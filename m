@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99898994BD6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:47:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3EA3994905
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:19:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F1131F28A83
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:47:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DCB528307F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F531DED7B;
-	Tue,  8 Oct 2024 12:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BB81DE8BC;
+	Tue,  8 Oct 2024 12:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xcBvrTrh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omMstkdD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628361DED69;
-	Tue,  8 Oct 2024 12:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857581DE8A9;
+	Tue,  8 Oct 2024 12:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391639; cv=none; b=hLuMf5kclHvxtgVuLPlQj9mv/DL8ps+OBmK4TqL11+kxghmwrqzg2jPbs5gaUt3sOC+L4UlLD358yfS8Q7cDkjnnyEBOxG8k8EnSLePF5qvycSLHS3rVuutZUYjKpaOWLaK6NbvtA3KQv68DKv5PDPEDyO8NB92bh0KmKExklig=
+	t=1728389927; cv=none; b=gOYsuNLCWRkwFugrr+6ek5d8rkmRRJmbiz+U+33yaD+cJ45bJTJnj9q0Y+bTjZFU5WYne0Ooep64/Po/dXj+qe+Rh0NTOLL/AuH1+LJji+J3bHsqKlPfGLPvB5Zg1AYSTO80+VLKjeW0mqWLlPZ/TydW+gQ64g+lU8kTnsmP9is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391639; c=relaxed/simple;
-	bh=5brLwsHXqGToYyA7hdsLmq4iqLzvRzdcDLdruM/Flb4=;
+	s=arc-20240116; t=1728389927; c=relaxed/simple;
+	bh=fqqbjFlBYdL8fm79e2Ed3hd770SWszb4fFdLt//U6zQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F8vn2l94N+7aA0DbbaTB++mScMTSIhrQSweUz3okeRrkF34/RitkzqyNgVQD/LWjmRsdFAuH3LkH6FpCbkbWx5ETvNzijdtxZF3N0C+UVcjOULozOnloifZIvIkgwe/MqkiAvItT0nsVBjYX9lDXWqiHvw5AS4tlOy8XpWR+I1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xcBvrTrh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA72CC4CECC;
-	Tue,  8 Oct 2024 12:47:18 +0000 (UTC)
+	 MIME-Version; b=j8W4/PZFQwQMe2FSHzCzGkyUUorwLe4/FSJK9eCUab76O4mOORwsYDQcvNQQ3o3UEdA53hTt0mrGjlJumFssQK9duA2emohZ45BnglOmwjEiTVawQvviruxVCg15yLEGkhGjAJVi0Wy1dnEfpt9cG7mdL7ke2whdSBKdVCi8wio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omMstkdD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B266C4CEC7;
+	Tue,  8 Oct 2024 12:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391639;
-	bh=5brLwsHXqGToYyA7hdsLmq4iqLzvRzdcDLdruM/Flb4=;
+	s=korg; t=1728389927;
+	bh=fqqbjFlBYdL8fm79e2Ed3hd770SWszb4fFdLt//U6zQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xcBvrTrh0I05NutN5xJBQKcQtUZY3iLclb9P/67G1FB+R4IE6YMeJFSF0ECLe0o3m
-	 AGZZcyatx7zJNM0nLZkjHoqw1qlHQcGLpOzK4IlioNC+RfysYBkTPlHogGkixITK8I
-	 8mItzw1P6g913h/bC8RwcT7ljjQfxzIOkR1tOQWQ=
+	b=omMstkdDl3M2GHauVUANbboJVPu04uwyTmoXOgTqr+tmCr5qNVEkSJAD77wZAKsMm
+	 yvjj8hV+EvJKddoKapCJt/HGfjZTDJXY76e/WKP0wNT3GrKFafUlb30+2D1uSpQaqF
+	 75nboKZKvCy3yTIr6bgHXqQ4/+JymXM/cxpxAiFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cyan Nyan <cyan.vtb@gmail.com>,
-	Asahi Lina <lina@asahilina.net>,
-	Takashi Iwai <tiwai@suse.de>,
+	Breno Leitao <leitao@debian.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 171/558] ALSA: usb-audio: Add quirk for RME Digiface USB
-Date: Tue,  8 Oct 2024 14:03:21 +0200
-Message-ID: <20241008115709.087379013@linuxfoundation.org>
+Subject: [PATCH 6.10 139/482] x86/ioapic: Handle allocation failures gracefully
+Date: Tue,  8 Oct 2024 14:03:22 +0200
+Message-ID: <20241008115653.773517720@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,301 +63,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cyan Nyan <cyan.vtb@gmail.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit c032044e9672408c534d64a6df2b1ba14449e948 ]
+[ Upstream commit 830802a0fea8fb39d3dc9fb7d6b5581e1343eb1f ]
 
-Add trivial support for audio streaming on the RME Digiface USB. Binds
-only to the first interface to allow userspace to directly drive the
-complex I/O and matrix mixer controls.
+Breno observed panics when using failslab under certain conditions during
+runtime:
 
-Signed-off-by: Cyan Nyan <cyan.vtb@gmail.com>
-[Lina: Added 2x/4x sample rate support & boot/format quirks]
-Co-developed-by: Asahi Lina <lina@asahilina.net>
-Signed-off-by: Asahi Lina <lina@asahilina.net>
-Link: https://patch.msgid.link/20240903-rme-digiface-v2-1-71b06c912e97@asahilina.net
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+   can not alloc irq_pin_list (-1,0,20)
+   Kernel panic - not syncing: IO-APIC: failed to add irq-pin. Can not proceed
+
+   panic+0x4e9/0x590
+   mp_irqdomain_alloc+0x9ab/0xa80
+   irq_domain_alloc_irqs_locked+0x25d/0x8d0
+   __irq_domain_alloc_irqs+0x80/0x110
+   mp_map_pin_to_irq+0x645/0x890
+   acpi_register_gsi_ioapic+0xe6/0x150
+   hpet_open+0x313/0x480
+
+That's a pointless panic which is a leftover of the historic IO/APIC code
+which panic'ed during early boot when the interrupt allocation failed.
+
+The only place which might justify panic is the PIT/HPET timer_check() code
+which tries to figure out whether the timer interrupt is delivered through
+the IO/APIC. But that code does not require to handle interrupt allocation
+failures. If the interrupt cannot be allocated then timer delivery fails
+and it either panics due to that or falls back to legacy mode.
+
+Cure this by removing the panic wrapper around __add_pin_to_irq_node() and
+making mp_irqdomain_alloc() aware of the failure condition and handle it as
+any other failure in this function gracefully.
+
+Reported-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Breno Leitao <leitao@debian.org>
+Tested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Link: https://lore.kernel.org/all/ZqfJmUF8sXIyuSHN@gmail.com
+Link: https://lore.kernel.org/all/20240802155440.275200843@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks-table.h | 171 ++++++++++++++++++++++++++++++++++++++-
- sound/usb/quirks.c       |  58 +++++++++++++
- 2 files changed, 228 insertions(+), 1 deletion(-)
+ arch/x86/kernel/apic/io_apic.c | 46 ++++++++++++++++------------------
+ 1 file changed, 22 insertions(+), 24 deletions(-)
 
-diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
-index 8d22de8bc2a96..631b9ab80f6cd 100644
---- a/sound/usb/quirks-table.h
-+++ b/sound/usb/quirks-table.h
-@@ -3604,6 +3604,175 @@ YAMAHA_DEVICE(0x7010, "UB99"),
- 		}
- 	}
- },
--
-+{
-+	/* Only claim interface 0 */
-+	.match_flags = USB_DEVICE_ID_MATCH_VENDOR |
-+		       USB_DEVICE_ID_MATCH_PRODUCT |
-+		       USB_DEVICE_ID_MATCH_INT_CLASS |
-+		       USB_DEVICE_ID_MATCH_INT_NUMBER,
-+	.idVendor = 0x2a39,
-+	.idProduct = 0x3f8c,
-+	.bInterfaceClass = USB_CLASS_VENDOR_SPEC,
-+	.bInterfaceNumber = 0,
-+	QUIRK_DRIVER_INFO {
-+		QUIRK_DATA_COMPOSITE {
-+			/*
-+			 * Three modes depending on sample rate band,
-+			 * with different channel counts for in/out
-+			 */
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 34, // outputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x02,
-+					.ep_idx = 1,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_32000 |
-+						SNDRV_PCM_RATE_44100 |
-+						SNDRV_PCM_RATE_48000,
-+					.rate_min = 32000,
-+					.rate_max = 48000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						32000, 44100, 48000,
-+					},
-+					.sync_ep = 0x81,
-+					.sync_iface = 0,
-+					.sync_altsetting = 1,
-+					.sync_ep_idx = 0,
-+					.implicit_fb = 1,
-+				},
-+			},
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 18, // outputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x02,
-+					.ep_idx = 1,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_64000 |
-+						SNDRV_PCM_RATE_88200 |
-+						SNDRV_PCM_RATE_96000,
-+					.rate_min = 64000,
-+					.rate_max = 96000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						64000, 88200, 96000,
-+					},
-+					.sync_ep = 0x81,
-+					.sync_iface = 0,
-+					.sync_altsetting = 1,
-+					.sync_ep_idx = 0,
-+					.implicit_fb = 1,
-+				},
-+			},
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 10, // outputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x02,
-+					.ep_idx = 1,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_KNOT |
-+						SNDRV_PCM_RATE_176400 |
-+						SNDRV_PCM_RATE_192000,
-+					.rate_min = 128000,
-+					.rate_max = 192000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						128000, 176400, 192000,
-+					},
-+					.sync_ep = 0x81,
-+					.sync_iface = 0,
-+					.sync_altsetting = 1,
-+					.sync_ep_idx = 0,
-+					.implicit_fb = 1,
-+				},
-+			},
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 32, // inputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x81,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_32000 |
-+						SNDRV_PCM_RATE_44100 |
-+						SNDRV_PCM_RATE_48000,
-+					.rate_min = 32000,
-+					.rate_max = 48000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						32000, 44100, 48000,
-+					}
-+				}
-+			},
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 16, // inputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x81,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_64000 |
-+						SNDRV_PCM_RATE_88200 |
-+						SNDRV_PCM_RATE_96000,
-+					.rate_min = 64000,
-+					.rate_max = 96000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						64000, 88200, 96000,
-+					}
-+				}
-+			},
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 8, // inputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x81,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_KNOT |
-+						SNDRV_PCM_RATE_176400 |
-+						SNDRV_PCM_RATE_192000,
-+					.rate_min = 128000,
-+					.rate_max = 192000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						128000, 176400, 192000,
-+					}
-+				}
-+			},
-+			QUIRK_COMPOSITE_END
-+		}
-+	}
-+},
- #undef USB_DEVICE_VENDOR_SPEC
- #undef USB_AUDIO_DEVICE
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index e7b68c67852e9..73da862a012c6 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -1389,6 +1389,27 @@ static int snd_usb_motu_m_series_boot_quirk(struct usb_device *dev)
- 	return 0;
- }
- 
-+static int snd_usb_rme_digiface_boot_quirk(struct usb_device *dev)
-+{
-+	/* Disable mixer, internal clock, all outputs ADAT, 48kHz, TMS off */
-+	snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
-+			16, 0x40, 0x2410, 0x7fff, NULL, 0);
-+	snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
-+			18, 0x40, 0x0104, 0xffff, NULL, 0);
-+
-+	/* Disable loopback for all inputs */
-+	for (int ch = 0; ch < 32; ch++)
-+		snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
-+				22, 0x40, 0x400, ch, NULL, 0);
-+
-+	/* Unity gain for all outputs */
-+	for (int ch = 0; ch < 34; ch++)
-+		snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
-+				21, 0x40, 0x9000, 0x100 + ch, NULL, 0);
-+
-+	return 0;
-+}
-+
- /*
-  * Setup quirks
+diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
+index 477b740b2f267..d1ec1dcb637af 100644
+--- a/arch/x86/kernel/apic/io_apic.c
++++ b/arch/x86/kernel/apic/io_apic.c
+@@ -352,27 +352,26 @@ static void ioapic_mask_entry(int apic, int pin)
+  * shared ISA-space IRQs, so we have to support them. We are super
+  * fast in the common case, and fast for shared ISA-space IRQs.
   */
-@@ -1616,6 +1637,8 @@ int snd_usb_apply_boot_quirk(struct usb_device *dev,
- 		    get_iface_desc(intf->altsetting)->bInterfaceNumber < 3)
- 			return snd_usb_motu_microbookii_boot_quirk(dev);
- 		break;
-+	case USB_ID(0x2a39, 0x3f8c): /* RME Digiface USB */
-+		return snd_usb_rme_digiface_boot_quirk(dev);
- 	}
- 
- 	return 0;
-@@ -1771,6 +1794,38 @@ static void mbox3_set_format_quirk(struct snd_usb_substream *subs,
- 		dev_warn(&subs->dev->dev, "MBOX3: Couldn't set the sample rate");
- }
- 
-+static const int rme_digiface_rate_table[] = {
-+	32000, 44100, 48000, 0,
-+	64000, 88200, 96000, 0,
-+	128000, 176400, 192000, 0,
-+};
-+
-+static int rme_digiface_set_format_quirk(struct snd_usb_substream *subs)
-+{
-+	unsigned int cur_rate = subs->data_endpoint->cur_rate;
-+	u16 val;
-+	int speed_mode;
-+	int id;
-+
-+	for (id = 0; id < ARRAY_SIZE(rme_digiface_rate_table); id++) {
-+		if (rme_digiface_rate_table[id] == cur_rate)
-+			break;
-+	}
-+
-+	if (id >= ARRAY_SIZE(rme_digiface_rate_table))
-+		return -EINVAL;
-+
-+	/* 2, 3, 4 for 1x, 2x, 4x */
-+	speed_mode = (id >> 2) + 2;
-+	val = (id << 3) | (speed_mode << 12);
-+
-+	/* Set the sample rate */
-+	snd_usb_ctl_msg(subs->stream->chip->dev,
-+		usb_sndctrlpipe(subs->stream->chip->dev, 0),
-+		16, 0x40, val, 0x7078, NULL, 0);
-+	return 0;
-+}
-+
- void snd_usb_set_format_quirk(struct snd_usb_substream *subs,
- 			      const struct audioformat *fmt)
+-static int __add_pin_to_irq_node(struct mp_chip_data *data,
+-				 int node, int apic, int pin)
++static bool add_pin_to_irq_node(struct mp_chip_data *data, int node, int apic, int pin)
  {
-@@ -1795,6 +1850,9 @@ void snd_usb_set_format_quirk(struct snd_usb_substream *subs,
- 	case USB_ID(0x0dba, 0x5000):
- 		mbox3_set_format_quirk(subs, fmt); /* Digidesign Mbox 3 */
- 		break;
-+	case USB_ID(0x2a39, 0x3f8c): /* RME Digiface USB */
-+		rme_digiface_set_format_quirk(subs);
-+		break;
+ 	struct irq_pin_list *entry;
+ 
+-	/* don't allow duplicates */
+-	for_each_irq_pin(entry, data->irq_2_pin)
++	/* Don't allow duplicates */
++	for_each_irq_pin(entry, data->irq_2_pin) {
+ 		if (entry->apic == apic && entry->pin == pin)
+-			return 0;
++			return true;
++	}
+ 
+ 	entry = kzalloc_node(sizeof(struct irq_pin_list), GFP_ATOMIC, node);
+ 	if (!entry) {
+-		pr_err("can not alloc irq_pin_list (%d,%d,%d)\n",
+-		       node, apic, pin);
+-		return -ENOMEM;
++		pr_err("Cannot allocate irq_pin_list (%d,%d,%d)\n", node, apic, pin);
++		return false;
  	}
++
+ 	entry->apic = apic;
+ 	entry->pin = pin;
+ 	list_add_tail(&entry->list, &data->irq_2_pin);
+-
+-	return 0;
++	return true;
  }
  
+ static void __remove_pin_from_irq(struct mp_chip_data *data, int apic, int pin)
+@@ -387,13 +386,6 @@ static void __remove_pin_from_irq(struct mp_chip_data *data, int apic, int pin)
+ 		}
+ }
+ 
+-static void add_pin_to_irq_node(struct mp_chip_data *data,
+-				int node, int apic, int pin)
+-{
+-	if (__add_pin_to_irq_node(data, node, apic, pin))
+-		panic("IO-APIC: failed to add irq-pin. Can not proceed\n");
+-}
+-
+ /*
+  * Reroute an IRQ to a different pin.
+  */
+@@ -1002,8 +994,7 @@ static int alloc_isa_irq_from_domain(struct irq_domain *domain,
+ 	if (irq_data && irq_data->parent_data) {
+ 		if (!mp_check_pin_attr(irq, info))
+ 			return -EBUSY;
+-		if (__add_pin_to_irq_node(irq_data->chip_data, node, ioapic,
+-					  info->ioapic.pin))
++		if (!add_pin_to_irq_node(irq_data->chip_data, node, ioapic, info->ioapic.pin))
+ 			return -ENOMEM;
+ 	} else {
+ 		info->flags |= X86_IRQ_ALLOC_LEGACY;
+@@ -3017,10 +3008,8 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
+ 		return -ENOMEM;
+ 
+ 	ret = irq_domain_alloc_irqs_parent(domain, virq, nr_irqs, info);
+-	if (ret < 0) {
+-		kfree(data);
+-		return ret;
+-	}
++	if (ret < 0)
++		goto free_data;
+ 
+ 	INIT_LIST_HEAD(&data->irq_2_pin);
+ 	irq_data->hwirq = info->ioapic.pin;
+@@ -3029,7 +3018,10 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
+ 	irq_data->chip_data = data;
+ 	mp_irqdomain_get_attr(mp_pin_to_gsi(ioapic, pin), data, info);
+ 
+-	add_pin_to_irq_node(data, ioapic_alloc_attr_node(info), ioapic, pin);
++	if (!add_pin_to_irq_node(data, ioapic_alloc_attr_node(info), ioapic, pin)) {
++		ret = -ENOMEM;
++		goto free_irqs;
++	}
+ 
+ 	mp_preconfigure_entry(data);
+ 	mp_register_handler(virq, data->is_level);
+@@ -3044,6 +3036,12 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
+ 		    ioapic, mpc_ioapic_id(ioapic), pin, virq,
+ 		    data->is_level, data->active_low);
+ 	return 0;
++
++free_irqs:
++	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
++free_data:
++	kfree(data);
++	return ret;
+ }
+ 
+ void mp_irqdomain_free(struct irq_domain *domain, unsigned int virq,
 -- 
 2.43.0
 
