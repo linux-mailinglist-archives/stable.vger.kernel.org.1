@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D95994BC9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:46:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A74589948F6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:19:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 222B41C24EEB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:46:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 619D228278E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8244E1DE4C4;
-	Tue,  8 Oct 2024 12:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5531DED4B;
+	Tue,  8 Oct 2024 12:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKuTcAW7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfOThclV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40564183CB8;
-	Tue,  8 Oct 2024 12:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485E41DE8A6;
+	Tue,  8 Oct 2024 12:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391597; cv=none; b=S3LNUTyG/f9zr80B0osaZdE3zaXw/OqNOHXFk3Ddx2wR8/2k0sFKl7/8f5Bus28FXF8LTR1tvoTHlBboKpUtqLrRqKc8pbJQYf5USOAmtWwlufaXWypG+ZTfOz1gcNIeIX4gJ1qzRsIltE7+cBR2iLHewvY7F1IfsqLsgBJrhno=
+	t=1728389901; cv=none; b=lNpeguo5pMCeOo728jgyYIYR9xTEbm9G4vW7t65V5ck4+akLmzeg/vCYW8nOIMAglsfh6Zl0vVSRYVjImRt0QmdJJmGjP6vvdclWQJVcXO7tRKXeYTersovfKKHELtiq/faBLs1ZPCbCjZRRPnIeVLflBPqaWHGd8oD4wQvcaTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391597; c=relaxed/simple;
-	bh=RnwKQLtHF0GCeIbHCvi5Bb7PdcxpzWloj8m0eReqDco=;
+	s=arc-20240116; t=1728389901; c=relaxed/simple;
+	bh=kbZ55wadEMi3PtGsHqkU2l9KYzTZbeOqk9qUt6pNBhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pzBqxDrlK0QRDH0PEPmqHL4Bwnd9YGQ697sGYycYMU2VI2PxIpb4KhljpEMstaXhERzK38SiQO+bN6yRXViSWjlr7oQwt2qJnvlJ4VN7qwBJq+yiUhNpriNaw2gwVxLPkvMwVL8YiG5bnWcq+7LaY5WoW+8LEexwC4wC0Lnvx4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKuTcAW7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8471C4CEC7;
-	Tue,  8 Oct 2024 12:46:36 +0000 (UTC)
+	 MIME-Version; b=AyGh7t7IITcFL8JijYYPJCBl0uUWJx3zlLVJkz/gGmJVCeh7tDyOB7bZDcOfBu0Fkh7wBHPbCl5pUGpp5+kyFRzGhbndzQvR3bjUoA2FFuBpVWSjrPXfeW4Dxo+ROX7XxhNcNAzV493GUb3Yh8BMXsg/ra6ssAvZD+LsLuaa+Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfOThclV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCD3C4CEC7;
+	Tue,  8 Oct 2024 12:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391597;
-	bh=RnwKQLtHF0GCeIbHCvi5Bb7PdcxpzWloj8m0eReqDco=;
+	s=korg; t=1728389901;
+	bh=kbZ55wadEMi3PtGsHqkU2l9KYzTZbeOqk9qUt6pNBhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eKuTcAW7y1CrNKXcw2sjzXtvRd14uUC12EF3/s/t+u8VbzY5+LOCEw9FCUKPsxFHp
-	 ehRqui937piAQ+ij02gw9KXCco9+rJWTbtdYmY89MVC+aEx9CTEOpSIzxKz+ZmleFH
-	 DlxO3fBJsWGilwk8H1l7Il8ssAAAnk7MEpskTrJY=
+	b=NfOThclV0CS+fqcTPjgzWy++zdTe7FENVsY+RhP68hHzc7m/qNxXNjVZhZRQWJFQf
+	 2SaZiMi8n+lXB9CjH5JTou2dzwHnWzqpYBlTB8QivP2zGmwGHzFJg4mbLKwK1MErYV
+	 /gN1bJnugz4qWRryXj8mwqQ3H+/fGYmxm/xtrZwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis Peens <louis.peens@corigine.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
 	Jakub Kicinski <kuba@kernel.org>,
+	Joe Damato <jdamato@fastly.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 164/558] nfp: Use IRQF_NO_AUTOEN flag in request_irq()
+Subject: [PATCH 6.10 131/482] net: napi: Prevent overflow of napi_defer_hard_irqs
 Date: Tue,  8 Oct 2024 14:03:14 +0200
-Message-ID: <20241008115708.811638657@linuxfoundation.org>
+Message-ID: <20241008115653.460033707@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Joe Damato <jdamato@fastly.com>
 
-[ Upstream commit daaba19d357f0900b303a530ced96c78086267ea ]
+[ Upstream commit 08062af0a52107a243f7608fd972edb54ca5b7f8 ]
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+In commit 6f8b12d661d0 ("net: napi: add hard irqs deferral feature")
+napi_defer_irqs was added to net_device and napi_defer_irqs_count was
+added to napi_struct, both as type int.
 
-Reviewed-by: Louis Peens <louis.peens@corigine.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patch.msgid.link/20240911094445.1922476-4-ruanjinjie@huawei.com
+This value never goes below zero, so there is not reason for it to be a
+signed int. Change the type for both from int to u32, and add an
+overflow check to sysfs to limit the value to S32_MAX.
+
+The limit of S32_MAX was chosen because the practical limit before this
+patch was S32_MAX (anything larger was an overflow) and thus there are
+no behavioral changes introduced. If the extra bit is needed in the
+future, the limit can be raised.
+
+Before this patch:
+
+$ sudo bash -c 'echo 2147483649 > /sys/class/net/eth4/napi_defer_hard_irqs'
+$ cat /sys/class/net/eth4/napi_defer_hard_irqs
+-2147483647
+
+After this patch:
+
+$ sudo bash -c 'echo 2147483649 > /sys/class/net/eth4/napi_defer_hard_irqs'
+bash: line 0: echo: write error: Numerical result out of range
+
+Similarly, /sys/class/net/XXXXX/tx_queue_len is defined as unsigned:
+
+include/linux/netdevice.h:      unsigned int            tx_queue_len;
+
+And has an overflow check:
+
+dev_change_tx_queue_len(..., unsigned long new_len):
+
+  if (new_len != (unsigned int)new_len)
+          return -ERANGE;
+
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240904153431.307932-1-jdamato@fastly.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/netronome/nfp/nfp_net_common.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ Documentation/networking/net_cachelines/net_device.rst | 2 +-
+ include/linux/netdevice.h                              | 4 ++--
+ net/core/net-sysfs.c                                   | 6 +++++-
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-index 182ba0a8b095b..6e0929af0f725 100644
---- a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-+++ b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-@@ -821,14 +821,13 @@ nfp_net_prepare_vector(struct nfp_net *nn, struct nfp_net_r_vector *r_vec,
+diff --git a/Documentation/networking/net_cachelines/net_device.rst b/Documentation/networking/net_cachelines/net_device.rst
+index 70c4fb9d4e5ce..d68f37f5b1f82 100644
+--- a/Documentation/networking/net_cachelines/net_device.rst
++++ b/Documentation/networking/net_cachelines/net_device.rst
+@@ -98,7 +98,7 @@ unsigned_int                        num_rx_queues
+ unsigned_int                        real_num_rx_queues      -                   read_mostly         get_rps_cpu
+ struct_bpf_prog*                    xdp_prog                -                   read_mostly         netif_elide_gro()
+ unsigned_long                       gro_flush_timeout       -                   read_mostly         napi_complete_done
+-int                                 napi_defer_hard_irqs    -                   read_mostly         napi_complete_done
++u32                                 napi_defer_hard_irqs    -                   read_mostly         napi_complete_done
+ unsigned_int                        gro_max_size            -                   read_mostly         skb_gro_receive
+ unsigned_int                        gro_ipv4_max_size       -                   read_mostly         skb_gro_receive
+ rx_handler_func_t*                  rx_handler              read_mostly         -                   __netif_receive_skb_core
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 238aaed5d7236..bf3eba0d9bdca 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -354,7 +354,7 @@ struct napi_struct {
  
- 	snprintf(r_vec->name, sizeof(r_vec->name),
- 		 "%s-rxtx-%d", nfp_net_name(nn), idx);
--	err = request_irq(r_vec->irq_vector, r_vec->handler, 0, r_vec->name,
--			  r_vec);
-+	err = request_irq(r_vec->irq_vector, r_vec->handler, IRQF_NO_AUTOEN,
-+			  r_vec->name, r_vec);
- 	if (err) {
- 		nfp_net_napi_del(&nn->dp, r_vec);
- 		nn_err(nn, "Error requesting IRQ %d\n", r_vec->irq_vector);
- 		return err;
- 	}
--	disable_irq(r_vec->irq_vector);
+ 	unsigned long		state;
+ 	int			weight;
+-	int			defer_hard_irqs_count;
++	u32			defer_hard_irqs_count;
+ 	unsigned long		gro_bitmask;
+ 	int			(*poll)(struct napi_struct *, int);
+ #ifdef CONFIG_NETPOLL
+@@ -2089,7 +2089,7 @@ struct net_device {
+ 	unsigned int		real_num_rx_queues;
+ 	struct netdev_rx_queue	*_rx;
+ 	unsigned long		gro_flush_timeout;
+-	int			napi_defer_hard_irqs;
++	u32			napi_defer_hard_irqs;
+ 	unsigned int		gro_max_size;
+ 	unsigned int		gro_ipv4_max_size;
+ 	rx_handler_func_t __rcu	*rx_handler;
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index 15ad775ddd3c1..dc0c622d453e1 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -32,6 +32,7 @@
+ #ifdef CONFIG_SYSFS
+ static const char fmt_hex[] = "%#x\n";
+ static const char fmt_dec[] = "%d\n";
++static const char fmt_uint[] = "%u\n";
+ static const char fmt_ulong[] = "%lu\n";
+ static const char fmt_u64[] = "%llu\n";
  
- 	irq_set_affinity_hint(r_vec->irq_vector, &r_vec->affinity_mask);
+@@ -425,6 +426,9 @@ NETDEVICE_SHOW_RW(gro_flush_timeout, fmt_ulong);
  
+ static int change_napi_defer_hard_irqs(struct net_device *dev, unsigned long val)
+ {
++	if (val > S32_MAX)
++		return -ERANGE;
++
+ 	WRITE_ONCE(dev->napi_defer_hard_irqs, val);
+ 	return 0;
+ }
+@@ -438,7 +442,7 @@ static ssize_t napi_defer_hard_irqs_store(struct device *dev,
+ 
+ 	return netdev_store(dev, attr, buf, len, change_napi_defer_hard_irqs);
+ }
+-NETDEVICE_SHOW_RW(napi_defer_hard_irqs, fmt_dec);
++NETDEVICE_SHOW_RW(napi_defer_hard_irqs, fmt_uint);
+ 
+ static ssize_t ifalias_store(struct device *dev, struct device_attribute *attr,
+ 			     const char *buf, size_t len)
 -- 
 2.43.0
 
