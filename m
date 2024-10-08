@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-82463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9AA8994CEA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3446994A41
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:31:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FDEA1F256BA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 581E31F21990
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8A71DF247;
-	Tue,  8 Oct 2024 12:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A051DE3A2;
+	Tue,  8 Oct 2024 12:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APQy9Fp9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obLWCMxI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EBB1DE2A5;
-	Tue,  8 Oct 2024 12:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925CA1DA60C;
+	Tue,  8 Oct 2024 12:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392347; cv=none; b=aNUkhivJq0RdiTRto5UT8gpSBXT+fDIgye4aX4YtsskvlThdoU2B0KDvB9naT4XaJ+fV/EUuHpb0/SRKm5ZNPv148AFA9uW188rYIR24HnDdDFPE18SGJqcHyR7VnK6VS5ATap7yXxT6/8FEiphGOCasaFkdgwIkp5/UBYqToiw=
+	t=1728390672; cv=none; b=qLu0L3vMTQFn6TnQD1PMa1acR9GIX5P4K4I8s0cBXYgnNOCeOca4FptjHbwMRRTlgtTP+eXhShf3yfu31+2Aj/Fz0v7LhR3S3F3VshsVw14Fn0/kTSFQVvgbij5n5ZVxE1y/bomrDaNYRTpj6uqYHVUXy/yHsdJsL/7dG3E19GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392347; c=relaxed/simple;
-	bh=Q1y9n2NL/I7OK6PF8IGyvkgs7B3ctPak0fgHrVW3Os0=;
+	s=arc-20240116; t=1728390672; c=relaxed/simple;
+	bh=Xh5DXJYxuCM8fJJqeYghHjQuHfAxQMTNGTCQlWRexBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WP86T86kKsgi/3sz5QX88kmugpxgbTBNVQPju8AEE98dgMHcMK9BdMk/V16EO3kApk2JzDeWAqZR2LvUWTRUqPV4B+/W8s17+vuXVPiEUyoaWe7UHaOd439SrBS1hBNMMhHW0iNI48OAa6wD957m4N5Wn0b7jsBYi0yIyg3GHw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APQy9Fp9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E35FC4CEC7;
-	Tue,  8 Oct 2024 12:59:06 +0000 (UTC)
+	 MIME-Version; b=B0KnVEJYYh4OotfTLy+8QvfoqMh5Kqm64UaBsV+m8KmBlK9ojSuKOigpFxN7PokkRLVdTFXm7HUlUe9hSDmoU8Wjt0tMMl+qUxOqzaUNjxEbc5XxVqNqT5963B02XiJFNIcw+iCdPjjqtmShOebHfx2pMH2Pp6ptvY4kBFkR9mM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obLWCMxI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAE07C4CEC7;
+	Tue,  8 Oct 2024 12:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392347;
-	bh=Q1y9n2NL/I7OK6PF8IGyvkgs7B3ctPak0fgHrVW3Os0=;
+	s=korg; t=1728390672;
+	bh=Xh5DXJYxuCM8fJJqeYghHjQuHfAxQMTNGTCQlWRexBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=APQy9Fp93P3XEdTA3h1w0j/QmQUPvVhASr/MrgZ9wQd5DH0iOyKM1pQA/LxpkxzwP
-	 UaSFG5Hr8xl8vVCcnkE3OMAoRJ7qPxyNkn2iBwfnnF/SaOw/Rm3+lgmD2iIBsZkqEp
-	 24gJbujUNFAn22XVLT7ZE0pcmFvaexHTXx1PN3h4=
+	b=obLWCMxInZ8hQHMCKx/x+LKxWrkF5XKMfLlpx2xAMQmCWeBM0pXzaTTxQ4T7YkDx1
+	 +6TXdJCnqmtndti1CS7YsYZxTwTJx+3R+UgFxcRCyzumR3DYCgAqdcw0yjV6L2unxo
+	 Y8YNFW+5wPat+qnFs6uKRfzBFOTF6/XxRl2tgkvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.11 389/558] ext4: fix double brelse() the buffer of the extents path
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 356/482] ocfs2: remove unreasonable unlock in ocfs2_read_blocks
 Date: Tue,  8 Oct 2024 14:06:59 +0200
-Message-ID: <20241008115717.593384355@linuxfoundation.org>
+Message-ID: <20241008115702.431148969@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +70,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-commit dcaa6c31134c0f515600111c38ed7750003e1b9c upstream.
+commit c03a82b4a0c935774afa01fd6d128b444fd930a1 upstream.
 
-In ext4_ext_try_to_merge_up(), set path[1].p_bh to NULL after it has been
-released, otherwise it may be released twice. An example of what triggers
-this is as follows:
+Patch series "Misc fixes for ocfs2_read_blocks", v5.
 
-  split2    map    split1
-|--------|-------|--------|
+This series contains 2 fixes for ocfs2_read_blocks().  The first patch fix
+the issue reported by syzbot, which detects bad unlock balance in
+ocfs2_read_blocks().  The second patch fixes an issue reported by Heming
+Zhao when reviewing above fix.
 
-ext4_ext_map_blocks
- ext4_ext_handle_unwritten_extents
-  ext4_split_convert_extents
-   // path->p_depth == 0
-   ext4_split_extent
-     // 1. do split1
-     ext4_split_extent_at
-       |ext4_ext_insert_extent
-       |  ext4_ext_create_new_leaf
-       |    ext4_ext_grow_indepth
-       |      le16_add_cpu(&neh->eh_depth, 1)
-       |    ext4_find_extent
-       |      // return -ENOMEM
-       |// get error and try zeroout
-       |path = ext4_find_extent
-       |  path->p_depth = 1
-       |ext4_ext_try_to_merge
-       |  ext4_ext_try_to_merge_up
-       |    path->p_depth = 0
-       |    brelse(path[1].p_bh)  ---> not set to NULL here
-       |// zeroout success
-     // 2. update path
-     ext4_find_extent
-     // 3. do split2
-     ext4_split_extent_at
-       ext4_ext_insert_extent
-         ext4_ext_create_new_leaf
-           ext4_ext_grow_indepth
-             le16_add_cpu(&neh->eh_depth, 1)
-           ext4_find_extent
-             path[0].p_bh = NULL;
-             path->p_depth = 1
-             read_extent_tree_block  ---> return err
-             // path[1].p_bh is still the old value
-             ext4_free_ext_path
-               ext4_ext_drop_refs
-                 // path->p_depth == 1
-                 brelse(path[1].p_bh)  ---> brelse a buffer twice
 
-Finally got the following WARRNING when removing the buffer from lru:
+This patch (of 2):
 
-============================================
-VFS: brelse: Trying to free free buffer
-WARNING: CPU: 2 PID: 72 at fs/buffer.c:1241 __brelse+0x58/0x90
-CPU: 2 PID: 72 Comm: kworker/u19:1 Not tainted 6.9.0-dirty #716
-RIP: 0010:__brelse+0x58/0x90
-Call Trace:
- <TASK>
- __find_get_block+0x6e7/0x810
- bdev_getblk+0x2b/0x480
- __ext4_get_inode_loc+0x48a/0x1240
- ext4_get_inode_loc+0xb2/0x150
- ext4_reserve_inode_write+0xb7/0x230
- __ext4_mark_inode_dirty+0x144/0x6a0
- ext4_ext_insert_extent+0x9c8/0x3230
- ext4_ext_map_blocks+0xf45/0x2dc0
- ext4_map_blocks+0x724/0x1700
- ext4_do_writepages+0x12d6/0x2a70
-[...]
-============================================
+There was a lock release before exiting, so remove the unreasonable unlock.
 
-Fixes: ecb94f5fdf4b ("ext4: collapse a single extent tree block into the inode if possible")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20240822023545.1994557-9-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lkml.kernel.org/r/20240902023636.1843422-1-joseph.qi@linux.alibaba.com
+Link: https://lkml.kernel.org/r/20240902023636.1843422-2-joseph.qi@linux.alibaba.com
+Fixes: cf76c78595ca ("ocfs2: don't put and assigning null to bh allocated outside")
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ab134185af9ef88dfed5
+Tested-by: syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>	[4.20+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ocfs2/buffer_head_io.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -1877,6 +1877,7 @@ static void ext4_ext_try_to_merge_up(han
- 	path[0].p_hdr->eh_max = cpu_to_le16(max_root);
- 
- 	brelse(path[1].p_bh);
-+	path[1].p_bh = NULL;
- 	ext4_free_blocks(handle, inode, NULL, blk, 1,
- 			 EXT4_FREE_BLOCKS_METADATA | EXT4_FREE_BLOCKS_FORGET);
- }
+--- a/fs/ocfs2/buffer_head_io.c
++++ b/fs/ocfs2/buffer_head_io.c
+@@ -235,7 +235,6 @@ int ocfs2_read_blocks(struct ocfs2_cachi
+ 		if (bhs[i] == NULL) {
+ 			bhs[i] = sb_getblk(sb, block++);
+ 			if (bhs[i] == NULL) {
+-				ocfs2_metadata_cache_io_unlock(ci);
+ 				status = -ENOMEM;
+ 				mlog_errno(status);
+ 				/* Don't forget to put previous bh! */
 
 
 
