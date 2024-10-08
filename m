@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C58994EC1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868DE994A6C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:33:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F8E3B2A1A2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:20:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A67B28A04A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDE21DEFEA;
-	Tue,  8 Oct 2024 13:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053B2190663;
+	Tue,  8 Oct 2024 12:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caq/8lEt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/6RXrgk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDC11DED6F;
-	Tue,  8 Oct 2024 13:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D721E485;
+	Tue,  8 Oct 2024 12:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393625; cv=none; b=vDgj6cpyuBul5e2oq03bL/U0+wlwQS9JP58dWgwpKv6kHLrlpwjBi8+ZvRgFbK18Jw77rpi+ULovYEnuq8FmwBmLiJRckQRivZKDCTg5P035FtMU5b7+SAg1kmF3zBx+GUHD7xy4tYk54d/F3fRRgQ+bij8L6c8+7DNjTeD+7S0=
+	t=1728390782; cv=none; b=AJFz6MLehDQzJw3pi1RevnHgzVv4Wl5gnCoSctVlr3sKWWoPJu20zw9anHJ5i0hL6I8Ty9M4zCEFB3pDi9+8lbEQjjmvesZ46xfmrKCUSLCOePbzF036WiQS36szRpJm3ka9TR8J5T9CLBfdoZKjxb2okOMgc5pykTKVK9IY3rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393625; c=relaxed/simple;
-	bh=kORK4qc3BvYUv0hdqw2t9u2xSQmnKDD40KILabS4bNw=;
+	s=arc-20240116; t=1728390782; c=relaxed/simple;
+	bh=V9PpaBUoayG+Xkus4Yi1NvTLXpYp7m1RbkFgmpt46XA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DTuJ0xiMA+qdowpNaxAlitkt3h6Yck7UORdBDFs8DfmpDuI/Jo23eFiZTVl0KPbWNTuHFKCY5p6qX6F/n9aU4cnoknnfNeUkXXZ62qYJpWhpzpsvcGH5TAKCDTJ4JO52FPkSuDRgei+vxatxHfwFAoSwj7D0TWASr6tpQLIv5DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caq/8lEt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AF32C4CEC7;
-	Tue,  8 Oct 2024 13:20:24 +0000 (UTC)
+	 MIME-Version; b=qngx7qoJLRpHpwQwWyQWGxFMwtT/n2cu5NiXy83DSMYnAvUEXtpHTOH+tlNy+jTRCoOO3xj/Vw1AGPtJJQn1XlPEQNSAUWKRHZg5n4FrASFDoPf5WPmo1B+yhgqBGKk8maYljqJpWh58WFCvrO6p+8MCs7bQfCIZyvZbuHH8aCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/6RXrgk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FFAC4CEC7;
+	Tue,  8 Oct 2024 12:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393625;
-	bh=kORK4qc3BvYUv0hdqw2t9u2xSQmnKDD40KILabS4bNw=;
+	s=korg; t=1728390782;
+	bh=V9PpaBUoayG+Xkus4Yi1NvTLXpYp7m1RbkFgmpt46XA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=caq/8lEtds592gN7NHgLZeScsm/yCauplSL202LLtN8Q2gXZRxMyNebw3XFgqCDvh
-	 /KcQGQvS2KrurATtNtzwiKk7MriWrG8jNNbSDQCuqN+gFLqlX3IKB9c7uA+G4BiRgV
-	 6d7oyfjdBHGwZSH20TRXOECV2kwWMza9r6Q5QvGo=
+	b=F/6RXrgkwSgMprqtXNzl0wIFB3ACbBfdWTU673etUXK1IMAoReGp2YFYAXAqQ6alT
+	 PpJWYLRgboGGPzrG4bU4k0hd1JDCV/3MDgErlzkdpSQ/MjzzwcC0o52cHU9n0gXDcO
+	 9V78gdwgqGZe0cQp68ssBhYwTHJI5SSNXrcCMubc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Hancock <robert.hancock@calian.com>,
-	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.6 208/386] i2c: xiic: Wait for TX empty to avoid missed TX NAKs
+	Mike Tipton <quic_mdtipton@quicinc.com>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Imran Shaik <quic_imrashai@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 390/482] clk: qcom: clk-rpmh: Fix overflow in BCM vote
 Date: Tue,  8 Oct 2024 14:07:33 +0200
-Message-ID: <20241008115637.591714149@linuxfoundation.org>
+Message-ID: <20241008115703.761151477@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Hancock <robert.hancock@calian.com>
+From: Mike Tipton <quic_mdtipton@quicinc.com>
 
-commit 521da1e9225450bd323db5fa5bca942b1dc485b7 upstream.
+commit a4e5af27e6f6a8b0d14bc0d7eb04f4a6c7291586 upstream.
 
-Frequently an I2C write will be followed by a read, such as a register
-address write followed by a read of the register value. In this driver,
-when the TX FIFO half empty interrupt was raised and it was determined
-that there was enough space in the TX FIFO to send the following read
-command, it would do so without waiting for the TX FIFO to actually
-empty.
+Valid frequencies may result in BCM votes that exceed the max HW value.
+Set vote ceiling to BCM_TCS_CMD_VOTE_MASK to ensure the votes aren't
+truncated, which can result in lower frequencies than desired.
 
-Unfortunately it appears that in some cases this can result in a NAK
-that was raised by the target device on the write, such as due to an
-unsupported register address, being ignored and the subsequent read
-being done anyway. This can potentially put the I2C bus into an
-invalid state and/or result in invalid read data being processed.
-
-To avoid this, once a message has been fully written to the TX FIFO,
-wait for the TX FIFO empty interrupt before moving on to the next
-message, to ensure NAKs are handled properly.
-
-Fixes: e1d5b6598cdc ("i2c: Add support for Xilinx XPS IIC Bus Interface")
-Signed-off-by: Robert Hancock <robert.hancock@calian.com>
-Cc: <stable@vger.kernel.org> # v2.6.34+
-Reviewed-by: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
-Acked-by: Michal Simek <michal.simek@amd.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 04053f4d23a4 ("clk: qcom: clk-rpmh: Add IPA clock support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
+Reviewed-by: Taniya Das <quic_tdas@quicinc.com>
+Signed-off-by: Imran Shaik <quic_imrashai@quicinc.com>
+Link: https://lore.kernel.org/r/20240809-clk-rpmh-bcm-vote-fix-v2-1-240c584b7ef9@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-xiic.c |   19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ drivers/clk/qcom/clk-rpmh.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/i2c/busses/i2c-xiic.c
-+++ b/drivers/i2c/busses/i2c-xiic.c
-@@ -772,14 +772,17 @@ static irqreturn_t xiic_process(int irq,
- 			goto out;
- 		}
- 
--		xiic_fill_tx_fifo(i2c);
--
--		/* current message sent and there is space in the fifo */
--		if (!xiic_tx_space(i2c) && xiic_tx_fifo_space(i2c) >= 2) {
-+		if (xiic_tx_space(i2c)) {
-+			xiic_fill_tx_fifo(i2c);
-+		} else {
-+			/* current message fully written */
- 			dev_dbg(i2c->adap.dev.parent,
- 				"%s end of message sent, nmsgs: %d\n",
- 				__func__, i2c->nmsgs);
--			if (i2c->nmsgs > 1) {
-+			/* Don't move onto the next message until the TX FIFO empties,
-+			 * to ensure that a NAK is not missed.
-+			 */
-+			if (i2c->nmsgs > 1 && (pend & XIIC_INTR_TX_EMPTY_MASK)) {
- 				i2c->nmsgs--;
- 				i2c->tx_msg++;
- 				xfer_more = 1;
-@@ -790,11 +793,7 @@ static irqreturn_t xiic_process(int irq,
- 					"%s Got TX IRQ but no more to do...\n",
- 					__func__);
- 			}
--		} else if (!xiic_tx_space(i2c) && (i2c->nmsgs == 1))
--			/* current frame is sent and is last,
--			 * make sure to disable tx half
--			 */
--			xiic_irq_dis(i2c, XIIC_INTR_TX_HALF_MASK);
-+		}
+--- a/drivers/clk/qcom/clk-rpmh.c
++++ b/drivers/clk/qcom/clk-rpmh.c
+@@ -263,6 +263,8 @@ static int clk_rpmh_bcm_send_cmd(struct
+ 		cmd_state = 0;
  	}
  
- 	if (pend & XIIC_INTR_BNB_MASK) {
++	cmd_state = min(cmd_state, BCM_TCS_CMD_VOTE_MASK);
++
+ 	if (c->last_sent_aggr_state != cmd_state) {
+ 		cmd.addr = c->res_addr;
+ 		cmd.data = BCM_TCS_CMD(1, enable, 0, cmd_state);
 
 
 
