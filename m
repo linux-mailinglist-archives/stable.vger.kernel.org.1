@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-82595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A92994D88
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:06:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A245994FB0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F8D01C24C57
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:06:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10BF22877BA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D59B1DE4DB;
-	Tue,  8 Oct 2024 13:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE5F1DF96F;
+	Tue,  8 Oct 2024 13:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQGtRby+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eeJsnsVG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3F41DE4CC;
-	Tue,  8 Oct 2024 13:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ED31DF72C;
+	Tue,  8 Oct 2024 13:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392784; cv=none; b=eopaLvFd8z7NfTm9vkoYbUbWfptNdCHxB2kwBasnghGtvu+dyHqH2QIc5P+HkhROcBj3QyWUG1wzheZabyoVtFVpaxXzBhSpIkek4u311+DMDkrg0crw1eTzdEzjusPFZELNiaMxydSOODPSt7Ydui98kTuah+BrJ7g/DOVeh+A=
+	t=1728394034; cv=none; b=sJ28LGAJRML7NKW9/PbHCnyvuLUYAxcg1Fggu9Fqh3ONJk1GvM4b0JcOBXQb4P3l9I0Woa5jCg7lBcPfFXTZ5M4I5Q/P2jTr7gtyXJDgTFJ+Oscx2+BUkLb1fcSMj5KEfUyGv4BadeknJFSlmHcTfPAxpAXn5Nu4zWpUKYthZ0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392784; c=relaxed/simple;
-	bh=dXPaVfUzWHPo9kFwFCHAFAIZQ2J5nT3XhYnXGrdDhhc=;
+	s=arc-20240116; t=1728394034; c=relaxed/simple;
+	bh=sHgkpXZ1PqPKI3HD7MWI1qJJDXwDbKVcdkV1LcnptL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aeplAES7M5XJ29xOMeGPzAxghmvSzp6rmYtypU6Y3q2VOBUoTPiPxZnAvs6mm7FFUnc2mkM5JJE2HLU4y4PrA9iUzhYHKIBOvFYbL+EH8qsZuIuAIdvE0WCBSiJBHufHlR1rKfb4+07oIUQz03TT3pFXQMGG0VSaXKg8h/iRE0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQGtRby+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA513C4CEC7;
-	Tue,  8 Oct 2024 13:06:22 +0000 (UTC)
+	 MIME-Version; b=jrF5b6KxBFzQMU6RUwX0dUp81bP/8JoqAut90VcJN8IWswzQni2uec1YLUQFElityxPxFCGZTyU27oo1cymDYJXegyWWgSxA7nrwH9o3mY097zZ+S96vSTs4ypTtYA6+nYDHPJPSt3HTWT1D0n2NsF4fwcOu0+/r28zJ510AVY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eeJsnsVG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19242C4CEC7;
+	Tue,  8 Oct 2024 13:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392783;
-	bh=dXPaVfUzWHPo9kFwFCHAFAIZQ2J5nT3XhYnXGrdDhhc=;
+	s=korg; t=1728394034;
+	bh=sHgkpXZ1PqPKI3HD7MWI1qJJDXwDbKVcdkV1LcnptL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eQGtRby+ugPGt4LdWgrP5NgINRITHC1GxvrmLgR3aVmFMh7M+lKA4l9AoCQXCcteq
-	 /G0WpldBsG3Lxf8JYOrAR19gAKKzbK6vWDU5c+nnmv3JJD2Eke8eobGqwlY7J1v3IC
-	 BN4FbM2X8jRK+PvelORPVGsZfz4Y/3oQW7QAm16Q=
+	b=eeJsnsVGdSu7sSIvTPWDrPxgEBhcsnF++ohQ84x4ohgTsvVDcZJ5OB4LjJxzKa6ui
+	 RBkm5eS5PinuEwUUSAWeAPV6YX9NODnINF7A76TnA2n/R/jYsaKVo0pLPHuCF4dvph
+	 3onht4jrZ1hFteF8BZfIl8741d6XFE3kEDAuLqCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Wei Li <liwei391@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.11 511/558] tracing/timerlat: Fix a race during cpuhp processing
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 296/386] smb3: fix incorrect mode displayed for read-only files
 Date: Tue,  8 Oct 2024 14:09:01 +0200
-Message-ID: <20241008115722.337383063@linuxfoundation.org>
+Message-ID: <20241008115641.034982165@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +60,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Li <liwei391@huawei.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit 829e0c9f0855f26b3ae830d17b24aec103f7e915 upstream.
+commit 2f3017e7cc7515e0110a3733d8dca84de2a1d23d upstream.
 
-There is another found exception that the "timerlat/1" thread was
-scheduled on CPU0, and lead to timer corruption finally:
+Commands like "chmod 0444" mark a file readonly via the attribute flag
+(when mapping of mode bits into the ACL are not set, or POSIX extensions
+are not negotiated), but they were not reported correctly for stat of
+directories (they were reported ok for files and for "ls").  See example
+below:
 
-```
-ODEBUG: init active (active state 0) object: ffff888237c2e108 object type: hrtimer hint: timerlat_irq+0x0/0x220
-WARNING: CPU: 0 PID: 426 at lib/debugobjects.c:518 debug_print_object+0x7d/0xb0
-Modules linked in:
-CPU: 0 UID: 0 PID: 426 Comm: timerlat/1 Not tainted 6.11.0-rc7+ #45
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-RIP: 0010:debug_print_object+0x7d/0xb0
-...
-Call Trace:
- <TASK>
- ? __warn+0x7c/0x110
- ? debug_print_object+0x7d/0xb0
- ? report_bug+0xf1/0x1d0
- ? prb_read_valid+0x17/0x20
- ? handle_bug+0x3f/0x70
- ? exc_invalid_op+0x13/0x60
- ? asm_exc_invalid_op+0x16/0x20
- ? debug_print_object+0x7d/0xb0
- ? debug_print_object+0x7d/0xb0
- ? __pfx_timerlat_irq+0x10/0x10
- __debug_object_init+0x110/0x150
- hrtimer_init+0x1d/0x60
- timerlat_main+0xab/0x2d0
- ? __pfx_timerlat_main+0x10/0x10
- kthread+0xb7/0xe0
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x2d/0x40
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-```
+    root:~# ls /mnt2 -l
+    total 12
+    drwxr-xr-x 2 root root         0 Sep 21 18:03 normaldir
+    -rwxr-xr-x 1 root root         0 Sep 21 23:24 normalfile
+    dr-xr-xr-x 2 root root         0 Sep 21 17:55 readonly-dir
+    -r-xr-xr-x 1 root root 209716224 Sep 21 18:15 readonly-file
+    root:~# stat -c %a /mnt2/readonly-dir
+    755
+    root:~# stat -c %a /mnt2/readonly-file
+    555
 
-After tracing the scheduling event, it was discovered that the migration
-of the "timerlat/1" thread was performed during thread creation. Further
-analysis confirmed that it is because the CPU online processing for
-osnoise is implemented through workers, which is asynchronous with the
-offline processing. When the worker was scheduled to create a thread, the
-CPU may has already been removed from the cpu_online_mask during the offline
-process, resulting in the inability to select the right CPU:
+This fixes the stat of directories when ATTR_READONLY is set
+(in cases where the mode can not be obtained other ways).
 
-T1                       | T2
-[CPUHP_ONLINE]           | cpu_device_down()
-osnoise_hotplug_workfn() |
-                         |     cpus_write_lock()
-                         |     takedown_cpu(1)
-                         |     cpus_write_unlock()
-[CPUHP_OFFLINE]          |
-    cpus_read_lock()     |
-    start_kthread(1)     |
-    cpus_read_unlock()   |
-
-To fix this, skip online processing if the CPU is already offline.
+    root:~# stat -c %a /mnt2/readonly-dir
+    555
 
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20240924094515.3561410-4-liwei391@huawei.com
-Fixes: c8895e271f79 ("trace/osnoise: Support hotplug operations")
-Signed-off-by: Wei Li <liwei391@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_osnoise.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/client/inode.c |   19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
---- a/kernel/trace/trace_osnoise.c
-+++ b/kernel/trace/trace_osnoise.c
-@@ -2094,6 +2094,8 @@ static void osnoise_hotplug_workfn(struc
- 	mutex_lock(&interface_lock);
- 	cpus_read_lock();
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -779,10 +779,6 @@ static void cifs_open_info_to_fattr(stru
+ 		fattr->cf_mode = S_IFREG | cifs_sb->ctx->file_mode;
+ 		fattr->cf_dtype = DT_REG;
  
-+	if (!cpu_online(cpu))
-+		goto out_unlock;
- 	if (!cpumask_test_cpu(cpu, &osnoise_cpumask))
- 		goto out_unlock;
+-		/* clear write bits if ATTR_READONLY is set */
+-		if (fattr->cf_cifsattrs & ATTR_READONLY)
+-			fattr->cf_mode &= ~(S_IWUGO);
+-
+ 		/*
+ 		 * Don't accept zero nlink from non-unix servers unless
+ 		 * delete is pending.  Instead mark it as unknown.
+@@ -795,6 +791,10 @@ static void cifs_open_info_to_fattr(stru
+ 		}
+ 	}
  
++	/* clear write bits if ATTR_READONLY is set */
++	if (fattr->cf_cifsattrs & ATTR_READONLY)
++		fattr->cf_mode &= ~(S_IWUGO);
++
+ out_reparse:
+ 	if (S_ISLNK(fattr->cf_mode)) {
+ 		if (likely(data->symlink_target))
+@@ -1212,11 +1212,14 @@ handle_mnt_opt:
+ 				 __func__, rc);
+ 			goto out;
+ 		}
+-	}
+-
+-	/* fill in remaining high mode bits e.g. SUID, VTX */
+-	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_UNX_EMUL)
++	} else if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_UNX_EMUL)
++		/* fill in remaining high mode bits e.g. SUID, VTX */
+ 		cifs_sfu_mode(fattr, full_path, cifs_sb, xid);
++	else if (!(tcon->posix_extensions))
++		/* clear write bits if ATTR_READONLY is set */
++		if (fattr->cf_cifsattrs & ATTR_READONLY)
++			fattr->cf_mode &= ~(S_IWUGO);
++
+ 
+ 	/* check for Minshall+French symlinks */
+ 	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_MF_SYMLINKS) {
 
 
 
