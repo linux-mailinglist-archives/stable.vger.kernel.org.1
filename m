@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-82168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C66A994B7C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E85A9948C1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:16:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA79E1F27874
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC3DF1F28DA6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9E81DF961;
-	Tue,  8 Oct 2024 12:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831E41CDFB8;
+	Tue,  8 Oct 2024 12:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOZJDmjH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXJIyQ1u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9C11DDC24;
-	Tue,  8 Oct 2024 12:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405B4165F08;
+	Tue,  8 Oct 2024 12:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391376; cv=none; b=ZbX8xNUNb/Pznz4aG8PC4L9YaV0WqJLyPHOo9sPLbLgsYrYrKaSrmW3eW1M/SQ/UBYWzlsbt/DEKtcg4lASbO/6i96HFwfWcDCqX4TU8wqpnlwJaCtr4xUUONro+mPb6mfeEE5gMkV/m+z2/OAS5HX9N4O4Zoji5juSlLxy9sj4=
+	t=1728389775; cv=none; b=hYDjrng6bItrB8mTSiu9Ksm5MsuAHj1xSWFvF/pONxJNzqjsk5YGUh1/K1Ylwb2AQATIba61BvfUkt012JC8T+AmrnCr2MP+/dt8IWg2qqOpkMlKdi97YvNMBchvl4tqvVtvQUpDy6WhfyrR8oXX4ZcsX4vGOrncdBrHabslB8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391376; c=relaxed/simple;
-	bh=MY12BubPSsjVHyQKPSo/DBV0gGFzq4N+/7Erdoo8t2g=;
+	s=arc-20240116; t=1728389775; c=relaxed/simple;
+	bh=MFuP0nzT9qe+rejwoicrkxqFWa+pTacaZDBA/UkrV+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FIQPOkQPmhQ4LsaLOAabdcdOxb47MmZ1JFJeGrI69ZyCY28eN6SdEJ7qSPB/sfuUCibl8JDl00ivOAy7aCMy1m2PqlRboizcWDUthVk1foVVme50usiYqQzICjnpYrItBP7x0OyB55mdHiVpKT6kzVUyLiNGXigUbX4TJZd3XI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOZJDmjH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAB6C4CEC7;
-	Tue,  8 Oct 2024 12:42:55 +0000 (UTC)
+	 MIME-Version; b=QAAV0eFAgpqdu1xZaVMdWjiVVOt7Lbhr7CjQ/d5JdL5qle6wht/+ZFpbJ3/5JRYUUG5oSrHE0Gc2uILRnbFgH61cDBPRh6vZCp2McK3YP4dBPtXHunEHNeRvrUP4RnnH5Jo7w0UX2jxHPyZCBsN6mniCaFsjYmf5JSZBCCG6dic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXJIyQ1u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8746C4CECC;
+	Tue,  8 Oct 2024 12:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391375;
-	bh=MY12BubPSsjVHyQKPSo/DBV0gGFzq4N+/7Erdoo8t2g=;
+	s=korg; t=1728389775;
+	bh=MFuP0nzT9qe+rejwoicrkxqFWa+pTacaZDBA/UkrV+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VOZJDmjHBwxrTaSR05fFnmlGXvzqX7Zr9ZQ+0Xq7y1pw974cvkDGmI6EoMw6mvmYF
-	 vS2yfmq5LXnoQtNjxpREV2vbb5AlgS/d4jh74RddhXuR0RH3LZsl2nyC7RRnJxV/el
-	 oAzsYxPGjrRB3ZpPBsLWcnXyUDA1n+ebSSQOlb2k=
+	b=xXJIyQ1uYt4pDFR5uoPKHwSKcRE05NPLy0n2EcfbsjW53Q/5QPiolz6nFeYLdGWJZ
+	 BwzGmQlcuNaQkUeUOuhqmPsMQTQAPw9xQm6RkjLjYxR3YDebFzU7w7/K56gMH5qv1H
+	 1ia50fXmrZ7++Q3fGCRM/9SXmdX4Dgq0Lmt86hcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 094/558] wifi: iwlwifi: mvm: drop wrong STA selection in TX
+Subject: [PATCH 6.10 061/482] ALSA: hda/generic: Unconditionally prefer preferred_dacs pairs
 Date: Tue,  8 Oct 2024 14:02:04 +0200
-Message-ID: <20241008115706.069055450@linuxfoundation.org>
+Message-ID: <20241008115650.708796609@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 1c7e1068a7c9c39ed27636db93e71911e0045419 ]
+[ Upstream commit 1c801e7f77445bc56e5e1fec6191fd4503534787 ]
 
-This shouldn't happen at all, since in station mode all MMPDUs
-go through the TXQ for the STA, and not this function. There
-may or may not be a race in mac80211 through which this might
-happen for some frames while a station is being added, but in
-that case we can also just drop the frame and pretend the STA
-didn't exist yet.
+Some time ago, we introduced the obey_preferred_dacs flag for choosing
+the DAC/pin pairs specified by the driver instead of parsing the
+paths.  This works as expected, per se, but there have been a few
+cases where we forgot to set this flag while preferred_dacs table is
+already set up.  It ended up with incorrect wiring and made us
+wondering why it doesn't work.
 
-Also, the code is simply wrong since it uses deflink, and it's
-not easy to fix it since the mvmvif->ap_sta pointer cannot be
-used without the mutex, and perhaps the right link might not
-even be known.
+Basically, when the preferred_dacs table is provided, it means that
+the driver really wants to wire up to follow that.  That is, the
+presence of the preferred_dacs table itself is already a "do-it"
+flag.
 
-Just drop the frame at that point instead of trying to fix it
-up.
+In this patch, we simply replace the evaluation of obey_preferred_dacs
+flag with the presence of preferred_dacs table for fixing the
+misbehavior.  Another patch to drop of the obsoleted flag will
+follow.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240808232017.45ad105dc7fe.I6d45c82e5758395d9afb8854057ded03c7dc81d7@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 242d990c158d ("ALSA: hda/generic: Add option to enforce preferred_dacs pairs")
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1219803
+Link: https://patch.msgid.link/20241001121439.26060-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c    | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ sound/pci/hda/hda_generic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 625ccf566e1c2..1ebcc6417ecef 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -838,20 +838,10 @@ void iwl_mvm_mac_tx(struct ieee80211_hw *hw,
- 	if (ieee80211_is_mgmt(hdr->frame_control))
- 		sta = NULL;
+diff --git a/sound/pci/hda/hda_generic.c b/sound/pci/hda/hda_generic.c
+index 9cff87dfbecbb..b34d84fedcc8a 100644
+--- a/sound/pci/hda/hda_generic.c
++++ b/sound/pci/hda/hda_generic.c
+@@ -1383,7 +1383,7 @@ static int try_assign_dacs(struct hda_codec *codec, int num_outs,
+ 		struct nid_path *path;
+ 		hda_nid_t pin = pins[i];
  
--	/* If there is no sta, and it's not offchannel - send through AP */
-+	/* this shouldn't even happen: just drop */
- 	if (!sta && info->control.vif->type == NL80211_IFTYPE_STATION &&
--	    !offchannel) {
--		struct iwl_mvm_vif *mvmvif =
--			iwl_mvm_vif_from_mac80211(info->control.vif);
--		u8 ap_sta_id = READ_ONCE(mvmvif->deflink.ap_sta_id);
--
--		if (ap_sta_id < mvm->fw->ucode_capa.num_stations) {
--			/* mac80211 holds rcu read lock */
--			sta = rcu_dereference(mvm->fw_id_to_mac_id[ap_sta_id]);
--			if (IS_ERR_OR_NULL(sta))
--				goto drop;
--		}
--	}
-+	    !offchannel)
-+		goto drop;
+-		if (!spec->obey_preferred_dacs) {
++		if (!spec->preferred_dacs) {
+ 			path = snd_hda_get_path_from_idx(codec, path_idx[i]);
+ 			if (path) {
+ 				badness += assign_out_path_ctls(codec, path);
+@@ -1395,7 +1395,7 @@ static int try_assign_dacs(struct hda_codec *codec, int num_outs,
+ 		if (dacs[i]) {
+ 			if (is_dac_already_used(codec, dacs[i]))
+ 				badness += bad->shared_primary;
+-		} else if (spec->obey_preferred_dacs) {
++		} else if (spec->preferred_dacs) {
+ 			badness += BAD_NO_PRIMARY_DAC;
+ 		}
  
- 	if (tmp_sta && !sta && link_id != IEEE80211_LINK_UNSPECIFIED &&
- 	    !ieee80211_is_probe_resp(hdr->frame_control)) {
 -- 
 2.43.0
 
