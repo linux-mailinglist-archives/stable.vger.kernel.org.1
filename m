@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-82771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA52994E57
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 508DC994CE0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 411071C2536B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82E2C1C25169
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735CC192594;
-	Tue,  8 Oct 2024 13:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5841DED4B;
+	Tue,  8 Oct 2024 12:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mc20cDq/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyT0pPXX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3062C1D3653;
-	Tue,  8 Oct 2024 13:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0F3189910;
+	Tue,  8 Oct 2024 12:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393374; cv=none; b=AxyW6Mjd8h/t2Jeouq6ccLNlqipfTnRoj9qQamkuAo0NrycOv9IKXBltqJp2OqOLr/p6esPFp8CtS9IdOurxLID3eBIQmcwwvHF1xjRx455tTLN/BLFwMS5OKmoN99BO2TZIVdGFeQP2XykOW7tb9VC33b+6mfoBFr4AHdCM6E0=
+	t=1728392316; cv=none; b=atd6YaLH4Vnn0dCjS66yNg0T4qZGTIW1YU6AbqPh/CsYTKvTTbkUScSEYaYMv6EYv1UeFgWs2QLYglM7aZ+ko0dxpou+tCH34SDcFcrjPvbOCCg37ewulbltXOCPuxsRSDZaqEnqAyxKo2d/Aje6GBZLzAHU0urVQP1pMeEbU1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393374; c=relaxed/simple;
-	bh=PMDIG63zL4D10pTCRI5382AUXQIHqN/QVpYEMjJt5fI=;
+	s=arc-20240116; t=1728392316; c=relaxed/simple;
+	bh=RQfnY9yUqQNdW2HCvJbhVLJXJC5xzqBX4i5l/kf/vlA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KLxAda5VOHRJH+0BEbBRRfLQdtmI6TjOx1N77Ac4khScziklXRc5QtVJYw8OPKdo/ZVSMyUhuc0B6tfdESwnY+iEuKEKyFTHguzz89+UnOM1Uk4rByiQw1/UZfMjA/IueBuwh0xrlfq2PA4flzsC95h9auQK5T9mWB039dnzVm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mc20cDq/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8503C4CEC7;
-	Tue,  8 Oct 2024 13:16:13 +0000 (UTC)
+	 MIME-Version; b=h+MsLV1sfdwBbyHR1oMp/yqEuPu8MrWJynhCeL/+GG9ixA+4qdvgVGc75865BC2VGQf0XyFwoXEhn3+kcEgFpX1huZj+iti54EChdNWJ0WqCgyUpKviFwE7DKRu7jsheE7tThjK2Ldyl0yxZWju8skYHjgMtqifSUp86NSMNNdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyT0pPXX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB03C4CEC7;
+	Tue,  8 Oct 2024 12:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393374;
-	bh=PMDIG63zL4D10pTCRI5382AUXQIHqN/QVpYEMjJt5fI=;
+	s=korg; t=1728392316;
+	bh=RQfnY9yUqQNdW2HCvJbhVLJXJC5xzqBX4i5l/kf/vlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mc20cDq/xo+zKpfM7oEvZLYM2IkHddjqvlv9ND8/nkEx3FCGsK8drOWiG9HBNqoXs
-	 6fl7KqN/bQMZz5xvDQcIaZO/5+tC8yXA2k3cdpO9p/HDWV/9aPcpU2O9t1s4gczsvV
-	 ZzSr+HL3QE0IxNlwYG0qSf51xBlsL1+RDXisHGfw=
+	b=YyT0pPXX7DTgLOEbmUQ164IycuM5l9jJ6KM2zrwLdSw68XuQSEErxTIthu9ySRhSf
+	 p023gBmDfRNIrhm1XaEbdFKj5Qh7tXILNn8kFB4pewb9615jZDNf0g+/IiS3NV8dV8
+	 MVlEzOtSRo4m2iOBFpoTBrZo0dVFuU+MHkaex0Ws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 133/386] drm/amdkfd: amdkfd_free_gtt_mem clear the correct pointer
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.11 348/558] KVM: arm64: Fix kvm_has_feat*() handling of negative features
 Date: Tue,  8 Oct 2024 14:06:18 +0200
-Message-ID: <20241008115634.669464120@linuxfoundation.org>
+Message-ID: <20241008115715.992913801@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,170 +59,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit c86ad39140bbcb9dc75a10046c2221f657e8083b ]
+commit a1d402abf8e3ff1d821e88993fc5331784fac0da upstream.
 
-Pass pointer reference to amdgpu_bo_unref to clear the correct pointer,
-otherwise amdgpu_bo_unref clear the local variable, the original pointer
-not set to NULL, this could cause use-after-free bug.
+Oliver reports that the kvm_has_feat() helper is not behaviing as
+expected for negative feature. On investigation, the main issue
+seems to be caused by the following construct:
 
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ #define get_idreg_field(kvm, id, fld)				\
+ 	(id##_##fld##_SIGNED ?					\
+	 get_idreg_field_signed(kvm, id, fld) :			\
+	 get_idreg_field_unsigned(kvm, id, fld))
+
+where one side of the expression evaluates as something signed,
+and the other as something unsigned. In retrospect, this is totally
+braindead, as the compiler converts this into an unsigned expression.
+When compared to something that is 0, the test is simply elided.
+
+Epic fail. Similar issue exists in the expand_field_sign() macro.
+
+The correct way to handle this is to chose between signed and unsigned
+comparisons, so that both sides of the ternary expression are of the
+same type (bool).
+
+In order to keep the code readable (sort of), we introduce new
+comparison primitives taking an operator as a parameter, and
+rewrite the kvm_has_feat*() helpers in terms of these primitives.
+
+Fixes: c62d7a23b947 ("KVM: arm64: Add feature checking helpers")
+Reported-by: Oliver Upton <oliver.upton@linux.dev>
+Tested-by: Oliver Upton <oliver.upton@linux.dev>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20241002204239.2051637-1-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c         | 14 +++++++-------
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h         |  2 +-
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c           |  2 +-
- drivers/gpu/drm/amd/amdkfd/kfd_device.c            |  4 ++--
- .../gpu/drm/amd/amdkfd/kfd_device_queue_manager.c  |  2 +-
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c       |  2 +-
- drivers/gpu/drm/amd/amdkfd/kfd_process.c           |  2 +-
- .../gpu/drm/amd/amdkfd/kfd_process_queue_manager.c |  4 ++--
- 8 files changed, 16 insertions(+), 16 deletions(-)
+ arch/arm64/include/asm/kvm_host.h |   25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-index 25d5fda5b243e..af6c6d89e63af 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-@@ -335,15 +335,15 @@ int amdgpu_amdkfd_alloc_gtt_mem(struct amdgpu_device *adev, size_t size,
- 	return r;
- }
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -1423,11 +1423,6 @@ void kvm_set_vm_id_reg(struct kvm *kvm,
+ 		sign_extend64(__val, id##_##fld##_WIDTH - 1);		\
+ 	})
  
--void amdgpu_amdkfd_free_gtt_mem(struct amdgpu_device *adev, void *mem_obj)
-+void amdgpu_amdkfd_free_gtt_mem(struct amdgpu_device *adev, void **mem_obj)
- {
--	struct amdgpu_bo *bo = (struct amdgpu_bo *) mem_obj;
-+	struct amdgpu_bo **bo = (struct amdgpu_bo **) mem_obj;
+-#define expand_field_sign(id, fld, val)					\
+-	(id##_##fld##_SIGNED ?						\
+-	 __expand_field_sign_signed(id, fld, val) :			\
+-	 __expand_field_sign_unsigned(id, fld, val))
+-
+ #define get_idreg_field_unsigned(kvm, id, fld)				\
+ 	({								\
+ 		u64 __val = kvm_read_vm_id_reg((kvm), SYS_##id);	\
+@@ -1443,20 +1438,26 @@ void kvm_set_vm_id_reg(struct kvm *kvm,
+ #define get_idreg_field_enum(kvm, id, fld)				\
+ 	get_idreg_field_unsigned(kvm, id, fld)
  
--	amdgpu_bo_reserve(bo, true);
--	amdgpu_bo_kunmap(bo);
--	amdgpu_bo_unpin(bo);
--	amdgpu_bo_unreserve(bo);
--	amdgpu_bo_unref(&(bo));
-+	amdgpu_bo_reserve(*bo, true);
-+	amdgpu_bo_kunmap(*bo);
-+	amdgpu_bo_unpin(*bo);
-+	amdgpu_bo_unreserve(*bo);
-+	amdgpu_bo_unref(bo);
- }
+-#define get_idreg_field(kvm, id, fld)					\
++#define kvm_cmp_feat_signed(kvm, id, fld, op, limit)			\
++	(get_idreg_field_signed((kvm), id, fld) op __expand_field_sign_signed(id, fld, limit))
++
++#define kvm_cmp_feat_unsigned(kvm, id, fld, op, limit)			\
++	(get_idreg_field_unsigned((kvm), id, fld) op __expand_field_sign_unsigned(id, fld, limit))
++
++#define kvm_cmp_feat(kvm, id, fld, op, limit)				\
+ 	(id##_##fld##_SIGNED ?						\
+-	 get_idreg_field_signed(kvm, id, fld) :				\
+-	 get_idreg_field_unsigned(kvm, id, fld))
++	 kvm_cmp_feat_signed(kvm, id, fld, op, limit) :			\
++	 kvm_cmp_feat_unsigned(kvm, id, fld, op, limit))
  
- int amdgpu_amdkfd_alloc_gws(struct amdgpu_device *adev, size_t size,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-index db5b1c6beba75..3134e6ad81d1d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-@@ -221,7 +221,7 @@ int amdgpu_amdkfd_evict_userptr(struct mmu_interval_notifier *mni,
- int amdgpu_amdkfd_alloc_gtt_mem(struct amdgpu_device *adev, size_t size,
- 				void **mem_obj, uint64_t *gpu_addr,
- 				void **cpu_ptr, bool mqd_gfx9);
--void amdgpu_amdkfd_free_gtt_mem(struct amdgpu_device *adev, void *mem_obj);
-+void amdgpu_amdkfd_free_gtt_mem(struct amdgpu_device *adev, void **mem_obj);
- int amdgpu_amdkfd_alloc_gws(struct amdgpu_device *adev, size_t size,
- 				void **mem_obj);
- void amdgpu_amdkfd_free_gws(struct amdgpu_device *adev, void *mem_obj);
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-index 9d10530283705..19d46be639429 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -417,7 +417,7 @@ static int kfd_ioctl_create_queue(struct file *filep, struct kfd_process *p,
+ #define kvm_has_feat(kvm, id, fld, limit)				\
+-	(get_idreg_field((kvm), id, fld) >= expand_field_sign(id, fld, limit))
++	kvm_cmp_feat(kvm, id, fld, >=, limit)
  
- err_create_queue:
- 	if (wptr_bo)
--		amdgpu_amdkfd_free_gtt_mem(dev->adev, wptr_bo);
-+		amdgpu_amdkfd_free_gtt_mem(dev->adev, (void **)&wptr_bo);
- err_wptr_map_gart:
- err_bind_process:
- err_pdd:
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-index 0c94bdfadaabf..9d0b0bf70ad1e 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-@@ -838,7 +838,7 @@ bool kgd2kfd_device_init(struct kfd_dev *kfd,
- kfd_doorbell_error:
- 	kfd_gtt_sa_fini(kfd);
- kfd_gtt_sa_init_error:
--	amdgpu_amdkfd_free_gtt_mem(kfd->adev, kfd->gtt_mem);
-+	amdgpu_amdkfd_free_gtt_mem(kfd->adev, &kfd->gtt_mem);
- alloc_gtt_mem_failure:
- 	dev_err(kfd_device,
- 		"device %x:%x NOT added due to errors\n",
-@@ -856,7 +856,7 @@ void kgd2kfd_device_exit(struct kfd_dev *kfd)
- 		kfd_doorbell_fini(kfd);
- 		ida_destroy(&kfd->doorbell_ida);
- 		kfd_gtt_sa_fini(kfd);
--		amdgpu_amdkfd_free_gtt_mem(kfd->adev, kfd->gtt_mem);
-+		amdgpu_amdkfd_free_gtt_mem(kfd->adev, &kfd->gtt_mem);
- 	}
+ #define kvm_has_feat_enum(kvm, id, fld, val)				\
+-	(get_idreg_field_unsigned((kvm), id, fld) == __expand_field_sign_unsigned(id, fld, val))
++	kvm_cmp_feat_unsigned(kvm, id, fld, ==, val)
  
- 	kfree(kfd);
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-index 60d98301ef041..4d9a406925e18 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-@@ -2610,7 +2610,7 @@ static void deallocate_hiq_sdma_mqd(struct kfd_node *dev,
- {
- 	WARN(!mqd, "No hiq sdma mqd trunk to free");
+ #define kvm_has_feat_range(kvm, id, fld, min, max)			\
+-	(get_idreg_field((kvm), id, fld) >= expand_field_sign(id, fld, min) && \
+-	 get_idreg_field((kvm), id, fld) <= expand_field_sign(id, fld, max))
++	(kvm_cmp_feat(kvm, id, fld, >=, min) &&				\
++	kvm_cmp_feat(kvm, id, fld, <=, max))
  
--	amdgpu_amdkfd_free_gtt_mem(dev->adev, mqd->gtt_mem);
-+	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
- }
- 
- void device_queue_manager_uninit(struct device_queue_manager *dqm)
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
-index 447829c22295c..4c3f379803117 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
-@@ -223,7 +223,7 @@ void kfd_free_mqd_cp(struct mqd_manager *mm, void *mqd,
- 	      struct kfd_mem_obj *mqd_mem_obj)
- {
- 	if (mqd_mem_obj->gtt_mem) {
--		amdgpu_amdkfd_free_gtt_mem(mm->dev->adev, mqd_mem_obj->gtt_mem);
-+		amdgpu_amdkfd_free_gtt_mem(mm->dev->adev, &mqd_mem_obj->gtt_mem);
- 		kfree(mqd_mem_obj);
- 	} else {
- 		kfd_gtt_sa_free(mm->dev, mqd_mem_obj);
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-index d98e45aec76b4..43f520b379670 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -1047,7 +1047,7 @@ static void kfd_process_destroy_pdds(struct kfd_process *p)
- 
- 		if (pdd->dev->kfd->shared_resources.enable_mes)
- 			amdgpu_amdkfd_free_gtt_mem(pdd->dev->adev,
--						   pdd->proc_ctx_bo);
-+						   &pdd->proc_ctx_bo);
- 		/*
- 		 * before destroying pdd, make sure to report availability
- 		 * for auto suspend
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-index 8aca92624a77e..dbc75ca84375a 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-@@ -199,9 +199,9 @@ static void pqm_clean_queue_resource(struct process_queue_manager *pqm,
- 	}
- 
- 	if (dev->kfd->shared_resources.enable_mes) {
--		amdgpu_amdkfd_free_gtt_mem(dev->adev, pqn->q->gang_ctx_bo);
-+		amdgpu_amdkfd_free_gtt_mem(dev->adev, &pqn->q->gang_ctx_bo);
- 		if (pqn->q->wptr_bo)
--			amdgpu_amdkfd_free_gtt_mem(dev->adev, pqn->q->wptr_bo);
-+			amdgpu_amdkfd_free_gtt_mem(dev->adev, (void **)&pqn->q->wptr_bo);
- 	}
- }
- 
--- 
-2.43.0
-
+ /* Check for a given level of PAuth support */
+ #define kvm_has_pauth(k, l)						\
 
 
 
