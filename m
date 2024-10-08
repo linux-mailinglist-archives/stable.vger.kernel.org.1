@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-82258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877B5994BDC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:47:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9BD099491E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:20:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EBF128203D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:47:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 257981F262CF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D811DE8AA;
-	Tue,  8 Oct 2024 12:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF71C1DF721;
+	Tue,  8 Oct 2024 12:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6wELayN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JDINeJm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858F9183CB8;
-	Tue,  8 Oct 2024 12:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2491D7E31;
+	Tue,  8 Oct 2024 12:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391659; cv=none; b=DZXl6dfsAT41wXVFxJHWsCyysBJsXridYmEQhwLbWJgKa/RezvZAowiDB5iOtjDVL6QPKUcrOBGjCoc7fWlOPnGIRFj0hPZ2zpY1EEcvjFeDLxHszBKNDDcl4/v3Tm8ryRc/s/rg+hNSYmGoA1Kz9eNaafPrYLULnuux6u7+B18=
+	t=1728389978; cv=none; b=c9QK7510pTYZmtLyWZy+G6U1a0mB2MRqvC4i9V0F47XnhCmUaBtVZixeW+9JCnykHX0zrqlankR+0cAXtgToHo+XcslqjUfD1Cyy1M23a1Knk/vl54lEQiCdXEjeg6Cu9ZQZpF9Hv1UH7wvnHq3B0mrV1G6S+i2aU3jnGidu8qY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391659; c=relaxed/simple;
-	bh=fJWBoV4pL31Anbe4ncgv0knel+T8wmiMFvq2mui2bNs=;
+	s=arc-20240116; t=1728389978; c=relaxed/simple;
+	bh=RZQFjj+ug8W+CxsAdbEZoyQRUxOLDPnsOZjJYzNqS84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ArbX46vkrvrThV+IUosrlTHwbeQu+jjLMCt3X4NW0BqKezdk1M+53OkGvjzHpMXefFSh25faWshLASERxKGRZBUBFnqEgQ3fOopd7lZy/8me0qp0tTslerB5Bik20ITXGe5yaeSFE8rQ77moP/nMyQswFic76qcTuvOoPoKZOLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6wELayN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097EBC4CEC7;
-	Tue,  8 Oct 2024 12:47:38 +0000 (UTC)
+	 MIME-Version; b=l69Frmxh+1ubD0eIUQtGztivMcNn5ecSlwKD4Aajh7wIxNhekjtygGhFb7n1OD8XZT3OGXBiv0FDQLvQe3B7PzPABFBssn4GS/aSKe979O5gfLCk4vB4YRZZvT5BJ+s2nKZ0YFKDgCpbcqUflw5faXjXxHHyCXb/Nt0987mWRZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JDINeJm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C712EC4CEC7;
+	Tue,  8 Oct 2024 12:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391659;
-	bh=fJWBoV4pL31Anbe4ncgv0knel+T8wmiMFvq2mui2bNs=;
+	s=korg; t=1728389978;
+	bh=RZQFjj+ug8W+CxsAdbEZoyQRUxOLDPnsOZjJYzNqS84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T6wELayN3oH3xgbbDb/3FeRHbH60BrspzSlAfj82+O+WhCAHtLwfEM/TpBo0vIlKc
-	 6NBD8HBGOoTcQaTgxjKfD7YJhwKpTtLaYV+niuWG//cADLyqqw5iM+A7D9x2fw/RiC
-	 tj8quG/YirEXQFcDHmiNe71g1gNueOgWCvO1BX8w=
+	b=1JDINeJm8FFKLMrerbLICtJ6Y9LTnIrh1CSgxa4vMFhvV9sS9xCB8+EO6Unuj4k2Y
+	 NUS9Nj0ExiLeu0U7VeFfPktbjsMw8LmLkYJjLMwmk07qupHvrZ9FLVd0c8DVslPii0
+	 rPWLZrI59sgEK8G6rCrthdKgw9Fw5tBsEUbBFQvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Willy Tarreau <w@1wt.eu>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Tao Liu <ltao@redhat.com>,
+	Steve Wahl <steve.wahl@hpe.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Pavin Joseph <me@pavinjoseph.com>,
+	Sarah Brofeldt <srhb@dbc.dk>,
+	Eric Hagberg <ehagberg@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 185/558] selftests/nolibc: avoid passing NULL to printf("%s")
+Subject: [PATCH 6.10 152/482] x86/kexec: Add EFI config table identity mapping for kexec kernel
 Date: Tue,  8 Oct 2024 14:03:35 +0200
-Message-ID: <20241008115709.631592043@linuxfoundation.org>
+Message-ID: <20241008115654.288842966@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +65,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Tao Liu <ltao@redhat.com>
 
-[ Upstream commit f1a58f61d88642ae1e6e97e9d72d73bc70a93cb8 ]
+[ Upstream commit 5760929f6545c651682de3c2c6c6786816b17bb1 ]
 
-Clang on higher optimization levels detects that NULL is passed to
-printf("%s") and warns about it.
-While printf() from nolibc gracefully handles that NULL,
-it is undefined behavior as per POSIX, so the warning is reasonable.
-Avoid the warning by transforming NULL into a non-NULL placeholder.
+A kexec kernel boot failure is sometimes observed on AMD CPUs due to an
+unmapped EFI config table array.  This can be seen when "nogbpages" is on
+the kernel command line, and has been observed as a full BIOS reboot rather
+than a successful kexec.
 
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Acked-by: Willy Tarreau <w@1wt.eu>
-Link: https://lore.kernel.org/r/20240807-nolibc-llvm-v2-8-c20f2f5fc7c2@weissschuh.net
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+This was also the cause of reported regressions attributed to Commit
+7143c5f4cf20 ("x86/mm/ident_map: Use gbpages only where full GB page should
+be mapped.") which was subsequently reverted.
+
+To avoid this page fault, explicitly include the EFI config table array in
+the kexec identity map.
+
+Further explanation:
+
+The following 2 commits caused the EFI config table array to be
+accessed when enabling sev at kernel startup.
+
+    commit ec1c66af3a30 ("x86/compressed/64: Detect/setup SEV/SME features
+                          earlier during boot")
+    commit c01fce9cef84 ("x86/compressed: Add SEV-SNP feature
+                          detection/setup")
+
+This is in the code that examines whether SEV should be enabled or not, so
+it can even affect systems that are not SEV capable.
+
+This may result in a page fault if the EFI config table array's address is
+unmapped. Since the page fault occurs before the new kernel establishes its
+own identity map and page fault routines, it is unrecoverable and kexec
+fails.
+
+Most often, this problem is not seen because the EFI config table array
+gets included in the map by the luck of being placed at a memory address
+close enough to other memory areas that *are* included in the map created
+by kexec.
+
+Both the "nogbpages" command line option and the "use gpbages only where
+full GB page should be mapped" change greatly reduce the chance of being
+included in the map by luck, which is why the problem appears.
+
+Signed-off-by: Tao Liu <ltao@redhat.com>
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Pavin Joseph <me@pavinjoseph.com>
+Tested-by: Sarah Brofeldt <srhb@dbc.dk>
+Tested-by: Eric Hagberg <ehagberg@gmail.com>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/all/20240717213121.3064030-2-steve.wahl@hpe.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/nolibc/nolibc-test.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/machine_kexec_64.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
-index 093d0512f4c57..8cbb51dca0cd6 100644
---- a/tools/testing/selftests/nolibc/nolibc-test.c
-+++ b/tools/testing/selftests/nolibc/nolibc-test.c
-@@ -542,7 +542,7 @@ int expect_strzr(const char *expr, int llen)
- {
- 	int ret = 0;
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index cc0f7f70b17ba..9c9ac606893e9 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -28,6 +28,7 @@
+ #include <asm/setup.h>
+ #include <asm/set_memory.h>
+ #include <asm/cpu.h>
++#include <asm/efi.h>
  
--	llen += printf(" = <%s> ", expr);
-+	llen += printf(" = <%s> ", expr ? expr : "(null)");
- 	if (expr) {
- 		ret = 1;
- 		result(llen, FAIL);
-@@ -561,7 +561,7 @@ int expect_strnz(const char *expr, int llen)
+ #ifdef CONFIG_ACPI
+ /*
+@@ -87,6 +88,8 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
  {
- 	int ret = 0;
+ #ifdef CONFIG_EFI
+ 	unsigned long mstart, mend;
++	void *kaddr;
++	int ret;
  
--	llen += printf(" = <%s> ", expr);
-+	llen += printf(" = <%s> ", expr ? expr : "(null)");
- 	if (!expr) {
- 		ret = 1;
- 		result(llen, FAIL);
+ 	if (!efi_enabled(EFI_BOOT))
+ 		return 0;
+@@ -102,6 +105,30 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
+ 	if (!mstart)
+ 		return 0;
+ 
++	ret = kernel_ident_mapping_init(info, level4p, mstart, mend);
++	if (ret)
++		return ret;
++
++	kaddr = memremap(mstart, mend - mstart, MEMREMAP_WB);
++	if (!kaddr) {
++		pr_err("Could not map UEFI system table\n");
++		return -ENOMEM;
++	}
++
++	mstart = efi_config_table;
++
++	if (efi_enabled(EFI_64BIT)) {
++		efi_system_table_64_t *stbl = (efi_system_table_64_t *)kaddr;
++
++		mend = mstart + sizeof(efi_config_table_64_t) * stbl->nr_tables;
++	} else {
++		efi_system_table_32_t *stbl = (efi_system_table_32_t *)kaddr;
++
++		mend = mstart + sizeof(efi_config_table_32_t) * stbl->nr_tables;
++	}
++
++	memunmap(kaddr);
++
+ 	return kernel_ident_mapping_init(info, level4p, mstart, mend);
+ #endif
+ 	return 0;
 -- 
 2.43.0
 
