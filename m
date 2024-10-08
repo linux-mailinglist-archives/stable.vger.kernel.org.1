@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-81746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9816994924
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:21:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D263994925
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 534741F21B79
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE20A1C22721
 	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1612E1DE3A2;
-	Tue,  8 Oct 2024 12:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4111DE3BB;
+	Tue,  8 Oct 2024 12:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igei3m+S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1UWr9x1j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E601D26F2;
-	Tue,  8 Oct 2024 12:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8FB1DE2CD;
+	Tue,  8 Oct 2024 12:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389994; cv=none; b=M83meJ6GkhBIEMACVFiFQ87FDscfWLbuq3nxT/k9Xayx6EK07uHzuxNI8NjMifJ6tCbzPDV7EWZnq/LDD/u+32LH6UNt9eOSmfYH3HrwaqFbEhRYOmTIyQinTt5DYF2BafgGsYaJRekk+ofGVInpo+WVJU1b/vqV2yt3PWqZLc8=
+	t=1728389998; cv=none; b=DMR2LpyATpPZs8kZyRMzLW3/KhBKG68RYYqoMha24loJa4ZHdNCfx/pRwSokSGTUQtegtL8/yKroKbqV9aSDAC8WwuGnD/XothQifPs+fMUxIbpi5LZT+DMVEqcXEGSRuozGbx/x2W7V1Wp1hQ5WQsbRSmXjQTNrzkpbU70H1rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389994; c=relaxed/simple;
-	bh=rAAFVVoI0mUr4qS62z7cZZZgVqbh6vTWg3igY38gPqs=;
+	s=arc-20240116; t=1728389998; c=relaxed/simple;
+	bh=Ns+g5ZBus9RfxvvZOLDORiy9Dzj8l30xS0Ob8/HXsUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C8RJQo5fVQx/8busVg43dt0fPL4RzqU7bIW7tx9AGsobrqoJRcot1d11P15pt67c3257hfTn1ynX0Q4xJtbx7cqLMM5snJH5bBtuJpBmWPRG8T/NLMpsIcRbcgD9K/e2PbSw4NO5C53R1NkyqJMaoz5GuwJbtEOqJVN1kdiuzjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igei3m+S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2BCAC4CEC7;
-	Tue,  8 Oct 2024 12:19:53 +0000 (UTC)
+	 MIME-Version; b=ae5NUfTbJD7vnCO3jSZeljWES7mfyIkGW/Q33EdcugjO+MA1eSGjg5ZL3O9Jq8LxkPalwjF42vJlkV1SEpUwNZCcVmf2ZXkY+oFyp0XlWcuSWMFeSWVJiMcWKb0r3ffwcEZmZN9SiCLLjVUKZay/w5OuqcIXyGA1Ir0R1pRQW0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1UWr9x1j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7497FC4CEC7;
+	Tue,  8 Oct 2024 12:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389994;
-	bh=rAAFVVoI0mUr4qS62z7cZZZgVqbh6vTWg3igY38gPqs=;
+	s=korg; t=1728389997;
+	bh=Ns+g5ZBus9RfxvvZOLDORiy9Dzj8l30xS0Ob8/HXsUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=igei3m+SaXAr0Wp+tRyR1M83qwXrWJ5x5fgMn4D2fubgxNqoPY8GgsYpbhjRsUkah
-	 7OwoyodqS3yvh89xsiF29tGMlmZj8maglPtadKMxJq8mSQ8dS9KyNLOy6bt1fyXudR
-	 P+5cGgAa1Nr4AJjI15x4QcixrZBFNlfCubE3nDU4=
+	b=1UWr9x1jM8y1//nGNmCjq2uZsf/5FCsPcswrlYDRCPuQnF6I/A+cJ+W9KjEVOoikp
+	 kDJ0CtG6/JO3xHPDeegoaw9mHJpZ4226Er6vqNYQenQi6icZ0O7Xe0S9/9LvCmmx8U
+	 HQoKTi1Lq5wx0lBrZYAU6kpicjbwkPepgvOwEY5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 127/482] net: phy: Check for read errors in SIOCGMIIREG
-Date: Tue,  8 Oct 2024 14:03:10 +0200
-Message-ID: <20241008115653.302928313@linuxfoundation.org>
+Subject: [PATCH 6.10 128/482] wifi: rtw89: avoid reading out of bounds when loading TX power FW elements
+Date: Tue,  8 Oct 2024 14:03:11 +0200
+Message-ID: <20241008115653.342063330@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
 References: <20241008115648.280954295@linuxfoundation.org>
@@ -64,84 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-[ Upstream commit 569bf6d481b0b823c3c9c3b8be77908fd7caf66b ]
+[ Upstream commit ed2e4bb17a4884cf29c3347353d8aabb7265b46c ]
 
-When reading registers from the PHY using the SIOCGMIIREG IOCTL any
-errors returned from either mdiobus_read() or mdiobus_c45_read() are
-ignored, and parts of the returned error is passed as the register value
-back to user-space.
+Because the loop-expression will do one more time before getting false from
+cond-expression, the original code copied one more entry size beyond valid
+region.
 
-For example, if mdiobus_c45_read() is used with a bus that do not
-implement the read_c45() callback -EOPNOTSUPP is returned. This is
-however directly stored in mii_data->val_out and returned as the
-registers content. As val_out is a u16 the error code is truncated and
-returned as a plausible register value.
+Fix it by moving the entry copy to loop-body.
 
-Fix this by first checking the return value for errors before returning
-it as the register content.
-
-Before this patch,
-
-    # phytool read eth0/0:1/0
-    0xffa1
-
-After this change,
-
-    $ phytool read eth0/0:1/0
-    error: phy_read (-95)
-
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20240903171536.628930-1-niklas.soderlund+renesas@ragnatech.se
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240902015803.20420-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index c4236564c1cd0..8495b111a524a 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -342,14 +342,19 @@ int phy_mii_ioctl(struct phy_device *phydev, struct ifreq *ifr, int cmd)
- 		if (mdio_phy_id_is_c45(mii_data->phy_id)) {
- 			prtad = mdio_phy_id_prtad(mii_data->phy_id);
- 			devad = mdio_phy_id_devad(mii_data->phy_id);
--			mii_data->val_out = mdiobus_c45_read(
--				phydev->mdio.bus, prtad, devad,
--				mii_data->reg_num);
-+			ret = mdiobus_c45_read(phydev->mdio.bus, prtad, devad,
-+					       mii_data->reg_num);
-+
- 		} else {
--			mii_data->val_out = mdiobus_read(
--				phydev->mdio.bus, mii_data->phy_id,
--				mii_data->reg_num);
-+			ret = mdiobus_read(phydev->mdio.bus, mii_data->phy_id,
-+					   mii_data->reg_num);
- 		}
-+
-+		if (ret < 0)
-+			return ret;
-+
-+		mii_data->val_out = ret;
-+
- 		return 0;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 112bdd95fc6ea..504660ee3cba3 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3888,16 +3888,22 @@ struct rtw89_txpwr_conf {
+ 	const void *data;
+ };
  
- 	case SIOCSMIIREG:
++static inline bool rtw89_txpwr_entcpy(void *entry, const void *cursor, u8 size,
++				      const struct rtw89_txpwr_conf *conf)
++{
++	u8 valid_size = min(size, conf->ent_sz);
++
++	memcpy(entry, cursor, valid_size);
++	return true;
++}
++
+ #define rtw89_txpwr_conf_valid(conf) (!!(conf)->data)
+ 
+ #define rtw89_for_each_in_txpwr_conf(entry, cursor, conf) \
+-	for (typecheck(const void *, cursor), (cursor) = (conf)->data, \
+-	     memcpy(&(entry), cursor, \
+-		    min_t(u8, sizeof(entry), (conf)->ent_sz)); \
++	for (typecheck(const void *, cursor), (cursor) = (conf)->data; \
+ 	     (cursor) < (conf)->data + (conf)->num_ents * (conf)->ent_sz; \
+-	     (cursor) += (conf)->ent_sz, \
+-	     memcpy(&(entry), cursor, \
+-		    min_t(u8, sizeof(entry), (conf)->ent_sz)))
++	     (cursor) += (conf)->ent_sz) \
++		if (rtw89_txpwr_entcpy(&(entry), cursor, sizeof(entry), conf))
+ 
+ struct rtw89_txpwr_byrate_data {
+ 	struct rtw89_txpwr_conf conf;
 -- 
 2.43.0
 
