@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67D85994F06
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:23:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C88C8994ACB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99DF11C2513C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:23:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 716EC1F245C1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BD61DF730;
-	Tue,  8 Oct 2024 13:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D716B1DE4F3;
+	Tue,  8 Oct 2024 12:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jnqPe5r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzwmL6C2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD041DF260;
-	Tue,  8 Oct 2024 13:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934B5192594;
+	Tue,  8 Oct 2024 12:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393759; cv=none; b=Q3PyBmkc7nVrvBJHrqduCaNKyCr3UaSwrWpxV0mn+fZxX6HIBNo/x4f63MLvbQn6FHSo0alhPKBRTxexSS4zCqkpsh1vd2SRjWN1QekukfRXoGpD7XwEAS+FxcRmL+4/s/GP/DDiLK9tJCF0QMBRIdx6jemSxpARjzqVUs6ADNk=
+	t=1728390992; cv=none; b=mc9sfMDJRLBCLYafXjuhQi11lkpXWv66SNjmF/tRkMghsk0R67nsZu9K9LGwds4DMglI2/CMQmyE4nWwVjBh9JvErMJWRUbSp2GPc5EQe07Mvf5nNfppYfYvKeDXK2XRsQNJYs8U62SAKSbQaxOqNTTa3/f8Rw7qBipw7zmPJPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393759; c=relaxed/simple;
-	bh=fxWml+ukE4heC5KKqHLxHeW7XKzdln9Qqaj/jwU7rRk=;
+	s=arc-20240116; t=1728390992; c=relaxed/simple;
+	bh=xe7zYbz8+07HlRbojzYZgphMQkkW8jw53T6kb/ja7Go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g8d1+zlQ6p8e8e6iXwezcyYYG+xshyp0vUiadcNWnM7u4SiVwIqB0b+kUvJI+qKTK0J13kmSszaZG2uq19uFp8psLgBqXGhBcoYNqLjWFyAnMIyXKdPcu5n5WiWcCgw+z/+S8P08X0hazqPAO1ogz17AKlx7NZaOGt5CSe1VaAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jnqPe5r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75AFC4CEC7;
-	Tue,  8 Oct 2024 13:22:38 +0000 (UTC)
+	 MIME-Version; b=qC/uMm1lT+dETojGE9Ibgs97OXJynPqjkBXPmSpyeHO4d0WOBYfPigDfPBe73hVwr8WNcuVV/3Zbd3dUVMZ5xG8o8JTc6KzNsWIxCvLw4QrmV1tsY8E/a379/3lph+o/GMXtIlxZc9yK+ovVrWhVmEYliL6rVzVb0w5UyH2tBbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzwmL6C2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B48C4AF0B;
+	Tue,  8 Oct 2024 12:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393759;
-	bh=fxWml+ukE4heC5KKqHLxHeW7XKzdln9Qqaj/jwU7rRk=;
+	s=korg; t=1728390992;
+	bh=xe7zYbz8+07HlRbojzYZgphMQkkW8jw53T6kb/ja7Go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0jnqPe5rACboXxnvY+mqvWD8LOZXpokoS/ay+e52wzmnxtx+GEUNOSZJI4HAp0MlA
-	 DuoQBk6KRfkerI49iitIBM/VNtpLytLwGUpxSHlaSm/NDioyMY/vWGLy+bKYB7VGi2
-	 yQqpDBDcQ3orU+rczVJqxuqAIb0caFC395EUnCtA=
+	b=fzwmL6C2WKMskA8Vc2hwwWn/5zb2HB0yRQenfX/XfiuYpJmKF+oOkdaIkDvjX0l9U
+	 6W+rkfOPVtcyzq2Z2F3htZhFflJGzhDZoKYpcrtIiWnJMn90QD2cmdfk34jjRgWRPa
+	 7VZrPpe/ZLg7fKVOOmyUUoJDYbGsWmArv7zvN8EQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.6 247/386] ext4: mark fc as ineligible using an handle in ext4_xattr_set()
-Date: Tue,  8 Oct 2024 14:08:12 +0200
-Message-ID: <20241008115639.113419966@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Wei Li <liwei391@huawei.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.10 430/482] tracing/timerlat: Fix a race during cpuhp processing
+Date: Tue,  8 Oct 2024 14:08:13 +0200
+Message-ID: <20241008115705.444803927@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+From: Wei Li <liwei391@huawei.com>
 
-commit 04e6ce8f06d161399e5afde3df5dcfa9455b4952 upstream.
+commit 829e0c9f0855f26b3ae830d17b24aec103f7e915 upstream.
 
-Calling ext4_fc_mark_ineligible() with a NULL handle is racy and may result
-in a fast-commit being done before the filesystem is effectively marked as
-ineligible.  This patch moves the call to this function so that an handle
-can be used.  If a transaction fails to start, then there's not point in
-trying to mark the filesystem as ineligible, and an error will eventually be
-returned to user-space.
+There is another found exception that the "timerlat/1" thread was
+scheduled on CPU0, and lead to timer corruption finally:
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240923104909.18342-3-luis.henriques@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+```
+ODEBUG: init active (active state 0) object: ffff888237c2e108 object type: hrtimer hint: timerlat_irq+0x0/0x220
+WARNING: CPU: 0 PID: 426 at lib/debugobjects.c:518 debug_print_object+0x7d/0xb0
+Modules linked in:
+CPU: 0 UID: 0 PID: 426 Comm: timerlat/1 Not tainted 6.11.0-rc7+ #45
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:debug_print_object+0x7d/0xb0
+...
+Call Trace:
+ <TASK>
+ ? __warn+0x7c/0x110
+ ? debug_print_object+0x7d/0xb0
+ ? report_bug+0xf1/0x1d0
+ ? prb_read_valid+0x17/0x20
+ ? handle_bug+0x3f/0x70
+ ? exc_invalid_op+0x13/0x60
+ ? asm_exc_invalid_op+0x16/0x20
+ ? debug_print_object+0x7d/0xb0
+ ? debug_print_object+0x7d/0xb0
+ ? __pfx_timerlat_irq+0x10/0x10
+ __debug_object_init+0x110/0x150
+ hrtimer_init+0x1d/0x60
+ timerlat_main+0xab/0x2d0
+ ? __pfx_timerlat_main+0x10/0x10
+ kthread+0xb7/0xe0
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2d/0x40
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+```
+
+After tracing the scheduling event, it was discovered that the migration
+of the "timerlat/1" thread was performed during thread creation. Further
+analysis confirmed that it is because the CPU online processing for
+osnoise is implemented through workers, which is asynchronous with the
+offline processing. When the worker was scheduled to create a thread, the
+CPU may has already been removed from the cpu_online_mask during the offline
+process, resulting in the inability to select the right CPU:
+
+T1                       | T2
+[CPUHP_ONLINE]           | cpu_device_down()
+osnoise_hotplug_workfn() |
+                         |     cpus_write_lock()
+                         |     takedown_cpu(1)
+                         |     cpus_write_unlock()
+[CPUHP_OFFLINE]          |
+    cpus_read_lock()     |
+    start_kthread(1)     |
+    cpus_read_unlock()   |
+
+To fix this, skip online processing if the CPU is already offline.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20240924094515.3561410-4-liwei391@huawei.com
+Fixes: c8895e271f79 ("trace/osnoise: Support hotplug operations")
+Signed-off-by: Wei Li <liwei391@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/trace/trace_osnoise.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -2554,6 +2554,8 @@ retry:
+--- a/kernel/trace/trace_osnoise.c
++++ b/kernel/trace/trace_osnoise.c
+@@ -2094,6 +2094,8 @@ static void osnoise_hotplug_workfn(struc
+ 	mutex_lock(&interface_lock);
+ 	cpus_read_lock();
  
- 		error = ext4_xattr_set_handle(handle, inode, name_index, name,
- 					      value, value_len, flags);
-+		ext4_fc_mark_ineligible(inode->i_sb, EXT4_FC_REASON_XATTR,
-+					handle);
- 		error2 = ext4_journal_stop(handle);
- 		if (error == -ENOSPC &&
- 		    ext4_should_retry_alloc(sb, &retries))
-@@ -2561,7 +2563,6 @@ retry:
- 		if (error == 0)
- 			error = error2;
- 	}
--	ext4_fc_mark_ineligible(inode->i_sb, EXT4_FC_REASON_XATTR, NULL);
++	if (!cpu_online(cpu))
++		goto out_unlock;
+ 	if (!cpumask_test_cpu(cpu, &osnoise_cpumask))
+ 		goto out_unlock;
  
- 	return error;
- }
 
 
 
