@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D7F994D4D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:04:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 503DF994A95
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6421E1F24889
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:04:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E5FA1C24C0D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9834D1DE2A5;
-	Tue,  8 Oct 2024 13:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225EA1DE88B;
+	Tue,  8 Oct 2024 12:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBGxryVS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxJUczjM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556021C9B99;
-	Tue,  8 Oct 2024 13:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30621C4631;
+	Tue,  8 Oct 2024 12:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392650; cv=none; b=NuAvNPrjBaeDDov+vFu1gf4pwRorB8NQipthgtMke8s+d2YhdfliCfuX/7fBiFLhXdW/I+o6nFHS8EIA0pAxPsOcw8IBx6xEhvQief2dAMSwOCwwZnqVs81h25WNeKUEjVJLm+jy8cYlBZnp7Ih85dt2EzGWtpym09l7IRpsCns=
+	t=1728390860; cv=none; b=g1M36oMlk8yFjRuJWwFDYnPaXL5z2JfMssbQI/WfnCM05aZoNR2kW1MAkss4TYEmuiyEovYomTwa2bpmpZFdo5Lzhn78XfGJcnYKG0K26AIjeo3F80xxbKQUmYpVkb1Y6yVtMs2cZ7fV9T/OuoDk/F7xqN6CIcgXq8DFAMnC0MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392650; c=relaxed/simple;
-	bh=Pew3pT4WKn7K1TNrdzXysUF84GiTly42pXK4JlfBs9g=;
+	s=arc-20240116; t=1728390860; c=relaxed/simple;
+	bh=o/OsH4V6SI2GTdnQFGeSb5FVOljGanie1dC7SlOrpGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HuqVeSIo2aSR+oLEYxUaxo13+ytm4wqjwGD76DlwzuHEY41gmXi6PtSjl8SSkSZ/1LCTn4QZAHfiN4Ic/zxb7eh7jLJvO0d0S/olKrZg3/JguhPRAIR3uz82zD/duPkdizV0ndGKGxWsMpR3Yn9e0YvlgsGrjDrzEX6ckgieC7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBGxryVS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDC5C4CEC7;
-	Tue,  8 Oct 2024 13:04:09 +0000 (UTC)
+	 MIME-Version; b=HF2YrV1Una2EPpaaylxfKxmVsEy9iYGscTK4Q8SMGWZ6dJgxSvOnwr2cDGf7kmgGDwjDWofjcdinjax1EDsMVktF2kjXu/9IHTXia83kU4H5t5P1q9FpGbTouKOJcL6h7cVaLjWJN34BCG9KdYl/UUmK/yWZQsG/mo9Mx480t3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxJUczjM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005A0C4CEC7;
+	Tue,  8 Oct 2024 12:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392650;
-	bh=Pew3pT4WKn7K1TNrdzXysUF84GiTly42pXK4JlfBs9g=;
+	s=korg; t=1728390860;
+	bh=o/OsH4V6SI2GTdnQFGeSb5FVOljGanie1dC7SlOrpGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SBGxryVSVkTolU7sgQ/5ZDEoJq/TjsJCPtGhU5ZkV2EKqhodmZ0Ahw5mcq4/gHhNR
-	 K26lf8fPeH+iOkIUB9c97IQTBdt1IfqsSIkTfDTE0y1yWEssG3i/l2sTGo/16LCFjr
-	 3Zq3+IGWuO8uuuguPb7jkB0c0mCktAcv2edzLcpc=
+	b=nxJUczjMrX+/ewI3FyQGnIkqs7UB5taHiqekSJqk1hjdtUdVM80sw1J+yARxSSseq
+	 SRA1dxzNbODxkADxwJ/69xFXFi+tUOvjTv0Dbv7GPt3hMGPzBDKOLUwnYhsSLq+NLH
+	 M9x6HW1K2Q56DnllpEfMWvM+bAv7M+4svnwRWhxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bastien Curutchet <bastien.curutchet@bootlin.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.11 447/558] leds: pca9532: Remove irrelevant blink configuration error message
-Date: Tue,  8 Oct 2024 14:07:57 +0200
-Message-ID: <20241008115719.852818687@linuxfoundation.org>
+	Lamome Julien <julien.lamome@wanadoo.fr>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.10 415/482] ACPI: resource: Add Asus Vivobook X1704VAP to irq1_level_low_skip_override[]
+Date: Tue,  8 Oct 2024 14:07:58 +0200
+Message-ID: <20241008115704.734762131@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 2aad93b6de0d874038d3d7958be05011284cd6b9 upstream.
+commit 2f80ce0b78c340e332f04a5801dee5e4ac8cfaeb upstream.
 
-The update_hw_blink() function prints an error message when hardware is
-not able to handle a blink configuration on its own. IMHO, this isn't a
-'real' error since the software fallback is used afterwards.
+Like other Asus Vivobook models the X1704VAP has its keybopard IRQ (1)
+described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
+which breaks the keyboard.
 
-Remove the error messages to avoid flooding the logs with unnecessary
-messages.
+Add the X1704VAP to the irq1_level_low_skip_override[] quirk table to fix
+this.
 
-Cc: stable@vger.kernel.org
-Fixes: 48ca7f302cfc ("leds: pca9532: Use PWM1 for hardware blinking")
-Signed-off-by: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Link: https://lore.kernel.org/r/20240826133237.134604-1-bastien.curutchet@bootlin.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Reported-by: Lamome Julien <julien.lamome@wanadoo.fr>
+Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1078696
+Closes: https://lore.kernel.org/all/1226760b-4699-4529-bf57-6423938157a3@wanadoo.fr/
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20240927141606.66826-3-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/leds-pca9532.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/acpi/resource.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/leds/leds-pca9532.c b/drivers/leds/leds-pca9532.c
-index 338ddada3de9..1b47acf54720 100644
---- a/drivers/leds/leds-pca9532.c
-+++ b/drivers/leds/leds-pca9532.c
-@@ -215,8 +215,7 @@ static int pca9532_update_hw_blink(struct pca9532_led *led,
- 		if (other->state == PCA9532_PWM1) {
- 			if (other->ldev.blink_delay_on != delay_on ||
- 			    other->ldev.blink_delay_off != delay_off) {
--				dev_err(&led->client->dev,
--					"HW can handle only one blink configuration at a time\n");
-+				/* HW can handle only one blink configuration at a time */
- 				return -EINVAL;
- 			}
- 		}
-@@ -224,7 +223,7 @@ static int pca9532_update_hw_blink(struct pca9532_led *led,
- 
- 	psc = ((delay_on + delay_off) * PCA9532_PWM_PERIOD_DIV - 1) / 1000;
- 	if (psc > U8_MAX) {
--		dev_err(&led->client->dev, "Blink period too long to be handled by hardware\n");
-+		/* Blink period too long to be handled by hardware */
- 		return -EINVAL;
- 	}
- 
--- 
-2.46.2
-
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -441,6 +441,13 @@ static const struct dmi_system_id irq1_l
+ 		},
+ 	},
+ 	{
++		/* Asus Vivobook X1704VAP */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "X1704VAP"),
++		},
++	},
++	{
+ 		/* Asus ExpertBook B1402CBA */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 
 
 
