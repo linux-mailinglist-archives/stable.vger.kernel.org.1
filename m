@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-81689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD529948D5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:17:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A04994BAD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:45:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25A281F29126
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:17:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF22E28444C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:45:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402891DD867;
-	Tue,  8 Oct 2024 12:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A77F1DEFF7;
+	Tue,  8 Oct 2024 12:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6/3y39T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08xlO8kD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F184C1E485;
-	Tue,  8 Oct 2024 12:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165551DEFC7;
+	Tue,  8 Oct 2024 12:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389807; cv=none; b=sTKSFLBvwFqB9si5RH6Kjv5SfB4iOLPwc/v8dw8DEZ9Xll5GKeUmKI7oazJJSz2Cri+15X6GrFVgOntZKAMVXiGVx04lgu3knUvO0X8iwmBeDR2Z/8W+Lyg4hONVlIURz2g/CjHpg97ZtwIXLcSkKzClkHZqK1vz5N/O2ogS5Ic=
+	t=1728391515; cv=none; b=IfJEKy2wrie9B7v9GqOH2AC8ioXyx9Njck8WAqb84zpnczbx/c0s+OscL7i4RlA+y0P1wgvSfpGlnN5zxPGhE1KxaBqodlaA0Nl5bGQPaJYf5aOApXrfX4DplxDEtpPxc0jxdqhVzLcX0AjrV/xXrSPR64BH9FVDWs6+lXYNxgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389807; c=relaxed/simple;
-	bh=1t0fDHWFHAf+fdv0DebM2UeSj0Y1sob/bUL40pHJO6M=;
+	s=arc-20240116; t=1728391515; c=relaxed/simple;
+	bh=6oyAmfR6Pk4LG/p+zwNP74y+VpzBrdYf+Ie5uqmVkr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3iIkcP5CPcm2EB91uIrplUVaAskWZonsa9GFF5t+K5muBF1Q6waMTJUt6buCZX/zaNLBZyjpoDO9dL3GTHA35T9nuQjq7VxuPJuW2BKKERuCoT6Fqut8jx0K8CU1EcfJnbvcOc1vbVWk3fOiRFCsWmF8y+sETvhZ1PKtutNdEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6/3y39T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E05C4CEC7;
-	Tue,  8 Oct 2024 12:16:46 +0000 (UTC)
+	 MIME-Version; b=h6GPyFkbCa5fhxq4xfHXFYoC7+DoWCaRYL3wm5l69Sl2F/ATmDDBWTyVSw+TodOeXtqY9w+fZONufHTjclmWdmN9ufd92/iizUzdf1afn9KUaTs43TX12MhltK4S27OXgDCXVZZIitznt8NreE2Ngy1LGDQvR05b7YX+6tyk0g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08xlO8kD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40043C4CEC7;
+	Tue,  8 Oct 2024 12:45:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389806;
-	bh=1t0fDHWFHAf+fdv0DebM2UeSj0Y1sob/bUL40pHJO6M=;
+	s=korg; t=1728391514;
+	bh=6oyAmfR6Pk4LG/p+zwNP74y+VpzBrdYf+Ie5uqmVkr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6/3y39TCRZFUcl/xUuVA/miVn5rBxYn6tE4GgZtCel9XgK2Jx1l+fehb+39FYNjE
-	 uckQcnpvirktPdUxl9xmtIBmmAqrFQ5lpVBholzmpkaTPiZqeE71arqr/w8JveDhaA
-	 2Q/S8A/lzze1oHlRkqGFwWICQTZATR7EjQEPIeg8=
+	b=08xlO8kDwzd7HdeOwsCU5EracEa5roRUqLuRp2NFomGMFYm+U0ktOotDuItA3fg4F
+	 LLKv/PAVllyijNpLmPnuOeYfprk6KgrT7kVz2m8Rw1PYSIbhIY2WXGs0ZLy+qHlv6f
+	 Jhw6nnX5wngI13rYAM/7F+r+9jN4+otVeQxHBjhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jade Dong <jadedong@tencent.com>,
+	Jason Xing <kernelxing@tencent.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 102/482] ACPICA: check null return of ACPI_ALLOCATE_ZEROED() in acpi_db_convert_to_package()
-Date: Tue,  8 Oct 2024 14:02:45 +0200
-Message-ID: <20241008115652.323559296@linuxfoundation.org>
+Subject: [PATCH 6.11 136/558] tcp: avoid reusing FIN_WAIT2 when trying to find port in connect() process
+Date: Tue,  8 Oct 2024 14:02:46 +0200
+Message-ID: <20241008115707.716766919@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Jason Xing <kernelxing@tencent.com>
 
-[ Upstream commit a5242874488eba2b9062985bf13743c029821330 ]
+[ Upstream commit 0d9e5df4a257afc3a471a82961ace9a22b88295a ]
 
-ACPICA commit 4d4547cf13cca820ff7e0f859ba83e1a610b9fd0
+We found that one close-wait socket was reset by the other side
+due to a new connection reusing the same port which is beyond our
+expectation, so we have to investigate the underlying reason.
 
-ACPI_ALLOCATE_ZEROED() may fail, elements might be NULL and will cause
-NULL pointer dereference later.
+The following experiment is conducted in the test environment. We
+limit the port range from 40000 to 40010 and delay the time to close()
+after receiving a fin from the active close side, which can help us
+easily reproduce like what happened in production.
 
-Link: https://github.com/acpica/acpica/commit/4d4547cf
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://patch.msgid.link/tencent_4A21A2865B8B0A0D12CAEBEB84708EDDB505@qq.com
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Here are three connections captured by tcpdump:
+127.0.0.1.40002 > 127.0.0.1.9999: Flags [S], seq 2965525191
+127.0.0.1.9999 > 127.0.0.1.40002: Flags [S.], seq 2769915070
+127.0.0.1.40002 > 127.0.0.1.9999: Flags [.], ack 1
+127.0.0.1.40002 > 127.0.0.1.9999: Flags [F.], seq 1, ack 1
+// a few seconds later, within 60 seconds
+127.0.0.1.40002 > 127.0.0.1.9999: Flags [S], seq 2965590730
+127.0.0.1.9999 > 127.0.0.1.40002: Flags [.], ack 2
+127.0.0.1.40002 > 127.0.0.1.9999: Flags [R], seq 2965525193
+// later, very quickly
+127.0.0.1.40002 > 127.0.0.1.9999: Flags [S], seq 2965590730
+127.0.0.1.9999 > 127.0.0.1.40002: Flags [S.], seq 3120990805
+127.0.0.1.40002 > 127.0.0.1.9999: Flags [.], ack 1
+
+As we can see, the first flow is reset because:
+1) client starts a new connection, I mean, the second one
+2) client tries to find a suitable port which is a timewait socket
+   (its state is timewait, substate is fin_wait2)
+3) client occupies that timewait port to send a SYN
+4) server finds a corresponding close-wait socket in ehash table,
+   then replies with a challenge ack
+5) client sends an RST to terminate this old close-wait socket.
+
+I don't think the port selection algo can choose a FIN_WAIT2 socket
+when we turn on tcp_tw_reuse because on the server side there
+remain unread data. In some cases, if one side haven't call close() yet,
+we should not consider it as expendable and treat it at will.
+
+Even though, sometimes, the server isn't able to call close() as soon
+as possible like what we expect, it can not be terminated easily,
+especially due to a second unrelated connection happening.
+
+After this patch, we can see the expected failure if we start a
+connection when all the ports are occupied in fin_wait2 state:
+"Ncat: Cannot assign requested address."
+
+Reported-by: Jade Dong <jadedong@tencent.com>
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240823001152.31004-1-kerneljasonxing@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/dbconvert.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/tcp_ipv4.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/acpi/acpica/dbconvert.c b/drivers/acpi/acpica/dbconvert.c
-index 2b84ac093698a..8dbab69320499 100644
---- a/drivers/acpi/acpica/dbconvert.c
-+++ b/drivers/acpi/acpica/dbconvert.c
-@@ -174,6 +174,8 @@ acpi_status acpi_db_convert_to_package(char *string, union acpi_object *object)
- 	elements =
- 	    ACPI_ALLOCATE_ZEROED(DB_DEFAULT_PKG_ELEMENTS *
- 				 sizeof(union acpi_object));
-+	if (!elements)
-+		return (AE_NO_MEMORY);
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index a4e510846905e..5087e12209a19 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -120,6 +120,9 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 	int ts_recent_stamp;
  
- 	this = string;
- 	for (i = 0; i < (DB_DEFAULT_PKG_ELEMENTS - 1); i++) {
++	if (tw->tw_substate == TCP_FIN_WAIT2)
++		reuse = 0;
++
+ 	if (reuse == 2) {
+ 		/* Still does not detect *everything* that goes through
+ 		 * lo, since we require a loopback src or dst address
 -- 
 2.43.0
 
