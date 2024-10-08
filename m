@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-82873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD8A994EED
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:23:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D5D3994A97
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42AB91F224E0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:23:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E89A1C23CAE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749291DFE0A;
-	Tue,  8 Oct 2024 13:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E90F1DE89A;
+	Tue,  8 Oct 2024 12:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxK7vmXz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYO8sDC+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33EA11DFE03;
-	Tue,  8 Oct 2024 13:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87A91779B1;
+	Tue,  8 Oct 2024 12:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393712; cv=none; b=cEsdysYMgtoXA69kln7yyQ/aJDs29e2g9aHXboDCui6TBPppA7E1VM0M7Fj2EUVba7X4h0rFEFW8B+oM1VMIOdqtOjcVC8eD4I2ZyydJ/7ACmahA7bVoC3DzPBfvDBUl5dq1EEgLTbcWF/G4CwQZP3i8iiyjr2fwQUyKgGgSZGg=
+	t=1728390863; cv=none; b=mflfpPdjv/HBND989AXAI515w9T06RM6vItAuDbZMLoALqBiytrPlCHQsHlf+qxOt9bsvrDT5t4W08wjNLrvuYT7ztjebsaWXCjZU0MEg7gmCJ1eqvEP+gHTEimmG4kq/frMBe4qphbYFvsi6kq13G4e9JM7YvGUzV0AyhmHvn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393712; c=relaxed/simple;
-	bh=bmH37kTLOABJ/nXhVYWYiF8Q7SrrA7hlddJHSX/wurM=;
+	s=arc-20240116; t=1728390863; c=relaxed/simple;
+	bh=mmV8vfE+y57oUk5iiRGVW5D+GUyCjlZc/je11ESt1XA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X4d0zmLwQem+K8XtNc+ZNLSwO55zXmEksNSzRrQwc9RFGACouIn9htHNmZ6VUk9fJikEJ4jv1dsFoKT280Tp9fJtE5tlsil19nrwwmkreZbfJxW//c47B/k7dswr4cjE47LVzTccE2NHIN5Qt2uwdg2Ck1KT4HP8+6FBkiF9Umg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxK7vmXz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C455C4CECE;
-	Tue,  8 Oct 2024 13:21:51 +0000 (UTC)
+	 MIME-Version; b=figk9JnrIvAOxPaTkXdyJ/5KYmzkHpoGjlhHxKzY2rt/3kcYu4NdlqvotIli/gNlb+uBFTiCjQ0b10QtO2JiTeJpqu4TTeJ/7T3O7OgR3+vbkfeGcOFGEvL9SBu3aR9/Or3ZI01ijhs0raSWqqu6eRR77mNikq+jEqQZnYg31tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYO8sDC+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EF8C4CEC7;
+	Tue,  8 Oct 2024 12:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393711;
-	bh=bmH37kTLOABJ/nXhVYWYiF8Q7SrrA7hlddJHSX/wurM=;
+	s=korg; t=1728390863;
+	bh=mmV8vfE+y57oUk5iiRGVW5D+GUyCjlZc/je11ESt1XA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxK7vmXzlpWa80jPYDl4hF1qS1pubey5H1OFmuh4kTW7fKrgVzNNcwTyejUPRYcNA
-	 4NNBO4kX3HObIMgDzvsm3C8PHFVRsgWXjRphpfuXvY9vqyfSBNTLBqjDZSxeM5DUhW
-	 f4YR3/MwHFUValJAJM58Mpxd87DwPlUEkfjIFhJo=
+	b=UYO8sDC+s+umxLj6aH2t0s9obAKa4SghD0xgg6/KEHAGwYwb016PRKd6vuKZpZOz0
+	 MtBfC69RkBRX9/xRP4VBPYXIxpdF34rLSKgKRYjKYIMSw4PGogKAUh5vJLGJB2idbJ
+	 MbJRpdyefcGOv9Akb3e9yUJODU0I6FBI+UYf8feI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 234/386] ext4: propagate errors from ext4_find_extent() in ext4_insert_range()
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.10 416/482] ACPI: resource: Add Asus ExpertBook B2502CVA to irq1_level_low_skip_override[]
 Date: Tue,  8 Oct 2024 14:07:59 +0200
-Message-ID: <20241008115638.609681110@linuxfoundation.org>
+Message-ID: <20241008115704.773911007@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 369c944ed1d7c3fb7b35f24e4735761153afe7b3 upstream.
+commit 056301e7c7c886f96d799edd36f3406cc30e1822 upstream.
 
-Even though ext4_find_extent() returns an error, ext4_insert_range() still
-returns 0. This may confuse the user as to why fallocate returns success,
-but the contents of the file are not as expected. So propagate the error
-returned by ext4_find_extent() to avoid inconsistencies.
+Like other Asus ExpertBook models the B2502CVA has its keybopard IRQ (1)
+described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
+which breaks the keyboard.
 
-Fixes: 331573febb6a ("ext4: Add support FALLOC_FL_INSERT_RANGE for fallocate")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20240822023545.1994557-11-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Add the B2502CVA to the irq1_level_low_skip_override[] quirk table to fix
+this.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217760
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20240927141606.66826-4-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/resource.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -5549,6 +5549,7 @@ static int ext4_insert_range(struct file
- 	path = ext4_find_extent(inode, offset_lblk, NULL, 0);
- 	if (IS_ERR(path)) {
- 		up_write(&EXT4_I(inode)->i_data_sem);
-+		ret = PTR_ERR(path);
- 		goto out_stop;
- 	}
- 
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -511,6 +511,13 @@ static const struct dmi_system_id irq1_l
+ 		},
+ 	},
+ 	{
++		/* Asus ExpertBook B2502CVA */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "B2502CVA"),
++		},
++	},
++	{
+ 		/* Asus Vivobook Go E1404GA* */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 
 
 
