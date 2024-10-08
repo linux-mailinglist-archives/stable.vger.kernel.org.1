@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5123994DF7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:11:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 788139949BA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:26:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 227101C2526A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:11:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA6EA1C24AC0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5891DEFF7;
-	Tue,  8 Oct 2024 13:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1BA1DE8A9;
+	Tue,  8 Oct 2024 12:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptJIA6MG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MAJoWnX+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AF01DEFE6;
-	Tue,  8 Oct 2024 13:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0621DE8B7;
+	Tue,  8 Oct 2024 12:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393077; cv=none; b=ZhRdalALjh/LACkvfdagmHEtSqVVMX3pcTYu0ksMPop3FfV0f2ewutz/ibMN9wr10+kdz3mzFR1+CfQzy7TmChH2xuEm5hGwuvHOT03qD/RhRpi4X3hDNxmN2xZJSiv5sgJy8GOlfQtsbbqxSCboskvyhQPzTHnq6y1W4dkMXeg=
+	t=1728390336; cv=none; b=Weylg7+jCjwDgech4VAkn11xulqm5EcVGi10UilEdOmw9e/AlZg233Q/Kh4ZJ58Wkv1oNbs+q+dNh8ecBfrHrwgB97wrebTglV1K59YA+YocOSEmTkYcRmJ5iXQ/fg4CvUIFBOwYtTMZTc260xdKEAkzZMRQDmMQlfkS+ykHB18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393077; c=relaxed/simple;
-	bh=RhhMtXSai372GBObLfbfvH1KCoqc2W4WWXKPPem+6sI=;
+	s=arc-20240116; t=1728390336; c=relaxed/simple;
+	bh=2ENQz+wpaNA17NO1WIHmq2NrDAm3CsFY8hgHThaBDS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I0jNwpyjX4xKKewloyaFZehaWdDwBTLPPTlj3o73C//wNfjTEZ0Y0Pf6lI9DiFx0TE6skQOT7o6MkcAH9JhRI2pV9XzgSWg98hvGBlpPN6M9VjPiZ+CPQlfEDDJKZIlWKKUgvjL7qGnQlMMmMpKIoYjxRPKvQb1V3GxmbJViLLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptJIA6MG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166D8C4CEC7;
-	Tue,  8 Oct 2024 13:11:16 +0000 (UTC)
+	 MIME-Version; b=cgofU0IgkMVLmbdV6Np0BpkmBtC74kRdDOgZt4O02jWFSzTtiq8rK8Id52Mtc4HGlt2m6DQOxU6OQyVJUzu46s1h1wLxjJjV26T5eBpgegsmtWG9UDtsB9yg3v6l6FzpW+P0UBl6NAueS27RbqK+8sW2tm1QDXeTkdiifboOIVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MAJoWnX+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B56C4CECC;
+	Tue,  8 Oct 2024 12:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393077;
-	bh=RhhMtXSai372GBObLfbfvH1KCoqc2W4WWXKPPem+6sI=;
+	s=korg; t=1728390336;
+	bh=2ENQz+wpaNA17NO1WIHmq2NrDAm3CsFY8hgHThaBDS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ptJIA6MGwy28pkaogFe24t5UbR6bn2CJoAfTssP8LNvrjwo6mTVbphtpMWS+Is8Xu
-	 j/57DK4h4MKlJntxt57IZG8MSVvNUXMpC1+9p5QdNoc0AbPxx4qU6WqY1qfJTLi11K
-	 H1Xpn0xp7nFNRAjubB62M9q6SIe2zUIoCMcl3+mA=
+	b=MAJoWnX+3nGS6egvMqwpj5MMG8waZHU9qgHyQ3fNdNC7+R18RCpuZSfN6eCKztSvF
+	 O/WgfmxxkcTKsUa9MP2NaU7OF7qHFXhzNDDIpyXVJjsBcf1K1O7drbVyQlKiSfLp3S
+	 CQzXnn/Wkl9VzXOn3cvQMmq4IQbQNdnuqiMma5AE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Tim Huang <tim.huang@amd.com>,
+	Jesse Zhang <jesse.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/386] Bluetooth: L2CAP: Fix not validating setsockopt user input
+Subject: [PATCH 6.10 227/482] drm/amdgpu: fix unchecked return value warning for amdgpu_atombios
 Date: Tue,  8 Oct 2024 14:04:50 +0200
-Message-ID: <20241008115631.245476872@linuxfoundation.org>
+Message-ID: <20241008115657.240252367@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,167 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Tim Huang <tim.huang@amd.com>
 
-[ Upstream commit 4f3951242ace5efc7131932e2e01e6ac6baed846 ]
+[ Upstream commit 92549780e32718d64a6d08bbbb3c6fffecb541c7 ]
 
-Check user input length before copying data.
+This resolves the unchecded return value warning reported by Coverity.
 
-Fixes: 33575df7be67 ("Bluetooth: move l2cap_sock_setsockopt() to l2cap_sock.c")
-Fixes: 3ee7b7cd8390 ("Bluetooth: Add BT_MODE socket option")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Tim Huang <tim.huang@amd.com>
+Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c | 52 +++++++++++++++-----------------------
- 1 file changed, 20 insertions(+), 32 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c | 35 ++++++++++++--------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index 5d332e69c7e1a..f04ce84267988 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -727,7 +727,7 @@ static int l2cap_sock_setsockopt_old(struct socket *sock, int optname,
- 	struct sock *sk = sock->sk;
- 	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
- 	struct l2cap_options opts;
--	int len, err = 0;
-+	int err = 0;
- 	u32 opt;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
+index 7dc102f0bc1d3..0c8975ac5af9e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
+@@ -1018,8 +1018,9 @@ int amdgpu_atombios_get_clock_dividers(struct amdgpu_device *adev,
+ 		if (clock_type == COMPUTE_ENGINE_PLL_PARAM) {
+ 			args.v3.ulClockParams = cpu_to_le32((clock_type << 24) | clock);
  
- 	BT_DBG("sk %p", sk);
-@@ -754,11 +754,9 @@ static int l2cap_sock_setsockopt_old(struct socket *sock, int optname,
- 		opts.max_tx   = chan->max_tx;
- 		opts.txwin_size = chan->tx_win;
+-			amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
+-				sizeof(args));
++			if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
++			    index, (uint32_t *)&args, sizeof(args)))
++				return -EINVAL;
  
--		len = min_t(unsigned int, sizeof(opts), optlen);
--		if (copy_from_sockptr(&opts, optval, len)) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opts, sizeof(opts), optval, optlen);
-+		if (err)
- 			break;
--		}
+ 			dividers->post_div = args.v3.ucPostDiv;
+ 			dividers->enable_post_div = (args.v3.ucCntlFlag &
+@@ -1039,8 +1040,9 @@ int amdgpu_atombios_get_clock_dividers(struct amdgpu_device *adev,
+ 			if (strobe_mode)
+ 				args.v5.ucInputFlag = ATOM_PLL_INPUT_FLAG_PLL_STROBE_MODE_EN;
  
- 		if (opts.txwin_size > L2CAP_DEFAULT_EXT_WINDOW) {
- 			err = -EINVAL;
-@@ -801,10 +799,9 @@ static int l2cap_sock_setsockopt_old(struct socket *sock, int optname,
+-			amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
+-				sizeof(args));
++			if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
++			    index, (uint32_t *)&args, sizeof(args)))
++				return -EINVAL;
+ 
+ 			dividers->post_div = args.v5.ucPostDiv;
+ 			dividers->enable_post_div = (args.v5.ucCntlFlag &
+@@ -1058,8 +1060,9 @@ int amdgpu_atombios_get_clock_dividers(struct amdgpu_device *adev,
+ 		/* fusion */
+ 		args.v4.ulClock = cpu_to_le32(clock);	/* 10 khz */
+ 
+-		amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
+-			sizeof(args));
++		if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
++		    index, (uint32_t *)&args, sizeof(args)))
++			return -EINVAL;
+ 
+ 		dividers->post_divider = dividers->post_div = args.v4.ucPostDiv;
+ 		dividers->real_clock = le32_to_cpu(args.v4.ulClock);
+@@ -1070,8 +1073,9 @@ int amdgpu_atombios_get_clock_dividers(struct amdgpu_device *adev,
+ 		args.v6_in.ulClock.ulComputeClockFlag = clock_type;
+ 		args.v6_in.ulClock.ulClockFreq = cpu_to_le32(clock);	/* 10 khz */
+ 
+-		amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
+-			sizeof(args));
++		if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
++		    index, (uint32_t *)&args, sizeof(args)))
++			return -EINVAL;
+ 
+ 		dividers->whole_fb_div = le16_to_cpu(args.v6_out.ulFbDiv.usFbDiv);
+ 		dividers->frac_fb_div = le16_to_cpu(args.v6_out.ulFbDiv.usFbDivFrac);
+@@ -1113,8 +1117,9 @@ int amdgpu_atombios_get_memory_pll_dividers(struct amdgpu_device *adev,
+ 			if (strobe_mode)
+ 				args.ucInputFlag |= MPLL_INPUT_FLAG_STROBE_MODE_EN;
+ 
+-			amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
+-				sizeof(args));
++			if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
++			    index, (uint32_t *)&args, sizeof(args)))
++				return -EINVAL;
+ 
+ 			mpll_param->clkfrac = le16_to_cpu(args.ulFbDiv.usFbDivFrac);
+ 			mpll_param->clkf = le16_to_cpu(args.ulFbDiv.usFbDiv);
+@@ -1211,8 +1216,9 @@ int amdgpu_atombios_get_max_vddc(struct amdgpu_device *adev, u8 voltage_type,
+ 		args.v2.ucVoltageMode = 0;
+ 		args.v2.usVoltageLevel = 0;
+ 
+-		amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
+-			sizeof(args));
++		if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
++		    index, (uint32_t *)&args, sizeof(args)))
++			return -EINVAL;
+ 
+ 		*voltage = le16_to_cpu(args.v2.usVoltageLevel);
  		break;
+@@ -1221,8 +1227,9 @@ int amdgpu_atombios_get_max_vddc(struct amdgpu_device *adev, u8 voltage_type,
+ 		args.v3.ucVoltageMode = ATOM_GET_VOLTAGE_LEVEL;
+ 		args.v3.usVoltageLevel = cpu_to_le16(voltage_id);
  
- 	case L2CAP_LM:
--		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		if (err)
- 			break;
--		}
+-		amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
+-			sizeof(args));
++		if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
++		    index, (uint32_t *)&args, sizeof(args)))
++			return -EINVAL;
  
- 		if (opt & L2CAP_LM_FIPS) {
- 			err = -EINVAL;
-@@ -885,7 +882,7 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 	struct bt_security sec;
- 	struct bt_power pwr;
- 	struct l2cap_conn *conn;
--	int len, err = 0;
-+	int err = 0;
- 	u32 opt;
- 	u16 mtu;
- 	u8 mode;
-@@ -911,11 +908,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 
- 		sec.level = BT_SECURITY_LOW;
- 
--		len = min_t(unsigned int, sizeof(sec), optlen);
--		if (copy_from_sockptr(&sec, optval, len)) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&sec, sizeof(sec), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		if (sec.level < BT_SECURITY_LOW ||
- 		    sec.level > BT_SECURITY_FIPS) {
-@@ -960,10 +955,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 
--		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		if (opt) {
- 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
-@@ -975,10 +969,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 		*voltage = le16_to_cpu(args.v3.usVoltageLevel);
  		break;
- 
- 	case BT_FLUSHABLE:
--		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		if (opt > BT_FLUSHABLE_ON) {
- 			err = -EINVAL;
-@@ -1010,11 +1003,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 
- 		pwr.force_active = BT_POWER_FORCE_ACTIVE_ON;
- 
--		len = min_t(unsigned int, sizeof(pwr), optlen);
--		if (copy_from_sockptr(&pwr, optval, len)) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&pwr, sizeof(pwr), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		if (pwr.force_active)
- 			set_bit(FLAG_FORCE_ACTIVE, &chan->flags);
-@@ -1023,10 +1014,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 		break;
- 
- 	case BT_CHANNEL_POLICY:
--		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		err = -EOPNOTSUPP;
- 		break;
-@@ -1055,10 +1045,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 
--		if (copy_from_sockptr(&mtu, optval, sizeof(u16))) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&mtu, sizeof(mtu), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		if (chan->mode == L2CAP_MODE_EXT_FLOWCTL &&
- 		    sk->sk_state == BT_CONNECTED)
-@@ -1086,10 +1075,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 
--		if (copy_from_sockptr(&mode, optval, sizeof(u8))) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&mode, sizeof(mode), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		BT_DBG("mode %u", mode);
- 
 -- 
 2.43.0
 
