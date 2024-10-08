@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03CE6994948
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91FF2994DD3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BF451C22580
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B6A3283359
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1781DE3AE;
-	Tue,  8 Oct 2024 12:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE9D1DE88F;
+	Tue,  8 Oct 2024 13:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hd8nq5TR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeLlUGsU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391DA1CF297;
-	Tue,  8 Oct 2024 12:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF2C1C32EB;
+	Tue,  8 Oct 2024 13:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390086; cv=none; b=eLqcp/5lMqyPhYP8vqG+jUBsSCVW5MDuoDgdLdcKQgegRqhPDa28H5dF4ZE+VFbVM0lRoipKos154YEKATvP3b4wRRHmqXaiCjsLurxeXtCAD6oxIKmgabD+k3jfIM4pz6AuzdItBb+bmW28pJcLcLbm6HmbhYJ7BDb0CoajadQ=
+	t=1728392992; cv=none; b=db2t1FkTTk+w0ygxWjoImr1Jo1CPl5v3pBn8NBS+NgwM1bKeedzIEwXaVtU1sGQJdr7t+DgERGrQysTqeWfUjF1WRIFRKDlxf9j/UdeoUUvQb/IOP9MgV+GG7iIGv0ThRNUjpqDKFhTrOME9miqTaM4xRuM6+5+dDDE3liowZfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390086; c=relaxed/simple;
-	bh=p02ARv4fZ5TL8W24+ex74cXzWNbb79lbjKr6UDN19JU=;
+	s=arc-20240116; t=1728392992; c=relaxed/simple;
+	bh=vBSjwA/sRmMRLLivj8NdfdkAzwrlWjFN84RNuukDFZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/jnYgDGkrpySlqgW0RmZMxuATswR33ZXMs6kalhKyq6cdl3zrYPC00H52VwCC5BqpbU8UsyDkKkiQBMfKaUO+q7TW1RDUPRa2L+nHGjDJ/0ToL20V/ruaK2fKBKJ6RfVg2Bq/srKtCME9b2b5CaWA5f7oohdGakzHTYtqMN8do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hd8nq5TR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D79BC4CEC7;
-	Tue,  8 Oct 2024 12:21:25 +0000 (UTC)
+	 MIME-Version; b=u908iQVvYmO6zbgsXJgS+4mFq7xHHwn9W91b56JyZkEdptYK9RvwR/tMaKL6F3jj2nq68Qx2E0P4kcYpLWI8CN+T9epHaMRPwvowicphUbmab5zbq5tZ2oUWDc5amwNKr5rOn/J2rEFFGDTDYL/n52d9Wx+olTx3JsToFPYhO4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeLlUGsU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E2BC4CECD;
+	Tue,  8 Oct 2024 13:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390086;
-	bh=p02ARv4fZ5TL8W24+ex74cXzWNbb79lbjKr6UDN19JU=;
+	s=korg; t=1728392992;
+	bh=vBSjwA/sRmMRLLivj8NdfdkAzwrlWjFN84RNuukDFZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hd8nq5TReuTqlS8ll5X52CFu4d2n/omQdhaj6s3B9PzuypKfqxZ/EyggXMGqkkpGG
-	 W0A8HMDh+NXkfyLTPZbiDO1GUNkBOSJZ/38zVfjdvyBcgIDDzBH9uTzVh2vyHjMXsr
-	 bdoZEVcFfnD+/aJybKJQiXGQcnKc3vo/3QNOBt68=
+	b=oeLlUGsU9p+rfsctxHICL5zIlYhQ3qA3TU4RZISDq9JoL4N6hWU5SDWt8DByxeGtg
+	 nkJPJuz+X2S6sP8X1fte3YSBooQZ/5i9r+iZfik2hL/1AIa/h4+yCugMS1nJ02XGY5
+	 eUSEwKAoh2i4j/zJf8dB5GZDKK5KSnUvZJly+tZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 185/482] ata: pata_serverworks: Do not use the term blacklist
+Subject: [PATCH 6.6 003/386] jump_label: Simplify and clarify static_key_fast_inc_cpus_locked()
 Date: Tue,  8 Oct 2024 14:04:08 +0200
-Message-ID: <20241008115655.584485687@linuxfoundation.org>
+Message-ID: <20241008115629.451506990@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 858048568c9e3887d8b19e101ee72f129d65cb15 ]
+[ Upstream commit 9bc2ff871f00437ad2f10c1eceff51aaa72b478f ]
 
-Let's not use the term blacklist in the function
-serverworks_osb4_filter() documentation comment and rather simply refer
-to what that function looks at: the list of devices with groken UDMA5.
+Make the code more obvious and add proper comments to avoid future head
+scratching.
 
-While at it, also constify the values of the csb_bad_ata100 array.
-
-Of note is that all of this should probably be handled using libata
-quirk mechanism but it is unclear if these UDMA5 quirks are specific
-to this controller only.
-
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20240610124406.548322963@linutronix.de
+Stable-dep-of: 1d7f856c2ca4 ("jump_label: Fix static_key_slow_dec() yet again")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/pata_serverworks.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ kernel/jump_label.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/ata/pata_serverworks.c b/drivers/ata/pata_serverworks.c
-index 549ff24a98231..4edddf6bcc150 100644
---- a/drivers/ata/pata_serverworks.c
-+++ b/drivers/ata/pata_serverworks.c
-@@ -46,10 +46,11 @@
- #define SVWKS_CSB5_REVISION_NEW	0x92 /* min PCI_REVISION_ID for UDMA5 (A2.0) */
- #define SVWKS_CSB6_REVISION	0xa0 /* min PCI_REVISION_ID for UDMA4 (A1.0) */
+diff --git a/kernel/jump_label.c b/kernel/jump_label.c
+index 1ed269b2c4035..7374053bbe049 100644
+--- a/kernel/jump_label.c
++++ b/kernel/jump_label.c
+@@ -159,22 +159,24 @@ bool static_key_slow_inc_cpuslocked(struct static_key *key)
+ 	if (static_key_fast_inc_not_disabled(key))
+ 		return true;
  
--/* Seagate Barracuda ATA IV Family drives in UDMA mode 5
-- * can overrun their FIFOs when used with the CSB5 */
--
--static const char *csb_bad_ata100[] = {
-+/*
-+ * Seagate Barracuda ATA IV Family drives in UDMA mode 5
-+ * can overrun their FIFOs when used with the CSB5.
-+ */
-+static const char * const csb_bad_ata100[] = {
- 	"ST320011A",
- 	"ST340016A",
- 	"ST360021A",
-@@ -163,10 +164,11 @@ static unsigned int serverworks_osb4_filter(struct ata_device *adev, unsigned in
-  *	@adev: ATA device
-  *	@mask: Mask of proposed modes
-  *
-- *	Check the blacklist and disable UDMA5 if matched
-+ *	Check the list of devices with broken UDMA5 and
-+ *	disable UDMA5 if matched.
-  */
--
--static unsigned int serverworks_csb_filter(struct ata_device *adev, unsigned int mask)
-+static unsigned int serverworks_csb_filter(struct ata_device *adev,
-+					   unsigned int mask)
- {
- 	const char *p;
- 	char model_num[ATA_ID_PROD_LEN + 1];
+-	jump_label_lock();
+-	if (atomic_read(&key->enabled) == 0) {
+-		atomic_set(&key->enabled, -1);
++	guard(mutex)(&jump_label_mutex);
++	/* Try to mark it as 'enabling in progress. */
++	if (!atomic_cmpxchg(&key->enabled, 0, -1)) {
+ 		jump_label_update(key);
+ 		/*
+-		 * Ensure that if the above cmpxchg loop observes our positive
+-		 * value, it must also observe all the text changes.
++		 * Ensure that when static_key_fast_inc_not_disabled() or
++		 * static_key_slow_try_dec() observe the positive value,
++		 * they must also observe all the text changes.
+ 		 */
+ 		atomic_set_release(&key->enabled, 1);
+ 	} else {
+-		if (WARN_ON_ONCE(!static_key_fast_inc_not_disabled(key))) {
+-			jump_label_unlock();
++		/*
++		 * While holding the mutex this should never observe
++		 * anything else than a value >= 1 and succeed
++		 */
++		if (WARN_ON_ONCE(!static_key_fast_inc_not_disabled(key)))
+ 			return false;
+-		}
+ 	}
+-	jump_label_unlock();
+ 	return true;
+ }
+ 
 -- 
 2.43.0
 
