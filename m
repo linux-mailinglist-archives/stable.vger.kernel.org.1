@@ -1,57 +1,67 @@
-Return-Path: <stable+bounces-82027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FA86994AAB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:35:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E716994F13
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA08D1F226C2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:35:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B19BD1C2476E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A8A1C2443;
-	Tue,  8 Oct 2024 12:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B441DFDAC;
+	Tue,  8 Oct 2024 13:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8HycCT0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TwJF4rio"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E889A1779B1;
-	Tue,  8 Oct 2024 12:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551891DF263;
+	Tue,  8 Oct 2024 13:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390928; cv=none; b=Bpf87mUOzqzVBmiXLI1Iu2SNCBDFvY7ik7jkUaL9azxBRVdIadLsX0fslEUcbZvmcKER/YAAl1GpMuF1FbBYl+wFay/qBDFFe3xsmr2/EgiZTZi4s+zrGExDnMkIxUSsFPLnE4lNhfnTSqgVhX1OZ47kNSeEvNdH2RV0ES9Hs/I=
+	t=1728393791; cv=none; b=fjgwgCOZsL6eUy400Wz/fuhmc4rGH5MSct6Kw+uNgkWJ1QNgffDKG3BTzZq1DdkPBTCH90+diDa5VpXRYCDJrs4UU6evZ10iuPew8eJr8yl8w+S12UITu0BArK1PXfdE0k1apNCz44i11388pW1BQ2Fn5qCL7Rpg7mb5TBFCmfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390928; c=relaxed/simple;
-	bh=Es4jw003ZSYL1qWFpdGdeMlYlW1Gg1C4e5Fkn5hlXks=;
+	s=arc-20240116; t=1728393791; c=relaxed/simple;
+	bh=2SusbEQKoQ4TxUFZ+BPG89DPwT5KP3XluLm2MbAb6Vo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BLl9ASR2GXOcIFHwpBm0eBSIsgK7RVGuldhQq9clXE+FoaE/X8kHIxVadnaTSwqU7JSY3GtjAD4nIGTZqtJjktMouBObtoes/xSMcRpP9UE7ipXgnUxX7tYfzY2Y6lAQVZw3Ka1twyjPNz08Brxt7RV6JNfbc6YCpQdqVX1uHj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8HycCT0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59375C4CEC7;
-	Tue,  8 Oct 2024 12:35:27 +0000 (UTC)
+	 MIME-Version; b=YQR3jeBJEahYlmu7N/UNn4E2S0J3bloxJdlcJS3WMvaVJuNHhIvQ05I0xRl122E1hXW/BDc4L3gBgjUdTohdM0bad2Zt4NAcYcjjvBI4oZg2C87Qfxw2XmQIf6pd0ZHRk9sLScLnqILgHW9mtA34A7ifLV9pa5iCVLaJrR98nhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TwJF4rio; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97ED6C4CECC;
+	Tue,  8 Oct 2024 13:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390927;
-	bh=Es4jw003ZSYL1qWFpdGdeMlYlW1Gg1C4e5Fkn5hlXks=;
+	s=korg; t=1728393791;
+	bh=2SusbEQKoQ4TxUFZ+BPG89DPwT5KP3XluLm2MbAb6Vo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8HycCT08bOMgNyvYevdXpWeWaZWv3Xo+JLWyctrdmR79Q/DDdNmu+S+NNJ75z28B
-	 IKTOoJTYcTFglZfsl+SAnCzC1lWcSeqQPZU3l3CraKmfHwDKycDRHJAcYUBR300niV
-	 DCwz/+uuYYiWSFAq0eJyYFPqPV8Yd2vSvM8JNrm4=
+	b=TwJF4rioDFsXE0/TS9X2k2NKGxYfYBTnfLz2jxymg/eWVe/8qrSN1fxGWeO7KXjPc
+	 LvoGs4ug/F0q//fvC1EdwlV/hzve57L4uBWAM59WNMOnBZ9F71PEiEDROYWB1M2g99
+	 dXJaQvkqMkVIgUabaZ2wfLFRYS2WRaNJzLbWjGuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Liviu Dudau <liviu.dudau@arm.com>
-Subject: [PATCH 6.10 437/482] drm/panthor: Fix access to uninitialized variable in tick_ctx_cleanup()
+	"Huang, Ying" <ying.huang@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Baoquan He <bhe@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 255/386] resource: fix region_intersects() vs add_memory_driver_managed()
 Date: Tue,  8 Oct 2024 14:08:20 +0200
-Message-ID: <20241008115705.721726815@linuxfoundation.org>
+Message-ID: <20241008115639.428895596@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +73,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Huang Ying <ying.huang@intel.com>
 
-commit 282864cc5d3f144af0cdea1868ee2dc2c5110f0d upstream.
+commit b4afe4183ec77f230851ea139d91e5cf2644c68b upstream.
 
-The group variable can't be used to retrieve ptdev in our second loop,
-because it points to the previously iterated list_head, not a valid
-group. Get the ptdev object from the scheduler instead.
+On a system with CXL memory, the resource tree (/proc/iomem) related to
+CXL memory may look like something as follows.
 
+490000000-50fffffff : CXL Window 0
+  490000000-50fffffff : region0
+    490000000-50fffffff : dax0.0
+      490000000-50fffffff : System RAM (kmem)
+
+Because drivers/dax/kmem.c calls add_memory_driver_managed() during
+onlining CXL memory, which makes "System RAM (kmem)" a descendant of "CXL
+Window X".  This confuses region_intersects(), which expects all "System
+RAM" resources to be at the top level of iomem_resource.  This can lead to
+bugs.
+
+For example, when the following command line is executed to write some
+memory in CXL memory range via /dev/mem,
+
+ $ dd if=data of=/dev/mem bs=$((1 << 10)) seek=$((0x490000000 >> 10)) count=1
+ dd: error writing '/dev/mem': Bad address
+ 1+0 records in
+ 0+0 records out
+ 0 bytes copied, 0.0283507 s, 0.0 kB/s
+
+the command fails as expected.  However, the error code is wrong.  It
+should be "Operation not permitted" instead of "Bad address".  More
+seriously, the /dev/mem permission checking in devmem_is_allowed() passes
+incorrectly.  Although the accessing is prevented later because ioremap()
+isn't allowed to map system RAM, it is a potential security issue.  During
+command executing, the following warning is reported in the kernel log for
+calling ioremap() on system RAM.
+
+ ioremap on RAM at 0x0000000490000000 - 0x0000000490000fff
+ WARNING: CPU: 2 PID: 416 at arch/x86/mm/ioremap.c:216 __ioremap_caller.constprop.0+0x131/0x35d
+ Call Trace:
+  memremap+0xcb/0x184
+  xlate_dev_mem_ptr+0x25/0x2f
+  write_mem+0x94/0xfb
+  vfs_write+0x128/0x26d
+  ksys_write+0xac/0xfe
+  do_syscall_64+0x9a/0xfd
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+The details of command execution process are as follows.  In the above
+resource tree, "System RAM" is a descendant of "CXL Window 0" instead of a
+top level resource.  So, region_intersects() will report no System RAM
+resources in the CXL memory region incorrectly, because it only checks the
+top level resources.  Consequently, devmem_is_allowed() will return 1
+(allow access via /dev/mem) for CXL memory region incorrectly.
+Fortunately, ioremap() doesn't allow to map System RAM and reject the
+access.
+
+So, region_intersects() needs to be fixed to work correctly with the
+resource tree with "System RAM" not at top level as above.  To fix it, if
+we found a unmatched resource in the top level, we will continue to search
+matched resources in its descendant resources.  So, we will not miss any
+matched resources in resource tree anymore.
+
+In the new implementation, an example resource tree
+
+|------------- "CXL Window 0" ------------|
+|-- "System RAM" --|
+
+will behave similar as the following fake resource tree for
+region_intersects(, IORESOURCE_SYSTEM_RAM, ),
+
+|-- "System RAM" --||-- "CXL Window 0a" --|
+
+Where "CXL Window 0a" is part of the original "CXL Window 0" that
+isn't covered by "System RAM".
+
+Link: https://lkml.kernel.org/r/20240906030713.204292-2-ying.huang@intel.com
+Fixes: c221c0b0308f ("device-dax: "Hotplug" persistent memory for use like normal RAM")
+Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Baoquan He <bhe@redhat.com>
 Cc: <stable@vger.kernel.org>
-Fixes: d72f049087d4 ("drm/panthor: Allow driver compilation")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Julia Lawall <julia.lawall@inria.fr>
-Closes: https://lore.kernel.org/r/202409302306.UDikqa03-lkp@intel.com/
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240930163742.87036-1-boris.brezillon@collabora.com
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panthor/panthor_sched.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/resource.c |   58 ++++++++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 50 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index a8a939a9fb51..145d983bb129 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -2046,6 +2046,7 @@ static void
- tick_ctx_cleanup(struct panthor_scheduler *sched,
- 		 struct panthor_sched_tick_ctx *ctx)
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -493,20 +493,62 @@ static int __region_intersects(struct re
+ 			       size_t size, unsigned long flags,
+ 			       unsigned long desc)
  {
-+	struct panthor_device *ptdev = sched->ptdev;
- 	struct panthor_group *group, *tmp;
- 	u32 i;
+-	struct resource res;
++	resource_size_t ostart, oend;
+ 	int type = 0; int other = 0;
+-	struct resource *p;
++	struct resource *p, *dp;
++	bool is_type, covered;
++	struct resource res;
  
-@@ -2054,7 +2055,7 @@ tick_ctx_cleanup(struct panthor_scheduler *sched,
- 			/* If everything went fine, we should only have groups
- 			 * to be terminated in the old_groups lists.
- 			 */
--			drm_WARN_ON(&group->ptdev->base, !ctx->csg_upd_failed_mask &&
-+			drm_WARN_ON(&ptdev->base, !ctx->csg_upd_failed_mask &&
- 				    group_can_run(group));
+ 	res.start = start;
+ 	res.end = start + size - 1;
  
- 			if (!group_can_run(group)) {
-@@ -2077,7 +2078,7 @@ tick_ctx_cleanup(struct panthor_scheduler *sched,
- 		/* If everything went fine, the groups to schedule lists should
- 		 * be empty.
- 		 */
--		drm_WARN_ON(&group->ptdev->base,
-+		drm_WARN_ON(&ptdev->base,
- 			    !ctx->csg_upd_failed_mask && !list_empty(&ctx->groups[i]));
+ 	for (p = parent->child; p ; p = p->sibling) {
+-		bool is_type = (((p->flags & flags) == flags) &&
+-				((desc == IORES_DESC_NONE) ||
+-				 (desc == p->desc)));
+-
+-		if (resource_overlaps(p, &res))
+-			is_type ? type++ : other++;
++		if (!resource_overlaps(p, &res))
++			continue;
++		is_type = (p->flags & flags) == flags &&
++			(desc == IORES_DESC_NONE || desc == p->desc);
++		if (is_type) {
++			type++;
++			continue;
++		}
++		/*
++		 * Continue to search in descendant resources as if the
++		 * matched descendant resources cover some ranges of 'p'.
++		 *
++		 * |------------- "CXL Window 0" ------------|
++		 * |-- "System RAM" --|
++		 *
++		 * will behave similar as the following fake resource
++		 * tree when searching "System RAM".
++		 *
++		 * |-- "System RAM" --||-- "CXL Window 0a" --|
++		 */
++		covered = false;
++		ostart = max(res.start, p->start);
++		oend = min(res.end, p->end);
++		for_each_resource(p, dp, false) {
++			if (!resource_overlaps(dp, &res))
++				continue;
++			is_type = (dp->flags & flags) == flags &&
++				(desc == IORES_DESC_NONE || desc == dp->desc);
++			if (is_type) {
++				type++;
++				/*
++				 * Range from 'ostart' to 'dp->start'
++				 * isn't covered by matched resource.
++				 */
++				if (dp->start > ostart)
++					break;
++				if (dp->end >= oend) {
++					covered = true;
++					break;
++				}
++				/* Remove covered range */
++				ostart = max(ostart, dp->end + 1);
++			}
++		}
++		if (!covered)
++			other++;
+ 	}
  
- 		list_for_each_entry_safe(group, tmp, &ctx->groups[i], run_node) {
--- 
-2.46.2
-
+ 	if (type == 0)
 
 
 
