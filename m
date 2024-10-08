@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98DAB994D62
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6157F994F52
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB7E11C25013
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:04:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A1E61C23C3C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8531DF25B;
-	Tue,  8 Oct 2024 13:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745EA1E008C;
+	Tue,  8 Oct 2024 13:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEYrFz1y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ta2WvFkT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597D41DF24E;
-	Tue,  8 Oct 2024 13:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3162B1DF97C;
+	Tue,  8 Oct 2024 13:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392684; cv=none; b=Z4MX6Zg8Ni/xmdsqJyaTy8+hu2XPx0CavPqtTs8/esWOGI+KHyw+r44XJyuut1guHgqDC36L20lPqgICEybm7kGANRDKiGm4/QMpAUsV+Agio4P3Hf4ngWx5SZdJqpd2v3FSZEyPxtvC/vJ2Ud2OaCY0l3+QRm0zi5sM8/e3wqE=
+	t=1728393849; cv=none; b=rx6UCWUfp7ZaVK5W2TqTxe0NZ8ao+lIRhGCXZ5F+GKAXyqR3ZSLIRrVTpiIxjd+j1IxDSoIGkx+K9sjw4mZ4gtTZLIGSJC2jiQEzWK3XWnEd2vvjAIvhunNvEnsjeerD43F7/ha5jUc9Gag9RYerVadKuJqSWNl+nommh2AXLrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392684; c=relaxed/simple;
-	bh=ieDlIDrXRQ819gpGPYhqgtWRZph31ffy4h9GG0Y0q4U=;
+	s=arc-20240116; t=1728393849; c=relaxed/simple;
+	bh=kQLz5t9MyFDpcMYKi9PJ1pdtaMZyYekf0hoJ1Vp9QMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bLMxACPT+4MWVo2aHO09HaDE78ES5adVKH1HsOA97V61afFN8in8yykDkWV2A81vLdYyuzkNf+j1hEaBzk+XwqqOBKCwSJDlwtaQnJKeFtfUyIEoavtrahisjHvZTazIOPEtgFR1KL1P3Qx+qmizHyA7edgSCgm0XXdmqL6fdio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEYrFz1y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC141C4CECC;
-	Tue,  8 Oct 2024 13:04:43 +0000 (UTC)
+	 MIME-Version; b=aqWllRr8BpJH4eryD7XSSUgZQXv1vUTAxfWs15dLYV0FKiNE2baRnLmwU0XJpCpJbK4oZbpaYaqQ5SlBOs/QsNhfuw144/dDuWPZ1thidQjoH9UceME6jO+U0lOXYoxYHQXkLBKyRlZTMhvURnjS+rHs23KVTQgJM3O5BmnvOM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ta2WvFkT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD08C4CEC7;
+	Tue,  8 Oct 2024 13:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392684;
-	bh=ieDlIDrXRQ819gpGPYhqgtWRZph31ffy4h9GG0Y0q4U=;
+	s=korg; t=1728393849;
+	bh=kQLz5t9MyFDpcMYKi9PJ1pdtaMZyYekf0hoJ1Vp9QMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AEYrFz1yzlHradqabJZPi3y6SLJwp8ykNJl3pDLD93mUfk+Y9Gcu3KmJdPwE/9YYe
-	 75l7Z3Vl6MVmhzYrtKHDBFCGEFLwlHxWN2p83JAavJYTspijnZ5WOSxYSaxiSApSgY
-	 uVQbslMZk/ubfvrAs+wyI35k9QjwRyq+PG/bBJfw=
+	b=ta2WvFkTU7jw1E1XylOKAdodVgLKjYutwI8cip1SAYQ7jE0z9MMOZX/HjhhwyKBpz
+	 i4HZHrub4BDlpKdzpzNQehHQZ0zNbsKJRgSRJBvnuATvQqTukRhFiTggwR3ttxVxur
+	 LvQRF2Eai0iVrFxpZ1sZGkE5aoFL53XkRCY80aXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.11 489/558] cachefiles: fix dentry leak in cachefiles_open_file()
+	Cedric Blancher <cedric.blancher@gmail.com>,
+	Dan Shelton <dan.f.shelton@gmail.com>,
+	Roland Mainz <roland.mainz@nrubsig.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 274/386] NFSD: Fix NFSv4s PUTPUBFH operation
 Date: Tue,  8 Oct 2024 14:08:39 +0200
-Message-ID: <20241008115721.476456395@linuxfoundation.org>
+Message-ID: <20241008115640.173828962@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit da6ef2dffe6056aad3435e6cf7c6471c2a62187c upstream.
+commit 202f39039a11402dcbcd5fece8d9fa6be83f49ae upstream.
 
-A dentry leak may be caused when a lookup cookie and a cull are concurrent:
+According to RFC 8881, all minor versions of NFSv4 support PUTPUBFH.
 
-            P1             |             P2
------------------------------------------------------------
-cachefiles_lookup_cookie
-  cachefiles_look_up_object
-    lookup_one_positive_unlocked
-     // get dentry
-                            cachefiles_cull
-                              inode->i_flags |= S_KERNEL_FILE;
-    cachefiles_open_file
-      cachefiles_mark_inode_in_use
-        __cachefiles_mark_inode_in_use
-          can_use = false
-          if (!(inode->i_flags & S_KERNEL_FILE))
-            can_use = true
-	  return false
-        return false
-        // Returns an error but doesn't put dentry
+Replace the XDR decoder for PUTPUBFH with a "noop" since we no
+longer want the minorversion check, and PUTPUBFH has no arguments to
+decode. (Ideally nfsd4_decode_noop should really be called
+nfsd4_decode_void).
 
-After that the following WARNING will be triggered when the backend folder
-is umounted:
+PUTPUBFH should now behave just like PUTROOTFH.
 
-==================================================================
-BUG: Dentry 000000008ad87947{i=7a,n=Dx_1_1.img}  still in use (1) [unmount of ext4 sda]
-WARNING: CPU: 4 PID: 359261 at fs/dcache.c:1767 umount_check+0x5d/0x70
-CPU: 4 PID: 359261 Comm: umount Not tainted 6.6.0-dirty #25
-RIP: 0010:umount_check+0x5d/0x70
-Call Trace:
- <TASK>
- d_walk+0xda/0x2b0
- do_one_tree+0x20/0x40
- shrink_dcache_for_umount+0x2c/0x90
- generic_shutdown_super+0x20/0x160
- kill_block_super+0x1a/0x40
- ext4_kill_sb+0x22/0x40
- deactivate_locked_super+0x35/0x80
- cleanup_mnt+0x104/0x160
-==================================================================
-
-Whether cachefiles_open_file() returns true or false, the reference count
-obtained by lookup_positive_unlocked() in cachefiles_look_up_object()
-should be released.
-
-Therefore release that reference count in cachefiles_look_up_object() to
-fix the above issue and simplify the code.
-
-Fixes: 1f08c925e7a3 ("cachefiles: Implement backing file wrangling")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240829083409.3788142-1-libaokun@huaweicloud.com
-Acked-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-by: Cedric Blancher <cedric.blancher@gmail.com>
+Fixes: e1a90ebd8b23 ("NFSD: Combine decode operations for v4 and v4.1")
+Cc: Dan Shelton <dan.f.shelton@gmail.com>
+Cc: Roland Mainz <roland.mainz@nrubsig.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cachefiles/namei.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ fs/nfsd/nfs4xdr.c |   10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
---- a/fs/cachefiles/namei.c
-+++ b/fs/cachefiles/namei.c
-@@ -595,14 +595,12 @@ static bool cachefiles_open_file(struct
- 	 * write and readdir but not lookup or open).
- 	 */
- 	touch_atime(&file->f_path);
--	dput(dentry);
- 	return true;
- 
- check_failed:
- 	fscache_cookie_lookup_negative(object->cookie);
- 	cachefiles_unmark_inode_in_use(object, file);
- 	fput(file);
--	dput(dentry);
- 	if (ret == -ESTALE)
- 		return cachefiles_create_file(object);
- 	return false;
-@@ -611,7 +609,6 @@ error_fput:
- 	fput(file);
- error:
- 	cachefiles_do_unmark_inode_in_use(object, d_inode(dentry));
--	dput(dentry);
- 	return false;
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -1246,14 +1246,6 @@ nfsd4_decode_putfh(struct nfsd4_compound
  }
  
-@@ -654,7 +651,9 @@ bool cachefiles_look_up_object(struct ca
- 		goto new_file;
- 	}
- 
--	if (!cachefiles_open_file(object, dentry))
-+	ret = cachefiles_open_file(object, dentry);
-+	dput(dentry);
-+	if (!ret)
- 		return false;
- 
- 	_leave(" = t [%lu]", file_inode(object->file)->i_ino);
+ static __be32
+-nfsd4_decode_putpubfh(struct nfsd4_compoundargs *argp, union nfsd4_op_u *p)
+-{
+-	if (argp->minorversion == 0)
+-		return nfs_ok;
+-	return nfserr_notsupp;
+-}
+-
+-static __be32
+ nfsd4_decode_read(struct nfsd4_compoundargs *argp, union nfsd4_op_u *u)
+ {
+ 	struct nfsd4_read *read = &u->read;
+@@ -2345,7 +2337,7 @@ static const nfsd4_dec nfsd4_dec_ops[] =
+ 	[OP_OPEN_CONFIRM]	= nfsd4_decode_open_confirm,
+ 	[OP_OPEN_DOWNGRADE]	= nfsd4_decode_open_downgrade,
+ 	[OP_PUTFH]		= nfsd4_decode_putfh,
+-	[OP_PUTPUBFH]		= nfsd4_decode_putpubfh,
++	[OP_PUTPUBFH]		= nfsd4_decode_noop,
+ 	[OP_PUTROOTFH]		= nfsd4_decode_noop,
+ 	[OP_READ]		= nfsd4_decode_read,
+ 	[OP_READDIR]		= nfsd4_decode_readdir,
 
 
 
