@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E57994EF8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:23:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C99E994A9A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06D6C2844F4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:23:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D47221F25EAE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9DC1DF26B;
-	Tue,  8 Oct 2024 13:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2BB61DE8AA;
+	Tue,  8 Oct 2024 12:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9DjjseL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/LCcKHm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5FA1DE88F;
-	Tue,  8 Oct 2024 13:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B133D1DE2AD;
+	Tue,  8 Oct 2024 12:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393723; cv=none; b=L7Pk4dU8Jmnm3MqtSsJmJMzo0+PpXkUePu3WfigOdRtzBDS9/sHVPWX57m9/9m7mA331jcZ5ZluFXktLBqHknBy3/69kFwjk/GNVwN0cIW/Fv0BGNALu/xIj2W0LtIjKFAik6KVi3Oacn0O1aKPl5qYenL1rzLZACewhoAaAWe8=
+	t=1728390873; cv=none; b=flw1D43sNep8rihrQa5P/WIgKPL//CIn4J0fsTaobjwAQZ2tfSUWNBmfFvtuYAlrm1qbaX8IInK66Br3TvZo5Zq+5ACOKILsaqpQ8nhs4hV5qyxMsKgax8RIOPjxb8e8KpE8bCQs+kTPVqlRxfFfslWuprQQkpNxf28Y4O3xrB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393723; c=relaxed/simple;
-	bh=v3VDULWMNM263P0m7YWo3aFzUZCpSh1LxGjBt8vLRtU=;
+	s=arc-20240116; t=1728390873; c=relaxed/simple;
+	bh=k1tAdcksFd3L2y0Xrk0ClYq8SlQKC1ZtJjgxokFjSPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WVFqNlGlgc7ny5ZQlUzpZj7MiukwrMyO3bPh0pr3qKJ/2s00kh9TqS1Ik4wt/iq0mbaNVRVFr6B+sfiD1PefVXYoxW/4v70jV2+c9BQB4jzMT/z8jffQMALDqdrvPgFKRXq6iJ1g6Vn8zw1MbGz70KgnDEM112AO8xBtO64JG6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9DjjseL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D98C4CEC7;
-	Tue,  8 Oct 2024 13:22:02 +0000 (UTC)
+	 MIME-Version; b=T4/8Ui41Rqj+B69QQ9xO8PHCJb9pKLz32or4RdswwpQ9KnqIUZZnmsuhgKgAOcQza13oWFi8SNfCaZVFfPkYorViObBQ3Z1hwKzqw+TPI73WefcCgksJiN/76Hj+1kgrdpzMzmOjX848EZLhumAYwNa1rqjPluFdEFP+8uwqor0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/LCcKHm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B461C4CEC7;
+	Tue,  8 Oct 2024 12:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393723;
-	bh=v3VDULWMNM263P0m7YWo3aFzUZCpSh1LxGjBt8vLRtU=;
+	s=korg; t=1728390873;
+	bh=k1tAdcksFd3L2y0Xrk0ClYq8SlQKC1ZtJjgxokFjSPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G9DjjseLwgj7cJ9n1eoctlNDQ8BqVea9Pm6GlklKU7MGC3W/QXoINp9GTX5C6qcxW
-	 Oha2Gb8zrqtH5b7EA3JCRwvHfX1x2Ep3w+cfy3vxlIkhS157Gk+dIE8eNQGNF5QgyF
-	 uLSlaXqxOgAjCv5J774Zg23x3jqfxZz/sdY3wTjY=
+	b=I/LCcKHmwrpxvM27yr2Od4II8MTXT5lqr7Q42QQSD90Ik3hglZGjgYlizUsYpgpKL
+	 O8fda+i9zQ1rh5V02jzgkI+u651bqEhWYXZM0YRKbhsk8e6fQ+VsjWL+zeWaLhuJsr
+	 XQoWRUoVRuzXIgu3iqHS/Aoycqxt/8EIATA4Izeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.6 237/386] ext4: fix incorrect tid assumption in __jbd2_log_wait_for_space()
+	Ben Millwood <thebenmachine@gmail.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.10 419/482] btrfs: send: fix invalid clone operation for file that got its size decreased
 Date: Tue,  8 Oct 2024 14:08:02 +0200
-Message-ID: <20241008115638.726207607@linuxfoundation.org>
+Message-ID: <20241008115704.892571290@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 972090651ee15e51abfb2160e986fa050cfc7a40 upstream.
+commit fa630df665aa9ddce3a96ce7b54e10a38e4d2a2b upstream.
 
-Function __jbd2_log_wait_for_space() assumes that '0' is not a valid value
-for transaction IDs, which is incorrect.  Don't assume that and invoke
-jbd2_log_wait_commit() if the journal had a committing transaction instead.
+During an incremental send we may end up sending an invalid clone
+operation, for the last extent of a file which ends at an unaligned offset
+that matches the final i_size of the file in the send snapshot, in case
+the file had its initial size (the size in the parent snapshot) decreased
+in the send snapshot. In this case the destination will fail to apply the
+clone operation because its end offset is not sector size aligned and it
+ends before the current size of the file.
 
-Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240724161119.13448-3-luis.henriques@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Sending the truncate operation always happens when we finish processing an
+inode, after we process all its extents (and xattrs, names, etc). So fix
+this by ensuring the file has a valid size before we send a clone
+operation for an unaligned extent that ends at the final i_size of the
+file. The size we truncate to matches the start offset of the clone range
+but it could be any value between that start offset and the final size of
+the file since the clone operation will expand the i_size if the current
+size is smaller than the end offset. The start offset of the range was
+chosen because it's always sector size aligned and avoids a truncation
+into the middle of a page, which results in dirtying the page due to
+filling part of it with zeroes and then making the clone operation at the
+receiver trigger IO.
+
+The following test reproduces the issue:
+
+  $ cat test.sh
+  #!/bin/bash
+
+  DEV=/dev/sdi
+  MNT=/mnt/sdi
+
+  mkfs.btrfs -f $DEV
+  mount $DEV $MNT
+
+  # Create a file with a size of 256K + 5 bytes, having two extents, one
+  # with a size of 128K and another one with a size of 128K + 5 bytes.
+  last_ext_size=$((128 * 1024 + 5))
+  xfs_io -f -d -c "pwrite -S 0xab -b 128K 0 128K" \
+         -c "pwrite -S 0xcd -b $last_ext_size 128K $last_ext_size" \
+         $MNT/foo
+
+  # Another file which we will later clone foo into, but initially with
+  # a larger size than foo.
+  xfs_io -f -c "pwrite -S 0xef 0 1M" $MNT/bar
+
+  btrfs subvolume snapshot -r $MNT/ $MNT/snap1
+
+  # Now resize bar and clone foo into it.
+  xfs_io -c "truncate 0" \
+         -c "reflink $MNT/foo" $MNT/bar
+
+  btrfs subvolume snapshot -r $MNT/ $MNT/snap2
+
+  rm -f /tmp/send-full /tmp/send-inc
+  btrfs send -f /tmp/send-full $MNT/snap1
+  btrfs send -p $MNT/snap1 -f /tmp/send-inc $MNT/snap2
+
+  umount $MNT
+  mkfs.btrfs -f $DEV
+  mount $DEV $MNT
+
+  btrfs receive -f /tmp/send-full $MNT
+  btrfs receive -f /tmp/send-inc $MNT
+
+  umount $MNT
+
+Running it before this patch:
+
+  $ ./test.sh
+  (...)
+  At subvol snap1
+  At snapshot snap2
+  ERROR: failed to clone extents to bar: Invalid argument
+
+A test case for fstests will be sent soon.
+
+Reported-by: Ben Millwood <thebenmachine@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/CAJhrHS2z+WViO2h=ojYvBPDLsATwLbg+7JaNCyYomv0fUxEpQQ@mail.gmail.com/
+Fixes: 46a6e10a1ab1 ("btrfs: send: allow cloning non-aligned extent if it ends at i_size")
+CC: stable@vger.kernel.org # 6.11
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/checkpoint.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/btrfs/send.c |   23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -79,9 +79,12 @@ __releases(&journal->j_state_lock)
- 		if (space_left < nblocks) {
- 			int chkpt = journal->j_checkpoint_transactions != NULL;
- 			tid_t tid = 0;
-+			bool has_transaction = false;
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -6188,8 +6188,29 @@ static int send_write_or_clone(struct se
+ 	if (ret < 0)
+ 		return ret;
  
--			if (journal->j_committing_transaction)
-+			if (journal->j_committing_transaction) {
- 				tid = journal->j_committing_transaction->t_tid;
-+				has_transaction = true;
-+			}
- 			spin_unlock(&journal->j_list_lock);
- 			write_unlock(&journal->j_state_lock);
- 			if (chkpt) {
-@@ -89,7 +92,7 @@ __releases(&journal->j_state_lock)
- 			} else if (jbd2_cleanup_journal_tail(journal) == 0) {
- 				/* We were able to recover space; yay! */
- 				;
--			} else if (tid) {
-+			} else if (has_transaction) {
- 				/*
- 				 * jbd2_journal_commit_transaction() may want
- 				 * to take the checkpoint_mutex if JBD2_FLUSHED
+-	if (clone_root->offset + num_bytes == info.size)
++	if (clone_root->offset + num_bytes == info.size) {
++		/*
++		 * The final size of our file matches the end offset, but it may
++		 * be that its current size is larger, so we have to truncate it
++		 * to any value between the start offset of the range and the
++		 * final i_size, otherwise the clone operation is invalid
++		 * because it's unaligned and it ends before the current EOF.
++		 * We do this truncate to the final i_size when we finish
++		 * processing the inode, but it's too late by then. And here we
++		 * truncate to the start offset of the range because it's always
++		 * sector size aligned while if it were the final i_size it
++		 * would result in dirtying part of a page, filling part of a
++		 * page with zeroes and then having the clone operation at the
++		 * receiver trigger IO and wait for it due to the dirty page.
++		 */
++		if (sctx->parent_root != NULL) {
++			ret = send_truncate(sctx, sctx->cur_ino,
++					    sctx->cur_inode_gen, offset);
++			if (ret < 0)
++				return ret;
++		}
+ 		goto clone_data;
++	}
+ 
+ write_data:
+ 	ret = send_extent_data(sctx, path, offset, num_bytes);
 
 
 
