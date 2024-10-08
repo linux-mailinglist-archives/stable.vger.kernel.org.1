@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE905994957
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A756994BEB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:48:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E09F51C21077
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC9711C21219
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DEA1DF270;
-	Tue,  8 Oct 2024 12:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA101DE2CF;
+	Tue,  8 Oct 2024 12:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMHvJ62B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJ2TT5Wk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52FE1DF26B;
-	Tue,  8 Oct 2024 12:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06B71C4613;
+	Tue,  8 Oct 2024 12:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390106; cv=none; b=TCZ86IuVAm9QlH++GSUcWJUe25MhbfM8jx9DG6NgRd99UGV8pJXrGPGmVS+xEkWbCOwJucqYb90fqZ1DDpzsqooydFmVVYtd7bnOhm4OBS62rH+rOgv/uDbHHtwSrqWtehi659im4/1P/uHxAS0qXkA+vv7lvvxl18pFGjJ6kf0=
+	t=1728391693; cv=none; b=ry+vx+6Fcj4JZSc5zZ05R2kFLc/7AhWso0Sght3As+E4McisQaE4ibuLbBYGlBjwimXVExILL3prQG1fivAyFZrHLQv0XV5Ux+d+Tnm7vKc13fPaAzRoagFavPuqmfv1kL5AVx5jUTRIX/Gfl0O/+gW1HDzzaSds8Yim3Xlbr98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390106; c=relaxed/simple;
-	bh=mRxjXpRy301z+CIkpfLNCurtdPH9qoAMCan9O343ZNw=;
+	s=arc-20240116; t=1728391693; c=relaxed/simple;
+	bh=YwNb4eHhO/Z3v+kTOs8HM304MxYsmPCirlnja5iRukI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GpaqProjHZHX26DzLiN03BGvnv1IMFypQF8beRLfJdehX9KVmrq5t7aYFEJOd6g1ilzzdt+a+FHENexAWWch+E8MiISMcnWcAnGIOn25cq/YGD6bUE1nFizNEwxwMR1gD5Lqfy3G6pRqnrnNnhcd7vtNRrwx/3fqUfpwSl7ooXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMHvJ62B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C227C4CECD;
-	Tue,  8 Oct 2024 12:21:46 +0000 (UTC)
+	 MIME-Version; b=UmjVnD9EchwWVyAVhVJOqPhHoGn0iLN5O7T+4ihuwus9qv6Q2F3Mivh7yqCYMiTkU/R+h+DR8X+XTJBuE1/ec0eXBCgTlTvyxyKw6LsbinzXfwJpDkH18qzOIssB8RgQvhgLBvm7432xyqIbiF1Of+6uq2idIWmF0Tc9i6IBZ20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJ2TT5Wk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3B1C4CEC7;
+	Tue,  8 Oct 2024 12:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390106;
-	bh=mRxjXpRy301z+CIkpfLNCurtdPH9qoAMCan9O343ZNw=;
+	s=korg; t=1728391693;
+	bh=YwNb4eHhO/Z3v+kTOs8HM304MxYsmPCirlnja5iRukI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NMHvJ62Bot69qj1vTq1SbOvZ9Wqj2T3QMCvmbsXf1om9FGru3JdI+nXhiIymaggky
-	 hBt3AKM/VGe8Fie6c0Nk/sOxI67Gq5D6bPY0WiYL+euN8vWFLZNiYAkSH3G1tBKzUK
-	 bowOJTjHSlduN58IwjEk2AsYxZ2OWQIcyIgL/PeA=
+	b=AJ2TT5WkSwGywEbyVtSEU2WW+FPQayfgACj7pUNJ+vBEGge5vPThBIZCoK0sbyBLu
+	 sM3UcFF/iwFfIKJaGF1sDpsqgHAOXFLFfK3x7asiD+VCi+pjNWreXZ2m3d8I2crPqA
+	 ix/MuNwK52/A9NwEL/oG2GJo7X0PUZF58rpi/rk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Pauk <pauk.denis@gmail.com>,
-	Attila <attila@fulop.one>,
-	Guenter Roeck <linux@roeck-us.net>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 161/482] hwmon: (nct6775) add G15CF to ASUS WMI monitoring list
+Subject: [PATCH 6.11 194/558] rcuscale: Provide clear error when async specified without primitives
 Date: Tue,  8 Oct 2024 14:03:44 +0200
-Message-ID: <20241008115654.641540195@linuxfoundation.org>
+Message-ID: <20241008115709.985638302@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Pauk <pauk.denis@gmail.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit 1f432e4cf1dd3ecfec5ed80051b4611632a0fd51 ]
+[ Upstream commit 11377947b5861fa59bf77c827e1dd7c081842cc9 ]
 
-Boards G15CF has got a nct6775 chip, but by default there's no use of it
-because of resource conflict with WMI method.
+Currently, if the rcuscale module's async module parameter is specified
+for RCU implementations that do not have async primitives such as RCU
+Tasks Rude (which now lacks a call_rcu_tasks_rude() function), there
+will be a series of splats due to calls to a NULL pointer.  This commit
+therefore warns of this situation, but switches to non-async testing.
 
-Add the board to the WMI monitoring list.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=204807
-Signed-off-by: Denis Pauk <pauk.denis@gmail.com>
-Tested-by: Attila <attila@fulop.one>
-Message-ID: <20240812152652.1303-1-pauk.denis@gmail.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: "Paul E. McKenney" <paulmck@kernel.org>
+Signed-off-by: Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nct6775-platform.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/rcu/rcuscale.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/nct6775-platform.c b/drivers/hwmon/nct6775-platform.c
-index 9aa4dcf4a6f33..096f1daa8f2bc 100644
---- a/drivers/hwmon/nct6775-platform.c
-+++ b/drivers/hwmon/nct6775-platform.c
-@@ -1269,6 +1269,7 @@ static const char * const asus_msi_boards[] = {
- 	"EX-B760M-V5 D4",
- 	"EX-H510M-V3",
- 	"EX-H610M-V3 D4",
-+	"G15CF",
- 	"PRIME A620M-A",
- 	"PRIME B560-PLUS",
- 	"PRIME B560-PLUS AC-HES",
+diff --git a/kernel/rcu/rcuscale.c b/kernel/rcu/rcuscale.c
+index b53a9e8f5904f..f88c75b3cea3b 100644
+--- a/kernel/rcu/rcuscale.c
++++ b/kernel/rcu/rcuscale.c
+@@ -499,7 +499,7 @@ rcu_scale_writer(void *arg)
+ 			schedule_timeout_idle(torture_random(&tr) % writer_holdoff_jiffies + 1);
+ 		wdp = &wdpp[i];
+ 		*wdp = ktime_get_mono_fast_ns();
+-		if (gp_async) {
++		if (gp_async && !WARN_ON_ONCE(!cur_ops->async)) {
+ retry:
+ 			if (!rhp)
+ 				rhp = kmalloc(sizeof(*rhp), GFP_KERNEL);
+@@ -555,7 +555,7 @@ rcu_scale_writer(void *arg)
+ 			i++;
+ 		rcu_scale_wait_shutdown();
+ 	} while (!torture_must_stop());
+-	if (gp_async) {
++	if (gp_async && cur_ops->async) {
+ 		cur_ops->gp_barrier();
+ 	}
+ 	writer_n_durations[me] = i_max + 1;
 -- 
 2.43.0
 
