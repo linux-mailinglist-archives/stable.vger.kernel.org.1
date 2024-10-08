@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-82401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25F0F994CA0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:57:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEBF994A16
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD428280C57
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:57:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 672511F212D5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5161DF25C;
-	Tue,  8 Oct 2024 12:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9D71DEFC4;
+	Tue,  8 Oct 2024 12:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7AkKCOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQuvJ821"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662451C9B99;
-	Tue,  8 Oct 2024 12:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3731DEFC2;
+	Tue,  8 Oct 2024 12:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392136; cv=none; b=p4IX3mIa+vTuf/Du1QwN4WbwqnmUYlf6vWU3diQTY6HI3o+eqF49JDLJSf4mlwq7vUE6Bg0HXyWeWKoohO9GA6NthJrfOgBE1w9JUuF9BDYer0LSSqDaZwLxj0Y82orqMgnS2S5KjbvKAHXd9/oOYvtZ7b6/WCK6+4HJjC6wVOg=
+	t=1728390542; cv=none; b=PxFhcwJZJKTCCoiXoJu25wqFqxCzkrW52ySBvhoM/nIZN97GupvuSnSLYnTxHiwmhPYzm3wCAypdrClqXghT/bK4StPScRlVe5SBOl+FhTiikK7nKvxt6C+2bTbVdPScBD4rIb2YyeGy8YADkSMbFcZgFsNK6354Jffzp8B+EGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392136; c=relaxed/simple;
-	bh=hJ7JURUiqp+ib7cFNsnXZkekfkFOIJhhyIXlEA2qONI=;
+	s=arc-20240116; t=1728390542; c=relaxed/simple;
+	bh=F5LQAyCpTRBYt8RwAuJgM0Gn2afgpwcCrRzLuqAfQtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PqUg7bKtfyLMVUKuvFQ2ZDo8SFQYS6G0gEspyuhudCjirPlfq5xjPvXZF+o3q3JbmeEy/D2+LF4GbihKzd1Zul3CQskAnUXEwUECtuUQwK152cadbrA/+7knlcMgTLejbVHmn1cayADlo4ig8umjM27F/Bmcw16SrgbZ3e79gvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7AkKCOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8CD4C4CEC7;
-	Tue,  8 Oct 2024 12:55:35 +0000 (UTC)
+	 MIME-Version; b=TEiz6DDbJf4/ILMH4Ll3OTk2HOGOOcXR5dr69O5drIGPDgcYwUhejFCHiFZcGwUvTlC1R81wSPIhs94NR09pmUtSrDzMITT2+eL/3npDhqmGix5qlJhcrZqAhIOBeBo0b6fNb+hOAYsuycgPXQKJEH+cIY/SM7g+d/uGe07fiQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQuvJ821; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F81C4CEC7;
+	Tue,  8 Oct 2024 12:29:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392136;
-	bh=hJ7JURUiqp+ib7cFNsnXZkekfkFOIJhhyIXlEA2qONI=;
+	s=korg; t=1728390542;
+	bh=F5LQAyCpTRBYt8RwAuJgM0Gn2afgpwcCrRzLuqAfQtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x7AkKCOxf29G0yCgz0GsBxTIssnpdNrRt3sI5G9YPcx4be4ZAZIXJwA31v5T+u1ZA
-	 qw0r8Haf0LyRlHK6mSpPDUrbEC42n2o5O3V2BsLsYbQEUg7Oe67o6eWxv1jFcJlU8u
-	 ah+vtwonwTTri4va+bJXU4cV1ekcl0GOeLRDNHD0=
+	b=RQuvJ821KCBPwQMhk761HPHcdA0eehbrecswYNjavtauMtjcNd+F5FCADLTpE+K9X
+	 A535F5qGY14tLavsG23TkVjClJHV8mL3Mx0dI+ahidsxeyAnjvA7XeR9HoP7+Rl666
+	 6r2FrO/ES5+tOSEY5yrhW7Sa8yRuWdDgtHSS2QYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengfei Xu <pengfei.xu@intel.com>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 326/558] perf: Really fix event_function_call() locking
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.10 293/482] i2c: qcom-geni: Use IRQF_NO_AUTOEN flag in request_irq()
 Date: Tue,  8 Oct 2024 14:05:56 +0200
-Message-ID: <20241008115715.134080127@linuxfoundation.org>
+Message-ID: <20241008115659.808863270@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit fe826cc2654e8561b64246325e6a51b62bf2488c ]
+commit e2c85d85a05f16af2223fcc0195ff50a7938b372 upstream.
 
-Commit 558abc7e3f89 ("perf: Fix event_function_call() locking") lost
-IRQ disabling by mistake.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-Fixes: 558abc7e3f89 ("perf: Fix event_function_call() locking")
-Reported-by: Pengfei Xu <pengfei.xu@intel.com>
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Tested-by: Pengfei Xu <pengfei.xu@intel.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 37692de5d523 ("i2c: i2c-qcom-geni: Add bus driver for the Qualcomm GENI I2C controller")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: <stable@vger.kernel.org> # v4.19+
+Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/i2c/busses/i2c-qcom-geni.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 4339df585d42d..62a5d50b850ed 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -263,8 +263,8 @@ static int event_function(void *info)
- static void event_function_call(struct perf_event *event, event_f func, void *data)
- {
- 	struct perf_event_context *ctx = event->ctx;
--	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
- 	struct task_struct *task = READ_ONCE(ctx->task); /* verified in event_function */
-+	struct perf_cpu_context *cpuctx;
- 	struct event_function_struct efs = {
- 		.event = event,
- 		.func = func,
-@@ -292,22 +292,25 @@ static void event_function_call(struct perf_event *event, event_f func, void *da
- 	if (!task_function_call(task, event_function, &efs))
- 		return;
- 
-+	local_irq_disable();
-+	cpuctx = this_cpu_ptr(&perf_cpu_context);
- 	perf_ctx_lock(cpuctx, ctx);
- 	/*
- 	 * Reload the task pointer, it might have been changed by
- 	 * a concurrent perf_event_context_sched_out().
- 	 */
- 	task = ctx->task;
--	if (task == TASK_TOMBSTONE) {
--		perf_ctx_unlock(cpuctx, ctx);
--		return;
--	}
-+	if (task == TASK_TOMBSTONE)
-+		goto unlock;
- 	if (ctx->is_active) {
- 		perf_ctx_unlock(cpuctx, ctx);
-+		local_irq_enable();
- 		goto again;
+--- a/drivers/i2c/busses/i2c-qcom-geni.c
++++ b/drivers/i2c/busses/i2c-qcom-geni.c
+@@ -818,15 +818,13 @@ static int geni_i2c_probe(struct platfor
+ 	init_completion(&gi2c->done);
+ 	spin_lock_init(&gi2c->lock);
+ 	platform_set_drvdata(pdev, gi2c);
+-	ret = devm_request_irq(dev, gi2c->irq, geni_i2c_irq, 0,
++	ret = devm_request_irq(dev, gi2c->irq, geni_i2c_irq, IRQF_NO_AUTOEN,
+ 			       dev_name(dev), gi2c);
+ 	if (ret) {
+ 		dev_err(dev, "Request_irq failed:%d: err:%d\n",
+ 			gi2c->irq, ret);
+ 		return ret;
  	}
- 	func(event, NULL, ctx, data);
-+unlock:
- 	perf_ctx_unlock(cpuctx, ctx);
-+	local_irq_enable();
- }
- 
- /*
--- 
-2.43.0
-
+-	/* Disable the interrupt so that the system can enter low-power mode */
+-	disable_irq(gi2c->irq);
+ 	i2c_set_adapdata(&gi2c->adap, gi2c);
+ 	gi2c->adap.dev.parent = dev;
+ 	gi2c->adap.dev.of_node = dev->of_node;
 
 
 
