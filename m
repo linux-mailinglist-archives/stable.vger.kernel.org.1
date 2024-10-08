@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-81813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 609EF99498B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:25:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C21994C17
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:50:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07458B23874
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:25:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9440D1C24F5E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13A21DEFE3;
-	Tue,  8 Oct 2024 12:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343F61DE4FA;
+	Tue,  8 Oct 2024 12:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5tFIyBl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbhmH6vb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0C11DF246;
-	Tue,  8 Oct 2024 12:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79F61D54D1;
+	Tue,  8 Oct 2024 12:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390219; cv=none; b=c9jF+RW+DzgKubX8dX7AUxfJh0gTYtkSRK+kPkr3DDVa8Glgswssa0/avq07WZFNu1BWQ0jJ40hTYNJ2RYw6LThMLQuXvHBKtIdriuXUr5hcQFKU5G+LPZnbj9PDVcjIUGnW5ObUBqry4udwsOP9VBUUETonek3IYCNaOoz8QvQ=
+	t=1728391809; cv=none; b=o6v3WlN8AmgyfrMa+7e+BTFKsy4bywldsq0EQV2gzkoHIFZwRMhLvxr1w75uVuQVNQIPXqwSSQrVbXbVt2E/TuU7q7MDz7GNbnWvumHMFONZpYUugzIKr1bLzs8XTMT6SpgjrqPq+j1xj1SxXuvYrub72ixn7r58X3APJHP7gdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390219; c=relaxed/simple;
-	bh=xRwpEEbuYHfbPkydie3q8iIAytaTV9+1hvCGNoaHiIc=;
+	s=arc-20240116; t=1728391809; c=relaxed/simple;
+	bh=IeP5h8OpIA0lXbqYoQ9xzr45ENT7vudB+Eqg5f6R+d8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VhfyrJqDmLSqhN8rJSOT5DH9tdxZocQZ9lVVvj2Ag1B5X9t7Wwqt/KZhnaEdbNAcxac62idPYrEpXpF8nVYI63QfuH/tCjkKJ4y91ZVDHrqojkeX1Ag9hhhXeKml7Z3ry2GFF66yf84ixkY5v1s8gi2NUUii0rAvbx4hy7b9bCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N5tFIyBl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A209CC4CECC;
-	Tue,  8 Oct 2024 12:23:38 +0000 (UTC)
+	 MIME-Version; b=pKw9T5MUyD/xP69z8UQAd4bbshU8jTrpty1mgDTTuL7kEwqxvXRipmk5F0mdXHB4J3jRSv2KOJcXytEvtBkgJdIEIOJZ5Oz46q2YYJK30hmgw9qpvrEr2OETQe3rPi7cyPTiKnbkZL7Ux8bYVt3+GLFnWZBSvrATCEZHNluc/88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lbhmH6vb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54725C4CEC7;
+	Tue,  8 Oct 2024 12:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390219;
-	bh=xRwpEEbuYHfbPkydie3q8iIAytaTV9+1hvCGNoaHiIc=;
+	s=korg; t=1728391808;
+	bh=IeP5h8OpIA0lXbqYoQ9xzr45ENT7vudB+Eqg5f6R+d8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N5tFIyBlXxV3V9g4/NbDzQd1Zx+8oGwMppJGJZNSECliqUhxzpPQCkHpOq6jlFNlW
-	 AHjnOa2oyHO9eiuXQJuX6Dkkp6lPIiW1LZL7zYomGLCZEFzzI/+ymYvpgPOj2jUSoz
-	 4LWQ1+sfRkuU0AY9PxbLFySvPXmnqyyRdkGWRMmk=
+	b=lbhmH6vbxoazY7c3vjQOXRMy9gDSoUH94Kc/vZc+JFCXsy7d8/4urqXTJFv1V3pij
+	 VOPBgpL+xBLc/So/yhInCS34+1dvcfA1hd322zmHUrGzJv+Tg3NF5tEJRpY9CG0WoL
+	 lXcYtb+irc2DYuxFfYQA7VEhTlkuI7yhUPgt2YqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Tim Huang <tim.huang@amd.com>,
-	Roman Li <roman.li@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 194/482] drm/amd/display: fix double free issue during amdgpu module unload
-Date: Tue,  8 Oct 2024 14:04:17 +0200
-Message-ID: <20241008115655.939272901@linuxfoundation.org>
+Subject: [PATCH 6.11 228/558] drm/amd/display: fix a UBSAN warning in DML2.1
+Date: Tue,  8 Oct 2024 14:04:18 +0200
+Message-ID: <20241008115711.313720361@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +65,188 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <tim.huang@amd.com>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-[ Upstream commit 20b5a8f9f4670a8503aa9fa95ca632e77c6bf55d ]
+[ Upstream commit eaf3adb8faab611ba57594fa915893fc93a7788c ]
 
-Flexible endpoints use DIGs from available inflexible endpoints,
-so only the encoders of inflexible links need to be freed.
-Otherwise, a double free issue may occur when unloading the
-amdgpu module.
+When programming phantom pipe, since cursor_width is explicity set to 0,
+this causes calculation logic to trigger overflow for an unsigned int
+triggering the kernel's UBSAN check as below:
 
-[  279.190523] RIP: 0010:__slab_free+0x152/0x2f0
-[  279.190577] Call Trace:
-[  279.190580]  <TASK>
-[  279.190582]  ? show_regs+0x69/0x80
-[  279.190590]  ? die+0x3b/0x90
-[  279.190595]  ? do_trap+0xc8/0xe0
-[  279.190601]  ? do_error_trap+0x73/0xa0
-[  279.190605]  ? __slab_free+0x152/0x2f0
-[  279.190609]  ? exc_invalid_op+0x56/0x70
-[  279.190616]  ? __slab_free+0x152/0x2f0
-[  279.190642]  ? asm_exc_invalid_op+0x1f/0x30
-[  279.190648]  ? dcn10_link_encoder_destroy+0x19/0x30 [amdgpu]
-[  279.191096]  ? __slab_free+0x152/0x2f0
-[  279.191102]  ? dcn10_link_encoder_destroy+0x19/0x30 [amdgpu]
-[  279.191469]  kfree+0x260/0x2b0
-[  279.191474]  dcn10_link_encoder_destroy+0x19/0x30 [amdgpu]
-[  279.191821]  link_destroy+0xd7/0x130 [amdgpu]
-[  279.192248]  dc_destruct+0x90/0x270 [amdgpu]
-[  279.192666]  dc_destroy+0x19/0x40 [amdgpu]
-[  279.193020]  amdgpu_dm_fini+0x16e/0x200 [amdgpu]
-[  279.193432]  dm_hw_fini+0x26/0x40 [amdgpu]
-[  279.193795]  amdgpu_device_fini_hw+0x24c/0x400 [amdgpu]
-[  279.194108]  amdgpu_driver_unload_kms+0x4f/0x70 [amdgpu]
-[  279.194436]  amdgpu_pci_remove+0x40/0x80 [amdgpu]
-[  279.194632]  pci_device_remove+0x3a/0xa0
-[  279.194638]  device_remove+0x40/0x70
-[  279.194642]  device_release_driver_internal+0x1ad/0x210
-[  279.194647]  driver_detach+0x4e/0xa0
-[  279.194650]  bus_remove_driver+0x6f/0xf0
-[  279.194653]  driver_unregister+0x33/0x60
-[  279.194657]  pci_unregister_driver+0x44/0x90
-[  279.194662]  amdgpu_exit+0x19/0x1f0 [amdgpu]
-[  279.194939]  __do_sys_delete_module.isra.0+0x198/0x2f0
-[  279.194946]  __x64_sys_delete_module+0x16/0x20
-[  279.194950]  do_syscall_64+0x58/0x120
-[  279.194954]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
-[  279.194980]  </TASK>
+[   40.962845] UBSAN: shift-out-of-bounds in /tmp/amd.EfpumTkO/amd/amdgpu/../display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c:3312:34
+[   40.962849] shift exponent 4294967170 is too large for 32-bit type 'unsigned int'
+[   40.962852] CPU: 1 PID: 1670 Comm: gnome-shell Tainted: G        W  OE      6.5.0-41-generic #41~22.04.2-Ubuntu
+[   40.962854] Hardware name: Gigabyte Technology Co., Ltd. X670E AORUS PRO X/X670E AORUS PRO X, BIOS F21 01/10/2024
+[   40.962856] Call Trace:
+[   40.962857]  <TASK>
+[   40.962860]  dump_stack_lvl+0x48/0x70
+[   40.962870]  dump_stack+0x10/0x20
+[   40.962872]  __ubsan_handle_shift_out_of_bounds+0x1ac/0x360
+[   40.962878]  calculate_cursor_req_attributes.cold+0x1b/0x28 [amdgpu]
+[   40.963099]  dml_core_mode_support+0x6b91/0x16bc0 [amdgpu]
+[   40.963327]  ? srso_alias_return_thunk+0x5/0x7f
+[   40.963331]  ? CalculateWatermarksMALLUseAndDRAMSpeedChangeSupport+0x18b8/0x2790 [amdgpu]
+[   40.963534]  ? srso_alias_return_thunk+0x5/0x7f
+[   40.963536]  ? dml_core_mode_support+0xb3db/0x16bc0 [amdgpu]
+[   40.963730]  dml2_core_calcs_mode_support_ex+0x2c/0x90 [amdgpu]
+[   40.963906]  ? srso_alias_return_thunk+0x5/0x7f
+[   40.963909]  ? dml2_core_calcs_mode_support_ex+0x2c/0x90 [amdgpu]
+[   40.964078]  core_dcn4_mode_support+0x72/0xbf0 [amdgpu]
+[   40.964247]  dml2_top_optimization_perform_optimization_phase+0x1d3/0x2a0 [amdgpu]
+[   40.964420]  dml2_build_mode_programming+0x23d/0x750 [amdgpu]
+[   40.964587]  dml21_validate+0x274/0x770 [amdgpu]
+[   40.964761]  ? srso_alias_return_thunk+0x5/0x7f
+[   40.964763]  ? resource_append_dpp_pipes_for_plane_composition+0x27c/0x3b0 [amdgpu]
+[   40.964942]  dml2_validate+0x504/0x750 [amdgpu]
+[   40.965117]  ? dml21_copy+0x95/0xb0 [amdgpu]
+[   40.965291]  ? srso_alias_return_thunk+0x5/0x7f
+[   40.965295]  dcn401_validate_bandwidth+0x4e/0x70 [amdgpu]
+[   40.965491]  update_planes_and_stream_state+0x38d/0x5c0 [amdgpu]
+[   40.965672]  update_planes_and_stream_v3+0x52/0x1e0 [amdgpu]
+[   40.965845]  ? srso_alias_return_thunk+0x5/0x7f
+[   40.965849]  dc_update_planes_and_stream+0x71/0xb0 [amdgpu]
+
+Fix this by adding a guard for checking cursor width before triggering
+the size calculation.
 
 Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Tim Huang <tim.huang@amd.com>
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/link_factory.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../src/dml2_core/dml2_core_dcn4_calcs.c      | 93 ++++++++++---------
+ 1 file changed, 49 insertions(+), 44 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_factory.c b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-index 72df9bdfb23ff..608491f860b29 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-@@ -385,7 +385,7 @@ static void link_destruct(struct dc_link *link)
- 	if (link->panel_cntl)
- 		link->panel_cntl->funcs->destroy(&link->panel_cntl);
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
+index 6f4026e396e09..c40cd5d634568 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
+@@ -7231,10 +7231,9 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
+ 	/* Cursor Support Check */
+ 	mode_lib->ms.support.CursorSupport = true;
+ 	for (k = 0; k < mode_lib->ms.num_active_planes; k++) {
+-		if (display_cfg->plane_descriptors[k].cursor.cursor_width > 0.0) {
+-			if (display_cfg->plane_descriptors[k].cursor.cursor_bpp == 64 && mode_lib->ip.cursor_64bpp_support == false) {
++		if (display_cfg->plane_descriptors[k].cursor.num_cursors > 0) {
++			if (display_cfg->plane_descriptors[k].cursor.cursor_bpp == 64 && mode_lib->ip.cursor_64bpp_support == false)
+ 				mode_lib->ms.support.CursorSupport = false;
+-			}
+ 		}
+ 	}
  
--	if (link->link_enc) {
-+	if (link->link_enc && !link->is_dig_mapping_flexible) {
- 		/* Update link encoder resource tracking variables. These are used for
- 		 * the dynamic assignment of link encoders to streams. Virtual links
- 		 * are not assigned encoder resources on creation.
+@@ -8091,27 +8090,31 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
+ 	for (k = 0; k < mode_lib->ms.num_active_planes; ++k) {
+ 		double line_time_us = (double)display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.h_total / ((double)display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.pixel_clock_khz / 1000);
+ 		bool cursor_not_enough_urgent_latency_hiding = 0;
+-		calculate_cursor_req_attributes(
+-			display_cfg->plane_descriptors[k].cursor.cursor_width,
+-			display_cfg->plane_descriptors[k].cursor.cursor_bpp,
+ 
+-			// output
+-			&s->cursor_lines_per_chunk[k],
+-			&s->cursor_bytes_per_line[k],
+-			&s->cursor_bytes_per_chunk[k],
+-			&s->cursor_bytes[k]);
+-
+-		calculate_cursor_urgent_burst_factor(
+-			mode_lib->ip.cursor_buffer_size,
+-			display_cfg->plane_descriptors[k].cursor.cursor_width,
+-			s->cursor_bytes_per_chunk[k],
+-			s->cursor_lines_per_chunk[k],
+-			line_time_us,
+-			mode_lib->ms.UrgLatency,
++		if (display_cfg->plane_descriptors[k].cursor.num_cursors > 0) {
++			calculate_cursor_req_attributes(
++				display_cfg->plane_descriptors[k].cursor.cursor_width,
++				display_cfg->plane_descriptors[k].cursor.cursor_bpp,
++
++				// output
++				&s->cursor_lines_per_chunk[k],
++				&s->cursor_bytes_per_line[k],
++				&s->cursor_bytes_per_chunk[k],
++				&s->cursor_bytes[k]);
++
++			calculate_cursor_urgent_burst_factor(
++				mode_lib->ip.cursor_buffer_size,
++				display_cfg->plane_descriptors[k].cursor.cursor_width,
++				s->cursor_bytes_per_chunk[k],
++				s->cursor_lines_per_chunk[k],
++				line_time_us,
++				mode_lib->ms.UrgLatency,
++
++				// output
++				&mode_lib->ms.UrgentBurstFactorCursor[k],
++				&cursor_not_enough_urgent_latency_hiding);
++		}
+ 
+-			// output
+-			&mode_lib->ms.UrgentBurstFactorCursor[k],
+-			&cursor_not_enough_urgent_latency_hiding);
+ 		mode_lib->ms.UrgentBurstFactorCursorPre[k] = mode_lib->ms.UrgentBurstFactorCursor[k];
+ 
+ #ifdef __DML_VBA_DEBUG__
+@@ -10592,31 +10595,33 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
+ 
+ 	for (k = 0; k < s->num_active_planes; ++k) {
+ 		bool cursor_not_enough_urgent_latency_hiding = 0;
+-		double line_time_us;
++		double line_time_us = 0.0;
+ 
+-		calculate_cursor_req_attributes(
+-			display_cfg->plane_descriptors[k].cursor.cursor_width,
+-			display_cfg->plane_descriptors[k].cursor.cursor_bpp,
++		line_time_us = display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.h_total /
++			((double)display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.pixel_clock_khz / 1000);
++		if (display_cfg->plane_descriptors[k].cursor.num_cursors > 0) {
++			calculate_cursor_req_attributes(
++				display_cfg->plane_descriptors[k].cursor.cursor_width,
++				display_cfg->plane_descriptors[k].cursor.cursor_bpp,
+ 
+-			// output
+-			&s->cursor_lines_per_chunk[k],
+-			&s->cursor_bytes_per_line[k],
+-			&s->cursor_bytes_per_chunk[k],
+-			&s->cursor_bytes[k]);
+-
+-		line_time_us = display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.h_total / ((double)display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.pixel_clock_khz / 1000);
+-
+-		calculate_cursor_urgent_burst_factor(
+-			mode_lib->ip.cursor_buffer_size,
+-			display_cfg->plane_descriptors[k].cursor.cursor_width,
+-			s->cursor_bytes_per_chunk[k],
+-			s->cursor_lines_per_chunk[k],
+-			line_time_us,
+-			mode_lib->mp.UrgentLatency,
++				// output
++				&s->cursor_lines_per_chunk[k],
++				&s->cursor_bytes_per_line[k],
++				&s->cursor_bytes_per_chunk[k],
++				&s->cursor_bytes[k]);
++
++			calculate_cursor_urgent_burst_factor(
++				mode_lib->ip.cursor_buffer_size,
++				display_cfg->plane_descriptors[k].cursor.cursor_width,
++				s->cursor_bytes_per_chunk[k],
++				s->cursor_lines_per_chunk[k],
++				line_time_us,
++				mode_lib->mp.UrgentLatency,
+ 
+-			// output
+-			&mode_lib->mp.UrgentBurstFactorCursor[k],
+-			&cursor_not_enough_urgent_latency_hiding);
++				// output
++				&mode_lib->mp.UrgentBurstFactorCursor[k],
++				&cursor_not_enough_urgent_latency_hiding);
++		}
+ 		mode_lib->mp.UrgentBurstFactorCursorPre[k] = mode_lib->mp.UrgentBurstFactorCursor[k];
+ 
+ 		CalculateUrgentBurstFactor(
 -- 
 2.43.0
 
