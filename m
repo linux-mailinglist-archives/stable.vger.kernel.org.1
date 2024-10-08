@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-81781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE2099495C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:23:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9BD4994BED
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:48:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CC6D280EEA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:23:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E82C281352
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31B21DF750;
-	Tue,  8 Oct 2024 12:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4CC1DE4C4;
+	Tue,  8 Oct 2024 12:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lA7xVNST"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIXL9IGq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9F21DF743;
-	Tue,  8 Oct 2024 12:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1983D1DE2A5;
+	Tue,  8 Oct 2024 12:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390110; cv=none; b=X0RUp1WskQXiZnvmlSNUu5RtXoBhausPtPIvdseQJStHhev8WE8SYGemXhDuwHMkSWnDoiIMsD24Fk7XqUqCN6xHO2lgdZ/D1gv346/p3UR1YQXg2Btl8XLxk6zRcNKCuzDGyvfax7qOj3YtLU8oFapqabesC+hXwouo7SXK1lM=
+	t=1728391697; cv=none; b=ShLAj27JsAG6oyRLGZkYzXMOMsK0xnKhlnTDfdmuHHuK76OibDElhYZAaQaem6eUNxnhpSgWDbpJO8UqqcqzscytedRb2i7S6ecFDw0IUj0nERmYoYnfG4p4rLdkOuHd6vdJfkEPcE5QseK0rOqLxiTAcyh31GE6MLX65j1zJc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390110; c=relaxed/simple;
-	bh=c+824C39pUhXU53j6wLG9XmFkvBBITtQ9//P+AV1m2c=;
+	s=arc-20240116; t=1728391697; c=relaxed/simple;
+	bh=eH15FFDkG2ObAYpzFZ4lh5M8/vZjcgehhJmmO7V4Kk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E8gGnm2i2YTyR/eA9CRJ8ySKuPfFKj/pkwLbPmaSGeQITpjzosRxLYGW7ec4FrRVSkxxgVi5YaN+SiCOxEEGDJZvhIZvLsOhBo9GBkGa7hujjrCtUUGZYr3PFW0YIDTdK3V6t/khZ1I8HuSRaPgsx/qB107sHdoRpyIdi5TeVnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lA7xVNST; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B1AC4CECC;
-	Tue,  8 Oct 2024 12:21:49 +0000 (UTC)
+	 MIME-Version; b=fDxRJ4HYsatn9OliHOC7XApr8/eHO2G6ppYx5V4gO5S4clWK7rDQ9PYKvbXd7OJCOZeohzMDJYQ8GdcWAY42Ea0GpJWoNN3cKr3bvoX8ynLdmqM2pQsAHtTCFiZPbGIQPuaLQ60TLUMSuA5u8JHl3Ge+A+XCQhfpqSWsjYy6ae8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIXL9IGq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341C3C4CEC7;
+	Tue,  8 Oct 2024 12:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390110;
-	bh=c+824C39pUhXU53j6wLG9XmFkvBBITtQ9//P+AV1m2c=;
+	s=korg; t=1728391696;
+	bh=eH15FFDkG2ObAYpzFZ4lh5M8/vZjcgehhJmmO7V4Kk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lA7xVNSTzS+FE0BrxA8vUhy3t+JpaxF25pbURtvZzi2sjjCVoMrB6JK5opS6lMl0Y
-	 8L+oV4r6x3FeITUMNGAQ7ywhrpx0mc8kIKxsw08tsv//enZXv/+Q8DaBylgtbwt4OX
-	 2jWAdeNgQqa00k7g0mhB/74fqoMDaU188AMlxGbo=
+	b=FIXL9IGqeq580DpzIdu23iNhdYhrAW3f3/CrClW8nNb4j6MHdDTsZ6WOmFuvRAIYk
+	 dp5/91f4QYr1PYpzBZow99eyOfohNUeQ8YO+UKb2r2JjXmMKm8gI9MpoM8EMfh50yr
+	 WjUL5JXmGY9eotUCTWuQv+WA/CPdFIHnNVVKFSJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Helge Deller <deller@gmx.de>,
+	Andrew Davis <afd@ti.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 162/482] fbdev: efifb: Register sysfs groups through driver core
+Subject: [PATCH 6.11 195/558] power: reset: brcmstb: Do not go into infinite loop if reset fails
 Date: Tue,  8 Oct 2024 14:03:45 +0200
-Message-ID: <20241008115654.680859271@linuxfoundation.org>
+Message-ID: <20241008115710.024529600@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +62,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit 95cdd538e0e5677efbdf8aade04ec098ab98f457 ]
+[ Upstream commit cf8c39b00e982fa506b16f9d76657838c09150cb ]
 
-The driver core can register and cleanup sysfs groups already.
-Make use of that functionality to simplify the error handling and
-cleanup.
+There may be other backup reset methods available, do not halt
+here so that other reset methods can be tried.
 
-Also avoid a UAF race during unregistering where the sysctl attributes
-were usable after the info struct was freed.
-
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Andrew Davis <afd@ti.com>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20240610142836.168603-5-afd@ti.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/efifb.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ drivers/power/reset/brcmstb-reboot.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
-index 8dd82afb3452b..595b8e27bea66 100644
---- a/drivers/video/fbdev/efifb.c
-+++ b/drivers/video/fbdev/efifb.c
-@@ -561,15 +561,10 @@ static int efifb_probe(struct platform_device *dev)
- 		break;
+diff --git a/drivers/power/reset/brcmstb-reboot.c b/drivers/power/reset/brcmstb-reboot.c
+index 0f2944dc93551..a04713f191a11 100644
+--- a/drivers/power/reset/brcmstb-reboot.c
++++ b/drivers/power/reset/brcmstb-reboot.c
+@@ -62,9 +62,6 @@ static int brcmstb_restart_handler(struct notifier_block *this,
+ 		return NOTIFY_DONE;
  	}
  
--	err = sysfs_create_groups(&dev->dev.kobj, efifb_groups);
--	if (err) {
--		pr_err("efifb: cannot add sysfs attrs\n");
--		goto err_unmap;
--	}
- 	err = fb_alloc_cmap(&info->cmap, 256, 0);
- 	if (err < 0) {
- 		pr_err("efifb: cannot allocate colormap\n");
--		goto err_groups;
-+		goto err_unmap;
- 	}
- 
- 	err = devm_aperture_acquire_for_platform_device(dev, par->base, par->size);
-@@ -587,8 +582,6 @@ static int efifb_probe(struct platform_device *dev)
- 
- err_fb_dealloc_cmap:
- 	fb_dealloc_cmap(&info->cmap);
--err_groups:
--	sysfs_remove_groups(&dev->dev.kobj, efifb_groups);
- err_unmap:
- 	if (mem_flags & (EFI_MEMORY_UC | EFI_MEMORY_WC))
- 		iounmap(info->screen_base);
-@@ -608,12 +601,12 @@ static void efifb_remove(struct platform_device *pdev)
- 
- 	/* efifb_destroy takes care of info cleanup */
- 	unregister_framebuffer(info);
--	sysfs_remove_groups(&pdev->dev.kobj, efifb_groups);
+-	while (1)
+-		;
+-
+ 	return NOTIFY_DONE;
  }
  
- static struct platform_driver efifb_driver = {
- 	.driver = {
- 		.name = "efi-framebuffer",
-+		.dev_groups = efifb_groups,
- 	},
- 	.probe = efifb_probe,
- 	.remove_new = efifb_remove,
 -- 
 2.43.0
 
