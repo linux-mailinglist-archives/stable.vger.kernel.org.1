@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-82019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88EC994AA3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:35:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61EB3994F67
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CF1328B49C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:35:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7F2CB28755
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8C0192D69;
-	Tue,  8 Oct 2024 12:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4CF1DF243;
+	Tue,  8 Oct 2024 13:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1wRSZhE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrlJz2lM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA6A1779B1;
-	Tue,  8 Oct 2024 12:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF1A1DF254;
+	Tue,  8 Oct 2024 13:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390902; cv=none; b=S+3erMtYQB3quJ+MOoQl8ayAuT838RwEi+Xp02JtR6UXmcOerrzRTAvOlBLlfjlwob5ZlB8sD0TsiKf1nySPLL887CqAQ7aW7DfArC0n8ATUHujwxLt7KBAJSDdQ//Qs1irEVLA+texh8cCESMmnl13Wnd09LHv+M0+ZWeBz0Io=
+	t=1728393649; cv=none; b=ImXfFNPIet8BTGas52YxqpKXFjUscMdfEhN+dXQmiWgE+amdnpNBINt5Evc7oJDQdhjLLSuuhx9XIdh2a1N9BbF9J49PvtR10Mwy99gTuvQc8O0F2hAUoJxecmOyfPOJAIVuEgqdsO6LrSh6pAaZ+eOuLx1Z0kbb2lMDVqowxHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390902; c=relaxed/simple;
-	bh=E/uci8butSiKTtKw4F1yzhIP5OD3ZETWIobQPQh4sUk=;
+	s=arc-20240116; t=1728393649; c=relaxed/simple;
+	bh=sOAupW5NoV5DgkuEb1O6i5TXtND8MPasFImhHsnOAvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ul/+wB1hFQIY8rhDLnwZ+MQL1hDMQD4F5CFnHgzIpi3vvQ4F/LsKkV60nM5U6KbhgD+H6F2ycBvm/cBx2XgLhjY14LBfFemEs9oKhb3/DuNYBypL74+JWcyeK9NwX+VZ10FPUNGkLH6p5RzcWIYykjoaRCAR9QadtR+rZ80rpio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1wRSZhE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F88C4CEC7;
-	Tue,  8 Oct 2024 12:35:02 +0000 (UTC)
+	 MIME-Version; b=RgNIfEhlaukhPgN/t89VqhVvmCAWjWlhh4cZDCod1qTY70U3e6QgzGT3vMp7FGUs36nu4Tu42HYYc6xqLJFg3nezVF6VAT1snfCuVAb0Xk8/7c4kiyKLp4uPu8FGgxv6WztavidX5eNr5T6P3RBKf0/SsMM3Q/aOmrhA6T7a1dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrlJz2lM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C93C4CEC7;
+	Tue,  8 Oct 2024 13:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390902;
-	bh=E/uci8butSiKTtKw4F1yzhIP5OD3ZETWIobQPQh4sUk=;
+	s=korg; t=1728393649;
+	bh=sOAupW5NoV5DgkuEb1O6i5TXtND8MPasFImhHsnOAvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V1wRSZhEAuPMwmOGctb/sMhH6Rc1J0rwF12AgrR2Cc+hMH4N/KUM33Cf6ipqt2sMD
-	 UGnWwR4Pho6ZyTCUaVsGcrBjLWuOQtog7CyzRIbDlxOGrRTIcGgMDtUt5pIRJea0sB
-	 HoqQ7d3dT3t75J6JVqLUE/rSZziVXIh8Zu93v6+s=
+	b=hrlJz2lMSFAb+B1bOQZPhwbaLAsq1LAR/ubzfR6HGjT3bpRLTqMBV/1KZgl4iHJx8
+	 Kd+OrolHbyd/MMDSovE/VHa+o1B/TrHppVgBpFSYgT0IUr29fsfgSp7COZzqD5FGNf
+	 m8DlIamEKy2UDTJvQIFZ1h7q5tzNAsc9DQwjnvAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 396/482] clk: qcom: gcc-sc8180x: Add GPLL9 support
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 6.6 214/386] firmware: tegra: bpmp: Drop unused mbox_client_to_bpmp()
 Date: Tue,  8 Oct 2024 14:07:39 +0200
-Message-ID: <20241008115703.994524638@linuxfoundation.org>
+Message-ID: <20241008115637.829073565@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 818a2f8d5e4ad2c1e39a4290158fe8e39a744c70 upstream.
+commit 9c3a62c20f7fb00294a4237e287254456ba8a48b upstream.
 
-Add the missing GPLL9 pll and fix the gcc_parents_7 data to use
-the correct pll hw.
+mbox_client_to_bpmp() is not used, W=1 builds:
 
-Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
+  drivers/firmware/tegra/bpmp.c:28:1: error: unused function 'mbox_client_to_bpmp' [-Werror,-Wunused-function]
+
+Fixes: cdfa358b248e ("firmware: tegra: Refactor BPMP driver")
 Cc: stable@vger.kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-3-8b3eaa5fb856@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-sc8180x.c |   20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/firmware/tegra/bpmp.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
---- a/drivers/clk/qcom/gcc-sc8180x.c
-+++ b/drivers/clk/qcom/gcc-sc8180x.c
-@@ -142,6 +142,23 @@ static struct clk_alpha_pll gpll7 = {
- 	},
- };
+--- a/drivers/firmware/tegra/bpmp.c
++++ b/drivers/firmware/tegra/bpmp.c
+@@ -24,12 +24,6 @@
+ #define MSG_RING	BIT(1)
+ #define TAG_SZ		32
  
-+static struct clk_alpha_pll gpll9 = {
-+	.offset = 0x1c000,
-+	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_TRION],
-+	.clkr = {
-+		.enable_reg = 0x52000,
-+		.enable_mask = BIT(9),
-+		.hw.init = &(const struct clk_init_data) {
-+			.name = "gpll9",
-+			.parent_data = &(const struct clk_parent_data) {
-+				.fw_name = "bi_tcxo",
-+			},
-+			.num_parents = 1,
-+			.ops = &clk_alpha_pll_fixed_trion_ops,
-+		},
-+	},
-+};
-+
- static const struct parent_map gcc_parent_map_0[] = {
- 	{ P_BI_TCXO, 0 },
- 	{ P_GPLL0_OUT_MAIN, 1 },
-@@ -241,7 +258,7 @@ static const struct parent_map gcc_paren
- static const struct clk_parent_data gcc_parents_7[] = {
- 	{ .fw_name = "bi_tcxo", },
- 	{ .hw = &gpll0.clkr.hw },
--	{ .name = "gppl9" },
-+	{ .hw = &gpll9.clkr.hw },
- 	{ .hw = &gpll4.clkr.hw },
- 	{ .hw = &gpll0_out_even.clkr.hw },
- };
-@@ -4448,6 +4465,7 @@ static struct clk_regmap *gcc_sc8180x_cl
- 	[GPLL1] = &gpll1.clkr,
- 	[GPLL4] = &gpll4.clkr,
- 	[GPLL7] = &gpll7.clkr,
-+	[GPLL9] = &gpll9.clkr,
- };
- 
- static const struct qcom_reset_map gcc_sc8180x_resets[] = {
+-static inline struct tegra_bpmp *
+-mbox_client_to_bpmp(struct mbox_client *client)
+-{
+-	return container_of(client, struct tegra_bpmp, mbox.client);
+-}
+-
+ static inline const struct tegra_bpmp_ops *
+ channel_to_ops(struct tegra_bpmp_channel *channel)
+ {
 
 
 
