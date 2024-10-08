@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-82765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95042994EBD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:20:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE1E9949D8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AF41B2BCB6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD8971F24A1A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474541DF25A;
-	Tue,  8 Oct 2024 13:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D4E1DEFF0;
+	Tue,  8 Oct 2024 12:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jK0KMSfQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wx/VLGQF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8FD1DEFF7;
-	Tue,  8 Oct 2024 13:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D481DED43;
+	Tue,  8 Oct 2024 12:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393354; cv=none; b=m5M9rUxFUxuk7spRHhkqnXP3DnvkCCK9p0plAxfObGuP3dGAayWTpll7BfqCT9vkb+QccGpwGLWbqKeeWU0ffl1bHcYhX3wruBepL7FH5+AIMObDiwRfT76RNZocLVsrWvwyO98/LCeBKj+rXdxXt0BDEKygjPxppmHsP7MWh3I=
+	t=1728390399; cv=none; b=XRAuq67Kmw6IhWbTB3CQl1hg2OP944NdVOm6kAy7Hh9WsmpPSEWCu7IBnEKm7hNUWKyfT+B25/Lgh576YHo5oqTBJQtcYu3mhMA6pDQHy6iAo/QwtXrSNe82oKGN9VJgaXx26UOW4yKqu21PP24cMJcU8Y16aaPtZoGXu8OVEho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393354; c=relaxed/simple;
-	bh=YoF0s0LdWLI140cLbv7SoinxgWV4uhtP4aE9Pvy6vwo=;
+	s=arc-20240116; t=1728390399; c=relaxed/simple;
+	bh=wUtMi2a4yUhvyvVQLFKTu/1wOOvZerLdYBqRoiW41xo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ruKeEOWELBI3ASf4r7y2rJZf3hcfC2MamESYDeTjaQHejHMNPj83I761WrPzmAzYPXrLMt/mDW05bdDCY6Wej+MgDCrHBK2yz4RblIleFbctprt3BmtTPnhdFqmUvOQhcxMJK9nFxlL0oIsSdcG5axxHVQ3SqfBOgve/s+dc7VQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jK0KMSfQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B451C4CEC7;
-	Tue,  8 Oct 2024 13:15:53 +0000 (UTC)
+	 MIME-Version; b=l3AwkvgFhJHCm1yurgIFgr5rtuyWINlUgAEi/+73yldOUgyJFqQiOdcoCgRmacQALJTkUvvpBvCSEhxJvVOF3fFeRN0zNc+l7INsSEJ7bVXqv0ShQD2g5dv7qUQLV/qdKxhdAeE7iFsuyRLBrDpK+TUNRP9n9Q9m3ShtIsKyUBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wx/VLGQF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC67AC4CEC7;
+	Tue,  8 Oct 2024 12:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393353;
-	bh=YoF0s0LdWLI140cLbv7SoinxgWV4uhtP4aE9Pvy6vwo=;
+	s=korg; t=1728390398;
+	bh=wUtMi2a4yUhvyvVQLFKTu/1wOOvZerLdYBqRoiW41xo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jK0KMSfQsQtZ3fH0s3AfDcTXLZnDmmMpL/0V5QgJgZ+Kz90pMpL952RhB9vT6dJ7p
-	 a/Z2eBW0iFnnj5jE4IzczL+MBtXGAuLhfzu3xf7uz3lKfS6+Qfym7fqXxq6bNLXSCc
-	 wXrt5Z/dxWDyB46hy/wjZOuPUmFEG7MxA5/STcFg=
+	b=Wx/VLGQFSi10MkwghUXEPIUUdJCrnLE4KbGrkTYS4u57j0o3khTf3WBnjFW5Q4xfk
+	 DWAXgAQKB1ymbodSqJ9/GSJEmEXj+Bc90MFI/DOh0cGEKTwcXsQTjda67bUDOjJLI4
+	 0bZQySnqgAUMuf/JmNHHqH2QCW4zrxGWaMRCZP34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jade Dong <jadedong@tencent.com>,
-	Jason Xing <kernelxing@tencent.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/386] tcp: avoid reusing FIN_WAIT2 when trying to find port in connect() process
+Subject: [PATCH 6.10 277/482] nvme-tcp: fix link failure for TCP auth
 Date: Tue,  8 Oct 2024 14:05:40 +0200
-Message-ID: <20241008115633.188813428@linuxfoundation.org>
+Message-ID: <20241008115659.181559476@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 0d9e5df4a257afc3a471a82961ace9a22b88295a ]
+[ Upstream commit 2d5a333e09c388189238291577e443221baacba0 ]
 
-We found that one close-wait socket was reset by the other side
-due to a new connection reusing the same port which is beyond our
-expectation, so we have to investigate the underlying reason.
+The nvme fabric driver calls the nvme_tls_key_lookup() function from
+nvmf_parse_key() when the keyring is enabled, but this is broken in a
+configuration with CONFIG_NVME_FABRICS=y and CONFIG_NVME_TCP=m because
+this leads to the function definition being in a loadable module:
 
-The following experiment is conducted in the test environment. We
-limit the port range from 40000 to 40010 and delay the time to close()
-after receiving a fin from the active close side, which can help us
-easily reproduce like what happened in production.
+x86_64-linux-ld: vmlinux.o: in function `nvmf_parse_key':
+fabrics.c:(.text+0xb1bdec): undefined reference to `nvme_tls_key_lookup'
 
-Here are three connections captured by tcpdump:
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [S], seq 2965525191
-127.0.0.1.9999 > 127.0.0.1.40002: Flags [S.], seq 2769915070
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [.], ack 1
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [F.], seq 1, ack 1
-// a few seconds later, within 60 seconds
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [S], seq 2965590730
-127.0.0.1.9999 > 127.0.0.1.40002: Flags [.], ack 2
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [R], seq 2965525193
-// later, very quickly
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [S], seq 2965590730
-127.0.0.1.9999 > 127.0.0.1.40002: Flags [S.], seq 3120990805
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [.], ack 1
+Move the 'select' up to CONFIG_NVME_FABRICS itself to force this
+part to be built-in as well if needed.
 
-As we can see, the first flow is reset because:
-1) client starts a new connection, I mean, the second one
-2) client tries to find a suitable port which is a timewait socket
-   (its state is timewait, substate is fin_wait2)
-3) client occupies that timewait port to send a SYN
-4) server finds a corresponding close-wait socket in ehash table,
-   then replies with a challenge ack
-5) client sends an RST to terminate this old close-wait socket.
-
-I don't think the port selection algo can choose a FIN_WAIT2 socket
-when we turn on tcp_tw_reuse because on the server side there
-remain unread data. In some cases, if one side haven't call close() yet,
-we should not consider it as expendable and treat it at will.
-
-Even though, sometimes, the server isn't able to call close() as soon
-as possible like what we expect, it can not be terminated easily,
-especially due to a second unrelated connection happening.
-
-After this patch, we can see the expected failure if we start a
-connection when all the ports are occupied in fin_wait2 state:
-"Ncat: Cannot assign requested address."
-
-Reported-by: Jade Dong <jadedong@tencent.com>
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240823001152.31004-1-kerneljasonxing@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5bc46b49c828 ("nvme-tcp: check for invalidated or revoked key")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/nvme/host/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 96d235bcf5cb2..df3ddf31f8e67 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -116,6 +116,9 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
- 	const struct tcp_timewait_sock *tcptw = tcp_twsk(sktw);
- 	struct tcp_sock *tp = tcp_sk(sk);
+diff --git a/drivers/nvme/host/Kconfig b/drivers/nvme/host/Kconfig
+index 854eb26ac3db9..e6bb73c168872 100644
+--- a/drivers/nvme/host/Kconfig
++++ b/drivers/nvme/host/Kconfig
+@@ -42,6 +42,7 @@ config NVME_HWMON
  
-+	if (tw->tw_substate == TCP_FIN_WAIT2)
-+		reuse = 0;
-+
- 	if (reuse == 2) {
- 		/* Still does not detect *everything* that goes through
- 		 * lo, since we require a loopback src or dst address
+ config NVME_FABRICS
+ 	select NVME_CORE
++	select NVME_KEYRING if NVME_TCP_TLS
+ 	tristate
+ 
+ config NVME_RDMA
+@@ -95,7 +96,6 @@ config NVME_TCP
+ config NVME_TCP_TLS
+ 	bool "NVMe over Fabrics TCP TLS encryption support"
+ 	depends on NVME_TCP
+-	select NVME_KEYRING
+ 	select NET_HANDSHAKE
+ 	select KEYS
+ 	help
 -- 
 2.43.0
 
