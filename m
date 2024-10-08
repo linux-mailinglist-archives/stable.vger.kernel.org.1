@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-82083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63921994AF6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:38:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85DD3994B02
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED80DB26FB4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:38:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C976284B1C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE961DE3A2;
-	Tue,  8 Oct 2024 12:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE0A1DE2AD;
+	Tue,  8 Oct 2024 12:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wuIGFEns"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1FCbCrsV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA461DE2AD;
-	Tue,  8 Oct 2024 12:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993D9192594;
+	Tue,  8 Oct 2024 12:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391107; cv=none; b=AwF+6e08cBh7+AcEfuKjZBOj4KGCRu9JK0APJgQPsX6tYmXXz6LeP2lhofA8XL69mIuzfQJtlvjejH8KMVqdN0mEsxpk6MmdaLy0CCNA9sL9sDmiHKeIO2DtvW0CVZZdSCW1AglarkoYsC9ejRU259R+jTgxScNwCdEQFe2HPPA=
+	t=1728391142; cv=none; b=kVm+EaaX+G1zR3kpvXAO40PTysxNXrn269ft4j/IvwrnmRJqycapeKdQA1DzwsP4Tsk3UdblbaTzGEJ8CKqUXuZNyLGSHv7oRWmoUDaaYHsZ5J/cRqYceWYfulgnbO0xpmASaxkN5g9lMTOEBLYgLVd2uAl52v+ZmPDtaWsGwyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391107; c=relaxed/simple;
-	bh=sTcn9VHocoIdkm3vTJ1bKg1rcjYiK6TC5BAaeklXL5s=;
+	s=arc-20240116; t=1728391142; c=relaxed/simple;
+	bh=cavsj7dCJZlhWTt3pOAnuQlRwEfajGzNU/QJ2ECclAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YcIsgo5qG3irKGHmLaKjU/LZdcbBMMkn11fSi8sKEJD1gE/DQ2xexJfIYVMyAzmaDqFkeTZetRBdI6EBptG7PQGCAnljKToWNHmxOr0m1TwKheyQOtUHYQ+gAxu9xByMORIiIRE4AIHuT6Ymg9WGWROyvmCgOycXhhzd3MYsPk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wuIGFEns; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250B1C4CEC7;
-	Tue,  8 Oct 2024 12:38:26 +0000 (UTC)
+	 MIME-Version; b=RwcT3tw8ir8EuAgFztZnagakBcB1EIWN7tF6f9TSCnGypNjLUBgxKEjNp98ERndK6F4nx1Y9zpwjeBLWWmlSM2F0HVVowgyDH+UqoT2RGaVOjU9XvxrxWa8Kg399SSIuc3e+LFQggm1SUuRvBefSpFVbB9W4pOD19pAnnOtUpK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1FCbCrsV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C0FC4CEC7;
+	Tue,  8 Oct 2024 12:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391107;
-	bh=sTcn9VHocoIdkm3vTJ1bKg1rcjYiK6TC5BAaeklXL5s=;
+	s=korg; t=1728391142;
+	bh=cavsj7dCJZlhWTt3pOAnuQlRwEfajGzNU/QJ2ECclAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wuIGFEnsi8SL6UUwOE0X37HCxj/+XD1SL4p8OoFNaWcbzFyzaZtSJv5xCN7825xT1
-	 w2Kn0BBcDy/zjenIvkJASaT+NYovGkmaFPZGPLkfz0VdRENRXPiwmSjhW/RfaIzSTP
-	 +b5XxkqaqZkTozMlFm0G7lHnSc9/IVeZ/Jt8lhhs=
+	b=1FCbCrsVhTHIlAG4B/x+CnsdS5YBlc4LfWkrLiz0kl0jHFXq1HsIZQgT3VD3E5l4a
+	 b7WM72QnWb9NGnqFEqYFOUO341K9hPU4PgQlzriuf9vSYvZ3nMXpzsrp1uQEEQo0zR
+	 p8TUQLwLGbUmS2Vw2qH0rv04yh4qRHmN64/Q0T8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Klara Modin <klarasmodin@gmail.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 002/558] static_call: Replace pointless WARN_ON() in static_call_module_notify()
-Date: Tue,  8 Oct 2024 14:00:32 +0200
-Message-ID: <20241008115702.318252759@linuxfoundation.org>
+Subject: [PATCH 6.11 003/558] jump_label: Fix static_key_slow_dec() yet again
+Date: Tue,  8 Oct 2024 14:00:33 +0200
+Message-ID: <20241008115702.356969408@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
 References: <20241008115702.214071228@linuxfoundation.org>
@@ -66,44 +67,123 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit fe513c2ef0a172a58f158e2e70465c4317f0a9a2 ]
+[ Upstream commit 1d7f856c2ca449f04a22d876e36b464b7a9d28b6 ]
 
-static_call_module_notify() triggers a WARN_ON(), when memory allocation
-fails in __static_call_add_module().
+While commit 83ab38ef0a0b ("jump_label: Fix concurrency issues in
+static_key_slow_dec()") fixed one problem, it created yet another,
+notably the following is now possible:
 
-That's not really justified, because the failure case must be correctly
-handled by the well known call chain and the error code is passed
-through to the initiating userspace application.
+  slow_dec
+    if (try_dec) // dec_not_one-ish, false
+    // enabled == 1
+                                slow_inc
+                                  if (inc_not_disabled) // inc_not_zero-ish
+                                  // enabled == 2
+                                    return
 
-A memory allocation fail is not a fatal problem, but the WARN_ON() takes
-the machine out when panic_on_warn is set.
+    guard((mutex)(&jump_label_mutex);
+    if (atomic_cmpxchg(1,0)==1) // false, we're 2
 
-Replace it with a pr_warn().
+                                slow_dec
+                                  if (try-dec) // dec_not_one, true
+                                  // enabled == 1
+                                    return
+    else
+      try_dec() // dec_not_one, false
+      WARN
 
-Fixes: 9183c3f9ed71 ("static_call: Add inline static call infrastructure")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Use dec_and_test instead of cmpxchg(), like it was prior to
+83ab38ef0a0b. Add a few WARNs for the paranoid.
+
+Fixes: 83ab38ef0a0b ("jump_label: Fix concurrency issues in static_key_slow_dec()")
+Reported-by: "Darrick J. Wong" <djwong@kernel.org>
+Tested-by: Klara Modin <klarasmodin@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/8734mf7pmb.ffs@tglx
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/static_call_inline.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/jump_label.c | 34 +++++++++++++++++++++++++++-------
+ 1 file changed, 27 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/static_call_inline.c b/kernel/static_call_inline.c
-index 7bb0962b52291..5259cda486d05 100644
---- a/kernel/static_call_inline.c
-+++ b/kernel/static_call_inline.c
-@@ -453,7 +453,7 @@ static int static_call_module_notify(struct notifier_block *nb,
- 	case MODULE_STATE_COMING:
- 		ret = static_call_add_module(mod);
- 		if (ret) {
--			WARN(1, "Failed to allocate memory for static calls");
-+			pr_warn("Failed to allocate memory for static calls\n");
- 			static_call_del_module(mod);
- 		}
- 		break;
+diff --git a/kernel/jump_label.c b/kernel/jump_label.c
+index 6dc76b590703e..93a822d3c468c 100644
+--- a/kernel/jump_label.c
++++ b/kernel/jump_label.c
+@@ -168,7 +168,7 @@ bool static_key_slow_inc_cpuslocked(struct static_key *key)
+ 		jump_label_update(key);
+ 		/*
+ 		 * Ensure that when static_key_fast_inc_not_disabled() or
+-		 * static_key_slow_try_dec() observe the positive value,
++		 * static_key_dec_not_one() observe the positive value,
+ 		 * they must also observe all the text changes.
+ 		 */
+ 		atomic_set_release(&key->enabled, 1);
+@@ -250,7 +250,7 @@ void static_key_disable(struct static_key *key)
+ }
+ EXPORT_SYMBOL_GPL(static_key_disable);
+ 
+-static bool static_key_slow_try_dec(struct static_key *key)
++static bool static_key_dec_not_one(struct static_key *key)
+ {
+ 	int v;
+ 
+@@ -274,6 +274,14 @@ static bool static_key_slow_try_dec(struct static_key *key)
+ 		 * enabled. This suggests an ordering problem on the user side.
+ 		 */
+ 		WARN_ON_ONCE(v < 0);
++
++		/*
++		 * Warn about underflow, and lie about success in an attempt to
++		 * not make things worse.
++		 */
++		if (WARN_ON_ONCE(v == 0))
++			return true;
++
+ 		if (v <= 1)
+ 			return false;
+ 	} while (!likely(atomic_try_cmpxchg(&key->enabled, &v, v - 1)));
+@@ -284,15 +292,27 @@ static bool static_key_slow_try_dec(struct static_key *key)
+ static void __static_key_slow_dec_cpuslocked(struct static_key *key)
+ {
+ 	lockdep_assert_cpus_held();
++	int val;
+ 
+-	if (static_key_slow_try_dec(key))
++	if (static_key_dec_not_one(key))
+ 		return;
+ 
+ 	guard(mutex)(&jump_label_mutex);
+-	if (atomic_cmpxchg(&key->enabled, 1, 0) == 1)
++	val = atomic_read(&key->enabled);
++	/*
++	 * It should be impossible to observe -1 with jump_label_mutex held,
++	 * see static_key_slow_inc_cpuslocked().
++	 */
++	if (WARN_ON_ONCE(val == -1))
++		return;
++	/*
++	 * Cannot already be 0, something went sideways.
++	 */
++	if (WARN_ON_ONCE(val == 0))
++		return;
++
++	if (atomic_dec_and_test(&key->enabled))
+ 		jump_label_update(key);
+-	else
+-		WARN_ON_ONCE(!static_key_slow_try_dec(key));
+ }
+ 
+ static void __static_key_slow_dec(struct static_key *key)
+@@ -329,7 +349,7 @@ void __static_key_slow_dec_deferred(struct static_key *key,
+ {
+ 	STATIC_KEY_CHECK_USE(key);
+ 
+-	if (static_key_slow_try_dec(key))
++	if (static_key_dec_not_one(key))
+ 		return;
+ 
+ 	schedule_delayed_work(work, timeout);
 -- 
 2.43.0
 
