@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 331D9994401
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 11:19:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 526AA994402
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 11:19:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8B131F22DDE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 09:19:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7699A1C20E55
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 09:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9503F1422A8;
-	Tue,  8 Oct 2024 09:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56AAF152532;
+	Tue,  8 Oct 2024 09:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCfiWl9Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcJhEYdi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550A413C816
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 09:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C41613C827
+	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 09:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728379152; cv=none; b=hP4OQcrw3XnR09ktdNfMzPWAdrUfFaJXzPzhz+6ZLIJRtSUG5FXI9feYUqq0fG36hei82k9v+oy7T6No8mruptUgs6kbPk9G6IthNr4l9e6oQJ8M4HCshIqWuEB0+qj/38pbWWp5M67RzYOELu09/zYNAD4XoOjzMcGRx3ep0QY=
+	t=1728379156; cv=none; b=i6thL/CHdy34q0R06ZCgok1fSAV30JAdB/GVLVXGRbY0oXVHA7O3y1MZjVTcNaPTSfXkSQOa1h4qb/K3qvNS4j+WWGxV0sMzem+uMzfWxAMtssBaA2f0aYJdyxYJUVqIM+pX9+6JT2+8wjsgaZWxxtm8LB3k0Tws4GU/H+dD+54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728379152; c=relaxed/simple;
-	bh=o6dCwKa7RKlFsmcQoZAV6DSesqfaT1dKeokqJKEITeM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mD4RR24lyuJvM/4ZlIU3G742nWx4bCk91+qJqPt5UF/sZJ7fh+Y+mxhQa5tUNJYp+M1lFBzlfMYGtCWQ3o/EjuWnw4HsDzfH8RTenWyGsSGIvZKe7im7B3lRNH35g78YD5+VDa+ILfEg3QaZW0usjitSHa+Dv1EkpmrX7vDG+D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCfiWl9Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46F0C4CEC7;
-	Tue,  8 Oct 2024 09:19:11 +0000 (UTC)
+	s=arc-20240116; t=1728379156; c=relaxed/simple;
+	bh=qbvn2kFo1T/l4c6lAakJpCTWDTc4eM+w3cJ3lJirWyw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JsH+hGCdOCBzu3yfjKSIu60/wxiKCKu0hWGPXgvc9ytPAXFwb9uncXgZUHuDZAlPYaYLWGz7OVbvH8CdmNsdaGImHQJQNaHoSzwgmIQ3/ajVKCQWT1SaoYb+uBW/xtciDqkSorB4JgcWakxK//YQ0qvGtM6C7nKvppu0iohtHLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcJhEYdi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBB0C4CEC7;
+	Tue,  8 Oct 2024 09:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728379152;
-	bh=o6dCwKa7RKlFsmcQoZAV6DSesqfaT1dKeokqJKEITeM=;
+	s=korg; t=1728379155;
+	bh=qbvn2kFo1T/l4c6lAakJpCTWDTc4eM+w3cJ3lJirWyw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=gCfiWl9YEK9SDjVZINxlod60wN7Qw0ohtFrDByqAjaJ6pYKlUh2a62MSUkw9dL/xH
-	 ivi54UYwtIN3sYSq8E6c//9q/fody/IIEC6sYmgNpDjSydsGmjpNQC80/EMH3nBKUw
-	 FDd7GfRpUXpqcMn1sG8Rj82gMDey+QAZa//FP5E8=
-Subject: FAILED: patch "[PATCH] drm/i915: Fix readout degamma_lut mismatch on ilk/snb" failed to apply to 6.10-stable tree
+	b=kcJhEYdiLjvZ5lz4eOsGjUImSDVISHyaOhoRqrgFiQSs9SmiPBqsXbtpR+d8Iw5Bg
+	 /vR0+J+I5VO1N9Ztbvh+PsOCTZ3y6pMVfme8BvwAUeY3DnsexFsttoauHUIOb/B8a3
+	 /JMZDPWUyZ8hRtWLaVzUU3v9vuXVLa0daVLKkxh0=
+Subject: FAILED: patch "[PATCH] drm/i915: Fix readout degamma_lut mismatch on ilk/snb" failed to apply to 6.6-stable tree
 To: ville.syrjala@linux.intel.com,uma.shankar@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 08 Oct 2024 11:19:00 +0200
-Message-ID: <2024100800-retiring-unopened-df59@gregkh>
+Date: Tue, 08 Oct 2024 11:19:01 +0200
+Message-ID: <2024100801-yelp-fasting-b762@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,42 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 33eca84db6e31091cef63584158ab64704f78462
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100800-retiring-unopened-df59@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100801-yelp-fasting-b762@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 33eca84db6e3 ("drm/i915: Fix readout degamma_lut mismatch on ilk/snb")
 da8c3cdb016c ("drm/i915: Rename bigjoiner master/slave to bigjoiner primary/secondary")
 fb4943574f92 ("drm/i915: Rename all bigjoiner to joiner")
+578ff98403ce ("drm/i915: Allow bigjoiner for MST")
+3607b30836ae ("drm/i915: Handle joined pipes inside hsw_crtc_enable()")
+e16bcbb01186 ("drm/i915: Handle joined pipes inside hsw_crtc_disable()")
+2b8ad19d3ed6 ("drm/i915: Introduce intel_crtc_joined_pipe_mask()")
+e43b4f7980f8 ("drm/i915: Pass connector to intel_dp_need_bigjoiner()")
+5a1527ed8b43 ("drm/i915/mst: Check intel_dp_joiner_needs_dsc()")
+aa099402f98b ("drm/i915: Extract intel_dp_joiner_needs_dsc()")
+c0b8afc3a777 ("drm/i915: s/intel_dp_can_bigjoiner()/intel_dp_has_bigjoiner()/")
+e02ef5553d9b ("drm/i915: Update pipes in reverse order for bigjoiner")
+3a5e09d82f97 ("drm/i915: Fix intel_modeset_pipe_config_late() for bigjoiner")
+f9d5e51db656 ("drm/i915/vrr: Disable VRR when using bigjoiner")
+ef79820db723 ("drm/i915: Disable live M/N updates when using bigjoiner")
+b37e1347b991 ("drm/i915: Disable port sync when bigjoiner is used")
+372fa0c79d3f ("drm/i915/psr: Disable PSR when bigjoiner is used")
+7a3f171c8f6a ("drm/i915: Extract glk_need_scaler_clock_gating_wa()")
+c922a47913f9 ("drm/i915: Clean up glk_pipe_scaler_clock_gating_wa()")
+e9fa99dd47a4 ("drm/i915: Shuffle DP .mode_valid() checks")
 
 thanks,
 
