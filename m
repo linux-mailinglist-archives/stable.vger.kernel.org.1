@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBFD59949DC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D4C994E3D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:15:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9701F1F22887
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 899C4282D2F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8322E1DC759;
-	Tue,  8 Oct 2024 12:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C011DEFE3;
+	Tue,  8 Oct 2024 13:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7yYMuiV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/7mwvjH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E030EEC8;
-	Tue,  8 Oct 2024 12:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559EF16FF26;
+	Tue,  8 Oct 2024 13:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390413; cv=none; b=DVbhc9u/x6fNFjbf6Q5GvhMz1fdM0LEUc33lTs9p8r6ibfiD0Iyosd+zKHXfkAS5+7kWaosb8Er1lDCuYEvUeeWmSqpVkrZiy5vs9CxX8UO6cPYHqn8bOvU6QEG86g2j+20W8YEmjy2bloVC659MZi7TlrvOJeoRQ82LPKBiviY=
+	t=1728393256; cv=none; b=VJmdVVA99KM27PT7fI8pT4IjHfex7ulbxSzpbmIv641z+HPupZk7GPQ52jRohP+EkubpgY0BYkOMpURVaYGt1BxBppro/6a0tQ3PILEFJAHoM5JBQCU8Ch7IBUgryQDptI+wyDFNoW4I5qMI4aQgTzKe4ocT+cfnhDH3kHlJp0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390413; c=relaxed/simple;
-	bh=mM6VF7nywYkZKBh5MWMsfBM+AwxZR0Mv+VH3zX4MYCA=;
+	s=arc-20240116; t=1728393256; c=relaxed/simple;
+	bh=2Sl/U0chRhACupt/b67Zy07yQGYR1OXUuuTXGyj5ccY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PgZ8lZzE3BZfwoMztB+0lzJUlQdTnyOflvvjfqwX6Ir3m0BXr+Hbmfs+6fruil5mgQfML72UwiGuyWVPZEH3ALvawjW7IoguihfheNFPUfbeg4yDFrWi8oBuNFF4RbN0PmGq1azq42LmOSDEIldYcW9xmXru5MZfoya535IhsXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7yYMuiV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5C2C4CEC7;
-	Tue,  8 Oct 2024 12:26:52 +0000 (UTC)
+	 MIME-Version; b=LHDPRHUfWF0sGB7YkRZwW8kERnHXZXtcKJv7DoeNH+tHlAZp/HtHT9dLPQMQCJ1HsGTrM1bpcwrZa/HqKNzkKc5lsohwiGG+8KNYAkcGjZ6bVW3+MeK1lPp2KQlZpMNtkYAiICyqidA040qbMLMwdPSyb65/CPv7gKhx3EQTqB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/7mwvjH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754E8C4CEC7;
+	Tue,  8 Oct 2024 13:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390412;
-	bh=mM6VF7nywYkZKBh5MWMsfBM+AwxZR0Mv+VH3zX4MYCA=;
+	s=korg; t=1728393255;
+	bh=2Sl/U0chRhACupt/b67Zy07yQGYR1OXUuuTXGyj5ccY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7yYMuiVZFOtoXNhy7p3ZPc2lEK9ebPPI0mMAX3rCyUUh+f86n9w2SCYXWPdQm8ZI
-	 wzzL+/qUbmit5KSIVzz+s4CuagHztgWQsHNhFbpr21RyF1LksVRG85MAKYSfkzTHT0
-	 uf+VoHKeUdcljbC5B4WpRovSTwvt//ki3ko2gAEY=
+	b=e/7mwvjHErJ5z6HsliWz7HVwWy1jf0sJJ3SYBjv7mpLnsUglNg2zX/txJOfUPcRml
+	 LGrJAppsv4pfJ45sZolkPTcnNNqUTfcdNGsojYN4LS0xqqp+zJRTEltqHloW16XGYE
+	 Ry3GcTFSG4qts165xGrEFwSpPJZ61pbUVfuOV8G8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Jens Remus <jremus@linux.ibm.com>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Aleksandrs Vinarskis <alex.vinarskis@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 281/482] selftests: vDSO: fix ELF hash table entry size for s390x
+Subject: [PATCH 6.6 099/386] ACPICA: iasl: handle empty connection_node
 Date: Tue,  8 Oct 2024 14:05:44 +0200
-Message-ID: <20241008115659.337936405@linuxfoundation.org>
+Message-ID: <20241008115633.343075242@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Remus <jremus@linux.ibm.com>
+From: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
 
-[ Upstream commit 14be4e6f35221c4731b004553ecf7cbc6dc1d2d8 ]
+[ Upstream commit a0a2459b79414584af6c46dd8c6f866d8f1aa421 ]
 
-The vDSO self tests fail on s390x for a vDSO linked with the GNU linker
-ld as follows:
+ACPICA commit 6c551e2c9487067d4b085333e7fe97e965a11625
 
-  # ./vdso_test_gettimeofday
-  Floating point exception (core dumped)
-
-On s390x the ELF hash table entries are 64 bits instead of 32 bits in
-size (see Glibc sysdeps/unix/sysv/linux/s390/bits/elfclass.h).
-
-Fixes: 40723419f407 ("kselftest: Enable vDSO test on non x86 platforms")
-Reported-by: Heiko Carstens <hca@linux.ibm.com>
-Tested-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Jens Remus <jremus@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://github.com/acpica/acpica/commit/6c551e2c
+Signed-off-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vDSO/parse_vdso.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/acpi/acpica/exprep.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
-index d9ccc5acac182..7dd5668ea8a6e 100644
---- a/tools/testing/selftests/vDSO/parse_vdso.c
-+++ b/tools/testing/selftests/vDSO/parse_vdso.c
-@@ -36,6 +36,12 @@
- #define ELF_BITS_XFORM(bits, x) ELF_BITS_XFORM2(bits, x)
- #define ELF(x) ELF_BITS_XFORM(ELF_BITS, x)
+diff --git a/drivers/acpi/acpica/exprep.c b/drivers/acpi/acpica/exprep.c
+index 08196fa17080e..82b1fa2d201fe 100644
+--- a/drivers/acpi/acpica/exprep.c
++++ b/drivers/acpi/acpica/exprep.c
+@@ -437,6 +437,9 @@ acpi_status acpi_ex_prep_field_value(struct acpi_create_field_info *info)
  
-+#ifdef __s390x__
-+#define ELF_HASH_ENTRY ELF(Xword)
-+#else
-+#define ELF_HASH_ENTRY ELF(Word)
-+#endif
-+
- static struct vdso_info
- {
- 	bool valid;
-@@ -47,8 +53,8 @@ static struct vdso_info
- 	/* Symbol table */
- 	ELF(Sym) *symtab;
- 	const char *symstrings;
--	ELF(Word) *bucket, *chain;
--	ELF(Word) nbucket, nchain;
-+	ELF_HASH_ENTRY *bucket, *chain;
-+	ELF_HASH_ENTRY nbucket, nchain;
- 
- 	/* Version table */
- 	ELF(Versym) *versym;
-@@ -115,7 +121,7 @@ void vdso_init_from_sysinfo_ehdr(uintptr_t base)
- 	/*
- 	 * Fish out the useful bits of the dynamic table.
- 	 */
--	ELF(Word) *hash = 0;
-+	ELF_HASH_ENTRY *hash = 0;
- 	vdso_info.symstrings = 0;
- 	vdso_info.symtab = 0;
- 	vdso_info.versym = 0;
-@@ -133,7 +139,7 @@ void vdso_init_from_sysinfo_ehdr(uintptr_t base)
- 				 + vdso_info.load_offset);
- 			break;
- 		case DT_HASH:
--			hash = (ELF(Word) *)
-+			hash = (ELF_HASH_ENTRY *)
- 				((uintptr_t)dyn[i].d_un.d_ptr
- 				 + vdso_info.load_offset);
- 			break;
+ 		if (info->connection_node) {
+ 			second_desc = info->connection_node->object;
++			if (second_desc == NULL) {
++				break;
++			}
+ 			if (!(second_desc->common.flags & AOPOBJ_DATA_VALID)) {
+ 				status =
+ 				    acpi_ds_get_buffer_arguments(second_desc);
 -- 
 2.43.0
 
