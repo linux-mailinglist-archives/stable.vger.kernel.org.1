@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EFAE994F3A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:25:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A54994D33
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D064B273E3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:23:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 363722826BF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43841DFE31;
-	Tue,  8 Oct 2024 13:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C54D11DE88B;
+	Tue,  8 Oct 2024 13:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLVbAZKY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VljJJ1YO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840C01DF990;
-	Tue,  8 Oct 2024 13:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8337D1DFD1;
+	Tue,  8 Oct 2024 13:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393739; cv=none; b=QoUwZdKkJPWFzB7v9ojGmvRxCdtJASg19NKlWMQElOcg8TUVtkguOi+E+8KwSiHI94GoO4095dUjgNrJNNes7m21DkRGbycZohPVYwKm6wvodNoClJ5TsX3rGwecIFJ0ztHIHwVNkKpTuYQtIrvIkQBvxvaJDPFwsASFJU6Pq3E=
+	t=1728392576; cv=none; b=ED+QLPY8hTKN2lXsphBFjR3rvDJjcC29y3ghdy4k6CaO03HvQqmoX6XdsyKltJq2zo++YEvtL5R4kVb5ytmK5OKjFWMfQpkJ8BfA/xa2GfsZIL4agAco4mNFdEMARIVAVg/CSS6V/WHuHR8jZVT87xzypcmTr4QQz/1wm+G9IW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393739; c=relaxed/simple;
-	bh=9iTRbSK7wf9/0/+LCr0JxxUXuAfn6FlSvONCFYbm6M4=;
+	s=arc-20240116; t=1728392576; c=relaxed/simple;
+	bh=/To6JJ95B0/uwAxFys6rqVgfiYnNBOtRI0zFv3NxQbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eD7rHh887JMmzR5OuhPZEFdsJ0Sizl4dlAMfRvR68nKQVcCai7SZH295JM3KDdJpra8f2a2sJBf9CzytSzeAFN1bhGaabzxSNzl2IySx1ky2bFVmRsUa2/avJ41GLGLgmymmFT2kMawICEwu7wks1KgaYxVELAqriNa5TEbR+Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLVbAZKY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF133C4CED1;
-	Tue,  8 Oct 2024 13:22:18 +0000 (UTC)
+	 MIME-Version; b=LXz3mqhYp5Rers7t3jO6k///ChqZaUiuqzT9baPZDgXtgBIMl+M6EyBgh+NJFiHnxXtcOycKD7lXZcPOkHcmBC6k6SjdEBtQEQNjoq63cj+3EEuUdaROg35yZwHTzo6TPQOyCWER3TDRToAmRVuJL9AtOVHh8ucmj3bC+x04p0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VljJJ1YO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C63C4CECE;
+	Tue,  8 Oct 2024 13:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393739;
-	bh=9iTRbSK7wf9/0/+LCr0JxxUXuAfn6FlSvONCFYbm6M4=;
+	s=korg; t=1728392576;
+	bh=/To6JJ95B0/uwAxFys6rqVgfiYnNBOtRI0zFv3NxQbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XLVbAZKYfrdQ+49LZqT9u2Fyk9Q/1uuzmgVsLIXNFB34kNSRBF4j6c7W6aInfZee0
-	 yxGchak4eeTsvZtp2fu7snhNDSyN6haNOmgIIcch8sPVnGs6c/qy47SHvyfLaMsy4m
-	 bpIdYd5gL+5zZdV1BK2DVHkS+QHq9j+Tcr/rThZU=
+	b=VljJJ1YO+6H9CCuG650tpBiw9D2LwnazRaZoFm6qPL/H+kHchQqvR/Tkrh1Xquq6T
+	 0T3KP2Px2y1yg13PHo0cs4kgNGbrxDKyIN2TcsCab7Zu3vWWHKrgHkSOspW69u2e+l
+	 mWg+vitYX3P+3N1y3H6n1JnbnPTHGFGYC5aCgEK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 242/386] ext4: update orig_path in ext4_find_extent()
+	Mike Tipton <quic_mdtipton@quicinc.com>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Imran Shaik <quic_imrashai@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 457/558] clk: qcom: clk-rpmh: Fix overflow in BCM vote
 Date: Tue,  8 Oct 2024 14:08:07 +0200
-Message-ID: <20241008115638.920329083@linuxfoundation.org>
+Message-ID: <20241008115720.242509476@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Mike Tipton <quic_mdtipton@quicinc.com>
 
-commit 5b4b2dcace35f618fe361a87bae6f0d13af31bc1 upstream.
+commit a4e5af27e6f6a8b0d14bc0d7eb04f4a6c7291586 upstream.
 
-In ext4_find_extent(), if the path is not big enough, we free it and set
-*orig_path to NULL. But after reallocating and successfully initializing
-the path, we don't update *orig_path, in which case the caller gets a
-valid path but a NULL ppath, and this may cause a NULL pointer dereference
-or a path memory leak. For example:
+Valid frequencies may result in BCM votes that exceed the max HW value.
+Set vote ceiling to BCM_TCS_CMD_VOTE_MASK to ensure the votes aren't
+truncated, which can result in lower frequencies than desired.
 
-ext4_split_extent
-  path = *ppath = 2000
-  ext4_find_extent
-    if (depth > path[0].p_maxdepth)
-      kfree(path = 2000);
-      *orig_path = path = NULL;
-      path = kcalloc() = 3000
-  ext4_split_extent_at(*ppath = NULL)
-    path = *ppath;
-    ex = path[depth].p_ext;
-    // NULL pointer dereference!
-
-==================================================================
-BUG: kernel NULL pointer dereference, address: 0000000000000010
-CPU: 6 UID: 0 PID: 576 Comm: fsstress Not tainted 6.11.0-rc2-dirty #847
-RIP: 0010:ext4_split_extent_at+0x6d/0x560
-Call Trace:
- <TASK>
- ext4_split_extent.isra.0+0xcb/0x1b0
- ext4_ext_convert_to_initialized+0x168/0x6c0
- ext4_ext_handle_unwritten_extents+0x325/0x4d0
- ext4_ext_map_blocks+0x520/0xdb0
- ext4_map_blocks+0x2b0/0x690
- ext4_iomap_begin+0x20e/0x2c0
-[...]
-==================================================================
-
-Therefore, *orig_path is updated when the extent lookup succeeds, so that
-the caller can safely use path or *ppath.
-
-Fixes: 10809df84a4d ("ext4: teach ext4_ext_find_extent() to realloc path if necessary")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240822023545.1994557-6-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 04053f4d23a4 ("clk: qcom: clk-rpmh: Add IPA clock support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
+Reviewed-by: Taniya Das <quic_tdas@quicinc.com>
+Signed-off-by: Imran Shaik <quic_imrashai@quicinc.com>
+Link: https://lore.kernel.org/r/20240809-clk-rpmh-bcm-vote-fix-v2-1-240c584b7ef9@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c     |    3 ++-
- fs/ext4/move_extent.c |    1 -
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/clk-rpmh.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -957,6 +957,8 @@ ext4_find_extent(struct inode *inode, ex
- 
- 	ext4_ext_show_path(inode, path);
- 
-+	if (orig_path)
-+		*orig_path = path;
- 	return path;
- 
- err:
-@@ -3249,7 +3251,6 @@ static int ext4_split_extent_at(handle_t
+--- a/drivers/clk/qcom/clk-rpmh.c
++++ b/drivers/clk/qcom/clk-rpmh.c
+@@ -263,6 +263,8 @@ static int clk_rpmh_bcm_send_cmd(struct
+ 		cmd_state = 0;
  	}
- 	depth = ext_depth(inode);
- 	ex = path[depth].p_ext;
--	*ppath = path;
  
- 	if (EXT4_EXT_MAY_ZEROOUT & split_flag) {
- 		if (split_flag & (EXT4_EXT_DATA_VALID1|EXT4_EXT_DATA_VALID2)) {
---- a/fs/ext4/move_extent.c
-+++ b/fs/ext4/move_extent.c
-@@ -36,7 +36,6 @@ get_ext_path(struct inode *inode, ext4_l
- 		*ppath = NULL;
- 		return -ENODATA;
- 	}
--	*ppath = path;
- 	return 0;
- }
- 
++	cmd_state = min(cmd_state, BCM_TCS_CMD_VOTE_MASK);
++
+ 	if (c->last_sent_aggr_state != cmd_state) {
+ 		cmd.addr = c->res_addr;
+ 		cmd.data = BCM_TCS_CMD(1, enable, 0, cmd_state);
 
 
 
