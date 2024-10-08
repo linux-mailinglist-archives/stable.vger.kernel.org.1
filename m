@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-82821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46180994E9A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A92C7994A76
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:33:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3AF92826A7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F9CEB2207F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571E71DEFF6;
-	Tue,  8 Oct 2024 13:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5BC01DE8AA;
+	Tue,  8 Oct 2024 12:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEQ73Har"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIuLAaVm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156761DE4CC;
-	Tue,  8 Oct 2024 13:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607961D27B3;
+	Tue,  8 Oct 2024 12:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393538; cv=none; b=F4YlruS1frDHLw7809NCF9MJJFIhhx68O5ACcmQtwriMrpBkfCzKaxoe1GfVaEBFTRa2DwonCUpnDzFGJww2R0SY3TVMCbzQ6GKI6HPmzMNLhywrv/O0HEkPMBzxkPH2uwg4BBHbgI/QorEK6DHOoaKft1CCL0V+Do/DnGxEOy8=
+	t=1728390792; cv=none; b=qzSBEbrH72+5DLOSTmBRQtAgnLmtIfxJeYPjZ6xAHHqD1p49fO7l5OiMKNkVzUhSz0R6xs6g1EPh5k4z1+s7CKCVGiC+5zdEjhwpcGHnncSP84PM5TSObrVyZvOjmQVTfXCKM5RBuYFrALdgpASc2oLf2KKI9vcjawM2/JjGL7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393538; c=relaxed/simple;
-	bh=YzXmwrbTLOfkhab8uFO4i/3v2eoZbD6Wold/mUad+Us=;
+	s=arc-20240116; t=1728390792; c=relaxed/simple;
+	bh=k4teYPH8mUWW+PO2wQo/wca5qzvEO+haNG7GzJnCwLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FjQriJwO+7FqzTbe5MHZDldRAcoxmoi5AoLrigQQqkQhrWqFU5EZZwb1DpKgJ0JkSaTIJN0DfUO1qinHZmJWHani4bwy4o1X5BeOE45fzODUnD5yWo84F9LSnY5zhGvc8PxeSVbQg+qYMM4VtYqW0ccA2KrWUP7zQbsFhOn9cFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEQ73Har; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78797C4CEC7;
-	Tue,  8 Oct 2024 13:18:57 +0000 (UTC)
+	 MIME-Version; b=YxAK7FzV72i1yJmXNN0fD18Wu2JCg2+PCVnoPK2fgonvKT/TsB2G0fv0usqdSSk4TvFttPK+zxCBuirDyWCe27omal0InZRmXov6KHUuI2ojKGtb30XAF/QycsLn3u6fQvtQ1WVArgbsjJPdN7kHLI/CW/o6mYrMHLZ3nJ3Yv28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rIuLAaVm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EEDC4CECF;
+	Tue,  8 Oct 2024 12:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393537;
-	bh=YzXmwrbTLOfkhab8uFO4i/3v2eoZbD6Wold/mUad+Us=;
+	s=korg; t=1728390792;
+	bh=k4teYPH8mUWW+PO2wQo/wca5qzvEO+haNG7GzJnCwLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TEQ73Har4so87EkNakN+x6EvWLLGDjKc/wjXgmNqAb2s4lDC4J57dJ2IyANqTVpQo
-	 rgXgeQzoMP1alKQ3ntf5uCuwdG4n5G9F0/aujrQngGcR9ZDYgY0GMCChDJE/PfA7aY
-	 FtkDB2DKdNHUIbDIEwH9madpvLi3sV+93li2ZTWk=
+	b=rIuLAaVmMILeYGaBOza6Zjy/NLjJ4giS6sNiPX8VOz6gpK0Nrjsr9H5m7LOmaPx6t
+	 Wp+VtRLlxPDY/qj4LFofZvVUhTpRGNF1+nETfnvah+A7/ADB3mm1g+Hc1srntIE0wJ
+	 q5bHZa4sxOPDLCj6CfQRRw24HGVEX81r4W5ZpTEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 181/386] ext4: avoid use-after-free in ext4_ext_show_leaf()
+	Mark Rutland <mark.rutland@arm.com>,
+	James More <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.10 363/482] arm64: Subscribe Microsoft Azure Cobalt 100 to erratum 3194386
 Date: Tue,  8 Oct 2024 14:07:06 +0200
-Message-ID: <20241008115636.534622871@linuxfoundation.org>
+Message-ID: <20241008115702.708105117@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
 
-[ Upstream commit 4e2524ba2ca5f54bdbb9e5153bea00421ef653f5 ]
+commit 3eddb108abe3de6723cc4b77e8558ce1b3047987 upstream.
 
-In ext4_find_extent(), path may be freed by error or be reallocated, so
-using a previously saved *ppath may have been freed and thus may trigger
-use-after-free, as follows:
+Add the Microsoft Azure Cobalt 100 CPU to the list of CPUs suffering
+from erratum 3194386 added in commit 75b3c43eab59 ("arm64: errata:
+Expand speculative SSBS workaround")
 
-ext4_split_extent
-  path = *ppath;
-  ext4_split_extent_at(ppath)
-  path = ext4_find_extent(ppath)
-  ext4_split_extent_at(ppath)
-    // ext4_find_extent fails to free path
-    // but zeroout succeeds
-  ext4_ext_show_leaf(inode, path)
-    eh = path[depth].p_hdr
-    // path use-after-free !!!
-
-Similar to ext4_split_extent_at(), we use *ppath directly as an input to
-ext4_ext_show_leaf(). Fix a spelling error by the way.
-
-Same problem in ext4_ext_handle_unwritten_extents(). Since 'path' is only
-used in ext4_ext_show_leaf(), remove 'path' and use *ppath directly.
-
-This issue is triggered only when EXT_DEBUG is defined and therefore does
-not affect functionality.
-
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20240822023545.1994557-5-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: Mark Rutland <mark.rutland@arm.com>
+CC: James More <james.morse@arm.com>
+CC: Will Deacon <will@kernel.org>
+CC: stable@vger.kernel.org # 6.6+
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20241003225239.321774-1-eahariha@linux.microsoft.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ Documentation/arch/arm64/silicon-errata.rst |    2 ++
+ arch/arm64/kernel/cpu_errata.c              |    1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 448e0ea49b31d..7fead53255fcb 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -3287,7 +3287,7 @@ static int ext4_split_extent_at(handle_t *handle,
- }
- 
- /*
-- * ext4_split_extents() splits an extent and mark extent which is covered
-+ * ext4_split_extent() splits an extent and mark extent which is covered
-  * by @map as split_flags indicates
-  *
-  * It may result in splitting the extent into multiple extents (up to three)
-@@ -3363,7 +3363,7 @@ static int ext4_split_extent(handle_t *handle,
- 			goto out;
- 	}
- 
--	ext4_ext_show_leaf(inode, path);
-+	ext4_ext_show_leaf(inode, *ppath);
- out:
- 	return err ? err : allocated;
- }
-@@ -3828,14 +3828,13 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
- 			struct ext4_ext_path **ppath, int flags,
- 			unsigned int allocated, ext4_fsblk_t newblock)
- {
--	struct ext4_ext_path __maybe_unused *path = *ppath;
- 	int ret = 0;
- 	int err = 0;
- 
- 	ext_debug(inode, "logical block %llu, max_blocks %u, flags 0x%x, allocated %u\n",
- 		  (unsigned long long)map->m_lblk, map->m_len, flags,
- 		  allocated);
--	ext4_ext_show_leaf(inode, path);
-+	ext4_ext_show_leaf(inode, *ppath);
- 
- 	/*
- 	 * When writing into unwritten space, we should not fail to
-@@ -3932,7 +3931,7 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
- 	if (allocated > map->m_len)
- 		allocated = map->m_len;
- 	map->m_len = allocated;
--	ext4_ext_show_leaf(inode, path);
-+	ext4_ext_show_leaf(inode, *ppath);
- out2:
- 	return err ? err : allocated;
- }
--- 
-2.43.0
-
+--- a/Documentation/arch/arm64/silicon-errata.rst
++++ b/Documentation/arch/arm64/silicon-errata.rst
+@@ -289,3 +289,5 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Microsoft      | Azure Cobalt 100| #2253138        | ARM64_ERRATUM_2253138       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| Microsoft      | Azure Cobalt 100| #3324339        | ARM64_ERRATUM_3194386       |
+++----------------+-----------------+-----------------+-----------------------------+
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -447,6 +447,7 @@ static const struct midr_range erratum_s
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X925),
++	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
 
 
 
