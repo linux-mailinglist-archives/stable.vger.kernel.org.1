@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-82910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DADFB994F4B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:26:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C567994AC8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04AF71C22430
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:26:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7B2DB26DBB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9F01DF74D;
-	Tue,  8 Oct 2024 13:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB681DA60C;
+	Tue,  8 Oct 2024 12:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lj9iYfa/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="weoiLyoF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738ED1DF25C;
-	Tue,  8 Oct 2024 13:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C404C190663;
+	Tue,  8 Oct 2024 12:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393839; cv=none; b=GrjySIg3kTM/n0Urj3HoN/D/3A0t9+fs3s7SmQTQ9IydKrrHT87kcXslpI51JirMPErARhU4R+f9e4Cv6j8Z4m2ZZCkr+XQCPBVlnPRd7HZEnVFqmkqCKg+Ovjuj8O6nn/r6/p5XCFfLjnI6txa0F/5awF7XsmUPFUxbJ7Hwq7c=
+	t=1728390980; cv=none; b=UyLMQJf+E3E+98mTRLRZ4MrW8ey4dPxtalkUZXX/yJFGNu0HoSYolCB53VOguTOdNVeJ1rcBu5vVabp8paLbtCtjWgEiC7e5Z21sNO8NG7bFBgwE1nPn+e5kdniW4q/DFmrmOa0oix6BVkWG/qCf3fQlzwPikTLTsQWsaIsp4rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393839; c=relaxed/simple;
-	bh=9u19+tCNcxcEmPcbKB8i/4rfRgfCebCIDPJIJYoGxoU=;
+	s=arc-20240116; t=1728390980; c=relaxed/simple;
+	bh=+lx7GTgdgyRh+oGQoXlWhl+2tGxeQ9LEzvSdoosD/FQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rjx/niplEZlk5f/PBHau9E9t/PDwYtQdm1WhJywly8c/2ItRxgscCdcfVeh0uY+F+hnhimrxeTwjbp28Pz61C4cVbY5u0Wc6/p++Odvz9YZeUyfmydTwK/v1Lzmt0y77EIEZIayknJ2sN2wtzBf7MgjASheh4Siw5esUyVPc7sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lj9iYfa/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8687EC4CECC;
-	Tue,  8 Oct 2024 13:23:58 +0000 (UTC)
+	 MIME-Version; b=jTEDv4+lqSouquoq1NUIWyQOsSU7Vym3udCA/tLinhRV+W6ShMhLOrAhGN0TEVzg3q6MtgQ3d3eQKW9lQCu92AfXEFpBOw1i45UsRZ2ZFSb9+OP0v0EvYOUDDBthP+j3CmoNzNGG9CEV+fQlyQU7kq8Fn7SOspt5WHa2O8rsCOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=weoiLyoF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36813C4CECD;
+	Tue,  8 Oct 2024 12:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393839;
-	bh=9u19+tCNcxcEmPcbKB8i/4rfRgfCebCIDPJIJYoGxoU=;
+	s=korg; t=1728390980;
+	bh=+lx7GTgdgyRh+oGQoXlWhl+2tGxeQ9LEzvSdoosD/FQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lj9iYfa/0as3GizSP18hgwalI4ENXYf5+UMahVW56TShnqfLjj5baEGVX0Ey6EGoI
-	 gRAo5jQ04K6Yf7s27H6USorCLADzmiiZhpuOugbQCBtYqTy9ZrD14BmG3eiuTK0cco
-	 GHXIDW2WSMPRj49EGmomlgH5q+WT6Gnv9TC7/pss=
+	b=weoiLyoF6KPG8C0w1bDOBVCCGJ6RciSs/ijlJi3bissq5cj40PN2+ArtFYvEOQy3h
+	 BSSPIv7V8kNOL7t79UQORdqi8PFsY4m9BOO21pqOdB+rpt1zmOR9LUii747fnIphlY
+	 dBcsapD0Tbl8AODqAr0RmunKLkDvZtgy6bmvYXhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunzhao Li <yunzhao@cloudflare.com>,
-	"Matt Fleming (Cloudflare)" <matt@readmodwrite.com>,
-	Ian Rogers <irogers@google.com>,
-	kernel-team@cloudflare.com,
-	Namhyung Kim <namhyung@kernel.org>,
-	Riccardo Mancini <rickyman7@gmail.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 6.6 271/386] perf hist: Update hist symbol when updating maps
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 453/482] build-id: require program headers to be right after ELF header
 Date: Tue,  8 Oct 2024 14:08:36 +0200
-Message-ID: <20241008115640.055400158@linuxfoundation.org>
+Message-ID: <20241008115706.345226133@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Fleming <matt@readmodwrite.com>
+From: Alexey Dobriyan <adobriyan@gmail.com>
 
-commit ac01c8c4246546fd8340a232f3ada1921dc0ee48 upstream.
+[ Upstream commit 961a2851324561caed579764ffbee3db82b32829 ]
 
-AddressSanitizer found a use-after-free bug in the symbol code which
-manifested as 'perf top' segfaulting.
+Neither ELF spec not ELF loader require program header to be placed right
+after ELF header, but build-id code very much assumes such placement:
 
-  ==1238389==ERROR: AddressSanitizer: heap-use-after-free on address 0x60b00c48844b at pc 0x5650d8035961 bp 0x7f751aaecc90 sp 0x7f751aaecc80
-  READ of size 1 at 0x60b00c48844b thread T193
-      #0 0x5650d8035960 in _sort__sym_cmp util/sort.c:310
-      #1 0x5650d8043744 in hist_entry__cmp util/hist.c:1286
-      #2 0x5650d8043951 in hists__findnew_entry util/hist.c:614
-      #3 0x5650d804568f in __hists__add_entry util/hist.c:754
-      #4 0x5650d8045bf9 in hists__add_entry util/hist.c:772
-      #5 0x5650d8045df1 in iter_add_single_normal_entry util/hist.c:997
-      #6 0x5650d8043326 in hist_entry_iter__add util/hist.c:1242
-      #7 0x5650d7ceeefe in perf_event__process_sample /home/matt/src/linux/tools/perf/builtin-top.c:845
-      #8 0x5650d7ceeefe in deliver_event /home/matt/src/linux/tools/perf/builtin-top.c:1208
-      #9 0x5650d7fdb51b in do_flush util/ordered-events.c:245
-      #10 0x5650d7fdb51b in __ordered_events__flush util/ordered-events.c:324
-      #11 0x5650d7ced743 in process_thread /home/matt/src/linux/tools/perf/builtin-top.c:1120
-      #12 0x7f757ef1f133 in start_thread nptl/pthread_create.c:442
-      #13 0x7f757ef9f7db in clone3 ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+See
 
-When updating hist maps it's also necessary to update the hist symbol
-reference because the old one gets freed in map__put().
+	find_get_page(vma->vm_file->f_mapping, 0);
 
-While this bug was probably introduced with 5c24b67aae72f54c ("perf
-tools: Replace map->referenced & maps->removed_maps with map->refcnt"),
-the symbol objects were leaked until c087e9480cf33672 ("perf machine:
-Fix refcount usage when processing PERF_RECORD_KSYMBOL") was merged so
-the bug was masked.
+line and checks against PAGE_SIZE.
 
-Fixes: c087e9480cf33672 ("perf machine: Fix refcount usage when processing PERF_RECORD_KSYMBOL")
-Reported-by: Yunzhao Li <yunzhao@cloudflare.com>
-Signed-off-by: Matt Fleming (Cloudflare) <matt@readmodwrite.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: kernel-team@cloudflare.com
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Riccardo Mancini <rickyman7@gmail.com>
-Cc: stable@vger.kernel.org # v5.13+
-Link: https://lore.kernel.org/r/20240815142212.3834625-1-matt@readmodwrite.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Returns errors for now until someone rewrites build-id parser
+to be more inline with load_elf_binary().
+
+Link: https://lkml.kernel.org/r/d58bc281-6ca7-467a-9a64-40fa214bd63e@p183
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 905415ff3ffb ("lib/buildid: harden build ID parsing logic")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/hist.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ lib/buildid.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/tools/perf/util/hist.c
-+++ b/tools/perf/util/hist.c
-@@ -638,6 +638,11 @@ static struct hist_entry *hists__findnew
- 			 * the history counter to increment.
- 			 */
- 			if (he->ms.map != entry->ms.map) {
-+				if (he->ms.sym) {
-+					u64 addr = he->ms.sym->start;
-+					he->ms.sym = map__find_symbol(entry->ms.map, addr);
-+				}
-+
- 				map__put(he->ms.map);
- 				he->ms.map = map__get(entry->ms.map);
- 			}
+diff --git a/lib/buildid.c b/lib/buildid.c
+index 7954dd92e36c0..e02b5507418b4 100644
+--- a/lib/buildid.c
++++ b/lib/buildid.c
+@@ -73,6 +73,13 @@ static int get_build_id_32(const void *page_addr, unsigned char *build_id,
+ 	Elf32_Phdr *phdr;
+ 	int i;
+ 
++	/*
++	 * FIXME
++	 * Neither ELF spec nor ELF loader require that program headers
++	 * start immediately after ELF header.
++	 */
++	if (ehdr->e_phoff != sizeof(Elf32_Ehdr))
++		return -EINVAL;
+ 	/* only supports phdr that fits in one page */
+ 	if (ehdr->e_phnum >
+ 	    (PAGE_SIZE - sizeof(Elf32_Ehdr)) / sizeof(Elf32_Phdr))
+@@ -98,6 +105,13 @@ static int get_build_id_64(const void *page_addr, unsigned char *build_id,
+ 	Elf64_Phdr *phdr;
+ 	int i;
+ 
++	/*
++	 * FIXME
++	 * Neither ELF spec nor ELF loader require that program headers
++	 * start immediately after ELF header.
++	 */
++	if (ehdr->e_phoff != sizeof(Elf64_Ehdr))
++		return -EINVAL;
+ 	/* only supports phdr that fits in one page */
+ 	if (ehdr->e_phnum >
+ 	    (PAGE_SIZE - sizeof(Elf64_Ehdr)) / sizeof(Elf64_Phdr))
+-- 
+2.43.0
+
 
 
 
