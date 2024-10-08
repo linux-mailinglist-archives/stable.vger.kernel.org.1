@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39083994874
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:13:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C0D994B60
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:43:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B3091C24D31
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:13:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EB5A284FB8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A7A1DE3C1;
-	Tue,  8 Oct 2024 12:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2391DF27E;
+	Tue,  8 Oct 2024 12:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gI0mpK4I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnhMJ2Pq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EBF1DE2C4;
-	Tue,  8 Oct 2024 12:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C1B1DF247;
+	Tue,  8 Oct 2024 12:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389574; cv=none; b=gUXuBti3I4kI5yEffA4mP/QmY9frilQhPP52BEW9sNnU+seZftEBfPc/pZHnusBi68I+5VX8D9Gofkgr2zBOha2kCaLo1WyHteXME7Cx1bgcJoU/vC1535QPq/Lh2t9Zsfb+WUDfDzLhJJdZpEsyrr8wWUbfvR3YgQ8MjQ+au88=
+	t=1728391293; cv=none; b=cd7hV5WeQmCIXrsMd6/05wNEHT6/B4bTbi2i05VJ8Ik+MCX1HoQqxknIcu2B2N2yeMVtuG6FnZ1e0AIvc3C4x6PiBkfBU1rfh1BDmiI97B26dCJtn7hwoojFTfymgyWqX4852b6Uerpxk+VqIY2Biz/bWiuSEMbyq8F4c+P5DME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389574; c=relaxed/simple;
-	bh=0Suqf0+K+TmsSk6wr04Oo2ehgvyLTey7pd5VwwFYAuA=;
+	s=arc-20240116; t=1728391293; c=relaxed/simple;
+	bh=9QxplPmpBY/fpVXfO6XqT20iSmvde+tQW7mmcLMkkoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WOj7yOMpv04Fp6aZEwWUH+ksGTzrE72PCacJG/R0E4YEn7M1+aZ/ZctHN6Vp969zBz2k/fhk3r3iKJxT1KgPvTGOJBFKx2TAcatdEm+vZxkuPohnPEiTYIccsMQjVX7wPw16ibEDd7dc6ecblLGH92bbmbhChr4DE0Oto0XOSTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gI0mpK4I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC44C4CEC7;
-	Tue,  8 Oct 2024 12:12:53 +0000 (UTC)
+	 MIME-Version; b=Fvj21OXTEz/kZGBn/L2eqHGiUyLA7tmILHWs3ocb4RIgAQHv5ttL05ECKo1XaB1fgEFD3NkGZ+y6BEfIsIbXCHEAYcp4zdezGqx+lkczQ8CDR3PrIqHOxVWUwQSP61awVzuKaxWN7RKKAwXalMEeF6Ksz3kGTr1J/GFyGHtG5Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnhMJ2Pq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2433C4CEC7;
+	Tue,  8 Oct 2024 12:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389574;
-	bh=0Suqf0+K+TmsSk6wr04Oo2ehgvyLTey7pd5VwwFYAuA=;
+	s=korg; t=1728391293;
+	bh=9QxplPmpBY/fpVXfO6XqT20iSmvde+tQW7mmcLMkkoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gI0mpK4INP2VujGZ2yOI5zMDn9NiNnyGLg29hy0ZIhX9pVPSANZixMmK8LuIUnRdz
-	 2IisC6WnzQyLydlQzLhTn9Vv7VpBarC0IIsV+yD4aRa8012AKOWBLZJwv7tpYE7ByB
-	 TLUOiYvAK8f+XkV4FExzc4xZ3vHbHaTi6l7LpUMs=
+	b=TnhMJ2PqiiloHbFX6xOPJRpzGXgzuoEJclSiOYGzTKzLBq7PlLezi7910BaLKEDvf
+	 E4QTFSsEAgsCATa+yyXJ9CDG3JlFFmW61W4+41fgFu3TitceLumV9U3OzioNpUQsMG
+	 I22R7l2D58Kg3jAx7xzlfWrBLXi3tHZeDprq4AUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Steven Price <steven.price@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 034/482] net: Add netif_get_gro_max_size helper for GRO
+Subject: [PATCH 6.11 067/558] drm/panthor: Lock the VM resv before calling drm_gpuvm_bo_obtain_prealloc()
 Date: Tue,  8 Oct 2024 14:01:37 +0200
-Message-ID: <20241008115649.641824359@linuxfoundation.org>
+Message-ID: <20241008115704.853262315@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-[ Upstream commit e8d4d34df715133c319fabcf63fdec684be75ff8 ]
+[ Upstream commit fa998a9eac8809da4f219aad49836fcad2a9bf5c ]
 
-Add a small netif_get_gro_max_size() helper which returns the maximum IPv4
-or IPv6 GRO size of the netdevice.
+drm_gpuvm_bo_obtain_prealloc() will call drm_gpuvm_bo_put() on our
+pre-allocated BO if the <BO,VM> association exists. Given we
+only have one ref on preallocated_vm_bo, drm_gpuvm_bo_destroy() will
+be called immediately, and we have to hold the VM resv lock when
+calling this function.
 
-We later add a netif_get_gso_max_size() equivalent as well for GSO, so that
-these helpers can be used consistently instead of open-coded checks.
-
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240923212242.15669-1-daniel@iogearbox.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: e609c959a939 ("net: Fix gso_features_check to check for both dev->gso_{ipv4_,}max_size")
+Fixes: 647810ec2476 ("drm/panthor: Add the MMU/VM logical block")
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240913112722.492144-1-boris.brezillon@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netdevice.h | 9 +++++++++
- net/core/gro.c            | 9 ++-------
- 2 files changed, 11 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/panthor/panthor_mmu.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index d20c6c99eb887..84a445ca4749a 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -5000,6 +5000,15 @@ void netif_set_tso_max_segs(struct net_device *dev, unsigned int segs);
- void netif_inherit_tso_max(struct net_device *to,
- 			   const struct net_device *from);
+diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
+index cc6e13a977835..ce8e8a93d7076 100644
+--- a/drivers/gpu/drm/panthor/panthor_mmu.c
++++ b/drivers/gpu/drm/panthor/panthor_mmu.c
+@@ -1251,9 +1251,17 @@ static int panthor_vm_prepare_map_op_ctx(struct panthor_vm_op_ctx *op_ctx,
+ 		goto err_cleanup;
+ 	}
  
-+static inline unsigned int
-+netif_get_gro_max_size(const struct net_device *dev, const struct sk_buff *skb)
-+{
-+	/* pairs with WRITE_ONCE() in netif_set_gro(_ipv4)_max_size() */
-+	return skb->protocol == htons(ETH_P_IPV6) ?
-+	       READ_ONCE(dev->gro_max_size) :
-+	       READ_ONCE(dev->gro_ipv4_max_size);
-+}
-+
- static inline bool netif_is_macsec(const struct net_device *dev)
- {
- 	return dev->priv_flags & IFF_MACSEC;
-diff --git a/net/core/gro.c b/net/core/gro.c
-index b3b43de1a6502..87708483a5f46 100644
---- a/net/core/gro.c
-+++ b/net/core/gro.c
-@@ -98,7 +98,6 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
- 	unsigned int headlen = skb_headlen(skb);
- 	unsigned int len = skb_gro_len(skb);
- 	unsigned int delta_truesize;
--	unsigned int gro_max_size;
- 	unsigned int new_truesize;
- 	struct sk_buff *lp;
- 	int segs;
-@@ -112,12 +111,8 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
- 	if (p->pp_recycle != skb->pp_recycle)
- 		return -ETOOMANYREFS;
++	/* drm_gpuvm_bo_obtain_prealloc() will call drm_gpuvm_bo_put() on our
++	 * pre-allocated BO if the <BO,VM> association exists. Given we
++	 * only have one ref on preallocated_vm_bo, drm_gpuvm_bo_destroy() will
++	 * be called immediately, and we have to hold the VM resv lock when
++	 * calling this function.
++	 */
++	dma_resv_lock(panthor_vm_resv(vm), NULL);
+ 	mutex_lock(&bo->gpuva_list_lock);
+ 	op_ctx->map.vm_bo = drm_gpuvm_bo_obtain_prealloc(preallocated_vm_bo);
+ 	mutex_unlock(&bo->gpuva_list_lock);
++	dma_resv_unlock(panthor_vm_resv(vm));
  
--	/* pairs with WRITE_ONCE() in netif_set_gro(_ipv4)_max_size() */
--	gro_max_size = p->protocol == htons(ETH_P_IPV6) ?
--			READ_ONCE(p->dev->gro_max_size) :
--			READ_ONCE(p->dev->gro_ipv4_max_size);
--
--	if (unlikely(p->len + len >= gro_max_size || NAPI_GRO_CB(skb)->flush))
-+	if (unlikely(p->len + len >= netif_get_gro_max_size(p->dev, p) ||
-+		     NAPI_GRO_CB(skb)->flush))
- 		return -E2BIG;
- 
- 	if (unlikely(p->len + len >= GRO_LEGACY_MAX_SIZE)) {
+ 	/* If the a vm_bo for this <VM,BO> combination exists, it already
+ 	 * retains a pin ref, and we can release the one we took earlier.
 -- 
 2.43.0
 
