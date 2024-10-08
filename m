@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC9E994B95
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5070B9948D9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:17:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E49EC1F27B29
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 095AF28126D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:17:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667EA1DED60;
-	Tue,  8 Oct 2024 12:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7801DE4C9;
+	Tue,  8 Oct 2024 12:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahfy7FKO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nq1grOAO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235861DE3AE;
-	Tue,  8 Oct 2024 12:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196C117B4EC;
+	Tue,  8 Oct 2024 12:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391454; cv=none; b=EIXvfpZneTHAnLbrc1NpF5ASomA26m+mNJI9O75MnheHrWuJXWYHBuSruI/6CA3XLlQPfjg/MKomZnEGsx0GioDtAmFlF1pOQ8EqQg2gLbYOHuMWpsjbL7F1zkz4s0T6zt8+geG4dHKphBdiOEFsNsTFIP1rvMj6UDSUuWF4Cps=
+	t=1728389820; cv=none; b=IqKhtwqHOv7XBN/iNYYcxEiIJ2sit7Z+jvKZ2EL6P/jJfewJBKJMcP/GNaIQm9oAgkKkOQQpXu1SX0beH4WIRE8pDiymcLbGTCT9tdhhnApGtO8baxXVNfd1y5MsWQEoYoiWQlN8C1ltWZmaIT8R9JTKbHoPenZQmjFSVjWyoD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391454; c=relaxed/simple;
-	bh=XkS/hj9edexZu6T0ofnd9GrupNrQcencINDY632Smjo=;
+	s=arc-20240116; t=1728389820; c=relaxed/simple;
+	bh=S5kE0uM2rUcaGFtViTM7dab81baM3tlo6w/iJcdY2aE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gT2Z7yjg7iQ3cD6FuFL4bkYQ4+JBKy/PUQfy6MHzZCi3mR/uBlndvGGMq6Y4W2/EPq5ybCyzQu5i2v7AFgG0F00o7VeLtBUL9tbjmQA4cMvNMIVK9otrhtETzUVs+vI0juJs6Na+GZ69RyRiCSielc36Tao9q+wR08wGArpD1Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahfy7FKO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEE5C4CEC7;
-	Tue,  8 Oct 2024 12:44:13 +0000 (UTC)
+	 MIME-Version; b=A9icBr2wBXID+L2/LtAP7Lb7L36lyhTLLx+qoBTofXNj56AhaOC96JaRigk3Uul9yS6zfHVV+Cai1IWo9hTrKkPJ5HPqUQFJ4dYy9uJPl4ghCY/XdQku9lH1CiVMgrKtMEXVjqL4II94q2QDBilpyzoeawUHdEp0fMW1yOS15hY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nq1grOAO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A17C4CEC7;
+	Tue,  8 Oct 2024 12:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391454;
-	bh=XkS/hj9edexZu6T0ofnd9GrupNrQcencINDY632Smjo=;
+	s=korg; t=1728389820;
+	bh=S5kE0uM2rUcaGFtViTM7dab81baM3tlo6w/iJcdY2aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ahfy7FKO0D/fjsFNe0hQNlx9j9yOsLSjxA9MbgtNd/snmEy/3cXxOO4jhNS1mp06B
-	 S7u4pxWiq069VnafOkwjmE+HjUiEiA/OEVtOGpYThky2vFNopAaJS7XsP1XPqO0zav
-	 8hQFTFt187uQFtnygxXPFwuuEusFyZHjryRLpdQs=
+	b=Nq1grOAOII/GHlhpvJh6e5kRuu76BOygsTPDZZnzbW8YRi6DHp8J63Lbxp1SItsST
+	 KT7PfLJGWyyIo3E/3l3YH9KNKUG3pr4937rPRl8kYh/0MSSl2mjqwsJFeY5X/C6a9o
+	 Xd6thZ5KpO0IVptKGxXqivj6B+6roGnQPoiSSMqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Li Zhijian <lizhijian@fujitsu.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 120/558] ACPI: EC: Do not release locks during operation region accesses
-Date: Tue,  8 Oct 2024 14:02:30 +0200
-Message-ID: <20241008115707.088364255@linuxfoundation.org>
+Subject: [PATCH 6.10 088/482] fs/inode: Prevent dump_mapping() accessing invalid dentry.d_name.name
+Date: Tue,  8 Oct 2024 14:02:31 +0200
+Message-ID: <20241008115651.768314878@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,168 +63,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-[ Upstream commit dc171114926ec390ab90f46534545420ec03e458 ]
+[ Upstream commit 7f7b850689ac06a62befe26e1fd1806799e7f152 ]
 
-It is not particularly useful to release locks (the EC mutex and the
-ACPI global lock, if present) and re-acquire them immediately thereafter
-during EC address space accesses in acpi_ec_space_handler().
+It's observed that a crash occurs during hot-remove a memory device,
+in which user is accessing the hugetlb. See calltrace as following:
 
-First, releasing them for a while before grabbing them again does not
-really help anyone because there may not be enough time for another
-thread to acquire them.
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 14045 at arch/x86/mm/fault.c:1278 do_user_addr_fault+0x2a0/0x790
+Modules linked in: kmem device_dax cxl_mem cxl_pmem cxl_port cxl_pci dax_hmem dax_pmem nd_pmem cxl_acpi nd_btt cxl_core crc32c_intel nvme virtiofs fuse nvme_core nfit libnvdimm dm_multipath scsi_dh_rdac scsi_dh_emc s
+mirror dm_region_hash dm_log dm_mod
+CPU: 1 PID: 14045 Comm: daxctl Not tainted 6.10.0-rc2-lizhijian+ #492
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+RIP: 0010:do_user_addr_fault+0x2a0/0x790
+Code: 48 8b 00 a8 04 0f 84 b5 fe ff ff e9 1c ff ff ff 4c 89 e9 4c 89 e2 be 01 00 00 00 bf 02 00 00 00 e8 b5 ef 24 00 e9 42 fe ff ff <0f> 0b 48 83 c4 08 4c 89 ea 48 89 ee 4c 89 e7 5b 5d 41 5c 41 5d 41
+RSP: 0000:ffffc90000a575f0 EFLAGS: 00010046
+RAX: ffff88800c303600 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 0000000000001000 RSI: ffffffff82504162 RDI: ffffffff824b2c36
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffffc90000a57658
+R13: 0000000000001000 R14: ffff88800bc2e040 R15: 0000000000000000
+FS:  00007f51cb57d880(0000) GS:ffff88807fd00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000001000 CR3: 00000000072e2004 CR4: 00000000001706f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ? __warn+0x8d/0x190
+ ? do_user_addr_fault+0x2a0/0x790
+ ? report_bug+0x1c3/0x1d0
+ ? handle_bug+0x3c/0x70
+ ? exc_invalid_op+0x14/0x70
+ ? asm_exc_invalid_op+0x16/0x20
+ ? do_user_addr_fault+0x2a0/0x790
+ ? exc_page_fault+0x31/0x200
+ exc_page_fault+0x68/0x200
+<...snip...>
+BUG: unable to handle page fault for address: 0000000000001000
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 800000000ad92067 P4D 800000000ad92067 PUD 7677067 PMD 0
+ Oops: Oops: 0000 [#1] PREEMPT SMP PTI
+ ---[ end trace 0000000000000000 ]---
+ BUG: unable to handle page fault for address: 0000000000001000
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 800000000ad92067 P4D 800000000ad92067 PUD 7677067 PMD 0
+ Oops: Oops: 0000 [#1] PREEMPT SMP PTI
+ CPU: 1 PID: 14045 Comm: daxctl Kdump: loaded Tainted: G        W          6.10.0-rc2-lizhijian+ #492
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+ RIP: 0010:dentry_name+0x1f4/0x440
+<...snip...>
+? dentry_name+0x2fa/0x440
+vsnprintf+0x1f3/0x4f0
+vprintk_store+0x23a/0x540
+vprintk_emit+0x6d/0x330
+_printk+0x58/0x80
+dump_mapping+0x10b/0x1a0
+? __pfx_free_object_rcu+0x10/0x10
+__dump_page+0x26b/0x3e0
+? vprintk_emit+0xe0/0x330
+? _printk+0x58/0x80
+? dump_page+0x17/0x50
+dump_page+0x17/0x50
+do_migrate_range+0x2f7/0x7f0
+? do_migrate_range+0x42/0x7f0
+? offline_pages+0x2f4/0x8c0
+offline_pages+0x60a/0x8c0
+memory_subsys_offline+0x9f/0x1c0
+? lockdep_hardirqs_on+0x77/0x100
+? _raw_spin_unlock_irqrestore+0x38/0x60
+device_offline+0xe3/0x110
+state_store+0x6e/0xc0
+kernfs_fop_write_iter+0x143/0x200
+vfs_write+0x39f/0x560
+ksys_write+0x65/0xf0
+do_syscall_64+0x62/0x130
 
-Second, if another thread successfully acquires them and carries out
-a new EC write or read in the middle if an operation region access in
-progress, it may confuse the EC firmware, especially after the burst
-mode has been enabled.
+Previously, some sanity check have been done in dump_mapping() before
+the print facility parsing '%pd' though, it's still possible to run into
+an invalid dentry.d_name.name.
 
-Finally, manipulating the locks after writing or reading every single
-byte of data is overhead that it is better to avoid.
+Since dump_mapping() only needs to dump the filename only, retrieve it
+by itself in a safer way to prevent an unnecessary crash.
 
-Accordingly, modify the code to carry out EC address space accesses
-entirely without releasing the locks.
+Note that either retrieving the filename with '%pd' or
+strncpy_from_kernel_nofault(), the filename could be unreliable.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/12473338.O9o76ZdvQC@rjwysocki.net
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Link: https://lore.kernel.org/r/20240826055503.1522320-1-lizhijian@fujitsu.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 55 +++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 49 insertions(+), 6 deletions(-)
+ fs/inode.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 38d2f6e6b12b4..25399f6dde7e2 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -783,6 +783,9 @@ static int acpi_ec_transaction_unlocked(struct acpi_ec *ec,
- 	unsigned long tmp;
- 	int ret = 0;
+diff --git a/fs/inode.c b/fs/inode.c
+index 3df67672986aa..aeb07c3b8f24e 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -593,6 +593,7 @@ void dump_mapping(const struct address_space *mapping)
+ 	struct hlist_node *dentry_first;
+ 	struct dentry *dentry_ptr;
+ 	struct dentry dentry;
++	char fname[64] = {};
+ 	unsigned long ino;
  
-+	if (t->rdata)
-+		memset(t->rdata, 0, t->rlen);
-+
- 	/* start transaction */
- 	spin_lock_irqsave(&ec->lock, tmp);
- 	/* Enable GPE for command processing (IBF=0/OBF=1) */
-@@ -819,8 +822,6 @@ static int acpi_ec_transaction(struct acpi_ec *ec, struct transaction *t)
- 
- 	if (!ec || (!t) || (t->wlen && !t->wdata) || (t->rlen && !t->rdata))
- 		return -EINVAL;
--	if (t->rdata)
--		memset(t->rdata, 0, t->rlen);
- 
- 	mutex_lock(&ec->mutex);
- 	if (ec->global_lock) {
-@@ -847,7 +848,7 @@ static int acpi_ec_burst_enable(struct acpi_ec *ec)
- 				.wdata = NULL, .rdata = &d,
- 				.wlen = 0, .rlen = 1};
- 
--	return acpi_ec_transaction(ec, &t);
-+	return acpi_ec_transaction_unlocked(ec, &t);
- }
- 
- static int acpi_ec_burst_disable(struct acpi_ec *ec)
-@@ -857,7 +858,7 @@ static int acpi_ec_burst_disable(struct acpi_ec *ec)
- 				.wlen = 0, .rlen = 0};
- 
- 	return (acpi_ec_read_status(ec) & ACPI_EC_FLAG_BURST) ?
--				acpi_ec_transaction(ec, &t) : 0;
-+				acpi_ec_transaction_unlocked(ec, &t) : 0;
- }
- 
- static int acpi_ec_read(struct acpi_ec *ec, u8 address, u8 *data)
-@@ -873,6 +874,19 @@ static int acpi_ec_read(struct acpi_ec *ec, u8 address, u8 *data)
- 	return result;
- }
- 
-+static int acpi_ec_read_unlocked(struct acpi_ec *ec, u8 address, u8 *data)
-+{
-+	int result;
-+	u8 d;
-+	struct transaction t = {.command = ACPI_EC_COMMAND_READ,
-+				.wdata = &address, .rdata = &d,
-+				.wlen = 1, .rlen = 1};
-+
-+	result = acpi_ec_transaction_unlocked(ec, &t);
-+	*data = d;
-+	return result;
-+}
-+
- static int acpi_ec_write(struct acpi_ec *ec, u8 address, u8 data)
- {
- 	u8 wdata[2] = { address, data };
-@@ -883,6 +897,16 @@ static int acpi_ec_write(struct acpi_ec *ec, u8 address, u8 data)
- 	return acpi_ec_transaction(ec, &t);
- }
- 
-+static int acpi_ec_write_unlocked(struct acpi_ec *ec, u8 address, u8 data)
-+{
-+	u8 wdata[2] = { address, data };
-+	struct transaction t = {.command = ACPI_EC_COMMAND_WRITE,
-+				.wdata = wdata, .rdata = NULL,
-+				.wlen = 2, .rlen = 0};
-+
-+	return acpi_ec_transaction_unlocked(ec, &t);
-+}
-+
- int ec_read(u8 addr, u8 *val)
- {
- 	int err;
-@@ -1323,6 +1347,7 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 	struct acpi_ec *ec = handler_context;
- 	int result = 0, i, bytes = bits / 8;
- 	u8 *value = (u8 *)value64;
-+	u32 glk;
- 
- 	if ((address > 0xFF) || !value || !handler_context)
- 		return AE_BAD_PARAMETER;
-@@ -1330,13 +1355,25 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 	if (function != ACPI_READ && function != ACPI_WRITE)
- 		return AE_BAD_PARAMETER;
- 
-+	mutex_lock(&ec->mutex);
-+
-+	if (ec->global_lock) {
-+		acpi_status status;
-+
-+		status = acpi_acquire_global_lock(ACPI_EC_UDELAY_GLK, &glk);
-+		if (ACPI_FAILURE(status)) {
-+			result = -ENODEV;
-+			goto unlock;
-+		}
-+	}
-+
- 	if (ec->busy_polling || bits > 8)
- 		acpi_ec_burst_enable(ec);
- 
- 	for (i = 0; i < bytes; ++i, ++address, ++value) {
- 		result = (function == ACPI_READ) ?
--			acpi_ec_read(ec, address, value) :
--			acpi_ec_write(ec, address, *value);
-+			acpi_ec_read_unlocked(ec, address, value) :
-+			acpi_ec_write_unlocked(ec, address, *value);
- 		if (result < 0)
- 			break;
+ 	/*
+@@ -629,11 +630,14 @@ void dump_mapping(const struct address_space *mapping)
+ 		return;
  	}
-@@ -1344,6 +1381,12 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 	if (ec->busy_polling || bits > 8)
- 		acpi_ec_burst_disable(ec);
  
-+	if (ec->global_lock)
-+		acpi_release_global_lock(glk);
-+
-+unlock:
-+	mutex_unlock(&ec->mutex);
-+
- 	switch (result) {
- 	case -EINVAL:
- 		return AE_BAD_PARAMETER;
++	if (strncpy_from_kernel_nofault(fname, dentry.d_name.name, 63) < 0)
++		strscpy(fname, "<invalid>");
+ 	/*
+-	 * if dentry is corrupted, the %pd handler may still crash,
+-	 * but it's unlikely that we reach here with a corrupt mapping
++	 * Even if strncpy_from_kernel_nofault() succeeded,
++	 * the fname could be unreliable
+ 	 */
+-	pr_warn("aops:%ps ino:%lx dentry name:\"%pd\"\n", a_ops, ino, &dentry);
++	pr_warn("aops:%ps ino:%lx dentry name(?):\"%s\"\n",
++		a_ops, ino, fname);
+ }
+ 
+ void clear_inode(struct inode *inode)
 -- 
 2.43.0
 
