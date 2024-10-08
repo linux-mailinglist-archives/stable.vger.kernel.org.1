@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C87DA994A04
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:29:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1043C994CBD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:58:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C3851F21E7C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:29:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 339091C2510E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0EF1DE4F3;
-	Tue,  8 Oct 2024 12:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E491DEFE3;
+	Tue,  8 Oct 2024 12:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVhBttg+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBFIop35"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696BB1DA60C;
-	Tue,  8 Oct 2024 12:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0461DE8A0;
+	Tue,  8 Oct 2024 12:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390499; cv=none; b=LpuPHWKgP8UMXraK2AfmapPfJBYZYoz+y8DCOgnaxXb7Gb3HTbQD5uTqQJy+kOFTsaqdXebNIljsv4NktlIBovduTSfHHx9PX38kcZZWin660mwUhy1KceP2yO00qt1TmyYlXAA7Yger+mVQosOE9sSuCqmTrsU7bx34YR98CK0=
+	t=1728392212; cv=none; b=NsZR6f0J50ISXBfnTLtlNviLXgvxXUw9bixjcDxTgeGRpdCyNFOZciHo5XQQy8b5827d9+QK7eUXsKRUjognTXFcmdx8P+v1jZxR0btRdw4im5ctEMbbbxGIClx3qsFaC5EEqgUQCqvcRN+UGED70dnxEUvb1G5HF/Ri0wa9peI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390499; c=relaxed/simple;
-	bh=/IhfLkbagABHqpZ81aNaQhGak6GZkKWtjSsJsvhj/fA=;
+	s=arc-20240116; t=1728392212; c=relaxed/simple;
+	bh=e0agGJbQTcUNF6Z2O5+Jdlg/dSAU2ZMfGxV9iW6jysE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aoq+re8wkkaI/bO8W4mF2Z/MoejMVvrMit2pz2++RVFa2IOLU9glMDf7Jlw5h22NWkGueohEHzMzniW9jmlu9r3C53W57qAQXuz4JTrhgLjScckkDEnK/ohh/lI/UBV0a3qA68OFV0fw4VM7l9+s1NMHjN0ViCGsQOT+O+TLDfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVhBttg+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC80EC4CEC7;
-	Tue,  8 Oct 2024 12:28:18 +0000 (UTC)
+	 MIME-Version; b=sxgdmRaSadbzxM2FetTROkw1aLANQcr5Dq2TiBFruHYAFWIO2kfmfIc9Nnqb8YB7xZ//t9DvJlnLVRUGILAuakLD+srE/evSP3/DvsE1NAT/RLqM/lwkqvASqcvKx5bLpPumamghG2wc3YCUlQ4SGYdU17GWvOQiGWmi0t3gcaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBFIop35; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9211EC4CECC;
+	Tue,  8 Oct 2024 12:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390499;
-	bh=/IhfLkbagABHqpZ81aNaQhGak6GZkKWtjSsJsvhj/fA=;
+	s=korg; t=1728392212;
+	bh=e0agGJbQTcUNF6Z2O5+Jdlg/dSAU2ZMfGxV9iW6jysE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WVhBttg+KtmBuFvxyxEl0ET0TrIY1l/ovLIrvLu2wfBSQpYj4Hsm7NG2D3cfNguTR
-	 vAlTQ3fbEKQilPIbG8zpEE3dB92MiMApqAGecgZo7lZBOiicbC5guEOyACzTwSXeGM
-	 u0CgyvqCLuvjhljw8Y15h0gb/aFOjfsKp5xu6yUU=
+	b=mBFIop35YifSnJiA3K6X+fL78SYrwOTasT+k0P0V3AnrAsANfSlfqXa+LPoHuFqu8
+	 4Uvd92MTDyDr5jBqAMC5DJ3rRc1lPBFouJeoNjHD7ROBL4klAAmXmwqQffksIKkYRu
+	 8FxHad1J7sT8ghwH7+ucmDlYzgNyzc+Z3CiGpjZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Feng Tang <feng.tang@intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 6.10 308/482] mm, slub: avoid zeroing kmalloc redzone
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 341/558] f2fs: introduce migration_window_granularity
 Date: Tue,  8 Oct 2024 14:06:11 +0200
-Message-ID: <20241008115700.554838654@linuxfoundation.org>
+Message-ID: <20241008115715.721823873@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,205 +63,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Daeho Jeong <daehojeong@google.com>
 
-commit 59090e479ac78ae18facd4c58eb332562a23020e upstream.
+[ Upstream commit 8c890c4c60342719526520133fb1b6f69f196ab8 ]
 
-Since commit 946fa0dbf2d8 ("mm/slub: extend redzone check to extra
-allocated kmalloc space than requested"), setting orig_size treats
-the wasted space (object_size - orig_size) as a redzone. However with
-init_on_free=1 we clear the full object->size, including the redzone.
+We can control the scanning window granularity for GC migration. For
+more frequent scanning and GC on zoned devices, we need a fine grained
+control knob for it.
 
-Additionally we clear the object metadata, including the stored orig_size,
-making it zero, which makes check_object() treat the whole object as a
-redzone.
-
-These issues lead to the following BUG report with "slub_debug=FUZ
-init_on_free=1":
-
-[    0.000000] =============================================================================
-[    0.000000] BUG kmalloc-8 (Not tainted): kmalloc Redzone overwritten
-[    0.000000] -----------------------------------------------------------------------------
-[    0.000000]
-[    0.000000] 0xffff000010032858-0xffff00001003285f @offset=2136. First byte 0x0 instead of 0xcc
-[    0.000000] FIX kmalloc-8: Restoring kmalloc Redzone 0xffff000010032858-0xffff00001003285f=0xcc
-[    0.000000] Slab 0xfffffdffc0400c80 objects=36 used=23 fp=0xffff000010032a18 flags=0x3fffe0000000200(workingset|node=0|zone=0|lastcpupid=0x1ffff)
-[    0.000000] Object 0xffff000010032858 @offset=2136 fp=0xffff0000100328c8
-[    0.000000]
-[    0.000000] Redzone  ffff000010032850: cc cc cc cc cc cc cc cc                          ........
-[    0.000000] Object   ffff000010032858: cc cc cc cc cc cc cc cc                          ........
-[    0.000000] Redzone  ffff000010032860: cc cc cc cc cc cc cc cc                          ........
-[    0.000000] Padding  ffff0000100328b4: 00 00 00 00 00 00 00 00 00 00 00 00              ............
-[    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.11.0-rc3-next-20240814-00004-g61844c55c3f4 #144
-[    0.000000] Hardware name: NXP i.MX95 19X19 board (DT)
-[    0.000000] Call trace:
-[    0.000000]  dump_backtrace+0x90/0xe8
-[    0.000000]  show_stack+0x18/0x24
-[    0.000000]  dump_stack_lvl+0x74/0x8c
-[    0.000000]  dump_stack+0x18/0x24
-[    0.000000]  print_trailer+0x150/0x218
-[    0.000000]  check_object+0xe4/0x454
-[    0.000000]  free_to_partial_list+0x2f8/0x5ec
-
-To address the issue, use orig_size to clear the used area. And restore
-the value of orig_size after clear the remaining area.
-
-When CONFIG_SLUB_DEBUG not defined, (get_orig_size()' directly returns
-s->object_size. So when using memset to init the area, the size can simply
-be orig_size, as orig_size returns object_size when CONFIG_SLUB_DEBUG not
-enabled. And orig_size can never be bigger than object_size.
-
-Fixes: 946fa0dbf2d8 ("mm/slub: extend redzone check to extra allocated kmalloc space than requested")
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Feng Tang <feng.tang@intel.com>
-Acked-by: David Rientjes <rientjes@google.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 5cc69a27abfa ("f2fs: forcibly migrate to secure space for zoned device file pinning")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/slub.c |  100 ++++++++++++++++++++++++++++++++------------------------------
- 1 file changed, 53 insertions(+), 47 deletions(-)
+ Documentation/ABI/testing/sysfs-fs-f2fs |  8 +++++++
+ fs/f2fs/f2fs.h                          |  2 ++
+ fs/f2fs/gc.c                            | 31 +++++++++++++++++--------
+ fs/f2fs/gc.h                            |  1 +
+ fs/f2fs/super.c                         |  2 ++
+ fs/f2fs/sysfs.c                         |  7 ++++++
+ 6 files changed, 41 insertions(+), 10 deletions(-)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -756,6 +756,50 @@ static inline bool slab_update_freelist(
- 	return false;
- }
+diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
+index 3500920ab7ce0..d0c1acfcad405 100644
+--- a/Documentation/ABI/testing/sysfs-fs-f2fs
++++ b/Documentation/ABI/testing/sysfs-fs-f2fs
+@@ -777,3 +777,11 @@ Description:	The zone UFS we are currently using consists of two parts:
+ 		blkzone_alloc_policy = 1  Only allow writing to sequential zones
+ 		blkzone_alloc_policy = 2  Prioritize writing to conventional zones
+ 		========================  =========================================
++
++What:		/sys/fs/f2fs/<disk>/migration_window_granularity
++Date:		September 2024
++Contact:	"Daeho Jeong" <daehojeong@google.com>
++Description:	Controls migration window granularity of garbage collection on large
++		section. it can control the scanning window granularity for GC migration
++		in a unit of segment, while migration_granularity controls the number
++		of segments which can be migrated at the same turn.
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index ad3b39a953120..bfd97498cd3da 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1697,6 +1697,8 @@ struct f2fs_sb_info {
+ 	unsigned int max_victim_search;
+ 	/* migration granularity of garbage collection, unit: segment */
+ 	unsigned int migration_granularity;
++	/* migration window granularity of garbage collection, unit: segment */
++	unsigned int migration_window_granularity;
  
-+/*
-+ * kmalloc caches has fixed sizes (mostly power of 2), and kmalloc() API
-+ * family will round up the real request size to these fixed ones, so
-+ * there could be an extra area than what is requested. Save the original
-+ * request size in the meta data area, for better debug and sanity check.
-+ */
-+static inline void set_orig_size(struct kmem_cache *s,
-+				void *object, unsigned int orig_size)
-+{
-+	void *p = kasan_reset_tag(object);
-+	unsigned int kasan_meta_size;
-+
-+	if (!slub_debug_orig_size(s))
-+		return;
-+
-+	/*
-+	 * KASAN can save its free meta data inside of the object at offset 0.
-+	 * If this meta data size is larger than 'orig_size', it will overlap
-+	 * the data redzone in [orig_size+1, object_size]. Thus, we adjust
-+	 * 'orig_size' to be as at least as big as KASAN's meta data.
-+	 */
-+	kasan_meta_size = kasan_metadata_size(s, true);
-+	if (kasan_meta_size > orig_size)
-+		orig_size = kasan_meta_size;
-+
-+	p += get_info_end(s);
-+	p += sizeof(struct track) * 2;
-+
-+	*(unsigned int *)p = orig_size;
-+}
-+
-+static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
-+{
-+	void *p = kasan_reset_tag(object);
-+
-+	if (!slub_debug_orig_size(s))
-+		return s->object_size;
-+
-+	p += get_info_end(s);
-+	p += sizeof(struct track) * 2;
-+
-+	return *(unsigned int *)p;
-+}
-+
- #ifdef CONFIG_SLUB_DEBUG
- static unsigned long object_map[BITS_TO_LONGS(MAX_OBJS_PER_PAGE)];
- static DEFINE_SPINLOCK(object_map_lock);
-@@ -969,50 +1013,6 @@ static void print_slab_info(const struct
- 	       folio_flags(folio, 0));
- }
+ 	/*
+ 	 * for stat information.
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 46e3bc26b78a6..5cd316d2102de 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -1708,24 +1708,34 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
+ 	struct blk_plug plug;
+ 	unsigned int segno = start_segno;
+ 	unsigned int end_segno = start_segno + SEGS_PER_SEC(sbi);
++	unsigned int sec_end_segno;
+ 	int seg_freed = 0, migrated = 0;
+ 	unsigned char type = IS_DATASEG(get_seg_entry(sbi, segno)->type) ?
+ 						SUM_TYPE_DATA : SUM_TYPE_NODE;
+ 	unsigned char data_type = (type == SUM_TYPE_DATA) ? DATA : NODE;
+ 	int submitted = 0;
  
--/*
-- * kmalloc caches has fixed sizes (mostly power of 2), and kmalloc() API
-- * family will round up the real request size to these fixed ones, so
-- * there could be an extra area than what is requested. Save the original
-- * request size in the meta data area, for better debug and sanity check.
-- */
--static inline void set_orig_size(struct kmem_cache *s,
--				void *object, unsigned int orig_size)
--{
--	void *p = kasan_reset_tag(object);
--	unsigned int kasan_meta_size;
--
--	if (!slub_debug_orig_size(s))
--		return;
--
+-	if (__is_large_section(sbi))
+-		end_segno = rounddown(end_segno, SEGS_PER_SEC(sbi));
++	if (__is_large_section(sbi)) {
++		sec_end_segno = rounddown(end_segno, SEGS_PER_SEC(sbi));
+ 
 -	/*
--	 * KASAN can save its free meta data inside of the object at offset 0.
--	 * If this meta data size is larger than 'orig_size', it will overlap
--	 * the data redzone in [orig_size+1, object_size]. Thus, we adjust
--	 * 'orig_size' to be as at least as big as KASAN's meta data.
+-	 * zone-capacity can be less than zone-size in zoned devices,
+-	 * resulting in less than expected usable segments in the zone,
+-	 * calculate the end segno in the zone which can be garbage collected
 -	 */
--	kasan_meta_size = kasan_metadata_size(s, true);
--	if (kasan_meta_size > orig_size)
--		orig_size = kasan_meta_size;
--
--	p += get_info_end(s);
--	p += sizeof(struct track) * 2;
--
--	*(unsigned int *)p = orig_size;
--}
--
--static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
--{
--	void *p = kasan_reset_tag(object);
--
--	if (!slub_debug_orig_size(s))
--		return s->object_size;
--
--	p += get_info_end(s);
--	p += sizeof(struct track) * 2;
--
--	return *(unsigned int *)p;
--}
--
- void skip_orig_size_check(struct kmem_cache *s, const void *object)
- {
- 	set_orig_size(s, (void *)object, s->object_size);
-@@ -1859,7 +1859,6 @@ static inline void inc_slabs_node(struct
- 							int objects) {}
- static inline void dec_slabs_node(struct kmem_cache *s, int node,
- 							int objects) {}
--
- #ifndef CONFIG_SLUB_TINY
- static bool freelist_corrupted(struct kmem_cache *s, struct slab *slab,
- 			       void **freelist, void *nextfree)
-@@ -2187,14 +2186,21 @@ bool slab_free_hook(struct kmem_cache *s
- 	 */
- 	if (unlikely(init)) {
- 		int rsize;
--		unsigned int inuse;
-+		unsigned int inuse, orig_size;
- 
- 		inuse = get_info_end(s);
-+		orig_size = get_orig_size(s, x);
- 		if (!kasan_has_integrated_init())
--			memset(kasan_reset_tag(x), 0, s->object_size);
-+			memset(kasan_reset_tag(x), 0, orig_size);
- 		rsize = (s->flags & SLAB_RED_ZONE) ? s->red_left_pad : 0;
- 		memset((char *)kasan_reset_tag(x) + inuse, 0,
- 		       s->size - inuse - rsize);
+-	if (f2fs_sb_has_blkzoned(sbi))
+-		end_segno -= SEGS_PER_SEC(sbi) -
 +		/*
-+		 * Restore orig_size, otherwize kmalloc redzone overwritten
-+		 * would be reported
++		 * zone-capacity can be less than zone-size in zoned devices,
++		 * resulting in less than expected usable segments in the zone,
++		 * calculate the end segno in the zone which can be garbage
++		 * collected
 +		 */
-+		set_orig_size(s, x, orig_size);
++		if (f2fs_sb_has_blkzoned(sbi))
++			sec_end_segno -= SEGS_PER_SEC(sbi) -
+ 					f2fs_usable_segs_in_sec(sbi, segno);
+ 
++		if (gc_type == BG_GC)
++			end_segno = start_segno +
++				sbi->migration_window_granularity;
 +
++		if (end_segno > sec_end_segno)
++			end_segno = sec_end_segno;
++	}
++
+ 	sanity_check_seg_type(sbi, get_seg_entry(sbi, segno)->type);
+ 
+ 	/* readahead multi ssa blocks those have contiguous address */
+@@ -1803,7 +1813,8 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
+ 
+ 		if (__is_large_section(sbi))
+ 			sbi->next_victim_seg[gc_type] =
+-				(segno + 1 < end_segno) ? segno + 1 : NULL_SEGNO;
++				(segno + 1 < sec_end_segno) ?
++					segno + 1 : NULL_SEGNO;
+ skip:
+ 		f2fs_put_page(sum_page, 0);
  	}
- 	/* KASAN might put x into memory quarantine, delaying its reuse. */
- 	return !kasan_slab_free(s, x, init);
+diff --git a/fs/f2fs/gc.h b/fs/f2fs/gc.h
+index 55c4ba73362ef..245f93663745a 100644
+--- a/fs/f2fs/gc.h
++++ b/fs/f2fs/gc.h
+@@ -32,6 +32,7 @@
+ 
+ #define LIMIT_NO_ZONED_GC	60 /* percentage over total user space of no gc for zoned devices */
+ #define LIMIT_BOOST_ZONED_GC	25 /* percentage over total user space of boosted gc for zoned devices */
++#define DEF_MIGRATION_WINDOW_GRANULARITY_ZONED	3
+ 
+ #define DEF_GC_FAILED_PINNED_FILES	2048
+ #define MAX_GC_FAILED_PINNED_FILES	USHRT_MAX
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 2a2ac02ddedf6..0f6e2b3f6a4c5 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -3791,6 +3791,8 @@ static void init_sb_info(struct f2fs_sb_info *sbi)
+ 	sbi->next_victim_seg[FG_GC] = NULL_SEGNO;
+ 	sbi->max_victim_search = DEF_MAX_VICTIM_SEARCH;
+ 	sbi->migration_granularity = SEGS_PER_SEC(sbi);
++	sbi->migration_window_granularity = f2fs_sb_has_blkzoned(sbi) ?
++		DEF_MIGRATION_WINDOW_GRANULARITY_ZONED : SEGS_PER_SEC(sbi);
+ 	sbi->seq_file_ra_mul = MIN_RA_MUL;
+ 	sbi->max_fragment_chunk = DEF_FRAGMENT_SIZE;
+ 	sbi->max_fragment_hole = DEF_FRAGMENT_SIZE;
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index 63ff2d1647eb5..9f26719425cf7 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -561,6 +561,11 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
+ 			return -EINVAL;
+ 	}
+ 
++	if (!strcmp(a->attr.name, "migration_window_granularity")) {
++		if (t == 0 || t > SEGS_PER_SEC(sbi))
++			return -EINVAL;
++	}
++
+ 	if (!strcmp(a->attr.name, "gc_urgent")) {
+ 		if (t == 0) {
+ 			sbi->gc_mode = GC_NORMAL;
+@@ -1010,6 +1015,7 @@ F2FS_SBI_RW_ATTR(gc_pin_file_thresh, gc_pin_file_threshold);
+ F2FS_SBI_RW_ATTR(gc_reclaimed_segments, gc_reclaimed_segs);
+ F2FS_SBI_GENERAL_RW_ATTR(max_victim_search);
+ F2FS_SBI_GENERAL_RW_ATTR(migration_granularity);
++F2FS_SBI_GENERAL_RW_ATTR(migration_window_granularity);
+ F2FS_SBI_GENERAL_RW_ATTR(dir_level);
+ #ifdef CONFIG_F2FS_IOSTAT
+ F2FS_SBI_GENERAL_RW_ATTR(iostat_enable);
+@@ -1150,6 +1156,7 @@ static struct attribute *f2fs_attrs[] = {
+ 	ATTR_LIST(min_ssr_sections),
+ 	ATTR_LIST(max_victim_search),
+ 	ATTR_LIST(migration_granularity),
++	ATTR_LIST(migration_window_granularity),
+ 	ATTR_LIST(dir_level),
+ 	ATTR_LIST(ram_thresh),
+ 	ATTR_LIST(ra_nid_pages),
+-- 
+2.43.0
+
 
 
 
