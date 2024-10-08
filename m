@@ -1,136 +1,112 @@
-Return-Path: <stable+bounces-81497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FCA7993C0C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 03:16:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1100C993C3F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 03:25:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58F64284795
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 01:16:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9C3D1F23ED4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 01:25:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E073171D2;
-	Tue,  8 Oct 2024 01:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD6FBE4E;
+	Tue,  8 Oct 2024 01:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="G43W1zKo"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="tq9lB4qK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546BD101C8;
-	Tue,  8 Oct 2024 01:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9C5EC4;
+	Tue,  8 Oct 2024 01:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728350166; cv=none; b=ChT4HGgZAA8KOQSEv0cFNgWdw2g68KwojfnPrcJwoViTmh7bZyURDe/2YAqzn5A6xbfTK8Ck3zV6pk38KX6Lkc/ra0mTOCUtqTd2VxH9RM26iiqDNBG/2QfFmLOUDoigZ270D0GKbiHLE5XN3H8lqjpnXOXhoKjzubZjiE7Q6rA=
+	t=1728350747; cv=none; b=I7A4XHFZJ15onzlaTIkZy6yvT+MS1vnyPoMAlmKIdgLgBRjKECTo47ShXQR6kii9gLJzyPboP2NZPDEUj4sCZKwfcux9THxlYR7uNeCIgfbNc+8ZPw8pIiJoek2UdgZhzbhDw9ib4gL/rTO3IADXyzdM43beB8NC4OzlK/7Ty+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728350166; c=relaxed/simple;
-	bh=WcG8SsgyprgukliU7UGp1ZoWz6SwT+7Bf1sJFZ2FIbg=;
-	h=Date:To:From:Subject:Message-Id; b=knfkIUiasYFYQhjRxUSt1OGrMbZh9VFZupRXIV7rrZ99E7x5oDYUHpe6/ALbCdG80Tq1uCMuP3Fok1p2Xgg3LxALESFbIyssXrJvOFHXCk8zhMKx9roJ5dSEpIeGWpdiqj8kHL0zkmDtWOkZPWcuvqtwBOI9WJK5l9rbyUrCrtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=G43W1zKo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2BAC4CECF;
-	Tue,  8 Oct 2024 01:16:05 +0000 (UTC)
+	s=arc-20240116; t=1728350747; c=relaxed/simple;
+	bh=Jcaw7n1n45MRlRFybUVcR90vvhEXAsjWZ5csI8emrWI=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=lSae79/yIRGuXtjVOCV05dNhp3Fjl9/kbIBNh1NA+p0Pgp5aKzzPwrkqxLdavz9FMBNH4PfM9lo/QyS4SVMFhJrHOdf+jN7QCIJxbXwQdkG8A9JN7xx12+6qWt0Vo3rn2uXQJYKEirjdqygEPaZBsRt+m2X1wnhLtJ8csoYpGPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=tq9lB4qK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6D7C4CECD;
+	Tue,  8 Oct 2024 01:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1728350165;
-	bh=WcG8SsgyprgukliU7UGp1ZoWz6SwT+7Bf1sJFZ2FIbg=;
-	h=Date:To:From:Subject:From;
-	b=G43W1zKo2HkwXLLb7L1Y0+FEp8qF+Z8nUPwqBcoFZHa7KQ8CIm4wOiIfmfvop/yI4
-	 NIerCiqTYZZ33xhh+zY3HlGabhy59eWGDk10vxgxsr/3y8nlIjtAmVFftnSXkBefrF
-	 tBwW5nsyi8Pukx/5WXzrQCuSm1PfkyyYjARLZZI0=
-Date: Mon, 07 Oct 2024 18:16:05 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,urezki@gmail.com,surenb@google.com,stable@vger.kernel.org,kent.overstreet@linux.dev,greearb@candelatech.com,fw@strlen.de,akpm@linux-foundation.org
+	s=korg; t=1728350747;
+	bh=Jcaw7n1n45MRlRFybUVcR90vvhEXAsjWZ5csI8emrWI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=tq9lB4qKWsQWHQaf+mwVFtvWivq62jTqy3UWXf9/WASKXvKbw0dDMT/VU7gd8wbic
+	 q9lJwNm69aS/sKIcrC9ZKzGNfJkn0XMCcY9sPyzlBhqU8cLIGZQmv8F+rqqF5/Y2S4
+	 KsM/KSEBtnhcaScoCsgqv3lm5Te5WcJFh3h1lEy4=
+Date: Mon, 7 Oct 2024 18:25:46 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + lib-alloc_tag_module_unload-must-wait-for-pending-kfree_rcu-calls.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241008011605.BC2BAC4CECF@smtp.kernel.org>
+To: Jeongjun Park <aha310510@gmail.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, usama.anjum@collabora.com,
+ peterx@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] mm: remove the newlines, which are added for unknown
+ reasons and interfere with bug analysis
+Message-Id: <20241007182546.7f3ac958c7a3bc408420549a@linux-foundation.org>
+In-Reply-To: <CAO9qdTGSaJZ0oTmWqRouU45ur3drQVxRaH8aaBB99DXAoA40_A@mail.gmail.com>
+References: <20241007065307.4158-1-aha310510@gmail.com>
+	<2024100748-exhume-overgrown-bf0d@gregkh>
+	<CAO9qdTFwaK36EKV1c8gLCgBG+BR5JmC6=PGk2a6YdHVrH9NukQ@mail.gmail.com>
+	<2024100700-animal-upriver-fb7c@gregkh>
+	<CAO9qdTGSaJZ0oTmWqRouU45ur3drQVxRaH8aaBB99DXAoA40_A@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+On Mon, 7 Oct 2024 20:24:57 +0900 Jeongjun Park <aha310510@gmail.com> wrote:
+
+> > > Since I cannot modify the source code printing function of the git.kernel.org
+> > > site, the best solution I can suggest is to remove the unnecessary line break
+> > > character that exists in all versions.
+> >
+> > I would recommend fixing the git.kernel.org code, it is all open source
+> > and can be fixed up, as odds are other projects/repos would like to have
+> > it fixed as well.
+> >
+> 
+> Oh, I just realized that this website is open source and written in C.
+> 
+> This seems to be the correct git repository, so I'll commit here.
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/zx2c4/cgit.git
+
+Still, we don't want that newline in there.  I did this as a little
+cleanup.  Please send a new (similar) patch if you're prefer.
 
 
-The patch titled
-     Subject: lib: alloc_tag_module_unload must wait for pending kfree_rcu calls
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     lib-alloc_tag_module_unload-must-wait-for-pending-kfree_rcu-calls.patch
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: mm/memory.c: remove stray newline at top of file
+Date: Mon Oct  7 06:20:09 PM PDT 2024
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-alloc_tag_module_unload-must-wait-for-pending-kfree_rcu-calls.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Florian Westphal <fw@strlen.de>
-Subject: lib: alloc_tag_module_unload must wait for pending kfree_rcu calls
-Date: Mon, 7 Oct 2024 22:52:24 +0200
-
-Ben Greear reports following splat:
- ------------[ cut here ]------------
- net/netfilter/nf_nat_core.c:1114 module nf_nat func:nf_nat_register_fn has 256 allocated at module unload
- WARNING: CPU: 1 PID: 10421 at lib/alloc_tag.c:168 alloc_tag_module_unload+0x22b/0x3f0
- Modules linked in: nf_nat(-) btrfs ufs qnx4 hfsplus hfs minix vfat msdos fat
-...
- Hardware name: Default string Default string/SKYBAY, BIOS 5.12 08/04/2020
- RIP: 0010:alloc_tag_module_unload+0x22b/0x3f0
-  codetag_unload_module+0x19b/0x2a0
-  ? codetag_load_module+0x80/0x80
-
-nf_nat module exit calls kfree_rcu on those addresses, but the free
-operation is likely still pending by the time alloc_tag checks for leaks.
-
-Wait for outstanding kfree_rcu operations to complete before checking
-resolves this warning.
-
-Reproducer:
-unshare -n iptables-nft -t nat -A PREROUTING -p tcp
-grep nf_nat /proc/allocinfo # will list 4 allocations
-rmmod nft_chain_nat
-rmmod nf_nat                # will WARN.
-
-Link: https://lkml.kernel.org/r/20241007205236.11847-1-fw@strlen.de
-Fixes: a473573964e5 ("lib: code tagging module support")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reported-by: Ben Greear <greearb@candelatech.com>
-Closes: https://lore.kernel.org/netdev/bdaaef9d-4364-4171-b82b-bcfc12e207eb@candelatech.com/
-Cc: Uladzislau Rezki <urezki@gmail.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: <stable@vger.kernel.org>
+Fixes: d61ea1cb0095 ("userfaultfd: UFFD_FEATURE_WP_ASYNC")
+Reported-by: Jeongjun Park <aha310510@gmail.com>
+Closes: https://lkml.kernel.org/r/20241007065307.4158-1-aha310510@gmail.com
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- lib/codetag.c |    2 ++
- 1 file changed, 2 insertions(+)
+ mm/memory.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/lib/codetag.c~lib-alloc_tag_module_unload-must-wait-for-pending-kfree_rcu-calls
-+++ a/lib/codetag.c
-@@ -228,6 +228,8 @@ bool codetag_unload_module(struct module
- 	if (!mod)
- 		return true;
- 
-+	kvfree_rcu_barrier();
-+
- 	mutex_lock(&codetag_lock);
- 	list_for_each_entry(cttype, &codetag_types, link) {
- 		struct codetag_module *found = NULL;
+--- a/mm/memory.c~mm-memoryc-remove-stray-newline-at-top-of-file
++++ a/mm/memory.c
+@@ -1,4 +1,3 @@
+-
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+  *  linux/mm/memory.c
 _
-
-Patches currently in -mm which might be from fw@strlen.de are
-
-lib-alloc_tag_module_unload-must-wait-for-pending-kfree_rcu-calls.patch
 
 
