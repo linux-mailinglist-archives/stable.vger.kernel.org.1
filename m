@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-82041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73263994AC0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7629994D85
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:06:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96ABF1C24AEE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C2131F21A92
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B10190663;
-	Tue,  8 Oct 2024 12:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC251DE88F;
+	Tue,  8 Oct 2024 13:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZlzOVyta"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYFlCGoH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E6B1DC759;
-	Tue,  8 Oct 2024 12:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3B11C5793;
+	Tue,  8 Oct 2024 13:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390971; cv=none; b=iM4E0uhZW5folIptk7QBSVAX1S4tHpBTXWlbwE3LCIAjmMQif+zLxFil9OSNTqqlMXRDYOVB8GveQcD+IS0wHnWJLqjsUebDLMfwG0RlB0OROBxL1pLCAB1FHRkVztH3gluUbI27Wyt6TajlOIcJHAZHYMwiexdgYJUwuACenP8=
+	t=1728392771; cv=none; b=eGXTAzIPhHsNL6M9r7hb7CFh1jcKiInE/nVMosVptu1lqcfVcu2YVCQI7D7v5pt09RPimm2x/luKLBY3JSZvjfnPf5IguG4BaKlvSF6bbbyZWubpASBFBw1jLgiw6pbkuvZ9WbbJSZFUhAa5LK7pDab2ouLUJjBoSkgGn2SNyJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390971; c=relaxed/simple;
-	bh=B+/oFjOOv0SKlN+B6Um7S7QwiXFqZH1hYK3cZetM9Lg=;
+	s=arc-20240116; t=1728392771; c=relaxed/simple;
+	bh=nS4cKFDcZcA30smaD8BgFwUcCpjcCSc++P9HtTD06As=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P6izSRv0xyuSvaZr1HQKYNu9xkv9+BBQgGgo9QJadB58/LrLWJp5HAb3vvjQ1sXF+8Y63deHo7Q55mV7TZ/WyyiwRbnxcPGGf1PdkAp8Pr1x9qaziYH2rTI2ofm/1Q2lv6hvVIs7wNOluay4qrQaTOEOxLu5HdGGei8gpitnReI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZlzOVyta; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88E0C4CEC7;
-	Tue,  8 Oct 2024 12:36:10 +0000 (UTC)
+	 MIME-Version; b=Qsu1r3dCpBGUVXAE2/4Fjy4ZlsUxdCOkSYtvrHI+cYd1Tv6HbXdVzstCjZv5Q5W0gwn60dJVAvvLvkjRewnguTkJjExOPQkgd+4HaOPeXdfarn4/OjN19MCWeaYpVPHu1il/0jD+4xjTrkEWPkzLwtSZhZqIA9/oEpuH6W2TMUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYFlCGoH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00083C4CEC7;
+	Tue,  8 Oct 2024 13:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390971;
-	bh=B+/oFjOOv0SKlN+B6Um7S7QwiXFqZH1hYK3cZetM9Lg=;
+	s=korg; t=1728392771;
+	bh=nS4cKFDcZcA30smaD8BgFwUcCpjcCSc++P9HtTD06As=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZlzOVytaMmR3u1kmHV03jXu18IgTkP06oago4M/l9Cl+pvl/vxBSDd3gm9pEa/0Qd
-	 Sn34R3LbBMH2nomCBjGenuXXh6CIDCmbjiCSBcPsr1epE/6/SaJgwaIZBlJg6XIlw7
-	 6cGWC43tMPzK3zrV6p1HrW75IOIEUFj7p5jU/HIY=
+	b=xYFlCGoHkj5O8Im+c9fUAk1ZeBRMSZdlcWMk5FFjDVlU4rquQmqWJ/x7H//ou0L9p
+	 YCrUXUm16TalP3FNs9Aqs0N7NZM4G1D32KvicLdnQ1f7bJRVYZGse8Jg9kANoTpcKP
+	 /Al7LPWRJu+z+z4Ath+blxH3TjvBgIqrRrE3o8/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 450/482] uprobes: fix kernel info leak via "[uprobes]" vma
+	Steve Sistare <steven.sistare@oracle.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Peter Xu <peterx@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 483/558] mm/gup: fix memfd_pin_folios hugetlb page allocation
 Date: Tue,  8 Oct 2024 14:08:33 +0200
-Message-ID: <20241008115706.228317559@linuxfoundation.org>
+Message-ID: <20241008115721.243699291@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +67,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Steve Sistare <steven.sistare@oracle.com>
 
-commit 34820304cc2cd1804ee1f8f3504ec77813d29c8e upstream.
+commit 9289f020da47ef04b28865589eeee3d56d4bafea upstream.
 
-xol_add_vma() maps the uninitialized page allocated by __create_xol_area()
-into userspace. On some architectures (x86) this memory is readable even
-without VM_READ, VM_EXEC results in the same pgprot_t as VM_EXEC|VM_READ,
-although this doesn't really matter, debugger can read this memory anyway.
+When memfd_pin_folios -> memfd_alloc_folio creates a hugetlb page, the
+index is wrong.  The subsequent call to filemap_get_folios_contig thus
+cannot find it, and fails, and memfd_pin_folios loops forever.  To fix,
+adjust the index for the huge_page_order.
 
-Link: https://lore.kernel.org/all/20240929162047.GA12611@redhat.com/
+memfd_alloc_folio also forgets to unlock the folio, so the next touch of
+the page calls hugetlb_fault which blocks forever trying to take the lock.
+Unlock it.
 
-Reported-by: Will Deacon <will@kernel.org>
-Fixes: d4b3b6384f98 ("uprobes/core: Allocate XOL slots for uprobes use")
-Cc: stable@vger.kernel.org
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/1725373521-451395-5-git-send-email-steven.sistare@oracle.com
+Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/uprobes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/memfd.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 28c678c8daef3..3dd1f14643648 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -1491,7 +1491,7 @@ static struct xol_area *__create_xol_area(unsigned long vaddr)
+diff --git a/mm/memfd.c b/mm/memfd.c
+index bfe0e7189a37..bcb131db829d 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -79,10 +79,13 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
+ 		 * alloc from. Also, the folio will be pinned for an indefinite
+ 		 * amount of time, so it is not expected to be migrated away.
+ 		 */
+-		gfp_mask = htlb_alloc_mask(hstate_file(memfd));
+-		gfp_mask &= ~(__GFP_HIGHMEM | __GFP_MOVABLE);
++		struct hstate *h = hstate_file(memfd);
  
- 	area->xol_mapping.name = "[uprobes]";
- 	area->xol_mapping.pages = area->pages;
--	area->pages[0] = alloc_page(GFP_HIGHUSER);
-+	area->pages[0] = alloc_page(GFP_HIGHUSER | __GFP_ZERO);
- 	if (!area->pages[0])
- 		goto free_bitmap;
- 	area->pages[1] = NULL;
+-		folio = alloc_hugetlb_folio_reserve(hstate_file(memfd),
++		gfp_mask = htlb_alloc_mask(h);
++		gfp_mask &= ~(__GFP_HIGHMEM | __GFP_MOVABLE);
++		idx >>= huge_page_order(h);
++
++		folio = alloc_hugetlb_folio_reserve(h,
+ 						    numa_node_id(),
+ 						    NULL,
+ 						    gfp_mask);
+@@ -95,6 +98,7 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
+ 				free_huge_folio(folio);
+ 				return ERR_PTR(err);
+ 			}
++			folio_unlock(folio);
+ 			return folio;
+ 		}
+ 		return ERR_PTR(-ENOMEM);
 -- 
-2.43.0
+2.46.2
 
 
 
