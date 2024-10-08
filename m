@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-82838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2324994EAD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71DDF994A5F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25E441C24B73
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6134B253BD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E0C1DE4CC;
-	Tue,  8 Oct 2024 13:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B5B1B81CC;
+	Tue,  8 Oct 2024 12:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Or6yvOHj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nw4Pm5Hu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FA513A257;
-	Tue,  8 Oct 2024 13:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F191E493;
+	Tue,  8 Oct 2024 12:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393596; cv=none; b=mSwvpZyvGrioPtFYBcVhb5cxz/+hG40+S5I0tIUmxsNP3EWE4KnS1y3VrKdD8tX4+1WU0Y8atoMc7P6LK8llKAWXtZleYg6wdwc0/xk6Ju2ay4sZBsIoKxM/JbLEXH23O6so7h2oqOIdwsYVjsZZtagy0ccsx2qXBSKlw183cfM=
+	t=1728390750; cv=none; b=GwKFJqt7qTjv4MCoajxU3snnyJO0/6pUzzG4icl9+YiFOIvZezWjodUIATNi+96B1KIYl44oqERBrrPLmc1wvwQRAlgJpX6iSiPli5r6bfxbn2pBFbawoLAnEpWjUZ09DrQul2UEjaZo8Hx6AxZ1wgk9Rr4aKIaRcOxY++HWgps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393596; c=relaxed/simple;
-	bh=XxVnphyRuIW1WY4hTrWe28j2oXWTFDuNHJQEpm2CDOs=;
+	s=arc-20240116; t=1728390750; c=relaxed/simple;
+	bh=y/M5zohoH+qAdRwUmDYpmPggG9va5P5OYzzlw5X8m84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KUXOh3sQxnC3rsHnwwG16OBqNo8kqRpgXXn0NnLOLkFYliTfL+ue09Iqj+HbruXnvgduoZC/DwyBQgwzETXVdRu9KvIW3PXVOOGHdgLSdgbaTEOgIB3H8LdEHJMvghDCDeN6+D8gUigzRkHYd3xwbI8mtVDX8dqHuEnhx1fS1nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Or6yvOHj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFB8C4CEC7;
-	Tue,  8 Oct 2024 13:19:55 +0000 (UTC)
+	 MIME-Version; b=hhtxd0r7SN7wBRyc7tm7UKE+Bs78d0gw3rWq3+BARRHHa696BNOr3XyKQNDm2IwsIolbA0flN7yIjUSXun51BCuFAnS9A/WbthaEkJCrxy5nfZ4LdVeTfqXtVM895P3/ep/IAOh9I21VpyTKQl2x3LpaeRpf/fIA06cTC4E7EiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nw4Pm5Hu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 963E4C4CEC7;
+	Tue,  8 Oct 2024 12:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393596;
-	bh=XxVnphyRuIW1WY4hTrWe28j2oXWTFDuNHJQEpm2CDOs=;
+	s=korg; t=1728390750;
+	bh=y/M5zohoH+qAdRwUmDYpmPggG9va5P5OYzzlw5X8m84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Or6yvOHjWfQWJbGcSwB8GBhIakE3G6PHRXOQkg6XjsGZfB1epNRBDJ+xzRuDTsO7O
-	 x1CVZEbwnlV71W2/qukI74+KQLHzjQBI2441dZqeUIsORBzfrFIy3+19gc6W21qG1k
-	 92QGsKQy6JmS/bQpRw/FISHrgREOxuveCR2tAUiE=
+	b=nw4Pm5HuExoO90x4wZQspurjczFJWpzNdf25wDRTaH2YIrWAH9s3tttj7VzF/nvrU
+	 lavZwif+TCaf5i4BVBGEeGffcqtEok82ebtX7b4ObbPJhhg+g94Qu4xk2NsSvmcmaD
+	 j1a82iM55yFwZLMnAf5EaAeWEjxvySLnpp+KfgAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 199/386] selftests: vDSO: fix vDSO symbols lookup for powerpc64
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.10 381/482] media: ov5675: Fix power on/off delay timings
 Date: Tue,  8 Oct 2024 14:07:24 +0200
-Message-ID: <20241008115637.238313933@linuxfoundation.org>
+Message-ID: <20241008115703.410188727@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit ba83b3239e657469709d15dcea5f9b65bf9dbf34 ]
+commit 719ec29fceda2f19c833d2784b1574638320400f upstream.
 
-On powerpc64, following tests fail locating vDSO functions:
+The ov5675 specification says that the gap between XSHUTDN deassert and the
+first I2C transaction should be a minimum of 8192 XVCLK cycles.
 
-  ~ # ./vdso_test_abi
-  TAP version 13
-  1..16
-  # [vDSO kselftest] VDSO_VERSION: LINUX_2.6.15
-  # Couldn't find __kernel_gettimeofday
-  ok 1 # SKIP __kernel_gettimeofday
-  # clock_id: CLOCK_REALTIME
-  # Couldn't find __kernel_clock_gettime
-  ok 2 # SKIP __kernel_clock_gettime CLOCK_REALTIME
-  # Couldn't find __kernel_clock_getres
-  ok 3 # SKIP __kernel_clock_getres CLOCK_REALTIME
-  ...
-  # Couldn't find __kernel_time
-  ok 16 # SKIP __kernel_time
-  # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:16 error:0
+Right now we use a usleep_rage() that gives a sleep time of between about
+430 and 860 microseconds.
 
-  ~ # ./vdso_test_getrandom
-  __kernel_getrandom is missing!
+On the Lenovo X13s we have observed that in about 1/20 cases the current
+timing is too tight and we start transacting before the ov5675's reset
+cycle completes, leading to I2C bus transaction failures.
 
-  ~ # ./vdso_test_gettimeofday
-  Could not find __kernel_gettimeofday
+The reset racing is sometimes triggered at initial chip probe but, more
+usually on a subsequent power-off/power-on cycle e.g.
 
-  ~ # ./vdso_test_getcpu
-  Could not find __kernel_getcpu
+[   71.451662] ov5675 24-0010: failed to write reg 0x0103. error = -5
+[   71.451686] ov5675 24-0010: failed to set plls
 
-On powerpc64, as shown below by readelf, vDSO functions symbols have
-type NOTYPE, so also accept that type when looking for symbols.
+The current quiescence period we have is too tight. Instead of expressing
+the post reset delay in terms of the current XVCLK this patch converts the
+power-on and power-off delays to the maximum theoretical delay @ 6 MHz with
+an additional buffer.
 
-$ powerpc64-linux-gnu-readelf -a arch/powerpc/kernel/vdso/vdso64.so.dbg
-ELF Header:
-  Magic:   7f 45 4c 46 02 02 01 00 00 00 00 00 00 00 00 00
-  Class:                             ELF64
-  Data:                              2's complement, big endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              DYN (Shared object file)
-  Machine:                           PowerPC64
-  Version:                           0x1
-...
+1.365 milliseconds on the power-on path is 1.5 milliseconds with grace.
+85.3 microseconds on the power-off path is 90 microseconds with grace.
 
-Symbol table '.dynsym' contains 12 entries:
-   Num:    Value          Size Type    Bind   Vis      Ndx Name
-     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND
-     1: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     2: 00000000000005f0    36 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     3: 0000000000000578    68 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     4: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
-     5: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     6: 0000000000000614   172 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     7: 00000000000006f0    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     8: 000000000000047c    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     9: 0000000000000454    12 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-    10: 00000000000004d0    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-    11: 00000000000005bc    52 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-
-Symbol table '.symtab' contains 56 entries:
-   Num:    Value          Size Type    Bind   Vis      Ndx Name
-...
-    45: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
-    46: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __kernel_getcpu
-    47: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_getres
-    48: 00000000000005f0    36 NOTYPE  GLOBAL DEFAULT    8 __kernel_get_tbfreq
-    49: 000000000000047c    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_gettimeofday
-    50: 0000000000000614   172 NOTYPE  GLOBAL DEFAULT    8 __kernel_sync_dicache
-    51: 00000000000006f0    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_getrandom
-    52: 0000000000000454    12 NOTYPE  GLOBAL DEFAULT    8 __kernel_sigtram[...]
-    53: 0000000000000578    68 NOTYPE  GLOBAL DEFAULT    8 __kernel_time
-    54: 00000000000004d0    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_g[...]
-    55: 00000000000005bc    52 NOTYPE  GLOBAL DEFAULT    8 __kernel_get_sys[...]
-
-Fixes: 98eedc3a9dbf ("Document the vDSO and add a reference parser")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 49d9ad719e89 ("media: ov5675: add device-tree support and support runtime PM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Tested-by: Quentin Schulz <quentin.schulz@cherry.de> # RK3399 Puma with
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/vDSO/parse_vdso.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/i2c/ov5675.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
-index 4ae417372e9eb..d9ccc5acac182 100644
---- a/tools/testing/selftests/vDSO/parse_vdso.c
-+++ b/tools/testing/selftests/vDSO/parse_vdso.c
-@@ -216,7 +216,8 @@ void *vdso_sym(const char *version, const char *name)
- 		ELF(Sym) *sym = &vdso_info.symtab[chain];
+--- a/drivers/media/i2c/ov5675.c
++++ b/drivers/media/i2c/ov5675.c
+@@ -972,12 +972,10 @@ static int ov5675_set_stream(struct v4l2
  
- 		/* Check for a defined global or weak function w/ right name. */
--		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC)
-+		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC &&
-+		    ELF64_ST_TYPE(sym->st_info) != STT_NOTYPE)
- 			continue;
- 		if (ELF64_ST_BIND(sym->st_info) != STB_GLOBAL &&
- 		    ELF64_ST_BIND(sym->st_info) != STB_WEAK)
--- 
-2.43.0
-
+ static int ov5675_power_off(struct device *dev)
+ {
+-	/* 512 xvclk cycles after the last SCCB transation or MIPI frame end */
+-	u32 delay_us = DIV_ROUND_UP(512, OV5675_XVCLK_19_2 / 1000 / 1000);
+ 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
+ 	struct ov5675 *ov5675 = to_ov5675(sd);
+ 
+-	usleep_range(delay_us, delay_us * 2);
++	usleep_range(90, 100);
+ 
+ 	clk_disable_unprepare(ov5675->xvclk);
+ 	gpiod_set_value_cansleep(ov5675->reset_gpio, 1);
+@@ -988,7 +986,6 @@ static int ov5675_power_off(struct devic
+ 
+ static int ov5675_power_on(struct device *dev)
+ {
+-	u32 delay_us = DIV_ROUND_UP(8192, OV5675_XVCLK_19_2 / 1000 / 1000);
+ 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
+ 	struct ov5675 *ov5675 = to_ov5675(sd);
+ 	int ret;
+@@ -1014,8 +1011,11 @@ static int ov5675_power_on(struct device
+ 
+ 	gpiod_set_value_cansleep(ov5675->reset_gpio, 0);
+ 
+-	/* 8192 xvclk cycles prior to the first SCCB transation */
+-	usleep_range(delay_us, delay_us * 2);
++	/* Worst case quiesence gap is 1.365 milliseconds @ 6MHz XVCLK
++	 * Add an additional threshold grace period to ensure reset
++	 * completion before initiating our first I2C transaction.
++	 */
++	usleep_range(1500, 1600);
+ 
+ 	return 0;
+ }
 
 
 
