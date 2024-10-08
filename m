@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41932994A49
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:31:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34CD1994F40
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93D7A28943B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:31:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E82FAB2974A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:17:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10951DE8BA;
-	Tue,  8 Oct 2024 12:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30891DEFE3;
+	Tue,  8 Oct 2024 13:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XOUytV8O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2aZ2mRVJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FAD1CEE8E;
-	Tue,  8 Oct 2024 12:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAA81DED6F;
+	Tue,  8 Oct 2024 13:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390687; cv=none; b=rk7F0sg545MtpzIiMdbZdT7peauCBa93b/eezOc6apR7hlnGE9/6+GqcYLUO+YG2QbvCzNfcBFQJgMiHXqMXpgWe/H2qRpSvNXqblCRkvbcBgkj95NIFqfldHHouq0rJeHZMsYqqac5olIZMYm/QTXd+iUtYPkxKN3I3VPSHYnY=
+	t=1728393432; cv=none; b=C/qKXui5nrOrHq/xfqDvYJKKlBmiNcf4OqjjYrhcBazcvDl8x09cpoumLvXavBGxhx6Cnby7/Bm042K8x2xdZ+FEFo++nSXxmdt46VoUnv9JJIFo7vwqFyMCNHdDj37ot24PO6RmMoYdH7eGY/FE5DgKN9/ZRDN7QrNWwfwGb9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390687; c=relaxed/simple;
-	bh=FGu6DRva7wmifzA8g5CsoUeUoj2lSorOq/O74qvIexk=;
+	s=arc-20240116; t=1728393432; c=relaxed/simple;
+	bh=5SvU8ARRQZsmJ83bNdm5qBSKNkF5Rjnv3/yRxWcoy5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mLPmsBz5PlCppPelKG05ZR6r8oXoFcYI+/6BvLPX6EgOF5EysTma+rl+9/2XRKwa0sxeG60VJsGOL6NT1dJ3fqcF7XeYFkjX1EIZDS47ISL6chyCsSYRmB26vbUGbtW3Q5j1ZlkEblW31rYSopJZovProMiS2qsEnd0N3uu559E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XOUytV8O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A83C4CEC7;
-	Tue,  8 Oct 2024 12:31:27 +0000 (UTC)
+	 MIME-Version; b=ojTf+qfMg7KRlbyVR1JTqYoSc1FJQL+5BU7/gRRuSdZq/ioqu7NL0H8ihg+L7bggVQn83C8GtKT/y/Z8P9UeurBEY3QVJ+7ywSLzY5aQBYFsz4hFLpGkpZLtu/HC1kxHwdF52A0x1LpUowo9uhjAJgabdsbn9y5KYxBmMkwAnGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2aZ2mRVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E6FC4CEC7;
+	Tue,  8 Oct 2024 13:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390687;
-	bh=FGu6DRva7wmifzA8g5CsoUeUoj2lSorOq/O74qvIexk=;
+	s=korg; t=1728393432;
+	bh=5SvU8ARRQZsmJ83bNdm5qBSKNkF5Rjnv3/yRxWcoy5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XOUytV8O+q8mMVUdeh2kAMLM5Kj+vF/XLak1w5ShpfNwk6W0bVvJWUPtTnPlVe1sj
-	 vABEWXKClrurrcNMvDnOzKRew1mWwkdPTMNeDJ0Dnr/O57bF1pOfqfr1aLwX7BAhud
-	 7oZIzlThSWdRqpUMuDC0Y/phuX9OyseuBV9UrcuA=
+	b=2aZ2mRVJ/Jy/9hhHx9MzXWLX8si5c05tf/oeptdtvJMvj1yuN6ir3SjEiowaWDbXr
+	 4OPcWpWXRK1/FhiTY0vAXPIkXKacnhc29C1d4em7Rl/HD37QtlwDV2oRgL5gHJqspo
+	 kxNb3GedpdWRhLu0u14HIwR1TCF9hdTXEBcgi+es=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaxi Shen <shenxiaxi26@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org,
-	syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
-Subject: [PATCH 6.10 332/482] ext4: fix timer use-after-free on failed mount
+	Jesse Zhang <jesse.zhang@amd.com>,
+	Tim Huang <tim.huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 150/386] drm/amdkfd: Fix resource leak in criu restore queue
 Date: Tue,  8 Oct 2024 14:06:35 +0200
-Message-ID: <20241008115701.491594767@linuxfoundation.org>
+Message-ID: <20241008115635.330537959@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaxi Shen <shenxiaxi26@gmail.com>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-commit 0ce160c5bdb67081a62293028dc85758a8efb22a upstream.
+[ Upstream commit aa47fe8d3595365a935921a90d00bc33ee374728 ]
 
-Syzbot has found an ODEBUG bug in ext4_fill_super
+To avoid memory leaks, release q_extra_data when exiting the restore queue.
+v2: Correct the proto (Alex)
 
-The del_timer_sync function cancels the s_err_report timer,
-which reminds about filesystem errors daily. We should
-guarantee the timer is no longer active before kfree(sbi).
-
-When filesystem mounting fails, the flow goes to failed_mount3,
-where an error occurs when ext4_stop_mmpd is called, causing
-a read I/O failure. This triggers the ext4_handle_error function
-that ultimately re-arms the timer,
-leaving the s_err_report timer active before kfree(sbi) is called.
-
-Fix the issue by canceling the s_err_report timer after calling ext4_stop_mmpd.
-
-Signed-off-by: Xiaxi Shen <shenxiaxi26@gmail.com>
-Reported-and-tested-by: syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=59e0101c430934bc9a36
-Link: https://patch.msgid.link/20240715043336.98097-1-shenxiaxi26@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+Reviewed-by: Tim Huang <tim.huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5633,8 +5633,8 @@ failed_mount3a:
- failed_mount3:
- 	/* flush s_sb_upd_work before sbi destroy */
- 	flush_work(&sbi->s_sb_upd_work);
--	del_timer_sync(&sbi->s_err_report);
- 	ext4_stop_mmpd(sbi);
-+	del_timer_sync(&sbi->s_err_report);
- 	ext4_group_desc_free(sbi);
- failed_mount:
- 	if (sbi->s_chksum_driver)
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+index dbc75ca84375a..0583af4e84fa3 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+@@ -982,6 +982,7 @@ int kfd_criu_restore_queue(struct kfd_process *p,
+ 		pr_debug("Queue id %d was restored successfully\n", queue_id);
+ 
+ 	kfree(q_data);
++	kfree(q_extra_data);
+ 
+ 	return ret;
+ }
+-- 
+2.43.0
+
 
 
 
