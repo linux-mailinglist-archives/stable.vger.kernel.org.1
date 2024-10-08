@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-81940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47875994A3A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:31:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E0C0994D09
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65C4F1C22524
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:31:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8D2328785A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF9D1DE886;
-	Tue,  8 Oct 2024 12:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC4E17F4FF;
+	Tue,  8 Oct 2024 13:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/KI/mBG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5Bxir3A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B080192D69;
-	Tue,  8 Oct 2024 12:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B221DE8A0;
+	Tue,  8 Oct 2024 13:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390649; cv=none; b=fmo/+2MuaDbb80YPNabGQrpbEu31YJygwM7RdBhAkpIL/yUci4N4v9LK1HdWmcjs2zJqWFtZazBdvmrSgyvsUscNrEHFCkCHkS3cM0vebdfqrDU+ReYgH6Zys56iBgASzqAyb6oozmTJ4JsGRCoJL4+zU1aK9suvhcnie6aTHi4=
+	t=1728392435; cv=none; b=IkYhHgdAHI0/mrQMFDt4a2r5PPHqkWVK9yMmhiys9+hyyRVZQzESDS1SHMnpx4QISGUoUcL/yRCZaS8e2VLgwn485jMwwFKxalq1snwVQ2mQpUQd1AyWsGYrltAzRbSSZ6QbTdhEePGYK4JbqIBgF8wIBerZipMMseQqgqGvoJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390649; c=relaxed/simple;
-	bh=FJpfb/oxTxS4CUQTNI/f7uio2ca9M5S4X8j7PMFdj0U=;
+	s=arc-20240116; t=1728392435; c=relaxed/simple;
+	bh=Gad+J1+tyX4JCq7pZ1t7csQaquNpQPhSl4+I4uYFVKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oGKAOQe8uJ+Ni1egy6PdXXatzKNbSZfZWXuJ8r/c5oAbsP6qHoIbgw6B4iNXlFfeq+6IWHyG28pD/tk1cxsU/uoChwk+f/VHlEb4iU9NCxREZDok1mlXNN/vT94n+JyrsXAoCRjsQfCmzAxQqszZgV0hPt9dXdKRaW4WlI2bJnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/KI/mBG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAAD2C4CEC7;
-	Tue,  8 Oct 2024 12:30:48 +0000 (UTC)
+	 MIME-Version; b=Kc+XUrWmcD720AwufcVNhmpk+rMfLrdqDNzLnwj91BFj1wsuEIVL2BiVVWSYK9HMs9QLlOYxA90864gjrVbIdTAavzZvhLNE9ma+8zlE5vITDtr3yhwmCq8a027DcsxI7Vr9qAFklLgI6PpAWjMriMWfAFCi2ovC0qSaEKE2R6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5Bxir3A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC36C4CEC7;
+	Tue,  8 Oct 2024 13:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390649;
-	bh=FJpfb/oxTxS4CUQTNI/f7uio2ca9M5S4X8j7PMFdj0U=;
+	s=korg; t=1728392434;
+	bh=Gad+J1+tyX4JCq7pZ1t7csQaquNpQPhSl4+I4uYFVKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1/KI/mBGiFzXXd1LFWhFUKqQs3iud1SlJHI5idRKTFWlUIw6TRLFlBN7wuXA1hk1m
-	 nUnCPfHg7vd1edsaMqtf8zr/dCDlBz5tTIl6e0YAdTdjBAk+OOXT/X4lP5c0iYyKVx
-	 OGg0x0E9vebOgQkw7apBaF+o30D4Sz6VE7meNal0=
+	b=C5Bxir3AoLunwFpaG5t7AHQnZQXpB/YXD++k0pWk9SwQzkT83A3taBu47EUZ915Vo
+	 bHf74sRb9gWl8D11mVSs0K4Jb0b48EgqhirddwHJG10foIFasfXPEMtXGBu36RcoLv
+	 +rK/+T6Dhzjksjxn4bjp9gHL4AyLTYEOAOkxGqjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
 	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
 	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.10 350/482] jbd2: correctly compare tids with tid_geq function in jbd2_fc_begin_commit
+Subject: [PATCH 6.11 383/558] ext4: propagate errors from ext4_find_extent() in ext4_insert_range()
 Date: Tue,  8 Oct 2024 14:06:53 +0200
-Message-ID: <20241008115702.199074820@linuxfoundation.org>
+Message-ID: <20241008115717.359899025@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,38 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit f0e3c14802515f60a47e6ef347ea59c2733402aa upstream.
+commit 369c944ed1d7c3fb7b35f24e4735761153afe7b3 upstream.
 
-Use tid_geq to compare tids to work over sequence number wraps.
+Even though ext4_find_extent() returns an error, ext4_insert_range() still
+returns 0. This may confuse the user as to why fallocate returns success,
+but the contents of the file are not as expected. So propagate the error
+returned by ext4_find_extent() to avoid inconsistencies.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Fixes: 331573febb6a ("ext4: Add support FALLOC_FL_INSERT_RANGE for fallocate")
 Cc: stable@kernel.org
-Link: https://patch.msgid.link/20240801013815.2393869-2-shikemeng@huaweicloud.com
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20240822023545.1994557-11-libaokun@huaweicloud.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/journal.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/extents.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -725,7 +725,7 @@ int jbd2_fc_begin_commit(journal_t *jour
- 		return -EINVAL;
- 
- 	write_lock(&journal->j_state_lock);
--	if (tid <= journal->j_commit_sequence) {
-+	if (tid_geq(journal->j_commit_sequence, tid)) {
- 		write_unlock(&journal->j_state_lock);
- 		return -EALREADY;
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -5553,6 +5553,7 @@ static int ext4_insert_range(struct file
+ 	path = ext4_find_extent(inode, offset_lblk, NULL, 0);
+ 	if (IS_ERR(path)) {
+ 		up_write(&EXT4_I(inode)->i_data_sem);
++		ret = PTR_ERR(path);
+ 		goto out_stop;
  	}
+ 
 
 
 
