@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-82875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA8EA994EF3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:23:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4093994D53
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FDBC1F23A4D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:23:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C121F1C24C32
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6701DF997;
-	Tue,  8 Oct 2024 13:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328A11DE88B;
+	Tue,  8 Oct 2024 13:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UU0b0Mtr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZ/b0zFU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B5D1DF270;
-	Tue,  8 Oct 2024 13:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F951C9B99;
+	Tue,  8 Oct 2024 13:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393719; cv=none; b=BaQFqdPQAG9mkla6zKUHBOBiai7EtdaQ53DDXjxiJMaYGiPUvGFUfMc3X5YBkZlfV8xuQCV7R6SOZYq7A0cZlGcfnkc3gDhcOF+xS1lcI/pTX5cewJ7ErXLnQTRkVqvJibfaLGe3w22w19OblSU7zfDs9KnSl8za1B6YkcBtN+8=
+	t=1728392664; cv=none; b=Y/APbINOo0q9vXJa60xx4HWDrw2+9JnhfkpbrlzZNSXaclGXpkaJnsFvXsAno36rwAnv09kiPKY8TYjcm7dgxKFS3nyfgMXFFAUXLpsO7FytTbJnpngDsseex3wgpWJPNWgRGkSjRLe0DfwHi1a2kSErL/43/Uis8aF95VKG704=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393719; c=relaxed/simple;
-	bh=n/SFRhDuBRF9tCOusw4XhR8/FnEv14pvoPA3UiuwgTw=;
+	s=arc-20240116; t=1728392664; c=relaxed/simple;
+	bh=nWJ7qSWX9Sl9U0JyzuJ1VDAiRCaFEHNbs5O9O62W8LE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tjvf3MrlzIqAnelB9RP6BnunLcc3l4RgyS2ZXt0dYE9Ya0nAInXtQ8RJPODc4uUW+GBWdU95yt2lVArnjsNWdz5OPVopLmrRVVfgNgmoGOJS6AFW/slYAUynf4HHCOS0u6wHLId9ZYF2yFTHQIk8kQNV7OTeJqsQQVyHU8gA0io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UU0b0Mtr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8ECC4CECC;
-	Tue,  8 Oct 2024 13:21:58 +0000 (UTC)
+	 MIME-Version; b=YZa6oBU2CeRI4mLmlPFmsnmZuI0x4GYHsLJId3HQug4l9bgLu0DjEseKeReQAavnD+6Qx91I9Fzqdo+F4V0V6+EmYouA2HW1LELZYdG4m/RnuLcVNB7yJ4g0PF8PP8VIx+Q9peHyHUh7doNxPuOriI7aMBc5Kf9ZHrKo2ULI74w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZ/b0zFU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47447C4CEC7;
+	Tue,  8 Oct 2024 13:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393719;
-	bh=n/SFRhDuBRF9tCOusw4XhR8/FnEv14pvoPA3UiuwgTw=;
+	s=korg; t=1728392663;
+	bh=nWJ7qSWX9Sl9U0JyzuJ1VDAiRCaFEHNbs5O9O62W8LE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UU0b0Mtr8nOJeDvQpyjtys+I3BOhuSE2Q66Tpjhhgqls4zT5oPi41568W12OmFzbT
-	 Mokb64J87vCT8X3NaPqJ/3vP2trOkjvaUFpl8ITq1wA59opunW0BxynVwALwWb1yiL
-	 qOr0obzuvbBaNwjVXU+rpFlY6oKgWRpgYZ8X6SzI=
+	b=BZ/b0zFUkyLWhmbxVYyWQF0mybp7RcCRbyxlMnEArjPsx/QH1Cl0HUUbXMIMQgRo3
+	 HA8pF5Qhmjs2v39ek5THaVchR58wP/OtFk+WBJSjc0HCjmXmCKkB+0G+INJ6PIPixE
+	 1EhsmdprzDqC462x8hBbNA7cfOXOu/BeDvM7OqV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 236/386] ext4: dax: fix overflowing extents beyond inode size when partially writing
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 451/558] clk: qcom: dispcc-sm8250: use CLK_SET_RATE_PARENT for branch clocks
 Date: Tue,  8 Oct 2024 14:08:01 +0200
-Message-ID: <20241008115638.687933155@linuxfoundation.org>
+Message-ID: <20241008115720.008644089@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit dda898d7ffe85931f9cca6d702a51f33717c501e upstream.
+commit 0e93c6320ecde0583de09f3fe801ce8822886fec upstream.
 
-The dax_iomap_rw() does two things in each iteration: map written blocks
-and copy user data to blocks. If the process is killed by user(See signal
-handling in dax_iomap_iter()), the copied data will be returned and added
-on inode size, which means that the length of written extents may exceed
-the inode size, then fsck will fail. An example is given as:
+Add CLK_SET_RATE_PARENT for several branch clocks. Such clocks don't
+have a way to change the rate, so set the parent rate instead.
 
-dd if=/dev/urandom of=file bs=4M count=1
- dax_iomap_rw
-  iomap_iter // round 1
-   ext4_iomap_begin
-    ext4_iomap_alloc // allocate 0~2M extents(written flag)
-  dax_iomap_iter // copy 2M data
-  iomap_iter // round 2
-   iomap_iter_advance
-    iter->pos += iter->processed // iter->pos = 2M
-   ext4_iomap_begin
-    ext4_iomap_alloc // allocate 2~4M extents(written flag)
-  dax_iomap_iter
-   fatal_signal_pending
-  done = iter->pos - iocb->ki_pos // done = 2M
- ext4_handle_inode_extension
-  ext4_update_inode_size // inode size = 2M
-
-fsck reports: Inode 13, i_size is 2097152, should be 4194304.  Fix?
-
-Fix the problem by truncating extents if the written length is smaller
-than expected.
-
-Fixes: 776722e85d3b ("ext4: DAX iomap write support")
-CC: stable@vger.kernel.org
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219136
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Link: https://patch.msgid.link/20240809121532.2105494-1-chengzhihao@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 80a18f4a8567 ("clk: qcom: Add display clock controller driver for SM8150 and SM8250")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240804-sm8350-fixes-v1-1-1149dd8399fe@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/file.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/clk/qcom/dispcc-sm8250.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/ext4/file.c
-+++ b/fs/ext4/file.c
-@@ -334,10 +334,10 @@ static ssize_t ext4_handle_inode_extensi
-  * Clean up the inode after DIO or DAX extending write has completed and the
-  * inode size has been updated using ext4_handle_inode_extension().
-  */
--static void ext4_inode_extension_cleanup(struct inode *inode, ssize_t count)
-+static void ext4_inode_extension_cleanup(struct inode *inode, bool need_trunc)
- {
- 	lockdep_assert_held_write(&inode->i_rwsem);
--	if (count < 0) {
-+	if (need_trunc) {
- 		ext4_truncate_failed_write(inode);
- 		/*
- 		 * If the truncate operation failed early, then the inode may
-@@ -586,7 +586,7 @@ static ssize_t ext4_dio_write_iter(struc
- 		 * writeback of delalloc blocks.
- 		 */
- 		WARN_ON_ONCE(ret == -EIOCBQUEUED);
--		ext4_inode_extension_cleanup(inode, ret);
-+		ext4_inode_extension_cleanup(inode, ret < 0);
- 	}
- 
- out:
-@@ -670,7 +670,7 @@ ext4_dax_write_iter(struct kiocb *iocb,
- 
- 	if (extend) {
- 		ret = ext4_handle_inode_extension(inode, offset, ret);
--		ext4_inode_extension_cleanup(inode, ret);
-+		ext4_inode_extension_cleanup(inode, ret < (ssize_t)count);
- 	}
- out:
- 	inode_unlock(inode);
+--- a/drivers/clk/qcom/dispcc-sm8250.c
++++ b/drivers/clk/qcom/dispcc-sm8250.c
+@@ -849,6 +849,7 @@ static struct clk_branch disp_cc_mdss_dp
+ 				&disp_cc_mdss_dp_link1_div_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -884,6 +885,7 @@ static struct clk_branch disp_cc_mdss_dp
+ 				&disp_cc_mdss_dp_link_div_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -1009,6 +1011,7 @@ static struct clk_branch disp_cc_mdss_md
+ 				&disp_cc_mdss_mdp_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
 
 
 
