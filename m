@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE0F994E2F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:14:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A6F19949F3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A937C1F20EE3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:14:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BDFC1C24B07
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038741DF278;
-	Tue,  8 Oct 2024 13:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B131DE8AA;
+	Tue,  8 Oct 2024 12:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGUicfWO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GL/8FbX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71CA1DE88F;
-	Tue,  8 Oct 2024 13:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015921E493;
+	Tue,  8 Oct 2024 12:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393200; cv=none; b=V2KFA8msy8jyEWcNQaEkcGlnLIf1eUOJXtEjUOKvmfQMkoP/A3wLjesTL65WDmLaiFB9PfP/qtTo2woN05ruzRTkEE+RTtpwZZF7qpd/mD+WiXZDhL/KfYtE5ETeYg/zaanChPmK98Bh3WeCHEsewcMbCkEaASgNTvGt3R31Mds=
+	t=1728390460; cv=none; b=GzV32QKKdlLrsa1I6p8XBoIDzL0bkK5Ako6b8S3PLCzPOadKeTVkti63MCmRqjHo7ixDNijzOXo0B1VCXUtFJCodjCpwvZ+rfP2NZmGJFqMyM2kJza5RGJlVEAvJpV3PkWoDu3xvKMuxTVnv/NRL1uUV1SXag1jFjQZw6uRapmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393200; c=relaxed/simple;
-	bh=jVJtE9IJ2AjnjVxJPQ7JxOdbcPpKVjVgf5S+voE6bAk=;
+	s=arc-20240116; t=1728390460; c=relaxed/simple;
+	bh=wdZKVDgmWZ40DQfU+NhUV+TEZB1VefoYdAcuZ3q7v00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pDkrRYHaIUkHqPFjuqUw6KhYFC0/ocNRz+93YpT070EOQl6kwCOHixn7CdIOju15P6C9g0YR7mb6w809enm6P4OapcQ2cwJDD50d5TBaJ29p1AVszEGW3Hrfd4ldLv06FeNBHTdeSzVsNm+gTfrXOs7LzYFC4qy8Q4QUEpEPbuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGUicfWO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D599FC4CEC7;
-	Tue,  8 Oct 2024 13:13:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qxcOgvAfl5SPgrkj4Ns7RZDCdjMD39H1Ma+INmNMbAAEy+YW8eatc5R4R5+FOLYxaOOWJjI7OdqvXwozOsHhvNl39DiRIT59voR5jHo1lK8cLcaFi+HHwwYBExQWblB9W4zTChN1v662M1DRg4ZagMDF4U/p0OW8t1F+sXCtR/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GL/8FbX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7149DC4CECC;
+	Tue,  8 Oct 2024 12:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393200;
-	bh=jVJtE9IJ2AjnjVxJPQ7JxOdbcPpKVjVgf5S+voE6bAk=;
+	s=korg; t=1728390459;
+	bh=wdZKVDgmWZ40DQfU+NhUV+TEZB1VefoYdAcuZ3q7v00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IGUicfWO/DyHM6Or7x5kshnsJwdICXMIVPbnLg3IpUAdMtx6RUExyaJ8wGXPz28VO
-	 vMK+o3D2ott6t/OPMexvPcok6dP4KFuZ12nB011jy/tFUau/txjcWWXXskLz2gIjAY
-	 moTXO/v6cHyUAE+PHgKkdEdzTp/fwUWIKPB4a3ws=
+	b=0GL/8FbXx2l99a9iqrQB8wXG8tXvqeF6wxPWKjZ2mvqasH9x3jqoz5txCUJPI62ld
+	 DZdaEL4GOK7+MIcNdWPBSsFIEHc/cugVnRVX8BcxaDqf75sNFLA09c+ljqNga07HeN
+	 5K411FWP8xs8zgr+TV2wnz2t36/cp2IQcdJTKkV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Alessandro Zanni <alessandro.zanni87@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/386] wifi: ath11k: fix array out-of-bound access in SoC stats
+Subject: [PATCH 6.10 264/482] kselftest/devices/probe: Fix SyntaxWarning in regex strings for Python3
 Date: Tue,  8 Oct 2024 14:05:27 +0200
-Message-ID: <20241008115632.687226337@linuxfoundation.org>
+Message-ID: <20241008115658.672677107@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+From: Alessandro Zanni <alessandro.zanni87@gmail.com>
 
-[ Upstream commit 69f253e46af98af17e3efa3e5dfa72fcb7d1983d ]
+[ Upstream commit a19008256d05e726f29f43c6a307e45482c082c3 ]
 
-Currently, the ath11k_soc_dp_stats::hal_reo_error array is defined with a
-maximum size of DP_REO_DST_RING_MAX. However, the ath11k_dp_process_rx()
-function access ath11k_soc_dp_stats::hal_reo_error using the REO
-destination SRNG ring ID, which is incorrect. SRNG ring ID differ from
-normal ring ID, and this usage leads to out-of-bounds array access. To fix
-this issue, modify ath11k_dp_process_rx() to use the normal ring ID
-directly instead of the SRNG ring ID to avoid out-of-bounds array access.
+Insert raw strings to prevent Python3 from interpreting string literals
+as Unicode strings and "\d" as invalid escaped sequence.
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+Fix the warnings:
 
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240704070811.4186543-3-quic_periyasa@quicinc.com
+tools/testing/selftests/devices/probe/test_discoverable_devices.py:48:
+SyntaxWarning: invalid escape sequence '\d' usb_controller_sysfs_dir =
+"usb[\d]+"
+
+tools/testing/selftests/devices/probe/test_discoverable_devices.py: 94:
+SyntaxWarning: invalid escape sequence '\d' re_usb_version =
+re.compile("PRODUCT=.*/(\d)/.*")
+
+Fixes: dacf1d7a78bf ("kselftest: Add test to verify probe of devices from discoverable buses")
+
+Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Alessandro Zanni <alessandro.zanni87@gmail.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/devices/test_discoverable_devices.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index b3499f966a9d6..a4d56136f42f7 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -2700,7 +2700,7 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
- 		if (unlikely(push_reason !=
- 			     HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRUCTION)) {
- 			dev_kfree_skb_any(msdu);
--			ab->soc_stats.hal_reo_error[dp->reo_dst_ring[ring_id].ring_id]++;
-+			ab->soc_stats.hal_reo_error[ring_id]++;
- 			continue;
- 		}
+diff --git a/tools/testing/selftests/devices/test_discoverable_devices.py b/tools/testing/selftests/devices/test_discoverable_devices.py
+index fbae8deb593d5..37a58e94e7c3a 100755
+--- a/tools/testing/selftests/devices/test_discoverable_devices.py
++++ b/tools/testing/selftests/devices/test_discoverable_devices.py
+@@ -39,7 +39,7 @@ def find_pci_controller_dirs():
+ 
+ 
+ def find_usb_controller_dirs():
+-    usb_controller_sysfs_dir = "usb[\d]+"
++    usb_controller_sysfs_dir = r"usb[\d]+"
+ 
+     dir_regex = re.compile(usb_controller_sysfs_dir)
+     for d in os.scandir(sysfs_usb_devices):
+@@ -69,7 +69,7 @@ def get_acpi_uid(sysfs_dev_dir):
+ 
+ 
+ def get_usb_version(sysfs_dev_dir):
+-    re_usb_version = re.compile("PRODUCT=.*/(\d)/.*")
++    re_usb_version = re.compile(r"PRODUCT=.*/(\d)/.*")
+     with open(os.path.join(sysfs_dev_dir, "uevent")) as f:
+         return int(re_usb_version.search(f.read()).group(1))
  
 -- 
 2.43.0
