@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-82335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6B1994C3A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5123994DF7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:11:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47B85287763
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 227101C2526A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979AC1DE4CC;
-	Tue,  8 Oct 2024 12:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5891DEFF7;
+	Tue,  8 Oct 2024 13:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRc2LFkO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptJIA6MG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563641DE8A0;
-	Tue,  8 Oct 2024 12:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AF01DEFE6;
+	Tue,  8 Oct 2024 13:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391914; cv=none; b=ex1QQhk5BQZ91uQZOh679ItvomE6DOV2zIjInRmUoYjcXcdGiMxXb/Dd3FNufBVIQkn4z9XqOFmIvI+vCO7Y7nb8//1XpCoujUuzcWDu9DoNPdLxSMWfZlEBll1gUrhLMfS9qB2LkdCdKnumkE2wHVRQqX97hHbIEz/jIWXYRc8=
+	t=1728393077; cv=none; b=ZhRdalALjh/LACkvfdagmHEtSqVVMX3pcTYu0ksMPop3FfV0f2ewutz/ibMN9wr10+kdz3mzFR1+CfQzy7TmChH2xuEm5hGwuvHOT03qD/RhRpi4X3hDNxmN2xZJSiv5sgJy8GOlfQtsbbqxSCboskvyhQPzTHnq6y1W4dkMXeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391914; c=relaxed/simple;
-	bh=O8zs4gRvxME/UBI020xwRkzrGt5QuTt8QimKIlOOVEE=;
+	s=arc-20240116; t=1728393077; c=relaxed/simple;
+	bh=RhhMtXSai372GBObLfbfvH1KCoqc2W4WWXKPPem+6sI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ky3chVjdWJN1yQWdUaKJHtHjSf3sbuITQQfkoNjxtb5pX7A7LxOR2g7zEJ2taKeJdEjeWJZtSzpmy+Y36HAJdVoJI6Wm8uqXotCqFg8SG07SFhquJx1flA+oH6PzBjKmNZCmMc3AlYI/twXje7pkERVUiL+2JZnjrYXq2Rgb0j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRc2LFkO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9829FC4CEC7;
-	Tue,  8 Oct 2024 12:51:53 +0000 (UTC)
+	 MIME-Version; b=I0jNwpyjX4xKKewloyaFZehaWdDwBTLPPTlj3o73C//wNfjTEZ0Y0Pf6lI9DiFx0TE6skQOT7o6MkcAH9JhRI2pV9XzgSWg98hvGBlpPN6M9VjPiZ+CPQlfEDDJKZIlWKKUgvjL7qGnQlMMmMpKIoYjxRPKvQb1V3GxmbJViLLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptJIA6MG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166D8C4CEC7;
+	Tue,  8 Oct 2024 13:11:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391914;
-	bh=O8zs4gRvxME/UBI020xwRkzrGt5QuTt8QimKIlOOVEE=;
+	s=korg; t=1728393077;
+	bh=RhhMtXSai372GBObLfbfvH1KCoqc2W4WWXKPPem+6sI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cRc2LFkOLMoGjNAA1orB/Ggp8G15uW6x5hmZVOZ57GffiCiGlyqsFGTJuXYiWkGj0
-	 7Dm5c3TZrtMg4fdwHfsuTo/TsT9y6PFdPlQk4y6siNGdZ+sndKpdJ955OugOR7aB94
-	 VrXw6ley6QJlEKobXu6d1b5cpRKAApBaG6t/M9rs=
+	b=ptJIA6MGwy28pkaogFe24t5UbR6bn2CJoAfTssP8LNvrjwo6mTVbphtpMWS+Is8Xu
+	 j/57DK4h4MKlJntxt57IZG8MSVvNUXMpC1+9p5QdNoc0AbPxx4qU6WqY1qfJTLi11K
+	 H1Xpn0xp7nFNRAjubB62M9q6SIe2zUIoCMcl3+mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 260/558] drm/amd/display: Implement bounds check for stream encoder creation in DCN401
+Subject: [PATCH 6.6 045/386] Bluetooth: L2CAP: Fix not validating setsockopt user input
 Date: Tue,  8 Oct 2024 14:04:50 +0200
-Message-ID: <20241008115712.564732348@linuxfoundation.org>
+Message-ID: <20241008115631.245476872@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,60 +62,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit bdf606810210e8e07a0cdf1af3c467291363b295 ]
+[ Upstream commit 4f3951242ace5efc7131932e2e01e6ac6baed846 ]
 
-'stream_enc_regs' array is an array of dcn10_stream_enc_registers
-structures. The array is initialized with four elements, corresponding
-to the four calls to stream_enc_regs() in the array initializer. This
-means that valid indices for this array are 0, 1, 2, and 3.
+Check user input length before copying data.
 
-The error message 'stream_enc_regs' 4 <= 5 below, is indicating that
-there is an attempt to access this array with an index of 5, which is
-out of bounds. This could lead to undefined behavior
-
-Here, eng_id is used as an index to access the stream_enc_regs array. If
-eng_id is 5, this would result in an out-of-bounds access on the
-stream_enc_regs array.
-
-Thus fixing Buffer overflow error in dcn401_stream_encoder_create
-
-Found by smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn401/dcn401_resource.c:1209 dcn401_stream_encoder_create() error: buffer overflow 'stream_enc_regs' 4 <= 5
-
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 33575df7be67 ("Bluetooth: move l2cap_sock_setsockopt() to l2cap_sock.c")
+Fixes: 3ee7b7cd8390 ("Bluetooth: Add BT_MODE socket option")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c    | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/l2cap_sock.c | 52 +++++++++++++++-----------------------
+ 1 file changed, 20 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c
-index 34b02147881dd..3e76732ac0dca 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c
-@@ -1188,7 +1188,7 @@ static struct stream_encoder *dcn401_stream_encoder_create(
- 	vpg = dcn401_vpg_create(ctx, vpg_inst);
- 	afmt = dcn401_afmt_create(ctx, afmt_inst);
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index 5d332e69c7e1a..f04ce84267988 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -727,7 +727,7 @@ static int l2cap_sock_setsockopt_old(struct socket *sock, int optname,
+ 	struct sock *sk = sock->sk;
+ 	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
+ 	struct l2cap_options opts;
+-	int len, err = 0;
++	int err = 0;
+ 	u32 opt;
  
--	if (!enc1 || !vpg || !afmt) {
-+	if (!enc1 || !vpg || !afmt || eng_id >= ARRAY_SIZE(stream_enc_regs)) {
- 		kfree(enc1);
- 		kfree(vpg);
- 		kfree(afmt);
+ 	BT_DBG("sk %p", sk);
+@@ -754,11 +754,9 @@ static int l2cap_sock_setsockopt_old(struct socket *sock, int optname,
+ 		opts.max_tx   = chan->max_tx;
+ 		opts.txwin_size = chan->tx_win;
+ 
+-		len = min_t(unsigned int, sizeof(opts), optlen);
+-		if (copy_from_sockptr(&opts, optval, len)) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opts, sizeof(opts), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opts.txwin_size > L2CAP_DEFAULT_EXT_WINDOW) {
+ 			err = -EINVAL;
+@@ -801,10 +799,9 @@ static int l2cap_sock_setsockopt_old(struct socket *sock, int optname,
+ 		break;
+ 
+ 	case L2CAP_LM:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt & L2CAP_LM_FIPS) {
+ 			err = -EINVAL;
+@@ -885,7 +882,7 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 	struct bt_security sec;
+ 	struct bt_power pwr;
+ 	struct l2cap_conn *conn;
+-	int len, err = 0;
++	int err = 0;
+ 	u32 opt;
+ 	u16 mtu;
+ 	u8 mode;
+@@ -911,11 +908,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 
+ 		sec.level = BT_SECURITY_LOW;
+ 
+-		len = min_t(unsigned int, sizeof(sec), optlen);
+-		if (copy_from_sockptr(&sec, optval, len)) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&sec, sizeof(sec), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (sec.level < BT_SECURITY_LOW ||
+ 		    sec.level > BT_SECURITY_FIPS) {
+@@ -960,10 +955,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
+ 		}
+ 
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt) {
+ 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
+@@ -975,10 +969,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 		break;
+ 
+ 	case BT_FLUSHABLE:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt > BT_FLUSHABLE_ON) {
+ 			err = -EINVAL;
+@@ -1010,11 +1003,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 
+ 		pwr.force_active = BT_POWER_FORCE_ACTIVE_ON;
+ 
+-		len = min_t(unsigned int, sizeof(pwr), optlen);
+-		if (copy_from_sockptr(&pwr, optval, len)) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&pwr, sizeof(pwr), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (pwr.force_active)
+ 			set_bit(FLAG_FORCE_ACTIVE, &chan->flags);
+@@ -1023,10 +1014,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 		break;
+ 
+ 	case BT_CHANNEL_POLICY:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		err = -EOPNOTSUPP;
+ 		break;
+@@ -1055,10 +1045,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
+ 		}
+ 
+-		if (copy_from_sockptr(&mtu, optval, sizeof(u16))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&mtu, sizeof(mtu), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (chan->mode == L2CAP_MODE_EXT_FLOWCTL &&
+ 		    sk->sk_state == BT_CONNECTED)
+@@ -1086,10 +1075,9 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
+ 		}
+ 
+-		if (copy_from_sockptr(&mode, optval, sizeof(u8))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&mode, sizeof(mode), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		BT_DBG("mode %u", mode);
+ 
 -- 
 2.43.0
 
