@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-82448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED7D994CDA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B14D4994E92
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 570621C250FC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71371281447
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D09A1DF975;
-	Tue,  8 Oct 2024 12:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5AD1DED4E;
+	Tue,  8 Oct 2024 13:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gjf4tvtG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQ/ABVwA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3AA1DE89D;
-	Tue,  8 Oct 2024 12:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB5A1DE8BE;
+	Tue,  8 Oct 2024 13:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392296; cv=none; b=c1QiYOS3q/YR+TgGIKk6w8Kf1aSG6UgNMtlhCJsA5/O84fasFBetk08GXy7Esv9WrmhQuaYmRotqV8HP9JDCjqnyXHUpbGwV60bPEAF5Ls+y7By/TqI13rMxzU63XwzRqHMQIQjd96rUgNWWhpOSTffLGuwjnZ3xT0RgjWO5f8U=
+	t=1728393513; cv=none; b=txKlQdcy6nzpbTmI9CbhBhlWqHmiy5fv/FXIJ7M5NjNu9z95pA+Q/5V3MdJkHaev1fA5pYHJQf7hQz/8h5sR1ChicVDaeXhOx9UGXzL+dSLonAprr8Il+d7dbcSfnIgFhfpCqGRcWBuO/ySrBj2ebGi93jEHji9N4xuFbYLQ4es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392296; c=relaxed/simple;
-	bh=C7iGIHDpD1kJIkMPoK1zyEORLcflsUUJctma+Mh8jVg=;
+	s=arc-20240116; t=1728393513; c=relaxed/simple;
+	bh=CY6UiXK5M6WjO+EnDSF6KZ0InQdpydP4x4XDCvIQYn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HfMXC82hFpmR2zYJpZxR1UEZoxTFV5K+aEZCoRrhB1jY6hEV/+H68Gl5DRZIAE7FLvai2LqjKWj59oHzK29sEOyOoCiXWx7YV8YyyBH4l+SjUwzhCF+WiTLYUSenKFokBiwlUOs36vOhJRVfa/9UaWo6Tmb1HQsbBdUKF5rkyFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gjf4tvtG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAEEC4CECC;
-	Tue,  8 Oct 2024 12:58:15 +0000 (UTC)
+	 MIME-Version; b=Sa2xh39MU78mHgXhJSqF5LF68+lScEa3E7g6/n5VBVJGiG6RrIDrtGpPKc2HfCjH6IVzETpE56efjdMzP2m3h5yZXKZlTEon2hbqApOIlrgshRugATQ0MJsTz7T9wwPGLgW4ir7qCLP7P+sChKL8fUSlfkgIWqP/kY7B9a2mGkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQ/ABVwA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E19BC4CEC7;
+	Tue,  8 Oct 2024 13:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392295;
-	bh=C7iGIHDpD1kJIkMPoK1zyEORLcflsUUJctma+Mh8jVg=;
+	s=korg; t=1728393513;
+	bh=CY6UiXK5M6WjO+EnDSF6KZ0InQdpydP4x4XDCvIQYn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gjf4tvtG632Wcwb+kxyOmbut21GWQGq3r/C1MDv6vTzGgVlWfEHNKvTY/999sYwJL
-	 gbR0ZCU2697QMhSNIiV0J2YhaSEuXbvTwHsRhRdgji/bp2hSd7BC8KjsYO5N4A77zb
-	 YT1IsE3plEjkm/CiQF4SriPUQW3rREXTLlyHilI8=
+	b=qQ/ABVwANsLKP9CsrbT+Q9wovQLyULq+mONrUHCFvJaX3r938p+ZwU4zx473YsYdo
+	 7a4mkNzxq3463E1nA85ajhPcU3YI5OMBNlxJF0h3wpMuXYvol4Wxo5P5fage7Knx44
+	 cT8NuZrmp5JhPaNIzmWW5yyYpMhud4qB4UOT/Dic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baojun Xu <baojun.xu@ti.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.11 372/558] ALSA: hda/tas2781: Add new quirk for Lenovo Y990 Laptop
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 157/386] drm/amd/display: Fix index out of bounds in degamma hardware format translation
 Date: Tue,  8 Oct 2024 14:06:42 +0200
-Message-ID: <20241008115716.934667015@linuxfoundation.org>
+Message-ID: <20241008115635.603979482@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +69,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baojun Xu <baojun.xu@ti.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit 49f5ee951f11f4d6a124f00f71b2590507811a55 upstream.
+[ Upstream commit b7e99058eb2e86aabd7a10761e76cae33d22b49f ]
 
-Add new vendor_id and subsystem_id in quirk for Lenovo Y990 Laptop.
+Fixes index out of bounds issue in
+`cm_helper_translate_curve_to_degamma_hw_format` function. The issue
+could occur when the index 'i' exceeds the number of transfer function
+points (TRANSFER_FUNC_POINTS).
 
-Signed-off-by: Baojun Xu <baojun.xu@ti.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240919075743.259-1-baojun.xu@ti.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The fix adds a check to ensure 'i' is within bounds before accessing the
+transfer function points. If 'i' is out of bounds the function returns
+false to indicate an error.
+
+Reported by smatch:
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:594 cm_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:595 cm_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:596 cm_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
+
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10892,6 +10892,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x17aa, 0x38cd, "Y790 VECO DUAL", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x38d2, "Lenovo Yoga 9 14IMH9", ALC287_FIXUP_YOGA9_14IMH9_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x38d7, "Lenovo Yoga 9 14IMH9", ALC287_FIXUP_YOGA9_14IMH9_BASS_SPK_PIN),
-+	SND_PCI_QUIRK(0x17aa, 0x38df, "Y990 YG DUAL", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x38f9, "Thinkbook 16P Gen5", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x17aa, 0x38fa, "Thinkbook 16P Gen5", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x17aa, 0x3902, "Lenovo E50-80", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
+index c0372aa4ec838..684e30f9cf898 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
+@@ -571,6 +571,8 @@ bool cm_helper_translate_curve_to_degamma_hw_format(
+ 				i += increment) {
+ 			if (j == hw_points - 1)
+ 				break;
++			if (i >= TRANSFER_FUNC_POINTS)
++				return false;
+ 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
+ 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
+ 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
+-- 
+2.43.0
+
 
 
 
