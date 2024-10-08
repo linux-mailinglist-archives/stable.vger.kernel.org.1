@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-82147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0B9994B6B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:43:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49ED0994863
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:12:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB570B252D3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:43:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA36A2808B4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3011DE2CF;
-	Tue,  8 Oct 2024 12:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5D51DE3A2;
+	Tue,  8 Oct 2024 12:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PgPQpbsB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfFQpHF6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C391DE2AD;
-	Tue,  8 Oct 2024 12:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87511DACBE;
+	Tue,  8 Oct 2024 12:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391309; cv=none; b=qPq3QAmWQHO3S3WiSwiVze3/yKhGnU7UiNP50FQv1Xpf4JRg+jancqGyfy6VvSAHRle9nhqcOPsOs+wZvDbyXb4zie4XhQ9W7B5vnmkCldmsXmjZsdOoAUXf1fE55fY/XvfmJjYuN7/QpPk9JawXVRakwY+M2Wh4vi5wuS/i2aI=
+	t=1728389542; cv=none; b=bxiOWmNeXibjNQMbOVBCwQb63xqtvmieTlQEjCbuIq2eiU7hheNAVGYovfoAjf9F4VHEJLfl7IKnt2jEfCy2b1IMheporiaoRDllfngN94/NYT4J/SV53luBO/19Whidb300CrD0tjrF0QqD+/clz1YuwoJ15yV2ZP9oFVpRTD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391309; c=relaxed/simple;
-	bh=2dFcrXwC69A2QRS9IHX+xXG5pW3g1EIU/hW8eMhq720=;
+	s=arc-20240116; t=1728389542; c=relaxed/simple;
+	bh=IIyYZVRKhiEDEkXb2T4Tc+Szybli+hZPPpQxkJFhypQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ms2R2bc044qXtm6Q3ZhsEPLX8hGHY5WV5vilfCgSaE7LFJj9R6vZK95g+SMpNRMHqLtn6w1lljSfqnODA3Y1btRF4B30ZVw9kthN88sMfs3i4lt7jqMKVxW/vrpVHNx6IjP2FAbfMLPzSeNq7hNo7z1KLffhi6GPPcn9ArBOEl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PgPQpbsB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92FBC4CEC7;
-	Tue,  8 Oct 2024 12:41:48 +0000 (UTC)
+	 MIME-Version; b=sA7gTtjmhrISyGfwAsn8O3kTXNSh5hYS2MxOTt0/yxYRkiOXLmA/GxBM+lFYU9sbA1dXEzSq2AU2fqmsJEPixIvaJ/iDMNqiwk/KNbzEJ1YUFhQ6CcBUL7dooBeommDsU66MlqBTf9E3la5ZOWiSY4sM1zLhvmjWW+MVW9HRuks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfFQpHF6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C54C4CEC7;
+	Tue,  8 Oct 2024 12:12:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391309;
-	bh=2dFcrXwC69A2QRS9IHX+xXG5pW3g1EIU/hW8eMhq720=;
+	s=korg; t=1728389542;
+	bh=IIyYZVRKhiEDEkXb2T4Tc+Szybli+hZPPpQxkJFhypQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PgPQpbsBd5VpFTVd6Rdi3hoywmQVwKHXnm7Lzd9ONP3upEXIAHb18Nb9+daBlGco9
-	 WqRwd+YlMHDDokrPsb/e6tlxkkxMeOpw2gTmaVZUciLCRIqz8vEOZe/QEP5CAcwQjM
-	 CsgPkfO5t5ndtR1HUNuVNbH8iX7dEdMP5YBjEljo=
+	b=CfFQpHF6Qu5zajJgRum8A3x+nhNnWRp60Am6BkXIzvE07JAhZOqThdnd9+8wBqnlY
+	 kDChOpySNx1QdigL2Kaobzz+/xuxV1ihPLQRUzVCxbfO39m2EHK/YMFv+2JIXShJbE
+	 51jDoSOCfpZM4qP5RIKT4APoP6QNkoI49G1CLzpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jonathan Davies <jonathan.davies@nutanix.com>,
-	Willem de Bruijn <willemb@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 042/558] net: avoid potential underflow in qdisc_pkt_len_init() with UFO
+Subject: [PATCH 6.10 009/482] drm/amd/display: handle nulled pipe context in DCE110s set_drr()
 Date: Tue,  8 Oct 2024 14:01:12 +0200
-Message-ID: <20241008115703.881719756@linuxfoundation.org>
+Message-ID: <20241008115648.662925788@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,143 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
 
-[ Upstream commit c20029db28399ecc50e556964eaba75c43b1e2f1 ]
+[ Upstream commit e7d4e1438533abe448813bdc45691f9c230aa307 ]
 
-After commit 7c6d2ecbda83 ("net: be more gentle about silly gso
-requests coming from user") virtio_net_hdr_to_skb() had sanity check
-to detect malicious attempts from user space to cook a bad GSO packet.
+As set_drr() is called from IRQ context, it can happen that the
+pipe context has been nulled by dc_state_destruct().
 
-Then commit cf9acc90c80ec ("net: virtio_net_hdr_to_skb: count
-transport header in UFO") while fixing one issue, allowed user space
-to cook a GSO packet with the following characteristic :
+Apply the same protection here that is already present for
+dcn35_set_drr() and dcn10_set_drr(). I.e. fetch the tg pointer
+first (to avoid a race with dc_state_destruct()), and then
+check the local copy before using it.
 
-IPv4 SKB_GSO_UDP, gso_size=3, skb->len = 28.
-
-When this packet arrives in qdisc_pkt_len_init(), we end up
-with hdr_len = 28 (IPv4 header + UDP header), matching skb->len
-
-Then the following sets gso_segs to 0 :
-
-gso_segs = DIV_ROUND_UP(skb->len - hdr_len,
-                        shinfo->gso_size);
-
-Then later we set qdisc_skb_cb(skb)->pkt_len to back to zero :/
-
-qdisc_skb_cb(skb)->pkt_len += (gso_segs - 1) * hdr_len;
-
-This leads to the following crash in fq_codel [1]
-
-qdisc_pkt_len_init() is best effort, we only want an estimation
-of the bytes sent on the wire, not crashing the kernel.
-
-This patch is fixing this particular issue, a following one
-adds more sanity checks for another potential bug.
-
-[1]
-[   70.724101] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[   70.724561] #PF: supervisor read access in kernel mode
-[   70.724561] #PF: error_code(0x0000) - not-present page
-[   70.724561] PGD 10ac61067 P4D 10ac61067 PUD 107ee2067 PMD 0
-[   70.724561] Oops: Oops: 0000 [#1] SMP NOPTI
-[   70.724561] CPU: 11 UID: 0 PID: 2163 Comm: b358537762 Not tainted 6.11.0-virtme #991
-[   70.724561] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   70.724561] RIP: 0010:fq_codel_enqueue (net/sched/sch_fq_codel.c:120 net/sched/sch_fq_codel.c:168 net/sched/sch_fq_codel.c:230) sch_fq_codel
-[ 70.724561] Code: 24 08 49 c1 e1 06 44 89 7c 24 18 45 31 ed 45 31 c0 31 ff 89 44 24 14 4c 03 8b 90 01 00 00 eb 04 39 ca 73 37 4d 8b 39 83 c7 01 <49> 8b 17 49 89 11 41 8b 57 28 45 8b 5f 34 49 c7 07 00 00 00 00 49
-All code
-========
-   0:	24 08                	and    $0x8,%al
-   2:	49 c1 e1 06          	shl    $0x6,%r9
-   6:	44 89 7c 24 18       	mov    %r15d,0x18(%rsp)
-   b:	45 31 ed             	xor    %r13d,%r13d
-   e:	45 31 c0             	xor    %r8d,%r8d
-  11:	31 ff                	xor    %edi,%edi
-  13:	89 44 24 14          	mov    %eax,0x14(%rsp)
-  17:	4c 03 8b 90 01 00 00 	add    0x190(%rbx),%r9
-  1e:	eb 04                	jmp    0x24
-  20:	39 ca                	cmp    %ecx,%edx
-  22:	73 37                	jae    0x5b
-  24:	4d 8b 39             	mov    (%r9),%r15
-  27:	83 c7 01             	add    $0x1,%edi
-  2a:*	49 8b 17             	mov    (%r15),%rdx		<-- trapping instruction
-  2d:	49 89 11             	mov    %rdx,(%r9)
-  30:	41 8b 57 28          	mov    0x28(%r15),%edx
-  34:	45 8b 5f 34          	mov    0x34(%r15),%r11d
-  38:	49 c7 07 00 00 00 00 	movq   $0x0,(%r15)
-  3f:	49                   	rex.WB
-
-Code starting with the faulting instruction
-===========================================
-   0:	49 8b 17             	mov    (%r15),%rdx
-   3:	49 89 11             	mov    %rdx,(%r9)
-   6:	41 8b 57 28          	mov    0x28(%r15),%edx
-   a:	45 8b 5f 34          	mov    0x34(%r15),%r11d
-   e:	49 c7 07 00 00 00 00 	movq   $0x0,(%r15)
-  15:	49                   	rex.WB
-[   70.724561] RSP: 0018:ffff95ae85e6fb90 EFLAGS: 00000202
-[   70.724561] RAX: 0000000002000000 RBX: ffff95ae841de000 RCX: 0000000000000000
-[   70.724561] RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000001
-[   70.724561] RBP: ffff95ae85e6fbf8 R08: 0000000000000000 R09: ffff95b710a30000
-[   70.724561] R10: 0000000000000000 R11: bdf289445ce31881 R12: ffff95ae85e6fc58
-[   70.724561] R13: 0000000000000000 R14: 0000000000000040 R15: 0000000000000000
-[   70.724561] FS:  000000002c5c1380(0000) GS:ffff95bd7fcc0000(0000) knlGS:0000000000000000
-[   70.724561] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   70.724561] CR2: 0000000000000000 CR3: 000000010c568000 CR4: 00000000000006f0
-[   70.724561] Call Trace:
-[   70.724561]  <TASK>
-[   70.724561] ? __die (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:434)
-[   70.724561] ? page_fault_oops (arch/x86/mm/fault.c:715)
-[   70.724561] ? exc_page_fault (./arch/x86/include/asm/irqflags.h:26 ./arch/x86/include/asm/irqflags.h:87 ./arch/x86/include/asm/irqflags.h:147 arch/x86/mm/fault.c:1489 arch/x86/mm/fault.c:1539)
-[   70.724561] ? asm_exc_page_fault (./arch/x86/include/asm/idtentry.h:623)
-[   70.724561] ? fq_codel_enqueue (net/sched/sch_fq_codel.c:120 net/sched/sch_fq_codel.c:168 net/sched/sch_fq_codel.c:230) sch_fq_codel
-[   70.724561] dev_qdisc_enqueue (net/core/dev.c:3784)
-[   70.724561] __dev_queue_xmit (net/core/dev.c:3880 (discriminator 2) net/core/dev.c:4390 (discriminator 2))
-[   70.724561] ? irqentry_enter (kernel/entry/common.c:237)
-[   70.724561] ? sysvec_apic_timer_interrupt (./arch/x86/include/asm/hardirq.h:74 (discriminator 2) arch/x86/kernel/apic/apic.c:1043 (discriminator 2) arch/x86/kernel/apic/apic.c:1043 (discriminator 2))
-[   70.724561] ? trace_hardirqs_on (kernel/trace/trace_preemptirq.c:58 (discriminator 4))
-[   70.724561] ? asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:702)
-[   70.724561] ? virtio_net_hdr_to_skb.constprop.0 (./include/linux/virtio_net.h:129 (discriminator 1))
-[   70.724561] packet_sendmsg (net/packet/af_packet.c:3145 (discriminator 1) net/packet/af_packet.c:3177 (discriminator 1))
-[   70.724561] ? _raw_spin_lock_bh (./arch/x86/include/asm/atomic.h:107 (discriminator 4) ./include/linux/atomic/atomic-arch-fallback.h:2170 (discriminator 4) ./include/linux/atomic/atomic-instrumented.h:1302 (discriminator 4) ./include/asm-generic/qspinlock.h:111 (discriminator 4) ./include/linux/spinlock.h:187 (discriminator 4) ./include/linux/spinlock_api_smp.h:127 (discriminator 4) kernel/locking/spinlock.c:178 (discriminator 4))
-[   70.724561] ? netdev_name_node_lookup_rcu (net/core/dev.c:325 (discriminator 1))
-[   70.724561] __sys_sendto (net/socket.c:730 (discriminator 1) net/socket.c:745 (discriminator 1) net/socket.c:2210 (discriminator 1))
-[   70.724561] ? __sys_setsockopt (./include/linux/file.h:34 net/socket.c:2355)
-[   70.724561] __x64_sys_sendto (net/socket.c:2222 (discriminator 1) net/socket.c:2218 (discriminator 1) net/socket.c:2218 (discriminator 1))
-[   70.724561] do_syscall_64 (arch/x86/entry/common.c:52 (discriminator 1) arch/x86/entry/common.c:83 (discriminator 1))
-[   70.724561] entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-[   70.724561] RIP: 0033:0x41ae09
-
-Fixes: cf9acc90c80ec ("net: virtio_net_hdr_to_skb: count transport header in UFO")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jonathan Davies <jonathan.davies@nutanix.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Jonathan Davies <jonathan.davies@nutanix.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3142
+Fixes: 06ad7e164256 ("drm/amd/display: Destroy DC context while keeping DML and DML2")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../amd/display/dc/hwss/dce110/dce110_hwseq.c | 21 ++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 03fb8ae459c0e..7f2355574ceca 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3750,7 +3750,7 @@ static void qdisc_pkt_len_init(struct sk_buff *skb)
- 						sizeof(_tcphdr), &_tcphdr);
- 			if (likely(th))
- 				hdr_len += __tcp_hdrlen(th);
--		} else {
-+		} else if (shinfo->gso_type & SKB_GSO_UDP_L4) {
- 			struct udphdr _udphdr;
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+index e9e9f80a02a77..542d669bf5e30 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+@@ -2020,13 +2020,20 @@ static void set_drr(struct pipe_ctx **pipe_ctx,
+ 	 * as well.
+ 	 */
+ 	for (i = 0; i < num_pipes; i++) {
+-		pipe_ctx[i]->stream_res.tg->funcs->set_drr(
+-			pipe_ctx[i]->stream_res.tg, &params);
+-
+-		if (adjust.v_total_max != 0 && adjust.v_total_min != 0)
+-			pipe_ctx[i]->stream_res.tg->funcs->set_static_screen_control(
+-					pipe_ctx[i]->stream_res.tg,
+-					event_triggers, num_frames);
++		/* dc_state_destruct() might null the stream resources, so fetch tg
++		 * here first to avoid a race condition. The lifetime of the pointee
++		 * itself (the timing_generator object) is not a problem here.
++		 */
++		struct timing_generator *tg = pipe_ctx[i]->stream_res.tg;
++
++		if ((tg != NULL) && tg->funcs) {
++			if (tg->funcs->set_drr)
++				tg->funcs->set_drr(tg, &params);
++			if (adjust.v_total_max != 0 && adjust.v_total_min != 0)
++				if (tg->funcs->set_static_screen_control)
++					tg->funcs->set_static_screen_control(
++						tg, event_triggers, num_frames);
++		}
+ 	}
+ }
  
- 			if (skb_header_pointer(skb, hdr_len,
 -- 
 2.43.0
 
