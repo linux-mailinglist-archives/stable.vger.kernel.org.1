@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-82349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3618C994C4D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:53:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54832994975
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE7F61F24828
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:53:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CAD21C234C4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030721DED7A;
-	Tue,  8 Oct 2024 12:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 114001DEFC8;
+	Tue,  8 Oct 2024 12:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZlchapaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UhOXd8r/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62211DED69;
-	Tue,  8 Oct 2024 12:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C101DED6A;
+	Tue,  8 Oct 2024 12:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391960; cv=none; b=TTKHXwJot07bxnrvqn0VwSvgxMJTmp/ARBmsp34gwhmYVf17HmwsQRhjW3oMhXVny9kGZ+mCTcd9w7MP18CzSoibpVMkBwUESwWLaUPToHUNiSD0CzDan9Jbci8xaYjzU27QiCFpryNBhTJdM33cx6+hpR0Nf0fxqOy9dyt0iUg=
+	t=1728390167; cv=none; b=hHVmIEyH8+Zf1Ip8j+OAIqTFBrGOgmQgzr9syZ7XoiVWi5c/VWpiJLWOTDgd91RYVawOPbCR29CXYVZ+N9WjIbETbBEuRPb/BayrkOkp+pf0hOmszWExbj7UNXvL/XemLJvuk68PjtK8RYvg4eLsozmoYhBleoDJti/Gg9+aqsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391960; c=relaxed/simple;
-	bh=xsTxAIasgCzVdNh5cglxfTYREQh+D/S0NbL1LlwXa20=;
+	s=arc-20240116; t=1728390167; c=relaxed/simple;
+	bh=N59SpeQNlDpo8C41FrMrbdXm60iYAcRb866B77Gcjy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mil5XaHZ66quP7UM7Hr8UccADZg97Ldo/sRqU2cCabpOc69HAiZslCFFD44sj41gvZT2NzY5wyi1D91/JhYbNn26C3Sv79BddbDPpb78D/2rNKy97+W2ZCg5uP4EHltWCekHJpifEj7Kl9qL3vkRkFV7Oy6u4XNN+TPFPN55+yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZlchapaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA65DC4CEC7;
-	Tue,  8 Oct 2024 12:52:39 +0000 (UTC)
+	 MIME-Version; b=pCHj/Rcbkp5zAD6LyWIy8MJz+GR+gITAfGzA66R8vWGzOlsCOzkU5cefs01Y2Aagr8q0sNcKgbyE5PPtvN3g9fOna3eLmlQkTPECpG8HPhnLbw12U9FB6PgFqPuDYlc+d5uilVDm4Hcj0nUyjgR1nqjy0hzyDFJIOt0hpQw4Yuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UhOXd8r/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1C3C4CEC7;
+	Tue,  8 Oct 2024 12:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391960;
-	bh=xsTxAIasgCzVdNh5cglxfTYREQh+D/S0NbL1LlwXa20=;
+	s=korg; t=1728390167;
+	bh=N59SpeQNlDpo8C41FrMrbdXm60iYAcRb866B77Gcjy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZlchapaIP+RglzEdxwgeg6qONx3nmeZ2L+4l31i+Iut5sS3+ym2sen+F6dywAASpo
-	 s9LZ8n6WzgPolkRfqo64GkjIcabZRtuOBEgIpT9swe7wDKzqsXWX6MG9zdM4kKI701
-	 F0jRmlZW1lk/ppfyEBy5M4TjorpCZTsoRikdMAKw=
+	b=UhOXd8r/X6n5J9jyL+QynImPpvhD240dZQajusGETBNTCg7G+XbYriWCZ0pTjOTGc
+	 WLIaeNvF+rgW0xL5/ZjlsMmFtL3RtIz71QTzkIG0B3yz02qMVfXOp4JyquPsTPOHKr
+	 TRGcRAtDEr7EX2dk09vr/lw8b5nT6cR3aoATfhh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Liu <liupeng01@kylinos.cn>,
+	Nevenko Stupar <nevenko.stupar@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 243/558] drm/amdgpu: add raven1 gfxoff quirk
+Subject: [PATCH 6.10 210/482] drm/amd/display: Check null-initialized variables
 Date: Tue,  8 Oct 2024 14:04:33 +0200
-Message-ID: <20241008115711.902585231@linuxfoundation.org>
+Message-ID: <20241008115656.574347403@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Liu <liupeng01@kylinos.cn>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 0126c0ae11e8b52ecfde9d1b174ee2f32d6c3a5d ]
+[ Upstream commit 367cd9ceba1933b63bc1d87d967baf6d9fd241d2 ]
 
-Fix screen corruption with openkylin.
+[WHAT & HOW]
+drr_timing and subvp_pipe are initialized to null and they are not
+always assigned new values. It is necessary to check for null before
+dereferencing.
 
-Link: https://bbs.openkylin.top/t/topic/171497
-Signed-off-by: Peng Liu <liupeng01@kylinos.cn>
+This fixes 2 FORWARD_NULL issues reported by Coverity.
+
+Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-index 2929c8972ea73..9360a4425c4ae 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-@@ -1301,6 +1301,8 @@ static const struct amdgpu_gfxoff_quirk amdgpu_gfxoff_quirk_list[] = {
- 	{ 0x1002, 0x15dd, 0x1002, 0x15dd, 0xc6 },
- 	/* Apple MacBook Pro (15-inch, 2019) Radeon Pro Vega 20 4 GB */
- 	{ 0x1002, 0x69af, 0x106b, 0x019a, 0xc0 },
-+	/* https://bbs.openkylin.top/t/topic/171497 */
-+	{ 0x1002, 0x15d8, 0x19e5, 0x3e14, 0xc2 },
- 	{ 0, 0, 0, 0, 0 },
- };
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+index ebcf5ece209a4..bf8c89fe95a7e 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+@@ -871,8 +871,9 @@ static bool subvp_drr_schedulable(struct dc *dc, struct dc_state *context)
+ 	 * for VBLANK: (VACTIVE region of the SubVP pipe can fit the MALL prefetch, VBLANK frame time,
+ 	 * and the max of (VBLANK blanking time, MALL region)).
+ 	 */
+-	if (stretched_drr_us < (1 / (double)drr_timing->min_refresh_in_uhz) * 1000000 * 1000000 &&
+-			subvp_active_us - prefetch_us - stretched_drr_us - max_vblank_mallregion > 0)
++	if (drr_timing &&
++	    stretched_drr_us < (1 / (double)drr_timing->min_refresh_in_uhz) * 1000000 * 1000000 &&
++	    subvp_active_us - prefetch_us - stretched_drr_us - max_vblank_mallregion > 0)
+ 		schedulable = true;
  
+ 	return schedulable;
+@@ -937,7 +938,7 @@ static bool subvp_vblank_schedulable(struct dc *dc, struct dc_state *context)
+ 		if (!subvp_pipe && pipe_mall_type == SUBVP_MAIN)
+ 			subvp_pipe = pipe;
+ 	}
+-	if (found) {
++	if (found && subvp_pipe) {
+ 		phantom_stream = dc_state_get_paired_subvp_stream(context, subvp_pipe->stream);
+ 		main_timing = &subvp_pipe->stream->timing;
+ 		phantom_timing = &phantom_stream->timing;
 -- 
 2.43.0
 
