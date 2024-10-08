@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-81927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28AA994A2F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69EA6994E85
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E7391C24B45
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BE661C25191
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6F61DF25E;
-	Tue,  8 Oct 2024 12:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 115151DEFEA;
+	Tue,  8 Oct 2024 13:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elfWyDmB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irJthOYb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89812178384;
-	Tue,  8 Oct 2024 12:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F3C1DEFCE;
+	Tue,  8 Oct 2024 13:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390607; cv=none; b=We6HUK5cRCAX/KsBcW/FVvI3xJ5kpDWIrAPuRzNzO/ooksa2tP5cbDTh67I/nbIeTAI4rxfvPLeivOEHQB45f56sPp+sopNR+rwJvZhkZQ6EVCgqdq1+SwGVRIMlwjBz9dpE8pwkMDoYr2sAoGKd0BQKFgvz3zkpZgxlCaR9c4w=
+	t=1728393476; cv=none; b=kV8JkzwM2e7jDYNdmb8CBeZtEJuBKOKMh32dbGOsge3oQpFRtDNZZvLWyr0dhyIWCG0tYT4vJzLggE6g3iW1KhG6Syd78w11/qv3VYOBiBdIRjZthgQtvUC6xjHYmqSlcRZWzttZOx113fKZ3kXBiLH7JaYHOhupJSz1qCVFWmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390607; c=relaxed/simple;
-	bh=TC2TUBtJ6w1b3oznr0k4YYwfPEhSGFb4TsKkFRaEfX8=;
+	s=arc-20240116; t=1728393476; c=relaxed/simple;
+	bh=BwW18ttrt2DrD++7UQhYNkwWfyAhvlNm4BEwXMmHic8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HG4/6OkaJBH9llT0yGhvcvY9UFj6QX7JX7UTJHibBJxB/FBEwlrg78IWev78b6Etq4JcNTq3r6WOdxt3xygPd3DCuVV+g9eMAMOmAVxOKRJLiA36oHF5q8UrDb6qpIkqcHPZ32WBb/pG/753+WmAP8YqpbpAMv2BIrpxrGK7A9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elfWyDmB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5CBC4CEC7;
-	Tue,  8 Oct 2024 12:30:06 +0000 (UTC)
+	 MIME-Version; b=SlJoHBvE4L0PKZfWhoXwWBhIOoQBK9+Lcsnv1UlyyZaS+TIjTmnkXqEc8efT5UO57miFh1arimQpPxBvIAHl0aqvdSAuzxyjr3uJTpvxdI4kSiYqO6zcfX/M8WlxTbfEBYhi/us5qOrKSChZ6sxs1JBFMthIo/8EkYH2sN8z0zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irJthOYb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65DEC4CEC7;
+	Tue,  8 Oct 2024 13:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390607;
-	bh=TC2TUBtJ6w1b3oznr0k4YYwfPEhSGFb4TsKkFRaEfX8=;
+	s=korg; t=1728393476;
+	bh=BwW18ttrt2DrD++7UQhYNkwWfyAhvlNm4BEwXMmHic8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=elfWyDmBtsaSfOs4P2KUxvjcLDIdeMLUFjboYKk6Pzq2oy6v951j9xSCY/yX6OXEa
-	 nGB2my9cN+guGpGiThgf4erlrfJSpKFwJD2eX8bDtJcwlIll7CUS17rPL4BrtCwCkt
-	 Uf1Lgpch4gekH0ADuNyoV+9tPLrYTNftZUljybpw=
+	b=irJthOYbdEXiFyt0OozPsyTY59MRX+LtuPtmQr7Bkdiw0acpPN5s8V7/goKtsNMt3
+	 D/QToMIWV5tSE1YUnFz7OgHGSw1JaoGeQ/q9EABOyCU0iplHQ4p5Mak0GucayRdQ1q
+	 wE+7b3Uc/gxbfu5Rh34aFbZJMISljuYZkBKexAS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.10 338/482] ext4: use handle to mark fc as ineligible in __track_dentry_update()
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 156/386] drm/amd/display: Fix index out of bounds in DCN30 degamma hardware format translation
 Date: Tue,  8 Oct 2024 14:06:41 +0200
-Message-ID: <20241008115701.727051793@linuxfoundation.org>
+Message-ID: <20241008115635.565112674@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +69,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit faab35a0370fd6e0821c7a8dd213492946fc776f upstream.
+[ Upstream commit bc50b614d59990747dd5aeced9ec22f9258991ff ]
 
-Calling ext4_fc_mark_ineligible() with a NULL handle is racy and may result
-in a fast-commit being done before the filesystem is effectively marked as
-ineligible.  This patch fixes the calls to this function in
-__track_dentry_update() by adding an extra parameter to the callback used in
-ext4_fc_track_template().
+This commit addresses a potential index out of bounds issue in the
+`cm3_helper_translate_curve_to_degamma_hw_format` function in the DCN30
+color  management module. The issue could occur when the index 'i'
+exceeds the  number of transfer function points (TRANSFER_FUNC_POINTS).
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240923104909.18342-2-luis.henriques@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The fix adds a check to ensure 'i' is within bounds before accessing the
+transfer function points. If 'i' is out of bounds, the function returns
+false to indicate an error.
+
+Reported by smatch:
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:338 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:339 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:340 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
+
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/fast_commit.c |   19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -379,7 +379,7 @@ void ext4_fc_mark_ineligible(struct supe
-  */
- static int ext4_fc_track_template(
- 	handle_t *handle, struct inode *inode,
--	int (*__fc_track_fn)(struct inode *, void *, bool),
-+	int (*__fc_track_fn)(handle_t *handle, struct inode *, void *, bool),
- 	void *args, int enqueue)
- {
- 	bool update = false;
-@@ -396,7 +396,7 @@ static int ext4_fc_track_template(
- 		ext4_fc_reset_inode(inode);
- 		ei->i_sync_tid = tid;
- 	}
--	ret = __fc_track_fn(inode, args, update);
-+	ret = __fc_track_fn(handle, inode, args, update);
- 	mutex_unlock(&ei->i_fc_lock);
- 
- 	if (!enqueue)
-@@ -420,7 +420,8 @@ struct __track_dentry_update_args {
- };
- 
- /* __track_fn for directory entry updates. Called with ei->i_fc_lock. */
--static int __track_dentry_update(struct inode *inode, void *arg, bool update)
-+static int __track_dentry_update(handle_t *handle, struct inode *inode,
-+				 void *arg, bool update)
- {
- 	struct ext4_fc_dentry_update *node;
- 	struct ext4_inode_info *ei = EXT4_I(inode);
-@@ -435,14 +436,14 @@ static int __track_dentry_update(struct
- 
- 	if (IS_ENCRYPTED(dir)) {
- 		ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_ENCRYPTED_FILENAME,
--					NULL);
-+					handle);
- 		mutex_lock(&ei->i_fc_lock);
- 		return -EOPNOTSUPP;
- 	}
- 
- 	node = kmem_cache_alloc(ext4_fc_dentry_cachep, GFP_NOFS);
- 	if (!node) {
--		ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_NOMEM, NULL);
-+		ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_NOMEM, handle);
- 		mutex_lock(&ei->i_fc_lock);
- 		return -ENOMEM;
- 	}
-@@ -454,7 +455,7 @@ static int __track_dentry_update(struct
- 		node->fcd_name.name = kmalloc(dentry->d_name.len, GFP_NOFS);
- 		if (!node->fcd_name.name) {
- 			kmem_cache_free(ext4_fc_dentry_cachep, node);
--			ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_NOMEM, NULL);
-+			ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_NOMEM, handle);
- 			mutex_lock(&ei->i_fc_lock);
- 			return -ENOMEM;
- 		}
-@@ -576,7 +577,8 @@ void ext4_fc_track_create(handle_t *hand
- }
- 
- /* __track_fn for inode tracking */
--static int __track_inode(struct inode *inode, void *arg, bool update)
-+static int __track_inode(handle_t *handle, struct inode *inode, void *arg,
-+			 bool update)
- {
- 	if (update)
- 		return -EEXIST;
-@@ -614,7 +616,8 @@ struct __track_range_args {
- };
- 
- /* __track_fn for tracking data updates */
--static int __track_range(struct inode *inode, void *arg, bool update)
-+static int __track_range(handle_t *handle, struct inode *inode, void *arg,
-+			 bool update)
- {
- 	struct ext4_inode_info *ei = EXT4_I(inode);
- 	ext4_lblk_t oldstart;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
+index e0df9b0065f9c..e0b1fc92ed186 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
+@@ -355,6 +355,8 @@ bool cm3_helper_translate_curve_to_degamma_hw_format(
+ 				i += increment) {
+ 			if (j == hw_points - 1)
+ 				break;
++			if (i >= TRANSFER_FUNC_POINTS)
++				return false;
+ 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
+ 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
+ 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
+-- 
+2.43.0
+
 
 
 
