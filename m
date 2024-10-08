@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47E9C994D91
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:06:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C9C4994F1F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E060B266B6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:03:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB12A2864F8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E871DE4CC;
-	Tue,  8 Oct 2024 13:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70AD01DF722;
+	Tue,  8 Oct 2024 13:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQbQm47C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bs5wYuOx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531FD1C9B99;
-	Tue,  8 Oct 2024 13:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE631DEFE3;
+	Tue,  8 Oct 2024 13:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392593; cv=none; b=AmRg+TgYluOoLXzH0TuWDPcMDXZG18JvyRfxczjF+wazgQxOengv6q+btun5rW7XQ0yG7X7zRFbF57ZeCGXpC/0zkIe6hffwQm0gfotfHebMkFftuOrG3Z05nMVi0QabK1zi82bPHI9AB+tXIKexz5Ytm+9dcV11f6/aSJmYMbM=
+	t=1728393809; cv=none; b=lavnFvm8iOPXU0kKBtliLNok7va4vZ00nlyJuzXHhJiaAZ8TatotsDlthnQehSbIvRvgdz5trzSTobl4JmsH3RAPydiJYjp1fcANbCZFEpRM5IS5LqMojL4c2meQYuYetPNv4+SK0wGPzM958fB4VuTa3qu2Bm5NCt60AYuf0OU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392593; c=relaxed/simple;
-	bh=hjG3JYp/sr90MIYA4T1MyxqmY/Xxc+d8FFC+XbQM2YY=;
+	s=arc-20240116; t=1728393809; c=relaxed/simple;
+	bh=EtCnoGngnq4Uk51jnNScJDckquvZbYuWJzU46jb9g1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cySHjat24iOj8CM/PIZ3cB75zehzFqg2pEVuuAP+TbasqE2OD/ba2oH6EdZYOgjnKcrFL+05nQkjBDhsAQveX33H6vv9nq7vxGzjPK4BQtlCfTKJyMnZPbO0BSrgPoKuwQLf6IfmQrj4hhOWSF81+3NWIonhAOqlkdjyNrXWGUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQbQm47C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A71C4CED1;
-	Tue,  8 Oct 2024 13:03:12 +0000 (UTC)
+	 MIME-Version; b=R/wQYu1ZKzvVtfVxGGLIWoi3PbuH5KxG/yy4cOexPC4Xks5F2bm7WFNh/EZIQtL3QmhJzJJoOf034JE66RnCsg4R33yZq4FS8CWPtwW50QkgN35nFYdpQUsJIHh1hHOGKuLmohLqF4Tczkx9Irx7qi+02Yo60SyAr4cymRgVYmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bs5wYuOx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539C0C4CEC7;
+	Tue,  8 Oct 2024 13:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392593;
-	bh=hjG3JYp/sr90MIYA4T1MyxqmY/Xxc+d8FFC+XbQM2YY=;
+	s=korg; t=1728393808;
+	bh=EtCnoGngnq4Uk51jnNScJDckquvZbYuWJzU46jb9g1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NQbQm47CjcJdz7OVlDHnDKd0pl7ESmfUv5uSMqwJPqxlgzExTKIjvakjbS8J1pc1M
-	 RMOp9kTA/GIV4UqlT0xlEs7qjeuFgdItz3o2cK4HR3wTaVye05BPBbd4JiwPrJmVP5
-	 EvdB4Kop20SxMth9sRQuqT03KNc6vlBBOhIfDnxE=
+	b=Bs5wYuOxA09I1+c31Rmw7hOqikI95B1NA0Z4t/JZ4gzsaNqfvCoz4337PF/V7V7fn
+	 LthnIdd56qEw+XR3y0gFPv+sfwvfYpnuS4fW+bZRfMmGT8fdqEWNziBafgsghVGU94
+	 px2J1FmgVmAGn36vbKzSNIkHkDjU3ShRjat9qyPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Umang Jain <umang.jain@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.11 444/558] media: imx335: Fix reset-gpio handling
-Date: Tue,  8 Oct 2024 14:07:54 +0200
-Message-ID: <20241008115719.737025535@linuxfoundation.org>
+	Abhishek Tamboli <abhishektamboli9@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 230/386] ALSA: hda/realtek: Add a quirk for HP Pavilion 15z-ec200
+Date: Tue,  8 Oct 2024 14:07:55 +0200
+Message-ID: <20241008115638.454574212@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Umang Jain <umang.jain@ideasonboard.com>
+From: Abhishek Tamboli <abhishektamboli9@gmail.com>
 
-commit 99d30e2fdea4086be4e66e2deb10de854b547ab8 upstream.
+commit d75dba49744478c32f6ce1c16b5f391c2d5cef5f upstream.
 
-Rectify the logical value of reset-gpio so that it is set to
-0 (disabled) during power-on and to 1 (enabled) during power-off.
+Add the quirk for HP Pavilion Gaming laptop 15z-ec200 for
+enabling the mute led. The fix apply the ALC285_FIXUP_HP_MUTE_LED
+quirk for this model.
 
-Set the reset-gpio to GPIO_OUT_HIGH at initialization time to make
-sure it starts off in reset. Also drop the "Set XCLR" comment which
-is not-so-informative.
-
-The existing usage of imx335 had reset-gpios polarity inverted
-(GPIO_ACTIVE_HIGH) in their device-tree sources. With this patch
-included, those DTS will not be able to stream imx335 anymore. The
-reset-gpio polarity will need to be rectified in the device-tree
-sources as shown in [1] example, in order to get imx335 functional
-again (as it remains in reset prior to this fix).
-
-Cc: stable@vger.kernel.org
-Fixes: 45d19b5fb9ae ("media: i2c: Add imx335 camera sensor driver")
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/linux-media/20240729110437.199428-1-umang.jain@ideasonboard.com/
-Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219303
+Signed-off-by: Abhishek Tamboli <abhishektamboli9@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240930145300.4604-1-abhishektamboli9@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/imx335.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/i2c/imx335.c
-+++ b/drivers/media/i2c/imx335.c
-@@ -997,7 +997,7 @@ static int imx335_parse_hw_config(struct
- 
- 	/* Request optional reset pin */
- 	imx335->reset_gpio = devm_gpiod_get_optional(imx335->dev, "reset",
--						     GPIOD_OUT_LOW);
-+						     GPIOD_OUT_HIGH);
- 	if (IS_ERR(imx335->reset_gpio)) {
- 		dev_err(imx335->dev, "failed to get reset gpio %ld\n",
- 			PTR_ERR(imx335->reset_gpio));
-@@ -1110,8 +1110,7 @@ static int imx335_power_on(struct device
- 
- 	usleep_range(500, 550); /* Tlow */
- 
--	/* Set XCLR */
--	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
-+	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
- 
- 	ret = clk_prepare_enable(imx335->inclk);
- 	if (ret) {
-@@ -1124,7 +1123,7 @@ static int imx335_power_on(struct device
- 	return 0;
- 
- error_reset:
--	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
-+	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
- 	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
- 
- 	return ret;
-@@ -1141,7 +1140,7 @@ static int imx335_power_off(struct devic
- 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
- 	struct imx335 *imx335 = to_imx335(sd);
- 
--	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
-+	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
- 	clk_disable_unprepare(imx335->inclk);
- 	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
- 
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9923,6 +9923,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8896, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8898, "HP EliteBook 845 G8 Notebook PC", ALC285_FIXUP_HP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x103c, 0x88d0, "HP Pavilion 15-eh1xxx (mainboard 88D0)", ALC287_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x88dd, "HP Pavilion 15z-ec200", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8902, "HP OMEN 16", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x890e, "HP 255 G8 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8919, "HP Pavilion Aero Laptop 13-be0xxx", ALC287_FIXUP_HP_GPIO_LED),
 
 
 
