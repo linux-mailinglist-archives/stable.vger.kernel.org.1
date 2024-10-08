@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-82764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5CA7994E52
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E72994CB0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:57:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 244061C250D6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CE861F23114
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBA21DE8BE;
-	Tue,  8 Oct 2024 13:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A60DC1DED64;
+	Tue,  8 Oct 2024 12:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJULLtMO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdjfD4rs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D152C1C5793;
-	Tue,  8 Oct 2024 13:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656EE1DE8A0;
+	Tue,  8 Oct 2024 12:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393350; cv=none; b=GHhD0sx2opt9IikymjvmflAgTJ91bzsEo2cHpiqalzIL+vEWE/DZEzHHS25bMQt8tLNizH+NucX8UwU2LYzDkHOk123Lk1DmM3WgkklYX9CGQWDWfOAw8DzaElTG09rUwB5mLdpZVfYKEYbrqMpCD0iiIztucnmqQf6gSt2tR0c=
+	t=1728392170; cv=none; b=UoynHstJBX05BSA/ymtY5vp3ca0NKn1AYiKGjN++wbhzKae9Eh1GYoaNXtrXiYVPpOJAX9SXVsT8I/mwlOpZOGEmU259xQU+0jEIwGck+R/VSSa8CKRPHutXuyKmuV6kiYDR9fWVO9nS79Uj1lCTsb2xemhPfhubAaGhjV7uFXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393350; c=relaxed/simple;
-	bh=S8h/4RdIybJldbPPPWpKXYm8FuT2dh+JTs1Gv1GIWtA=;
+	s=arc-20240116; t=1728392170; c=relaxed/simple;
+	bh=wWAHjDw7Cgczf/MzToc3gnY9wAbkIuTr9Fos3hy5rQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iGK1eHn40piEU0g+fgJUCv83GxhOrWl0YdqgmaXLatzQdBlRLu+yxHXDc9WHGyvwqVguM6sLh+7Kwa/CVvqpyuj5aa0JgeNyd6wWB56oeFylCZZjYR2S/gH8QisDznSq0obRxJ52hfRtVejvOMnjSuWe5VwtrTPL3D63eFT8fCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJULLtMO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9199C4CEC7;
-	Tue,  8 Oct 2024 13:15:49 +0000 (UTC)
+	 MIME-Version; b=iMr0bQ6F7xilmY7t4t5IaDYL79qlATLC7qxPxXUV+OpvDcqWOWKsRS7p4rTiEuBbBQmHSyM6M9guRNtSRCAWXHA5IGt5GivBdoP1B5s1lutld+2ijfPSvIJpXv/ekz0Kx08Wf+ww1n3JyIXu+olok4UR/Q90/emo8YxYN96eoHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdjfD4rs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30ECC4CEC7;
+	Tue,  8 Oct 2024 12:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393350;
-	bh=S8h/4RdIybJldbPPPWpKXYm8FuT2dh+JTs1Gv1GIWtA=;
+	s=korg; t=1728392170;
+	bh=wWAHjDw7Cgczf/MzToc3gnY9wAbkIuTr9Fos3hy5rQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJULLtMOJwZZ6rTFmSF7B/+4hQ6/0CsdpIQuF3gnQkBSToBo2itRoYueiFS4eZNgP
-	 9GtT5XUafVyrgw7wRhHUq/2XEbOBlT1/AllXB2LZEDijnd8Ncck8RJZWxNxhJd7u/J
-	 +a4DosDIsiZxuML/cIYLYZ2Ryew2A7fTUrZi5J68=
+	b=SdjfD4rsx7ui5ykUMT9fwBWVcDr0ovcpu0cD+vfxL8uuzW6lFT/IeGIYGrSki3nzf
+	 bt7H/lD6XF/BjMIfqN6XiehHDdmhSjFOXunSJ9H0bKjyCdegc/ny55CoLakY7thjuo
+	 w7JjjvlBmqwJfKxHpGVh4TIrdMT2j8CX2y/CSC6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Mikhail Ukhin <mish.uxin2012@yandex.ru>,
+	Artem Sadovnikov <ancowi69@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/386] netpoll: Ensure clean state on setup failures
+Subject: [PATCH 6.11 309/558] ext4: fix i_data_sem unlock order in ext4_ind_migrate()
 Date: Tue,  8 Oct 2024 14:05:39 +0200
-Message-ID: <20241008115633.149439113@linuxfoundation.org>
+Message-ID: <20241008115714.473520550@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Artem Sadovnikov <ancowi69@gmail.com>
 
-[ Upstream commit ae5a0456e0b4cfd7e61619e55251ffdf1bc7adfb ]
+[ Upstream commit cc749e61c011c255d81b192a822db650c68b313f ]
 
-Modify netpoll_setup() and __netpoll_setup() to ensure that the netpoll
-structure (np) is left in a clean state if setup fails for any reason.
-This prevents carrying over misconfigured fields in case of partial
-setup success.
+Fuzzing reports a possible deadlock in jbd2_log_wait_commit.
 
-Key changes:
-- np->dev is now set only after successful setup, ensuring it's always
-  NULL if netpoll is not configured or if netpoll_setup() fails.
-- np->local_ip is zeroed if netpoll setup doesn't complete successfully.
-- Added DEBUG_NET_WARN_ON_ONCE() checks to catch unexpected states.
-- Reordered some operations in __netpoll_setup() for better logical flow.
+This issue is triggered when an EXT4_IOC_MIGRATE ioctl is set to require
+synchronous updates because the file descriptor is opened with O_SYNC.
+This can lead to the jbd2_journal_stop() function calling
+jbd2_might_wait_for_commit(), potentially causing a deadlock if the
+EXT4_IOC_MIGRATE call races with a write(2) system call.
 
-These changes improve the reliability of netpoll configuration, since it
-assures that the structure is fully initialized or totally unset.
+This problem only arises when CONFIG_PROVE_LOCKING is enabled. In this
+case, the jbd2_might_wait_for_commit macro locks jbd2_handle in the
+jbd2_journal_stop function while i_data_sem is locked. This triggers
+lockdep because the jbd2_journal_start function might also lock the same
+jbd2_handle simultaneously.
 
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20240822111051.179850-2-leitao@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with syzkaller.
+
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Co-developed-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+Signed-off-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20240404095000.5872-1-mish.uxin2012%40yandex.ru
+Link: https://patch.msgid.link/20240829152210.2754-1-ancowi69@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ fs/ext4/migrate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 55bcacf67df3b..e082139004093 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -626,12 +626,9 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
- 	const struct net_device_ops *ops;
- 	int err;
- 
--	np->dev = ndev;
--	strscpy(np->dev_name, ndev->name, IFNAMSIZ);
--
- 	if (ndev->priv_flags & IFF_DISABLE_NETPOLL) {
- 		np_err(np, "%s doesn't support polling, aborting\n",
--		       np->dev_name);
-+		       ndev->name);
- 		err = -ENOTSUPP;
- 		goto out;
- 	}
-@@ -649,7 +646,7 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
- 
- 		refcount_set(&npinfo->refcnt, 1);
- 
--		ops = np->dev->netdev_ops;
-+		ops = ndev->netdev_ops;
- 		if (ops->ndo_netpoll_setup) {
- 			err = ops->ndo_netpoll_setup(ndev, npinfo);
- 			if (err)
-@@ -660,6 +657,8 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
- 		refcount_inc(&npinfo->refcnt);
- 	}
- 
-+	np->dev = ndev;
-+	strscpy(np->dev_name, ndev->name, IFNAMSIZ);
- 	npinfo->netpoll = np;
- 
- 	/* last thing to do is link it to the net device structure */
-@@ -677,6 +676,7 @@ EXPORT_SYMBOL_GPL(__netpoll_setup);
- int netpoll_setup(struct netpoll *np)
- {
- 	struct net_device *ndev = NULL;
-+	bool ip_overwritten = false;
- 	struct in_device *in_dev;
- 	int err;
- 
-@@ -741,6 +741,7 @@ int netpoll_setup(struct netpoll *np)
- 			}
- 
- 			np->local_ip.ip = ifa->ifa_local;
-+			ip_overwritten = true;
- 			np_info(np, "local IP %pI4\n", &np->local_ip.ip);
- 		} else {
- #if IS_ENABLED(CONFIG_IPV6)
-@@ -757,6 +758,7 @@ int netpoll_setup(struct netpoll *np)
- 					    !!(ipv6_addr_type(&np->remote_ip.in6) & IPV6_ADDR_LINKLOCAL))
- 						continue;
- 					np->local_ip.in6 = ifp->addr;
-+					ip_overwritten = true;
- 					err = 0;
- 					break;
- 				}
-@@ -787,6 +789,9 @@ int netpoll_setup(struct netpoll *np)
- 	return 0;
- 
- put:
-+	DEBUG_NET_WARN_ON_ONCE(np->dev);
-+	if (ip_overwritten)
-+		memset(&np->local_ip, 0, sizeof(np->local_ip));
- 	netdev_put(ndev, &np->dev_tracker);
- unlock:
- 	rtnl_unlock();
+diff --git a/fs/ext4/migrate.c b/fs/ext4/migrate.c
+index d98ac2af8199f..a5e1492bbaaa5 100644
+--- a/fs/ext4/migrate.c
++++ b/fs/ext4/migrate.c
+@@ -663,8 +663,8 @@ int ext4_ind_migrate(struct inode *inode)
+ 	if (unlikely(ret2 && !ret))
+ 		ret = ret2;
+ errout:
+-	ext4_journal_stop(handle);
+ 	up_write(&EXT4_I(inode)->i_data_sem);
++	ext4_journal_stop(handle);
+ out_unlock:
+ 	ext4_writepages_up_write(inode->i_sb, alloc_ctx);
+ 	return ret;
 -- 
 2.43.0
 
