@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB7F994EB8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:20:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F5C994A6D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:33:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49CC4285621
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:20:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47711B2310E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811001DEFE0;
-	Tue,  8 Oct 2024 13:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5757E1B81CC;
+	Tue,  8 Oct 2024 12:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krZ7I2x+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Svqi9zDE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8DC1DE89A;
-	Tue,  8 Oct 2024 13:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D7E178384;
+	Tue,  8 Oct 2024 12:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393622; cv=none; b=c0Iz678TaMAgUC7dj0Ge27hpJaUeEvU3LejvLAOWyIHJkfnBe00ly+npPG7jp/2q3FWLbTpnLP2e2XXE/nzOvKooP7gZ5M/QPZ5FjsuG19Utfkdn4SbSI7cBuZofrZs8aH67eSDB/Uqx7odKt0H0YUJlTqwCFKfHiKhrIk2d2Tg=
+	t=1728390779; cv=none; b=at+89G6uYZ4+1FS91rl379BbdjWeVSDrIZ5/l7pwLqdJZVJ9mbYixUW9/UZSvtuoaH32AbUmnh1ZLe4NgNLl7RXherL0nAHW5YDZLiOzjhkTQYs7SFq9PW9AyBuhnd5ALItGsvtu+fvzoQnUzlgAnNxSCVM6jDJAXdEBU6h+Nhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393622; c=relaxed/simple;
-	bh=rpv4CI9R5W+HQ/Rzi5e2+BKl4QQtwkuSi6qweByfoTM=;
+	s=arc-20240116; t=1728390779; c=relaxed/simple;
+	bh=gP1ZBdtIYs/YAbwxXhvtswtwgVLSsVT/1ywKa9AhNHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BPsg7SuSW7c3iNfqSSgFNJJYw25eSxIaYN5YniU+62DIrThbGcHAtdsyO2aroCVn4C3G8G0XHcF24WO2U3IlKSBKjnJ/DwjVZ6aHdqarqYiPJ8Oo7JufPoGRZRHZ2kL0Zz98As3561QPwibV8vF/0I0CzjC+orSfVUBGSghQSdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krZ7I2x+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C0CC4CEC7;
-	Tue,  8 Oct 2024 13:20:21 +0000 (UTC)
+	 MIME-Version; b=TCLUr/WslteSoQhQ+gE27jcLt5egWDhqgKniL5Sa0ouMpomTXb87gazPlaihTI3FMNeMTAvVF1x44ZhciEmplkEOQhDikZ6qNksqDg98JPuaY+bvfEXoCWONwlBnJRztXOcOYz9x6h1SSBcWpC50A6sCQoccarSrNEGpJd41iUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Svqi9zDE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E44C4CEC7;
+	Tue,  8 Oct 2024 12:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393622;
-	bh=rpv4CI9R5W+HQ/Rzi5e2+BKl4QQtwkuSi6qweByfoTM=;
+	s=korg; t=1728390779;
+	bh=gP1ZBdtIYs/YAbwxXhvtswtwgVLSsVT/1ywKa9AhNHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=krZ7I2x+fMneor5gXSFU1KE0miYa/yxXse7ZOLnXH4I8BoJHJw4YtobizDv9AfmKR
-	 XRazoFQ5nRxE6h9Rhy+noZkUe27C6GY6EKpOcmspXIrsKITfzoVvrL3fYAq38d3RqS
-	 h3XdLfi9KFz+POHVsnfdohr7cJYy2LulVBB8y+uQ=
+	b=Svqi9zDEJaFISxpEiN8yJvwrx5sEaLBWn+HwFHxN5JRgLrsNenYvMgpDCz4arI1Wk
+	 +0RVFvEtAkFZEKIcMZPV36FUUS9oEWSw28vp+95FHkn3oG/N8FvqMdPtwjapXc1gUR
+	 5kyeUZIuTV5MDJ5upuc4fgA4a8j16kHaePPZzfHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.6 207/386] i2c: qcom-geni: Use IRQF_NO_AUTOEN flag in request_irq()
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 389/482] dt-bindings: clock: qcom: Add GPLL9 support on gcc-sc8180x
 Date: Tue,  8 Oct 2024 14:07:32 +0200
-Message-ID: <20241008115637.550750395@linuxfoundation.org>
+Message-ID: <20241008115703.721985670@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-commit e2c85d85a05f16af2223fcc0195ff50a7938b372 upstream.
+commit 648b4bde0aca2980ebc0b90cdfbb80d222370c3d upstream.
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+Add the missing GPLL9 which is required for the gcc sdcc2 clock.
 
-Fixes: 37692de5d523 ("i2c: i2c-qcom-geni: Add bus driver for the Qualcomm GENI I2C controller")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: <stable@vger.kernel.org> # v4.19+
-Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 0fadcdfdcf57 ("dt-bindings: clock: Add SC8180x GCC binding")
+Cc: stable@vger.kernel.org
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-2-8b3eaa5fb856@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-qcom-geni.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/dt-bindings/clock/qcom,gcc-sc8180x.h |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/i2c/busses/i2c-qcom-geni.c
-+++ b/drivers/i2c/busses/i2c-qcom-geni.c
-@@ -819,15 +819,13 @@ static int geni_i2c_probe(struct platfor
- 	init_completion(&gi2c->done);
- 	spin_lock_init(&gi2c->lock);
- 	platform_set_drvdata(pdev, gi2c);
--	ret = devm_request_irq(dev, gi2c->irq, geni_i2c_irq, 0,
-+	ret = devm_request_irq(dev, gi2c->irq, geni_i2c_irq, IRQF_NO_AUTOEN,
- 			       dev_name(dev), gi2c);
- 	if (ret) {
- 		dev_err(dev, "Request_irq failed:%d: err:%d\n",
- 			gi2c->irq, ret);
- 		return ret;
- 	}
--	/* Disable the interrupt so that the system can enter low-power mode */
--	disable_irq(gi2c->irq);
- 	i2c_set_adapdata(&gi2c->adap, gi2c);
- 	gi2c->adap.dev.parent = dev;
- 	gi2c->adap.dev.of_node = dev->of_node;
+--- a/include/dt-bindings/clock/qcom,gcc-sc8180x.h
++++ b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
+@@ -248,6 +248,7 @@
+ #define GCC_USB3_SEC_CLKREF_CLK					238
+ #define GCC_UFS_MEM_CLKREF_EN					239
+ #define GCC_UFS_CARD_CLKREF_EN					240
++#define GPLL9							241
+ 
+ #define GCC_EMAC_BCR						0
+ #define GCC_GPU_BCR						1
 
 
 
