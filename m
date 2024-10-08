@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64596994DE4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:10:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F56C994C29
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D25B1C252A0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:10:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FB1A285913
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27B41DED60;
-	Tue,  8 Oct 2024 13:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937FC1DE3C1;
+	Tue,  8 Oct 2024 12:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHrHV/fQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFmQ+APe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF711DED74;
-	Tue,  8 Oct 2024 13:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F0D183CB8;
+	Tue,  8 Oct 2024 12:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393033; cv=none; b=lB24cYZF13qsome+MCZ+cKF4zD3lJFSlz+lH3xED8YZzj+8JVHN4gD+HEliRaR0ulIhouZehiO78a/XLDjl+PGP6CC9xOPhQ7j826EqCEb7r0rNaEpl7P75o1lmlzBUSv/uy/3PEZs1cskkrvKs7BAlnD8dbSYlWSb5X84jXP+k=
+	t=1728391871; cv=none; b=gyEpVCHvSG1Kggt54/lWetX7Q26JKquMeL7dMdjmX/pB+vyR9aCpPXeE4Ef9ULPacTOnORXnlDuf6ToZ5Fzv+JfkWl0fXp/rL+EDsr2adKRgCEykKJmVB4v5fXUbIXU0Z49X5HohFOTGQmDiMAmAfp1U9RtRZ/RbigsriORbUfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393033; c=relaxed/simple;
-	bh=lKt8iiB79/TcLzRvA2pSiH1bnnk6BBXd939q6tDEfs4=;
+	s=arc-20240116; t=1728391871; c=relaxed/simple;
+	bh=euSTtZweBmcSn0C+P6u67na3g1XAFo/YSfWS7KUB1Fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=csv+XS9LeDUXB1KuGlfEho3j9RKQvCNgllfg3i2w1yNl3urvDqeL23Exhgu7W/QeV598nvtGdMtKMAucpXxlwDHOZRdn3JFCV4287Xd1b9M7/dzRGJqGTpF9eSvTp1ZPSGwBbxXP3wKNOwT1rt+fQFDute2YFTkMaDGyAVe8d6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHrHV/fQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1002C4CEC7;
-	Tue,  8 Oct 2024 13:10:32 +0000 (UTC)
+	 MIME-Version; b=nbVhFGc9V0H+G/p15TvRWzBwfRrfiFnfrbKBXZYRhQB9dqHS3nNg5GRhgYY451L8WR8YfoMDVTYuXUlgPJGpyAEnPwcxVG1zhf1NJSgDL7mbVGl+3H0gAWkx1cpR+2XifqdJQe9w7DJnRdNG8OEBnJQCqKUuw8ji1YEGCRDI70Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFmQ+APe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E8CC4CEC7;
+	Tue,  8 Oct 2024 12:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393033;
-	bh=lKt8iiB79/TcLzRvA2pSiH1bnnk6BBXd939q6tDEfs4=;
+	s=korg; t=1728391871;
+	bh=euSTtZweBmcSn0C+P6u67na3g1XAFo/YSfWS7KUB1Fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RHrHV/fQ4HP+U2TPk4Z0SNDkrDswqrCg0hpWwEGdVzaYPHYHDP0MztreGEHJPj6a3
-	 E83DTwxoTLN1Iaq9RTumqF1tG3e/66tgfIqW4h1sP2cL5xhmivDC+oexQrcUXsqZ0h
-	 ppUMJZQGjMZH6NSCwvY2msjaVVIGFk+vHpoX4OL8=
+	b=bFmQ+APew+XweLCQRkVCHH4ofq0MDSG2/5dM8qZ+yoKyqLoWDZZPYLUkM0NB0tCFO
+	 LFLmxKZFn9LlsroaxmxV5MK+GZS03XrRhiSOkYcZCUGWESVX24Ct4SDJ6FL864PyZK
+	 sOpqCDU3QsXk3NRr/SgP3frDDIBVFIIKCM6oN2Ec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Danilov <littlesmilingcloud@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	aln8 <aln8un@gmail.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 033/386] ipv4: ip_gre: Fix drops of small packets in ipgre_xmit
+Subject: [PATCH 6.11 248/558] platform/x86/amd: pmf: Add quirk for TUF Gaming A14
 Date: Tue,  8 Oct 2024 14:04:38 +0200
-Message-ID: <20241008115630.782236162@linuxfoundation.org>
+Message-ID: <20241008115712.098339234@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Danilov <littlesmilingcloud@gmail.com>
+From: aln8 <aln8un@gmail.com>
 
-[ Upstream commit c4a14f6d9d17ad1e41a36182dd3b8a5fd91efbd7 ]
+[ Upstream commit 06369503d644068abd9e90918c6611274d94c126 ]
 
-Regression Description:
+The ASUS TUF Gaming A14 has the same issue as the ROG Zephyrus G14
+where it advertises SPS support but doesn't use it.
 
-Depending on the options specified for the GRE tunnel device, small
-packets may be dropped. This occurs because the pskb_network_may_pull
-function fails due to the packet's insufficient length.
-
-For example, if only the okey option is specified for the tunnel device,
-original (before encapsulation) packets smaller than 28 bytes (including
-the IPv4 header) will be dropped. This happens because the required
-length is calculated relative to the network header, not the skb->head.
-
-Here is how the required length is computed and checked:
-
-* The pull_len variable is set to 28 bytes, consisting of:
-  * IPv4 header: 20 bytes
-  * GRE header with Key field: 8 bytes
-
-* The pskb_network_may_pull function adds the network offset, shifting
-the checkable space further to the beginning of the network header and
-extending it to the beginning of the packet. As a result, the end of
-the checkable space occurs beyond the actual end of the packet.
-
-Instead of ensuring that 28 bytes are present in skb->head, the function
-is requesting these 28 bytes starting from the network header. For small
-packets, this requested length exceeds the actual packet size, causing
-the check to fail and the packets to be dropped.
-
-This issue affects both locally originated and forwarded packets in
-DMVPN-like setups.
-
-How to reproduce (for local originated packets):
-
-  ip link add dev gre1 type gre ikey 1.9.8.4 okey 1.9.8.4 \
-          local <your-ip> remote 0.0.0.0
-
-  ip link set mtu 1400 dev gre1
-  ip link set up dev gre1
-  ip address add 192.168.13.1/24 dev gre1
-  ip neighbor add 192.168.13.2 lladdr <remote-ip> dev gre1
-  ping -s 1374 -c 10 192.168.13.2
-  tcpdump -vni gre1
-  tcpdump -vni <your-ext-iface> 'ip proto 47'
-  ip -s -s -d link show dev gre1
-
-Solution:
-
-Use the pskb_may_pull function instead the pskb_network_may_pull.
-
-Fixes: 80d875cfc9d3 ("ipv4: ip_gre: Avoid skb_pull() failure in ipgre_xmit()")
-Signed-off-by: Anton Danilov <littlesmilingcloud@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240924235158.106062-1-littlesmilingcloud@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: aln8 <aln8un@gmail.com>
+Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Link: https://lore.kernel.org/r/20240912073601.65656-1-aln8un@gmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_gre.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/platform/x86/amd/pmf/pmf-quirks.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index f21a1a5403723..890c15510b421 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -645,11 +645,11 @@ static netdev_tx_t ipgre_xmit(struct sk_buff *skb,
- 		if (skb_cow_head(skb, 0))
- 			goto free_skb;
+diff --git a/drivers/platform/x86/amd/pmf/pmf-quirks.c b/drivers/platform/x86/amd/pmf/pmf-quirks.c
+index 48870ca52b413..7cde5733b9cac 100644
+--- a/drivers/platform/x86/amd/pmf/pmf-quirks.c
++++ b/drivers/platform/x86/amd/pmf/pmf-quirks.c
+@@ -37,6 +37,14 @@ static const struct dmi_system_id fwbug_list[] = {
+ 		},
+ 		.driver_data = &quirk_no_sps_bug,
+ 	},
++	{
++		.ident = "ASUS TUF Gaming A14",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "FA401W"),
++		},
++		.driver_data = &quirk_no_sps_bug,
++	},
+ 	{}
+ };
  
--		tnl_params = (const struct iphdr *)skb->data;
--
--		if (!pskb_network_may_pull(skb, pull_len))
-+		if (!pskb_may_pull(skb, pull_len))
- 			goto free_skb;
- 
-+		tnl_params = (const struct iphdr *)skb->data;
-+
- 		/* ip_tunnel_xmit() needs skb->data pointing to gre header. */
- 		skb_pull(skb, pull_len);
- 		skb_reset_mac_header(skb);
 -- 
 2.43.0
 
