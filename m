@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-81802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49B3C994979
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:24:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 507DB994C54
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:53:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B82B1C23DB0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:24:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82F771C24EC0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B294B1DEFED;
-	Tue,  8 Oct 2024 12:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4201DED60;
+	Tue,  8 Oct 2024 12:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3sp40QR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DqvxPavy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7089A1DE886;
-	Tue,  8 Oct 2024 12:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAAF1DE894;
+	Tue,  8 Oct 2024 12:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390181; cv=none; b=pFJxLFO98Iu9HDZIF2z8y/DBhYsRSdd47FD5YbLxIjGCXP053S2hEmaLAjErwwvBuL622ptJSphNphZtfTDF0aHbR8i01Rv3sGUm59opMMXeHbVtuQE9yVD7M8cm9XOXnFl0ByPmZZc2XevX3f8IkMa4hbunWCX5pbDUl0TdKdg=
+	t=1728391973; cv=none; b=e0rEwA/j1zOXKnA7GSMrewJ4b4wRlvZ4Rw4AZ/E3wBDP9TCzZo1IBFcv3IOR3bLd4AZjO94k1SY5nRoolcbUSSW7dwc4VZ04fJgffyEWX7pFzio6I5LjW1bcIWXpoOzrG45WtfJofan9veTNZ19QRva95/C1yCSSWYmWqtD4gwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390181; c=relaxed/simple;
-	bh=GN3aHf1CyWm0x1f6Xn281KuzwWql582bWHHZ4OcPWDQ=;
+	s=arc-20240116; t=1728391973; c=relaxed/simple;
+	bh=VReQKxeRDUOhcW6qtTyBkk3CtANM12YaLK72CP2fVOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ryYHDgdYEfaFs46O29HRn18CdvuH7/eoKe/FGsL+4uQ8kfxSj/jxALUh12XojcpAB4yXPa/0HRgZz3CM7VCTxgVM+7E3sE92bPuTUCEAdaUv/N0xvxy+nybjuo58K8PMVxGAeCGZLmkQg4+eTgt5YpLmWbVJEhOXNGGK3isIuJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3sp40QR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415FBC4CEC7;
-	Tue,  8 Oct 2024 12:23:00 +0000 (UTC)
+	 MIME-Version; b=T+WvJwfvSrJcvfXO8GNnz38axjK4kX78cDBPm+SB3XEdjuwc+uNUye2BgMY0S1xlKgTm29ZSmKVoMr3Uw2vclNIUOlPQ9ugXi3ncJRytNb/P2AXQI64GOlE0XUCjKkTpmwtwDpOxyaRyrKOiAQjsg5jBXlTOfYs9E/UB8/SYanw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DqvxPavy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C5CC4CECD;
+	Tue,  8 Oct 2024 12:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390180;
-	bh=GN3aHf1CyWm0x1f6Xn281KuzwWql582bWHHZ4OcPWDQ=;
+	s=korg; t=1728391973;
+	bh=VReQKxeRDUOhcW6qtTyBkk3CtANM12YaLK72CP2fVOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d3sp40QRchQE+WOne58ZYw2HQFTdfkE9AvqZ1y/oGLo/Cx4YyJ0pd3nFFZGrcDzXe
-	 haA7q2Gfnbx7pDoDu5KbMzgRQb/YeOohpusB2Hl9jjT37+hmoz2Zrg264Km1iSlFvy
-	 s1FJThnWO1wKQFCg72oWeaixkOaTkZ07H6XzoGZA=
+	b=DqvxPavyw9W4SQO0lMayiftbm3D0Zuv+Cr4ESqbOIG2oLS3GNBVF4pE+KsWbqKP2/
+	 Q5agdNaPkogKCn9RVQG+q680QnfoBjdiExWSQTtZZCvdQfQAO429QFBPczOzHoHOqR
+	 e1EP0gioIEFixBBBHGgGsh7tTn8+LYz27LFmlckE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ckath <ckath@yandex.ru>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 214/482] drm/amd/display: Fix index out of bounds in DCN30 degamma hardware format translation
+Subject: [PATCH 6.11 247/558] platform/x86: touchscreen_dmi: add nanote-next quirk
 Date: Tue,  8 Oct 2024 14:04:37 +0200
-Message-ID: <20241008115656.733415424@linuxfoundation.org>
+Message-ID: <20241008115712.059625505@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,56 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Ckath <ckath@yandex.ru>
 
-[ Upstream commit bc50b614d59990747dd5aeced9ec22f9258991ff ]
+[ Upstream commit c11619af35bae5884029bd14170c3e4b55ddf6f3 ]
 
-This commit addresses a potential index out of bounds issue in the
-`cm3_helper_translate_curve_to_degamma_hw_format` function in the DCN30
-color  management module. The issue could occur when the index 'i'
-exceeds the  number of transfer function points (TRANSFER_FUNC_POINTS).
+Add touschscreen info for the nanote next (UMPC-03-SR).
 
-The fix adds a check to ensure 'i' is within bounds before accessing the
-transfer function points. If 'i' is out of bounds, the function returns
-false to indicate an error.
+After checking with multiple owners the DMI info really is this generic.
 
-Reported by smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:338 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:339 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:340 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
-
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Ckath <ckath@yandex.ru>
+Link: https://lore.kernel.org/r/e8dda83a-10ae-42cf-a061-5d29be0d193a@yandex.ru
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/platform/x86/touchscreen_dmi.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-index b8327237ed441..edc77615d0973 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-@@ -335,6 +335,8 @@ bool cm3_helper_translate_curve_to_degamma_hw_format(
- 				i += increment) {
- 			if (j == hw_points - 1)
- 				break;
-+			if (i >= TRANSFER_FUNC_POINTS)
-+				return false;
- 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
- 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
- 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
+index f74af0a689f20..0a39f68c641d1 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -840,6 +840,21 @@ static const struct ts_dmi_data rwc_nanote_p8_data = {
+ 	.properties = rwc_nanote_p8_props,
+ };
+ 
++static const struct property_entry rwc_nanote_next_props[] = {
++	PROPERTY_ENTRY_U32("touchscreen-min-x", 5),
++	PROPERTY_ENTRY_U32("touchscreen-min-y", 5),
++	PROPERTY_ENTRY_U32("touchscreen-size-x", 1785),
++	PROPERTY_ENTRY_U32("touchscreen-size-y", 1145),
++	PROPERTY_ENTRY_BOOL("touchscreen-inverted-y"),
++	PROPERTY_ENTRY_STRING("firmware-name", "gsl1680-rwc-nanote-next.fw"),
++	{ }
++};
++
++static const struct ts_dmi_data rwc_nanote_next_data = {
++	.acpi_name = "MSSL1680:00",
++	.properties = rwc_nanote_next_props,
++};
++
+ static const struct property_entry schneider_sct101ctm_props[] = {
+ 	PROPERTY_ENTRY_U32("touchscreen-size-x", 1715),
+ 	PROPERTY_ENTRY_U32("touchscreen-size-y", 1140),
+@@ -1589,6 +1604,17 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_SKU, "0001")
+ 		},
+ 	},
++	{
++		/* RWC NANOTE NEXT */
++		.driver_data = (void *)&rwc_nanote_next_data,
++		.matches = {
++			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_BOARD_VENDOR, "To be filled by O.E.M."),
++			/* Above matches are too generic, add bios-version match */
++			DMI_MATCH(DMI_BIOS_VERSION, "S8A70R100-V005"),
++		},
++	},
+ 	{
+ 		/* Schneider SCT101CTM */
+ 		.driver_data = (void *)&schneider_sct101ctm_data,
 -- 
 2.43.0
 
