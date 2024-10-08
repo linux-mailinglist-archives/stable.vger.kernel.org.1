@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-81709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A77E9948EB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:18:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ACDB994B9C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:45:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D25DB1F29120
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:18:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F3D286698
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726421CF297;
-	Tue,  8 Oct 2024 12:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8501DEFF8;
+	Tue,  8 Oct 2024 12:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/bn//a4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouD1E0oB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE3E1DACBE;
-	Tue,  8 Oct 2024 12:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4411DC759;
+	Tue,  8 Oct 2024 12:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389871; cv=none; b=V9Dp7VR83+eTVsTK4Fbvre40QtE8VUqX4IlaIESW/BRgr2cDs8H4Mi/wnPTLkdeqz2PxiQXc4fPjVy3xrizyAJbLpyYjQfW/UlcZtE45EcLX2Hw5zrLDBHPmT1/Hic9vumHD5ab2WUd9p6SvAjrDJCPoTI4kHdT4Iq52BPuuox4=
+	t=1728391470; cv=none; b=gQg1jFfVZGdRIFycXfcl/qxVBrBmNW5LM9sa6qeE8/LUYZR54HL5rOCFc5IKAtLT5AaUN/OYmPHZ9MIlTJpfgdABImrSHyp1rMK3pqoZFfIWQ/1W1YroYPITTySsqgn3TyVw05bxuE8ysaUcV95Qg4+TKLe8l5fum9GGnmAKJ34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389871; c=relaxed/simple;
-	bh=4SEkgro3Jl+ikGotn7Uzzh5nAdi8jdQBJdaVQ5USLGU=;
+	s=arc-20240116; t=1728391470; c=relaxed/simple;
+	bh=acRfUMN/7+eudIwufqi5qb/Mk5GUxCCa5dJOil7tHpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AcLluoMrYBjL5GmrcSaDyr2Y+8C5cEaCyxeJ5fubtiRkvxAUoZ5MfAMMm463y64iYGtFvDpscRZSIay6JKxRqEd3nhEUiUJAnpPos4wjRdK7ou4K1AI2Jk0JgjB4lg6Yyemzi/z3CX1tZgDqImPlL2Bf2g+rC2Rv0D+sImnh8bY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/bn//a4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4450C4CEC7;
-	Tue,  8 Oct 2024 12:17:50 +0000 (UTC)
+	 MIME-Version; b=ja8uK7sfjmCWjKoNBxJ5GBmNjocnwyMdIvJUU3vrHuFYoosmMc1zJ5rJe7E3sSAeoBEQk4CCHEBH2bKXgxwqdDmD/R0iDRaeA9K6kGZ66Dn5rBiwKvUgJdydh9fhc1N+25pGg+BuTaYLwZrrsHf9jFHJBhTwOGUgjVyguLg7TbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouD1E0oB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DD4C4CEC7;
+	Tue,  8 Oct 2024 12:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389871;
-	bh=4SEkgro3Jl+ikGotn7Uzzh5nAdi8jdQBJdaVQ5USLGU=;
+	s=korg; t=1728391469;
+	bh=acRfUMN/7+eudIwufqi5qb/Mk5GUxCCa5dJOil7tHpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p/bn//a4zTTaoWC0K24r9Wa2vpJwKTZ0t83g9+8SE46dIqBhuYPbaH2iG8JeXs9DV
-	 VCUN8cE21s4iAVq2xDLnYFQhmZiL4rQLYmX53IPyseidCxKz1+z2UAEDB9q9y0PaHn
-	 F9TbrdzZRocZBuyCBebtF5+8rgB6XTqDZMT84ouA=
+	b=ouD1E0oB5tj9yzuoVcs6/0f1IlWBnOP3dgnLx2KdEgXbKb19asqUqR1iNqvKm8zbp
+	 ktK7SrYQBVQWxulQvKQubdO4yzivRSYOHaAdAACeKjYLMcFc2EXmGjMzpfOzTLsEKi
+	 co8V8YqmJXXOg24q2m6EAR/OvwiOxLHRLeBN6UP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamim Khan <tamim@fusetak.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 090/482] ACPI: resource: Skip IRQ override on Asus Vivobook Go E1404GAB
-Date: Tue,  8 Oct 2024 14:02:33 +0200
-Message-ID: <20241008115651.853466706@linuxfoundation.org>
+Subject: [PATCH 6.11 124/558] net: mvpp2: Increase size of queue_name buffer
+Date: Tue,  8 Oct 2024 14:02:34 +0200
+Message-ID: <20241008115707.245733177@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamim Khan <tamim@fusetak.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 49e9cc315604972cc14868cb67831e3e8c3f1470 ]
+[ Upstream commit 91d516d4de48532d967a77967834e00c8c53dfe6 ]
 
-Like other Asus Vivobooks, the Asus Vivobook Go E1404GAB has a DSDT
-that describes IRQ 1 as ActiveLow, while the kernel overrides to Edge_High.
+Increase size of queue_name buffer from 30 to 31 to accommodate
+the largest string written to it. This avoids truncation in
+the possibly unlikely case where the string is name is the
+maximum size.
 
-This override prevents the internal keyboard from working.
+Flagged by gcc-14:
 
-Fix the problem by adding this laptop to the table that prevents the kernel
-from overriding the IRQ.
+  .../mvpp2_main.c: In function 'mvpp2_probe':
+  .../mvpp2_main.c:7636:32: warning: 'snprintf' output may be truncated before the last format character [-Wformat-truncation=]
+   7636 |                  "stats-wq-%s%s", netdev_name(priv->port_list[0]->dev),
+        |                                ^
+  .../mvpp2_main.c:7635:9: note: 'snprintf' output between 10 and 31 bytes into a destination of size 30
+   7635 |         snprintf(priv->queue_name, sizeof(priv->queue_name),
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   7636 |                  "stats-wq-%s%s", netdev_name(priv->port_list[0]->dev),
+        |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   7637 |                  priv->port_count > 1 ? "+" : "");
+        |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219212
-Signed-off-by: Tamim Khan <tamim@fusetak.com>
-Link: https://patch.msgid.link/20240903014317.38858-1-tamim@fusetak.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Introduced by commit 118d6298f6f0 ("net: mvpp2: add ethtool GOP statistics").
+I am not flagging this as a bug as I am not aware that it is one.
+
+Compile tested only.
+
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Marcin Wojtas <marcin.s.wojtas@gmail.com>
+Link: https://patch.msgid.link/20240806-mvpp2-namelen-v1-1-6dc773653f2f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index cb2aacbb93357..8a4726e2eb693 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -503,6 +503,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "B2502FBA"),
- 		},
- 	},
-+	{
-+		/* Asus Vivobook Go E1404GAB */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "E1404GAB"),
-+		},
-+	},
- 	{
- 		/* Asus Vivobook E1504GA */
- 		.matches = {
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2.h b/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
+index e809f91c08fb9..9e02e4367bec8 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
+@@ -1088,7 +1088,7 @@ struct mvpp2 {
+ 	unsigned int max_port_rxqs;
+ 
+ 	/* Workqueue to gather hardware statistics */
+-	char queue_name[30];
++	char queue_name[31];
+ 	struct workqueue_struct *stats_queue;
+ 
+ 	/* Debugfs root entry */
 -- 
 2.43.0
 
