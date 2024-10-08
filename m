@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E5DA99489C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:15:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39BBE994B88
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C83628111E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:15:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFB42B26AD9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D786F1DE4C9;
-	Tue,  8 Oct 2024 12:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808B91DFD87;
+	Tue,  8 Oct 2024 12:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFMaXDpM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGWDQqyr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942541DE88B;
-	Tue,  8 Oct 2024 12:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA891DF976;
+	Tue,  8 Oct 2024 12:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389684; cv=none; b=aN+t5X0mxDDufDgrRXfzsM0sMDg6GmJkEuM/GS5tmlrOFKs/5aC0gT5TXO5E+8PivWbbh5oSFsuc3lODSwHwUi4NmzOjXcFXP5S/nx39QTcQU0mEx2DsabT3mkeT4whFs6BQpigtH17HhiapzReDJduhITorwDLqjhybfj+r0bk=
+	t=1728391394; cv=none; b=KxEueRw9aBHqtQzJ1bMAWMPzcq1LUWjRDTmij1ErzHREnWU+nwz8gP66tHi+aIQxQr9GHnHJ2urlZX7jJpQ4alo13Xkc46XqHRLGG5fHgm9bJ1or89F+/c48dN9Z2gmsn/7VhMzHFIbEU9FwyZ4fHeq7tHYeEtgYV4uxa/7j5u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389684; c=relaxed/simple;
-	bh=yYSMUT6BwvVwhHqzsZlioWGHZ1G4CdmQcF6N6oV+us8=;
+	s=arc-20240116; t=1728391394; c=relaxed/simple;
+	bh=rr3QYThYcXzvrABNb8BYE1NDY/Bz/HmjBHAkGhkTVZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NLR6RiumYRTkrBEZW4WNAN4T/T4zHK9fE0vAk60teM//Yq8tUNXR/kfyi5lUG6sL+T2U9FL2oMuiyY28tFymUvTve0ilUBGgGuQ4WPMqB7Ilvo0zUsOyHBYH0XyEjo584QMtAmjCfBCzBniviXDdy16CpAQjwZyi/PvOQXVaDhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFMaXDpM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA871C4CEC7;
-	Tue,  8 Oct 2024 12:14:43 +0000 (UTC)
+	 MIME-Version; b=Mdl6Mso1tM9xu+G/J0JwHJ/s83kmmPnmjaOY/NLAKkLMfNfBJR/MEndoS6/yyC3k8/Z0+ups4APOFa/zZrcu6heDejYah2mSDwZ5SJ/4C+K4Jcg7PsT0d3m/QYEeIsO9mX7BYCsZEtClhJG/x6iA1MeqlnrkEqLLSPSlmo7XB9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGWDQqyr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA05C4CEC7;
+	Tue,  8 Oct 2024 12:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389684;
-	bh=yYSMUT6BwvVwhHqzsZlioWGHZ1G4CdmQcF6N6oV+us8=;
+	s=korg; t=1728391393;
+	bh=rr3QYThYcXzvrABNb8BYE1NDY/Bz/HmjBHAkGhkTVZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oFMaXDpM77ctmTfyqpvmDxu3gbZ6tN5SQxPxSKPsYAnBpZFWcTpHTwZNT6mfNDIl1
-	 pY2U3JrMN2hb3Cp3Y4wtxL6QiEUm0/WoMeTvl1AtbWXfhOUYSqsxx3VjPc/wiVsBub
-	 JZtxVWGp+75vCQH/hZKDGDBQZYGhaK7sKkF3L3iY=
+	b=FGWDQqyr0OWB9zqfic5U5fXi6WSCalyD7G8AXbBim+s2IJVnDz4wVXj0hZkNOOSkt
+	 xj35qEz4qKAkf48Ix3y3tb7U5ISwWLepwKoCmzOWJxZwUE6zMrbgKaHrpjLkNcKO87
+	 vY8tXw0ORsnq0aPDNWZZwGGNCluv5k9xq4q7Y+Gs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 066/482] cifs: Fix buffer overflow when parsing NFS reparse points
+Subject: [PATCH 6.11 099/558] net: hisilicon: hns_mdio: fix OF node leak in probe()
 Date: Tue,  8 Oct 2024 14:02:09 +0200
-Message-ID: <20241008115650.905346447@linuxfoundation.org>
+Message-ID: <20241008115706.265465148@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +61,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit e2a8910af01653c1c268984855629d71fb81f404 ]
+[ Upstream commit e62beddc45f487b9969821fad3a0913d9bc18a2f ]
 
-ReparseDataLength is sum of the InodeType size and DataBuffer size.
-So to get DataBuffer size it is needed to subtract InodeType's size from
-ReparseDataLength.
+Driver is leaking OF node reference from
+of_parse_phandle_with_fixed_args() in probe().
 
-Function cifs_strndup_from_utf16() is currentlly accessing buf->DataBuffer
-at position after the end of the buffer because it does not subtract
-InodeType size from the length. Fix this problem and correctly subtract
-variable len.
-
-Member InodeType is present only when reparse buffer is large enough. Check
-for ReparseDataLength before accessing InodeType to prevent another invalid
-memory access.
-
-Major and minor rdev values are present also only when reparse buffer is
-large enough. Check for reparse buffer size before calling reparse_mkdev().
-
-Fixes: d5ecebc4900d ("smb3: Allow query of symlinks stored as reparse points")
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240827144421.52852-4-krzysztof.kozlowski@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/reparse.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns_mdio.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
-index 48c27581ec511..cfa03c166de8c 100644
---- a/fs/smb/client/reparse.c
-+++ b/fs/smb/client/reparse.c
-@@ -320,9 +320,16 @@ static int parse_reparse_posix(struct reparse_posix_data *buf,
- 	unsigned int len;
- 	u64 type;
- 
-+	len = le16_to_cpu(buf->ReparseDataLength);
-+	if (len < sizeof(buf->InodeType)) {
-+		cifs_dbg(VFS, "srv returned malformed nfs buffer\n");
-+		return -EIO;
-+	}
-+
-+	len -= sizeof(buf->InodeType);
-+
- 	switch ((type = le64_to_cpu(buf->InodeType))) {
- 	case NFS_SPECFILE_LNK:
--		len = le16_to_cpu(buf->ReparseDataLength);
- 		data->symlink_target = cifs_strndup_from_utf16(buf->DataBuffer,
- 							       len, true,
- 							       cifs_sb->local_nls);
-@@ -482,12 +489,18 @@ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
- 	u32 tag = data->reparse.tag;
- 
- 	if (tag == IO_REPARSE_TAG_NFS && buf) {
-+		if (le16_to_cpu(buf->ReparseDataLength) < sizeof(buf->InodeType))
-+			return false;
- 		switch (le64_to_cpu(buf->InodeType)) {
- 		case NFS_SPECFILE_CHR:
-+			if (le16_to_cpu(buf->ReparseDataLength) != sizeof(buf->InodeType) + 8)
-+				return false;
- 			fattr->cf_mode |= S_IFCHR;
- 			fattr->cf_rdev = reparse_nfs_mkdev(buf);
- 			break;
- 		case NFS_SPECFILE_BLK:
-+			if (le16_to_cpu(buf->ReparseDataLength) != sizeof(buf->InodeType) + 8)
-+				return false;
- 			fattr->cf_mode |= S_IFBLK;
- 			fattr->cf_rdev = reparse_nfs_mkdev(buf);
- 			break;
+diff --git a/drivers/net/ethernet/hisilicon/hns_mdio.c b/drivers/net/ethernet/hisilicon/hns_mdio.c
+index ed73707176c1a..8a047145f0c50 100644
+--- a/drivers/net/ethernet/hisilicon/hns_mdio.c
++++ b/drivers/net/ethernet/hisilicon/hns_mdio.c
+@@ -575,6 +575,7 @@ static int hns_mdio_probe(struct platform_device *pdev)
+ 						MDIO_SC_RESET_ST;
+ 				}
+ 			}
++			of_node_put(reg_args.np);
+ 		} else {
+ 			dev_warn(&pdev->dev, "find syscon ret = %#x\n", ret);
+ 			mdio_dev->subctrl_vbase = NULL;
 -- 
 2.43.0
 
