@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 140E9994D6C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D71E2994FF3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:31:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAE49284993
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA236B2302E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BBB1DE88F;
-	Tue,  8 Oct 2024 13:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C421E009C;
+	Tue,  8 Oct 2024 13:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XRz3vhAx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f93lxNDt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6AD1DE2A5;
-	Tue,  8 Oct 2024 13:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510C51DEFD7;
+	Tue,  8 Oct 2024 13:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392715; cv=none; b=pnhGnf3BcAlEfn8PdIFV9otnm7uXO7kdmT+LOSNVvW27+aM5APtOVvL6mN0U/vixKafXjK/XfO5J542RxJGdv8/yewDA7nSkkyZVZGyg7IYA2V7ggEAimUkoIyYYiT1/10d406s1P7piAxd4Tf6Ris/0mo4FPllQZaCbY3LLPVI=
+	t=1728393887; cv=none; b=oRmyG3TUbGT2iAqwxpVL+rKu7hH4ElukwzqIA7PJ7cZo6+VU7gnt+E+Bu4UXvyOBOtzdeEcfGIbwZ4lstkMj6Ow4xDfOhPQLoQkU47GcKn8OX2Si7gRsNV96iqnsgklu2/VZrqWHjClX8n3eLvo7HUX+cOLt0DdggjY5RKSdkhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392715; c=relaxed/simple;
-	bh=0Sp2pmuMZsAHZm2tfOSVu1PXi+AAFy2vOlawcOrCpFY=;
+	s=arc-20240116; t=1728393887; c=relaxed/simple;
+	bh=O92rSR72os9Waxiq4Ljw0+JHsDWyWv5Rr2dB/GnSygE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YNBs7YMOr9sS7GxyhM76JvJv4FVNhyjgwEMGYP02MHP9hQjiFMK5jUPFgwA3q76GA8D7Z3LncAQjpESkn0FAMO63zNuP4CNbI+PizFpIN4aSG8uyrlncR00JmGC0WWP74oMgDT45mX0CJVe02zNR4dhmU7HcKXwh93H4BZVxu9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XRz3vhAx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B59C4CEC7;
-	Tue,  8 Oct 2024 13:05:14 +0000 (UTC)
+	 MIME-Version; b=N7lDAudcKmHSWtnlNYhJ6EsecVrbDE1J/f+R1BoUt7Dq2yJoy8PHaEtI8JDH+Dv8xG4rDm1MlIwA2fHrz/aY5y6jf9X0DREvUkQohTEreyRDndkex9c98S5XnTq+XJVa44SwuImlJP7PsfcSqqnBJCU9PBskXtqEKY47KTnlJ0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f93lxNDt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C12C4CEC7;
+	Tue,  8 Oct 2024 13:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392715;
-	bh=0Sp2pmuMZsAHZm2tfOSVu1PXi+AAFy2vOlawcOrCpFY=;
+	s=korg; t=1728393886;
+	bh=O92rSR72os9Waxiq4Ljw0+JHsDWyWv5Rr2dB/GnSygE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XRz3vhAxBHCFvSh8WA7O+ciItWiuyKRev0gnizbbNf5Yj235evEajC5Rv6XF+5Ipw
-	 Am+aRad2YTP9QFkIT/v3a3fdjBqoawcQlAkHEo/i7GhFKbcD4DGVY+9ho8Qzfh6W2i
-	 PuoW5QZK3VR7USiPm03towuGEqhU4yQSoYn6s9L8=
+	b=f93lxNDtLch7IaxkG9Wau+w36nO95h1ezcIKXoVePmk/o5z2L3oIghgbKGt9+u+cV
+	 mbMjNW4fs6W+1Slz8ZLNsqn66IMKe4DGub+JkGqjrAPG35qKeOf0KxuG3PXbeTeHnI
+	 n0ImGWqPMHzJ5VpWErZUhUBbYdO3X2S3rGnN6WGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+283673dbc38527ef9f3d@syzkaller.appspotmail.com,
-	Josef Bacik <josef@toxicpanda.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.11 497/558] btrfs: fix a NULL pointer dereference when failed to start a new trasacntion
-Date: Tue,  8 Oct 2024 14:08:47 +0200
-Message-ID: <20241008115721.788604615@linuxfoundation.org>
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH 6.6 283/386] media: sun4i_csi: Implement link validate for sun4i_csi subdev
+Date: Tue,  8 Oct 2024 14:08:48 +0200
+Message-ID: <20241008115640.522980565@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 
-commit c3b47f49e83197e8dffd023ec568403bcdbb774b upstream.
+commit 2dc5d5d401f5c6cecd97800ffef82e8d17d228f0 upstream.
 
-[BUG]
-Syzbot reported a NULL pointer dereference with the following crash:
+The sun4i_csi driver doesn't implement link validation for the subdev it
+registers, leaving the link between the subdev and its source
+unvalidated. Fix it, using the v4l2_subdev_link_validate() helper.
 
-  FAULT_INJECTION: forcing a failure.
-   start_transaction+0x830/0x1670 fs/btrfs/transaction.c:676
-   prepare_to_relocate+0x31f/0x4c0 fs/btrfs/relocation.c:3642
-   relocate_block_group+0x169/0xd20 fs/btrfs/relocation.c:3678
-  ...
-  BTRFS info (device loop0): balance: ended with status: -12
-  Oops: general protection fault, probably for non-canonical address 0xdffffc00000000cc: 0000 [#1] PREEMPT SMP KASAN NOPTI
-  KASAN: null-ptr-deref in range [0x0000000000000660-0x0000000000000667]
-  RIP: 0010:btrfs_update_reloc_root+0x362/0xa80 fs/btrfs/relocation.c:926
-  Call Trace:
-   <TASK>
-   commit_fs_roots+0x2ee/0x720 fs/btrfs/transaction.c:1496
-   btrfs_commit_transaction+0xfaf/0x3740 fs/btrfs/transaction.c:2430
-   del_balance_item fs/btrfs/volumes.c:3678 [inline]
-   reset_balance_state+0x25e/0x3c0 fs/btrfs/volumes.c:3742
-   btrfs_balance+0xead/0x10c0 fs/btrfs/volumes.c:4574
-   btrfs_ioctl_balance+0x493/0x7c0 fs/btrfs/ioctl.c:3673
-   vfs_ioctl fs/ioctl.c:51 [inline]
-   __do_sys_ioctl fs/ioctl.c:907 [inline]
-   __se_sys_ioctl+0xf9/0x170 fs/ioctl.c:893
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-[CAUSE]
-The allocation failure happens at the start_transaction() inside
-prepare_to_relocate(), and during the error handling we call
-unset_reloc_control(), which makes fs_info->balance_ctl to be NULL.
-
-Then we continue the error path cleanup in btrfs_balance() by calling
-reset_balance_state() which will call del_balance_item() to fully delete
-the balance item in the root tree.
-
-However during the small window between set_reloc_contrl() and
-unset_reloc_control(), we can have a subvolume tree update and created a
-reloc_root for that subvolume.
-
-Then we go into the final btrfs_commit_transaction() of
-del_balance_item(), and into btrfs_update_reloc_root() inside
-commit_fs_roots().
-
-That function checks if fs_info->reloc_ctl is in the merge_reloc_tree
-stage, but since fs_info->reloc_ctl is NULL, it results a NULL pointer
-dereference.
-
-[FIX]
-Just add extra check on fs_info->reloc_ctl inside
-btrfs_update_reloc_root(), before checking
-fs_info->reloc_ctl->merge_reloc_tree.
-
-That DEAD_RELOC_TREE handling is to prevent further modification to the
-reloc tree during merge stage, but since there is no reloc_ctl at all,
-we do not need to bother that.
-
-Reported-by: syzbot+283673dbc38527ef9f3d@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/66f6bfa7.050a0220.38ace9.0019.GAE@google.com/
-CC: stable@vger.kernel.org # 4.19+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 577bbf23b758 ("media: sunxi: Add A10 CSI driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Acked-by: Chen-Yu Tsai <wens@csie.org>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/relocation.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -923,7 +923,7 @@ int btrfs_update_reloc_root(struct btrfs
- 	btrfs_grab_root(reloc_root);
+--- a/drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c
++++ b/drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c
+@@ -39,6 +39,10 @@ static const struct media_entity_operati
+ 	.link_validate = v4l2_subdev_link_validate,
+ };
  
- 	/* root->reloc_root will stay until current relocation finished */
--	if (fs_info->reloc_ctl->merge_reloc_tree &&
-+	if (fs_info->reloc_ctl && fs_info->reloc_ctl->merge_reloc_tree &&
- 	    btrfs_root_refs(root_item) == 0) {
- 		set_bit(BTRFS_ROOT_DEAD_RELOC_TREE, &root->state);
- 		/*
++static const struct media_entity_operations sun4i_csi_subdev_entity_ops = {
++	.link_validate = v4l2_subdev_link_validate,
++};
++
+ static int sun4i_csi_notify_bound(struct v4l2_async_notifier *notifier,
+ 				  struct v4l2_subdev *subdev,
+ 				  struct v4l2_async_connection *asd)
+@@ -213,6 +217,7 @@ static int sun4i_csi_probe(struct platfo
+ 	v4l2_subdev_init(subdev, &sun4i_csi_subdev_ops);
+ 	subdev->flags = V4L2_SUBDEV_FL_HAS_DEVNODE | V4L2_SUBDEV_FL_HAS_EVENTS;
+ 	subdev->entity.function = MEDIA_ENT_F_VID_IF_BRIDGE;
++	subdev->entity.ops = &sun4i_csi_subdev_entity_ops;
+ 	subdev->owner = THIS_MODULE;
+ 	snprintf(subdev->name, sizeof(subdev->name), "sun4i-csi-0");
+ 	v4l2_set_subdevdata(subdev, csi);
 
 
 
