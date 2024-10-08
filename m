@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD96F994E76
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:17:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF4B5994D65
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 825F9282B6B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:17:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F52BB2B5E0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB831DF256;
-	Tue,  8 Oct 2024 13:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BAF1DF75D;
+	Tue,  8 Oct 2024 12:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QE7Rsclv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTral3j4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5531DEFC8;
-	Tue,  8 Oct 2024 13:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E911DE89D;
+	Tue,  8 Oct 2024 12:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393442; cv=none; b=Ve0Ty3iXhI1ihYPtjFYHeqhvfZ7I9I0FvkOdCiROVeWuRiWUrwkbbSFjroPi93Wkv2wrCPrfOjsvulZaeZjosvgDPMcCAJlKh2R+LSOajNJ6tCr3hkq/ojrrvUqL0u0zKgJHFESBJMREznI5TITvGbN6WpbmkMIvFI/o7QQfbqo=
+	t=1728392278; cv=none; b=J7Qqo2lkpJ8+FRVhIyGkMzOTImG53shYa2FvYBzA6elq9zNig6myS3y745UsFhHoptV/FJg6MLnAbWuim0aOZQQ6Wj7ula6ju2eQl9P2FsJ66MkkKRpPx5VT9fxQaMmJiWhmD08m7P8F40IeBJS4FQ5LUadyZ45iL2FdAMJazvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393442; c=relaxed/simple;
-	bh=sBeANQbk3bkzuZrI0y+IBLjCwkdB7BkiojL/V/k1ShI=;
+	s=arc-20240116; t=1728392278; c=relaxed/simple;
+	bh=WAYRTDbbU7Ds+8zNEOjYAiRmkTQLGhuIQjNHzFexAjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1eeVcojG6Qj0TXt26E/Aggfds6zH2A1oKU5lj9VKsLHoCtWRvmH5SCTUXBf6RW9Yt94N4KAKG5gGUude/ogR+KsN2n3HV5RqZbCeYK+GDgxk2S7qiVG62/jEhvxZypQ2K7ppueZlgHrLlYdiaTMkFCllwpOs/IEBQxuLuNz3mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QE7Rsclv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7B3C4CEC7;
-	Tue,  8 Oct 2024 13:17:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=quCnXDIr3vSHMoUYs6wqjH9v31lFk9A/ZLVxyUNHTAePQQbUSLB+MOjFpQG/5laLFKRo6sCfM5JhDgA20To9xlbp6TpeDVWUd8GX4ZgsZGzqqGdkbpzw5XNtfqMkBjsKNIUzF0t3TJChaRRHWryypUJEr63LEOuv3vaR4ef+LeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTral3j4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40327C4CEC7;
+	Tue,  8 Oct 2024 12:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393442;
-	bh=sBeANQbk3bkzuZrI0y+IBLjCwkdB7BkiojL/V/k1ShI=;
+	s=korg; t=1728392278;
+	bh=WAYRTDbbU7Ds+8zNEOjYAiRmkTQLGhuIQjNHzFexAjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QE7RsclvfoHhwfezM3nNLUfR2/CZg1LerYvm6F3PamtM0U+uEkEucuH9aZ7DbB3Ha
-	 ao4Iyv5KGgFCYN5apcEuYiGsNlt23+9nWzBcIdN/mgd9I4m28pdIaquUjNd2W0CCc+
-	 SJSrJv+GHUf+21bPEzMQxzCmdIfrAcLrEYphtMEU=
+	b=mTral3j4PTzr/o3NjTKUbLf4LQdLd3JcSBdgZReWNsZyIi7/1mJcEy2t9NrqmaDtw
+	 xdgCY7sR+xWgsbTib06fmpxgJSOpR9LF1eGAZduqAFP6BtgNag7Nz9lO3h1DJRsNZO
+	 gI3FEIuxW66o6irpDODpBilWjZTXAXH8uy19JpXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ckath <ckath@yandex.ru>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 152/386] platform/x86: touchscreen_dmi: add nanote-next quirk
-Date: Tue,  8 Oct 2024 14:06:37 +0200
-Message-ID: <20241008115635.409430769@linuxfoundation.org>
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>
+Subject: [PATCH 6.11 368/558] drm/v3d: Prevent out of bounds access in performance query extensions
+Date: Tue,  8 Oct 2024 14:06:38 +0200
+Message-ID: <20241008115716.776836178@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ckath <ckath@yandex.ru>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit c11619af35bae5884029bd14170c3e4b55ddf6f3 ]
+commit f32b5128d2c440368b5bf3a7a356823e235caabb upstream.
 
-Add touschscreen info for the nanote next (UMPC-03-SR).
+Check that the number of perfmons userspace is passing in the copy and
+reset extensions is not greater than the internal kernel storage where
+the ids will be copied into.
 
-After checking with multiple owners the DMI info really is this generic.
-
-Signed-off-by: Ckath <ckath@yandex.ru>
-Link: https://lore.kernel.org/r/e8dda83a-10ae-42cf-a061-5d29be0d193a@yandex.ru
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: bae7cb5d6800 ("drm/v3d: Create a CPU job extension for the reset performance query job")
+Cc: Maíra Canal <mcanal@igalia.com>
+Cc: Iago Toral Quiroga <itoral@igalia.com>
+Cc: stable@vger.kernel.org # v6.8+
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Reviewed-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240711135340.84617-2-tursulin@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/touchscreen_dmi.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ drivers/gpu/drm/v3d/v3d_submit.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
-index 06ebab520f271..30c05a9948319 100644
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -885,6 +885,21 @@ static const struct ts_dmi_data rwc_nanote_p8_data = {
- 	.properties = rwc_nanote_p8_props,
- };
+--- a/drivers/gpu/drm/v3d/v3d_submit.c
++++ b/drivers/gpu/drm/v3d/v3d_submit.c
+@@ -671,6 +671,9 @@ v3d_get_cpu_reset_performance_params(str
+ 	if (reset.nperfmons > V3D_MAX_PERFMONS)
+ 		return -EINVAL;
  
-+static const struct property_entry rwc_nanote_next_props[] = {
-+	PROPERTY_ENTRY_U32("touchscreen-min-x", 5),
-+	PROPERTY_ENTRY_U32("touchscreen-min-y", 5),
-+	PROPERTY_ENTRY_U32("touchscreen-size-x", 1785),
-+	PROPERTY_ENTRY_U32("touchscreen-size-y", 1145),
-+	PROPERTY_ENTRY_BOOL("touchscreen-inverted-y"),
-+	PROPERTY_ENTRY_STRING("firmware-name", "gsl1680-rwc-nanote-next.fw"),
-+	{ }
-+};
++	if (reset.nperfmons > V3D_MAX_PERFMONS)
++		return -EINVAL;
 +
-+static const struct ts_dmi_data rwc_nanote_next_data = {
-+	.acpi_name = "MSSL1680:00",
-+	.properties = rwc_nanote_next_props,
-+};
+ 	job->job_type = V3D_CPU_JOB_TYPE_RESET_PERFORMANCE_QUERY;
+ 
+ 	job->performance_query.queries = kvmalloc_array(reset.count,
+@@ -753,6 +756,9 @@ v3d_get_cpu_copy_performance_query_param
+ 		return -EINVAL;
+ 
+ 	if (copy.nperfmons > V3D_MAX_PERFMONS)
++		return -EINVAL;
 +
- static const struct property_entry schneider_sct101ctm_props[] = {
- 	PROPERTY_ENTRY_U32("touchscreen-size-x", 1715),
- 	PROPERTY_ENTRY_U32("touchscreen-size-y", 1140),
-@@ -1648,6 +1663,17 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_SKU, "0001")
- 		},
- 	},
-+	{
-+		/* RWC NANOTE NEXT */
-+		.driver_data = (void *)&rwc_nanote_next_data,
-+		.matches = {
-+			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
-+			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
-+			DMI_MATCH(DMI_BOARD_VENDOR, "To be filled by O.E.M."),
-+			/* Above matches are too generic, add bios-version match */
-+			DMI_MATCH(DMI_BIOS_VERSION, "S8A70R100-V005"),
-+		},
-+	},
- 	{
- 		/* Schneider SCT101CTM */
- 		.driver_data = (void *)&schneider_sct101ctm_data,
--- 
-2.43.0
-
++	if (copy.nperfmons > V3D_MAX_PERFMONS)
+ 		return -EINVAL;
+ 
+ 	job->job_type = V3D_CPU_JOB_TYPE_COPY_PERFORMANCE_QUERY;
 
 
 
