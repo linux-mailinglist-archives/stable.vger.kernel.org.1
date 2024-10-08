@@ -1,170 +1,161 @@
-Return-Path: <stable+bounces-83046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9E66995214
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 16:41:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66FB6995292
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 16:57:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 666962849ED
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:41:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 986641C259F3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA821DF27A;
-	Tue,  8 Oct 2024 14:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E561E0480;
+	Tue,  8 Oct 2024 14:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PRHZYuB6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PZBEHlQs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1DC1DEFC7
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 14:40:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573171E00A6;
+	Tue,  8 Oct 2024 14:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728398461; cv=none; b=T+/oNFhT9tQt1GxdlIxSxFtx9YY0bZ0hRHjMHKR4x5v2i71byGR7ToL53phxvPNA0uRcCM2/rnRD3I/MIdIkfna//q53VS27ZDDuFiO2GLsE20Crcu2yhJIjdTcfGKpmpPBa+XVb9UqjSCiaI792vBexphpB/c+M82O4BUZH3s0=
+	t=1728399404; cv=none; b=mtatXvkMLI++PkMFtIU88WLJmqyFlPLUwZG8hSclT090CDOsuRLyDB3jAXtenkAA81xTJRoy/Ha0WxdXq2eb2DHAP2BM2dixENtzGMacKeu3ecrVOdTj1nsbRps4iGc2ClXmDJTlDgHH/ZySqXaP+L7vl0Sjyg5WkJiZbwiK8mQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728398461; c=relaxed/simple;
-	bh=PFjVtz4inbM50WtUyHtYw0Am2Az3EpMC8mLk1Ellgr0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QfEmbEkHV35xJdnUXRsI2jTDpgjPDsBugm4PIB2cMxXQrzQjZygRKL1Xwe6zBIXUcZfQ4K82+MzcD56uBGES/oyNqbhGyUyy+YEoBFd4fAuP08oeYr1uj/XS4Dh1e/DSDXZ5KS97cbib19tslI3eYKAb+2LHlCbhwP7ut3Fo6rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PRHZYuB6; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5398e53ca28so6343441e87.3
-        for <stable@vger.kernel.org>; Tue, 08 Oct 2024 07:40:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728398457; x=1729003257; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZyeaaLdT9Ra809qAoYWtXxMYfajBYOU3xJzmen+kJX0=;
-        b=PRHZYuB6vtG1DP8yuZ0y1qzz+wJK1wjGUJUxr0rUpA/A1h/wQ4h5BsNDZUIUTM1Bgt
-         I2gw2GGoB0uL9mfjSdsmXcqomUgAztP+5HxzzyXA43e3TlqdW84XxRg7ybueD/EhW3RN
-         AJxqaqVyEqot+qsPFoWSMSwlCJbWAefpeVPBWxOktnnMZhkDLIPjffswFJzarLkDmXAx
-         krQ2oMYiQMY5EAZldOCnWTGr27SMoElvfDx+GvEkRAc+Wj5zvknE7zqgv6ALCYMEfs7T
-         Wdj77gndu5rNqRU5P1tMiMwlryO//PjK/ienA1EMrXpEx1ZvAwn1u5jSFRwpGRK3cXjm
-         /qpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728398457; x=1729003257;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZyeaaLdT9Ra809qAoYWtXxMYfajBYOU3xJzmen+kJX0=;
-        b=OGyGXq5SofJe46fDF+pX2kI6rs6dmtW75igJHOCF92zq4IrKAf6SK5CJRtaMWjzsrg
-         5qcnvm0rj8vaAVEzywWx2tmj17KAWAfhjlHIrcq3bF3Cw4Qr/3ycHM8/1Azu5+8+l9rD
-         DLicOKVM57ThjRZYx/SniSDS2nPc/cbaSTsRycdJeTFDdm66FSqr6LOAWsuPGuwWMi0r
-         CkCHZJeIvgqI1hMjxtjpRoZlnaxe7PyPm2jsOocsUmrT351KkCPQDO1itJiXQRAelDcX
-         2TSmacujfhD9efAkt3SgbH0CPz5jiNENWqa5EZmMaclfiFaVoVdGk3JDT/5qKHHb7V/G
-         Kp7g==
-X-Gm-Message-State: AOJu0YzY7lbzCXzhMSc5/rf3KPtdVdKPWOM4cqN8Vf6y6Xe8MKPBD1Cc
-	wOR9OSvA52ZAOmpu1Z7x2oh6uexXZ8fAYL7hdfInfea4chhFaT5q0Q+AUqL15XDOrwoGzKnsAo9
-	c8btShVuzFbfw8V+UVS8UqY18n7Q=
-X-Google-Smtp-Source: AGHT+IHkZ5rKBCsEBpDfsa1I3/8Mm3hBa4OOzVnd8soxtgOcDmi2R/2AKM9AT4MMrOEK8Pcdjg0UnOxJtpMlkN1DQOM=
-X-Received: by 2002:a05:6512:124d:b0:539:9ee4:bab3 with SMTP id
- 2adb3069b0e04-539ab9ed195mr8513939e87.59.1728398456989; Tue, 08 Oct 2024
- 07:40:56 -0700 (PDT)
+	s=arc-20240116; t=1728399404; c=relaxed/simple;
+	bh=zfXMLHZZ4S156l8d/BbkONRVgFIUqnsGeh1jRe6xziE=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=R4bppGEiZ2DWYTN4AhQRE58KODkPqUnT928OIRtG1+TWo01gNafvq3ynujHGi/CYg64GFHdo4O0SyzhSmY3HaMvCLn5rK28KHx6bswf5WYoCX79VpzclmleWp2QFMBJzgYHoNUw7CGptktonpRk1WhzU6JM5hfI81zQW/0YW6cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PZBEHlQs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F54C4CECD;
+	Tue,  8 Oct 2024 14:56:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728399403;
+	bh=zfXMLHZZ4S156l8d/BbkONRVgFIUqnsGeh1jRe6xziE=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=PZBEHlQsW4A017AUdoosNcNDTEVEVKg7sFv9ZPvJqtObOuKcRbsJTqEUndR26Go9l
+	 cGaKRikGLQoTaWBVGf3UZ6oaKfNTs0EQvZXGukSR8i+k5aWc4Wvtz9hnkjV8JiDZ/z
+	 zU3lP0MsqAchXGYcBSzpp0ct9DykYHRBhfcliYzpi/tYNBYtHI8Xm56nwP9/DV2QCw
+	 gPQaw60gJwZLJoftVTQ1skIPucFxAPawQIC+eSjtHswiQ1YXB/75VbjhaoWbIGsKyw
+	 D4VNHdg0oiyZliBwLB250Y0tCxESDEQDGqLZ7rGJcVIAffZIu6nh5dTorUZams0v6d
+	 V6lw8CpmHMyRQ==
+Date: Tue, 08 Oct 2024 09:56:43 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241008115702.214071228@linuxfoundation.org> <20241008115719.272201292@linuxfoundation.org>
- <CA+icZUUjDD6r1NMQ6Kiscq8Yt0a-vBYjh1SiW1oNMQEKPWXQbA@mail.gmail.com> <2024100859-enviable-phony-9be8@gregkh>
-In-Reply-To: <2024100859-enviable-phony-9be8@gregkh>
-Reply-To: sedat.dilek@gmail.com
-From: Sedat Dilek <sedat.dilek@gmail.com>
-Date: Tue, 8 Oct 2024 16:40:20 +0200
-Message-ID: <CA+icZUWV_ooRHbSmxj6JuaOGXhdkr1jUSK+TkfdvX-JaiG5MyQ@mail.gmail.com>
-Subject: Re: [PATCH 6.11 432/558] perf python: Disable -Wno-cast-function-type-mismatch
- if present on clang
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Ian Rogers <irogers@google.com>, Ingo Molnar <mingo@redhat.com>, 
-	Namhyung Kim <namhyung@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Arnaldo Carvalho de Melo <acme@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Alain Volmat <alain.volmat@foss.st.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ linux-media@vger.kernel.org, Hugues Fruchet <hugues.fruchet@foss.st.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ Hans Verkuil <hverkuil-cisco@xs4all.nl>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, devicetree@vger.kernel.org, 
+ Conor Dooley <conor+dt@kernel.org>, linux-arm-kernel@lists.infradead.org
+In-Reply-To: <20241008-csi_dcmipp_mp25-v1-0-e3fd0ed54b31@foss.st.com>
+References: <20241008-csi_dcmipp_mp25-v1-0-e3fd0ed54b31@foss.st.com>
+Message-Id: <172839929145.1375728.3090731448199694318.robh@kernel.org>
+Subject: Re: [PATCH 00/15] media: stm32: introduction of CSI / DCMIPP for
+ STM32MP25
 
-On Tue, Oct 8, 2024 at 4:06=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Oct 08, 2024 at 03:05:41PM +0200, Sedat Dilek wrote:
-> > On Tue, Oct 8, 2024 at 3:01=E2=80=AFPM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > 6.11-stable review patch.  If anyone has any objections, please let m=
-e know.
-> > >
-> > > ------------------
-> > >
-> > > From: Arnaldo Carvalho de Melo <acme@redhat.com>
-> > >
-> > > commit 00dc514612fe98cfa117193b9df28f15e7c9db9c upstream.
-> > >
-> > > The -Wcast-function-type-mismatch option was introduced in clang 19 a=
-nd
-> > > its enabled by default, since we use -Werror, and python bindings do
-> > > casts that are valid but trips this warning, disable it if present.
-> > >
-> > > Closes: https://lore.kernel.org/all/CA+icZUXoJ6BS3GMhJHV3aZWyb5Cz2haF=
-neX0C5pUMUUhG-UVKQ@mail.gmail.com
-> > > Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
-> > > Tested-by: Sedat Dilek <sedat.dilek@gmail.com>
-> > > Cc: Ian Rogers <irogers@google.com>
-> > > Cc: Ingo Molnar <mingo@redhat.com>
-> > > Cc: Namhyung Kim <namhyung@kernel.org>
-> > > Cc: Nathan Chancellor <nathan@kernel.org>
-> > > Cc: Peter Zijlstra <peterz@infradead.org>
-> > > Cc: stable@vger.kernel.org # To allow building with the upcoming clan=
-g 19
-> > > Link: https://lore.kernel.org/lkml/CA+icZUVtHn8X1Tb_Y__c-WswsO0K8U9uy=
-3r2MzKXwTA5THtL7w@mail.gmail.com
-> > > Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-> > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > ---
-> > >  tools/perf/util/setup.py |    2 ++
-> > >  1 file changed, 2 insertions(+)
-> > >
-> > > --- a/tools/perf/util/setup.py
-> > > +++ b/tools/perf/util/setup.py
-> > > @@ -63,6 +63,8 @@ cflags =3D getenv('CFLAGS', '').split()
-> > >  cflags +=3D ['-fno-strict-aliasing', '-Wno-write-strings', '-Wno-unu=
-sed-parameter', '-Wno-redundant-decls' ]
-> > >  if cc_is_clang:
-> > >      cflags +=3D ["-Wno-unused-command-line-argument" ]
-> > > +    if clang_has_option("-Wno-cast-function-type-mismatch"):
-> > > +        cflags +=3D ["-Wno-cast-function-type-mismatch" ]
-> > >  else:
-> > >      cflags +=3D ['-Wno-cast-function-type' ]
-> > >
-> > >
-> > >
-> >
-> > ( I already responded to a stable-commits email sent to me, but here
-> > might be better. )
-> >
-> > Hi Greg,
-> >
-> > You need both patches:
-> >
-> > upstream 00dc514612fe98cfa117193b9df28f15e7c9db9c
-> > "perf python: Disable -Wno-cast-function-type-mismatch if present on cl=
-ang"
-> > ^^ You have only this one - sets only the warning flag
-> >
-> > upstream b81162302001f41157f6e93654aaccc30e817e2a
-> > "perf python: Allow checking for the existence of warning"
-> > ^^ Add this please to all stable trees affected, Thanks.
-> >
-> > Explanations in [1] and initial report in [2].
->
-> Thanks, now queued up!
->
-> greg k-h
 
-Cool, that will be a nice stable-linux version 6.11.3 for us!
+On Tue, 08 Oct 2024 13:18:02 +0200, Alain Volmat wrote:
+> This series introduces the camera pipeline support for the
+> STM32MP25 SOC.  The STM32MP25 has 3 pipelines, fed from a
+> single camera input which can be either parallel or csi.
+> 
+> This series adds the basic support for the 1st pipe (dump)
+> which, in term of features is same as the one featured on
+> the STM32MP13 SOC.  It focuses on introduction of the
+> CSI input stage for the DCMIPP, and the CSI specific new
+> control code for the DCMIPP.
+> One of the subdev of the DCMIPP, dcmipp_parallel is now
+> renamed as dcmipp_input since it allows to not only control
+> the parallel but also the csi interface.
+> 
+> Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+> ---
+> Alain Volmat (15):
+>       media: stm32: dcmipp: correct dma_set_mask_and_coherent mask value
+>       dt-bindings: media: addition of stm32 csi driver description
+>       media: stm32: csi: addition of the STM32 CSI driver
+>       media: stm32: dcmipp: use v4l2_subdev_is_streaming
+>       media: stm32: dcmipp: replace s_stream with enable/disable_streams
+>       media: stm32: dcmipp: rename dcmipp_parallel into dcmipp_input
+>       media: stm32: dcmipp: add support for csi input into dcmipp-input
+>       media: stm32: dcmipp: add bayer 10~14 bits formats
+>       media: stm32: dcmipp: add 1X16 RGB / YUV formats support
+>       media: stm32: dcmipp: avoid duplicated format on enum in bytecap
+>       media: stm32: dcmipp: fill media ctl hw_revision field
+>       dt-bindings: media: addition of stm32mp25 compatible of DCMIPP
+>       media: stm32: dcmipp: add core support for the stm32mp25
+>       arm64: dts: st: add csi & dcmipp node in stm32mp25
+>       arm64: dts: st: enable imx335/csi/dcmipp pipeline on stm32mp257f-ev1
+> 
+>  .../devicetree/bindings/media/st,stm32-csi.yaml    |  129 +++
+>  .../devicetree/bindings/media/st,stm32-dcmipp.yaml |   53 +-
+>  MAINTAINERS                                        |    8 +
+>  arch/arm64/boot/dts/st/stm32mp251.dtsi             |   23 +
+>  arch/arm64/boot/dts/st/stm32mp257f-ev1.dts         |   87 ++
+>  drivers/media/platform/st/stm32/Kconfig            |   14 +
+>  drivers/media/platform/st/stm32/Makefile           |    1 +
+>  drivers/media/platform/st/stm32/stm32-csi.c        | 1150 ++++++++++++++++++++
+>  .../media/platform/st/stm32/stm32-dcmipp/Makefile  |    2 +-
+>  .../st/stm32/stm32-dcmipp/dcmipp-bytecap.c         |  128 ++-
+>  .../st/stm32/stm32-dcmipp/dcmipp-byteproc.c        |  119 +-
+>  .../platform/st/stm32/stm32-dcmipp/dcmipp-common.h |    4 +-
+>  .../platform/st/stm32/stm32-dcmipp/dcmipp-core.c   |  116 +-
+>  .../platform/st/stm32/stm32-dcmipp/dcmipp-input.c  |  540 +++++++++
+>  .../st/stm32/stm32-dcmipp/dcmipp-parallel.c        |  440 --------
+>  15 files changed, 2238 insertions(+), 576 deletions(-)
+> ---
+> base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+> change-id: 20241007-csi_dcmipp_mp25-7779601f57da
+> 
+> Best regards,
+> --
+> Alain Volmat <alain.volmat@foss.st.com>
+> 
+> 
+> 
 
--sed@-
+
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y st/stm32mp257f-ev1.dtb' for 20241008-csi_dcmipp_mp25-v1-0-e3fd0ed54b31@foss.st.com:
+
+arch/arm64/boot/dts/st/stm32mp257f-ev1.dtb: imx335@1a: 'powerdown-gpios' does not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/media/i2c/sony,imx335.yaml#
+arch/arm64/boot/dts/st/stm32mp257f-ev1.dtb: csi@48020000: ports:port@0:endpoint:data-lanes:0: 0 is not of type 'array'
+	from schema $id: http://devicetree.org/schemas/media/st,stm32-csi.yaml#
+arch/arm64/boot/dts/st/stm32mp257f-ev1.dtb: csi@48020000: ports:port@0:endpoint:data-lanes:1: 1 is not of type 'array'
+	from schema $id: http://devicetree.org/schemas/media/st,stm32-csi.yaml#
+
+
+
+
+
 
