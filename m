@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-81852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196DA9949C5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D3C994DF2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:11:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE7D32818F1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28E291C25268
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4FA91DF244;
-	Tue,  8 Oct 2024 12:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3304F1DF273;
+	Tue,  8 Oct 2024 13:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4vXrIYQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tH6PLPbz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FEE1DED4B;
-	Tue,  8 Oct 2024 12:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E6E1DF723;
+	Tue,  8 Oct 2024 13:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390352; cv=none; b=TkRAVETC0O2e84UnE8ROmwqLxkEo0nw0JzAC+CFXJB2RF/6TOFL9n3/Gd7njSasJbjdlfdq/wVdNQ/PBzXBRXtJD9rY0c8FFVEh7jLSmvxZrcngTOwhGPvZbQV/FSyCA3fqKBT0IzmJAqc8oqhXiCxFhFQluEr+ckAqxz1u331M=
+	t=1728393061; cv=none; b=cjkmDafInZ6nwR6mwvyxMoUGKMaP8+DFDlIJtimqyV/9XMmZW2a3LKiBSOqQ++5oPBF/0JalV4rtH+Q9mV8QHaRITMRweEAc9JksaxfVWuS8uwA3Tq05wjj4pZQAaGpIkjMpghCPd+KbaYKFp4/mZ8BchoqmGeFhSwt/q484hVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390352; c=relaxed/simple;
-	bh=ZfMxwxxArC5uwtoDHfW0ENRMcPLh7n/eb/sBxNCWp+4=;
+	s=arc-20240116; t=1728393061; c=relaxed/simple;
+	bh=Lj4TvzhRuH88eJdEl6CtX6Sk9ZOVR/DRU/0wrpNhzVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kBaGe6JK08/i/xy5DQwoNGxpPFZo/WKj6le+xdw6Rm+b8Fgo/L0c/7mwA/EYVrtwSYxrJUiXiK7PHuPIAPUf2f6dHxfqTLdZCTbEBWYj6T8TBSYo9SDaY5CDW3QbpkABmL9Q7VPz8RSseLtAwNi/Xmu4+3e+UapCx53NDpdY7IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4vXrIYQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A7CC4CEC7;
-	Tue,  8 Oct 2024 12:25:51 +0000 (UTC)
+	 MIME-Version; b=bUkUgSFgKa7Wd0bfYa1s5iVNSKIeNHhWmFW+6P/ujbFu+X3pdLFshh2HFuuLH+TahMGJJ70lOzfQWkTOdzX50bG9Qriq1M5ry1wq1EhRNco6J6vwEjPiDHY6pT2vcS4T1zzRvUIhJNM9lk+bB/jvSDwoWiKjBPshVdoO23YHVM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tH6PLPbz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49607C4CECE;
+	Tue,  8 Oct 2024 13:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390352;
-	bh=ZfMxwxxArC5uwtoDHfW0ENRMcPLh7n/eb/sBxNCWp+4=;
+	s=korg; t=1728393060;
+	bh=Lj4TvzhRuH88eJdEl6CtX6Sk9ZOVR/DRU/0wrpNhzVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d4vXrIYQZaa2ik6X080dGfcTpG8RDfR/KfkLD3unVw8X8FBEM2RF/hRgjGByghYdz
-	 I4COm+o/4H4pD4zpAbBnValzZdHE6h7C00VA/C3NcRdu7cHFOwv4FEyREwdYD3TZ0i
-	 GfNoZK/SaXxdjxHwZWVWyQVCL2fds7rZ1rlw32Os=
+	b=tH6PLPbzpXklitMR3GarakfQiQ9BY3WXveuakAqrswJ/73pvHTRL4fW0NIcAzyl3l
+	 Iijufj7A+BdR/FWd8Jl9BC7NWi+hMSx3ohz6weC1TTy551V0GD04vP6anAKP1UlZu2
+	 kdE6cIkQS93qRdc0qaOCJcY+iyEO0WW/Mc6GSyUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Robert Hancock <robert.hancock@calian.com>,
+	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 222/482] scsi: aacraid: Rearrange order of struct aac_srb_unit
+Subject: [PATCH 6.6 040/386] i2c: xiic: Try re-initialization on bus busy timeout
 Date: Tue,  8 Oct 2024 14:04:45 +0200
-Message-ID: <20241008115657.046351820@linuxfoundation.org>
+Message-ID: <20241008115631.051453044@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +64,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Robert Hancock <robert.hancock@calian.com>
 
-[ Upstream commit 6e5860b0ad4934baee8c7a202c02033b2631bb44 ]
+[ Upstream commit 1d4a1adbed2582444aaf97671858b7d12915bd05 ]
 
-struct aac_srb_unit contains struct aac_srb, which contains struct sgmap,
-which ends in a (currently) "fake" (1-element) flexible array.  Converting
-this to a flexible array is needed so that runtime bounds checking won't
-think the array is fixed size (i.e. under CONFIG_FORTIFY_SOURCE=y and/or
-CONFIG_UBSAN_BOUNDS=y), as other parts of aacraid use struct sgmap as a
-flexible array.
+In the event that the I2C bus was powered down when the I2C controller
+driver loads, or some spurious pulses occur on the I2C bus, it's
+possible that the controller detects a spurious I2C "start" condition.
+In this situation it may continue to report the bus is busy indefinitely
+and block the controller from working.
 
-It is not legal to have a flexible array in the middle of a structure, so
-it either needs to be split up or rearranged so that it is at the end of
-the structure. Luckily, struct aac_srb_unit, which is exclusively
-consumed/updated by aac_send_safw_bmic_cmd(), does not depend on member
-ordering.
+The "single-master" DT flag can be specified to disable bus busy checks
+entirely, but this may not be safe to use in situations where other I2C
+masters may potentially exist.
 
-The values set in the on-stack struct aac_srb_unit instance "srbu" by the
-only two callers, aac_issue_safw_bmic_identify() and
-aac_get_safw_ciss_luns(), do not contain anything in srbu.srb.sgmap.sg, and
-they both implicitly initialize srbu.srb.sgmap.count to 0 during
-memset(). For example:
+In the event that the controller reports "bus busy" for too long when
+starting a transaction, we can try reinitializing the controller to see
+if the busy condition clears. This allows recovering from this scenario.
 
-        memset(&srbu, 0, sizeof(struct aac_srb_unit));
-
-        srbcmd = &srbu.srb;
-        srbcmd->flags   = cpu_to_le32(SRB_DataIn);
-        srbcmd->cdb[0]  = CISS_REPORT_PHYSICAL_LUNS;
-        srbcmd->cdb[1]  = 2; /* extended reporting */
-        srbcmd->cdb[8]  = (u8)(datasize >> 8);
-        srbcmd->cdb[9]  = (u8)(datasize);
-
-        rcode = aac_send_safw_bmic_cmd(dev, &srbu, phys_luns, datasize);
-
-During aac_send_safw_bmic_cmd(), a separate srb is mapped into DMA, and has
-srbu.srb copied into it:
-
-        srb = fib_data(fibptr);
-        memcpy(srb, &srbu->srb, sizeof(struct aac_srb));
-
-Only then is srb.sgmap.count written and srb->sg populated:
-
-        srb->count              = cpu_to_le32(xfer_len);
-
-        sg64 = (struct sgmap64 *)&srb->sg;
-        sg64->count             = cpu_to_le32(1);
-        sg64->sg[0].addr[1]     = cpu_to_le32(upper_32_bits(addr));
-        sg64->sg[0].addr[0]     = cpu_to_le32(lower_32_bits(addr));
-        sg64->sg[0].count       = cpu_to_le32(xfer_len);
-
-But this is happening in the DMA memory, not in srbu.srb. An attempt to
-copy the changes back to srbu does happen:
-
-        /*
-         * Copy the updated data for other dumping or other usage if
-         * needed
-         */
-        memcpy(&srbu->srb, srb, sizeof(struct aac_srb));
-
-But this was never correct: the sg64 (3 u32s) overlap of srb.sg (2 u32s)
-always meant that srbu.srb would have held truncated information and any
-attempt to walk srbu.srb.sg.sg based on the value of srbu.srb.sg.count
-would result in attempting to parse past the end of srbu.srb.sg.sg[0] into
-srbu.srb_reply.
-
-After getting a reply from hardware, the reply is copied into
-srbu.srb_reply:
-
-        srb_reply = (struct aac_srb_reply *)fib_data(fibptr);
-        memcpy(&srbu->srb_reply, srb_reply, sizeof(struct aac_srb_reply));
-
-This has always been fixed-size, so there's no issue here. It is worth
-noting that the two callers _never check_ srbu contents -- neither
-srbu.srb nor srbu.srb_reply is examined. (They depend on the mapped
-xfer_buf instead.)
-
-Therefore, the ordering of members in struct aac_srb_unit does not matter,
-and the flexible array member can moved to the end.
-
-(Additionally, the two memcpy()s that update srbu could be entirely
-removed as they are never consumed, but I left that as-is.)
-
-Signed-off-by: Kees Cook <kees@kernel.org>
-Link: https://lore.kernel.org/r/20240711215739.208776-1-kees@kernel.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: e1d5b6598cdc ("i2c: Add support for Xilinx XPS IIC Bus Interface")
+Signed-off-by: Robert Hancock <robert.hancock@calian.com>
+Cc: <stable@vger.kernel.org> # v2.6.34+
+Reviewed-by: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/aacraid/aacraid.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-xiic.c | 41 ++++++++++++++++++++++-------------
+ 1 file changed, 26 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/scsi/aacraid/aacraid.h b/drivers/scsi/aacraid/aacraid.h
-index 7d5a155073c62..9b66fa29fb05c 100644
---- a/drivers/scsi/aacraid/aacraid.h
-+++ b/drivers/scsi/aacraid/aacraid.h
-@@ -2029,8 +2029,8 @@ struct aac_srb_reply
- };
+diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
+index 19468565120e1..d3ca7d2f81a61 100644
+--- a/drivers/i2c/busses/i2c-xiic.c
++++ b/drivers/i2c/busses/i2c-xiic.c
+@@ -844,23 +844,11 @@ static int xiic_bus_busy(struct xiic_i2c *i2c)
+ 	return (sr & XIIC_SR_BUS_BUSY_MASK) ? -EBUSY : 0;
+ }
  
- struct aac_srb_unit {
--	struct aac_srb		srb;
- 	struct aac_srb_reply	srb_reply;
-+	struct aac_srb		srb;
- };
+-static int xiic_busy(struct xiic_i2c *i2c)
++static int xiic_wait_not_busy(struct xiic_i2c *i2c)
+ {
+ 	int tries = 3;
+ 	int err;
  
- /*
+-	if (i2c->tx_msg || i2c->rx_msg)
+-		return -EBUSY;
+-
+-	/* In single master mode bus can only be busy, when in use by this
+-	 * driver. If the register indicates bus being busy for some reason we
+-	 * should ignore it, since bus will never be released and i2c will be
+-	 * stuck forever.
+-	 */
+-	if (i2c->singlemaster) {
+-		return 0;
+-	}
+-
+ 	/* for instance if previous transfer was terminated due to TX error
+ 	 * it might be that the bus is on it's way to become available
+ 	 * give it at most 3 ms to wake
+@@ -1104,13 +1092,36 @@ static int xiic_start_xfer(struct xiic_i2c *i2c, struct i2c_msg *msgs, int num)
+ 
+ 	mutex_lock(&i2c->lock);
+ 
+-	ret = xiic_busy(i2c);
+-	if (ret) {
++	if (i2c->tx_msg || i2c->rx_msg) {
+ 		dev_err(i2c->adap.dev.parent,
+ 			"cannot start a transfer while busy\n");
++		ret = -EBUSY;
+ 		goto out;
+ 	}
+ 
++	/* In single master mode bus can only be busy, when in use by this
++	 * driver. If the register indicates bus being busy for some reason we
++	 * should ignore it, since bus will never be released and i2c will be
++	 * stuck forever.
++	 */
++	if (!i2c->singlemaster) {
++		ret = xiic_wait_not_busy(i2c);
++		if (ret) {
++			/* If the bus is stuck in a busy state, such as due to spurious low
++			 * pulses on the bus causing a false start condition to be detected,
++			 * then try to recover by re-initializing the controller and check
++			 * again if the bus is still busy.
++			 */
++			dev_warn(i2c->adap.dev.parent, "I2C bus busy timeout, reinitializing\n");
++			ret = xiic_reinit(i2c);
++			if (ret)
++				goto out;
++			ret = xiic_wait_not_busy(i2c);
++			if (ret)
++				goto out;
++		}
++	}
++
+ 	i2c->tx_msg = msgs;
+ 	i2c->rx_msg = NULL;
+ 	i2c->nmsgs = num;
 -- 
 2.43.0
 
