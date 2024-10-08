@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB24994D59
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 036F7994A7E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:33:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03F71B2BD77
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72A9EB254CA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CFE1DE8AA;
-	Tue,  8 Oct 2024 12:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74E81DE2CF;
+	Tue,  8 Oct 2024 12:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2Pwacgn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnaabz/K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70D0189910;
-	Tue,  8 Oct 2024 12:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65BEE1CCB32;
+	Tue,  8 Oct 2024 12:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392383; cv=none; b=u5mawIC+9UptY2ttREMQPTYL7qBgvDIu8EW0+vYddhiPpIvufT10OjLEzQceODgzABnyJCgais/WtcBC1uGGWyh+FulPiZFmlqjGxf1jXjzOkvNQeVI01cD3afDR5TraGOwkYRFAllPd+Y76ZbKVAiUS58+Ie31qhLwM/UN/EeI=
+	t=1728390802; cv=none; b=knFR8WkGSJPc8FqYLnqf6Nu2DoGYclbGtyFtfXDLcMSbpxNN8ifGCy4M9QbVnWFifpPAHI6/Q2g/e1Tjc9wE3cYo1qdQinp4IyhJm6Yv8Iy55+Qm/iyGyLOVEK4X4GbT8rv8kFsIe2d0zXNVcA8fVJ0VCclo9m2CFf+EK/fwWJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392383; c=relaxed/simple;
-	bh=YsLlpCnLZ4WjKfSh24XEgYtwZHqPtz4HbRIO2dFWn8g=;
+	s=arc-20240116; t=1728390802; c=relaxed/simple;
+	bh=Sq7cDm2UdVfWrkt/TnNpUiebe+JMWartlEmz6v0qMrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GuI2gP+TtNkFTEQdPm2Yj58E8puuLBrVcuWlnK6JiAnL4G2TWx3dNBg+UWrf0uOfb2/21VJ5JKdUyjx8g3udY/aaEcI5MZamIYGfj4uFUhrf4AGehQszgrEgP0KJrADiTw49SFYrmk6iaVdazoqlpfEu7Y2bSpHK/we1WSpMWmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2Pwacgn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362E7C4CEC7;
-	Tue,  8 Oct 2024 12:59:43 +0000 (UTC)
+	 MIME-Version; b=GMqKZG8xNfK3i9Wx09YfDUQxfgzTDXITpfe53n8M4SIAyve7RpL2feppJLT9oNVPNPrEejvV/LC/cEwzBJK/f7AY9A9O1VG1RJ76xB6Y6+tdAYtBhBKygD7bx6BYgisoEFvmvYn5FAzBnf4qcNhb8chG7znkh24O1cOgETVWp8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnaabz/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F15C4CEC7;
+	Tue,  8 Oct 2024 12:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392383;
-	bh=YsLlpCnLZ4WjKfSh24XEgYtwZHqPtz4HbRIO2dFWn8g=;
+	s=korg; t=1728390802;
+	bh=Sq7cDm2UdVfWrkt/TnNpUiebe+JMWartlEmz6v0qMrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2Pwacgngljzmv9vvHBneViSsWOnN1flN/b1AnE2T7RZsDBgnsSju1m8Fcq5mh95t
-	 lxQUzPub0MVTqPwwkdYYc+blh9uhjwpQTPmvqEF5MOwyhAMmMUWE9ImnKcan6VkU57
-	 ujTjCRFKCeD5F9lKUKuit2Jlt5zFgZQkZmU+rwYw=
+	b=vnaabz/KSzbkg0+7a30/xf1cNbz0XEqZTTG2LP0yVlQuSKstXL2IvxyKyeX26iudj
+	 lLCFPm5CXYWmJfS4aAHQp6QUKV/CCP8IlIYC4RYMo26wU8YqHzsMNWN2C95+lLUexy
+	 TAZosdItWl95OSnp9TPZvzj3VbNkV3SVA6EEFi2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 399/558] drm/xe: Generate oob before compiling anything
+	Youssef Esmat <youssefesmat@google.com>,
+	Daniel Bristot de Oliveira <bristot@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>
+Subject: [PATCH 6.10 366/482] sched/core: Clear prev->dl_server in CFS pick fast path
 Date: Tue,  8 Oct 2024 14:07:09 +0200
-Message-ID: <20241008115717.980993978@linuxfoundation.org>
+Message-ID: <20241008115702.825392518@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Youssef Esmat <youssefesmat@google.com>
 
-commit ea74bf9ccba9ae80fc0766c07c4abaef927e9e63 upstream.
+commit a741b82423f41501e301eb6f9820b45ca202e877 upstream.
 
-Instead of keep adding more dependencies as WAs are needed in different
-places of the driver, just add a rule with all the objects so the code
-generation happens before anything else.
+In case the previous pick was a DL server pick, ->dl_server might be
+set. Clear it in the fast path as well.
 
-While at it, group lines related to wa_oob in the Makefile.
-
-v2: Prefix $(obj) when declaring dependency
-
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240708213041.1734028-1-lucas.demarchi@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Fixes: 63ba8422f876 ("sched/deadline: Introduce deadline servers")
+Signed-off-by: Youssef Esmat <youssefesmat@google.com>
+Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Juri Lelli <juri.lelli@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/7f7381ccba09efcb4a1c1ff808ed58385eccc222.1716811044.git.bristot@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/Makefile |   24 ++++--------------------
- 1 file changed, 4 insertions(+), 20 deletions(-)
+ kernel/sched/core.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/xe/Makefile
-+++ b/drivers/gpu/drm/xe/Makefile
-@@ -12,34 +12,15 @@ subdir-ccflags-$(CONFIG_DRM_XE_WERROR) +
- subdir-ccflags-y += -I$(obj) -I$(src)
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6044,6 +6044,13 @@ __pick_next_task(struct rq *rq, struct t
+ 		}
  
- # generated sources
--hostprogs := xe_gen_wa_oob
- 
-+hostprogs := xe_gen_wa_oob
- generated_oob := $(obj)/generated/xe_wa_oob.c $(obj)/generated/xe_wa_oob.h
--
- quiet_cmd_wa_oob = GEN     $(notdir $(generated_oob))
-       cmd_wa_oob = mkdir -p $(@D); $^ $(generated_oob)
--
- $(obj)/generated/%_wa_oob.c $(obj)/generated/%_wa_oob.h: $(obj)/xe_gen_wa_oob \
- 		 $(src)/xe_wa_oob.rules
- 	$(call cmd,wa_oob)
- 
--uses_generated_oob := \
--	$(obj)/xe_ggtt.o \
--	$(obj)/xe_device.o \
--	$(obj)/xe_gsc.o \
--	$(obj)/xe_gt.o \
--	$(obj)/xe_guc.o \
--	$(obj)/xe_guc_ads.o \
--	$(obj)/xe_guc_pc.o \
--	$(obj)/xe_migrate.o \
--	$(obj)/xe_pat.o \
--	$(obj)/xe_ring_ops.o \
--	$(obj)/xe_vm.o \
--	$(obj)/xe_wa.o \
--	$(obj)/xe_ttm_stolen_mgr.o
--
--$(uses_generated_oob): $(generated_oob)
--
- # Please keep these build lists sorted!
- 
- # core driver code
-@@ -322,3 +303,6 @@ quiet_cmd_hdrtest = HDRTEST $(patsubst %
- 
- $(obj)/%.hdrtest: $(src)/%.h FORCE
- 	$(call if_changed_dep,hdrtest)
+ 		/*
++		 * This is a normal CFS pick, but the previous could be a DL pick.
++		 * Clear it as previous is no longer picked.
++		 */
++		if (prev->dl_server)
++			prev->dl_server = NULL;
 +
-+uses_generated_oob := $(addprefix $(obj)/, $(xe-y))
-+$(uses_generated_oob): $(obj)/generated/xe_wa_oob.h
++		/*
+ 		 * This is the fast path; it cannot be a DL server pick;
+ 		 * therefore even if @p == @prev, ->dl_server must be NULL.
+ 		 */
 
 
 
