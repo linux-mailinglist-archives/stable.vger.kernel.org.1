@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E8E994DBC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA6A994FDE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:30:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC2E12835FB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F080528541A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A1E1DF243;
-	Tue,  8 Oct 2024 13:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5FAE1DFD80;
+	Tue,  8 Oct 2024 13:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyaK8CAj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZfmPIhn5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3BA81DEFC8;
-	Tue,  8 Oct 2024 13:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBFC1DF750;
+	Tue,  8 Oct 2024 13:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392920; cv=none; b=sb1lieiUt9OGKIbQi9rM3jAWX1k9TOgjLqAdFqUXVer+JpHUwmTk1zNVDIYxUayllWVb3nmcavhHyFT1NhjNtFQSEtl4OO8FbRnIn0+2k9TNsQTplgTBFSilhpztapzZ6ZC0i6ChB1ur4kvYEvXG2GYRLXPZLuOoGJvaMCQfp2k=
+	t=1728394152; cv=none; b=Elmw+nlYxWTtgoOx5JikGDzl8LuWR5ILkItQtTEupNsYNDWtdOKrdDxBZlGLmJioOeEsdsPrlJKnx+lABfml70eIFWHJ7tqebwJbQN0HZuIU1g2ceTagcssA0fA7bCMxV64PEuj2vxTnYZ1ZqEmlsfYbUqOFBJiEu4sgfgS++ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392920; c=relaxed/simple;
-	bh=szRt+te+Yh4MmRvABjXAsRYZPv0+EXokMZlv7HTRZ4o=;
+	s=arc-20240116; t=1728394152; c=relaxed/simple;
+	bh=iGALKTrrUoAkIwvcko6RxOlGDsO0ernTlIV+gz1CuFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UcA2Xo/NUPPctZ3ozRDUmTUXrcqMKgxTDjAllf9b5GL0LoRcj+iUlxBpy4gZ0e7sl05ppe43QhT+buTRCtsM4pcDenBNY/ShF0XeASCy8x7SoRF9jTbaNiqofj8yMzJD4jTSTftVRb5wFQUyH2/PMZdOsU8vf4FckUVKoyk9F9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyaK8CAj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34219C4CEC7;
-	Tue,  8 Oct 2024 13:08:40 +0000 (UTC)
+	 MIME-Version; b=nzGMx3s4j+ZHoSy2YBohjDIPmskk0CIs489ih9L9WyMBhdSQnXmU4X4Mhb7rXnnmVe9vcMN6ewE550oYT2UfcdgJm/EG/3L1EdFDTwnEtttucMyp2ynJMJen7XQFCAHDCbTEDW+K2WjqwDHcWZrBRTdGEXN1Km+WDdNorZY893Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZfmPIhn5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FCB7C4CEC7;
+	Tue,  8 Oct 2024 13:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392920;
-	bh=szRt+te+Yh4MmRvABjXAsRYZPv0+EXokMZlv7HTRZ4o=;
+	s=korg; t=1728394152;
+	bh=iGALKTrrUoAkIwvcko6RxOlGDsO0ernTlIV+gz1CuFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PyaK8CAjJuQWEV+XzLIGS4qVqzgy3QvJ8j9w/w4ePgBps91/o3lR4u6QXMXGoCrAo
-	 2kwiXagJkNUk0vLaiU7n5ATNEGSJja4QvHz1Lkc08KwGT74y38NGaI3OH2MRAJxWZC
-	 Y1hsg9xUEhncp04CdRFNR85GJCxWIpHSw+bwoKOQ=
+	b=ZfmPIhn5MsgwdjkgfVzaTv1M8VWF0S2MfIIa93hWx8zo9MDcdlrNNwifPdiXwYo9z
+	 StsguMHu7Wmi3EuhFGylbZwVetUi+78pW0qFrMRRccFAZ7qrgqDik2hnvgU9kyUM6P
+	 Q+9KeUm75wS6YN5q9Ea0HD4S2uctv2NBaK6YaGvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 546/558] drm/xe: Clean up VM / exec queue file lock usage.
+Subject: [PATCH 6.6 331/386] i2c: create debugfs entry per adapter
 Date: Tue,  8 Oct 2024 14:09:36 +0200
-Message-ID: <20241008115723.720115011@linuxfoundation.org>
+Message-ID: <20241008115642.410193855@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,141 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 9e3c85ddea7a473ed57b6cdfef2dfd468356fc91 ]
+[ Upstream commit 73febd775bdbdb98c81255ff85773ac410ded5c4 ]
 
-Both the VM / exec queue file lock protect the lookup and reference to
-the object, nothing more. These locks are not intended anything else
-underneath them. XA have their own locking too, so no need to take the
-VM / exec queue file lock aside from when doing a lookup and reference
-get.
+Two drivers already implement custom debugfs handling for their
+i2c_adapter and more will come. So, let the core create a debugfs
+directory per adapter and pass that to drivers for their debugfs files.
 
-Add some kernel doc to make this clear and cleanup a few typos too.
-
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240921011712.2681510-1-matthew.brost@intel.com
-(cherry picked from commit fe4f5d4b661666a45b48fe7f95443f8fefc09c8c)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Stable-dep-of: 74231870cf49 ("drm/xe/vm: move xa_alloc to prevent UAF")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Stable-dep-of: 8d3cefaf6592 ("i2c: core: Lock address during client device instantiation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_device.c       |  2 --
- drivers/gpu/drm/xe/xe_device_types.h | 14 +++++++++++---
- drivers/gpu/drm/xe/xe_drm_client.c   |  9 ++++++++-
- drivers/gpu/drm/xe/xe_exec_queue.c   |  2 --
- drivers/gpu/drm/xe/xe_vm.c           |  4 ----
- 5 files changed, 19 insertions(+), 12 deletions(-)
+ drivers/i2c/i2c-core-base.c | 11 +++++++++++
+ include/linux/i2c.h         |  2 ++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index 83f603a1ab122..8a44a2b6dcbb6 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -159,10 +159,8 @@ static void xe_file_close(struct drm_device *dev, struct drm_file *file)
- 		xe_exec_queue_kill(q);
- 		xe_exec_queue_put(q);
- 	}
--	mutex_lock(&xef->vm.lock);
- 	xa_for_each(&xef->vm.xa, idx, vm)
- 		xe_vm_close_and_put(vm);
--	mutex_unlock(&xef->vm.lock);
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 1e873ff0a624d..9d918a7dfddae 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -16,6 +16,7 @@
+ #include <linux/acpi.h>
+ #include <linux/clk/clk-conf.h>
+ #include <linux/completion.h>
++#include <linux/debugfs.h>
+ #include <linux/delay.h>
+ #include <linux/err.h>
+ #include <linux/errno.h>
+@@ -67,6 +68,8 @@ static int i2c_detect(struct i2c_adapter *adapter, struct i2c_driver *driver);
+ static DEFINE_STATIC_KEY_FALSE(i2c_trace_msg_key);
+ static bool is_registered;
  
- 	xe_file_put(xef);
- 
-diff --git a/drivers/gpu/drm/xe/xe_device_types.h b/drivers/gpu/drm/xe/xe_device_types.h
-index fbc05188263d9..a7c7812d57915 100644
---- a/drivers/gpu/drm/xe/xe_device_types.h
-+++ b/drivers/gpu/drm/xe/xe_device_types.h
-@@ -558,15 +558,23 @@ struct xe_file {
- 	struct {
- 		/** @vm.xe: xarray to store VMs */
- 		struct xarray xa;
--		/** @vm.lock: protects file VM state */
-+		/**
-+		 * @vm.lock: Protects VM lookup + reference and removal a from
-+		 * file xarray. Not an intended to be an outer lock which does
-+		 * thing while being held.
-+		 */
- 		struct mutex lock;
- 	} vm;
- 
- 	/** @exec_queue: Submission exec queue state for file */
- 	struct {
--		/** @exec_queue.xe: xarray to store engines */
-+		/** @exec_queue.xa: xarray to store exece queues */
- 		struct xarray xa;
--		/** @exec_queue.lock: protects file engine state */
-+		/**
-+		 * @exec_queue.lock: Protects exec queue lookup + reference and
-+		 * removal a frommfile xarray. Not an intended to be an outer
-+		 * lock which does thing while being held.
-+		 */
- 		struct mutex lock;
- 	} exec_queue;
- 
-diff --git a/drivers/gpu/drm/xe/xe_drm_client.c b/drivers/gpu/drm/xe/xe_drm_client.c
-index 1af95b9b91715..c237ced421833 100644
---- a/drivers/gpu/drm/xe/xe_drm_client.c
-+++ b/drivers/gpu/drm/xe/xe_drm_client.c
-@@ -288,8 +288,15 @@ static void show_run_ticks(struct drm_printer *p, struct drm_file *file)
- 
- 	/* Accumulate all the exec queues from this client */
- 	mutex_lock(&xef->exec_queue.lock);
--	xa_for_each(&xef->exec_queue.xa, i, q)
-+	xa_for_each(&xef->exec_queue.xa, i, q) {
-+		xe_exec_queue_get(q);
-+		mutex_unlock(&xef->exec_queue.lock);
++static struct dentry *i2c_debugfs_root;
 +
- 		xe_exec_queue_update_run_ticks(q);
-+
-+		mutex_lock(&xef->exec_queue.lock);
-+		xe_exec_queue_put(q);
-+	}
- 	mutex_unlock(&xef->exec_queue.lock);
- 
- 	/* Get the total GPU cycles */
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
-index d0bbb1d9b1ac1..2179c65dc60ab 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue.c
-+++ b/drivers/gpu/drm/xe/xe_exec_queue.c
-@@ -627,9 +627,7 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
- 		}
+ int i2c_transfer_trace_reg(void)
+ {
+ 	static_branch_inc(&i2c_trace_msg_key);
+@@ -1523,6 +1526,8 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
+ 		goto out_list;
  	}
  
--	mutex_lock(&xef->exec_queue.lock);
- 	err = xa_alloc(&xef->exec_queue.xa, &id, q, xa_limit_32b, GFP_KERNEL);
--	mutex_unlock(&xef->exec_queue.lock);
- 	if (err)
- 		goto kill_exec_queue;
- 
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index 743c8d79d79d2..8fb425ad9e4a4 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -1905,9 +1905,7 @@ int xe_vm_create_ioctl(struct drm_device *dev, void *data,
- 	if (IS_ERR(vm))
- 		return PTR_ERR(vm);
- 
--	mutex_lock(&xef->vm.lock);
- 	err = xa_alloc(&xef->vm.xa, &id, vm, xa_limit_32b, GFP_KERNEL);
--	mutex_unlock(&xef->vm.lock);
- 	if (err)
- 		goto err_close_and_put;
- 
-@@ -1939,9 +1937,7 @@ int xe_vm_create_ioctl(struct drm_device *dev, void *data,
++	adap->debugfs = debugfs_create_dir(dev_name(&adap->dev), i2c_debugfs_root);
++
+ 	res = i2c_setup_smbus_alert(adap);
+ 	if (res)
+ 		goto out_reg;
+@@ -1562,6 +1567,7 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
  	return 0;
  
- err_free_id:
--	mutex_lock(&xef->vm.lock);
- 	xa_erase(&xef->vm.xa, id);
--	mutex_unlock(&xef->vm.lock);
- err_close_and_put:
- 	xe_vm_close_and_put(vm);
+ out_reg:
++	debugfs_remove_recursive(adap->debugfs);
+ 	init_completion(&adap->dev_released);
+ 	device_unregister(&adap->dev);
+ 	wait_for_completion(&adap->dev_released);
+@@ -1763,6 +1769,8 @@ void i2c_del_adapter(struct i2c_adapter *adap)
+ 
+ 	i2c_host_notify_irq_teardown(adap);
+ 
++	debugfs_remove_recursive(adap->debugfs);
++
+ 	/* wait until all references to the device are gone
+ 	 *
+ 	 * FIXME: This is old code and should ideally be replaced by an
+@@ -2060,6 +2068,8 @@ static int __init i2c_init(void)
+ 
+ 	is_registered = true;
+ 
++	i2c_debugfs_root = debugfs_create_dir("i2c", NULL);
++
+ #ifdef CONFIG_I2C_COMPAT
+ 	i2c_adapter_compat_class = class_compat_register("i2c-adapter");
+ 	if (!i2c_adapter_compat_class) {
+@@ -2098,6 +2108,7 @@ static void __exit i2c_exit(void)
+ #ifdef CONFIG_I2C_COMPAT
+ 	class_compat_unregister(i2c_adapter_compat_class);
+ #endif
++	debugfs_remove_recursive(i2c_debugfs_root);
+ 	bus_unregister(&i2c_bus_type);
+ 	tracepoint_synchronize_unregister();
+ }
+diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+index 32cf5708d5a5b..033de64d09bba 100644
+--- a/include/linux/i2c.h
++++ b/include/linux/i2c.h
+@@ -746,6 +746,8 @@ struct i2c_adapter {
+ 
+ 	struct irq_domain *host_notify_domain;
+ 	struct regulator *bus_regulator;
++
++	struct dentry *debugfs;
+ };
+ #define to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
  
 -- 
 2.43.0
