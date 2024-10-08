@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-82339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2416994C3D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:52:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 206379949C7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B72F1F21E33
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:52:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 864FCB21A55
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B4F1DE89F;
-	Tue,  8 Oct 2024 12:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1271E485;
+	Tue,  8 Oct 2024 12:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZ2mAX0X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REXRDPRa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12FB1DE894;
-	Tue,  8 Oct 2024 12:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878D41DF971;
+	Tue,  8 Oct 2024 12:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391927; cv=none; b=Lq7YnQ58vSxdy75KkWnAtQ16vdbScBxAQjeKu7faP+esoO66arU87XZdz1qrCcrC+1ak/VUmLI1YGnpqfw3AgTG2ysz5f2ASQydoqFVL1QJ6PnfIa8C+FvsSMA4r12aGOv8DSk5Bkc0nfOh0YNa+J/vuQVOWNm9pjfPz58bK4J0=
+	t=1728390349; cv=none; b=DqgffeGT3nxineuMggNfCKAeQ+CMcQd9ldEnQA9w6KAIowLzyqxhbeiUcEvJdN1hIlMghLtDOCX5Uh8D2818prqqrnS7qwq4hmDe4S8ui2qEqCVlhRU/yo7jT9yt/U3DIb4BIt9vvsA/DogRmBYrSS68Gtngsu4MVzsDWnnUqak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391927; c=relaxed/simple;
-	bh=1u+0ttHz+7NDENB79nkC/dtUPm2OA1tYYkVBizwFKtw=;
+	s=arc-20240116; t=1728390349; c=relaxed/simple;
+	bh=/mWlIHLj3gAZbb5NZADs2IK9CTUtValK064cbOpeQvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hd1H8pWEyF+wLmw4Lmuh3KjEgu10kTYxAeSF3tfs4cavhHyNx4NGycRdLKmte/I/qg0+LrtgJCJt6BAjPsr+1+7+wovyl3Ut46HHT4tGsg5jYHQjNjtD88TrbGb96SRROGhB6pN2tTQUCYOpWmx4X7T8Oy+mL2rbfk5bQNwp/m0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZ2mAX0X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEDBC4CEC7;
-	Tue,  8 Oct 2024 12:52:06 +0000 (UTC)
+	 MIME-Version; b=brvH7Wty6pcpNYXTgwEkd8w3ABRV8JOsY/yciX9uawpthF4g1GWpYWF5h/TiJDE954exhABNJctofh4RB6fpgJxiKgrJjX9PUapfRssuAqnKKxQ2dAxyMIZc4Byxb12aY4pqz9YesoqpUkzq3N6CkRSraRuYgyWiFIKJp28DgAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=REXRDPRa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938F4C4CEC7;
+	Tue,  8 Oct 2024 12:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391927;
-	bh=1u+0ttHz+7NDENB79nkC/dtUPm2OA1tYYkVBizwFKtw=;
+	s=korg; t=1728390349;
+	bh=/mWlIHLj3gAZbb5NZADs2IK9CTUtValK064cbOpeQvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZ2mAX0XcSXYgz/y3VINZEhAG2pH/C83eAdmx4Guigmrcv0xn7uir8puWApYhJfl0
-	 7kJedBAFKJLagNJATp7jgjX81ftgJQWSkzDluoGyyIyre5z3/sbkoLBoA7GW+/U7dA
-	 hWMDd9+ISvkHrAzPqefnwRNYvF+J30elPpqsYbEk=
+	b=REXRDPRaEkakXB74Y4iHb36pd9e5v+Mf9fCRbwrGjsOoJz2R7JrXKvsjPxG2e2Apf
+	 vZCsBxVM/7t/a4HE5xQrK4fPG1KzcXlNkKnTu4puPN/Bq8LVbKlplwDfokV8jNlmmA
+	 3DW643YyETrkaJD4lq0ybhEixqM2YZufn+vHkC6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Victor Skvortsov <victor.skvortsov@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 264/558] drm/amd/display: Fix possible overflow in integer multiplication
+Subject: [PATCH 6.10 231/482] drm/amdgpu: Block MMR_READ IOCTL in reset
 Date: Tue,  8 Oct 2024 14:04:54 +0200
-Message-ID: <20241008115712.721823692@linuxfoundation.org>
+Message-ID: <20241008115657.393224259@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Victor Skvortsov <victor.skvortsov@amd.com>
 
-[ Upstream commit 3f96f545f877ac59d0c967f52d760b4b2b3b9a47 ]
+[ Upstream commit 9e823f307074c0f82b5f6044943b0086e3079bed ]
 
-[WHAT & HOW]
-Integer multiplies integer may overflow in context that expects an
-expression of unsigned long long (64 bits). This can be fixed by casting
-integer to unsigned long long to force 64 bits results.
+Register access from userspace should be blocked until
+reset is complete.
 
-This fixes 2 OVERFLOW_BEFORE_WIDEN issues reported by Coverity.
-
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Victor Skvortsov <victor.skvortsov@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/resource/dcn32/dcn32_resource_helpers.c    | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 43 ++++++++++++++++++-------
+ 1 file changed, 31 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource_helpers.c b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource_helpers.c
-index 47c8a9fbe7546..f5a4e97c40ced 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource_helpers.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource_helpers.c
-@@ -663,7 +663,7 @@ bool dcn32_subvp_drr_admissable(struct dc *dc, struct dc_state *context)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+index 977cde6d13626..6d4e774b6cedc 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -43,6 +43,7 @@
+ #include "amdgpu_gem.h"
+ #include "amdgpu_display.h"
+ #include "amdgpu_ras.h"
++#include "amdgpu_reset.h"
+ #include "amd_pcie.h"
  
- 				subvp_disallow |= disallow_subvp_in_active_plus_blank(pipe);
- 				refresh_rate = (pipe->stream->timing.pix_clk_100hz * (uint64_t)100 +
--					pipe->stream->timing.v_total * pipe->stream->timing.h_total - (uint64_t)1);
-+					pipe->stream->timing.v_total * (unsigned long long)pipe->stream->timing.h_total - (uint64_t)1);
- 				refresh_rate = div_u64(refresh_rate, pipe->stream->timing.v_total);
- 				refresh_rate = div_u64(refresh_rate, pipe->stream->timing.h_total);
- 			}
-@@ -724,7 +724,7 @@ bool dcn32_subvp_vblank_admissable(struct dc *dc, struct dc_state *context, int
+ void amdgpu_unregister_gpu_instance(struct amdgpu_device *adev)
+@@ -778,6 +779,7 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 				    ? -EFAULT : 0;
+ 	}
+ 	case AMDGPU_INFO_READ_MMR_REG: {
++		int ret = 0;
+ 		unsigned int n, alloc_size;
+ 		uint32_t *regs;
+ 		unsigned int se_num = (info->read_mmr_reg.instance >>
+@@ -787,24 +789,37 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 				   AMDGPU_INFO_MMR_SH_INDEX_SHIFT) &
+ 				  AMDGPU_INFO_MMR_SH_INDEX_MASK;
  
- 				subvp_disallow |= disallow_subvp_in_active_plus_blank(pipe);
- 				refresh_rate = (pipe->stream->timing.pix_clk_100hz * (uint64_t)100 +
--					pipe->stream->timing.v_total * pipe->stream->timing.h_total - (uint64_t)1);
-+					pipe->stream->timing.v_total * (unsigned long long)pipe->stream->timing.h_total - (uint64_t)1);
- 				refresh_rate = div_u64(refresh_rate, pipe->stream->timing.v_total);
- 				refresh_rate = div_u64(refresh_rate, pipe->stream->timing.h_total);
++		if (!down_read_trylock(&adev->reset_domain->sem))
++			return -ENOENT;
++
+ 		/* set full masks if the userspace set all bits
+ 		 * in the bitfields
+ 		 */
+-		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK)
++		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK) {
+ 			se_num = 0xffffffff;
+-		else if (se_num >= AMDGPU_GFX_MAX_SE)
+-			return -EINVAL;
+-		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK)
++		} else if (se_num >= AMDGPU_GFX_MAX_SE) {
++			ret = -EINVAL;
++			goto out;
++		}
++
++		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK) {
+ 			sh_num = 0xffffffff;
+-		else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE)
+-			return -EINVAL;
++		} else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE) {
++			ret = -EINVAL;
++			goto out;
++		}
+ 
+-		if (info->read_mmr_reg.count > 128)
+-			return -EINVAL;
++		if (info->read_mmr_reg.count > 128) {
++			ret = -EINVAL;
++			goto out;
++		}
+ 
+ 		regs = kmalloc_array(info->read_mmr_reg.count, sizeof(*regs), GFP_KERNEL);
+-		if (!regs)
+-			return -ENOMEM;
++		if (!regs) {
++			ret = -ENOMEM;
++			goto out;
++		}
++
+ 		alloc_size = info->read_mmr_reg.count * sizeof(*regs);
+ 
+ 		amdgpu_gfx_off_ctrl(adev, false);
+@@ -816,13 +831,17 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 					      info->read_mmr_reg.dword_offset + i);
+ 				kfree(regs);
+ 				amdgpu_gfx_off_ctrl(adev, true);
+-				return -EFAULT;
++				ret = -EFAULT;
++				goto out;
  			}
+ 		}
+ 		amdgpu_gfx_off_ctrl(adev, true);
+ 		n = copy_to_user(out, regs, min(size, alloc_size));
+ 		kfree(regs);
+-		return n ? -EFAULT : 0;
++		ret = (n ? -EFAULT : 0);
++out:
++		up_read(&adev->reset_domain->sem);
++		return ret;
+ 	}
+ 	case AMDGPU_INFO_DEV_INFO: {
+ 		struct drm_amdgpu_info_device *dev_info;
 -- 
 2.43.0
 
