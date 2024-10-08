@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-81925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F01994A2D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A27D8994E7A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:17:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 459B01C24B43
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 550531F2583E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5914A18BC16;
-	Tue,  8 Oct 2024 12:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8771DF243;
+	Tue,  8 Oct 2024 13:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PjT8nUm+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6GGxyjN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124711DEFC9;
-	Tue,  8 Oct 2024 12:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A451DE4CD;
+	Tue,  8 Oct 2024 13:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390601; cv=none; b=eHxzVTk7dtpQ18H0x3v/wj3eYaJFIq6SfZz7Ajt+zoNzqvU0rkPhMzZAkJnnYujqFdUtnctXQr9YNcrSRoj+moMsjbap7SwYbET+Wu6q0JonrJQho19crtRa2WgsowML7IiFDNEfd3AMHM2QD07tRGvq1EDLUWk8C8KoGhvuhNE=
+	t=1728393449; cv=none; b=EC2gZqTdwYWlRCQO/vztSFyJwnITQIxpC4a7mLnBlAYsHKgbsyltz6sulvmWzOrYB5yI/zrLPbpKix/Cp7TaBG4MBHmEwdKEqSSEIpooBWsfEeb7Z9Uqc8OKmhZlNirSHReDJ12YHbhAeTvIBoBq4HNr6a5NGlPWo3OECpTQ+Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390601; c=relaxed/simple;
-	bh=2m0HS+mrZjJmqb6XLkxHJtaHEYh5i2geRu9CEIBJcEE=;
+	s=arc-20240116; t=1728393449; c=relaxed/simple;
+	bh=FbJ+f0yxOlGS/BQOJ3IjMu1nrYkrmBLxMhZWhkW6zrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6YZG9V7q/3v5LK1tMsKO8nLP5SNHZuz8ZuRUdKw7xX0XTppW1mHw7bH46nLYGdlW6FZDCjxNmi4dTDCKQZ5uzYyPtQNNcPCeNwVfT3pd14GJgdIhoaDFug6gtYmI40chB50l0oNRzQWbuC+GVZDU4QhAQ8QVxx9+a3wAdEWz94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PjT8nUm+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEA1C4CEC7;
-	Tue,  8 Oct 2024 12:30:00 +0000 (UTC)
+	 MIME-Version; b=HU05L8I2j7EOObj6gDfWWd3mUmBl/fE/1c1XkJDbQrKKPtdSo7o+douhTM2fq4P9CQdbZsbdh/nQqBCZAesywMavZQMFT7Rs+CGt0wLbOhQu3wkU3NC/mDuimss97W3xyp0+mRGW1Z92raDJzQQXkQFf8lFUslfphaP3v4fQW7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6GGxyjN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71006C4CEC7;
+	Tue,  8 Oct 2024 13:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390600;
-	bh=2m0HS+mrZjJmqb6XLkxHJtaHEYh5i2geRu9CEIBJcEE=;
+	s=korg; t=1728393448;
+	bh=FbJ+f0yxOlGS/BQOJ3IjMu1nrYkrmBLxMhZWhkW6zrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PjT8nUm+1re7B+2PDJIpkWF3gZ6OE22x1YRLtimGfAjmu9DGTKx96Dm/XH5hC7FlF
-	 iMwMkbA4Ow3/cOxEDw6vZ9n1Mm/XFYHOpKyMQ7gylVjANIN2kqHng2Mi8GY+Us03+h
-	 sLYMpPgyYOwOI3o8Us4I0TDmby9FxiGldLg1diQ8=
+	b=f6GGxyjNLC+FkJKgqg7oT7hKKOKv2t4Xgo3xgTDbY0mdF447lyH8rVQBvQuR25fSC
+	 LUVAYePjzNaIRGRMKNEbmOehK2ux15lu5ovxEng5FTwWv5JvsbhEcq9ACYrmH+xvSd
+	 /g3+5ZK1hIWig2cxYaIyNLGopMuuIDihyOveoNC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.10 336/482] ext4: fix incorrect tid assumption in jbd2_journal_shrink_checkpoint_list()
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 154/386] drm/amd/display: Check stream before comparing them
 Date: Tue,  8 Oct 2024 14:06:39 +0200
-Message-ID: <20241008115701.648223343@linuxfoundation.org>
+Message-ID: <20241008115635.486638181@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+From: Alex Hung <alex.hung@amd.com>
 
-commit 7a6443e1dad70281f99f0bd394d7fd342481a632 upstream.
+[ Upstream commit 35ff747c86767937ee1e0ca987545b7eed7a0810 ]
 
-Function jbd2_journal_shrink_checkpoint_list() assumes that '0' is not a
-valid value for transaction IDs, which is incorrect.  Don't assume that and
-use two extra boolean variables to control the loop iterations and keep
-track of the first and last tid.
+[WHAT & HOW]
+amdgpu_dm can pass a null stream to dc_is_stream_unchanged. It is
+necessary to check for null before dereferencing them.
 
-Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240724161119.13448-4-luis.henriques@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This fixes 1 FORWARD_NULL issue reported by Coverity.
+
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/checkpoint.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -410,6 +410,7 @@ unsigned long jbd2_journal_shrink_checkp
- 	tid_t tid = 0;
- 	unsigned long nr_freed = 0;
- 	unsigned long freed;
-+	bool first_set = false;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index 4b34bc9d4e4be..99fcd39bb15e0 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -2154,6 +2154,8 @@ static bool are_stream_backends_same(
+ bool dc_is_stream_unchanged(
+ 	struct dc_stream_state *old_stream, struct dc_stream_state *stream)
+ {
++	if (!old_stream || !stream)
++		return false;
  
- again:
- 	spin_lock(&journal->j_list_lock);
-@@ -429,8 +430,10 @@ again:
- 	else
- 		transaction = journal->j_checkpoint_transactions;
- 
--	if (!first_tid)
-+	if (!first_set) {
- 		first_tid = transaction->t_tid;
-+		first_set = true;
-+	}
- 	last_transaction = journal->j_checkpoint_transactions->t_cpprev;
- 	next_transaction = transaction;
- 	last_tid = last_transaction->t_tid;
-@@ -460,7 +463,7 @@ again:
- 	spin_unlock(&journal->j_list_lock);
- 	cond_resched();
- 
--	if (*nr_to_scan && next_tid)
-+	if (*nr_to_scan && journal->j_shrink_transaction)
- 		goto again;
- out:
- 	trace_jbd2_shrink_checkpoint_list(journal, first_tid, tid, last_tid,
+ 	if (!are_stream_backends_same(old_stream, stream))
+ 		return false;
+-- 
+2.43.0
+
 
 
 
