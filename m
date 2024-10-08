@@ -1,90 +1,103 @@
-Return-Path: <stable+bounces-81500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508A8993C60
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 03:42:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF0B993C5B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 03:42:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 153212813A2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 01:42:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5D561F249D3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 01:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF3914A82;
-	Tue,  8 Oct 2024 01:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="tDKu7nOp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C11C14A82;
+	Tue,  8 Oct 2024 01:41:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764D31E519
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 01:42:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D148818622;
+	Tue,  8 Oct 2024 01:41:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728351743; cv=none; b=XtuXS3/Sj9BZYZ8U2/V5OKuRlkoy0H6ULRBa4qloY8a5L907iwPdJg2GGedaRlAsib5yK+dZBHI/xCquDO0jOBIqH4APWCMdOi9FL3SeBOAaYCrqBfv9S/N1AhBEdLmednL9PrEwIwjXD5iwdTweIQAeijaR/8D9u3PgyTOcOuE=
+	t=1728351717; cv=none; b=i50g4DxWvloun6kRsz4LVmm3lOJuwjrPFZSk+NKIZabDZm9LycjxGpLYefAAi1xeO/f3nkqB/mDyup3q0+ItlwudAAyQhTfFM5Js4jT0hZl1B9tzWOs3kLDDS8psPKpkcK/vaKh0ZaObvn6IFYiuq7YrOQFTMyS7hwhfVu/wQDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728351743; c=relaxed/simple;
-	bh=5pA89Rg7oaz4Ibt7dpsZdwCutHczCehf1ctyBjleX+o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=l9iVoNat91IHGKDxx4LpWuChjtK3eU+KTNtgWaL3XdiKZjaxKUMeNzVohCAellu2KsnCJlTkUbRSbKeDErN5PV2GMrfPfrHTJKL/8WXD8MJn+ovnAuiIVPWQRcrfG+kWiyfL5vIK9uGGRVTrGnAPBLSbk7RiGs5Tv/fxQcPFgzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=tDKu7nOp; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
-Message-ID: <602fc890-8924-4ff4-904c-8bc561745b46@manjaro.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1728351342;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CYecW2RugHf1zIKNu6odX8I/6lKZT9Sm5v53GOCmkKo=;
-	b=tDKu7nOpG6XyhaCh0gDLjeIj+a4lT430twPnFYc7R5XWBIqL38YjvU9kVQYACxvnWXsyIB
-	XLDUHuaRGvj5kJ3unzswqn+ZODkv0qAVQAC4LYEW/+RxqGwCD/uKXCCBmIXASEhSx4h4Jm
-	vtzgzBsglC3PaklberdbAv3wX98jtLX2Wg+6BZk+IkmF5FvrTcKaOS74cS3RItRQfAfDeJ
-	r2xxVbL5C7F6Ao4+qiWyHxI+kQWFHaYxo947sdlKpZ/J4SVZceJmL1IWTyQHpLlkChPmra
-	D1Wrm1J+Qq1M4vVhbw3aQJOIb6mUAnYb+uT0q5GKqWzyo2k1GAGYJEv3lTpeSA==
-Date: Tue, 8 Oct 2024 08:35:33 +0700
+	s=arc-20240116; t=1728351717; c=relaxed/simple;
+	bh=cWSt4WA0p+of5ATDqf+7wEmIL+eMVlkDc/qdAUHqWjg=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=VZMoz78uhqGmfv7Nv6xOQ42FsUdwWlImwrQ5ZBUI87peqTxzHDgODjmd4jhYNqMoGnTW4LH3fXitsSeUcE15CPSRQcyCI1euxf8Q2qSCkowCoxzkZXepyXlDDtIu2hAGyRs3F2dZRG5gZOMzkLbxB9ZNEt97lq6ltxIjoSdwwXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4XMzJj1gZ2z4f3jk7;
+	Tue,  8 Oct 2024 09:41:41 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id E597A1A0359;
+	Tue,  8 Oct 2024 09:41:52 +0800 (CST)
+Received: from [10.174.176.73] (unknown [10.174.176.73])
+	by APP4 (Coremail) with SMTP id gCh0CgD3KsfgjQRnQFbqDQ--.24419S3;
+	Tue, 08 Oct 2024 09:41:52 +0800 (CST)
+Subject: Re: [PATCH 5.10] block, bfq: remove useless checking in
+ bfq_put_queue()
+To: Jens Axboe <axboe@kernel.dk>, George Rurikov
+ <g.ryurikov@securitycode.ru>, stable@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Paolo Valente <paolo.valente@linaro.org>, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+ Jan Kara <jack@suse.cz>, "yukuai (C)" <yukuai3@huawei.com>
+References: <20241007140709.1762881-1-g.ryurikov@securitycode.ru>
+ <5995b8d7-a94a-4c5d-8bf6-e19998c0ac72@kernel.dk>
+From: Yu Kuai <yukuai1@huaweicloud.com>
+Message-ID: <06ed3431-1311-ef45-0611-1321307a4629@huaweicloud.com>
+Date: Tue, 8 Oct 2024 09:41:52 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: Regression in 6.11.2
-To: Mario Limonciello <mario.limonciello@amd.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <d75e0922-ec80-4ef1-880a-fba98a67ffe5@amd.com>
-Content-Language: en-US
-Cc: 'Roman Gilg' <romangg@manjaro.org>
-From: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>
-Organization: Manjaro Community
-In-Reply-To: <d75e0922-ec80-4ef1-880a-fba98a67ffe5@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=philm@manjaro.org smtp.mailfrom=philm@manjaro.org
+In-Reply-To: <5995b8d7-a94a-4c5d-8bf6-e19998c0ac72@kernel.dk>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgD3KsfgjQRnQFbqDQ--.24419S3
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYH7kC6x804xWl14x267AKxVW8JVW5JwAF
+	c2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII
+	0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xv
+	wVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4
+	x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG
+	64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r
+	1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kI
+	c2xKxwCYjI0SjxkI62AI1cAE67vIY487MxAIw28IcxkI7VAKI48JMxAqzxv26xkF7I0En4
+	kS14v26r1q6r43MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4l
+	x2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrw
+	CI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI
+	42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z2
+	80aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IUbPEf5UUUUU==
+X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
 
-On 8/10/24 03:33, Mario Limonciello wrote:
-> Hi,
-> 
-> commit 872b8f14d772 ("drm/amd/display: Validate backlight caps are 
-> sane") was added to stable trees to fix a brightness problem on one 
-> laptop on a buggy firmware but with how aggressive it was it caused a 
-> problem on another.
-> 
-> Fortunately the problem on the other was already fixed in 6.12 though!
-> 
-> commit 87d749a6aab7 ("drm/amd/display: Allow backlight to go below 
-> `AMDGPU_DM_DEFAULT_MIN_BACKLIGHT`")
-> 
-> Can that commit please be brought everywhere that 872b8f14d772 went?
-> 
-> Thanks!
+Hi,
 
-So far commit 872b8f14d772 got added to 6.11.2, 6.10.13 and 6.6.54.
-It is also queued up for upcoming 6.1.113 and 5.15.168.
+在 2024/10/07 22:21, Jens Axboe 写道:
+> On 10/7/24 8:07 AM, George Rurikov wrote:
+>> From: George Ryurikov <g.ryurikov@securitycode.ru>
+>>
+>> From: Yu Kuai <yukuai3@huawei.com>
+>>
+>> commit 1e3cc2125d7cc7d492b2e6e52d09c1e17ba573c3
+>>
+>> 'bfqq->bfqd' is ensured to set in bfq_init_queue(), and it will never
+>> change afterwards.
+> 
+> No point pushing this to stable, so no from here.
+> 
 
--- 
-Best, Philip
+Yes, and there are no follow up fixes as well.
+
+Thanks,
+Kuai
+
 
