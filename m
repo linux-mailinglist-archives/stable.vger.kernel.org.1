@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-82301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39950994C16
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:50:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 609EF99498B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:25:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED287282CCF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:50:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07458B23874
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11CF1DEFF0;
-	Tue,  8 Oct 2024 12:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13A21DEFE3;
+	Tue,  8 Oct 2024 12:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYVfiLl6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5tFIyBl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02DC1DEFE4;
-	Tue,  8 Oct 2024 12:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0C11DF246;
+	Tue,  8 Oct 2024 12:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391805; cv=none; b=Rw1leSU4RtICCy4r/ViHZIlgs7vPhnjaLLwEnLh59IaB0wUpE65mH01ghPe7ye8SNE0nifgXnMkgJGjcRBmxmVVd021d61Bp1kMzaQkrft877TMVkd1ABeXziXFFh76wJuNfbfGCgLoMUjTyYqp4MUjQ0uGqY0qxRm6Yyh5PCZI=
+	t=1728390219; cv=none; b=c9jF+RW+DzgKubX8dX7AUxfJh0gTYtkSRK+kPkr3DDVa8Glgswssa0/avq07WZFNu1BWQ0jJ40hTYNJ2RYw6LThMLQuXvHBKtIdriuXUr5hcQFKU5G+LPZnbj9PDVcjIUGnW5ObUBqry4udwsOP9VBUUETonek3IYCNaOoz8QvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391805; c=relaxed/simple;
-	bh=J/2g0PKlMi25VCKJlenHNo5wDC1YHKZVVUcmVYW2fXc=;
+	s=arc-20240116; t=1728390219; c=relaxed/simple;
+	bh=xRwpEEbuYHfbPkydie3q8iIAytaTV9+1hvCGNoaHiIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QiXd86vcN1G77tWORVCwHERnSt2MIq1lQqbHOMamURWVGUSCv/fDRVkh1qRAGfOzUt7K4q2USTSEGXflA5gLsqupsd59tf/gkcw89KPkQw+TDK+ksnm8Qb1tDpWYalmfa4i/xvV9m056FkH38UtdK3bP0jBOgddRqS1JKlUKkok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYVfiLl6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C6AC4CEC7;
-	Tue,  8 Oct 2024 12:50:04 +0000 (UTC)
+	 MIME-Version; b=VhfyrJqDmLSqhN8rJSOT5DH9tdxZocQZ9lVVvj2Ag1B5X9t7Wwqt/KZhnaEdbNAcxac62idPYrEpXpF8nVYI63QfuH/tCjkKJ4y91ZVDHrqojkeX1Ag9hhhXeKml7Z3ry2GFF66yf84ixkY5v1s8gi2NUUii0rAvbx4hy7b9bCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N5tFIyBl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A209CC4CECC;
+	Tue,  8 Oct 2024 12:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391805;
-	bh=J/2g0PKlMi25VCKJlenHNo5wDC1YHKZVVUcmVYW2fXc=;
+	s=korg; t=1728390219;
+	bh=xRwpEEbuYHfbPkydie3q8iIAytaTV9+1hvCGNoaHiIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZYVfiLl6EGoyhbEmB/crlMn+TgPl3HySuAi/Ghb3RR+fCHK9vm44ikVnTMrvQgc5w
-	 joIbYYhayCyGkSTAVHBRpR1Q7WnimrCsDJiADcz70lVwH4zZEWEvUAY1IFNgSK5o8K
-	 jvriIYKPzzgwlnHULkpYTrpPaYXmEqWOgUJskpQw=
+	b=N5tFIyBlXxV3V9g4/NbDzQd1Zx+8oGwMppJGJZNSECliqUhxzpPQCkHpOq6jlFNlW
+	 AHjnOa2oyHO9eiuXQJuX6Dkkp6lPIiW1LZL7zYomGLCZEFzzI/+ymYvpgPOj2jUSoz
+	 4LWQ1+sfRkuU0AY9PxbLFySvPXmnqyyRdkGWRMmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Tim Huang <tim.huang@amd.com>,
 	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 227/558] drm/amd/display: Add NULL check for function pointer in dcn32_set_output_transfer_func
+Subject: [PATCH 6.10 194/482] drm/amd/display: fix double free issue during amdgpu module unload
 Date: Tue,  8 Oct 2024 14:04:17 +0200
-Message-ID: <20241008115711.274607234@linuxfoundation.org>
+Message-ID: <20241008115655.939272901@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,54 +65,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Tim Huang <tim.huang@amd.com>
 
-[ Upstream commit 28574b08c70e56d34d6f6379326a860b96749051 ]
+[ Upstream commit 20b5a8f9f4670a8503aa9fa95ca632e77c6bf55d ]
 
-This commit adds a null check for the set_output_gamma function pointer
-in the dcn32_set_output_transfer_func function. Previously,
-set_output_gamma was being checked for null, but then it was being
-dereferenced without any null check. This could lead to a null pointer
-dereference if set_output_gamma is null.
+Flexible endpoints use DIGs from available inflexible endpoints,
+so only the encoders of inflexible links need to be freed.
+Otherwise, a double free issue may occur when unloading the
+amdgpu module.
 
-To fix this, we now ensure that set_output_gamma is not null before
-dereferencing it. We do this by adding a null check for set_output_gamma
-before the call to set_output_gamma.
+[  279.190523] RIP: 0010:__slab_free+0x152/0x2f0
+[  279.190577] Call Trace:
+[  279.190580]  <TASK>
+[  279.190582]  ? show_regs+0x69/0x80
+[  279.190590]  ? die+0x3b/0x90
+[  279.190595]  ? do_trap+0xc8/0xe0
+[  279.190601]  ? do_error_trap+0x73/0xa0
+[  279.190605]  ? __slab_free+0x152/0x2f0
+[  279.190609]  ? exc_invalid_op+0x56/0x70
+[  279.190616]  ? __slab_free+0x152/0x2f0
+[  279.190642]  ? asm_exc_invalid_op+0x1f/0x30
+[  279.190648]  ? dcn10_link_encoder_destroy+0x19/0x30 [amdgpu]
+[  279.191096]  ? __slab_free+0x152/0x2f0
+[  279.191102]  ? dcn10_link_encoder_destroy+0x19/0x30 [amdgpu]
+[  279.191469]  kfree+0x260/0x2b0
+[  279.191474]  dcn10_link_encoder_destroy+0x19/0x30 [amdgpu]
+[  279.191821]  link_destroy+0xd7/0x130 [amdgpu]
+[  279.192248]  dc_destruct+0x90/0x270 [amdgpu]
+[  279.192666]  dc_destroy+0x19/0x40 [amdgpu]
+[  279.193020]  amdgpu_dm_fini+0x16e/0x200 [amdgpu]
+[  279.193432]  dm_hw_fini+0x26/0x40 [amdgpu]
+[  279.193795]  amdgpu_device_fini_hw+0x24c/0x400 [amdgpu]
+[  279.194108]  amdgpu_driver_unload_kms+0x4f/0x70 [amdgpu]
+[  279.194436]  amdgpu_pci_remove+0x40/0x80 [amdgpu]
+[  279.194632]  pci_device_remove+0x3a/0xa0
+[  279.194638]  device_remove+0x40/0x70
+[  279.194642]  device_release_driver_internal+0x1ad/0x210
+[  279.194647]  driver_detach+0x4e/0xa0
+[  279.194650]  bus_remove_driver+0x6f/0xf0
+[  279.194653]  driver_unregister+0x33/0x60
+[  279.194657]  pci_unregister_driver+0x44/0x90
+[  279.194662]  amdgpu_exit+0x19/0x1f0 [amdgpu]
+[  279.194939]  __do_sys_delete_module.isra.0+0x198/0x2f0
+[  279.194946]  __x64_sys_delete_module+0x16/0x20
+[  279.194950]  do_syscall_64+0x58/0x120
+[  279.194954]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+[  279.194980]  </TASK>
 
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Tim Huang <tim.huang@amd.com>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/link/link_factory.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-index 9a912b9c1f2e9..33e3d94e429d4 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-@@ -582,7 +582,9 @@ bool dcn32_set_output_transfer_func(struct dc *dc,
- 		}
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_factory.c b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
+index 72df9bdfb23ff..608491f860b29 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_factory.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
+@@ -385,7 +385,7 @@ static void link_destruct(struct dc_link *link)
+ 	if (link->panel_cntl)
+ 		link->panel_cntl->funcs->destroy(&link->panel_cntl);
  
--	mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
-+	if (mpc->funcs->set_output_gamma)
-+		mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
-+
- 	return ret;
- }
- 
+-	if (link->link_enc) {
++	if (link->link_enc && !link->is_dig_mapping_flexible) {
+ 		/* Update link encoder resource tracking variables. These are used for
+ 		 * the dynamic assignment of link encoders to streams. Virtual links
+ 		 * are not assigned encoder resources on creation.
 -- 
 2.43.0
 
