@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02852994C75
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 279DE994E30
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:14:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 070C1B29F5D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:52:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9004282A05
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:14:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6041DED4E;
-	Tue,  8 Oct 2024 12:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274501DF270;
+	Tue,  8 Oct 2024 13:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9JKLkMe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WkNuI+7i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB55A1DE2CF;
-	Tue,  8 Oct 2024 12:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87D21DF274;
+	Tue,  8 Oct 2024 13:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391954; cv=none; b=peX6JSsRhHTLAUKGwiQw9kvKCi5evgYpCE6ZJqLp/7tF1GwI4IDPMTNi4zbr4IMQYnHXJSc9N/ujQwoedYsvW0b49t0tCrdUJLuvqVwVB8CUmJT/0IfEAtq2mQW7k9Hdjlowttfk2YlD5LOpc4xnnb6f6E90hKSzj7zlSDBtVEE=
+	t=1728393203; cv=none; b=nYBdgSGruMBknw5A8OVZPX85RvxUDNS8zIgSrrFYjrZDE3PjHKAA9FI7kN1oeblYFXt6uPyd1xvPfp0jq+Eh1xN7wVmbI2GF3OAtugq+LJVBJZKFwNwwlmVJRJiNG2yaLARWJROnrtDup5RLk3SqA2zJ+GxLCgkDcxMmk4VD9CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391954; c=relaxed/simple;
-	bh=CUhuwUNTm0xqgAZ1hRH9OEKR+fQT8rwvWWHtjdnDXl4=;
+	s=arc-20240116; t=1728393203; c=relaxed/simple;
+	bh=7EyhFOhzT9kngDMgY96hk4EAgH7ZUVypliJ1YsVJAXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mjt5F23vCFHlLpA95K5ZK7Nyxd3JbpGXBOUEOs+eE198+2VDT9R0vMIFaJbzsma4Ypaz8ocZeK2rhfCVsuSEZYQji5qeatM1AM5s1ByCV84pSqVkQfdTECDjp+TvEq9EtfgR2fgtioDPeAZi+zxEzGHWlDaY+x/kcf6CixdSvHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9JKLkMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A4AC4CEC7;
-	Tue,  8 Oct 2024 12:52:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BHaEDfuF9Dy2XHd9hczCPyGLv5D2egNZqw1KryZgj7gTzp6ZWaxqTUbkZ9K1O/WNcdPuUCcdnw1EHwyEJyXG6KM4jqKo8rZqVbQP1PN6dITAmiAALRTjhJPxDQQKWX1WcMSkLYhMGDZSSYZ1LHC8Zvz9R8Cmso8Ph5jwzYsCTCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WkNuI+7i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9EBC4CEC7;
+	Tue,  8 Oct 2024 13:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391953;
-	bh=CUhuwUNTm0xqgAZ1hRH9OEKR+fQT8rwvWWHtjdnDXl4=;
+	s=korg; t=1728393203;
+	bh=7EyhFOhzT9kngDMgY96hk4EAgH7ZUVypliJ1YsVJAXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9JKLkMeybdAyfinTz+nnFvM/6gKoo+MXorXl+ZAa1RIouFFNKKV/n+5Jc7cVfRkp
-	 oGt1tjrvhb72MtkXVhLRG3n2QCUuVn7ZKo3SrWaY1djC40PyZtN7Eqfk2i0uOo+J+Q
-	 3FVViXup0Iy4wK0pqkSdXr6AHn5tRbmw1oWkkTyU=
+	b=WkNuI+7iwebBvBUCFu/IVVhAhmJpx4B1eqIClZDjslHLryuBvHYWYdFtJREXrTjrT
+	 eVhn/8YagX4Gn5hq0gXIzmVyE4Aiv6Lt8XvhrGid0FJLgsf7uA9ZHQmrSvKL6zPl0s
+	 Idkc7bsY91eTOzdvKt6dhV3cGQyMoTXMr9sTlDr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Dmitry Kandybka <d.kandybka@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 271/558] scsi: lpfc: Validate hdwq pointers before dereferencing in reset/errata paths
+Subject: [PATCH 6.6 056/386] wifi: ath9k: fix possible integer overflow in ath9k_get_et_stats()
 Date: Tue,  8 Oct 2024 14:05:01 +0200
-Message-ID: <20241008115712.995912457@linuxfoundation.org>
+Message-ID: <20241008115631.674448079@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,97 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Dmitry Kandybka <d.kandybka@gmail.com>
 
-[ Upstream commit 2be1d4f11944cd6283cb97268b3e17c4424945ca ]
+[ Upstream commit 3f66f26703093886db81f0610b97a6794511917c ]
 
-When the HBA is undergoing a reset or is handling an errata event, NULL ptr
-dereference crashes may occur in routines such as
-lpfc_sli_flush_io_rings(), lpfc_dev_loss_tmo_callbk(), or
-lpfc_abort_handler().
+In 'ath9k_get_et_stats()', promote TX stats counters to 'u64'
+to avoid possible integer overflow. Compile tested only.
 
-Add NULL ptr checks before dereferencing hdwq pointers that may have been
-freed due to operations colliding with a reset or errata event handler.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240726231512.92867-4-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240725111743.14422-1-d.kandybka@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c |  3 ++-
- drivers/scsi/lpfc/lpfc_scsi.c    | 13 +++++++++++--
- drivers/scsi/lpfc/lpfc_sli.c     | 11 +++++++++++
- 3 files changed, 24 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath9k/debug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 6943f6c6395c4..f21c5993e8d72 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -175,7 +175,8 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
- 			 ndlp->nlp_state, ndlp->fc4_xpt_flags);
+diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
+index 808fb6747a7f7..7791f4df6d484 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -1325,11 +1325,11 @@ void ath9k_get_et_stats(struct ieee80211_hw *hw,
+ 	struct ath_softc *sc = hw->priv;
+ 	int i = 0;
  
- 	/* Don't schedule a worker thread event if the vport is going down. */
--	if (test_bit(FC_UNLOADING, &vport->load_flag)) {
-+	if (test_bit(FC_UNLOADING, &vport->load_flag) ||
-+	    !test_bit(HBA_SETUP, &phba->hba_flag)) {
- 		spin_lock_irqsave(&ndlp->lock, iflags);
- 		ndlp->rport = NULL;
- 
-diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
-index 9f0b59672e191..0eaede8275dac 100644
---- a/drivers/scsi/lpfc/lpfc_scsi.c
-+++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -5555,11 +5555,20 @@ lpfc_abort_handler(struct scsi_cmnd *cmnd)
- 
- 	iocb = &lpfc_cmd->cur_iocbq;
- 	if (phba->sli_rev == LPFC_SLI_REV4) {
--		pring_s4 = phba->sli4_hba.hdwq[iocb->hba_wqidx].io_wq->pring;
--		if (!pring_s4) {
-+		/* if the io_wq & pring are gone, the port was reset. */
-+		if (!phba->sli4_hba.hdwq[iocb->hba_wqidx].io_wq ||
-+		    !phba->sli4_hba.hdwq[iocb->hba_wqidx].io_wq->pring) {
-+			lpfc_printf_vlog(vport, KERN_WARNING, LOG_FCP,
-+					 "2877 SCSI Layer I/O Abort Request "
-+					 "IO CMPL Status x%x ID %d LUN %llu "
-+					 "HBA_SETUP %d\n", FAILED,
-+					 cmnd->device->id,
-+					 (u64)cmnd->device->lun,
-+					 test_bit(HBA_SETUP, &phba->hba_flag));
- 			ret = FAILED;
- 			goto out_unlock_hba;
- 		}
-+		pring_s4 = phba->sli4_hba.hdwq[iocb->hba_wqidx].io_wq->pring;
- 		spin_lock(&pring_s4->ring_lock);
- 	}
- 	/* the command is in process of being cancelled */
-diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
-index 88debef2fb6db..7dc34c71eb78c 100644
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -4687,6 +4687,17 @@ lpfc_sli_flush_io_rings(struct lpfc_hba *phba)
- 	/* Look on all the FCP Rings for the iotag */
- 	if (phba->sli_rev >= LPFC_SLI_REV4) {
- 		for (i = 0; i < phba->cfg_hdw_queue; i++) {
-+			if (!phba->sli4_hba.hdwq ||
-+			    !phba->sli4_hba.hdwq[i].io_wq) {
-+				lpfc_printf_log(phba, KERN_ERR, LOG_SLI,
-+						"7777 hdwq's deleted %lx "
-+						"%lx %x %x\n",
-+						phba->pport->load_flag,
-+						phba->hba_flag,
-+						phba->link_state,
-+						phba->sli.sli_flag);
-+				return;
-+			}
- 			pring = phba->sli4_hba.hdwq[i].io_wq->pring;
- 
- 			spin_lock_irq(&pring->ring_lock);
+-	data[i++] = (sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_pkts_all +
++	data[i++] = ((u64)sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_pkts_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BK)].tx_pkts_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VI)].tx_pkts_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VO)].tx_pkts_all);
+-	data[i++] = (sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_bytes_all +
++	data[i++] = ((u64)sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_bytes_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BK)].tx_bytes_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VI)].tx_bytes_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VO)].tx_bytes_all);
 -- 
 2.43.0
 
