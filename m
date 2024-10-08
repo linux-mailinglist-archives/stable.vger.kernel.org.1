@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-82890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73AF8994F0E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:24:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69878994AD4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCDA12850C6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:24:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 062F4B2716E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4123F1DFDAA;
-	Tue,  8 Oct 2024 13:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474AB1DC759;
+	Tue,  8 Oct 2024 12:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWLcMGeT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3Fet4os"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BA21DF263;
-	Tue,  8 Oct 2024 13:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0257A1779B1;
+	Tue,  8 Oct 2024 12:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393770; cv=none; b=F0AovXVj3TtpztLm0iq01s/6OebIDR8oy7k1baL+eSZ077I2ig4lNrC3l6+nW8dDqR+rw7sDz9oGVFyQbC3EPIpqKjU/oXjKIwnR0I+YlC6IxA7x6eb02RvRt3IWkgsS7vW5ycAu4DIzZ7Ncf4LB0sVXKQBGXoqEsRUTXmzpY1Y=
+	t=1728391015; cv=none; b=knx2pY9IdN5aqfUyqEoZKXXFGaRrBHIwb5Ae+UHhSIVdEHrp6b587I25xnkXif0kZStEdLf7zO2bip8F88TtZIb63C3W35RvFo+kmquzm2nUEHf6YcrFYtoSIpy9Ef3X9iARJSX1tB4YxzGpNNB8yXzktqbecP9PKjpE5RIUghY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393770; c=relaxed/simple;
-	bh=vAgr5C25/nYWWm/oFIpXvZEMn4PtC/Xenp0SXnLkmVg=;
+	s=arc-20240116; t=1728391015; c=relaxed/simple;
+	bh=7mEADpqTRikmYFfBZpHD63Xgw010CmTPQjRuBlBa6HA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oaGE9aFGCLLSYTamkc+Jui3Et13EUbMtT4SnF1EqLKXoLCdcTIrP0hSNTvVdxo8+3FY6oivbz41+CQIq7lpTn6LeqCOUM6XW6at295JZlhjd8FU1NQrt4CxDM1ht4kzg32wFlYepGLj20Lo+YRiCl7PqCdZdwWB1ZpQMP/x9upk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWLcMGeT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3CAC4CEC7;
-	Tue,  8 Oct 2024 13:22:48 +0000 (UTC)
+	 MIME-Version; b=ENlGHM/rOUBcNpmP62NIQSnHj3aEDB1wL4/z9pmYLb/JTyy3LtrLWf3sRRK6EjWDccfGy7kCvYWWRbbeZKB9PuhkdBAqgNB+wl+4y3V0MyGIgEM1gIlY6E0uK312xU4ORZADgYuz0ITHwUNC9gLwrCZ8uK8LDmkHYvIOs/sDlz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3Fet4os; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65504C4CEC7;
+	Tue,  8 Oct 2024 12:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393769;
-	bh=vAgr5C25/nYWWm/oFIpXvZEMn4PtC/Xenp0SXnLkmVg=;
+	s=korg; t=1728391014;
+	bh=7mEADpqTRikmYFfBZpHD63Xgw010CmTPQjRuBlBa6HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FWLcMGeTFVKeK8SFZ6i1KwL0MdZJgQkQbVvK35++SZE/zCObSRtlwZTaQHILhXJfW
-	 ZJZv6mGStMhJtyueAQtiUe78lsDdrNMZp9RbOKWnUA5hAjGKP3exkFgegU9KnVzyst
-	 PTGX//PQDxda20yGEMdV/wvNR7LFctBAP6gZgC7U=
+	b=C3Fet4osbvxyJzlVq1/jDJ7Ns39gg9/WMSNud4zvBazS+46PEB0tyCzOe92OQa2aj
+	 BIWIzixtANBh5f++hzxab1MaIMbbyB1TdbBKY1yQXU70XxFDtZoUfuehIIxkX1tKl4
+	 D1/EYbsSwkT9KUio00+Chu3zpatqLBH5Tn6/NCw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Camm Maguire <camm@maguirefamily.org>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 250/386] parisc: Fix stack start for ADDR_NO_RANDOMIZE personality
-Date: Tue,  8 Oct 2024 14:08:15 +0200
-Message-ID: <20241008115639.232966712@linuxfoundation.org>
+	"Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Helge Deller <deller@gmx.de>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	"Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>
+Subject: [PATCH 6.10 433/482] firmware/sysfb: Disable sysfb for firmware buffers with unknown parent
+Date: Tue,  8 Oct 2024 14:08:16 +0200
+Message-ID: <20241008115705.561564441@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +68,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit f31b256994acec6929306dfa86ac29716e7503d6 upstream.
+commit ad604f0a4c040dcb8faf44dc72db25e457c28076 upstream.
 
-Fix the stack start address calculation for the parisc architecture in
-setup_arg_pages() when address randomization is disabled. When the
-ADDR_NO_RANDOMIZE process personality is disabled there is no need to add
-additional space for the stack.
-Note that this patch touches code inside an #ifdef CONFIG_STACK_GROWSUP hunk,
-which is why only the parisc architecture is affected since it's the
-only Linux architecture where the stack grows upwards.
+The sysfb framebuffer handling only operates on graphics devices
+that provide the system's firmware framebuffer. If that device is
+not known, assume that any graphics device has been initialized by
+firmware.
 
-Without this patch you will find the stack in the middle of some
-mapped libaries and suddenly limited to 6MB instead of 8MB:
+Fixes a problem on i915 where sysfb does not release the firmware
+framebuffer after the native graphics driver loaded.
 
-root@parisc:~# setarch -R /bin/bash -c "cat /proc/self/maps"
-00010000-00019000 r-xp 00000000 08:05 1182034           /usr/bin/cat
-00019000-0001a000 rwxp 00009000 08:05 1182034           /usr/bin/cat
-0001a000-0003b000 rwxp 00000000 00:00 0                 [heap]
-f90c4000-f9283000 r-xp 00000000 08:05 1573004           /usr/lib/hppa-linux-gnu/libc.so.6
-f9283000-f9285000 r--p 001bf000 08:05 1573004           /usr/lib/hppa-linux-gnu/libc.so.6
-f9285000-f928a000 rwxp 001c1000 08:05 1573004           /usr/lib/hppa-linux-gnu/libc.so.6
-f928a000-f9294000 rwxp 00000000 00:00 0
-f9301000-f9323000 rwxp 00000000 00:00 0                 [stack]
-f98b4000-f98e4000 r-xp 00000000 08:05 1572869           /usr/lib/hppa-linux-gnu/ld.so.1
-f98e4000-f98e5000 r--p 00030000 08:05 1572869           /usr/lib/hppa-linux-gnu/ld.so.1
-f98e5000-f98e9000 rwxp 00031000 08:05 1572869           /usr/lib/hppa-linux-gnu/ld.so.1
-f9ad8000-f9b00000 rw-p 00000000 00:00 0
-f9b00000-f9b01000 r-xp 00000000 00:00 0                 [vdso]
-
-With the patch the stack gets correctly mapped at the end
-of the process memory map:
-
-root@panama:~# setarch -R /bin/bash -c "cat /proc/self/maps"
-00010000-00019000 r-xp 00000000 08:13 16385582          /usr/bin/cat
-00019000-0001a000 rwxp 00009000 08:13 16385582          /usr/bin/cat
-0001a000-0003b000 rwxp 00000000 00:00 0                 [heap]
-fef29000-ff0eb000 r-xp 00000000 08:13 16122400          /usr/lib/hppa-linux-gnu/libc.so.6
-ff0eb000-ff0ed000 r--p 001c2000 08:13 16122400          /usr/lib/hppa-linux-gnu/libc.so.6
-ff0ed000-ff0f2000 rwxp 001c4000 08:13 16122400          /usr/lib/hppa-linux-gnu/libc.so.6
-ff0f2000-ff0fc000 rwxp 00000000 00:00 0
-ff4b4000-ff4e4000 r-xp 00000000 08:13 16121913          /usr/lib/hppa-linux-gnu/ld.so.1
-ff4e4000-ff4e6000 r--p 00030000 08:13 16121913          /usr/lib/hppa-linux-gnu/ld.so.1
-ff4e6000-ff4ea000 rwxp 00032000 08:13 16121913          /usr/lib/hppa-linux-gnu/ld.so.1
-ff6d7000-ff6ff000 rw-p 00000000 00:00 0
-ff6ff000-ff700000 r-xp 00000000 00:00 0                 [vdso]
-ff700000-ff722000 rwxp 00000000 00:00 0                 [stack]
-
-Reported-by: Camm Maguire <camm@maguirefamily.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: d045c77c1a69 ("parisc,metag: Fix crashes due to stack randomization on stack-grows-upwards architectures")
-Fixes: 17d9822d4b4c ("parisc: Consider stack randomization for mmap base only when necessary")
-Cc: stable@vger.kernel.org	# v5.2+
+Reported-by: Borah, Chaitanya Kumar <chaitanya.kumar.borah@intel.com>
+Closes: https://lore.kernel.org/dri-devel/SJ1PR11MB6129EFB8CE63D1EF6D932F94B96F2@SJ1PR11MB6129.namprd11.prod.outlook.com/
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12160
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: b49420d6a1ae ("video/aperture: optionally match the device in sysfb_disable()")
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: Linux regression tracking (Thorsten Leemhuis) <regressions@leemhuis.info>
+Cc: <stable@vger.kernel.org> # v6.11+
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240924084227.262271-1-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/exec.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/firmware/sysfb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -770,7 +770,8 @@ int setup_arg_pages(struct linux_binprm
- 	stack_base = calc_max_stack_size(stack_base);
+diff --git a/drivers/firmware/sysfb.c b/drivers/firmware/sysfb.c
+index 02a07d3d0d40..a3df782fa687 100644
+--- a/drivers/firmware/sysfb.c
++++ b/drivers/firmware/sysfb.c
+@@ -67,9 +67,11 @@ static bool sysfb_unregister(void)
+ void sysfb_disable(struct device *dev)
+ {
+ 	struct screen_info *si = &screen_info;
++	struct device *parent;
  
- 	/* Add space for stack randomization. */
--	stack_base += (STACK_RND_MASK << PAGE_SHIFT);
-+	if (current->flags & PF_RANDOMIZE)
-+		stack_base += (STACK_RND_MASK << PAGE_SHIFT);
- 
- 	/* Make sure we didn't let the argument array grow too large. */
- 	if (vma->vm_end - vma->vm_start > stack_base)
+ 	mutex_lock(&disable_lock);
+-	if (!dev || dev == sysfb_parent_dev(si)) {
++	parent = sysfb_parent_dev(si);
++	if (!dev || !parent || dev == parent) {
+ 		sysfb_unregister();
+ 		disabled = true;
+ 	}
+-- 
+2.46.2
+
 
 
 
