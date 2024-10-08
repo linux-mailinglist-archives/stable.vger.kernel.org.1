@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-81892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B292994A00
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:29:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C954994F16
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:24:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D876B1F230BE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:29:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81349B27F71
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE211DACBE;
-	Tue,  8 Oct 2024 12:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C17371DEFC6;
+	Tue,  8 Oct 2024 13:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRmmuT7S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qquAMmqD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6FB1DA60C;
-	Tue,  8 Oct 2024 12:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811E01D3653;
+	Tue,  8 Oct 2024 13:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390486; cv=none; b=SLH0LOuS48MqveffXtXP4L1qL4RYdVD2dd65jvYIQPEFZlONRD6GdoBhha3onIQjnnUjA7j5NmdxAnzsxbbDlI6wQ3aA6z+6a8tPXqaYlR+sd6pUVIT7rNPTf64ewdxfA2UnIo8xX/Fv+sApF4zHglrJG3IwLVy4tos5SL8Z5AY=
+	t=1728393364; cv=none; b=O2S09EK7hM/pWaX8WoEBpwfUK7lo9yChxzj2h25roUThvGrBmAFrVoXoB6jxz7IknG11DbN+riWL4GtASzjJeTj3YGEfg7I7HZ/Vzz7DkOpaoCguM6dz3AUPNwtkFw/NWQjH8QLUrSccPvEin2pCrjGId7jwcFJw9wJfHwfliaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390486; c=relaxed/simple;
-	bh=01I2Xl0jyLgXqc4/6GdgBiGrGiPwf/ai+FiZhaf26zc=;
+	s=arc-20240116; t=1728393364; c=relaxed/simple;
+	bh=Njcj3oeR4VsiqgTiwQJYSFW08ZsYEmtq9j3z0+f1prE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TgWMhRrOC06STKNm2t32jAoj6d9XPpO+Ef9+w3tt5Tf5hSTlOsF4901TST8DGbfSws6LKdF/Adn0pmOr6N+NuOIsslfLworfdpTQ+EuOx32Tow8KIF6lCz6hIYNzGxxzWqB730am5IEZE1EJuoX1FlxU0spW/ZKjww3vbbikcac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRmmuT7S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE5AC4CEC7;
-	Tue,  8 Oct 2024 12:28:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Lp+z5QuBUFXBZsiicmqL6GIvu73lsKpvAVmPRPHyRtzM812KXw/nAyLDIKfVcp3uABJLL69T5x80Qdd3W+A0GOielYKOobMj0hQTaPhvuoeEKMyhcNdMsawkRu18VSfSA3gH85WIBzRkgcsTv+lP+fkgUGebYvcBquF6FIzXAm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qquAMmqD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9480DC4CEC7;
+	Tue,  8 Oct 2024 13:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390485;
-	bh=01I2Xl0jyLgXqc4/6GdgBiGrGiPwf/ai+FiZhaf26zc=;
+	s=korg; t=1728393364;
+	bh=Njcj3oeR4VsiqgTiwQJYSFW08ZsYEmtq9j3z0+f1prE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZRmmuT7SHsd9ITE+ee1HRXG5VVjskHCuo/dPoLaXKfAgxJW2vy7NMLr2W2rWh3sYY
-	 ZdP+Fgwwa/gD9QqwBR93Ih5/5zOb7mgQh0uvSLsszerm8lC3Vl4WNQ0CWGjMhWvZLB
-	 rws2JAmMF6p5og7lRcAoFzk1owcQR6NkZJZDT1yU=
+	b=qquAMmqDHv2tRFRMLC5WzlEP1YqszZgZmgFBKtGT/qyGO9b+MDR386tl21LSYGGGH
+	 RNeCbwDWc2JdLkcGh7KAixDMjh2VABFteqekD3m8kfVamx+fXuZSwc7nRBvkt1mjAN
+	 4I/phkeydU7HBq/si9iaEp5Li05oztnNpt42JJzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Virag <virag.david003@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.10 304/482] dt-bindings: clock: exynos7885: Fix duplicated binding
+	Mirsad Todorovac <mtodorovac69@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 122/386] x86/syscall: Avoid memcpy() for ia32 syscall_get_arguments()
 Date: Tue,  8 Oct 2024 14:06:07 +0200
-Message-ID: <20241008115700.399738937@linuxfoundation.org>
+Message-ID: <20241008115634.237949981@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +62,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Virag <virag.david003@gmail.com>
+From: Kees Cook <kees@kernel.org>
 
-commit abf3a3ea9acb5c886c8729191a670744ecd42024 upstream.
+[ Upstream commit d19d638b1e6cf746263ef60b7d0dee0204d8216a ]
 
-The numbering in Exynos7885's FSYS CMU bindings has 4 duplicated by
-accident, with the rest of the bindings continuing with 5.
+Modern (fortified) memcpy() prefers to avoid writing (or reading) beyond
+the end of the addressed destination (or source) struct member:
 
-Fix this by moving CLK_MOUT_FSYS_USB30DRD_USER to the end as 11.
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘syscall_get_arguments’ at ./arch/x86/include/asm/syscall.h:85:2,
+    inlined from ‘populate_seccomp_data’ at kernel/seccomp.c:258:2,
+    inlined from ‘__seccomp_filter’ at kernel/seccomp.c:1231:3:
+./include/linux/fortify-string.h:580:25: error: call to ‘__read_overflow2_field’ declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  580 |                         __read_overflow2_field(q_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Since CLK_MOUT_FSYS_USB30DRD_USER is not used in any device tree as of
-now, and there are no other clocks affected (maybe apart from
-CLK_MOUT_FSYS_MMC_SDIO_USER which the number was shared with, also not
-used in a device tree), this is the least impactful way to solve this
-problem.
+As already done for x86_64 and compat mode, do not use memcpy() to
+extract syscall arguments from struct pt_regs but rather just perform
+direct assignments. Binary output differences are negligible, and actually
+ends up using less stack space:
 
-Fixes: cd268e309c29 ("dt-bindings: clock: Add bindings for Exynos7885 CMU_FSYS")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Virag <virag.david003@gmail.com>
-Link: https://lore.kernel.org/r/20240806121157.479212-2-virag.david003@gmail.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+-       sub    $0x84,%esp
++       sub    $0x6c,%esp
+
+and less text size:
+
+   text    data     bss     dec     hex filename
+  10794     252       0   11046    2b26 gcc-32b/kernel/seccomp.o.stock
+  10714     252       0   10966    2ad6 gcc-32b/kernel/seccomp.o.after
+
+Closes: https://lore.kernel.org/lkml/9b69fb14-df89-4677-9c82-056ea9e706f5@gmail.com/
+Reported-by: Mirsad Todorovac <mtodorovac69@gmail.com>
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Mirsad Todorovac <mtodorovac69@gmail.com>
+Link: https://lore.kernel.org/all/20240708202202.work.477-kees%40kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/clock/exynos7885.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/syscall.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/include/dt-bindings/clock/exynos7885.h
-+++ b/include/dt-bindings/clock/exynos7885.h
-@@ -136,12 +136,12 @@
- #define CLK_MOUT_FSYS_MMC_CARD_USER	2
- #define CLK_MOUT_FSYS_MMC_EMBD_USER	3
- #define CLK_MOUT_FSYS_MMC_SDIO_USER	4
--#define CLK_MOUT_FSYS_USB30DRD_USER	4
- #define CLK_GOUT_MMC_CARD_ACLK		5
- #define CLK_GOUT_MMC_CARD_SDCLKIN	6
- #define CLK_GOUT_MMC_EMBD_ACLK		7
- #define CLK_GOUT_MMC_EMBD_SDCLKIN	8
- #define CLK_GOUT_MMC_SDIO_ACLK		9
- #define CLK_GOUT_MMC_SDIO_SDCLKIN	10
-+#define CLK_MOUT_FSYS_USB30DRD_USER	11
+diff --git a/arch/x86/include/asm/syscall.h b/arch/x86/include/asm/syscall.h
+index 03bb950eba690..228a42585d5c9 100644
+--- a/arch/x86/include/asm/syscall.h
++++ b/arch/x86/include/asm/syscall.h
+@@ -82,7 +82,12 @@ static inline void syscall_get_arguments(struct task_struct *task,
+ 					 struct pt_regs *regs,
+ 					 unsigned long *args)
+ {
+-	memcpy(args, &regs->bx, 6 * sizeof(args[0]));
++	args[0] = regs->bx;
++	args[1] = regs->cx;
++	args[2] = regs->dx;
++	args[3] = regs->si;
++	args[4] = regs->di;
++	args[5] = regs->bp;
+ }
  
- #endif /* _DT_BINDINGS_CLOCK_EXYNOS_7885_H */
+ static inline int syscall_get_arch(struct task_struct *task)
+-- 
+2.43.0
+
 
 
 
