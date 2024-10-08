@@ -1,132 +1,84 @@
-Return-Path: <stable+bounces-83057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C9B499539C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 17:45:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B6D9953E1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 17:59:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 108AAB23EF2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:45:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B16A286F67
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10161E0DC8;
-	Tue,  8 Oct 2024 15:45:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="2aQEEhzN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E962D3BBDE;
+	Tue,  8 Oct 2024 15:59:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C39C1E0B8C
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 15:45:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF271E0B68
+	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 15:58:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728402305; cv=none; b=o3bz6nd/xM4yc82YZJJKaiqw4tbPTwXd9UzWcYpo1foHmWYUAKo/KbzlS1hRPHH8rAk+HRHQ+Z3vjob8EXo1CtkVzp4ugztJACBbU2/q2eNXmxDV8fbMBaRpT6MGbm9U4ST+lYxlIVl7EeN71keYQWNDPYLajohB62UaO6oXwsg=
+	t=1728403140; cv=none; b=c5nDQPkfKbAr8aWTkUbTwIfbBJb/FBpPH32XVoegKbYP4GLqURAeE/bh4gepldPl+TsVcn+8ZwS7EaM/yQrhDJJP4zfopBBhiqtwXQU+WK+rXKHoLs5E0lpjoTAoz8omhgMfBn0FFy6+ID0DNlHl4WaqTZWeFV+1ddZOYO0Vq+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728402305; c=relaxed/simple;
-	bh=oVBsJqn/AvE56D2S6kVn7RApm8mO3KrtDZZVK89hK7M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=m+4/dLoqv1SHdKR1cwIytM5aEk2lH0eEPvbcP3D96GpHIi+vrc4ebxdjua+BKT6kzMfKm09Oyj+32rpwY8TBuYw1z8S1T8Nakq3mphrpoK5KcipG/zeCDE0Vp4MmKGmClChvdo18oAvm3B78PQhaSKHM/mmli0m4sOsz2WV++A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=2aQEEhzN; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42cde6b5094so59066625e9.3
-        for <stable@vger.kernel.org>; Tue, 08 Oct 2024 08:45:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1728402301; x=1729007101; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bbelPJURc0Qo14/gAixY0bohF8WhC7LFbvL3eTZ4rd4=;
-        b=2aQEEhzNVnzaUEdGYgis+pG4lV+KnujMXXvqo/L/8g98ofHm1R/mkKyjt4SlFHpSkJ
-         erV6W220X1GvcHoxM3x6vxsLKyJHBfeNQfp47vUfKlBk/hQ5KQjQ+Zx5+ZlpG5yJQ0UD
-         ad0kgSbmia3g9i8UbtZeV8FANC8DOgtX1pMBv2vgBQMTExf7vop18sprRo1wpNcHKvAh
-         ORy43Uf0nTRuW+URhdJGprh0lePiWT7hNy0szvOlwEGNgeHvYWdk7Ss9cihLds8kFaU8
-         Ff+Njr56e3xVLYUxAQUxWcAGvhHuFHwy4aLXF1B5+1Coe6w0LS703V3aQrAX9Wik9am8
-         imKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728402301; x=1729007101;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bbelPJURc0Qo14/gAixY0bohF8WhC7LFbvL3eTZ4rd4=;
-        b=iyrFCOyZxjjRCjaRYZ9Fgv2NsB9nlUOnoVhYwI1UX+mTL2wknbmP+AdgrUQs0qbyRa
-         RBs9aYoWUd57vG63swu6vpIh7CU8oVv8FBG4Mcdswgux1cTtD8k30RAXzmNItWeUEI9d
-         3O+Xt4p9Smf8nqTbXYDFzqn/v0+j/c7KsBXWWaitIMLz7/0eN4iVsAiI9wLS6x+6Jm1n
-         OqqzoVjWqLB4+zLV/mFIlrDH9PwZnzTFUkuQ/gO5e46g+MGLjXb1aYqea8eI6zJaQ+VT
-         zYtaTXpo7HjwLB7h+8WmYPePZ8IUkCpUw9XSt6r7J60Kwe8MaSHaQfSN2GV42lWtPkWI
-         DPJw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/BrY3V431NKP2JwTeF/c/xbks/vIjkyUiBJTUk7KxSwPK5wmfFY4TvSsnKxUdNDMorKrFwxw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YydTFh6LXAD+WcAvrC42HEFAmQGSRDFz7NKzIwsrbv1TYtB3E8a
-	89yzeiHKoYMS3HHmwL2G9+AZVjWkaI1T1gKOhynVkyqcUyH4Y8/XhsjNXsiVQzM=
-X-Google-Smtp-Source: AGHT+IFOq9JRDmt8Gehc04UjC3HBBxMR6du/qX+O5gNpNaBTqBviThtjoi8LjMjD/1TypknrJQ7wbA==
-X-Received: by 2002:a05:600c:198c:b0:42c:bdb0:c61e with SMTP id 5b1f17b1804b1-42f85aae2damr127558255e9.13.1728402301418;
-        Tue, 08 Oct 2024 08:45:01 -0700 (PDT)
-Received: from [127.0.1.1] (host-79-54-25-3.retail.telecomitalia.it. [79.54.25.3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f86b1d826sm129591215e9.26.2024.10.08.08.44.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Oct 2024 08:45:00 -0700 (PDT)
-From: Angelo Dureghello <adureghello@baylibre.com>
-X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Tue, 08 Oct 2024 17:43:33 +0200
-Subject: [PATCH v5 01/10] iio: dac: adi-axi-dac: fix wrong register
- bitfield
+	s=arc-20240116; t=1728403140; c=relaxed/simple;
+	bh=DhnlNXBkjc8b/3gJoE/oApypT6XPA9bkuPL/Qd/sIOk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sXv4qCiG89m9WuhWjhs4y78TK6lEQHGr4vXlTKqQODTOIugLfBSp8PuuF45WE2k9sCcOuxTAe9668rgoCZGljjfgHZQUroan0M6txu7JzgzL1pVcVPIswi923h41+ozT2NFkgkdDNkk1djjVyzU3XGGVRTcnWbDmdVIJy/m13ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D006ADA7;
+	Tue,  8 Oct 2024 08:59:27 -0700 (PDT)
+Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3B4723F73F;
+	Tue,  8 Oct 2024 08:58:57 -0700 (PDT)
+From: Mark Rutland <mark.rutland@arm.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: catalin.marinas@arm.com,
+	catalin.marnias@arm.com,
+	mark.rutland@arm.com,
+	stable@vger.kernel.org,
+	will@kernel.org
+Subject: [PATCH 0/6] arm64: probes: fixes and cleanup
+Date: Tue,  8 Oct 2024 16:58:45 +0100
+Message-Id: <20241008155851.801546-1-mark.rutland@arm.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241008-wip-bl-ad3552r-axi-v0-iio-testing-v5-1-3d410944a63d@baylibre.com>
-References: <20241008-wip-bl-ad3552r-axi-v0-iio-testing-v5-0-3d410944a63d@baylibre.com>
-In-Reply-To: <20241008-wip-bl-ad3552r-axi-v0-iio-testing-v5-0-3d410944a63d@baylibre.com>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Olivier Moysan <olivier.moysan@foss.st.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, dletchner@baylibre.com, 
- Mark Brown <broonie@kernel.org>, 
- Angelo Dureghello <adureghello@baylibre.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.1
+Content-Transfer-Encoding: 8bit
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+These patches address some issues I spotted while looking at kprobes and
+uprobes.
 
-Fix ADI_DAC_R1_MODE of AXI_DAC_REG_CNTRL_2.
+Patch 1 is the most pressing, as a uprobes user can trigger a kernel
+BUG(). Patches 2 and 3 fix latent endianness bugs which only manifest on
+big-endian kernels, and patchs 4-6 clean things up so that it's harder
+to get this wrong again in future.
 
-Both generic DAC and ad3552r DAC IPs docs are reporting
-bit 5 for it.
+Mark.
 
-Link: https://wiki.analog.com/resources/fpga/docs/axi_dac_ip
-Fixes: 4e3949a192e4 ("iio: dac: add support for AXI DAC IP core")
-Cc: stable@vger.kernel.org
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
----
- drivers/iio/dac/adi-axi-dac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Mark Rutland (6):
+  arm64: probes: Remove broken LDR (literal) uprobe support
+  arm64: probes: Fix simulate_ldr*_literal()
+  arm64: probes: Fix uprobes for big-endian kernels
+  arm64: probes: Move kprobes-specific fields
+  arm64: probes: Cleanup kprobes endianness conversions
+  arm64: probes: Remove probe_opcode_t
 
-diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
-index 0cb00f3bec04..b8b4171b8043 100644
---- a/drivers/iio/dac/adi-axi-dac.c
-+++ b/drivers/iio/dac/adi-axi-dac.c
-@@ -46,7 +46,7 @@
- #define AXI_DAC_REG_CNTRL_1		0x0044
- #define   AXI_DAC_SYNC			BIT(0)
- #define AXI_DAC_REG_CNTRL_2		0x0048
--#define	  ADI_DAC_R1_MODE		BIT(4)
-+#define	  ADI_DAC_R1_MODE		BIT(5)
- #define AXI_DAC_DRP_STATUS		0x0074
- #define   AXI_DAC_DRP_LOCKED		BIT(17)
- /* DAC Channel controls */
+ arch/arm64/include/asm/probes.h          | 11 +++----
+ arch/arm64/include/asm/uprobes.h         |  8 ++---
+ arch/arm64/kernel/probes/decode-insn.c   | 22 ++++++++-----
+ arch/arm64/kernel/probes/decode-insn.h   |  2 +-
+ arch/arm64/kernel/probes/kprobes.c       | 39 ++++++++++++------------
+ arch/arm64/kernel/probes/simulate-insn.c | 18 +++++------
+ arch/arm64/kernel/probes/uprobes.c       |  8 ++---
+ 7 files changed, 53 insertions(+), 55 deletions(-)
 
 -- 
-2.45.0.rc1
+2.30.2
 
 
