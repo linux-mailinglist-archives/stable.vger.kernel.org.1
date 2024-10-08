@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-82306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE731994C25
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00077994966
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:23:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2F9BB24DF4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:50:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3930284A26
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996E81DE8B1;
-	Tue,  8 Oct 2024 12:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942311DF975;
+	Tue,  8 Oct 2024 12:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZ1CyS12"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbP1jvfC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5642C1D54D1;
-	Tue,  8 Oct 2024 12:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539971DF96D;
+	Tue,  8 Oct 2024 12:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391822; cv=none; b=CJeLr2VLSCDORrsLuoYUNczE2DncszT63R9rx7tWLWfJUFUDDoOga2W6cRuEGPiPxEFgJjeOmT068c6K/pCCvYfCKsaUyavJgfKjxkYh540ldUTpW5lEDWaegbjVqfCNvy705gw2QOQyIaHde7FYgXMvuT9brMDLXGJSK3xPPE0=
+	t=1728390130; cv=none; b=fpaF8mGSjTjr9TNUb8HO1owPK1Ix0gzRtytb9znUNueAt0cYA52bQndHlFgnEvhksebSsaTx8FptjStTpBxeRB34PizFBBkO98BjLlKaYxjT4YzXFBhHpDxAqJx6PEYiGg298bgmv1OXWulhHW19JKUFGe2Ur9p+fdZ5fCRT8uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391822; c=relaxed/simple;
-	bh=+t9VqaikdCr0lV/0CyLFqJJ2gxixQwQluVIYPgKan4k=;
+	s=arc-20240116; t=1728390130; c=relaxed/simple;
+	bh=Rb/ih7nhqD5yvhCEXUWFS4iyzETwC3HM5TG2tarYho4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ohrd88OHhPgawG/nxLTefo3rBkBNadu2macWKYg/AErS9CUImDR8Vms/pYlokXC3wUnEtc5T4jVjbaWwedLEShW0KdPbIRrYiPI2LHaYbwrQ9icJr32IJb1TpWY+/6DG1md1IeY0es4rEwmxsOyvvkAyr8VcNOV1uJSk2dEwSx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZ1CyS12; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F26C4CEC7;
-	Tue,  8 Oct 2024 12:50:21 +0000 (UTC)
+	 MIME-Version; b=e5OL/GSVLksrFhFHyR23yC3TEBJZH63TsZ6nMbQkqay5AC5JfXW3LmCf3aGF7ZASPZyEKwaF1FeTYDaKJh8GNa72gCtbMANbfHwm5H+huuTpzNzpiKsZpJDFQSeVdjgfrg8lGkpG2CCSW2gG4Gj+yoo1JxYrkAvDpHKkIaYO1xM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbP1jvfC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4D7C4CECC;
+	Tue,  8 Oct 2024 12:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391822;
-	bh=+t9VqaikdCr0lV/0CyLFqJJ2gxixQwQluVIYPgKan4k=;
+	s=korg; t=1728390130;
+	bh=Rb/ih7nhqD5yvhCEXUWFS4iyzETwC3HM5TG2tarYho4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZ1CyS12knsDgd6otEmLjM0IJv0PLhDf8vTQF/UWEsOkjLRDa6bnRmFqI1P+7B/qH
-	 6XvKNQzeFrE9wGXEY7M7GfcRgIoFPQInLVQA4NyqoP8AAKs7FzsYquVSU114OjQ8jJ
-	 ZN1YGeqsLZj74rnPI+fFGQwXNC5sTQCjiu136XYs=
+	b=gbP1jvfCbrPtHYIZFlhv8RQedNW4NtVnPvGDW7hTtm3GbSWW5QDPK/eYgCw4ohqTI
+	 Gurw6H8U4xsDA0a1gUhG6Fnxi1YeayknSEL5UcAEGEqJWDxidc1a8xET1phdDhuwAi
+	 854JzkNVlDMeb2Fxtbn57ckwehFu/657mbM80mAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Scott Benesh <scott.benesh@microchip.com>,
+	Mike McGowen <mike.mcgowen@microchip.com>,
+	David Strahan <David.Strahan@microchip.com>,
+	Don Brace <don.brace@microchip.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 232/558] drm/amd/display: Add null check for afb in amdgpu_dm_plane_handle_cursor_update (v2)
-Date: Tue,  8 Oct 2024 14:04:22 +0200
-Message-ID: <20241008115711.472806351@linuxfoundation.org>
+Subject: [PATCH 6.10 200/482] scsi: smartpqi: add new controller PCI IDs
+Date: Tue,  8 Oct 2024 14:04:23 +0200
+Message-ID: <20241008115656.179737595@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,55 +65,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: David Strahan <David.Strahan@microchip.com>
 
-[ Upstream commit cd9e9e0852d501f169aa3bb34e4b413d2eb48c37 ]
+[ Upstream commit dbc39b84540f746cc814e69b21e53e6d3e12329a ]
 
-This commit adds a null check for the 'afb' variable in the
-amdgpu_dm_plane_handle_cursor_update function. Previously, 'afb' was
-assumed to be null, but was used later in the code without a null check.
-This could potentially lead to a null pointer dereference.
+All PCI ID entries in Hex.
 
-Changes since v1:
-- Moved the null check for 'afb' to the line where 'afb' is used. (Alex)
+Add new cisco pci ids:
+                                             VID  / DID  / SVID / SDID
+                                             ----   ----   ----   ----
+                                             9005   028f   1137   02fe
+                                             9005   028f   1137   02ff
+                                             9005   028f   1137   0300
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm_plane.c:1298 amdgpu_dm_plane_handle_cursor_update() error: we previously assumed 'afb' could be null (see line 1252)
+Add new h3c pci ids:
+                                             VID  / DID  / SVID / SDID
+                                             ----   ----   ----   ----
+                                             9005   028f   193d   0462
+                                             9005   028f   193d   8462
 
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Co-developed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Add new ieit pci ids:
+                                             VID  / DID  / SVID / SDID
+                                             ----   ----   ----   ----
+                                             9005   028f   1ff9   00a3
+
+Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
+Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
+Signed-off-by: David Strahan <David.Strahan@microchip.com>
+Signed-off-by: Don Brace <don.brace@microchip.com>
+Link: https://lore.kernel.org/r/20240827185501.692804-5-don.brace@microchip.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/smartpqi/smartpqi_init.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-index 5cb11cc2d0636..a573a66398984 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-@@ -1377,7 +1377,8 @@ void amdgpu_dm_plane_handle_cursor_update(struct drm_plane *plane,
- 	    adev->dm.dc->caps.color.dpp.gamma_corr)
- 		attributes.attribute_flags.bits.ENABLE_CURSOR_DEGAMMA = 1;
- 
--	attributes.pitch = afb->base.pitches[0] / afb->base.format->cpp[0];
-+	if (afb)
-+		attributes.pitch = afb->base.pitches[0] / afb->base.format->cpp[0];
- 
- 	if (crtc_state->stream) {
- 		mutex_lock(&adev->dm.dc_lock);
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index a4719af88718e..4230714e5f3a1 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -9428,6 +9428,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x152d, 0x8a37)
+ 	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x193d, 0x0462)
++	},
+ 	{
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x193d, 0x1104)
+@@ -9468,6 +9472,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x193d, 0x8461)
+ 	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x193d, 0x8462)
++	},
+ 	{
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x193d, 0xc460)
+@@ -10176,6 +10184,18 @@ static const struct pci_device_id pqi_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x1137, 0x02fa)
+ 	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1137, 0x02fe)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1137, 0x02ff)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1137, 0x0300)
++	},
+ 	{
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x1ff9, 0x0045)
+@@ -10352,6 +10372,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x1f51, 0x1045)
+ 	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x00a3)
++	},
+ 	{
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       PCI_ANY_ID, PCI_ANY_ID)
 -- 
 2.43.0
 
