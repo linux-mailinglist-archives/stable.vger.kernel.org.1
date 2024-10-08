@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-81677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9631F9948B7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:16:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CC8994B79
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 537B828640F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:16:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EDD8288040
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C061CDFB8;
-	Tue,  8 Oct 2024 12:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36541DF963;
+	Tue,  8 Oct 2024 12:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXjeQ0gd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRB8KZhl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338931E485;
-	Tue,  8 Oct 2024 12:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820391DF751;
+	Tue,  8 Oct 2024 12:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389765; cv=none; b=YNFAk8XjkZ1rbdH0oVkjdw1Yf6FvnewdvY4rCIbbytYn9+m/Fv+dCvGZv53oCvfCmD+VT21uBpQ+eWFg6SJOLXqigsPKrHmO5j9FqRvovVlG1r7tCuxwCVkH0cvdb6QmkejCNNce8/LpPJqDMWFTCsNPiHST1nosAHXCEHIBHjE=
+	t=1728391369; cv=none; b=UPrTTwuOZtT6tGrembkTQg+Uw55prMNhjr+DSZVX7AMrLZF3760G5ZHY/ZeWh62bGFywDtXqMVlGxZ3qPF8jw2EyulCqWdx8gHUfT323HsgeBNVp38ltBa4kGEQwVfkxDzW0GLfNLNcNZNCAybhV/1ivMrujR1p2PG/qiCt+o6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389765; c=relaxed/simple;
-	bh=fOLA3k/MTyTaxRyoV30nAk2tHTgDxM9kXt+iuBRUyMw=;
+	s=arc-20240116; t=1728391369; c=relaxed/simple;
+	bh=m/bgoELUCDkbWYGEwSEpsvJOjKsWUPtkgpHc/0JC/O0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nq65cBbsWt2hC50f8abOMdnqDQ4UlBlsVM7nbjmenRRB65z95DXWFrC9gvuPpDBJNi6VtAk6r4hS93xAB8dPzuBNhmQzmDuRGubrqHAYH4thguHCDvj/sNSlMyDLtVS0d+uwC91ClVKBrTQzciTyOVsKAPVEJLN+y4KZHipfEkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXjeQ0gd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 968D8C4CEC7;
-	Tue,  8 Oct 2024 12:16:04 +0000 (UTC)
+	 MIME-Version; b=U66MzdkENyRYfdafELY8hai83d0z0KqcaimlS8Jl730cMz6RJhVCNWrjghE1xa0AjmELi5fr5FFrE6LErtdmruZu6xCcAZwRoqTtrcOT5ebvEvMFqL/Wb0m/nk25g1CXoO+lWVwVuBlBNTolEjjkvMBiZCiCvi0KvrpYJAwpZKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRB8KZhl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031ABC4CEC7;
+	Tue,  8 Oct 2024 12:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389765;
-	bh=fOLA3k/MTyTaxRyoV30nAk2tHTgDxM9kXt+iuBRUyMw=;
+	s=korg; t=1728391369;
+	bh=m/bgoELUCDkbWYGEwSEpsvJOjKsWUPtkgpHc/0JC/O0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xXjeQ0gddGnE6yfdkYhoB2s5Tgvk0tX5RPxm2EeeBxE0xUj/wMBTdXT4vRytiaeL4
-	 UD25Z5MkyPftLmvHWbdwGivlNkmRTnGpz5ubsH/LlE//f0XHGfUpkvYXZp6RlprbnY
-	 kuW3O83mFI+vnHExnVa1zXfY7fowE3BORr+XlOwA=
+	b=YRB8KZhlrtYSLyMChVHv/zKHinFfVERSUqwjXj+XG+XVnzjk219blygcza6c6AigN
+	 Jnl1w596S6l/FkRaw99biFRuoeXnOkUk/vUi38PTQy80+EsMRI5Ov6kY/BIRWKQDjM
+	 WrmyN5x/ZqEOH0CMEGNgmfmvb2Hz1VN99DsPnRSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oder Chiou <oder_chiou@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 058/482] ALSA: hda/realtek: Fix the push button function for the ALC257
-Date: Tue,  8 Oct 2024 14:02:01 +0200
-Message-ID: <20241008115650.590482124@linuxfoundation.org>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.11 092/558] ice: Adjust over allocation of memory in ice_sched_add_root_node() and ice_sched_add_node()
+Date: Tue,  8 Oct 2024 14:02:02 +0200
+Message-ID: <20241008115705.990456787@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oder Chiou <oder_chiou@realtek.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 05df9732a0894846c46d0062d4af535c5002799d ]
+[ Upstream commit 62fdaf9e8056e9a9e6fe63aa9c816ec2122d60c6 ]
 
-The headset push button cannot work properly in case of the ALC257.
-This patch reverted the previous commit to correct the side effect.
+In ice_sched_add_root_node() and ice_sched_add_node() there are calls to
+devm_kcalloc() in order to allocate memory for array of pointers to
+'ice_sched_node' structure. But incorrect types are used as sizeof()
+arguments in these calls (structures instead of pointers) which leads to
+over allocation of memory.
 
-Fixes: ef9718b3d54e ("ALSA: hda/realtek: Fix noise from speakers on Lenovo IdeaPad 3 15IAU7")
-Signed-off-by: Oder Chiou <oder_chiou@realtek.com>
-Link: https://patch.msgid.link/20240930105039.3473266-1-oder_chiou@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Adjust over allocation of memory by correcting types in devm_kcalloc()
+sizeof() arguments.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/ice/ice_sched.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 2b674691ce4b6..64efa6123d839 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -583,6 +583,7 @@ static void alc_shutup_pins(struct hda_codec *codec)
- 	switch (codec->core.vendor_id) {
- 	case 0x10ec0236:
- 	case 0x10ec0256:
-+	case 0x10ec0257:
- 	case 0x19e58326:
- 	case 0x10ec0283:
- 	case 0x10ec0285:
+diff --git a/drivers/net/ethernet/intel/ice/ice_sched.c b/drivers/net/ethernet/intel/ice/ice_sched.c
+index ecf8f5d602921..6ca13c5dcb14e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sched.c
++++ b/drivers/net/ethernet/intel/ice/ice_sched.c
+@@ -28,9 +28,8 @@ ice_sched_add_root_node(struct ice_port_info *pi,
+ 	if (!root)
+ 		return -ENOMEM;
+ 
+-	/* coverity[suspicious_sizeof] */
+ 	root->children = devm_kcalloc(ice_hw_to_dev(hw), hw->max_children[0],
+-				      sizeof(*root), GFP_KERNEL);
++				      sizeof(*root->children), GFP_KERNEL);
+ 	if (!root->children) {
+ 		devm_kfree(ice_hw_to_dev(hw), root);
+ 		return -ENOMEM;
+@@ -186,10 +185,9 @@ ice_sched_add_node(struct ice_port_info *pi, u8 layer,
+ 	if (!node)
+ 		return -ENOMEM;
+ 	if (hw->max_children[layer]) {
+-		/* coverity[suspicious_sizeof] */
+ 		node->children = devm_kcalloc(ice_hw_to_dev(hw),
+ 					      hw->max_children[layer],
+-					      sizeof(*node), GFP_KERNEL);
++					      sizeof(*node->children), GFP_KERNEL);
+ 		if (!node->children) {
+ 			devm_kfree(ice_hw_to_dev(hw), node);
+ 			return -ENOMEM;
 -- 
 2.43.0
 
