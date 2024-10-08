@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6357D994BDF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:47:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17777994903
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:19:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17FEBB289CD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:46:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA8F6283A72
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E609183CB8;
-	Tue,  8 Oct 2024 12:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380F41DE890;
+	Tue,  8 Oct 2024 12:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXukavrC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4gVg5bl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16E7190663;
-	Tue,  8 Oct 2024 12:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96EC18FC70;
+	Tue,  8 Oct 2024 12:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391616; cv=none; b=Qe25LXRBzg4wm7ck5/3pGldppP8oAenFRvP+g7TFoEcOYIu01cUYkRPliycyAGNZt58PddffvD3wovkPRJ0fbL++/L9IY2/cXXrOMT8xqhmxLPpCQFDsGiBttmQecn9IHY0lGZX8U9V35mEmzJCiwcRnAOBrNVoIMdyRY7+YMJ8=
+	t=1728389921; cv=none; b=ZxdmoyNG6EzBE4RgyRN5oD/jhjuSMLXXPk+o9LuY/gIYdtiTt6ahnBQ8yCTfJkv9zW+bXm9iFMOBaG7LpS6XzAbgRvTJnj/pJ54EwSP5C/KM0cuUC6fDNwTZiP12R+RCzH3/Npt8L2ZCHD3ZlcdWYoyebqx6QKH00evMjdlyHL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391616; c=relaxed/simple;
-	bh=JQ0o2BmzNpiYL9hPcly+o4XU133UYC42BbX+FyKZ9+k=;
+	s=arc-20240116; t=1728389921; c=relaxed/simple;
+	bh=akpvxJ+9Krvy0FlkNrSdNHEgL09iwZgKKJpYOHPmIiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HE+i176XFtvhIXpWJ2p0axAQxgZWSNq60ZX2LH8ybQuS+UiRtd1BsxUIw5xJTUekzEJX/LAWDwaPlHptsoLrGm8TGmL5AQuoeeHPaKG4NUNmP+J4nv0KlY/2A7juDrtOgdvXAWwMzWaqu1yB+y31POzcQp/xR1cvwWWfHUYm4Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXukavrC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D62C4CEC7;
-	Tue,  8 Oct 2024 12:46:54 +0000 (UTC)
+	 MIME-Version; b=B7DVOOvxyNer7p/tD6aOExbFRRFNCLB/i3fxHx4nb1D9B90NG2i58HDRJXt19KgLX9kiivqZRSndmIJZlXEhA8OghNDY9R2/l3M39Vd8LE67SZrmhfqYpCSTr2MNa3lao+3g8R7m26bh204FLh4pZgPTBaUvBXwD9hogdCo2LwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4gVg5bl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C33C4CEC7;
+	Tue,  8 Oct 2024 12:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391615;
-	bh=JQ0o2BmzNpiYL9hPcly+o4XU133UYC42BbX+FyKZ9+k=;
+	s=korg; t=1728389920;
+	bh=akpvxJ+9Krvy0FlkNrSdNHEgL09iwZgKKJpYOHPmIiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qXukavrCfymYssmCqDPrg3vMvlBmevHWl1uYVBBSCRSCzt1HnO7lta8Yd81ybDpmN
-	 lguRqmUVteRwltB3MMFL43nuJ9ogzrsrmYyyTKRKUY2AJQ7Uu+9ohju1JElKJeDFmh
-	 KXbzozDAKqbSjYuDNeARVzaMHrDwdeuP+oThqm84=
+	b=d4gVg5bl8pzc+GdBH72b9BPNAGwN5TAQnRwTw3boGti6UVq7gIDysLi+e8kRB27MP
+	 CcQWIPJAMBZ/k7vZx4RSXprWmMMcB0p1WJkxG440lbpNBMd0MIRLS4YlNpvlLVMyV2
+	 F8Zl12tTaHWaWMzVjuMZ/PejdYie2MgdLvp1K8so=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Louis Peens <louis.peens@corigine.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 169/558] ALSA: usb-audio: Define macros for quirk table entries
-Date: Tue,  8 Oct 2024 14:03:19 +0200
-Message-ID: <20241008115709.006053410@linuxfoundation.org>
+Subject: [PATCH 6.10 137/482] nfp: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Tue,  8 Oct 2024 14:03:20 +0200
+Message-ID: <20241008115653.695927671@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 0c3ad39b791c2ecf718afcaca30e5ceafa939d5c ]
+[ Upstream commit daaba19d357f0900b303a530ced96c78086267ea ]
 
-Many entries in the USB-audio quirk tables have relatively complex
-expressions.  For improving the readability, introduce a few macros.
-Those are applied in the following patch.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-Link: https://patch.msgid.link/20240814134844.2726-2-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Louis Peens <louis.peens@corigine.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20240911094445.1922476-4-ruanjinjie@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks-table.h | 77 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 77 insertions(+)
+ drivers/net/ethernet/netronome/nfp/nfp_net_common.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
-index aaa6a515d0f8a..e3a25f4f68792 100644
---- a/sound/usb/quirks-table.h
-+++ b/sound/usb/quirks-table.h
-@@ -35,6 +35,83 @@
- 	.bInterfaceClass = USB_CLASS_AUDIO, \
- 	.bInterfaceSubClass = USB_SUBCLASS_AUDIOCONTROL
+diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
+index 182ba0a8b095b..6e0929af0f725 100644
+--- a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
++++ b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
+@@ -821,14 +821,13 @@ nfp_net_prepare_vector(struct nfp_net *nn, struct nfp_net_r_vector *r_vec,
  
-+/* Quirk .driver_info, followed by the definition of the quirk entry;
-+ * put like QUIRK_DRIVER_INFO { ... } in each entry of the quirk table
-+ */
-+#define QUIRK_DRIVER_INFO \
-+	.driver_info = (unsigned long)&(const struct snd_usb_audio_quirk)
-+
-+/*
-+ * Macros for quirk data entries
-+ */
-+
-+/* Quirk data entry for ignoring the interface */
-+#define QUIRK_DATA_IGNORE(_ifno) \
-+	.ifnum = (_ifno), .type = QUIRK_IGNORE_INTERFACE
-+/* Quirk data entry for a standard audio interface */
-+#define QUIRK_DATA_STANDARD_AUDIO(_ifno) \
-+	.ifnum = (_ifno), .type = QUIRK_AUDIO_STANDARD_INTERFACE
-+/* Quirk data entry for a standard MIDI interface */
-+#define QUIRK_DATA_STANDARD_MIDI(_ifno) \
-+	.ifnum = (_ifno), .type = QUIRK_MIDI_STANDARD_INTERFACE
-+/* Quirk data entry for a standard mixer interface */
-+#define QUIRK_DATA_STANDARD_MIXER(_ifno) \
-+	.ifnum = (_ifno), .type = QUIRK_AUDIO_STANDARD_MIXER
-+
-+/* Quirk data entry for Yamaha MIDI */
-+#define QUIRK_DATA_MIDI_YAMAHA(_ifno) \
-+	.ifnum = (_ifno), .type = QUIRK_MIDI_YAMAHA
-+/* Quirk data entry for Edirol UAxx */
-+#define QUIRK_DATA_EDIROL_UAXX(_ifno) \
-+	.ifnum = (_ifno), .type = QUIRK_AUDIO_EDIROL_UAXX
-+/* Quirk data entry for raw bytes interface */
-+#define QUIRK_DATA_RAW_BYTES(_ifno) \
-+	.ifnum = (_ifno), .type = QUIRK_MIDI_RAW_BYTES
-+
-+/* Quirk composite array terminator */
-+#define QUIRK_COMPOSITE_END	{ .ifnum = -1 }
-+
-+/* Quirk data entry for composite quirks;
-+ * followed by the quirk array that is terminated with QUIRK_COMPOSITE_END
-+ * e.g. QUIRK_DATA_COMPOSITE { { quirk1 }, { quirk2 },..., QUIRK_COMPOSITE_END }
-+ */
-+#define QUIRK_DATA_COMPOSITE \
-+	.ifnum = QUIRK_ANY_INTERFACE, \
-+	.type = QUIRK_COMPOSITE, \
-+	.data = &(const struct snd_usb_audio_quirk[])
-+
-+/* Quirk data entry for a fixed audio endpoint;
-+ * followed by audioformat definition
-+ * e.g. QUIRK_DATA_AUDIOFORMAT(n) { .formats = xxx, ... }
-+ */
-+#define QUIRK_DATA_AUDIOFORMAT(_ifno)	    \
-+	.ifnum = (_ifno),		    \
-+	.type = QUIRK_AUDIO_FIXED_ENDPOINT, \
-+	.data = &(const struct audioformat)
-+
-+/* Quirk data entry for a fixed MIDI endpoint;
-+ * followed by snd_usb_midi_endpoint_info definition
-+ * e.g. QUIRK_DATA_MIDI_FIXED_ENDPOINT(n) { .out_cables = x, .in_cables = y }
-+ */
-+#define QUIRK_DATA_MIDI_FIXED_ENDPOINT(_ifno) \
-+	.ifnum = (_ifno),		      \
-+	.type = QUIRK_MIDI_FIXED_ENDPOINT,    \
-+	.data = &(const struct snd_usb_midi_endpoint_info)
-+/* Quirk data entry for a MIDIMAN MIDI endpoint */
-+#define QUIRK_DATA_MIDI_MIDIMAN(_ifno) \
-+	.ifnum = (_ifno),	       \
-+	.type = QUIRK_MIDI_MIDIMAN,    \
-+	.data = &(const struct snd_usb_midi_endpoint_info)
-+/* Quirk data entry for a EMAGIC MIDI endpoint */
-+#define QUIRK_DATA_MIDI_EMAGIC(_ifno) \
-+	.ifnum = (_ifno),	      \
-+	.type = QUIRK_MIDI_EMAGIC,    \
-+	.data = &(const struct snd_usb_midi_endpoint_info)
-+
-+/*
-+ * Here we go... the quirk table definition begins:
-+ */
-+
- /* FTDI devices */
- {
- 	USB_DEVICE(0x0403, 0xb8d8),
+ 	snprintf(r_vec->name, sizeof(r_vec->name),
+ 		 "%s-rxtx-%d", nfp_net_name(nn), idx);
+-	err = request_irq(r_vec->irq_vector, r_vec->handler, 0, r_vec->name,
+-			  r_vec);
++	err = request_irq(r_vec->irq_vector, r_vec->handler, IRQF_NO_AUTOEN,
++			  r_vec->name, r_vec);
+ 	if (err) {
+ 		nfp_net_napi_del(&nn->dp, r_vec);
+ 		nn_err(nn, "Error requesting IRQ %d\n", r_vec->irq_vector);
+ 		return err;
+ 	}
+-	disable_irq(r_vec->irq_vector);
+ 
+ 	irq_set_affinity_hint(r_vec->irq_vector, &r_vec->affinity_mask);
+ 
 -- 
 2.43.0
 
