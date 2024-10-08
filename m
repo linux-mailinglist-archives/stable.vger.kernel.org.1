@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB97994CD5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 007EE994A4A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:31:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 111602865B0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 787C21F22706
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A155D1DFD99;
-	Tue,  8 Oct 2024 12:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02B51DED55;
+	Tue,  8 Oct 2024 12:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmDMzDnf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5LvjGhK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D55F1DF75D;
-	Tue,  8 Oct 2024 12:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE89B1CEE8E;
+	Tue,  8 Oct 2024 12:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392275; cv=none; b=ZC3/MzYgUa5U33IBDHyi6eI4rZBB5peNI2AJP3tLJ7VSC5ZmOOrhnhu7jF90EW28MvDCikhS2ouOazLRCZfNeOPgrX+CPXxMKfLRGIFYQY8tdpdLg/lyV40naNBUrQVR3aL13psv1TVcL0NdQvra4te4D9orCPc9rXbcReH8QbU=
+	t=1728390694; cv=none; b=AJRlTJIIna3LVTlfJwvMIlRlRr1v6fRlwgfw4PusmLYbTiQYO/EosLNvwB+VJu9mPti5x2Lb40yFg/Qh2xdnhBG9zYAiwrlhmWeUE1SeCb99D95fMGrHZQvc6uAWVc8slugoP87BPXqG1T5I/ed/0Kesa3R2sHIb4aK4ilb+R8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392275; c=relaxed/simple;
-	bh=U1v8M4SdVie6yimD5cOlc+VQ9JmdMODholHUqC5uSJs=;
+	s=arc-20240116; t=1728390694; c=relaxed/simple;
+	bh=pbhNuBMXOxGkqPKVl75V37LPdqXdbhuMGXMf2YAEW3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kjnM95nCjfM34+UGMP2gbFpZlR7geq462QEH2Ut6BFOhzIiBjU9lSg2O5LGdFWk7jFX0VJQgURDkugNI4owAZBAYaZF/Iki4bKwkiWAgXXPgvmE0TijqhLB5TSm047ak63IW5JUjzdA8hWrX5wmN+yOVfT4xU92VoLZMXMYNynA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmDMzDnf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE153C4CEC7;
-	Tue,  8 Oct 2024 12:57:54 +0000 (UTC)
+	 MIME-Version; b=RLEMPjoSSSzcEtaacZtRllic/WoWjmd5oJ0PcZsVzVOwzz4sW4JyPZAAy75JzvNXVYcGRccz/NnfjCmhZDLSpnobfJa7/Kp3MK/2i9lCTlhhnxYiNNjRSEYChyrPkJeUk+Zo+oGxRI9OtgDoOw0P5pJipIeOxkPZOPGj4mz/rs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5LvjGhK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27781C4CEC7;
+	Tue,  8 Oct 2024 12:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392275;
-	bh=U1v8M4SdVie6yimD5cOlc+VQ9JmdMODholHUqC5uSJs=;
+	s=korg; t=1728390694;
+	bh=pbhNuBMXOxGkqPKVl75V37LPdqXdbhuMGXMf2YAEW3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WmDMzDnfy6tT6zcYy/YEqXOGHQcd+yTCwbR1+aOK2BOura7V5yQeiSWcDoz4CIUQJ
-	 2h37Jqfdp56VPb4yI8UGkEwkjS3ZvCSUdhMYgCZzNevw5+vmaq1hrccrLSY9qz+j3r
-	 YVaYqDL+xiBPTSH6kqmfVB2DBaZccFNTtdXuNRvg=
+	b=g5LvjGhKqGgw8lXR1dtHnAk2xL9VHi/TYFpZPzdn0lwMLuSThx42PZotxUAUXl3gx
+	 itDTk/dHkCmAItK25pJKRIVoXbhP2UzqP5pbzFm/aOfcmKqRkmYh/onnJtJq69vQa4
+	 PA2FdKTNvZuVBsCAqolwfooxg4fzSXcE9axy8RCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Gengkun <luogengkun@huaweicloud.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kan Liang <kan.liang@linux.intel.com>
-Subject: [PATCH 6.11 367/558] perf/core: Fix small negative period being ignored
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.10 334/482] ext4: update orig_path in ext4_find_extent()
 Date: Tue,  8 Oct 2024 14:06:37 +0200
-Message-ID: <20241008115716.738091608@linuxfoundation.org>
+Message-ID: <20241008115701.569140904@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Gengkun <luogengkun@huaweicloud.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 62c0b1061593d7012292f781f11145b2d46f43ab upstream.
+commit 5b4b2dcace35f618fe361a87bae6f0d13af31bc1 upstream.
 
-In perf_adjust_period, we will first calculate period, and then use
-this period to calculate delta. However, when delta is less than 0,
-there will be a deviation compared to when delta is greater than or
-equal to 0. For example, when delta is in the range of [-14,-1], the
-range of delta = delta + 7 is between [-7,6], so the final value of
-delta/8 is 0. Therefore, the impact of -1 and -2 will be ignored.
-This is unacceptable when the target period is very short, because
-we will lose a lot of samples.
+In ext4_find_extent(), if the path is not big enough, we free it and set
+*orig_path to NULL. But after reallocating and successfully initializing
+the path, we don't update *orig_path, in which case the caller gets a
+valid path but a NULL ppath, and this may cause a NULL pointer dereference
+or a path memory leak. For example:
 
-Here are some tests and analyzes:
-before:
-  # perf record -e cs -F 1000  ./a.out
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.022 MB perf.data (518 samples) ]
+ext4_split_extent
+  path = *ppath = 2000
+  ext4_find_extent
+    if (depth > path[0].p_maxdepth)
+      kfree(path = 2000);
+      *orig_path = path = NULL;
+      path = kcalloc() = 3000
+  ext4_split_extent_at(*ppath = NULL)
+    path = *ppath;
+    ex = path[depth].p_ext;
+    // NULL pointer dereference!
 
-  # perf script
-  ...
-  a.out     396   257.956048:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.957891:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.959730:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.961545:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.963355:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.965163:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.966973:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.968785:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.970593:         23 cs:  ffffffff81f4eeec schedul>
-  ...
+==================================================================
+BUG: kernel NULL pointer dereference, address: 0000000000000010
+CPU: 6 UID: 0 PID: 576 Comm: fsstress Not tainted 6.11.0-rc2-dirty #847
+RIP: 0010:ext4_split_extent_at+0x6d/0x560
+Call Trace:
+ <TASK>
+ ext4_split_extent.isra.0+0xcb/0x1b0
+ ext4_ext_convert_to_initialized+0x168/0x6c0
+ ext4_ext_handle_unwritten_extents+0x325/0x4d0
+ ext4_ext_map_blocks+0x520/0xdb0
+ ext4_map_blocks+0x2b0/0x690
+ ext4_iomap_begin+0x20e/0x2c0
+[...]
+==================================================================
 
-after:
-  # perf record -e cs -F 1000  ./a.out
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.058 MB perf.data (1466 samples) ]
+Therefore, *orig_path is updated when the extent lookup succeeds, so that
+the caller can safely use path or *ppath.
 
-  # perf script
-  ...
-  a.out     395    59.338813:         11 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.339707:         12 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.340682:         13 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.341751:         13 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.342799:         12 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.343765:         11 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.344651:         11 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.345539:         12 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.346502:         13 cs:  ffffffff81f4eeec schedul>
-  ...
-
-test.c
-
-int main() {
-        for (int i = 0; i < 20000; i++)
-                usleep(10);
-
-        return 0;
-}
-
-  # time ./a.out
-  real    0m1.583s
-  user    0m0.040s
-  sys     0m0.298s
-
-The above results were tested on x86-64 qemu with KVM enabled using
-test.c as test program. Ideally, we should have around 1500 samples,
-but the previous algorithm had only about 500, whereas the modified
-algorithm now has about 1400. Further more, the new version shows 1
-sample per 0.001s, while the previous one is 1 sample per 0.002s.This
-indicates that the new algorithm is more sensitive to small negative
-values compared to old algorithm.
-
-Fixes: bd2b5b12849a ("perf_counter: More aggressive frequency adjustment")
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20240831074316.2106159-2-luogengkun@huaweicloud.com
+Fixes: 10809df84a4d ("ext4: teach ext4_ext_find_extent() to realloc path if necessary")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240822023545.1994557-6-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/ext4/extents.c     |    3 ++-
+ fs/ext4/move_extent.c |    1 -
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -4097,7 +4097,11 @@ static void perf_adjust_period(struct pe
- 	period = perf_calculate_period(event, nsec, count);
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -957,6 +957,8 @@ ext4_find_extent(struct inode *inode, ex
  
- 	delta = (s64)(period - hwc->sample_period);
--	delta = (delta + 7) / 8; /* low pass filter */
-+	if (delta >= 0)
-+		delta += 7;
-+	else
-+		delta -= 7;
-+	delta /= 8; /* low pass filter */
+ 	ext4_ext_show_path(inode, path);
  
- 	sample_period = hwc->sample_period + delta;
++	if (orig_path)
++		*orig_path = path;
+ 	return path;
+ 
+ err:
+@@ -3249,7 +3251,6 @@ static int ext4_split_extent_at(handle_t
+ 	}
+ 	depth = ext_depth(inode);
+ 	ex = path[depth].p_ext;
+-	*ppath = path;
+ 
+ 	if (EXT4_EXT_MAY_ZEROOUT & split_flag) {
+ 		if (split_flag & (EXT4_EXT_DATA_VALID1|EXT4_EXT_DATA_VALID2)) {
+--- a/fs/ext4/move_extent.c
++++ b/fs/ext4/move_extent.c
+@@ -36,7 +36,6 @@ get_ext_path(struct inode *inode, ext4_l
+ 		*ppath = NULL;
+ 		return -ENODATA;
+ 	}
+-	*ppath = path;
+ 	return 0;
+ }
  
 
 
