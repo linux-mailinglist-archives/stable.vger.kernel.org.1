@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-81820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E79A8994994
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:25:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE52C994C3F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90F031F269E0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:25:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79D731F230D5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA2F1DF96C;
-	Tue,  8 Oct 2024 12:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B381DED43;
+	Tue,  8 Oct 2024 12:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJDVaacu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ztbnhuU/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BEEE1DE8BA;
-	Tue,  8 Oct 2024 12:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF6F1DE89A;
+	Tue,  8 Oct 2024 12:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390242; cv=none; b=bTLS28ynnsYxp8Dq3DahMDQAEuqx20fIcRIyo+UNEDDqCq3hOuhFzOsEH6NGaf2VA5eVT9EwoKNhuSd+5gI+F2jd+kRWL8XZr59rjeOLO9BdU2viBxShZONpdJM4L2m2hcM6MqK8vKV2rCd6bN8ZIudQdG7WXEuWbpV4nQ3LY2w=
+	t=1728391934; cv=none; b=LqqlnS7AMJI6v9pdHj8lcKQvv3f1v4nBTSWVZztqYhtDDDUmxbHKAdtyoCT8xcCL3V30kN7kXmxVkylBUiCm/f7NUNaK+hz3z844wIzy30z6H3PijJwFnidJxp0BMJ58z0lTlD/yOaqNmrdlmM5b7aKi9gylxp3srgKELtUdqew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390242; c=relaxed/simple;
-	bh=jadj8la7FUeESH9qdo8bFm2L1jtl+0X6hXsuK/xHIEo=;
+	s=arc-20240116; t=1728391934; c=relaxed/simple;
+	bh=T6Ny+cLFUL0C6qcjXVE+tab/sQMvu3h4vsVmj0bTS94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VgvzJOS/no9ZVHH4UK7oSVnP1/pSWAgVUpwy2/djTjGo94l2ZYjxYH2NEc/ZJ0LOwsXq9ukYkmlqAJ2GeyAzWJUFTSMeqfM9GmLMVo7yzJvUoz3KCSiIwSKo5kzlTlYXUwxfohNPArWNe7wxof6yo7oW7EUOnqqk+5xNu8YgE1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJDVaacu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E99CDC4CEC7;
-	Tue,  8 Oct 2024 12:24:01 +0000 (UTC)
+	 MIME-Version; b=pBrv6zalfltChOqw/hVDu5wFU/c2W5jFpNr1tkLiuGSsVXuey07HgyUCMu9E1kZj3Ci0YrVe+9G6ll5J/pWRx+FlmEUXhu4LuPyC/2wOyiC2vapJ8f/xcIxHYsNMSGIfMrM7ukV2Z6Or72w0YYHVdiZLPX5cJNqKE0+Niz/rxC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ztbnhuU/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF350C4CEC7;
+	Tue,  8 Oct 2024 12:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390242;
-	bh=jadj8la7FUeESH9qdo8bFm2L1jtl+0X6hXsuK/xHIEo=;
+	s=korg; t=1728391934;
+	bh=T6Ny+cLFUL0C6qcjXVE+tab/sQMvu3h4vsVmj0bTS94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJDVaacud5/qbjR40f3N7VTeDRBKQjg/IAK8QcRfmtn4XX7+/b68LtceOAO0IxrE9
-	 PIsDM5UYpkn3Zb9TiC3wIwQAWrXF6B46oeS6gQaFFZT3FAlcJvWZfIoG8AK464RiGV
-	 dodu3/EH21QA1uUX49uaOtvtK1JXSgTXLbN8/738=
+	b=ztbnhuU/G9O2grnlBGYx3DP3YQOLxxQRPucIf+olkewnfN3EMY2TF8U3tamELWcpe
+	 cxW/eb4SNp8vL1SnHSHDNY+gwVmoDEhHbSLghKck8EEjTd38sp2DbYaIJccVl11Gx/
+	 Yb4FHNpZ6QV/BvM/8sY2i4aD3eOATAkKWudLdA+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 233/482] drm/amdgpu/gfx11: enter safe mode before touching CP_INT_CNTL
+Subject: [PATCH 6.11 266/558] drm/amd/display: Avoid overflow assignment in link_dp_cts
 Date: Tue,  8 Oct 2024 14:04:56 +0200
-Message-ID: <20241008115657.470360189@linuxfoundation.org>
+Message-ID: <20241008115712.799902866@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit b5be054c585110b2c5c1b180136800e8c41c7bb4 ]
+[ Upstream commit a15268787b79fd183dd526cc16bec9af4f4e49a1 ]
 
-Need to enter safe mode before touching GC MMIO.
+sampling_rate is an uint8_t but is assigned an unsigned int, and thus it
+can overflow. As a result, sampling_rate is changed to uint32_t.
 
-Acked-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Similarly, LINK_QUAL_PATTERN_SET has a size of 2 bits, and it should
+only be assigned to a value less or equal than 4.
+
+This fixes 2 INTEGER_OVERFLOW issues reported by Coverity.
+
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dc_dp_types.h                  | 2 +-
+ drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c | 3 ++-
+ drivers/gpu/drm/amd/display/include/dpcd_defs.h               | 1 +
+ 3 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index 4ba8eb45ac174..0bcdcb2101577 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -4497,6 +4497,8 @@ static int gfx_v11_0_soft_reset(void *handle)
- 	int r, i, j, k;
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
+index 519c3df78ee5b..95c275bf649bd 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
+@@ -727,7 +727,7 @@ struct dp_audio_test_data_flags {
+ struct dp_audio_test_data {
  
-+	gfx_v11_0_set_safe_mode(adev, 0);
-+
- 	tmp = RREG32_SOC15(GC, 0, regCP_INT_CNTL);
- 	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL, CMP_BUSY_INT_ENABLE, 0);
- 	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL, CNTX_BUSY_INT_ENABLE, 0);
-@@ -4504,8 +4506,6 @@ static int gfx_v11_0_soft_reset(void *handle)
- 	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL, GFX_IDLE_INT_ENABLE, 0);
- 	WREG32_SOC15(GC, 0, regCP_INT_CNTL, tmp);
- 
--	gfx_v11_0_set_safe_mode(adev, 0);
--
- 	mutex_lock(&adev->srbm_mutex);
- 	for (i = 0; i < adev->gfx.mec.num_mec; ++i) {
- 		for (j = 0; j < adev->gfx.mec.num_queue_per_pipe; j++) {
+ 	struct dp_audio_test_data_flags flags;
+-	uint8_t sampling_rate;
++	uint32_t sampling_rate;
+ 	uint8_t channel_count;
+ 	uint8_t pattern_type;
+ 	uint8_t pattern_period[8];
+diff --git a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
+index df3781081da7a..32d5a4b143333 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
++++ b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
+@@ -775,7 +775,8 @@ bool dp_set_test_pattern(
+ 			core_link_read_dpcd(link, DP_TRAINING_PATTERN_SET,
+ 					    &training_pattern.raw,
+ 					    sizeof(training_pattern));
+-			training_pattern.v1_3.LINK_QUAL_PATTERN_SET = pattern;
++			if (pattern <= PHY_TEST_PATTERN_END_DP11)
++				training_pattern.v1_3.LINK_QUAL_PATTERN_SET = pattern;
+ 			core_link_write_dpcd(link, DP_TRAINING_PATTERN_SET,
+ 					     &training_pattern.raw,
+ 					     sizeof(training_pattern));
+diff --git a/drivers/gpu/drm/amd/display/include/dpcd_defs.h b/drivers/gpu/drm/amd/display/include/dpcd_defs.h
+index aee5170f5fb23..c246235e4afec 100644
+--- a/drivers/gpu/drm/amd/display/include/dpcd_defs.h
++++ b/drivers/gpu/drm/amd/display/include/dpcd_defs.h
+@@ -76,6 +76,7 @@ enum dpcd_phy_test_patterns {
+ 	PHY_TEST_PATTERN_D10_2,
+ 	PHY_TEST_PATTERN_SYMBOL_ERROR,
+ 	PHY_TEST_PATTERN_PRBS7,
++	PHY_TEST_PATTERN_END_DP11 = PHY_TEST_PATTERN_PRBS7,
+ 	PHY_TEST_PATTERN_80BIT_CUSTOM,/* For DP1.2 only */
+ 	PHY_TEST_PATTERN_CP2520_1,
+ 	PHY_TEST_PATTERN_CP2520_2,
 -- 
 2.43.0
 
