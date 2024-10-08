@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F999948F9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:19:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D95994BC9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:46:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B1E8B24F58
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:19:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 222B41C24EEB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36551DE8BD;
-	Tue,  8 Oct 2024 12:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8244E1DE4C4;
+	Tue,  8 Oct 2024 12:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVF+TH8F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKuTcAW7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6270FEEC8;
-	Tue,  8 Oct 2024 12:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40564183CB8;
+	Tue,  8 Oct 2024 12:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389898; cv=none; b=UR43rbrJv3l43W+kllT7d/WUwD8Ja0bRbjUWX0r9qLh/+ER2e/pfwa88T8+YW/EKSf1IEHPgDqTdISZyuympO6qK7q0OmbYkntv90P4PCi7+KLhpqFD70z/h3fbHwVOejLcllZjxmrq33hHtwRsqgOVWw15UCMb/rvHqXGTrxFg=
+	t=1728391597; cv=none; b=S3LNUTyG/f9zr80B0osaZdE3zaXw/OqNOHXFk3Ddx2wR8/2k0sFKl7/8f5Bus28FXF8LTR1tvoTHlBboKpUtqLrRqKc8pbJQYf5USOAmtWwlufaXWypG+ZTfOz1gcNIeIX4gJ1qzRsIltE7+cBR2iLHewvY7F1IfsqLsgBJrhno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389898; c=relaxed/simple;
-	bh=Fks232i+ltgkFT1/YcARPxoSwoeDB+4sBIaA/NfrkY4=;
+	s=arc-20240116; t=1728391597; c=relaxed/simple;
+	bh=RnwKQLtHF0GCeIbHCvi5Bb7PdcxpzWloj8m0eReqDco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RGmCSaF4SkbPQR9mGTja5MYXRKM3WIyH84QtDzOqIwGWRX2S8EwfPHinfg+BjnvbtSzeTl2J0pi6rNEgGVHnizByIchED8/YU7Z81uGoTlVRzoizVaFUdvvZaP0XBXaSurs6GSWlqXk4gu6fuF8y9IaFUKP7vZEBB7XNmkOeO5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVF+TH8F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A08DC4CEC7;
-	Tue,  8 Oct 2024 12:18:17 +0000 (UTC)
+	 MIME-Version; b=pzBqxDrlK0QRDH0PEPmqHL4Bwnd9YGQ697sGYycYMU2VI2PxIpb4KhljpEMstaXhERzK38SiQO+bN6yRXViSWjlr7oQwt2qJnvlJ4VN7qwBJq+yiUhNpriNaw2gwVxLPkvMwVL8YiG5bnWcq+7LaY5WoW+8LEexwC4wC0Lnvx4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKuTcAW7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8471C4CEC7;
+	Tue,  8 Oct 2024 12:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389898;
-	bh=Fks232i+ltgkFT1/YcARPxoSwoeDB+4sBIaA/NfrkY4=;
+	s=korg; t=1728391597;
+	bh=RnwKQLtHF0GCeIbHCvi5Bb7PdcxpzWloj8m0eReqDco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gVF+TH8FVcfw4DVkQQtRSDTQJHD84Ah1QsDssiMN4R5r6FR5GEmv7Jr01cH5KbgDj
-	 DMr8pSi9IfnUb01nBu5Wg6FkMucVr8dme4v+FCz6SYktt0rfVPXVSlIPD2tmTfkrYq
-	 QTyaIqdGANCmi/QB7oAGh6TEI/uZQfNi4lryUpBw=
+	b=eKuTcAW7y1CrNKXcw2sjzXtvRd14uUC12EF3/s/t+u8VbzY5+LOCEw9FCUKPsxFHp
+	 ehRqui937piAQ+ij02gw9KXCco9+rJWTbtdYmY89MVC+aEx9CTEOpSIzxKz+ZmleFH
+	 DlxO3fBJsWGilwk8H1l7Il8ssAAAnk7MEpskTrJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Kaplan <david.kaplan@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Louis Peens <louis.peens@corigine.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 130/482] x86/bugs: Fix handling when SRSO mitigation is disabled
-Date: Tue,  8 Oct 2024 14:03:13 +0200
-Message-ID: <20241008115653.420590972@linuxfoundation.org>
+Subject: [PATCH 6.11 164/558] nfp: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Tue,  8 Oct 2024 14:03:14 +0200
+Message-ID: <20241008115708.811638657@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Kaplan <david.kaplan@amd.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 1dbb6b1495d472806fef1f4c94f5b3e4c89a3c1d ]
+[ Upstream commit daaba19d357f0900b303a530ced96c78086267ea ]
 
-When the SRSO mitigation is disabled, either via mitigations=off or
-spec_rstack_overflow=off, the warning about the lack of IBPB-enhancing
-microcode is printed anyway.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-This is unnecessary since the user has turned off the mitigation.
-
-  [ bp: Massage, drop SBPB rationale as it doesn't matter because when
-    mitigations are disabled x86_pred_cmd is not being used anyway. ]
-
-Signed-off-by: David Kaplan <david.kaplan@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20240904150711.193022-1-david.kaplan@amd.com
+Reviewed-by: Louis Peens <louis.peens@corigine.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20240911094445.1922476-4-ruanjinjie@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/netronome/nfp/nfp_net_common.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index b6f927f6c567e..47c84503ad9be 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2545,10 +2545,9 @@ static void __init srso_select_mitigation(void)
- {
- 	bool has_microcode = boot_cpu_has(X86_FEATURE_IBPB_BRTYPE);
+diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
+index 182ba0a8b095b..6e0929af0f725 100644
+--- a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
++++ b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
+@@ -821,14 +821,13 @@ nfp_net_prepare_vector(struct nfp_net *nn, struct nfp_net_r_vector *r_vec,
  
--	if (cpu_mitigations_off())
--		return;
--
--	if (!boot_cpu_has_bug(X86_BUG_SRSO)) {
-+	if (!boot_cpu_has_bug(X86_BUG_SRSO) ||
-+	    cpu_mitigations_off() ||
-+	    srso_cmd == SRSO_CMD_OFF) {
- 		if (boot_cpu_has(X86_FEATURE_SBPB))
- 			x86_pred_cmd = PRED_CMD_SBPB;
- 		return;
-@@ -2579,11 +2578,6 @@ static void __init srso_select_mitigation(void)
+ 	snprintf(r_vec->name, sizeof(r_vec->name),
+ 		 "%s-rxtx-%d", nfp_net_name(nn), idx);
+-	err = request_irq(r_vec->irq_vector, r_vec->handler, 0, r_vec->name,
+-			  r_vec);
++	err = request_irq(r_vec->irq_vector, r_vec->handler, IRQF_NO_AUTOEN,
++			  r_vec->name, r_vec);
+ 	if (err) {
+ 		nfp_net_napi_del(&nn->dp, r_vec);
+ 		nn_err(nn, "Error requesting IRQ %d\n", r_vec->irq_vector);
+ 		return err;
  	}
+-	disable_irq(r_vec->irq_vector);
  
- 	switch (srso_cmd) {
--	case SRSO_CMD_OFF:
--		if (boot_cpu_has(X86_FEATURE_SBPB))
--			x86_pred_cmd = PRED_CMD_SBPB;
--		return;
--
- 	case SRSO_CMD_MICROCODE:
- 		if (has_microcode) {
- 			srso_mitigation = SRSO_MITIGATION_MICROCODE;
-@@ -2637,6 +2631,8 @@ static void __init srso_select_mitigation(void)
- 			pr_err("WARNING: kernel not compiled with MITIGATION_SRSO.\n");
-                 }
- 		break;
-+	default:
-+		break;
- 	}
+ 	irq_set_affinity_hint(r_vec->irq_vector, &r_vec->affinity_mask);
  
- out:
 -- 
 2.43.0
 
