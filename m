@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-82426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0A1994CC0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:58:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D4B994ED4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE3C71C2170E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:58:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3CB8B242C0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5561DEFF7;
-	Tue,  8 Oct 2024 12:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682C21DED48;
+	Tue,  8 Oct 2024 13:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6Rh/o4/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vr17EJ8x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF691DED7B;
-	Tue,  8 Oct 2024 12:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256AC1DE88B;
+	Tue,  8 Oct 2024 13:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392222; cv=none; b=qbn0XvHv14Hf6zPT4CqrE8ggozk9nOTEvyR+fiH6rFy0Py7t8RBG521K0JrdM7WteV4DinvxRDBwlb/nZQCOZrdnpLdH5qzgGEt4YdwxH6ZZOGALR/K7zgk3CfT9eTNUyGh2b6tVHpf/+y9v5a2GxIPSqyLdOYhVV/jWVIr1Bh4=
+	t=1728393390; cv=none; b=cThuvISVSmy1IEgEMOEey5YHhJGMDtDT0BT9WOyc+cPdM8PIabOLGR6BaYSsQDRzLV4myeTqub82irQJF/2voWpzMxzwJLpnzDZ3PI6tfmXiHOFmJbwPeYgRT3x+iFfODK2gXF+IkUM8ptqo3nAsGT8CrB7n34r3WdbGjPujT34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392222; c=relaxed/simple;
-	bh=ew5fcnLKqxEdlr5G0XEznH1OcorBWPyIBrwMsjv/x1o=;
+	s=arc-20240116; t=1728393390; c=relaxed/simple;
+	bh=cko9lMjwMY4PPYtAoJFF1Pgk4+wA2kF0Frkt9vsONkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qLW8z7xVonXtT3X6hP4bSfDdoxY6pAZ492HlLvIEpopAAIK4+ldv/9CeGgHrS6MHFvaMqv+KoxEr09TFNXaKuxKNIYthVxM9ShUbFE9qsZ2wboPw+elx/bGoa0pb75Jc5xwdcUOMZPpuVmfo5cPgsxPK9yY+9u1ry/qrwSWJxQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6Rh/o4/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D60C4CECC;
-	Tue,  8 Oct 2024 12:57:01 +0000 (UTC)
+	 MIME-Version; b=XNVoqgIACNsHPp7o+v6Ewl1N41PXPHW9Z+fBuA1rMOOX1l0dyAnQ3WpKO/nJG1I3GnjLvqHrgeZbrp4lWsma+/+prWHHPxMX0BpxqBI6EgFdQSMPS8czuZCQ1/1IRvE9kUhjL0O2RSja/yXrv2I2ozORTwBYROjll5CpgJNIqcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vr17EJ8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73FCEC4CEC7;
+	Tue,  8 Oct 2024 13:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392221;
-	bh=ew5fcnLKqxEdlr5G0XEznH1OcorBWPyIBrwMsjv/x1o=;
+	s=korg; t=1728393390;
+	bh=cko9lMjwMY4PPYtAoJFF1Pgk4+wA2kF0Frkt9vsONkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U6Rh/o4/P3ki9m6ScngqhoOliAlWXWFdthJqorc0DB1Wb+HZsg3jVf5Twu1sOCxe5
-	 ME/1m6SlefQ7ECZ5J20Wj6CBdtbcLddjT31TRBc2oh0yWd8DYpmKlYgx/tfm0upxcR
-	 E+KsoVsS0anOpIg6377z8KaDfRi1PWCDQSc2Yx0Q=
+	b=Vr17EJ8xoGqt4u4/KgSd/AeBd7BbCZnr6PYEEihRS8qMsV3c7iehe+krNtdqsZYZe
+	 ZOlM9FEt5FtiI0XDiZD/FmCk5PoHOsXLWsBBgjSFf+wOrZ+3ly5ADpVcj0Lup4JoIc
+	 fnohZ+a22K2+Nlg8Mbqm9UtAa5Yi/qG07xem+S8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shiyan <eagle.alexander923@gmail.com>,
-	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.11 352/558] media: i2c: ar0521: Use cansleep version of gpiod_set_value()
-Date: Tue,  8 Oct 2024 14:06:22 +0200
-Message-ID: <20241008115716.151684153@linuxfoundation.org>
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 138/386] drm/amd/display: Handle null stream_status in planes_changed_for_existing_stream
+Date: Tue,  8 Oct 2024 14:06:23 +0200
+Message-ID: <20241008115634.863916813@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +67,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit bee1aed819a8cda47927436685d216906ed17f62 upstream.
+[ Upstream commit 8141f21b941710ecebe49220b69822cab3abd23d ]
 
-If we use GPIO reset from I2C port expander, we must use *_cansleep()
-variant of GPIO functions.
-This was not done in ar0521_power_on()/ar0521_power_off() functions.
-Let's fix that.
+This commit adds a null check for 'stream_status' in the function
+'planes_changed_for_existing_stream'. Previously, the code assumed
+'stream_status' could be null, but did not handle the case where it was
+actually null. This could lead to a null pointer dereference.
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 11 at drivers/gpio/gpiolib.c:3496 gpiod_set_value+0x74/0x7c
-Modules linked in:
-CPU: 0 PID: 11 Comm: kworker/u16:0 Not tainted 6.10.0 #53
-Hardware name: Diasom DS-RK3568-SOM-EVB (DT)
-Workqueue: events_unbound deferred_probe_work_func
-pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : gpiod_set_value+0x74/0x7c
-lr : ar0521_power_on+0xcc/0x290
-sp : ffffff8001d7ab70
-x29: ffffff8001d7ab70 x28: ffffff80027dcc90 x27: ffffff8003c82000
-x26: ffffff8003ca9250 x25: ffffffc080a39c60 x24: ffffff8003ca9088
-x23: ffffff8002402720 x22: ffffff8003ca9080 x21: ffffff8003ca9088
-x20: 0000000000000000 x19: ffffff8001eb2a00 x18: ffffff80efeeac80
-x17: 756d2d6332692f30 x16: 0000000000000000 x15: 0000000000000000
-x14: ffffff8001d91d40 x13: 0000000000000016 x12: ffffffc080e98930
-x11: ffffff8001eb2880 x10: 0000000000000890 x9 : ffffff8001d7a9f0
-x8 : ffffff8001d92570 x7 : ffffff80efeeac80 x6 : 000000003fc6e780
-x5 : ffffff8001d91c80 x4 : 0000000000000002 x3 : 0000000000000000
-x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000001
-Call trace:
- gpiod_set_value+0x74/0x7c
- ar0521_power_on+0xcc/0x290
-...
+Reported by smatch:
+drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_resource.c:3784 planes_changed_for_existing_stream() error: we previously assumed 'stream_status' could be null (see line 3774)
 
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
-Fixes: 852b50aeed15 ("media: On Semi AR0521 sensor driver")
-Cc: stable@vger.kernel.org
-Acked-by: Krzysztof Hałasa <khalasa@piap.pl>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ar0521.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/media/i2c/ar0521.c
-+++ b/drivers/media/i2c/ar0521.c
-@@ -844,7 +844,8 @@ static int ar0521_power_off(struct devic
- 	clk_disable_unprepare(sensor->extclk);
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index 733e445331ea5..4b34bc9d4e4be 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -2877,8 +2877,10 @@ static bool planes_changed_for_existing_stream(struct dc_state *context,
+ 		}
+ 	}
  
- 	if (sensor->reset_gpio)
--		gpiod_set_value(sensor->reset_gpio, 1); /* assert RESET signal */
-+		/* assert RESET signal */
-+		gpiod_set_value_cansleep(sensor->reset_gpio, 1);
+-	if (!stream_status)
++	if (!stream_status) {
+ 		ASSERT(0);
++		return false;
++	}
  
- 	for (i = ARRAY_SIZE(ar0521_supply_names) - 1; i >= 0; i--) {
- 		if (sensor->supplies[i])
-@@ -878,7 +879,7 @@ static int ar0521_power_on(struct device
- 
- 	if (sensor->reset_gpio)
- 		/* deassert RESET signal */
--		gpiod_set_value(sensor->reset_gpio, 0);
-+		gpiod_set_value_cansleep(sensor->reset_gpio, 0);
- 	usleep_range(4500, 5000); /* min 45000 clocks */
- 
- 	for (cnt = 0; cnt < ARRAY_SIZE(initial_regs); cnt++) {
+ 	for (i = 0; i < set_count; i++)
+ 		if (set[i].stream == stream)
+-- 
+2.43.0
+
 
 
 
