@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B835994AA9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:35:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C81AD994D14
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:01:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 268C31F20FDC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:35:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DF3A28676A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A1D1C4631;
-	Tue,  8 Oct 2024 12:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3160617F4FF;
+	Tue,  8 Oct 2024 13:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njfdlRm0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RiGygMUt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9FE1779B1;
-	Tue,  8 Oct 2024 12:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45991DE4DB;
+	Tue,  8 Oct 2024 13:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390921; cv=none; b=Av6jRzht8eCMLafgml4eREQU9ouhYogVLnt/+NdtfILHEY/hHVOIDuXkVtp0qJ/l/QSSVqsiOTsJyO8/T8ChrHgS02gPL0N8wAeYk0iYDLCUr7unlOqMQDv/Hd7gY4yA0jX/jILPkuaGlwWKcS8CEEOt7h7MB7MitH+8et/Qsyk=
+	t=1728392470; cv=none; b=WEsRlZkWn3v3ot3i6xQdhlJIK0IIOX4QxCOismcFLo5tzaFmS+AIPTngpU8Kb0zXSqF7XxIlN0G8Nj2n8khAo6gL8cDww9QimtlOzAmq2/3HnVzCySh1leGGs7o/C9ttnzlOuefuKvit/I4BCU4KNheNbrdSo+hSuJLNlyJzhUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390921; c=relaxed/simple;
-	bh=gvHaEKoJFFoGY1k8ruIYreI1Z/nIUULP1xyWY5d3ess=;
+	s=arc-20240116; t=1728392470; c=relaxed/simple;
+	bh=91DolElmDlQ7M4OvGKDBe4L3ZiMx7+bNLJIHApAGscs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eXmXeftsjNtB6QMFe8NVKUioOaamjngiumHrRm/2xJ9jBuEICt3q3+kd3vk2M+h3w0TT1tUwzaKhEr+xozFakm69YBlRoHPoc1YSE6LPQnD+ZC6H51TicraJa2IzaSCP69IDb+Alt2etpuHoAMl3SM1FPx46yM9CsfxU+QCoFMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njfdlRm0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFB11C4CECC;
-	Tue,  8 Oct 2024 12:35:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=p46hkWcN6PV1ZW3v3SU2Ng58sxH0x2QX4uCGGmohH0mXLkn/Kr+m9yjHeOmJkAjBHC81Nq0zSJ3JSWX1En0JPPr98VIcrLa8ybqVxI8BE2rRzxyifB/KtmLxKsCPWUrHc+YyNoMEaVIugwK5/l6ggKS6so3fb6mu0ApS6r9+5bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RiGygMUt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6032CC4CEC7;
+	Tue,  8 Oct 2024 13:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390921;
-	bh=gvHaEKoJFFoGY1k8ruIYreI1Z/nIUULP1xyWY5d3ess=;
+	s=korg; t=1728392469;
+	bh=91DolElmDlQ7M4OvGKDBe4L3ZiMx7+bNLJIHApAGscs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njfdlRm0vZRL6Iz0hxQ1X+mpOyGi4ji0SpI7zU3e7O2i/x4DOc7ECoiJSdIdX+nA6
-	 xXQnZ7TDAYc4Qq1QRTsOpoHCjpEnqMyFJJnVu3PbipGE+MjLr4JDzwnFoLO3OQy8Mt
-	 77WK+FY6Jq06cJ5x+vt579OyTRNAIww//FaGkg9s=
+	b=RiGygMUtF8lItlwXwajLfBwzRj090q4WnoueTvN2FQSA8mNh6cS4UUMbkNNTB0O9k
+	 DceV51zpdbNbIrnzFKIDeSMXqEdIK9yxNAbNat15uaOyF1+gX7mLC6PFi5Njyc+sYs
+	 CK3gFcvEGHRS2LzfMNu7yWubLMuRSNGpnYLZtU+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 392/482] clk: qcom: gcc-sm8150: De-register gcc_cpuss_ahb_clk_src
+	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 425/558] drm/xe/oa: Dont reset OAC_CONTEXT_ENABLE on OA stream close
 Date: Tue,  8 Oct 2024 14:07:35 +0200
-Message-ID: <20241008115703.838439348@linuxfoundation.org>
+Message-ID: <20241008115718.999130229@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,131 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: José Roberto de Souza <jose.souza@intel.com>
 
-commit bab0c7a0bc586e736b7cd2aac8e6391709a70ef2 upstream.
+commit 8135f1c09dd2eecee7cb637f7ec9a29e57300eb8 upstream.
 
-The branch clocks of gcc_cpuss_ahb_clk_src are marked critical
-and hence these clocks vote on XO blocking the suspend.
-De-register these clocks and its source as there is no rate
-setting happening on them.
+Mesa testing on Xe2+ revealed that when OA metrics are collected for an
+exec_queue, after the OA stream is closed, future batch buffers submitted
+on that exec_queue do not complete. Not resetting OAC_CONTEXT_ENABLE on OA
+stream close resolves these hangs and should not have any adverse effects.
 
-Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
+v2: Make the change that we don't reset the bit clearer (Ashutosh)
+    Also make the same fix for OAC as OAR (Ashutosh)
+
+Bspec: 60314
+Fixes: 2f4a730fcd2d ("drm/xe/oa: Add OAR support")
+Fixes: 14e077f8006d ("drm/xe/oa: Add OAC support")
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2821
+Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-5-8b3eaa5fb856@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240924213713.3497992-1-ashutosh.dixit@intel.com
+(cherry picked from commit 0c8650b09a365f4a31fca1d1d1e9d99c56071128)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-sc8180x.c |   63 -----------------------------------------
- 1 file changed, 63 deletions(-)
+ drivers/gpu/drm/xe/xe_oa.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/clk/qcom/gcc-sc8180x.c
-+++ b/drivers/clk/qcom/gcc-sc8180x.c
-@@ -260,28 +260,6 @@ static const struct clk_parent_data gcc_
- 	{ .hw = &gpll0_out_even.clkr.hw },
- };
- 
--static const struct freq_tbl ftbl_gcc_cpuss_ahb_clk_src[] = {
--	F(19200000, P_BI_TCXO, 1, 0, 0),
--	F(50000000, P_GPLL0_OUT_MAIN, 12, 0, 0),
--	F(100000000, P_GPLL0_OUT_MAIN, 6, 0, 0),
--	{ }
--};
--
--static struct clk_rcg2 gcc_cpuss_ahb_clk_src = {
--	.cmd_rcgr = 0x48014,
--	.mnd_width = 0,
--	.hid_width = 5,
--	.parent_map = gcc_parent_map_0,
--	.freq_tbl = ftbl_gcc_cpuss_ahb_clk_src,
--	.clkr.hw.init = &(struct clk_init_data){
--		.name = "gcc_cpuss_ahb_clk_src",
--		.parent_data = gcc_parents_0,
--		.num_parents = ARRAY_SIZE(gcc_parents_0),
--		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
--	},
--};
--
- static const struct freq_tbl ftbl_gcc_emac_ptp_clk_src[] = {
- 	F(19200000, P_BI_TCXO, 1, 0, 0),
- 	F(50000000, P_GPLL0_OUT_EVEN, 6, 0, 0),
-@@ -1599,25 +1577,6 @@ static struct clk_branch gcc_cfg_noc_usb
- 	},
- };
- 
--/* For CPUSS functionality the AHB clock needs to be left enabled */
--static struct clk_branch gcc_cpuss_ahb_clk = {
--	.halt_reg = 0x48000,
--	.halt_check = BRANCH_HALT_VOTED,
--	.clkr = {
--		.enable_reg = 0x52004,
--		.enable_mask = BIT(21),
--		.hw.init = &(struct clk_init_data){
--			.name = "gcc_cpuss_ahb_clk",
--			.parent_hws = (const struct clk_hw *[]){
--				      &gcc_cpuss_ahb_clk_src.clkr.hw
--			},
--			.num_parents = 1,
--			.flags = CLK_IS_CRITICAL | CLK_SET_RATE_PARENT,
--			.ops = &clk_branch2_ops,
--		},
--	},
--};
--
- static struct clk_branch gcc_cpuss_rbcpr_clk = {
- 	.halt_reg = 0x48008,
- 	.halt_check = BRANCH_HALT,
-@@ -3150,25 +3109,6 @@ static struct clk_branch gcc_sdcc4_apps_
- 	},
- };
- 
--/* For CPUSS functionality the SYS NOC clock needs to be left enabled */
--static struct clk_branch gcc_sys_noc_cpuss_ahb_clk = {
--	.halt_reg = 0x4819c,
--	.halt_check = BRANCH_HALT_VOTED,
--	.clkr = {
--		.enable_reg = 0x52004,
--		.enable_mask = BIT(0),
--		.hw.init = &(struct clk_init_data){
--			.name = "gcc_sys_noc_cpuss_ahb_clk",
--			.parent_hws = (const struct clk_hw *[]){
--				      &gcc_cpuss_ahb_clk_src.clkr.hw
--			},
--			.num_parents = 1,
--			.flags = CLK_IS_CRITICAL | CLK_SET_RATE_PARENT,
--			.ops = &clk_branch2_ops,
--		},
--	},
--};
--
- static struct clk_branch gcc_tsif_ahb_clk = {
- 	.halt_reg = 0x36004,
- 	.halt_check = BRANCH_HALT,
-@@ -4284,8 +4224,6 @@ static struct clk_regmap *gcc_sc8180x_cl
- 	[GCC_CFG_NOC_USB3_MP_AXI_CLK] = &gcc_cfg_noc_usb3_mp_axi_clk.clkr,
- 	[GCC_CFG_NOC_USB3_PRIM_AXI_CLK] = &gcc_cfg_noc_usb3_prim_axi_clk.clkr,
- 	[GCC_CFG_NOC_USB3_SEC_AXI_CLK] = &gcc_cfg_noc_usb3_sec_axi_clk.clkr,
--	[GCC_CPUSS_AHB_CLK] = &gcc_cpuss_ahb_clk.clkr,
--	[GCC_CPUSS_AHB_CLK_SRC] = &gcc_cpuss_ahb_clk_src.clkr,
- 	[GCC_CPUSS_RBCPR_CLK] = &gcc_cpuss_rbcpr_clk.clkr,
- 	[GCC_DDRSS_GPU_AXI_CLK] = &gcc_ddrss_gpu_axi_clk.clkr,
- 	[GCC_DISP_HF_AXI_CLK] = &gcc_disp_hf_axi_clk.clkr,
-@@ -4422,7 +4360,6 @@ static struct clk_regmap *gcc_sc8180x_cl
- 	[GCC_SDCC4_AHB_CLK] = &gcc_sdcc4_ahb_clk.clkr,
- 	[GCC_SDCC4_APPS_CLK] = &gcc_sdcc4_apps_clk.clkr,
- 	[GCC_SDCC4_APPS_CLK_SRC] = &gcc_sdcc4_apps_clk_src.clkr,
--	[GCC_SYS_NOC_CPUSS_AHB_CLK] = &gcc_sys_noc_cpuss_ahb_clk.clkr,
- 	[GCC_TSIF_AHB_CLK] = &gcc_tsif_ahb_clk.clkr,
- 	[GCC_TSIF_INACTIVITY_TIMERS_CLK] = &gcc_tsif_inactivity_timers_clk.clkr,
- 	[GCC_TSIF_REF_CLK] = &gcc_tsif_ref_clk.clkr,
+diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
+index eae38a49ee8e..2804f14f8f29 100644
+--- a/drivers/gpu/drm/xe/xe_oa.c
++++ b/drivers/gpu/drm/xe/xe_oa.c
+@@ -709,8 +709,7 @@ static int xe_oa_configure_oar_context(struct xe_oa_stream *stream, bool enable)
+ 		{
+ 			RING_CONTEXT_CONTROL(stream->hwe->mmio_base),
+ 			regs_offset + CTX_CONTEXT_CONTROL,
+-			_MASKED_FIELD(CTX_CTRL_OAC_CONTEXT_ENABLE,
+-				      enable ? CTX_CTRL_OAC_CONTEXT_ENABLE : 0)
++			_MASKED_BIT_ENABLE(CTX_CTRL_OAC_CONTEXT_ENABLE),
+ 		},
+ 	};
+ 	struct xe_oa_reg reg_lri = { OAR_OACONTROL, oacontrol };
+@@ -742,10 +741,8 @@ static int xe_oa_configure_oac_context(struct xe_oa_stream *stream, bool enable)
+ 		{
+ 			RING_CONTEXT_CONTROL(stream->hwe->mmio_base),
+ 			regs_offset + CTX_CONTEXT_CONTROL,
+-			_MASKED_FIELD(CTX_CTRL_OAC_CONTEXT_ENABLE,
+-				      enable ? CTX_CTRL_OAC_CONTEXT_ENABLE : 0) |
+-			_MASKED_FIELD(CTX_CTRL_RUN_ALONE,
+-				      enable ? CTX_CTRL_RUN_ALONE : 0),
++			_MASKED_BIT_ENABLE(CTX_CTRL_OAC_CONTEXT_ENABLE) |
++			_MASKED_FIELD(CTX_CTRL_RUN_ALONE, enable ? CTX_CTRL_RUN_ALONE : 0),
+ 		},
+ 	};
+ 	struct xe_oa_reg reg_lri = { OAC_OACONTROL, oacontrol };
+-- 
+2.46.2
+
 
 
 
