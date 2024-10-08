@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-82279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8F4994BFA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:48:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42A6E994937
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:21:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8B9D1F28AAE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:48:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF93A1F25E07
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07A21DE4FA;
-	Tue,  8 Oct 2024 12:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB331DF244;
+	Tue,  8 Oct 2024 12:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSyxstt8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOXKo0/n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF971DE2AE;
-	Tue,  8 Oct 2024 12:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1303B1E485;
+	Tue,  8 Oct 2024 12:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391730; cv=none; b=feTaXnqZ9NtNHa1doMyH/OlVMByuRwCa63VRIMJHEqB8IDRWHHDPxzbiYrSqeqOI6d5j6rTfLg85XOrV99Xn2UQr4EiC6XA53zQfgGQo4pEzuvs5JzvFKJsHOvKptJeGOU+yzYhdboOGkNvdEcctBqLMpC1ET+qNVnt0xSWJ1yA=
+	t=1728390035; cv=none; b=i/eQ9Cpxyc8BM62+qjqhtDbEiDZ8FWu1C+HN/rRmaAAwxRsR2NCRDW7OHnb6T3n62eS0s0QZ4PASPdfyDL7SeNTF4eXF/TApHGilb9ji1hrLyb58UXsxRh7XLdfyHFm2rC2x7+4zX4D7dLXkn6O9fmV/FvtsXgUKptQCcfVs06s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391730; c=relaxed/simple;
-	bh=KwpWCpF60jHCLXz172tW8x6KubjSM04i2DatvXf6G70=;
+	s=arc-20240116; t=1728390035; c=relaxed/simple;
+	bh=q3F9TXLfk4DaXQ4ZPUo7JnvRv8PRzvtriuMDj/Ltnsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m7MxSA+/B9/mvdzmmfk/rAWQXBrwUo2eC5Qqa0vtFMSvqMlvNFe3vpuwdcwA8eaUQLQ4+NJlMJZVuv+ES0aRUV3FZ5aAO1YqqsWGlh4rx5hEWsbPD8LFaFmr2Jnv1pHGU4h40kZoQZyvgLb6OR+uROG0sPvf/Bo5J1uEtk/9234=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSyxstt8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0696CC4CECC;
-	Tue,  8 Oct 2024 12:48:49 +0000 (UTC)
+	 MIME-Version; b=FEvGXD0+oOIz2GIccmt0wQ3otV18GR0yFIPw8zcXvanuk62SBjLb5Cnl2FTQpEhSvRWOt/rzvxqa3FbEHxxOzpyUT+MlBZeY54/qlt4WUB9M5rHCQKImyM8hEueU/0SwO1CrXCshdDCJ+HNfzRg1C9qRzVB7flrCuzeO/ePg4Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOXKo0/n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F77C4CED4;
+	Tue,  8 Oct 2024 12:20:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391730;
-	bh=KwpWCpF60jHCLXz172tW8x6KubjSM04i2DatvXf6G70=;
+	s=korg; t=1728390034;
+	bh=q3F9TXLfk4DaXQ4ZPUo7JnvRv8PRzvtriuMDj/Ltnsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oSyxstt81fjfJrLXKt4ugjAxACfcJiIi2ayT00zDSkfUM7Lz9yO/bXVhbqkOs83pB
-	 9cUPtTVCuk1Zq1PK0fVMCzhRKzD9NqXxavaiCPcHOJgos04QberqGyJKIgbnJ3m9tn
-	 zNoGJXhgU2iu4KzTmiJx6ejzSjAPrj86n8kdb7JQ=
+	b=iOXKo0/n+WXT3R0EGVazYv/94vcwbvycV5mcXDFuqdJtf9Va7jzrRatNKAffMGh1m
+	 g8BcQb0hHOU4dDPJEv9IfuBkW36Z/8Pr28TLMTrUMIFV/OhkhUJksjtZcesq4sL8Qn
+	 UXY5RLE8x4NpL69D6nIfQYehidGCk09hKZbd93Ic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 204/558] drm/amd/display: Check null pointers before using them
+Subject: [PATCH 6.10 171/482] iommu/arm-smmu-v3: Do not use devm for the cd table allocations
 Date: Tue,  8 Oct 2024 14:03:54 +0200
-Message-ID: <20241008115710.373455524@linuxfoundation.org>
+Message-ID: <20241008115655.035235569@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 1ff12bcd7deaeed25efb5120433c6a45dd5504a8 ]
+[ Upstream commit 47b2de35cab2b683f69d03515c2658c2d8515323 ]
 
-[WHAT & HOW]
-These pointers are null checked previously in the same function,
-indicating they might be null as reported by Coverity. As a result,
-they need to be checked when used again.
+The master->cd_table is entirely contained within the struct
+arm_smmu_master which is guaranteed to be freed by the core code under
+arm_smmu_release_device().
 
-This fixes 3 FORWARD_NULL issue reported by Coverity.
+There is no reason to use devm here, arm_smmu_free_cd_tables() is reliably
+called to free the CD related memory. Remove it and save some memory.
 
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/5-v4-6416877274e1+1af-smmuv3_tidy_jgg@nvidia.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 29 +++++++++------------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index f6cbff0ed6f94..188d10820654a 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -7275,6 +7275,9 @@ create_validate_stream_for_sink(struct amdgpu_dm_connector *aconnector,
- 	int requested_bpc = drm_state ? drm_state->max_requested_bpc : 8;
- 	enum dc_status dc_result = DC_OK;
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index 1f38669b711d3..a5425519fecb8 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -1173,8 +1173,8 @@ static int arm_smmu_alloc_cd_leaf_table(struct arm_smmu_device *smmu,
+ {
+ 	size_t size = CTXDESC_L2_ENTRIES * (CTXDESC_CD_DWORDS << 3);
  
-+	if (!dm_state)
-+		return NULL;
-+
- 	do {
- 		stream = create_stream_for_sink(connector, drm_mode,
- 						dm_state, old_stream,
-@@ -9382,7 +9385,7 @@ static void amdgpu_dm_commit_streams(struct drm_atomic_state *state,
- 		if (acrtc)
- 			old_crtc_state = drm_atomic_get_old_crtc_state(state, &acrtc->base);
+-	l1_desc->l2ptr = dmam_alloc_coherent(smmu->dev, size,
+-					     &l1_desc->l2ptr_dma, GFP_KERNEL);
++	l1_desc->l2ptr = dma_alloc_coherent(smmu->dev, size,
++					    &l1_desc->l2ptr_dma, GFP_KERNEL);
+ 	if (!l1_desc->l2ptr) {
+ 		dev_warn(smmu->dev,
+ 			 "failed to allocate context descriptor table\n");
+@@ -1373,17 +1373,17 @@ static int arm_smmu_alloc_cd_tables(struct arm_smmu_master *master)
+ 		cd_table->num_l1_ents = DIV_ROUND_UP(max_contexts,
+ 						  CTXDESC_L2_ENTRIES);
  
--		if (!acrtc->wb_enabled)
-+		if (!acrtc || !acrtc->wb_enabled)
- 			continue;
+-		cd_table->l1_desc = devm_kcalloc(smmu->dev, cd_table->num_l1_ents,
+-					      sizeof(*cd_table->l1_desc),
+-					      GFP_KERNEL);
++		cd_table->l1_desc = kcalloc(cd_table->num_l1_ents,
++					    sizeof(*cd_table->l1_desc),
++					    GFP_KERNEL);
+ 		if (!cd_table->l1_desc)
+ 			return -ENOMEM;
  
- 		dm_old_crtc_state = to_dm_crtc_state(old_crtc_state);
-@@ -9786,9 +9789,10 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
- 
- 			DRM_INFO("[HDCP_DM] hdcp_update_display enable_encryption = %x\n", enable_encryption);
- 
--			hdcp_update_display(
--				adev->dm.hdcp_workqueue, aconnector->dc_link->link_index, aconnector,
--				new_con_state->hdcp_content_type, enable_encryption);
-+			if (aconnector->dc_link)
-+				hdcp_update_display(
-+					adev->dm.hdcp_workqueue, aconnector->dc_link->link_index, aconnector,
-+					new_con_state->hdcp_content_type, enable_encryption);
- 		}
+ 		l1size = cd_table->num_l1_ents * (CTXDESC_L1_DESC_DWORDS << 3);
  	}
  
+-	cd_table->cdtab = dmam_alloc_coherent(smmu->dev, l1size, &cd_table->cdtab_dma,
+-					   GFP_KERNEL);
++	cd_table->cdtab = dma_alloc_coherent(smmu->dev, l1size,
++					     &cd_table->cdtab_dma, GFP_KERNEL);
+ 	if (!cd_table->cdtab) {
+ 		dev_warn(smmu->dev, "failed to allocate context descriptor\n");
+ 		ret = -ENOMEM;
+@@ -1394,7 +1394,7 @@ static int arm_smmu_alloc_cd_tables(struct arm_smmu_master *master)
+ 
+ err_free_l1:
+ 	if (cd_table->l1_desc) {
+-		devm_kfree(smmu->dev, cd_table->l1_desc);
++		kfree(cd_table->l1_desc);
+ 		cd_table->l1_desc = NULL;
+ 	}
+ 	return ret;
+@@ -1414,21 +1414,18 @@ static void arm_smmu_free_cd_tables(struct arm_smmu_master *master)
+ 			if (!cd_table->l1_desc[i].l2ptr)
+ 				continue;
+ 
+-			dmam_free_coherent(smmu->dev, size,
+-					   cd_table->l1_desc[i].l2ptr,
+-					   cd_table->l1_desc[i].l2ptr_dma);
++			dma_free_coherent(smmu->dev, size,
++					  cd_table->l1_desc[i].l2ptr,
++					  cd_table->l1_desc[i].l2ptr_dma);
+ 		}
+-		devm_kfree(smmu->dev, cd_table->l1_desc);
+-		cd_table->l1_desc = NULL;
++		kfree(cd_table->l1_desc);
+ 
+ 		l1size = cd_table->num_l1_ents * (CTXDESC_L1_DESC_DWORDS << 3);
+ 	} else {
+ 		l1size = cd_table->num_l1_ents * (CTXDESC_CD_DWORDS << 3);
+ 	}
+ 
+-	dmam_free_coherent(smmu->dev, l1size, cd_table->cdtab, cd_table->cdtab_dma);
+-	cd_table->cdtab_dma = 0;
+-	cd_table->cdtab = NULL;
++	dma_free_coherent(smmu->dev, l1size, cd_table->cdtab, cd_table->cdtab_dma);
+ }
+ 
+ bool arm_smmu_free_asid(struct arm_smmu_ctx_desc *cd)
 -- 
 2.43.0
 
