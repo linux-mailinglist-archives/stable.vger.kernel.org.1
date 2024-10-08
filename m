@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A54994D33
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:02:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2C3994AA0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 363722826BF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 254EC28B1CC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C54D11DE88B;
-	Tue,  8 Oct 2024 13:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3791C4631;
+	Tue,  8 Oct 2024 12:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VljJJ1YO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsrBnzkP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8337D1DFD1;
-	Tue,  8 Oct 2024 13:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7C21779B1;
+	Tue,  8 Oct 2024 12:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392576; cv=none; b=ED+QLPY8hTKN2lXsphBFjR3rvDJjcC29y3ghdy4k6CaO03HvQqmoX6XdsyKltJq2zo++YEvtL5R4kVb5ytmK5OKjFWMfQpkJ8BfA/xa2GfsZIL4agAco4mNFdEMARIVAVg/CSS6V/WHuHR8jZVT87xzypcmTr4QQz/1wm+G9IW0=
+	t=1728390893; cv=none; b=qCrCsqZI5dQ8AACXogS0jBwwKfGZ/VApMTQPaSf5T/jyndRsC3qEzTOWD4Vx8godb24iYbeD3Pd5cYnNBMoXJPuO+Cg+3op62CksF3AXLCY6fbDlDufe6I1/no3fNkov5Sme3F1nWcmEHQpT+UF+nqA5Bu/+pgaJja2mqmnxtLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392576; c=relaxed/simple;
-	bh=/To6JJ95B0/uwAxFys6rqVgfiYnNBOtRI0zFv3NxQbg=;
+	s=arc-20240116; t=1728390893; c=relaxed/simple;
+	bh=V81q+biJWP0F2OmHPptSWcGJCDlfa0V67R7zxHFWwMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LXz3mqhYp5Rers7t3jO6k///ChqZaUiuqzT9baPZDgXtgBIMl+M6EyBgh+NJFiHnxXtcOycKD7lXZcPOkHcmBC6k6SjdEBtQEQNjoq63cj+3EEuUdaROg35yZwHTzo6TPQOyCWER3TDRToAmRVuJL9AtOVHh8ucmj3bC+x04p0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VljJJ1YO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C63C4CECE;
-	Tue,  8 Oct 2024 13:02:55 +0000 (UTC)
+	 MIME-Version; b=EdeFcYTvokhbcDKEc1/HcoEjSxjDTAjT5VeIiaIDvvJS9WAiRENwm/YcZtcTSl7fcvKhZCu3naVzXrMD2v8Nu9npEkrBPjkyJ0PCOp9xAfCIdJW0sEF1M3MEakKuWo/2mYKqFDIu4t9MSBxAeCt6QL6TXDQtWnYp/sVb8OQDYmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsrBnzkP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F49C4CEC7;
+	Tue,  8 Oct 2024 12:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392576;
-	bh=/To6JJ95B0/uwAxFys6rqVgfiYnNBOtRI0zFv3NxQbg=;
+	s=korg; t=1728390893;
+	bh=V81q+biJWP0F2OmHPptSWcGJCDlfa0V67R7zxHFWwMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VljJJ1YO+6H9CCuG650tpBiw9D2LwnazRaZoFm6qPL/H+kHchQqvR/Tkrh1Xquq6T
-	 0T3KP2Px2y1yg13PHo0cs4kgNGbrxDKyIN2TcsCab7Zu3vWWHKrgHkSOspW69u2e+l
-	 mWg+vitYX3P+3N1y3H6n1JnbnPTHGFGYC5aCgEK8=
+	b=bsrBnzkPzPxcv9LpwBgsjEncLDuO1BnL0tNFxzriUB+l3v3c5yuiakqWt+JgN+AO4
+	 KZvoZSBZJLgpS7Hmkh2QtDJ3pCK3uTa55E8bszWzEDyo+xjcATKyTBUa1lfeyfbxwW
+	 uJ+0jd9uaE9V2/7SRUZFbbB62Ljh4oepLLBSYYeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Tipton <quic_mdtipton@quicinc.com>,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Imran Shaik <quic_imrashai@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.11 457/558] clk: qcom: clk-rpmh: Fix overflow in BCM vote
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Kiran K <kiran.k@intel.com>
+Subject: [PATCH 6.10 424/482] Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE
 Date: Tue,  8 Oct 2024 14:08:07 +0200
-Message-ID: <20241008115720.242509476@linuxfoundation.org>
+Message-ID: <20241008115705.088668521@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Tipton <quic_mdtipton@quicinc.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit a4e5af27e6f6a8b0d14bc0d7eb04f4a6c7291586 upstream.
+commit b25e11f978b63cb7857890edb3a698599cddb10e upstream.
 
-Valid frequencies may result in BCM votes that exceed the max HW value.
-Set vote ceiling to BCM_TCS_CMD_VOTE_MASK to ensure the votes aren't
-truncated, which can result in lower frequencies than desired.
+This aligned BR/EDR JUST_WORKS method with LE which since 92516cd97fd4
+("Bluetooth: Always request for user confirmation for Just Works")
+always request user confirmation with confirm_hint set since the
+likes of bluetoothd have dedicated policy around JUST_WORKS method
+(e.g. main.conf:JustWorksRepairing).
 
-Fixes: 04053f4d23a4 ("clk: qcom: clk-rpmh: Add IPA clock support")
+CVE: CVE-2024-8805
 Cc: stable@vger.kernel.org
-Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
-Reviewed-by: Taniya Das <quic_tdas@quicinc.com>
-Signed-off-by: Imran Shaik <quic_imrashai@quicinc.com>
-Link: https://lore.kernel.org/r/20240809-clk-rpmh-bcm-vote-fix-v2-1-240c584b7ef9@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: ba15a58b179e ("Bluetooth: Fix SSP acceptor just-works confirmation without MITM")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Tested-by: Kiran K <kiran.k@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/clk-rpmh.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/bluetooth/hci_event.c |   13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
---- a/drivers/clk/qcom/clk-rpmh.c
-+++ b/drivers/clk/qcom/clk-rpmh.c
-@@ -263,6 +263,8 @@ static int clk_rpmh_bcm_send_cmd(struct
- 		cmd_state = 0;
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -5325,19 +5325,16 @@ static void hci_user_confirm_request_evt
+ 		goto unlock;
  	}
  
-+	cmd_state = min(cmd_state, BCM_TCS_CMD_VOTE_MASK);
-+
- 	if (c->last_sent_aggr_state != cmd_state) {
- 		cmd.addr = c->res_addr;
- 		cmd.data = BCM_TCS_CMD(1, enable, 0, cmd_state);
+-	/* If no side requires MITM protection; auto-accept */
++	/* If no side requires MITM protection; use JUST_CFM method */
+ 	if ((!loc_mitm || conn->remote_cap == HCI_IO_NO_INPUT_OUTPUT) &&
+ 	    (!rem_mitm || conn->io_capability == HCI_IO_NO_INPUT_OUTPUT)) {
+ 
+-		/* If we're not the initiators request authorization to
+-		 * proceed from user space (mgmt_user_confirm with
+-		 * confirm_hint set to 1). The exception is if neither
+-		 * side had MITM or if the local IO capability is
+-		 * NoInputNoOutput, in which case we do auto-accept
++		/* If we're not the initiator of request authorization and the
++		 * local IO capability is not NoInputNoOutput, use JUST_WORKS
++		 * method (mgmt_user_confirm with confirm_hint set to 1).
+ 		 */
+ 		if (!test_bit(HCI_CONN_AUTH_PEND, &conn->flags) &&
+-		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT &&
+-		    (loc_mitm || rem_mitm)) {
++		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT) {
+ 			bt_dev_dbg(hdev, "Confirming auto-accept as acceptor");
+ 			confirm_hint = 1;
+ 			goto confirm;
 
 
 
