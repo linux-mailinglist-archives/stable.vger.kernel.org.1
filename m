@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-83006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F271994FE3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:30:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31327994FF0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:31:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BBC41C248E8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:30:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC420288625
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F3F1D9A43;
-	Tue,  8 Oct 2024 13:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDEC01DFDB1;
+	Tue,  8 Oct 2024 13:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEYNyli5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLpbY9Jr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0091F1DE4CB;
-	Tue,  8 Oct 2024 13:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646751DFDAC;
+	Tue,  8 Oct 2024 13:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728394166; cv=none; b=OnsF8G8u5+e23jylauoV05pE7CxKpwbzaFeEWwbwwd7eN88inW8oyyPDZ/AxZ0iHk+kfUK0FEMQu+VAyijngu2qEFEdoi+JOFjqdB6XSZqZjl2qBQ5dnF/U/92clmtwU6aGOUeITge8Z6h+jtxlK6xXRzzpHpSwttSfIgOX3rbM=
+	t=1728394202; cv=none; b=kVJP7p4Ws1DCgM4GqVzuFtWsBsIufa1mkicmrLM0LkFcdPCm3gLcqzlKHIuPiGMC+gagdxprpenSA3pFE0t1z96WPkj8TtQGRbyPPpLiDvpRC4+Q1PES3c/1KTatqa76LV2waJXaSXJ1HUtpOQvD/QS6k2tFGkOhINs2oPmpSok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728394166; c=relaxed/simple;
-	bh=DZOjwinwdbSAY5AAYdgMNz5tj3LuMmD53DS2eDXXlQM=;
+	s=arc-20240116; t=1728394202; c=relaxed/simple;
+	bh=MDFR5Vr4EYHDXVDG7hAHvUuEukT1dyK3PEfKl54Fm8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bncwe9LZ6I2MQ7TTM/Iz4ixkjHhW+qyzbH3c3DolDDwZD86ZAnNCIuGdTEtsEesBQqnzt7/g2EUuId+R+QT6lQQ478NtnxPfSDSeNpFNdOcG1YM4+INg4IL2+FxooX91HlpPmYbugO5tP56ACWcAPMIOwT8/pan3Y5bDBxyp6dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEYNyli5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657B9C4CEC7;
-	Tue,  8 Oct 2024 13:29:25 +0000 (UTC)
+	 MIME-Version; b=BOuQbED56uXL0iO6Y55BF+0EEvAJl7r36XFP7uJ0l9mQLqXWu8h7KrYqlXxznrBR7B6YWpJ+pPdPOalG3yJK96XLLC6AO9RC7cbDIKKvFzd9TWdWRhmwenpKSnoND0TOUiAzNbaSVZnU7I25b4dRdYLWR4Ol+B7QynuoobC4Ns4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLpbY9Jr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D46DAC4CEC7;
+	Tue,  8 Oct 2024 13:30:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728394165;
-	bh=DZOjwinwdbSAY5AAYdgMNz5tj3LuMmD53DS2eDXXlQM=;
+	s=korg; t=1728394202;
+	bh=MDFR5Vr4EYHDXVDG7hAHvUuEukT1dyK3PEfKl54Fm8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pEYNyli5IkyHEsoPELm4kxU3xS9oo5krHeHqjMYxFfvKm514goZ05WiFQ/sbgMUR8
-	 YBbQa3JmzJIa0TN8goq77KFYA5W0cNj7u2Ezj3aZXTza44bR+Ddy/2sy+AHswck4Ye
-	 O6OhwfNk8oZABXJGoEDa2L0xrwJ/+DbYrmaM14VM=
+	b=uLpbY9Jru5HoxEJRqEDu1BzYm2qMJ26gpWzHpRSzWVP6v6JZyPEPCS7svtiU+sY3Z
+	 73UxwHXq+30a6NuE+FH0uQdYlybOmPIqeLwpf4m+/F0yFVyR4l7ciP2suPPGmUIYSG
+	 vwdesDEANFGeFSk6rdLPXMQUpwhIpNfORVbyx/j0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 359/386] r8169: add tally counter fields added with RTL8125
-Date: Tue,  8 Oct 2024 14:10:04 +0200
-Message-ID: <20241008115643.510420473@linuxfoundation.org>
+Subject: [PATCH 6.6 360/386] clk: qcom: gcc-sc8180x: Add GPLL9 support
+Date: Tue,  8 Oct 2024 14:10:05 +0200
+Message-ID: <20241008115643.549097882@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
 References: <20241008115629.309157387@linuxfoundation.org>
@@ -67,64 +67,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-[ Upstream commit ced8e8b8f40accfcce4a2bbd8b150aa76d5eff9a ]
+[ Upstream commit 818a2f8d5e4ad2c1e39a4290158fe8e39a744c70 ]
 
-RTL8125 added fields to the tally counter, what may result in the chip
-dma'ing these new fields to unallocated memory. Therefore make sure
-that the allocated memory area is big enough to hold all of the
-tally counter values, even if we use only parts of it.
+Add the missing GPLL9 pll and fix the gcc_parents_7 data to use
+the correct pll hw.
 
-Fixes: f1bce4ad2f1c ("r8169: add support for RTL8125")
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
 Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/741d26a9-2b2b-485d-91d9-ecb302e345b5@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-3-8b3eaa5fb856@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 27 +++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ drivers/clk/qcom/gcc-sc8180x.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 382ba8b04cbfa..b499d8ea6d216 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -567,6 +567,33 @@ struct rtl8169_counters {
- 	__le32	rx_multicast;
- 	__le16	tx_aborted;
- 	__le16	tx_underrun;
-+	/* new since RTL8125 */
-+	__le64 tx_octets;
-+	__le64 rx_octets;
-+	__le64 rx_multicast64;
-+	__le64 tx_unicast64;
-+	__le64 tx_broadcast64;
-+	__le64 tx_multicast64;
-+	__le32 tx_pause_on;
-+	__le32 tx_pause_off;
-+	__le32 tx_pause_all;
-+	__le32 tx_deferred;
-+	__le32 tx_late_collision;
-+	__le32 tx_all_collision;
-+	__le32 tx_aborted32;
-+	__le32 align_errors32;
-+	__le32 rx_frame_too_long;
-+	__le32 rx_runt;
-+	__le32 rx_pause_on;
-+	__le32 rx_pause_off;
-+	__le32 rx_pause_all;
-+	__le32 rx_unknown_opcode;
-+	__le32 rx_mac_error;
-+	__le32 tx_underrun32;
-+	__le32 rx_mac_missed;
-+	__le32 rx_tcam_dropped;
-+	__le32 tdu;
-+	__le32 rdu;
+diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
+index 283bda4d1e701..ec0c45881c67a 100644
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -142,6 +142,23 @@ static struct clk_alpha_pll gpll7 = {
+ 	},
  };
  
- struct rtl8169_tc_offsets {
++static struct clk_alpha_pll gpll9 = {
++	.offset = 0x1c000,
++	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_TRION],
++	.clkr = {
++		.enable_reg = 0x52000,
++		.enable_mask = BIT(9),
++		.hw.init = &(const struct clk_init_data) {
++			.name = "gpll9",
++			.parent_data = &(const struct clk_parent_data) {
++				.fw_name = "bi_tcxo",
++			},
++			.num_parents = 1,
++			.ops = &clk_alpha_pll_fixed_trion_ops,
++		},
++	},
++};
++
+ static const struct parent_map gcc_parent_map_0[] = {
+ 	{ P_BI_TCXO, 0 },
+ 	{ P_GPLL0_OUT_MAIN, 1 },
+@@ -241,7 +258,7 @@ static const struct parent_map gcc_parent_map_7[] = {
+ static const struct clk_parent_data gcc_parents_7[] = {
+ 	{ .fw_name = "bi_tcxo", },
+ 	{ .hw = &gpll0.clkr.hw },
+-	{ .name = "gppl9" },
++	{ .hw = &gpll9.clkr.hw },
+ 	{ .hw = &gpll4.clkr.hw },
+ 	{ .hw = &gpll0_out_even.clkr.hw },
+ };
+@@ -4419,6 +4436,7 @@ static struct clk_regmap *gcc_sc8180x_clocks[] = {
+ 	[GPLL1] = &gpll1.clkr,
+ 	[GPLL4] = &gpll4.clkr,
+ 	[GPLL7] = &gpll7.clkr,
++	[GPLL9] = &gpll9.clkr,
+ };
+ 
+ static const struct qcom_reset_map gcc_sc8180x_resets[] = {
 -- 
 2.43.0
 
