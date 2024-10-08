@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-81912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF6F994A18
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C797B994E5E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9B361F21E1A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7185D1F236D6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891151B81CC;
-	Tue,  8 Oct 2024 12:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E6C1DDA36;
+	Tue,  8 Oct 2024 13:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXE/MwI5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVs95LQS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477A31C2443;
-	Tue,  8 Oct 2024 12:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEF01DE88F;
+	Tue,  8 Oct 2024 13:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390554; cv=none; b=OkhtCu5x8gcHPSGie1oSqN9p2oEuAHk8wBsFwMx6JdfeRENvWFFw0GOM/mtATOrD8nybzqHhHpHly0IQo2gysOgXIYI5zoBBaFCCzpruLrPmlyruaHOGhS4jh961kmPrB5PF23MKebFpLwlHeQpYqf7jY17jk+Kd2Q9oG2SsAnQ=
+	t=1728393393; cv=none; b=BGEX/HKNkPpUQ8RCPHFVU68ZCMJ6cNlbDe+uRmPh0ZxbYxTJrf8ByclMuZfOgptMb7i2nb1G+Sz8zE4FW98qHw3jqkF9zX/MZWpmdKPbu/LhDhAQM92SXtSj0tPasEoZY0hyCpbo0xabuUaVcaqOyjznD8S41RzUuCWzG5Qw7jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390554; c=relaxed/simple;
-	bh=stVwMCxGnZuHwB1GibRBQV9WTVGB3zeo/aeYp6W/TpA=;
+	s=arc-20240116; t=1728393393; c=relaxed/simple;
+	bh=azGPQ8fT45UA50E1mzYOl1ZJm6mHCJLl8pDo3TCNCj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EVbSvquubDPygL8KMHo1uLpN4/IFNxSG8cJpEfmgAv+1d7LGBwLwuMu2oaZKSr4Q93XYoTrQ6RZjbBw89PaNwDMMm+lWNSmm3u6b9yXBfMUsrCleOIjPoaQkgJMy3DcM3r8S1xXbc8terSMXLMTsAdYNod6DlHHIUvBBa5k5YzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXE/MwI5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA96C4CECC;
-	Tue,  8 Oct 2024 12:29:13 +0000 (UTC)
+	 MIME-Version; b=TY5f4+uleuarpsRyyXl10vC43AayIolbLL5cBKwQ0snsdKU6hnyrgv6LtQJYghc/+mxRxY7287fMpG/76TimKccLTuI+TGmIZIDY33cydOM4s3Lp8VaTx0o5joVxHnWDW4UNPd2X8aGaE9489FyjX7n3h9rub7PagxcZlOWAi6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVs95LQS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB63CC4CEC7;
+	Tue,  8 Oct 2024 13:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390554;
-	bh=stVwMCxGnZuHwB1GibRBQV9WTVGB3zeo/aeYp6W/TpA=;
+	s=korg; t=1728393393;
+	bh=azGPQ8fT45UA50E1mzYOl1ZJm6mHCJLl8pDo3TCNCj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AXE/MwI5oYIZHP+Bf9GTVwZpOdoyT/U62rUfZvWnnwbYVzXazM1uNP9qK17V/CBDb
-	 R60b4oJpgrznNCgQvdzc5J+3sMur+XK2eEjJAXDmXWbdtpcexK2BbPrj1VvX8Ln5Vr
-	 +Ef8aJKtdLjVq50yuos7UzuDUT5TS3AD/HCvqvZs=
+	b=VVs95LQSHt9BMeh7yNBkPM22aSrreplE2MGDw7jyttY1vDtQnglRcYcN+cC/jtJ0Z
+	 LqXC8o+hVdWRxwtZsZ6y6GsdAjRI1ZjMyFbn0JA+HFHMGE7ZUjegl8yda/rTeZvOPl
+	 1dLSjGhrm7egAKEWHDqPwKHAmf5S3zxf+EhXNRMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhishek Tamboli <abhishektamboli9@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 321/482] ALSA: hda/realtek: Add a quirk for HP Pavilion 15z-ec200
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 139/386] drm/amd/display: Check null pointers before using dc->clk_mgr
 Date: Tue,  8 Oct 2024 14:06:24 +0200
-Message-ID: <20241008115701.061332679@linuxfoundation.org>
+Message-ID: <20241008115634.902131978@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhishek Tamboli <abhishektamboli9@gmail.com>
+From: Alex Hung <alex.hung@amd.com>
 
-commit d75dba49744478c32f6ce1c16b5f391c2d5cef5f upstream.
+[ Upstream commit 95d9e0803e51d5a24276b7643b244c7477daf463 ]
 
-Add the quirk for HP Pavilion Gaming laptop 15z-ec200 for
-enabling the mute led. The fix apply the ALC285_FIXUP_HP_MUTE_LED
-quirk for this model.
+[WHY & HOW]
+dc->clk_mgr is null checked previously in the same function, indicating
+it might be null.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219303
-Signed-off-by: Abhishek Tamboli <abhishektamboli9@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240930145300.4604-1-abhishektamboli9@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Passing "dc" to "dc->hwss.apply_idle_power_optimizations", which
+dereferences null "dc->clk_mgr". (The function pointer resolves to
+"dcn35_apply_idle_power_optimizations".)
+
+This fixes 1 FORWARD_NULL issue reported by Coverity.
+
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10162,6 +10162,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8896, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8898, "HP EliteBook 845 G8 Notebook PC", ALC285_FIXUP_HP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x103c, 0x88d0, "HP Pavilion 15-eh1xxx (mainboard 88D0)", ALC287_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x88dd, "HP Pavilion 15z-ec200", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8902, "HP OMEN 16", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x890e, "HP 255 G8 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8919, "HP Pavilion Aero Laptop 13-be0xxx", ALC287_FIXUP_HP_GPIO_LED),
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 0b2eb2a6c8e14..a7a6f6c5c7655 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -4716,7 +4716,8 @@ void dc_allow_idle_optimizations(struct dc *dc, bool allow)
+ 	if (allow == dc->idle_optimizations_allowed)
+ 		return;
+ 
+-	if (dc->hwss.apply_idle_power_optimizations && dc->hwss.apply_idle_power_optimizations(dc, allow))
++	if (dc->hwss.apply_idle_power_optimizations && dc->clk_mgr != NULL &&
++	    dc->hwss.apply_idle_power_optimizations(dc, allow))
+ 		dc->idle_optimizations_allowed = allow;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
