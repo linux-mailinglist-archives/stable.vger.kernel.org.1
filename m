@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 326939949F2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC83994E61
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF15C2812A7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B198B28ADA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188D11DD552;
-	Tue,  8 Oct 2024 12:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEED1DF26D;
+	Tue,  8 Oct 2024 13:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJ85EUa1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2aKO+qp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDA64C97;
-	Tue,  8 Oct 2024 12:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00B71DE88F;
+	Tue,  8 Oct 2024 13:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390456; cv=none; b=a4Vxnb6zJNAR9x+q1kgDQI0Y4vLRJyryfBRxPrpVcKgY/FpvGnmqhdiJSr3ZD/K8h5NFuqJO9dzRZpqHN93N4gjKzjy50noZf7Naq6wR4eBgF5nMTVa7pUUS54zwnVnnF3xkb/vGxfXZMGdfQtrFuK3Vvih8vrBGaEZJb+nRaz0=
+	t=1728393197; cv=none; b=dy9Eosck4c2j+otwtROX+WZBmwENOFlacuhHbqKWvXhTamapa6wmO/pBB83eCKMbezWipoy8JlUo5JiM7wqsVl2WvL/USILTIh16IDUwzbLgzrXNLMmon+SmuEXSlsuOnBm6kK6UWKM9yDUmV/W7s+ghWl/U2a0EoZxVlxQyTvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390456; c=relaxed/simple;
-	bh=IJfSVbSEmd5SXxZUmM3HizynEvzntg22tgUlMZ1ikxc=;
+	s=arc-20240116; t=1728393197; c=relaxed/simple;
+	bh=FmQ8/0QGFIXAaAtsnGymYGky+z4Akv870a+h5VyS/PQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jJoXvYoXr+J1i67PePalzRJCbgPjavuuQNWRVfEybpK7GafUjVrBZZrAxGKXre8fUhA2RhG+m8M3RN8WPxxCBC/3T0Kh3f1WIxM4qMmFLJxVg18IrWlzM0HzkTVoo8/m/yAbR83J7UqBPZOaSSJMw4fopdhRFmTOhPWQeRFiKs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJ85EUa1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409A0C4CEC7;
-	Tue,  8 Oct 2024 12:27:36 +0000 (UTC)
+	 MIME-Version; b=NQ5Zze2LtSOc43uG/Dzmtf0WLahDY1kh6UjW/MG3fpoa+QlDhRty8xkcdcNY3nhLx7zJjMBj7OHwvH/HNH0Y1La3GYgaElpmTbOvi457NymBurpBnZ3zqXpu+RlgDouMN+PXkywiI1fexToctrKOtoIBGxIAzfYujraHVSRtK2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2aKO+qp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA38C4CEC7;
+	Tue,  8 Oct 2024 13:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390456;
-	bh=IJfSVbSEmd5SXxZUmM3HizynEvzntg22tgUlMZ1ikxc=;
+	s=korg; t=1728393196;
+	bh=FmQ8/0QGFIXAaAtsnGymYGky+z4Akv870a+h5VyS/PQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QJ85EUa1kooXopeuo/zGXJ8AVB7Xyxc3BMzGBPj4WDPr7piPXX1lCwfR3serxXEJ/
-	 Ofb9oDMGYZnu4FlESTJWQwx+7d12qtwSoOGXs77c0A1WK5/cVwWg/YqgqOKYumVxKV
-	 GPl60/fVzcCRNZnUbHpiBI3UzZ/u5E4HeuLzKgXw=
+	b=u2aKO+qpfN94ZJNznRc53YnodT9ti101M/k1BbOo2svyyKFOz4uNVcr76AHIG+L88
+	 C5JGS1bgmvhnfbfRJ85PTRwXrRVr99xSKHsWHgZZXCNuU6Nj/1V4sSFkPWgLzDL3ql
+	 i15mS41lyqeXosGMOFnB8r2dMU0dsP7JroTCanwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 263/482] spi: s3c64xx: fix timeout counters in flush_fifo
+Subject: [PATCH 6.6 081/386] wifi: ath12k: fix array out-of-bound access in SoC stats
 Date: Tue,  8 Oct 2024 14:05:26 +0200
-Message-ID: <20241008115658.633556300@linuxfoundation.org>
+Message-ID: <20241008115632.647917301@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Dooks <ben.dooks@codethink.co.uk>
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-[ Upstream commit 68a16708d2503b6303d67abd43801e2ca40c208d ]
+[ Upstream commit e106b7ad13c1d246adaa57df73edb8f8b8acb240 ]
 
-In the s3c64xx_flush_fifo() code, the loops counter is post-decremented
-in the do { } while(test && loops--) condition. This means the loops is
-left at the unsigned equivalent of -1 if the loop times out. The test
-after will never pass as if tests for loops == 0.
+Currently, the ath12k_soc_dp_stats::hal_reo_error array is defined with a
+maximum size of DP_REO_DST_RING_MAX. However, the ath12k_dp_rx_process()
+function access ath12k_soc_dp_stats::hal_reo_error using the REO
+destination SRNG ring ID, which is incorrect. SRNG ring ID differ from
+normal ring ID, and this usage leads to out-of-bounds array access. To
+fix this issue, modify ath12k_dp_rx_process() to use the normal ring ID
+directly instead of the SRNG ring ID to avoid out-of-bounds array access.
 
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-Fixes: 230d42d422e7 ("spi: Add s3c64xx SPI Controller driver")
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://patch.msgid.link/20240924134009.116247-2-ben.dooks@codethink.co.uk
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240704070811.4186543-2-quic_periyasa@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-s3c64xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 833c58c88e408..6ab416a339669 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -245,7 +245,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
- 	loops = msecs_to_loops(1);
- 	do {
- 		val = readl(regs + S3C64XX_SPI_STATUS);
--	} while (TX_FIFO_LVL(val, sdd) && loops--);
-+	} while (TX_FIFO_LVL(val, sdd) && --loops);
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index d9bc07844fb71..70ad035acac75 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -2670,7 +2670,7 @@ int ath12k_dp_rx_process(struct ath12k_base *ab, int ring_id,
+ 		if (push_reason !=
+ 		    HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRUCTION) {
+ 			dev_kfree_skb_any(msdu);
+-			ab->soc_stats.hal_reo_error[dp->reo_dst_ring[ring_id].ring_id]++;
++			ab->soc_stats.hal_reo_error[ring_id]++;
+ 			continue;
+ 		}
  
- 	if (loops == 0)
- 		dev_warn(&sdd->pdev->dev, "Timed out flushing TX FIFO\n");
-@@ -258,7 +258,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
- 			readl(regs + S3C64XX_SPI_RX_DATA);
- 		else
- 			break;
--	} while (loops--);
-+	} while (--loops);
- 
- 	if (loops == 0)
- 		dev_warn(&sdd->pdev->dev, "Timed out flushing RX FIFO\n");
 -- 
 2.43.0
 
