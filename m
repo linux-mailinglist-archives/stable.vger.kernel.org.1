@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257AB994B92
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A54C19948B3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:15:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5815C1C24E5F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D754B1C20FA8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637F61DEFF6;
-	Tue,  8 Oct 2024 12:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F6718FC70;
+	Tue,  8 Oct 2024 12:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eh5OrrIq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvO4z/3W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D1D1DED55;
-	Tue,  8 Oct 2024 12:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081A31E485;
+	Tue,  8 Oct 2024 12:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391445; cv=none; b=N/sr74g8i48YX/C8gCbv03n2UVEn8P4SclfPveM+so/gUHLJZ516Cat/0H1sd+JjW7Nya7AoDek/WGbwt+G0rS3DwIqT5uk2A1NNVQidiOP0QSmdsAMBhPwGg/ss2VDHaOodaktGCZUc7D0yNZZG5b0/YqfKuK0wVt48HAU1Oco=
+	t=1728389752; cv=none; b=FmcJCDrYzd+cNrlMq4d0A4g2xPTjsAN5Q2Se9H6XdUsC9eMjTsdmHoJhVDXRv1jCtwKMFFc0xwPuO4KDCYczylvDrXx1CVXcXfIZr5euPCrkY+dF8PP2zH5WwmocJHF0OWaFgb1EmLCQ9zkrlK3kzzmMLj2NLRpmX07aAUBRVhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391445; c=relaxed/simple;
-	bh=PmE9rrGRdyPr84/stoogRe2UW0ULhhwZKkwyJYGYh/I=;
+	s=arc-20240116; t=1728389752; c=relaxed/simple;
+	bh=E4n2UyXKADKWp+jZWs7HL4ctdsn7mOVZreA+v70Vkqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PhtK4d7oQtu/c1W03CNWxGOmU3Wr0MQ3bxNx+hC/QnjbW4XfMzUGR+gbkb+vHdmEeGSG5ceNOzaoq+l/RqVWK7TQHHoQ2UwxBte9M/SGZAOAMfzeGdvWGZ02Ztr6S5Tjz8X4wr+g/DH+cEWMZq/HD1G6dX4iXZZlR10IsdTVi9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eh5OrrIq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D589C4CECC;
-	Tue,  8 Oct 2024 12:44:04 +0000 (UTC)
+	 MIME-Version; b=mXfWtPaIdO744bUJ4Bx91nfOWxvU9Uo1Q5Gfhl7h8urCZAx19VWpt0XCfoWWj3GRvl5xeRK3ErtKRzN11BubHICZDTHVet3eMnbJIZMceR8v2QE+8oPg5VxcA8bor6vuoo71nPxXdHkLavVc9nU6O6CRlDTAmCN5G9L/KbJpd/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvO4z/3W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AF3C4CEC7;
+	Tue,  8 Oct 2024 12:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391445;
-	bh=PmE9rrGRdyPr84/stoogRe2UW0ULhhwZKkwyJYGYh/I=;
+	s=korg; t=1728389751;
+	bh=E4n2UyXKADKWp+jZWs7HL4ctdsn7mOVZreA+v70Vkqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eh5OrrIqQHK1zBZJsbsqCqh1mLsI70K+jx0cswyqfEXLM6Gc8WgX7eEh9jkimGdfu
-	 0vGoxsRVkuEdlUjRdd9jTuO9BwE9Su14btW9/2KZSV2nlhcKmjAHsXfQYpTApISIui
-	 2R14L4j/yeiR1MUa/2SK8+nNFQGOA0S7MhBIkseo=
+	b=tvO4z/3WxnilYi/P2uG9KyHO/TpBCTXnKSKuaAUXdFMbsYBRFkj2wvysLSTWWGjcJ
+	 squQNALaL5BckPYr+C7ktbGpS9ZG2OB8z+CyM8yHYaSeyiuXeFMUZntjSp9UqAKWe2
+	 5AB7w7vQBY8prbTk+eTCojNMxE4sJpL4zorZS+6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Chapman <jchapman@katalix.com>,
-	Tom Parkin <tparkin@katalix.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 117/558] l2tp: free sessions using rcu
+Subject: [PATCH 6.10 084/482] net: hisilicon: hns_mdio: fix OF node leak in probe()
 Date: Tue,  8 Oct 2024 14:02:27 +0200
-Message-ID: <20241008115706.970682877@linuxfoundation.org>
+Message-ID: <20241008115651.612735753@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Chapman <jchapman@katalix.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit d17e89999574aca143dd4ede43e4382d32d98724 ]
+[ Upstream commit e62beddc45f487b9969821fad3a0913d9bc18a2f ]
 
-l2tp sessions may be accessed under an rcu read lock. Have them freed
-via rcu and remove the now unneeded synchronize_rcu when a session is
-removed.
+Driver is leaking OF node reference from
+of_parse_phandle_with_fixed_args() in probe().
 
-Signed-off-by: James Chapman <jchapman@katalix.com>
-Signed-off-by: Tom Parkin <tparkin@katalix.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240827144421.52852-4-krzysztof.kozlowski@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/l2tp/l2tp_core.c | 4 +---
- net/l2tp/l2tp_core.h | 1 +
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/hisilicon/hns_mdio.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-index a9cbcbc9d016d..edff7afc06199 100644
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -152,7 +152,7 @@ static void l2tp_session_free(struct l2tp_session *session)
- 	trace_free_session(session);
- 	if (session->tunnel)
- 		l2tp_tunnel_dec_refcount(session->tunnel);
--	kfree(session);
-+	kfree_rcu(session, rcu);
- }
- 
- struct l2tp_tunnel *l2tp_sk_to_tunnel(struct sock *sk)
-@@ -1298,8 +1298,6 @@ static void l2tp_session_unhash(struct l2tp_session *session)
- 
- 		spin_unlock_bh(&pn->l2tp_session_idr_lock);
- 		spin_unlock_bh(&tunnel->list_lock);
--
--		synchronize_rcu();
- 	}
- }
- 
-diff --git a/net/l2tp/l2tp_core.h b/net/l2tp/l2tp_core.h
-index 6c25c196cc222..d0e3460089d90 100644
---- a/net/l2tp/l2tp_core.h
-+++ b/net/l2tp/l2tp_core.h
-@@ -67,6 +67,7 @@ struct l2tp_session_coll_list {
- struct l2tp_session {
- 	int			magic;		/* should be L2TP_SESSION_MAGIC */
- 	long			dead;
-+	struct rcu_head		rcu;
- 
- 	struct l2tp_tunnel	*tunnel;	/* back pointer to tunnel context */
- 	u32			session_id;
+diff --git a/drivers/net/ethernet/hisilicon/hns_mdio.c b/drivers/net/ethernet/hisilicon/hns_mdio.c
+index ed73707176c1a..8a047145f0c50 100644
+--- a/drivers/net/ethernet/hisilicon/hns_mdio.c
++++ b/drivers/net/ethernet/hisilicon/hns_mdio.c
+@@ -575,6 +575,7 @@ static int hns_mdio_probe(struct platform_device *pdev)
+ 						MDIO_SC_RESET_ST;
+ 				}
+ 			}
++			of_node_put(reg_args.np);
+ 		} else {
+ 			dev_warn(&pdev->dev, "find syscon ret = %#x\n", ret);
+ 			mdio_dev->subctrl_vbase = NULL;
 -- 
 2.43.0
 
