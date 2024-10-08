@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-82936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B75EB994F7C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:28:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B24994D82
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:06:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75FC62856A5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:28:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D09821F21D9D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7CD1E0484;
-	Tue,  8 Oct 2024 13:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1641DE89D;
+	Tue,  8 Oct 2024 13:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOne0AsI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sgSfpKEB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AC11DF722;
-	Tue,  8 Oct 2024 13:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9921DE2A5;
+	Tue,  8 Oct 2024 13:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393930; cv=none; b=uS4YUH7EUaTzvHCJcp/8SGpdRGTN2GjTpU8A15yUh83Ne1z8SZSeJ/rkXt/ruQ5qKzSzODRkOkae3kENhxIEhDFLU8cn6CdyoAsjztLnanDlfnQkbGPVt5TskC5GcLxlCTym8scJYK5eAJUhmSRAkfP+SurRtqdF72R5T/aybmQ=
+	t=1728392765; cv=none; b=obn/JIv16gFpUBCAa+QSKNhMGubcOqnVp2xq9FRAk9/jquvRmpg2Jlfa3FbOLf7VcTFwSrXT0OdK76BlZPEJfmwXgnA/erEGehWTqbAIVWvIBGm84tORiN54XZzu2BfHARaCCOXf6f/Ebq+aIQyXjHwdl00tsIPpLUq+f5Ax0Es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393930; c=relaxed/simple;
-	bh=Ee4XHyNCE/wG47qWagWibGBZPWUZKdwKj6Nauxn5T6s=;
+	s=arc-20240116; t=1728392765; c=relaxed/simple;
+	bh=Vb/0NYmcHhgbm5GueE9wJAOAKz5b/0X6Dpsa7M1tAno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rI9bfjhErQnFvT/bXWUp28DDxT0NFGrG49E4kfAKoYaMLBspMwthRpXxVNzEHV7+br4o4u+0CzcTVup5Ihlj6thXxCWfcKxu/D+ER/6y5WiLYa6zhqplWsDYXHLxJ7cLRHxrSbGokv0vWC1C2cnudfPE3WlAWQ6fOTqeK75Ukxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOne0AsI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F413CC4CEC7;
-	Tue,  8 Oct 2024 13:25:29 +0000 (UTC)
+	 MIME-Version; b=jFuV4xMYzD2nltzQAHWxxLjDb3RPxjnZFa/d1NVVTWm6fIxaS8yOjhWfsl1FI2kXuE2OCkUPJfwxWNU+/VQTD/a8befCbSLB51VCprpFQk9XCqr5iF9NK3RP24FlEt+GlB61EQ0i7syGY5N/qPvd8na0RyN9qs3WVEM+JwQAp6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sgSfpKEB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E26C4CEC7;
+	Tue,  8 Oct 2024 13:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393930;
-	bh=Ee4XHyNCE/wG47qWagWibGBZPWUZKdwKj6Nauxn5T6s=;
+	s=korg; t=1728392764;
+	bh=Vb/0NYmcHhgbm5GueE9wJAOAKz5b/0X6Dpsa7M1tAno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VOne0AsIkrmP/bgKYyHYzAOGjLmlVKBHaf7vnmoZlGa5dWgIBapsGwikF/OiPeENy
-	 HAJ9hnTncZRZDg1pfIjA8fgdOiUyDfe6IP8a+Kj+DQFmrgLUbdOqGAbr0Y3fxlHJu9
-	 G7DgHTMgQ0JXqLWklP+2EgFuuaCPMw46qXW+z+Ek=
+	b=sgSfpKEBrXwpEGHRqI0U6S5jCT3S68gp/Qu2X7HKhm9wVwDYKUG1T0W1vr8986d8E
+	 rRF+7+NQLrXpqkl+pWAoSrFxAPFqAc06pAWCBvqYTsPJ4NpfmmJSsUtXYUAdcbAAtL
+	 Fo/2CMzWklC6naWRHzu7zQAfrOkWeMR3+LHgChlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.6 266/386] arm64: fix selection of HAVE_DYNAMIC_FTRACE_WITH_ARGS
+	Steve Sistare <steven.sistare@oracle.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Peter Xu <peterx@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 481/558] mm/hugetlb: fix memfd_pin_folios free_huge_pages leak
 Date: Tue,  8 Oct 2024 14:08:31 +0200
-Message-ID: <20241008115639.858795949@linuxfoundation.org>
+Message-ID: <20241008115721.166014543@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +67,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Steve Sistare <steven.sistare@oracle.com>
 
-commit b3d6121eaeb22aee8a02f46706745b1968cc0292 upstream.
+commit c56b6f3d801d7ec8965993342bdd9e2972b6cb8e upstream.
 
-The Kconfig logic to select HAVE_DYNAMIC_FTRACE_WITH_ARGS is incorrect,
-and HAVE_DYNAMIC_FTRACE_WITH_ARGS may be selected when it is not
-supported by the combination of clang and GNU LD, resulting in link-time
-errors:
+memfd_pin_folios followed by unpin_folios fails to restore free_huge_pages
+if the pages were not already faulted in, because the folio refcount for
+pages created by memfd_alloc_folio never goes to 0.  memfd_pin_folios
+needs another folio_put to undo the folio_try_get below:
 
-  aarch64-linux-gnu-ld: .init.data has both ordered [`__patchable_function_entries' in init/main.o] and unordered [`.meminit.data' in mm/sparse.o] sections
-  aarch64-linux-gnu-ld: final link failed: bad value
+memfd_alloc_folio()
+  alloc_hugetlb_folio_nodemask()
+    dequeue_hugetlb_folio_nodemask()
+      dequeue_hugetlb_folio_node_exact()
+        folio_ref_unfreeze(folio, 1);    ; adds 1 refcount
+  folio_try_get()                        ; adds 1 refcount
+  hugetlb_add_to_page_cache()            ; adds 512 refcount (on x86)
 
-... which can be seen when building with CC=clang using a binutils
-version older than 2.36.
+With the fix, after memfd_pin_folios + unpin_folios, the refcount for the
+(unfaulted) page is 512, which is correct, as the refcount for a faulted
+unpinned page is 513.
 
-We originally fixed that in commit:
-
-  45bd8951806eb5e8 ("arm64: Improve HAVE_DYNAMIC_FTRACE_WITH_REGS selection for clang")
-
-... by splitting the "select HAVE_DYNAMIC_FTRACE_WITH_ARGS" statement
-into separete CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS and
-GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS options which individually select
-HAVE_DYNAMIC_FTRACE_WITH_ARGS.
-
-Subsequently we accidentally re-introduced the common "select
-HAVE_DYNAMIC_FTRACE_WITH_ARGS" statement in commit:
-
-  26299b3f6ba26bfc ("ftrace: arm64: move from REGS to ARGS")
-
-... then we removed it again in commit:
-
-  68a63a412d18bd2e ("arm64: Fix build with CC=clang, CONFIG_FTRACE=y and CONFIG_STACK_TRACER=y")
-
-... then we accidentally re-introduced it again in commit:
-
-  2aa6ac03516d078c ("arm64: ftrace: Add direct call support")
-
-Fix this for the third time by keeping the unified select statement and
-making this depend onf either GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS or
-CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS. This is more consistent with
-usual style and less likely to go wrong in future.
-
-Fixes: 2aa6ac03516d ("arm64: ftrace: Add direct call support")
-Cc: <stable@vger.kernel.org> # 6.4.x
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240930120448.3352564-1-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lkml.kernel.org/r/1725373521-451395-3-git-send-email-steven.sistare@oracle.com
+Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/Kconfig |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ mm/gup.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -191,7 +191,8 @@ config ARM64
- 	select HAVE_DMA_CONTIGUOUS
- 	select HAVE_DYNAMIC_FTRACE
- 	select HAVE_DYNAMIC_FTRACE_WITH_ARGS \
--		if $(cc-option,-fpatchable-function-entry=2)
-+		if (GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS || \
-+		    CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS)
- 	select HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS \
- 		if DYNAMIC_FTRACE_WITH_ARGS && DYNAMIC_FTRACE_WITH_CALL_OPS
- 	select HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS \
-@@ -262,12 +263,10 @@ config CLANG_SUPPORTS_DYNAMIC_FTRACE_WIT
- 	def_bool CC_IS_CLANG
- 	# https://github.com/ClangBuiltLinux/linux/issues/1507
- 	depends on AS_IS_GNU || (AS_IS_LLVM && (LD_IS_LLD || LD_VERSION >= 23600))
--	select HAVE_DYNAMIC_FTRACE_WITH_ARGS
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -3618,7 +3618,7 @@ long memfd_pin_folios(struct file *memfd
+ 	pgoff_t start_idx, end_idx, next_idx;
+ 	struct folio *folio = NULL;
+ 	struct folio_batch fbatch;
+-	struct hstate *h;
++	struct hstate *h = NULL;
+ 	long ret = -EINVAL;
  
- config GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS
- 	def_bool CC_IS_GCC
- 	depends on $(cc-option,-fpatchable-function-entry=2)
--	select HAVE_DYNAMIC_FTRACE_WITH_ARGS
+ 	if (start < 0 || start > end || !max_folios)
+@@ -3662,6 +3662,8 @@ long memfd_pin_folios(struct file *memfd
+ 							     &fbatch);
+ 			if (folio) {
+ 				folio_put(folio);
++				if (h)
++					folio_put(folio);
+ 				folio = NULL;
+ 			}
  
- config 64BIT
- 	def_bool y
 
 
 
