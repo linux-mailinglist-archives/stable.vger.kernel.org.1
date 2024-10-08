@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-82597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7CB994D90
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:06:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD802994F9A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:28:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 824461F22A14
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:06:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 760EE1F22783
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEFC1DE8BE;
-	Tue,  8 Oct 2024 13:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C691E1040;
+	Tue,  8 Oct 2024 13:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5nDtqlN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtcrWdsi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296821DE88F;
-	Tue,  8 Oct 2024 13:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81D31E103B;
+	Tue,  8 Oct 2024 13:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392790; cv=none; b=Ro2pihOCcDKNwSVVON6/csdNg7X8z0Qbroji38t9J8PUol/Ht5k3xME+cGOCsiXXArv76MKrGs6puBfCB0BzyQ81NwMi5eDrsg5qDCsGtW/w9g+6Xcerwmo9nBaDl536BEB33ml9PtGwTLlBC7vg19PQUo7UV0dH96Qh4ExOMsM=
+	t=1728393962; cv=none; b=M0mgaDmtMSVnQ/dElQU0239p5jdRUZVwP1269SpdQUFVoDlTem/7kGFJ7e0dTH2Z1CsFm+wBfwscQm/KciB9u5323k9aQWGfwLk6GHKJ6MU+N5Xl1yvpyDnVwoEjLAyw6Kp8UlrZ7wOmLlMKfHUDn9Bfbu54lmOj0gI9MrO4Kxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392790; c=relaxed/simple;
-	bh=N6HDXsq3fY/TfGqXJRTnCGdAYKmNCxZaIGFlcRCoVdQ=;
+	s=arc-20240116; t=1728393962; c=relaxed/simple;
+	bh=w5Zx6jQBU/+VV6E/tSya82b5DU2pzAAyZgiYNS+jHC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oeXO29PIpbhQ4kB8V1GPh2PMOYs6VUjfoMt83IcXAyRzqm6WIxyuAMvL0HtdeGhRvOxdcyVqeeJx//S09AIRlxPlYEqjuDQS5Qr0Ws1+g3RSCgHt3MrbfsqC4Kkcrw9I9Yd7ZJQNn6M8xDnK6ShREFC1fFn8HkI3QrZOSs4oeqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5nDtqlN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9E0C4CECC;
-	Tue,  8 Oct 2024 13:06:29 +0000 (UTC)
+	 MIME-Version; b=cJ8VuPJxisjBWdfqsOI317N4uyzcql5mDqirf4ky3xAmpyOaiMoFNOKWjnkKWbp2dXpGWgQIKLbUfJfSkaQ7/aRFrHQ9LG/jqcTCH9UpmuRtLcz2PhWaINXKt/qHTDmPgrUJ2tjymcBF9GwyKeirzgCyZTOKa/iH+tJiYzbaAT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtcrWdsi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DEEEC4CEC7;
+	Tue,  8 Oct 2024 13:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392790;
-	bh=N6HDXsq3fY/TfGqXJRTnCGdAYKmNCxZaIGFlcRCoVdQ=;
+	s=korg; t=1728393961;
+	bh=w5Zx6jQBU/+VV6E/tSya82b5DU2pzAAyZgiYNS+jHC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n5nDtqlNur5aIYzHfxeeSb44gar9+t+CoKu7w1SLWD6sKwOvNPpnUbVCceYixnCke
-	 L4HzEJNkCsIiAsXYrA4FnygBn2m6Z7FFK3KgdjG69xFtKvTADGb6U3e5+YN8e53UH4
-	 4nxClYBc0n/4CD0fkq+eS3y2bEGz/mChauMyuI2A=
+	b=NtcrWdsiT2nI+5C+uNxjuKcQUN/7mTUeTN5lMrm82ye0TSlFn9wxB5plCwqpy59bo
+	 H90CPXn3jG/et2rXffavMtFrG/O0pJfPZuG7BxRejjZAOjUfAyt4Oy/Qk+fgmEDkSx
+	 YQAclCUBI3o9dI/i7kFe6P7heIHEFhm/u3nydXUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Luben Tuikov <ltuikov89@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	dri-devel@lists.freedesktop.org,
-	Philipp Stanner <pstanner@redhat.com>
-Subject: [PATCH 6.11 521/558] drm/sched: Add locking to drm_sched_entity_modify_sched
+	Lamome Julien <julien.lamome@wanadoo.fr>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 306/386] ACPI: resource: Add Asus Vivobook X1704VAP to irq1_level_low_skip_override[]
 Date: Tue,  8 Oct 2024 14:09:11 +0200
-Message-ID: <20241008115722.730754697@linuxfoundation.org>
+Message-ID: <20241008115641.426440815@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,57 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 4286cc2c953983d44d248c9de1c81d3a9643345c upstream.
+commit 2f80ce0b78c340e332f04a5801dee5e4ac8cfaeb upstream.
 
-Without the locking amdgpu currently can race between
-amdgpu_ctx_set_entity_priority() (via drm_sched_entity_modify_sched()) and
-drm_sched_job_arm(), leading to the latter accesing potentially
-inconsitent entity->sched_list and entity->num_sched_list pair.
+Like other Asus Vivobook models the X1704VAP has its keybopard IRQ (1)
+described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
+which breaks the keyboard.
 
-v2:
- * Improve commit message. (Philipp)
+Add the X1704VAP to the irq1_level_low_skip_override[] quirk table to fix
+this.
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: b37aced31eb0 ("drm/scheduler: implement a function to modify sched list")
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Luben Tuikov <ltuikov89@gmail.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org
-Cc: Philipp Stanner <pstanner@redhat.com>
-Cc: <stable@vger.kernel.org> # v5.7+
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240913160559.49054-2-tursulin@igalia.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
+Reported-by: Lamome Julien <julien.lamome@wanadoo.fr>
+Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1078696
+Closes: https://lore.kernel.org/all/1226760b-4699-4529-bf57-6423938157a3@wanadoo.fr/
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20240927141606.66826-3-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/resource.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -133,8 +133,10 @@ void drm_sched_entity_modify_sched(struc
- {
- 	WARN_ON(!num_sched_list || !sched_list);
- 
-+	spin_lock(&entity->rq_lock);
- 	entity->sched_list = sched_list;
- 	entity->num_sched_list = num_sched_list;
-+	spin_unlock(&entity->rq_lock);
- }
- EXPORT_SYMBOL(drm_sched_entity_modify_sched);
- 
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -440,6 +440,13 @@ static const struct dmi_system_id asus_l
+ 		},
+ 	},
+ 	{
++		/* Asus Vivobook X1704VAP */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "X1704VAP"),
++		},
++	},
++	{
+ 		.ident = "Asus ExpertBook B1402CBA",
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 
 
 
