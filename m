@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-83013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F0B9994FE9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:31:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0DD994FEC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:31:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAD911C22444
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:30:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCEDB1C247A2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3DA1DED7D;
-	Tue,  8 Oct 2024 13:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D6A71DFD8B;
+	Tue,  8 Oct 2024 13:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmtUuT7F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K1T0tU+j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3691DF964;
-	Tue,  8 Oct 2024 13:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B741DFD81;
+	Tue,  8 Oct 2024 13:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728394189; cv=none; b=o4IIqCtS/a/9LVZmHb4uu6N1/wbgRRTYlu/d5Weq46jnLxILGDnIOSmr3yFki7lGNeLINEGl+NxTwcdiKFxGtNgAhjLLP/IZ8lqYYTPDtbSBEjn/IJ6ALwD4luctPNAGh2ZTb7da9QnBUne+qhTPJcyo/Fxb6pBd/8CorMlVG84=
+	t=1728394193; cv=none; b=B96mTtS0qfLTROR5IoR7tzLSekzIwmicHNeHkoPyd5H9Tc0C/z8Dgln4013GMHeoaok7LuODruyd6F8Nk49aBK+EtrxLKui0HW3uiDa3yeVtreL8ts1Acj2+F98daONeCEKu/YgGw9YI5i2Xwp9iGQB2nzhmlMjTbIJtBlaGEzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728394189; c=relaxed/simple;
-	bh=Mg8gp50QgKIVtgRHrOnY09DScRtmxaVlYB5rf0+d8JE=;
+	s=arc-20240116; t=1728394193; c=relaxed/simple;
+	bh=S/QWtSGfdLOXt6y9fmPsonwVEGYD5bIbZsi5ZG59V20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e1R05aLZaMegprctp3YsngiOZ6ZE1vyr3jWuJ4yj5PhQkFLJd2ued0GXX/TsRuPnCvO032QP5rEHbXhHc7ieHnKI4nizKEJ8ZKx4KJqpJHSz2nzpvEAHKtbiAR0tLyuG3GjfVIPuhIi01PjkEEYdbvXZ2Ym9HWyEgWTGgFX1f4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmtUuT7F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB88EC4CEC7;
-	Tue,  8 Oct 2024 13:29:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lzUCEvi7a4/W+LL1TaBBneZvTdLBpvvG0JbU14ZcwQIpoRG0ahw7Z/gpH0izlRNq5+qfKpcgI/DSJZAAisGXDsNUN0Qhb1TYgxffOWTmS9Do5+35t1qwWREsWgxjKipzbATIdIeOAqr9AsPLrpKr2lux9Vc/G915RnbcrkzSwuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K1T0tU+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5045DC4CECE;
+	Tue,  8 Oct 2024 13:29:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728394189;
-	bh=Mg8gp50QgKIVtgRHrOnY09DScRtmxaVlYB5rf0+d8JE=;
+	s=korg; t=1728394192;
+	bh=S/QWtSGfdLOXt6y9fmPsonwVEGYD5bIbZsi5ZG59V20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hmtUuT7FjnlowG3NnS27IeCbAPcKZ8fkDlOUDv7hePWz/HGB8GO6JU0D1DrkHH0+m
-	 fG1lSKIR17P5PD08qeNB2IS0v9hLmcmBGdyyhZhcOEwDjOfw/b5R32TBHFrs8PCyv4
-	 yIqICyLrs/PTAIMNw2tSkadQcJw3ZdZ+M5+xYxCc=
+	b=K1T0tU+jvNIT+S+oombewHoB+2cp0SGj0HrN5xgEC87R0trkhRaMtOS1svyOGMRMc
+	 owSlPw+upq8rNZp2Erxm0ia//aqZmtLAeeDVURN8ILfmV6KuGLrU74xzwfpfukzyfe
+	 BV8jQCNEDEtHppIltTS0OVKvoLl2R1gMJQWiARUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Md Iqbal Hossain <md.iqbal.hossain@intel.com>,
-	Chen Yu <yu.c.chen@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
 	Vegard Nossum <vegard.nossum@oracle.com>
-Subject: [PATCH 6.6 374/386] efi/unaccepted: touch soft lockup during memory accept
-Date: Tue,  8 Oct 2024 14:10:19 +0200
-Message-ID: <20241008115644.106630676@linuxfoundation.org>
+Subject: [PATCH 6.6 375/386] platform/x86: think-lmi: Fix password opcode ordering for workstations
+Date: Tue,  8 Oct 2024 14:10:20 +0200
+Message-ID: <20241008115644.146726966@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
 References: <20241008115629.309157387@linuxfoundation.org>
@@ -63,105 +62,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yu <yu.c.chen@intel.com>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit 1c5a1627f48105cbab81d25ec2f72232bfaa8185 ]
+[ Upstream commit 6f7d0f5fd8e440c3446560100ac4ff9a55eec340 ]
 
-Commit 50e782a86c98 ("efi/unaccepted: Fix soft lockups caused by
-parallel memory acceptance") has released the spinlock so other CPUs can
-do memory acceptance in parallel and not triggers softlockup on other
-CPUs.
+The Lenovo workstations require the password opcode to be run before
+the attribute value is changed (if Admin password is enabled).
 
-However the softlock up was intermittent shown up if the memory of the
-TD guest is large, and the timeout of softlockup is set to 1 second:
+Tested on some Thinkpads to confirm they are OK with this order too.
 
- RIP: 0010:_raw_spin_unlock_irqrestore
- Call Trace:
- ? __hrtimer_run_queues
- <IRQ>
- ? hrtimer_interrupt
- ? watchdog_timer_fn
- ? __sysvec_apic_timer_interrupt
- ? __pfx_watchdog_timer_fn
- ? sysvec_apic_timer_interrupt
- </IRQ>
- ? __hrtimer_run_queues
- <TASK>
- ? hrtimer_interrupt
- ? asm_sysvec_apic_timer_interrupt
- ? _raw_spin_unlock_irqrestore
- ? __sysvec_apic_timer_interrupt
- ? sysvec_apic_timer_interrupt
- accept_memory
- try_to_accept_memory
- do_huge_pmd_anonymous_page
- get_page_from_freelist
- __handle_mm_fault
- __alloc_pages
- __folio_alloc
- ? __tdx_hypercall
- handle_mm_fault
- vma_alloc_folio
- do_user_addr_fault
- do_huge_pmd_anonymous_page
- exc_page_fault
- ? __do_huge_pmd_anonymous_page
- asm_exc_page_fault
- __handle_mm_fault
-
-When the local irq is enabled at the end of accept_memory(), the
-softlockup detects that the watchdog on single CPU has not been fed for
-a while. That is to say, even other CPUs will not be blocked by
-spinlock, the current CPU might be stunk with local irq disabled for a
-while, which hurts not only nmi watchdog but also softlockup.
-
-Chao Gao pointed out that the memory accept could be time costly and
-there was similar report before. Thus to avoid any softlocup detection
-during this stage, give the softlockup a flag to skip the timeout check
-at the end of accept_memory(), by invoking touch_softlockup_watchdog().
-
-Reported-by: Md Iqbal Hossain <md.iqbal.hossain@intel.com>
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: 50e782a86c98 ("efi/unaccepted: Fix soft lockups caused by parallel memory acceptance")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-(cherry picked from commit 1c5a1627f48105cbab81d25ec2f72232bfaa8185)
-[Harshit: CVE-2024-36936; Minor conflict resolution due to header file
- differences due to missing commit: 7cd34dd3c9bf ("efi/unaccepted: do not
- let /proc/vmcore try to access unaccepted memory") in 6.6.y]
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Fixes: 640a5fa50a42 ("platform/x86: think-lmi: Opcode support")
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240209152359.528919-1-mpearson-lenovo@squebb.ca
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+(cherry picked from commit 6f7d0f5fd8e440c3446560100ac4ff9a55eec340)
+[Harshit: CVE-2024-26836; Resolve conflicts due to missing commit:
+ 318d97849fc2 ("platform/x86: think-lmi: Add bulk save feature") which is
+ not in 6.6.y]
 Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/unaccepted_memory.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/platform/x86/think-lmi.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/drivers/firmware/efi/unaccepted_memory.c
-+++ b/drivers/firmware/efi/unaccepted_memory.c
-@@ -3,6 +3,7 @@
- #include <linux/efi.h>
- #include <linux/memblock.h>
- #include <linux/spinlock.h>
-+#include <linux/nmi.h>
- #include <asm/unaccepted_memory.h>
- 
- /* Protects unaccepted memory bitmap and accepting_list */
-@@ -148,6 +149,9 @@ retry:
- 	}
- 
- 	list_del(&range.list);
+--- a/drivers/platform/x86/think-lmi.c
++++ b/drivers/platform/x86/think-lmi.c
+@@ -1021,7 +1021,16 @@ static ssize_t current_value_store(struc
+ 		 * Note - this sets the variable and then the password as separate
+ 		 * WMI calls. Function tlmi_save_bios_settings will error if the
+ 		 * password is incorrect.
++		 * Workstation's require the opcode to be set before changing the
++		 * attribute.
+ 		 */
++		if (tlmi_priv.pwd_admin->valid && tlmi_priv.pwd_admin->password[0]) {
++			ret = tlmi_opcode_setting("WmiOpcodePasswordAdmin",
++						  tlmi_priv.pwd_admin->password);
++			if (ret)
++				goto out;
++		}
 +
-+	touch_softlockup_watchdog();
-+
- 	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
- }
+ 		set_str = kasprintf(GFP_KERNEL, "%s,%s;", setting->display_name,
+ 				    new_setting);
+ 		if (!set_str) {
+@@ -1033,13 +1042,6 @@ static ssize_t current_value_store(struc
+ 		if (ret)
+ 			goto out;
  
+-		if (tlmi_priv.pwd_admin->valid && tlmi_priv.pwd_admin->password[0]) {
+-			ret = tlmi_opcode_setting("WmiOpcodePasswordAdmin",
+-						  tlmi_priv.pwd_admin->password);
+-			if (ret)
+-				goto out;
+-		}
+-
+ 		ret = tlmi_save_bios_settings("");
+ 	} else { /* old non-opcode based authentication method (deprecated) */
+ 		if (tlmi_priv.pwd_admin->valid && tlmi_priv.pwd_admin->password[0]) {
 
 
 
