@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-81857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4D3C9949CC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A58AE994E55
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D82CB25CEF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F2CE1F23282
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5DD1DEFC4;
-	Tue,  8 Oct 2024 12:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E87B1C5793;
+	Tue,  8 Oct 2024 13:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SR9BFoY9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odwW5Qte"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5071DED7B;
-	Tue,  8 Oct 2024 12:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04BB1D3653;
+	Tue,  8 Oct 2024 13:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390369; cv=none; b=Po23Avaa4yyomgxAG+f9xCNmqDJfvHvdqaZpfSFfqH6LUoqr12pCWYXHpp/kpqK0jOPvje759R4FpRzgKG5DYCfjwJuWI0uM2rp4lLSPE5S/wtHVumgWtWlZjWnBzEKn41sxGbQsj1mzcpMfd+KWu/SPeK1FoYuLjQ1Z5aQ1p1Q=
+	t=1728393361; cv=none; b=AwnqpBpS05e/SL2JYNcrwMu9B5MAcWA3dc6OoYp2CTDQBlBKdNbrLLd1/2VH+OlByRGGo9LC67qrbMZ5QF8YX/MZ/eesk3klo5v2vawlfAf8R5HVB+FmwRb/wsKEl4e/thPGElcHx3hiI10Uk/Pj0zFwg+s+gwOE6ff1xea6TS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390369; c=relaxed/simple;
-	bh=s69oBi+vmkuA4AAD65iXZv6cR3zO/XBmJQIHXNGT8A0=;
+	s=arc-20240116; t=1728393361; c=relaxed/simple;
+	bh=V1iKgGnX94bREtod46PdG/TSnHyEQZVJA9Ur43VAYU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGMz4xEGukq4spMtYN5XGWamdcJv42DvgQ0oE/L0N53zigeT3xBbzhUOnouv0ycHwcOfXNFk+MTmScV90bzbQ2Cg17O/TuUfZL+pZprT1b+YtwIEiCsfVJvdtEy3+4+OwzUNAW5JZHqwso8Mi+GHb8IORfzY8SpJPsnfz6XEUAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SR9BFoY9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398E1C4CEC7;
-	Tue,  8 Oct 2024 12:26:08 +0000 (UTC)
+	 MIME-Version; b=TlB8HGXB6D7VAtUon96Xrtx+/cioRRrIPOrglHbbpYVix3wtGXZ5PTOJq7jA6gMaS4qOavM+UuUArh/4AXKJDREgGeMdcIcI72IoSxfS+e51zoEjh5mPnhWXx6G7isXGGtaCTvQeUBg1begT9+FQMTGlMX0Li4iqSDw+aFkDXvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odwW5Qte; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510F4C4CEC7;
+	Tue,  8 Oct 2024 13:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390368;
-	bh=s69oBi+vmkuA4AAD65iXZv6cR3zO/XBmJQIHXNGT8A0=;
+	s=korg; t=1728393360;
+	bh=V1iKgGnX94bREtod46PdG/TSnHyEQZVJA9Ur43VAYU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SR9BFoY9AfMIX3hX5kyIH07A1uB3LEDvvqtBD9ZRKIbWdUFjPzsGbX0SFqeJySpLe
-	 iADg+sBaZQtb840vIs38dPhxC3SOosZI84ciyUMRf0vvBXp+JnbnwTb5HqLXMMBiyx
-	 1DzMuWQM+Ea1nVdiCt9bXw/iBbIZgZieH+2mnxdM=
+	b=odwW5QtecKedVqeS5u39PvTtqN9ITKv6GrpYseWzlrmQcV9+0tQ0up6JEMVKfknFh
+	 AdROvyIs15HRS05ZTszC6J2rDttt0mOLdl3uPGvmXb92Q50H+3ac21/vMNI3MSMsy+
+	 3ddc+8JRqhXDQy01r4WfaLrJRUPRUs4mTq1Jz1Pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Anne Macedo <retpolanne@posteo.net>,
-	Changbin Du <changbin.du@huawei.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
+	Simon Horman <horms@kernel.org>,
+	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 269/482] perf callchain: Fix stitch LBR memory leaks
+Subject: [PATCH 6.6 087/386] net: mvpp2: Increase size of queue_name buffer
 Date: Tue,  8 Oct 2024 14:05:32 +0200
-Message-ID: <20241008115658.867946355@linuxfoundation.org>
+Message-ID: <20241008115632.878195965@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,145 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 599c19397b17d197fc1184bbc950f163a292efc9 ]
+[ Upstream commit 91d516d4de48532d967a77967834e00c8c53dfe6 ]
 
-The 'struct callchain_cursor_node' has a 'struct map_symbol' whose maps
-and map members are reference counted. Ensure these values use a _get
-routine to increment the reference counts and use map_symbol__exit() to
-release the reference counts.
+Increase size of queue_name buffer from 30 to 31 to accommodate
+the largest string written to it. This avoids truncation in
+the possibly unlikely case where the string is name is the
+maximum size.
 
-Do similar for 'struct thread's prev_lbr_cursor, but save the size of
-the prev_lbr_cursor array so that it may be iterated.
+Flagged by gcc-14:
 
-Ensure that when stitch_nodes are placed on the free list the
-map_symbols are exited.
+  .../mvpp2_main.c: In function 'mvpp2_probe':
+  .../mvpp2_main.c:7636:32: warning: 'snprintf' output may be truncated before the last format character [-Wformat-truncation=]
+   7636 |                  "stats-wq-%s%s", netdev_name(priv->port_list[0]->dev),
+        |                                ^
+  .../mvpp2_main.c:7635:9: note: 'snprintf' output between 10 and 31 bytes into a destination of size 30
+   7635 |         snprintf(priv->queue_name, sizeof(priv->queue_name),
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   7636 |                  "stats-wq-%s%s", netdev_name(priv->port_list[0]->dev),
+        |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   7637 |                  priv->port_count > 1 ? "+" : "");
+        |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Fix resolve_lbr_callchain_sample() by replacing list_replace_init() to
-list_splice_init(), so the whole list is moved and nodes aren't leaked.
+Introduced by commit 118d6298f6f0 ("net: mvpp2: add ethtool GOP statistics").
+I am not flagging this as a bug as I am not aware that it is one.
 
-A reproduction of the memory leaks is possible with a leak sanitizer
-build in the perf report command of:
+Compile tested only.
 
-  ```
-  $ perf record -e cycles --call-graph lbr perf test -w thloop
-  $ perf report --stitch-lbr
-  ```
-
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Fixes: ff165628d72644e3 ("perf callchain: Stitch LBR call stack")
-Signed-off-by: Ian Rogers <irogers@google.com>
-[ Basic tests after applying the patch, repeating the example above ]
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Anne Macedo <retpolanne@posteo.net>
-Cc: Changbin Du <changbin.du@huawei.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240808054644.1286065-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Marcin Wojtas <marcin.s.wojtas@gmail.com>
+Link: https://patch.msgid.link/20240806-mvpp2-namelen-v1-1-6dc773653f2f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/machine.c | 17 +++++++++++++++--
- tools/perf/util/thread.c  |  4 ++++
- tools/perf/util/thread.h  |  1 +
- 3 files changed, 20 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
-index 8477edefc2997..706be5e4a0761 100644
---- a/tools/perf/util/machine.c
-+++ b/tools/perf/util/machine.c
-@@ -2270,8 +2270,12 @@ static void save_lbr_cursor_node(struct thread *thread,
- 		cursor->curr = cursor->first;
- 	else
- 		cursor->curr = cursor->curr->next;
-+
-+	map_symbol__exit(&lbr_stitch->prev_lbr_cursor[idx].ms);
- 	memcpy(&lbr_stitch->prev_lbr_cursor[idx], cursor->curr,
- 	       sizeof(struct callchain_cursor_node));
-+	lbr_stitch->prev_lbr_cursor[idx].ms.maps = maps__get(cursor->curr->ms.maps);
-+	lbr_stitch->prev_lbr_cursor[idx].ms.map = map__get(cursor->curr->ms.map);
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2.h b/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
+index e809f91c08fb9..9e02e4367bec8 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
+@@ -1088,7 +1088,7 @@ struct mvpp2 {
+ 	unsigned int max_port_rxqs;
  
- 	lbr_stitch->prev_lbr_cursor[idx].valid = true;
- 	cursor->pos++;
-@@ -2482,6 +2486,9 @@ static bool has_stitched_lbr(struct thread *thread,
- 		memcpy(&stitch_node->cursor, &lbr_stitch->prev_lbr_cursor[i],
- 		       sizeof(struct callchain_cursor_node));
+ 	/* Workqueue to gather hardware statistics */
+-	char queue_name[30];
++	char queue_name[31];
+ 	struct workqueue_struct *stats_queue;
  
-+		stitch_node->cursor.ms.maps = maps__get(lbr_stitch->prev_lbr_cursor[i].ms.maps);
-+		stitch_node->cursor.ms.map = map__get(lbr_stitch->prev_lbr_cursor[i].ms.map);
-+
- 		if (callee)
- 			list_add(&stitch_node->node, &lbr_stitch->lists);
- 		else
-@@ -2505,6 +2512,8 @@ static bool alloc_lbr_stitch(struct thread *thread, unsigned int max_lbr)
- 	if (!thread__lbr_stitch(thread)->prev_lbr_cursor)
- 		goto free_lbr_stitch;
- 
-+	thread__lbr_stitch(thread)->prev_lbr_cursor_size = max_lbr + 1;
-+
- 	INIT_LIST_HEAD(&thread__lbr_stitch(thread)->lists);
- 	INIT_LIST_HEAD(&thread__lbr_stitch(thread)->free_lists);
- 
-@@ -2560,8 +2569,12 @@ static int resolve_lbr_callchain_sample(struct thread *thread,
- 						max_lbr, callee);
- 
- 		if (!stitched_lbr && !list_empty(&lbr_stitch->lists)) {
--			list_replace_init(&lbr_stitch->lists,
--					  &lbr_stitch->free_lists);
-+			struct stitch_list *stitch_node;
-+
-+			list_for_each_entry(stitch_node, &lbr_stitch->lists, node)
-+				map_symbol__exit(&stitch_node->cursor.ms);
-+
-+			list_splice_init(&lbr_stitch->lists, &lbr_stitch->free_lists);
- 		}
- 		memcpy(&lbr_stitch->prev_sample, sample, sizeof(*sample));
- 	}
-diff --git a/tools/perf/util/thread.c b/tools/perf/util/thread.c
-index 87c59aa9fe38b..0ffdd52d86d70 100644
---- a/tools/perf/util/thread.c
-+++ b/tools/perf/util/thread.c
-@@ -476,6 +476,7 @@ void thread__free_stitch_list(struct thread *thread)
- 		return;
- 
- 	list_for_each_entry_safe(pos, tmp, &lbr_stitch->lists, node) {
-+		map_symbol__exit(&pos->cursor.ms);
- 		list_del_init(&pos->node);
- 		free(pos);
- 	}
-@@ -485,6 +486,9 @@ void thread__free_stitch_list(struct thread *thread)
- 		free(pos);
- 	}
- 
-+	for (unsigned int i = 0 ; i < lbr_stitch->prev_lbr_cursor_size; i++)
-+		map_symbol__exit(&lbr_stitch->prev_lbr_cursor[i].ms);
-+
- 	zfree(&lbr_stitch->prev_lbr_cursor);
- 	free(thread__lbr_stitch(thread));
- 	thread__set_lbr_stitch(thread, NULL);
-diff --git a/tools/perf/util/thread.h b/tools/perf/util/thread.h
-index 8b4a3c69bad19..6cbf6eb2812e0 100644
---- a/tools/perf/util/thread.h
-+++ b/tools/perf/util/thread.h
-@@ -26,6 +26,7 @@ struct lbr_stitch {
- 	struct list_head		free_lists;
- 	struct perf_sample		prev_sample;
- 	struct callchain_cursor_node	*prev_lbr_cursor;
-+	unsigned int prev_lbr_cursor_size;
- };
- 
- DECLARE_RC_STRUCT(thread) {
+ 	/* Debugfs root entry */
 -- 
 2.43.0
 
