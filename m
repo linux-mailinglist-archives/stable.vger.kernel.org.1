@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-82054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69878994AD4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26AD6994F0D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 062F4B2716E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 527921C25592
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474AB1DC759;
-	Tue,  8 Oct 2024 12:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604491DF990;
+	Tue,  8 Oct 2024 13:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3Fet4os"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EoYm9EWa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0257A1779B1;
-	Tue,  8 Oct 2024 12:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0BC1DF263;
+	Tue,  8 Oct 2024 13:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391015; cv=none; b=knx2pY9IdN5aqfUyqEoZKXXFGaRrBHIwb5Ae+UHhSIVdEHrp6b587I25xnkXif0kZStEdLf7zO2bip8F88TtZIb63C3W35RvFo+kmquzm2nUEHf6YcrFYtoSIpy9Ef3X9iARJSX1tB4YxzGpNNB8yXzktqbecP9PKjpE5RIUghY=
+	t=1728393773; cv=none; b=bZgxUgcn6wM+aX+3/3qodCPZPPKMEpC+yBKwxHaVPqXfxNaxtECNUul8MAZaS36IRMVHSjh8kwJS/W/jgotBR0leEoEkPpmLxSF/zMokJIgMZ19krAzUL0bNvhQCYgB0Hr48dC6w5MyzsVCiAIpVQRYy5QRhphBtrIFxgY0tFds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391015; c=relaxed/simple;
-	bh=7mEADpqTRikmYFfBZpHD63Xgw010CmTPQjRuBlBa6HA=;
+	s=arc-20240116; t=1728393773; c=relaxed/simple;
+	bh=R5LsKrnWqeP2QLisL2JHkeeZQvuFyNMyNOsdBmi13Tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ENlGHM/rOUBcNpmP62NIQSnHj3aEDB1wL4/z9pmYLb/JTyy3LtrLWf3sRRK6EjWDccfGy7kCvYWWRbbeZKB9PuhkdBAqgNB+wl+4y3V0MyGIgEM1gIlY6E0uK312xU4ORZADgYuz0ITHwUNC9gLwrCZ8uK8LDmkHYvIOs/sDlz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3Fet4os; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65504C4CEC7;
-	Tue,  8 Oct 2024 12:36:54 +0000 (UTC)
+	 MIME-Version; b=YC9CL3eMiL9wptOomSWW2208F9Va7Tqrm5An17IBDe+1u3thgG9efAeJXZDvx6mMFhow9MaxrcGw54w+i30la9vu7yIoXCujI3e1QZJT8pYYfLU7Ofef+25G0+9SqCMRkdOC4YCUTcCEVDuUPZtLbZz/pGi4QDgJd5wflCnBDUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EoYm9EWa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52146C4CEC7;
+	Tue,  8 Oct 2024 13:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391014;
-	bh=7mEADpqTRikmYFfBZpHD63Xgw010CmTPQjRuBlBa6HA=;
+	s=korg; t=1728393772;
+	bh=R5LsKrnWqeP2QLisL2JHkeeZQvuFyNMyNOsdBmi13Tg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3Fet4osbvxyJzlVq1/jDJ7Ns39gg9/WMSNud4zvBazS+46PEB0tyCzOe92OQa2aj
-	 BIWIzixtANBh5f++hzxab1MaIMbbyB1TdbBKY1yQXU70XxFDtZoUfuehIIxkX1tKl4
-	 D1/EYbsSwkT9KUio00+Chu3zpatqLBH5Tn6/NCw4=
+	b=EoYm9EWa4PAg0GxdPuZxXHqURhaGt98ON0JXdWy9D3JSLPnzqTA1j3Y0QfHQoVjbF
+	 SNOfEOXenrhKS56x9bi6KrtNEX6nDau7g790cab/40ePOn/EggI0bxTwxyoGGoDDdj
+	 YVdLq1Mk4wbWDN5r3jtiadrlpkNneW2REaQHtEeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Helge Deller <deller@gmx.de>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	dri-devel@lists.freedesktop.org,
-	"Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>
-Subject: [PATCH 6.10 433/482] firmware/sysfb: Disable sysfb for firmware buffers with unknown parent
+	Val Packett <val@packett.cool>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.6 251/386] drm/rockchip: vop: clear DMA stop bit on RK3066
 Date: Tue,  8 Oct 2024 14:08:16 +0200
-Message-ID: <20241008115705.561564441@linuxfoundation.org>
+Message-ID: <20241008115639.272238669@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,64 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Val Packett <val@packett.cool>
 
-commit ad604f0a4c040dcb8faf44dc72db25e457c28076 upstream.
+commit 6b44aa559d6c7f4ea591ef9d2352a7250138d62a upstream.
 
-The sysfb framebuffer handling only operates on graphics devices
-that provide the system's firmware framebuffer. If that device is
-not known, assume that any graphics device has been initialized by
-firmware.
+The RK3066 VOP sets a dma_stop bit when it's done scanning out a frame
+and needs the driver to acknowledge that by clearing the bit.
 
-Fixes a problem on i915 where sysfb does not release the firmware
-framebuffer after the native graphics driver loaded.
+Unless we clear it "between" frames, the RGB output only shows noise
+instead of the picture. atomic_flush is the place for it that least
+affects other code (doing it on vblank would require converting all
+other usages of the reg_lock to spin_(un)lock_irq, which would affect
+performance for everyone).
 
-Reported-by: Borah, Chaitanya Kumar <chaitanya.kumar.borah@intel.com>
-Closes: https://lore.kernel.org/dri-devel/SJ1PR11MB6129EFB8CE63D1EF6D932F94B96F2@SJ1PR11MB6129.namprd11.prod.outlook.com/
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12160
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: b49420d6a1ae ("video/aperture: optionally match the device in sysfb_disable()")
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: Linux regression tracking (Thorsten Leemhuis) <regressions@leemhuis.info>
-Cc: <stable@vger.kernel.org> # v6.11+
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240924084227.262271-1-tzimmermann@suse.de
+This seems to be a redundant synchronization mechanism that was removed
+in later iterations of the VOP hardware block.
+
+Fixes: f4a6de855eae ("drm: rockchip: vop: add rk3066 vop definitions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Val Packett <val@packett.cool>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240624204054.5524-2-val@packett.cool
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/sysfb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c |    4 ++++
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.h |    1 +
+ drivers/gpu/drm/rockchip/rockchip_vop_reg.c |    1 +
+ 3 files changed, 6 insertions(+)
 
-diff --git a/drivers/firmware/sysfb.c b/drivers/firmware/sysfb.c
-index 02a07d3d0d40..a3df782fa687 100644
---- a/drivers/firmware/sysfb.c
-+++ b/drivers/firmware/sysfb.c
-@@ -67,9 +67,11 @@ static bool sysfb_unregister(void)
- void sysfb_disable(struct device *dev)
- {
- 	struct screen_info *si = &screen_info;
-+	struct device *parent;
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -1566,6 +1566,10 @@ static void vop_crtc_atomic_flush(struct
+ 	VOP_AFBC_SET(vop, enable, s->enable_afbc);
+ 	vop_cfg_done(vop);
  
- 	mutex_lock(&disable_lock);
--	if (!dev || dev == sysfb_parent_dev(si)) {
-+	parent = sysfb_parent_dev(si);
-+	if (!dev || !parent || dev == parent) {
- 		sysfb_unregister();
- 		disabled = true;
- 	}
--- 
-2.46.2
-
++	/* Ack the DMA transfer of the previous frame (RK3066). */
++	if (VOP_HAS_REG(vop, common, dma_stop))
++		VOP_REG_SET(vop, common, dma_stop, 0);
++
+ 	spin_unlock(&vop->reg_lock);
+ 
+ 	/*
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
+@@ -122,6 +122,7 @@ struct vop_common {
+ 	struct vop_reg lut_buffer_index;
+ 	struct vop_reg gate_en;
+ 	struct vop_reg mmu_en;
++	struct vop_reg dma_stop;
+ 	struct vop_reg out_mode;
+ 	struct vop_reg standby;
+ };
+--- a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
++++ b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
+@@ -435,6 +435,7 @@ static const struct vop_output rk3066_ou
+ };
+ 
+ static const struct vop_common rk3066_common = {
++	.dma_stop = VOP_REG(RK3066_SYS_CTRL0, 0x1, 0),
+ 	.standby = VOP_REG(RK3066_SYS_CTRL0, 0x1, 1),
+ 	.out_mode = VOP_REG(RK3066_DSP_CTRL0, 0xf, 0),
+ 	.cfg_done = VOP_REG(RK3066_REG_CFG_DONE, 0x1, 0),
 
 
 
