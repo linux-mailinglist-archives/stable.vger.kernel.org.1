@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-81959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C88994A53
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4DF994CFE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C79CBB24D78
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35B23286D4C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C561DED77;
-	Tue,  8 Oct 2024 12:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5BE1DED4E;
+	Tue,  8 Oct 2024 12:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eiFLuXLZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c55CbBMg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D551D0BAA;
-	Tue,  8 Oct 2024 12:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB3D189910;
+	Tue,  8 Oct 2024 12:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390712; cv=none; b=epQFGZKhkmaFCHWCyaC/iA7+nNZYfaMRR4sXkqQdbL6ArsirEx8i3tzYS3iV1ZUlEVdC1N9sbQbuZPxg3aaCQyfdpPDIQJm92zOMEuw9d7Gg+YfApvOf+TgBgLpyyz5uMe6UHy49LOijyYZaPfQxNRdmyef4IyYk6ugQOY67iTg=
+	t=1728392397; cv=none; b=dk3TRBAoccyj+AVpJ6MKMQXxgmC3wliK11rR2u2Hz7GcZ6AeEwG3nopVcFDY7mLCdhRKtSXHGq8u8r1iXlNTMo/8GrQSj3O0Y4bxyqFx8TJde0NykOje0tNuurlqKqQ+bjvJCcR3PKjVK7ewzB5S9Lav9TyJemBJ6xUcy7mvA+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390712; c=relaxed/simple;
-	bh=nTt4/nPG0uK3LOlNbgb+VGeTaXhXa1vxdL5bVbJtP2k=;
+	s=arc-20240116; t=1728392397; c=relaxed/simple;
+	bh=f20q/1ItGkV2tGgE8XkqMvf3/GY0MyiW4ERGEX5EfpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NP9sMeJVcGYlvbHt5cg7ACiXTkrb6yBZ8fRtf7XzQ98L+hYjAAKEvv8qign2mj5q8eXl11JN8GqNA3yHprns6iuZfsTrcXFFXXWGDmVQaHnWf6QJScEkTRfMndcngb5KXCbHWUHy6vgTXae/H2yHQWV3duFcMlukNVhc8uV6eBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eiFLuXLZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C9DC4CEC7;
-	Tue,  8 Oct 2024 12:31:51 +0000 (UTC)
+	 MIME-Version; b=X/dAmExMlFmLrEgAvxnwvEZdGB2IYXZolaqJ2sK9HrCDahBqvQsLJycb8pLDg4x+5ZU0DPHi9S4GyAbxOnW3D5FvP1HTtI+18EjC+A6rkRkEFueXJzZTHQzX/8Lcro9mQ1FuZc8LHxYNWUwkKVEb5ub+Tf/a6x64zp5HuAyQ1Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c55CbBMg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD55CC4CEC7;
+	Tue,  8 Oct 2024 12:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390711;
-	bh=nTt4/nPG0uK3LOlNbgb+VGeTaXhXa1vxdL5bVbJtP2k=;
+	s=korg; t=1728392397;
+	bh=f20q/1ItGkV2tGgE8XkqMvf3/GY0MyiW4ERGEX5EfpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eiFLuXLZuyIc+1H7TXMcK+/1RzYFPqlwKH1o4kKKDaLS7yKpqQr/ihCK9WSfDg87t
-	 ecUFEyZWZxRA7Bxo3zMKVD3LRUK62FYwZ1Gfx+iO6A/ZoLD7+atUCqnBRvK6cFf5dR
-	 5LmJn1Va5Om9U6cyyn44qIy5nIjovpnCHl7UxaC4=
+	b=c55CbBMgP32pDOk/8kKmOWUa+nMEvm+F0VudYVT7rNNNwWrQEXiatCrSJCzN6dMJP
+	 jqNEts0+j6EjTvLZvGinwkLneU+O0IPnxgUSbswO2bWDvNbLEItxEPxzlWNZzU4zCC
+	 FNgvaJssB0mLpB+7aUKpinScVY+ZjwT9HVbTm5s0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunzhao Li <yunzhao@cloudflare.com>,
-	"Matt Fleming (Cloudflare)" <matt@readmodwrite.com>,
-	Ian Rogers <irogers@google.com>,
-	kernel-team@cloudflare.com,
-	Namhyung Kim <namhyung@kernel.org>,
-	Riccardo Mancini <rickyman7@gmail.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 6.10 370/482] perf hist: Update hist symbol when updating maps
+	Val Packett <val@packett.cool>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.11 403/558] drm/rockchip: vop: clear DMA stop bit on RK3066
 Date: Tue,  8 Oct 2024 14:07:13 +0200
-Message-ID: <20241008115702.983408366@linuxfoundation.org>
+Message-ID: <20241008115718.138088741@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Fleming <matt@readmodwrite.com>
+From: Val Packett <val@packett.cool>
 
-commit ac01c8c4246546fd8340a232f3ada1921dc0ee48 upstream.
+commit 6b44aa559d6c7f4ea591ef9d2352a7250138d62a upstream.
 
-AddressSanitizer found a use-after-free bug in the symbol code which
-manifested as 'perf top' segfaulting.
+The RK3066 VOP sets a dma_stop bit when it's done scanning out a frame
+and needs the driver to acknowledge that by clearing the bit.
 
-  ==1238389==ERROR: AddressSanitizer: heap-use-after-free on address 0x60b00c48844b at pc 0x5650d8035961 bp 0x7f751aaecc90 sp 0x7f751aaecc80
-  READ of size 1 at 0x60b00c48844b thread T193
-      #0 0x5650d8035960 in _sort__sym_cmp util/sort.c:310
-      #1 0x5650d8043744 in hist_entry__cmp util/hist.c:1286
-      #2 0x5650d8043951 in hists__findnew_entry util/hist.c:614
-      #3 0x5650d804568f in __hists__add_entry util/hist.c:754
-      #4 0x5650d8045bf9 in hists__add_entry util/hist.c:772
-      #5 0x5650d8045df1 in iter_add_single_normal_entry util/hist.c:997
-      #6 0x5650d8043326 in hist_entry_iter__add util/hist.c:1242
-      #7 0x5650d7ceeefe in perf_event__process_sample /home/matt/src/linux/tools/perf/builtin-top.c:845
-      #8 0x5650d7ceeefe in deliver_event /home/matt/src/linux/tools/perf/builtin-top.c:1208
-      #9 0x5650d7fdb51b in do_flush util/ordered-events.c:245
-      #10 0x5650d7fdb51b in __ordered_events__flush util/ordered-events.c:324
-      #11 0x5650d7ced743 in process_thread /home/matt/src/linux/tools/perf/builtin-top.c:1120
-      #12 0x7f757ef1f133 in start_thread nptl/pthread_create.c:442
-      #13 0x7f757ef9f7db in clone3 ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+Unless we clear it "between" frames, the RGB output only shows noise
+instead of the picture. atomic_flush is the place for it that least
+affects other code (doing it on vblank would require converting all
+other usages of the reg_lock to spin_(un)lock_irq, which would affect
+performance for everyone).
 
-When updating hist maps it's also necessary to update the hist symbol
-reference because the old one gets freed in map__put().
+This seems to be a redundant synchronization mechanism that was removed
+in later iterations of the VOP hardware block.
 
-While this bug was probably introduced with 5c24b67aae72f54c ("perf
-tools: Replace map->referenced & maps->removed_maps with map->refcnt"),
-the symbol objects were leaked until c087e9480cf33672 ("perf machine:
-Fix refcount usage when processing PERF_RECORD_KSYMBOL") was merged so
-the bug was masked.
-
-Fixes: c087e9480cf33672 ("perf machine: Fix refcount usage when processing PERF_RECORD_KSYMBOL")
-Reported-by: Yunzhao Li <yunzhao@cloudflare.com>
-Signed-off-by: Matt Fleming (Cloudflare) <matt@readmodwrite.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: kernel-team@cloudflare.com
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Riccardo Mancini <rickyman7@gmail.com>
-Cc: stable@vger.kernel.org # v5.13+
-Link: https://lore.kernel.org/r/20240815142212.3834625-1-matt@readmodwrite.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: f4a6de855eae ("drm: rockchip: vop: add rk3066 vop definitions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Val Packett <val@packett.cool>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240624204054.5524-2-val@packett.cool
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/hist.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c |    4 ++++
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.h |    1 +
+ drivers/gpu/drm/rockchip/rockchip_vop_reg.c |    1 +
+ 3 files changed, 6 insertions(+)
 
---- a/tools/perf/util/hist.c
-+++ b/tools/perf/util/hist.c
-@@ -637,6 +637,11 @@ static struct hist_entry *hists__findnew
- 			 * the history counter to increment.
- 			 */
- 			if (he->ms.map != entry->ms.map) {
-+				if (he->ms.sym) {
-+					u64 addr = he->ms.sym->start;
-+					he->ms.sym = map__find_symbol(entry->ms.map, addr);
-+				}
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -1583,6 +1583,10 @@ static void vop_crtc_atomic_flush(struct
+ 	VOP_AFBC_SET(vop, enable, s->enable_afbc);
+ 	vop_cfg_done(vop);
+ 
++	/* Ack the DMA transfer of the previous frame (RK3066). */
++	if (VOP_HAS_REG(vop, common, dma_stop))
++		VOP_REG_SET(vop, common, dma_stop, 0);
 +
- 				map__put(he->ms.map);
- 				he->ms.map = map__get(entry->ms.map);
- 			}
+ 	spin_unlock(&vop->reg_lock);
+ 
+ 	/*
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
+@@ -122,6 +122,7 @@ struct vop_common {
+ 	struct vop_reg lut_buffer_index;
+ 	struct vop_reg gate_en;
+ 	struct vop_reg mmu_en;
++	struct vop_reg dma_stop;
+ 	struct vop_reg out_mode;
+ 	struct vop_reg standby;
+ };
+--- a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
++++ b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
+@@ -466,6 +466,7 @@ static const struct vop_output rk3066_ou
+ };
+ 
+ static const struct vop_common rk3066_common = {
++	.dma_stop = VOP_REG(RK3066_SYS_CTRL0, 0x1, 0),
+ 	.standby = VOP_REG(RK3066_SYS_CTRL0, 0x1, 1),
+ 	.out_mode = VOP_REG(RK3066_DSP_CTRL0, 0xf, 0),
+ 	.cfg_done = VOP_REG(RK3066_REG_CFG_DONE, 0x1, 0),
 
 
 
