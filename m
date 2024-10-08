@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-82915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A517D994F54
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:27:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 305D8994F58
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:27:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64E2C2858DD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:27:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 627C31C22CB4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312671DFD93;
-	Tue,  8 Oct 2024 13:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF481DFDA5;
+	Tue,  8 Oct 2024 13:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAbO+1VA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSd34x2o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33A11DF979;
-	Tue,  8 Oct 2024 13:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AFB1DF96C;
+	Tue,  8 Oct 2024 13:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393856; cv=none; b=L4pqGyoAVwH3t6G228s6C3gaNGVp9vhlLyIyLQ13vNohQ5AU42HfebT4YvwUCIfeIpCzFc9TeCScBV+xHrdt/9Xo+ICPwqmEO3evs3QZnkxwaFp4AFgr4/IWs/7K/z2HlXGGyU4ueO/yOulDHN2vn/PP/v9nU9xt9RFzQFtjN14=
+	t=1728393862; cv=none; b=aAJyUrl1dtAP7Co4iGARHVjvPzn2TWJcUMLUbPTuQzK/v0aHa2IZS3MgR0RMjgUAYLhGrcsoFtfFCGgPOHrO1J3HQpigOVsJsOhrfZ8fLH9JyyY2xNaPfvMxAMpISp7JP3COPv2NBAiGlGojM5g7ImkAe9ytFvACJWXLIJBzsBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393856; c=relaxed/simple;
-	bh=0RnWVrhgbDqr7uLn/mqwQYPNDl7uIGJoSJJb4Zaegf8=;
+	s=arc-20240116; t=1728393862; c=relaxed/simple;
+	bh=kfciNehJbaAInwimTCqFsI2Ddd4k+GaolIuzWq13mBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AKPN14RCjhXlP/QdhSfqsVmkFb9sSi8lv9er2uYLRHvOdvRW7kCO4mIatYQvC8giWJXX+yx+eTuUEdimeJ+z0NQX0j/Q50PJuYLkcrG1hJKr5Te6J8uKxkbA3aOD4kUbIec7HoF5NAoNlAzSuVR7wZLfpFbotIKJyoociWeAppE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAbO+1VA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533A2C4CEC7;
-	Tue,  8 Oct 2024 13:24:15 +0000 (UTC)
+	 MIME-Version; b=cpvP097kVMVZi8gJoyGOdi4PabGqXKVMiaxnvoGSIw4WkNqXmyqYcLFtw858kMTp1RjwhWquhfFtz/SZbg+Rw7NCcLnGjuth9OAFfhb6yEPxte2s+3HyjS/B2gTCYVuP4zhl/B9F8BjIXXUk9Df5oEZqSsRhgInBWDxMx+Es1fA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSd34x2o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4990DC4CEC7;
+	Tue,  8 Oct 2024 13:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393855;
-	bh=0RnWVrhgbDqr7uLn/mqwQYPNDl7uIGJoSJJb4Zaegf8=;
+	s=korg; t=1728393862;
+	bh=kfciNehJbaAInwimTCqFsI2Ddd4k+GaolIuzWq13mBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fAbO+1VALGclRxdYAsFUnhvTc90FkZbo2BHRtVFC6x1tIqW5YGqQb+t83nliY78x2
-	 aJfIZ5O2SVVUOew1tHYq10RTxEqDQnE1cqJTbC76byrjPxYYDI+VnlwfpyBl/XTenl
-	 X4Eh8PBFscxj1qlRTOLZIFg0X84K/O+RIsu1heMQ=
+	b=hSd34x2oeSeRrrl3RqUWM+VnvUfFDzKAy27Tlv1PJVJlo8lYglWp41OpU1kWGKtUX
+	 t9GBAVO3UgpMaRr+n+P9rHXkSJiolYR5AGj6LvjvGQ7YNQBpaLuxH88VDrQptyDMB6
+	 otNoMoQYe5wfMD7Kpsf9VJvSCmCFoFZJq97lHWOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.6 276/386] RDMA/mana_ib: use the correct page size for mapping user-mode doorbell page
-Date: Tue,  8 Oct 2024 14:08:41 +0200
-Message-ID: <20241008115640.250640155@linuxfoundation.org>
+	syzbot+ba9eac24453387a9d502@syzkaller.appspotmail.com,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.6 277/386] riscv: Fix kernel stack size when KASAN is enabled
+Date: Tue,  8 Oct 2024 14:08:42 +0200
+Message-ID: <20241008115640.288749619@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
 References: <20241008115629.309157387@linuxfoundation.org>
@@ -65,42 +66,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-commit 4a3b99bc04e501b816db78f70064e26a01257910 upstream.
+commit cfb10de18538e383dbc4f3ce7f477ce49287ff3d upstream.
 
-When mapping doorbell page from user-mode, the driver should use the system
-page size as this memory is allocated via mmap() from user-mode.
+We use Kconfig to select the kernel stack size, doubling the default
+size if KASAN is enabled.
 
+But that actually only works if KASAN is selected from the beginning,
+meaning that if KASAN config is added later (for example using
+menuconfig), CONFIG_THREAD_SIZE_ORDER won't be updated, keeping the
+default size, which is not enough for KASAN as reported in [1].
+
+So fix this by moving the logic to compute the right kernel stack into a
+header.
+
+Fixes: a7555f6b62e7 ("riscv: stack: Add config of thread stack size")
+Reported-by: syzbot+ba9eac24453387a9d502@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000eb301906222aadc2@google.com/ [1]
 Cc: stable@vger.kernel.org
-Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
-Signed-off-by: Long Li <longli@microsoft.com>
-Link: https://patch.msgid.link/1725030993-16213-2-git-send-email-longli@linuxonhyperv.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240917150328.59831-1-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mana/main.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/riscv/Kconfig                   |    3 +--
+ arch/riscv/include/asm/thread_info.h |    7 ++++++-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/infiniband/hw/mana/main.c
-+++ b/drivers/infiniband/hw/mana/main.c
-@@ -460,13 +460,13 @@ int mana_ib_mmap(struct ib_ucontext *ibc
- 	      PAGE_SHIFT;
- 	prot = pgprot_writecombine(vma->vm_page_prot);
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -633,8 +633,7 @@ config IRQ_STACKS
+ config THREAD_SIZE_ORDER
+ 	int "Kernel stack size (in power-of-two numbers of page size)" if VMAP_STACK && EXPERT
+ 	range 0 4
+-	default 1 if 32BIT && !KASAN
+-	default 3 if 64BIT && KASAN
++	default 1 if 32BIT
+ 	default 2
+ 	help
+ 	  Specify the Pages of thread stack size (from 4KB to 64KB), which also
+--- a/arch/riscv/include/asm/thread_info.h
++++ b/arch/riscv/include/asm/thread_info.h
+@@ -12,7 +12,12 @@
+ #include <linux/const.h>
  
--	ret = rdma_user_mmap_io(ibcontext, vma, pfn, gc->db_page_size, prot,
-+	ret = rdma_user_mmap_io(ibcontext, vma, pfn, PAGE_SIZE, prot,
- 				NULL);
- 	if (ret)
- 		ibdev_dbg(ibdev, "can't rdma_user_mmap_io ret %d\n", ret);
- 	else
--		ibdev_dbg(ibdev, "mapped I/O pfn 0x%llx page_size %u, ret %d\n",
--			  pfn, gc->db_page_size, ret);
-+		ibdev_dbg(ibdev, "mapped I/O pfn 0x%llx page_size %lu, ret %d\n",
-+			  pfn, PAGE_SIZE, ret);
+ /* thread information allocation */
+-#define THREAD_SIZE_ORDER	CONFIG_THREAD_SIZE_ORDER
++#ifdef CONFIG_KASAN
++#define KASAN_STACK_ORDER	1
++#else
++#define KASAN_STACK_ORDER	0
++#endif
++#define THREAD_SIZE_ORDER	(CONFIG_THREAD_SIZE_ORDER + KASAN_STACK_ORDER)
+ #define THREAD_SIZE		(PAGE_SIZE << THREAD_SIZE_ORDER)
  
- 	return ret;
- }
+ /*
 
 
 
