@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-81596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4117994848
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:11:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0806994B6A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:43:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E2B9283E64
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:11:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7819E287763
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD9E21DE897;
-	Tue,  8 Oct 2024 12:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CBA1DF278;
+	Tue,  8 Oct 2024 12:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjTFht0f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYcVyzo2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857B21DE885;
-	Tue,  8 Oct 2024 12:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C341DF270;
+	Tue,  8 Oct 2024 12:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389488; cv=none; b=NiGSZN3VFxfzIfwD3egdkab0xkm0Q8g+cRuTXOoaZ57hpgdoRB+9B6hV39c6llExCr5gk+6gd7+Iplvz/9gw83BhWpnwHxXWBm6eq+zV4lGs1xZdGhi40r9Zb8e6jQMB7jrDV7O8zFxCvDFGumeb+EfYJmrQ83TE8yrmWcrOlts=
+	t=1728391315; cv=none; b=NcB+4ZBLwjSfnFkNloKzjFoLA8vlcDNRulrNWVw8Oovh3w3Xp06rHppjiPZVNAwNUoVORlCju+OCEmcVzWUstU7wRiSNNsrRl1vjwMj87H02bhopJQQ/xvhEWyUikvkvdiLVfdbIrxkRci/tg43mFu3e/2Zw8r8JhxIenyu7TVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389488; c=relaxed/simple;
-	bh=t9qAE7FxVf6VIHY+hu1qKwE4vSSKyYK0pwF9leqyfTA=;
+	s=arc-20240116; t=1728391315; c=relaxed/simple;
+	bh=mgjbkBQcEHi1IAqaprg2JeL4DMTxLZk23LIjPeO4E8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sOkS3pwLWK4cX3R40LH8lyyyn3Lvj7m7sWIHpboknL29UBwL0ONVfKB8+rK/B6GsG/8+mhqA8EYCrzvU/f2rOfKT3vG21TOfSN3ZywSmK7/dRReopU0l+6Vd7JAwk6g1mqKQPUkJcnLWGTBCoVsfzd3Nuh2cmB+Kut81f3Mm3uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjTFht0f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4AFC4CECD;
-	Tue,  8 Oct 2024 12:11:27 +0000 (UTC)
+	 MIME-Version; b=pdzHtNizuHpv6Zqu7BMaE/uoLYJ4876aSlAWDQakVHX5uEnMv+g2poFwl6P/uccsTL8ROfq9JW7wWwsTwkCa5mxwuk1Si95kyRh4+CS0Z573Rh7tbonycFqdPF8Z+9pNL66pkEJhHxKm/FfAtfOUYhDGBrxWeGeRve+1Uehk2HE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYcVyzo2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13022C4CECC;
+	Tue,  8 Oct 2024 12:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389488;
-	bh=t9qAE7FxVf6VIHY+hu1qKwE4vSSKyYK0pwF9leqyfTA=;
+	s=korg; t=1728391315;
+	bh=mgjbkBQcEHi1IAqaprg2JeL4DMTxLZk23LIjPeO4E8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gjTFht0fAvzuyNRWSuRPBdpndWUQgY8dZavfWjxwvZc6XPSm/kl43MbroMD6zObsH
-	 EDXrNKb0xOIohcx45hJPH09Sdfg0moIbM2UOvhjKJcgANJYBdeR7dscH6CU3IiOeVq
-	 5JS6DTEWfSnyq4dVwK3xS3ocn1rQmxk1vYSw5Gd4=
+	b=uYcVyzo2349FuTgIt316EamauSGvMqZBjJ3Vuh5lkTE2d9OSPoUM8cjp1PLm5llba
+	 fTwG2kztOinNipCmLOShmfNCGsyNLK3KRH27GmB0WZyoTzOcupp0E2eyWFxqJnr++5
+	 G4d9Of94a7bk3HtbkM1tpD5yBIT00eKvdi2mcTYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-afs@lists.infradead.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 001/482] static_call: Handle module init failure correctly in static_call_del_module()
+Subject: [PATCH 6.11 034/558] afs: Fix missing wire-up of afs_retry_request()
 Date: Tue,  8 Oct 2024 14:01:04 +0200
-Message-ID: <20241008115648.348265383@linuxfoundation.org>
+Message-ID: <20241008115703.565273104@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +68,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 4b30051c4864234ec57290c3d142db7c88f10d8a ]
+[ Upstream commit 2cf36327ee1e47733aba96092d7bd082a4056ff5 ]
 
-Module insertion invokes static_call_add_module() to initialize the static
-calls in a module. static_call_add_module() invokes __static_call_init(),
-which allocates a struct static_call_mod to either encapsulate the built-in
-static call sites of the associated key into it so further modules can be
-added or to append the module to the module chain.
+afs_retry_request() is supposed to be pointed to by the afs_req_ops netfs
+operations table, but the pointer got lost somewhere.  The function is used
+during writeback to rotate through the authentication keys that were in
+force when the file was modified locally.
 
-If that allocation fails the function returns with an error code and the
-module core invokes static_call_del_module() to clean up eventually added
-static_call_mod entries.
+Fix this by adding the pointer to the function.
 
-This works correctly, when all keys used by the module were converted over
-to a module chain before the failure. If not then static_call_del_module()
-causes a #GP as it blindly assumes that key::mods points to a valid struct
-static_call_mod.
-
-The problem is that key::mods is not a individual struct member of struct
-static_call_key, it's part of a union to save space:
-
-        union {
-                /* bit 0: 0 = mods, 1 = sites */
-                unsigned long type;
-                struct static_call_mod *mods;
-                struct static_call_site *sites;
-	};
-
-key::sites is a pointer to the list of built-in usage sites of the static
-call. The type of the pointer is differentiated by bit 0. A mods pointer
-has the bit clear, the sites pointer has the bit set.
-
-As static_call_del_module() blidly assumes that the pointer is a valid
-static_call_mod type, it fails to check for this failure case and
-dereferences the pointer to the list of built-in call sites, which is
-obviously bogus.
-
-Cure it by checking whether the key has a sites or a mods pointer.
-
-If it's a sites pointer then the key is not to be touched. As the sites are
-walked in the same order as in __static_call_init() the site walk can be
-terminated because all subsequent sites have not been touched by the init
-code due to the error exit.
-
-If it was converted before the allocation fail, then the inner loop which
-searches for a module match will find nothing.
-
-A fail in the second allocation in __static_call_init() is harmless and
-does not require special treatment. The first allocation succeeded and
-converted the key to a module chain. That first entry has mod::mod == NULL
-and mod::next == NULL, so the inner loop of static_call_del_module() will
-neither find a module match nor a module chain. The next site in the walk
-was either already converted, but can't match the module, or it will exit
-the outer loop because it has a static_call_site pointer and not a
-static_call_mod pointer.
-
-Fixes: 9183c3f9ed71 ("static_call: Add inline static call infrastructure")
-Closes: https://lore.kernel.org/all/20230915082126.4187913-1-ruanjinjie@huawei.com
-Reported-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/87zfon6b0s.ffs@tglx
+Fixes: 1ecb146f7cd8 ("netfs, afs: Use writeback retry to deal with alternate keys")
+Reported-by: Dr. David Alan Gilbert <linux@treblig.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/1690847.1726346402@warthog.procyon.org.uk
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/static_call_inline.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/afs/file.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/static_call_inline.c b/kernel/static_call_inline.c
-index 639397b5491ca..7bb0962b52291 100644
---- a/kernel/static_call_inline.c
-+++ b/kernel/static_call_inline.c
-@@ -411,6 +411,17 @@ static void static_call_del_module(struct module *mod)
+diff --git a/fs/afs/file.c b/fs/afs/file.c
+index ec1be0091fdb5..290f60460ec75 100644
+--- a/fs/afs/file.c
++++ b/fs/afs/file.c
+@@ -404,6 +404,7 @@ const struct netfs_request_ops afs_req_ops = {
+ 	.begin_writeback	= afs_begin_writeback,
+ 	.prepare_write		= afs_prepare_write,
+ 	.issue_write		= afs_issue_write,
++	.retry_request		= afs_retry_request,
+ };
  
- 	for (site = start; site < stop; site++) {
- 		key = static_call_key(site);
-+
-+		/*
-+		 * If the key was not updated due to a memory allocation
-+		 * failure in __static_call_init() then treating key::sites
-+		 * as key::mods in the code below would cause random memory
-+		 * access and #GP. In that case all subsequent sites have
-+		 * not been touched either, so stop iterating.
-+		 */
-+		if (!static_call_key_has_mods(key))
-+			break;
-+
- 		if (key == prev_key)
- 			continue;
- 
+ static void afs_add_open_mmap(struct afs_vnode *vnode)
 -- 
 2.43.0
 
