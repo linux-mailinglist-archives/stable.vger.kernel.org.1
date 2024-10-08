@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-81660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 322149948A3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:15:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FD88994B9A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:45:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A05EA1F2830A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:15:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A79111F27C16
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5A61DE3A3;
-	Tue,  8 Oct 2024 12:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3EB31DEFC5;
+	Tue,  8 Oct 2024 12:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGzCV6K7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPV1Y3Fw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07211D0E23;
-	Tue,  8 Oct 2024 12:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A399B192594;
+	Tue,  8 Oct 2024 12:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389708; cv=none; b=UJYP1kn2KNf8XR88PZvwbQk36b+ENKX4vgZxw/Rph5PJc/TJumuQG6H3x/FsKG4ugTXroMsbQlgtNmu/4k9UsoJvB8xhEPPkecIR1t7WV6FVmrMbSqyEn1ygSHFxDaXkhFr/O4T46uzYMFBBZxaN26nx3iDUP0HW1dDW2TZ+T44=
+	t=1728391463; cv=none; b=iXFXH+I416YC6zAdwq4G7Pl+C+vK114yt1ek/tF5U2w50VahJR88yUZVu21zj6v/lTuWmN4rZw5yTvqKPcPxdPkRL2jFX3p7oc0/H/9j6zcbtyMoBPOUfQjiiAFDYLbeyk829b9J32MgqbfJJ7f9IgNeNSEYxFHE7OwuIYjiBuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389708; c=relaxed/simple;
-	bh=T29U0R38DOR+v9AnMPyq7HONS0RrqhRKGnEVTJ0EI9Q=;
+	s=arc-20240116; t=1728391463; c=relaxed/simple;
+	bh=fHvC2Y2b4lyeGUs/ncuXAo6bXjnsQkJp8ya4QFyXofE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWB8sOgTin3NYJDhdCI4fjMxGhswUZHr+ncr/IFWAZI5YHCXhj/j5I6cfuJaUiPyXKG0BoSYyTITA0pgIz03zjOhsuUAS09xO0hvZEWm+dyr0GwJOYivO75S4Hgf2s/5zl+PQ7sNx/rtvOY0UN4QcYGkgg6TVpPU2ShUmZWrfqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGzCV6K7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29451C4CEC7;
-	Tue,  8 Oct 2024 12:15:06 +0000 (UTC)
+	 MIME-Version; b=f5oEHqIaojuTJLwx+uozvvbf3CFFdf25yFUrCS4LLcBta2nyFujZRwbF0oizaO2f1TM/nyxZE5vVXXxT5hIc2XQugVr7vDmDH4tuabKPe4YaS97R8gzRXPPXcTCxEM7qaAG99Bvhlj6IO4ouDjJ86MVS0Qsgb+V6ZRIASAMcmSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPV1Y3Fw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0957FC4CEC7;
+	Tue,  8 Oct 2024 12:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389707;
-	bh=T29U0R38DOR+v9AnMPyq7HONS0RrqhRKGnEVTJ0EI9Q=;
+	s=korg; t=1728391463;
+	bh=fHvC2Y2b4lyeGUs/ncuXAo6bXjnsQkJp8ya4QFyXofE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pGzCV6K79SBAhfA23wMt7dLQhXU5Sf+tMNyhpSM8tcQSKqSUD+dW+tI1PkRAD7m20
-	 6XFkxNGYYOj0f4Dymcn3ARALR/wdFROarkTcQb8nR2xwoi7uZb3lgAG0fUV8Zvk0cw
-	 tJPHnFowBpN0FL3B2d+8j33w3h2vAjWn+qmYYvq8=
+	b=tPV1Y3FwBsc2VvkxBa2C56PADxdQ7ap4t++0nwD2BQV11CmDrktHTSDJRm+1/t/Ns
+	 /xQU0Kr8F9GXFSgYynJIbSzmLMlngSf+vW37dIJJZBV4O33qEkkJRbPrhLiUqBRklX
+	 BnILnxNuVRBsjKx0Vdm5Zq/DBSCSw8KhEVKd4SkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chih-Kang Chang <gary.chang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Tamim Khan <tamim@fusetak.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 072/482] wifi: rtw89: avoid to add interface to list twice when SER
+Subject: [PATCH 6.11 105/558] ACPI: resource: Skip IRQ override on Asus Vivobook Go E1404GAB
 Date: Tue,  8 Oct 2024 14:02:15 +0200
-Message-ID: <20241008115651.140192059@linuxfoundation.org>
+Message-ID: <20241008115706.500247990@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,126 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+From: Tamim Khan <tamim@fusetak.com>
 
-[ Upstream commit 7dd5d2514a8ea58f12096e888b0bd050d7eae20a ]
+[ Upstream commit 49e9cc315604972cc14868cb67831e3e8c3f1470 ]
 
-If SER L2 occurs during the WoWLAN resume flow, the add interface flow
-is triggered by ieee80211_reconfig(). However, due to
-rtw89_wow_resume() return failure, it will cause the add interface flow
-to be executed again, resulting in a double add list and causing a kernel
-panic. Therefore, we have added a check to prevent double adding of the
-list.
+Like other Asus Vivobooks, the Asus Vivobook Go E1404GAB has a DSDT
+that describes IRQ 1 as ActiveLow, while the kernel overrides to Edge_High.
 
-list_add double add: new=ffff99d6992e2010, prev=ffff99d6992e2010, next=ffff99d695302628.
-------------[ cut here ]------------
-kernel BUG at lib/list_debug.c:37!
-invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 0 PID: 9 Comm: kworker/0:1 Tainted: G        W  O       6.6.30-02659-gc18865c4dfbd #1 770df2933251a0e3c888ba69d1053a817a6376a7
-Hardware name: HP Grunt/Grunt, BIOS Google_Grunt.11031.169.0 06/24/2021
-Workqueue: events_freezable ieee80211_restart_work [mac80211]
-RIP: 0010:__list_add_valid_or_report+0x5e/0xb0
-Code: c7 74 18 48 39 ce 74 13 b0 01 59 5a 5e 5f 41 58 41 59 41 5a 5d e9 e2 d6 03 00 cc 48 c7 c7 8d 4f 17 83 48 89 c2 e8 02 c0 00 00 <0f> 0b 48 c7 c7 aa 8c 1c 83 e8 f4 bf 00 00 0f 0b 48 c7 c7 c8 bc 12
-RSP: 0018:ffffa91b8007bc50 EFLAGS: 00010246
-RAX: 0000000000000058 RBX: ffff99d6992e0900 RCX: a014d76c70ef3900
-RDX: ffffa91b8007bae8 RSI: 00000000ffffdfff RDI: 0000000000000001
-RBP: ffffa91b8007bc88 R08: 0000000000000000 R09: ffffa91b8007bae0
-R10: 00000000ffffdfff R11: ffffffff83a79800 R12: ffff99d695302060
-R13: ffff99d695300900 R14: ffff99d6992e1be0 R15: ffff99d6992e2010
-FS:  0000000000000000(0000) GS:ffff99d6aac00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000078fbdba43480 CR3: 000000010e464000 CR4: 00000000001506f0
-Call Trace:
- <TASK>
- ? __die_body+0x1f/0x70
- ? die+0x3d/0x60
- ? do_trap+0xa4/0x110
- ? __list_add_valid_or_report+0x5e/0xb0
- ? do_error_trap+0x6d/0x90
- ? __list_add_valid_or_report+0x5e/0xb0
- ? handle_invalid_op+0x30/0x40
- ? __list_add_valid_or_report+0x5e/0xb0
- ? exc_invalid_op+0x3c/0x50
- ? asm_exc_invalid_op+0x16/0x20
- ? __list_add_valid_or_report+0x5e/0xb0
- rtw89_ops_add_interface+0x309/0x310 [rtw89_core 7c32b1ee6854761c0321027c8a58c5160e41f48f]
- drv_add_interface+0x5c/0x130 [mac80211 83e989e6e616bd5b4b8a2b0a9f9352a2c385a3bc]
- ieee80211_reconfig+0x241/0x13d0 [mac80211 83e989e6e616bd5b4b8a2b0a9f9352a2c385a3bc]
- ? finish_wait+0x3e/0x90
- ? synchronize_rcu_expedited+0x174/0x260
- ? sync_rcu_exp_done_unlocked+0x50/0x50
- ? wake_bit_function+0x40/0x40
- ieee80211_restart_work+0xf0/0x140 [mac80211 83e989e6e616bd5b4b8a2b0a9f9352a2c385a3bc]
- process_scheduled_works+0x1e5/0x480
- worker_thread+0xea/0x1e0
- kthread+0xdb/0x110
- ? move_linked_works+0x90/0x90
- ? kthread_associate_blkcg+0xa0/0xa0
- ret_from_fork+0x3b/0x50
- ? kthread_associate_blkcg+0xa0/0xa0
- ret_from_fork_asm+0x11/0x20
- </TASK>
-Modules linked in: dm_integrity async_xor xor async_tx lz4 lz4_compress zstd zstd_compress zram zsmalloc rfcomm cmac uinput algif_hash algif_skcipher af_alg btusb btrtl iio_trig_hrtimer industrialio_sw_trigger btmtk industrialio_configfs btbcm btintel uvcvideo videobuf2_vmalloc iio_trig_sysfs videobuf2_memops videobuf2_v4l2 videobuf2_common uvc snd_hda_codec_hdmi veth snd_hda_intel snd_intel_dspcfg acpi_als snd_hda_codec industrialio_triggered_buffer kfifo_buf snd_hwdep industrialio i2c_piix4 snd_hda_core designware_i2s ip6table_nat snd_soc_max98357a xt_MASQUERADE xt_cgroup snd_soc_acp_rt5682_mach fuse rtw89_8922ae(O) rtw89_8922a(O) rtw89_pci(O) rtw89_core(O) 8021q mac80211(O) bluetooth ecdh_generic ecc cfg80211 r8152 mii joydev
-gsmi: Log Shutdown Reason 0x03
----[ end trace 0000000000000000 ]---
+This override prevents the internal keyboard from working.
 
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240731070506.46100-4-pkshih@realtek.com
+Fix the problem by adding this laptop to the table that prevents the kernel
+from overriding the IRQ.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219212
+Signed-off-by: Tamim Khan <tamim@fusetak.com>
+Link: https://patch.msgid.link/20240903014317.38858-1-tamim@fusetak.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/mac80211.c |  4 +++-
- drivers/net/wireless/realtek/rtw89/util.h     | 18 ++++++++++++++++++
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
-index 1ec97250e88e5..4fae0bd566f6a 100644
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -126,7 +126,9 @@ static int rtw89_ops_add_interface(struct ieee80211_hw *hw,
- 	rtwvif->rtwdev = rtwdev;
- 	rtwvif->roc.state = RTW89_ROC_IDLE;
- 	rtwvif->offchan = false;
--	list_add_tail(&rtwvif->list, &rtwdev->rtwvifs_list);
-+	if (!rtw89_rtwvif_in_list(rtwdev, rtwvif))
-+		list_add_tail(&rtwvif->list, &rtwdev->rtwvifs_list);
-+
- 	INIT_WORK(&rtwvif->update_beacon_work, rtw89_core_update_beacon_work);
- 	INIT_DELAYED_WORK(&rtwvif->roc.roc_work, rtw89_roc_work);
- 	rtw89_leave_ps_mode(rtwdev);
-diff --git a/drivers/net/wireless/realtek/rtw89/util.h b/drivers/net/wireless/realtek/rtw89/util.h
-index e2ed4565025dd..d4ee9078a4f48 100644
---- a/drivers/net/wireless/realtek/rtw89/util.h
-+++ b/drivers/net/wireless/realtek/rtw89/util.h
-@@ -14,6 +14,24 @@
- #define rtw89_for_each_rtwvif(rtwdev, rtwvif)				       \
- 	list_for_each_entry(rtwvif, &(rtwdev)->rtwvifs_list, list)
- 
-+/* Before adding rtwvif to list, we need to check if it already exist, beacase
-+ * in some case such as SER L2 happen during WoWLAN flow, calling reconfig
-+ * twice cause the list to be added twice.
-+ */
-+static inline bool rtw89_rtwvif_in_list(struct rtw89_dev *rtwdev,
-+					struct rtw89_vif *new)
-+{
-+	struct rtw89_vif *rtwvif;
-+
-+	lockdep_assert_held(&rtwdev->mutex);
-+
-+	rtw89_for_each_rtwvif(rtwdev, rtwvif)
-+		if (rtwvif == new)
-+			return true;
-+
-+	return false;
-+}
-+
- /* The result of negative dividend and positive divisor is undefined, but it
-  * should be one case of round-down or round-up. So, make it round-down if the
-  * result is round-up.
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index cb2aacbb93357..8a4726e2eb693 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -503,6 +503,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "B2502FBA"),
+ 		},
+ 	},
++	{
++		/* Asus Vivobook Go E1404GAB */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "E1404GAB"),
++		},
++	},
+ 	{
+ 		/* Asus Vivobook E1504GA */
+ 		.matches = {
 -- 
 2.43.0
 
