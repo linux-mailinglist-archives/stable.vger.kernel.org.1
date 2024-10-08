@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-81680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E85A9948C1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:16:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF212994B7D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC3DF1F28DA6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:16:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F14911C24E04
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831E41CDFB8;
-	Tue,  8 Oct 2024 12:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0921DF96F;
+	Tue,  8 Oct 2024 12:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXJIyQ1u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2JhLX0h7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405B4165F08;
-	Tue,  8 Oct 2024 12:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C04C1DF96B;
+	Tue,  8 Oct 2024 12:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389775; cv=none; b=hYDjrng6bItrB8mTSiu9Ksm5MsuAHj1xSWFvF/pONxJNzqjsk5YGUh1/K1Ylwb2AQATIba61BvfUkt012JC8T+AmrnCr2MP+/dt8IWg2qqOpkMlKdi97YvNMBchvl4tqvVtvQUpDy6WhfyrR8oXX4ZcsX4vGOrncdBrHabslB8U=
+	t=1728391379; cv=none; b=uUbW28xbBufkFkY9ROBmwy28ukUeqESyeEKVhyMAHboOIqElYVySkzcMbxEI2HtflEoCTVnNj36zavKU93Wng3dPzmNqG/UJ+THDam5HFNJcY9BeitSb2BV8UPrtQjSE7uxFAt3CLKAwlN9J3okC5RX29aSkrok4XtA1TWrNE/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389775; c=relaxed/simple;
-	bh=MFuP0nzT9qe+rejwoicrkxqFWa+pTacaZDBA/UkrV+Y=;
+	s=arc-20240116; t=1728391379; c=relaxed/simple;
+	bh=4rYhsWpBb/TEbIy6ZD1tDtPiBsL5sNuHHmF5UFf7oRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QAAV0eFAgpqdu1xZaVMdWjiVVOt7Lbhr7CjQ/d5JdL5qle6wht/+ZFpbJ3/5JRYUUG5oSrHE0Gc2uILRnbFgH61cDBPRh6vZCp2McK3YP4dBPtXHunEHNeRvrUP4RnnH5Jo7w0UX2jxHPyZCBsN6mniCaFsjYmf5JSZBCCG6dic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXJIyQ1u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8746C4CECC;
-	Tue,  8 Oct 2024 12:16:14 +0000 (UTC)
+	 MIME-Version; b=jfLe9SC9siT04RigzWgNZrVNKnK03rHzOo+ptced8LahLCq7Rl8AHkqL69FJ2hHkA9a4iBtF0XdZRCLl2MUHJM4tWAzfFY4WDt5SLZAd2o+FEShTWRruLHol7w6qNATZbvmUuMJ6zVUUZwIq8SkN6bsCTuYIwnHBaqGaJVOEk18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2JhLX0h7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B3FEC4CEC7;
+	Tue,  8 Oct 2024 12:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389775;
-	bh=MFuP0nzT9qe+rejwoicrkxqFWa+pTacaZDBA/UkrV+Y=;
+	s=korg; t=1728391378;
+	bh=4rYhsWpBb/TEbIy6ZD1tDtPiBsL5sNuHHmF5UFf7oRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xXJIyQ1uYt4pDFR5uoPKHwSKcRE05NPLy0n2EcfbsjW53Q/5QPiolz6nFeYLdGWJZ
-	 BwzGmQlcuNaQkUeUOuhqmPsMQTQAPw9xQm6RkjLjYxR3YDebFzU7w7/K56gMH5qv1H
-	 1ia50fXmrZ7++Q3fGCRM/9SXmdX4Dgq0Lmt86hcI=
+	b=2JhLX0h7cuHZ1fo8UAWSuWoDjdBw/fx2+yYPEiT/M2x5i3pPKEHX1Ynm6R4d0S3mQ
+	 kOgE4CO9UrkohnW4oX6wM5qKIuPJ7XMuaBeClbGKuJSz8hj4kWR2ZdYYZ8r3BjkLu2
+	 hBwoBPX+aUX5fNmimhgUXOZCy9QVQJWGKv+nNaUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>,
+	Issam Hamdi <ih@simonwunderlich.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 061/482] ALSA: hda/generic: Unconditionally prefer preferred_dacs pairs
-Date: Tue,  8 Oct 2024 14:02:04 +0200
-Message-ID: <20241008115650.708796609@linuxfoundation.org>
+Subject: [PATCH 6.11 095/558] wifi: cfg80211: Set correct chandef when starting CAC
+Date: Tue,  8 Oct 2024 14:02:05 +0200
+Message-ID: <20241008115706.108740782@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Issam Hamdi <ih@simonwunderlich.de>
 
-[ Upstream commit 1c801e7f77445bc56e5e1fec6191fd4503534787 ]
+[ Upstream commit 20361712880396e44ce80aaeec2d93d182035651 ]
 
-Some time ago, we introduced the obey_preferred_dacs flag for choosing
-the DAC/pin pairs specified by the driver instead of parsing the
-paths.  This works as expected, per se, but there have been a few
-cases where we forgot to set this flag while preferred_dacs table is
-already set up.  It ended up with incorrect wiring and made us
-wondering why it doesn't work.
+When starting CAC in a mode other than AP mode, it return a
+"WARNING: CPU: 0 PID: 63 at cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]"
+caused by the chandef.chan being null at the end of CAC.
 
-Basically, when the preferred_dacs table is provided, it means that
-the driver really wants to wire up to follow that.  That is, the
-presence of the preferred_dacs table itself is already a "do-it"
-flag.
+Solution: Ensure the channel definition is set for the different modes
+when starting CAC to avoid getting a NULL 'chan' at the end of CAC.
 
-In this patch, we simply replace the evaluation of obey_preferred_dacs
-flag with the presence of preferred_dacs table for fixing the
-misbehavior.  Another patch to drop of the obsoleted flag will
-follow.
+ Call Trace:
+  ? show_regs.part.0+0x14/0x16
+  ? __warn+0x67/0xc0
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? report_bug+0xa7/0x130
+  ? exc_overflow+0x30/0x30
+  ? handle_bug+0x27/0x50
+  ? exc_invalid_op+0x18/0x60
+  ? handle_exception+0xf6/0xf6
+  ? exc_overflow+0x30/0x30
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? exc_overflow+0x30/0x30
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? regulatory_propagate_dfs_state.cold+0x1b/0x4c [cfg80211]
+  ? cfg80211_propagate_cac_done_wk+0x1a/0x30 [cfg80211]
+  ? process_one_work+0x165/0x280
+  ? worker_thread+0x120/0x3f0
+  ? kthread+0xc2/0xf0
+  ? process_one_work+0x280/0x280
+  ? kthread_complete_and_exit+0x20/0x20
+  ? ret_from_fork+0x19/0x24
 
-Fixes: 242d990c158d ("ALSA: hda/generic: Add option to enforce preferred_dacs pairs")
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1219803
-Link: https://patch.msgid.link/20241001121439.26060-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>
+Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
+Link: https://patch.msgid.link/20240816142418.3381951-1-ih@simonwunderlich.de
+[shorten subject, remove OCB, reorder cases to match previous list]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_generic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/wireless/nl80211.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/hda_generic.c b/sound/pci/hda/hda_generic.c
-index 9cff87dfbecbb..b34d84fedcc8a 100644
---- a/sound/pci/hda/hda_generic.c
-+++ b/sound/pci/hda/hda_generic.c
-@@ -1383,7 +1383,7 @@ static int try_assign_dacs(struct hda_codec *codec, int num_outs,
- 		struct nid_path *path;
- 		hda_nid_t pin = pins[i];
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 1d83bc3de5ca5..f18e1716339e0 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -10144,7 +10144,20 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
  
--		if (!spec->obey_preferred_dacs) {
-+		if (!spec->preferred_dacs) {
- 			path = snd_hda_get_path_from_idx(codec, path_idx[i]);
- 			if (path) {
- 				badness += assign_out_path_ctls(codec, path);
-@@ -1395,7 +1395,7 @@ static int try_assign_dacs(struct hda_codec *codec, int num_outs,
- 		if (dacs[i]) {
- 			if (is_dac_already_used(codec, dacs[i]))
- 				badness += bad->shared_primary;
--		} else if (spec->obey_preferred_dacs) {
-+		} else if (spec->preferred_dacs) {
- 			badness += BAD_NO_PRIMARY_DAC;
- 		}
- 
+ 	err = rdev_start_radar_detection(rdev, dev, &chandef, cac_time_ms);
+ 	if (!err) {
+-		wdev->links[0].ap.chandef = chandef;
++		switch (wdev->iftype) {
++		case NL80211_IFTYPE_AP:
++		case NL80211_IFTYPE_P2P_GO:
++			wdev->links[0].ap.chandef = chandef;
++			break;
++		case NL80211_IFTYPE_ADHOC:
++			wdev->u.ibss.chandef = chandef;
++			break;
++		case NL80211_IFTYPE_MESH_POINT:
++			wdev->u.mesh.chandef = chandef;
++			break;
++		default:
++			break;
++		}
+ 		wdev->cac_started = true;
+ 		wdev->cac_start_time = jiffies;
+ 		wdev->cac_time_ms = cac_time_ms;
 -- 
 2.43.0
 
