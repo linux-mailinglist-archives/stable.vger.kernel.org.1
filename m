@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B875994D71
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C36BA994AF2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:38:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD9D81C24BD0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 894BC284E7D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148C01DE4CD;
-	Tue,  8 Oct 2024 13:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFEF1DE3AE;
+	Tue,  8 Oct 2024 12:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7beyO+L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivl6Jk2f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58951C9B99;
-	Tue,  8 Oct 2024 13:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3BD1779B1;
+	Tue,  8 Oct 2024 12:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392728; cv=none; b=jB2sYTgveArNNudN7o+znltPDFhqjLojlaTfM8BYGazpspj/d+RW5pyBaA3C2poPHM82d732o34ELlazKgaxQ53amxcK8Q2g2aMCmQCM4saE6KwmYmr3h1WgRwxyat1eqcPa4E/PH+T/kOZPDcJaj9+kJIoS4YzgQ2pajvphGfc=
+	t=1728391092; cv=none; b=hxL3cB/w0I+uox/DJAiueDmcVid5c6nuRXqgZYncdiKnzZSMn4mhZIfIG+457VnZiqqFgbE8R/Pol3prbYPMRnCNnCi4UDKlSXDOm/Eo9+SB4U/VoGd/bnhg7w8S0IAqwIUD0cr7xqJldXuO6S88GN/bcikfUFbruVzRoYboeic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392728; c=relaxed/simple;
-	bh=sT43mvBk4G1NrMGFcQ4nKuL9fBpStAI670x9SHQhRC0=;
+	s=arc-20240116; t=1728391092; c=relaxed/simple;
+	bh=HkwZBK9bsdXcp1RPaoOq1iorZYo9dPJmbT/kquOkDOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uW3OeKMxcHYVoXYipmL0ylW9u4951stB0d2VZ1o2u86P4rpw1z9VYPr28raEz4d7N3dSH99JgzEStnkZyU3qqMdB5iVKZA0XRV6FuKkq1QKTYSa3j8T2r2S5jxOvM7zmrcrRVkjA/+9arFPwuDp809hGU5pu0HECeFGliJhs5eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7beyO+L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A63C4CEC7;
-	Tue,  8 Oct 2024 13:05:27 +0000 (UTC)
+	 MIME-Version; b=a9RDC514g5MA2pGT9WIrZYaPEbaT8YGu2nF+iYS79GXuGCxDhQt27U12a/HAvBlO1mbWQOdVltr5WbI6ntjf4D9OQYLPpBqwGhvb4k+hxCThlp3NY3bhRxkz+5t9VIoe8RyNZ02lOZWYua0nGGumpg1K1gWEnwYZ6AO5vmEhcQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivl6Jk2f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B1E3C4CECC;
+	Tue,  8 Oct 2024 12:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392728;
-	bh=sT43mvBk4G1NrMGFcQ4nKuL9fBpStAI670x9SHQhRC0=;
+	s=korg; t=1728391092;
+	bh=HkwZBK9bsdXcp1RPaoOq1iorZYo9dPJmbT/kquOkDOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e7beyO+Ly49lKlROTUXJ8V/IEVWXAw7/xImvuLamMTRUggI51PfdrvvJklGMuzAWJ
-	 OSgYYFLxHnBDsjiYGl4CRWbyv/PpfOPZM8Ikzzyr2gF7Jar1EBGAM2FrZojxGaR9um
-	 nYNVf44IvJomTau2LOYuD951mrFswFsHfpaeJdbc=
+	b=ivl6Jk2fT5pg2IAcHZfBfCOGI5W4bV7O2U/ZKRq8KHEThKCM6TPtaOI2hnyxbs5p9
+	 eKzW9bTv+x+H4XveveKoFOgBldBuSz+0BaWoXnQM0lPqQQzYTJYErwSzeKTqukJhil
+	 2mTNgc0KdeSvO0Dpf3qCeegW208DmVAld6ZFqAio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Miquel=20Sabat=C3=A9=20Sol=C3=A0?= <mikisabate@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.11 501/558] cpufreq: Avoid a bad reference count on CPU node
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 468/482] iio: pressure: bmp280: Fix waiting time for BMP3xx configuration
 Date: Tue,  8 Oct 2024 14:08:51 +0200
-Message-ID: <20241008115721.947407277@linuxfoundation.org>
+Message-ID: <20241008115706.930103069@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Sabaté Solà <mikisabate@gmail.com>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-commit c0f02536fffbbec71aced36d52a765f8c4493dc2 upstream.
+[ Upstream commit 262a6634bcc4f0c1c53d13aa89882909f281a6aa ]
 
-In the parse_perf_domain function, if the call to
-of_parse_phandle_with_args returns an error, then the reference to the
-CPU device node that was acquired at the start of the function would not
-be properly decremented.
+According to the datasheet, both pressure and temperature can go up to
+oversampling x32. With this option, the maximum measurement time is not
+80ms (this is for press x32 and temp x2), but it is 130ms nominal
+(calculated from table 3.9.2) and since most of the maximum values
+are around +15%, it is configured to 150ms.
 
-Address this by declaring the variable with the __free(device_node)
-cleanup attribute.
-
-Signed-off-by: Miquel Sabaté Solà <mikisabate@gmail.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/20240917134246.584026-1-mikisabate@gmail.com
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8d329309184d ("iio: pressure: bmp280: Add support for BMP380 sensor family")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://patch.msgid.link/20240711211558.106327-3-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cpufreq.h |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/iio/pressure/bmp280-core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/include/linux/cpufreq.h
-+++ b/include/linux/cpufreq.h
-@@ -1113,10 +1113,9 @@ static inline int parse_perf_domain(int
- 				    const char *cell_name,
- 				    struct of_phandle_args *args)
- {
--	struct device_node *cpu_np;
- 	int ret;
+diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+index 55ea708489b66..1549f361a473f 100644
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -1204,10 +1204,11 @@ static int bmp380_chip_config(struct bmp280_data *data)
+ 		}
+ 		/*
+ 		 * Waits for measurement before checking configuration error
+-		 * flag. Selected longest measure time indicated in
+-		 * section 3.9.1 in the datasheet.
++		 * flag. Selected longest measurement time, calculated from
++		 * formula in datasheet section 3.9.2 with an offset of ~+15%
++		 * as it seen as well in table 3.9.1.
+ 		 */
+-		msleep(80);
++		msleep(150);
  
--	cpu_np = of_cpu_device_node_get(cpu);
-+	struct device_node *cpu_np __free(device_node) = of_cpu_device_node_get(cpu);
- 	if (!cpu_np)
- 		return -ENODEV;
- 
-@@ -1124,9 +1123,6 @@ static inline int parse_perf_domain(int
- 					 args);
- 	if (ret < 0)
- 		return ret;
--
--	of_node_put(cpu_np);
--
- 	return 0;
- }
- 
+ 		/* Check config error flag */
+ 		ret = regmap_read(data->regmap, BMP380_REG_ERROR, &tmp);
+-- 
+2.43.0
+
 
 
 
