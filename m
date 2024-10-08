@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-81683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC8D9948CA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:17:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60BE4994BA5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A97DB220EF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:17:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED3A91F28000
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 034B6165F08;
-	Tue,  8 Oct 2024 12:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298FD1DF727;
+	Tue,  8 Oct 2024 12:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QE7syhqO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfU7rtUv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A341DE4F4;
-	Tue,  8 Oct 2024 12:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB62B1DE2A5;
+	Tue,  8 Oct 2024 12:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389786; cv=none; b=OKSf2+e+uvFSGXcB+1S9zvBs+R7NKlnyZnOYjJ/0c6V0ORraxJap5BQw2qWXoumS/mOGjrCdw/H7Gzx1vTHFaZ74IgdvfkXkxtclbP1KiErcK+PsHVa3eJAvSBSkTgfuQmnP3QLfeHJgZjiaDIbLl2tTjd2tWAqyscDn9OvrZXw=
+	t=1728391485; cv=none; b=CQk2NSQdGRtb9oFxvLDWB5YTA9rIW8jlY4HY4WDwrSX1KieGYtWY5Yg6lwa8NxForxb0KNjO2nmaJc+FTLfrhWyokCdfFWgQ5Utq7ZGJByzphjPy+wnCtGqciP+Ca2+OMvwa/UOI2NR62CaUE5+1ejC5Rlk+zLigI6IVOS3vmJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389786; c=relaxed/simple;
-	bh=sg50azOz5jUDPzNGfKq3Ac09TnmHm15pkaxnBv2lFLs=;
+	s=arc-20240116; t=1728391485; c=relaxed/simple;
+	bh=IkPb5hRgRSdgCoSG1Bdg3ekDJANEhRxav4n5PoxgOuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SJJrxcWV3XqwFv+vfZ7y9Z2vW+HyAU+Ro6cuevaublIT55YkQvbje3LQOdu8H3uorK4nd//jbCuTDZ9Rxs4WDVRSS6CzWe5CxhVKa054pjX2cOhG80J0iGplJ3ombJ2gnqqsnw5g2cv8f+f1BrajPvvS4yey/S4GZS/OUYm25zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QE7syhqO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBD8C4CEC7;
-	Tue,  8 Oct 2024 12:16:25 +0000 (UTC)
+	 MIME-Version; b=hmCtytcXz2b9PVbpbfGUow0PNj9TevGYYzJTqdHYxI0M8afXOiNAIc0yyCQYUVV2iiYa0xb8lXi4JBsIwzhcA8CN7tLmb9J6yp3iYQoj4rwtt/yv8EKJomqIwHxPu5yd2Z0Rvffov3cAl97SOkGaMeezgtPJJkLHNIWKAEZfFQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KfU7rtUv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD34C4CEC7;
+	Tue,  8 Oct 2024 12:44:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389786;
-	bh=sg50azOz5jUDPzNGfKq3Ac09TnmHm15pkaxnBv2lFLs=;
+	s=korg; t=1728391485;
+	bh=IkPb5hRgRSdgCoSG1Bdg3ekDJANEhRxav4n5PoxgOuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QE7syhqOamd78d143E4xrvmbO3NdzpoMeD7M3YkAS0YCgxAmk3eKEJ57l9oHxihjq
-	 ckgM5c437ci2cqzRW/a0lYkHchST8E3wq80E14TgLNOZvDpz8k7ha6adcuocnquW6Z
-	 R1mgydd1F/xrtUA7zURxq04SstiRVoKHLbAdP5Qw=
+	b=KfU7rtUv/94dkhJcZW2gcqI4RnAUfb6WpASJn67eOTDuqTOXNfRrdspdzphW0xPMu
+	 bFyxgMPDtwUgD6Om4bN5pHECXszZ7Tw+OjTTXzhgjVdm5qBRpS345SeaNwguVsir3u
+	 7NkMfEmv1yKb0HqIZPar2gUmBZ9Z2SbIf7fKfQcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	al0uette@outlook.com,
-	vderp@icloud.com,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 096/482] ACPI: CPPC: Add support for setting EPP register in FFH
+Subject: [PATCH 6.11 129/558] ipv4: Mask upper DSCP bits and ECN bits in NETLINK_FIB_LOOKUP family
 Date: Tue,  8 Oct 2024 14:02:39 +0200
-Message-ID: <20241008115652.088391057@linuxfoundation.org>
+Message-ID: <20241008115707.441567111@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit aaf21ac93909e08a12931173336bdb52ac8499f1 ]
+[ Upstream commit 8fed54758cd248cd311a2b5c1e180abef1866237 ]
 
-Some Asus AMD systems are reported to not be able to change EPP values
-because the BIOS doesn't advertise support for the CPPC MSR and the PCC
-region is not configured.
+The NETLINK_FIB_LOOKUP netlink family can be used to perform a FIB
+lookup according to user provided parameters and communicate the result
+back to user space.
 
-However the ACPI 6.2 specification allows CPC registers to be declared
-in FFH:
-```
-Starting with ACPI Specification 6.2, all _CPC registers can be in
-PCC, System Memory, System IO, or Functional Fixed Hardware address
-spaces. OSPM support for this more flexible register space scheme
-is indicated by the “Flexible Address Space for CPPC Registers” _OSC
-bit.
-```
+However, unlike other users of the FIB lookup API, the upper DSCP bits
+and the ECN bits of the DS field are not masked, which can result in the
+wrong result being returned.
 
-If this _OSC has been set allow using FFH to configure EPP.
+Solve this by masking the upper DSCP bits and the ECN bits using
+IPTOS_RT_MASK.
 
-Reported-by: al0uette@outlook.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218686
-Suggested-by: al0uette@outlook.com
-Tested-by: vderp@icloud.com
-Tested-by: al0uette@outlook.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20240910031524.106387-1-superm1@kernel.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The structure that communicates the request and the response is not
+exported to user space, so it is unlikely that this netlink family is
+actually in use [1].
+
+[1] https://lore.kernel.org/netdev/ZpqpB8vJU%2FQ6LSqa@debian/
+
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/ipv4/fib_frontend.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 2a588e4ed4af4..6a048d44fbcf6 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -103,6 +103,11 @@ static DEFINE_PER_CPU(struct cpc_desc *, cpc_desc_ptr);
- 				(cpc)->cpc_entry.reg.space_id ==	\
- 				ACPI_ADR_SPACE_PLATFORM_COMM)
- 
-+/* Check if a CPC register is in FFH */
-+#define CPC_IN_FFH(cpc) ((cpc)->type == ACPI_TYPE_BUFFER &&		\
-+				(cpc)->cpc_entry.reg.space_id ==	\
-+				ACPI_ADR_SPACE_FIXED_HARDWARE)
-+
- /* Check if a CPC register is in SystemMemory */
- #define CPC_IN_SYSTEM_MEMORY(cpc) ((cpc)->type == ACPI_TYPE_BUFFER &&	\
- 				(cpc)->cpc_entry.reg.space_id ==	\
-@@ -1519,9 +1524,12 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
- 		/* after writing CPC, transfer the ownership of PCC to platform */
- 		ret = send_pcc_cmd(pcc_ss_id, CMD_WRITE);
- 		up_write(&pcc_ss_data->pcc_lock);
-+	} else if (osc_cpc_flexible_adr_space_confirmed &&
-+		   CPC_SUPPORTED(epp_set_reg) && CPC_IN_FFH(epp_set_reg)) {
-+		ret = cpc_write(cpu, epp_set_reg, perf_ctrls->energy_perf);
- 	} else {
- 		ret = -ENOTSUPP;
--		pr_debug("_CPC in PCC is not supported\n");
-+		pr_debug("_CPC in PCC and _CPC in FFH are not supported\n");
- 	}
- 
- 	return ret;
+diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
+index 7ad2cafb92763..da540ddb7af65 100644
+--- a/net/ipv4/fib_frontend.c
++++ b/net/ipv4/fib_frontend.c
+@@ -1343,7 +1343,7 @@ static void nl_fib_lookup(struct net *net, struct fib_result_nl *frn)
+ 	struct flowi4           fl4 = {
+ 		.flowi4_mark = frn->fl_mark,
+ 		.daddr = frn->fl_addr,
+-		.flowi4_tos = frn->fl_tos,
++		.flowi4_tos = frn->fl_tos & IPTOS_RT_MASK,
+ 		.flowi4_scope = frn->fl_scope,
+ 	};
+ 	struct fib_table *tb;
 -- 
 2.43.0
 
