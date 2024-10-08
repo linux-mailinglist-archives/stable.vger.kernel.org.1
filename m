@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-82906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82464994F42
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:26:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20102994D84
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:06:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A769283EC1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:26:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D06E28761E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD3A1E0DD4;
-	Tue,  8 Oct 2024 13:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C391DE4CC;
+	Tue,  8 Oct 2024 13:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ihk97R0U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3N8M81q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C9D1E0DD0;
-	Tue,  8 Oct 2024 13:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81B41C9B99;
+	Tue,  8 Oct 2024 13:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393825; cv=none; b=oZzAJrS72uGHaS1XQHS4dHqi0e/HU+GuVh5j+2axgw7eTyBVH+PvL22M0+8lSSkEJvv+/c7Hd8yRSJ4mtu3mzuOEd/+2lDyDtESsvaEP5wwrQKZbk2RacGMyccgQotrs1MHZGHdq+12Z2Z6AYj1aRWG0z/DTFP607xCWQLdjfHw=
+	t=1728392768; cv=none; b=AjkLml7rqwfi/uF/0wH5HQMfIo2c8yI3tN8lVxmZ5UzQSwQ5NIRU5Di+ujhfw2vrUJ9NqX4TCGttDId7gmOXc5oSqesAgSkScE2agacZHeOa8LtcF35fhhFh3sQnMhhQQkR2mdc+NruekRlY9ywblx4IWERt1gV0LSSZ1YK2tbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393825; c=relaxed/simple;
-	bh=52iLaCNJbXQHe1W2rNdAljb4KIhESjy8ieChlExAR04=;
+	s=arc-20240116; t=1728392768; c=relaxed/simple;
+	bh=cUD+nTiD9qkJU7OL+1ufMZdMIKmw/yt9A+1K+hh708g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tdMN/dqxqHnINl8XtYQIi5kk1nzh6Qnl3KcpUwdxO38dYjDSJSV7YSIZUz3hVCjXT44wOaJLp2eDJBTPeT473Sfvxj4CDB+fxSSasRTNFIVT2OWxgiYqhoGowBceJRY6gVHx0AYY5ZhGufgfOW1zxrMVb9ZKRlwoubuVT2W1/4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ihk97R0U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D21C4CED9;
-	Tue,  8 Oct 2024 13:23:44 +0000 (UTC)
+	 MIME-Version; b=lybgq4TNj7HtPC2X1/fNMh0NRh2eOIoWdzAgv9Zp5rr5uUH1ql/KSQNSDlA+DPxBWx7dr1KVsGIPUBRUGepbjry4a48A8vFkMnn1InJJn3ESQu42gy6MonrmqpYSIv+b/fGqqV1/2v23D1Sd93KWR4M1OKhxKxrq9znjCnfCppM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3N8M81q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E27C4CEC7;
+	Tue,  8 Oct 2024 13:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393824;
-	bh=52iLaCNJbXQHe1W2rNdAljb4KIhESjy8ieChlExAR04=;
+	s=korg; t=1728392768;
+	bh=cUD+nTiD9qkJU7OL+1ufMZdMIKmw/yt9A+1K+hh708g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ihk97R0UlUJPfY3xISFadcSqyvf7M3KnF7BRoPIXG0fsCTVNHHnaCfhh2yzIa60l3
-	 p/V36wzyTsgeZ3PfzSbl/7qlauDRDXh5LT+bcihHGqjxTodDdwVmcHMz+j1tYddGUq
-	 Rx8zB3ZcijWH3GWBw5g6d1wtRQtbzH0RKxnofouY=
+	b=Q3N8M81qdrv9RKHt/jj6+Iw2xlQS183wP8azh3RCPNYbm4EEnNOIPBCB8dMdHwXdE
+	 mlBnZxa8KcKWKBThnFjnESCxz29dMVp3vaTS1xf5F/nX1MTq8/9peP3vs/BSthEta/
+	 q6NC+a5IOrYADtVK53uo988ONIyzeLd6uSLiVVV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James More <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Easwar Hariharan <eahariha@linux.microsoft.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.6 267/386] arm64: Subscribe Microsoft Azure Cobalt 100 to erratum 3194386
+	Steve Sistare <steven.sistare@oracle.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Peter Xu <peterx@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 482/558] mm/hugetlb: fix memfd_pin_folios resv_huge_pages leak
 Date: Tue,  8 Oct 2024 14:08:32 +0200
-Message-ID: <20241008115639.898438202@linuxfoundation.org>
+Message-ID: <20241008115721.205151030@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +67,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
+From: Steve Sistare <steven.sistare@oracle.com>
 
-commit 3eddb108abe3de6723cc4b77e8558ce1b3047987 upstream.
+commit 26a8ea80929c518bdec5e53a5776f95919b7c88e upstream.
 
-Add the Microsoft Azure Cobalt 100 CPU to the list of CPUs suffering
-from erratum 3194386 added in commit 75b3c43eab59 ("arm64: errata:
-Expand speculative SSBS workaround")
+memfd_pin_folios followed by unpin_folios leaves resv_huge_pages elevated
+if the pages were not already faulted in.  During a normal page fault,
+resv_huge_pages is consumed here:
 
-CC: Mark Rutland <mark.rutland@arm.com>
-CC: James More <james.morse@arm.com>
-CC: Will Deacon <will@kernel.org>
-CC: stable@vger.kernel.org # 6.6+
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20241003225239.321774-1-eahariha@linux.microsoft.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+hugetlb_fault()
+  alloc_hugetlb_folio()
+    dequeue_hugetlb_folio_vma()
+      dequeue_hugetlb_folio_nodemask()
+        dequeue_hugetlb_folio_node_exact()
+          free_huge_pages--
+      resv_huge_pages--
+
+During memfd_pin_folios, the page is created by calling
+alloc_hugetlb_folio_nodemask instead of alloc_hugetlb_folio, and
+resv_huge_pages is not modified:
+
+memfd_alloc_folio()
+  alloc_hugetlb_folio_nodemask()
+    dequeue_hugetlb_folio_nodemask()
+      dequeue_hugetlb_folio_node_exact()
+        free_huge_pages--
+
+alloc_hugetlb_folio_nodemask has other callers that must not modify
+resv_huge_pages.  Therefore, to fix, define an alternate version of
+alloc_hugetlb_folio_nodemask for this call site that adjusts
+resv_huge_pages.
+
+Link: https://lkml.kernel.org/r/1725373521-451395-4-git-send-email-steven.sistare@oracle.com
+Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/arch/arm64/silicon-errata.rst |    2 ++
- arch/arm64/kernel/cpu_errata.c              |    1 +
- 2 files changed, 3 insertions(+)
+ include/linux/hugetlb.h |   10 ++++++++++
+ mm/hugetlb.c            |   17 +++++++++++++++++
+ mm/memfd.c              |    9 ++++-----
+ 3 files changed, 31 insertions(+), 5 deletions(-)
 
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -280,3 +280,5 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | Microsoft      | Azure Cobalt 100| #2253138        | ARM64_ERRATUM_2253138       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| Microsoft      | Azure Cobalt 100| #3324339        | ARM64_ERRATUM_3194386       |
-++----------------+-----------------+-----------------+-----------------------------+
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -463,6 +463,7 @@ static const struct midr_range erratum_s
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X925),
-+	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -695,6 +695,9 @@ struct folio *alloc_hugetlb_folio(struct
+ struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
+ 				nodemask_t *nmask, gfp_t gfp_mask,
+ 				bool allow_alloc_fallback);
++struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
++					  nodemask_t *nmask, gfp_t gfp_mask);
++
+ int hugetlb_add_to_page_cache(struct folio *folio, struct address_space *mapping,
+ 			pgoff_t idx);
+ void restore_reserve_on_error(struct hstate *h, struct vm_area_struct *vma,
+@@ -1060,6 +1063,13 @@ static inline struct folio *alloc_hugetl
+ {
+ 	return NULL;
+ }
++
++static inline struct folio *
++alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
++			    nodemask_t *nmask, gfp_t gfp_mask)
++{
++	return NULL;
++}
+ 
+ static inline struct folio *
+ alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2564,6 +2564,23 @@ struct folio *alloc_buddy_hugetlb_folio_
+ 	return folio;
+ }
+ 
++struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
++		nodemask_t *nmask, gfp_t gfp_mask)
++{
++	struct folio *folio;
++
++	spin_lock_irq(&hugetlb_lock);
++	folio = dequeue_hugetlb_folio_nodemask(h, gfp_mask, preferred_nid,
++					       nmask);
++	if (folio) {
++		VM_BUG_ON(!h->resv_huge_pages);
++		h->resv_huge_pages--;
++	}
++
++	spin_unlock_irq(&hugetlb_lock);
++	return folio;
++}
++
+ /* folio migration callback function */
+ struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
+ 		nodemask_t *nmask, gfp_t gfp_mask, bool allow_alloc_fallback)
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -82,11 +82,10 @@ struct folio *memfd_alloc_folio(struct f
+ 		gfp_mask = htlb_alloc_mask(hstate_file(memfd));
+ 		gfp_mask &= ~(__GFP_HIGHMEM | __GFP_MOVABLE);
+ 
+-		folio = alloc_hugetlb_folio_nodemask(hstate_file(memfd),
+-						     numa_node_id(),
+-						     NULL,
+-						     gfp_mask,
+-						     false);
++		folio = alloc_hugetlb_folio_reserve(hstate_file(memfd),
++						    numa_node_id(),
++						    NULL,
++						    gfp_mask);
+ 		if (folio && folio_try_get(folio)) {
+ 			err = hugetlb_add_to_page_cache(folio,
+ 							memfd->f_mapping,
 
 
 
