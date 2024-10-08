@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F585994A9C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD55B994D16
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2B3E1C24993
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D820D1C25246
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5999E1DDA15;
-	Tue,  8 Oct 2024 12:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292701DED6F;
+	Tue,  8 Oct 2024 13:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVeq5Ett"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khhJfKba"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C5A192D69;
-	Tue,  8 Oct 2024 12:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4C91C32EB;
+	Tue,  8 Oct 2024 13:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390884; cv=none; b=eJwjpFNWkJ+JEDeGP5WsHI6kah/VwYrqeQaKJRigJTE+1s7waBrqOGRzcfVjPbUtCPj0qDQObaNMHuv8ECRe2CE3urEjdTXt87/ISIX509iaYdBwfTHNvyLZ2ohfuayN56RdOwiFjpO0bz4wmu6VN6KQtdY6a9enmkTQfGFGU5g=
+	t=1728392487; cv=none; b=I/ZR0vOHVNIzBwQxmfhy3S80Z5hzaUdLHKb8W9Fyg+4yvoY139nteSrPoKRWrF+QiJIVmGA3eV1wlHbXm7Zv1Gd0Up1iiB8ybVKicv56IFmwRnGZeMdvGI7oTmYeFIBGyy1PYT2ks5LMg1ZD9YnH3+WzlOWtbFm2rHjJTtVyTi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390884; c=relaxed/simple;
-	bh=/Mza5eVi97xpRiSHza1AiKb07ZZEDBu58r7MhRa0SPE=;
+	s=arc-20240116; t=1728392487; c=relaxed/simple;
+	bh=VGbxwhMIJYjm8qKPJihCGUz2DMjoIl4OwEy7i7YclN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cEw2tGNYizAFsGvRT98AEuuVfDpq+jsC1prkt9T+IrtHjLOI1OQ/OCMNTFujS6Th/DdKi+n4KNo8fULzwttvvr3xBru+T/OBti35oNvI0vrrV3iZ/yDqN0yEFgmVUjCEUMe2ydoHFCedNJJ3twAD6oH45uw5USeeji0jaHzMOh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVeq5Ett; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23839C4CEC7;
-	Tue,  8 Oct 2024 12:34:42 +0000 (UTC)
+	 MIME-Version; b=JH1x62BNqneI4ghUniplLTNuQQVRQTPM8Xxq6hAcUT+jwS383jj2FjRTxrYUX6ulL3nFM5Wnfm5wfSEWHB6VvJSgeyp2MQGt1Br/Fi2dUQ+Om0Gw6i6Q9GCjIf3fiHLP5JY42XDpFnD4nQJmIeYlXqHpwLEC48Yp70mLN6lJqSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khhJfKba; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E94C4CEC7;
+	Tue,  8 Oct 2024 13:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390883;
-	bh=/Mza5eVi97xpRiSHza1AiKb07ZZEDBu58r7MhRa0SPE=;
+	s=korg; t=1728392487;
+	bh=VGbxwhMIJYjm8qKPJihCGUz2DMjoIl4OwEy7i7YclN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mVeq5Ett3e3KUOfuW0iqs6Vri4txeEdjFWp/ONJN0qYx5gsMJQW8gBET3611lJvNl
-	 KU8mq3cDwMvnynSkP91lsvB8+49h9+g7bhcjSiprvxz48K9JtE6rYVNzZgaOtoOnNE
-	 SHCDBOc64vlpgDVOPEdrIOaAzxFNPtDZ/YVabVxk=
+	b=khhJfKbaNke96JvN7ZON3sikkWdZiZlhyCBvEMadow/WuZsBzLW/Ea/buE24VSRqa
+	 tvDROg27Re44Z09tIlcT58cbfcUIQI5Xlb7whFrQO+Z+EHrRR32RaRo7GVa3PDYni/
+	 z4wdxNenccBf6/UBlytqHGqUZTGNSynsw2CLLpso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.10 395/482] media: qcom: camss: Remove use_count guard in stop_streaming
-Date: Tue,  8 Oct 2024 14:07:38 +0200
-Message-ID: <20241008115703.955801789@linuxfoundation.org>
+	Brandon Duffany <brandon@buildbuddy.io>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.11 429/558] sched: psi: fix bogus pressure spikes from aggregation race
+Date: Tue,  8 Oct 2024 14:07:39 +0200
+Message-ID: <20241008115719.154460175@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +63,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Johannes Weiner <hannes@cmpxchg.org>
 
-commit 25f18cb1b673220b76a86ebef8e7fb79bd303b27 upstream.
+commit 3840cbe24cf060ea05a585ca497814609f5d47d1 upstream.
 
-The use_count check was introduced so that multiple concurrent Raw Data
-Interfaces RDIs could be driven by different virtual channels VCs on the
-CSIPHY input driving the video pipeline.
+Brandon reports sporadic, non-sensical spikes in cumulative pressure
+time (total=) when reading cpu.pressure at a high rate. This is due to
+a race condition between reader aggregation and tasks changing states.
 
-This is an invalid use of use_count though as use_count pertains to the
-number of times a video entity has been opened by user-space not the number
-of active streams.
+While it affects all states and all resources captured by PSI, in
+practice it most likely triggers with CPU pressure, since scheduling
+events are so frequent compared to other resource events.
 
-If use_count and stream-on count don't agree then stop_streaming() will
-break as is currently the case and has become apparent when using CAMSS
-with libcamera's released softisp 0.3.
+The race context is the live snooping of ongoing stalls during a
+pressure read. The read aggregates per-cpu records for stalls that
+have concluded, but will also incorporate ad-hoc the duration of any
+active state that hasn't been recorded yet. This is important to get
+timely measurements of ongoing stalls. Those ad-hoc samples are
+calculated on-the-fly up to the current time on that CPU; since the
+stall hasn't concluded, it's expected that this is the minimum amount
+of stall time that will enter the per-cpu records once it does.
 
-The use of use_count like this is a bit hacky and right now breaks regular
-usage of CAMSS for a single stream case. Stopping qcam results in the splat
-below, and then it cannot be started again and any attempts to do so fails
-with -EBUSY.
+The problem is that the path that concludes the state uses a CPU clock
+read that is not synchronized against aggregators; the clock is read
+outside of the seqlock protection. This allows aggregators to race and
+snoop a stall with a longer duration than will actually be recorded.
 
-[ 1265.509831] WARNING: CPU: 5 PID: 919 at drivers/media/common/videobuf2/videobuf2-core.c:2183 __vb2_queue_cancel+0x230/0x2c8 [videobuf2_common]
-...
-[ 1265.510630] Call trace:
-[ 1265.510636]  __vb2_queue_cancel+0x230/0x2c8 [videobuf2_common]
-[ 1265.510648]  vb2_core_streamoff+0x24/0xcc [videobuf2_common]
-[ 1265.510660]  vb2_ioctl_streamoff+0x5c/0xa8 [videobuf2_v4l2]
-[ 1265.510673]  v4l_streamoff+0x24/0x30 [videodev]
-[ 1265.510707]  __video_do_ioctl+0x190/0x3f4 [videodev]
-[ 1265.510732]  video_usercopy+0x304/0x8c4 [videodev]
-[ 1265.510757]  video_ioctl2+0x18/0x34 [videodev]
-[ 1265.510782]  v4l2_ioctl+0x40/0x60 [videodev]
-...
-[ 1265.510944] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 0 in active state
-[ 1265.511175] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 1 in active state
-[ 1265.511398] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 2 in active st
+With the recorded stall time being less than the last snapshot
+remembered by the aggregator, a subsequent sample will underflow and
+observe a bogus delta value, resulting in an erratic jump in pressure.
 
-One CAMSS specific way to handle multiple VCs on the same RDI might be:
+Fix this by moving the clock read of the state change into the seqlock
+protection. This ensures no aggregation can snoop live stalls past the
+time that's recorded when the state concludes.
 
-- Reference count each pipeline enable for CSIPHY, CSID, VFE and RDIx.
-- The video buffers are already associated with msm_vfeN_rdiX so
-  release video buffers when told to do so by stop_streaming.
-- Only release the power-domains for the CSIPHY, CSID and VFE when
-  their internal refcounts drop.
-
-Either way refusing to release video buffers based on use_count is
-erroneous and should be reverted. The silicon enabling code for selecting
-VCs is perfectly fine. Its a "known missing feature" that concurrent VCs
-won't work with CAMSS right now.
-
-Initial testing with this code didn't show an error but, SoftISP and "real"
-usage with Google Hangouts breaks the upstream code pretty quickly, we need
-to do a partial revert and take another pass at VCs.
-
-This commit partially reverts commit 89013969e232 ("media: camss: sm8250:
-Pipeline starting and stopping for multiple virtual channels")
-
-Fixes: 89013969e232 ("media: camss: sm8250: Pipeline starting and stopping for multiple virtual channels")
-Reported-by: Johan Hovold <johan+linaro@kernel.org>
-Closes: https://lore.kernel.org/lkml/ZoVNHOTI0PKMNt4_@hovoldconsulting.com/
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: Brandon Duffany <brandon@buildbuddy.io>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219194
+Link: https://lore.kernel.org/lkml/20240827121851.GB438928@cmpxchg.org/
+Fixes: df77430639c9 ("psi: Reduce calls to sched_clock() in psi")
+Cc: stable@vger.kernel.org
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss-video.c |    6 ------
- 1 file changed, 6 deletions(-)
+ kernel/sched/psi.c |   26 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
---- a/drivers/media/platform/qcom/camss/camss-video.c
-+++ b/drivers/media/platform/qcom/camss/camss-video.c
-@@ -557,12 +557,6 @@ static void video_stop_streaming(struct
+--- a/kernel/sched/psi.c
++++ b/kernel/sched/psi.c
+@@ -769,12 +769,13 @@ static void record_times(struct psi_grou
+ }
  
- 		ret = v4l2_subdev_call(subdev, video, s_stream, 0);
+ static void psi_group_change(struct psi_group *group, int cpu,
+-			     unsigned int clear, unsigned int set, u64 now,
++			     unsigned int clear, unsigned int set,
+ 			     bool wake_clock)
+ {
+ 	struct psi_group_cpu *groupc;
+ 	unsigned int t, m;
+ 	u32 state_mask;
++	u64 now;
  
--		if (entity->use_count > 1) {
--			/* Don't stop if other instances of the pipeline are still running */
--			dev_dbg(video->camss->dev, "Video pipeline still used, don't stop streaming.\n");
--			return;
--		}
+ 	lockdep_assert_rq_held(cpu_rq(cpu));
+ 	groupc = per_cpu_ptr(group->pcpu, cpu);
+@@ -789,6 +790,7 @@ static void psi_group_change(struct psi_
+ 	 * SOME and FULL time these may have resulted in.
+ 	 */
+ 	write_seqcount_begin(&groupc->seq);
++	now = cpu_clock(cpu);
+ 
+ 	/*
+ 	 * Start with TSK_ONCPU, which doesn't have a corresponding
+@@ -899,18 +901,15 @@ void psi_task_change(struct task_struct
+ {
+ 	int cpu = task_cpu(task);
+ 	struct psi_group *group;
+-	u64 now;
+ 
+ 	if (!task->pid)
+ 		return;
+ 
+ 	psi_flags_change(task, clear, set);
+ 
+-	now = cpu_clock(cpu);
 -
- 		if (ret) {
- 			dev_err(video->camss->dev, "Video pipeline stop failed: %d\n", ret);
- 			return;
+ 	group = task_psi_group(task);
+ 	do {
+-		psi_group_change(group, cpu, clear, set, now, true);
++		psi_group_change(group, cpu, clear, set, true);
+ 	} while ((group = group->parent));
+ }
+ 
+@@ -919,7 +918,6 @@ void psi_task_switch(struct task_struct
+ {
+ 	struct psi_group *group, *common = NULL;
+ 	int cpu = task_cpu(prev);
+-	u64 now = cpu_clock(cpu);
+ 
+ 	if (next->pid) {
+ 		psi_flags_change(next, 0, TSK_ONCPU);
+@@ -936,7 +934,7 @@ void psi_task_switch(struct task_struct
+ 				break;
+ 			}
+ 
+-			psi_group_change(group, cpu, 0, TSK_ONCPU, now, true);
++			psi_group_change(group, cpu, 0, TSK_ONCPU, true);
+ 		} while ((group = group->parent));
+ 	}
+ 
+@@ -974,7 +972,7 @@ void psi_task_switch(struct task_struct
+ 		do {
+ 			if (group == common)
+ 				break;
+-			psi_group_change(group, cpu, clear, set, now, wake_clock);
++			psi_group_change(group, cpu, clear, set, wake_clock);
+ 		} while ((group = group->parent));
+ 
+ 		/*
+@@ -986,7 +984,7 @@ void psi_task_switch(struct task_struct
+ 		if ((prev->psi_flags ^ next->psi_flags) & ~TSK_ONCPU) {
+ 			clear &= ~TSK_ONCPU;
+ 			for (; group; group = group->parent)
+-				psi_group_change(group, cpu, clear, set, now, wake_clock);
++				psi_group_change(group, cpu, clear, set, wake_clock);
+ 		}
+ 	}
+ }
+@@ -997,8 +995,8 @@ void psi_account_irqtime(struct rq *rq,
+ 	int cpu = task_cpu(curr);
+ 	struct psi_group *group;
+ 	struct psi_group_cpu *groupc;
+-	u64 now, irq;
+ 	s64 delta;
++	u64 irq;
+ 
+ 	if (static_branch_likely(&psi_disabled))
+ 		return;
+@@ -1011,7 +1009,6 @@ void psi_account_irqtime(struct rq *rq,
+ 	if (prev && task_psi_group(prev) == group)
+ 		return;
+ 
+-	now = cpu_clock(cpu);
+ 	irq = irq_time_read(cpu);
+ 	delta = (s64)(irq - rq->psi_irq_time);
+ 	if (delta < 0)
+@@ -1019,12 +1016,15 @@ void psi_account_irqtime(struct rq *rq,
+ 	rq->psi_irq_time = irq;
+ 
+ 	do {
++		u64 now;
++
+ 		if (!group->enabled)
+ 			continue;
+ 
+ 		groupc = per_cpu_ptr(group->pcpu, cpu);
+ 
+ 		write_seqcount_begin(&groupc->seq);
++		now = cpu_clock(cpu);
+ 
+ 		record_times(groupc, now);
+ 		groupc->times[PSI_IRQ_FULL] += delta;
+@@ -1223,11 +1223,9 @@ void psi_cgroup_restart(struct psi_group
+ 	for_each_possible_cpu(cpu) {
+ 		struct rq *rq = cpu_rq(cpu);
+ 		struct rq_flags rf;
+-		u64 now;
+ 
+ 		rq_lock_irq(rq, &rf);
+-		now = cpu_clock(cpu);
+-		psi_group_change(group, cpu, 0, 0, now, true);
++		psi_group_change(group, cpu, 0, 0, true);
+ 		rq_unlock_irq(rq, &rf);
+ 	}
+ }
 
 
 
