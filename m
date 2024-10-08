@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D4C994E3D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:15:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE18D994CBB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:58:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 899C4282D2F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 936EA1F23C61
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C011DEFE3;
-	Tue,  8 Oct 2024 13:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696A21DF99F;
+	Tue,  8 Oct 2024 12:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/7mwvjH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMxNCzuR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559EF16FF26;
-	Tue,  8 Oct 2024 13:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FE41DF995;
+	Tue,  8 Oct 2024 12:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393256; cv=none; b=VJmdVVA99KM27PT7fI8pT4IjHfex7ulbxSzpbmIv641z+HPupZk7GPQ52jRohP+EkubpgY0BYkOMpURVaYGt1BxBppro/6a0tQ3PILEFJAHoM5JBQCU8Ch7IBUgryQDptI+wyDFNoW4I5qMI4aQgTzKe4ocT+cfnhDH3kHlJp0I=
+	t=1728392204; cv=none; b=ZLRxteSwVM3YvupI8UTZWYcYXxBmgwIGSsvoRTAMAyct46h7SWBTg0Hh5bkUIpXEIulSqos8ysbALOH4QZGfPXFvML1Q9H05cNbYGh/B4lWcf5OgrLH4BSDoUADqoRzixxg9gKxxC3Kyj44TFC/jHC6TI+d7wHd4/k2DL0aBbr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393256; c=relaxed/simple;
-	bh=2Sl/U0chRhACupt/b67Zy07yQGYR1OXUuuTXGyj5ccY=;
+	s=arc-20240116; t=1728392204; c=relaxed/simple;
+	bh=FkzOADYzbyNYi1PneAgVB6DJ4Hfjl18gqOGUifaA+Dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LHDPRHUfWF0sGB7YkRZwW8kERnHXZXtcKJv7DoeNH+tHlAZp/HtHT9dLPQMQCJ1HsGTrM1bpcwrZa/HqKNzkKc5lsohwiGG+8KNYAkcGjZ6bVW3+MeK1lPp2KQlZpMNtkYAiICyqidA040qbMLMwdPSyb65/CPv7gKhx3EQTqB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/7mwvjH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754E8C4CEC7;
-	Tue,  8 Oct 2024 13:14:15 +0000 (UTC)
+	 MIME-Version; b=foauC6wA0HOgxnUiCWFuWB5lKwJkaIqZWAN/48mow9SGay+oHNiWPh0wOHDL0iBtOyWcAspo0+JPG8NWIj/t2YZwj8dDXy5xT8nNmiuXhmYVjLSjDOtGbN7GYlzpgA8/TUqfcC3ixz20RQTdxSJnnpjYcZ+vkFGw6NEYiYc9aOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMxNCzuR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B765C4CEC7;
+	Tue,  8 Oct 2024 12:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393255;
-	bh=2Sl/U0chRhACupt/b67Zy07yQGYR1OXUuuTXGyj5ccY=;
+	s=korg; t=1728392204;
+	bh=FkzOADYzbyNYi1PneAgVB6DJ4Hfjl18gqOGUifaA+Dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/7mwvjHErJ5z6HsliWz7HVwWy1jf0sJJ3SYBjv7mpLnsUglNg2zX/txJOfUPcRml
-	 LGrJAppsv4pfJ45sZolkPTcnNNqUTfcdNGsojYN4LS0xqqp+zJRTEltqHloW16XGYE
-	 Ry3GcTFSG4qts165xGrEFwSpPJZ61pbUVfuOV8G8=
+	b=NMxNCzuRifOfIBaIr2+NxK/O6dFxgchXgmzLCFUkpkOTG44xiHzICbcUkpRAV4/3+
+	 kVp4mCJiEPCUa4KiISdMrD7rKoeIxfLWuloVnHFCA18ZAiEOTBj2s5zD/U+zplPiYd
+	 PWzn5Hkz6NIsvb69LWOiisTb7xIaNxa0AIy7yELY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandrs Vinarskis <alex.vinarskis@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/386] ACPICA: iasl: handle empty connection_node
-Date: Tue,  8 Oct 2024 14:05:44 +0200
-Message-ID: <20241008115633.343075242@linuxfoundation.org>
+Subject: [PATCH 6.11 315/558] spi: spi-imx: Fix pm_runtime_set_suspended() with runtime pm enabled
+Date: Tue,  8 Oct 2024 14:05:45 +0200
+Message-ID: <20241008115714.705863087@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit a0a2459b79414584af6c46dd8c6f866d8f1aa421 ]
+[ Upstream commit b6e05ba0844139dde138625906015c974c86aa93 ]
 
-ACPICA commit 6c551e2c9487067d4b085333e7fe97e965a11625
+It is not valid to call pm_runtime_set_suspended() for devices
+with runtime PM enabled because it returns -EAGAIN if it is enabled
+already and working. So, call pm_runtime_disable() before to fix it.
 
-Link: https://github.com/acpica/acpica/commit/6c551e2c
-Signed-off-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 43b6bf406cd0 ("spi: imx: fix runtime pm support for !CONFIG_PM")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20240923040015.3009329-2-ruanjinjie@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/exprep.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/exprep.c b/drivers/acpi/acpica/exprep.c
-index 08196fa17080e..82b1fa2d201fe 100644
---- a/drivers/acpi/acpica/exprep.c
-+++ b/drivers/acpi/acpica/exprep.c
-@@ -437,6 +437,9 @@ acpi_status acpi_ex_prep_field_value(struct acpi_create_field_info *info)
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 85bd1a82a34eb..4c31d36f3130a 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1865,8 +1865,8 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 		spi_imx_sdma_exit(spi_imx);
+ out_runtime_pm_put:
+ 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
+-	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(spi_imx->dev);
++	pm_runtime_set_suspended(&pdev->dev);
  
- 		if (info->connection_node) {
- 			second_desc = info->connection_node->object;
-+			if (second_desc == NULL) {
-+				break;
-+			}
- 			if (!(second_desc->common.flags & AOPOBJ_DATA_VALID)) {
- 				status =
- 				    acpi_ds_get_buffer_arguments(second_desc);
+ 	clk_disable_unprepare(spi_imx->clk_ipg);
+ out_put_per:
 -- 
 2.43.0
 
