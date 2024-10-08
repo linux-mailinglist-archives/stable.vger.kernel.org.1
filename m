@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-82862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBAD994ED6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:22:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F60994A86
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 250AB1F228AD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:22:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D256BB21635
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CAC1DF721;
-	Tue,  8 Oct 2024 13:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37DB01DF263;
+	Tue,  8 Oct 2024 12:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNai+soI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnqOKpJn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA631DF272;
-	Tue,  8 Oct 2024 13:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D862F1DF254;
+	Tue,  8 Oct 2024 12:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393676; cv=none; b=Q1Hwn3JBQpqSGs+6VZBs6dXoH2IeY4EITeSembehqOcwBDf5NcuVjM8UE7K/vvFnPkScHXSouS5ekgRQ2IvYbXhXloD+31B4cKwM6MaPHSA7PGaaI1rgqnjOWmg9roUU0S9MgzH8vHpvIgY0Mzbj8JKW4QFqFwFVeDlBY6u1jRs=
+	t=1728390817; cv=none; b=Pm6B+u8CV5J58QI3nHChbJMytedD6Hd/d3OP3SlxU+pcVsRIAOfSG4eiZULufS9b6EGzhJxCzWf1MN41/ukSMvVtMBgvuj104u6huHRh1Qu4UQKVPK0mzMzeMMhiqNYXr1DCtcYKkKU9xtHLuu1flBwzPnAZF3WO7d2k0CAqAt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393676; c=relaxed/simple;
-	bh=zyvds578ZykJNaFcvdZppRweUxQe9Pcji+qYDBWKXtM=;
+	s=arc-20240116; t=1728390817; c=relaxed/simple;
+	bh=4JkpQe9ATVeeoc0Cicr0Hilry+N08acvF3Xr77OqHNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rGada/T0fLcvJUiMh5dBMdsWtuxKfKkkzct3PZVRNHfNlSTGL8S3Zl5hg/YtZWfNhwGqcFWGfDz0jZsCplXB3kIaka94ki+NDNzZdXIjLdYSa0NVo9Di8SXTWxmS4J+4IoR/NfhRJPJnKb1QhQ9MjtGynd5d7jO+6TDEemBRMb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNai+soI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B24DC4CEC7;
-	Tue,  8 Oct 2024 13:21:15 +0000 (UTC)
+	 MIME-Version; b=DGxxYHDW5s5hMRTBD81YLXOIJFrPq+44sIrs6LsljMrDF7dFOQnyxdevj8h6EFdqI6DNVMe1PIXa0rOGawN4R93ZLf4IgrJnxbTkwwHB8vRIKYeon2eQouvggDKROvGDRg9Vy/o3NMl4tLf2Sh+cAGj2HGRZ1ntC+VaWMuLUJc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnqOKpJn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49039C4CECC;
+	Tue,  8 Oct 2024 12:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393676;
-	bh=zyvds578ZykJNaFcvdZppRweUxQe9Pcji+qYDBWKXtM=;
+	s=korg; t=1728390817;
+	bh=4JkpQe9ATVeeoc0Cicr0Hilry+N08acvF3Xr77OqHNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zNai+soIOrnL179Gu3vfGsf9v8/3gP+CApra1DRFGqFRtXM6fsosyZs06eCnkrKER
-	 hSXUwvXWOsC40fHonrKz8Ai/PcqravOWcVh0aQZU22JF6FkoVMLXkSbjPTHV5i99Wp
-	 mcrd+8NS09pcz4m9pFUEa4ZlGPyZcRNTjw1qN/H0=
+	b=TnqOKpJnbI0yFa2SxkOJLSUATsbhdXJL+UXAGVpZ0QXx6Qx0Hes28IoUya8cNo/vf
+	 h3Lht+DuFE4qlnLrTQYvZYFb6WXEDzBCj1tGFFKUbDSU/HgEySp1HK6BZMPW04m+wI
+	 7cxGJ1mALmGorT10jMM4zdkUg8l29pdgz2+uNDfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 221/386] parisc: Fix itlb miss handler for 64-bit programs
+	Ben Greear <greearb@candelatech.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.10 403/482] vrf: revert "vrf: Remove unnecessary RCU-bh critical section"
 Date: Tue,  8 Oct 2024 14:07:46 +0200
-Message-ID: <20241008115638.102988235@linuxfoundation.org>
+Message-ID: <20241008115704.268717845@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Willem de Bruijn <willemb@google.com>
 
-commit 9542130937e9dc707dd7c6b7af73326437da2d50 upstream.
+commit b04c4d9eb4f25b950b33218e33b04c94e7445e51 upstream.
 
-For an itlb miss when executing code above 4 Gb on ILP64 adjust the
-iasq/iaoq in the same way isr/ior was adjusted.  This fixes signal
-delivery for the 64-bit static test program from
-http://ftp.parisc-linux.org/src/64bit.tar.gz.  Note that signals are
-handled by the signal trampoline code in the 64-bit VDSO which is mapped
-into high userspace memory region above 4GB for 64-bit processes.
+This reverts commit 504fc6f4f7f681d2a03aa5f68aad549d90eab853.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org	# v4.19+
+dev_queue_xmit_nit is expected to be called with BH disabled.
+__dev_queue_xmit has the following:
+
+        /* Disable soft irqs for various locks below. Also
+         * stops preemption for RCU.
+         */
+        rcu_read_lock_bh();
+
+VRF must follow this invariant. The referenced commit removed this
+protection. Which triggered a lockdep warning:
+
+	================================
+	WARNING: inconsistent lock state
+	6.11.0 #1 Tainted: G        W
+	--------------------------------
+	inconsistent {IN-SOFTIRQ-W} -> {SOFTIRQ-ON-W} usage.
+	btserver/134819 [HC0[0]:SC0[0]:HE1:SE1] takes:
+	ffff8882da30c118 (rlock-AF_PACKET){+.?.}-{2:2}, at: tpacket_rcv+0x863/0x3b30
+	{IN-SOFTIRQ-W} state was registered at:
+	  lock_acquire+0x19a/0x4f0
+	  _raw_spin_lock+0x27/0x40
+	  packet_rcv+0xa33/0x1320
+	  __netif_receive_skb_core.constprop.0+0xcb0/0x3a90
+	  __netif_receive_skb_list_core+0x2c9/0x890
+	  netif_receive_skb_list_internal+0x610/0xcc0
+          [...]
+
+	other info that might help us debug this:
+	 Possible unsafe locking scenario:
+
+	       CPU0
+	       ----
+	  lock(rlock-AF_PACKET);
+	  <Interrupt>
+	    lock(rlock-AF_PACKET);
+
+	 *** DEADLOCK ***
+
+	Call Trace:
+	 <TASK>
+	 dump_stack_lvl+0x73/0xa0
+	 mark_lock+0x102e/0x16b0
+	 __lock_acquire+0x9ae/0x6170
+	 lock_acquire+0x19a/0x4f0
+	 _raw_spin_lock+0x27/0x40
+	 tpacket_rcv+0x863/0x3b30
+	 dev_queue_xmit_nit+0x709/0xa40
+	 vrf_finish_direct+0x26e/0x340 [vrf]
+	 vrf_l3_out+0x5f4/0xe80 [vrf]
+	 __ip_local_out+0x51e/0x7a0
+          [...]
+
+Fixes: 504fc6f4f7f6 ("vrf: Remove unnecessary RCU-bh critical section")
+Link: https://lore.kernel.org/netdev/20240925185216.1990381-1-greearb@candelatech.com/
+Reported-by: Ben Greear <greearb@candelatech.com>
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20240929061839.1175300-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/entry.S |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/vrf.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -1051,8 +1051,7 @@ ENTRY_CFI(intr_save)		/* for os_hpmc */
- 	STREG           %r16, PT_ISR(%r29)
- 	STREG           %r17, PT_IOR(%r29)
+--- a/drivers/net/vrf.c
++++ b/drivers/net/vrf.c
+@@ -628,7 +628,9 @@ static void vrf_finish_direct(struct sk_
+ 		eth_zero_addr(eth->h_dest);
+ 		eth->h_proto = skb->protocol;
  
--#if 0 && defined(CONFIG_64BIT)
--	/* Revisit when we have 64-bit code above 4Gb */
-+#if defined(CONFIG_64BIT)
- 	b,n		intr_save2
++		rcu_read_lock_bh();
+ 		dev_queue_xmit_nit(skb, vrf_dev);
++		rcu_read_unlock_bh();
  
- skip_save_ior:
-@@ -1060,8 +1059,7 @@ skip_save_ior:
- 	 * need to adjust iasq/iaoq here in the same way we adjusted isr/ior
- 	 * above.
- 	 */
--	extrd,u,*	%r8,PSW_W_BIT,1,%r1
--	cmpib,COND(=),n	1,%r1,intr_save2
-+	bb,COND(>=),n	%r8,PSW_W_BIT,intr_save2
- 	LDREG		PT_IASQ0(%r29), %r16
- 	LDREG		PT_IAOQ0(%r29), %r17
- 	/* adjust iasq/iaoq */
+ 		skb_pull(skb, ETH_HLEN);
+ 	}
 
 
 
