@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 036F7994A7E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:33:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 830DF994E9F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72A9EB254CA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:33:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DA211F25764
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74E81DE2CF;
-	Tue,  8 Oct 2024 12:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F5D1DE88F;
+	Tue,  8 Oct 2024 13:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnaabz/K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MmwpBKzD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65BEE1CCB32;
-	Tue,  8 Oct 2024 12:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7041DDA36;
+	Tue,  8 Oct 2024 13:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390802; cv=none; b=knFR8WkGSJPc8FqYLnqf6Nu2DoGYclbGtyFtfXDLcMSbpxNN8ifGCy4M9QbVnWFifpPAHI6/Q2g/e1Tjc9wE3cYo1qdQinp4IyhJm6Yv8Iy55+Qm/iyGyLOVEK4X4GbT8rv8kFsIe2d0zXNVcA8fVJ0VCclo9m2CFf+EK/fwWJE=
+	t=1728393548; cv=none; b=Oau2cg5pRVb1uhXsd4YinuYh3s6s4/u+dMjNFkw8ai5PF0uvGHmY9YkMLS+bpWp2mX/YnKNUcOn3xdQBlGhSe7Rru6cteK4ksSCC+92fJsxIOW2j1qz2XqGopgZtA+UrZzM7H0ss21sqDzko2zakOINEZgVULGFEvhRhKRpP+u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390802; c=relaxed/simple;
-	bh=Sq7cDm2UdVfWrkt/TnNpUiebe+JMWartlEmz6v0qMrA=;
+	s=arc-20240116; t=1728393548; c=relaxed/simple;
+	bh=93AeCP1o3Wv+mGG+xhkoAn9DtgzsFQemNhZGdkeJE08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMqKZG8xNfK3i9Wx09YfDUQxfgzTDXITpfe53n8M4SIAyve7RpL2feppJLT9oNVPNPrEejvV/LC/cEwzBJK/f7AY9A9O1VG1RJ76xB6Y6+tdAYtBhBKygD7bx6BYgisoEFvmvYn5FAzBnf4qcNhb8chG7znkh24O1cOgETVWp8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnaabz/K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F15C4CEC7;
-	Tue,  8 Oct 2024 12:33:21 +0000 (UTC)
+	 MIME-Version; b=NGz2B3mcPZYLQEi1/F6RrPsZqJeYfrI/9K1x4zkEyThFemBmcfBstzoHHqvh+FsxmT9NMIS2MyvMjKz7eVk2Wnuu1fYhJj4PYQvf2LY3/s/oG1+jiVrri/PX/C3KZdIJvNwOLBVLIq2BHlJmwdHBdLX2T4iPEPh26yha051U/Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MmwpBKzD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8CDC4CEC7;
+	Tue,  8 Oct 2024 13:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390802;
-	bh=Sq7cDm2UdVfWrkt/TnNpUiebe+JMWartlEmz6v0qMrA=;
+	s=korg; t=1728393548;
+	bh=93AeCP1o3Wv+mGG+xhkoAn9DtgzsFQemNhZGdkeJE08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vnaabz/KSzbkg0+7a30/xf1cNbz0XEqZTTG2LP0yVlQuSKstXL2IvxyKyeX26iudj
-	 lLCFPm5CXYWmJfS4aAHQp6QUKV/CCP8IlIYC4RYMo26wU8YqHzsMNWN2C95+lLUexy
-	 TAZosdItWl95OSnp9TPZvzj3VbNkV3SVA6EEFi2w=
+	b=MmwpBKzDt9lFV0HkDe6Hb9At2we73pjPb1e4n+3eB4TXHvJSCBBkEuqB9SvGe6zvU
+	 /fUdkWv31lXEBo6zrmi/iHFsjrTvB7DdhqhbePVJnkQWKc5SruaulYfNavu0xTxq6F
+	 jn5ly88TUKn+MBdq8eBjmgDsKyHfXoiK3VcmPmzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youssef Esmat <youssefesmat@google.com>,
-	Daniel Bristot de Oliveira <bristot@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>
-Subject: [PATCH 6.10 366/482] sched/core: Clear prev->dl_server in CFS pick fast path
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 184/386] iomap: handle a post-direct I/O invalidate race in iomap_write_delalloc_release
 Date: Tue,  8 Oct 2024 14:07:09 +0200
-Message-ID: <20241008115702.825392518@linuxfoundation.org>
+Message-ID: <20241008115636.652807736@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youssef Esmat <youssefesmat@google.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit a741b82423f41501e301eb6f9820b45ca202e877 upstream.
+[ Upstream commit 7a9d43eace888a0ee6095035997bb138425844d3 ]
 
-In case the previous pick was a DL server pick, ->dl_server might be
-set. Clear it in the fast path as well.
+When direct I/O completions invalidates the page cache it holds neither the
+i_rwsem nor the invalidate_lock so it can be racing with
+iomap_write_delalloc_release.  If the search for the end of the region that
+contains data returns the start offset we hit such a race and just need to
+look for the end of the newly created hole instead.
 
-Fixes: 63ba8422f876 ("sched/deadline: Introduce deadline servers")
-Signed-off-by: Youssef Esmat <youssefesmat@google.com>
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Juri Lelli <juri.lelli@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/7f7381ccba09efcb4a1c1ff808ed58385eccc222.1716811044.git.bristot@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240910043949.3481298-2-hch@lst.de
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/iomap/buffered-io.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -6044,6 +6044,13 @@ __pick_next_task(struct rq *rq, struct t
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 5371b16341fff..aedaad4c37d75 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1177,7 +1177,15 @@ static int iomap_write_delalloc_release(struct inode *inode,
+ 			error = data_end;
+ 			goto out_unlock;
  		}
- 
- 		/*
-+		 * This is a normal CFS pick, but the previous could be a DL pick.
-+		 * Clear it as previous is no longer picked.
-+		 */
-+		if (prev->dl_server)
-+			prev->dl_server = NULL;
+-		WARN_ON_ONCE(data_end <= start_byte);
 +
 +		/*
- 		 * This is the fast path; it cannot be a DL server pick;
- 		 * therefore even if @p == @prev, ->dl_server must be NULL.
- 		 */
++		 * If we race with post-direct I/O invalidation of the page cache,
++		 * there might be no data left at start_byte.
++		 */
++		if (data_end == start_byte)
++			continue;
++
++		WARN_ON_ONCE(data_end < start_byte);
+ 		WARN_ON_ONCE(data_end > scan_end_byte);
+ 
+ 		error = iomap_write_delalloc_scan(inode, &punch_start_byte,
+-- 
+2.43.0
+
 
 
 
