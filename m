@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEAB2994D7A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CAEC994ADB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CD591C2520F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E35A1C24E98
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C516F1DFD1;
-	Tue,  8 Oct 2024 13:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116461DE89A;
+	Tue,  8 Oct 2024 12:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LuxT9oMP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtBjhPxf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8238B1DE4CC;
-	Tue,  8 Oct 2024 13:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FC51D27B3;
+	Tue,  8 Oct 2024 12:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392742; cv=none; b=pWFamNImH4NUofaCmaNkpJUXSTgypvvirXbS6Msz12bm0Uh2OUEPYMYky/Sr1IVA3ZPkceCi8OxkhIqdZc92q4LTHdKl+PQnN3R9GvJzbPg/IEEbhrD8UxjPHT6adsbfgAaWmLwhd+DVXUhTzNxVBV8k4oQ8u01vF1uVyGEx+g4=
+	t=1728391039; cv=none; b=KFqIsLJqWPja+UoK6vwiOJl8VPh3YXArFyk71u0yssamrwZ61hGHoivaL5jq8faV2pwGw5kQkHqoJQtI95mHtqpnzpTuR74VE0/0POpq99a6bSKOWL37D0CpjbYCJqlQ6v8XxFsuax+zlHXocibVv1DjlBLD6pZoHJbX+YHwDos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392742; c=relaxed/simple;
-	bh=gtNkcNBT7L4uEERw62mHqJqfeUP3SkiduSrBhrxsDrc=;
+	s=arc-20240116; t=1728391039; c=relaxed/simple;
+	bh=Au6eBLrN0VhDX5izzDPFyAS7JmL2/ns3yZRLJ/sTIV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f2SY6EfdetoI/H3/pAiufiZRo6J6PcHHAUikvb3plllF19ornuhlZiv1snGcloSsEZWtwPGiEB15MeAxoBzkxS19cDHvDSjBlN1e1Jutqs0Cz9YfNbVNzyGhiFIgEj7iVtLKuDb/X2fOKCEEomAS0igVEtYdh3cmIC5/pEaf+H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LuxT9oMP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E513FC4CEC7;
-	Tue,  8 Oct 2024 13:05:41 +0000 (UTC)
+	 MIME-Version; b=JTqewhAxLX5aeXSuC76dXVwokASo3zP2XpkcoJCXPoL8Vp7ffVVBecvF3QnC0w0IHkvPjvBb7d6vnHVRv1K5oIRrrAJTZ+T8wm45jSxhoO26baawzVU6oneIWPyTjJGA+iURJyAVbW3DGM1LQNgInpa6JdMZrj9WHvB8mSsKGa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtBjhPxf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FA0C4CEC7;
+	Tue,  8 Oct 2024 12:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392742;
-	bh=gtNkcNBT7L4uEERw62mHqJqfeUP3SkiduSrBhrxsDrc=;
+	s=korg; t=1728391039;
+	bh=Au6eBLrN0VhDX5izzDPFyAS7JmL2/ns3yZRLJ/sTIV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LuxT9oMPWSCJSIB8gdFCsLIVMlsSmONlaSE9eZRWksIU0sUmKr1QhE7Fs3Ycitir9
-	 5fwVO+QAFN2Ky2nivuK4z7jJtNJC0gyaOu5IhCb1KV3wyzt00ghhY6W/2NPOAiI8z8
-	 0vFvQgWoJ3xPaol5Hvasaa5w40eTfkLhgB0xQuIg=
+	b=OtBjhPxfM8u3BmSulyTHHhpST8YpOAE533G0wtaYdY98OXE0xpJ/e0qlxFYnEIlag
+	 WMUQSFTWBOIR6rqSzC2o6yBqqIGPbnjQwhJKP8ti20LQe8Y3SPqE6eRg1iS8kxgKRP
+	 5gBTPjweR87sbeAzO25gPFoYZi3cliXD02i7VKs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Kiran K <kiran.k@intel.com>
-Subject: [PATCH 6.11 505/558] Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 472/482] ACPI: battery: Fix possible crash when unregistering a battery hook
 Date: Tue,  8 Oct 2024 14:08:55 +0200
-Message-ID: <20241008115722.104266341@linuxfoundation.org>
+Message-ID: <20241008115707.086951144@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-commit b25e11f978b63cb7857890edb3a698599cddb10e upstream.
+[ Upstream commit 76959aff14a0012ad6b984ec7686d163deccdc16 ]
 
-This aligned BR/EDR JUST_WORKS method with LE which since 92516cd97fd4
-("Bluetooth: Always request for user confirmation for Just Works")
-always request user confirmation with confirm_hint set since the
-likes of bluetoothd have dedicated policy around JUST_WORKS method
-(e.g. main.conf:JustWorksRepairing).
+When a battery hook returns an error when adding a new battery, then
+the battery hook is automatically unregistered.
+However the battery hook provider cannot know that, so it will later
+call battery_hook_unregister() on the already unregistered battery
+hook, resulting in a crash.
 
-CVE: CVE-2024-8805
-Cc: stable@vger.kernel.org
-Fixes: ba15a58b179e ("Bluetooth: Fix SSP acceptor just-works confirmation without MITM")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Tested-by: Kiran K <kiran.k@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by using the list head to mark already unregistered battery
+hooks as already being unregistered so that they can be ignored by
+battery_hook_unregister().
+
+Fixes: fa93854f7a7e ("battery: Add the battery hooking API")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20241001212835.341788-3-W_Armin@gmx.de
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c |   13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ drivers/acpi/battery.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -5324,19 +5324,16 @@ static void hci_user_confirm_request_evt
- 		goto unlock;
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index 04610036e5dc5..916cdf44be893 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -715,7 +715,7 @@ static void battery_hook_unregister_unlocked(struct acpi_battery_hook *hook)
+ 		if (!hook->remove_battery(battery->bat, hook))
+ 			power_supply_changed(battery->bat);
  	}
+-	list_del(&hook->list);
++	list_del_init(&hook->list);
  
--	/* If no side requires MITM protection; auto-accept */
-+	/* If no side requires MITM protection; use JUST_CFM method */
- 	if ((!loc_mitm || conn->remote_cap == HCI_IO_NO_INPUT_OUTPUT) &&
- 	    (!rem_mitm || conn->io_capability == HCI_IO_NO_INPUT_OUTPUT)) {
+ 	pr_info("extension unregistered: %s\n", hook->name);
+ }
+@@ -723,7 +723,14 @@ static void battery_hook_unregister_unlocked(struct acpi_battery_hook *hook)
+ void battery_hook_unregister(struct acpi_battery_hook *hook)
+ {
+ 	mutex_lock(&hook_mutex);
+-	battery_hook_unregister_unlocked(hook);
++	/*
++	 * Ignore already unregistered battery hooks. This might happen
++	 * if a battery hook was previously unloaded due to an error when
++	 * adding a new battery.
++	 */
++	if (!list_empty(&hook->list))
++		battery_hook_unregister_unlocked(hook);
++
+ 	mutex_unlock(&hook_mutex);
+ }
+ EXPORT_SYMBOL_GPL(battery_hook_unregister);
+@@ -733,7 +740,6 @@ void battery_hook_register(struct acpi_battery_hook *hook)
+ 	struct acpi_battery *battery;
  
--		/* If we're not the initiators request authorization to
--		 * proceed from user space (mgmt_user_confirm with
--		 * confirm_hint set to 1). The exception is if neither
--		 * side had MITM or if the local IO capability is
--		 * NoInputNoOutput, in which case we do auto-accept
-+		/* If we're not the initiator of request authorization and the
-+		 * local IO capability is not NoInputNoOutput, use JUST_WORKS
-+		 * method (mgmt_user_confirm with confirm_hint set to 1).
- 		 */
- 		if (!test_bit(HCI_CONN_AUTH_PEND, &conn->flags) &&
--		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT &&
--		    (loc_mitm || rem_mitm)) {
-+		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT) {
- 			bt_dev_dbg(hdev, "Confirming auto-accept as acceptor");
- 			confirm_hint = 1;
- 			goto confirm;
+ 	mutex_lock(&hook_mutex);
+-	INIT_LIST_HEAD(&hook->list);
+ 	list_add(&hook->list, &battery_hook_list);
+ 	/*
+ 	 * Now that the driver is registered, we need
+-- 
+2.43.0
+
 
 
 
