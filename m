@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-81948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 543DA994A42
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:31:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0578E994CEB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1EAD1F22359
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:31:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37CB91C251BC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47911DE3D6;
-	Tue,  8 Oct 2024 12:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0425D1DED60;
+	Tue,  8 Oct 2024 12:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKergKWh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVPHQyK7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825341DE2C4;
-	Tue,  8 Oct 2024 12:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E82189910;
+	Tue,  8 Oct 2024 12:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390675; cv=none; b=MGDOnkE9H1/pU6qs+983OrkvsxEwKA5xI/yyo5FN7nU2UfVUbH2ExXTIRsHCpa+7kJ9GlWfCdggt96b7hMhBA1nbqhWiIROy5AGTmVQpG2V6xJUUAf5xQRa3Ylqpwiebqr3xhXJU47/6KrHp5YDYFc5R7+hz6kpISYQ/LIUcoj0=
+	t=1728392350; cv=none; b=RQmcMFDL37OtzIUQZg4kLtpkDdqBOT43xgUvKOZLqG4fLP8J47SzRlROAV2M3qtPAHM0802IvYwgj3Cl+KDvPvtAesI4apKQEvpZ8SIKOSv1tYGNK9qX/ut1LLJHtOB+eNM/Ndfw5q99+fHPTEG4P7/mLCNunQM9haP0OiW/11M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390675; c=relaxed/simple;
-	bh=yBJ34axu15JsoF+F7+NVID+fLuDyyXd3xIhhoSvdc90=;
+	s=arc-20240116; t=1728392350; c=relaxed/simple;
+	bh=fgD4nwGKsICrMuU3TlipGk6dKlcCXqQzQWr+f+1uhMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IKSR2FI4DpF9w7yIbJsgD+T8WJo8ciVEioLBZohWq11v/pWTi2MjxUzLIUAPPlM5Ti4fNXy+V2W11J7ATN04iXFz/ItG13Zs2OuC/QGG7AgEB5NeN0eF0OzaQ+Q3Css/ZOySV06okULDAp2w3f4jSfOCx6sjDK34dxAQyUfuxFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKergKWh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0933C4CEC7;
-	Tue,  8 Oct 2024 12:31:14 +0000 (UTC)
+	 MIME-Version; b=rDu27DAuQeGvfLv4/F9xMveK8Xf+uLb/SLcbQ+/TCxFNSXNLfFrfkoBi+PJifunQ66wHzhYAGAwbPbX0vTVpT8lbuHC5VgMijXXSOQK5MSvyBTc1VnRvH2W7+TXgs0QD1Qh3CMVBy5qkZnbT/EVK1kz6kRMeQ1nVdc25yawOVFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVPHQyK7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD60AC4CEC7;
+	Tue,  8 Oct 2024 12:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390675;
-	bh=yBJ34axu15JsoF+F7+NVID+fLuDyyXd3xIhhoSvdc90=;
+	s=korg; t=1728392350;
+	bh=fgD4nwGKsICrMuU3TlipGk6dKlcCXqQzQWr+f+1uhMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MKergKWhwet93AEwLyZOTaBsuPrxQHVfu1VmTpnOEl9gIUHfVwg30oHEfSaPciRSy
-	 zC1mv2dG3qCdqcJn6x298LG06xaxieYn8n+r9YojdOmCfYeo6BGvDGKeYiEwrAKj0D
-	 1Cuo/X1loM4Me+3TUbsUhWNNyELjLhp1HertPlDw=
+	b=VVPHQyK77lT7TzMZK91TwxCWRN7Sn0pf60Fx73zPI0cLTswuyQzj9rvl6pFyqjoGZ
+	 6q/WlYhVCqAqGzE1P0/3nhsXZOhen8lKsj/g4fky5/P+4YU0SqcOLmmv5S31ksN9GX
+	 Aakbl+O8j2oQSAjgDh+ViLHi/t3QNHGVcdqjA4iw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julian Sun <sunjunchao2870@gmail.com>,
-	syzbot+05b9b39d8bdfe1a0861f@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 357/482] ocfs2: fix null-ptr-deref when journal load failed.
+	Xiaxi Shen <shenxiaxi26@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org,
+	syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
+Subject: [PATCH 6.11 390/558] ext4: fix timer use-after-free on failed mount
 Date: Tue,  8 Oct 2024 14:07:00 +0200
-Message-ID: <20241008115702.471178581@linuxfoundation.org>
+Message-ID: <20241008115717.632075576@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,70 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Sun <sunjunchao2870@gmail.com>
+From: Xiaxi Shen <shenxiaxi26@gmail.com>
 
-commit 5784d9fcfd43bd853654bb80c87ef293b9e8e80a upstream.
+commit 0ce160c5bdb67081a62293028dc85758a8efb22a upstream.
 
-During the mounting process, if journal_reset() fails because of too short
-journal, then lead to jbd2_journal_load() fails with NULL j_sb_buffer.
-Subsequently, ocfs2_journal_shutdown() calls
-jbd2_journal_flush()->jbd2_cleanup_journal_tail()->
-__jbd2_update_log_tail()->jbd2_journal_update_sb_log_tail()
-->lock_buffer(journal->j_sb_buffer), resulting in a null-pointer
-dereference error.
+Syzbot has found an ODEBUG bug in ext4_fill_super
 
-To resolve this issue, we should check the JBD2_LOADED flag to ensure the
-journal was properly loaded.  Additionally, use journal instead of
-osb->journal directly to simplify the code.
+The del_timer_sync function cancels the s_err_report timer,
+which reminds about filesystem errors daily. We should
+guarantee the timer is no longer active before kfree(sbi).
 
-Link: https://syzkaller.appspot.com/bug?extid=05b9b39d8bdfe1a0861f
-Link: https://lkml.kernel.org/r/20240902030844.422725-1-sunjunchao2870@gmail.com
-Fixes: f6f50e28f0cb ("jbd2: Fail to load a journal if it is too short")
-Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
-Reported-by: syzbot+05b9b39d8bdfe1a0861f@syzkaller.appspotmail.com
-Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+When filesystem mounting fails, the flow goes to failed_mount3,
+where an error occurs when ext4_stop_mmpd is called, causing
+a read I/O failure. This triggers the ext4_handle_error function
+that ultimately re-arms the timer,
+leaving the s_err_report timer active before kfree(sbi) is called.
+
+Fix the issue by canceling the s_err_report timer after calling ext4_stop_mmpd.
+
+Signed-off-by: Xiaxi Shen <shenxiaxi26@gmail.com>
+Reported-and-tested-by: syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=59e0101c430934bc9a36
+Link: https://patch.msgid.link/20240715043336.98097-1-shenxiaxi26@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/journal.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/ext4/super.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ocfs2/journal.c
-+++ b/fs/ocfs2/journal.c
-@@ -1055,7 +1055,7 @@ void ocfs2_journal_shutdown(struct ocfs2
- 	if (!igrab(inode))
- 		BUG();
- 
--	num_running_trans = atomic_read(&(osb->journal->j_num_trans));
-+	num_running_trans = atomic_read(&(journal->j_num_trans));
- 	trace_ocfs2_journal_shutdown(num_running_trans);
- 
- 	/* Do a commit_cache here. It will flush our journal, *and*
-@@ -1074,9 +1074,10 @@ void ocfs2_journal_shutdown(struct ocfs2
- 		osb->commit_task = NULL;
- 	}
- 
--	BUG_ON(atomic_read(&(osb->journal->j_num_trans)) != 0);
-+	BUG_ON(atomic_read(&(journal->j_num_trans)) != 0);
- 
--	if (ocfs2_mount_local(osb)) {
-+	if (ocfs2_mount_local(osb) &&
-+	    (journal->j_journal->j_flags & JBD2_LOADED)) {
- 		jbd2_journal_lock_updates(journal->j_journal);
- 		status = jbd2_journal_flush(journal->j_journal, 0);
- 		jbd2_journal_unlock_updates(journal->j_journal);
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5635,8 +5635,8 @@ failed_mount3a:
+ failed_mount3:
+ 	/* flush s_sb_upd_work before sbi destroy */
+ 	flush_work(&sbi->s_sb_upd_work);
+-	del_timer_sync(&sbi->s_err_report);
+ 	ext4_stop_mmpd(sbi);
++	del_timer_sync(&sbi->s_err_report);
+ 	ext4_group_desc_free(sbi);
+ failed_mount:
+ 	if (sbi->s_chksum_driver)
 
 
 
