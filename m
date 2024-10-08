@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-82408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE9D994CAC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 852E0994E4D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C2551C24FA8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:57:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FBB81C2533F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08BB21DF74A;
-	Tue,  8 Oct 2024 12:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CBFC1DF266;
+	Tue,  8 Oct 2024 13:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Un+onaxM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AF4+bgww"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4EC1DFE00;
-	Tue,  8 Oct 2024 12:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A33C192594;
+	Tue,  8 Oct 2024 13:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392160; cv=none; b=tsPAv0pPoNBvGTMoHSgsnDq201azMalZx+nIy6oFJ3Q3h8Te5V1q7qK7y9/RDLEXIWrMcDhmGSjlIDZxdEeKHX67f+9Rfgop1MBlMhTMCTVFeOPc5efnMPJP5MjwlZByE5EDcazymnhAshtJYMzHKzBRr1063CtEhrPp0wGC0Ps=
+	t=1728393330; cv=none; b=gu+P9KqrsBhtT2kTc2yzRU2uRj8EO46BXWcdKTP+mQu5zWxxtskZCd7Sz39DGTPY59ieNnQeW8fteWJe3+bnVJV5Fq2ZFtgRDxDDt1eZfUJjM/b3sxeCQG9KMjWTYm2nKMA4HURpIDoAWuh/UdWZUWROblpUsHjYUArTyZqjCPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392160; c=relaxed/simple;
-	bh=Q1qdwYFAV0lruSv8FDt+QzgLVjn+IGyiHmFjMbKPrCQ=;
+	s=arc-20240116; t=1728393330; c=relaxed/simple;
+	bh=KF5onVzPk939l8uXDiJ4T3rge6xXS4V5bJIVKuTL2ek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ESE747AeoOCh77CamIPv5VpzvU9a/ankxdNjDyOeyCVXxy1QxyCFVmQSF4jNUFDTkN3zoMmzWy2Ofm4kkn4MC5JN64OYhBggwLBimMt8aRL9y8CNnPSXdGpTrTurR5Kjc1JduZIXrbhmCH8zgkcp6RK0XiGpCNe+V7ysxy5TTao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Un+onaxM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF6F0C4CECC;
-	Tue,  8 Oct 2024 12:55:59 +0000 (UTC)
+	 MIME-Version; b=DkvqNgpqdivz9eNAhEW4oLgELjO4RHYXEH2WjzFFFH7sPrOYTk/npvyhl1YXE9oiFPgoJoTUl3I862KNjlkLX9dQkDoQBDqg/v1UGl9d0PgfRKtI/Ox84zgngD4vg/Y7oj/ryhLfOHgKcKDOBJk6acjScAhK0a0mozq5NNDCdwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AF4+bgww; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6CB5C4CECC;
+	Tue,  8 Oct 2024 13:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392160;
-	bh=Q1qdwYFAV0lruSv8FDt+QzgLVjn+IGyiHmFjMbKPrCQ=;
+	s=korg; t=1728393330;
+	bh=KF5onVzPk939l8uXDiJ4T3rge6xXS4V5bJIVKuTL2ek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Un+onaxMm4cjlk7UQ5PuAN2JYgtMfD2TQH++hBvKNrUoS8CeM+8ye0bZ14VAQl1uo
-	 gjrgXVlyvaoROyAkpfCgdxgu6kT2ffQSQbCQzKdejSPkZSUFcq9D9nFd9bk2ZpvuPT
-	 XJr7+l1qXvlimrstCnJnfZz9rseLEAdy5r9ShLDw=
+	b=AF4+bgww/36NFSwmNAEJHa1EvVGUtA8WDuCNBmq89dAiYxErixf5xb3lSmOqB67LH
+	 Lwc/lnY966eHvsDACu6+s3waMyqwhPCN4V73Fhja3jxY7w2fzfTUHrpX1F750vW+DB
+	 rQijzuVwN56eEyO7/ZilcSgrwsrO76JZr+nyua5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Mario Casquero <mcasquer@redhat.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 333/558] selftests/mm: fix charge_reserved_hugetlb.sh test
+Subject: [PATCH 6.6 118/386] ALSA: asihpi: Fix potential OOB array access
 Date: Tue,  8 Oct 2024 14:06:03 +0200
-Message-ID: <20241008115715.408096164@linuxfoundation.org>
+Message-ID: <20241008115634.084204053@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,125 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit c41a701d18efe6b8aa402efab16edbaba50c9548 ]
+[ Upstream commit 7b986c7430a6bb68d523dac7bfc74cbd5b44ef96 ]
 
-Currently, running the charge_reserved_hugetlb.sh selftest we can
-sometimes observe something like:
+ASIHPI driver stores some values in the static array upon a response
+from the driver, and its index depends on the firmware.  We shouldn't
+trust it blindly.
 
-  $ ./charge_reserved_hugetlb.sh -cgroup-v2
-  ...
-  write_result is 0
-  After write:
-  hugetlb_usage=0
-  reserved_usage=10485760
-  killing write_to_hugetlbfs
-  Received 2.
-  Deleting the memory
-  Detach failure: Invalid argument
-  umount: /mnt/huge: target is busy.
+This patch adds a sanity check of the array index to fit in the array
+size.
 
-Both cases are issues in the test.
-
-While the unmount error seems to be racy, it will make the test fail:
-	$ ./run_vmtests.sh -t hugetlb
-	...
-	# [FAIL]
-	not ok 10 charge_reserved_hugetlb.sh -cgroup-v2 # exit=32
-
-The issue is that we are not waiting for the write_to_hugetlbfs process to
-quit.  So it might still have a hugetlbfs file open, about which umount is
-not happy.  Fix that by making "killall" wait for the process to quit.
-
-The other error ("Detach failure: Invalid argument") does not seem to
-result in a test error, but is misleading.  Turns out write_to_hugetlbfs.c
-unconditionally tries to cleanup using shmdt(), even when we only
-mmap()'ed a hugetlb file.  Even worse, shmaddr is never even set for the
-SHM case.  Fix that as well.
-
-With this change it seems to work as expected.
-
-Link: https://lkml.kernel.org/r/20240821123115.2068812-1-david@redhat.com
-Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: Mario Casquero <mcasquer@redhat.com>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Tested-by: Mario Casquero <mcasquer@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://patch.msgid.link/20240808091454.30846-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/mm/charge_reserved_hugetlb.sh   |  2 +-
- .../testing/selftests/mm/write_to_hugetlbfs.c | 21 +++++++++++--------
- 2 files changed, 13 insertions(+), 10 deletions(-)
+ sound/pci/asihpi/hpimsgx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-index d680c00d2853a..67df7b47087f0 100755
---- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-@@ -254,7 +254,7 @@ function cleanup_hugetlb_memory() {
-   local cgroup="$1"
-   if [[ "$(pgrep -f write_to_hugetlbfs)" != "" ]]; then
-     echo killing write_to_hugetlbfs
--    killall -2 write_to_hugetlbfs
-+    killall -2 --wait write_to_hugetlbfs
-     wait_for_hugetlb_memory_to_get_depleted $cgroup
-   fi
-   set -e
-diff --git a/tools/testing/selftests/mm/write_to_hugetlbfs.c b/tools/testing/selftests/mm/write_to_hugetlbfs.c
-index 6a2caba19ee1d..1289d311efd70 100644
---- a/tools/testing/selftests/mm/write_to_hugetlbfs.c
-+++ b/tools/testing/selftests/mm/write_to_hugetlbfs.c
-@@ -28,7 +28,7 @@ enum method {
- 
- /* Global variables. */
- static const char *self;
--static char *shmaddr;
-+static int *shmaddr;
- static int shmid;
- 
- /*
-@@ -47,15 +47,17 @@ void sig_handler(int signo)
- {
- 	printf("Received %d.\n", signo);
- 	if (signo == SIGINT) {
--		printf("Deleting the memory\n");
--		if (shmdt((const void *)shmaddr) != 0) {
--			perror("Detach failure");
-+		if (shmaddr) {
-+			printf("Deleting the memory\n");
-+			if (shmdt((const void *)shmaddr) != 0) {
-+				perror("Detach failure");
-+				shmctl(shmid, IPC_RMID, NULL);
-+				exit(4);
-+			}
-+
- 			shmctl(shmid, IPC_RMID, NULL);
--			exit(4);
-+			printf("Done deleting the memory\n");
- 		}
--
--		shmctl(shmid, IPC_RMID, NULL);
--		printf("Done deleting the memory\n");
+diff --git a/sound/pci/asihpi/hpimsgx.c b/sound/pci/asihpi/hpimsgx.c
+index d0caef2994818..b68e6bfbbfbab 100644
+--- a/sound/pci/asihpi/hpimsgx.c
++++ b/sound/pci/asihpi/hpimsgx.c
+@@ -708,7 +708,7 @@ static u16 HPIMSGX__init(struct hpi_message *phm,
+ 		phr->error = HPI_ERROR_PROCESSING_MESSAGE;
+ 		return phr->error;
  	}
- 	exit(2);
- }
-@@ -211,7 +213,8 @@ int main(int argc, char **argv)
- 			shmctl(shmid, IPC_RMID, NULL);
- 			exit(2);
- 		}
--		printf("shmaddr: %p\n", ptr);
-+		shmaddr = ptr;
-+		printf("shmaddr: %p\n", shmaddr);
- 
- 		break;
- 	default:
+-	if (hr.error == 0) {
++	if (hr.error == 0 && hr.u.s.adapter_index < HPI_MAX_ADAPTERS) {
+ 		/* the adapter was created successfully
+ 		   save the mapping for future use */
+ 		hpi_entry_points[hr.u.s.adapter_index] = entry_point_func;
 -- 
 2.43.0
 
