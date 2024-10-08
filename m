@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-82569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F15DC994D67
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E66B994F5C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:27:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D3131F25F65
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F4E91C23154
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565E81DED48;
-	Tue,  8 Oct 2024 13:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F451DFDA9;
+	Tue,  8 Oct 2024 13:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18bQ2UCr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4wOyob2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EB51DFD1;
-	Tue,  8 Oct 2024 13:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E871DF96C;
+	Tue,  8 Oct 2024 13:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392702; cv=none; b=eUMVDAVsBsFt54yN36u16HIbuPLESWnUDR83S0I0m6gnDFD/h0r+F4CT6QSyHUnPiAue9npW0f78MSFiEa1Q1MbaJnlwaAODPyloggi/yOEhbEROIu2csRulqIg9d2EvM+QKj1fl/YWyyGPHwraOYiN7pDtMGJXrnrtk0O1RvBM=
+	t=1728393874; cv=none; b=Yg8hzQ9Fp/39Uu/Grn4LZZP5mE3uzQwVBDrYoQcb3HEpx6g9Etrfppg7QcSKTEzHw/ZtrWOj3H6Q5nThK/nCf+hf9O/xz5WxhPhNKQ1gKM0D9a/2rETX4Hms++zjKl43aIp3KnDR1rn/tSjYPj1aViXYtLYrSjh9XauDN6CjPRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392702; c=relaxed/simple;
-	bh=LTPvT39e4JSW7kvYKP1gqwshuKqeNnBOcN+IQl6Fj+A=;
+	s=arc-20240116; t=1728393874; c=relaxed/simple;
+	bh=0Foy6w7OlhKsTSpezmOEhr2xwkrj++HgNnEY7c62LnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fdr9X/0NsscBReNcwLbjZZusCuz7EfoOmQfJlEG6lNAQEqregvOe1IJQ7Qos/IhDTRLlMjS9Xt12cByWSiapk7gk1Ob+37m2Fp0AaKE7ixxGBYH9IDuK62BlDkiIN/jNjJcew8F+3BJ3Hay0CshfuBSglFwKIxXaDvUcO19qGxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18bQ2UCr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C17FC4CEC7;
-	Tue,  8 Oct 2024 13:05:00 +0000 (UTC)
+	 MIME-Version; b=IwiQ6nXx9PIib3Pq05ZIk+ZB00OrdGvwafaevqFdMjEHtDd00Wr6JY9kaLLF3COrggZesoB1fBGkfgp9Cg/hFUOYST8ecEeX5LBM6vGX9aGGccxIIyh4/hUlkqHExRzrx7UW3N8QGs+LOYMnpJFhEi9gEZ6HoC1U04NImhTrJm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4wOyob2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B71DC4AF09;
+	Tue,  8 Oct 2024 13:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392701;
-	bh=LTPvT39e4JSW7kvYKP1gqwshuKqeNnBOcN+IQl6Fj+A=;
+	s=korg; t=1728393874;
+	bh=0Foy6w7OlhKsTSpezmOEhr2xwkrj++HgNnEY7c62LnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=18bQ2UCr2czp8+XkUw3cyr7HJJ3ojTzKIr4keIdmr2cKQI4ehPyyAI8nmhDCmReOx
-	 +FYVUe3ielMmhqzGTqcxIvDR6QdcLngOFNHKOY2hD+eiwb7xWYWAHZF3e/rB24kvR2
-	 rZwNqv1AotOabQ3uEEDmPRwJ9Ra/yIMXTvCc4QUc=
+	b=K4wOyob2hQt3ccOsC7FO0GbSP8K3Qh+8bcbyevG50d/8oBGUX0p/9Jv8RvvtJouVN
+	 tUpn5j0I6CuxTp3rgY9vYsmcE4IV5r9pNWZDra1fO4IEwE2ECjc8Orkfwrovnrhd2o
+	 8wKoLo1R+CZGmZxwqK2Uu99SgczwrHwysJyIHHAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lamome Julien <julien.lamome@wanadoo.fr>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.11 494/558] ACPI: resource: Add Asus Vivobook X1704VAP to irq1_level_low_skip_override[]
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 279/386] media: ov5675: Fix power on/off delay timings
 Date: Tue,  8 Oct 2024 14:08:44 +0200
-Message-ID: <20241008115721.670763468@linuxfoundation.org>
+Message-ID: <20241008115640.367342812@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-commit 2f80ce0b78c340e332f04a5801dee5e4ac8cfaeb upstream.
+commit 719ec29fceda2f19c833d2784b1574638320400f upstream.
 
-Like other Asus Vivobook models the X1704VAP has its keybopard IRQ (1)
-described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
-which breaks the keyboard.
+The ov5675 specification says that the gap between XSHUTDN deassert and the
+first I2C transaction should be a minimum of 8192 XVCLK cycles.
 
-Add the X1704VAP to the irq1_level_low_skip_override[] quirk table to fix
-this.
+Right now we use a usleep_rage() that gives a sleep time of between about
+430 and 860 microseconds.
 
-Reported-by: Lamome Julien <julien.lamome@wanadoo.fr>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1078696
-Closes: https://lore.kernel.org/all/1226760b-4699-4529-bf57-6423938157a3@wanadoo.fr/
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20240927141606.66826-3-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On the Lenovo X13s we have observed that in about 1/20 cases the current
+timing is too tight and we start transacting before the ov5675's reset
+cycle completes, leading to I2C bus transaction failures.
+
+The reset racing is sometimes triggered at initial chip probe but, more
+usually on a subsequent power-off/power-on cycle e.g.
+
+[   71.451662] ov5675 24-0010: failed to write reg 0x0103. error = -5
+[   71.451686] ov5675 24-0010: failed to set plls
+
+The current quiescence period we have is too tight. Instead of expressing
+the post reset delay in terms of the current XVCLK this patch converts the
+power-on and power-off delays to the maximum theoretical delay @ 6 MHz with
+an additional buffer.
+
+1.365 milliseconds on the power-on path is 1.5 milliseconds with grace.
+85.3 microseconds on the power-off path is 90 microseconds with grace.
+
+Fixes: 49d9ad719e89 ("media: ov5675: add device-tree support and support runtime PM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Tested-by: Quentin Schulz <quentin.schulz@cherry.de> # RK3399 Puma with
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/media/i2c/ov5675.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -441,6 +441,13 @@ static const struct dmi_system_id irq1_l
- 		},
- 	},
- 	{
-+		/* Asus Vivobook X1704VAP */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "X1704VAP"),
-+		},
-+	},
-+	{
- 		/* Asus ExpertBook B1402CBA */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+--- a/drivers/media/i2c/ov5675.c
++++ b/drivers/media/i2c/ov5675.c
+@@ -979,12 +979,10 @@ static int ov5675_set_stream(struct v4l2
+ 
+ static int ov5675_power_off(struct device *dev)
+ {
+-	/* 512 xvclk cycles after the last SCCB transation or MIPI frame end */
+-	u32 delay_us = DIV_ROUND_UP(512, OV5675_XVCLK_19_2 / 1000 / 1000);
+ 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
+ 	struct ov5675 *ov5675 = to_ov5675(sd);
+ 
+-	usleep_range(delay_us, delay_us * 2);
++	usleep_range(90, 100);
+ 
+ 	clk_disable_unprepare(ov5675->xvclk);
+ 	gpiod_set_value_cansleep(ov5675->reset_gpio, 1);
+@@ -995,7 +993,6 @@ static int ov5675_power_off(struct devic
+ 
+ static int ov5675_power_on(struct device *dev)
+ {
+-	u32 delay_us = DIV_ROUND_UP(8192, OV5675_XVCLK_19_2 / 1000 / 1000);
+ 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
+ 	struct ov5675 *ov5675 = to_ov5675(sd);
+ 	int ret;
+@@ -1021,8 +1018,11 @@ static int ov5675_power_on(struct device
+ 
+ 	gpiod_set_value_cansleep(ov5675->reset_gpio, 0);
+ 
+-	/* 8192 xvclk cycles prior to the first SCCB transation */
+-	usleep_range(delay_us, delay_us * 2);
++	/* Worst case quiesence gap is 1.365 milliseconds @ 6MHz XVCLK
++	 * Add an additional threshold grace period to ensure reset
++	 * completion before initiating our first I2C transaction.
++	 */
++	usleep_range(1500, 1600);
+ 
+ 	return 0;
+ }
 
 
 
