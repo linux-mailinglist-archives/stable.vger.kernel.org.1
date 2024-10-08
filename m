@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB53994E46
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:15:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BEA2994A21
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E18DF1C251DD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15D4D1F21BFF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9751DF25B;
-	Tue,  8 Oct 2024 13:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B94101DE88B;
+	Tue,  8 Oct 2024 12:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fy+OKvp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdSv2Cve"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB321DFD1;
-	Tue,  8 Oct 2024 13:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764C91DE4CD;
+	Tue,  8 Oct 2024 12:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393290; cv=none; b=gaDUdW9PZJc2ua1HIp82PVZqVd5cxhmiLEVTwelrpF62iQZoCJ5qAdC6XSUEncT7LtApkq6TGQTUGY3SKTAiaPxAHASv95A8ZlmJWqDIdA6Jsf2fPnZyx1uO1qAFWcC5HFZODDPQTnmXsdstA2Ev49WohXrsuSgXhPsXIQRoPPo=
+	t=1728390591; cv=none; b=L+h8p45w1RYs0zCSG90OQ0xleP+WMAmj534dysnJtb9KA+0Z5nOygixK1UaIu+JZOmsHdus+W03U9TmpLoU/8CviOSONU+E8N9R3HL8CQ0jMkn14cofeT8mVu/NXWY/srmdvp9tF8Ol4ij46R+dldgDdrm0owjZOYxTAB/NUFG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393290; c=relaxed/simple;
-	bh=VwLXGnTasct4wEBMuTusf4lkOJ7WC7+2/bap9Bzf58A=;
+	s=arc-20240116; t=1728390591; c=relaxed/simple;
+	bh=AKbLsD9YFsOUlKvcVCYbdIWNJTGpQZ7+SNY90ea2zHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n9fG/LT7uHjnPXQs8eHj6EprLJUfm5UYT0iTn4bb8iUNoBJh1N22uqcQkKnLauaSsQgDFy76OaihvGoyOwTD1/hAqF89aNRN/tKw8SgwyT/Q6VITNqMJmnAsCxCX0w4zdiMLgqi3e8mERNq0AnXngnJaOUUrUxoUwEFIhhGt4Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fy+OKvp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2B5C4CEC7;
-	Tue,  8 Oct 2024 13:14:49 +0000 (UTC)
+	 MIME-Version; b=afv3wJlP3Fb9j5xy0NBkgOgbyVC7W5UuZWuXCUw552J3JjY4F0apX212oDOtuW5/u4NtcC4xVNTlVZwJtKphoV95zOk3T/MCPokI5Cm69ynqxjtTkx9FxTuqRMic2ugfh1Xeag4tYgfiE7sy/WU9RX5ATVn21qDct89jn8q8BHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdSv2Cve; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8774C4CEC7;
+	Tue,  8 Oct 2024 12:29:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393290;
-	bh=VwLXGnTasct4wEBMuTusf4lkOJ7WC7+2/bap9Bzf58A=;
+	s=korg; t=1728390591;
+	bh=AKbLsD9YFsOUlKvcVCYbdIWNJTGpQZ7+SNY90ea2zHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0fy+OKvp0ols211CrMVrjz7f7I4b/yWW7BNK2c2XYgxedfs3zQqXMsxwajjOT88xl
-	 BjqsiYeNcInaDw5PWnrCfrapGVpujJQSSl39aVCT4wZogEGimTz2Wyqe9TXUzBz1xI
-	 WuVPczH06yLbFWvzyEP4fTk7C3XOGyBWe92bb5TA=
+	b=CdSv2Cve5a3hPm76nv0ynIBG3l+rEiDjAqdJoreoyP0cIBVO8y3cWUvscVISMKWVg
+	 Rt5UTtYTR1Oh5hUb08Y8Dqgo+EflJkhHbh/1GGMVTPPKvfZCNhmlTxCXlMgUB7RW03
+	 pi5oGVmmQVFMF/UR4dRrqdFIpfwYb8/AWBgXCR64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 108/386] x86/ioapic: Handle allocation failures gracefully
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Zach Wade <zachwade.k@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.10 290/482] platform/x86: ISST: Fix the KASAN report slab-out-of-bounds bug
 Date: Tue,  8 Oct 2024 14:05:53 +0200
-Message-ID: <20241008115633.692296926@linuxfoundation.org>
+Message-ID: <20241008115659.690473885@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,158 +62,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Zach Wade <zachwade.k@gmail.com>
 
-[ Upstream commit 830802a0fea8fb39d3dc9fb7d6b5581e1343eb1f ]
+commit 7d59ac07ccb58f8f604f8057db63b8efcebeb3de upstream.
 
-Breno observed panics when using failslab under certain conditions during
-runtime:
+Attaching SST PCI device to VM causes "BUG: KASAN: slab-out-of-bounds".
+kasan report:
+[   19.411889] ==================================================================
+[   19.413702] BUG: KASAN: slab-out-of-bounds in _isst_if_get_pci_dev+0x3d5/0x400 [isst_if_common]
+[   19.415634] Read of size 8 at addr ffff888829e65200 by task cpuhp/16/113
+[   19.417368]
+[   19.418627] CPU: 16 PID: 113 Comm: cpuhp/16 Tainted: G            E      6.9.0 #10
+[   19.420435] Hardware name: VMware, Inc. VMware20,1/440BX Desktop Reference Platform, BIOS VMW201.00V.20192059.B64.2207280713 07/28/2022
+[   19.422687] Call Trace:
+[   19.424091]  <TASK>
+[   19.425448]  dump_stack_lvl+0x5d/0x80
+[   19.426963]  ? _isst_if_get_pci_dev+0x3d5/0x400 [isst_if_common]
+[   19.428694]  print_report+0x19d/0x52e
+[   19.430206]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+[   19.431837]  ? _isst_if_get_pci_dev+0x3d5/0x400 [isst_if_common]
+[   19.433539]  kasan_report+0xf0/0x170
+[   19.435019]  ? _isst_if_get_pci_dev+0x3d5/0x400 [isst_if_common]
+[   19.436709]  _isst_if_get_pci_dev+0x3d5/0x400 [isst_if_common]
+[   19.438379]  ? __pfx_sched_clock_cpu+0x10/0x10
+[   19.439910]  isst_if_cpu_online+0x406/0x58f [isst_if_common]
+[   19.441573]  ? __pfx_isst_if_cpu_online+0x10/0x10 [isst_if_common]
+[   19.443263]  ? ttwu_queue_wakelist+0x2c1/0x360
+[   19.444797]  cpuhp_invoke_callback+0x221/0xec0
+[   19.446337]  cpuhp_thread_fun+0x21b/0x610
+[   19.447814]  ? __pfx_cpuhp_thread_fun+0x10/0x10
+[   19.449354]  smpboot_thread_fn+0x2e7/0x6e0
+[   19.450859]  ? __pfx_smpboot_thread_fn+0x10/0x10
+[   19.452405]  kthread+0x29c/0x350
+[   19.453817]  ? __pfx_kthread+0x10/0x10
+[   19.455253]  ret_from_fork+0x31/0x70
+[   19.456685]  ? __pfx_kthread+0x10/0x10
+[   19.458114]  ret_from_fork_asm+0x1a/0x30
+[   19.459573]  </TASK>
+[   19.460853]
+[   19.462055] Allocated by task 1198:
+[   19.463410]  kasan_save_stack+0x30/0x50
+[   19.464788]  kasan_save_track+0x14/0x30
+[   19.466139]  __kasan_kmalloc+0xaa/0xb0
+[   19.467465]  __kmalloc+0x1cd/0x470
+[   19.468748]  isst_if_cdev_register+0x1da/0x350 [isst_if_common]
+[   19.470233]  isst_if_mbox_init+0x108/0xff0 [isst_if_mbox_msr]
+[   19.471670]  do_one_initcall+0xa4/0x380
+[   19.472903]  do_init_module+0x238/0x760
+[   19.474105]  load_module+0x5239/0x6f00
+[   19.475285]  init_module_from_file+0xd1/0x130
+[   19.476506]  idempotent_init_module+0x23b/0x650
+[   19.477725]  __x64_sys_finit_module+0xbe/0x130
+[   19.476506]  idempotent_init_module+0x23b/0x650
+[   19.477725]  __x64_sys_finit_module+0xbe/0x130
+[   19.478920]  do_syscall_64+0x82/0x160
+[   19.480036]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   19.481292]
+[   19.482205] The buggy address belongs to the object at ffff888829e65000
+ which belongs to the cache kmalloc-512 of size 512
+[   19.484818] The buggy address is located 0 bytes to the right of
+ allocated 512-byte region [ffff888829e65000, ffff888829e65200)
+[   19.487447]
+[   19.488328] The buggy address belongs to the physical page:
+[   19.489569] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff888829e60c00 pfn:0x829e60
+[   19.491140] head: order:3 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[   19.492466] anon flags: 0x57ffffc0000840(slab|head|node=1|zone=2|lastcpupid=0x1fffff)
+[   19.493914] page_type: 0xffffffff()
+[   19.494988] raw: 0057ffffc0000840 ffff88810004cc80 0000000000000000 0000000000000001
+[   19.496451] raw: ffff888829e60c00 0000000080200018 00000001ffffffff 0000000000000000
+[   19.497906] head: 0057ffffc0000840 ffff88810004cc80 0000000000000000 0000000000000001
+[   19.499379] head: ffff888829e60c00 0000000080200018 00000001ffffffff 0000000000000000
+[   19.500844] head: 0057ffffc0000003 ffffea0020a79801 ffffea0020a79848 00000000ffffffff
+[   19.502316] head: 0000000800000000 0000000000000000 00000000ffffffff 0000000000000000
+[   19.503784] page dumped because: kasan: bad access detected
+[   19.505058]
+[   19.505970] Memory state around the buggy address:
+[   19.507172]  ffff888829e65100: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   19.508599]  ffff888829e65180: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   19.510013] >ffff888829e65200: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   19.510014]                    ^
+[   19.510016]  ffff888829e65280: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   19.510018]  ffff888829e65300: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   19.515367] ==================================================================
 
-   can not alloc irq_pin_list (-1,0,20)
-   Kernel panic - not syncing: IO-APIC: failed to add irq-pin. Can not proceed
+The reason for this error is physical_package_ids assigned by VMware VMM
+are not continuous and have gaps. This will cause value returned by
+topology_physical_package_id() to be more than topology_max_packages().
 
-   panic+0x4e9/0x590
-   mp_irqdomain_alloc+0x9ab/0xa80
-   irq_domain_alloc_irqs_locked+0x25d/0x8d0
-   __irq_domain_alloc_irqs+0x80/0x110
-   mp_map_pin_to_irq+0x645/0x890
-   acpi_register_gsi_ioapic+0xe6/0x150
-   hpet_open+0x313/0x480
+Here the allocation uses topology_max_packages(). The call to
+topology_max_packages() returns maximum logical package ID not physical
+ID. Hence use topology_logical_package_id() instead of
+topology_physical_package_id().
 
-That's a pointless panic which is a leftover of the historic IO/APIC code
-which panic'ed during early boot when the interrupt allocation failed.
-
-The only place which might justify panic is the PIT/HPET timer_check() code
-which tries to figure out whether the timer interrupt is delivered through
-the IO/APIC. But that code does not require to handle interrupt allocation
-failures. If the interrupt cannot be allocated then timer delivery fails
-and it either panics due to that or falls back to legacy mode.
-
-Cure this by removing the panic wrapper around __add_pin_to_irq_node() and
-making mp_irqdomain_alloc() aware of the failure condition and handle it as
-any other failure in this function gracefully.
-
-Reported-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Breno Leitao <leitao@debian.org>
-Tested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Link: https://lore.kernel.org/all/ZqfJmUF8sXIyuSHN@gmail.com
-Link: https://lore.kernel.org/all/20240802155440.275200843@linutronix.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9a1aac8a96dc ("platform/x86: ISST: PUNIT device mapping with Sub-NUMA clustering")
+Cc: stable@vger.kernel.org
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Zach Wade <zachwade.k@gmail.com>
+Link: https://lore.kernel.org/r/20240923144508.1764-1-zachwade.k@gmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/apic/io_apic.c | 46 ++++++++++++++++------------------
- 1 file changed, 22 insertions(+), 24 deletions(-)
+ drivers/platform/x86/intel/speed_select_if/isst_if_common.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
-index 00da6cf6b07dc..d0c5325d17510 100644
---- a/arch/x86/kernel/apic/io_apic.c
-+++ b/arch/x86/kernel/apic/io_apic.c
-@@ -352,27 +352,26 @@ static void ioapic_mask_entry(int apic, int pin)
-  * shared ISA-space IRQs, so we have to support them. We are super
-  * fast in the common case, and fast for shared ISA-space IRQs.
-  */
--static int __add_pin_to_irq_node(struct mp_chip_data *data,
--				 int node, int apic, int pin)
-+static bool add_pin_to_irq_node(struct mp_chip_data *data, int node, int apic, int pin)
- {
- 	struct irq_pin_list *entry;
+--- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+@@ -316,7 +316,9 @@ static struct pci_dev *_isst_if_get_pci_
+ 	    cpu >= nr_cpu_ids || cpu >= num_possible_cpus())
+ 		return NULL;
  
--	/* don't allow duplicates */
--	for_each_irq_pin(entry, data->irq_2_pin)
-+	/* Don't allow duplicates */
-+	for_each_irq_pin(entry, data->irq_2_pin) {
- 		if (entry->apic == apic && entry->pin == pin)
--			return 0;
-+			return true;
-+	}
+-	pkg_id = topology_physical_package_id(cpu);
++	pkg_id = topology_logical_package_id(cpu);
++	if (pkg_id >= topology_max_packages())
++		return NULL;
  
- 	entry = kzalloc_node(sizeof(struct irq_pin_list), GFP_ATOMIC, node);
- 	if (!entry) {
--		pr_err("can not alloc irq_pin_list (%d,%d,%d)\n",
--		       node, apic, pin);
--		return -ENOMEM;
-+		pr_err("Cannot allocate irq_pin_list (%d,%d,%d)\n", node, apic, pin);
-+		return false;
- 	}
-+
- 	entry->apic = apic;
- 	entry->pin = pin;
- 	list_add_tail(&entry->list, &data->irq_2_pin);
--
--	return 0;
-+	return true;
- }
- 
- static void __remove_pin_from_irq(struct mp_chip_data *data, int apic, int pin)
-@@ -387,13 +386,6 @@ static void __remove_pin_from_irq(struct mp_chip_data *data, int apic, int pin)
- 		}
- }
- 
--static void add_pin_to_irq_node(struct mp_chip_data *data,
--				int node, int apic, int pin)
--{
--	if (__add_pin_to_irq_node(data, node, apic, pin))
--		panic("IO-APIC: failed to add irq-pin. Can not proceed\n");
--}
--
- /*
-  * Reroute an IRQ to a different pin.
-  */
-@@ -1002,8 +994,7 @@ static int alloc_isa_irq_from_domain(struct irq_domain *domain,
- 	if (irq_data && irq_data->parent_data) {
- 		if (!mp_check_pin_attr(irq, info))
- 			return -EBUSY;
--		if (__add_pin_to_irq_node(irq_data->chip_data, node, ioapic,
--					  info->ioapic.pin))
-+		if (!add_pin_to_irq_node(irq_data->chip_data, node, ioapic, info->ioapic.pin))
- 			return -ENOMEM;
- 	} else {
- 		info->flags |= X86_IRQ_ALLOC_LEGACY;
-@@ -3037,10 +3028,8 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
- 		return -ENOMEM;
- 
- 	ret = irq_domain_alloc_irqs_parent(domain, virq, nr_irqs, info);
--	if (ret < 0) {
--		kfree(data);
--		return ret;
--	}
-+	if (ret < 0)
-+		goto free_data;
- 
- 	INIT_LIST_HEAD(&data->irq_2_pin);
- 	irq_data->hwirq = info->ioapic.pin;
-@@ -3049,7 +3038,10 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
- 	irq_data->chip_data = data;
- 	mp_irqdomain_get_attr(mp_pin_to_gsi(ioapic, pin), data, info);
- 
--	add_pin_to_irq_node(data, ioapic_alloc_attr_node(info), ioapic, pin);
-+	if (!add_pin_to_irq_node(data, ioapic_alloc_attr_node(info), ioapic, pin)) {
-+		ret = -ENOMEM;
-+		goto free_irqs;
-+	}
- 
- 	mp_preconfigure_entry(data);
- 	mp_register_handler(virq, data->is_level);
-@@ -3064,6 +3056,12 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
- 		    ioapic, mpc_ioapic_id(ioapic), pin, virq,
- 		    data->is_level, data->active_low);
- 	return 0;
-+
-+free_irqs:
-+	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
-+free_data:
-+	kfree(data);
-+	return ret;
- }
- 
- void mp_irqdomain_free(struct irq_domain *domain, unsigned int virq,
--- 
-2.43.0
-
+ 	bus_number = isst_cpu_info[cpu].bus_info[bus_no];
+ 	if (bus_number < 0)
 
 
 
