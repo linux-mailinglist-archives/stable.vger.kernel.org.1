@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-81751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FD799492E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:21:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9C4994C06
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:49:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E1A21F263E0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:21:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E6DEB259AA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE5E1DED6A;
-	Tue,  8 Oct 2024 12:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04BA1DE3AE;
+	Tue,  8 Oct 2024 12:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hl9LpUxP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vuk+6p7b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE561DDA36;
-	Tue,  8 Oct 2024 12:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF15F1C2420;
+	Tue,  8 Oct 2024 12:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390011; cv=none; b=eAndAahH0t1xEBTmxPNLLSiDAMizUIQTXQgnA6YXb4ipureQk4hWg9F/QRGstNkzVLB6lHL/0AE19TwaC5EbOvK4g3T6F8pvefJEWhgcwiAgJ/I9jWTmwBbEToqZA3ENxjKoNR+fCwXmImk97iZ3YsOERfk18J/T2DKUmZUEYM8=
+	t=1728391703; cv=none; b=Ed1pu1KEKisPfCUPoRN/Pr88kCuxFWYU5py9vwEUzJ9LU/AMvEyflUmvzJVpk0FpEFKJ0IUOivEi46eaYEZ9vzvWrDnZBBdOM3EoH4HAM27dURVAo1KKCSlTMJb7yd1hwx5hEUgzVCTxoNQh9HwBbY9afnkX7Vln2KzpVDah83Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390011; c=relaxed/simple;
-	bh=1Y+ytk3MYnIV5xoqtbZgeK1sNhr+1GnLV2kCYuX8lBM=;
+	s=arc-20240116; t=1728391703; c=relaxed/simple;
+	bh=zKo5Udw2CLipUBXcO4Cz4nkR/uGgrgYBAqxcl2nR13c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7TzrTkQ+LiZ8b6WEF/1x6yKUsnqUXclGIuWOWaukIsm6V/zbnJg/tsTZ4tvYL3B5re+Edg1UmhEX+libaoii/+R2SgSiQ4LCurhvD4YZbO8nYpjMq7emJRYvcq3IdzQ4gWlE01/55Mn5bL8FDDibWRozgx6WhUR840ZF90SDNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hl9LpUxP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C07C0C4CEC7;
-	Tue,  8 Oct 2024 12:20:10 +0000 (UTC)
+	 MIME-Version; b=JcMzYKniQOaufAGn6dH/DD9Pgl/+9Aha6GTcEUp37GD1OMkp8hhSzNVMVtNQsLiBR7XjpUc2czjtotDlOS8UTBmfplZYyypnAJow4MY9p8KwIlgb7t4Fg3/T2IZcDQ1ix0RObumFxBecgqnIPUxVkkjLYe1zUPwz/r+Fq5ujPKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vuk+6p7b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1192AC4CEC7;
+	Tue,  8 Oct 2024 12:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390011;
-	bh=1Y+ytk3MYnIV5xoqtbZgeK1sNhr+1GnLV2kCYuX8lBM=;
+	s=korg; t=1728391703;
+	bh=zKo5Udw2CLipUBXcO4Cz4nkR/uGgrgYBAqxcl2nR13c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hl9LpUxP9myz2vAKgQzRyThKFfOLAgjaePaEOrIEBVrloP+Ci8Fo89c7xu6KO3ord
-	 4mpCWxrTlRVMDt4oOT6qtxEDrTh9tcHbq3EabWGEd61siD2AaFzgUvwIUBZzPW8mWW
-	 f62MfygSPIE7bagQP4SWCL7tJnVwt2FYq1WGIGaY=
+	b=Vuk+6p7bZivxYAAZlBrkyxI7zvvmg3Nj6aA1JtJt634dUT91EfUJ4uqNlGtwWC6AC
+	 ZzPZ82POQ94FOI6dpIrPX8AKNDx6pDsLMj62vNIj0T6TKVsWOPKxhwSmDuqB2iSvP4
+	 En7mIDxABNx2M9SRbslJ7XWkGW/3v5wstAYW5/L4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Raghavendra Kakarla <quic_rkakarla@quicinc.com>
-Subject: [PATCH 6.10 164/482] pmdomain: core: Dont hold the genpd-lock when calling dev_pm_domain_set()
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 197/558] iommu/vt-d: Always reserve a domain ID for identity setup
 Date: Tue,  8 Oct 2024 14:03:47 +0200
-Message-ID: <20241008115654.758564429@linuxfoundation.org>
+Message-ID: <20241008115710.102289448@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit b87eee38605c396f0e1fa435939960e5c6cd41d6 ]
+[ Upstream commit 2c13012e09190174614fd6901857a1b8c199e17d ]
 
-There is no need to hold the genpd-lock, while assigning the
-dev->pm_domain. In fact, it becomes a problem on a PREEMPT_RT based
-configuration as the genpd-lock may be a raw spinlock, while the lock
-acquired through the call to dev_pm_domain_set() is a regular spinlock.
+We will use a global static identity domain. Reserve a static domain ID
+for it.
 
-To fix the problem, let's simply move the calls to dev_pm_domain_set()
-outside the genpd-lock.
-
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Tested-by: Raghavendra Kakarla <quic_rkakarla@quicinc.com>  # qcm6490 with PREEMPT_RT set
-Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20240527142557.321610-3-ulf.hansson@linaro.org
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Link: https://lore.kernel.org/r/20240809055431.36513-4-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/iommu/intel/iommu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
-index 0ab6008e863e8..4134a8344d2da 100644
---- a/drivers/pmdomain/core.c
-+++ b/drivers/pmdomain/core.c
-@@ -1694,7 +1694,6 @@ static int genpd_add_device(struct generic_pm_domain *genpd, struct device *dev,
- 	genpd_lock(genpd);
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index 4aa070cf56e70..e3e513cabc86a 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -1447,10 +1447,10 @@ static int iommu_init_domains(struct intel_iommu *iommu)
+ 	 * entry for first-level or pass-through translation modes should
+ 	 * be programmed with a domain id different from those used for
+ 	 * second-level or nested translation. We reserve a domain id for
+-	 * this purpose.
++	 * this purpose. This domain id is also used for identity domain
++	 * in legacy mode.
+ 	 */
+-	if (sm_supported(iommu))
+-		set_bit(FLPT_DEFAULT_DID, iommu->domain_ids);
++	set_bit(FLPT_DEFAULT_DID, iommu->domain_ids);
  
- 	genpd_set_cpumask(genpd, gpd_data->cpu);
--	dev_pm_domain_set(dev, &genpd->domain);
- 
- 	genpd->device_count++;
- 	if (gd)
-@@ -1703,6 +1702,7 @@ static int genpd_add_device(struct generic_pm_domain *genpd, struct device *dev,
- 	list_add_tail(&gpd_data->base.list_node, &genpd->dev_list);
- 
- 	genpd_unlock(genpd);
-+	dev_pm_domain_set(dev, &genpd->domain);
-  out:
- 	if (ret)
- 		genpd_free_dev_data(dev, gpd_data);
-@@ -1759,12 +1759,13 @@ static int genpd_remove_device(struct generic_pm_domain *genpd,
- 		genpd->gd->max_off_time_changed = true;
- 
- 	genpd_clear_cpumask(genpd, gpd_data->cpu);
--	dev_pm_domain_set(dev, NULL);
- 
- 	list_del_init(&pdd->list_node);
- 
- 	genpd_unlock(genpd);
- 
-+	dev_pm_domain_set(dev, NULL);
-+
- 	if (genpd->detach_dev)
- 		genpd->detach_dev(genpd, dev);
- 
+ 	return 0;
+ }
 -- 
 2.43.0
 
