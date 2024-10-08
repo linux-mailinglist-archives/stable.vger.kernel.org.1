@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-82291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74F7994C08
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:49:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CE6994948
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F6E92817AB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:49:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BF451C22580
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353AB1DE3AE;
-	Tue,  8 Oct 2024 12:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1781DE3AE;
+	Tue,  8 Oct 2024 12:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/J0gl/z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hd8nq5TR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78641C2420;
-	Tue,  8 Oct 2024 12:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391DA1CF297;
+	Tue,  8 Oct 2024 12:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391772; cv=none; b=TWbo4ASGH0/e2ILzdhdEDro5V/gxCa6PzsWg9FsCL6leI6JmYWyG6PlGSgp8LCOPYwqImk/5vJ9xQtVeEh3U/DlDhFMYh5wBCBG02m14W2kU1S3MDBYHL1PJtBvggTXycm5lv4w2z1VjYZdaf3AVDM3xbRFrCQ5oV7JFRTCVYrM=
+	t=1728390086; cv=none; b=eLqcp/5lMqyPhYP8vqG+jUBsSCVW5MDuoDgdLdcKQgegRqhPDa28H5dF4ZE+VFbVM0lRoipKos154YEKATvP3b4wRRHmqXaiCjsLurxeXtCAD6oxIKmgabD+k3jfIM4pz6AuzdItBb+bmW28pJcLcLbm6HmbhYJ7BDb0CoajadQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391772; c=relaxed/simple;
-	bh=6RyuiKxV2UBfcLj7UP4AKnk+B5CUTKoQhCgS49+m7Uo=;
+	s=arc-20240116; t=1728390086; c=relaxed/simple;
+	bh=p02ARv4fZ5TL8W24+ex74cXzWNbb79lbjKr6UDN19JU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UVyI7TILasYLl8yyALZRpFL0N5LhdLRXsJFDDubFHQmYwzFh/fS8UDEqqGB6TghEBNkYDcMYrHmsfg5IwOQ6l/zHVHLp280s2WqVPOKCB3WCN5vnyMGcfuXJ8wbtjUjhlxnjZglud5Opq3Z+oy2n17LLBJJIUaWSVaJZcO3wH3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/J0gl/z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110BAC4CEC7;
-	Tue,  8 Oct 2024 12:49:30 +0000 (UTC)
+	 MIME-Version; b=O/jnYgDGkrpySlqgW0RmZMxuATswR33ZXMs6kalhKyq6cdl3zrYPC00H52VwCC5BqpbU8UsyDkKkiQBMfKaUO+q7TW1RDUPRa2L+nHGjDJ/0ToL20V/ruaK2fKBKJ6RfVg2Bq/srKtCME9b2b5CaWA5f7oohdGakzHTYtqMN8do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hd8nq5TR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D79BC4CEC7;
+	Tue,  8 Oct 2024 12:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391771;
-	bh=6RyuiKxV2UBfcLj7UP4AKnk+B5CUTKoQhCgS49+m7Uo=;
+	s=korg; t=1728390086;
+	bh=p02ARv4fZ5TL8W24+ex74cXzWNbb79lbjKr6UDN19JU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/J0gl/znRGp5ZW18sx4wh7XbB362M7LMRX0dG6iKrN5OaEZ1/4TYiPLpr27VWWbK
-	 CDEDJj2pECM36wlnoIrGPTgs3YuwdX2FmMNyP0hewjuo3nbaabuS9pr7LkYFPUIJ4R
-	 ZgDO815pfkX7u2T/V2BJlwGGD85QwC6eM21TVcKg=
+	b=Hd8nq5TReuTqlS8ll5X52CFu4d2n/omQdhaj6s3B9PzuypKfqxZ/EyggXMGqkkpGG
+	 W0A8HMDh+NXkfyLTPZbiDO1GUNkBOSJZ/38zVfjdvyBcgIDDzBH9uTzVh2vyHjMXsr
+	 bdoZEVcFfnD+/aJybKJQiXGQcnKc3vo/3QNOBt68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Niklas Cassel <cassel@kernel.org>,
 	Igor Pylypiv <ipylypiv@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 218/558] ata: pata_serverworks: Do not use the term blacklist
+Subject: [PATCH 6.10 185/482] ata: pata_serverworks: Do not use the term blacklist
 Date: Tue,  8 Oct 2024 14:04:08 +0200
-Message-ID: <20241008115710.922708750@linuxfoundation.org>
+Message-ID: <20241008115655.584485687@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
