@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-82326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F6D994C30
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8A20994DE9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:10:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11481286567
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92AEC1F21A13
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB0A1DE4D7;
-	Tue,  8 Oct 2024 12:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE001DED6F;
+	Tue,  8 Oct 2024 13:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeeW0KNU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tVCOlNx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6E61DE2CF;
-	Tue,  8 Oct 2024 12:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA231DED4E;
+	Tue,  8 Oct 2024 13:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391887; cv=none; b=pqOQcHygMA4rPa2+u9aQYfwxBj1bGcpGUyOpI11kLen6qDy92VyvH4m4e9T+RGRpCTqcq11iwL+p6YiEYZ/yDvMm7lax8ABFGsR+tOH5rucyjKdNI54CT5BS3IxRedqvHjJKIxe4OyqujwrtEMMxDRHRVUEmKlan8a5vNabiMpc=
+	t=1728393051; cv=none; b=mwoS8suMfTd7cU6C07trZ3I9ZKRv5pkF57Jxqa1ZmExkfu+cEwRCDxcbqa8AFt36suWOKmddLMmTao1nmxcU3OU7JLC2ZorJgVFj3CgL6roBuryAnpj0tGum28+rPGz9vEcWcjCswFEeK7gpFWBKCb+1Siv9hnc91g0FABwUM9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391887; c=relaxed/simple;
-	bh=bHnRtpqLJIxDvzsBOTw02cqMDGGIv5fGXkOjSLXfnoo=;
+	s=arc-20240116; t=1728393051; c=relaxed/simple;
+	bh=pP9ReGJ3Wcn8fRakjKEGhILCNiNugAa3rPu4W7iiv4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JOSlNwnpDGWHKHxWDN1T+07AqPAuXAtR/Ta3l7cAVefpX3JqV46irDwCpYsZoE5fm5W4wBwvtspeYj8kuamBXrS3WCfY9e3XL8jKOkzJsfP9GvT67AuJaDeIuFjrVFrz4DHEfNCUqEIuQoyJ+GfTMlSK4BmT1SoxGDYn44NdBL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeeW0KNU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C2DC4CED8;
-	Tue,  8 Oct 2024 12:51:26 +0000 (UTC)
+	 MIME-Version; b=WOS7iKeAi8tgMK6xSwYNtLcTPOcnpe0Biiazt3B81Fe9FMPQVvnjHDSmLMQ/jLzHdTnc4XIS//nxYcUFW0zk3j0oSIqw9IN1Z9J5pmdEfZq6tTfzGufKwGI2uQYw44h+SPYs8plZPqomxQBtJfC3DUeTt5bu2cjMqfgKm9xTGYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tVCOlNx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8D0C4CEC7;
+	Tue,  8 Oct 2024 13:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391887;
-	bh=bHnRtpqLJIxDvzsBOTw02cqMDGGIv5fGXkOjSLXfnoo=;
+	s=korg; t=1728393050;
+	bh=pP9ReGJ3Wcn8fRakjKEGhILCNiNugAa3rPu4W7iiv4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CeeW0KNURiLfPRUhWe/PkmdiY/tJQ1fpgRqVb5EOitwb7zVjYeIf/dwnYrrwIbOko
-	 8ZUPtTvfzpeUg4S+yWfg9bu0xKkeCL4d0FuwEogvxrgrnIRkwtItpKBsN2K4x8mmBe
-	 tf9BHT/mVgRlcmiX7OFgif870ZVg2aP3x5lLTBzQ=
+	b=1tVCOlNxBde+IxrruMVmnO7qqBabTMuQ6CZFvmhzceFOZYOiF0ENUEMW2rnaOFXp7
+	 nqYHrmWDs1QQrXDrPpelA2PT0mOSLX2zXP5e2wD5WyKjr0alFRqZ2U7LAZWjlO8AXD
+	 t7YvlF1SrMccVOXCGKEA7dEz8Q96TeGE1kUkWO+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nevenko Stupar <nevenko.stupar@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	syzbot+f4e0f821e3a3b7cee51d@syzkaller.appspotmail.com,
+	Xin Long <lucien.xin@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 253/558] drm/amd/display: Check null-initialized variables
+Subject: [PATCH 6.6 038/386] sctp: set sk_state back to CLOSED if autobind fails in sctp_listen_start
 Date: Tue,  8 Oct 2024 14:04:43 +0200
-Message-ID: <20241008115712.293333802@linuxfoundation.org>
+Message-ID: <20241008115630.973844156@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,57 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 367cd9ceba1933b63bc1d87d967baf6d9fd241d2 ]
+[ Upstream commit 8beee4d8dee76b67c75dc91fd8185d91e845c160 ]
 
-[WHAT & HOW]
-drr_timing and subvp_pipe are initialized to null and they are not
-always assigned new values. It is necessary to check for null before
-dereferencing.
+In sctp_listen_start() invoked by sctp_inet_listen(), it should set the
+sk_state back to CLOSED if sctp_autobind() fails due to whatever reason.
 
-This fixes 2 FORWARD_NULL issues reported by Coverity.
+Otherwise, next time when calling sctp_inet_listen(), if sctp_sk(sk)->reuse
+is already set via setsockopt(SCTP_REUSE_PORT), sctp_sk(sk)->bind_hash will
+be dereferenced as sk_state is LISTENING, which causes a crash as bind_hash
+is NULL.
 
-Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+  RIP: 0010:sctp_inet_listen+0x7f0/0xa20 net/sctp/socket.c:8617
+  Call Trace:
+   <TASK>
+   __sys_listen_socket net/socket.c:1883 [inline]
+   __sys_listen+0x1b7/0x230 net/socket.c:1894
+   __do_sys_listen net/socket.c:1902 [inline]
+
+Fixes: 5e8f3f703ae4 ("sctp: simplify sctp listening code")
+Reported-by: syzbot+f4e0f821e3a3b7cee51d@syzkaller.appspotmail.com
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Link: https://patch.msgid.link/a93e655b3c153dc8945d7a812e6d8ab0d52b7aa0.1727729391.git.lucien.xin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/sctp/socket.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-index 9d399c4ce957d..4cb0227bdd270 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-@@ -871,8 +871,9 @@ static bool subvp_drr_schedulable(struct dc *dc, struct dc_state *context)
- 	 * for VBLANK: (VACTIVE region of the SubVP pipe can fit the MALL prefetch, VBLANK frame time,
- 	 * and the max of (VBLANK blanking time, MALL region)).
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 225dfacfd233f..4a1ebe46d045d 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -8551,8 +8551,10 @@ static int sctp_listen_start(struct sock *sk, int backlog)
  	 */
--	if (stretched_drr_us < (1 / (double)drr_timing->min_refresh_in_uhz) * 1000000 * 1000000 &&
--			subvp_active_us - prefetch_us - stretched_drr_us - max_vblank_mallregion > 0)
-+	if (drr_timing &&
-+	    stretched_drr_us < (1 / (double)drr_timing->min_refresh_in_uhz) * 1000000 * 1000000 &&
-+	    subvp_active_us - prefetch_us - stretched_drr_us - max_vblank_mallregion > 0)
- 		schedulable = true;
- 
- 	return schedulable;
-@@ -937,7 +938,7 @@ static bool subvp_vblank_schedulable(struct dc *dc, struct dc_state *context)
- 		if (!subvp_pipe && pipe_mall_type == SUBVP_MAIN)
- 			subvp_pipe = pipe;
- 	}
--	if (found) {
-+	if (found && subvp_pipe) {
- 		phantom_stream = dc_state_get_paired_subvp_stream(context, subvp_pipe->stream);
- 		main_timing = &subvp_pipe->stream->timing;
- 		phantom_timing = &phantom_stream->timing;
+ 	inet_sk_set_state(sk, SCTP_SS_LISTENING);
+ 	if (!ep->base.bind_addr.port) {
+-		if (sctp_autobind(sk))
++		if (sctp_autobind(sk)) {
++			inet_sk_set_state(sk, SCTP_SS_CLOSED);
+ 			return -EAGAIN;
++		}
+ 	} else {
+ 		if (sctp_get_port(sk, inet_sk(sk)->inet_num)) {
+ 			inet_sk_set_state(sk, SCTP_SS_CLOSED);
 -- 
 2.43.0
 
