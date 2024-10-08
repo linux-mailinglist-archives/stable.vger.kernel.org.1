@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-82648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C460994DD9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:10:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D0D99498A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:25:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D70EB25C7B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F47A1F26537
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1641C9DDF;
-	Tue,  8 Oct 2024 13:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1A41DF97A;
+	Tue,  8 Oct 2024 12:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n3zgraC9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0WXp5aB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C131C1C5793;
-	Tue,  8 Oct 2024 13:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5571DEFE3;
+	Tue,  8 Oct 2024 12:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392958; cv=none; b=uKRyjkE7xwhGhaoVe5KMFfYOBc5MUfJp0X85KC+/iUcWbhMsnyTLGtuXu3yThLD4DYO/YIIvDgrDn1n4UIGfcFmosCusAAkFEOtxt5BmKeyy88rekRhxWNzD0jzv4oqn3ffKxpA5FhFhTTjMZRG1z2iOyTS8kmpITe+s+bllG2E=
+	t=1728390216; cv=none; b=W8ppgU7PC8M4BCr/KbhFnmcpNKntQbSFFbry0yEggOoInXoFhZuPKbns1mqjxINA8cS6IIqIlR8X7+8WKDDKa8i9UeUIMEa2S4nu8MugQP45vlas62G0RIfYK3I5QsKx8WBn8z1lvf8FJM3/BKS5HKxnnoRLg/mZpOz9QZtNYCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392958; c=relaxed/simple;
-	bh=IqXJoz35b3W+PJILpSwC/UPM7K/1mGFNodYm8tQPpxU=;
+	s=arc-20240116; t=1728390216; c=relaxed/simple;
+	bh=fMSMNwf8B5DZE6aWDOmcHb91ZY4VcAJmwSmRCfVFTXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dNyrPli/fIDdc/sMvCiY5T81H2FICAiCaokY/tqp4/rstjzGaY1PcD9dE82G0gmFfk35lhAVkXtcdQaAS1umUBu6JKJ0OjapidXhyQS2/vMOMaqYZQ2DpbjmxegS9Wlc8wMNzRuhHxItNGowvJFyivlCqzNbg68Wv6eS6uUguuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n3zgraC9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB580C4CECC;
-	Tue,  8 Oct 2024 13:09:17 +0000 (UTC)
+	 MIME-Version; b=NlgHdg+xoDGWMi+mfHb7XrxHFNYM9UyRU/hMPBwEi5dqE2jm/f0zK+ljHRvc0+Xv/lbgQsvkUpGWqseSgFmWvvOLaRIwAD7B4/j/ZhBtbAGFxq5fCvPmKhMalcLvMNuR8Vr5gP0kg+Hcn9D0NfyBc9XAvd597JonYmHMyvhAstA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0WXp5aB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44FB9C4CECC;
+	Tue,  8 Oct 2024 12:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392958;
-	bh=IqXJoz35b3W+PJILpSwC/UPM7K/1mGFNodYm8tQPpxU=;
+	s=korg; t=1728390215;
+	bh=fMSMNwf8B5DZE6aWDOmcHb91ZY4VcAJmwSmRCfVFTXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n3zgraC9ckYuxWMMHlivpqtEgS/bU+90+LPSx35nD9uSp5ZXDkNTbeHG1/STs9ILe
-	 3rqfgd6QyBR3iZoCoQVPXpP1hLCTlTC0hKfRHGZTAS1+/8EkB5WBkBt5a2zcBNgSrr
-	 HCM8nKrJlyc4pOF9AYrOpaNuD/QJjXevDmFbs8nY=
+	b=p0WXp5aBMrQ2NhcKnMzPouAoypR+A29bUWQLunMQd66FwNFiotDjR16p2+hwlKuv2
+	 v/B6Gu4buzc+mZeayOawZDL7nBbmqIhMHRIJhFKkWEkCs8aAUqXa9H9m5nPVglLxHc
+	 bYRY20h+rs9ycmy55ROED6nXgQ16NqdTZGazGCJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/386] ieee802154: Fix build error
+Subject: [PATCH 6.10 193/482] drm/amd/display: Add null check for afb in amdgpu_dm_plane_handle_cursor_update (v2)
 Date: Tue,  8 Oct 2024 14:04:16 +0200
-Message-ID: <20241008115629.765697491@linuxfoundation.org>
+Message-ID: <20241008115655.898845164@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +68,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit addf89774e48c992316449ffab4f29c2309ebefb ]
+[ Upstream commit cd9e9e0852d501f169aa3bb34e4b413d2eb48c37 ]
 
-If REGMAP_SPI is m and IEEE802154_MCR20A is y,
+This commit adds a null check for the 'afb' variable in the
+amdgpu_dm_plane_handle_cursor_update function. Previously, 'afb' was
+assumed to be null, but was used later in the code without a null check.
+This could potentially lead to a null pointer dereference.
 
-	mcr20a.c:(.text+0x3ed6c5b): undefined reference to `__devm_regmap_init_spi'
-	ld: mcr20a.c:(.text+0x3ed6cb5): undefined reference to `__devm_regmap_init_spi'
+Changes since v1:
+- Moved the null check for 'afb' to the line where 'afb' is used. (Alex)
 
-Select REGMAP_SPI for IEEE802154_MCR20A to fix it.
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm_plane.c:1298 amdgpu_dm_plane_handle_cursor_update() error: we previously assumed 'afb' could be null (see line 1252)
 
-Fixes: 8c6ad9cc5157 ("ieee802154: Add NXP MCR20A IEEE 802.15.4 transceiver driver")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/20240909131740.1296608-1-ruanjinjie@huawei.com
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Co-developed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ieee802154/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ieee802154/Kconfig b/drivers/net/ieee802154/Kconfig
-index 95da876c56138..1075e24b11def 100644
---- a/drivers/net/ieee802154/Kconfig
-+++ b/drivers/net/ieee802154/Kconfig
-@@ -101,6 +101,7 @@ config IEEE802154_CA8210_DEBUGFS
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+index 7d47acdd11d55..fe7a99aee47dd 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+@@ -1285,7 +1285,8 @@ void amdgpu_dm_plane_handle_cursor_update(struct drm_plane *plane,
+ 	    adev->dm.dc->caps.color.dpp.gamma_corr)
+ 		attributes.attribute_flags.bits.ENABLE_CURSOR_DEGAMMA = 1;
  
- config IEEE802154_MCR20A
- 	tristate "MCR20A transceiver driver"
-+	select REGMAP_SPI
- 	depends on IEEE802154_DRIVERS && MAC802154
- 	depends on SPI
- 	help
+-	attributes.pitch = afb->base.pitches[0] / afb->base.format->cpp[0];
++	if (afb)
++		attributes.pitch = afb->base.pitches[0] / afb->base.format->cpp[0];
+ 
+ 	if (crtc_state->stream) {
+ 		mutex_lock(&adev->dm.dc_lock);
 -- 
 2.43.0
 
