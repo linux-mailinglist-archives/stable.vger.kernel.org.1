@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-82808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C8F6994E8B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6938994A43
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDFAD1C25372
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:18:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 180F728918D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6F11DE88F;
-	Tue,  8 Oct 2024 13:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C41190663;
+	Tue,  8 Oct 2024 12:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cc3NrUQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YO4SjvpP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379511DEFEA;
-	Tue,  8 Oct 2024 13:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9703B17DFF7;
+	Tue,  8 Oct 2024 12:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393493; cv=none; b=X8+zKfQW9OXhz1VGxOXC1bLplsKJC8EihAUUptVkjyH7vGY14grS0AGXiyjAkzA+KFGRCi2Cet3hVWpHu/MJ0qiDAHSVHjLOZzBZv3eeqfYP2zB6RCFqBNLml3V1hkm8ef6prwj/8bd0yf1bgaaH7/wMRaRMp2vNffxbEWotcW0=
+	t=1728390652; cv=none; b=Xq6XpINcqE8qNu1ZSLTBETSHizjpeBJQDetqLTZ3vnYfqFrMhOzHVfy3SeqCKQSX+sOYL8z9IW04df+iiLVP3D8n+frtIj609M6D2f0AU9VtAoTRNUi6QFxs4mDLKEZMnWGY8WLzTobyRKctjGnrsMcHhb/wm8LDaMLYkiumFdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393493; c=relaxed/simple;
-	bh=2TVbUvYtpGswVeiURUa8kcbaQtrJE43Qe/QH0WswAEQ=;
+	s=arc-20240116; t=1728390652; c=relaxed/simple;
+	bh=LRkmEn05KAqNPwTtgfw9BxALBtZzmMzAXEyScCQ279M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ABotrrNTrKGUK0UhOcfS8hn4xVmDUkS9QVHQYI6h50UEd+GuzGN0LKSCzqQJOlez/SephEdikH3MiM4M5A3qIIcrbFVJZ8Ydv4QaF+Ck/wx51726q2qQ3pGhDSUxFKteOtZwVnio/Ic7Eph+KrpFy5uV6TpeSPueEf4r0N+0jWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cc3NrUQv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A89EC4CEC7;
-	Tue,  8 Oct 2024 13:18:12 +0000 (UTC)
+	 MIME-Version; b=OTS74kX7kiAzL75+LiNCCi5vPLCu720JZPF2VYpIPY+YvqA2jYnFaHnUmdtKYEEWrYmCGkGthUPRhfEmbvh77k2Oaej9/IGFOtGSPVob5bH7uASlpggVjf0eIE17QZEPTL1i4ov+GAEU3Mw5yVW39P9INMtWeazgsIzMjytfJLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YO4SjvpP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A40DC4CEC7;
+	Tue,  8 Oct 2024 12:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393493;
-	bh=2TVbUvYtpGswVeiURUa8kcbaQtrJE43Qe/QH0WswAEQ=;
+	s=korg; t=1728390652;
+	bh=LRkmEn05KAqNPwTtgfw9BxALBtZzmMzAXEyScCQ279M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cc3NrUQvheGGZfZgAQh5+iVkWXLShV1Bnv7tbXnCGw16Ans7hxIue1bIMeDl3gmgt
-	 G9HGwZUj1h5RS2E302GO5VqiMsq2XHlH+AnDzwCReUlYwaYJIHPFCuT+XmABGwhezd
-	 u+7UXX/8G7l8Lo6UOYwOyixY7wfckexIltO+MtjM=
+	b=YO4SjvpPT0GjX6rVFLf/SQDxA3Xwj2WAeYu9jslo5owMc+Ue2GQaUiweayzbU7EJE
+	 eg7+HkLiMEa+2OwojAakxGIf2urY7vh8FN+gdkwJXJIWhUrG2R3bWuF+BpK8E13BDq
+	 CgWiruRhlu7F6VJfPnpCuSLDYBaGmOvS/WumUed4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Skvortsov <victor.skvortsov@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 169/386] drm/amdgpu: Block MMR_READ IOCTL in reset
+	Danilo Krummrich <dakr@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Rientjes <rientjes@google.com>,
+	Christoph Lameter <cl@linux.com>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Pekka Enberg <penberg@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 351/482] mm: krealloc: consider spare memory for __GFP_ZERO
 Date: Tue,  8 Oct 2024 14:06:54 +0200
-Message-ID: <20241008115636.074221923@linuxfoundation.org>
+Message-ID: <20241008115702.237603041@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +68,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Skvortsov <victor.skvortsov@amd.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit 9e823f307074c0f82b5f6044943b0086e3079bed ]
+commit 1a83a716ec233990e1fd5b6fbb1200ade63bf450 upstream.
 
-Register access from userspace should be blocked until
-reset is complete.
+As long as krealloc() is called with __GFP_ZERO consistently, starting
+with the initial memory allocation, __GFP_ZERO should be fully honored.
 
-Signed-off-by: Victor Skvortsov <victor.skvortsov@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, if for an existing allocation krealloc() is called with a
+decreased size, it is not ensured that the spare portion the allocation is
+zeroed.  Thus, if krealloc() is subsequently called with a larger size
+again, __GFP_ZERO can't be fully honored, since we don't know the previous
+size, but only the bucket size.
+
+Example:
+
+	buf = kzalloc(64, GFP_KERNEL);
+	memset(buf, 0xff, 64);
+
+	buf = krealloc(buf, 48, GFP_KERNEL | __GFP_ZERO);
+
+	/* After this call the last 16 bytes are still 0xff. */
+	buf = krealloc(buf, 64, GFP_KERNEL | __GFP_ZERO);
+
+Fix this, by explicitly setting spare memory to zero, when shrinking an
+allocation with __GFP_ZERO flag set or init_on_alloc enabled.
+
+Link: https://lkml.kernel.org/r/20240812223707.32049-1-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: David Rientjes <rientjes@google.com>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: Pekka Enberg <penberg@kernel.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 43 ++++++++++++++++++-------
- 1 file changed, 31 insertions(+), 12 deletions(-)
+ mm/slab_common.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-index 58dab4f73a9a2..5797055b1148f 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-@@ -43,6 +43,7 @@
- #include "amdgpu_gem.h"
- #include "amdgpu_display.h"
- #include "amdgpu_ras.h"
-+#include "amdgpu_reset.h"
- #include "amd_pcie.h"
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -1176,6 +1176,13 @@ __do_krealloc(const void *p, size_t new_
  
- void amdgpu_unregister_gpu_instance(struct amdgpu_device *adev)
-@@ -722,6 +723,7 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
- 				    ? -EFAULT : 0;
+ 	/* If the object still fits, repoison it precisely. */
+ 	if (ks >= new_size) {
++		/* Zero out spare memory. */
++		if (want_init_on_alloc(flags)) {
++			kasan_disable_current();
++			memset((void *)p + new_size, 0, ks - new_size);
++			kasan_enable_current();
++		}
++
+ 		p = kasan_krealloc((void *)p, new_size, flags);
+ 		return (void *)p;
  	}
- 	case AMDGPU_INFO_READ_MMR_REG: {
-+		int ret = 0;
- 		unsigned int n, alloc_size;
- 		uint32_t *regs;
- 		unsigned int se_num = (info->read_mmr_reg.instance >>
-@@ -731,24 +733,37 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
- 				   AMDGPU_INFO_MMR_SH_INDEX_SHIFT) &
- 				  AMDGPU_INFO_MMR_SH_INDEX_MASK;
- 
-+		if (!down_read_trylock(&adev->reset_domain->sem))
-+			return -ENOENT;
-+
- 		/* set full masks if the userspace set all bits
- 		 * in the bitfields
- 		 */
--		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK)
-+		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK) {
- 			se_num = 0xffffffff;
--		else if (se_num >= AMDGPU_GFX_MAX_SE)
--			return -EINVAL;
--		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK)
-+		} else if (se_num >= AMDGPU_GFX_MAX_SE) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+
-+		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK) {
- 			sh_num = 0xffffffff;
--		else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE)
--			return -EINVAL;
-+		} else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
- 
--		if (info->read_mmr_reg.count > 128)
--			return -EINVAL;
-+		if (info->read_mmr_reg.count > 128) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
- 
- 		regs = kmalloc_array(info->read_mmr_reg.count, sizeof(*regs), GFP_KERNEL);
--		if (!regs)
--			return -ENOMEM;
-+		if (!regs) {
-+			ret = -ENOMEM;
-+			goto out;
-+		}
-+
- 		alloc_size = info->read_mmr_reg.count * sizeof(*regs);
- 
- 		amdgpu_gfx_off_ctrl(adev, false);
-@@ -760,13 +775,17 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
- 					      info->read_mmr_reg.dword_offset + i);
- 				kfree(regs);
- 				amdgpu_gfx_off_ctrl(adev, true);
--				return -EFAULT;
-+				ret = -EFAULT;
-+				goto out;
- 			}
- 		}
- 		amdgpu_gfx_off_ctrl(adev, true);
- 		n = copy_to_user(out, regs, min(size, alloc_size));
- 		kfree(regs);
--		return n ? -EFAULT : 0;
-+		ret = (n ? -EFAULT : 0);
-+out:
-+		up_read(&adev->reset_domain->sem);
-+		return ret;
- 	}
- 	case AMDGPU_INFO_DEV_INFO: {
- 		struct drm_amdgpu_info_device *dev_info;
--- 
-2.43.0
-
 
 
 
