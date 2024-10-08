@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5158A994AE4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2A92994D88
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:06:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F19461F248CA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F8D01C24C57
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10DF1DE4FA;
-	Tue,  8 Oct 2024 12:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D59B1DE4DB;
+	Tue,  8 Oct 2024 13:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S79og12G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQGtRby+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBF71DC759;
-	Tue,  8 Oct 2024 12:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3F41DE4CC;
+	Tue,  8 Oct 2024 13:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391055; cv=none; b=dc5KNhv6mcj/DgcaMvbI1oy0MhV60V8qsQ4opEl8Athhmp7H6yi+3PN/VyV8xodKh4TBDsnEkW1TjRKLKC0g3n2dLjVORr02QM4aGImOhYukpW0X6DIJqq1PJy01NWvkyb8T3V8B7m9xOwiZpj8xMRVON//lkQsNNDOta/hIP7o=
+	t=1728392784; cv=none; b=eopaLvFd8z7NfTm9vkoYbUbWfptNdCHxB2kwBasnghGtvu+dyHqH2QIc5P+HkhROcBj3QyWUG1wzheZabyoVtFVpaxXzBhSpIkek4u311+DMDkrg0crw1eTzdEzjusPFZELNiaMxydSOODPSt7Ydui98kTuah+BrJ7g/DOVeh+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391055; c=relaxed/simple;
-	bh=7MYeIBKwFVmPP70oLvWrj7jZFCPQtXSMhF720nOanNc=;
+	s=arc-20240116; t=1728392784; c=relaxed/simple;
+	bh=dXPaVfUzWHPo9kFwFCHAFAIZQ2J5nT3XhYnXGrdDhhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JD9iIRMW8JTCY4DtIBxjIHtoIUauSUeFGarLVkKQogZEiweLKhfad+WywIGqs5bjItTJqrtCoQE+ONmaC6/kEFNMFJXNJq95CMSUFdfgsVViJdZ1jF49ARpExr3b12Dq+9BwQM3KAZJiNP2mFtBrrBdSZKEGEQ1qRAYYCCCMlbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S79og12G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62FCC4CEC7;
-	Tue,  8 Oct 2024 12:37:34 +0000 (UTC)
+	 MIME-Version; b=aeplAES7M5XJ29xOMeGPzAxghmvSzp6rmYtypU6Y3q2VOBUoTPiPxZnAvs6mm7FFUnc2mkM5JJE2HLU4y4PrA9iUzhYHKIBOvFYbL+EH8qsZuIuAIdvE0WCBSiJBHufHlR1rKfb4+07oIUQz03TT3pFXQMGG0VSaXKg8h/iRE0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQGtRby+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA513C4CEC7;
+	Tue,  8 Oct 2024 13:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391055;
-	bh=7MYeIBKwFVmPP70oLvWrj7jZFCPQtXSMhF720nOanNc=;
+	s=korg; t=1728392783;
+	bh=dXPaVfUzWHPo9kFwFCHAFAIZQ2J5nT3XhYnXGrdDhhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S79og12GezEz8W3MXTy9kFzOjcEORVa0x7PERtWaQEgmWbdov4R+Y5cjrGLtI9JmI
-	 +q3370jHkxuKzGTpMYHC06yAyZOJXw9s6ow4K9ZyGe6rx1ju3iinUdK7z0Y/hOy51c
-	 IY8/Qy6JaBYmGYT3g/CTDQC3Jjrx0kRwIyIgFpFA=
+	b=eQGtRby+ugPGt4LdWgrP5NgINRITHC1GxvrmLgR3aVmFMh7M+lKA4l9AoCQXCcteq
+	 /G0WpldBsG3Lxf8JYOrAR19gAKKzbK6vWDU5c+nnmv3JJD2Eke8eobGqwlY7J1v3IC
+	 BN4FbM2X8jRK+PvelORPVGsZfz4Y/3oQW7QAm16Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoran Zhang <wh1sper@zju.edu.cn>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 6.10 477/482] vhost/scsi: null-ptr-dereference in vhost_scsi_get_req()
-Date: Tue,  8 Oct 2024 14:09:00 +0200
-Message-ID: <20241008115707.282070402@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Wei Li <liwei391@huawei.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.11 511/558] tracing/timerlat: Fix a race during cpuhp processing
+Date: Tue,  8 Oct 2024 14:09:01 +0200
+Message-ID: <20241008115722.337383063@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoran Zhang <wh1sper@zju.edu.cn>
+From: Wei Li <liwei391@huawei.com>
 
-commit 221af82f606d928ccef19a16d35633c63026f1be upstream.
+commit 829e0c9f0855f26b3ae830d17b24aec103f7e915 upstream.
 
-Since commit 3f8ca2e115e5 ("vhost/scsi: Extract common handling code
-from control queue handler") a null pointer dereference bug can be
-triggered when guest sends an SCSI AN request.
+There is another found exception that the "timerlat/1" thread was
+scheduled on CPU0, and lead to timer corruption finally:
 
-In vhost_scsi_ctl_handle_vq(), `vc.target` is assigned with
-`&v_req.tmf.lun[1]` within a switch-case block and is then passed to
-vhost_scsi_get_req() which extracts `vc->req` and `tpg`. However, for
-a `VIRTIO_SCSI_T_AN_*` request, tpg is not required, so `vc.target` is
-set to NULL in this branch. Later, in vhost_scsi_get_req(),
-`vc->target` is dereferenced without being checked, leading to a null
-pointer dereference bug. This bug can be triggered from guest.
-
-When this bug occurs, the vhost_worker process is killed while holding
-`vq->mutex` and the corresponding tpg will remain occupied
-indefinitely.
-
-Below is the KASAN report:
-Oops: general protection fault, probably for non-canonical address
-0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 1 PID: 840 Comm: poc Not tainted 6.10.0+ #1
-Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS
-1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:vhost_scsi_get_req+0x165/0x3a0
-Code: 00 fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 2b 02 00 00
-48 b8 00 00 00 00 00 fc ff df 4d 8b 65 30 4c 89 e2 48 c1 ea 03 <0f> b6
-04 02 4c 89 e2 83 e2 07 38 d0 7f 08 84 c0 0f 85 be 01 00 00
-RSP: 0018:ffff888017affb50 EFLAGS: 00010246
-RAX: dffffc0000000000 RBX: ffff88801b000000 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff888017affcb8
-RBP: ffff888017affb80 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: ffff888017affc88 R14: ffff888017affd1c R15: ffff888017993000
-FS:  000055556e076500(0000) GS:ffff88806b100000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000200027c0 CR3: 0000000010ed0004 CR4: 0000000000370ef0
+```
+ODEBUG: init active (active state 0) object: ffff888237c2e108 object type: hrtimer hint: timerlat_irq+0x0/0x220
+WARNING: CPU: 0 PID: 426 at lib/debugobjects.c:518 debug_print_object+0x7d/0xb0
+Modules linked in:
+CPU: 0 UID: 0 PID: 426 Comm: timerlat/1 Not tainted 6.11.0-rc7+ #45
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:debug_print_object+0x7d/0xb0
+...
 Call Trace:
  <TASK>
- ? show_regs+0x86/0xa0
- ? die_addr+0x4b/0xd0
- ? exc_general_protection+0x163/0x260
- ? asm_exc_general_protection+0x27/0x30
- ? vhost_scsi_get_req+0x165/0x3a0
- vhost_scsi_ctl_handle_vq+0x2a4/0xca0
- ? __pfx_vhost_scsi_ctl_handle_vq+0x10/0x10
- ? __switch_to+0x721/0xeb0
- ? __schedule+0xda5/0x5710
- ? __kasan_check_write+0x14/0x30
- ? _raw_spin_lock+0x82/0xf0
- vhost_scsi_ctl_handle_kick+0x52/0x90
- vhost_run_work_list+0x134/0x1b0
- vhost_task_fn+0x121/0x350
-...
+ ? __warn+0x7c/0x110
+ ? debug_print_object+0x7d/0xb0
+ ? report_bug+0xf1/0x1d0
+ ? prb_read_valid+0x17/0x20
+ ? handle_bug+0x3f/0x70
+ ? exc_invalid_op+0x13/0x60
+ ? asm_exc_invalid_op+0x16/0x20
+ ? debug_print_object+0x7d/0xb0
+ ? debug_print_object+0x7d/0xb0
+ ? __pfx_timerlat_irq+0x10/0x10
+ __debug_object_init+0x110/0x150
+ hrtimer_init+0x1d/0x60
+ timerlat_main+0xab/0x2d0
+ ? __pfx_timerlat_main+0x10/0x10
+ kthread+0xb7/0xe0
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2d/0x40
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
  </TASK>
----[ end trace 0000000000000000 ]---
+```
 
-Let's add a check in vhost_scsi_get_req.
+After tracing the scheduling event, it was discovered that the migration
+of the "timerlat/1" thread was performed during thread creation. Further
+analysis confirmed that it is because the CPU online processing for
+osnoise is implemented through workers, which is asynchronous with the
+offline processing. When the worker was scheduled to create a thread, the
+CPU may has already been removed from the cpu_online_mask during the offline
+process, resulting in the inability to select the right CPU:
 
-Fixes: 3f8ca2e115e5 ("vhost/scsi: Extract common handling code from control queue handler")
-Signed-off-by: Haoran Zhang <wh1sper@zju.edu.cn>
-[whitespace fixes]
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Message-Id: <b26d7ddd-b098-4361-88f8-17ca7f90adf7@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+T1                       | T2
+[CPUHP_ONLINE]           | cpu_device_down()
+osnoise_hotplug_workfn() |
+                         |     cpus_write_lock()
+                         |     takedown_cpu(1)
+                         |     cpus_write_unlock()
+[CPUHP_OFFLINE]          |
+    cpus_read_lock()     |
+    start_kthread(1)     |
+    cpus_read_unlock()   |
+
+To fix this, skip online processing if the CPU is already offline.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20240924094515.3561410-4-liwei391@huawei.com
+Fixes: c8895e271f79 ("trace/osnoise: Support hotplug operations")
+Signed-off-by: Wei Li <liwei391@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vhost/scsi.c |   25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ kernel/trace/trace_osnoise.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -1029,20 +1029,23 @@ vhost_scsi_get_req(struct vhost_virtqueu
- 		/* virtio-scsi spec requires byte 0 of the lun to be 1 */
- 		vq_err(vq, "Illegal virtio-scsi lun: %u\n", *vc->lunp);
- 	} else {
--		struct vhost_scsi_tpg **vs_tpg, *tpg;
-+		struct vhost_scsi_tpg **vs_tpg, *tpg = NULL;
+--- a/kernel/trace/trace_osnoise.c
++++ b/kernel/trace/trace_osnoise.c
+@@ -2094,6 +2094,8 @@ static void osnoise_hotplug_workfn(struc
+ 	mutex_lock(&interface_lock);
+ 	cpus_read_lock();
  
--		vs_tpg = vhost_vq_get_backend(vq);	/* validated at handler entry */
--
--		tpg = READ_ONCE(vs_tpg[*vc->target]);
--		if (unlikely(!tpg)) {
--			vq_err(vq, "Target 0x%x does not exist\n", *vc->target);
--		} else {
--			if (tpgp)
--				*tpgp = tpg;
--			ret = 0;
-+		if (vc->target) {
-+			/* validated at handler entry */
-+			vs_tpg = vhost_vq_get_backend(vq);
-+			tpg = READ_ONCE(vs_tpg[*vc->target]);
-+			if (unlikely(!tpg)) {
-+				vq_err(vq, "Target 0x%x does not exist\n", *vc->target);
-+				goto out;
-+			}
- 		}
--	}
- 
-+		if (tpgp)
-+			*tpgp = tpg;
-+		ret = 0;
-+	}
-+out:
- 	return ret;
- }
++	if (!cpu_online(cpu))
++		goto out_unlock;
+ 	if (!cpumask_test_cpu(cpu, &osnoise_cpumask))
+ 		goto out_unlock;
  
 
 
