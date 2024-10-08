@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-82680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52BFE994E1D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:13:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 238B5994C33
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E090B25033
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:11:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB6F01F2258E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59B11DEFC8;
-	Tue,  8 Oct 2024 13:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638201DE4D7;
+	Tue,  8 Oct 2024 12:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doQ+Jsqe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3eod+hj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636C11DED60;
-	Tue,  8 Oct 2024 13:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208EE1CCB32;
+	Tue,  8 Oct 2024 12:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393064; cv=none; b=UKryu0mrVmRnMJuLG1RKw0YU4YNxATpR6FREkXBk6RQqLANj6/HoMPog8XvajuMMIfO7SmD6D19/pLBWgy8Y2fJ/Y6RTl0gaom9ktrAf7ycYdVQwGMThu1OzxGJXFJk8KUe2UI1n9pxxgmB7AP5aYXXD8Eg1/yDAGy+wc3Scvzo=
+	t=1728391898; cv=none; b=j+AZSOl3k4NphRpOkZZkp3niQOC1Ue17RGHLCLcmwbE+2NwoUwlOuyzkKMN24ClUsAXPYb1bHf4NgKeckfQAlFOFpTDo2YZRot1YEFEkf9MCjo+5HywHogXc67RTNy8UZ6ImIT9U/+Hhr13WZFifOx3/eAu4Dt/ez41CzRGms5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393064; c=relaxed/simple;
-	bh=fvWklU6EeBtYvAH5Lgcmo7GAwGLxzzwewyFlT1eb6Aw=;
+	s=arc-20240116; t=1728391898; c=relaxed/simple;
+	bh=6eLIzxIxKu3XIfpWCZBmkqP3YJ8EeV5GUsJ0V3dKHaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NBzmXYqkvGQSGenSABNUwpNbVSlk5bZDNR+q7uCcsYz+FcIkX6HXdwjdKxXlrk16G99S99U8kJGCwrAZV3zYf/y2uO/HeQN22aSAnZt+NoC2okTRzoX8x6FCwNp/EVG28Re6q+1LA7XWhqK4b8AJhONafKx28bwLJr7uFDm41Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doQ+Jsqe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05F0C4CEC7;
-	Tue,  8 Oct 2024 13:11:03 +0000 (UTC)
+	 MIME-Version; b=BKgP36/px8sANCpHSVACDEwf7nkeP2cUv2iN8saUwr8HmwT15uN+/p0i8PBNgPVN9PARcVbX67zQ5Y/Iu6H1CyHFDizaVM3F1aqbTjwIOaaBp2CogKFcDYUXKWGRe70lMHxhEYhfOdOLSwojDXJ6yPr4Lt4u1NjYpLRi55Z/mYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I3eod+hj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5D6C4CEC7;
+	Tue,  8 Oct 2024 12:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393064;
-	bh=fvWklU6EeBtYvAH5Lgcmo7GAwGLxzzwewyFlT1eb6Aw=;
+	s=korg; t=1728391898;
+	bh=6eLIzxIxKu3XIfpWCZBmkqP3YJ8EeV5GUsJ0V3dKHaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=doQ+Jsqe2COgbqxOtmAFQH5nsAd9Ksz9Seff/tLiU+rjhAZpO5SOt40ytxy3GPnZ3
-	 PHFiXeh02/fCAX1Vh3zknmG98LYXmesGi1nYfFrzoQGMS8J0M9UyRmtSSlE78bkRhb
-	 cCmh/AL7GukOftSMvgXkmn4wkyquZENhs3mocun0=
+	b=I3eod+hjf5Vo5dvnntiEG9LRajLKqQvnqPEABfwRMTDuD9+2wFwmBY/eTsRouOFxI
+	 yXrwcq0LfHuSXdeTlQepOFbtP3eOdzSQqWvCn4CpieJ17LfONpirTSjUstlwsywzEg
+	 lv4Hm1GVUIk75/bTwZeRWdVA6Gc9cTtvUgWl2pkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Joshua Aberback <joshua.aberback@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Chris Park <chris.park@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/386] loop: dont set QUEUE_FLAG_NOMERGES
+Subject: [PATCH 6.11 256/558] drm/amd/display: Deallocate DML memory if allocation fails
 Date: Tue,  8 Oct 2024 14:04:46 +0200
-Message-ID: <20241008115631.090771300@linuxfoundation.org>
+Message-ID: <20241008115712.408591278@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Chris Park <chris.park@amd.com>
 
-[ Upstream commit 667ea36378cf7f669044b27871c496e1559c872a ]
+[ Upstream commit 892abca6877a96c9123bb1c010cafccdf8ca1b75 ]
 
-QUEUE_FLAG_NOMERGES isn't really a driver interface, but a user tunable.
-There also isn't any good reason to set it in the loop driver.
+[Why]
+When DC state create DML memory allocation fails, memory is not
+deallocated subsequently, resulting in uninitialized structure
+that is not NULL.
 
-The original commit adding it (5b5e20f421c0b6d "block: loop: set
-QUEUE_FLAG_NOMERGES for request queue of loop") claims that "It doesn't
-make sense to enable merge because the I/O submitted to backing file is
-handled page by page."  which of course isn't true for multi-page bvec
-now, and it never has been for direct I/O, for which commit 40326d8a33d
-("block/loop: allow request merge for directio mode") alredy disabled
-the nomerges flag.
+[How]
+Deallocate memory if DML memory allocation fails.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240627124926.512662-2-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Joshua Aberback <joshua.aberback@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Chris Park <chris.park@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c | 15 ++-------------
- 1 file changed, 2 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_state.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 552f56a84a7eb..886c635990377 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -211,13 +211,10 @@ static void __loop_update_dio(struct loop_device *lo, bool dio)
- 	if (lo->lo_state == Lo_bound)
- 		blk_mq_freeze_queue(lo->lo_queue);
- 	lo->use_dio = use_dio;
--	if (use_dio) {
--		blk_queue_flag_clear(QUEUE_FLAG_NOMERGES, lo->lo_queue);
-+	if (use_dio)
- 		lo->lo_flags |= LO_FLAGS_DIRECT_IO;
--	} else {
--		blk_queue_flag_set(QUEUE_FLAG_NOMERGES, lo->lo_queue);
-+	else
- 		lo->lo_flags &= ~LO_FLAGS_DIRECT_IO;
--	}
- 	if (lo->lo_state == Lo_bound)
- 		blk_mq_unfreeze_queue(lo->lo_queue);
- }
-@@ -2038,14 +2035,6 @@ static int loop_add(int i)
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_state.c b/drivers/gpu/drm/amd/display/dc/core/dc_state.c
+index e990346e51f67..665157f8d4cbe 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_state.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_state.c
+@@ -211,10 +211,16 @@ struct dc_state *dc_state_create(struct dc *dc, struct dc_state_create_params *p
+ #ifdef CONFIG_DRM_AMD_DC_FP
+ 	if (dc->debug.using_dml2) {
+ 		dml2_opt->use_clock_dc_limits = false;
+-		dml2_create(dc, dml2_opt, &state->bw_ctx.dml2);
++		if (!dml2_create(dc, dml2_opt, &state->bw_ctx.dml2)) {
++			dc_state_release(state);
++			return NULL;
++		}
  
- 	blk_queue_max_hw_sectors(lo->lo_queue, BLK_DEF_MAX_SECTORS);
+ 		dml2_opt->use_clock_dc_limits = true;
+-		dml2_create(dc, dml2_opt, &state->bw_ctx.dml2_dc_power_source);
++		if (!dml2_create(dc, dml2_opt, &state->bw_ctx.dml2_dc_power_source)) {
++			dc_state_release(state);
++			return NULL;
++		}
+ 	}
+ #endif
  
--	/*
--	 * By default, we do buffer IO, so it doesn't make sense to enable
--	 * merge because the I/O submitted to backing file is handled page by
--	 * page. For directio mode, merge does help to dispatch bigger request
--	 * to underlayer disk. We will enable merge once directio is enabled.
--	 */
--	blk_queue_flag_set(QUEUE_FLAG_NOMERGES, lo->lo_queue);
--
- 	/*
- 	 * Disable partition scanning by default. The in-kernel partition
- 	 * scanning can be requested individually per-device during its
 -- 
 2.43.0
 
