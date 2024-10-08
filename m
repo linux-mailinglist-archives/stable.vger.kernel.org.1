@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD659994907
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:19:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFADE994BC0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 305A4B26E43
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:19:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F20CB1C24EBB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FD71DED47;
-	Tue,  8 Oct 2024 12:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671F21CCB32;
+	Tue,  8 Oct 2024 12:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENyJ0raq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZ9yxRlY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68D21DE8A9;
-	Tue,  8 Oct 2024 12:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BE21C2420;
+	Tue,  8 Oct 2024 12:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389930; cv=none; b=OwiSfRbfjLd9Dj8GxRrhQKvttZmmPeFg7qczbTPLjBLD5w/RmHHqbQ755RFQDdGTUgeU2oj2BuPsvoLwb1e+UBFJuz4LWXVQGqCGwwVwSeuPEEI+Iq37zQbouDn9L0k9hmb+NBTpyMh/kbwiWbUCyviscU0GQ7h815+t2Flw78o=
+	t=1728391567; cv=none; b=nhIJQfyCbyMjiPMApjCY6wz9rkeBkeQLb92FLMvCzaXKAxk6RjvBG7CNkeYOmKEnfqFcqI9JKDA939JI8k1dp2IVh/4iNk34vIvJkwCTaq/MzM4kksJwZ1TN2uEOMxnDkun5LdWS/I/z9Xrf5QfdGsEm87S193lJmHtIZUaJMfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389930; c=relaxed/simple;
-	bh=89AAJqf3JKKvt7bEWvBlvminwqPuKAONPU4BaeltjLo=;
+	s=arc-20240116; t=1728391567; c=relaxed/simple;
+	bh=7z9Q55X7XsuuPNBZX52kpzC5CjQ9phzrDIvBv8jngK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=leybKpUUo6MbK+YfRPGrZXHfI2F7r6XlAYKLYK+CI85Pb+9TFhBPMfT4s2hEEEHvM2K2fc7/PaT0VzwB+CYtF5VNmI6Z3cAkI/Yp4cO89QG5XP52bufdjcIUUdSrQq6Sx90VhAO0+KXw+Q+KGhvJkwRshCgkXXTMorJefPiCVl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ENyJ0raq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F80C4CEC7;
-	Tue,  8 Oct 2024 12:18:50 +0000 (UTC)
+	 MIME-Version; b=MXq3K9pC5fp2GStvgBxNorgHJUod0q7/P2CBMPH6uJyOzQpWnKsZG5ZEM5CFGAaQJqGzQpHb+6jE8DIyyb/6O40RM1GDO3sw3T2/WeJXwosBvK7+H3HwbG1JVG4G3IS2qnp9eR+oVvw2TFb4QvNFaKDtDwATS1nvxwMuQEt2y9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZ9yxRlY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B701C4CEC7;
+	Tue,  8 Oct 2024 12:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389930;
-	bh=89AAJqf3JKKvt7bEWvBlvminwqPuKAONPU4BaeltjLo=;
+	s=korg; t=1728391567;
+	bh=7z9Q55X7XsuuPNBZX52kpzC5CjQ9phzrDIvBv8jngK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ENyJ0raqrA245A9l3f7M1wEWrJZB4qBfEwf2chvLLGC+3Ti6aaYFhRnjqKqfXFiyC
-	 VaItCGPq9KloAunMLh2483i1cKvWlTXPBZiHNoF67p3KbmSMt0GFytdjvlh2MPici9
-	 ekqlc0rlyeRto6WMDTVpXV9M/ftrwf7OeCmTZw/E=
+	b=xZ9yxRlY0XRuV8rcEW37vRbz5NU+uPYiAkBgYZb1cxZaICnNcxvB6bjAx2OYigjjt
+	 jaiZyuJeenl5hfcGNqvMiG+kWhOPKe/UDakDzA7oA0v4wp81GrACsT7Ch5Y74AHhak
+	 RcJuFkD6mZyoHLXvEe12b7cSJoQp/jGanCanFeiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Grant <al.grant@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Will Deacon <will@kernel.org>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 122/482] drivers/perf: arm_spe: Use perf_allow_kernel() for permissions
+Subject: [PATCH 6.11 155/558] wifi: rtw89: avoid reading out of bounds when loading TX power FW elements
 Date: Tue,  8 Oct 2024 14:03:05 +0200
-Message-ID: <20241008115653.107122779@linuxfoundation.org>
+Message-ID: <20241008115708.461711990@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-[ Upstream commit 5e9629d0ae977d6f6916d7e519724804e95f0b07 ]
+[ Upstream commit ed2e4bb17a4884cf29c3347353d8aabb7265b46c ]
 
-Use perf_allow_kernel() for 'pa_enable' (physical addresses),
-'pct_enable' (physical timestamps) and context IDs. This means that
-perf_event_paranoid is now taken into account and LSM hooks can be used,
-which is more consistent with other perf_event_open calls. For example
-PERF_SAMPLE_PHYS_ADDR uses perf_allow_kernel() rather than just
-perfmon_capable().
+Because the loop-expression will do one more time before getting false from
+cond-expression, the original code copied one more entry size beyond valid
+region.
 
-This also indirectly fixes the following error message which is
-misleading because perf_event_paranoid is not taken into account by
-perfmon_capable():
+Fix it by moving the entry copy to loop-body.
 
-  $ perf record -e arm_spe/pa_enable/
-
-  Error:
-  Access to performance monitoring and observability operations is
-  limited. Consider adjusting /proc/sys/kernel/perf_event_paranoid
-  setting ...
-
-Suggested-by: Al Grant <al.grant@arm.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Link: https://lore.kernel.org/r/20240827145113.1224604-1-james.clark@linaro.org
-Link: https://lore.kernel.org/all/20240807120039.GD37996@noisy.programming.kicks-ass.net/
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240902015803.20420-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm_spe_pmu.c | 9 ++++-----
- include/linux/perf_event.h | 8 +-------
- kernel/events/core.c       | 9 +++++++++
- 3 files changed, 14 insertions(+), 12 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
-index 9100d82bfabc0..3569050f9cf37 100644
---- a/drivers/perf/arm_spe_pmu.c
-+++ b/drivers/perf/arm_spe_pmu.c
-@@ -41,7 +41,7 @@
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 9c282d84743b9..46dfb0b294db9 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3909,16 +3909,22 @@ struct rtw89_txpwr_conf {
+ 	const void *data;
+ };
  
- /*
-  * Cache if the event is allowed to trace Context information.
-- * This allows us to perform the check, i.e, perfmon_capable(),
-+ * This allows us to perform the check, i.e, perf_allow_kernel(),
-  * in the context of the event owner, once, during the event_init().
-  */
- #define SPE_PMU_HW_FLAGS_CX			0x00001
-@@ -50,7 +50,7 @@ static_assert((PERF_EVENT_FLAG_ARCH & SPE_PMU_HW_FLAGS_CX) == SPE_PMU_HW_FLAGS_C
- 
- static void set_spe_event_has_cx(struct perf_event *event)
- {
--	if (IS_ENABLED(CONFIG_PID_IN_CONTEXTIDR) && perfmon_capable())
-+	if (IS_ENABLED(CONFIG_PID_IN_CONTEXTIDR) && !perf_allow_kernel(&event->attr))
- 		event->hw.flags |= SPE_PMU_HW_FLAGS_CX;
- }
- 
-@@ -745,9 +745,8 @@ static int arm_spe_pmu_event_init(struct perf_event *event)
- 
- 	set_spe_event_has_cx(event);
- 	reg = arm_spe_event_to_pmscr(event);
--	if (!perfmon_capable() &&
--	    (reg & (PMSCR_EL1_PA | PMSCR_EL1_PCT)))
--		return -EACCES;
-+	if (reg & (PMSCR_EL1_PA | PMSCR_EL1_PCT))
-+		return perf_allow_kernel(&event->attr);
- 
- 	return 0;
- }
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 393fb13733b02..a7f1a3a4d1dce 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -1608,13 +1608,7 @@ static inline int perf_is_paranoid(void)
- 	return sysctl_perf_event_paranoid > -1;
- }
- 
--static inline int perf_allow_kernel(struct perf_event_attr *attr)
--{
--	if (sysctl_perf_event_paranoid > 1 && !perfmon_capable())
--		return -EACCES;
--
--	return security_perf_event_open(attr, PERF_SECURITY_KERNEL);
--}
-+int perf_allow_kernel(struct perf_event_attr *attr);
- 
- static inline int perf_allow_cpu(struct perf_event_attr *attr)
- {
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 36191add55c37..081d9692ce747 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -13362,6 +13362,15 @@ const struct perf_event_attr *perf_event_attrs(struct perf_event *event)
- 	return &event->attr;
- }
- 
-+int perf_allow_kernel(struct perf_event_attr *attr)
++static inline bool rtw89_txpwr_entcpy(void *entry, const void *cursor, u8 size,
++				      const struct rtw89_txpwr_conf *conf)
 +{
-+	if (sysctl_perf_event_paranoid > 1 && !perfmon_capable())
-+		return -EACCES;
++	u8 valid_size = min(size, conf->ent_sz);
 +
-+	return security_perf_event_open(attr, PERF_SECURITY_KERNEL);
++	memcpy(entry, cursor, valid_size);
++	return true;
 +}
-+EXPORT_SYMBOL_GPL(perf_allow_kernel);
 +
- /*
-  * Inherit an event from parent task to child task.
-  *
+ #define rtw89_txpwr_conf_valid(conf) (!!(conf)->data)
+ 
+ #define rtw89_for_each_in_txpwr_conf(entry, cursor, conf) \
+-	for (typecheck(const void *, cursor), (cursor) = (conf)->data, \
+-	     memcpy(&(entry), cursor, \
+-		    min_t(u8, sizeof(entry), (conf)->ent_sz)); \
++	for (typecheck(const void *, cursor), (cursor) = (conf)->data; \
+ 	     (cursor) < (conf)->data + (conf)->num_ents * (conf)->ent_sz; \
+-	     (cursor) += (conf)->ent_sz, \
+-	     memcpy(&(entry), cursor, \
+-		    min_t(u8, sizeof(entry), (conf)->ent_sz)))
++	     (cursor) += (conf)->ent_sz) \
++		if (rtw89_txpwr_entcpy(&(entry), cursor, sizeof(entry), conf))
+ 
+ struct rtw89_txpwr_byrate_data {
+ 	struct rtw89_txpwr_conf conf;
 -- 
 2.43.0
 
