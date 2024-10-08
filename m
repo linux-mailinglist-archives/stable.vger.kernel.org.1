@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D0B3994DA9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:08:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76192994ACA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4AEEB27A71
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:04:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C0E3B26FC5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244BF1DE2AE;
-	Tue,  8 Oct 2024 13:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E187E1DE4CB;
+	Tue,  8 Oct 2024 12:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="094pb1/9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oCE2DlKy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69E21DFD1;
-	Tue,  8 Oct 2024 13:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A034D192594;
+	Tue,  8 Oct 2024 12:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392680; cv=none; b=Unyh44+2kkn/cZ4xeTQaFoHj7LE3wDv5HeK7trn5ZvxyPxCqcUyYy01J4oeoPn4ifOLB9SLKA9ByusXXUlo9kfOra4MA8X/aJ/G+CUvJK3OpaFqZ5FiQSGByXjofDGjv+1sMmqvpbSEGCDPzrg4yttA/Vk34RvZr0gQVIPX8SuY=
+	t=1728390986; cv=none; b=ViWcMRGmkA9/AbC/2w1Ixu+AFoTnU6IjQmrYQDs2R0oAFynWCBk0nX1WFqIlZJb0rwJox7p26j459aAPmgAV7/BZ11s9/w2vfcPDGuVXs/M3NdHl6PMUoRk8uQjUJ37XkwKKB3mM1uAEVC0JS/nEnugvJPfMuEXkHQFzDhY9DRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392680; c=relaxed/simple;
-	bh=W9Dcg5rA/3vKLdffeDJKsgctEc5ARfNjtnbSwjY2xEE=;
+	s=arc-20240116; t=1728390986; c=relaxed/simple;
+	bh=erH7kyPwNHgU/WWsCQ69ox0lD3MMhH4/wXG1gBJrxHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y4vlyu6/zm5UUAbCbRVkDmYWVPmveI/qnjNk5osfgz40gmb9HpNRoIu14yfFWLkE3WXwCXK+riWZcuNhePIislhokjC1dwxpiT0IpI+bbxyLVsWRpK1r6YSCFcicIRKSkHHGaT1rmxrCPEq3Ty0GOvfo3Xkwz8brTS/fGIrh4Yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=094pb1/9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58651C4CEC7;
-	Tue,  8 Oct 2024 13:04:40 +0000 (UTC)
+	 MIME-Version; b=DA7xOzokRsGyIJ+L0c6OCdRNxHFqc0LRBF82wa9FI3M2yqUXB5wuJpdTLQkU5EHxOiwF2JBofJyXVpKIu9ySGS6Y/t52VRuRuXJMZ/nJKM+NTmW1V+LOghmfgt82MZ7MD5tnXs/nVBVsHUXyLLJ+yOccv3Cdsh/mCOWGfRVLoqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oCE2DlKy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25582C4CEC7;
+	Tue,  8 Oct 2024 12:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392680;
-	bh=W9Dcg5rA/3vKLdffeDJKsgctEc5ARfNjtnbSwjY2xEE=;
+	s=korg; t=1728390986;
+	bh=erH7kyPwNHgU/WWsCQ69ox0lD3MMhH4/wXG1gBJrxHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=094pb1/9ZCp6KQf2W90N3IijVLbV2gsQm4B2LBcLFjy+sI2avhGk3lTlsEbSrqbjH
-	 U1CPQ+jLpl72yDgVXJDlrmRUtVT+F3xjtWeE2ePe26fKW+MyfW0ruW0zLxe9EAPu4t
-	 fAlZotguChduaHOF96J980ER7tmRQz7OC5eZ1I+Y=
+	b=oCE2DlKysB/sNjQ+ktLAUgdPHSBXLL+GiuKqo4HCGsadrKgUQglMzJ8YXOIetC7wb
+	 vJW5tAoNv5XvdDemOtEQdZEpD+3JK06UmxaORYrRRQFnjImEohmjtlyy0ZAIrifE22
+	 9L7mujYtkICSY8WwfYYIULhOAGPAzzSPALW3TQZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.11 488/558] HID: bpf: fix cfi stubs for hid_bpf_ops
+	Matthew Brost <matthew.brost@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 455/482] drm/xe: Delete unused GuC submission_state.suspend
 Date: Tue,  8 Oct 2024 14:08:38 +0200
-Message-ID: <20241008115721.436678872@linuxfoundation.org>
+Message-ID: <20241008115706.422643522@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Tissoires <bentiss@kernel.org>
+From: Matthew Brost <matthew.brost@intel.com>
 
-commit acd5f76fd5292c91628e04da83e8b78c986cfa2b upstream.
+[ Upstream commit 3f371a98deada9aee53d908c9aa53f6cdcb1300b ]
 
-With the introduction of commit e42ac1418055 ("bpf: Check unsupported ops
-from the bpf_struct_ops's cfi_stubs"), a HID-BPF struct_ops containing
-a .hid_hw_request() or a .hid_hw_output_report() was failing to load
-as the cfi stubs were not defined.
+GuC submission_state.suspend is unused, delete it.
 
-Fix that by defining those simple static functions and restore HID-BPF
-functionality.
-
-This was detected with the HID selftests suddenly failing on Linus' tree.
-
-Cc: stable@vger.kernel.org # v6.11+
-Fixes: 9286675a2aed ("HID: bpf: add HID-BPF hooks for hid_hw_output_report")
-Fixes: 8bd0488b5ea5 ("HID: bpf: add HID-BPF hooks for hid_hw_raw_requests")
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240425054747.1918811-1-matthew.brost@intel.com
+Stable-dep-of: 2d2be279f1ca ("drm/xe: fix UAF around queue destruction")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/bpf/hid_bpf_struct_ops.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/gpu/drm/xe/xe_guc_submit.c | 4 ----
+ drivers/gpu/drm/xe/xe_guc_types.h  | 9 ---------
+ 2 files changed, 13 deletions(-)
 
-diff --git a/drivers/hid/bpf/hid_bpf_struct_ops.c b/drivers/hid/bpf/hid_bpf_struct_ops.c
-index cd696c59ba0f..702c22fae136 100644
---- a/drivers/hid/bpf/hid_bpf_struct_ops.c
-+++ b/drivers/hid/bpf/hid_bpf_struct_ops.c
-@@ -276,9 +276,23 @@ static int __hid_bpf_rdesc_fixup(struct hid_bpf_ctx *ctx)
- 	return 0;
- }
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index 958dde8422d7e..a40287a7c3de8 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -251,7 +251,6 @@ static void primelockdep(struct xe_guc *guc)
+ 	fs_reclaim_acquire(GFP_KERNEL);
  
-+static int __hid_bpf_hw_request(struct hid_bpf_ctx *ctx, unsigned char reportnum,
-+				enum hid_report_type rtype, enum hid_class_request reqtype,
-+				u64 source)
-+{
-+	return 0;
-+}
-+
-+static int __hid_bpf_hw_output_report(struct hid_bpf_ctx *ctx, u64 source)
-+{
-+	return 0;
-+}
-+
- static struct hid_bpf_ops __bpf_hid_bpf_ops = {
- 	.hid_device_event = __hid_bpf_device_event,
- 	.hid_rdesc_fixup = __hid_bpf_rdesc_fixup,
-+	.hid_hw_request = __hid_bpf_hw_request,
-+	.hid_hw_output_report = __hid_bpf_hw_output_report,
- };
+ 	mutex_lock(&guc->submission_state.lock);
+-	might_lock(&guc->submission_state.suspend.lock);
+ 	mutex_unlock(&guc->submission_state.lock);
  
- static struct bpf_struct_ops bpf_hid_bpf_ops = {
+ 	fs_reclaim_release(GFP_KERNEL);
+@@ -279,9 +278,6 @@ int xe_guc_submit_init(struct xe_guc *guc)
+ 
+ 	xa_init(&guc->submission_state.exec_queue_lookup);
+ 
+-	spin_lock_init(&guc->submission_state.suspend.lock);
+-	guc->submission_state.suspend.context = dma_fence_context_alloc(1);
+-
+ 	primelockdep(guc);
+ 
+ 	return drmm_add_action_or_reset(&xe->drm, guc_submit_fini, guc);
+diff --git a/drivers/gpu/drm/xe/xe_guc_types.h b/drivers/gpu/drm/xe/xe_guc_types.h
+index 82bd93f7867d1..546ac6350a31f 100644
+--- a/drivers/gpu/drm/xe/xe_guc_types.h
++++ b/drivers/gpu/drm/xe/xe_guc_types.h
+@@ -72,15 +72,6 @@ struct xe_guc {
+ 		atomic_t stopped;
+ 		/** @submission_state.lock: protects submission state */
+ 		struct mutex lock;
+-		/** @submission_state.suspend: suspend fence state */
+-		struct {
+-			/** @submission_state.suspend.lock: suspend fences lock */
+-			spinlock_t lock;
+-			/** @submission_state.suspend.context: suspend fences context */
+-			u64 context;
+-			/** @submission_state.suspend.seqno: suspend fences seqno */
+-			u32 seqno;
+-		} suspend;
+ #ifdef CONFIG_PROVE_LOCKING
+ #define NUM_SUBMIT_WQ	256
+ 		/** @submission_state.submit_wq_pool: submission ordered workqueues pool */
 -- 
-2.46.2
+2.43.0
 
 
 
