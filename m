@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-82715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8132B994E28
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:13:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 227EA9949D6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 391D91F223AC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:13:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C50D22812A7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7498C1DEFC8;
-	Tue,  8 Oct 2024 13:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915E11DF732;
+	Tue,  8 Oct 2024 12:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DAt0ztwB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMLgUO3x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3E01DE88F;
-	Tue,  8 Oct 2024 13:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB241DEFCE;
+	Tue,  8 Oct 2024 12:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393180; cv=none; b=ngoqzaEkKJaZsmA6vSRz8tI7FxeglF/VYTGaMilpCNUBjpiiElD2wqc2bzLRWN46QeZT+l+d9Szfjpa+Qk0jGLXZRcviJ/hdlB94TUEcO4D7wFrsmpzx2Tvdf5lkKXdkh83LvG3ZcgUPUjkXpchgIugjMtgdkiqtBZyAxX120GE=
+	t=1728390391; cv=none; b=ELf/4+ZBrXTVfk7eIVxWqAO2u4BtDd34rgoFd1jyRHDpHdCuD0jJbt1ykZGlGlX9C5x5JpZxrI9m0mEWdNW9ylJJiYYlOqnLid4rrjCRwCIZY6C7OgeemTcsFCaERiIZ++q1mkKq94wgboU1ApOK8TfsoINAGhqoNJlAyzx2yvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393180; c=relaxed/simple;
-	bh=epKWvcMgt6UvEkc4W/yEzh7VfFJv0bjvKkFW9WfOO7o=;
+	s=arc-20240116; t=1728390391; c=relaxed/simple;
+	bh=na/nyCLS/AWHOO1kW7TCGn5PUkYrfxAiOeYIScBjvkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ePJC24OBRopiuhzuZ0kDew9i+6r7fe6G4472F8VEOvyKa2XKIlWLTfGc6NgBX5akDjRjxp8y8cvcaSeAYxmdo5BacUaf0xW/GzWlSMHLk6VBmySbmqriMXjcg429mggW3irW07+zjNHLPWG4ApTa4FkYPZFyObxmu9e8/NNAO54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DAt0ztwB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E03C4CECC;
-	Tue,  8 Oct 2024 13:12:59 +0000 (UTC)
+	 MIME-Version; b=LxNsYAZqKNBLzeJPi1rhnymtxgKBZnUvvcEiEd5xXjwykytxE+QHV2vw1JFNtGSdJkq5K0Axb7Sgdu9jVDBodNSDdbOjrgDVHodjz7yuPdMb6+//YY8RJ6fqkcGijdBMcCCBpkoEuVxgYTFBqZm27cAIBdH1cK1mS6m5KbMguJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMLgUO3x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723D3C4CECC;
+	Tue,  8 Oct 2024 12:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393180;
-	bh=epKWvcMgt6UvEkc4W/yEzh7VfFJv0bjvKkFW9WfOO7o=;
+	s=korg; t=1728390390;
+	bh=na/nyCLS/AWHOO1kW7TCGn5PUkYrfxAiOeYIScBjvkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DAt0ztwB2nHMgQFXYAlxKTR5icHDlKAZ5sTmnJHGYy5OAXgtyfpyi3Jgx/UvInpmt
-	 EBSO30CMZ0JIWCPeRiiOJkQCTv0hTk3TwNK3T6leITkgN88FqxSzrKh1/LTj/fIKny
-	 Nw19o/wnU+YBMuKBKC46aD96Ak2wh5ZUZhsYpeIo=
+	b=aMLgUO3xXoZ2OoOlYOjNo2UxzkBiORkYGmpGuFtGZcv6VEh91X7Zne9MHa0dbem8B
+	 Mm0p4n6/yI2h05Hmq+tENyfXEQK8PRXOEGl+k+ZFMTHWZt65qXl+LoRWRVhJnyGHC/
+	 gHG9ydDVGCAlyOjRHbCb+epo+ir/HdrySVlB3dj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hilda Wu <hildawu@realtek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Ben Cheatham <Benjamin.Cheatham@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Srinivasulu Thanneeru <sthanneeru.opensrc@micron.com>,
+	Ira Weiny <ira.weiny@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 076/386] Bluetooth: btusb: Add Realtek RTL8852C support ID 0x0489:0xe122
+Subject: [PATCH 6.10 258/482] EINJ, CXL: Fix CXL device SBDF calculation
 Date: Tue,  8 Oct 2024 14:05:21 +0200
-Message-ID: <20241008115632.452262265@linuxfoundation.org>
+Message-ID: <20241008115658.438351622@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hilda Wu <hildawu@realtek.com>
+From: Ben Cheatham <Benjamin.Cheatham@amd.com>
 
-[ Upstream commit bdf9557f70e7512bb2f754abf90d9e9958745316 ]
+[ Upstream commit ee1e3c46ed19c096be22472c728fa7f68b1352c4 ]
 
-Add the support ID (0x0489, 0xe122) to usb_device_id table for
-Realtek RTL8852C.
+The SBDF of the target CXL 2.0 compliant root port is required to inject a CXL
+protocol error as per ACPI 6.5. The SBDF given has to be in the
+following format:
 
-The device info from /sys/kernel/debug/usb/devices as below.
+31     24 23    16 15    11 10      8  7        0
++-------------------------------------------------+
+| segment |   bus  | device | function | reserved |
++-------------------------------------------------+
 
-T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
-D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e122 Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=Bluetooth Radio
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+The SBDF calculated in cxl_dport_get_sbdf() doesn't account for
+the reserved bits currently, causing the wrong SBDF to be used.
+Fix said calculation to properly shift the SBDF.
 
-Signed-off-by: Hilda Wu <hildawu@realtek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Without this fix, error injection into CXL 2.0 root ports through the
+CXL debugfs interface (<debugfs>/cxl) is broken. Injection
+through the legacy interface (<debugfs>/apei/einj/) will still work
+because the SBDF is manually provided by the user.
+
+Fixes: 12fb28ea6b1cf ("EINJ: Add CXL error type support")
+Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Tested-by: Srinivasulu Thanneeru <sthanneeru.opensrc@micron.com>
+Reviewed-by: Srinivasulu Thanneeru <sthanneeru.opensrc@micron.com>
+Link: https://patch.msgid.link/20240927163428.366557-1-Benjamin.Cheatham@amd.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/apei/einj-cxl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 0a58106207b0c..bc53da383f855 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -537,6 +537,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3592), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe122), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
+diff --git a/drivers/acpi/apei/einj-cxl.c b/drivers/acpi/apei/einj-cxl.c
+index 8b8be0c90709f..d64e2713aae4b 100644
+--- a/drivers/acpi/apei/einj-cxl.c
++++ b/drivers/acpi/apei/einj-cxl.c
+@@ -63,7 +63,7 @@ static int cxl_dport_get_sbdf(struct pci_dev *dport_dev, u64 *sbdf)
+ 		seg = bridge->domain_nr;
  
- 	/* Realtek 8852BE Bluetooth devices */
- 	{ USB_DEVICE(0x0cb8, 0xc559), .driver_info = BTUSB_REALTEK |
+ 	bus = pbus->number;
+-	*sbdf = (seg << 24) | (bus << 16) | dport_dev->devfn;
++	*sbdf = (seg << 24) | (bus << 16) | (dport_dev->devfn << 8);
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
