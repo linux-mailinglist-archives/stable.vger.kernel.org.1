@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-82824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 830DF994E9F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A6D2994CFA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DA211F25764
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CCF71C2519D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F5D1DE88F;
-	Tue,  8 Oct 2024 13:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891D81DED4B;
+	Tue,  8 Oct 2024 12:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MmwpBKzD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhsuMt4x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7041DDA36;
-	Tue,  8 Oct 2024 13:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E88189910;
+	Tue,  8 Oct 2024 12:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393548; cv=none; b=Oau2cg5pRVb1uhXsd4YinuYh3s6s4/u+dMjNFkw8ai5PF0uvGHmY9YkMLS+bpWp2mX/YnKNUcOn3xdQBlGhSe7Rru6cteK4ksSCC+92fJsxIOW2j1qz2XqGopgZtA+UrZzM7H0ss21sqDzko2zakOINEZgVULGFEvhRhKRpP+u8=
+	t=1728392387; cv=none; b=eB67GFDgjK8maYqj4bjQBLeOoskfIPEQMKUdaXUD8RLqPoAXPbghQwHQrtxLWKtm7S/0wpLOyqSnDHRFk8TkzuqQHz1hC6rc9JMrMCeOcfokkfrWmmy70vwqNo5F5HQjlN6LskouAkZCA+2mEBhQV3lXNJ/UsoXW/HBwWr1XBPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393548; c=relaxed/simple;
-	bh=93AeCP1o3Wv+mGG+xhkoAn9DtgzsFQemNhZGdkeJE08=;
+	s=arc-20240116; t=1728392387; c=relaxed/simple;
+	bh=iXrjQlVD7jqYBGx9qpSndlJxpIabyxxDPGBuTB7SWDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NGz2B3mcPZYLQEi1/F6RrPsZqJeYfrI/9K1x4zkEyThFemBmcfBstzoHHqvh+FsxmT9NMIS2MyvMjKz7eVk2Wnuu1fYhJj4PYQvf2LY3/s/oG1+jiVrri/PX/C3KZdIJvNwOLBVLIq2BHlJmwdHBdLX2T4iPEPh26yha051U/Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MmwpBKzD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8CDC4CEC7;
-	Tue,  8 Oct 2024 13:19:07 +0000 (UTC)
+	 MIME-Version; b=R0UGGpbfhJAl2LyApLejHmdBQyEKMC3R/fa2+vRagP//EQpXIVfLJFDHqr5FuIZ1rVQMQMGCAYbufLJNDbVzVyfsRyyY1koZ8iViN8cy+9FVdmVQeuojMEft7BekE09Y+VmZ49A3uau2w9OUfSQLmhSc2JcqWLD58A4xSoVKV5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhsuMt4x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC25CC4CEC7;
+	Tue,  8 Oct 2024 12:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393548;
-	bh=93AeCP1o3Wv+mGG+xhkoAn9DtgzsFQemNhZGdkeJE08=;
+	s=korg; t=1728392387;
+	bh=iXrjQlVD7jqYBGx9qpSndlJxpIabyxxDPGBuTB7SWDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MmwpBKzDt9lFV0HkDe6Hb9At2we73pjPb1e4n+3eB4TXHvJSCBBkEuqB9SvGe6zvU
-	 /fUdkWv31lXEBo6zrmi/iHFsjrTvB7DdhqhbePVJnkQWKc5SruaulYfNavu0xTxq6F
-	 jn5ly88TUKn+MBdq8eBjmgDsKyHfXoiK3VcmPmzU=
+	b=qhsuMt4xnYpwyBxAWwW8NrR4Hb5Im1mkXkw7rH4txiBjtC0NS0xBi7A6NcAhFtuI1
+	 GIbmM9k8TYz6S6iXUDcQ3p1DCL3rB9l7LNk89Ij7LSFHHNQt6mk2bDcrIF/seKBGze
+	 qCpxvw/9ScULkUixLIdNdVYhzBgIfm/ZEQoujwnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 184/386] iomap: handle a post-direct I/O invalidate race in iomap_write_delalloc_release
-Date: Tue,  8 Oct 2024 14:07:09 +0200
-Message-ID: <20241008115636.652807736@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.11 400/558] parisc: Fix 64-bit userspace syscall path
+Date: Tue,  8 Oct 2024 14:07:10 +0200
+Message-ID: <20241008115718.018919122@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +60,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Helge Deller <deller@kernel.org>
 
-[ Upstream commit 7a9d43eace888a0ee6095035997bb138425844d3 ]
+commit d24449864da5838936669618356b0e30ca2999c3 upstream.
 
-When direct I/O completions invalidates the page cache it holds neither the
-i_rwsem nor the invalidate_lock so it can be racing with
-iomap_write_delalloc_release.  If the search for the end of the region that
-contains data returns the start offset we hit such a race and just need to
-look for the end of the newly created hole instead.
+Currently the glibc isn't yet ported to 64-bit for hppa, so
+there is no usable userspace available yet.
+But it's possible to manually build a static 64-bit binary
+and run that for testing. One such 64-bit test program is
+available at http://ftp.parisc-linux.org/src/64bit.tar.gz
+and it shows various issues with the existing 64-bit syscall
+path in the kernel.
+This patch fixes those issues.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240910043949.3481298-2-hch@lst.de
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org      # v4.19+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/iomap/buffered-io.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ arch/parisc/kernel/syscall.S |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 5371b16341fff..aedaad4c37d75 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1177,7 +1177,15 @@ static int iomap_write_delalloc_release(struct inode *inode,
- 			error = data_end;
- 			goto out_unlock;
- 		}
--		WARN_ON_ONCE(data_end <= start_byte);
-+
-+		/*
-+		 * If we race with post-direct I/O invalidation of the page cache,
-+		 * there might be no data left at start_byte.
-+		 */
-+		if (data_end == start_byte)
-+			continue;
-+
-+		WARN_ON_ONCE(data_end < start_byte);
- 		WARN_ON_ONCE(data_end > scan_end_byte);
+--- a/arch/parisc/kernel/syscall.S
++++ b/arch/parisc/kernel/syscall.S
+@@ -243,10 +243,10 @@ linux_gateway_entry:
  
- 		error = iomap_write_delalloc_scan(inode, &punch_start_byte,
--- 
-2.43.0
-
+ #ifdef CONFIG_64BIT
+ 	ldil	L%sys_call_table, %r1
+-	or,=	%r2,%r2,%r2
+-	addil	L%(sys_call_table64-sys_call_table), %r1
++	or,ev	%r2,%r2,%r2
++	ldil	L%sys_call_table64, %r1
+ 	ldo	R%sys_call_table(%r1), %r19
+-	or,=	%r2,%r2,%r2
++	or,ev	%r2,%r2,%r2
+ 	ldo	R%sys_call_table64(%r1), %r19
+ #else
+ 	load32	sys_call_table, %r19
+@@ -379,10 +379,10 @@ tracesys_next:
+ 	extrd,u	%r19,63,1,%r2			/* W hidden in bottom bit */
+ 
+ 	ldil	L%sys_call_table, %r1
+-	or,=	%r2,%r2,%r2
+-	addil	L%(sys_call_table64-sys_call_table), %r1
++	or,ev	%r2,%r2,%r2
++	ldil	L%sys_call_table64, %r1
+ 	ldo	R%sys_call_table(%r1), %r19
+-	or,=	%r2,%r2,%r2
++	or,ev	%r2,%r2,%r2
+ 	ldo	R%sys_call_table64(%r1), %r19
+ #else
+ 	load32	sys_call_table, %r19
+@@ -1327,6 +1327,8 @@ ENTRY(sys_call_table)
+ END(sys_call_table)
+ 
+ #ifdef CONFIG_64BIT
++#undef __SYSCALL_WITH_COMPAT
++#define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, native)
+ 	.align 8
+ ENTRY(sys_call_table64)
+ #include <asm/syscall_table_64.h>    /* 64-bit syscalls */
 
 
 
