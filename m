@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DAE3994EAC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF2DD994A54
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3076B2835EA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96356289720
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673691DED7D;
-	Tue,  8 Oct 2024 13:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69991DDA36;
+	Tue,  8 Oct 2024 12:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vn9kUAtX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIRPFxGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244841DE89F;
-	Tue,  8 Oct 2024 13:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833251E485;
+	Tue,  8 Oct 2024 12:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393593; cv=none; b=OrF9b1UpMqJfxksnrNBMat3jKPzFtJnkmeOL4uwtBY9+6QmUQy6X+zDeEbdodnZL29LcnPv5N8F4v7giKijNIL+QJg7WnHBqRyfKdapnN0MF75Kx0PwGLsUAp45dA5Bb2OifWI+LgOWGhqTrSg+tzdstiY6F+FtWRqPks1ZDpxA=
+	t=1728390721; cv=none; b=IUB3lgBjccyHrKfdVjR+vhCGCtGGjmdl/rN1cMXL3m0SuX6/5gGYxR2Wk8GT075JwsRxIHz2FMNMVvsSH+IR51aJMNwUyy2YEvfH1E/OzRFn7dI26IQ2ZQSpZdf0NxWDdroymSON0ER+BafJf4e6EBL/qYeT9ipuxqdqJgnWvpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393593; c=relaxed/simple;
-	bh=y6LVkq8gg+as2eeEIW0Z2rp07dwMuF6MXYuLGl2lrIs=;
+	s=arc-20240116; t=1728390721; c=relaxed/simple;
+	bh=0BNUqO06w1AiVI4ORUrjpi6kJQBmf5g/2MvV0I8+ZEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IGFwWm/s+vS63jEchvfhmqHmU4KZSMjgFGMl7mKknMmpGY9vuE2s5uvk34raYTkmAWM73Uh1k8PyyjVFboKJf/4ieq/VCLA8dF6s3HIEZoYdn3wnvmq17WPYSMjgBrhRY786u5Q6YdobPspV9X2nD96090wnnzTLhq3bMqtxzsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vn9kUAtX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E269C4CECC;
-	Tue,  8 Oct 2024 13:19:52 +0000 (UTC)
+	 MIME-Version; b=NB5VHidPmFPpMLYqGfnlT6J3WWsDfqLgYded0qnO3q5OtqRucHdK+CDdiEEHItIl8nTo/3vlR9hJVTn9DhqAf29m/gFkzR3NwUvh7r/kBSrQum4DHPsVrQBLZeldm6HxdONKK3/THo9GQubrvvcyNNuxwg0Ltd86EkQMGG6sI6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIRPFxGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01EAEC4CEC7;
+	Tue,  8 Oct 2024 12:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393592;
-	bh=y6LVkq8gg+as2eeEIW0Z2rp07dwMuF6MXYuLGl2lrIs=;
+	s=korg; t=1728390721;
+	bh=0BNUqO06w1AiVI4ORUrjpi6kJQBmf5g/2MvV0I8+ZEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vn9kUAtX4LTRfRDUb8k8FjxIRpV8umJfr2nTNJGUvtewbi5519XJ2R0gEwl4CVxKy
-	 cbw6AXjXEsyks0J4avU1eHxuprGydwjaqYhGFWKkuRouHOfF684o4rCaxjqtJqhrTB
-	 LNSFxBqPk0S8Omz8+yfapf7usXRPuwD9iRhR6uUw=
+	b=qIRPFxGxwl4JqhcJFsN3qtil+Y1DDbIha5xwy9wUAiQPDQCxUGj/lyfkSS/CFCj2K
+	 3hXd5LhsG+4pmoM1eR0gxeZHqtC7HpuZq6l/hmW9ct0IIRvF26TyOFep0A64gWdNGA
+	 3zoZ2o9VSweVvAjoMW8UtMGs5cEkAO68XvDcNWi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yun Lu <luyun@kylinos.cn>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 190/386] selftest: hid: add missing run-hid-tools-tests.sh
-Date: Tue,  8 Oct 2024 14:07:15 +0200
-Message-ID: <20241008115636.887045283@linuxfoundation.org>
+	Cedric Blancher <cedric.blancher@gmail.com>,
+	Dan Shelton <dan.f.shelton@gmail.com>,
+	Roland Mainz <roland.mainz@nrubsig.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.10 373/482] NFSD: Fix NFSv4s PUTPUBFH operation
+Date: Tue,  8 Oct 2024 14:07:16 +0200
+Message-ID: <20241008115703.101201324@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yun Lu <luyun@kylinos.cn>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 160c826b4dd0d570f0f51cf002cb49bda807e9f5 ]
+commit 202f39039a11402dcbcd5fece8d9fa6be83f49ae upstream.
 
-HID test cases run tests using the run-hid-tools-tests.sh script.
-When installed with "make install", the run-hid-tools-tests.sh
-script will not be copied over, resulting in the following error message.
+According to RFC 8881, all minor versions of NFSv4 support PUTPUBFH.
 
-  make -C tools/testing/selftests/ TARGETS=hid install \
-  	  INSTALL_PATH=$KSFT_INSTALL_PATH
+Replace the XDR decoder for PUTPUBFH with a "noop" since we no
+longer want the minorversion check, and PUTPUBFH has no arguments to
+decode. (Ideally nfsd4_decode_noop should really be called
+nfsd4_decode_void).
 
-  cd $KSFT_INSTALL_PATH
-  ./run_kselftest.sh -c hid
+PUTPUBFH should now behave just like PUTROOTFH.
 
-selftests: hid: hid-core.sh
-bash: ./run-hid-tools-tests.sh: No such file or directory
-
-Add the run-hid-tools-tests.sh script to the TEST_FILES in the Makefile
-for it to be installed.
-
-Fixes: ffb85d5c9e80 ("selftests: hid: import hid-tools hid-core tests")
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Cedric Blancher <cedric.blancher@gmail.com>
+Fixes: e1a90ebd8b23 ("NFSD: Combine decode operations for v4 and v4.1")
+Cc: Dan Shelton <dan.f.shelton@gmail.com>
+Cc: Roland Mainz <roland.mainz@nrubsig.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/hid/Makefile | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/nfs4xdr.c |   10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/tools/testing/selftests/hid/Makefile b/tools/testing/selftests/hid/Makefile
-index 2e986cbf1a463..87b6f5f83d7e0 100644
---- a/tools/testing/selftests/hid/Makefile
-+++ b/tools/testing/selftests/hid/Makefile
-@@ -17,6 +17,8 @@ TEST_PROGS += hid-tablet.sh
- TEST_PROGS += hid-usb_crash.sh
- TEST_PROGS += hid-wacom.sh
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -1246,14 +1246,6 @@ nfsd4_decode_putfh(struct nfsd4_compound
+ }
  
-+TEST_FILES := run-hid-tools-tests.sh
-+
- CXX ?= $(CROSS_COMPILE)g++
- 
- HOSTPKG_CONFIG := pkg-config
--- 
-2.43.0
-
+ static __be32
+-nfsd4_decode_putpubfh(struct nfsd4_compoundargs *argp, union nfsd4_op_u *p)
+-{
+-	if (argp->minorversion == 0)
+-		return nfs_ok;
+-	return nfserr_notsupp;
+-}
+-
+-static __be32
+ nfsd4_decode_read(struct nfsd4_compoundargs *argp, union nfsd4_op_u *u)
+ {
+ 	struct nfsd4_read *read = &u->read;
+@@ -2374,7 +2366,7 @@ static const nfsd4_dec nfsd4_dec_ops[] =
+ 	[OP_OPEN_CONFIRM]	= nfsd4_decode_open_confirm,
+ 	[OP_OPEN_DOWNGRADE]	= nfsd4_decode_open_downgrade,
+ 	[OP_PUTFH]		= nfsd4_decode_putfh,
+-	[OP_PUTPUBFH]		= nfsd4_decode_putpubfh,
++	[OP_PUTPUBFH]		= nfsd4_decode_noop,
+ 	[OP_PUTROOTFH]		= nfsd4_decode_noop,
+ 	[OP_READ]		= nfsd4_decode_read,
+ 	[OP_READDIR]		= nfsd4_decode_readdir,
 
 
 
