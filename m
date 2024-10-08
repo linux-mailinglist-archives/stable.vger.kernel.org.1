@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-81650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81F76994897
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F0B994B7E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B2DA28319A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A04F1C24DDA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7F31DE4DC;
-	Tue,  8 Oct 2024 12:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F261DF974;
+	Tue,  8 Oct 2024 12:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h9/+xP7B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1yDEoFBi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C97C1DE2D9;
-	Tue,  8 Oct 2024 12:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220071DDC24;
+	Tue,  8 Oct 2024 12:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389674; cv=none; b=dDTtXY+o1StD3ZlKfLgyCmrwE3wGrpSDOgkx13QzZ64aBJ+CqSPpEE7RISlF14zHnkD8QL8TZty79gU12T4lidUls/ShF9+l6VW2hbisW8eWTr4eCLG9spR7t7twjEFUfFStQvE6XapXNOXbSy1w0JaHX7EMD7hIPikDEDhRHE8=
+	t=1728391385; cv=none; b=c3rAkYHdzwiDo6EGIchb07xLwtHDv+z2kmkgrdOgjN9KCK2kvhEYo02KapbCewRWd1fvzHMV8XjJD1LNkIsnLnR50/lKjbiwmA8jqk4DHyceCXmSgvBtiGixWh1a6xl+24ntq27t+CR8kMYW7KGGSTztCz69YSJhRC9yJRpCoBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389674; c=relaxed/simple;
-	bh=4/eP90sfUzSFsHaUHhdsKHYdJcvbfP9rBTzSBx2+Ins=;
+	s=arc-20240116; t=1728391385; c=relaxed/simple;
+	bh=cCp5BrCQIZgjxWkp45YzvnRk/Uwh19/4gcoPpPlToqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrISkXGEe/RSbxxAW0AtJqW/07hVEOZZ/XxEY8jbIQyTR45l5NSWiqExYaReODFU61SBtqNghLy1VTDK+dRP0a8DiBXPBsarmSFv8ZMhlL1ww05mNMT6orUmanP/byAinUNqqALBGzl5R0R9kf+9YhaeuL+vtigGprC/gWKcFUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h9/+xP7B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF9EC4CEC7;
-	Tue,  8 Oct 2024 12:14:33 +0000 (UTC)
+	 MIME-Version; b=BJv6vAUlrp1w/fkrIbh6ywcmahrwxZ0sPYVnDzgfaAmJQD8nLoXYTeRtk++Jl/zRrNRxumhbFnsxWMjpNptfMGRIEmV6qgeamvJ7GMMfhe8q2BjLJRMdhbgYXObfrQpZVIFSWzYeNZLmi1DQQOtQgynpP/tEGo0Zg1Amfu8Iue4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1yDEoFBi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46619C4CECD;
+	Tue,  8 Oct 2024 12:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389674;
-	bh=4/eP90sfUzSFsHaUHhdsKHYdJcvbfP9rBTzSBx2+Ins=;
+	s=korg; t=1728391384;
+	bh=cCp5BrCQIZgjxWkp45YzvnRk/Uwh19/4gcoPpPlToqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h9/+xP7Bh3ft0MMN3VUr+5YH+sUNvHMfWh4cYYeXbR7QqwWi0xbb8bRBq+D250USq
-	 q99xHlBNP6o35I6OGKZQfP+xbFZQgMt89BmCF1YjgTUtvliUUw+UINe/zKkiL3H6my
-	 ULtcK2L8q0l48+BRDtapVN4IFTh2UWt4ySL4Iwok=
+	b=1yDEoFBio59+PsVge1kHnBumBhJe4i60j7TZg7KnWziT8vos6Xbxr3TaeN08qFCSY
+	 wMw8voQqVUA94GFWkX3FjtDVJ+g/gGsrwxTbK44rTVvgqFXBo23Z7KTyO0iNoVjEEE
+	 zSEE183ZY1U65H/aDHRKuG42Ma31wA7ehXsR5fk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 063/482] drm/xe: Restore pci state upon resume
-Date: Tue,  8 Oct 2024 14:02:06 +0200
-Message-ID: <20241008115650.788017475@linuxfoundation.org>
+Subject: [PATCH 6.11 097/558] net: hisilicon: hip04: fix OF node leak in probe()
+Date: Tue,  8 Oct 2024 14:02:07 +0200
+Message-ID: <20241008115706.186938676@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit cffa8e83df9fe525afad1e1099097413f9174f57 ]
+[ Upstream commit 17555297dbd5bccc93a01516117547e26a61caf1 ]
 
-The pci state was saved, but not restored. Restore
-right after the power state transition request like
-every other driver.
+Driver is leaking OF node reference from
+of_parse_phandle_with_fixed_args() in probe().
 
-v2: Use right fixes tag, since this was there initialy, but
-    accidentally removed.
-
-Fixes: f6761c68c0ac ("drm/xe/display: Improve s2idle handling.")
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240912214507.456897-1-rodrigo.vivi@intel.com
-Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-(cherry picked from commit ec2d1539e159f53eae708e194c449cfefa004994)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240827144421.52852-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/hisilicon/hip04_eth.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_pci.c b/drivers/gpu/drm/xe/xe_pci.c
-index f326dbb1cecd9..99824e19a376f 100644
---- a/drivers/gpu/drm/xe/xe_pci.c
-+++ b/drivers/gpu/drm/xe/xe_pci.c
-@@ -868,6 +868,8 @@ static int xe_pci_resume(struct device *dev)
- 	if (err)
- 		return err;
+diff --git a/drivers/net/ethernet/hisilicon/hip04_eth.c b/drivers/net/ethernet/hisilicon/hip04_eth.c
+index b91e7a06b97f7..beb815e5289b1 100644
+--- a/drivers/net/ethernet/hisilicon/hip04_eth.c
++++ b/drivers/net/ethernet/hisilicon/hip04_eth.c
+@@ -947,6 +947,7 @@ static int hip04_mac_probe(struct platform_device *pdev)
+ 	priv->tx_coalesce_timer.function = tx_done;
  
-+	pci_restore_state(pdev);
-+
- 	err = pci_enable_device(pdev);
- 	if (err)
- 		return err;
+ 	priv->map = syscon_node_to_regmap(arg.np);
++	of_node_put(arg.np);
+ 	if (IS_ERR(priv->map)) {
+ 		dev_warn(d, "no syscon hisilicon,hip04-ppe\n");
+ 		ret = PTR_ERR(priv->map);
 -- 
 2.43.0
 
