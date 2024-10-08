@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-82812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A832E994E8F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98CE3994A40
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:31:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A97E1F217A2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:18:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1677C1F2162F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2B71DE4CD;
-	Tue,  8 Oct 2024 13:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B611DE2AD;
+	Tue,  8 Oct 2024 12:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjDnqYx3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShNFOJFb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC9D1DE4CC;
-	Tue,  8 Oct 2024 13:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B011E485;
+	Tue,  8 Oct 2024 12:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393507; cv=none; b=cjVli+zZJCwlvwHviBw+V/zy4llSb21ystNGe+RWlPX8CEVZPYV9ewkw8jwcrsusbzjRruJoXqjxzNaCaq+G7AhZL8axpqFajlQaxOPpQO+5JF93AkqexqOztm7eMNpYfISnfdXthMFCWIhj4pAzVFac3uDUVWCFS8A/LtcF6oo=
+	t=1728390669; cv=none; b=lmnzOUc5BACCg7cZkAwfwZ3SBuZuTf+WYNqtPzo/0EkcouE4jPcuWvAOwyEnKS9gDf9VvolK/76WsTam4fKaJHkl2rPGuDjGo1yAoY8v4hSPOJMbEqOKYh3N2TzDVJ5M9d2IZkO8Eij0IKeJ5oVVWiEz2GuWqQZ3uGCqKF4hG/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393507; c=relaxed/simple;
-	bh=Ntlj+EYfdMo6d25mk3vcaINCg54IhGA39XyKRuMmyH4=;
+	s=arc-20240116; t=1728390669; c=relaxed/simple;
+	bh=U94RMlH0pAIMwiRqi4h0CwPWGnvxClDYcHccv7pZKmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rlSCXUmpVYMHlFMz9D6qCJsTmTDoXsI72wiK4LB/KHiPENHi4ZGyN7WBYMrJGF9KXkeQVqO+eB5936yi+T5wHmnjSN2V3AY4QExiuHVWxBZxcvDDgv7URBQoNn9/cXOY0HXZzcl4CaEVpdcbhUJmB/XIsT8enq5p0v2cXVAg6lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjDnqYx3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E35C4CEC7;
-	Tue,  8 Oct 2024 13:18:26 +0000 (UTC)
+	 MIME-Version; b=GQsbZZpQo0CSyB0Hy++6U1m0rdaf5Cf46Xk4VFYzgo9G2V2WwuSmYdi1lbBmv7v6k68QsKzOlxtUVckRJlqXzkSLQQ8kSDMSEQpYucK3/djD6Nx4xTePL/luuwHiU55gke7AToyj9SzCF+hc4fapHTu6vAg4jCRI5NgXHxek7bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShNFOJFb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E1D5C4CEC7;
+	Tue,  8 Oct 2024 12:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393506;
-	bh=Ntlj+EYfdMo6d25mk3vcaINCg54IhGA39XyKRuMmyH4=;
+	s=korg; t=1728390669;
+	bh=U94RMlH0pAIMwiRqi4h0CwPWGnvxClDYcHccv7pZKmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hjDnqYx3y+V7TynH0yxyUw4DyNMUFSlq9LAOJX/ZOtI0hXRMKBXa02vd6XnI8ZdG8
-	 cbTc0PSXcDZlhLg47o4f2Ug31T/KfUoeCR/CO/NmjXqVetkCKDgEw1ukoeKrL0SC3j
-	 O3RP26dGbuj17MQUZGDOaIiby6uTQLsiE1t8OY3g=
+	b=ShNFOJFbPgPaUVlDtx4QKqo3/7cg0zt7kdSuFN6fINEOTa3VKiF9etI5tsqDsElH3
+	 54nA+elOcRg0yvUy6U3qJyAJYbxyNOsISxdG7NBmGYWdFQp0QonhM6LmPuGhJy29kr
+	 A6qOCu0wEliJ5gCUaVJk3+d4fmuQoapQIue79pm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Haren Myneni <haren@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 173/386] powerpc/pseries: Use correct data types from pseries_hp_errorlog struct
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 355/482] ocfs2: cancel dqi_sync_work before freeing oinfo
 Date: Tue,  8 Oct 2024 14:06:58 +0200
-Message-ID: <20241008115636.229255572@linuxfoundation.org>
+Message-ID: <20241008115702.392306530@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,161 +69,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haren Myneni <haren@linux.ibm.com>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
 
-[ Upstream commit b76e0d4215b6b622127ebcceaa7f603313ceaec4 ]
+commit 35fccce29feb3706f649726d410122dd81b92c18 upstream.
 
-_be32 type is defined for some elements in pseries_hp_errorlog
-struct but also used them u32 after be32_to_cpu() conversion.
+ocfs2_global_read_info() will initialize and schedule dqi_sync_work at the
+end, if error occurs after successfully reading global quota, it will
+trigger the following warning with CONFIG_DEBUG_OBJECTS_* enabled:
 
-Example: In handle_dlpar_errorlog()
-hp_elog->_drc_u.drc_index = be32_to_cpu(hp_elog->_drc_u.drc_index);
+ODEBUG: free active (active state 0) object: 00000000d8b0ce28 object type: timer_list hint: qsync_work_fn+0x0/0x16c
 
-And later assigned to u32 type
-dlpar_cpu() - u32 drc_index = hp_elog->_drc_u.drc_index;
+This reports that there is an active delayed work when freeing oinfo in
+error handling, so cancel dqi_sync_work first.  BTW, return status instead
+of -1 when .read_file_info fails.
 
-This incorrect usage is giving the following warnings and the
-patch resolve these warnings with the correct assignment.
-
-arch/powerpc/platforms/pseries/dlpar.c:398:53: sparse: sparse:
-incorrect type in argument 1 (different base types) @@
-expected unsigned int [usertype] drc_index @@
-got restricted __be32 [usertype] drc_index @@
-...
-arch/powerpc/platforms/pseries/dlpar.c:418:43: sparse: sparse:
-incorrect type in assignment (different base types) @@
-expected restricted __be32 [usertype] drc_count @@
-got unsigned int [usertype] @@
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202408182142.wuIKqYae-lkp@intel.com/
-Closes: https://lore.kernel.org/oe-kbuild-all/202408182302.o7QRO45S-lkp@intel.com/
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-
-v3:
-- Fix warnings from using incorrect data types in pseries_hp_errorlog
-  struct
-v2:
-- Remove pr_info() and TODO comments
-- Update more information in the commit logs
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240822025028.938332-1-haren@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://syzkaller.appspot.com/bug?extid=f7af59df5d6b25f0febd
+Link: https://lkml.kernel.org/r/20240904071004.2067695-1-joseph.qi@linux.alibaba.com
+Fixes: 171bf93ce11f ("ocfs2: Periodic quota syncing")
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Reported-by: syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com
+Tested-by: syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/dlpar.c          | 17 -----------------
- arch/powerpc/platforms/pseries/hotplug-cpu.c    |  2 +-
- arch/powerpc/platforms/pseries/hotplug-memory.c | 16 ++++++++--------
- arch/powerpc/platforms/pseries/pmem.c           |  2 +-
- 4 files changed, 10 insertions(+), 27 deletions(-)
+ fs/ocfs2/quota_local.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
-index 47f8eabd1bee3..9873b916b2370 100644
---- a/arch/powerpc/platforms/pseries/dlpar.c
-+++ b/arch/powerpc/platforms/pseries/dlpar.c
-@@ -334,23 +334,6 @@ int handle_dlpar_errorlog(struct pseries_hp_errorlog *hp_elog)
- {
- 	int rc;
+--- a/fs/ocfs2/quota_local.c
++++ b/fs/ocfs2/quota_local.c
+@@ -692,7 +692,7 @@ static int ocfs2_local_read_info(struct
+ 	int status;
+ 	struct buffer_head *bh = NULL;
+ 	struct ocfs2_quota_recovery *rec;
+-	int locked = 0;
++	int locked = 0, global_read = 0;
  
--	/* pseries error logs are in BE format, convert to cpu type */
--	switch (hp_elog->id_type) {
--	case PSERIES_HP_ELOG_ID_DRC_COUNT:
--		hp_elog->_drc_u.drc_count =
--				be32_to_cpu(hp_elog->_drc_u.drc_count);
--		break;
--	case PSERIES_HP_ELOG_ID_DRC_INDEX:
--		hp_elog->_drc_u.drc_index =
--				be32_to_cpu(hp_elog->_drc_u.drc_index);
--		break;
--	case PSERIES_HP_ELOG_ID_DRC_IC:
--		hp_elog->_drc_u.ic.count =
--				be32_to_cpu(hp_elog->_drc_u.ic.count);
--		hp_elog->_drc_u.ic.index =
--				be32_to_cpu(hp_elog->_drc_u.ic.index);
--	}
--
- 	switch (hp_elog->resource) {
- 	case PSERIES_HP_ELOG_RESOURCE_MEM:
- 		rc = dlpar_memory(hp_elog);
-diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-index e62835a12d73f..6838a0fcda296 100644
---- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-@@ -757,7 +757,7 @@ int dlpar_cpu(struct pseries_hp_errorlog *hp_elog)
- 	u32 drc_index;
- 	int rc;
- 
--	drc_index = hp_elog->_drc_u.drc_index;
-+	drc_index = be32_to_cpu(hp_elog->_drc_u.drc_index);
- 
- 	lock_device_hotplug();
- 
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 4adca5b61daba..95ff84c55cb14 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -811,16 +811,16 @@ int dlpar_memory(struct pseries_hp_errorlog *hp_elog)
- 	case PSERIES_HP_ELOG_ACTION_ADD:
- 		switch (hp_elog->id_type) {
- 		case PSERIES_HP_ELOG_ID_DRC_COUNT:
--			count = hp_elog->_drc_u.drc_count;
-+			count = be32_to_cpu(hp_elog->_drc_u.drc_count);
- 			rc = dlpar_memory_add_by_count(count);
- 			break;
- 		case PSERIES_HP_ELOG_ID_DRC_INDEX:
--			drc_index = hp_elog->_drc_u.drc_index;
-+			drc_index = be32_to_cpu(hp_elog->_drc_u.drc_index);
- 			rc = dlpar_memory_add_by_index(drc_index);
- 			break;
- 		case PSERIES_HP_ELOG_ID_DRC_IC:
--			count = hp_elog->_drc_u.ic.count;
--			drc_index = hp_elog->_drc_u.ic.index;
-+			count = be32_to_cpu(hp_elog->_drc_u.ic.count);
-+			drc_index = be32_to_cpu(hp_elog->_drc_u.ic.index);
- 			rc = dlpar_memory_add_by_ic(count, drc_index);
- 			break;
- 		default:
-@@ -832,16 +832,16 @@ int dlpar_memory(struct pseries_hp_errorlog *hp_elog)
- 	case PSERIES_HP_ELOG_ACTION_REMOVE:
- 		switch (hp_elog->id_type) {
- 		case PSERIES_HP_ELOG_ID_DRC_COUNT:
--			count = hp_elog->_drc_u.drc_count;
-+			count = be32_to_cpu(hp_elog->_drc_u.drc_count);
- 			rc = dlpar_memory_remove_by_count(count);
- 			break;
- 		case PSERIES_HP_ELOG_ID_DRC_INDEX:
--			drc_index = hp_elog->_drc_u.drc_index;
-+			drc_index = be32_to_cpu(hp_elog->_drc_u.drc_index);
- 			rc = dlpar_memory_remove_by_index(drc_index);
- 			break;
- 		case PSERIES_HP_ELOG_ID_DRC_IC:
--			count = hp_elog->_drc_u.ic.count;
--			drc_index = hp_elog->_drc_u.ic.index;
-+			count = be32_to_cpu(hp_elog->_drc_u.ic.count);
-+			drc_index = be32_to_cpu(hp_elog->_drc_u.ic.index);
- 			rc = dlpar_memory_remove_by_ic(count, drc_index);
- 			break;
- 		default:
-diff --git a/arch/powerpc/platforms/pseries/pmem.c b/arch/powerpc/platforms/pseries/pmem.c
-index 3c290b9ed01b3..0f1d45f32e4a4 100644
---- a/arch/powerpc/platforms/pseries/pmem.c
-+++ b/arch/powerpc/platforms/pseries/pmem.c
-@@ -121,7 +121,7 @@ int dlpar_hp_pmem(struct pseries_hp_errorlog *hp_elog)
- 		return -EINVAL;
+ 	info->dqi_max_spc_limit = 0x7fffffffffffffffLL;
+ 	info->dqi_max_ino_limit = 0x7fffffffffffffffLL;
+@@ -700,6 +700,7 @@ static int ocfs2_local_read_info(struct
+ 	if (!oinfo) {
+ 		mlog(ML_ERROR, "failed to allocate memory for ocfs2 quota"
+ 			       " info.");
++		status = -ENOMEM;
+ 		goto out_err;
  	}
+ 	info->dqi_priv = oinfo;
+@@ -712,6 +713,7 @@ static int ocfs2_local_read_info(struct
+ 	status = ocfs2_global_read_info(sb, type);
+ 	if (status < 0)
+ 		goto out_err;
++	global_read = 1;
  
--	drc_index = hp_elog->_drc_u.drc_index;
-+	drc_index = be32_to_cpu(hp_elog->_drc_u.drc_index);
+ 	status = ocfs2_inode_lock(lqinode, &oinfo->dqi_lqi_bh, 1);
+ 	if (status < 0) {
+@@ -782,10 +784,12 @@ out_err:
+ 		if (locked)
+ 			ocfs2_inode_unlock(lqinode, 1);
+ 		ocfs2_release_local_quota_bitmaps(&oinfo->dqi_chunk);
++		if (global_read)
++			cancel_delayed_work_sync(&oinfo->dqi_sync_work);
+ 		kfree(oinfo);
+ 	}
+ 	brelse(bh);
+-	return -1;
++	return status;
+ }
  
- 	lock_device_hotplug();
- 
--- 
-2.43.0
-
+ /* Write local info to quota file */
 
 
 
