@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-82857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8696A994F57
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:27:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0735C994D49
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:04:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75544B29CD4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:21:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32C19B29EAD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F14C1DEFCE;
-	Tue,  8 Oct 2024 13:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7466E1DE89D;
+	Tue,  8 Oct 2024 13:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2hkiaot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQj4H/xe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03A018C333;
-	Tue,  8 Oct 2024 13:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D801C32EB;
+	Tue,  8 Oct 2024 13:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393659; cv=none; b=K0YULH+9ZzHldjngXa6WDW5EctpemW3jeDoUmjeABRZZvqP4diYy6rycdTmahiGslr7UeOY8HZYDVuAALO8CLjhcz7sp50pGp049r9HB6OIrPmXr+Gs3dQOacEGBjYFO8MnYShlGyyhvQSIvdhYFAXWlDvkHN94ib77DWCKZihE=
+	t=1728392498; cv=none; b=DN/MAiXF61rwEZMYwxU2Dz0oKF3JNfi3Ns3miEYf8Gl4jSVtlafdwl1TBCMo3iedruMmM7ccQUNymg7MHFTUTA4mr0zMMG02BFy0ozHrfJKMG4S3UMOviAD/933R5BEYmzCrfEJ5VSRO3QD4oGzsNHoN2G0xFTSVBSr1SxqqAOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393659; c=relaxed/simple;
-	bh=P5LxcdMvkfupc1U6XrACLxm+nGBg5q3DecDlYKZ5xFE=;
+	s=arc-20240116; t=1728392498; c=relaxed/simple;
+	bh=W+cb3FbG6g7aTke3iZiCZgdHc2DAdAudt/o/0w7idaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fhtj9YVB1YsU52baQUSYabo2LL5Jx3sczWRhfekRjjBHhWjJIct+5+tsCAQ3weMc8A8kcWpRgAOkVvkKpKVrCIO5Dzp1sLHT0t1hrV9hhZLazpqqepCJ+zk/e0a1D8w0eba9I8LUsBxVRUzQjOhISHvx0+u3ssVoL50uEWyBUac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2hkiaot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC56C4CECC;
-	Tue,  8 Oct 2024 13:20:58 +0000 (UTC)
+	 MIME-Version; b=Zc1EfVBoPVuTGiMdfsz4JUGN8QyWVLtjdfWvu+WOAB0cpKhvHMbR3y/Ka/279WnZ7YidTnjIFH1FeywhfneVIfgeURDAFt8pAuK/tFVo1aLIh1nlTY4UgIDXoo9TJ63BF5D0Gc2wrqTI73euPJGO9EOTNgH0rahIIP1HaPK3Dh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQj4H/xe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FABC4CEC7;
+	Tue,  8 Oct 2024 13:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393659;
-	bh=P5LxcdMvkfupc1U6XrACLxm+nGBg5q3DecDlYKZ5xFE=;
+	s=korg; t=1728392498;
+	bh=W+cb3FbG6g7aTke3iZiCZgdHc2DAdAudt/o/0w7idaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U2hkiaotyS0GhjAfydrHQwt0TBajfgHcB5iino7hap4dNYc8W41EULpnI8Ed1gpZk
-	 TBxEFWaxsRX6APwI2tucWtolCyahNmF7j8+q3SasQf3MLr08eDgbEoZuf0eCEKlhci
-	 vr+jeZjwopC9aRrWZ7jfjSsg0N35Ed56qJC5HPTs=
+	b=oQj4H/xeDKmsuin40fvSxMup913rm16wSR5PlbnAyHfvIIeIvuzNTnaUw9fUPrjCx
+	 NgikLLoyf92KaY2gQlZzIxs2Yqzpi6BjbH15MAsCTL7IU3RskoAuM0Zgnofy9EobHr
+	 PgXY92kRn+oXluP8iiWlIOoSeHX48EE8PoA8wTwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 217/386] spi: bcm63xx: Fix module autoloading
+	Sedat Dilek <sedat.dilek@gmail.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 6.11 432/558] perf python: Disable -Wno-cast-function-type-mismatch if present on clang
 Date: Tue,  8 Oct 2024 14:07:42 +0200
-Message-ID: <20241008115637.946532575@linuxfoundation.org>
+Message-ID: <20241008115719.272201292@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +66,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-commit 909f34f2462a99bf876f64c5c61c653213e32fce upstream.
+commit 00dc514612fe98cfa117193b9df28f15e7c9db9c upstream.
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
-based on the alias from platform_device_id table.
+The -Wcast-function-type-mismatch option was introduced in clang 19 and
+its enabled by default, since we use -Werror, and python bindings do
+casts that are valid but trips this warning, disable it if present.
 
-Fixes: 44d8fb30941d ("spi/bcm63xx: move register definitions into the driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20240819123349.4020472-2-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Closes: https://lore.kernel.org/all/CA+icZUXoJ6BS3GMhJHV3aZWyb5Cz2haFneX0C5pUMUUhG-UVKQ@mail.gmail.com
+Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
+Tested-by: Sedat Dilek <sedat.dilek@gmail.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: stable@vger.kernel.org # To allow building with the upcoming clang 19
+Link: https://lore.kernel.org/lkml/CA+icZUVtHn8X1Tb_Y__c-WswsO0K8U9uy3r2MzKXwTA5THtL7w@mail.gmail.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-bcm63xx.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/setup.py |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -466,6 +466,7 @@ static const struct platform_device_id b
- 	{
- 	},
- };
-+MODULE_DEVICE_TABLE(platform, bcm63xx_spi_dev_match);
+--- a/tools/perf/util/setup.py
++++ b/tools/perf/util/setup.py
+@@ -63,6 +63,8 @@ cflags = getenv('CFLAGS', '').split()
+ cflags += ['-fno-strict-aliasing', '-Wno-write-strings', '-Wno-unused-parameter', '-Wno-redundant-decls' ]
+ if cc_is_clang:
+     cflags += ["-Wno-unused-command-line-argument" ]
++    if clang_has_option("-Wno-cast-function-type-mismatch"):
++        cflags += ["-Wno-cast-function-type-mismatch" ]
+ else:
+     cflags += ['-Wno-cast-function-type' ]
  
- static const struct of_device_id bcm63xx_spi_of_match[] = {
- 	{ .compatible = "brcm,bcm6348-spi", .data = &bcm6348_spi_reg_offsets },
 
 
 
