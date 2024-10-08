@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-82590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7629994D85
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:06:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F8E994F8A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:28:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C2131F21A92
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:06:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9FD6B26A14
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC251DE88F;
-	Tue,  8 Oct 2024 13:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6101F1E0E04;
+	Tue,  8 Oct 2024 13:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYFlCGoH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYHfRFko"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3B11C5793;
-	Tue,  8 Oct 2024 13:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2C71E0DFE;
+	Tue,  8 Oct 2024 13:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392771; cv=none; b=eGXTAzIPhHsNL6M9r7hb7CFh1jcKiInE/nVMosVptu1lqcfVcu2YVCQI7D7v5pt09RPimm2x/luKLBY3JSZvjfnPf5IguG4BaKlvSF6bbbyZWubpASBFBw1jLgiw6pbkuvZ9WbbJSZFUhAa5LK7pDab2ouLUJjBoSkgGn2SNyJM=
+	t=1728393829; cv=none; b=AIh8P8lsndLK9gTWz0xozD5E/kkAZ0oIBDf/DlVPUK+co8q58Sj0ulToQ+TGcIi8ytl/k0X8rScGfYQShr1nhUOnxIDuwSfESWoL+4PMvcJmv/rMxjazEV2VSdtnnm7/YqJJXRj1bpoKO+n4X9HzqnKharUX5Lr+u/0Q8lYrp18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392771; c=relaxed/simple;
-	bh=nS4cKFDcZcA30smaD8BgFwUcCpjcCSc++P9HtTD06As=;
+	s=arc-20240116; t=1728393829; c=relaxed/simple;
+	bh=VI+JN1XYTgd+rFKLLWgcU7w6xx2kACg63qiUsH4iClU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qsu1r3dCpBGUVXAE2/4Fjy4ZlsUxdCOkSYtvrHI+cYd1Tv6HbXdVzstCjZv5Q5W0gwn60dJVAvvLvkjRewnguTkJjExOPQkgd+4HaOPeXdfarn4/OjN19MCWeaYpVPHu1il/0jD+4xjTrkEWPkzLwtSZhZqIA9/oEpuH6W2TMUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYFlCGoH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00083C4CEC7;
-	Tue,  8 Oct 2024 13:06:10 +0000 (UTC)
+	 MIME-Version; b=HldX6wt4qx5PKl+339Nsh/biAewZrJEuVuJgUET0T72HHWpSCQk4z+MjKaXHbQkZrijxGNkmIo1P8q3Fc51gMOm6kl1Qc7Gpd/0uVtaPy78IT0xR1cHRqtYjQ16q2UJw4rOv/OA4Nl7afe03w+KhXs3rTiYyrX+/GHC7bsyv5vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYHfRFko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC6BBC4CECC;
+	Tue,  8 Oct 2024 13:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392771;
-	bh=nS4cKFDcZcA30smaD8BgFwUcCpjcCSc++P9HtTD06As=;
+	s=korg; t=1728393828;
+	bh=VI+JN1XYTgd+rFKLLWgcU7w6xx2kACg63qiUsH4iClU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xYFlCGoHkj5O8Im+c9fUAk1ZeBRMSZdlcWMk5FFjDVlU4rquQmqWJ/x7H//ou0L9p
-	 YCrUXUm16TalP3FNs9Aqs0N7NZM4G1D32KvicLdnQ1f7bJRVYZGse8Jg9kANoTpcKP
-	 /Al7LPWRJu+z+z4Ath+blxH3TjvBgIqrRrE3o8/k=
+	b=QYHfRFkoIEs7L8I0/ZyCfP4RFiC346V0Sr+0qEg8mjIzjh/dXKPn2EAehKzVQ8uRU
+	 PWFOUbY6Hsoue82RuSqF2vh6OSsW+tHKQ2WjczHXaihzWpjqpMsf86F/2zN3bhqtzq
+	 Tt/RAjQTDdR5dMpDHlR+nmkXyvTrcLxQpE3qi1Mo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Sistare <steven.sistare@oracle.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Peter Xu <peterx@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 483/558] mm/gup: fix memfd_pin_folios hugetlb page allocation
+	Jisheng Zhang <jszhang@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.6 268/386] riscv: define ILLEGAL_POINTER_VALUE for 64bit
 Date: Tue,  8 Oct 2024 14:08:33 +0200
-Message-ID: <20241008115721.243699291@linuxfoundation.org>
+Message-ID: <20241008115639.937930116@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,71 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve Sistare <steven.sistare@oracle.com>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-commit 9289f020da47ef04b28865589eeee3d56d4bafea upstream.
+commit 5c178472af247c7b50f962495bb7462ba453b9fb upstream.
 
-When memfd_pin_folios -> memfd_alloc_folio creates a hugetlb page, the
-index is wrong.  The subsequent call to filemap_get_folios_contig thus
-cannot find it, and fails, and memfd_pin_folios loops forever.  To fix,
-adjust the index for the huge_page_order.
+This is used in poison.h for poison pointer offset. Based on current
+SV39, SV48 and SV57 vm layout, 0xdead000000000000 is a proper value
+that is not mappable, this can avoid potentially turning an oops to
+an expolit.
 
-memfd_alloc_folio also forgets to unlock the folio, so the next touch of
-the page calls hugetlb_fault which blocks forever trying to take the lock.
-Unlock it.
-
-Link: https://lkml.kernel.org/r/1725373521-451395-5-git-send-email-steven.sistare@oracle.com
-Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Fixes: fbe934d69eb7 ("RISC-V: Build Infrastructure")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240705170210.3236-1-jszhang@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memfd.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/riscv/Kconfig |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/mm/memfd.c b/mm/memfd.c
-index bfe0e7189a37..bcb131db829d 100644
---- a/mm/memfd.c
-+++ b/mm/memfd.c
-@@ -79,10 +79,13 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
- 		 * alloc from. Also, the folio will be pinned for an indefinite
- 		 * amount of time, so it is not expected to be migrated away.
- 		 */
--		gfp_mask = htlb_alloc_mask(hstate_file(memfd));
--		gfp_mask &= ~(__GFP_HIGHMEM | __GFP_MOVABLE);
-+		struct hstate *h = hstate_file(memfd);
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -259,6 +259,11 @@ config GENERIC_HWEIGHT
+ config FIX_EARLYCON_MEM
+ 	def_bool MMU
  
--		folio = alloc_hugetlb_folio_reserve(hstate_file(memfd),
-+		gfp_mask = htlb_alloc_mask(h);
-+		gfp_mask &= ~(__GFP_HIGHMEM | __GFP_MOVABLE);
-+		idx >>= huge_page_order(h);
++config ILLEGAL_POINTER_VALUE
++	hex
++	default 0 if 32BIT
++	default 0xdead000000000000 if 64BIT
 +
-+		folio = alloc_hugetlb_folio_reserve(h,
- 						    numa_node_id(),
- 						    NULL,
- 						    gfp_mask);
-@@ -95,6 +98,7 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
- 				free_huge_folio(folio);
- 				return ERR_PTR(err);
- 			}
-+			folio_unlock(folio);
- 			return folio;
- 		}
- 		return ERR_PTR(-ENOMEM);
--- 
-2.46.2
-
+ config PGTABLE_LEVELS
+ 	int
+ 	default 5 if 64BIT
 
 
 
