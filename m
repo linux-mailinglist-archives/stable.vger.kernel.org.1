@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-82888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DEF9994F07
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:24:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5C9994D40
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:03:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DF6B28590D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:23:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C8F5B26F5B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E221F1DF96B;
-	Tue,  8 Oct 2024 13:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755BD1DED65;
+	Tue,  8 Oct 2024 13:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLCudC9N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZmEBqbb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9C31DED7D;
-	Tue,  8 Oct 2024 13:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322941DE88B;
+	Tue,  8 Oct 2024 13:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393762; cv=none; b=McCD1pwBnhmASmt/hTpU6e7VEkEDPaFIdbmp5WjbDIGqALQL8kIVpA3IlP40Eb6RFMDFcwArEFDyDjNQV7heiDhTfG6P9IpmW2mKNKdbrrJS38GrvZCzl7ZIqYaXH/naCgcS3Xc4vygoE+nMJbJNta55T/KN/d9QoMdBsf21cxg=
+	t=1728392600; cv=none; b=qy6qvTsgPd+MQEiYblA8r1yQ1Q+sC2EYFuzqsdncEr38iGi0xcs5Yn33+hvs4BERp1Qoggnrapgb2FvDzK9yALK1XVBHWRMVK1LL/QvYflEkrFIZZZlEZaqvnkXtWZK6E34WRa6u+g4AlGhOMeSsTP4e+8dGMa4LvORrnyudHHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393762; c=relaxed/simple;
-	bh=fDjNhxfciWOoa7PYZfyvyK2/yPoJdm7S9tTJKknlr1w=;
+	s=arc-20240116; t=1728392600; c=relaxed/simple;
+	bh=Rjr4WDiTE063O5CZnYApT4+tyK8VKw39VWjQiOde4Zw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dRt7KAgwull33h27Vpw8OfBNIpxw9y/3p9MrdnjPbxAGmjkgFbs18r2I7YPgiAN6XWuDXYxBnw8mIwdBWd4VZZj2dWG3i8ZZ/WIR0fcf8JoKtJwBY0fmrDYGsxdBWH+b3Ie4Mw5hAo/guGSc2XufinweiJIdpcQjOO+4Ap1UArM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLCudC9N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB92C4CEC7;
-	Tue,  8 Oct 2024 13:22:41 +0000 (UTC)
+	 MIME-Version; b=bVDZASrqiLwjHEhBJqvJOo88hlaN/oWGrcrX4SjDEFziOJlqiGd3nWpyTnXnj+/3ipKZ9YIBXtoYqtUoeGPAmleZV11guNF365pOlzFpyuP5jP1lLX7W9xs8/fle0NAAiK9/AsPEIFuziDxKt26H5jnB7MnpZk8QUEzj2rCTou4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZmEBqbb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9204FC4CEC7;
+	Tue,  8 Oct 2024 13:03:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393762;
-	bh=fDjNhxfciWOoa7PYZfyvyK2/yPoJdm7S9tTJKknlr1w=;
+	s=korg; t=1728392600;
+	bh=Rjr4WDiTE063O5CZnYApT4+tyK8VKw39VWjQiOde4Zw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vLCudC9NjZBNHlQaWLtcn313ZfgKlHm/KNTmGsHuqQEMys7aP7crgsae+G4alf8+8
-	 6O4U8E8GxT4ILasF81XOBOeVPnoY+TFzXlbBDFdYj3r0ivaGxPDpc1T+mhklc8DdAF
-	 wegAPtAmsGPOS3vILPcBcSzFtM4QIIMZqcRn+GCw=
+	b=nZmEBqbbgiVgyNNJotLTzRZr8yLrmFr35ulc3o74rwvpj4t+e4hpGEAEXGEWLfdaD
+	 qi5ptPKiJOJKvZbVTISnDfmCgA+IUsxDmWnE+xCeqRBGhuJdwRhNRFpn+S/B5q8yze
+	 t9+SaqRhogj3nbNko8m8GwKshlmnj3+jL65PRaoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 248/386] parisc: Fix 64-bit userspace syscall path
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 463/558] clk: qcom: gcc-sc8180x: Add GPLL9 support
 Date: Tue,  8 Oct 2024 14:08:13 +0200
-Message-ID: <20241008115639.151510719@linuxfoundation.org>
+Message-ID: <20241008115720.472886727@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@kernel.org>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-commit d24449864da5838936669618356b0e30ca2999c3 upstream.
+commit 818a2f8d5e4ad2c1e39a4290158fe8e39a744c70 upstream.
 
-Currently the glibc isn't yet ported to 64-bit for hppa, so
-there is no usable userspace available yet.
-But it's possible to manually build a static 64-bit binary
-and run that for testing. One such 64-bit test program is
-available at http://ftp.parisc-linux.org/src/64bit.tar.gz
-and it shows various issues with the existing 64-bit syscall
-path in the kernel.
-This patch fixes those issues.
+Add the missing GPLL9 pll and fix the gcc_parents_7 data to use
+the correct pll hw.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org      # v4.19+
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
+Cc: stable@vger.kernel.org
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-3-8b3eaa5fb856@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/syscall.S |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/clk/qcom/gcc-sc8180x.c |   20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
---- a/arch/parisc/kernel/syscall.S
-+++ b/arch/parisc/kernel/syscall.S
-@@ -243,10 +243,10 @@ linux_gateway_entry:
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -142,6 +142,23 @@ static struct clk_alpha_pll gpll7 = {
+ 	},
+ };
  
- #ifdef CONFIG_64BIT
- 	ldil	L%sys_call_table, %r1
--	or,=	%r2,%r2,%r2
--	addil	L%(sys_call_table64-sys_call_table), %r1
-+	or,ev	%r2,%r2,%r2
-+	ldil	L%sys_call_table64, %r1
- 	ldo	R%sys_call_table(%r1), %r19
--	or,=	%r2,%r2,%r2
-+	or,ev	%r2,%r2,%r2
- 	ldo	R%sys_call_table64(%r1), %r19
- #else
- 	load32	sys_call_table, %r19
-@@ -379,10 +379,10 @@ tracesys_next:
- 	extrd,u	%r19,63,1,%r2			/* W hidden in bottom bit */
++static struct clk_alpha_pll gpll9 = {
++	.offset = 0x1c000,
++	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_TRION],
++	.clkr = {
++		.enable_reg = 0x52000,
++		.enable_mask = BIT(9),
++		.hw.init = &(const struct clk_init_data) {
++			.name = "gpll9",
++			.parent_data = &(const struct clk_parent_data) {
++				.fw_name = "bi_tcxo",
++			},
++			.num_parents = 1,
++			.ops = &clk_alpha_pll_fixed_trion_ops,
++		},
++	},
++};
++
+ static const struct parent_map gcc_parent_map_0[] = {
+ 	{ P_BI_TCXO, 0 },
+ 	{ P_GPLL0_OUT_MAIN, 1 },
+@@ -241,7 +258,7 @@ static const struct parent_map gcc_paren
+ static const struct clk_parent_data gcc_parents_7[] = {
+ 	{ .fw_name = "bi_tcxo", },
+ 	{ .hw = &gpll0.clkr.hw },
+-	{ .name = "gppl9" },
++	{ .hw = &gpll9.clkr.hw },
+ 	{ .hw = &gpll4.clkr.hw },
+ 	{ .hw = &gpll0_out_even.clkr.hw },
+ };
+@@ -4489,6 +4506,7 @@ static struct clk_regmap *gcc_sc8180x_cl
+ 	[GPLL1] = &gpll1.clkr,
+ 	[GPLL4] = &gpll4.clkr,
+ 	[GPLL7] = &gpll7.clkr,
++	[GPLL9] = &gpll9.clkr,
+ };
  
- 	ldil	L%sys_call_table, %r1
--	or,=	%r2,%r2,%r2
--	addil	L%(sys_call_table64-sys_call_table), %r1
-+	or,ev	%r2,%r2,%r2
-+	ldil	L%sys_call_table64, %r1
- 	ldo	R%sys_call_table(%r1), %r19
--	or,=	%r2,%r2,%r2
-+	or,ev	%r2,%r2,%r2
- 	ldo	R%sys_call_table64(%r1), %r19
- #else
- 	load32	sys_call_table, %r19
-@@ -1327,6 +1327,8 @@ ENTRY(sys_call_table)
- END(sys_call_table)
- 
- #ifdef CONFIG_64BIT
-+#undef __SYSCALL_WITH_COMPAT
-+#define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, native)
- 	.align 8
- ENTRY(sys_call_table64)
- #include <asm/syscall_table_64.h>    /* 64-bit syscalls */
+ static const struct qcom_reset_map gcc_sc8180x_resets[] = {
 
 
 
