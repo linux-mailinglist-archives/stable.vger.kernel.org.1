@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-82937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD1C8994F7D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:28:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70FAD994AAD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:35:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87A491F235C6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:28:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F6192854D6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1831DFE39;
-	Tue,  8 Oct 2024 13:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A45CF1B81CC;
+	Tue,  8 Oct 2024 12:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSql8C5D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngsj07lw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194061DF722;
-	Tue,  8 Oct 2024 13:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639861779B1;
+	Tue,  8 Oct 2024 12:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393934; cv=none; b=KmzMgHB/ect0FKkN1MtdP8MvjZNqkWfh/4w9Z3zNJhCagQl+QDC670xQBsEQ5W+1u86Q+BsJUCNDEcPTjHoHBGTXQ5eyBiY3V8WqAMIQn4x76k8pm7gD7TYv6Rd3TyTP37ntytwzsn9G2+q1MUQ+r1D4u9i1abyBLAZNiyr47Gg=
+	t=1728390934; cv=none; b=YwgA8kken8AueIfgdoGAeOewahT8zTKKQ0hz1wWTrd4V4yn8nBkv5Ee/J9vZaPPWHLwCgaKrvbeOOCGCN9sR8H/qqtGLMCU5ulzJuaAqYe/8Ftt7JSjma0XLhNidycmMKjnI8mvF9sEQs6jbYbqcog7sLIjzXw9/Zgt866UMbNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393934; c=relaxed/simple;
-	bh=E+r8NMZ4y4CP1W6nUeCgyB4LvS2oLCrMNS2hYYL/3Ho=;
+	s=arc-20240116; t=1728390934; c=relaxed/simple;
+	bh=V7btzH06HqdZ6IZoGYKWpayy3s4rPn99jtAJ+lsbQ0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jKc8pmAVlLPMuEX+4FLMw1Kexy4eWruLSTPXF1J+KmrAp6btp5NMe+j+YgpBpmSqILA1QIYv9WuHuofSx2vf3L0gQz5xUYCDkkYlnogs2kmrwKCiC3uyV9DTecXo0vpcq2kNOG4g4aQd5R4gfuTbQNvD64pvRU69HH6GaNcNKdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSql8C5D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28AC0C4CEC7;
-	Tue,  8 Oct 2024 13:25:32 +0000 (UTC)
+	 MIME-Version; b=MkmXMINZZfWC7z4/hq7kuQIwBMg9Ds8K54uY/5HkkK4/wKYoSlm5fDEio+rnhG4W4QDJI8UDB5zfZoQ1A8HzJrZmvjRSreyL2BKwYqEXiXLk4QBB/Pg9r2sFulQr5DEhsEZVA4eziiBtsrHH27JXPJq55Ad+54GR0kRBEXxh3O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngsj07lw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0D7C4CEC7;
+	Tue,  8 Oct 2024 12:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393933;
-	bh=E+r8NMZ4y4CP1W6nUeCgyB4LvS2oLCrMNS2hYYL/3Ho=;
+	s=korg; t=1728390934;
+	bh=V7btzH06HqdZ6IZoGYKWpayy3s4rPn99jtAJ+lsbQ0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gSql8C5DJ6XftDqrOpr700XQQGutRTenfIwmVMU/mslBi5f/+pRFuHhB7S3QDeREX
-	 zWb1VyPmMND3uw1fxTLJ2T6pXhjpcNTQFmM4C+b8Slw5atghUhAZ2CueT1xeqEiAxt
-	 BRa4iRjHo6xH8h884fUu9TZJOHqEifhfZ9MbNio8=
+	b=ngsj07lwvMwCFN0K47YdcvSX70MhmYrLqZZwSzyvl7z/25iZfa8/gKLyATYISM4qW
+	 EOdPWwEHWnANkixbZgXlpjtvLs550OHEVA8Oxv0x6NK/Pz2ozEy6cTXyA70wbZf/2w
+	 +vOPx6v/7Ows5xSeUCAjKEU4AUpFtCHlQpzRDlPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 257/386] jbd2: correctly compare tids with tid_geq function in jbd2_fc_begin_commit
+	Asahi Lina <lina@asahilina.net>,
+	Rob Clark <robdclark@chromium.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Janne Grunau <j@jannau.net>
+Subject: [PATCH 6.10 439/482] drm/sched: Fix dynamic job-flow control race
 Date: Tue,  8 Oct 2024 14:08:22 +0200
-Message-ID: <20241008115639.507681377@linuxfoundation.org>
+Message-ID: <20241008115705.799383822@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,38 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Rob Clark <robdclark@chromium.org>
 
-commit f0e3c14802515f60a47e6ef347ea59c2733402aa upstream.
+commit 440d52b370b03b366fd26ace36bab20552116145 upstream.
 
-Use tid_geq to compare tids to work over sequence number wraps.
+Fixes a race condition reported here: https://github.com/AsahiLinux/linux/issues/309#issuecomment-2238968609
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20240801013815.2393869-2-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+The whole premise of lockless access to a single-producer-single-
+consumer queue is that there is just a single producer and single
+consumer.  That means we can't call drm_sched_can_queue() (which is
+about queueing more work to the hw, not to the spsc queue) from
+anywhere other than the consumer (wq).
+
+This call in the producer is just an optimization to avoid scheduling
+the consuming worker if it cannot yet queue more work to the hw.  It
+is safe to drop this optimization to avoid the race condition.
+
+Suggested-by: Asahi Lina <lina@asahilina.net>
+Fixes: a78422e9dff3 ("drm/sched: implement dynamic job-flow control")
+Closes: https://github.com/AsahiLinux/linux/issues/309
+Cc: stable@vger.kernel.org
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Tested-by: Janne Grunau <j@jannau.net>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240913202301.16772-1-robdclark@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/journal.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/scheduler/sched_entity.c | 4 ++--
+ drivers/gpu/drm/scheduler/sched_main.c   | 7 ++-----
+ include/drm/gpu_scheduler.h              | 2 +-
+ 3 files changed, 5 insertions(+), 8 deletions(-)
 
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -725,7 +725,7 @@ int jbd2_fc_begin_commit(journal_t *jour
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/scheduler/sched_entity.c b/drivers/gpu/drm/scheduler/sched_entity.c
+index 58c8161289fe..567e5ace6d0c 100644
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -380,7 +380,7 @@ static void drm_sched_entity_wakeup(struct dma_fence *f,
+ 		container_of(cb, struct drm_sched_entity, cb);
  
- 	write_lock(&journal->j_state_lock);
--	if (tid <= journal->j_commit_sequence) {
-+	if (tid_geq(journal->j_commit_sequence, tid)) {
- 		write_unlock(&journal->j_state_lock);
- 		return -EALREADY;
+ 	drm_sched_entity_clear_dep(f, cb);
+-	drm_sched_wakeup(entity->rq->sched, entity);
++	drm_sched_wakeup(entity->rq->sched);
+ }
+ 
+ /**
+@@ -612,7 +612,7 @@ void drm_sched_entity_push_job(struct drm_sched_job *sched_job)
+ 		if (drm_sched_policy == DRM_SCHED_POLICY_FIFO)
+ 			drm_sched_rq_update_fifo(entity, submit_ts);
+ 
+-		drm_sched_wakeup(entity->rq->sched, entity);
++		drm_sched_wakeup(entity->rq->sched);
  	}
+ }
+ EXPORT_SYMBOL(drm_sched_entity_push_job);
+diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
+index 7e90c9f95611..a124d5e77b5e 100644
+--- a/drivers/gpu/drm/scheduler/sched_main.c
++++ b/drivers/gpu/drm/scheduler/sched_main.c
+@@ -1022,15 +1022,12 @@ EXPORT_SYMBOL(drm_sched_job_cleanup);
+ /**
+  * drm_sched_wakeup - Wake up the scheduler if it is ready to queue
+  * @sched: scheduler instance
+- * @entity: the scheduler entity
+  *
+  * Wake up the scheduler if we can queue jobs.
+  */
+-void drm_sched_wakeup(struct drm_gpu_scheduler *sched,
+-		      struct drm_sched_entity *entity)
++void drm_sched_wakeup(struct drm_gpu_scheduler *sched)
+ {
+-	if (drm_sched_can_queue(sched, entity))
+-		drm_sched_run_job_queue(sched);
++	drm_sched_run_job_queue(sched);
+ }
+ 
+ /**
+diff --git a/include/drm/gpu_scheduler.h b/include/drm/gpu_scheduler.h
+index 5acc64954a88..e28bc649b5c9 100644
+--- a/include/drm/gpu_scheduler.h
++++ b/include/drm/gpu_scheduler.h
+@@ -574,7 +574,7 @@ void drm_sched_entity_modify_sched(struct drm_sched_entity *entity,
+ 
+ void drm_sched_tdr_queue_imm(struct drm_gpu_scheduler *sched);
+ void drm_sched_job_cleanup(struct drm_sched_job *job);
+-void drm_sched_wakeup(struct drm_gpu_scheduler *sched, struct drm_sched_entity *entity);
++void drm_sched_wakeup(struct drm_gpu_scheduler *sched);
+ bool drm_sched_wqueue_ready(struct drm_gpu_scheduler *sched);
+ void drm_sched_wqueue_stop(struct drm_gpu_scheduler *sched);
+ void drm_sched_wqueue_start(struct drm_gpu_scheduler *sched);
+-- 
+2.46.2
+
 
 
 
