@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-82471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C09C3994CF3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46180994E9A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 784621F228B4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3AF92826A7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91E61DF727;
-	Tue,  8 Oct 2024 12:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571E71DEFF6;
+	Tue,  8 Oct 2024 13:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFXQGRc3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEQ73Har"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954901DEFE4;
-	Tue,  8 Oct 2024 12:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156761DE4CC;
+	Tue,  8 Oct 2024 13:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392373; cv=none; b=KllxMbb4+UTEwGvfFuWUmimSik6q/hybGUepNV2DMEYLro8iGM+aJPoFqytMpbMQGZ5ojoEgW+SCwRMFDBknIeDSxsPkr3Tw8G658ExLFN6WBkljqyXQnQMKEotQJIvO9egETASTbbRifD7xixIbGBYPl5uPyF6MOhHF6leSTbk=
+	t=1728393538; cv=none; b=F4YlruS1frDHLw7809NCF9MJJFIhhx68O5ACcmQtwriMrpBkfCzKaxoe1GfVaEBFTRa2DwonCUpnDzFGJww2R0SY3TVMCbzQ6GKI6HPmzMNLhywrv/O0HEkPMBzxkPH2uwg4BBHbgI/QorEK6DHOoaKft1CCL0V+Do/DnGxEOy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392373; c=relaxed/simple;
-	bh=QY7w8JkGoP144USBehhHp6qReoaBXIhdYQya82hD+KI=;
+	s=arc-20240116; t=1728393538; c=relaxed/simple;
+	bh=YzXmwrbTLOfkhab8uFO4i/3v2eoZbD6Wold/mUad+Us=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nMgdvKhyetKwsAwDzgXhFEJr2abERbASsjvAFhM/vyS/TfGA76T6AOUFlyH48WvfyjPY6hPjtcUX2ShmCJXYcax7DmuRbFNO2vzUoZzvwGSRRwn/NRRqFCrJ+DLooFOE4TeuDcfNtae44CuJ87QxZcmlLUNr3UUQeiS/SdzwPPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFXQGRc3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00262C4CEC7;
-	Tue,  8 Oct 2024 12:59:32 +0000 (UTC)
+	 MIME-Version; b=FjQriJwO+7FqzTbe5MHZDldRAcoxmoi5AoLrigQQqkQhrWqFU5EZZwb1DpKgJ0JkSaTIJN0DfUO1qinHZmJWHani4bwy4o1X5BeOE45fzODUnD5yWo84F9LSnY5zhGvc8PxeSVbQg+qYMM4VtYqW0ccA2KrWUP7zQbsFhOn9cFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEQ73Har; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78797C4CEC7;
+	Tue,  8 Oct 2024 13:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392373;
-	bh=QY7w8JkGoP144USBehhHp6qReoaBXIhdYQya82hD+KI=;
+	s=korg; t=1728393537;
+	bh=YzXmwrbTLOfkhab8uFO4i/3v2eoZbD6Wold/mUad+Us=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xFXQGRc3Am+wh0+xQh2eVbEx19eERN/a5d3y2OhQMJQNBWCHr2/hYY6Qc0tyClZ1B
-	 xlsWn0jFyW9XLAZEfEfParuAee0M7AhZOIPiuSp6fy3VY15CEDI14CtKqIGMCnIUaO
-	 /micbLDkahFJK8j6rJ94dKNMJjGDf2pGbKX6wdng=
+	b=TEQ73Har4so87EkNakN+x6EvWLLGDjKc/wjXgmNqAb2s4lDC4J57dJ2IyANqTVpQo
+	 rgXgeQzoMP1alKQ3ntf5uCuwdG4n5G9F0/aujrQngGcR9ZDYgY0GMCChDJE/PfA7aY
+	 FtkDB2DKdNHUIbDIEwH9madpvLi3sV+93li2ZTWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Baokun Li <libaokun1@huawei.com>,
 	Jan Kara <jack@suse.cz>,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
 	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.11 396/558] ext4: use handle to mark fc as ineligible in __track_dentry_update()
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 181/386] ext4: avoid use-after-free in ext4_ext_show_leaf()
 Date: Tue,  8 Oct 2024 14:07:06 +0200
-Message-ID: <20241008115717.864777010@linuxfoundation.org>
+Message-ID: <20241008115636.534622871@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit faab35a0370fd6e0821c7a8dd213492946fc776f upstream.
+[ Upstream commit 4e2524ba2ca5f54bdbb9e5153bea00421ef653f5 ]
 
-Calling ext4_fc_mark_ineligible() with a NULL handle is racy and may result
-in a fast-commit being done before the filesystem is effectively marked as
-ineligible.  This patch fixes the calls to this function in
-__track_dentry_update() by adding an extra parameter to the callback used in
-ext4_fc_track_template().
+In ext4_find_extent(), path may be freed by error or be reallocated, so
+using a previously saved *ppath may have been freed and thus may trigger
+use-after-free, as follows:
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+ext4_split_extent
+  path = *ppath;
+  ext4_split_extent_at(ppath)
+  path = ext4_find_extent(ppath)
+  ext4_split_extent_at(ppath)
+    // ext4_find_extent fails to free path
+    // but zeroout succeeds
+  ext4_ext_show_leaf(inode, path)
+    eh = path[depth].p_hdr
+    // path use-after-free !!!
+
+Similar to ext4_split_extent_at(), we use *ppath directly as an input to
+ext4_ext_show_leaf(). Fix a spelling error by the way.
+
+Same problem in ext4_ext_handle_unwritten_extents(). Since 'path' is only
+used in ext4_ext_show_leaf(), remove 'path' and use *ppath directly.
+
+This issue is triggered only when EXT_DEBUG is defined and therefore does
+not affect functionality.
+
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240923104909.18342-2-luis.henriques@linux.dev
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20240822023545.1994557-5-libaokun@huaweicloud.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/fast_commit.c |   19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ fs/ext4/extents.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -379,7 +379,7 @@ void ext4_fc_mark_ineligible(struct supe
-  */
- static int ext4_fc_track_template(
- 	handle_t *handle, struct inode *inode,
--	int (*__fc_track_fn)(struct inode *, void *, bool),
-+	int (*__fc_track_fn)(handle_t *handle, struct inode *, void *, bool),
- 	void *args, int enqueue)
- {
- 	bool update = false;
-@@ -396,7 +396,7 @@ static int ext4_fc_track_template(
- 		ext4_fc_reset_inode(inode);
- 		ei->i_sync_tid = tid;
- 	}
--	ret = __fc_track_fn(inode, args, update);
-+	ret = __fc_track_fn(handle, inode, args, update);
- 	mutex_unlock(&ei->i_fc_lock);
- 
- 	if (!enqueue)
-@@ -420,7 +420,8 @@ struct __track_dentry_update_args {
- };
- 
- /* __track_fn for directory entry updates. Called with ei->i_fc_lock. */
--static int __track_dentry_update(struct inode *inode, void *arg, bool update)
-+static int __track_dentry_update(handle_t *handle, struct inode *inode,
-+				 void *arg, bool update)
- {
- 	struct ext4_fc_dentry_update *node;
- 	struct ext4_inode_info *ei = EXT4_I(inode);
-@@ -435,14 +436,14 @@ static int __track_dentry_update(struct
- 
- 	if (IS_ENCRYPTED(dir)) {
- 		ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_ENCRYPTED_FILENAME,
--					NULL);
-+					handle);
- 		mutex_lock(&ei->i_fc_lock);
- 		return -EOPNOTSUPP;
- 	}
- 
- 	node = kmem_cache_alloc(ext4_fc_dentry_cachep, GFP_NOFS);
- 	if (!node) {
--		ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_NOMEM, NULL);
-+		ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_NOMEM, handle);
- 		mutex_lock(&ei->i_fc_lock);
- 		return -ENOMEM;
- 	}
-@@ -454,7 +455,7 @@ static int __track_dentry_update(struct
- 		node->fcd_name.name = kmalloc(dentry->d_name.len, GFP_NOFS);
- 		if (!node->fcd_name.name) {
- 			kmem_cache_free(ext4_fc_dentry_cachep, node);
--			ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_NOMEM, NULL);
-+			ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_NOMEM, handle);
- 			mutex_lock(&ei->i_fc_lock);
- 			return -ENOMEM;
- 		}
-@@ -576,7 +577,8 @@ void ext4_fc_track_create(handle_t *hand
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 448e0ea49b31d..7fead53255fcb 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3287,7 +3287,7 @@ static int ext4_split_extent_at(handle_t *handle,
  }
  
- /* __track_fn for inode tracking */
--static int __track_inode(struct inode *inode, void *arg, bool update)
-+static int __track_inode(handle_t *handle, struct inode *inode, void *arg,
-+			 bool update)
- {
- 	if (update)
- 		return -EEXIST;
-@@ -614,7 +616,8 @@ struct __track_range_args {
- };
+ /*
+- * ext4_split_extents() splits an extent and mark extent which is covered
++ * ext4_split_extent() splits an extent and mark extent which is covered
+  * by @map as split_flags indicates
+  *
+  * It may result in splitting the extent into multiple extents (up to three)
+@@ -3363,7 +3363,7 @@ static int ext4_split_extent(handle_t *handle,
+ 			goto out;
+ 	}
  
- /* __track_fn for tracking data updates */
--static int __track_range(struct inode *inode, void *arg, bool update)
-+static int __track_range(handle_t *handle, struct inode *inode, void *arg,
-+			 bool update)
+-	ext4_ext_show_leaf(inode, path);
++	ext4_ext_show_leaf(inode, *ppath);
+ out:
+ 	return err ? err : allocated;
+ }
+@@ -3828,14 +3828,13 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
+ 			struct ext4_ext_path **ppath, int flags,
+ 			unsigned int allocated, ext4_fsblk_t newblock)
  {
- 	struct ext4_inode_info *ei = EXT4_I(inode);
- 	ext4_lblk_t oldstart;
+-	struct ext4_ext_path __maybe_unused *path = *ppath;
+ 	int ret = 0;
+ 	int err = 0;
+ 
+ 	ext_debug(inode, "logical block %llu, max_blocks %u, flags 0x%x, allocated %u\n",
+ 		  (unsigned long long)map->m_lblk, map->m_len, flags,
+ 		  allocated);
+-	ext4_ext_show_leaf(inode, path);
++	ext4_ext_show_leaf(inode, *ppath);
+ 
+ 	/*
+ 	 * When writing into unwritten space, we should not fail to
+@@ -3932,7 +3931,7 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
+ 	if (allocated > map->m_len)
+ 		allocated = map->m_len;
+ 	map->m_len = allocated;
+-	ext4_ext_show_leaf(inode, path);
++	ext4_ext_show_leaf(inode, *ppath);
+ out2:
+ 	return err ? err : allocated;
+ }
+-- 
+2.43.0
+
 
 
 
