@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-81713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C8E9948EF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:18:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05554994BA1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2825D1F291AD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:18:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1FA91F27DA7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD741DDA24;
-	Tue,  8 Oct 2024 12:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5341CCB32;
+	Tue,  8 Oct 2024 12:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVvUOfF5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19hNVRez"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFC5165F08;
-	Tue,  8 Oct 2024 12:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFE11DDC24;
+	Tue,  8 Oct 2024 12:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389885; cv=none; b=SpvTviG2qYK/8gWdnVp9O2uEtnyygtP1jtxc3Z9Hv1bArgKuSByVSBYjHEHO9LZ/p6qhetqpMO3E3cMeFyxEJf/xQVS447dccpi5ix99iWdu/JDR28xiXgAHACY9Xt3mZNDDfgRed7avWL52sHvZL2bzeuePxlK4KPCwkodS2cc=
+	t=1728391479; cv=none; b=JHt7lcom1udq8xvRvt/r0wEAEsOxQ5F13A77NbWRC39BZ/N02OgriNWPeO5qEMt8Qmw9HqD+UhxnAVFXXK5vwlGSlUXZfTF4XiFCvZVUlGo/Pp2nj+vcgcoQ1x08ucDpovMtjg2mhDhdsQP5rJPIqVBqkuNrniGGZzifrAHmaNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389885; c=relaxed/simple;
-	bh=yoX/zKUxWT0aPRb0yOl2pnzvE3bU7mCwY5ZohbTdydk=;
+	s=arc-20240116; t=1728391479; c=relaxed/simple;
+	bh=QBAzf/5qzeNx00/ZBL2sv/pf8djwFIy5iZl05Lcm93U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QstmkTTlWkxP8vwVA49yob3hlipGrqDZqVEc7p8dRBQnsOEN7C7c+rk97/bfEx+rsVjVFuly6fOQ5StdFd+Vdp26F6ls0mWrgMyCwwtAs3UVdJeGOabxZZUzJAP+mctUyexNRHba3n+Xoj5J1rT40HppbLDH4OMAqGu1AC1vM6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVvUOfF5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9189EC4CEC7;
-	Tue,  8 Oct 2024 12:18:04 +0000 (UTC)
+	 MIME-Version; b=Q/bnD1KrlqlOhfCjvWfJyoI58AxK5au/ukIMIGKHUmWxEiqR0JhxdTCMdPoEloq/YRbFw7G3WdHSA8J3My53jNy7cwy0YsNjPWIk6mHwd4ujkgL9O8vYS8D8bWaKqBfNbm5E64PEj5L9iRjiy9fbMCyvcY7vt6EmLwdg+H2yB+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19hNVRez; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6655C4CEC7;
+	Tue,  8 Oct 2024 12:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389885;
-	bh=yoX/zKUxWT0aPRb0yOl2pnzvE3bU7mCwY5ZohbTdydk=;
+	s=korg; t=1728391479;
+	bh=QBAzf/5qzeNx00/ZBL2sv/pf8djwFIy5iZl05Lcm93U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wVvUOfF5a0drcmbovM8z1/akjfwzaeoUJdhlDPwbMUMHrXMHP5ij8+ujQuwPcHep6
-	 9HNoaViW0hKqbX3wVZ01ZmLePfa/eaIk936VxG+6fQBkvCRHNehvTm/sfVgsP1klU3
-	 Er6bG2hwKRBNpaK4KZMy4o/tE71R09Qchqi3RJ7A=
+	b=19hNVReznH99QjY4tnLLnXh5GeWLLnkkXvMtRsvSh6A1c784LLmexkpmtQ3LT97aB
+	 SpMUsI4JH1HicsP06HH+O2vQEtGsylzTo0XOPXm7+0cBUgkCDrdI34EDUl9HVslNfQ
+	 5A6tU2SsNs4oFyLhvdCsrQ7aB6sTROWGJWNkahoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hilda Wu <hildawu@realtek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 094/482] Bluetooth: btrtl: Set msft ext address filter quirk for RTL8852B
+Subject: [PATCH 6.11 127/558] wifi: rtw89: correct base HT rate mask for firmware
 Date: Tue,  8 Oct 2024 14:02:37 +0200
-Message-ID: <20241008115652.010136542@linuxfoundation.org>
+Message-ID: <20241008115707.362663031@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hilda Wu <hildawu@realtek.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 9a0570948c5def5c59e588dc0e009ed850a1f5a1 ]
+[ Upstream commit 45742881f9eee2a4daeb6008e648a460dd3742cd ]
 
-For tracking multiple devices concurrently with a condition.
-The patch enables the HCI_QUIRK_USE_MSFT_EXT_ADDRESS_FILTER quirk
-on RTL8852B controller.
+Coverity reported that u8 rx_mask << 24 will become signed 32 bits, which
+casting to unsigned 64 bits will do sign extension. For example,
+putting 0x80000000 (signed 32 bits) to a u64 variable will become
+0xFFFFFFFF_80000000.
 
-The quirk setting is based on commit 9e14606d8f38 ("Bluetooth: msft:
-Extended monitor tracking by address filter")
+The real case we meet is:
+  rx_mask[0...3] = ff ff 00 00
+  ra_mask = 0xffffffff_ff0ff000
 
-With this setting, when a pattern monitor detects a device, this
-feature issues an address monitor for tracking that device. Let the
-original pattern monitor keep monitor new devices.
+After this fix:
+  rx_mask[0...3] = ff ff 00 00
+  ra_mask = 0x00000000_ff0ff000
 
-Signed-off-by: Hilda Wu <hildawu@realtek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fortunately driver does bitwise-AND with incorrect ra_mask and supported
+rates (1ss and 2ss rate only) afterward, so the final rate mask of
+original code is still correct.
+
+Addresses-Coverity-ID: 1504762 ("Unintended sign extension")
+
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240809072012.84152-5-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btrtl.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtw89/phy.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
-index bfcb41a57655f..78b5d44558d73 100644
---- a/drivers/bluetooth/btrtl.c
-+++ b/drivers/bluetooth/btrtl.c
-@@ -1296,6 +1296,7 @@ void btrtl_set_quirks(struct hci_dev *hdev, struct btrtl_device_info *btrtl_dev)
- 			btrealtek_set_flag(hdev, REALTEK_ALT6_CONTINUOUS_TX_CHIP);
- 
- 		if (btrtl_dev->project_id == CHIP_ID_8852A ||
-+		    btrtl_dev->project_id == CHIP_ID_8852B ||
- 		    btrtl_dev->project_id == CHIP_ID_8852C)
- 			set_bit(HCI_QUIRK_USE_MSFT_EXT_ADDRESS_FILTER, &hdev->quirks);
- 
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index ad11d1414874a..c038e5ca3e45a 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -353,8 +353,8 @@ static void rtw89_phy_ra_sta_update(struct rtw89_dev *rtwdev,
+ 		csi_mode = RTW89_RA_RPT_MODE_HT;
+ 		ra_mask |= ((u64)sta->deflink.ht_cap.mcs.rx_mask[3] << 48) |
+ 			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[2] << 36) |
+-			   (sta->deflink.ht_cap.mcs.rx_mask[1] << 24) |
+-			   (sta->deflink.ht_cap.mcs.rx_mask[0] << 12);
++			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[1] << 24) |
++			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[0] << 12);
+ 		high_rate_masks = rtw89_ra_mask_ht_rates;
+ 		if (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_RX_STBC)
+ 			stbc_en = 1;
 -- 
 2.43.0
 
