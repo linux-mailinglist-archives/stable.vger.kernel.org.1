@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-82759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76EBA994ECE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A719949FD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:29:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6EA2B24D38
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0F7FB24ABB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4768C1DF275;
-	Tue,  8 Oct 2024 13:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873981DF246;
+	Tue,  8 Oct 2024 12:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+f+RTLT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQHC/ulp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D311DED60;
-	Tue,  8 Oct 2024 13:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BC31DEFE5;
+	Tue,  8 Oct 2024 12:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393334; cv=none; b=VCC/LQTGjaL2ngi9GK8BYCQAYNeOfgaH5yx7qJHy1qnNjZvA2Zt05FAeEzaQXprGYVJeDoHoRuMcg9PyMyVG0/o36Qwg+oM3JpBfFW2RF3nnrTFqP3a0MqWimi1gvJ7GxJj0Ks9LQX83s/9+L0gjumBUflNznRhn7XinxSxx34M=
+	t=1728390476; cv=none; b=RjnIVnqOQjxAQyyLOuDKPwzGUpor/GekqZJQT8Mw432p1YoJbhJor0MywLsns0JTbWFvnMJcLGr811SuD8vNpukyYF8ghyU67HDkroYqioiB8n6NGgeneH44PIxQqTl1eAfTT8Fb/8IPmDJYRn/+AKDSD5P7mxiagOTzBr/MpPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393334; c=relaxed/simple;
-	bh=jDAjvmUc9qIfDdIp/Qnc0ZfTZDPm7I9FC+3cqbFbBUM=;
+	s=arc-20240116; t=1728390476; c=relaxed/simple;
+	bh=usEL5loZhOCBYYwQNN5U257hdcN0pM180lSBOLidyCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QR7bkPeOoq0NnljY4mAk/K8KL1hMZst5+5jN/pGMxy1ZwmhU7hqhs6xnB2JJIXtETw02iVxHz1Vi2XTUjLoEmEhJ5YYwKyS9/2vRHZdx8lRCgk+aPVr5m9D8icn4wI8+vAMVggCWf56EXdo69qu9BBYdYny/mNM73DYHUCUp/xY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+f+RTLT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C22EC4CECD;
-	Tue,  8 Oct 2024 13:15:33 +0000 (UTC)
+	 MIME-Version; b=GBKcaQkPmr2Tavb5p4a/iEhuXpq+mxsETuudU1nQLv605vxDiBc4zR1jDVw1ZSuaBIMuoTSwvL4agxvK4f5aNw2Vt65rle7+CeYJp+iWotdnKze2nZKpOmiWvVvPzRPTINi4JjFEhjSlf0QHf4gXPCqDvUe+GO0t7K4Wnc+cAm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQHC/ulp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB610C4CEC7;
+	Tue,  8 Oct 2024 12:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393333;
-	bh=jDAjvmUc9qIfDdIp/Qnc0ZfTZDPm7I9FC+3cqbFbBUM=;
+	s=korg; t=1728390476;
+	bh=usEL5loZhOCBYYwQNN5U257hdcN0pM180lSBOLidyCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+f+RTLTbdP0dBBJKxtbhx0rMWVBq7BFdJF/lGyRcgHIajRJj9c9rLiBN8Yt3ftMf
-	 p/h3nqNB0HjyzRtNa47eCTP2bhXLY4vKJwWeX/owr2vzgo2p9GKaQZw4Rc10pv8L5q
-	 USyh5lO87VWmlPy6Tl62WjBL7YhACqyHKqDXveuM=
+	b=JQHC/ulpXNWcQ486Lp6q5ctdRJaSMBtzZ9cbckNpmM5tQxMaF2ugwRgawOKY0jUXU
+	 XQlWAZLgqsnIscDj+wbUE17Z/yc+hWZKaBofAY2Tp77fEzFn2fWqGjb5fbHJYQEPmg
+	 DR2FA+bkRakOUQ1/+tG8H+Wk2RynHzLxHj19eQeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 119/386] ALSA: hdsp: Break infinite MIDI input flush loop
+	Mike Baynton <mike@mbaynton.com>,
+	Amir Goldstein <amir73il@gmail.com>
+Subject: [PATCH 6.10 301/482] ovl: fail if trusted xattrs are needed but caller lacks permission
 Date: Tue,  8 Oct 2024 14:06:04 +0200
-Message-ID: <20241008115634.122525875@linuxfoundation.org>
+Message-ID: <20241008115700.130106809@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Mike Baynton <mike@mbaynton.com>
 
-[ Upstream commit c01f3815453e2d5f699ccd8c8c1f93a5b8669e59 ]
+commit 6c4a5f96450415735c31ed70ff354f0ee5cbf67b upstream.
 
-The current MIDI input flush on HDSP and HDSPM drivers relies on the
-hardware reporting the right value.  If the hardware doesn't give the
-proper value but returns -1, it may be stuck at an infinite loop.
+Some overlayfs features require permission to read/write trusted.*
+xattrs. These include redirect_dir, verity, metacopy, and data-only
+layers. This patch adds additional validations at mount time to stop
+overlays from mounting in certain cases where the resulting mount would
+not function according to the user's expectations because they lack
+permission to access trusted.* xattrs (for example, not global root.)
 
-Add a counter and break if the loop is unexpectedly too long.
+Similar checks in ovl_make_workdir() that disable features instead of
+failing are still relevant and used in cases where the resulting mount
+can still work "reasonably well." Generally, if the feature was enabled
+through kernel config or module option, any mount that worked before
+will still work the same; this applies to redirect_dir and metacopy. The
+user must explicitly request these features in order to generate a mount
+failure. Verity and data-only layers on the other hand must be explictly
+requested and have no "reasonable" disabled or degraded alternative, so
+mounts attempting either always fail.
 
-Link: https://patch.msgid.link/20240808091513.31380-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+"lower data-only dirs require metacopy support" moved down in case
+userxattr is set, which disables metacopy.
+
+Cc: stable@vger.kernel.org # v6.6+
+Signed-off-by: Mike Baynton <mike@mbaynton.com>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/rme9652/hdsp.c  | 6 ++++--
- sound/pci/rme9652/hdspm.c | 6 ++++--
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ fs/overlayfs/params.c |   38 +++++++++++++++++++++++++++++++++-----
+ 1 file changed, 33 insertions(+), 5 deletions(-)
 
-diff --git a/sound/pci/rme9652/hdsp.c b/sound/pci/rme9652/hdsp.c
-index e7d1b43471a29..713ca262a0e97 100644
---- a/sound/pci/rme9652/hdsp.c
-+++ b/sound/pci/rme9652/hdsp.c
-@@ -1298,8 +1298,10 @@ static int snd_hdsp_midi_output_possible (struct hdsp *hdsp, int id)
- 
- static void snd_hdsp_flush_midi_input (struct hdsp *hdsp, int id)
+--- a/fs/overlayfs/params.c
++++ b/fs/overlayfs/params.c
+@@ -782,11 +782,6 @@ int ovl_fs_params_verify(const struct ov
  {
--	while (snd_hdsp_midi_input_available (hdsp, id))
--		snd_hdsp_midi_read_byte (hdsp, id);
-+	int count = 256;
+ 	struct ovl_opt_set set = ctx->set;
+ 
+-	if (ctx->nr_data > 0 && !config->metacopy) {
+-		pr_err("lower data-only dirs require metacopy support.\n");
+-		return -EINVAL;
+-	}
+-
+ 	/* Workdir/index are useless in non-upper mount */
+ 	if (!config->upperdir) {
+ 		if (config->workdir) {
+@@ -938,6 +933,39 @@ int ovl_fs_params_verify(const struct ov
+ 		config->metacopy = false;
+ 	}
+ 
++	/*
++	 * Fail if we don't have trusted xattr capability and a feature was
++	 * explicitly requested that requires them.
++	 */
++	if (!config->userxattr && !capable(CAP_SYS_ADMIN)) {
++		if (set.redirect &&
++		    config->redirect_mode != OVL_REDIRECT_NOFOLLOW) {
++			pr_err("redirect_dir requires permission to access trusted xattrs\n");
++			return -EPERM;
++		}
++		if (config->metacopy && set.metacopy) {
++			pr_err("metacopy requires permission to access trusted xattrs\n");
++			return -EPERM;
++		}
++		if (config->verity_mode) {
++			pr_err("verity requires permission to access trusted xattrs\n");
++			return -EPERM;
++		}
++		if (ctx->nr_data > 0) {
++			pr_err("lower data-only dirs require permission to access trusted xattrs\n");
++			return -EPERM;
++		}
++		/*
++		 * Other xattr-dependent features should be disabled without
++		 * great disturbance to the user in ovl_make_workdir().
++		 */
++	}
 +
-+	while (snd_hdsp_midi_input_available(hdsp, id) && --count)
-+		snd_hdsp_midi_read_byte(hdsp, id);
++	if (ctx->nr_data > 0 && !config->metacopy) {
++		pr_err("lower data-only dirs require metacopy support.\n");
++		return -EINVAL;
++	}
++
+ 	return 0;
  }
  
- static int snd_hdsp_midi_output_write (struct hdsp_midi *hmidi)
-diff --git a/sound/pci/rme9652/hdspm.c b/sound/pci/rme9652/hdspm.c
-index 267c7848974ae..74215f57f4fc9 100644
---- a/sound/pci/rme9652/hdspm.c
-+++ b/sound/pci/rme9652/hdspm.c
-@@ -1838,8 +1838,10 @@ static inline int snd_hdspm_midi_output_possible (struct hdspm *hdspm, int id)
- 
- static void snd_hdspm_flush_midi_input(struct hdspm *hdspm, int id)
- {
--	while (snd_hdspm_midi_input_available (hdspm, id))
--		snd_hdspm_midi_read_byte (hdspm, id);
-+	int count = 256;
-+
-+	while (snd_hdspm_midi_input_available(hdspm, id) && --count)
-+		snd_hdspm_midi_read_byte(hdspm, id);
- }
- 
- static int snd_hdspm_midi_output_write (struct hdspm_midi *hmidi)
--- 
-2.43.0
-
 
 
 
