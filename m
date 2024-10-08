@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-81929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15DCB994A31
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE3E0994EAA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47B331C24B22
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BE0AB26480
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC15D1DE886;
-	Tue,  8 Oct 2024 12:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD931DE4CC;
+	Tue,  8 Oct 2024 13:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2GYPKUS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwIcVglf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9FC4C97;
-	Tue,  8 Oct 2024 12:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2761DE4CD;
+	Tue,  8 Oct 2024 13:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390613; cv=none; b=hfoYFbFg573Nos/FkNDa1B/eANYRrskYq7yEsudxHqidSHkq+vINF/1f3Mn3HA0okoAei++akC2cGgLtAVlnm2+dV57Stx3AUCX+cPsfKjOx/3Ds5ACKk6zI9pPrB5yhMcORalAFr2GSK7J3TzQfVkKr42hqQYhZnD1YDYbfQ0c=
+	t=1728393568; cv=none; b=f4fA41BqxmwQil5JT+MIYMxvV37oooH0iYdhvE1ubJr8z2cb5qGUV9/ese0RZnVVofal0nNja3GfOE4HOdM9JGLC8jM/fVlVOUq/95ohD3wDBVaxalAW8tW4l4HAOerSdT8B3w4gJA4eI2s0jjQ/f+0Oj5r4AlYeIPRQ1T+D30E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390613; c=relaxed/simple;
-	bh=sdeYvWLVow4IFPpTkNY/KgpsTL1P96mpHlYQJmH8vaI=;
+	s=arc-20240116; t=1728393568; c=relaxed/simple;
+	bh=6lfEy+R+ILQo9WiH3pFs4w3TfYq28l+PY5tVm2MbumQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pobcHkE7IdAvYpt4CFAkQw9WNtxI3Z4GmZl2O4KLPm1YyQxyDLMl/Y9TXWDkxlxRoKvfzV0JnflVUJEfnWklz0rK0pSfX6SKX+B1+nN1csX2eRxBFDRW3c6bf8pWjHBourh94FiOes5yiLhXcwyM4xxtReoyKCG6w/NFXoHh5to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2GYPKUS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C75DC4CEC7;
-	Tue,  8 Oct 2024 12:30:12 +0000 (UTC)
+	 MIME-Version; b=VTTyc8GVJgAqBOe/CoEXdfhXVeLvaEw3J9usHwoLDrTdtq1u1l4UQdmKX4BCktNptWAu99NtRBU8yfJVGHHxTGNFBnr6nF1wgpJZAwW0OHsleHczXql6Ymirz31+rzeg5Wfo+UIQ4kckW1Ge81yf3BrP6oWGWG1u7Z5X+JIjKJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwIcVglf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DA4C4CEC7;
+	Tue,  8 Oct 2024 13:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390613;
-	bh=sdeYvWLVow4IFPpTkNY/KgpsTL1P96mpHlYQJmH8vaI=;
+	s=korg; t=1728393568;
+	bh=6lfEy+R+ILQo9WiH3pFs4w3TfYq28l+PY5tVm2MbumQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V2GYPKUSIcaiWSU41XQUurxaFIIhF++r85UhA3vqzOZhaW28WzpPT1GisIjWaCbIn
-	 Zc2zWoSAxnbkIh+OLgfbJsMTC2Lwg2B/F77E/tLFhvEpSWVnvxRRxC04jN4xcKO5Kr
-	 4pBckj3uSby7RqhbiDZwYJaWYoGEAMsTKJ5RI3Zo=
+	b=QwIcVglfwKgkRzKW5aqEObIZceEtJK634X+G2UTUcv7aAsEWFsRHRnQYYajFLSbE/
+	 h3G2GK+nF0EJseCMl+bNYH4HyYSZ+zI/SZHGYfCBbcgknQWJAbAGe0o7sNvOZSSTHG
+	 KiLTpFPn1hQ2Kb0vKwvXlCyQ6V5o8TPmt37KOzrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wesley Hershberger <wesley.hershberger@canonical.com>,
-	=?UTF-8?q?St=C3=A9phane=20Graber?= <stgraber@stgraber.org>,
-	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
-	Eric Sandeen <sandeen@redhat.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.10 340/482] ext4: fix off by one issue in alloc_flex_gd()
-Date: Tue,  8 Oct 2024 14:06:43 +0200
-Message-ID: <20241008115701.804141895@linuxfoundation.org>
+	Alex Hung <alex.hung@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 159/386] drm/amd/display: Avoid overflow assignment in link_dp_cts
+Date: Tue,  8 Oct 2024 14:06:44 +0200
+Message-ID: <20241008115635.682712073@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,145 +63,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Alex Hung <alex.hung@amd.com>
 
-commit 6121258c2b33ceac3d21f6a221452692c465df88 upstream.
+[ Upstream commit a15268787b79fd183dd526cc16bec9af4f4e49a1 ]
 
-Wesley reported an issue:
+sampling_rate is an uint8_t but is assigned an unsigned int, and thus it
+can overflow. As a result, sampling_rate is changed to uint32_t.
 
-==================================================================
-EXT4-fs (dm-5): resizing filesystem from 7168 to 786432 blocks
-------------[ cut here ]------------
-kernel BUG at fs/ext4/resize.c:324!
-CPU: 9 UID: 0 PID: 3576 Comm: resize2fs Not tainted 6.11.0+ #27
-RIP: 0010:ext4_resize_fs+0x1212/0x12d0
-Call Trace:
- __ext4_ioctl+0x4e0/0x1800
- ext4_ioctl+0x12/0x20
- __x64_sys_ioctl+0x99/0xd0
- x64_sys_call+0x1206/0x20d0
- do_syscall_64+0x72/0x110
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-==================================================================
+Similarly, LINK_QUAL_PATTERN_SET has a size of 2 bits, and it should
+only be assigned to a value less or equal than 4.
 
-While reviewing the patch, Honza found that when adjusting resize_bg in
-alloc_flex_gd(), it was possible for flex_gd->resize_bg to be bigger than
-flexbg_size.
+This fixes 2 INTEGER_OVERFLOW issues reported by Coverity.
 
-The reproduction of the problem requires the following:
-
- o_group = flexbg_size * 2 * n;
- o_size = (o_group + 1) * group_size;
- n_group: [o_group + flexbg_size, o_group + flexbg_size * 2)
- o_size = (n_group + 1) * group_size;
-
-Take n=0,flexbg_size=16 as an example:
-
-              last:15
-|o---------------|--------------n-|
-o_group:0    resize to      n_group:30
-
-The corresponding reproducer is:
-
-img=test.img
-rm -f $img
-truncate -s 600M $img
-mkfs.ext4 -F $img -b 1024 -G 16 8M
-dev=`losetup -f --show $img`
-mkdir -p /tmp/test
-mount $dev /tmp/test
-resize2fs $dev 248M
-
-Delete the problematic plus 1 to fix the issue, and add a WARN_ON_ONCE()
-to prevent the issue from happening again.
-
-[ Note: another reproucer which this commit fixes is:
-
-  img=test.img
-  rm -f $img
-  truncate -s 25MiB $img
-  mkfs.ext4 -b 4096 -E nodiscard,lazy_itable_init=0,lazy_journal_init=0 $img
-  truncate -s 3GiB $img
-  dev=`losetup -f --show $img`
-  mkdir -p /tmp/test
-  mount $dev /tmp/test
-  resize2fs $dev 3G
-  umount $dev
-  losetup -d $dev
-
-  -- TYT ]
-
-Reported-by: Wesley Hershberger <wesley.hershberger@canonical.com>
-Closes: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2081231
-Reported-by: Stéphane Graber <stgraber@stgraber.org>
-Closes: https://lore.kernel.org/all/20240925143325.518508-1-aleksandr.mikhalitsyn@canonical.com/
-Tested-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-Tested-by: Eric Sandeen <sandeen@redhat.com>
-Fixes: 665d3e0af4d3 ("ext4: reduce unnecessary memory allocation in alloc_flex_gd()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240927133329.1015041-1-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/resize.c |   18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dc_dp_types.h                  | 2 +-
+ drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c | 3 ++-
+ drivers/gpu/drm/amd/display/include/dpcd_defs.h               | 1 +
+ 3 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/resize.c
-+++ b/fs/ext4/resize.c
-@@ -230,8 +230,8 @@ struct ext4_new_flex_group_data {
- #define MAX_RESIZE_BG				16384
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
+index 83719f5bea495..8df52f9ba0b7c 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
+@@ -721,7 +721,7 @@ struct dp_audio_test_data_flags {
+ struct dp_audio_test_data {
  
- /*
-- * alloc_flex_gd() allocates a ext4_new_flex_group_data with size of
-- * @flexbg_size.
-+ * alloc_flex_gd() allocates an ext4_new_flex_group_data that satisfies the
-+ * resizing from @o_group to @n_group, its size is typically @flexbg_size.
-  *
-  * Returns NULL on failure otherwise address of the allocated structure.
-  */
-@@ -239,25 +239,27 @@ static struct ext4_new_flex_group_data *
- 				ext4_group_t o_group, ext4_group_t n_group)
- {
- 	ext4_group_t last_group;
-+	unsigned int max_resize_bg;
- 	struct ext4_new_flex_group_data *flex_gd;
- 
- 	flex_gd = kmalloc(sizeof(*flex_gd), GFP_NOFS);
- 	if (flex_gd == NULL)
- 		goto out3;
- 
--	if (unlikely(flexbg_size > MAX_RESIZE_BG))
--		flex_gd->resize_bg = MAX_RESIZE_BG;
--	else
--		flex_gd->resize_bg = flexbg_size;
-+	max_resize_bg = umin(flexbg_size, MAX_RESIZE_BG);
-+	flex_gd->resize_bg = max_resize_bg;
- 
- 	/* Avoid allocating large 'groups' array if not needed */
- 	last_group = o_group | (flex_gd->resize_bg - 1);
- 	if (n_group <= last_group)
--		flex_gd->resize_bg = 1 << fls(n_group - o_group + 1);
-+		flex_gd->resize_bg = 1 << fls(n_group - o_group);
- 	else if (n_group - last_group < flex_gd->resize_bg)
--		flex_gd->resize_bg = 1 << max(fls(last_group - o_group + 1),
-+		flex_gd->resize_bg = 1 << max(fls(last_group - o_group),
- 					      fls(n_group - last_group));
- 
-+	if (WARN_ON_ONCE(flex_gd->resize_bg > max_resize_bg))
-+		flex_gd->resize_bg = max_resize_bg;
-+
- 	flex_gd->groups = kmalloc_array(flex_gd->resize_bg,
- 					sizeof(struct ext4_new_group_data),
- 					GFP_NOFS);
+ 	struct dp_audio_test_data_flags flags;
+-	uint8_t sampling_rate;
++	uint32_t sampling_rate;
+ 	uint8_t channel_count;
+ 	uint8_t pattern_type;
+ 	uint8_t pattern_period[8];
+diff --git a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
+index fe4282771cd07..8a97d96f7d8bb 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
++++ b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
+@@ -849,7 +849,8 @@ bool dp_set_test_pattern(
+ 			core_link_read_dpcd(link, DP_TRAINING_PATTERN_SET,
+ 					    &training_pattern.raw,
+ 					    sizeof(training_pattern));
+-			training_pattern.v1_3.LINK_QUAL_PATTERN_SET = pattern;
++			if (pattern <= PHY_TEST_PATTERN_END_DP11)
++				training_pattern.v1_3.LINK_QUAL_PATTERN_SET = pattern;
+ 			core_link_write_dpcd(link, DP_TRAINING_PATTERN_SET,
+ 					     &training_pattern.raw,
+ 					     sizeof(training_pattern));
+diff --git a/drivers/gpu/drm/amd/display/include/dpcd_defs.h b/drivers/gpu/drm/amd/display/include/dpcd_defs.h
+index aee5170f5fb23..c246235e4afec 100644
+--- a/drivers/gpu/drm/amd/display/include/dpcd_defs.h
++++ b/drivers/gpu/drm/amd/display/include/dpcd_defs.h
+@@ -76,6 +76,7 @@ enum dpcd_phy_test_patterns {
+ 	PHY_TEST_PATTERN_D10_2,
+ 	PHY_TEST_PATTERN_SYMBOL_ERROR,
+ 	PHY_TEST_PATTERN_PRBS7,
++	PHY_TEST_PATTERN_END_DP11 = PHY_TEST_PATTERN_PRBS7,
+ 	PHY_TEST_PATTERN_80BIT_CUSTOM,/* For DP1.2 only */
+ 	PHY_TEST_PATTERN_CP2520_1,
+ 	PHY_TEST_PATTERN_CP2520_2,
+-- 
+2.43.0
+
 
 
 
