@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-81669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DA889948AE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:15:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC94A994B8F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BECA6284334
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:15:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5C411C24C98
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E692F1DD867;
-	Tue,  8 Oct 2024 12:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C5C1DEFE1;
+	Tue,  8 Oct 2024 12:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nviMAWxX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPPJMYzS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E3233981;
-	Tue,  8 Oct 2024 12:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BA2192594;
+	Tue,  8 Oct 2024 12:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389737; cv=none; b=ohIsT+W/H9orkBIw3kzPpckiXPoJggJjorXP4lv0xZcHiUot6jE70RAG61hnngJ2+4QNw9t0PGGbGKw/FPX2HpvEYgHamC7mkFP/VIEb7f0AJq29YqIoDJf23FwNYBybjhwqYTNHbKmzn7HcRD+lfJed7t6Jz/2pwnL7LgtLx1U=
+	t=1728391438; cv=none; b=I0bInDkJDZ4rFh0jOkSatNGlAzIX7rKUuB2o5UaaV/2GDcFu6syclOPgV9xJ6pZpT7ByUjPv1gJ2W1WzvrYoaq8YgHG+//0m46p0YA9LakH6CVFDhPJTdtwOdVC3ARpnwG8KJmnOq4MyYrChZUk9D/kUo4V8AlVNrN8AlVco/fQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389737; c=relaxed/simple;
-	bh=kSymDANh2hvyH53sejtlPjKDax/tXac/3DVio9h0p1E=;
+	s=arc-20240116; t=1728391438; c=relaxed/simple;
+	bh=guxe/386R9pwlvidbY1K+N16wFWiFH+lDP9IlomuJD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rXHx5TwV1xJx47GJqXpKrCzJh5VzEUmrX8rro7hIfkwOPM9sU51grGLbRbY5ldP8uOhCPuvd2iJPi1zoQ7G1CjSKnzUYX+6bMpQTbzBzdz5SeZoKbIKwS36mtFuKDEI6jn59rkTReXWcmv0lBzag5RWwZ6wgzwAlfHwbc8u8gu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nviMAWxX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1222DC4CEC7;
-	Tue,  8 Oct 2024 12:15:36 +0000 (UTC)
+	 MIME-Version; b=h3KxYEN++Mxhhi4dCLAqgD1teU2c+WnqQgrDK6USYREZieP7sLj/11Oz/luvnilEtcRJS8nP/1N5ypxctlU7QT+1mCzTX3zwNlQFY8hm0kU3vuoVZ0V1KMF/daBtTz9NiH6rpHAXIQ+0lLWjE1+WuHWGQ+Pq8RddAsCkSz9siPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPPJMYzS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2503FC4CEC7;
+	Tue,  8 Oct 2024 12:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389737;
-	bh=kSymDANh2hvyH53sejtlPjKDax/tXac/3DVio9h0p1E=;
+	s=korg; t=1728391438;
+	bh=guxe/386R9pwlvidbY1K+N16wFWiFH+lDP9IlomuJD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nviMAWxXZBQN43qbcxs1xwCCqkRCUc5LoAihdWOsSJNgyME6fkDXoc6AfTily9sfe
-	 YR76X0PcFajmofmcLS7Sh9Em7KFaus3bdPht8Xllwe7S7qOGNwhh8YiHflndbk1qiA
-	 TZsxx46v/k5bAAMfEUdAUWGQ3v+g4i7bLM3Gzl3g=
+	b=nPPJMYzSnYITFic+DiZCXcY0bCwJQUTvITGjOheUZux+cEWmasHZtJDYyzh5JcM/B
+	 EVFnnQHGhF3BvyK7L3Rvj97W4e48h9QeHofhgiX2PUyXBTkdmuxhanwGKrFOKsvmca
+	 3LppQcCmeZW+JqyopA/iwbZwtNPRdRwN6wS+M3E8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 081/482] net/xen-netback: prevent UAF in xenvif_flush_hash()
-Date: Tue,  8 Oct 2024 14:02:24 +0200
-Message-ID: <20241008115651.494604106@linuxfoundation.org>
+Subject: [PATCH 6.11 115/558] wifi: ath11k: fix array out-of-bound access in SoC stats
+Date: Tue,  8 Oct 2024 14:02:25 +0200
+Message-ID: <20241008115706.891645398@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-[ Upstream commit 0fa5e94a1811d68fbffa0725efe6d4ca62c03d12 ]
+[ Upstream commit 69f253e46af98af17e3efa3e5dfa72fcb7d1983d ]
 
-During the list_for_each_entry_rcu iteration call of xenvif_flush_hash,
-kfree_rcu does not exist inside the rcu read critical section, so if
-kfree_rcu is called when the rcu grace period ends during the iteration,
-UAF occurs when accessing head->next after the entry becomes free.
+Currently, the ath11k_soc_dp_stats::hal_reo_error array is defined with a
+maximum size of DP_REO_DST_RING_MAX. However, the ath11k_dp_process_rx()
+function access ath11k_soc_dp_stats::hal_reo_error using the REO
+destination SRNG ring ID, which is incorrect. SRNG ring ID differ from
+normal ring ID, and this usage leads to out-of-bounds array access. To fix
+this issue, modify ath11k_dp_process_rx() to use the normal ring ID
+directly instead of the SRNG ring ID to avoid out-of-bounds array access.
 
-Therefore, to solve this, you need to change it to list_for_each_entry_safe.
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
 
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Link: https://patch.msgid.link/20240822181109.2577354-1-aha310510@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240704070811.4186543-3-quic_periyasa@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/xen-netback/hash.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/xen-netback/hash.c b/drivers/net/xen-netback/hash.c
-index ff96f22648efd..45ddce35f6d2c 100644
---- a/drivers/net/xen-netback/hash.c
-+++ b/drivers/net/xen-netback/hash.c
-@@ -95,7 +95,7 @@ static u32 xenvif_new_hash(struct xenvif *vif, const u8 *data,
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 86485580dd895..c087d8a0f5b25 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -2697,7 +2697,7 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
+ 		if (unlikely(push_reason !=
+ 			     HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRUCTION)) {
+ 			dev_kfree_skb_any(msdu);
+-			ab->soc_stats.hal_reo_error[dp->reo_dst_ring[ring_id].ring_id]++;
++			ab->soc_stats.hal_reo_error[ring_id]++;
+ 			continue;
+ 		}
  
- static void xenvif_flush_hash(struct xenvif *vif)
- {
--	struct xenvif_hash_cache_entry *entry;
-+	struct xenvif_hash_cache_entry *entry, *n;
- 	unsigned long flags;
- 
- 	if (xenvif_hash_cache_size == 0)
-@@ -103,8 +103,7 @@ static void xenvif_flush_hash(struct xenvif *vif)
- 
- 	spin_lock_irqsave(&vif->hash.cache.lock, flags);
- 
--	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link,
--				lockdep_is_held(&vif->hash.cache.lock)) {
-+	list_for_each_entry_safe(entry, n, &vif->hash.cache.list, link) {
- 		list_del_rcu(&entry->link);
- 		vif->hash.cache.count--;
- 		kfree_rcu(entry, rcu);
 -- 
 2.43.0
 
