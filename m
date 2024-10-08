@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-82477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B3D4994CFD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A67DC994A50
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 072521F220AE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 521941F21DC1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5086A1DEFF3;
-	Tue,  8 Oct 2024 12:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4D11DED6F;
+	Tue,  8 Oct 2024 12:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOGPmkEf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3dBABGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF37189910;
-	Tue,  8 Oct 2024 12:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6ED1D0BAA;
+	Tue,  8 Oct 2024 12:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392394; cv=none; b=qjejv4ImCZ1qtjLhXtZ50yW+m/VFQnwu18gmhvvl7a1dAX4Uau1DKmeIjWfplCYo9ncs6m1QT8yFkZavwvyskr9NlgIdnajpwpHYFei62mVxJUK/KPRMOj1ssxoM3d0+f/to9zt0/fkmkwgU6ktdzzEz5/i7pKI6KJpBPti6030=
+	t=1728390709; cv=none; b=SkKFG8WQNCOMu0grOcKoxHPAZSE/HwA52oPxFb3RbHnL4D9nKBfFEpSi8alFt+1AFG4+JXJPvs5NY47+n+4ftjZkrR2wXc1ngXrEi3bJLaZl4wnlMSdcuqRHvGoDiz+fRmkBO8j3cvI9HWJsHWTAcsE5d98K4iHi0l0Sau644K4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392394; c=relaxed/simple;
-	bh=T5OpvfzvJZ0Psnznx7oheI2Q+JFmXKr4Q+2zmUCCqS4=;
+	s=arc-20240116; t=1728390709; c=relaxed/simple;
+	bh=exqbaKdcut4XAge8A5gJA7aDcg0XFAbPy/538zYSGtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=btKHB6uhDhgJyFKA1ZxfTXs1ZRxi5zb8DuCPx8ojuOLzCVVMJcYUwpTeKqDF8X6kLxBl2aPLhtpyXJUg5ihstvdwdEaZxt35hCaB3ggXAf+OUE7N4tLV5CZsDQi3WTcDjxWLmz3k8j5aid+/QgriTShibzzTP0M2ARfDPyFj0rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOGPmkEf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71314C4CEC7;
-	Tue,  8 Oct 2024 12:59:53 +0000 (UTC)
+	 MIME-Version; b=n6/LafAbc2Ga5Qpf6nD01g8AUagtp7VIX1ViYtTFrFAKOeI4p5r4tnvrmV2vh4rLEiGXs+q4IQBdDMkTpyQzInx9Sn51r8Y1c/Ws24JNZkQEcckVGg0BVHEwYuMsc//8CWFM47KuROyVmEuqNKPKg2rk3mYVoY5wAbceJwAgpjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3dBABGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B162C4CEC7;
+	Tue,  8 Oct 2024 12:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392393;
-	bh=T5OpvfzvJZ0Psnznx7oheI2Q+JFmXKr4Q+2zmUCCqS4=;
+	s=korg; t=1728390708;
+	bh=exqbaKdcut4XAge8A5gJA7aDcg0XFAbPy/538zYSGtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DOGPmkEf52jKei8GJ6amu549jcXupv5E3QxFUz68ukCmFLwuGzSXX71KBxGm+qSvl
-	 jSc1wbilrR37PBZ/8/ecNIWgoqAKbBHWCFqNlDy6RKcLIxKRyNS6tv2v7P8klXOJCG
-	 MSQgq6m7GAxtz8TVzCPN32uQOWWW7CjCv2SDkyZQ=
+	b=U3dBABGx3q2lzLSLjkOsCh3DscqBDaIpG9j0maPmft8L4zxAkDfIc3f40hgwFarCf
+	 bwcBs2AVzhiZ0hrPpqBpGR0JM9VfQp2R0RIGn4/NEPx78iWhWRFKQw7fKz1LmiFpzv
+	 ZFgzuO5yMVHfKPW4KDoxqM2JqPq7j4pINm7V3iN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Camm Maguire <camm@maguirefamily.org>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.11 402/558] parisc: Fix stack start for ADDR_NO_RANDOMIZE personality
+	Sedat Dilek <sedat.dilek@gmail.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 6.10 369/482] perf python: Disable -Wno-cast-function-type-mismatch if present on clang
 Date: Tue,  8 Oct 2024 14:07:12 +0200
-Message-ID: <20241008115718.099030124@linuxfoundation.org>
+Message-ID: <20241008115702.943300326@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +66,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-commit f31b256994acec6929306dfa86ac29716e7503d6 upstream.
+commit 00dc514612fe98cfa117193b9df28f15e7c9db9c upstream.
 
-Fix the stack start address calculation for the parisc architecture in
-setup_arg_pages() when address randomization is disabled. When the
-ADDR_NO_RANDOMIZE process personality is disabled there is no need to add
-additional space for the stack.
-Note that this patch touches code inside an #ifdef CONFIG_STACK_GROWSUP hunk,
-which is why only the parisc architecture is affected since it's the
-only Linux architecture where the stack grows upwards.
+The -Wcast-function-type-mismatch option was introduced in clang 19 and
+its enabled by default, since we use -Werror, and python bindings do
+casts that are valid but trips this warning, disable it if present.
 
-Without this patch you will find the stack in the middle of some
-mapped libaries and suddenly limited to 6MB instead of 8MB:
-
-root@parisc:~# setarch -R /bin/bash -c "cat /proc/self/maps"
-00010000-00019000 r-xp 00000000 08:05 1182034           /usr/bin/cat
-00019000-0001a000 rwxp 00009000 08:05 1182034           /usr/bin/cat
-0001a000-0003b000 rwxp 00000000 00:00 0                 [heap]
-f90c4000-f9283000 r-xp 00000000 08:05 1573004           /usr/lib/hppa-linux-gnu/libc.so.6
-f9283000-f9285000 r--p 001bf000 08:05 1573004           /usr/lib/hppa-linux-gnu/libc.so.6
-f9285000-f928a000 rwxp 001c1000 08:05 1573004           /usr/lib/hppa-linux-gnu/libc.so.6
-f928a000-f9294000 rwxp 00000000 00:00 0
-f9301000-f9323000 rwxp 00000000 00:00 0                 [stack]
-f98b4000-f98e4000 r-xp 00000000 08:05 1572869           /usr/lib/hppa-linux-gnu/ld.so.1
-f98e4000-f98e5000 r--p 00030000 08:05 1572869           /usr/lib/hppa-linux-gnu/ld.so.1
-f98e5000-f98e9000 rwxp 00031000 08:05 1572869           /usr/lib/hppa-linux-gnu/ld.so.1
-f9ad8000-f9b00000 rw-p 00000000 00:00 0
-f9b00000-f9b01000 r-xp 00000000 00:00 0                 [vdso]
-
-With the patch the stack gets correctly mapped at the end
-of the process memory map:
-
-root@panama:~# setarch -R /bin/bash -c "cat /proc/self/maps"
-00010000-00019000 r-xp 00000000 08:13 16385582          /usr/bin/cat
-00019000-0001a000 rwxp 00009000 08:13 16385582          /usr/bin/cat
-0001a000-0003b000 rwxp 00000000 00:00 0                 [heap]
-fef29000-ff0eb000 r-xp 00000000 08:13 16122400          /usr/lib/hppa-linux-gnu/libc.so.6
-ff0eb000-ff0ed000 r--p 001c2000 08:13 16122400          /usr/lib/hppa-linux-gnu/libc.so.6
-ff0ed000-ff0f2000 rwxp 001c4000 08:13 16122400          /usr/lib/hppa-linux-gnu/libc.so.6
-ff0f2000-ff0fc000 rwxp 00000000 00:00 0
-ff4b4000-ff4e4000 r-xp 00000000 08:13 16121913          /usr/lib/hppa-linux-gnu/ld.so.1
-ff4e4000-ff4e6000 r--p 00030000 08:13 16121913          /usr/lib/hppa-linux-gnu/ld.so.1
-ff4e6000-ff4ea000 rwxp 00032000 08:13 16121913          /usr/lib/hppa-linux-gnu/ld.so.1
-ff6d7000-ff6ff000 rw-p 00000000 00:00 0
-ff6ff000-ff700000 r-xp 00000000 00:00 0                 [vdso]
-ff700000-ff722000 rwxp 00000000 00:00 0                 [stack]
-
-Reported-by: Camm Maguire <camm@maguirefamily.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: d045c77c1a69 ("parisc,metag: Fix crashes due to stack randomization on stack-grows-upwards architectures")
-Fixes: 17d9822d4b4c ("parisc: Consider stack randomization for mmap base only when necessary")
-Cc: stable@vger.kernel.org	# v5.2+
+Closes: https://lore.kernel.org/all/CA+icZUXoJ6BS3GMhJHV3aZWyb5Cz2haFneX0C5pUMUUhG-UVKQ@mail.gmail.com
+Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
+Tested-by: Sedat Dilek <sedat.dilek@gmail.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: stable@vger.kernel.org # To allow building with the upcoming clang 19
+Link: https://lore.kernel.org/lkml/CA+icZUVtHn8X1Tb_Y__c-WswsO0K8U9uy3r2MzKXwTA5THtL7w@mail.gmail.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/exec.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/perf/util/setup.py |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -811,7 +811,8 @@ int setup_arg_pages(struct linux_binprm
- 	stack_base = calc_max_stack_size(stack_base);
+--- a/tools/perf/util/setup.py
++++ b/tools/perf/util/setup.py
+@@ -63,6 +63,8 @@ cflags = getenv('CFLAGS', '').split()
+ cflags += ['-fno-strict-aliasing', '-Wno-write-strings', '-Wno-unused-parameter', '-Wno-redundant-decls', '-DPYTHON_PERF' ]
+ if cc_is_clang:
+     cflags += ["-Wno-unused-command-line-argument" ]
++    if clang_has_option("-Wno-cast-function-type-mismatch"):
++        cflags += ["-Wno-cast-function-type-mismatch" ]
+ else:
+     cflags += ['-Wno-cast-function-type' ]
  
- 	/* Add space for stack randomization. */
--	stack_base += (STACK_RND_MASK << PAGE_SHIFT);
-+	if (current->flags & PF_RANDOMIZE)
-+		stack_base += (STACK_RND_MASK << PAGE_SHIFT);
- 
- 	/* Make sure we didn't let the argument array grow too large. */
- 	if (vma->vm_end - vma->vm_start > stack_base)
 
 
 
