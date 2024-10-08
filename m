@@ -1,273 +1,154 @@
-Return-Path: <stable+bounces-83076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E9CC995515
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 18:55:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE8E99551F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 18:57:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41F1A1C24A28
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 16:55:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A4CC1C24EF9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 16:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E441E0E1F;
-	Tue,  8 Oct 2024 16:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43DBE1E0E09;
+	Tue,  8 Oct 2024 16:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="N6za2VVc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HWFUjXgr"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9A01E0E1C
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 16:53:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2BC1E0DEB;
+	Tue,  8 Oct 2024 16:56:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728406408; cv=none; b=geeIiwhu7aPK4ElOQa93PEfRMCu8O1ukH6S4KqW3lri2rhucMH/28Mq8uRjfJycY0b1npw8IMN9MBdHuaG2rpzoecaVdZHWbLNPu7A8NtnwzlISIJ8Mq78ZLcZY+Cdp/rn/0es2DiH8ztpgfB4Ya9uKfvoKvrD0bZsNO/PGMgbY=
+	t=1728406620; cv=none; b=OXj7GrlBVBvTcpRDlOpXkK1s+eFz4qOaF2kUDySXJVjm/myvdZOpsq3H2L9v7ydDfDUt1W2FWixVN1bN3RBQtHWGE/6UnH30XkI9xdnD7n6OTj+/6v6x69OOMWwaXO3CCcP8yW70lNHQzCJerqBAn5kaR/Qx0RwZUE8opftKZO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728406408; c=relaxed/simple;
-	bh=rL0MaoaPRUFNOqhcp1c45TPTF2EMiFWUdnqQcNH+NTI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J2qbhhtjafv+bVk5lsu1MnrpIRlWGSjmdm/IVNFN/RTm/Lif2FH6IXEZdudheifKZ/Vxs8b3Wt+m9Vu7BDOjZbIK3DMjD/TynD6/7JNbkehpT2GluKOIBBZyu53fxE6OR3Qkm1hwN5qLbo4bwhNXeHgW4vHEjzxprkMwklg6NcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=N6za2VVc; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
-	In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=AMUlgTG0A/opBPXFTsxFfv7mFV+HOzteHoWz27wt99Q=; b=N6za2VVcLnSsh21iAjKOKaJPji
-	zNhK3jF65H3dvw+gjP380XZ6laOfVkKFhfcB1pk8T0bQXLZaezNQnC7SPddKA4scxRRMdNFRj4W/f
-	LmIAoIqfafSKoYtT+dopsSQ8Nxks26D65jWmnTmOYBebcOOL9NIDWbDPGFEm81OIUeHdzqV9jZRG0
-	+MpYTzWU8cxPSjly5jOCNaGbHSvZMyeAB9zcD4+L4NvjqyWS9Jx4cmfpZN0KlBb79ggJKxc7HqLl7
-	HX3wB22gQw3bnER/uEMIeBaAo5qt/OqXTmgal/zXsb+SCuNVvZUQPfw4MuytOGTcLy118UfotCi3U
-	ZThEtIZw==;
-Received: from 179-125-64-236-dinamico.pombonet.net.br ([179.125.64.236] helo=localhost.localdomain)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1syDSe-006dsM-Gj; Tue, 08 Oct 2024 18:53:25 +0200
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-To: stable@vger.kernel.org
-Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Christoph Hellwig <hch@infradead.org>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	kernel-dev@igalia.com,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 5.15 3/3] blk-integrity: register sysfs attributes on struct device
-Date: Tue,  8 Oct 2024 13:53:07 -0300
-Message-Id: <20241008165307.4170334-4-cascardo@igalia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241008165307.4170334-1-cascardo@igalia.com>
-References: <20241008165307.4170334-1-cascardo@igalia.com>
+	s=arc-20240116; t=1728406620; c=relaxed/simple;
+	bh=TjuE1lpyj0KPwrOqFc2qqWD/4QiChx8KTqlN2KEH57A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aNtFh/rgGaF3zad79DdWxRFn/cR13ATulqFhLub7CCAKdo2enijUIuJCbxepccpnrPaYr2eZh2oEistzMCFGi31Se6GjKhuDT8PXyen9bWbR/FV1CwLzA/XQjuetYtbmfNvK6prfM1BifhQn8xBtWJn21aK8uK+6ARfg5n1hVdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HWFUjXgr; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728406619; x=1759942619;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=TjuE1lpyj0KPwrOqFc2qqWD/4QiChx8KTqlN2KEH57A=;
+  b=HWFUjXgrd4uNr5nbh/NlVaTkN81kDlS5o8h1U6TQq11yiRlC8V+tGpUX
+   h56DdGe33QP/Nsornm3S5icS6/3N1Ibhb0d868o1ejRnrvPXx3KfrnjM4
+   W6x23VmIrz7xct99nSpym6VbVeclgmMFXQ7BbiL6L4ddk2QZ+BANF/0RB
+   WnAjIP/aBb1pPzsEI+MUoWKKVIM4DgbLMGM5U6ci92YvCIGCBoT63y9Mk
+   6ssgDczMOaeSy1Yvz+kxE05diLMvd5hI7jIAMrQNELEoIJvM4WJt9+t2Y
+   BmufCiZszbZRWGDbpS0VHRNcIDtYL68WCe3zpKmKstMxc12wt1rIuznYC
+   Q==;
+X-CSE-ConnectionGUID: mZBFnl3gQT6q8eUyrpVffQ==
+X-CSE-MsgGUID: B4VfjgllSGKzX4sdcruoow==
+X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="38984020"
+X-IronPort-AV: E=Sophos;i="6.11,187,1725346800"; 
+   d="scan'208";a="38984020"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2024 09:56:58 -0700
+X-CSE-ConnectionGUID: SUmYSgOJSomqo9ygta8+GA==
+X-CSE-MsgGUID: RruUnu+gRoSSPg4zh8D/Dg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,187,1725346800"; 
+   d="scan'208";a="113379971"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa001.jf.intel.com with ESMTP; 08 Oct 2024 09:56:56 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id BDCF520F; Tue, 08 Oct 2024 19:56:54 +0300 (EEST)
+Date: Tue, 8 Oct 2024 19:56:54 +0300
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Christian Heusel <christian@heusel.eu>,
+	Fabian =?utf-8?Q?St=C3=A4ber?= <fabian@fstab.de>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"S, Sanath" <Sanath.S@amd.com>
+Subject: Re: Dell WD19TB Thunderbolt Dock not working with kernel > 6.6.28-1
+Message-ID: <20241008165654.GU275077@black.fi.intel.com>
+References: <CAPX310gmJeYhE2C6-==rKSDh6wAmoR8R5-pjEOgYD3AP+Si+0w@mail.gmail.com>
+ <2024092318-pregnancy-handwoven-3458@gregkh>
+ <CAPX310hNn28m3gxmtus0=EAb3wXvDTgG2HXyR63CBW7HKxYkpg@mail.gmail.com>
+ <CAPX310hCZqKJvEns9vjoQ27=JZzNNa+HK0o4knOMfBBK+JWNEg@mail.gmail.com>
+ <1c354887-c2a5-4df5-978c-94a410341554@heusel.eu>
+ <5192a3c3-29dd-4249-9a69-fc4845ad419c@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <5192a3c3-29dd-4249-9a69-fc4845ad419c@amd.com>
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+On Mon, Oct 07, 2024 at 12:33:54PM -0500, Mario Limonciello wrote:
+> On 10/7/2024 12:21, Christian Heusel wrote:
+> > On 24/10/07 06:49PM, Fabian Stäber wrote:
+> > > Hi,
+> > 
+> > Hey Fabian,
+> > 
+> > > sorry for the delay, I ran git bisect, here's the output. If you need
+> > > any additional info please let me know.
+> > > 
+> > > 3c1d704d9266741fc5a9a0a287a5c6b72ddbea55 is the first bad commit
+> > > commit 3c1d704d9266741fc5a9a0a287a5c6b72ddbea55 (HEAD)
+> > > Author: Sanath S <Sanath.S@amd.com>
+> > > Date:   Sat Jan 13 10:52:48 2024
+> > > 
+> > >      thunderbolt: Reset topology created by the boot firmware
+> > > 
+> > >      commit 59a54c5f3dbde00b8ad30aef27fe35b1fe07bf5c upstream.
+> > 
+> > So there is a commit c67f926ec870 ("thunderbolt: Reset only non-USB4
+> > host routers in resume") that carries a fixes tag for the commit that
+> > you have bisected to. The commits should both be in v6.6.29 and onwards,
+> > so in the same release that's causing you problems. Maybe the fix is
+> > incomplete or has a missing dependency 🤔
+> 
+> You mean mainline commit 8cf9926c537c ("thunderbolt: Reset only non-USB4
+> host routers in resume").
+> 
+> > 
+> > >      [...]
+> > >      Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
+> > >      Signed-off-by: Sanath S <Sanath.S@amd.com>
+> > >      Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> > >      Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > 
+> > I have added Mika, Mario and Sanath to the recipients, maybe they have
+> > inputs on what would be useful debugging output.
+> > 
+> > In the meantime maybe also test if the issue is present with the latest
+> > stable kernel ("linux" in the Arch packages) and with the latest release
+> > candidate (you can find a precompiled version [here][0].
+> 
+> To double confirm, does thunderbolt.host_reset=0 on the kernel command line
+> help your issue?  Based on the bisect I would expect it should help.  Yes;
+> comments on both 6.6.y as well as 6.12-rc2 would be ideal.
+> 
+> Also assuming it helps can you please post your dmesg from 6.12-rc2 both
+> with thunderbolt.host_reset=0 and without?  A github gist or a new kernel
+> bugzilla are good places to post it.
 
-Upstream commit ff53cd52d9bdbf4074d2bbe9b591729997780bd3.
+Also to understand the flow, you are booting with the dock connected
+right?
 
-The "integrity" kobject only acted as a holder for static sysfs entries.
-It also was embedded into struct gendisk without managing it, violating
-assumptions of the driver core.
+Can you see also what:
 
-Instead register the sysfs entries directly onto the struct device.
+  $ boltctl
 
-Also drop the now unused member integrity_kobj from struct gendisk.
-
-Suggested-by: Christoph Hellwig <hch@infradead.org>
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/r/20230309-kobj_release-gendisk_integrity-v3-3-ceccb4493c46@weissschuh.net
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[cascardo: conflict because of constification of integrity_ktype]
-[cascardo: struct gendisk is defined at include/linux/genhd.h]
-[cascardo: there is no blk_trace_attr_group]
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
----
- block/blk-integrity.c | 55 +++----------------------------------------
- block/blk.h           | 10 +-------
- block/genhd.c         | 12 ++++------
- include/linux/genhd.h |  3 ---
- 4 files changed, 8 insertions(+), 72 deletions(-)
-
-diff --git a/block/blk-integrity.c b/block/blk-integrity.c
-index 8868b1e01d58..fbbb38cc9e8a 100644
---- a/block/blk-integrity.c
-+++ b/block/blk-integrity.c
-@@ -212,31 +212,6 @@ bool blk_integrity_merge_bio(struct request_queue *q, struct request *req,
- 	return true;
- }
- 
--static ssize_t integrity_attr_show(struct kobject *kobj, struct attribute *attr,
--				   char *page)
--{
--	struct gendisk *disk = container_of(kobj, struct gendisk, integrity_kobj);
--	struct device *dev = disk_to_dev(disk);
--	struct device_attribute *dev_attr =
--		container_of(attr, struct device_attribute, attr);
--
--	return dev_attr->show(dev, dev_attr, page);
--}
--
--static ssize_t integrity_attr_store(struct kobject *kobj,
--				    struct attribute *attr, const char *page,
--				    size_t count)
--{
--	struct gendisk *disk = container_of(kobj, struct gendisk, integrity_kobj);
--	struct device *dev = disk_to_dev(disk);
--	struct device_attribute *dev_attr =
--		container_of(attr, struct device_attribute, attr);
--
--	if (!dev_attr->store)
--		return 0;
--	return dev_attr->store(dev, dev_attr, page, count);
--}
--
- static inline struct blk_integrity *dev_to_bi(struct device *dev)
- {
- 	return &dev_to_disk(dev)->queue->integrity;
-@@ -345,16 +320,10 @@ static struct attribute *integrity_attrs[] = {
- 	&dev_attr_device_is_integrity_capable.attr,
- 	NULL
- };
--ATTRIBUTE_GROUPS(integrity);
- 
--static const struct sysfs_ops integrity_ops = {
--	.show	= &integrity_attr_show,
--	.store	= &integrity_attr_store,
--};
--
--static struct kobj_type integrity_ktype = {
--	.default_groups = integrity_groups,
--	.sysfs_ops	= &integrity_ops,
-+const struct attribute_group blk_integrity_attr_group = {
-+	.name = "integrity",
-+	.attrs = integrity_attrs,
- };
- 
- static blk_status_t blk_integrity_nop_fn(struct blk_integrity_iter *iter)
-@@ -431,21 +400,3 @@ void blk_integrity_unregister(struct gendisk *disk)
- 	memset(bi, 0, sizeof(*bi));
- }
- EXPORT_SYMBOL(blk_integrity_unregister);
--
--int blk_integrity_add(struct gendisk *disk)
--{
--	int ret;
--
--	ret = kobject_init_and_add(&disk->integrity_kobj, &integrity_ktype,
--				   &disk_to_dev(disk)->kobj, "%s", "integrity");
--	if (!ret)
--		kobject_uevent(&disk->integrity_kobj, KOBJ_ADD);
--	return ret;
--}
--
--void blk_integrity_del(struct gendisk *disk)
--{
--	kobject_uevent(&disk->integrity_kobj, KOBJ_REMOVE);
--	kobject_del(&disk->integrity_kobj);
--	kobject_put(&disk->integrity_kobj);
--}
-diff --git a/block/blk.h b/block/blk.h
-index aab72194d226..e90a5e348512 100644
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -130,8 +130,7 @@ static inline bool integrity_req_gap_front_merge(struct request *req,
- 				bip_next->bip_vec[0].bv_offset);
- }
- 
--int blk_integrity_add(struct gendisk *disk);
--void blk_integrity_del(struct gendisk *);
-+extern const struct attribute_group blk_integrity_attr_group;
- #else /* CONFIG_BLK_DEV_INTEGRITY */
- static inline bool blk_integrity_merge_rq(struct request_queue *rq,
- 		struct request *r1, struct request *r2)
-@@ -164,13 +163,6 @@ static inline bool bio_integrity_endio(struct bio *bio)
- static inline void bio_integrity_free(struct bio *bio)
- {
- }
--static inline int blk_integrity_add(struct gendisk *disk)
--{
--	return 0;
--}
--static inline void blk_integrity_del(struct gendisk *disk)
--{
--}
- #endif /* CONFIG_BLK_DEV_INTEGRITY */
- 
- unsigned long blk_rq_timeout(unsigned long timeout);
-diff --git a/block/genhd.c b/block/genhd.c
-index 4d28f1d5f9b0..88d1a6385a24 100644
---- a/block/genhd.c
-+++ b/block/genhd.c
-@@ -467,15 +467,11 @@ int device_add_disk(struct device *parent, struct gendisk *disk,
- 	 */
- 	pm_runtime_set_memalloc_noio(ddev, true);
- 
--	ret = blk_integrity_add(disk);
--	if (ret)
--		goto out_del_block_link;
--
- 	disk->part0->bd_holder_dir =
- 		kobject_create_and_add("holders", &ddev->kobj);
- 	if (!disk->part0->bd_holder_dir) {
- 		ret = -ENOMEM;
--		goto out_del_integrity;
-+		goto out_del_block_link;
- 	}
- 	disk->slave_dir = kobject_create_and_add("slaves", &ddev->kobj);
- 	if (!disk->slave_dir) {
-@@ -535,8 +531,6 @@ int device_add_disk(struct device *parent, struct gendisk *disk,
- 	disk->slave_dir = NULL;
- out_put_holder_dir:
- 	kobject_put(disk->part0->bd_holder_dir);
--out_del_integrity:
--	blk_integrity_del(disk);
- out_del_block_link:
- 	if (!sysfs_deprecated)
- 		sysfs_remove_link(block_depr, dev_name(ddev));
-@@ -592,7 +586,6 @@ void del_gendisk(struct gendisk *disk)
- 	if (WARN_ON_ONCE(!disk_live(disk) && !(disk->flags & GENHD_FL_HIDDEN)))
- 		return;
- 
--	blk_integrity_del(disk);
- 	disk_del_events(disk);
- 
- 	mutex_lock(&disk->open_mutex);
-@@ -1084,6 +1077,9 @@ static struct attribute_group disk_attr_group = {
- 
- static const struct attribute_group *disk_attr_groups[] = {
- 	&disk_attr_group,
-+#ifdef CONFIG_BLK_DEV_INTEGRITY
-+	&blk_integrity_attr_group,
-+#endif
- 	NULL
- };
- 
-diff --git a/include/linux/genhd.h b/include/linux/genhd.h
-index 690b7f7996d1..3f49a3a30e9b 100644
---- a/include/linux/genhd.h
-+++ b/include/linux/genhd.h
-@@ -144,9 +144,6 @@ struct gendisk {
- 	struct timer_rand_state *random;
- 	atomic_t sync_io;		/* RAID */
- 	struct disk_events *ev;
--#ifdef  CONFIG_BLK_DEV_INTEGRITY
--	struct kobject integrity_kobj;
--#endif	/* CONFIG_BLK_DEV_INTEGRITY */
- #if IS_ENABLED(CONFIG_CDROM)
- 	struct cdrom_device_info *cdi;
- #endif
--- 
-2.34.1
+outputs (after you have booted up, and the problem is reproduced)? It
+should list the dock and show it as "authorized" but I'm not familiar
+with Arch Linux so it could be that they are not using bolt and that
+explains why things do not appear working as nobody is going to
+re-create that PCIe tunnel that was torn down during host router reset.
 
