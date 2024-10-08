@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-82793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BFF1994E79
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:17:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5A04994CD6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 250522819FA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:17:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67821284520
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130861DF722;
-	Tue,  8 Oct 2024 13:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878B41DF964;
+	Tue,  8 Oct 2024 12:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sdes7xAi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYI/10Lh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BBA1DF243;
-	Tue,  8 Oct 2024 13:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454CF1DE88B;
+	Tue,  8 Oct 2024 12:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393445; cv=none; b=QBWdmsQ3sUDr6V0NjTst/jqZCAQOXu5aF+PqLui5dxEFtUGZMCtxzKMnhIljjh0ZMDih3bdNKZ3Jd3UqQfThijQaGVRYlmtLvvvfpgoH3Y47D0O0JfnT/eik7Shyd2Tv0vc5Un5cNT04GsX/a4XzAjN/fQ/RsuBYdXp16+W3cFw=
+	t=1728392282; cv=none; b=tV2OAldNXRIKQNlxwvmGFADnOmpZR/egb512nR5sTCF8f4BNe64ySMycWMSOP2f10Npu3ESgPmgl9V9bi3R4ZsY9fA87KS7BUkKkdkbL0K0YR4i/fIKvQ3FVgVgTRa8A5hlM1syRVbQLo5GpNeP3tSvZ/Xs6LKdafGxIc8vY88s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393445; c=relaxed/simple;
-	bh=26Y/qtL4H/YBcP1KDxXPF0TE9+9kCU/mQzBD7dHc7YU=;
+	s=arc-20240116; t=1728392282; c=relaxed/simple;
+	bh=gDhI59Exww4vjO4vD07sxN8NMGCuqss7QgYeNpWnkA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UmGauRDSe3gc5keV/H2gA/K8eDl3aQoiJfuaWbug8Zfx9YqajAKFN3B94QttfYJtAmXbo8XY6kVooHdSYdVQGQcJc/v3A0EaIU58rsYDKsOn1c/ij8O577/meGIQBIdPaZ5hi9FZCgIosS2mJiytECs+m15H5NX2tLyenkwJVfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sdes7xAi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47353C4CECC;
-	Tue,  8 Oct 2024 13:17:25 +0000 (UTC)
+	 MIME-Version; b=JMd2MwzmRHgwOC1AimuIGi0BSS84784lbTQut023Iovh9Nyw9KxCQydwRp3VUuYRpfAsMSkFdFvfKn+JtXPRRphx+1jRsr+vzun2HmC3B0vH+LV6ezR28xq8JLdcX0DNg5FJ6qA5FMdiiuAXV1qBQdLuJDMq2FO/uJjOp2fvUlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYI/10Lh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D486C4CEC7;
+	Tue,  8 Oct 2024 12:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393445;
-	bh=26Y/qtL4H/YBcP1KDxXPF0TE9+9kCU/mQzBD7dHc7YU=;
+	s=korg; t=1728392282;
+	bh=gDhI59Exww4vjO4vD07sxN8NMGCuqss7QgYeNpWnkA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sdes7xAiLYpaA35GPjg26rVqzdl61Ku2qicP5WuJSosrv6f+4B6EQC2VCLJXtg1gZ
-	 SpLtYhoLeMQfSGazbwcSuMWWMZNXK+PaJZZxT5KWmJkGONts3PtB7X172gOWTxxpOB
-	 r+grqSwy2ctLWBXes9VLzLwhGGqzf4qVah7bd4D8=
+	b=cYI/10LhmCsqQC314rUuD6at6AD1ontzAl//K2gbf1NlkGeTTuzOcV4lDzBEJIEeD
+	 dQK2D1XqW+0+8kNwWogaZEgKSKA3BkTdQLVoBwpY9fTygjq4kaqOUqfFpOyb9C25/Q
+	 GpGtDT1Z9/+mdVVzDSbnkVGMivXwqbehNfYVsp+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yannick Fertre <yannick.fertre@foss.st.com>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/386] drm/stm: ltdc: reset plane transparency after plane disable
-Date: Tue,  8 Oct 2024 14:06:38 +0200
-Message-ID: <20241008115635.447635693@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.11 369/558] parisc: Fix itlb miss handler for 64-bit programs
+Date: Tue,  8 Oct 2024 14:06:39 +0200
+Message-ID: <20241008115716.816022704@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yannick Fertre <yannick.fertre@foss.st.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 02fa62d41c8abff945bae5bfc3ddcf4721496aca ]
+commit 9542130937e9dc707dd7c6b7af73326437da2d50 upstream.
 
-The plane's opacity should be reseted while the plane
-is disabled. It prevents from seeing a possible global
-or layer background color set earlier.
+For an itlb miss when executing code above 4 Gb on ILP64 adjust the
+iasq/iaoq in the same way isr/ior was adjusted.  This fixes signal
+delivery for the 64-bit static test program from
+http://ftp.parisc-linux.org/src/64bit.tar.gz.  Note that signals are
+handled by the signal trampoline code in the 64-bit VDSO which is mapped
+into high userspace memory region above 4GB for 64-bit processes.
 
-Signed-off-by: Yannick Fertre <yannick.fertre@foss.st.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240712131344.98113-1-yannick.fertre@foss.st.com
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org	# v4.19+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/stm/ltdc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/parisc/kernel/entry.S |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/stm/ltdc.c b/drivers/gpu/drm/stm/ltdc.c
-index 056642d12265c..0832b749b66e7 100644
---- a/drivers/gpu/drm/stm/ltdc.c
-+++ b/drivers/gpu/drm/stm/ltdc.c
-@@ -1513,6 +1513,9 @@ static void ltdc_plane_atomic_disable(struct drm_plane *plane,
- 	/* Disable layer */
- 	regmap_write_bits(ldev->regmap, LTDC_L1CR + lofs, LXCR_LEN | LXCR_CLUTEN |  LXCR_HMEN, 0);
+--- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -1051,8 +1051,7 @@ ENTRY_CFI(intr_save)		/* for os_hpmc */
+ 	STREG           %r16, PT_ISR(%r29)
+ 	STREG           %r17, PT_IOR(%r29)
  
-+	/* Reset the layer transparency to hide any related background color */
-+	regmap_write_bits(ldev->regmap, LTDC_L1CACR + lofs, LXCACR_CONSTA, 0x00);
-+
- 	/* Commit shadow registers = update plane at next vblank */
- 	if (ldev->caps.plane_reg_shadow)
- 		regmap_write_bits(ldev->regmap, LTDC_L1RCR + lofs,
--- 
-2.43.0
-
+-#if 0 && defined(CONFIG_64BIT)
+-	/* Revisit when we have 64-bit code above 4Gb */
++#if defined(CONFIG_64BIT)
+ 	b,n		intr_save2
+ 
+ skip_save_ior:
+@@ -1060,8 +1059,7 @@ skip_save_ior:
+ 	 * need to adjust iasq/iaoq here in the same way we adjusted isr/ior
+ 	 * above.
+ 	 */
+-	extrd,u,*	%r8,PSW_W_BIT,1,%r1
+-	cmpib,COND(=),n	1,%r1,intr_save2
++	bb,COND(>=),n	%r8,PSW_W_BIT,intr_save2
+ 	LDREG		PT_IASQ0(%r29), %r16
+ 	LDREG		PT_IAOQ0(%r29), %r17
+ 	/* adjust iasq/iaoq */
 
 
 
