@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-82916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB4F1994F55
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD57994AB0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 820711F23265
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:27:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A56AA1F2260F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94D01DF256;
-	Tue,  8 Oct 2024 13:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8331CCB32;
+	Tue,  8 Oct 2024 12:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zq1Grjak"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJxNrCn3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652DC1DF266;
-	Tue,  8 Oct 2024 13:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEE818DF6D;
+	Tue,  8 Oct 2024 12:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393859; cv=none; b=uJRFklJ5YGuZXhbnst0v+NwhxjL1/fe6VzAMFXEMzuz42IhsFu68BQ9WgD6+kW6lPdANrOQb944pTHaP27nTDci36DgKuYPjXaxTpH7fapmhFlcgrH523MlDQgIHG+HqGwLMD4t1gq26NLp6S2mn1moru3fp9ZqIu6SVoHVL0EM=
+	t=1728390941; cv=none; b=krKWkAKV+jJV9fj72RA+N38Vaq+GwyGySF57UTXzWMbB0q8RfIkDupZtePLwAlHyZaYuZ6263JK8um0C5v6Ygl+WEWGiBsebt+sXoDOvxnPIitdmPkKv9JJ4V1FoJuM2UYMacdCkiphro4HZ44+Cqz5glUIz+nspdeRksH/OnXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393859; c=relaxed/simple;
-	bh=aHZO/JUAdUQJIWJe7Szn89Woh0475OH5IsW9Y7d5RT4=;
+	s=arc-20240116; t=1728390941; c=relaxed/simple;
+	bh=TQp0lpSHi54E3y25zanOT3txyQKcBuOaz3OKzhxOqg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CV+E8Lc6TXG7AWmTdBDok73wgXPSfOeTkFgsrRtDeFGevO6U/G2TTJvqJIZZsfiasvdVEu9lm7g/fgLUhgv8IVWvfuLtR53V9C888vTwIpfbk7pkcw+qrXTndw9qIsSDCrWWbZZVBKyUpZWdMDdxdjH2jPiwfy0ci5xhKnqEjoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zq1Grjak; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E6DC4CEC7;
-	Tue,  8 Oct 2024 13:24:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YeYt50z2cCwqITy/IOZiUEnxCLZWwEHAg+r2YvUXN5I0nFt9BWZ4w28i+Op6Hk4xb/WuvRtG8QJcKYbv/x0FVTNQKINXMn2mPuctzY6bTVBJYVR7g+cfgdr+Sh+qCpi3ULzrch1a4ZLzQ3mbPvBhkYA4MXRDxESrHyJ6eSg/wjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJxNrCn3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F04AC4CEC7;
+	Tue,  8 Oct 2024 12:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393859;
-	bh=aHZO/JUAdUQJIWJe7Szn89Woh0475OH5IsW9Y7d5RT4=;
+	s=korg; t=1728390940;
+	bh=TQp0lpSHi54E3y25zanOT3txyQKcBuOaz3OKzhxOqg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zq1GrjakLg7SaLIbcg9dIfRmM81V9iTOa3Gq6XUJeufYBn0IGpuXV4nl7GjVnypFc
-	 17Y/Ftf+U1qo5zT91BAni7NPieMWxYDqCdgmPE7CJZezd5cK+A+gEEK3WnNo0HjPuy
-	 vpHve9Q41QQ8eUGsjP27bPxLbXNqAMJjP0elfdF8=
+	b=MJxNrCn361lGkLL+hpLED+4X/vgfY63eh7HLKlZ5NmxR3eaUBkChjQHqZB4A8YrXr
+	 OHqEkRDMKwmLdKyiC+WsA9YqcguNvGukce0Av3xO8VwVIipEGQ+KQv621TnhWQmaNH
+	 m63rK7SFq296+435aXM+9lnQclN0giiq9MrriFZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>,
-	Su Yue <glass.su@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 259/386] ocfs2: fix the la space leak when unmounting an ocfs2 volume
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Luben Tuikov <ltuikov89@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Philipp Stanner <pstanner@redhat.com>,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH 6.10 441/482] drm/sched: Always wake up correct scheduler in drm_sched_entity_push_job
 Date: Tue,  8 Oct 2024 14:08:24 +0200
-Message-ID: <20241008115639.584690080@linuxfoundation.org>
+Message-ID: <20241008115705.877622047@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,67 +66,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-commit dfe6c5692fb525e5e90cefe306ee0dffae13d35f upstream.
+commit cbc8764e29c2318229261a679b2aafd0f9072885 upstream.
 
-This bug has existed since the initial OCFS2 code.  The code logic in
-ocfs2_sync_local_to_main() is wrong, as it ignores the last contiguous
-free bits, which causes an OCFS2 volume to lose the last free clusters of
-LA window on each umount command.
+Since drm_sched_entity_modify_sched() can modify the entities run queue,
+lets make sure to only dereference the pointer once so both adding and
+waking up are guaranteed to be consistent.
 
-Link: https://lkml.kernel.org/r/20240719114310.14245-1-heming.zhao@suse.com
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Reviewed-by: Su Yue <glass.su@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Alternative of moving the spin_unlock to after the wake up would for now
+be more problematic since the same lock is taken inside
+drm_sched_rq_update_fifo().
+
+v2:
+ * Improve commit message. (Philipp)
+ * Cache the scheduler pointer directly. (Christian)
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: b37aced31eb0 ("drm/scheduler: implement a function to modify sched list")
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Luben Tuikov <ltuikov89@gmail.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Philipp Stanner <pstanner@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.7+
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240924101914.2713-3-tursulin@igalia.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/localalloc.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/gpu/drm/scheduler/sched_entity.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/fs/ocfs2/localalloc.c
-+++ b/fs/ocfs2/localalloc.c
-@@ -1008,6 +1008,25 @@ static int ocfs2_sync_local_to_main(stru
- 		start = bit_off + 1;
- 	}
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -599,6 +599,9 @@ void drm_sched_entity_push_job(struct dr
  
-+	/* clear the contiguous bits until the end boundary */
-+	if (count) {
-+		blkno = la_start_blk +
-+			ocfs2_clusters_to_blocks(osb->sb,
-+					start - count);
+ 	/* first job wakes up scheduler */
+ 	if (first) {
++		struct drm_gpu_scheduler *sched;
++		struct drm_sched_rq *rq;
 +
-+		trace_ocfs2_sync_local_to_main_free(
-+				count, start - count,
-+				(unsigned long long)la_start_blk,
-+				(unsigned long long)blkno);
+ 		/* Add the entity to the run queue */
+ 		spin_lock(&entity->rq_lock);
+ 		if (entity->stopped) {
+@@ -608,13 +611,16 @@ void drm_sched_entity_push_job(struct dr
+ 			return;
+ 		}
+ 
+-		drm_sched_rq_add_entity(entity->rq, entity);
++		rq = entity->rq;
++		sched = rq->sched;
 +
-+		status = ocfs2_release_clusters(handle,
-+				main_bm_inode,
-+				main_bm_bh, blkno,
-+				count);
-+		if (status < 0)
-+			mlog_errno(status);
-+	}
-+
- bail:
- 	if (status)
- 		mlog_errno(status);
++		drm_sched_rq_add_entity(rq, entity);
+ 		spin_unlock(&entity->rq_lock);
+ 
+ 		if (drm_sched_policy == DRM_SCHED_POLICY_FIFO)
+ 			drm_sched_rq_update_fifo(entity, submit_ts);
+ 
+-		drm_sched_wakeup(entity->rq->sched);
++		drm_sched_wakeup(sched);
+ 	}
+ }
+ EXPORT_SYMBOL(drm_sched_entity_push_job);
 
 
 
