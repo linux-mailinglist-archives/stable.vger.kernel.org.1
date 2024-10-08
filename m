@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-82798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479BE994E81
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABC9994CDB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F21071F25664
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:18:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA734286265
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30691DF26C;
-	Tue,  8 Oct 2024 13:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C9A1DE4CB;
+	Tue,  8 Oct 2024 12:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTwY1i4M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sC/soE9E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993571DF26B;
-	Tue,  8 Oct 2024 13:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93B31DED7A;
+	Tue,  8 Oct 2024 12:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393462; cv=none; b=oIKJea45HJLF9tyLx09RQdCxqNoc0Mp7193NfHJUbz0nT+oQSKEg1kZ/vrnjPnMHh6p+M7NlPDuaPiqmnpldUylq2ETuhSBLSsv4Qs5HKK/hcOmigRdTWpWOz6M4FH4JttGMcrdaHU+XxQO+1G1Wv8bk7EB9EC+QUfoTsiP84/k=
+	t=1728392302; cv=none; b=nFMRXOpLD2ZUlSMxxhmN/kah4DWmhnUkKHCFd7ME4Df1syvAGbnDEB+s4+wJOw7kCubxPe9vi1kMAIQuBDtW6c+VQkHYVdElImVxp8ZG18SJV4Voehj9LcYTNf++uXSSsea69a3ffAkrlKvFos97eSIn7nJqax9Sw8wPk/wDxk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393462; c=relaxed/simple;
-	bh=O617RhH3SQDdgAwbg7iVWBIrv6z4gNn9t/uo1fqMuGE=;
+	s=arc-20240116; t=1728392302; c=relaxed/simple;
+	bh=oaoijTgn43LntV2/ztkdf3IvBtSxdu4Khb0Q9qyfT2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=URT5zqFJKSdVfnYQB9wpLkvLbTQOPjPfwKfhl/KuROrLAYVQC8ufu6r2CpQn0d1353LezzqXX20hw/Rw16/qr8G+f/fgGwMuJsvipLE46xYGhuIY7ldb955O04mJKYl22+zK3qCU2I6mWcDEodJawoHQhDre4M7Ny+aCXivjNuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTwY1i4M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05999C4CEC7;
-	Tue,  8 Oct 2024 13:17:41 +0000 (UTC)
+	 MIME-Version; b=TDzEk2pcJa47cnlybVtpqRQ0C/tkiA8zSFYKqBXdljA17L9TDkDk3k+gN3x/t8Bc1qLGd44LivY7AzjLVnfEhTqygfyWKgwdU29Cg4+frCsLX3Sxyw8MFAiiEA/1nox4gzJRXNPTe+k8JBxSG5M+bV+Bn/ksn/6cWV3whLVo9xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sC/soE9E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37039C4CEC7;
+	Tue,  8 Oct 2024 12:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393462;
-	bh=O617RhH3SQDdgAwbg7iVWBIrv6z4gNn9t/uo1fqMuGE=;
+	s=korg; t=1728392302;
+	bh=oaoijTgn43LntV2/ztkdf3IvBtSxdu4Khb0Q9qyfT2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DTwY1i4Ml2IwBHhWTjGDHRZabJcNcCuYGwC4qYkmWKRJP+kduWCp4upnT1sFJ5pGG
-	 kkNmCKO1spkvitBu7FqxHt1lxM5bVR/uRBK0w4rPffnkAVcqSeZvIFJ77vbfgcOqmm
-	 x8rIYKehwRVmB2DMvKiuAnYqAwWbMy+EiC2Z/soU=
+	b=sC/soE9EQDX4uCV+2auzioupVCsU2tKSdaKzTVGSuocOpy6LOrpmAjuOs5N+8UAGm
+	 /wNjFLV817+E56f2PohwrM8/jh98xCZP+yDgm0ksyAXNDBQsr8i6P5o2k6d4kbL2W8
+	 yOyLltIT5PzRsmtdllZh6NqTl+WCBOplP+v1hpb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Jerry Snitselaar <jsnitsel@redhat.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/386] iommu/vt-d: Always reserve a domain ID for identity setup
-Date: Tue,  8 Oct 2024 14:06:13 +0200
-Message-ID: <20241008115634.474484301@linuxfoundation.org>
+Subject: [PATCH 6.11 344/558] f2fs: forcibly migrate to secure space for zoned device file pinning
+Date: Tue,  8 Oct 2024 14:06:14 +0200
+Message-ID: <20241008115715.837507306@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Daeho Jeong <daehojeong@google.com>
 
-[ Upstream commit 2c13012e09190174614fd6901857a1b8c199e17d ]
+[ Upstream commit 5cc69a27abfa91abbb39fc584f82d6c867b60f47 ]
 
-We will use a global static identity domain. Reserve a static domain ID
-for it.
+We need to migrate data blocks even though it is full to secure space
+for zoned device file pinning.
 
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Link: https://lore.kernel.org/r/20240809055431.36513-4-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 9703d69d9d15 ("f2fs: support file pinning for zoned devices")
+Signed-off-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/f2fs/gc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 9918af222c516..b7317016834cf 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -1692,10 +1692,10 @@ static int iommu_init_domains(struct intel_iommu *iommu)
- 	 * entry for first-level or pass-through translation modes should
- 	 * be programmed with a domain id different from those used for
- 	 * second-level or nested translation. We reserve a domain id for
--	 * this purpose.
-+	 * this purpose. This domain id is also used for identity domain
-+	 * in legacy mode.
- 	 */
--	if (sm_supported(iommu))
--		set_bit(FLPT_DEFAULT_DID, iommu->domain_ids);
-+	set_bit(FLPT_DEFAULT_DID, iommu->domain_ids);
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index a59fec64eccfb..938249e7819e4 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -2056,8 +2056,7 @@ int f2fs_gc_range(struct f2fs_sb_info *sbi,
+ 			.iroot = RADIX_TREE_INIT(gc_list.iroot, GFP_NOFS),
+ 		};
  
- 	return 0;
- }
+-		do_garbage_collect(sbi, segno, &gc_list, FG_GC,
+-						dry_run_sections == 0, false);
++		do_garbage_collect(sbi, segno, &gc_list, FG_GC, true, false);
+ 		put_gc_inode(&gc_list);
+ 
+ 		if (!dry_run && get_valid_blocks(sbi, segno, true))
 -- 
 2.43.0
 
