@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-82993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF0C994FD4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:30:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADA49994FD7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:30:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85A8A1F24A74
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:30:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C27E31C24CA9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F941E04A0;
-	Tue,  8 Oct 2024 13:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E4A1E04B0;
+	Tue,  8 Oct 2024 13:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+34lUJB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oukhjFCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8C71DFE34;
-	Tue,  8 Oct 2024 13:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E7E1E0497;
+	Tue,  8 Oct 2024 13:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728394121; cv=none; b=gjxOxLsmScatd8loZpasku8KbQQUhRdLdjymXSvENiVSCKDaWM2cQfImbhdtDAyQJZElsnBVkD+zv5onSJGWXXdiA/cE+adsoAIEa9GmVa1nqmVG8jGdrawQsWOyRZMuG/gzWswpJytg7JN4PjW8ZCgTN+5EGwIZupV1zMzwGVw=
+	t=1728394128; cv=none; b=KF0YzOQu7x7vNReGX13ENqaTfQdHFEH9JcE8eciaqB6lXVEbLmvoYpze6gFDKVeQS2EQ8tolrW8cmQzVVdyvWe7htw2JLOQdDElYdYZk+ZTrvTf/wnH7W0fN5JhG/vPGD2k4FyPu14HwiIIPEIhm6kboDI3ooztkU+tu1SjhkpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728394121; c=relaxed/simple;
-	bh=oNtodfFZNrxpbSTuQ3zRRDzQGUK/uIMGMZAQmn5FzME=;
+	s=arc-20240116; t=1728394128; c=relaxed/simple;
+	bh=ON3NVu7kZWzTsEOIWqL87QfCV+NPt9vFVqVZr7X4LzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DCCuB9BsoeoYiLgFUBf/v/TXsrLlS/B5Sj4/n/mCkvij+ohpHG7EFtmWCtQQ19fwVtPODccNLkN0EHPgGRwCAbxEcXHSSsQbsqEwS1DdNrMBCuZWPjUsrS3X83tsA2MQJT2UabKlCegl0OV5v9Du7PEsYSnVeFRSY767gZ0otC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+34lUJB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C977EC4CECC;
-	Tue,  8 Oct 2024 13:28:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uNhlGz6jpWwWtn3lDUzjIYALbXJibQEnJ2C+UaJEmmPoz8qDYaZHgwqqjrPh68DToef2KT2PEyZd2mMK3AyubmwyCdaw/Aq3jamoeu2hIf1gyyKRQvv5AFgz/+BBrs4BdOy27aMvLxGbBlDlqPqNYO7gnJSWu/dOdgUzTO1148M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oukhjFCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8019DC4CEC7;
+	Tue,  8 Oct 2024 13:28:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728394121;
-	bh=oNtodfFZNrxpbSTuQ3zRRDzQGUK/uIMGMZAQmn5FzME=;
+	s=korg; t=1728394128;
+	bh=ON3NVu7kZWzTsEOIWqL87QfCV+NPt9vFVqVZr7X4LzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k+34lUJB4TSxAISTPyHChpYkp9XHKukRQh1ZHFkhwYQLDwNfbP68i+JHH1nvOk30D
-	 4kxo5cvQCdOQpioeUq2R+l6lMdr2icSUl+Zgo4ji7b7QERKIvtDtOYw2k4WLCFxA9l
-	 yLNwPRTmNXCjsmZCv+sLowZOH3wZ7Bbb1CBVBzsE=
+	b=oukhjFCcu679OdWJZcFTh8uht8zLB9fpb7ANF7cafFux61X1gV98kzM6RflMvTZb2
+	 fSZsqMe5YH7k+qI9JgefrFCK5N91iRYl5CzBrSfFnMK1vBhhgf9azw+XIt41TVbKGw
+	 RgpVyZbYPpw0G4naFUcet8zUb1TydosLFbsyFyqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 353/386] iio: pressure: bmp280: Allow multiple chips id per family of devices
-Date: Tue,  8 Oct 2024 14:09:58 +0200
-Message-ID: <20241008115643.273181807@linuxfoundation.org>
+Subject: [PATCH 6.6 354/386] iio: pressure: bmp280: Improve indentation and line wrapping
+Date: Tue,  8 Oct 2024 14:09:59 +0200
+Message-ID: <20241008115643.313442206@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
 References: <20241008115629.309157387@linuxfoundation.org>
@@ -60,149 +60,373 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Angel Iglesias <ang.iglesiasg@gmail.com>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-[ Upstream commit 33564435c8084ff29837c9ed9bb9574ec957751d ]
+[ Upstream commit 439ce8961bdd2e925c1f6adc82ce9fe3931e2c08 ]
 
-Improve device detection in certain chip families known to have
-various chip IDs. When no ID matches, give a warning but follow
-along what device said on the firmware side and try to configure
-it.
+Fix indentations that are not following the standards, remove
+extra white lines and add missing white lines.
 
-Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-Link: https://lore.kernel.org/r/eade22d11e9de4405ea19fdaa5a8249143ae94df.1697994521.git.ang.iglesiasg@gmail.com
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://lore.kernel.org/r/20240429190046.24252-2-vassilisamir@gmail.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Stable-dep-of: b9065b0250e1 ("iio: pressure: bmp280: Fix regmap for BMP280 device")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/bmp280-core.c | 35 ++++++++++++++++++++++--------
- drivers/iio/pressure/bmp280.h      |  3 ++-
- 2 files changed, 28 insertions(+), 10 deletions(-)
+ drivers/iio/pressure/bmp280-core.c | 108 ++++++++++++++++-------------
+ drivers/iio/pressure/bmp280-spi.c  |   4 +-
+ 2 files changed, 61 insertions(+), 51 deletions(-)
 
 diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index a65630d5742f0..ac72b175ffcc1 100644
+index ac72b175ffcc1..dac2a4e237929 100644
 --- a/drivers/iio/pressure/bmp280-core.c
 +++ b/drivers/iio/pressure/bmp280-core.c
-@@ -794,10 +794,12 @@ static int bmp280_chip_config(struct bmp280_data *data)
- }
+@@ -51,7 +51,6 @@
+  */
+ enum { AC1, AC2, AC3, AC4, AC5, AC6, B1, B2, MB, MC, MD };
  
- static const int bmp280_oversampling_avail[] = { 1, 2, 4, 8, 16 };
-+static const u8 bmp280_chip_ids[] = { BMP280_CHIP_ID };
- 
- const struct bmp280_chip_info bmp280_chip_info = {
- 	.id_reg = BMP280_REG_ID,
--	.chip_id = BMP280_CHIP_ID,
-+	.chip_id = bmp280_chip_ids,
-+	.num_chip_id = ARRAY_SIZE(bmp280_chip_ids),
- 	.regmap_config = &bmp280_regmap_config,
- 	.start_up_time = 2000,
- 	.channels = bmp280_channels,
-@@ -846,9 +848,12 @@ static int bme280_chip_config(struct bmp280_data *data)
- 	return bmp280_chip_config(data);
- }
- 
-+static const u8 bme280_chip_ids[] = { BME280_CHIP_ID };
-+
- const struct bmp280_chip_info bme280_chip_info = {
- 	.id_reg = BMP280_REG_ID,
--	.chip_id = BME280_CHIP_ID,
-+	.chip_id = bme280_chip_ids,
-+	.num_chip_id = ARRAY_SIZE(bme280_chip_ids),
- 	.regmap_config = &bmp280_regmap_config,
- 	.start_up_time = 2000,
- 	.channels = bmp280_channels,
-@@ -1220,10 +1225,12 @@ static int bmp380_chip_config(struct bmp280_data *data)
- 
- static const int bmp380_oversampling_avail[] = { 1, 2, 4, 8, 16, 32 };
- static const int bmp380_iir_filter_coeffs_avail[] = { 1, 2, 4, 8, 16, 32, 64, 128};
-+static const u8 bmp380_chip_ids[] = { BMP380_CHIP_ID };
- 
- const struct bmp280_chip_info bmp380_chip_info = {
- 	.id_reg = BMP380_REG_ID,
--	.chip_id = BMP380_CHIP_ID,
-+	.chip_id = bmp380_chip_ids,
-+	.num_chip_id = ARRAY_SIZE(bmp380_chip_ids),
- 	.regmap_config = &bmp380_regmap_config,
- 	.start_up_time = 2000,
- 	.channels = bmp380_channels,
-@@ -1720,10 +1727,12 @@ static int bmp580_chip_config(struct bmp280_data *data)
- }
- 
- static const int bmp580_oversampling_avail[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
-+static const u8 bmp580_chip_ids[] = { BMP580_CHIP_ID, BMP580_CHIP_ID_ALT };
- 
- const struct bmp280_chip_info bmp580_chip_info = {
- 	.id_reg = BMP580_REG_CHIP_ID,
--	.chip_id = BMP580_CHIP_ID,
-+	.chip_id = bmp580_chip_ids,
-+	.num_chip_id = ARRAY_SIZE(bmp580_chip_ids),
- 	.regmap_config = &bmp580_regmap_config,
- 	.start_up_time = 2000,
- 	.channels = bmp380_channels,
-@@ -1983,10 +1992,12 @@ static int bmp180_chip_config(struct bmp280_data *data)
- 
- static const int bmp180_oversampling_temp_avail[] = { 1 };
- static const int bmp180_oversampling_press_avail[] = { 1, 2, 4, 8 };
-+static const u8 bmp180_chip_ids[] = { BMP180_CHIP_ID };
- 
- const struct bmp280_chip_info bmp180_chip_info = {
- 	.id_reg = BMP280_REG_ID,
--	.chip_id = BMP180_CHIP_ID,
-+	.chip_id = bmp180_chip_ids,
-+	.num_chip_id = ARRAY_SIZE(bmp180_chip_ids),
- 	.regmap_config = &bmp180_regmap_config,
- 	.start_up_time = 2000,
- 	.channels = bmp280_channels,
-@@ -2077,6 +2088,7 @@ int bmp280_common_probe(struct device *dev,
- 	struct bmp280_data *data;
- 	struct gpio_desc *gpiod;
- 	unsigned int chip_id;
-+	unsigned int i;
+-
+ enum bmp380_odr {
+ 	BMP380_ODR_200HZ,
+ 	BMP380_ODR_100HZ,
+@@ -180,18 +179,19 @@ static int bmp280_read_calib(struct bmp280_data *data)
+ 	struct bmp280_calib *calib = &data->calib.bmp280;
  	int ret;
  
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-@@ -2142,12 +2154,17 @@ int bmp280_common_probe(struct device *dev,
- 	ret = regmap_read(regmap, data->chip_info->id_reg, &chip_id);
- 	if (ret < 0)
+-
+ 	/* Read temperature and pressure calibration values. */
+ 	ret = regmap_bulk_read(data->regmap, BMP280_REG_COMP_TEMP_START,
+-			       data->bmp280_cal_buf, sizeof(data->bmp280_cal_buf));
++			       data->bmp280_cal_buf,
++			       sizeof(data->bmp280_cal_buf));
+ 	if (ret < 0) {
+ 		dev_err(data->dev,
+-			"failed to read temperature and pressure calibration parameters\n");
++			"failed to read calibration parameters\n");
  		return ret;
--	if (chip_id != data->chip_info->chip_id) {
--		dev_err(dev, "bad chip id: expected %x got %x\n",
--			data->chip_info->chip_id, chip_id);
--		return -EINVAL;
-+
-+	for (i = 0; i < data->chip_info->num_chip_id; i++) {
-+		if (chip_id == data->chip_info->chip_id[i]) {
-+			dev_info(dev, "0x%x is a known chip id for %s\n", chip_id, name);
-+			break;
-+		}
  	}
  
-+	if (i == data->chip_info->num_chip_id)
-+		dev_warn(dev, "bad chip id: 0x%x is not a known chip id\n", chip_id);
+-	/* Toss the temperature and pressure calibration data into the entropy pool */
+-	add_device_randomness(data->bmp280_cal_buf, sizeof(data->bmp280_cal_buf));
++	/* Toss calibration data into the entropy pool */
++	add_device_randomness(data->bmp280_cal_buf,
++			      sizeof(data->bmp280_cal_buf));
+ 
+ 	/* Parse temperature calibration values. */
+ 	calib->T1 = le16_to_cpu(data->bmp280_cal_buf[T1]);
+@@ -222,7 +222,7 @@ static int bme280_read_calib(struct bmp280_data *data)
+ 	/* Load shared calibration params with bmp280 first */
+ 	ret = bmp280_read_calib(data);
+ 	if  (ret < 0) {
+-		dev_err(dev, "failed to read common bmp280 calibration parameters\n");
++		dev_err(dev, "failed to read calibration parameters\n");
+ 		return ret;
+ 	}
+ 
+@@ -282,6 +282,7 @@ static int bme280_read_calib(struct bmp280_data *data)
+ 
+ 	return 0;
+ }
 +
- 	if (data->chip_info->preinit) {
- 		ret = data->chip_info->preinit(data);
+ /*
+  * Returns humidity in percent, resolution is 0.01 percent. Output value of
+  * "47445" represents 47445/1024 = 46.333 %RH.
+@@ -304,7 +305,7 @@ static u32 bmp280_compensate_humidity(struct bmp280_data *data,
+ 	var = clamp_val(var, 0, 419430400);
+ 
+ 	return var >> 12;
+-};
++}
+ 
+ /*
+  * Returns temperature in DegC, resolution is 0.01 DegC.  Output value of
+@@ -537,7 +538,7 @@ static int bmp280_read_raw(struct iio_dev *indio_dev,
+ }
+ 
+ static int bmp280_write_oversampling_ratio_humid(struct bmp280_data *data,
+-					       int val)
++						 int val)
+ {
+ 	const int *avail = data->chip_info->oversampling_humid_avail;
+ 	const int n = data->chip_info->num_oversampling_humid_avail;
+@@ -562,7 +563,7 @@ static int bmp280_write_oversampling_ratio_humid(struct bmp280_data *data,
+ }
+ 
+ static int bmp280_write_oversampling_ratio_temp(struct bmp280_data *data,
+-					       int val)
++						int val)
+ {
+ 	const int *avail = data->chip_info->oversampling_temp_avail;
+ 	const int n = data->chip_info->num_oversampling_temp_avail;
+@@ -587,7 +588,7 @@ static int bmp280_write_oversampling_ratio_temp(struct bmp280_data *data,
+ }
+ 
+ static int bmp280_write_oversampling_ratio_press(struct bmp280_data *data,
+-					       int val)
++						 int val)
+ {
+ 	const int *avail = data->chip_info->oversampling_press_avail;
+ 	const int n = data->chip_info->num_oversampling_press_avail;
+@@ -771,13 +772,12 @@ static int bmp280_chip_config(struct bmp280_data *data)
+ 	int ret;
+ 
+ 	ret = regmap_write_bits(data->regmap, BMP280_REG_CTRL_MEAS,
+-				 BMP280_OSRS_TEMP_MASK |
+-				 BMP280_OSRS_PRESS_MASK |
+-				 BMP280_MODE_MASK,
+-				 osrs | BMP280_MODE_NORMAL);
++				BMP280_OSRS_TEMP_MASK |
++				BMP280_OSRS_PRESS_MASK |
++				BMP280_MODE_MASK,
++				osrs | BMP280_MODE_NORMAL);
+ 	if (ret < 0) {
+-		dev_err(data->dev,
+-			"failed to write ctrl_meas register\n");
++		dev_err(data->dev, "failed to write ctrl_meas register\n");
+ 		return ret;
+ 	}
+ 
+@@ -785,8 +785,7 @@ static int bmp280_chip_config(struct bmp280_data *data)
+ 				 BMP280_FILTER_MASK,
+ 				 BMP280_FILTER_4X);
+ 	if (ret < 0) {
+-		dev_err(data->dev,
+-			"failed to write config register\n");
++		dev_err(data->dev, "failed to write config register\n");
+ 		return ret;
+ 	}
+ 
+@@ -925,8 +924,8 @@ static int bmp380_cmd(struct bmp280_data *data, u8 cmd)
+ }
+ 
+ /*
+- * Returns temperature in Celsius degrees, resolution is 0.01º C. Output value of
+- * "5123" equals 51.2º C. t_fine carries fine temperature as global value.
++ * Returns temperature in Celsius degrees, resolution is 0.01º C. Output value
++ * of "5123" equals 51.2º C. t_fine carries fine temperature as global value.
+  *
+  * Taken from datasheet, Section Appendix 9, "Compensation formula" and repo
+  * https://github.com/BoschSensortec/BMP3-Sensor-API.
+@@ -1068,7 +1067,8 @@ static int bmp380_read_calib(struct bmp280_data *data)
+ 
+ 	/* Read temperature and pressure calibration data */
+ 	ret = regmap_bulk_read(data->regmap, BMP380_REG_CALIB_TEMP_START,
+-			       data->bmp380_cal_buf, sizeof(data->bmp380_cal_buf));
++			       data->bmp380_cal_buf,
++			       sizeof(data->bmp380_cal_buf));
+ 	if (ret) {
+ 		dev_err(data->dev,
+ 			"failed to read temperature calibration parameters\n");
+@@ -1076,7 +1076,8 @@ static int bmp380_read_calib(struct bmp280_data *data)
+ 	}
+ 
+ 	/* Toss the temperature calibration data into the entropy pool */
+-	add_device_randomness(data->bmp380_cal_buf, sizeof(data->bmp380_cal_buf));
++	add_device_randomness(data->bmp380_cal_buf,
++			      sizeof(data->bmp380_cal_buf));
+ 
+ 	/* Parse calibration values */
+ 	calib->T1 = get_unaligned_le16(&data->bmp380_cal_buf[BMP380_T1]);
+@@ -1158,7 +1159,8 @@ static int bmp380_chip_config(struct bmp280_data *data)
+ 
+ 	/* Configure output data rate */
+ 	ret = regmap_update_bits_check(data->regmap, BMP380_REG_ODR,
+-				       BMP380_ODRS_MASK, data->sampling_freq, &aux);
++				       BMP380_ODRS_MASK, data->sampling_freq,
++				       &aux);
+ 	if (ret) {
+ 		dev_err(data->dev, "failed to write ODR selection register\n");
+ 		return ret;
+@@ -1177,12 +1179,13 @@ static int bmp380_chip_config(struct bmp280_data *data)
+ 
+ 	if (change) {
+ 		/*
+-		 * The configurations errors are detected on the fly during a measurement
+-		 * cycle. If the sampling frequency is too low, it's faster to reset
+-		 * the measurement loop than wait until the next measurement is due.
++		 * The configurations errors are detected on the fly during a
++		 * measurement cycle. If the sampling frequency is too low, it's
++		 * faster to reset the measurement loop than wait until the next
++		 * measurement is due.
+ 		 *
+-		 * Resets sensor measurement loop toggling between sleep and normal
+-		 * operating modes.
++		 * Resets sensor measurement loop toggling between sleep and
++		 * normal operating modes.
+ 		 */
+ 		ret = regmap_write_bits(data->regmap, BMP380_REG_POWER_CONTROL,
+ 					BMP380_MODE_MASK,
+@@ -1200,22 +1203,21 @@ static int bmp380_chip_config(struct bmp280_data *data)
+ 			return ret;
+ 		}
+ 		/*
+-		 * Waits for measurement before checking configuration error flag.
+-		 * Selected longest measure time indicated in section 3.9.1
+-		 * in the datasheet.
++		 * Waits for measurement before checking configuration error
++		 * flag. Selected longest measure time indicated in
++		 * section 3.9.1 in the datasheet.
+ 		 */
+ 		msleep(80);
+ 
+ 		/* Check config error flag */
+ 		ret = regmap_read(data->regmap, BMP380_REG_ERROR, &tmp);
+ 		if (ret) {
+-			dev_err(data->dev,
+-				"failed to read error register\n");
++			dev_err(data->dev, "failed to read error register\n");
+ 			return ret;
+ 		}
+ 		if (tmp & BMP380_ERR_CONF_MASK) {
+ 			dev_warn(data->dev,
+-				"sensor flagged configuration as incompatible\n");
++				 "sensor flagged configuration as incompatible\n");
+ 			return -EINVAL;
+ 		}
+ 	}
+@@ -1315,9 +1317,11 @@ static int bmp580_nvm_operation(struct bmp280_data *data, bool is_write)
+ 	}
+ 
+ 	/* Start NVM operation sequence */
+-	ret = regmap_write(data->regmap, BMP580_REG_CMD, BMP580_CMD_NVM_OP_SEQ_0);
++	ret = regmap_write(data->regmap, BMP580_REG_CMD,
++			   BMP580_CMD_NVM_OP_SEQ_0);
+ 	if (ret) {
+-		dev_err(data->dev, "failed to send nvm operation's first sequence\n");
++		dev_err(data->dev,
++			"failed to send nvm operation's first sequence\n");
+ 		return ret;
+ 	}
+ 	if (is_write) {
+@@ -1325,7 +1329,8 @@ static int bmp580_nvm_operation(struct bmp280_data *data, bool is_write)
+ 		ret = regmap_write(data->regmap, BMP580_REG_CMD,
+ 				   BMP580_CMD_NVM_WRITE_SEQ_1);
+ 		if (ret) {
+-			dev_err(data->dev, "failed to send nvm write sequence\n");
++			dev_err(data->dev,
++				"failed to send nvm write sequence\n");
+ 			return ret;
+ 		}
+ 		/* Datasheet says on 4.8.1.2 it takes approximately 10ms */
+@@ -1336,7 +1341,8 @@ static int bmp580_nvm_operation(struct bmp280_data *data, bool is_write)
+ 		ret = regmap_write(data->regmap, BMP580_REG_CMD,
+ 				   BMP580_CMD_NVM_READ_SEQ_1);
+ 		if (ret) {
+-			dev_err(data->dev, "failed to send nvm read sequence\n");
++			dev_err(data->dev,
++				"failed to send nvm read sequence\n");
+ 			return ret;
+ 		}
+ 		/* Datasheet says on 4.8.1.1 it takes approximately 200us */
+@@ -1499,8 +1505,8 @@ static int bmp580_nvmem_read(void *priv, unsigned int offset, void *val,
  		if (ret)
-diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-index 9d9f4ce2baa6e..a44ea33221635 100644
---- a/drivers/iio/pressure/bmp280.h
-+++ b/drivers/iio/pressure/bmp280.h
-@@ -418,7 +418,8 @@ struct bmp280_data {
+ 			goto exit;
  
- struct bmp280_chip_info {
- 	unsigned int id_reg;
--	const unsigned int chip_id;
-+	const u8 *chip_id;
-+	int num_chip_id;
+-		ret = regmap_bulk_read(data->regmap, BMP580_REG_NVM_DATA_LSB, &data->le16,
+-				       sizeof(data->le16));
++		ret = regmap_bulk_read(data->regmap, BMP580_REG_NVM_DATA_LSB,
++				       &data->le16, sizeof(data->le16));
+ 		if (ret) {
+ 			dev_err(data->dev, "error reading nvm data regs\n");
+ 			goto exit;
+@@ -1544,7 +1550,8 @@ static int bmp580_nvmem_write(void *priv, unsigned int offset, void *val,
+ 	while (bytes >= sizeof(*buf)) {
+ 		addr = bmp580_nvmem_addrs[offset / sizeof(*buf)];
  
- 	const struct regmap_config *regmap_config;
+-		ret = regmap_write(data->regmap, BMP580_REG_NVM_ADDR, BMP580_NVM_PROG_EN |
++		ret = regmap_write(data->regmap, BMP580_REG_NVM_ADDR,
++				   BMP580_NVM_PROG_EN |
+ 				   FIELD_PREP(BMP580_NVM_ROW_ADDR_MASK, addr));
+ 		if (ret) {
+ 			dev_err(data->dev, "error writing nvm address\n");
+@@ -1552,8 +1559,8 @@ static int bmp580_nvmem_write(void *priv, unsigned int offset, void *val,
+ 		}
+ 		data->le16 = cpu_to_le16(*buf++);
  
+-		ret = regmap_bulk_write(data->regmap, BMP580_REG_NVM_DATA_LSB, &data->le16,
+-					sizeof(data->le16));
++		ret = regmap_bulk_write(data->regmap, BMP580_REG_NVM_DATA_LSB,
++					&data->le16, sizeof(data->le16));
+ 		if (ret) {
+ 			dev_err(data->dev, "error writing LSB NVM data regs\n");
+ 			goto exit;
+@@ -1660,7 +1667,8 @@ static int bmp580_chip_config(struct bmp280_data *data)
+ 		  BMP580_OSR_PRESS_EN;
+ 
+ 	ret = regmap_update_bits_check(data->regmap, BMP580_REG_OSR_CONFIG,
+-				       BMP580_OSR_TEMP_MASK | BMP580_OSR_PRESS_MASK |
++				       BMP580_OSR_TEMP_MASK |
++				       BMP580_OSR_PRESS_MASK |
+ 				       BMP580_OSR_PRESS_EN,
+ 				       reg_val, &aux);
+ 	if (ret) {
+@@ -1711,7 +1719,8 @@ static int bmp580_chip_config(struct bmp280_data *data)
+ 		 */
+ 		ret = regmap_read(data->regmap, BMP580_REG_EFF_OSR, &tmp);
+ 		if (ret) {
+-			dev_err(data->dev, "error reading effective OSR register\n");
++			dev_err(data->dev,
++				"error reading effective OSR register\n");
+ 			return ret;
+ 		}
+ 		if (!(tmp & BMP580_EFF_OSR_VALID_ODR)) {
+@@ -1846,7 +1855,8 @@ static int bmp180_read_calib(struct bmp280_data *data)
+ 	}
+ 
+ 	/* Toss the calibration data into the entropy pool */
+-	add_device_randomness(data->bmp180_cal_buf, sizeof(data->bmp180_cal_buf));
++	add_device_randomness(data->bmp180_cal_buf,
++			      sizeof(data->bmp180_cal_buf));
+ 
+ 	calib->AC1 = be16_to_cpu(data->bmp180_cal_buf[AC1]);
+ 	calib->AC2 = be16_to_cpu(data->bmp180_cal_buf[AC2]);
+@@ -1961,8 +1971,7 @@ static u32 bmp180_compensate_press(struct bmp280_data *data, s32 adc_press)
+ 	return p + ((x1 + x2 + 3791) >> 4);
+ }
+ 
+-static int bmp180_read_press(struct bmp280_data *data,
+-			     int *val, int *val2)
++static int bmp180_read_press(struct bmp280_data *data, int *val, int *val2)
+ {
+ 	u32 comp_press;
+ 	s32 adc_press;
+@@ -2239,6 +2248,7 @@ static int bmp280_runtime_resume(struct device *dev)
+ 	ret = regulator_bulk_enable(BMP280_NUM_SUPPLIES, data->supplies);
+ 	if (ret)
+ 		return ret;
++
+ 	usleep_range(data->start_up_time, data->start_up_time + 100);
+ 	return data->chip_info->chip_config(data);
+ }
+diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
+index 9de923228a9f4..47122da8e716d 100644
+--- a/drivers/iio/pressure/bmp280-spi.c
++++ b/drivers/iio/pressure/bmp280-spi.c
+@@ -12,7 +12,7 @@
+ #include "bmp280.h"
+ 
+ static int bmp280_regmap_spi_write(void *context, const void *data,
+-                                   size_t count)
++				   size_t count)
+ {
+ 	struct device *dev = context;
+ 	struct spi_device *spi = to_spi_device(dev);
+@@ -29,7 +29,7 @@ static int bmp280_regmap_spi_write(void *context, const void *data,
+ }
+ 
+ static int bmp280_regmap_spi_read(void *context, const void *reg,
+-                                  size_t reg_size, void *val, size_t val_size)
++				  size_t reg_size, void *val, size_t val_size)
+ {
+ 	struct device *dev = context;
+ 	struct spi_device *spi = to_spi_device(dev);
 -- 
 2.43.0
 
