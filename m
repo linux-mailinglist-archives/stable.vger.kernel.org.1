@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-82183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBAFB994B8C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F89994B6E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 671CE1F27A52
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E12711F27359
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDA61DED7B;
-	Tue,  8 Oct 2024 12:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639061DF273;
+	Tue,  8 Oct 2024 12:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmWbZeS3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvBdUTxB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B35A192594;
-	Tue,  8 Oct 2024 12:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF551DED64;
+	Tue,  8 Oct 2024 12:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391422; cv=none; b=d9aRqECbx4l7hEvmZZi1/33dGO/Y2VLRkR+3+NXD4NjlqEJrEATNqoukOROcge8Sjb6Vxs524G2+wN69Sf5GsmfZUZaqO3RkGvQVIxUYzJxFloK3KdFN4rTqNoQp7r1j9UIl4RI6blFqlG2GiFtFEcNws5k8C3eAuoKaYVRwIQU=
+	t=1728391322; cv=none; b=lxrRGnxXmjVg5hNteYHObyKdhgi39HE6g8CV7WaQR+mlRHuyqp/7+BPnp98scwAAgIlIIIDj36EhK0Y3VD9GLr2kblJXsd0t0QNwDj0RRS/h0ZLujcOgDiJlsii4e77JjEupyps/M+hX+eLXnN5WjHfEbQgOPqSPbwN9nhE0JF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391422; c=relaxed/simple;
-	bh=oLqsdmTmlW2kWSwm0fT4R+CP5p7oGXEQxPa/gKMEu6o=;
+	s=arc-20240116; t=1728391322; c=relaxed/simple;
+	bh=Vu6fnFr0xVYr+N+aARf6tjPVq+koNQ+7jzsKhXuKFNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n/zI3IjCfeJCPEpYPUMjjusyXZJTctAqmp208EXuv4AlXDVVF4qyGwsKeA/0Kr72aHBuBR7GbsHzbn5qpOenbq5m4V1ONxJU52IstJpUfrOA3NJ9giqMjywalavQHTFaBd5xu3scudSl13/jpwDHNtl8xErDyKWB5E6oNiny6SY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmWbZeS3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE8DC4CEC7;
-	Tue,  8 Oct 2024 12:43:41 +0000 (UTC)
+	 MIME-Version; b=FtochfEovtwMvLeas6KEwtKoH2e0cmaWhxgfTb57Wn5ovipExF9R+PnHG39vuA47XGOpotm/x04RnV+a9E92oynKcDj86dxjVvhtTa6eMJYPbtIzXJfC4Uq7lAZ5UlvMuSGc1muDPjgwQd/d65u+pcbobJxtE7yo1q2CHWj5WU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvBdUTxB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98420C4CEC7;
+	Tue,  8 Oct 2024 12:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391422;
-	bh=oLqsdmTmlW2kWSwm0fT4R+CP5p7oGXEQxPa/gKMEu6o=;
+	s=korg; t=1728391322;
+	bh=Vu6fnFr0xVYr+N+aARf6tjPVq+koNQ+7jzsKhXuKFNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jmWbZeS3Zw7PaNSY/4aD1KQLlZPD4hwMBxgJOfiaEgYcCmbqKJI1nCPnfc8vlu4oD
-	 aSzb89WhqNlYUkYAfli/i9ZcZjxqJhEsEAXmkMQiW2ovd3M3AVzksrURLOnu8QX/lT
-	 jOCGNlyRs88yH45rFGqlxN0s8spSoz9639lng76c=
+	b=pvBdUTxBBXPg3T0MOqkltnTfnNVPzFWXK41XzXlvL6C6bTBXRBrivDNbePL7y7QU4
+	 GriLhx9z+MqH++dhf6G3Tt2fOaC0FVVsktp8PBEnMYCFMZVWvRJHLuiote2Btv3g2S
+	 kFB6kTfh6JDMYUIPJE2jj6ea89fDLDknySHFyokA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomas Glozar <tglozar@redhat.com>,
-	Ben Hutchings <benh@debian.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 077/558] tools/rtla: Fix installation from out-of-tree build
-Date: Tue,  8 Oct 2024 14:01:47 +0200
-Message-ID: <20241008115705.406651073@linuxfoundation.org>
+Subject: [PATCH 6.11 078/558] ALSA: gus: Fix some error handling paths related to get_bpos() usage
+Date: Tue,  8 Oct 2024 14:01:48 +0200
+Message-ID: <20241008115705.445942829@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
 References: <20241008115702.214071228@linuxfoundation.org>
@@ -67,38 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ben Hutchings <benh@debian.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit f771d5369f1dbfe32c93bcb4f5d7ca8322b15389 ]
+[ Upstream commit 9df39a872c462ea07a3767ebd0093c42b2ff78a2 ]
 
-rtla now supports out-of-tree builds, but installation fails as it
-still tries to install the rtla binary from the source tree.  Use the
-existing macro $(RTLA) to refer to the binary.
+If get_bpos() fails, it is likely that the corresponding error code should
+be returned.
 
-Link: https://lore.kernel.org/ZudubuoU_JHjPZ7w@decadent.org.uk
-Fixes: 01474dc706ca ("tools/rtla: Use tools/build makefiles to build rtla")
-Reviewed-by: Tomas Glozar <tglozar@redhat.com>
-Tested-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Ben Hutchings <benh@debian.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: a6970bb1dd99 ("ALSA: gus: Convert to the new PCM ops")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://patch.msgid.link/d9ca841edad697154afa97c73a5d7a14919330d9.1727984008.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/Makefile.rtla | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/isa/gus/gus_pcm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/tracing/rtla/Makefile.rtla b/tools/tracing/rtla/Makefile.rtla
-index 3ff0b8970896f..cc1d6b615475f 100644
---- a/tools/tracing/rtla/Makefile.rtla
-+++ b/tools/tracing/rtla/Makefile.rtla
-@@ -38,7 +38,7 @@ BINDIR		:= /usr/bin
- .PHONY: install
- install: doc_install
- 	@$(MKDIR) -p $(DESTDIR)$(BINDIR)
--	$(call QUIET_INSTALL,rtla)$(INSTALL) rtla -m 755 $(DESTDIR)$(BINDIR)
-+	$(call QUIET_INSTALL,rtla)$(INSTALL) $(RTLA) -m 755 $(DESTDIR)$(BINDIR)
- 	@$(STRIP) $(DESTDIR)$(BINDIR)/rtla
- 	@test ! -f $(DESTDIR)$(BINDIR)/osnoise || $(RM) $(DESTDIR)$(BINDIR)/osnoise
- 	@$(LN) rtla $(DESTDIR)$(BINDIR)/osnoise
+diff --git a/sound/isa/gus/gus_pcm.c b/sound/isa/gus/gus_pcm.c
+index 850544725da79..d55c3dc229c0e 100644
+--- a/sound/isa/gus/gus_pcm.c
++++ b/sound/isa/gus/gus_pcm.c
+@@ -378,7 +378,7 @@ static int snd_gf1_pcm_playback_copy(struct snd_pcm_substream *substream,
+ 
+ 	bpos = get_bpos(pcmp, voice, pos, len);
+ 	if (bpos < 0)
+-		return pos;
++		return bpos;
+ 	if (copy_from_iter(runtime->dma_area + bpos, len, src) != len)
+ 		return -EFAULT;
+ 	return playback_copy_ack(substream, bpos, len);
+@@ -395,7 +395,7 @@ static int snd_gf1_pcm_playback_silence(struct snd_pcm_substream *substream,
+ 	
+ 	bpos = get_bpos(pcmp, voice, pos, len);
+ 	if (bpos < 0)
+-		return pos;
++		return bpos;
+ 	snd_pcm_format_set_silence(runtime->format, runtime->dma_area + bpos,
+ 				   bytes_to_samples(runtime, count));
+ 	return playback_copy_ack(substream, bpos, len);
 -- 
 2.43.0
 
