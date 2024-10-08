@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-82977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84895994FC0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47013994DB6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:08:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D4EA28501C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 781981C246F4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5211E0088;
-	Tue,  8 Oct 2024 13:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F2F1DF27C;
+	Tue,  8 Oct 2024 13:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyIRuPG1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3VBxw1p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1D51DFE36;
-	Tue,  8 Oct 2024 13:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DD51DF279;
+	Tue,  8 Oct 2024 13:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728394067; cv=none; b=AjcY5PTxK6BADlZ46Q4VeR8VY0miEfQrj5Q7sYAr5cJG986YiBsZoso20sEV9WQmhriRfcqMjDwiX7ZIbMC6i3qKDSMHoRSSCtkb0XPPHdvGHrQM8eU8f/O9JS2Jw/+LIQgsZw0Bhd6zGMQdieMkDc3ozUdHEHx+vjnlzt/b1Yo=
+	t=1728392903; cv=none; b=G8glwRqXP+FpMVcpWBK2yeMlDPcFFga4fVwnxC5q/Oqm2wpatBaU8EPggBbn7e5byOuISDiANDG634x2O7gbL8Np6OQECQ3wndYOPnpxVDD6wx0LSsobNhbKvM8blVFLJqnyhq1PMkp8crocUX8ElRbu+r6mruVY4fduYLHlJEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728394067; c=relaxed/simple;
-	bh=s8uBH/qD1xp5JCObtC8waIezkpDg9wsBMdAd6UI6Ewk=;
+	s=arc-20240116; t=1728392903; c=relaxed/simple;
+	bh=XnWAVRXfk/YXgGTkQKefavdcJBWPRNf6imD0o8ZLojo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0WF7C5jBkhU9y9S28mhJ1AFlTvjpbdfcxiYze40UCXlhiA7bGUEZg/oSK7OIoJosWL1CSwTqEw7HAasf1OPQr/nly79kkw0mGV0CAVuNN6R8SaucRzMrWVq9XJnht5rvDWkAezl+NFP7xXBngaqlQF8lMM+iBlozRA6Wii0zUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyIRuPG1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A64DC4CEC7;
-	Tue,  8 Oct 2024 13:27:46 +0000 (UTC)
+	 MIME-Version; b=pWyWE9kXdn8fi1sEAFGEk54Jjn+BuoLPo2BOns3/O/PEgZBsoZm/8kKErr1H6xiYKYRfF2LtOMRuYHT7ck/EvY47XTqulfNrLYWKgxNW5KkPDNNNgQVi4ElbSITRa8VMjZioVrGAd5x9xHPqjcP6ccLfORd8aJqLi+RSUVVUnNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3VBxw1p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43553C4CEC7;
+	Tue,  8 Oct 2024 13:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728394067;
-	bh=s8uBH/qD1xp5JCObtC8waIezkpDg9wsBMdAd6UI6Ewk=;
+	s=korg; t=1728392903;
+	bh=XnWAVRXfk/YXgGTkQKefavdcJBWPRNf6imD0o8ZLojo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pyIRuPG1CkgJYUUCT2KTyn480/cj1lfr3osAGWWjsL4yXENNMUzd8AznUBhmuIzBv
-	 sTnUkd552Gj/3RmIAeJY+OFNIXBjqrgQnUfpxT4qNT0vDr1/HMiVwqlfxjnG+VftB3
-	 R5Kqdkf51UCEWQb1BL832RkSB1jFTRaqs8Jt6wOo=
+	b=y3VBxw1p/PIClnrwkPWY7sq3udlLMxzZdQ5qJsfY8WiihsF8wfgV1KA8mpcTqdUyQ
+	 I0h0IN3ytVHWdeqeSqrUi2zogn3M2w4MiOYUYbR8u8e202QeTPxUehBErtUVbBKacD
+	 /tu3yK9pFVEJ21B3E9YjOIKPQMy85E0TQBHJHAdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 338/386] uprobes: fix kernel info leak via "[uprobes]" vma
-Date: Tue,  8 Oct 2024 14:09:43 +0200
-Message-ID: <20241008115642.684244284@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.11 554/558] ALSA: control: Fix leftover snd_power_unref()
+Date: Tue,  8 Oct 2024 14:09:44 +0200
+Message-ID: <20241008115724.033345014@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +60,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 34820304cc2cd1804ee1f8f3504ec77813d29c8e upstream.
+commit fef1ac950c600ba50ef4d65ca03c8dae9be7f9ea upstream.
 
-xol_add_vma() maps the uninitialized page allocated by __create_xol_area()
-into userspace. On some architectures (x86) this memory is readable even
-without VM_READ, VM_EXEC results in the same pgprot_t as VM_EXEC|VM_READ,
-although this doesn't really matter, debugger can read this memory anyway.
+One snd_power_unref() was forgotten and left at __snd_ctl_elem_info()
+in the previous change for reorganizing the locking order.
 
-Link: https://lore.kernel.org/all/20240929162047.GA12611@redhat.com/
-
-Reported-by: Will Deacon <will@kernel.org>
-Fixes: d4b3b6384f98 ("uprobes/core: Allocate XOL slots for uprobes use")
-Cc: stable@vger.kernel.org
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fcc62b19104a ("ALSA: control: Take power_ref lock primarily")
+Link: https://github.com/thesofproject/linux/pull/5127
+Link: https://patch.msgid.link/20240801064203.30284-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/uprobes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/control.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 6876b7f152b10..6dac0b5798213 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -1491,7 +1491,7 @@ static struct xol_area *__create_xol_area(unsigned long vaddr)
- 
- 	area->xol_mapping.name = "[uprobes]";
- 	area->xol_mapping.pages = area->pages;
--	area->pages[0] = alloc_page(GFP_HIGHUSER);
-+	area->pages[0] = alloc_page(GFP_HIGHUSER | __GFP_ZERO);
- 	if (!area->pages[0])
- 		goto free_bitmap;
- 	area->pages[1] = NULL;
--- 
-2.43.0
-
+--- a/sound/core/control.c
++++ b/sound/core/control.c
+@@ -1168,7 +1168,6 @@ static int __snd_ctl_elem_info(struct sn
+ 	info->access = 0;
+ #endif
+ 	result = kctl->info(kctl, info);
+-	snd_power_unref(card);
+ 	if (result >= 0) {
+ 		snd_BUG_ON(info->access);
+ 		index_offset = snd_ctl_get_ioff(kctl, &info->id);
 
 
 
