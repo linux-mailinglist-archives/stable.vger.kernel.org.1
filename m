@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2DE3994BAC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:45:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FD529948D5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:17:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7874F284448
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:45:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25A281F29126
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:17:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290681DEFF3;
-	Tue,  8 Oct 2024 12:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402891DD867;
+	Tue,  8 Oct 2024 12:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D2/lI11r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6/3y39T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96AE1DEFF0;
-	Tue,  8 Oct 2024 12:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F184C1E485;
+	Tue,  8 Oct 2024 12:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391506; cv=none; b=RWi8D9OowralPTMDvIQWEVjQ9qs9kKWCC/0agPG/xmwm+08RFTAqp+zY/nuFkaVRNo8wq4u4QTDVlM6mnfylYhB6Ja+jv/c4wPuvLF7wmdon4Pg3H9V/63jSwdpCI1dohkHScRjXzK+0ywrIo/IpoyYYmUzo22BsOm1D+TjDmps=
+	t=1728389807; cv=none; b=sTKSFLBvwFqB9si5RH6Kjv5SfB4iOLPwc/v8dw8DEZ9Xll5GKeUmKI7oazJJSz2Cri+15X6GrFVgOntZKAMVXiGVx04lgu3knUvO0X8iwmBeDR2Z/8W+Lyg4hONVlIURz2g/CjHpg97ZtwIXLcSkKzClkHZqK1vz5N/O2ogS5Ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391506; c=relaxed/simple;
-	bh=7Xo+JX/UbsJlacBsti5/l8brRORlCq4pzGp0lvYpRWk=;
+	s=arc-20240116; t=1728389807; c=relaxed/simple;
+	bh=1t0fDHWFHAf+fdv0DebM2UeSj0Y1sob/bUL40pHJO6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iHnfoutdFkrfl99u6XGVdVOaHv0XWQPjJeIDWJuduhhlJaELnRyGw0/IqU8b/M+xjrFrPSe3kMzdyFt+O7QkRLIEzw5647LmFftcn+4H7+0rnRCV1SEJt9FR5Pf7+tyCv9xogArTivdsOhDoqG1tYnORbHwl/XRFPASx3ZmQj3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D2/lI11r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5053CC4CEC7;
-	Tue,  8 Oct 2024 12:45:06 +0000 (UTC)
+	 MIME-Version; b=R3iIkcP5CPcm2EB91uIrplUVaAskWZonsa9GFF5t+K5muBF1Q6waMTJUt6buCZX/zaNLBZyjpoDO9dL3GTHA35T9nuQjq7VxuPJuW2BKKERuCoT6Fqut8jx0K8CU1EcfJnbvcOc1vbVWk3fOiRFCsWmF8y+sETvhZ1PKtutNdEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6/3y39T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E05C4CEC7;
+	Tue,  8 Oct 2024 12:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391506;
-	bh=7Xo+JX/UbsJlacBsti5/l8brRORlCq4pzGp0lvYpRWk=;
+	s=korg; t=1728389806;
+	bh=1t0fDHWFHAf+fdv0DebM2UeSj0Y1sob/bUL40pHJO6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D2/lI11ro/inmfEaX7WgqKwXifDNIPuNd1SjHiB+Qbn+tKPRjVoXBqIypL4xuCmj5
-	 ZmrPsrDNLiYCIq/bBRF9Zjy1+Q1SGCKjIbZt7Z1Q2+CwYQTIUgngibW3rS30xNu24d
-	 Iz5k0oG04+GX8vqVWSrC/KyMaG+t7fwL91PJFfB4=
+	b=D6/3y39TCRZFUcl/xUuVA/miVn5rBxYn6tE4GgZtCel9XgK2Jx1l+fehb+39FYNjE
+	 uckQcnpvirktPdUxl9xmtIBmmAqrFQ5lpVBholzmpkaTPiZqeE71arqr/w8JveDhaA
+	 2Q/S8A/lzze1oHlRkqGFwWICQTZATR7EjQEPIeg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 135/558] netpoll: Ensure clean state on setup failures
+Subject: [PATCH 6.10 102/482] ACPICA: check null return of ACPI_ALLOCATE_ZEROED() in acpi_db_convert_to_package()
 Date: Tue,  8 Oct 2024 14:02:45 +0200
-Message-ID: <20241008115707.677457884@linuxfoundation.org>
+Message-ID: <20241008115652.323559296@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit ae5a0456e0b4cfd7e61619e55251ffdf1bc7adfb ]
+[ Upstream commit a5242874488eba2b9062985bf13743c029821330 ]
 
-Modify netpoll_setup() and __netpoll_setup() to ensure that the netpoll
-structure (np) is left in a clean state if setup fails for any reason.
-This prevents carrying over misconfigured fields in case of partial
-setup success.
+ACPICA commit 4d4547cf13cca820ff7e0f859ba83e1a610b9fd0
 
-Key changes:
-- np->dev is now set only after successful setup, ensuring it's always
-  NULL if netpoll is not configured or if netpoll_setup() fails.
-- np->local_ip is zeroed if netpoll setup doesn't complete successfully.
-- Added DEBUG_NET_WARN_ON_ONCE() checks to catch unexpected states.
-- Reordered some operations in __netpoll_setup() for better logical flow.
+ACPI_ALLOCATE_ZEROED() may fail, elements might be NULL and will cause
+NULL pointer dereference later.
 
-These changes improve the reliability of netpoll configuration, since it
-assures that the structure is fully initialized or totally unset.
-
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20240822111051.179850-2-leitao@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://github.com/acpica/acpica/commit/4d4547cf
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Link: https://patch.msgid.link/tencent_4A21A2865B8B0A0D12CAEBEB84708EDDB505@qq.com
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/acpi/acpica/dbconvert.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index d657b042d5a04..930acc87c8c08 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -624,12 +624,9 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
- 	const struct net_device_ops *ops;
- 	int err;
+diff --git a/drivers/acpi/acpica/dbconvert.c b/drivers/acpi/acpica/dbconvert.c
+index 2b84ac093698a..8dbab69320499 100644
+--- a/drivers/acpi/acpica/dbconvert.c
++++ b/drivers/acpi/acpica/dbconvert.c
+@@ -174,6 +174,8 @@ acpi_status acpi_db_convert_to_package(char *string, union acpi_object *object)
+ 	elements =
+ 	    ACPI_ALLOCATE_ZEROED(DB_DEFAULT_PKG_ELEMENTS *
+ 				 sizeof(union acpi_object));
++	if (!elements)
++		return (AE_NO_MEMORY);
  
--	np->dev = ndev;
--	strscpy(np->dev_name, ndev->name, IFNAMSIZ);
--
- 	if (ndev->priv_flags & IFF_DISABLE_NETPOLL) {
- 		np_err(np, "%s doesn't support polling, aborting\n",
--		       np->dev_name);
-+		       ndev->name);
- 		err = -ENOTSUPP;
- 		goto out;
- 	}
-@@ -647,7 +644,7 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
- 
- 		refcount_set(&npinfo->refcnt, 1);
- 
--		ops = np->dev->netdev_ops;
-+		ops = ndev->netdev_ops;
- 		if (ops->ndo_netpoll_setup) {
- 			err = ops->ndo_netpoll_setup(ndev, npinfo);
- 			if (err)
-@@ -658,6 +655,8 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
- 		refcount_inc(&npinfo->refcnt);
- 	}
- 
-+	np->dev = ndev;
-+	strscpy(np->dev_name, ndev->name, IFNAMSIZ);
- 	npinfo->netpoll = np;
- 
- 	/* last thing to do is link it to the net device structure */
-@@ -675,6 +674,7 @@ EXPORT_SYMBOL_GPL(__netpoll_setup);
- int netpoll_setup(struct netpoll *np)
- {
- 	struct net_device *ndev = NULL;
-+	bool ip_overwritten = false;
- 	struct in_device *in_dev;
- 	int err;
- 
-@@ -739,6 +739,7 @@ int netpoll_setup(struct netpoll *np)
- 			}
- 
- 			np->local_ip.ip = ifa->ifa_local;
-+			ip_overwritten = true;
- 			np_info(np, "local IP %pI4\n", &np->local_ip.ip);
- 		} else {
- #if IS_ENABLED(CONFIG_IPV6)
-@@ -755,6 +756,7 @@ int netpoll_setup(struct netpoll *np)
- 					    !!(ipv6_addr_type(&np->remote_ip.in6) & IPV6_ADDR_LINKLOCAL))
- 						continue;
- 					np->local_ip.in6 = ifp->addr;
-+					ip_overwritten = true;
- 					err = 0;
- 					break;
- 				}
-@@ -785,6 +787,9 @@ int netpoll_setup(struct netpoll *np)
- 	return 0;
- 
- put:
-+	DEBUG_NET_WARN_ON_ONCE(np->dev);
-+	if (ip_overwritten)
-+		memset(&np->local_ip, 0, sizeof(np->local_ip));
- 	netdev_put(ndev, &np->dev_tracker);
- unlock:
- 	rtnl_unlock();
+ 	this = string;
+ 	for (i = 0; i < (DB_DEFAULT_PKG_ELEMENTS - 1); i++) {
 -- 
 2.43.0
 
