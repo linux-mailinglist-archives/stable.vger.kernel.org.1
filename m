@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC05D994CFB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F30994EA3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72E1B286D56
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C1AD1F24EDF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F891DED7A;
-	Tue,  8 Oct 2024 12:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F13D1DED4E;
+	Tue,  8 Oct 2024 13:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bu5bCgX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15otroy4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A36189910;
-	Tue,  8 Oct 2024 12:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EE61DE4CC;
+	Tue,  8 Oct 2024 13:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392390; cv=none; b=IMczwpM/ls7aTGP3cDGvst6r1i4uvuUIE1tuUMMvWKDIi2b31b67MMcGiJbhR3ByrqpXnCPbgV6ueaYKwBwDYH1yxty0K3+/pQ0hBZWebM6MFsfu8vJZXtddp6cShP38CwXpJUog5nWQBQElNOiav8MWQU+3Zys2lsTK0jgn4ws=
+	t=1728393558; cv=none; b=gMjCQ1Vk0MepTAKBwB9Tjyc7BMjx2pP5jpHC65nm+UUiUH29kx/ZlxLXDxUXnFYYKThsprxNFykk3pl8X4gC1hSOuSXSfGDzvD8RLD0GKwDue0W/5bMekrfK82dIG+1Oacif9UlHvJC1LWDp6+hKkwa7WPOIcJPmmvkGByHh9l0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392390; c=relaxed/simple;
-	bh=B/rnJqWLTlb5WsL7V/G6xLQhXQ0YnNzEQ9SwS0U2Qeg=;
+	s=arc-20240116; t=1728393558; c=relaxed/simple;
+	bh=jUt4FhE8ABsXGWI4pAukQvaBvZRutWcFwk3f5GILmok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u7ZxN8Cn+xhuLNhE/nBixn7XTwgwwqRP6X9Sv71QWXXfTLK1OVmR4GbSBqucSPhJAjn6vg4Tntmogd8k3XyRn5vMVJAgh8HlCKjQFSeFXiPZYR/uB3x70f/YvmCu88q+Iweu54WaarvYWprdVQEDl/2OCRMbingR2iPHuW4A1I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bu5bCgX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158A7C4CEC7;
-	Tue,  8 Oct 2024 12:59:49 +0000 (UTC)
+	 MIME-Version; b=Jrxu9+WYeJ7YM6S7s/fVTyn//39GG738qyPtqpn3+HdlpSUfoEuCexH2ZmnOmK5tpjAwYe+xCJgFCtB3td+ajV/cFkYaKv9crf1VAkFHaKiV+sOOQ6QmvnQ6bzbfwx8D4Tc6X6ZmmJQv69h4OShStjZDeU2Cn6kTv5bl3mKeYBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15otroy4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38EFC4CECC;
+	Tue,  8 Oct 2024 13:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392390;
-	bh=B/rnJqWLTlb5WsL7V/G6xLQhXQ0YnNzEQ9SwS0U2Qeg=;
+	s=korg; t=1728393558;
+	bh=jUt4FhE8ABsXGWI4pAukQvaBvZRutWcFwk3f5GILmok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1bu5bCgXE1Mrln6lrA91pG7AhsnckEKcv7+IqIl3ggj7/qbTNzNfs4c4nr4MHKIs3
-	 WTiKgXw3OIT6MSGkZMna8DiNYOrx+oUb6qapn272YFELc1I9iYIIvWOfkDwVdPUy+4
-	 bd32Uvperb4OnIEgLO/8jgNkiBMKl0p3lhx+d9Fw=
+	b=15otroy4UEM3Mw4QVD6lgcWBRg6Eq0t1bXpVp5t/OViO+PhcMMDW7u83cz9fA6cFT
+	 WkoxTlVdd2cQ7Djjyags/zRzd+hdj42j1jAVVZ86F+N+BWmmbo5QhS5lIptt1il2y0
+	 /NsmBGR9lZA3xe9EVLKh00n+1q5OkzFChdZo4mjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Camm Maguire <camm@maguirefamily.org>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.11 401/558] parisc: Allow mmap(MAP_STACK) memory to automatically expand upwards
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 186/386] spi: spi-imx: Fix pm_runtime_set_suspended() with runtime pm enabled
 Date: Tue,  8 Oct 2024 14:07:11 +0200
-Message-ID: <20241008115718.059616100@linuxfoundation.org>
+Message-ID: <20241008115636.731001721@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@kernel.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 5d698966fa7b452035c44c937d704910bf3440dd upstream.
+[ Upstream commit b6e05ba0844139dde138625906015c974c86aa93 ]
 
-When userspace allocates memory with mmap() in order to be used for stack,
-allow this memory region to automatically expand upwards up until the
-current maximum process stack size.
-The fault handler checks if the VM_GROWSUP bit is set in the vm_flags field
-of a memory area before it allows it to expand.
-This patch modifies the parisc specific code only.
-A RFC for a generic patch to modify mmap() for all architectures was sent
-to the mailing list but did not get enough Acks.
+It is not valid to call pm_runtime_set_suspended() for devices
+with runtime PM enabled because it returns -EAGAIN if it is enabled
+already and working. So, call pm_runtime_disable() before to fix it.
 
-Reported-by: Camm Maguire <camm@maguirefamily.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org	# v5.10+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 43b6bf406cd0 ("spi: imx: fix runtime pm support for !CONFIG_PM")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20240923040015.3009329-2-ruanjinjie@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/mman.h |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/spi/spi-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/parisc/include/asm/mman.h
-+++ b/arch/parisc/include/asm/mman.h
-@@ -11,4 +11,18 @@ static inline bool arch_memory_deny_writ
- }
- #define arch_memory_deny_write_exec_supported arch_memory_deny_write_exec_supported
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 006860ee03ca0..daa32bde61556 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1870,8 +1870,8 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 		spi_imx_sdma_exit(spi_imx);
+ out_runtime_pm_put:
+ 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
+-	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(spi_imx->dev);
++	pm_runtime_set_suspended(&pdev->dev);
  
-+static inline unsigned long arch_calc_vm_flag_bits(unsigned long flags)
-+{
-+	/*
-+	 * The stack on parisc grows upwards, so if userspace requests memory
-+	 * for a stack, mark it with VM_GROWSUP so that the stack expansion in
-+	 * the fault handler will work.
-+	 */
-+	if (flags & MAP_STACK)
-+		return VM_GROWSUP;
-+
-+	return 0;
-+}
-+#define arch_calc_vm_flag_bits(flags) arch_calc_vm_flag_bits(flags)
-+
- #endif /* __ASM_MMAN_H__ */
+ 	clk_disable_unprepare(spi_imx->clk_ipg);
+ out_put_per:
+-- 
+2.43.0
+
 
 
 
