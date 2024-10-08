@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-81946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98CE3994A40
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:31:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9AA8994CEA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1677C1F2162F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:31:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FDEA1F256BA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B611DE2AD;
-	Tue,  8 Oct 2024 12:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8A71DF247;
+	Tue,  8 Oct 2024 12:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShNFOJFb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APQy9Fp9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B011E485;
-	Tue,  8 Oct 2024 12:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EBB1DE2A5;
+	Tue,  8 Oct 2024 12:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390669; cv=none; b=lmnzOUc5BACCg7cZkAwfwZ3SBuZuTf+WYNqtPzo/0EkcouE4jPcuWvAOwyEnKS9gDf9VvolK/76WsTam4fKaJHkl2rPGuDjGo1yAoY8v4hSPOJMbEqOKYh3N2TzDVJ5M9d2IZkO8Eij0IKeJ5oVVWiEz2GuWqQZ3uGCqKF4hG/8=
+	t=1728392347; cv=none; b=aNUkhivJq0RdiTRto5UT8gpSBXT+fDIgye4aX4YtsskvlThdoU2B0KDvB9naT4XaJ+fV/EUuHpb0/SRKm5ZNPv148AFA9uW188rYIR24HnDdDFPE18SGJqcHyR7VnK6VS5ATap7yXxT6/8FEiphGOCasaFkdgwIkp5/UBYqToiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390669; c=relaxed/simple;
-	bh=U94RMlH0pAIMwiRqi4h0CwPWGnvxClDYcHccv7pZKmM=;
+	s=arc-20240116; t=1728392347; c=relaxed/simple;
+	bh=Q1y9n2NL/I7OK6PF8IGyvkgs7B3ctPak0fgHrVW3Os0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQsbZZpQo0CSyB0Hy++6U1m0rdaf5Cf46Xk4VFYzgo9G2V2WwuSmYdi1lbBmv7v6k68QsKzOlxtUVckRJlqXzkSLQQ8kSDMSEQpYucK3/djD6Nx4xTePL/luuwHiU55gke7AToyj9SzCF+hc4fapHTu6vAg4jCRI5NgXHxek7bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShNFOJFb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E1D5C4CEC7;
-	Tue,  8 Oct 2024 12:31:08 +0000 (UTC)
+	 MIME-Version; b=WP86T86kKsgi/3sz5QX88kmugpxgbTBNVQPju8AEE98dgMHcMK9BdMk/V16EO3kApk2JzDeWAqZR2LvUWTRUqPV4B+/W8s17+vuXVPiEUyoaWe7UHaOd439SrBS1hBNMMhHW0iNI48OAa6wD957m4N5Wn0b7jsBYi0yIyg3GHw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APQy9Fp9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E35FC4CEC7;
+	Tue,  8 Oct 2024 12:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390669;
-	bh=U94RMlH0pAIMwiRqi4h0CwPWGnvxClDYcHccv7pZKmM=;
+	s=korg; t=1728392347;
+	bh=Q1y9n2NL/I7OK6PF8IGyvkgs7B3ctPak0fgHrVW3Os0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ShNFOJFbPgPaUVlDtx4QKqo3/7cg0zt7kdSuFN6fINEOTa3VKiF9etI5tsqDsElH3
-	 54nA+elOcRg0yvUy6U3qJyAJYbxyNOsISxdG7NBmGYWdFQp0QonhM6LmPuGhJy29kr
-	 A6qOCu0wEliJ5gCUaVJk3+d4fmuQoapQIue79pm8=
+	b=APQy9Fp93P3XEdTA3h1w0j/QmQUPvVhASr/MrgZ9wQd5DH0iOyKM1pQA/LxpkxzwP
+	 UaSFG5Hr8xl8vVCcnkE3OMAoRJ7qPxyNkn2iBwfnnF/SaOw/Rm3+lgmD2iIBsZkqEp
+	 24gJbujUNFAn22XVLT7ZE0pcmFvaexHTXx1PN3h4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 355/482] ocfs2: cancel dqi_sync_work before freeing oinfo
-Date: Tue,  8 Oct 2024 14:06:58 +0200
-Message-ID: <20241008115702.392306530@linuxfoundation.org>
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.11 389/558] ext4: fix double brelse() the buffer of the extents path
+Date: Tue,  8 Oct 2024 14:06:59 +0200
+Message-ID: <20241008115717.593384355@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,85 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 35fccce29feb3706f649726d410122dd81b92c18 upstream.
+commit dcaa6c31134c0f515600111c38ed7750003e1b9c upstream.
 
-ocfs2_global_read_info() will initialize and schedule dqi_sync_work at the
-end, if error occurs after successfully reading global quota, it will
-trigger the following warning with CONFIG_DEBUG_OBJECTS_* enabled:
+In ext4_ext_try_to_merge_up(), set path[1].p_bh to NULL after it has been
+released, otherwise it may be released twice. An example of what triggers
+this is as follows:
 
-ODEBUG: free active (active state 0) object: 00000000d8b0ce28 object type: timer_list hint: qsync_work_fn+0x0/0x16c
+  split2    map    split1
+|--------|-------|--------|
 
-This reports that there is an active delayed work when freeing oinfo in
-error handling, so cancel dqi_sync_work first.  BTW, return status instead
-of -1 when .read_file_info fails.
+ext4_ext_map_blocks
+ ext4_ext_handle_unwritten_extents
+  ext4_split_convert_extents
+   // path->p_depth == 0
+   ext4_split_extent
+     // 1. do split1
+     ext4_split_extent_at
+       |ext4_ext_insert_extent
+       |  ext4_ext_create_new_leaf
+       |    ext4_ext_grow_indepth
+       |      le16_add_cpu(&neh->eh_depth, 1)
+       |    ext4_find_extent
+       |      // return -ENOMEM
+       |// get error and try zeroout
+       |path = ext4_find_extent
+       |  path->p_depth = 1
+       |ext4_ext_try_to_merge
+       |  ext4_ext_try_to_merge_up
+       |    path->p_depth = 0
+       |    brelse(path[1].p_bh)  ---> not set to NULL here
+       |// zeroout success
+     // 2. update path
+     ext4_find_extent
+     // 3. do split2
+     ext4_split_extent_at
+       ext4_ext_insert_extent
+         ext4_ext_create_new_leaf
+           ext4_ext_grow_indepth
+             le16_add_cpu(&neh->eh_depth, 1)
+           ext4_find_extent
+             path[0].p_bh = NULL;
+             path->p_depth = 1
+             read_extent_tree_block  ---> return err
+             // path[1].p_bh is still the old value
+             ext4_free_ext_path
+               ext4_ext_drop_refs
+                 // path->p_depth == 1
+                 brelse(path[1].p_bh)  ---> brelse a buffer twice
 
-Link: https://syzkaller.appspot.com/bug?extid=f7af59df5d6b25f0febd
-Link: https://lkml.kernel.org/r/20240904071004.2067695-1-joseph.qi@linux.alibaba.com
-Fixes: 171bf93ce11f ("ocfs2: Periodic quota syncing")
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Reported-by: syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com
-Tested-by: syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Finally got the following WARRNING when removing the buffer from lru:
+
+============================================
+VFS: brelse: Trying to free free buffer
+WARNING: CPU: 2 PID: 72 at fs/buffer.c:1241 __brelse+0x58/0x90
+CPU: 2 PID: 72 Comm: kworker/u19:1 Not tainted 6.9.0-dirty #716
+RIP: 0010:__brelse+0x58/0x90
+Call Trace:
+ <TASK>
+ __find_get_block+0x6e7/0x810
+ bdev_getblk+0x2b/0x480
+ __ext4_get_inode_loc+0x48a/0x1240
+ ext4_get_inode_loc+0xb2/0x150
+ ext4_reserve_inode_write+0xb7/0x230
+ __ext4_mark_inode_dirty+0x144/0x6a0
+ ext4_ext_insert_extent+0x9c8/0x3230
+ ext4_ext_map_blocks+0xf45/0x2dc0
+ ext4_map_blocks+0x724/0x1700
+ ext4_do_writepages+0x12d6/0x2a70
+[...]
+============================================
+
+Fixes: ecb94f5fdf4b ("ext4: collapse a single extent tree block into the inode if possible")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20240822023545.1994557-9-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/quota_local.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/ext4/extents.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ocfs2/quota_local.c
-+++ b/fs/ocfs2/quota_local.c
-@@ -692,7 +692,7 @@ static int ocfs2_local_read_info(struct
- 	int status;
- 	struct buffer_head *bh = NULL;
- 	struct ocfs2_quota_recovery *rec;
--	int locked = 0;
-+	int locked = 0, global_read = 0;
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -1877,6 +1877,7 @@ static void ext4_ext_try_to_merge_up(han
+ 	path[0].p_hdr->eh_max = cpu_to_le16(max_root);
  
- 	info->dqi_max_spc_limit = 0x7fffffffffffffffLL;
- 	info->dqi_max_ino_limit = 0x7fffffffffffffffLL;
-@@ -700,6 +700,7 @@ static int ocfs2_local_read_info(struct
- 	if (!oinfo) {
- 		mlog(ML_ERROR, "failed to allocate memory for ocfs2 quota"
- 			       " info.");
-+		status = -ENOMEM;
- 		goto out_err;
- 	}
- 	info->dqi_priv = oinfo;
-@@ -712,6 +713,7 @@ static int ocfs2_local_read_info(struct
- 	status = ocfs2_global_read_info(sb, type);
- 	if (status < 0)
- 		goto out_err;
-+	global_read = 1;
- 
- 	status = ocfs2_inode_lock(lqinode, &oinfo->dqi_lqi_bh, 1);
- 	if (status < 0) {
-@@ -782,10 +784,12 @@ out_err:
- 		if (locked)
- 			ocfs2_inode_unlock(lqinode, 1);
- 		ocfs2_release_local_quota_bitmaps(&oinfo->dqi_chunk);
-+		if (global_read)
-+			cancel_delayed_work_sync(&oinfo->dqi_sync_work);
- 		kfree(oinfo);
- 	}
- 	brelse(bh);
--	return -1;
-+	return status;
+ 	brelse(path[1].p_bh);
++	path[1].p_bh = NULL;
+ 	ext4_free_blocks(handle, inode, NULL, blk, 1,
+ 			 EXT4_FREE_BLOCKS_METADATA | EXT4_FREE_BLOCKS_FORGET);
  }
- 
- /* Write local info to quota file */
 
 
 
