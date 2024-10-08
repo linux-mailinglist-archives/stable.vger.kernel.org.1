@@ -1,132 +1,102 @@
-Return-Path: <stable+bounces-81553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B106199440C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 11:20:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A82C5994420
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 11:23:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5836F1F237FF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 09:20:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AF4828FB11
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 09:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7380D18BC03;
-	Tue,  8 Oct 2024 09:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9868013A88A;
+	Tue,  8 Oct 2024 09:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aByUyj7R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fDTf9Qcr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E0C18B464
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 09:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABD338DF2
+	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 09:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728379213; cv=none; b=Y1vsbghhiIqAVqyMZp26AAN1diUfUeYsoL1/RZEauRUXJoC/eJy/MQ2MheJAoUuPi1o81GQZ6BUo+jVYGDTv9ecdkECFSiUhsxJUFadWkDIfsoHA8PrxwpV2XqG6QrMVrOPOpNq4RAdmKWY5ZLtn7wNGNJ/asqPt0DCvitN0j2s=
+	t=1728379379; cv=none; b=mcm4iX+zkwHwZ7+ieWOJ7/esxQC9a+FobJnuGpzUwFSguENiL7vPi5hMLENqFu+7yq4BzMio6lgPoMiqkN5HRcN6/BP+iGi4/CerXeFgDpnoi5nHAcAJcNjpgY9wbRH6aAKIDa6UNpokRtlhoV9lMcOXHH7f/4T0zW0NNf5KQVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728379213; c=relaxed/simple;
-	bh=eUEpShZB+Q5wzzDnDEC+aT48u7pa6aIVcF+uvIMd6Wk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JfG4PPquTpF2GZsxDWcyOpnKSygLTnPX+Bv4ba6cVwjMBjlFn2uig81eHtCHpnobZdnIg3Sj7cePM5hUtWT3SE1/w5JyG2BqiecqDDoqK/DBkNIOaXPbCLrtE4sZRw3ZIWAuiLLn4Cu9xTTIXfS9wcx8xgXnK2BQLRn8Bjm4YXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aByUyj7R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58909C4CECF;
-	Tue,  8 Oct 2024 09:20:12 +0000 (UTC)
+	s=arc-20240116; t=1728379379; c=relaxed/simple;
+	bh=GQmaoKOmh0KbA2vGuB7EWKSh13e51GqPKizukdss1h8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TXQoxVnBfZN3yRp9ppkeK7Um0U1DISC5oekaes0sLBVrjJAJwTDgYNlC1+nGRffE934BI1dYV5dOjTyU9d3CeS2FXAzKmCm3c5iIVe6KNSKlHy1AYLvR3SJsZYXmqsOIDhgd2bGZTKEDCuRyT79GRyrs0Yn077isdJLYRsFg5lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fDTf9Qcr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9A5C4CECF;
+	Tue,  8 Oct 2024 09:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728379212;
-	bh=eUEpShZB+Q5wzzDnDEC+aT48u7pa6aIVcF+uvIMd6Wk=;
-	h=Subject:To:Cc:From:Date:From;
-	b=aByUyj7R/gMsLkA26YV4e4g61MU9cuSLOv51dWTs+fesauvGCJqlbk6huqs4+MtUq
-	 2YISYjbSaWHiv+gaP720tqhviLCL9ikHGpdgQDbRiX3NzO/SgGgyNAYzIRImHNYBGy
-	 mUsqeB49B6pMCgvzQNQ4PDvTZrSbzcLM1rgzsNN8=
-Subject: FAILED: patch "[PATCH] drm/xe/vram: fix ccs offset calculation" failed to apply to 6.10-stable tree
-To: matthew.auld@intel.com,akshata.jahagirdar@intel.com,himal.prasad.ghimiray@intel.com,lucas.demarchi@intel.com,matthew.d.roper@intel.com,shuicheng.lin@intel.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 08 Oct 2024 11:20:09 +0200
-Message-ID: <2024100809-goes-diagnosis-d07c@gregkh>
+	s=korg; t=1728379379;
+	bh=GQmaoKOmh0KbA2vGuB7EWKSh13e51GqPKizukdss1h8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fDTf9QcrJ9RWbwh8Z1lGNGHhDi+VzCLWatbkzZD726LPLmFoFs+8w9CAZsVWRUL0C
+	 zT9RdnCPuKP8lXH9qVK7tqmTGg9ZUMzdQBe+uXCFlVZ9SgbX9lYghhc3eSuR53K8Bi
+	 Y7ukT2TkWpiTdDSdVsDyeDx8BGUPn2ZCUXvVCPwo=
+Date: Tue, 8 Oct 2024 11:22:56 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jonathan Gray <jsg@jsg.id.au>
+Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org
+Subject: Re: [PATCH 6.6.y] Revert "drm/amd/display: Skip Recompute DSC Params
+ if no Stream on Link"
+Message-ID: <2024100842-tidiness-buzz-ad6a@gregkh>
+References: <20241007035711.46624-1-jsg@jsg.id.au>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241007035711.46624-1-jsg@jsg.id.au>
 
+On Mon, Oct 07, 2024 at 02:57:11PM +1100, Jonathan Gray wrote:
+> This reverts commit a53841b074cc196c3caaa37e1f15d6bc90943b97.
+> 
+> duplicated a change made in 6.6.46
+> 718d83f66fb07b2cab89a1fc984613a00e3db18f
+> 
+> Cc: stable@vger.kernel.org # 6.6
+> Signed-off-by: Jonathan Gray <jsg@jsg.id.au>
+> ---
+>  drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 3 ---
+>  1 file changed, 3 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+> index 7fb11445a28f..d390e3d62e56 100644
+> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+> @@ -1266,9 +1266,6 @@ static bool is_dsc_need_re_compute(
+>  		}
+>  	}
+>  
+> -	if (new_stream_on_link_num == 0)
+> -		return false;
+> -
+>  	if (new_stream_on_link_num == 0)
+>  		return false;
+>  
+> -- 
+> 2.46.1
+> 
 
-The patch below does not apply to the 6.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+The whole drm tree is messed up when it comes to stable patches.
+Duplicates like this happen all the time due to their bizarre workflow
+that causes this to happen at least once a release, and is still a major
+pain to deal with.
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x ee06c09ded3c2f722be4e240ed06287e23596bda
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100809-goes-diagnosis-d07c@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
-
-Possible dependencies:
-
-ee06c09ded3c ("drm/xe/vram: fix ccs offset calculation")
-638d1c79cbf1 ("drm/xe: Promote VRAM initialization function to own file")
-8c52ca22b15b ("drm/xe: Drop xe_ prefix from static functions in xe_mmio.c")
-2d8865b27724 ("drm/xe: Move BAR definitions to dedicated file")
-2adfc4e022f3 ("drm/xe: Move XEHP_MTCFG_ADDR register definition to xe_regs.h")
-c7117419784f ("drm/xe: reset mmio mappings with devm")
-a0b834c8957a ("drm/xe/mmio: move mmio_fini over to devm")
-f7e20cfb59c9 ("drm/xe: Cleanup xe_mmio.h")
-93dd6ad89c7d ("drm/xe: Don't rely on xe_force_wake.h to be included elsewhere")
+I dread the -rc1 merge window each time for the drm patches and put them
+off until I have gotten through everything else.  Can you please work
+with those developers to make this go better to prevent this from
+constantly happening?
 
 thanks,
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From ee06c09ded3c2f722be4e240ed06287e23596bda Mon Sep 17 00:00:00 2001
-From: Matthew Auld <matthew.auld@intel.com>
-Date: Mon, 16 Sep 2024 09:49:12 +0100
-Subject: [PATCH] drm/xe/vram: fix ccs offset calculation
-
-Spec says SW is expected to round up to the nearest 128K, if not already
-aligned for the CC unit view of CCS. We are seeing the assert sometimes
-pop on BMG to tell us that there is a hole between GSM and CCS, as well
-as popping other asserts with having a vram size with strange alignment,
-which is likely caused by misaligned offset here.
-
-v2 (Shuicheng):
- - Do the round_up() on final SW address.
-
-BSpec: 68023
-Fixes: b5c2ca0372dc ("drm/xe/xe2hpg: Determine flat ccs offset for vram")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Shuicheng Lin <shuicheng.lin@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: stable@vger.kernel.org # v6.10+
-Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Tested-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240916084911.13119-2-matthew.auld@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 37173392741c425191b959acb3adf70c9a4610c0)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-
-diff --git a/drivers/gpu/drm/xe/xe_vram.c b/drivers/gpu/drm/xe/xe_vram.c
-index 5bcd59190353..80ba2fc78837 100644
---- a/drivers/gpu/drm/xe/xe_vram.c
-+++ b/drivers/gpu/drm/xe/xe_vram.c
-@@ -182,6 +182,7 @@ static inline u64 get_flat_ccs_offset(struct xe_gt *gt, u64 tile_size)
- 		offset = offset_hi << 32; /* HW view bits 39:32 */
- 		offset |= offset_lo << 6; /* HW view bits 31:6 */
- 		offset *= num_enabled; /* convert to SW view */
-+		offset = round_up(offset, SZ_128K); /* SW must round up to nearest 128K */
- 
- 		/* We don't expect any holes */
- 		xe_assert_msg(xe, offset == (xe_mmio_read64_2x32(gt, GSMBASE) - ccs_size),
-
 
