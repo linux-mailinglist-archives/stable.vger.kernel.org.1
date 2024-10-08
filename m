@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-81635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 645D8994885
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B00994B76
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C69F1C2498B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F0B9B25C9E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0551DEFD6;
-	Tue,  8 Oct 2024 12:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A551DF736;
+	Tue,  8 Oct 2024 12:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqxxNmLH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPbk5T8v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24B31DEFD9;
-	Tue,  8 Oct 2024 12:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60941DE3AE;
+	Tue,  8 Oct 2024 12:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389622; cv=none; b=mTFo0+02eVoXDBqqp7HafbfQbV7OY8kiftBKojf80ruuPTCb4vc9WXEbaYNZpL3TdB/S0MBF9JdNROIZmaqQcVNH8Q9DjfOf3g/orHNceKKTcNXNu9rrmh1Q1D2h9pun+ttjidNlRpu0sHgUa64o/O61dW7mBkmrK9BBEbONnc8=
+	t=1728391328; cv=none; b=cVjAMGU9uYIH8dW+hjzzjarDr6dWWmzRxKUyye4oMdhYP2PFTy2h7vCQ77eQAB7WgBIq5M03Q1k6cKicpMOrzgCvxnJbRk0S8Zf6VA5QvU1l7rptQ7rZlL6LHj9n2OjiSMWcQbt/BH9DdS6QEjI9ZYRthuAngpYShUJSaKo/VSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389622; c=relaxed/simple;
-	bh=bYRiSNW5GJL/gVf51417p6TeTsEIlNpMRaof6Mc+lHA=;
+	s=arc-20240116; t=1728391328; c=relaxed/simple;
+	bh=2mu1epDhXEiszDYWzvOiQPvmtZptUGrVEGs2QGTRWjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QL1P6+MWo/rSOHBne0mmZfHf4ub01JP8rNb0bdNxxzYaoTPGfJKa6g/wXYgX5u4hlIKKyr+latIUyrUfPGgAOJuMnXzOGIYPwFG6ltgp1RjcS8mvQ05YQzcxmNfVAaigguwHEXVAJU8WU5ro1xbCURxvv9Ej+PMfcPLLXQkwACA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqxxNmLH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57F3C4CEC7;
-	Tue,  8 Oct 2024 12:13:41 +0000 (UTC)
+	 MIME-Version; b=n6hiN0qS3dHkvLqvfwbgvUY7iS0rsylU1pTGcapTwl3owTJoVBpJYDOrLoNnYL4e9JFvm+DrJkfAbkMpM4dJv9PwbgJpTl6aOtfv1jbJzPYyIPoD1RkoKJReSOt0wr30OCz3b++rr0qXvlB8h6jmZHblv0iwnjxD0bFclnCMCkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPbk5T8v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C417C4CEC7;
+	Tue,  8 Oct 2024 12:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389622;
-	bh=bYRiSNW5GJL/gVf51417p6TeTsEIlNpMRaof6Mc+lHA=;
+	s=korg; t=1728391328;
+	bh=2mu1epDhXEiszDYWzvOiQPvmtZptUGrVEGs2QGTRWjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RqxxNmLHzoTzW/w5E3E/pyp1TL0Jwivbfdss3f0RPztgEoww7zoRUwdunORga7YGH
-	 CJvuI0uedGS7nHWMcW4zW89tDBGw0fL8tJH00gtRnok9fY6VOrIveM8/zg9Xu9uS8m
-	 X/Fxj8uDtwScjaMaTMWR1OVxBwR4JImqsXXV1yPw=
+	b=dPbk5T8viegp7Li5Ec49Tw74aJUeokEE59pXSkQ+GUE29/TJ811FvTbNmSVf15WUC
+	 5gRak1OPlujSnMgPRU5yeV7yY9vEHvZFa3z6T53fmZUKgE6bXlEngiWXF7OZ5tUBNx
+	 kSehefOuIhp0Hd0iSwLqsfJOAsTYN2kJQw7mWj8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Brian Foster <bfoster@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 047/482] iomap: constrain the file range passed to iomap_file_unshare
+Subject: [PATCH 6.11 080/558] drm/amd/display: Disable replay if VRR capability is false
 Date: Tue,  8 Oct 2024 14:01:50 +0200
-Message-ID: <20241008115650.156302052@linuxfoundation.org>
+Message-ID: <20241008115705.524525190@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-[ Upstream commit a311a08a4237241fb5b9d219d3e33346de6e83e0 ]
+[ Upstream commit b68417613d4134b9e39fff95e72ca726268b47db ]
 
-File contents can only be shared (i.e. reflinked) below EOF, so it makes
-no sense to try to unshare ranges beyond EOF.  Constrain the file range
-parameters here so that we don't have to do that in the callers.
+[Why]
+The VRR need to be supported for panel replay feature.
+If VRR capability is false, panel replay capability also
+need to be disabled.
 
-Fixes: 5f4e5752a8a3 ("fs: add iomap_file_dirty")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://lore.kernel.org/r/20241002150213.GC21853@frogsfrogsfrogs
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Brian Foster <bfoster@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+[How]
+After update the vrr capability, the panel replay capability
+also need to be check if need.
+
+Reviewed-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dax.c               | 6 +++++-
- fs/iomap/buffered-io.c | 6 +++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/dax.c b/fs/dax.c
-index becb4a6920c6a..c62acd2812f8d 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -1305,11 +1305,15 @@ int dax_file_unshare(struct inode *inode, loff_t pos, loff_t len,
- 	struct iomap_iter iter = {
- 		.inode		= inode,
- 		.pos		= pos,
--		.len		= len,
- 		.flags		= IOMAP_WRITE | IOMAP_UNSHARE | IOMAP_DAX,
- 	};
-+	loff_t size = i_size_read(inode);
- 	int ret;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 74bb1e0e91348..a705e7fa18c06 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -12240,6 +12240,12 @@ void amdgpu_dm_update_freesync_caps(struct drm_connector *connector,
+ 	if (dm_con_state)
+ 		dm_con_state->freesync_capable = freesync_capable;
  
-+	if (pos < 0 || pos >= size)
-+		return 0;
++	if (connector->state && amdgpu_dm_connector->dc_link && !freesync_capable &&
++	    amdgpu_dm_connector->dc_link->replay_settings.config.replay_supported) {
++		amdgpu_dm_connector->dc_link->replay_settings.config.replay_supported = false;
++		amdgpu_dm_connector->dc_link->replay_settings.replay_feature_enabled = false;
++	}
 +
-+	iter.len = min(len, size - pos);
- 	while ((ret = iomap_iter(&iter, ops)) > 0)
- 		iter.processed = dax_unshare_iter(&iter);
- 	return ret;
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index d465589902790..e817564e80e01 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1366,11 +1366,15 @@ iomap_file_unshare(struct inode *inode, loff_t pos, loff_t len,
- 	struct iomap_iter iter = {
- 		.inode		= inode,
- 		.pos		= pos,
--		.len		= len,
- 		.flags		= IOMAP_WRITE | IOMAP_UNSHARE,
- 	};
-+	loff_t size = i_size_read(inode);
- 	int ret;
- 
-+	if (pos < 0 || pos >= size)
-+		return 0;
-+
-+	iter.len = min(len, size - pos);
- 	while ((ret = iomap_iter(&iter, ops)) > 0)
- 		iter.processed = iomap_unshare_iter(&iter);
- 	return ret;
+ 	if (connector->vrr_capable_property)
+ 		drm_connector_set_vrr_capable_property(connector,
+ 						       freesync_capable);
 -- 
 2.43.0
 
