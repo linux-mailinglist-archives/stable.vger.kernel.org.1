@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-82815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0CD7994E93
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 543DA994A42
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:31:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F23C81C24C8A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:18:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1EAD1F22359
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4441DED7D;
-	Tue,  8 Oct 2024 13:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47911DE3D6;
+	Tue,  8 Oct 2024 12:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IsRAFyt0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKergKWh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B231DDA36;
-	Tue,  8 Oct 2024 13:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825341DE2C4;
+	Tue,  8 Oct 2024 12:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393517; cv=none; b=fPzTskIrCB5wadCK84f9WBmH5zRrSjeYjOne7XMOhdOSL7HpXh/za2wVqZA041KqPrQg5XahCwG3vPDMB+8vo6Ultxj2xpmr7zm933C5+OiMbGsEGDXQnbZWnkqYgqF8qrTsnVCL7QHO6x9AnGPlErc4Ro8OO96+E98Q4PJiHEQ=
+	t=1728390675; cv=none; b=MGDOnkE9H1/pU6qs+983OrkvsxEwKA5xI/yyo5FN7nU2UfVUbH2ExXTIRsHCpa+7kJ9GlWfCdggt96b7hMhBA1nbqhWiIROy5AGTmVQpG2V6xJUUAf5xQRa3Ylqpwiebqr3xhXJU47/6KrHp5YDYFc5R7+hz6kpISYQ/LIUcoj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393517; c=relaxed/simple;
-	bh=wD9TO7jQIysvVE2mTBlWAlZMcJySc+VBd/Ti4ls4m04=;
+	s=arc-20240116; t=1728390675; c=relaxed/simple;
+	bh=yBJ34axu15JsoF+F7+NVID+fLuDyyXd3xIhhoSvdc90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f7qCF6tik4R0RTkdYdG7JE2l8jGbbfeocBHAayf997bLnxs3BQFPEaalKfSi+H+DjX1ltBqnoygX9fCE0ljiBp0O/HPWX90OLMDCmDOWQrQf4qv8+nV0aWWRI+QIrLk+80qPPyrepB+4/jpV8AORfbxH19Ks9Ept108dxuzLWPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IsRAFyt0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A07C4CECC;
-	Tue,  8 Oct 2024 13:18:36 +0000 (UTC)
+	 MIME-Version; b=IKSR2FI4DpF9w7yIbJsgD+T8WJo8ciVEioLBZohWq11v/pWTi2MjxUzLIUAPPlM5Ti4fNXy+V2W11J7ATN04iXFz/ItG13Zs2OuC/QGG7AgEB5NeN0eF0OzaQ+Q3Css/ZOySV06okULDAp2w3f4jSfOCx6sjDK34dxAQyUfuxFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKergKWh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0933C4CEC7;
+	Tue,  8 Oct 2024 12:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393517;
-	bh=wD9TO7jQIysvVE2mTBlWAlZMcJySc+VBd/Ti4ls4m04=;
+	s=korg; t=1728390675;
+	bh=yBJ34axu15JsoF+F7+NVID+fLuDyyXd3xIhhoSvdc90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IsRAFyt0mWWR1iXkdBNnsCRzv487wq0+bDSX3IRgrbXQjAEXKhgbYIbxCJnLVDW34
-	 YNIljdrs5qOR0vDyxGZ5BZtLdLhKpBJ7QzDrlvtPxhx1TuDiIbpKHJQp/ALMlvtfPI
-	 ebdduAIcz1exYiSAW7Kyt2UeP8GiiwzRecox1wPY=
+	b=MKergKWhwet93AEwLyZOTaBsuPrxQHVfu1VmTpnOEl9gIUHfVwg30oHEfSaPciRSy
+	 zC1mv2dG3qCdqcJn6x298LG06xaxieYn8n+r9YojdOmCfYeo6BGvDGKeYiEwrAKj0D
+	 1Cuo/X1loM4Me+3TUbsUhWNNyELjLhp1HertPlDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 175/386] drm/amdgpu/gfx10: use rlc safe mode for soft recovery
+	Julian Sun <sunjunchao2870@gmail.com>,
+	syzbot+05b9b39d8bdfe1a0861f@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 357/482] ocfs2: fix null-ptr-deref when journal load failed.
 Date: Tue,  8 Oct 2024 14:07:00 +0200
-Message-ID: <20241008115636.305896668@linuxfoundation.org>
+Message-ID: <20241008115702.471178581@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +69,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Julian Sun <sunjunchao2870@gmail.com>
 
-[ Upstream commit ead60e9c4e29c8574cae1be4fe3af1d9a978fb0f ]
+commit 5784d9fcfd43bd853654bb80c87ef293b9e8e80a upstream.
 
-Protect the MMIO access with safe mode.
+During the mounting process, if journal_reset() fails because of too short
+journal, then lead to jbd2_journal_load() fails with NULL j_sb_buffer.
+Subsequently, ocfs2_journal_shutdown() calls
+jbd2_journal_flush()->jbd2_cleanup_journal_tail()->
+__jbd2_update_log_tail()->jbd2_journal_update_sb_log_tail()
+->lock_buffer(journal->j_sb_buffer), resulting in a null-pointer
+dereference error.
 
-Acked-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To resolve this issue, we should check the JBD2_LOADED flag to ensure the
+journal was properly loaded.  Additionally, use journal instead of
+osb->journal directly to simplify the code.
+
+Link: https://syzkaller.appspot.com/bug?extid=05b9b39d8bdfe1a0861f
+Link: https://lkml.kernel.org/r/20240902030844.422725-1-sunjunchao2870@gmail.com
+Fixes: f6f50e28f0cb ("jbd2: Fail to load a journal if it is too short")
+Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
+Reported-by: syzbot+05b9b39d8bdfe1a0861f@syzkaller.appspotmail.com
+Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ocfs2/journal.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index cd594b92c6129..53c99bc6abb33 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -8748,7 +8748,9 @@ static void gfx_v10_0_ring_soft_recovery(struct amdgpu_ring *ring,
- 	value = REG_SET_FIELD(value, SQ_CMD, MODE, 0x01);
- 	value = REG_SET_FIELD(value, SQ_CMD, CHECK_VMID, 1);
- 	value = REG_SET_FIELD(value, SQ_CMD, VM_ID, vmid);
-+	amdgpu_gfx_rlc_enter_safe_mode(adev, 0);
- 	WREG32_SOC15(GC, 0, mmSQ_CMD, value);
-+	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
- }
+--- a/fs/ocfs2/journal.c
++++ b/fs/ocfs2/journal.c
+@@ -1055,7 +1055,7 @@ void ocfs2_journal_shutdown(struct ocfs2
+ 	if (!igrab(inode))
+ 		BUG();
  
- static void
--- 
-2.43.0
-
+-	num_running_trans = atomic_read(&(osb->journal->j_num_trans));
++	num_running_trans = atomic_read(&(journal->j_num_trans));
+ 	trace_ocfs2_journal_shutdown(num_running_trans);
+ 
+ 	/* Do a commit_cache here. It will flush our journal, *and*
+@@ -1074,9 +1074,10 @@ void ocfs2_journal_shutdown(struct ocfs2
+ 		osb->commit_task = NULL;
+ 	}
+ 
+-	BUG_ON(atomic_read(&(osb->journal->j_num_trans)) != 0);
++	BUG_ON(atomic_read(&(journal->j_num_trans)) != 0);
+ 
+-	if (ocfs2_mount_local(osb)) {
++	if (ocfs2_mount_local(osb) &&
++	    (journal->j_journal->j_flags & JBD2_LOADED)) {
+ 		jbd2_journal_lock_updates(journal->j_journal);
+ 		status = jbd2_journal_flush(journal->j_journal, 0);
+ 		jbd2_journal_unlock_updates(journal->j_journal);
 
 
 
