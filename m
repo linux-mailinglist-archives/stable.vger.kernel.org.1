@@ -1,73 +1,103 @@
-Return-Path: <stable+bounces-81587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 856D39947C1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:53:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0B249947EB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A0741F25A05
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 11:53:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 114E5B24D90
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6037E1DE88F;
-	Tue,  8 Oct 2024 11:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B7A1DB37F;
+	Tue,  8 Oct 2024 12:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/VQfWG/"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="RYURahtC";
+	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="Ib9new5v"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9B11D799E
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 11:51:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728388297; cv=none; b=R3GWIJyDT15JHIQ4R+JMTz6KX/faiJ6d6ULf6sZdn85HWTuLVbW66XBk12yPUlKh0FZPj+JlCi9I9P422Mhej+JZ6zzElquIzDh0b9wvT53KzJNIYHEVhlDPSRb88SAWOuetFu4YDUjZtxqtOzwizfBhTC4HTXIRr43jK+cwj84=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728388297; c=relaxed/simple;
-	bh=0uC2Yh6l6/OF1D0/KD2NE2Fv+41xtQvci2BIFcTMHZs=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C041DDA36;
+	Tue,  8 Oct 2024 12:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=185.185.170.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728388863; cv=fail; b=aR2S5eR3tY4UjEG0bD1GHoF4ALRV00Y5VFRF+PZjbriwZa8MZm7FvgUozu/2+IYvDyq3j1dH8bu7gD0oEAAOs8hQGoWOY/epgqjrFhaTAQR1rvpt+R5/0J+34zpHs7INxGNxLsRhQZLvbcEpDnn7SKzvqq1Fxd4Rv6ndsoqdm0E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728388863; c=relaxed/simple;
+	bh=b1P3DJk/6hfkSCnVQuxHt+Ux8LUCWKKpIGVzlcmNA0M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=osQxU+7ttUaJlGCQPWSuKAmQWs+gJmehNXG5nnUzpT0xIhx29nQOtd8i+2N1WMMkpy6UowihBOa3N1UFPmbgZeNAfXLUdi8VYlTgM0ASkI0eh/2RnnhPTg+dQGJjFIK+Y43egXaFalGVnQ6/h0Qy+BdCUIZxRQ8y0fBBfL+UB5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/VQfWG/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77ADC4CEC7;
-	Tue,  8 Oct 2024 11:51:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728388296;
-	bh=0uC2Yh6l6/OF1D0/KD2NE2Fv+41xtQvci2BIFcTMHZs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b/VQfWG/HsKelNr9U/ERf9c7NMsJ64wLB8XaOGooois/kuw4hrKMYU8LBz+CUvtUN
-	 uFriZDCXB6Eheeul05NfNtxwwhjV+tnTmXY0XYj3fYOzc67MEx6SRPaRQ77GZW5gsJ
-	 TwICX9EuLfOE17ZeZ6i3JnO56NFY6fY5AbV8aXzk=
-Date: Tue, 8 Oct 2024 13:51:33 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Pavel Machek <pavel@denx.de>
-Cc: Vegard Nossum <vegard.nossum@oracle.com>, Jens Axboe <axboe@kernel.dk>,
-	stable@vger.kernel.org, cengiz.can@canonical.com, mheyne@amazon.de,
-	mngyadam@amazon.com, kuntal.nayak@broadcom.com,
-	ajay.kaher@broadcom.com, zsm@chromium.org, dan.carpenter@linaro.org,
-	shivani.agarwal@broadcom.com, ahalaney@redhat.com,
-	alsi@bang-olufsen.dk, ardb@kernel.org,
-	benjamin.gaignard@collabora.com, bli@bang-olufsen.dk,
-	chengzhihao1@huawei.com, christophe.jaillet@wanadoo.fr,
-	ebiggers@kernel.org, edumazet@google.com, fancer.lancer@gmail.com,
-	florian.fainelli@broadcom.com, harshit.m.mogalapalli@oracle.com,
-	hdegoede@redhat.com, horms@kernel.org, hverkuil-cisco@xs4all.nl,
-	ilpo.jarvinen@linux.intel.com, jgg@nvidia.com, kevin.tian@intel.com,
-	kirill.shutemov@linux.intel.com, kuba@kernel.org,
-	luiz.von.dentz@intel.com, md.iqbal.hossain@intel.com,
-	mpearson-lenovo@squebb.ca, nicolinc@nvidia.com, pablo@netfilter.org,
-	rfoss@kernel.org, richard@nod.at, tfiga@chromium.org,
-	vladimir.oltean@nxp.com, xiaolei.wang@windriver.com,
-	yanjun.zhu@linux.dev, yi.zhang@redhat.com, yu.c.chen@intel.com,
-	yukuai3@huawei.com
-Subject: Re: [PATCH RFC 6.6.y 00/15] Some missing CVE fixes
-Message-ID: <2024100848-blubber-clinking-6f45@gregkh>
-References: <20241002150606.11385-1-vegard.nossum@oracle.com>
- <612f0415-96c2-4d52-bd3d-46ffa8afbeef@kernel.dk>
- <69e265b4-fae2-4a60-9652-c8db07da89a1@oracle.com>
- <ZwUVPCre5BR6uPZj@duo.ucw.cz>
- <2024100823-barbed-flatness-631c@gregkh>
- <ZwUaGvyHBePPNQF/@duo.ucw.cz>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vd+551GbIcuuamXnuu0sI93a2LaCYUqxUbYu5N1sJI4sFhBR+VLCigLI0tsb9nFjTKVQ9jUvyxYB94xu0xn19f0qgDdEhKvZcP951Qwy7ccfRlL0+QewnlSRKFSB0xzgmzDsIusSgH1tWbAMxt/wRY3c2mfkCi+YtEscbQ3+KK4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=RYURahtC; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=Ib9new5v; arc=fail smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+Received: from meesny.iki.fi (meesny.iki.fi [IPv6:2001:67c:2b0:1c1::201])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPS id 4XNDsL1G9Mz49Pwl;
+	Tue,  8 Oct 2024 14:52:22 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1728388342;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U/1XjZ8pkIPE3lI97nZZnbcpCWTZVXjxc7zkc/9HM1M=;
+	b=RYURahtCmVnySZmKapolw8ViCcq5lJ2BkQEMp1UpemEG/ODBqu8kgoHn9QFLVBC9UTKl6L
+	W0d0KeqPHxGOWnTv0W0g/6QdT/7sgc4gNT+u5HH9ZmaH/y+eb7CF59Ign9nP4sca3u2a5Z
+	HVwY+vIDWDCpKsnaK/UqbmTGtLXMk+UYpYwJywUQZ9q6OHUdizAQ3oQTN5BqOiIOMPChf5
+	l799kqxzipMalW4w3cvCzxfGtdBeHTMHFnRASfuBMcSv+8dTon54JEiNCHddCruTWWH8ad
+	ron9fiylHeNGvBg+l99iWGSVC+kJsCBAHMvEDuWsaxS0mPPWRs3SWMGarJa2AA==
+Received: from hillosipuli.retiisi.eu (80-248-247-191.cust.suomicom.net [80.248.247.191])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sailus)
+	by meesny.iki.fi (Postfix) with ESMTPSA id 4XNDs97169zyRx;
+	Tue,  8 Oct 2024 14:52:13 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
+	t=1728388334;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U/1XjZ8pkIPE3lI97nZZnbcpCWTZVXjxc7zkc/9HM1M=;
+	b=Ib9new5vglA0JYX/xJisWGgvH6vzKC0ctR1J7NBeUt2OrolKwqRTtzd4iHb2NuN7AOBqjJ
+	/9upfe9aJwRJE17j8av5ehstbNt+0DF0t5IcZuiasmhWuL1kUhSV0hP4yHdk2mKMuGPlQ3
+	0APdLgpVdHKI5YTMaJ4RnI7Jp2OsPso=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=meesny; t=1728388334;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U/1XjZ8pkIPE3lI97nZZnbcpCWTZVXjxc7zkc/9HM1M=;
+	b=xdSSDQROEFpeWY85dTW3FKy8Uks27Ql3uWRoSRDKrB1G/UY3BHZR665BCc1j9QoQyqTei8
+	m5J2CFLStaw26wK7R2B6vyV4JB//q1NNhm60NEi+8WeWc4YvJRJrgLAXUZddXYQryfIq11
+	T9XP87nVEsq1xNEiNWEtnnUPoBTJF6g=
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
+ARC-Seal: i=1; s=meesny; d=iki.fi; t=1728388334; a=rsa-sha256; cv=none;
+	b=xu6Ltj/i7Bvwjg+t1+v6vrZODN6IHByVP50vkI+HUGAjff99SMjtp6rlQrQVj1PtIEJJm2
+	CahD/42SYXNKKRJRh+CrfTeANoW4sgkerkxLub/cKIwvsf1N4iQK+WFeVsAzsbLcBLtd06
+	FqnN2Mk0Jpl4ABKPRCDwqsy9dlMqf7A=
+Received: from valkosipuli.retiisi.eu (valkosipuli.localdomain [192.168.4.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by hillosipuli.retiisi.eu (Postfix) with ESMTPS id 7D29E634CBD;
+	Tue,  8 Oct 2024 14:52:11 +0300 (EEST)
+Date: Tue, 8 Oct 2024 11:52:11 +0000
+From: Sakari Ailus <sakari.ailus@iki.fi>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] media: uvcvideo: Support partial control reads
+Message-ID: <ZwUc6-hbqDgBiqRl@valkosipuli.retiisi.eu>
+References: <20241008-uvc-readless-v1-0-042ac4581f44@chromium.org>
+ <20241008-uvc-readless-v1-1-042ac4581f44@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,39 +106,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZwUaGvyHBePPNQF/@duo.ucw.cz>
+In-Reply-To: <20241008-uvc-readless-v1-1-042ac4581f44@chromium.org>
 
-On Tue, Oct 08, 2024 at 01:40:10PM +0200, Pavel Machek wrote:
-> On Tue 2024-10-08 13:24:31, Greg Kroah-Hartman wrote:
-> > On Tue, Oct 08, 2024 at 01:19:24PM +0200, Pavel Machek wrote:
-> > > Hi!
-> > > 
-> > > > Unfortunately for distributions, there may be various customers or
-> > > > government agencies which expect or require all CVEs to be addressed
-> > > > (regardless of severity), which is why we're backporting these to stable
-> > > > and trying to close those gaps.
-> > > 
-> > > Customers and government will need to understand that with CVEs
-> > > assigned the way they are, addressing all of them will be impossible
-> > > (or will lead to unstable kernel), unfortunately :-(.
-> > 
-> > Citation needed please.
+Hi Ricardo,
+
+On Tue, Oct 08, 2024 at 07:06:14AM +0000, Ricardo Ribalda wrote:
+> Some cameras, like the ELMO MX-P3, do not return all the bytes
+> requested from a control if it can fit in less bytes.
+> Eg: Returning 0xab instead of 0x00ab.
+> usb 3-9: Failed to query (GET_DEF) UVC control 3 on unit 2: 1 (exp. 2).
 > 
-> https://opensourcesecurity.io/category/securityblog/
+> Extend the returned value from the camera and return it.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: a763b9fb58be ("media: uvcvideo: Do not return positive errors in uvc_query_ctrl()")
 
-To be specific:
-	https://opensourcesecurity.io/2024/06/03/why-are-vulnerabilities-out-of-control-in-2024/
+Is this really the patch that introduced the problem?
 
-Yes, I refer to that in my talk I linked to, what they are saying here
-is great, so work with cve.org to fix it.  We can't ignore the cve.org
-rules while being a CNA, sorry, that's not allowed.
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+>  drivers/media/usb/uvc/uvc_video.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+> index cd9c29532fb0..853dfb7b5f7b 100644
+> --- a/drivers/media/usb/uvc/uvc_video.c
+> +++ b/drivers/media/usb/uvc/uvc_video.c
+> @@ -79,11 +79,16 @@ int uvc_query_ctrl(struct uvc_device *dev, u8 query, u8 unit,
+>  	if (likely(ret == size))
+>  		return 0;
+>  
+> +	if (ret > 0 && ret < size) {
+> +		memset(data + ret, 0, size - ret);
 
-But that link talks nothing about an "unstable kernel" which is what I
-take objection to.  As I always say, never cherry-pick, just take all
-stable releases.  That is proven with much research and publications in
-the past years, why people don't believe in it is beyond me...
+It'd be nice to have a comment in the code why this is being done
+(including it's little endian).
 
-good luck!
+> +		return 0;
+> +	}
+> +
+>  	if (ret != -EPIPE) {
+>  		dev_err(&dev->udev->dev,
+>  			"Failed to query (%s) UVC control %u on unit %u: %d (exp. %u).\n",
+>  			uvc_query_name(query), cs, unit, ret, size);
+> -		return ret < 0 ? ret : -EPIPE;
+> +		return ret ? ret : -EPIPE;
+>  	}
+>  
+>  	/* Reuse data[0] to request the error code. */
+> 
 
-greg k-h
+-- 
+Kind regards,
+
+Sakari Ailus
 
