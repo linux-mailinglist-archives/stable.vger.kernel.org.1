@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA798994D20
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:02:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5681994A88
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67C702832FE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 196031C24B56
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4EC1DEFEA;
-	Tue,  8 Oct 2024 13:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF34B1DEFC8;
+	Tue,  8 Oct 2024 12:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eVmJ2CPE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1lQwWOt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9151DEFE3;
-	Tue,  8 Oct 2024 13:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0671DDA36;
+	Tue,  8 Oct 2024 12:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392514; cv=none; b=s6G+XAg9Bx4jwVVoOG2Oc7Hf0jUkOaljpdaJWjxkXliTfFpUj5tsYZDJF2aqFIRPc2A7P0GVMOZmBsNOjHjIkbGEHVN5K/aUm1vwYdH4rpVCRyDe3vmDzvUqJzkl5Yys8FJn1HNhLG/HnqXdejLp+Hj+4rCTF+K48ZpdH/ZtFGs=
+	t=1728390824; cv=none; b=mbbqIZQuYakokIj+mnor8Nzu9ZB2+KOM0FpMEq8PMJHY8LkJw2HB8OMihcX987+Eo8k3W+fbzUImP9MCIYofChbq/k5r1yOpW+tsLwW441CaqVR8xGOB6aKY4hNYKEUtFa8N2wx8ovXvOQnGldRiCgOurfpdxz5EJ4WtNg4OW80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392514; c=relaxed/simple;
-	bh=TzI+lqDij1uGJD2jt2xfzJaZSEWlLxeJy7NLgl9C9eM=;
+	s=arc-20240116; t=1728390824; c=relaxed/simple;
+	bh=1/OsEsxvJyuJ/hTQz7SvWnUVJjAjIPL5QZA6DG7DcM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QK4/UxEbwcM7HluhqGdcDN7VRhSqrR9kvO+giMVaeXqXmiJr4ZUMZM2i55O23ffQkU0fwxf/4bWS04k8SnNu4Op4UipgnDzbjzWKY6j/FcXiIFF6SBkSC2Z2IzlH62ooBkjcdXB5eRFMaqWpjVMHVk2knLmHD4YjxdDPc4VAQUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eVmJ2CPE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D91D3C4CECC;
-	Tue,  8 Oct 2024 13:01:53 +0000 (UTC)
+	 MIME-Version; b=oguEiOMofDYHthpcE7bvvCINjzZU/PkLBZFj/tAfuRLYYvhjPWA/8vC5dNx6jpgeDcGVNLGDhCl1ErZ1+9fl5Rv8yBnYOdz8P0l0gpB1jeJZ5lzzKdUktqhJwNNvXjGJ3hb+qq4p1RFHFRb4Ua/q2yvLfIVGegoolC1ix+FHVvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1lQwWOt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6A0C4CECD;
+	Tue,  8 Oct 2024 12:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392514;
-	bh=TzI+lqDij1uGJD2jt2xfzJaZSEWlLxeJy7NLgl9C9eM=;
+	s=korg; t=1728390824;
+	bh=1/OsEsxvJyuJ/hTQz7SvWnUVJjAjIPL5QZA6DG7DcM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eVmJ2CPEh5K8zR+t/Fmgxtsh7A6W1tP9AkyzOCcyGSnnAjkuaAxODvpOjPXcxMb/L
-	 IqlO2wPlYIrhyrntdqlasTkEkNIeHvFX3eOlhKX5aJQOVkGh3S0SrWUs7htL+eUAql
-	 zP5luQ2TcRsfte9CpJfijb5/6dNQyL+KQrfEgB64=
+	b=d1lQwWOt5y/Oc6QOsk3K8PUrWzF61tXGagQW4k8MBSkDDQNSFqOMCuVDlagm+w4bE
+	 fplZKl4mAHc2MuLVu4AL9DhYJGLVwWr620KW1PBEh8/Z+TKbuuaFidx62ST/3bq9Yv
+	 CvWwpBtsKqpCtKvXtgzwFTuEPdhjDNWuPWU25ZIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.11 437/558] i3c: master: svc: Fix use after free vulnerability in svc_i3c_master Driver Due to Race Condition
-Date: Tue,  8 Oct 2024 14:07:47 +0200
-Message-ID: <20241008115719.467967245@linuxfoundation.org>
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.10 405/482] gso: fix udp gso fraglist segmentation after pull from frag_list
+Date: Tue,  8 Oct 2024 14:07:48 +0200
+Message-ID: <20241008115704.348340548@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+From: Willem de Bruijn <willemb@google.com>
 
-commit 61850725779709369c7e907ae8c7c75dc7cec4f3 upstream.
+commit a1e40ac5b5e9077fe1f7ae0eb88034db0f9ae1ab upstream.
 
-In the svc_i3c_master_probe function, &master->hj_work is bound with
-svc_i3c_master_hj_work, &master->ibi_work is bound with
-svc_i3c_master_ibi_work. And svc_i3c_master_ibi_work  can start the
-hj_work, svc_i3c_master_irq_handler can start the ibi_work.
+Detect gso fraglist skbs with corrupted geometry (see below) and
+pass these to skb_segment instead of skb_segment_list, as the first
+can segment them correctly.
 
-If we remove the module which will call svc_i3c_master_remove to
-make cleanup, it will free master->base through i3c_master_unregister
-while the work mentioned above will be used. The sequence of operations
-that may lead to a UAF bug is as follows:
+Valid SKB_GSO_FRAGLIST skbs
+- consist of two or more segments
+- the head_skb holds the protocol headers plus first gso_size
+- one or more frag_list skbs hold exactly one segment
+- all but the last must be gso_size
 
-CPU0                                         CPU1
+Optional datapath hooks such as NAT and BPF (bpf_skb_pull_data) can
+modify these skbs, breaking these invariants.
 
-                                    | svc_i3c_master_hj_work
-svc_i3c_master_remove               |
-i3c_master_unregister(&master->base)|
-device_unregister(&master->dev)     |
-device_release                      |
-//free master->base                 |
-                                    | i3c_master_do_daa(&master->base)
-                                    | //use master->base
+In extreme cases they pull all data into skb linear. For UDP, this
+causes a NULL ptr deref in __udpv4_gso_segment_list_csum at
+udp_hdr(seg->next)->dest.
 
-Fix it by ensuring that the work is canceled before proceeding with the
-cleanup in svc_i3c_master_remove.
+Detect invalid geometry due to pull, by checking head_skb size.
+Don't just drop, as this may blackhole a destination. Convert to be
+able to pass to regular skb_segment.
 
-Fixes: 0f74f8b6675c ("i3c: Make i3c_master_unregister() return void")
+Link: https://lore.kernel.org/netdev/20240428142913.18666-1-shiming.cheng@mediatek.com/
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Signed-off-by: Willem de Bruijn <willemb@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/stable/20240914154030.180-1-kxwang23%40m.fudan.edu.cn
-Link: https://lore.kernel.org/r/20240914163932.253-1-kxwang23@m.fudan.edu.cn
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://patch.msgid.link/20241001171752.107580-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/udp_offload.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -1775,6 +1775,7 @@ static void svc_i3c_master_remove(struct
- {
- 	struct svc_i3c_master *master = platform_get_drvdata(pdev);
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -290,8 +290,26 @@ struct sk_buff *__udp_gso_segment(struct
+ 		return NULL;
+ 	}
  
-+	cancel_work_sync(&master->hj_work);
- 	i3c_master_unregister(&master->base);
+-	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)
+-		return __udp_gso_segment_list(gso_skb, features, is_ipv6);
++	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
++		 /* Detect modified geometry and pass those to skb_segment. */
++		if (skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size)
++			return __udp_gso_segment_list(gso_skb, features, is_ipv6);
++
++		 /* Setup csum, as fraglist skips this in udp4_gro_receive. */
++		gso_skb->csum_start = skb_transport_header(gso_skb) - gso_skb->head;
++		gso_skb->csum_offset = offsetof(struct udphdr, check);
++		gso_skb->ip_summed = CHECKSUM_PARTIAL;
++
++		uh = udp_hdr(gso_skb);
++		if (is_ipv6)
++			uh->check = ~udp_v6_check(gso_skb->len,
++						  &ipv6_hdr(gso_skb)->saddr,
++						  &ipv6_hdr(gso_skb)->daddr, 0);
++		else
++			uh->check = ~udp_v4_check(gso_skb->len,
++						  ip_hdr(gso_skb)->saddr,
++						  ip_hdr(gso_skb)->daddr, 0);
++	}
  
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	skb_pull(gso_skb, sizeof(*uh));
+ 
 
 
 
