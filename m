@@ -1,330 +1,151 @@
-Return-Path: <stable+bounces-81502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6A2F993D88
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 05:31:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 892ED993DB4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 05:53:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 633661F244D2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 03:31:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D91B1F24F92
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 03:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B874A42AB4;
-	Tue,  8 Oct 2024 03:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3CA61FEB;
+	Tue,  8 Oct 2024 03:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Kczz6eEm"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Sqow9lV9"
 X-Original-To: stable@vger.kernel.org
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2074.outbound.protection.outlook.com [40.107.22.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076221DFD1;
-	Tue,  8 Oct 2024 03:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.74
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728358255; cv=fail; b=aI5pz+p4bwmoGiMjfUf21vDLSoMbQDNaJkr/2Kq8CydLGR05KCytX1Qq75x9NyJNZBSZ034a1WUP8manhq2nLaeHvB64dXsAWlVvpunb8+AZj/49nC7n5w1odrX7Fx0lDFZDC4hEoe2uzIfFwSnVpBQ6Xi7pCt4bd9EirM81mAQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728358255; c=relaxed/simple;
-	bh=BdNv5jqlgcc3yrt0qv8ogpRV2nNlmQ0vXLTKbITTTGY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ylu+8J4wh7srZxOWpsIf4OdlIrz7J5wLL5zlVM8bOBTao+Pxz6u3/BFjuYen3Y/ZlEjt+5am2IWpGFeDmQmI4q10ITnExHXgx7B3haMfCwzf8/k0+/WsYJsIF7kIxhZEY40xxITcYK6hvZiqWDB667e7w9RaQjq0jgF4ja2SDP0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Kczz6eEm; arc=fail smtp.client-ip=40.107.22.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=J2Dx2UQL/8KVZJ4j52t0z9Zai3f11ZHj/9ikus4moqZNM1oweAxine3/bbFtYSG9zA84M4NDdRFMwqhOTy2p2HDVlo9nl/kQPSkWviNtkRrwSpP7x1GCMJrNGWN4LuE3/419xZVKN5Z9Rt4tbtTQboch82tSKWUhnMk+fv7JUjBCNvIjxsJb0Ka1SzpSfhde6lIge3Bw01XpixGZ42EJ6uMHhV3pirOJAjrfDlV86RRSxBa6KezMBHbC8YAajgiabTdWkoRmrjdTCVrzjss5MwNvSBgDYUupzyzTBkoDuXhAz0iOcWuJYIjX48Ejun1sh8oKZY62cg9ZsAQD+kIP3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=m1dImxxdMO512UAOqoVUDBQ07Wx4rZC5UnkLrRCIXb0=;
- b=bfMqxB/q8ZbOZ8Ldct8tZ98SL4rSTy6HcBQoIRtSwH7LGQUQzYE6wA7e82qajd/k902yBFR4mzeW6HJZ+J7F70tPeMWfZPokRU4MKN7dz3p2BgWbG+aD70uC2+ugFf/mkru6wKyyKFMQ2CNEqugtmDFdpZVBtj+k59LFjZewGHP8XCZ7aa5JylS4sdBc+lIgPFiE+LukK7iqsiVV11y9YPP58jUrhZqZyoXdNVMPJSpcgC2HlljlJGeBmoyB5ea/Jxn6DKD4h4gt4kcxIOlHibEhMKAdj+HiFE0hgTcVE0lakLoEkFP9ImqcP2nTcDb6riW63AT7QOCYz6lHeh4Rlg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=m1dImxxdMO512UAOqoVUDBQ07Wx4rZC5UnkLrRCIXb0=;
- b=Kczz6eEmGwAfl+6mRJD5cL/2JogA4NkXZXkPo2SKTsFVQ0wf7e+QWCmedZszZFx3W+Kug4Luy/XiRvLZBGlrMTRsXTof5Wy/gI7w0Epb5q495E0+iXBnxbesf18S0kBAWjPoPVXCCAsuTJotkL6lIjnkk21CNOtOLr7+DwEJLiltTOg6fCev9QBP+Ok1JsKt5DO9kMHgJQ6kWyr3bHW+pH5M6iM5gWSCd6KBO7uBtPRkm0N4d9PbLzmjv6V3Ffb49sSFI9srSyvz58YGDSYlSX8QOleZ8nGTtwAxLXQ6wBH/4Z5+lOzRx57wxtBE2kOSGfJBvvwDnWQGQfFfDnmS6w==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by AS8PR04MB8341.eurprd04.prod.outlook.com (2603:10a6:20b:3b0::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.23; Tue, 8 Oct
- 2024 03:30:50 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8026.019; Tue, 8 Oct 2024
- 03:30:49 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-CC: "davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, Claudiu Manoil
-	<claudiu.manoil@nxp.com>, "ast@kernel.org" <ast@kernel.org>,
-	"daniel@iogearbox.net" <daniel@iogearbox.net>, "hawk@kernel.org"
-	<hawk@kernel.org>, "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "bpf@vger.kernel.org"
-	<bpf@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "rkannoth@marvell.com"
-	<rkannoth@marvell.com>, "maciej.fijalkowski@intel.com"
-	<maciej.fijalkowski@intel.com>, "sbhatta@marvell.com" <sbhatta@marvell.com>
-Subject: RE: [PATCH v2 net 3/3] net: enetc: disable IRQ after Rx and Tx BD
- rings are disabled
-Thread-Topic: [PATCH v2 net 3/3] net: enetc: disable IRQ after Rx and Tx BD
- rings are disabled
-Thread-Index: AQHbEhvKg7CI8w3+3UGT+l2bnqYKr7Jw5MKAgAEBQGCAClYY4A==
-Date: Tue, 8 Oct 2024 03:30:49 +0000
-Message-ID:
- <PAXPR04MB85101B7AC1C1F46E8DD59958887E2@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20240929024506.1527828-1-wei.fang@nxp.com>
- <20240929024506.1527828-4-wei.fang@nxp.com>
- <20240930220249.dio23fh7mqw4pojn@skbuf>
- <PAXPR04MB85102EFDDEBED7C602ACBD4888772@PAXPR04MB8510.eurprd04.prod.outlook.com>
-In-Reply-To:
- <PAXPR04MB85102EFDDEBED7C602ACBD4888772@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AS8PR04MB8341:EE_
-x-ms-office365-filtering-correlation-id: cafb1e22-23c4-4bed-c50c-08dce7499b09
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|7416014|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?xeaRQ8LLvXcu6wZsUAM4V7oVTGzGuywpx5tDYPoe16ZdZ6Mw0Biy1qtq2Bo3?=
- =?us-ascii?Q?qv2bHyuBBMnNyaxYDXvaGq1L9I2IDzsDQ/n0nI//R9005Qo/VQeWF6b2Hp3K?=
- =?us-ascii?Q?HOildIl4AJKueHzYR0mBjdvZBu5oO7cWmyuubgh8H7b3fhsJRuESnR+Dqooo?=
- =?us-ascii?Q?sHworrRKvEtXbFlaSn4dF0m6khXmNVxoXCk92nvg3fNYxgC4Zzz6TdOze+ad?=
- =?us-ascii?Q?Je6CLnKavCPWlMS3ht4fv5aUwUbBhgXZfKCj224MHfiBlPFoznmLGpMY4KGG?=
- =?us-ascii?Q?8fCfIEbfkIF3NDH7d4dkffzPTjKw2b+91rxH56JTDV1I040qHZekXI1S3BIB?=
- =?us-ascii?Q?+Czps7B1F4jUuGNsJOD9UPNF22vZ7clmxWm8SGGRb+tBtEh00PP0lm4yryF0?=
- =?us-ascii?Q?pf5jQMoJVnfgIgez3NXIRsPVVbIa5z9iMdxTqHecOQzeSg7VSoPbSncC8AU4?=
- =?us-ascii?Q?a47M2Nd3brVdVEfPOd2qEEa/209dQ3LeofnllBNVQ1qRXwT2nQw8gq0ooVDE?=
- =?us-ascii?Q?SYMoCKKVRkX05GGScC8WDFItFDdQkfH5QWfRY2ILzwXclMiuPloy8FnQyXvP?=
- =?us-ascii?Q?aC6W9MlXedu/iTXdWIQIkVKmNxq4/FDezN5vGC5F51sz91i3qh8cfz/ioD1k?=
- =?us-ascii?Q?hQfYlVFlBnQMK9tJl4zMH2Jlc7qUyuK399SCUyQiEv72GuDFjfd5GwoEDaNX?=
- =?us-ascii?Q?wnccXGJKBBohutwvX7KyVHrDtDdKUPOwn3CSNEbnOb1RotgvbfquFyeeduSZ?=
- =?us-ascii?Q?3KizYBgCax5/Vr/f1nCENC2pBF+62Qr0xvZWn24vC2/qQ1akWwZ4xrXTQjzT?=
- =?us-ascii?Q?KCBZjYaWvOdyQvMJfuENcd9WQh/94jvXFw4bZXsTqfxvLwWywwpt4nnK+edC?=
- =?us-ascii?Q?FCuLqJ/J7jEX5Sfrf/6iXqWbH3f3cDxMZaIpLncsFpCJExL61C8WONLbOqTS?=
- =?us-ascii?Q?JcB953t6XIcUWUvd0ogFzis29BnueZlURjSRGmB2HpO+5IEZd2AX2vpRBOg5?=
- =?us-ascii?Q?HZDGkP3OvWbQNnJijBkn1IsQcE8LXdka5yoQyoRhBKppBybn7M/rTQ3Fw5SD?=
- =?us-ascii?Q?uXnqzOVlg1MoRPrPuFcwSUaVePbR9N3ztAml0wQre0UPYALS5IFkLHM0/htS?=
- =?us-ascii?Q?/Yvlr3N8TYkmgYCZ5cla7XSk4EYJ3UrcpR09XhVi/AyTOIzcseKpTRmvoZpL?=
- =?us-ascii?Q?LramJuQII1Iw0q3Enj6p+EU/tTowXimHVv39PPRaIiXkk4b5OQOxtEkhKvgW?=
- =?us-ascii?Q?EYSzqzkVQzOYTnrVG/MZOxcXYgRw/Mi1ncMnqjag1RN0K/UFeUIqfgFVsISl?=
- =?us-ascii?Q?MS30IYf1574ydm2TTxOZgf2zlzcx3dmviipAuW6EinipqQ=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?7DX475u3oLEJtK0nDcQMgt8UUSgx0E3C9Ws9fTHqaoenGcy+8NR3XRO05bzs?=
- =?us-ascii?Q?M+nfEC4I6zj9jG146AvR4xxiLrgllQAE03n3DWL31hyGDrwpzPrR2xhF93S0?=
- =?us-ascii?Q?EVoAFs2P0RaX6idBC3v7KH9vuGJdqRNQ0dXeDA+7MD0yRsJoIz90HLG6u5ur?=
- =?us-ascii?Q?Eh/gSrzaUYapHc1AgxIDBW5Wvk2ZD17ckinP8GXdUcQBu+AroNSd4Gozm2KV?=
- =?us-ascii?Q?z6pwgGX43fbmjtAEXoJ3ENd6MGy429p7Mo7DBf/bftwBC/ozOErpalysDLey?=
- =?us-ascii?Q?fDE6wZ2vnR1xxAmhW3Qec1tFaK6WisHHGXsaO/Kx0aLOjIWJgYduA0oto+7y?=
- =?us-ascii?Q?1OJRhWAAwCbGqGWGcafyGJ8SVv+G7jwk1TQCIBLk5wM1HQhBnzzPQRaQoE0W?=
- =?us-ascii?Q?EvrLW5rViUf8nLbD/gy4OUqkwJ8/PwDgUMFY7QX4vmrdyvnJQhIRi50r/gOW?=
- =?us-ascii?Q?7IJTxdcXzUG5ylN24io3pkkU+76P8PQ1p/yDKxP2HldbQg7pi8HeM4zgY19L?=
- =?us-ascii?Q?1NUoqftHJ14RRRMloXyIqD86tW/TG/XZwdsbbawAYZ5BqWyl0PvoHCv3mgz4?=
- =?us-ascii?Q?49ygYYFo2DN9ayvwtylTjYHduAqPM42NYn69Q/ofmoITNhNz/HLSoCJ041TG?=
- =?us-ascii?Q?L378d0IPWWVjidwag0x5ZEMdnPg8bHG+KfafKeCXs22mfXBPhDs5iOkSP7Kz?=
- =?us-ascii?Q?5wbkKq16znOte+mEuuvksFIngiJCiOXuMKEPvd3CiEJyZMTMaRM7G6WpI/D+?=
- =?us-ascii?Q?IFuQK8GVVstvm5mVuiOV0AU5fLdNXiP7E4CeWuTuRNEwC9HS0Xb9WbVWQ9oE?=
- =?us-ascii?Q?BEixUAJOtVFPjNVZug4FYowMy/ljL4qOmeyNKzs1ZEzgXHqmklYdsMlVgl2w?=
- =?us-ascii?Q?BYyrhdOIDxsdYBnZkE5Yh4LP9asyReb8OryfV8p0U8itiKHOoUSMpmf4sTg0?=
- =?us-ascii?Q?QxZ0/WKlodcpP231eZ8yrmDBOp228pMOPceWNkbt4xn5OVJnkzes9Hlxk4Wh?=
- =?us-ascii?Q?ZRzAoFNQS5et7u9j2meUX0my6/PZi+NTUrWvKkv+TzBhNwm6C96FomKR3i05?=
- =?us-ascii?Q?ZzHc3HMrq4JXa5mRur16TU1lP1VGznlXhjf5QpWLWSdjFiOc+qkLpHO1V0MT?=
- =?us-ascii?Q?5WL7oiFa4TA6olP8jKILGmenjfwzkzJ4DpT2iLEd8WDv29mL/WKO1oBTQPjV?=
- =?us-ascii?Q?ereNpcJdTzJ7U2LpDP54PrzOuB7mGpkRKfSeZquP0t3thGUVBHX+YtY1stzO?=
- =?us-ascii?Q?OK16ms/F5DNPAlzTCxyWSGiXyRNaQwvDs5IN+bII+am3cGmCAq7KoVCeS53A?=
- =?us-ascii?Q?VtV/creh2HYBlQ7iirCSKfE4z27CW5XchSHPn6BI29eaHiAo2FvxQR4DYBUF?=
- =?us-ascii?Q?CiZ62vM85NwAJC6dLo62T583A0spciwv6QUAxEUoX3EpjRNWVsWXRxKAVz2C?=
- =?us-ascii?Q?M1KOyXsjOeglIQWGuyHVWhYV8JiqQdnZZDSdjyCD40nMzhwOihA6wJBlCFi8?=
- =?us-ascii?Q?x6SCTVJj1fwrdjWql82t0+OfXcPO39+JQ3B5cjBVL4mX9itVMZz3BPqImpyr?=
- =?us-ascii?Q?771Y3VpLeDbKH4VRyC0=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9EC1DA5F
+	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 03:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728359613; cv=none; b=kPfGZw0JV0ue5YtkHhHo9LNlAjSnbWFxgsIlePrfHs00fptSdSWZ+qNmDCJeQMk+nWkDJWLw7dG+cIPz4hLlgK754d/jQ98XJZEIBAyBjppTqla2ZoFOUHcau4Vj9bdRr2F3BQRMF87/sAVmkN30x5O8KFb49Kn3alnLQTH3gWg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728359613; c=relaxed/simple;
+	bh=RDBNanjeTqAsh9rPG2jAlXFjrg3LR8U84MfLAQ6XceI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LpK3jMgl6Ry7A5Z+vIe4GMbQp3ryWatoe63XRzKCE+TxX4Dod+A2pEDjfiJVulB9roo7+gW4nC7SG2eMbaR8/6cVrGOOW4M8Sm3I69rnJw3dv/bcvrHWr0SaWP1ylLnn2RYLiQlMbQzvW2y69s9Pl7QKfoOSHDT3kLLVdvhvAf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Sqow9lV9; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-7e9fd82f1a5so1475886a12.1
+        for <stable@vger.kernel.org>; Mon, 07 Oct 2024 20:53:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1728359610; x=1728964410; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bZmM1kivjY+OP9fhZeIHR6lGq4KOb7jxhbJjcjvyqC4=;
+        b=Sqow9lV9cIVb81dSGgA5ionHvRU86QzWK3f2WAzktCajEHUaDZgaHKlgHs3xKk0TJ3
+         RiGzciQbqA86i6PVz0oVWRf1uy0kdo2EEvpeDSHhaTspLBNLCE4Eb+J6zNYWT0B6Jan/
+         gzp1qGTT4JYBB56dN5ejQ6IesuaKi3Jkf+jYCEZWaXMcIGYbhzXpd4Y9nALEYIOM8z7D
+         xizBSQqZnSwYDpzXG7J5h6BnwUltCu6iWhuEY+i761nahI2Aqc0SxeASumFEjW7EjRFc
+         ff99mcjWUE/VL5bh6Y0S1CSQdFSc8gP32ZzPzMIWJNt5ZaMWdw2RppkcH8y/+3ZHX+iS
+         JULg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728359610; x=1728964410;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bZmM1kivjY+OP9fhZeIHR6lGq4KOb7jxhbJjcjvyqC4=;
+        b=dHJc2+j8qWu0Teo7SdGUuimss96NAz1kQhD3wN9HSLXvVADf6fqf09VdI+t7IG11mT
+         o30k5F9bp4kte1JUrAW8zNSWGl1NIwfwbdrsy/OX02UrXYMM02Ki5XPtqw3TUj4tj6uD
+         +PVDf3CcNUe0emtlCzWDBynLLsuJkodQ8+J/3OpaCR8ZtvDMWEbfwaBEPCjfSA8US5z5
+         HkdHTh/Wdk25BRj1D47bccYpo3BsJ+t67BTUUd44kwu7E+oRsmB4OV7vnIYOvVO5Wh15
+         F0rMHSB4oKgSzVaylflFQ+I9lYHZoBmxrhFdlqAgDqPfP5n9tiWhIzzvLTe8By2d9pcF
+         msuw==
+X-Forwarded-Encrypted: i=1; AJvYcCXhB1I7myK6qNZWZr8yeMzCVs+N8hJmjgUl+AQcPejUIEpeUp+EE30792T5oLm+8Q/LmgOKauM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyq4WKB7Tbpe2p1+QtVS7SC3VMeGNvKi4n0lPKi7Tc7wWJlldDq
+	O0uraTmBPsxQME1yf8CXIET3aSP0IUlGYUFOJ82pPX4XnLHNQ5gae6a9q5+PW0s=
+X-Google-Smtp-Source: AGHT+IEKN2Kdq3MW9os/92sJ7powcTTKtvPCz4qyJxzSGTfT7D+tIcgPx2zAUwMNJC9bB5QI33ZTzA==
+X-Received: by 2002:a05:6a21:38b:b0:1cf:4c70:f26f with SMTP id adf61e73a8af0-1d6dfa3a765mr20221207637.17.1728359610462;
+        Mon, 07 Oct 2024 20:53:30 -0700 (PDT)
+Received: from [10.68.125.128] ([63.216.146.178])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7e9f680c732sm5718701a12.12.2024.10.07.20.53.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Oct 2024 20:53:30 -0700 (PDT)
+Message-ID: <1c114925-9206-42b1-b24b-bb123853a359@bytedance.com>
+Date: Tue, 8 Oct 2024 11:53:23 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cafb1e22-23c4-4bed-c50c-08dce7499b09
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Oct 2024 03:30:49.9214
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Enm+wg64oAGGm2Pipjh2B91ca59nv/c6jX7lKCtoAJ+dCqGr8DqmshlqzSh0AIAQ1oOHs+PRPZZST/HQw/qZhg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8341
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/mremap: Fix move_normal_pmd/retract_page_tables race
+Content-Language: en-US
+To: Jann Horn <jannh@google.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, linux-mm@kvack.org,
+ willy@infradead.org, hughd@google.com, lorenzo.stoakes@oracle.com,
+ joel@joelfernandes.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20241007-move_normal_pmd-vs-collapse-fix-2-v1-1-5ead9631f2ea@google.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+In-Reply-To: <20241007-move_normal_pmd-vs-collapse-fix-2-v1-1-5ead9631f2ea@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+Hi Jann,
 
+On 2024/10/8 05:42, Jann Horn wrote:
 
-Best Regards,
-Wei Fang
-Hi Vladimir,
+[...]
 
-> >
-> > On Sun, Sep 29, 2024 at 10:45:06AM +0800, Wei Fang wrote:
-> > > When running "xdp-bench tx eno0" to test the XDP_TX feature of ENETC
-> > > on LS1028A, it was found that if the command was re-run multiple time=
-s,
-> > > Rx could not receive the frames, and the result of xdo-bench showed
-> > > that the rx rate was 0.
-> > >
-> > > root@ls1028ardb:~# ./xdp-bench tx eno0
-> > > Hairpinning (XDP_TX) packets on eno0 (ifindex 3; driver fsl_enetc)
-> > > Summary                      2046 rx/s                  0
-> > err,drop/s
-> > > Summary                         0 rx/s                  0
-> > err,drop/s
-> > > Summary                         0 rx/s                  0
-> > err,drop/s
-> > > Summary                         0 rx/s                  0
-> > err,drop/s
-> > >
-> > > By observing the Rx PIR and CIR registers, we found that CIR is alway=
-s
-> > > equal to 0x7FF and PIR is always 0x7FE, which means that the Rx ring
-> > > is full and can no longer accommodate other Rx frames. Therefore, we
-> > > can conclude that the problem is caused by the Rx BD ring not being
-> > > cleaned up.
-> > >
-> > > Further analysis of the code revealed that the Rx BD ring will only
-> > > be cleaned if the "cleaned_cnt > xdp_tx_in_flight" condition is met.
-> > > Therefore, some debug logs were added to the driver and the current
-> > > values of cleaned_cnt and xdp_tx_in_flight were printed when the Rx
-> > > BD ring was full. The logs are as follows.
-> > >
-> > > [  178.762419] [XDP TX] >> cleaned_cnt:1728, xdp_tx_in_flight:2140
-> > > [  178.771387] [XDP TX] >> cleaned_cnt:1941, xdp_tx_in_flight:2110
-> > > [  178.776058] [XDP TX] >> cleaned_cnt:1792, xdp_tx_in_flight:2110
-> > >
-> > > From the results, we can see that the max value of xdp_tx_in_flight
-> > > has reached 2140. However, the size of the Rx BD ring is only 2048.
-> > > This is incredible, so we checked the code again and found that
-> > > xdp_tx_in_flight did not drop to 0 when the bpf program was uninstall=
-ed
-> > > and it was not reset when the bfp program was installed again. The
-> > > root cause is that the IRQ is disabled too early in enetc_stop(),
-> > > resulting in enetc_recycle_xdp_tx_buff() not being called, therefore,
-> > > xdp_tx_in_flight is not cleared.
-> > >
-> > > Fixes: ff58fda09096 ("net: enetc: prioritize ability to go down over =
-packet
-> > processing")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> > > ---
-> > > v2 changes:
-> > > 1. Modify the titile and rephrase the commit meesage.
-> > > 2. Use the new solution as described in the title
-> > > ---
-> >
-> > I gave this another test under a bit different set of circumstances thi=
-s time,
-> > and I'm confident that there are still problems, which I haven't identi=
-fied
-> > though (yet).
-> >
-> > With 64 byte frames at 2.5 Gbps, I see this going on:
-> >
-> > $ xdp-bench tx eno0 &
-> > $ while :; do taskset $((1 << 0)) hwstamp_ctl -i eno0 -r 1 && sleep 1 &=
-&
-> taskset
-> > $((1 << 0)) hwstamp_ctl -i eno0 -r 0 && sleep 1; done
-> > current settings:
-> > tx_type 0
-> > rx_filter 0
-> > new settings:
-> > tx_type 0
-> > rx_filter 1
-> > Summary                 1,556,952 rx/s                  0
-> err,drop/s
-> > Summary                         0 rx/s                  0
-> err,drop/s
-> > Summary                         0 rx/s                  0
-> err,drop/s
-> > current settings:
-> > tx_type 0
-> > rx_filter 1
-> > Summary                         0 rx/s                  0
-> err,drop/s
-> > [  883.780346] fsl_enetc 0000:00:00.0 eno0: timeout for tx ring #6 clea=
-r (its
-> > RX ring has 2072 XDP_TX frames in flight)
-> > new settings:
-> > tx_type 0
-> > rx_filter 0
-> > Summary                     1,027 rx/s                  0
-> err,drop/s
-> > current settings:
-> > tx_type 0
-> > rx_filter 0
-> > Summary                         0 rx/s                  0
-> err,drop/s
-> >
-> > which looks like the symptoms that the patch tries to solve.
-> >
-> > My previous testing was with 390 byte frames, and this did not happen.
-> >
-> > Please do not merge this.
->=20
-> Oh, it looks like there are still some issues we don't know about. I did
-> test using 64 bytes but not at that high of a rate. Also I didn't turn on
-> timestamp. Anyway, I will try to reproduce the issue when I'm back to
-> office next Tuesday. It would be nice if you can help find the root cause
-> before next Tuesday, thanks!
+> 
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index 24712f8dbb6b..dda09e957a5d 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -238,6 +238,7 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+>   {
+>   	spinlock_t *old_ptl, *new_ptl;
+>   	struct mm_struct *mm = vma->vm_mm;
+> +	bool res = false;
+>   	pmd_t pmd;
+>   
+>   	if (!arch_supports_page_table_move())
+> @@ -277,19 +278,25 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+>   	if (new_ptl != old_ptl)
+>   		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
+>   
+> -	/* Clear the pmd */
+>   	pmd = *old_pmd;
+> +
+> +	/* Racing with collapse? */
+> +	if (unlikely(!pmd_present(pmd) || pmd_leaf(pmd)))
 
-I think the reason is that Rx BDRs are disabled when enetc_stop() is called=
-,
-but there are still many unprocessed frames on Rx BDR. These frames will
-be processed by XDP program and put into Tx BDR. So enetc_wait_txbdr()
-will timeout and cause xdp_tx_in_flight will not be cleared.
+Since we already hold the exclusive mmap lock, after a racing
+with collapse occurs, the pmd entry cannot be refilled with
+new content by page fault. So maybe we only need to recheck
+pmd_none(pmd) here?
 
-So based on this patch, we should add a separate patch, similar to the patc=
-h
-2 ("net: enetc: fix the issues of XDP_REDIRECT feature "), which prevents t=
-he
-XDP_TX frames from being put into Tx BDRs when the ENETC_TX_DOWN flag
-is set. The new patch is shown below. After adding this new patch, I follow=
-ed
-your test steps and tested for more than 30 minutes, and the issue cannot b=
-e
-reproduced anymore (without this patch, this problem would be reproduced
-within seconds).
+Thanks,
+Qi
 
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -1606,6 +1606,12 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr =
-*rx_ring,
-                        break;
-                case XDP_TX:
-                        tx_ring =3D priv->xdp_tx_ring[rx_ring->index];
-+                       if (unlikely(test_bit(ENETC_TX_DOWN, &priv->flags))=
-) {
-+                               enetc_xdp_drop(rx_ring, orig_i, i);
-+                               tx_ring->stats.xdp_tx_drops++;
-+                               break;
-+                       }
-+
-                        xdp_tx_bd_cnt =3D enetc_rx_swbd_to_xdp_tx_swbd(xdp_=
-tx_arr,
-                                                                     rx_rin=
-g,
-                                                                     orig_i=
-, i);
+> +		goto out_unlock;
+> +	/* Clear the pmd */
+>   	pmd_clear(old_pmd);
+> +	res = true;
+>   
+>   	VM_BUG_ON(!pmd_none(*new_pmd));
+>   
+>   	pmd_populate(mm, new_pmd, pmd_pgtable(pmd));
+>   	flush_tlb_range(vma, old_addr, old_addr + PMD_SIZE);
+> +out_unlock:
+>   	if (new_ptl != old_ptl)
+>   		spin_unlock(new_ptl);
+>   	spin_unlock(old_ptl);
+>   
+> -	return true;
+> +	return res;
+>   }
+>   #else
+>   static inline bool move_normal_pmd(struct vm_area_struct *vma,
+> 
+> ---
+> base-commit: 8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b
+> change-id: 20241007-move_normal_pmd-vs-collapse-fix-2-387e9a68c7d6
 
