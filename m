@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-81982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F14E3994A6E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:33:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D8E3994F4C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:26:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BE551C2475A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:33:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65C24B22A1C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762201E493;
-	Tue,  8 Oct 2024 12:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D2F1DF25D;
+	Tue,  8 Oct 2024 13:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fy2Jfvl5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQ8pv+Hz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241591B81CC;
-	Tue,  8 Oct 2024 12:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A4C1DEFD7;
+	Tue,  8 Oct 2024 13:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390786; cv=none; b=rr/7dZda1VHF8vAkqjUUSqEx0QUE6AYn3KBNG5B1Y9qe9F5QG7rLyHLT4ldlGIbLAL2Rr1f1rBbcAjdZe3nmPY25Kbp32ElD6CBHFQfbIB0c0ObM69Zq6KmRX/zF2Ga780eDVoZIwvnRDkMBVxjemQKL2t8HJfN2os/LFBoq+ts=
+	t=1728393635; cv=none; b=NzrpZ3l5kME28naaWiiEGFKDaYyDcCe4WlrNTWQteqIwIO6Uz/fIb9y9hF6kXihk+Hji3HJYs1vKHhuNxreC1w24kkJ/dIFuGakis4hXL4tI9/DbevadjYYAQpd3aP8tKGmB9kBr8VfjPWk2PItcy3/5N+JliKW/IseuQOM43D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390786; c=relaxed/simple;
-	bh=9B9VJjA60o+gpmus44luuC4Eo2WtlkPGODF2smv36Fk=;
+	s=arc-20240116; t=1728393635; c=relaxed/simple;
+	bh=GufAfIUsZBlS0Uo/mxPJquN8KXd7BPx9GOrNSHwRRLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g1XJ5D1ibChh6WiGrNYORN6/nlFw8olPznjOswRjKuoXI+mAE+aU3ENCLQ+iR8iJdQ4D9Nw7jGEhMPntHEM/IV+4Gqhud/ZW9wyhRYP7UfGtw33Ktnok3g0qNJzFHZ5nao/q1nIA0p4QNpzd1jNIwwZEF2HSilyGLjI3wFqHz7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fy2Jfvl5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FDCC4CEC7;
-	Tue,  8 Oct 2024 12:33:05 +0000 (UTC)
+	 MIME-Version; b=TObeO3MjHjY8MGVghhtnf2nXlgbgm8GPRS7vxvbfO8UhxQJ8FEP05G7FgY/4IgktyekE/i9dnXjFEiW6eccp8Kc0F5EuysRzH+DQrUPPFFgFnUdS/e++O0aBpJ1yboEAr7q+IHmdxyxUHZ6ZYPI5kk/iRRFfwWlu1n22hoFZN+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQ8pv+Hz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EC5C4CEC7;
+	Tue,  8 Oct 2024 13:20:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390785;
-	bh=9B9VJjA60o+gpmus44luuC4Eo2WtlkPGODF2smv36Fk=;
+	s=korg; t=1728393635;
+	bh=GufAfIUsZBlS0Uo/mxPJquN8KXd7BPx9GOrNSHwRRLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fy2Jfvl5SF2bc3AfvGDs1bhc80BmpXZS+7mPAHelBuLTCA6kjKA3TSjN8riREWs75
-	 ms/d4FAes2vQjScnpf0LFANIzyMbalI40PoWaLXf3C8cR3tn4TzkEhiKPQsdKDtW2k
-	 vHHB/x7RrVjS0qFA86AAqxY/+hG/ITeQqBsodbkA=
+	b=vQ8pv+HzsC4lT+YtKH3+X0AsiaVAzKN/kU+p7fn4u8Jo2EarCjErhoAuCfQF5bZMR
+	 6/OiaHnngNZ5PjuYF4WTrzvKXO/C0FUBmzI76dfr2dTxrL6uFKGYREaDwL2ZmcOoQh
+	 ig7B9m+voU1PeX9hq2qmIC9lyWZRAo76V6X+bKDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Virag <virag.david003@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.10 391/482] clk: samsung: exynos7885: Update CLKS_NR_FSYS after bindings fix
-Date: Tue,  8 Oct 2024 14:07:34 +0200
-Message-ID: <20241008115703.799421730@linuxfoundation.org>
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.6 210/386] i2c: xiic: Fix pm_runtime_set_suspended() with runtime pm enabled
+Date: Tue,  8 Oct 2024 14:07:35 +0200
+Message-ID: <20241008115637.670506800@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Virag <virag.david003@gmail.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 217a5f23c290c349ceaa37a6f2c014ad4c2d5759 upstream.
+commit 0c8d604dea437b69a861479b413d629bc9b3da70 upstream.
 
-Update CLKS_NR_FSYS to the proper value after a fix in DT bindings.
-This should always be the last clock in a CMU + 1.
+It is not valid to call pm_runtime_set_suspended() for devices
+with runtime PM enabled because it returns -EAGAIN if it is enabled
+already and working. So, call pm_runtime_disable() before to fix it.
 
-Fixes: cd268e309c29 ("dt-bindings: clock: Add bindings for Exynos7885 CMU_FSYS")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Virag <virag.david003@gmail.com>
-Link: https://lore.kernel.org/r/20240806121157.479212-5-virag.david003@gmail.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 36ecbcab84d0 ("i2c: xiic: Implement power management")
+Cc: <stable@vger.kernel.org> # v4.6+
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/samsung/clk-exynos7885.c |    2 +-
+ drivers/i2c/busses/i2c-xiic.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/clk/samsung/clk-exynos7885.c
-+++ b/drivers/clk/samsung/clk-exynos7885.c
-@@ -20,7 +20,7 @@
- #define CLKS_NR_TOP			(CLK_GOUT_FSYS_USB30DRD + 1)
- #define CLKS_NR_CORE			(CLK_GOUT_TREX_P_CORE_PCLK_P_CORE + 1)
- #define CLKS_NR_PERI			(CLK_GOUT_WDT1_PCLK + 1)
--#define CLKS_NR_FSYS			(CLK_GOUT_MMC_SDIO_SDCLKIN + 1)
-+#define CLKS_NR_FSYS			(CLK_MOUT_FSYS_USB30DRD_USER + 1)
+--- a/drivers/i2c/busses/i2c-xiic.c
++++ b/drivers/i2c/busses/i2c-xiic.c
+@@ -1337,8 +1337,8 @@ static int xiic_i2c_probe(struct platfor
+ 	return 0;
  
- /* ---- CMU_TOP ------------------------------------------------------------- */
+ err_pm_disable:
+-	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_set_suspended(&pdev->dev);
  
+ 	return ret;
+ }
 
 
 
