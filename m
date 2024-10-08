@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-81869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C4879949DB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F2FE994CB9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:58:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AED6A1C21018
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A701F1F226B1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE0E1D9586;
-	Tue,  8 Oct 2024 12:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB111DF996;
+	Tue,  8 Oct 2024 12:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSjyQF7N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BaukAg6M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3EDEEC8;
-	Tue,  8 Oct 2024 12:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDDF1DEFC9;
+	Tue,  8 Oct 2024 12:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390409; cv=none; b=P6suQLQjibEcpHu7aUH1YVBu4drRfVV2y8+cmA0uRGq5DC2z0H6sJRoEv1D9JZg8GA18hsfPSuJALSNyvvvM+ww9mwU3fsgg2Av3elM/goQEJUWsx2T9bJkx3bMEvWoVgexY5/GizNg0JujD2N8TNsIe2wSyXxHNMbbIQcDJkWk=
+	t=1728392197; cv=none; b=uWmd6Fw6f1QcwJRkoTLz5YRw/6U+HWXoByc+6HORyJFwTV+CoFDijWufYgsCyEldBC+A9E/5c+Mv80/LJni24GLVbiOts08BdzRD+uUeWxn38a4i5VOR3wtsm0Jz+arDzJfWgss2gESUzYds2ERGxyGvIUx50U3IAg290fE20+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390409; c=relaxed/simple;
-	bh=zCaee3QTrbY1PfuOjGEIEtwWqBM4gHt6Br+sobM/WoI=;
+	s=arc-20240116; t=1728392197; c=relaxed/simple;
+	bh=sn7GsKv5LzfMP9iD/qbFiq1aYMDRl29yYKf6HRgrD2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AVSJiFeXQHDCbhj9pdGYqXsh5DER5mbddCU3KIOturxQFhGoBof6/nX3033EkCypsYuR97eYIg6j3+R+4wzO6utCyO6cuyhoxxjZRtvXCzCkPAjzmFesXznHa+Hlo6zpdLgErCwySPyQrUgLOzG9iG9uH/Ekolib300qALryRgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSjyQF7N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A4EC4CEC7;
-	Tue,  8 Oct 2024 12:26:48 +0000 (UTC)
+	 MIME-Version; b=AlfH4qjqsZ1HJ/I+H5oHxDtabSLP0XY3avHDqAQrEH66bSNFQVBVTZ9Sdeb3UofVIfCLXUptJ5BAvCEqIesPi65YhXFyz5QESv1dVp8YWFRzorgZE5rL+P0KI1JD32jH17ln4S+9BOL2zJkpCQpZVBGiJ4zP7qzcKYEuIjBtMhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BaukAg6M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D311AC4CEC7;
+	Tue,  8 Oct 2024 12:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390409;
-	bh=zCaee3QTrbY1PfuOjGEIEtwWqBM4gHt6Br+sobM/WoI=;
+	s=korg; t=1728392197;
+	bh=sn7GsKv5LzfMP9iD/qbFiq1aYMDRl29yYKf6HRgrD2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rSjyQF7NYvAqi7qBQymiLiTOfqr3TlUeMicoiA3ZXgMLtmLJS6qSoHucrWlfcjtln
-	 +ilPo9s9ctph/bmO7s85RRReY44YIToUFgnHhaeKQaOVt/NuHsOBVFe8Afsme9ihNC
-	 R7VTE47YeKA7hL45BH5U64J3qficxFzjQjya8sgU=
+	b=BaukAg6MuYrXVPX/aZ/XC4sDnrwPqRKUD8YAKWqBx0oCuEaH9/99W5r0BMchKXvmF
+	 2ifFy4F+j6JxzjqEq0zvBTWWIDDXpMHvH7Q7iDv97i/8BU8To/scs/hkyd9o4MA3FW
+	 gat3Xd75Kssw32QHCNqiXvByMJbJPeCL40eU8Gm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Zac Ecob <zacecob@protonmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 280/482] powerpc/vdso: Fix VDSO data access when running in a non-root time namespace
+Subject: [PATCH 6.11 313/558] bpf: Fix a sdiv overflow issue
 Date: Tue,  8 Oct 2024 14:05:43 +0200
-Message-ID: <20241008115659.299092686@linuxfoundation.org>
+Message-ID: <20241008115714.628389609@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +64,204 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Yonghong Song <yonghong.song@linux.dev>
 
-[ Upstream commit c73049389e58c01e2e3bbfae900c8daeee177191 ]
+[ Upstream commit 7dd34d7b7dcf9309fc6224caf4dd5b35bedddcb7 ]
 
-When running in a non-root time namespace, the global VDSO data page
-is replaced by a dedicated namespace data page and the global data
-page is mapped next to it. Detailed explanations can be found at
-commit 660fd04f9317 ("lib/vdso: Prepare for time namespace support").
+Zac Ecob reported a problem where a bpf program may cause kernel crash due
+to the following error:
+  Oops: divide error: 0000 [#1] PREEMPT SMP KASAN PTI
 
-When it happens, __kernel_get_syscall_map and __kernel_get_tbfreq
-and __kernel_sync_dicache don't work anymore because they read 0
-instead of the data they need.
+The failure is due to the below signed divide:
+  LLONG_MIN/-1 where LLONG_MIN equals to -9,223,372,036,854,775,808.
+LLONG_MIN/-1 is supposed to give a positive number 9,223,372,036,854,775,808,
+but it is impossible since for 64-bit system, the maximum positive
+number is 9,223,372,036,854,775,807. On x86_64, LLONG_MIN/-1 will
+cause a kernel exception. On arm64, the result for LLONG_MIN/-1 is
+LLONG_MIN.
 
-To address that, clock_mode has to be read. When it is set to
-VDSO_CLOCKMODE_TIMENS, it means it is a dedicated namespace data page
-and the global data is located on the following page.
+Further investigation found all the following sdiv/smod cases may trigger
+an exception when bpf program is running on x86_64 platform:
+  - LLONG_MIN/-1 for 64bit operation
+  - INT_MIN/-1 for 32bit operation
+  - LLONG_MIN%-1 for 64bit operation
+  - INT_MIN%-1 for 32bit operation
+where -1 can be an immediate or in a register.
 
-Add a macro called get_realdatapage which reads clock_mode and add
-PAGE_SIZE to the pointer provided by get_datapage macro when
-clock_mode is equal to VDSO_CLOCKMODE_TIMENS. Use this new macro
-instead of get_datapage macro except for time functions as they handle
-it internally.
+On arm64, there are no exceptions:
+  - LLONG_MIN/-1 = LLONG_MIN
+  - INT_MIN/-1 = INT_MIN
+  - LLONG_MIN%-1 = 0
+  - INT_MIN%-1 = 0
+where -1 can be an immediate or in a register.
 
-Fixes: 74205b3fc2ef ("powerpc/vdso: Add support for time namespaces")
-Reported-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Closes: https://lore.kernel.org/all/ZtnYqZI-nrsNslwy@zx2c4.com/
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Insn patching is needed to handle the above cases and the patched codes
+produced results aligned with above arm64 result. The below are pseudo
+codes to handle sdiv/smod exceptions including both divisor -1 and divisor 0
+and the divisor is stored in a register.
+
+sdiv:
+      tmp = rX
+      tmp += 1 /* [-1, 0] -> [0, 1]
+      if tmp >(unsigned) 1 goto L2
+      if tmp == 0 goto L1
+      rY = 0
+  L1:
+      rY = -rY;
+      goto L3
+  L2:
+      rY /= rX
+  L3:
+
+smod:
+      tmp = rX
+      tmp += 1 /* [-1, 0] -> [0, 1]
+      if tmp >(unsigned) 1 goto L1
+      if tmp == 1 (is64 ? goto L2 : goto L3)
+      rY = 0;
+      goto L2
+  L1:
+      rY %= rX
+  L2:
+      goto L4  // only when !is64
+  L3:
+      wY = wY  // only when !is64
+  L4:
+
+  [1] https://lore.kernel.org/bpf/tPJLTEh7S_DxFEqAI2Ji5MBSoZVg7_G-Py2iaZpAaWtM961fFTWtsnlzwvTbzBzaUzwQAoNATXKUlt0LZOFgnDcIyKCswAnAGdUF3LBrhGQ=@protonmail.com/
+
+Reported-by: Zac Ecob <zacecob@protonmail.com>
+Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20240913150326.1187788-1-yonghong.song@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/vdso_datapage.h | 15 +++++++++++++++
- arch/powerpc/kernel/asm-offsets.c        |  2 ++
- arch/powerpc/kernel/vdso/cacheflush.S    |  2 +-
- arch/powerpc/kernel/vdso/datapage.S      |  4 ++--
- 4 files changed, 20 insertions(+), 3 deletions(-)
+ kernel/bpf/verifier.c | 93 +++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 89 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/vdso_datapage.h b/arch/powerpc/include/asm/vdso_datapage.h
-index a585c8e538ff0..939daf6b695ef 100644
---- a/arch/powerpc/include/asm/vdso_datapage.h
-+++ b/arch/powerpc/include/asm/vdso_datapage.h
-@@ -111,6 +111,21 @@ extern struct vdso_arch_data *vdso_data;
- 	addi	\ptr, \ptr, (_vdso_datapage - 999b)@l
- .endm
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 400449959802b..d5215cb1747f1 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -19953,13 +19953,46 @@ static int do_misc_fixups(struct bpf_verifier_env *env)
+ 			/* Convert BPF_CLASS(insn->code) == BPF_ALU64 to 32-bit ALU */
+ 			insn->code = BPF_ALU | BPF_OP(insn->code) | BPF_SRC(insn->code);
  
-+#include <asm/asm-offsets.h>
-+#include <asm/page.h>
+-		/* Make divide-by-zero exceptions impossible. */
++		/* Make sdiv/smod divide-by-minus-one exceptions impossible. */
++		if ((insn->code == (BPF_ALU64 | BPF_MOD | BPF_K) ||
++		     insn->code == (BPF_ALU64 | BPF_DIV | BPF_K) ||
++		     insn->code == (BPF_ALU | BPF_MOD | BPF_K) ||
++		     insn->code == (BPF_ALU | BPF_DIV | BPF_K)) &&
++		    insn->off == 1 && insn->imm == -1) {
++			bool is64 = BPF_CLASS(insn->code) == BPF_ALU64;
++			bool isdiv = BPF_OP(insn->code) == BPF_DIV;
++			struct bpf_insn *patchlet;
++			struct bpf_insn chk_and_sdiv[] = {
++				BPF_RAW_INSN((is64 ? BPF_ALU64 : BPF_ALU) |
++					     BPF_NEG | BPF_K, insn->dst_reg,
++					     0, 0, 0),
++			};
++			struct bpf_insn chk_and_smod[] = {
++				BPF_MOV32_IMM(insn->dst_reg, 0),
++			};
 +
-+.macro get_realdatapage ptr scratch
-+	get_datapage \ptr
-+#ifdef CONFIG_TIME_NS
-+	lwz	\scratch, VDSO_CLOCKMODE_OFFSET(\ptr)
-+	xoris	\scratch, \scratch, VDSO_CLOCKMODE_TIMENS@h
-+	xori	\scratch, \scratch, VDSO_CLOCKMODE_TIMENS@l
-+	cntlzw	\scratch, \scratch
-+	rlwinm	\scratch, \scratch, PAGE_SHIFT - 5, 1 << PAGE_SHIFT
-+	add	\ptr, \ptr, \scratch
-+#endif
-+.endm
++			patchlet = isdiv ? chk_and_sdiv : chk_and_smod;
++			cnt = isdiv ? ARRAY_SIZE(chk_and_sdiv) : ARRAY_SIZE(chk_and_smod);
 +
- #endif /* __ASSEMBLY__ */
++			new_prog = bpf_patch_insn_data(env, i + delta, patchlet, cnt);
++			if (!new_prog)
++				return -ENOMEM;
++
++			delta    += cnt - 1;
++			env->prog = prog = new_prog;
++			insn      = new_prog->insnsi + i + delta;
++			goto next_insn;
++		}
++
++		/* Make divide-by-zero and divide-by-minus-one exceptions impossible. */
+ 		if (insn->code == (BPF_ALU64 | BPF_MOD | BPF_X) ||
+ 		    insn->code == (BPF_ALU64 | BPF_DIV | BPF_X) ||
+ 		    insn->code == (BPF_ALU | BPF_MOD | BPF_X) ||
+ 		    insn->code == (BPF_ALU | BPF_DIV | BPF_X)) {
+ 			bool is64 = BPF_CLASS(insn->code) == BPF_ALU64;
+ 			bool isdiv = BPF_OP(insn->code) == BPF_DIV;
++			bool is_sdiv = isdiv && insn->off == 1;
++			bool is_smod = !isdiv && insn->off == 1;
+ 			struct bpf_insn *patchlet;
+ 			struct bpf_insn chk_and_div[] = {
+ 				/* [R,W]x div 0 -> 0 */
+@@ -19979,10 +20012,62 @@ static int do_misc_fixups(struct bpf_verifier_env *env)
+ 				BPF_JMP_IMM(BPF_JA, 0, 0, 1),
+ 				BPF_MOV32_REG(insn->dst_reg, insn->dst_reg),
+ 			};
++			struct bpf_insn chk_and_sdiv[] = {
++				/* [R,W]x sdiv 0 -> 0
++				 * LLONG_MIN sdiv -1 -> LLONG_MIN
++				 * INT_MIN sdiv -1 -> INT_MIN
++				 */
++				BPF_MOV64_REG(BPF_REG_AX, insn->src_reg),
++				BPF_RAW_INSN((is64 ? BPF_ALU64 : BPF_ALU) |
++					     BPF_ADD | BPF_K, BPF_REG_AX,
++					     0, 0, 1),
++				BPF_RAW_INSN((is64 ? BPF_JMP : BPF_JMP32) |
++					     BPF_JGT | BPF_K, BPF_REG_AX,
++					     0, 4, 1),
++				BPF_RAW_INSN((is64 ? BPF_JMP : BPF_JMP32) |
++					     BPF_JEQ | BPF_K, BPF_REG_AX,
++					     0, 1, 0),
++				BPF_RAW_INSN((is64 ? BPF_ALU64 : BPF_ALU) |
++					     BPF_MOV | BPF_K, insn->dst_reg,
++					     0, 0, 0),
++				/* BPF_NEG(LLONG_MIN) == -LLONG_MIN == LLONG_MIN */
++				BPF_RAW_INSN((is64 ? BPF_ALU64 : BPF_ALU) |
++					     BPF_NEG | BPF_K, insn->dst_reg,
++					     0, 0, 0),
++				BPF_JMP_IMM(BPF_JA, 0, 0, 1),
++				*insn,
++			};
++			struct bpf_insn chk_and_smod[] = {
++				/* [R,W]x mod 0 -> [R,W]x */
++				/* [R,W]x mod -1 -> 0 */
++				BPF_MOV64_REG(BPF_REG_AX, insn->src_reg),
++				BPF_RAW_INSN((is64 ? BPF_ALU64 : BPF_ALU) |
++					     BPF_ADD | BPF_K, BPF_REG_AX,
++					     0, 0, 1),
++				BPF_RAW_INSN((is64 ? BPF_JMP : BPF_JMP32) |
++					     BPF_JGT | BPF_K, BPF_REG_AX,
++					     0, 3, 1),
++				BPF_RAW_INSN((is64 ? BPF_JMP : BPF_JMP32) |
++					     BPF_JEQ | BPF_K, BPF_REG_AX,
++					     0, 3 + (is64 ? 0 : 1), 1),
++				BPF_MOV32_IMM(insn->dst_reg, 0),
++				BPF_JMP_IMM(BPF_JA, 0, 0, 1),
++				*insn,
++				BPF_JMP_IMM(BPF_JA, 0, 0, 1),
++				BPF_MOV32_REG(insn->dst_reg, insn->dst_reg),
++			};
  
- #endif /* __KERNEL__ */
-diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index f029755f9e69a..0c5c0fbf62417 100644
---- a/arch/powerpc/kernel/asm-offsets.c
-+++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -346,6 +346,8 @@ int main(void)
- #else
- 	OFFSET(CFG_SYSCALL_MAP32, vdso_arch_data, syscall_map);
- #endif
-+	OFFSET(VDSO_CLOCKMODE_OFFSET, vdso_arch_data, data[0].clock_mode);
-+	DEFINE(VDSO_CLOCKMODE_TIMENS, VDSO_CLOCKMODE_TIMENS);
+-			patchlet = isdiv ? chk_and_div : chk_and_mod;
+-			cnt = isdiv ? ARRAY_SIZE(chk_and_div) :
+-				      ARRAY_SIZE(chk_and_mod) - (is64 ? 2 : 0);
++			if (is_sdiv) {
++				patchlet = chk_and_sdiv;
++				cnt = ARRAY_SIZE(chk_and_sdiv);
++			} else if (is_smod) {
++				patchlet = chk_and_smod;
++				cnt = ARRAY_SIZE(chk_and_smod) - (is64 ? 2 : 0);
++			} else {
++				patchlet = isdiv ? chk_and_div : chk_and_mod;
++				cnt = isdiv ? ARRAY_SIZE(chk_and_div) :
++					      ARRAY_SIZE(chk_and_mod) - (is64 ? 2 : 0);
++			}
  
- #ifdef CONFIG_BUG
- 	DEFINE(BUG_ENTRY_SIZE, sizeof(struct bug_entry));
-diff --git a/arch/powerpc/kernel/vdso/cacheflush.S b/arch/powerpc/kernel/vdso/cacheflush.S
-index 0085ae464dac9..3b2479bd2f9a1 100644
---- a/arch/powerpc/kernel/vdso/cacheflush.S
-+++ b/arch/powerpc/kernel/vdso/cacheflush.S
-@@ -30,7 +30,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
- #ifdef CONFIG_PPC64
- 	mflr	r12
-   .cfi_register lr,r12
--	get_datapage	r10
-+	get_realdatapage	r10, r11
- 	mtlr	r12
-   .cfi_restore	lr
- #endif
-diff --git a/arch/powerpc/kernel/vdso/datapage.S b/arch/powerpc/kernel/vdso/datapage.S
-index db8e167f01667..2b19b6201a33a 100644
---- a/arch/powerpc/kernel/vdso/datapage.S
-+++ b/arch/powerpc/kernel/vdso/datapage.S
-@@ -28,7 +28,7 @@ V_FUNCTION_BEGIN(__kernel_get_syscall_map)
- 	mflr	r12
-   .cfi_register lr,r12
- 	mr.	r4,r3
--	get_datapage	r3
-+	get_realdatapage	r3, r11
- 	mtlr	r12
- #ifdef __powerpc64__
- 	addi	r3,r3,CFG_SYSCALL_MAP64
-@@ -52,7 +52,7 @@ V_FUNCTION_BEGIN(__kernel_get_tbfreq)
-   .cfi_startproc
- 	mflr	r12
-   .cfi_register lr,r12
--	get_datapage	r3
-+	get_realdatapage	r3, r11
- #ifndef __powerpc64__
- 	lwz	r4,(CFG_TB_TICKS_PER_SEC + 4)(r3)
- #endif
+ 			new_prog = bpf_patch_insn_data(env, i + delta, patchlet, cnt);
+ 			if (!new_prog)
 -- 
 2.43.0
 
