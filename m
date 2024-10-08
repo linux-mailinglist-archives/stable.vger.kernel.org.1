@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-82434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20995994CCD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:58:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40AF4994E7E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:17:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD4BD1F23D05
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:58:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB47B1F24860
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9747B1DF27E;
-	Tue,  8 Oct 2024 12:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D371DF25A;
+	Tue,  8 Oct 2024 13:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrrfnZcq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gp6T4kJ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F3B1DE4CC;
-	Tue,  8 Oct 2024 12:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9908B1DEFF6;
+	Tue,  8 Oct 2024 13:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392248; cv=none; b=C8KArFP1k3PocCxcmSAvvRKtWpMO42f68DyfgTnnJShJA8FevxwVGfJuqtGYSuQPXbnyw2x+SwOJFRYiUF60LhEcv4u6ElhzTCIopri8xyUgR49HS3ocQui53rnWwJWpuC6b0pcs51VNmJMQSOWzgQGohpgxze/gt3Bo6ydU5os=
+	t=1728393459; cv=none; b=UN0FL8iAcVLBdXYtX4srtsT5iNHqGqCyqE55CMa4mG0345A9k/51v4cv2/yWxmeju3S2mQpU1UeQgSdIERQ2D0EzZZ01m+GU5CwpPQiyTk6kxXEsOot0+aXDqehOMpRrgyqvlLj5Sq4bKADpz+Fo9eZxCBIDOj53N8zMqrw7PEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392248; c=relaxed/simple;
-	bh=4DQbEMVRRPF007lTkKB4GeCHFAQn3/fJPVs9GPnaVvI=;
+	s=arc-20240116; t=1728393459; c=relaxed/simple;
+	bh=uHKne9paOoXw/2MbhadEmNavQm1QyTob87V24Vzj5lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kbZ6DV/UpylYo4fP4xqNsLzCCoaoQhQvyIG8qVeytJeK9nmbXD3224SPJA1pbIkDmrpxcf+5/M9kUGS0ncMUvXXXj27fOhNSoZvSM6QyeWOaSR3RsddgRbtheq2RXR6RL8bu4ErndfJ0a107krdXmfWkzDKvv4OKfIXSh+Bq2Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrrfnZcq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A4FC4CEC7;
-	Tue,  8 Oct 2024 12:57:27 +0000 (UTC)
+	 MIME-Version; b=Eyn6K3Cka6gQAu2zBLDOVoWxyuGIEOz2zvKM3G3J10OYf6+OOG0+DxoPlKPLhDhLF0tIvTC8q3zj7wJZzhdfLTcJOfssM8g0ldxNygh4yykG4l9FwD3KIISCoQ1+CUXzyjsrREdYPWgW1w5vpUW0Td0vjeKklnYZvo04JT9Awc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gp6T4kJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50BDC4CEC7;
+	Tue,  8 Oct 2024 13:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392248;
-	bh=4DQbEMVRRPF007lTkKB4GeCHFAQn3/fJPVs9GPnaVvI=;
+	s=korg; t=1728393459;
+	bh=uHKne9paOoXw/2MbhadEmNavQm1QyTob87V24Vzj5lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jrrfnZcqL3/5Gt1PdYrna0OwhD+xjjAT26PMs9cUdaKYCH++gkbpyQmlEXiMsWB5L
-	 BHgKovAKH2AQm+LiLVwXtfAiJMQwqBLXwCrO3/wyIC0/HW9zXe/jG2dMUOKBN92k8U
-	 Ddl3d6C9mtp+EUqKSUutTyDKRah+crq0rhvlulAo=
+	b=gp6T4kJ8pRoapMeWliqvkIlaiI80l4pleyFeAWFp9jVJuhaXcBmIZWDWXns/njWsf
+	 AAKqMM6ZSJgJwZVT7K8j9X1NNccQi1vXWbzJ+tek+kk66sbkdZCctpxo9/zlPG5r6r
+	 wqGdh4ATejPVmVGT8Twbtpqp6lEPuWugMSjxqmwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Andrew Davis <afd@ti.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 342/558] f2fs: increase BG GC migration window granularity when boosted for zoned devices
+Subject: [PATCH 6.6 127/386] power: reset: brcmstb: Do not go into infinite loop if reset fails
 Date: Tue,  8 Oct 2024 14:06:12 +0200
-Message-ID: <20241008115715.760502054@linuxfoundation.org>
+Message-ID: <20241008115634.434576550@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daeho Jeong <daehojeong@google.com>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit 2223fe652f759649ae1d520e47e5f06727c0acbd ]
+[ Upstream commit cf8c39b00e982fa506b16f9d76657838c09150cb ]
 
-Need bigger BG GC migration window granularity when free section is
-running low.
+There may be other backup reset methods available, do not halt
+here so that other reset methods can be tried.
 
-Signed-off-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 5cc69a27abfa ("f2fs: forcibly migrate to secure space for zoned device file pinning")
+Signed-off-by: Andrew Davis <afd@ti.com>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20240610142836.168603-5-afd@ti.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/gc.c | 12 ++++++++++--
- fs/f2fs/gc.h |  1 +
- 2 files changed, 11 insertions(+), 2 deletions(-)
+ drivers/power/reset/brcmstb-reboot.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index 5cd316d2102de..9a3d3994cf2ba 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -1728,10 +1728,18 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
- 			sec_end_segno -= SEGS_PER_SEC(sbi) -
- 					f2fs_usable_segs_in_sec(sbi, segno);
- 
--		if (gc_type == BG_GC)
--			end_segno = start_segno +
-+		if (gc_type == BG_GC) {
-+			unsigned int window_granularity =
- 				sbi->migration_window_granularity;
- 
-+			if (f2fs_sb_has_blkzoned(sbi) &&
-+					!has_enough_free_blocks(sbi,
-+					LIMIT_BOOST_ZONED_GC))
-+				window_granularity *= BOOST_GC_MULTIPLE;
-+
-+			end_segno = start_segno + window_granularity;
-+		}
-+
- 		if (end_segno > sec_end_segno)
- 			end_segno = sec_end_segno;
+diff --git a/drivers/power/reset/brcmstb-reboot.c b/drivers/power/reset/brcmstb-reboot.c
+index 0f2944dc93551..a04713f191a11 100644
+--- a/drivers/power/reset/brcmstb-reboot.c
++++ b/drivers/power/reset/brcmstb-reboot.c
+@@ -62,9 +62,6 @@ static int brcmstb_restart_handler(struct notifier_block *this,
+ 		return NOTIFY_DONE;
  	}
-diff --git a/fs/f2fs/gc.h b/fs/f2fs/gc.h
-index 245f93663745a..78abeebd68b5e 100644
---- a/fs/f2fs/gc.h
-+++ b/fs/f2fs/gc.h
-@@ -33,6 +33,7 @@
- #define LIMIT_NO_ZONED_GC	60 /* percentage over total user space of no gc for zoned devices */
- #define LIMIT_BOOST_ZONED_GC	25 /* percentage over total user space of boosted gc for zoned devices */
- #define DEF_MIGRATION_WINDOW_GRANULARITY_ZONED	3
-+#define BOOST_GC_MULTIPLE	5
  
- #define DEF_GC_FAILED_PINNED_FILES	2048
- #define MAX_GC_FAILED_PINNED_FILES	USHRT_MAX
+-	while (1)
+-		;
+-
+ 	return NOTIFY_DONE;
+ }
+ 
 -- 
 2.43.0
 
