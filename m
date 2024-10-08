@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-82869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EFAF994EE3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:22:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2720994D27
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:02:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D8AC1F224E0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:22:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 572F31F24661
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351411DFDAC;
-	Tue,  8 Oct 2024 13:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1B51DE4CC;
+	Tue,  8 Oct 2024 13:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfPVA9Su"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7QwS88U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAB01DFDA8;
-	Tue,  8 Oct 2024 13:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EBA18F2FA;
+	Tue,  8 Oct 2024 13:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393699; cv=none; b=XfiY/FfD5w9zb8uyurGzq7yqwJuWwvxQRJH0CCK6Scto7Xe8DLJJm2vsgOPdXR0dien1UzNy37/iUNvmJsl9Cuo+bkBwbxhv/0uXwlL3jxmGw/NnczlUr8CY3Fn2EGg7gMTN5Do+Ddf0sf3gkntoBhsduEC7vhrrsMKWDazZiDw=
+	t=1728392537; cv=none; b=m2cr0vmJuQtB+AMseglMyaqX8g1w+TeJi5OjB/5M8AZRScIxUZtgflwcqD2KJ17X1q+MIM1XxcNcwEw0nWU5MHb0L/5/++JZTgOhUSsihLZDVCW1FVQ2iEdisyTBhpnJG5c3GROYldFHyjTxPAuCj+U4Gj3JUsxxlHF27NT0nv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393699; c=relaxed/simple;
-	bh=J48fGW0hS3YHgeJorBjbLFwB9Jv70vCMnKv4n1jd++s=;
+	s=arc-20240116; t=1728392537; c=relaxed/simple;
+	bh=895KymytCMLlCPRDJo5fbqviJyhAyYFYOXfw9GW0nco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KbIJF7qxr/Xlogmjck+biunUIMQgTvSW/Q/drwVL9SIs7z/n07tAQQlypnoV3s3Bg4ell7Iqq6vbaGFlZKO/A2neOLQPXFZbjpzHz5EHNkUxJb69fdReMtOATZFO4ALQWVM4SWwFWHZNgqmPrY+3/0ygW5cT/jEv/q1qoJQEZYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfPVA9Su; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1856C4CECC;
-	Tue,  8 Oct 2024 13:21:37 +0000 (UTC)
+	 MIME-Version; b=WYrbQ2uGhukfT2fwrgbz+85UtM/Khxxk8ObkYnxCj8uMhI71EjJkVefRGTJv2QvVETMiT9qm2c2i1Pb0YfG8hWNhR0Rys8xa65h9JHn5ewWyryhlcKduv3qzYGp9fggh07obq+KARIhmcoVqvYhUIx0g8boXwm4NxFn51dyC7dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7QwS88U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FBF6C4CEC7;
+	Tue,  8 Oct 2024 13:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393698;
-	bh=J48fGW0hS3YHgeJorBjbLFwB9Jv70vCMnKv4n1jd++s=;
+	s=korg; t=1728392537;
+	bh=895KymytCMLlCPRDJo5fbqviJyhAyYFYOXfw9GW0nco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zfPVA9SuL20B71+83650rIR043OhZRwJ31z9OL0GHtg7qNMhG7SwrbOUgoI/wtGGm
-	 cfV6FgBrj3VLwx5cB0G8Zkxi1OXerJ8A6KQtosloByurlzz7JmILnRN+rWmyZ3/Zo1
-	 twUANFyHr3/xbTvV5SWsEXQomvQVqrbIh/DgOvSw=
+	b=p7QwS88UZs5TZVOubrJmcJPZeJLnks3O47Gd5uCnyLnfIFxJ/wc2oTQZrjCD62L9p
+	 E3skOFlFO0snsPd1PO2D+3JdtcntaAWhO3TMSsDuj86Hqb4X8fqGoU4bEcPrXreYzK
+	 ndMX81f7FiIUktvfHcfLhpJM63Y6ZERYTPCtGppg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 198/386] selftests: vDSO: fix vdso_config for powerpc
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	syzbot+9709e73bae885b05314b@syzkaller.appspotmail.com,
+	Heming Zhao <heming.zhao@suse.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 413/558] ocfs2: fix uninit-value in ocfs2_get_block()
 Date: Tue,  8 Oct 2024 14:07:23 +0200
-Message-ID: <20241008115637.198287992@linuxfoundation.org>
+Message-ID: <20241008115718.525844283@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +69,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
 
-[ Upstream commit 7d297c419b08eafa69ce27243ee9bbecab4fcaa4 ]
+commit 2af148ef8549a12f8025286b8825c2833ee6bcb8 upstream.
 
-Running vdso_test_correctness on powerpc64 gives the following warning:
+syzbot reported an uninit-value BUG:
 
-  ~ # ./vdso_test_correctness
-  Warning: failed to find clock_gettime64 in vDSO
+BUG: KMSAN: uninit-value in ocfs2_get_block+0xed2/0x2710 fs/ocfs2/aops.c:159
+ocfs2_get_block+0xed2/0x2710 fs/ocfs2/aops.c:159
+do_mpage_readpage+0xc45/0x2780 fs/mpage.c:225
+mpage_readahead+0x43f/0x840 fs/mpage.c:374
+ocfs2_readahead+0x269/0x320 fs/ocfs2/aops.c:381
+read_pages+0x193/0x1110 mm/readahead.c:160
+page_cache_ra_unbounded+0x901/0x9f0 mm/readahead.c:273
+do_page_cache_ra mm/readahead.c:303 [inline]
+force_page_cache_ra+0x3b1/0x4b0 mm/readahead.c:332
+force_page_cache_readahead mm/internal.h:347 [inline]
+generic_fadvise+0x6b0/0xa90 mm/fadvise.c:106
+vfs_fadvise mm/fadvise.c:185 [inline]
+ksys_fadvise64_64 mm/fadvise.c:199 [inline]
+__do_sys_fadvise64 mm/fadvise.c:214 [inline]
+__se_sys_fadvise64 mm/fadvise.c:212 [inline]
+__x64_sys_fadvise64+0x1fb/0x3a0 mm/fadvise.c:212
+x64_sys_call+0xe11/0x3ba0
+arch/x86/include/generated/asm/syscalls_64.h:222
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-This is because vdso_test_correctness was built with VDSO_32BIT defined.
+This is because when ocfs2_extent_map_get_blocks() fails, p_blkno is
+uninitialized.  So the error log will trigger the above uninit-value
+access.
 
-__powerpc__ macro is defined on both powerpc32 and powerpc64 so
-__powerpc64__ needs to be checked first in vdso_config.h
+The error log is out-of-date since get_blocks() was removed long time ago.
+And the error code will be logged in ocfs2_extent_map_get_blocks() once
+ocfs2_get_cluster() fails, so fix this by only logging inode and block.
 
-Fixes: 693f5ca08ca0 ("kselftest: Extend vDSO selftest")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://syzkaller.appspot.com/bug?extid=9709e73bae885b05314b
+Link: https://lkml.kernel.org/r/20240925090600.3643376-1-joseph.qi@linux.alibaba.com
+Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: syzbot+9709e73bae885b05314b@syzkaller.appspotmail.com
+Tested-by: syzbot+9709e73bae885b05314b@syzkaller.appspotmail.com
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/vDSO/vdso_config.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/ocfs2/aops.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/vDSO/vdso_config.h b/tools/testing/selftests/vDSO/vdso_config.h
-index cdfed403ba13f..f9890584f6fb4 100644
---- a/tools/testing/selftests/vDSO/vdso_config.h
-+++ b/tools/testing/selftests/vDSO/vdso_config.h
-@@ -18,13 +18,13 @@
- #elif defined(__aarch64__)
- #define VDSO_VERSION		3
- #define VDSO_NAMES		0
--#elif defined(__powerpc__)
-+#elif defined(__powerpc64__)
- #define VDSO_VERSION		1
- #define VDSO_NAMES		0
--#define VDSO_32BIT		1
--#elif defined(__powerpc64__)
-+#elif defined(__powerpc__)
- #define VDSO_VERSION		1
- #define VDSO_NAMES		0
-+#define VDSO_32BIT		1
- #elif defined (__s390__)
- #define VDSO_VERSION		2
- #define VDSO_NAMES		0
--- 
-2.43.0
-
+--- a/fs/ocfs2/aops.c
++++ b/fs/ocfs2/aops.c
+@@ -156,9 +156,8 @@ int ocfs2_get_block(struct inode *inode,
+ 	err = ocfs2_extent_map_get_blocks(inode, iblock, &p_blkno, &count,
+ 					  &ext_flags);
+ 	if (err) {
+-		mlog(ML_ERROR, "Error %d from get_blocks(0x%p, %llu, 1, "
+-		     "%llu, NULL)\n", err, inode, (unsigned long long)iblock,
+-		     (unsigned long long)p_blkno);
++		mlog(ML_ERROR, "get_blocks() failed, inode: 0x%p, "
++		     "block: %llu\n", inode, (unsigned long long)iblock);
+ 		goto bail;
+ 	}
+ 
 
 
 
