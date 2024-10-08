@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-82851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22523994F49
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:26:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E3B994D8D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:06:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A81F8B2AA7A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:20:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EB66B2C387
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8402A1DEFEA;
-	Tue,  8 Oct 2024 13:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9331DE8BA;
+	Tue,  8 Oct 2024 13:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMOrTPil"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+a7B2vS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8DA1DEFC8;
-	Tue,  8 Oct 2024 13:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383611DE89A;
+	Tue,  8 Oct 2024 13:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393639; cv=none; b=KRQBkgCdSS1pWzuHQec65tSGlXQPfo1kbqg08rLw5Wb1P8wSD/ZejhW8A3kgxj7E9PIIS7FjVrKYvv7t85qiy3at8zogQ2vr5P9aoSc1mAuM4Eg5Ka1tUEjLda34BkSshP9guULWimcE3x0LX2YMG/e9jW6ijA5Bzk28cqaw0U4=
+	t=1728392473; cv=none; b=ad9PJt+cgrdCKNoRVkK3KBZAYMk64SxfzoOW0/pemCuBllfrLIt/slchZJxFhe12jbpaD6/TKKVTqCotcVvjL7ZCljlpvQMg+ObT5MlOXtTbY26q9Jy4uH5kUogYNhQ21JA3Jm33GY/pW/J/iX8MJRUpmMF6eRy7Cqw36igdHsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393639; c=relaxed/simple;
-	bh=+T+cuuNS64dSEUtvPIrBIkT2AwGPhtIwV02yVF7r1Xk=;
+	s=arc-20240116; t=1728392473; c=relaxed/simple;
+	bh=+0WG6J+UasL0rUT7UcWN0cBXicSbXd5ly30hBt+wy/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOvtguDvJyP4/3nTO5rJWE0X4Y3GENWPw4LHeuYINckJ0dQsHgY+S7nraVYoyAJug2HXLuJmlQJ7R4Mnaxq961MhXNkU4oFOhTSTX+udlc498Z6hjRPrBje1rHuauj9DeJPoDeX2lgdKPdM1lLheO5nnUiN5EOOaE/1715x1kGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MMOrTPil; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11CCC4CEC7;
-	Tue,  8 Oct 2024 13:20:38 +0000 (UTC)
+	 MIME-Version; b=QVkF8Ekt8BKo8ljN1yWU8IMmn/+spMnVHGYZbUuD3V5KD5GFzpDaeBjGe9Xj5S9zgk0OifjxZuV79EF3yLQNj8zCCFrztDtN5IQuwasKwfCaCi2VY6H21/l6+Bpln3OLDUMDvqmyVvcsxsMbZc4MuK0K9XuGvrNV/eY3hC1s/q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+a7B2vS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1565C4CEC7;
+	Tue,  8 Oct 2024 13:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393639;
-	bh=+T+cuuNS64dSEUtvPIrBIkT2AwGPhtIwV02yVF7r1Xk=;
+	s=korg; t=1728392473;
+	bh=+0WG6J+UasL0rUT7UcWN0cBXicSbXd5ly30hBt+wy/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MMOrTPil/1o5C93//23MTYEDpuC9E4fwCC1tgoWDGzIkv/rQjIb39MbnqQ67rSIuD
-	 zVZeKE2372okBKYXFq/HiBIM3QRYWqXCI3LJETtNAYgZvmgBHUdjKWgo4x3gdIJUW4
-	 HimcodHUTu7ifP3kn25fhbqhaXep2PU3f2uMZ4U8=
+	b=J+a7B2vSLkBshhejn8xmllvADJ7sMdR42NKBRAKZ8+tA+1KtCv2Tef9pSUC0lNSGD
+	 fWvFiQDcF3iL2RyjCn30b+fVIHL/ezNuvHW64+he0A3d4hJpV/GCTnChkQqvvVE7iR
+	 QI0TGgVOLFpSHkuY9LyHHQzDLpUEvUe62MtD+7M4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kimriver Liu <kimriver.liu@siengine.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.6 211/386] i2c: designware: fix controller is holding SCL low while ENABLE bit is disabled
+	Daniel Bristot de Oliveira <bristot@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>
+Subject: [PATCH 6.11 426/558] sched/deadline: Comment sched_dl_entity::dl_server variable
 Date: Tue,  8 Oct 2024 14:07:36 +0200
-Message-ID: <20241008115637.710085163@linuxfoundation.org>
+Message-ID: <20241008115719.037928248@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,138 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kimriver Liu <kimriver.liu@siengine.com>
+From: Daniel Bristot de Oliveira <bristot@kernel.org>
 
-commit 5d69d5a00f80488ddcb4dee7d1374a0709398178 upstream.
+commit f23c042ce34ba265cf3129d530702b5d218e3f4b upstream.
 
-It was observed that issuing the ABORT bit (IC_ENABLE[1]) will not
-work when IC_ENABLE is already disabled.
+Add an explanation for the newly added variable.
 
-Check if the ENABLE bit (IC_ENABLE[0]) is disabled when the controller
-is holding SCL low. If the ENABLE bit is disabled, the software needs
-to enable it before trying to issue the ABORT bit. otherwise,
-the controller ignores any write to ABORT bit.
-
-These kernel logs show up whenever an I2C transaction is
-attempted after this failure.
-i2c_designware e95e0000.i2c: timeout waiting for bus ready
-i2c_designware e95e0000.i2c: timeout in disabling adapter
-
-The patch fixes the issue where the controller cannot be disabled
-while SCL is held low if the ENABLE bit is already disabled.
-
-Fixes: 2409205acd3c ("i2c: designware: fix __i2c_dw_disable() in case master is holding SCL low")
-Signed-off-by: Kimriver Liu <kimriver.liu@siengine.com>
-Cc: <stable@vger.kernel.org> # v6.6+
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 63ba8422f876 ("sched/deadline: Introduce deadline servers")
+Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Juri Lelli <juri.lelli@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/147f7aa8cb8fd925f36aa8059af6a35aad08b45a.1716811044.git.bristot@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-designware-common.c |   14 ++++++++++
- drivers/i2c/busses/i2c-designware-core.h   |    1 
- drivers/i2c/busses/i2c-designware-master.c |   38 +++++++++++++++++++++++++++++
- 3 files changed, 53 insertions(+)
+ include/linux/sched.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/i2c/busses/i2c-designware-common.c
-+++ b/drivers/i2c/busses/i2c-designware-common.c
-@@ -441,6 +441,7 @@ err_release_lock:
- 
- void __i2c_dw_disable(struct dw_i2c_dev *dev)
- {
-+	struct i2c_timings *t = &dev->timings;
- 	unsigned int raw_intr_stats;
- 	unsigned int enable;
- 	int timeout = 100;
-@@ -453,6 +454,19 @@ void __i2c_dw_disable(struct dw_i2c_dev
- 
- 	abort_needed = raw_intr_stats & DW_IC_INTR_MST_ON_HOLD;
- 	if (abort_needed) {
-+		if (!(enable & DW_IC_ENABLE_ENABLE)) {
-+			regmap_write(dev->map, DW_IC_ENABLE, DW_IC_ENABLE_ENABLE);
-+			/*
-+			 * Wait 10 times the signaling period of the highest I2C
-+			 * transfer supported by the driver (for 400KHz this is
-+			 * 25us) to ensure the I2C ENABLE bit is already set
-+			 * as described in the DesignWare I2C databook.
-+			 */
-+			fsleep(DIV_ROUND_CLOSEST_ULL(10 * MICRO, t->bus_freq_hz));
-+			/* Set ENABLE bit before setting ABORT */
-+			enable |= DW_IC_ENABLE_ENABLE;
-+		}
-+
- 		regmap_write(dev->map, DW_IC_ENABLE, enable | DW_IC_ENABLE_ABORT);
- 		ret = regmap_read_poll_timeout(dev->map, DW_IC_ENABLE, enable,
- 					       !(enable & DW_IC_ENABLE_ABORT), 10,
---- a/drivers/i2c/busses/i2c-designware-core.h
-+++ b/drivers/i2c/busses/i2c-designware-core.h
-@@ -109,6 +109,7 @@
- 						 DW_IC_INTR_RX_UNDER | \
- 						 DW_IC_INTR_RD_REQ)
- 
-+#define DW_IC_ENABLE_ENABLE			BIT(0)
- #define DW_IC_ENABLE_ABORT			BIT(1)
- 
- #define DW_IC_STATUS_ACTIVITY			BIT(0)
---- a/drivers/i2c/busses/i2c-designware-master.c
-+++ b/drivers/i2c/busses/i2c-designware-master.c
-@@ -253,6 +253,34 @@ static void i2c_dw_xfer_init(struct dw_i
- 	regmap_write(dev->map, DW_IC_INTR_MASK, DW_IC_INTR_MASTER_MASK);
- }
- 
-+/*
-+ * This function waits for the controller to be idle before disabling I2C
-+ * When the controller is not in the IDLE state, the MST_ACTIVITY bit
-+ * (IC_STATUS[5]) is set.
-+ *
-+ * Values:
-+ * 0x1 (ACTIVE): Controller not idle
-+ * 0x0 (IDLE): Controller is idle
-+ *
-+ * The function is called after completing the current transfer.
-+ *
-+ * Returns:
-+ * False when the controller is in the IDLE state.
-+ * True when the controller is in the ACTIVE state.
-+ */
-+static bool i2c_dw_is_controller_active(struct dw_i2c_dev *dev)
-+{
-+	u32 status;
-+
-+	regmap_read(dev->map, DW_IC_STATUS, &status);
-+	if (!(status & DW_IC_STATUS_MASTER_ACTIVITY))
-+		return false;
-+
-+	return regmap_read_poll_timeout(dev->map, DW_IC_STATUS, status,
-+				       !(status & DW_IC_STATUS_MASTER_ACTIVITY),
-+				       1100, 20000) != 0;
-+}
-+
- static int i2c_dw_check_stopbit(struct dw_i2c_dev *dev)
- {
- 	u32 val;
-@@ -695,6 +723,16 @@ i2c_dw_xfer(struct i2c_adapter *adap, st
- 	}
- 
- 	/*
-+	 * This happens rarely (~1:500) and is hard to reproduce. Debug trace
-+	 * showed that IC_STATUS had value of 0x23 when STOP_DET occurred,
-+	 * if disable IC_ENABLE.ENABLE immediately that can result in
-+	 * IC_RAW_INTR_STAT.MASTER_ON_HOLD holding SCL low. Check if
-+	 * controller is still ACTIVE before disabling I2C.
-+	 */
-+	if (i2c_dw_is_controller_active(dev))
-+		dev_err(dev->dev, "controller active\n");
-+
-+	/*
- 	 * We must disable the adapter before returning and signaling the end
- 	 * of the current transfer. Otherwise the hardware might continue
- 	 * generating interrupts which in turn causes a race condition with
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -639,6 +639,8 @@ struct sched_dl_entity {
+ 	 *
+ 	 * @dl_overrun tells if the task asked to be informed about runtime
+ 	 * overruns.
++	 *
++	 * @dl_server tells if this is a server entity.
+ 	 */
+ 	unsigned int			dl_throttled      : 1;
+ 	unsigned int			dl_yielded        : 1;
 
 
 
