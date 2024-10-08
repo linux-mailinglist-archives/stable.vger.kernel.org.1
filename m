@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-82591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31EC3994DFB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:11:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B22994AC6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3320DB23CAF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:06:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A34CE1C24C40
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4371DE4CD;
-	Tue,  8 Oct 2024 13:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9FD01DC759;
+	Tue,  8 Oct 2024 12:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgIFnKiD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGl5+rJl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783641C5793;
-	Tue,  8 Oct 2024 13:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C2F192594;
+	Tue,  8 Oct 2024 12:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392774; cv=none; b=VZUAivUte41NGps5uYEp3QT6wVJN5cxTRw7b57U2v8slDBA7RW7M+1fe4SAhuW0eZi9rD5uAkHxdPHoVD4fEmwZr+nlM69v8B7FU0ekCc7pysfUEO32aHWw4/dsNxmf5qKuGFQT+R/s816Nsex1qIhGulId/7YLcOfe+tK2B1J0=
+	t=1728390977; cv=none; b=phz30ttuPptpFlAx7I5SgXjOGJ2DEP3LuXEcdLhHEYGiNBs7mnZ/5mgPhaMNfQTeFP6yHM0EA+/xFPo2hUZrBwowhWBRn4oQ9kd9THtFKtfWskA+lOrTpzXnE/yMZn8Y6cZs8VyDV5Tmx2kMiGAycMw0zyFPZrLmwaS/0QpaN/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392774; c=relaxed/simple;
-	bh=FpOP337FLJ48D7yKV2zqBApSaZR4ViHPlX/1/yAIlSU=;
+	s=arc-20240116; t=1728390977; c=relaxed/simple;
+	bh=EfKKo307UtEOv/T+MKGne6fEe7GrIHKMLeC/nn6G07Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EMeiFadm5N+56VmTwJ2ts8hhvt4qetITg0hye+4BxIlaX5xJIPBFibxD3iC1I+Ma3BPXDCthd8lO2EHg8xaOHW4J2AS7uBys2Ci/+7d5AxS49WMmhR9ZGEqB7dxMr23PHwJ+sa/Waz+z4pmLAhRh6AoyfrWlrl633ReK+Wj78LY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgIFnKiD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F092DC4CEC7;
-	Tue,  8 Oct 2024 13:06:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cGvWGyJy5X2AQENtBu29HzS/vHGBJ7nMMKDWx30nSJBmrT+iza6kZ21rCkcaDqhld0rxByANM4tqRdt4dSlnbctBxF0xThqXR1OrxjLmzgEU/v6BgLrYMKPZ9VthzRp5N9NvTETRMl7ozumVA+jci6PW5nhMjPqlQMx6URbSLbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGl5+rJl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2070BC4CEC7;
+	Tue,  8 Oct 2024 12:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392774;
-	bh=FpOP337FLJ48D7yKV2zqBApSaZR4ViHPlX/1/yAIlSU=;
+	s=korg; t=1728390977;
+	bh=EfKKo307UtEOv/T+MKGne6fEe7GrIHKMLeC/nn6G07Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EgIFnKiDOZlvHitOV02tVRTlnqJz5ntZnKtAXdwW0RzaFTqTPk40r0sqF7T9nZsp2
-	 EMOYOvajhqal69UTN7pXRmyH4NGpeqhe0z6qDP9loua3iY67gHggaWjG4lpjNxPZVb
-	 twLqqW1IzeBnvYN9Z/tYNiLzyoiRSS+cB8pLOjTY=
+	b=gGl5+rJllojLU3eoFjGHyxhIVr738jNfPE8F4IsULva1dzp6hXSWDQ9iTVhm5Jre+
+	 6VAmFM1dTtkZicXmljgJgdeDnccW3dECbj4CurSXfimhfNTVzwLlTkc5u7i7SBb6s+
+	 eufQAETfaqVjtjk6uCeZNJ2wngPkSTYiXf9Sr/Jk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Sistare <steven.sistare@oracle.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Peter Xu <peterx@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 484/558] mm/gup: fix memfd_pin_folios alloc race panic
-Date: Tue,  8 Oct 2024 14:08:34 +0200
-Message-ID: <20241008115721.281982453@linuxfoundation.org>
+	Harry Wentland <harry.wentland@amd.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 452/482] drm/amd/display: Allow backlight to go below `AMDGPU_DM_DEFAULT_MIN_BACKLIGHT`
+Date: Tue,  8 Oct 2024 14:08:35 +0200
+Message-ID: <20241008115706.305897026@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve Sistare <steven.sistare@oracle.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit ce645b9fdc78ec5d28067286e92871ddae6817d5 upstream.
+[ Upstream commit 87d749a6aab73d8069d0345afaa98297816cb220 ]
 
-If memfd_pin_folios tries to create a hugetlb page, but someone else
-already did, then folio gets the value -EEXIST here:
+The issue with panel power savings compatibility below
+`AMDGPU_DM_DEFAULT_MIN_BACKLIGHT` happens at
+`AMDGPU_DM_DEFAULT_MIN_BACKLIGHT` as well.
 
-        folio = memfd_alloc_folio(memfd, start_idx);
-        if (IS_ERR(folio)) {
-                ret = PTR_ERR(folio);
-                if (ret != -EEXIST)
-                        goto err;
+That issue will be fixed separately, so don't prevent the backlight
+brightness from going that low.
 
-then on the next trip through the "while start_idx" loop we panic here:
-
-        if (folio) {
-                folio_put(folio);
-
-To fix, set the folio to NULL on error.
-
-Link: https://lkml.kernel.org/r/1725373521-451395-6-git-send-email-steven.sistare@oracle.com
-Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/amd-gfx/be04226a-a9e3-4a45-a83b-6d263c6557d8@t-8ch.de/T/#m400dee4e2fc61fe9470334d20a7c8c89c9aef44f
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/gup.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -3705,6 +3705,7 @@ long memfd_pin_folios(struct file *memfd
- 					ret = PTR_ERR(folio);
- 					if (ret != -EEXIST)
- 						goto err;
-+					folio = NULL;
- 				}
- 			}
- 		}
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index d2554b4a14fe9..83f4ff9e848d7 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4176,7 +4176,7 @@ static void amdgpu_dm_update_backlight_caps(struct amdgpu_display_manager *dm,
+ 		int spread = caps.max_input_signal - caps.min_input_signal;
+ 
+ 		if (caps.max_input_signal > AMDGPU_DM_DEFAULT_MAX_BACKLIGHT ||
+-		    caps.min_input_signal < AMDGPU_DM_DEFAULT_MIN_BACKLIGHT ||
++		    caps.min_input_signal < 0 ||
+ 		    spread > AMDGPU_DM_DEFAULT_MAX_BACKLIGHT ||
+ 		    spread < AMDGPU_DM_MIN_SPREAD) {
+ 			DRM_DEBUG_KMS("DM: Invalid backlight caps: min=%d, max=%d\n",
+-- 
+2.43.0
+
 
 
 
