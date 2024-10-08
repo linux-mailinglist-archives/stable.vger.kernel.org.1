@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F10F994E84
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD733994CE9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA3D31F25681
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:18:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8904B27028
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCB51DE4CD;
-	Tue,  8 Oct 2024 13:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77ABD1DF25D;
+	Tue,  8 Oct 2024 12:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdiO3rlc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxxvnUOC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126C01D3653;
-	Tue,  8 Oct 2024 13:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A431DED74;
+	Tue,  8 Oct 2024 12:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393473; cv=none; b=GXXZCBGawJAcwyw8hB1xmzZroO4GD4xt2yeZ4wHyUhvVtjKQVFZDV/R3Np/xP1vUosYoAbDF3GIaMxl5Us2UPwEPiEp5vdR0cjrGxV3skIrK6Gez9ZQHDMLhYH3CTAhnle8QGE2U1yNxC8gwk5AaE75R8hcMLOGfmJLmFY5LJto=
+	t=1728392177; cv=none; b=eoqq3psHeM4UO0pUhhH1xYJlLs6lmtv6CHm3BRwB2Hy3BIwnDd6BoqVBNW5UbdGnUXhnp1PFD2kxiWaTpws4Dh4A39WrLw78kfNv3KuWDT0dwo6+/qMh8wow+cM2pWI+6QI6M52wkBRybaYjZW6MKaXDJIJ8uARK/JvzTSchBsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393473; c=relaxed/simple;
-	bh=/tEuvF1HGIItV/HilD64+hYYpvZow1PBniRnhwjQ6OE=;
+	s=arc-20240116; t=1728392177; c=relaxed/simple;
+	bh=EIaPrjSyYZlTc5pJ/QuEGSWkKOj1hxki3qFvkrx5e4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LPXtO3U24vH2a7ukZt2T3OuPXYOhlnIxsAYxCEeIKMrVHkEsBL61Oi6lHheYrSoBeoy8/D/WRZU/kfBZc9S9rbZH4U2Vh9BLoE8BkEHi4KqcPOHRrVVb/+XJl+YZwHp4bdvLQVqSlCyYoxfkXqJ6AluJU0p7+tduRwc6C4N1jZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdiO3rlc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72219C4CEC7;
-	Tue,  8 Oct 2024 13:17:52 +0000 (UTC)
+	 MIME-Version; b=acHTr9COGDMKn6DLKbnC2/ZZYBTQjko/U28v5pz+V79u/b84jTN8z2YfOMHUh+ASVEdTNdhCrNExtzw1NutUttg+rs/EMIldnRbjBYBKS6QknqWIzdJL2KFO4/cI+4P1pNbCAkynceNXAMgsxtq4MjVWFqj5eUmTTDxZFd7IgYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RxxvnUOC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3E2C4CEC7;
+	Tue,  8 Oct 2024 12:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393472;
-	bh=/tEuvF1HGIItV/HilD64+hYYpvZow1PBniRnhwjQ6OE=;
+	s=korg; t=1728392176;
+	bh=EIaPrjSyYZlTc5pJ/QuEGSWkKOj1hxki3qFvkrx5e4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DdiO3rlc7DRNdDt/uPnVQNTT/p7a8EZfWd+zLmwQTilzuBBIRwUnRQNUFWBrUo48q
-	 fx/ntvOGo1JXoEylSt9eEdFNw40O5w6UwI7HG+mlTNv74uCuvqOUjd+recev1bvS8O
-	 gSSh/BcZXwG9eAkeiFwC/rCmYS6yvqz8MI3QPbdk=
+	b=RxxvnUOCavwBH2eu9Kqi+181Nt8wFqCC26xo3y4Cb4kRuJKrUcwHeiS/pkFm+qtmc
+	 K6FyXowtW8LO4LJOT93raxzMW/Sdzv5zWkvesKMOi4XMK0JWOzlVXcp9MH3zN3TfSB
+	 y75AM5Xl+S1jhIna74dQTg8f1nMhvTWRXozzxt3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Willy Tarreau <w@1wt.eu>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 121/386] selftests/nolibc: avoid passing NULL to printf("%s")
-Date: Tue,  8 Oct 2024 14:06:06 +0200
-Message-ID: <20241008115634.199213100@linuxfoundation.org>
+Subject: [PATCH 6.11 337/558] powerpc/vdso: Fix VDSO data access when running in a non-root time namespace
+Date: Tue,  8 Oct 2024 14:06:07 +0200
+Message-ID: <20241008115715.564771091@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit f1a58f61d88642ae1e6e97e9d72d73bc70a93cb8 ]
+[ Upstream commit c73049389e58c01e2e3bbfae900c8daeee177191 ]
 
-Clang on higher optimization levels detects that NULL is passed to
-printf("%s") and warns about it.
-While printf() from nolibc gracefully handles that NULL,
-it is undefined behavior as per POSIX, so the warning is reasonable.
-Avoid the warning by transforming NULL into a non-NULL placeholder.
+When running in a non-root time namespace, the global VDSO data page
+is replaced by a dedicated namespace data page and the global data
+page is mapped next to it. Detailed explanations can be found at
+commit 660fd04f9317 ("lib/vdso: Prepare for time namespace support").
 
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Acked-by: Willy Tarreau <w@1wt.eu>
-Link: https://lore.kernel.org/r/20240807-nolibc-llvm-v2-8-c20f2f5fc7c2@weissschuh.net
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+When it happens, __kernel_get_syscall_map and __kernel_get_tbfreq
+and __kernel_sync_dicache don't work anymore because they read 0
+instead of the data they need.
+
+To address that, clock_mode has to be read. When it is set to
+VDSO_CLOCKMODE_TIMENS, it means it is a dedicated namespace data page
+and the global data is located on the following page.
+
+Add a macro called get_realdatapage which reads clock_mode and add
+PAGE_SIZE to the pointer provided by get_datapage macro when
+clock_mode is equal to VDSO_CLOCKMODE_TIMENS. Use this new macro
+instead of get_datapage macro except for time functions as they handle
+it internally.
+
+Fixes: 74205b3fc2ef ("powerpc/vdso: Add support for time namespaces")
+Reported-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Closes: https://lore.kernel.org/all/ZtnYqZI-nrsNslwy@zx2c4.com/
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/nolibc/nolibc-test.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/vdso_datapage.h | 15 +++++++++++++++
+ arch/powerpc/kernel/asm-offsets.c        |  2 ++
+ arch/powerpc/kernel/vdso/cacheflush.S    |  2 +-
+ arch/powerpc/kernel/vdso/datapage.S      |  4 ++--
+ 4 files changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
-index 1fc4998f06bf6..4aaafbfc2f973 100644
---- a/tools/testing/selftests/nolibc/nolibc-test.c
-+++ b/tools/testing/selftests/nolibc/nolibc-test.c
-@@ -522,7 +522,7 @@ int expect_strzr(const char *expr, int llen)
- {
- 	int ret = 0;
+diff --git a/arch/powerpc/include/asm/vdso_datapage.h b/arch/powerpc/include/asm/vdso_datapage.h
+index a585c8e538ff0..939daf6b695ef 100644
+--- a/arch/powerpc/include/asm/vdso_datapage.h
++++ b/arch/powerpc/include/asm/vdso_datapage.h
+@@ -111,6 +111,21 @@ extern struct vdso_arch_data *vdso_data;
+ 	addi	\ptr, \ptr, (_vdso_datapage - 999b)@l
+ .endm
  
--	llen += printf(" = <%s> ", expr);
-+	llen += printf(" = <%s> ", expr ? expr : "(null)");
- 	if (expr) {
- 		ret = 1;
- 		result(llen, FAIL);
-@@ -541,7 +541,7 @@ int expect_strnz(const char *expr, int llen)
- {
- 	int ret = 0;
++#include <asm/asm-offsets.h>
++#include <asm/page.h>
++
++.macro get_realdatapage ptr scratch
++	get_datapage \ptr
++#ifdef CONFIG_TIME_NS
++	lwz	\scratch, VDSO_CLOCKMODE_OFFSET(\ptr)
++	xoris	\scratch, \scratch, VDSO_CLOCKMODE_TIMENS@h
++	xori	\scratch, \scratch, VDSO_CLOCKMODE_TIMENS@l
++	cntlzw	\scratch, \scratch
++	rlwinm	\scratch, \scratch, PAGE_SHIFT - 5, 1 << PAGE_SHIFT
++	add	\ptr, \ptr, \scratch
++#endif
++.endm
++
+ #endif /* __ASSEMBLY__ */
  
--	llen += printf(" = <%s> ", expr);
-+	llen += printf(" = <%s> ", expr ? expr : "(null)");
- 	if (!expr) {
- 		ret = 1;
- 		result(llen, FAIL);
+ #endif /* __KERNEL__ */
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index 23733282de4d9..7b3feb6bc2103 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -346,6 +346,8 @@ int main(void)
+ #else
+ 	OFFSET(CFG_SYSCALL_MAP32, vdso_arch_data, syscall_map);
+ #endif
++	OFFSET(VDSO_CLOCKMODE_OFFSET, vdso_arch_data, data[0].clock_mode);
++	DEFINE(VDSO_CLOCKMODE_TIMENS, VDSO_CLOCKMODE_TIMENS);
+ 
+ #ifdef CONFIG_BUG
+ 	DEFINE(BUG_ENTRY_SIZE, sizeof(struct bug_entry));
+diff --git a/arch/powerpc/kernel/vdso/cacheflush.S b/arch/powerpc/kernel/vdso/cacheflush.S
+index 0085ae464dac9..3b2479bd2f9a1 100644
+--- a/arch/powerpc/kernel/vdso/cacheflush.S
++++ b/arch/powerpc/kernel/vdso/cacheflush.S
+@@ -30,7 +30,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
+ #ifdef CONFIG_PPC64
+ 	mflr	r12
+   .cfi_register lr,r12
+-	get_datapage	r10
++	get_realdatapage	r10, r11
+ 	mtlr	r12
+   .cfi_restore	lr
+ #endif
+diff --git a/arch/powerpc/kernel/vdso/datapage.S b/arch/powerpc/kernel/vdso/datapage.S
+index db8e167f01667..2b19b6201a33a 100644
+--- a/arch/powerpc/kernel/vdso/datapage.S
++++ b/arch/powerpc/kernel/vdso/datapage.S
+@@ -28,7 +28,7 @@ V_FUNCTION_BEGIN(__kernel_get_syscall_map)
+ 	mflr	r12
+   .cfi_register lr,r12
+ 	mr.	r4,r3
+-	get_datapage	r3
++	get_realdatapage	r3, r11
+ 	mtlr	r12
+ #ifdef __powerpc64__
+ 	addi	r3,r3,CFG_SYSCALL_MAP64
+@@ -52,7 +52,7 @@ V_FUNCTION_BEGIN(__kernel_get_tbfreq)
+   .cfi_startproc
+ 	mflr	r12
+   .cfi_register lr,r12
+-	get_datapage	r3
++	get_realdatapage	r3, r11
+ #ifndef __powerpc64__
+ 	lwz	r4,(CFG_TB_TICKS_PER_SEC + 4)(r3)
+ #endif
 -- 
 2.43.0
 
