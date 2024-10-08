@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-81716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22CB9948F8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:19:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76343994BBF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:46:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCFF4B24F6F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:18:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CF5F28735C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3707C1DE8AA;
-	Tue,  8 Oct 2024 12:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8811DEFC9;
+	Tue,  8 Oct 2024 12:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+eKLSlf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIaeICsi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB341EEC8;
-	Tue,  8 Oct 2024 12:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17030183CB8;
+	Tue,  8 Oct 2024 12:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389895; cv=none; b=a9QDZQZZkgHnJnLiDwj6tcysIE7p6LdJnHgeFmA/YWZl/QxFghTtWpMsYnWuD4vrey3LwYxeu4PWF7v+ctweNpbSKiYhvr2QqE0GoR4dSkqv8d8+1IWn59nN9SSohPLw5iPnaYCTm8bss9ApFWHotWjUEmZ25HJ8g3PE8bzZXXM=
+	t=1728391564; cv=none; b=V95mXwdnWO5+P6TCvFP5FtTkIbrbQjm8Hl42e3wL/6R7K0K3vGD4EuZMxVPmvjBW5VKVP79wzPSlDc8vTtahtzPhhWPrdBbuhqLQfCRvveekiIvcyMaRNzQWjmRlk44xudaNFLi8YnU4dSSykTmiS+m8Y3HyL0lNfEmZtneff/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389895; c=relaxed/simple;
-	bh=j3m0Le1ryw+PN43RGoewbj3cupxqPwxLqyMRjRQaj0Q=;
+	s=arc-20240116; t=1728391564; c=relaxed/simple;
+	bh=n+R/viSZ1rP1lBXXF28nTxftQEpDbp+FQ0Tv1vi1/Lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lPr5Za+lxkhJ7/crzZzMJTJ9mb5bxmxvwN36ThVAGjA4elBUGIaOQRFawNfcnw24RvO6MkbzLkHOViH5ntI9JyN+x37DMtBr+57IcoI/c1jF5L6Hclfp+C1jX9ikf/H890lAAzOmFsaRkwXv3YA/HpLLW6r19hMAzFnXILmFkEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+eKLSlf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C080C4CECC;
-	Tue,  8 Oct 2024 12:18:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EijIMPpk9yb7UNQo6x6n7/NLJlZ0K9ZclZ2BTt1O2ZQlACdLDrk8eYQdCNgLFzrjbUdu7+lxOA+oijdMJ11lEafn8Td2PoW64MabEqdMZN7v3NvToiRaSkqBhAqetzh9J665lmPMZOy3ORDw8smSXVRw7uC+3SPBGQyO7XDICqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIaeICsi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AEADC4CEC7;
+	Tue,  8 Oct 2024 12:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389894;
-	bh=j3m0Le1ryw+PN43RGoewbj3cupxqPwxLqyMRjRQaj0Q=;
+	s=korg; t=1728391563;
+	bh=n+R/viSZ1rP1lBXXF28nTxftQEpDbp+FQ0Tv1vi1/Lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H+eKLSlferJuwKHlPH5b320O2l9rQydF+eg0kl4JV95Z4rkdRPl1C2FCfEta69V2q
-	 oHo3x+dDViEpzqcJYEvTZguLqj+nod+h71vJrkFkCT/LnH87R2oJ4fX5QMKhrwMZb0
-	 bV91ZVM+IaUm6HhH9SsU/fFUAd4xLTj5eJ/xALwE=
+	b=LIaeICsiO8alWWf1VoOiJKQWy+WSvVjDt8ArZMHTK9PjEck4A+WEZCeDtYugCUP3H
+	 DcoFTM1tsllrdD5SQisHgsaXZT+vBamW2gd5R7ZYrZuXtTnaCcswaewNUMHRH5PhPV
+	 hz+FSTQvD5jy/4o8XV/M6TBiA1zvpWBWS9MoY+Fo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Anderson <dianders@chromium.org>,
-	Jeff Xu <jeffxu@google.com>,
-	Jann Horn <jannh@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Adrian Ratiu <adrian.ratiu@collabora.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 121/482] proc: add config & param to block forcing mem writes
+Subject: [PATCH 6.11 154/558] net: phy: Check for read errors in SIOCGMIIREG
 Date: Tue,  8 Oct 2024 14:03:04 +0200
-Message-ID: <20241008115653.068115041@linuxfoundation.org>
+Message-ID: <20241008115708.420803986@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,204 +64,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Ratiu <adrian.ratiu@collabora.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 41e8149c8892ed1962bd15350b3c3e6e90cba7f4 ]
+[ Upstream commit 569bf6d481b0b823c3c9c3b8be77908fd7caf66b ]
 
-This adds a Kconfig option and boot param to allow removing
-the FOLL_FORCE flag from /proc/pid/mem write calls because
-it can be abused.
+When reading registers from the PHY using the SIOCGMIIREG IOCTL any
+errors returned from either mdiobus_read() or mdiobus_c45_read() are
+ignored, and parts of the returned error is passed as the register value
+back to user-space.
 
-The traditional forcing behavior is kept as default because
-it can break GDB and some other use cases.
+For example, if mdiobus_c45_read() is used with a bus that do not
+implement the read_c45() callback -EOPNOTSUPP is returned. This is
+however directly stored in mii_data->val_out and returned as the
+registers content. As val_out is a u16 the error code is truncated and
+returned as a plausible register value.
 
-Previously we tried a more sophisticated approach allowing
-distributions to fine-tune /proc/pid/mem behavior, however
-that got NAK-ed by Linus [1], who prefers this simpler
-approach with semantics also easier to understand for users.
+Fix this by first checking the return value for errors before returning
+it as the register content.
 
-Link: https://lore.kernel.org/lkml/CAHk-=wiGWLChxYmUA5HrT5aopZrB7_2VTa0NLZcxORgkUe5tEQ@mail.gmail.com/ [1]
-Cc: Doug Anderson <dianders@chromium.org>
-Cc: Jeff Xu <jeffxu@google.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
-Link: https://lore.kernel.org/r/20240802080225.89408-1-adrian.ratiu@collabora.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Before this patch,
+
+    # phytool read eth0/0:1/0
+    0xffa1
+
+After this change,
+
+    $ phytool read eth0/0:1/0
+    error: phy_read (-95)
+
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20240903171536.628930-1-niklas.soderlund+renesas@ragnatech.se
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../admin-guide/kernel-parameters.txt         | 10 +++
- fs/proc/base.c                                | 61 ++++++++++++++++++-
- security/Kconfig                              | 32 ++++++++++
- 3 files changed, 102 insertions(+), 1 deletion(-)
+ drivers/net/phy/phy.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index c82446cef8e21..2c8e062eb2ce5 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4791,6 +4791,16 @@
- 	printk.time=	Show timing data prefixed to each printk message line
- 			Format: <bool>  (1/Y/y=enable, 0/N/n=disable)
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index 785182fa5fe01..b88d857ea23b8 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -342,14 +342,19 @@ int phy_mii_ioctl(struct phy_device *phydev, struct ifreq *ifr, int cmd)
+ 		if (mdio_phy_id_is_c45(mii_data->phy_id)) {
+ 			prtad = mdio_phy_id_prtad(mii_data->phy_id);
+ 			devad = mdio_phy_id_devad(mii_data->phy_id);
+-			mii_data->val_out = mdiobus_c45_read(
+-				phydev->mdio.bus, prtad, devad,
+-				mii_data->reg_num);
++			ret = mdiobus_c45_read(phydev->mdio.bus, prtad, devad,
++					       mii_data->reg_num);
++
+ 		} else {
+-			mii_data->val_out = mdiobus_read(
+-				phydev->mdio.bus, mii_data->phy_id,
+-				mii_data->reg_num);
++			ret = mdiobus_read(phydev->mdio.bus, mii_data->phy_id,
++					   mii_data->reg_num);
+ 		}
++
++		if (ret < 0)
++			return ret;
++
++		mii_data->val_out = ret;
++
+ 		return 0;
  
-+	proc_mem.force_override= [KNL]
-+			Format: {always | ptrace | never}
-+			Traditionally /proc/pid/mem allows memory permissions to be
-+			overridden without restrictions. This option may be set to
-+			restrict that. Can be one of:
-+			- 'always': traditional behavior always allows mem overrides.
-+			- 'ptrace': only allow mem overrides for active ptracers.
-+			- 'never':  never allow mem overrides.
-+			If not specified, default is the CONFIG_PROC_MEM_* choice.
-+
- 	processor.max_cstate=	[HW,ACPI]
- 			Limit processor to maximum C-state
- 			max_cstate=9 overrides any DMI blacklist limit.
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index 72a1acd03675c..f389c69767fa5 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -85,6 +85,7 @@
- #include <linux/elf.h>
- #include <linux/pid_namespace.h>
- #include <linux/user_namespace.h>
-+#include <linux/fs_parser.h>
- #include <linux/fs_struct.h>
- #include <linux/slab.h>
- #include <linux/sched/autogroup.h>
-@@ -117,6 +118,40 @@
- static u8 nlink_tid __ro_after_init;
- static u8 nlink_tgid __ro_after_init;
- 
-+enum proc_mem_force {
-+	PROC_MEM_FORCE_ALWAYS,
-+	PROC_MEM_FORCE_PTRACE,
-+	PROC_MEM_FORCE_NEVER
-+};
-+
-+static enum proc_mem_force proc_mem_force_override __ro_after_init =
-+	IS_ENABLED(CONFIG_PROC_MEM_NO_FORCE) ? PROC_MEM_FORCE_NEVER :
-+	IS_ENABLED(CONFIG_PROC_MEM_FORCE_PTRACE) ? PROC_MEM_FORCE_PTRACE :
-+	PROC_MEM_FORCE_ALWAYS;
-+
-+static const struct constant_table proc_mem_force_table[] __initconst = {
-+	{ "always", PROC_MEM_FORCE_ALWAYS },
-+	{ "ptrace", PROC_MEM_FORCE_PTRACE },
-+	{ "never", PROC_MEM_FORCE_NEVER },
-+	{ }
-+};
-+
-+static int __init early_proc_mem_force_override(char *buf)
-+{
-+	if (!buf)
-+		return -EINVAL;
-+
-+	/*
-+	 * lookup_constant() defaults to proc_mem_force_override to preseve
-+	 * the initial Kconfig choice in case an invalid param gets passed.
-+	 */
-+	proc_mem_force_override = lookup_constant(proc_mem_force_table,
-+						  buf, proc_mem_force_override);
-+
-+	return 0;
-+}
-+early_param("proc_mem.force_override", early_proc_mem_force_override);
-+
- struct pid_entry {
- 	const char *name;
- 	unsigned int len;
-@@ -835,6 +870,28 @@ static int mem_open(struct inode *inode, struct file *file)
- 	return ret;
- }
- 
-+static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
-+{
-+	struct task_struct *task;
-+	bool ptrace_active = false;
-+
-+	switch (proc_mem_force_override) {
-+	case PROC_MEM_FORCE_NEVER:
-+		return false;
-+	case PROC_MEM_FORCE_PTRACE:
-+		task = get_proc_task(file_inode(file));
-+		if (task) {
-+			ptrace_active =	READ_ONCE(task->ptrace) &&
-+					READ_ONCE(task->mm) == mm &&
-+					READ_ONCE(task->parent) == current;
-+			put_task_struct(task);
-+		}
-+		return ptrace_active;
-+	default:
-+		return true;
-+	}
-+}
-+
- static ssize_t mem_rw(struct file *file, char __user *buf,
- 			size_t count, loff_t *ppos, int write)
- {
-@@ -855,7 +912,9 @@ static ssize_t mem_rw(struct file *file, char __user *buf,
- 	if (!mmget_not_zero(mm))
- 		goto free;
- 
--	flags = FOLL_FORCE | (write ? FOLL_WRITE : 0);
-+	flags = write ? FOLL_WRITE : 0;
-+	if (proc_mem_foll_force(file, mm))
-+		flags |= FOLL_FORCE;
- 
- 	while (count > 0) {
- 		size_t this_len = min_t(size_t, count, PAGE_SIZE);
-diff --git a/security/Kconfig b/security/Kconfig
-index 412e76f1575d0..a93c1a9b7c283 100644
---- a/security/Kconfig
-+++ b/security/Kconfig
-@@ -19,6 +19,38 @@ config SECURITY_DMESG_RESTRICT
- 
- 	  If you are unsure how to answer this question, answer N.
- 
-+choice
-+	prompt "Allow /proc/pid/mem access override"
-+	default PROC_MEM_ALWAYS_FORCE
-+	help
-+	  Traditionally /proc/pid/mem allows users to override memory
-+	  permissions for users like ptrace, assuming they have ptrace
-+	  capability.
-+
-+	  This allows people to limit that - either never override, or
-+	  require actual active ptrace attachment.
-+
-+	  Defaults to the traditional behavior (for now)
-+
-+config PROC_MEM_ALWAYS_FORCE
-+	bool "Traditional /proc/pid/mem behavior"
-+	help
-+	  This allows /proc/pid/mem accesses to override memory mapping
-+	  permissions if you have ptrace access rights.
-+
-+config PROC_MEM_FORCE_PTRACE
-+	bool "Require active ptrace() use for access override"
-+	help
-+	  This allows /proc/pid/mem accesses to override memory mapping
-+	  permissions for active ptracers like gdb.
-+
-+config PROC_MEM_NO_FORCE
-+	bool "Never"
-+	help
-+	  Never override memory mapping permissions
-+
-+endchoice
-+
- config SECURITY
- 	bool "Enable different security models"
- 	depends on SYSFS
+ 	case SIOCSMIIREG:
 -- 
 2.43.0
 
