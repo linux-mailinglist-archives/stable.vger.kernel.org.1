@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-81907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26FA5994A12
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:29:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BBE3994E5B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6145283EE0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:29:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE1BA1C2529E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B08D1DF750;
-	Tue,  8 Oct 2024 12:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7111DE89A;
+	Tue,  8 Oct 2024 13:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iTUOx8mU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BpZLnwJk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD261DF74A;
-	Tue,  8 Oct 2024 12:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03001C5793;
+	Tue,  8 Oct 2024 13:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390532; cv=none; b=BjBaP/zID/80cEvuOrFODnjp336w8U+uskKrSKakApDhau9TG767fhWIFXdDZal87Tm8y/HAXTNpD1YgfBAgW1968SJT0tfqTFyF78gbGKOu5loOauLhN2Mbs0JRgrk3uOKxUPPFL//0pVqYN3oCR6BWqlxY4JGS94FSyuyAHHY=
+	t=1728393384; cv=none; b=kLpFmOO17911w21sLK+/qvIDW1BEXZV01k6LrvakHA2u28H0iRxzW64oC1ol3OaLxMDsjYFrMUb6LJ2c4qdKizOtU1q/WUKGCGm2A+ODnzzo1X0CDROpVu4gZxcgaCKQcQLuBzDgj7dl6MjSJmp2uvfzdu1QSry40nWnl47thlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390532; c=relaxed/simple;
-	bh=G3qQnRZz07HCi7YzHQ0zqv9TId5+RtwcAwGHyZiTGeA=;
+	s=arc-20240116; t=1728393384; c=relaxed/simple;
+	bh=izMb9lzwB6H4R1iu1I4HIrOxPZRSgtOBrhQI7YG5nW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gO/dT1P1rPK4iAipyeVpGfKZe+6hNTg+5C9eCFhPUbVBu30cKcnKZ7zI5Xvq1IsQyimK7/BauO3N8rzgIZXMQdMdFbESkR3abpi9eY6jRY5RhpKrupQCO/qo6UR2u+xTuiYTX+Zfhas/XMwqy6l5fqbSedgip1CYB8HCt8Nw+MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iTUOx8mU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E048C4CED4;
-	Tue,  8 Oct 2024 12:28:52 +0000 (UTC)
+	 MIME-Version; b=GNjB3wLmM732vkk9IEyGxMBjuWPNw+3JnO1hG4MXD1Kw68MfpxBqozx5AnIqPWxJ7j5er5cK5rXBVEKol/P7kKse7TKmVtrKAIcr3i1I0xknEhj25qkYsXZ49EegItMXsBMbdbRVU1w9KPMAVInIMQ7bcaEBpbLts/LC1evKgg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpZLnwJk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749E9C4CEC7;
+	Tue,  8 Oct 2024 13:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390532;
-	bh=G3qQnRZz07HCi7YzHQ0zqv9TId5+RtwcAwGHyZiTGeA=;
+	s=korg; t=1728393383;
+	bh=izMb9lzwB6H4R1iu1I4HIrOxPZRSgtOBrhQI7YG5nW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iTUOx8mUMgLfk6P6X+oHSt87Ixs7zHOIkSYzo0nx80EpC4b7A6qMW/wdgZJfjpWIH
-	 sxSPEATN+hT2YLd1Qw3ENRqjmBHRGK/pCieHna1z9i5b/3Wo8r2gCOkZgrUy4qb9j+
-	 h4rKaq5WZHA3fH3/+O6Ta1m8vuJqs68UfamMMi1k=
+	b=BpZLnwJkTWrzNX8/rbbLPxhLlnigeoMVwfjvk7vNJqme/bc+mRShNDQPKvPH+jXbX
+	 1VTvH4Ki8jyIBeya++x51zbRXmfuqJ4Vp6dYpLqnqoona3no27jveecOrDfDbbIVdo
+	 Rqk0B77oaI5ZUxo/SNBuw6h34AvsMp9HCw1AfECw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Lalinsky <lalinsky@c4.cz>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 317/482] ALSA: usb-audio: Add native DSD support for Luxman D-08u
-Date: Tue,  8 Oct 2024 14:06:20 +0200
-Message-ID: <20241008115700.907716482@linuxfoundation.org>
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Igor Pylypiv <ipylypiv@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 136/386] ata: sata_sil: Rename sil_blacklist to sil_quirks
+Date: Tue,  8 Oct 2024 14:06:21 +0200
+Message-ID: <20241008115634.786595393@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Lalinsky <lalinsky@c4.cz>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 6b0bde5d8d4078ca5feec72fd2d828f0e5cf115d upstream.
+[ Upstream commit 93b0f9e11ce511353c65b7f924cf5f95bd9c3aba ]
 
-Add native DSD support for Luxman D-08u DAC, by adding the PID/VID 1852:5062.
-This makes DSD playback work, and also sound quality when playing PCM files
-is improved, crackling sounds are gone.
+Rename the array sil_blacklist to sil_quirks as this name is more
+neutral and is also consistent with how this driver define quirks with
+the SIL_QUIRK_XXX flags.
 
-Signed-off-by: Jan Lalinsky <lalinsky@c4.cz>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241003030811.2655735-1-lalinsky@c4.cz
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ata/sata_sil.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2221,6 +2221,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_DISABLE_AUTOSUSPEND),
- 	DEVICE_FLG(0x17aa, 0x104d, /* Lenovo ThinkStation P620 Internal Speaker + Front Headset */
- 		   QUIRK_FLAG_DISABLE_AUTOSUSPEND),
-+	DEVICE_FLG(0x1852, 0x5062, /* Luxman D-08u */
-+		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
- 	DEVICE_FLG(0x1852, 0x5065, /* Luxman DA-06 */
- 		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
- 	DEVICE_FLG(0x1901, 0x0191, /* GE B850V3 CP2114 audio interface */
+diff --git a/drivers/ata/sata_sil.c b/drivers/ata/sata_sil.c
+index cc77c02482843..df095659bae0f 100644
+--- a/drivers/ata/sata_sil.c
++++ b/drivers/ata/sata_sil.c
+@@ -128,7 +128,7 @@ static const struct pci_device_id sil_pci_tbl[] = {
+ static const struct sil_drivelist {
+ 	const char *product;
+ 	unsigned int quirk;
+-} sil_blacklist [] = {
++} sil_quirks[] = {
+ 	{ "ST320012AS",		SIL_QUIRK_MOD15WRITE },
+ 	{ "ST330013AS",		SIL_QUIRK_MOD15WRITE },
+ 	{ "ST340017AS",		SIL_QUIRK_MOD15WRITE },
+@@ -600,8 +600,8 @@ static void sil_thaw(struct ata_port *ap)
+  *	list, and apply the fixups to only the specific
+  *	devices/hosts/firmwares that need it.
+  *
+- *	20040111 - Seagate drives affected by the Mod15Write bug are blacklisted
+- *	The Maxtor quirk is in the blacklist, but I'm keeping the original
++ *	20040111 - Seagate drives affected by the Mod15Write bug are quirked
++ *	The Maxtor quirk is in sil_quirks, but I'm keeping the original
+  *	pessimistic fix for the following reasons...
+  *	- There seems to be less info on it, only one device gleaned off the
+  *	Windows	driver, maybe only one is affected.  More info would be greatly
+@@ -620,9 +620,9 @@ static void sil_dev_config(struct ata_device *dev)
+ 
+ 	ata_id_c_string(dev->id, model_num, ATA_ID_PROD, sizeof(model_num));
+ 
+-	for (n = 0; sil_blacklist[n].product; n++)
+-		if (!strcmp(sil_blacklist[n].product, model_num)) {
+-			quirks = sil_blacklist[n].quirk;
++	for (n = 0; sil_quirks[n].product; n++)
++		if (!strcmp(sil_quirks[n].product, model_num)) {
++			quirks = sil_quirks[n].quirk;
+ 			break;
+ 		}
+ 
+-- 
+2.43.0
+
 
 
 
