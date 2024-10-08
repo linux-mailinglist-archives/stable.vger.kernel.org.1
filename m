@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-81899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1587F994A06
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:29:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 479BE994E81
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B58561F230D5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:29:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F21071F25664
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13651D7E31;
-	Tue,  8 Oct 2024 12:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30691DF26C;
+	Tue,  8 Oct 2024 13:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ud3jYUZ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTwY1i4M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F46A1DA60C;
-	Tue,  8 Oct 2024 12:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993571DF26B;
+	Tue,  8 Oct 2024 13:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390509; cv=none; b=hU0WQU7lFGPzxJABMgWOn15+9MOOkmgLvq2oUte2hOVgWpVAH7igA026lHIGiNMhdpYv/Z4NbpHALD0H97L8k4sQIwpTbEFCBOu/oVhepl5KvHRHQMeERfaCyKDlrUNWokN44Mt3k0M2aTmD1aM3iIlEpgfHPvzAuUZU1flNLWU=
+	t=1728393462; cv=none; b=oIKJea45HJLF9tyLx09RQdCxqNoc0Mp7193NfHJUbz0nT+oQSKEg1kZ/vrnjPnMHh6p+M7NlPDuaPiqmnpldUylq2ETuhSBLSsv4Qs5HKK/hcOmigRdTWpWOz6M4FH4JttGMcrdaHU+XxQO+1G1Wv8bk7EB9EC+QUfoTsiP84/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390509; c=relaxed/simple;
-	bh=/d8x8FinadcI2LEuYKEd3BG+xx6vgPP2mN0WbKLmGIc=;
+	s=arc-20240116; t=1728393462; c=relaxed/simple;
+	bh=O617RhH3SQDdgAwbg7iVWBIrv6z4gNn9t/uo1fqMuGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hYk3Go4c+TWDINXcnhx690xmLdogOoAgYcQv1OT5ktKSfostrctC/Q1A/EoQ8L1VOB7LaQb7TNvJKPOtKLH03G+d2aWiLILN/tLcg8IP7aI5MavvVkw/Pbp2G/AC5om6oZnCzglHB9z4Zy/a6hrJCKCuUpMXPbrydqoKqSHWTJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ud3jYUZ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A27C4CEC7;
-	Tue,  8 Oct 2024 12:28:28 +0000 (UTC)
+	 MIME-Version; b=URT5zqFJKSdVfnYQB9wpLkvLbTQOPjPfwKfhl/KuROrLAYVQC8ufu6r2CpQn0d1353LezzqXX20hw/Rw16/qr8G+f/fgGwMuJsvipLE46xYGhuIY7ldb955O04mJKYl22+zK3qCU2I6mWcDEodJawoHQhDre4M7Ny+aCXivjNuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTwY1i4M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05999C4CEC7;
+	Tue,  8 Oct 2024 13:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390509;
-	bh=/d8x8FinadcI2LEuYKEd3BG+xx6vgPP2mN0WbKLmGIc=;
+	s=korg; t=1728393462;
+	bh=O617RhH3SQDdgAwbg7iVWBIrv6z4gNn9t/uo1fqMuGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ud3jYUZ3vJo40KZ7l/0CnaLGx77Hdsk3Cn23NGainFab53tklS21zphFpRdeHH1ml
-	 BRmxXwitJ2mzOJOjzDc3z3F3ypkDev2RQwX2Zt/gNtd9CrbeZCOGU13Q+LuPEbPBRn
-	 jlk4dZc+OEK6FVfIaaIHw4WKIPU9RJpIblw0Qddk=
+	b=DTwY1i4Ml2IwBHhWTjGDHRZabJcNcCuYGwC4qYkmWKRJP+kduWCp4upnT1sFJ5pGG
+	 kkNmCKO1spkvitBu7FqxHt1lxM5bVR/uRBK0w4rPffnkAVcqSeZvIFJ77vbfgcOqmm
+	 x8rIYKehwRVmB2DMvKiuAnYqAwWbMy+EiC2Z/soU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Iago Toral Quiroga <itoral@igalia.com>
-Subject: [PATCH 6.10 310/482] drm/v3d: Prevent out of bounds access in performance query extensions
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 128/386] iommu/vt-d: Always reserve a domain ID for identity setup
 Date: Tue,  8 Oct 2024 14:06:13 +0200
-Message-ID: <20241008115700.633484646@linuxfoundation.org>
+Message-ID: <20241008115634.474484301@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +63,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-commit f32b5128d2c440368b5bf3a7a356823e235caabb upstream.
+[ Upstream commit 2c13012e09190174614fd6901857a1b8c199e17d ]
 
-Check that the number of perfmons userspace is passing in the copy and
-reset extensions is not greater than the internal kernel storage where
-the ids will be copied into.
+We will use a global static identity domain. Reserve a static domain ID
+for it.
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: bae7cb5d6800 ("drm/v3d: Create a CPU job extension for the reset performance query job")
-Cc: Maíra Canal <mcanal@igalia.com>
-Cc: Iago Toral Quiroga <itoral@igalia.com>
-Cc: stable@vger.kernel.org # v6.8+
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240711135340.84617-2-tursulin@igalia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Link: https://lore.kernel.org/r/20240809055431.36513-4-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_submit.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iommu/intel/iommu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/v3d/v3d_submit.c
-+++ b/drivers/gpu/drm/v3d/v3d_submit.c
-@@ -671,6 +671,9 @@ v3d_get_cpu_reset_performance_params(str
- 	if (reset.nperfmons > V3D_MAX_PERFMONS)
- 		return -EINVAL;
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index 9918af222c516..b7317016834cf 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -1692,10 +1692,10 @@ static int iommu_init_domains(struct intel_iommu *iommu)
+ 	 * entry for first-level or pass-through translation modes should
+ 	 * be programmed with a domain id different from those used for
+ 	 * second-level or nested translation. We reserve a domain id for
+-	 * this purpose.
++	 * this purpose. This domain id is also used for identity domain
++	 * in legacy mode.
+ 	 */
+-	if (sm_supported(iommu))
+-		set_bit(FLPT_DEFAULT_DID, iommu->domain_ids);
++	set_bit(FLPT_DEFAULT_DID, iommu->domain_ids);
  
-+	if (reset.nperfmons > V3D_MAX_PERFMONS)
-+		return -EINVAL;
-+
- 	job->job_type = V3D_CPU_JOB_TYPE_RESET_PERFORMANCE_QUERY;
- 
- 	job->performance_query.queries = kvmalloc_array(reset.count,
-@@ -753,6 +756,9 @@ v3d_get_cpu_copy_performance_query_param
- 		return -EINVAL;
- 
- 	if (copy.nperfmons > V3D_MAX_PERFMONS)
-+		return -EINVAL;
-+
-+	if (copy.nperfmons > V3D_MAX_PERFMONS)
- 		return -EINVAL;
- 
- 	job->job_type = V3D_CPU_JOB_TYPE_COPY_PERFORMANCE_QUERY;
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
