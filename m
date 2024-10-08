@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-82822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B59994E9B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3FF7994CF7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7289B1C25413
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AD571F2208C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24BE1DEFC8;
-	Tue,  8 Oct 2024 13:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5594E1DF755;
+	Tue,  8 Oct 2024 12:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXYQiGaR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9UzJbzT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7671DE8BE;
-	Tue,  8 Oct 2024 13:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B9A1DF750;
+	Tue,  8 Oct 2024 12:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393541; cv=none; b=XwrP9qM/nrSaR0PIe8yKT9ack37ikS2NYUSkRHhhKK2OKn3grh3crPpEDxqo54TmO/ZHJWkA/4DK89DJ+tnoKyOrU7FEpkHWWkcoGQ4rKSDnWJwY100/WdfzSQSxCiI8dCUzN54uRsjNDC9I3uIlhk8haBZeJk4T4URBETSql7s=
+	t=1728392377; cv=none; b=nVPSFrdPOI11+EdqYN9WVrW5CwssJAbMC4TKPiGN7Qydr6LcbG2KaKOLohYIDwjy1LXG36oV5ViejHSiMZJdxUfQmKhUuYunWW4hKfzFCY9gFKSWtp4WV2C/ZGr3Ihd78xmkE6iZEUSwR4JSvjoHNc904UuVfNF+JL/bcnsnKks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393541; c=relaxed/simple;
-	bh=5/vBPj0P4Yy5jdw8OKgofMrNOupAIvllHvVTZZSTF44=;
+	s=arc-20240116; t=1728392377; c=relaxed/simple;
+	bh=PmIWps9fZVZe9HejoL2M8PMBnUXzOzqgiRHWEU+mzu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s6jY2Z3IVDM938VbWJpV8RQGQzsGB5M7Q3d/BbPTXsZLDk36STdGsrmHVN1e61djEYddzK52QQPqI/LGUOs2iWTE0woOgaTpumTVDZ+nz4I+diJN/X8CBYqI4senUPfJP0DLgpgIS66bAePoQBd97SLMwdL2IUtb9nrokHabrOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXYQiGaR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8699C4CECC;
-	Tue,  8 Oct 2024 13:19:00 +0000 (UTC)
+	 MIME-Version; b=EmiGXyiNgA7O6yp45ofILSgPxFBx94b9W0X7mCB2Ky73jXa3ASmX17EQE0i8bGcBp3+n5y8ZrrZmVUvvCxlcBoueXGesE4k0odl4aNv21Q+vZvRv0gK9eF+q9Ju6qLRG7/VSW3LVZy+JLMKMLU/I3IGrt3xvnTcVU72yaRr+Vwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9UzJbzT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58156C4CEC7;
+	Tue,  8 Oct 2024 12:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393541;
-	bh=5/vBPj0P4Yy5jdw8OKgofMrNOupAIvllHvVTZZSTF44=;
+	s=korg; t=1728392376;
+	bh=PmIWps9fZVZe9HejoL2M8PMBnUXzOzqgiRHWEU+mzu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SXYQiGaRsK3/gyT5tneeacHtySteoi1dWWVFv1MSiMAuEEVE+RRwsAmwkx1yMjAns
-	 Kq90t4Ozu1Ezt10fWwCk85OdFUtS6ObTcNR9ncyVP13WNOvk0ywwbNm13TrsRzdMjS
-	 c/9fAmJF34MI1ej0AlU1IUTGrCRYlvdThS1nnBL0=
+	b=R9UzJbzTC09TsZJ5BX4EOkxy/bzZ5vC+L2AruWjLrHPWxhvGvkyvvDrmcCDIxWSN3
+	 nh/QB9eIiWcO17Y54bvcgxCf3JiLyKMpQW8HUj2L2C9stk3W6SBPFH+LnDmIn7QFvc
+	 dyxLi9aZiutElZmXCL/vZn7KuuCU3UHVydamHlZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Mikhail Ukhin <mish.uxin2012@yandex.ru>,
-	Artem Sadovnikov <ancowi69@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
 	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 182/386] ext4: fix i_data_sem unlock order in ext4_ind_migrate()
+	stable@kernel.org
+Subject: [PATCH 6.11 397/558] ext4: mark fc as ineligible using an handle in ext4_xattr_set()
 Date: Tue,  8 Oct 2024 14:07:07 +0200
-Message-ID: <20241008115636.574578801@linuxfoundation.org>
+Message-ID: <20241008115717.903578479@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Sadovnikov <ancowi69@gmail.com>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-[ Upstream commit cc749e61c011c255d81b192a822db650c68b313f ]
+commit 04e6ce8f06d161399e5afde3df5dcfa9455b4952 upstream.
 
-Fuzzing reports a possible deadlock in jbd2_log_wait_commit.
+Calling ext4_fc_mark_ineligible() with a NULL handle is racy and may result
+in a fast-commit being done before the filesystem is effectively marked as
+ineligible.  This patch moves the call to this function so that an handle
+can be used.  If a transaction fails to start, then there's not point in
+trying to mark the filesystem as ineligible, and an error will eventually be
+returned to user-space.
 
-This issue is triggered when an EXT4_IOC_MIGRATE ioctl is set to require
-synchronous updates because the file descriptor is opened with O_SYNC.
-This can lead to the jbd2_journal_stop() function calling
-jbd2_might_wait_for_commit(), potentially causing a deadlock if the
-EXT4_IOC_MIGRATE call races with a write(2) system call.
-
-This problem only arises when CONFIG_PROVE_LOCKING is enabled. In this
-case, the jbd2_might_wait_for_commit macro locks jbd2_handle in the
-jbd2_journal_stop function while i_data_sem is locked. This triggers
-lockdep because the jbd2_journal_start function might also lock the same
-jbd2_handle simultaneously.
-
-Found by Linux Verification Center (linuxtesting.org) with syzkaller.
-
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Co-developed-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
-Signed-off-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
-Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20240404095000.5872-1-mish.uxin2012%40yandex.ru
-Link: https://patch.msgid.link/20240829152210.2754-1-ancowi69@gmail.com
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240923104909.18342-3-luis.henriques@linux.dev
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/migrate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/xattr.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/migrate.c b/fs/ext4/migrate.c
-index d98ac2af8199f..a5e1492bbaaa5 100644
---- a/fs/ext4/migrate.c
-+++ b/fs/ext4/migrate.c
-@@ -663,8 +663,8 @@ int ext4_ind_migrate(struct inode *inode)
- 	if (unlikely(ret2 && !ret))
- 		ret = ret2;
- errout:
--	ext4_journal_stop(handle);
- 	up_write(&EXT4_I(inode)->i_data_sem);
-+	ext4_journal_stop(handle);
- out_unlock:
- 	ext4_writepages_up_write(inode->i_sb, alloc_ctx);
- 	return ret;
--- 
-2.43.0
-
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -2559,6 +2559,8 @@ retry:
+ 
+ 		error = ext4_xattr_set_handle(handle, inode, name_index, name,
+ 					      value, value_len, flags);
++		ext4_fc_mark_ineligible(inode->i_sb, EXT4_FC_REASON_XATTR,
++					handle);
+ 		error2 = ext4_journal_stop(handle);
+ 		if (error == -ENOSPC &&
+ 		    ext4_should_retry_alloc(sb, &retries))
+@@ -2566,7 +2568,6 @@ retry:
+ 		if (error == 0)
+ 			error = error2;
+ 	}
+-	ext4_fc_mark_ineligible(inode->i_sb, EXT4_FC_REASON_XATTR, NULL);
+ 
+ 	return error;
+ }
 
 
 
