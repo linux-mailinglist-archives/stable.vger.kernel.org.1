@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4965F994C77
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D689949F5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 932F8B2A796
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:53:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C9F91C23CF9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F57A1DF242;
-	Tue,  8 Oct 2024 12:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33E21DED6F;
+	Tue,  8 Oct 2024 12:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qs2bPw5e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTi2CAY8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCCB1DE8BA;
-	Tue,  8 Oct 2024 12:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31B31E493;
+	Tue,  8 Oct 2024 12:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392007; cv=none; b=Bex/5P/BmSCz14V12npAFHDDh+SuKKVl0TNZMLIeXjJc49D0CSRDooovS2KM8ieWaBwYLAvvLXWJzh1cz250FWFUJ/cBE6cUA/4lkhKotLouTz0OKLP9qwPZRrsipMKp1fATj/nzUpGZFSyFTaG4B65dPz64p0X20kxWX7ac3C0=
+	t=1728390466; cv=none; b=Vkwq/3kpb1EBcLDr9AIQtA1+ScYlPCMU8sU0mrr/pZL3N0UP9ckjwaUUiaFIv+FxIZpZY12ZjduK3eeFTe5GOL39Zklilp62rksUgOlD2zi+CX8Cq7F5TDGWWpVTkePKV9J8juSYTkgkxT0VtB9n+mbzyZQIyFzcPsjlee0aMOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392007; c=relaxed/simple;
-	bh=FF3l1pw0Z9Up9KfDlVRoZ2i4iUgo709jJ3a+ylxeRTs=;
+	s=arc-20240116; t=1728390466; c=relaxed/simple;
+	bh=YwAZwsUM/rZUsS9zJl2LC1nUqiEJzEkqVlutL1xuVh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Boi85CNMnP1qTm+Kw0H1MpWo4vmJc39Mu+KYTVkwF9NPu++olNjFYO9sf0A+AhFRD99uq0oltcQBdDjgbo7QMJdvIi7CMcrNO3o7U7Tt2YjUr8AEVlclk3O+LMgyK7dm4JWqZSQmHgkIJmyzX1oMUKnBl/b3RmtnOjXkI+UxcG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qs2bPw5e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB95C4CEC7;
-	Tue,  8 Oct 2024 12:53:26 +0000 (UTC)
+	 MIME-Version; b=iFt6wY7UB9pkLgA5VU7x4IlDfArp2I111FVCKgKLoWYjGzzv3Hi9sfkgWOaF2ks5tOHy9v5CfhqQsJ/qXBKXsqQmtueTP7oeiOaBCtQEs1wXxGILsKGhy9m3DWc38F0cCeyzIOgJ7YjkgmQ9uTIwOmD7/gBKLbdbHLeVC5BDc3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nTi2CAY8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9553C4CEC7;
+	Tue,  8 Oct 2024 12:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392006;
-	bh=FF3l1pw0Z9Up9KfDlVRoZ2i4iUgo709jJ3a+ylxeRTs=;
+	s=korg; t=1728390466;
+	bh=YwAZwsUM/rZUsS9zJl2LC1nUqiEJzEkqVlutL1xuVh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qs2bPw5eEtZDnNEJ6Zzyq9bxlgEDvtMP6zCtdjiCbJTHGti4aQ2ALljy0gq3TIGU6
-	 1ren0fabrbN+MQX+ia3b48bjSk1YSebQ55p2pDolySCBNRdf7ic1omuJ5HjKq/ZP79
-	 auyB784HpPMW8QPWcd0yAF2sfZeh8U7xr/yhhu3k=
+	b=nTi2CAY8KOFW2agFXpjpyPmF9RzAszfnKxIiUf9Ox5uhoEXdlS/2VLssq0CHrnhdy
+	 g838KFESK9Hk/N6qz3Btdr1YOtWWD2gJk+BoCz7J9e8uY1MO1wb457JPDvHGYaAEOU
+	 Wr8eRLv76pgetY8PF1JOEzxjweolIpjpJhH5pyKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Quentin Monnet <qmo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 289/558] drm/amdkfd: Check int source id for utcl2 poison event
+Subject: [PATCH 6.10 256/482] bpftool: Fix undefined behavior in qsort(NULL, 0, ...)
 Date: Tue,  8 Oct 2024 14:05:19 +0200
-Message-ID: <20241008115713.698517142@linuxfoundation.org>
+Message-ID: <20241008115658.360726955@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hawking Zhang <Hawking.Zhang@amd.com>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit db6341a9168d2a24ded526277eeab29724d76e9d ]
+[ Upstream commit f04e2ad394e2755d0bb2d858ecb5598718bf00d5 ]
 
-Traditional utcl2 fault_status polling does not
-work in SRIOV environment. The polling of fault
-status register from guest side will be dropped
-by hardware.
+When netfilter has no entry to display, qsort is called with
+qsort(NULL, 0, ...). This results in undefined behavior, as UBSan
+reports:
 
-Driver should switch to check utcl2 interrupt
-source id to identify utcl2 poison event. It is
-set to 1 when poisoned data interrupts are
-signaled.
+net.c:827:2: runtime error: null pointer passed as argument 1, which is declared to never be null
 
-v2: drop the unused local variable (Tao)
+Although the C standard does not explicitly state whether calling qsort
+with a NULL pointer when the size is 0 constitutes undefined behavior,
+Section 7.1.4 of the C standard (Use of library functions) mentions:
 
-Signed-off-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+"Each of the following statements applies unless explicitly stated
+otherwise in the detailed descriptions that follow: If an argument to a
+function has an invalid value (such as a value outside the domain of
+the function, or a pointer outside the address space of the program, or
+a null pointer, or a pointer to non-modifiable storage when the
+corresponding parameter is not const-qualified) or a type (after
+promotion) not expected by a function with variable number of
+arguments, the behavior is undefined."
+
+To avoid this, add an early return when nf_link_info is NULL to prevent
+calling qsort with a NULL pointer.
+
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/20240910150207.3179306-1-visitorckw@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/amdkfd/kfd_int_process_v9.c    | 18 +-----------------
- drivers/gpu/drm/amd/amdkfd/soc15_int.h         |  1 +
- 2 files changed, 2 insertions(+), 17 deletions(-)
+ tools/bpf/bpftool/net.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
-index a9c3580be8c9b..fecdbbab98949 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
-@@ -431,25 +431,9 @@ static void event_interrupt_wq_v9(struct kfd_node *dev,
- 		   client_id == SOC15_IH_CLIENTID_UTCL2) {
- 		struct kfd_vm_fault_info info = {0};
- 		uint16_t ring_id = SOC15_RING_ID_FROM_IH_ENTRY(ih_ring_entry);
--		uint32_t node_id = SOC15_NODEID_FROM_IH_ENTRY(ih_ring_entry);
--		uint32_t vmid_type = SOC15_VMID_TYPE_FROM_IH_ENTRY(ih_ring_entry);
--		int hub_inst = 0;
- 		struct kfd_hsa_memory_exception_data exception_data;
+diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
+index ad2ea6cf2db11..0f2106218e1f0 100644
+--- a/tools/bpf/bpftool/net.c
++++ b/tools/bpf/bpftool/net.c
+@@ -824,6 +824,9 @@ static void show_link_netfilter(void)
+ 		nf_link_count++;
+ 	}
  
--		/* gfxhub */
--		if (!vmid_type && dev->adev->gfx.funcs->ih_node_to_logical_xcc) {
--			hub_inst = dev->adev->gfx.funcs->ih_node_to_logical_xcc(dev->adev,
--				node_id);
--			if (hub_inst < 0)
--				hub_inst = 0;
--		}
--
--		/* mmhub */
--		if (vmid_type && client_id == SOC15_IH_CLIENTID_VMC)
--			hub_inst = node_id / 4;
--
--		if (amdgpu_amdkfd_ras_query_utcl2_poison_status(dev->adev,
--					hub_inst, vmid_type)) {
-+		if (source_id == SOC15_INTSRC_VMC_UTCL2_POISON) {
- 			event_interrupt_poison_consumption_v9(dev, pasid, client_id);
- 			return;
- 		}
-diff --git a/drivers/gpu/drm/amd/amdkfd/soc15_int.h b/drivers/gpu/drm/amd/amdkfd/soc15_int.h
-index 10138676f27fd..e5c0205f26181 100644
---- a/drivers/gpu/drm/amd/amdkfd/soc15_int.h
-+++ b/drivers/gpu/drm/amd/amdkfd/soc15_int.h
-@@ -29,6 +29,7 @@
- #define SOC15_INTSRC_CP_BAD_OPCODE	183
- #define SOC15_INTSRC_SQ_INTERRUPT_MSG	239
- #define SOC15_INTSRC_VMC_FAULT		0
-+#define SOC15_INTSRC_VMC_UTCL2_POISON	1
- #define SOC15_INTSRC_SDMA_TRAP		224
- #define SOC15_INTSRC_SDMA_ECC		220
- #define SOC21_INTSRC_SDMA_TRAP		49
++	if (!nf_link_info)
++		return;
++
+ 	qsort(nf_link_info, nf_link_count, sizeof(*nf_link_info), netfilter_link_compar);
+ 
+ 	for (id = 0; id < nf_link_count; id++) {
 -- 
 2.43.0
 
