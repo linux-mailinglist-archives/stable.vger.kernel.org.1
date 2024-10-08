@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C7FA994D6E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80061994AF0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:38:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC13C281707
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 791EA1C25508
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E14C1DE4CD;
-	Tue,  8 Oct 2024 13:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833571DED64;
+	Tue,  8 Oct 2024 12:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="najMpuBw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvEVTSbM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF891DFD1;
-	Tue,  8 Oct 2024 13:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DAC1DED43;
+	Tue,  8 Oct 2024 12:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392722; cv=none; b=oyJyA4FnY4oLn4ES6Q5XbwHFbhImoQUtzexBHnrD16O8hoSbMbJtmN0qPwMx2WCaBHTubOcixZ/doCgm5N4x4++1omIYv1k64JoE7VgIPHwj8alzhDkZC6XapheGzQ0wcU40zVAPDzs88AFY2ToAbW6fyqwbTn9lw8ezQ/naWfQ=
+	t=1728391086; cv=none; b=Vns+F0ZcG0JWaJGAQABhLoIPqpuAr19yFGv2CB6MAMV89Fyb0bMWZ5wq42ScNTSAp9FwLcJ8RWhuzRgCkjjl+A6JRdFzkngaL6HfLIuIgWEl/oTiRBWofKWAnZrTyktTP7uIMP/8R+MyFPogx57SlXvZQE09v/iKJu7qi+bbDMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392722; c=relaxed/simple;
-	bh=AkrBk0r0KPQtZGLrkEcpp4W+Q5NRx6y5QavxBUZlFnc=;
+	s=arc-20240116; t=1728391086; c=relaxed/simple;
+	bh=9SH9NpDlGy6Ww6kFVP5Bact79L+b0yxYufZyjRr526o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aogLBbO+jv1YV/4qfocYwQiyKLyudPVj6C1ZjDMv3opzQ6NptPnHX+42xYIal1Km277+F193FUzngFjpiZEq7bXrltJu5osQPViHP/bTdJjUizX5tHrJOgrYj9Y8x/Q0cmfsyL6yL0l/5paSkuchBzFF+PyOpqjkHEzYiJkMEV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=najMpuBw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B60C4CEC7;
-	Tue,  8 Oct 2024 13:05:21 +0000 (UTC)
+	 MIME-Version; b=AR4HajDTWNYravw9ISnQKKARdg91O+P9tdBy2VzNuvbsJHCs8znO5We6+X30uOdL3N3sMv9ImiOBklRfSjiWGPcaEVEfyRS1QTA7YlKpQG6xWGneyqRO30rxkdevirPJYFdf/RP2opWWIiiHbYT9oxbRA/4HW5bS8l721+smYio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvEVTSbM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3ECBC4CEC7;
+	Tue,  8 Oct 2024 12:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392722;
-	bh=AkrBk0r0KPQtZGLrkEcpp4W+Q5NRx6y5QavxBUZlFnc=;
+	s=korg; t=1728391086;
+	bh=9SH9NpDlGy6Ww6kFVP5Bact79L+b0yxYufZyjRr526o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=najMpuBwVmeH7XOmLCX2TcT9tZCDnkgrVBtx4UEBDtJx+QKOXrWTTqKgHK3FUcJc/
-	 c13/oUvi6Vw6Wo8td1lpLhQbfHsBJA0zv9DAg2Hy7BNBitn/nbElCZ1aroyK36xKKx
-	 avPDIth6MB88Gu2eFYPLrCfEdEcwKjd5RkvrR4gQ=
+	b=FvEVTSbMGTxbLyO+SO0OcM4SUNx/yaHiP8R+gr5jNtcMoJHGoU58/hzTfFIbrw/A3
+	 9osskdrC/yNLzllIbZZbSMSgHzGoTo8akZ5IpbClD1N2/hGmOxFa9i+Nlqa4oJJUNC
+	 pFxlIGdZaGyiJoW3XWHw0+DQ4Urr8RjwkH6xF+QE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Millwood <thebenmachine@gmail.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.11 499/558] btrfs: send: fix invalid clone operation for file that got its size decreased
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 466/482] iio: pressure: bmp280: Use BME prefix for BME280 specifics
 Date: Tue,  8 Oct 2024 14:08:49 +0200
-Message-ID: <20241008115721.867657613@linuxfoundation.org>
+Message-ID: <20241008115706.851801536@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,133 +62,295 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-commit fa630df665aa9ddce3a96ce7b54e10a38e4d2a2b upstream.
+[ Upstream commit b23be4cd99a6f1f46963b87952632268174e62c1 ]
 
-During an incremental send we may end up sending an invalid clone
-operation, for the last extent of a file which ends at an unaligned offset
-that matches the final i_size of the file in the send snapshot, in case
-the file had its initial size (the size in the parent snapshot) decreased
-in the send snapshot. In this case the destination will fail to apply the
-clone operation because its end offset is not sector size aligned and it
-ends before the current size of the file.
+Change the rest of the defines and function names that are
+used specifically by the BME280 humidity sensor to BME280
+as it is done for the rest of the BMP{0,1,3,5}80 sensors.
 
-Sending the truncate operation always happens when we finish processing an
-inode, after we process all its extents (and xattrs, names, etc). So fix
-this by ensuring the file has a valid size before we send a clone
-operation for an unaligned extent that ends at the final i_size of the
-file. The size we truncate to matches the start offset of the clone range
-but it could be any value between that start offset and the final size of
-the file since the clone operation will expand the i_size if the current
-size is smaller than the end offset. The start offset of the range was
-chosen because it's always sector size aligned and avoids a truncation
-into the middle of a page, which results in dirtying the page due to
-filling part of it with zeroes and then making the clone operation at the
-receiver trigger IO.
-
-The following test reproduces the issue:
-
-  $ cat test.sh
-  #!/bin/bash
-
-  DEV=/dev/sdi
-  MNT=/mnt/sdi
-
-  mkfs.btrfs -f $DEV
-  mount $DEV $MNT
-
-  # Create a file with a size of 256K + 5 bytes, having two extents, one
-  # with a size of 128K and another one with a size of 128K + 5 bytes.
-  last_ext_size=$((128 * 1024 + 5))
-  xfs_io -f -d -c "pwrite -S 0xab -b 128K 0 128K" \
-         -c "pwrite -S 0xcd -b $last_ext_size 128K $last_ext_size" \
-         $MNT/foo
-
-  # Another file which we will later clone foo into, but initially with
-  # a larger size than foo.
-  xfs_io -f -c "pwrite -S 0xef 0 1M" $MNT/bar
-
-  btrfs subvolume snapshot -r $MNT/ $MNT/snap1
-
-  # Now resize bar and clone foo into it.
-  xfs_io -c "truncate 0" \
-         -c "reflink $MNT/foo" $MNT/bar
-
-  btrfs subvolume snapshot -r $MNT/ $MNT/snap2
-
-  rm -f /tmp/send-full /tmp/send-inc
-  btrfs send -f /tmp/send-full $MNT/snap1
-  btrfs send -p $MNT/snap1 -f /tmp/send-inc $MNT/snap2
-
-  umount $MNT
-  mkfs.btrfs -f $DEV
-  mount $DEV $MNT
-
-  btrfs receive -f /tmp/send-full $MNT
-  btrfs receive -f /tmp/send-inc $MNT
-
-  umount $MNT
-
-Running it before this patch:
-
-  $ ./test.sh
-  (...)
-  At subvol snap1
-  At snapshot snap2
-  ERROR: failed to clone extents to bar: Invalid argument
-
-A test case for fstests will be sent soon.
-
-Reported-by: Ben Millwood <thebenmachine@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/CAJhrHS2z+WViO2h=ojYvBPDLsATwLbg+7JaNCyYomv0fUxEpQQ@mail.gmail.com/
-Fixes: 46a6e10a1ab1 ("btrfs: send: allow cloning non-aligned extent if it ends at i_size")
-CC: stable@vger.kernel.org # 6.11
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://lore.kernel.org/r/20240429190046.24252-3-vassilisamir@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: b9065b0250e1 ("iio: pressure: bmp280: Fix regmap for BMP280 device")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c |   23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ drivers/iio/pressure/bmp280-core.c   | 37 +++++++++++------------
+ drivers/iio/pressure/bmp280-regmap.c |  8 ++---
+ drivers/iio/pressure/bmp280.h        | 45 +++++++++++++++-------------
+ 3 files changed, 46 insertions(+), 44 deletions(-)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -6189,8 +6189,29 @@ static int send_write_or_clone(struct se
+diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+index 82c177e0ff933..51413ab86e66e 100644
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -235,14 +235,14 @@ static int bme280_read_calib(struct bmp280_data *data)
+ 	 * Humidity data is only available on BME280.
+ 	 */
+ 
+-	ret = regmap_read(data->regmap, BMP280_REG_COMP_H1, &tmp);
++	ret = regmap_read(data->regmap, BME280_REG_COMP_H1, &tmp);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to read H1 comp value\n");
+ 		return ret;
+ 	}
+ 	calib->H1 = tmp;
+ 
+-	ret = regmap_bulk_read(data->regmap, BMP280_REG_COMP_H2,
++	ret = regmap_bulk_read(data->regmap, BME280_REG_COMP_H2,
+ 			       &data->le16, sizeof(data->le16));
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to read H2 comp value\n");
+@@ -250,14 +250,14 @@ static int bme280_read_calib(struct bmp280_data *data)
+ 	}
+ 	calib->H2 = sign_extend32(le16_to_cpu(data->le16), 15);
+ 
+-	ret = regmap_read(data->regmap, BMP280_REG_COMP_H3, &tmp);
++	ret = regmap_read(data->regmap, BME280_REG_COMP_H3, &tmp);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to read H3 comp value\n");
+ 		return ret;
+ 	}
+ 	calib->H3 = tmp;
+ 
+-	ret = regmap_bulk_read(data->regmap, BMP280_REG_COMP_H4,
++	ret = regmap_bulk_read(data->regmap, BME280_REG_COMP_H4,
+ 			       &data->be16, sizeof(data->be16));
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to read H4 comp value\n");
+@@ -266,15 +266,15 @@ static int bme280_read_calib(struct bmp280_data *data)
+ 	calib->H4 = sign_extend32(((be16_to_cpu(data->be16) >> 4) & 0xff0) |
+ 				  (be16_to_cpu(data->be16) & 0xf), 11);
+ 
+-	ret = regmap_bulk_read(data->regmap, BMP280_REG_COMP_H5,
++	ret = regmap_bulk_read(data->regmap, BME280_REG_COMP_H5,
+ 			       &data->le16, sizeof(data->le16));
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to read H5 comp value\n");
+ 		return ret;
+ 	}
+-	calib->H5 = sign_extend32(FIELD_GET(BMP280_COMP_H5_MASK, le16_to_cpu(data->le16)), 11);
++	calib->H5 = sign_extend32(FIELD_GET(BME280_COMP_H5_MASK, le16_to_cpu(data->le16)), 11);
+ 
+-	ret = regmap_read(data->regmap, BMP280_REG_COMP_H6, &tmp);
++	ret = regmap_read(data->regmap, BME280_REG_COMP_H6, &tmp);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to read H6 comp value\n");
+ 		return ret;
+@@ -290,7 +290,7 @@ static int bme280_read_calib(struct bmp280_data *data)
+  *
+  * Taken from BME280 datasheet, Section 4.2.3, "Compensation formula".
+  */
+-static u32 bmp280_compensate_humidity(struct bmp280_data *data,
++static u32 bme280_compensate_humidity(struct bmp280_data *data,
+ 				      s32 adc_humidity)
+ {
+ 	struct bmp280_calib *calib = &data->calib.bmp280;
+@@ -430,7 +430,7 @@ static int bmp280_read_press(struct bmp280_data *data,
+ 	return IIO_VAL_FRACTIONAL;
+ }
+ 
+-static int bmp280_read_humid(struct bmp280_data *data, int *val, int *val2)
++static int bme280_read_humid(struct bmp280_data *data, int *val, int *val2)
+ {
+ 	u32 comp_humidity;
+ 	s32 adc_humidity;
+@@ -441,7 +441,7 @@ static int bmp280_read_humid(struct bmp280_data *data, int *val, int *val2)
  	if (ret < 0)
  		return ret;
  
--	if (clone_root->offset + num_bytes == info.size)
-+	if (clone_root->offset + num_bytes == info.size) {
-+		/*
-+		 * The final size of our file matches the end offset, but it may
-+		 * be that its current size is larger, so we have to truncate it
-+		 * to any value between the start offset of the range and the
-+		 * final i_size, otherwise the clone operation is invalid
-+		 * because it's unaligned and it ends before the current EOF.
-+		 * We do this truncate to the final i_size when we finish
-+		 * processing the inode, but it's too late by then. And here we
-+		 * truncate to the start offset of the range because it's always
-+		 * sector size aligned while if it were the final i_size it
-+		 * would result in dirtying part of a page, filling part of a
-+		 * page with zeroes and then having the clone operation at the
-+		 * receiver trigger IO and wait for it due to the dirty page.
-+		 */
-+		if (sctx->parent_root != NULL) {
-+			ret = send_truncate(sctx, sctx->cur_ino,
-+					    sctx->cur_inode_gen, offset);
-+			if (ret < 0)
-+				return ret;
-+		}
- 		goto clone_data;
-+	}
+-	ret = regmap_bulk_read(data->regmap, BMP280_REG_HUMIDITY_MSB,
++	ret = regmap_bulk_read(data->regmap, BME280_REG_HUMIDITY_MSB,
+ 			       &data->be16, sizeof(data->be16));
+ 	if (ret < 0) {
+ 		dev_err(data->dev, "failed to read humidity\n");
+@@ -454,7 +454,7 @@ static int bmp280_read_humid(struct bmp280_data *data, int *val, int *val2)
+ 		dev_err(data->dev, "reading humidity skipped\n");
+ 		return -EIO;
+ 	}
+-	comp_humidity = bmp280_compensate_humidity(data, adc_humidity);
++	comp_humidity = bme280_compensate_humidity(data, adc_humidity);
  
- write_data:
- 	ret = send_extent_data(sctx, path, offset, num_bytes);
+ 	*val = comp_humidity * 1000 / 1024;
+ 
+@@ -538,7 +538,7 @@ static int bmp280_read_raw(struct iio_dev *indio_dev,
+ 	return ret;
+ }
+ 
+-static int bmp280_write_oversampling_ratio_humid(struct bmp280_data *data,
++static int bme280_write_oversampling_ratio_humid(struct bmp280_data *data,
+ 						 int val)
+ {
+ 	const int *avail = data->chip_info->oversampling_humid_avail;
+@@ -682,7 +682,7 @@ static int bmp280_write_raw(struct iio_dev *indio_dev,
+ 		mutex_lock(&data->lock);
+ 		switch (chan->type) {
+ 		case IIO_HUMIDITYRELATIVE:
+-			ret = bmp280_write_oversampling_ratio_humid(data, val);
++			ret = bme280_write_oversampling_ratio_humid(data, val);
+ 			break;
+ 		case IIO_PRESSURE:
+ 			ret = bmp280_write_oversampling_ratio_press(data, val);
+@@ -832,16 +832,15 @@ EXPORT_SYMBOL_NS(bmp280_chip_info, IIO_BMP280);
+ 
+ static int bme280_chip_config(struct bmp280_data *data)
+ {
+-	u8 osrs = FIELD_PREP(BMP280_OSRS_HUMIDITY_MASK, data->oversampling_humid + 1);
++	u8 osrs = FIELD_PREP(BME280_OSRS_HUMIDITY_MASK, data->oversampling_humid + 1);
+ 	int ret;
+ 
+ 	/*
+ 	 * Oversampling of humidity must be set before oversampling of
+ 	 * temperature/pressure is set to become effective.
+ 	 */
+-	ret = regmap_update_bits(data->regmap, BMP280_REG_CTRL_HUMIDITY,
+-				  BMP280_OSRS_HUMIDITY_MASK, osrs);
+-
++	ret = regmap_update_bits(data->regmap, BME280_REG_CTRL_HUMIDITY,
++				 BME280_OSRS_HUMIDITY_MASK, osrs);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -869,12 +868,12 @@ const struct bmp280_chip_info bme280_chip_info = {
+ 
+ 	.oversampling_humid_avail = bmp280_oversampling_avail,
+ 	.num_oversampling_humid_avail = ARRAY_SIZE(bmp280_oversampling_avail),
+-	.oversampling_humid_default = BMP280_OSRS_HUMIDITY_16X - 1,
++	.oversampling_humid_default = BME280_OSRS_HUMIDITY_16X - 1,
+ 
+ 	.chip_config = bme280_chip_config,
+ 	.read_temp = bmp280_read_temp,
+ 	.read_press = bmp280_read_press,
+-	.read_humid = bmp280_read_humid,
++	.read_humid = bme280_read_humid,
+ 	.read_calib = bme280_read_calib,
+ };
+ EXPORT_SYMBOL_NS(bme280_chip_info, IIO_BMP280);
+diff --git a/drivers/iio/pressure/bmp280-regmap.c b/drivers/iio/pressure/bmp280-regmap.c
+index 3ee56720428c5..fa52839474b18 100644
+--- a/drivers/iio/pressure/bmp280-regmap.c
++++ b/drivers/iio/pressure/bmp280-regmap.c
+@@ -45,7 +45,7 @@ static bool bmp280_is_writeable_reg(struct device *dev, unsigned int reg)
+ {
+ 	switch (reg) {
+ 	case BMP280_REG_CONFIG:
+-	case BMP280_REG_CTRL_HUMIDITY:
++	case BME280_REG_CTRL_HUMIDITY:
+ 	case BMP280_REG_CTRL_MEAS:
+ 	case BMP280_REG_RESET:
+ 		return true;
+@@ -57,8 +57,8 @@ static bool bmp280_is_writeable_reg(struct device *dev, unsigned int reg)
+ static bool bmp280_is_volatile_reg(struct device *dev, unsigned int reg)
+ {
+ 	switch (reg) {
+-	case BMP280_REG_HUMIDITY_LSB:
+-	case BMP280_REG_HUMIDITY_MSB:
++	case BME280_REG_HUMIDITY_LSB:
++	case BME280_REG_HUMIDITY_MSB:
+ 	case BMP280_REG_TEMP_XLSB:
+ 	case BMP280_REG_TEMP_LSB:
+ 	case BMP280_REG_TEMP_MSB:
+@@ -167,7 +167,7 @@ const struct regmap_config bmp280_regmap_config = {
+ 	.reg_bits = 8,
+ 	.val_bits = 8,
+ 
+-	.max_register = BMP280_REG_HUMIDITY_LSB,
++	.max_register = BME280_REG_HUMIDITY_LSB,
+ 	.cache_type = REGCACHE_RBTREE,
+ 
+ 	.writeable_reg = bmp280_is_writeable_reg,
+diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
+index 5812a344ed8e8..91d4457a92301 100644
+--- a/drivers/iio/pressure/bmp280.h
++++ b/drivers/iio/pressure/bmp280.h
+@@ -192,8 +192,6 @@
+ #define BMP380_PRESS_SKIPPED		0x800000
+ 
+ /* BMP280 specific registers */
+-#define BMP280_REG_HUMIDITY_LSB		0xFE
+-#define BMP280_REG_HUMIDITY_MSB		0xFD
+ #define BMP280_REG_TEMP_XLSB		0xFC
+ #define BMP280_REG_TEMP_LSB		0xFB
+ #define BMP280_REG_TEMP_MSB		0xFA
+@@ -207,15 +205,6 @@
+ #define BMP280_REG_CONFIG		0xF5
+ #define BMP280_REG_CTRL_MEAS		0xF4
+ #define BMP280_REG_STATUS		0xF3
+-#define BMP280_REG_CTRL_HUMIDITY	0xF2
+-
+-/* Due to non linear mapping, and data sizes we can't do a bulk read */
+-#define BMP280_REG_COMP_H1		0xA1
+-#define BMP280_REG_COMP_H2		0xE1
+-#define BMP280_REG_COMP_H3		0xE3
+-#define BMP280_REG_COMP_H4		0xE4
+-#define BMP280_REG_COMP_H5		0xE5
+-#define BMP280_REG_COMP_H6		0xE7
+ 
+ #define BMP280_REG_COMP_TEMP_START	0x88
+ #define BMP280_COMP_TEMP_REG_COUNT	6
+@@ -223,8 +212,6 @@
+ #define BMP280_REG_COMP_PRESS_START	0x8E
+ #define BMP280_COMP_PRESS_REG_COUNT	18
+ 
+-#define BMP280_COMP_H5_MASK		GENMASK(15, 4)
+-
+ #define BMP280_CONTIGUOUS_CALIB_REGS	(BMP280_COMP_TEMP_REG_COUNT + \
+ 					 BMP280_COMP_PRESS_REG_COUNT)
+ 
+@@ -235,14 +222,6 @@
+ #define BMP280_FILTER_8X		3
+ #define BMP280_FILTER_16X		4
+ 
+-#define BMP280_OSRS_HUMIDITY_MASK	GENMASK(2, 0)
+-#define BMP280_OSRS_HUMIDITY_SKIP	0
+-#define BMP280_OSRS_HUMIDITY_1X		1
+-#define BMP280_OSRS_HUMIDITY_2X		2
+-#define BMP280_OSRS_HUMIDITY_4X		3
+-#define BMP280_OSRS_HUMIDITY_8X		4
+-#define BMP280_OSRS_HUMIDITY_16X	5
+-
+ #define BMP280_OSRS_TEMP_MASK		GENMASK(7, 5)
+ #define BMP280_OSRS_TEMP_SKIP		0
+ #define BMP280_OSRS_TEMP_1X		1
+@@ -264,6 +243,30 @@
+ #define BMP280_MODE_FORCED		1
+ #define BMP280_MODE_NORMAL		3
+ 
++/* BME280 specific registers */
++#define BME280_REG_HUMIDITY_LSB		0xFE
++#define BME280_REG_HUMIDITY_MSB		0xFD
++
++#define BME280_REG_CTRL_HUMIDITY	0xF2
++
++/* Due to non linear mapping, and data sizes we can't do a bulk read */
++#define BME280_REG_COMP_H1		0xA1
++#define BME280_REG_COMP_H2		0xE1
++#define BME280_REG_COMP_H3		0xE3
++#define BME280_REG_COMP_H4		0xE4
++#define BME280_REG_COMP_H5		0xE5
++#define BME280_REG_COMP_H6		0xE7
++
++#define BME280_COMP_H5_MASK		GENMASK(15, 4)
++
++#define BME280_OSRS_HUMIDITY_MASK	GENMASK(2, 0)
++#define BME280_OSRS_HUMIDITY_SKIP	0
++#define BME280_OSRS_HUMIDITY_1X		1
++#define BME280_OSRS_HUMIDITY_2X		2
++#define BME280_OSRS_HUMIDITY_4X		3
++#define BME280_OSRS_HUMIDITY_8X		4
++#define BME280_OSRS_HUMIDITY_16X	5
++
+ /* BMP180 specific registers */
+ #define BMP180_REG_OUT_XLSB		0xF8
+ #define BMP180_REG_OUT_LSB		0xF7
+-- 
+2.43.0
+
 
 
 
