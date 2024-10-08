@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5547B994D2D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:02:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9642994A91
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B72728242E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9094828B527
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C244E1DE2A5;
-	Tue,  8 Oct 2024 13:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA361DE3AE;
+	Tue,  8 Oct 2024 12:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5oVqVgw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSiVO2yR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E68A1DFD1;
-	Tue,  8 Oct 2024 13:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0880C1779B1;
+	Tue,  8 Oct 2024 12:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392557; cv=none; b=hDcL276+t7QAhRdPbjlaspjNo8UIrBx88kJV1MJmupcaKIrC3+z4NgzJlea1vT2HG6g5pKiQBkyF8y8KYpJC+rojwB/4/ua/YTAaTDj+R84n8wmdkSsMX0oQ3uh0/fW1ns4+s5vrTGXOATFoDFEkGcGlCnK0WkYU2Evfc2MWOrM=
+	t=1728390844; cv=none; b=FpKFck5ZJyenu78ZX/9UamDiKruBJHFMY5lUjjHRtJeDU8dYX0JbNbpfGjuNTjHh2ydTAp/B6wr/SMQb4OWiZVilac3vzX+7ADkZGsPi+11wLk1fDOYNBTg8f0BZANfyp0sWuBIcKZZyx7S2dmin/KA7+qUDd1vBgtiZ0jKhiIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392557; c=relaxed/simple;
-	bh=ohd4XY+zHN2021rgv2kKq59p+qe/QPwXi3y1nC4YmKE=;
+	s=arc-20240116; t=1728390844; c=relaxed/simple;
+	bh=G8+KkC3i66+4S+pGvUiMtqaVFHcNZ8S8wR1PMr+BK34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ze4bLX7TB74LpItt39UgNbMEpPYa4ayfAkGubw9OSZnjxEenOBWux3xH6x40a0tbHMCK6FtPisCjysm3SmiPWcwh+95v0zD1IiTfiGoi9gh3y1TnVGN4OjRYvoQ7muriRtH2uQHgJ0y8V87vrr2kO0RZy8Q8roNx1jC0UTCmBh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5oVqVgw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1D4C4CEC7;
-	Tue,  8 Oct 2024 13:02:36 +0000 (UTC)
+	 MIME-Version; b=I/2AqTFtLlKCpHiV1p/v7gNWAZWnB9TH2i6V3L8Akw3OHFagTGr00QrZ1/re9wo5fIWK27wzeAHGI4jWX51Vb/lwG2RncAX4RtAOvU9PFNWkKUcTFbEgdmNtE6xlHkWdenQKuT1t+EMp4pOSAEg9OCzf4TVWTVztWJaOc/+g6N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TSiVO2yR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9B2C4CEC7;
+	Tue,  8 Oct 2024 12:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392557;
-	bh=ohd4XY+zHN2021rgv2kKq59p+qe/QPwXi3y1nC4YmKE=;
+	s=korg; t=1728390843;
+	bh=G8+KkC3i66+4S+pGvUiMtqaVFHcNZ8S8wR1PMr+BK34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E5oVqVgwTXB85oIWFkWDUXR208KQ3CWcFVr59JqIFSpgOiMucNasJYHUf4sYbdA5z
-	 nRFxk+kCO3IHwOZ/ISDHWMvuLB8TltQI95stdqujMvW9UoJbbktL62H2q9+N8nSd2m
-	 obkGKqFJRc9Gy1QQUCcJs37RH9+0Dmc4Y0PePhGk=
+	b=TSiVO2yRzNWDjkflVhnDAn5LQO8IHfHGjtK1o+w4hd5ViW5Jut37SdiF9PLM5gItH
+	 yhx+zZt05DW+b8ZkTCpTzrzgxu06lCr8YOWk6n83HjNiFYbWK+iH0O+SzwTOBi4h18
+	 rbLiLZkAEKrkBEVfcqhYE48FFUm0HmwswY5ZCvWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolai Stange <nstange@suse.com>,
-	Chun-Yi Lee <jlee@suse.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.11 443/558] aoe: fix the potential use-after-free problem in more places
-Date: Tue,  8 Oct 2024 14:07:53 +0200
-Message-ID: <20241008115719.697760890@linuxfoundation.org>
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.10 411/482] cachefiles: fix dentry leak in cachefiles_open_file()
+Date: Tue,  8 Oct 2024 14:07:54 +0200
+Message-ID: <20241008115704.580534318@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chun-Yi Lee <joeyli.kernel@gmail.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 6d6e54fc71ad1ab0a87047fd9c211e75d86084a3 upstream.
+commit da6ef2dffe6056aad3435e6cf7c6471c2a62187c upstream.
 
-For fixing CVE-2023-6270, f98364e92662 ("aoe: fix the potential
-use-after-free problem in aoecmd_cfg_pkts") makes tx() calling dev_put()
-instead of doing in aoecmd_cfg_pkts(). It avoids that the tx() runs
-into use-after-free.
+A dentry leak may be caused when a lookup cookie and a cull are concurrent:
 
-Then Nicolai Stange found more places in aoe have potential use-after-free
-problem with tx(). e.g. revalidate(), aoecmd_ata_rw(), resend(), probe()
-and aoecmd_cfg_rsp(). Those functions also use aoenet_xmit() to push
-packet to tx queue. So they should also use dev_hold() to increase the
-refcnt of skb->dev.
+            P1             |             P2
+-----------------------------------------------------------
+cachefiles_lookup_cookie
+  cachefiles_look_up_object
+    lookup_one_positive_unlocked
+     // get dentry
+                            cachefiles_cull
+                              inode->i_flags |= S_KERNEL_FILE;
+    cachefiles_open_file
+      cachefiles_mark_inode_in_use
+        __cachefiles_mark_inode_in_use
+          can_use = false
+          if (!(inode->i_flags & S_KERNEL_FILE))
+            can_use = true
+	  return false
+        return false
+        // Returns an error but doesn't put dentry
 
-On the other hand, moving dev_put() to tx() causes that the refcnt of
-skb->dev be reduced to a negative value, because corresponding
-dev_hold() are not called in revalidate(), aoecmd_ata_rw(), resend(),
-probe(), and aoecmd_cfg_rsp(). This patch fixed this issue.
+After that the following WARNING will be triggered when the backend folder
+is umounted:
 
-Cc: stable@vger.kernel.org
-Link: https://nvd.nist.gov/vuln/detail/CVE-2023-6270
-Fixes: f98364e92662 ("aoe: fix the potential use-after-free problem in aoecmd_cfg_pkts")
-Reported-by: Nicolai Stange <nstange@suse.com>
-Signed-off-by: Chun-Yi Lee <jlee@suse.com>
-Link: https://lore.kernel.org/stable/20240624064418.27043-1-jlee%40suse.com
-Link: https://lore.kernel.org/r/20241002035458.24401-1-jlee@suse.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+==================================================================
+BUG: Dentry 000000008ad87947{i=7a,n=Dx_1_1.img}  still in use (1) [unmount of ext4 sda]
+WARNING: CPU: 4 PID: 359261 at fs/dcache.c:1767 umount_check+0x5d/0x70
+CPU: 4 PID: 359261 Comm: umount Not tainted 6.6.0-dirty #25
+RIP: 0010:umount_check+0x5d/0x70
+Call Trace:
+ <TASK>
+ d_walk+0xda/0x2b0
+ do_one_tree+0x20/0x40
+ shrink_dcache_for_umount+0x2c/0x90
+ generic_shutdown_super+0x20/0x160
+ kill_block_super+0x1a/0x40
+ ext4_kill_sb+0x22/0x40
+ deactivate_locked_super+0x35/0x80
+ cleanup_mnt+0x104/0x160
+==================================================================
+
+Whether cachefiles_open_file() returns true or false, the reference count
+obtained by lookup_positive_unlocked() in cachefiles_look_up_object()
+should be released.
+
+Therefore release that reference count in cachefiles_look_up_object() to
+fix the above issue and simplify the code.
+
+Fixes: 1f08c925e7a3 ("cachefiles: Implement backing file wrangling")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240829083409.3788142-1-libaokun@huaweicloud.com
+Acked-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/aoe/aoecmd.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ fs/cachefiles/namei.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/block/aoe/aoecmd.c
-+++ b/drivers/block/aoe/aoecmd.c
-@@ -361,6 +361,7 @@ ata_rw_frameinit(struct frame *f)
+--- a/fs/cachefiles/namei.c
++++ b/fs/cachefiles/namei.c
+@@ -595,14 +595,12 @@ static bool cachefiles_open_file(struct
+ 	 * write and readdir but not lookup or open).
+ 	 */
+ 	touch_atime(&file->f_path);
+-	dput(dentry);
+ 	return true;
+ 
+ check_failed:
+ 	fscache_cookie_lookup_negative(object->cookie);
+ 	cachefiles_unmark_inode_in_use(object, file);
+ 	fput(file);
+-	dput(dentry);
+ 	if (ret == -ESTALE)
+ 		return cachefiles_create_file(object);
+ 	return false;
+@@ -611,7 +609,6 @@ error_fput:
+ 	fput(file);
+ error:
+ 	cachefiles_do_unmark_inode_in_use(object, d_inode(dentry));
+-	dput(dentry);
+ 	return false;
+ }
+ 
+@@ -654,7 +651,9 @@ bool cachefiles_look_up_object(struct ca
+ 		goto new_file;
  	}
  
- 	ah->cmdstat = ATA_CMD_PIO_READ | writebit | extbit;
-+	dev_hold(t->ifp->nd);
- 	skb->dev = t->ifp->nd;
- }
+-	if (!cachefiles_open_file(object, dentry))
++	ret = cachefiles_open_file(object, dentry);
++	dput(dentry);
++	if (!ret)
+ 		return false;
  
-@@ -401,6 +402,8 @@ aoecmd_ata_rw(struct aoedev *d)
- 		__skb_queue_head_init(&queue);
- 		__skb_queue_tail(&queue, skb);
- 		aoenet_xmit(&queue);
-+	} else {
-+		dev_put(f->t->ifp->nd);
- 	}
- 	return 1;
- }
-@@ -483,10 +486,13 @@ resend(struct aoedev *d, struct frame *f
- 	memcpy(h->dst, t->addr, sizeof h->dst);
- 	memcpy(h->src, t->ifp->nd->dev_addr, sizeof h->src);
- 
-+	dev_hold(t->ifp->nd);
- 	skb->dev = t->ifp->nd;
- 	skb = skb_clone(skb, GFP_ATOMIC);
--	if (skb == NULL)
-+	if (skb == NULL) {
-+		dev_put(t->ifp->nd);
- 		return;
-+	}
- 	f->sent = ktime_get();
- 	__skb_queue_head_init(&queue);
- 	__skb_queue_tail(&queue, skb);
-@@ -617,6 +623,8 @@ probe(struct aoetgt *t)
- 		__skb_queue_head_init(&queue);
- 		__skb_queue_tail(&queue, skb);
- 		aoenet_xmit(&queue);
-+	} else {
-+		dev_put(f->t->ifp->nd);
- 	}
- }
- 
-@@ -1395,6 +1403,7 @@ aoecmd_ata_id(struct aoedev *d)
- 	ah->cmdstat = ATA_CMD_ID_ATA;
- 	ah->lba3 = 0xa0;
- 
-+	dev_hold(t->ifp->nd);
- 	skb->dev = t->ifp->nd;
- 
- 	d->rttavg = RTTAVG_INIT;
-@@ -1404,6 +1413,8 @@ aoecmd_ata_id(struct aoedev *d)
- 	skb = skb_clone(skb, GFP_ATOMIC);
- 	if (skb)
- 		f->sent = ktime_get();
-+	else
-+		dev_put(t->ifp->nd);
- 
- 	return skb;
- }
+ 	_leave(" = t [%lu]", file_inode(object->file)->i_ino);
 
 
 
