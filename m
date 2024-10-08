@@ -1,113 +1,93 @@
-Return-Path: <stable+bounces-81595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 957C0994810
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:07:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8039B9947DF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:00:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2B16B25CC5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:07:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A41051C246F6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0B61D90A9;
-	Tue,  8 Oct 2024 12:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0261C2339;
+	Tue,  8 Oct 2024 12:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VnOIH8iq";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="v6CvucHF";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VnOIH8iq";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="v6CvucHF"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XXx+LcZ6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2084.outbound.protection.outlook.com [40.107.96.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362F6320F
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 12:06:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389220; cv=none; b=UMfnQviOyWI9t2bSCqgEnPw2+LlYJFhZY9BrvphK3jE1GxuJ7nO9J+eMULqQmKod3Z9DtWKsWNrBCIfP5kfUyZiWEpCDuVidyNGcni3FkTHx0a9rprGVWZq5ud9mQapUI1/4RS7nFls+pcmm4bMlcAt+M49Gu/7Rh87dicf0JQY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389220; c=relaxed/simple;
-	bh=cDRBoARuMeT4IUbabQzv+bDboMR4/JIK34pzzs3squQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EE1OH42JfX7bjmMPyPQ42bEWABpXtE79pVvQ2EJyrAEEnjz/09yzDrEOYkfksUvyc5AeUwiE12OfS2xksKNTFUzykL8vJhUYkQQsAyD5ZdYffldyRTMj21LsCs12cE6LbumEsOPSaCSEfgr/i4lKAdypH1Dtxgp02/EOIWKzGjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VnOIH8iq; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=v6CvucHF; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VnOIH8iq; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=v6CvucHF; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 595AF21B48;
-	Tue,  8 Oct 2024 12:06:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1728389217; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=23PGrB8uzAtWDgANn2M7nbKmJLyaCxszDckzcfp1teg=;
-	b=VnOIH8iqgSgccoUW9cyOxLE3k9DUJ28OUcGr8u7+qcD0IyZIkrbZ7hFpbYvILUvTXKIRju
-	lwEqwITllQ3TOw/wV4HfyqJBpIcv/yYSsROFJNu4Axrpwe9pyR9UTMO7359fzyJn9TXYCk
-	oQ9GO+2EFM6urHVDKpJV/n14SvH+eA0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1728389217;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=23PGrB8uzAtWDgANn2M7nbKmJLyaCxszDckzcfp1teg=;
-	b=v6CvucHF+xv0EHSIKDzbvYGfKg+tuyiQ+iJH7s5ibXiMxvGobQNCPCRn8PUOvSnicPGKv8
-	7lu2q8eowuO/TVBg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1728389217; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=23PGrB8uzAtWDgANn2M7nbKmJLyaCxszDckzcfp1teg=;
-	b=VnOIH8iqgSgccoUW9cyOxLE3k9DUJ28OUcGr8u7+qcD0IyZIkrbZ7hFpbYvILUvTXKIRju
-	lwEqwITllQ3TOw/wV4HfyqJBpIcv/yYSsROFJNu4Axrpwe9pyR9UTMO7359fzyJn9TXYCk
-	oQ9GO+2EFM6urHVDKpJV/n14SvH+eA0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1728389217;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=23PGrB8uzAtWDgANn2M7nbKmJLyaCxszDckzcfp1teg=;
-	b=v6CvucHF+xv0EHSIKDzbvYGfKg+tuyiQ+iJH7s5ibXiMxvGobQNCPCRn8PUOvSnicPGKv8
-	7lu2q8eowuO/TVBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AE6BE13AA0;
-	Tue,  8 Oct 2024 12:06:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id MIDQH2AgBWcCbgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 08 Oct 2024 12:06:56 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: simona@ffwll.ch,
-	airlied@gmail.com,
-	javierm@redhat.com,
-	jfalempe@redhat.com
-Cc: dri-devel@lists.freedesktop.org,
-	amd-gfx@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	kernel test robot <lkp@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 03/12] drm/fbdev-dma: Select FB_DEFERRED_IO
-Date: Tue,  8 Oct 2024 13:59:22 +0200
-Message-ID: <20241008120652.159190-4-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20241008120652.159190-1-tzimmermann@suse.de>
-References: <20241008120652.159190-1-tzimmermann@suse.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B9F18C916;
+	Tue,  8 Oct 2024 12:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.84
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728388820; cv=fail; b=UOHIPIe2hodgkanzUfktE6A7YKLfinJnbAbiWDFVboK/+Ncm0XUq3DzZ7/RHhbhU3D3sDKDyLnw8eP0wGDYuSBiqSmz1uNGOUvQPX2jGpSYSQx08qymDuaLj3B3ExrTvqkh3MV5I9XRxBAS2hxKa+DlIToTIql3aopAA2F2HAU0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728388820; c=relaxed/simple;
+	bh=+F52ppeXgcbOS7sg6ezTMe9g453n5VSIoeMT0atQiwI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HOFZQkcsg3ft+uT3mMjFv2do4sfSXDGZ7imVAckHYgY7z5VMp4klydE/lHvKI9iLast5wnjeK/hGzMh3w9qhH+iMnMXOapEpolhsqCWZzFdU496wkXVmnLDE/XsBr+vhpP18A3YmzA1vg7B6vYjqoB/DU9Fk4YT9qkztRDH12NI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XXx+LcZ6; arc=fail smtp.client-ip=40.107.96.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZLZWx2dQxYhbOtpRKsWDSCIQwwsWQakq0Nn1JGUj7HfsghwXuKaN8MvxQGnEmaTX/LtRnVbeAngVdk97anE2Ist1x35mHGShtmlqmQbKglp1RXwdxD6Sa4oc0vJKXHIKW7QLR6z5jSDqoOwBKki+6Bm6OU7uq1n6zy1exb4euVlbFwclui82RfCbJU0dRSzFmiiOmmM1clMvU7ZtWkwNvQ3lwPNETE+j8KcNQbuI6zPe0HA10xWHjvx0oxRPZNx4b52ia5X2+4wgbJQxAgXr3TOnOKaJzABHIvbb2AR07SPfrriJevNDajMYNfzmbgMiPTrvUrO4TAZfBhlATbyvNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tsIvfBKQPgNURFKGFmRVwqe1gWO6syWD3Pl3oeHG24g=;
+ b=FcotGp7vRUMRL7volI3FfQBlwsoZTp5fXR0yHgnoRBTm3SnuZIahr5agOnAcUmy2Gh6tih2m3hF2RrVZtBDt5Z0y1xhNH3eBkzzvO5Ayli004867tNGB2ispyC2YGP79NgB6+FUnG+NzGyh7AOg0F9f9nK1PCBlJJU/an3LcXQwwt8E1LuhyscXxFdhIEAQPbpB80hbZepD4bIEqODdAQP10Ug4O11gN9A92T4CYzFPhOho73WFY6h6Kd9sj0wthSbDRF1qFfXjAHlihqU5kfiZPGivA4mp4xEHEQZqA7LF7Outa3nnofZo+1EOEJXiSZW/7ErqcOCEW9wZY5RzYTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tsIvfBKQPgNURFKGFmRVwqe1gWO6syWD3Pl3oeHG24g=;
+ b=XXx+LcZ6qnWEXrOHJ4YYhwu+nFDsnVyxEOW8pg75MW/FEkb45cRiJ1AMvXV86K5uDi1oApTSetvxgKaSq5MDFqeMBCuiF1Qrts8aWtrOCpu2S6FuA9IuFwBkubvbDS7S12e/Dzo6Cx/6faWUCWcQ/cvva1zMbtHKEQ+apWvX7zZkvTu/2azLG7pC6vvep8KURPc30mRiOpSQx+ZZnkL01HM9gCbR9tMgJUfoMd6h0QGGKuN8rATrzqA8AzgMPZppHjJvnlz9iLbu9BxsQZARX1fAsDVCuL9lQjLzCp/q1KpoMfdse4XCH6kOl1FBJr9GQLfZJr/+q4ShDhl84nHz2w==
+Received: from BY5PR17CA0004.namprd17.prod.outlook.com (2603:10b6:a03:1b8::17)
+ by MW4PR12MB7168.namprd12.prod.outlook.com (2603:10b6:303:22d::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.24; Tue, 8 Oct
+ 2024 12:00:12 +0000
+Received: from CO1PEPF000044F5.namprd05.prod.outlook.com
+ (2603:10b6:a03:1b8:cafe::73) by BY5PR17CA0004.outlook.office365.com
+ (2603:10b6:a03:1b8::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.23 via Frontend
+ Transport; Tue, 8 Oct 2024 12:00:11 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ CO1PEPF000044F5.mail.protection.outlook.com (10.167.241.75) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8048.13 via Frontend Transport; Tue, 8 Oct 2024 12:00:11 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 8 Oct 2024
+ 05:00:02 -0700
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Tue, 8 Oct 2024 05:00:02 -0700
+Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.126.190.180)
+ with Microsoft SMTP Server id 15.2.1544.4 via Frontend Transport; Tue, 8 Oct
+ 2024 04:59:59 -0700
+From: Yonatan Maman <ymaman@nvidia.com>
+To: <kherbst@redhat.com>, <lyude@redhat.com>, <dakr@redhat.com>,
+	<airlied@gmail.com>, <daniel@ffwll.ch>, <bskeggs@nvidia.com>,
+	<jglisse@redhat.com>, <dri-devel@lists.freedesktop.org>,
+	<nouveau@lists.freedesktop.org>
+CC: Yonatan Maman <Ymaman@Nvidia.com>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v4 0/2] drm/nouveau/dmem: Fix Vulnerability and Device Channels configuration
+Date: Tue, 8 Oct 2024 14:59:41 +0300
+Message-ID: <20241008115943.990286-1-ymaman@nvidia.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -115,77 +95,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo,intel.com:email];
-	FREEMAIL_TO(0.00)[ffwll.ch,gmail.com,redhat.com];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F5:EE_|MW4PR12MB7168:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2f5d69eb-3674-4cae-7971-08dce790c345
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|376014|1800799024|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?nXQPfLFHMA54TVwvdwPcPW3zR+1hZTXlVebjL+mCWFPNR2geL+UekNMDJknU?=
+ =?us-ascii?Q?Hh+tXlDII7fDdbmQOrVgrBpx3WPmBL566kRqOwzIqZMGnh6fsmWW/WbmeNfd?=
+ =?us-ascii?Q?QpLIBTdzuRPTryh+EGhv4Oe2iUwmw615+B1CbnD3nLXx4AGoEB3k507JSW9G?=
+ =?us-ascii?Q?LwKuHSD3cAp5NHVJ5RqDo61oblVgMVnehMe+XEQnjWjNsVKEozML3xVKDrpG?=
+ =?us-ascii?Q?OZXGTr6CGHtGFRhWdw1uAMVrirebodpBGYz3SYDUBePgZVuZOhX8Y42dXe1l?=
+ =?us-ascii?Q?SQ4DKmtu7tD3IpwjzGS8tQQfjwch7g+AL0NvgH9W2Qyp3yXX1+k0Es16OHO0?=
+ =?us-ascii?Q?0z7SZ+80TvlbRhS7X9IswiQRpLJ2uih0T0iwO4LssPFi8igpm9omr8PNnJgw?=
+ =?us-ascii?Q?VMot5s3eBeFG/F4lE0e5zV/Oc2h3qnG+0XD6GMKd4GCewaQp3GnVGZ8D4JCo?=
+ =?us-ascii?Q?x1pp5gR+CHcb4bkBEDZwrql7y9PxCOf9dEwfRwqjh4M/u9E3Q3l9kwPlvf0g?=
+ =?us-ascii?Q?ixR5dlXUA1Ccc3lgXd3XG34myN2D8B09STj+cO2sqEXFS1GSR5TngMYGl+DQ?=
+ =?us-ascii?Q?l5PpzBR/9nxthILfdy+M16Sgzbax/p3kpEZKZJLRdP7tFISJ5gKdO0wAP1BX?=
+ =?us-ascii?Q?pnp+PG6Ivhnw7k6ohm80UUCvwyHfi2Wk6QQ7QLf0XE4ZFajDTD3N/x1cnxKM?=
+ =?us-ascii?Q?J3Hv6dva6+dWlQf+yaZIhNQY/Hci09d5h37Eq4ZJ/5Jo/fCm3f5OdZEHtkT2?=
+ =?us-ascii?Q?8S86d5XK5llsjIDaC2PBESt/1ooSEBUQp7Ev4DgHaqJFmP0U7TRZolxDYKTP?=
+ =?us-ascii?Q?OvgkWE2t0LC2A2zgzdUiG9C9k9oe0wQG45CiNUFzN08+gRVEgHgSGOxsJk3Z?=
+ =?us-ascii?Q?1VHmnKaZLMOLnZod++/jUr+6uWjSHC0V/yyRulFZkiM24yfcPLVh19JFN5ze?=
+ =?us-ascii?Q?sOQMeFID2RdISWO+HQLqFIqihjfbrZAe2qr27Y7JrVu7Tf8zMpsSlas4KJzv?=
+ =?us-ascii?Q?Wt6egRciI6wK8d0AQajRAN1GWQ1oPo+7ns37cLMBs1tGqZPrm1LMQaPIJxe+?=
+ =?us-ascii?Q?Jr0lrdplQxwjJ/qkxN1+14OLcUpMeD03AdzvjdhHETMhWtLYCGFm9+c6vywR?=
+ =?us-ascii?Q?6Quh/j8TNPaBP4VzHqoxO6nsvjYszCgoZAgFD7RSsPE1YBdtgqMfe/1B81ge?=
+ =?us-ascii?Q?UvhmWUMQnYffgXaBIjvJ+eF8PwWr5KqJ8C0aMHLVr+9l28B/GQSttNmxxbHe?=
+ =?us-ascii?Q?EO5OSCgTp1q6tdkYeNPRLf6vpds9sKm4pOkGcODBKrL1AET24KCDTYwU2Xb4?=
+ =?us-ascii?Q?yr0N1g/sJASIRtlVeLzlXG8JEbTht6z/RTjMnr/NWSzWZYrL/uFmarfqR88V?=
+ =?us-ascii?Q?21d4Xa7JsUgnh3T94jj7+DlWnsXZ?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(376014)(1800799024)(7416014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2024 12:00:11.6247
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2f5d69eb-3674-4cae-7971-08dce790c345
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000044F5.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7168
 
-Commit 808a40b69468 ("drm/fbdev-dma: Implement damage handling and
-deferred I/O") added deferred I/O for fbdev-dma. Also select the
-Kconfig symbol FB_DEFERRED_IO (via FB_DMAMEM_HELPERS_DEFERRED). Fixes
-build errors about missing fbdefio, such as
+From: Yonatan Maman <Ymaman@Nvidia.com>
 
-drivers/gpu/drm/drm_fbdev_dma.c:218:26: error: 'struct drm_fb_helper' has no member named 'fbdefio'
-  218 |                 fb_helper->fbdefio.delay = HZ / 20;
-      |                          ^~
-drivers/gpu/drm/drm_fbdev_dma.c:219:26: error: 'struct drm_fb_helper' has no member named 'fbdefio'
-  219 |                 fb_helper->fbdefio.deferred_io = drm_fb_helper_deferred_io;
-      |                          ^~
-drivers/gpu/drm/drm_fbdev_dma.c:221:21: error: 'struct fb_info' has no member named 'fbdefio'
-  221 |                 info->fbdefio = &fb_helper->fbdefio;
-      |                     ^~
-drivers/gpu/drm/drm_fbdev_dma.c:221:43: error: 'struct drm_fb_helper' has no member named 'fbdefio'
-  221 |                 info->fbdefio = &fb_helper->fbdefio;
-      |                                           ^~
+This patch series addresses two critical issues in the Nouveau driver
+related to device channels, error handling, and sensitive data leaks.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202410050241.Mox9QRjP-lkp@intel.com/
-Fixes: 808a40b69468 ("drm/fbdev-dma: Implement damage handling and deferred I/O")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: <stable@vger.kernel.org> # v6.11+
----
- drivers/gpu/drm/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+- Vulnerability in migrate_to_ram: The migrate_to_ram function might
+  return a dirty HIGH_USER page when a copy push command (FW channel)
+  fails, potentially exposing sensitive data and posing a security
+  risk. To mitigate this, the patch ensures the allocation of a non-dirty
+  (zero) page for the destination, preventing the return of a dirty page
+  and enhancing driver security in case of failure.
 
-diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index 1df4e627e3d3..db2e206a117c 100644
---- a/drivers/gpu/drm/Kconfig
-+++ b/drivers/gpu/drm/Kconfig
-@@ -338,7 +338,7 @@ config DRM_TTM_HELPER
- config DRM_GEM_DMA_HELPER
- 	tristate
- 	depends on DRM
--	select FB_DMAMEM_HELPERS if DRM_FBDEV_EMULATION
-+	select FB_DMAMEM_HELPERS_DEFERRED if DRM_FBDEV_EMULATION
- 	help
- 	  Choose this if you need the GEM DMA helper functions
- 
+- Privileged Error in Copy Engine Channel: An error was observed when
+  the nouveau_dmem_copy_one function is executed, leading to a Host Copy
+  Engine Privileged error on channel 1. The patch resolves this by
+  adjusting the Copy Engine channel configuration to permit privileged
+  push commands, resolving the error.
+
+Changes since V3:
+- Fixed version according to Danilo Krummrich's comments.
+
+Yonatan Maman (2):
+  nouveau/dmem: Fix privileged error in copy engine channel
+  nouveau/dmem: Fix vulnerability in migrate_to_ram upon copy error
+
+ drivers/gpu/drm/nouveau/nouveau_dmem.c | 2 +-
+ drivers/gpu/drm/nouveau/nouveau_drm.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
 -- 
-2.46.0
+2.34.1
 
 
