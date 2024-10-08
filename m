@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-82952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F92994FA0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31A52994D98
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:07:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA98D1C24B0C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA517283A45
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F6E1E0B9E;
-	Tue,  8 Oct 2024 13:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7E81DF27E;
+	Tue,  8 Oct 2024 13:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvLMe+LW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+uiH3k+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31981DF998;
-	Tue,  8 Oct 2024 13:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3471DED47;
+	Tue,  8 Oct 2024 13:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393984; cv=none; b=M8UI3WWkYQet009njWZavyxcx2f9FEFJmVczCrfLwet7XZSpXbYyDQ9dKTK2KTV6yP6JOSTyRbEHX/aVbaHEnvTf+UGXQFBv3uC1yCrcO8MaTMbsKlLgrBmcR1sc70Qac/hXsRWv0Qw84lyAdG9L/d/sIkrR3pPM/S7Grb2A6Mg=
+	t=1728392814; cv=none; b=XUmZhRDcehwz5czJ4qpkNo1QtlQr75iy7pnzylYP17mjeEXX/9VZAR5ZCnz6xbW64NqVSrNZTmCMDqQdVmphJNWECoa6B7r+qBrMk9ZXmb7AjsFbjzHDUWilZ8lXLLiEHM/Nq+kL4xmyfFv1qcpEIlTtrffLg/hvrayjk7i0Eig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393984; c=relaxed/simple;
-	bh=wDZDMEmW4plA50h8CXIXf9S+BeM4ViaHOwj6Z2zeQ8M=;
+	s=arc-20240116; t=1728392814; c=relaxed/simple;
+	bh=ipgYlM12fLo7XqoVCNqqFxVK7MFvodUh+bU+C8XWQ5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQciwVyv+8R8R9TL/rPSLTga4m2Wy1SAqRD8vQT63yFPYrYinh9I0bWSwXFBpEn+41nxHywbQQLCkbnJtp19cOv3YvduluwG2v+1yrRmrXjag+KxeDbb8GU1ucMwV7HVexCNb3NDKGSojkzI4BnvNhTPbXCY+BIFk6ZRJeTs4Yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvLMe+LW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6D6C4CEC7;
-	Tue,  8 Oct 2024 13:26:24 +0000 (UTC)
+	 MIME-Version; b=bT2nhy/a4XsroqcxL0vvTDkMdHi+c3jK+9+vBYGAI6frg/Gmn+1g8wFwLllfjdXHymHIbEWVPBxa30XHfF8Hz92+hVTkLiCqlDpTHru9u5hqjLZ25/hdv8t2F87o7p19YjKF2VrUccyxrZ8OZHWKR1MlkGn516wWzZ3hduzGRao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+uiH3k+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A6DC4CEC7;
+	Tue,  8 Oct 2024 13:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393984;
-	bh=wDZDMEmW4plA50h8CXIXf9S+BeM4ViaHOwj6Z2zeQ8M=;
+	s=korg; t=1728392813;
+	bh=ipgYlM12fLo7XqoVCNqqFxVK7MFvodUh+bU+C8XWQ5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tvLMe+LW2cX2MmPjzVN01icct35mS73ZrpFViZWMtbBSqsxaSg9bB2nMSym4WEfaJ
-	 ONdF8O0k+8nISNcuJAbVJACfCUFed5b+iixwNdw7ZNk3W/iSTEToPG+8BEJqJHGxUW
-	 2LBjrbQdjRlC3bt6Dv9YL91qbFdDrPTIDVcru5aQ=
+	b=J+uiH3k+qX2E4W04mpGObPb1WMGn59iRV2sg5DtvSfiHPmP5Pu9dIz1FlasvGTLo7
+	 mucBqfsH28FZXNqDEdCCkrdWpJhKaFvDT6hC25OcOUPH2pUgRJBIC7+zQj3vjcJWeI
+	 69zn1u7GGn6241nJ77i6nyQO/4KQaZRgB2hM/85g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Parth Pancholi <parth.pancholi@toradex.com>,
-	Keerthy <j-keerthy@ti.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.6 312/386] gpio: davinci: fix lazy disable
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Yihan Zhu <Yihan.Zhu@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.11 527/558] drm/amd/display: update DML2 policy EnhancedPrefetchScheduleAccelerationFinal DCN35
 Date: Tue,  8 Oct 2024 14:09:17 +0200
-Message-ID: <20241008115641.663986359@linuxfoundation.org>
+Message-ID: <20241008115722.966598310@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +65,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+From: Yihan Zhu <Yihan.Zhu@amd.com>
 
-commit 3360d41f4ac490282fddc3ccc0b58679aa5c065d upstream.
+commit 0d5e5e8a0aa49ea2163abf128da3b509a6c58286 upstream.
 
-On a few platforms such as TI's AM69 device, disable_irq() fails to keep
-track of the interrupts that happen between disable_irq() and
-enable_irq() and those interrupts are missed. Use the ->irq_unmask() and
-->irq_mask() methods instead of ->irq_enable() and ->irq_disable() to
-correctly keep track of edges when disable_irq is called.
+[WHY & HOW]
+Mismatch in DCN35 DML2 cause bw validation failed to acquire unexpected DPP pipe to cause
+grey screen and system hang. Remove EnhancedPrefetchScheduleAccelerationFinal value override
+to match HW spec.
 
-This solves the issue of disable_irq() not working as expected on such
-platforms.
-
-Fixes: 23265442b02b ("ARM: davinci: irq_data conversion.")
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Signed-off-by: Parth Pancholi <parth.pancholi@toradex.com>
-Acked-by: Keerthy <j-keerthy@ti.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 9dad21f910fcea2bdcff4af46159101d7f9cd8ba)
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240828133207.493961-1-parth105105@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-davinci.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/gpio/gpio-davinci.c
-+++ b/drivers/gpio/gpio-davinci.c
-@@ -289,7 +289,7 @@ static int davinci_gpio_probe(struct pla
-  * serve as EDMA event triggers.
-  */
- 
--static void gpio_irq_disable(struct irq_data *d)
-+static void gpio_irq_mask(struct irq_data *d)
- {
- 	struct davinci_gpio_regs __iomem *g = irq2regs(d);
- 	uintptr_t mask = (uintptr_t)irq_data_get_irq_handler_data(d);
-@@ -298,7 +298,7 @@ static void gpio_irq_disable(struct irq_
- 	writel_relaxed(mask, &g->clr_rising);
- }
- 
--static void gpio_irq_enable(struct irq_data *d)
-+static void gpio_irq_unmask(struct irq_data *d)
- {
- 	struct davinci_gpio_regs __iomem *g = irq2regs(d);
- 	uintptr_t mask = (uintptr_t)irq_data_get_irq_handler_data(d);
-@@ -324,8 +324,8 @@ static int gpio_irq_type(struct irq_data
- 
- static struct irq_chip gpio_irqchip = {
- 	.name		= "GPIO",
--	.irq_enable	= gpio_irq_enable,
--	.irq_disable	= gpio_irq_disable,
-+	.irq_unmask	= gpio_irq_unmask,
-+	.irq_mask	= gpio_irq_mask,
- 	.irq_set_type	= gpio_irq_type,
- 	.flags		= IRQCHIP_SET_TYPE_MASKED | IRQCHIP_SKIP_SET_WAKE,
- };
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
+@@ -303,7 +303,6 @@ void build_unoptimized_policy_settings(e
+ 	if (project == dml_project_dcn35 ||
+ 		project == dml_project_dcn351) {
+ 		policy->DCCProgrammingAssumesScanDirectionUnknownFinal = false;
+-		policy->EnhancedPrefetchScheduleAccelerationFinal = 0;
+ 		policy->AllowForPStateChangeOrStutterInVBlankFinal = dml_prefetch_support_uclk_fclk_and_stutter_if_possible; /*new*/
+ 		policy->UseOnlyMaxPrefetchModes = 1;
+ 	}
 
 
 
