@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC94A994B8F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A52ED9948B1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:15:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5C411C24C98
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 489071F28542
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C5C1DEFE1;
-	Tue,  8 Oct 2024 12:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C5A1CDFB8;
+	Tue,  8 Oct 2024 12:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPPJMYzS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzljyzM4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BA2192594;
-	Tue,  8 Oct 2024 12:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3217165F08;
+	Tue,  8 Oct 2024 12:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391438; cv=none; b=I0bInDkJDZ4rFh0jOkSatNGlAzIX7rKUuB2o5UaaV/2GDcFu6syclOPgV9xJ6pZpT7ByUjPv1gJ2W1WzvrYoaq8YgHG+//0m46p0YA9LakH6CVFDhPJTdtwOdVC3ARpnwG8KJmnOq4MyYrChZUk9D/kUo4V8AlVNrN8AlVco/fQ=
+	t=1728389745; cv=none; b=ZjIHM/ulCLg6ckHfQUpIQheJ2rwLbSDD58JHse1tH9GVwH/tZvqEZfD0eRXHeP3jMqo0GnMe7SKiMsy2xEjZIi2+WjG1qPZecxU2ONuBWsfIhKoz/l8+sIy7QmSjxNk6VEZCknXUMgCv6EfhCI8RtoeT5+yEyAyCP3AZ5WYYhik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391438; c=relaxed/simple;
-	bh=guxe/386R9pwlvidbY1K+N16wFWiFH+lDP9IlomuJD4=;
+	s=arc-20240116; t=1728389745; c=relaxed/simple;
+	bh=M8NlstOVvPswHaLO8MH38EsIo3jk84IaZHvgeR2za20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3KxYEN++Mxhhi4dCLAqgD1teU2c+WnqQgrDK6USYREZieP7sLj/11Oz/luvnilEtcRJS8nP/1N5ypxctlU7QT+1mCzTX3zwNlQFY8hm0kU3vuoVZ0V1KMF/daBtTz9NiH6rpHAXIQ+0lLWjE1+WuHWGQ+Pq8RddAsCkSz9siPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPPJMYzS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2503FC4CEC7;
-	Tue,  8 Oct 2024 12:43:57 +0000 (UTC)
+	 MIME-Version; b=iJOIcF04A4nY5lo1pnnAENN9b6D+AK7iqJbuEWmtV6CScJWrcqrdYMu1zNAB8e5ktKDVhvys7okJ1E4W+5OsuJvNoPN34tibkQVKsvmEHtbUtpfkWOM3WUjcNPMQ6xwxAbuPpywMQoED+QLTOsc1aicHPk861df8JKj4mksagI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzljyzM4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2217FC4CEC7;
+	Tue,  8 Oct 2024 12:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391438;
-	bh=guxe/386R9pwlvidbY1K+N16wFWiFH+lDP9IlomuJD4=;
+	s=korg; t=1728389744;
+	bh=M8NlstOVvPswHaLO8MH38EsIo3jk84IaZHvgeR2za20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nPPJMYzSnYITFic+DiZCXcY0bCwJQUTvITGjOheUZux+cEWmasHZtJDYyzh5JcM/B
-	 EVFnnQHGhF3BvyK7L3Rvj97W4e48h9QeHofhgiX2PUyXBTkdmuxhanwGKrFOKsvmca
-	 3LppQcCmeZW+JqyopA/iwbZwtNPRdRwN6wS+M3E8=
+	b=VzljyzM4GqXQIarjd4Ag0l9iPpKnH/sw7ktEMeVDTVZivR3i8Xqx36mwDBTJDHGGb
+	 diIPMx10xw5n7QosrwhLPFEaoMm8cjHtwiSm9KjHzdiNzROzIutOCpq6I61gNoVMsx
+	 OQXYgLhVZxpwVGPTrthu3giX926y0S7Q8jjI0L6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 115/558] wifi: ath11k: fix array out-of-bound access in SoC stats
+Subject: [PATCH 6.10 082/482] net: hisilicon: hip04: fix OF node leak in probe()
 Date: Tue,  8 Oct 2024 14:02:25 +0200
-Message-ID: <20241008115706.891645398@linuxfoundation.org>
+Message-ID: <20241008115651.533528806@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 69f253e46af98af17e3efa3e5dfa72fcb7d1983d ]
+[ Upstream commit 17555297dbd5bccc93a01516117547e26a61caf1 ]
 
-Currently, the ath11k_soc_dp_stats::hal_reo_error array is defined with a
-maximum size of DP_REO_DST_RING_MAX. However, the ath11k_dp_process_rx()
-function access ath11k_soc_dp_stats::hal_reo_error using the REO
-destination SRNG ring ID, which is incorrect. SRNG ring ID differ from
-normal ring ID, and this usage leads to out-of-bounds array access. To fix
-this issue, modify ath11k_dp_process_rx() to use the normal ring ID
-directly instead of the SRNG ring ID to avoid out-of-bounds array access.
+Driver is leaking OF node reference from
+of_parse_phandle_with_fixed_args() in probe().
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240704070811.4186543-3-quic_periyasa@quicinc.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240827144421.52852-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hip04_eth.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 86485580dd895..c087d8a0f5b25 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -2697,7 +2697,7 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
- 		if (unlikely(push_reason !=
- 			     HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRUCTION)) {
- 			dev_kfree_skb_any(msdu);
--			ab->soc_stats.hal_reo_error[dp->reo_dst_ring[ring_id].ring_id]++;
-+			ab->soc_stats.hal_reo_error[ring_id]++;
- 			continue;
- 		}
+diff --git a/drivers/net/ethernet/hisilicon/hip04_eth.c b/drivers/net/ethernet/hisilicon/hip04_eth.c
+index b91e7a06b97f7..beb815e5289b1 100644
+--- a/drivers/net/ethernet/hisilicon/hip04_eth.c
++++ b/drivers/net/ethernet/hisilicon/hip04_eth.c
+@@ -947,6 +947,7 @@ static int hip04_mac_probe(struct platform_device *pdev)
+ 	priv->tx_coalesce_timer.function = tx_done;
  
+ 	priv->map = syscon_node_to_regmap(arg.np);
++	of_node_put(arg.np);
+ 	if (IS_ERR(priv->map)) {
+ 		dev_warn(d, "no syscon hisilicon,hip04-ppe\n");
+ 		ret = PTR_ERR(priv->map);
 -- 
 2.43.0
 
