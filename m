@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-81688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3013E9948D4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:17:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 424BB994BAB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:45:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A453A1F2918C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:17:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03F44284051
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC7F1DED47;
-	Tue,  8 Oct 2024 12:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210C51DED65;
+	Tue,  8 Oct 2024 12:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ftxbe+N+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gXwewL53"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7651DDA15;
-	Tue,  8 Oct 2024 12:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A431DEFCF;
+	Tue,  8 Oct 2024 12:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389803; cv=none; b=CpXuY7kgTcj4S4K/ECj4eVC0qmIKRdP2Cr32Um38CNeOuJPHFBlobZop6+3FUaGXviWNTHiYf9r1Ts8Sydy21vIumA/Qxxuzi7l1mcjh0H0O+kq3TE4vnT+NXl1JdCCYb4x4h6FPkmwPAjaI+IxBwX2uEHFRLLxvyKvkMX6M5JE=
+	t=1728391503; cv=none; b=XyJ49e40nEEoiy5bR98pDOQH6SnSqW40bR22MyrAsDG8HOcgfO93hdcty3JTvfW0NnXvZaGOzDFi99Er6iNaeCuoS02nYmtGbU9BMW9R3EcSMzCbZWwg1CJ4kKe74wyPDR7ats2djTH76+dIAg9EvwDQLLyctqaDkPZpObFxA40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389803; c=relaxed/simple;
-	bh=/cOjV985wlMfZ2BomLrO4O04Z/5RB0I08mCL1C3Lito=;
+	s=arc-20240116; t=1728391503; c=relaxed/simple;
+	bh=8QbHaO9iQ0e3MClV9lH8gRy9SBZMrG18lr8pUu+ekrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ubSW+5wLAy7cFqLE56f9MFm8JbrKgEA+JQCiidQEdKSSPm+ec44YgaA4yeTt93MIh7r1hvDYAH8VpM1I7dYDxfF3yGsGXFdLHyjsnrrU3uLV2beFhtjCfDPYK67XF3w/rA1V2gWWNYSVJWJR1Oe856zy7cDGmZY6Z0c2Xk5Pe7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ftxbe+N+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F6FC4CEC7;
-	Tue,  8 Oct 2024 12:16:42 +0000 (UTC)
+	 MIME-Version; b=Uf0AOoqgug9q+JSMG4dYUCBBmOxsYA52+bHgoVzekRJD38UGCuu40AGA01OTAuj67wG+ljhfcq0H4alfDCoMipBFs3GndEOnDEpyZgmqzzX+On0aC0fhHhI7WM801WUTjZbLgphcb5+8zRUWxH2ZakxouhvXkr8NhIPgh3gFFhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gXwewL53; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59FB6C4CEC7;
+	Tue,  8 Oct 2024 12:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389803;
-	bh=/cOjV985wlMfZ2BomLrO4O04Z/5RB0I08mCL1C3Lito=;
+	s=korg; t=1728391503;
+	bh=8QbHaO9iQ0e3MClV9lH8gRy9SBZMrG18lr8pUu+ekrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ftxbe+N+vJJtu1jv1EmKequgMQO3JLjanp2e0MIDBe8x6MFrqBJ/TivHeqPTTxLOD
-	 3TP/uO8A/Kaxhzboo1Z+qphEOV4nQcxpNJGtBe/LBsr2VP1XvHaWMx/XVn82TCrrdg
-	 ZMYAUylZnGme6HiRO9sdoP6cWA6eHaZ6lPl58mK4=
+	b=gXwewL53077pyYBwOS9Ps6oibJE+sAmoJCplshCZogPYWg6y6RJXOeJb5lGQng7E2
+	 qz1CzdhoxxLm9T1eBO1SOjPWy567ysO1c4rKj9KhDhk1zKumQNcOUuTWsFRQqv7Gxg
+	 sHVdf3oEw6XyDRDKIoFfHnIPi41hdMorcYwk+8Ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 101/482] ACPI: EC: Do not release locks during operation region accesses
+Subject: [PATCH 6.11 134/558] crypto: simd - Do not call crypto_alloc_tfm during registration
 Date: Tue,  8 Oct 2024 14:02:44 +0200
-Message-ID: <20241008115652.284330839@linuxfoundation.org>
+Message-ID: <20241008115707.637536253@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,168 +61,251 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit dc171114926ec390ab90f46534545420ec03e458 ]
+[ Upstream commit 3c44d31cb34ce4eb8311a2e73634d57702948230 ]
 
-It is not particularly useful to release locks (the EC mutex and the
-ACPI global lock, if present) and re-acquire them immediately thereafter
-during EC address space accesses in acpi_ec_space_handler().
+Algorithm registration is usually carried out during module init,
+where as little work as possible should be carried out.  The SIMD
+code violated this rule by allocating a tfm, this then triggers a
+full test of the algorithm which may dead-lock in certain cases.
 
-First, releasing them for a while before grabbing them again does not
-really help anyone because there may not be enough time for another
-thread to acquire them.
+SIMD is only allocating the tfm to get at the alg object, which is
+in fact already available as it is what we are registering.  Use
+that directly and remove the crypto_alloc_tfm call.
 
-Second, if another thread successfully acquires them and carries out
-a new EC write or read in the middle if an operation region access in
-progress, it may confuse the EC firmware, especially after the burst
-mode has been enabled.
+Also remove some obsolete and unused SIMD API.
 
-Finally, manipulating the locks after writing or reading every single
-byte of data is overhead that it is better to avoid.
-
-Accordingly, modify the code to carry out EC address space accesses
-entirely without releasing the locks.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/12473338.O9o76ZdvQC@rjwysocki.net
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 55 +++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 49 insertions(+), 6 deletions(-)
+ arch/arm/crypto/aes-ce-glue.c     |  2 +-
+ arch/arm/crypto/aes-neonbs-glue.c |  2 +-
+ crypto/simd.c                     | 76 ++++++-------------------------
+ include/crypto/internal/simd.h    | 12 +----
+ 4 files changed, 19 insertions(+), 73 deletions(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 38d2f6e6b12b4..25399f6dde7e2 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -783,6 +783,9 @@ static int acpi_ec_transaction_unlocked(struct acpi_ec *ec,
- 	unsigned long tmp;
- 	int ret = 0;
- 
-+	if (t->rdata)
-+		memset(t->rdata, 0, t->rlen);
-+
- 	/* start transaction */
- 	spin_lock_irqsave(&ec->lock, tmp);
- 	/* Enable GPE for command processing (IBF=0/OBF=1) */
-@@ -819,8 +822,6 @@ static int acpi_ec_transaction(struct acpi_ec *ec, struct transaction *t)
- 
- 	if (!ec || (!t) || (t->wlen && !t->wdata) || (t->rlen && !t->rdata))
- 		return -EINVAL;
--	if (t->rdata)
--		memset(t->rdata, 0, t->rlen);
- 
- 	mutex_lock(&ec->mutex);
- 	if (ec->global_lock) {
-@@ -847,7 +848,7 @@ static int acpi_ec_burst_enable(struct acpi_ec *ec)
- 				.wdata = NULL, .rdata = &d,
- 				.wlen = 0, .rlen = 1};
- 
--	return acpi_ec_transaction(ec, &t);
-+	return acpi_ec_transaction_unlocked(ec, &t);
+diff --git a/arch/arm/crypto/aes-ce-glue.c b/arch/arm/crypto/aes-ce-glue.c
+index b668c97663ec0..f5b66f4cf45d9 100644
+--- a/arch/arm/crypto/aes-ce-glue.c
++++ b/arch/arm/crypto/aes-ce-glue.c
+@@ -711,7 +711,7 @@ static int __init aes_init(void)
+ 		algname = aes_algs[i].base.cra_name + 2;
+ 		drvname = aes_algs[i].base.cra_driver_name + 2;
+ 		basename = aes_algs[i].base.cra_driver_name;
+-		simd = simd_skcipher_create_compat(algname, drvname, basename);
++		simd = simd_skcipher_create_compat(aes_algs + i, algname, drvname, basename);
+ 		err = PTR_ERR(simd);
+ 		if (IS_ERR(simd))
+ 			goto unregister_simds;
+diff --git a/arch/arm/crypto/aes-neonbs-glue.c b/arch/arm/crypto/aes-neonbs-glue.c
+index 201eb35dde37e..735a2441ad484 100644
+--- a/arch/arm/crypto/aes-neonbs-glue.c
++++ b/arch/arm/crypto/aes-neonbs-glue.c
+@@ -540,7 +540,7 @@ static int __init aes_init(void)
+ 		algname = aes_algs[i].base.cra_name + 2;
+ 		drvname = aes_algs[i].base.cra_driver_name + 2;
+ 		basename = aes_algs[i].base.cra_driver_name;
+-		simd = simd_skcipher_create_compat(algname, drvname, basename);
++		simd = simd_skcipher_create_compat(aes_algs + i, algname, drvname, basename);
+ 		err = PTR_ERR(simd);
+ 		if (IS_ERR(simd))
+ 			goto unregister_simds;
+diff --git a/crypto/simd.c b/crypto/simd.c
+index 2aa4f72e224fd..b07721d1f3f6e 100644
+--- a/crypto/simd.c
++++ b/crypto/simd.c
+@@ -136,27 +136,19 @@ static int simd_skcipher_init(struct crypto_skcipher *tfm)
+ 	return 0;
  }
  
- static int acpi_ec_burst_disable(struct acpi_ec *ec)
-@@ -857,7 +858,7 @@ static int acpi_ec_burst_disable(struct acpi_ec *ec)
- 				.wlen = 0, .rlen = 0};
- 
- 	return (acpi_ec_read_status(ec) & ACPI_EC_FLAG_BURST) ?
--				acpi_ec_transaction(ec, &t) : 0;
-+				acpi_ec_transaction_unlocked(ec, &t) : 0;
- }
- 
- static int acpi_ec_read(struct acpi_ec *ec, u8 address, u8 *data)
-@@ -873,6 +874,19 @@ static int acpi_ec_read(struct acpi_ec *ec, u8 address, u8 *data)
- 	return result;
- }
- 
-+static int acpi_ec_read_unlocked(struct acpi_ec *ec, u8 address, u8 *data)
-+{
-+	int result;
-+	u8 d;
-+	struct transaction t = {.command = ACPI_EC_COMMAND_READ,
-+				.wdata = &address, .rdata = &d,
-+				.wlen = 1, .rlen = 1};
-+
-+	result = acpi_ec_transaction_unlocked(ec, &t);
-+	*data = d;
-+	return result;
-+}
-+
- static int acpi_ec_write(struct acpi_ec *ec, u8 address, u8 data)
+-struct simd_skcipher_alg *simd_skcipher_create_compat(const char *algname,
++struct simd_skcipher_alg *simd_skcipher_create_compat(struct skcipher_alg *ialg,
++						      const char *algname,
+ 						      const char *drvname,
+ 						      const char *basename)
  {
- 	u8 wdata[2] = { address, data };
-@@ -883,6 +897,16 @@ static int acpi_ec_write(struct acpi_ec *ec, u8 address, u8 data)
- 	return acpi_ec_transaction(ec, &t);
- }
- 
-+static int acpi_ec_write_unlocked(struct acpi_ec *ec, u8 address, u8 data)
-+{
-+	u8 wdata[2] = { address, data };
-+	struct transaction t = {.command = ACPI_EC_COMMAND_WRITE,
-+				.wdata = wdata, .rdata = NULL,
-+				.wlen = 2, .rlen = 0};
-+
-+	return acpi_ec_transaction_unlocked(ec, &t);
-+}
-+
- int ec_read(u8 addr, u8 *val)
- {
+ 	struct simd_skcipher_alg *salg;
+-	struct crypto_skcipher *tfm;
+-	struct skcipher_alg *ialg;
+ 	struct skcipher_alg *alg;
  	int err;
-@@ -1323,6 +1347,7 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 	struct acpi_ec *ec = handler_context;
- 	int result = 0, i, bytes = bits / 8;
- 	u8 *value = (u8 *)value64;
-+	u32 glk;
  
- 	if ((address > 0xFF) || !value || !handler_context)
- 		return AE_BAD_PARAMETER;
-@@ -1330,13 +1355,25 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 	if (function != ACPI_READ && function != ACPI_WRITE)
- 		return AE_BAD_PARAMETER;
- 
-+	mutex_lock(&ec->mutex);
-+
-+	if (ec->global_lock) {
-+		acpi_status status;
-+
-+		status = acpi_acquire_global_lock(ACPI_EC_UDELAY_GLK, &glk);
-+		if (ACPI_FAILURE(status)) {
-+			result = -ENODEV;
-+			goto unlock;
-+		}
-+	}
-+
- 	if (ec->busy_polling || bits > 8)
- 		acpi_ec_burst_enable(ec);
- 
- 	for (i = 0; i < bytes; ++i, ++address, ++value) {
- 		result = (function == ACPI_READ) ?
--			acpi_ec_read(ec, address, value) :
--			acpi_ec_write(ec, address, *value);
-+			acpi_ec_read_unlocked(ec, address, value) :
-+			acpi_ec_write_unlocked(ec, address, *value);
- 		if (result < 0)
- 			break;
+-	tfm = crypto_alloc_skcipher(basename, CRYPTO_ALG_INTERNAL,
+-				    CRYPTO_ALG_INTERNAL | CRYPTO_ALG_ASYNC);
+-	if (IS_ERR(tfm))
+-		return ERR_CAST(tfm);
+-
+-	ialg = crypto_skcipher_alg(tfm);
+-
+ 	salg = kzalloc(sizeof(*salg), GFP_KERNEL);
+ 	if (!salg) {
+ 		salg = ERR_PTR(-ENOMEM);
+-		goto out_put_tfm;
++		goto out;
  	}
-@@ -1344,6 +1381,12 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 	if (ec->busy_polling || bits > 8)
- 		acpi_ec_burst_disable(ec);
  
-+	if (ec->global_lock)
-+		acpi_release_global_lock(glk);
-+
-+unlock:
-+	mutex_unlock(&ec->mutex);
-+
- 	switch (result) {
- 	case -EINVAL:
- 		return AE_BAD_PARAMETER;
+ 	salg->ialg_name = basename;
+@@ -195,30 +187,16 @@ struct simd_skcipher_alg *simd_skcipher_create_compat(const char *algname,
+ 	if (err)
+ 		goto out_free_salg;
+ 
+-out_put_tfm:
+-	crypto_free_skcipher(tfm);
++out:
+ 	return salg;
+ 
+ out_free_salg:
+ 	kfree(salg);
+ 	salg = ERR_PTR(err);
+-	goto out_put_tfm;
++	goto out;
+ }
+ EXPORT_SYMBOL_GPL(simd_skcipher_create_compat);
+ 
+-struct simd_skcipher_alg *simd_skcipher_create(const char *algname,
+-					       const char *basename)
+-{
+-	char drvname[CRYPTO_MAX_ALG_NAME];
+-
+-	if (snprintf(drvname, CRYPTO_MAX_ALG_NAME, "simd-%s", basename) >=
+-	    CRYPTO_MAX_ALG_NAME)
+-		return ERR_PTR(-ENAMETOOLONG);
+-
+-	return simd_skcipher_create_compat(algname, drvname, basename);
+-}
+-EXPORT_SYMBOL_GPL(simd_skcipher_create);
+-
+ void simd_skcipher_free(struct simd_skcipher_alg *salg)
+ {
+ 	crypto_unregister_skcipher(&salg->alg);
+@@ -246,7 +224,7 @@ int simd_register_skciphers_compat(struct skcipher_alg *algs, int count,
+ 		algname = algs[i].base.cra_name + 2;
+ 		drvname = algs[i].base.cra_driver_name + 2;
+ 		basename = algs[i].base.cra_driver_name;
+-		simd = simd_skcipher_create_compat(algname, drvname, basename);
++		simd = simd_skcipher_create_compat(algs + i, algname, drvname, basename);
+ 		err = PTR_ERR(simd);
+ 		if (IS_ERR(simd))
+ 			goto err_unregister;
+@@ -383,27 +361,19 @@ static int simd_aead_init(struct crypto_aead *tfm)
+ 	return 0;
+ }
+ 
+-struct simd_aead_alg *simd_aead_create_compat(const char *algname,
+-					      const char *drvname,
+-					      const char *basename)
++static struct simd_aead_alg *simd_aead_create_compat(struct aead_alg *ialg,
++						     const char *algname,
++						     const char *drvname,
++						     const char *basename)
+ {
+ 	struct simd_aead_alg *salg;
+-	struct crypto_aead *tfm;
+-	struct aead_alg *ialg;
+ 	struct aead_alg *alg;
+ 	int err;
+ 
+-	tfm = crypto_alloc_aead(basename, CRYPTO_ALG_INTERNAL,
+-				CRYPTO_ALG_INTERNAL | CRYPTO_ALG_ASYNC);
+-	if (IS_ERR(tfm))
+-		return ERR_CAST(tfm);
+-
+-	ialg = crypto_aead_alg(tfm);
+-
+ 	salg = kzalloc(sizeof(*salg), GFP_KERNEL);
+ 	if (!salg) {
+ 		salg = ERR_PTR(-ENOMEM);
+-		goto out_put_tfm;
++		goto out;
+ 	}
+ 
+ 	salg->ialg_name = basename;
+@@ -442,36 +412,20 @@ struct simd_aead_alg *simd_aead_create_compat(const char *algname,
+ 	if (err)
+ 		goto out_free_salg;
+ 
+-out_put_tfm:
+-	crypto_free_aead(tfm);
++out:
+ 	return salg;
+ 
+ out_free_salg:
+ 	kfree(salg);
+ 	salg = ERR_PTR(err);
+-	goto out_put_tfm;
+-}
+-EXPORT_SYMBOL_GPL(simd_aead_create_compat);
+-
+-struct simd_aead_alg *simd_aead_create(const char *algname,
+-				       const char *basename)
+-{
+-	char drvname[CRYPTO_MAX_ALG_NAME];
+-
+-	if (snprintf(drvname, CRYPTO_MAX_ALG_NAME, "simd-%s", basename) >=
+-	    CRYPTO_MAX_ALG_NAME)
+-		return ERR_PTR(-ENAMETOOLONG);
+-
+-	return simd_aead_create_compat(algname, drvname, basename);
++	goto out;
+ }
+-EXPORT_SYMBOL_GPL(simd_aead_create);
+ 
+-void simd_aead_free(struct simd_aead_alg *salg)
++static void simd_aead_free(struct simd_aead_alg *salg)
+ {
+ 	crypto_unregister_aead(&salg->alg);
+ 	kfree(salg);
+ }
+-EXPORT_SYMBOL_GPL(simd_aead_free);
+ 
+ int simd_register_aeads_compat(struct aead_alg *algs, int count,
+ 			       struct simd_aead_alg **simd_algs)
+@@ -493,7 +447,7 @@ int simd_register_aeads_compat(struct aead_alg *algs, int count,
+ 		algname = algs[i].base.cra_name + 2;
+ 		drvname = algs[i].base.cra_driver_name + 2;
+ 		basename = algs[i].base.cra_driver_name;
+-		simd = simd_aead_create_compat(algname, drvname, basename);
++		simd = simd_aead_create_compat(algs + i, algname, drvname, basename);
+ 		err = PTR_ERR(simd);
+ 		if (IS_ERR(simd))
+ 			goto err_unregister;
+diff --git a/include/crypto/internal/simd.h b/include/crypto/internal/simd.h
+index d2316242a9884..be97b97a75dd2 100644
+--- a/include/crypto/internal/simd.h
++++ b/include/crypto/internal/simd.h
+@@ -14,11 +14,10 @@
+ struct simd_skcipher_alg;
+ struct skcipher_alg;
+ 
+-struct simd_skcipher_alg *simd_skcipher_create_compat(const char *algname,
++struct simd_skcipher_alg *simd_skcipher_create_compat(struct skcipher_alg *ialg,
++						      const char *algname,
+ 						      const char *drvname,
+ 						      const char *basename);
+-struct simd_skcipher_alg *simd_skcipher_create(const char *algname,
+-					       const char *basename);
+ void simd_skcipher_free(struct simd_skcipher_alg *alg);
+ 
+ int simd_register_skciphers_compat(struct skcipher_alg *algs, int count,
+@@ -32,13 +31,6 @@ void simd_unregister_skciphers(struct skcipher_alg *algs, int count,
+ struct simd_aead_alg;
+ struct aead_alg;
+ 
+-struct simd_aead_alg *simd_aead_create_compat(const char *algname,
+-					      const char *drvname,
+-					      const char *basename);
+-struct simd_aead_alg *simd_aead_create(const char *algname,
+-				       const char *basename);
+-void simd_aead_free(struct simd_aead_alg *alg);
+-
+ int simd_register_aeads_compat(struct aead_alg *algs, int count,
+ 			       struct simd_aead_alg **simd_algs);
+ 
 -- 
 2.43.0
 
