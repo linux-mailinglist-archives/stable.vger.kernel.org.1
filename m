@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-82544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6105994D3F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:03:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8347B994F12
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:24:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F0241F23340
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:03:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25CC51F24AF3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFBD1DE4CD;
-	Tue,  8 Oct 2024 13:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7C21DF96C;
+	Tue,  8 Oct 2024 13:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LK5PzoJf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqUCbgaV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5441DFD1;
-	Tue,  8 Oct 2024 13:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611C21DED7A;
+	Tue,  8 Oct 2024 13:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392620; cv=none; b=JEjkJdaOmIbqfUdtS/Fupfy/ktb/zdymBRb9VGQc6pRgYeQ2vvCNOQ/2h/2Uu3hJCnFhwgLus6/gXQt9L4Eg8pFs2o9I2WmMLspjsPoUfn6jK9DHGHy1lAwq6c8vbEnIFXwyi7LKcYENJ4OGbck6Q1Y4HoyCcfUt18zqa0gGnRM=
+	t=1728393788; cv=none; b=XjvLObCEETnvuRVCl/JthX4sFi6afJS/PusGtttgfmU6y21Qh3xbIHiCeR0NA5zLlrEM4hJh+bz42oZjFIrzN0XTmiPA2uM3ODt2j3LX07KqhNFDdukYiprqjdTI6rHxWCg7qXJ9jXqDAWsSY3r7XzlK9GL56OSVG3leVSrps/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392620; c=relaxed/simple;
-	bh=2p7sQ6uvgbWcU+/4Qa7zM9A0dAnlrs2VbidPHiIiWmI=;
+	s=arc-20240116; t=1728393788; c=relaxed/simple;
+	bh=Vy+tfQX9nE4tl0QmTHaFFNonIOjsOB/v8CyV/RbC4tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TA+wrDQYXx9qvpRuQSNem6j77aJg/DCAchgom9qPcEi4XVSbX6fHda65EhAUNZszC9jhVykOprKTyuSCjOK6gV1Pr2HQPmdFdG3WC7BVgPKJYUwbeIQg4cpDbxViQ+5OPa4FHiUvxB9yfG68YOuXeLWpVBoxC1Qta/y26zvBx0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LK5PzoJf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC271C4CEC7;
-	Tue,  8 Oct 2024 13:03:39 +0000 (UTC)
+	 MIME-Version; b=RTYqTDhDCV5DEEJt1/SSAAiiW9n53mMvP5G7wmKcNwwLWOf+524CNI60wq+ddWWpKFc/cwhHtmMmqulyyU8CoCZkh1YNSIfzLcvnfKocxgEZzzxNx0t/wVX3ZbcX/sXC9pdJUUXCBBIwRAplG89Ox4XSMZDkkkX0fRlamMkDDuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqUCbgaV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B130C4CEC7;
+	Tue,  8 Oct 2024 13:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392620;
-	bh=2p7sQ6uvgbWcU+/4Qa7zM9A0dAnlrs2VbidPHiIiWmI=;
+	s=korg; t=1728393788;
+	bh=Vy+tfQX9nE4tl0QmTHaFFNonIOjsOB/v8CyV/RbC4tg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LK5PzoJfsh8ORUM7K9L4fQ1LCHTxAe4huG2TmPs4iV021C9gQf+FNd0ZlTief38KY
-	 bprOftmQswjt24v6JLsP+jDTNeZ4S/osBynylBIV+LZzPrn/qV+jrK3CZzI2/4bsZJ
-	 khAPEtAc/BCGRoghSFLgNN84mg/gN3RNaVL2+ABo=
+	b=zqUCbgaV+V89LC11v5R9VZu6+Sk95pwBTwSrA1XvDNKi/f4b5tPpEFznefMG9aacp
+	 Z6kK0sX6R77sY8lbc42tNDTJOSHexVbKKri8go2Qcxz5Th27Z/d/YkAoXdbCI8vOrf
+	 2oyh6qLO4myHzcx7GXNOm22Id8RzxnytnaqAxyGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.11 469/558] smb3: fix incorrect mode displayed for read-only files
+	Ma Ke <make24@iscas.ac.cn>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH 6.6 254/386] drm: omapdrm: Add missing check for alloc_ordered_workqueue
 Date: Tue,  8 Oct 2024 14:08:19 +0200
-Message-ID: <20241008115720.703603124@linuxfoundation.org>
+Message-ID: <20241008115639.389323132@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 2f3017e7cc7515e0110a3733d8dca84de2a1d23d upstream.
+commit e794b7b9b92977365c693760a259f8eef940c536 upstream.
 
-Commands like "chmod 0444" mark a file readonly via the attribute flag
-(when mapping of mode bits into the ACL are not set, or POSIX extensions
-are not negotiated), but they were not reported correctly for stat of
-directories (they were reported ok for files and for "ls").  See example
-below:
-
-    root:~# ls /mnt2 -l
-    total 12
-    drwxr-xr-x 2 root root         0 Sep 21 18:03 normaldir
-    -rwxr-xr-x 1 root root         0 Sep 21 23:24 normalfile
-    dr-xr-xr-x 2 root root         0 Sep 21 17:55 readonly-dir
-    -r-xr-xr-x 1 root root 209716224 Sep 21 18:15 readonly-file
-    root:~# stat -c %a /mnt2/readonly-dir
-    755
-    root:~# stat -c %a /mnt2/readonly-file
-    555
-
-This fixes the stat of directories when ATTR_READONLY is set
-(in cases where the mode can not be obtained other ways).
-
-    root:~# stat -c %a /mnt2/readonly-dir
-    555
+As it may return NULL pointer and cause NULL pointer dereference. Add check
+for the return value of alloc_ordered_workqueue.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 2f95bc6d324a ("drm: omapdrm: Perform initialization/cleanup at probe/remove time")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240808061336.2796729-1-make24@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/inode.c |   19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/omapdrm/omap_drv.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -800,10 +800,6 @@ static void cifs_open_info_to_fattr(stru
- 		fattr->cf_mode = S_IFREG | cifs_sb->ctx->file_mode;
- 		fattr->cf_dtype = DT_REG;
+--- a/drivers/gpu/drm/omapdrm/omap_drv.c
++++ b/drivers/gpu/drm/omapdrm/omap_drv.c
+@@ -695,6 +695,10 @@ static int omapdrm_init(struct omap_drm_
+ 	soc = soc_device_match(omapdrm_soc_devices);
+ 	priv->omaprev = soc ? (uintptr_t)soc->data : 0;
+ 	priv->wq = alloc_ordered_workqueue("omapdrm", 0);
++	if (!priv->wq) {
++		ret = -ENOMEM;
++		goto err_alloc_workqueue;
++	}
  
--		/* clear write bits if ATTR_READONLY is set */
--		if (fattr->cf_cifsattrs & ATTR_READONLY)
--			fattr->cf_mode &= ~(S_IWUGO);
--
- 		/*
- 		 * Don't accept zero nlink from non-unix servers unless
- 		 * delete is pending.  Instead mark it as unknown.
-@@ -816,6 +812,10 @@ static void cifs_open_info_to_fattr(stru
- 		}
- 	}
- 
-+	/* clear write bits if ATTR_READONLY is set */
-+	if (fattr->cf_cifsattrs & ATTR_READONLY)
-+		fattr->cf_mode &= ~(S_IWUGO);
-+
- out_reparse:
- 	if (S_ISLNK(fattr->cf_mode)) {
- 		if (likely(data->symlink_target))
-@@ -1233,11 +1233,14 @@ handle_mnt_opt:
- 				 __func__, rc);
- 			goto out;
- 		}
--	}
--
--	/* fill in remaining high mode bits e.g. SUID, VTX */
--	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_UNX_EMUL)
-+	} else if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_UNX_EMUL)
-+		/* fill in remaining high mode bits e.g. SUID, VTX */
- 		cifs_sfu_mode(fattr, full_path, cifs_sb, xid);
-+	else if (!(tcon->posix_extensions))
-+		/* clear write bits if ATTR_READONLY is set */
-+		if (fattr->cf_cifsattrs & ATTR_READONLY)
-+			fattr->cf_mode &= ~(S_IWUGO);
-+
- 
- 	/* check for Minshall+French symlinks */
- 	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_MF_SYMLINKS) {
+ 	mutex_init(&priv->list_lock);
+ 	INIT_LIST_HEAD(&priv->obj_list);
+@@ -753,6 +757,7 @@ err_gem_deinit:
+ 	drm_mode_config_cleanup(ddev);
+ 	omap_gem_deinit(ddev);
+ 	destroy_workqueue(priv->wq);
++err_alloc_workqueue:
+ 	omap_disconnect_pipelines(ddev);
+ 	drm_dev_put(ddev);
+ 	return ret;
 
 
 
