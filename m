@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-82723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5202994E31
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:14:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D554B994C66
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69E261F23DED
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:14:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1341D1C24EFB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC871DF27A;
-	Tue,  8 Oct 2024 13:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765C51DEFC8;
+	Tue,  8 Oct 2024 12:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WokVjNGm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qE9p8Sgt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BEB1DEFED;
-	Tue,  8 Oct 2024 13:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EF11CCB32;
+	Tue,  8 Oct 2024 12:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393207; cv=none; b=SLtOxItodfrYcH5HB+F4E77RQjCiq3GnGbZH5PtJbeQ8cqyW2wsKkb++vtxeIdN/NsaR5UAULoBwKLu0XN7OjhIWe+VO8i/8lYBAp+ooq5VTXc5/1GnEifiorPbRuJztWTibMWjQV+vaBcLwmtDh4jTFOj0xE3Y8wR8gfyD8+6M=
+	t=1728392044; cv=none; b=Arj8Bobq8Fvp+DfcHPmpIdUbMQ84WfPX2ATz6Xmfj3y2wgskRX9CTVqnQ8OLCcJtiIJqo0vQ9NSwMMpnt2Q8zM8dHK8xu68LksJ1eJUVVQhlv7/m4I9sYFkgorISda7rlzJ/Y/V0B+ZoiIJcWAmDh5HIpsQj+1aQXveenA+tuCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393207; c=relaxed/simple;
-	bh=twa4kOF9p1GkjolZfHajeOhhfEIstVp+g8f7LVuenfM=;
+	s=arc-20240116; t=1728392044; c=relaxed/simple;
+	bh=o2u150M0/8kim3OuWoRmlGFeHLGv+avUpYRa14m83Hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fhyRBYwtNSUrK1nItSOriYu0VW4NKDLBm3aKKR2+U4lUSeK+U55rvZeYclOEXgClFga8QItJoTwzC//6pryjZUlcFQzoFPDAQEPdmBu+b/dbINvcRZhgOGfIMwr/VRvTc2YlyHU1uFt2OhuBcpmcCtvnKci7U+tltBEUEUPDVsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WokVjNGm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 968C7C4CEC7;
-	Tue,  8 Oct 2024 13:13:26 +0000 (UTC)
+	 MIME-Version; b=bD0Hz/HPSpxKKCf9/ehblGO0AVBtkfmybVe5VqXbvfD1XvOh1uZaCK3+W8kVAb2XDP/0OECWaV9MXUTsKNQ7WWTSihbH6/4xh28VPBnrrYewRmf7738BiLTfQIr7/j6Ekbh/m0egyX1SBZo9UQ4VnaXCGv1U+9INEBqFLAOUYWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qE9p8Sgt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE4BC4CEC7;
+	Tue,  8 Oct 2024 12:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393207;
-	bh=twa4kOF9p1GkjolZfHajeOhhfEIstVp+g8f7LVuenfM=;
+	s=korg; t=1728392044;
+	bh=o2u150M0/8kim3OuWoRmlGFeHLGv+avUpYRa14m83Hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WokVjNGm6iEp+m+kSMFnGaz1Y5dhp8vXXHZgPtiYztAZHI0SVk1Y6q0N7+73n4FQ/
-	 PUrCKTXz3kPQyyP1OnQ3vUMbb49C8ynoS5UYlMYi3d1DPGspq2okxjIEhBzYhj2OJw
-	 1O5n4f8/Dx3Mg36fMIp91f7XcUyyhMm1A0MBDh34=
+	b=qE9p8SgttT9tVGKLYYOh1HghNmiWlzEtzDKSQEjZgyulsVHNznkZHA6jzT4BdczfZ
+	 OqrSoPDOWyvxwK+wFDJIGlXSsNJWZ9iUPhnJIpa2y/Vib+N5z2x3HViy4Cp/pfsblU
+	 JjYh8VG1b7XIkv1LvFb1zuLqW5I+rVTWnpx7Lbuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zong-Zhe Yang <kevin_yang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Zhu Jun <zhujun2@cmss.chinamobile.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/386] wifi: rtw88: select WANT_DEV_COREDUMP
-Date: Tue,  8 Oct 2024 14:05:28 +0200
-Message-ID: <20241008115632.724261268@linuxfoundation.org>
+Subject: [PATCH 6.11 299/558] tools/hv: Add memory allocation check in hv_fcopy_start
+Date: Tue,  8 Oct 2024 14:05:29 +0200
+Message-ID: <20241008115714.086859780@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+From: Zhu Jun <zhujun2@cmss.chinamobile.com>
 
-[ Upstream commit 7e989b0c1e33210c07340bf5228aa83ea52515b5 ]
+[ Upstream commit 94e86b174d103d941b4afc4f016af8af9e5352fa ]
 
-We have invoked device coredump when fw crash.
-Should select WANT_DEV_COREDUMP by ourselves.
+Added error handling for memory allocation failures
+of file_name and path_name.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240718070616.42217-1-pkshih@realtek.com
+Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
+Reviewed-by: Dexuan Cui <decui@microsoft.com>
+Tested-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20240906091333.11419-1-zhujun2@cmss.chinamobile.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240906091333.11419-1-zhujun2@cmss.chinamobile.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ tools/hv/hv_fcopy_uio_daemon.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wireless/realtek/rtw88/Kconfig
-index cffad1c012499..2af2bc613458d 100644
---- a/drivers/net/wireless/realtek/rtw88/Kconfig
-+++ b/drivers/net/wireless/realtek/rtw88/Kconfig
-@@ -12,6 +12,7 @@ if RTW88
+diff --git a/tools/hv/hv_fcopy_uio_daemon.c b/tools/hv/hv_fcopy_uio_daemon.c
+index 3ce316cc9f970..7a00f3066a980 100644
+--- a/tools/hv/hv_fcopy_uio_daemon.c
++++ b/tools/hv/hv_fcopy_uio_daemon.c
+@@ -296,6 +296,13 @@ static int hv_fcopy_start(struct hv_start_fcopy *smsg_in)
+ 	file_name = (char *)malloc(file_size * sizeof(char));
+ 	path_name = (char *)malloc(path_size * sizeof(char));
  
- config RTW88_CORE
- 	tristate
-+	select WANT_DEV_COREDUMP
++	if (!file_name || !path_name) {
++		free(file_name);
++		free(path_name);
++		syslog(LOG_ERR, "Can't allocate memory for file name and/or path name");
++		return HV_E_FAIL;
++	}
++
+ 	wcstoutf8(file_name, (__u16 *)in_file_name, file_size);
+ 	wcstoutf8(path_name, (__u16 *)in_path_name, path_size);
  
- config RTW88_PCI
- 	tristate
 -- 
 2.43.0
 
