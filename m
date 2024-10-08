@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-82616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D2F994E0A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:12:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 143EF994FE2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:30:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC940B285E5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:07:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A2CF1C24CBF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815D71DE8BE;
-	Tue,  8 Oct 2024 13:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022A11DEFF6;
+	Tue,  8 Oct 2024 13:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1/O6nd0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MN+B3ioo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356E61DE88F;
-	Tue,  8 Oct 2024 13:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B558D1D9A43;
+	Tue,  8 Oct 2024 13:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392856; cv=none; b=JDLGOBMeBDYtMCnyJ4DxCIZUG1YGI23i41nCVbu4Z6ROwbzYWNHJc8Q7Qw3KMi1MJ+A2U1VpCqAG7ccph4sqRPEr2L0l8SO9AV1EFVWrH3yu/uNlCc+5iXkF4K4sU7c0Ss93l8cCMSqX2oDFKVy0A9EXr9CA1Ozkoy0a7/9sNyY=
+	t=1728394162; cv=none; b=uTwcj57UNKxfjdTiZ+Wl12Rs6BnRgzkVvtDYCVDxxc1ITzfcsOyGg+1ZCRiNsZFIGABgzR4MjlDix1FepXo4oEr6gBSYTLb74F85o5xE+eLZvmyY9xxss+qMFXKGAgIPU5ID7ZTPQtMaVSeggK55HKJQBW9mLMEStjfj3aLySzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392856; c=relaxed/simple;
-	bh=8w+qchzuT6fZnvzr3V5a3siLttVX9xFbixQtpXDqH84=;
+	s=arc-20240116; t=1728394162; c=relaxed/simple;
+	bh=GepXjxZ0tGSaPm+xJ8oq0FdnrwmIE3qMsymYs/PNJww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gK+Pom0bZpIpYRoCgaYlM2EBc7tpLheK3sYElKrlvvNkJjO2jdJeTfQqZw8JJBxu45geSDMZ121VCKOfFfO/IIBjkrpUDutZYrfOjKvltb6McdBN+3yZuqeTpqJDRKIPvvcUi1YwD0H36O0pEWObMP5+8OC5VtHoDw4fAoHtI7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1/O6nd0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8B1C4CECC;
-	Tue,  8 Oct 2024 13:07:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BeGRXFe4enQSPu0NR+S/SNkKiajHEgEF8fQHA3EnomkqZTI3cjjcjtTEmdQ/Mg9X7Cnu+qUpqIVLvZ2dxlHldzxT6J8m8acT9LALd6k7rSNwXVynEionq6lsnheiYlrX9BNJ26DF2JGS4g+Y0PKdnGaKz7WqvThoerk1QJKW1SE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MN+B3ioo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E27BFC4CEC7;
+	Tue,  8 Oct 2024 13:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392856;
-	bh=8w+qchzuT6fZnvzr3V5a3siLttVX9xFbixQtpXDqH84=;
+	s=korg; t=1728394162;
+	bh=GepXjxZ0tGSaPm+xJ8oq0FdnrwmIE3qMsymYs/PNJww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P1/O6nd0eBns33xT00TjuDN4hM6qWTnLQwnF5XyJ9x36Bm8foKvsEdfPUWZvsAKN6
-	 e3yVkAe9aRS+ffgg7r4PhHUnkH22pg0Sool520dvN6LM1nJx62+BunaE7gNVMhtgTD
-	 GfNl4nXXp5x8v5MoyR4lbogkRojT/qFUvfbOyLak=
+	b=MN+B3iooc84S2pjmX7I3wBNDStpXUx2MiGCtD7NIPmXhp8N9AH2YRj9drMFyrrgqr
+	 k8P2xuvswfKySkG4ID2pRGKIonGWKsghRLOwZFuxkQTuk1onJEr8GH5XMxaL/IKbVa
+	 AXBfGvTtaafdx0yL+3yB46aU4ReTNmdA/HfsRGDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 539/558] NFSD: Limit the number of concurrent async COPY operations
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Luben Tuikov <ltuikov89@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	Philipp Stanner <pstanner@redhat.com>
+Subject: [PATCH 6.6 324/386] drm/sched: Add locking to drm_sched_entity_modify_sched
 Date: Tue,  8 Oct 2024 14:09:29 +0200
-Message-ID: <20241008115723.444481815@linuxfoundation.org>
+Message-ID: <20241008115642.136365085@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,122 +66,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit aadc3bbea163b6caaaebfdd2b6c4667fbc726752 ]
+commit 4286cc2c953983d44d248c9de1c81d3a9643345c upstream.
 
-Nothing appears to limit the number of concurrent async COPY
-operations that clients can start. In addition, AFAICT each async
-COPY can copy an unlimited number of 4MB chunks, so can run for a
-long time. Thus IMO async COPY can become a DoS vector.
+Without the locking amdgpu currently can race between
+amdgpu_ctx_set_entity_priority() (via drm_sched_entity_modify_sched()) and
+drm_sched_job_arm(), leading to the latter accesing potentially
+inconsitent entity->sched_list and entity->num_sched_list pair.
 
-Add a restriction mechanism that bounds the number of concurrent
-background COPY operations. Start simple and try to be fair -- this
-patch implements a per-namespace limit.
+v2:
+ * Improve commit message. (Philipp)
 
-An async COPY request that occurs while this limit is exceeded gets
-NFS4ERR_DELAY. The requesting client can choose to send the request
-again after a delay or fall back to a traditional read/write style
-copy.
-
-If there is need to make the mechanism more sophisticated, we can
-visit that in future patches.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: b37aced31eb0 ("drm/scheduler: implement a function to modify sched list")
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Luben Tuikov <ltuikov89@gmail.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: Philipp Stanner <pstanner@redhat.com>
+Cc: <stable@vger.kernel.org> # v5.7+
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240913160559.49054-2-tursulin@igalia.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/netns.h     |  1 +
- fs/nfsd/nfs4proc.c  | 11 +++++++++--
- fs/nfsd/nfs4state.c |  1 +
- fs/nfsd/xdr4.h      |  1 +
- 4 files changed, 12 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/scheduler/sched_entity.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
-index 14ec156563209..5cae26917436c 100644
---- a/fs/nfsd/netns.h
-+++ b/fs/nfsd/netns.h
-@@ -148,6 +148,7 @@ struct nfsd_net {
- 	u32		s2s_cp_cl_id;
- 	struct idr	s2s_cp_stateids;
- 	spinlock_t	s2s_cp_lock;
-+	atomic_t	pending_async_copies;
- 
- 	/*
- 	 * Version information
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 60c526adc27c6..5768b2ff1d1d1 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1279,6 +1279,7 @@ static void nfs4_put_copy(struct nfsd4_copy *copy)
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -111,8 +111,10 @@ void drm_sched_entity_modify_sched(struc
  {
- 	if (!refcount_dec_and_test(&copy->refcount))
- 		return;
-+	atomic_dec(&copy->cp_nn->pending_async_copies);
- 	kfree(copy->cp_src);
- 	kfree(copy);
+ 	WARN_ON(!num_sched_list || !sched_list);
+ 
++	spin_lock(&entity->rq_lock);
+ 	entity->sched_list = sched_list;
+ 	entity->num_sched_list = num_sched_list;
++	spin_unlock(&entity->rq_lock);
  }
-@@ -1833,10 +1834,16 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	memcpy(&copy->fh, &cstate->current_fh.fh_handle,
- 		sizeof(struct knfsd_fh));
- 	if (nfsd4_copy_is_async(copy)) {
--		status = nfserrno(-ENOMEM);
- 		async_copy = kzalloc(sizeof(struct nfsd4_copy), GFP_KERNEL);
- 		if (!async_copy)
- 			goto out_err;
-+		async_copy->cp_nn = nn;
-+		/* Arbitrary cap on number of pending async copy operations */
-+		if (atomic_inc_return(&nn->pending_async_copies) >
-+				(int)rqstp->rq_pool->sp_nrthreads) {
-+			atomic_dec(&nn->pending_async_copies);
-+			goto out_err;
-+		}
- 		INIT_LIST_HEAD(&async_copy->copies);
- 		refcount_set(&async_copy->refcount, 1);
- 		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
-@@ -1876,7 +1883,7 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	}
- 	if (async_copy)
- 		cleanup_async_copy(async_copy);
--	status = nfserrno(-ENOMEM);
-+	status = nfserr_jukebox;
- 	goto out;
- }
+ EXPORT_SYMBOL(drm_sched_entity_modify_sched);
  
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index f4eae4b65572a..3837f4e417247 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -8575,6 +8575,7 @@ static int nfs4_state_create_net(struct net *net)
- 	spin_lock_init(&nn->client_lock);
- 	spin_lock_init(&nn->s2s_cp_lock);
- 	idr_init(&nn->s2s_cp_stateids);
-+	atomic_set(&nn->pending_async_copies, 0);
- 
- 	spin_lock_init(&nn->blocked_locks_lock);
- 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
-diff --git a/fs/nfsd/xdr4.h b/fs/nfsd/xdr4.h
-index fbdd42cde1fa5..2a21a7662e030 100644
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -713,6 +713,7 @@ struct nfsd4_copy {
- 	struct nfsd4_ssc_umount_item *ss_nsui;
- 	struct nfs_fh		c_fh;
- 	nfs4_stateid		stateid;
-+	struct nfsd_net		*cp_nn;
- };
- 
- static inline void nfsd4_copy_set_sync(struct nfsd4_copy *copy, bool sync)
--- 
-2.43.0
-
 
 
 
