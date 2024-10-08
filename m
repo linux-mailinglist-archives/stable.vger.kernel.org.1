@@ -1,92 +1,110 @@
-Return-Path: <stable+bounces-81579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F649946C3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:25:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCD69946FD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:33:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20F951C246DD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 11:25:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAEE21F26EA3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 11:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFBC1D2F7E;
-	Tue,  8 Oct 2024 11:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3691CEEA0;
+	Tue,  8 Oct 2024 11:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KXer0U3n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eq1ERBFb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7371D2B3C
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 11:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6961183CD4;
+	Tue,  8 Oct 2024 11:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728386674; cv=none; b=i7cWTyIcDfugGHYS6Ti14rjE+qaY6oW/vwhWYzIuMY14CoJAgq81FQ8zLvR0x91b+1hfmrHZvsT3NSIWnyG1R3BHmq0kv9+Qiwfzct+t4+aHrrGiUqRdrPl+ljtxXaqm39pYs3Ig51ZtZoSAZbnZPz48DCqV+nh7JUVh9dot+1M=
+	t=1728387060; cv=none; b=q0eysehv/T2UAvTBNyhC3wutJxo3koM9Z3wKvfLK9+6r2QqDkuOuK0oE+y7ubq9WeyFIz8SE23sVEsfcOUMPtFhjDjzPWNjcMFnudCD6AXpsnz+9VbRTrJI0D1V0FjuIHfLkk7MbdSYxImRMZNaAqUGWL0nNpOW2dwqCD/BEdYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728386674; c=relaxed/simple;
-	bh=XSXFPh3AhgdMX/aQ2nRzmtyqm+US3yShKHue+ysilXo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dUN6P9NtBMccUJmuHQcHDgyEro0TrZyp/FNfNCFCwYwy8SgxoU1ORmWP/YYihFxuKOLbRe6uQ+Udxpu0ir21QwBu5YqhLXNEhS4hGpcu0Cdbkc8pqkOrmeG6LqhD+Bxt4OEOllUr4igJacwcZ/NF5IV+zAzyElGJ+cfMWBGfH3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KXer0U3n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE05CC4CECC;
-	Tue,  8 Oct 2024 11:24:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728386674;
-	bh=XSXFPh3AhgdMX/aQ2nRzmtyqm+US3yShKHue+ysilXo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KXer0U3ngcCoYAqa0synU7wQPOyPfPIno6apR/ptZnSMMCi/C6mCzBfFtqtAA4z3D
-	 4veaOg+5FHFkzpG/RIclCeEVitNbqnJauPoszNfqktTA9DvLiPviG/r77iP7sS1kb3
-	 /ghDhPeuj6x7fCeZ/3OfI3Y5BCxvFeGr10TyhbKI=
-Date: Tue, 8 Oct 2024 13:24:31 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Pavel Machek <pavel@denx.de>
-Cc: Vegard Nossum <vegard.nossum@oracle.com>, Jens Axboe <axboe@kernel.dk>,
-	stable@vger.kernel.org, cengiz.can@canonical.com, mheyne@amazon.de,
-	mngyadam@amazon.com, kuntal.nayak@broadcom.com,
-	ajay.kaher@broadcom.com, zsm@chromium.org, dan.carpenter@linaro.org,
-	shivani.agarwal@broadcom.com, ahalaney@redhat.com,
-	alsi@bang-olufsen.dk, ardb@kernel.org,
-	benjamin.gaignard@collabora.com, bli@bang-olufsen.dk,
-	chengzhihao1@huawei.com, christophe.jaillet@wanadoo.fr,
-	ebiggers@kernel.org, edumazet@google.com, fancer.lancer@gmail.com,
-	florian.fainelli@broadcom.com, harshit.m.mogalapalli@oracle.com,
-	hdegoede@redhat.com, horms@kernel.org, hverkuil-cisco@xs4all.nl,
-	ilpo.jarvinen@linux.intel.com, jgg@nvidia.com, kevin.tian@intel.com,
-	kirill.shutemov@linux.intel.com, kuba@kernel.org,
-	luiz.von.dentz@intel.com, md.iqbal.hossain@intel.com,
-	mpearson-lenovo@squebb.ca, nicolinc@nvidia.com, pablo@netfilter.org,
-	rfoss@kernel.org, richard@nod.at, tfiga@chromium.org,
-	vladimir.oltean@nxp.com, xiaolei.wang@windriver.com,
-	yanjun.zhu@linux.dev, yi.zhang@redhat.com, yu.c.chen@intel.com,
-	yukuai3@huawei.com
-Subject: Re: [PATCH RFC 6.6.y 00/15] Some missing CVE fixes
-Message-ID: <2024100823-barbed-flatness-631c@gregkh>
-References: <20241002150606.11385-1-vegard.nossum@oracle.com>
- <612f0415-96c2-4d52-bd3d-46ffa8afbeef@kernel.dk>
- <69e265b4-fae2-4a60-9652-c8db07da89a1@oracle.com>
- <ZwUVPCre5BR6uPZj@duo.ucw.cz>
+	s=arc-20240116; t=1728387060; c=relaxed/simple;
+	bh=LpL9dtMQLqWD4sFWnQHhVp2X1e22LnbI6VuQJzY8JJ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DuLEQqkoKJigoQ1FLnX7unSJ4oQbIpLb9MgphC1bLHc4g285sQrVT49wLZSkw8Yr8gkzWsxLzP1m//XrgHxRc2PhwDTCGhmMCvkoSSlfHQED3II0SYLQSHVktsi24zxzKg5NNE45Uwdj35+WlUmggWwbW3Wcs51tyhg9ZarzABw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eq1ERBFb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F47DC4CEC7;
+	Tue,  8 Oct 2024 11:30:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728387060;
+	bh=LpL9dtMQLqWD4sFWnQHhVp2X1e22LnbI6VuQJzY8JJ0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eq1ERBFbQyt61djlGPEE1niuZpvzQdy2Wo7DPio9ouC7cMlFAmNRYplIX17mMZz+S
+	 Vj8GmKvO4sT3Z4CgwO0bKOEGeQJ14uoDG8WmDxEl0SmlLXtGVxf2CVWXaQDMGGd6V3
+	 Y57wPUdsxW8t8etJdVAHiHaMlNz0h7PyyX8lnwB6PGemZUQZXayP5iRCN0DZo21CBn
+	 0EJNqFRrHMUU87NChkv8P6tuwyxm+r2qy1s0JMuPxwz2F3eJnXt4adeAUD1TA/YgjW
+	 Cnx+FgySMFdIQG3v5eaizcU1YrgoQC8zzAkaWnABQdhgQRkPfBetH4XoADqmMCszXV
+	 PU0BnhbZ2Hl+g==
+From: Christian Brauner <brauner@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>,
+	Lennart Poettering <lennart@poettering.net>,
+	linux-fsdevel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] fcntl: make F_DUPFD_QUERY associative
+Date: Tue,  8 Oct 2024 13:30:49 +0200
+Message-ID: <20241008-duften-formel-251f967602d5@brauner>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZwUVPCre5BR6uPZj@duo.ucw.cz>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1269; i=brauner@kernel.org; h=from:subject:message-id; bh=LpL9dtMQLqWD4sFWnQHhVp2X1e22LnbI6VuQJzY8JJ0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaSzir+xFdbadU9yBfsx8VaN94/tZWzLjP/wxc+r2RC7R H3Hut0/O0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACaiFsTwP3Hbgotzf876cOGV 62VHebN5Bh4Hb7kwNLwUs3LKWnbsxQlGhsXFTvuqz2k4xm4Ktz0rLrPk64PKPx+yvmy/JrPTfba 7OTcA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 08, 2024 at 01:19:24PM +0200, Pavel Machek wrote:
-> Hi!
-> 
-> > Unfortunately for distributions, there may be various customers or
-> > government agencies which expect or require all CVEs to be addressed
-> > (regardless of severity), which is why we're backporting these to stable
-> > and trying to close those gaps.
-> 
-> Customers and government will need to understand that with CVEs
-> assigned the way they are, addressing all of them will be impossible
-> (or will lead to unstable kernel), unfortunately :-(.
+Currently when passing a closed file descriptor to
+fcntl(fd, F_DUPFD_QUERY, fd_dup) the order matters:
 
-Citation needed please.
+    fd = open("/dev/null");
+    fd_dup = dup(fd);
+
+When we now close one of the file descriptors we get:
+
+    (1) fcntl(fd, fd_dup) // -EBADF
+    (2) fcntl(fd_dup, fd) // 0 aka not equal
+
+depending on which file descriptor is passed first. That's not a huge
+deal but it gives the api I slightly weird feel. Make it so that the
+order doesn't matter by requiring that both file descriptors are valid:
+
+(1') fcntl(fd, fd_dup) // -EBADF
+(2') fcntl(fd_dup, fd) // -EBADF
+
+Fixes: c62b758bae6a ("fcntl: add F_DUPFD_QUERY fcntl()")
+Cc: <stable@vger.kernel.org>
+Reported-by: Lennart Poettering <lennart@poettering.net>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+---
+ fs/fcntl.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/fs/fcntl.c b/fs/fcntl.c
+index 22dd9dcce7ec..3d89de31066a 100644
+--- a/fs/fcntl.c
++++ b/fs/fcntl.c
+@@ -397,6 +397,9 @@ static long f_dupfd_query(int fd, struct file *filp)
+ {
+ 	CLASS(fd_raw, f)(fd);
+ 
++	if (fd_empty(f))
++		return -EBADF;
++
+ 	/*
+ 	 * We can do the 'fdput()' immediately, as the only thing that
+ 	 * matters is the pointer value which isn't changed by the fdput.
+-- 
+2.45.2
+
 
