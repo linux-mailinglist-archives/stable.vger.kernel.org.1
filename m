@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-82681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63A4E994DF3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:11:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7666E994C34
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A0EF28532C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:11:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B6C41F2276D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041421DEFC6;
-	Tue,  8 Oct 2024 13:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FD21DE4FA;
+	Tue,  8 Oct 2024 12:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hgj5DeRm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBHIV1cq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58221DE4CD;
-	Tue,  8 Oct 2024 13:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61AC81CCB32;
+	Tue,  8 Oct 2024 12:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393067; cv=none; b=cPRI0jQFTS6kU+zBEKKTUXYVY1nL8Qx/d2Z2mJa+AngWsoLnk0gR1eHGw7EPsStAMjacj6jWl/XgPFkrtmeBJ7ZQmMV3Zbt3uThMFmeAKSuVDPyg0QnPM9WO9LVXWJeEkNJsb1mV3iFHP+xvoIPG/Atk/FY5vcvJCaPw/jXqPw4=
+	t=1728391901; cv=none; b=HvnODfNmHhKGxArIiv9FKFcUsL0h22YTzPQacoZx7ZHFDiR76fOEP5twDfSFhRKc/cRpR8xMVR0u39OMgJ2ZFr5EdV87DXubnYRCte8VRBAS1HwUgJdbCg8EM6vSm0oMaf1mfTyXi6bqZ0JyjKRLSUURqZfex5JyTcDo1dSBJWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393067; c=relaxed/simple;
-	bh=A1NKzNTbJH/znyX5l/Q8NCJrvv6lRptMpmFQfIEJiCw=;
+	s=arc-20240116; t=1728391901; c=relaxed/simple;
+	bh=KFKngU5eU0Ww6zmqwRQCDVC0b49lGFxFKHlIpQFDxdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VPXXnJeiCsCHxExd+q5rPk7sE4NxFWYbCHjNySBhF/zLDDpD8majYl+NEadEz3RHKWlXSafUXKmgiVXBZI2XkzkyphPFqQQa+6siX6Q/y5PvtipJLga0GOAnUOdlTfDCzik1baHXuwL8SXdf1mMRwjfzwq9btyQfA1q0/Tp5lPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hgj5DeRm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28225C4CEC7;
-	Tue,  8 Oct 2024 13:11:06 +0000 (UTC)
+	 MIME-Version; b=rmpqoVaiOLTQevvPid9yGi38CN1uRNQqtSqWK6pxYJF6YZNDMcM3Uj/4mTJVY07mrNzMFe9lq0aBKhtkrpzJ8TJuIHWZ0X44VylG6WsHpvcFTuY6hziqDm1aKBYr7MtGx46D74tslFBcZKty7IRHoJMZkotV0+zAVsuC90g3HbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBHIV1cq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5AF2C4CEC7;
+	Tue,  8 Oct 2024 12:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393067;
-	bh=A1NKzNTbJH/znyX5l/Q8NCJrvv6lRptMpmFQfIEJiCw=;
+	s=korg; t=1728391901;
+	bh=KFKngU5eU0Ww6zmqwRQCDVC0b49lGFxFKHlIpQFDxdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hgj5DeRm+p4eAil4RKTsOhLFV2mcK9CDmosSApzUz0XkCZ0thIeai59Qzy5WTUUQ2
-	 DgXhOsInCSgSJ+5QVjCRfljBOScyyxaSKf2iqNfxAGW2dHD/tAJcXEVKAdSxHpvqDP
-	 beRqawKlc24TsSlDgAPIIhMK5Q367uBtJUPTfVWI=
+	b=vBHIV1cqAVJqTf1GOcDW6Ca2B5Mo+wHz9bPrRK3wUAwaS7Sj+m1zAU5kYvqvh7UbB
+	 hfvZH8l8FXKzVuawTPfVWwKcczcCx0s4jxsnhfCQvOkMRuEP4OojYKO5MX7TRgYiW1
+	 3dEwEq/NQ1aYeZaNlnN1cT66JfIBYzzw87EyG2uw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/386] Bluetooth: hci_sock: Fix not validating setsockopt user input
+Subject: [PATCH 6.11 257/558] drm/amd/display: Increase array size of dummy_boolean
 Date: Tue,  8 Oct 2024 14:04:47 +0200
-Message-ID: <20241008115631.129164002@linuxfoundation.org>
+Message-ID: <20241008115712.447511166@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit b2186061d6043d6345a97100460363e990af0d46 ]
+[ Upstream commit 6d64d39486197083497a01b39e23f2f8474b35d3 ]
 
-Check user input length before copying data.
+[WHY]
+dml2_core_shared_mode_support and dml_core_mode_support access the third
+element of dummy_boolean, i.e. hw_debug5 = &s->dummy_boolean[2], when
+dummy_boolean has size of 2. Any assignment to hw_debug5 causes an
+OVERRUN.
 
-Fixes: 09572fca7223 ("Bluetooth: hci_sock: Add support for BT_{SND,RCV}BUF")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[HOW]
+Increase dummy_boolean's array size to 3.
+
+This fixes 2 OVERRUN issues reported by Coverity.
+
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sock.c | 21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ .../dc/dml2/dml21/src/dml2_core/dml2_core_shared_types.h        | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
-index 3d904ca92e9e8..69c2ba1e843eb 100644
---- a/net/bluetooth/hci_sock.c
-+++ b/net/bluetooth/hci_sock.c
-@@ -1943,10 +1943,9 @@ static int hci_sock_setsockopt_old(struct socket *sock, int level, int optname,
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_shared_types.h b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_shared_types.h
+index 1343b744eeb31..67e32a4ab0114 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_shared_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_shared_types.h
+@@ -865,7 +865,7 @@ struct dml2_core_calcs_mode_support_locals {
+ 	unsigned int dpte_row_bytes_per_row_l[DML2_MAX_PLANES];
+ 	unsigned int dpte_row_bytes_per_row_c[DML2_MAX_PLANES];
  
- 	switch (optname) {
- 	case HCI_DATA_DIR:
--		if (copy_from_sockptr(&opt, optval, sizeof(opt))) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, len);
-+		if (err)
- 			break;
--		}
- 
- 		if (opt)
- 			hci_pi(sk)->cmsg_mask |= HCI_CMSG_DIR;
-@@ -1955,10 +1954,9 @@ static int hci_sock_setsockopt_old(struct socket *sock, int level, int optname,
- 		break;
- 
- 	case HCI_TIME_STAMP:
--		if (copy_from_sockptr(&opt, optval, sizeof(opt))) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, len);
-+		if (err)
- 			break;
--		}
- 
- 		if (opt)
- 			hci_pi(sk)->cmsg_mask |= HCI_CMSG_TSTAMP;
-@@ -1976,11 +1974,9 @@ static int hci_sock_setsockopt_old(struct socket *sock, int level, int optname,
- 			uf.event_mask[1] = *((u32 *) f->event_mask + 1);
- 		}
- 
--		len = min_t(unsigned int, len, sizeof(uf));
--		if (copy_from_sockptr(&uf, optval, len)) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&uf, sizeof(uf), optval, len);
-+		if (err)
- 			break;
--		}
- 
- 		if (!capable(CAP_NET_RAW)) {
- 			uf.type_mask &= hci_sec_filter.type_mask;
-@@ -2039,10 +2035,9 @@ static int hci_sock_setsockopt(struct socket *sock, int level, int optname,
- 			goto done;
- 		}
- 
--		if (copy_from_sockptr(&opt, optval, sizeof(opt))) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, len);
-+		if (err)
- 			break;
--		}
- 
- 		hci_pi(sk)->mtu = opt;
- 		break;
+-	bool dummy_boolean[2];
++	bool dummy_boolean[3];
+ 	unsigned int dummy_integer[3];
+ 	unsigned int dummy_integer_array[36][DML2_MAX_PLANES];
+ 	enum dml2_odm_mode dummy_odm_mode[DML2_MAX_PLANES];
 -- 
 2.43.0
 
