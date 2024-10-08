@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B843994AF4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:38:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F6C994D66
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5811285295
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:38:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9513E1C24D5A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9511CCB32;
-	Tue,  8 Oct 2024 12:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5C01DE2AE;
+	Tue,  8 Oct 2024 13:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNI6Ofpb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBI5ZnQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579351779B1;
-	Tue,  8 Oct 2024 12:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46FEF1DE88F;
+	Tue,  8 Oct 2024 13:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391099; cv=none; b=r63ulDs4C34MNNUgeQFA1i+jg+5geBeXWZ5J5DP/LZkcwSWN77vYuyXcfmWu8GDeAsrmXCxOf+CEOMjjL3Cx+PTUcq7ngPC7KLVM+AgbwrxyJvxyhvo32LrAlOBQ+OmNW84CAvtPeK7ZBERX2dLagSgB3L9gOSc4K49CHyW0edo=
+	t=1728392698; cv=none; b=Q8FEFupVZMGuy2MYKBUCP7Nk+U5zpnQ4drhX3EvNMon+npr5Ow1pzLCCYIjJpk+ihj3PgfRVxRwz4WxBaw4adTtDefhRVCCk+B0X+uq6pfmboImwCmWeHA0eeuHg5rjHLaKE3WF3pFOVfZBCCg91ZCmc4eRfXbuBDRg6bJUsoi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391099; c=relaxed/simple;
-	bh=uCOJpE28WuMBySXC+OIcHpqt8zC/Glkw+tgppbW6WMI=;
+	s=arc-20240116; t=1728392698; c=relaxed/simple;
+	bh=nj6crMyt/pxGrVkEzhoSJWsAXr2U3xovQGx3feduQcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ncvwhqGX4Abf6cF3cRtjMUxgwxLRkE8eYizN/xeqDaRxF8xIqdxXnS9sUlvmijUL6jRRZHmZolBdB44e00i37V69xH2y4XIXrAkmRqd3sLADoZ9o+KFZdNxq63DPN8eFOFjTZTrdEb15EJ7n5T3yBc5btcI8ptJPr0i9PZqK7Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNI6Ofpb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851EAC4CEC7;
-	Tue,  8 Oct 2024 12:38:18 +0000 (UTC)
+	 MIME-Version; b=EU+ZHw5x3lFUeuqZ6rRcr8ZbJVBbJg+yBa9+AnIs5gwB+n8f0JpT/RhijlL4XG/oCBo0wXCuT3RqtQUgjIWGbthEkrx258LCmxs22MkWj7WlZ1ZFT6t8MLH9avkR9XNF1QoxSrNzTYTNlnHnrTt5CEK9VQnyhk4ZWnxw3H62ams=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBI5ZnQc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE74C4CEC7;
+	Tue,  8 Oct 2024 13:04:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391098;
-	bh=uCOJpE28WuMBySXC+OIcHpqt8zC/Glkw+tgppbW6WMI=;
+	s=korg; t=1728392698;
+	bh=nj6crMyt/pxGrVkEzhoSJWsAXr2U3xovQGx3feduQcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LNI6OfpbIu7jkmw7QZwGdH8tyTNHio6rePMcTycbEK9zD0fDgOks8Fh7dlrhWv+tV
-	 lG/7fevXp0UaQvVF0Tsv9yMUwyXsykPBGB2u5e4VoIo+M/VWdmpaIlahyju1Cez7Pw
-	 cgeG5mJEljmUBdMokoa+ODD9aPDN5J52VoSxWSGw=
+	b=sBI5ZnQc0p+rhHJwhzQahHdJ3vqPIY9Ja0Gc2k5rpI/qwVToPPRmv/rJBQCjdttCc
+	 5yeggG65iFbzb/uUfCnCuARUZl+0HYrko4XP8H4TYwHBFTlSiml5aGW+kN/elxiOyH
+	 G7YyYVjj75+JbpweHDsZGtlC8UKyChnrWc5eWuLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 460/482] NFSD: Limit the number of concurrent async COPY operations
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.11 493/558] ACPI: resource: Loosen the Asus E1404GAB DMI match to also cover the E1404GA
 Date: Tue,  8 Oct 2024 14:08:43 +0200
-Message-ID: <20241008115706.616353379@linuxfoundation.org>
+Message-ID: <20241008115721.631995508@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit aadc3bbea163b6caaaebfdd2b6c4667fbc726752 ]
+commit 63539defee17bf0cbd8e24078cf103efee9c6633 upstream.
 
-Nothing appears to limit the number of concurrent async COPY
-operations that clients can start. In addition, AFAICT each async
-COPY can copy an unlimited number of 4MB chunks, so can run for a
-long time. Thus IMO async COPY can become a DoS vector.
+Like other Asus Vivobooks, the Asus Vivobook Go E1404GA has a DSDT
+describing IRQ 1 as ActiveLow, while the kernel overrides to Edge_High.
 
-Add a restriction mechanism that bounds the number of concurrent
-background COPY operations. Start simple and try to be fair -- this
-patch implements a per-namespace limit.
+    $ sudo dmesg | grep DMI:.*BIOS
+    [    0.000000] DMI: ASUSTeK COMPUTER INC. Vivobook Go E1404GA_E1404GA/E1404GA, BIOS E1404GA.302 08/23/2023
+    $ sudo cp /sys/firmware/acpi/tables/DSDT dsdt.dat
+    $ iasl -d dsdt.dat
+    $ grep -A 30 PS2K dsdt.dsl | grep IRQ -A 1
+                IRQ (Level, ActiveLow, Exclusive, )
+                    {1}
 
-An async COPY request that occurs while this limit is exceeded gets
-NFS4ERR_DELAY. The requesting client can choose to send the request
-again after a delay or fall back to a traditional read/write style
-copy.
+There already is an entry in the irq1_level_low_skip_override[] DMI match
+table for the "E1404GAB", change this to match on "E1404GA" to cover
+the E1404GA model as well (DMI_MATCH() does a substring match).
 
-If there is need to make the mechanism more sophisticated, we can
-visit that in future patches.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219224
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20240927141606.66826-2-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/netns.h     |  1 +
- fs/nfsd/nfs4proc.c  | 11 +++++++++--
- fs/nfsd/nfs4state.c |  1 +
- fs/nfsd/xdr4.h      |  1 +
- 4 files changed, 12 insertions(+), 2 deletions(-)
+ drivers/acpi/resource.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
-index 14ec156563209..5cae26917436c 100644
---- a/fs/nfsd/netns.h
-+++ b/fs/nfsd/netns.h
-@@ -148,6 +148,7 @@ struct nfsd_net {
- 	u32		s2s_cp_cl_id;
- 	struct idr	s2s_cp_stateids;
- 	spinlock_t	s2s_cp_lock;
-+	atomic_t	pending_async_copies;
- 
- 	/*
- 	 * Version information
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 60c526adc27c6..5768b2ff1d1d1 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1279,6 +1279,7 @@ static void nfs4_put_copy(struct nfsd4_copy *copy)
- {
- 	if (!refcount_dec_and_test(&copy->refcount))
- 		return;
-+	atomic_dec(&copy->cp_nn->pending_async_copies);
- 	kfree(copy->cp_src);
- 	kfree(copy);
- }
-@@ -1833,10 +1834,16 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	memcpy(&copy->fh, &cstate->current_fh.fh_handle,
- 		sizeof(struct knfsd_fh));
- 	if (nfsd4_copy_is_async(copy)) {
--		status = nfserrno(-ENOMEM);
- 		async_copy = kzalloc(sizeof(struct nfsd4_copy), GFP_KERNEL);
- 		if (!async_copy)
- 			goto out_err;
-+		async_copy->cp_nn = nn;
-+		/* Arbitrary cap on number of pending async copy operations */
-+		if (atomic_inc_return(&nn->pending_async_copies) >
-+				(int)rqstp->rq_pool->sp_nrthreads) {
-+			atomic_dec(&nn->pending_async_copies);
-+			goto out_err;
-+		}
- 		INIT_LIST_HEAD(&async_copy->copies);
- 		refcount_set(&async_copy->refcount, 1);
- 		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
-@@ -1876,7 +1883,7 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	}
- 	if (async_copy)
- 		cleanup_async_copy(async_copy);
--	status = nfserrno(-ENOMEM);
-+	status = nfserr_jukebox;
- 	goto out;
- }
- 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index f4eae4b65572a..3837f4e417247 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -8575,6 +8575,7 @@ static int nfs4_state_create_net(struct net *net)
- 	spin_lock_init(&nn->client_lock);
- 	spin_lock_init(&nn->s2s_cp_lock);
- 	idr_init(&nn->s2s_cp_stateids);
-+	atomic_set(&nn->pending_async_copies, 0);
- 
- 	spin_lock_init(&nn->blocked_locks_lock);
- 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
-diff --git a/fs/nfsd/xdr4.h b/fs/nfsd/xdr4.h
-index fbdd42cde1fa5..2a21a7662e030 100644
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -713,6 +713,7 @@ struct nfsd4_copy {
- 	struct nfsd4_ssc_umount_item *ss_nsui;
- 	struct nfs_fh		c_fh;
- 	nfs4_stateid		stateid;
-+	struct nfsd_net		*cp_nn;
- };
- 
- static inline void nfsd4_copy_set_sync(struct nfsd4_copy *copy, bool sync)
--- 
-2.43.0
-
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -504,10 +504,10 @@ static const struct dmi_system_id irq1_l
+ 		},
+ 	},
+ 	{
+-		/* Asus Vivobook Go E1404GAB */
++		/* Asus Vivobook Go E1404GA* */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_MATCH(DMI_BOARD_NAME, "E1404GAB"),
++			DMI_MATCH(DMI_BOARD_NAME, "E1404GA"),
+ 		},
+ 	},
+ 	{
 
 
 
