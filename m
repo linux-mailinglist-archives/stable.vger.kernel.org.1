@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-82973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D46A994FB9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32B0B994DC2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D68141F22076
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1A22283C81
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1301DE89A;
-	Tue,  8 Oct 2024 13:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67CA11DF263;
+	Tue,  8 Oct 2024 13:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qq6JRUNA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7pf3a81"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8F71DFD84;
-	Tue,  8 Oct 2024 13:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FBF1DED4B;
+	Tue,  8 Oct 2024 13:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728394054; cv=none; b=FADZN03A3sdCGdZfSjDfE5nXgoj7x6/GHDuBgm9xXJTcbY5T+25MlqQDpi+sC86eeIvu8QHBm7Jl7FBowh6yCxaJGBvd5RT85MLqgNgPBDkvWL9BIbewC4n9nAloIdEMVu4AXVJsRggzv7yLQDJ7JYgs9E4mvba13dvaIm5wh4g=
+	t=1728392931; cv=none; b=iHgxsl2lrf44pl2TYv1qQjAzErBZkZ/cdJ6IcEk6h/A2htvM7iX+b2zoWwcTpO5YmyDxGJfC6dmPTSYcxcHRqIrOI4WdRpQnYucJcajm4OprNq1M3t+7vLehXzuTjwpe/oEN4SdCXA/MaSzRmNifuHY9/GKW23g+nDZRIilifS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728394054; c=relaxed/simple;
-	bh=kNnBU6swNo9xg7NUDjhI3S4gADrmytmSz3Y4S/v/Ms8=;
+	s=arc-20240116; t=1728392931; c=relaxed/simple;
+	bh=E4eeiVB9uoNs7RpASWB10LqD5NPujA2OlzXHkVpuS4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ej1qZT+rQ3j6GIHXn3BVG+XovsW1Lk0WBq5VcIjcqyQj7xIRwux4wCtD1Bq1xuvHpQ69LSEcJ4o3bMs0+GGP4RlVybpurna+fMXDjdMMqotyhiDd+7330hCNOASZmw7zuk1OyRJofYDCAxkpvpQfIQf9avFKY+RutBoWI9asG2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qq6JRUNA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 609FDC4CEC7;
-	Tue,  8 Oct 2024 13:27:33 +0000 (UTC)
+	 MIME-Version; b=hpdlrO1OrVCf2JeqWPTQ4R4XmQeTwffpdQE1U46BtYE/i16PxhaZ8xoJ7aMvJIh98YEuYd/wh3m6/ijgLT8chKtbgRGQBt32i8EvLPIfhkhvQiqqTK8veYFJ/Z1w+fKCemxLnRT2pjtkJjYnmYKnx9welc07W0Eih/MDzo1kwSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7pf3a81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88386C4CEC7;
+	Tue,  8 Oct 2024 13:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728394053;
-	bh=kNnBU6swNo9xg7NUDjhI3S4gADrmytmSz3Y4S/v/Ms8=;
+	s=korg; t=1728392931;
+	bh=E4eeiVB9uoNs7RpASWB10LqD5NPujA2OlzXHkVpuS4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qq6JRUNAnG/IWO6l6qnrrXtTAhYHyhIdqo4Gwyj5mwIsXV6IfL4/ILAA242TnrhNj
-	 WzQ/pqtikDmnxUh3+PIRzV801XvBCdIhE8XSHMLcQjUubN0v8Wx5L1J9RR9jRA/ZHn
-	 gWoV8ros4E6HZf2hPh5UABa9H7CCtjkOoODIW5Sg=
+	b=S7pf3a81WQN6Q9kb4fXyTurkKkScYx3fLq1M634y5tkWhc4XpBT6ZAMXpn/IU3zuP
+	 bcynFHl2LXKJmkblX2VFKOv0+12ElPApzt+VLnl1hI1gbAxDLhYRuYtWbWaHlI82Wl
+	 n6zuj9PgDCVA0Wiq47xAgqMIZuie5S9wlqYsjaeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 334/386] i2c: synquacer: Deal with optional PCLK correctly
+	Matthew Auld <matthew.auld@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Akshata Jahagirdar <akshata.jahagirdar@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>
+Subject: [PATCH 6.11 549/558] drm/xe/vram: fix ccs offset calculation
 Date: Tue,  8 Oct 2024 14:09:39 +0200
-Message-ID: <20241008115642.526768552@linuxfoundation.org>
+Message-ID: <20241008115723.837735190@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit f2990f8630531a99cad4dc5c44cb2a11ded42492 ]
+commit ee06c09ded3c2f722be4e240ed06287e23596bda upstream.
 
-ACPI boot does not provide clocks and regulators, but instead, provides
-the PCLK rate directly, and enables the clock in firmware. So deal
-gracefully with this.
+Spec says SW is expected to round up to the nearest 128K, if not already
+aligned for the CC unit view of CCS. We are seeing the assert sometimes
+pop on BMG to tell us that there is a hole between GSM and CCS, as well
+as popping other asserts with having a vram size with strange alignment,
+which is likely caused by misaligned offset here.
 
-Fixes: 55750148e559 ("i2c: synquacer: Fix an error handling path in synquacer_i2c_probe()")
+v2 (Shuicheng):
+ - Do the round_up() on final SW address.
+
+BSpec: 68023
+Fixes: b5c2ca0372dc ("drm/xe/xe2hpg: Determine flat ccs offset for vram")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
 Cc: stable@vger.kernel.org # v6.10+
-Cc: Andi Shyti <andi.shyti@kernel.org>
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Tested-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240916084911.13119-2-matthew.auld@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 37173392741c425191b959acb3adf70c9a4610c0)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-synquacer.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_vram.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i2c/busses/i2c-synquacer.c b/drivers/i2c/busses/i2c-synquacer.c
-index e774b9f499b63..9bb69a8ab6582 100644
---- a/drivers/i2c/busses/i2c-synquacer.c
-+++ b/drivers/i2c/busses/i2c-synquacer.c
-@@ -550,12 +550,13 @@ static int synquacer_i2c_probe(struct platform_device *pdev)
- 	device_property_read_u32(&pdev->dev, "socionext,pclk-rate",
- 				 &i2c->pclkrate);
+--- a/drivers/gpu/drm/xe/xe_vram.c
++++ b/drivers/gpu/drm/xe/xe_vram.c
+@@ -182,6 +182,7 @@ static inline u64 get_flat_ccs_offset(st
+ 		offset = offset_hi << 32; /* HW view bits 39:32 */
+ 		offset |= offset_lo << 6; /* HW view bits 31:6 */
+ 		offset *= num_enabled; /* convert to SW view */
++		offset = round_up(offset, SZ_128K); /* SW must round up to nearest 128K */
  
--	pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
-+	pclk = devm_clk_get_optional_enabled(&pdev->dev, "pclk");
- 	if (IS_ERR(pclk))
- 		return dev_err_probe(&pdev->dev, PTR_ERR(pclk),
- 				     "failed to get and enable clock\n");
- 
--	i2c->pclkrate = clk_get_rate(pclk);
-+	if (pclk)
-+		i2c->pclkrate = clk_get_rate(pclk);
- 
- 	if (i2c->pclkrate < SYNQUACER_I2C_MIN_CLK_RATE ||
- 	    i2c->pclkrate > SYNQUACER_I2C_MAX_CLK_RATE)
--- 
-2.43.0
-
+ 		/* We don't expect any holes */
+ 		xe_assert_msg(xe, offset == (xe_mmio_read64_2x32(gt, GSMBASE) - ccs_size),
 
 
 
