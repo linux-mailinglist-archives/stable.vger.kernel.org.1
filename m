@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-82382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C40994C6F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31612994E7F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDD2B1F24AA6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC712B2C014
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCB11DE88F;
-	Tue,  8 Oct 2024 12:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B7EF1DF266;
+	Tue,  8 Oct 2024 13:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTn1d64y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ff7vUF0H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA8B1CCB32;
-	Tue,  8 Oct 2024 12:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0E81DEFE3;
+	Tue,  8 Oct 2024 13:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392069; cv=none; b=FBa7EigNAKDM67EuSaW6cIQXCxN7zVWshZ7/Cu3Ld+tXTQq/VejRpe2KQED4YqjLv75YVboVA8ocwPXVvpzZ7hL1Z0yjErdHvd/wrBptPqAZR9SSFzWwQyOabJbZepUOkbyzutBkaVKNsJeRW83ADLaKQmW2iWvHBIGHABd06jM=
+	t=1728393238; cv=none; b=rSP8nsXcYS07NZvfnVNYKiF4pX1fn2w04MwuosRnbn5cjeqVgATrDWb4FnfS+tITjOl339XSjz370v65stNXS3s0+ut88mWFwLayqTiwufN9lLzY1izw1E9MsHKvkZez5SgvN6HDMwpEcT7B6ZewxqIBS2O/SJ7Vq/9mxVsOElk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392069; c=relaxed/simple;
-	bh=snErhnoyEtzeBRFaUbaRqc0ifgp9skSFBpvMMvvrhpQ=;
+	s=arc-20240116; t=1728393238; c=relaxed/simple;
+	bh=8GlkaPJe9jAJZrvBfCIcsDd14CG0w1KUsQbPP1bmeEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PlLu2bLyyEUOw9Q+D7mysQHJj55rHk13l+xAU/K39+eMKH2Jw7wNjXIJRZxCWcpiq9IK8qQhAALyDocGuozPAame3dv4WVSVKY3Oy1zguzE9mya7r3aT1SVRBY/KKS0yCQaP0lpyB93kXvuy+wm/456hWKrI9gtu/KQU5rnjw0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTn1d64y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F45C4CEC7;
-	Tue,  8 Oct 2024 12:54:28 +0000 (UTC)
+	 MIME-Version; b=A65IHgbWNga5G0RTu6g5njmR8yaX++mkQ7Li6qBdUXZG+me9RHVM+polajUg3oEhgBtZBGxnoohnUhA5/aItHG8h+CHJSu2FD84DRWosHWSp2GE5py1lwQyi8LMEb65+TKuSHX5VkcVC7SsZZyECM5/CD7Y3GNqC4M00xQdtZ3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ff7vUF0H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D5AC4CECD;
+	Tue,  8 Oct 2024 13:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392069;
-	bh=snErhnoyEtzeBRFaUbaRqc0ifgp9skSFBpvMMvvrhpQ=;
+	s=korg; t=1728393238;
+	bh=8GlkaPJe9jAJZrvBfCIcsDd14CG0w1KUsQbPP1bmeEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DTn1d64yZTHSQL7nS5k/xua7PttXhaoGMAEXV2cWrspj7V1yOYFrZrfEyLiP9O2tR
-	 QeiFf3OVTVfIEQUS/BJa4NH9jvIXCDKTzdopuJiZRQclwrnd19ZcnIVbmqWQURrP2L
-	 //oQOORTDMou+Z84hDmffGAtJR8NVyFGzVwakzFA=
+	b=Ff7vUF0HBS/bu2UFSabOiL/C+mSnebWUL3fWtFly2+knsyO9bGq9koaaGR3BW6POc
+	 S2pzOOZPU9pvVAcLkXlvEOfooZTrzlZ9EfU46vn0xylnbdwAHkcZWZHT/Q4thNBzqB
+	 kAD9vWtqUGqSMPe0X0bpoTCPhKrYuASMky7oE9JU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <tim.huang@amd.com>,
-	Jesse Zhang <jesse.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 276/558] drm/amdgpu: fix unchecked return value warning for amdgpu_atombios
-Date: Tue,  8 Oct 2024 14:05:06 +0200
-Message-ID: <20241008115713.191040195@linuxfoundation.org>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.6 062/386] ice: Adjust over allocation of memory in ice_sched_add_root_node() and ice_sched_add_node()
+Date: Tue,  8 Oct 2024 14:05:07 +0200
+Message-ID: <20241008115631.908263839@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <tim.huang@amd.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 92549780e32718d64a6d08bbbb3c6fffecb541c7 ]
+[ Upstream commit 62fdaf9e8056e9a9e6fe63aa9c816ec2122d60c6 ]
 
-This resolves the unchecded return value warning reported by Coverity.
+In ice_sched_add_root_node() and ice_sched_add_node() there are calls to
+devm_kcalloc() in order to allocate memory for array of pointers to
+'ice_sched_node' structure. But incorrect types are used as sizeof()
+arguments in these calls (structures instead of pointers) which leads to
+over allocation of memory.
 
-Signed-off-by: Tim Huang <tim.huang@amd.com>
-Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Adjust over allocation of memory by correcting types in devm_kcalloc()
+sizeof() arguments.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c | 35 ++++++++++++--------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_sched.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-index 7dc102f0bc1d3..0c8975ac5af9e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-@@ -1018,8 +1018,9 @@ int amdgpu_atombios_get_clock_dividers(struct amdgpu_device *adev,
- 		if (clock_type == COMPUTE_ENGINE_PLL_PARAM) {
- 			args.v3.ulClockParams = cpu_to_le32((clock_type << 24) | clock);
+diff --git a/drivers/net/ethernet/intel/ice/ice_sched.c b/drivers/net/ethernet/intel/ice/ice_sched.c
+index c0533d7b66b99..908bcd0738033 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sched.c
++++ b/drivers/net/ethernet/intel/ice/ice_sched.c
+@@ -28,9 +28,8 @@ ice_sched_add_root_node(struct ice_port_info *pi,
+ 	if (!root)
+ 		return -ENOMEM;
  
--			amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
--				sizeof(args));
-+			if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
-+			    index, (uint32_t *)&args, sizeof(args)))
-+				return -EINVAL;
- 
- 			dividers->post_div = args.v3.ucPostDiv;
- 			dividers->enable_post_div = (args.v3.ucCntlFlag &
-@@ -1039,8 +1040,9 @@ int amdgpu_atombios_get_clock_dividers(struct amdgpu_device *adev,
- 			if (strobe_mode)
- 				args.v5.ucInputFlag = ATOM_PLL_INPUT_FLAG_PLL_STROBE_MODE_EN;
- 
--			amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
--				sizeof(args));
-+			if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
-+			    index, (uint32_t *)&args, sizeof(args)))
-+				return -EINVAL;
- 
- 			dividers->post_div = args.v5.ucPostDiv;
- 			dividers->enable_post_div = (args.v5.ucCntlFlag &
-@@ -1058,8 +1060,9 @@ int amdgpu_atombios_get_clock_dividers(struct amdgpu_device *adev,
- 		/* fusion */
- 		args.v4.ulClock = cpu_to_le32(clock);	/* 10 khz */
- 
--		amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
--			sizeof(args));
-+		if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
-+		    index, (uint32_t *)&args, sizeof(args)))
-+			return -EINVAL;
- 
- 		dividers->post_divider = dividers->post_div = args.v4.ucPostDiv;
- 		dividers->real_clock = le32_to_cpu(args.v4.ulClock);
-@@ -1070,8 +1073,9 @@ int amdgpu_atombios_get_clock_dividers(struct amdgpu_device *adev,
- 		args.v6_in.ulClock.ulComputeClockFlag = clock_type;
- 		args.v6_in.ulClock.ulClockFreq = cpu_to_le32(clock);	/* 10 khz */
- 
--		amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
--			sizeof(args));
-+		if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
-+		    index, (uint32_t *)&args, sizeof(args)))
-+			return -EINVAL;
- 
- 		dividers->whole_fb_div = le16_to_cpu(args.v6_out.ulFbDiv.usFbDiv);
- 		dividers->frac_fb_div = le16_to_cpu(args.v6_out.ulFbDiv.usFbDivFrac);
-@@ -1113,8 +1117,9 @@ int amdgpu_atombios_get_memory_pll_dividers(struct amdgpu_device *adev,
- 			if (strobe_mode)
- 				args.ucInputFlag |= MPLL_INPUT_FLAG_STROBE_MODE_EN;
- 
--			amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
--				sizeof(args));
-+			if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
-+			    index, (uint32_t *)&args, sizeof(args)))
-+				return -EINVAL;
- 
- 			mpll_param->clkfrac = le16_to_cpu(args.ulFbDiv.usFbDivFrac);
- 			mpll_param->clkf = le16_to_cpu(args.ulFbDiv.usFbDiv);
-@@ -1211,8 +1216,9 @@ int amdgpu_atombios_get_max_vddc(struct amdgpu_device *adev, u8 voltage_type,
- 		args.v2.ucVoltageMode = 0;
- 		args.v2.usVoltageLevel = 0;
- 
--		amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
--			sizeof(args));
-+		if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
-+		    index, (uint32_t *)&args, sizeof(args)))
-+			return -EINVAL;
- 
- 		*voltage = le16_to_cpu(args.v2.usVoltageLevel);
- 		break;
-@@ -1221,8 +1227,9 @@ int amdgpu_atombios_get_max_vddc(struct amdgpu_device *adev, u8 voltage_type,
- 		args.v3.ucVoltageMode = ATOM_GET_VOLTAGE_LEVEL;
- 		args.v3.usVoltageLevel = cpu_to_le16(voltage_id);
- 
--		amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
--			sizeof(args));
-+		if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
-+		    index, (uint32_t *)&args, sizeof(args)))
-+			return -EINVAL;
- 
- 		*voltage = le16_to_cpu(args.v3.usVoltageLevel);
- 		break;
+-	/* coverity[suspicious_sizeof] */
+ 	root->children = devm_kcalloc(ice_hw_to_dev(hw), hw->max_children[0],
+-				      sizeof(*root), GFP_KERNEL);
++				      sizeof(*root->children), GFP_KERNEL);
+ 	if (!root->children) {
+ 		devm_kfree(ice_hw_to_dev(hw), root);
+ 		return -ENOMEM;
+@@ -186,10 +185,9 @@ ice_sched_add_node(struct ice_port_info *pi, u8 layer,
+ 	if (!node)
+ 		return -ENOMEM;
+ 	if (hw->max_children[layer]) {
+-		/* coverity[suspicious_sizeof] */
+ 		node->children = devm_kcalloc(ice_hw_to_dev(hw),
+ 					      hw->max_children[layer],
+-					      sizeof(*node), GFP_KERNEL);
++					      sizeof(*node->children), GFP_KERNEL);
+ 		if (!node->children) {
+ 			devm_kfree(ice_hw_to_dev(hw), node);
+ 			return -ENOMEM;
 -- 
 2.43.0
 
