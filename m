@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-81889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A719949FD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:29:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4CD994CAD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0F7FB24ABB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:29:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADF1F2842DC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873981DF246;
-	Tue,  8 Oct 2024 12:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565DB1DF74F;
+	Tue,  8 Oct 2024 12:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQHC/ulp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBhMfzuh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BC31DEFE5;
-	Tue,  8 Oct 2024 12:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E9D1DF73A;
+	Tue,  8 Oct 2024 12:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390476; cv=none; b=RjnIVnqOQjxAQyyLOuDKPwzGUpor/GekqZJQT8Mw432p1YoJbhJor0MywLsns0JTbWFvnMJcLGr811SuD8vNpukyYF8ghyU67HDkroYqioiB8n6NGgeneH44PIxQqTl1eAfTT8Fb/8IPmDJYRn/+AKDSD5P7mxiagOTzBr/MpPc=
+	t=1728392164; cv=none; b=iavLZK+qHAIECWW4Kd/dj36YW7PrVV2juFkNVGxtR7d/3dDbtKjoqpKAF8mPtyEGVe9wfCR9rrExHcrT/KE70RRltn2Qb7jTsau3QijZbRheikFWJT2SHkfSGvZoaCd96kdwM9WEtAh1MZdiRXVJEiD+j0q/jvP1oJueJStcZS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390476; c=relaxed/simple;
-	bh=usEL5loZhOCBYYwQNN5U257hdcN0pM180lSBOLidyCo=;
+	s=arc-20240116; t=1728392164; c=relaxed/simple;
+	bh=CMt68s4jNh4KT9eycHZojb5C/4NLkuHHdt375z/uuPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GBKcaQkPmr2Tavb5p4a/iEhuXpq+mxsETuudU1nQLv605vxDiBc4zR1jDVw1ZSuaBIMuoTSwvL4agxvK4f5aNw2Vt65rle7+CeYJp+iWotdnKze2nZKpOmiWvVvPzRPTINi4JjFEhjSlf0QHf4gXPCqDvUe+GO0t7K4Wnc+cAm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQHC/ulp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB610C4CEC7;
-	Tue,  8 Oct 2024 12:27:55 +0000 (UTC)
+	 MIME-Version; b=HayVNkbYnvcD16/NES//Azii/J7xfKL32bqRY2dLZLlmdyAY/oCkw47nJ/AM0y6apyFYolqRZTgvE6biyWIC39nSzjY/M89kRHUgNnuDgp6d6hXT1PosF0XpM7MXH+/E0e4/6oyq9UwCKq5wL7xWRh4F33wtoTsrtUqFiPIIlKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBhMfzuh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236C0C4CECF;
+	Tue,  8 Oct 2024 12:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390476;
-	bh=usEL5loZhOCBYYwQNN5U257hdcN0pM180lSBOLidyCo=;
+	s=korg; t=1728392163;
+	bh=CMt68s4jNh4KT9eycHZojb5C/4NLkuHHdt375z/uuPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JQHC/ulpXNWcQ486Lp6q5ctdRJaSMBtzZ9cbckNpmM5tQxMaF2ugwRgawOKY0jUXU
-	 XQlWAZLgqsnIscDj+wbUE17Z/yc+hWZKaBofAY2Tp77fEzFn2fWqGjb5fbHJYQEPmg
-	 DR2FA+bkRakOUQ1/+tG8H+Wk2RynHzLxHj19eQeU=
+	b=IBhMfzuhL25hY3FtQfl/MVeGFduWxYqNOJZTBSU9CmOHeeMI6g8W3xvlZkUhxDBeN
+	 RkTcGpjHOxQnHkosMUIX55XhARPTZb86ZmFmPQgEg5o2tirWNCi6gn+qXJfbchaT9a
+	 SQZPjSbP9SDNHGMQA6pGB0HxR1WkO+VgSjnErvSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Baynton <mike@mbaynton.com>,
-	Amir Goldstein <amir73il@gmail.com>
-Subject: [PATCH 6.10 301/482] ovl: fail if trusted xattrs are needed but caller lacks permission
+	Arnd Bergmann <arnd@arndb.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 334/558] nvme-tcp: fix link failure for TCP auth
 Date: Tue,  8 Oct 2024 14:06:04 +0200
-Message-ID: <20241008115700.130106809@linuxfoundation.org>
+Message-ID: <20241008115715.446986863@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Baynton <mike@mbaynton.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 6c4a5f96450415735c31ed70ff354f0ee5cbf67b upstream.
+[ Upstream commit 2d5a333e09c388189238291577e443221baacba0 ]
 
-Some overlayfs features require permission to read/write trusted.*
-xattrs. These include redirect_dir, verity, metacopy, and data-only
-layers. This patch adds additional validations at mount time to stop
-overlays from mounting in certain cases where the resulting mount would
-not function according to the user's expectations because they lack
-permission to access trusted.* xattrs (for example, not global root.)
+The nvme fabric driver calls the nvme_tls_key_lookup() function from
+nvmf_parse_key() when the keyring is enabled, but this is broken in a
+configuration with CONFIG_NVME_FABRICS=y and CONFIG_NVME_TCP=m because
+this leads to the function definition being in a loadable module:
 
-Similar checks in ovl_make_workdir() that disable features instead of
-failing are still relevant and used in cases where the resulting mount
-can still work "reasonably well." Generally, if the feature was enabled
-through kernel config or module option, any mount that worked before
-will still work the same; this applies to redirect_dir and metacopy. The
-user must explicitly request these features in order to generate a mount
-failure. Verity and data-only layers on the other hand must be explictly
-requested and have no "reasonable" disabled or degraded alternative, so
-mounts attempting either always fail.
+x86_64-linux-ld: vmlinux.o: in function `nvmf_parse_key':
+fabrics.c:(.text+0xb1bdec): undefined reference to `nvme_tls_key_lookup'
 
-"lower data-only dirs require metacopy support" moved down in case
-userxattr is set, which disables metacopy.
+Move the 'select' up to CONFIG_NVME_FABRICS itself to force this
+part to be built-in as well if needed.
 
-Cc: stable@vger.kernel.org # v6.6+
-Signed-off-by: Mike Baynton <mike@mbaynton.com>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5bc46b49c828 ("nvme-tcp: check for invalidated or revoked key")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/params.c |   38 +++++++++++++++++++++++++++++++++-----
- 1 file changed, 33 insertions(+), 5 deletions(-)
+ drivers/nvme/host/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/overlayfs/params.c
-+++ b/fs/overlayfs/params.c
-@@ -782,11 +782,6 @@ int ovl_fs_params_verify(const struct ov
- {
- 	struct ovl_opt_set set = ctx->set;
+diff --git a/drivers/nvme/host/Kconfig b/drivers/nvme/host/Kconfig
+index 883aaab2d83e3..486afe5981845 100644
+--- a/drivers/nvme/host/Kconfig
++++ b/drivers/nvme/host/Kconfig
+@@ -41,6 +41,7 @@ config NVME_HWMON
  
--	if (ctx->nr_data > 0 && !config->metacopy) {
--		pr_err("lower data-only dirs require metacopy support.\n");
--		return -EINVAL;
--	}
--
- 	/* Workdir/index are useless in non-upper mount */
- 	if (!config->upperdir) {
- 		if (config->workdir) {
-@@ -938,6 +933,39 @@ int ovl_fs_params_verify(const struct ov
- 		config->metacopy = false;
- 	}
+ config NVME_FABRICS
+ 	select NVME_CORE
++	select NVME_KEYRING if NVME_TCP_TLS
+ 	tristate
  
-+	/*
-+	 * Fail if we don't have trusted xattr capability and a feature was
-+	 * explicitly requested that requires them.
-+	 */
-+	if (!config->userxattr && !capable(CAP_SYS_ADMIN)) {
-+		if (set.redirect &&
-+		    config->redirect_mode != OVL_REDIRECT_NOFOLLOW) {
-+			pr_err("redirect_dir requires permission to access trusted xattrs\n");
-+			return -EPERM;
-+		}
-+		if (config->metacopy && set.metacopy) {
-+			pr_err("metacopy requires permission to access trusted xattrs\n");
-+			return -EPERM;
-+		}
-+		if (config->verity_mode) {
-+			pr_err("verity requires permission to access trusted xattrs\n");
-+			return -EPERM;
-+		}
-+		if (ctx->nr_data > 0) {
-+			pr_err("lower data-only dirs require permission to access trusted xattrs\n");
-+			return -EPERM;
-+		}
-+		/*
-+		 * Other xattr-dependent features should be disabled without
-+		 * great disturbance to the user in ovl_make_workdir().
-+		 */
-+	}
-+
-+	if (ctx->nr_data > 0 && !config->metacopy) {
-+		pr_err("lower data-only dirs require metacopy support.\n");
-+		return -EINVAL;
-+	}
-+
- 	return 0;
- }
- 
+ config NVME_RDMA
+@@ -94,7 +95,6 @@ config NVME_TCP
+ config NVME_TCP_TLS
+ 	bool "NVMe over Fabrics TCP TLS encryption support"
+ 	depends on NVME_TCP
+-	select NVME_KEYRING
+ 	select NET_HANDSHAKE
+ 	select KEYS
+ 	help
+-- 
+2.43.0
+
 
 
 
