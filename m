@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-82913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6157F994F52
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:27:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F705994D63
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A1E61C23C3C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:27:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7D98284185
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745EA1E008C;
-	Tue,  8 Oct 2024 13:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066F91DE8BA;
+	Tue,  8 Oct 2024 13:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ta2WvFkT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CljZnbNZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3162B1DF97C;
-	Tue,  8 Oct 2024 13:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F541DE2AE;
+	Tue,  8 Oct 2024 13:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393849; cv=none; b=rx6UCWUfp7ZaVK5W2TqTxe0NZ8ao+lIRhGCXZ5F+GKAXyqR3ZSLIRrVTpiIxjd+j1IxDSoIGkx+K9sjw4mZ4gtTZLIGSJC2jiQEzWK3XWnEd2vvjAIvhunNvEnsjeerD43F7/ha5jUc9Gag9RYerVadKuJqSWNl+nommh2AXLrk=
+	t=1728392687; cv=none; b=VOUJUpUoE9eRVW+r4QABCLuc2Jf5qLrHnhOpMn/9VB/eIlaaftkna5fBGsSM/e7Ol1Xi4bbMlel7awr3L6FM+A76VIKSkwe/wzMWFEAtbpii6Vfelt/esHfdrPTNtER4L2YA9hNpw0gtlVOuViDeo3Q7v6R4X14IWel1j25D5kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393849; c=relaxed/simple;
-	bh=kQLz5t9MyFDpcMYKi9PJ1pdtaMZyYekf0hoJ1Vp9QMA=;
+	s=arc-20240116; t=1728392687; c=relaxed/simple;
+	bh=VPjIIHpQ8pErmnRRdacAykWJBGWW/DJNDT7i+SN+qzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aqWllRr8BpJH4eryD7XSSUgZQXv1vUTAxfWs15dLYV0FKiNE2baRnLmwU0XJpCpJbK4oZbpaYaqQ5SlBOs/QsNhfuw144/dDuWPZ1thidQjoH9UceME6jO+U0lOXYoxYHQXkLBKyRlZTMhvURnjS+rHs23KVTQgJM3O5BmnvOM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ta2WvFkT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD08C4CEC7;
-	Tue,  8 Oct 2024 13:24:08 +0000 (UTC)
+	 MIME-Version; b=CpOw2P4N3x50UFk2s5zO8HY/e+d4K+YmbNkpLog8bBdwE+mATfWFj3PcxZHI0LJ/B3R/yuIILo3moKkjBKZlVOzFs/beDFUnUWsdB8BpvfIu3GZLDVcWdQDCUbCf11vfbcCiBtCj3McfwEaHcTK9rm4b94YuTkviwWRe77sYlZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CljZnbNZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B9EC4CEC7;
+	Tue,  8 Oct 2024 13:04:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393849;
-	bh=kQLz5t9MyFDpcMYKi9PJ1pdtaMZyYekf0hoJ1Vp9QMA=;
+	s=korg; t=1728392687;
+	bh=VPjIIHpQ8pErmnRRdacAykWJBGWW/DJNDT7i+SN+qzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ta2WvFkTU7jw1E1XylOKAdodVgLKjYutwI8cip1SAYQ7jE0z9MMOZX/HjhhwyKBpz
-	 i4HZHrub4BDlpKdzpzNQehHQZ0zNbsKJRgSRJBvnuATvQqTukRhFiTggwR3ttxVxur
-	 LvQRF2Eai0iVrFxpZ1sZGkE5aoFL53XkRCY80aXE=
+	b=CljZnbNZRruZRql2kjdaEjkktkj5lavVbl53OH5765ZF69ZJNgQqq8Erv7FR0sqDc
+	 0JTN726D/iT98tPV25CoU8Cw5Imy6F3yUv3ehDmJrjFYY38EJZgzioViZPcJGwPUdt
+	 77elzoYFoFgzjNnZp5P2m4dc6xxTsgFbnT53f9Oc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cedric Blancher <cedric.blancher@gmail.com>,
-	Dan Shelton <dan.f.shelton@gmail.com>,
-	Roland Mainz <roland.mainz@nrubsig.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 274/386] NFSD: Fix NFSv4s PUTPUBFH operation
-Date: Tue,  8 Oct 2024 14:08:39 +0200
-Message-ID: <20241008115640.173828962@linuxfoundation.org>
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.11 490/558] pidfs: check for valid pid namespace
+Date: Tue,  8 Oct 2024 14:08:40 +0200
+Message-ID: <20241008115721.515038266@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 202f39039a11402dcbcd5fece8d9fa6be83f49ae upstream.
+commit 8a46067783bdff222d1fb8f8c20e3b7b711e3ce5 upstream.
 
-According to RFC 8881, all minor versions of NFSv4 support PUTPUBFH.
+When we access a no-current task's pid namespace we need check that the
+task hasn't been reaped in the meantime and it's pid namespace isn't
+accessible anymore.
 
-Replace the XDR decoder for PUTPUBFH with a "noop" since we no
-longer want the minorversion check, and PUTPUBFH has no arguments to
-decode. (Ideally nfsd4_decode_noop should really be called
-nfsd4_decode_void).
+The user namespace is fine because it is only released when the last
+reference to struct task_struct is put and exit_creds() is called.
 
-PUTPUBFH should now behave just like PUTROOTFH.
-
-Reported-by: Cedric Blancher <cedric.blancher@gmail.com>
-Fixes: e1a90ebd8b23 ("NFSD: Combine decode operations for v4 and v4.1")
-Cc: Dan Shelton <dan.f.shelton@gmail.com>
-Cc: Roland Mainz <roland.mainz@nrubsig.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/20240926-klebt-altgedienten-0415ad4d273c@brauner
+Fixes: 5b08bd408534 ("pidfs: allow retrieval of namespace file descriptors")
+CC: stable@vger.kernel.org # v6.11
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4xdr.c |   10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ fs/pidfs.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -1246,14 +1246,6 @@ nfsd4_decode_putfh(struct nfsd4_compound
- }
+diff --git a/fs/pidfs.c b/fs/pidfs.c
+index 7ffdc88dfb52..80675b6bf884 100644
+--- a/fs/pidfs.c
++++ b/fs/pidfs.c
+@@ -120,6 +120,7 @@ static long pidfd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 	struct nsproxy *nsp __free(put_nsproxy) = NULL;
+ 	struct pid *pid = pidfd_pid(file);
+ 	struct ns_common *ns_common = NULL;
++	struct pid_namespace *pid_ns;
  
- static __be32
--nfsd4_decode_putpubfh(struct nfsd4_compoundargs *argp, union nfsd4_op_u *p)
--{
--	if (argp->minorversion == 0)
--		return nfs_ok;
--	return nfserr_notsupp;
--}
--
--static __be32
- nfsd4_decode_read(struct nfsd4_compoundargs *argp, union nfsd4_op_u *u)
- {
- 	struct nfsd4_read *read = &u->read;
-@@ -2345,7 +2337,7 @@ static const nfsd4_dec nfsd4_dec_ops[] =
- 	[OP_OPEN_CONFIRM]	= nfsd4_decode_open_confirm,
- 	[OP_OPEN_DOWNGRADE]	= nfsd4_decode_open_downgrade,
- 	[OP_PUTFH]		= nfsd4_decode_putfh,
--	[OP_PUTPUBFH]		= nfsd4_decode_putpubfh,
-+	[OP_PUTPUBFH]		= nfsd4_decode_noop,
- 	[OP_PUTROOTFH]		= nfsd4_decode_noop,
- 	[OP_READ]		= nfsd4_decode_read,
- 	[OP_READDIR]		= nfsd4_decode_readdir,
+ 	if (arg)
+ 		return -EINVAL;
+@@ -202,7 +203,9 @@ static long pidfd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 	case PIDFD_GET_PID_NAMESPACE:
+ 		if (IS_ENABLED(CONFIG_PID_NS)) {
+ 			rcu_read_lock();
+-			ns_common = to_ns_common( get_pid_ns(task_active_pid_ns(task)));
++			pid_ns = task_active_pid_ns(task);
++			if (pid_ns)
++				ns_common = to_ns_common(get_pid_ns(pid_ns));
+ 			rcu_read_unlock();
+ 		}
+ 		break;
+-- 
+2.46.2
+
 
 
 
