@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-82743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C04994E42
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:15:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B60EE9949EB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 251BA284805
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E7E31F25BD9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DD51DF72E;
-	Tue,  8 Oct 2024 13:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076C91DF978;
+	Tue,  8 Oct 2024 12:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLLrEK97"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XT2HJ1f+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA54D1DEFE0;
-	Tue,  8 Oct 2024 13:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D121DF96F;
+	Tue,  8 Oct 2024 12:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393277; cv=none; b=nnYM6RP8fGXEDz6p7TXySXZEtDLJJ+ow6tdDcINvBAzdgqtEIHhg7jBXTTFZ420t/2aJ9sryNrptdtaTpOhEsIG4oKBxxICDwkPspSLV6idkWaTL/zbyLxbNjLp2y3fhj5SBvsPaE08W7WCp+Yuf/AGwZ8FEp++PEHWHhZJ7QMA=
+	t=1728390440; cv=none; b=dh0D8H3bJm0etse9Rx8AcXfDmMmiNEFfvd/H3HrGJ4jSwL1ABxbjMCLcgdp4iKickvZBP4TgyiSlOUYvl2MTE0lTgP+d6Y077KcKKmrhzkORzFm8XCiJqecds/GzQg/wghWFr3f07fezG7FjgcfE3ZmTT4Z/BfYqLyqUcQ1Er2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393277; c=relaxed/simple;
-	bh=0LC0Yh6xP3W75Wq6iZO1S/VbfYlfgo9C+PbSbwM50C0=;
+	s=arc-20240116; t=1728390440; c=relaxed/simple;
+	bh=n4P7pF+lRpOflfjmaCkPsnPnrNqJj+O9QBsHYmoTWj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rxv1rBONJupq9+9f1m4CC8I3GKgWT10HUY+/i1yikxrF0XX1WVfvjTCUxKXAO0FF1CCIyFD3Dt/jPM0CRFo+NbJypZeKFeWG9BOohSBUK7ItTfqNPfUpxoVYNpZU6kTyK89UE9NGZOhYE6IArWBCaJ0wbV199RdZ17UxWJCQAWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLLrEK97; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A497C4CEC7;
-	Tue,  8 Oct 2024 13:14:36 +0000 (UTC)
+	 MIME-Version; b=f5nPvoEY4F6mKnsWy6mdiJuBfYrYlTe9i7WeCH4GLknVxkDAHmpeaWElaLcKIpJ0LEVptL18FI7jAQF3k2vkYqmN99NwzlXTPYHC31crfAl9RJ7CE2ToQkMqDwrzzZRJ1GqdeFc4CLgRnNxGiQZYiM7NfZIPPTbUOkBO7Cg3P6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XT2HJ1f+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C69BC4CECD;
+	Tue,  8 Oct 2024 12:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393276;
-	bh=0LC0Yh6xP3W75Wq6iZO1S/VbfYlfgo9C+PbSbwM50C0=;
+	s=korg; t=1728390440;
+	bh=n4P7pF+lRpOflfjmaCkPsnPnrNqJj+O9QBsHYmoTWj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HLLrEK97WGuahC28hFDPWcCn7pc8BhOrQ6nle2EWhVixg1vpWqIqNqJ8Aw8biQJO+
-	 a60bYACG9Blm/V3P3g1LvDEOSdlbwZibgFN/JNm5DHE+PvaMK2ZM+plLDPN8XByF4J
-	 iifNVXozSmtyj9AGjCi3IAMMYIo7dUf1RCkRAM1I=
+	b=XT2HJ1f+TIcflfkJwwhnnJ/FGWMZZlw9ed6mi52RZHTrEp8G3SuvQM9IiFFlw3WBE
+	 GGHAU704T/+UZj4UqAuGwmChUnRwyGaNmGJOLeFll9dfm/dK6sXvqNxLmDfYMY7hmv
+	 vlFn6A7K72DTLyaRA89oxNbWTC+ZRzB2Ab+Ww+Qg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/386] wifi: mwifiex: Fix memcpy() field-spanning write warning in mwifiex_cmd_802_11_scan_ext()
-Date: Tue,  8 Oct 2024 14:05:50 +0200
-Message-ID: <20241008115633.577208588@linuxfoundation.org>
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 288/482] Revert "ALSA: hda: Conditionally use snooping for AMD HDMI"
+Date: Tue,  8 Oct 2024 14:05:51 +0200
+Message-ID: <20241008115659.612439959@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 498365e52bebcbc36a93279fe7e9d6aec8479cee ]
+commit 3f7f36a4559ef78a6418c5f0447fbfbdcf671956 upstream.
 
-Replace one-element array with a flexible-array member in
-`struct host_cmd_ds_802_11_scan_ext`.
+This reverts commit 478689b5990deb626a0b3f1ebf165979914d6be4.
 
-With this, fix the following warning:
+The fix seems leading to regressions for other systems.
+Also, the way to check the presence of IOMMU via get_dma_ops() isn't
+reliable and it's no longer applicable for 6.12.  After all, it's no
+right fix, so let's revert it at first.
 
-elo 16 17:51:58 surfacebook kernel: ------------[ cut here ]------------
-elo 16 17:51:58 surfacebook kernel: memcpy: detected field-spanning write (size 243) of single field "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2239 (size 1)
-elo 16 17:51:58 surfacebook kernel: WARNING: CPU: 0 PID: 498 at drivers/net/wireless/marvell/mwifiex/scan.c:2239 mwifiex_cmd_802_11_scan_ext+0x83/0x90 [mwifiex]
+To be noted, the PCM buffer allocation has been changed to try the
+continuous pages at first since 6.12, so the problem could be already
+addressed without this hackish workaround.
 
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Closes: https://lore.kernel.org/linux-hardening/ZsZNgfnEwOcPdCly@black.fi.intel.com/
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/ZsZa5xRcsLq9D+RX@elsanto
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Closes: https://lore.kernel.org/ZvgCdYfKgwHpJXGE@eldamar.lan
+Link: https://patch.msgid.link/20241002155948.4859-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/fw.h   | 2 +-
- drivers/net/wireless/marvell/mwifiex/scan.c | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ sound/pci/hda/hda_controller.h |    2 +-
+ sound/pci/hda/hda_intel.c      |   10 +---------
+ 2 files changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-index 62f3c9a52a1d5..a3be37526697b 100644
---- a/drivers/net/wireless/marvell/mwifiex/fw.h
-+++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-@@ -1587,7 +1587,7 @@ struct host_cmd_ds_802_11_scan_rsp {
+--- a/sound/pci/hda/hda_controller.h
++++ b/sound/pci/hda/hda_controller.h
+@@ -28,7 +28,7 @@
+ #else
+ #define AZX_DCAPS_I915_COMPONENT 0		/* NOP */
+ #endif
+-#define AZX_DCAPS_AMD_ALLOC_FIX	(1 << 14)	/* AMD allocation workaround */
++/* 14 unused */
+ #define AZX_DCAPS_CTX_WORKAROUND (1 << 15)	/* X-Fi workaround */
+ #define AZX_DCAPS_POSFIX_LPIB	(1 << 16)	/* Use LPIB as default */
+ #define AZX_DCAPS_AMD_WORKAROUND (1 << 17)	/* AMD-specific workaround */
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -40,7 +40,6 @@
  
- struct host_cmd_ds_802_11_scan_ext {
- 	u32   reserved;
--	u8    tlv_buffer[1];
-+	u8    tlv_buffer[];
- } __packed;
+ #ifdef CONFIG_X86
+ /* for snoop control */
+-#include <linux/dma-map-ops.h>
+ #include <asm/set_memory.h>
+ #include <asm/cpufeature.h>
+ #endif
+@@ -307,7 +306,7 @@ enum {
  
- struct mwifiex_ie_types_bss_mode {
-diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
-index 72904c275461e..5be817d9854a6 100644
---- a/drivers/net/wireless/marvell/mwifiex/scan.c
-+++ b/drivers/net/wireless/marvell/mwifiex/scan.c
-@@ -2543,8 +2543,7 @@ int mwifiex_ret_802_11_scan_ext(struct mwifiex_private *priv,
- 	ext_scan_resp = &resp->params.ext_scan;
+ /* quirks for ATI HDMI with snoop off */
+ #define AZX_DCAPS_PRESET_ATI_HDMI_NS \
+-	(AZX_DCAPS_PRESET_ATI_HDMI | AZX_DCAPS_AMD_ALLOC_FIX)
++	(AZX_DCAPS_PRESET_ATI_HDMI | AZX_DCAPS_SNOOP_OFF)
  
- 	tlv = (void *)ext_scan_resp->tlv_buffer;
--	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN
--					      - 1);
-+	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN);
+ /* quirks for AMD SB */
+ #define AZX_DCAPS_PRESET_AMD_SB \
+@@ -1703,13 +1702,6 @@ static void azx_check_snoop_available(st
+ 	if (chip->driver_caps & AZX_DCAPS_SNOOP_OFF)
+ 		snoop = false;
  
- 	while (buf_left >= sizeof(struct mwifiex_ie_types_header)) {
- 		type = le16_to_cpu(tlv->type);
--- 
-2.43.0
-
+-#ifdef CONFIG_X86
+-	/* check the presence of DMA ops (i.e. IOMMU), disable snoop conditionally */
+-	if ((chip->driver_caps & AZX_DCAPS_AMD_ALLOC_FIX) &&
+-	    !get_dma_ops(chip->card->dev))
+-		snoop = false;
+-#endif
+-
+ 	chip->snoop = snoop;
+ 	if (!snoop) {
+ 		dev_info(chip->card->dev, "Force to non-snoop mode\n");
 
 
 
