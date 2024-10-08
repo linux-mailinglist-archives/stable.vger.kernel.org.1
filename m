@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E8E994E73
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:17:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A80994D50
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:04:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44EC21C24739
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:17:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A420B2A23B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261D21DEFF6;
-	Tue,  8 Oct 2024 13:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57FD1DED74;
+	Tue,  8 Oct 2024 12:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sspZznBV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qs0rXd/N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D885A1DEFE0;
-	Tue,  8 Oct 2024 13:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609C21DE8A0;
+	Tue,  8 Oct 2024 12:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393435; cv=none; b=CLigGaZ4/4kU0Gwr2lJc4G8S0xN2brfvHrULY3HTlz1mKN4xUH8ubaLJ3OST+5IqEQBkwlNaNpcgyrXhjvoO0PKEFQ3c9hxqLrt3h2iYTJTAN/uL/hwKYh93hEEVTiYoHN0EqV071YIpG/8ShuNjWsQtqQPot1K47Td8uWBE4r4=
+	t=1728392184; cv=none; b=oGubwqKRnVlGACOtbpX7yTSBctspJwzjIBO4ek3eCKzkS4c4X5XiS3kH+2Cr39wPrd2xnmjlfikwCWm+spb+aM5jlZSirCuHrgQqcKnTljczdhwb/2kw6g4bZaDuxrY0ZqVFqn3YROeuaMNC4Z3BD40dFCNnrL3SQVvqZd1AT5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393435; c=relaxed/simple;
-	bh=kAjB9ZP45U9VMyCrRHJVDZD8riw+f/vGKGMr43ypEZA=;
+	s=arc-20240116; t=1728392184; c=relaxed/simple;
+	bh=7hTUR05ADMyE1qkP3gbot3f9Z+eirTfjYOAenfSqxBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wq5ExJQfITR1PUjZazYVYkJUYXusSf32xTUREVjOU37z473+gjwk6bapj7xPvg0ZzCIX7MIxxH1GmELoems+DrMgPsaK+UG5pidOyyFF9BLhjq3QhkIf7uDq5zuqxxlHaBbuBkmEbjGNeh2fyJGYcnMhHgbVrPwZQxQ0FMG9shs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sspZznBV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 475F4C4CEC7;
-	Tue,  8 Oct 2024 13:17:15 +0000 (UTC)
+	 MIME-Version; b=elckwYRURipJK4ewZyY07Us2Yf0SGqEpDrsexidHCa9sxSZQH39BiuX3gmyGiwUCPyIEVDATbUDAuc1rrtAEFK7i0a2gGWc6JFHYGPDjjHoa8iG+LAtsc/kDaWIFNKF3R2nX1oal7NgXxALSVvV/y0sLMBbV+uGnkEtTxugSokQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qs0rXd/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F81C4CECC;
+	Tue,  8 Oct 2024 12:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393435;
-	bh=kAjB9ZP45U9VMyCrRHJVDZD8riw+f/vGKGMr43ypEZA=;
+	s=korg; t=1728392183;
+	bh=7hTUR05ADMyE1qkP3gbot3f9Z+eirTfjYOAenfSqxBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sspZznBVb2OV5rvioEoAkI7yQvVQD8KlG4OJ33OytoxILEfm/tTNB5SQjtfbCsQER
-	 Wdqeke9JdiALde3PJtgMsBx9Tn9MpXPxysnB945AfnEYxFQL0pgAwYNtDy9gBcRzZV
-	 3i8qKIi/+InS/3+TTVk7Dj70oymQfp8Q80fWIvwE=
+	b=qs0rXd/Nv26QeIl5d2ikHqX3fSw3CXw8lDUAMGc6h0kfYceQdUAn+EUvfM0w/nYHS
+	 Riqvl+FyY+uLYWMsisuvZDKJOTw3F3UNRUF35fsBXLf3Zb07CXeeL9LOkKuFUB+ZTM
+	 iaI30kB2BODWfIBf8tzR5Byyer4L3MMyR8yHCR1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Helge Deller <deller@gmx.de>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/386] fbdev: efifb: Register sysfs groups through driver core
+Subject: [PATCH 6.11 339/558] selftests: vDSO: fix vdso_config for s390
 Date: Tue,  8 Oct 2024 14:06:09 +0200
-Message-ID: <20241008115634.316716051@linuxfoundation.org>
+Message-ID: <20241008115715.643096454@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 95cdd538e0e5677efbdf8aade04ec098ab98f457 ]
+[ Upstream commit a6e23fb8d3c0e3904da70beaf5d7e840a983c97f ]
 
-The driver core can register and cleanup sysfs groups already.
-Make use of that functionality to simplify the error handling and
-cleanup.
+Running vdso_test_correctness on s390x (aka s390 64 bit) emits a warning:
 
-Also avoid a UAF race during unregistering where the sysctl attributes
-were usable after the info struct was freed.
+Warning: failed to find clock_gettime64 in vDSO
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
+This is caused by the "#elif defined (__s390__)" check in vdso_config.h
+which the defines VDSO_32BIT.
+
+If __s390x__ is defined also __s390__ is defined. Therefore the correct
+check must make sure that only __s390__ is defined.
+
+Therefore add the missing !defined(__s390x__). Also use common
+__s390x__ define instead of __s390X__.
+
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 693f5ca08ca0 ("kselftest: Extend vDSO selftest")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/efifb.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ tools/testing/selftests/vDSO/vdso_config.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
-index f9b4ddd592ce4..88ac24202a1ff 100644
---- a/drivers/video/fbdev/efifb.c
-+++ b/drivers/video/fbdev/efifb.c
-@@ -571,15 +571,10 @@ static int efifb_probe(struct platform_device *dev)
- 		break;
- 	}
- 
--	err = sysfs_create_groups(&dev->dev.kobj, efifb_groups);
--	if (err) {
--		pr_err("efifb: cannot add sysfs attrs\n");
--		goto err_unmap;
--	}
- 	err = fb_alloc_cmap(&info->cmap, 256, 0);
- 	if (err < 0) {
- 		pr_err("efifb: cannot allocate colormap\n");
--		goto err_groups;
-+		goto err_unmap;
- 	}
- 
- 	if (efifb_pci_dev)
-@@ -603,8 +598,6 @@ static int efifb_probe(struct platform_device *dev)
- 		pm_runtime_put(&efifb_pci_dev->dev);
- 
- 	fb_dealloc_cmap(&info->cmap);
--err_groups:
--	sysfs_remove_groups(&dev->dev.kobj, efifb_groups);
- err_unmap:
- 	if (mem_flags & (EFI_MEMORY_UC | EFI_MEMORY_WC))
- 		iounmap(info->screen_base);
-@@ -624,12 +617,12 @@ static void efifb_remove(struct platform_device *pdev)
- 
- 	/* efifb_destroy takes care of info cleanup */
- 	unregister_framebuffer(info);
--	sysfs_remove_groups(&pdev->dev.kobj, efifb_groups);
- }
- 
- static struct platform_driver efifb_driver = {
- 	.driver = {
- 		.name = "efi-framebuffer",
-+		.dev_groups = efifb_groups,
- 	},
- 	.probe = efifb_probe,
- 	.remove_new = efifb_remove,
+diff --git a/tools/testing/selftests/vDSO/vdso_config.h b/tools/testing/selftests/vDSO/vdso_config.h
+index 00bfed6e4922e..fe0b3ec48c8d8 100644
+--- a/tools/testing/selftests/vDSO/vdso_config.h
++++ b/tools/testing/selftests/vDSO/vdso_config.h
+@@ -25,11 +25,11 @@
+ #define VDSO_VERSION		1
+ #define VDSO_NAMES		0
+ #define VDSO_32BIT		1
+-#elif defined (__s390__)
++#elif defined (__s390__) && !defined(__s390x__)
+ #define VDSO_VERSION		2
+ #define VDSO_NAMES		0
+ #define VDSO_32BIT		1
+-#elif defined (__s390X__)
++#elif defined (__s390x__)
+ #define VDSO_VERSION		2
+ #define VDSO_NAMES		0
+ #elif defined(__mips__)
 -- 
 2.43.0
 
