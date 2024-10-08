@@ -1,55 +1,64 @@
-Return-Path: <stable+bounces-81972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94929994A60
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 036CE994D35
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:03:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15F5BB251BB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49A29B2330A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12B11E485;
-	Tue,  8 Oct 2024 12:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D7A1DE2AE;
+	Tue,  8 Oct 2024 13:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvC9mxWP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLhrjTV6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E111E493;
-	Tue,  8 Oct 2024 12:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257AC17F4FF;
+	Tue,  8 Oct 2024 13:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390753; cv=none; b=nvuvsWX7tsFXBJU7muHcRvimqZMD4ojHVTToJ83inbHXlBBpr4BSUEErKpnVUlhhEuUyIbhv5UVnFc45OvPIyYvRERdsaFXAlouqjTszgvALLSmuoO9wXc6Cq0aQzvUpwWvfRPn8cOytgMiWBGuYLPzjXT6FyT2Kyah24Vs91s0=
+	t=1728392547; cv=none; b=IOLio1oeJU06uAQyk/P0MIpG4rZmV7U5SqAtUxkyTWSu5e0YvTd3tMp835qyNTzCslDkyxaAAC7SZduUSXFgo+LGJU8Z0RIsp0FBkJ6pGkheU0pjqh3An3jjfDo7SdxaISe580a/KC+oat1AweQlPsHR3+ml5H7zm/EBUCYuttk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390753; c=relaxed/simple;
-	bh=RdrBGepv/0v3RVZKnVDVgYRVy5tIwWzw9/hEgnQFsE0=;
+	s=arc-20240116; t=1728392547; c=relaxed/simple;
+	bh=9R6QGbEIU7xK6E2P7KGe7OvTMnKLe4JuA3cjojeLGpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHNWndhzFxpPuZnhzBytt9a4y3Jom++WID4fT+hem+BXQGx2lwRCG232pTbMddBKbYXMMFKoYVxyM0lZWOoa1DF+pz8u8lypo2i6NwjptvX/MZfVR2CWO+hC3IUJZ/dDNDhE44+fvZPqWMEz+6TdudswPC8A/VGdvD3gzLOhCJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvC9mxWP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C79C4CEC7;
-	Tue,  8 Oct 2024 12:32:32 +0000 (UTC)
+	 MIME-Version; b=Unqua8KB6s5JyvhFZcsVIkq4KMApz63GF4L7hBLx6KW8wefrgQhxdzjKCw9kzvaxEsYgW7xG7OeKzmzznQMkK68AYxs90NLujDc36HyjVYkVlxOoeykRuzzmv1RaeZiMRIZchd747LCmileS0GwpiFcoNdLuMHm33RUPZnp2iHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLhrjTV6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C4FC4CEC7;
+	Tue,  8 Oct 2024 13:02:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390753;
-	bh=RdrBGepv/0v3RVZKnVDVgYRVy5tIwWzw9/hEgnQFsE0=;
+	s=korg; t=1728392547;
+	bh=9R6QGbEIU7xK6E2P7KGe7OvTMnKLe4JuA3cjojeLGpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xvC9mxWPQls75ZWgEUY77vp8pewxJ2y1VmaGghALgwUjmpYo2L++NGt7+AC5NlxaZ
-	 evkuxLbCOtASCTxTuBmNWinQpaePzguu0XptNgbe08imGc8JADr+EYcY6Fl0lEqrJm
-	 sjEOAG/zPSjGbGYCPrwhcfnMCX72DW+8J619KSmE=
+	b=SLhrjTV6gKFKysewn3KPRrI6ic1Zg9EeRzywQ2ZJjFOkrSWCo8kF0pw8p2wAyYYkY
+	 t5GIt4spwSKwl3KeXm6vUvhOUkfOhVxwSIJdJZql0f1BWJ9JInh+grHTwBwkjFnnr7
+	 YJqJVj9mwydMpstUIwn4bY950e6y+Y5KtXt7Ho38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.10 382/482] clk: rockchip: fix error for unknown clocks
-Date: Tue,  8 Oct 2024 14:07:25 +0200
-Message-ID: <20241008115703.450306997@linuxfoundation.org>
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 416/558] ocfs2: remove unreasonable unlock in ocfs2_read_blocks
+Date: Tue,  8 Oct 2024 14:07:26 +0200
+Message-ID: <20241008115718.643764479@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +70,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-commit 12fd64babaca4dc09d072f63eda76ba44119816a upstream.
+commit c03a82b4a0c935774afa01fd6d128b444fd930a1 upstream.
 
-There is a clk == NULL check after the switch to check for
-unsupported clk types. Since clk is re-assigned in a loop,
-this check is useless right now for anything but the first
-round. Let's fix this up by assigning clk = NULL in the
-loop before the switch statement.
+Patch series "Misc fixes for ocfs2_read_blocks", v5.
 
-Fixes: a245fecbb806 ("clk: rockchip: add basic infrastructure for clock branches")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-[added fixes + stable-cc]
-Link: https://lore.kernel.org/r/20240325193609.237182-6-sebastian.reichel@collabora.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+This series contains 2 fixes for ocfs2_read_blocks().  The first patch fix
+the issue reported by syzbot, which detects bad unlock balance in
+ocfs2_read_blocks().  The second patch fixes an issue reported by Heming
+Zhao when reviewing above fix.
+
+
+This patch (of 2):
+
+There was a lock release before exiting, so remove the unreasonable unlock.
+
+Link: https://lkml.kernel.org/r/20240902023636.1843422-1-joseph.qi@linux.alibaba.com
+Link: https://lkml.kernel.org/r/20240902023636.1843422-2-joseph.qi@linux.alibaba.com
+Fixes: cf76c78595ca ("ocfs2: don't put and assigning null to bh allocated outside")
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ab134185af9ef88dfed5
+Tested-by: syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>	[4.20+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/rockchip/clk.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ocfs2/buffer_head_io.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/clk/rockchip/clk.c
-+++ b/drivers/clk/rockchip/clk.c
-@@ -450,12 +450,13 @@ void rockchip_clk_register_branches(stru
- 				    struct rockchip_clk_branch *list,
- 				    unsigned int nr_clk)
- {
--	struct clk *clk = NULL;
-+	struct clk *clk;
- 	unsigned int idx;
- 	unsigned long flags;
- 
- 	for (idx = 0; idx < nr_clk; idx++, list++) {
- 		flags = list->flags;
-+		clk = NULL;
- 
- 		/* catch simple muxes */
- 		switch (list->branch_type) {
+--- a/fs/ocfs2/buffer_head_io.c
++++ b/fs/ocfs2/buffer_head_io.c
+@@ -235,7 +235,6 @@ int ocfs2_read_blocks(struct ocfs2_cachi
+ 		if (bhs[i] == NULL) {
+ 			bhs[i] = sb_getblk(sb, block++);
+ 			if (bhs[i] == NULL) {
+-				ocfs2_metadata_cache_io_unlock(ci);
+ 				status = -ENOMEM;
+ 				mlog_errno(status);
+ 				/* Don't forget to put previous bh! */
 
 
 
