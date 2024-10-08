@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF5C9994A90
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5547B994D2D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:02:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7453528B4EA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B72728242E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE2F192D69;
-	Tue,  8 Oct 2024 12:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C244E1DE2A5;
+	Tue,  8 Oct 2024 13:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="juHK2Xg0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5oVqVgw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2371779B1;
-	Tue,  8 Oct 2024 12:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E68A1DFD1;
+	Tue,  8 Oct 2024 13:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390841; cv=none; b=sJCxorNH4fDa9u39sPRlP1kDklSd2Oq7O2kRbI6HQyf1dkHfALDkp50ysKfw/TvCbT3GXmfSgM/6ygvbkcPWyOIze9cH4oArkMGDZiwzS1nFMKppbN3igT9YxwbpKKPeu9Wa+rL8PeZ4cdY5bafBeQ7yYJWWr+oO/PHp5oASTE4=
+	t=1728392557; cv=none; b=hDcL276+t7QAhRdPbjlaspjNo8UIrBx88kJV1MJmupcaKIrC3+z4NgzJlea1vT2HG6g5pKiQBkyF8y8KYpJC+rojwB/4/ua/YTAaTDj+R84n8wmdkSsMX0oQ3uh0/fW1ns4+s5vrTGXOATFoDFEkGcGlCnK0WkYU2Evfc2MWOrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390841; c=relaxed/simple;
-	bh=yVU3SMIXy3ydyaDm3Ttavfc8BsidGnipN9Zl8f5b2k0=;
+	s=arc-20240116; t=1728392557; c=relaxed/simple;
+	bh=ohd4XY+zHN2021rgv2kKq59p+qe/QPwXi3y1nC4YmKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NVj6Hxg67/gIrXNRYrjEk+0OeNrq4ZJLBbvwt4fJtH9iSUJQve+O8BWFjFet5j7XhluzklPTw6PmrOOpE3FsE1OMidUS60UFstHXVzCL2kqaRFGfWHSmoCNZUgexaNaWsG2M74WkZKsM2U/X4rUKsttJm6ElAqylm7n51MMYdjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=juHK2Xg0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B336C4CEC7;
-	Tue,  8 Oct 2024 12:34:00 +0000 (UTC)
+	 MIME-Version; b=Ze4bLX7TB74LpItt39UgNbMEpPYa4ayfAkGubw9OSZnjxEenOBWux3xH6x40a0tbHMCK6FtPisCjysm3SmiPWcwh+95v0zD1IiTfiGoi9gh3y1TnVGN4OjRYvoQ7muriRtH2uQHgJ0y8V87vrr2kO0RZy8Q8roNx1jC0UTCmBh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5oVqVgw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1D4C4CEC7;
+	Tue,  8 Oct 2024 13:02:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390840;
-	bh=yVU3SMIXy3ydyaDm3Ttavfc8BsidGnipN9Zl8f5b2k0=;
+	s=korg; t=1728392557;
+	bh=ohd4XY+zHN2021rgv2kKq59p+qe/QPwXi3y1nC4YmKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=juHK2Xg0vtPVu1526+UpimPHim9q0/RLUHHqjP+gVpkAqYYwCg+NvfsjZ1/USD8Ms
-	 dSDLhpbx3PUsvTqiVNd/EmfkIAJp7X6wPe6oBC2TMyqZN08QSXCFpjrFAS1S/7xZyN
-	 6S9w084FCZ+sUKzHTPeiO8OiSCx5tm7fUKRBgWmU=
+	b=E5oVqVgwTXB85oIWFkWDUXR208KQ3CWcFVr59JqIFSpgOiMucNasJYHUf4sYbdA5z
+	 nRFxk+kCO3IHwOZ/ISDHWMvuLB8TltQI95stdqujMvW9UoJbbktL62H2q9+N8nSd2m
+	 obkGKqFJRc9Gy1QQUCcJs37RH9+0Dmc4Y0PePhGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.10 410/482] Input: adp5589-keys - fix adp5589_gpio_get_value()
+	Nicolai Stange <nstange@suse.com>,
+	Chun-Yi Lee <jlee@suse.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.11 443/558] aoe: fix the potential use-after-free problem in more places
 Date: Tue,  8 Oct 2024 14:07:53 +0200
-Message-ID: <20241008115704.541268122@linuxfoundation.org>
+Message-ID: <20241008115719.697760890@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Chun-Yi Lee <joeyli.kernel@gmail.com>
 
-commit c684771630e64bc39bddffeb65dd8a6612a6b249 upstream.
+commit 6d6e54fc71ad1ab0a87047fd9c211e75d86084a3 upstream.
 
-The adp5589 seems to have the same behavior as similar devices as
-explained in commit 910a9f5636f5 ("Input: adp5588-keys - get value from
-data out when dir is out").
+For fixing CVE-2023-6270, f98364e92662 ("aoe: fix the potential
+use-after-free problem in aoecmd_cfg_pkts") makes tx() calling dev_put()
+instead of doing in aoecmd_cfg_pkts(). It avoids that the tx() runs
+into use-after-free.
 
-Basically, when the gpio is set as output we need to get the value from
-ADP5589_GPO_DATA_OUT_A register instead of ADP5589_GPI_STATUS_A.
+Then Nicolai Stange found more places in aoe have potential use-after-free
+problem with tx(). e.g. revalidate(), aoecmd_ata_rw(), resend(), probe()
+and aoecmd_cfg_rsp(). Those functions also use aoenet_xmit() to push
+packet to tx queue. So they should also use dev_hold() to increase the
+refcnt of skb->dev.
 
-Fixes: 9d2e173644bb ("Input: ADP5589 - new driver for I2C Keypad Decoder and I/O Expander")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20241001-b4-dev-adp5589-fw-conversion-v1-2-fca0149dfc47@analog.com
+On the other hand, moving dev_put() to tx() causes that the refcnt of
+skb->dev be reduced to a negative value, because corresponding
+dev_hold() are not called in revalidate(), aoecmd_ata_rw(), resend(),
+probe(), and aoecmd_cfg_rsp(). This patch fixed this issue.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://nvd.nist.gov/vuln/detail/CVE-2023-6270
+Fixes: f98364e92662 ("aoe: fix the potential use-after-free problem in aoecmd_cfg_pkts")
+Reported-by: Nicolai Stange <nstange@suse.com>
+Signed-off-by: Chun-Yi Lee <jlee@suse.com>
+Link: https://lore.kernel.org/stable/20240624064418.27043-1-jlee%40suse.com
+Link: https://lore.kernel.org/r/20241002035458.24401-1-jlee@suse.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/keyboard/adp5589-keys.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/block/aoe/aoecmd.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/input/keyboard/adp5589-keys.c
-+++ b/drivers/input/keyboard/adp5589-keys.c
-@@ -391,10 +391,17 @@ static int adp5589_gpio_get_value(struct
- 	struct adp5589_kpad *kpad = gpiochip_get_data(chip);
- 	unsigned int bank = kpad->var->bank(kpad->gpiomap[off]);
- 	unsigned int bit = kpad->var->bit(kpad->gpiomap[off]);
-+	int val;
+--- a/drivers/block/aoe/aoecmd.c
++++ b/drivers/block/aoe/aoecmd.c
+@@ -361,6 +361,7 @@ ata_rw_frameinit(struct frame *f)
+ 	}
  
--	return !!(adp5589_read(kpad->client,
--			       kpad->var->reg(ADP5589_GPI_STATUS_A) + bank) &
--			       bit);
-+	mutex_lock(&kpad->gpio_lock);
-+	if (kpad->dir[bank] & bit)
-+		val = kpad->dat_out[bank];
-+	else
-+		val = adp5589_read(kpad->client,
-+				   kpad->var->reg(ADP5589_GPI_STATUS_A) + bank);
-+	mutex_unlock(&kpad->gpio_lock);
-+
-+	return !!(val & bit);
+ 	ah->cmdstat = ATA_CMD_PIO_READ | writebit | extbit;
++	dev_hold(t->ifp->nd);
+ 	skb->dev = t->ifp->nd;
  }
  
- static void adp5589_gpio_set_value(struct gpio_chip *chip,
+@@ -401,6 +402,8 @@ aoecmd_ata_rw(struct aoedev *d)
+ 		__skb_queue_head_init(&queue);
+ 		__skb_queue_tail(&queue, skb);
+ 		aoenet_xmit(&queue);
++	} else {
++		dev_put(f->t->ifp->nd);
+ 	}
+ 	return 1;
+ }
+@@ -483,10 +486,13 @@ resend(struct aoedev *d, struct frame *f
+ 	memcpy(h->dst, t->addr, sizeof h->dst);
+ 	memcpy(h->src, t->ifp->nd->dev_addr, sizeof h->src);
+ 
++	dev_hold(t->ifp->nd);
+ 	skb->dev = t->ifp->nd;
+ 	skb = skb_clone(skb, GFP_ATOMIC);
+-	if (skb == NULL)
++	if (skb == NULL) {
++		dev_put(t->ifp->nd);
+ 		return;
++	}
+ 	f->sent = ktime_get();
+ 	__skb_queue_head_init(&queue);
+ 	__skb_queue_tail(&queue, skb);
+@@ -617,6 +623,8 @@ probe(struct aoetgt *t)
+ 		__skb_queue_head_init(&queue);
+ 		__skb_queue_tail(&queue, skb);
+ 		aoenet_xmit(&queue);
++	} else {
++		dev_put(f->t->ifp->nd);
+ 	}
+ }
+ 
+@@ -1395,6 +1403,7 @@ aoecmd_ata_id(struct aoedev *d)
+ 	ah->cmdstat = ATA_CMD_ID_ATA;
+ 	ah->lba3 = 0xa0;
+ 
++	dev_hold(t->ifp->nd);
+ 	skb->dev = t->ifp->nd;
+ 
+ 	d->rttavg = RTTAVG_INIT;
+@@ -1404,6 +1413,8 @@ aoecmd_ata_id(struct aoedev *d)
+ 	skb = skb_clone(skb, GFP_ATOMIC);
+ 	if (skb)
+ 		f->sent = ktime_get();
++	else
++		dev_put(t->ifp->nd);
+ 
+ 	return skb;
+ }
 
 
 
