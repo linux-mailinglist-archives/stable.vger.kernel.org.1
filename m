@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF97994DBE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA13994A92
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 944F9B2C3B4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:01:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7A751F23F4A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4FD81DED48;
-	Tue,  8 Oct 2024 13:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D951DE2A5;
+	Tue,  8 Oct 2024 12:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5LY0sM4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tj0u4VHJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E6A1C9DDF;
-	Tue,  8 Oct 2024 13:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F611779B1;
+	Tue,  8 Oct 2024 12:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392476; cv=none; b=A+QKwL2yW3Qlgyye/oIRbCRgxP1XWcsQH01HPFWoBU2XKZPgngqvJ3Zwa0JnTNpGcKGqyy/HtKQj45mpYnzGWS9oMCgVvLSWVtQx1vXCRmTJA0MmFOE5Jm13mDg859NlQ59IF4RmBJ96bnhsrW3bpaNqAA1Bdw6gGK1M2yOXrgc=
+	t=1728390847; cv=none; b=lHXwHOt2iO1aHV4jrzh86A7ck824Wu3wBDN5V6imAB8qpIWD+vB32zQzHrtCXHmrwmo0u6SGZhPS+Ah8P5QZnV4YEXNIraQyIqZsTI8SZKtAchnUe365zD58FqAUgj8sZDEynAfwQ/Ar2HwIYAh7w5B+PXgTFfyS7v4mdTpAbZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392476; c=relaxed/simple;
-	bh=FDP4Ud6k6C9DVIsStYhi/RcmYRX9LG/QGx7NhqkxUWI=;
+	s=arc-20240116; t=1728390847; c=relaxed/simple;
+	bh=cBUrAST+ELkJp87zvTq/nv6ahfWcWCzllcHpVtW4Psc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQZXj8+8dPAS/2P2TqL6ClFi1YzGQnmhLDQ8mNw6h5A1RXm1V+dWgrQioEI3RF6DCTNuuoDhElXO/25jqVe2BqAjEFF88Un6kM2ugJ8x1jPcwacYdQZ6mWhhaq6r21mSLAacI6I2/up3VxdvMwSyqlYvIjmFRD3r0CgvsSk3hNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5LY0sM4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF1BC4CEC7;
-	Tue,  8 Oct 2024 13:01:15 +0000 (UTC)
+	 MIME-Version; b=tyUFVXKEoIv+avQH2LcCsKoVIgroKDJ1gGNEigURqbN6eeIMPey+mrmnsslDqyDj8D+hDfpu6uuRFgOf+HjoWKwJd4o8HRqDQ6B+tgwGl0sqoUvEgcRyns1xk/UG5GVme4ZhXQ6SZTccuLrJfejpyyrCMBGmw+LOq9W9QsutMkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tj0u4VHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7D5C4CEC7;
+	Tue,  8 Oct 2024 12:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392476;
-	bh=FDP4Ud6k6C9DVIsStYhi/RcmYRX9LG/QGx7NhqkxUWI=;
+	s=korg; t=1728390847;
+	bh=cBUrAST+ELkJp87zvTq/nv6ahfWcWCzllcHpVtW4Psc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v5LY0sM4y/wwzuctGzCrhCOkRuouV0ybmDT6PUrShP9q3XnclxA8G8dJKX8XVmdzr
-	 WKnNUyyk9IdvV1A+0CODQYAgus1dAtpBrfH94NqIsnPbU4SmHkcO1c3Xdf7Uopvk5/
-	 btqxq5uUEB7kHrvr4Org3I4VpGtm+r44QxJbQOVs=
+	b=Tj0u4VHJSgffhTKEpgTI06t6o42VypNkzPXbadvszbYqTxmagbFikzuvs3aCR9oj/
+	 1xu2UjWXSGlEmOz64Y8tPsrp7ak0Lpq/W1KSYFCRM/UQ4MptOa73Iidi2u2/1aolUH
+	 vZOa/9bBFY24SwMso6+EOkmc0qAGPrfsEYTFklX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
-	Daniel Bristot de Oliveira <bristot@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>
-Subject: [PATCH 6.11 427/558] sched/core: Add clearing of ->dl_server in put_prev_task_balance()
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 394/482] clk: qcom: gcc-sm8250: Do not turn off PCIe GDSCs during gdsc_disable()
 Date: Tue,  8 Oct 2024 14:07:37 +0200
-Message-ID: <20241008115719.076636158@linuxfoundation.org>
+Message-ID: <20241008115703.915778727@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joel Fernandes (Google) <joel@joelfernandes.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-commit c245910049d04fbfa85bb2f5acd591c24e9907c7 upstream.
+commit ade508b545c969c72cd68479f275a5dd640fd8b9 upstream.
 
-Paths using put_prev_task_balance() need to do a pick shortly
-after. Make sure they also clear the ->dl_server on prev as a
-part of that.
+With PWRSTS_OFF_ON, PCIe GDSCs are turned off during gdsc_disable(). This
+can happen during scenarios such as system suspend and breaks the resume
+of PCIe controllers from suspend.
 
-Fixes: 63ba8422f876 ("sched/deadline: Introduce deadline servers")
-Signed-off-by: "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Juri Lelli <juri.lelli@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/d184d554434bedbad0581cb34656582d78655150.1716811044.git.bristot@kernel.org
+So use PWRSTS_RET_ON to indicate the GDSC driver to not turn off the GDSCs
+during gdsc_disable() and allow the hardware to transition the GDSCs to
+retention when the parent domain enters low power state during system
+suspend.
+
+Cc: stable@vger.kernel.org # 5.7
+Fixes: 3e5770921a88 ("clk: qcom: gcc: Add global clock controller driver for SM8250")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20240719134238.312191-1-manivannan.sadhasivam@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/clk/qcom/gcc-sm8250.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -5789,6 +5789,14 @@ static void put_prev_task_balance(struct
- #endif
+--- a/drivers/clk/qcom/gcc-sm8250.c
++++ b/drivers/clk/qcom/gcc-sm8250.c
+@@ -3226,7 +3226,7 @@ static struct gdsc pcie_0_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_0_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ };
  
- 	put_prev_task(rq, prev);
-+
-+	/*
-+	 * We've updated @prev and no longer need the server link, clear it.
-+	 * Must be done before ->pick_next_task() because that can (re)set
-+	 * ->dl_server.
-+	 */
-+	if (prev->dl_server)
-+		prev->dl_server = NULL;
- }
+ static struct gdsc pcie_1_gdsc = {
+@@ -3234,7 +3234,7 @@ static struct gdsc pcie_1_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_1_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ };
  
- /*
-@@ -5832,14 +5840,6 @@ __pick_next_task(struct rq *rq, struct t
- restart:
- 	put_prev_task_balance(rq, prev, rf);
+ static struct gdsc pcie_2_gdsc = {
+@@ -3242,7 +3242,7 @@ static struct gdsc pcie_2_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_2_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ };
  
--	/*
--	 * We've updated @prev and no longer need the server link, clear it.
--	 * Must be done before ->pick_next_task() because that can (re)set
--	 * ->dl_server.
--	 */
--	if (prev->dl_server)
--		prev->dl_server = NULL;
--
- 	for_each_class(class) {
- 		p = class->pick_next_task(rq);
- 		if (p)
+ static struct gdsc ufs_card_gdsc = {
 
 
 
