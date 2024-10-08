@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A52ED9948B1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:15:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 370F3994B91
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 489071F28542
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:15:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D749D1F26285
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C5A1CDFB8;
-	Tue,  8 Oct 2024 12:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7D01DEFEC;
+	Tue,  8 Oct 2024 12:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzljyzM4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b8ukfdzT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3217165F08;
-	Tue,  8 Oct 2024 12:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1B5192594;
+	Tue,  8 Oct 2024 12:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389745; cv=none; b=ZjIHM/ulCLg6ckHfQUpIQheJ2rwLbSDD58JHse1tH9GVwH/tZvqEZfD0eRXHeP3jMqo0GnMe7SKiMsy2xEjZIi2+WjG1qPZecxU2ONuBWsfIhKoz/l8+sIy7QmSjxNk6VEZCknXUMgCv6EfhCI8RtoeT5+yEyAyCP3AZ5WYYhik=
+	t=1728391442; cv=none; b=QeohH5oG6cs1hruf3kEkn2n/O1nBcuDDHEhsD5zUjINqb1nCsBIGg/Y5BRmYm/lwggP0XfqvN5L1CFZlKNPTKQc+xjCleQUeHiOVvNBEYLPMkdpJZqIbaJrdPFICGSaH8wKSP4Sh38pqQDSxc0ZPo/jRquxXHHIdDx0JImd4BSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389745; c=relaxed/simple;
-	bh=M8NlstOVvPswHaLO8MH38EsIo3jk84IaZHvgeR2za20=;
+	s=arc-20240116; t=1728391442; c=relaxed/simple;
+	bh=lAZ4M80G7zgKqhI1bEeli1uur/pGMkD5KB5COt/GiWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJOIcF04A4nY5lo1pnnAENN9b6D+AK7iqJbuEWmtV6CScJWrcqrdYMu1zNAB8e5ktKDVhvys7okJ1E4W+5OsuJvNoPN34tibkQVKsvmEHtbUtpfkWOM3WUjcNPMQ6xwxAbuPpywMQoED+QLTOsc1aicHPk861df8JKj4mksagI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzljyzM4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2217FC4CEC7;
-	Tue,  8 Oct 2024 12:15:43 +0000 (UTC)
+	 MIME-Version; b=mQOX4cJrqVCl6ZNbKu4+NeGR4Wxdr2jz7Tcg554rOA2IhMKVfwLxJtHwajR3VplmjcoaFTj5OOzP44U7LamQNo8Vg45vCLCfncIqOO8RWLNULq708F4rp6QtK8rtmjqiYTzO0y6TyfniRWDzo+ErYqXg3la7I3YAF+ds7gPD8KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b8ukfdzT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B86BC4CEC7;
+	Tue,  8 Oct 2024 12:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389744;
-	bh=M8NlstOVvPswHaLO8MH38EsIo3jk84IaZHvgeR2za20=;
+	s=korg; t=1728391441;
+	bh=lAZ4M80G7zgKqhI1bEeli1uur/pGMkD5KB5COt/GiWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VzljyzM4GqXQIarjd4Ag0l9iPpKnH/sw7ktEMeVDTVZivR3i8Xqx36mwDBTJDHGGb
-	 diIPMx10xw5n7QosrwhLPFEaoMm8cjHtwiSm9KjHzdiNzROzIutOCpq6I61gNoVMsx
-	 OQXYgLhVZxpwVGPTrthu3giX926y0S7Q8jjI0L6E=
+	b=b8ukfdzTcKnmTZsmG+ty4TSu6DF05pLuOEl05Qe7SlW8L0FPjkuNf53Cj9KPZvWC2
+	 sYqn7wFZLsKDS3IqdTjHWkHbQH8To+sccPEi6xFMjUmuvu2Yoc9QutVvsommifLaa2
+	 Tj5v2J1puwb2KrB9ZWtxau4M4zCKzPNVvH31H09Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 082/482] net: hisilicon: hip04: fix OF node leak in probe()
-Date: Tue,  8 Oct 2024 14:02:25 +0200
-Message-ID: <20241008115651.533528806@linuxfoundation.org>
+Subject: [PATCH 6.11 116/558] wifi: rtw88: select WANT_DEV_COREDUMP
+Date: Tue,  8 Oct 2024 14:02:26 +0200
+Message-ID: <20241008115706.931187942@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-[ Upstream commit 17555297dbd5bccc93a01516117547e26a61caf1 ]
+[ Upstream commit 7e989b0c1e33210c07340bf5228aa83ea52515b5 ]
 
-Driver is leaking OF node reference from
-of_parse_phandle_with_fixed_args() in probe().
+We have invoked device coredump when fw crash.
+Should select WANT_DEV_COREDUMP by ourselves.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240827144421.52852-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240718070616.42217-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hip04_eth.c | 1 +
+ drivers/net/wireless/realtek/rtw88/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hip04_eth.c b/drivers/net/ethernet/hisilicon/hip04_eth.c
-index b91e7a06b97f7..beb815e5289b1 100644
---- a/drivers/net/ethernet/hisilicon/hip04_eth.c
-+++ b/drivers/net/ethernet/hisilicon/hip04_eth.c
-@@ -947,6 +947,7 @@ static int hip04_mac_probe(struct platform_device *pdev)
- 	priv->tx_coalesce_timer.function = tx_done;
+diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wireless/realtek/rtw88/Kconfig
+index 22838ede03cd8..02b0d698413be 100644
+--- a/drivers/net/wireless/realtek/rtw88/Kconfig
++++ b/drivers/net/wireless/realtek/rtw88/Kconfig
+@@ -12,6 +12,7 @@ if RTW88
  
- 	priv->map = syscon_node_to_regmap(arg.np);
-+	of_node_put(arg.np);
- 	if (IS_ERR(priv->map)) {
- 		dev_warn(d, "no syscon hisilicon,hip04-ppe\n");
- 		ret = PTR_ERR(priv->map);
+ config RTW88_CORE
+ 	tristate
++	select WANT_DEV_COREDUMP
+ 
+ config RTW88_PCI
+ 	tristate
 -- 
 2.43.0
 
