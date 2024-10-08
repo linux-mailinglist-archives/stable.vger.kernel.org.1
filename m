@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-81741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9BD099491E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:20:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE11C994BDD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:47:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 257981F262CF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:20:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E19E28162F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF71C1DF721;
-	Tue,  8 Oct 2024 12:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF461D54D1;
+	Tue,  8 Oct 2024 12:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JDINeJm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zl1yH7/T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2491D7E31;
-	Tue,  8 Oct 2024 12:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02541DC046;
+	Tue,  8 Oct 2024 12:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389978; cv=none; b=c9QK7510pTYZmtLyWZy+G6U1a0mB2MRqvC4i9V0F47XnhCmUaBtVZixeW+9JCnykHX0zrqlankR+0cAXtgToHo+XcslqjUfD1Cyy1M23a1Knk/vl54lEQiCdXEjeg6Cu9ZQZpF9Hv1UH7wvnHq3B0mrV1G6S+i2aU3jnGidu8qY=
+	t=1728391662; cv=none; b=dztVm3ebc2Lk9QkIOjBXCwIYQ3hkwTjL+fIQNr2HbeIdgOHnC68Un3EJU0SXn8/sXUrdEMaoq1zNySbZnNOtkvJbhKF6AAjqHDhmZxjs/DXALvOrS8LMyElJ4VnIUs1LnRHp9RoaGXb3NaLVR0pvdge2/VNRqYvN/FydPIZOruE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389978; c=relaxed/simple;
-	bh=RZQFjj+ug8W+CxsAdbEZoyQRUxOLDPnsOZjJYzNqS84=;
+	s=arc-20240116; t=1728391662; c=relaxed/simple;
+	bh=CPMacX/Nx6GIC17zX5QpiIuFEsCI6/XdcQ8xQf4jvKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l69Frmxh+1ubD0eIUQtGztivMcNn5ecSlwKD4Aajh7wIxNhekjtygGhFb7n1OD8XZT3OGXBiv0FDQLvQe3B7PzPABFBssn4GS/aSKe979O5gfLCk4vB4YRZZvT5BJ+s2nKZ0YFKDgCpbcqUflw5faXjXxHHyCXb/Nt0987mWRZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JDINeJm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C712EC4CEC7;
-	Tue,  8 Oct 2024 12:19:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hPq4joBhapP3OFg1qK3ZyO+bg5YRKcIMUcO0VzlhMqOHVBDUF5lHjDEixW7jcszQfXtfn6O6jKjtHG0jFLj8vXZzTizdTLnoLcY52AsKO7PuuC9gA9X1bqTtjs5+LpF/cot09OmPVSm1lxj+i3Aj46CuIX8mc6m8QptOWfO3ic8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zl1yH7/T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF76C4CECD;
+	Tue,  8 Oct 2024 12:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389978;
-	bh=RZQFjj+ug8W+CxsAdbEZoyQRUxOLDPnsOZjJYzNqS84=;
+	s=korg; t=1728391662;
+	bh=CPMacX/Nx6GIC17zX5QpiIuFEsCI6/XdcQ8xQf4jvKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1JDINeJm8FFKLMrerbLICtJ6Y9LTnIrh1CSgxa4vMFhvV9sS9xCB8+EO6Unuj4k2Y
-	 NUS9Nj0ExiLeu0U7VeFfPktbjsMw8LmLkYJjLMwmk07qupHvrZ9FLVd0c8DVslPii0
-	 rPWLZrI59sgEK8G6rCrthdKgw9Fw5tBsEUbBFQvI=
+	b=zl1yH7/TYG2ZX9XJ5mnIDnOI8M6d/YknPlvlb90r76t/WWnKJgyA41R9ZFcK7yG7I
+	 4ksQ7wQbmtM8NEke2507DiLHjVXG6nvifCjn6xkL2t+CBaE5in9ftjCNcGGzEu2RlV
+	 BENqf1DC8+wl3KFGs2NP0Pw1q64CLT85tGAxXVKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Liu <ltao@redhat.com>,
-	Steve Wahl <steve.wahl@hpe.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Pavin Joseph <me@pavinjoseph.com>,
-	Sarah Brofeldt <srhb@dbc.dk>,
-	Eric Hagberg <ehagberg@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Mirsad Todorovac <mtodorovac69@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 152/482] x86/kexec: Add EFI config table identity mapping for kexec kernel
-Date: Tue,  8 Oct 2024 14:03:35 +0200
-Message-ID: <20241008115654.288842966@linuxfoundation.org>
+Subject: [PATCH 6.11 186/558] x86/syscall: Avoid memcpy() for ia32 syscall_get_arguments()
+Date: Tue,  8 Oct 2024 14:03:36 +0200
+Message-ID: <20241008115709.670743850@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,120 +62,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Liu <ltao@redhat.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 5760929f6545c651682de3c2c6c6786816b17bb1 ]
+[ Upstream commit d19d638b1e6cf746263ef60b7d0dee0204d8216a ]
 
-A kexec kernel boot failure is sometimes observed on AMD CPUs due to an
-unmapped EFI config table array.  This can be seen when "nogbpages" is on
-the kernel command line, and has been observed as a full BIOS reboot rather
-than a successful kexec.
+Modern (fortified) memcpy() prefers to avoid writing (or reading) beyond
+the end of the addressed destination (or source) struct member:
 
-This was also the cause of reported regressions attributed to Commit
-7143c5f4cf20 ("x86/mm/ident_map: Use gbpages only where full GB page should
-be mapped.") which was subsequently reverted.
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘syscall_get_arguments’ at ./arch/x86/include/asm/syscall.h:85:2,
+    inlined from ‘populate_seccomp_data’ at kernel/seccomp.c:258:2,
+    inlined from ‘__seccomp_filter’ at kernel/seccomp.c:1231:3:
+./include/linux/fortify-string.h:580:25: error: call to ‘__read_overflow2_field’ declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  580 |                         __read_overflow2_field(q_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To avoid this page fault, explicitly include the EFI config table array in
-the kexec identity map.
+As already done for x86_64 and compat mode, do not use memcpy() to
+extract syscall arguments from struct pt_regs but rather just perform
+direct assignments. Binary output differences are negligible, and actually
+ends up using less stack space:
 
-Further explanation:
+-       sub    $0x84,%esp
++       sub    $0x6c,%esp
 
-The following 2 commits caused the EFI config table array to be
-accessed when enabling sev at kernel startup.
+and less text size:
 
-    commit ec1c66af3a30 ("x86/compressed/64: Detect/setup SEV/SME features
-                          earlier during boot")
-    commit c01fce9cef84 ("x86/compressed: Add SEV-SNP feature
-                          detection/setup")
+   text    data     bss     dec     hex filename
+  10794     252       0   11046    2b26 gcc-32b/kernel/seccomp.o.stock
+  10714     252       0   10966    2ad6 gcc-32b/kernel/seccomp.o.after
 
-This is in the code that examines whether SEV should be enabled or not, so
-it can even affect systems that are not SEV capable.
-
-This may result in a page fault if the EFI config table array's address is
-unmapped. Since the page fault occurs before the new kernel establishes its
-own identity map and page fault routines, it is unrecoverable and kexec
-fails.
-
-Most often, this problem is not seen because the EFI config table array
-gets included in the map by the luck of being placed at a memory address
-close enough to other memory areas that *are* included in the map created
-by kexec.
-
-Both the "nogbpages" command line option and the "use gpbages only where
-full GB page should be mapped" change greatly reduce the chance of being
-included in the map by luck, which is why the problem appears.
-
-Signed-off-by: Tao Liu <ltao@redhat.com>
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Pavin Joseph <me@pavinjoseph.com>
-Tested-by: Sarah Brofeldt <srhb@dbc.dk>
-Tested-by: Eric Hagberg <ehagberg@gmail.com>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/all/20240717213121.3064030-2-steve.wahl@hpe.com
+Closes: https://lore.kernel.org/lkml/9b69fb14-df89-4677-9c82-056ea9e706f5@gmail.com/
+Reported-by: Mirsad Todorovac <mtodorovac69@gmail.com>
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Mirsad Todorovac <mtodorovac69@gmail.com>
+Link: https://lore.kernel.org/all/20240708202202.work.477-kees%40kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/machine_kexec_64.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ arch/x86/include/asm/syscall.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
-index cc0f7f70b17ba..9c9ac606893e9 100644
---- a/arch/x86/kernel/machine_kexec_64.c
-+++ b/arch/x86/kernel/machine_kexec_64.c
-@@ -28,6 +28,7 @@
- #include <asm/setup.h>
- #include <asm/set_memory.h>
- #include <asm/cpu.h>
-+#include <asm/efi.h>
- 
- #ifdef CONFIG_ACPI
- /*
-@@ -87,6 +88,8 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
+diff --git a/arch/x86/include/asm/syscall.h b/arch/x86/include/asm/syscall.h
+index 2fc7bc3863ff6..7c488ff0c7641 100644
+--- a/arch/x86/include/asm/syscall.h
++++ b/arch/x86/include/asm/syscall.h
+@@ -82,7 +82,12 @@ static inline void syscall_get_arguments(struct task_struct *task,
+ 					 struct pt_regs *regs,
+ 					 unsigned long *args)
  {
- #ifdef CONFIG_EFI
- 	unsigned long mstart, mend;
-+	void *kaddr;
-+	int ret;
+-	memcpy(args, &regs->bx, 6 * sizeof(args[0]));
++	args[0] = regs->bx;
++	args[1] = regs->cx;
++	args[2] = regs->dx;
++	args[3] = regs->si;
++	args[4] = regs->di;
++	args[5] = regs->bp;
+ }
  
- 	if (!efi_enabled(EFI_BOOT))
- 		return 0;
-@@ -102,6 +105,30 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
- 	if (!mstart)
- 		return 0;
- 
-+	ret = kernel_ident_mapping_init(info, level4p, mstart, mend);
-+	if (ret)
-+		return ret;
-+
-+	kaddr = memremap(mstart, mend - mstart, MEMREMAP_WB);
-+	if (!kaddr) {
-+		pr_err("Could not map UEFI system table\n");
-+		return -ENOMEM;
-+	}
-+
-+	mstart = efi_config_table;
-+
-+	if (efi_enabled(EFI_64BIT)) {
-+		efi_system_table_64_t *stbl = (efi_system_table_64_t *)kaddr;
-+
-+		mend = mstart + sizeof(efi_config_table_64_t) * stbl->nr_tables;
-+	} else {
-+		efi_system_table_32_t *stbl = (efi_system_table_32_t *)kaddr;
-+
-+		mend = mstart + sizeof(efi_config_table_32_t) * stbl->nr_tables;
-+	}
-+
-+	memunmap(kaddr);
-+
- 	return kernel_ident_mapping_init(info, level4p, mstart, mend);
- #endif
- 	return 0;
+ static inline int syscall_get_arch(struct task_struct *task)
 -- 
 2.43.0
 
