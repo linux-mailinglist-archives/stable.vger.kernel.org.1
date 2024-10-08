@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-81864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 227EA9949D6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95EB6994E29
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:13:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C50D22812A7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C82501C233B1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915E11DF732;
-	Tue,  8 Oct 2024 12:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001B81DED6F;
+	Tue,  8 Oct 2024 13:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMLgUO3x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWDS/S3h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB241DEFCE;
-	Tue,  8 Oct 2024 12:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CD61DE8A0;
+	Tue,  8 Oct 2024 13:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390391; cv=none; b=ELf/4+ZBrXTVfk7eIVxWqAO2u4BtDd34rgoFd1jyRHDpHdCuD0jJbt1ykZGlGlX9C5x5JpZxrI9m0mEWdNW9ylJJiYYlOqnLid4rrjCRwCIZY6C7OgeemTcsFCaERiIZ++q1mkKq94wgboU1ApOK8TfsoINAGhqoNJlAyzx2yvI=
+	t=1728393183; cv=none; b=VcTtLhIWNzVLh0D7iMS4s0HO/KV/6CYjQmyiYlcBC8ExLjzMbdv2A2biYe0FhdMvHk1bWoKP2ueSIXvuEnwi4sUGqKfII5JKVZsVraFveDNzsRN1Po8OxTw764Pp1uvERXSfGmVBxtwEJdjk9SEnhGoZoawWLW8xGfFIERy7zMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390391; c=relaxed/simple;
-	bh=na/nyCLS/AWHOO1kW7TCGn5PUkYrfxAiOeYIScBjvkA=;
+	s=arc-20240116; t=1728393183; c=relaxed/simple;
+	bh=S9QkYLLq9OrlNWFhEXnLmthxDvhP/5CxAWQzIkCkoxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LxNsYAZqKNBLzeJPi1rhnymtxgKBZnUvvcEiEd5xXjwykytxE+QHV2vw1JFNtGSdJkq5K0Axb7Sgdu9jVDBodNSDdbOjrgDVHodjz7yuPdMb6+//YY8RJ6fqkcGijdBMcCCBpkoEuVxgYTFBqZm27cAIBdH1cK1mS6m5KbMguJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMLgUO3x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723D3C4CECC;
-	Tue,  8 Oct 2024 12:26:30 +0000 (UTC)
+	 MIME-Version; b=OqKTn6dODhamddjB7PwZe621V9zVU4UxqVEhmo9uKPnO39OOpbhZ1gfxD8uLVDrTXGqvmFQbN6Uq8FS9enhrZmgf5WJEjZ+GESt6mlCF7HQhF8VAZ/HwIbabrdkNkpW3/vawHKS50amu8/0mdDNwUz6eWGiXwG8UGUEuc+R7jLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWDS/S3h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F57C4CECC;
+	Tue,  8 Oct 2024 13:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390390;
-	bh=na/nyCLS/AWHOO1kW7TCGn5PUkYrfxAiOeYIScBjvkA=;
+	s=korg; t=1728393183;
+	bh=S9QkYLLq9OrlNWFhEXnLmthxDvhP/5CxAWQzIkCkoxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aMLgUO3xXoZ2OoOlYOjNo2UxzkBiORkYGmpGuFtGZcv6VEh91X7Zne9MHa0dbem8B
-	 Mm0p4n6/yI2h05Hmq+tENyfXEQK8PRXOEGl+k+ZFMTHWZt65qXl+LoRWRVhJnyGHC/
-	 gHG9ydDVGCAlyOjRHbCb+epo+ir/HdrySVlB3dj4=
+	b=PWDS/S3hK9iFItuIeRssafEgYA6eHw34EAGPM7WdrNHX42QOfR4FvaYqoerO+QL9V
+	 upmlMM8VCJQJyRLeS7q3i015Mbdwzw6Urg/eG6yIBGKtIKTfRCwuwAZu28tyvvPBvx
+	 tvMm+/IQgz1zhGtyA9WNDKg7R1v5tz5U/3eI5Y1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Cheatham <Benjamin.Cheatham@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Srinivasulu Thanneeru <sthanneeru.opensrc@micron.com>,
-	Ira Weiny <ira.weiny@intel.com>,
+	Hilda Wu <hildawu@realtek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 258/482] EINJ, CXL: Fix CXL device SBDF calculation
-Date: Tue,  8 Oct 2024 14:05:21 +0200
-Message-ID: <20241008115658.438351622@linuxfoundation.org>
+Subject: [PATCH 6.6 077/386] Bluetooth: btrtl: Set msft ext address filter quirk for RTL8852B
+Date: Tue,  8 Oct 2024 14:05:22 +0200
+Message-ID: <20241008115632.492051227@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Cheatham <Benjamin.Cheatham@amd.com>
+From: Hilda Wu <hildawu@realtek.com>
 
-[ Upstream commit ee1e3c46ed19c096be22472c728fa7f68b1352c4 ]
+[ Upstream commit 9a0570948c5def5c59e588dc0e009ed850a1f5a1 ]
 
-The SBDF of the target CXL 2.0 compliant root port is required to inject a CXL
-protocol error as per ACPI 6.5. The SBDF given has to be in the
-following format:
+For tracking multiple devices concurrently with a condition.
+The patch enables the HCI_QUIRK_USE_MSFT_EXT_ADDRESS_FILTER quirk
+on RTL8852B controller.
 
-31     24 23    16 15    11 10      8  7        0
-+-------------------------------------------------+
-| segment |   bus  | device | function | reserved |
-+-------------------------------------------------+
+The quirk setting is based on commit 9e14606d8f38 ("Bluetooth: msft:
+Extended monitor tracking by address filter")
 
-The SBDF calculated in cxl_dport_get_sbdf() doesn't account for
-the reserved bits currently, causing the wrong SBDF to be used.
-Fix said calculation to properly shift the SBDF.
+With this setting, when a pattern monitor detects a device, this
+feature issues an address monitor for tracking that device. Let the
+original pattern monitor keep monitor new devices.
 
-Without this fix, error injection into CXL 2.0 root ports through the
-CXL debugfs interface (<debugfs>/cxl) is broken. Injection
-through the legacy interface (<debugfs>/apei/einj/) will still work
-because the SBDF is manually provided by the user.
-
-Fixes: 12fb28ea6b1cf ("EINJ: Add CXL error type support")
-Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Tested-by: Srinivasulu Thanneeru <sthanneeru.opensrc@micron.com>
-Reviewed-by: Srinivasulu Thanneeru <sthanneeru.opensrc@micron.com>
-Link: https://patch.msgid.link/20240927163428.366557-1-Benjamin.Cheatham@amd.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Hilda Wu <hildawu@realtek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/einj-cxl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btrtl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/apei/einj-cxl.c b/drivers/acpi/apei/einj-cxl.c
-index 8b8be0c90709f..d64e2713aae4b 100644
---- a/drivers/acpi/apei/einj-cxl.c
-+++ b/drivers/acpi/apei/einj-cxl.c
-@@ -63,7 +63,7 @@ static int cxl_dport_get_sbdf(struct pci_dev *dport_dev, u64 *sbdf)
- 		seg = bridge->domain_nr;
+diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
+index 277d039ecbb42..1e7c1f9db9e4b 100644
+--- a/drivers/bluetooth/btrtl.c
++++ b/drivers/bluetooth/btrtl.c
+@@ -1285,6 +1285,7 @@ void btrtl_set_quirks(struct hci_dev *hdev, struct btrtl_device_info *btrtl_dev)
+ 			btrealtek_set_flag(hdev, REALTEK_ALT6_CONTINUOUS_TX_CHIP);
  
- 	bus = pbus->number;
--	*sbdf = (seg << 24) | (bus << 16) | dport_dev->devfn;
-+	*sbdf = (seg << 24) | (bus << 16) | (dport_dev->devfn << 8);
+ 		if (btrtl_dev->project_id == CHIP_ID_8852A ||
++		    btrtl_dev->project_id == CHIP_ID_8852B ||
+ 		    btrtl_dev->project_id == CHIP_ID_8852C)
+ 			set_bit(HCI_QUIRK_USE_MSFT_EXT_ADDRESS_FILTER, &hdev->quirks);
  
- 	return 0;
- }
 -- 
 2.43.0
 
