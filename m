@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD40399496D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:24:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D42A5994E90
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A62B1C231BC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:24:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E126B27978
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7AC1DED48;
-	Tue,  8 Oct 2024 12:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15BFF1DED74;
+	Tue,  8 Oct 2024 13:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EKN/ed7S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQyN057r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB2A1DE3D4;
-	Tue,  8 Oct 2024 12:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80C61DE4CD;
+	Tue,  8 Oct 2024 13:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390150; cv=none; b=ES/v066lqkEv2vgjOeaiecR8wcSjkD5fJburB007eOW2mbgZeJae5ylj41HsMsr71x8bxzbZIBBfQwcbjo341ZQ7YUawHFA+bD5h4Mr+MHsj4pjU3l0K+fWOURuqDNYSgHZHqxzd9UDAqd81cwgQecqXCZ+54dnE5gsvPSOW1Fg=
+	t=1728393107; cv=none; b=sqqiYM6U9QHDLVkRpqZZPUX/XUazhChg5Apg3gE9KDuNsUGSiXN73CuS4XOBH5EvmFS0fSlOw+uNhQzKosgFZGXehasAh29JiKQe71xnZf1jMAUzHBykjJR/1U17Gx1a0N5Meg9ZJmBR9+NNK0o+HeZqRXfgjMc7073jQuX+W0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390150; c=relaxed/simple;
-	bh=F9jyXHJ8sNjlANOIGnG08zmwdPE/2pxMf3FufMRL0ZA=;
+	s=arc-20240116; t=1728393107; c=relaxed/simple;
+	bh=92638754maB4VkSQPJ29EG2N2eL9G4FJ2a8TnJ+fGkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uxfce/U/ZhwvIQfdp18DxujGM1auSbSCQum811DAwCc+ugbnRokj/oxhifBLa4YXsAnRyGJ6+7mFuCXqeZmDTJZosYTbnjz8+DnyMRe2TUA1J+pqcgtcZUk+vxUwSlOe4+cyPE7dC/RSkHa32ArTTXVSfQLqFrGWiAzcLhhhdBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKN/ed7S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED66C4CEC7;
-	Tue,  8 Oct 2024 12:22:29 +0000 (UTC)
+	 MIME-Version; b=bbMZTBcPIddh9l+7mxKLN/B1q3pbuCoXgH5n/VhG55S0gMkvmFCELqcp+chCEe2RpyEJtdE1p1vlFg7enTvihxl4fI51x+wRU1rOzqElX1jcvuXZ3NSxJkb6xmX0nMEAad0MUAoF6YC0+UIWhqBcEqZZMi/tZPd5Neuzx9evxVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQyN057r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA94C4CEC7;
+	Tue,  8 Oct 2024 13:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390149;
-	bh=F9jyXHJ8sNjlANOIGnG08zmwdPE/2pxMf3FufMRL0ZA=;
+	s=korg; t=1728393107;
+	bh=92638754maB4VkSQPJ29EG2N2eL9G4FJ2a8TnJ+fGkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EKN/ed7Skkx/pboJ/y3S2OreHNFeBu8JuTbT2tH6dmbxLLsy/k9uMA5EmZyfEF/Ha
-	 szuyvSGDfPbgfRn1+3KAEUHVTzNPa+cffpwYaTkJB40ceaTMfb1tBltVogkXQ1ZmBl
-	 FfD2sULf0S9bWWoCsF9lay2Fn8tJZeC84iHw0YWQ=
+	b=pQyN057rrZwav1xBlXaAE3m2LVvEp9xx0TBQq2gzJkK96OUmoDf+WrcGo2D9/GybF
+	 G6SV9SQlIQqoOM/wqQOExVaC9MVttyGfV4UMF/JHG84K6EG9mF9W9nTH4yYsMZYT/U
+	 QJJWbhZvJAvHahm2WKRIgVEZ2P7sxKgQdJ8FMjeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishnu Sankar <vishnuocv@gmail.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Jiri Kosina <jkosina@suse.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 206/482] HID: multitouch: Add support for Thinkpad X12 Gen 2 Kbd Portfolio
+Subject: [PATCH 6.6 024/386] Bluetooth: btmrvl: Use IRQF_NO_AUTOEN flag in request_irq()
 Date: Tue,  8 Oct 2024 14:04:29 +0200
-Message-ID: <20241008115656.416568303@linuxfoundation.org>
+Message-ID: <20241008115630.428562348@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishnu Sankar <vishnuocv@gmail.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 65b72ea91a257a5f0cb5a26b01194d3dd4b85298 ]
+[ Upstream commit 7b1ab460592ca818e7b52f27cd3ec86af79220d1 ]
 
-This applies similar quirks used by previous generation device, so that
-Trackpoint and buttons on the touchpad works.  New USB KBD PID 0x61AE for
-Thinkpad X12 Tab is added.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-Signed-off-by: Vishnu Sankar <vishnuocv@gmail.com>
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: bb7f4f0bcee6 ("btmrvl: add platform specific wakeup interrupt support")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h        | 1 +
- drivers/hid/hid-multitouch.c | 6 ++++++
- 2 files changed, 7 insertions(+)
+ drivers/bluetooth/btmrvl_sdio.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 53655f81d9950..06104a4e0fdc1 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -794,6 +794,7 @@
- #define USB_DEVICE_ID_LENOVO_X1_TAB	0x60a3
- #define USB_DEVICE_ID_LENOVO_X1_TAB3	0x60b5
- #define USB_DEVICE_ID_LENOVO_X12_TAB	0x60fe
-+#define USB_DEVICE_ID_LENOVO_X12_TAB2	0x61ae
- #define USB_DEVICE_ID_LENOVO_OPTICAL_USB_MOUSE_600E	0x600e
- #define USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_608D	0x608d
- #define USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_6019	0x6019
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 99812c0f830b5..c4a6908bbe540 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -2113,6 +2113,12 @@ static const struct hid_device_id mt_devices[] = {
- 			   USB_VENDOR_ID_LENOVO,
- 			   USB_DEVICE_ID_LENOVO_X12_TAB) },
+diff --git a/drivers/bluetooth/btmrvl_sdio.c b/drivers/bluetooth/btmrvl_sdio.c
+index d76c799553aaa..468e4165c7cc0 100644
+--- a/drivers/bluetooth/btmrvl_sdio.c
++++ b/drivers/bluetooth/btmrvl_sdio.c
+@@ -92,7 +92,7 @@ static int btmrvl_sdio_probe_of(struct device *dev,
+ 		} else {
+ 			ret = devm_request_irq(dev, cfg->irq_bt,
+ 					       btmrvl_wake_irq_bt,
+-					       0, "bt_wake", card);
++					       IRQF_NO_AUTOEN, "bt_wake", card);
+ 			if (ret) {
+ 				dev_err(dev,
+ 					"Failed to request irq_bt %d (%d)\n",
+@@ -101,7 +101,6 @@ static int btmrvl_sdio_probe_of(struct device *dev,
  
-+	/* Lenovo X12 TAB Gen 2 */
-+	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
-+		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
-+			   USB_VENDOR_ID_LENOVO,
-+			   USB_DEVICE_ID_LENOVO_X12_TAB2) },
-+
- 	/* Logitech devices */
- 	{ .driver_data = MT_CLS_NSMU,
- 		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
+ 			/* Configure wakeup (enabled by default) */
+ 			device_init_wakeup(dev, true);
+-			disable_irq(cfg->irq_bt);
+ 		}
+ 	}
+ 
 -- 
 2.43.0
 
