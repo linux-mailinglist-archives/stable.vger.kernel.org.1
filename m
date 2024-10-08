@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-82396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8840D994D25
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:02:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8249949ED
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EED5DB22ADA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:56:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7941F1F256CD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA741DFDA0;
-	Tue,  8 Oct 2024 12:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CCA1DF96C;
+	Tue,  8 Oct 2024 12:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yij45veL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fvv21FzU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFCB1DE89D;
-	Tue,  8 Oct 2024 12:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3C81DF756;
+	Tue,  8 Oct 2024 12:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392120; cv=none; b=DqJBnxSOnG/jFsaWzBF1pwoed+lu8T4Uj314Pasgg9gcEwMKeZ2vG3HqM4xyL+mwrABlwu3u5lF1DEtI57op8PY8CC2VvW5qZdWWBQcIoqHEP+vtb9rt00/8f5cc8yKNv0Wx6xjQt1wzQFbffmOoOFVABzuZFxSyVXcBy1BqrzU=
+	t=1728390443; cv=none; b=QA8042rqLNOznCrn+HFOoskBPc2ga6xhYWuE+TgS1B4lXxpzt2a/DakHfKiKDixaA0OyH0+QnJSOy2vLmoNj3O0eP3UGrRtPLuDNOZYvm882E9BXQB6JCSrV2RlhVfDp2GxB+M9WILVi2kBB+MYExGWtF9ocdxIkP7Z9l4FzMVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392120; c=relaxed/simple;
-	bh=RIud3jPCw/6Z+L5q6EY4azVHfn7l6dR8XPWNhpXPne4=;
+	s=arc-20240116; t=1728390443; c=relaxed/simple;
+	bh=eAmXXCWeNK6vyitEk9YLt4udp+KBflTywJ7G5KZp3vE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTGBNSBflWLadSsCv/R2fyxw8Jqf3Av6OBnIC6V/Xtu9idm7rDF8/umB9g/f7y2m6INEt8LyhuVhNUC2U6k7U6h5YQCxHkDkhQiTvRJWb2GzS9QMtKbbmEKGxGWL1mlkmfjOYSAxDJWcoBpLkA6SUX2HXFvjC1I6z7Sl5lUsmAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yij45veL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D286C4CECD;
-	Tue,  8 Oct 2024 12:55:19 +0000 (UTC)
+	 MIME-Version; b=riW01pX0yUPRUb44nVeSLLKuh0N+IqQEnGxvbDhZjOD+6QReuRqNrxZZV4lSKce+AWk2EFcMe2EPwfCy9q6tuDcHNw1CwJJF8KloYO/d+aNFC+NATPslVqUWJfP24wrbDv4MgmQc0gqMWOurqCHEegobIcbMVwKCQU13+kAcnyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fvv21FzU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D1EC4CEC7;
+	Tue,  8 Oct 2024 12:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392120;
-	bh=RIud3jPCw/6Z+L5q6EY4azVHfn7l6dR8XPWNhpXPne4=;
+	s=korg; t=1728390443;
+	bh=eAmXXCWeNK6vyitEk9YLt4udp+KBflTywJ7G5KZp3vE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yij45veLFckR/1sEJjRDiayzQG4qEshL9fcdo3BjNISQv+9f9rOgnyTlNtltVbbOO
-	 UXgGkuxJn9cMXR57RMGFijtdzNAff7HDwFON0aLDEVnsaVDcHkbIUIqZ5Dru39Z42g
-	 STZMQaXNoIuOEX7lNM1iISsL+PgyerSPAsH0c0XE=
+	b=Fvv21FzUG76DG+I2P5MYTmBtNdGremObOeWz99AmtriKAzgE9IQijAqW2C4ieMuLT
+	 Q9H+D/+VdtsJbv0Y1FSo4Jo39UGy+nmzQB+ocbhW6J9nZemJU64++B55DDj+UDqzq9
+	 3WZcOuxqyMLk31BcQLZyExL0GCrDKblafxrWxY2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Alexander F. Lent" <lx@xanderlent.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 322/558] accel/ivpu: Add missing MODULE_FIRMWARE metadata
+	Aleksandr Burakov <a.burakov@rosalinux.ru>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.10 289/482] platform/x86: x86-android-tablets: Fix use after free on platform_device_register() errors
 Date: Tue,  8 Oct 2024 14:05:52 +0200
-Message-ID: <20241008115714.978618082@linuxfoundation.org>
+Message-ID: <20241008115659.651635125@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander F. Lent <lx@xanderlent.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 58b5618ba80a5e5a8d531a70eae12070e5bd713f ]
+commit 2fae3129c0c08e72b1fe93e61fd8fd203252094a upstream.
 
-Modules that load firmware from various paths at runtime must declare
-those paths at compile time, via the MODULE_FIRMWARE macro, so that the
-firmware paths are included in the module's metadata.
+x86_android_tablet_remove() frees the pdevs[] array, so it should not
+be used after calling x86_android_tablet_remove().
 
-The accel/ivpu driver loads firmware but lacks this metadata,
-preventing dracut from correctly locating firmware files. Fix it.
+When platform_device_register() fails, store the pdevs[x] PTR_ERR() value
+into the local ret variable before calling x86_android_tablet_remove()
+to avoid using pdevs[] after it has been freed.
 
-Fixes: 9ab43e95f922 ("accel/ivpu: Switch to generation based FW names")
-Fixes: 02d5b0aacd05 ("accel/ivpu: Implement firmware parsing and booting")
-Signed-off-by: Alexander F. Lent <lx@xanderlent.com>
-Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240709-fix-ivpu-firmware-metadata-v3-1-55f70bba055b@xanderlent.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5eba0141206e ("platform/x86: x86-android-tablets: Add support for instantiating platform-devs")
+Fixes: e2200d3f26da ("platform/x86: x86-android-tablets: Add gpio_keys support to x86_android_tablet_init()")
+Cc: stable@vger.kernel.org
+Reported-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
+Closes: https://lore.kernel.org/platform-driver-x86/20240917120458.7300-1-a.burakov@rosalinux.ru/
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241005130545.64136-1-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_fw.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/platform/x86/x86-android-tablets/core.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_fw.c b/drivers/accel/ivpu/ivpu_fw.c
-index de3d661163756..ede6165e09d90 100644
---- a/drivers/accel/ivpu/ivpu_fw.c
-+++ b/drivers/accel/ivpu/ivpu_fw.c
-@@ -60,6 +60,10 @@ static struct {
- 	{ IVPU_HW_IP_40XX, "intel/vpu/vpu_40xx_v0.0.bin" },
- };
+--- a/drivers/platform/x86/x86-android-tablets/core.c
++++ b/drivers/platform/x86/x86-android-tablets/core.c
+@@ -390,8 +390,9 @@ static __init int x86_android_tablet_pro
+ 	for (i = 0; i < pdev_count; i++) {
+ 		pdevs[i] = platform_device_register_full(&dev_info->pdev_info[i]);
+ 		if (IS_ERR(pdevs[i])) {
++			ret = PTR_ERR(pdevs[i]);
+ 			x86_android_tablet_remove(pdev);
+-			return PTR_ERR(pdevs[i]);
++			return ret;
+ 		}
+ 	}
  
-+/* Production fw_names from the table above */
-+MODULE_FIRMWARE("intel/vpu/vpu_37xx_v0.0.bin");
-+MODULE_FIRMWARE("intel/vpu/vpu_40xx_v0.0.bin");
-+
- static int ivpu_fw_request(struct ivpu_device *vdev)
- {
- 	int ret = -ENOENT;
--- 
-2.43.0
-
+@@ -443,8 +444,9 @@ static __init int x86_android_tablet_pro
+ 								  PLATFORM_DEVID_AUTO,
+ 								  &pdata, sizeof(pdata));
+ 		if (IS_ERR(pdevs[pdev_count])) {
++			ret = PTR_ERR(pdevs[pdev_count]);
+ 			x86_android_tablet_remove(pdev);
+-			return PTR_ERR(pdevs[pdev_count]);
++			return ret;
+ 		}
+ 		pdev_count++;
+ 	}
 
 
 
