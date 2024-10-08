@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-82672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11964994DE5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:10:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A83D5994C2A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 909C01F223D8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:10:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7DD51C24F59
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303391DEFC8;
-	Tue,  8 Oct 2024 13:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E994A1DE3C1;
+	Tue,  8 Oct 2024 12:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTS+vnTG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAJUzI8G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E275E1DED4E;
-	Tue,  8 Oct 2024 13:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76F0183CB8;
+	Tue,  8 Oct 2024 12:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393037; cv=none; b=OYfo4GzQFijYP2Nqy6KENKXU9yASsfQqnzkD/7TafSnzcFVhVpIsgv+pOxJUjMUi7YiOFM7cXnbxvZtbE4cQJu+6ICalI+LuQy2pCTvFUDUD72cghDOJEpLu/+sZi0Js6r8qzxlQz5B30AkJlaoJfr8XOzUn+QLfvcgW+jPOOAg=
+	t=1728391874; cv=none; b=hYlcp7Ir4FOgLar/hxo18h4QDkvVnpEvseTXVtvN/KqKDqIFrvOChtIAMmN22jQEg1MukC3vD0HgBx5yEtgtQBmVJJQKaTeyzf76qBJQvx2fIzPZE+GsuKrdh1o5tm1nlrzaJZVbqQePZsZDcXP054Qdcl2iMlh+Gc9wLy6jATU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393037; c=relaxed/simple;
-	bh=Scv929UP2oNN8Y9IcJUniOe8zlisQh6u9kyJj1ybpDo=;
+	s=arc-20240116; t=1728391874; c=relaxed/simple;
+	bh=r2Ms1JhGRvS/VzTHonLsJkZL7xi7zd5tojEi7OBbC20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oWLewVT970Ct2X95tiqzKkDVP4SAjppz0kB07IXKF3EznQ6VB7LxYzh7Wz6prBqUn/7VtBsCXXGa6mIHTy05J38pP4GNl9WGWyK0B6DPpshO9D+NYM8RnBiUkF7a+WF0hH0A3djrTcShOfHHgi2jNjt3vmJnDt985fE+BfbxTCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTS+vnTG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527FAC4CEC7;
-	Tue,  8 Oct 2024 13:10:36 +0000 (UTC)
+	 MIME-Version; b=P6o6VPeXwNgYckmHNiwI35E4v7wKKqYICrVGK0594pJrJQTuFrY7MQZWjLvPHZui3vAPswFhz4P3coMEc2+ovKUHsKIVdwyPm9GKe2AoC76RkSCrP1ZViL1ltv91qJTyzAcpPIT8dJro0FJ03XEIQtk4wo9L2KY1PiCqFkkHypE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAJUzI8G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF56C4CEC7;
+	Tue,  8 Oct 2024 12:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393036;
-	bh=Scv929UP2oNN8Y9IcJUniOe8zlisQh6u9kyJj1ybpDo=;
+	s=korg; t=1728391874;
+	bh=r2Ms1JhGRvS/VzTHonLsJkZL7xi7zd5tojEi7OBbC20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hTS+vnTGz0AmzlZ5mNfqb7Bqytok0YqHazsgb1rzIhu1yzDpLCFqH4/ir69qVZVjd
-	 Xpd1OJM2xCbMpeSDWjI6axDNs2ZKjabRjWhjN5YH8BHbMBluJFJ0aYkqW90dPvwSJY
-	 vQiyTYYXGQXYfyUTzlcX7ujnbSMRD86x1sBqLs90=
+	b=EAJUzI8GL1mhaaf8KW+XrgCSqpEzZpWSkMcxl1mk6JlKVTUpjHfooWElvgenKuVuG
+	 AVkTIXyfcermOq4kZJmdo2XqkNNzCXmhmU9IxsQL98vZDvQqlgCa22gVbYvOSUANGU
+	 nkoaK8kFv2f+m5x4I47owSBd43AhnY+k2Dd3Fc0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 034/386] net: test for not too small csum_start in virtio_net_hdr_to_skb()
+Subject: [PATCH 6.11 249/558] drm/xe: Add timeout to preempt fences
 Date: Tue,  8 Oct 2024 14:04:39 +0200
-Message-ID: <20241008115630.821295970@linuxfoundation.org>
+Message-ID: <20241008115712.136878374@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +64,209 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit 49d14b54a527289d09a9480f214b8c586322310a ]
+[ Upstream commit 627c961d672d3304564455ba471f5e4405170eec ]
 
-syzbot was able to trigger this warning [1], after injecting a
-malicious packet through af_packet, setting skb->csum_start and thus
-the transport header to an incorrect value.
+To adhere to dma fencing rules that fences must signal within a
+reasonable amount of time, add a 5 second timeout to preempt fences. If
+this timeout occurs, kill the associated VM as this fatal to the VM.
 
-We can at least make sure the transport header is after
-the end of the network header (with a estimated minimal size).
+v2:
+ - Add comment for smp_wmb (Checkpatch)
+ - Fix kernel doc typo (Inspection)
+ - Add comment for killed check (Niranjana)
+v3:
+ - Drop smp_wmb (Matthew Auld)
+ - Don't take vm->lock in preempt fence worker (Matthew Auld)
+ - Drop RB given changes to patch
+v4:
+ - Add WRITE/READ_ONCE (Niranjana)
+ - Don't export xe_vm_kill (Niranjana)
 
-[1]
-[   67.873027] skb len=4096 headroom=16 headlen=14 tailroom=0
-mac=(-1,-1) mac_len=0 net=(16,-6) trans=10
-shinfo(txflags=0 nr_frags=1 gso(size=0 type=0 segs=0))
-csum(0xa start=10 offset=0 ip_summed=3 complete_sw=0 valid=0 level=0)
-hash(0x0 sw=0 l4=0) proto=0x0800 pkttype=0 iif=0
-priority=0x0 mark=0x0 alloc_cpu=10 vlan_all=0x0
-encapsulation=0 inner(proto=0x0000, mac=0, net=0, trans=0)
-[   67.877172] dev name=veth0_vlan feat=0x000061164fdd09e9
-[   67.877764] sk family=17 type=3 proto=0
-[   67.878279] skb linear:   00000000: 00 00 10 00 00 00 00 00 0f 00 00 00 08 00
-[   67.879128] skb frag:     00000000: 0e 00 07 00 00 00 28 00 08 80 1c 00 04 00 00 02
-[   67.879877] skb frag:     00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.880647] skb frag:     00000020: 00 00 02 00 00 00 08 00 1b 00 00 00 00 00 00 00
-[   67.881156] skb frag:     00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.881753] skb frag:     00000040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.882173] skb frag:     00000050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.882790] skb frag:     00000060: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.883171] skb frag:     00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.883733] skb frag:     00000080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.884206] skb frag:     00000090: 00 00 00 00 00 00 00 00 00 00 69 70 76 6c 61 6e
-[   67.884704] skb frag:     000000a0: 31 00 00 00 00 00 00 00 00 00 2b 00 00 00 00 00
-[   67.885139] skb frag:     000000b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.885677] skb frag:     000000c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.886042] skb frag:     000000d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.886408] skb frag:     000000e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.887020] skb frag:     000000f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.887384] skb frag:     00000100: 00 00
-[   67.887878] ------------[ cut here ]------------
-[   67.887908] offset (-6) >= skb_headlen() (14)
-[   67.888445] WARNING: CPU: 10 PID: 2088 at net/core/dev.c:3332 skb_checksum_help (net/core/dev.c:3332 (discriminator 2))
-[   67.889353] Modules linked in: macsec macvtap macvlan hsr wireguard curve25519_x86_64 libcurve25519_generic libchacha20poly1305 chacha_x86_64 libchacha poly1305_x86_64 dummy bridge sr_mod cdrom evdev pcspkr i2c_piix4 9pnet_virtio 9p 9pnet netfs
-[   67.890111] CPU: 10 UID: 0 PID: 2088 Comm: b363492833 Not tainted 6.11.0-virtme #1011
-[   67.890183] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   67.890309] RIP: 0010:skb_checksum_help (net/core/dev.c:3332 (discriminator 2))
-[   67.891043] Call Trace:
-[   67.891173]  <TASK>
-[   67.891274] ? __warn (kernel/panic.c:741)
-[   67.891320] ? skb_checksum_help (net/core/dev.c:3332 (discriminator 2))
-[   67.891333] ? report_bug (lib/bug.c:180 lib/bug.c:219)
-[   67.891348] ? handle_bug (arch/x86/kernel/traps.c:239)
-[   67.891363] ? exc_invalid_op (arch/x86/kernel/traps.c:260 (discriminator 1))
-[   67.891372] ? asm_exc_invalid_op (./arch/x86/include/asm/idtentry.h:621)
-[   67.891388] ? skb_checksum_help (net/core/dev.c:3332 (discriminator 2))
-[   67.891399] ? skb_checksum_help (net/core/dev.c:3332 (discriminator 2))
-[   67.891416] ip_do_fragment (net/ipv4/ip_output.c:777 (discriminator 1))
-[   67.891448] ? __ip_local_out (./include/linux/skbuff.h:1146 ./include/net/l3mdev.h:196 ./include/net/l3mdev.h:213 net/ipv4/ip_output.c:113)
-[   67.891459] ? __pfx_ip_finish_output2 (net/ipv4/ip_output.c:200)
-[   67.891470] ? ip_route_output_flow (./arch/x86/include/asm/preempt.h:84 (discriminator 13) ./include/linux/rcupdate.h:96 (discriminator 13) ./include/linux/rcupdate.h:871 (discriminator 13) net/ipv4/route.c:2625 (discriminator 13) ./include/net/route.h:141 (discriminator 13) net/ipv4/route.c:2852 (discriminator 13))
-[   67.891484] ipvlan_process_v4_outbound (drivers/net/ipvlan/ipvlan_core.c:445 (discriminator 1))
-[   67.891581] ipvlan_queue_xmit (drivers/net/ipvlan/ipvlan_core.c:542 drivers/net/ipvlan/ipvlan_core.c:604 drivers/net/ipvlan/ipvlan_core.c:670)
-[   67.891596] ipvlan_start_xmit (drivers/net/ipvlan/ipvlan_main.c:227)
-[   67.891607] dev_hard_start_xmit (./include/linux/netdevice.h:4916 ./include/linux/netdevice.h:4925 net/core/dev.c:3588 net/core/dev.c:3604)
-[   67.891620] __dev_queue_xmit (net/core/dev.h:168 (discriminator 25) net/core/dev.c:4425 (discriminator 25))
-[   67.891630] ? skb_copy_bits (./include/linux/uaccess.h:233 (discriminator 1) ./include/linux/uaccess.h:260 (discriminator 1) ./include/linux/highmem-internal.h:230 (discriminator 1) net/core/skbuff.c:3018 (discriminator 1))
-[   67.891645] ? __pskb_pull_tail (net/core/skbuff.c:2848 (discriminator 4))
-[   67.891655] ? skb_partial_csum_set (net/core/skbuff.c:5657)
-[   67.891666] ? virtio_net_hdr_to_skb.constprop.0 (./include/linux/skbuff.h:2791 (discriminator 3) ./include/linux/skbuff.h:2799 (discriminator 3) ./include/linux/virtio_net.h:109 (discriminator 3))
-[   67.891684] packet_sendmsg (net/packet/af_packet.c:3145 (discriminator 1) net/packet/af_packet.c:3177 (discriminator 1))
-[   67.891700] ? _raw_spin_lock_bh (./arch/x86/include/asm/atomic.h:107 (discriminator 4) ./include/linux/atomic/atomic-arch-fallback.h:2170 (discriminator 4) ./include/linux/atomic/atomic-instrumented.h:1302 (discriminator 4) ./include/asm-generic/qspinlock.h:111 (discriminator 4) ./include/linux/spinlock.h:187 (discriminator 4) ./include/linux/spinlock_api_smp.h:127 (discriminator 4) kernel/locking/spinlock.c:178 (discriminator 4))
-[   67.891716] __sys_sendto (net/socket.c:730 (discriminator 1) net/socket.c:745 (discriminator 1) net/socket.c:2210 (discriminator 1))
-[   67.891734] ? do_sock_setsockopt (net/socket.c:2335)
-[   67.891747] ? __sys_setsockopt (./include/linux/file.h:34 net/socket.c:2355)
-[   67.891761] __x64_sys_sendto (net/socket.c:2222 (discriminator 1) net/socket.c:2218 (discriminator 1) net/socket.c:2218 (discriminator 1))
-[   67.891772] do_syscall_64 (arch/x86/entry/common.c:52 (discriminator 1) arch/x86/entry/common.c:83 (discriminator 1))
-[   67.891785] entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-Fixes: 9181d6f8a2bb ("net: add more sanity check in virtio_net_hdr_to_skb()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20240926165836.3797406-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Tested-by: Stuart Summers <stuart.summers@intel.com>
+Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240626004137.4060806-1-matthew.brost@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_net.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_exec_queue_types.h |  6 ++--
+ drivers/gpu/drm/xe/xe_execlist.c         |  3 +-
+ drivers/gpu/drm/xe/xe_guc_submit.c       | 39 ++++++++++++++++++++----
+ drivers/gpu/drm/xe/xe_preempt_fence.c    | 12 ++++++--
+ drivers/gpu/drm/xe/xe_vm.c               | 12 +++++++-
+ 5 files changed, 59 insertions(+), 13 deletions(-)
 
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index 276ca543ef44d..02a9f4dc594d0 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -103,8 +103,10 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+diff --git a/drivers/gpu/drm/xe/xe_exec_queue_types.h b/drivers/gpu/drm/xe/xe_exec_queue_types.h
+index f6ee0ae80fd63..fc2a1a20b7e4b 100644
+--- a/drivers/gpu/drm/xe/xe_exec_queue_types.h
++++ b/drivers/gpu/drm/xe/xe_exec_queue_types.h
+@@ -169,9 +169,11 @@ struct xe_exec_queue_ops {
+ 	int (*suspend)(struct xe_exec_queue *q);
+ 	/**
+ 	 * @suspend_wait: Wait for an exec queue to suspend executing, should be
+-	 * call after suspend.
++	 * call after suspend. In dma-fencing path thus must return within a
++	 * reasonable amount of time. -ETIME return shall indicate an error
++	 * waiting for suspend resulting in associated VM getting killed.
+ 	 */
+-	void (*suspend_wait)(struct xe_exec_queue *q);
++	int (*suspend_wait)(struct xe_exec_queue *q);
+ 	/**
+ 	 * @resume: Resume exec queue execution, exec queue must be in a suspended
+ 	 * state and dma fence returned from most recent suspend call must be
+diff --git a/drivers/gpu/drm/xe/xe_execlist.c b/drivers/gpu/drm/xe/xe_execlist.c
+index db906117db6d6..7502e3486eafa 100644
+--- a/drivers/gpu/drm/xe/xe_execlist.c
++++ b/drivers/gpu/drm/xe/xe_execlist.c
+@@ -422,10 +422,11 @@ static int execlist_exec_queue_suspend(struct xe_exec_queue *q)
+ 	return 0;
+ }
  
- 		if (!skb_partial_csum_set(skb, start, off))
- 			return -EINVAL;
-+		if (skb_transport_offset(skb) < nh_min_len)
-+			return -EINVAL;
+-static void execlist_exec_queue_suspend_wait(struct xe_exec_queue *q)
++static int execlist_exec_queue_suspend_wait(struct xe_exec_queue *q)
  
--		nh_min_len = max_t(u32, nh_min_len, skb_transport_offset(skb));
-+		nh_min_len = skb_transport_offset(skb);
- 		p_off = nh_min_len + thlen;
- 		if (!pskb_may_pull(skb, p_off))
- 			return -EINVAL;
+ {
+ 	/* NIY */
++	return 0;
+ }
+ 
+ static void execlist_exec_queue_resume(struct xe_exec_queue *q)
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index 64b3a7848f4ab..fd4ac3899edd2 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -1318,6 +1318,15 @@ static void __guc_exec_queue_process_msg_set_sched_props(struct xe_sched_msg *ms
+ 	kfree(msg);
+ }
+ 
++static void __suspend_fence_signal(struct xe_exec_queue *q)
++{
++	if (!q->guc->suspend_pending)
++		return;
++
++	WRITE_ONCE(q->guc->suspend_pending, false);
++	wake_up(&q->guc->suspend_wait);
++}
++
+ static void suspend_fence_signal(struct xe_exec_queue *q)
+ {
+ 	struct xe_guc *guc = exec_queue_to_guc(q);
+@@ -1327,9 +1336,7 @@ static void suspend_fence_signal(struct xe_exec_queue *q)
+ 		  guc_read_stopped(guc));
+ 	xe_assert(xe, q->guc->suspend_pending);
+ 
+-	q->guc->suspend_pending = false;
+-	smp_wmb();
+-	wake_up(&q->guc->suspend_wait);
++	__suspend_fence_signal(q);
+ }
+ 
+ static void __guc_exec_queue_process_msg_suspend(struct xe_sched_msg *msg)
+@@ -1486,6 +1493,7 @@ static void guc_exec_queue_kill(struct xe_exec_queue *q)
+ {
+ 	trace_xe_exec_queue_kill(q);
+ 	set_exec_queue_killed(q);
++	__suspend_fence_signal(q);
+ 	xe_guc_exec_queue_trigger_cleanup(q);
+ }
+ 
+@@ -1584,12 +1592,31 @@ static int guc_exec_queue_suspend(struct xe_exec_queue *q)
+ 	return 0;
+ }
+ 
+-static void guc_exec_queue_suspend_wait(struct xe_exec_queue *q)
++static int guc_exec_queue_suspend_wait(struct xe_exec_queue *q)
+ {
+ 	struct xe_guc *guc = exec_queue_to_guc(q);
++	int ret;
++
++	/*
++	 * Likely don't need to check exec_queue_killed() as we clear
++	 * suspend_pending upon kill but to be paranoid but races in which
++	 * suspend_pending is set after kill also check kill here.
++	 */
++	ret = wait_event_timeout(q->guc->suspend_wait,
++				 !READ_ONCE(q->guc->suspend_pending) ||
++				 exec_queue_killed(q) ||
++				 guc_read_stopped(guc),
++				 HZ * 5);
+ 
+-	wait_event(q->guc->suspend_wait, !q->guc->suspend_pending ||
+-		   guc_read_stopped(guc));
++	if (!ret) {
++		xe_gt_warn(guc_to_gt(guc),
++			   "Suspend fence, guc_id=%d, failed to respond",
++			   q->guc->id);
++		/* XXX: Trigger GT reset? */
++		return -ETIME;
++	}
++
++	return 0;
+ }
+ 
+ static void guc_exec_queue_resume(struct xe_exec_queue *q)
+diff --git a/drivers/gpu/drm/xe/xe_preempt_fence.c b/drivers/gpu/drm/xe/xe_preempt_fence.c
+index c453f45328b1c..83fbeea5aa201 100644
+--- a/drivers/gpu/drm/xe/xe_preempt_fence.c
++++ b/drivers/gpu/drm/xe/xe_preempt_fence.c
+@@ -17,10 +17,16 @@ static void preempt_fence_work_func(struct work_struct *w)
+ 		container_of(w, typeof(*pfence), preempt_work);
+ 	struct xe_exec_queue *q = pfence->q;
+ 
+-	if (pfence->error)
++	if (pfence->error) {
+ 		dma_fence_set_error(&pfence->base, pfence->error);
+-	else
+-		q->ops->suspend_wait(q);
++	} else if (!q->ops->reset_status(q)) {
++		int err = q->ops->suspend_wait(q);
++
++		if (err)
++			dma_fence_set_error(&pfence->base, err);
++	} else {
++		dma_fence_set_error(&pfence->base, -ENOENT);
++	}
+ 
+ 	dma_fence_signal(&pfence->base);
+ 	/*
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index b49bee0dfac5d..743c8d79d79d2 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -133,8 +133,10 @@ static int wait_for_existing_preempt_fences(struct xe_vm *vm)
+ 		if (q->lr.pfence) {
+ 			long timeout = dma_fence_wait(q->lr.pfence, false);
+ 
+-			if (timeout < 0)
++			/* Only -ETIME on fence indicates VM needs to be killed */
++			if (timeout < 0 || q->lr.pfence->error == -ETIME)
+ 				return -ETIME;
++
+ 			dma_fence_put(q->lr.pfence);
+ 			q->lr.pfence = NULL;
+ 		}
+@@ -311,6 +313,14 @@ int __xe_vm_userptr_needs_repin(struct xe_vm *vm)
+ 
+ #define XE_VM_REBIND_RETRY_TIMEOUT_MS 1000
+ 
++/*
++ * xe_vm_kill() - VM Kill
++ * @vm: The VM.
++ * @unlocked: Flag indicates the VM's dma-resv is not held
++ *
++ * Kill the VM by setting banned flag indicated VM is no longer available for
++ * use. If in preempt fence mode, also kill all exec queue attached to the VM.
++ */
+ static void xe_vm_kill(struct xe_vm *vm, bool unlocked)
+ {
+ 	struct xe_exec_queue *q;
 -- 
 2.43.0
 
