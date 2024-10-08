@@ -1,188 +1,227 @@
-Return-Path: <stable+bounces-81541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8420C99439C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 11:08:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25389943F5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 11:18:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 296611F250D0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 09:08:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1A8B1C22289
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 09:18:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9731F18130D;
-	Tue,  8 Oct 2024 09:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ideco.ru header.i=@ideco.ru header.b="pe/4R8RX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8006316DEB4;
+	Tue,  8 Oct 2024 09:17:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.ideco.ru (smtp.ideco.ru [46.36.23.100])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0474DF58;
-	Tue,  8 Oct 2024 09:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.36.23.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BB413C827
+	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 09:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728378214; cv=none; b=r+3LRaAnAljf7jsiXQjKfyWgdD5reEzMO2Jp9NjUvH8i2r1ogX4ar20OXpOShvaxhBbAyQ4Y+Lj83dCG4k1WTHLx+oqS3t+Mxi0pp1icNPhQ8Rb8z1nrGq25ZTOo4VMmx9i4jup6v7rIBHXYfMX9k7FNHAIU92lWqqu+EAfTyQY=
+	t=1728379079; cv=none; b=Ldt05F66CaCgug7tBniYzd+q0W11dRYzaNTv5zi8zTzhLH/mFjS5RbOUFnOlqxdyguBLrZzML55/sL0nHzbUM5oMYeegYzLOXqIvKx8MyAsaOJBd0J30XLxHQZR0YV6YMS52HVJ/fpb5n3+XQaU4e6pzwFVbgmlf3Fh1xhmMPKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728378214; c=relaxed/simple;
-	bh=oa1gj8apNjivRvy0FeqjjCQd4EIkJj5sytrBwpF4zYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D9HezY/FywbQSxPe5dZtnTtwiBFaskKqHjk0wSNKjS4vWRD5g7WoRaHob/2S82UTTJztT1Nc3TJgE6ny159gssflUZzgsfHcggDUKzU8edX7oTGx7nG73QN856NgoFo8uUaMH8UtbYIfjyVGioOdP1T5afwlzpB0wY9ivenZILM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideco.ru; spf=none smtp.mailfrom=ideco.ru; dkim=pass (2048-bit key) header.d=ideco.ru header.i=@ideco.ru header.b=pe/4R8RX; arc=none smtp.client-ip=46.36.23.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideco.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ideco.ru
-Received: from [169.254.254.254] (localhost [127.0.0.1])
-	by smtp.ideco.ru (Postfix) with ESMTP id 5A2E97005C85;
-	Tue,  8 Oct 2024 14:03:26 +0500 (+05)
-Received: from localhost.localdomain (unknown [5.189.15.141])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.ideco.ru (Postfix) with ESMTPSA id CA44F7005C82;
-	Tue,  8 Oct 2024 14:03:23 +0500 (+05)
-DKIM-Filter: OpenDKIM Filter v2.11.0 smtp.ideco.ru CA44F7005C82
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ideco.ru; s=ics;
-	t=1728378205; bh=j4Z7yKchBM4Oa9SHtTqar55A2WWFtP/hdSu/eN3XC9E=;
-	h=From:To:Cc:Subject:Date;
-	b=pe/4R8RXYGgYoehGzk2JkeIag63lEMbIn+ldrhqPAV2ykbQ2KpvA4RHlY4hG6PNrS
-	 85aRZiAvFAy+KJpO7749ogz0RSodlKAa67NXfgHIy+ZKy7mCMRGyzevvR1SCnxHNr5
-	 Pln7PYqm6dGeXpX9aZoHjTewpvFN6C8XZO5ZVK7GaRXdB+EJhRgyLh3PNr/Ghdt4H/
-	 wTkCZ1ESljQ9u4gQ2SNx6k+Z38YrAL6wXkJlT60waNXRosGQ7+F65oj1MRwJR9or/J
-	 fleDJeOWYk+GdPq47lr2+7qjOyfAvNii5C11pohzDYLkfX13fFD1FX1SN2Uj7NrRbG
-	 3RCPiwCAi6lcQ==
-From: Petr Vaganov <p.vaganov@ideco.ru>
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Petr Vaganov <p.vaganov@ideco.ru>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Stephan Mueller <smueller@chronox.de>,
-	Antony Antony <antony.antony@secunet.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org,
-	Boris Tonofa <b.tonofa@ideco.ru>
-Subject: [PATCH ipsec v3] xfrm: fix one more kernel-infoleak in algo dumping
-Date: Tue,  8 Oct 2024 14:02:58 +0500
-Message-ID: <20241008090259.20785-1-p.vaganov@ideco.ru>
-X-Mailer: git-send-email 2.46.2
+	s=arc-20240116; t=1728379079; c=relaxed/simple;
+	bh=ePH6PW23AU097SZNcxtUJsCdOlZBVdJHYcRef3Shofo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=QLQZgOBe+XAS+SZihtv+LLEZMGkPJByskQYt9z3rqFC4jVW7f3VemnWTrN07ANypH3tSnOA1IcSbX3LjdhrLJBqYG6voghBW1AgBc69l5NJ+TgYe3E5o//FtRI3ILx7MSG6P3f8og4ADRchRU5z6PvK0gM7tHv4TiJ0I2iXylto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XN9QQ5Csjz20pc7;
+	Tue,  8 Oct 2024 17:17:18 +0800 (CST)
+Received: from dggpeml100021.china.huawei.com (unknown [7.185.36.148])
+	by mail.maildlp.com (Postfix) with ESMTPS id 212BD1401F1;
+	Tue,  8 Oct 2024 17:17:54 +0800 (CST)
+Received: from [127.0.0.1] (10.174.177.71) by dggpeml100021.china.huawei.com
+ (7.185.36.148) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 8 Oct
+ 2024 17:17:53 +0800
+Message-ID: <d745523b-5fa5-411e-8799-f74affd0f6a8@huawei.com>
+Date: Tue, 8 Oct 2024 17:17:53 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: patch "[PATCH] ext4: fix slab-use-after-free in
+ ext4_split_extent_at()" failed to apply to 4.19-stable tree
+To: <gregkh@linuxfoundation.org>
+CC: <tytso@mit.edu>, <jack@suse.cz>, <ojaswin@linux.ibm.com>,
+	<stable@vger.kernel.org>, Yang Erkun <yangerkun@huawei.com>
+References: <2024100717-untrue-mockup-9fb4@gregkh>
+Content-Language: en-US
+From: Baokun Li <libaokun1@huawei.com>
+In-Reply-To: <2024100717-untrue-mockup-9fb4@gregkh>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpeml100021.china.huawei.com (7.185.36.148)
 
-During fuzz testing, the following issue was discovered:
+Hi greg,
 
-BUG: KMSAN: kernel-infoleak in _copy_to_iter+0x598/0x2a30
- _copy_to_iter+0x598/0x2a30
- __skb_datagram_iter+0x168/0x1060
- skb_copy_datagram_iter+0x5b/0x220
- netlink_recvmsg+0x362/0x1700
- sock_recvmsg+0x2dc/0x390
- __sys_recvfrom+0x381/0x6d0
- __x64_sys_recvfrom+0x130/0x200
- x64_sys_call+0x32c8/0x3cc0
- do_syscall_64+0xd8/0x1c0
- entry_SYSCALL_64_after_hwframe+0x79/0x81
+On 2024/10/7 20:28, gregkh@linuxfoundation.org wrote:
+> The patch below does not apply to the 4.19-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>
+> To reproduce the conflict and resubmit, you may use the following commands:
+>
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x c26ab35702f8cd0cdc78f96aa5856bfb77be798f
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100717-untrue-mockup-9fb4@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+>
+> Possible dependencies:
+>
+> c26ab35702f8 ("ext4: fix slab-use-after-free in ext4_split_extent_at()")
+> 082cd4ec240b ("ext4: fix bug on in ext4_es_cache_extent as ext4_split_extent_at failed")
+>
+> thanks,
+>
+> greg k-h
+The dependency for this patch is:
+3f5424790d43 ("ext4: fix inode tree inconsistency caused by ENOMEM")
 
-Uninit was stored to memory at:
- copy_to_user_state_extra+0xcc1/0x1e00
- dump_one_state+0x28c/0x5f0
- xfrm_state_walk+0x548/0x11e0
- xfrm_dump_sa+0x1e0/0x840
- netlink_dump+0x943/0x1c40
- __netlink_dump_start+0x746/0xdb0
- xfrm_user_rcv_msg+0x429/0xc00
- netlink_rcv_skb+0x613/0x780
- xfrm_netlink_rcv+0x77/0xc0
- netlink_unicast+0xe90/0x1280
- netlink_sendmsg+0x126d/0x1490
- __sock_sendmsg+0x332/0x3d0
- ____sys_sendmsg+0x863/0xc30
- ___sys_sendmsg+0x285/0x3e0
- __x64_sys_sendmsg+0x2d6/0x560
- x64_sys_call+0x1316/0x3cc0
- do_syscall_64+0xd8/0x1c0
- entry_SYSCALL_64_after_hwframe+0x79/0x81
+After applying this commit, there is no conflict when applying the
+following two commits on the linux-4.19.y and linux-5.4.y branches:
 
-Uninit was created at:
- __kmalloc+0x571/0xd30
- attach_auth+0x106/0x3e0
- xfrm_add_sa+0x2aa0/0x4230
- xfrm_user_rcv_msg+0x832/0xc00
- netlink_rcv_skb+0x613/0x780
- xfrm_netlink_rcv+0x77/0xc0
- netlink_unicast+0xe90/0x1280
- netlink_sendmsg+0x126d/0x1490
- __sock_sendmsg+0x332/0x3d0
- ____sys_sendmsg+0x863/0xc30
- ___sys_sendmsg+0x285/0x3e0
- __x64_sys_sendmsg+0x2d6/0x560
- x64_sys_call+0x1316/0x3cc0
- do_syscall_64+0xd8/0x1c0
- entry_SYSCALL_64_after_hwframe+0x79/0x81
+c26ab35702f8 ("ext4: fix slab-use-after-free in ext4_split_extent_at()")
+5b4b2dcace35 ("ext4: update orig_path in ext4_find_extent()")
 
-Bytes 328-379 of 732 are uninitialized
-Memory access of size 732 starts at ffff88800e18e000
-Data copied to user address 00007ff30f48aff0
-
-CPU: 2 PID: 18167 Comm: syz-executor.0 Not tainted 6.8.11 #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-
-Fixes copying of xfrm algorithms where some random
-data of the structure fields can end up in userspace.
-Padding in structures may be filled with random (possibly sensitve)
-data and should never be given directly to user-space.
-
-A similar issue was resolved in the commit
-8222d5910dae ("xfrm: Zero padding when dumping algos and encap")
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: c7a5899eb26e ("xfrm: redact SA secret with lockdown confidentiality")
-Cc: stable@vger.kernel.org
-Co-developed-by: Boris Tonofa <b.tonofa@ideco.ru>
-Signed-off-by: Boris Tonofa <b.tonofa@ideco.ru>
-Signed-off-by: Petr Vaganov <p.vaganov@ideco.ru>
----
-v3: Corrected commit description "This patch fixes copying..." to
-"Fixes copying..." according to accepted rules of Linux kernel commits,
-as suggested by Markus Elfring <elfring@users.sourceforge.net>.
-v2: Fixed typo in sizeof(sizeof(ap->alg_name) expression.
-The third argument for the strscpy_pad macro was chosen by
-analogy with those in other functions of this file - as did
-commit 8222d5910dae ("xfrm: Zero padding when dumping algos and encap").
-I still think it would be better to leave the strscpy_pad() macro with
-three arguments in this patch, mainly so that it would be consistent 
-with the existing similar code in this module.
-Regarding strncpy() above, we don't think it is
-a real issue since the uncopied parts should be already padded with zeroes
-by nla_reserve().
-
- net/xfrm/xfrm_user.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 55f039ec3d59..0083faabe8be 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -1098,7 +1098,9 @@ static int copy_to_user_auth(struct xfrm_algo_auth *auth, struct sk_buff *skb)
- 	if (!nla)
- 		return -EMSGSIZE;
- 	ap = nla_data(nla);
--	memcpy(ap, auth, sizeof(struct xfrm_algo_auth));
-+	strscpy_pad(ap->alg_name, auth->alg_name, sizeof(ap->alg_name));
-+	ap->alg_key_len = auth->alg_key_len;
-+	ap->alg_trunc_len = auth->alg_trunc_len;
- 	if (redact_secret && auth->alg_key_len)
- 		memset(ap->alg_key, 0, (auth->alg_key_len + 7) / 8);
- 	else
--- 
-2.46.2
+Regards,
+Baokun
+>
+> ------------------ original commit in Linus's tree ------------------
+>
+>  From c26ab35702f8cd0cdc78f96aa5856bfb77be798f Mon Sep 17 00:00:00 2001
+> From: Baokun Li <libaokun1@huawei.com>
+> Date: Thu, 22 Aug 2024 10:35:23 +0800
+> Subject: [PATCH] ext4: fix slab-use-after-free in ext4_split_extent_at()
+>
+> We hit the following use-after-free:
+>
+> ==================================================================
+> BUG: KASAN: slab-use-after-free in ext4_split_extent_at+0xba8/0xcc0
+> Read of size 2 at addr ffff88810548ed08 by task kworker/u20:0/40
+> CPU: 0 PID: 40 Comm: kworker/u20:0 Not tainted 6.9.0-dirty #724
+> Call Trace:
+>   <TASK>
+>   kasan_report+0x93/0xc0
+>   ext4_split_extent_at+0xba8/0xcc0
+>   ext4_split_extent.isra.0+0x18f/0x500
+>   ext4_split_convert_extents+0x275/0x750
+>   ext4_ext_handle_unwritten_extents+0x73e/0x1580
+>   ext4_ext_map_blocks+0xe20/0x2dc0
+>   ext4_map_blocks+0x724/0x1700
+>   ext4_do_writepages+0x12d6/0x2a70
+> [...]
+>
+> Allocated by task 40:
+>   __kmalloc_noprof+0x1ac/0x480
+>   ext4_find_extent+0xf3b/0x1e70
+>   ext4_ext_map_blocks+0x188/0x2dc0
+>   ext4_map_blocks+0x724/0x1700
+>   ext4_do_writepages+0x12d6/0x2a70
+> [...]
+>
+> Freed by task 40:
+>   kfree+0xf1/0x2b0
+>   ext4_find_extent+0xa71/0x1e70
+>   ext4_ext_insert_extent+0xa22/0x3260
+>   ext4_split_extent_at+0x3ef/0xcc0
+>   ext4_split_extent.isra.0+0x18f/0x500
+>   ext4_split_convert_extents+0x275/0x750
+>   ext4_ext_handle_unwritten_extents+0x73e/0x1580
+>   ext4_ext_map_blocks+0xe20/0x2dc0
+>   ext4_map_blocks+0x724/0x1700
+>   ext4_do_writepages+0x12d6/0x2a70
+> [...]
+> ==================================================================
+>
+> The flow of issue triggering is as follows:
+>
+> ext4_split_extent_at
+>    path = *ppath
+>    ext4_ext_insert_extent(ppath)
+>      ext4_ext_create_new_leaf(ppath)
+>        ext4_find_extent(orig_path)
+>          path = *orig_path
+>          read_extent_tree_block
+>            // return -ENOMEM or -EIO
+>          ext4_free_ext_path(path)
+>            kfree(path)
+>          *orig_path = NULL
+>    a. If err is -ENOMEM:
+>    ext4_ext_dirty(path + path->p_depth)
+>    // path use-after-free !!!
+>    b. If err is -EIO and we have EXT_DEBUG defined:
+>    ext4_ext_show_leaf(path)
+>      eh = path[depth].p_hdr
+>      // path also use-after-free !!!
+>
+> So when trying to zeroout or fix the extent length, call ext4_find_extent()
+> to update the path.
+>
+> In addition we use *ppath directly as an ext4_ext_show_leaf() input to
+> avoid possible use-after-free when EXT_DEBUG is defined, and to avoid
+> unnecessary path updates.
+>
+> Fixes: dfe5080939ea ("ext4: drop EXT4_EX_NOFREE_ON_ERR from rest of extents handling code")
+> Cc: stable@kernel.org
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+> Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+> Link: https://patch.msgid.link/20240822023545.1994557-4-libaokun@huaweicloud.com
+> Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+>
+> diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+> index 4395e2b668ec..fe6bca63f9d6 100644
+> --- a/fs/ext4/extents.c
+> +++ b/fs/ext4/extents.c
+> @@ -3251,6 +3251,25 @@ static int ext4_split_extent_at(handle_t *handle,
+>   	if (err != -ENOSPC && err != -EDQUOT && err != -ENOMEM)
+>   		goto out;
+>   
+> +	/*
+> +	 * Update path is required because previous ext4_ext_insert_extent()
+> +	 * may have freed or reallocated the path. Using EXT4_EX_NOFAIL
+> +	 * guarantees that ext4_find_extent() will not return -ENOMEM,
+> +	 * otherwise -ENOMEM will cause a retry in do_writepages(), and a
+> +	 * WARN_ON may be triggered in ext4_da_update_reserve_space() due to
+> +	 * an incorrect ee_len causing the i_reserved_data_blocks exception.
+> +	 */
+> +	path = ext4_find_extent(inode, ee_block, ppath,
+> +				flags | EXT4_EX_NOFAIL);
+> +	if (IS_ERR(path)) {
+> +		EXT4_ERROR_INODE(inode, "Failed split extent on %u, err %ld",
+> +				 split, PTR_ERR(path));
+> +		return PTR_ERR(path);
+> +	}
+> +	depth = ext_depth(inode);
+> +	ex = path[depth].p_ext;
+> +	*ppath = path;
+> +
+>   	if (EXT4_EXT_MAY_ZEROOUT & split_flag) {
+>   		if (split_flag & (EXT4_EXT_DATA_VALID1|EXT4_EXT_DATA_VALID2)) {
+>   			if (split_flag & EXT4_EXT_DATA_VALID1) {
+> @@ -3303,7 +3322,7 @@ static int ext4_split_extent_at(handle_t *handle,
+>   	ext4_ext_dirty(handle, inode, path + path->p_depth);
+>   	return err;
+>   out:
+> -	ext4_ext_show_leaf(inode, path);
+> +	ext4_ext_show_leaf(inode, *ppath);
+>   	return err;
+>   }
+>   
+>
 
 
