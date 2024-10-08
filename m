@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-81619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6065994872
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:13:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BCD3994B5F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:43:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D8EE1F27456
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:13:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B846B218D1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE991DEFF6;
-	Tue,  8 Oct 2024 12:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4A41779B1;
+	Tue,  8 Oct 2024 12:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wp508uDi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SCfUcC/5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C25C1DED55;
-	Tue,  8 Oct 2024 12:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1E81DEFEC;
+	Tue,  8 Oct 2024 12:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389567; cv=none; b=l4McyIgfX9yyZhG4B5ZYoI+kZU5cAVOhesBkUdSkRj/ith94/UtWv/3CEjj5d1MwHCL7nnE0iIAbLy7ZLMp+k+WqwGqN0YTSQ79akBZ7ZDc5HqLmFiQM0+GDx0gXI0YzrVkfGH7JRWHBYooIfESymnmHsJzPgohUD5Ema1nxOFI=
+	t=1728391287; cv=none; b=V5W9IJzZ9vPYmr5o1lS+yCOzXVnCDzqiqHIXU7eRj/xgEBQN50Im4kKYgFP/k8KLH19wSbk/NL2y+8yBEP3g8ZkXeqEeaF5WhLIfmH2RxaUjImVpVwqQmGv+I7FX8eNzbZuiL+JfNCmFV11cvKbw2ljDWccWxWVhjYkQvJ7HTh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389567; c=relaxed/simple;
-	bh=aKWqSk2ieg72daVUfO8rP3nvlkFLX6V3crJZVOoH/E8=;
+	s=arc-20240116; t=1728391287; c=relaxed/simple;
+	bh=MFb8yhRjVfX7J6MTGWpmj0neMlQZYdorh+p6vmTJzZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DjUuKiZs5EubtFOYCtsZKg0TQ4N0DQjxyQ9dkF2LRUpTQYcgW6/x5oVa3jYP5vXEv5Tu8V1lGAD3X+w78qtQO4YWGS57MSX5ZIbkUKvM2irth7yD2+xcJkw3lDk199mOi51zDi13KTGDjUEm7r1LKC5GBEmz3NM68qRo9hl4ikA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wp508uDi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDED5C4CEC7;
-	Tue,  8 Oct 2024 12:12:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qAz7GBgpKW/5hCS74ekqK4RzzJ07Z856rHA5UBaAJwasBhWWxqp803+6QROtszH7nKvk2IxXcUIgpYjjAO1ZjRcVnKWHwNkPsneRS4YAloJ2QzLYkxCS1eW3iKvttopa5z8LTGWJOriz90EkcqoM4LG5JfPsgLE74bHt9MO//C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SCfUcC/5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E1CC4CEC7;
+	Tue,  8 Oct 2024 12:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389567;
-	bh=aKWqSk2ieg72daVUfO8rP3nvlkFLX6V3crJZVOoH/E8=;
+	s=korg; t=1728391287;
+	bh=MFb8yhRjVfX7J6MTGWpmj0neMlQZYdorh+p6vmTJzZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wp508uDiCjUv2XO3/mmQ77CaE9BAwQ0EqIEZH4tEdgYv3GO94A9tFnieX7+P0ucvm
-	 VBS9gVj9mE3PW3OfOeRDuB1pHBZb1DqRhK2/FySh8FZ8DFc/yEUixPbk5Mfd2wK07X
-	 ijWqhDvn4Jphae7YvYnqsEdMbRP6HN7yux4zhkH8=
+	b=SCfUcC/56uZ9cg2mUhhnuG91gCM2k8IWRSQb9APxW8UOm8OdGKM3CCc9aZoL0SGeW
+	 iXvf9WlkZ6i/iJM624DKu0cWkmbYgjT2pG5RTx8F9qcrz1zaEam8vDmDfKQHd4clvS
+	 vq5uA9HlkSNXICWv8H2gvmfj6Ekemsft3QUhwUCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Christian Brauner <brauner@kernel.org>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 032/482] afs: Fix the setting of the server responding flag
+Subject: [PATCH 6.11 065/558] cifs: Remove intermediate object of failed create reparse call
 Date: Tue,  8 Oct 2024 14:01:35 +0200
-Message-ID: <20241008115649.564237250@linuxfoundation.org>
+Message-ID: <20241008115704.775993273@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit ff98751bae40faed1ba9c6a7287e84430f7dec64 ]
+[ Upstream commit c9432ad5e32f066875b1bf95939c363bc46d6a45 ]
 
-In afs_wait_for_operation(), we set transcribe the call responded flag to
-the server record that we used after doing the fileserver iteration loop -
-but it's possible to exit the loop having had a response from the server
-that we've discarded (e.g. it returned an abort or we started receiving
-data, but the call didn't complete).
+If CREATE was successful but SMB2_OP_SET_REPARSE failed then remove the
+intermediate object created by CREATE. Otherwise empty object stay on the
+server when reparse call failed.
 
-This means that op->server might be NULL, but we don't check that before
-attempting to set the server flag.
+This ensures that if the creating of special files is unsupported by the
+server then no empty file stay on the server as a result of unsupported
+operation.
 
-Fixes: 98f9fda2057b ("afs: Fold the afs_addr_cursor struct in")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20240923150756.902363-7-dhowells@redhat.com
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 102466f303ff ("smb: client: allow creating special files via reparse points")
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/fs_operation.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/smb2inode.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/fs/afs/fs_operation.c b/fs/afs/fs_operation.c
-index 3546b087e791d..428721bbe4f6e 100644
---- a/fs/afs/fs_operation.c
-+++ b/fs/afs/fs_operation.c
-@@ -201,7 +201,7 @@ void afs_wait_for_operation(struct afs_operation *op)
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index 11a1c53c64e0b..a6dab60e2c01e 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -1205,9 +1205,12 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
+ 	struct cifsFileInfo *cfile;
+ 	struct inode *new = NULL;
++	int out_buftype[4] = {};
++	struct kvec out_iov[4] = {};
+ 	struct kvec in_iov[2];
+ 	int cmds[2];
+ 	int rc;
++	int i;
+ 
+ 	oparms = CIFS_OPARMS(cifs_sb, tcon, full_path,
+ 			     SYNCHRONIZE | DELETE |
+@@ -1228,7 +1231,7 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
+ 		cmds[1] = SMB2_OP_POSIX_QUERY_INFO;
+ 		cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
+ 		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path, &oparms,
+-				      in_iov, cmds, 2, cfile, NULL, NULL, NULL);
++				      in_iov, cmds, 2, cfile, out_iov, out_buftype, NULL);
+ 		if (!rc) {
+ 			rc = smb311_posix_get_inode_info(&new, full_path,
+ 							 data, sb, xid);
+@@ -1237,12 +1240,29 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
+ 		cmds[1] = SMB2_OP_QUERY_INFO;
+ 		cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
+ 		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path, &oparms,
+-				      in_iov, cmds, 2, cfile, NULL, NULL, NULL);
++				      in_iov, cmds, 2, cfile, out_iov, out_buftype, NULL);
+ 		if (!rc) {
+ 			rc = cifs_get_inode_info(&new, full_path,
+ 						 data, sb, xid, NULL);
  		}
  	}
++
++
++	/*
++	 * If CREATE was successful but SMB2_OP_SET_REPARSE failed then
++	 * remove the intermediate object created by CREATE. Otherwise
++	 * empty object stay on the server when reparse call failed.
++	 */
++	if (rc &&
++	    out_iov[0].iov_base != NULL && out_buftype[0] != CIFS_NO_BUFFER &&
++	    ((struct smb2_hdr *)out_iov[0].iov_base)->Status == STATUS_SUCCESS &&
++	    (out_iov[1].iov_base == NULL || out_buftype[1] == CIFS_NO_BUFFER ||
++	     ((struct smb2_hdr *)out_iov[1].iov_base)->Status != STATUS_SUCCESS))
++		smb2_unlink(xid, tcon, full_path, cifs_sb, NULL);
++
++	for (i = 0; i < ARRAY_SIZE(out_buftype); i++)
++		free_rsp_buf(out_buftype[i], out_iov[i].iov_base);
++
+ 	return rc ? ERR_PTR(rc) : new;
+ }
  
--	if (op->call_responded)
-+	if (op->call_responded && op->server)
- 		set_bit(AFS_SERVER_FL_RESPONDING, &op->server->flags);
- 
- 	if (!afs_op_error(op)) {
 -- 
 2.43.0
 
