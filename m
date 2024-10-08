@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A268994DD7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:10:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B531D994C0B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC8ED1C2523C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:10:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7618D2817AB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE501DE8A0;
-	Tue,  8 Oct 2024 13:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A511DE4CC;
+	Tue,  8 Oct 2024 12:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1L9rpveW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gN7rLkY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8EF1C32EB;
-	Tue,  8 Oct 2024 13:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0471DDC06;
+	Tue,  8 Oct 2024 12:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393005; cv=none; b=qMzEcDVhBiwVkUp4SQLTUh2T7wPKW5yclZE0oahAIzLVZdmWcOZXkl/94fwWvWUnkm5GRsC/DA4x7nrtk8p8Bwcu+aE6vUS46IO4Aa3Law0mwmRKGkngU7zHuwsfgEqnJPLjMgZrZzQbZbCPVx/wZqj8AD6bvdjkOedEufW09Cc=
+	t=1728391785; cv=none; b=MW+9nQPlOAG6eD6IC+JUlavdBV4ku3w+u5renia9g9r015beeTE2/pnjGZ7cpJOKfyHiw66WH+ZmiWGab3fAba+82feXcB20vhCx7VXltpJ20H0+k7R5od4TZv0tPZpaQciwPzzKDapYMPVLtiR0OmfNvRFYB6r2Ss6MisNdluM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393005; c=relaxed/simple;
-	bh=lTXM3K8l3fRqCbKNtMC6hyCevmzx5yJBSeQNyQxBweg=;
+	s=arc-20240116; t=1728391785; c=relaxed/simple;
+	bh=RcR4JEi+DGx+JTc0TfbEhvtBXm1djvBTo+mPM3gfj+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tU8hJ4xR78coctnVDychPcAhGEebTd35loWZHz+ZQU6vZj8noFIadZckWSTcBZnkh7yDr/Xtd8wyRmrNnt7qYyOaVSmuhGHaVdQXTPfV/s0WuD5FpMDeSobuxVTXdMKj1h+xFgTrKe/vO1IlTM/VLbx1A66mAHf0YXz9HLSapoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1L9rpveW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158EAC4CEC7;
-	Tue,  8 Oct 2024 13:10:04 +0000 (UTC)
+	 MIME-Version; b=PJaKXztEUXc3Y9I7GUnme2zzF8FYFaNm6KXREJmQlmHQQhJyIMJvme56XlWtrW0slwWVSss6J/MYreiuvZ3ecW4mi3me8+qAEFrbfRD1B6uwzbhkeWSDE9QJhFvAPENi1+sh82mOI/jrz3zYzLNexqxkB7W08yErKkeAmcLIj9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gN7rLkY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20E8C4CEC7;
+	Tue,  8 Oct 2024 12:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393005;
-	bh=lTXM3K8l3fRqCbKNtMC6hyCevmzx5yJBSeQNyQxBweg=;
+	s=korg; t=1728391785;
+	bh=RcR4JEi+DGx+JTc0TfbEhvtBXm1djvBTo+mPM3gfj+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1L9rpveWRTg8Ner1KrgWTc5bZ647UnpAghBXzuk34U4stMnzaspo8+sNhSyXJGFXa
-	 VY8JdFMxy7AI0NOvZSMS7vJ9xftXXdRJ+oBU3VferZ8J30UNLm4aWYac9nUTex2kUj
-	 AxJazt0wy+q0xjZUPSbe3Bd9L8uN63KxVkHHNuSo=
+	b=2gN7rLkYBQixevVXwwFsnRbVIK6gAptjxLY33zYbQoGHeTnl8wgS2Q6SxIwXK9lUj
+	 xStl/EBzVs5pMf9uAoz4Q8/KVWnChfhFulUylWmsr6M0BMAIxGnr4TCTzzZud5t2wI
+	 hxq8XEYbMrw/aa6kBWJ4S8llPQUNhCKhbceiS5+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asad Kamal <asad.kamal@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Louis Dalibard <ontake@ontake.dev>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/386] drm/amdgpu: Fix get each xcp macro
+Subject: [PATCH 6.11 222/558] HID: Ignore battery for all ELAN I2C-HID devices
 Date: Tue,  8 Oct 2024 14:04:12 +0200
-Message-ID: <20241008115629.609070052@linuxfoundation.org>
+Message-ID: <20241008115711.078583682@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +63,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asad Kamal <asad.kamal@amd.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit ef126c06a98bde1a41303970eb0fc0ac33c3cc02 ]
+[ Upstream commit bcc31692a1d1e21f0d06c5f727c03ee299d2264e ]
 
-Fix get each xcp macro to loop over each partition correctly
+Before this change there were 16 vid:pid based quirks to ignore the battery
+reported by Elan I2C-HID touchscreens on various Asus and HP laptops.
 
-Fixes: 4bdca2057933 ("drm/amdgpu: Add utility functions for xcp")
-Signed-off-by: Asad Kamal <asad.kamal@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+And a report has been received that the 04F3:2A00 I2C touchscreen on
+the HP ProBook x360 11 G5 EE/86CF also reports a non present battery.
+
+Since I2C-HID devices are always builtin to laptops they are not battery
+owered so it should be safe to just ignore the battery on all Elan I2C-HID
+devices, rather then adding a 17th quirk for the 04F3:2A00 touchscreen.
+
+As reported in the changelog of commit a3a5a37efba1 ("HID: Ignore battery
+for ELAN touchscreens 2F2C and 4116"), which added 2 new Elan touchscreen
+quirks about a month ago, the HID reported battery seems to be related
+to a stylus being used. But even when a stylus is in use it does not
+properly report the charge of the stylus battery, instead the reported
+battery charge jumps from 0% to 1%. So it is best to just ignore the
+HID battery.
+
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2302776
+Cc: Louis Dalibard <ontake@ontake.dev>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-ids.h   | 16 ----------------
+ drivers/hid/hid-input.c | 37 +++++--------------------------------
+ 2 files changed, 5 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.h
-index 9a1036aeec2a0..9142238e7791a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_xcp.h
-@@ -179,6 +179,6 @@ amdgpu_get_next_xcp(struct amdgpu_xcp_mgr *xcp_mgr, int *from)
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 781c5aa298598..53655f81d9950 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -417,24 +417,8 @@
+ #define USB_DEVICE_ID_TOSHIBA_CLICK_L9W	0x0401
+ #define USB_DEVICE_ID_HP_X2		0x074d
+ #define USB_DEVICE_ID_HP_X2_10_COVER	0x0755
+-#define I2C_DEVICE_ID_HP_ENVY_X360_15	0x2d05
+-#define I2C_DEVICE_ID_HP_ENVY_X360_15T_DR100	0x29CF
+-#define I2C_DEVICE_ID_HP_ENVY_X360_EU0009NV	0x2CF9
+-#define I2C_DEVICE_ID_HP_SPECTRE_X360_15	0x2817
+-#define I2C_DEVICE_ID_HP_SPECTRE_X360_13_AW0020NG  0x29DF
+-#define I2C_DEVICE_ID_ASUS_TP420IA_TOUCHSCREEN 0x2BC8
+-#define I2C_DEVICE_ID_ASUS_GV301RA_TOUCHSCREEN 0x2C82
+-#define I2C_DEVICE_ID_ASUS_UX3402_TOUCHSCREEN 0x2F2C
+-#define I2C_DEVICE_ID_ASUS_UX6404_TOUCHSCREEN 0x4116
+ #define USB_DEVICE_ID_ASUS_UX550VE_TOUCHSCREEN	0x2544
+ #define USB_DEVICE_ID_ASUS_UX550_TOUCHSCREEN	0x2706
+-#define I2C_DEVICE_ID_SURFACE_GO_TOUCHSCREEN	0x261A
+-#define I2C_DEVICE_ID_SURFACE_GO2_TOUCHSCREEN	0x2A1C
+-#define I2C_DEVICE_ID_LENOVO_YOGA_C630_TOUCHSCREEN	0x279F
+-#define I2C_DEVICE_ID_HP_SPECTRE_X360_13T_AW100	0x29F5
+-#define I2C_DEVICE_ID_HP_SPECTRE_X360_14T_EA100_V1	0x2BED
+-#define I2C_DEVICE_ID_HP_SPECTRE_X360_14T_EA100_V2	0x2BEE
+-#define I2C_DEVICE_ID_HP_ENVY_X360_15_EU0556NG		0x2D02
+ #define I2C_DEVICE_ID_CHROMEBOOK_TROGDOR_POMPOM	0x2F81
  
- #define for_each_xcp(xcp_mgr, xcp, i)                            \
- 	for (i = 0, xcp = amdgpu_get_next_xcp(xcp_mgr, &i); xcp; \
--	     xcp = amdgpu_get_next_xcp(xcp_mgr, &i))
-+	     ++i, xcp = amdgpu_get_next_xcp(xcp_mgr, &i))
+ #define USB_VENDOR_ID_ELECOM		0x056e
+diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
+index c9094a4f281e9..fda9dce3da998 100644
+--- a/drivers/hid/hid-input.c
++++ b/drivers/hid/hid-input.c
+@@ -373,14 +373,6 @@ static const struct hid_device_id hid_battery_quirks[] = {
+ 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH,
+ 		USB_DEVICE_ID_LOGITECH_DINOVO_EDGE_KBD),
+ 	  HID_BATTERY_QUIRK_IGNORE },
+-	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_TP420IA_TOUCHSCREEN),
+-	  HID_BATTERY_QUIRK_IGNORE },
+-	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_GV301RA_TOUCHSCREEN),
+-	  HID_BATTERY_QUIRK_IGNORE },
+-	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_UX3402_TOUCHSCREEN),
+-	  HID_BATTERY_QUIRK_IGNORE },
+-	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_UX6404_TOUCHSCREEN),
+-	  HID_BATTERY_QUIRK_IGNORE },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, USB_DEVICE_ID_ASUS_UX550_TOUCHSCREEN),
+ 	  HID_BATTERY_QUIRK_IGNORE },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, USB_DEVICE_ID_ASUS_UX550VE_TOUCHSCREEN),
+@@ -391,32 +383,13 @@ static const struct hid_device_id hid_battery_quirks[] = {
+ 	  HID_BATTERY_QUIRK_AVOID_QUERY },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_UGEE, USB_DEVICE_ID_UGEE_XPPEN_TABLET_DECO_PRO_SW),
+ 	  HID_BATTERY_QUIRK_AVOID_QUERY },
+-	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_HP_ENVY_X360_15),
+-	  HID_BATTERY_QUIRK_IGNORE },
+-	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_HP_ENVY_X360_15T_DR100),
+-	  HID_BATTERY_QUIRK_IGNORE },
+-	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_HP_ENVY_X360_EU0009NV),
+-	  HID_BATTERY_QUIRK_IGNORE },
+-	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_HP_SPECTRE_X360_15),
+-	  HID_BATTERY_QUIRK_IGNORE },
+-	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_HP_SPECTRE_X360_13_AW0020NG),
+-	  HID_BATTERY_QUIRK_IGNORE },
+-	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_SURFACE_GO_TOUCHSCREEN),
+-	  HID_BATTERY_QUIRK_IGNORE },
+-	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_SURFACE_GO2_TOUCHSCREEN),
+-	  HID_BATTERY_QUIRK_IGNORE },
+-	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_LENOVO_YOGA_C630_TOUCHSCREEN),
+-	  HID_BATTERY_QUIRK_IGNORE },
+-	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_HP_SPECTRE_X360_13T_AW100),
+-	  HID_BATTERY_QUIRK_IGNORE },
+-	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_HP_SPECTRE_X360_14T_EA100_V1),
+-	  HID_BATTERY_QUIRK_IGNORE },
+-	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_HP_SPECTRE_X360_14T_EA100_V2),
+-	  HID_BATTERY_QUIRK_IGNORE },
+-	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_HP_ENVY_X360_15_EU0556NG),
+-	  HID_BATTERY_QUIRK_IGNORE },
+ 	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_CHROMEBOOK_TROGDOR_POMPOM),
+ 	  HID_BATTERY_QUIRK_AVOID_QUERY },
++	/*
++	 * Elan I2C-HID touchscreens seem to all report a non present battery,
++	 * set HID_BATTERY_QUIRK_IGNORE for all Elan I2C-HID devices.
++	 */
++	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, HID_ANY_ID), HID_BATTERY_QUIRK_IGNORE },
+ 	{}
+ };
  
- #endif
 -- 
 2.43.0
 
