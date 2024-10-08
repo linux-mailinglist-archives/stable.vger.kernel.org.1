@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5942B994DB4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:08:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5158A994AE4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AF131C24F97
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:08:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F19461F248CA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5991DF24B;
-	Tue,  8 Oct 2024 13:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10DF1DE4FA;
+	Tue,  8 Oct 2024 12:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CiHAlI6Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S79og12G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297391DEFED;
-	Tue,  8 Oct 2024 13:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBF71DC759;
+	Tue,  8 Oct 2024 12:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392897; cv=none; b=k9FZWzDtb6Qm/WoQo31AG1F1lEFZgEFroNlW4aNUl+rKlWjnoa5/5UvBKtGgEYsxDyaCdTBWiU6ZTdEgDgtzC05dZpHM8IJ2EDquS1Vf63v1iuCV5W2NoGpP2pdsNgLHpFT5ItnPCUjIhDWl4HdKZv91CetkQNTpRluPZibTYEc=
+	t=1728391055; cv=none; b=dc5KNhv6mcj/DgcaMvbI1oy0MhV60V8qsQ4opEl8Athhmp7H6yi+3PN/VyV8xodKh4TBDsnEkW1TjRKLKC0g3n2dLjVORr02QM4aGImOhYukpW0X6DIJqq1PJy01NWvkyb8T3V8B7m9xOwiZpj8xMRVON//lkQsNNDOta/hIP7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392897; c=relaxed/simple;
-	bh=ERmHoXo1YJwxut4E/9rbUu3HRXxWD3A/JPo+/UFpmeY=;
+	s=arc-20240116; t=1728391055; c=relaxed/simple;
+	bh=7MYeIBKwFVmPP70oLvWrj7jZFCPQtXSMhF720nOanNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EewGGU/NemVWhRb11KHUKodKFRRwRlRZ9OXkzmMqmpVtPOIJf7v25DA/9/jXs7i56mYNnVKpWv68BsG+TY90BUM18yblP76LOc+Da0gLHb7colENXsd70AQ/0aZ3xiX24uTorXXd+bTUoah8U0aES7c6etlvi392YQwDzsn1Bqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CiHAlI6Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89065C4CECD;
-	Tue,  8 Oct 2024 13:08:16 +0000 (UTC)
+	 MIME-Version; b=JD9iIRMW8JTCY4DtIBxjIHtoIUauSUeFGarLVkKQogZEiweLKhfad+WywIGqs5bjItTJqrtCoQE+ONmaC6/kEFNMFJXNJq95CMSUFdfgsVViJdZ1jF49ARpExr3b12Dq+9BwQM3KAZJiNP2mFtBrrBdSZKEGEQ1qRAYYCCCMlbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S79og12G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62FCC4CEC7;
+	Tue,  8 Oct 2024 12:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392897;
-	bh=ERmHoXo1YJwxut4E/9rbUu3HRXxWD3A/JPo+/UFpmeY=;
+	s=korg; t=1728391055;
+	bh=7MYeIBKwFVmPP70oLvWrj7jZFCPQtXSMhF720nOanNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CiHAlI6Q1GJ+4giWCbDxsdQAAgEirnqXH7vw3Lck2++1dSFh5k3BfmfO2ZbF+GpAX
-	 1iBiFdbp4eV4QxxBhHR5mctlj0REa1wwBIvrR+BY/6/mcCSoPGPklkv/F2/g0V+mZx
-	 ixTf7QxjDJBSIMQu9kePnTrNQr4pRy+oBUTEYYt0=
+	b=S79og12GezEz8W3MXTy9kFzOjcEORVa0x7PERtWaQEgmWbdov4R+Y5cjrGLtI9JmI
+	 +q3370jHkxuKzGTpMYHC06yAyZOJXw9s6ow4K9ZyGe6rx1ju3iinUdK7z0Y/hOy51c
+	 IY8/Qy6JaBYmGYT3g/CTDQC3Jjrx0kRwIyIgFpFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Wei Li <liwei391@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.11 510/558] tracing/timerlat: Drop interface_lock in stop_kthread()
+	Haoran Zhang <wh1sper@zju.edu.cn>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 6.10 477/482] vhost/scsi: null-ptr-dereference in vhost_scsi_get_req()
 Date: Tue,  8 Oct 2024 14:09:00 +0200
-Message-ID: <20241008115722.298176997@linuxfoundation.org>
+Message-ID: <20241008115707.282070402@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Li <liwei391@huawei.com>
+From: Haoran Zhang <wh1sper@zju.edu.cn>
 
-commit b484a02c9cedf8703eff8f0756f94618004bd165 upstream.
+commit 221af82f606d928ccef19a16d35633c63026f1be upstream.
 
-stop_kthread() is the offline callback for "trace/osnoise:online", since
-commit 5bfbcd1ee57b ("tracing/timerlat: Add interface_lock around clearing
-of kthread in stop_kthread()"), the following ABBA deadlock scenario is
-introduced:
+Since commit 3f8ca2e115e5 ("vhost/scsi: Extract common handling code
+from control queue handler") a null pointer dereference bug can be
+triggered when guest sends an SCSI AN request.
 
-T1                            | T2 [BP]               | T3 [AP]
-osnoise_hotplug_workfn()      | work_for_cpu_fn()     | cpuhp_thread_fun()
-                              |   _cpu_down()         |   osnoise_cpu_die()
-  mutex_lock(&interface_lock) |                       |     stop_kthread()
-                              |     cpus_write_lock() |       mutex_lock(&interface_lock)
-  cpus_read_lock()            |     cpuhp_kick_ap()   |
+In vhost_scsi_ctl_handle_vq(), `vc.target` is assigned with
+`&v_req.tmf.lun[1]` within a switch-case block and is then passed to
+vhost_scsi_get_req() which extracts `vc->req` and `tpg`. However, for
+a `VIRTIO_SCSI_T_AN_*` request, tpg is not required, so `vc.target` is
+set to NULL in this branch. Later, in vhost_scsi_get_req(),
+`vc->target` is dereferenced without being checked, leading to a null
+pointer dereference bug. This bug can be triggered from guest.
 
-As the interface_lock here in just for protecting the "kthread" field of
-the osn_var, use xchg() instead to fix this issue. Also use
-for_each_online_cpu() back in stop_per_cpu_kthreads() as it can take
-cpu_read_lock() again.
+When this bug occurs, the vhost_worker process is killed while holding
+`vq->mutex` and the corresponding tpg will remain occupied
+indefinitely.
 
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20240924094515.3561410-3-liwei391@huawei.com
-Fixes: 5bfbcd1ee57b ("tracing/timerlat: Add interface_lock around clearing of kthread in stop_kthread()")
-Signed-off-by: Wei Li <liwei391@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Below is the KASAN report:
+Oops: general protection fault, probably for non-canonical address
+0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 1 PID: 840 Comm: poc Not tainted 6.10.0+ #1
+Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS
+1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:vhost_scsi_get_req+0x165/0x3a0
+Code: 00 fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 2b 02 00 00
+48 b8 00 00 00 00 00 fc ff df 4d 8b 65 30 4c 89 e2 48 c1 ea 03 <0f> b6
+04 02 4c 89 e2 83 e2 07 38 d0 7f 08 84 c0 0f 85 be 01 00 00
+RSP: 0018:ffff888017affb50 EFLAGS: 00010246
+RAX: dffffc0000000000 RBX: ffff88801b000000 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff888017affcb8
+RBP: ffff888017affb80 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+R13: ffff888017affc88 R14: ffff888017affd1c R15: ffff888017993000
+FS:  000055556e076500(0000) GS:ffff88806b100000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000200027c0 CR3: 0000000010ed0004 CR4: 0000000000370ef0
+Call Trace:
+ <TASK>
+ ? show_regs+0x86/0xa0
+ ? die_addr+0x4b/0xd0
+ ? exc_general_protection+0x163/0x260
+ ? asm_exc_general_protection+0x27/0x30
+ ? vhost_scsi_get_req+0x165/0x3a0
+ vhost_scsi_ctl_handle_vq+0x2a4/0xca0
+ ? __pfx_vhost_scsi_ctl_handle_vq+0x10/0x10
+ ? __switch_to+0x721/0xeb0
+ ? __schedule+0xda5/0x5710
+ ? __kasan_check_write+0x14/0x30
+ ? _raw_spin_lock+0x82/0xf0
+ vhost_scsi_ctl_handle_kick+0x52/0x90
+ vhost_run_work_list+0x134/0x1b0
+ vhost_task_fn+0x121/0x350
+...
+ </TASK>
+---[ end trace 0000000000000000 ]---
+
+Let's add a check in vhost_scsi_get_req.
+
+Fixes: 3f8ca2e115e5 ("vhost/scsi: Extract common handling code from control queue handler")
+Signed-off-by: Haoran Zhang <wh1sper@zju.edu.cn>
+[whitespace fixes]
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Message-Id: <b26d7ddd-b098-4361-88f8-17ca7f90adf7@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_osnoise.c |   13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/vhost/scsi.c |   25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
---- a/kernel/trace/trace_osnoise.c
-+++ b/kernel/trace/trace_osnoise.c
-@@ -1953,12 +1953,8 @@ static void stop_kthread(unsigned int cp
- {
- 	struct task_struct *kthread;
- 
--	mutex_lock(&interface_lock);
--	kthread = per_cpu(per_cpu_osnoise_var, cpu).kthread;
-+	kthread = xchg_relaxed(&(per_cpu(per_cpu_osnoise_var, cpu).kthread), NULL);
- 	if (kthread) {
--		per_cpu(per_cpu_osnoise_var, cpu).kthread = NULL;
--		mutex_unlock(&interface_lock);
--
- 		if (cpumask_test_and_clear_cpu(cpu, &kthread_cpumask) &&
- 		    !WARN_ON(!test_bit(OSN_WORKLOAD, &osnoise_options))) {
- 			kthread_stop(kthread);
-@@ -1972,7 +1968,6 @@ static void stop_kthread(unsigned int cp
- 			put_task_struct(kthread);
- 		}
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -1029,20 +1029,23 @@ vhost_scsi_get_req(struct vhost_virtqueu
+ 		/* virtio-scsi spec requires byte 0 of the lun to be 1 */
+ 		vq_err(vq, "Illegal virtio-scsi lun: %u\n", *vc->lunp);
  	} else {
--		mutex_unlock(&interface_lock);
- 		/* if no workload, just return */
- 		if (!test_bit(OSN_WORKLOAD, &osnoise_options)) {
- 			/*
-@@ -1994,8 +1989,12 @@ static void stop_per_cpu_kthreads(void)
- {
- 	int cpu;
+-		struct vhost_scsi_tpg **vs_tpg, *tpg;
++		struct vhost_scsi_tpg **vs_tpg, *tpg = NULL;
  
--	for_each_possible_cpu(cpu)
-+	cpus_read_lock();
-+
-+	for_each_online_cpu(cpu)
- 		stop_kthread(cpu);
-+
-+	cpus_read_unlock();
+-		vs_tpg = vhost_vq_get_backend(vq);	/* validated at handler entry */
+-
+-		tpg = READ_ONCE(vs_tpg[*vc->target]);
+-		if (unlikely(!tpg)) {
+-			vq_err(vq, "Target 0x%x does not exist\n", *vc->target);
+-		} else {
+-			if (tpgp)
+-				*tpgp = tpg;
+-			ret = 0;
++		if (vc->target) {
++			/* validated at handler entry */
++			vs_tpg = vhost_vq_get_backend(vq);
++			tpg = READ_ONCE(vs_tpg[*vc->target]);
++			if (unlikely(!tpg)) {
++				vq_err(vq, "Target 0x%x does not exist\n", *vc->target);
++				goto out;
++			}
+ 		}
+-	}
+ 
++		if (tpgp)
++			*tpgp = tpg;
++		ret = 0;
++	}
++out:
+ 	return ret;
  }
  
- /*
 
 
 
