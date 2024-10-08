@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-82833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A37A3994EA8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1799994A35
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C76701C25339
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA77F1C24BD9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C051DED48;
-	Tue,  8 Oct 2024 13:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2425B192594;
+	Tue,  8 Oct 2024 12:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FACIq1Q4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1gVz1H5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39111DE89A;
-	Tue,  8 Oct 2024 13:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D763A1E485;
+	Tue,  8 Oct 2024 12:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393579; cv=none; b=Tw0N/YU2i6OUnSjn0zojsnnsjHD2+KA9+LwRWtwU1RV2F+MdwAFara1JtVH7pKK00/PPWzCsRRu7oDFyepPeq9d4QIaHoxAaMsuHXDpvfSoPc3I8HB6dv0CpTAJ5wH0aHcAs9Dqn0mlLNFqnaMRDUzyClSGGWdJqcbAZvA/lcvg=
+	t=1728390626; cv=none; b=WtwK/8Wz8caQatMg2fLr06RmpCcLlX8m06+woEJ9TTmmv2gHSibUAr+4zsVz3y/6T5HOwfWnCsekgdeYnMyoqXj4hLiW3IiZdfgB3BK75uKucX2z2ojOpdVDTHuOSDfU5GQ7sZfWvI4zWvTTdxfNyMeBYaCkawL/f6wC7c2XjwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393579; c=relaxed/simple;
-	bh=JSGWA4/0Ol02wqsFLJXxJvD2wCkeY9Ae+FuVLpRaHfc=;
+	s=arc-20240116; t=1728390626; c=relaxed/simple;
+	bh=sQJpzDyQIcwVTecPP6FdW/Jcdk/Ddja6XSyCyz7y9Lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AIzM0D5WD+wx8Lqt0T7403fHGMgp7B93RWEg480o5fMAbnTgu4iw/Oc/0rgm83IrEnqvN8h2O49f+HJrXigxOKEoFy13DLLQBB08qyzIpcUxHMvCgVaQ/LOgnbGc5ZHtG+BqzNXDAsFXBzdRXtl5lzi+wE26Ef9xTvnJiubImQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FACIq1Q4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55104C4CECC;
-	Tue,  8 Oct 2024 13:19:38 +0000 (UTC)
+	 MIME-Version; b=Zao28wv596Bavcr03HUH3QZu/IKlGs8cw3s6XL6Go9co4rDmcVsqJawTKOckADbOGdhSFcsLB/RAW9VGkZ3XBa7XL7DXvWMPY1KL+I79gPDMjh7F31LZurch21YNyGNTE218zUUi9xPEk70PAe9ZILt7g/IQsdYvL6NApr6ScuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1gVz1H5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D50C4CEC7;
+	Tue,  8 Oct 2024 12:30:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393578;
-	bh=JSGWA4/0Ol02wqsFLJXxJvD2wCkeY9Ae+FuVLpRaHfc=;
+	s=korg; t=1728390626;
+	bh=sQJpzDyQIcwVTecPP6FdW/Jcdk/Ddja6XSyCyz7y9Lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FACIq1Q4bjuwoRS+v5VN4929zh99KBqTnrZokvJL82ZEEJiXlv/ezNFRbCgRezEXx
-	 pPCuzZFACvi5zrKdEoRfbA3BAAFlaLND+Fai0w7efjD/Xq3dd+fFPtj9mw4wZRuEhn
-	 dGqgPROXx1lrcj6NjQVzck+g2W8bBqGYoBZ8/7hc=
+	b=Y1gVz1H59EjzOMgzYipkNscZpJNqSA+D1PR6k6G7dMa+VFpQsgsGur/+aLUP/KE1x
+	 3+Zd+ZkNkm9W3FQUrohqZwvxG0miZAOpXYutbCYr1yEt+myfP5tfkIbkBaTt0tEd3y
+	 ye4p926gP8cKibj9QlWOhPevh8ArczTdJLab16pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 162/386] perf,x86: avoid missing caller address in stack traces captured in uprobe
+	Val Packett <val@packett.cool>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.10 344/482] drm/rockchip: vop: clear DMA stop bit on RK3066
 Date: Tue,  8 Oct 2024 14:06:47 +0200
-Message-ID: <20241008115635.799939345@linuxfoundation.org>
+Message-ID: <20241008115701.962723089@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,201 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit cfa7f3d2c526c224a6271cc78a4a27a0de06f4f0 ]
+commit 6b44aa559d6c7f4ea591ef9d2352a7250138d62a upstream.
 
-When tracing user functions with uprobe functionality, it's common to
-install the probe (e.g., a BPF program) at the first instruction of the
-function. This is often going to be `push %rbp` instruction in function
-preamble, which means that within that function frame pointer hasn't
-been established yet. This leads to consistently missing an actual
-caller of the traced function, because perf_callchain_user() only
-records current IP (capturing traced function) and then following frame
-pointer chain (which would be caller's frame, containing the address of
-caller's caller).
+The RK3066 VOP sets a dma_stop bit when it's done scanning out a frame
+and needs the driver to acknowledge that by clearing the bit.
 
-So when we have target_1 -> target_2 -> target_3 call chain and we are
-tracing an entry to target_3, captured stack trace will report
-target_1 -> target_3 call chain, which is wrong and confusing.
+Unless we clear it "between" frames, the RGB output only shows noise
+instead of the picture. atomic_flush is the place for it that least
+affects other code (doing it on vblank would require converting all
+other usages of the reg_lock to spin_(un)lock_irq, which would affect
+performance for everyone).
 
-This patch proposes a x86-64-specific heuristic to detect `push %rbp`
-(`push %ebp` on 32-bit architecture) instruction being traced. Given
-entire kernel implementation of user space stack trace capturing works
-under assumption that user space code was compiled with frame pointer
-register (%rbp/%ebp) preservation, it seems pretty reasonable to use
-this instruction as a strong indicator that this is the entry to the
-function. In that case, return address is still pointed to by %rsp/%esp,
-so we fetch it and add to stack trace before proceeding to unwind the
-rest using frame pointer-based logic.
+This seems to be a redundant synchronization mechanism that was removed
+in later iterations of the VOP hardware block.
 
-We also check for `endbr64` (for 64-bit modes) as another common pattern
-for function entry, as suggested by Josh Poimboeuf. Even if we get this
-wrong sometimes for uprobes attached not at the function entry, it's OK
-because stack trace will still be overall meaningful, just with one
-extra bogus entry. If we don't detect this, we end up with guaranteed to
-be missing caller function entry in the stack trace, which is worse
-overall.
-
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20240729175223.23914-1-andrii@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f4a6de855eae ("drm: rockchip: vop: add rk3066 vop definitions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Val Packett <val@packett.cool>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240624204054.5524-2-val@packett.cool
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/core.c  | 63 +++++++++++++++++++++++++++++++++++++++++
- include/linux/uprobes.h |  2 ++
- kernel/events/uprobes.c |  2 ++
- 3 files changed, 67 insertions(+)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c |    4 ++++
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.h |    1 +
+ drivers/gpu/drm/rockchip/rockchip_vop_reg.c |    1 +
+ 3 files changed, 6 insertions(+)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 8811fedc9776a..150a365b4fbc8 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -41,6 +41,8 @@
- #include <asm/desc.h>
- #include <asm/ldt.h>
- #include <asm/unwind.h>
-+#include <asm/uprobes.h>
-+#include <asm/ibt.h>
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -1583,6 +1583,10 @@ static void vop_crtc_atomic_flush(struct
+ 	VOP_AFBC_SET(vop, enable, s->enable_afbc);
+ 	vop_cfg_done(vop);
  
- #include "perf_event.h"
++	/* Ack the DMA transfer of the previous frame (RK3066). */
++	if (VOP_HAS_REG(vop, common, dma_stop))
++		VOP_REG_SET(vop, common, dma_stop, 0);
++
+ 	spin_unlock(&vop->reg_lock);
  
-@@ -2816,6 +2818,46 @@ static unsigned long get_segment_base(unsigned int segment)
- 	return get_desc_base(desc);
- }
- 
-+#ifdef CONFIG_UPROBES
-+/*
-+ * Heuristic-based check if uprobe is installed at the function entry.
-+ *
-+ * Under assumption of user code being compiled with frame pointers,
-+ * `push %rbp/%ebp` is a good indicator that we indeed are.
-+ *
-+ * Similarly, `endbr64` (assuming 64-bit mode) is also a common pattern.
-+ * If we get this wrong, captured stack trace might have one extra bogus
-+ * entry, but the rest of stack trace will still be meaningful.
-+ */
-+static bool is_uprobe_at_func_entry(struct pt_regs *regs)
-+{
-+	struct arch_uprobe *auprobe;
-+
-+	if (!current->utask)
-+		return false;
-+
-+	auprobe = current->utask->auprobe;
-+	if (!auprobe)
-+		return false;
-+
-+	/* push %rbp/%ebp */
-+	if (auprobe->insn[0] == 0x55)
-+		return true;
-+
-+	/* endbr64 (64-bit only) */
-+	if (user_64bit_mode(regs) && is_endbr(*(u32 *)auprobe->insn))
-+		return true;
-+
-+	return false;
-+}
-+
-+#else
-+static bool is_uprobe_at_func_entry(struct pt_regs *regs)
-+{
-+	return false;
-+}
-+#endif /* CONFIG_UPROBES */
-+
- #ifdef CONFIG_IA32_EMULATION
- 
- #include <linux/compat.h>
-@@ -2827,6 +2869,7 @@ perf_callchain_user32(struct pt_regs *regs, struct perf_callchain_entry_ctx *ent
- 	unsigned long ss_base, cs_base;
- 	struct stack_frame_ia32 frame;
- 	const struct stack_frame_ia32 __user *fp;
-+	u32 ret_addr;
- 
- 	if (user_64bit_mode(regs))
- 		return 0;
-@@ -2836,6 +2879,12 @@ perf_callchain_user32(struct pt_regs *regs, struct perf_callchain_entry_ctx *ent
- 
- 	fp = compat_ptr(ss_base + regs->bp);
- 	pagefault_disable();
-+
-+	/* see perf_callchain_user() below for why we do this */
-+	if (is_uprobe_at_func_entry(regs) &&
-+	    !get_user(ret_addr, (const u32 __user *)regs->sp))
-+		perf_callchain_store(entry, ret_addr);
-+
- 	while (entry->nr < entry->max_stack) {
- 		if (!valid_user_frame(fp, sizeof(frame)))
- 			break;
-@@ -2864,6 +2913,7 @@ perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs
- {
- 	struct stack_frame frame;
- 	const struct stack_frame __user *fp;
-+	unsigned long ret_addr;
- 
- 	if (perf_guest_state()) {
- 		/* TODO: We don't support guest os callchain now */
-@@ -2887,6 +2937,19 @@ perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs
- 		return;
- 
- 	pagefault_disable();
-+
-+	/*
-+	 * If we are called from uprobe handler, and we are indeed at the very
-+	 * entry to user function (which is normally a `push %rbp` instruction,
-+	 * under assumption of application being compiled with frame pointers),
-+	 * we should read return address from *regs->sp before proceeding
-+	 * to follow frame pointers, otherwise we'll skip immediate caller
-+	 * as %rbp is not yet setup.
-+	 */
-+	if (is_uprobe_at_func_entry(regs) &&
-+	    !get_user(ret_addr, (const unsigned long __user *)regs->sp))
-+		perf_callchain_store(entry, ret_addr);
-+
- 	while (entry->nr < entry->max_stack) {
- 		if (!valid_user_frame(fp, sizeof(frame)))
- 			break;
-diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
-index f46e0ca0169c7..d91e32aff5a13 100644
---- a/include/linux/uprobes.h
-+++ b/include/linux/uprobes.h
-@@ -76,6 +76,8 @@ struct uprobe_task {
- 	struct uprobe			*active_uprobe;
- 	unsigned long			xol_vaddr;
- 
-+	struct arch_uprobe              *auprobe;
-+
- 	struct return_instance		*return_instances;
- 	unsigned int			depth;
+ 	/*
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
+@@ -122,6 +122,7 @@ struct vop_common {
+ 	struct vop_reg lut_buffer_index;
+ 	struct vop_reg gate_en;
+ 	struct vop_reg mmu_en;
++	struct vop_reg dma_stop;
+ 	struct vop_reg out_mode;
+ 	struct vop_reg standby;
  };
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 4705571f80345..6876b7f152b10 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -2071,6 +2071,7 @@ static void handler_chain(struct uprobe *uprobe, struct pt_regs *regs)
- 	bool need_prep = false; /* prepare return uprobe, when needed */
+--- a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
++++ b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
+@@ -466,6 +466,7 @@ static const struct vop_output rk3066_ou
+ };
  
- 	down_read(&uprobe->register_rwsem);
-+	current->utask->auprobe = &uprobe->arch;
- 	for (uc = uprobe->consumers; uc; uc = uc->next) {
- 		int rc = 0;
- 
-@@ -2085,6 +2086,7 @@ static void handler_chain(struct uprobe *uprobe, struct pt_regs *regs)
- 
- 		remove &= rc;
- 	}
-+	current->utask->auprobe = NULL;
- 
- 	if (need_prep && !remove)
- 		prepare_uretprobe(uprobe, regs); /* put bp at return */
--- 
-2.43.0
-
+ static const struct vop_common rk3066_common = {
++	.dma_stop = VOP_REG(RK3066_SYS_CTRL0, 0x1, 0),
+ 	.standby = VOP_REG(RK3066_SYS_CTRL0, 0x1, 1),
+ 	.out_mode = VOP_REG(RK3066_DSP_CTRL0, 0xf, 0),
+ 	.cfg_done = VOP_REG(RK3066_REG_CFG_DONE, 0x1, 0),
 
 
 
