@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB1B99489D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:15:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 370F2994B82
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57AE91C2489C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:15:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D12BC2882BA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC3F81DE4DF;
-	Tue,  8 Oct 2024 12:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7961DF982;
+	Tue,  8 Oct 2024 12:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYaqkzVA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gR/qcMHV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FE91DE4CC;
-	Tue,  8 Oct 2024 12:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E298192594;
+	Tue,  8 Oct 2024 12:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389687; cv=none; b=lLSNpZnaqDqymysT1WKk+6CVPNe9GjoYtpXnPxW2g9QXGfNZHxCr3kGdiVO8DXSCIIInMqGPwP43BIS+3T/q8o79LR6qdL9932TnetSLAmaBE/FwZ7c9C4TWu6rwes/ge/mA6FJO1u2U2XIrybppFV/MaT/r4mQXv4ZlLYsmSw0=
+	t=1728391397; cv=none; b=int03c0aLfPO3XebUJnRypB3yXPa+oFqwdDnX5pV9VJuZCz2GauEtO3MoqQEMrYH2prDBqoD3ylmmFT3XbdNr2mCtqg7xMuSvkaIWW1Ht3h4Auh37Rg1uljJKoc+1qtLfnH0Y9GUIIr8p56VfqagRiJ3qjaTkw0xioRVRTpPhKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389687; c=relaxed/simple;
-	bh=Pun53SwWIJo1p1h3kbVqkgJ7P1CXYd9AhJXIMHsfIJc=;
+	s=arc-20240116; t=1728391397; c=relaxed/simple;
+	bh=y7i1KDkb3SfuilZ5IQqMR2DkEx/5mxZn5Tt7WLjUbIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mQHXC1K+DLAjZT08R2anUER57zdq3KFSnvGf8HMSmHr6BFeECfvIDX8wV/3ft9MG85twX+1UBn3jk7RhFElf4qnlmRmGzCNcvi3bi/3Tn2NPNbwF4hBPuHvXCOalOdqyIOpcZxdHYEySSvu0d7rf7vLaQACOJlBtaE+77HMuv/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYaqkzVA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5234C4CEC7;
-	Tue,  8 Oct 2024 12:14:46 +0000 (UTC)
+	 MIME-Version; b=PPruqe0p9/EOxHCEgfMw+h8/yRhxEfyiCozEVlAAbTVPO5X7TyDieVmO4AJBB23EoetTn+K/TreZ5dP0kndEUAkPfbKaOOI4aIG8mDfrpF74OQCsoOdA2cIqZrpycPVLw+UB0ODm6ccRYjodcCqo0lVEgJMCyBxJ9nqBD6VtcR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gR/qcMHV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F148C4CEC7;
+	Tue,  8 Oct 2024 12:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389687;
-	bh=Pun53SwWIJo1p1h3kbVqkgJ7P1CXYd9AhJXIMHsfIJc=;
+	s=korg; t=1728391397;
+	bh=y7i1KDkb3SfuilZ5IQqMR2DkEx/5mxZn5Tt7WLjUbIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AYaqkzVATlY/LAAqDJ3QDAt9TXn6DxuDDfcpZQ9sNAq8EVtCBDm5r1bF+NZTMKg7Y
-	 eMrUDqeNjzXVCBMFGRZp4eX9x9IXPtichR7cgDUFe7SSqTd0or7Te2+aF9RARsX2qP
-	 SME+PR22tOzVyWMVSVQynID7ABysh2ZfsXtv/J7k=
+	b=gR/qcMHVjCJho05lXYWNkhFqhEWO2W4tSKRsvDuGoALk1ffZxV6HAL/I6seDWOaTD
+	 7KYDP90asB7L+E1DUy+1ZfswJQ039L+V199X4qV3fAPxJRJ5JWXYA9laZke86XIC9k
+	 Hujkf04+znN/0DYz3ss9G/IrHgBO9xZVCACvECgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Seiji Nishikawa <snishika@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 067/482] cifs: Do not convert delimiter when parsing NFS-style symlinks
+Subject: [PATCH 6.11 100/558] ACPI: PAD: fix crash in exit_round_robin()
 Date: Tue,  8 Oct 2024 14:02:10 +0200
-Message-ID: <20241008115650.944445695@linuxfoundation.org>
+Message-ID: <20241008115706.304662945@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Seiji Nishikawa <snishika@redhat.com>
 
-[ Upstream commit d3a49f60917323228f8fdeee313260ef14f94df7 ]
+[ Upstream commit 0a2ed70a549e61c5181bad5db418d223b68ae932 ]
 
-NFS-style symlinks have target location always stored in NFS/UNIX form
-where backslash means the real UNIX backslash and not the SMB path
-separator.
+The kernel occasionally crashes in cpumask_clear_cpu(), which is called
+within exit_round_robin(), because when executing clear_bit(nr, addr) with
+nr set to 0xffffffff, the address calculation may cause misalignment within
+the memory, leading to access to an invalid memory address.
 
-So do not mangle slash and backslash content of NFS-style symlink during
-readlink() syscall as it is already in the correct Linux form.
+----------
+BUG: unable to handle kernel paging request at ffffffffe0740618
+        ...
+CPU: 3 PID: 2919323 Comm: acpi_pad/14 Kdump: loaded Tainted: G           OE  X --------- -  - 4.18.0-425.19.2.el8_7.x86_64 #1
+        ...
+RIP: 0010:power_saving_thread+0x313/0x411 [acpi_pad]
+Code: 89 cd 48 89 d3 eb d1 48 c7 c7 55 70 72 c0 e8 64 86 b0 e4 c6 05 0d a1 02 00 01 e9 bc fd ff ff 45 89 e4 42 8b 04 a5 20 82 72 c0 <f0> 48 0f b3 05 f4 9c 01 00 42 c7 04 a5 20 82 72 c0 ff ff ff ff 31
+RSP: 0018:ff72a5d51fa77ec8 EFLAGS: 00010202
+RAX: 00000000ffffffff RBX: ff462981e5d8cb80 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000246 RDI: 0000000000000246
+RBP: ff46297556959d80 R08: 0000000000000382 R09: ff46297c8d0f38d8
+R10: 0000000000000000 R11: 0000000000000001 R12: 000000000000000e
+R13: 0000000000000000 R14: ffffffffffffffff R15: 000000000000000e
+FS:  0000000000000000(0000) GS:ff46297a800c0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffe0740618 CR3: 0000007e20410004 CR4: 0000000000771ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ ? acpi_pad_add+0x120/0x120 [acpi_pad]
+ kthread+0x10b/0x130
+ ? set_kthread_struct+0x50/0x50
+ ret_from_fork+0x1f/0x40
+        ...
+CR2: ffffffffe0740618
 
-This fixes interoperability of NFS-style symlinks with backslashes created
-by Linux NFS3 client throw Windows NFS server and retrieved by Linux SMB
-client throw Windows SMB server, where both Windows servers exports the
-same directory.
+crash> dis -lr ffffffffc0726923
+        ...
+/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./include/linux/cpumask.h: 114
+0xffffffffc0726918 <power_saving_thread+776>:	mov    %r12d,%r12d
+/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./include/linux/cpumask.h: 325
+0xffffffffc072691b <power_saving_thread+779>:	mov    -0x3f8d7de0(,%r12,4),%eax
+/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./arch/x86/include/asm/bitops.h: 80
+0xffffffffc0726923 <power_saving_thread+787>:	lock btr %rax,0x19cf4(%rip)        # 0xffffffffc0740620 <pad_busy_cpus_bits>
 
-Fixes: d5ecebc4900d ("smb3: Allow query of symlinks stored as reparse points")
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+crash> px tsk_in_cpu[14]
+$66 = 0xffffffff
+
+crash> px 0xffffffffc072692c+0x19cf4
+$99 = 0xffffffffc0740620
+
+crash> sym 0xffffffffc0740620
+ffffffffc0740620 (b) pad_busy_cpus_bits [acpi_pad]
+
+crash> px pad_busy_cpus_bits[0]
+$42 = 0xfffc0
+----------
+
+To fix this, ensure that tsk_in_cpu[tsk_index] != -1 before calling
+cpumask_clear_cpu() in exit_round_robin(), just as it is done in
+round_robin_cpu().
+
+Signed-off-by: Seiji Nishikawa <snishika@redhat.com>
+Link: https://patch.msgid.link/20240825141352.25280-1-snishika@redhat.com
+[ rjw: Subject edit, avoid updates to the same value ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/reparse.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/acpi/acpi_pad.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
-index cfa03c166de8c..ad0e0de9a165d 100644
---- a/fs/smb/client/reparse.c
-+++ b/fs/smb/client/reparse.c
-@@ -335,7 +335,6 @@ static int parse_reparse_posix(struct reparse_posix_data *buf,
- 							       cifs_sb->local_nls);
- 		if (!data->symlink_target)
- 			return -ENOMEM;
--		convert_delimiter(data->symlink_target, '/');
- 		cifs_dbg(FYI, "%s: target path: %s\n",
- 			 __func__, data->symlink_target);
- 		break;
+diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
+index 350d3a8928896..e84720f0246e8 100644
+--- a/drivers/acpi/acpi_pad.c
++++ b/drivers/acpi/acpi_pad.c
+@@ -136,8 +136,10 @@ static void exit_round_robin(unsigned int tsk_index)
+ {
+ 	struct cpumask *pad_busy_cpus = to_cpumask(pad_busy_cpus_bits);
+ 
+-	cpumask_clear_cpu(tsk_in_cpu[tsk_index], pad_busy_cpus);
+-	tsk_in_cpu[tsk_index] = -1;
++	if (tsk_in_cpu[tsk_index] != -1) {
++		cpumask_clear_cpu(tsk_in_cpu[tsk_index], pad_busy_cpus);
++		tsk_in_cpu[tsk_index] = -1;
++	}
+ }
+ 
+ static unsigned int idle_pct = 5; /* percentage */
 -- 
 2.43.0
 
