@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-82333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D0A994C38
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC5B9949B9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:26:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF0FD1F22CDD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE8ACB26693
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E3E1DE88F;
-	Tue,  8 Oct 2024 12:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BDA1DE3AE;
+	Tue,  8 Oct 2024 12:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnwEA5Qy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mw8sPoPS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A3F1CCB32;
-	Tue,  8 Oct 2024 12:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AC71CF297;
+	Tue,  8 Oct 2024 12:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391911; cv=none; b=Wm5DDsMrErfGe+CNofeWQKZ1ZRzF1yAQw3Z75BTOJ/L/aVZFBvSNApAQA7oy3MUUExtV3Cx7TWvspyQmg0xH30vLzG35TjzjYGKvDfNDMhZ2jRbIxfzZ83cNCIpLsdwITme/gyWvHE0WmnN6TFYgEUxPlESLl+XPDtN1WL3vn4o=
+	t=1728390334; cv=none; b=lfbCslPXxYiPSAo7GGpQQNwXbbbKtJyaPglSsmruf5j/aAcfF91fUj/xfIFugBSNYvWGu9873TvsW5iHVx0O6s6LuVLTpNbcXcYwqv9HAD2RAU3+VcwimTPDzFSxw27PkvdWx6ySVkcPcNguYfh7sTz931X9EHTFvj+5LApQ3VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391911; c=relaxed/simple;
-	bh=QpbnwtFXzWDhyhR4yRKX6o7Vh2VC32uCu6fZispOgoc=;
+	s=arc-20240116; t=1728390334; c=relaxed/simple;
+	bh=AdKSgxKTJJqnJOYqyI5XyFMecYL5EWjcqotqD+U16EM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9XbLC4cZDQpGjJmGkiB8UcrwspNJ2b9tnEexJCDGSuDTd7w58WfwwgZ7pzxQ7F3JT2B0t3SaS/V433y1+F4cyTqkEf2O96LiG4z5RHZlHnf/XhG3IcNzGeUNpMUv1uxNYPRGLi1UBBL8lxqIvb3vYPAPJfQHck/3jCQfaoQZ2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnwEA5Qy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68986C4CECC;
-	Tue,  8 Oct 2024 12:51:50 +0000 (UTC)
+	 MIME-Version; b=sgM5Mqf50bvwMNBRHyosl/MV9bDqNLf2dV8d2uVuQJdBSzf2/rPypCNGjwDHTfakq4EJJ4HXAKEHzBvAFZm3ehqBUVuKjAKYjuI93rSXvGEAXEQJm36tFv89kgSkd/I2jywUgmnOEG+fV8HfR/J3/PwIEZ8wEo1zIS0K/UF1WL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mw8sPoPS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49C0C4CEC7;
+	Tue,  8 Oct 2024 12:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391911;
-	bh=QpbnwtFXzWDhyhR4yRKX6o7Vh2VC32uCu6fZispOgoc=;
+	s=korg; t=1728390333;
+	bh=AdKSgxKTJJqnJOYqyI5XyFMecYL5EWjcqotqD+U16EM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bnwEA5QyBWBolVlhmFg0AQyDj7wZG8UUOHOds6sfufzQiKVABwxFkkJTnwqfBrd8Q
-	 XB6umqskhGDRA7EYgcvUPPzi6QMNyNDDkwVMn0EW4gMNejbNErr3eaa8y3YDKYZoHO
-	 deOjfS3XPFeTdqUAZunEu+pbR5mWhBeVxfYgFPSY=
+	b=Mw8sPoPSG/n3CWZM0Lj1+mFgd/+yZfaMHsERehb6szuqes+YEBbSc6luCQhaLClKh
+	 DPmilkMiIYZi2zHpUwLBupsOUMzxxwRnKyaNEbUdoj+TUSNYDiXn1IKelNd0w61BuH
+	 fv2q+LwjV+1e3ehq1GxtMV6NJT22xwadn5kt9Vdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Tim Huang <tim.huang@amd.com>,
+	Jesse Zhang <jesse.zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 259/558] drm/amd/display: Fix index out of bounds in degamma hardware format translation
+Subject: [PATCH 6.10 226/482] drm/amdgpu: fix unchecked return value warning for amdgpu_gfx
 Date: Tue,  8 Oct 2024 14:04:49 +0200
-Message-ID: <20241008115712.524675427@linuxfoundation.org>
+Message-ID: <20241008115657.200419994@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,56 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Tim Huang <tim.huang@amd.com>
 
-[ Upstream commit b7e99058eb2e86aabd7a10761e76cae33d22b49f ]
+[ Upstream commit c0277b9d7c2ee9ee5dbc948548984f0fbb861301 ]
 
-Fixes index out of bounds issue in
-`cm_helper_translate_curve_to_degamma_hw_format` function. The issue
-could occur when the index 'i' exceeds the number of transfer function
-points (TRANSFER_FUNC_POINTS).
+This resolves the unchecded return value warning reported by Coverity.
 
-The fix adds a check to ensure 'i' is within bounds before accessing the
-transfer function points. If 'i' is out of bounds the function returns
-false to indicate an error.
-
-Reported by smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:594 cm_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:595 cm_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:596 cm_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
-
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Tim Huang <tim.huang@amd.com>
+Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
-index 0b49362f71b06..eaed5d1c398aa 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
-@@ -591,6 +591,8 @@ bool cm_helper_translate_curve_to_degamma_hw_format(
- 				i += increment) {
- 			if (j == hw_points - 1)
- 				break;
-+			if (i >= TRANSFER_FUNC_POINTS)
-+				return false;
- 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
- 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
- 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+index e92bdc9a39d35..1935b211b527d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+@@ -816,8 +816,11 @@ int amdgpu_gfx_ras_late_init(struct amdgpu_device *adev, struct ras_common_if *r
+ 	int r;
+ 
+ 	if (amdgpu_ras_is_supported(adev, ras_block->block)) {
+-		if (!amdgpu_persistent_edc_harvesting_supported(adev))
+-			amdgpu_ras_reset_error_status(adev, AMDGPU_RAS_BLOCK__GFX);
++		if (!amdgpu_persistent_edc_harvesting_supported(adev)) {
++			r = amdgpu_ras_reset_error_status(adev, AMDGPU_RAS_BLOCK__GFX);
++			if (r)
++				return r;
++		}
+ 
+ 		r = amdgpu_ras_block_late_init(adev, ras_block);
+ 		if (r)
+@@ -961,7 +964,10 @@ uint32_t amdgpu_kiq_rreg(struct amdgpu_device *adev, uint32_t reg, uint32_t xcc_
+ 		pr_err("critical bug! too many kiq readers\n");
+ 		goto failed_unlock;
+ 	}
+-	amdgpu_ring_alloc(ring, 32);
++	r = amdgpu_ring_alloc(ring, 32);
++	if (r)
++		goto failed_unlock;
++
+ 	amdgpu_ring_emit_rreg(ring, reg, reg_val_offs);
+ 	r = amdgpu_fence_emit_polling(ring, &seq, MAX_KIQ_REG_WAIT);
+ 	if (r)
+@@ -1027,7 +1033,10 @@ void amdgpu_kiq_wreg(struct amdgpu_device *adev, uint32_t reg, uint32_t v, uint3
+ 	}
+ 
+ 	spin_lock_irqsave(&kiq->ring_lock, flags);
+-	amdgpu_ring_alloc(ring, 32);
++	r = amdgpu_ring_alloc(ring, 32);
++	if (r)
++		goto failed_unlock;
++
+ 	amdgpu_ring_emit_wreg(ring, reg, v);
+ 	r = amdgpu_fence_emit_polling(ring, &seq, MAX_KIQ_REG_WAIT);
+ 	if (r)
+@@ -1063,6 +1072,7 @@ void amdgpu_kiq_wreg(struct amdgpu_device *adev, uint32_t reg, uint32_t v, uint3
+ 
+ failed_undo:
+ 	amdgpu_ring_undo(ring);
++failed_unlock:
+ 	spin_unlock_irqrestore(&kiq->ring_lock, flags);
+ failed_kiq_write:
+ 	dev_err(adev->dev, "failed to write reg:%x\n", reg);
 -- 
 2.43.0
 
