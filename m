@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA13994A92
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE82C994EBF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:20:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7A751F23F4A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4B0C287AF8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D951DE2A5;
-	Tue,  8 Oct 2024 12:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53F21DED7D;
+	Tue,  8 Oct 2024 13:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tj0u4VHJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6Q+3V2Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F611779B1;
-	Tue,  8 Oct 2024 12:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42CC1DE4CD;
+	Tue,  8 Oct 2024 13:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390847; cv=none; b=lHXwHOt2iO1aHV4jrzh86A7ck824Wu3wBDN5V6imAB8qpIWD+vB32zQzHrtCXHmrwmo0u6SGZhPS+Ah8P5QZnV4YEXNIraQyIqZsTI8SZKtAchnUe365zD58FqAUgj8sZDEynAfwQ/Ar2HwIYAh7w5B+PXgTFfyS7v4mdTpAbZA=
+	t=1728393642; cv=none; b=axDOY+GAIjm+zIH6JnBFj/qLqFBf7NhyWPkI7LVX4Y5vAY0v9q3uCnd8EUIeTdILnA3GGAbNyoH07SfUrSPHINlS8LIttDguqygFAj6/mSX2SWGecEN3MgoQxCeC+skk7eT5/9o9LPuLnfGTIyBLx26jalFQbiI5cbeg7m8fYfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390847; c=relaxed/simple;
-	bh=cBUrAST+ELkJp87zvTq/nv6ahfWcWCzllcHpVtW4Psc=;
+	s=arc-20240116; t=1728393642; c=relaxed/simple;
+	bh=PW+MOduTbp881l3exYLkB2mGM8SlqvnF/JU6qJFqexg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tyUFVXKEoIv+avQH2LcCsKoVIgroKDJ1gGNEigURqbN6eeIMPey+mrmnsslDqyDj8D+hDfpu6uuRFgOf+HjoWKwJd4o8HRqDQ6B+tgwGl0sqoUvEgcRyns1xk/UG5GVme4ZhXQ6SZTccuLrJfejpyyrCMBGmw+LOq9W9QsutMkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tj0u4VHJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7D5C4CEC7;
-	Tue,  8 Oct 2024 12:34:06 +0000 (UTC)
+	 MIME-Version; b=RIsIViZyn2ZVF2n06aqyXeQE4OOZ30TOfume0fzKvjhxncQlYwGjE5WH5dkLz+b3kpLGaXqqPjmCE4OdwEIjiQ+2xPsnOgE2XvNBhpMSkUX8AT3W6E7iXceq6oIQKb92L/i41e94hxjwo1nkvNg/a9T/jtdnKyd06/97aYUJhZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6Q+3V2Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AF26C4CEC7;
+	Tue,  8 Oct 2024 13:20:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390847;
-	bh=cBUrAST+ELkJp87zvTq/nv6ahfWcWCzllcHpVtW4Psc=;
+	s=korg; t=1728393642;
+	bh=PW+MOduTbp881l3exYLkB2mGM8SlqvnF/JU6qJFqexg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tj0u4VHJSgffhTKEpgTI06t6o42VypNkzPXbadvszbYqTxmagbFikzuvs3aCR9oj/
-	 1xu2UjWXSGlEmOz64Y8tPsrp7ak0Lpq/W1KSYFCRM/UQ4MptOa73Iidi2u2/1aolUH
-	 vZOa/9bBFY24SwMso6+EOkmc0qAGPrfsEYTFklX0=
+	b=k6Q+3V2Y4PHhw8ASoFwvsL3pUco9nvOCLAnpxgNsz0nOqTkUyE9IcVGiq/w/lPtoN
+	 dZfpXlexgMzmtg+8wLzloJgZPKW2eFbYXiBWQ+8NZM5Uj8sbwwFxORy6SllkRcnRX+
+	 mdP/N2l4ZpgCIlMG8iJlL6tMbpyv8c0pG4CvFla0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 394/482] clk: qcom: gcc-sm8250: Do not turn off PCIe GDSCs during gdsc_disable()
+	Alice Ryhl <aliceryhl@google.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.6 212/386] rust: sync: require `T: Sync` for `LockedBy::access`
 Date: Tue,  8 Oct 2024 14:07:37 +0200
-Message-ID: <20241008115703.915778727@linuxfoundation.org>
+Message-ID: <20241008115637.749402530@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Alice Ryhl <aliceryhl@google.com>
 
-commit ade508b545c969c72cd68479f275a5dd640fd8b9 upstream.
+commit a8ee30f45d5d57467ddb7877ed6914d0eba0af7f upstream.
 
-With PWRSTS_OFF_ON, PCIe GDSCs are turned off during gdsc_disable(). This
-can happen during scenarios such as system suspend and breaks the resume
-of PCIe controllers from suspend.
+The `LockedBy::access` method only requires a shared reference to the
+owner, so if we have shared access to the `LockedBy` from several
+threads at once, then two threads could call `access` in parallel and
+both obtain a shared reference to the inner value. Thus, require that
+`T: Sync` when calling the `access` method.
 
-So use PWRSTS_RET_ON to indicate the GDSC driver to not turn off the GDSCs
-during gdsc_disable() and allow the hardware to transition the GDSCs to
-retention when the parent domain enters low power state during system
-suspend.
+An alternative is to require `T: Sync` in the `impl Sync for LockedBy`.
+This patch does not choose that approach as it gives up the ability to
+use `LockedBy` with `!Sync` types, which is okay as long as you only use
+`access_mut`.
 
-Cc: stable@vger.kernel.org # 5.7
-Fixes: 3e5770921a88 ("clk: qcom: gcc: Add global clock controller driver for SM8250")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240719134238.312191-1-manivannan.sadhasivam@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 7b1f55e3a984 ("rust: sync: introduce `LockedBy`")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://lore.kernel.org/r/20240915-locked-by-sync-fix-v2-1-1a8d89710392@google.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-sm8250.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ rust/kernel/sync/locked_by.rs |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/drivers/clk/qcom/gcc-sm8250.c
-+++ b/drivers/clk/qcom/gcc-sm8250.c
-@@ -3226,7 +3226,7 @@ static struct gdsc pcie_0_gdsc = {
- 	.pd = {
- 		.name = "pcie_0_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- };
+--- a/rust/kernel/sync/locked_by.rs
++++ b/rust/kernel/sync/locked_by.rs
+@@ -80,8 +80,12 @@ pub struct LockedBy<T: ?Sized, U: ?Sized
+ // SAFETY: `LockedBy` can be transferred across thread boundaries iff the data it protects can.
+ unsafe impl<T: ?Sized + Send, U: ?Sized> Send for LockedBy<T, U> {}
  
- static struct gdsc pcie_1_gdsc = {
-@@ -3234,7 +3234,7 @@ static struct gdsc pcie_1_gdsc = {
- 	.pd = {
- 		.name = "pcie_1_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- };
+-// SAFETY: `LockedBy` serialises the interior mutability it provides, so it is `Sync` as long as the
+-// data it protects is `Send`.
++// SAFETY: If `T` is not `Sync`, then parallel shared access to this `LockedBy` allows you to use
++// `access_mut` to hand out `&mut T` on one thread at the time. The requirement that `T: Send` is
++// sufficient to allow that.
++//
++// If `T` is `Sync`, then the `access` method also becomes available, which allows you to obtain
++// several `&T` from several threads at once. However, this is okay as `T` is `Sync`.
+ unsafe impl<T: ?Sized + Send, U: ?Sized> Sync for LockedBy<T, U> {}
  
- static struct gdsc pcie_2_gdsc = {
-@@ -3242,7 +3242,7 @@ static struct gdsc pcie_2_gdsc = {
- 	.pd = {
- 		.name = "pcie_2_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- };
+ impl<T, U> LockedBy<T, U> {
+@@ -115,7 +119,10 @@ impl<T: ?Sized, U> LockedBy<T, U> {
+     ///
+     /// Panics if `owner` is different from the data protected by the lock used in
+     /// [`new`](LockedBy::new).
+-    pub fn access<'a>(&'a self, owner: &'a U) -> &'a T {
++    pub fn access<'a>(&'a self, owner: &'a U) -> &'a T
++    where
++        T: Sync,
++    {
+         build_assert!(
+             size_of::<U>() > 0,
+             "`U` cannot be a ZST because `owner` wouldn't be unique"
+@@ -124,7 +131,10 @@ impl<T: ?Sized, U> LockedBy<T, U> {
+             panic!("mismatched owners");
+         }
  
- static struct gdsc ufs_card_gdsc = {
+-        // SAFETY: `owner` is evidence that the owner is locked.
++        // SAFETY: `owner` is evidence that there are only shared references to the owner for the
++        // duration of 'a, so it's not possible to use `Self::access_mut` to obtain a mutable
++        // reference to the inner value that aliases with this shared reference. The type is `Sync`
++        // so there are no other requirements.
+         unsafe { &*self.data.get() }
+     }
+ 
 
 
 
