@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-82332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D08994C37
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE009949B3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECC041F223AD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 467BD1F2695F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544921DE4D7;
-	Tue,  8 Oct 2024 12:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336581DE89D;
+	Tue,  8 Oct 2024 12:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTJFpfGc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSh4OAIR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED441CCB32;
-	Tue,  8 Oct 2024 12:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16491E485;
+	Tue,  8 Oct 2024 12:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391908; cv=none; b=OHBjeSGdeZmnwKMz2+kosZvZblqQ1Sr/ZbqRywe7BgKJDybzYobt14VxLIzf13m/tRIV0WTJY6cXXsmjuVpyn4cf4Tv+vCT+WuAUkHduGUnwqaS4w3YU13VB0+M+9zS8Ewbcyf04p99fALYNVoHPWKvlBhtjuJKChRbLyunTVfA=
+	t=1728390317; cv=none; b=c8AQLLP8MZTtBaeXQKUiR1cHpft7Po7iJOHeYfB0sOx+rx9rS9sD68rtk+nneTds3oovBp4f4ylTxyM2VxsWi26chPFXN8Gn+IkCkDe9/eMd8iFAGTDbNJP9rLkUOWSuQ0O2iGGNU+LSoyojw2nTD32ZjXlkfw5ARHDqGKs5rzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391908; c=relaxed/simple;
-	bh=4KY8vEdqKDq8X7mHMRHYhPttcGsv1d6sknYfFpH0CXg=;
+	s=arc-20240116; t=1728390317; c=relaxed/simple;
+	bh=xsOIXZmNJKmu2ZaAwoP5ZRTYiolwDs1Pr7dzKWYAP+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uhtNup+i6g/EczubDBZMGn90eR0CQ3HoXAdfr3gqQsuvgKxiyHGaz3V6iR2AgUKmib09DfGY5zXp6fXPDVaWxfiwEkja/C7IORzTJ3N2DkJIai7l7T4dPIDzqzBSAW6+UVGoWcQiovJHYZxtV8ME69Qp0pGEpGjQA3b5OQJmYAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTJFpfGc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D33C4CEC7;
-	Tue,  8 Oct 2024 12:51:47 +0000 (UTC)
+	 MIME-Version; b=goTvdjwI+aj/DEG3EH3YxGz5t2q8h0sfH7UxDHkBFIbD2XV5bs6lfb3YaJtohUekW8D+sme99KPuC7BwzPBMqV3Kk7wa+i7O3C39AZBNWAlG1WKANsQ3tEoopP8KfJxpFTbKngJiNBVaJbZWyAzSEQM3OaVsty19G9Q6m0rzO7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSh4OAIR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67AB8C4CEC7;
+	Tue,  8 Oct 2024 12:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391907;
-	bh=4KY8vEdqKDq8X7mHMRHYhPttcGsv1d6sknYfFpH0CXg=;
+	s=korg; t=1728390316;
+	bh=xsOIXZmNJKmu2ZaAwoP5ZRTYiolwDs1Pr7dzKWYAP+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vTJFpfGc7OqO+wsP4gfYtst2k+q04cj0fzB4FJvXQDZp+lGoMH2gAbij+eyg/yW8b
-	 8SKtkXcZIpZsPl9ut2ZdHLF4FBOmhgDnK9hMF6n6wHI4k9041dPzKe75HWnYoZyDyA
-	 ZFpu/hYvuowmZYiOOCf0E8/mSLG+zstBeli5sUiY=
+	b=aSh4OAIRkSghXuvhtFUFgTXFywGhXaQTMjbQhJ2SogjLg3r914D7lP0lQsp0j8Gh0
+	 5FjjtiKXSp3zxG6ThbskXMJWdv2LiWQQR4HOijp4cPvS05TcoKz/LCCkHs0U28M4Sz
+	 fg9V/BhimVxhy9gwyR89qmKbrjFpO4tJ64TCGvII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 258/558] drm/amd/display: Fix index out of bounds in DCN30 degamma hardware format translation
+Subject: [PATCH 6.10 225/482] scsi: lpfc: Update PRLO handling in direct attached topology
 Date: Tue,  8 Oct 2024 14:04:48 +0200
-Message-ID: <20241008115712.486117526@linuxfoundation.org>
+Message-ID: <20241008115657.162503249@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,56 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit bc50b614d59990747dd5aeced9ec22f9258991ff ]
+[ Upstream commit 1f0f7679ad8942f810b0f19ee9cf098c3502d66a ]
 
-This commit addresses a potential index out of bounds issue in the
-`cm3_helper_translate_curve_to_degamma_hw_format` function in the DCN30
-color  management module. The issue could occur when the index 'i'
-exceeds the  number of transfer function points (TRANSFER_FUNC_POINTS).
+A kref imbalance occurs when handling an unsolicited PRLO in direct
+attached topology.
 
-The fix adds a check to ensure 'i' is within bounds before accessing the
-transfer function points. If 'i' is out of bounds, the function returns
-false to indicate an error.
+Rework PRLO rcv handling when in MAPPED state.  Save the state that we were
+handling a PRLO by setting nlp_last_elscmd to ELS_CMD_PRLO.  Then in the
+lpfc_cmpl_els_logo_acc() completion routine, manually restart discovery.
+By issuing the PLOGI, which nlp_gets, before nlp_put at the end of the
+lpfc_cmpl_els_logo_acc() routine, we are saving us from a final nlp_put.
+And, we are still allowing the unreg_rpi to happen.
 
-Reported by smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:338 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:339 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:340 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
-
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20240726231512.92867-7-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/lpfc/lpfc_els.c       | 27 ++++++++++++++++-----------
+ drivers/scsi/lpfc/lpfc_nportdisc.c | 22 ++++++++++++++++++++--
+ 2 files changed, 36 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-index b8327237ed441..edc77615d0973 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-@@ -335,6 +335,8 @@ bool cm3_helper_translate_curve_to_degamma_hw_format(
- 				i += increment) {
- 			if (j == hw_points - 1)
- 				break;
-+			if (i >= TRANSFER_FUNC_POINTS)
-+				return false;
- 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
- 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
- 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
+diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
+index 9084976aa77e1..9c8a6d2a29049 100644
+--- a/drivers/scsi/lpfc/lpfc_els.c
++++ b/drivers/scsi/lpfc/lpfc_els.c
+@@ -5244,9 +5244,10 @@ lpfc_cmpl_els_logo_acc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
+ 	/* ACC to LOGO completes to NPort <nlp_DID> */
+ 	lpfc_printf_vlog(vport, KERN_INFO, LOG_ELS,
+ 			 "0109 ACC to LOGO completes to NPort x%x refcnt %d "
+-			 "Data: x%x x%x x%x\n",
+-			 ndlp->nlp_DID, kref_read(&ndlp->kref), ndlp->nlp_flag,
+-			 ndlp->nlp_state, ndlp->nlp_rpi);
++			 "last els x%x Data: x%x x%x x%x\n",
++			 ndlp->nlp_DID, kref_read(&ndlp->kref),
++			 ndlp->nlp_last_elscmd, ndlp->nlp_flag, ndlp->nlp_state,
++			 ndlp->nlp_rpi);
+ 
+ 	/* This clause allows the LOGO ACC to complete and free resources
+ 	 * for the Fabric Domain Controller.  It does deliberately skip
+@@ -5258,18 +5259,22 @@ lpfc_cmpl_els_logo_acc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
+ 		goto out;
+ 
+ 	if (ndlp->nlp_state == NLP_STE_NPR_NODE) {
+-		/* If PLOGI is being retried, PLOGI completion will cleanup the
+-		 * node. The NLP_NPR_2B_DISC flag needs to be retained to make
+-		 * progress on nodes discovered from last RSCN.
+-		 */
+-		if ((ndlp->nlp_flag & NLP_DELAY_TMO) &&
+-		    (ndlp->nlp_last_elscmd == ELS_CMD_PLOGI))
+-			goto out;
+-
+ 		if (ndlp->nlp_flag & NLP_RPI_REGISTERED)
+ 			lpfc_unreg_rpi(vport, ndlp);
+ 
++		/* If came from PRLO, then PRLO_ACC is done.
++		 * Start rediscovery now.
++		 */
++		if (ndlp->nlp_last_elscmd == ELS_CMD_PRLO) {
++			spin_lock_irq(&ndlp->lock);
++			ndlp->nlp_flag |= NLP_NPR_2B_DISC;
++			spin_unlock_irq(&ndlp->lock);
++			ndlp->nlp_prev_state = ndlp->nlp_state;
++			lpfc_nlp_set_state(vport, ndlp, NLP_STE_PLOGI_ISSUE);
++			lpfc_issue_els_plogi(vport, ndlp->nlp_DID, 0);
++		}
+ 	}
++
+  out:
+ 	/*
+ 	 * The driver received a LOGO from the rport and has ACK'd it.
+diff --git a/drivers/scsi/lpfc/lpfc_nportdisc.c b/drivers/scsi/lpfc/lpfc_nportdisc.c
+index f6a53446e57f9..4574716c8764f 100644
+--- a/drivers/scsi/lpfc/lpfc_nportdisc.c
++++ b/drivers/scsi/lpfc/lpfc_nportdisc.c
+@@ -2652,8 +2652,26 @@ lpfc_rcv_prlo_mapped_node(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
+ 	/* flush the target */
+ 	lpfc_sli_abort_iocb(vport, ndlp->nlp_sid, 0, LPFC_CTX_TGT);
+ 
+-	/* Treat like rcv logo */
+-	lpfc_rcv_logo(vport, ndlp, cmdiocb, ELS_CMD_PRLO);
++	/* Send PRLO_ACC */
++	spin_lock_irq(&ndlp->lock);
++	ndlp->nlp_flag |= NLP_LOGO_ACC;
++	spin_unlock_irq(&ndlp->lock);
++	lpfc_els_rsp_acc(vport, ELS_CMD_PRLO, cmdiocb, ndlp, NULL);
++
++	/* Save ELS_CMD_PRLO as the last elscmd and then set to NPR.
++	 * lpfc_cmpl_els_logo_acc is expected to restart discovery.
++	 */
++	ndlp->nlp_last_elscmd = ELS_CMD_PRLO;
++	ndlp->nlp_prev_state = ndlp->nlp_state;
++
++	lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE | LOG_ELS | LOG_DISCOVERY,
++			 "3422 DID x%06x nflag x%x lastels x%x ref cnt %u\n",
++			 ndlp->nlp_DID, ndlp->nlp_flag,
++			 ndlp->nlp_last_elscmd,
++			 kref_read(&ndlp->kref));
++
++	lpfc_nlp_set_state(vport, ndlp, NLP_STE_NPR_NODE);
++
+ 	return ndlp->nlp_state;
+ }
+ 
 -- 
 2.43.0
 
