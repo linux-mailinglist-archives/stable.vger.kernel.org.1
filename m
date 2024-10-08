@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15C73994B75
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68DF59948B0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:15:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF588287F8F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2527B284E65
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF131DF74A;
-	Tue,  8 Oct 2024 12:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649F81D0E23;
+	Tue,  8 Oct 2024 12:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOgLMKoW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXJGbEps"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13981DC759;
-	Tue,  8 Oct 2024 12:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F6E1E485;
+	Tue,  8 Oct 2024 12:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391350; cv=none; b=AJQFX5UdEXGlz4vmB1DmgSCWPZat03zuXC4+Q3jeSWH5ahLM4VVVkgdELtjfHNSBXGJHypcLMTg9XK7LxmwksAUm8oHC951beyuCoSpsZS1oS96uP54XMpIuL+sXgti7MlT/nLu9RX7TM1Z7+x1ZPl7qWFAixemGA3WYFoOZvws=
+	t=1728389741; cv=none; b=Xy2oNJXPIVKQQxeFrirJtN7Gs2WPdpCFAg8/M/CGcAGi12CvWd/NzqlWdVY+CAnQfLd7pfi7UvNitBk3UtzhiJY0la6A8AY0n7ov3/RLtqJVSp9lZinTLotcBZvxJM8oMXfCCGhXCJiapJ81Uhh0f2g+eRlkAm1Xw9CIIHHRc9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391350; c=relaxed/simple;
-	bh=7ALeoiuky3SYogr1RddlR+Cr8iDH9ySV2C2e8ohcOAc=;
+	s=arc-20240116; t=1728389741; c=relaxed/simple;
+	bh=pTjaNYUIaTvLhZOjZ1AgtcK5FOd8Xku4vjOTY8D5Ru8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=di4o3DeKVt1r/xuYXGmrox6hbUp2t09vas87tpX1zdm6qDfGdm9+pdsKHUGKA+f8zjb8zrrK6WrDz+GeVO8p4SR44DHvwXDnE+l6JkmwI69+pGAmIqXnTrR3/MXoN4rANiYDzZ34II5wG3MA3v60QZZzY8cMpWEgX6aDzet1y0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOgLMKoW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EABF5C4CEC7;
-	Tue,  8 Oct 2024 12:42:29 +0000 (UTC)
+	 MIME-Version; b=RhzaE3JELnczhfk0R5NTqpC0imbbjrpAjQ3ri2ehEFZ9sUwpfVdXlHxVvoSUkwuMq4T1z7fIu+Sn44SeyBvBINHDETc+NEIQkc1YmuenFPJjhxn4SAtYJaqNmvLQZAWXVSS0CNe9GTK+pDsKGz0MIiJZBOIZD15kiCq/pb2v2i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXJGbEps; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F56C4CEC7;
+	Tue,  8 Oct 2024 12:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391350;
-	bh=7ALeoiuky3SYogr1RddlR+Cr8iDH9ySV2C2e8ohcOAc=;
+	s=korg; t=1728389741;
+	bh=pTjaNYUIaTvLhZOjZ1AgtcK5FOd8Xku4vjOTY8D5Ru8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TOgLMKoWN+0eIk77CocFXNuBGF2dkIWxroeWygq/XUbbwpVPk7tPzA06a73u2xF2t
-	 BlwFsd6GgXtO/UC4kc+4b5gd9AY7DHIudfIlDWbAFJXVvz1tJhDLikYjMcD9ejYG7o
-	 bxwCzdTzMMYDa5/c5WF8tnzhVyxCUmkaYrYBNkS0=
+	b=ZXJGbEpsG6w0gL+zmkGM2WZq1CEXHyRvpgY6kRW7sDy1dILKJcG2Db17L18h/knHm
+	 a3uCIe6LbuuTU9Yl9RkTr2fhubbZ2tXWpLev/j5+BgO8qL2467kNQoKT38KOwm6NmQ
+	 ZkCINWvP1hCb3VAc5BFZtQhPj/IGtQ7X+XmZVaSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+98afa303be379af6cdb2@syzkaller.appspotmail.com,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Andrei Simion <andrei.simion@microchip.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 087/558] wifi: ath9k_htc: Use __skb_set_length() for resetting urb before resubmit
-Date: Tue,  8 Oct 2024 14:01:57 +0200
-Message-ID: <20241008115705.795183821@linuxfoundation.org>
+Subject: [PATCH 6.10 055/482] ASoC: atmel: mchp-pdmc: Skip ALSA restoration if substream runtime is uninitialized
+Date: Tue,  8 Oct 2024 14:01:58 +0200
+Message-ID: <20241008115650.472421808@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Andrei Simion <andrei.simion@microchip.com>
 
-[ Upstream commit 94745807f3ebd379f23865e6dab196f220664179 ]
+[ Upstream commit 09cfc6a532d249a51d3af5022d37ebbe9c3d31f6 ]
 
-Syzbot points out that skb_trim() has a sanity check on the existing length of
-the skb, which can be uninitialised in some error paths. The intent here is
-clearly just to reset the length to zero before resubmitting, so switch to
-calling __skb_set_length(skb, 0) directly. In addition, __skb_set_length()
-already contains a call to skb_reset_tail_pointer(), so remove the redundant
-call.
+Update the driver to prevent alsa-restore.service from failing when
+reading data from /var/lib/alsa/asound.state at boot. Ensure that the
+restoration of ALSA mixer configurations is skipped if substream->runtime
+is NULL.
 
-The syzbot report came from ath9k_hif_usb_reg_in_cb(), but there's a similar
-usage of skb_trim() in ath9k_hif_usb_rx_cb(), change both while we're at it.
-
-Reported-by: syzbot+98afa303be379af6cdb2@syzkaller.appspotmail.com
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240812142447.12328-1-toke@toke.dk
+Fixes: 50291652af52 ("ASoC: atmel: mchp-pdmc: add PDMC driver")
+Signed-off-by: Andrei Simion <andrei.simion@microchip.com>
+Link: https://patch.msgid.link/20240924081237.50046-1-andrei.simion@microchip.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/hif_usb.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ sound/soc/atmel/mchp-pdmc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
-index 0c7841f952287..a3733c9b484e4 100644
---- a/drivers/net/wireless/ath/ath9k/hif_usb.c
-+++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
-@@ -716,8 +716,7 @@ static void ath9k_hif_usb_rx_cb(struct urb *urb)
- 	}
+diff --git a/sound/soc/atmel/mchp-pdmc.c b/sound/soc/atmel/mchp-pdmc.c
+index dcc4e14b3dde2..206bbb5aaab5d 100644
+--- a/sound/soc/atmel/mchp-pdmc.c
++++ b/sound/soc/atmel/mchp-pdmc.c
+@@ -285,6 +285,9 @@ static int mchp_pdmc_chmap_ctl_put(struct snd_kcontrol *kcontrol,
+ 	if (!substream)
+ 		return -ENODEV;
  
- resubmit:
--	skb_reset_tail_pointer(skb);
--	skb_trim(skb, 0);
-+	__skb_set_length(skb, 0);
- 
- 	usb_anchor_urb(urb, &hif_dev->rx_submitted);
- 	ret = usb_submit_urb(urb, GFP_ATOMIC);
-@@ -754,8 +753,7 @@ static void ath9k_hif_usb_reg_in_cb(struct urb *urb)
- 	case -ESHUTDOWN:
- 		goto free_skb;
- 	default:
--		skb_reset_tail_pointer(skb);
--		skb_trim(skb, 0);
-+		__skb_set_length(skb, 0);
- 
- 		goto resubmit;
- 	}
++	if (!substream->runtime)
++		return 0; /* just for avoiding error from alsactl restore */
++
+ 	map = mchp_pdmc_chmap_get(substream, info);
+ 	if (!map)
+ 		return -EINVAL;
 -- 
 2.43.0
 
