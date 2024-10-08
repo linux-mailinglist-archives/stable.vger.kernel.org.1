@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 852E0994E4D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6820D9949FA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:29:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FBB81C2533F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A0071C24B18
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CBFC1DF266;
-	Tue,  8 Oct 2024 13:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6954A1DEFEC;
+	Tue,  8 Oct 2024 12:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AF4+bgww"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lugk0kGv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A33C192594;
-	Tue,  8 Oct 2024 13:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277DC1DEFE4;
+	Tue,  8 Oct 2024 12:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393330; cv=none; b=gu+P9KqrsBhtT2kTc2yzRU2uRj8EO46BXWcdKTP+mQu5zWxxtskZCd7Sz39DGTPY59ieNnQeW8fteWJe3+bnVJV5Fq2ZFtgRDxDDt1eZfUJjM/b3sxeCQG9KMjWTYm2nKMA4HURpIDoAWuh/UdWZUWROblpUsHjYUArTyZqjCPE=
+	t=1728390473; cv=none; b=tzBF3wL3ChkOjPapMU4qpXC6NtyC5/c8gvErnJA4tgn38VGWYyRfKXmlrGkspx+x5ab5I/8wBkGw+potdPr30ECeI8jdGBCuzqmuiSKOAXyzEw/Kkl7tnSCo62qHzHGR+eEaFKo1Ed9E+xzs+ArEudUp2xOyUwD+Jvxz7PdfhZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393330; c=relaxed/simple;
-	bh=KF5onVzPk939l8uXDiJ4T3rge6xXS4V5bJIVKuTL2ek=;
+	s=arc-20240116; t=1728390473; c=relaxed/simple;
+	bh=f6VHJpZGwmjZeCi0ukJuKH19S2yJ7mUB/azYCUngjS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DkvqNgpqdivz9eNAhEW4oLgELjO4RHYXEH2WjzFFFH7sPrOYTk/npvyhl1YXE9oiFPgoJoTUl3I862KNjlkLX9dQkDoQBDqg/v1UGl9d0PgfRKtI/Ox84zgngD4vg/Y7oj/ryhLfOHgKcKDOBJk6acjScAhK0a0mozq5NNDCdwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AF4+bgww; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6CB5C4CECC;
-	Tue,  8 Oct 2024 13:15:29 +0000 (UTC)
+	 MIME-Version; b=RoTfeRzEj7K2K9xP/IeK/ga1fUzpfIC41Kf1t6osUvTWePeqUeu6p6ADKK3B9ebo0rWxNs50b9FJKL6DLrB2Nkg6a6/6i3rIcAYxvkP4QmrW+med/ff23E1Y/gcNWfVu/+xJS/NOYCEO/n33ICxzXiPUQ8T6v4vC9bEm7fSLTKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lugk0kGv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E447C4CECF;
+	Tue,  8 Oct 2024 12:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393330;
-	bh=KF5onVzPk939l8uXDiJ4T3rge6xXS4V5bJIVKuTL2ek=;
+	s=korg; t=1728390473;
+	bh=f6VHJpZGwmjZeCi0ukJuKH19S2yJ7mUB/azYCUngjS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AF4+bgww/36NFSwmNAEJHa1EvVGUtA8WDuCNBmq89dAiYxErixf5xb3lSmOqB67LH
-	 Lwc/lnY966eHvsDACu6+s3waMyqwhPCN4V73Fhja3jxY7w2fzfTUHrpX1F750vW+DB
-	 rQijzuVwN56eEyO7/ZilcSgrwsrO76JZr+nyua5M=
+	b=lugk0kGvCLZzcuZwlcnq/qHoOnuVHLa0UJU3f8sqNP30E7oixmbnp9IlNhkttYExM
+	 BxSQtAeZRT92vgkPDJWAXCaffsWoa+sN/GkyFtT489J9SLAhi4LdgXjJ+l1yNNVeli
+	 BbV9aVytmT2BvMQdxwQClnhCiT4q/3hYDJ/0vesE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/386] ALSA: asihpi: Fix potential OOB array access
+	Alice Ryhl <aliceryhl@google.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.10 300/482] rust: sync: require `T: Sync` for `LockedBy::access`
 Date: Tue,  8 Oct 2024 14:06:03 +0200
-Message-ID: <20241008115634.084204053@linuxfoundation.org>
+Message-ID: <20241008115700.090419466@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Alice Ryhl <aliceryhl@google.com>
 
-[ Upstream commit 7b986c7430a6bb68d523dac7bfc74cbd5b44ef96 ]
+commit a8ee30f45d5d57467ddb7877ed6914d0eba0af7f upstream.
 
-ASIHPI driver stores some values in the static array upon a response
-from the driver, and its index depends on the firmware.  We shouldn't
-trust it blindly.
+The `LockedBy::access` method only requires a shared reference to the
+owner, so if we have shared access to the `LockedBy` from several
+threads at once, then two threads could call `access` in parallel and
+both obtain a shared reference to the inner value. Thus, require that
+`T: Sync` when calling the `access` method.
 
-This patch adds a sanity check of the array index to fit in the array
-size.
+An alternative is to require `T: Sync` in the `impl Sync for LockedBy`.
+This patch does not choose that approach as it gives up the ability to
+use `LockedBy` with `!Sync` types, which is okay as long as you only use
+`access_mut`.
 
-Link: https://patch.msgid.link/20240808091454.30846-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 7b1f55e3a984 ("rust: sync: introduce `LockedBy`")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://lore.kernel.org/r/20240915-locked-by-sync-fix-v2-1-1a8d89710392@google.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/asihpi/hpimsgx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/sync/locked_by.rs |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/asihpi/hpimsgx.c b/sound/pci/asihpi/hpimsgx.c
-index d0caef2994818..b68e6bfbbfbab 100644
---- a/sound/pci/asihpi/hpimsgx.c
-+++ b/sound/pci/asihpi/hpimsgx.c
-@@ -708,7 +708,7 @@ static u16 HPIMSGX__init(struct hpi_message *phm,
- 		phr->error = HPI_ERROR_PROCESSING_MESSAGE;
- 		return phr->error;
- 	}
--	if (hr.error == 0) {
-+	if (hr.error == 0 && hr.u.s.adapter_index < HPI_MAX_ADAPTERS) {
- 		/* the adapter was created successfully
- 		   save the mapping for future use */
- 		hpi_entry_points[hr.u.s.adapter_index] = entry_point_func;
--- 
-2.43.0
-
+--- a/rust/kernel/sync/locked_by.rs
++++ b/rust/kernel/sync/locked_by.rs
+@@ -83,8 +83,12 @@ pub struct LockedBy<T: ?Sized, U: ?Sized
+ // SAFETY: `LockedBy` can be transferred across thread boundaries iff the data it protects can.
+ unsafe impl<T: ?Sized + Send, U: ?Sized> Send for LockedBy<T, U> {}
+ 
+-// SAFETY: `LockedBy` serialises the interior mutability it provides, so it is `Sync` as long as the
+-// data it protects is `Send`.
++// SAFETY: If `T` is not `Sync`, then parallel shared access to this `LockedBy` allows you to use
++// `access_mut` to hand out `&mut T` on one thread at the time. The requirement that `T: Send` is
++// sufficient to allow that.
++//
++// If `T` is `Sync`, then the `access` method also becomes available, which allows you to obtain
++// several `&T` from several threads at once. However, this is okay as `T` is `Sync`.
+ unsafe impl<T: ?Sized + Send, U: ?Sized> Sync for LockedBy<T, U> {}
+ 
+ impl<T, U> LockedBy<T, U> {
+@@ -118,7 +122,10 @@ impl<T: ?Sized, U> LockedBy<T, U> {
+     ///
+     /// Panics if `owner` is different from the data protected by the lock used in
+     /// [`new`](LockedBy::new).
+-    pub fn access<'a>(&'a self, owner: &'a U) -> &'a T {
++    pub fn access<'a>(&'a self, owner: &'a U) -> &'a T
++    where
++        T: Sync,
++    {
+         build_assert!(
+             size_of::<U>() > 0,
+             "`U` cannot be a ZST because `owner` wouldn't be unique"
+@@ -127,7 +134,10 @@ impl<T: ?Sized, U> LockedBy<T, U> {
+             panic!("mismatched owners");
+         }
+ 
+-        // SAFETY: `owner` is evidence that the owner is locked.
++        // SAFETY: `owner` is evidence that there are only shared references to the owner for the
++        // duration of 'a, so it's not possible to use `Self::access_mut` to obtain a mutable
++        // reference to the inner value that aliases with this shared reference. The type is `Sync`
++        // so there are no other requirements.
+         unsafe { &*self.data.get() }
+     }
+ 
 
 
 
