@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-81710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4CB9948EC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:18:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FBA1994B9D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:45:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17976282946
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:18:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44A9B1F27C91
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBB01DDC24;
-	Tue,  8 Oct 2024 12:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1B01DF249;
+	Tue,  8 Oct 2024 12:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ep6W8WXg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkW7gmRm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9F61DDA24;
-	Tue,  8 Oct 2024 12:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64741DDC24;
+	Tue,  8 Oct 2024 12:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389875; cv=none; b=ViO5db5fNaliURBG6CZjOS//e/FgO1eXU+mc7f8m3gaqeD6stBFR6PBWJoGeogHsMa1BrZ7TpTtloSFKSSGTkM6RTChYpipu0KEDT16fmESYfwI4curEJps06hBb6KbjW87J/EbecwUWhkADMKsSkLVC6Bb5zqD649ukO9rwJlA=
+	t=1728391472; cv=none; b=nXRJBNEnib1SgCHcDnY61GVf6t+NGxs0tusGsgaoGYi4qx0EOb5yLQ7nQ33eSlgaGogERtD8CeYNry3dtbNcAjTbbns3QiewVXrZrXc9t3lsHwVxWGBSTtva4tpOvr8RWyC2zZgXPJMmFeh9+RjbLfyS1gl8orsRamZP5yTHRqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389875; c=relaxed/simple;
-	bh=aCi44OGztgsCmG87e3oyrzSQz2F40UcdMijgZIC9spM=;
+	s=arc-20240116; t=1728391472; c=relaxed/simple;
+	bh=gBqeIn7sjNr/FhB2jq4wiEJk+11TNHktRlnZmM/Uzoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rhruSduNrSp1cmxmkELxvYn/A4htRvZUPzIzBtm/FH2PyYZOWRwnFFQBJHEJg5pUHDnA8iIb9f+id2gqWKkOMMHMNHv2NMqyvXRSmerB//O7N2Q4WF7ESbh1trINVCPnTVmXLq9Z0ap3THuDyry7ZOsjUe94g16V0AyG3IFKPVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ep6W8WXg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168ADC4CECC;
-	Tue,  8 Oct 2024 12:17:53 +0000 (UTC)
+	 MIME-Version; b=MOPcaMWCBrgMS1u/1mFxBkTVFbQBP9PC3fcHGJgZxE8LZI12eqNJDIslMGuSfo34XjkM3sPsuuH1I5vFzgIlSLLJSRMky4dzk0yGMVTpdubxUcu5ShwH1QeWSeE5K+eNOZKYLYpEZUNZpBoOwX39PvO1t820828LxfpiN3dGrN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkW7gmRm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2036EC4CECC;
+	Tue,  8 Oct 2024 12:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389874;
-	bh=aCi44OGztgsCmG87e3oyrzSQz2F40UcdMijgZIC9spM=;
+	s=korg; t=1728391472;
+	bh=gBqeIn7sjNr/FhB2jq4wiEJk+11TNHktRlnZmM/Uzoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ep6W8WXgAwbxLapV0wwHF2EOOXK01Ok6UzCjr+/ySXWq8PrpGOIsnRFv1x2g+cFkj
-	 UWLCJp+tZVWOoMapMVNvfLRP6+0aIcZRlm412XLkqHWSz+x7MgwMCNxev09dJJAm5r
-	 tBFGqMkZ5YAd7TCuQ9zbnoiQnvFK3Oqd4uTz0tUQ=
+	b=PkW7gmRmSWHVMHOMX2rMSsTjh0/H8zAbua2IXm7OhYiHk5tlom8cbEg013gGt0gVx
+	 YuvtZgAIXGObRCsn/2OvpBSQm1EKREh6J3FhIbUhlTqnKLTj+f4vF3eMDM/CZebFVr
+	 YBnBwERz4ukP6t6WByM5+viOe8JovsrYwfvBr4Dg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
+	Simon Horman <horms@kernel.org>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 091/482] wifi: mt76: mt7915: disable tx worker during tx BA session enable/disable
-Date: Tue,  8 Oct 2024 14:02:34 +0200
-Message-ID: <20241008115651.892580802@linuxfoundation.org>
+Subject: [PATCH 6.11 125/558] bnxt_en: Extend maximum length of version string by 1 byte
+Date: Tue,  8 Oct 2024 14:02:35 +0200
+Message-ID: <20241008115707.284652596@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 256cbd26fbafb30ba3314339106e5c594e9bd5f9 ]
+[ Upstream commit ffff7ee843c351ce71d6e0d52f0f20bea35e18c9 ]
 
-Avoids firmware race condition.
+This corrects an out-by-one error in the maximum length of the package
+version string. The size argument of snprintf includes space for the
+trailing '\0' byte, so there is no need to allow extra space for it by
+reducing the value of the size argument by 1.
 
-Link: https://patch.msgid.link/20240827093011.18621-7-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Found by inspection.
+Compile tested only.
+
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20240813-bnxt-str-v2-1-872050a157e7@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 9599adf104b16..758249b20c222 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -690,13 +690,17 @@ int mt7915_mcu_add_tx_ba(struct mt7915_dev *dev,
- {
- 	struct mt7915_sta *msta = (struct mt7915_sta *)params->sta->drv_priv;
- 	struct mt7915_vif *mvif = msta->vif;
-+	int ret;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+index 4cf9bf8b01b09..ac06f4a4cf97c 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+@@ -4157,7 +4157,7 @@ static void bnxt_get_pkgver(struct net_device *dev)
  
-+	mt76_worker_disable(&dev->mt76.tx_worker);
- 	if (enable && !params->amsdu)
- 		msta->wcid.amsdu = false;
-+	ret = mt76_connac_mcu_sta_ba(&dev->mt76, &mvif->mt76, params,
-+				     MCU_EXT_CMD(STA_REC_UPDATE),
-+				     enable, true);
-+	mt76_worker_enable(&dev->mt76.tx_worker);
- 
--	return mt76_connac_mcu_sta_ba(&dev->mt76, &mvif->mt76, params,
--				      MCU_EXT_CMD(STA_REC_UPDATE),
--				      enable, true);
-+	return ret;
+ 	if (!bnxt_get_pkginfo(dev, buf, sizeof(buf))) {
+ 		len = strlen(bp->fw_ver_str);
+-		snprintf(bp->fw_ver_str + len, FW_VER_STR_LEN - len - 1,
++		snprintf(bp->fw_ver_str + len, FW_VER_STR_LEN - len,
+ 			 "/pkg %s", buf);
+ 	}
  }
- 
- int mt7915_mcu_add_rx_ba(struct mt7915_dev *dev,
 -- 
 2.43.0
 
