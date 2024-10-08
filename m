@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-82489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E0C0994D09
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ECD5994CE4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8D2328785A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5106C1C25196
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC4E17F4FF;
-	Tue,  8 Oct 2024 13:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6AD1DEFF8;
+	Tue,  8 Oct 2024 12:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5Bxir3A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avFCRv8N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B221DE8A0;
-	Tue,  8 Oct 2024 13:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EFF189910;
+	Tue,  8 Oct 2024 12:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392435; cv=none; b=IkYhHgdAHI0/mrQMFDt4a2r5PPHqkWVK9yMmhiys9+hyyRVZQzESDS1SHMnpx4QISGUoUcL/yRCZaS8e2VLgwn485jMwwFKxalq1snwVQ2mQpUQd1AyWsGYrltAzRbSSZ6QbTdhEePGYK4JbqIBgF8wIBerZipMMseQqgqGvoJw=
+	t=1728392329; cv=none; b=OFszpfVX2YI5g6d4wvDS3FcHRNLMBS/Hp0Z8BaVC2d6BsmDdPaMNfmvPy913M34LQKeSJZL+MOYNBs4Tpa+htO2e470cLNuF0jqY73QneDexXTj3n0gny0ibnt6DoU/wzBSPaYP/o/e5UkmkNYK0tXN9/FEBRxYgX0EMdFWVM54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392435; c=relaxed/simple;
-	bh=Gad+J1+tyX4JCq7pZ1t7csQaquNpQPhSl4+I4uYFVKM=;
+	s=arc-20240116; t=1728392329; c=relaxed/simple;
+	bh=S7b9I3LENrNrC404yRtJfIB5UwWaIJ1Ecuzn8dikVzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kc+XUrWmcD720AwufcVNhmpk+rMfLrdqDNzLnwj91BFj1wsuEIVL2BiVVWSYK9HMs9QLlOYxA90864gjrVbIdTAavzZvhLNE9ma+8zlE5vITDtr3yhwmCq8a027DcsxI7Vr9qAFklLgI6PpAWjMriMWfAFCi2ovC0qSaEKE2R6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5Bxir3A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC36C4CEC7;
-	Tue,  8 Oct 2024 13:00:34 +0000 (UTC)
+	 MIME-Version; b=a3scd1iE6Vi2jjAdxR25lXNIsbp72kxVLt/UC4u8naTernUZP8LtJLeG2vnmOZSqDAO/1TX8fUzS2JjVR1SHtsEggUvXhV0D1Az5n1RVj/3pWf0NK5aD9GhJUmxpDycdjcvnUQakEsLE7Mjx/DiNLEx46+Zi54cq7nZgtv9anME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avFCRv8N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F704C4CEC7;
+	Tue,  8 Oct 2024 12:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392434;
-	bh=Gad+J1+tyX4JCq7pZ1t7csQaquNpQPhSl4+I4uYFVKM=;
+	s=korg; t=1728392329;
+	bh=S7b9I3LENrNrC404yRtJfIB5UwWaIJ1Ecuzn8dikVzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C5Bxir3AoLunwFpaG5t7AHQnZQXpB/YXD++k0pWk9SwQzkT83A3taBu47EUZ915Vo
-	 bHf74sRb9gWl8D11mVSs0K4Jb0b48EgqhirddwHJG10foIFasfXPEMtXGBu36RcoLv
-	 +rK/+T6Dhzjksjxn4bjp9gHL4AyLTYEOAOkxGqjk=
+	b=avFCRv8NB3WpOIIscbYevdLdVi4dkL3XPynKl+5g76Nf1s4Svz4Zre/hm0xaSszhL
+	 mYfSSRc9X06ClEq7U3sQPeAuDJc0vSk6S/2Dpl1Oefo/gbpOt1DvYpEJdH3xMwmvji
+	 j6ma74ytt7Jo3A98uZChW5DIPbX0DjvDBKSezGpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
 	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.11 383/558] ext4: propagate errors from ext4_find_extent() in ext4_insert_range()
-Date: Tue,  8 Oct 2024 14:06:53 +0200
-Message-ID: <20241008115717.359899025@linuxfoundation.org>
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.11 384/558] ext4: fix incorrect tid assumption in ext4_fc_mark_ineligible()
+Date: Tue,  8 Oct 2024 14:06:54 +0200
+Message-ID: <20241008115717.399241062@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
 References: <20241008115702.214071228@linuxfoundation.org>
@@ -68,38 +67,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-commit 369c944ed1d7c3fb7b35f24e4735761153afe7b3 upstream.
+commit ebc4b2c1ac92fc0f8bf3f5a9c285a871d5084a6b upstream.
 
-Even though ext4_find_extent() returns an error, ext4_insert_range() still
-returns 0. This may confuse the user as to why fallocate returns success,
-but the contents of the file are not as expected. So propagate the error
-returned by ext4_find_extent() to avoid inconsistencies.
+Function jbd2_journal_shrink_checkpoint_list() assumes that '0' is not a
+valid value for transaction IDs, which is incorrect.
 
-Fixes: 331573febb6a ("ext4: Add support FALLOC_FL_INSERT_RANGE for fallocate")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Furthermore, the sbi->s_fc_ineligible_tid handling also makes the same
+assumption by being initialised to '0'.  Fortunately, the sb flag
+EXT4_MF_FC_INELIGIBLE can be used to check whether sbi->s_fc_ineligible_tid
+has been previously set instead of comparing it with '0'.
+
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20240822023545.1994557-11-libaokun@huaweicloud.com
+Link: https://patch.msgid.link/20240724161119.13448-5-luis.henriques@linux.dev
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/fast_commit.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -5553,6 +5553,7 @@ static int ext4_insert_range(struct file
- 	path = ext4_find_extent(inode, offset_lblk, NULL, 0);
- 	if (IS_ERR(path)) {
- 		up_write(&EXT4_I(inode)->i_data_sem);
-+		ret = PTR_ERR(path);
- 		goto out_stop;
- 	}
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -339,22 +339,29 @@ void ext4_fc_mark_ineligible(struct supe
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	tid_t tid;
++	bool has_transaction = true;
++	bool is_ineligible;
  
+ 	if (ext4_fc_disabled(sb))
+ 		return;
+ 
+-	ext4_set_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
+ 	if (handle && !IS_ERR(handle))
+ 		tid = handle->h_transaction->t_tid;
+ 	else {
+ 		read_lock(&sbi->s_journal->j_state_lock);
+-		tid = sbi->s_journal->j_running_transaction ?
+-				sbi->s_journal->j_running_transaction->t_tid : 0;
++		if (sbi->s_journal->j_running_transaction)
++			tid = sbi->s_journal->j_running_transaction->t_tid;
++		else
++			has_transaction = false;
+ 		read_unlock(&sbi->s_journal->j_state_lock);
+ 	}
+ 	spin_lock(&sbi->s_fc_lock);
+-	if (tid_gt(tid, sbi->s_fc_ineligible_tid))
++	is_ineligible = ext4_test_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
++	if (has_transaction &&
++	    (!is_ineligible ||
++	     (is_ineligible && tid_gt(tid, sbi->s_fc_ineligible_tid))))
+ 		sbi->s_fc_ineligible_tid = tid;
++	ext4_set_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
+ 	spin_unlock(&sbi->s_fc_lock);
+ 	WARN_ON(reason >= EXT4_FC_REASON_MAX);
+ 	sbi->s_fc_stats.fc_ineligible_reason_count[reason]++;
 
 
 
