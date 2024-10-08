@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87054994AA7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:35:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA1E3994ECB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8A9A1C24BC5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:35:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72288283019
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:21:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FCE51C2443;
-	Tue,  8 Oct 2024 12:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3322D1DF75E;
+	Tue,  8 Oct 2024 13:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T26rFIW1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfaAUm+N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C104D1779B1;
-	Tue,  8 Oct 2024 12:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A8B1DF72C;
+	Tue,  8 Oct 2024 13:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390914; cv=none; b=JHXJr5pdq2q1kV+55ImD5TNj4eoDYb+RuHjAQO77if//SK+9rLvhd+YTm9XT8CNP+FF9RnNHgaqJCgdgqt3hJTpb3AGGrJ4Y0T88LtlP5c+nxKzS7w6fRynsxEb7KAeGsraqqGwPR5XJrQuSCmoftrBX3dIGes1PC0eygHyvisM=
+	t=1728393663; cv=none; b=UML+ZVSjU5tBb0Mz10k5lnIPgPSHAyN1VJ0ZAU/BBqvQQIcZ4HOM9DjOj2mSpefypysvrJyNKl3su9oC41bjGwO8A1N5Znc8inPxQXNKYwiwNTSNX5c3VQYm+xrcFfRVxP19oyOU7id2jXM04Wk5g7zi1ACd1nMQSjvBdfnJ6So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390914; c=relaxed/simple;
-	bh=UmGshN0ubdruZROWqGQahL4MYx3yrM2d8lNnTBx1n4w=;
+	s=arc-20240116; t=1728393663; c=relaxed/simple;
+	bh=r4Oa5cEz01RTf39Dw3GAXQ3rhZdASrYJZ36VUYFrQoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7mEvT0EtPAmCSWqwj5pmudFD3f26nS28avqk7Lj57o3eQkF2W1dWYOXnLn7jo2aGTmv/XWqSLmO8rxIve/G9cK3BPwOHrOeb/ro3aPLjpoUrTCxNpm0vccTHjTDw8ZcSJ/E/0g5SysFQnFjHaljPCEA+vMz3CreE5+GFUU0/Js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T26rFIW1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 360DCC4CEC7;
-	Tue,  8 Oct 2024 12:35:14 +0000 (UTC)
+	 MIME-Version; b=em7Pxd5ge86yEfqQ5ym5B6qpBwAFZgsEg1bozIsDsIJv1di0/QOLfuClip3FzujyvVqg0V/XIXsuaZL/qqS614x9Cb2LD1yR6QUh7ShAld+nLh3gmsXWJ3ON0sH1ZHRNRwjCebQtkTxhGeFPRvOfkci2BVQIUXbmfzp1wWVSIEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfaAUm+N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E38BC4CECD;
+	Tue,  8 Oct 2024 13:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390914;
-	bh=UmGshN0ubdruZROWqGQahL4MYx3yrM2d8lNnTBx1n4w=;
+	s=korg; t=1728393662;
+	bh=r4Oa5cEz01RTf39Dw3GAXQ3rhZdASrYJZ36VUYFrQoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T26rFIW1Fl3LKhtcrU49YzHEITqBgJZe13Xsa+K7zgb406WXQXZmJv3dSiEa1gnse
-	 z5K9efDmYT9LDtW1LANudiyeFYKlQdtFHTChxmI4EZoqi6oH8MoPl4ViFO5x4NsCos
-	 aBS0fwLPkry72NFk35yZ2cnViqxEJoHJ0GpLoXLw=
+	b=vfaAUm+NeFsvVH4m5ejpg7m9Qe8wRcS2Ax4dg1ZAtDcqqZVhScNVTDiX6I0fEa1Zm
+	 PqGJS8TsEBPLCtZEaDHmHwHBfB8uiYyBBjbBuuFqPQYelJxV3M8nD+i6+Sa5F3Omym
+	 R+AhQW9dwfr78t370fk8DADJCVAJH+6kt7XvSnCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangrong <wangrong@uniontech.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.10 400/482] smb: client: use actual path when queryfs
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 218/386] spi: bcm63xx: Fix missing pm_runtime_disable()
 Date: Tue,  8 Oct 2024 14:07:43 +0200
-Message-ID: <20241008115704.150921976@linuxfoundation.org>
+Message-ID: <20241008115637.985713301@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,145 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangrong <wangrong@uniontech.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit a421e3fe0e6abe27395078f4f0cec5daf466caea upstream.
+commit 265697288ec2160ca84707565d6641d46f69b0ff upstream.
 
-Due to server permission control, the client does not have access to
-the shared root directory, but can access subdirectories normally, so
-users usually mount the shared subdirectories directly. In this case,
-queryfs should use the actual path instead of the root directory to
-avoid the call returning an error (EACCES).
+The pm_runtime_disable() is missing in the remove function, fix it
+by using devm_pm_runtime_enable(), so the pm_runtime_disable() in
+the probe error path can also be removed.
 
-Signed-off-by: wangrong <wangrong@uniontech.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 2d13f2ff6073 ("spi: bcm63xx-spi: fix pm_runtime")
+Cc: stable@vger.kernel.org # v5.13+
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://patch.msgid.link/20240819123349.4020472-3-ruanjinjie@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsfs.c   |   13 ++++++++++++-
- fs/smb/client/cifsglob.h |    2 +-
- fs/smb/client/smb1ops.c  |    2 +-
- fs/smb/client/smb2ops.c  |   19 ++++++++++++-------
- 4 files changed, 26 insertions(+), 10 deletions(-)
+ drivers/spi/spi-bcm63xx.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -313,8 +313,17 @@ cifs_statfs(struct dentry *dentry, struc
- 	struct TCP_Server_Info *server = tcon->ses->server;
- 	unsigned int xid;
- 	int rc = 0;
-+	const char *full_path;
-+	void *page;
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -584,13 +584,15 @@ static int bcm63xx_spi_probe(struct plat
  
- 	xid = get_xid();
-+	page = alloc_dentry_path();
-+
-+	full_path = build_path_from_dentry(dentry, page);
-+	if (IS_ERR(full_path)) {
-+		rc = PTR_ERR(full_path);
-+		goto statfs_out;
-+	}
+ 	bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
  
- 	if (le32_to_cpu(tcon->fsAttrInfo.MaxPathNameComponentLength) > 0)
- 		buf->f_namelen =
-@@ -330,8 +339,10 @@ cifs_statfs(struct dentry *dentry, struc
- 	buf->f_ffree = 0;	/* unlimited */
+-	pm_runtime_enable(&pdev->dev);
++	ret = devm_pm_runtime_enable(&pdev->dev);
++	if (ret)
++		goto out_clk_disable;
  
- 	if (server->ops->queryfs)
--		rc = server->ops->queryfs(xid, tcon, cifs_sb, buf);
-+		rc = server->ops->queryfs(xid, tcon, full_path, cifs_sb, buf);
+ 	/* register and we are done */
+ 	ret = devm_spi_register_controller(dev, host);
+ 	if (ret) {
+ 		dev_err(dev, "spi register failed\n");
+-		goto out_pm_disable;
++		goto out_clk_disable;
+ 	}
  
-+statfs_out:
-+	free_dentry_path(page);
- 	free_xid(xid);
- 	return rc;
- }
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -482,7 +482,7 @@ struct smb_version_operations {
- 			__u16 net_fid, struct cifsInodeInfo *cifs_inode);
- 	/* query remote filesystem */
- 	int (*queryfs)(const unsigned int, struct cifs_tcon *,
--		       struct cifs_sb_info *, struct kstatfs *);
-+		       const char *, struct cifs_sb_info *, struct kstatfs *);
- 	/* send mandatory brlock to the server */
- 	int (*mand_lock)(const unsigned int, struct cifsFileInfo *, __u64,
- 			 __u64, __u32, int, int, bool);
---- a/fs/smb/client/smb1ops.c
-+++ b/fs/smb/client/smb1ops.c
-@@ -909,7 +909,7 @@ cifs_oplock_response(struct cifs_tcon *t
+ 	dev_info(dev, "at %pr (irq %d, FIFOs size %d)\n",
+@@ -598,8 +600,6 @@ static int bcm63xx_spi_probe(struct plat
  
- static int
- cifs_queryfs(const unsigned int xid, struct cifs_tcon *tcon,
--	     struct cifs_sb_info *cifs_sb, struct kstatfs *buf)
-+	     const char *path, struct cifs_sb_info *cifs_sb, struct kstatfs *buf)
- {
- 	int rc = -EOPNOTSUPP;
+ 	return 0;
  
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -2816,7 +2816,7 @@ out_free_path:
- 
- static int
- smb2_queryfs(const unsigned int xid, struct cifs_tcon *tcon,
--	     struct cifs_sb_info *cifs_sb, struct kstatfs *buf)
-+	     const char *path, struct cifs_sb_info *cifs_sb, struct kstatfs *buf)
- {
- 	struct smb2_query_info_rsp *rsp;
- 	struct smb2_fs_full_size_info *info = NULL;
-@@ -2825,7 +2825,7 @@ smb2_queryfs(const unsigned int xid, str
- 	int rc;
- 
- 
--	rc = smb2_query_info_compound(xid, tcon, "",
-+	rc = smb2_query_info_compound(xid, tcon, path,
- 				      FILE_READ_ATTRIBUTES,
- 				      FS_FULL_SIZE_INFORMATION,
- 				      SMB2_O_INFO_FILESYSTEM,
-@@ -2853,28 +2853,33 @@ qfs_exit:
- 
- static int
- smb311_queryfs(const unsigned int xid, struct cifs_tcon *tcon,
--	       struct cifs_sb_info *cifs_sb, struct kstatfs *buf)
-+	       const char *path, struct cifs_sb_info *cifs_sb, struct kstatfs *buf)
- {
- 	int rc;
--	__le16 srch_path = 0; /* Null - open root of share */
-+	__le16 *utf16_path = NULL;
- 	u8 oplock = SMB2_OPLOCK_LEVEL_NONE;
- 	struct cifs_open_parms oparms;
- 	struct cifs_fid fid;
- 
- 	if (!tcon->posix_extensions)
--		return smb2_queryfs(xid, tcon, cifs_sb, buf);
-+		return smb2_queryfs(xid, tcon, path, cifs_sb, buf);
- 
- 	oparms = (struct cifs_open_parms) {
- 		.tcon = tcon,
--		.path = "",
-+		.path = path,
- 		.desired_access = FILE_READ_ATTRIBUTES,
- 		.disposition = FILE_OPEN,
- 		.create_options = cifs_create_options(cifs_sb, 0),
- 		.fid = &fid,
- 	};
- 
--	rc = SMB2_open(xid, &oparms, &srch_path, &oplock, NULL, NULL,
-+	utf16_path = cifs_convert_path_to_utf16(path, cifs_sb);
-+	if (utf16_path == NULL)
-+		return -ENOMEM;
-+
-+	rc = SMB2_open(xid, &oparms, utf16_path, &oplock, NULL, NULL,
- 		       NULL, NULL);
-+	kfree(utf16_path);
- 	if (rc)
- 		return rc;
- 
+-out_pm_disable:
+-	pm_runtime_disable(&pdev->dev);
+ out_clk_disable:
+ 	clk_disable_unprepare(clk);
+ out_err:
 
 
 
