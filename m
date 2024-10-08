@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-81747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D263994925
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:21:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6797994BE8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:48:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE20A1C22721
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:21:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 134D0B29393
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4111DE3BB;
-	Tue,  8 Oct 2024 12:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ADD81DE2CF;
+	Tue,  8 Oct 2024 12:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1UWr9x1j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6jRzRGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8FB1DE2CD;
-	Tue,  8 Oct 2024 12:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D86183CB8;
+	Tue,  8 Oct 2024 12:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389998; cv=none; b=DMR2LpyATpPZs8kZyRMzLW3/KhBKG68RYYqoMha24loJa4ZHdNCfx/pRwSokSGTUQtegtL8/yKroKbqV9aSDAC8WwuGnD/XothQifPs+fMUxIbpi5LZT+DMVEqcXEGSRuozGbx/x2W7V1Wp1hQ5WQsbRSmXjQTNrzkpbU70H1rs=
+	t=1728391588; cv=none; b=Dvnwp8XkZwUBBbSGBm/ouBB9bsZ5IlVMRu83POT9JVTzBtuejXUM00FJd/RZyEqZJ/DkrcItGf0iYPxs6fMNaj4u8WqWF3nA89NmanDMbB5g/dyG4sAqUeGPHZHnBtExkC5pib+r8yLW1DzjXiS7374srxq8tEBa38wYmWy5eaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389998; c=relaxed/simple;
-	bh=Ns+g5ZBus9RfxvvZOLDORiy9Dzj8l30xS0Ob8/HXsUg=;
+	s=arc-20240116; t=1728391588; c=relaxed/simple;
+	bh=4e/TDzNCIu60xU6nFxK7iAVNuesLpFquYoTCb6Ybhqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ae5NUfTbJD7vnCO3jSZeljWES7mfyIkGW/Q33EdcugjO+MA1eSGjg5ZL3O9Jq8LxkPalwjF42vJlkV1SEpUwNZCcVmf2ZXkY+oFyp0XlWcuSWMFeSWVJiMcWKb0r3ffwcEZmZN9SiCLLjVUKZay/w5OuqcIXyGA1Ir0R1pRQW0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1UWr9x1j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7497FC4CEC7;
-	Tue,  8 Oct 2024 12:19:57 +0000 (UTC)
+	 MIME-Version; b=ggtiKV0TSkE1L9VDu+4mJxcKivWeySYeGn4eoJyEuXL6HxczbM1hJZDZtA0mD5LjF+0t5/eQPyFiGa0EDWQ3W5OaM+NVsshLNtTFxFK/g3/mKJUrTdxEkKBKrACLcvqT+tAQ7VldzJAnKkSVUueZrZ5uzpdA8FAw+g1mM4iwj4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6jRzRGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EAFC4CEC7;
+	Tue,  8 Oct 2024 12:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389997;
-	bh=Ns+g5ZBus9RfxvvZOLDORiy9Dzj8l30xS0Ob8/HXsUg=;
+	s=korg; t=1728391588;
+	bh=4e/TDzNCIu60xU6nFxK7iAVNuesLpFquYoTCb6Ybhqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1UWr9x1jM8y1//nGNmCjq2uZsf/5FCsPcswrlYDRCPuQnF6I/A+cJ+W9KjEVOoikp
-	 kDJ0CtG6/JO3xHPDeegoaw9mHJpZ4226Er6vqNYQenQi6icZ0O7Xe0S9/9LvCmmx8U
-	 HQoKTi1Lq5wx0lBrZYAU6kpicjbwkPepgvOwEY5o=
+	b=c6jRzRGx9zPbbvETFxItMCg4ol76KTxYCk6lpJhOY+5dcoThs4rWGZGsK+i1l8zr6
+	 LojFmCanWJoQxPSJ31eB/R6cWjVC8Ae/XzcHdsr6cTUzOGaoidzEDNMqdY50AqQe9I
+	 mqlE/ZGWivxor0T/JcAw4O3OOozR16tOCeTo+yOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zong-Zhe Yang <kevin_yang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 128/482] wifi: rtw89: avoid reading out of bounds when loading TX power FW elements
+Subject: [PATCH 6.11 161/558] wifi: mt76: mt7915: hold dev->mt76.mutex while disabling tx worker
 Date: Tue,  8 Oct 2024 14:03:11 +0200
-Message-ID: <20241008115653.342063330@linuxfoundation.org>
+Message-ID: <20241008115708.696036304@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit ed2e4bb17a4884cf29c3347353d8aabb7265b46c ]
+[ Upstream commit 8f7152f10cb434f954aeff85ca1be9cd4d01912b ]
 
-Because the loop-expression will do one more time before getting false from
-cond-expression, the original code copied one more entry size beyond valid
-region.
+Prevent racing against other functions disabling the same worker
 
-Fix it by moving the entry copy to loop-body.
-
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240902015803.20420-1-pkshih@realtek.com
+Link: https://patch.msgid.link/20240827093011.18621-17-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/core.h | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 112bdd95fc6ea..504660ee3cba3 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -3888,16 +3888,22 @@ struct rtw89_txpwr_conf {
- 	const void *data;
- };
- 
-+static inline bool rtw89_txpwr_entcpy(void *entry, const void *cursor, u8 size,
-+				      const struct rtw89_txpwr_conf *conf)
-+{
-+	u8 valid_size = min(size, conf->ent_sz);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 8008ce3fa6c7e..387d47e9fcd38 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1537,12 +1537,14 @@ void mt7915_mac_reset_work(struct work_struct *work)
+ 		set_bit(MT76_RESET, &phy2->mt76->state);
+ 		cancel_delayed_work_sync(&phy2->mt76->mac_work);
+ 	}
 +
-+	memcpy(entry, cursor, valid_size);
-+	return true;
-+}
++	mutex_lock(&dev->mt76.mutex);
 +
- #define rtw89_txpwr_conf_valid(conf) (!!(conf)->data)
+ 	mt76_worker_disable(&dev->mt76.tx_worker);
+ 	mt76_for_each_q_rx(&dev->mt76, i)
+ 		napi_disable(&dev->mt76.napi[i]);
+ 	napi_disable(&dev->mt76.tx_napi);
  
- #define rtw89_for_each_in_txpwr_conf(entry, cursor, conf) \
--	for (typecheck(const void *, cursor), (cursor) = (conf)->data, \
--	     memcpy(&(entry), cursor, \
--		    min_t(u8, sizeof(entry), (conf)->ent_sz)); \
-+	for (typecheck(const void *, cursor), (cursor) = (conf)->data; \
- 	     (cursor) < (conf)->data + (conf)->num_ents * (conf)->ent_sz; \
--	     (cursor) += (conf)->ent_sz, \
--	     memcpy(&(entry), cursor, \
--		    min_t(u8, sizeof(entry), (conf)->ent_sz)))
-+	     (cursor) += (conf)->ent_sz) \
-+		if (rtw89_txpwr_entcpy(&(entry), cursor, sizeof(entry), conf))
+-	mutex_lock(&dev->mt76.mutex);
  
- struct rtw89_txpwr_byrate_data {
- 	struct rtw89_txpwr_conf conf;
+ 	if (mtk_wed_device_active(&dev->mt76.mmio.wed))
+ 		mtk_wed_device_stop(&dev->mt76.mmio.wed);
 -- 
 2.43.0
 
