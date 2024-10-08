@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-82320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8300994C27
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD40399496D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:24:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7440A2857A1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A62B1C231BC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B523A1DE4CC;
-	Tue,  8 Oct 2024 12:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7AC1DED48;
+	Tue,  8 Oct 2024 12:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVFKhEJq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EKN/ed7S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FC3183CB8;
-	Tue,  8 Oct 2024 12:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB2A1DE3D4;
+	Tue,  8 Oct 2024 12:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391868; cv=none; b=WB9TDO28g3QoL4j2NpxelqM29UXcxOacJoQJG7mWriCXx6VQVMYox/JMDwNGfsxY9Xzhmd1D0lRV7Vx9inBSk7cNatIPpEFVoQRb2l3rHmm8QgGUZ2e3+3NZNehQtZxx7st6pm1bRavgy4+5GYq4oGXyApbJpRrD5WeSSWAMkWM=
+	t=1728390150; cv=none; b=ES/v066lqkEv2vgjOeaiecR8wcSjkD5fJburB007eOW2mbgZeJae5ylj41HsMsr71x8bxzbZIBBfQwcbjo341ZQ7YUawHFA+bD5h4Mr+MHsj4pjU3l0K+fWOURuqDNYSgHZHqxzd9UDAqd81cwgQecqXCZ+54dnE5gsvPSOW1Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391868; c=relaxed/simple;
-	bh=ugvq0f7/DzZrjzX5zg12TKTi4a42BalSFBqlnBbgC6U=;
+	s=arc-20240116; t=1728390150; c=relaxed/simple;
+	bh=F9jyXHJ8sNjlANOIGnG08zmwdPE/2pxMf3FufMRL0ZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uhMkyWKGZjff8xjE+Xh1UrPZT+CxwNgerLID099lIrqfPBHI4gySpAzQ3hBY/kaROWNvmejrNYRQ2Vu4Cs2Xlcoic1eVt5/o7/pVyzm2yYp54yijOUDlaOQXqLzPW9ZfYRdGzRvhump3eEZCBShsPKopG1tmBTEyHgdR04J9SWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVFKhEJq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A29EC4CEC7;
-	Tue,  8 Oct 2024 12:51:07 +0000 (UTC)
+	 MIME-Version; b=Uxfce/U/ZhwvIQfdp18DxujGM1auSbSCQum811DAwCc+ugbnRokj/oxhifBLa4YXsAnRyGJ6+7mFuCXqeZmDTJZosYTbnjz8+DnyMRe2TUA1J+pqcgtcZUk+vxUwSlOe4+cyPE7dC/RSkHa32ArTTXVSfQLqFrGWiAzcLhhhdBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKN/ed7S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED66C4CEC7;
+	Tue,  8 Oct 2024 12:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391868;
-	bh=ugvq0f7/DzZrjzX5zg12TKTi4a42BalSFBqlnBbgC6U=;
+	s=korg; t=1728390149;
+	bh=F9jyXHJ8sNjlANOIGnG08zmwdPE/2pxMf3FufMRL0ZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jVFKhEJqtOoq212YLUirCIkpKxUDp5klNoE46RskT5Js1pqnE4R/bALoiJej8A0fg
-	 VnzLTbThfvXaf3K5w6YyyAg7qvEWBfwmJlAcftSRjShdypqixZTL7v2hWJ9RRgxtUq
-	 iYQhzirMQSnwhAJ4nLyZHNWtCmEH3g/v+wIg9krY=
+	b=EKN/ed7Skkx/pboJ/y3S2OreHNFeBu8JuTbT2tH6dmbxLLsy/k9uMA5EmZyfEF/Ha
+	 szuyvSGDfPbgfRn1+3KAEUHVTzNPa+cffpwYaTkJB40ceaTMfb1tBltVogkXQ1ZmBl
+	 FfD2sULf0S9bWWoCsF9lay2Fn8tJZeC84iHw0YWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Benesh <scott.benesh@microchip.com>,
-	Scott Teel <scott.teel@microchip.com>,
-	Mike McGowen <mike.mcgowen@microchip.com>,
-	Mahesh Rajashekhara <mahesh.rajashekhara@microchip.com>,
-	Don Brace <don.brace@microchip.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Vishnu Sankar <vishnuocv@gmail.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 239/558] scsi: smartpqi: correct stream detection
+Subject: [PATCH 6.10 206/482] HID: multitouch: Add support for Thinkpad X12 Gen 2 Kbd Portfolio
 Date: Tue,  8 Oct 2024 14:04:29 +0200
-Message-ID: <20241008115711.747843991@linuxfoundation.org>
+Message-ID: <20241008115656.416568303@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,52 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahesh Rajashekhara <mahesh.rajashekhara@microchip.com>
+From: Vishnu Sankar <vishnuocv@gmail.com>
 
-[ Upstream commit 4c76114932d1d6fad2e72823e7898a3c960cf2a7 ]
+[ Upstream commit 65b72ea91a257a5f0cb5a26b01194d3dd4b85298 ]
 
-Correct stream detection by initializing the structure
-pqi_scsi_dev_raid_map_data to 0s.
+This applies similar quirks used by previous generation device, so that
+Trackpoint and buttons on the touchpad works.  New USB KBD PID 0x61AE for
+Thinkpad X12 Tab is added.
 
-When the OS issues SCSI READ commands, the driver erroneously considers
-them as SCSI WRITES. If they are identified as sequential IOs, the driver
-then submits those requests via the RAID path instead of the AIO path.
-
-The 'is_write' flag might be set for SCSI READ commands also.  The driver
-may interpret SCSI READ commands as SCSI WRITE commands, resulting in IOs
-being submitted through the RAID path.
-
-Note: This does not cause data corruption.
-
-Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
-Reviewed-by: Scott Teel <scott.teel@microchip.com>
-Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
-Signed-off-by: Mahesh Rajashekhara <mahesh.rajashekhara@microchip.com>
-Signed-off-by: Don Brace <don.brace@microchip.com>
-Link: https://lore.kernel.org/r/20240827185501.692804-3-don.brace@microchip.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Vishnu Sankar <vishnuocv@gmail.com>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/smartpqi/smartpqi_init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-multitouch.c | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-index 02d16fddd3123..a4719af88718e 100644
---- a/drivers/scsi/smartpqi/smartpqi_init.c
-+++ b/drivers/scsi/smartpqi/smartpqi_init.c
-@@ -5917,7 +5917,7 @@ static bool pqi_is_parity_write_stream(struct pqi_ctrl_info *ctrl_info,
- 	int rc;
- 	struct pqi_scsi_dev *device;
- 	struct pqi_stream_data *pqi_stream_data;
--	struct pqi_scsi_dev_raid_map_data rmd;
-+	struct pqi_scsi_dev_raid_map_data rmd = { 0 };
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 53655f81d9950..06104a4e0fdc1 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -794,6 +794,7 @@
+ #define USB_DEVICE_ID_LENOVO_X1_TAB	0x60a3
+ #define USB_DEVICE_ID_LENOVO_X1_TAB3	0x60b5
+ #define USB_DEVICE_ID_LENOVO_X12_TAB	0x60fe
++#define USB_DEVICE_ID_LENOVO_X12_TAB2	0x61ae
+ #define USB_DEVICE_ID_LENOVO_OPTICAL_USB_MOUSE_600E	0x600e
+ #define USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_608D	0x608d
+ #define USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_6019	0x6019
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 99812c0f830b5..c4a6908bbe540 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2113,6 +2113,12 @@ static const struct hid_device_id mt_devices[] = {
+ 			   USB_VENDOR_ID_LENOVO,
+ 			   USB_DEVICE_ID_LENOVO_X12_TAB) },
  
- 	if (!ctrl_info->enable_stream_detection)
- 		return false;
++	/* Lenovo X12 TAB Gen 2 */
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
++		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
++			   USB_VENDOR_ID_LENOVO,
++			   USB_DEVICE_ID_LENOVO_X12_TAB2) },
++
+ 	/* Logitech devices */
+ 	{ .driver_data = MT_CLS_NSMU,
+ 		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
 -- 
 2.43.0
 
