@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-82756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0DEB994E4C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:15:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59FFA9949CE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C06D1F236ED
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E4111F2390F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5371DEFC9;
-	Tue,  8 Oct 2024 13:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54D11DEFD7;
+	Tue,  8 Oct 2024 12:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeVSNGgu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HvtAuXCO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F32192594;
-	Tue,  8 Oct 2024 13:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A211DEFE5;
+	Tue,  8 Oct 2024 12:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393323; cv=none; b=T9PCwANxQkUjMVsPmvDGs985JZN+OS5h4lOme4mkhpLI16efToK1+NLBL5K0rIgukDog2AnesAzJUc07utoeoJQ/hrxjxyxuIrIBnG9Fh3CRpyf0E9saHL1iXwsTh3P/vm8IKTIUQH6hAeGukoyD/VOv+3XxZle5kjddhXJP1Ak=
+	t=1728390378; cv=none; b=cg0ERtSjH8Clx2PDLPPHcwAJQEvA55/Gs5by7y/Na74c5ZRVAtRyDiksW5DZ/1XiQLpbVf7vGZf/aFV0+wzHUmu/bb7LW9FdC54Nv2Z2Ty3FdyxF7HnSQVz28QiTz9czVrgUglctcDCASHp3nfoI3Js7y6P0NhQPXUefzsKhUKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393323; c=relaxed/simple;
-	bh=ccI5JElKTN9h3Qyj/5DlIQXdguSJpwZhWdxHxKWXUyo=;
+	s=arc-20240116; t=1728390378; c=relaxed/simple;
+	bh=AiBxuKCbXVWr1OcXYJVtHUUrwQ2Hm0/yWQsKXpLjqNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dgl1VhbVDMvdJRf4nmDAqBZpbroDw9TaLuiUpMpv7JhPirdybzDRPU2yd+Cc5WoEtS8DzSVlaBJ7JlGhB5kAZSEiKqQB9WJf+tKpQGS93at4KBJZS5pi4nA1JerPHLsYNrYwYeXr6eRvLZ+heC/gHm9JFzd6vTJiwpCg0m5zjgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DeVSNGgu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293FFC4CECC;
-	Tue,  8 Oct 2024 13:15:22 +0000 (UTC)
+	 MIME-Version; b=Y2LlxkE927C6horVpnZFR0IKTSL0KYmVTdN282Cygbm9yC5fGiU8zVh157qeFIVGgzoEmItYhXQsNKVAnQtxQ3/jPgihqmwI9eG/ijayRh/W6agu4B1U9lChnTFNRkedP7at/P90B4UYHOswQeAAaDQHw8xupJ8PnDnRVajH1zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HvtAuXCO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B06C4CEC7;
+	Tue,  8 Oct 2024 12:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393323;
-	bh=ccI5JElKTN9h3Qyj/5DlIQXdguSJpwZhWdxHxKWXUyo=;
+	s=korg; t=1728390378;
+	bh=AiBxuKCbXVWr1OcXYJVtHUUrwQ2Hm0/yWQsKXpLjqNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DeVSNGguPwBZkXlfFi/VDWa0JtNHyOAT1vgyt/KX/C51Y7Tu4G5CCb2kvqjLy6ArX
-	 /nDOOyySxxVjPRbgZRKW0LRkyYvo0209g5FZrxGNl+iqKUzRDM5s/q4Lu/rzLh6Nxr
-	 AAtLbZwu7fSkCbLDNe6jAdHpU+Iff5ZALhA8GLsI=
+	b=HvtAuXCOKiXfYKQs+USvrBp/DYuCt1ZOD+N95ZchYTklwY6H6mZPp0W6kdjfblIx9
+	 lGMWaHSU1XG84Tzp1obSr1QX/s03USFEY8+YNhOo0Dz9kJ0a42JxeTwSzoEo5sNMPJ
+	 267p5zfjK+PCBtwfansb/OXUGFquBXvNXjCMzr/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/386] wifi: rtw89: correct base HT rate mask for firmware
+Subject: [PATCH 6.10 272/482] drm/xe: Fix memory leak on xe_alloc_pf_queue failure
 Date: Tue,  8 Oct 2024 14:05:35 +0200
-Message-ID: <20241008115632.996071322@linuxfoundation.org>
+Message-ID: <20241008115658.984178263@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Nirmoy Das <nirmoy.das@intel.com>
 
-[ Upstream commit 45742881f9eee2a4daeb6008e648a460dd3742cd ]
+[ Upstream commit c5f728de696caa35481fd84202dfbc9fecc18e0b ]
 
-Coverity reported that u8 rx_mask << 24 will become signed 32 bits, which
-casting to unsigned 64 bits will do sign extension. For example,
-putting 0x80000000 (signed 32 bits) to a u64 variable will become
-0xFFFFFFFF_80000000.
+Simplify memory unwinding on error also fixing current memory
+leak that can happen on error.
 
-The real case we meet is:
-  rx_mask[0...3] = ff ff 00 00
-  ra_mask = 0xffffffff_ff0ff000
+v2: use devm_kcalloc(Matt A)
 
-After this fix:
-  rx_mask[0...3] = ff ff 00 00
-  ra_mask = 0x00000000_ff0ff000
-
-Fortunately driver does bitwise-AND with incorrect ra_mask and supported
-rates (1ss and 2ss rate only) afterward, so the final rate mask of
-original code is still correct.
-
-Addresses-Coverity-ID: 1504762 ("Unintended sign extension")
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240809072012.84152-5-pkshih@realtek.com
+Fixes: 3338e4f90c14 ("drm/xe: Use topology to determine page fault queue size")
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Stuart Summers <stuart.summers@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240826162035.20462-1-nirmoy.das@intel.com
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/phy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_pagefault.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 7139146cb3fad..fac83b718a30c 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -284,8 +284,8 @@ static void rtw89_phy_ra_sta_update(struct rtw89_dev *rtwdev,
- 		csi_mode = RTW89_RA_RPT_MODE_HT;
- 		ra_mask |= ((u64)sta->deflink.ht_cap.mcs.rx_mask[3] << 48) |
- 			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[2] << 36) |
--			   (sta->deflink.ht_cap.mcs.rx_mask[1] << 24) |
--			   (sta->deflink.ht_cap.mcs.rx_mask[0] << 12);
-+			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[1] << 24) |
-+			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[0] << 12);
- 		high_rate_masks = rtw89_ra_mask_ht_rates;
- 		if (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_RX_STBC)
- 			stbc_en = 1;
+diff --git a/drivers/gpu/drm/xe/xe_gt_pagefault.c b/drivers/gpu/drm/xe/xe_gt_pagefault.c
+index 28cf90e8989c6..d924fdd8f6f97 100644
+--- a/drivers/gpu/drm/xe/xe_gt_pagefault.c
++++ b/drivers/gpu/drm/xe/xe_gt_pagefault.c
+@@ -408,20 +408,17 @@ static void pagefault_fini(void *arg)
+ {
+ 	struct xe_gt *gt = arg;
+ 	struct xe_device *xe = gt_to_xe(gt);
+-	int i;
+ 
+ 	if (!xe->info.has_usm)
+ 		return;
+ 
+ 	destroy_workqueue(gt->usm.acc_wq);
+ 	destroy_workqueue(gt->usm.pf_wq);
+-
+-	for (i = 0; i < NUM_PF_QUEUE; ++i)
+-		kfree(gt->usm.pf_queue[i].data);
+ }
+ 
+ static int xe_alloc_pf_queue(struct xe_gt *gt, struct pf_queue *pf_queue)
+ {
++	struct xe_device *xe = gt_to_xe(gt);
+ 	xe_dss_mask_t all_dss;
+ 	int num_dss, num_eus;
+ 
+@@ -437,7 +434,8 @@ static int xe_alloc_pf_queue(struct xe_gt *gt, struct pf_queue *pf_queue)
+ 		(num_eus + XE_NUM_HW_ENGINES) * PF_MSG_LEN_DW;
+ 
+ 	pf_queue->gt = gt;
+-	pf_queue->data = kcalloc(pf_queue->num_dw, sizeof(u32), GFP_KERNEL);
++	pf_queue->data = devm_kcalloc(xe->drm.dev, pf_queue->num_dw,
++				      sizeof(u32), GFP_KERNEL);
+ 	if (!pf_queue->data)
+ 		return -ENOMEM;
+ 
 -- 
 2.43.0
 
