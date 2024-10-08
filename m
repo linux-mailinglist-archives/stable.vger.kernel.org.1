@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80232994968
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:23:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4699E994C1B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:50:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35ACF1F243D1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:23:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F82C283DEB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4491DD867;
-	Tue,  8 Oct 2024 12:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47121DE898;
+	Tue,  8 Oct 2024 12:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YD/ff5LI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYmyNBAF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC54C1DACBE;
-	Tue,  8 Oct 2024 12:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC461DE4FA;
+	Tue,  8 Oct 2024 12:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390137; cv=none; b=NTyXT7lAPelc1W1gDmFRITFFpYY0x6UyiETFiG6ia0dNfOxwUH7CG/NW9YaJacUkhwhQz3LuroZfMuepOVmN8I3AOK4CY2XwocRkTbws8O6xLxk8RYzZt0+FGICsOhYn/rVtQt/c0cyUG7yWgI38/2uGPygM6Z1n3xdY9fjAT3U=
+	t=1728391834; cv=none; b=rZgQnT5xAMXj0vRGnA7PZP28uwo3hWxn/OG87ykmL4JfJqQFIFs25DFX778fu4ewcDAeoPHik/ppJ5VN/kILTwA2OwvIx5ww8JCV9woBKxR5pNeqaehbcKwm1RF+jtXNtnUcpEICRNxplCZkn5SatF4KEfcm1k6v9U0egbIBycA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390137; c=relaxed/simple;
-	bh=cRjF2fsCo/PvRbdkv9hFGzzEs6yNxaURhZ6a8udZGwM=;
+	s=arc-20240116; t=1728391834; c=relaxed/simple;
+	bh=NqequjglBlNml8Dd1qLLnmnNN7BkSxnr6Fvsy3iUQXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NIAat+AWLCOXgyNzjbZwz7col6aTHG8dVOnM3ytyzOKxB+tn+TsqhB2w/pcvt3OzEwUSdSMYvsH2rfCotUfOgmDhIVEddQXJectvybdgziWD8ZTepQtFvsXGpJAqkZij2JuEVTqXxZFrKhHFbZMaSyvsaD9OB7WRdC1yl/mMRiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YD/ff5LI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269ABC4CEC7;
-	Tue,  8 Oct 2024 12:22:16 +0000 (UTC)
+	 MIME-Version; b=aNAfj47/2PO2/gzpR4L7qc902nTUoIR2wJa6ATGxkXfk/MqyHyFeVDphRw83DPD2idUD5TRZowFqhHTjszFs1MkkCpI5EJ24z9YjM1U3xPoqZt3TpKjQ0jNcYe8uRJhsC3IxLYGGNYQXZmCd+MWVy/aGYqq0X5r2I4tlQgH73/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYmyNBAF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04966C4CEC7;
+	Tue,  8 Oct 2024 12:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390137;
-	bh=cRjF2fsCo/PvRbdkv9hFGzzEs6yNxaURhZ6a8udZGwM=;
+	s=korg; t=1728391834;
+	bh=NqequjglBlNml8Dd1qLLnmnNN7BkSxnr6Fvsy3iUQXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YD/ff5LIqEC4yLVaCyRKH33SO7nA25yoyxAdcs3QfO1N3eaV1MPOAOnUS5+HTqPnM
-	 24gPyK41U09KAtq+xC+5f+peUy5yDH1bNc9vNfAbOdtgLp8aPiu3QcI0+QDvWghG5E
-	 xHBDih/LnSKuzjnAsmzh2G0JmDxZNELQz9nhzbog=
+	b=EYmyNBAFErigm2phW2WqNOnpAVduOQEpVH1v5SFe6WOeVzeLBCd7yyzvCRpc4J0Hx
+	 P+4gNFdig86txzgEDNXSQakTlJyIgda5YP1p+wsU0JlaOkfi1k2y+yQdZ1Dp4RxmW+
+	 xZrKa8YnTd+U8eiB8m4jRjhBrYY4QcKczrW4Y5As=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+02341e0daa42a15ce130@syzkaller.appspotmail.com,
-	Zhao Mengmeng <zhaomengmeng@kylinos.cn>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 202/482] jfs: Fix uninit-value access of new_ea in ea_buffer
+Subject: [PATCH 6.11 235/558] drm/amdgpu: add list empty check to avoid null pointer issue
 Date: Tue,  8 Oct 2024 14:04:25 +0200
-Message-ID: <20241008115656.260046206@linuxfoundation.org>
+Message-ID: <20241008115711.592054898@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-[ Upstream commit 2b59ffad47db1c46af25ccad157bb3b25147c35c ]
+[ Upstream commit 4416377ae1fdc41a90b665943152ccd7ff61d3c5 ]
 
-syzbot reports that lzo1x_1_do_compress is using uninit-value:
+Add list empty check to avoid null pointer issues in some corner cases.
+- list_for_each_entry_safe()
 
-=====================================================
-BUG: KMSAN: uninit-value in lzo1x_1_do_compress+0x19f9/0x2510 lib/lzo/lzo1x_compress.c:178
-
-...
-
-Uninit was stored to memory at:
- ea_put fs/jfs/xattr.c:639 [inline]
-
-...
-
-Local variable ea_buf created at:
- __jfs_setxattr+0x5d/0x1ae0 fs/jfs/xattr.c:662
- __jfs_xattr_set+0xe6/0x1f0 fs/jfs/xattr.c:934
-
-=====================================================
-
-The reason is ea_buf->new_ea is not initialized properly.
-
-Fix this by using memset to empty its content at the beginning
-in ea_get().
-
-Reported-by: syzbot+02341e0daa42a15ce130@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=02341e0daa42a15ce130
-Signed-off-by: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/xattr.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/fs/jfs/xattr.c b/fs/jfs/xattr.c
-index 2999ed5d83f5e..0fb05e314edf6 100644
---- a/fs/jfs/xattr.c
-+++ b/fs/jfs/xattr.c
-@@ -434,6 +434,8 @@ static int ea_get(struct inode *inode, struct ea_buffer *ea_buf, int min_size)
- 	int rc;
- 	int quota_allocation = 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
+index 19158cc30f31f..43f3e72fb247a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
+@@ -80,6 +80,9 @@ static void aca_banks_release(struct aca_banks *banks)
+ {
+ 	struct aca_bank_node *node, *tmp;
  
-+	memset(&ea_buf->new_ea, 0, sizeof(ea_buf->new_ea));
++	if (list_empty(&banks->list))
++		return;
 +
- 	/* When fsck.jfs clears a bad ea, it doesn't clear the size */
- 	if (ji->ea.flag == 0)
- 		ea_size = 0;
+ 	list_for_each_entry_safe(node, tmp, &banks->list, node) {
+ 		list_del(&node->node);
+ 		kvfree(node);
+@@ -562,9 +565,13 @@ static void aca_error_fini(struct aca_error *aerr)
+ 	struct aca_bank_error *bank_error, *tmp;
+ 
+ 	mutex_lock(&aerr->lock);
++	if (list_empty(&aerr->list))
++		goto out_unlock;
++
+ 	list_for_each_entry_safe(bank_error, tmp, &aerr->list, node)
+ 		aca_bank_error_remove(aerr, bank_error);
+ 
++out_unlock:
+ 	mutex_destroy(&aerr->lock);
+ }
+ 
+@@ -680,6 +687,9 @@ static void aca_manager_fini(struct aca_handle_manager *mgr)
+ {
+ 	struct aca_handle *handle, *tmp;
+ 
++	if (list_empty(&mgr->list))
++		return;
++
+ 	list_for_each_entry_safe(handle, tmp, &mgr->list, node)
+ 		amdgpu_aca_remove_handle(handle);
+ }
 -- 
 2.43.0
 
