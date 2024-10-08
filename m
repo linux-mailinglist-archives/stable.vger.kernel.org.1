@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-82867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12235994EDD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:22:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEBEC994D21
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:02:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEC2A28501C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:22:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 193181C25508
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1EE1DEFE3;
-	Tue,  8 Oct 2024 13:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50121DE89D;
+	Tue,  8 Oct 2024 13:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cz9eJOR5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGBx3z98"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C66E1DED4E;
-	Tue,  8 Oct 2024 13:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A348F1DE4CD;
+	Tue,  8 Oct 2024 13:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393692; cv=none; b=a6FWL2xHMe+h5OsYC06KfZeZTTs9K3hMefBR1VJSXpM73hZwCR6KVvqT71BAfy0mkVHuTVZWlcFw9ZdeXxtEebTLHnaFP0shvqSErAEmaXyK5P9ZqzF4hVfg2ABat6VlK58Br8Dr30AKDSvTx9gNXDKl410m3vwotw2uebHt9FQ=
+	t=1728392517; cv=none; b=uv2oXgs+eaxbv0yaHxoIdMYnqLq8k6oxebNz9HuEXfRTtnGHi4RI3Z8JEOTW0saz+6vvJNu6HJ7d6L7PKxBzGImWxcixAMj6fLW+O8UfaxdGwnv/d0t1UuHMb3zQDK1vHvfLQO4niL04qtoRwuWhRcXb7K7pIzf42hPYJafHZ9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393692; c=relaxed/simple;
-	bh=42FEqSaFp6AYmmP74VC3ZJYQqwYA7XQOWl0mTDjaKV0=;
+	s=arc-20240116; t=1728392517; c=relaxed/simple;
+	bh=t7CmQsUWJzOHZPU/1v156No5PKEPZiDi1twdY1QcT7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJ1HhjWqXhx+n6k/crbmuDFFNfVPMrSnc+eB0Z9DJDUSXv6Bl4LvXx/0dIn7k4fNL0DoyiGzTvXIyBCWB+gcBlpg76nRsEt1534z3S3rTOcfqYx9zD/LQOniyW2U/93qhRfSux+EuorS7fCiFZzcl3EKZ+hqe/JBmW0VeBeTArw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cz9eJOR5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038D7C4CEC7;
-	Tue,  8 Oct 2024 13:21:31 +0000 (UTC)
+	 MIME-Version; b=jRK1iYS8KKsbdUtA6SAKw0wuC4R1bMYJgzHM4D659V3LyfYldPdCQ/w0K2qFWhAHrsjQ9PKd9du4TRrWA/enHH586UsisQL8ovktKV0fuxgqYEXQInoe1+b517NcgIy+atzS3LnqCWmBKwFJ/L5nkiqFpBVX6tBjSTK74BCL2xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGBx3z98; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EADCC4CEC7;
+	Tue,  8 Oct 2024 13:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393692;
-	bh=42FEqSaFp6AYmmP74VC3ZJYQqwYA7XQOWl0mTDjaKV0=;
+	s=korg; t=1728392517;
+	bh=t7CmQsUWJzOHZPU/1v156No5PKEPZiDi1twdY1QcT7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cz9eJOR58uJYrHKmt5HSkKNsdD5azy7ukd/bR4N48Ahma+X3tE6Yzmscg7v0f2qJV
-	 w9lPCV4N8SRncOo/I2g1kl7ghD0WczimMw6w4YPuDfFsBTmst0HCQsuGqB5M6M2ksF
-	 KFT5jvmUJdbmKsDQCzwZpCwqZMx+n5odBYvx3CQc=
+	b=nGBx3z98rTXe0ZWqRHbPLx9GQ9sBRIFFlVC2du/SbGl8DcLsFE3e9rapmg7CGBWT0
+	 f9STAI1YwXHQVHa5H2zWzeL9jofiUGpMgiWmz2u9heTlDoNg1W9++IPyagViLkw0Zs
+	 GonagkiKoHz2EixZCp4ICloSspXiKHW+c60RqdW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengfei Xu <pengfei.xu@intel.com>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 196/386] perf: Really fix event_function_call() locking
+	Danilo Krummrich <dakr@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Rientjes <rientjes@google.com>,
+	Christoph Lameter <cl@linux.com>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Pekka Enberg <penberg@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 411/558] mm: krealloc: consider spare memory for __GFP_ZERO
 Date: Tue,  8 Oct 2024 14:07:21 +0200
-Message-ID: <20241008115637.119920158@linuxfoundation.org>
+Message-ID: <20241008115718.447737898@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +68,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit fe826cc2654e8561b64246325e6a51b62bf2488c ]
+commit 1a83a716ec233990e1fd5b6fbb1200ade63bf450 upstream.
 
-Commit 558abc7e3f89 ("perf: Fix event_function_call() locking") lost
-IRQ disabling by mistake.
+As long as krealloc() is called with __GFP_ZERO consistently, starting
+with the initial memory allocation, __GFP_ZERO should be fully honored.
 
-Fixes: 558abc7e3f89 ("perf: Fix event_function_call() locking")
-Reported-by: Pengfei Xu <pengfei.xu@intel.com>
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Tested-by: Pengfei Xu <pengfei.xu@intel.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, if for an existing allocation krealloc() is called with a
+decreased size, it is not ensured that the spare portion the allocation is
+zeroed.  Thus, if krealloc() is subsequently called with a larger size
+again, __GFP_ZERO can't be fully honored, since we don't know the previous
+size, but only the bucket size.
+
+Example:
+
+	buf = kzalloc(64, GFP_KERNEL);
+	memset(buf, 0xff, 64);
+
+	buf = krealloc(buf, 48, GFP_KERNEL | __GFP_ZERO);
+
+	/* After this call the last 16 bytes are still 0xff. */
+	buf = krealloc(buf, 64, GFP_KERNEL | __GFP_ZERO);
+
+Fix this, by explicitly setting spare memory to zero, when shrinking an
+allocation with __GFP_ZERO flag set or init_on_alloc enabled.
+
+Link: https://lkml.kernel.org/r/20240812223707.32049-1-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: David Rientjes <rientjes@google.com>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: Pekka Enberg <penberg@kernel.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ mm/slab_common.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 18eab7f50ecce..0ff381fa2f588 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -263,8 +263,8 @@ static int event_function(void *info)
- static void event_function_call(struct perf_event *event, event_f func, void *data)
- {
- 	struct perf_event_context *ctx = event->ctx;
--	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
- 	struct task_struct *task = READ_ONCE(ctx->task); /* verified in event_function */
-+	struct perf_cpu_context *cpuctx;
- 	struct event_function_struct efs = {
- 		.event = event,
- 		.func = func,
-@@ -292,22 +292,25 @@ static void event_function_call(struct perf_event *event, event_f func, void *da
- 	if (!task_function_call(task, event_function, &efs))
- 		return;
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -1273,6 +1273,13 @@ __do_krealloc(const void *p, size_t new_
  
-+	local_irq_disable();
-+	cpuctx = this_cpu_ptr(&perf_cpu_context);
- 	perf_ctx_lock(cpuctx, ctx);
- 	/*
- 	 * Reload the task pointer, it might have been changed by
- 	 * a concurrent perf_event_context_sched_out().
- 	 */
- 	task = ctx->task;
--	if (task == TASK_TOMBSTONE) {
--		perf_ctx_unlock(cpuctx, ctx);
--		return;
--	}
-+	if (task == TASK_TOMBSTONE)
-+		goto unlock;
- 	if (ctx->is_active) {
- 		perf_ctx_unlock(cpuctx, ctx);
-+		local_irq_enable();
- 		goto again;
+ 	/* If the object still fits, repoison it precisely. */
+ 	if (ks >= new_size) {
++		/* Zero out spare memory. */
++		if (want_init_on_alloc(flags)) {
++			kasan_disable_current();
++			memset((void *)p + new_size, 0, ks - new_size);
++			kasan_enable_current();
++		}
++
+ 		p = kasan_krealloc((void *)p, new_size, flags);
+ 		return (void *)p;
  	}
- 	func(event, NULL, ctx, data);
-+unlock:
- 	perf_ctx_unlock(cpuctx, ctx);
-+	local_irq_enable();
- }
- 
- /*
--- 
-2.43.0
-
 
 
 
