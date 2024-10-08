@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4E2994A96
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A23994F22
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:25:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A3B4B21D87
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A777B1C23E4C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38DBF1DE4DF;
-	Tue,  8 Oct 2024 12:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AAE1DFE37;
+	Tue,  8 Oct 2024 13:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZXmC16k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Skk9K2m+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E7E1779B1;
-	Tue,  8 Oct 2024 12:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53801DFE2F;
+	Tue,  8 Oct 2024 13:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390854; cv=none; b=ikovWI2X4QAqym39IzgJTRx/E4xVD+aaNmtZnsNipSCkEy7enBNIhrFj8sb0bqViESzDfZ49XLqS43gHhRk1Wrxx/VF/03NT1SYkcSwpE4bPlaBDKKEWkVXTE96HvT4kindt8kEuuWu1z6BJZuiK98nSCuIp9IArLQNcu/7bCwg=
+	t=1728393811; cv=none; b=DYR4Bmhq5NJdZzELQ2rP8Z/RajImZvAtLx247f+Incur2IKvwSXqD+SurRBVMvWMcZ8W52KU4BLeBR1F4C0kVeqT7C3Kr1QC8Z6wFXQQvGA0RgRc5Pz8wUzz1EJe4ebae8uFQaKTo9fljf5BkfE7aZSU0I/vML/k1ne7Kn0lzCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390854; c=relaxed/simple;
-	bh=mTlk/bvVXCwyNnIIlhCH8wgC50d8ZVVm3cokhe7pKAc=;
+	s=arc-20240116; t=1728393811; c=relaxed/simple;
+	bh=TwOEAff8HbIzJOS0wT8i4PQyf3kypR1Jkl8KSmhAnvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QHKOoUDlE1kti2cMMzZYhX2eMDlI7qp7szcYS+w6elw64vjLa6egicUnx44f7UBs8SuYSieAk+GOVVhZooO7WTElcdCiAaHZEJKHT2oJtU0VdJdVV2hC87wZ+2/0/Xziy+WAKvWFqqVOzWvXS1Y/p/dTfiJ9RSebYMVSK5jjACA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZXmC16k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549DAC4CEC7;
-	Tue,  8 Oct 2024 12:34:13 +0000 (UTC)
+	 MIME-Version; b=APkIVn3Uu89ryL9B6pSsXyQMEUOm/qnofGTJxGJwc8tnZRC4oBd27/P707FDqIuYv295ohDOSsp8UUQtAk0uEx9Oayl1qmgYz2UtAby5ZBO8tyCrlnXiSmQxLgjIgMXt3/AuJ/3isPbQ1eVIgFxNW+n2Em0BoqSmo6Bi3TEOvMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Skk9K2m+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E056C4CEC7;
+	Tue,  8 Oct 2024 13:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390853;
-	bh=mTlk/bvVXCwyNnIIlhCH8wgC50d8ZVVm3cokhe7pKAc=;
+	s=korg; t=1728393811;
+	bh=TwOEAff8HbIzJOS0wT8i4PQyf3kypR1Jkl8KSmhAnvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZXmC16kaW5TVcpO3fodAuyXUqL2chEyzLnceYLjAmNP+5PeNN8XXU0FaNdVOKonC
-	 aZUDbrI9rEhOQ++51PenpWCT1ijKeyeG8oONUAUmdC3aVtKNjEIgpxukmlOQWeLizO
-	 vbqEO6BTgX6/iOuuObSk7gk9vobTo/FU9NyeBigA=
+	b=Skk9K2m+08GoTMzyVjXVvK6dxfj+ojvavPyCdFWlVd83N4D5ITyG/5bP2QjONO3b6
+	 aJmeDHwm4GHbBBVVtUjn1J5AJa/AZWOaEzOQTaSada2O912jOl4oEXvU5WuAItidD1
+	 hKUeVS9p0dKrYC/FjDYeKAywOlTLA7XjoVtNv4BU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.10 413/482] ACPI: resource: Remove duplicate Asus E1504GAB IRQ override
+	syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.6 231/386] ext4: no need to continue when the number of entries is 1
 Date: Tue,  8 Oct 2024 14:07:56 +0200
-Message-ID: <20241008115704.657330411@linuxfoundation.org>
+Message-ID: <20241008115638.493803409@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit 65bdebf38e5fac7c56a9e05d3479a707e6dc783c upstream.
+commit 1a00a393d6a7fb1e745a41edd09019bd6a0ad64c upstream.
 
-Commit d2aaf1996504 ("ACPI: resource: Add DMI quirks for ASUS Vivobook
-E1504GA and E1504GAB") does exactly what the subject says, adding DMI
-matches for both the E1504GA and E1504GAB.
-
-But DMI_MATCH() does a substring match, so checking for E1504GA will also
-match E1504GAB.
-
-Drop the unnecessary E1504GAB entry since that is covered already by
-the E1504GA entry.
-
-Fixes: d2aaf1996504 ("ACPI: resource: Add DMI quirks for ASUS Vivobook E1504GA and E1504GAB")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20240927141606.66826-1-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: ac27a0ec112a ("[PATCH] ext4: initial copy of files from ext3")
+Reported-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ae688d469e36fb5138d0
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reported-and-tested-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
+Link: https://patch.msgid.link/tencent_BE7AEE6C7C2D216CB8949CE8E6EE7ECC2C0A@qq.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ fs/ext4/namei.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 8a4726e2eb69..1ff251fd1901 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -511,19 +511,12 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 		},
- 	},
- 	{
--		/* Asus Vivobook E1504GA */
-+		/* Asus Vivobook E1504GA* */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 			DMI_MATCH(DMI_BOARD_NAME, "E1504GA"),
- 		},
- 	},
--	{
--		/* Asus Vivobook E1504GAB */
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--			DMI_MATCH(DMI_BOARD_NAME, "E1504GAB"),
--		},
--	},
- 	{
- 		/* Asus Vivobook Pro N6506MV */
- 		.matches = {
--- 
-2.46.2
-
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -2047,7 +2047,7 @@ static struct ext4_dir_entry_2 *do_split
+ 		split = count/2;
+ 
+ 	hash2 = map[split].hash;
+-	continued = hash2 == map[split - 1].hash;
++	continued = split > 0 ? hash2 == map[split - 1].hash : 0;
+ 	dxtrace(printk(KERN_INFO "Split block %lu at %x, %i/%i\n",
+ 			(unsigned long)dx_get_block(frame->at),
+ 					hash2, split, count-split));
 
 
 
