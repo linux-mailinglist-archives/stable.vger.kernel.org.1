@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-82605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70000994D99
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:07:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 468EB994FA3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97BD1283D30
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:07:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFBB11F23440
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7C71DF25D;
-	Tue,  8 Oct 2024 13:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09541DED48;
+	Tue,  8 Oct 2024 13:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mrBviQOd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGbHDSAE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0241C9B99;
-	Tue,  8 Oct 2024 13:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2741DEFF6;
+	Tue,  8 Oct 2024 13:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392819; cv=none; b=ocVnG0Z16y7Za08mOjOlkhr1d6KHYCsCIR0H0Qq5apzE0AZiV9xXOfUes4R/hdSODuWiNlmZGgi3kGvCkWAf+U3sja4jNdO9sUfy876Tj9Kv/9bWh2p+XylcnTsUSeKd3KgIycaNRQLsW0w4vJ2IBdBf5BzGtFJx0G3Q6mvgYWw=
+	t=1728393991; cv=none; b=g7dBb3AdTHUuQ772ggc3XeWIc5zXdhICdFw08YORF0BCQ7uu0Q4P5q08GSPThF/X+AesaCXInmmFohmEEluRPOw91jBVh11ZaIy0K3Agtr/pzxb88yJj6U3oPUO6Qq6xZcP+5MqlYzhgGZiqi/oIwW75uZEctT6MJ/XimLnFzT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392819; c=relaxed/simple;
-	bh=GCpW5olJI1JC1dNqcKGdYxcFx9ZdsOaxjtyORMUxjDU=;
+	s=arc-20240116; t=1728393991; c=relaxed/simple;
+	bh=Uo2gqnv4ZxlEHTh3jICsAxZJkIooQ5bLe8ENvWIxnjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8Bz+BoJs+YqmRC2eYplZ3bTN7SyLAwSyLWceBEDxkGix+jMeCsk+pBnJb57Kdoec34sRdsCe6ARk1yGdB0xWP2twRXF6kmdOv0+GBsZcueKosjRgVZhSkqGX7bvv/oTuFH7XQMCkX2EyuogLSfXiKHQh8280d5eotAJDeuYct0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mrBviQOd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A73C4CECC;
-	Tue,  8 Oct 2024 13:06:59 +0000 (UTC)
+	 MIME-Version; b=O/Hk+COT4el74W8ERLEfp/iFlJQIO5WkxjHBoUpQW+G/gVB6QG1+pKYDkGNjN/UWYRfeYrY2R4z5sTGAG0QHjrO28myqSbkczCSsl+zqr+LvOj3EUNWN+DRck0GBPsSUjPeuZXeB910Eyyu7UYirRysI4kuzqnEtNw+LzyZLq3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGbHDSAE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20232C4CEC7;
+	Tue,  8 Oct 2024 13:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392819;
-	bh=GCpW5olJI1JC1dNqcKGdYxcFx9ZdsOaxjtyORMUxjDU=;
+	s=korg; t=1728393991;
+	bh=Uo2gqnv4ZxlEHTh3jICsAxZJkIooQ5bLe8ENvWIxnjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mrBviQOdSVBWgFhUFP3Qe7K6ON1rYNhhD9jBt1gADB6lXqYHJn7Olk6eGpgZayDuj
-	 jZdvyFH6Udqa9q5JU+XQGUhtpWdp5eAuMn5hh8U4TNKt2QPn/BRiVghn1WHGtfmVpl
-	 jyrZdfU0XVz/jAE0UB3FQ70yo+dcJUl4EWV+s3X0=
+	b=hGbHDSAEutv/6DXi77DmpnBsHXoMyPGFBsfa8cbKhk8oeG2DRjrOcDQRlrzFwrK4K
+	 SSgGB3nPQaQoviJq2ARXqJgNXmc/6eJ8Yc61xbbbyprDjeIPA6653IQFh7iqA8BhpD
+	 p8CsmWCDQOacuWKG7hoJ5pjis0G8zPfJmBGAnYvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Bonelli <marco@mebeim.net>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 529/558] kconfig: fix infinite loop in sym_calc_choice()
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Kiran K <kiran.k@intel.com>
+Subject: [PATCH 6.6 314/386] Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE
 Date: Tue,  8 Oct 2024 14:09:19 +0200
-Message-ID: <20241008115723.043714061@linuxfoundation.org>
+Message-ID: <20241008115641.742006796@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 4d46b5b623e0adee1153b1d80689211e5094ae44 ]
+commit b25e11f978b63cb7857890edb3a698599cddb10e upstream.
 
-Since commit f79dc03fe68c ("kconfig: refactor choice value calculation"),
-Kconfig for ARCH=powerpc may result in an infinite loop. This occurs
-because there are two entries for POWERPC64_CPU in a choice block.
+This aligned BR/EDR JUST_WORKS method with LE which since 92516cd97fd4
+("Bluetooth: Always request for user confirmation for Just Works")
+always request user confirmation with confirm_hint set since the
+likes of bluetoothd have dedicated policy around JUST_WORKS method
+(e.g. main.conf:JustWorksRepairing).
 
-If the same symbol appears twice in a choice block, the ->choice_link
-node is added twice to ->choice_members, resulting a corrupted linked
-list.
-
-A simple test case is:
-
-    choice
-            prompt "choice"
-
-    config A
-            bool "A"
-
-    config B
-            bool "B 1"
-
-    config B
-            bool "B 2"
-
-    endchoice
-
-Running 'make defconfig' results in an infinite loop.
-
-One solution is to replace the current two entries:
-
-    config POWERPC64_CPU
-            bool "Generic (POWER5 and PowerPC 970 and above)"
-            depends on PPC_BOOK3S_64 && !CPU_LITTLE_ENDIAN
-            select PPC_64S_HASH_MMU
-
-    config POWERPC64_CPU
-            bool "Generic (POWER8 and above)"
-            depends on PPC_BOOK3S_64 && CPU_LITTLE_ENDIAN
-            select ARCH_HAS_FAST_MULTIPLIER
-            select PPC_64S_HASH_MMU
-            select PPC_HAS_LBARX_LHARX
-
-with the following single entry:
-
-    config POWERPC64_CPU
-            bool "Generic 64 bit powerpc"
-            depends on PPC_BOOK3S_64
-            select ARCH_HAS_FAST_MULTIPLIER if CPU_LITTLE_ENDIAN
-            select PPC_64S_HASH_MMU
-            select PPC_HAS_LBARX_LHARX if CPU_LITTLE_ENDIAN
-
-In my opinion, the latter looks cleaner, but PowerPC maintainers may
-prefer to display different prompts depending on CPU_LITTLE_ENDIAN.
-
-For now, this commit fixes the issue in Kconfig, restoring the original
-behavior. I will reconsider whether such a use case is worth supporting.
-
-Fixes: f79dc03fe68c ("kconfig: refactor choice value calculation")
-Reported-by: Marco Bonelli <marco@mebeim.net>
-Closes: https://lore.kernel.org/all/1763151587.3581913.1727224126288@privateemail.com/
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CVE: CVE-2024-8805
+Cc: stable@vger.kernel.org
+Fixes: ba15a58b179e ("Bluetooth: Fix SSP acceptor just-works confirmation without MITM")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Tested-by: Kiran K <kiran.k@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/parser.y | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_event.c |   13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/scripts/kconfig/parser.y b/scripts/kconfig/parser.y
-index 61900feb4254a..add1ce4b5091d 100644
---- a/scripts/kconfig/parser.y
-+++ b/scripts/kconfig/parser.y
-@@ -158,8 +158,14 @@ config_stmt: config_entry_start config_option_list
- 			yynerrs++;
- 		}
- 
--		list_add_tail(&current_entry->sym->choice_link,
--			      &current_choice->choice_members);
-+		/*
-+		 * If the same symbol appears twice in a choice block, the list
-+		 * node would be added twice, leading to a broken linked list.
-+		 * list_empty() ensures that this symbol has not yet added.
-+		 */
-+		if (list_empty(&current_entry->sym->choice_link))
-+			list_add_tail(&current_entry->sym->choice_link,
-+				      &current_choice->choice_members);
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -5324,19 +5324,16 @@ static void hci_user_confirm_request_evt
+ 		goto unlock;
  	}
  
- 	printd(DEBUG_PARSE, "%s:%d:endconfig\n", cur_filename, cur_lineno);
--- 
-2.43.0
-
+-	/* If no side requires MITM protection; auto-accept */
++	/* If no side requires MITM protection; use JUST_CFM method */
+ 	if ((!loc_mitm || conn->remote_cap == HCI_IO_NO_INPUT_OUTPUT) &&
+ 	    (!rem_mitm || conn->io_capability == HCI_IO_NO_INPUT_OUTPUT)) {
+ 
+-		/* If we're not the initiators request authorization to
+-		 * proceed from user space (mgmt_user_confirm with
+-		 * confirm_hint set to 1). The exception is if neither
+-		 * side had MITM or if the local IO capability is
+-		 * NoInputNoOutput, in which case we do auto-accept
++		/* If we're not the initiator of request authorization and the
++		 * local IO capability is not NoInputNoOutput, use JUST_WORKS
++		 * method (mgmt_user_confirm with confirm_hint set to 1).
+ 		 */
+ 		if (!test_bit(HCI_CONN_AUTH_PEND, &conn->flags) &&
+-		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT &&
+-		    (loc_mitm || rem_mitm)) {
++		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT) {
+ 			bt_dev_dbg(hdev, "Confirming auto-accept as acceptor");
+ 			confirm_hint = 1;
+ 			goto confirm;
 
 
 
