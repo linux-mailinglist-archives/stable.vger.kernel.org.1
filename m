@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10A2994A1D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1FE994E9C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AF881F2147F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE951B255BC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77841DE2AE;
-	Tue,  8 Oct 2024 12:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420421DEFC8;
+	Tue,  8 Oct 2024 13:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S17srnYX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gcsA/v1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D171D0BAA;
-	Tue,  8 Oct 2024 12:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B3217C7C9;
+	Tue,  8 Oct 2024 13:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390570; cv=none; b=tzZ3CMfCHlMbEIWRVBwO25pQM7iFk9BL09wki4RmikyTow+6BtCn5AHGG3i4FJTj3tUDHuzodME0OP6wzG8AAWumlG/4En7rf76uOyUL0nJ7U7FBGbRWME2EqymaDA4Ilc1rqhu3lJYWFHAu0evr4uTjoMHKjvdTI77ql3WQdY8=
+	t=1728393313; cv=none; b=XvC88TSEmexPStpXPpVaLNqmwX2p8pXrVBzcbSKaOdAULfBOL87qovgCTGgfvhGYyNLA/LkzjrVOEcu6SLKkGkJFHFCKqMjpCS8Y4KlTEFylBUwYtUbm7X+q2sJp+MeOwbcEqG26SXeatLUDg0lHJEptBfk7LngBdvviepbg9ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390570; c=relaxed/simple;
-	bh=VwR5v8WrpYWqjWPXwzGg517Rw28jI9wAHFpq1vcsXW4=;
+	s=arc-20240116; t=1728393313; c=relaxed/simple;
+	bh=5bKBOrGIgxClZFqWghhmid2DPCqOP8m2UGHxnZwn75Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ItpY4HUcQdWuUNb7yREhVB1rQnNr7ZJtvYD0K/WcXmfP8A+9b+tjKYjMOW0RdW7EwflzKVMHzgPdNqoW1sQ+qJtbnYVAXFmDm62je/Tf4E+hypiscwWYqeY8IgyqQRlDsBgyKF7ReQst1tN/Q/9M6I6NkakxHdFM2xpBy8SXbp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S17srnYX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC554C4CEC7;
-	Tue,  8 Oct 2024 12:29:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ixM5LCEXbbz+68wEpGd+WdRXHeZ+7iL1cVOA2IymTexNnNHBNTToeJnVkLrUWbNoqfTXpfnsuyLpA1lrLIAK+IeNpzyAoWf8ScJWo02+2oo9c7CZUSy7meOYEB0GQC2nDVsKNJ1cY2AOKHSNPRxwdpXHIswDjO32aUzspJdFE1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gcsA/v1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64977C4CEC7;
+	Tue,  8 Oct 2024 13:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390570;
-	bh=VwR5v8WrpYWqjWPXwzGg517Rw28jI9wAHFpq1vcsXW4=;
+	s=korg; t=1728393312;
+	bh=5bKBOrGIgxClZFqWghhmid2DPCqOP8m2UGHxnZwn75Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S17srnYXLZ+npZaGcufbFvtweuRuAkwyOVyWLpkb5QmtalSgiLO+Gp5oCXyrfTWf2
-	 gufeeEpjaAMZI0afNaU4grDunpva+vttczTjgKsFp11bvCnLG3YzwBRJ3FDMfyQH/e
-	 jVyYR4PtBst47zyR59C3XDQC4q6yU2+PHFLKDbEo=
+	b=2gcsA/v1XRFczgX8EI9YR0qUqJBy2iRIspim05R4KhgxfOc+uG6cR1Jsi3ypK5FqI
+	 PofJbycsAQHWA9e9rGcbNmUz4ygt/t4ndcRMbO2I6Nwa1HdM3FtCV6J5fwB+6gFCGf
+	 Zzzw4lKUvtvV2MU0Y2D8hzbeIug3kkyV2xbgBLw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shiyan <eagle.alexander923@gmail.com>,
-	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.10 295/482] media: i2c: ar0521: Use cansleep version of gpiod_set_value()
-Date: Tue,  8 Oct 2024 14:05:58 +0200
-Message-ID: <20241008115659.890780348@linuxfoundation.org>
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 114/386] tools/x86/kcpuid: Protect against faulty "max subleaf" values
+Date: Tue,  8 Oct 2024 14:05:59 +0200
+Message-ID: <20241008115633.930535185@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +63,70 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-commit bee1aed819a8cda47927436685d216906ed17f62 upstream.
+[ Upstream commit cf96ab1a966b87b09fdd9e8cc8357d2d00776a3a ]
 
-If we use GPIO reset from I2C port expander, we must use *_cansleep()
-variant of GPIO functions.
-This was not done in ar0521_power_on()/ar0521_power_off() functions.
-Let's fix that.
+Protect against the kcpuid code parsing faulty max subleaf numbers
+through a min() expression.  Thus, ensuring that max_subleaf will always
+be ≤ MAX_SUBLEAF_NUM.
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 11 at drivers/gpio/gpiolib.c:3496 gpiod_set_value+0x74/0x7c
-Modules linked in:
-CPU: 0 PID: 11 Comm: kworker/u16:0 Not tainted 6.10.0 #53
-Hardware name: Diasom DS-RK3568-SOM-EVB (DT)
-Workqueue: events_unbound deferred_probe_work_func
-pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : gpiod_set_value+0x74/0x7c
-lr : ar0521_power_on+0xcc/0x290
-sp : ffffff8001d7ab70
-x29: ffffff8001d7ab70 x28: ffffff80027dcc90 x27: ffffff8003c82000
-x26: ffffff8003ca9250 x25: ffffffc080a39c60 x24: ffffff8003ca9088
-x23: ffffff8002402720 x22: ffffff8003ca9080 x21: ffffff8003ca9088
-x20: 0000000000000000 x19: ffffff8001eb2a00 x18: ffffff80efeeac80
-x17: 756d2d6332692f30 x16: 0000000000000000 x15: 0000000000000000
-x14: ffffff8001d91d40 x13: 0000000000000016 x12: ffffffc080e98930
-x11: ffffff8001eb2880 x10: 0000000000000890 x9 : ffffff8001d7a9f0
-x8 : ffffff8001d92570 x7 : ffffff80efeeac80 x6 : 000000003fc6e780
-x5 : ffffff8001d91c80 x4 : 0000000000000002 x3 : 0000000000000000
-x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000001
-Call trace:
- gpiod_set_value+0x74/0x7c
- ar0521_power_on+0xcc/0x290
-...
+Use "u32" for the subleaf numbers since kcpuid is compiled with -Wextra,
+which includes signed/unsigned comparisons warnings.
 
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
-Fixes: 852b50aeed15 ("media: On Semi AR0521 sensor driver")
-Cc: stable@vger.kernel.org
-Acked-by: Krzysztof Hałasa <khalasa@piap.pl>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20240718134755.378115-5-darwi@linutronix.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ar0521.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/arch/x86/kcpuid/kcpuid.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/media/i2c/ar0521.c
-+++ b/drivers/media/i2c/ar0521.c
-@@ -844,7 +844,8 @@ static int ar0521_power_off(struct devic
- 	clk_disable_unprepare(sensor->extclk);
+diff --git a/tools/arch/x86/kcpuid/kcpuid.c b/tools/arch/x86/kcpuid/kcpuid.c
+index 24b7d017ec2c1..b7965dfff33a9 100644
+--- a/tools/arch/x86/kcpuid/kcpuid.c
++++ b/tools/arch/x86/kcpuid/kcpuid.c
+@@ -7,7 +7,8 @@
+ #include <string.h>
+ #include <getopt.h>
  
- 	if (sensor->reset_gpio)
--		gpiod_set_value(sensor->reset_gpio, 1); /* assert RESET signal */
-+		/* assert RESET signal */
-+		gpiod_set_value_cansleep(sensor->reset_gpio, 1);
+-#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
++#define ARRAY_SIZE(x)	(sizeof(x) / sizeof((x)[0]))
++#define min(a, b)	(((a) < (b)) ? (a) : (b))
  
- 	for (i = ARRAY_SIZE(ar0521_supply_names) - 1; i >= 0; i--) {
- 		if (sensor->supplies[i])
-@@ -878,7 +879,7 @@ static int ar0521_power_on(struct device
+ typedef unsigned int u32;
+ typedef unsigned long long u64;
+@@ -207,12 +208,9 @@ static void raw_dump_range(struct cpuid_range *range)
+ #define MAX_SUBLEAF_NUM		32
+ struct cpuid_range *setup_cpuid_range(u32 input_eax)
+ {
+-	u32 max_func, idx_func;
+-	int subleaf;
++	u32 max_func, idx_func, subleaf, max_subleaf;
++	u32 eax, ebx, ecx, edx, f = input_eax;
+ 	struct cpuid_range *range;
+-	u32 eax, ebx, ecx, edx;
+-	u32 f = input_eax;
+-	int max_subleaf;
+ 	bool allzero;
  
- 	if (sensor->reset_gpio)
- 		/* deassert RESET signal */
--		gpiod_set_value(sensor->reset_gpio, 0);
-+		gpiod_set_value_cansleep(sensor->reset_gpio, 0);
- 	usleep_range(4500, 5000); /* min 45000 clocks */
+ 	eax = input_eax;
+@@ -258,7 +256,7 @@ struct cpuid_range *setup_cpuid_range(u32 input_eax)
+ 		 * others have to be tried (0xf)
+ 		 */
+ 		if (f == 0x7 || f == 0x14 || f == 0x17 || f == 0x18)
+-			max_subleaf = (eax & 0xff) + 1;
++			max_subleaf = min((eax & 0xff) + 1, max_subleaf);
  
- 	for (cnt = 0; cnt < ARRAY_SIZE(initial_regs); cnt++) {
+ 		if (f == 0xb)
+ 			max_subleaf = 2;
+-- 
+2.43.0
+
 
 
 
