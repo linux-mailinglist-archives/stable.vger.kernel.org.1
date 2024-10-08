@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51475994D17
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:01:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDACC994AA4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:35:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F100A1F23071
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:01:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EE3728B60D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C9E1DE4CD;
-	Tue,  8 Oct 2024 13:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0672D1CCB32;
+	Tue,  8 Oct 2024 12:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ygDq5HNP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCWcFEzv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05B61DDC35;
-	Tue,  8 Oct 2024 13:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0411779B1;
+	Tue,  8 Oct 2024 12:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392491; cv=none; b=d+vRviG3d5U2LLPMLI0+IvJTDHr/CIBgry1lrtuvTDX6Upuf3/Sypfsm7oCr7q78iLlWtEWciQzVdH6lnwsFe08t/pjT3C7Luh6fA5Bnev8LBm9/y2mb5L3aWpkLHXysSisYEqs6f6B6p3vSGH4Zi+sJlrRWa/yjEfO2kLLwfmY=
+	t=1728390905; cv=none; b=tgb3Lsh/NI7ZHwnfHem9f3/qRvGkBJ9WdkseMHclB/RQN3XmfgIrK+c3n2FM5R2TeQyt1ubJkGbAPgV/wZxD3GUxd8Za1vjO8WwHaGBbPDCke/HyElj8tP1s4rTpq95qi0bq0AfRLGFuT7DH8u7izwV5pgBJCyxc7tVYs4PhT6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392491; c=relaxed/simple;
-	bh=POCBnUxEJkzDdp55hvNbQQGdh5YQT39e+PqXN2zjAMk=;
+	s=arc-20240116; t=1728390905; c=relaxed/simple;
+	bh=zdHQnjr8nd0rLw0EklwU1gCJgHcTXurLHloIQMBL1Tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=THYqFU+yxKGXayLchQlo3vXSZoW2M8vW6cAD9qvUKrskSUMiaPNBRLsKW0465h6JapDZCDq0wzgL5fE3/9xWrwG2px10FgkUGgPjTl7AyHZiV5PqC/Xg+rGzvcZ/Qd3TcOUVXV6Va6rtIMC8MHlRZiCOEOt8YAGUOriZb5T4Jd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ygDq5HNP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D539C4CEC7;
-	Tue,  8 Oct 2024 13:01:30 +0000 (UTC)
+	 MIME-Version; b=ONdPu8fimptopdHy0A8C2UNsHI+nsjLCpD+f/IuZEGCOLz79mr03MEoPb5Bb9rvmydqaz3AgvpmsKoRlhhyN+0Z24c3+h/419QCm+E8hH0IDrDuA7VzONEutoGf2fWcFiqD0MxC+9ZWXT+SZjjzZfXtxQ7MBqyUQf0JB1l7O0rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCWcFEzv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3971BC4CEC7;
+	Tue,  8 Oct 2024 12:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392491;
-	bh=POCBnUxEJkzDdp55hvNbQQGdh5YQT39e+PqXN2zjAMk=;
+	s=korg; t=1728390905;
+	bh=zdHQnjr8nd0rLw0EklwU1gCJgHcTXurLHloIQMBL1Tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ygDq5HNPSSwWvTwGrwdPkJ5vI+HG8TEbuRTbz1he/JUvA3JhlQ3ij3NEIWCCxoCoL
-	 WeMYnEXzw+oXWu11WaWrLRG3kxDrLLMn1VYhkgfsRjrSEMUVILnYPZXJA2D5S++omz
-	 0R7p5eriOAopwoZTK/fBTnVxVq5WGLMrygq68BtU=
+	b=kCWcFEzvgtmzey14FzUS1vH6xezdeIzHofgyDJDME5oMgmT0iK3Xuz6XR2sAe7ERg
+	 G7FVLCKrUd9g+PfE0+YXe8dAckdFY0tLoAk0j3SrAmoZu4PArHo3wOYoj313K0EdsD
+	 gkidvBGo54GADHqgqE0tDOK7Ugve+ngQpBGR0sXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.11 430/558] riscv: define ILLEGAL_POINTER_VALUE for 64bit
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.10 397/482] media: qcom: camss: Fix ordering of pm_runtime_enable
 Date: Tue,  8 Oct 2024 14:07:40 +0200
-Message-ID: <20241008115719.193681211@linuxfoundation.org>
+Message-ID: <20241008115704.032368743@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-commit 5c178472af247c7b50f962495bb7462ba453b9fb upstream.
+commit a151766bd3688f6803e706c6433a7c8d3c6a6a94 upstream.
 
-This is used in poison.h for poison pointer offset. Based on current
-SV39, SV48 and SV57 vm layout, 0xdead000000000000 is a proper value
-that is not mappable, this can avoid potentially turning an oops to
-an expolit.
+pm_runtime_enable() should happen prior to vfe_get() since vfe_get() calls
+pm_runtime_resume_and_get().
 
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Fixes: fbe934d69eb7 ("RISC-V: Build Infrastructure")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240705170210.3236-1-jszhang@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+This is a basic race condition that doesn't show up for most users so is
+not widely reported. If you blacklist qcom-camss in modules.d and then
+subsequently modprobe the module post-boot it is possible to reliably show
+this error up.
+
+The kernel log for this error looks like this:
+
+qcom-camss ac5a000.camss: Failed to power up pipeline: -13
+
+Fixes: 02afa816dbbf ("media: camss: Add basic runtime PM support")
+Reported-by: Johan Hovold <johan+linaro@kernel.org>
+Closes: https://lore.kernel.org/lkml/ZoVNHOTI0PKMNt4_@hovoldconsulting.com/
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Konrad Dybcio <konradybcio@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/Kconfig |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/media/platform/qcom/camss/camss.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -319,6 +319,11 @@ config GENERIC_HWEIGHT
- config FIX_EARLYCON_MEM
- 	def_bool MMU
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -1985,6 +1985,8 @@ static int camss_probe(struct platform_d
  
-+config ILLEGAL_POINTER_VALUE
-+	hex
-+	default 0 if 32BIT
-+	default 0xdead000000000000 if 64BIT
+ 	v4l2_async_nf_init(&camss->notifier, &camss->v4l2_dev);
+ 
++	pm_runtime_enable(dev);
 +
- config PGTABLE_LEVELS
- 	int
- 	default 5 if 64BIT
+ 	num_subdevs = camss_of_parse_ports(camss);
+ 	if (num_subdevs < 0) {
+ 		ret = num_subdevs;
+@@ -2021,8 +2023,6 @@ static int camss_probe(struct platform_d
+ 		}
+ 	}
+ 
+-	pm_runtime_enable(dev);
+-
+ 	return 0;
+ 
+ err_register_subdevs:
+@@ -2030,6 +2030,7 @@ err_register_subdevs:
+ err_v4l2_device_unregister:
+ 	v4l2_device_unregister(&camss->v4l2_dev);
+ 	v4l2_async_nf_cleanup(&camss->notifier);
++	pm_runtime_disable(dev);
+ err_genpd_cleanup:
+ 	camss_genpd_cleanup(camss);
+ 
 
 
 
