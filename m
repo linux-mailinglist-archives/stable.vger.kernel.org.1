@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-81808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76519994981
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:24:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE36994C2E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3568128664F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:24:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C85072863E0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60BE1DEFF8;
-	Tue,  8 Oct 2024 12:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7032E1DE886;
+	Tue,  8 Oct 2024 12:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKuHt5IU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aY0aaBVT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7440B178CC5;
-	Tue,  8 Oct 2024 12:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F58D1C9B61;
+	Tue,  8 Oct 2024 12:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390202; cv=none; b=ZLkVbdFBa3fQ+4EAe2wqv5N7dFWhxWkqKNMVxlfrTXCWsHAN9j4vORkSiucMgyFs1XJ3XyMn2rN7dfvFJvdrett76UXOzatsFzHYPpC++0ABIRf30SUYMuHm2fWRUYfUwiMsHVG+EVxWfLHpisUQjJS0rDlshRpHMZ2/SmsiwtY=
+	t=1728391884; cv=none; b=IMaFGjA79qHttjn0FpwFaTOuibdbbaMgW1IQwA06qF8B5bFR0jOeupqmHNh5uj6C1NIR83Gl18zFJ6JINkYMcxY46ZvZXqs/E+vlqJp6uGcI2jw1Slf6G+tZW52MXddD16NnfV2B6Hqk6kaEZ0VCZAZrIuX1zX5Q/WX61LCAqXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390202; c=relaxed/simple;
-	bh=2itl1O+I7Ubqu506f1+qRn4pk1KWIk5bQRh6pK4ELyY=;
+	s=arc-20240116; t=1728391884; c=relaxed/simple;
+	bh=DilKeOp9+V5gZPWruLfw9GN/nYVB/+4G0Bopnm7FJfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gp5cUcjXvMbv7Q/6o9TdZL498fQf6nq/U3ncVIKTb+FWDNW6QmJ7yGbzs622vjjQFJ3+tgEb+TsWNybcpg25TIa4HrfR4UbNTK8qUcZYxqIpHBcKX0OH5s43CLZuEd3GwAV70m42TvUL0hfyrZOrDnsM/BY7ahLG8Pt0MSJD2wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKuHt5IU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE73C4CEC7;
-	Tue,  8 Oct 2024 12:23:21 +0000 (UTC)
+	 MIME-Version; b=VbSgAQOsENTKPymZ6+Ok6nJafnch3vtt1a21Gl9pQ0/JA31P5kWBLx0HJf6q/l6PH3gZkQ9jaYuHZX2BQIeXU8ls3sALTG8IU4Rn35rBvtLTMZfmokoxUMv4zeuZ/+GGNrvFFNhIDooPlDbzU9asu1Y1RHPtQXDGABJHp4ToW6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aY0aaBVT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB07C4CEC7;
+	Tue,  8 Oct 2024 12:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390202;
-	bh=2itl1O+I7Ubqu506f1+qRn4pk1KWIk5bQRh6pK4ELyY=;
+	s=korg; t=1728391884;
+	bh=DilKeOp9+V5gZPWruLfw9GN/nYVB/+4G0Bopnm7FJfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QKuHt5IU6l8BuqGg3Pvt3jRXd/qd7mYou1FXzqUJ+zuorKoVCux1a/lsaBO829hBt
-	 gF/TtOG4Q5HjB8GtZjLNWrDpkzPTjhry00B5wHshzZQj7DaX0Zrav2tr+ufwX7F2Tm
-	 TBvSDThAcesrF+3NvHpt63HftB3kpAGdcKomxLp4=
+	b=aY0aaBVT7exOgwostAPDc8RKKaIN1UWbMl7Nn7p/oSPFQ1GwV+5RL/LTIo7CD4tBb
+	 eQJ9BcCR9rGBq1PSrU8XdMFDGeCveTrbA1FQVYP2K9JLlCAS3YOKhQe0hXBzHaHXy4
+	 bWTscpbzpJswtQSYst4N8X2gW8FZ5cVZ+VDorSKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Harry Wentland <harry.wentland@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
 	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 219/482] drm/amd/display: Initialize get_bytes_per_elements default to 1
+Subject: [PATCH 6.11 252/558] drm/amd/display: Initialize denominators default to 1
 Date: Tue,  8 Oct 2024 14:04:42 +0200
-Message-ID: <20241008115656.929907282@linuxfoundation.org>
+Message-ID: <20241008115712.253812838@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,35 +65,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 4067f4fa0423a89fb19a30b57231b384d77d2610 ]
+[ Upstream commit b995c0a6de6c74656a0c39cd57a0626351b13e3c ]
 
-Variables, used as denominators and maybe not assigned to other values,
-should not be 0. bytes_per_element_y & bytes_per_element_c are
-initialized by get_bytes_per_element() which should never return 0.
+[WHAT & HOW]
+Variables used as denominators and maybe not assigned to other values,
+should not be 0. Change their default to 1 so they are never 0.
 
 This fixes 10 DIVIDE_BY_ZERO issues reported by Coverity.
 
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
 Signed-off-by: Alex Hung <alex.hung@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20v2.c | 2 +-
- .../gpu/drm/amd/display/dc/dml/dcn21/display_rq_dlg_calc_21.c   | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ .../gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20.c | 2 +-
+ drivers/gpu/drm/amd/display/dc/dml/dml1_display_rq_dlg_calc.c | 2 +-
+ .../display/dc/dml2/dml21/src/dml2_core/dml2_core_shared.c    | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20v2.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20v2.c
-index 0fc9f3e3ffaef..f603486af6e30 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20v2.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20v2.c
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20.c
+index 7c56ad0f88122..e7019c95ba79e 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20.c
 @@ -78,7 +78,7 @@ static void calculate_ttu_cursor(struct display_mode_lib *mode_lib,
  
  static unsigned int get_bytes_per_element(enum source_format_class source_format, bool is_chroma)
@@ -103,11 +104,11 @@ index 0fc9f3e3ffaef..f603486af6e30 100644
  
  	if (source_format == dm_444_16) {
  		if (!is_chroma)
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn21/display_rq_dlg_calc_21.c b/drivers/gpu/drm/amd/display/dc/dml/dcn21/display_rq_dlg_calc_21.c
-index 618f4b682ab1b..9f28e4d3c664c 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn21/display_rq_dlg_calc_21.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn21/display_rq_dlg_calc_21.c
-@@ -53,7 +53,7 @@ static void calculate_ttu_cursor(
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dml1_display_rq_dlg_calc.c b/drivers/gpu/drm/amd/display/dc/dml/dml1_display_rq_dlg_calc.c
+index dae13f202220e..d8bfc85e5dcd0 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dml1_display_rq_dlg_calc.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dml1_display_rq_dlg_calc.c
+@@ -39,7 +39,7 @@
  
  static unsigned int get_bytes_per_element(enum source_format_class source_format, bool is_chroma)
  {
@@ -116,6 +117,21 @@ index 618f4b682ab1b..9f28e4d3c664c 100644
  
  	if (source_format == dm_444_16) {
  		if (!is_chroma)
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_shared.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_shared.c
+index 81f0a6f19f87b..679b200319034 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_shared.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_shared.c
+@@ -9386,8 +9386,8 @@ static void CalculateVMGroupAndRequestTimes(
+ 	double TimePerVMRequestVBlank[],
+ 	double TimePerVMRequestFlip[])
+ {
+-	unsigned int num_group_per_lower_vm_stage = 0;
+-	unsigned int num_req_per_lower_vm_stage = 0;
++	unsigned int num_group_per_lower_vm_stage = 1;
++	unsigned int num_req_per_lower_vm_stage = 1;
+ 
+ #ifdef __DML_VBA_DEBUG__
+ 	dml2_printf("DML::%s: NumberOfActiveSurfaces = %u\n", __func__, NumberOfActiveSurfaces);
 -- 
 2.43.0
 
