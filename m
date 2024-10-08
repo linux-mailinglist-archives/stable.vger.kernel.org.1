@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-82005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D5D994A94
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8D7F994D4D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:04:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 197D01F23911
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6421E1F24889
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:04:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D391DE890;
-	Tue,  8 Oct 2024 12:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9834D1DE2A5;
+	Tue,  8 Oct 2024 13:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZniomD1t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBGxryVS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B221DE3A2;
-	Tue,  8 Oct 2024 12:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556021C9B99;
+	Tue,  8 Oct 2024 13:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390857; cv=none; b=HDyzvbijio4Yiu8cm8xDXGgZwlITifgC6VyqKBrkIHPuGCdxQOm9+Md4nrBis+HaFAC8TuHM88XVcwVdAViZ7FCU6XPUe8Y3AtjM6Jn7GbRTCqRchlrHKxIT/jGi2/BIjgGhEionaWMxgWyYIuz5ljpcdGqMiQdTR868vo8p3Ac=
+	t=1728392650; cv=none; b=NuAvNPrjBaeDDov+vFu1gf4pwRorB8NQipthgtMke8s+d2YhdfliCfuX/7fBiFLhXdW/I+o6nFHS8EIA0pAxPsOcw8IBx6xEhvQief2dAMSwOCwwZnqVs81h25WNeKUEjVJLm+jy8cYlBZnp7Ih85dt2EzGWtpym09l7IRpsCns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390857; c=relaxed/simple;
-	bh=VvcEpblsPYi93zWLdDd1nTMACvafX6p1KHcTdPZjC8c=;
+	s=arc-20240116; t=1728392650; c=relaxed/simple;
+	bh=Pew3pT4WKn7K1TNrdzXysUF84GiTly42pXK4JlfBs9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nRq3yEecEqalsdS7tQhSLOtbVjSLDUNwYD6u6im4xM13Op1QsQXa4DqN+JNimtaAQJM32c5gJHTwSHg8OciSs4zzoKqOmea6wZm7vr4s2SkKD/eQY2sCNjRbrcuxbfQnbdXXGgS5bOGIeR+ZFx9rvk8DarcW2MY2oPOy8J8amwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZniomD1t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E82C4CEC7;
-	Tue,  8 Oct 2024 12:34:16 +0000 (UTC)
+	 MIME-Version; b=HuqVeSIo2aSR+oLEYxUaxo13+ytm4wqjwGD76DlwzuHEY41gmXi6PtSjl8SSkSZ/1LCTn4QZAHfiN4Ic/zxb7eh7jLJvO0d0S/olKrZg3/JguhPRAIR3uz82zD/duPkdizV0ndGKGxWsMpR3Yn9e0YvlgsGrjDrzEX6ckgieC7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBGxryVS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDC5C4CEC7;
+	Tue,  8 Oct 2024 13:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390857;
-	bh=VvcEpblsPYi93zWLdDd1nTMACvafX6p1KHcTdPZjC8c=;
+	s=korg; t=1728392650;
+	bh=Pew3pT4WKn7K1TNrdzXysUF84GiTly42pXK4JlfBs9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZniomD1taSRiUuBNmiaRCCoVxpYK5/DwSvWK53pqRjctZhp8r0mSfc4TJcEDXgEWJ
-	 JvQUU2wMG5wJXySY8eTqvaWdqfutOI0nEOg5dsSSW9rCbDZkrZuMF9osHB9D/NMuBN
-	 9QDwKtiE4t5VC8rENVo14JVI7myXvljE8MgdUqTY=
+	b=SBGxryVSVkTolU7sgQ/5ZDEoJq/TjsJCPtGhU5ZkV2EKqhodmZ0Ahw5mcq4/gHhNR
+	 K26lf8fPeH+iOkIUB9c97IQTBdt1IfqsSIkTfDTE0y1yWEssG3i/l2sTGo/16LCFjr
+	 3Zq3+IGWuO8uuuguPb7jkB0c0mCktAcv2edzLcpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.10 414/482] ACPI: resource: Loosen the Asus E1404GAB DMI match to also cover the E1404GA
+	Bastien Curutchet <bastien.curutchet@bootlin.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.11 447/558] leds: pca9532: Remove irrelevant blink configuration error message
 Date: Tue,  8 Oct 2024 14:07:57 +0200
-Message-ID: <20241008115704.696296280@linuxfoundation.org>
+Message-ID: <20241008115719.852818687@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
 
-commit 63539defee17bf0cbd8e24078cf103efee9c6633 upstream.
+commit 2aad93b6de0d874038d3d7958be05011284cd6b9 upstream.
 
-Like other Asus Vivobooks, the Asus Vivobook Go E1404GA has a DSDT
-describing IRQ 1 as ActiveLow, while the kernel overrides to Edge_High.
+The update_hw_blink() function prints an error message when hardware is
+not able to handle a blink configuration on its own. IMHO, this isn't a
+'real' error since the software fallback is used afterwards.
 
-    $ sudo dmesg | grep DMI:.*BIOS
-    [    0.000000] DMI: ASUSTeK COMPUTER INC. Vivobook Go E1404GA_E1404GA/E1404GA, BIOS E1404GA.302 08/23/2023
-    $ sudo cp /sys/firmware/acpi/tables/DSDT dsdt.dat
-    $ iasl -d dsdt.dat
-    $ grep -A 30 PS2K dsdt.dsl | grep IRQ -A 1
-                IRQ (Level, ActiveLow, Exclusive, )
-                    {1}
+Remove the error messages to avoid flooding the logs with unnecessary
+messages.
 
-There already is an entry in the irq1_level_low_skip_override[] DMI match
-table for the "E1404GAB", change this to match on "E1404GA" to cover
-the E1404GA model as well (DMI_MATCH() does a substring match).
-
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219224
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20240927141606.66826-2-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 48ca7f302cfc ("leds: pca9532: Use PWM1 for hardware blinking")
+Signed-off-by: Bastien Curutchet <bastien.curutchet@bootlin.com>
+Link: https://lore.kernel.org/r/20240826133237.134604-1-bastien.curutchet@bootlin.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/leds/leds-pca9532.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -504,10 +504,10 @@ static const struct dmi_system_id irq1_l
- 		},
- 	},
- 	{
--		/* Asus Vivobook Go E1404GAB */
-+		/* Asus Vivobook Go E1404GA* */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--			DMI_MATCH(DMI_BOARD_NAME, "E1404GAB"),
-+			DMI_MATCH(DMI_BOARD_NAME, "E1404GA"),
- 		},
- 	},
- 	{
+diff --git a/drivers/leds/leds-pca9532.c b/drivers/leds/leds-pca9532.c
+index 338ddada3de9..1b47acf54720 100644
+--- a/drivers/leds/leds-pca9532.c
++++ b/drivers/leds/leds-pca9532.c
+@@ -215,8 +215,7 @@ static int pca9532_update_hw_blink(struct pca9532_led *led,
+ 		if (other->state == PCA9532_PWM1) {
+ 			if (other->ldev.blink_delay_on != delay_on ||
+ 			    other->ldev.blink_delay_off != delay_off) {
+-				dev_err(&led->client->dev,
+-					"HW can handle only one blink configuration at a time\n");
++				/* HW can handle only one blink configuration at a time */
+ 				return -EINVAL;
+ 			}
+ 		}
+@@ -224,7 +223,7 @@ static int pca9532_update_hw_blink(struct pca9532_led *led,
+ 
+ 	psc = ((delay_on + delay_off) * PCA9532_PWM_PERIOD_DIV - 1) / 1000;
+ 	if (psc > U8_MAX) {
+-		dev_err(&led->client->dev, "Blink period too long to be handled by hardware\n");
++		/* Blink period too long to be handled by hardware */
+ 		return -EINVAL;
+ 	}
+ 
+-- 
+2.46.2
+
 
 
 
