@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-81863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 603189949D5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ECBE9949D7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFFAF1F2118E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F160282C83
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA92A1DF971;
-	Tue,  8 Oct 2024 12:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B321DEFF7;
+	Tue,  8 Oct 2024 12:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DN5UUhd7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vU+OzO0f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D831DE2AD;
-	Tue,  8 Oct 2024 12:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C971DEFE1;
+	Tue,  8 Oct 2024 12:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390387; cv=none; b=IC/TRItdi4du++2IWnnQxtBGuKZQPEamHCRKbsP8r0lbA9igEiQPhsYbiNonNAW7yLBGKS0Bm/KZQ3Ib5YHIFj6YhwWbZ+bZfg4KlnV6I2dcLjYjvF+KX+Lp7mhsMpAL/3Cac6A2TCwTJwZD700+0/Qv3pf9xYPHlkoS4L9dZ6M=
+	t=1728390395; cv=none; b=ims0JbtR9FeWtmO/tSiVr4kXYKKw2Lgri/oVdfb9HoLpov8TYJTWdhFzZvSALbvavNCn2ELzrUMdXICaBhfZK8Um+Qj/IK/gUSYTk61b3mikb189Hl6U3CxNcuFpaR1uM72O6SFMKB4KyN50KjMtmECa4KkQqoR4Twc8ezfqUCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390387; c=relaxed/simple;
-	bh=/imnsK2IY+4OIs3QfYz72ZFWD5EXQnbIj3A97TR0OmM=;
+	s=arc-20240116; t=1728390395; c=relaxed/simple;
+	bh=vKaaqn1xbmQIz59qbjY6GqtnN+8LBRVipwPkyPWo3RQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IKoD93OqWdUYNPpkaVK44aYechaIsF8bDGVaKPPZ6YTR79XZ8hSM0aSsfpEXk8LWRldfgXwfWwZjYPcik7aPa9nuxMKjTz5l51sXHz31SybOKvjOr0UJjHDCKaCnJV8w/+9wYUwyaVSlh3sffimBqZpS+2v9mHQup9uX0uX2DXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DN5UUhd7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB056C4CECD;
-	Tue,  8 Oct 2024 12:26:26 +0000 (UTC)
+	 MIME-Version; b=DuvUwtdoNWOIbr3z6CM2OdlcHeulgKF3p1mqKG2nb/tlBas6P+52Tp9pRFh3rNkErmpR/hRY2+mVynUpAlMHl8qaCQXVLrtFDwFiQXi4ZSbs5mBnaCo6/ixN2wZs5AXFlTNa65Xcs0ZIu39nbqVLVvf583a5TPYzHF+Pqafnsgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vU+OzO0f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29F2C4CEC7;
+	Tue,  8 Oct 2024 12:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390387;
-	bh=/imnsK2IY+4OIs3QfYz72ZFWD5EXQnbIj3A97TR0OmM=;
+	s=korg; t=1728390395;
+	bh=vKaaqn1xbmQIz59qbjY6GqtnN+8LBRVipwPkyPWo3RQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DN5UUhd7bY090uwbF1/89R/zfJrQjxFpDIz7V/sb/1OhkO6t/lroy872ThaLSm5iQ
-	 aBUCXifdPBM2Ciq2L3KhL9wxvMlNzlF6TJYmstl5ha2g5Kkev1X7deboG8jLirL9bO
-	 1gxq/QEvUzR45YYHlcy9kaKN5AwDa73wYkOFTInA=
+	b=vU+OzO0fNuWglkyx0nDZmp4vHIKGl+uNNnGGgT+JbHyFO/EjcooFAKrlRdI6x+Z9i
+	 mG5eEHfCJoKEjECak/ZeCPvPEl28oQWEg0W6L2AoX1y0uHCUHypAlgoRrUKlAJ8RbQ
+	 eLiU1zqQopyfbKmKW1JLEBu/JygNb2GRYEQTJqRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	David Hildenbrand <david@redhat.com>,
+	Mario Casquero <mcasquer@redhat.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 275/482] selftests: vDSO: fix vDSO symbols lookup for powerpc64
-Date: Tue,  8 Oct 2024 14:05:38 +0200
-Message-ID: <20241008115659.102267099@linuxfoundation.org>
+Subject: [PATCH 6.10 276/482] selftests/mm: fix charge_reserved_hugetlb.sh test
+Date: Tue,  8 Oct 2024 14:05:39 +0200
+Message-ID: <20241008115659.141640505@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
 References: <20241008115648.280954295@linuxfoundation.org>
@@ -67,106 +70,121 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit ba83b3239e657469709d15dcea5f9b65bf9dbf34 ]
+[ Upstream commit c41a701d18efe6b8aa402efab16edbaba50c9548 ]
 
-On powerpc64, following tests fail locating vDSO functions:
+Currently, running the charge_reserved_hugetlb.sh selftest we can
+sometimes observe something like:
 
-  ~ # ./vdso_test_abi
-  TAP version 13
-  1..16
-  # [vDSO kselftest] VDSO_VERSION: LINUX_2.6.15
-  # Couldn't find __kernel_gettimeofday
-  ok 1 # SKIP __kernel_gettimeofday
-  # clock_id: CLOCK_REALTIME
-  # Couldn't find __kernel_clock_gettime
-  ok 2 # SKIP __kernel_clock_gettime CLOCK_REALTIME
-  # Couldn't find __kernel_clock_getres
-  ok 3 # SKIP __kernel_clock_getres CLOCK_REALTIME
+  $ ./charge_reserved_hugetlb.sh -cgroup-v2
   ...
-  # Couldn't find __kernel_time
-  ok 16 # SKIP __kernel_time
-  # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:16 error:0
+  write_result is 0
+  After write:
+  hugetlb_usage=0
+  reserved_usage=10485760
+  killing write_to_hugetlbfs
+  Received 2.
+  Deleting the memory
+  Detach failure: Invalid argument
+  umount: /mnt/huge: target is busy.
 
-  ~ # ./vdso_test_getrandom
-  __kernel_getrandom is missing!
+Both cases are issues in the test.
 
-  ~ # ./vdso_test_gettimeofday
-  Could not find __kernel_gettimeofday
+While the unmount error seems to be racy, it will make the test fail:
+	$ ./run_vmtests.sh -t hugetlb
+	...
+	# [FAIL]
+	not ok 10 charge_reserved_hugetlb.sh -cgroup-v2 # exit=32
 
-  ~ # ./vdso_test_getcpu
-  Could not find __kernel_getcpu
+The issue is that we are not waiting for the write_to_hugetlbfs process to
+quit.  So it might still have a hugetlbfs file open, about which umount is
+not happy.  Fix that by making "killall" wait for the process to quit.
 
-On powerpc64, as shown below by readelf, vDSO functions symbols have
-type NOTYPE, so also accept that type when looking for symbols.
+The other error ("Detach failure: Invalid argument") does not seem to
+result in a test error, but is misleading.  Turns out write_to_hugetlbfs.c
+unconditionally tries to cleanup using shmdt(), even when we only
+mmap()'ed a hugetlb file.  Even worse, shmaddr is never even set for the
+SHM case.  Fix that as well.
 
-$ powerpc64-linux-gnu-readelf -a arch/powerpc/kernel/vdso/vdso64.so.dbg
-ELF Header:
-  Magic:   7f 45 4c 46 02 02 01 00 00 00 00 00 00 00 00 00
-  Class:                             ELF64
-  Data:                              2's complement, big endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              DYN (Shared object file)
-  Machine:                           PowerPC64
-  Version:                           0x1
-...
+With this change it seems to work as expected.
 
-Symbol table '.dynsym' contains 12 entries:
-   Num:    Value          Size Type    Bind   Vis      Ndx Name
-     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND
-     1: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     2: 00000000000005f0    36 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     3: 0000000000000578    68 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     4: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
-     5: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     6: 0000000000000614   172 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     7: 00000000000006f0    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     8: 000000000000047c    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     9: 0000000000000454    12 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-    10: 00000000000004d0    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-    11: 00000000000005bc    52 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-
-Symbol table '.symtab' contains 56 entries:
-   Num:    Value          Size Type    Bind   Vis      Ndx Name
-...
-    45: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
-    46: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __kernel_getcpu
-    47: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_getres
-    48: 00000000000005f0    36 NOTYPE  GLOBAL DEFAULT    8 __kernel_get_tbfreq
-    49: 000000000000047c    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_gettimeofday
-    50: 0000000000000614   172 NOTYPE  GLOBAL DEFAULT    8 __kernel_sync_dicache
-    51: 00000000000006f0    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_getrandom
-    52: 0000000000000454    12 NOTYPE  GLOBAL DEFAULT    8 __kernel_sigtram[...]
-    53: 0000000000000578    68 NOTYPE  GLOBAL DEFAULT    8 __kernel_time
-    54: 00000000000004d0    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_g[...]
-    55: 00000000000005bc    52 NOTYPE  GLOBAL DEFAULT    8 __kernel_get_sys[...]
-
-Fixes: 98eedc3a9dbf ("Document the vDSO and add a reference parser")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://lkml.kernel.org/r/20240821123115.2068812-1-david@redhat.com
+Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: Mario Casquero <mcasquer@redhat.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Tested-by: Mario Casquero <mcasquer@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vDSO/parse_vdso.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../selftests/mm/charge_reserved_hugetlb.sh   |  2 +-
+ .../testing/selftests/mm/write_to_hugetlbfs.c | 21 +++++++++++--------
+ 2 files changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
-index 4ae417372e9eb..d9ccc5acac182 100644
---- a/tools/testing/selftests/vDSO/parse_vdso.c
-+++ b/tools/testing/selftests/vDSO/parse_vdso.c
-@@ -216,7 +216,8 @@ void *vdso_sym(const char *version, const char *name)
- 		ELF(Sym) *sym = &vdso_info.symtab[chain];
+diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+index d680c00d2853a..67df7b47087f0 100755
+--- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
++++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+@@ -254,7 +254,7 @@ function cleanup_hugetlb_memory() {
+   local cgroup="$1"
+   if [[ "$(pgrep -f write_to_hugetlbfs)" != "" ]]; then
+     echo killing write_to_hugetlbfs
+-    killall -2 write_to_hugetlbfs
++    killall -2 --wait write_to_hugetlbfs
+     wait_for_hugetlb_memory_to_get_depleted $cgroup
+   fi
+   set -e
+diff --git a/tools/testing/selftests/mm/write_to_hugetlbfs.c b/tools/testing/selftests/mm/write_to_hugetlbfs.c
+index 6a2caba19ee1d..1289d311efd70 100644
+--- a/tools/testing/selftests/mm/write_to_hugetlbfs.c
++++ b/tools/testing/selftests/mm/write_to_hugetlbfs.c
+@@ -28,7 +28,7 @@ enum method {
  
- 		/* Check for a defined global or weak function w/ right name. */
--		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC)
-+		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC &&
-+		    ELF64_ST_TYPE(sym->st_info) != STT_NOTYPE)
- 			continue;
- 		if (ELF64_ST_BIND(sym->st_info) != STB_GLOBAL &&
- 		    ELF64_ST_BIND(sym->st_info) != STB_WEAK)
+ /* Global variables. */
+ static const char *self;
+-static char *shmaddr;
++static int *shmaddr;
+ static int shmid;
+ 
+ /*
+@@ -47,15 +47,17 @@ void sig_handler(int signo)
+ {
+ 	printf("Received %d.\n", signo);
+ 	if (signo == SIGINT) {
+-		printf("Deleting the memory\n");
+-		if (shmdt((const void *)shmaddr) != 0) {
+-			perror("Detach failure");
++		if (shmaddr) {
++			printf("Deleting the memory\n");
++			if (shmdt((const void *)shmaddr) != 0) {
++				perror("Detach failure");
++				shmctl(shmid, IPC_RMID, NULL);
++				exit(4);
++			}
++
+ 			shmctl(shmid, IPC_RMID, NULL);
+-			exit(4);
++			printf("Done deleting the memory\n");
+ 		}
+-
+-		shmctl(shmid, IPC_RMID, NULL);
+-		printf("Done deleting the memory\n");
+ 	}
+ 	exit(2);
+ }
+@@ -211,7 +213,8 @@ int main(int argc, char **argv)
+ 			shmctl(shmid, IPC_RMID, NULL);
+ 			exit(2);
+ 		}
+-		printf("shmaddr: %p\n", ptr);
++		shmaddr = ptr;
++		printf("shmaddr: %p\n", shmaddr);
+ 
+ 		break;
+ 	default:
 -- 
 2.43.0
 
