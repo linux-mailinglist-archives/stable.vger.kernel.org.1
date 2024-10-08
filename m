@@ -1,51 +1,55 @@
-Return-Path: <stable+bounces-83035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B7E7995005
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:31:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2AD994FE4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 179D91F259C1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:31:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26E6628672E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4F81DEFE5;
-	Tue,  8 Oct 2024 13:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897471DF260;
+	Tue,  8 Oct 2024 13:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dtu6JTFh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dT0l3Zhk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18AA18C333;
-	Tue,  8 Oct 2024 13:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472121DE4CB;
+	Tue,  8 Oct 2024 13:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728394253; cv=none; b=sEuQVushjxK86yAy5Wv6ET/uc+X5JUujkh+bC77rX0MeB1YTdVnnyo31wnr8EhsfoOMdvoZAowDpFeq/EhmgzuPHUlqy0PpeemLW0ID9A/mAzsif5Sy1M06QNXetp/Taq3swxrT38xgYgIiBIw29kmia2RqRTiVHkjG8vwUklz0=
+	t=1728394169; cv=none; b=F2df9f619cpWSuLMxKLxdpETtu9FBf8hu6e1hPsoc3+kU5LIHpP7ssax0rKvFOcE9dgAXAQMHms9BI9WhK9FhFNwHiYMYvPk1ZND5jRdEePtARiiOG7WWV9Va5rgJo5wmHVP3l+VrtIwnjLY/9t4ZIaz4Iw8dKYZdTT5v56nfz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728394253; c=relaxed/simple;
-	bh=kiCIkIdp5/d9jIjTE5hH3mDM2rEGxTLv/p8Gc5MjFEg=;
+	s=arc-20240116; t=1728394169; c=relaxed/simple;
+	bh=J9K22ArcGlpDKFm0zKGAZydCBNfxBMCSUQnu4OO7Acs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GxS1p/aKXx0te6RAx+W5LOnjqKmN68lQzQWd/vRddvjXO8WMq2VhcGqqDX6AaLAQW541fc7mWjQvHmIzQ3+oRYtOCVHsKcRFgC1kZQvkGMn9umU5Q9crbQ2P2LTBTzL/PBPZ6t3ibUBvppdN9Sbo1DsVT/wJZSyw8eO4n7UYcTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dtu6JTFh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47798C4CEC7;
-	Tue,  8 Oct 2024 13:30:53 +0000 (UTC)
+	 MIME-Version; b=e01AxisjbX67J3nKi9l2rDEJXzLchzU5mOT3ZKTSYfvODfpFOhz4+6shU2cNR22VW9vQemj7DDph+JGn7hChNuVEdVPegK+lWw3NgMg51Nzag7g/N2cidho+KRBMcLoED/btvWE6vN4QfCV32FDTlZXAhuzuJ2w7KMf9uNxPooY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dT0l3Zhk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9103C4CECD;
+	Tue,  8 Oct 2024 13:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728394253;
-	bh=kiCIkIdp5/d9jIjTE5hH3mDM2rEGxTLv/p8Gc5MjFEg=;
+	s=korg; t=1728394169;
+	bh=J9K22ArcGlpDKFm0zKGAZydCBNfxBMCSUQnu4OO7Acs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dtu6JTFhYMz124Hjfh1K2XzQO1xa0HJYBDJ16cCR61IOtTAXogB0W6FlFL4tj2bZK
-	 qHR+WmSvRjvN/iZwaFS2Kasnmq1lFIxPmVj+Eg5HQJdPoGLpMsj4qB2niF+pih4CUN
-	 aaiHcYQ1jvGabrpjhYucGmQDe6ca6OHzvmrW9OjE=
+	b=dT0l3Zhkze+DvfeHsa5FPvHaDbWBPly8i3DhBHf8NpJtzKqbSYqFOxdAJkXnOvD4A
+	 j4tfZ1DJ2lo97PyUYXwBr8igpSO++9H43uc2mzpIkYVfIprTqTnxjso0OflXVm2daI
+	 nO2cFKpmyc/MJQbARdMgovjEdvcMEv+2JBRQ5QdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Gray <jsg@jsg.id.au>
-Subject: [PATCH 6.6 367/386] Revert "drm/amd/display: Skip Recompute DSC Params if no Stream on Link"
-Date: Tue,  8 Oct 2024 14:10:12 +0200
-Message-ID: <20241008115643.826879686@linuxfoundation.org>
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Eric Biggers <ebiggers@google.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vegard Nossum <vegard.nossum@oracle.com>
+Subject: [PATCH 6.6 368/386] ubifs: ubifs_symlink: Fix memleak of inode->i_link in error path
+Date: Tue,  8 Oct 2024 14:10:13 +0200
+Message-ID: <20241008115643.866904777@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
 References: <20241008115629.309157387@linuxfoundation.org>
@@ -64,32 +68,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonathan Gray <jsg@jsg.id.au>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-This reverts commit a53841b074cc196c3caaa37e1f15d6bc90943b97.
+[ Upstream commit 6379b44cdcd67f5f5d986b73953e99700591edfa ]
 
-duplicated a change made in 6.6.46
-718d83f66fb07b2cab89a1fc984613a00e3db18f
+For error handling path in ubifs_symlink(), inode will be marked as
+bad first, then iput() is invoked. If inode->i_link is initialized by
+fscrypt_encrypt_symlink() in encryption scenario, inode->i_link won't
+be freed by callchain ubifs_free_inode -> fscrypt_free_inode in error
+handling path, because make_bad_inode() has changed 'inode->i_mode' as
+'S_IFREG'.
+Following kmemleak is easy to be reproduced by injecting error in
+ubifs_jnl_update() when doing symlink in encryption scenario:
+ unreferenced object 0xffff888103da3d98 (size 8):
+  comm "ln", pid 1692, jiffies 4294914701 (age 12.045s)
+  backtrace:
+   kmemdup+0x32/0x70
+   __fscrypt_encrypt_symlink+0xed/0x1c0
+   ubifs_symlink+0x210/0x300 [ubifs]
+   vfs_symlink+0x216/0x360
+   do_symlinkat+0x11a/0x190
+   do_syscall_64+0x3b/0xe0
+There are two ways fixing it:
+ 1. Remove make_bad_inode() in error handling path. We can do that
+    because ubifs_evict_inode() will do same processes for good
+    symlink inode and bad symlink inode, for inode->i_nlink checking
+    is before is_bad_inode().
+ 2. Free inode->i_link before marking inode bad.
+Method 2 is picked, it has less influence, personally, I think.
 
-Cc: stable@vger.kernel.org # 6.6
-Signed-off-by: Jonathan Gray <jsg@jsg.id.au>
+Cc: stable@vger.kernel.org
+Fixes: 2c58d548f570 ("fscrypt: cache decrypted symlink target in ->i_link")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Suggested-by: Eric Biggers <ebiggers@kernel.org>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+(cherry picked from commit 6379b44cdcd67f5f5d986b73953e99700591edfa)
+[Vegard: CVE-2024-26972; no conflicts]
+Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |    3 ---
- 1 file changed, 3 deletions(-)
+ fs/ubifs/dir.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -1269,9 +1269,6 @@ static bool is_dsc_need_re_compute(
- 	if (new_stream_on_link_num == 0)
- 		return false;
- 
--	if (new_stream_on_link_num == 0)
--		return false;
--
- 	/* check current_state if there stream on link but it is not in
- 	 * new request state
- 	 */
+--- a/fs/ubifs/dir.c
++++ b/fs/ubifs/dir.c
+@@ -1126,6 +1126,8 @@ out_cancel:
+ 	dir_ui->ui_size = dir->i_size;
+ 	mutex_unlock(&dir_ui->ui_mutex);
+ out_inode:
++	/* Free inode->i_link before inode is marked as bad. */
++	fscrypt_free_inode(inode);
+ 	make_bad_inode(inode);
+ 	iput(inode);
+ out_fname:
 
 
 
