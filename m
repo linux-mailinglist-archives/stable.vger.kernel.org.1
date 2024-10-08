@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55712994880
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7575C994B94
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCB18B24B5D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C892B21433
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6234C1DEFC5;
-	Tue,  8 Oct 2024 12:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39551DED6A;
+	Tue,  8 Oct 2024 12:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuXukiSC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGvi5GI7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5901DE890;
-	Tue,  8 Oct 2024 12:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F541DE4CC;
+	Tue,  8 Oct 2024 12:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389602; cv=none; b=ZU8zzuw7r/JpCI/mIveitD1Y5CFMUQVUoEqY1r9mZhxE/BkDhYlTSOUL6cNs89xxBEHAAG2QVJ7jef5zfzpoMHntRM0Rr92WaeemPSSVJw1K+pDO4oIczpLV3WjBsq4DseND0rNdO0US+1MCqJ8142jH7Zooua+EXUOSLvUnY7E=
+	t=1728391412; cv=none; b=KXpCySTILiqiGjZbs2IZk0mHGxsPN637CV5+2ehI17mivAnhkJRJ1GQSVaTYRzuq/907XHInIKvHUbZZDR7eTydtRZZ1HhBW9fUBBlPLoKNXpWUEYr6E3ArYaaTc4Rv1FmBNhiME/ppwjfpUJaKx+qUg74wNRXMclTjo6UmB/qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389602; c=relaxed/simple;
-	bh=AzA9a5/xhtwuom3w8Mo8nxRTScWFHnHTLOUpwmttEO4=;
+	s=arc-20240116; t=1728391412; c=relaxed/simple;
+	bh=HdPjLOhquK225fDe9clDI6LfwMDYoQ+RY2vdNqzpBAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BN0X56emS6yT7mpGfFjPUqBBT4AvC/lMgbMcYf3UrHKfLZ0Q//v0V7OEElGPDfhvipDTwt997EBFZlQZZlWxPQOftfCjj1UjNccQEjh+Y0NLFEkQLs0bZFUGry1BjEh5hk98XY9DA8U+GMy8LK3WBj5JxQsEEWJp48YgL/FGSrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuXukiSC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA46C4CECC;
-	Tue,  8 Oct 2024 12:13:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pqcpichrcAVapicIHSgWvvc5SIuMpnHqlgjzKjSjo6lQ5UoHy1Ek6rkHFkJwsLorRx4bq7vfe0a51jmRSvb5PUW8GNMz9JDqDCQyuQPf0Ae6d3UPzbUYvbAK7fDBLRj14LiZDSX41FpfRLX8hh6EYv62F6yRNG+MHpTQCgEGa28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGvi5GI7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EACE6C4CEC7;
+	Tue,  8 Oct 2024 12:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389601;
-	bh=AzA9a5/xhtwuom3w8Mo8nxRTScWFHnHTLOUpwmttEO4=;
+	s=korg; t=1728391412;
+	bh=HdPjLOhquK225fDe9clDI6LfwMDYoQ+RY2vdNqzpBAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zuXukiSCPO6uRzyOOZFm15zss3BqaKT/gZg8liuXMpE8p60/x3VHRfrd60snWQV6A
-	 qYEuxemRg76lfYx7tPwIgqEWbtpaxvu1ofYoChyzWiF7XRlslrIvCnXWeQBKxJY8+N
-	 /NtG3TywOXcQH3B9kFRvNup7rNHJJ60s4+JSNgLc=
+	b=TGvi5GI7YRbn0TP90n1wIUGQ6aXadPIGSkk5y/O9imTdtm20wnEjzM6Pw/nY7oDW2
+	 7LCqG+k3HCnM99wJn7kdRgdurrXJLgqLs1/Z/vAiq5gYUWsr7ROKKeCBZlzUmF6KeN
+	 HC2L13rfJg1eFRCJNiERERirE2dADVjPYlBxivD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 041/482] net: stmmac: dwmac4: extend timeout for VLAN Tag register busy bit check
+Subject: [PATCH 6.11 074/558] cifs: Fix buffer overflow when parsing NFS reparse points
 Date: Tue,  8 Oct 2024 14:01:44 +0200
-Message-ID: <20241008115649.920761545@linuxfoundation.org>
+Message-ID: <20241008115705.129976654@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +64,80 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenwei Wang <shenwei.wang@nxp.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 4c1b56671b68ffcbe6b78308bfdda6bcce6491ae ]
+[ Upstream commit e2a8910af01653c1c268984855629d71fb81f404 ]
 
-Increase the timeout for checking the busy bit of the VLAN Tag register
-from 10µs to 500ms. This change is necessary to accommodate scenarios
-where Energy Efficient Ethernet (EEE) is enabled.
+ReparseDataLength is sum of the InodeType size and DataBuffer size.
+So to get DataBuffer size it is needed to subtract InodeType's size from
+ReparseDataLength.
 
-Overnight testing revealed that when EEE is active, the busy bit can
-remain set for up to approximately 300ms. The new 500ms timeout provides
-a safety margin.
+Function cifs_strndup_from_utf16() is currentlly accessing buf->DataBuffer
+at position after the end of the buffer because it does not subtract
+InodeType size from the length. Fix this problem and correctly subtract
+variable len.
 
-Fixes: ed64639bc1e0 ("net: stmmac: Add support for VLAN Rx filtering")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Link: https://patch.msgid.link/20240924205424.573913-1-shenwei.wang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Member InodeType is present only when reparse buffer is large enough. Check
+for ReparseDataLength before accessing InodeType to prevent another invalid
+memory access.
+
+Major and minor rdev values are present also only when reparse buffer is
+large enough. Check for reparse buffer size before calling reparse_mkdev().
+
+Fixes: d5ecebc4900d ("smb3: Allow query of symlinks stored as reparse points")
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/stmicro/stmmac/dwmac4_core.c  | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ fs/smb/client/reparse.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-index 8e2049ed60159..c79d70899493b 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-@@ -14,6 +14,7 @@
- #include <linux/slab.h>
- #include <linux/ethtool.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include "stmmac.h"
- #include "stmmac_pcs.h"
- #include "dwmac4.h"
-@@ -475,7 +476,7 @@ static int dwmac4_write_vlan_filter(struct net_device *dev,
- 				    u8 index, u32 data)
- {
- 	void __iomem *ioaddr = (void __iomem *)dev->base_addr;
--	int i, timeout = 10;
-+	int ret;
- 	u32 val;
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index 48c27581ec511..cfa03c166de8c 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -320,9 +320,16 @@ static int parse_reparse_posix(struct reparse_posix_data *buf,
+ 	unsigned int len;
+ 	u64 type;
  
- 	if (index >= hw->num_vlan)
-@@ -491,16 +492,15 @@ static int dwmac4_write_vlan_filter(struct net_device *dev,
++	len = le16_to_cpu(buf->ReparseDataLength);
++	if (len < sizeof(buf->InodeType)) {
++		cifs_dbg(VFS, "srv returned malformed nfs buffer\n");
++		return -EIO;
++	}
++
++	len -= sizeof(buf->InodeType);
++
+ 	switch ((type = le64_to_cpu(buf->InodeType))) {
+ 	case NFS_SPECFILE_LNK:
+-		len = le16_to_cpu(buf->ReparseDataLength);
+ 		data->symlink_target = cifs_strndup_from_utf16(buf->DataBuffer,
+ 							       len, true,
+ 							       cifs_sb->local_nls);
+@@ -482,12 +489,18 @@ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
+ 	u32 tag = data->reparse.tag;
  
- 	writel(val, ioaddr + GMAC_VLAN_TAG);
- 
--	for (i = 0; i < timeout; i++) {
--		val = readl(ioaddr + GMAC_VLAN_TAG);
--		if (!(val & GMAC_VLAN_TAG_CTRL_OB))
--			return 0;
--		udelay(1);
-+	ret = readl_poll_timeout(ioaddr + GMAC_VLAN_TAG, val,
-+				 !(val & GMAC_VLAN_TAG_CTRL_OB),
-+				 1000, 500000);
-+	if (ret) {
-+		netdev_err(dev, "Timeout accessing MAC_VLAN_Tag_Filter\n");
-+		return -EBUSY;
- 	}
- 
--	netdev_err(dev, "Timeout accessing MAC_VLAN_Tag_Filter\n");
--
--	return -EBUSY;
-+	return 0;
- }
- 
- static int dwmac4_add_hw_vlan_rx_fltr(struct net_device *dev,
+ 	if (tag == IO_REPARSE_TAG_NFS && buf) {
++		if (le16_to_cpu(buf->ReparseDataLength) < sizeof(buf->InodeType))
++			return false;
+ 		switch (le64_to_cpu(buf->InodeType)) {
+ 		case NFS_SPECFILE_CHR:
++			if (le16_to_cpu(buf->ReparseDataLength) != sizeof(buf->InodeType) + 8)
++				return false;
+ 			fattr->cf_mode |= S_IFCHR;
+ 			fattr->cf_rdev = reparse_nfs_mkdev(buf);
+ 			break;
+ 		case NFS_SPECFILE_BLK:
++			if (le16_to_cpu(buf->ReparseDataLength) != sizeof(buf->InodeType) + 8)
++				return false;
+ 			fattr->cf_mode |= S_IFBLK;
+ 			fattr->cf_rdev = reparse_nfs_mkdev(buf);
+ 			break;
 -- 
 2.43.0
 
