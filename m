@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D373B994947
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 270DB994BE5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:48:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 586CAB278B7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6584281585
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607891DDA24;
-	Tue,  8 Oct 2024 12:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E431DE2CF;
+	Tue,  8 Oct 2024 12:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blPoSXK6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAaWxP7g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1C01D26F2;
-	Tue,  8 Oct 2024 12:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305C11C2420;
+	Tue,  8 Oct 2024 12:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390080; cv=none; b=WKVrhEp/9kDkRczZ0nF/HE/zcUcgC31hrVW1oiI26pLPFNbq9DyETYYkrzAEGFysFxeiQBsNTW9F8vqVOGcr7S7RyR3rJDH2h0S0X5Vn8xHEB6BKzGqbj8AvLzQFIa09euxOihVkaLIldn8+UroDmgf9/nCqrGcEWye1bCr6LO0=
+	t=1728391683; cv=none; b=s57+mNB/AXgC9miRWnP3sH7wKdSToGg1YicjMGbjxSM14N8OBh52Lw850XixAH+nBnuchUBb1YwXkNvx52imwKh2GXlrJupffqoNPtyWy9ewg+Q4H0NSH0HpEV09+Xw1SZpHL/miAx4g0Kn7YDFX7hQgmhyV8JCVU94aeLyz7ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390080; c=relaxed/simple;
-	bh=AR0rF7LGyMP8jHJavdIBlKXA+tr1V5ybKwEnHhpOx48=;
+	s=arc-20240116; t=1728391683; c=relaxed/simple;
+	bh=xmoQqGPpq2ZP/UeY4zWh2Uuo4c3wDmzGozHojtuIT/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BUKpHisxT6sGvhJaatY5uxu6sy8EEafuaaFhpqH+rwMG4fP2B3tl8sKEE7Y4WuFmwX0WSuTTVBBt2loehEBWzZKsd6KSih7/cPT05G+uoGvQtuuWUPPIzeH/tNStNFVRwTQDAw/vyaL+zPOQFwN6di3uOe8xrtUopaNhtKDX14Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blPoSXK6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA03C4CEC7;
-	Tue,  8 Oct 2024 12:21:18 +0000 (UTC)
+	 MIME-Version; b=q7ckVI032NAeKYhKJZWM8aTW0CUSGpwUnnT7kKR8acNsJ0OOSXgqYOqHLzQhVWFPJCryl7Be5t11WZ8wgPTTVfQwnUMAMby9L2VdCer8Xwq0847gTccxNyHO5w3o9ucB7cpVuipF7qMQN7t+Txzl9V+RvG9psFdxXU+SZ6NYm7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAaWxP7g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A2EC4CEC7;
+	Tue,  8 Oct 2024 12:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390079;
-	bh=AR0rF7LGyMP8jHJavdIBlKXA+tr1V5ybKwEnHhpOx48=;
+	s=korg; t=1728391683;
+	bh=xmoQqGPpq2ZP/UeY4zWh2Uuo4c3wDmzGozHojtuIT/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=blPoSXK6CGVIoeYKtU6MsWmVYQeUqIZ8gYUBmHJ+sFXpMu4DA4vSnN02Z3PucM8zT
-	 iB87Nsgkp/11EWEfOZJYdSXi94fL/G6reex670ZAr4wm/wdsGbhYL0pgs55ImU4Xfs
-	 jYP7/yhsSG4CRYm1OsmzEbbioDpIbznSxa26WMis=
+	b=VAaWxP7gWud6tZEQEec64VKovQLVVOTDFE3spDr+FQLduC/BELQtfe05S50pzCcEu
+	 yTm2hVrhO3n9uklmeC7EgEVxmNpJpXU7sChKko7bwdLdVwC+NRfA/uy/6iG4/jpv6Y
+	 /QCvJIy6Po8w0FQVQR/DA5En5gOlHCA2YjXXqw1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Willy Tarreau <w@1wt.eu>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 157/482] selftests/nolibc: avoid passing NULL to printf("%s")
-Date: Tue,  8 Oct 2024 14:03:40 +0200
-Message-ID: <20241008115654.484963908@linuxfoundation.org>
+Subject: [PATCH 6.11 191/558] fbdev: pxafb: Fix possible use after free in pxafb_task()
+Date: Tue,  8 Oct 2024 14:03:41 +0200
+Message-ID: <20241008115709.865359561@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
 
-[ Upstream commit f1a58f61d88642ae1e6e97e9d72d73bc70a93cb8 ]
+[ Upstream commit 4a6921095eb04a900e0000da83d9475eb958e61e ]
 
-Clang on higher optimization levels detects that NULL is passed to
-printf("%s") and warns about it.
-While printf() from nolibc gracefully handles that NULL,
-it is undefined behavior as per POSIX, so the warning is reasonable.
-Avoid the warning by transforming NULL into a non-NULL placeholder.
+In the pxafb_probe function, it calls the pxafb_init_fbinfo function,
+after which &fbi->task is associated with pxafb_task. Moreover,
+within this pxafb_init_fbinfo function, the pxafb_blank function
+within the &pxafb_ops struct is capable of scheduling work.
 
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Acked-by: Willy Tarreau <w@1wt.eu>
-Link: https://lore.kernel.org/r/20240807-nolibc-llvm-v2-8-c20f2f5fc7c2@weissschuh.net
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+If we remove the module which will call pxafb_remove to make cleanup,
+it will call unregister_framebuffer function which can call
+do_unregister_framebuffer to free fbi->fb through
+put_fb_info(fb_info), while the work mentioned above will be used.
+The sequence of operations that may lead to a UAF bug is as follows:
+
+CPU0                                                CPU1
+
+                                   | pxafb_task
+pxafb_remove                       |
+unregister_framebuffer(info)       |
+do_unregister_framebuffer(fb_info) |
+put_fb_info(fb_info)               |
+// free fbi->fb                    | set_ctrlr_state(fbi, state)
+                                   | __pxafb_lcd_power(fbi, 0)
+                                   | fbi->lcd_power(on, &fbi->fb.var)
+                                   | //use fbi->fb
+
+Fix it by ensuring that the work is canceled before proceeding
+with the cleanup in pxafb_remove.
+
+Note that only root user can remove the driver at runtime.
+
+Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/nolibc/nolibc-test.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/pxafb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
-index 994477ee87bef..4bd8360d54225 100644
---- a/tools/testing/selftests/nolibc/nolibc-test.c
-+++ b/tools/testing/selftests/nolibc/nolibc-test.c
-@@ -534,7 +534,7 @@ int expect_strzr(const char *expr, int llen)
- {
- 	int ret = 0;
+diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
+index 2ef56fa28aff3..5ce02495cda63 100644
+--- a/drivers/video/fbdev/pxafb.c
++++ b/drivers/video/fbdev/pxafb.c
+@@ -2403,6 +2403,7 @@ static void pxafb_remove(struct platform_device *dev)
+ 	info = &fbi->fb;
  
--	llen += printf(" = <%s> ", expr);
-+	llen += printf(" = <%s> ", expr ? expr : "(null)");
- 	if (expr) {
- 		ret = 1;
- 		result(llen, FAIL);
-@@ -553,7 +553,7 @@ int expect_strnz(const char *expr, int llen)
- {
- 	int ret = 0;
+ 	pxafb_overlay_exit(fbi);
++	cancel_work_sync(&fbi->task);
+ 	unregister_framebuffer(info);
  
--	llen += printf(" = <%s> ", expr);
-+	llen += printf(" = <%s> ", expr ? expr : "(null)");
- 	if (!expr) {
- 		ret = 1;
- 		result(llen, FAIL);
+ 	pxafb_disable_controller(fbi);
 -- 
 2.43.0
 
