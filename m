@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD404994E38
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:14:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC4C9949A2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9407E1F211DD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:14:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A39728614B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7BF1DF243;
-	Tue,  8 Oct 2024 13:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C591DF265;
+	Tue,  8 Oct 2024 12:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MCBcCkq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+vumtZ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3911DE4CD;
-	Tue,  8 Oct 2024 13:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826921DEFC5;
+	Tue,  8 Oct 2024 12:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393228; cv=none; b=L4w4CPP6+Aa66fk3IU6zZrw+yDo/cqzyvocbigmV0KQeTC1K35kW2PR2Z9tUeRfEm9wgj2gJYOwepZYEvdPQQcfk3345MZYOqOxawVLkdIzymJc0qk56s3maNYp27vXbyHLX2S7TP+YCT6ZRrbvKzBuNWmqs9uLffHZzx1gdpMs=
+	t=1728390269; cv=none; b=T6LUCWt8uhPEEEn7mvRJedqhd1mkec+a+kaOHZ0bHa202GMWQGImVzJLsNPXVR4dRcMzHJVaNPJDg89sosDduoCUSocgTh54/kSek4OZYVWGLXRP3HEQYMp9UU8q4RElTzH8ELBTEBuCsY1hppirEBVw4LL7xfXo/Em2yr31GzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393228; c=relaxed/simple;
-	bh=4zS46cu7CqIuzkWYxrzONLTLU20GnOKtcZg1mHWugCg=;
+	s=arc-20240116; t=1728390269; c=relaxed/simple;
+	bh=cMYC30j5nwKsX2PJziNS1B+HqrTPUOcUaDQHdzlXyn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EV9qhXnP2N8J1LIYzXcAntyQL1WFwyWuDv6TtM9chdr60Z7qrmjUBjDkxLvQ1PNsI7xTNt5Zb6dPU/dVcIAw0+85+GobSjjS5fuuGJj/RU6MB5gzP4NDH/96KJS9X4DyqWm+inKgv9NDgBSNCVVBkb+zR2q0YBPy2yez0ATAbLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MCBcCkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B9AC4CEC7;
-	Tue,  8 Oct 2024 13:13:46 +0000 (UTC)
+	 MIME-Version; b=C+XG/8BC4TtlAIQ1eE3ig0QeK5kBSNhm8xs/4DUh828X7s+Esmu3i+4Mliv8f7gILtvsmALFD7pHi7AQdLFxekT4NjvvJUGKvKKr/JdTPTtaSGAEcBqFNYFps7lAKbCBrFAz4lwW0VzUBevMH7qNn26wL9xT+wecrbZzFeTlELU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+vumtZ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DE2C4CEC7;
+	Tue,  8 Oct 2024 12:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393227;
-	bh=4zS46cu7CqIuzkWYxrzONLTLU20GnOKtcZg1mHWugCg=;
+	s=korg; t=1728390269;
+	bh=cMYC30j5nwKsX2PJziNS1B+HqrTPUOcUaDQHdzlXyn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0MCBcCkqYPdDD9tbXAN20QOzGEYkyDurULYjpWfoYu1upW3ln350kmefYkmLrutb1
-	 9xop7r6W+mvcAH4GfOvoi/IhFIwmzryvEGtLimXdVxJmLlnNdpI6+5tlrFR4GhWJZ6
-	 XeN+DrfKl/HLnqV4r79nsQPbBtcT7lej7uYOcm3I=
+	b=w+vumtZ4lIFg9yP38IdwkYzfRKvJnB8E6rWaJfduIdms4Vd04lwuCGupDsIHgvuR4
+	 c1ic5elfkeu5M8ntGKiNLhWXtybh9jAO3o0EKf58HKW6pWHyrjBnQDXwcuBAV9mR01
+	 ciFnV9PqKRrb+TcjV0DtEFTgXD0qoAxBDvkQTuEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fangrui Song <maskray@google.com>,
-	Jan Beulich <jbeulich@suse.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/386] crypto: x86/sha256 - Add parentheses around macros single arguments
+Subject: [PATCH 6.10 241/482] drm/amdgpu/gfx11: use rlc safe mode for soft recovery
 Date: Tue,  8 Oct 2024 14:05:04 +0200
-Message-ID: <20241008115631.791244756@linuxfoundation.org>
+Message-ID: <20241008115657.780085438@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fangrui Song <maskray@google.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 3363c460ef726ba693704dbcd73b7e7214ccc788 ]
+[ Upstream commit 3f2d35c325534c1b7ac5072173f0dc7ca969dec2 ]
 
-The macros FOUR_ROUNDS_AND_SCHED and DO_4ROUNDS rely on an
-unexpected/undocumented behavior of the GNU assembler, which might
-change in the future
-(https://sourceware.org/bugzilla/show_bug.cgi?id=32073).
+Protect the MMIO access with safe mode.
 
-    M (1) (2) // 1 arg !? Future: 2 args
-    M 1 + 2   // 1 arg !? Future: 3 args
-
-    M 1 2     // 2 args
-
-Add parentheses around the single arguments to support future GNU
-assembler and LLVM integrated assembler (when the IsOperator hack from
-the following link is dropped).
-
-Link: https://github.com/llvm/llvm-project/commit/055006475e22014b28a070db1bff41ca15f322f0
-Signed-off-by: Fangrui Song <maskray@google.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Acked-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/sha256-avx2-asm.S | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/crypto/sha256-avx2-asm.S b/arch/x86/crypto/sha256-avx2-asm.S
-index 0ffb072be9561..0bbec1c75cd0b 100644
---- a/arch/x86/crypto/sha256-avx2-asm.S
-+++ b/arch/x86/crypto/sha256-avx2-asm.S
-@@ -592,22 +592,22 @@ SYM_TYPED_FUNC_START(sha256_transform_rorx)
- 	leaq	K256+0*32(%rip), INP		## reuse INP as scratch reg
- 	vpaddd	(INP, SRND), X0, XFER
- 	vmovdqa XFER, 0*32+_XFER(%rsp, SRND)
--	FOUR_ROUNDS_AND_SCHED	_XFER + 0*32
-+	FOUR_ROUNDS_AND_SCHED	(_XFER + 0*32)
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index 0bcdcb2101577..6b5cd0dcd25f4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -5792,7 +5792,9 @@ static void gfx_v11_0_ring_soft_recovery(struct amdgpu_ring *ring,
+ 	value = REG_SET_FIELD(value, SQ_CMD, MODE, 0x01);
+ 	value = REG_SET_FIELD(value, SQ_CMD, CHECK_VMID, 1);
+ 	value = REG_SET_FIELD(value, SQ_CMD, VM_ID, vmid);
++	amdgpu_gfx_rlc_enter_safe_mode(adev, 0);
+ 	WREG32_SOC15(GC, 0, regSQ_CMD, value);
++	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
+ }
  
- 	leaq	K256+1*32(%rip), INP
- 	vpaddd	(INP, SRND), X0, XFER
- 	vmovdqa XFER, 1*32+_XFER(%rsp, SRND)
--	FOUR_ROUNDS_AND_SCHED	_XFER + 1*32
-+	FOUR_ROUNDS_AND_SCHED	(_XFER + 1*32)
- 
- 	leaq	K256+2*32(%rip), INP
- 	vpaddd	(INP, SRND), X0, XFER
- 	vmovdqa XFER, 2*32+_XFER(%rsp, SRND)
--	FOUR_ROUNDS_AND_SCHED	_XFER + 2*32
-+	FOUR_ROUNDS_AND_SCHED	(_XFER + 2*32)
- 
- 	leaq	K256+3*32(%rip), INP
- 	vpaddd	(INP, SRND), X0, XFER
- 	vmovdqa XFER, 3*32+_XFER(%rsp, SRND)
--	FOUR_ROUNDS_AND_SCHED	_XFER + 3*32
-+	FOUR_ROUNDS_AND_SCHED	(_XFER + 3*32)
- 
- 	add	$4*32, SRND
- 	cmp	$3*4*32, SRND
-@@ -618,12 +618,12 @@ SYM_TYPED_FUNC_START(sha256_transform_rorx)
- 	leaq	K256+0*32(%rip), INP
- 	vpaddd	(INP, SRND), X0, XFER
- 	vmovdqa XFER, 0*32+_XFER(%rsp, SRND)
--	DO_4ROUNDS	_XFER + 0*32
-+	DO_4ROUNDS	(_XFER + 0*32)
- 
- 	leaq	K256+1*32(%rip), INP
- 	vpaddd	(INP, SRND), X1, XFER
- 	vmovdqa XFER, 1*32+_XFER(%rsp, SRND)
--	DO_4ROUNDS	_XFER + 1*32
-+	DO_4ROUNDS	(_XFER + 1*32)
- 	add	$2*32, SRND
- 
- 	vmovdqa	X2, X0
-@@ -651,8 +651,8 @@ SYM_TYPED_FUNC_START(sha256_transform_rorx)
- 	xor	SRND, SRND
- .align 16
- .Lloop3:
--	DO_4ROUNDS	 _XFER + 0*32 + 16
--	DO_4ROUNDS	 _XFER + 1*32 + 16
-+	DO_4ROUNDS	(_XFER + 0*32 + 16)
-+	DO_4ROUNDS	(_XFER + 1*32 + 16)
- 	add	$2*32, SRND
- 	cmp	$4*4*32, SRND
- 	jb	.Lloop3
+ static void
 -- 
 2.43.0
 
