@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9603994B3D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:41:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E8E994890
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13CC9B23F70
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:41:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F5481C212E8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5782C1DED6F;
-	Tue,  8 Oct 2024 12:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74FC21DE8B7;
+	Tue,  8 Oct 2024 12:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1s6BuoG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8tYQ1ku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED121DE2AD;
-	Tue,  8 Oct 2024 12:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE861CF297;
+	Tue,  8 Oct 2024 12:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391258; cv=none; b=ZA9mMxCqc1Y1mbL+q92uR4Ly/L1+0hyDa75l/4APOUGL29Xw7+CCMxdbV9erj0LP4wH11RBQH/3pmbvfgaRvZvHnON0XWq7hNtr+P7l+u2/as98zNS91LE9TSQJm9RcEbyYmRXcNAILo3KTfBZZFNVTYiA+6FBCKTMdGJxfovis=
+	t=1728389653; cv=none; b=aYW4FzYEyvA26SAxIcR5yarQtCBn0Ev32tnDBGX+BRdDOlRrZylq0xCbiGobiv6vfS38AzTyAn8kcy9nMaMzl4ZbzvOOVxwv5sNUoocqx2MgtcKZ4EZnHUPvm66fgU4O3bkWM7wLqqv3/njq9/tfk4M/BMM9YulRA2RMF2GFg5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391258; c=relaxed/simple;
-	bh=K8hYv2vcgO3wjlL7xogyOsmrPoYUFUB+rgGRlEL9eXA=;
+	s=arc-20240116; t=1728389653; c=relaxed/simple;
+	bh=kuXUmA4UEBsAu+5cQhOuXoLDVEGD231HOlYe4F/fNS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b9oRkl2bv3uYE/WyK74cL1Hp33wzyPaMvL399apF7kxV1w0dhdjNaq4EYl6BOoc1MXqRx3QfrI+qEVSV2tda6uEwXTyILHPJE5IFzNEPc1fHEIlF/s/JvCliVhv/icH61qRHmMg0/c3kBSn+GEGdtXG8+GuiUOCD+FZwhgQ/KSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1s6BuoG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59667C4CEC7;
-	Tue,  8 Oct 2024 12:40:57 +0000 (UTC)
+	 MIME-Version; b=ImBVKoWUkLPheOITuYVDoTua2xJOcNAlolQygPn3x4246cCLz+hZh7xnQ5aHB/X9zdUzf/Jpa+DETTD/nl+Q08Gi1wvUqeWAKePXEx6q6+86Rlm82YaXdGiHcBtmagHy0Xni2Y6jgNfbxJYlwrdRAugXJPrbOZUcPMSQ5ZN1wks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8tYQ1ku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F02EC4CECC;
+	Tue,  8 Oct 2024 12:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391257;
-	bh=K8hYv2vcgO3wjlL7xogyOsmrPoYUFUB+rgGRlEL9eXA=;
+	s=korg; t=1728389653;
+	bh=kuXUmA4UEBsAu+5cQhOuXoLDVEGD231HOlYe4F/fNS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A1s6BuoGXHQalMM4YtNstdyjc0VP9oSEyk6PJlfEFbXgL81LWik5cGzYCApJIw/pw
-	 T+blr+JODS6hY/mAkN3Ao+C67ytSBmXRC6J32BLaZ6t+Jm2OHnDVKdmiyc+y/c0+oa
-	 TnpNM05ZVx8k1rroqL0ar0iKabeAquWhXPqKNozE=
+	b=u8tYQ1kupDX41ybnjvhPJ7i/6vh6KJcmPI4IT6rVV8RP6T635TcaOa+Up4izt4Pso
+	 gBbtlYgCq3IApyB5BhZFz5MN3INFDkSxpTa3xSsaXpe3lNXTlmjFjfPJeit524V/ef
+	 geD3uSbrb8I0NAyQuc+lYiu6I3aKFWW1mOPwOZiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Simion <andrei.simion@microchip.com>,
-	Mark Brown <broonie@kernel.org>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 057/558] ASoC: atmel: mchp-pdmc: Skip ALSA restoration if substream runtime is uninitialized
-Date: Tue,  8 Oct 2024 14:01:27 +0200
-Message-ID: <20241008115704.463918032@linuxfoundation.org>
+Subject: [PATCH 6.10 025/482] selftests: netfilter: Fix nft_audit.sh for newer nft binaries
+Date: Tue,  8 Oct 2024 14:01:28 +0200
+Message-ID: <20241008115649.289981154@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Simion <andrei.simion@microchip.com>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit 09cfc6a532d249a51d3af5022d37ebbe9c3d31f6 ]
+[ Upstream commit 8a89015644513ef69193a037eb966f2d55fe385a ]
 
-Update the driver to prevent alsa-restore.service from failing when
-reading data from /var/lib/alsa/asound.state at boot. Ensure that the
-restoration of ALSA mixer configurations is skipped if substream->runtime
-is NULL.
+As a side-effect of nftables' commit dbff26bfba833 ("cache: consolidate
+reset command"), audit logs changed when more objects were reset than
+fit into a single netlink message.
 
-Fixes: 50291652af52 ("ASoC: atmel: mchp-pdmc: add PDMC driver")
-Signed-off-by: Andrei Simion <andrei.simion@microchip.com>
-Link: https://patch.msgid.link/20240924081237.50046-1-andrei.simion@microchip.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Since the objects' distribution in netlink messages is not relevant,
+implement a summarizing function which combines repeated audit logs into
+a single one with summed up 'entries=' value.
+
+Fixes: 203bb9d39866 ("selftests: netfilter: Extend nft_audit.sh")
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/atmel/mchp-pdmc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../selftests/net/netfilter/nft_audit.sh      | 57 ++++++++++---------
+ 1 file changed, 29 insertions(+), 28 deletions(-)
 
-diff --git a/sound/soc/atmel/mchp-pdmc.c b/sound/soc/atmel/mchp-pdmc.c
-index dcc4e14b3dde2..206bbb5aaab5d 100644
---- a/sound/soc/atmel/mchp-pdmc.c
-+++ b/sound/soc/atmel/mchp-pdmc.c
-@@ -285,6 +285,9 @@ static int mchp_pdmc_chmap_ctl_put(struct snd_kcontrol *kcontrol,
- 	if (!substream)
- 		return -ENODEV;
+diff --git a/tools/testing/selftests/net/netfilter/nft_audit.sh b/tools/testing/selftests/net/netfilter/nft_audit.sh
+index 902f8114bc80f..87f2b4c725aa0 100755
+--- a/tools/testing/selftests/net/netfilter/nft_audit.sh
++++ b/tools/testing/selftests/net/netfilter/nft_audit.sh
+@@ -48,12 +48,31 @@ logread_pid=$!
+ trap 'kill $logread_pid; rm -f $logfile $rulefile' EXIT
+ exec 3<"$logfile"
  
-+	if (!substream->runtime)
-+		return 0; /* just for avoiding error from alsactl restore */
++lsplit='s/^\(.*\) entries=\([^ ]*\) \(.*\)$/pfx="\1"\nval="\2"\nsfx="\3"/'
++summarize_logs() {
++	sum=0
++	while read line; do
++		eval $(sed "$lsplit" <<< "$line")
++		[[ $sum -gt 0 ]] && {
++			[[ "$pfx $sfx" == "$tpfx $tsfx" ]] && {
++				let "sum += val"
++				continue
++			}
++			echo "$tpfx entries=$sum $tsfx"
++		}
++		tpfx="$pfx"
++		tsfx="$sfx"
++		sum=$val
++	done
++	echo "$tpfx entries=$sum $tsfx"
++}
 +
- 	map = mchp_pdmc_chmap_get(substream, info);
- 	if (!map)
- 		return -EINVAL;
+ do_test() { # (cmd, log)
+ 	echo -n "testing for cmd: $1 ... "
+ 	cat <&3 >/dev/null
+ 	$1 >/dev/null || exit 1
+ 	sleep 0.1
+-	res=$(diff -a -u <(echo "$2") - <&3)
++	res=$(diff -a -u <(echo "$2") <(summarize_logs <&3))
+ 	[ $? -eq 0 ] && { echo "OK"; return; }
+ 	echo "FAIL"
+ 	grep -v '^\(---\|+++\|@@\)' <<< "$res"
+@@ -152,31 +171,17 @@ do_test 'nft reset rules t1 c2' \
+ 'table=t1 family=2 entries=3 op=nft_reset_rule'
+ 
+ do_test 'nft reset rules table t1' \
+-'table=t1 family=2 entries=3 op=nft_reset_rule
+-table=t1 family=2 entries=3 op=nft_reset_rule
+-table=t1 family=2 entries=3 op=nft_reset_rule'
++'table=t1 family=2 entries=9 op=nft_reset_rule'
+ 
+ do_test 'nft reset rules t2 c3' \
+-'table=t2 family=2 entries=189 op=nft_reset_rule
+-table=t2 family=2 entries=188 op=nft_reset_rule
+-table=t2 family=2 entries=126 op=nft_reset_rule'
++'table=t2 family=2 entries=503 op=nft_reset_rule'
+ 
+ do_test 'nft reset rules t2' \
+-'table=t2 family=2 entries=3 op=nft_reset_rule
+-table=t2 family=2 entries=3 op=nft_reset_rule
+-table=t2 family=2 entries=186 op=nft_reset_rule
+-table=t2 family=2 entries=188 op=nft_reset_rule
+-table=t2 family=2 entries=129 op=nft_reset_rule'
++'table=t2 family=2 entries=509 op=nft_reset_rule'
+ 
+ do_test 'nft reset rules' \
+-'table=t1 family=2 entries=3 op=nft_reset_rule
+-table=t1 family=2 entries=3 op=nft_reset_rule
+-table=t1 family=2 entries=3 op=nft_reset_rule
+-table=t2 family=2 entries=3 op=nft_reset_rule
+-table=t2 family=2 entries=3 op=nft_reset_rule
+-table=t2 family=2 entries=180 op=nft_reset_rule
+-table=t2 family=2 entries=188 op=nft_reset_rule
+-table=t2 family=2 entries=135 op=nft_reset_rule'
++'table=t1 family=2 entries=9 op=nft_reset_rule
++table=t2 family=2 entries=509 op=nft_reset_rule'
+ 
+ # resetting sets and elements
+ 
+@@ -200,13 +205,11 @@ do_test 'nft reset counters t1' \
+ 'table=t1 family=2 entries=1 op=nft_reset_obj'
+ 
+ do_test 'nft reset counters t2' \
+-'table=t2 family=2 entries=342 op=nft_reset_obj
+-table=t2 family=2 entries=158 op=nft_reset_obj'
++'table=t2 family=2 entries=500 op=nft_reset_obj'
+ 
+ do_test 'nft reset counters' \
+ 'table=t1 family=2 entries=1 op=nft_reset_obj
+-table=t2 family=2 entries=341 op=nft_reset_obj
+-table=t2 family=2 entries=159 op=nft_reset_obj'
++table=t2 family=2 entries=500 op=nft_reset_obj'
+ 
+ # resetting quotas
+ 
+@@ -217,13 +220,11 @@ do_test 'nft reset quotas t1' \
+ 'table=t1 family=2 entries=1 op=nft_reset_obj'
+ 
+ do_test 'nft reset quotas t2' \
+-'table=t2 family=2 entries=315 op=nft_reset_obj
+-table=t2 family=2 entries=185 op=nft_reset_obj'
++'table=t2 family=2 entries=500 op=nft_reset_obj'
+ 
+ do_test 'nft reset quotas' \
+ 'table=t1 family=2 entries=1 op=nft_reset_obj
+-table=t2 family=2 entries=314 op=nft_reset_obj
+-table=t2 family=2 entries=186 op=nft_reset_obj'
++table=t2 family=2 entries=500 op=nft_reset_obj'
+ 
+ # deleting rules
+ 
 -- 
 2.43.0
 
