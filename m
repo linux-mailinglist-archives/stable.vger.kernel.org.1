@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-82589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20102994D84
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:06:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B168994ABF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D06E28761E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:06:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F35DA283688
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C391DE4CC;
-	Tue,  8 Oct 2024 13:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A238F1D27B3;
+	Tue,  8 Oct 2024 12:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3N8M81q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXNYn53o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81B41C9B99;
-	Tue,  8 Oct 2024 13:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6019F1779B1;
+	Tue,  8 Oct 2024 12:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392768; cv=none; b=AjkLml7rqwfi/uF/0wH5HQMfIo2c8yI3tN8lVxmZ5UzQSwQ5NIRU5Di+ujhfw2vrUJ9NqX4TCGttDId7gmOXc5oSqesAgSkScE2agacZHeOa8LtcF35fhhFh3sQnMhhQQkR2mdc+NruekRlY9ywblx4IWERt1gV0LSSZ1YK2tbc=
+	t=1728390968; cv=none; b=FXLHtkyV2ZCwh2ozd4ZpTZyko8LDZPO7hlRbzK2qTptKQlV9Y2gwNvAmKGxJOzHba/NdJvZWYkUq8mlo7Tjd6RkCuXbSVwCBA+SgaBAmcHOAUUGnkRKL2upjiaOZX7ley2hsDtShlwHLw8e2PF7xXLvGarTmZu2H2CeTQo/CoeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392768; c=relaxed/simple;
-	bh=cUD+nTiD9qkJU7OL+1ufMZdMIKmw/yt9A+1K+hh708g=;
+	s=arc-20240116; t=1728390968; c=relaxed/simple;
+	bh=FxZ7Hxz4ML3RrrFgyLDYgztvmk7WkXJZjgae8Lp6Nno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lybgq4TNj7HtPC2X1/fNMh0NRh2eOIoWdzAgv9Zp5rr5uUH1ql/KSQNSDlA+DPxBWx7dr1KVsGIPUBRUGepbjry4a48A8vFkMnn1InJJn3ESQu42gy6MonrmqpYSIv+b/fGqqV1/2v23D1Sd93KWR4M1OKhxKxrq9znjCnfCppM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3N8M81q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E27C4CEC7;
-	Tue,  8 Oct 2024 13:06:07 +0000 (UTC)
+	 MIME-Version; b=K7HHDyYri7FmlW4zJeD2S4CQYwyNXYZqDG3seKUyqqVs7SMNOfW9mAlO3VN/pPPfBXVFVfoUnXaj4eL4UBJu/c5rUBQsFov+ZwYrsBGzpIM6iQvavBvLSoL1VT4q83PwOL8atG4kmfVr3M98SeQ4oWqr/4o1RrzOHpykfjtaU3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXNYn53o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D067DC4CEC7;
+	Tue,  8 Oct 2024 12:36:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392768;
-	bh=cUD+nTiD9qkJU7OL+1ufMZdMIKmw/yt9A+1K+hh708g=;
+	s=korg; t=1728390968;
+	bh=FxZ7Hxz4ML3RrrFgyLDYgztvmk7WkXJZjgae8Lp6Nno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q3N8M81qdrv9RKHt/jj6+Iw2xlQS183wP8azh3RCPNYbm4EEnNOIPBCB8dMdHwXdE
-	 mlBnZxa8KcKWKBThnFjnESCxz29dMVp3vaTS1xf5F/nX1MTq8/9peP3vs/BSthEta/
-	 q6NC+a5IOrYADtVK53uo988ONIyzeLd6uSLiVVV8=
+	b=LXNYn53oboSXaNklTtZmBgM6bg9vX+qv8bQE5mI46dhwJxsJsfoXJo5pft+Acrwyk
+	 CbfxvBysyiEoWKMG9tT5pnevZ6+02DgHNxckzEJkzEVuonMobCLyiD4EuOF2m2VEE8
+	 RED/8imSzFVohZNqqVLQQ2lbwHceDKlE2HPuHOoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Sistare <steven.sistare@oracle.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Peter Xu <peterx@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 482/558] mm/hugetlb: fix memfd_pin_folios resv_huge_pages leak
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 449/482] arm64: errata: Expand speculative SSBS workaround once more
 Date: Tue,  8 Oct 2024 14:08:32 +0200
-Message-ID: <20241008115721.205151030@linuxfoundation.org>
+Message-ID: <20241008115706.189898167@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,129 +64,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve Sistare <steven.sistare@oracle.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 26a8ea80929c518bdec5e53a5776f95919b7c88e upstream.
+[ Upstream commit 081eb7932c2b244f63317a982c5e3990e2c7fbdd ]
 
-memfd_pin_folios followed by unpin_folios leaves resv_huge_pages elevated
-if the pages were not already faulted in.  During a normal page fault,
-resv_huge_pages is consumed here:
+A number of Arm Ltd CPUs suffer from errata whereby an MSR to the SSBS
+special-purpose register does not affect subsequent speculative
+instructions, permitting speculative store bypassing for a window of
+time.
 
-hugetlb_fault()
-  alloc_hugetlb_folio()
-    dequeue_hugetlb_folio_vma()
-      dequeue_hugetlb_folio_nodemask()
-        dequeue_hugetlb_folio_node_exact()
-          free_huge_pages--
-      resv_huge_pages--
+We worked around this for a number of CPUs in commits:
 
-During memfd_pin_folios, the page is created by calling
-alloc_hugetlb_folio_nodemask instead of alloc_hugetlb_folio, and
-resv_huge_pages is not modified:
+* 7187bb7d0b5c7dfa ("arm64: errata: Add workaround for Arm errata 3194386 and 3312417")
+* 75b3c43eab594bfb ("arm64: errata: Expand speculative SSBS workaround")
+* 145502cac7ea70b5 ("arm64: errata: Expand speculative SSBS workaround (again)")
 
-memfd_alloc_folio()
-  alloc_hugetlb_folio_nodemask()
-    dequeue_hugetlb_folio_nodemask()
-      dequeue_hugetlb_folio_node_exact()
-        free_huge_pages--
+Since then, a (hopefully final) batch of updates have been published,
+with two more affected CPUs. For the affected CPUs the existing
+mitigation is sufficient, as described in their respective Software
+Developer Errata Notice (SDEN) documents:
 
-alloc_hugetlb_folio_nodemask has other callers that must not modify
-resv_huge_pages.  Therefore, to fix, define an alternate version of
-alloc_hugetlb_folio_nodemask for this call site that adjusts
-resv_huge_pages.
+* Cortex-A715 (MP148) SDEN v15.0, erratum 3456084
+  https://developer.arm.com/documentation/SDEN-2148827/1500/
 
-Link: https://lkml.kernel.org/r/1725373521-451395-4-git-send-email-steven.sistare@oracle.com
-Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+* Neoverse-N3 (MP195) SDEN v5.0, erratum 3456111
+  https://developer.arm.com/documentation/SDEN-3050973/0500/
+
+Enable the existing mitigation by adding the relevant MIDRs to
+erratum_spec_ssbs_list, and update silicon-errata.rst and the
+Kconfig text accordingly.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240930111705.3352047-3-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/hugetlb.h |   10 ++++++++++
- mm/hugetlb.c            |   17 +++++++++++++++++
- mm/memfd.c              |    9 ++++-----
- 3 files changed, 31 insertions(+), 5 deletions(-)
+ Documentation/arch/arm64/silicon-errata.rst | 4 ++++
+ arch/arm64/Kconfig                          | 2 ++
+ arch/arm64/kernel/cpu_errata.c              | 2 ++
+ 3 files changed, 8 insertions(+)
 
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -695,6 +695,9 @@ struct folio *alloc_hugetlb_folio(struct
- struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
- 				nodemask_t *nmask, gfp_t gfp_mask,
- 				bool allow_alloc_fallback);
-+struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
-+					  nodemask_t *nmask, gfp_t gfp_mask);
-+
- int hugetlb_add_to_page_cache(struct folio *folio, struct address_space *mapping,
- 			pgoff_t idx);
- void restore_reserve_on_error(struct hstate *h, struct vm_area_struct *vma,
-@@ -1060,6 +1063,13 @@ static inline struct folio *alloc_hugetl
- {
- 	return NULL;
- }
-+
-+static inline struct folio *
-+alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
-+			    nodemask_t *nmask, gfp_t gfp_mask)
-+{
-+	return NULL;
-+}
- 
- static inline struct folio *
- alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -2564,6 +2564,23 @@ struct folio *alloc_buddy_hugetlb_folio_
- 	return folio;
- }
- 
-+struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
-+		nodemask_t *nmask, gfp_t gfp_mask)
-+{
-+	struct folio *folio;
-+
-+	spin_lock_irq(&hugetlb_lock);
-+	folio = dequeue_hugetlb_folio_nodemask(h, gfp_mask, preferred_nid,
-+					       nmask);
-+	if (folio) {
-+		VM_BUG_ON(!h->resv_huge_pages);
-+		h->resv_huge_pages--;
-+	}
-+
-+	spin_unlock_irq(&hugetlb_lock);
-+	return folio;
-+}
-+
- /* folio migration callback function */
- struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
- 		nodemask_t *nmask, gfp_t gfp_mask, bool allow_alloc_fallback)
---- a/mm/memfd.c
-+++ b/mm/memfd.c
-@@ -82,11 +82,10 @@ struct folio *memfd_alloc_folio(struct f
- 		gfp_mask = htlb_alloc_mask(hstate_file(memfd));
- 		gfp_mask &= ~(__GFP_HIGHMEM | __GFP_MOVABLE);
- 
--		folio = alloc_hugetlb_folio_nodemask(hstate_file(memfd),
--						     numa_node_id(),
--						     NULL,
--						     gfp_mask,
--						     false);
-+		folio = alloc_hugetlb_folio_reserve(hstate_file(memfd),
-+						    numa_node_id(),
-+						    NULL,
-+						    gfp_mask);
- 		if (folio && folio_try_get(folio)) {
- 			err = hugetlb_add_to_page_cache(folio,
- 							memfd->f_mapping,
+diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
+index 3bc51669ead7d..8cd4f365044b6 100644
+--- a/Documentation/arch/arm64/silicon-errata.rst
++++ b/Documentation/arch/arm64/silicon-errata.rst
+@@ -146,6 +146,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A715     | #2645198        | ARM64_ERRATUM_2645198       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-A715     | #3456084        | ARM64_ERRATUM_3194386       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A720     | #3456091        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A725     | #3456106        | ARM64_ERRATUM_3194386       |
+@@ -186,6 +188,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N2     | #3324339        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Neoverse-N3     | #3456111        | ARM64_ERRATUM_3194386       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-V1     | #1619801        | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-V1     | #3324341        | ARM64_ERRATUM_3194386       |
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 03faaecfa2444..43d79f87fa180 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1078,6 +1078,7 @@ config ARM64_ERRATUM_3194386
+ 	  * ARM Cortex-A78C erratum 3324346
+ 	  * ARM Cortex-A78C erratum 3324347
+ 	  * ARM Cortex-A710 erratam 3324338
++	  * ARM Cortex-A715 errartum 3456084
+ 	  * ARM Cortex-A720 erratum 3456091
+ 	  * ARM Cortex-A725 erratum 3456106
+ 	  * ARM Cortex-X1 erratum 3324344
+@@ -1088,6 +1089,7 @@ config ARM64_ERRATUM_3194386
+ 	  * ARM Cortex-X925 erratum 3324334
+ 	  * ARM Neoverse-N1 erratum 3324349
+ 	  * ARM Neoverse N2 erratum 3324339
++	  * ARM Neoverse-N3 erratum 3456111
+ 	  * ARM Neoverse-V1 erratum 3324341
+ 	  * ARM Neoverse V2 erratum 3324336
+ 	  * ARM Neoverse-V3 erratum 3312417
+diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+index aec2867daadc2..a78f247029aec 100644
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -439,6 +439,7 @@ static const struct midr_range erratum_spec_ssbs_list[] = {
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_A715),
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A720),
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A725),
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
+@@ -450,6 +451,7 @@ static const struct midr_range erratum_spec_ssbs_list[] = {
+ 	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
++	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N3),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
+-- 
+2.43.0
+
 
 
 
