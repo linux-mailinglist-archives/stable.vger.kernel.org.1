@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-82657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297B9994DD1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 163DD994967
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:23:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BEF11C250E3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7DBA284CFB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900451DED65;
-	Tue,  8 Oct 2024 13:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDA01DED64;
+	Tue,  8 Oct 2024 12:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2oIsOKzn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K37br7pP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8C71DE4CC;
-	Tue,  8 Oct 2024 13:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFD7165F08;
+	Tue,  8 Oct 2024 12:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392985; cv=none; b=jlw8Mh+nCECSlPCYxWk2J4xt5McoEuRNseioSfXE6Wq8Pbps2L/Z1n7687Bggn270CWM4NPh3oXVvVCrLAcCRVgYdkPgVg66ZvRpUge7bdnFX+4Bf4hdb3WgjsrBYt82UtMhL3NGNg9jvLnsD+5Eld9/8Qmw3z+rejHH/HCiK5M=
+	t=1728390134; cv=none; b=O2futMm3JcTJlvedzCb0k6/b0hvHfkOWD6UVjeiOH8PIrkbk99gEZl81z0+2g2Bdyvc/yzq1SbfyQO/iyGsXPHOkqDDgCchGx8M6VcHdSXOPpSywPG5X12xUvjN05dmP1c9prewDhv8GOV7Hjekr8S/gP5dpfc9Ag+zByqISL2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392985; c=relaxed/simple;
-	bh=vaZ/pAUdS+N1XtJo5RlieC8mw8NZIEqP9IFO0NRXTOk=;
+	s=arc-20240116; t=1728390134; c=relaxed/simple;
+	bh=VIDrS4QnIDXc6HHkTKXG9YfG8v78yD9pcNayHSJkYGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h48KMOR/SR3d8I28XeYlUvVRKZD5bWcq7VlQ0M/8PnZZNY9BZYgMnBCS8suv/byzQeGmEE2BjndHq+Efy9sOUXxkP8KyA6S1r5HUyF585HKGTsGZSkrvZgAh96Pu/MbuliC8b9GOAYbVjaW4vwKrVXoPZEyqcZ196kI+RzPVTgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2oIsOKzn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10DBC4CEC7;
-	Tue,  8 Oct 2024 13:09:44 +0000 (UTC)
+	 MIME-Version; b=toaHKgyafsW2G+qDeHqG37akHu0UPlfETNQrGwUR0oh0VPKDM9u8usbkHyjoXS+83WoDoyihOo8ChitxHtB9VEMdmkQ5WkjC2VUwZ0SdQXr1xC/EmhwMxD4us6coQC2zzfJbGqsJ01xrIIO7YFEMRh8sVYjISDKtRqCCgE4MEmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K37br7pP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49354C4CEC7;
+	Tue,  8 Oct 2024 12:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392985;
-	bh=vaZ/pAUdS+N1XtJo5RlieC8mw8NZIEqP9IFO0NRXTOk=;
+	s=korg; t=1728390134;
+	bh=VIDrS4QnIDXc6HHkTKXG9YfG8v78yD9pcNayHSJkYGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2oIsOKznn+4bO00OGZzMHc278C7JBxFR12dXlwSfRTp7AvctEdlQrgXIARfBz7fi/
-	 tJZi/eM1YTz0ICeLNIYFWuyhaDkb3U9Te169dnxBzQ4AOVqBKm+zmRW39wRHQyUxOL
-	 eT+t8rvtdEWXhazb08auihrHaJcyMf5D4CJy24pc=
+	b=K37br7pPG1FdYkpwj/yWgd7CtjtT7+Lst0pReoJuMQ7vDf8J8kkj4vscqqU+EnDw0
+	 RqBj9Bk3xgEPExAnDxFZCIFVuJvQMtVlrexwVIFY4tMrDGmdpwOjUlP5URGRHqzCLj
+	 OdFeqp87UsKAOB3Cwll4K4wyMDvE/q6PFypgaGqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/386] net: wwan: qcom_bam_dmux: Fix missing pm_runtime_disable()
+Subject: [PATCH 6.10 201/482] drm/msm/adreno: Assign msm_gpu->pdev earlier to avoid nullptrs
 Date: Tue,  8 Oct 2024 14:04:24 +0200
-Message-ID: <20241008115630.081005212@linuxfoundation.org>
+Message-ID: <20241008115656.220261734@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit d505d3593b52b6c43507f119572409087416ba28 ]
+[ Upstream commit 16007768551d5bfe53426645401435ca8d2ef54f ]
 
-It's important to undo pm_runtime_use_autosuspend() with
-pm_runtime_dont_use_autosuspend() at driver exit time.
+There are some cases, such as the one uncovered by Commit 46d4efcccc68
+("drm/msm/a6xx: Avoid a nullptr dereference when speedbin setting fails")
+where
 
-But the pm_runtime_disable() and pm_runtime_dont_use_autosuspend()
-is missing in the error path for bam_dmux_probe(). So add it.
+msm_gpu_cleanup() : platform_set_drvdata(gpu->pdev, NULL);
 
-Found by code review. Compile-tested only.
+is called on gpu->pdev == NULL, as the GPU device has not been fully
+initialized yet.
 
-Fixes: 21a0ffd9b38c ("net: wwan: Add Qualcomm BAM-DMUX WWAN network driver")
-Suggested-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Turns out that there's more than just the aforementioned path that
+causes this to happen (e.g. the case when there's speedbin data in the
+catalog, but opp-supported-hw is missing in DT).
+
+Assigning msm_gpu->pdev earlier seems like the least painful solution
+to this, therefore do so.
+
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/602742/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/qcom_bam_dmux.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/adreno/adreno_gpu.c | 1 +
+ drivers/gpu/drm/msm/msm_gpu.c           | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
-index 17d46f4d29139..174a9156b3233 100644
---- a/drivers/net/wwan/qcom_bam_dmux.c
-+++ b/drivers/net/wwan/qcom_bam_dmux.c
-@@ -823,17 +823,17 @@ static int bam_dmux_probe(struct platform_device *pdev)
- 	ret = devm_request_threaded_irq(dev, pc_ack_irq, NULL, bam_dmux_pc_ack_irq,
- 					IRQF_ONESHOT, NULL, dmux);
- 	if (ret)
--		return ret;
-+		goto err_disable_pm;
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+index d5d9361e11aa5..8e8f55225e1ea 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+@@ -1079,6 +1079,7 @@ int adreno_gpu_init(struct drm_device *drm, struct platform_device *pdev,
+ 	adreno_gpu->chip_id = config->chip_id;
  
- 	ret = devm_request_threaded_irq(dev, dmux->pc_irq, NULL, bam_dmux_pc_irq,
- 					IRQF_ONESHOT, NULL, dmux);
- 	if (ret)
--		return ret;
-+		goto err_disable_pm;
+ 	gpu->allow_relocs = config->info->family < ADRENO_6XX_GEN1;
++	gpu->pdev = pdev;
  
- 	ret = irq_get_irqchip_state(dmux->pc_irq, IRQCHIP_STATE_LINE_LEVEL,
- 				    &dmux->pc_state);
- 	if (ret)
--		return ret;
-+		goto err_disable_pm;
+ 	/* Only handle the core clock when GMU is not in use (or is absent). */
+ 	if (adreno_has_gmu_wrapper(adreno_gpu) ||
+diff --git a/drivers/gpu/drm/msm/msm_gpu.c b/drivers/gpu/drm/msm/msm_gpu.c
+index cd185b9636d26..56b6de049bd7b 100644
+--- a/drivers/gpu/drm/msm/msm_gpu.c
++++ b/drivers/gpu/drm/msm/msm_gpu.c
+@@ -929,7 +929,6 @@ int msm_gpu_init(struct drm_device *drm, struct platform_device *pdev,
+ 	if (IS_ERR(gpu->gpu_cx))
+ 		gpu->gpu_cx = NULL;
  
- 	/* Check if remote finished initialization before us */
- 	if (dmux->pc_state) {
-@@ -844,6 +844,11 @@ static int bam_dmux_probe(struct platform_device *pdev)
- 	}
+-	gpu->pdev = pdev;
+ 	platform_set_drvdata(pdev, &gpu->adreno_smmu);
  
- 	return 0;
-+
-+err_disable_pm:
-+	pm_runtime_disable(dev);
-+	pm_runtime_dont_use_autosuspend(dev);
-+	return ret;
- }
- 
- static int bam_dmux_remove(struct platform_device *pdev)
+ 	msm_devfreq_init(gpu);
 -- 
 2.43.0
 
