@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-81928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B8BA994A30
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED7D994CDA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 009FE1F220C6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 570621C250FC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31D31DED74;
-	Tue,  8 Oct 2024 12:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D09A1DF975;
+	Tue,  8 Oct 2024 12:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9vFnHTE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gjf4tvtG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DF616FF26;
-	Tue,  8 Oct 2024 12:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3AA1DE89D;
+	Tue,  8 Oct 2024 12:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390610; cv=none; b=QVCN1yrKnigxAXrmCJN71/ycwdkwD0RDqvubBnJf4OlOBtoOkPE9d12fN2O9/AreS3Emfx/Gav9f38/PZSoCkFdRMfYibk9rb47/7PZDhhhBHW+H7+W3huw/17Ri5urZ5uPY5EdBf0YLSXC2OPgGkN+N12ApjIGkC0ob48wfWFc=
+	t=1728392296; cv=none; b=c1QiYOS3q/YR+TgGIKk6w8Kf1aSG6UgNMtlhCJsA5/O84fasFBetk08GXy7Esv9WrmhQuaYmRotqV8HP9JDCjqnyXHUpbGwV60bPEAF5Ls+y7By/TqI13rMxzU63XwzRqHMQIQjd96rUgNWWhpOSTffLGuwjnZ3xT0RgjWO5f8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390610; c=relaxed/simple;
-	bh=jf8Lovz9RuWrLAhsSUmOhga/MGu3uhXLrDhHgcuYFIA=;
+	s=arc-20240116; t=1728392296; c=relaxed/simple;
+	bh=C7iGIHDpD1kJIkMPoK1zyEORLcflsUUJctma+Mh8jVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgsQwrCOKPGT4kM6C9GA8twJAE8nYb31HTm9gmejb0vYlwv0Ys/7kjgf2ZzgtVUQjczor5l8Sbk+g377Zv45vvohM4eYqkp8Y/48ik356GFgVX06fz/uD/hqSmym/OnaiSN1LqXnH1t9AFtHH+gfqPZGRc1op0Oiuz6Te9dSclg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B9vFnHTE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4645C4CEC7;
-	Tue,  8 Oct 2024 12:30:09 +0000 (UTC)
+	 MIME-Version; b=HfMXC82hFpmR2zYJpZxR1UEZoxTFV5K+aEZCoRrhB1jY6hEV/+H68Gl5DRZIAE7FLvai2LqjKWj59oHzK29sEOyOoCiXWx7YV8YyyBH4l+SjUwzhCF+WiTLYUSenKFokBiwlUOs36vOhJRVfa/9UaWo6Tmb1HQsbBdUKF5rkyFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gjf4tvtG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAEEC4CECC;
+	Tue,  8 Oct 2024 12:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390610;
-	bh=jf8Lovz9RuWrLAhsSUmOhga/MGu3uhXLrDhHgcuYFIA=;
+	s=korg; t=1728392295;
+	bh=C7iGIHDpD1kJIkMPoK1zyEORLcflsUUJctma+Mh8jVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B9vFnHTEyxwkrWNTTyZW4goM1zHWN4KEU9O/s2epLEBaCKscvXW3G+MfrxRvGvgAT
-	 6s8Kxz+9+HQJkQdyy7B3TDKm12FW8Tyh1Tf6TUCDEQ/agFMwK1hGJ9/9EjKW0/g3IB
-	 9AZMu7p3tRmdU3vmhsFFGlbgbSr4nX7/Y8MrijUg=
+	b=Gjf4tvtG632Wcwb+kxyOmbut21GWQGq3r/C1MDv6vTzGgVlWfEHNKvTY/999sYwJL
+	 gbR0ZCU2697QMhSNIiV0J2YhaSEuXbvTwHsRhRdgji/bp2hSd7BC8KjsYO5N4A77zb
+	 YT1IsE3plEjkm/CiQF4SriPUQW3rREXTLlyHilI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.10 339/482] ext4: mark fc as ineligible using an handle in ext4_xattr_set()
+	Baojun Xu <baojun.xu@ti.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.11 372/558] ALSA: hda/tas2781: Add new quirk for Lenovo Y990 Laptop
 Date: Tue,  8 Oct 2024 14:06:42 +0200
-Message-ID: <20241008115701.765736694@linuxfoundation.org>
+Message-ID: <20241008115716.934667015@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+From: Baojun Xu <baojun.xu@ti.com>
 
-commit 04e6ce8f06d161399e5afde3df5dcfa9455b4952 upstream.
+commit 49f5ee951f11f4d6a124f00f71b2590507811a55 upstream.
 
-Calling ext4_fc_mark_ineligible() with a NULL handle is racy and may result
-in a fast-commit being done before the filesystem is effectively marked as
-ineligible.  This patch moves the call to this function so that an handle
-can be used.  If a transaction fails to start, then there's not point in
-trying to mark the filesystem as ineligible, and an error will eventually be
-returned to user-space.
+Add new vendor_id and subsystem_id in quirk for Lenovo Y990 Laptop.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240923104909.18342-3-luis.henriques@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Signed-off-by: Baojun Xu <baojun.xu@ti.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240919075743.259-1-baojun.xu@ti.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -2559,6 +2559,8 @@ retry:
- 
- 		error = ext4_xattr_set_handle(handle, inode, name_index, name,
- 					      value, value_len, flags);
-+		ext4_fc_mark_ineligible(inode->i_sb, EXT4_FC_REASON_XATTR,
-+					handle);
- 		error2 = ext4_journal_stop(handle);
- 		if (error == -ENOSPC &&
- 		    ext4_should_retry_alloc(sb, &retries))
-@@ -2566,7 +2568,6 @@ retry:
- 		if (error == 0)
- 			error = error2;
- 	}
--	ext4_fc_mark_ineligible(inode->i_sb, EXT4_FC_REASON_XATTR, NULL);
- 
- 	return error;
- }
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10892,6 +10892,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x17aa, 0x38cd, "Y790 VECO DUAL", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x38d2, "Lenovo Yoga 9 14IMH9", ALC287_FIXUP_YOGA9_14IMH9_BASS_SPK_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x38d7, "Lenovo Yoga 9 14IMH9", ALC287_FIXUP_YOGA9_14IMH9_BASS_SPK_PIN),
++	SND_PCI_QUIRK(0x17aa, 0x38df, "Y990 YG DUAL", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x38f9, "Thinkbook 16P Gen5", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x38fa, "Thinkbook 16P Gen5", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x3902, "Lenovo E50-80", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
 
 
 
