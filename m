@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-82383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3755F994C8D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:55:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A46479949A7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:26:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 541D3B24E1E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5F0E1C24A9E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C906A1DE4CC;
-	Tue,  8 Oct 2024 12:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B3533981;
+	Tue,  8 Oct 2024 12:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xxid14ib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+XxoxBo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B8D1CCB32;
-	Tue,  8 Oct 2024 12:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355FD1DF27C;
+	Tue,  8 Oct 2024 12:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392073; cv=none; b=igiBnRK5vghWTFo6HwtFHCejgg8Ud53S96JYqXKAIF2hYqlTulbJbyjO5d0No8CqjO4n0MwnItd2NK1cBCq9E/jwHuu6yQxjLawmvuM63mcPIC5WQZ3u7gjkzzgB/aPfbVdbmJzGdpwPbBoJzamFxEDzRvpJe5NXkh6b+SZcInI=
+	t=1728390282; cv=none; b=a/1SJ8P0MT6zgBJm38RoUQoje4bstU80b/1QoBG/I2QrYfhEzWwgpRuCa4xctuasQDZJNI2VDJNcnjPzGsY9vmP7k5H60prZORIra7M4eiNQTl3khvbaMiRrldHloBQuID4+rvZZ3xkGR0ZnVIzXIKs1pYCMQNPRe3Lb+Of1pLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392073; c=relaxed/simple;
-	bh=Zhuptf/IQLTJ6+C/WqFgwZBMOLQv40FALk46AFguEhA=;
+	s=arc-20240116; t=1728390282; c=relaxed/simple;
+	bh=2dxySYWyf4Z9YW3D5OpQbiONkQmgPSFEH+PWce8+rZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+TKrr2/e5vwBwd3uVLaGCunCoVNuihJxx3tFNWcdYgC+z7hZFzls+NSsUnG5e4x5rZ0lqrn0wfV9IlAK2HAEIW6rWHfi7eWTW+Td+uWnXqqC58UoQ9gHDsN4NmabyRr2D3yvJXcwVydTBLT/Zp9ExzpJwKu3TIga6MzpsAYNB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xxid14ib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83015C4CEC7;
-	Tue,  8 Oct 2024 12:54:32 +0000 (UTC)
+	 MIME-Version; b=ZzHWUszKhB6Pha4WbEyAsqpvCA4gP1TqmbKPPNgrgMmoDOADXyT5IP26PlpU779K50IREA3DDth7BcGWsMxIC+9fsaBvhGupMc5fGD9hF9h0YQc4YKcQRG+Az4ol+1DEAHC+Nxj0xIE2/ffIk2m03asMkFtP+Wfb2nXkrSUTf2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+XxoxBo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76F8C4CECC;
+	Tue,  8 Oct 2024 12:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392073;
-	bh=Zhuptf/IQLTJ6+C/WqFgwZBMOLQv40FALk46AFguEhA=;
+	s=korg; t=1728390282;
+	bh=2dxySYWyf4Z9YW3D5OpQbiONkQmgPSFEH+PWce8+rZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xxid14ibPAyDpH9yxlYFBXe3qNU77lSGPAFy/cE9usFE13jDqBNMl0rdEmMafvgCI
-	 m6RaSQcinP10us4becIP4Iw21ZosOGTJF3K0n2QrlTEhGo8JzoW18r0CIc2ELohPQd
-	 4JThP3vku6DR4vVIG//5cvM1aMfPxZ44R4nxWgu4=
+	b=X+XxoxBoBubGcr0mPi18GfDeTydIkUPA2M2v9gqTsZ7ZlkFdtfBugjJAcYFkSoSko
+	 bwCT3hNOH3aPKwfxLnAZZyyc/p7JsoSTDe++pX7paPQxksIOg0Qca34mbrOkclgnmG
+	 vyjYOHB6fSKgUu9nNyBrbUqc8DNgvx/pe2+eI1p4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Zhu Jun <zhujun2@cmss.chinamobile.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 277/558] perf: Fix event_function_call() locking
+Subject: [PATCH 6.10 244/482] tools/hv: Add memory allocation check in hv_fcopy_start
 Date: Tue,  8 Oct 2024 14:05:07 +0200
-Message-ID: <20241008115713.229414317@linuxfoundation.org>
+Message-ID: <20241008115657.897962956@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Zhu Jun <zhujun2@cmss.chinamobile.com>
 
-[ Upstream commit 558abc7e3f895049faa46b08656be4c60dc6e9fd ]
+[ Upstream commit 94e86b174d103d941b4afc4f016af8af9e5352fa ]
 
-All the event_function/@func call context already uses perf_ctx_lock()
-except for the !ctx->is_active case. Make it all consistent.
+Added error handling for memory allocation failures
+of file_name and path_name.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240807115550.138301094@infradead.org
+Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
+Reviewed-by: Dexuan Cui <decui@microsoft.com>
+Tested-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20240906091333.11419-1-zhujun2@cmss.chinamobile.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240906091333.11419-1-zhujun2@cmss.chinamobile.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ tools/hv/hv_fcopy_uio_daemon.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index b21c8f24a9876..4339df585d42d 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -263,6 +263,7 @@ static int event_function(void *info)
- static void event_function_call(struct perf_event *event, event_f func, void *data)
- {
- 	struct perf_event_context *ctx = event->ctx;
-+	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
- 	struct task_struct *task = READ_ONCE(ctx->task); /* verified in event_function */
- 	struct event_function_struct efs = {
- 		.event = event,
-@@ -291,22 +292,22 @@ static void event_function_call(struct perf_event *event, event_f func, void *da
- 	if (!task_function_call(task, event_function, &efs))
- 		return;
+diff --git a/tools/hv/hv_fcopy_uio_daemon.c b/tools/hv/hv_fcopy_uio_daemon.c
+index 3ce316cc9f970..7a00f3066a980 100644
+--- a/tools/hv/hv_fcopy_uio_daemon.c
++++ b/tools/hv/hv_fcopy_uio_daemon.c
+@@ -296,6 +296,13 @@ static int hv_fcopy_start(struct hv_start_fcopy *smsg_in)
+ 	file_name = (char *)malloc(file_size * sizeof(char));
+ 	path_name = (char *)malloc(path_size * sizeof(char));
  
--	raw_spin_lock_irq(&ctx->lock);
-+	perf_ctx_lock(cpuctx, ctx);
- 	/*
- 	 * Reload the task pointer, it might have been changed by
- 	 * a concurrent perf_event_context_sched_out().
- 	 */
- 	task = ctx->task;
- 	if (task == TASK_TOMBSTONE) {
--		raw_spin_unlock_irq(&ctx->lock);
-+		perf_ctx_unlock(cpuctx, ctx);
- 		return;
- 	}
- 	if (ctx->is_active) {
--		raw_spin_unlock_irq(&ctx->lock);
-+		perf_ctx_unlock(cpuctx, ctx);
- 		goto again;
- 	}
- 	func(event, NULL, ctx, data);
--	raw_spin_unlock_irq(&ctx->lock);
-+	perf_ctx_unlock(cpuctx, ctx);
- }
++	if (!file_name || !path_name) {
++		free(file_name);
++		free(path_name);
++		syslog(LOG_ERR, "Can't allocate memory for file name and/or path name");
++		return HV_E_FAIL;
++	}
++
+ 	wcstoutf8(file_name, (__u16 *)in_file_name, file_size);
+ 	wcstoutf8(path_name, (__u16 *)in_path_name, path_size);
  
- /*
 -- 
 2.43.0
 
