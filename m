@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-82490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA7BC994D0A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F352994A32
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 517311F22482
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61AA31C24C09
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A7B1DED43;
-	Tue,  8 Oct 2024 13:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F881DACBE;
+	Tue,  8 Oct 2024 12:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPBanz6Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mv5OfBoh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0C21DE4DB;
-	Tue,  8 Oct 2024 13:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68483190663;
+	Tue,  8 Oct 2024 12:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392439; cv=none; b=oDTgKRVLtX8gcxtfzqtRfRv0FnyW0XIgEFP6vqpAuTdHYU6WW3dpWLbc3YIVh0LKpzNRD5pn0ZRhfs1zEYs6jDHiIS3oRUemCVPhJIgIZIBrD64jXsaIND5KTRNCH8XaQq6qDl72X+9iqEvwDKGGeexaNEmPzmLRwvwFEkDYfFE=
+	t=1728390617; cv=none; b=NWS7S+Ys3Ho510IaSVooIQNK+/oe+kyk+ehW2LA+QkxECS9SUGq3GR+vrpVn5O654jCiVLFoscJWgOEEJjD5XNRVdAzp8Kqu6TcPy+I3Xm76qVudtRO5MeEXDfAK52IBCQ6zGxPiAui6iILyiMi9ij14AXXYDZ1m+ZaGHwhqH7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392439; c=relaxed/simple;
-	bh=vAd+eaGIAxt9AtvOGMWvTsf2d2zeZtxkTrHvgckPMiw=;
+	s=arc-20240116; t=1728390617; c=relaxed/simple;
+	bh=iLWVpuh7ZDLJF8mciL5Xzxk1+bUt+UjulFw4klEHgV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WtnPiWQufUkAW7aQV0EBB76iSU7Q8pylMgFQ11lObgcZsk11/ROO2JYtwmqR7Lv1a2LDDGrZdr3OJC3wiwd/Um5aNdO/OEi1vuZM/Jprga7CozuDyZZ8O6m+8C5I03/sh77rpgsdM77CnbU/29atohn9h4v8dmZknRsFO9+TCec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPBanz6Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE0CC4CEC7;
-	Tue,  8 Oct 2024 13:00:38 +0000 (UTC)
+	 MIME-Version; b=oaH6a8ealVgXmzFhjjyER9uggiFY07DjOs0wna0Uky7AYNhHPIw/ajz+FH70YOBSQS1JtElJ8k8QPp5mv9WQnit0oTQEWM/hLCvPqJaERKqfTCHIQ0eF0fqth1nqQDqt8dHKbzfOgA11WmeOH4qwwShPs3oXRtQUDwtbGl7n2pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mv5OfBoh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7837DC4CEC7;
+	Tue,  8 Oct 2024 12:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392438;
-	bh=vAd+eaGIAxt9AtvOGMWvTsf2d2zeZtxkTrHvgckPMiw=;
+	s=korg; t=1728390617;
+	bh=iLWVpuh7ZDLJF8mciL5Xzxk1+bUt+UjulFw4klEHgV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hPBanz6Q6zelf5y5a9WUh0vY++zqYiRhzSUt1usQC6NPoMe1lR1Npla61MHJuolg8
-	 iBLFp68rTQddIGHZPdOjqgrnbZicrqZGShG6BNW2sviswp93iJRXKaVGJe/IFB00ZY
-	 TGkTM0jQkKO1osa5YrHZTD9MLx5E5sPjfnwczRmc=
+	b=mv5OfBohBF5VnSttgMgsdKrizDH9TvVoqYxM7sf9COU1fQLY3SWZpnwKo4vPPgIbm
+	 6/IeYFZTmb6MU6m+4V58ppboDixg5LAreg597NMGfm95LhC2zOVKLAwir+g+tC8I4B
+	 AwAzNH2KHPHTJ9ITOgzs9R7KY8I2hYHFH4vAtWcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lianqin Hu <hulianqin@vivo.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.11 374/558] ALSA: usb-audio: Add delay quirk for VIVO USB-C HEADSET
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.10 341/482] parisc: Fix 64-bit userspace syscall path
 Date: Tue,  8 Oct 2024 14:06:44 +0200
-Message-ID: <20241008115717.012503863@linuxfoundation.org>
+Message-ID: <20241008115701.843106513@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +60,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lianqin Hu <hulianqin@vivo.com>
+From: Helge Deller <deller@kernel.org>
 
-commit 73385f3e0d8088b715ae8f3f66d533c482a376ab upstream.
+commit d24449864da5838936669618356b0e30ca2999c3 upstream.
 
-Audio control requests that sets sampling frequency sometimes fail on
-this card. Adding delay between control messages eliminates that problem.
+Currently the glibc isn't yet ported to 64-bit for hppa, so
+there is no usable userspace available yet.
+But it's possible to manually build a static 64-bit binary
+and run that for testing. One such 64-bit test program is
+available at http://ftp.parisc-linux.org/src/64bit.tar.gz
+and it shows various issues with the existing 64-bit syscall
+path in the kernel.
+This patch fixes those issues.
 
-Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/TYUPR06MB62177E629E9DEF2401333BF7D2692@TYUPR06MB6217.apcprd06.prod.outlook.com
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org      # v4.19+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/parisc/kernel/syscall.S |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2279,6 +2279,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
- 	DEVICE_FLG(0x2b53, 0x0031, /* Fiero SC-01 (firmware v1.1.0) */
- 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
-+	DEVICE_FLG(0x2d95, 0x8011, /* VIVO USB-C HEADSET */
-+		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x2d95, 0x8021, /* VIVO USB-C-XE710 HEADSET */
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x30be, 0x0101, /* Schiit Hel */
+--- a/arch/parisc/kernel/syscall.S
++++ b/arch/parisc/kernel/syscall.S
+@@ -243,10 +243,10 @@ linux_gateway_entry:
+ 
+ #ifdef CONFIG_64BIT
+ 	ldil	L%sys_call_table, %r1
+-	or,=	%r2,%r2,%r2
+-	addil	L%(sys_call_table64-sys_call_table), %r1
++	or,ev	%r2,%r2,%r2
++	ldil	L%sys_call_table64, %r1
+ 	ldo	R%sys_call_table(%r1), %r19
+-	or,=	%r2,%r2,%r2
++	or,ev	%r2,%r2,%r2
+ 	ldo	R%sys_call_table64(%r1), %r19
+ #else
+ 	load32	sys_call_table, %r19
+@@ -379,10 +379,10 @@ tracesys_next:
+ 	extrd,u	%r19,63,1,%r2			/* W hidden in bottom bit */
+ 
+ 	ldil	L%sys_call_table, %r1
+-	or,=	%r2,%r2,%r2
+-	addil	L%(sys_call_table64-sys_call_table), %r1
++	or,ev	%r2,%r2,%r2
++	ldil	L%sys_call_table64, %r1
+ 	ldo	R%sys_call_table(%r1), %r19
+-	or,=	%r2,%r2,%r2
++	or,ev	%r2,%r2,%r2
+ 	ldo	R%sys_call_table64(%r1), %r19
+ #else
+ 	load32	sys_call_table, %r19
+@@ -1327,6 +1327,8 @@ ENTRY(sys_call_table)
+ END(sys_call_table)
+ 
+ #ifdef CONFIG_64BIT
++#undef __SYSCALL_WITH_COMPAT
++#define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, native)
+ 	.align 8
+ ENTRY(sys_call_table64)
+ #include <asm/syscall_table_64.h>    /* 64-bit syscalls */
 
 
 
