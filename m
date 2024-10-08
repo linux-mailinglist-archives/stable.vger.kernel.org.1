@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-82217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6625B994BB6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:46:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C7559948AA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:15:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14730283582
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:46:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 936AA283A15
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC101DEFD6;
-	Tue,  8 Oct 2024 12:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466D0165F08;
+	Tue,  8 Oct 2024 12:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3OPkuyz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EIhcCvbd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3811DE898;
-	Tue,  8 Oct 2024 12:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0299617B4EC;
+	Tue,  8 Oct 2024 12:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391532; cv=none; b=OYS5PogND9tFvXid1PeMtQoKClxCcC0mNH+av82JzwpZl+1r6HC2NQaT8Dyw1BTlzAzjOJfDlqjLm8D6G0XX30uQXH3FQ8dPtoQnngl9xLjtz322//5IlR/DpOcUspcfFVhwuvLrdy1h6ttpPey2LKkKzYTfa65o9/cZXv0Ptgo=
+	t=1728389731; cv=none; b=KAWLQUwfHw8teFjwaRq4J75RedyNfshz2Liy+clQaLUjCphLTloCk4Bt3uOf3gESvNwZpwgOIauwhVIKO5H8El07JAlQTttWvTu5XZcbdeFhVvAbau23mkRIJsq/C+TU1EtFsd6DeHdkVdNAA9rQYARYi6YWGBTpU6Z25v0ZWx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391532; c=relaxed/simple;
-	bh=1JNG30GcwJtzLEZ9kH1DepijJd/0X7daWbwbvkhintM=;
+	s=arc-20240116; t=1728389731; c=relaxed/simple;
+	bh=9ujRXkhPuxnEOaB0tq2JJlvhOUg2gTjkYoGu0I3DliU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tnk1fCjooHYi6Bk11xDSp5MNCVNq1YCVkfIU8c7+O5xKSEchmRSONQu64vGBSQ3PYdvdGpXP/FFheRDE3YzL1EW1wdTqSRx2nPYtlG3H4XqiaEmFS98xVAeqYKZg8io0TCusbrlvSy+R9ForihnKXvYxyJqebjhq3t4Ta/EbxuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3OPkuyz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EFAC4CEC7;
-	Tue,  8 Oct 2024 12:45:31 +0000 (UTC)
+	 MIME-Version; b=K1LrX47SHl2faw10STZIQ7S1tCKgDP4h4K5BtJLys+SUXRvox2G51Vey9vcUCxd7lJgED1RT0kNGboUGLnhkEiqyW64C27lSHrDkHOGqmInQICG76dDD+8nvm8oIhS8wEPqY5P4ULUbRx3hyyKUr82zgA0GB0RZxTWddDUnK+qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EIhcCvbd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65802C4CEC7;
+	Tue,  8 Oct 2024 12:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391532;
-	bh=1JNG30GcwJtzLEZ9kH1DepijJd/0X7daWbwbvkhintM=;
+	s=korg; t=1728389730;
+	bh=9ujRXkhPuxnEOaB0tq2JJlvhOUg2gTjkYoGu0I3DliU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O3OPkuyzRZzLcyjNRS1F1/DcsQYZlJ66VN6ZI5FLViBisYH5TwWoFd/xcfleEUh2+
-	 6at7+LVR7DuL0k2yIazZPz2Ag+2Ty57Jv26jx3npkVUJhO+oQHLSb62SpuLUtIG29i
-	 H2/hFaGFHBLZPUuU8DtGcgIChHPYJTk98YW5iLeA=
+	b=EIhcCvbdCSHR4/Lz7I/Tt2nPEU6Z23ybDvOs7j+NKEies1x2aLhHwuhmXbJMDq63j
+	 vhdpPifBKWjh7PYqZBUphbrHR2xMpXdwRcekFLxXmZ0OXqOqMWP+b0Ttqpr0s9DhvQ
+	 n43L9EaqVIdwLlUjF5YEX4GQBC2OaTon87YxSIqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Konstantin Ovsepian <ovs@ovs.to>,
-	Tejun Heo <tj@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 112/558] blk_iocost: fix more out of bound shifts
+Subject: [PATCH 6.10 079/482] wifi: iwlwifi: mvm: drop wrong STA selection in TX
 Date: Tue,  8 Oct 2024 14:02:22 +0200
-Message-ID: <20241008115706.773079385@linuxfoundation.org>
+Message-ID: <20241008115651.415133092@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Ovsepian <ovs@ovs.to>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 9bce8005ec0dcb23a58300e8522fe4a31da606fa ]
+[ Upstream commit 1c7e1068a7c9c39ed27636db93e71911e0045419 ]
 
-Recently running UBSAN caught few out of bound shifts in the
-ioc_forgive_debts() function:
+This shouldn't happen at all, since in station mode all MMPDUs
+go through the TXQ for the STA, and not this function. There
+may or may not be a race in mac80211 through which this might
+happen for some frames while a station is being added, but in
+that case we can also just drop the frame and pretend the STA
+didn't exist yet.
 
-UBSAN: shift-out-of-bounds in block/blk-iocost.c:2142:38
-shift exponent 80 is too large for 64-bit type 'u64' (aka 'unsigned long
-long')
-...
-UBSAN: shift-out-of-bounds in block/blk-iocost.c:2144:30
-shift exponent 80 is too large for 64-bit type 'u64' (aka 'unsigned long
-long')
-...
-Call Trace:
-<IRQ>
-dump_stack_lvl+0xca/0x130
-__ubsan_handle_shift_out_of_bounds+0x22c/0x280
-? __lock_acquire+0x6441/0x7c10
-ioc_timer_fn+0x6cec/0x7750
-? blk_iocost_init+0x720/0x720
-? call_timer_fn+0x5d/0x470
-call_timer_fn+0xfa/0x470
-? blk_iocost_init+0x720/0x720
-__run_timer_base+0x519/0x700
-...
+Also, the code is simply wrong since it uses deflink, and it's
+not easy to fix it since the mvmvif->ap_sta pointer cannot be
+used without the mutex, and perhaps the right link might not
+even be known.
 
-Actual impact of this issue was not identified but I propose to fix the
-undefined behaviour.
-The proposed fix to prevent those out of bound shifts consist of
-precalculating exponent before using it the shift operations by taking
-min value from the actual exponent and maximum possible number of bits.
+Just drop the frame at that point instead of trying to fix it
+up.
 
-Reported-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Konstantin Ovsepian <ovs@ovs.to>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20240822154137.2627818-1-ovs@ovs.to
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240808232017.45ad105dc7fe.I6d45c82e5758395d9afb8854057ded03c7dc81d7@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-iocost.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c    | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
 
-diff --git a/block/blk-iocost.c b/block/blk-iocost.c
-index 690ca99dfaca6..5a6098a3db57e 100644
---- a/block/blk-iocost.c
-+++ b/block/blk-iocost.c
-@@ -2076,7 +2076,7 @@ static void ioc_forgive_debts(struct ioc *ioc, u64 usage_us_sum, int nr_debtors,
- 			      struct ioc_now *now)
- {
- 	struct ioc_gq *iocg;
--	u64 dur, usage_pct, nr_cycles;
-+	u64 dur, usage_pct, nr_cycles, nr_cycles_shift;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 83551d962a46c..6673a4e467c0b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -834,20 +834,10 @@ void iwl_mvm_mac_tx(struct ieee80211_hw *hw,
+ 	if (ieee80211_is_mgmt(hdr->frame_control))
+ 		sta = NULL;
  
- 	/* if no debtor, reset the cycle */
- 	if (!nr_debtors) {
-@@ -2138,10 +2138,12 @@ static void ioc_forgive_debts(struct ioc *ioc, u64 usage_us_sum, int nr_debtors,
- 		old_debt = iocg->abs_vdebt;
- 		old_delay = iocg->delay;
+-	/* If there is no sta, and it's not offchannel - send through AP */
++	/* this shouldn't even happen: just drop */
+ 	if (!sta && info->control.vif->type == NL80211_IFTYPE_STATION &&
+-	    !offchannel) {
+-		struct iwl_mvm_vif *mvmvif =
+-			iwl_mvm_vif_from_mac80211(info->control.vif);
+-		u8 ap_sta_id = READ_ONCE(mvmvif->deflink.ap_sta_id);
+-
+-		if (ap_sta_id < mvm->fw->ucode_capa.num_stations) {
+-			/* mac80211 holds rcu read lock */
+-			sta = rcu_dereference(mvm->fw_id_to_mac_id[ap_sta_id]);
+-			if (IS_ERR_OR_NULL(sta))
+-				goto drop;
+-		}
+-	}
++	    !offchannel)
++		goto drop;
  
-+		nr_cycles_shift = min_t(u64, nr_cycles, BITS_PER_LONG - 1);
- 		if (iocg->abs_vdebt)
--			iocg->abs_vdebt = iocg->abs_vdebt >> nr_cycles ?: 1;
-+			iocg->abs_vdebt = iocg->abs_vdebt >> nr_cycles_shift ?: 1;
-+
- 		if (iocg->delay)
--			iocg->delay = iocg->delay >> nr_cycles ?: 1;
-+			iocg->delay = iocg->delay >> nr_cycles_shift ?: 1;
- 
- 		iocg_kick_waitq(iocg, true, now);
- 
+ 	if (tmp_sta && !sta && link_id != IEEE80211_LINK_UNSPECIFIED &&
+ 	    !ieee80211_is_probe_resp(hdr->frame_control)) {
 -- 
 2.43.0
 
