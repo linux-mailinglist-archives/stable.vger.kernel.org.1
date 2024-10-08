@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70B51994E1A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:13:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2588C994C59
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BA9F1F2235B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:13:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A73E71F24A67
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECC01DF256;
-	Tue,  8 Oct 2024 13:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8F11DED48;
+	Tue,  8 Oct 2024 12:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYLRqfpD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQ6nRm7Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D68E1DED4E;
-	Tue,  8 Oct 2024 13:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA021DE3A3;
+	Tue,  8 Oct 2024 12:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393150; cv=none; b=WvSjuo0l1iWNNiZgWYQDddFpa1J77/UKKGyykBduz2HeAKRphiqCRzdyS9OWKOKG4K8lTNgmZvd9PANOktPJeUQE/yUjfvMWw6m4hZhGKxOflktO1rMiCz3MabILw/wnEsZEqOxVPMAV09MIYIRUhbR9ys2ml9cnQQE3oquVDgg=
+	t=1728391991; cv=none; b=rged2P5rnMftslMiLeYL/5w7V/qf5SdPHN+dBy8p5NhUjVPK/m5Gm9thC9y82edb0PLevvEtp6ATr7Jl+PEE+Vwkw4F8Nbxau5Gb9CShzlKuNmQ63T+O8le5XB47UXBh/eB2FtNKEdeIrLwNa6eDNv30dxAz7NryQ4Cv9XqYpMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393150; c=relaxed/simple;
-	bh=4ZhM/JRUdnyxkEic7EoSPw2wC6aq2NtccoaoOkfANDc=;
+	s=arc-20240116; t=1728391991; c=relaxed/simple;
+	bh=GdKCUcKNb5ZjxTRk935UxUFhXwSVjVNHCOpvhTYEPeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TVkP/nHfLUaVCg/dq7rXBizlOdrGGLPxmocg/VnKDO2280D7YZXer49K2TzQFRDPLbZV+rlHANavyOmk6gK1rdg8e3/HibLcAj30n9372rUiyJCbOKsLsHPGJJqOaM1GrtleuMuGfS+CYJhUBcv/kzkSfEyYDGG0NkqBRGZ5Tyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYLRqfpD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137CBC4CECD;
-	Tue,  8 Oct 2024 13:12:28 +0000 (UTC)
+	 MIME-Version; b=TTLPWN+CKyrCBw2gGJHFys1yGJJQOK6MWSuhQU+mERBKt0Q+vdHrLG7nwbykmnZyH8xsPHBmoacG1bEh20VXEykpUMX9Ii8/u551M67QgXRcMYKLzPbm/0PvbdXib078yE144QNRlZfL/QFLlufi7wTzXoEczx3bOXhY4utRvmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQ6nRm7Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B0A9C4CEC7;
+	Tue,  8 Oct 2024 12:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393149;
-	bh=4ZhM/JRUdnyxkEic7EoSPw2wC6aq2NtccoaoOkfANDc=;
+	s=korg; t=1728391990;
+	bh=GdKCUcKNb5ZjxTRk935UxUFhXwSVjVNHCOpvhTYEPeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EYLRqfpDgEcW+JCdrHB/bV4QP5YWkhZhFLYNpNGg5dVLl22vdnHiBznOI7fMDKHkH
-	 00zJioGtsXIhqCNlzWkz0VZdfeTxBZL+eoUMP0Qc7EjfYHA51A+I/SVvNtwfe5Owum
-	 bKD5cn/erQndSqzH6LppncV+xnTKzDnNn2ZjCrEk=
+	b=TQ6nRm7ZADsehW9MfAKUb7kSWrAIDTdENB4r2CV9g10ck4F5M7Ds6E2AHWfwYYL8C
+	 aHBB2GoXmvMhikAE33il62yI0cyhtSl8/sFTolA10mhTZvz7S3llWsIZl0B4RLPKEi
+	 Wtk6lK2C+RgJnvmCTGV1B6q9PkCn/fhqTyPK6N6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Victor Skvortsov <victor.skvortsov@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/386] net: hisilicon: hns_dsaf_mac: fix OF node leak in hns_mac_get_info()
-Date: Tue,  8 Oct 2024 14:05:13 +0200
-Message-ID: <20241008115632.140568529@linuxfoundation.org>
+Subject: [PATCH 6.11 284/558] drm/amdgpu: Block MMR_READ IOCTL in reset
+Date: Tue,  8 Oct 2024 14:05:14 +0200
+Message-ID: <20241008115713.502501451@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Victor Skvortsov <victor.skvortsov@amd.com>
 
-[ Upstream commit 5680cf8d34e1552df987e2f4bb1bff0b2a8c8b11 ]
+[ Upstream commit 9e823f307074c0f82b5f6044943b0086e3079bed ]
 
-Driver is leaking OF node reference from
-of_parse_phandle_with_fixed_args() in hns_mac_get_info().
+Register access from userspace should be blocked until
+reset is complete.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240827144421.52852-3-krzysztof.kozlowski@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Victor Skvortsov <victor.skvortsov@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 43 ++++++++++++++++++-------
+ 1 file changed, 31 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-index f75668c479351..616a2768e5048 100644
---- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-+++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-@@ -933,6 +933,7 @@ static int hns_mac_get_info(struct hns_mac_cb *mac_cb)
- 			mac_cb->cpld_ctrl = NULL;
- 		} else {
- 			syscon = syscon_node_to_regmap(cpld_args.np);
-+			of_node_put(cpld_args.np);
- 			if (IS_ERR_OR_NULL(syscon)) {
- 				dev_dbg(mac_cb->dev, "no cpld-syscon found!\n");
- 				mac_cb->cpld_ctrl = NULL;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+index 66782be5917b9..96af9ff1acb67 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -43,6 +43,7 @@
+ #include "amdgpu_gem.h"
+ #include "amdgpu_display.h"
+ #include "amdgpu_ras.h"
++#include "amdgpu_reset.h"
+ #include "amd_pcie.h"
+ 
+ void amdgpu_unregister_gpu_instance(struct amdgpu_device *adev)
+@@ -778,6 +779,7 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 				    ? -EFAULT : 0;
+ 	}
+ 	case AMDGPU_INFO_READ_MMR_REG: {
++		int ret = 0;
+ 		unsigned int n, alloc_size;
+ 		uint32_t *regs;
+ 		unsigned int se_num = (info->read_mmr_reg.instance >>
+@@ -787,24 +789,37 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 				   AMDGPU_INFO_MMR_SH_INDEX_SHIFT) &
+ 				  AMDGPU_INFO_MMR_SH_INDEX_MASK;
+ 
++		if (!down_read_trylock(&adev->reset_domain->sem))
++			return -ENOENT;
++
+ 		/* set full masks if the userspace set all bits
+ 		 * in the bitfields
+ 		 */
+-		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK)
++		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK) {
+ 			se_num = 0xffffffff;
+-		else if (se_num >= AMDGPU_GFX_MAX_SE)
+-			return -EINVAL;
+-		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK)
++		} else if (se_num >= AMDGPU_GFX_MAX_SE) {
++			ret = -EINVAL;
++			goto out;
++		}
++
++		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK) {
+ 			sh_num = 0xffffffff;
+-		else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE)
+-			return -EINVAL;
++		} else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE) {
++			ret = -EINVAL;
++			goto out;
++		}
+ 
+-		if (info->read_mmr_reg.count > 128)
+-			return -EINVAL;
++		if (info->read_mmr_reg.count > 128) {
++			ret = -EINVAL;
++			goto out;
++		}
+ 
+ 		regs = kmalloc_array(info->read_mmr_reg.count, sizeof(*regs), GFP_KERNEL);
+-		if (!regs)
+-			return -ENOMEM;
++		if (!regs) {
++			ret = -ENOMEM;
++			goto out;
++		}
++
+ 		alloc_size = info->read_mmr_reg.count * sizeof(*regs);
+ 
+ 		amdgpu_gfx_off_ctrl(adev, false);
+@@ -816,13 +831,17 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 					      info->read_mmr_reg.dword_offset + i);
+ 				kfree(regs);
+ 				amdgpu_gfx_off_ctrl(adev, true);
+-				return -EFAULT;
++				ret = -EFAULT;
++				goto out;
+ 			}
+ 		}
+ 		amdgpu_gfx_off_ctrl(adev, true);
+ 		n = copy_to_user(out, regs, min(size, alloc_size));
+ 		kfree(regs);
+-		return n ? -EFAULT : 0;
++		ret = (n ? -EFAULT : 0);
++out:
++		up_read(&adev->reset_domain->sem);
++		return ret;
+ 	}
+ 	case AMDGPU_INFO_DEV_INFO: {
+ 		struct drm_amdgpu_info_device *dev_info;
 -- 
 2.43.0
 
