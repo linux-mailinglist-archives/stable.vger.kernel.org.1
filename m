@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-82652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6469994DCD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2A6299498E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:25:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8C3E1C25285
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8109D286536
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6031DED65;
-	Tue,  8 Oct 2024 13:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A344B1DEFEF;
+	Tue,  8 Oct 2024 12:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLK/82EW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUM8sMih"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0F91C9B99;
-	Tue,  8 Oct 2024 13:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD8C190663;
+	Tue,  8 Oct 2024 12:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392972; cv=none; b=ZmMsD5cEK2Qt7gcr/vIo3gqio0o2RM7V6QYcRneSzZ9LEcqIigXeU+Bf7dDrpnm2ylAn1/S4KZESKLhyaTIgORsaojJlmjNIMmlgA37ZjplrHJxa9cdlLxB+fXhJFYWMgjUtS9+C08rpqKzjkPGcKDgrSlPSisfj7RVGd1cB+68=
+	t=1728390229; cv=none; b=otR8os2nTolQk5yy5G/zlzerTda6ms5l6mKN82NL3zo1thfeDWLggBoduI6MK7GATL12LciaXbUOLqhk/BF/DHCWsqIEBJtgGiUuNdcP8OeKxC04NxgrnCZl2E1bk3foSW7aGLZv2TmpfFxBovLlU2+CqQWcouNvIllbhx4YCNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392972; c=relaxed/simple;
-	bh=Pw+PDkLD+bLLqA6GKNbPpeAELzU8JZaNN9EsePp4g5g=;
+	s=arc-20240116; t=1728390229; c=relaxed/simple;
+	bh=k7MxNI7nYRXY6j+9DJ0s5+bjO5VMgCwSzxwZ/1UfvAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Os67t9lygKpWjjqABdaP+ilrXEw4pvGb8ICzjM21AnXOuA/YEnkBgFVcz/9NEFOLGY/1OkNxb4+aMK8PhjN3mqO05z0NIZX5aTn1KTC6Kr5wQWl9UmncIl9Q+IQ2C8nReXv3YX0ZDnkPXQctBL0oo6h4a6se2DxxI9VHXwx/q1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLK/82EW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BFDC4CEC7;
-	Tue,  8 Oct 2024 13:09:30 +0000 (UTC)
+	 MIME-Version; b=NSP9MxRuuRoUmkkgeayiFdnsG/NmeWwmUsn84ygWZ69HrTgGfkTHlQJi/ETYgjjJczjpBaMZpbm+fJ308g0seOSOqverNSMQeb6lkEicvrcl1gm4iKLziZIh1pOCOXBRMHEPXRgPepmHB0lBcQUzNlUWDh2fXCe0/XbsJPJKLB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUM8sMih; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31B1C4CEC7;
+	Tue,  8 Oct 2024 12:23:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392971;
-	bh=Pw+PDkLD+bLLqA6GKNbPpeAELzU8JZaNN9EsePp4g5g=;
+	s=korg; t=1728390229;
+	bh=k7MxNI7nYRXY6j+9DJ0s5+bjO5VMgCwSzxwZ/1UfvAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VLK/82EWsDp+S2pklVjmZeNovQpC+8T5XRWPJRJwjeitkpXGACBDnJSPu+LuPepzB
-	 FZEQpqzGZkSdO6fjo6B56MMhifYps2cb2dm9W3SFU7c1SiOl7JwCcaswX43zEIkXj2
-	 3CO8SQD+S+Mi+Ss9RVaEUK8XGFaZHogc++U9NK9E=
+	b=QUM8sMihyqp1A5TPM0ckI1QZDzw4qa4JEjwrWBFx+OR2LSnz9GLl2yoqTmTqsnEP5
+	 Z4rJFOqiEIonffYhDp4u8hfanG4aaKbArsa8wnejusJaMB8lvvSchr86LfYMs6iYgY
+	 DQgq7jwFrUh0kLidiPnTnA88X9aLVNH7DmMPVpXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elena Salomatkina <esalomatkina@ispras.ru>,
-	Simon Horman <horms@kernel.org>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/386] net/mlx5e: Fix NULL deref in mlx5e_tir_builder_alloc()
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+3c010e21296f33a5dc16@syzkaller.appspotmail.com
+Subject: [PATCH 6.10 197/482] jfs: Fix uaf in dbFreeBits
 Date: Tue,  8 Oct 2024 14:04:20 +0200
-Message-ID: <20241008115629.922367277@linuxfoundation.org>
+Message-ID: <20241008115656.060956693@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,46 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elena Salomatkina <esalomatkina@ispras.ru>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit f25389e779500cf4a59ef9804534237841bce536 ]
+[ Upstream commit d6c1b3599b2feb5c7291f5ac3a36e5fa7cedb234 ]
 
-In mlx5e_tir_builder_alloc() kvzalloc() may return NULL
-which is dereferenced on the next line in a reference
-to the modify field.
+[syzbot reported]
+==================================================================
+BUG: KASAN: slab-use-after-free in __mutex_lock_common kernel/locking/mutex.c:587 [inline]
+BUG: KASAN: slab-use-after-free in __mutex_lock+0xfe/0xd70 kernel/locking/mutex.c:752
+Read of size 8 at addr ffff8880229254b0 by task syz-executor357/5216
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+CPU: 0 UID: 0 PID: 5216 Comm: syz-executor357 Not tainted 6.11.0-rc3-syzkaller-00156-gd7a5aa4b3c00 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/27/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:93 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:119
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ __mutex_lock_common kernel/locking/mutex.c:587 [inline]
+ __mutex_lock+0xfe/0xd70 kernel/locking/mutex.c:752
+ dbFreeBits+0x7ea/0xd90 fs/jfs/jfs_dmap.c:2390
+ dbFreeDmap fs/jfs/jfs_dmap.c:2089 [inline]
+ dbFree+0x35b/0x680 fs/jfs/jfs_dmap.c:409
+ dbDiscardAG+0x8a9/0xa20 fs/jfs/jfs_dmap.c:1650
+ jfs_ioc_trim+0x433/0x670 fs/jfs/jfs_discard.c:100
+ jfs_ioctl+0x2d0/0x3e0 fs/jfs/ioctl.c:131
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:907 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
 
-Fixes: a6696735d694 ("net/mlx5e: Convert TIR to a dedicated object")
-Signed-off-by: Elena Salomatkina <esalomatkina@ispras.ru>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Freed by task 5218:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+ kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:579
+ poison_slab_object+0xe0/0x150 mm/kasan/common.c:240
+ __kasan_slab_free+0x37/0x60 mm/kasan/common.c:256
+ kasan_slab_free include/linux/kasan.h:184 [inline]
+ slab_free_hook mm/slub.c:2252 [inline]
+ slab_free mm/slub.c:4473 [inline]
+ kfree+0x149/0x360 mm/slub.c:4594
+ dbUnmount+0x11d/0x190 fs/jfs/jfs_dmap.c:278
+ jfs_mount_rw+0x4ac/0x6a0 fs/jfs/jfs_mount.c:247
+ jfs_remount+0x3d1/0x6b0 fs/jfs/super.c:454
+ reconfigure_super+0x445/0x880 fs/super.c:1083
+ vfs_cmd_reconfigure fs/fsopen.c:263 [inline]
+ vfs_fsconfig_locked fs/fsopen.c:292 [inline]
+ __do_sys_fsconfig fs/fsopen.c:473 [inline]
+ __se_sys_fsconfig+0xb6e/0xf80 fs/fsopen.c:345
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+[Analysis]
+There are two paths (dbUnmount and jfs_ioc_trim) that generate race
+condition when accessing bmap, which leads to the occurrence of uaf.
+
+Use the lock s_umount to synchronize them, in order to avoid uaf caused
+by race condition.
+
+Reported-and-tested-by: syzbot+3c010e21296f33a5dc16@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/tir.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/jfs/jfs_discard.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tir.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tir.c
-index d4239e3b3c88e..11f724ad90dbf 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tir.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tir.c
-@@ -23,6 +23,9 @@ struct mlx5e_tir_builder *mlx5e_tir_builder_alloc(bool modify)
- 	struct mlx5e_tir_builder *builder;
+diff --git a/fs/jfs/jfs_discard.c b/fs/jfs/jfs_discard.c
+index 575cb2ba74fc8..5f4b305030ad5 100644
+--- a/fs/jfs/jfs_discard.c
++++ b/fs/jfs/jfs_discard.c
+@@ -65,7 +65,7 @@ void jfs_issue_discard(struct inode *ip, u64 blkno, u64 nblocks)
+ int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
+ {
+ 	struct inode *ipbmap = JFS_SBI(ip->i_sb)->ipbmap;
+-	struct bmap *bmp = JFS_SBI(ip->i_sb)->bmap;
++	struct bmap *bmp;
+ 	struct super_block *sb = ipbmap->i_sb;
+ 	int agno, agno_end;
+ 	u64 start, end, minlen;
+@@ -83,10 +83,15 @@ int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
+ 	if (minlen == 0)
+ 		minlen = 1;
  
- 	builder = kvzalloc(sizeof(*builder), GFP_KERNEL);
-+	if (!builder)
-+		return NULL;
++	down_read(&sb->s_umount);
++	bmp = JFS_SBI(ip->i_sb)->bmap;
 +
- 	builder->modify = modify;
+ 	if (minlen > bmp->db_agsize ||
+ 	    start >= bmp->db_mapsize ||
+-	    range->len < sb->s_blocksize)
++	    range->len < sb->s_blocksize) {
++		up_read(&sb->s_umount);
+ 		return -EINVAL;
++	}
  
- 	return builder;
+ 	if (end >= bmp->db_mapsize)
+ 		end = bmp->db_mapsize - 1;
+@@ -100,6 +105,8 @@ int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
+ 		trimmed += dbDiscardAG(ip, agno, minlen);
+ 		agno++;
+ 	}
++
++	up_read(&sb->s_umount);
+ 	range->len = trimmed << sb->s_blocksize_bits;
+ 
+ 	return 0;
 -- 
 2.43.0
 
