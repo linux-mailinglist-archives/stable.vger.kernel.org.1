@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-81850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9104E9949C4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2416994C3D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:52:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 494DF283733
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B72F1F21E33
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40AA01DE8AA;
-	Tue,  8 Oct 2024 12:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B4F1DE89F;
+	Tue,  8 Oct 2024 12:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ow2lfwo8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZ2mAX0X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DF51E485;
-	Tue,  8 Oct 2024 12:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12FB1DE894;
+	Tue,  8 Oct 2024 12:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390346; cv=none; b=lBsxEQiyj5p5sN65b7DfFq36iYuRcF9IHivIYYaFabGSlqocDC3T28fWPXINoSYDX5mCRcpaIQI2zEuKaM4nuOnXMyQTTUb/ePNklfomgdrQ5WOEM8c51CJxhCItbxZ/zwwM/utO7yfhepKz4iHB2PtAK9AnFTKx9BKCQW44aVo=
+	t=1728391927; cv=none; b=Lq7YnQ58vSxdy75KkWnAtQ16vdbScBxAQjeKu7faP+esoO66arU87XZdz1qrCcrC+1ak/VUmLI1YGnpqfw3AgTG2ysz5f2ASQydoqFVL1QJ6PnfIa8C+FvsSMA4r12aGOv8DSk5Bkc0nfOh0YNa+J/vuQVOWNm9pjfPz58bK4J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390346; c=relaxed/simple;
-	bh=7y4qNc7zTS9uzbpa+3/egFh4VFSXlYrsIP8kttxDYU4=;
+	s=arc-20240116; t=1728391927; c=relaxed/simple;
+	bh=1u+0ttHz+7NDENB79nkC/dtUPm2OA1tYYkVBizwFKtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=caYw4m5o+RRZ9f4zOHkDHgSemI3CMWWjU8lZTl1bNy5Xoe37jRzo4umtq46o7ea4DmAMKF1ACfOHGEyxQyteS/sggu3IwYE2y6ZoYV1Zw+JesVtGTYzh5rDUkLdHqT2t3DcDuKRQsWOPL9sYW8Deqd1AWCe3rRPTzxhSE4fndMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ow2lfwo8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66894C4CECE;
-	Tue,  8 Oct 2024 12:25:45 +0000 (UTC)
+	 MIME-Version; b=Hd1H8pWEyF+wLmw4Lmuh3KjEgu10kTYxAeSF3tfs4cavhHyNx4NGycRdLKmte/I/qg0+LrtgJCJt6BAjPsr+1+7+wovyl3Ut46HHT4tGsg5jYHQjNjtD88TrbGb96SRROGhB6pN2tTQUCYOpWmx4X7T8Oy+mL2rbfk5bQNwp/m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZ2mAX0X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEDBC4CEC7;
+	Tue,  8 Oct 2024 12:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390345;
-	bh=7y4qNc7zTS9uzbpa+3/egFh4VFSXlYrsIP8kttxDYU4=;
+	s=korg; t=1728391927;
+	bh=1u+0ttHz+7NDENB79nkC/dtUPm2OA1tYYkVBizwFKtw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ow2lfwo8cPTufRAmG5HIaCud5YEkWuNBQHcCvvulYlVcyyT7sR1K99sE+AnF18Lc+
-	 JmvZJy8+3vqLHRtVd8I2IoFNImbQRxsWuN7Pe2zfuk4MGGHUTZ5VjNrUr2fWkh7G3a
-	 HfJ7Zd1TtSCBCkRSrJWEJZPTOLNErs8OGwnmoDlI=
+	b=iZ2mAX0XcSXYgz/y3VINZEhAG2pH/C83eAdmx4Guigmrcv0xn7uir8puWApYhJfl0
+	 7kJedBAFKJLagNJATp7jgjX81ftgJQWSkzDluoGyyIyre5z3/sbkoLBoA7GW+/U7dA
+	 hWMDd9+ISvkHrAzPqefnwRNYvF+J30elPpqsYbEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Alex Hung <alex.hung@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 230/482] drm/radeon/r100: Handle unknown family in r100_cp_init_microcode()
-Date: Tue,  8 Oct 2024 14:04:53 +0200
-Message-ID: <20241008115657.354224421@linuxfoundation.org>
+Subject: [PATCH 6.11 264/558] drm/amd/display: Fix possible overflow in integer multiplication
+Date: Tue,  8 Oct 2024 14:04:54 +0200
+Message-ID: <20241008115712.721823692@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,142 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit c6dbab46324b1742b50dc2fb5c1fee2c28129439 ]
+[ Upstream commit 3f96f545f877ac59d0c967f52d760b4b2b3b9a47 ]
 
-With -Werror:
+[WHAT & HOW]
+Integer multiplies integer may overflow in context that expects an
+expression of unsigned long long (64 bits). This can be fixed by casting
+integer to unsigned long long to force 64 bits results.
 
-    In function ‘r100_cp_init_microcode’,
-	inlined from ‘r100_cp_init’ at drivers/gpu/drm/radeon/r100.c:1136:7:
-    include/linux/printk.h:465:44: error: ‘%s’ directive argument is null [-Werror=format-overflow=]
-      465 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
-	  |                                            ^
-    include/linux/printk.h:437:17: note: in definition of macro ‘printk_index_wrap’
-      437 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
-	  |                 ^~~~~~~
-    include/linux/printk.h:508:9: note: in expansion of macro ‘printk’
-      508 |         printk(KERN_ERR pr_fmt(fmt), ##__VA_ARGS__)
-	  |         ^~~~~~
-    drivers/gpu/drm/radeon/r100.c:1062:17: note: in expansion of macro ‘pr_err’
-     1062 |                 pr_err("radeon_cp: Failed to load firmware \"%s\"\n", fw_name);
-	  |                 ^~~~~~
+This fixes 2 OVERFLOW_BEFORE_WIDEN issues reported by Coverity.
 
-Fix this by converting the if/else if/... construct into a proper
-switch() statement with a default to handle the error case.
-
-As a bonus, the generated code is ca. 100 bytes smaller (with gcc 11.4.0
-targeting arm32).
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/r100.c | 70 ++++++++++++++++++++++-------------
- 1 file changed, 45 insertions(+), 25 deletions(-)
+ .../amd/display/dc/resource/dcn32/dcn32_resource_helpers.c    | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/r100.c b/drivers/gpu/drm/radeon/r100.c
-index 0b1e19345f43a..bfd42e3e161e9 100644
---- a/drivers/gpu/drm/radeon/r100.c
-+++ b/drivers/gpu/drm/radeon/r100.c
-@@ -1016,45 +1016,65 @@ static int r100_cp_init_microcode(struct radeon_device *rdev)
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource_helpers.c b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource_helpers.c
+index 47c8a9fbe7546..f5a4e97c40ced 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource_helpers.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource_helpers.c
+@@ -663,7 +663,7 @@ bool dcn32_subvp_drr_admissable(struct dc *dc, struct dc_state *context)
  
- 	DRM_DEBUG_KMS("\n");
+ 				subvp_disallow |= disallow_subvp_in_active_plus_blank(pipe);
+ 				refresh_rate = (pipe->stream->timing.pix_clk_100hz * (uint64_t)100 +
+-					pipe->stream->timing.v_total * pipe->stream->timing.h_total - (uint64_t)1);
++					pipe->stream->timing.v_total * (unsigned long long)pipe->stream->timing.h_total - (uint64_t)1);
+ 				refresh_rate = div_u64(refresh_rate, pipe->stream->timing.v_total);
+ 				refresh_rate = div_u64(refresh_rate, pipe->stream->timing.h_total);
+ 			}
+@@ -724,7 +724,7 @@ bool dcn32_subvp_vblank_admissable(struct dc *dc, struct dc_state *context, int
  
--	if ((rdev->family == CHIP_R100) || (rdev->family == CHIP_RV100) ||
--	    (rdev->family == CHIP_RV200) || (rdev->family == CHIP_RS100) ||
--	    (rdev->family == CHIP_RS200)) {
-+	switch (rdev->family) {
-+	case CHIP_R100:
-+	case CHIP_RV100:
-+	case CHIP_RV200:
-+	case CHIP_RS100:
-+	case CHIP_RS200:
- 		DRM_INFO("Loading R100 Microcode\n");
- 		fw_name = FIRMWARE_R100;
--	} else if ((rdev->family == CHIP_R200) ||
--		   (rdev->family == CHIP_RV250) ||
--		   (rdev->family == CHIP_RV280) ||
--		   (rdev->family == CHIP_RS300)) {
-+		break;
-+
-+	case CHIP_R200:
-+	case CHIP_RV250:
-+	case CHIP_RV280:
-+	case CHIP_RS300:
- 		DRM_INFO("Loading R200 Microcode\n");
- 		fw_name = FIRMWARE_R200;
--	} else if ((rdev->family == CHIP_R300) ||
--		   (rdev->family == CHIP_R350) ||
--		   (rdev->family == CHIP_RV350) ||
--		   (rdev->family == CHIP_RV380) ||
--		   (rdev->family == CHIP_RS400) ||
--		   (rdev->family == CHIP_RS480)) {
-+		break;
-+
-+	case CHIP_R300:
-+	case CHIP_R350:
-+	case CHIP_RV350:
-+	case CHIP_RV380:
-+	case CHIP_RS400:
-+	case CHIP_RS480:
- 		DRM_INFO("Loading R300 Microcode\n");
- 		fw_name = FIRMWARE_R300;
--	} else if ((rdev->family == CHIP_R420) ||
--		   (rdev->family == CHIP_R423) ||
--		   (rdev->family == CHIP_RV410)) {
-+		break;
-+
-+	case CHIP_R420:
-+	case CHIP_R423:
-+	case CHIP_RV410:
- 		DRM_INFO("Loading R400 Microcode\n");
- 		fw_name = FIRMWARE_R420;
--	} else if ((rdev->family == CHIP_RS690) ||
--		   (rdev->family == CHIP_RS740)) {
-+		break;
-+
-+	case CHIP_RS690:
-+	case CHIP_RS740:
- 		DRM_INFO("Loading RS690/RS740 Microcode\n");
- 		fw_name = FIRMWARE_RS690;
--	} else if (rdev->family == CHIP_RS600) {
-+		break;
-+
-+	case CHIP_RS600:
- 		DRM_INFO("Loading RS600 Microcode\n");
- 		fw_name = FIRMWARE_RS600;
--	} else if ((rdev->family == CHIP_RV515) ||
--		   (rdev->family == CHIP_R520) ||
--		   (rdev->family == CHIP_RV530) ||
--		   (rdev->family == CHIP_R580) ||
--		   (rdev->family == CHIP_RV560) ||
--		   (rdev->family == CHIP_RV570)) {
-+		break;
-+
-+	case CHIP_RV515:
-+	case CHIP_R520:
-+	case CHIP_RV530:
-+	case CHIP_R580:
-+	case CHIP_RV560:
-+	case CHIP_RV570:
- 		DRM_INFO("Loading R500 Microcode\n");
- 		fw_name = FIRMWARE_R520;
-+		break;
-+
-+	default:
-+		DRM_ERROR("Unsupported Radeon family %u\n", rdev->family);
-+		return -EINVAL;
- 	}
- 
- 	err = request_firmware(&rdev->me_fw, fw_name, rdev->dev);
+ 				subvp_disallow |= disallow_subvp_in_active_plus_blank(pipe);
+ 				refresh_rate = (pipe->stream->timing.pix_clk_100hz * (uint64_t)100 +
+-					pipe->stream->timing.v_total * pipe->stream->timing.h_total - (uint64_t)1);
++					pipe->stream->timing.v_total * (unsigned long long)pipe->stream->timing.h_total - (uint64_t)1);
+ 				refresh_rate = div_u64(refresh_rate, pipe->stream->timing.v_total);
+ 				refresh_rate = div_u64(refresh_rate, pipe->stream->timing.h_total);
+ 			}
 -- 
 2.43.0
 
