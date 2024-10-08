@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24DBA994E58
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F0E994C41
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:52:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EBA7B2B0D1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37C1028406D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C56D1DF964;
-	Tue,  8 Oct 2024 13:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BC21DE89F;
+	Tue,  8 Oct 2024 12:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBrPpi2D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4WgiVLM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396361DE8BE;
-	Tue,  8 Oct 2024 13:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E311DE886;
+	Tue,  8 Oct 2024 12:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393242; cv=none; b=jEz72FvBIpq8LUErdFgaYFsa8hDRnz6I20Tub0Ybwguo8Y99PuSha3dzizVkFywtmyM6iQKjNzK0Jo8nzhVNsLZnhnQRyh39X54iMB6eHUKIkjgM4lEMXLtlgATmoxtSPgedC3dNBzbYCA1OxFl8cyqZ2kcEeuLnknSnDUT81pw=
+	t=1728391944; cv=none; b=Xnt9IJZK9iGXmdspHCE9MLvCbLLC4R1WBcIRI2F96iDr3TXLUwI6uaEDcTBJjsusYIGT7xR8JZplSk0SGBWmvB9tpudRax5sYqCV0P5dnslPR4HQ4qbtEJMVL2srfTsOPUuzbdCM6HLKkV8PwWbrO7lqvF4YTjV7PZKE46nvc4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393242; c=relaxed/simple;
-	bh=Pd9D6yZz41ULcAujBI3PeLcpFjFGXDQwqgORpX5zzak=;
+	s=arc-20240116; t=1728391944; c=relaxed/simple;
+	bh=u0fJzuB9GgG6QtjjXtd/UGlG3CW/1+5UELuAfN3Co7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rHXEvpNXB/X2Em8NLC75FbfuQ+vgGBh5jHduwcA92OQ4eHsNEnsXlNNRB510xh5IvsCiA70FrXmBi57aew8B6dvUYzndgaJ4Z8jKbW1mpqLeELbtWHe6h9NCyreuEf4iz9H3xxfjo7WSR5jdSjAsNDBa1s3DqqVRNfaDVDQocW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBrPpi2D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A022BC4CEC7;
-	Tue,  8 Oct 2024 13:14:01 +0000 (UTC)
+	 MIME-Version; b=YqOTy7flIhPZWBP4OiCTb0ZVazuK5tqc+oMaY34sbeEaohUmWAAcLc39qUBtGRspuRKqgOtbWtfchZomBRNLg8lg4iU13DmAo7UnjlBRjVJe+paQFP2zbKRrptGaIrvYmkxBOwSpZIyLI59wXF6RlFkOI28pGK3vOkZiZhEDHvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4WgiVLM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F72C4CEC7;
+	Tue,  8 Oct 2024 12:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393242;
-	bh=Pd9D6yZz41ULcAujBI3PeLcpFjFGXDQwqgORpX5zzak=;
+	s=korg; t=1728391944;
+	bh=u0fJzuB9GgG6QtjjXtd/UGlG3CW/1+5UELuAfN3Co7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sBrPpi2DliPxOH3MkiRMouMUQCLadFCO2nYkyQCf5EtvZ7OWopEjzBZOQ531w6PRh
-	 agpLL0tn92UazhoLfx89ydcymu1HRHBk9uhLWIg1UOIGoU6Ip72WZRVI2EtfLIcwRj
-	 6NOgc3P8tFiel90a+wcIsRXsK1oeRO1DJnANV9n8=
+	b=y4WgiVLMAwusiUK5IgpViFs7l74kUtYV1QlaViMj2x0nxRmPBMX2Q/qVy+1EMTWbx
+	 K9qubCChRDOZqWOvpiisxj9O9F5SwuYB4SKriggmHck2ZM7pvrjZ6ZpwY+5uN42EY3
+	 JLXQPIltZ6t4Nm3aSzFmEl3XdmzgWUL67bagXrs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/386] cifs: Do not convert delimiter when parsing NFS-style symlinks
+Subject: [PATCH 6.11 268/558] drm/printer: Allow NULL data in devcoredump printer
 Date: Tue,  8 Oct 2024 14:04:58 +0200
-Message-ID: <20241008115631.557162317@linuxfoundation.org>
+Message-ID: <20241008115712.877562184@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,148 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit d3a49f60917323228f8fdeee313260ef14f94df7 ]
+[ Upstream commit 53369581dc0c68a5700ed51e1660f44c4b2bb524 ]
 
-NFS-style symlinks have target location always stored in NFS/UNIX form
-where backslash means the real UNIX backslash and not the SMB path
-separator.
+We want to determine the size of the devcoredump before writing it out.
+To that end, we will run the devcoredump printer with NULL data to get
+the size, alloc data based on the generated offset, then run the
+devcorecump again with a valid data pointer to print.  This necessitates
+not writing data to the data pointer on the initial pass, when it is
+NULL.
 
-So do not mangle slash and backslash content of NFS-style symlink during
-readlink() syscall as it is already in the correct Linux form.
+v5:
+ - Better commit message (Jonathan)
+ - Add kerenl doc with examples (Jani)
 
-This fixes interoperability of NFS-style symlinks with backslashes created
-by Linux NFS3 client throw Windows NFS server and retrieved by Linux SMB
-client throw Windows SMB server, where both Windows servers exports the
-same directory.
-
-Fixes: d5ecebc4900d ("smb3: Allow query of symlinks stored as reparse points")
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Acked-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240801154118.2547543-3-matthew.brost@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/reparse.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/drm_print.c | 13 +++++----
+ include/drm/drm_print.h     | 54 ++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 61 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
-index cfa03c166de8c..ad0e0de9a165d 100644
---- a/fs/smb/client/reparse.c
-+++ b/fs/smb/client/reparse.c
-@@ -335,7 +335,6 @@ static int parse_reparse_posix(struct reparse_posix_data *buf,
- 							       cifs_sb->local_nls);
- 		if (!data->symlink_target)
- 			return -ENOMEM;
--		convert_delimiter(data->symlink_target, '/');
- 		cifs_dbg(FYI, "%s: target path: %s\n",
- 			 __func__, data->symlink_target);
- 		break;
+diff --git a/drivers/gpu/drm/drm_print.c b/drivers/gpu/drm/drm_print.c
+index cf24dfdeb6b27..0081190201a7f 100644
+--- a/drivers/gpu/drm/drm_print.c
++++ b/drivers/gpu/drm/drm_print.c
+@@ -100,8 +100,9 @@ void __drm_puts_coredump(struct drm_printer *p, const char *str)
+ 			copy = iterator->remain;
+ 
+ 		/* Copy out the bit of the string that we need */
+-		memcpy(iterator->data,
+-			str + (iterator->start - iterator->offset), copy);
++		if (iterator->data)
++			memcpy(iterator->data,
++			       str + (iterator->start - iterator->offset), copy);
+ 
+ 		iterator->offset = iterator->start + copy;
+ 		iterator->remain -= copy;
+@@ -110,7 +111,8 @@ void __drm_puts_coredump(struct drm_printer *p, const char *str)
+ 
+ 		len = min_t(ssize_t, strlen(str), iterator->remain);
+ 
+-		memcpy(iterator->data + pos, str, len);
++		if (iterator->data)
++			memcpy(iterator->data + pos, str, len);
+ 
+ 		iterator->offset += len;
+ 		iterator->remain -= len;
+@@ -140,8 +142,9 @@ void __drm_printfn_coredump(struct drm_printer *p, struct va_format *vaf)
+ 	if ((iterator->offset >= iterator->start) && (len < iterator->remain)) {
+ 		ssize_t pos = iterator->offset - iterator->start;
+ 
+-		snprintf(((char *) iterator->data) + pos,
+-			iterator->remain, "%pV", vaf);
++		if (iterator->data)
++			snprintf(((char *) iterator->data) + pos,
++				 iterator->remain, "%pV", vaf);
+ 
+ 		iterator->offset += len;
+ 		iterator->remain -= len;
+diff --git a/include/drm/drm_print.h b/include/drm/drm_print.h
+index 5d9dff5149c99..d2676831d765d 100644
+--- a/include/drm/drm_print.h
++++ b/include/drm/drm_print.h
+@@ -221,7 +221,8 @@ drm_vprintf(struct drm_printer *p, const char *fmt, va_list *va)
+ 
+ /**
+  * struct drm_print_iterator - local struct used with drm_printer_coredump
+- * @data: Pointer to the devcoredump output buffer
++ * @data: Pointer to the devcoredump output buffer, can be NULL if using
++ * drm_printer_coredump to determine size of devcoredump
+  * @start: The offset within the buffer to start writing
+  * @remain: The number of bytes to write for this iteration
+  */
+@@ -266,6 +267,57 @@ struct drm_print_iterator {
+  *			coredump_read, ...)
+  *	}
+  *
++ * The above example has a time complexity of O(N^2), where N is the size of the
++ * devcoredump. This is acceptable for small devcoredumps but scales poorly for
++ * larger ones.
++ *
++ * Another use case for drm_coredump_printer is to capture the devcoredump into
++ * a saved buffer before the dev_coredump() callback. This involves two passes:
++ * one to determine the size of the devcoredump and another to print it to a
++ * buffer. Then, in dev_coredump(), copy from the saved buffer into the
++ * devcoredump read buffer.
++ *
++ * For example::
++ *
++ *	char *devcoredump_saved_buffer;
++ *
++ *	ssize_t __coredump_print(char *buffer, ssize_t count, ...)
++ *	{
++ *		struct drm_print_iterator iter;
++ *		struct drm_printer p;
++ *
++ *		iter.data = buffer;
++ *		iter.start = 0;
++ *		iter.remain = count;
++ *
++ *		p = drm_coredump_printer(&iter);
++ *
++ *		drm_printf(p, "foo=%d\n", foo);
++ *		...
++ *		return count - iter.remain;
++ *	}
++ *
++ *	void coredump_print(...)
++ *	{
++ *		ssize_t count;
++ *
++ *		count = __coredump_print(NULL, INT_MAX, ...);
++ *		devcoredump_saved_buffer = kvmalloc(count, GFP_KERNEL);
++ *		__coredump_print(devcoredump_saved_buffer, count, ...);
++ *	}
++ *
++ *	void coredump_read(char *buffer, loff_t offset, size_t count,
++ *			   void *data, size_t datalen)
++ *	{
++ *		...
++ *		memcpy(buffer, devcoredump_saved_buffer + offset, count);
++ *		...
++ *	}
++ *
++ * The above example has a time complexity of O(N*2), where N is the size of the
++ * devcoredump. This scales better than the previous example for larger
++ * devcoredumps.
++ *
+  * RETURNS:
+  * The &drm_printer object
+  */
 -- 
 2.43.0
 
