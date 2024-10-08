@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-81951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34083994A46
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:31:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DFB2994CD2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC78F1F21DD3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:31:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6FC81F230D5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137A41DE4FA;
-	Tue,  8 Oct 2024 12:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F431DF73D;
+	Tue,  8 Oct 2024 12:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EELQk8CF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DltwGjxm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E151CEE8E;
-	Tue,  8 Oct 2024 12:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCD81DED60;
+	Tue,  8 Oct 2024 12:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390684; cv=none; b=PW33AANBYlAlXxNfW6VhnQJeiJU+fB2/Hay9oODeUdHhPAHCwSmtVoift6Tzw9thkUj3xg8+pghDpGFj12mQoFaDHLdFKcmd4eG1UOFNmt94QOYXg/PY8AdaGQDOakegoFUWsuhDa4VcJMDva9msQcnKJoTMJwDmtrDrkvBtOgQ=
+	t=1728392265; cv=none; b=HjofCGYDnuq25AzFewis1dF7f6iN2RSehc4Hk59RyG1kqVhZsq6dY/BURxHl9fIaWIHgQqQHIK9kIVxMISon5xfUEe1c22+3fAtYzNHFTX4BEVK36Y2AuFv0vYWCIWo5eEprnB31kFNrUaYwL8v92piowX+pxdS/roo9ElLGZzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390684; c=relaxed/simple;
-	bh=+lTlgmzgtPxxeRh0I7AWeszcSoDsjD8MWAu4WO7S2SE=;
+	s=arc-20240116; t=1728392265; c=relaxed/simple;
+	bh=SsqLOCF1c4Jkt5i37cymNIexji/3pyVh9be3C/6klgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IugZ7iR0f8eDoZ1hi6j4yDb2PrknRW9YxNagdZ3kGtEif3EvWR6O9fBV6AdIZv5b4GCtems5GQ/3gPEb8MxYdVAXjbd2LJpMHYyk29xBzPqvPjUNPhRmN+LSZ2VVa2bHoULTWBqypI6Fjft0HvP632xGicKPIhHDnv+LL7NfAY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EELQk8CF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ABF5C4CEC7;
-	Tue,  8 Oct 2024 12:31:24 +0000 (UTC)
+	 MIME-Version; b=e0DLLjv1kxkNKcbK09bjnEDQfqXeFyvZ5hSM7secGQR0Wo7gfK+SWrtNU6kLCjNV5XdsXgDdBtaJroM8tJ6RdmessCIX8w1KF2eq83pPYV+DBLEX5h3UlK+tTr9Rzxsi09yJKII/7iUihDdzdM/cnboyyARg6nZ2tYw3gsc9qag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DltwGjxm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD50C4CEC7;
+	Tue,  8 Oct 2024 12:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390684;
-	bh=+lTlgmzgtPxxeRh0I7AWeszcSoDsjD8MWAu4WO7S2SE=;
+	s=korg; t=1728392265;
+	bh=SsqLOCF1c4Jkt5i37cymNIexji/3pyVh9be3C/6klgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EELQk8CFI+PRugfr7zxoKIy7grVRAnO0xOWLbNIVqEfjaYhKYNCbi1KUbXhv6kir3
-	 p1euTxL7EZJCOyEuHQw7OOL+n9ibhZ1K7gxnI7cAsjiePijO/28gSfVayW9+ZaW+Mm
-	 Fy8dsxOMiF4/mTEBCKZuPBHyomPzlNh3r7UOTS5k=
+	b=DltwGjxm50WwfxiZ3WzLTuDoaIFSfEm3rWOmyzNJSYbTQJuLzpF4qB04J8RCmfMLu
+	 phozOY/nlcYU5UEuD0sJMAFeCl46S5I+h+y79YcUd6tfE66CS+J3H/au9i8NzW8S3P
+	 tokM1QVmK3WgPbFtT1PMC6ZTEUc8J1GdYsZxiWGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.10 331/482] ext4: fix double brelse() the buffer of the extents path
+	Hans de Goede <hdegoede@redhat.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.11 364/558] power: supply: hwmon: Fix missing temp1_max_alarm attribute
 Date: Tue,  8 Oct 2024 14:06:34 +0200
-Message-ID: <20241008115701.452781127@linuxfoundation.org>
+Message-ID: <20241008115716.621778461@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit dcaa6c31134c0f515600111c38ed7750003e1b9c upstream.
+commit e50a57d16f897e45de1112eb6478577b197fab52 upstream.
 
-In ext4_ext_try_to_merge_up(), set path[1].p_bh to NULL after it has been
-released, otherwise it may be released twice. An example of what triggers
-this is as follows:
+Temp channel 0 aka temp1 can have a temp1_max_alarm attribute for
+power_supply devices which have a POWER_SUPPLY_PROP_TEMP_ALERT_MAX
+property.
 
-  split2    map    split1
-|--------|-------|--------|
+HWMON_T_MAX_ALARM was missing from power_supply_hwmon_info for
+temp channel 0, causing the hwmon temp1_max_alarm attribute to be
+missing from such power_supply devices.
 
-ext4_ext_map_blocks
- ext4_ext_handle_unwritten_extents
-  ext4_split_convert_extents
-   // path->p_depth == 0
-   ext4_split_extent
-     // 1. do split1
-     ext4_split_extent_at
-       |ext4_ext_insert_extent
-       |  ext4_ext_create_new_leaf
-       |    ext4_ext_grow_indepth
-       |      le16_add_cpu(&neh->eh_depth, 1)
-       |    ext4_find_extent
-       |      // return -ENOMEM
-       |// get error and try zeroout
-       |path = ext4_find_extent
-       |  path->p_depth = 1
-       |ext4_ext_try_to_merge
-       |  ext4_ext_try_to_merge_up
-       |    path->p_depth = 0
-       |    brelse(path[1].p_bh)  ---> not set to NULL here
-       |// zeroout success
-     // 2. update path
-     ext4_find_extent
-     // 3. do split2
-     ext4_split_extent_at
-       ext4_ext_insert_extent
-         ext4_ext_create_new_leaf
-           ext4_ext_grow_indepth
-             le16_add_cpu(&neh->eh_depth, 1)
-           ext4_find_extent
-             path[0].p_bh = NULL;
-             path->p_depth = 1
-             read_extent_tree_block  ---> return err
-             // path[1].p_bh is still the old value
-             ext4_free_ext_path
-               ext4_ext_drop_refs
-                 // path->p_depth == 1
-                 brelse(path[1].p_bh)  ---> brelse a buffer twice
+Add this to power_supply_hwmon_info to fix this.
 
-Finally got the following WARRNING when removing the buffer from lru:
-
-============================================
-VFS: brelse: Trying to free free buffer
-WARNING: CPU: 2 PID: 72 at fs/buffer.c:1241 __brelse+0x58/0x90
-CPU: 2 PID: 72 Comm: kworker/u19:1 Not tainted 6.9.0-dirty #716
-RIP: 0010:__brelse+0x58/0x90
-Call Trace:
- <TASK>
- __find_get_block+0x6e7/0x810
- bdev_getblk+0x2b/0x480
- __ext4_get_inode_loc+0x48a/0x1240
- ext4_get_inode_loc+0xb2/0x150
- ext4_reserve_inode_write+0xb7/0x230
- __ext4_mark_inode_dirty+0x144/0x6a0
- ext4_ext_insert_extent+0x9c8/0x3230
- ext4_ext_map_blocks+0xf45/0x2dc0
- ext4_map_blocks+0x724/0x1700
- ext4_do_writepages+0x12d6/0x2a70
-[...]
-============================================
-
-Fixes: ecb94f5fdf4b ("ext4: collapse a single extent tree block into the inode if possible")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20240822023545.1994557-9-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: f1d33ae806ec ("power: supply: remove duplicated argument in power_supply_hwmon_info")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240908185337.103696-2-hdegoede@redhat.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/power/supply/power_supply_hwmon.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -1877,6 +1877,7 @@ static void ext4_ext_try_to_merge_up(han
- 	path[0].p_hdr->eh_max = cpu_to_le16(max_root);
+--- a/drivers/power/supply/power_supply_hwmon.c
++++ b/drivers/power/supply/power_supply_hwmon.c
+@@ -318,7 +318,8 @@ static const struct hwmon_channel_info *
+ 			   HWMON_T_INPUT     |
+ 			   HWMON_T_MAX       |
+ 			   HWMON_T_MIN       |
+-			   HWMON_T_MIN_ALARM,
++			   HWMON_T_MIN_ALARM |
++			   HWMON_T_MAX_ALARM,
  
- 	brelse(path[1].p_bh);
-+	path[1].p_bh = NULL;
- 	ext4_free_blocks(handle, inode, NULL, blk, 1,
- 			 EXT4_FREE_BLOCKS_METADATA | EXT4_FREE_BLOCKS_FORGET);
- }
+ 			   HWMON_T_LABEL     |
+ 			   HWMON_T_INPUT     |
 
 
 
