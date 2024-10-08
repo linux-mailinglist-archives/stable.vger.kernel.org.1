@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-81947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3446994A41
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:31:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF9D994E91
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 581E31F21990
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:31:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39A591F24EF2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A051DE3A2;
-	Tue,  8 Oct 2024 12:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3841DE89F;
+	Tue,  8 Oct 2024 13:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obLWCMxI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q2Qgl2cQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925CA1DA60C;
-	Tue,  8 Oct 2024 12:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6351DE4CC;
+	Tue,  8 Oct 2024 13:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390672; cv=none; b=qLu0L3vMTQFn6TnQD1PMa1acR9GIX5P4K4I8s0cBXYgnNOCeOca4FptjHbwMRRTlgtTP+eXhShf3yfu31+2Aj/Fz0v7LhR3S3F3VshsVw14Fn0/kTSFQVvgbij5n5ZVxE1y/bomrDaNYRTpj6uqYHVUXy/yHsdJsL/7dG3E19GI=
+	t=1728393510; cv=none; b=GlI/FefsyDGxk4VGNzY7KwrKFbQA86g6Zd+bSmrSzqXDm97B0q3evQt0bU8R5K08Ek6sgOjwU8qkxszo1U2clbRoWDzYryKf1+hywz1qGDl34BbxJ/t1f6VO2eNhh7646B2vvqGwSZSfE0jewkLewdzdcncOxjYFR09WHh2UcLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390672; c=relaxed/simple;
-	bh=Xh5DXJYxuCM8fJJqeYghHjQuHfAxQMTNGTCQlWRexBo=;
+	s=arc-20240116; t=1728393510; c=relaxed/simple;
+	bh=wBXBKUNyccLju50gagsWv+mKClgiqtv+G3QfWf4eEfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B0KnVEJYYh4OotfTLy+8QvfoqMh5Kqm64UaBsV+m8KmBlK9ojSuKOigpFxN7PokkRLVdTFXm7HUlUe9hSDmoU8Wjt0tMMl+qUxOqzaUNjxEbc5XxVqNqT5963B02XiJFNIcw+iCdPjjqtmShOebHfx2pMH2Pp6ptvY4kBFkR9mM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obLWCMxI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAE07C4CEC7;
-	Tue,  8 Oct 2024 12:31:11 +0000 (UTC)
+	 MIME-Version; b=ZGR2apeHaAINtB4fm0EuA2zAwAS2V/qVC4DvRahoC3SHovMxRRDRftiserLLcZER2PF59KQejy/NO59D044HLKlHewqKAhc8u/sxDSzU6DijhD9MeVjcHknM4u+5EObhCt9UFRAyvN7PPleJH+Y5opT/4bUm4XROUqv8spzNNKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q2Qgl2cQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1E5C4CEC7;
+	Tue,  8 Oct 2024 13:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390672;
-	bh=Xh5DXJYxuCM8fJJqeYghHjQuHfAxQMTNGTCQlWRexBo=;
+	s=korg; t=1728393510;
+	bh=wBXBKUNyccLju50gagsWv+mKClgiqtv+G3QfWf4eEfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=obLWCMxInZ8hQHMCKx/x+LKxWrkF5XKMfLlpx2xAMQmCWeBM0pXzaTTxQ4T7YkDx1
-	 +6TXdJCnqmtndti1CS7YsYZxTwTJx+3R+UgFxcRCyzumR3DYCgAqdcw0yjV6L2unxo
-	 Y8YNFW+5wPat+qnFs6uKRfzBFOTF6/XxRl2tgkvk=
+	b=q2Qgl2cQOFjKcl7HfoPjVMFndDrqo3OOh8KVQ/DvZ8jNsuZBg+sAGvr+8u3CO3AuE
+	 OmFBGPe+fIEG0HUifvs/odCM8SthOsEJvA0eAdphDLsWpDnAtSxpt3Z3fooWy61Jt0
+	 59GG5rNmFYEm4jC8oIb8seMGoz3qOY/HvD/ij8Pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 356/482] ocfs2: remove unreasonable unlock in ocfs2_read_blocks
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 174/386] drm/amdgpu/gfx11: use rlc safe mode for soft recovery
 Date: Tue,  8 Oct 2024 14:06:59 +0200
-Message-ID: <20241008115702.431148969@linuxfoundation.org>
+Message-ID: <20241008115636.267769703@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,59 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit c03a82b4a0c935774afa01fd6d128b444fd930a1 upstream.
+[ Upstream commit 3f2d35c325534c1b7ac5072173f0dc7ca969dec2 ]
 
-Patch series "Misc fixes for ocfs2_read_blocks", v5.
+Protect the MMIO access with safe mode.
 
-This series contains 2 fixes for ocfs2_read_blocks().  The first patch fix
-the issue reported by syzbot, which detects bad unlock balance in
-ocfs2_read_blocks().  The second patch fixes an issue reported by Heming
-Zhao when reviewing above fix.
-
-
-This patch (of 2):
-
-There was a lock release before exiting, so remove the unreasonable unlock.
-
-Link: https://lkml.kernel.org/r/20240902023636.1843422-1-joseph.qi@linux.alibaba.com
-Link: https://lkml.kernel.org/r/20240902023636.1843422-2-joseph.qi@linux.alibaba.com
-Fixes: cf76c78595ca ("ocfs2: don't put and assigning null to bh allocated outside")
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reported-by: syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ab134185af9ef88dfed5
-Tested-by: syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>	[4.20+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/buffer_head_io.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/ocfs2/buffer_head_io.c
-+++ b/fs/ocfs2/buffer_head_io.c
-@@ -235,7 +235,6 @@ int ocfs2_read_blocks(struct ocfs2_cachi
- 		if (bhs[i] == NULL) {
- 			bhs[i] = sb_getblk(sb, block++);
- 			if (bhs[i] == NULL) {
--				ocfs2_metadata_cache_io_unlock(ci);
- 				status = -ENOMEM;
- 				mlog_errno(status);
- 				/* Don't forget to put previous bh! */
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index c813cd7b015e1..54ec9b32562c2 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -5701,7 +5701,9 @@ static void gfx_v11_0_ring_soft_recovery(struct amdgpu_ring *ring,
+ 	value = REG_SET_FIELD(value, SQ_CMD, MODE, 0x01);
+ 	value = REG_SET_FIELD(value, SQ_CMD, CHECK_VMID, 1);
+ 	value = REG_SET_FIELD(value, SQ_CMD, VM_ID, vmid);
++	amdgpu_gfx_rlc_enter_safe_mode(adev, 0);
+ 	WREG32_SOC15(GC, 0, regSQ_CMD, value);
++	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
+ }
+ 
+ static void
+-- 
+2.43.0
+
 
 
 
