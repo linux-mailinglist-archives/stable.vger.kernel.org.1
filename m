@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-82879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC91994EFB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:23:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C0C1994A9D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C17BF1F21A24
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:23:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD0CF1C24C4D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392441DE4CD;
-	Tue,  8 Oct 2024 13:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464A21C4631;
+	Tue,  8 Oct 2024 12:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jArlyN1r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvcJe/cE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B4C18C333;
-	Tue,  8 Oct 2024 13:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030241C2443;
+	Tue,  8 Oct 2024 12:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393733; cv=none; b=IbPBYIDNLLeM1SU0s1SHde6Ri5qfNzcvYPc9iYKDME6Clk+zduNkttTJra5sPuo1Ji1EE6dB5MbLzbfaJTiYSVUWeLOVoJkLFOlE0l727KlFlOq486xQ49teWvomrayYlV1RtTLMhYaEXV0meWFFs9c/+6pHMcx/g3J7p0RsRzs=
+	t=1728390887; cv=none; b=lCyt5fc6C5cqFdU9KX/0Heg6duJ2q/dCYlejaVWC3DzsGoXeewD0Y/Y2Zw6KgfZ2L6ggYyzh+kx83vtLxx/2oT9D/5fKH64r2MS5NhCeFd6OoIEl2G4DL2i4zpfN8v2k32nrG+N5Jpi8nFYzxGMww9x7Hq3PyGB9gVqhmtt7W4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393733; c=relaxed/simple;
-	bh=CIoxFeZ2LD+cX12sON+sqEcndh3EaPMkA0ZFtQbRRGo=;
+	s=arc-20240116; t=1728390887; c=relaxed/simple;
+	bh=1gnKiGdpbQ5xMeOJkptLuVP4D3aLlC7SrKUgL0W2kZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gGzoJD/V+5wrSpOp0TKEgtnHQm3wb6G78rWo20W5hMPYcG96i5AeIHoy378TMkS74NEAoPoGHjwIukjYdMQFLL/grvZTKtf6xLbX8AH6LGAIUQ7y2b51WcKox/sltsNdf1qyqUAZ+Wbry67Ie5I9GoEkacQ2AxQI3HJHjfgULLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jArlyN1r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58239C4CEC7;
-	Tue,  8 Oct 2024 13:22:12 +0000 (UTC)
+	 MIME-Version; b=l+kJc71PUc699mqHpb3Othh5fKUkz0PVwc5J6q3spFynYhptzAD3qB34p3popClmlB5od0uUy3lTLezLxrb6Cc6iwIMQRH/cNssniHhHe+bPt95MlU5gB6X55C6BjWxyCr5nRJqy1Cdae0C5AGQapJzZxNROaZ4jxS+PqL33eGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvcJe/cE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627BFC4CEC7;
+	Tue,  8 Oct 2024 12:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393732;
-	bh=CIoxFeZ2LD+cX12sON+sqEcndh3EaPMkA0ZFtQbRRGo=;
+	s=korg; t=1728390886;
+	bh=1gnKiGdpbQ5xMeOJkptLuVP4D3aLlC7SrKUgL0W2kZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jArlyN1rau8Az6tdKSv9m2Is8fXDax22NZZ7QqBi4UJcWtCOk/xLdtOnMRh+8VR1j
-	 8k9hchJOuOEFuDUOJiw+2LLpKES5ZtMGD9Z4nbo8Pq29SKJVes1kxNlxvAsmEkp7+z
-	 s6H0KN5yw0Tx3njvCMxbsUC3yyWFvQfEaJm0aOKc=
+	b=YvcJe/cEgaQG0LO6VkvvP02BxLbed0rT2jdEPoSfdW9PNGeKteflTL6AJw9UOsdpB
+	 2KR/paN2YqkQyGrnRvpb4eXXs7KtGlfCjpbnWmV7UGsWqKqt5fm98uMfQ1lpgzD5Sd
+	 PYHeMFo/QlOMEIxmEM3zE719G+bzryFAzagk+epo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 240/386] ext4: fix double brelse() the buffer of the extents path
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Parth Pancholi <parth.pancholi@toradex.com>,
+	Keerthy <j-keerthy@ti.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.10 422/482] gpio: davinci: fix lazy disable
 Date: Tue,  8 Oct 2024 14:08:05 +0200
-Message-ID: <20241008115638.842426386@linuxfoundation.org>
+Message-ID: <20241008115705.011321432@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-commit dcaa6c31134c0f515600111c38ed7750003e1b9c upstream.
+commit 3360d41f4ac490282fddc3ccc0b58679aa5c065d upstream.
 
-In ext4_ext_try_to_merge_up(), set path[1].p_bh to NULL after it has been
-released, otherwise it may be released twice. An example of what triggers
-this is as follows:
+On a few platforms such as TI's AM69 device, disable_irq() fails to keep
+track of the interrupts that happen between disable_irq() and
+enable_irq() and those interrupts are missed. Use the ->irq_unmask() and
+->irq_mask() methods instead of ->irq_enable() and ->irq_disable() to
+correctly keep track of edges when disable_irq is called.
 
-  split2    map    split1
-|--------|-------|--------|
+This solves the issue of disable_irq() not working as expected on such
+platforms.
 
-ext4_ext_map_blocks
- ext4_ext_handle_unwritten_extents
-  ext4_split_convert_extents
-   // path->p_depth == 0
-   ext4_split_extent
-     // 1. do split1
-     ext4_split_extent_at
-       |ext4_ext_insert_extent
-       |  ext4_ext_create_new_leaf
-       |    ext4_ext_grow_indepth
-       |      le16_add_cpu(&neh->eh_depth, 1)
-       |    ext4_find_extent
-       |      // return -ENOMEM
-       |// get error and try zeroout
-       |path = ext4_find_extent
-       |  path->p_depth = 1
-       |ext4_ext_try_to_merge
-       |  ext4_ext_try_to_merge_up
-       |    path->p_depth = 0
-       |    brelse(path[1].p_bh)  ---> not set to NULL here
-       |// zeroout success
-     // 2. update path
-     ext4_find_extent
-     // 3. do split2
-     ext4_split_extent_at
-       ext4_ext_insert_extent
-         ext4_ext_create_new_leaf
-           ext4_ext_grow_indepth
-             le16_add_cpu(&neh->eh_depth, 1)
-           ext4_find_extent
-             path[0].p_bh = NULL;
-             path->p_depth = 1
-             read_extent_tree_block  ---> return err
-             // path[1].p_bh is still the old value
-             ext4_free_ext_path
-               ext4_ext_drop_refs
-                 // path->p_depth == 1
-                 brelse(path[1].p_bh)  ---> brelse a buffer twice
-
-Finally got the following WARRNING when removing the buffer from lru:
-
-============================================
-VFS: brelse: Trying to free free buffer
-WARNING: CPU: 2 PID: 72 at fs/buffer.c:1241 __brelse+0x58/0x90
-CPU: 2 PID: 72 Comm: kworker/u19:1 Not tainted 6.9.0-dirty #716
-RIP: 0010:__brelse+0x58/0x90
-Call Trace:
- <TASK>
- __find_get_block+0x6e7/0x810
- bdev_getblk+0x2b/0x480
- __ext4_get_inode_loc+0x48a/0x1240
- ext4_get_inode_loc+0xb2/0x150
- ext4_reserve_inode_write+0xb7/0x230
- __ext4_mark_inode_dirty+0x144/0x6a0
- ext4_ext_insert_extent+0x9c8/0x3230
- ext4_ext_map_blocks+0xf45/0x2dc0
- ext4_map_blocks+0x724/0x1700
- ext4_do_writepages+0x12d6/0x2a70
-[...]
-============================================
-
-Fixes: ecb94f5fdf4b ("ext4: collapse a single extent tree block into the inode if possible")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20240822023545.1994557-9-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 23265442b02b ("ARM: davinci: irq_data conversion.")
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Signed-off-by: Parth Pancholi <parth.pancholi@toradex.com>
+Acked-by: Keerthy <j-keerthy@ti.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240828133207.493961-1-parth105105@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpio/gpio-davinci.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -1877,6 +1877,7 @@ static void ext4_ext_try_to_merge_up(han
- 	path[0].p_hdr->eh_max = cpu_to_le16(max_root);
+--- a/drivers/gpio/gpio-davinci.c
++++ b/drivers/gpio/gpio-davinci.c
+@@ -289,7 +289,7 @@ static int davinci_gpio_probe(struct pla
+  * serve as EDMA event triggers.
+  */
  
- 	brelse(path[1].p_bh);
-+	path[1].p_bh = NULL;
- 	ext4_free_blocks(handle, inode, NULL, blk, 1,
- 			 EXT4_FREE_BLOCKS_METADATA | EXT4_FREE_BLOCKS_FORGET);
+-static void gpio_irq_disable(struct irq_data *d)
++static void gpio_irq_mask(struct irq_data *d)
+ {
+ 	struct davinci_gpio_regs __iomem *g = irq2regs(d);
+ 	uintptr_t mask = (uintptr_t)irq_data_get_irq_handler_data(d);
+@@ -298,7 +298,7 @@ static void gpio_irq_disable(struct irq_
+ 	writel_relaxed(mask, &g->clr_rising);
  }
+ 
+-static void gpio_irq_enable(struct irq_data *d)
++static void gpio_irq_unmask(struct irq_data *d)
+ {
+ 	struct davinci_gpio_regs __iomem *g = irq2regs(d);
+ 	uintptr_t mask = (uintptr_t)irq_data_get_irq_handler_data(d);
+@@ -324,8 +324,8 @@ static int gpio_irq_type(struct irq_data
+ 
+ static struct irq_chip gpio_irqchip = {
+ 	.name		= "GPIO",
+-	.irq_enable	= gpio_irq_enable,
+-	.irq_disable	= gpio_irq_disable,
++	.irq_unmask	= gpio_irq_unmask,
++	.irq_mask	= gpio_irq_mask,
+ 	.irq_set_type	= gpio_irq_type,
+ 	.flags		= IRQCHIP_SET_TYPE_MASKED | IRQCHIP_SKIP_SET_WAKE,
+ };
 
 
 
