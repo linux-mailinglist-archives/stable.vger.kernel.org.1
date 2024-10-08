@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-82624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 077F3994DAF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:08:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 348E6994F8C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBA0B282EDA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:08:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0CCA287BBE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFDA1DED48;
-	Tue,  8 Oct 2024 13:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94A718C333;
+	Tue,  8 Oct 2024 13:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itzUuZmM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTMnglFe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197B41DFD1;
-	Tue,  8 Oct 2024 13:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E5C1DE8BE;
+	Tue,  8 Oct 2024 13:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392884; cv=none; b=tcRFpNiZtId9tBOS03WYxl1gRbT1SCsVMLlIqq0tp6iOcnMQExz/WHmgr1+V72PSISihPrnDl/V8tbz5qsKwalzMgs889okb+W06Iu1Ksvzrb5bBh6uzYAEAuCspBm5VouRhSOg5haYOpiNxtLmRWKtsZ40nWshebDNOYzX931M=
+	t=1728393944; cv=none; b=swMU0W+h7U2iVAv5bXzBXXOiR6ahkfsuaT9p6hZwNrbljdJo0QfY3qdKUgiqI7taccYjY9epx4iKVkVUtpNh+BUdi/kAfpzGSUXT2Gkxl3nY7zlO5omCyz8zqPCqhihiY1LwxjGykFpyK6yqJ5aWRUvBrjemFWjF85F/6xp8PiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392884; c=relaxed/simple;
-	bh=9/4CdHiFVEwQggzQZN1efDv/h5aLDBYZxoF1tRZuTDU=;
+	s=arc-20240116; t=1728393944; c=relaxed/simple;
+	bh=SNYuux6LJ9NXE5pCoqkVurGx31XfVnwH4G/Pd3cm/j8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NhnMgBulfL8nL0yeiCpFfbLJQIuu84NIBYUl6yByXyeL2B080ZvIYjv6PTRCRx+9v+AHiQlabpXbsk8SBukmnjVODeNy66xdat+1nV5nqoQkYXo3jZtArjkY1mGS/RpzAPCQse20uJj7iqceXIyuTPC5xyjjiwwI+FuG93Uo6pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itzUuZmM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710A6C4CECD;
-	Tue,  8 Oct 2024 13:08:03 +0000 (UTC)
+	 MIME-Version; b=fsUMDSkH/wWdnNAwrQffIRfkaVu8ty5Y+tYaDtDd89gUaSLB5zu+sTcZi9W/XW92cmDyFyhspqkBdaPRQgQ0d3tkqQlDvEu+3qIFhWvgdx5nMgFsYJRnQItK2K0Bo4yF5eaLKUEOhD6IKsvBJbryDetfTF25dN6yMCt8r8AWOis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTMnglFe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC50C4CECC;
+	Tue,  8 Oct 2024 13:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392883;
-	bh=9/4CdHiFVEwQggzQZN1efDv/h5aLDBYZxoF1tRZuTDU=;
+	s=korg; t=1728393944;
+	bh=SNYuux6LJ9NXE5pCoqkVurGx31XfVnwH4G/Pd3cm/j8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=itzUuZmMmQawUyTxHRVJcKcvDsYEoiCvUDfwHpwFIN9Dgxpfh91NbZF+gxTZWQNPk
-	 g3nOXRx+399rqOmBC9pUnFd5Oyqpyctov46nw+8tJeBh/qS09mrxuOAX2e1pD8UU8a
-	 EAH19gltbHTcniu81sM34gN65URxVQKFd9qCJWqU=
+	b=UTMnglFe2cLlY2Q+Bcm/sWPA27ZjvM+ggDM9wyuhS8aixzgevvfk0TbJrSXqUFBPv
+	 TVJUQHGYbZxI9pb+o7/OU3jNfI+yMPjBYBErdceGtDA/Q+l3BPDh6ipRUCeI9O6ZFz
+	 LumgsO6oA1z+fDRA7MxVNEVdv62y4a1RkA5a+TTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Anshuman Gupta <anshuman.gupta@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.11 516/558] drm/i915/gem: fix bitwise and logical AND mixup
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	KhaiWenTan <khai.wen.tan@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 301/386] net: stmmac: Fix zero-division error when disabling tc cbs
 Date: Tue,  8 Oct 2024 14:09:06 +0200
-Message-ID: <20241008115722.533826711@linuxfoundation.org>
+Message-ID: <20241008115641.230731890@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,53 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: KhaiWenTan <khai.wen.tan@linux.intel.com>
 
-commit 394b52462020b6cceff1f7f47fdebd03589574f3 upstream.
+commit 675faf5a14c14a2be0b870db30a70764df81e2df upstream.
 
-CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND is an int, defaulting to 250. When
-the wakeref is non-zero, it's either -1 or a dynamically allocated
-pointer, depending on CONFIG_DRM_I915_DEBUG_RUNTIME_PM. It's likely that
-the code works by coincidence with the bitwise AND, but with
-CONFIG_DRM_I915_DEBUG_RUNTIME_PM=y, there's the off chance that the
-condition evaluates to false, and intel_wakeref_auto() doesn't get
-called. Switch to the intended logical AND.
+The commit b8c43360f6e4 ("net: stmmac: No need to calculate speed divider
+when offload is disabled") allows the "port_transmit_rate_kbps" to be
+set to a value of 0, which is then passed to the "div_s64" function when
+tc-cbs is disabled. This leads to a zero-division error.
 
-v2: Use != to avoid clang -Wconstant-logical-operand (Nathan)
+When tc-cbs is disabled, the idleslope, sendslope, and credit values the
+credit values are not required to be configured. Therefore, adding a return
+statement after setting the txQ mode to DCB when tc-cbs is disabled would
+prevent a zero-division error.
 
-Fixes: ad74457a6b5a ("drm/i915/dgfx: Release mmap on rpm suspend")
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: stable@vger.kernel.org # v6.1+
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com> # v1
-Link: https://patchwork.freedesktop.org/patch/msgid/643cc0a4d12f47fd8403d42581e83b1e9c4543c7.1726680898.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 4c1bfe259ed1d2ade826f95d437e1c41b274df04)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Fixes: b8c43360f6e4 ("net: stmmac: No need to calculate speed divider when offload is disabled")
+Cc: <stable@vger.kernel.org>
+Co-developed-by: Choong Yong Liang <yong.liang.choong@linux.intel.com>
+Signed-off-by: Choong Yong Liang <yong.liang.choong@linux.intel.com>
+Signed-off-by: KhaiWenTan <khai.wen.tan@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240918061422.1589662-1-khai.wen.tan@linux.intel.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_ttm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-@@ -1131,7 +1131,7 @@ static vm_fault_t vm_fault_ttm(struct vm
- 		GEM_WARN_ON(!i915_ttm_cpu_maps_iomem(bo->resource));
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+@@ -396,6 +396,7 @@ static int tc_setup_cbs(struct stmmac_pr
+ 			return ret;
+ 
+ 		priv->plat->tx_queues_cfg[queue].mode_to_use = MTL_QUEUE_DCB;
++		return 0;
  	}
  
--	if (wakeref & CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND)
-+	if (wakeref && CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND != 0)
- 		intel_wakeref_auto(&to_i915(obj->base.dev)->runtime_pm.userfault_wakeref,
- 				   msecs_to_jiffies_timeout(CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND));
- 
+ 	/* Final adjustments for HW */
 
 
 
