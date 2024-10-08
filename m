@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD17994D0E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:01:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C58994EC1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83B77287AE6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:01:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F8E3B2A1A2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F26F1DE4DB;
-	Tue,  8 Oct 2024 13:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDE21DEFEA;
+	Tue,  8 Oct 2024 13:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MrBj0jFh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caq/8lEt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C284C192D9E;
-	Tue,  8 Oct 2024 13:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDC11DED6F;
+	Tue,  8 Oct 2024 13:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392459; cv=none; b=HIYRk4TiKNy16Qwj/9Ud5x9ecyaGXlzOFL8lz7b6q43+d3+XGp1flV7JBu3zPn+ms9/EUAopImF6yRDKPwyMcCjlvexnqk5S/ACf6nsnYZMzE03N+VW7uHDf6uXNh4zaH3cdaIKsfS7zkI6fBfbu8M2jGRF2932sYN3ZGygtQkM=
+	t=1728393625; cv=none; b=vDgj6cpyuBul5e2oq03bL/U0+wlwQS9JP58dWgwpKv6kHLrlpwjBi8+ZvRgFbK18Jw77rpi+ULovYEnuq8FmwBmLiJRckQRivZKDCTg5P035FtMU5b7+SAg1kmF3zBx+GUHD7xy4tYk54d/F3fRRgQ+bij8L6c8+7DNjTeD+7S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392459; c=relaxed/simple;
-	bh=KrNAGsFu2XtlZCNwdVUEyb2CSePpiW7xUXeZ7V1H1L4=;
+	s=arc-20240116; t=1728393625; c=relaxed/simple;
+	bh=kORK4qc3BvYUv0hdqw2t9u2xSQmnKDD40KILabS4bNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gOhQS7w4rqYykldSUUzUdWa5xlt57vb4pUUqMVVOCDyxYJZsBztkflwV87lTsJqt/ehgZWtuc55iE2Y+NUG6ooOCDg7Ne5kS0KFu9oPG0KwQeFvhu6fHAoM7FLd/ikk2RNm9m4yAPm4nYqrfo2kpcbZMIqmsJ9okQky/cKwajKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MrBj0jFh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3293EC4CEC7;
-	Tue,  8 Oct 2024 13:00:58 +0000 (UTC)
+	 MIME-Version; b=DTuJ0xiMA+qdowpNaxAlitkt3h6Yck7UORdBDFs8DfmpDuI/Jo23eFiZTVl0KPbWNTuHFKCY5p6qX6F/n9aU4cnoknnfNeUkXXZ62qYJpWhpzpsvcGH5TAKCDTJ4JO52FPkSuDRgei+vxatxHfwFAoSwj7D0TWASr6tpQLIv5DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caq/8lEt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AF32C4CEC7;
+	Tue,  8 Oct 2024 13:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392459;
-	bh=KrNAGsFu2XtlZCNwdVUEyb2CSePpiW7xUXeZ7V1H1L4=;
+	s=korg; t=1728393625;
+	bh=kORK4qc3BvYUv0hdqw2t9u2xSQmnKDD40KILabS4bNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MrBj0jFh5ahPGsb1Wfc/9O4mHqP4QRdHmUwlTGaGPfh2ClsRe8Va3bzLmzRporENC
-	 CnV0DhRIQrBLQEYyu8WTB/6R1RvEqNzYOhDc4qyAEAvDkRUs0w38xK02I2MY25PAa5
-	 ptMMg0jSSiaZaUQu7baZUNKYrymTo3pG4S0pdt+U=
+	b=caq/8lEtds592gN7NHgLZeScsm/yCauplSL202LLtN8Q2gXZRxMyNebw3XFgqCDvh
+	 /KcQGQvS2KrurATtNtzwiKk7MriWrG8jNNbSDQCuqN+gFLqlX3IKB9c7uA+G4BiRgV
+	 6d7oyfjdBHGwZSH20TRXOECV2kwWMza9r6Q5QvGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.11 422/558] arm64: fix selection of HAVE_DYNAMIC_FTRACE_WITH_ARGS
-Date: Tue,  8 Oct 2024 14:07:32 +0200
-Message-ID: <20241008115718.878299563@linuxfoundation.org>
+	Robert Hancock <robert.hancock@calian.com>,
+	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.6 208/386] i2c: xiic: Wait for TX empty to avoid missed TX NAKs
+Date: Tue,  8 Oct 2024 14:07:33 +0200
+Message-ID: <20241008115637.591714149@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Robert Hancock <robert.hancock@calian.com>
 
-commit b3d6121eaeb22aee8a02f46706745b1968cc0292 upstream.
+commit 521da1e9225450bd323db5fa5bca942b1dc485b7 upstream.
 
-The Kconfig logic to select HAVE_DYNAMIC_FTRACE_WITH_ARGS is incorrect,
-and HAVE_DYNAMIC_FTRACE_WITH_ARGS may be selected when it is not
-supported by the combination of clang and GNU LD, resulting in link-time
-errors:
+Frequently an I2C write will be followed by a read, such as a register
+address write followed by a read of the register value. In this driver,
+when the TX FIFO half empty interrupt was raised and it was determined
+that there was enough space in the TX FIFO to send the following read
+command, it would do so without waiting for the TX FIFO to actually
+empty.
 
-  aarch64-linux-gnu-ld: .init.data has both ordered [`__patchable_function_entries' in init/main.o] and unordered [`.meminit.data' in mm/sparse.o] sections
-  aarch64-linux-gnu-ld: final link failed: bad value
+Unfortunately it appears that in some cases this can result in a NAK
+that was raised by the target device on the write, such as due to an
+unsupported register address, being ignored and the subsequent read
+being done anyway. This can potentially put the I2C bus into an
+invalid state and/or result in invalid read data being processed.
 
-... which can be seen when building with CC=clang using a binutils
-version older than 2.36.
+To avoid this, once a message has been fully written to the TX FIFO,
+wait for the TX FIFO empty interrupt before moving on to the next
+message, to ensure NAKs are handled properly.
 
-We originally fixed that in commit:
-
-  45bd8951806eb5e8 ("arm64: Improve HAVE_DYNAMIC_FTRACE_WITH_REGS selection for clang")
-
-... by splitting the "select HAVE_DYNAMIC_FTRACE_WITH_ARGS" statement
-into separete CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS and
-GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS options which individually select
-HAVE_DYNAMIC_FTRACE_WITH_ARGS.
-
-Subsequently we accidentally re-introduced the common "select
-HAVE_DYNAMIC_FTRACE_WITH_ARGS" statement in commit:
-
-  26299b3f6ba26bfc ("ftrace: arm64: move from REGS to ARGS")
-
-... then we removed it again in commit:
-
-  68a63a412d18bd2e ("arm64: Fix build with CC=clang, CONFIG_FTRACE=y and CONFIG_STACK_TRACER=y")
-
-... then we accidentally re-introduced it again in commit:
-
-  2aa6ac03516d078c ("arm64: ftrace: Add direct call support")
-
-Fix this for the third time by keeping the unified select statement and
-making this depend onf either GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS or
-CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS. This is more consistent with
-usual style and less likely to go wrong in future.
-
-Fixes: 2aa6ac03516d ("arm64: ftrace: Add direct call support")
-Cc: <stable@vger.kernel.org> # 6.4.x
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240930120448.3352564-1-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: e1d5b6598cdc ("i2c: Add support for Xilinx XPS IIC Bus Interface")
+Signed-off-by: Robert Hancock <robert.hancock@calian.com>
+Cc: <stable@vger.kernel.org> # v2.6.34+
+Reviewed-by: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/Kconfig |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/i2c/busses/i2c-xiic.c |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -196,7 +196,8 @@ config ARM64
- 	select HAVE_DMA_CONTIGUOUS
- 	select HAVE_DYNAMIC_FTRACE
- 	select HAVE_DYNAMIC_FTRACE_WITH_ARGS \
--		if $(cc-option,-fpatchable-function-entry=2)
-+		if (GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS || \
-+		    CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS)
- 	select HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS \
- 		if DYNAMIC_FTRACE_WITH_ARGS && DYNAMIC_FTRACE_WITH_CALL_OPS
- 	select HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS \
-@@ -269,12 +270,10 @@ config CLANG_SUPPORTS_DYNAMIC_FTRACE_WIT
- 	def_bool CC_IS_CLANG
- 	# https://github.com/ClangBuiltLinux/linux/issues/1507
- 	depends on AS_IS_GNU || (AS_IS_LLVM && (LD_IS_LLD || LD_VERSION >= 23600))
--	select HAVE_DYNAMIC_FTRACE_WITH_ARGS
+--- a/drivers/i2c/busses/i2c-xiic.c
++++ b/drivers/i2c/busses/i2c-xiic.c
+@@ -772,14 +772,17 @@ static irqreturn_t xiic_process(int irq,
+ 			goto out;
+ 		}
  
- config GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS
- 	def_bool CC_IS_GCC
- 	depends on $(cc-option,-fpatchable-function-entry=2)
--	select HAVE_DYNAMIC_FTRACE_WITH_ARGS
+-		xiic_fill_tx_fifo(i2c);
+-
+-		/* current message sent and there is space in the fifo */
+-		if (!xiic_tx_space(i2c) && xiic_tx_fifo_space(i2c) >= 2) {
++		if (xiic_tx_space(i2c)) {
++			xiic_fill_tx_fifo(i2c);
++		} else {
++			/* current message fully written */
+ 			dev_dbg(i2c->adap.dev.parent,
+ 				"%s end of message sent, nmsgs: %d\n",
+ 				__func__, i2c->nmsgs);
+-			if (i2c->nmsgs > 1) {
++			/* Don't move onto the next message until the TX FIFO empties,
++			 * to ensure that a NAK is not missed.
++			 */
++			if (i2c->nmsgs > 1 && (pend & XIIC_INTR_TX_EMPTY_MASK)) {
+ 				i2c->nmsgs--;
+ 				i2c->tx_msg++;
+ 				xfer_more = 1;
+@@ -790,11 +793,7 @@ static irqreturn_t xiic_process(int irq,
+ 					"%s Got TX IRQ but no more to do...\n",
+ 					__func__);
+ 			}
+-		} else if (!xiic_tx_space(i2c) && (i2c->nmsgs == 1))
+-			/* current frame is sent and is last,
+-			 * make sure to disable tx half
+-			 */
+-			xiic_irq_dis(i2c, XIIC_INTR_TX_HALF_MASK);
++		}
+ 	}
  
- config 64BIT
- 	def_bool y
+ 	if (pend & XIIC_INTR_BNB_MASK) {
 
 
 
