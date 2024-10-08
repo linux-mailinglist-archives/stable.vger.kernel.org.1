@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD733994CE9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B292994A00
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8904B27028
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:57:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D876B1F230BE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77ABD1DF25D;
-	Tue,  8 Oct 2024 12:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE211DACBE;
+	Tue,  8 Oct 2024 12:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxxvnUOC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRmmuT7S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A431DED74;
-	Tue,  8 Oct 2024 12:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6FB1DA60C;
+	Tue,  8 Oct 2024 12:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392177; cv=none; b=eoqq3psHeM4UO0pUhhH1xYJlLs6lmtv6CHm3BRwB2Hy3BIwnDd6BoqVBNW5UbdGnUXhnp1PFD2kxiWaTpws4Dh4A39WrLw78kfNv3KuWDT0dwo6+/qMh8wow+cM2pWI+6QI6M52wkBRybaYjZW6MKaXDJIJ8uARK/JvzTSchBsE=
+	t=1728390486; cv=none; b=SLH0LOuS48MqveffXtXP4L1qL4RYdVD2dd65jvYIQPEFZlONRD6GdoBhha3onIQjnnUjA7j5NmdxAnzsxbbDlI6wQ3aA6z+6a8tPXqaYlR+sd6pUVIT7rNPTf64ewdxfA2UnIo8xX/Fv+sApF4zHglrJG3IwLVy4tos5SL8Z5AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392177; c=relaxed/simple;
-	bh=EIaPrjSyYZlTc5pJ/QuEGSWkKOj1hxki3qFvkrx5e4w=;
+	s=arc-20240116; t=1728390486; c=relaxed/simple;
+	bh=01I2Xl0jyLgXqc4/6GdgBiGrGiPwf/ai+FiZhaf26zc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=acHTr9COGDMKn6DLKbnC2/ZZYBTQjko/U28v5pz+V79u/b84jTN8z2YfOMHUh+ASVEdTNdhCrNExtzw1NutUttg+rs/EMIldnRbjBYBKS6QknqWIzdJL2KFO4/cI+4P1pNbCAkynceNXAMgsxtq4MjVWFqj5eUmTTDxZFd7IgYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RxxvnUOC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3E2C4CEC7;
-	Tue,  8 Oct 2024 12:56:16 +0000 (UTC)
+	 MIME-Version; b=TgWMhRrOC06STKNm2t32jAoj6d9XPpO+Ef9+w3tt5Tf5hSTlOsF4901TST8DGbfSws6LKdF/Adn0pmOr6N+NuOIsslfLworfdpTQ+EuOx32Tow8KIF6lCz6hIYNzGxxzWqB730am5IEZE1EJuoX1FlxU0spW/ZKjww3vbbikcac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRmmuT7S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE5AC4CEC7;
+	Tue,  8 Oct 2024 12:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392176;
-	bh=EIaPrjSyYZlTc5pJ/QuEGSWkKOj1hxki3qFvkrx5e4w=;
+	s=korg; t=1728390485;
+	bh=01I2Xl0jyLgXqc4/6GdgBiGrGiPwf/ai+FiZhaf26zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RxxvnUOCavwBH2eu9Kqi+181Nt8wFqCC26xo3y4Cb4kRuJKrUcwHeiS/pkFm+qtmc
-	 K6FyXowtW8LO4LJOT93raxzMW/Sdzv5zWkvesKMOi4XMK0JWOzlVXcp9MH3zN3TfSB
-	 y75AM5Xl+S1jhIna74dQTg8f1nMhvTWRXozzxt3E=
+	b=ZRmmuT7SHsd9ITE+ee1HRXG5VVjskHCuo/dPoLaXKfAgxJW2vy7NMLr2W2rWh3sYY
+	 ZdP+Fgwwa/gD9QqwBR93Ih5/5zOb7mgQh0uvSLsszerm8lC3Vl4WNQ0CWGjMhWvZLB
+	 rws2JAmMF6p5og7lRcAoFzk1owcQR6NkZJZDT1yU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 337/558] powerpc/vdso: Fix VDSO data access when running in a non-root time namespace
+	David Virag <virag.david003@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.10 304/482] dt-bindings: clock: exynos7885: Fix duplicated binding
 Date: Tue,  8 Oct 2024 14:06:07 +0200
-Message-ID: <20241008115715.564771091@linuxfoundation.org>
+Message-ID: <20241008115700.399738937@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,124 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: David Virag <virag.david003@gmail.com>
 
-[ Upstream commit c73049389e58c01e2e3bbfae900c8daeee177191 ]
+commit abf3a3ea9acb5c886c8729191a670744ecd42024 upstream.
 
-When running in a non-root time namespace, the global VDSO data page
-is replaced by a dedicated namespace data page and the global data
-page is mapped next to it. Detailed explanations can be found at
-commit 660fd04f9317 ("lib/vdso: Prepare for time namespace support").
+The numbering in Exynos7885's FSYS CMU bindings has 4 duplicated by
+accident, with the rest of the bindings continuing with 5.
 
-When it happens, __kernel_get_syscall_map and __kernel_get_tbfreq
-and __kernel_sync_dicache don't work anymore because they read 0
-instead of the data they need.
+Fix this by moving CLK_MOUT_FSYS_USB30DRD_USER to the end as 11.
 
-To address that, clock_mode has to be read. When it is set to
-VDSO_CLOCKMODE_TIMENS, it means it is a dedicated namespace data page
-and the global data is located on the following page.
+Since CLK_MOUT_FSYS_USB30DRD_USER is not used in any device tree as of
+now, and there are no other clocks affected (maybe apart from
+CLK_MOUT_FSYS_MMC_SDIO_USER which the number was shared with, also not
+used in a device tree), this is the least impactful way to solve this
+problem.
 
-Add a macro called get_realdatapage which reads clock_mode and add
-PAGE_SIZE to the pointer provided by get_datapage macro when
-clock_mode is equal to VDSO_CLOCKMODE_TIMENS. Use this new macro
-instead of get_datapage macro except for time functions as they handle
-it internally.
-
-Fixes: 74205b3fc2ef ("powerpc/vdso: Add support for time namespaces")
-Reported-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Closes: https://lore.kernel.org/all/ZtnYqZI-nrsNslwy@zx2c4.com/
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cd268e309c29 ("dt-bindings: clock: Add bindings for Exynos7885 CMU_FSYS")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Virag <virag.david003@gmail.com>
+Link: https://lore.kernel.org/r/20240806121157.479212-2-virag.david003@gmail.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/vdso_datapage.h | 15 +++++++++++++++
- arch/powerpc/kernel/asm-offsets.c        |  2 ++
- arch/powerpc/kernel/vdso/cacheflush.S    |  2 +-
- arch/powerpc/kernel/vdso/datapage.S      |  4 ++--
- 4 files changed, 20 insertions(+), 3 deletions(-)
+ include/dt-bindings/clock/exynos7885.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/vdso_datapage.h b/arch/powerpc/include/asm/vdso_datapage.h
-index a585c8e538ff0..939daf6b695ef 100644
---- a/arch/powerpc/include/asm/vdso_datapage.h
-+++ b/arch/powerpc/include/asm/vdso_datapage.h
-@@ -111,6 +111,21 @@ extern struct vdso_arch_data *vdso_data;
- 	addi	\ptr, \ptr, (_vdso_datapage - 999b)@l
- .endm
+--- a/include/dt-bindings/clock/exynos7885.h
++++ b/include/dt-bindings/clock/exynos7885.h
+@@ -136,12 +136,12 @@
+ #define CLK_MOUT_FSYS_MMC_CARD_USER	2
+ #define CLK_MOUT_FSYS_MMC_EMBD_USER	3
+ #define CLK_MOUT_FSYS_MMC_SDIO_USER	4
+-#define CLK_MOUT_FSYS_USB30DRD_USER	4
+ #define CLK_GOUT_MMC_CARD_ACLK		5
+ #define CLK_GOUT_MMC_CARD_SDCLKIN	6
+ #define CLK_GOUT_MMC_EMBD_ACLK		7
+ #define CLK_GOUT_MMC_EMBD_SDCLKIN	8
+ #define CLK_GOUT_MMC_SDIO_ACLK		9
+ #define CLK_GOUT_MMC_SDIO_SDCLKIN	10
++#define CLK_MOUT_FSYS_USB30DRD_USER	11
  
-+#include <asm/asm-offsets.h>
-+#include <asm/page.h>
-+
-+.macro get_realdatapage ptr scratch
-+	get_datapage \ptr
-+#ifdef CONFIG_TIME_NS
-+	lwz	\scratch, VDSO_CLOCKMODE_OFFSET(\ptr)
-+	xoris	\scratch, \scratch, VDSO_CLOCKMODE_TIMENS@h
-+	xori	\scratch, \scratch, VDSO_CLOCKMODE_TIMENS@l
-+	cntlzw	\scratch, \scratch
-+	rlwinm	\scratch, \scratch, PAGE_SHIFT - 5, 1 << PAGE_SHIFT
-+	add	\ptr, \ptr, \scratch
-+#endif
-+.endm
-+
- #endif /* __ASSEMBLY__ */
- 
- #endif /* __KERNEL__ */
-diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index 23733282de4d9..7b3feb6bc2103 100644
---- a/arch/powerpc/kernel/asm-offsets.c
-+++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -346,6 +346,8 @@ int main(void)
- #else
- 	OFFSET(CFG_SYSCALL_MAP32, vdso_arch_data, syscall_map);
- #endif
-+	OFFSET(VDSO_CLOCKMODE_OFFSET, vdso_arch_data, data[0].clock_mode);
-+	DEFINE(VDSO_CLOCKMODE_TIMENS, VDSO_CLOCKMODE_TIMENS);
- 
- #ifdef CONFIG_BUG
- 	DEFINE(BUG_ENTRY_SIZE, sizeof(struct bug_entry));
-diff --git a/arch/powerpc/kernel/vdso/cacheflush.S b/arch/powerpc/kernel/vdso/cacheflush.S
-index 0085ae464dac9..3b2479bd2f9a1 100644
---- a/arch/powerpc/kernel/vdso/cacheflush.S
-+++ b/arch/powerpc/kernel/vdso/cacheflush.S
-@@ -30,7 +30,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
- #ifdef CONFIG_PPC64
- 	mflr	r12
-   .cfi_register lr,r12
--	get_datapage	r10
-+	get_realdatapage	r10, r11
- 	mtlr	r12
-   .cfi_restore	lr
- #endif
-diff --git a/arch/powerpc/kernel/vdso/datapage.S b/arch/powerpc/kernel/vdso/datapage.S
-index db8e167f01667..2b19b6201a33a 100644
---- a/arch/powerpc/kernel/vdso/datapage.S
-+++ b/arch/powerpc/kernel/vdso/datapage.S
-@@ -28,7 +28,7 @@ V_FUNCTION_BEGIN(__kernel_get_syscall_map)
- 	mflr	r12
-   .cfi_register lr,r12
- 	mr.	r4,r3
--	get_datapage	r3
-+	get_realdatapage	r3, r11
- 	mtlr	r12
- #ifdef __powerpc64__
- 	addi	r3,r3,CFG_SYSCALL_MAP64
-@@ -52,7 +52,7 @@ V_FUNCTION_BEGIN(__kernel_get_tbfreq)
-   .cfi_startproc
- 	mflr	r12
-   .cfi_register lr,r12
--	get_datapage	r3
-+	get_realdatapage	r3, r11
- #ifndef __powerpc64__
- 	lwz	r4,(CFG_TB_TICKS_PER_SEC + 4)(r3)
- #endif
--- 
-2.43.0
-
+ #endif /* _DT_BINDINGS_CLOCK_EXYNOS_7885_H */
 
 
 
