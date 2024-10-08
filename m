@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-81921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E60994A22
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 303A0994E63
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03F82B22A3C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D27EB2BA0F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF5B1DE8B7;
-	Tue,  8 Oct 2024 12:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0503F1DF265;
+	Tue,  8 Oct 2024 13:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CaG5x9sW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rK+kVFt9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019211D618C;
-	Tue,  8 Oct 2024 12:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DBA192594;
+	Tue,  8 Oct 2024 13:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390588; cv=none; b=NGUbknO9FUXPWTu4xJU2nkMZWf/zoKQAPuV+j2IyhbDEjkS/gdbdnTeBJygrkh7lN8dsV5GlWu+ZdF1d6/ZZd0OnqO+amYr/k5WRPmDjLe7Ouv7TICLscKgw6Q8hHVPGeDj6BAJxZzbQ51DV9HEZk8AIym92oOaHBWcgcMrV+uc=
+	t=1728393327; cv=none; b=n1AO1OMuxmpXy9YWZNov1IhR1iDZS+Z7kf/VuKeMi/T1rZhDGlBijaq2ws1SM8Is93wRTm2kdpja8HIOWFqtrMMhb3FAtO8tnc1xYUGSe0byvC1b4lJQP4JiJoDa1GL36aagk+9ZjcBnVUIlsWrwjPfbRzyQl1Pz4L5vpXBWhgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390588; c=relaxed/simple;
-	bh=18qIb6kOREnzLX8N+HsoQ/MGFOVuwSaDoy76z155KZc=;
+	s=arc-20240116; t=1728393327; c=relaxed/simple;
+	bh=KP28jVeeLzb8+9R1v3oSZDeoF+LEOA+uqRz0JB4v3kA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NtDLqXtmNCLinIJf363ft3zW7TCH9qR7+CAPNLO0702HnH4ZMiYN2/+Boz+GT3u/jJiksIKMO2u/3hdnVwmZ9SysiT3e9tViTKxT/i1+sbiDR5j7XJl99PXdCQQ41k74pa1oYyOjLP8PIG7B0huNVrQff0W+C8IDgGrmZV0NJ8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CaG5x9sW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C2BC4CEC7;
-	Tue,  8 Oct 2024 12:29:47 +0000 (UTC)
+	 MIME-Version; b=SYp1J0p3FWLCW7yMFxezf24S/YkgSHXUIeJ+yNQKngqMoI+xKz7s9xdrTzzyiJgL/FcObfu9V7vnEp19ugFJYN+sChwu2VZMI2LMjE9zLiFM/ozx3wPBEPZN6JqSF5OXOiquO8y4QceEn8GkW/IehSQrQ04Dd5jQVpjZGR918nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rK+kVFt9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82D6C4CEC7;
+	Tue,  8 Oct 2024 13:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390587;
-	bh=18qIb6kOREnzLX8N+HsoQ/MGFOVuwSaDoy76z155KZc=;
+	s=korg; t=1728393327;
+	bh=KP28jVeeLzb8+9R1v3oSZDeoF+LEOA+uqRz0JB4v3kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CaG5x9sWuOa6teuvLrqejBQ8/AcWoXhEpzoPYfw0dmqPx5rxnf//fosJ8eUDwmE86
-	 0piouY1kmCstDjEj50dj5rd43IQppCc+bjX941rc5Gwmc2yv52pJhnJZXT7Aj/4VLX
-	 9X8OV+SU2Jj8tQDWbj0j4TxDYXXL7q4F7Ds6F8GQ=
+	b=rK+kVFt9wC16Jxqnskz759h1pkQgU51CVGe0mzvGkPmFTkTkbztlPHyDXVet7apI+
+	 MPF0Fkp9IgvFd2ihoou02Ni6TIk/eVHA5merotBB9klZ4NkbiilkVMAFf9fj/6kGm9
+	 TtKsPjzR5kKILE7dAm6c65ZybsC43EMwVBoSA83Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.10 299/482] i2c: synquacer: Deal with optional PCLK correctly
+	Tao Liu <ltao@redhat.com>,
+	Steve Wahl <steve.wahl@hpe.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Pavin Joseph <me@pavinjoseph.com>,
+	Sarah Brofeldt <srhb@dbc.dk>,
+	Eric Hagberg <ehagberg@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 117/386] x86/kexec: Add EFI config table identity mapping for kexec kernel
 Date: Tue,  8 Oct 2024 14:06:02 +0200
-Message-ID: <20241008115700.050476425@linuxfoundation.org>
+Message-ID: <20241008115634.046185758@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +67,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Tao Liu <ltao@redhat.com>
 
-commit f2990f8630531a99cad4dc5c44cb2a11ded42492 upstream.
+[ Upstream commit 5760929f6545c651682de3c2c6c6786816b17bb1 ]
 
-ACPI boot does not provide clocks and regulators, but instead, provides
-the PCLK rate directly, and enables the clock in firmware. So deal
-gracefully with this.
+A kexec kernel boot failure is sometimes observed on AMD CPUs due to an
+unmapped EFI config table array.  This can be seen when "nogbpages" is on
+the kernel command line, and has been observed as a full BIOS reboot rather
+than a successful kexec.
 
-Fixes: 55750148e559 ("i2c: synquacer: Fix an error handling path in synquacer_i2c_probe()")
-Cc: stable@vger.kernel.org # v6.10+
-Cc: Andi Shyti <andi.shyti@kernel.org>
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This was also the cause of reported regressions attributed to Commit
+7143c5f4cf20 ("x86/mm/ident_map: Use gbpages only where full GB page should
+be mapped.") which was subsequently reverted.
+
+To avoid this page fault, explicitly include the EFI config table array in
+the kexec identity map.
+
+Further explanation:
+
+The following 2 commits caused the EFI config table array to be
+accessed when enabling sev at kernel startup.
+
+    commit ec1c66af3a30 ("x86/compressed/64: Detect/setup SEV/SME features
+                          earlier during boot")
+    commit c01fce9cef84 ("x86/compressed: Add SEV-SNP feature
+                          detection/setup")
+
+This is in the code that examines whether SEV should be enabled or not, so
+it can even affect systems that are not SEV capable.
+
+This may result in a page fault if the EFI config table array's address is
+unmapped. Since the page fault occurs before the new kernel establishes its
+own identity map and page fault routines, it is unrecoverable and kexec
+fails.
+
+Most often, this problem is not seen because the EFI config table array
+gets included in the map by the luck of being placed at a memory address
+close enough to other memory areas that *are* included in the map created
+by kexec.
+
+Both the "nogbpages" command line option and the "use gpbages only where
+full GB page should be mapped" change greatly reduce the chance of being
+included in the map by luck, which is why the problem appears.
+
+Signed-off-by: Tao Liu <ltao@redhat.com>
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Pavin Joseph <me@pavinjoseph.com>
+Tested-by: Sarah Brofeldt <srhb@dbc.dk>
+Tested-by: Eric Hagberg <ehagberg@gmail.com>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/all/20240717213121.3064030-2-steve.wahl@hpe.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-synquacer.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/kernel/machine_kexec_64.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
---- a/drivers/i2c/busses/i2c-synquacer.c
-+++ b/drivers/i2c/busses/i2c-synquacer.c
-@@ -550,12 +550,13 @@ static int synquacer_i2c_probe(struct pl
- 	device_property_read_u32(&pdev->dev, "socionext,pclk-rate",
- 				 &i2c->pclkrate);
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index d287fe290c9ab..2fa12d1dc6760 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -28,6 +28,7 @@
+ #include <asm/setup.h>
+ #include <asm/set_memory.h>
+ #include <asm/cpu.h>
++#include <asm/efi.h>
  
--	pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
-+	pclk = devm_clk_get_optional_enabled(&pdev->dev, "pclk");
- 	if (IS_ERR(pclk))
- 		return dev_err_probe(&pdev->dev, PTR_ERR(pclk),
- 				     "failed to get and enable clock\n");
+ #ifdef CONFIG_ACPI
+ /*
+@@ -90,6 +91,8 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
+ {
+ #ifdef CONFIG_EFI
+ 	unsigned long mstart, mend;
++	void *kaddr;
++	int ret;
  
--	i2c->pclkrate = clk_get_rate(pclk);
-+	if (pclk)
-+		i2c->pclkrate = clk_get_rate(pclk);
+ 	if (!efi_enabled(EFI_BOOT))
+ 		return 0;
+@@ -105,6 +108,30 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
+ 	if (!mstart)
+ 		return 0;
  
- 	if (i2c->pclkrate < SYNQUACER_I2C_MIN_CLK_RATE ||
- 	    i2c->pclkrate > SYNQUACER_I2C_MAX_CLK_RATE)
++	ret = kernel_ident_mapping_init(info, level4p, mstart, mend);
++	if (ret)
++		return ret;
++
++	kaddr = memremap(mstart, mend - mstart, MEMREMAP_WB);
++	if (!kaddr) {
++		pr_err("Could not map UEFI system table\n");
++		return -ENOMEM;
++	}
++
++	mstart = efi_config_table;
++
++	if (efi_enabled(EFI_64BIT)) {
++		efi_system_table_64_t *stbl = (efi_system_table_64_t *)kaddr;
++
++		mend = mstart + sizeof(efi_config_table_64_t) * stbl->nr_tables;
++	} else {
++		efi_system_table_32_t *stbl = (efi_system_table_32_t *)kaddr;
++
++		mend = mstart + sizeof(efi_config_table_32_t) * stbl->nr_tables;
++	}
++
++	memunmap(kaddr);
++
+ 	return kernel_ident_mapping_init(info, level4p, mstart, mend);
+ #endif
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
