@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-82588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28B24994D82
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:06:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8576994ABD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D09821F21D9D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:06:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7183F285B29
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1641DE89D;
-	Tue,  8 Oct 2024 13:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3A31DE3A2;
+	Tue,  8 Oct 2024 12:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sgSfpKEB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KERKGEwW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9921DE2A5;
-	Tue,  8 Oct 2024 13:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1071DE2AD;
+	Tue,  8 Oct 2024 12:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392765; cv=none; b=obn/JIv16gFpUBCAa+QSKNhMGubcOqnVp2xq9FRAk9/jquvRmpg2Jlfa3FbOLf7VcTFwSrXT0OdK76BlZPEJfmwXgnA/erEGehWTqbAIVWvIBGm84tORiN54XZzu2BfHARaCCOXf6f/Ebq+aIQyXjHwdl00tsIPpLUq+f5Ax0Es=
+	t=1728390965; cv=none; b=gGN1JK8nf14b25bxAMgTtXKbucg0uZuVdRGs9cxOVxPbG54F8OfQlUPkDNVOWIxVTRTifeARl00fEmZhwR5iIxKCXH4oSRj9cV/UxjLC1rQVkfGeGjf+fsNxIwemVaMaxUBm4opq4enxIXFFZmI7P1twXoHI3FEZgIamZ297xa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392765; c=relaxed/simple;
-	bh=Vb/0NYmcHhgbm5GueE9wJAOAKz5b/0X6Dpsa7M1tAno=;
+	s=arc-20240116; t=1728390965; c=relaxed/simple;
+	bh=Amyz+IHHINE8EKPK9V1WcdIJOT2NuSFAY4i9MO1W7P0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jFuV4xMYzD2nltzQAHWxxLjDb3RPxjnZFa/d1NVVTWm6fIxaS8yOjhWfsl1FI2kXuE2OCkUPJfwxWNU+/VQTD/a8befCbSLB51VCprpFQk9XCqr5iF9NK3RP24FlEt+GlB61EQ0i7syGY5N/qPvd8na0RyN9qs3WVEM+JwQAp6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sgSfpKEB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E26C4CEC7;
-	Tue,  8 Oct 2024 13:06:04 +0000 (UTC)
+	 MIME-Version; b=AsJjnZeIIA8bGP65aI5d9FDHIp/KTLilSpqIPWA/Ut6nybUFJP1Gppde/E/tb/873RISnyJaHLMAwjy/haFPBZWHGJnYurxZz0d8w/Z5+v/n3gZfhVHiJv4Lcrnq9JVF4Ga42hMR0SUROrED/O2TZT518IBnP7mdtZ6srHc1Dsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KERKGEwW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09C9C4CEC7;
+	Tue,  8 Oct 2024 12:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392764;
-	bh=Vb/0NYmcHhgbm5GueE9wJAOAKz5b/0X6Dpsa7M1tAno=;
+	s=korg; t=1728390965;
+	bh=Amyz+IHHINE8EKPK9V1WcdIJOT2NuSFAY4i9MO1W7P0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sgSfpKEBrXwpEGHRqI0U6S5jCT3S68gp/Qu2X7HKhm9wVwDYKUG1T0W1vr8986d8E
-	 rRF+7+NQLrXpqkl+pWAoSrFxAPFqAc06pAWCBvqYTsPJ4NpfmmJSsUtXYUAdcbAAtL
-	 Fo/2CMzWklC6naWRHzu7zQAfrOkWeMR3+LHgChlQ=
+	b=KERKGEwW8IGA3nS+SDvpduMgEmb6QGwsDniU/MMPskK8Bif45Aizr9xgYNx0ccp4G
+	 SCAFl3F/bzwvejlbRbS2Ob20RrR8M/iozjAbDmVLxzqTCsRJKtC1voPDedEDpJtDWX
+	 n+zUcnW+xf9g8EZpaK+Dms+SEYFjgwFrKKmUafUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Sistare <steven.sistare@oracle.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Peter Xu <peterx@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 481/558] mm/hugetlb: fix memfd_pin_folios free_huge_pages leak
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 448/482] arm64: cputype: Add Neoverse-N3 definitions
 Date: Tue,  8 Oct 2024 14:08:31 +0200
-Message-ID: <20241008115721.166014543@linuxfoundation.org>
+Message-ID: <20241008115706.151025337@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,67 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve Sistare <steven.sistare@oracle.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit c56b6f3d801d7ec8965993342bdd9e2972b6cb8e upstream.
+[ Upstream commit 924725707d80bc2588cefafef76ff3f164d299bc ]
 
-memfd_pin_folios followed by unpin_folios fails to restore free_huge_pages
-if the pages were not already faulted in, because the folio refcount for
-pages created by memfd_alloc_folio never goes to 0.  memfd_pin_folios
-needs another folio_put to undo the folio_try_get below:
+Add cputype definitions for Neoverse-N3. These will be used for errata
+detection in subsequent patches.
 
-memfd_alloc_folio()
-  alloc_hugetlb_folio_nodemask()
-    dequeue_hugetlb_folio_nodemask()
-      dequeue_hugetlb_folio_node_exact()
-        folio_ref_unfreeze(folio, 1);    ; adds 1 refcount
-  folio_try_get()                        ; adds 1 refcount
-  hugetlb_add_to_page_cache()            ; adds 512 refcount (on x86)
+These values can be found in Table A-261 ("MIDR_EL1 bit descriptions")
+in issue 02 of the Neoverse-N3 TRM, which can be found at:
 
-With the fix, after memfd_pin_folios + unpin_folios, the refcount for the
-(unfaulted) page is 512, which is correct, as the refcount for a faulted
-unpinned page is 513.
+  https://developer.arm.com/documentation/107997/0000/?lang=en
 
-Link: https://lkml.kernel.org/r/1725373521-451395-3-git-send-email-steven.sistare@oracle.com
-Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240930111705.3352047-2-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/gup.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -3618,7 +3618,7 @@ long memfd_pin_folios(struct file *memfd
- 	pgoff_t start_idx, end_idx, next_idx;
- 	struct folio *folio = NULL;
- 	struct folio_batch fbatch;
--	struct hstate *h;
-+	struct hstate *h = NULL;
- 	long ret = -EINVAL;
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 5a7dfeb8e8eb5..488f8e7513495 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -94,6 +94,7 @@
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
+ #define ARM_CPU_PART_CORTEX_X925	0xD85
+ #define ARM_CPU_PART_CORTEX_A725	0xD87
++#define ARM_CPU_PART_NEOVERSE_N3	0xD8E
  
- 	if (start < 0 || start > end || !max_folios)
-@@ -3662,6 +3662,8 @@ long memfd_pin_folios(struct file *memfd
- 							     &fbatch);
- 			if (folio) {
- 				folio_put(folio);
-+				if (h)
-+					folio_put(folio);
- 				folio = NULL;
- 			}
- 
+ #define APM_CPU_PART_XGENE		0x000
+ #define APM_CPU_VAR_POTENZA		0x00
+@@ -176,6 +177,7 @@
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
+ #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
+ #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
++#define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
+ #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+ #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
+-- 
+2.43.0
+
 
 
 
