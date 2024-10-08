@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-81988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D86994A7F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:33:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC05D994CFB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91070B2559B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:33:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72E1B286D56
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6CA11DE2C4;
-	Tue,  8 Oct 2024 12:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F891DED7A;
+	Tue,  8 Oct 2024 12:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVCsRytl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bu5bCgX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639811DE4CC;
-	Tue,  8 Oct 2024 12:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A36189910;
+	Tue,  8 Oct 2024 12:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390805; cv=none; b=X/JOuwHtyFk2dIJALPZOOQY1QHBoR2pORkUy90mmP3V4R4AJeJc/gxkfPIEbBVCD97/AM22n6wGvy6YdE8K0vK/kbMi6IzO90TwSWwL/MevfrecrL4Q98pwjgJyJTicEh3RiUMo+r1u27Dqy/ZTmYPPqWGoHLYnc3E1SlozVnV0=
+	t=1728392390; cv=none; b=IMczwpM/ls7aTGP3cDGvst6r1i4uvuUIE1tuUMMvWKDIi2b31b67MMcGiJbhR3ByrqpXnCPbgV6ueaYKwBwDYH1yxty0K3+/pQ0hBZWebM6MFsfu8vJZXtddp6cShP38CwXpJUog5nWQBQElNOiav8MWQU+3Zys2lsTK0jgn4ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390805; c=relaxed/simple;
-	bh=Wzw2rGRg610jnvXOAuJzm/NGhjmbnfYoqZpSHY7f69s=;
+	s=arc-20240116; t=1728392390; c=relaxed/simple;
+	bh=B/rnJqWLTlb5WsL7V/G6xLQhXQ0YnNzEQ9SwS0U2Qeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPer+BrTbI+ecJ4XY+mRYN+Ah5GlDPCMuyA08o8grUDxu1eq0adiP+CmG3N74rdmX39MgUZK/IBK8w59usVaJtvvZvc3Z7vWztBh5WJaxobOp0f+HjBdA30tBOR+uRIUg2Ptw8q2hEhV+Gx4oNzMzFloty+G9w5zbGOHjNGiehE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVCsRytl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93195C4CEC7;
-	Tue,  8 Oct 2024 12:33:24 +0000 (UTC)
+	 MIME-Version; b=u7ZxN8Cn+xhuLNhE/nBixn7XTwgwwqRP6X9Sv71QWXXfTLK1OVmR4GbSBqucSPhJAjn6vg4Tntmogd8k3XyRn5vMVJAgh8HlCKjQFSeFXiPZYR/uB3x70f/YvmCu88q+Iweu54WaarvYWprdVQEDl/2OCRMbingR2iPHuW4A1I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bu5bCgX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158A7C4CEC7;
+	Tue,  8 Oct 2024 12:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390805;
-	bh=Wzw2rGRg610jnvXOAuJzm/NGhjmbnfYoqZpSHY7f69s=;
+	s=korg; t=1728392390;
+	bh=B/rnJqWLTlb5WsL7V/G6xLQhXQ0YnNzEQ9SwS0U2Qeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QVCsRytlXpNXSvYI3r0DhzGZIby1GUolfI8Re6K/mjQaHUBB1IvWG8i8Zw5I5bJeX
-	 Q7V4xfQb2QEqWfynnAWTkkJPFJOuFlApr8IB0diYXrijCKHNZfEElu1XhYMs2gX8iy
-	 c2sCrvyPXCtmnERjdV0qXUCsdOAZHxg1Evm0lIEs=
+	b=1bu5bCgXE1Mrln6lrA91pG7AhsnckEKcv7+IqIl3ggj7/qbTNzNfs4c4nr4MHKIs3
+	 WTiKgXw3OIT6MSGkZMna8DiNYOrx+oUb6qapn272YFELc1I9iYIIvWOfkDwVdPUy+4
+	 bd32Uvperb4OnIEgLO/8jgNkiBMKl0p3lhx+d9Fw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.10 367/482] riscv: define ILLEGAL_POINTER_VALUE for 64bit
-Date: Tue,  8 Oct 2024 14:07:10 +0200
-Message-ID: <20241008115702.864304586@linuxfoundation.org>
+	Camm Maguire <camm@maguirefamily.org>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.11 401/558] parisc: Allow mmap(MAP_STACK) memory to automatically expand upwards
+Date: Tue,  8 Oct 2024 14:07:11 +0200
+Message-ID: <20241008115718.059616100@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Helge Deller <deller@kernel.org>
 
-commit 5c178472af247c7b50f962495bb7462ba453b9fb upstream.
+commit 5d698966fa7b452035c44c937d704910bf3440dd upstream.
 
-This is used in poison.h for poison pointer offset. Based on current
-SV39, SV48 and SV57 vm layout, 0xdead000000000000 is a proper value
-that is not mappable, this can avoid potentially turning an oops to
-an expolit.
+When userspace allocates memory with mmap() in order to be used for stack,
+allow this memory region to automatically expand upwards up until the
+current maximum process stack size.
+The fault handler checks if the VM_GROWSUP bit is set in the vm_flags field
+of a memory area before it allows it to expand.
+This patch modifies the parisc specific code only.
+A RFC for a generic patch to modify mmap() for all architectures was sent
+to the mailing list but did not get enough Acks.
 
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Fixes: fbe934d69eb7 ("RISC-V: Build Infrastructure")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240705170210.3236-1-jszhang@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Reported-by: Camm Maguire <camm@maguirefamily.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org	# v5.10+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/Kconfig |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/parisc/include/asm/mman.h |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -312,6 +312,11 @@ config GENERIC_HWEIGHT
- config FIX_EARLYCON_MEM
- 	def_bool MMU
+--- a/arch/parisc/include/asm/mman.h
++++ b/arch/parisc/include/asm/mman.h
+@@ -11,4 +11,18 @@ static inline bool arch_memory_deny_writ
+ }
+ #define arch_memory_deny_write_exec_supported arch_memory_deny_write_exec_supported
  
-+config ILLEGAL_POINTER_VALUE
-+	hex
-+	default 0 if 32BIT
-+	default 0xdead000000000000 if 64BIT
++static inline unsigned long arch_calc_vm_flag_bits(unsigned long flags)
++{
++	/*
++	 * The stack on parisc grows upwards, so if userspace requests memory
++	 * for a stack, mark it with VM_GROWSUP so that the stack expansion in
++	 * the fault handler will work.
++	 */
++	if (flags & MAP_STACK)
++		return VM_GROWSUP;
 +
- config PGTABLE_LEVELS
- 	int
- 	default 5 if 64BIT
++	return 0;
++}
++#define arch_calc_vm_flag_bits(flags) arch_calc_vm_flag_bits(flags)
++
+ #endif /* __ASM_MMAN_H__ */
 
 
 
