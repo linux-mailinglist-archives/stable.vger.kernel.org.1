@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F803994C6E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0DEB994E4C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:15:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 614881C23DFC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C06D1F236ED
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4A71DE4CC;
-	Tue,  8 Oct 2024 12:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5371DEFC9;
+	Tue,  8 Oct 2024 13:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxW2ZGwe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeVSNGgu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3B61D31A0;
-	Tue,  8 Oct 2024 12:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F32192594;
+	Tue,  8 Oct 2024 13:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392066; cv=none; b=h5ACVvBEdDtCycA4KfBYROL/sx3J6dO1ktllKRlfamCHErg9zZN4hjjLwEDWAI4TgT9hvekWQSuhAMlGE3820wTs+oGQCTvxA9O7hZI3B0HqJxh8/8ZL0tb2tUGlyre4B8PqHvL9XjNIfwrn/aQLHopPXGQVZf8FWgFQiV7hYsA=
+	t=1728393323; cv=none; b=T9PCwANxQkUjMVsPmvDGs985JZN+OS5h4lOme4mkhpLI16efToK1+NLBL5K0rIgukDog2AnesAzJUc07utoeoJQ/hrxjxyxuIrIBnG9Fh3CRpyf0E9saHL1iXwsTh3P/vm8IKTIUQH6hAeGukoyD/VOv+3XxZle5kjddhXJP1Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392066; c=relaxed/simple;
-	bh=HjrsSPZKBuUEZw46eIZODT5ZLGS4wojTTxCx8Wlpook=;
+	s=arc-20240116; t=1728393323; c=relaxed/simple;
+	bh=ccI5JElKTN9h3Qyj/5DlIQXdguSJpwZhWdxHxKWXUyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQkeIr3x9RsKvRvISr38GomgiWj9GhDfRDTEuw5DXQysqwCNbysP1JhMDQNR9SFVtVcqHvXMkg9LJuKguP3IGDX3sJ7vX+YMQuWet6mWm0xLES4NS9rwhv5KOwtcLQZBnu/rqgwMogxCXY589VwLp7OXIyvssqypTJ0b9yF4XR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxW2ZGwe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E6AC4CEC7;
-	Tue,  8 Oct 2024 12:54:25 +0000 (UTC)
+	 MIME-Version; b=dgl1VhbVDMvdJRf4nmDAqBZpbroDw9TaLuiUpMpv7JhPirdybzDRPU2yd+Cc5WoEtS8DzSVlaBJ7JlGhB5kAZSEiKqQB9WJf+tKpQGS93at4KBJZS5pi4nA1JerPHLsYNrYwYeXr6eRvLZ+heC/gHm9JFzd6vTJiwpCg0m5zjgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DeVSNGgu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293FFC4CECC;
+	Tue,  8 Oct 2024 13:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392065;
-	bh=HjrsSPZKBuUEZw46eIZODT5ZLGS4wojTTxCx8Wlpook=;
+	s=korg; t=1728393323;
+	bh=ccI5JElKTN9h3Qyj/5DlIQXdguSJpwZhWdxHxKWXUyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TxW2ZGwe6bFnfvy9Wy4IM2dh3eaApER+VNb+a9ly5Rhz63AgB7rsEed3K3wqyZomG
-	 tL0mne72O+DbML7nuXYeuhHrr2x1CI6PgCYIIwOR3I8beCS9DUSmH3quN0AC9UZ3Zu
-	 /MBMfSJjRrMPmfU2W3SwLnMYTfbI8x2wWgnp0ryI=
+	b=DeVSNGguPwBZkXlfFi/VDWa0JtNHyOAT1vgyt/KX/C51Y7Tu4G5CCb2kvqjLy6ArX
+	 /nDOOyySxxVjPRbgZRKW0LRkyYvo0209g5FZrxGNl+iqKUzRDM5s/q4Lu/rzLh6Nxr
+	 AAtLbZwu7fSkCbLDNe6jAdHpU+Iff5ZALhA8GLsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 305/558] ext4: dont set SB_RDONLY after filesystem errors
+Subject: [PATCH 6.6 090/386] wifi: rtw89: correct base HT rate mask for firmware
 Date: Tue,  8 Oct 2024 14:05:35 +0200
-Message-ID: <20241008115714.319739584@linuxfoundation.org>
+Message-ID: <20241008115632.996071322@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit d3476f3dad4ad68ae5f6b008ea6591d1520da5d8 ]
+[ Upstream commit 45742881f9eee2a4daeb6008e648a460dd3742cd ]
 
-When the filesystem is mounted with errors=remount-ro, we were setting
-SB_RDONLY flag to stop all filesystem modifications. We knew this misses
-proper locking (sb->s_umount) and does not go through proper filesystem
-remount procedure but it has been the way this worked since early ext2
-days and it was good enough for catastrophic situation damage
-mitigation. Recently, syzbot has found a way (see link) to trigger
-warnings in filesystem freezing because the code got confused by
-SB_RDONLY changing under its hands. Since these days we set
-EXT4_FLAGS_SHUTDOWN on the superblock which is enough to stop all
-filesystem modifications, modifying SB_RDONLY shouldn't be needed. So
-stop doing that.
+Coverity reported that u8 rx_mask << 24 will become signed 32 bits, which
+casting to unsigned 64 bits will do sign extension. For example,
+putting 0x80000000 (signed 32 bits) to a u64 variable will become
+0xFFFFFFFF_80000000.
 
-Link: https://lore.kernel.org/all/000000000000b90a8e061e21d12f@google.com
-Reported-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Link: https://patch.msgid.link/20240805201241.27286-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+The real case we meet is:
+  rx_mask[0...3] = ff ff 00 00
+  ra_mask = 0xffffffff_ff0ff000
+
+After this fix:
+  rx_mask[0...3] = ff ff 00 00
+  ra_mask = 0x00000000_ff0ff000
+
+Fortunately driver does bitwise-AND with incorrect ra_mask and supported
+rates (1ss and 2ss rate only) afterward, so the final rate mask of
+original code is still correct.
+
+Addresses-Coverity-ID: 1504762 ("Unintended sign extension")
+
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240809072012.84152-5-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw89/phy.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index cecea19908109..b3f47d6879ebf 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -735,11 +735,12 @@ static void ext4_handle_error(struct super_block *sb, bool force_ro, int error,
- 
- 	ext4_msg(sb, KERN_CRIT, "Remounting filesystem read-only");
- 	/*
--	 * Make sure updated value of ->s_mount_flags will be visible before
--	 * ->s_flags update
-+	 * EXT4_FLAGS_SHUTDOWN was set which stops all filesystem
-+	 * modifications. We don't set SB_RDONLY because that requires
-+	 * sb->s_umount semaphore and setting it without proper remount
-+	 * procedure is confusing code such as freeze_super() leading to
-+	 * deadlocks and other problems.
- 	 */
--	smp_wmb();
--	sb->s_flags |= SB_RDONLY;
- }
- 
- static void update_super_work(struct work_struct *work)
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index 7139146cb3fad..fac83b718a30c 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -284,8 +284,8 @@ static void rtw89_phy_ra_sta_update(struct rtw89_dev *rtwdev,
+ 		csi_mode = RTW89_RA_RPT_MODE_HT;
+ 		ra_mask |= ((u64)sta->deflink.ht_cap.mcs.rx_mask[3] << 48) |
+ 			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[2] << 36) |
+-			   (sta->deflink.ht_cap.mcs.rx_mask[1] << 24) |
+-			   (sta->deflink.ht_cap.mcs.rx_mask[0] << 12);
++			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[1] << 24) |
++			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[0] << 12);
+ 		high_rate_masks = rtw89_ra_mask_ht_rates;
+ 		if (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_RX_STBC)
+ 			stbc_en = 1;
 -- 
 2.43.0
 
