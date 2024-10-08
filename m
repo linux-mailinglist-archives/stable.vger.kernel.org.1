@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9214F9949F4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5202994E31
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:14:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 475061F24CF9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69E261F23DED
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A3F1DE8BE;
-	Tue,  8 Oct 2024 12:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC871DF27A;
+	Tue,  8 Oct 2024 13:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+oDEEVG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WokVjNGm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2823A4C97;
-	Tue,  8 Oct 2024 12:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BEB1DEFED;
+	Tue,  8 Oct 2024 13:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390463; cv=none; b=qvHN1WnPiuq1uinYZ3qvcGlznMTPbNx9deQaEYu/iqbZvJ/ibty6qy0FPOHHqpRF6WUN9qM0SC+NxiBXoejyNuzzgLTx2eQ6mvI6OCWrY1fGXhl3O1nD0ZY6DZZpfkGZECRlIhpQQ13iuhvVqJ2tByDVfzRD3+SW/hlq6q+HiWs=
+	t=1728393207; cv=none; b=SLtOxItodfrYcH5HB+F4E77RQjCiq3GnGbZH5PtJbeQ8cqyW2wsKkb++vtxeIdN/NsaR5UAULoBwKLu0XN7OjhIWe+VO8i/8lYBAp+ooq5VTXc5/1GnEifiorPbRuJztWTibMWjQV+vaBcLwmtDh4jTFOj0xE3Y8wR8gfyD8+6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390463; c=relaxed/simple;
-	bh=XfCvJy4uHg/rkFo6S5SLVm6nQ+hj2nDPeLUQKrmQS6Y=;
+	s=arc-20240116; t=1728393207; c=relaxed/simple;
+	bh=twa4kOF9p1GkjolZfHajeOhhfEIstVp+g8f7LVuenfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D25JOZY0mR+OO5IK28XEw3mFmWu7RSbKLhXcbkGyro90H7VXyWF1u50HWZY0lzwIMgzYjjbNsrcJePJ95GMxPmblqEwfH3hSw4vZ+eLiAukpkKynaLvvXhrv4lIS59fyEPK8YTWQCH/UOdPao/b6VLi78DGE1zO+XHC2FD/7WEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+oDEEVG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EBA2C4CEC7;
-	Tue,  8 Oct 2024 12:27:42 +0000 (UTC)
+	 MIME-Version; b=fhyRBYwtNSUrK1nItSOriYu0VW4NKDLBm3aKKR2+U4lUSeK+U55rvZeYclOEXgClFga8QItJoTwzC//6pryjZUlcFQzoFPDAQEPdmBu+b/dbINvcRZhgOGfIMwr/VRvTc2YlyHU1uFt2OhuBcpmcCtvnKci7U+tltBEUEUPDVsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WokVjNGm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 968C7C4CEC7;
+	Tue,  8 Oct 2024 13:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390463;
-	bh=XfCvJy4uHg/rkFo6S5SLVm6nQ+hj2nDPeLUQKrmQS6Y=;
+	s=korg; t=1728393207;
+	bh=twa4kOF9p1GkjolZfHajeOhhfEIstVp+g8f7LVuenfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p+oDEEVGm827fRiVSeRKNIFdQgMmMSjNEsYCghNmvU+FEgiDJx5Vnc6t8aIRwrATy
-	 cHGnHSHLMhLfxhuK9BgOhK4RYR2mBI0SmsTY7eTscfMrczdR7LcyYosVYpxpJpyRYI
-	 RIGieq2ySPkREjDghjmxBOhIwfqcuTModW9fuRsY=
+	b=WokVjNGm6iEp+m+kSMFnGaz1Y5dhp8vXXHZgPtiYztAZHI0SVk1Y6q0N7+73n4FQ/
+	 PUrCKTXz3kPQyyP1OnQ3vUMbb49C8ynoS5UYlMYi3d1DPGspq2okxjIEhBzYhj2OJw
+	 1O5n4f8/Dx3Mg36fMIp91f7XcUyyhMm1A0MBDh34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sinadin Shan <sinadin.shan@oracle.com>,
-	Yifei Liu <yifei.l.liu@oracle.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 265/482] selftests: breakpoints: use remaining time to check if suspend succeed
+Subject: [PATCH 6.6 083/386] wifi: rtw88: select WANT_DEV_COREDUMP
 Date: Tue,  8 Oct 2024 14:05:28 +0200
-Message-ID: <20241008115658.711509096@linuxfoundation.org>
+Message-ID: <20241008115632.724261268@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yifei Liu <yifei.l.liu@oracle.com>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-[ Upstream commit c66be905cda24fb782b91053b196bd2e966f95b7 ]
+[ Upstream commit 7e989b0c1e33210c07340bf5228aa83ea52515b5 ]
 
-step_after_suspend_test fails with device busy error while
-writing to /sys/power/state to start suspend. The test believes
-it failed to enter suspend state with
+We have invoked device coredump when fw crash.
+Should select WANT_DEV_COREDUMP by ourselves.
 
-$ sudo ./step_after_suspend_test
-TAP version 13
-Bail out! Failed to enter Suspend state
-
-However, in the kernel message, I indeed see the system get
-suspended and then wake up later.
-
-[611172.033108] PM: suspend entry (s2idle)
-[611172.044940] Filesystems sync: 0.006 seconds
-[611172.052254] Freezing user space processes
-[611172.059319] Freezing user space processes completed (elapsed 0.001 seconds)
-[611172.067920] OOM killer disabled.
-[611172.072465] Freezing remaining freezable tasks
-[611172.080332] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
-[611172.089724] printk: Suspending console(s) (use no_console_suspend to debug)
-[611172.117126] serial 00:03: disabled
-some other hardware get reconnected
-[611203.136277] OOM killer enabled.
-[611203.140637] Restarting tasks ...
-[611203.141135] usb 1-8.1: USB disconnect, device number 7
-[611203.141755] done.
-[611203.155268] random: crng reseeded on system resumption
-[611203.162059] PM: suspend exit
-
-After investigation, I noticed that for the code block
-if (write(power_state_fd, "mem", strlen("mem")) != strlen("mem"))
-	ksft_exit_fail_msg("Failed to enter Suspend state\n");
-
-The write will return -1 and errno is set to 16 (device busy).
-It should be caused by the write function is not successfully returned
-before the system suspend and the return value get messed when waking up.
-As a result, It may be better to check the time passed of those few
-instructions to determine whether the suspend is executed correctly for
-it is pretty hard to execute those few lines for 5 seconds.
-
-The timer to wake up the system is set to expire after 5 seconds and
-no re-arm. If the timer remaining time is 0 second and 0 nano secomd,
-it means the timer expired and wake the system up. Otherwise, the system
-could be considered to enter the suspend state failed if there is any
-remaining time.
-
-After appling this patch, the test would not fail for it believes the
-system does not go to suspend by mistake. It now could continue to the
-rest part of the test after suspend.
-
-Fixes: bfd092b8c272 ("selftests: breakpoint: add step_after_suspend_test")
-Reported-by: Sinadin Shan <sinadin.shan@oracle.com>
-Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240718070616.42217-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/breakpoints/step_after_suspend_test.c  | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/breakpoints/step_after_suspend_test.c b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-index b8703c499d28c..0e6374aac96f5 100644
---- a/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-+++ b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-@@ -153,7 +153,10 @@ void suspend(void)
- 	if (err < 0)
- 		ksft_exit_fail_msg("timerfd_settime() failed\n");
+diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wireless/realtek/rtw88/Kconfig
+index cffad1c012499..2af2bc613458d 100644
+--- a/drivers/net/wireless/realtek/rtw88/Kconfig
++++ b/drivers/net/wireless/realtek/rtw88/Kconfig
+@@ -12,6 +12,7 @@ if RTW88
  
--	if (write(power_state_fd, "mem", strlen("mem")) != strlen("mem"))
-+	system("(echo mem > /sys/power/state) 2> /dev/null");
-+
-+	timerfd_gettime(timerfd, &spec);
-+	if (spec.it_value.tv_sec != 0 || spec.it_value.tv_nsec != 0)
- 		ksft_exit_fail_msg("Failed to enter Suspend state\n");
+ config RTW88_CORE
+ 	tristate
++	select WANT_DEV_COREDUMP
  
- 	close(timerfd);
+ config RTW88_PCI
+ 	tristate
 -- 
 2.43.0
 
