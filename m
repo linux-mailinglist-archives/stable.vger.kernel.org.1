@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-82105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F0C994B0F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:39:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8F9994B13
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:39:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB5741C235E5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:39:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 771AE285BE0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47110190663;
-	Tue,  8 Oct 2024 12:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1115B1DDA15;
+	Tue,  8 Oct 2024 12:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOEbMCCe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOoRz84o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C9F1DA60C;
-	Tue,  8 Oct 2024 12:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C48B01779B1;
+	Tue,  8 Oct 2024 12:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391178; cv=none; b=PwEddYreadmqg6IxlfN8r+rbpu58zti8wT/4KTnWFJK2BYcuu3FkDuqn+i8XsZFU4/4yRncAIFZ0LUsg9t664TmQoiB01pdby5X/W9kPezb0jAdFg2DDfH3wHAO85gmi21+e4q9Ri5vx+biilT6EmaUx6ZvMvz2pM8+WmXmcrkE=
+	t=1728391189; cv=none; b=XPdYWnIvV2nfSu/fT05J8Tbfaf85kvc83dXXvdZz4cJET6BQwp90q4F6fIu4UoD2tJBpW1dTeuFiIl8vstXLY0XAL3+XFPoynk9Xxlszkwj5TosY9niXu/RoknxP1Wz4NLvNWK6+7nTDHTKHPyTIilexyX0pO2swe0OohyjZkD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391178; c=relaxed/simple;
-	bh=LKAnu5NWEVGoLXGO+Lzck34prbi0IKvwiF0yEqluYo8=;
+	s=arc-20240116; t=1728391189; c=relaxed/simple;
+	bh=mv1h5SoVHCjoRr9a633HFWFK0DM+SmyHX++O+y/KoPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fb9G+w/i/a/m0oKrEEtV9kXMpErCvgQmvVZzaPp9jGkAcuhfX0d+c1FIUJLFHo/fR1NgRMddfakcCPCkVw8nxFIHZmm9vgMVHHZp5rxXI387WKpyXaiCFt5l9U8nKjenZVnyoGDVm6BP8hnLJQ2GddyKId4p+iL3OnwrwZAsoN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOEbMCCe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1D2C4CEC7;
-	Tue,  8 Oct 2024 12:39:36 +0000 (UTC)
+	 MIME-Version; b=c1MnQ88T3HnAQTGnxi4qjQ+NXA16zAuRFWvTjqWCpZ3cNFO7Yqax8q3DbFggzDmcDLsmhbdp9zgDVdchS+t++4lOuLm6z0Wqln3JcwCU+imIBiNrNOflS4QL5hNz/bVWEutBprqIfS5PPjUPsPm2UW4DJzlq4nVitXv0X/OT3WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOoRz84o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46704C4CEC7;
+	Tue,  8 Oct 2024 12:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391177;
-	bh=LKAnu5NWEVGoLXGO+Lzck34prbi0IKvwiF0yEqluYo8=;
+	s=korg; t=1728391189;
+	bh=mv1h5SoVHCjoRr9a633HFWFK0DM+SmyHX++O+y/KoPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wOEbMCCe5Wj/FldeQyv8IC5elDBUR7YEN4eTqsUXU/EC6LWektm/3ZjTKgzssfDAS
-	 hri4BTZzvBDNCwIrXq0RBq2kyjNwA8tWepm7fRy7s9nAcdUUlYX4GlSkBCSRLp89uk
-	 CYKkwbuId6O0Et6+BO+spRXgRmYmk5Mrp8ibkVD4=
+	b=BOoRz84o46GJYAFue5Suabq661fAiTH9AUjZVTeAWsd1zNpApqS/dgiaQJHF2eAmS
+	 5w1D6PXLkqYdxkuziXFV0OjiUIUFwscxjH/hdk6EB0b1jujU82NamEsZ6gdsU7PKEm
+	 VGyUhU/KbiWd+gSvF/Lg79uXv99Axy87Z8jAMNKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rafael Rocha <rrochavi@fnal.gov>,
-	=?UTF-8?q?Kai=20M=C3=A4kisara?= <kai.makisara@kolumbus.fi>,
+	Christoph Hellwig <hch@lst.de>,
+	John Garry <john.g.garry@oracle.com>,
+	Daniel Wagner <dwagner@suse.de>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 004/558] scsi: st: Fix input/output error on empty drive reset
-Date: Tue,  8 Oct 2024 14:00:34 +0200
-Message-ID: <20241008115702.394795074@linuxfoundation.org>
+Subject: [PATCH 6.11 005/558] scsi: pm8001: Do not overwrite PCI queue mapping
+Date: Tue,  8 Oct 2024 14:00:35 +0200
+Message-ID: <20241008115702.432709029@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
 References: <20241008115702.214071228@linuxfoundation.org>
@@ -61,77 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael Rocha <rrochavi@fnal.gov>
+From: Daniel Wagner <dwagner@suse.de>
 
-[ Upstream commit 3d882cca73be830549833517ddccb3ac4668c04e ]
+[ Upstream commit a141c17a543332fc1238eb5cba562bfc66879126 ]
 
-A previous change was introduced to prevent data loss during a power-on
-reset when a tape is present inside the drive. This commit set the
-"pos_unknown" flag to true to avoid operations that could compromise data
-by performing actions from an untracked position. The relevant change is
-commit 9604eea5bd3a ("scsi: st: Add third party poweron reset handling")
+blk_mq_pci_map_queues() maps all queues but right after this, we overwrite
+these mappings by calling blk_mq_map_queues(). Just use one helper but not
+both.
 
-As a consequence of this change, a new issue has surfaced: the driver now
-returns an "Input/output error" even for empty drives when the drive, host,
-or bus is reset. This issue stems from the "flush_buffer" function, which
-first checks whether the "pos_unknown" flag is set. If the flag is set, the
-user will encounter an "Input/output error" until the tape position is
-known again. This behavior differs from the previous implementation, where
-empty drives were not affected at system start up time, allowing tape
-software to send commands to the driver to retrieve the drive's status and
-other information.
-
-The current behavior prioritizes the "pos_unknown" flag over the
-"ST_NO_TAPE" status, leading to issues for software that detects drives
-during system startup. This software will receive an "Input/output error"
-until a tape is loaded and its position is known.
-
-To resolve this, the "ST_NO_TAPE" status should take priority when the
-drive is empty, allowing communication with the drive following a power-on
-reset. At the same time, the change should continue to protect data by
-maintaining the "pos_unknown" flag when the drive contains a tape and its
-position is unknown.
-
-Signed-off-by: Rafael Rocha <rrochavi@fnal.gov>
-Link: https://lore.kernel.org/r/20240905173921.10944-1-rrochavi@fnal.gov
-Fixes: 9604eea5bd3a ("scsi: st: Add third party poweron reset handling")
-Acked-by: Kai Mäkisara <kai.makisara@kolumbus.fi>
+Fixes: 42f22fe36d51 ("scsi: pm8001: Expose hardware queues for pm80xx")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Link: https://lore.kernel.org/r/20240912-do-not-overwrite-pci-mapping-v1-1-85724b6cec49@suse.de
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/scsi/pm8001/pm8001_init.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 0d8ce1a92168c..d50bad3a2ce92 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -834,6 +834,9 @@ static int flush_buffer(struct scsi_tape *STp, int seek_next)
- 	int backspace, result;
- 	struct st_partstat *STps;
+diff --git a/drivers/scsi/pm8001/pm8001_init.c b/drivers/scsi/pm8001/pm8001_init.c
+index 1e63cb6cd8e32..33e1eba62ca12 100644
+--- a/drivers/scsi/pm8001/pm8001_init.c
++++ b/drivers/scsi/pm8001/pm8001_init.c
+@@ -100,10 +100,12 @@ static void pm8001_map_queues(struct Scsi_Host *shost)
+ 	struct pm8001_hba_info *pm8001_ha = sha->lldd_ha;
+ 	struct blk_mq_queue_map *qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
  
-+	if (STp->ready != ST_READY)
-+		return 0;
-+
- 	/*
- 	 * If there was a bus reset, block further access
- 	 * to this device.
-@@ -841,8 +844,6 @@ static int flush_buffer(struct scsi_tape *STp, int seek_next)
- 	if (STp->pos_unknown)
- 		return (-EIO);
+-	if (pm8001_ha->number_of_intr > 1)
++	if (pm8001_ha->number_of_intr > 1) {
+ 		blk_mq_pci_map_queues(qmap, pm8001_ha->pdev, 1);
++		return;
++	}
  
--	if (STp->ready != ST_READY)
--		return 0;
- 	STps = &(STp->ps[STp->partition]);
- 	if (STps->rw == ST_WRITING)	/* Writing */
- 		return st_flush_write_buffer(STp);
+-	return blk_mq_map_queues(qmap);
++	blk_mq_map_queues(qmap);
+ }
+ 
+ /*
 -- 
 2.43.0
 
