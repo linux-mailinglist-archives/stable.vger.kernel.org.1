@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B459994B73
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4FA994894
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD97B1C24DDA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D26F6280B40
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DFB41DED4E;
-	Tue,  8 Oct 2024 12:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78C51DE2CD;
+	Tue,  8 Oct 2024 12:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSq2NzCN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DM9NuxPd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54591DDC24;
-	Tue,  8 Oct 2024 12:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CCD1CF297;
+	Tue,  8 Oct 2024 12:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391344; cv=none; b=GLjKqmDjYtCZNUt+W5wkwFaSGUQTNZ6+cx65T6naE/kx/fssBgOU8cms9hcVDfG2zzgP43MLcRNZOkAcReQByPWw8I0G4liQdfJzVWlqkWIl4WVq+lwF+nZi3SU0ehqLtoWF1dLZMMC1D2kLrpeTkY9VQsTBRIKJAJvuYxqh7xA=
+	t=1728389667; cv=none; b=uWA2VBYcJm6iRfPglYVr/M/usf8g6tcQMQ1bPE9KhvRyjOF+m6avwfsAo5bsbDTfOwDCTcLXMnd77oneO17aWfEGyGB03Ks1Ns2dLpb2RFiJZJ08O0tPZfOf2NsIddoWNZWYIuYVjXRoS0wgJnPm88sSNgt83xt7xYx6kkxbC84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391344; c=relaxed/simple;
-	bh=/Km1vKPmWJrRJK5jrueD+kWc7wGmSO2MnzbPhqvEE1Y=;
+	s=arc-20240116; t=1728389667; c=relaxed/simple;
+	bh=sofhwFYUmRs049iK8MkTYk28Yd7aOmWOL+SXs0heUNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZlKUaFmDDJYA4nRywFcJaBsJpCK+PIsQh0XGFCn6Esf0HozUpUB+2PGR3zys+cbsEk7PGLuJF/maIoiyeRLvcfwtfVysmYtdZx7tejL4eAI/ttuvifgm+YRqZaI3ZdwVyQ4zJev/efFVKou00FUfmrJnyR5arOFETWhiKDxHhic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSq2NzCN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2609C4CEC7;
-	Tue,  8 Oct 2024 12:42:23 +0000 (UTC)
+	 MIME-Version; b=LXfd+PdJdNt7fybrq6sqrQmJtcPmcR9bZseTVGTS9Wy5bCjFo643M5rDtodwSluo36KHhd3euf7vzK/m72ldNGeN6n6VFnASr2GeMmVz/v5JYSL+tuSjzCQWcU+5l07jXBF5FYN7XnKM0HYmx47kgpY8rhdBtGIyOW07glS5wDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DM9NuxPd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96874C4CEC7;
+	Tue,  8 Oct 2024 12:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391344;
-	bh=/Km1vKPmWJrRJK5jrueD+kWc7wGmSO2MnzbPhqvEE1Y=;
+	s=korg; t=1728389667;
+	bh=sofhwFYUmRs049iK8MkTYk28Yd7aOmWOL+SXs0heUNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SSq2NzCNkcub1WN/NgZXW54EPE+zouH3LKxQebMJ8vkTcbGX6bwDyz3XdaM3TL7Wx
-	 8lL0e6RMeF8uvCstv+FZiS0liOY04vIayHZM/bmc3L1Fs6IJqvv07D3QgKMq4nJIVJ
-	 IkKm+Z9JpGJ2LSN/vOFEm59AnONqdXvmzpNrfvss=
+	b=DM9NuxPdArhy412KVJhbgasaNUebSLY5OxIuUm8cBiUJ9CwhIoXqHgiqW3tCjPt9f
+	 FZN9Slev49CH5fDOe5ahd1xSF5dXAzz848/Erg9nai+E7UEKu+WSk4Yx+bqmTHfiq+
+	 SWgHJVAipg/KIV5pRlqv/HRjCklAkKY8GoFuIh08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Kandybka <d.kandybka@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 085/558] wifi: ath9k: fix possible integer overflow in ath9k_get_et_stats()
-Date: Tue,  8 Oct 2024 14:01:55 +0200
-Message-ID: <20241008115705.718028550@linuxfoundation.org>
+Subject: [PATCH 6.10 053/482] loop: dont set QUEUE_FLAG_NOMERGES
+Date: Tue,  8 Oct 2024 14:01:56 +0200
+Message-ID: <20241008115650.393159380@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Kandybka <d.kandybka@gmail.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 3f66f26703093886db81f0610b97a6794511917c ]
+[ Upstream commit 667ea36378cf7f669044b27871c496e1559c872a ]
 
-In 'ath9k_get_et_stats()', promote TX stats counters to 'u64'
-to avoid possible integer overflow. Compile tested only.
+QUEUE_FLAG_NOMERGES isn't really a driver interface, but a user tunable.
+There also isn't any good reason to set it in the loop driver.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+The original commit adding it (5b5e20f421c0b6d "block: loop: set
+QUEUE_FLAG_NOMERGES for request queue of loop") claims that "It doesn't
+make sense to enable merge because the I/O submitted to backing file is
+handled page by page."  which of course isn't true for multi-page bvec
+now, and it never has been for direct I/O, for which commit 40326d8a33d
+("block/loop: allow request merge for directio mode") alredy disabled
+the nomerges flag.
 
-Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240725111743.14422-1-d.kandybka@gmail.com
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240627124926.512662-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/debug.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/block/loop.c | 15 ++-------------
+ 1 file changed, 2 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
-index bf3da631c69fd..51abc470125b3 100644
---- a/drivers/net/wireless/ath/ath9k/debug.c
-+++ b/drivers/net/wireless/ath/ath9k/debug.c
-@@ -1325,11 +1325,11 @@ void ath9k_get_et_stats(struct ieee80211_hw *hw,
- 	struct ath_softc *sc = hw->priv;
- 	int i = 0;
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 1153721bc7c25..41cfcf9efcfc5 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -211,13 +211,10 @@ static void __loop_update_dio(struct loop_device *lo, bool dio)
+ 	if (lo->lo_state == Lo_bound)
+ 		blk_mq_freeze_queue(lo->lo_queue);
+ 	lo->use_dio = use_dio;
+-	if (use_dio) {
+-		blk_queue_flag_clear(QUEUE_FLAG_NOMERGES, lo->lo_queue);
++	if (use_dio)
+ 		lo->lo_flags |= LO_FLAGS_DIRECT_IO;
+-	} else {
+-		blk_queue_flag_set(QUEUE_FLAG_NOMERGES, lo->lo_queue);
++	else
+ 		lo->lo_flags &= ~LO_FLAGS_DIRECT_IO;
+-	}
+ 	if (lo->lo_state == Lo_bound)
+ 		blk_mq_unfreeze_queue(lo->lo_queue);
+ }
+@@ -2059,14 +2056,6 @@ static int loop_add(int i)
+ 	}
+ 	lo->lo_queue = lo->lo_disk->queue;
  
--	data[i++] = (sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_pkts_all +
-+	data[i++] = ((u64)sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_pkts_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BK)].tx_pkts_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VI)].tx_pkts_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VO)].tx_pkts_all);
--	data[i++] = (sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_bytes_all +
-+	data[i++] = ((u64)sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_bytes_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BK)].tx_bytes_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VI)].tx_bytes_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VO)].tx_bytes_all);
+-	/*
+-	 * By default, we do buffer IO, so it doesn't make sense to enable
+-	 * merge because the I/O submitted to backing file is handled page by
+-	 * page. For directio mode, merge does help to dispatch bigger request
+-	 * to underlayer disk. We will enable merge once directio is enabled.
+-	 */
+-	blk_queue_flag_set(QUEUE_FLAG_NOMERGES, lo->lo_queue);
+-
+ 	/*
+ 	 * Disable partition scanning by default. The in-kernel partition
+ 	 * scanning can be requested individually per-device during its
 -- 
 2.43.0
 
