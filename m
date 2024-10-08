@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-82155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58CB0994B7A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1412599488B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE025B258F5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5ACE281600
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C94A1DED60;
-	Tue,  8 Oct 2024 12:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74FB31DC759;
+	Tue,  8 Oct 2024 12:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3NLqnN4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiXP2ApJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D681DC759;
-	Tue,  8 Oct 2024 12:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7611DE3C1;
+	Tue,  8 Oct 2024 12:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391335; cv=none; b=ah9PhTSayVPV90rbB48mQ/eFYqtIOU5M5FY/DJ0W0ZGb2lZcKP/R7lTANRKO/+4+6Kw4RS2wqzmF5hFXyCLkrgqR+G9dXrLG6Y2EGHGgvFh6KAYTO9YVNa0qvwtxWJ9rItrukdydHsLAVEKv26jEwBChJg0G7vCIhkJn5D484G0=
+	t=1728389636; cv=none; b=g91GsVxndNIxWi1ofdoMjcXmyELXS/FyA8qCCI4ABnnKejA8yiDXaJCOkAwLTL/RuNG5X6Nuhqinbdl6BvmMaZ6920ADySQ2Pf5p//OauHrcthZVKpxk5bzehaAv/+2y6GwHcZ+08+jWOsy0pf17479xt20n9t6bMiCk64TFDyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391335; c=relaxed/simple;
-	bh=A4ea+acqlTK08R+UYmEVwLbJtaqAdscJ3+bxUQNSbPg=;
+	s=arc-20240116; t=1728389636; c=relaxed/simple;
+	bh=9FJcBzhpwps6JLy1gSV0qgFSnbc6miQNSOsyb8V4oCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ShAOCK6k2YSv9qX1/wbucXPBxyuz+9D14BzlbvIVyTuBy0f8OxXYUd14S9RD+s7Vn0XG+/wtyzD6Ls0dFq8Y2CMgV9UJmY5q8dzNSdCJkTBD4fVuk6rbHRF6v0OwhF98TsGkLSxOsvmm+g35yv45yim/PcPGt8uUYgp6kWYqsbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J3NLqnN4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68BABC4CEC7;
-	Tue,  8 Oct 2024 12:42:14 +0000 (UTC)
+	 MIME-Version; b=rKRYdt8veMNsnict6gqIws3B3bh56vjhfejZqnZTxBkrNDrXoiSUG29Ppuu2ccvEgojgwzZi3X9hiI/awDKAX4m++LX6chO5RaznS9Ffiv8cl8+lV1+ewaTFp9XfXCKHBMYjvqmYORXU+CJ8CY5SYjuKD1IS4gkXpc1ZCdee9U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiXP2ApJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630C0C4CEC7;
+	Tue,  8 Oct 2024 12:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391334;
-	bh=A4ea+acqlTK08R+UYmEVwLbJtaqAdscJ3+bxUQNSbPg=;
+	s=korg; t=1728389636;
+	bh=9FJcBzhpwps6JLy1gSV0qgFSnbc6miQNSOsyb8V4oCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J3NLqnN4CwLAT6zCJhPet6r0REKiSuibesC3fj/lfprLvvqaZkGby0whrYdyV3jPU
-	 WAWNQQFdQlsDgaVWIVJ9H037Nmhi2VjKEd68ybADPZ1MBalsP0PlMo00I1qwLoD/Wn
-	 jOK7DO7xsX+c3bsco5kaKIEVYsYF90MraHxEnVXo=
+	b=TiXP2ApJ5OW93ygrZkmzaYqO/ISGVYpLWbUASj40PGZlyZBvhpLGCwqopGqC7jG5x
+	 uMg1MRGOdfySp7UHBBuF0nDQONyBq3c96PC11EhFwHQhfUp1KtX0SeVL9a4HHwRfHy
+	 axoLiydjqysIqyzx1Y35wDYBuRg8o/iHXnXjet3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arthur Borsboom <arthurborsboom@gmail.com>,
-	Sun peng Li <sunpeng.li@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jeff Xu <jeffxu@chromium.org>,
+	Pedro Falcato <pedro.falcato@gmail.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 082/558] drm/amd/display: Re-enable panel replay feature
-Date: Tue,  8 Oct 2024 14:01:52 +0200
-Message-ID: <20241008115705.602030780@linuxfoundation.org>
+Subject: [PATCH 6.10 050/482] selftest mm/mseal: fix test_seal_mremap_move_dontunmap_anyaddr
+Date: Tue,  8 Oct 2024 14:01:53 +0200
+Message-ID: <20241008115650.274712296@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,60 +69,206 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Jeff Xu <jeffxu@chromium.org>
 
-[ Upstream commit be64336307a6c3ee71fe1337c1b9f0495aa83c50 ]
+[ Upstream commit 072cd213b75eb01fcf40eff898f8d5c008ce1457 ]
 
-[Why & How]
-Fixed the replay issues and now re-enable the panel replay feature.
+the syscall remap accepts following:
 
-Reported-by: Arthur Borsboom <arthurborsboom@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3344
-Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+mremap(src, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP, dst)
+
+when the src is sealed, the call will fail with error code:
+EPERM
+
+Previously, the test uses hard-coded 0xdeaddead as dst, and it
+will fail on the system with newer glibc installed.
+
+This patch removes test's dependency on glibc for mremap(), also
+fix the test and remove the hardcoded address.
+
+Link: https://lkml.kernel.org/r/20240807212320.2831848-1-jeffxu@chromium.org
+Fixes: 4926c7a52de7 ("selftest mm/mseal memory sealing")
+Signed-off-by: Jeff Xu <jeffxu@chromium.org>
+Reported-by: Pedro Falcato <pedro.falcato@gmail.com>
+Cc: Dave Hansen <dave.hansen@intel.com>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 20 ++++++++-----------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ tools/testing/selftests/mm/mseal_test.c | 57 ++++++++++++++++---------
+ 1 file changed, 36 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 9ee54c5ce4a61..f6cbff0ed6f94 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4919,18 +4919,14 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
- 	/* Determine whether to enable Replay support by default. */
- 	if (!(amdgpu_dc_debug_mask & DC_DISABLE_REPLAY)) {
- 		switch (amdgpu_ip_version(adev, DCE_HWIP, 0)) {
--/*
-- * Disabled by default due to https://gitlab.freedesktop.org/drm/amd/-/issues/3344
-- *		case IP_VERSION(3, 1, 4):
-- *		case IP_VERSION(3, 1, 5):
-- *		case IP_VERSION(3, 1, 6):
-- *		case IP_VERSION(3, 2, 0):
-- *		case IP_VERSION(3, 2, 1):
-- *		case IP_VERSION(3, 5, 0):
-- *		case IP_VERSION(3, 5, 1):
-- *			replay_feature_enabled = true;
-- *			break;
-- */
-+		case IP_VERSION(3, 1, 4):
-+		case IP_VERSION(3, 2, 0):
-+		case IP_VERSION(3, 2, 1):
-+		case IP_VERSION(3, 5, 0):
-+		case IP_VERSION(3, 5, 1):
-+			replay_feature_enabled = true;
-+			break;
+diff --git a/tools/testing/selftests/mm/mseal_test.c b/tools/testing/selftests/mm/mseal_test.c
+index 09faffbc3d87c..43e6d0c53fe4c 100644
+--- a/tools/testing/selftests/mm/mseal_test.c
++++ b/tools/testing/selftests/mm/mseal_test.c
+@@ -146,6 +146,16 @@ static int sys_madvise(void *start, size_t len, int types)
+ 	return sret;
+ }
+ 
++static void *sys_mremap(void *addr, size_t old_len, size_t new_len,
++	unsigned long flags, void *new_addr)
++{
++	void *sret;
 +
- 		default:
- 			replay_feature_enabled = amdgpu_dc_feature_mask & DC_REPLAY_MASK;
- 			break;
++	errno = 0;
++	sret = (void *) syscall(__NR_mremap, addr, old_len, new_len, flags, new_addr);
++	return sret;
++}
++
+ static int sys_pkey_alloc(unsigned long flags, unsigned long init_val)
+ {
+ 	int ret = syscall(__NR_pkey_alloc, flags, init_val);
+@@ -1151,12 +1161,12 @@ static void test_seal_mremap_shrink(bool seal)
+ 	}
+ 
+ 	/* shrink from 4 pages to 2 pages. */
+-	ret2 = mremap(ptr, size, 2 * page_size, 0, 0);
++	ret2 = sys_mremap(ptr, size, 2 * page_size, 0, 0);
+ 	if (seal) {
+-		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
++		FAIL_TEST_IF_FALSE(ret2 == (void *) MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+ 	} else {
+-		FAIL_TEST_IF_FALSE(ret2 != MAP_FAILED);
++		FAIL_TEST_IF_FALSE(ret2 != (void *) MAP_FAILED);
+ 
+ 	}
+ 
+@@ -1183,7 +1193,7 @@ static void test_seal_mremap_expand(bool seal)
+ 	}
+ 
+ 	/* expand from 2 page to 4 pages. */
+-	ret2 = mremap(ptr, 2 * page_size, 4 * page_size, 0, 0);
++	ret2 = sys_mremap(ptr, 2 * page_size, 4 * page_size, 0, 0);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+@@ -1216,7 +1226,7 @@ static void test_seal_mremap_move(bool seal)
+ 	}
+ 
+ 	/* move from ptr to fixed address. */
+-	ret2 = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, newPtr);
++	ret2 = sys_mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, newPtr);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+@@ -1335,7 +1345,7 @@ static void test_seal_mremap_shrink_fixed(bool seal)
+ 	}
+ 
+ 	/* mremap to move and shrink to fixed address */
+-	ret2 = mremap(ptr, size, 2 * page_size, MREMAP_MAYMOVE | MREMAP_FIXED,
++	ret2 = sys_mremap(ptr, size, 2 * page_size, MREMAP_MAYMOVE | MREMAP_FIXED,
+ 			newAddr);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+@@ -1366,7 +1376,7 @@ static void test_seal_mremap_expand_fixed(bool seal)
+ 	}
+ 
+ 	/* mremap to move and expand to fixed address */
+-	ret2 = mremap(ptr, page_size, size, MREMAP_MAYMOVE | MREMAP_FIXED,
++	ret2 = sys_mremap(ptr, page_size, size, MREMAP_MAYMOVE | MREMAP_FIXED,
+ 			newAddr);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+@@ -1397,7 +1407,7 @@ static void test_seal_mremap_move_fixed(bool seal)
+ 	}
+ 
+ 	/* mremap to move to fixed address */
+-	ret2 = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, newAddr);
++	ret2 = sys_mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, newAddr);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+@@ -1426,14 +1436,13 @@ static void test_seal_mremap_move_fixed_zero(bool seal)
+ 	/*
+ 	 * MREMAP_FIXED can move the mapping to zero address
+ 	 */
+-	ret2 = mremap(ptr, size, 2 * page_size, MREMAP_MAYMOVE | MREMAP_FIXED,
++	ret2 = sys_mremap(ptr, size, 2 * page_size, MREMAP_MAYMOVE | MREMAP_FIXED,
+ 			0);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+ 	} else {
+ 		FAIL_TEST_IF_FALSE(ret2 == 0);
+-
+ 	}
+ 
+ 	TEST_END_CHECK();
+@@ -1456,13 +1465,13 @@ static void test_seal_mremap_move_dontunmap(bool seal)
+ 	}
+ 
+ 	/* mremap to move, and don't unmap src addr. */
+-	ret2 = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP, 0);
++	ret2 = sys_mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP, 0);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+ 	} else {
++		/* kernel will allocate a new address */
+ 		FAIL_TEST_IF_FALSE(ret2 != MAP_FAILED);
+-
+ 	}
+ 
+ 	TEST_END_CHECK();
+@@ -1470,7 +1479,7 @@ static void test_seal_mremap_move_dontunmap(bool seal)
+ 
+ static void test_seal_mremap_move_dontunmap_anyaddr(bool seal)
+ {
+-	void *ptr;
++	void *ptr, *ptr2;
+ 	unsigned long page_size = getpagesize();
+ 	unsigned long size = 4 * page_size;
+ 	int ret;
+@@ -1485,24 +1494,30 @@ static void test_seal_mremap_move_dontunmap_anyaddr(bool seal)
+ 	}
+ 
+ 	/*
+-	 * The 0xdeaddead should not have effect on dest addr
+-	 * when MREMAP_DONTUNMAP is set.
++	 * The new address is any address that not allocated.
++	 * use allocate/free to similate that.
+ 	 */
+-	ret2 = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP,
+-			0xdeaddead);
++	setup_single_address(size, &ptr2);
++	FAIL_TEST_IF_FALSE(ptr2 != (void *)-1);
++	ret = sys_munmap(ptr2, size);
++	FAIL_TEST_IF_FALSE(!ret);
++
++	/*
++	 * remap to any address.
++	 */
++	ret2 = sys_mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP,
++			(void *) ptr2);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+ 	} else {
+-		FAIL_TEST_IF_FALSE(ret2 != MAP_FAILED);
+-		FAIL_TEST_IF_FALSE((long)ret2 != 0xdeaddead);
+-
++		/* remap success and return ptr2 */
++		FAIL_TEST_IF_FALSE(ret2 ==  ptr2);
+ 	}
+ 
+ 	TEST_END_CHECK();
+ }
+ 
+-
+ static void test_seal_merge_and_split(void)
+ {
+ 	void *ptr;
 -- 
 2.43.0
 
