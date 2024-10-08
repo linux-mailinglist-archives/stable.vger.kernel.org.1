@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AFF2994F50
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:27:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2860E994AC9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8219E1F23477
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:27:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C7F31C24CE3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131111DFD87;
-	Tue,  8 Oct 2024 13:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0411DE4CD;
+	Tue,  8 Oct 2024 12:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljfuY6v0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCdur05F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C498C1DF260;
-	Tue,  8 Oct 2024 13:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E54190663;
+	Tue,  8 Oct 2024 12:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393845; cv=none; b=PKk4F3w1DShIvxDQpGoZ+Vy7fBBUTllYrGa/XayxKYupCQ9LNGGwgZawpuspqo/bAPAWuvv5dsIq7p2qUbcjfQiLMz8LCdzAPP80ayA6KBF4d+qdPu07q1q6e1zQXjvg81/B12WItvcplVgvXEujTYOn/eZl/TtElvbw8w2SYFo=
+	t=1728390989; cv=none; b=CFeShZUfByIrJl7LA0oMMWg9F9JDeQoJJbMyZJOsxuVjB8cLvhR6ks8PwbcSMGAKAnAJBy2Efuc8XCJgW7ZYlYJY06CiWwWhbS0Ew95Ncy5bscFfEjt9L0OsClANoJudMWVaA6HBwZ2kx8VJOddoSWnl1DzgCLXo0qFrvyKq50o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393845; c=relaxed/simple;
-	bh=763C+Ub+Jrdc3gQVNP2vNhxWNGXNsQBjaP+GxeAm2yU=;
+	s=arc-20240116; t=1728390989; c=relaxed/simple;
+	bh=VaFJKPl9spYSFXVs14CSlD77LJaBNQSLRaIrf+OBFFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ISTgoWCMfQw9xccO1R2JwH+6ueEYv5KSOK0YMvQVc1ZDuok91DZ7/OPWdZ4CKzNiyfV2aL6+Iy2IFL08ou2voqNhWqKwaS9tgYImWCRQYF0UipkDxPUpXDyv6yhLdt3srIXFnizlACb2ePM2sVXQzG7qMvkCgyGemxNpduTny6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljfuY6v0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E641C4CEC7;
-	Tue,  8 Oct 2024 13:24:05 +0000 (UTC)
+	 MIME-Version; b=mbIMt9zyR6mKclNnNTGktKLmxtCbLkJOOlI4YRSDnyGFYheaO/KyZpjBbqhaxZNFBFg6FJe27zJ59W6tIqkvBmgMcAWLdqLBB0lDqlWHc9FNAliHTM3tpWnYg3QqcyCg110f19NaNDne4LR13ma6JscO594k/8gBpXGZkKvXMMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCdur05F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0683EC4CEC7;
+	Tue,  8 Oct 2024 12:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393845;
-	bh=763C+Ub+Jrdc3gQVNP2vNhxWNGXNsQBjaP+GxeAm2yU=;
+	s=korg; t=1728390989;
+	bh=VaFJKPl9spYSFXVs14CSlD77LJaBNQSLRaIrf+OBFFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ljfuY6v05Aaa+X3jlQWpTr2V5AuXvp6y6S73B0kx/x+L5UJC1yay4J3/qNN/F7NSW
-	 GvA7irAFRI9F/tQs3M6o5rI+b3eUTx1usRZl8xvu+wTIe+xQ1QWHHeOQ8uxxvMvXNd
-	 me7Xq1AZVXGHZrzhpn14vsSiNer78bhnUDPMqShA=
+	b=VCdur05FhCJ5B8OIXsNrjGxreWPhfwo2CWH2L54huUT5m4U30NGvAQum26D5hWa3f
+	 k6CEde9thYhHkCbWn8vSEZHsHl2VLdWhR/4sLvJiGCxu2UxbqA2NeTipXXwAhwcMWC
+	 mLG8JxqaO/Uw94UOPX/NLGU7foMd83cgdHSwaZKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 273/386] nfsd: map the EBADMSG to nfserr_io to avoid warning
-Date: Tue,  8 Oct 2024 14:08:38 +0200
-Message-ID: <20241008115640.134039068@linuxfoundation.org>
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 456/482] drm/xe: fix UAF around queue destruction
+Date: Tue,  8 Oct 2024 14:08:39 +0200
+Message-ID: <20241008115706.460797135@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +63,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit 340e61e44c1d2a15c42ec72ade9195ad525fd048 upstream.
+[ Upstream commit 2d2be279f1ca9e7288282d4214f16eea8a727cdb ]
 
-Ext4 will throw -EBADMSG through ext4_readdir when a checksum error
-occurs, resulting in the following WARNING.
+We currently do stuff like queuing the final destruction step on a
+random system wq, which will outlive the driver instance. With bad
+timing we can teardown the driver with one or more work workqueue still
+being alive leading to various UAF splats. Add a fini step to ensure
+user queues are properly torn down. At this point GuC should already be
+nuked so queue itself should no longer be referenced from hw pov.
 
-Fix it by mapping EBADMSG to nfserr_io.
+v2 (Matt B)
+ - Looks much safer to use a waitqueue and then just wait for the
+   xa_array to become empty before triggering the drain.
 
-nfsd_buffered_readdir
- iterate_dir // -EBADMSG -74
-  ext4_readdir // .iterate_shared
-   ext4_dx_readdir
-    ext4_htree_fill_tree
-     htree_dirblock_to_tree
-      ext4_read_dirblock
-       __ext4_read_dirblock
-        ext4_dirblock_csum_verify
-         warn_no_space_for_csum
-          __warn_no_space_for_csum
-        return ERR_PTR(-EFSBADCRC) // -EBADMSG -74
- nfserrno // WARNING
-
-[  161.115610] ------------[ cut here ]------------
-[  161.116465] nfsd: non-standard errno: -74
-[  161.117315] WARNING: CPU: 1 PID: 780 at fs/nfsd/nfsproc.c:878 nfserrno+0x9d/0xd0
-[  161.118596] Modules linked in:
-[  161.119243] CPU: 1 PID: 780 Comm: nfsd Not tainted 5.10.0-00014-g79679361fd5d #138
-[  161.120684] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qe
-mu.org 04/01/2014
-[  161.123601] RIP: 0010:nfserrno+0x9d/0xd0
-[  161.124676] Code: 0f 87 da 30 dd 00 83 e3 01 b8 00 00 00 05 75 d7 44 89 ee 48 c7 c7 c0 57 24 98 89 44 24 04 c6
- 05 ce 2b 61 03 01 e8 99 20 d8 00 <0f> 0b 8b 44 24 04 eb b5 4c 89 e6 48 c7 c7 a0 6d a4 99 e8 cc 15 33
-[  161.127797] RSP: 0018:ffffc90000e2f9c0 EFLAGS: 00010286
-[  161.128794] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-[  161.130089] RDX: 1ffff1103ee16f6d RSI: 0000000000000008 RDI: fffff520001c5f2a
-[  161.131379] RBP: 0000000000000022 R08: 0000000000000001 R09: ffff8881f70c1827
-[  161.132664] R10: ffffed103ee18304 R11: 0000000000000001 R12: 0000000000000021
-[  161.133949] R13: 00000000ffffffb6 R14: ffff8881317c0000 R15: ffffc90000e2fbd8
-[  161.135244] FS:  0000000000000000(0000) GS:ffff8881f7080000(0000) knlGS:0000000000000000
-[  161.136695] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  161.137761] CR2: 00007fcaad70b348 CR3: 0000000144256006 CR4: 0000000000770ee0
-[  161.139041] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[  161.140291] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[  161.141519] PKRU: 55555554
-[  161.142076] Call Trace:
-[  161.142575]  ? __warn+0x9b/0x140
-[  161.143229]  ? nfserrno+0x9d/0xd0
-[  161.143872]  ? report_bug+0x125/0x150
-[  161.144595]  ? handle_bug+0x41/0x90
-[  161.145284]  ? exc_invalid_op+0x14/0x70
-[  161.146009]  ? asm_exc_invalid_op+0x12/0x20
-[  161.146816]  ? nfserrno+0x9d/0xd0
-[  161.147487]  nfsd_buffered_readdir+0x28b/0x2b0
-[  161.148333]  ? nfsd4_encode_dirent_fattr+0x380/0x380
-[  161.149258]  ? nfsd_buffered_filldir+0xf0/0xf0
-[  161.150093]  ? wait_for_concurrent_writes+0x170/0x170
-[  161.151004]  ? generic_file_llseek_size+0x48/0x160
-[  161.151895]  nfsd_readdir+0x132/0x190
-[  161.152606]  ? nfsd4_encode_dirent_fattr+0x380/0x380
-[  161.153516]  ? nfsd_unlink+0x380/0x380
-[  161.154256]  ? override_creds+0x45/0x60
-[  161.155006]  nfsd4_encode_readdir+0x21a/0x3d0
-[  161.155850]  ? nfsd4_encode_readlink+0x210/0x210
-[  161.156731]  ? write_bytes_to_xdr_buf+0x97/0xe0
-[  161.157598]  ? __write_bytes_to_xdr_buf+0xd0/0xd0
-[  161.158494]  ? lock_downgrade+0x90/0x90
-[  161.159232]  ? nfs4svc_decode_voidarg+0x10/0x10
-[  161.160092]  nfsd4_encode_operation+0x15a/0x440
-[  161.160959]  nfsd4_proc_compound+0x718/0xe90
-[  161.161818]  nfsd_dispatch+0x18e/0x2c0
-[  161.162586]  svc_process_common+0x786/0xc50
-[  161.163403]  ? nfsd_svc+0x380/0x380
-[  161.164137]  ? svc_printk+0x160/0x160
-[  161.164846]  ? svc_xprt_do_enqueue.part.0+0x365/0x380
-[  161.165808]  ? nfsd_svc+0x380/0x380
-[  161.166523]  ? rcu_is_watching+0x23/0x40
-[  161.167309]  svc_process+0x1a5/0x200
-[  161.168019]  nfsd+0x1f5/0x380
-[  161.168663]  ? nfsd_shutdown_threads+0x260/0x260
-[  161.169554]  kthread+0x1c4/0x210
-[  161.170224]  ? kthread_insert_work_sanity_check+0x80/0x80
-[  161.171246]  ret_from_fork+0x1f/0x30
-
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2317
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240923145647.77707-2-matthew.auld@intel.com
+(cherry picked from commit 861108666cc0e999cffeab6aff17b662e68774e3)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/xe/xe_device.c       |  6 +++++-
+ drivers/gpu/drm/xe/xe_device_types.h |  3 +++
+ drivers/gpu/drm/xe/xe_guc_submit.c   | 26 +++++++++++++++++++++++++-
+ drivers/gpu/drm/xe/xe_guc_types.h    |  2 ++
+ 4 files changed, 35 insertions(+), 2 deletions(-)
 
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -101,6 +101,7 @@ nfserrno (int errno)
- 		{ nfserr_io, -EUCLEAN },
- 		{ nfserr_perm, -ENOKEY },
- 		{ nfserr_no_grace, -ENOGRACE},
-+		{ nfserr_io, -EBADMSG },
- 	};
- 	int	i;
+diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
+index a1cbdafbff75e..599bf7f9e8c5c 100644
+--- a/drivers/gpu/drm/xe/xe_device.c
++++ b/drivers/gpu/drm/xe/xe_device.c
+@@ -231,6 +231,9 @@ static void xe_device_destroy(struct drm_device *dev, void *dummy)
+ 	if (xe->unordered_wq)
+ 		destroy_workqueue(xe->unordered_wq);
  
++	if (xe->destroy_wq)
++		destroy_workqueue(xe->destroy_wq);
++
+ 	ttm_device_fini(&xe->ttm);
+ }
+ 
+@@ -293,8 +296,9 @@ struct xe_device *xe_device_create(struct pci_dev *pdev,
+ 	xe->preempt_fence_wq = alloc_ordered_workqueue("xe-preempt-fence-wq", 0);
+ 	xe->ordered_wq = alloc_ordered_workqueue("xe-ordered-wq", 0);
+ 	xe->unordered_wq = alloc_workqueue("xe-unordered-wq", 0, 0);
++	xe->destroy_wq = alloc_workqueue("xe-destroy-wq", 0, 0);
+ 	if (!xe->ordered_wq || !xe->unordered_wq ||
+-	    !xe->preempt_fence_wq) {
++	    !xe->preempt_fence_wq || !xe->destroy_wq) {
+ 		/*
+ 		 * Cleanup done in xe_device_destroy via
+ 		 * drmm_add_action_or_reset register above
+diff --git a/drivers/gpu/drm/xe/xe_device_types.h b/drivers/gpu/drm/xe/xe_device_types.h
+index 2e62450d86e18..f671300e0c9bd 100644
+--- a/drivers/gpu/drm/xe/xe_device_types.h
++++ b/drivers/gpu/drm/xe/xe_device_types.h
+@@ -376,6 +376,9 @@ struct xe_device {
+ 	/** @unordered_wq: used to serialize unordered work, mostly display */
+ 	struct workqueue_struct *unordered_wq;
+ 
++	/** @destroy_wq: used to serialize user destroy work, like queue */
++	struct workqueue_struct *destroy_wq;
++
+ 	/** @tiles: device tiles */
+ 	struct xe_tile tiles[XE_MAX_TILES_PER_DEVICE];
+ 
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index a40287a7c3de8..a0f8299488030 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -233,10 +233,26 @@ static struct workqueue_struct *get_submit_wq(struct xe_guc *guc)
+ }
+ #endif
+ 
++static void xe_guc_submit_fini(struct xe_guc *guc)
++{
++	struct xe_device *xe = guc_to_xe(guc);
++	struct xe_gt *gt = guc_to_gt(guc);
++	int ret;
++
++	ret = wait_event_timeout(guc->submission_state.fini_wq,
++				 xa_empty(&guc->submission_state.exec_queue_lookup),
++				 HZ * 5);
++
++	drain_workqueue(xe->destroy_wq);
++
++	xe_gt_assert(gt, ret);
++}
++
+ static void guc_submit_fini(struct drm_device *drm, void *arg)
+ {
+ 	struct xe_guc *guc = arg;
+ 
++	xe_guc_submit_fini(guc);
+ 	xa_destroy(&guc->submission_state.exec_queue_lookup);
+ 	free_submit_wq(guc);
+ }
+@@ -278,6 +294,8 @@ int xe_guc_submit_init(struct xe_guc *guc)
+ 
+ 	xa_init(&guc->submission_state.exec_queue_lookup);
+ 
++	init_waitqueue_head(&guc->submission_state.fini_wq);
++
+ 	primelockdep(guc);
+ 
+ 	return drmm_add_action_or_reset(&xe->drm, guc_submit_fini, guc);
+@@ -294,6 +312,9 @@ static void __release_guc_id(struct xe_guc *guc, struct xe_exec_queue *q, u32 xa
+ 
+ 	xe_guc_id_mgr_release_locked(&guc->submission_state.idm,
+ 				     q->guc->id, q->width);
++
++	if (xa_empty(&guc->submission_state.exec_queue_lookup))
++		wake_up(&guc->submission_state.fini_wq);
+ }
+ 
+ static int alloc_guc_id(struct xe_guc *guc, struct xe_exec_queue *q)
+@@ -1025,13 +1046,16 @@ static void __guc_exec_queue_fini_async(struct work_struct *w)
+ 
+ static void guc_exec_queue_fini_async(struct xe_exec_queue *q)
+ {
++	struct xe_guc *guc = exec_queue_to_guc(q);
++	struct xe_device *xe = guc_to_xe(guc);
++
+ 	INIT_WORK(&q->guc->fini_async, __guc_exec_queue_fini_async);
+ 
+ 	/* We must block on kernel engines so slabs are empty on driver unload */
+ 	if (q->flags & EXEC_QUEUE_FLAG_PERMANENT)
+ 		__guc_exec_queue_fini_async(&q->guc->fini_async);
+ 	else
+-		queue_work(system_wq, &q->guc->fini_async);
++		queue_work(xe->destroy_wq, &q->guc->fini_async);
+ }
+ 
+ static void __guc_exec_queue_fini(struct xe_guc *guc, struct xe_exec_queue *q)
+diff --git a/drivers/gpu/drm/xe/xe_guc_types.h b/drivers/gpu/drm/xe/xe_guc_types.h
+index 546ac6350a31f..69046f6982717 100644
+--- a/drivers/gpu/drm/xe/xe_guc_types.h
++++ b/drivers/gpu/drm/xe/xe_guc_types.h
+@@ -81,6 +81,8 @@ struct xe_guc {
+ #endif
+ 		/** @submission_state.enabled: submission is enabled */
+ 		bool enabled;
++		/** @submission_state.fini_wq: submit fini wait queue */
++		wait_queue_head_t fini_wq;
+ 	} submission_state;
+ 	/** @hwconfig: Hardware config state */
+ 	struct {
+-- 
+2.43.0
+
 
 
 
