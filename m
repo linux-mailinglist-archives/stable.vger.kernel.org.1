@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-82909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A234C994F98
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:28:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D8C994D57
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:04:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DED2BB27145
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:26:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC62E28283C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E411E0084;
-	Tue,  8 Oct 2024 13:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6750F1DE4CD;
+	Tue,  8 Oct 2024 13:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dwduN9v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJhknUuF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50D91DF72E;
-	Tue,  8 Oct 2024 13:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1E51DFD1;
+	Tue,  8 Oct 2024 13:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393835; cv=none; b=XTP2wr/bSATyzJHyuJhn17k/zA21XPTNeOf9ouH6EKbSISCx4ooo7JTt8QN8D78VSc/yGOW3va03SKVgBnKDT8YHMcQpizHAIgv4Cx10Hb5xa/KIdkmlbSQlsfzIEkaWH+YWhxb9Kro8Z8CCkA1h1fxBZ9jxw8jBLhlxvUDMuxo=
+	t=1728392674; cv=none; b=qy2iaXuS5buySObD8uv17Hx0cSmLynB4KK3HMOVsL6/qdDrwPSvqYgKHp+vbNMPnflOnn/I7SBJtT0Dwnl26qqc+vZ/tUYv+xSXF91fI8FSmjqZV/8ZPydmPBh3NUocPUTkhzwkNkDTmFjPF9jup1697DFHbJW88XSs0IWxvTjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393835; c=relaxed/simple;
-	bh=+DU2UwmGkTxOPP3EfIAf0Rmt/il9UDFZNYXBE73eYHc=;
+	s=arc-20240116; t=1728392674; c=relaxed/simple;
+	bh=Na6RJVXA+EVWWbD3/1tUldjTdUmc6Nw+zQfgjZhrgqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ARpP+TQzgb5fl6cw5nCAffYizBdfjNgpcZooSBKJQk+wB5irYhs+U6db1Pc6pgWNB5/In+CcGQm0hiq1YiV/TeFbpUF3PHVW9EMtoa71sIzF42QlgTPK17lekAytrDlEnyf3KVuSNxmp2cdx2iCwn+Tymk1TWhEbWhTB0ztcOhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dwduN9v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A48C4CEC7;
-	Tue,  8 Oct 2024 13:23:54 +0000 (UTC)
+	 MIME-Version; b=KJYPgwkzyu6B8/GpsvAuGvP0tUw54e+kx808hTiOnxJoS0TfCogk41ANgUzXuwPMGB4kqnbcJVITcBvv1Z8nyD9K22fTV+1EZ/ro1GCD7W+/GfF2D84BeqYQEVAZsWPm32Or8zq3uS0lmDZWYRmCwtVERN44VJhl+BffhbvF9bY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJhknUuF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81414C4CECC;
+	Tue,  8 Oct 2024 13:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393835;
-	bh=+DU2UwmGkTxOPP3EfIAf0Rmt/il9UDFZNYXBE73eYHc=;
+	s=korg; t=1728392674;
+	bh=Na6RJVXA+EVWWbD3/1tUldjTdUmc6Nw+zQfgjZhrgqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1dwduN9vONXm1yUgeLCCyAg1X5SHIr4s8zAkQ3w//8ej7bYFtwa97BjeRnL+zrLIY
-	 VmiK6b2lvxJEn3sn0OFfV2+PBXuohUwkHFAIcG8KBs7IXeNl4yJ3rQ6o57rJC4rrIb
-	 5g1PmQkWc6/ZAGE400pmeWuitnlHErbdqNwVTIVU=
+	b=pJhknUuFUw/PNvJmDCjrhDJRkqOzOXRTNCtK3piU2+aEEYjqbUJ+sLyPUzipVFTvv
+	 v5L0FRSNoiapFJv3d22FNHa5Wak4hmgPq/1OFNWGJY27mxGI5wjAawaY4JzeMrpig4
+	 rfN3hkOfrx0qr7+LVeBp19uunz54Axi1M95hR8tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sedat Dilek <sedat.dilek@gmail.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 6.6 270/386] perf python: Disable -Wno-cast-function-type-mismatch if present on clang
-Date: Tue,  8 Oct 2024 14:08:35 +0200
-Message-ID: <20241008115640.015093038@linuxfoundation.org>
+	Nuno Sa <nuno.sa@analog.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.11 486/558] Input: adp5589-keys - fix NULL pointer dereference
+Date: Tue,  8 Oct 2024 14:08:36 +0200
+Message-ID: <20241008115721.359501131@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,45 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-commit 00dc514612fe98cfa117193b9df28f15e7c9db9c upstream.
+commit fb5cc65f973661241e4a2b7390b429aa7b330c69 upstream.
 
-The -Wcast-function-type-mismatch option was introduced in clang 19 and
-its enabled by default, since we use -Werror, and python bindings do
-casts that are valid but trips this warning, disable it if present.
+We register a devm action to call adp5589_clear_config() and then pass
+the i2c client as argument so that we can call i2c_get_clientdata() in
+order to get our device object. However, i2c_set_clientdata() is only
+being set at the end of the probe function which means that we'll get a
+NULL pointer dereference in case the probe function fails early.
 
-Closes: https://lore.kernel.org/all/CA+icZUXoJ6BS3GMhJHV3aZWyb5Cz2haFneX0C5pUMUUhG-UVKQ@mail.gmail.com
-Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
-Tested-by: Sedat Dilek <sedat.dilek@gmail.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: stable@vger.kernel.org # To allow building with the upcoming clang 19
-Link: https://lore.kernel.org/lkml/CA+icZUVtHn8X1Tb_Y__c-WswsO0K8U9uy3r2MzKXwTA5THtL7w@mail.gmail.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 30df385e35a4 ("Input: adp5589-keys - use devm_add_action_or_reset() for register clear")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20241001-b4-dev-adp5589-fw-conversion-v1-1-fca0149dfc47@analog.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/setup.py |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/input/keyboard/adp5589-keys.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/tools/perf/util/setup.py
-+++ b/tools/perf/util/setup.py
-@@ -63,6 +63,8 @@ cflags = getenv('CFLAGS', '').split()
- cflags += ['-fno-strict-aliasing', '-Wno-write-strings', '-Wno-unused-parameter', '-Wno-redundant-decls', '-DPYTHON_PERF' ]
- if cc_is_clang:
-     cflags += ["-Wno-unused-command-line-argument" ]
-+    if clang_has_option("-Wno-cast-function-type-mismatch"):
-+        cflags += ["-Wno-cast-function-type-mismatch" ]
- else:
-     cflags += ['-Wno-cast-function-type' ]
+--- a/drivers/input/keyboard/adp5589-keys.c
++++ b/drivers/input/keyboard/adp5589-keys.c
+@@ -936,10 +936,9 @@ static int adp5589_keypad_add(struct adp
  
+ static void adp5589_clear_config(void *data)
+ {
+-	struct i2c_client *client = data;
+-	struct adp5589_kpad *kpad = i2c_get_clientdata(client);
++	struct adp5589_kpad *kpad = data;
+ 
+-	adp5589_write(client, kpad->var->reg(ADP5589_GENERAL_CFG), 0);
++	adp5589_write(kpad->client, kpad->var->reg(ADP5589_GENERAL_CFG), 0);
+ }
+ 
+ static int adp5589_probe(struct i2c_client *client)
+@@ -983,7 +982,7 @@ static int adp5589_probe(struct i2c_clie
+ 	}
+ 
+ 	error = devm_add_action_or_reset(&client->dev, adp5589_clear_config,
+-					 client);
++					 kpad);
+ 	if (error)
+ 		return error;
+ 
+@@ -1010,8 +1009,6 @@ static int adp5589_probe(struct i2c_clie
+ 	if (error)
+ 		return error;
+ 
+-	i2c_set_clientdata(client, kpad);
+-
+ 	dev_info(&client->dev, "Rev.%d keypad, irq %d\n", revid, client->irq);
+ 	return 0;
+ }
 
 
 
