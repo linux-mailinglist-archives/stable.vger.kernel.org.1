@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 279DE994E30
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:14:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5BBA99499B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:25:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9004282A05
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:14:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 795BE286E6D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:25:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274501DF270;
-	Tue,  8 Oct 2024 13:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591381DE4CD;
+	Tue,  8 Oct 2024 12:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WkNuI+7i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p40ZIn3R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87D21DF274;
-	Tue,  8 Oct 2024 13:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B7C1CF7A2;
+	Tue,  8 Oct 2024 12:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393203; cv=none; b=nYBdgSGruMBknw5A8OVZPX85RvxUDNS8zIgSrrFYjrZDE3PjHKAA9FI7kN1oeblYFXt6uPyd1xvPfp0jq+Eh1xN7wVmbI2GF3OAtugq+LJVBJZKFwNwwlmVJRJiNG2yaLARWJROnrtDup5RLk3SqA2zJ+GxLCgkDcxMmk4VD9CA=
+	t=1728390259; cv=none; b=mHcxmVlq11dbk1V8CYHJJoKIGAlLUKOkdv/WE/NwTlQXP/YLxwQt0L5Kf/PjIhC9X22ygcSpMqcZJ3zHRNd9U6WQ/3uoQFipoUmAF5OOZZDpHO0w/D1xpuHXrTEVz+RZSTl6GKhP4ZkVbzWSXW1nCoEtcuek4EUNk4KQHXiuE1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393203; c=relaxed/simple;
-	bh=7EyhFOhzT9kngDMgY96hk4EAgH7ZUVypliJ1YsVJAXk=;
+	s=arc-20240116; t=1728390259; c=relaxed/simple;
+	bh=xiXtpR2ZNL+Um93SNZD9cTNxkFSbjXWNL2gRFQC3gQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BHaEDfuF9Dy2XHd9hczCPyGLv5D2egNZqw1KryZgj7gTzp6ZWaxqTUbkZ9K1O/WNcdPuUCcdnw1EHwyEJyXG6KM4jqKo8rZqVbQP1PN6dITAmiAALRTjhJPxDQQKWX1WcMSkLYhMGDZSSYZ1LHC8Zvz9R8Cmso8Ph5jwzYsCTCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WkNuI+7i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9EBC4CEC7;
-	Tue,  8 Oct 2024 13:13:23 +0000 (UTC)
+	 MIME-Version; b=bDlMV9D2Rsl7yg4Nvv+EP9OSrk9TJ1A6JOPIIJO9ynCSvU1FsuuWzA2nBGRds0lyyiHG6/g70XMJQb4bQrCb24fLinoY42a524G3fCMWPCj2nA224KZAlK8yPlkkIXKUxnT2ph1xm42WNKN0KZIYx4X2i+KH3RUeH3orsNExWVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p40ZIn3R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C148C4CEC7;
+	Tue,  8 Oct 2024 12:24:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393203;
-	bh=7EyhFOhzT9kngDMgY96hk4EAgH7ZUVypliJ1YsVJAXk=;
+	s=korg; t=1728390259;
+	bh=xiXtpR2ZNL+Um93SNZD9cTNxkFSbjXWNL2gRFQC3gQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WkNuI+7iwebBvBUCFu/IVVhAhmJpx4B1eqIClZDjslHLryuBvHYWYdFtJREXrTjrT
-	 eVhn/8YagX4Gn5hq0gXIzmVyE4Aiv6Lt8XvhrGid0FJLgsf7uA9ZHQmrSvKL6zPl0s
-	 Idkc7bsY91eTOzdvKt6dhV3cGQyMoTXMr9sTlDr8=
+	b=p40ZIn3R5JVIbQHijXkf/Z/RrPmGt8LOvvTmQsP6FHrP/DlfVOuna5lPiKQhdNojf
+	 mNBe3g0OnrjsF3gtZbomdbo5umKmmA7K3mRDt2OKfCW2JR6yDiARbYtQv2O4f9HwSZ
+	 cjjT0Quc6uosNhXQMmmeJO04DxdYouUioAoYq1G4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Kandybka <d.kandybka@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/386] wifi: ath9k: fix possible integer overflow in ath9k_get_et_stats()
+Subject: [PATCH 6.10 238/482] of/irq: Refer to actual buffer size in of_irq_parse_one()
 Date: Tue,  8 Oct 2024 14:05:01 +0200
-Message-ID: <20241008115631.674448079@linuxfoundation.org>
+Message-ID: <20241008115657.662983995@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Kandybka <d.kandybka@gmail.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 3f66f26703093886db81f0610b97a6794511917c ]
+[ Upstream commit 39ab331ab5d377a18fbf5a0e0b228205edfcc7f4 ]
 
-In 'ath9k_get_et_stats()', promote TX stats counters to 'u64'
-to avoid possible integer overflow. Compile tested only.
+Replace two open-coded calculations of the buffer size by invocations of
+sizeof() on the buffer itself, to make sure the code will always use the
+actual buffer size.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240725111743.14422-1-d.kandybka@gmail.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/817c0b9626fd30790fc488c472a3398324cfcc0c.1724156125.git.geert+renesas@glider.be
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/debug.c | 4 ++--
+ drivers/of/irq.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
-index 808fb6747a7f7..7791f4df6d484 100644
---- a/drivers/net/wireless/ath/ath9k/debug.c
-+++ b/drivers/net/wireless/ath/ath9k/debug.c
-@@ -1325,11 +1325,11 @@ void ath9k_get_et_stats(struct ieee80211_hw *hw,
- 	struct ath_softc *sc = hw->priv;
- 	int i = 0;
+diff --git a/drivers/of/irq.c b/drivers/of/irq.c
+index 8fd63100ba8f0..d67b69cb84bfe 100644
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -357,8 +357,8 @@ int of_irq_parse_one(struct device_node *device, int index, struct of_phandle_ar
+ 	addr = of_get_property(device, "reg", &addr_len);
  
--	data[i++] = (sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_pkts_all +
-+	data[i++] = ((u64)sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_pkts_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BK)].tx_pkts_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VI)].tx_pkts_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VO)].tx_pkts_all);
--	data[i++] = (sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_bytes_all +
-+	data[i++] = ((u64)sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_bytes_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BK)].tx_bytes_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VI)].tx_bytes_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VO)].tx_bytes_all);
+ 	/* Prevent out-of-bounds read in case of longer interrupt parent address size */
+-	if (addr_len > (3 * sizeof(__be32)))
+-		addr_len = 3 * sizeof(__be32);
++	if (addr_len > sizeof(addr_buf))
++		addr_len = sizeof(addr_buf);
+ 	if (addr)
+ 		memcpy(addr_buf, addr, addr_len);
+ 
 -- 
 2.43.0
 
