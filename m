@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1418994C8F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:56:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED2E994EE6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:22:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDE421C24FD6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:56:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91F53B22F5B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C004E1DF964;
-	Tue,  8 Oct 2024 12:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5001DF24B;
+	Tue,  8 Oct 2024 13:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lurAwSQL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJN6Y3/2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4AB1DF75C;
-	Tue,  8 Oct 2024 12:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D351DE89A;
+	Tue,  8 Oct 2024 13:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392106; cv=none; b=Y1rD6ttEym25pNlBn7LtPOXdKI2VSnz7RN5tn/hx7tKZuIx3znYEGiL++C+5AuDGitwNSfm3fwYMx+LcLprgJcHMK14RVOqQKA+rt1kCvojiLCm/OQ3w7wP2VsbF5FeEFlqQYhMJcTny1LpgoKq2SdY0uUfQ0f4sT4C1WWg1zwA=
+	t=1728393270; cv=none; b=Lxj1fkMKOvUH40Kb+XVSUHXQfPFNpC9+3IYysTs3okbJkkMoXIdkrs2Ig7/OTVq95qiPfGVtOfnQoU3gOPv1asgsLEYQgfw9GQZpcIHO1XquaTREVFAef+ZNFIblDXg9JLX8wU6KdP1WBI8nFyh0/8NLYIUKIA2wrHg/42okMKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392106; c=relaxed/simple;
-	bh=PBuJ1gnEDBMrV5XPa28AaU9aeg0AS6GxTdhLpynNCY4=;
+	s=arc-20240116; t=1728393270; c=relaxed/simple;
+	bh=sHFh0TAIgd+oEPBCve9LsuFSdTV7PML3G/FGU0uffKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJpxrfLb9KrK2T4XQ11200CxQYOBPN8F6/b1rcQ6tS7zizW6n/my00R55rCiGalH0Pv75rf3k3vkrbLJd0zDvLLRK/y5oLGeG6wtclCqNgZo02EHei9V4wqkUHtVIxFIa45H5hnH7zm1c5KccMl3i44nHEuuwNz/cbuaY+UkiVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lurAwSQL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F21C4CEC7;
-	Tue,  8 Oct 2024 12:55:05 +0000 (UTC)
+	 MIME-Version; b=Q1BI500L8fx7j4rwlK5A7Pr0t0EN4ObtjMs/QnYEjalb8R9qUHGHq+H08Z95KUyGNtVhiMekUwTnYiKoqWud6KddQKmJ5tD9+z82Df7pga5wKmAb1h14NigfOaWRatluuNMhHzZYktAL/Bmx3bHvDUVLTkUVBp+IgmKH3Wqa5q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJN6Y3/2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A862C4CEC7;
+	Tue,  8 Oct 2024 13:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392106;
-	bh=PBuJ1gnEDBMrV5XPa28AaU9aeg0AS6GxTdhLpynNCY4=;
+	s=korg; t=1728393269;
+	bh=sHFh0TAIgd+oEPBCve9LsuFSdTV7PML3G/FGU0uffKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lurAwSQLQYPy4YMY09MnnkEpEm4F4NgX84+KkBwUboBTTOVWw4LK/SWF/B0CzrSqD
-	 FFckq+diMH8+3SNjd7B9UVZlxJfKfph3kf0dyVtoNR6G1V9ZPVJbucyydjRjUN3ZzJ
-	 7+Ipr3ksmelXyVtU+dXq9kHaXBKUgWobQimmnNi4=
+	b=wJN6Y3/24fiYaVg+2/NGCaRr0saiCLhj34DBVzHJ6VjIo9BxhbrnDAIBXAGcK/pj/
+	 x125a8xZl9VMUmU/zBPYIh035Krqo1Jcp0Z2/13DSvTLjWZ0kDG1RB7Gkn8HUVZb3H
+	 srShPJ0RKgmrlT7KcQGYCjkvweeDLKSoFsps0hww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yun Lu <luyun@kylinos.cn>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 318/558] selftest: hid: add missing run-hid-tools-tests.sh
+Subject: [PATCH 6.6 103/386] wifi: mt76: mt7915: add dummy HW offload of IEEE 802.11 fragmentation
 Date: Tue,  8 Oct 2024 14:05:48 +0200
-Message-ID: <20241008115714.822433624@linuxfoundation.org>
+Message-ID: <20241008115633.501029411@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yun Lu <luyun@kylinos.cn>
+From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
 
-[ Upstream commit 160c826b4dd0d570f0f51cf002cb49bda807e9f5 ]
+[ Upstream commit f2cc859149240d910fdc6405717673e0b84bfda8 ]
 
-HID test cases run tests using the run-hid-tools-tests.sh script.
-When installed with "make install", the run-hid-tools-tests.sh
-script will not be copied over, resulting in the following error message.
+Currently, CONNAC2 series do not support encryption for fragmented Tx frames.
+Therefore, add dummy function mt7915_set_frag_threshold() to prevent SW
+IEEE 802.11 fragmentation.
 
-  make -C tools/testing/selftests/ TARGETS=hid install \
-  	  INSTALL_PATH=$KSFT_INSTALL_PATH
-
-  cd $KSFT_INSTALL_PATH
-  ./run_kselftest.sh -c hid
-
-selftests: hid: hid-core.sh
-bash: ./run-hid-tools-tests.sh: No such file or directory
-
-Add the run-hid-tools-tests.sh script to the TEST_FILES in the Makefile
-for it to be installed.
-
-Fixes: ffb85d5c9e80 ("selftests: hid: import hid-tools hid-core tests")
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+Link: https://patch.msgid.link/20240827093011.18621-16-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/hid/Makefile | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c | 7 +++++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/tools/testing/selftests/hid/Makefile b/tools/testing/selftests/hid/Makefile
-index 2b5ea18bde38b..346328e2295c3 100644
---- a/tools/testing/selftests/hid/Makefile
-+++ b/tools/testing/selftests/hid/Makefile
-@@ -17,6 +17,8 @@ TEST_PROGS += hid-tablet.sh
- TEST_PROGS += hid-usb_crash.sh
- TEST_PROGS += hid-wacom.sh
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index e6af7318a9e38..5ff260319282c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -388,6 +388,7 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
+ 	ieee80211_hw_set(hw, SUPPORTS_RX_DECAP_OFFLOAD);
+ 	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
+ 	ieee80211_hw_set(hw, WANT_MONITOR_VIF);
++	ieee80211_hw_set(hw, SUPPORTS_TX_FRAG);
  
-+TEST_FILES := run-hid-tools-tests.sh
+ 	hw->max_tx_fragments = 4;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 27655dcb79142..4fd5fd555191a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -1561,6 +1561,12 @@ mt7915_twt_teardown_request(struct ieee80211_hw *hw,
+ 	mutex_unlock(&dev->mt76.mutex);
+ }
+ 
++static int
++mt7915_set_frag_threshold(struct ieee80211_hw *hw, u32 val)
++{
++	return 0;
++}
 +
- CXX ?= $(CROSS_COMPILE)g++
- 
- HOSTPKG_CONFIG := pkg-config
+ static int
+ mt7915_set_radar_background(struct ieee80211_hw *hw,
+ 			    struct cfg80211_chan_def *chandef)
+@@ -1687,6 +1693,7 @@ const struct ieee80211_ops mt7915_ops = {
+ 	.sta_set_decap_offload = mt7915_sta_set_decap_offload,
+ 	.add_twt_setup = mt7915_mac_add_twt_setup,
+ 	.twt_teardown_request = mt7915_twt_teardown_request,
++	.set_frag_threshold = mt7915_set_frag_threshold,
+ 	CFG80211_TESTMODE_CMD(mt76_testmode_cmd)
+ 	CFG80211_TESTMODE_DUMP(mt76_testmode_dump)
+ #ifdef CONFIG_MAC80211_DEBUGFS
 -- 
 2.43.0
 
