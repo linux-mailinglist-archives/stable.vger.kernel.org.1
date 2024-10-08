@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC77994F33
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:25:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D59994A55
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8D88B284BD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:21:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF1571F21E0E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003F51DF26D;
-	Tue,  8 Oct 2024 13:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41CB718BC16;
+	Tue,  8 Oct 2024 12:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sR/IJplY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMVYjRyg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FE21DF996;
-	Tue,  8 Oct 2024 13:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D211E485;
+	Tue,  8 Oct 2024 12:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393666; cv=none; b=UDJm6bB3i0tU4tw5+cPe9dLG8qx/edYqDc/uTcf557CUouqKeJLARvD3qNS0Y/8b8iybHb7CRaCDdGhYXYqE/NymzN39OQ+05mnUzaglKo256larcaZn3JpXdO0NY+e5H/uw8H9v54ZM+D/talP3I6HOOcCYYawtoorn6h+xWvE=
+	t=1728390728; cv=none; b=pgQLtmaCEi34I8/HVpC2FYWQ4u3wiahD3fdKyy6epAI928udGv2y48DttPSDNuHRytbbltScquOD71LMsO85J1he6TE40J+grs7ymY4UUfdew5bemC3+3DBggV+Zx+YwQ5WZj/DG81rVQvJLchT8cs2jgQI6lBtzaiSruKxvkL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393666; c=relaxed/simple;
-	bh=N7rUW/kN57pEWjnhVpCt4T+Vvk+8ekdPb3mRfxm8l2w=;
+	s=arc-20240116; t=1728390728; c=relaxed/simple;
+	bh=vzxus5TqzihteuDGgjRghlx8+OMIekTErMSlbnif3Hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZG75pQu9WSwj3owoJfEjSLYXc20ZLdXPYG0xsKWrKeVAvbK3l8olTDVagBx6SG5QQWlNWqRmnt1BOmiCT89Oo3tZUmbm771TFl44Y9C3Znhf6G7Cov8IQIagIrkyuidp+jw4vV5yd0L+oa/iXuvigOMWWxnVTbVEU4Zuf59gRuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sR/IJplY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2159C4CECC;
-	Tue,  8 Oct 2024 13:21:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f5QY0kGMT++D8COH198BMAih7ronHNUr/3lUpmZnzrauDrSZMZfNppGetnrk/nU1uwL0zw5QhN4n6lC1SLSRSLzIivU9a5RyupyaSB7QtFyWywYYrNaNPWziL/fQ/GJ7v96T29XTEViMEhrOU7zclPx27WD9V3AUhqFdYLP/hlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMVYjRyg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7112BC4CECD;
+	Tue,  8 Oct 2024 12:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393666;
-	bh=N7rUW/kN57pEWjnhVpCt4T+Vvk+8ekdPb3mRfxm8l2w=;
+	s=korg; t=1728390727;
+	bh=vzxus5TqzihteuDGgjRghlx8+OMIekTErMSlbnif3Hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sR/IJplYHy6W0ndqHZMxH9FjKljPgP9G1fabilN1gRE5FAMDDbdoKZkZYsIU7HXF7
-	 Cz25+82rWPzI24/3Ovj6/7C3ubOYtTO7SVEYQ+ujyvzA+ujBtF4O8NKF1BYLPx1FJZ
-	 256gE7vWW6+SOrBAYgbcDxzkFHPaoYi4VbMnciSQ=
+	b=rMVYjRygcDuFHca1KM9JPdXi9QMyy9q+lDk2bDlZc49urYeYn6Y5Gwbw/tWYjP0Pt
+	 CMTQ/DUn2cknJmgRNenqFnn8ONyr7SlOOK3rNnO66rgmrkwkx4eWeYgQ5Efx3zKIr3
+	 /GMHnAdgiSe3Hvhk7NLtAVimoGxlTpRq8HtKrTYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sinadin Shan <sinadin.shan@oracle.com>,
-	Yifei Liu <yifei.l.liu@oracle.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 192/386] selftests: breakpoints: use remaining time to check if suspend succeed
-Date: Tue,  8 Oct 2024 14:07:17 +0200
-Message-ID: <20241008115636.964298774@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Joel Granados <j.granados@samsung.com>
+Subject: [PATCH 6.10 375/482] sysctl: avoid spurious permanent empty tables
+Date: Tue,  8 Oct 2024 14:07:18 +0200
+Message-ID: <20241008115703.178103938@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +59,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yifei Liu <yifei.l.liu@oracle.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit c66be905cda24fb782b91053b196bd2e966f95b7 ]
+commit 559d4c6a9d3b60f239493239070eb304edaea594 upstream.
 
-step_after_suspend_test fails with device busy error while
-writing to /sys/power/state to start suspend. The test believes
-it failed to enter suspend state with
+The test if a table is a permanently empty one, inspects the address of
+the registered ctl_table argument.
+However as sysctl_mount_point is an empty array and does not occupy and
+space it can end up sharing an address with another object in memory.
+If that other object itself is a "struct ctl_table" then registering
+that table will fail as it's incorrectly recognized as permanently empty.
 
-$ sudo ./step_after_suspend_test
-TAP version 13
-Bail out! Failed to enter Suspend state
+Avoid this issue by adding a dummy element to the array so that is not
+empty anymore.
+Explicitly register the table with zero elements as otherwise the dummy
+element would be recognized as a sentinel element which would lead to a
+runtime warning from the sysctl core.
 
-However, in the kernel message, I indeed see the system get
-suspended and then wake up later.
+While the issue seems not being encountered at this time, this seems
+mostly to be due to luck.
+Also a future change, constifying sysctl_mount_point and root_table, can
+reliably trigger this issue on clang 18.
 
-[611172.033108] PM: suspend entry (s2idle)
-[611172.044940] Filesystems sync: 0.006 seconds
-[611172.052254] Freezing user space processes
-[611172.059319] Freezing user space processes completed (elapsed 0.001 seconds)
-[611172.067920] OOM killer disabled.
-[611172.072465] Freezing remaining freezable tasks
-[611172.080332] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
-[611172.089724] printk: Suspending console(s) (use no_console_suspend to debug)
-[611172.117126] serial 00:03: disabled
-some other hardware get reconnected
-[611203.136277] OOM killer enabled.
-[611203.140637] Restarting tasks ...
-[611203.141135] usb 1-8.1: USB disconnect, device number 7
-[611203.141755] done.
-[611203.155268] random: crng reseeded on system resumption
-[611203.162059] PM: suspend exit
+Given that empty arrays are non-standard in the first place it seems
+prudent to avoid them if possible.
 
-After investigation, I noticed that for the code block
-if (write(power_state_fd, "mem", strlen("mem")) != strlen("mem"))
-	ksft_exit_fail_msg("Failed to enter Suspend state\n");
-
-The write will return -1 and errno is set to 16 (device busy).
-It should be caused by the write function is not successfully returned
-before the system suspend and the return value get messed when waking up.
-As a result, It may be better to check the time passed of those few
-instructions to determine whether the suspend is executed correctly for
-it is pretty hard to execute those few lines for 5 seconds.
-
-The timer to wake up the system is set to expire after 5 seconds and
-no re-arm. If the timer remaining time is 0 second and 0 nano secomd,
-it means the timer expired and wake the system up. Otherwise, the system
-could be considered to enter the suspend state failed if there is any
-remaining time.
-
-After appling this patch, the test would not fail for it believes the
-system does not go to suspend by mistake. It now could continue to the
-rest part of the test after suspend.
-
-Fixes: bfd092b8c272 ("selftests: breakpoint: add step_after_suspend_test")
-Reported-by: Sinadin Shan <sinadin.shan@oracle.com>
-Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4a7b29f65094 ("sysctl: move sysctl type to ctl_table_header")
+Fixes: a35dd3a786f5 ("sysctl: drop now unnecessary out-of-bounds check")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Closes: https://lore.kernel.org/oe-lkp/202408051453.f638857e-lkp@intel.com
+Signed-off-by: Joel Granados <j.granados@samsung.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../testing/selftests/breakpoints/step_after_suspend_test.c  | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/proc/proc_sysctl.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/breakpoints/step_after_suspend_test.c b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-index 2cf6f10ab7c4a..fc02918962c75 100644
---- a/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-+++ b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-@@ -153,7 +153,10 @@ void suspend(void)
- 	if (err < 0)
- 		ksft_exit_fail_msg("timerfd_settime() failed\n");
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index 9553e77c9d31..d11ebc055ce0 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -29,8 +29,13 @@ static const struct inode_operations proc_sys_inode_operations;
+ static const struct file_operations proc_sys_dir_file_operations;
+ static const struct inode_operations proc_sys_dir_operations;
  
--	if (write(power_state_fd, "mem", strlen("mem")) != strlen("mem"))
-+	system("(echo mem > /sys/power/state) 2> /dev/null");
-+
-+	timerfd_gettime(timerfd, &spec);
-+	if (spec.it_value.tv_sec != 0 || spec.it_value.tv_nsec != 0)
- 		ksft_exit_fail_msg("Failed to enter Suspend state\n");
+-/* Support for permanently empty directories */
+-static struct ctl_table sysctl_mount_point[] = { };
++/*
++ * Support for permanently empty directories.
++ * Must be non-empty to avoid sharing an address with other tables.
++ */
++static struct ctl_table sysctl_mount_point[] = {
++	{ }
++};
  
- 	close(timerfd);
+ /**
+  * register_sysctl_mount_point() - registers a sysctl mount point
+@@ -42,7 +47,7 @@ static struct ctl_table sysctl_mount_point[] = { };
+  */
+ struct ctl_table_header *register_sysctl_mount_point(const char *path)
+ {
+-	return register_sysctl(path, sysctl_mount_point);
++	return register_sysctl_sz(path, sysctl_mount_point, 0);
+ }
+ EXPORT_SYMBOL(register_sysctl_mount_point);
+ 
 -- 
-2.43.0
+2.46.2
 
 
 
