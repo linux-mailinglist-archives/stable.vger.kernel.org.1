@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C965C994D41
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:03:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA86994AAB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:35:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7544F1F243CD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:03:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA08D1F226C2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C05C1DE8A0;
-	Tue,  8 Oct 2024 13:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A8A1C2443;
+	Tue,  8 Oct 2024 12:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FVfNgslL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8HycCT0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE63A1DE4CC;
-	Tue,  8 Oct 2024 13:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E889A1779B1;
+	Tue,  8 Oct 2024 12:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392623; cv=none; b=cQrkCPNx+JW9cu3ZGA0bxEAaHBqBsqKlgdNuDoqLDq1OR/KcJN0x/ISVfQHcEuiGeMRmOB3RLxZzUpaUOYpetvG2nVW9LPveJ4mOamsmS5f4hLQc9DHQENh/yLFQegir/6IowUkVR9tdIoi0S8rtvegOqV9pBNm//UQuarH/qlU=
+	t=1728390928; cv=none; b=Bpf87mUOzqzVBmiXLI1Iu2SNCBDFvY7ik7jkUaL9azxBRVdIadLsX0fslEUcbZvmcKER/YAAl1GpMuF1FbBYl+wFay/qBDFFe3xsmr2/EgiZTZi4s+zrGExDnMkIxUSsFPLnE4lNhfnTSqgVhX1OZ47kNSeEvNdH2RV0ES9Hs/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392623; c=relaxed/simple;
-	bh=w0jSK/FZJMrRszU6PwQmssZEV1mFmnO4hRrYWmiiXWg=;
+	s=arc-20240116; t=1728390928; c=relaxed/simple;
+	bh=Es4jw003ZSYL1qWFpdGdeMlYlW1Gg1C4e5Fkn5hlXks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gOFN4TpJWzj5naPZuT951ugiJLhQIJRQu5z0A0k8RpZOPOeS8tlfUe6pJdLVsRS1Muqtyn4ldkNfFUJV9CqfBATuSfNYTK6SJZtOP1lT9yRYzxVWsVYD4L2GPKrl0m7/N864BhC0NIvVB82CK090sLOauQHbcbRaeCD2dxbc6X0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FVfNgslL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D57FC4CEC7;
-	Tue,  8 Oct 2024 13:03:43 +0000 (UTC)
+	 MIME-Version; b=BLl9ASR2GXOcIFHwpBm0eBSIsgK7RVGuldhQq9clXE+FoaE/X8kHIxVadnaTSwqU7JSY3GtjAD4nIGTZqtJjktMouBObtoes/xSMcRpP9UE7ipXgnUxX7tYfzY2Y6lAQVZw3Ka1twyjPNz08Brxt7RV6JNfbc6YCpQdqVX1uHj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8HycCT0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59375C4CEC7;
+	Tue,  8 Oct 2024 12:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392623;
-	bh=w0jSK/FZJMrRszU6PwQmssZEV1mFmnO4hRrYWmiiXWg=;
+	s=korg; t=1728390927;
+	bh=Es4jw003ZSYL1qWFpdGdeMlYlW1Gg1C4e5Fkn5hlXks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FVfNgslLnpRIvRCF+e9+f5x7ZDbDmCmhfXywfaR0YSmI/KRLPhIbHUS9YXIJf39Zq
-	 1UdBI38lxFeXXhv9AV/jgWJPGTvUnstseVqTOX2BJXk3Mewxu8vCQE0FxXhkX4ovT7
-	 +VWYkXtJx0L8rrBjnaDfNbFF9hO94japQ5gaXra8=
+	b=d8HycCT08bOMgNyvYevdXpWeWaZWv3Xo+JLWyctrdmR79Q/DDdNmu+S+NNJ75z28B
+	 IKTOoJTYcTFglZfsl+SAnCzC1lWcSeqQPZU3l3CraKmfHwDKycDRHJAcYUBR300niV
+	 DCwz/+uuYYiWSFAq0eJyYFPqPV8Yd2vSvM8JNrm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.11 470/558] iio: magnetometer: ak8975: Fix reading for ak099xx sensors
+	kernel test robot <lkp@intel.com>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Liviu Dudau <liviu.dudau@arm.com>
+Subject: [PATCH 6.10 437/482] drm/panthor: Fix access to uninitialized variable in tick_ctx_cleanup()
 Date: Tue,  8 Oct 2024 14:08:20 +0200
-Message-ID: <20241008115720.742231495@linuxfoundation.org>
+Message-ID: <20241008115705.721726815@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,82 +61,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-commit 129464e86c7445a858b790ac2d28d35f58256bbe upstream.
+commit 282864cc5d3f144af0cdea1868ee2dc2c5110f0d upstream.
 
-Move ST2 reading with overflow handling after measurement data
-reading.
-ST2 register read have to be read after read measurment data,
-because it means end of the reading and realease the lock on the data.
-Remove ST2 read skip on interrupt based waiting because ST2 required to
-be read out at and of the axis read.
+The group variable can't be used to retrieve ptdev in our second loop,
+because it points to the previously iterated list_head, not a valid
+group. Get the ptdev object from the scheduler instead.
 
-Fixes: 57e73a423b1e ("iio: ak8975: add ak09911 and ak09912 support")
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://patch.msgid.link/20240819-ak09918-v4-2-f0734d14cfb9@mainlining.org
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: <stable@vger.kernel.org>
+Fixes: d72f049087d4 ("drm/panthor: Allow driver compilation")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Julia Lawall <julia.lawall@inria.fr>
+Closes: https://lore.kernel.org/r/202409302306.UDikqa03-lkp@intel.com/
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240930163742.87036-1-boris.brezillon@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/magnetometer/ak8975.c |   32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/panthor/panthor_sched.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -692,22 +692,8 @@ static int ak8975_start_read_axis(struct
- 	if (ret < 0)
- 		return ret;
+diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+index a8a939a9fb51..145d983bb129 100644
+--- a/drivers/gpu/drm/panthor/panthor_sched.c
++++ b/drivers/gpu/drm/panthor/panthor_sched.c
+@@ -2046,6 +2046,7 @@ static void
+ tick_ctx_cleanup(struct panthor_scheduler *sched,
+ 		 struct panthor_sched_tick_ctx *ctx)
+ {
++	struct panthor_device *ptdev = sched->ptdev;
+ 	struct panthor_group *group, *tmp;
+ 	u32 i;
  
--	/* This will be executed only for non-interrupt based waiting case */
--	if (ret & data->def->ctrl_masks[ST1_DRDY]) {
--		ret = i2c_smbus_read_byte_data(client,
--					       data->def->ctrl_regs[ST2]);
--		if (ret < 0) {
--			dev_err(&client->dev, "Error in reading ST2\n");
--			return ret;
--		}
--		if (ret & (data->def->ctrl_masks[ST2_DERR] |
--			   data->def->ctrl_masks[ST2_HOFL])) {
--			dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
--			return -EINVAL;
--		}
--	}
--
--	return 0;
-+	/* Return with zero if the data is ready. */
-+	return !data->def->ctrl_regs[ST1_DRDY];
- }
+@@ -2054,7 +2055,7 @@ tick_ctx_cleanup(struct panthor_scheduler *sched,
+ 			/* If everything went fine, we should only have groups
+ 			 * to be terminated in the old_groups lists.
+ 			 */
+-			drm_WARN_ON(&group->ptdev->base, !ctx->csg_upd_failed_mask &&
++			drm_WARN_ON(&ptdev->base, !ctx->csg_upd_failed_mask &&
+ 				    group_can_run(group));
  
- /* Retrieve raw flux value for one of the x, y, or z axis.  */
-@@ -734,6 +720,20 @@ static int ak8975_read_axis(struct iio_d
- 	if (ret < 0)
- 		goto exit;
+ 			if (!group_can_run(group)) {
+@@ -2077,7 +2078,7 @@ tick_ctx_cleanup(struct panthor_scheduler *sched,
+ 		/* If everything went fine, the groups to schedule lists should
+ 		 * be empty.
+ 		 */
+-		drm_WARN_ON(&group->ptdev->base,
++		drm_WARN_ON(&ptdev->base,
+ 			    !ctx->csg_upd_failed_mask && !list_empty(&ctx->groups[i]));
  
-+	/* Read out ST2 for release lock on measurment data. */
-+	ret = i2c_smbus_read_byte_data(client, data->def->ctrl_regs[ST2]);
-+	if (ret < 0) {
-+		dev_err(&client->dev, "Error in reading ST2\n");
-+		goto exit;
-+	}
-+
-+	if (ret & (data->def->ctrl_masks[ST2_DERR] |
-+		   data->def->ctrl_masks[ST2_HOFL])) {
-+		dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
-+		ret = -EINVAL;
-+		goto exit;
-+	}
-+
- 	mutex_unlock(&data->lock);
- 
- 	pm_runtime_mark_last_busy(&data->client->dev);
+ 		list_for_each_entry_safe(group, tmp, &ctx->groups[i], run_node) {
+-- 
+2.46.2
+
 
 
 
