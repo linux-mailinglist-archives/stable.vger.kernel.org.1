@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-82156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A3B1994B71
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B952D99488E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F14BF287D9E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43689B25FEB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5107F1DED43;
-	Tue,  8 Oct 2024 12:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2009E1DE4FA;
+	Tue,  8 Oct 2024 12:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMZCiJrN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcI3OSiw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3521DDC24;
-	Tue,  8 Oct 2024 12:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14221D618C;
+	Tue,  8 Oct 2024 12:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391338; cv=none; b=P9QnT8dOuskZkdzCyN3lkUWFYRNM9MILM8ZAggSHVqsZbQI4IEWR76x8jbGx9nRDZDd65+762hI4rKn2f3Wy9Rf7d19tOZ4dNOJVdGaGDHj9fzviQfjW6LfBrGz8lOrDcOtcKCOSKaKz9YdHfyUDLemy8/mKBRCENrzVHwU2QZo=
+	t=1728389639; cv=none; b=ckjFQcFUCj6Bq0ykfWpPf8cqYw8/UMU2wgFzsmO0upH7YqeQbb5Q+2PTGkNH14ti/yvEjYCohPz64gF+XbpFuwLxekpe3KfiZv+o6PEPbIRpMiWlRvTKNuDa54+GGj/0k0GgKLq7OrQZ+TBKM42Mh+iy39Qfv6OjZSJCdg4m9IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391338; c=relaxed/simple;
-	bh=Avej4pBkmIfgWuxQIxhuVIWg9O6swJLHgfBX943MXas=;
+	s=arc-20240116; t=1728389639; c=relaxed/simple;
+	bh=+VUz9UVD//cVy3FcLadYZzaXWZEYl40G2VToRJskXe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tPjupwdzXNppE/Z+ZKWgqOihKDZ0NqWai/7hnQaOMB9FLHoTQWZotAoWopBWTi1v7i4aoyNFqjlzvKlJIHexDIsGLfjHtwLy2S/X/wSXHuMmJhwo1srg/kN8OPSkVABLJUb45VTnZfs8aVbF+p81cs+NWuKhvUbAKYPOLGky6Uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMZCiJrN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89432C4CEC7;
-	Tue,  8 Oct 2024 12:42:17 +0000 (UTC)
+	 MIME-Version; b=IMTzI4d2xYDlDatad/r8pASfWb35uIsagArJTkK/wXqmYk6vqk06msP639KBMwEaWRZ7JROOI44mlrwgvdrHxY9pij+i9H7y1CMUH7yCNYoSKChH9E85JXNzkHuaakVpj84ExtDXUsgFoejoTm/SNyByruZL+VI+PH2IYIWUhIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcI3OSiw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB28AC4CEC7;
+	Tue,  8 Oct 2024 12:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391337;
-	bh=Avej4pBkmIfgWuxQIxhuVIWg9O6swJLHgfBX943MXas=;
+	s=korg; t=1728389639;
+	bh=+VUz9UVD//cVy3FcLadYZzaXWZEYl40G2VToRJskXe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mMZCiJrNu6FkKIMVdvm1QHDQlfsyjwR0pSiUWZy0Z1x+WLt9Gz/4TXLVFfgSjvTTA
-	 43cte6+f5TSvXl+JOZlGx1DuD4zLrPNmAT4Jf15X3yrqqtiiIrbmzuVkemEKZKyU2T
-	 jGtr82ptsAGMEtQdyaztcS1et6wY8J/2YdCTI/IA=
+	b=zcI3OSiwShhaQJjZ14XeCvBu+iYx15EquhFSCI/WLjGOl3KxAa1ptiaOHGy2QBAxx
+	 6IePaa28OZZXwRhmbN61HQXK939sIky/tpS2YssT6F/uWShWd3x4GbE08ZdgT26ktg
+	 90m3EDc2plNuoHQlWzLSVou0lQsRtSlZiXKPQ3Pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dima Ruinskiy <dima.ruinskiy@intel.com>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Marc Ferland <marc.ferland@sonatest.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 083/558] e1000e: avoid failing the system during pm_suspend
-Date: Tue,  8 Oct 2024 14:01:53 +0200
-Message-ID: <20241008115705.640313682@linuxfoundation.org>
+Subject: [PATCH 6.10 051/482] i2c: xiic: improve error message when transfer fails to start
+Date: Tue,  8 Oct 2024 14:01:54 +0200
+Message-ID: <20241008115650.314172470@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Marc Ferland <marc.ferland@sonatest.com>
 
-[ Upstream commit 0a6ad4d9e1690c7faa3a53f762c877e477093657 ]
+[ Upstream commit ee1691d0ae103ba7fd9439800ef454674fadad27 ]
 
-Occasionally when the system goes into pm_suspend, the suspend might fail
-due to a PHY access error on the network adapter. Previously, this would
-have caused the whole system to fail to go to a low power state.
-An example of this was reported in the following Bugzilla:
-https://bugzilla.kernel.org/show_bug.cgi?id=205015
+xiic_start_xfer can fail for different reasons:
 
-[ 1663.694828] e1000e 0000:00:19.0 eth0: Failed to disable ULP
-[ 1664.731040] asix 2-3:1.0 eth1: link up, 100Mbps, full-duplex, lpa 0xC1E1
-[ 1665.093513] e1000e 0000:00:19.0 eth0: Hardware Error
-[ 1665.596760] e1000e 0000:00:19.0: pci_pm_resume+0x0/0x80 returned 0 after 2975399 usecs
+- EBUSY: bus is busy or i2c messages still in tx_msg or rx_msg
+- ETIMEDOUT: timed-out trying to clear the RX fifo
+- EINVAL: wrong clock settings
 
-and then the system never recovers from it, and all the following suspend failed due to this
-[22909.393854] PM: pci_pm_suspend(): e1000e_pm_suspend+0x0/0x760 [e1000e] returns -2
-[22909.393858] PM: dpm_run_callback(): pci_pm_suspend+0x0/0x160 returns -2
-[22909.393861] PM: Device 0000:00:1f.6 failed to suspend async: error -2
+Both EINVAL and ETIMEDOUT will currently print a specific error
+message followed by a generic one, for example:
 
-This can be avoided by changing the return values of __e1000_shutdown and
-e1000e_pm_suspend functions so that they always return 0 (success). This
-is consistent with what other drivers do.
+    Failed to clear rx fifo
+    Error xiic_start_xfer
 
-If the e1000e driver encounters a hardware error during suspend, potential
-side effects include slightly higher power draw or non-working wake on
-LAN. This is preferred to a system-level suspend failure, and a warning
-message is written to the system log, so that the user can be aware that
-the LAN controller experienced a problem during suspend.
+however EBUSY will simply output the generic message:
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=205015
-Suggested-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+    Error xiic_start_xfer
+
+which is not really helpful.
+
+This commit adds a new error message when a busy condition is detected
+and also removes the generic message since it does not provide any
+relevant information to the user.
+
+Signed-off-by: Marc Ferland <marc.ferland@sonatest.com>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Stable-dep-of: 1d4a1adbed25 ("i2c: xiic: Try re-initialization on bus busy timeout")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/netdev.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/i2c/busses/i2c-xiic.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 360ee26557f77..f103249b12fac 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -6671,8 +6671,10 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
- 		if (adapter->flags2 & FLAG2_HAS_PHY_WAKEUP) {
- 			/* enable wakeup by the PHY */
- 			retval = e1000_init_phy_wakeup(adapter, wufc);
--			if (retval)
--				return retval;
-+			if (retval) {
-+				e_err("Failed to enable wakeup\n");
-+				goto skip_phy_configurations;
-+			}
- 		} else {
- 			/* enable wakeup by the MAC */
- 			ew32(WUFC, wufc);
-@@ -6693,8 +6695,10 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
- 			 * or broadcast.
- 			 */
- 			retval = e1000_enable_ulp_lpt_lp(hw, !runtime);
--			if (retval)
--				return retval;
-+			if (retval) {
-+				e_err("Failed to enable ULP\n");
-+				goto skip_phy_configurations;
-+			}
- 		}
- 	}
+diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
+index 71391b590adae..19468565120e1 100644
+--- a/drivers/i2c/busses/i2c-xiic.c
++++ b/drivers/i2c/busses/i2c-xiic.c
+@@ -1105,8 +1105,11 @@ static int xiic_start_xfer(struct xiic_i2c *i2c, struct i2c_msg *msgs, int num)
+ 	mutex_lock(&i2c->lock);
  
-@@ -6726,6 +6730,7 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
- 		hw->phy.ops.release(hw);
- 	}
+ 	ret = xiic_busy(i2c);
+-	if (ret)
++	if (ret) {
++		dev_err(i2c->adap.dev.parent,
++			"cannot start a transfer while busy\n");
+ 		goto out;
++	}
  
-+skip_phy_configurations:
- 	/* Release control of h/w to f/w.  If f/w is AMT enabled, this
- 	 * would have already happened in close and is redundant.
- 	 */
-@@ -6968,15 +6973,13 @@ static int e1000e_pm_suspend(struct device *dev)
- 	e1000e_pm_freeze(dev);
+ 	i2c->tx_msg = msgs;
+ 	i2c->rx_msg = NULL;
+@@ -1164,10 +1167,8 @@ static int xiic_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+ 		return err;
  
- 	rc = __e1000_shutdown(pdev, false);
--	if (rc) {
--		e1000e_pm_thaw(dev);
--	} else {
-+	if (!rc) {
- 		/* Introduce S0ix implementation */
- 		if (adapter->flags2 & FLAG2_ENABLE_S0IX_FLOWS)
- 			e1000e_s0ix_entry_flow(adapter);
- 	}
+ 	err = xiic_start_xfer(i2c, msgs, num);
+-	if (err < 0) {
+-		dev_err(adap->dev.parent, "Error xiic_start_xfer\n");
++	if (err < 0)
+ 		goto out;
+-	}
  
--	return rc;
-+	return 0;
- }
- 
- static int e1000e_pm_resume(struct device *dev)
+ 	err = wait_for_completion_timeout(&i2c->completion, XIIC_XFER_TIMEOUT);
+ 	mutex_lock(&i2c->lock);
 -- 
 2.43.0
 
