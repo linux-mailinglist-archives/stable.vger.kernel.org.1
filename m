@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EECF99496A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:24:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2B09994CAF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:57:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C11DE283E26
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:24:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 886DAB2A51D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32731DD54F;
-	Tue,  8 Oct 2024 12:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14AB1DEFFC;
+	Tue,  8 Oct 2024 12:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekjygL3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZxJWhUj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9266E1D540;
-	Tue,  8 Oct 2024 12:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5551DE3A3;
+	Tue,  8 Oct 2024 12:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390146; cv=none; b=VXQ3hAvjx+TtqLv/osCeJr3ngSUMkSBQk5R204Q5NBV7hemcSOx7bqcYD8761zFQg38HRCl/gBEt3/VnqtPbanqhbQaIsc6dAFnf8wkMPHR1+qwqALMye2XHXLpHkOLq2mTw7r03mIntgTaeyT5Cs93C8lfzy4pCVuPz6rqF7QM=
+	t=1728391977; cv=none; b=Gu9Z+ejB+N2R43AzougcPI33a9ahr9D88YlzqBzmoMCa1Kyo7EZCKUS2nPOJl8+8cJkFP2Zs75h5yk0d4eT9YYKazPVkudoSYSlmm76weH3/ZsroLP9u8FH9sD9I2TIpfAG1ME2OR+6aDhf8/kp4AzmcJDT1NE8IJTLlwf5GpQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390146; c=relaxed/simple;
-	bh=j9L0sPQ66smGS/6WqBAMTtWSPoL8/SPhEEMzKpQrtSg=;
+	s=arc-20240116; t=1728391977; c=relaxed/simple;
+	bh=tD84dK93WiLkBMBGroZsVlZ0XZXA/6nUL6N5041NT7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WGIQ8+4utf/sDzrts5jhRpM3NTJi9hcRKe1y5zcdiKUUaAszBfa0RxUsQYXvDoB374cpitjnxlBxO7JdnOeUNA0SNV5/dDzjtFHuTWf2R2W132Qx1tjhm5VgwolU0owk8qxvmBwP+PdOScYBSEyCAEaY4BgxmXmXjrwrb6n9c54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekjygL3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13657C4CEC7;
-	Tue,  8 Oct 2024 12:22:25 +0000 (UTC)
+	 MIME-Version; b=jCYd0998fPz0i7tb2Pzl5XCmdKnoXmA2Y20XmJMmO9V3N5YReCzGcPfI4LetfnZpPS9foxk9beWwVJG2FxGxUWEqyER6z3oAFM0RylhzL6ovW1dzA65fQkpgQez22XRLicVZPJtfSyyXb0lMDYmYTNEX7nO5BQ0Ezva3/eplw2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZxJWhUj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902A9C4CED1;
+	Tue,  8 Oct 2024 12:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390146;
-	bh=j9L0sPQ66smGS/6WqBAMTtWSPoL8/SPhEEMzKpQrtSg=;
+	s=korg; t=1728391977;
+	bh=tD84dK93WiLkBMBGroZsVlZ0XZXA/6nUL6N5041NT7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ekjygL3u/Fta4Faz4nqUFHUEy1gl1pzAav06fGSOYBQ8TDp0DeqRoog5rkQ6pjhzr
-	 dUe2lNiVGqIWQg1H8gfT5J7gl1HB/E+rzErnUVjIi4iNsGLnGr7XRo3t+t7Rj3wP6r
-	 rz4S4PBnhrjXokHKU3xkMlrOHTVFsG5JjbHCeoXE=
+	b=KZxJWhUj2MKGFaYwtkmpj8kTaV/Y8h6Ub/Wn6MYCSGVERAsbi6d86qjb2LCe3OSeI
+	 AvQV5xB+nL3g5sSwBJhOGHjQADDfXEwYx22K6rh7Um2G8qbZlOo1RSJS4Dz05UlD/9
+	 PVFie38436hiMIbZwWL2/P6vTXNoMGtQtChm3tyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <jesse.zhang@amd.com>,
-	Tim Huang <tim.huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 205/482] drm/amdkfd: Fix resource leak in criu restore queue
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+dca05492eff41f604890@syzkaller.appspotmail.com
+Subject: [PATCH 6.11 238/558] jfs: check if leafidx greater than num leaves per dmap tree
 Date: Tue,  8 Oct 2024 14:04:28 +0200
-Message-ID: <20241008115656.377911563@linuxfoundation.org>
+Message-ID: <20241008115711.708567965@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit aa47fe8d3595365a935921a90d00bc33ee374728 ]
+[ Upstream commit d64ff0d2306713ff084d4b09f84ed1a8c75ecc32 ]
 
-To avoid memory leaks, release q_extra_data when exiting the restore queue.
-v2: Correct the proto (Alex)
+syzbot report a out of bounds in dbSplit, it because dmt_leafidx greater
+than num leaves per dmap tree, add a checking for dmt_leafidx in dbFindLeaf.
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
-Reviewed-by: Tim Huang <tim.huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Shaggy:
+Modified sanity check to apply to control pages as well as leaf pages.
+
+Reported-and-tested-by: syzbot+dca05492eff41f604890@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=dca05492eff41f604890
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/jfs/jfs_dmap.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-index c97b4fc44859d..db2b71f7226f4 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-@@ -984,6 +984,7 @@ int kfd_criu_restore_queue(struct kfd_process *p,
- 		pr_debug("Queue id %d was restored successfully\n", queue_id);
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 8847e8c5d5b45..974ecf5e0d952 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -2944,9 +2944,10 @@ static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl)
+ static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl)
+ {
+ 	int ti, n = 0, k, x = 0;
+-	int max_size;
++	int max_size, max_idx;
  
- 	kfree(q_data);
-+	kfree(q_extra_data);
+ 	max_size = is_ctl ? CTLTREESIZE : TREESIZE;
++	max_idx = is_ctl ? LPERCTL : LPERDMAP;
  
- 	return ret;
- }
+ 	/* first check the root of the tree to see if there is
+ 	 * sufficient free space.
+@@ -2978,6 +2979,8 @@ static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl)
+ 		 */
+ 		assert(n < 4);
+ 	}
++	if (le32_to_cpu(tp->dmt_leafidx) >= max_idx)
++		return -ENOSPC;
+ 
+ 	/* set the return to the leftmost leaf describing sufficient
+ 	 * free space.
 -- 
 2.43.0
 
