@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-82768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C954994F16
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:24:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2FF994CB2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:57:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81349B27F71
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1789C1C2177D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C17371DEFC6;
-	Tue,  8 Oct 2024 13:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C8C1DEFD6;
+	Tue,  8 Oct 2024 12:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qquAMmqD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+dQCv4b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811E01D3653;
-	Tue,  8 Oct 2024 13:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30D71DE8A0;
+	Tue,  8 Oct 2024 12:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393364; cv=none; b=O2S09EK7hM/pWaX8WoEBpwfUK7lo9yChxzj2h25roUThvGrBmAFrVoXoB6jxz7IknG11DbN+riWL4GtASzjJeTj3YGEfg7I7HZ/Vzz7DkOpaoCguM6dz3AUPNwtkFw/NWQjH8QLUrSccPvEin2pCrjGId7jwcFJw9wJfHwfliaU=
+	t=1728392180; cv=none; b=Bs8y1g/VOeex6ALl2hysshQy9JOhXyskl8nxYMEfNE+CSGETPI21rRvT6p7JetH233wlUv2X0TgJUwEXudIephtF09jG9xTI0IcmvSh/Qb5fDOci1Q631cK8KOyFo4eB1oUvgHur5fKt2u70FIXTiHiX7jxX67go4dG3jQLYi74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393364; c=relaxed/simple;
-	bh=Njcj3oeR4VsiqgTiwQJYSFW08ZsYEmtq9j3z0+f1prE=;
+	s=arc-20240116; t=1728392180; c=relaxed/simple;
+	bh=idS2VevsRCdTH9t1kYJbWbhGvbk+fcXYhSGOuw0DKmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lp+z5QuBUFXBZsiicmqL6GIvu73lsKpvAVmPRPHyRtzM812KXw/nAyLDIKfVcp3uABJLL69T5x80Qdd3W+A0GOielYKOobMj0hQTaPhvuoeEKMyhcNdMsawkRu18VSfSA3gH85WIBzRkgcsTv+lP+fkgUGebYvcBquF6FIzXAm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qquAMmqD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9480DC4CEC7;
-	Tue,  8 Oct 2024 13:16:03 +0000 (UTC)
+	 MIME-Version; b=YxPj7gNbM9KlwHTCzXb5RiVoIa/r/PoLQbczyBxYhz0vL3OpJEzXiaJZzFpKfdV+5zoH/IZeukTuzPPor4ZAQL3xPVS19Qx8wb0orV5a3bEieniv91b/awhuAbFE23Aau+RQRayrTfg5kweAH01zbsmzYo9gI4jQ+1hj2UMSF38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+dQCv4b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59108C4CEC7;
+	Tue,  8 Oct 2024 12:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393364;
-	bh=Njcj3oeR4VsiqgTiwQJYSFW08ZsYEmtq9j3z0+f1prE=;
+	s=korg; t=1728392180;
+	bh=idS2VevsRCdTH9t1kYJbWbhGvbk+fcXYhSGOuw0DKmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qquAMmqDHv2tRFRMLC5WzlEP1YqszZgZmgFBKtGT/qyGO9b+MDR386tl21LSYGGGH
-	 RNeCbwDWc2JdLkcGh7KAixDMjh2VABFteqekD3m8kfVamx+fXuZSwc7nRBvkt1mjAN
-	 4I/phkeydU7HBq/si9iaEp5Li05oztnNpt42JJzs=
+	b=q+dQCv4bKBO1cum9Vv4Usgtbr/G1MorRRcFlfZ93XCaFbb2N5LsLZtUxJ4cvNIszb
+	 c0CfrwbJ76t591agsOX3t4u8GQpeY98mdyljZHwFx3+27cCB99/RGr8Pk8swmWhRAN
+	 3fFN+8gNMmYUqMPa7JMaoupsQwMpMy/0pl45OBQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mirsad Todorovac <mtodorovac69@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Jens Remus <jremus@linux.ibm.com>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/386] x86/syscall: Avoid memcpy() for ia32 syscall_get_arguments()
-Date: Tue,  8 Oct 2024 14:06:07 +0200
-Message-ID: <20241008115634.237949981@linuxfoundation.org>
+Subject: [PATCH 6.11 338/558] selftests: vDSO: fix ELF hash table entry size for s390x
+Date: Tue,  8 Oct 2024 14:06:08 +0200
+Message-ID: <20241008115715.603597600@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Jens Remus <jremus@linux.ibm.com>
 
-[ Upstream commit d19d638b1e6cf746263ef60b7d0dee0204d8216a ]
+[ Upstream commit 14be4e6f35221c4731b004553ecf7cbc6dc1d2d8 ]
 
-Modern (fortified) memcpy() prefers to avoid writing (or reading) beyond
-the end of the addressed destination (or source) struct member:
+The vDSO self tests fail on s390x for a vDSO linked with the GNU linker
+ld as follows:
 
-In function ‘fortify_memcpy_chk’,
-    inlined from ‘syscall_get_arguments’ at ./arch/x86/include/asm/syscall.h:85:2,
-    inlined from ‘populate_seccomp_data’ at kernel/seccomp.c:258:2,
-    inlined from ‘__seccomp_filter’ at kernel/seccomp.c:1231:3:
-./include/linux/fortify-string.h:580:25: error: call to ‘__read_overflow2_field’ declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
-  580 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # ./vdso_test_gettimeofday
+  Floating point exception (core dumped)
 
-As already done for x86_64 and compat mode, do not use memcpy() to
-extract syscall arguments from struct pt_regs but rather just perform
-direct assignments. Binary output differences are negligible, and actually
-ends up using less stack space:
+On s390x the ELF hash table entries are 64 bits instead of 32 bits in
+size (see Glibc sysdeps/unix/sysv/linux/s390/bits/elfclass.h).
 
--       sub    $0x84,%esp
-+       sub    $0x6c,%esp
-
-and less text size:
-
-   text    data     bss     dec     hex filename
-  10794     252       0   11046    2b26 gcc-32b/kernel/seccomp.o.stock
-  10714     252       0   10966    2ad6 gcc-32b/kernel/seccomp.o.after
-
-Closes: https://lore.kernel.org/lkml/9b69fb14-df89-4677-9c82-056ea9e706f5@gmail.com/
-Reported-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Tested-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Link: https://lore.kernel.org/all/20240708202202.work.477-kees%40kernel.org
+Fixes: 40723419f407 ("kselftest: Enable vDSO test on non x86 platforms")
+Reported-by: Heiko Carstens <hca@linux.ibm.com>
+Tested-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/syscall.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/testing/selftests/vDSO/parse_vdso.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/syscall.h b/arch/x86/include/asm/syscall.h
-index 03bb950eba690..228a42585d5c9 100644
---- a/arch/x86/include/asm/syscall.h
-+++ b/arch/x86/include/asm/syscall.h
-@@ -82,7 +82,12 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 					 struct pt_regs *regs,
- 					 unsigned long *args)
- {
--	memcpy(args, &regs->bx, 6 * sizeof(args[0]));
-+	args[0] = regs->bx;
-+	args[1] = regs->cx;
-+	args[2] = regs->dx;
-+	args[3] = regs->si;
-+	args[4] = regs->di;
-+	args[5] = regs->bp;
- }
+diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
+index d9ccc5acac182..7dd5668ea8a6e 100644
+--- a/tools/testing/selftests/vDSO/parse_vdso.c
++++ b/tools/testing/selftests/vDSO/parse_vdso.c
+@@ -36,6 +36,12 @@
+ #define ELF_BITS_XFORM(bits, x) ELF_BITS_XFORM2(bits, x)
+ #define ELF(x) ELF_BITS_XFORM(ELF_BITS, x)
  
- static inline int syscall_get_arch(struct task_struct *task)
++#ifdef __s390x__
++#define ELF_HASH_ENTRY ELF(Xword)
++#else
++#define ELF_HASH_ENTRY ELF(Word)
++#endif
++
+ static struct vdso_info
+ {
+ 	bool valid;
+@@ -47,8 +53,8 @@ static struct vdso_info
+ 	/* Symbol table */
+ 	ELF(Sym) *symtab;
+ 	const char *symstrings;
+-	ELF(Word) *bucket, *chain;
+-	ELF(Word) nbucket, nchain;
++	ELF_HASH_ENTRY *bucket, *chain;
++	ELF_HASH_ENTRY nbucket, nchain;
+ 
+ 	/* Version table */
+ 	ELF(Versym) *versym;
+@@ -115,7 +121,7 @@ void vdso_init_from_sysinfo_ehdr(uintptr_t base)
+ 	/*
+ 	 * Fish out the useful bits of the dynamic table.
+ 	 */
+-	ELF(Word) *hash = 0;
++	ELF_HASH_ENTRY *hash = 0;
+ 	vdso_info.symstrings = 0;
+ 	vdso_info.symtab = 0;
+ 	vdso_info.versym = 0;
+@@ -133,7 +139,7 @@ void vdso_init_from_sysinfo_ehdr(uintptr_t base)
+ 				 + vdso_info.load_offset);
+ 			break;
+ 		case DT_HASH:
+-			hash = (ELF(Word) *)
++			hash = (ELF_HASH_ENTRY *)
+ 				((uintptr_t)dyn[i].d_un.d_ptr
+ 				 + vdso_info.load_offset);
+ 			break;
 -- 
 2.43.0
 
