@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDCB5994E7B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:17:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C87DA994A04
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:29:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 730221F2571A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:17:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C3851F21E7C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A174A16FF26;
-	Tue,  8 Oct 2024 13:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0EF1DE4F3;
+	Tue,  8 Oct 2024 12:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dpg+x3fp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVhBttg+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610B21DE4CD;
-	Tue,  8 Oct 2024 13:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696BB1DA60C;
+	Tue,  8 Oct 2024 12:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393452; cv=none; b=q1vUZRHMfPfi9akQF3oykRzth8Ad1qhl8LN+S0MnRg78+DszjfKf2RQb6UqhmCKoKH11joXtYa1H1ICXkDkDbrmcHKbJuDAQzAjV+D2b+C1FWm3Vqq/2zU21kjO67OHi5QFawY5B6Kf8mIAbTKECpDr/1RCSrjyBvKbWp4pT1E8=
+	t=1728390499; cv=none; b=LpuPHWKgP8UMXraK2AfmapPfJBYZYoz+y8DCOgnaxXb7Gb3HTbQD5uTqQJy+kOFTsaqdXebNIljsv4NktlIBovduTSfHHx9PX38kcZZWin660mwUhy1KceP2yO00qt1TmyYlXAA7Yger+mVQosOE9sSuCqmTrsU7bx34YR98CK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393452; c=relaxed/simple;
-	bh=Bi1WViqQtWa8xE8wZrIZFicAvr2jM3hLPbn6pXxMzBA=;
+	s=arc-20240116; t=1728390499; c=relaxed/simple;
+	bh=/IhfLkbagABHqpZ81aNaQhGak6GZkKWtjSsJsvhj/fA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEQCo+Tzad4RQwiHJGfJUl18O6FbbaT/np8PGsdAabNRimu1zVgv7Wcim90RN9yvl+Ude2noGQTZRmy+GoGl+8KVndwqfKfG+578DODgR40QvZa+uoeb+GPUeWXPf2LLCbzCj1+/FS46gu33WBGWjb9bjxw7vhDa4SnZiXjuRrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dpg+x3fp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB3AC4CEC7;
-	Tue,  8 Oct 2024 13:17:31 +0000 (UTC)
+	 MIME-Version; b=aoq+re8wkkaI/bO8W4mF2Z/MoejMVvrMit2pz2++RVFa2IOLU9glMDf7Jlw5h22NWkGueohEHzMzniW9jmlu9r3C53W57qAQXuz4JTrhgLjScckkDEnK/ohh/lI/UBV0a3qA68OFV0fw4VM7l9+s1NMHjN0ViCGsQOT+O+TLDfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVhBttg+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC80EC4CEC7;
+	Tue,  8 Oct 2024 12:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393452;
-	bh=Bi1WViqQtWa8xE8wZrIZFicAvr2jM3hLPbn6pXxMzBA=;
+	s=korg; t=1728390499;
+	bh=/IhfLkbagABHqpZ81aNaQhGak6GZkKWtjSsJsvhj/fA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dpg+x3fp+a2KDOa58/NljFGEJAcErbvoiKJXWQI1rLNu4OwmurAFn8LwEDAnsGBR/
-	 lB8/fN7ZjpeE7TVpqEKxyllFHMnuAJgG+bjmCfESe22racmA9yBERWJw0DspoxVFGo
-	 /XIL1r9ShGFmOpkz4+M6UZv0qV0otazmzIlbDrTo=
+	b=WVhBttg+KtmBuFvxyxEl0ET0TrIY1l/ovLIrvLu2wfBSQpYj4Hsm7NG2D3cfNguTR
+	 vAlTQ3fbEKQilPIbG8zpEE3dB92MiMApqAGecgZo7lZBOiicbC5guEOyACzTwSXeGM
+	 u0CgyvqCLuvjhljw8Y15h0gb/aFOjfsKp5xu6yUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 125/386] fbdev: pxafb: Fix possible use after free in pxafb_task()
-Date: Tue,  8 Oct 2024 14:06:10 +0200
-Message-ID: <20241008115634.356578454@linuxfoundation.org>
+	Feng Tang <feng.tang@intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 6.10 308/482] mm, slub: avoid zeroing kmalloc redzone
+Date: Tue,  8 Oct 2024 14:06:11 +0200
+Message-ID: <20241008115700.554838654@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,205 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 4a6921095eb04a900e0000da83d9475eb958e61e ]
+commit 59090e479ac78ae18facd4c58eb332562a23020e upstream.
 
-In the pxafb_probe function, it calls the pxafb_init_fbinfo function,
-after which &fbi->task is associated with pxafb_task. Moreover,
-within this pxafb_init_fbinfo function, the pxafb_blank function
-within the &pxafb_ops struct is capable of scheduling work.
+Since commit 946fa0dbf2d8 ("mm/slub: extend redzone check to extra
+allocated kmalloc space than requested"), setting orig_size treats
+the wasted space (object_size - orig_size) as a redzone. However with
+init_on_free=1 we clear the full object->size, including the redzone.
 
-If we remove the module which will call pxafb_remove to make cleanup,
-it will call unregister_framebuffer function which can call
-do_unregister_framebuffer to free fbi->fb through
-put_fb_info(fb_info), while the work mentioned above will be used.
-The sequence of operations that may lead to a UAF bug is as follows:
+Additionally we clear the object metadata, including the stored orig_size,
+making it zero, which makes check_object() treat the whole object as a
+redzone.
 
-CPU0                                                CPU1
+These issues lead to the following BUG report with "slub_debug=FUZ
+init_on_free=1":
 
-                                   | pxafb_task
-pxafb_remove                       |
-unregister_framebuffer(info)       |
-do_unregister_framebuffer(fb_info) |
-put_fb_info(fb_info)               |
-// free fbi->fb                    | set_ctrlr_state(fbi, state)
-                                   | __pxafb_lcd_power(fbi, 0)
-                                   | fbi->lcd_power(on, &fbi->fb.var)
-                                   | //use fbi->fb
+[    0.000000] =============================================================================
+[    0.000000] BUG kmalloc-8 (Not tainted): kmalloc Redzone overwritten
+[    0.000000] -----------------------------------------------------------------------------
+[    0.000000]
+[    0.000000] 0xffff000010032858-0xffff00001003285f @offset=2136. First byte 0x0 instead of 0xcc
+[    0.000000] FIX kmalloc-8: Restoring kmalloc Redzone 0xffff000010032858-0xffff00001003285f=0xcc
+[    0.000000] Slab 0xfffffdffc0400c80 objects=36 used=23 fp=0xffff000010032a18 flags=0x3fffe0000000200(workingset|node=0|zone=0|lastcpupid=0x1ffff)
+[    0.000000] Object 0xffff000010032858 @offset=2136 fp=0xffff0000100328c8
+[    0.000000]
+[    0.000000] Redzone  ffff000010032850: cc cc cc cc cc cc cc cc                          ........
+[    0.000000] Object   ffff000010032858: cc cc cc cc cc cc cc cc                          ........
+[    0.000000] Redzone  ffff000010032860: cc cc cc cc cc cc cc cc                          ........
+[    0.000000] Padding  ffff0000100328b4: 00 00 00 00 00 00 00 00 00 00 00 00              ............
+[    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.11.0-rc3-next-20240814-00004-g61844c55c3f4 #144
+[    0.000000] Hardware name: NXP i.MX95 19X19 board (DT)
+[    0.000000] Call trace:
+[    0.000000]  dump_backtrace+0x90/0xe8
+[    0.000000]  show_stack+0x18/0x24
+[    0.000000]  dump_stack_lvl+0x74/0x8c
+[    0.000000]  dump_stack+0x18/0x24
+[    0.000000]  print_trailer+0x150/0x218
+[    0.000000]  check_object+0xe4/0x454
+[    0.000000]  free_to_partial_list+0x2f8/0x5ec
 
-Fix it by ensuring that the work is canceled before proceeding
-with the cleanup in pxafb_remove.
+To address the issue, use orig_size to clear the used area. And restore
+the value of orig_size after clear the remaining area.
 
-Note that only root user can remove the driver at runtime.
+When CONFIG_SLUB_DEBUG not defined, (get_orig_size()' directly returns
+s->object_size. So when using memset to init the area, the size can simply
+be orig_size, as orig_size returns object_size when CONFIG_SLUB_DEBUG not
+enabled. And orig_size can never be bigger than object_size.
 
-Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 946fa0dbf2d8 ("mm/slub: extend redzone check to extra allocated kmalloc space than requested")
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Feng Tang <feng.tang@intel.com>
+Acked-by: David Rientjes <rientjes@google.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/pxafb.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/slub.c |  100 ++++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 53 insertions(+), 47 deletions(-)
 
-diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
-index fa943612c4e2b..3a2427eb29f23 100644
---- a/drivers/video/fbdev/pxafb.c
-+++ b/drivers/video/fbdev/pxafb.c
-@@ -2403,6 +2403,7 @@ static void pxafb_remove(struct platform_device *dev)
- 	info = &fbi->fb;
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -756,6 +756,50 @@ static inline bool slab_update_freelist(
+ 	return false;
+ }
  
- 	pxafb_overlay_exit(fbi);
-+	cancel_work_sync(&fbi->task);
- 	unregister_framebuffer(info);
++/*
++ * kmalloc caches has fixed sizes (mostly power of 2), and kmalloc() API
++ * family will round up the real request size to these fixed ones, so
++ * there could be an extra area than what is requested. Save the original
++ * request size in the meta data area, for better debug and sanity check.
++ */
++static inline void set_orig_size(struct kmem_cache *s,
++				void *object, unsigned int orig_size)
++{
++	void *p = kasan_reset_tag(object);
++	unsigned int kasan_meta_size;
++
++	if (!slub_debug_orig_size(s))
++		return;
++
++	/*
++	 * KASAN can save its free meta data inside of the object at offset 0.
++	 * If this meta data size is larger than 'orig_size', it will overlap
++	 * the data redzone in [orig_size+1, object_size]. Thus, we adjust
++	 * 'orig_size' to be as at least as big as KASAN's meta data.
++	 */
++	kasan_meta_size = kasan_metadata_size(s, true);
++	if (kasan_meta_size > orig_size)
++		orig_size = kasan_meta_size;
++
++	p += get_info_end(s);
++	p += sizeof(struct track) * 2;
++
++	*(unsigned int *)p = orig_size;
++}
++
++static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
++{
++	void *p = kasan_reset_tag(object);
++
++	if (!slub_debug_orig_size(s))
++		return s->object_size;
++
++	p += get_info_end(s);
++	p += sizeof(struct track) * 2;
++
++	return *(unsigned int *)p;
++}
++
+ #ifdef CONFIG_SLUB_DEBUG
+ static unsigned long object_map[BITS_TO_LONGS(MAX_OBJS_PER_PAGE)];
+ static DEFINE_SPINLOCK(object_map_lock);
+@@ -969,50 +1013,6 @@ static void print_slab_info(const struct
+ 	       folio_flags(folio, 0));
+ }
  
- 	pxafb_disable_controller(fbi);
--- 
-2.43.0
-
+-/*
+- * kmalloc caches has fixed sizes (mostly power of 2), and kmalloc() API
+- * family will round up the real request size to these fixed ones, so
+- * there could be an extra area than what is requested. Save the original
+- * request size in the meta data area, for better debug and sanity check.
+- */
+-static inline void set_orig_size(struct kmem_cache *s,
+-				void *object, unsigned int orig_size)
+-{
+-	void *p = kasan_reset_tag(object);
+-	unsigned int kasan_meta_size;
+-
+-	if (!slub_debug_orig_size(s))
+-		return;
+-
+-	/*
+-	 * KASAN can save its free meta data inside of the object at offset 0.
+-	 * If this meta data size is larger than 'orig_size', it will overlap
+-	 * the data redzone in [orig_size+1, object_size]. Thus, we adjust
+-	 * 'orig_size' to be as at least as big as KASAN's meta data.
+-	 */
+-	kasan_meta_size = kasan_metadata_size(s, true);
+-	if (kasan_meta_size > orig_size)
+-		orig_size = kasan_meta_size;
+-
+-	p += get_info_end(s);
+-	p += sizeof(struct track) * 2;
+-
+-	*(unsigned int *)p = orig_size;
+-}
+-
+-static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
+-{
+-	void *p = kasan_reset_tag(object);
+-
+-	if (!slub_debug_orig_size(s))
+-		return s->object_size;
+-
+-	p += get_info_end(s);
+-	p += sizeof(struct track) * 2;
+-
+-	return *(unsigned int *)p;
+-}
+-
+ void skip_orig_size_check(struct kmem_cache *s, const void *object)
+ {
+ 	set_orig_size(s, (void *)object, s->object_size);
+@@ -1859,7 +1859,6 @@ static inline void inc_slabs_node(struct
+ 							int objects) {}
+ static inline void dec_slabs_node(struct kmem_cache *s, int node,
+ 							int objects) {}
+-
+ #ifndef CONFIG_SLUB_TINY
+ static bool freelist_corrupted(struct kmem_cache *s, struct slab *slab,
+ 			       void **freelist, void *nextfree)
+@@ -2187,14 +2186,21 @@ bool slab_free_hook(struct kmem_cache *s
+ 	 */
+ 	if (unlikely(init)) {
+ 		int rsize;
+-		unsigned int inuse;
++		unsigned int inuse, orig_size;
+ 
+ 		inuse = get_info_end(s);
++		orig_size = get_orig_size(s, x);
+ 		if (!kasan_has_integrated_init())
+-			memset(kasan_reset_tag(x), 0, s->object_size);
++			memset(kasan_reset_tag(x), 0, orig_size);
+ 		rsize = (s->flags & SLAB_RED_ZONE) ? s->red_left_pad : 0;
+ 		memset((char *)kasan_reset_tag(x) + inuse, 0,
+ 		       s->size - inuse - rsize);
++		/*
++		 * Restore orig_size, otherwize kmalloc redzone overwritten
++		 * would be reported
++		 */
++		set_orig_size(s, x, orig_size);
++
+ 	}
+ 	/* KASAN might put x into memory quarantine, delaying its reuse. */
+ 	return !kasan_slab_free(s, x, init);
 
 
 
