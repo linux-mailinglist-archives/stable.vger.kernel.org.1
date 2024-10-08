@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-81771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86BB5994945
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 459C4994DC7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B8C7B22EC3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4D221F24573
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC14C1DE2CF;
-	Tue,  8 Oct 2024 12:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED7F1DEFC8;
+	Tue,  8 Oct 2024 13:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXTL1MPu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXWkzFrQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BF41DACBE;
-	Tue,  8 Oct 2024 12:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCFD1DFD1;
+	Tue,  8 Oct 2024 13:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390076; cv=none; b=CA3rDApCbyBXeXL0CWTLvD3R/fF23OxH2TYWosYC6wRyccV5Tig9D06kLnn6zo2uc6sO9CKTvaN/w79Kfqxv6a+7/yCTzqNxHjPiZM3wGZ230f2emA/rvry35SwXJYbXZn2/uG0Xk9SNUyv7OaVqw+uzuANRk6UVJaBofsOhAG8=
+	t=1728392951; cv=none; b=ddTYdJ8VVupTxP378gE/LBTKjqJKRgXU54jYzbFLDJAAJa+agKmpeF+VccssKpEMxM28UdAfrhRpV/I5j2VCn4ea7ISmdvVQejxKVgfBGZkM522V0E7SQnEkX+wM/2C6lsY+sue/3MX1SVNZJqV5WDvJris8+ewB+Qq2Z4GckVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390076; c=relaxed/simple;
-	bh=Sml2IShukZVsHYZfzbCP5S3kkAJo3cqAiNzhrRQ4L2o=;
+	s=arc-20240116; t=1728392951; c=relaxed/simple;
+	bh=6TlkPPNunLkMhsjTgYRpgzl/lgWonZKB1x+aCXM3uyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TBjkCtqhonT98X098zWj+BkzPvWXpwD6hpUmSg48yKoYM1PLiPrEDvuzbFShLXVNpKHZ+/CsIjr5NTPtT6et63n+uXK92vP9fqz19CRj8EJqR/DDk39ltphksnk9t2RkD1+dBeTG2eQ3ZHFmLHHFBH0mdJAuRNw9AwwoklwX+BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXTL1MPu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04728C4CEC7;
-	Tue,  8 Oct 2024 12:21:16 +0000 (UTC)
+	 MIME-Version; b=ixVKzPnrmuC3CLp8e/5Q4H1yEXEt+0TeoyDT+odLY9jnDujlX/tajX01n48k9ragRFS8Ozyd6Cbp45r3ornE9Nk7HM4u7akl3tyGaRoK0VVgX0+fxMGVywyE1b1ggtmwOQX0f9AA/GX/5EpIqrjTzaVP41KMjNpfMtCBnoLaWKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXWkzFrQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4169C4CEC7;
+	Tue,  8 Oct 2024 13:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390076;
-	bh=Sml2IShukZVsHYZfzbCP5S3kkAJo3cqAiNzhrRQ4L2o=;
+	s=korg; t=1728392951;
+	bh=6TlkPPNunLkMhsjTgYRpgzl/lgWonZKB1x+aCXM3uyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZXTL1MPudPpnLLV5iMepyGRzlYZdHOeGNtW/fu0S6L4fHO5NvgYimUWp8qgjxM764
-	 eqNz03yvvMTECvDW5KWOUmBRNykhbmXU8fNqpwoAbl/hRgRB5mzu/3p+wBOAxYqNHb
-	 BaEzR57JByFIW/49Ijssq9Sg0BbO/Svp4/vLnHZg=
+	b=RXWkzFrQ3d62As8BGkT59ns7AQksZl8JBaFKiHMcHJ7MdIhlP4iP9a1D9XAVwxuNw
+	 f/8HvsLbvkaeC4xfqZ0qAIS/ExET3GBS7yl/ztmdNIFUmNG6/Y27RnPOkNPt+IYAdt
+	 cTZkc4KTp8oY6ReS7fYMdSI7Ayjxu+aZx71503b4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 183/482] drm/amd/display: Add null check for top_pipe_to_program in commit_planes_for_stream
+Subject: [PATCH 6.6 001/386] static_call: Handle module init failure correctly in static_call_del_module()
 Date: Tue,  8 Oct 2024 14:04:06 +0200
-Message-ID: <20241008115655.505950805@linuxfoundation.org>
+Message-ID: <20241008115629.374716536@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,53 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 66d71a72539e173a9b00ca0b1852cbaa5f5bf1ad ]
+[ Upstream commit 4b30051c4864234ec57290c3d142db7c88f10d8a ]
 
-This commit addresses a null pointer dereference issue in the
-`commit_planes_for_stream` function at line 4140. The issue could occur
-when `top_pipe_to_program` is null.
+Module insertion invokes static_call_add_module() to initialize the static
+calls in a module. static_call_add_module() invokes __static_call_init(),
+which allocates a struct static_call_mod to either encapsulate the built-in
+static call sites of the associated key into it so further modules can be
+added or to append the module to the module chain.
 
-The fix adds a check to ensure `top_pipe_to_program` is not null before
-accessing its stream_res. This prevents a null pointer dereference.
+If that allocation fails the function returns with an error code and the
+module core invokes static_call_del_module() to clean up eventually added
+static_call_mod entries.
 
-Reported by smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc.c:4140 commit_planes_for_stream() error: we previously assumed 'top_pipe_to_program' could be null (see line 3906)
+This works correctly, when all keys used by the module were converted over
+to a module chain before the failure. If not then static_call_del_module()
+causes a #GP as it blindly assumes that key::mods points to a valid struct
+static_call_mod.
 
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The problem is that key::mods is not a individual struct member of struct
+static_call_key, it's part of a union to save space:
+
+        union {
+                /* bit 0: 0 = mods, 1 = sites */
+                unsigned long type;
+                struct static_call_mod *mods;
+                struct static_call_site *sites;
+	};
+
+key::sites is a pointer to the list of built-in usage sites of the static
+call. The type of the pointer is differentiated by bit 0. A mods pointer
+has the bit clear, the sites pointer has the bit set.
+
+As static_call_del_module() blidly assumes that the pointer is a valid
+static_call_mod type, it fails to check for this failure case and
+dereferences the pointer to the list of built-in call sites, which is
+obviously bogus.
+
+Cure it by checking whether the key has a sites or a mods pointer.
+
+If it's a sites pointer then the key is not to be touched. As the sites are
+walked in the same order as in __static_call_init() the site walk can be
+terminated because all subsequent sites have not been touched by the init
+code due to the error exit.
+
+If it was converted before the allocation fail, then the inner loop which
+searches for a module match will find nothing.
+
+A fail in the second allocation in __static_call_init() is harmless and
+does not require special treatment. The first allocation succeeded and
+converted the key to a module chain. That first entry has mod::mod == NULL
+and mod::next == NULL, so the inner loop of static_call_del_module() will
+neither find a module match nor a module chain. The next site in the walk
+was either already converted, but can't match the module, or it will exit
+the outer loop because it has a static_call_site pointer and not a
+static_call_mod pointer.
+
+Fixes: 9183c3f9ed71 ("static_call: Add inline static call infrastructure")
+Closes: https://lore.kernel.org/all/20230915082126.4187913-1-ruanjinjie@huawei.com
+Reported-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/87zfon6b0s.ffs@tglx
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/static_call_inline.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index da237f718dbdd..3bd18e862945f 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -3970,7 +3970,8 @@ static void commit_planes_for_stream(struct dc *dc,
- 	}
+diff --git a/kernel/static_call_inline.c b/kernel/static_call_inline.c
+index 639397b5491ca..7bb0962b52291 100644
+--- a/kernel/static_call_inline.c
++++ b/kernel/static_call_inline.c
+@@ -411,6 +411,17 @@ static void static_call_del_module(struct module *mod)
  
- 	if ((update_type != UPDATE_TYPE_FAST) && stream->update_flags.bits.dsc_changed)
--		if (top_pipe_to_program->stream_res.tg->funcs->lock_doublebuffer_enable) {
-+		if (top_pipe_to_program &&
-+		    top_pipe_to_program->stream_res.tg->funcs->lock_doublebuffer_enable) {
- 			top_pipe_to_program->stream_res.tg->funcs->wait_for_state(
- 				top_pipe_to_program->stream_res.tg,
- 				CRTC_STATE_VACTIVE);
+ 	for (site = start; site < stop; site++) {
+ 		key = static_call_key(site);
++
++		/*
++		 * If the key was not updated due to a memory allocation
++		 * failure in __static_call_init() then treating key::sites
++		 * as key::mods in the code below would cause random memory
++		 * access and #GP. In that case all subsequent sites have
++		 * not been touched either, so stop iterating.
++		 */
++		if (!static_call_key_has_mods(key))
++			break;
++
+ 		if (key == prev_key)
+ 			continue;
+ 
 -- 
 2.43.0
 
