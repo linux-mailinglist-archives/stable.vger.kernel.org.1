@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B952D99488E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55576994B72
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43689B25FEB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 791221C24C6C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2009E1DE4FA;
-	Tue,  8 Oct 2024 12:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58E11DED77;
+	Tue,  8 Oct 2024 12:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcI3OSiw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZcpu/c0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14221D618C;
-	Tue,  8 Oct 2024 12:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F2E1DC759;
+	Tue,  8 Oct 2024 12:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389639; cv=none; b=ckjFQcFUCj6Bq0ykfWpPf8cqYw8/UMU2wgFzsmO0upH7YqeQbb5Q+2PTGkNH14ti/yvEjYCohPz64gF+XbpFuwLxekpe3KfiZv+o6PEPbIRpMiWlRvTKNuDa54+GGj/0k0GgKLq7OrQZ+TBKM42Mh+iy39Qfv6OjZSJCdg4m9IM=
+	t=1728391341; cv=none; b=KDr08M00ScOHSbjkMjBnhIYPlOPxZoKCokByiPvl8mwO6mUr745DrMy8l04VVyjYmVAZgZn7ylXIHB45iZvCvERBC0Iz/LjKrMDROISt2iTsM2M80FS/bhazfrPl5P7zjCBeKPD3PLzogwvEmy2wOZh+EbOZ50Ayu3nXZc2R8K4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389639; c=relaxed/simple;
-	bh=+VUz9UVD//cVy3FcLadYZzaXWZEYl40G2VToRJskXe4=;
+	s=arc-20240116; t=1728391341; c=relaxed/simple;
+	bh=HUauxSiFWIlJDj/OmV/BApRCWrkXBDwae5B1EIswLqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IMTzI4d2xYDlDatad/r8pASfWb35uIsagArJTkK/wXqmYk6vqk06msP639KBMwEaWRZ7JROOI44mlrwgvdrHxY9pij+i9H7y1CMUH7yCNYoSKChH9E85JXNzkHuaakVpj84ExtDXUsgFoejoTm/SNyByruZL+VI+PH2IYIWUhIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcI3OSiw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB28AC4CEC7;
-	Tue,  8 Oct 2024 12:13:58 +0000 (UTC)
+	 MIME-Version; b=JqAvqluUXFWopfnMM5gACaGFu+NO4uuF1bE3XIaj/x0wcYQc1jCYUA8Sdz2L+SdnL89zvL9gnLQf44xRHGFN6zV56jKinXwtxBfaH9HpYiudSNfH5VUeocIhW/pmLHSKqBcNewRkPObCWn5/rUmnrs4UF4OemQizgNsSmypjPCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RZcpu/c0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD60C4CEC7;
+	Tue,  8 Oct 2024 12:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389639;
-	bh=+VUz9UVD//cVy3FcLadYZzaXWZEYl40G2VToRJskXe4=;
+	s=korg; t=1728391341;
+	bh=HUauxSiFWIlJDj/OmV/BApRCWrkXBDwae5B1EIswLqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zcI3OSiwShhaQJjZ14XeCvBu+iYx15EquhFSCI/WLjGOl3KxAa1ptiaOHGy2QBAxx
-	 6IePaa28OZZXwRhmbN61HQXK939sIky/tpS2YssT6F/uWShWd3x4GbE08ZdgT26ktg
-	 90m3EDc2plNuoHQlWzLSVou0lQsRtSlZiXKPQ3Pc=
+	b=RZcpu/c0zhg7KS7EqloDGXA33wuFI8ra9BFg+rcPkOuDwwmmQw7kwzYSfs0fskPAm
+	 vRhcknz+jw2GezeawjSVrwom5R3zNeABrnyTi1KBinmvW3fuXs0IGdiJcRLut+HThr
+	 LoiobsQIFSQ9NF6P+7tSLkP/3nzyWGnKdxh1l1j8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Ferland <marc.ferland@sonatest.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	James Chapman <jchapman@katalix.com>,
+	Tom Parkin <tparkin@katalix.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 051/482] i2c: xiic: improve error message when transfer fails to start
+Subject: [PATCH 6.11 084/558] l2tp: prevent possible tunnel refcount underflow
 Date: Tue,  8 Oct 2024 14:01:54 +0200
-Message-ID: <20241008115650.314172470@linuxfoundation.org>
+Message-ID: <20241008115705.679363759@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Ferland <marc.ferland@sonatest.com>
+From: James Chapman <jchapman@katalix.com>
 
-[ Upstream commit ee1691d0ae103ba7fd9439800ef454674fadad27 ]
+[ Upstream commit 24256415d18695b46da06c93135f5b51c548b950 ]
 
-xiic_start_xfer can fail for different reasons:
+When a session is created, it sets a backpointer to its tunnel. When
+the session refcount drops to 0, l2tp_session_free drops the tunnel
+refcount if session->tunnel is non-NULL. However, session->tunnel is
+set in l2tp_session_create, before the tunnel refcount is incremented
+by l2tp_session_register, which leaves a small window where
+session->tunnel is non-NULL when the tunnel refcount hasn't been
+bumped.
 
-- EBUSY: bus is busy or i2c messages still in tx_msg or rx_msg
-- ETIMEDOUT: timed-out trying to clear the RX fifo
-- EINVAL: wrong clock settings
+Moving the assignment to l2tp_session_register is trivial but
+l2tp_session_create calls l2tp_session_set_header_len which uses
+session->tunnel to get the tunnel's encap. Add an encap arg to
+l2tp_session_set_header_len to avoid using session->tunnel.
 
-Both EINVAL and ETIMEDOUT will currently print a specific error
-message followed by a generic one, for example:
+If l2tpv3 sessions have colliding IDs, it is possible for
+l2tp_v3_session_get to race with l2tp_session_register and fetch a
+session which doesn't yet have session->tunnel set. Add a check for
+this case.
 
-    Failed to clear rx fifo
-    Error xiic_start_xfer
-
-however EBUSY will simply output the generic message:
-
-    Error xiic_start_xfer
-
-which is not really helpful.
-
-This commit adds a new error message when a busy condition is detected
-and also removes the generic message since it does not provide any
-relevant information to the user.
-
-Signed-off-by: Marc Ferland <marc.ferland@sonatest.com>
-Acked-by: Michal Simek <michal.simek@amd.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Stable-dep-of: 1d4a1adbed25 ("i2c: xiic: Try re-initialization on bus busy timeout")
+Signed-off-by: James Chapman <jchapman@katalix.com>
+Signed-off-by: Tom Parkin <tparkin@katalix.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-xiic.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/l2tp/l2tp_core.c    | 24 +++++++++++++++++-------
+ net/l2tp/l2tp_core.h    |  3 ++-
+ net/l2tp/l2tp_netlink.c |  4 +++-
+ net/l2tp/l2tp_ppp.c     |  3 ++-
+ 4 files changed, 24 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
-index 71391b590adae..19468565120e1 100644
---- a/drivers/i2c/busses/i2c-xiic.c
-+++ b/drivers/i2c/busses/i2c-xiic.c
-@@ -1105,8 +1105,11 @@ static int xiic_start_xfer(struct xiic_i2c *i2c, struct i2c_msg *msgs, int num)
- 	mutex_lock(&i2c->lock);
+diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+index 2e86f520f7994..a9cbcbc9d016d 100644
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -254,7 +254,14 @@ struct l2tp_session *l2tp_v3_session_get(const struct net *net, struct sock *sk,
  
- 	ret = xiic_busy(i2c);
--	if (ret)
-+	if (ret) {
-+		dev_err(i2c->adap.dev.parent,
-+			"cannot start a transfer while busy\n");
- 		goto out;
-+	}
+ 		hash_for_each_possible_rcu(pn->l2tp_v3_session_htable, session,
+ 					   hlist, key) {
+-			if (session->tunnel->sock == sk &&
++			/* session->tunnel may be NULL if another thread is in
++			 * l2tp_session_register and has added an item to
++			 * l2tp_v3_session_htable but hasn't yet added the
++			 * session to its tunnel's session_list.
++			 */
++			struct l2tp_tunnel *tunnel = READ_ONCE(session->tunnel);
++
++			if (tunnel && tunnel->sock == sk &&
+ 			    refcount_inc_not_zero(&session->ref_count)) {
+ 				rcu_read_unlock_bh();
+ 				return session;
+@@ -482,6 +489,7 @@ int l2tp_session_register(struct l2tp_session *session,
+ 	}
  
- 	i2c->tx_msg = msgs;
- 	i2c->rx_msg = NULL;
-@@ -1164,10 +1167,8 @@ static int xiic_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
- 		return err;
+ 	l2tp_tunnel_inc_refcount(tunnel);
++	WRITE_ONCE(session->tunnel, tunnel);
+ 	list_add(&session->list, &tunnel->session_list);
  
- 	err = xiic_start_xfer(i2c, msgs, num);
--	if (err < 0) {
--		dev_err(adap->dev.parent, "Error xiic_start_xfer\n");
-+	if (err < 0)
- 		goto out;
--	}
+ 	if (tunnel->version == L2TP_HDR_VER_3) {
+@@ -797,7 +805,8 @@ void l2tp_recv_common(struct l2tp_session *session, struct sk_buff *skb,
+ 		if (!session->lns_mode && !session->send_seq) {
+ 			trace_session_seqnum_lns_enable(session);
+ 			session->send_seq = 1;
+-			l2tp_session_set_header_len(session, tunnel->version);
++			l2tp_session_set_header_len(session, tunnel->version,
++						    tunnel->encap);
+ 		}
+ 	} else {
+ 		/* No sequence numbers.
+@@ -818,7 +827,8 @@ void l2tp_recv_common(struct l2tp_session *session, struct sk_buff *skb,
+ 		if (!session->lns_mode && session->send_seq) {
+ 			trace_session_seqnum_lns_disable(session);
+ 			session->send_seq = 0;
+-			l2tp_session_set_header_len(session, tunnel->version);
++			l2tp_session_set_header_len(session, tunnel->version,
++						    tunnel->encap);
+ 		} else if (session->send_seq) {
+ 			pr_debug_ratelimited("%s: recv data has no seq numbers when required. Discarding.\n",
+ 					     session->name);
+@@ -1663,7 +1673,8 @@ EXPORT_SYMBOL_GPL(l2tp_session_delete);
+ /* We come here whenever a session's send_seq, cookie_len or
+  * l2specific_type parameters are set.
+  */
+-void l2tp_session_set_header_len(struct l2tp_session *session, int version)
++void l2tp_session_set_header_len(struct l2tp_session *session, int version,
++				 enum l2tp_encap_type encap)
+ {
+ 	if (version == L2TP_HDR_VER_2) {
+ 		session->hdr_len = 6;
+@@ -1672,7 +1683,7 @@ void l2tp_session_set_header_len(struct l2tp_session *session, int version)
+ 	} else {
+ 		session->hdr_len = 4 + session->cookie_len;
+ 		session->hdr_len += l2tp_get_l2specific_len(session);
+-		if (session->tunnel->encap == L2TP_ENCAPTYPE_UDP)
++		if (encap == L2TP_ENCAPTYPE_UDP)
+ 			session->hdr_len += 4;
+ 	}
+ }
+@@ -1686,7 +1697,6 @@ struct l2tp_session *l2tp_session_create(int priv_size, struct l2tp_tunnel *tunn
+ 	session = kzalloc(sizeof(*session) + priv_size, GFP_KERNEL);
+ 	if (session) {
+ 		session->magic = L2TP_SESSION_MAGIC;
+-		session->tunnel = tunnel;
  
- 	err = wait_for_completion_timeout(&i2c->completion, XIIC_XFER_TIMEOUT);
- 	mutex_lock(&i2c->lock);
+ 		session->session_id = session_id;
+ 		session->peer_session_id = peer_session_id;
+@@ -1724,7 +1734,7 @@ struct l2tp_session *l2tp_session_create(int priv_size, struct l2tp_tunnel *tunn
+ 			memcpy(&session->peer_cookie[0], &cfg->peer_cookie[0], cfg->peer_cookie_len);
+ 		}
+ 
+-		l2tp_session_set_header_len(session, tunnel->version);
++		l2tp_session_set_header_len(session, tunnel->version, tunnel->encap);
+ 
+ 		refcount_set(&session->ref_count, 1);
+ 
+diff --git a/net/l2tp/l2tp_core.h b/net/l2tp/l2tp_core.h
+index 8ac81bc1bc6fa..6c25c196cc222 100644
+--- a/net/l2tp/l2tp_core.h
++++ b/net/l2tp/l2tp_core.h
+@@ -260,7 +260,8 @@ void l2tp_recv_common(struct l2tp_session *session, struct sk_buff *skb,
+ int l2tp_udp_encap_recv(struct sock *sk, struct sk_buff *skb);
+ 
+ /* Transmit path helpers for sending packets over the tunnel socket. */
+-void l2tp_session_set_header_len(struct l2tp_session *session, int version);
++void l2tp_session_set_header_len(struct l2tp_session *session, int version,
++				 enum l2tp_encap_type encap);
+ int l2tp_xmit_skb(struct l2tp_session *session, struct sk_buff *skb);
+ 
+ /* Pseudowire management.
+diff --git a/net/l2tp/l2tp_netlink.c b/net/l2tp/l2tp_netlink.c
+index d105030520f95..fc43ecbd128cc 100644
+--- a/net/l2tp/l2tp_netlink.c
++++ b/net/l2tp/l2tp_netlink.c
+@@ -692,8 +692,10 @@ static int l2tp_nl_cmd_session_modify(struct sk_buff *skb, struct genl_info *inf
+ 		session->recv_seq = nla_get_u8(info->attrs[L2TP_ATTR_RECV_SEQ]);
+ 
+ 	if (info->attrs[L2TP_ATTR_SEND_SEQ]) {
++		struct l2tp_tunnel *tunnel = session->tunnel;
++
+ 		session->send_seq = nla_get_u8(info->attrs[L2TP_ATTR_SEND_SEQ]);
+-		l2tp_session_set_header_len(session, session->tunnel->version);
++		l2tp_session_set_header_len(session, tunnel->version, tunnel->encap);
+ 	}
+ 
+ 	if (info->attrs[L2TP_ATTR_LNS_MODE])
+diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
+index 3596290047b28..4f25c1212cacb 100644
+--- a/net/l2tp/l2tp_ppp.c
++++ b/net/l2tp/l2tp_ppp.c
+@@ -1205,7 +1205,8 @@ static int pppol2tp_session_setsockopt(struct sock *sk,
+ 			po->chan.hdrlen = val ? PPPOL2TP_L2TP_HDR_SIZE_SEQ :
+ 				PPPOL2TP_L2TP_HDR_SIZE_NOSEQ;
+ 		}
+-		l2tp_session_set_header_len(session, session->tunnel->version);
++		l2tp_session_set_header_len(session, session->tunnel->version,
++					    session->tunnel->encap);
+ 		break;
+ 
+ 	case PPPOL2TP_SO_LNSMODE:
 -- 
 2.43.0
 
