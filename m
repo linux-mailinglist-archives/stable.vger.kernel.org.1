@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-81859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE24F9949CD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F371C994E44
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:15:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C4331C24A77
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 310EB1C25279
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A827C1DE8A0;
-	Tue,  8 Oct 2024 12:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DC01DF243;
+	Tue,  8 Oct 2024 13:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzdOsDMp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bz5Ukl/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669C01DED55;
-	Tue,  8 Oct 2024 12:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326261DE4CD;
+	Tue,  8 Oct 2024 13:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390375; cv=none; b=Y7SPYL+D19tVgoNMSrBZgl+If8+3GPNZkOZogpO+fef+7aGV8uTQbgyKS8y6D33nKpSF0O1G4yQ3q8xs6pgiE2pHryfGLyZsI/iL0S/bwD69SbUbzdNSyqK9yvDWLWSTKNpDIYEhiyfRKzsm74iMGLPwxV3rGp8VXuCoi5ulw1c=
+	t=1728393284; cv=none; b=JyDPrIW5nQ39E6SF/oIRcmE0AZGoem5rsyMzMmgmNahA5udaGxDuLcirvIzjw1pylTw5J4S/5zFLLCpa9xWSSIOWNPqx5gnQOgxaq6G2GD8Iu/zLwvh/y0YxoOpmDAYU+b+niU7YRtDfuXp6PlJ0wbzFLGZ3I563fP0t4hwW8Gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390375; c=relaxed/simple;
-	bh=PM0m8xyBO3kV7qxtIGAkLaURMkGFU6xWyNWcL37+/Xc=;
+	s=arc-20240116; t=1728393284; c=relaxed/simple;
+	bh=b2ImvXYhi4xnNxCHu737vQmqxx1sksf0QPZVVokgBf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L7Uh1a8JfQ4tyiJpZA34kIGj0jldb3w7d8/XtK3QNkVs5j9FEzY7A0DQwu5EbkVkNYRvqm8b9J6Cuvj5UeGK7718+AqyqfVHvyglCKbMX3nrfrZcpOWDAxbyZnNcooRepi6OesS/OMNuUbdCj5Ia1EuRp+Zy/nI4AgHZrg41EGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzdOsDMp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98029C4CEC7;
-	Tue,  8 Oct 2024 12:26:14 +0000 (UTC)
+	 MIME-Version; b=ahLwwRpw6jui76PX7yhremNwaA18NSGo1Nj+mJCgjbbZiwvo3gDnG6EZgr15J+sZXAMTQ0GIBZXI/wP9/AemP/sNSmkTbiqTRBHF7PHa/OAXIn/wDz43NupEwOTi0gzFzamPIn51LW1UPYkpBiSRNxWhIJCdae2Hxak1tsGKErE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bz5Ukl/7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3260BC4CEC7;
+	Tue,  8 Oct 2024 13:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390375;
-	bh=PM0m8xyBO3kV7qxtIGAkLaURMkGFU6xWyNWcL37+/Xc=;
+	s=korg; t=1728393283;
+	bh=b2ImvXYhi4xnNxCHu737vQmqxx1sksf0QPZVVokgBf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qzdOsDMpb3Ymlq0oU+H0hiwYFusbxfhVd7/RqG2vjZJNROdCv38TA0UapN/lUs2w9
-	 qKS5IV8lO8lNbQxWIdxzmp5bHAUEGr+arSoOCEyEyDXmgvh0HPrnKZHgpmpgkBp4/G
-	 EGzqHE8+bvGh7ZjLQTNsWw/tNtKqnVSZ1EdcQ9k8=
+	b=Bz5Ukl/7DbqBay3ai+GSOs6z9Icrc1JoJeCSC6T6fN8K+JzhymffXyn+21jLzWzDa
+	 O0ETLal8Blxp8Jv734iG/fpbapBa3mBIbmN3NGulG0+nptOC8dWF7wNrXUBfdNCm02
+	 3mQhAtAQbHmdWudMZzAfZ7lolIncw2J/EGzeL9I0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Stuart Summers <stuart.summers@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 271/482] drm/xe: fixup xe_alloc_pf_queue
+Subject: [PATCH 6.6 089/386] ipv4: Check !in_dev earlier for ioctl(SIOCSIFADDR).
 Date: Tue,  8 Oct 2024 14:05:34 +0200
-Message-ID: <20241008115658.945890800@linuxfoundation.org>
+Message-ID: <20241008115632.957697811@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 321d6b4b9cbe3dd0bc99937d5e5b4d730b5b5798 ]
+[ Upstream commit e3af3d3c5b26c33a7950e34e137584f6056c4319 ]
 
-kzalloc expects number of bytes, therefore we should convert the number
-of dw into bytes, otherwise we are likely just accessing beyond the
-array causing all kinds of carnage. Also fixup the error handling while
-we are here.
+dev->ip_ptr could be NULL if we set an invalid MTU.
 
-v2:
- - Prefer kcalloc (dim)
+Even then, if we issue ioctl(SIOCSIFADDR) for a new IPv4 address,
+devinet_ioctl() allocates struct in_ifaddr and fails later in
+inet_set_ifa() because in_dev is NULL.
 
-Fixes: 3338e4f90c14 ("drm/xe: Use topology to determine page fault queue size")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Stuart Summers <stuart.summers@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240821171917.417386-2-matthew.auld@intel.com
+Let's move the check earlier.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20240809235406.50187-2-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt_pagefault.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/ipv4/devinet.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_pagefault.c b/drivers/gpu/drm/xe/xe_gt_pagefault.c
-index ee78b4e47dfcb..28cf90e8989c6 100644
---- a/drivers/gpu/drm/xe/xe_gt_pagefault.c
-+++ b/drivers/gpu/drm/xe/xe_gt_pagefault.c
-@@ -437,7 +437,10 @@ static int xe_alloc_pf_queue(struct xe_gt *gt, struct pf_queue *pf_queue)
- 		(num_eus + XE_NUM_HW_ENGINES) * PF_MSG_LEN_DW;
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index bc74f131fe4df..cb0c80328eebf 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -569,10 +569,6 @@ static int inet_set_ifa(struct net_device *dev, struct in_ifaddr *ifa)
  
- 	pf_queue->gt = gt;
--	pf_queue->data = kzalloc(pf_queue->num_dw, GFP_KERNEL);
-+	pf_queue->data = kcalloc(pf_queue->num_dw, sizeof(u32), GFP_KERNEL);
-+	if (!pf_queue->data)
-+		return -ENOMEM;
-+
- 	spin_lock_init(&pf_queue->lock);
- 	INIT_WORK(&pf_queue->worker, pf_queue_work_func);
+ 	ASSERT_RTNL();
  
+-	if (!in_dev) {
+-		inet_free_ifa(ifa);
+-		return -ENOBUFS;
+-	}
+ 	ipv4_devconf_setall(in_dev);
+ 	neigh_parms_data_state_setall(in_dev->arp_parms);
+ 	if (ifa->ifa_dev != in_dev) {
+@@ -1174,6 +1170,8 @@ int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
+ 
+ 		if (!ifa) {
+ 			ret = -ENOBUFS;
++			if (!in_dev)
++				break;
+ 			ifa = inet_alloc_ifa();
+ 			if (!ifa)
+ 				break;
 -- 
 2.43.0
 
