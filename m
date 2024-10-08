@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-82983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE4FC994FC7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:30:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E01F2994DA5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:07:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92A6928813E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:30:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DFD41C220EB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8971DF729;
-	Tue,  8 Oct 2024 13:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508581DE8A0;
+	Tue,  8 Oct 2024 13:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njNVh/q9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHx9/AZA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8D01DF99C;
-	Tue,  8 Oct 2024 13:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9841DE88F;
+	Tue,  8 Oct 2024 13:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728394087; cv=none; b=bi9xFkceng4Ph567Cc5+J5a4SiCVT3CoGmNL2xtjTDbQH9zUobYQKv5Wmg6o1GP1Agnsy7Ntz0xlxu627shGrdfhu0ce9bbpUub4o/NdBk7h7kEA88AXATNlxdsg8HzP8WttnnK2b2qBGRdrgW0H1Uxut2yZ00C+KM1PzK1LKSE=
+	t=1728392867; cv=none; b=VOfvp/FcxAhWKHkY7yiZjdGIFQUFE+yUkImmr5UmmQDAxdrK6K6wWXBtSwOBZILq1T5+46kRYJJrmfHhvTXMmJA9IHiIwNeeqKZzDe/Tm5DDP9MdpA+bHU506ZUy7vP/4q0owa350AAngf2giqYGMH6m9Ztt6zBQSaVoUbiml/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728394087; c=relaxed/simple;
-	bh=sbABcmMt+xQME9JjLX4qooqMzd0Vi5VYFSHsb9SIo9g=;
+	s=arc-20240116; t=1728392867; c=relaxed/simple;
+	bh=XL9vfowvSqD07ciabQ4+zjy48i1MNf1Wn7my5RV+S8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rMAHAo0Lfy5Da4ALMYNstqH+7SIMrt+bEyGW1u4UWJzebLNGUjeb5ZDpuLhxAl4FQggTKjl+XIQ2S2krQvCLpVJIHAbwkpYRIPRNbAvYcT/z+r321Xrp5W8Vo2Q+2Yf3Vxk1IQ082+OyKSM3NiYCLl5SR2iujrjbaaqc54Hvz9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njNVh/q9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F94C4CEC7;
-	Tue,  8 Oct 2024 13:28:06 +0000 (UTC)
+	 MIME-Version; b=LfnF2m83VLAZtf+SaNEpDdksk2e9MR6SZyy4yDuJGrY4LaaXMpP+lRMD++uMCbHlNudXt/s784V8IDFyA76Yu0aUtbY4FH+zdHZGgxVrXD+6FFpVRT1s6W2QfxgPEs4HwfCKVt5atP+CcONCtkDwDTxKEjl3wVFUdJQmvbJFWqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHx9/AZA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EFA4C4CEC7;
+	Tue,  8 Oct 2024 13:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728394087;
-	bh=sbABcmMt+xQME9JjLX4qooqMzd0Vi5VYFSHsb9SIo9g=;
+	s=korg; t=1728392866;
+	bh=XL9vfowvSqD07ciabQ4+zjy48i1MNf1Wn7my5RV+S8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njNVh/q9Xinvrb0gGm+2fBk9twj6IPeb3b5VPcQBvQzEBTmDcvwGzW8y+2E0bEV9F
-	 o57nfk4NXE5UPJJMjwasnQMEPsfDu6y4yn9vCFvXxGfs/Sove8sZ6ch9LjdVANwHuY
-	 8aS+tOrJwYRsXs/75M2yLv+phYSxY/JRvyMiwMoo=
+	b=MHx9/AZAbPVDzarHP72xzSgQ6OQcz+2RkgnTHoMjLNHR7138mGk6KvLN2/OvKfii0
+	 nt2ES3i/cvSCMBfwl5kQ34w6+SHrruVSeU2IH4iWc0PSIwKrtetbcXtpopZmqxQIPq
+	 5Ui0XADINWWW8q2r9t2P7FLIV8//pZ+DKy1P/FDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Lin <wayne.lin@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Fangzhi Zuo <jerry.zuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 326/386] drm/amd/display: Fix system hang while resume with TBT monitor
+	Udit Kumar <u-kumar1@ti.com>,
+	Beleswar Padhi <b-padhi@ti.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 541/558] remoteproc: k3-r5: Delay notification of wakeup event
 Date: Tue,  8 Oct 2024 14:09:31 +0200
-Message-ID: <20241008115642.214608619@linuxfoundation.org>
+Message-ID: <20241008115723.524933855@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Udit Kumar <u-kumar1@ti.com>
 
-commit 52d4e3fb3d340447dcdac0e14ff21a764f326907 upstream.
+[ Upstream commit 8fa052c29e509f3e47d56d7fc2ca28094d78c60a ]
 
-[Why]
-Connected with a Thunderbolt monitor and do the suspend and the system
-may hang while resume.
+Few times, core1 was scheduled to boot first before core0, which leads
+to error:
 
-The TBT monitor HPD will be triggered during the resume procedure
-and call the drm_client_modeset_probe() while
-struct drm_connector connector->dev->master is NULL.
+'k3_r5_rproc_start: can not start core 1 before core 0'.
 
-It will mess up the pipe topology after resume.
+This was happening due to some scheduling between prepare and start
+callback. The probe function waits for event, which is getting
+triggered by prepare callback. To avoid above condition move event
+trigger to start instead of prepare callback.
 
-[How]
-Skip the TBT monitor HPD during the resume procedure because we
-currently will probe the connectors after resume by default.
-
-Reviewed-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 453f86a26945207a16b8f66aaed5962dc2b95b85)
+Fixes: 61f6f68447ab ("remoteproc: k3-r5: Wait for core0 power-up before powering up core1")
+Signed-off-by: Udit Kumar <u-kumar1@ti.com>
+[ Applied wakeup event trigger only for Split-Mode booted rprocs ]
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240820105004.2788327-1-b-padhi@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/remoteproc/ti_k3_r5_remoteproc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -714,6 +714,12 @@ static void dmub_hpd_callback(struct amd
- 		return;
+diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+index 6424b347aa4f2..2992fd4eca648 100644
+--- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
++++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+@@ -469,8 +469,6 @@ static int k3_r5_rproc_prepare(struct rproc *rproc)
+ 			ret);
+ 		return ret;
+ 	}
+-	core->released_from_reset = true;
+-	wake_up_interruptible(&cluster->core_transition);
+ 
+ 	/*
+ 	 * Newer IP revisions like on J7200 SoCs support h/w auto-initialization
+@@ -587,6 +585,9 @@ static int k3_r5_rproc_start(struct rproc *rproc)
+ 		ret = k3_r5_core_run(core);
+ 		if (ret)
+ 			return ret;
++
++		core->released_from_reset = true;
++		wake_up_interruptible(&cluster->core_transition);
  	}
  
-+	/* Skip DMUB HPD IRQ in suspend/resume. We will probe them later. */
-+	if (notify->type == DMUB_NOTIFICATION_HPD && adev->in_suspend) {
-+		DRM_INFO("Skip DMUB HPD IRQ callback in suspend/resume\n");
-+		return;
-+	}
-+
- 	link_index = notify->link_index;
- 	link = adev->dm.dc->links[link_index];
- 	dev = adev->dm.ddev;
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
