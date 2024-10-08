@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96958994D7D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A649C994F9D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 603702870F6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51FF51F24E32
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB17C1DE4CD;
-	Tue,  8 Oct 2024 13:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE651E0DB1;
+	Tue,  8 Oct 2024 13:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxZ+1zU5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3XnIcaF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9EC1C9B99;
-	Tue,  8 Oct 2024 13:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795651DF996;
+	Tue,  8 Oct 2024 13:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392749; cv=none; b=dgsw1g5mzC0QqT9mmSQ7BH07SWR+kUShc/OGgoiuJpaUSp0IH/aFwJ+nOvF0xISMk212SbtwztbAZnnUZuz2nOIC+qeo7uo75O3daWiFqlvRTFjMQ7zEZc0H8+uKTOAxQOyhygvOmWMU19+nuLqYmejvP55bAHVO7DMDqLtHeFQ=
+	t=1728393975; cv=none; b=NhVHah/ZnwsQQoS9YcqWvuAlUVtejz6HACBJNjaaPbjlD9rgRAdcky0y3vgE+JQ7qs/O5pnkDsiYDwmGQ5W2TdlIrSbfXKZnCwtTrw186gMlHu7iY6PhxsaNscyaNhoXJHobpLdKVZy+veAV7/0IvIX0KK/xBv/NHiZ88cAZwto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392749; c=relaxed/simple;
-	bh=NilTKBFxrD2lk05NIW9a44Z4hL/MCoimxog0y2TsgX0=;
+	s=arc-20240116; t=1728393975; c=relaxed/simple;
+	bh=plFnwNu3clbLpmVsNUD+EPMH8TNfsA9DZaRMfrtPe5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QklHUGJqioGnMVGkUjF5MJD8/R7sA2eW5+sDbBeg7BWwdHQc/0BJkFzG9zxxeRPtzOur5mmhZALTL/McqcklFeukByPj8il20n6S5pARy//SeaYUcJ+8+nxDnmGoedxcSGcgOvvM7jChT2zv8eCC45IT1SxxMBwUlcvG0oOYzLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxZ+1zU5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA74CC4CEC7;
-	Tue,  8 Oct 2024 13:05:48 +0000 (UTC)
+	 MIME-Version; b=oq3t3xXmQ+GhaNu4yp3iohP3g5L90SdXMYQ3v/kRT20YQiW+WYwvEG2XwPgzczRHomF2wVh7QqrRWcEGq7DKMbUXQ0+uM48FGmc2F2GHiGByTiJnw7NVmr0G6oubmyQUy5XGw3ZbkBOSzwh8T3xVcVYJ3XJgN/ce9MEt5eQA9+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3XnIcaF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C713C4CEC7;
+	Tue,  8 Oct 2024 13:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392749;
-	bh=NilTKBFxrD2lk05NIW9a44Z4hL/MCoimxog0y2TsgX0=;
+	s=korg; t=1728393975;
+	bh=plFnwNu3clbLpmVsNUD+EPMH8TNfsA9DZaRMfrtPe5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OxZ+1zU5LjSpqZ3tz4P5ETK3TBiJAp4RtBhUvyz3zRV6yrnJHswJ1vnLlx5pZkXOa
-	 xM9DedsWJtB8x4ROIJO4usjo4xKa0kvg/LUTgLl3G4jEvkfnl7lpSdPKE5oORjyNiv
-	 /w4CBtlmQmcXHvH42r4Jv1p39t0V+XH3zrAfQu6k=
+	b=R3XnIcaFZI28G/4xL/zU5C3GSUirZDVDPKlXG4oz5gwrYDi2XxHZ9pDf2fqihW74S
+	 LT+8Olyd0VGC+B56R8UaMomwN3Gzc4Z4yhqqxAWlk5wil7l7x+ydQdnaXwFEDkRXie
+	 8yfqoTV2Dv8AxnUofK90atXM/6b5oHLAISEemEiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawei Ye <jiawei.ye@foxmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>
-Subject: [PATCH 6.11 506/558] mac802154: Fix potential RCU dereference issue in mac802154_scan_worker
-Date: Tue,  8 Oct 2024 14:08:56 +0200
-Message-ID: <20241008115722.143116041@linuxfoundation.org>
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 292/386] media: qcom: camss: Fix ordering of pm_runtime_enable
+Date: Tue,  8 Oct 2024 14:08:57 +0200
+Message-ID: <20241008115640.877305955@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawei Ye <jiawei.ye@foxmail.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-commit bff1709b3980bd7f80be6786f64cc9a9ee9e56da upstream.
+commit a151766bd3688f6803e706c6433a7c8d3c6a6a94 upstream.
 
-In the `mac802154_scan_worker` function, the `scan_req->type` field was
-accessed after the RCU read-side critical section was unlocked. According
-to RCU usage rules, this is illegal and can lead to unpredictable
-behavior, such as accessing memory that has been updated or causing
-use-after-free issues.
+pm_runtime_enable() should happen prior to vfe_get() since vfe_get() calls
+pm_runtime_resume_and_get().
 
-This possible bug was identified using a static analysis tool developed
-by myself, specifically designed to detect RCU-related issues.
+This is a basic race condition that doesn't show up for most users so is
+not widely reported. If you blacklist qcom-camss in modules.d and then
+subsequently modprobe the module post-boot it is possible to reliably show
+this error up.
 
-To address this, the `scan_req->type` value is now stored in a local
-variable `scan_req_type` while still within the RCU read-side critical
-section. The `scan_req_type` is then used after the RCU lock is released,
-ensuring that the type value is safely accessed without violating RCU
-rules.
+The kernel log for this error looks like this:
 
-Fixes: e2c3e6f53a7a ("mac802154: Handle active scanning")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawei Ye <jiawei.ye@foxmail.com>
-Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://lore.kernel.org/tencent_3B2F4F2B4DA30FAE2F51A9634A16B3AD4908@qq.com
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+qcom-camss ac5a000.camss: Failed to power up pipeline: -13
+
+Fixes: 02afa816dbbf ("media: camss: Add basic runtime PM support")
+Reported-by: Johan Hovold <johan+linaro@kernel.org>
+Closes: https://lore.kernel.org/lkml/ZoVNHOTI0PKMNt4_@hovoldconsulting.com/
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Konrad Dybcio <konradybcio@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac802154/scan.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/camss/camss.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/net/mac802154/scan.c
-+++ b/net/mac802154/scan.c
-@@ -176,6 +176,7 @@ void mac802154_scan_worker(struct work_s
- 	struct ieee802154_local *local =
- 		container_of(work, struct ieee802154_local, scan_work.work);
- 	struct cfg802154_scan_request *scan_req;
-+	enum nl802154_scan_types scan_req_type;
- 	struct ieee802154_sub_if_data *sdata;
- 	unsigned int scan_duration = 0;
- 	struct wpan_phy *wpan_phy;
-@@ -209,6 +210,7 @@ void mac802154_scan_worker(struct work_s
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -1665,6 +1665,8 @@ static int camss_probe(struct platform_d
+ 
+ 	v4l2_async_nf_init(&camss->notifier, &camss->v4l2_dev);
+ 
++	pm_runtime_enable(dev);
++
+ 	num_subdevs = camss_of_parse_ports(camss);
+ 	if (num_subdevs < 0) {
+ 		ret = num_subdevs;
+@@ -1701,8 +1703,6 @@ static int camss_probe(struct platform_d
+ 		}
  	}
  
- 	wpan_phy = scan_req->wpan_phy;
-+	scan_req_type = scan_req->type;
- 	scan_req_duration = scan_req->duration;
+-	pm_runtime_enable(dev);
+-
+ 	return 0;
  
- 	/* Look for the next valid chan */
-@@ -246,7 +248,7 @@ void mac802154_scan_worker(struct work_s
- 		goto end_scan;
- 	}
+ err_register_subdevs:
+@@ -1710,6 +1710,7 @@ err_register_subdevs:
+ err_v4l2_device_unregister:
+ 	v4l2_device_unregister(&camss->v4l2_dev);
+ 	v4l2_async_nf_cleanup(&camss->notifier);
++	pm_runtime_disable(dev);
+ err_genpd_cleanup:
+ 	camss_genpd_cleanup(camss);
  
--	if (scan_req->type == NL802154_SCAN_ACTIVE) {
-+	if (scan_req_type == NL802154_SCAN_ACTIVE) {
- 		ret = mac802154_transmit_beacon_req(local, sdata);
- 		if (ret)
- 			dev_err(&sdata->dev->dev,
 
 
 
