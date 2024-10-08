@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-82485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFAFD994D05
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 589C4994A45
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:31:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1CCA1C251EE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7B28B22B91
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE51F1D9A43;
-	Tue,  8 Oct 2024 13:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172171DE89F;
+	Tue,  8 Oct 2024 12:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dS/zYcCO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQp/Chuc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6611DEFC9;
-	Tue,  8 Oct 2024 13:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94331DE2AE;
+	Tue,  8 Oct 2024 12:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392421; cv=none; b=M9k4urwdB3vlDZzU3OdhrXRH0Qv1k0uC0Go6zvF4dc14B+dKTydDvYrxpQW5NPKYXKwlwZ4+q7C2dcwfmEc2gAxdVzQBLKpCWeg9t6tz3j6yoAfI4Pz+T3BzulkvOOBpDtv7v1A5nWX13MiKmQWr6R8yg6+V41PJzS8YPwjDOrE=
+	t=1728390639; cv=none; b=pypVs6SHo0JvHYak80OoDvm/sbaFl2UHYvwFw9qouox5IvgzmReV57GQV8l86SXd4On6g75SGmfVJsvWBUjMZi35wvm1gFT5gSY1iQ+pEXMnyNCBpM6ShPr/pdBJRdbJ09arlvzM9UqdW1CcS/90k7R7Tg8r6jyl45QAAc5uyRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392421; c=relaxed/simple;
-	bh=9JWPpWbAtaPXIIu+cTle2eryI2eWMN+AW3Y/Ccsm5G0=;
+	s=arc-20240116; t=1728390639; c=relaxed/simple;
+	bh=h945IO/nieyf3RpdYeBhnbtCNCcQeFY7BPqjQXW9DJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J1CnB+Hv8DCTAPVWy5jjEd35W50ixBPdtyjlPoLRinJYijDdk1423UZMv2GlpBiK2PWS7efdSoHVwq+me2vgb9sDUGgvWtk3oBBZA3y9tz1D340SfOJkNeD+a97DRz08acGBcSiwCWtIY+qckKei5Lk1bogzHbFT9J7MTabEREk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dS/zYcCO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA791C4CECC;
-	Tue,  8 Oct 2024 13:00:20 +0000 (UTC)
+	 MIME-Version; b=VGCktvMYBEv7bgosxEnIi9NmnYpIXcNmBwcNQk4t5X9myHQh6McX+dZEvRaWZLxYJY6zleHfdw0QaVX0egQJ79WifQMcSWUIAfWHa2RkV6j7viVF1ENNFgah7L83aE7JjA0ytD3I/R2fZSJvyA/boP3s5+nshVllmWynPdFcDkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQp/Chuc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37684C4CEC7;
+	Tue,  8 Oct 2024 12:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392421;
-	bh=9JWPpWbAtaPXIIu+cTle2eryI2eWMN+AW3Y/Ccsm5G0=;
+	s=korg; t=1728390639;
+	bh=h945IO/nieyf3RpdYeBhnbtCNCcQeFY7BPqjQXW9DJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dS/zYcCOQrPoL1KBYWuDhuD0IqltwLtrvEbw2h+2tjNOPQpM9RB1la8XZEDAr3pIb
-	 To4ne9c2vWuqWHUpl5hK/jVOyl6s9bVAajslXePmcrCkZHEcEv1osYWBr5iM+lhL1u
-	 VKxx85bMG/U7WK7YX0f4KsdsXZFZpg48tSDVGqY0=
+	b=wQp/Chuc5x5r1Y3SLNbrjz2n5XMlsY5Q4OdZkvpgC6ad9YqvOS+k8KFTbQiDKGfyH
+	 Ahe5gWXa0q7W0o64rJiOuA4ViSvtMs2p39cM6BtulmAWVAYcg2zcx9r9bc+GBYxm1g
+	 wkYXU08Ak6DMJuV63TbJZysH1wRdIxbjJIsqI+9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhishek Tamboli <abhishektamboli9@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.11 379/558] ALSA: hda/realtek: Add a quirk for HP Pavilion 15z-ec200
-Date: Tue,  8 Oct 2024 14:06:49 +0200
-Message-ID: <20241008115717.205662414@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH 6.10 347/482] drm: omapdrm: Add missing check for alloc_ordered_workqueue
+Date: Tue,  8 Oct 2024 14:06:50 +0200
+Message-ID: <20241008115702.080546417@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhishek Tamboli <abhishektamboli9@gmail.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit d75dba49744478c32f6ce1c16b5f391c2d5cef5f upstream.
+commit e794b7b9b92977365c693760a259f8eef940c536 upstream.
 
-Add the quirk for HP Pavilion Gaming laptop 15z-ec200 for
-enabling the mute led. The fix apply the ALC285_FIXUP_HP_MUTE_LED
-quirk for this model.
+As it may return NULL pointer and cause NULL pointer dereference. Add check
+for the return value of alloc_ordered_workqueue.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219303
-Signed-off-by: Abhishek Tamboli <abhishektamboli9@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240930145300.4604-1-abhishektamboli9@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Fixes: 2f95bc6d324a ("drm: omapdrm: Perform initialization/cleanup at probe/remove time")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240808061336.2796729-1-make24@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/omapdrm/omap_drv.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10388,6 +10388,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8896, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8898, "HP EliteBook 845 G8 Notebook PC", ALC285_FIXUP_HP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x103c, 0x88d0, "HP Pavilion 15-eh1xxx (mainboard 88D0)", ALC287_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x88dd, "HP Pavilion 15z-ec200", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8902, "HP OMEN 16", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x890e, "HP 255 G8 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8919, "HP Pavilion Aero Laptop 13-be0xxx", ALC287_FIXUP_HP_GPIO_LED),
+--- a/drivers/gpu/drm/omapdrm/omap_drv.c
++++ b/drivers/gpu/drm/omapdrm/omap_drv.c
+@@ -695,6 +695,10 @@ static int omapdrm_init(struct omap_drm_
+ 	soc = soc_device_match(omapdrm_soc_devices);
+ 	priv->omaprev = soc ? (uintptr_t)soc->data : 0;
+ 	priv->wq = alloc_ordered_workqueue("omapdrm", 0);
++	if (!priv->wq) {
++		ret = -ENOMEM;
++		goto err_alloc_workqueue;
++	}
+ 
+ 	mutex_init(&priv->list_lock);
+ 	INIT_LIST_HEAD(&priv->obj_list);
+@@ -753,6 +757,7 @@ err_gem_deinit:
+ 	drm_mode_config_cleanup(ddev);
+ 	omap_gem_deinit(ddev);
+ 	destroy_workqueue(priv->wq);
++err_alloc_workqueue:
+ 	omap_disconnect_pipelines(ddev);
+ 	drm_dev_put(ddev);
+ 	return ret;
 
 
 
