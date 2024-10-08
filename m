@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEFCC994D9F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:07:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDF0C994FAA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68F2F1F23A39
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:07:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8708C1F25656
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A44CE1DE8BE;
-	Tue,  8 Oct 2024 13:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4221DEFE0;
+	Tue,  8 Oct 2024 13:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rctUZ88x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yV6Xhiei"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B801C9B99;
-	Tue,  8 Oct 2024 13:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9211DEFF7;
+	Tue,  8 Oct 2024 13:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392840; cv=none; b=AzOX2ErgEWfCnfu79O+oSsuy5hNSJoNyVSJp09zt+cq1b0mJ/po6WFFuwQ76XA5KUaDPkddE4kZy3jnziV1O0yLPAR+0qGE/8bvx3dH+a1Q6H5A3CywZ66k7zrwLyyOHVi3kZzH16MU+QS+bgsoeb08fs5ezX16WqVL+Vx3KSfs=
+	t=1728394014; cv=none; b=NKkfpyI622sgxkEJYXghDQFgCh/2spW8PdTEwAVMBP+z6j6zCxc4SDJn76dochIpM5C91chwA92r8PImm6VvNrzNdUAeieQdVhtCSPgodRoRNJkysYZq3HtMaxvWvrnlPKwQloLGc/t2Yjp06bICAdo/b5IFfGvUsedUJfZm9rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392840; c=relaxed/simple;
-	bh=uy3KL7yr2r82IlofVHvBsx6Q5ve3TcfPQs4rDaAd8Vo=;
+	s=arc-20240116; t=1728394014; c=relaxed/simple;
+	bh=Hf1NcmOd0BnfBd6rWvR0IP4EuIIPlrEfZA9io3N12nY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hIA8PlrNtvUmMkwfIPTfZxkueI+MKMGnK55hsHQ2kTdxnSWN3iQzENSuySl2PGU3mwzmDmXxpMWSv9SXT/pfozoao91N4xojEpppRiwZM2COsbx3F2Ru4+RYiGFaX+HbSDvE8miMFO8kR0ExNGAVzqJum3SsG9Q0iiz4km59YKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rctUZ88x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC55C4CEC7;
-	Tue,  8 Oct 2024 13:07:19 +0000 (UTC)
+	 MIME-Version; b=i0/s6nfd7vmmDk6MAbWydA/sAOMASCPV/jFlzLyOgDhV5x/fkP5oWhSRbnBY4KpLZRc9n6h+17d4cmdKncQ6GNi1uVd5nkUBPamKwRfCq6oYQDGc0ehheew+di5zGgSUcmG6wFJ5XDx5HXo6c8RmS1Egs+Lg3m+oJjxfEWWPGzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yV6Xhiei; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46187C4CECC;
+	Tue,  8 Oct 2024 13:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392840;
-	bh=uy3KL7yr2r82IlofVHvBsx6Q5ve3TcfPQs4rDaAd8Vo=;
+	s=korg; t=1728394014;
+	bh=Hf1NcmOd0BnfBd6rWvR0IP4EuIIPlrEfZA9io3N12nY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rctUZ88xc99z9kEmo8ANoNxqCuOOoC5gCHUrcfT2DMQtJqaTTwA6t62mdy8YVTUbN
-	 Pm7c3c+uJoCIwLaGlRpwUn0ZCKaIjwZAuUIPTIf8sWKCwA2rFGP3PTHHOWp2SC3H51
-	 D607IAZj5cZDeswjxFufAFlFSxY0QJH+BFRjoFvk=
+	b=yV6XhieiycrEeCGMnJI9Rm8/YJWeMLg/O5J1dq4dZuIv5ydPXPAiiF8fWgM5zKp19
+	 pnOTWAA1WaolCIhiyoEenGLfLmW92rZz4Db3h1lAFiMezCRW1HD7zbKyzWselUveQP
+	 qK036aCUxPJquaEgxCz/wDChzOhhNQBzmTT/RL2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 534/558] uprobes: fix kernel info leak via "[uprobes]" vma
-Date: Tue,  8 Oct 2024 14:09:24 +0200
-Message-ID: <20241008115723.246726535@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Wei Li <liwei391@huawei.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 320/386] tracing/timerlat: Fix duplicated kthread creation due to CPU online/offline
+Date: Tue,  8 Oct 2024 14:09:25 +0200
+Message-ID: <20241008115641.978266568@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Wei Li <liwei391@huawei.com>
 
-commit 34820304cc2cd1804ee1f8f3504ec77813d29c8e upstream.
+commit 0bb0a5c12ecf36ad561542bbb95f96355e036a02 upstream.
 
-xol_add_vma() maps the uninitialized page allocated by __create_xol_area()
-into userspace. On some architectures (x86) this memory is readable even
-without VM_READ, VM_EXEC results in the same pgprot_t as VM_EXEC|VM_READ,
-although this doesn't really matter, debugger can read this memory anyway.
+osnoise_hotplug_workfn() is the asynchronous online callback for
+"trace/osnoise:online". It may be congested when a CPU goes online and
+offline repeatedly and is invoked for multiple times after a certain
+online.
 
-Link: https://lore.kernel.org/all/20240929162047.GA12611@redhat.com/
+This will lead to kthread leak and timer corruption. Add a check
+in start_kthread() to prevent this situation.
 
-Reported-by: Will Deacon <will@kernel.org>
-Fixes: d4b3b6384f98 ("uprobes/core: Allocate XOL slots for uprobes use")
 Cc: stable@vger.kernel.org
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20240924094515.3561410-2-liwei391@huawei.com
+Fixes: c8895e271f79 ("trace/osnoise: Support hotplug operations")
+Signed-off-by: Wei Li <liwei391@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/uprobes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_osnoise.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 333c44f2ce55d..56cd0c7f516d3 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -1500,7 +1500,7 @@ static struct xol_area *__create_xol_area(unsigned long vaddr)
+--- a/kernel/trace/trace_osnoise.c
++++ b/kernel/trace/trace_osnoise.c
+@@ -2006,6 +2006,10 @@ static int start_kthread(unsigned int cp
+ 	void *main = osnoise_main;
+ 	char comm[24];
  
- 	area->xol_mapping.name = "[uprobes]";
- 	area->xol_mapping.pages = area->pages;
--	area->pages[0] = alloc_page(GFP_HIGHUSER);
-+	area->pages[0] = alloc_page(GFP_HIGHUSER | __GFP_ZERO);
- 	if (!area->pages[0])
- 		goto free_bitmap;
- 	area->pages[1] = NULL;
--- 
-2.43.0
-
++	/* Do not start a new thread if it is already running */
++	if (per_cpu(per_cpu_osnoise_var, cpu).kthread)
++		return 0;
++
+ 	if (timerlat_enabled()) {
+ 		snprintf(comm, 24, "timerlat/%d", cpu);
+ 		main = timerlat_main;
+@@ -2060,11 +2064,10 @@ static int start_per_cpu_kthreads(void)
+ 		if (cpumask_test_and_clear_cpu(cpu, &kthread_cpumask)) {
+ 			struct task_struct *kthread;
+ 
+-			kthread = per_cpu(per_cpu_osnoise_var, cpu).kthread;
++			kthread = xchg_relaxed(&(per_cpu(per_cpu_osnoise_var, cpu).kthread), NULL);
+ 			if (!WARN_ON(!kthread))
+ 				kthread_stop(kthread);
+ 		}
+-		per_cpu(per_cpu_osnoise_var, cpu).kthread = NULL;
+ 	}
+ 
+ 	for_each_cpu(cpu, current_mask) {
 
 
 
