@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F9F994B12
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:39:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4117994848
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:11:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 991771F25D42
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:39:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E2B9283E64
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329CA1DC759;
-	Tue,  8 Oct 2024 12:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD9E21DE897;
+	Tue,  8 Oct 2024 12:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N24EuVuf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjTFht0f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EB41779B1;
-	Tue,  8 Oct 2024 12:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857B21DE885;
+	Tue,  8 Oct 2024 12:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391187; cv=none; b=G2axsmRArW1c1PmZ3YK8v+eqLXFGqifFhGcNpXHICMLPsOKScmHjEjbfBGhu+J3HhEB3GAm6oNrjzKPBittvSGis971jGNC6qxyIiHKR/GkV68YNMhAnMwkk/OD/p6UVbPCSVOhMajAvS0BK+ufHy2JMVHTkksoi5RGbJF6LNWA=
+	t=1728389488; cv=none; b=NiGSZN3VFxfzIfwD3egdkab0xkm0Q8g+cRuTXOoaZ57hpgdoRB+9B6hV39c6llExCr5gk+6gd7+Iplvz/9gw83BhWpnwHxXWBm6eq+zV4lGs1xZdGhi40r9Zb8e6jQMB7jrDV7O8zFxCvDFGumeb+EfYJmrQ83TE8yrmWcrOlts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391187; c=relaxed/simple;
-	bh=65egkYft6cLZBhhwYu00+SyMiDJTGdJkEEcMZ0b1/sc=;
+	s=arc-20240116; t=1728389488; c=relaxed/simple;
+	bh=t9qAE7FxVf6VIHY+hu1qKwE4vSSKyYK0pwF9leqyfTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fp5bNcAZNnZXnbzdz6MDg6SriPqemUHBlzyiP/eqKN3bOKXR2YOadc/wiViQNJfHxZqLjFi3KnK4M3s82G6lK3XCVRZyRReYwnGhN3YV61y4ZHzMn5j+K7WyUoIw6ap7K1IgfT2t07t3Ya5EB9QstAQkfIG+44P28tyWQ0SbzdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N24EuVuf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D431C4CEC7;
-	Tue,  8 Oct 2024 12:39:46 +0000 (UTC)
+	 MIME-Version; b=sOkS3pwLWK4cX3R40LH8lyyyn3Lvj7m7sWIHpboknL29UBwL0ONVfKB8+rK/B6GsG/8+mhqA8EYCrzvU/f2rOfKT3vG21TOfSN3ZywSmK7/dRReopU0l+6Vd7JAwk6g1mqKQPUkJcnLWGTBCoVsfzd3Nuh2cmB+Kut81f3Mm3uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjTFht0f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4AFC4CECD;
+	Tue,  8 Oct 2024 12:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391186;
-	bh=65egkYft6cLZBhhwYu00+SyMiDJTGdJkEEcMZ0b1/sc=;
+	s=korg; t=1728389488;
+	bh=t9qAE7FxVf6VIHY+hu1qKwE4vSSKyYK0pwF9leqyfTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N24EuVufrLBiaT0Yl5S7qMVkuIwEQBtZaFHSe3ZHjlRWenGFjrHmhy/FAEu4kk/D1
-	 ISEA6KnvdY3weZU8tSzMpy15kPBlaykiKVK4OxgP8H9orhZqY4HpXwjrwj+rBXGdWt
-	 MUmPEBjIg4tZ3JEA0JpCmukVd0p2msHUxkKj9Z94=
+	b=gjTFht0fAvzuyNRWSuRPBdpndWUQgY8dZavfWjxwvZc6XPSm/kl43MbroMD6zObsH
+	 EDXrNKb0xOIohcx45hJPH09Sdfg0moIbM2UOvhjKJcgANJYBdeR7dscH6CU3IiOeVq
+	 5JS6DTEWfSnyq4dVwK3xS3ocn1rQmxk1vYSw5Gd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 033/558] Bluetooth: btmrvl: Use IRQF_NO_AUTOEN flag in request_irq()
-Date: Tue,  8 Oct 2024 14:01:03 +0200
-Message-ID: <20241008115703.527355639@linuxfoundation.org>
+Subject: [PATCH 6.10 001/482] static_call: Handle module init failure correctly in static_call_del_module()
+Date: Tue,  8 Oct 2024 14:01:04 +0200
+Message-ID: <20241008115648.348265383@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 7b1ab460592ca818e7b52f27cd3ec86af79220d1 ]
+[ Upstream commit 4b30051c4864234ec57290c3d142db7c88f10d8a ]
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+Module insertion invokes static_call_add_module() to initialize the static
+calls in a module. static_call_add_module() invokes __static_call_init(),
+which allocates a struct static_call_mod to either encapsulate the built-in
+static call sites of the associated key into it so further modules can be
+added or to append the module to the module chain.
 
-Fixes: bb7f4f0bcee6 ("btmrvl: add platform specific wakeup interrupt support")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+If that allocation fails the function returns with an error code and the
+module core invokes static_call_del_module() to clean up eventually added
+static_call_mod entries.
+
+This works correctly, when all keys used by the module were converted over
+to a module chain before the failure. If not then static_call_del_module()
+causes a #GP as it blindly assumes that key::mods points to a valid struct
+static_call_mod.
+
+The problem is that key::mods is not a individual struct member of struct
+static_call_key, it's part of a union to save space:
+
+        union {
+                /* bit 0: 0 = mods, 1 = sites */
+                unsigned long type;
+                struct static_call_mod *mods;
+                struct static_call_site *sites;
+	};
+
+key::sites is a pointer to the list of built-in usage sites of the static
+call. The type of the pointer is differentiated by bit 0. A mods pointer
+has the bit clear, the sites pointer has the bit set.
+
+As static_call_del_module() blidly assumes that the pointer is a valid
+static_call_mod type, it fails to check for this failure case and
+dereferences the pointer to the list of built-in call sites, which is
+obviously bogus.
+
+Cure it by checking whether the key has a sites or a mods pointer.
+
+If it's a sites pointer then the key is not to be touched. As the sites are
+walked in the same order as in __static_call_init() the site walk can be
+terminated because all subsequent sites have not been touched by the init
+code due to the error exit.
+
+If it was converted before the allocation fail, then the inner loop which
+searches for a module match will find nothing.
+
+A fail in the second allocation in __static_call_init() is harmless and
+does not require special treatment. The first allocation succeeded and
+converted the key to a module chain. That first entry has mod::mod == NULL
+and mod::next == NULL, so the inner loop of static_call_del_module() will
+neither find a module match nor a module chain. The next site in the walk
+was either already converted, but can't match the module, or it will exit
+the outer loop because it has a static_call_site pointer and not a
+static_call_mod pointer.
+
+Fixes: 9183c3f9ed71 ("static_call: Add inline static call infrastructure")
+Closes: https://lore.kernel.org/all/20230915082126.4187913-1-ruanjinjie@huawei.com
+Reported-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/87zfon6b0s.ffs@tglx
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btmrvl_sdio.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/static_call_inline.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/bluetooth/btmrvl_sdio.c b/drivers/bluetooth/btmrvl_sdio.c
-index 85b7f2bb42598..07cd308f7abf6 100644
---- a/drivers/bluetooth/btmrvl_sdio.c
-+++ b/drivers/bluetooth/btmrvl_sdio.c
-@@ -92,7 +92,7 @@ static int btmrvl_sdio_probe_of(struct device *dev,
- 		} else {
- 			ret = devm_request_irq(dev, cfg->irq_bt,
- 					       btmrvl_wake_irq_bt,
--					       0, "bt_wake", card);
-+					       IRQF_NO_AUTOEN, "bt_wake", card);
- 			if (ret) {
- 				dev_err(dev,
- 					"Failed to request irq_bt %d (%d)\n",
-@@ -101,7 +101,6 @@ static int btmrvl_sdio_probe_of(struct device *dev,
+diff --git a/kernel/static_call_inline.c b/kernel/static_call_inline.c
+index 639397b5491ca..7bb0962b52291 100644
+--- a/kernel/static_call_inline.c
++++ b/kernel/static_call_inline.c
+@@ -411,6 +411,17 @@ static void static_call_del_module(struct module *mod)
  
- 			/* Configure wakeup (enabled by default) */
- 			device_init_wakeup(dev, true);
--			disable_irq(cfg->irq_bt);
- 		}
- 	}
+ 	for (site = start; site < stop; site++) {
+ 		key = static_call_key(site);
++
++		/*
++		 * If the key was not updated due to a memory allocation
++		 * failure in __static_call_init() then treating key::sites
++		 * as key::mods in the code below would cause random memory
++		 * access and #GP. In that case all subsequent sites have
++		 * not been touched either, so stop iterating.
++		 */
++		if (!static_call_key_has_mods(key))
++			break;
++
+ 		if (key == prev_key)
+ 			continue;
  
 -- 
 2.43.0
