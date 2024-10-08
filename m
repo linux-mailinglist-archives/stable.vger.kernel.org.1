@@ -1,161 +1,137 @@
-Return-Path: <stable+bounces-83041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA6E9950AE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:52:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B29C9950D1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01D7928449F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:52:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3255B23A2D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD5D1DF27A;
-	Tue,  8 Oct 2024 13:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4832D1DF25B;
+	Tue,  8 Oct 2024 13:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="MZUiqWFi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UO9zwAAM"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3239726ADD;
-	Tue,  8 Oct 2024 13:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0322926ADD;
+	Tue,  8 Oct 2024 13:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728395559; cv=none; b=oTnBHSDgECgz3qFY/Mu6YXkC05uvQndcvGWqIIoK/aWzPd0XkOzmTpQyfI+KxCkTt6rN+aNrJyaQn+Z45R/lhBZC5VJiaswsk5opsZ0yrZCBK6dKtSk60b5/CJd5I17Gi7viuFl97+D7FKyOjCBsq/iaQw5mAw3vGxIJK65HHo4=
+	t=1728395936; cv=none; b=PZppYBuosfYCJD6+4CENAiFylL0LfAcvsgisGAtEjREhza3DLpf+l2+SSEiAQLh/1sRJc4vO+z+tOpQ/cA8eEC9XWsgMWxp8Z6C3SdGXs4KjVQt9e1oRB8S1os3DGHPxgBUiD4ERdjfL7LRZ36787WlxYMekljgGEsqVXeJdkg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728395559; c=relaxed/simple;
-	bh=ZMS+Rl5TsaGNB9WGoe+0owkn3i/R060CfQBCn5OKDWk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oaxkqSmRqE3iBDcdBbru7xEnKjCgNjjYY/uqIxdOklI8JBLQE/fX+IXcjcdzGQ2r8W1TNMXiJzbCIJUYiGtk1wQEyR2051yE4NUcT6NRUzIMW/oJ1TqNBAceMXSuv2X5NK7PijcfNd7Y4OrWgKXAN10ReHbPpL0IQr1a90czbdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=MZUiqWFi; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=K3XwwW061KgN1orzCcgKcqHnOvhEmFckEUZYuHPC+9U=; t=1728395557;
-	x=1728827557; b=MZUiqWFicqC9auoJJbqmEDPwoTxIKyhzwAZ51CRo+wqNHYe1Wy9RUnPRFWHK4
-	fLN3kTLH3zpUpBad0LDFfHGMWy0TF3xJ8CNml7VYVUm0qB3/8kNhHRInYJY4ZBBFmtzh6rnXE8Qia
-	SOv3D1b5Zhl6lAnWCj1h5nNu68zXFLihuRdj3a6XEHJJhB3JG2EFrDrUNUpWdk7gHe7DqlWuIehsr
-	DZPJP6a57S9Voi6CbpFc6AOTL/SMlu6vNWyfWOSW7x8HEEI6iKvQ5KNW64BqIFS55bV3OOm4ZUEfJ
-	1liAxr2RKE+lJT2PEmkvRlMfPS6dhnrAbciYzdYoLL5PyQjHnQ==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1syAdH-0005fT-74; Tue, 08 Oct 2024 15:52:11 +0200
-Message-ID: <bd933e11-7836-462f-9b6b-5172301f188b@leemhuis.info>
-Date: Tue, 8 Oct 2024 15:52:10 +0200
+	s=arc-20240116; t=1728395936; c=relaxed/simple;
+	bh=YmX97+ILNhhY6E3q/z3GV+Ne8aaE7cHz7ZJ2+X6660M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gv9cuxnacXmX/pYzNa7KiZnkuD2Zhf+u4sI3kCsCG0r6UUiIX36GZTevQPlQo6Kg8ghAQ972LE/t42S5BngU/LkA12v6sn8TeLPFBcWkEgjIMJhc2/KnKI9p+fAM5oNWptCnA7c7a9AErf8v1c94WK7Qxbnbm8yWuGBsgFY7CoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UO9zwAAM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8867C4CEC7;
+	Tue,  8 Oct 2024 13:58:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728395935;
+	bh=YmX97+ILNhhY6E3q/z3GV+Ne8aaE7cHz7ZJ2+X6660M=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UO9zwAAMP5bi+y58CSW+CpgxYfPsCm+Br7XdQtH0rnKxjFIX06exZnbBNdveGa5BY
+	 2MrG8D3ii+dUPB2WEmcWx+ZQJ/eHpXQPFH3rO9+hCL279hE47f8vrXWg3jjdmtu7to
+	 I1ZecYmNmXuMeNq6EqgAw8wS7F0ffbflDashjoqXyMPnothsf4ko2sElDaf3Jrdt32
+	 ythG3g6Pt88F5BMkLI5xwaWmUH5iXgpi0gIHgSR9v6zFrPs4TYPAPMIbRfGma8yJTb
+	 3Q+I2UkqR9G9h/hdGETZRxdUiVFuPPd96bKQg7PNwj+P5tV8jwYWcW+e/wsH/Oxmhh
+	 ZhEQXRFccSRHA==
+From: Niklas Cassel <cassel@kernel.org>
+To: Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: W <linuxcdeveloper@gmail.com>,
+	stable@vger.kernel.org,
+	linux-ide@vger.kernel.org
+Subject: [PATCH v2] ata: libata: avoid superfluous disk spin down + spin up during hibernation
+Date: Tue,  8 Oct 2024 15:58:44 +0200
+Message-ID: <20241008135843.1266244-2-cassel@kernel.org>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/3] Fix dosemu vm86() fault
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
- Robert Gill <rtgill82@gmail.com>, Jari Ruusu <jariruusu@protonmail.com>,
- Brian Gerst <brgerst@gmail.com>, antonio.gomez.iglesias@linux.intel.com,
- daniel.sneddon@linux.intel.com, stable@vger.kernel.org,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <20240925-fix-dosemu-vm86-v7-0-1de0daca2d42@linux.intel.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-In-Reply-To: <20240925-fix-dosemu-vm86-v7-0-1de0daca2d42@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1728395557;fb0b07a4;
-X-HE-SMSGID: 1syAdH-0005fT-74
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2926; i=cassel@kernel.org; h=from:subject; bh=YmX97+ILNhhY6E3q/z3GV+Ne8aaE7cHz7ZJ2+X6660M=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGNJZrSZ/VJtX0P23odBlytOXBp02z7J8BaICg2VNe6QXV Ux9+Me5o5SFQYyLQVZMkcX3h8v+4m73KccV79jAzGFlAhnCwMUpABNZ/pKRYUfzoVBL365rnUIf 4iQP5d/UXrRnO0eTjM126Y8ciR9juRgZpuXn13j6CX6OUz27wfXPiavnUgt8FmtOE7QwzpBn3/m TFwA=
+X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
+Content-Transfer-Encoding: 8bit
 
-Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
-for once, to make this easily accessible to everyone.
+A user reported that commit aa3998dbeb3a ("ata: libata-scsi: Disable scsi
+device manage_system_start_stop") introduced a spin down + immediate spin
+up of the disk both when entering and when resuming from hibernation.
+This behavior was not there before, and causes an increased latency both
+when when entering and when resuming from hibernation.
 
-Is there hope that patches like these makes it to mainline any time
-soon? I fully understand that this it a hard problem, but in the end
-what triggered this were at least two regression reports afaics:
-https://bugzilla.kernel.org/show_bug.cgi?id=218707
-https://lore.kernel.org/lkml/IdYcxU6x6xuUqUg8cliJUnucfwfTO29TrKIlLGCCYbbIr1EQnP0ZAtTxdAM2hp5e5Gny_acIN3OFDS6v0sazocnZZ1UBaINEJ0HoDnbasSI=@protonmail.com/
+Hibernation is done by three consecutive PM events, in the following order:
+1) PM_EVENT_FREEZE
+2) PM_EVENT_THAW
+3) PM_EVENT_HIBERNATE
 
-Sure, the older one was in April, so one week more or less now won't
-make much of a difference. But I think it still would be great to get
-this fixed rather sooner than later. Or where those issues meanwhile
-fixed through other patches without me noticing and I'm making a fool of
-myself here?
+Commit aa3998dbeb3a ("ata: libata-scsi: Disable scsi device
+manage_system_start_stop") modified ata_eh_handle_port_suspend() to call
+ata_dev_power_set_standby() (which spins down the disk), for both event
+PM_EVENT_FREEZE and event PM_EVENT_HIBERNATE.
 
-This yet again makes me wonder if some "[regression fix]" in the subject
-or "CC: regressions@lists.linux.dev" in the patches would help to make
-the regression aspect obvious to everyone involved. But it would create
-yet another small bit of overhead... :-/
+Documentation/driver-api/pm/devices.rst, section "Entering Hibernation",
+explicitly mentions that PM_EVENT_FREEZE does not have to be put the device
+in a low-power state, and actually recommends not doing so. Thus, let's not
+spin down the disk on PM_EVENT_FREEZE. (The disk will instead be spun down
+during the subsequent PM_EVENT_HIBERNATE event.)
 
-Pawan Gupta, btw: many thx for working on this and sticking to it!
+This way, PM_EVENT_FREEZE will behave as it did before commit aa3998dbeb3a
+("ata: libata-scsi: Disable scsi device manage_system_start_stop"), while
+PM_EVENT_HIBERNATE will continue to spin down the disk.
 
-Ciao, Thorsten
+This will avoid the superfluous spin down + spin up when entering and
+resuming from hibernation, while still making sure that the disk is spun
+down before actually entering hibernation.
 
-On 26.09.24 00:25, Pawan Gupta wrote:
-> Changes in v7:
-> - Using %ss for verw fails kselftest ldt_gdt.c in 32-bit mode, use safer %cs instead (Dave).
-> 
-> v6: https://lore.kernel.org/r/20240905-fix-dosemu-vm86-v6-0-7aff8e53cbbf@linux.intel.com
-> - Use %ss in 64-bit mode as well for all VERW calls. This avoids any having
->   a separate macro for 32-bit (Dave).
-> - Split 32-bit mode fixes into separate patches.
-> 
-> v5: https://lore.kernel.org/r/20240711-fix-dosemu-vm86-v5-1-e87dcd7368aa@linux.intel.com
-> - Simplify the use of ALTERNATIVE construct (Uros/Jiri/Peter).
-> 
-> v4: https://lore.kernel.org/r/20240710-fix-dosemu-vm86-v4-1-aa6464e1de6f@linux.intel.com
-> - Further simplify the patch by using %ss for all VERW calls in 32-bit mode (Brian).
-> - In NMI exit path move VERW after RESTORE_ALL_NMI that touches GPRs (Dave).
-> 
-> v3: https://lore.kernel.org/r/20240701-fix-dosemu-vm86-v3-1-b1969532c75a@linux.intel.com
-> - Simplify CLEAR_CPU_BUFFERS_SAFE by using %ss instead of %ds (Brian).
-> - Do verw before popf in SYSEXIT path (Jari).
-> 
-> v2: https://lore.kernel.org/r/20240627-fix-dosemu-vm86-v2-1-d5579f698e77@linux.intel.com
-> - Safe guard against any other system calls like vm86() that might change %ds (Dave).
-> 
-> v1: https://lore.kernel.org/r/20240426-fix-dosemu-vm86-v1-1-88c826a3f378@linux.intel.com
-> 
-> Hi,
-> 
-> This series fixes a #GP in 32-bit kernels when executing vm86() system call
-> in dosemu software. In 32-bit mode, their are cases when user can set an
-> arbitrary %ds that can cause a #GP when executing VERW instruction. The
-> fix is to use %ss for referencing the VERW operand.
-> 
-> Patch 1-2: Fixes the VERW callsites in 32-bit entry path.
-> Patch   3: Uses %ss for VERW in 32-bit and 64-bit mode.
-> 
-> The fix is tested with below kselftest on 32-bit kernel:
-> 
-> 	./tools/testing/selftests/x86/entry_from_vm86.c
-> 
-> 64-bit kernel was boot tested. On a Rocket Lake, measuring the CPU cycles
-> for VERW with and without the %ss shows no significant difference. This
-> indicates that the scrubbing behavior of VERW is intact.
-> 
-> Thanks,
-> Pawan
-> 
-> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-> ---
-> Pawan Gupta (3):
->       x86/entry_32: Do not clobber user EFLAGS.ZF
->       x86/entry_32: Clear CPU buffers after register restore in NMI return
->       x86/bugs: Use code segment selector for VERW operand
-> 
->  arch/x86/entry/entry_32.S            | 6 ++++--
->  arch/x86/include/asm/nospec-branch.h | 6 ++++--
->  2 files changed, 8 insertions(+), 4 deletions(-)
-> ---
-> base-commit: 431c1646e1f86b949fa3685efc50b660a364c2b6
-> change-id: 20240426-fix-dosemu-vm86-dd111a01737e
-> 
-> Best regards,
+Cc: stable@vger.kernel.org # v6.6+
+Fixes: aa3998dbeb3a ("ata: libata-scsi: Disable scsi device manage_system_start_stop")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+---
+Changes since v1:
+-Add stable to cc.
 
-#regzbot poke
+ drivers/ata/libata-eh.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+index 3f0144e7dc80..fa41ea57a978 100644
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -4099,10 +4099,20 @@ static void ata_eh_handle_port_suspend(struct ata_port *ap)
+ 
+ 	WARN_ON(ap->pflags & ATA_PFLAG_SUSPENDED);
+ 
+-	/* Set all devices attached to the port in standby mode */
+-	ata_for_each_link(link, ap, HOST_FIRST) {
+-		ata_for_each_dev(dev, link, ENABLED)
+-			ata_dev_power_set_standby(dev);
++	/*
++	 * We will reach this point for all of the PM events:
++	 * PM_EVENT_SUSPEND (if runtime pm, PM_EVENT_AUTO will also be set)
++	 * PM_EVENT_FREEZE, and PM_EVENT_HIBERNATE.
++	 *
++	 * We do not want to perform disk spin down for PM_EVENT_FREEZE.
++	 * (Spin down will be performed by the subsequent PM_EVENT_HIBERNATE.)
++	 */
++	if (!(ap->pm_mesg.event & PM_EVENT_FREEZE)) {
++		/* Set all devices attached to the port in standby mode */
++		ata_for_each_link(link, ap, HOST_FIRST) {
++			ata_for_each_dev(dev, link, ENABLED)
++				ata_dev_power_set_standby(dev);
++		}
+ 	}
+ 
+ 	/*
+-- 
+2.46.2
+
 
