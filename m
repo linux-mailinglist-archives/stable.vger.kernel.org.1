@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-82555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D720D994D4F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:04:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD8A994EED
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:23:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 922AA2832D8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:04:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42AB91F224E0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A281DE4CC;
-	Tue,  8 Oct 2024 13:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749291DFE0A;
+	Tue,  8 Oct 2024 13:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0dMsdQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxK7vmXz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B6D1DFD1;
-	Tue,  8 Oct 2024 13:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33EA11DFE03;
+	Tue,  8 Oct 2024 13:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392657; cv=none; b=r5bEE2SC7DL0A9qDzv39G/rIYfG10Yw7h1bnF0ZYerd7dWmm+W4Cqw7fPukO997LHU6+vWAkDMKaIOMf0yBfEgw1b3rWlgJEH37sOm/IyjejBetNkzgLDD0IUzJAktTKTByJJTtD1raZXGNr8AT30DzmmDAXug+E/s/CLfY+2gc=
+	t=1728393712; cv=none; b=cEsdysYMgtoXA69kln7yyQ/aJDs29e2g9aHXboDCui6TBPppA7E1VM0M7Fj2EUVba7X4h0rFEFW8B+oM1VMIOdqtOjcVC8eD4I2ZyydJ/7ACmahA7bVoC3DzPBfvDBUl5dq1EEgLTbcWF/G4CwQZP3i8iiyjr2fwQUyKgGgSZGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392657; c=relaxed/simple;
-	bh=EC37W11r2ShW6b0rk8ojWyKorAnH3Xsl3FqOAWxUeOk=;
+	s=arc-20240116; t=1728393712; c=relaxed/simple;
+	bh=bmH37kTLOABJ/nXhVYWYiF8Q7SrrA7hlddJHSX/wurM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pF2KRPpmJZoaN6Xqk2Zj1lLIxPR88VYMgE4WtAixc9bGFRjs+Uo2rFbV74KEZqc8SHfMb9aUyKwoSb+poz3eyG7i8M3H5rOGCt4KvmD+9yOaKsoAEJ4WF7AyAlNLA5nsJha48d6i//BTBh8NYQ/3CkfHyX+h2CkBsBJGf3GpV5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0dMsdQv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A79DC4CECD;
-	Tue,  8 Oct 2024 13:04:16 +0000 (UTC)
+	 MIME-Version; b=X4d0zmLwQem+K8XtNc+ZNLSwO55zXmEksNSzRrQwc9RFGACouIn9htHNmZ6VUk9fJikEJ4jv1dsFoKT280Tp9fJtE5tlsil19nrwwmkreZbfJxW//c47B/k7dswr4cjE47LVzTccE2NHIN5Qt2uwdg2Ck1KT4HP8+6FBkiF9Umg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxK7vmXz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C455C4CECE;
+	Tue,  8 Oct 2024 13:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392656;
-	bh=EC37W11r2ShW6b0rk8ojWyKorAnH3Xsl3FqOAWxUeOk=;
+	s=korg; t=1728393711;
+	bh=bmH37kTLOABJ/nXhVYWYiF8Q7SrrA7hlddJHSX/wurM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e0dMsdQvSaFESoHsOrCZmVWNmCU0EPj1EowYP6ZQlixb/Ct3sb8FOR9k9Ti5hePdL
-	 mh7HM7OuLKCaeqOMQT6OnCaWU1EY+RNMuqdfcB7fNaZQIr910U1jAP98NdUPBHyDHg
-	 D3igw9XYD0/6FayCRYLigk/+L4OAHJ6/kAfs6DT0=
+	b=lxK7vmXzlpWa80jPYDl4hF1qS1pubey5H1OFmuh4kTW7fKrgVzNNcwTyejUPRYcNA
+	 4NNBO4kX3HObIMgDzvsm3C8PHFVRsgWXjRphpfuXvY9vqyfSBNTLBqjDZSxeM5DUhW
+	 f4YR3/MwHFUValJAJM58Mpxd87DwPlUEkfjIFhJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com,
-	Julian Sun <sunjunchao2870@gmail.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 6.11 449/558] gfs2: fix double destroy_workqueue error
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 234/386] ext4: propagate errors from ext4_find_extent() in ext4_insert_range()
 Date: Tue,  8 Oct 2024 14:07:59 +0200
-Message-ID: <20241008115719.931287189@linuxfoundation.org>
+Message-ID: <20241008115638.609681110@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Sun <sunjunchao2870@gmail.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 6cb9df81a2c462b89d2f9611009ab43ae8717841 upstream.
+commit 369c944ed1d7c3fb7b35f24e4735761153afe7b3 upstream.
 
-When gfs2_fill_super() fails, destroy_workqueue() is called within
-gfs2_gl_hash_clear(), and the subsequent code path calls
-destroy_workqueue() on the same work queue again.
+Even though ext4_find_extent() returns an error, ext4_insert_range() still
+returns 0. This may confuse the user as to why fallocate returns success,
+but the contents of the file are not as expected. So propagate the error
+returned by ext4_find_extent() to avoid inconsistencies.
 
-This issue can be fixed by setting the work queue pointer to NULL after
-the first destroy_workqueue() call and checking for a NULL pointer
-before attempting to destroy the work queue again.
-
-Reported-by: syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d34c2a269ed512c531b0
-Fixes: 30e388d57367 ("gfs2: Switch to a per-filesystem glock workqueue")
-Cc: stable@vger.kernel.org
-Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Fixes: 331573febb6a ("ext4: Add support FALLOC_FL_INSERT_RANGE for fallocate")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20240822023545.1994557-11-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/glock.c      |    1 +
- fs/gfs2/ops_fstype.c |    3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ fs/ext4/extents.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -2249,6 +2249,7 @@ void gfs2_gl_hash_clear(struct gfs2_sbd
- 	gfs2_free_dead_glocks(sdp);
- 	glock_hash_walk(dump_glock_func, sdp);
- 	destroy_workqueue(sdp->sd_glock_wq);
-+	sdp->sd_glock_wq = NULL;
- }
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -5549,6 +5549,7 @@ static int ext4_insert_range(struct file
+ 	path = ext4_find_extent(inode, offset_lblk, NULL, 0);
+ 	if (IS_ERR(path)) {
+ 		up_write(&EXT4_I(inode)->i_data_sem);
++		ret = PTR_ERR(path);
+ 		goto out_stop;
+ 	}
  
- static const char *state2str(unsigned state)
---- a/fs/gfs2/ops_fstype.c
-+++ b/fs/gfs2/ops_fstype.c
-@@ -1307,7 +1307,8 @@ fail_debug:
- fail_delete_wq:
- 	destroy_workqueue(sdp->sd_delete_wq);
- fail_glock_wq:
--	destroy_workqueue(sdp->sd_glock_wq);
-+	if (sdp->sd_glock_wq)
-+		destroy_workqueue(sdp->sd_glock_wq);
- fail_free:
- 	free_sbd(sdp);
- 	sb->s_fs_info = NULL;
 
 
 
