@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-82830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE3E0994EAA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA7BC994D0A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BE0AB26480
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 517311F22482
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD931DE4CC;
-	Tue,  8 Oct 2024 13:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A7B1DED43;
+	Tue,  8 Oct 2024 13:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwIcVglf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPBanz6Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2761DE4CD;
-	Tue,  8 Oct 2024 13:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0C21DE4DB;
+	Tue,  8 Oct 2024 13:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393568; cv=none; b=f4fA41BqxmwQil5JT+MIYMxvV37oooH0iYdhvE1ubJr8z2cb5qGUV9/ese0RZnVVofal0nNja3GfOE4HOdM9JGLC8jM/fVlVOUq/95ohD3wDBVaxalAW8tW4l4HAOerSdT8B3w4gJA4eI2s0jjQ/f+0Oj5r4AlYeIPRQ1T+D30E=
+	t=1728392439; cv=none; b=oDTgKRVLtX8gcxtfzqtRfRv0FnyW0XIgEFP6vqpAuTdHYU6WW3dpWLbc3YIVh0LKpzNRD5pn0ZRhfs1zEYs6jDHiIS3oRUemCVPhJIgIZIBrD64jXsaIND5KTRNCH8XaQq6qDl72X+9iqEvwDKGGeexaNEmPzmLRwvwFEkDYfFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393568; c=relaxed/simple;
-	bh=6lfEy+R+ILQo9WiH3pFs4w3TfYq28l+PY5tVm2MbumQ=;
+	s=arc-20240116; t=1728392439; c=relaxed/simple;
+	bh=vAd+eaGIAxt9AtvOGMWvTsf2d2zeZtxkTrHvgckPMiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VTTyc8GVJgAqBOe/CoEXdfhXVeLvaEw3J9usHwoLDrTdtq1u1l4UQdmKX4BCktNptWAu99NtRBU8yfJVGHHxTGNFBnr6nF1wgpJZAwW0OHsleHczXql6Ymirz31+rzeg5Wfo+UIQ4kckW1Ge81yf3BrP6oWGWG1u7Z5X+JIjKJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwIcVglf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DA4C4CEC7;
-	Tue,  8 Oct 2024 13:19:27 +0000 (UTC)
+	 MIME-Version; b=WtnPiWQufUkAW7aQV0EBB76iSU7Q8pylMgFQ11lObgcZsk11/ROO2JYtwmqR7Lv1a2LDDGrZdr3OJC3wiwd/Um5aNdO/OEi1vuZM/Jprga7CozuDyZZ8O6m+8C5I03/sh77rpgsdM77CnbU/29atohn9h4v8dmZknRsFO9+TCec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPBanz6Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE0CC4CEC7;
+	Tue,  8 Oct 2024 13:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393568;
-	bh=6lfEy+R+ILQo9WiH3pFs4w3TfYq28l+PY5tVm2MbumQ=;
+	s=korg; t=1728392438;
+	bh=vAd+eaGIAxt9AtvOGMWvTsf2d2zeZtxkTrHvgckPMiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QwIcVglfwKgkRzKW5aqEObIZceEtJK634X+G2UTUcv7aAsEWFsRHRnQYYajFLSbE/
-	 h3G2GK+nF0EJseCMl+bNYH4HyYSZ+zI/SZHGYfCBbcgknQWJAbAGe0o7sNvOZSSTHG
-	 KiLTpFPn1hQ2Kb0vKwvXlCyQ6V5o8TPmt37KOzrs=
+	b=hPBanz6Q6zelf5y5a9WUh0vY++zqYiRhzSUt1usQC6NPoMe1lR1Npla61MHJuolg8
+	 iBLFp68rTQddIGHZPdOjqgrnbZicrqZGShG6BNW2sviswp93iJRXKaVGJe/IFB00ZY
+	 TGkTM0jQkKO1osa5YrHZTD9MLx5E5sPjfnwczRmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 159/386] drm/amd/display: Avoid overflow assignment in link_dp_cts
+	Lianqin Hu <hulianqin@vivo.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.11 374/558] ALSA: usb-audio: Add delay quirk for VIVO USB-C HEADSET
 Date: Tue,  8 Oct 2024 14:06:44 +0200
-Message-ID: <20241008115635.682712073@linuxfoundation.org>
+Message-ID: <20241008115717.012503863@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Lianqin Hu <hulianqin@vivo.com>
 
-[ Upstream commit a15268787b79fd183dd526cc16bec9af4f4e49a1 ]
+commit 73385f3e0d8088b715ae8f3f66d533c482a376ab upstream.
 
-sampling_rate is an uint8_t but is assigned an unsigned int, and thus it
-can overflow. As a result, sampling_rate is changed to uint32_t.
+Audio control requests that sets sampling frequency sometimes fail on
+this card. Adding delay between control messages eliminates that problem.
 
-Similarly, LINK_QUAL_PATTERN_SET has a size of 2 bits, and it should
-only be assigned to a value less or equal than 4.
-
-This fixes 2 INTEGER_OVERFLOW issues reported by Coverity.
-
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/TYUPR06MB62177E629E9DEF2401333BF7D2692@TYUPR06MB6217.apcprd06.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc_dp_types.h                  | 2 +-
- drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c | 3 ++-
- drivers/gpu/drm/amd/display/include/dpcd_defs.h               | 1 +
- 3 files changed, 4 insertions(+), 2 deletions(-)
+ sound/usb/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
-index 83719f5bea495..8df52f9ba0b7c 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
-@@ -721,7 +721,7 @@ struct dp_audio_test_data_flags {
- struct dp_audio_test_data {
- 
- 	struct dp_audio_test_data_flags flags;
--	uint8_t sampling_rate;
-+	uint32_t sampling_rate;
- 	uint8_t channel_count;
- 	uint8_t pattern_type;
- 	uint8_t pattern_period[8];
-diff --git a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
-index fe4282771cd07..8a97d96f7d8bb 100644
---- a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
-@@ -849,7 +849,8 @@ bool dp_set_test_pattern(
- 			core_link_read_dpcd(link, DP_TRAINING_PATTERN_SET,
- 					    &training_pattern.raw,
- 					    sizeof(training_pattern));
--			training_pattern.v1_3.LINK_QUAL_PATTERN_SET = pattern;
-+			if (pattern <= PHY_TEST_PATTERN_END_DP11)
-+				training_pattern.v1_3.LINK_QUAL_PATTERN_SET = pattern;
- 			core_link_write_dpcd(link, DP_TRAINING_PATTERN_SET,
- 					     &training_pattern.raw,
- 					     sizeof(training_pattern));
-diff --git a/drivers/gpu/drm/amd/display/include/dpcd_defs.h b/drivers/gpu/drm/amd/display/include/dpcd_defs.h
-index aee5170f5fb23..c246235e4afec 100644
---- a/drivers/gpu/drm/amd/display/include/dpcd_defs.h
-+++ b/drivers/gpu/drm/amd/display/include/dpcd_defs.h
-@@ -76,6 +76,7 @@ enum dpcd_phy_test_patterns {
- 	PHY_TEST_PATTERN_D10_2,
- 	PHY_TEST_PATTERN_SYMBOL_ERROR,
- 	PHY_TEST_PATTERN_PRBS7,
-+	PHY_TEST_PATTERN_END_DP11 = PHY_TEST_PATTERN_PRBS7,
- 	PHY_TEST_PATTERN_80BIT_CUSTOM,/* For DP1.2 only */
- 	PHY_TEST_PATTERN_CP2520_1,
- 	PHY_TEST_PATTERN_CP2520_2,
--- 
-2.43.0
-
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2279,6 +2279,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
+ 	DEVICE_FLG(0x2b53, 0x0031, /* Fiero SC-01 (firmware v1.1.0) */
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
++	DEVICE_FLG(0x2d95, 0x8011, /* VIVO USB-C HEADSET */
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
+ 	DEVICE_FLG(0x2d95, 0x8021, /* VIVO USB-C-XE710 HEADSET */
+ 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
+ 	DEVICE_FLG(0x30be, 0x0101, /* Schiit Hel */
 
 
 
