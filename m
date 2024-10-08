@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-82325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE36994C2E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 050DB994DE8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:10:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C85072863E0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 240361C251DD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7032E1DE886;
-	Tue,  8 Oct 2024 12:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863FF1DE8BE;
+	Tue,  8 Oct 2024 13:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aY0aaBVT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOvABd7W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F58D1C9B61;
-	Tue,  8 Oct 2024 12:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F551DE4CD;
+	Tue,  8 Oct 2024 13:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391884; cv=none; b=IMaFGjA79qHttjn0FpwFaTOuibdbbaMgW1IQwA06qF8B5bFR0jOeupqmHNh5uj6C1NIR83Gl18zFJ6JINkYMcxY46ZvZXqs/E+vlqJp6uGcI2jw1Slf6G+tZW52MXddD16NnfV2B6Hqk6kaEZ0VCZAZrIuX1zX5Q/WX61LCAqXA=
+	t=1728393047; cv=none; b=b9rtIExlzn8NfLz42l2dT5B4M9/G9lkRuz8dQGhglSEAkqRlo+qcuN8QGPQax06x9ys+YZLFNUhgLwtMPy8B0z20OsBm9dwbKSZ9bnuRLwgDFwjfhbj6AbnmtHQdcOeY/PrabybyCGeGWCBQHUrV+jq2wvrUE0f66KtI4JwUR/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391884; c=relaxed/simple;
-	bh=DilKeOp9+V5gZPWruLfw9GN/nYVB/+4G0Bopnm7FJfg=;
+	s=arc-20240116; t=1728393047; c=relaxed/simple;
+	bh=5xZyo8JPKDeyixdj4iVd7cseyDBJcE8GwOYUVuEuL+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VbSgAQOsENTKPymZ6+Ok6nJafnch3vtt1a21Gl9pQ0/JA31P5kWBLx0HJf6q/l6PH3gZkQ9jaYuHZX2BQIeXU8ls3sALTG8IU4Rn35rBvtLTMZfmokoxUMv4zeuZ/+GGNrvFFNhIDooPlDbzU9asu1Y1RHPtQXDGABJHp4ToW6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aY0aaBVT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB07C4CEC7;
-	Tue,  8 Oct 2024 12:51:23 +0000 (UTC)
+	 MIME-Version; b=UgmEMbw7amuO8hkN4uhlQUAYeJQHnu8Ww7Qv7gzBgUbWIw+A2knVBae5W20O7Bk1LOWQDn5RoOHjqv+qn/MijeyKIaFd/XFJTn5qTiPy8BD22K2sOWNavbLks/ebg9StyTk2FHrdnOGuJTngzabfDf+QJAhdRJPaX5kA9ZaHBr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOvABd7W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6203C4CEC7;
+	Tue,  8 Oct 2024 13:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391884;
-	bh=DilKeOp9+V5gZPWruLfw9GN/nYVB/+4G0Bopnm7FJfg=;
+	s=korg; t=1728393047;
+	bh=5xZyo8JPKDeyixdj4iVd7cseyDBJcE8GwOYUVuEuL+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aY0aaBVT7exOgwostAPDc8RKKaIN1UWbMl7Nn7p/oSPFQ1GwV+5RL/LTIo7CD4tBb
-	 eQJ9BcCR9rGBq1PSrU8XdMFDGeCveTrbA1FQVYP2K9JLlCAS3YOKhQe0hXBzHaHXy4
-	 bWTscpbzpJswtQSYst4N8X2gW8FZ5cVZ+VDorSKQ=
+	b=TOvABd7WuZgiOsWOmFZsp3eJdrN2sF41VQ8miPXl9/YX4aYQVyOviVa/kDsOXtRm/
+	 i6/AG0gw1tcsGDs+U6f4VUp4XJq4xjUcHrBFA6Ttf5TFK9g6Y8w3a4PRhzE4oKp28v
+	 /wepVYh6RGK2lFbRyQbHusOGan3L1scqBoMS2fM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ravikanth Tuniki <ravikanth.tuniki@amd.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 252/558] drm/amd/display: Initialize denominators default to 1
+Subject: [PATCH 6.6 037/386] dt-bindings: net: xlnx,axi-ethernet: Add missing reg minItems
 Date: Tue,  8 Oct 2024 14:04:42 +0200
-Message-ID: <20241008115712.253812838@linuxfoundation.org>
+Message-ID: <20241008115630.936345307@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Ravikanth Tuniki <ravikanth.tuniki@amd.com>
 
-[ Upstream commit b995c0a6de6c74656a0c39cd57a0626351b13e3c ]
+[ Upstream commit c6929644c1e0d6108e57061d427eb966e1746351 ]
 
-[WHAT & HOW]
-Variables used as denominators and maybe not assigned to other values,
-should not be 0. Change their default to 1 so they are never 0.
+Add missing reg minItems as based on current binding document
+only ethernet MAC IO space is a supported configuration.
 
-This fixes 10 DIVIDE_BY_ZERO issues reported by Coverity.
+There is a bug in schema, current examples contain 64-bit
+addressing as well as 32-bit addressing. The schema validation
+does pass incidentally considering one 64-bit reg address as
+two 32-bit reg address entries. If we change axi_ethernet_eth1
+example node reg addressing to 32-bit schema validation reports:
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Documentation/devicetree/bindings/net/xlnx,axi-ethernet.example.dtb:
+ethernet@40000000: reg: [[1073741824, 262144]] is too short
+
+To fix it add missing reg minItems constraints and to make things clearer
+stick to 32-bit addressing in examples.
+
+Fixes: cbb1ca6d5f9a ("dt-bindings: net: xlnx,axi-ethernet: convert bindings document to yaml")
+Signed-off-by: Ravikanth Tuniki <ravikanth.tuniki@amd.com>
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/1727723615-2109795-1-git-send-email-radhey.shyam.pandey@amd.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20.c | 2 +-
- drivers/gpu/drm/amd/display/dc/dml/dml1_display_rq_dlg_calc.c | 2 +-
- .../display/dc/dml2/dml21/src/dml2_core/dml2_core_shared.c    | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20.c
-index 7c56ad0f88122..e7019c95ba79e 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20.c
-@@ -78,7 +78,7 @@ static void calculate_ttu_cursor(struct display_mode_lib *mode_lib,
+diff --git a/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml b/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
+index 1d33d80af11c3..652d696bc9e90 100644
+--- a/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
++++ b/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
+@@ -34,6 +34,7 @@ properties:
+       and length of the AXI DMA controller IO space, unless
+       axistream-connected is specified, in which case the reg
+       attribute of the node referenced by it is used.
++    minItems: 1
+     maxItems: 2
  
- static unsigned int get_bytes_per_element(enum source_format_class source_format, bool is_chroma)
- {
--	unsigned int ret_val = 0;
-+	unsigned int ret_val = 1;
- 
- 	if (source_format == dm_444_16) {
- 		if (!is_chroma)
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dml1_display_rq_dlg_calc.c b/drivers/gpu/drm/amd/display/dc/dml/dml1_display_rq_dlg_calc.c
-index dae13f202220e..d8bfc85e5dcd0 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dml1_display_rq_dlg_calc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dml1_display_rq_dlg_calc.c
-@@ -39,7 +39,7 @@
- 
- static unsigned int get_bytes_per_element(enum source_format_class source_format, bool is_chroma)
- {
--	unsigned int ret_val = 0;
-+	unsigned int ret_val = 1;
- 
- 	if (source_format == dm_444_16) {
- 		if (!is_chroma)
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_shared.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_shared.c
-index 81f0a6f19f87b..679b200319034 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_shared.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_shared.c
-@@ -9386,8 +9386,8 @@ static void CalculateVMGroupAndRequestTimes(
- 	double TimePerVMRequestVBlank[],
- 	double TimePerVMRequestFlip[])
- {
--	unsigned int num_group_per_lower_vm_stage = 0;
--	unsigned int num_req_per_lower_vm_stage = 0;
-+	unsigned int num_group_per_lower_vm_stage = 1;
-+	unsigned int num_req_per_lower_vm_stage = 1;
- 
- #ifdef __DML_VBA_DEBUG__
- 	dml2_printf("DML::%s: NumberOfActiveSurfaces = %u\n", __func__, NumberOfActiveSurfaces);
+   interrupts:
+@@ -165,7 +166,7 @@ examples:
+         clock-names = "s_axi_lite_clk", "axis_clk", "ref_clk", "mgt_clk";
+         clocks = <&axi_clk>, <&axi_clk>, <&pl_enet_ref_clk>, <&mgt_clk>;
+         phy-mode = "mii";
+-        reg = <0x00 0x40000000 0x00 0x40000>;
++        reg = <0x40000000 0x40000>;
+         xlnx,rxcsum = <0x2>;
+         xlnx,rxmem = <0x800>;
+         xlnx,txcsum = <0x2>;
 -- 
 2.43.0
 
