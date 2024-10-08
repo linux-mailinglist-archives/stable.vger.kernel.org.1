@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-81787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00077994966
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:23:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA28A994DD0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3930284A26
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:23:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 175A21C2529C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942311DF975;
-	Tue,  8 Oct 2024 12:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F60D1DED6F;
+	Tue,  8 Oct 2024 13:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbP1jvfC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3EeQJff"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539971DF96D;
-	Tue,  8 Oct 2024 12:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6A81C9DDF;
+	Tue,  8 Oct 2024 13:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390130; cv=none; b=fpaF8mGSjTjr9TNUb8HO1owPK1Ix0gzRtytb9znUNueAt0cYA52bQndHlFgnEvhksebSsaTx8FptjStTpBxeRB34PizFBBkO98BjLlKaYxjT4YzXFBhHpDxAqJx6PEYiGg298bgmv1OXWulhHW19JKUFGe2Ur9p+fdZ5fCRT8uI=
+	t=1728392982; cv=none; b=qwnQqty0skt2Dl1rk9JGZvZGmkrPabd+om766+7zHqTW1kw97B+w55Xg3E/T3WWBAj0gIrozDQuPcWeQ4fXsw8XLb62JapKhG3+ec2AvEDWdREXw9ObVm/8rdUno1MeJQtWd6TSX1vqoQb5+feT5u6cPkbioBfRX3a3aX4qvJHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390130; c=relaxed/simple;
-	bh=Rb/ih7nhqD5yvhCEXUWFS4iyzETwC3HM5TG2tarYho4=;
+	s=arc-20240116; t=1728392982; c=relaxed/simple;
+	bh=9URjn7JKuJZYGFaJLMZ1zRZkHuseKqDwZ4l9UI8R92o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e5OL/GSVLksrFhFHyR23yC3TEBJZH63TsZ6nMbQkqay5AC5JfXW3LmCf3aGF7ZASPZyEKwaF1FeTYDaKJh8GNa72gCtbMANbfHwm5H+huuTpzNzpiKsZpJDFQSeVdjgfrg8lGkpG2CCSW2gG4Gj+yoo1JxYrkAvDpHKkIaYO1xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbP1jvfC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4D7C4CECC;
-	Tue,  8 Oct 2024 12:22:08 +0000 (UTC)
+	 MIME-Version; b=KXV2GznUllUihRtnFlmljwAF6N6vWrAhJvQ6xlC/vPEtdJgvCd/GMDzKiR43uK+XwWYukjgINRy4MlJMhvHdLn3Rc2rk5K8ywlHG2P4uvDzKQTEmIneSrFVRrcY/o0NRXltf1X9H36hisBXss9iTK9M4Otly3Dbc/qayxAqNlx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3EeQJff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53CDFC4CEC7;
+	Tue,  8 Oct 2024 13:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390130;
-	bh=Rb/ih7nhqD5yvhCEXUWFS4iyzETwC3HM5TG2tarYho4=;
+	s=korg; t=1728392981;
+	bh=9URjn7JKuJZYGFaJLMZ1zRZkHuseKqDwZ4l9UI8R92o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbP1jvfCbrPtHYIZFlhv8RQedNW4NtVnPvGDW7hTtm3GbSWW5QDPK/eYgCw4ohqTI
-	 Gurw6H8U4xsDA0a1gUhG6Fnxi1YeayknSEL5UcAEGEqJWDxidc1a8xET1phdDhuwAi
-	 854JzkNVlDMeb2Fxtbn57ckwehFu/657mbM80mAg=
+	b=h3EeQJfffcMd8az0zv5t9cIy+Q/DArlcglQXetySb3Lcs/SNyhQudqwg7d0SC+u63
+	 SVi3klNbj/HJgxkDakwIRU8ZU9aDcw/MGCgx4rDRJMsczXMB8Mt7qHi55Nx6OtnScE
+	 daf+hrekEzQqpiJ2SZQTxcCCXQ3bW4eC7IygItxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Benesh <scott.benesh@microchip.com>,
-	Mike McGowen <mike.mcgowen@microchip.com>,
-	David Strahan <David.Strahan@microchip.com>,
-	Don Brace <don.brace@microchip.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 200/482] scsi: smartpqi: add new controller PCI IDs
+Subject: [PATCH 6.6 018/386] net: ieee802154: mcr20a: Use IRQF_NO_AUTOEN flag in request_irq()
 Date: Tue,  8 Oct 2024 14:04:23 +0200
-Message-ID: <20241008115656.179737595@linuxfoundation.org>
+Message-ID: <20241008115630.041567337@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Strahan <David.Strahan@microchip.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit dbc39b84540f746cc814e69b21e53e6d3e12329a ]
+[ Upstream commit 09573b1cc76e7ff8f056ab29ea1cdc152ec8c653 ]
 
-All PCI ID entries in Hex.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-Add new cisco pci ids:
-                                             VID  / DID  / SVID / SDID
-                                             ----   ----   ----   ----
-                                             9005   028f   1137   02fe
-                                             9005   028f   1137   02ff
-                                             9005   028f   1137   0300
-
-Add new h3c pci ids:
-                                             VID  / DID  / SVID / SDID
-                                             ----   ----   ----   ----
-                                             9005   028f   193d   0462
-                                             9005   028f   193d   8462
-
-Add new ieit pci ids:
-                                             VID  / DID  / SVID / SDID
-                                             ----   ----   ----   ----
-                                             9005   028f   1ff9   00a3
-
-Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
-Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
-Signed-off-by: David Strahan <David.Strahan@microchip.com>
-Signed-off-by: Don Brace <don.brace@microchip.com>
-Link: https://lore.kernel.org/r/20240827185501.692804-5-don.brace@microchip.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 8c6ad9cc5157 ("ieee802154: Add NXP MCR20A IEEE 802.15.4 transceiver driver")
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/20240911094234.1922418-1-ruanjinjie@huawei.com
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/smartpqi/smartpqi_init.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/net/ieee802154/mcr20a.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-index a4719af88718e..4230714e5f3a1 100644
---- a/drivers/scsi/smartpqi/smartpqi_init.c
-+++ b/drivers/scsi/smartpqi/smartpqi_init.c
-@@ -9428,6 +9428,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x152d, 0x8a37)
- 	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x193d, 0x0462)
-+	},
- 	{
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x193d, 0x1104)
-@@ -9468,6 +9472,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x193d, 0x8461)
- 	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x193d, 0x8462)
-+	},
- 	{
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x193d, 0xc460)
-@@ -10176,6 +10184,18 @@ static const struct pci_device_id pqi_pci_id_table[] = {
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x1137, 0x02fa)
- 	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1137, 0x02fe)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1137, 0x02ff)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1137, 0x0300)
-+	},
- 	{
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x1ff9, 0x0045)
-@@ -10352,6 +10372,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x1f51, 0x1045)
- 	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x00a3)
-+	},
- 	{
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       PCI_ANY_ID, PCI_ANY_ID)
+diff --git a/drivers/net/ieee802154/mcr20a.c b/drivers/net/ieee802154/mcr20a.c
+index 87abe3b46316e..bab92f19c4f48 100644
+--- a/drivers/net/ieee802154/mcr20a.c
++++ b/drivers/net/ieee802154/mcr20a.c
+@@ -1303,16 +1303,13 @@ mcr20a_probe(struct spi_device *spi)
+ 		irq_type = IRQF_TRIGGER_FALLING;
+ 
+ 	ret = devm_request_irq(&spi->dev, spi->irq, mcr20a_irq_isr,
+-			       irq_type, dev_name(&spi->dev), lp);
++			       irq_type | IRQF_NO_AUTOEN, dev_name(&spi->dev), lp);
+ 	if (ret) {
+ 		dev_err(&spi->dev, "could not request_irq for mcr20a\n");
+ 		ret = -ENODEV;
+ 		goto free_dev;
+ 	}
+ 
+-	/* disable_irq by default and wait for starting hardware */
+-	disable_irq(spi->irq);
+-
+ 	ret = ieee802154_register_hw(hw);
+ 	if (ret) {
+ 		dev_crit(&spi->dev, "ieee802154_register_hw failed\n");
 -- 
 2.43.0
 
