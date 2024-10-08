@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-82998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B50E994FDB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:30:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98877995007
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:31:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 093FA281179
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:30:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44E3D1F239F5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69D11DFE2B;
-	Tue,  8 Oct 2024 13:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F6E81DF25A;
+	Tue,  8 Oct 2024 13:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KLWDbsGa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DkvIYHVf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D451E00B3;
-	Tue,  8 Oct 2024 13:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAEE1DE89A;
+	Tue,  8 Oct 2024 13:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728394138; cv=none; b=IoPNMXR4XKG0b+4J5XH3GsGhOyj9bRJ58QNN13xiQXVvqKuNnHLeA0z/0BhmdULDWBX1r9DuDWTgZCuy5HB/ZcbzoH1YI3uiyBrX5jBQdhGTzV+hvOKAojuha9HxiPjosKQZJhD51uA/D4xWqRN/sPK/PKSRFSBWuOVWqryGk78=
+	t=1728394257; cv=none; b=cngTk+tw9drEDHUVfLeUtjPdWyO5KIvWWB2q0i2YtoRza9SxfGxu6Xv5jcnA3wu1pp+S2btnWlqId27wynb1Vq7gmmstW7+giqMEeDeST8LPwTBhfKsuSHiE98ZT1eBnUSPt/Xl84sfXaZuA7LFNYwAMygLQLN4Ipow1VXg95PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728394138; c=relaxed/simple;
-	bh=tO5v7ZIZGm4fXhuyYewtAfLQqeJgVEGtLFry/RK3oDg=;
+	s=arc-20240116; t=1728394257; c=relaxed/simple;
+	bh=o206EfaSPRrXzI+LR0e5yzNETS5afby1DvdIuxp+GgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SEKPz6cI5T8bbrZizvI5HYqN9mDy9yPOSNsZrwn3IDZ7SlfeKvdLAbu5N8b05yMaE4sketVsduVW5+aGsFrbVb0US/SmkkXXBktXtKL+4sbMmRmgIuWHrYFQNjiI/q09FIZta3cqpCyLzeZhXlMA2LTp5h+3PEIFLyAwlcJ7Sx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KLWDbsGa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBFBC4CECD;
-	Tue,  8 Oct 2024 13:28:57 +0000 (UTC)
+	 MIME-Version; b=JoKRv/KmWXHabAITCLJKkAZHtFXYxxkGtcqexMFGGq8iXzoJ/BPDjnTGdzOfreAJtSHnnnJ0Xr/DaP8+Lq2/i4yC5o7vxb8ZAF9/QKawMpJlT+UPtChO8T3KlftwiFDdPonpnB33TEmwlEwNH5UvBQUpvhX0mpqrNSa3H45Ch3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DkvIYHVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB27C4CECF;
+	Tue,  8 Oct 2024 13:30:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728394138;
-	bh=tO5v7ZIZGm4fXhuyYewtAfLQqeJgVEGtLFry/RK3oDg=;
+	s=korg; t=1728394256;
+	bh=o206EfaSPRrXzI+LR0e5yzNETS5afby1DvdIuxp+GgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KLWDbsGay1yOErLY/0GDekfOn2bA3y8PtAP4U2+ed9h1SpjIzFt+S+gGNDp/iwFkN
-	 RAu/G9iHKP3KfGCdU9cZXvWPWPj7hiCwSYc9WBxzWYaM9wrcYckYGkSg1oKGiUwcmT
-	 s/qHuna/fKOE/193R/0w2M0+yIm84hYlUHF5/b0c=
+	b=DkvIYHVfaaV/kEHDYgPPrYsghrYdsgcfZMgrWCRqrrexIPdDB2F4JrH9tdqfiKx6A
+	 YDiXEkoCdV40q9RepH4GKgLN8y3G77GpgIe1fjT4aBzECp5DfdugkntIvBn1QdrdBI
+	 DQzp6HzfJ2tqHIpInqYK+5NLqRo+a6bmi5Yr7EkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 357/386] iio: pressure: bmp280: Fix waiting time for BMP3xx configuration
-Date: Tue,  8 Oct 2024 14:10:02 +0200
-Message-ID: <20241008115643.432495376@linuxfoundation.org>
+Subject: [PATCH 6.6 358/386] r8169: Fix spelling mistake: "tx_underun" -> "tx_underrun"
+Date: Tue,  8 Oct 2024 14:10:03 +0200
+Message-ID: <20241008115643.470989198@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
 References: <20241008115629.309157387@linuxfoundation.org>
@@ -67,45 +68,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 262a6634bcc4f0c1c53d13aa89882909f281a6aa ]
+[ Upstream commit 8df9439389a44fb2cc4ef695e08d6a8870b1616c ]
 
-According to the datasheet, both pressure and temperature can go up to
-oversampling x32. With this option, the maximum measurement time is not
-80ms (this is for press x32 and temp x2), but it is 130ms nominal
-(calculated from table 3.9.2) and since most of the maximum values
-are around +15%, it is configured to 150ms.
+There is a spelling mistake in the struct field tx_underun, rename
+it to tx_underrun.
 
-Fixes: 8d329309184d ("iio: pressure: bmp280: Add support for BMP380 sensor family")
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Link: https://patch.msgid.link/20240711211558.106327-3-vassilisamir@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/20240909140021.64884-1-colin.i.king@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: ced8e8b8f40a ("r8169: add tally counter fields added with RTL8125")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/bmp280-core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 3ba718b11c464..84f6b333c9195 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -1203,10 +1203,11 @@ static int bmp380_chip_config(struct bmp280_data *data)
- 		}
- 		/*
- 		 * Waits for measurement before checking configuration error
--		 * flag. Selected longest measure time indicated in
--		 * section 3.9.1 in the datasheet.
-+		 * flag. Selected longest measurement time, calculated from
-+		 * formula in datasheet section 3.9.2 with an offset of ~+15%
-+		 * as it seen as well in table 3.9.1.
- 		 */
--		msleep(80);
-+		msleep(150);
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 8a732edac15a0..382ba8b04cbfa 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -566,7 +566,7 @@ struct rtl8169_counters {
+ 	__le64	rx_broadcast;
+ 	__le32	rx_multicast;
+ 	__le16	tx_aborted;
+-	__le16	tx_underun;
++	__le16	tx_underrun;
+ };
  
- 		/* Check config error flag */
- 		ret = regmap_read(data->regmap, BMP380_REG_ERROR, &tmp);
+ struct rtl8169_tc_offsets {
+@@ -1726,7 +1726,7 @@ static void rtl8169_get_ethtool_stats(struct net_device *dev,
+ 	data[9] = le64_to_cpu(counters->rx_broadcast);
+ 	data[10] = le32_to_cpu(counters->rx_multicast);
+ 	data[11] = le16_to_cpu(counters->tx_aborted);
+-	data[12] = le16_to_cpu(counters->tx_underun);
++	data[12] = le16_to_cpu(counters->tx_underrun);
+ }
+ 
+ static void rtl8169_get_strings(struct net_device *dev, u32 stringset, u8 *data)
 -- 
 2.43.0
 
