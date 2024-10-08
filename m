@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-82035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408DF994ABA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DD7994F79
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:28:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F01D4285956
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83BF31F2387D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BE31DE2A5;
-	Tue,  8 Oct 2024 12:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BD21E00BD;
+	Tue,  8 Oct 2024 13:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWQZCLlX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ga5mk+k8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064F41779B1;
-	Tue,  8 Oct 2024 12:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68C21DF722;
+	Tue,  8 Oct 2024 13:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390953; cv=none; b=Wxq/vVGwkT4R9lR+bhGq20ROSaDjCb4wMssFn1+tu32pxxdJiWyVhjqg7StusMcS7vkumm1zFbiX+CPFAv2nO2mBQNmTzIFg7yPKu5t8FJ3S2mRQsi3DQEpicbqmg0+vkDtDYZi/vgAHruUMjnA01FxkQqPNpr61HQTmB6zRJYw=
+	t=1728393920; cv=none; b=UPFnI+iJEa+naSDpQl7qMNaeAQIlLs6ARVLVMtK06V2YQ7OzMghWE74b3L6mC9PlF4acpvYZcAg351J82sf58kaRVP1Vo4l7DBAEwdQX7w+9uz045TyCmgZ0kpaevfbgFmxAaVcuBH0y0QFlXADdI3+n9fXsjOoc1fNMIbT+c2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390953; c=relaxed/simple;
-	bh=kmnFd4lbodnVAvuKKV+LmzI+Exi83aFuq7yscDDDOtI=;
+	s=arc-20240116; t=1728393920; c=relaxed/simple;
+	bh=JT7Zj7vf/sAMBI/xptZdjDujO4IhQb6Bdu8ijBtjoEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2AwrMT/PJbil+yuuEFL/MDgi+cWKoYKPI2S1QyItPJ21XMdXSHxlWojJ/FxvpI03L5/tTOXHAMxl/WyitG2VgaYmoH1wSgdH1d1MIKDM6xR2y/y9m3HGJd7ijQxzq47jzi0DAvPxhwgY2UvMyZ0/Mruga8sXWHsMLi4J6tZBWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWQZCLlX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72ACAC4CEC7;
-	Tue,  8 Oct 2024 12:35:52 +0000 (UTC)
+	 MIME-Version; b=In2RYmKj+kxavHyxam6BH9dsE6sNikaGMLR9fSq6zy3Is7cd1NB9zD4Z9xovEhQUs8ZXvbu/NuPUtYBu/o6rXiqB3XQMRBYzv6ESnvj+s7kq6RnjBu0Qk9ZpfsXH4XGpDuQFJEvKFjSfbaJlgluoEm1dBM4d5/SkyrEsvKnYjSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ga5mk+k8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B86AEC4CECC;
+	Tue,  8 Oct 2024 13:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390952;
-	bh=kmnFd4lbodnVAvuKKV+LmzI+Exi83aFuq7yscDDDOtI=;
+	s=korg; t=1728393920;
+	bh=JT7Zj7vf/sAMBI/xptZdjDujO4IhQb6Bdu8ijBtjoEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWQZCLlX253liaa02NLU6We0VCR/wPy8w6vEDd2UinWhlSFVufreAqa5eBXkoRySv
-	 ziAV5Qf5Hg2Cf4lopd14QLFiwNP8LtIdzjGu1t7rriH//iMOHopNIDjQqX+yGxIDXm
-	 NLfFXEMekPtMzeJyqjwiWABWbI+xHkf32xEdNIec=
+	b=ga5mk+k8jPwHVE5HF0azPyCluo9w+Fknw29urHUIAmMC2Ri+HvZdNZb3nK1S+oSa+
+	 IFSNp51i8adR0PLSs1SI2cq9CtFTPOV2pzDh+x9z+kpKuo/yq8A91ffJg7y5L/AW1U
+	 ul5EmQanbfCEwZyp9esKC5SrwX99mxelu8egEN+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Lin <wayne.lin@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Fangzhi Zuo <jerry.zuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.10 445/482] drm/amd/display: Fix system hang while resume with TBT monitor
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 263/386] ocfs2: remove unreasonable unlock in ocfs2_read_blocks
 Date: Tue,  8 Oct 2024 14:08:28 +0200
-Message-ID: <20241008115706.035376366@linuxfoundation.org>
+Message-ID: <20241008115639.740079005@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +70,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-commit 52d4e3fb3d340447dcdac0e14ff21a764f326907 upstream.
+commit c03a82b4a0c935774afa01fd6d128b444fd930a1 upstream.
 
-[Why]
-Connected with a Thunderbolt monitor and do the suspend and the system
-may hang while resume.
+Patch series "Misc fixes for ocfs2_read_blocks", v5.
 
-The TBT monitor HPD will be triggered during the resume procedure
-and call the drm_client_modeset_probe() while
-struct drm_connector connector->dev->master is NULL.
+This series contains 2 fixes for ocfs2_read_blocks().  The first patch fix
+the issue reported by syzbot, which detects bad unlock balance in
+ocfs2_read_blocks().  The second patch fixes an issue reported by Heming
+Zhao when reviewing above fix.
 
-It will mess up the pipe topology after resume.
 
-[How]
-Skip the TBT monitor HPD during the resume procedure because we
-currently will probe the connectors after resume by default.
+This patch (of 2):
 
-Reviewed-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 453f86a26945207a16b8f66aaed5962dc2b95b85)
-Cc: stable@vger.kernel.org
+There was a lock release before exiting, so remove the unreasonable unlock.
+
+Link: https://lkml.kernel.org/r/20240902023636.1843422-1-joseph.qi@linux.alibaba.com
+Link: https://lkml.kernel.org/r/20240902023636.1843422-2-joseph.qi@linux.alibaba.com
+Fixes: cf76c78595ca ("ocfs2: don't put and assigning null to bh allocated outside")
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ab134185af9ef88dfed5
+Tested-by: syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>	[4.20+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ocfs2/buffer_head_io.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -758,6 +758,12 @@ static void dmub_hpd_callback(struct amd
- 		return;
- 	}
- 
-+	/* Skip DMUB HPD IRQ in suspend/resume. We will probe them later. */
-+	if (notify->type == DMUB_NOTIFICATION_HPD && adev->in_suspend) {
-+		DRM_INFO("Skip DMUB HPD IRQ callback in suspend/resume\n");
-+		return;
-+	}
-+
- 	link_index = notify->link_index;
- 	link = adev->dm.dc->links[link_index];
- 	dev = adev->dm.ddev;
+--- a/fs/ocfs2/buffer_head_io.c
++++ b/fs/ocfs2/buffer_head_io.c
+@@ -235,7 +235,6 @@ int ocfs2_read_blocks(struct ocfs2_cachi
+ 		if (bhs[i] == NULL) {
+ 			bhs[i] = sb_getblk(sb, block++);
+ 			if (bhs[i] == NULL) {
+-				ocfs2_metadata_cache_io_unlock(ci);
+ 				status = -ENOMEM;
+ 				mlog_errno(status);
+ 				/* Don't forget to put previous bh! */
 
 
 
