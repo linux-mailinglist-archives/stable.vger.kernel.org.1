@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87840994D18
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:01:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 777B0994AA6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:35:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF8D31C25206
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:01:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA0D21C241F2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065DA1DE4DB;
-	Tue,  8 Oct 2024 13:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCB71CCB32;
+	Tue,  8 Oct 2024 12:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/Q8zpVv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBV5FChX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D1818F2FA;
-	Tue,  8 Oct 2024 13:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D461779B1;
+	Tue,  8 Oct 2024 12:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392494; cv=none; b=M6JVYxouKukfG3SenYwd8Ccpzrry+kIMmFB1YU7sdr2IUXABQmTeZDVGrbW2Fl9OVIAfNBZ+veck5sAatxKhIAbfKmyFIDJJRfoxabIEsTt7qs9GmYy3tIbHw74qT9A/6IIMqRXitn9WaaVmmmyVlW4mkG/kSNcjktOMWHc8UXE=
+	t=1728390911; cv=none; b=W3sT2ssBGq7G7/AG5+I+ABxq/SEwy3033xaPVwguRk2BLdD1SAIWM4sU2baJjlzAUZu5TVcIVwzC79CLmgDeGuxwraYSbUEk3GDmbv8lNChjvEM9w9Avn/FM8yeaFr+YkAn+doYOOJtu9Hna5QJQyZSsOp7jTcl5L66KPs0DYgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392494; c=relaxed/simple;
-	bh=aOyJtIr//clOoR/PkKpvZo7iuWtfAWOvKXE2YXLQnmo=;
+	s=arc-20240116; t=1728390911; c=relaxed/simple;
+	bh=82H4TnK/JcTCYbsK/axVRRZczbxDaQ1xyarkpkjyvCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3g6gxqzYWmsFoeFfHtV2zoE/dvZE9K3ZaVHV7XBZHBcraNwJ/CbNrTkTF+MjbEt+LJSj4nUJSXg5WrNdN6NocrxD4zfOZNSEQ6LAPgrhnFiJTjTbBrj27kP+bxatT9v3T6jH7bSeY8ePm4JG+ptGaCJaz9RXUo8AR1n8+1oAIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/Q8zpVv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F5FC4CEC7;
-	Tue,  8 Oct 2024 13:01:34 +0000 (UTC)
+	 MIME-Version; b=NxZVQht050Ry+8XooW6udZ7CSUOa4Hq8brWcKacSApfE3LER3PTfMYbwWG8F//zmwSbvZsKu0ffh7PAPS6J6Bwm2LlNxPeimhMi78h1rlGy4oroqwZSsYY5+Wiy7MX8XnTHFkeNPGbqSt0QxjuDkLH+xlBGCWZU9OYmE0keHcQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bBV5FChX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B79C4CEC7;
+	Tue,  8 Oct 2024 12:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392494;
-	bh=aOyJtIr//clOoR/PkKpvZo7iuWtfAWOvKXE2YXLQnmo=;
+	s=korg; t=1728390911;
+	bh=82H4TnK/JcTCYbsK/axVRRZczbxDaQ1xyarkpkjyvCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/Q8zpVvEgNcSu4PCdl4W8/9VNFNlCaOgdVggU6RpGvCfHCCGH3YCCxW57esMoYs8
-	 D3V8LiTECqEzPwbIlprZzOm/73UBNELtjFXZ9bYghfjKTX+YIUdtbf8/y6rH1SshFB
-	 Aa9o/Knp+HFKbrU7p9QkGdClZFWodBRz/iiNWydk=
+	b=bBV5FChXVcgVjovGX3X9u1QfNyFuS67R1DlGZwm6rR4Nhl/p31N0g1Hzd9DSMKvek
+	 ai+0AMefslZ4yZKjoqqqG/7rCWN/+RdLHvH59nIlSRpSubz0ZFY/Eusnag9fiYc3G5
+	 v+ZLBtCzo+jXohrr/T/kPtOtbefPJWUHDHZy15jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Aoyama Wataru <wataru.aoyama@sony.com>,
-	Namjae Jeon <linkinjeon@kernel.org>
-Subject: [PATCH 6.11 431/558] exfat: fix memory leak in exfat_load_bitmap()
-Date: Tue,  8 Oct 2024 14:07:41 +0200
-Message-ID: <20241008115719.233612962@linuxfoundation.org>
+	Ajit Pandey <quic_ajipan@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 399/482] clk: qcom: clk-alpha-pll: Fix CAL_L_VAL override for LUCID EVO PLL
+Date: Tue,  8 Oct 2024 14:07:42 +0200
+Message-ID: <20241008115704.111319633@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuezhang Mo <Yuezhang.Mo@sony.com>
+From: Ajit Pandey <quic_ajipan@quicinc.com>
 
-commit d2b537b3e533f28e0d97293fe9293161fe8cd137 upstream.
+commit fff617979f97c773aaa9432c31cf62444b3bdbd4 upstream.
 
-If the first directory entry in the root directory is not a bitmap
-directory entry, 'bh' will not be released and reassigned, which
-will cause a memory leak.
+In LUCID EVO PLL CAL_L_VAL and L_VAL bitfields are part of single
+PLL_L_VAL register. Update for L_VAL bitfield values in PLL_L_VAL
+register using regmap_write() API in __alpha_pll_trion_set_rate
+callback will override LUCID EVO PLL initial configuration related
+to PLL_CAL_L_VAL bit fields in PLL_L_VAL register.
 
-Fixes: 1e49a94cf707 ("exfat: add bitmap operations")
+Observed random PLL lock failures during PLL enable due to such
+override in PLL calibration value. Use regmap_update_bits() with
+L_VAL bitfield mask instead of regmap_write() API to update only
+PLL_L_VAL bitfields in __alpha_pll_trion_set_rate callback.
+
+Fixes: 260e36606a03 ("clk: qcom: clk-alpha-pll: add Lucid EVO PLL configuration interfaces")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Reviewed-by: Aoyama Wataru <wataru.aoyama@sony.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Ajit Pandey <quic_ajipan@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Acked-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20240611133752.2192401-2-quic_ajipan@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/exfat/balloc.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/clk/qcom/clk-alpha-pll.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/exfat/balloc.c
-+++ b/fs/exfat/balloc.c
-@@ -91,11 +91,8 @@ int exfat_load_bitmap(struct super_block
- 				return -EIO;
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -1665,7 +1665,7 @@ static int __alpha_pll_trion_set_rate(st
+ 	if (ret < 0)
+ 		return ret;
  
- 			type = exfat_get_entry_type(ep);
--			if (type == TYPE_UNUSED)
--				break;
--			if (type != TYPE_BITMAP)
--				continue;
--			if (ep->dentry.bitmap.flags == 0x0) {
-+			if (type == TYPE_BITMAP &&
-+			    ep->dentry.bitmap.flags == 0x0) {
- 				int err;
+-	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
++	regmap_update_bits(pll->clkr.regmap, PLL_L_VAL(pll), LUCID_EVO_PLL_L_VAL_MASK,  l);
+ 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
  
- 				err = exfat_allocate_bitmap(sb, ep);
-@@ -103,6 +100,9 @@ int exfat_load_bitmap(struct super_block
- 				return err;
- 			}
- 			brelse(bh);
-+
-+			if (type == TYPE_UNUSED)
-+				return -EINVAL;
- 		}
- 
- 		if (exfat_get_next_cluster(sb, &clu.dir))
+ 	/* Latch the PLL input */
 
 
 
