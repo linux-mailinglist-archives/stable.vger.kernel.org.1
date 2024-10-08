@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-82929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85619994FD1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:30:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 683E0994AD9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8957B2700E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:27:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9132E1C24E30
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3541DF27C;
-	Tue,  8 Oct 2024 13:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244451DE89D;
+	Tue,  8 Oct 2024 12:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtvvXgRw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hqYBYt6b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BEE81DEFE3;
-	Tue,  8 Oct 2024 13:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5ED71D27B3;
+	Tue,  8 Oct 2024 12:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393907; cv=none; b=VYRXufOTXU3/k5CtGtofedCNoh09zVSF6jdKD9ucJf4u6jv+mqq8ScLtcens9TjUzmITbaRWeqFqleQvAqkFm3gycliBfgQ1JbDQRXDA8IlsCz/VzvUO39PJLN6lB1zYcNf6ulgv++dbz9nd6GZhpE8KQWjCRMEA6InzLuU5SAI=
+	t=1728391036; cv=none; b=dFA5zXpytCUDqIPhevNKoItGp/5rgxp8B2wo2/8BwcQIzC96ziHAapVRoYAvWKrMZPlHenEtV//qxSCWyh2fRxU1pfra8jLp2DJyk6AsKTfKqPIPInWlP908iUdgNAk+Apvpx9pNAXW+zDwEWHTMQPuhYoFa58IfGPV4rdy0W9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393907; c=relaxed/simple;
-	bh=Uq6CmhkBhsWKaDveF76dwQtZXoeQMda+SlmHVjjHg+w=;
+	s=arc-20240116; t=1728391036; c=relaxed/simple;
+	bh=07bX+4aVAbh5nDFmEtZ3sjvqfiat0XOX1HLn+ZyRGnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HV0qDGkerIraJN5+A6MvMVW9z9rzcTHi8vhhEPn3C14oF4/nTMllLvBr2gNEFmLV3/2QSEjVLMQLUrdorgPFWf+D9xNfkofadJoKVRjeyL9+WLQogHdO6p3HQaOtcnBDRNV36RGF+F+f93EGp2hP6I1wL1PHXXM2q1Oa2ZuHr9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtvvXgRw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DAE5C4CECC;
-	Tue,  8 Oct 2024 13:25:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P+h1EkbfvarCC3UHcApzqqKzQiEfcbtRvUaESxCFgHlb1iAlwLHMAgHKeB6GKWjpp6qpW1Scs4MCVh8qv7p0U9zluPox3OBsMZ4unowUQ1TKRVTmEmUAMnfedh2GiFOYhx7GhcOpWQsoyzU4sERUH1dasbJbNgfk9DtQxa5MPe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hqYBYt6b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC61C4CEC7;
+	Tue,  8 Oct 2024 12:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393907;
-	bh=Uq6CmhkBhsWKaDveF76dwQtZXoeQMda+SlmHVjjHg+w=;
+	s=korg; t=1728391036;
+	bh=07bX+4aVAbh5nDFmEtZ3sjvqfiat0XOX1HLn+ZyRGnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KtvvXgRw7jno2jzlJG3+nxgnGUhvBctRY+51sIN0f+SGbv3DWyxlvtzmuZZAVl3da
-	 4qNVfwm3kA8WU7yzTybnl+teBLiLSyHlriu+4nyJUtbktuQdaFN7lHqU4pmiDofWom
-	 1E5vVMJlNCiyht5UbXuiLpZUApfwCqTlxFOtzBd8=
+	b=hqYBYt6bhzWo6UOZdvLC0khfgJduEd7SXvWOL+GpMNa+SD0seyTJYNMrkzSNzfa2b
+	 r3YoN7jhr7Uj7yQdjmFnPFS1VWThAGX28+Dw2gSnj8bWW2VZ/FXnfVqCBAvMuxFrfC
+	 qJViHXGw0ccOXwu5w5i4pbS98eARHsmHCJ81P30c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 288/386] clk: qcom: gcc-sm8150: De-register gcc_cpuss_ahb_clk_src
-Date: Tue,  8 Oct 2024 14:08:53 +0200
-Message-ID: <20241008115640.719619114@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 471/482] ACPI: battery: Simplify battery hook locking
+Date: Tue,  8 Oct 2024 14:08:54 +0200
+Message-ID: <20241008115707.048801301@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,131 +62,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-commit bab0c7a0bc586e736b7cd2aac8e6391709a70ef2 upstream.
+[ Upstream commit 86309cbed26139e1caae7629dcca1027d9a28e75 ]
 
-The branch clocks of gcc_cpuss_ahb_clk_src are marked critical
-and hence these clocks vote on XO blocking the suspend.
-De-register these clocks and its source as there is no rate
-setting happening on them.
+Move the conditional locking from __battery_hook_unregister()
+into battery_hook_unregister() and rename the low-level function
+to simplify the locking during battery hook removal.
 
-Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
-Cc: stable@vger.kernel.org
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-5-8b3eaa5fb856@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20241001212835.341788-2-W_Armin@gmx.de
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 76959aff14a0 ("ACPI: battery: Fix possible crash when unregistering a battery hook")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc8180x.c |   63 -----------------------------------------
- 1 file changed, 63 deletions(-)
+ drivers/acpi/battery.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/drivers/clk/qcom/gcc-sc8180x.c
-+++ b/drivers/clk/qcom/gcc-sc8180x.c
-@@ -260,28 +260,6 @@ static const struct clk_parent_data gcc_
- 	{ .hw = &gpll0_out_even.clkr.hw },
- };
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index 44ca989f16466..04610036e5dc5 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -703,28 +703,28 @@ static LIST_HEAD(acpi_battery_list);
+ static LIST_HEAD(battery_hook_list);
+ static DEFINE_MUTEX(hook_mutex);
  
--static const struct freq_tbl ftbl_gcc_cpuss_ahb_clk_src[] = {
--	F(19200000, P_BI_TCXO, 1, 0, 0),
--	F(50000000, P_GPLL0_OUT_MAIN, 12, 0, 0),
--	F(100000000, P_GPLL0_OUT_MAIN, 6, 0, 0),
--	{ }
--};
--
--static struct clk_rcg2 gcc_cpuss_ahb_clk_src = {
--	.cmd_rcgr = 0x48014,
--	.mnd_width = 0,
--	.hid_width = 5,
--	.parent_map = gcc_parent_map_0,
--	.freq_tbl = ftbl_gcc_cpuss_ahb_clk_src,
--	.clkr.hw.init = &(struct clk_init_data){
--		.name = "gcc_cpuss_ahb_clk_src",
--		.parent_data = gcc_parents_0,
--		.num_parents = ARRAY_SIZE(gcc_parents_0),
--		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
--	},
--};
--
- static const struct freq_tbl ftbl_gcc_emac_ptp_clk_src[] = {
- 	F(19200000, P_BI_TCXO, 1, 0, 0),
- 	F(50000000, P_GPLL0_OUT_EVEN, 6, 0, 0),
-@@ -1599,25 +1577,6 @@ static struct clk_branch gcc_cfg_noc_usb
- 	},
- };
+-static void __battery_hook_unregister(struct acpi_battery_hook *hook, int lock)
++static void battery_hook_unregister_unlocked(struct acpi_battery_hook *hook)
+ {
+ 	struct acpi_battery *battery;
++
+ 	/*
+ 	 * In order to remove a hook, we first need to
+ 	 * de-register all the batteries that are registered.
+ 	 */
+-	if (lock)
+-		mutex_lock(&hook_mutex);
+ 	list_for_each_entry(battery, &acpi_battery_list, list) {
+ 		if (!hook->remove_battery(battery->bat, hook))
+ 			power_supply_changed(battery->bat);
+ 	}
+ 	list_del(&hook->list);
+-	if (lock)
+-		mutex_unlock(&hook_mutex);
++
+ 	pr_info("extension unregistered: %s\n", hook->name);
+ }
  
--/* For CPUSS functionality the AHB clock needs to be left enabled */
--static struct clk_branch gcc_cpuss_ahb_clk = {
--	.halt_reg = 0x48000,
--	.halt_check = BRANCH_HALT_VOTED,
--	.clkr = {
--		.enable_reg = 0x52004,
--		.enable_mask = BIT(21),
--		.hw.init = &(struct clk_init_data){
--			.name = "gcc_cpuss_ahb_clk",
--			.parent_hws = (const struct clk_hw *[]){
--				      &gcc_cpuss_ahb_clk_src.clkr.hw
--			},
--			.num_parents = 1,
--			.flags = CLK_IS_CRITICAL | CLK_SET_RATE_PARENT,
--			.ops = &clk_branch2_ops,
--		},
--	},
--};
--
- static struct clk_branch gcc_cpuss_rbcpr_clk = {
- 	.halt_reg = 0x48008,
- 	.halt_check = BRANCH_HALT,
-@@ -3150,25 +3109,6 @@ static struct clk_branch gcc_sdcc4_apps_
- 	},
- };
+ void battery_hook_unregister(struct acpi_battery_hook *hook)
+ {
+-	__battery_hook_unregister(hook, 1);
++	mutex_lock(&hook_mutex);
++	battery_hook_unregister_unlocked(hook);
++	mutex_unlock(&hook_mutex);
+ }
+ EXPORT_SYMBOL_GPL(battery_hook_unregister);
  
--/* For CPUSS functionality the SYS NOC clock needs to be left enabled */
--static struct clk_branch gcc_sys_noc_cpuss_ahb_clk = {
--	.halt_reg = 0x4819c,
--	.halt_check = BRANCH_HALT_VOTED,
--	.clkr = {
--		.enable_reg = 0x52004,
--		.enable_mask = BIT(0),
--		.hw.init = &(struct clk_init_data){
--			.name = "gcc_sys_noc_cpuss_ahb_clk",
--			.parent_hws = (const struct clk_hw *[]){
--				      &gcc_cpuss_ahb_clk_src.clkr.hw
--			},
--			.num_parents = 1,
--			.flags = CLK_IS_CRITICAL | CLK_SET_RATE_PARENT,
--			.ops = &clk_branch2_ops,
--		},
--	},
--};
--
- static struct clk_branch gcc_tsif_ahb_clk = {
- 	.halt_reg = 0x36004,
- 	.halt_check = BRANCH_HALT,
-@@ -4258,8 +4198,6 @@ static struct clk_regmap *gcc_sc8180x_cl
- 	[GCC_CFG_NOC_USB3_MP_AXI_CLK] = &gcc_cfg_noc_usb3_mp_axi_clk.clkr,
- 	[GCC_CFG_NOC_USB3_PRIM_AXI_CLK] = &gcc_cfg_noc_usb3_prim_axi_clk.clkr,
- 	[GCC_CFG_NOC_USB3_SEC_AXI_CLK] = &gcc_cfg_noc_usb3_sec_axi_clk.clkr,
--	[GCC_CPUSS_AHB_CLK] = &gcc_cpuss_ahb_clk.clkr,
--	[GCC_CPUSS_AHB_CLK_SRC] = &gcc_cpuss_ahb_clk_src.clkr,
- 	[GCC_CPUSS_RBCPR_CLK] = &gcc_cpuss_rbcpr_clk.clkr,
- 	[GCC_DDRSS_GPU_AXI_CLK] = &gcc_ddrss_gpu_axi_clk.clkr,
- 	[GCC_DISP_HF_AXI_CLK] = &gcc_disp_hf_axi_clk.clkr,
-@@ -4396,7 +4334,6 @@ static struct clk_regmap *gcc_sc8180x_cl
- 	[GCC_SDCC4_AHB_CLK] = &gcc_sdcc4_ahb_clk.clkr,
- 	[GCC_SDCC4_APPS_CLK] = &gcc_sdcc4_apps_clk.clkr,
- 	[GCC_SDCC4_APPS_CLK_SRC] = &gcc_sdcc4_apps_clk_src.clkr,
--	[GCC_SYS_NOC_CPUSS_AHB_CLK] = &gcc_sys_noc_cpuss_ahb_clk.clkr,
- 	[GCC_TSIF_AHB_CLK] = &gcc_tsif_ahb_clk.clkr,
- 	[GCC_TSIF_INACTIVITY_TIMERS_CLK] = &gcc_tsif_inactivity_timers_clk.clkr,
- 	[GCC_TSIF_REF_CLK] = &gcc_tsif_ref_clk.clkr,
+@@ -750,7 +750,7 @@ void battery_hook_register(struct acpi_battery_hook *hook)
+ 			 * hooks.
+ 			 */
+ 			pr_err("extension failed to load: %s", hook->name);
+-			__battery_hook_unregister(hook, 0);
++			battery_hook_unregister_unlocked(hook);
+ 			goto end;
+ 		}
+ 
+@@ -789,7 +789,7 @@ static void battery_hook_add_battery(struct acpi_battery *battery)
+ 			 */
+ 			pr_err("error in extension, unloading: %s",
+ 					hook_node->name);
+-			__battery_hook_unregister(hook_node, 0);
++			battery_hook_unregister_unlocked(hook_node);
+ 		}
+ 	}
+ 	mutex_unlock(&hook_mutex);
+@@ -822,7 +822,7 @@ static void __exit battery_hook_exit(void)
+ 	 * need to remove the hooks.
+ 	 */
+ 	list_for_each_entry_safe(hook, ptr, &battery_hook_list, list) {
+-		__battery_hook_unregister(hook, 1);
++		battery_hook_unregister(hook);
+ 	}
+ 	mutex_destroy(&hook_mutex);
+ }
+-- 
+2.43.0
+
 
 
 
