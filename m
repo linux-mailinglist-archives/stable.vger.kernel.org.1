@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-82057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B73C994ADE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C965C994D41
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:03:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0DE1B272A6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7544F1F243CD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D53D1DE4CD;
-	Tue,  8 Oct 2024 12:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C05C1DE8A0;
+	Tue,  8 Oct 2024 13:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qt/7lilb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FVfNgslL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521891779B1;
-	Tue,  8 Oct 2024 12:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE63A1DE4CC;
+	Tue,  8 Oct 2024 13:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391024; cv=none; b=NGkmqSLWWGlNSljE1pdLqXEwqgAKoxGQI/uwOMriI02JuY5ODp7EhBKObV8v7hhyhdA48TfJBTGH8kgqwpsglXEX4EgHS9BqglKRBugDpxeVmm6KgfAeFYv5zgy/fA1n7CYRpbx06fEz7F4T1kL7d04A7ckIVx3iw2DcUZJbaco=
+	t=1728392623; cv=none; b=cQrkCPNx+JW9cu3ZGA0bxEAaHBqBsqKlgdNuDoqLDq1OR/KcJN0x/ISVfQHcEuiGeMRmOB3RLxZzUpaUOYpetvG2nVW9LPveJ4mOamsmS5f4hLQc9DHQENh/yLFQegir/6IowUkVR9tdIoi0S8rtvegOqV9pBNm//UQuarH/qlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391024; c=relaxed/simple;
-	bh=92v5ZQv+el85ndIF/MtEwaUCWokX8F2P8nIk2n9tYtQ=;
+	s=arc-20240116; t=1728392623; c=relaxed/simple;
+	bh=w0jSK/FZJMrRszU6PwQmssZEV1mFmnO4hRrYWmiiXWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JsvGKPg8y2vbSj0Qjrgs5sYOcnxuiraWF52X2dBUUr4rokr/qAfD6v4GLdXIt2lRSum8GddL6GQG0RId065GesuHXDPxu5j/IlOoRJ3p30hx1GovqDo6PBxMGs0SFijPmgyXL5UDmBBFy6osaab8LM1CBKDrM87/vJKDL/NWkwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qt/7lilb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF23DC4CEC7;
-	Tue,  8 Oct 2024 12:37:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gOFN4TpJWzj5naPZuT951ugiJLhQIJRQu5z0A0k8RpZOPOeS8tlfUe6pJdLVsRS1Muqtyn4ldkNfFUJV9CqfBATuSfNYTK6SJZtOP1lT9yRYzxVWsVYD4L2GPKrl0m7/N864BhC0NIvVB82CK090sLOauQHbcbRaeCD2dxbc6X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FVfNgslL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D57FC4CEC7;
+	Tue,  8 Oct 2024 13:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391024;
-	bh=92v5ZQv+el85ndIF/MtEwaUCWokX8F2P8nIk2n9tYtQ=;
+	s=korg; t=1728392623;
+	bh=w0jSK/FZJMrRszU6PwQmssZEV1mFmnO4hRrYWmiiXWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qt/7lilb/NEWYUwcYTl19EHQiqt272sO4XzfLEtJlcIa24+axOKNSxPWf5O1dk76s
-	 bJy/SNktjZrCyh2rhfikj018q9Nt+1weBx96ymjAoektxKWeKr7JbosKO+ZSDcvbvv
-	 h+2nQpruIVk8ZI0LVV6oZlXpJ/UCttvlJbg+OAdY=
+	b=FVfNgslLnpRIvRCF+e9+f5x7ZDbDmCmhfXywfaR0YSmI/KRLPhIbHUS9YXIJf39Zq
+	 1UdBI38lxFeXXhv9AV/jgWJPGTvUnstseVqTOX2BJXk3Mewxu8vCQE0FxXhkX4ovT7
+	 +VWYkXtJx0L8rrBjnaDfNbFF9hO94japQ5gaXra8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>
-Subject: [PATCH 6.10 436/482] drm/panthor: Dont add write fences to the shared BOs
-Date: Tue,  8 Oct 2024 14:08:19 +0200
-Message-ID: <20241008115705.682701417@linuxfoundation.org>
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.11 470/558] iio: magnetometer: ak8975: Fix reading for ak099xx sensors
+Date: Tue,  8 Oct 2024 14:08:20 +0200
+Message-ID: <20241008115720.742231495@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-commit f9e7ac6e2e9986c2ee63224992cb5c8276e46b2a upstream.
+commit 129464e86c7445a858b790ac2d28d35f58256bbe upstream.
 
-The only user (the mesa gallium driver) is already assuming explicit
-synchronization and doing the export/import dance on shared BOs. The
-only reason we were registering ourselves as writers on external BOs
-is because Xe, which was the reference back when we developed Panthor,
-was doing so. Turns out Xe was wrong, and we really want bookkeep on
-all registered fences, so userspace can explicitly upgrade those to
-read/write when needed.
+Move ST2 reading with overflow handling after measurement data
+reading.
+ST2 register read have to be read after read measurment data,
+because it means end of the reading and realease the lock on the data.
+Remove ST2 read skip on interrupt based waiting because ST2 required to
+be read out at and of the axis read.
 
-Fixes: 4bdca1150792 ("drm/panthor: Add the driver frontend block")
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240905070155.3254011-1-boris.brezillon@collabora.com
+Fixes: 57e73a423b1e ("iio: ak8975: add ak09911 and ak09912 support")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Link: https://patch.msgid.link/20240819-ak09918-v4-2-f0734d14cfb9@mainlining.org
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panthor/panthor_sched.c |    7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/iio/magnetometer/ak8975.c |   32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -3436,13 +3436,8 @@ void panthor_job_update_resvs(struct drm
- {
- 	struct panthor_job *job = container_of(sched_job, struct panthor_job, base);
+--- a/drivers/iio/magnetometer/ak8975.c
++++ b/drivers/iio/magnetometer/ak8975.c
+@@ -692,22 +692,8 @@ static int ak8975_start_read_axis(struct
+ 	if (ret < 0)
+ 		return ret;
  
--	/* Still not sure why we want USAGE_WRITE for external objects, since I
--	 * was assuming this would be handled through explicit syncs being imported
--	 * to external BOs with DMA_BUF_IOCTL_IMPORT_SYNC_FILE, but other drivers
--	 * seem to pass DMA_RESV_USAGE_WRITE, so there must be a good reason.
--	 */
- 	panthor_vm_update_resvs(job->group->vm, exec, &sched_job->s_fence->finished,
--				DMA_RESV_USAGE_BOOKKEEP, DMA_RESV_USAGE_WRITE);
-+				DMA_RESV_USAGE_BOOKKEEP, DMA_RESV_USAGE_BOOKKEEP);
+-	/* This will be executed only for non-interrupt based waiting case */
+-	if (ret & data->def->ctrl_masks[ST1_DRDY]) {
+-		ret = i2c_smbus_read_byte_data(client,
+-					       data->def->ctrl_regs[ST2]);
+-		if (ret < 0) {
+-			dev_err(&client->dev, "Error in reading ST2\n");
+-			return ret;
+-		}
+-		if (ret & (data->def->ctrl_masks[ST2_DERR] |
+-			   data->def->ctrl_masks[ST2_HOFL])) {
+-			dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
+-			return -EINVAL;
+-		}
+-	}
+-
+-	return 0;
++	/* Return with zero if the data is ready. */
++	return !data->def->ctrl_regs[ST1_DRDY];
  }
  
- void panthor_sched_unplug(struct panthor_device *ptdev)
+ /* Retrieve raw flux value for one of the x, y, or z axis.  */
+@@ -734,6 +720,20 @@ static int ak8975_read_axis(struct iio_d
+ 	if (ret < 0)
+ 		goto exit;
+ 
++	/* Read out ST2 for release lock on measurment data. */
++	ret = i2c_smbus_read_byte_data(client, data->def->ctrl_regs[ST2]);
++	if (ret < 0) {
++		dev_err(&client->dev, "Error in reading ST2\n");
++		goto exit;
++	}
++
++	if (ret & (data->def->ctrl_masks[ST2_DERR] |
++		   data->def->ctrl_masks[ST2_HOFL])) {
++		dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
++		ret = -EINVAL;
++		goto exit;
++	}
++
+ 	mutex_unlock(&data->lock);
+ 
+ 	pm_runtime_mark_last_busy(&data->client->dev);
 
 
 
