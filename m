@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-81856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 993049949CA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C0C3994E33
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:14:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EDC81F25A17
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B698F1F241E7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8F91DED79;
-	Tue,  8 Oct 2024 12:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837B01DED65;
+	Tue,  8 Oct 2024 13:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZHXEdhT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j185uZEi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D371DE3D4;
-	Tue,  8 Oct 2024 12:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E741DE4CD;
+	Tue,  8 Oct 2024 13:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390365; cv=none; b=KuV6LRReGtHY9IGPuOk4D+Z17i+K+VqbLcrSvMTCS8UGrmBMsMYFUBShi8tPty5+YZR+5GnSYbd9SR0lyTjNHDGqHbDl1B65Al31f28SND0vHIZOhevyzReDGqfolPpl3CBgIvNx9zOyV7Pn4ulsBd6HiWR3/aQLONzBhRuTx9o=
+	t=1728393217; cv=none; b=NazN0di+YGrgy/8rBV7XbqEkCHmw9BqjNGLjbim8uIHhrjN5XGpHte2N9PM89RI78bRa1Gk3TpsInCTku6DFu3HsDPTAf7vqI34LJWhIFqFy/gA4MORNc8pngX89J+SWFePc6rnrDN9RuxUpWRYd8G+Q5nEG0UOphVsSMtKyunc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390365; c=relaxed/simple;
-	bh=X67cs1D55qcp7dbiFolj4lGSYgbc1ohwhu/wDDYVnOk=;
+	s=arc-20240116; t=1728393217; c=relaxed/simple;
+	bh=0yCWKFFx+GfDzWNROGyZChvpWRQPL8iCdOlPI+mLstM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MHLkiyp0RbkD6Zi0CLnYNvenuCU0ukm7w08V9Og/pWb5wetyeYzFoAglim5BTnMMh9130gvvU6Ej59XUeEwIUYpfPU2/dWraE917p0+48GYRLVTkF2aqEFvhKCEmzYpOFTx7XU4lKCQerwN/xd9GytJfRz9MQuEx/tIAT1qomAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZHXEdhT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2612FC4CEC7;
-	Tue,  8 Oct 2024 12:26:04 +0000 (UTC)
+	 MIME-Version; b=OZ3pE4pSVNTlgCnyIO7ZlK9IwpJ4k2u1RpGDe0qY7lld+tUbHFOKWm1hjrMshtGWwFsGo85t030/Hio1RgLuXZreZ1MVX7JCtSdqFO+b2R6gP48gAP+Mi60D3FeI5szLZ+Ee/RhU7CHKA1Fa5sNmDIMeRiNcEn7BNlziEVx4lYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j185uZEi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D2FC4CECC;
+	Tue,  8 Oct 2024 13:13:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390365;
-	bh=X67cs1D55qcp7dbiFolj4lGSYgbc1ohwhu/wDDYVnOk=;
+	s=korg; t=1728393217;
+	bh=0yCWKFFx+GfDzWNROGyZChvpWRQPL8iCdOlPI+mLstM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZHXEdhT/pQd9hP1TT381E1qhdL1l8xPzFOnZyd3k+tb+JreS3YqDYCH6esp1kXsK
-	 saY7hEAEW0thPzOAEsYsBxPdfQpz6E2BUZF/Fh2XJIQqjOL4o23XN+21y5WRf0XKgi
-	 dl5zTXztw6qacL/Kfg/SZIQL6K5k+jjNIs1pvASs=
+	b=j185uZEiLjxZqv8l0cRrnSWsavI3mheN8bSF1zsuPRdlmqtasFjOHWr3QQO+6ektz
+	 HvGqdybQ99spwEwwBroyx0DqJyQKIPO4Mwfl/8wnQItjEyr4fPLowimQU8OJQ6v9iq
+	 BoE395vPEysl2TBrdFv+bIQlJ5cnpTFw5QbjDmBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 268/482] ALSA: control: Fix power_ref lock order for compat code, too
+Subject: [PATCH 6.6 086/386] tipc: guard against string buffer overrun
 Date: Tue,  8 Oct 2024 14:05:31 +0200
-Message-ID: <20241008115658.828908637@linuxfoundation.org>
+Message-ID: <20241008115632.839847961@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,118 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit a1066453b5e49a28523f3ecbbfe4e06c6a29561c ]
+[ Upstream commit 6555a2a9212be6983d2319d65276484f7c5f431a ]
 
-In the previous change for swapping the power_ref and controls_rwsem
-lock order, the code path for the compat layer was forgotten.
-This patch covers the remaining code.
+Smatch reports that copying media_name and if_name to name_parts may
+overwrite the destination.
 
-Fixes: fcc62b19104a ("ALSA: control: Take power_ref lock primarily")
-Link: https://patch.msgid.link/20240808163128.20383-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+ .../bearer.c:166 bearer_name_validate() error: strcpy() 'media_name' too large for 'name_parts->media_name' (32 vs 16)
+ .../bearer.c:167 bearer_name_validate() error: strcpy() 'if_name' too large for 'name_parts->if_name' (1010102 vs 16)
+
+This does seem to be the case so guard against this possibility by using
+strscpy() and failing if truncation occurs.
+
+Introduced by commit b97bf3fd8f6a ("[TIPC] Initial merge")
+
+Compile tested only.
+
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240801-tipic-overrun-v2-1-c5b869d1f074@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/control_compat.c | 45 ++++++++++++++++++++++++++++++-------
- 1 file changed, 37 insertions(+), 8 deletions(-)
+ net/tipc/bearer.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/sound/core/control_compat.c b/sound/core/control_compat.c
-index 934bb945e702a..ff0031cc7dfb8 100644
---- a/sound/core/control_compat.c
-+++ b/sound/core/control_compat.c
-@@ -79,6 +79,7 @@ struct snd_ctl_elem_info32 {
- static int snd_ctl_elem_info_compat(struct snd_ctl_file *ctl,
- 				    struct snd_ctl_elem_info32 __user *data32)
- {
-+	struct snd_card *card = ctl->card;
- 	struct snd_ctl_elem_info *data __free(kfree) = NULL;
- 	int err;
+diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
+index 878415c435276..fec638e494c9d 100644
+--- a/net/tipc/bearer.c
++++ b/net/tipc/bearer.c
+@@ -163,8 +163,12 @@ static int bearer_name_validate(const char *name,
  
-@@ -95,7 +96,11 @@ static int snd_ctl_elem_info_compat(struct snd_ctl_file *ctl,
- 	if (get_user(data->value.enumerated.item, &data32->value.enumerated.item))
- 		return -EFAULT;
- 
-+	err = snd_power_ref_and_wait(card);
-+	if (err < 0)
-+		return err;
- 	err = snd_ctl_elem_info(ctl, data);
-+	snd_power_unref(card);
- 	if (err < 0)
- 		return err;
- 	/* restore info to 32bit */
-@@ -175,10 +180,7 @@ static int get_ctl_type(struct snd_card *card, struct snd_ctl_elem_id *id,
- 	if (info == NULL)
- 		return -ENOMEM;
- 	info->id = *id;
--	err = snd_power_ref_and_wait(card);
--	if (!err)
--		err = kctl->info(kctl, info);
--	snd_power_unref(card);
-+	err = kctl->info(kctl, info);
- 	if (err >= 0) {
- 		err = info->type;
- 		*countp = info->count;
-@@ -275,8 +277,8 @@ static int copy_ctl_value_to_user(void __user *userdata,
- 	return 0;
+ 	/* return bearer name components, if necessary */
+ 	if (name_parts) {
+-		strcpy(name_parts->media_name, media_name);
+-		strcpy(name_parts->if_name, if_name);
++		if (strscpy(name_parts->media_name, media_name,
++			    TIPC_MAX_MEDIA_NAME) < 0)
++			return 0;
++		if (strscpy(name_parts->if_name, if_name,
++			    TIPC_MAX_IF_NAME) < 0)
++			return 0;
+ 	}
+ 	return 1;
  }
- 
--static int ctl_elem_read_user(struct snd_card *card,
--			      void __user *userdata, void __user *valuep)
-+static int __ctl_elem_read_user(struct snd_card *card,
-+				void __user *userdata, void __user *valuep)
- {
- 	struct snd_ctl_elem_value *data __free(kfree) = NULL;
- 	int err, type, count;
-@@ -296,8 +298,21 @@ static int ctl_elem_read_user(struct snd_card *card,
- 	return copy_ctl_value_to_user(userdata, valuep, data, type, count);
- }
- 
--static int ctl_elem_write_user(struct snd_ctl_file *file,
--			       void __user *userdata, void __user *valuep)
-+static int ctl_elem_read_user(struct snd_card *card,
-+			      void __user *userdata, void __user *valuep)
-+{
-+	int err;
-+
-+	err = snd_power_ref_and_wait(card);
-+	if (err < 0)
-+		return err;
-+	err = __ctl_elem_read_user(card, userdata, valuep);
-+	snd_power_unref(card);
-+	return err;
-+}
-+
-+static int __ctl_elem_write_user(struct snd_ctl_file *file,
-+				 void __user *userdata, void __user *valuep)
- {
- 	struct snd_ctl_elem_value *data __free(kfree) = NULL;
- 	struct snd_card *card = file->card;
-@@ -318,6 +333,20 @@ static int ctl_elem_write_user(struct snd_ctl_file *file,
- 	return copy_ctl_value_to_user(userdata, valuep, data, type, count);
- }
- 
-+static int ctl_elem_write_user(struct snd_ctl_file *file,
-+			       void __user *userdata, void __user *valuep)
-+{
-+	struct snd_card *card = file->card;
-+	int err;
-+
-+	err = snd_power_ref_and_wait(card);
-+	if (err < 0)
-+		return err;
-+	err = __ctl_elem_write_user(file, userdata, valuep);
-+	snd_power_unref(card);
-+	return err;
-+}
-+
- static int snd_ctl_elem_read_user_compat(struct snd_card *card,
- 					 struct snd_ctl_elem_value32 __user *data32)
- {
 -- 
 2.43.0
 
