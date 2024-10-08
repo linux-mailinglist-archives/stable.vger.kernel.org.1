@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-81916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD51A994A1C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FCDC994CA2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:57:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48218288298
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DD591C227A6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:57:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38401DC759;
-	Tue,  8 Oct 2024 12:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846931DF25B;
+	Tue,  8 Oct 2024 12:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0zzLYNl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pu7Xvn0B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7AB190663;
-	Tue,  8 Oct 2024 12:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CD31DED43;
+	Tue,  8 Oct 2024 12:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390567; cv=none; b=J1NFkBSLPDRRA7NmCdIpq59sQDltuSYSnibFvGnJvxU0olPxCJlCSOtwXb3T0xqmEpaEZhtdatx9V5a0WTMcpTfZoPsKf2l7UZso8RpN+n2oY73Rt+EN2aSS4rB9PuwWw3fds9Mu0YiDiZrnetnzX7Bs2AjStyGeiW16kbVzuZY=
+	t=1728392140; cv=none; b=RZi5BKwvnusMHXTsn6akazAaN5LCEsgSHUsF1yCRnQas1JOtLBCzMe5/mkhW+oh7w5lCFD5fFggd4BB2qDN1GepShhKsyiXt0qn3OOW0X9odXyTEE2kI8n+ZzUpNOP3RLBKfgTQh/xcEwLJlrN4TKrbLorjuUd6ZHkRZdInwrGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390567; c=relaxed/simple;
-	bh=D3y5NQhUPS4pBIfi4zUajpTJqU96X2DCMMY3gFqwgyU=;
+	s=arc-20240116; t=1728392140; c=relaxed/simple;
+	bh=DrEdu76bB3mSFhrZ8v5xpP6Tl6YU+oCHWEkdNN5PB9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lZ6Hhjk9D/gw4dby30HnRbyTJPmu6WrWSHjqA3FX84KOHrMfhy7fu2BrAm6oO35V4ACU7KbJnPy68tCCkamgTgcXk2X3e4BZF917uiamst3kHv+pWiEdGwNkUBtDun1hlz+ofe9nwck5yq/MQurUrfBmFyeX4fwZTIj9/eD/oBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0zzLYNl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972CEC4CEC7;
-	Tue,  8 Oct 2024 12:29:26 +0000 (UTC)
+	 MIME-Version; b=m9rYNZ9Bku/x2lC+W+yobUwwIX0O1omOYMqXc7QTyZY4rYV5wZextfk9vHP0SM9eYgoWlcYnxU2GuIytxVdPV9s6SxdKbyoO6M4rd08A0ReJKhoQC7RNhdS92IFVFJHg9UiBuNgXPtsWHAZyTaD+GaDKw27B5xYekk5AgYXhLO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pu7Xvn0B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D75C4CEC7;
+	Tue,  8 Oct 2024 12:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390567;
-	bh=D3y5NQhUPS4pBIfi4zUajpTJqU96X2DCMMY3gFqwgyU=;
+	s=korg; t=1728392139;
+	bh=DrEdu76bB3mSFhrZ8v5xpP6Tl6YU+oCHWEkdNN5PB9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0zzLYNlLTegDtWcikXxoi5xldOAQsq3Oc9+UaFubN+IAbNOIPfSv+4uHGtlwHyNm
-	 xr29HoCiRR2hRXUoLTUful0dfG/CKtjqn4YTCvRFMsKkG5hOu59uVDh1G5MBfn5k5u
-	 AbZz5TFmhboCGMRiDDlBoZTlUeR3RS7016uy1c+8=
+	b=pu7Xvn0BBzGlHSlXYatXQ6HP9uYaOXILWVWIr+3V1g5zdbwecUVTNAfQpBmlXBkL8
+	 bfiaL532dHu+5C2jn8mQKXQsjhuNEQMAevban08C6OImyANQ5yNO3sf/8cnGIiYekF
+	 lpl05BZPrcM/IGDL/i+NjcImhDQp8XTxIoltF2JU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Hancock <robert.hancock@calian.com>,
-	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.10 294/482] i2c: xiic: Wait for TX empty to avoid missed TX NAKs
+	Matthew Auld <matthew.auld@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 327/558] drm/xe: fixup xe_alloc_pf_queue
 Date: Tue,  8 Oct 2024 14:05:57 +0200
-Message-ID: <20241008115659.848832240@linuxfoundation.org>
+Message-ID: <20241008115715.173044845@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Hancock <robert.hancock@calian.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit 521da1e9225450bd323db5fa5bca942b1dc485b7 upstream.
+[ Upstream commit 321d6b4b9cbe3dd0bc99937d5e5b4d730b5b5798 ]
 
-Frequently an I2C write will be followed by a read, such as a register
-address write followed by a read of the register value. In this driver,
-when the TX FIFO half empty interrupt was raised and it was determined
-that there was enough space in the TX FIFO to send the following read
-command, it would do so without waiting for the TX FIFO to actually
-empty.
+kzalloc expects number of bytes, therefore we should convert the number
+of dw into bytes, otherwise we are likely just accessing beyond the
+array causing all kinds of carnage. Also fixup the error handling while
+we are here.
 
-Unfortunately it appears that in some cases this can result in a NAK
-that was raised by the target device on the write, such as due to an
-unsupported register address, being ignored and the subsequent read
-being done anyway. This can potentially put the I2C bus into an
-invalid state and/or result in invalid read data being processed.
+v2:
+ - Prefer kcalloc (dim)
 
-To avoid this, once a message has been fully written to the TX FIFO,
-wait for the TX FIFO empty interrupt before moving on to the next
-message, to ensure NAKs are handled properly.
-
-Fixes: e1d5b6598cdc ("i2c: Add support for Xilinx XPS IIC Bus Interface")
-Signed-off-by: Robert Hancock <robert.hancock@calian.com>
-Cc: <stable@vger.kernel.org> # v2.6.34+
-Reviewed-by: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
-Acked-by: Michal Simek <michal.simek@amd.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3338e4f90c14 ("drm/xe: Use topology to determine page fault queue size")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Stuart Summers <stuart.summers@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240821171917.417386-2-matthew.auld@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-xiic.c |   19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_pagefault.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-xiic.c
-+++ b/drivers/i2c/busses/i2c-xiic.c
-@@ -772,14 +772,17 @@ static irqreturn_t xiic_process(int irq,
- 			goto out;
- 		}
+diff --git a/drivers/gpu/drm/xe/xe_gt_pagefault.c b/drivers/gpu/drm/xe/xe_gt_pagefault.c
+index 401c0527d9140..0be4687bfc203 100644
+--- a/drivers/gpu/drm/xe/xe_gt_pagefault.c
++++ b/drivers/gpu/drm/xe/xe_gt_pagefault.c
+@@ -417,7 +417,10 @@ static int xe_alloc_pf_queue(struct xe_gt *gt, struct pf_queue *pf_queue)
+ 		(num_eus + XE_NUM_HW_ENGINES) * PF_MSG_LEN_DW;
  
--		xiic_fill_tx_fifo(i2c);
--
--		/* current message sent and there is space in the fifo */
--		if (!xiic_tx_space(i2c) && xiic_tx_fifo_space(i2c) >= 2) {
-+		if (xiic_tx_space(i2c)) {
-+			xiic_fill_tx_fifo(i2c);
-+		} else {
-+			/* current message fully written */
- 			dev_dbg(i2c->adap.dev.parent,
- 				"%s end of message sent, nmsgs: %d\n",
- 				__func__, i2c->nmsgs);
--			if (i2c->nmsgs > 1) {
-+			/* Don't move onto the next message until the TX FIFO empties,
-+			 * to ensure that a NAK is not missed.
-+			 */
-+			if (i2c->nmsgs > 1 && (pend & XIIC_INTR_TX_EMPTY_MASK)) {
- 				i2c->nmsgs--;
- 				i2c->tx_msg++;
- 				xfer_more = 1;
-@@ -790,11 +793,7 @@ static irqreturn_t xiic_process(int irq,
- 					"%s Got TX IRQ but no more to do...\n",
- 					__func__);
- 			}
--		} else if (!xiic_tx_space(i2c) && (i2c->nmsgs == 1))
--			/* current frame is sent and is last,
--			 * make sure to disable tx half
--			 */
--			xiic_irq_dis(i2c, XIIC_INTR_TX_HALF_MASK);
-+		}
- 	}
+ 	pf_queue->gt = gt;
+-	pf_queue->data = kzalloc(pf_queue->num_dw, GFP_KERNEL);
++	pf_queue->data = kcalloc(pf_queue->num_dw, sizeof(u32), GFP_KERNEL);
++	if (!pf_queue->data)
++		return -ENOMEM;
++
+ 	spin_lock_init(&pf_queue->lock);
+ 	INIT_WORK(&pf_queue->worker, pf_queue_work_func);
  
- 	if (pend & XIIC_INTR_BNB_MASK) {
+-- 
+2.43.0
+
 
 
 
