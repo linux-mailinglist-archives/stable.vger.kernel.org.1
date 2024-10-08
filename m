@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BBE994B88
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FB1B99489D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:15:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFB42B26AD9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57AE91C2489C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808B91DFD87;
-	Tue,  8 Oct 2024 12:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC3F81DE4DF;
+	Tue,  8 Oct 2024 12:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGWDQqyr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYaqkzVA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA891DF976;
-	Tue,  8 Oct 2024 12:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FE91DE4CC;
+	Tue,  8 Oct 2024 12:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391394; cv=none; b=KxEueRw9aBHqtQzJ1bMAWMPzcq1LUWjRDTmij1ErzHREnWU+nwz8gP66tHi+aIQxQr9GHnHJ2urlZX7jJpQ4alo13Xkc46XqHRLGG5fHgm9bJ1or89F+/c48dN9Z2gmsn/7VhMzHFIbEU9FwyZ4fHeq7tHYeEtgYV4uxa/7j5u4=
+	t=1728389687; cv=none; b=lLSNpZnaqDqymysT1WKk+6CVPNe9GjoYtpXnPxW2g9QXGfNZHxCr3kGdiVO8DXSCIIInMqGPwP43BIS+3T/q8o79LR6qdL9932TnetSLAmaBE/FwZ7c9C4TWu6rwes/ge/mA6FJO1u2U2XIrybppFV/MaT/r4mQXv4ZlLYsmSw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391394; c=relaxed/simple;
-	bh=rr3QYThYcXzvrABNb8BYE1NDY/Bz/HmjBHAkGhkTVZM=;
+	s=arc-20240116; t=1728389687; c=relaxed/simple;
+	bh=Pun53SwWIJo1p1h3kbVqkgJ7P1CXYd9AhJXIMHsfIJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mdl6Mso1tM9xu+G/J0JwHJ/s83kmmPnmjaOY/NLAKkLMfNfBJR/MEndoS6/yyC3k8/Z0+ups4APOFa/zZrcu6heDejYah2mSDwZ5SJ/4C+K4Jcg7PsT0d3m/QYEeIsO9mX7BYCsZEtClhJG/x6iA1MeqlnrkEqLLSPSlmo7XB9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGWDQqyr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA05C4CEC7;
-	Tue,  8 Oct 2024 12:43:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mQHXC1K+DLAjZT08R2anUER57zdq3KFSnvGf8HMSmHr6BFeECfvIDX8wV/3ft9MG85twX+1UBn3jk7RhFElf4qnlmRmGzCNcvi3bi/3Tn2NPNbwF4hBPuHvXCOalOdqyIOpcZxdHYEySSvu0d7rf7vLaQACOJlBtaE+77HMuv/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYaqkzVA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5234C4CEC7;
+	Tue,  8 Oct 2024 12:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391393;
-	bh=rr3QYThYcXzvrABNb8BYE1NDY/Bz/HmjBHAkGhkTVZM=;
+	s=korg; t=1728389687;
+	bh=Pun53SwWIJo1p1h3kbVqkgJ7P1CXYd9AhJXIMHsfIJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FGWDQqyr0OWB9zqfic5U5fXi6WSCalyD7G8AXbBim+s2IJVnDz4wVXj0hZkNOOSkt
-	 xj35qEz4qKAkf48Ix3y3tb7U5ISwWLepwKoCmzOWJxZwUE6zMrbgKaHrpjLkNcKO87
-	 vY8tXw0ORsnq0aPDNWZZwGGNCluv5k9xq4q7Y+Gs=
+	b=AYaqkzVATlY/LAAqDJ3QDAt9TXn6DxuDDfcpZQ9sNAq8EVtCBDm5r1bF+NZTMKg7Y
+	 eMrUDqeNjzXVCBMFGRZp4eX9x9IXPtichR7cgDUFe7SSqTd0or7Te2+aF9RARsX2qP
+	 SME+PR22tOzVyWMVSVQynID7ABysh2ZfsXtv/J7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 099/558] net: hisilicon: hns_mdio: fix OF node leak in probe()
-Date: Tue,  8 Oct 2024 14:02:09 +0200
-Message-ID: <20241008115706.265465148@linuxfoundation.org>
+Subject: [PATCH 6.10 067/482] cifs: Do not convert delimiter when parsing NFS-style symlinks
+Date: Tue,  8 Oct 2024 14:02:10 +0200
+Message-ID: <20241008115650.944445695@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit e62beddc45f487b9969821fad3a0913d9bc18a2f ]
+[ Upstream commit d3a49f60917323228f8fdeee313260ef14f94df7 ]
 
-Driver is leaking OF node reference from
-of_parse_phandle_with_fixed_args() in probe().
+NFS-style symlinks have target location always stored in NFS/UNIX form
+where backslash means the real UNIX backslash and not the SMB path
+separator.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240827144421.52852-4-krzysztof.kozlowski@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+So do not mangle slash and backslash content of NFS-style symlink during
+readlink() syscall as it is already in the correct Linux form.
+
+This fixes interoperability of NFS-style symlinks with backslashes created
+by Linux NFS3 client throw Windows NFS server and retrieved by Linux SMB
+client throw Windows SMB server, where both Windows servers exports the
+same directory.
+
+Fixes: d5ecebc4900d ("smb3: Allow query of symlinks stored as reparse points")
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns_mdio.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/client/reparse.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns_mdio.c b/drivers/net/ethernet/hisilicon/hns_mdio.c
-index ed73707176c1a..8a047145f0c50 100644
---- a/drivers/net/ethernet/hisilicon/hns_mdio.c
-+++ b/drivers/net/ethernet/hisilicon/hns_mdio.c
-@@ -575,6 +575,7 @@ static int hns_mdio_probe(struct platform_device *pdev)
- 						MDIO_SC_RESET_ST;
- 				}
- 			}
-+			of_node_put(reg_args.np);
- 		} else {
- 			dev_warn(&pdev->dev, "find syscon ret = %#x\n", ret);
- 			mdio_dev->subctrl_vbase = NULL;
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index cfa03c166de8c..ad0e0de9a165d 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -335,7 +335,6 @@ static int parse_reparse_posix(struct reparse_posix_data *buf,
+ 							       cifs_sb->local_nls);
+ 		if (!data->symlink_target)
+ 			return -ENOMEM;
+-		convert_delimiter(data->symlink_target, '/');
+ 		cifs_dbg(FYI, "%s: target path: %s\n",
+ 			 __func__, data->symlink_target);
+ 		break;
 -- 
 2.43.0
 
