@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-82403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A2C0994CA3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:57:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4CA994EEE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 325842816D8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:57:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80ACFB25495
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7EBB1DF26D;
-	Tue,  8 Oct 2024 12:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06921DF73A;
+	Tue,  8 Oct 2024 13:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/q17Hmu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKFEF219"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CC01DF246;
-	Tue,  8 Oct 2024 12:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9B21DE2D9;
+	Tue,  8 Oct 2024 13:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392143; cv=none; b=nZJbtWcSmiq5UFyEjrUdXL3OfewSh8R2w0nk8qVS4iy/WDYwsY31KAUVKL9Czx3mJ6AbwufWSv6/1XsDd6B4bPr1XlXyFqjd2oBfp85c+cDIbvQWRsOH0v+DfvuJRTcgahjhDpYH7TunJQQ1pt+jrCYMu+Do70/N+gf016V4z7E=
+	t=1728393309; cv=none; b=Lwr4ifb+GJ4Utt4l9Z8pJsbg9y/8HoP89DpINq6swPbdcI6r4b0EDe13eWf/goj3dn5tHB6c51IGzs1vuYe0Ns9afiijlA0ZqlmJdzSB26i3P60pzJ/sp4PQ8YEHUGfVZ9L13y2wad00yxYUCkka67yRN6IS4LlsXgRV+Ub0vWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392143; c=relaxed/simple;
-	bh=asNOO5STQSiIzMp+JT7O+14NQa0PBaeTNoT2j4QP7sE=;
+	s=arc-20240116; t=1728393309; c=relaxed/simple;
+	bh=JLvThrqdWU9uzqC9Zryzp/YOFDW0G9WUt9n8ytIp/R8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2XTt5i47dNB9weHPf9fuOObasPHmWoU+VA7/rChmgaYVjeSUWFPLwXJFzbwqdRqja9cXfJSML6Gwd9GAyu2c5firLuNBPJ55tO3V9eCgkO5QX3tbyoNEVE9WJl9lytln0/BKgENOlF1Nc/zBgAd59YeDwGt8abuOKil0dr0kDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/q17Hmu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B2DC4CEC7;
-	Tue,  8 Oct 2024 12:55:42 +0000 (UTC)
+	 MIME-Version; b=YnZOrjWZLr/V5I1ZJ/qL5JSEzSNFRmUd2RSLRzmQ7Xw6qliM/eX1lquWZa+ywTfmYbr1uAVtk7JQ8t+u9l5MpjY8kP/ePCk7dlU9jz6cIruVNE+xK7/puPEVvrQBS+x55U+mPxcqZd0dhreN58qEOoVXK6owqbRzaULssf2yFLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKFEF219; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08798C4CEC7;
+	Tue,  8 Oct 2024 13:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392143;
-	bh=asNOO5STQSiIzMp+JT7O+14NQa0PBaeTNoT2j4QP7sE=;
+	s=korg; t=1728393309;
+	bh=JLvThrqdWU9uzqC9Zryzp/YOFDW0G9WUt9n8ytIp/R8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V/q17HmutFXK21/yfH/x3rdj8K/MSBTzl6frQ/MmLggz65G8/yHdkJECQuosmcNvU
-	 72GLJ+sgGMalZ36vXK5+Mel9arKCQjxL+IA4zH+dEgrgt4fiEoRaHfqYNsT/O8M6oI
-	 Sr9BaR7x9EptIi4ErHb/t8VwwBkYdkS45u3ST4wo=
+	b=PKFEF219dRH1YEf+uAIdJD9LH7SeI2RSJo69vVIkw6ZA1fGC7rN2kFUR3n0wrEUDk
+	 7GGBsm0LIrXrsO6/tySG+gqlWzZSl2NzyZhalhnRsctzWYvRhDB/HuuI2/niOVKXRg
+	 XPHLSnGAaIntyOmGlrXRo9hOvZYjUNqolwmufZYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Stuart Summers <stuart.summers@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 328/558] drm/xe: Fix memory leak on xe_alloc_pf_queue failure
+Subject: [PATCH 6.6 113/386] ASoC: codecs: wsa883x: Handle reading version failure
 Date: Tue,  8 Oct 2024 14:05:58 +0200
-Message-ID: <20241008115715.212379971@linuxfoundation.org>
+Message-ID: <20241008115633.891862725@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nirmoy Das <nirmoy.das@intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit c5f728de696caa35481fd84202dfbc9fecc18e0b ]
+[ Upstream commit 2fbf16992e5aa14acf0441320033a01a32309ded ]
 
-Simplify memory unwinding on error also fixing current memory
-leak that can happen on error.
+If reading version and variant from registers fails (which is unlikely
+but possible, because it is a read over bus), the driver will proceed
+and perform device configuration based on uninitialized stack variables.
+Handle it a bit better - bail out without doing any init and failing the
+update status Soundwire callback.
 
-v2: use devm_kcalloc(Matt A)
-
-Fixes: 3338e4f90c14 ("drm/xe: Use topology to determine page fault queue size")
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Stuart Summers <stuart.summers@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240826162035.20462-1-nirmoy.das@intel.com
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20240710-asoc-wsa88xx-version-v1-2-f1c54966ccde@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt_pagefault.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ sound/soc/codecs/wsa883x.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_pagefault.c b/drivers/gpu/drm/xe/xe_gt_pagefault.c
-index 0be4687bfc203..730eec07795e2 100644
---- a/drivers/gpu/drm/xe/xe_gt_pagefault.c
-+++ b/drivers/gpu/drm/xe/xe_gt_pagefault.c
-@@ -388,20 +388,17 @@ static void pagefault_fini(void *arg)
+diff --git a/sound/soc/codecs/wsa883x.c b/sound/soc/codecs/wsa883x.c
+index 2169d93989841..1831d4487ba9d 100644
+--- a/sound/soc/codecs/wsa883x.c
++++ b/sound/soc/codecs/wsa883x.c
+@@ -998,15 +998,19 @@ static const struct reg_sequence reg_init[] = {
+ 	{WSA883X_GMAMP_SUP1, 0xE2},
+ };
+ 
+-static void wsa883x_init(struct wsa883x_priv *wsa883x)
++static int wsa883x_init(struct wsa883x_priv *wsa883x)
  {
- 	struct xe_gt *gt = arg;
- 	struct xe_device *xe = gt_to_xe(gt);
--	int i;
+ 	struct regmap *regmap = wsa883x->regmap;
+-	int variant, version;
++	int variant, version, ret;
  
- 	if (!xe->info.has_usm)
- 		return;
+-	regmap_read(regmap, WSA883X_OTP_REG_0, &variant);
++	ret = regmap_read(regmap, WSA883X_OTP_REG_0, &variant);
++	if (ret)
++		return ret;
+ 	wsa883x->variant = variant & WSA883X_ID_MASK;
  
- 	destroy_workqueue(gt->usm.acc_wq);
- 	destroy_workqueue(gt->usm.pf_wq);
--
--	for (i = 0; i < NUM_PF_QUEUE; ++i)
--		kfree(gt->usm.pf_queue[i].data);
+-	regmap_read(regmap, WSA883X_CHIP_ID0, &version);
++	ret = regmap_read(regmap, WSA883X_CHIP_ID0, &version);
++	if (ret)
++		return ret;
+ 	wsa883x->version = version;
+ 
+ 	switch (wsa883x->variant) {
+@@ -1041,6 +1045,8 @@ static void wsa883x_init(struct wsa883x_priv *wsa883x)
+ 				   WSA883X_DRE_OFFSET_MASK,
+ 				   wsa883x->comp_offset);
+ 	}
++
++	return 0;
  }
  
- static int xe_alloc_pf_queue(struct xe_gt *gt, struct pf_queue *pf_queue)
- {
-+	struct xe_device *xe = gt_to_xe(gt);
- 	xe_dss_mask_t all_dss;
- 	int num_dss, num_eus;
+ static int wsa883x_update_status(struct sdw_slave *slave,
+@@ -1049,7 +1055,7 @@ static int wsa883x_update_status(struct sdw_slave *slave,
+ 	struct wsa883x_priv *wsa883x = dev_get_drvdata(&slave->dev);
  
-@@ -417,7 +414,8 @@ static int xe_alloc_pf_queue(struct xe_gt *gt, struct pf_queue *pf_queue)
- 		(num_eus + XE_NUM_HW_ENGINES) * PF_MSG_LEN_DW;
+ 	if (status == SDW_SLAVE_ATTACHED && slave->dev_num > 0)
+-		wsa883x_init(wsa883x);
++		return wsa883x_init(wsa883x);
  
- 	pf_queue->gt = gt;
--	pf_queue->data = kcalloc(pf_queue->num_dw, sizeof(u32), GFP_KERNEL);
-+	pf_queue->data = devm_kcalloc(xe->drm.dev, pf_queue->num_dw,
-+				      sizeof(u32), GFP_KERNEL);
- 	if (!pf_queue->data)
- 		return -ENOMEM;
- 
+ 	return 0;
+ }
 -- 
 2.43.0
 
