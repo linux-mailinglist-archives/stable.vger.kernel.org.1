@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-81776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 021FA99494A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EDD994DD5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:10:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFD36284042
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA0B51C250E3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD611DA60C;
-	Tue,  8 Oct 2024 12:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EBD1DE88F;
+	Tue,  8 Oct 2024 13:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9Vc0KqW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YssGvg5k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C901D540;
-	Tue,  8 Oct 2024 12:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1598E1C32EB;
+	Tue,  8 Oct 2024 13:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390092; cv=none; b=k+XmB07YbVJEA/0iFOjIclx2OSoc/O99XFzzNCZq2w2Am4esh6/cMY9PpMNo4ZAC12Rw1Zu3zNeeZS1evLeG+1y2ezfoOUcyawyB8cWWKxGZMYTcCW8JmfBlSzxCTqj7pTrDJsYHM5sKlrWRCNBOh38mLDGukevdAB/bAZ7xXJk=
+	t=1728392999; cv=none; b=qq1RolxvfT2YbR2AoI1tSP3/c/c8WjNr8ODBSpsSbhLc0ALnyl3CyJ0o6KtpgNvBgLt6eIFYAjK/2D+/+UuRFB9hRvc3HX7TUlP2779LKWiAQWJhZiUkd2sur3+bCCkqU5TyiQcPSqhtIu45bM65MzdXctb0Cv2Mvc3G3a3fCHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390092; c=relaxed/simple;
-	bh=yVbtUbt0pUjXlNTJnc+5ZGke2T43D9l9r2yxEocErGo=;
+	s=arc-20240116; t=1728392999; c=relaxed/simple;
+	bh=xQzooaX1KHJEjozG3imatkKCu8BNt4ZkkaPZhOC2mRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H1o0r7Glr9jkjq2sCNkPZw86mUPRyXd3sCxSsm6m5JXG0p01nCZmkZdZzNwZGVCuyzd7K+qpEswjxzJCKcSEw9txb5u9MJWP3UMZ2OltXFP4tuuLoMrybMdeuC4MRkCVb47O9MQMe6W0MSGNbOlC8rSNmko+y6llJo7yR1OayLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9Vc0KqW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30379C4CEC7;
-	Tue,  8 Oct 2024 12:21:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G8HnuH/wbl2stpCEJRl0+3UbMH/RpzaBjfPmtFlFS8zEe0/obsy1x5itZ6dCOu13mdwI1FCPTNUQkR2XZmsDbOU33W/mj8XMi1Q9H1fCUyEkcQ8Il7wKHS/UkRQRCSNM2FqX4GAaQca9DbLwRdPQN615KDFiH4liNqg+yz/Cz38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YssGvg5k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8F1C4CEC7;
+	Tue,  8 Oct 2024 13:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390092;
-	bh=yVbtUbt0pUjXlNTJnc+5ZGke2T43D9l9r2yxEocErGo=;
+	s=korg; t=1728392998;
+	bh=xQzooaX1KHJEjozG3imatkKCu8BNt4ZkkaPZhOC2mRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9Vc0KqWkOLwhIbCz1DV9c4trBMK656ghBdw35yJBOzqioz9TA2hsxWFekNuBXafO
-	 6XTiNU6Xrm61SS3CZIGk5461gwPnrzq1kwcLegi2QNYVTeARVbtnO/EmP1fhor/s7Y
-	 V/hcWBizPH5ye3Cq4ql9rgsKn0Cj7S+Ubh2X/WOw=
+	b=YssGvg5kt0fRON1uCTOymp9vvLAH1TOyoUQGCYEAJchKRM7WSB8azqtLBqCcDwGPn
+	 sqlqfMzUUrJT6NrjHsPOw+h4ynM6SRI99dx+RbGM893FMHVzodJlJ06C2dsuYscM+/
+	 7U6qbjVXAwGNMUfYSJAAQmQP7wykGUC1WRMFgUK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Benesh <scott.benesh@microchip.com>,
-	Scott Teel <scott.teel@microchip.com>,
-	Mike McGowen <mike.mcgowen@microchip.com>,
-	David Strahan <David.Strahan@microchip.com>,
-	Don Brace <don.brace@microchip.com>,
+	Rafael Rocha <rrochavi@fnal.gov>,
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <kai.makisara@kolumbus.fi>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 187/482] scsi: smartpqi: Add new controller PCI IDs
+Subject: [PATCH 6.6 005/386] scsi: st: Fix input/output error on empty drive reset
 Date: Tue,  8 Oct 2024 14:04:10 +0200
-Message-ID: <20241008115655.662317354@linuxfoundation.org>
+Message-ID: <20241008115629.529143339@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,197 +61,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Strahan <David.Strahan@microchip.com>
+From: Rafael Rocha <rrochavi@fnal.gov>
 
-[ Upstream commit 0e21e73384d324f75ea16f3d622cfc433fa6209b ]
+[ Upstream commit 3d882cca73be830549833517ddccb3ac4668c04e ]
 
-All PCI ID entries in hex.
+A previous change was introduced to prevent data loss during a power-on
+reset when a tape is present inside the drive. This commit set the
+"pos_unknown" flag to true to avoid operations that could compromise data
+by performing actions from an untracked position. The relevant change is
+commit 9604eea5bd3a ("scsi: st: Add third party poweron reset handling")
 
-Add new inagile PCI IDs:
-                                             VID  / DID  / SVID / SDID
-                                             ----   ----   ----   ----
-            SMART-HBA 8242-24i               9005 / 028f / 1ff9 / 0045
-            RAID 8236-16i                    9005 / 028f / 1ff9 / 0046
-            RAID 8240-24i                    9005 / 028f / 1ff9 / 0047
-            SMART-HBA 8238-16i               9005 / 028f / 1ff9 / 0048
-            PM8222-SHBA                      9005 / 028f / 1ff9 / 004a
-            RAID PM8204-2GB                  9005 / 028f / 1ff9 / 004b
-            RAID PM8204-4GB                  9005 / 028f / 1ff9 / 004c
-            PM8222-HBA                       9005 / 028f / 1ff9 / 004f
-            MT0804M6R                        9005 / 028f / 1ff9 / 0051
-            MT0801M6E                        9005 / 028f / 1ff9 / 0052
-            MT0808M6R                        9005 / 028f / 1ff9 / 0053
-            MT0800M6H                        9005 / 028f / 1ff9 / 0054
-            RS0800M5H24i                     9005 / 028f / 1ff9 / 006b
-            RS0800M5E8i                      9005 / 028f / 1ff9 / 006c
-            RS0800M5H8i                      9005 / 028f / 1ff9 / 006d
-            RS0804M5R16i                     9005 / 028f / 1ff9 / 006f
-            RS0800M5E24i                     9005 / 028f / 1ff9 / 0070
-            RS0800M5H16i                     9005 / 028f / 1ff9 / 0071
-            RS0800M5E16i                     9005 / 028f / 1ff9 / 0072
-            RT0800M7E                        9005 / 028f / 1ff9 / 0086
-            RT0800M7H                        9005 / 028f / 1ff9 / 0087
-            RT0804M7R                        9005 / 028f / 1ff9 / 0088
-            RT0808M7R                        9005 / 028f / 1ff9 / 0089
-            RT1608M6R16i                     9005 / 028f / 1ff9 / 00a1
+As a consequence of this change, a new issue has surfaced: the driver now
+returns an "Input/output error" even for empty drives when the drive, host,
+or bus is reset. This issue stems from the "flush_buffer" function, which
+first checks whether the "pos_unknown" flag is set. If the flag is set, the
+user will encounter an "Input/output error" until the tape position is
+known again. This behavior differs from the previous implementation, where
+empty drives were not affected at system start up time, allowing tape
+software to send commands to the driver to retrieve the drive's status and
+other information.
 
-Add new h3c pci_id:
-                                             VID  / DID  / SVID / SDID
-                                             ----   ----   ----   ----
-            UN RAID P4408-Mr-2               9005 / 028f / 193d / 1110
+The current behavior prioritizes the "pos_unknown" flag over the
+"ST_NO_TAPE" status, leading to issues for software that detects drives
+during system startup. This software will receive an "Input/output error"
+until a tape is loaded and its position is known.
 
-Add new powerleader pci ids:
-                                             VID  / DID  / SVID / SDID
-                                             ----   ----   ----   ----
-            PL SmartROC PM8204               9005 / 028f / 1f3a / 0104
+To resolve this, the "ST_NO_TAPE" status should take priority when the
+drive is empty, allowing communication with the drive following a power-on
+reset. At the same time, the change should continue to protect data by
+maintaining the "pos_unknown" flag when the drive contains a tape and its
+position is unknown.
 
-Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
-Reviewed-by: Scott Teel <scott.teel@microchip.com>
-Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
-Signed-off-by: David Strahan <David.Strahan@microchip.com>
-Signed-off-by: Don Brace <don.brace@microchip.com>
-Link: https://lore.kernel.org/r/20240711194704.982400-2-don.brace@microchip.com
+Signed-off-by: Rafael Rocha <rrochavi@fnal.gov>
+Link: https://lore.kernel.org/r/20240905173921.10944-1-rrochavi@fnal.gov
+Fixes: 9604eea5bd3a ("scsi: st: Add third party poweron reset handling")
+Acked-by: Kai Mäkisara <kai.makisara@kolumbus.fi>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/smartpqi/smartpqi_init.c | 104 ++++++++++++++++++++++++++
- 1 file changed, 104 insertions(+)
+ drivers/scsi/st.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-index c1524fb334eb5..02d16fddd3123 100644
---- a/drivers/scsi/smartpqi/smartpqi_init.c
-+++ b/drivers/scsi/smartpqi/smartpqi_init.c
-@@ -9456,6 +9456,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x193d, 0x110b)
- 	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x193d, 0x1110)
-+	},
- 	{
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x193d, 0x8460)
-@@ -9572,6 +9576,14 @@ static const struct pci_device_id pqi_pci_id_table[] = {
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x1bd4, 0x0089)
- 	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x00a1)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1f3a, 0x0104)
-+	},
- 	{
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x19e5, 0xd227)
-@@ -10164,6 +10176,98 @@ static const struct pci_device_id pqi_pci_id_table[] = {
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x1137, 0x02fa)
- 	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x0045)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x0046)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x0047)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x0048)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x004a)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x004b)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x004c)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x004f)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x0051)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x0052)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x0053)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x0054)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x006b)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x006c)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x006d)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x006f)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x0070)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x0071)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x0072)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x0086)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x0087)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x0088)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1ff9, 0x0089)
-+	},
- 	{
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 				0x1e93, 0x1000)
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index 338aa8c429682..212a402e75358 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -835,6 +835,9 @@ static int flush_buffer(struct scsi_tape *STp, int seek_next)
+ 	int backspace, result;
+ 	struct st_partstat *STps;
+ 
++	if (STp->ready != ST_READY)
++		return 0;
++
+ 	/*
+ 	 * If there was a bus reset, block further access
+ 	 * to this device.
+@@ -842,8 +845,6 @@ static int flush_buffer(struct scsi_tape *STp, int seek_next)
+ 	if (STp->pos_unknown)
+ 		return (-EIO);
+ 
+-	if (STp->ready != ST_READY)
+-		return 0;
+ 	STps = &(STp->ps[STp->partition]);
+ 	if (STps->rw == ST_WRITING)	/* Writing */
+ 		return st_flush_write_buffer(STp);
 -- 
 2.43.0
 
