@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-81778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804A099494C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5985A994BE9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:48:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F2151C234C4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 827B11C24E86
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4262B1D540;
-	Tue,  8 Oct 2024 12:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58881DE3AE;
+	Tue,  8 Oct 2024 12:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywMd6nvY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wb4QYhbP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2AB61DE2A5;
-	Tue,  8 Oct 2024 12:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B671C4613;
+	Tue,  8 Oct 2024 12:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390100; cv=none; b=QDulnakrwSbjmx3Dxb/5tABYvOUA7e1s+VkE89GbVCfd5hCetS8Oqkai80YvC6zoWSFrYL/brAlwFtLUWLWPPYvJkVNYhfOnZnRnveFjghoW7tpcP9j+Q96X/sDwbzLMXrPzsOIgAAB0Co/ozhYajQRvF0GjnEWHw8jVyxQ//NM=
+	t=1728391686; cv=none; b=UYG8piMAVoGg9lp81Q84qrv1RFkPmjtdG+IC4SdV723u3SbTtQgtcg4DnJHvjZQpq1mIO/T16LpIp4E4KZE3VUi+BQxpe58AjaTSe2kES4DysfQ1TWLjfl9N/+bLANBfSET6Z6cSeKjLNJX3eOfEibEx2Mqcspso54t9sBNEwLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390100; c=relaxed/simple;
-	bh=/p7pP+e6HP8E4D72IwnEbO4s7lmE7MXX5Veolg9RxMA=;
+	s=arc-20240116; t=1728391686; c=relaxed/simple;
+	bh=3woU2VNTKjtG/hg9UMXtOGLLA/kQH8U9g9fGsqSeups=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tsb/M0DmiQFdxf/0hwfPMjxEqlUPzBgfF2Cfih2VqHwRbrDNxa3JXZgA2jxgLZEQJzk2kN1prSNfd7jNMoBnxUVGhhlNP4Dd3vOY85RL/nnWJNF0FKkLTl1XkOKFTTA5u7ocWTzWV+KwtHcHATsJudDtU2GwcwPACU1VFkHiDuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywMd6nvY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3079FC4CEC7;
-	Tue,  8 Oct 2024 12:21:39 +0000 (UTC)
+	 MIME-Version; b=BTwe+ml+oCpCjdC1TWa3/KFWWjKW0y2mCuyvtLjOYRE+1I17dcFGS5mcKUx9FdXbqtXzV9rKLI+ZCmlZqxd3wkMOEb2bjW4sonIFGEkyxJ3pO4gpRWEDvjVGkhqx5AhQTwEPzn+khI1AtAKawZXYwldADPkzLXvuaMUNuKWhzzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wb4QYhbP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1217BC4CEC7;
+	Tue,  8 Oct 2024 12:48:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390099;
-	bh=/p7pP+e6HP8E4D72IwnEbO4s7lmE7MXX5Veolg9RxMA=;
+	s=korg; t=1728391686;
+	bh=3woU2VNTKjtG/hg9UMXtOGLLA/kQH8U9g9fGsqSeups=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ywMd6nvYpQlYlrKII9ZhlloXcmlg6fL5jXJvkbio1e/d1xy9m66DMgfjxjugjI+At
-	 VVHHfIbqekkxXklnwWC9uC5ejjGj9c6jP8wO1CASDcCQ7N+MC3kqnWSEavrKc7n0y5
-	 QE35gLe+KYMjDmOs8eO6zFEgjxGwYJeaXMomqlO4=
+	b=wb4QYhbPMNwxvaEdhT/02F9pyg9FdTVt/gaUT6UOAOYlhpcybFdGxHkfAnyV5oEIp
+	 t5NGgE/GGwMhkVox1q0kHH6xqfNaedFp1od0U1kbrRzwSza5pmJ15ye1ncdq/fsVwm
+	 hwNsi6lRuNa1eg4tmki6PpTQl2pkWtInzXWFqkwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 159/482] ASoC: Intel: boards: always check the result of acpi_dev_get_first_match_dev()
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Raghavendra Kakarla <quic_rkakarla@quicinc.com>
+Subject: [PATCH 6.11 192/558] pmdomain: core: Dont hold the genpd-lock when calling dev_pm_domain_set()
 Date: Tue,  8 Oct 2024 14:03:42 +0200
-Message-ID: <20241008115654.563638438@linuxfoundation.org>
+Message-ID: <20241008115709.905109664@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,175 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit 14e91ddd5c02d8c3e5a682ebfa0546352b459911 ]
+[ Upstream commit b87eee38605c396f0e1fa435939960e5c6cd41d6 ]
 
-The code seems mostly copy-pasted, with some machine drivers
-forgetting to test if the 'adev' result is NULL.
+There is no need to hold the genpd-lock, while assigning the
+dev->pm_domain. In fact, it becomes a problem on a PREEMPT_RT based
+configuration as the genpd-lock may be a raw spinlock, while the lock
+acquired through the call to dev_pm_domain_set() is a regular spinlock.
 
-Add this check when missing, and use -ENOENT consistently as an error
-code.
+To fix the problem, let's simply move the calls to dev_pm_domain_set()
+outside the genpd-lock.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/alsa-devel/918944d2-3d00-465e-a9d1-5d57fc966113@stanley.mountain/T/#u
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20240827123215.258859-4-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Tested-by: Raghavendra Kakarla <quic_rkakarla@quicinc.com>  # qcm6490 with PREEMPT_RT set
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20240527142557.321610-3-ulf.hansson@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcht_cx2072x.c | 4 ++++
- sound/soc/intel/boards/bytcht_da7213.c  | 4 ++++
- sound/soc/intel/boards/bytcht_es8316.c  | 2 +-
- sound/soc/intel/boards/bytcr_rt5640.c   | 2 +-
- sound/soc/intel/boards/bytcr_rt5651.c   | 2 +-
- sound/soc/intel/boards/cht_bsw_rt5645.c | 4 ++++
- sound/soc/intel/boards/cht_bsw_rt5672.c | 4 ++++
- sound/soc/intel/boards/sof_es8336.c     | 2 +-
- sound/soc/intel/boards/sof_wm8804.c     | 4 ++++
- 9 files changed, 24 insertions(+), 4 deletions(-)
+ drivers/pmdomain/core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/intel/boards/bytcht_cx2072x.c b/sound/soc/intel/boards/bytcht_cx2072x.c
-index df3c2a7b64d23..8c2b4ab764bba 100644
---- a/sound/soc/intel/boards/bytcht_cx2072x.c
-+++ b/sound/soc/intel/boards/bytcht_cx2072x.c
-@@ -255,7 +255,11 @@ static int snd_byt_cht_cx2072x_probe(struct platform_device *pdev)
- 		snprintf(codec_name, sizeof(codec_name), "i2c-%s",
- 			 acpi_dev_name(adev));
- 		byt_cht_cx2072x_dais[dai_index].codecs->name = codec_name;
-+	} else {
-+		dev_err(&pdev->dev, "Error cannot find '%s' dev\n", mach->id);
-+		return -ENOENT;
- 	}
+diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
+index acdc3e7b2eae2..ca7f780582cf4 100644
+--- a/drivers/pmdomain/core.c
++++ b/drivers/pmdomain/core.c
+@@ -1758,7 +1758,6 @@ static int genpd_add_device(struct generic_pm_domain *genpd, struct device *dev,
+ 	genpd_lock(genpd);
+ 
+ 	genpd_set_cpumask(genpd, gpd_data->cpu);
+-	dev_pm_domain_set(dev, &genpd->domain);
+ 
+ 	genpd->device_count++;
+ 	if (gd)
+@@ -1767,6 +1766,7 @@ static int genpd_add_device(struct generic_pm_domain *genpd, struct device *dev,
+ 	list_add_tail(&gpd_data->base.list_node, &genpd->dev_list);
+ 
+ 	genpd_unlock(genpd);
++	dev_pm_domain_set(dev, &genpd->domain);
+  out:
+ 	if (ret)
+ 		genpd_free_dev_data(dev, gpd_data);
+@@ -1823,12 +1823,13 @@ static int genpd_remove_device(struct generic_pm_domain *genpd,
+ 		genpd->gd->max_off_time_changed = true;
+ 
+ 	genpd_clear_cpumask(genpd, gpd_data->cpu);
+-	dev_pm_domain_set(dev, NULL);
+ 
+ 	list_del_init(&pdd->list_node);
+ 
+ 	genpd_unlock(genpd);
+ 
++	dev_pm_domain_set(dev, NULL);
 +
- 	acpi_dev_put(adev);
+ 	if (genpd->detach_dev)
+ 		genpd->detach_dev(genpd, dev);
  
- 	/* override platform name, if required */
-diff --git a/sound/soc/intel/boards/bytcht_da7213.c b/sound/soc/intel/boards/bytcht_da7213.c
-index 08c598b7e1eee..9178bbe8d9950 100644
---- a/sound/soc/intel/boards/bytcht_da7213.c
-+++ b/sound/soc/intel/boards/bytcht_da7213.c
-@@ -258,7 +258,11 @@ static int bytcht_da7213_probe(struct platform_device *pdev)
- 		snprintf(codec_name, sizeof(codec_name),
- 			 "i2c-%s", acpi_dev_name(adev));
- 		dailink[dai_index].codecs->name = codec_name;
-+	} else {
-+		dev_err(&pdev->dev, "Error cannot find '%s' dev\n", mach->id);
-+		return -ENOENT;
- 	}
-+
- 	acpi_dev_put(adev);
- 
- 	/* override platform name, if required */
-diff --git a/sound/soc/intel/boards/bytcht_es8316.c b/sound/soc/intel/boards/bytcht_es8316.c
-index 77b91ea4dc32c..3539c9ff0fd2c 100644
---- a/sound/soc/intel/boards/bytcht_es8316.c
-+++ b/sound/soc/intel/boards/bytcht_es8316.c
-@@ -562,7 +562,7 @@ static int snd_byt_cht_es8316_mc_probe(struct platform_device *pdev)
- 		byt_cht_es8316_dais[dai_index].codecs->name = codec_name;
- 	} else {
- 		dev_err(dev, "Error cannot find '%s' dev\n", mach->id);
--		return -ENXIO;
-+		return -ENOENT;
- 	}
- 
- 	codec_dev = acpi_get_first_physical_node(adev);
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index db4a33680d948..4479825c08b5e 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -1693,7 +1693,7 @@ static int snd_byt_rt5640_mc_probe(struct platform_device *pdev)
- 		byt_rt5640_dais[dai_index].codecs->name = byt_rt5640_codec_name;
- 	} else {
- 		dev_err(dev, "Error cannot find '%s' dev\n", mach->id);
--		return -ENXIO;
-+		return -ENOENT;
- 	}
- 
- 	codec_dev = acpi_get_first_physical_node(adev);
-diff --git a/sound/soc/intel/boards/bytcr_rt5651.c b/sound/soc/intel/boards/bytcr_rt5651.c
-index 8514b79f389bb..1f54da98aacf4 100644
---- a/sound/soc/intel/boards/bytcr_rt5651.c
-+++ b/sound/soc/intel/boards/bytcr_rt5651.c
-@@ -926,7 +926,7 @@ static int snd_byt_rt5651_mc_probe(struct platform_device *pdev)
- 		byt_rt5651_dais[dai_index].codecs->name = byt_rt5651_codec_name;
- 	} else {
- 		dev_err(dev, "Error cannot find '%s' dev\n", mach->id);
--		return -ENXIO;
-+		return -ENOENT;
- 	}
- 
- 	codec_dev = acpi_get_first_physical_node(adev);
-diff --git a/sound/soc/intel/boards/cht_bsw_rt5645.c b/sound/soc/intel/boards/cht_bsw_rt5645.c
-index 1da9ceee4d593..ac23a8b7cafca 100644
---- a/sound/soc/intel/boards/cht_bsw_rt5645.c
-+++ b/sound/soc/intel/boards/cht_bsw_rt5645.c
-@@ -582,7 +582,11 @@ static int snd_cht_mc_probe(struct platform_device *pdev)
- 		snprintf(cht_rt5645_codec_name, sizeof(cht_rt5645_codec_name),
- 			 "i2c-%s", acpi_dev_name(adev));
- 		cht_dailink[dai_index].codecs->name = cht_rt5645_codec_name;
-+	} else {
-+		dev_err(&pdev->dev, "Error cannot find '%s' dev\n", mach->id);
-+		return -ENOENT;
- 	}
-+
- 	/* acpi_get_first_physical_node() returns a borrowed ref, no need to deref */
- 	codec_dev = acpi_get_first_physical_node(adev);
- 	acpi_dev_put(adev);
-diff --git a/sound/soc/intel/boards/cht_bsw_rt5672.c b/sound/soc/intel/boards/cht_bsw_rt5672.c
-index d68e5bc755dee..c6c469d51243e 100644
---- a/sound/soc/intel/boards/cht_bsw_rt5672.c
-+++ b/sound/soc/intel/boards/cht_bsw_rt5672.c
-@@ -479,7 +479,11 @@ static int snd_cht_mc_probe(struct platform_device *pdev)
- 		snprintf(drv->codec_name, sizeof(drv->codec_name),
- 			 "i2c-%s", acpi_dev_name(adev));
- 		cht_dailink[dai_index].codecs->name = drv->codec_name;
-+	}  else {
-+		dev_err(&pdev->dev, "Error cannot find '%s' dev\n", mach->id);
-+		return -ENOENT;
- 	}
-+
- 	acpi_dev_put(adev);
- 
- 	/* Use SSP0 on Bay Trail CR devices */
-diff --git a/sound/soc/intel/boards/sof_es8336.c b/sound/soc/intel/boards/sof_es8336.c
-index c1fcc156a5752..809532238c44f 100644
---- a/sound/soc/intel/boards/sof_es8336.c
-+++ b/sound/soc/intel/boards/sof_es8336.c
-@@ -681,7 +681,7 @@ static int sof_es8336_probe(struct platform_device *pdev)
- 			dai_links[0].codecs->dai_name = "ES8326 HiFi";
- 	} else {
- 		dev_err(dev, "Error cannot find '%s' dev\n", mach->id);
--		return -ENXIO;
-+		return -ENOENT;
- 	}
- 
- 	codec_dev = acpi_get_first_physical_node(adev);
-diff --git a/sound/soc/intel/boards/sof_wm8804.c b/sound/soc/intel/boards/sof_wm8804.c
-index 4cb0d463bf404..9c5b3f8f09f36 100644
---- a/sound/soc/intel/boards/sof_wm8804.c
-+++ b/sound/soc/intel/boards/sof_wm8804.c
-@@ -270,7 +270,11 @@ static int sof_wm8804_probe(struct platform_device *pdev)
- 		snprintf(codec_name, sizeof(codec_name),
- 			 "%s%s", "i2c-", acpi_dev_name(adev));
- 		dailink[dai_index].codecs->name = codec_name;
-+	} else {
-+		dev_err(&pdev->dev, "Error cannot find '%s' dev\n", mach->id);
-+		return -ENOENT;
- 	}
-+
- 	acpi_dev_put(adev);
- 
- 	snd_soc_card_set_drvdata(card, ctx);
 -- 
 2.43.0
 
