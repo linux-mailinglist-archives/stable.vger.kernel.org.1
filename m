@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99990994E15
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:12:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D22429949A9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:26:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A53B1F224FE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:12:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56C3C1C24A7F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27FA1DF251;
-	Tue,  8 Oct 2024 13:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6921DFD80;
+	Tue,  8 Oct 2024 12:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkAyKEu/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbAGZsnS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718581DED6F;
-	Tue,  8 Oct 2024 13:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C44E1DF999;
+	Tue,  8 Oct 2024 12:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393133; cv=none; b=tYfOpMC96/o3yMcP/N+Ov3ToDnyI5h4VVL38vM5CSt3k/3JOFCUlx7sGfBWDtqEpCeJtPlnxuTR7/2V62O99XEXER0CW55/f5C9IgMmQ7618UCOiNp5daCeizQzsVIgLlErIc0iHIhbr6Q1p4uEtdp1O6+LKlyCzDYaKz1QDwpI=
+	t=1728390285; cv=none; b=kZg8TkIvr63+R+pVmAqmtI786HHg1L3fffd7F8hYi6bFMO13n89Ct9oG9MndD0Remc3LNiP0pdGXsVkbxcJfBhU1tqXu5H+lIiMrDzoSU2UuRBGqGpIHGBhiCGkwnVPSimCVZAuqsf2Lgrl7BFN/TevHkmNXFCBQd+MtYot3EDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393133; c=relaxed/simple;
-	bh=vqPav6kk8/mtEiiZ/rnICkcf8hhDB3oqSfKqrT4LIzQ=;
+	s=arc-20240116; t=1728390285; c=relaxed/simple;
+	bh=SkDr1XPNFfUC+vULpeHKr14RHzsxSesDi8TPV58KaB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rQltxJa+wDIlr5/xCgDoxa6y9YYVqQDd2Lxvk81yOJsyW5NB8A5SnkSBOZEevR8dq0s/3tsKgmtXHEs9xXggHKKeUvy6LOuJxfpb1p8+MPFXbfbzS6ZMeQMEy81yEWQHz20Aqc/svB8ESTpe/X4E6hF7sjgwi7LyEoM5PJXdE+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CkAyKEu/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EABAFC4CEC7;
-	Tue,  8 Oct 2024 13:12:12 +0000 (UTC)
+	 MIME-Version; b=PbzE8GEwQOjGahjT43rvGeuNlXfvxur6p8YzlQqMAuOp6mlU3urOwt1y93tJ0a0qRnPR/prF8Nue1d8D4UKAHRMNAKhTXzvucGpWM+qwJpaq/xHw0CUJsPSO6yyFST2WOXyhLI7J/5Bj/K8T/Z8mi5KNcUt35Ep9ywsmshtONHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbAGZsnS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC77C4CEC7;
+	Tue,  8 Oct 2024 12:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393133;
-	bh=vqPav6kk8/mtEiiZ/rnICkcf8hhDB3oqSfKqrT4LIzQ=;
+	s=korg; t=1728390285;
+	bh=SkDr1XPNFfUC+vULpeHKr14RHzsxSesDi8TPV58KaB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CkAyKEu/dlSa2QxYkmY44jGzJPqMnODz+D53T7Wh74WFVdqO0MZSLvbNjtOSYnbCr
-	 Ipcfcy1cXPK4bVOgHl6WiXcqC9ClbLQiMH55WBQcNjY8ib2CkYqZuZoNRGoEuRLZDL
-	 O9ddUfNAMWLmM+2YYYHYPNeTewhkQECfelDtivD4=
+	b=fbAGZsnSktzQoLECEsL/SFD/qPeHjnqTMUJKhx4hTSKhLBN34EfRHc+o0LH+P8JXp
+	 qQ30ViQ6rwtdbG6zAGHb7kBOCPP1N3h26f4JvCAs2fvtxlvVNfTbt7ivXuSTZbxzNE
+	 rj1WM/jMDGspMT5CJcelg2eEUZZn89rs9Re/GQkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 063/386] wifi: iwlwifi: mvm: Fix a race in scan abort flow
+Subject: [PATCH 6.10 245/482] HID: i2c-hid: ensure various commands do not interfere with each other
 Date: Tue,  8 Oct 2024 14:05:08 +0200
-Message-ID: <20241008115631.948101131@linuxfoundation.org>
+Message-ID: <20241008115657.937429730@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,155 +63,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit 87c1c28a9aa149489e1667f5754fc24f4973d2d0 ]
+[ Upstream commit b4ed18a3d56eabd18cfd9841ff05111e3cfbe8f9 ]
 
-When the upper layer requests to cancel an ongoing scan, a race
-is possible in which by the time the driver starts to handle the
-upper layers scan cancel flow, the FW already completed handling
-the scan request and the driver received the scan complete
-notification but still did not handle the notification. In such a
-case the FW will simply ignore the scan abort request coming from
-the driver, no notification would arrive from the FW and the entire
-abort flow would be considered a failure.
+i2c-hid uses 2 shared buffers: command and "raw" input buffer for
+sending requests to peripherals and read data from peripherals when
+executing variety of commands. Such commands include reading of HID
+registers, requesting particular power mode, getting and setting
+reports and so on. Because all such requests use the same 2 buffers
+they should not execute simultaneously.
 
-To better handle this, check the status code returned by the FW for
-the scan abort command. In case the status indicates that
-no scan was aborted, complete the scan abort flow with success, i.e.,
-the scan was aborted, as the flow is expected to consume the scan
-complete notification.
+Fix this by introducing "cmd_lock" mutex and acquire it whenever
+we needs to access ihid->cmdbuf or idid->rawbuf.
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240825085558.483989d3baef.I3340556a222388504c6330b333360bf77d10f9e2@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/intel/iwlwifi/fw/api/scan.h  | 13 ++++++
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 42 +++++++++++++++----
- 2 files changed, 47 insertions(+), 8 deletions(-)
+ drivers/hid/i2c-hid/i2c-hid-core.c | 42 +++++++++++++++++++-----------
+ 1 file changed, 27 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-index 93078f8cc08c0..af487a2738f82 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-@@ -1123,6 +1123,19 @@ struct iwl_umac_scan_abort {
- 	__le32 flags;
- } __packed; /* SCAN_ABORT_CMD_UMAC_API_S_VER_1 */
+diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
+index 632eaf9e11a6b..2f8a9d3f1e861 100644
+--- a/drivers/hid/i2c-hid/i2c-hid-core.c
++++ b/drivers/hid/i2c-hid/i2c-hid-core.c
+@@ -105,6 +105,7 @@ struct i2c_hid {
  
-+/**
-+ * enum iwl_umac_scan_abort_status
-+ *
-+ * @IWL_UMAC_SCAN_ABORT_STATUS_SUCCESS: scan was successfully aborted
-+ * @IWL_UMAC_SCAN_ABORT_STATUS_IN_PROGRESS: scan abort is in progress
-+ * @IWL_UMAC_SCAN_ABORT_STATUS_NOT_FOUND: nothing to abort
-+ */
-+enum iwl_umac_scan_abort_status {
-+	IWL_UMAC_SCAN_ABORT_STATUS_SUCCESS = 0,
-+	IWL_UMAC_SCAN_ABORT_STATUS_IN_PROGRESS,
-+	IWL_UMAC_SCAN_ABORT_STATUS_NOT_FOUND,
-+};
-+
- /**
-  * struct iwl_umac_scan_complete
-  * @uid: scan id, &enum iwl_umac_scan_uid_offsets
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 626620cd892f0..ded06602f6ced 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -3222,13 +3222,23 @@ void iwl_mvm_rx_umac_scan_iter_complete_notif(struct iwl_mvm *mvm,
- 		       mvm->scan_start);
- }
+ 	wait_queue_head_t	wait;		/* For waiting the interrupt */
  
--static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type)
-+static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type, bool *wait)
++	struct mutex		cmd_lock;	/* protects cmdbuf and rawbuf */
+ 	struct mutex		reset_lock;
+ 
+ 	struct i2chid_ops	*ops;
+@@ -220,6 +221,8 @@ static int i2c_hid_xfer(struct i2c_hid *ihid,
+ static int i2c_hid_read_register(struct i2c_hid *ihid, __le16 reg,
+ 				 void *buf, size_t len)
  {
--	struct iwl_umac_scan_abort cmd = {};
-+	struct iwl_umac_scan_abort abort_cmd = {};
-+	struct iwl_host_cmd cmd = {
-+		.id = WIDE_ID(IWL_ALWAYS_LONG_GROUP, SCAN_ABORT_UMAC),
-+		.len = { sizeof(abort_cmd), },
-+		.data = { &abort_cmd, },
-+		.flags = CMD_SEND_IN_RFKILL,
-+	};
++	guard(mutex)(&ihid->cmd_lock);
 +
- 	int uid, ret;
-+	u32 status = IWL_UMAC_SCAN_ABORT_STATUS_NOT_FOUND;
+ 	*(__le16 *)ihid->cmdbuf = reg;
  
- 	lockdep_assert_held(&mvm->mutex);
+ 	return i2c_hid_xfer(ihid, ihid->cmdbuf, sizeof(__le16), buf, len);
+@@ -252,6 +255,8 @@ static int i2c_hid_get_report(struct i2c_hid *ihid,
  
-+	*wait = true;
+ 	i2c_hid_dbg(ihid, "%s\n", __func__);
+ 
++	guard(mutex)(&ihid->cmd_lock);
 +
- 	/* We should always get a valid index here, because we already
- 	 * checked that this type of scan was running in the generic
- 	 * code.
-@@ -3237,17 +3247,28 @@ static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type)
- 	if (WARN_ON_ONCE(uid < 0))
- 		return uid;
+ 	/* Command register goes first */
+ 	*(__le16 *)ihid->cmdbuf = ihid->hdesc.wCommandRegister;
+ 	length += sizeof(__le16);
+@@ -342,6 +347,8 @@ static int i2c_hid_set_or_send_report(struct i2c_hid *ihid,
+ 	if (!do_set && le16_to_cpu(ihid->hdesc.wMaxOutputLength) == 0)
+ 		return -ENOSYS;
  
--	cmd.uid = cpu_to_le32(uid);
-+	abort_cmd.uid = cpu_to_le32(uid);
- 
- 	IWL_DEBUG_SCAN(mvm, "Sending scan abort, uid %u\n", uid);
- 
--	ret = iwl_mvm_send_cmd_pdu(mvm,
--				   WIDE_ID(IWL_ALWAYS_LONG_GROUP, SCAN_ABORT_UMAC),
--				   CMD_SEND_IN_RFKILL, sizeof(cmd), &cmd);
-+	ret = iwl_mvm_send_cmd_status(mvm, &cmd, &status);
++	guard(mutex)(&ihid->cmd_lock);
 +
-+	IWL_DEBUG_SCAN(mvm, "Scan abort: ret=%d, status=%u\n", ret, status);
- 	if (!ret)
- 		mvm->scan_uid_status[uid] = type << IWL_MVM_SCAN_STOPPING_SHIFT;
+ 	if (do_set) {
+ 		/* Command register goes first */
+ 		*(__le16 *)ihid->cmdbuf = ihid->hdesc.wCommandRegister;
+@@ -384,6 +391,8 @@ static int i2c_hid_set_power_command(struct i2c_hid *ihid, int power_state)
+ {
+ 	size_t length;
  
--	IWL_DEBUG_SCAN(mvm, "Scan abort: ret=%d\n", ret);
-+	/* Handle the case that the FW is no longer familiar with the scan that
-+	 * is to be stopped. In such a case, it is expected that the scan
-+	 * complete notification was already received but not yet processed.
-+	 * In such a case, there is no need to wait for a scan complete
-+	 * notification and the flow should continue similar to the case that
-+	 * the scan was really aborted.
-+	 */
-+	if (status == IWL_UMAC_SCAN_ABORT_STATUS_NOT_FOUND) {
-+		mvm->scan_uid_status[uid] = type << IWL_MVM_SCAN_STOPPING_SHIFT;
-+		*wait = false;
-+	}
++	guard(mutex)(&ihid->cmd_lock);
 +
- 	return ret;
- }
- 
-@@ -3257,6 +3278,7 @@ static int iwl_mvm_scan_stop_wait(struct iwl_mvm *mvm, int type)
- 	static const u16 scan_done_notif[] = { SCAN_COMPLETE_UMAC,
- 					      SCAN_OFFLOAD_COMPLETE, };
- 	int ret;
-+	bool wait = true;
- 
- 	lockdep_assert_held(&mvm->mutex);
- 
-@@ -3268,7 +3290,7 @@ static int iwl_mvm_scan_stop_wait(struct iwl_mvm *mvm, int type)
- 	IWL_DEBUG_SCAN(mvm, "Preparing to stop scan, type %x\n", type);
- 
- 	if (fw_has_capa(&mvm->fw->ucode_capa, IWL_UCODE_TLV_CAPA_UMAC_SCAN))
--		ret = iwl_mvm_umac_scan_abort(mvm, type);
-+		ret = iwl_mvm_umac_scan_abort(mvm, type, &wait);
- 	else
- 		ret = iwl_mvm_lmac_scan_abort(mvm);
- 
-@@ -3276,6 +3298,10 @@ static int iwl_mvm_scan_stop_wait(struct iwl_mvm *mvm, int type)
- 		IWL_DEBUG_SCAN(mvm, "couldn't stop scan type %d\n", type);
- 		iwl_remove_notification(&mvm->notif_wait, &wait_scan_done);
+ 	/* SET_POWER uses command register */
+ 	*(__le16 *)ihid->cmdbuf = ihid->hdesc.wCommandRegister;
+ 	length = sizeof(__le16);
+@@ -440,25 +449,27 @@ static int i2c_hid_start_hwreset(struct i2c_hid *ihid)
+ 	if (ret)
  		return ret;
-+	} else if (!wait) {
-+		IWL_DEBUG_SCAN(mvm, "no need to wait for scan type %d\n", type);
-+		iwl_remove_notification(&mvm->notif_wait, &wait_scan_done);
-+		return 0;
- 	}
  
- 	return iwl_wait_notification(&mvm->notif_wait, &wait_scan_done,
+-	/* Prepare reset command. Command register goes first. */
+-	*(__le16 *)ihid->cmdbuf = ihid->hdesc.wCommandRegister;
+-	length += sizeof(__le16);
+-	/* Next is RESET command itself */
+-	length += i2c_hid_encode_command(ihid->cmdbuf + length,
+-					 I2C_HID_OPCODE_RESET, 0, 0);
++	scoped_guard(mutex, &ihid->cmd_lock) {
++		/* Prepare reset command. Command register goes first. */
++		*(__le16 *)ihid->cmdbuf = ihid->hdesc.wCommandRegister;
++		length += sizeof(__le16);
++		/* Next is RESET command itself */
++		length += i2c_hid_encode_command(ihid->cmdbuf + length,
++						 I2C_HID_OPCODE_RESET, 0, 0);
+ 
+-	set_bit(I2C_HID_RESET_PENDING, &ihid->flags);
++		set_bit(I2C_HID_RESET_PENDING, &ihid->flags);
+ 
+-	ret = i2c_hid_xfer(ihid, ihid->cmdbuf, length, NULL, 0);
+-	if (ret) {
+-		dev_err(&ihid->client->dev,
+-			"failed to reset device: %d\n", ret);
+-		goto err_clear_reset;
+-	}
++		ret = i2c_hid_xfer(ihid, ihid->cmdbuf, length, NULL, 0);
++		if (ret) {
++			dev_err(&ihid->client->dev,
++				"failed to reset device: %d\n", ret);
++			break;
++		}
+ 
+-	return 0;
++		return 0;
++	}
+ 
+-err_clear_reset:
++	/* Clean up if sending reset command failed */
+ 	clear_bit(I2C_HID_RESET_PENDING, &ihid->flags);
+ 	i2c_hid_set_power(ihid, I2C_HID_PWR_SLEEP);
+ 	return ret;
+@@ -1200,6 +1211,7 @@ int i2c_hid_core_probe(struct i2c_client *client, struct i2chid_ops *ops,
+ 	ihid->is_panel_follower = drm_is_panel_follower(&client->dev);
+ 
+ 	init_waitqueue_head(&ihid->wait);
++	mutex_init(&ihid->cmd_lock);
+ 	mutex_init(&ihid->reset_lock);
+ 	INIT_WORK(&ihid->panel_follower_prepare_work, ihid_core_panel_prepare_work);
+ 
 -- 
 2.43.0
 
