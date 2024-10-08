@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3104C994AE0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C10A994D80
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:06:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 637411C24F8E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46DAB1C2526E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333C21DE8A0;
-	Tue,  8 Oct 2024 12:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7990F1DEFC8;
+	Tue,  8 Oct 2024 13:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qyBdriky"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLdBBg1w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F431DE3A2;
-	Tue,  8 Oct 2024 12:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3471E1DED74;
+	Tue,  8 Oct 2024 13:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391049; cv=none; b=IUQoZ8WtT/kaFMZBr6mzv/L3q8zJFDcxYlSFGbhs0qrpqpv3DeGFT9ndxae0a+wcD5jApMvQ9MQB+KumiAv0hW2AQzmrdk2hbx8rGFFDZrw2sGqczX7SMzdrN74S0lWrRM8dSs2vGR1YTISXweHtMuEnmfSBkLKd8qVL4XFVzss=
+	t=1728392759; cv=none; b=evUXbsxnYw3A6FwiO4SHHE6k0rWSNNTPjprcp8NEP4LKfzrWhDsN12Sxm6wwTPWEO5rnRLpIqYQqDvcQpYnHDVZRONQ/NThtOehXgb+kAACP0UP9zEf+sXJiPztZftD5c3LBpV9EPyBwo7x9tK+lTFx+zKHf3s+IrNdiUMTsqts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391049; c=relaxed/simple;
-	bh=fGie67DVEQdyX6oHw0Bqe0CwD0OpNE17WVae2c071OU=;
+	s=arc-20240116; t=1728392759; c=relaxed/simple;
+	bh=fVM+AA3pZjjg3nasl5dMLS2qicy/MutCHrahxrjAI/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mAJ3VnHS2ijY8pZAZIOqLXAG/6D2106jEvNobdVwr9eZPhO+1p7VnxBN/vo+T047dPZ8q0j0utU5NnFifj05U0+H+76AE5ZSJr1Kj0RKtsTUmGmk5LEXOXdXFgXt7CXQ+nP/IW4WmbDXiW0yoekPa60fXMDaUhFreuk0ZCpm+gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qyBdriky; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1EBC4CEC7;
-	Tue,  8 Oct 2024 12:37:28 +0000 (UTC)
+	 MIME-Version; b=oBNZBQy0lx6P0yVV2j8kOKwLY5pTXuzGlvHkC0VKU6fa8mpFk3fkR/HVL5xjGwcimhhTLLdDwpLMgfRzaxN2cz5tJFjZFnSf4NMoc0r2+en6VMkM8Ap6VtNlO/OY6FHL/VEXkqLIIgLyuLpL96dZu8wRFTeXExRL9sxT+3ethyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gLdBBg1w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8A5C4CEC7;
+	Tue,  8 Oct 2024 13:05:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391048;
-	bh=fGie67DVEQdyX6oHw0Bqe0CwD0OpNE17WVae2c071OU=;
+	s=korg; t=1728392758;
+	bh=fVM+AA3pZjjg3nasl5dMLS2qicy/MutCHrahxrjAI/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qyBdrikyNkg1YQMSqKWa2cvedhVzsZlaQdEbUY081tO9o7bZCpPIKExkWSU6AyBCy
-	 DGWrBrbVrG8uGB2g4E0K97+Fw5u8tVBDJebwnQLXixaHFoRdrvNldOxKdyyDZnuakL
-	 IXv1ghETjc0fv96qtMYL3zypcM4qxLV1VSicd30Q=
+	b=gLdBBg1wt/CsQLSyDiRapdraQw7HU0VR9uSbDtAu2h7B3RK2IlgDYLO5Y6i0l2nqw
+	 CrXwQcKCwkajuVCcVoSW1+Fjq04nGLgCWH+NO+2qpdpS7klsFlbyjWmdljr3Xl9kwz
+	 f84fY0x41GKnGVYlr2DT3hvnAPThHbuDyFD32tcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Subject: [PATCH 6.10 475/482] drm/sched: revert "Always increment correct scheduler score"
-Date: Tue,  8 Oct 2024 14:08:58 +0200
-Message-ID: <20241008115707.204584994@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Wei Li <liwei391@huawei.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.11 509/558] tracing/hwlat: Fix a race during cpuhp processing
+Date: Tue,  8 Oct 2024 14:08:59 +0200
+Message-ID: <20241008115722.259876265@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,50 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Wei Li <liwei391@huawei.com>
 
-commit abf201f6ce14c4ceeccde5471bdf59614b83a3d8 upstream.
+commit 2a13ca2e8abb12ee43ada8a107dadca83f140937 upstream.
 
-This reverts commit 087913e0ba2b3b9d7ccbafb2acf5dab9e35ae1d5.
+The cpuhp online/offline processing race also exists in percpu-mode hwlat
+tracer in theory, apply the fix too. That is:
 
-It turned out that the original code was correct since the rq can only
-change when there is no armed job for an entity.
+    T1                       | T2
+    [CPUHP_ONLINE]           | cpu_device_down()
+     hwlat_hotplug_workfn()  |
+                             |     cpus_write_lock()
+                             |     takedown_cpu(1)
+                             |     cpus_write_unlock()
+    [CPUHP_OFFLINE]          |
+        cpus_read_lock()     |
+        start_kthread(1)     |
+        cpus_read_unlock()   |
 
-This change here broke the logic since we only incremented the counter
-for the first job, so revert it.
-
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Acked-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240930131451.536150-1-christian.koenig@amd.com
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20240924094515.3561410-5-liwei391@huawei.com
+Fixes: ba998f7d9531 ("trace/hwlat: Support hotplug operations")
+Signed-off-by: Wei Li <liwei391@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_hwlat.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -586,6 +586,7 @@ void drm_sched_entity_push_job(struct dr
- 	ktime_t submit_ts;
+--- a/kernel/trace/trace_hwlat.c
++++ b/kernel/trace/trace_hwlat.c
+@@ -520,6 +520,8 @@ static void hwlat_hotplug_workfn(struct
+ 	if (!hwlat_busy || hwlat_data.thread_mode != MODE_PER_CPU)
+ 		goto out_unlock;
  
- 	trace_drm_sched_job(sched_job, entity);
-+	atomic_inc(entity->rq->sched->score);
- 	WRITE_ONCE(entity->last_user, current->group_leader);
- 
- 	/*
-@@ -613,7 +614,6 @@ void drm_sched_entity_push_job(struct dr
- 		rq = entity->rq;
- 		sched = rq->sched;
- 
--		atomic_inc(sched->score);
- 		drm_sched_rq_add_entity(rq, entity);
- 		spin_unlock(&entity->rq_lock);
++	if (!cpu_online(cpu))
++		goto out_unlock;
+ 	if (!cpumask_test_cpu(cpu, tr->tracing_cpumask))
+ 		goto out_unlock;
  
 
 
