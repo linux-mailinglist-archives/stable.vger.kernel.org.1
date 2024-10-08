@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-82649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E2F3994DE3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:10:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39950994C16
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:50:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4D9AB2BF1A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED287282CCF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1321DF243;
-	Tue,  8 Oct 2024 13:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11CF1DEFF0;
+	Tue,  8 Oct 2024 12:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLmDw2hy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYVfiLl6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1901DE4CC;
-	Tue,  8 Oct 2024 13:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02DC1DEFE4;
+	Tue,  8 Oct 2024 12:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392962; cv=none; b=rPNLTVh2jQnRhkujqgxfBnEBY8FZ56VhltYak7ApOXJwrWg6nOB9KVAfi6PgUPWYpr91pNE33sGGKXfkQm+yjEkyjfBTZJk9WsKNZzdWDkV3C7FQKxSNrPqyOFhiaYKEkRE3zCywcWzhWl7EIZUctvL57hIlRWzX+AX7VgUJ/Yo=
+	t=1728391805; cv=none; b=Rw1leSU4RtICCy4r/ViHZIlgs7vPhnjaLLwEnLh59IaB0wUpE65mH01ghPe7ye8SNE0nifgXnMkgJGjcRBmxmVVd021d61Bp1kMzaQkrft877TMVkd1ABeXziXFFh76wJuNfbfGCgLoMUjTyYqp4MUjQ0uGqY0qxRm6Yyh5PCZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392962; c=relaxed/simple;
-	bh=kQYuGlX+gz1cjOu1fR4nN/lt46QVBpu8nxCViLTxwqQ=;
+	s=arc-20240116; t=1728391805; c=relaxed/simple;
+	bh=J/2g0PKlMi25VCKJlenHNo5wDC1YHKZVVUcmVYW2fXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lZdKOqPIMLejlORHcKaDrXJbcIuo5CkOx8LoVLjyYN/iLvc8smFtdeS8rZBIuSgqktxwL8Mr1ClE2WE3kXcg/sgi8G3ka5tPuSSQhi7C6y2Kt0/gQRsyWIt/mufU92//qzkoM5McvX62+1GAuOD4yQVIsWkgWPLfTmyzck/A058=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLmDw2hy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CDEDC4CEC7;
-	Tue,  8 Oct 2024 13:09:21 +0000 (UTC)
+	 MIME-Version; b=QiXd86vcN1G77tWORVCwHERnSt2MIq1lQqbHOMamURWVGUSCv/fDRVkh1qRAGfOzUt7K4q2USTSEGXflA5gLsqupsd59tf/gkcw89KPkQw+TDK+ksnm8Qb1tDpWYalmfa4i/xvV9m056FkH38UtdK3bP0jBOgddRqS1JKlUKkok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYVfiLl6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C6AC4CEC7;
+	Tue,  8 Oct 2024 12:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392961;
-	bh=kQYuGlX+gz1cjOu1fR4nN/lt46QVBpu8nxCViLTxwqQ=;
+	s=korg; t=1728391805;
+	bh=J/2g0PKlMi25VCKJlenHNo5wDC1YHKZVVUcmVYW2fXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NLmDw2hyvG+WNZZFpAnLI6rKKl6FDJKo+659+YGEEQRmU9vS+WEcpKKEszknFxA7k
-	 rBLwmawmRCBhyVin3kbuRk5hhbVYs3pirMph/XiwAdlsGsfvQHItdFECgQ9WOT548N
-	 a23cQNiROZo/rCrDNcNZozs2f2sYl8gF1XAqU/I8=
+	b=ZYVfiLl6EGoyhbEmB/crlMn+TgPl3HySuAi/Ghb3RR+fCHK9vm44ikVnTMrvQgc5w
+	 joIbYYhayCyGkSTAVHBRpR1Q7WnimrCsDJiADcz70lVwH4zZEWEvUAY1IFNgSK5o8K
+	 jvriIYKPzzgwlnHULkpYTrpPaYXmEqWOgUJskpQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aakash Menon <aakash.menon@protempis.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/386] net: sparx5: Fix invalid timestamps
+Subject: [PATCH 6.11 227/558] drm/amd/display: Add NULL check for function pointer in dcn32_set_output_transfer_func
 Date: Tue,  8 Oct 2024 14:04:17 +0200
-Message-ID: <20241008115629.804302121@linuxfoundation.org>
+Message-ID: <20241008115711.274607234@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +69,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aakash Menon <aakash.r.menon@gmail.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 151ac45348afc5b56baa584c7cd4876addf461ff ]
+[ Upstream commit 28574b08c70e56d34d6f6379326a860b96749051 ]
 
-Bit 270-271 are occasionally unexpectedly set by the hardware. This issue
-was observed with 10G SFPs causing huge time errors (> 30ms) in PTP. Only
-30 bits are needed for the nanosecond part of the timestamp, clear 2 most
-significant bits before extracting timestamp from the internal frame
-header.
+This commit adds a null check for the set_output_gamma function pointer
+in the dcn32_set_output_transfer_func function. Previously,
+set_output_gamma was being checked for null, but then it was being
+dereferenced without any null check. This could lead to a null pointer
+dereference if set_output_gamma is null.
 
-Fixes: 70dfe25cd866 ("net: sparx5: Update extraction/injection for timestamping")
-Signed-off-by: Aakash Menon <aakash.menon@protempis.com>
-Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+To fix this, we now ensure that set_output_gamma is not null before
+dereferencing it. We do this by adding a null check for set_output_gamma
+before the call to set_output_gamma.
+
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_packet.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c b/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
-index ac7e1cffbcecf..dcf2e342fc14a 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
-@@ -45,8 +45,12 @@ void sparx5_ifh_parse(u32 *ifh, struct frame_info *info)
- 	fwd = (fwd >> 5);
- 	info->src_port = FIELD_GET(GENMASK(7, 1), fwd);
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
+index 9a912b9c1f2e9..33e3d94e429d4 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
+@@ -582,7 +582,9 @@ bool dcn32_set_output_transfer_func(struct dc *dc,
+ 		}
+ 	}
  
-+	/*
-+	 * Bit 270-271 are occasionally unexpectedly set by the hardware,
-+	 * clear bits before extracting timestamp
-+	 */
- 	info->timestamp =
--		((u64)xtr_hdr[2] << 24) |
-+		((u64)(xtr_hdr[2] & GENMASK(5, 0)) << 24) |
- 		((u64)xtr_hdr[3] << 16) |
- 		((u64)xtr_hdr[4] <<  8) |
- 		((u64)xtr_hdr[5] <<  0);
+-	mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
++	if (mpc->funcs->set_output_gamma)
++		mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
++
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
