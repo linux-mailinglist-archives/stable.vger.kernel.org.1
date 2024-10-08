@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-82675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 050DB994DE8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:10:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48F6D994C30
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 240361C251DD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:10:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11481286567
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863FF1DE8BE;
-	Tue,  8 Oct 2024 13:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB0A1DE4D7;
+	Tue,  8 Oct 2024 12:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOvABd7W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeeW0KNU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F551DE4CD;
-	Tue,  8 Oct 2024 13:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6E61DE2CF;
+	Tue,  8 Oct 2024 12:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393047; cv=none; b=b9rtIExlzn8NfLz42l2dT5B4M9/G9lkRuz8dQGhglSEAkqRlo+qcuN8QGPQax06x9ys+YZLFNUhgLwtMPy8B0z20OsBm9dwbKSZ9bnuRLwgDFwjfhbj6AbnmtHQdcOeY/PrabybyCGeGWCBQHUrV+jq2wvrUE0f66KtI4JwUR/Y=
+	t=1728391887; cv=none; b=pqOQcHygMA4rPa2+u9aQYfwxBj1bGcpGUyOpI11kLen6qDy92VyvH4m4e9T+RGRpCTqcq11iwL+p6YiEYZ/yDvMm7lax8ABFGsR+tOH5rucyjKdNI54CT5BS3IxRedqvHjJKIxe4OyqujwrtEMMxDRHRVUEmKlan8a5vNabiMpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393047; c=relaxed/simple;
-	bh=5xZyo8JPKDeyixdj4iVd7cseyDBJcE8GwOYUVuEuL+4=;
+	s=arc-20240116; t=1728391887; c=relaxed/simple;
+	bh=bHnRtpqLJIxDvzsBOTw02cqMDGGIv5fGXkOjSLXfnoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UgmEMbw7amuO8hkN4uhlQUAYeJQHnu8Ww7Qv7gzBgUbWIw+A2knVBae5W20O7Bk1LOWQDn5RoOHjqv+qn/MijeyKIaFd/XFJTn5qTiPy8BD22K2sOWNavbLks/ebg9StyTk2FHrdnOGuJTngzabfDf+QJAhdRJPaX5kA9ZaHBr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOvABd7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6203C4CEC7;
-	Tue,  8 Oct 2024 13:10:46 +0000 (UTC)
+	 MIME-Version; b=JOSlNwnpDGWHKHxWDN1T+07AqPAuXAtR/Ta3l7cAVefpX3JqV46irDwCpYsZoE5fm5W4wBwvtspeYj8kuamBXrS3WCfY9e3XL8jKOkzJsfP9GvT67AuJaDeIuFjrVFrz4DHEfNCUqEIuQoyJ+GfTMlSK4BmT1SoxGDYn44NdBL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeeW0KNU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C2DC4CED8;
+	Tue,  8 Oct 2024 12:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393047;
-	bh=5xZyo8JPKDeyixdj4iVd7cseyDBJcE8GwOYUVuEuL+4=;
+	s=korg; t=1728391887;
+	bh=bHnRtpqLJIxDvzsBOTw02cqMDGGIv5fGXkOjSLXfnoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TOvABd7WuZgiOsWOmFZsp3eJdrN2sF41VQ8miPXl9/YX4aYQVyOviVa/kDsOXtRm/
-	 i6/AG0gw1tcsGDs+U6f4VUp4XJq4xjUcHrBFA6Ttf5TFK9g6Y8w3a4PRhzE4oKp28v
-	 /wepVYh6RGK2lFbRyQbHusOGan3L1scqBoMS2fM8=
+	b=CeeW0KNURiLfPRUhWe/PkmdiY/tJQ1fpgRqVb5EOitwb7zVjYeIf/dwnYrrwIbOko
+	 8ZUPtTvfzpeUg4S+yWfg9bu0xKkeCL4d0FuwEogvxrgrnIRkwtItpKBsN2K4x8mmBe
+	 tf9BHT/mVgRlcmiX7OFgif870ZVg2aP3x5lLTBzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ravikanth Tuniki <ravikanth.tuniki@amd.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Nevenko Stupar <nevenko.stupar@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/386] dt-bindings: net: xlnx,axi-ethernet: Add missing reg minItems
-Date: Tue,  8 Oct 2024 14:04:42 +0200
-Message-ID: <20241008115630.936345307@linuxfoundation.org>
+Subject: [PATCH 6.11 253/558] drm/amd/display: Check null-initialized variables
+Date: Tue,  8 Oct 2024 14:04:43 +0200
+Message-ID: <20241008115712.293333802@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ravikanth Tuniki <ravikanth.tuniki@amd.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit c6929644c1e0d6108e57061d427eb966e1746351 ]
+[ Upstream commit 367cd9ceba1933b63bc1d87d967baf6d9fd241d2 ]
 
-Add missing reg minItems as based on current binding document
-only ethernet MAC IO space is a supported configuration.
+[WHAT & HOW]
+drr_timing and subvp_pipe are initialized to null and they are not
+always assigned new values. It is necessary to check for null before
+dereferencing.
 
-There is a bug in schema, current examples contain 64-bit
-addressing as well as 32-bit addressing. The schema validation
-does pass incidentally considering one 64-bit reg address as
-two 32-bit reg address entries. If we change axi_ethernet_eth1
-example node reg addressing to 32-bit schema validation reports:
+This fixes 2 FORWARD_NULL issues reported by Coverity.
 
-Documentation/devicetree/bindings/net/xlnx,axi-ethernet.example.dtb:
-ethernet@40000000: reg: [[1073741824, 262144]] is too short
-
-To fix it add missing reg minItems constraints and to make things clearer
-stick to 32-bit addressing in examples.
-
-Fixes: cbb1ca6d5f9a ("dt-bindings: net: xlnx,axi-ethernet: convert bindings document to yaml")
-Signed-off-by: Ravikanth Tuniki <ravikanth.tuniki@amd.com>
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/1727723615-2109795-1-git-send-email-radhey.shyam.pandey@amd.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml b/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
-index 1d33d80af11c3..652d696bc9e90 100644
---- a/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
-+++ b/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
-@@ -34,6 +34,7 @@ properties:
-       and length of the AXI DMA controller IO space, unless
-       axistream-connected is specified, in which case the reg
-       attribute of the node referenced by it is used.
-+    minItems: 1
-     maxItems: 2
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+index 9d399c4ce957d..4cb0227bdd270 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+@@ -871,8 +871,9 @@ static bool subvp_drr_schedulable(struct dc *dc, struct dc_state *context)
+ 	 * for VBLANK: (VACTIVE region of the SubVP pipe can fit the MALL prefetch, VBLANK frame time,
+ 	 * and the max of (VBLANK blanking time, MALL region)).
+ 	 */
+-	if (stretched_drr_us < (1 / (double)drr_timing->min_refresh_in_uhz) * 1000000 * 1000000 &&
+-			subvp_active_us - prefetch_us - stretched_drr_us - max_vblank_mallregion > 0)
++	if (drr_timing &&
++	    stretched_drr_us < (1 / (double)drr_timing->min_refresh_in_uhz) * 1000000 * 1000000 &&
++	    subvp_active_us - prefetch_us - stretched_drr_us - max_vblank_mallregion > 0)
+ 		schedulable = true;
  
-   interrupts:
-@@ -165,7 +166,7 @@ examples:
-         clock-names = "s_axi_lite_clk", "axis_clk", "ref_clk", "mgt_clk";
-         clocks = <&axi_clk>, <&axi_clk>, <&pl_enet_ref_clk>, <&mgt_clk>;
-         phy-mode = "mii";
--        reg = <0x00 0x40000000 0x00 0x40000>;
-+        reg = <0x40000000 0x40000>;
-         xlnx,rxcsum = <0x2>;
-         xlnx,rxmem = <0x800>;
-         xlnx,txcsum = <0x2>;
+ 	return schedulable;
+@@ -937,7 +938,7 @@ static bool subvp_vblank_schedulable(struct dc *dc, struct dc_state *context)
+ 		if (!subvp_pipe && pipe_mall_type == SUBVP_MAIN)
+ 			subvp_pipe = pipe;
+ 	}
+-	if (found) {
++	if (found && subvp_pipe) {
+ 		phantom_stream = dc_state_get_paired_subvp_stream(context, subvp_pipe->stream);
+ 		main_timing = &subvp_pipe->stream->timing;
+ 		phantom_timing = &phantom_stream->timing;
 -- 
 2.43.0
 
