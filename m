@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6551994D1D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:01:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9051E994A8C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEBCC1C24E89
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:01:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 084C6B21A72
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606FC1DE4DB;
-	Tue,  8 Oct 2024 13:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE3A1DF278;
+	Tue,  8 Oct 2024 12:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFh/UKmd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJTLZPoD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A0D18F2FA;
-	Tue,  8 Oct 2024 13:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD451DDA15;
+	Tue,  8 Oct 2024 12:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392511; cv=none; b=JkYx41VfvJXbQBzJNRXsmGlK2Bi2CX5hAFkvLwEYo6eiy5uKuEEJ+fhDa7o05iAEPSfEFxDytmxTH+7EtwEAUEeBDdirysanHyx+sReGRItDtuYzCkc81Qci/HpQEiKVEkv+1rvze1GEhKn4HITut8yD0iQ+nm8GuWd27hPwD+c=
+	t=1728390821; cv=none; b=MPXuXqx3xLiQ7CWjv7oRllqSfU6VLFhZEXE2GE8FHKex/Mwa3ZxCr76mAVxEZeFAlvQt/Gfm62gGaAE3ZxizkU+GEkYQQbafN8tXPEcxTFfXCOhkHJt4D4ya9HQaAQY3W55L6bwZcumSeLFnHn5lB4mjoEPkayxz9tz8mbdqblk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392511; c=relaxed/simple;
-	bh=kWLk07RQ+IOoknPZ0uhsRm9GfQFz+4g0p3GnZvKrN0c=;
+	s=arc-20240116; t=1728390821; c=relaxed/simple;
+	bh=4wZnEGFAxSK69i+AVz5ckSHlCrQvG9l54970NJ0e1lM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rKPyUQizV/nGdNvW2Exp5jE36IesmGt+E4+wYMyA2wQlwDOjV6OTtWyJh8DnfCQFAf8pmxZQM00/8TLC7E1lxSkknrTL8qv94wEMsHjgA8f/Fs4+IBny9EtIdfLayvxgilvu3vJm/fqlxdIfMje5FOVjW/IWYCp7vJIZoPoSHuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFh/UKmd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D09EC4CEC7;
-	Tue,  8 Oct 2024 13:01:50 +0000 (UTC)
+	 MIME-Version; b=UzigSYGQOG93pwL+AYburzSCN6xzmiBgINoLpU2zWIZ9+coahRb2aCJKnUn0dSzI3qrmOFbkYlfZXJL1Y50YIwrpS5gseGyvqzT6OgXikhHIG+UWtWJJuZaOBrovKmGrATzyL67BnbbGUdp63/V1+9bR0euf+1kGuXItebxhvVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJTLZPoD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4D2C4CECC;
+	Tue,  8 Oct 2024 12:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392511;
-	bh=kWLk07RQ+IOoknPZ0uhsRm9GfQFz+4g0p3GnZvKrN0c=;
+	s=korg; t=1728390821;
+	bh=4wZnEGFAxSK69i+AVz5ckSHlCrQvG9l54970NJ0e1lM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFh/UKmdkt0OPvMy+PoTwrAf83M/rIPjvr73wBWLNnKMLarHaOnjjNw1f6Un2mO1K
-	 7jXqyCbpVwUvo9FE7YHlEa0Rqg4Wi9Atn0wS/N9BdLfU+mQiO4o/4LcYEls1JwX6QF
-	 Ol2Vf0JZbJ16TzOfHVyYx304aveQj8H7ZrEuOG/s=
+	b=GJTLZPoDOtj/wdVd92ZDGTxfLDk98vkjV2I3FjyGRmentPKq7ISw0+pXamBcZ+nsD
+	 lAsVGWVSz0su9SkfDGKU/mkut/ip/hX1lcRansFhUog4LehTU/i1H2ZD84b+pk2uE0
+	 CQE/oUrM6c5R02akup2VHm7egZGZ3rWwdH2UwSBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cedric Blancher <cedric.blancher@gmail.com>,
-	Dan Shelton <dan.f.shelton@gmail.com>,
-	Roland Mainz <roland.mainz@nrubsig.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.11 436/558] NFSD: Fix NFSv4s PUTPUBFH operation
-Date: Tue,  8 Oct 2024 14:07:46 +0200
-Message-ID: <20241008115719.429802962@linuxfoundation.org>
+	Felix Fietkau <nbd@nbd.name>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.10 404/482] net: gso: fix tcp fraglist segmentation after pull from frag_list
+Date: Tue,  8 Oct 2024 14:07:47 +0200
+Message-ID: <20241008115704.308772085@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 202f39039a11402dcbcd5fece8d9fa6be83f49ae upstream.
+commit 17bd3bd82f9f79f3feba15476c2b2c95a9b11ff8 upstream.
 
-According to RFC 8881, all minor versions of NFSv4 support PUTPUBFH.
+Detect tcp gso fraglist skbs with corrupted geometry (see below) and
+pass these to skb_segment instead of skb_segment_list, as the first
+can segment them correctly.
 
-Replace the XDR decoder for PUTPUBFH with a "noop" since we no
-longer want the minorversion check, and PUTPUBFH has no arguments to
-decode. (Ideally nfsd4_decode_noop should really be called
-nfsd4_decode_void).
+Valid SKB_GSO_FRAGLIST skbs
+- consist of two or more segments
+- the head_skb holds the protocol headers plus first gso_size
+- one or more frag_list skbs hold exactly one segment
+- all but the last must be gso_size
 
-PUTPUBFH should now behave just like PUTROOTFH.
+Optional datapath hooks such as NAT and BPF (bpf_skb_pull_data) can
+modify these skbs, breaking these invariants.
 
-Reported-by: Cedric Blancher <cedric.blancher@gmail.com>
-Fixes: e1a90ebd8b23 ("NFSD: Combine decode operations for v4 and v4.1")
-Cc: Dan Shelton <dan.f.shelton@gmail.com>
-Cc: Roland Mainz <roland.mainz@nrubsig.org>
+In extreme cases they pull all data into skb linear. For TCP, this
+causes a NULL ptr deref in __tcpv4_gso_segment_list_csum at
+tcp_hdr(seg->next).
+
+Detect invalid geometry due to pull, by checking head_skb size.
+Don't just drop, as this may blackhole a destination. Convert to be
+able to pass to regular skb_segment.
+
+Approach and description based on a patch by Willem de Bruijn.
+
+Link: https://lore.kernel.org/netdev/20240428142913.18666-1-shiming.cheng@mediatek.com/
+Link: https://lore.kernel.org/netdev/20240922150450.3873767-1-willemdebruijn.kernel@gmail.com/
+Fixes: bee88cd5bd83 ("net: add support for segmenting TCP fraglist GSO packets")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20240926085315.51524-1-nbd@nbd.name
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4xdr.c |   10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ net/ipv4/tcp_offload.c   | 10 ++++++++--
+ net/ipv6/tcpv6_offload.c | 10 ++++++++--
+ 2 files changed, 16 insertions(+), 4 deletions(-)
 
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -1246,14 +1246,6 @@ nfsd4_decode_putfh(struct nfsd4_compound
- }
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index e4ad3311e148..2308665b51c5 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -101,8 +101,14 @@ static struct sk_buff *tcp4_gso_segment(struct sk_buff *skb,
+ 	if (!pskb_may_pull(skb, sizeof(struct tcphdr)))
+ 		return ERR_PTR(-EINVAL);
  
- static __be32
--nfsd4_decode_putpubfh(struct nfsd4_compoundargs *argp, union nfsd4_op_u *p)
--{
--	if (argp->minorversion == 0)
--		return nfs_ok;
--	return nfserr_notsupp;
--}
--
--static __be32
- nfsd4_decode_read(struct nfsd4_compoundargs *argp, union nfsd4_op_u *u)
- {
- 	struct nfsd4_read *read = &u->read;
-@@ -2374,7 +2366,7 @@ static const nfsd4_dec nfsd4_dec_ops[] =
- 	[OP_OPEN_CONFIRM]	= nfsd4_decode_open_confirm,
- 	[OP_OPEN_DOWNGRADE]	= nfsd4_decode_open_downgrade,
- 	[OP_PUTFH]		= nfsd4_decode_putfh,
--	[OP_PUTPUBFH]		= nfsd4_decode_putpubfh,
-+	[OP_PUTPUBFH]		= nfsd4_decode_noop,
- 	[OP_PUTROOTFH]		= nfsd4_decode_noop,
- 	[OP_READ]		= nfsd4_decode_read,
- 	[OP_READDIR]		= nfsd4_decode_readdir,
+-	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST)
+-		return __tcp4_gso_segment_list(skb, features);
++	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST) {
++		struct tcphdr *th = tcp_hdr(skb);
++
++		if (skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size)
++			return __tcp4_gso_segment_list(skb, features);
++
++		skb->ip_summed = CHECKSUM_NONE;
++	}
+ 
+ 	if (unlikely(skb->ip_summed != CHECKSUM_PARTIAL)) {
+ 		const struct iphdr *iph = ip_hdr(skb);
+diff --git a/net/ipv6/tcpv6_offload.c b/net/ipv6/tcpv6_offload.c
+index 23971903e66d..a45bf17cb2a1 100644
+--- a/net/ipv6/tcpv6_offload.c
++++ b/net/ipv6/tcpv6_offload.c
+@@ -159,8 +159,14 @@ static struct sk_buff *tcp6_gso_segment(struct sk_buff *skb,
+ 	if (!pskb_may_pull(skb, sizeof(*th)))
+ 		return ERR_PTR(-EINVAL);
+ 
+-	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST)
+-		return __tcp6_gso_segment_list(skb, features);
++	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST) {
++		struct tcphdr *th = tcp_hdr(skb);
++
++		if (skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size)
++			return __tcp6_gso_segment_list(skb, features);
++
++		skb->ip_summed = CHECKSUM_NONE;
++	}
+ 
+ 	if (unlikely(skb->ip_summed != CHECKSUM_PARTIAL)) {
+ 		const struct ipv6hdr *ipv6h = ipv6_hdr(skb);
+-- 
+2.46.2
+
 
 
 
