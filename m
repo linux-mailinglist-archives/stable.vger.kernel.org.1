@@ -1,156 +1,113 @@
-Return-Path: <stable+bounces-83161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C0F996178
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 09:53:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12651996196
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 09:56:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B078281AF7
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 07:53:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABDE1B22752
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 07:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83DD7187322;
-	Wed,  9 Oct 2024 07:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1B9188903;
+	Wed,  9 Oct 2024 07:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JXyux1GE"
 X-Original-To: stable@vger.kernel.org
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1616B185940;
-	Wed,  9 Oct 2024 07:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC281885A1
+	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 07:56:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728460382; cv=none; b=XTbCLuMzv9336a1U2TbJ7m3MtqHm3M1+ZTHy1nrzXpkWFtydjpfNimZiz5RvQJHtqDSwVUkiR3a8OqREu9KnQuNpAvujuV149TWqnUDBarmHFABYPLAMNGNnorIshF677l79ge6dWCkXwyCJ02K8IWV3pKytTkPTtxFR0HFsrM8=
+	t=1728460564; cv=none; b=i5AsQKYSzgbWhXtZPG1v9sXBtufYz8lixJoFVs+noaIJsXrcj0tQCBCnosHL+AJV61YxIpdBWOc0gJF029KDjg+mDf3RUhjN0hBmPh8ujetr8vm2wbv387HT8AoywjArERRBFuz59GaI6BvPbSC5jwn43dUzhxTaWcpJdn4QGVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728460382; c=relaxed/simple;
-	bh=+pLjG6qVfCrJjYwRdzb2oD8RD5WYMl+eOpx7RaGqGs4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FS68tWFlYiVrkATr6nAWq5e6wUZ69HQWiG4Kl1oVCx02pi3LYMfpzrHuXZKTERn2V47V9ipeMb0jy2MJbLwgg4V7fyeQZA54yIXuc+zEbFNvkfcC5qqpacWA6SnnLwpy/CrPr1eTdh/ZThOa04zuYOnymXRpFOMCzKpOjvUSv74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D808D1BF208;
-	Wed,  9 Oct 2024 07:52:56 +0000 (UTC)
-Message-ID: <c5cd71d1-8779-45d9-965d-8459d060857b@ghiti.fr>
-Date: Wed, 9 Oct 2024 09:52:56 +0200
+	s=arc-20240116; t=1728460564; c=relaxed/simple;
+	bh=5bDrW9FeH7jow12z7JCCd0C3C11s2ZFK9uhE9mhsRg8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=KdBCO/rgQ0OxxRMdxQ1ek3AcZSWL6GKCTphFiEtns4R7nhEUDtPgQ1RXoGsmx8971joKGDlMJtWnN1Y9dkLsSHDDghq7sp5TJENd7OwjnYpTXjKW+QOuLaYtSNw/nKYMN526SbOqnbGCrO3re1FBJwAIl2bYmIUwz7Wi+za2ARk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JXyux1GE; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-430558cddbeso3523875e9.1
+        for <stable@vger.kernel.org>; Wed, 09 Oct 2024 00:56:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1728460561; x=1729065361; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y07+yBgcOroVjHiX9PPEthxZxo0GpR0R3sF3xpne55c=;
+        b=JXyux1GE6TV7cTJNrIO8828F7lwEKI0oJ3LPmyitrwht8jXnWfrBLiUCaB1v73m2nK
+         B+csatpmawL4fOiIVfiyl2vlAgvd7NzgMbV2tuaCZ8jdc738xViMBQgKKHR5XCcTlBns
+         IYwkrXcDVYAnmwn+nRViHwD6wpkTeHbrZqAwCnVx9+DSAFizIX7/09/91mT+L4d2eZZU
+         7TcKo+O8Rt8gMcXbqMlwfEBvJEsQKJxVoQJMroV5yxgSCR7GOCE8lYzD9Wo9pVw1K+lu
+         O4o6DSr8LZsdVulvcQ/hGAa25FDMhDQ2S/79Lf8lC/AciLduVn8YHhwNypiciMPCgTxo
+         46Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728460561; x=1729065361;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y07+yBgcOroVjHiX9PPEthxZxo0GpR0R3sF3xpne55c=;
+        b=S1CAjbG0HGVPLbXKmIDSUfmsGW5u6Gk3N6ZaEptgANGeoMoDOquAcm0FVcrsUeG1tT
+         HFUEQVria66R1pjr4eGsPUHXdq1VWuU//SN8HKZeeSrVJ7hQni1mYotShiPYvcIlqKWy
+         JMX6eNBdOyoEOVr9wIaB6OiyMxdBLisUrEeLuXD52Cw7EuLVb82Pt5Vm8I6o1E0Rdpoh
+         +nVmNAFth9INZQ+90DRRiSRNiTH0jp987cUIcpDqucojelOcj7s4ugA8J4NWQrV8SaFX
+         DNpeFhhvnVH1Swu2CZTK9fZkeR//XEdgRXmh82e/14hh8zlYLiFOMVDap9Da27H2P5L8
+         z2Vw==
+X-Forwarded-Encrypted: i=1; AJvYcCUsCso8bwLLTG7eNG7Gtoje5ra83YxX7wPJV3CK4CFlMTU3qe0MKon9949Ox6QnhorcTYAiPFQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/BC2opkkUIaq6lOdTmS9SeHPuYkJKHtvC7hv33U0JwwAyBJf2
+	RdhoyHupd0l9Jw2wB1Ve5Tc7qEYADaq3lYqaXo9swEfrqwsAI+l2cN7lQfxdtQI=
+X-Google-Smtp-Source: AGHT+IEUTMyWoKYDFs0XFyBJ4bnVk79FYy8jhwf/yzMlTPUezsEK/9UOX2RPBUTNm5wGJUbXCAro6w==
+X-Received: by 2002:a05:600c:cc3:b0:424:895c:b84b with SMTP id 5b1f17b1804b1-43069960b49mr10023845e9.4.1728460561547;
+        Wed, 09 Oct 2024 00:56:01 -0700 (PDT)
+Received: from arrakeen.starnux.net ([2a01:e0a:982:cbb0:52eb:f6ff:feb3:451a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d16972fd9sm9660342f8f.104.2024.10.09.00.56.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Oct 2024 00:56:00 -0700 (PDT)
+From: Neil Armstrong <neil.armstrong@linaro.org>
+To: Jagan Teki <jagan@edgeble.ai>, 
+ Jessica Zhang <quic_jesszhan@quicinc.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Zhaoxiong Lv <lvzhaoxiong@huaqin.corp-partner.google.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ Hugo Villeneuve <hugo@hugovil.com>
+Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>, stable@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240930170503.1324560-1-hugo@hugovil.com>
+References: <20240930170503.1324560-1-hugo@hugovil.com>
+Subject: Re: [PATCH] drm: panel: jd9365da-h3: Remove unused num_init_cmds
+ structure member
+Message-Id: <172846056007.3028267.12851544842489974284.b4-ty@linaro.org>
+Date: Wed, 09 Oct 2024 09:56:00 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] riscv: efi: Set NX compat flag in PE/COFF header
-Content-Language: en-US
-To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
- Emil Renner Berthing <emil.renner.berthing@canonical.com>,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
-References: <20240929140233.211800-1-heinrich.schuchardt@canonical.com>
- <3c2ff70d-a580-4bba-b6e2-1b66b0a98c5d@ghiti.fr>
- <811ea10e-3bf1-45a5-a407-c09ec5756b48@canonical.com>
- <2d907c14-5b43-446e-9640-efb0fa0ba385@ghiti.fr>
- <a3308767-eb30-446b-8c70-32b36a3075e4@canonical.com>
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <a3308767-eb30-446b-8c70-32b36a3075e4@canonical.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alex@ghiti.fr
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.1
 
-On 09/10/2024 09:47, Heinrich Schuchardt wrote:
-> On 09.10.24 09:34, Alexandre Ghiti wrote:
->> Hi Heinrich,
->>
->> On 01/10/2024 17:24, Heinrich Schuchardt wrote:
->>> On 01.10.24 15:51, Alexandre Ghiti wrote:
->>>> Hi Heinrich,
->>>>
->>>> On 29/09/2024 16:02, Heinrich Schuchardt wrote:
->>>>> The IMAGE_DLLCHARACTERISTICS_NX_COMPAT informs the firmware that the
->>>>> EFI binary does not rely on pages that are both executable and
->>>>> writable.
->>>>>
->>>>> The flag is used by some distro versions of GRUB to decide if the EFI
->>>>> binary may be executed.
->>>>>
->>>>> As the Linux kernel neither has RWX sections nor needs RWX pages for
->>>>> relocation we should set the flag.
->>>>>
->>>>> Cc: Ard Biesheuvel <ardb@kernel.org>
->>>>> Cc: <stable@vger.kernel.org>
->>>>> Signed-off-by: Heinrich Schuchardt 
->>>>> <heinrich.schuchardt@canonical.com>
->>>>> ---
->>>>>   arch/riscv/kernel/efi-header.S | 2 +-
->>>>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/arch/riscv/kernel/efi-header.S 
->>>>> b/arch/riscv/kernel/efi- header.S
->>>>> index 515b2dfbca75..c5f17c2710b5 100644
->>>>> --- a/arch/riscv/kernel/efi-header.S
->>>>> +++ b/arch/riscv/kernel/efi-header.S
->>>>> @@ -64,7 +64,7 @@ extra_header_fields:
->>>>>       .long    efi_header_end - _start            // SizeOfHeaders
->>>>>       .long    0                    // CheckSum
->>>>>       .short    IMAGE_SUBSYSTEM_EFI_APPLICATION        // Subsystem
->>>>> -    .short    0                    // DllCharacteristics
->>>>> +    .short    IMAGE_DLL_CHARACTERISTICS_NX_COMPAT    // 
->>>>> DllCharacteristics
->>>>>       .quad    0                    // SizeOfStackReserve
->>>>>       .quad    0                    // SizeOfStackCommit
->>>>>       .quad    0                    // SizeOfHeapReserve
->>>>
->>>>
->>>> I don't understand if this fixes something or not: what could go 
->>>> wrong if we don't do this?
->>>>
->>>> Thanks,
->>>>
->>>> Alex
->>>>
->>>
->>>
->>> Hello Alexandre,
->>>
->>> https://learn.microsoft.com/en-us/windows-hardware/drivers/bringup/ 
->>> uefi-ca-memory-mitigation-requirements
->>> describes Microsoft's effort to improve security by avoiding memory 
->>> pages that are both executable and writable.
->>>
->>> IMAGE_DLL_CHARACTERISTICS_NX_COMPAT is an assertion by the EFI 
->>> binary that it does not use RWX pages. It may use the 
->>> EFI_MEMORY_ATTRIBUTE_PROTOCOL to set whether a page is writable or 
->>> executable (but not both).
->>>
->>> When using secure boot, compliant firmware will not allow loading a 
->>> binary if the flag is not set.
->>
->>
->> Great, so that's a necessary fix, it will get merged in the next rc 
->> or so:
->>
->> Fixes: cb7d2dd5612a ("RISC-V: Add PE/COFF header for EFI stub")
->
-> Thanks for reviewing.
->
-> At the time of commit cb7d2dd5612a (2020-10-02) the requirement did 
-> not exist. I guess a Fixes: tag is not applicable under these 
-> circumstances.
+Hi,
 
+On Mon, 30 Sep 2024 13:05:03 -0400, Hugo Villeneuve wrote:
+> Now that the driver has been converted to use wrapped MIPI DCS functions,
+> the num_init_cmds structure member is no longer needed, so remove it.
+> 
+> 
 
-Hmm ok, indeed that would be weird since it is not the culprit, I'll 
-remove it and it will simply fail to apply for kernels before this 
-commit, no big deal I guess.
+Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-next)
 
-Thanks again Heinrich!
+[1/1] drm: panel: jd9365da-h3: Remove unused num_init_cmds structure member
+      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/66ae275365be4f118abe2254a0ced1d913af93f2
 
-Alex
+-- 
+Neil
 
-
->
-> Best regards
->
-> Heinrich
 
