@@ -1,183 +1,166 @@
-Return-Path: <stable+bounces-83159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C51C99615C
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 09:47:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A21996171
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 09:52:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02F1A1F21E90
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 07:47:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F0C31F2287F
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 07:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522B817C9AC;
-	Wed,  9 Oct 2024 07:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98969187339;
+	Wed,  9 Oct 2024 07:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="qSEB6JYw"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xKJ2BZCu";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CosEm8UN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE7C17C7CA
-	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 07:47:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC75186E38;
+	Wed,  9 Oct 2024 07:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728460053; cv=none; b=onBgWlnh2iWYUTX7emS4+wg/20hqrvPbzRkG6FBjxUcwtj0YtElDvWKHGpmMyy0sCocvbVc3G/osCl3fLXkPir+QqGOeInGt62lCX03sIt6SHSUl+X3Mu2ZR5aTbfcmTGfvzYc2i7z479cYma5HroFmP0jplFjpM29jyGUQ9lyo=
+	t=1728460346; cv=none; b=iOEaX2+f+hXTa6hqIxjlUCNHN0iO2CR8+N6RMhX0WeVJBRKCsWNHi1Db/jnw5+NApBF4/oo3DyOO1t5fkyKrcvpRJZxNf+YSibSbG5itmjcU1160Q6PpCGeRE97y49TMNFwQrPVWa0SoA88kvjeJRM+Wh4y70aIvGuJKiNPaUb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728460053; c=relaxed/simple;
-	bh=M3yxsY+9PPnN46n9uKc3CclIdd+jGD1Dvn1W9uL3vZU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b6htpXi02y+dRXlKgFqYvssULbRkAdyoG+fkdIiSL91nvyMQq3L4tMgj3i2POEwTCctZYccY/1B44FNmNtTiA+6sXSn9O3fpZ55sv9l6qqfyk4CSY2TVukQGEAJ3Q5flffhfd2NgWVhi+NjV/fsN8TH6VdST1SDNBeeQw4Z37Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=qSEB6JYw; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id A918A3F4C0
-	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 07:47:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1728460047;
-	bh=64u7S06vuCARV2d1jETcvXWsb00VtP72rN9+doc72U8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type;
-	b=qSEB6JYwnrPjEMFEmj5Y3lNTuk1ytJW6MYg8GeDc/FDwXRhO+h53JO1ERdjmBK+Oe
-	 1HWRNegpBTH+0HrR0u1ohNghqd/SvbpGgKXoxIgnUHsm2qq/gFTCqYlH5+xuK8s5qN
-	 cOaP8UF7N6dIe6F5962gDQVSUWrUQtkOBKoF7f9jd/+SNYnWagFcC4qoJn/cK9h2Xa
-	 Kod9bqTHZys8KyFl/BaGqD6nNQvXaHv4A2FmvDcxZSrRlePLg9Hg/sYkuut8tRoKMM
-	 8J923aKZb80aJ6MkXH5vR2NWbGSN2endcFNxRyCFUD4YNV41jgU92cGIJSl2KO73yd
-	 Mfr7lmlJ4zjoQ==
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-37d3256c0a2so806129f8f.3
-        for <stable@vger.kernel.org>; Wed, 09 Oct 2024 00:47:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728460047; x=1729064847;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=64u7S06vuCARV2d1jETcvXWsb00VtP72rN9+doc72U8=;
-        b=wn8pjq+3dgJSm0tat1Kpb3D64B+pWp6Es2JJKeRbW1dXLT8KSoCq/UICTCYQN4TDks
-         bbkrbRt3cRVBAKjOuHf5WSCTsSTCtB4G1hiQNpqywNGQA/S2LIR8ZONtq2T0WA6Lkt0D
-         1a1mbY469QwUXu4vBcZVVvKA4hegFV/gYWc8JhjUyQzcR7gmXJY329qJtMeN9H+oQXnW
-         XPM/7wcDpE7eMuABp1ORnyHFt0Dm64KmEKqEtOmmXBdOS+VoEzf/zZIer0tIH/rP6CCe
-         o9hBy3Y3Cx7hO6Kt7ObTDhPI3IjHx+UgmtdMetVIAXAWcPm5y90QbbJWcAzELtrksBRg
-         6qZw==
-X-Forwarded-Encrypted: i=1; AJvYcCXRtEywTvUhLNsADlj7TskcCiIW/1hL7ZyGQQi9Z6VQ3zzcbDICkWzhg+guo31wF3ThHFMekTw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx92m6mWDMX7pz9U19T4ljYHEwkgGBuVuK0GukkuMiDLvuL+0QO
-	CTes3Ii7pkOiCjnJodtyqnzN9juWb6rF+aGJkWFhhVA2aM0BLBNJVbbWqMfCyWVWk0NJOnSNrTL
-	zi6nPJIMP0GvBcwoBSVrQvR7n2/sixLpGOvIavZ7kjRQs+mODg600Ormze8GJyw2Gbp5wKQ==
-X-Received: by 2002:a5d:5e11:0:b0:37d:3bad:a50b with SMTP id ffacd0b85a97d-37d3bada7a8mr652278f8f.45.1728460047167;
-        Wed, 09 Oct 2024 00:47:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFjy0iSj86RuRw+Xk9XUJOj0zHUIng80b/tKMspPKiIgG0uuvHQFCiq0VNFpthVXphITx593A==
-X-Received: by 2002:a5d:5e11:0:b0:37d:3bad:a50b with SMTP id ffacd0b85a97d-37d3bada7a8mr652267f8f.45.1728460046709;
-        Wed, 09 Oct 2024 00:47:26 -0700 (PDT)
-Received: from ?IPV6:2a02:3035:6e0:2015:a58c:a3d4:2675:9367? ([2a02:3035:6e0:2015:a58c:a3d4:2675:9367])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-430ccf51770sm11658085e9.22.2024.10.09.00.47.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Oct 2024 00:47:26 -0700 (PDT)
-Message-ID: <a3308767-eb30-446b-8c70-32b36a3075e4@canonical.com>
-Date: Wed, 9 Oct 2024 09:47:24 +0200
+	s=arc-20240116; t=1728460346; c=relaxed/simple;
+	bh=+lQ/l892jccd9NoS20UHoY5c0TozqbdXnZZgZ8BEqsI=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=BIphiG9Z/ihxgKS5wB+zmn3xmHXgI1ZMQr0zJptlMYfko/couVvaHscFRDb+FToyf2ORChForEZfREjiTF8S4yfKkymCKdkiNN8IRjo/ThahJm6qwLHzaE+sujLF63vP7tUGC1zH2qfwEEDHYLK2IUkFD1j5Etr8ZsVE+d/TB1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xKJ2BZCu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CosEm8UN; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 09 Oct 2024 07:52:21 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1728460342;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=gmtfUeTpS6PXG6kQuHt8C9RWoMWssM85Cme4gY2Rc8o=;
+	b=xKJ2BZCu3J08yv3DCa4k2zKeGHCHjCPhgoPjylZLwmwb+PFE7aDWLRKsYBZiPxZedJ7MFE
+	5HQ3D+QJSkMzxJ6yPJVqZlpgRbkG6AC1RqxDPVdKjggAbqpws49XUO/ObtvD8XsDDlsTOl
+	pbIpqIwaOlUCE1iLmx4N1xLNDoLuqwWxmgD9c5AhyjPkHlSImsZDOSQBSD65GW5dI6urt7
+	Q+Ni2COO3Ypq0VUwPsXd9WEYNsTjv/CIM36Gby1G4BN+YbCxcv6VZ5tQUYaqG3AmbcW7IS
+	ewyDL2p+1Gi5oOb+5iEkqqq1LZKlgsr214wGHsoV4CVMMyl6/MhwmYJov0dYJQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1728460342;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=gmtfUeTpS6PXG6kQuHt8C9RWoMWssM85Cme4gY2Rc8o=;
+	b=CosEm8UN5/BIYAe4nKoZc4cxUoemhQEf76rozYRM/D2Cxwv1J5q0R/DWd3fod8QOJb7YWx
+	SsF17v038L0gsLDg==
+From: "tip-bot2 for Pawan Gupta" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: x86/urgent] x86/bugs: Use code segment selector for VERW operand
+Cc: Robert Gill <rtgill82@gmail.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>, stable@vger.kernel.org,
+	#@tip-bot2.tec.linutronix.de, 5.10+@tip-bot2.tec.linutronix.de,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Brian Gerst <brgerst@gmail.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+	linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] riscv: efi: Set NX compat flag in PE/COFF header
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
- Emil Renner Berthing <emil.renner.berthing@canonical.com>,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
-References: <20240929140233.211800-1-heinrich.schuchardt@canonical.com>
- <3c2ff70d-a580-4bba-b6e2-1b66b0a98c5d@ghiti.fr>
- <811ea10e-3bf1-45a5-a407-c09ec5756b48@canonical.com>
- <2d907c14-5b43-446e-9640-efb0fa0ba385@ghiti.fr>
-Content-Language: en-US
-From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-In-Reply-To: <2d907c14-5b43-446e-9640-efb0fa0ba385@ghiti.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Message-ID: <172846034177.1442.4656176308179548613.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On 09.10.24 09:34, Alexandre Ghiti wrote:
-> Hi Heinrich,
-> 
-> On 01/10/2024 17:24, Heinrich Schuchardt wrote:
->> On 01.10.24 15:51, Alexandre Ghiti wrote:
->>> Hi Heinrich,
->>>
->>> On 29/09/2024 16:02, Heinrich Schuchardt wrote:
->>>> The IMAGE_DLLCHARACTERISTICS_NX_COMPAT informs the firmware that the
->>>> EFI binary does not rely on pages that are both executable and
->>>> writable.
->>>>
->>>> The flag is used by some distro versions of GRUB to decide if the EFI
->>>> binary may be executed.
->>>>
->>>> As the Linux kernel neither has RWX sections nor needs RWX pages for
->>>> relocation we should set the flag.
->>>>
->>>> Cc: Ard Biesheuvel <ardb@kernel.org>
->>>> Cc: <stable@vger.kernel.org>
->>>> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
->>>> ---
->>>>   arch/riscv/kernel/efi-header.S | 2 +-
->>>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/arch/riscv/kernel/efi-header.S b/arch/riscv/kernel/efi- 
->>>> header.S
->>>> index 515b2dfbca75..c5f17c2710b5 100644
->>>> --- a/arch/riscv/kernel/efi-header.S
->>>> +++ b/arch/riscv/kernel/efi-header.S
->>>> @@ -64,7 +64,7 @@ extra_header_fields:
->>>>       .long    efi_header_end - _start            // SizeOfHeaders
->>>>       .long    0                    // CheckSum
->>>>       .short    IMAGE_SUBSYSTEM_EFI_APPLICATION        // Subsystem
->>>> -    .short    0                    // DllCharacteristics
->>>> +    .short    IMAGE_DLL_CHARACTERISTICS_NX_COMPAT    // 
->>>> DllCharacteristics
->>>>       .quad    0                    // SizeOfStackReserve
->>>>       .quad    0                    // SizeOfStackCommit
->>>>       .quad    0                    // SizeOfHeapReserve
->>>
->>>
->>> I don't understand if this fixes something or not: what could go 
->>> wrong if we don't do this?
->>>
->>> Thanks,
->>>
->>> Alex
->>>
->>
->>
->> Hello Alexandre,
->>
->> https://learn.microsoft.com/en-us/windows-hardware/drivers/bringup/ 
->> uefi-ca-memory-mitigation-requirements
->> describes Microsoft's effort to improve security by avoiding memory 
->> pages that are both executable and writable.
->>
->> IMAGE_DLL_CHARACTERISTICS_NX_COMPAT is an assertion by the EFI binary 
->> that it does not use RWX pages. It may use the 
->> EFI_MEMORY_ATTRIBUTE_PROTOCOL to set whether a page is writable or 
->> executable (but not both).
->>
->> When using secure boot, compliant firmware will not allow loading a 
->> binary if the flag is not set.
-> 
-> 
-> Great, so that's a necessary fix, it will get merged in the next rc or so:
-> 
-> Fixes: cb7d2dd5612a ("RISC-V: Add PE/COFF header for EFI stub")
+The following commit has been merged into the x86/urgent branch of tip:
 
-Thanks for reviewing.
+Commit-ID:     e4d2102018542e3ae5e297bc6e229303abff8a0f
+Gitweb:        https://git.kernel.org/tip/e4d2102018542e3ae5e297bc6e229303abff8a0f
+Author:        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+AuthorDate:    Thu, 26 Sep 2024 09:10:31 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 09 Oct 2024 09:42:30 +02:00
 
-At the time of commit cb7d2dd5612a (2020-10-02) the requirement did not 
-exist. I guess a Fixes: tag is not applicable under these circumstances.
+x86/bugs: Use code segment selector for VERW operand
 
-Best regards
+Robert Gill reported below #GP in 32-bit mode when dosemu software was
+executing vm86() system call:
 
-Heinrich
+  general protection fault: 0000 [#1] PREEMPT SMP
+  CPU: 4 PID: 4610 Comm: dosemu.bin Not tainted 6.6.21-gentoo-x86 #1
+  Hardware name: Dell Inc. PowerEdge 1950/0H723K, BIOS 2.7.0 10/30/2010
+  EIP: restore_all_switch_stack+0xbe/0xcf
+  EAX: 00000000 EBX: 00000000 ECX: 00000000 EDX: 00000000
+  ESI: 00000000 EDI: 00000000 EBP: 00000000 ESP: ff8affdc
+  DS: 0000 ES: 0000 FS: 0000 GS: 0033 SS: 0068 EFLAGS: 00010046
+  CR0: 80050033 CR2: 00c2101c CR3: 04b6d000 CR4: 000406d0
+  Call Trace:
+   show_regs+0x70/0x78
+   die_addr+0x29/0x70
+   exc_general_protection+0x13c/0x348
+   exc_bounds+0x98/0x98
+   handle_exception+0x14d/0x14d
+   exc_bounds+0x98/0x98
+   restore_all_switch_stack+0xbe/0xcf
+   exc_bounds+0x98/0x98
+   restore_all_switch_stack+0xbe/0xcf
+
+This only happens in 32-bit mode when VERW based mitigations like MDS/RFDS
+are enabled. This is because segment registers with an arbitrary user value
+can result in #GP when executing VERW. Intel SDM vol. 2C documents the
+following behavior for VERW instruction:
+
+  #GP(0) - If a memory operand effective address is outside the CS, DS, ES,
+	   FS, or GS segment limit.
+
+CLEAR_CPU_BUFFERS macro executes VERW instruction before returning to user
+space. Use %cs selector to reference VERW operand. This ensures VERW will
+not #GP for an arbitrary user %ds.
+
+[ mingo: Fixed the SOB chain. ]
+
+Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
+Reported-by: Robert Gill <rtgill82@gmail.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com
+Cc: stable@vger.kernel.org # 5.10+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218707
+Closes: https://lore.kernel.org/all/8c77ccfd-d561-45a1-8ed5-6b75212c7a58@leemhuis.info/
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Suggested-by: Brian Gerst <brgerst@gmail.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+---
+ arch/x86/include/asm/nospec-branch.h | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index ff5f1ec..96b410b 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -323,7 +323,16 @@
+  * Note: Only the memory operand variant of VERW clears the CPU buffers.
+  */
+ .macro CLEAR_CPU_BUFFERS
+-	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
++#ifdef CONFIG_X86_64
++	ALTERNATIVE "", "verw mds_verw_sel(%rip)", X86_FEATURE_CLEAR_CPU_BUF
++#else
++	/*
++	 * In 32bit mode, the memory operand must be a %cs reference. The data
++	 * segments may not be usable (vm86 mode), and the stack segment may not
++	 * be flat (ESPFIX32).
++	 */
++	ALTERNATIVE "", "verw %cs:mds_verw_sel", X86_FEATURE_CLEAR_CPU_BUF
++#endif
+ .endm
+ 
+ #ifdef CONFIG_X86_64
 
