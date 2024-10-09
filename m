@@ -1,121 +1,82 @@
-Return-Path: <stable+bounces-83272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C31B9976A2
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 22:43:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DDAC99773E
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 23:08:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CE641C223DB
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 20:43:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E13372837B2
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 21:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA671E376D;
-	Wed,  9 Oct 2024 20:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B781E2316;
+	Wed,  9 Oct 2024 21:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b="slXIN3T8"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="POkOiRiE"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4BC1E1A04;
-	Wed,  9 Oct 2024 20:41:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DFB1E1A36;
+	Wed,  9 Oct 2024 21:08:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728506497; cv=none; b=Ea1ub5Guo7jvHR99pArhDMS2FeyknWVd73JMdNG/vsEUeN9P0H7PTLdhJWpd+X+vmdpJbWSx/G6Kstw+/jXZn8tNZoQmgdy9prTm4P0NQO71cQyPEMO7/x7NuGK+6MrfFjlyQonYXHemUQelepp4GLEKETpsp2DiwNQCrMXAKM4=
+	t=1728508104; cv=none; b=qqVWqvkr16eC2C37pgjhpxEs4/OmCtShR1WIpyvzJX2zPiCE7NZA+U6hD8MTl2bOiT4qifvsDfa0npnXiTngykSAoIqArINCCvkkhM/jxon0bd664pNmSQfplvl/i+zMttN0k1QnARlT7ztCeMLRH+rTHOnJc4S4m8QR2NpF09Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728506497; c=relaxed/simple;
-	bh=HHdoaMHdkVQWx0FkhugGfSdSqGDM4p2QXOJQBPWZ+bQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ttOT4AfQzXgVZEwfQICSvctCDtwwQ87ypN8xj/B4pvggi0NAkdg9ANgFpNOQP95RI173pqquIcmVJlnCwRvO7l6Wijn68cbUgDEs3y8qpfJaqEnrHDyhtHrYmmunKFNfNelUXGCZ6FJGQ+18ZaYIwX5mIaA/lmDHrVj51cPJp4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com; spf=pass smtp.mailfrom=cyphar.com; dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b=slXIN3T8; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyphar.com
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4XP4YR4vTPz9tnm;
-	Wed,  9 Oct 2024 22:41:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
-	t=1728506491;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KHaYV9nP73oZ6uB0oR4WRKvQDPGRHwYwcifbf4Jh92g=;
-	b=slXIN3T8XIYncnTRetCVjUj8DfJg+NOBD0EOn9mTZhv/LyNq4wmwsFqcKmGyK95SsmfWCA
-	HLIWf16K7r+OqxGan2slZ7copCdWJjfpNw0CnO9aMYYNEDv1GYLvKOBT6kFfQrrjfkLkeM
-	wdHJ5DzF84d40Aa56Sklwu3Oe80IzT6A/865354ssZfpiz5WNximqOlRJhhYplRvmNN143
-	mqv03TdvJvdUXfEzi5E02XGbuYaChPaVL7DIxtyWFSgk/AMT218/aV/udDqRsqLvj64087
-	8nEzxLwlDcCeodXPKksXi+IKwKZRHBn3tLB2Bh1Mzr499xU0UaJBAVCivXadbA==
-From: Aleksa Sarai <cyphar@cyphar.com>
-Date: Thu, 10 Oct 2024 07:40:36 +1100
-Subject: [PATCH RFC v3 03/10] openat2: explicitly return -E2BIG for (usize
- > PAGE_SIZE)
+	s=arc-20240116; t=1728508104; c=relaxed/simple;
+	bh=U7TqRRHty20VoO6nL6y+RwxqEmfTzgcg5lfdBgfAfGI=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=Ip7m9E0XdcM8ZhJHuwfMVWbs/fx1JX4RHJilf5Hdvu+et7RSwFYj2f/8jWNfB65veRmgmWq4xHE0f3cyuKK04gQokoT7IuwPk296OdmrFD7pd2jZR0JnH+7V3KirKoEQvyp8bx5a7Y8xSKSPj5sgMFfiRwSmYuxc/FQb4B5mZPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=POkOiRiE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4439FC4CEC3;
+	Wed,  9 Oct 2024 21:08:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1728508103;
+	bh=U7TqRRHty20VoO6nL6y+RwxqEmfTzgcg5lfdBgfAfGI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=POkOiRiEWJzuYqxdCw2+wcxgrHEgTMtvy0ldlVa/ja86aQgOsOysob5Z12hlD1xQo
+	 3Zmm/93gUHdLijTIXqy8fYcxY2Aik8qSLPPvTH4z0pn5KoeVWQni16NonVdtq3UZYI
+	 XhWqVG4stAM9ZoMTDVGYG72VdEEoE4piiFYfVFmQ=
+Date: Wed, 9 Oct 2024 14:08:22 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: kernel test robot <lkp@intel.com>, Jann Horn <jannh@google.com>,
+ oe-kbuild-all@lists.linux.dev, Linux Memory Management List
+ <linux-mm@kvack.org>, Hugh Dickins <hughd@google.com>, Oleg Nesterov
+ <oleg@redhat.com>, Michal Hocko <mhocko@suse.com>, Helge Deller
+ <deller@gmx.de>, Vlastimil Babka <vbabka@suse.cz>, Ben Hutchings
+ <bwh@kernel.org>, Willy Tarreau <w@1wt.eu>, Rik van Riel <riel@redhat.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: Enforce a minimal stack gap even against
+ inaccessible VMAs
+Message-Id: <20241009140822.0628a4d09312cbc19d73c6e4@linux-foundation.org>
+In-Reply-To: <f065ca1a-473b-41da-998a-cd51ae1d201d@lucifer.local>
+References: <20241008-stack-gap-inaccessible-v1-1-848d4d891f21@google.com>
+	<202410090632.brLG8w0b-lkp@intel.com>
+	<f065ca1a-473b-41da-998a-cd51ae1d201d@lucifer.local>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241010-extensible-structs-check_fields-v3-3-d2833dfe6edd@cyphar.com>
-References: <20241010-extensible-structs-check_fields-v3-0-d2833dfe6edd@cyphar.com>
-In-Reply-To: <20241010-extensible-structs-check_fields-v3-0-d2833dfe6edd@cyphar.com>
-To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
- Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, 
- Dietmar Eggemann <dietmar.eggemann@arm.com>, 
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>
-Cc: Kees Cook <kees@kernel.org>, Florian Weimer <fweimer@redhat.com>, 
- Arnd Bergmann <arnd@arndb.de>, Mark Rutland <mark.rutland@arm.com>, 
- linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>, 
- stable@vger.kernel.org
-X-Developer-Signature: v=1; a=openpgp-sha256; l=891; i=cyphar@cyphar.com;
- h=from:subject:message-id; bh=HHdoaMHdkVQWx0FkhugGfSdSqGDM4p2QXOJQBPWZ+bQ=;
- b=owGbwMvMwCWmMf3Xpe0vXfIZT6slMaSzvQr87Z/06/j0Nffc1sXu3nRypSM/175w9yWKFUfju
- GXky9LedJSyMIhxMciKKbJs8/MM3TR/8ZXkTyvZYOawMoEMYeDiFICJnHjByNDBIftiE9u7Ystv
- CfnfqwRDpJYFOp6Kme66aFLW9wMWgvWMDHv3Tp2aesyN7dzMZ3W88nvWWpzYw77gsv/ubyyPZXm
- 2PecHAA==
-X-Developer-Key: i=cyphar@cyphar.com; a=openpgp;
- fpr=C9C370B246B09F6DBCFC744C34401015D1D2D386
-X-Rspamd-Queue-Id: 4XP4YR4vTPz9tnm
 
-While we do currently return -EFAULT in this case, it seems prudent to
-follow the behaviour of other syscalls like clone3. It seems quite
-unlikely that anyone depends on this error code being EFAULT, but we can
-always revert this if it turns out to be an issue.
+On Wed, 9 Oct 2024 15:53:50 +0100 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
-Cc: <stable@vger.kernel.org> # v5.6+
-Fixes: fddb5d430ad9 ("open: introduce openat2(2) syscall")
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
----
- fs/open.c | 2 ++
- 1 file changed, 2 insertions(+)
+> > All errors (new ones prefixed by >>):
+> >
+> >    mm/mmap.c: In function 'expand_upwards':
+> > >> mm/mmap.c:1069:39: error: 'prev' undeclared (first use in this function)
+> >     1069 |                 if (vma_is_accessible(prev))
+> 
+> Suspect this is just a simple typo and should be next rather than prev :>)
 
-diff --git a/fs/open.c b/fs/open.c
-index 22adbef7ecc2..30bfcddd505d 100644
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -1458,6 +1458,8 @@ SYSCALL_DEFINE4(openat2, int, dfd, const char __user *, filename,
- 
- 	if (unlikely(usize < OPEN_HOW_SIZE_VER0))
- 		return -EINVAL;
-+	if (unlikely(usize > PAGE_SIZE))
-+		return -E2BIG;
- 
- 	err = copy_struct_from_user(&tmp, sizeof(tmp), how, usize);
- 	if (err)
+Agree, I'll make that change.
 
--- 
-2.46.1
-
+CONFIG_STACK_GROWSUP is only a parisc thing.  That makes runtime
+testing difficult.
 
