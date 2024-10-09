@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-83226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3642C996D87
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 16:21:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 196CB996DB1
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 16:27:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1344286F22
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 14:21:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A8371C22914
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 14:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3FD19D098;
-	Wed,  9 Oct 2024 14:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502211993B5;
+	Wed,  9 Oct 2024 14:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PYLSgIOn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="axTSp+Dk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC5B19C552;
-	Wed,  9 Oct 2024 14:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0976417BB3E;
+	Wed,  9 Oct 2024 14:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728483650; cv=none; b=K3XoMoXInFPvzuW8pt9KMc30EvdTd/1phLvN0S4A0gfn2S3vN/3jV4/cj9euz2XU4EbipHwSTrvIJ3qYu9moBFHw7SU1ssjhV0bKU/vGlYgtJBfJ1LlUT+2DlOwYItGwYlh4AQ7B09g/v9A3sGzZCRgCxFm2o+BpsPSJOXZnq9c=
+	t=1728484022; cv=none; b=tqzL/LzkfQdHxxYm5wrlCmbsT+Tuibp4X94v21rdMbZ/klxefxM+XslInBfBYOEv84KazlrNWhrTYKxainCRfn3DOT/LWgE+7SV0wZe6uP/bi4gukpj4oToEH8oH3hs+YvEzKuinupjX4EtR0ky6OgegZ5mMkgG83SgXjie/wcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728483650; c=relaxed/simple;
-	bh=QViY9lx7IRmLT83VCb/QN5MYrQn/DBbOjGPf3qXYL5s=;
+	s=arc-20240116; t=1728484022; c=relaxed/simple;
+	bh=MDSfxcpVBhXHa9uiPs3PHuImwK4ThD/0MyTFJwHnYjM=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=bB9gHtScZelvGypDBtQNmdQoEQU8X9pHbJSJjy8aH62xnrOCZ/kwzQ8pCAE5be2emaK1pRtw0OLrQzDEX9YOkz1iUHxem55eWZDM329VfJnMoaRkSSrrmDG8VHebqjuEkhyJeY2gx0qwrzrzhf5ysX/GUijGVYl2dmB75nXHybU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PYLSgIOn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D826C4CEC3;
-	Wed,  9 Oct 2024 14:20:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=otYGJeAyAcMOYrc1jez1QsVrsUk8s+0j7i40QOIcZ+KxxJ3K9lYA9rmasOnyBlux5xZ1iLk79Vg62X5QAn/W4+4P2V/9zr1lwnOVpme0NcHhtFxsqBbpyqhimI5yAzg/bJgtsl6pYBtwqW3z6GCJqjkocEn4wOgtcMenxUGDlts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=axTSp+Dk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D78C4CEC3;
+	Wed,  9 Oct 2024 14:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728483650;
-	bh=QViY9lx7IRmLT83VCb/QN5MYrQn/DBbOjGPf3qXYL5s=;
+	s=k20201202; t=1728484021;
+	bh=MDSfxcpVBhXHa9uiPs3PHuImwK4ThD/0MyTFJwHnYjM=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=PYLSgIOnaefqWMugYlxXrb0D/Ib2TT0NidJoR91A+I1KWnvbwjXA0TxGSS0XmSl/t
-	 e1h6UyqPFeZRjST9LWLXu/xaRjJm09Wwqh+ivTZ2pJHOuW5b1ziZDieAyV1AHxfoh5
-	 XlHRXxaULCD77+zDBcjrqONuXkTD9gHK7jaPvJ5oBraQM0/TDKqWKc/tLkoMY/NEwb
-	 sgN5WDbkK/YRwUZNth0ww+iuxri65xvNLYd5sOxsUSeL/0hbp4iFspHsDXjOUaYp21
-	 i9ADNApYJRTUBPG17ZeZkWmSrrI+wtRizpR3mthj9G/+KycKO84hmPqYJdjET+30xB
-	 PmzE+wa1LVh7Q==
-From: Lee Jones <lee@kernel.org>
-To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Gene Chen <gene_chen@richtek.com>, 
- Jacek Anaszewski <jacek.anaszewski@gmail.com>, 
- Bartosz Golaszewski <brgl@bgdev.pl>, Chen-Yu Tsai <wens@csie.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- linux-sunxi@lists.linux.dev, stable@vger.kernel.org
-In-Reply-To: <20240927-leds_device_for_each_child_node_scoped-v1-0-95c0614b38c8@gmail.com>
-References: <20240927-leds_device_for_each_child_node_scoped-v1-0-95c0614b38c8@gmail.com>
-Subject: Re: [PATCH 00/18] leds: switch to
- device_for_each_child_node_scoped()
-Message-Id: <172848364679.581850.9636321610214125502.b4-ty@kernel.org>
-Date: Wed, 09 Oct 2024 15:20:46 +0100
+	b=axTSp+DkY35Gsn5q0znUv1LTKuZI1MJ3qcF9cxSpQ4uEXy3JLAkBT8rGar8xv/92v
+	 MuBNruaS3GoU+efAUDf8LHyO6lrs116EI/RaPzQinQfZDqlPfKNSjYfDMd0pow0DYq
+	 scvXcYKnyD7I5EKAoY8xSDa0f2a/Qo3l1sEtp4/uMOuzeh+gyjCHJiGLzdPuRqPJqj
+	 XjjLquOo3XC1pwIHRCfZsm2sVLbW9s4CxPVrMVV+9OC9gl3pDqbQMHi1TGGPkn3Voo
+	 Xs/T9hR4GY64yzgITL+vK4poOhPvpB6xiI/vnyP7/g4A0uJPUFG6X0rHCqM2i97k/2
+	 NW+fz1sv7ZknA==
+From: Niklas Cassel <cassel@kernel.org>
+To: Damien Le Moal <dlemoal@kernel.org>, Hannes Reinecke <hare@suse.de>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Niklas Cassel <cassel@kernel.org>
+Cc: W <linuxcdeveloper@gmail.com>, stable@vger.kernel.org, 
+ linux-ide@vger.kernel.org
+In-Reply-To: <20241008135843.1266244-2-cassel@kernel.org>
+References: <20241008135843.1266244-2-cassel@kernel.org>
+Subject: Re: [PATCH v2] ata: libata: avoid superfluous disk spin down +
+ spin up during hibernation
+Message-Id: <172848401972.1542808.12439348742745149573.b4-ty@kernel.org>
+Date: Wed, 09 Oct 2024 16:26:59 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,59 +60,29 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-On Fri, 27 Sep 2024 01:20:51 +0200, Javier Carrasco wrote:
-> This series switches from the device_for_each_child_node() macro to its
-> scoped variant, which in general makes the code more robust if new early
-> exits are added to the loops, because there is no need for explicit
-> calls to fwnode_handle_put(). Depending on the complexity of the loop
-> and its error handling, the code gets simplified and it gets easier to
-> follow.
+On Tue, 08 Oct 2024 15:58:44 +0200, Niklas Cassel wrote:
+> A user reported that commit aa3998dbeb3a ("ata: libata-scsi: Disable scsi
+> device manage_system_start_stop") introduced a spin down + immediate spin
+> up of the disk both when entering and when resuming from hibernation.
+> This behavior was not there before, and causes an increased latency both
+> when when entering and when resuming from hibernation.
+> 
+> Hibernation is done by three consecutive PM events, in the following order:
+> 1) PM_EVENT_FREEZE
+> 2) PM_EVENT_THAW
+> 3) PM_EVENT_HIBERNATE
 > 
 > [...]
 
-Applied, thanks!
+Applied to libata/linux.git (for-6.12-fixes), thanks!
 
-[01/18] leds: flash: mt6360: fix device_for_each_child_node() refcounting in error paths
-        commit: 73b03b27736e440e3009fe1319cbc82d2cd1290c
-[02/18] leds: flash: mt6370: switch to device_for_each_child_node_scoped()
-        commit: 19d1cc765e7d477070ddda02c9a07a1ebcdf4b2d
-[03/18] leds: flash: leds-qcom-flash: switch to device_for_each_child_node_scoped()
-        commit: f64dd42a4f939fb5acc3f3568ef2118487617996
-[04/18] leds: aw200xx: switch to device_for_each_child_node_scoped()
-        commit: a361af3c1622d4b8ede54493fa88633fb12201d0
-[05/18] leds: cr0014114: switch to device_for_each_child_node_scoped()
-        commit: 65135e2ccf5ad0853c1df0ffeefc372066a62909
-[06/18] leds: el15203000: switch to device_for_each_child_node_scoped()
-        commit: 9e445e28ae0c6fe24369127cf2302cd4f3a1b42b
-[07/18] leds: gpio: switch to device_for_each_child_node_scoped()
-        commit: 42b49671602f9badb14fd2c32e6791a24d8cbf02
-[08/18] leds: lm3532: switch to device_for_each_child_node_scoped()
-        commit: 7bd4b9277b9831d115f14d26000c0ba32c83d109
-[09/18] leds: lm3697: switch to device_for_each_child_node_scoped()
-        commit: 6e2d1d83b70bd736228529fd1cb4f98e0ab77eb8
-[10/18] leds: lp50xx: switch to device_for_each_child_node_scoped()
-        commit: ba35b9a4c1b074218880c47ca09d19a3c69f904d
-[11/18] leds: max77650: switch to device_for_each_child_node_scoped()
-        commit: 4ab3ae432da1706b5e1624ecea3c670faaec39d7
-[12/18] leds: ns2: switch to device_for_each_child_node_scoped()
-        commit: 5b5d936db0d2fb9e81d240ed91d062b8c8f0d224
-[13/18] leds: pca963x: switch to device_for_each_child_node_scoped()
-        commit: dea90acb09324efe640ab69766c12d8d387ee97f
-[14/18] leds: pwm: switch to device_for_each_child_node_scoped()
-        commit: e3456071853597229012622c97b76109c0fa8754
-[15/18] leds: sun50i-a100: switch to device_for_each_child_node_scoped()
-        commit: 8cf103de9a002fb02125491c06d9cd60762d70e5
-[16/18] leds: tca6507: switch to device_for_each_child_node_scoped()
-        commit: 01728d041986a6992d0b2499e88db4569e65a535
-[17/18] leds: rgb: ktd202x: switch to device_for_each_child_node_scoped()
-        commit: 48259638fe5986afe8ed2a49e35f0641d953c311
-[18/18] leds: rgb: mt6370: switch to device_for_each_child_node_scoped()
-        commit: bf3fba727695dcd1ac3f9d17d88845223f56c14f
+[1/1] ata: libata: avoid superfluous disk spin down + spin up during hibernation
+      https://git.kernel.org/libata/linux/c/a38719e3
 
---
-Lee Jones [李琼斯]
+Kind regards,
+Niklas
 
 
