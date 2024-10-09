@@ -1,142 +1,88 @@
-Return-Path: <stable+bounces-83260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E599974F9
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 20:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5017B997502
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 20:40:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA8F4284A3B
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 18:36:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3523283020
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 18:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2161E103B;
-	Wed,  9 Oct 2024 18:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8EC1E105F;
+	Wed,  9 Oct 2024 18:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="un+u5UtC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ieHcrS7x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884AE1E1037;
-	Wed,  9 Oct 2024 18:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94941E103A;
+	Wed,  9 Oct 2024 18:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728498974; cv=none; b=USahXvbPMcyCTxTYGy72AzZdtrrNUPRudlnv1wF7hqSyviO03Dztj9aWKoJ9b+bev2uEiT+/NyDHDSB23Q3avLT/cPtOqhSJbySuU2gIxJxLywUipaQLqi3Z3un0WqEQgdXEOGAEJIpeST+iXNM+tCZbeo0adlJ+j9Q2dp+0kMs=
+	t=1728499224; cv=none; b=MpyGaMG04C9YKAou2YwiHWsS4KennRAM12qFh+1KKTUksgvMDOdKwLL+uKVN8YC8NrUkc662doozWGUN0gQS+loHhaxLUF1HR0cuGLZECE++qgZBLRCPccPsbiu80swHR5fAClyDjD5/Q76azMn2KYeJBumXNRoy/JxSlsWFTFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728498974; c=relaxed/simple;
-	bh=M5VW0Gu9YVbBMQ306nAp0Pc7t8pAcoEFUBaMERzl5UM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rQsCV6ZrQCKBEfBwY8Wzd00j7yTXVuFlJfg2MalTdTn4xfOVjBDnWVStaLUmqKYxmLbmFPoD5HGt+/B7IqTWDCWPrqxVdu/A+EX/++NVKL1nTk6dMNw6Glf/LAHwgj0HkJnnQJ1l9Nw58gpNk/7v/XJ+A9nrVLAtoZXPHUowZGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=un+u5UtC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC5AC4CEC3;
-	Wed,  9 Oct 2024 18:36:14 +0000 (UTC)
+	s=arc-20240116; t=1728499224; c=relaxed/simple;
+	bh=z42z8W9U2YPx+YS8zEcj9apDQw0Bbu0JeksNvPD0c94=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=S7ZeU0Pg2YPCC9qVwWZO3NtmqN12BepXH2CGJua/eRuU2rlvi3ibyG1v5h8EA2VqSFUVL5IowQoUxfuXE6natguybbotBUl3ujuSuIHwGIK1jqFPd3jMiLZW5c8G/HWAFQmV+DOnz34oMXr5zUphTP5XB8F3Fw7YxQ3c61j9jbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ieHcrS7x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5674C4CEC3;
+	Wed,  9 Oct 2024 18:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728498974;
-	bh=M5VW0Gu9YVbBMQ306nAp0Pc7t8pAcoEFUBaMERzl5UM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=un+u5UtCjY/0mVfkClFyMkfTvh8ud4sc6N0mD6dp5VOS/3XsdhSFDnAa98LXCfNHH
-	 dsYhBiVpYZ6IX51doBPlaphXpd/O1O4syvQl4kDCfaDuIheX9S3b6MC2jkbMYZodcj
-	 kOW9uC3wPBEVgt3sOB5dubW2JWOCPrFeNDhSxoky1D2KNzWw9J3KMlM9gN2fXKL5lR
-	 RnWdfQe7A3dqNWHXojILKZMFekUncXFGHOQ8MFxxLrxfbmhNbSwbj6ZNjeSJwwq4VM
-	 xpPk4Y01a7DPmcsAQAzhHj7RBCiQOdWm5Ou26wiYT5I+X9XavkVDrSt632vPgVz3Py
-	 vaKwM9st7lBPQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1sybXf-001wO5-Kh;
-	Wed, 09 Oct 2024 19:36:11 +0100
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	stable@vger.kernel.org,
-	Alexander Potapenko <glider@google.com>
-Subject: [PATCH] KVM: arm64: Don't eagerly teardown the vgic on init error
-Date: Wed,  9 Oct 2024 19:36:03 +0100
-Message-Id: <20241009183603.3221824-1-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
+	s=k20201202; t=1728499223;
+	bh=z42z8W9U2YPx+YS8zEcj9apDQw0Bbu0JeksNvPD0c94=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ieHcrS7xQP7fwR6z4KI1cDFB8TLmJZZy4bTyNtwprvsa8KkLUnuAyMheQIx/gXDki
+	 OOLjNH7IH7+0FSyF+nwh4KxmZWhgSfOix+lWRKM6cyYzoz2XWnd8jF4P4i/tyWHnh/
+	 UCKqLUxFoLDDAmoekGZZ/61jw+ZCIFzH4/eDiLDhPou3cdCLXucuwMDmERYd8QNd+v
+	 vfcy8GhIynZWizImTNtUVair7Xh5rigVYBp6b0P0/zJYLUPLFtZBlKnV6/wIQ7xn29
+	 TS+DeW4KWLGDwT7SOVkk5MtCBoFSm1cDm/K6YraZafoRm6I58V10Fomxix2pe7YNFo
+	 InNYXio5Crd5w==
+From: cel@kernel.org
+To: jlayton@kernel.org,
+	Olga Kornievskaia <okorniev@redhat.com>
+Cc: Chuck Lever <chuck.lever@oracle.com>,
+	linux-nfs@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] nfsd: fix possible badness in FREE_STATEID
+Date: Wed,  9 Oct 2024 14:40:18 -0400
+Message-ID: <172849919281.133418.5020480511074794369.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <20241004220403.50034-1-okorniev@redhat.com>
+References: <20241004220403.50034-1-okorniev@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, stable@vger.kernel.org, glider@google.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-As there is very little ordering in the KVM API, userspace can
-instanciate a half-baked GIC (missing its memory map, for example)
-at almost any time.
+From: Chuck Lever <chuck.lever@oracle.com>
 
-This means that, with the right timing, a thread running vcpu-0
-can enter the kernel without a GIC configured and get a GIC created
-behind its back by another thread. Amusingly, it will pick up
-that GIC and start messing with the data structures without the
-GIC having been fully initialised.
+On Fri, 04 Oct 2024 18:04:03 -0400, Olga Kornievskaia wrote:                                              
+> When multiple FREE_STATEIDs are sent for the same delegation stateid,
+> it can lead to a possible either use-after-tree or counter refcount
+> underflow errors.
+> 
+> In nfsd4_free_stateid() under the client lock we find a delegation
+> stateid, however the code drops the lock before calling nfs4_put_stid(),
+> that allows another FREE_STATE to find the stateid again. The first one
+> will proceed to then free the stateid which leads to either
+> use-after-free or decrementing already zerod counter.
+> 
+> [...]                                                                        
 
-Similarly, a thread running vcpu-1 can enter the kernel, and try
-to init the GIC that was previously created. Since this GIC isn't
-properly configured (no memory map), it fails to correctly initialise.
+Applied to nfsd-fixes for v6.12, thanks!                                                                
 
-And that's the point where we decide to teardown the GIC, freeing all
-its resources. Behind vcpu-0's back. Things stop pretty abruptly,
-with a variety of symptoms.  Clearly, this isn't good, we should be
-a bit more careful about this.
+[1/1] nfsd: fix possible badness in FREE_STATEID
+      commit: c88c150a467fcb670a1608e2272beeee3e86df6e                                                                      
 
-It is obvious that this guest is not viable, as it is missing some
-important part of its configuration. So instead of trying to tear
-bits of it down, let's just mark it as *dead*. It means that any
-further interaction from userspace will result in -EIO. The memory
-will be released on the "normal" path, when userspace gives up.
-
-Cc: stable@vger.kernel.org
-Reported-by: Alexander Potapenko <glider@google.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
----
- arch/arm64/kvm/arm.c            | 3 +++
- arch/arm64/kvm/vgic/vgic-init.c | 6 +++---
- 2 files changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index a0d01c46e4084..b97ada19f06a7 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -997,6 +997,9 @@ static int kvm_vcpu_suspend(struct kvm_vcpu *vcpu)
- static int check_vcpu_requests(struct kvm_vcpu *vcpu)
- {
- 	if (kvm_request_pending(vcpu)) {
-+		if (kvm_check_request(KVM_REQ_VM_DEAD, vcpu))
-+			return -EIO;
-+
- 		if (kvm_check_request(KVM_REQ_SLEEP, vcpu))
- 			kvm_vcpu_sleep(vcpu);
- 
-diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
-index e7c53e8af3d16..c4cbf798e71a4 100644
---- a/arch/arm64/kvm/vgic/vgic-init.c
-+++ b/arch/arm64/kvm/vgic/vgic-init.c
-@@ -536,10 +536,10 @@ int kvm_vgic_map_resources(struct kvm *kvm)
- out:
- 	mutex_unlock(&kvm->arch.config_lock);
- out_slots:
--	mutex_unlock(&kvm->slots_lock);
--
- 	if (ret)
--		kvm_vgic_destroy(kvm);
-+		kvm_vm_dead(kvm);
-+
-+	mutex_unlock(&kvm->slots_lock);
- 
- 	return ret;
- }
--- 
-2.39.2
+--                                                                              
+Chuck Lever
 
 
