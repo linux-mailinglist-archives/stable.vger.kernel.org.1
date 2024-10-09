@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-83252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED004997226
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 18:45:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C4B997247
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 18:50:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29E221C23F63
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 16:45:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B84AB1C240CB
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 16:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852711A3020;
-	Wed,  9 Oct 2024 16:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA20E1925B7;
+	Wed,  9 Oct 2024 16:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KCn6f7Nw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DLiIokbe"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD898489;
-	Wed,  9 Oct 2024 16:41:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97A28489;
+	Wed,  9 Oct 2024 16:49:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728492103; cv=none; b=dRbed0MEGwFc24JuZOKAX/3wHC0zomLvy4rvQ622YGYnoP7ruU+Y+yrK7tXHsbjlJAKqUtA4ux6tienGZGNJgQwvCOucxA5O1gsI5buMOaIxnn57S8OiysB2TFepMDZ7gN/uulZ+6XZs04VgWgvG43qRs6qis+Y8YfoF/hHCZd8=
+	t=1728492598; cv=none; b=e3xTs1FQzLCODZ5JpQk862hPdhzNFrubir4t8moGWeTM9xKqBJmTtK0TWRJHr3PNg7WQilbG5LL6ydmKBeY69ams8MEqLsvP0eeJG7pVStv3RwbCp1yNS2WHh4sgcVOd9fMQbPuN63FX7pkYb4FtRq4h+0jYbZPDwYgUQAiQLl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728492103; c=relaxed/simple;
-	bh=SuOAR2vHN+6P/wt8e/JT5JWIZ40oSAuu1ZrE3uAWQto=;
+	s=arc-20240116; t=1728492598; c=relaxed/simple;
+	bh=xR7cr3YHIIdDnSthq+U+odRxm4lKOmefmGr7+WmtlQM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mh3KFaTzQJUGTj70EO8MwDhvdaEaBAEkxSBlAN4tuVlHH98n6aQLtSBgzku5kgNUzIcftU2RpUnS016ACAGVflGXntQhQeum5joG0VAgJnWPU0w3OfB+rWj8JNKjLbYdnBbwXop1L00PKYg56ApdFYhMyRLBUjMJ1/YsuOWi+nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KCn6f7Nw; arc=none smtp.client-ip=198.175.65.17
+	 In-Reply-To:Content-Type; b=Hoa/OLUEARmizkbolJ+IFzd9ar38FnWtMuveKCrtfcARBn3troxitnNYIuTNZCcjP96qssqmh0qF7eoxFz68CNlhT+cSlJZ3VLTNIEy+ayTPtiJUJeqSuDSlsYzH6d6NTjK6OqL7frUxVNlCbc47VO/s47lFLL1CjAa88Rkfk8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DLiIokbe; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728492102; x=1760028102;
+  t=1728492597; x=1760028597;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=SuOAR2vHN+6P/wt8e/JT5JWIZ40oSAuu1ZrE3uAWQto=;
-  b=KCn6f7NwuQJIREwklW1eb7UD1qJ2hujHxk4Fv8eOznigCDuUa9FB9vxt
-   Exm3LeIt7HXwsC5tQOQVpHRVUXd9+0EOzN1SAxZn4AFFe8d1o/ltxlZYA
-   tRJ61A+7ubwu32yReECrsU93ARei/0mrmypki1U6mQy0xWmZvromniNUc
-   W+AG+lkL2j14CNcx1NRcdrPyQG/omaCkFdPHfp+/ZFkHCeNQkOe/RnAkj
-   EjI6WSP5D81uWR87eoDephtWGFWqgfzQ99TEMfk/A/DeOWJktH09Bxa/8
-   G8n0D72FlaArfeeU+8codsQOw70aTBljI9na/gJK6PF66EWnrB7C3c4cQ
-   Q==;
-X-CSE-ConnectionGUID: sT12dmCjSpedKGoOFizpxw==
-X-CSE-MsgGUID: j992Q9PKRPaqgBblrPalpg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="27925178"
+  bh=xR7cr3YHIIdDnSthq+U+odRxm4lKOmefmGr7+WmtlQM=;
+  b=DLiIokbeOd4spsjH5NyYoWL5oKLD4x7NRdNrY87ERoIIm/7TQ8i/wgmZ
+   AAFJUVMbBUd+Un9zBbJOtBC6GAKQNk+aCD1B+J8eA14/itnobk8EjEMP0
+   wABxlHVMnqme+6Q692UYOh8/Rord9txL3EQ7BLVkQAXnaJ8dXoiC9A40v
+   P+2o5vcGEI0zarPm4A00LYzxDKgMYGwiyxj5az7qZH+GeBAImahTduxY9
+   jkoTzFp9Y/2S11BOp+epz3wEQPwv3xtg1bH82e5HQXxjze3649LgSoS7k
+   cxfkxkrv2mZDeM6s1mKrlS9vEsj2vt2eyXoUTFXCgTCeFXyoU8NLW3lrK
+   A==;
+X-CSE-ConnectionGUID: 6PcMmZxxQ4mvV0s+0up+5A==
+X-CSE-MsgGUID: 7+V5AbwUSWWcqX7JJ2USdA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="27286749"
 X-IronPort-AV: E=Sophos;i="6.11,190,1725346800"; 
-   d="scan'208";a="27925178"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 09:41:35 -0700
-X-CSE-ConnectionGUID: BoH5p+sNT16HM/o8l46ceQ==
-X-CSE-MsgGUID: C2ml4FNfQHia87RfzaBaIg==
+   d="scan'208";a="27286749"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 09:49:56 -0700
+X-CSE-ConnectionGUID: uP/gmcODSzq7LMdkFOT4Tw==
+X-CSE-MsgGUID: mvoOfj8uRUmv++7yllleJg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,190,1725346800"; 
-   d="scan'208";a="80296012"
+   d="scan'208";a="76404502"
 Received: from uaeoff-desk2.amr.corp.intel.com (HELO [10.124.223.14]) ([10.124.223.14])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 09:41:33 -0700
-Message-ID: <1a91fc10-58f3-4d1f-9598-df5267774874@intel.com>
-Date: Wed, 9 Oct 2024 09:41:33 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 09:49:55 -0700
+Message-ID: <ed43f0b5-0625-4a6b-b986-42583673d857@intel.com>
+Date: Wed, 9 Oct 2024 09:49:54 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,18 +69,16 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH V2] x86/apic: Stop the TSC Deadline timer during lapic
  timer shutdown
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
- x86@kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, rafael.j.wysocki@intel.com,
- linux-pm@vger.kernel.org, hpa@zytor.com, peterz@infradead.org,
- thorsten.blum@toblux.com, yuntao.wang@linux.dev, tony.luck@intel.com,
- len.brown@intel.com, srinivas.pandruvada@intel.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+To: Zhang Rui <rui.zhang@intel.com>, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, rafael.j.wysocki@intel.com,
+ x86@kernel.org, linux-pm@vger.kernel.org
+Cc: hpa@zytor.com, peterz@infradead.org, thorsten.blum@toblux.com,
+ yuntao.wang@linux.dev, tony.luck@intel.com, len.brown@intel.com,
+ srinivas.pandruvada@intel.com, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 References: <20241009072001.509508-1-rui.zhang@intel.com>
- <CAJZ5v0hVhYhKbiNc_DAqbZqRNe=MAmS9QCiL4uAw-m-U19M=2A@mail.gmail.com>
-Content-Language: en-US
 From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
  oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
@@ -124,15 +122,86 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <CAJZ5v0hVhYhKbiNc_DAqbZqRNe=MAmS9QCiL4uAw-m-U19M=2A@mail.gmail.com>
+In-Reply-To: <20241009072001.509508-1-rui.zhang@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/9/24 04:24, Rafael J. Wysocki wrote:
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> x86 folks, this is quite nasty, so please make it high-prio.
+On 10/9/24 00:20, Zhang Rui wrote:
+> This 12-year-old bug prevents some modern processors from achieving
+> maximum power savings during suspend. For example, Lunar Lake systems
+> gets 0% package C-states during suspend to idle and this causes energy
+> star compliance tests to fail.
 
-How much linux-next soak time do you think this needs?  We'd ideally
-like to give it a week in x86/urgent.
+Why haven't we noticed or cared for the last 12 years?
+
+Also, plain language really matters.  Is this as simple as: "you close
+the lid on the laptop and the CPU doesn't power down at all"?
+
+> According to Intel SDM, for the local APIC timer,
+> 1. "The initial-count register is a read-write register. A write of 0 to
+>    the initial-count register effectively stops the local APIC timer, in
+>    both one-shot and periodic mode."
+> 2. "In TSC deadline mode, writes to the initial-count register are
+>    ignored; and current-count register always reads 0. Instead, timer
+>    behavior is controlled using the IA32_TSC_DEADLINE MSR."
+>    "In TSC-deadline mode, writing 0 to the IA32_TSC_DEADLINE MSR disarms
+>    the local-APIC timer."
+
+Is "stopping" and "disarming" the same thing?
+
+Second, while quoting the SDM is great, it would be even better to
+including the Linux naming for these things.  The Linux naming for the
+APIC registers is completely missing from this changelog.  You could say:
+
+	"In TSC deadline mode, writes to the initial-count register
+	(APIC_TMICT) are ignored"
+
+which makes it much easier to relate this code:
+
+        apic_write(APIC_TMICT, 0);
+
+back to the SDM language.  This is especially true because:
+
+#define APIC_TMICT      0x380
+
+doesn't make it obvious that "ICT" is the "Initial-Count Register".  I
+had to go back to the SDM table to make 100% sure.
+
+This also doesn't ever say which mode the kernel is running in.
+
+> Stop the TSC Deadline timer in lapic_timer_shutdown() by writing 0 to
+> MSR_IA32_TSC_DEADLINE.
+
+This dances around the problem but never comes out and says it:
+
+	The CPU package does not go into lower power modes (higher
+	package C-states) unless all local-APIC timers are disabled.
+
+Plus something to connect the old to the new:
+
+	On older CPUs, setting APIC_TMICT=0 was sufficient for disabling
+	the local-APIC timer, no matter the timer mode (deadline, one-
+	shot or periodic).  But newer CPUs adhere to the strict letter
+	of the law in the SDM and more fully ignore APIC_TMICT when in
+	deadline mode.  Those CPUs also don't fully "disable" the timer
+	when IA32_TSC_DEADLINE has passed.  They _require_ writing a 0.
+
+Or am I missing something?
+
+> diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+> index 6513c53c9459..d1006531729a 100644
+> --- a/arch/x86/kernel/apic/apic.c
+> +++ b/arch/x86/kernel/apic/apic.c
+> @@ -441,6 +441,10 @@ static int lapic_timer_shutdown(struct clock_event_device *evt)
+>  	v |= (APIC_LVT_MASKED | LOCAL_TIMER_VECTOR);
+>  	apic_write(APIC_LVTT, v);
+>  	apic_write(APIC_TMICT, 0);
+> +
+> +	if (boot_cpu_has(X86_FEATURE_TSC_DEADLINE_TIMER))
+> +		wrmsrl(MSR_IA32_TSC_DEADLINE, 0);
+> +
+>  	return 0;
+>  }
+>  
+
 
