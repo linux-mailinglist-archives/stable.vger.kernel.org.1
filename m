@@ -1,178 +1,94 @@
-Return-Path: <stable+bounces-83255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41DDD99728E
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 19:03:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3642699728A
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 19:03:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0055D283A0E
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 17:03:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0A731F22FCC
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 17:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7871DFD85;
-	Wed,  9 Oct 2024 17:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA3819AD7D;
+	Wed,  9 Oct 2024 17:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WCLmuMPQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dRHtkKJM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0351DF734
-	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 17:03:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C645976026;
+	Wed,  9 Oct 2024 17:03:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728493409; cv=none; b=NoTrep7I9xQzOAV8lDKfJRaEAdTMmSOMh7ovN5NbB8Y9ee8qnaj60KukJGeu1waRzlNKCk7ZP8vCRv5oQ+QtBjkEp/saGPn+sJ2qygvz50+v1mVkT/frporlof7rZ8WQUzeWmZ3IH8+JHEyYPywtGe3pyV8uVPn4HIcB/Hb4gyc=
+	t=1728493394; cv=none; b=UAtaVBcDgTA2d+5HhALPQ4C/oGbuofm3Rx8ZES7a3ltK4MbI4m7Dv2wa16hiTEKExQQET0L2z7Gy27HBU0BNUr2+q2ukux3+ZvHNXbxMdbCd7WCaFdLN5meBKDfYOK1ZDAKFPXQNVW+S7lJJVBKtx2p7PT4X0lfn/kgrJEJGea4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728493409; c=relaxed/simple;
-	bh=il/b3AvZzWJBRYKtEb/2HkenoGGf4dTZi4thDrQuPh0=;
+	s=arc-20240116; t=1728493394; c=relaxed/simple;
+	bh=UgK6pJLf1ERG7XQHDvEFtGSLVGz7aD5S0uQBp9C2OaM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iA1eDsqJnDRFSmWSTxwiv0brkyAcsMp66u9jmVHZUh5/mhGpj0rjbQ5IPfAe26xDSqZAfQnAzzfJJiiDxi0cNC6JL7navuFbppSZ7NnU6VLCiWQvjQFAq1x1vddPYl6QaYUtJdVSApOvfXVZRx7DsR19MO0iClhzy6U97e6hQqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WCLmuMPQ; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-431157f7e80so6615e9.1
-        for <stable@vger.kernel.org>; Wed, 09 Oct 2024 10:03:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728493406; x=1729098206; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8ec63M9Z2mnZ2BK+SUFLWuoDF9eppHWtyWp+65Wr+50=;
-        b=WCLmuMPQAMDelEAbVGAx86R4SlBOdV9OzF/xIuz34tScVxzt9sO6Hclm3dgnah8TyK
-         9dcAt25Q+WN05jkZ0HuJ6jNfnR9MU9w4sRpKuqma/GnauyKaJ5ySRD4okbdzEM4gEbkw
-         Zqrv2MIxLMJbJkF2XfIU6ugbHT0IZT8MhBO40PZuuQufyMw4Fk0bDYwcA9oKXuoSVDze
-         iJXQUeCodtzVS0S1it2rkv/U1bKuGj/Rcbmdjx7Samsz5q659otKcdXcZdwg9sB1X1sX
-         LPdJBRunQ3R4zmzadIoFx0Ut2XGWykrE572nOO/jOxEZ7dwMnxpXOwJtp6YDqfCtHw9n
-         dYKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728493406; x=1729098206;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8ec63M9Z2mnZ2BK+SUFLWuoDF9eppHWtyWp+65Wr+50=;
-        b=R/+R73kEPMSFMQFNx7TE2Yioyn3N65PWIlxrB5L4tewIaExIHWpJAFYsmXwKnLGlfr
-         iSIi5BLOzRA6ZQrtKip9jm1jx2mL3XlR2oXllaLAhZgnPCxi5jNtL1U/XmexWcu82qee
-         1Y3Gro9VYuMznvHX6buXt18+Y891tqWp4GFbrXljAuvwIZYuS7cSxh0lyLqCsreXdGjX
-         KUV7kPTv0ZNbY5hvvX5n3r42Eg2Sb8mCg5Nts5Qks/AP2rwAyZ6m0nJVZSf3xOrQyfPW
-         Kf6xl8TYNzQ0pzgy2atzIA9+xoHVkzFB55tNa7p8Y0xA/7FpUcQ186BwVJId8xH7FzOd
-         r5uA==
-X-Forwarded-Encrypted: i=1; AJvYcCWMfa9PYxHwvBd6EZx1zXQapCwKv0QfhZB/b38ubkASmgpjm1K1gKxjAv9eSkzZv3PA0YWMrVg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxgf/LOsJqvQWzQZ4N0OKBPfjPJ6HhuEL5Rhd5LLNybklV9agSJ
-	FTkPYtdpToaGqTzgn6IN6K1I6evFLTze1bBxiZSwoRImyHEZcAoOVb+iD2oArlnLvkaXUOkyu+k
-	PkqlIXci9QMWWKTZy52eXNP3BtMZotP02ymQL
-X-Google-Smtp-Source: AGHT+IH3gl8juZOigw+MxQlp2jNC2mCofepON7jhbWcSWQ/mk8khIIP1Uw/HQRJPdHyuneyy1GivHmlFb8tRVjjzCKM=
-X-Received: by 2002:a05:600c:b8a:b0:42c:b0b0:513a with SMTP id
- 5b1f17b1804b1-43058cf488cmr5665585e9.2.1728493405368; Wed, 09 Oct 2024
- 10:03:25 -0700 (PDT)
+	 To:Cc:Content-Type; b=AFMS9GESRWj8/kxrg9YYOFsFle94ZI0NAhl4c/WjM4iyk4/5QcpQ79J1RISWVmB7ML28O5Z7x4SdoqTidoWyGyfQeSKuE0xJj7vTkYSisCG2Uhurew7/BuQniET6Nd8Jys7AQPHBM4bW7yVSsUQ2dqbhEjWn3etLRZzCMjv6dwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dRHtkKJM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AFC4C4CED3;
+	Wed,  9 Oct 2024 17:03:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728493394;
+	bh=UgK6pJLf1ERG7XQHDvEFtGSLVGz7aD5S0uQBp9C2OaM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=dRHtkKJM1D9VsHVmCkUyccCOmZttdlLVzr48sk2aDHEo8rba15rsbdOysUO77qp42
+	 3NSAglZSI910X6884v7+vsnDe5zgRCX9cbHYEreSFnn5oz9IrNWENA0sYc+LXGkiAW
+	 7JT2ffYqwOpq40u09xW2dscN2wQpgD+AdwVrLPTVumFgKhb3Ao5nWNJ+tEjxrPr/Ad
+	 oDftAm4AnkTTZHJHNAsjA9FPhQsr+7PcTA7FMN3NPDFNc0Z+Uf0AhkfreG5c60krqR
+	 k02NHp0ugFyD8l4yVtQA2LcRDL79qllky1SMDRJP7L3FDkT2EIxghuMVGKXMalrRM/
+	 WEHuM7B4R3lOg==
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-716a5c58506so9970a34.2;
+        Wed, 09 Oct 2024 10:03:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWGbL3V2cbCSBvPelWnp4oq4XvuWabOrldsCQ8PG9wAjbRmPESISiB/NS2/Duy8unF5h7QGFEm+j+Y=@vger.kernel.org, AJvYcCWOL3xy6lp4ApWsCca72Qaq2QijxmlcSs5EIv4PQYDkSrK1MCuEl885tfUGsrWrEMsvWKrulbK+/6jdY/g=@vger.kernel.org, AJvYcCXOjit01gY7wHUb3SnGOCVh6VIF1yjSAXXlbrBTuj7Z+YM8Sk0pu7Quf/gjIkVGqU96wKyfV8dI@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfUMZ780VzzCq0HAQV3RsN7LbnKudu0P25Qk8rc+csbm5cDkIi
+	h31k+fOKzFg0TUVMC3HBK8+YPHBf+X/3+TKbOEcj5ovf0UpyAqT91G8ILsvtVZyIBDloUNRZfbq
+	KlHslZUazaszTbfZC1vvILVyK7Ys=
+X-Google-Smtp-Source: AGHT+IGnvG1JA9bGvqb7FznEPF+8+hBsbYv2jdcGhxDLU8SAtGhti/j9l64R/uy0x8yNAwXccUn/tLbF436E3DOKzGs=
+X-Received: by 2002:a05:6830:3697:b0:703:7827:6a68 with SMTP id
+ 46e09a7af769-716a4199fe9mr2927977a34.6.1728493393380; Wed, 09 Oct 2024
+ 10:03:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241008-stack-gap-inaccessible-v1-1-848d4d891f21@google.com>
- <1eda6e90-b8d1-4053-9757-8f59c3a6e7ee@lucifer.local> <CAG48ez2v=r9-37JADA5DgnZdMLCjcbVxAjLt5eH5uoBohRdqsw@mail.gmail.com>
- <3d334639-feb9-474d-a4ed-6aa6d2afb33d@lucifer.local>
-In-Reply-To: <3d334639-feb9-474d-a4ed-6aa6d2afb33d@lucifer.local>
-From: Jann Horn <jannh@google.com>
-Date: Wed, 9 Oct 2024 19:02:47 +0200
-Message-ID: <CAG48ez3uFHMoXCD2ys0rp9VZ=_yfO_819kNBensYue=+Tq-dew@mail.gmail.com>
-Subject: Re: [PATCH] mm: Enforce a minimal stack gap even against inaccessible VMAs
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
-	Oleg Nesterov <oleg@redhat.com>, Michal Hocko <mhocko@suse.com>, Helge Deller <deller@gmx.de>, 
-	Vlastimil Babka <vbabka@suse.cz>, Ben Hutchings <ben@decadent.org.uk>, Willy Tarreau <w@1wt.eu>, 
-	Rik van Riel <riel@surriel.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Liam Howlett <liam.howlett@oracle.com>
+References: <20241009072001.509508-1-rui.zhang@intel.com> <CAJZ5v0hVhYhKbiNc_DAqbZqRNe=MAmS9QCiL4uAw-m-U19M=2A@mail.gmail.com>
+ <1a91fc10-58f3-4d1f-9598-df5267774874@intel.com>
+In-Reply-To: <1a91fc10-58f3-4d1f-9598-df5267774874@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 9 Oct 2024 19:03:01 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jryxPs4HichjNscsLvvDzSGsRa88dtcjeAdEijx-cV=A@mail.gmail.com>
+Message-ID: <CAJZ5v0jryxPs4HichjNscsLvvDzSGsRa88dtcjeAdEijx-cV=A@mail.gmail.com>
+Subject: Re: [PATCH V2] x86/apic: Stop the TSC Deadline timer during lapic
+ timer shutdown
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>, x86@kernel.org, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, rafael.j.wysocki@intel.com, 
+	linux-pm@vger.kernel.org, hpa@zytor.com, peterz@infradead.org, 
+	thorsten.blum@toblux.com, yuntao.wang@linux.dev, tony.luck@intel.com, 
+	len.brown@intel.com, srinivas.pandruvada@intel.com, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 9, 2024 at 4:53=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
-> On Tue, Oct 08, 2024 at 04:20:13PM +0200, Jann Horn wrote:
-> > Though, while writing the above reproducer, I noticed another dodgy
-> > scenario regarding the stack gap: MAP_FIXED_NOREPLACE apparently
-> > ignores the stack guard region, because it only checks for VMA
-> > intersection, see this example:
-[snip]
-> > That could also be bad: MAP_FIXED_NOREPLACE exists, from what I
-> > understand, partly so that malloc implementations can use it to grow
-> > heap memory chunks (though glibc doesn't use it, I'm not sure who
-> > actually uses it that way). We wouldn't want a malloc implementation
-> > to grow a heap memory chunk until it is directly adjacent to a stack.
+On Wed, Oct 9, 2024 at 6:41=E2=80=AFPM Dave Hansen <dave.hansen@intel.com> =
+wrote:
 >
-> It seems... weird to use it that way as you couldn't be sure you weren't
-> overwriting another VMA.
-
-Here I'm talking about MAP_FIXED_NOREPLACE, not MAP_FIXED.
-MAP_FIXED_NOREPLACE is supposed to be sort of like calling mmap() with
-an address hint, except that if creating the VMA at the provided hint
-is not possible, it fails. I remember Daniel Micay talking about using
-it in his memory allocator at some point...
-
-> > > > @@ -1155,10 +1157,47 @@ int expand_downwards(struct vm_area_struct =
-*vma, unsigned long address)
-> > > >       /* Enforce stack_guard_gap */
-> > > >       prev =3D vma_prev(&vmi);
-> > > >       /* Check that both stack segments have the same anon_vma? */
-> > > > -     if (prev) {
-> > > > -             if (!(prev->vm_flags & VM_GROWSDOWN) &&
-> > > > -                 vma_is_accessible(prev) &&
-> > > > -                 (address - prev->vm_end < stack_guard_gap))
-> > > > +     if (prev && !(prev->vm_flags & VM_GROWSDOWN) &&
-> > > > +         (address - prev->vm_end < stack_guard_gap)) {
-> > > > +             /*
-> > > > +              * If the previous VMA is accessible, this is the nor=
-mal case
-> > > > +              * where the main stack is growing down towards some =
-unrelated
-> > > > +              * VMA. Enforce the full stack guard gap.
-> > > > +              */
-> > > > +             if (vma_is_accessible(prev))
-> > > > +                     return -ENOMEM;
-> > > > +
-> > > > +             /*
-> > > > +              * If the previous VMA is not accessible, we have a p=
-roblem:
-> > > > +              * We can't tell what userspace's intent is.
-> > > > +              *
-> > > > +              * Case A:
-> > > > +              * Maybe userspace wants to use the previous VMA as a
-> > > > +              * "guard region" at the bottom of the main stack, in=
- which case
-> > > > +              * userspace wants us to grow the stack until it is a=
-djacent to
-> > > > +              * the guard region. Apparently some Java runtime env=
-ironments
-> > > > +              * and Rust do that?
-> > > > +              * That is kind of ugly, and in that case userspace r=
-eally ought
-> > > > +              * to ensure that the stack is fully expanded immedia=
-tely, but
-> > > > +              * we have to handle this case.
-> > >
-> > > Yeah we can't break userspace on this, no doubt somebody is relying o=
-n this
-> > > _somewhere_.
+> On 10/9/24 04:24, Rafael J. Wysocki wrote:
+> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > >
-> > It would have to be a new user who appeared after commit 1be7107fbe18.
-> > And they'd have to install a "guard vma" somewhere below the main
-> > stack, and they'd have to care so much about the size of the stack
-> > that a single page makes a difference.
+> > x86 folks, this is quite nasty, so please make it high-prio.
 >
-> You did say 'Apparently some Java runtime environments and Rust do that'
-> though right? Or am I misunderstanding?
+> How much linux-next soak time do you think this needs?  We'd ideally
+> like to give it a week in x86/urgent.
 
-Ah, sorry, the context for this is in the commit message of commit
-561b5e0709e4, and the upstream discussion leading up to it
-(https://lore.kernel.org/all/1499126133.2707.20.camel@decadent.org.uk/T/).
+That works, a week in x86/urgent should be fine.
 
-So before commit 1be7107fbe18, these workloads worked fine despite the
-kernel unconditionally enforcing a single-page gap; and only when
-1be7107fbe18 changed that gap to be 1MB, people started seeing issues,
-which 561b5e0709e4 was supposed to address.
-
-So my idea with this patch was to revert the behavior for such
-workloads to the pre-1be7107fbe18 situation.
+Thank you!
 
