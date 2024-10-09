@@ -1,207 +1,178 @@
-Return-Path: <stable+bounces-83253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C4B997247
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 18:50:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41DDD99728E
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 19:03:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B84AB1C240CB
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 16:50:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0055D283A0E
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 17:03:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA20E1925B7;
-	Wed,  9 Oct 2024 16:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7871DFD85;
+	Wed,  9 Oct 2024 17:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DLiIokbe"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WCLmuMPQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97A28489;
-	Wed,  9 Oct 2024 16:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0351DF734
+	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 17:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728492598; cv=none; b=e3xTs1FQzLCODZ5JpQk862hPdhzNFrubir4t8moGWeTM9xKqBJmTtK0TWRJHr3PNg7WQilbG5LL6ydmKBeY69ams8MEqLsvP0eeJG7pVStv3RwbCp1yNS2WHh4sgcVOd9fMQbPuN63FX7pkYb4FtRq4h+0jYbZPDwYgUQAiQLl0=
+	t=1728493409; cv=none; b=NoTrep7I9xQzOAV8lDKfJRaEAdTMmSOMh7ovN5NbB8Y9ee8qnaj60KukJGeu1waRzlNKCk7ZP8vCRv5oQ+QtBjkEp/saGPn+sJ2qygvz50+v1mVkT/frporlof7rZ8WQUzeWmZ3IH8+JHEyYPywtGe3pyV8uVPn4HIcB/Hb4gyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728492598; c=relaxed/simple;
-	bh=xR7cr3YHIIdDnSthq+U+odRxm4lKOmefmGr7+WmtlQM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Hoa/OLUEARmizkbolJ+IFzd9ar38FnWtMuveKCrtfcARBn3troxitnNYIuTNZCcjP96qssqmh0qF7eoxFz68CNlhT+cSlJZ3VLTNIEy+ayTPtiJUJeqSuDSlsYzH6d6NTjK6OqL7frUxVNlCbc47VO/s47lFLL1CjAa88Rkfk8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DLiIokbe; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728492597; x=1760028597;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=xR7cr3YHIIdDnSthq+U+odRxm4lKOmefmGr7+WmtlQM=;
-  b=DLiIokbeOd4spsjH5NyYoWL5oKLD4x7NRdNrY87ERoIIm/7TQ8i/wgmZ
-   AAFJUVMbBUd+Un9zBbJOtBC6GAKQNk+aCD1B+J8eA14/itnobk8EjEMP0
-   wABxlHVMnqme+6Q692UYOh8/Rord9txL3EQ7BLVkQAXnaJ8dXoiC9A40v
-   P+2o5vcGEI0zarPm4A00LYzxDKgMYGwiyxj5az7qZH+GeBAImahTduxY9
-   jkoTzFp9Y/2S11BOp+epz3wEQPwv3xtg1bH82e5HQXxjze3649LgSoS7k
-   cxfkxkrv2mZDeM6s1mKrlS9vEsj2vt2eyXoUTFXCgTCeFXyoU8NLW3lrK
-   A==;
-X-CSE-ConnectionGUID: 6PcMmZxxQ4mvV0s+0up+5A==
-X-CSE-MsgGUID: 7+V5AbwUSWWcqX7JJ2USdA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="27286749"
-X-IronPort-AV: E=Sophos;i="6.11,190,1725346800"; 
-   d="scan'208";a="27286749"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 09:49:56 -0700
-X-CSE-ConnectionGUID: uP/gmcODSzq7LMdkFOT4Tw==
-X-CSE-MsgGUID: mvoOfj8uRUmv++7yllleJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,190,1725346800"; 
-   d="scan'208";a="76404502"
-Received: from uaeoff-desk2.amr.corp.intel.com (HELO [10.124.223.14]) ([10.124.223.14])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 09:49:55 -0700
-Message-ID: <ed43f0b5-0625-4a6b-b986-42583673d857@intel.com>
-Date: Wed, 9 Oct 2024 09:49:54 -0700
+	s=arc-20240116; t=1728493409; c=relaxed/simple;
+	bh=il/b3AvZzWJBRYKtEb/2HkenoGGf4dTZi4thDrQuPh0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iA1eDsqJnDRFSmWSTxwiv0brkyAcsMp66u9jmVHZUh5/mhGpj0rjbQ5IPfAe26xDSqZAfQnAzzfJJiiDxi0cNC6JL7navuFbppSZ7NnU6VLCiWQvjQFAq1x1vddPYl6QaYUtJdVSApOvfXVZRx7DsR19MO0iClhzy6U97e6hQqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WCLmuMPQ; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-431157f7e80so6615e9.1
+        for <stable@vger.kernel.org>; Wed, 09 Oct 2024 10:03:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1728493406; x=1729098206; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8ec63M9Z2mnZ2BK+SUFLWuoDF9eppHWtyWp+65Wr+50=;
+        b=WCLmuMPQAMDelEAbVGAx86R4SlBOdV9OzF/xIuz34tScVxzt9sO6Hclm3dgnah8TyK
+         9dcAt25Q+WN05jkZ0HuJ6jNfnR9MU9w4sRpKuqma/GnauyKaJ5ySRD4okbdzEM4gEbkw
+         Zqrv2MIxLMJbJkF2XfIU6ugbHT0IZT8MhBO40PZuuQufyMw4Fk0bDYwcA9oKXuoSVDze
+         iJXQUeCodtzVS0S1it2rkv/U1bKuGj/Rcbmdjx7Samsz5q659otKcdXcZdwg9sB1X1sX
+         LPdJBRunQ3R4zmzadIoFx0Ut2XGWykrE572nOO/jOxEZ7dwMnxpXOwJtp6YDqfCtHw9n
+         dYKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728493406; x=1729098206;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8ec63M9Z2mnZ2BK+SUFLWuoDF9eppHWtyWp+65Wr+50=;
+        b=R/+R73kEPMSFMQFNx7TE2Yioyn3N65PWIlxrB5L4tewIaExIHWpJAFYsmXwKnLGlfr
+         iSIi5BLOzRA6ZQrtKip9jm1jx2mL3XlR2oXllaLAhZgnPCxi5jNtL1U/XmexWcu82qee
+         1Y3Gro9VYuMznvHX6buXt18+Y891tqWp4GFbrXljAuvwIZYuS7cSxh0lyLqCsreXdGjX
+         KUV7kPTv0ZNbY5hvvX5n3r42Eg2Sb8mCg5Nts5Qks/AP2rwAyZ6m0nJVZSf3xOrQyfPW
+         Kf6xl8TYNzQ0pzgy2atzIA9+xoHVkzFB55tNa7p8Y0xA/7FpUcQ186BwVJId8xH7FzOd
+         r5uA==
+X-Forwarded-Encrypted: i=1; AJvYcCWMfa9PYxHwvBd6EZx1zXQapCwKv0QfhZB/b38ubkASmgpjm1K1gKxjAv9eSkzZv3PA0YWMrVg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxgf/LOsJqvQWzQZ4N0OKBPfjPJ6HhuEL5Rhd5LLNybklV9agSJ
+	FTkPYtdpToaGqTzgn6IN6K1I6evFLTze1bBxiZSwoRImyHEZcAoOVb+iD2oArlnLvkaXUOkyu+k
+	PkqlIXci9QMWWKTZy52eXNP3BtMZotP02ymQL
+X-Google-Smtp-Source: AGHT+IH3gl8juZOigw+MxQlp2jNC2mCofepON7jhbWcSWQ/mk8khIIP1Uw/HQRJPdHyuneyy1GivHmlFb8tRVjjzCKM=
+X-Received: by 2002:a05:600c:b8a:b0:42c:b0b0:513a with SMTP id
+ 5b1f17b1804b1-43058cf488cmr5665585e9.2.1728493405368; Wed, 09 Oct 2024
+ 10:03:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2] x86/apic: Stop the TSC Deadline timer during lapic
- timer shutdown
-To: Zhang Rui <rui.zhang@intel.com>, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, rafael.j.wysocki@intel.com,
- x86@kernel.org, linux-pm@vger.kernel.org
-Cc: hpa@zytor.com, peterz@infradead.org, thorsten.blum@toblux.com,
- yuntao.wang@linux.dev, tony.luck@intel.com, len.brown@intel.com,
- srinivas.pandruvada@intel.com, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241009072001.509508-1-rui.zhang@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20241009072001.509508-1-rui.zhang@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20241008-stack-gap-inaccessible-v1-1-848d4d891f21@google.com>
+ <1eda6e90-b8d1-4053-9757-8f59c3a6e7ee@lucifer.local> <CAG48ez2v=r9-37JADA5DgnZdMLCjcbVxAjLt5eH5uoBohRdqsw@mail.gmail.com>
+ <3d334639-feb9-474d-a4ed-6aa6d2afb33d@lucifer.local>
+In-Reply-To: <3d334639-feb9-474d-a4ed-6aa6d2afb33d@lucifer.local>
+From: Jann Horn <jannh@google.com>
+Date: Wed, 9 Oct 2024 19:02:47 +0200
+Message-ID: <CAG48ez3uFHMoXCD2ys0rp9VZ=_yfO_819kNBensYue=+Tq-dew@mail.gmail.com>
+Subject: Re: [PATCH] mm: Enforce a minimal stack gap even against inaccessible VMAs
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
+	Oleg Nesterov <oleg@redhat.com>, Michal Hocko <mhocko@suse.com>, Helge Deller <deller@gmx.de>, 
+	Vlastimil Babka <vbabka@suse.cz>, Ben Hutchings <ben@decadent.org.uk>, Willy Tarreau <w@1wt.eu>, 
+	Rik van Riel <riel@surriel.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Liam Howlett <liam.howlett@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/9/24 00:20, Zhang Rui wrote:
-> This 12-year-old bug prevents some modern processors from achieving
-> maximum power savings during suspend. For example, Lunar Lake systems
-> gets 0% package C-states during suspend to idle and this causes energy
-> star compliance tests to fail.
+On Wed, Oct 9, 2024 at 4:53=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+> On Tue, Oct 08, 2024 at 04:20:13PM +0200, Jann Horn wrote:
+> > Though, while writing the above reproducer, I noticed another dodgy
+> > scenario regarding the stack gap: MAP_FIXED_NOREPLACE apparently
+> > ignores the stack guard region, because it only checks for VMA
+> > intersection, see this example:
+[snip]
+> > That could also be bad: MAP_FIXED_NOREPLACE exists, from what I
+> > understand, partly so that malloc implementations can use it to grow
+> > heap memory chunks (though glibc doesn't use it, I'm not sure who
+> > actually uses it that way). We wouldn't want a malloc implementation
+> > to grow a heap memory chunk until it is directly adjacent to a stack.
+>
+> It seems... weird to use it that way as you couldn't be sure you weren't
+> overwriting another VMA.
 
-Why haven't we noticed or cared for the last 12 years?
+Here I'm talking about MAP_FIXED_NOREPLACE, not MAP_FIXED.
+MAP_FIXED_NOREPLACE is supposed to be sort of like calling mmap() with
+an address hint, except that if creating the VMA at the provided hint
+is not possible, it fails. I remember Daniel Micay talking about using
+it in his memory allocator at some point...
 
-Also, plain language really matters.  Is this as simple as: "you close
-the lid on the laptop and the CPU doesn't power down at all"?
+> > > > @@ -1155,10 +1157,47 @@ int expand_downwards(struct vm_area_struct =
+*vma, unsigned long address)
+> > > >       /* Enforce stack_guard_gap */
+> > > >       prev =3D vma_prev(&vmi);
+> > > >       /* Check that both stack segments have the same anon_vma? */
+> > > > -     if (prev) {
+> > > > -             if (!(prev->vm_flags & VM_GROWSDOWN) &&
+> > > > -                 vma_is_accessible(prev) &&
+> > > > -                 (address - prev->vm_end < stack_guard_gap))
+> > > > +     if (prev && !(prev->vm_flags & VM_GROWSDOWN) &&
+> > > > +         (address - prev->vm_end < stack_guard_gap)) {
+> > > > +             /*
+> > > > +              * If the previous VMA is accessible, this is the nor=
+mal case
+> > > > +              * where the main stack is growing down towards some =
+unrelated
+> > > > +              * VMA. Enforce the full stack guard gap.
+> > > > +              */
+> > > > +             if (vma_is_accessible(prev))
+> > > > +                     return -ENOMEM;
+> > > > +
+> > > > +             /*
+> > > > +              * If the previous VMA is not accessible, we have a p=
+roblem:
+> > > > +              * We can't tell what userspace's intent is.
+> > > > +              *
+> > > > +              * Case A:
+> > > > +              * Maybe userspace wants to use the previous VMA as a
+> > > > +              * "guard region" at the bottom of the main stack, in=
+ which case
+> > > > +              * userspace wants us to grow the stack until it is a=
+djacent to
+> > > > +              * the guard region. Apparently some Java runtime env=
+ironments
+> > > > +              * and Rust do that?
+> > > > +              * That is kind of ugly, and in that case userspace r=
+eally ought
+> > > > +              * to ensure that the stack is fully expanded immedia=
+tely, but
+> > > > +              * we have to handle this case.
+> > >
+> > > Yeah we can't break userspace on this, no doubt somebody is relying o=
+n this
+> > > _somewhere_.
+> >
+> > It would have to be a new user who appeared after commit 1be7107fbe18.
+> > And they'd have to install a "guard vma" somewhere below the main
+> > stack, and they'd have to care so much about the size of the stack
+> > that a single page makes a difference.
+>
+> You did say 'Apparently some Java runtime environments and Rust do that'
+> though right? Or am I misunderstanding?
 
-> According to Intel SDM, for the local APIC timer,
-> 1. "The initial-count register is a read-write register. A write of 0 to
->    the initial-count register effectively stops the local APIC timer, in
->    both one-shot and periodic mode."
-> 2. "In TSC deadline mode, writes to the initial-count register are
->    ignored; and current-count register always reads 0. Instead, timer
->    behavior is controlled using the IA32_TSC_DEADLINE MSR."
->    "In TSC-deadline mode, writing 0 to the IA32_TSC_DEADLINE MSR disarms
->    the local-APIC timer."
+Ah, sorry, the context for this is in the commit message of commit
+561b5e0709e4, and the upstream discussion leading up to it
+(https://lore.kernel.org/all/1499126133.2707.20.camel@decadent.org.uk/T/).
 
-Is "stopping" and "disarming" the same thing?
+So before commit 1be7107fbe18, these workloads worked fine despite the
+kernel unconditionally enforcing a single-page gap; and only when
+1be7107fbe18 changed that gap to be 1MB, people started seeing issues,
+which 561b5e0709e4 was supposed to address.
 
-Second, while quoting the SDM is great, it would be even better to
-including the Linux naming for these things.  The Linux naming for the
-APIC registers is completely missing from this changelog.  You could say:
-
-	"In TSC deadline mode, writes to the initial-count register
-	(APIC_TMICT) are ignored"
-
-which makes it much easier to relate this code:
-
-        apic_write(APIC_TMICT, 0);
-
-back to the SDM language.  This is especially true because:
-
-#define APIC_TMICT      0x380
-
-doesn't make it obvious that "ICT" is the "Initial-Count Register".  I
-had to go back to the SDM table to make 100% sure.
-
-This also doesn't ever say which mode the kernel is running in.
-
-> Stop the TSC Deadline timer in lapic_timer_shutdown() by writing 0 to
-> MSR_IA32_TSC_DEADLINE.
-
-This dances around the problem but never comes out and says it:
-
-	The CPU package does not go into lower power modes (higher
-	package C-states) unless all local-APIC timers are disabled.
-
-Plus something to connect the old to the new:
-
-	On older CPUs, setting APIC_TMICT=0 was sufficient for disabling
-	the local-APIC timer, no matter the timer mode (deadline, one-
-	shot or periodic).  But newer CPUs adhere to the strict letter
-	of the law in the SDM and more fully ignore APIC_TMICT when in
-	deadline mode.  Those CPUs also don't fully "disable" the timer
-	when IA32_TSC_DEADLINE has passed.  They _require_ writing a 0.
-
-Or am I missing something?
-
-> diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-> index 6513c53c9459..d1006531729a 100644
-> --- a/arch/x86/kernel/apic/apic.c
-> +++ b/arch/x86/kernel/apic/apic.c
-> @@ -441,6 +441,10 @@ static int lapic_timer_shutdown(struct clock_event_device *evt)
->  	v |= (APIC_LVT_MASKED | LOCAL_TIMER_VECTOR);
->  	apic_write(APIC_LVTT, v);
->  	apic_write(APIC_TMICT, 0);
-> +
-> +	if (boot_cpu_has(X86_FEATURE_TSC_DEADLINE_TIMER))
-> +		wrmsrl(MSR_IA32_TSC_DEADLINE, 0);
-> +
->  	return 0;
->  }
->  
-
+So my idea with this patch was to revert the behavior for such
+workloads to the pre-1be7107fbe18 situation.
 
