@@ -1,85 +1,63 @@
-Return-Path: <stable+bounces-83121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7614995CBF
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 03:11:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1093995CFD
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 03:31:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 449B4282D8A
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 01:11:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D576C1C219BF
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 01:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40C71CD2B;
-	Wed,  9 Oct 2024 01:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62F571747;
+	Wed,  9 Oct 2024 01:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EIjxWLW0"
+	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b="i1jA8xcQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtpout.efficios.com (smtpout.efficios.com [167.114.26.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B757E3C39
-	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 01:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B649918C31;
+	Wed,  9 Oct 2024 01:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.114.26.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728436264; cv=none; b=mYrAZvlSlr6RCSiVAiGbb3xVkCFXcsVBEfJNXAjQMzJ9l1GiQbbqGZGQOZ/OBb3sItXzDbkYXldMgk+D1TxWgLhexv6P9jJJJ6HsULScFzxhAHrmPPxfQzB6SPNt7ZcLwklkyCmcHImqB/kt6erLLV5rTIM8JmMIgdgD5HrsuIU=
+	t=1728437430; cv=none; b=PvtObEq8IaGdExC1nQ38ZLMEqwVCZsGaIZRlaeblUIlxybUWfgtOXbLLKtwMDARhHDDzhnVSuvkRVeyekRPMggyZCNC8w3dVDBgIay69WPw9cRK2wuMhDWaW6RML2hdZyRPIHYc99Wd83YKW2a7pRU0jMX0Ou5Zz8JqbKDE9wF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728436264; c=relaxed/simple;
-	bh=m4l+8MZkQz0UgAFt/6lw9jtd53ht82XNhJEda84Sy8Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=f/vwiUerEPTaedbxYTpfXPEOtbi0lknwvVHvhIkoWolbIbxe6dKoVgtcBDHaDCEWmObX0MUdtqBjcz1y8S9L6HnyWmrAnBBrNFntCoZ20t0excnZGBhx4Ja0s0Wq3YGfUki/E/OmpGOJK/svQWx3FY5PQtjFM73eh2+kHdN4sW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EIjxWLW0; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728436262; x=1759972262;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=m4l+8MZkQz0UgAFt/6lw9jtd53ht82XNhJEda84Sy8Y=;
-  b=EIjxWLW0ELH/Tz+cF/5juX1Y9zQZ+1xUT4xqapMmZCH3JoFZPNmQexdn
-   kpy2WnLz0AriAvLiaQTE9Na+9PuUYq+l8AAUt3Osf1GMCJRPhoEVpFblG
-   LdfuWXJptA0UXVAIFc+3ejpkctvkwIfEFG538P5yKcLmZ7xfTstB1J4kS
-   DGxC2vRZ6IGHvFQ6QACNwZd4ydWUJKJrnFFluin7K7Z56CJtBD8ldOgN1
-   84q77V4nl7yxSeVOUIX4c8zcbpn6tGopavFXLkLWRiGkaPdtjVWx3jaPx
-   TQcXBVx0JLOvtU9y0JyfV3wqqQRWPRzC4dZTBsDudfx8xv+SYA07Qe1Mb
-   w==;
-X-CSE-ConnectionGUID: byMCEk2iRrGWYQg53+lZnA==
-X-CSE-MsgGUID: UxPrO88NROWJXXmIR0/rUg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="27825591"
-X-IronPort-AV: E=Sophos;i="6.11,188,1725346800"; 
-   d="scan'208";a="27825591"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2024 18:11:02 -0700
-X-CSE-ConnectionGUID: VzzuPyQTQWKRXH13Cjf+Jg==
-X-CSE-MsgGUID: 7wLJJgzTQNewaPsfyaGOtg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,188,1725346800"; 
-   d="scan'208";a="76300831"
-Received: from yhuang6-mobl2.sh.intel.com ([10.238.3.32])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2024 18:10:59 -0700
-From: Huang Ying <ying.huang@intel.com>
-To: stable@vger.kernel.org
-Cc: Huang Ying <ying.huang@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Baoquan He <bhe@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10.y] resource: fix region_intersects() vs add_memory_driver_managed()
-Date: Wed,  9 Oct 2024 09:10:35 +0800
-Message-Id: <20241009011035.728697-1-ying.huang@intel.com>
+	s=arc-20240116; t=1728437430; c=relaxed/simple;
+	bh=jto2qXAdpV3rkAjfMaoAiJB6zTqwHnFS7BUKe4TF2dg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UREMuXUhT/ucF7kZySHqkJqHKd2W5/D+1jupS5VY40ilOUWtCbnCVZyhaen2T687ULGBcLoSxzEv13chf7c5kksZ/+hbc6t/YMx5jnsL1hLnN5E/gHEA2uFqEcm3w5dnFT+kjKcs5g/1tnQmtq0zK+FJk4PPQuvykaSaNHOfhYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com; spf=pass smtp.mailfrom=efficios.com; dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b=i1jA8xcQ; arc=none smtp.client-ip=167.114.26.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=efficios.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
+	s=smtpout1; t=1728437427;
+	bh=jto2qXAdpV3rkAjfMaoAiJB6zTqwHnFS7BUKe4TF2dg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=i1jA8xcQ5LPpJ2BCBxK/f/ZmqrAo4plPCr1yIx65DDoK/dxsvC0KMf+ggXh2vKlUl
+	 37snxLYl4T3A5gcmUrsnve9YgHuoMAzfjUbM4b9bXvb08e+nsibxwVriNlfmuxh1tn
+	 nmJVuHVv0MQ25tkEIzuFtg8JYWO3Qfhz0I25F55JUnP9K4MiyjMdThl+80GKcmJ7dD
+	 lEyf3jdAOJ3eKbolqNw9sxritdtuJXbs340OQqx+bqFdGZHCdhxDXkqA9t7Q9c0gMG
+	 IeRjhE4ZA6/dBztCFnQqMUTLBl4JxCoycOPPmLDdC6lKQeTpMf2/k973YZh7lkB3aA
+	 Outb9csHmeCWQ==
+Received: from thinkos.internal.efficios.com (unknown [IPv6:2606:6d00:100:4000:cacb:9855:de1f:ded2])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4XNb1H5JxzzSBT;
+	Tue,  8 Oct 2024 21:30:27 -0400 (EDT)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Shuah Khan <skhan@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Carlos O'Donell <carlos@redhat.com>,
+	Florian Weimer <fweimer@redhat.com>,
+	linux-kselftest@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/1] selftests/rseq: Fix mm_cid test failure
+Date: Tue,  8 Oct 2024 21:28:01 -0400
+Message-Id: <20241009012801.2062026-1-mathieu.desnoyers@efficios.com>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <2024100732-disinfect-spied-83fc@gregkh>
-References: <2024100732-disinfect-spied-83fc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,173 +66,246 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On a system with CXL memory, the resource tree (/proc/iomem) related to
-CXL memory may look like something as follows.
+Adapt the rseq.c/rseq.h code to follow GNU C library changes introduced by:
 
-490000000-50fffffff : CXL Window 0
-  490000000-50fffffff : region0
-    490000000-50fffffff : dax0.0
-      490000000-50fffffff : System RAM (kmem)
+glibc commit 2e456ccf0c34 ("Linux: Make __rseq_size useful for feature detection (bug 31965)")
 
-Because drivers/dax/kmem.c calls add_memory_driver_managed() during
-onlining CXL memory, which makes "System RAM (kmem)" a descendant of "CXL
-Window X".  This confuses region_intersects(), which expects all "System
-RAM" resources to be at the top level of iomem_resource.  This can lead to
-bugs.
+Without this fix, rseq selftests for mm_cid fail:
 
-For example, when the following command line is executed to write some
-memory in CXL memory range via /dev/mem,
+./run_param_test.sh
+Default parameters
+Running test spinlock
+Running compare-twice test spinlock
+Running mm_cid test spinlock
+Error: cpu id getter unavailable
 
- $ dd if=data of=/dev/mem bs=$((1 << 10)) seek=$((0x490000000 >> 10)) count=1
- dd: error writing '/dev/mem': Bad address
- 1+0 records in
- 0+0 records out
- 0 bytes copied, 0.0283507 s, 0.0 kB/s
+[ This is based on the following branch:
+  https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git
+  branch: fixes ]
 
-the command fails as expected.  However, the error code is wrong.  It
-should be "Operation not permitted" instead of "Bad address".  More
-seriously, the /dev/mem permission checking in devmem_is_allowed() passes
-incorrectly.  Although the accessing is prevented later because ioremap()
-isn't allowed to map system RAM, it is a potential security issue.  During
-command executing, the following warning is reported in the kernel log for
-calling ioremap() on system RAM.
-
- ioremap on RAM at 0x0000000490000000 - 0x0000000490000fff
- WARNING: CPU: 2 PID: 416 at arch/x86/mm/ioremap.c:216 __ioremap_caller.constprop.0+0x131/0x35d
- Call Trace:
-  memremap+0xcb/0x184
-  xlate_dev_mem_ptr+0x25/0x2f
-  write_mem+0x94/0xfb
-  vfs_write+0x128/0x26d
-  ksys_write+0xac/0xfe
-  do_syscall_64+0x9a/0xfd
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-The details of command execution process are as follows.  In the above
-resource tree, "System RAM" is a descendant of "CXL Window 0" instead of a
-top level resource.  So, region_intersects() will report no System RAM
-resources in the CXL memory region incorrectly, because it only checks the
-top level resources.  Consequently, devmem_is_allowed() will return 1
-(allow access via /dev/mem) for CXL memory region incorrectly.
-Fortunately, ioremap() doesn't allow to map System RAM and reject the
-access.
-
-So, region_intersects() needs to be fixed to work correctly with the
-resource tree with "System RAM" not at top level as above.  To fix it, if
-we found a unmatched resource in the top level, we will continue to search
-matched resources in its descendant resources.  So, we will not miss any
-matched resources in resource tree anymore.
-
-In the new implementation, an example resource tree
-
-|------------- "CXL Window 0" ------------|
-|-- "System RAM" --|
-
-will behave similar as the following fake resource tree for
-region_intersects(, IORESOURCE_SYSTEM_RAM, ),
-
-|-- "System RAM" --||-- "CXL Window 0a" --|
-
-Where "CXL Window 0a" is part of the original "CXL Window 0" that
-isn't covered by "System RAM".
-
-Link: https://lkml.kernel.org/r/20240906030713.204292-2-ying.huang@intel.com
-Fixes: c221c0b0308f ("device-dax: "Hotplug" persistent memory for use like normal RAM")
-Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 18c2355838e7 ("selftests/rseq: Implement rseq mm_cid field support")
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+CC: Boqun Feng <boqun.feng@gmail.com>
+CC: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+CC: Carlos O'Donell <carlos@redhat.com>
+CC: Florian Weimer <fweimer@redhat.com>
+CC: linux-kselftest@vger.kernel.org
+CC: stable@vger.kernel.org
 ---
- kernel/resource.c | 58 ++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 50 insertions(+), 8 deletions(-)
+ tools/testing/selftests/rseq/rseq.c | 110 +++++++++++++++++++---------
+ tools/testing/selftests/rseq/rseq.h |  10 +--
+ 2 files changed, 77 insertions(+), 43 deletions(-)
 
-diff --git a/kernel/resource.c b/kernel/resource.c
-index 100253d4909c..1087f33d70c4 100644
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -539,21 +539,63 @@ EXPORT_SYMBOL_GPL(page_is_ram);
- int region_intersects(resource_size_t start, size_t size, unsigned long flags,
- 		      unsigned long desc)
- {
--	struct resource res;
-+	resource_size_t ostart, oend;
- 	int type = 0; int other = 0;
--	struct resource *p;
-+	struct resource *p, *dp;
-+	bool is_type, covered;
-+	struct resource res;
+diff --git a/tools/testing/selftests/rseq/rseq.c b/tools/testing/selftests/rseq/rseq.c
+index 96e812bdf8a4..5b9772cdf265 100644
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -60,12 +60,6 @@ unsigned int rseq_size = -1U;
+ /* Flags used during rseq registration.  */
+ unsigned int rseq_flags;
  
- 	res.start = start;
- 	res.end = start + size - 1;
- 
- 	read_lock(&resource_lock);
- 	for (p = iomem_resource.child; p ; p = p->sibling) {
--		bool is_type = (((p->flags & flags) == flags) &&
--				((desc == IORES_DESC_NONE) ||
--				 (desc == p->desc)));
+-/*
+- * rseq feature size supported by the kernel. 0 if the registration was
+- * unsuccessful.
+- */
+-unsigned int rseq_feature_size = -1U;
 -
--		if (resource_overlaps(p, &res))
--			is_type ? type++ : other++;
-+		if (!resource_overlaps(p, &res))
-+			continue;
-+		is_type = (p->flags & flags) == flags &&
-+			(desc == IORES_DESC_NONE || desc == p->desc);
-+		if (is_type) {
-+			type++;
-+			continue;
-+		}
-+		/*
-+		 * Continue to search in descendant resources as if the
-+		 * matched descendant resources cover some ranges of 'p'.
-+		 *
-+		 * |------------- "CXL Window 0" ------------|
-+		 * |-- "System RAM" --|
-+		 *
-+		 * will behave similar as the following fake resource
-+		 * tree when searching "System RAM".
-+		 *
-+		 * |-- "System RAM" --||-- "CXL Window 0a" --|
-+		 */
-+		covered = false;
-+		ostart = max(res.start, p->start);
-+		oend = min(res.end, p->end);
-+		for (dp = p->child; dp; dp = next_resource(dp, false)) {
-+			if (!resource_overlaps(dp, &res))
-+				continue;
-+			is_type = (dp->flags & flags) == flags &&
-+				(desc == IORES_DESC_NONE || desc == dp->desc);
-+			if (is_type) {
-+				type++;
-+				/*
-+				 * Range from 'ostart' to 'dp->start'
-+				 * isn't covered by matched resource.
-+				 */
-+				if (dp->start > ostart)
-+					break;
-+				if (dp->end >= oend) {
-+					covered = true;
-+					break;
-+				}
-+				/* Remove covered range */
-+				ostart = max(ostart, dp->end + 1);
-+			}
-+		}
-+		if (!covered)
-+			other++;
- 	}
- 	read_unlock(&resource_lock);
+ static int rseq_ownership;
+ static int rseq_reg_success;	/* At least one rseq registration has succeded. */
  
+@@ -111,6 +105,43 @@ int rseq_available(void)
+ 	}
+ }
+ 
++/* The rseq areas need to be at least 32 bytes. */
++static
++unsigned int get_rseq_min_alloc_size(void)
++{
++	unsigned int alloc_size = rseq_size;
++
++	if (alloc_size < ORIG_RSEQ_ALLOC_SIZE)
++		alloc_size = ORIG_RSEQ_ALLOC_SIZE;
++	return alloc_size;
++}
++
++/*
++ * Return the feature size supported by the kernel.
++ *
++ * Depending on the value returned by getauxval(AT_RSEQ_FEATURE_SIZE):
++ *
++ * 0:   Return ORIG_RSEQ_FEATURE_SIZE (20)
++ * > 0: Return the value from getauxval(AT_RSEQ_FEATURE_SIZE).
++ *
++ * It should never return a value below ORIG_RSEQ_FEATURE_SIZE.
++ */
++static
++unsigned int get_rseq_kernel_feature_size(void)
++{
++	unsigned long auxv_rseq_feature_size, auxv_rseq_align;
++
++	auxv_rseq_align = getauxval(AT_RSEQ_ALIGN);
++	assert(!auxv_rseq_align || auxv_rseq_align <= RSEQ_THREAD_AREA_ALLOC_SIZE);
++
++	auxv_rseq_feature_size = getauxval(AT_RSEQ_FEATURE_SIZE);
++	assert(!auxv_rseq_feature_size || auxv_rseq_feature_size <= RSEQ_THREAD_AREA_ALLOC_SIZE);
++	if (auxv_rseq_feature_size)
++		return auxv_rseq_feature_size;
++	else
++		return ORIG_RSEQ_FEATURE_SIZE;
++}
++
+ int rseq_register_current_thread(void)
+ {
+ 	int rc;
+@@ -119,7 +150,7 @@ int rseq_register_current_thread(void)
+ 		/* Treat libc's ownership as a successful registration. */
+ 		return 0;
+ 	}
+-	rc = sys_rseq(&__rseq_abi, rseq_size, 0, RSEQ_SIG);
++	rc = sys_rseq(&__rseq_abi, get_rseq_min_alloc_size(), 0, RSEQ_SIG);
+ 	if (rc) {
+ 		if (RSEQ_READ_ONCE(rseq_reg_success)) {
+ 			/* Incoherent success/failure within process. */
+@@ -140,28 +171,12 @@ int rseq_unregister_current_thread(void)
+ 		/* Treat libc's ownership as a successful unregistration. */
+ 		return 0;
+ 	}
+-	rc = sys_rseq(&__rseq_abi, rseq_size, RSEQ_ABI_FLAG_UNREGISTER, RSEQ_SIG);
++	rc = sys_rseq(&__rseq_abi, get_rseq_min_alloc_size(), RSEQ_ABI_FLAG_UNREGISTER, RSEQ_SIG);
+ 	if (rc)
+ 		return -1;
+ 	return 0;
+ }
+ 
+-static
+-unsigned int get_rseq_feature_size(void)
+-{
+-	unsigned long auxv_rseq_feature_size, auxv_rseq_align;
+-
+-	auxv_rseq_align = getauxval(AT_RSEQ_ALIGN);
+-	assert(!auxv_rseq_align || auxv_rseq_align <= RSEQ_THREAD_AREA_ALLOC_SIZE);
+-
+-	auxv_rseq_feature_size = getauxval(AT_RSEQ_FEATURE_SIZE);
+-	assert(!auxv_rseq_feature_size || auxv_rseq_feature_size <= RSEQ_THREAD_AREA_ALLOC_SIZE);
+-	if (auxv_rseq_feature_size)
+-		return auxv_rseq_feature_size;
+-	else
+-		return ORIG_RSEQ_FEATURE_SIZE;
+-}
+-
+ static __attribute__((constructor))
+ void rseq_init(void)
+ {
+@@ -178,28 +193,54 @@ void rseq_init(void)
+ 	}
+ 	if (libc_rseq_size_p && libc_rseq_offset_p && libc_rseq_flags_p &&
+ 			*libc_rseq_size_p != 0) {
++		unsigned int libc_rseq_size;
++
+ 		/* rseq registration owned by glibc */
+ 		rseq_offset = *libc_rseq_offset_p;
+-		rseq_size = *libc_rseq_size_p;
++		libc_rseq_size = *libc_rseq_size_p;
+ 		rseq_flags = *libc_rseq_flags_p;
+-		rseq_feature_size = get_rseq_feature_size();
+-		if (rseq_feature_size > rseq_size)
+-			rseq_feature_size = rseq_size;
++
++		/*
++		 * Previous versions of glibc expose the value
++		 * 32 even though the kernel only supported 20
++		 * bytes initially. Therefore treat 32 as a
++		 * special-case. glibc 2.40 exposes a 20 bytes
++		 * __rseq_size without using getauxval(3) to
++		 * query the supported size, while still allocating a 32
++		 * bytes area. Also treat 20 as a special-case.
++		 *
++		 * Special-cases are handled by using the following
++		 * value as active feature set size:
++		 *
++		 *   rseq_size = min(32, get_rseq_kernel_feature_size())
++		 */
++		switch (libc_rseq_size) {
++		case ORIG_RSEQ_FEATURE_SIZE:
++			fallthrough;
++		case ORIG_RSEQ_ALLOC_SIZE:
++		{
++			unsigned int rseq_kernel_feature_size = get_rseq_kernel_feature_size();
++
++			if (rseq_kernel_feature_size < ORIG_RSEQ_ALLOC_SIZE)
++				rseq_size = rseq_kernel_feature_size;
++			else
++				rseq_size = ORIG_RSEQ_ALLOC_SIZE;
++			break;
++		}
++		default:
++			/* Otherwise just use the __rseq_size from libc as rseq_size. */
++			rseq_size = libc_rseq_size;
++			break;
++		}
+ 		return;
+ 	}
+ 	rseq_ownership = 1;
+ 	if (!rseq_available()) {
+ 		rseq_size = 0;
+-		rseq_feature_size = 0;
+ 		return;
+ 	}
+ 	rseq_offset = (void *)&__rseq_abi - rseq_thread_pointer();
+ 	rseq_flags = 0;
+-	rseq_feature_size = get_rseq_feature_size();
+-	if (rseq_feature_size == ORIG_RSEQ_FEATURE_SIZE)
+-		rseq_size = ORIG_RSEQ_ALLOC_SIZE;
+-	else
+-		rseq_size = RSEQ_THREAD_AREA_ALLOC_SIZE;
+ }
+ 
+ static __attribute__((destructor))
+@@ -209,7 +250,6 @@ void rseq_exit(void)
+ 		return;
+ 	rseq_offset = 0;
+ 	rseq_size = -1U;
+-	rseq_feature_size = -1U;
+ 	rseq_ownership = 0;
+ }
+ 
+diff --git a/tools/testing/selftests/rseq/rseq.h b/tools/testing/selftests/rseq/rseq.h
+index d7364ea4d201..4e217b620e0c 100644
+--- a/tools/testing/selftests/rseq/rseq.h
++++ b/tools/testing/selftests/rseq/rseq.h
+@@ -68,12 +68,6 @@ extern unsigned int rseq_size;
+ /* Flags used during rseq registration. */
+ extern unsigned int rseq_flags;
+ 
+-/*
+- * rseq feature size supported by the kernel. 0 if the registration was
+- * unsuccessful.
+- */
+-extern unsigned int rseq_feature_size;
+-
+ enum rseq_mo {
+ 	RSEQ_MO_RELAXED = 0,
+ 	RSEQ_MO_CONSUME = 1,	/* Unused */
+@@ -193,7 +187,7 @@ static inline uint32_t rseq_current_cpu(void)
+ 
+ static inline bool rseq_node_id_available(void)
+ {
+-	return (int) rseq_feature_size >= rseq_offsetofend(struct rseq_abi, node_id);
++	return (int) rseq_size >= rseq_offsetofend(struct rseq_abi, node_id);
+ }
+ 
+ /*
+@@ -207,7 +201,7 @@ static inline uint32_t rseq_current_node_id(void)
+ 
+ static inline bool rseq_mm_cid_available(void)
+ {
+-	return (int) rseq_feature_size >= rseq_offsetofend(struct rseq_abi, mm_cid);
++	return (int) rseq_size >= rseq_offsetofend(struct rseq_abi, mm_cid);
+ }
+ 
+ static inline uint32_t rseq_current_mm_cid(void)
 -- 
 2.39.2
 
