@@ -1,140 +1,141 @@
-Return-Path: <stable+bounces-83214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC3F9996C1F
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 15:34:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3EB996C42
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 15:36:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B5091C21352
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 13:34:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02B1EB21660
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 13:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06743193417;
-	Wed,  9 Oct 2024 13:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4085197A97;
+	Wed,  9 Oct 2024 13:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="GyQ/zVNU";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="hQNxdAVY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lMCcRcVC"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34261190462
-	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 13:34:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA1E1E4A4;
+	Wed,  9 Oct 2024 13:36:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728480873; cv=none; b=hXL9k99E63YKG8SDcEBDv8Uz8BGY9dtSE8ydoiv7LVAS2jNuYi09sr5wqMP9UyTQxuQ+VLrBfvPLMoM/UjMnX6sHmZwHmIfp+FrLAbw3TypfkYo6oFOIwLo1KMQi4PRfAEkMnRS3y6CMdtmL1Jcpksb8lLnvn6t8NLznliN55hA=
+	t=1728480999; cv=none; b=bOJAh5bThbwwSDSd94CdtpH0FVTFrlgmsAy2qy37DYrG7MjLLnvoqmAF8phz+CvnxyfCbh+0us7dY8CYfDbLr3hFMI7luPtPnAPga1gYT46hm9ILRUh1CuGpAxSA9nJX1kQAVoBDj57NSuKGtmfL15gJTvXLVqmA7jua+hYy8l4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728480873; c=relaxed/simple;
-	bh=dQzqHUaJn9F2j2CKQsasbuSrOSpM5gpCZAtpEl1CJqc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QkoWtBBxwvMFMPI5uzCqo7vGgvS4cNp7kM3v/WAMdevEN7s9jDJU6jwclneEQqbVXdYoUI2rJLu7x51Pm5sfIo97CSFgYkTsn+x1MJztmPli4mtcD73moRkwBY12yACIWdUXuaG3X6O167IUMD6amF1p1V38t3T0xMyncT4aaVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=GyQ/zVNU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=hQNxdAVY; arc=none smtp.client-ip=103.168.172.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 31AB0138018E;
-	Wed,  9 Oct 2024 09:34:30 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Wed, 09 Oct 2024 09:34:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1728480870; x=1728567270; bh=UHwl23mLqY
-	HlCsHNALTapSvYckMaDcFFeUs+aMAdV4Y=; b=GyQ/zVNUmEjuC5XoaVGTta7TBW
-	CUJXMTy4PplfsmmGv0PMCxrUu2HSEZQEvnVZGvSRCYihJtl0lLO0WLC4+jNE48fH
-	DiudLXtpqGZxICW/U8/XgdU8oMOb3QhLZfUIcOGBDNHqnFsrp+jw1JqDN6tNQgdb
-	aX3U1XA7/5htwwhaf8wFiKUFHUlb9NsRco+3peZgolKB8cww7r465vXTk3Qwpsf1
-	XXIGSHBN/ieLKb3ra9yrfo4XH3Ll2s/YB2yl4Td/zaoyZ6Axo4tzljiXAw2/z9qr
-	hp0tIMamIUGEHVZAfs9fTYt1ISIfKY/4FX99KI+vHgo3Ae76w1eqklTsKVDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1728480870; x=1728567270; bh=UHwl23mLqYHlCsHNALTapSvYckMa
-	DcFFeUs+aMAdV4Y=; b=hQNxdAVYgSOUT1GFgrDGjbWUTWVglWAZ/6StEhIbKSKh
-	GWO1jkiu/6wQrEcCzWZ+jwgFtjFKtGOiUn8Vy5zoHXKVq82sC1FRBzIVxA945+/B
-	60ViVISauI7URyTTuGi+UsaD+utvtyj0aJECDTZdWYW0EFdKuNXYB7CWm9piKerK
-	vKyKm34fbKyeul9RmZaZHkFUvhe/UGcayV2aGBDYjjieVA5kRKOLWCj+Myi/U2T/
-	XM7qj6ACM2D4YmjG3sS6OOmPibuFoJ82VpZXfWJxcj9ltYJKLD4MjrktMckg9ZdV
-	TeeA9KV2nbxKNIsqk/gltmdYXFs2zIwhhcXb0UmITA==
-X-ME-Sender: <xms:ZYYGZ3jjm2T_Kx6ig4AwSBpx5VkbeJiYMXBgwHdk9Mu4_1x3PiD5Eg>
-    <xme:ZYYGZ0DGU-9pfO__DDHlpHLaMvi8SHUi164rhFIfZ6ZIHpIbc39sUaQ_a2-ZBEeMW
-    CgdOfi3hqxFcQ>
-X-ME-Received: <xmr:ZYYGZ3FBKWV-ZIObh5xsfuO6UdsdZa2-5o1mbBe8CO--bDXVw_QEU2I8NBT3fspxEJ_3lJ45xE-QmhkJXyfKUOB5VpWcUDpcfwkXUw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeffedgieelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrf
-    grthhtvghrnhepvdegudeffeeuheefueegleffleeifedvkedtgffhjeeujeeluedukedt
-    gfekleegnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpmhhsghhiugdrlhhinhhkne
-    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghg
-    sehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhpohhuth
-    dprhgtphhtthhopeigihgrnhhghihurdgthhgvnhesfihinhgurhhivhgvrhdrtghomhdp
-    rhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:ZYYGZ0TPa7oJyb2ArwI7UPbCDhSb3j3XPRQVsaJwg4G9xoa2JEMGRQ>
-    <xmx:ZYYGZ0wcEoNhk6s2uUJ_OtR4VEIEnjIb_Ct4e1dI5ZqklrlAt2DFYw>
-    <xmx:ZYYGZ67wGJOaMHRUmAjNsklosQvuyA8AlKtvcI31gfNiWOM3e50g6g>
-    <xmx:ZYYGZ5xf4EC3FXH1_FtQTPkV3MarBmEKNWkf5IBJeadKWIL3SeH6tA>
-    <xmx:ZoYGZ-vFy8I2GvsZ93hVdUynwUiQLQZBTIavK4ppa8wda8u5wvX1kMVn>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 9 Oct 2024 09:34:29 -0400 (EDT)
-Date: Wed, 9 Oct 2024 15:34:26 +0200
-From: Greg KH <greg@kroah.com>
-To: Xiangyu Chen <xiangyu.chen@windriver.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH v2 6.1/6.6] wifi: mac80211: Avoid address calculations
- via out of bounds array indexing
-Message-ID: <2024100911-suffix-ranked-5323@gregkh>
-References: <20241009081627.354405-1-xiangyu.chen@windriver.com>
- <20241009081627.354405-2-xiangyu.chen@windriver.com>
+	s=arc-20240116; t=1728480999; c=relaxed/simple;
+	bh=F4JINcttXjoVRn5HH5wMT/sa4Wz40gFGrwTMgVB2Avo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fb9ACU3fuCNrjG8UhyzJYes2HFPxY/XXM/c4zLSGBRNd8UhN3PKZEqT3JmjagPgiFp6ANI3RSALaDajx5gzl2qi/prKvXmIx49LaOuVrwU8j3fHR1XvUTC67tQ1MFtEUOdmdDkLXTVLTqlsWAmxmmoJPT+1hE11eHUah6hqb07I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lMCcRcVC; arc=none smtp.client-ip=209.85.214.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-20c593d6b1cso17166615ad.0;
+        Wed, 09 Oct 2024 06:36:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728480997; x=1729085797; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7z1XFRx5WAa767478931DIH4cHF8X+E+L1pl0+bzJ/o=;
+        b=lMCcRcVC1JJVqKen8VsAwwuuENlMJXRdlaGcUEV0WynvvTJ23U2wd8iGyZUzGEaGvl
+         u6iZRBXR5gbF53uTNjq5d9DyGBShRvwYk1abb+B3PLGwdNaeRQ6/jwr0I6kcCxckmdq0
+         1weF/9UeI3CZ46NB7Uz7Jf6yrBtdUPZHiqklFnV8bJPg8SFXCIDDy9b+M/4UiapRt3qe
+         8/ibaJ1dxw+4PTBzbYXwHAPGeNXQWLyMpZnBumgWqLXc/diuINjH4X+CgUkU2j9upBwq
+         AF4rjIuiu+IPlGcbvw7CrhoGdEE3Epf/Pte0Do7N0yJDzXAm8YRqVffEhICcJAsy4lYO
+         8T0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728480997; x=1729085797;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=7z1XFRx5WAa767478931DIH4cHF8X+E+L1pl0+bzJ/o=;
+        b=VrOfirJMetpEAHaeYG1pY+PHVq8o0J5DiCqdVDtRPuxBt0NFvj9lU/9R23sWeYOh0m
+         vCc5dDxYTJPFs74EK7bwIQpUXfAtQkSwg5BaMLW0cObUYhl7bdLz0ctYFDW/ROPaqw+S
+         osMbVBlGXzqgWLkISQjUmK2fWA0JbzsGy+zMWw+XooafqPAMfbyT8BldAqz3JHFjJqLj
+         PDeuds0zGniTGK/+JHojUILDa+NG6vD3Df574xCxcVEPlhOi/QglVeNp5gzdiMVfGY87
+         you/Npnwe6cFzdrGKO7g6nd7oZVfrhcTyprOpWvkmyxKMPKdGHFLp1ahcBTm1/zhWoWZ
+         pMww==
+X-Forwarded-Encrypted: i=1; AJvYcCU/+wuQ6/8eCIA2EisArwodFGrbLOOZg+xHVqYe0kleFBBIZwdhox5VbvOypyvWm2e3ocRuORL0G/rIXP3J@vger.kernel.org, AJvYcCV/v4gxzakByvpRM0XJb589KqpdjDnd4Ea5TLiaLCxyThSMGj3XPXlJlUHyZ4/xT6CafeD8n4yPR6pHiQ/9Om8=@vger.kernel.org, AJvYcCXoY+ftzfvk/mNzffP02pVKf5X4wp4yyz7asoY3m+h/+h1Sa0HS164NDGGCc0yVfFLOY6EoG/xy@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8XGwXKWSq5/Qc/KGDccghS/d7W8v0vrRMaOzUJ9AeEgNUOlLf
+	8XlDYwQ8zYI9tSEMqP733XdTRfyCqo9OEaIPaYxsBs37fnanBC1epq7wk0pX
+X-Google-Smtp-Source: AGHT+IGsJEvxXtIb2li7iBcEDRdYWRnBXohOlYLYdxfwN6aIP8lCJDyFvh91ETVg4QWOgukM5r1bFA==
+X-Received: by 2002:a17:903:110c:b0:1fa:9c04:946a with SMTP id d9443c01a7336-20c636e1892mr47017035ad.1.1728480997420;
+        Wed, 09 Oct 2024 06:36:37 -0700 (PDT)
+Received: from [198.18.0.1] (n220246094186.netvigator.com. [220.246.94.186])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c7749c9d6sm5128645ad.28.2024.10.09.06.36.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Oct 2024 06:36:36 -0700 (PDT)
+Message-ID: <6077c924-f975-49a0-8ee4-4e481664ac38@gmail.com>
+Date: Wed, 9 Oct 2024 21:36:33 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241009081627.354405-2-xiangyu.chen@windriver.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] pstore: Fix uaf when backend is unregistered
+To: Kees Cook <kees@kernel.org>
+Cc: tony.luck@intel.com, gpiccoli@igalia.com,
+ linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, lixingyang1@qq.com
+References: <2bf30957-ad04-473a-a72e-8baab648fb56@gmail.com>
+ <202410081019.0E9DE76A@keescook>
+From: Zach Wade <zachwade.k@gmail.com>
+In-Reply-To: <202410081019.0E9DE76A@keescook>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 09, 2024 at 04:16:27PM +0800, Xiangyu Chen wrote:
-> From: Kenton Groombridge <concord@gentoo.org>
-> 
-> req->n_channels must be set before req->channels[] can be used.
-> 
-> This patch fixes one of the issues encountered in [1].
-> 
-> [   83.964255] UBSAN: array-index-out-of-bounds in net/mac80211/scan.c:364:4
-> [   83.964258] index 0 is out of range for type 'struct ieee80211_channel *[]'
-> [...]
-> [   83.964264] Call Trace:
-> [   83.964267]  <TASK>
-> [   83.964269]  dump_stack_lvl+0x3f/0xc0
-> [   83.964274]  __ubsan_handle_out_of_bounds+0xec/0x110
-> [   83.964278]  ieee80211_prep_hw_scan+0x2db/0x4b0
-> [   83.964281]  __ieee80211_start_scan+0x601/0x990
-> [   83.964291]  nl80211_trigger_scan+0x874/0x980
-> [   83.964295]  genl_family_rcv_msg_doit+0xe8/0x160
-> [   83.964298]  genl_rcv_msg+0x240/0x270
-> [...]
-> 
-> [1] https://bugzilla.kernel.org/show_bug.cgi?id=218810
-> 
-> Co-authored-by: Kees Cook <keescook@chromium.org>
-> Signed-off-by: Kees Cook <kees@kernel.org>
-> Signed-off-by: Kenton Groombridge <concord@gentoo.org>
-> Link: https://msgid.link/20240605152218.236061-1-concord@gentoo.org
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> [Xiangyu: Modified to apply on 6.1.y and 6.6.y]
-> Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-> ---
-> V1 -> V2:
-> add v6.6 support
 
-No hint as to what the git id of this is in Linus's tree, so now
-dropping :(
+
+On 2024/10/9 1:23, Kees Cook wrote:
+> On Wed, Oct 09, 2024 at 01:10:14AM +0800, Zach Wade wrote:
+>> when unload pstore_blk, we will unlink the pstore file and
+>> set pos->dentry to NULL, but simple_unlink(d_inode(root), pos->dentry)
+>> may free inode of pos->dentry and free pos by free_pstore_private,
+>> this may trigger uaf. kasan report:
+> 
+> Thanks for this! I need to double check what happening here a bit more
+> closely, as maybe some ordering changed after a43e0fc5e913 ("pstore:
+> inode: Only d_invalidate() is needed")
+> 
+>> @@ -316,9 +316,10 @@ int pstore_put_backend_records(struct pstore_info *psi)
+>>   		list_for_each_entry_safe(pos, tmp, &records_list, list) {
+>>   			if (pos->record->psi == psi) {
+>>   				list_del_init(&pos->list);
+>> -				d_invalidate(pos->dentry);
+>> -				simple_unlink(d_inode(root), pos->dentry);
+>> +				unlink_dentry = pos->dentry;
+>>   				pos->dentry = NULL;
+>> +				d_invalidate(unlink_dentry);
+>> +				simple_unlink(d_inode(root), unlink_dentry);
+> 
+> But on the face of it, this does solve the UAF. I'll double-check that
+> this isn't a result of the mentioned commit.
+
+Hi Cook,
+
+However, I think a more appropriate solution to the problem here is to
+check the reference count when uninstalling the mount point.
+
+At the same time, the test script is attached:
+#!/bin/bash
+modprobe pstore_blk
+blkdev=/dev/sda2
+best_effort=on
+mount -t pstore pstore /sys/fs/pstore
+sleep 2
+umount /sys/fs/pstore
+modprobe -r pstore_blk
+
+Thanks,
+Zach
+
+> 
+
+> -Kees
+> 
+
 
