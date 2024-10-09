@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-83217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F4A0996C4C
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 15:37:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E832B996C66
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 15:40:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E9FF2819E5
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 13:37:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C7511C209B3
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 13:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5133E198E7B;
-	Wed,  9 Oct 2024 13:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B03198E83;
+	Wed,  9 Oct 2024 13:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsRoVCsk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SoWsRSuI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3A3194AE6
-	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 13:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BF333CD2
+	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 13:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728481040; cv=none; b=iaskCvp07B1tQbCb7stAikqPAPV1n712oey2AOx8qtdEM2NqF/VB+cpoBcqx09td0Qa/bMhNo3W9tOVWoPjOjmttsvV8Vh8dcRaylYonIScVvc+Hawg7WBgPnjFmUZDe+R+EPB3Ilha2NgtJeHS21wBwHmQI9va1pf9wAZTvLqI=
+	t=1728481207; cv=none; b=UrXUTNJCg3VeXoJv/z01luDIy6A5mx/OB6WhVtvy1NtVMxU8go2cqgCVKrVK31CBpIyskneG1bs6GG0uKgfmHsXA+naDHq5wKp1vZS6ceAIQQu2NiTBFihaL1Si86+5OMJB4Dc48bVfzeaZ65tcvjhFPHMqzb9I8JxI+0blUoxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728481040; c=relaxed/simple;
-	bh=rHf4LbJE/9AUvUIEMS22AmRFc91+D48YaPbWkULlfQM=;
+	s=arc-20240116; t=1728481207; c=relaxed/simple;
+	bh=eGQ9JgqGVrwJY3mrgu04xhJ/sCOafI0xQMgik9kN2qA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cn62pzmLQvURNzamDkrzSXCvopoHVjIyKGQlkjex5Kkd1reMWS60w1CB4lb7hr+oP5yGg/610au+UyZZz4vc+Mc4F4go6umCTB6jWt2AgwFfX2h/Vfj2GA+cm6rgfCuif50hoTIwnOiOcfOY1bWJF7NG3EwS2nG5Dqp3VBrw0eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsRoVCsk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3B9C4CEC5;
-	Wed,  9 Oct 2024 13:37:18 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=JyI6zoaKkhwaIncY9MPSS/mNgxQj1s9yQvXvVoamPsR5BJaB5y+xOd4I5mpuOAVaNhNzX9OHZ9ePgR95UbYK7LO3LOZSYWPm2oQ1f8CtJgED57wzQ5IjY34qObAf7R3lrnRwmpFfJdYq4peQMtg9JGzYjVs+RrgXfi5qLKmeCsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SoWsRSuI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76AEFC4CEC5;
+	Wed,  9 Oct 2024 13:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728481039;
-	bh=rHf4LbJE/9AUvUIEMS22AmRFc91+D48YaPbWkULlfQM=;
+	s=korg; t=1728481207;
+	bh=eGQ9JgqGVrwJY3mrgu04xhJ/sCOafI0xQMgik9kN2qA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nsRoVCskiBoSPneGhLASeHY53xKW7gbmtg1jyrByPUOnHSamXpMd9D0TWWoPV7uu3
-	 qLnx1DT/WGQkzibHlnSwbuZCi9OFpko0fA6ox3lBoCEvONi29B+X7TW+EWrq49HJOa
-	 f0hyor1eWu3JOu/Y1fBcKvax7QrAULU1Xf+cy+nE=
-Date: Wed, 9 Oct 2024 15:37:16 +0200
+	b=SoWsRSuItSXc07XGkPdxjYXSXv11uEXcjCasMAf2tgRrtTFaruVrCUtarNpgFT33n
+	 MZCM89GaNBbLE/4r/UwJii4Q8er0pWZ583WAYcd5R83ZfGDvPbDLHGKiPeT0cH2t23
+	 ujB3RocgE5UG7bvmre+Hlt/c3TAAb8LpELCfWjxk=
+Date: Wed, 9 Oct 2024 15:40:04 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: David Sterba <dsterba@suse.cz>
-Cc: hsimeliere.opensource@witekio.com, stable@vger.kernel.org,
-	Filipe Manana <fdmanana@suse.com>, Omar Sandoval <osandov@fb.com>,
-	David Sterba <dsterba@suse.com>
-Subject: Re: [PATCH v5.10-v5.4] btrfs: get rid of warning on transaction
- commit when using flushoncommit
-Message-ID: <2024100909-gullible-abridge-b8bc@gregkh>
-References: <20241008105834.152591-1-hsimeliere.opensource@witekio.com>
- <2024100801-antics-bacterium-408d@gregkh>
- <20241008145802.GA1609@suse.cz>
+To: Huang Ying <ying.huang@intel.com>
+Cc: stable@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, Baoquan He <bhe@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 5.10.y] resource: fix region_intersects() vs
+ add_memory_driver_managed()
+Message-ID: <2024100930-childcare-kindred-1f46@gregkh>
+References: <2024100732-disinfect-spied-83fc@gregkh>
+ <20241009011035.728697-1-ying.huang@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,27 +66,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241008145802.GA1609@suse.cz>
+In-Reply-To: <20241009011035.728697-1-ying.huang@intel.com>
 
-On Tue, Oct 08, 2024 at 04:58:02PM +0200, David Sterba wrote:
-> On Tue, Oct 08, 2024 at 01:06:10PM +0200, Greg KH wrote:
-> > On Tue, Oct 08, 2024 at 12:58:34PM +0200, hsimeliere.opensource@witekio.com wrote:
-> > > From: Filipe Manana <fdmanana@suse.com>
-> > > 
-> > > commit a0f0cf8341e34e5d2265bfd3a7ad68342da1e2aa upstream.
-> > 
-> > Now queued up, thanks.
-> 
-> I haven't sent this patch to backport for < 5.15 because IIRC there were
-> some other changes needed. I'm not sure this patch is on itself is
-> sufficient to fix the warning and correct regarding the flushing logic.
-> So this needs an analysis first, if someobdy really wants to get i to
-> stable trees < 5.10. For now I suggest not to add it.
-> 
-> (For completeness, 5.15.27 and anything newer has the fix).
-> 
+On Wed, Oct 09, 2024 at 09:10:35AM +0800, Huang Ying wrote:
+> On a system with CXL memory, the resource tree (/proc/iomem) related to
+> CXL memory may look like something as follows.
 
-Ok, now dropped, thanks.
+<snip>
+
+You forgot to list what the git id of this commit in Linus's tree is :(
+
+Please fix up and resend all backports with that information.
+
+thanks,
 
 greg k-h
 
