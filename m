@@ -1,112 +1,95 @@
-Return-Path: <stable+bounces-83180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 071B7996784
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 12:44:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D41996866
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 13:19:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BD68B22CEE
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 10:44:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 403931F23BEB
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 11:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BEB618F2FF;
-	Wed,  9 Oct 2024 10:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C5D191F8A;
+	Wed,  9 Oct 2024 11:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kNus6zy1"
+	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="IH4HZife";
+	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="gyNJZSQu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mta-03.yadro.com (mta-03.yadro.com [89.207.88.253])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CD217E003;
-	Wed,  9 Oct 2024 10:44:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C0C191F6D;
+	Wed,  9 Oct 2024 11:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.207.88.253
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728470673; cv=none; b=jSeuWxo/AQxztrm1Pkc3UiAH5k7oDJZFXuiEvS4WLKShou19J8pLXsT49x+/N0DIz3tJd4fJryxEdEA9nV0Eg+be7m9stsD2STdOevUGlGbSmXedmLVKJ/zhPFqwdfxx29pwLtN0kyZH+ABFRk5RHC0lFM6TKLLw0Rp+fxBEy5U=
+	t=1728472668; cv=none; b=tgYtzyAgp8s7kuYiccMRLL9vT9ByhKVyMM0ta37sGs6shrQ86ZJOnGc2XlW/DsKNSEIcwZBR31zPImbTpu7++9CIQWJhYAI4DYkZ1XlS7BmlgCdPSLNve9O7TwI7zd9AB0ggXI0KBfBoO21EwcDh2XKmEIRnFa88EXQ3A1hPGNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728470673; c=relaxed/simple;
-	bh=fSCO3rIX7xGxdlryS43Gp5Vpac4eFy0z6a6csZoY4w4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VOYvAqRol9QIsImXZJQNEWlh3dwrEb5fof0zFu+PneA2QK4eKPlZAgsnfM+MNvK21QUQDylP7y4MvpZ+sR6EXFMfLR04BkNv+stUWxVmGX4pt3m51WtFCvzVcjJHBXrT3wizUoRaMNtLioROaXZKLxrz0jXgbRI+ZljfS0KOegk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kNus6zy1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588D8C4CECC;
-	Wed,  9 Oct 2024 10:44:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728470673;
-	bh=fSCO3rIX7xGxdlryS43Gp5Vpac4eFy0z6a6csZoY4w4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kNus6zy1/6zNmZGIPpJHl7dSYQxfNlSwoLYnk/x/Z5cMkbcaE6wLcENdlepp7wGxh
-	 LDTIgR2e4c/DWyuYF5YkHllWG141mKBzTfkwOpYFOP+elxKa8/Rt84zoYcmaCW7muG
-	 fOQyb9z74MoU+JmqGzPBvzL86mMDVjE4Ygtla+Jlze2r0cSPrx4zvUsT9RKKDai0Yz
-	 tnqC9Sz4UruASyiiCiNAF+KDRf8y3aWMLx1NthN1FvhvG8oH7H3xFDAiMauWtklbl+
-	 bk9yU3hvokb5A9WA57YipexwMoH1Mir/X+XpIMHbKw2xYXznKnSFvh8Jtui7VEhCx8
-	 AIMaJdlhzxaJg==
-Message-ID: <5bd13541-4ac0-4171-b4e5-0dedaa9e88b5@kernel.org>
-Date: Wed, 9 Oct 2024 19:44:31 +0900
+	s=arc-20240116; t=1728472668; c=relaxed/simple;
+	bh=Lz0ftFsXhb5jJOCxFoVtj6wvWCrPk1YnXLs9cvkNDWU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fS1ZdpugckLVVO0VbaNVaf1OzjwmLZ0kMEKEnNTePglltuJup/5Gj9qEN1gZvwdYrGsfmz1hyvgwFniT211Jo2wRmywE0BWfmyQlgLAt6Fh98DVHA+A0uqktYilVykeSnwk+Y9FG9H5O+HA9zJKKNdLEmG568SDo9oJ+AHSfswE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yadro.com; spf=pass smtp.mailfrom=yadro.com; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=IH4HZife; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=gyNJZSQu; arc=none smtp.client-ip=89.207.88.253
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yadro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yadro.com
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-03.yadro.com 4CA9FE0010
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
+	t=1728472661; bh=R907DmC1jjYrPDTem5g7CEoM/mYg6Iq8YV9QdrYYCxA=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+	b=IH4HZifep8H4+j9cDgUH2BkZOPX88XMOo36HQwsK0O7H2YvsDIdzFQM+1kDLqokXT
+	 xt7HI+M5HZcTHX1aCC4JKD8mkkLhowAKGxeng+R6/vec5LmNwvcemtD/QPwu45Ad2Y
+	 B3vRhtQs7gJNHbmiKqYbPzpBTjSA3bpNhROHqXicH9Jak8YGkyHtOVH7YbkxDptzNu
+	 40rJsrWUKCCtGrgtmXJdr7naO9oUa2s8jcxf/BgZc0O3+TZ5+7c3HNDu6iIqruZBbd
+	 YpenyJ/xpJueTJBX2z+8N32KJQPgKdctU6Bx5hMXKK1itFqf/qvV/GBVBz/6RWTlPf
+	 DRfnJJu60sO7Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
+	t=1728472661; bh=R907DmC1jjYrPDTem5g7CEoM/mYg6Iq8YV9QdrYYCxA=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+	b=gyNJZSQuhBr70Weh/OrKM+p68zZOrbVuOWo6eKyDaHe1AxcXiJ7LF3PA4szSEthhD
+	 XFTt4S062VbjioJ7tt7k/UifJiq+u19FJcBxXgLfj2iOIzAquyBaoxH9a1pO0Jlk0t
+	 QBkpm9phNSjNu0eNvWqC0y0U9uDRbGi/UFdTY2Si0KK6oJKeYNcCzDjhAmhYbD++WZ
+	 lJYwPF1AC4dGienLhrgg0P7FTptxHxCsIRFza/390EMCSYjJwiXeuuQxkMBuofpJwR
+	 rMfcUCZv/15TEEyAHJy0eE4sZ+6YPRsuQB4ctKgWmofgMcdRDZHZ8PhbcvQIF+6MHg
+	 mgDszipZCe0rw==
+From: Anastasia Kovaleva <a.kovaleva@yadro.com>
+To: <target-devel@vger.kernel.org>
+CC: <njavali@marvell.com>, <GR-QLogic-Storage-Upstream@marvell.com>,
+	<James.Bottomley@HansenPartnership.com>, <martin.petersen@oracle.com>,
+	<bvanassche@acm.org>, <quinn.tran@cavium.com>, <himanshu.madhani@cavium.com>,
+	<linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux@yadro.com>, <hare@suse.de>, <stable@vger.kernel.org>
+Subject: [PATCH v2 0/3] Fix bugs in qla2xxx driver
+Date: Wed, 9 Oct 2024 14:16:51 +0300
+Message-ID: <20241009111654.4697-1-a.kovaleva@yadro.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ata: libata: avoid superfluous disk spin down + spin
- up during hibernation
-To: Niklas Cassel <cassel@kernel.org>, Hannes Reinecke <hare@suse.de>,
- "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: W <linuxcdeveloper@gmail.com>, stable@vger.kernel.org,
- linux-ide@vger.kernel.org
-References: <20241008135843.1266244-2-cassel@kernel.org>
-From: Damien Le Moal <dlemoal@kernel.org>
-Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <20241008135843.1266244-2-cassel@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-ClientProxiedBy: T-EXCH-10.corp.yadro.com (172.17.11.60) To
+ T-EXCH-09.corp.yadro.com (172.17.11.59)
 
-On 10/8/24 22:58, Niklas Cassel wrote:
-> A user reported that commit aa3998dbeb3a ("ata: libata-scsi: Disable scsi
-> device manage_system_start_stop") introduced a spin down + immediate spin
-> up of the disk both when entering and when resuming from hibernation.
-> This behavior was not there before, and causes an increased latency both
-> when when entering and when resuming from hibernation.
+This series of patches contains 3 separate changes that fix some bugs in
+the qla2xxx driver.
+---
+v2:
+- Change a spinlock wrap to a WRITE_ONCE() in patch 1
+- Add Reviewed-by tags on patches 2 and 3
+---
+Anastasia Kovaleva (3):
+  scsi: qla2xxx: Drop starvation counter on success
+  scsi: qla2xxx: Make target send correct LOGO
+  scsi: qla2xxx: Remove incorrect trap
 
-One too many "when".
-
-> 
-> Hibernation is done by three consecutive PM events, in the following order:
-> 1) PM_EVENT_FREEZE
-> 2) PM_EVENT_THAW
-> 3) PM_EVENT_HIBERNATE
-> 
-> Commit aa3998dbeb3a ("ata: libata-scsi: Disable scsi device
-> manage_system_start_stop") modified ata_eh_handle_port_suspend() to call
-> ata_dev_power_set_standby() (which spins down the disk), for both event
-> PM_EVENT_FREEZE and event PM_EVENT_HIBERNATE.
-> 
-> Documentation/driver-api/pm/devices.rst, section "Entering Hibernation",
-> explicitly mentions that PM_EVENT_FREEZE does not have to be put the device
-> in a low-power state, and actually recommends not doing so. Thus, let's not
-> spin down the disk on PM_EVENT_FREEZE. (The disk will instead be spun down
-> during the subsequent PM_EVENT_HIBERNATE event.)
-> 
-> This way, PM_EVENT_FREEZE will behave as it did before commit aa3998dbeb3a
-> ("ata: libata-scsi: Disable scsi device manage_system_start_stop"), while
-> PM_EVENT_HIBERNATE will continue to spin down the disk.
-> 
-> This will avoid the superfluous spin down + spin up when entering and
-> resuming from hibernation, while still making sure that the disk is spun
-> down before actually entering hibernation.
-> 
-> Cc: stable@vger.kernel.org # v6.6+
-> Fixes: aa3998dbeb3a ("ata: libata-scsi: Disable scsi device manage_system_start_stop")
-> Signed-off-by: Niklas Cassel <cassel@kernel.org>
-
-With the above nit fixed,
-
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+ drivers/scsi/qla2xxx/qla_iocb.c   | 11 +++++++++++
+ drivers/scsi/qla2xxx/qla_isr.c    |  4 ++++
+ drivers/scsi/qla2xxx/qla_target.c | 16 +++++++---------
+ 3 files changed, 22 insertions(+), 9 deletions(-)
 
 -- 
-Damien Le Moal
-Western Digital Research
+2.40.1
+
 
