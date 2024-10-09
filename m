@@ -1,172 +1,159 @@
-Return-Path: <stable+bounces-83192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4E099693E
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 13:51:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F38F99694D
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 13:54:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9778CB21673
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 11:51:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AA861C23B41
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 11:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E167192D6B;
-	Wed,  9 Oct 2024 11:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C2B1922DA;
+	Wed,  9 Oct 2024 11:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NNcGUxTn"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="mLYPyait";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="WrkZoEAS";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="mLYPyait";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="WrkZoEAS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A81192B89;
-	Wed,  9 Oct 2024 11:50:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C111922D6;
+	Wed,  9 Oct 2024 11:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728474629; cv=none; b=pf/kJ5pWx70+jvpcg1o1+usBNmfdoj8Xubj0sD0Nh6ti1A6jZIVUCMee1r0cPHwrB1MWaYVBAm/dKsnwA7p9i4/eIWBpYCmdrD4nHrSInrwqZdnOY4r0XgGOnO36NIEXW4S1axr+2OHR/gYebXcO+lDNRqpzEalKECGdZA3YKac=
+	t=1728474879; cv=none; b=rCfPug/1sSeePrmw6reMFVOrEEhZxoz34EOXeEEA037Kr+2o2ItImrUprj4vbuk7KgUpC+h4I6lzESA9NKs8p1QhfzoDX+ZhFCCIlKd2IJjwRwThOnapR0BcosuyNO7RE2s7/Ss0WYM40gm0crkXfOR3kBGdNIeJClxWzqWcRlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728474629; c=relaxed/simple;
-	bh=dGswqfuoU6DO4cYJ0FthosnuJrBUDxI3B2K+sH8atgU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VHcsslyROgrUVRsdmb9e/5yLnjdyMWNnfWB/zAP61KSiOqg6m3zyp8yQtisrRXLezyBmXdtZDAv/qHvjg2AMlziqNvIxynq53cJu1zynBNUrZpfkcQc0VtK0j/q2x8itWng2dQ52PteAKw3FM6JwXQA5vFS+j9JKmfDyohhMZik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NNcGUxTn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393FEC4CECD;
-	Wed,  9 Oct 2024 11:50:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728474628;
-	bh=dGswqfuoU6DO4cYJ0FthosnuJrBUDxI3B2K+sH8atgU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NNcGUxTnIb8XVByvRuL/z1me0iaECCZ1AuAjulMjZi5tIH7ke7OTJcBcW9gq8nHNY
-	 kniriD0uu+01d8c7uXWWutmOZnNqKwJFZerW7epQuseaVHibz2w4W9l41ZhrTExYSz
-	 AxFPVD7cv3KmZp/0j11lKyOPTaklnt1Z121qzcdOOlwMWCvnVd4UX22rpbAc7gT5fL
-	 1XGFt8UTQ9FP2jkX91BVvXuKmpM+xujG7FnJlcErHLce0NwrBQa+O8ALon4wTPB9OE
-	 tgCl8DWWfRsQOSucL1aK0sFFKdADv6BghCwWRCqxBNm6tZBJd0m0sBH+qSq6SNX7mL
-	 jTtrb4lJKmzMQ==
-Message-ID: <ebe0b4dd-0603-4ef5-8007-d0a768561e95@kernel.org>
-Date: Wed, 9 Oct 2024 14:50:22 +0300
+	s=arc-20240116; t=1728474879; c=relaxed/simple;
+	bh=mlMIwJbmsMcapczAeVjnxlgtadHyKjGMSsBtOH0MOw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h6h329waMZFf/lmu/WVQEkJ5m4ne2pLgi7a7jnhFE2aUPCRwhmQwxdEv9MY55iJctstvpEu2XjvERhOJ5faDNlvjkUM3oBRjlHJAMikXXJOWazvP+h4plGeo/tJdHNKu5cdqUkJ9YzB7UDYu8It7Sk99Awc/kltxCM2RMqx3J9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=mLYPyait; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=WrkZoEAS; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=mLYPyait; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=WrkZoEAS; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4DD6321E5D;
+	Wed,  9 Oct 2024 11:54:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1728474876; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oUvGL+sPmRmjMQqWkjor2e4sPlA8EZDWqN+kZ9oteLo=;
+	b=mLYPyaitTcegU8E6eMKZAutBgCCB+zCZWUJZ7wim12jFiEspOZvA3V6NiE3bIBNbtPPT7+
+	TCVlQIgLf7hGe/KAv5n0f6LTjrquvho33fWCAxCo59ER7P6E5y1jzEo6FWEjR5WuDRjl0O
+	r+TOz/770C5FysmZNwI8N9X5kNYWdnc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1728474876;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oUvGL+sPmRmjMQqWkjor2e4sPlA8EZDWqN+kZ9oteLo=;
+	b=WrkZoEASi/jBZ/ULqsAMhbXUKb2xpyb5lgf8fp+HhmzKwvVriwuOzDnucnHbnnVB64ppsn
+	oGEuo4Z4/rLUizDw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mLYPyait;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WrkZoEAS
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1728474876; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oUvGL+sPmRmjMQqWkjor2e4sPlA8EZDWqN+kZ9oteLo=;
+	b=mLYPyaitTcegU8E6eMKZAutBgCCB+zCZWUJZ7wim12jFiEspOZvA3V6NiE3bIBNbtPPT7+
+	TCVlQIgLf7hGe/KAv5n0f6LTjrquvho33fWCAxCo59ER7P6E5y1jzEo6FWEjR5WuDRjl0O
+	r+TOz/770C5FysmZNwI8N9X5kNYWdnc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1728474876;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oUvGL+sPmRmjMQqWkjor2e4sPlA8EZDWqN+kZ9oteLo=;
+	b=WrkZoEASi/jBZ/ULqsAMhbXUKb2xpyb5lgf8fp+HhmzKwvVriwuOzDnucnHbnnVB64ppsn
+	oGEuo4Z4/rLUizDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 36E8A13A58;
+	Wed,  9 Oct 2024 11:54:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id TRdICvxuBmdoEAAAD6G6ig
+	(envelope-from <chrubis@suse.cz>); Wed, 09 Oct 2024 11:54:36 +0000
+Date: Wed, 9 Oct 2024 13:53:31 +0200
+From: Cyril Hrubis <chrubis@suse.cz>
+To: Anders Roxell <anders.roxell@linaro.org>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>,
+	Theodore Ts'o <tytso@mit.edu>, f.fainelli@gmail.com, rwarsow@gmx.de,
+	pavel@denx.de, conor@kernel.org, shuah@kernel.org,
+	allen.lkml@gmail.com, LTP List <ltp@lists.linux.it>,
+	patches@lists.linux.dev, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, broonie@kernel.org,
+	lkft-triage@lists.linaro.org, srw@sladewatkins.net,
+	patches@kernelci.org, akpm@linux-foundation.org,
+	jonathanh@nvidia.com, torvalds@linux-foundation.org,
+	sudipm.mukherjee@gmail.com, linux@roeck-us.net
+Subject: Re: [LTP] [PATCH 6.10 000/482] 6.10.14-rc1 review
+Message-ID: <ZwZuuz2jTW5evZ6v@yuki.lan>
+References: <20241008115648.280954295@linuxfoundation.org>
+ <CA+G9fYv=Ld-YCpWaV2X=ErcyfEQC8DA1jy+cOhmviEHGS9mh-w@mail.gmail.com>
+ <CADYN=9KBXFJA1oU6KVJU66vcEej5p+6NcVYO0=SUrWW1nqJ8jQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] usb: dwc3: core: Fix system suspend on TI AM62 platforms
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <len.brown@intel.com>,
- Pavel Machek <pavel@ucw.cz>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Nishanth Menon <nm@ti.com>,
- Tero Kristo <kristo@kernel.org>, Santosh Shilimkar <ssantosh@kernel.org>,
- Dhruva Gole <d-gole@ti.com>, Vishal Mahaveer <vishalm@ti.com>,
- "msp@baylibre.com" <msp@baylibre.com>, "srk@ti.com" <srk@ti.com>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20241001-am62-lpm-usb-v1-1-9916b71165f7@kernel.org>
- <20241005010355.zyb54bbqjmpdjnce@synopsys.com>
- <85f1805b-e4c8-48c4-8e99-c36d20182a13@kernel.org>
- <20241008205315.64cxff22uckoich5@synopsys.com>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20241008205315.64cxff22uckoich5@synopsys.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CADYN=9KBXFJA1oU6KVJU66vcEej5p+6NcVYO0=SUrWW1nqJ8jQ@mail.gmail.com>
+X-Rspamd-Queue-Id: 4DD6321E5D
+X-Spam-Score: -2.98
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-2.98 / 50.00];
+	BAYES_HAM(-2.97)[99.87%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linaro.org,linuxfoundation.org,suse.cz,kernel.org,mit.edu,gmail.com,gmx.de,denx.de,lists.linux.it,lists.linux.dev,vger.kernel.org,lists.linaro.org,sladewatkins.net,kernelci.org,linux-foundation.org,nvidia.com,roeck-us.net];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TAGGED_RCPT(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.cz:dkim,linux.it:url]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-
-
-On 08/10/2024 23:53, Thinh Nguyen wrote:
-> Hi Roger,
-> 
-> On Tue, Oct 08, 2024, Roger Quadros wrote:
->> Hi Thinh,
->>
->> On 05/10/2024 04:04, Thinh Nguyen wrote:
->>> Hi,
->>>
->>> On Tue, Oct 01, 2024, Roger Quadros wrote:
->>>> Since commit 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init"),
->>>> system suspend is broken on AM62 TI platforms.
->>>>
->>>> Before that commit, both DWC3_GUSB3PIPECTL_SUSPHY and DWC3_GUSB2PHYCFG_SUSPHY
->>>> bits (hence forth called 2 SUSPHY bits) were being set during core
->>>> initialization and even during core re-initialization after a system
->>>> suspend/resume.
->>>>
->>>> These bits are required to be set for system suspend/resume to work correctly
->>>> on AM62 platforms.
->>>>
->>>> Since that commit, the 2 SUSPHY bits are not set for DEVICE/OTG mode if gadget
->>>> driver is not loaded and started.
->>>> For Host mode, the 2 SUSPHY bits are set before the first system suspend but
->>>> get cleared at system resume during core re-init and are never set again.
->>>>
->>>> This patch resovles these two issues by ensuring the 2 SUSPHY bits are set
->>>> before system suspend and restored to the original state during system resume.
->>>>
->>>> Cc: stable@vger.kernel.org # v6.9+
->>>> Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
->>>> Link: https://urldefense.com/v3/__https://lore.kernel.org/all/1519dbe7-73b6-4afc-bfe3-23f4f75d772f@kernel.org/__;!!A4F2R9G_pg!ahChm4MaKd6VGYqbnM4X1_pY_jqavYDv5HvPFbmicKuhvFsBwlEFi1xO5itGuHmfjbRuUSzReJISf5-1gXpr$ 
->>>> Signed-off-by: Roger Quadros <rogerq@kernel.org>
->>>> ---
->>>>  drivers/usb/dwc3/core.c | 16 ++++++++++++++++
->>>>  drivers/usb/dwc3/core.h |  2 ++
->>>>  2 files changed, 18 insertions(+)
->>>>
->>>> diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
->>>> index 9eb085f359ce..1233922d4d54 100644
->>>> --- a/drivers/usb/dwc3/core.c
->>>> +++ b/drivers/usb/dwc3/core.c
->>>> @@ -2336,6 +2336,9 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
->>>>  	u32 reg;
->>>>  	int i;
->>>>  
->>>> +	dwc->susphy_state = !!(dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
->>>> +			    DWC3_GUSB2PHYCFG_SUSPHY);
->>>> +
->>>>  	switch (dwc->current_dr_role) {
->>>>  	case DWC3_GCTL_PRTCAP_DEVICE:
->>>>  		if (pm_runtime_suspended(dwc->dev))
->>>> @@ -2387,6 +2390,11 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
->>>>  		break;
->>>>  	}
->>>>  
->>>> +	if (!PMSG_IS_AUTO(msg)) {
->>>> +		if (!dwc->susphy_state)
->>>> +			dwc3_enable_susphy(dwc, true);
->>>> +	}
->>>> +
->>>>  	return 0;
->>>>  }
->>>>  
->>>> @@ -2454,6 +2462,14 @@ static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
->>>>  		break;
->>>>  	}
->>>>  
->>>> +	if (!PMSG_IS_AUTO(msg)) {
->>>> +		/* dwc3_core_init_for_resume() disables SUSPHY so just handle
->>>> +		 * the enable case
->>>> +		 */
->>>
->>> Can we note that this is a particular behavior needed for AM62 here?
->>> And can we use this comment style:
->>
->> Looking at this again, this fix is not specific to AM62 but for all platforms.
->> e.g. if Host Role was already started when going to system suspend, SUSPHY bits
->> were enabled, then after system resume SUSPHY bits are cleared at dwc3_core_init_for_resume().
->>
->> Host stop/start was not called so SUSPHY bits remain cleared. So here
->> we deal with enabling SUSPHY.
->>
-> 
-> It's true that we have a bug where the SUSPHY bits remain disabled after
-> suspend. However, the SUSPHY bits needing to be set during suspend is
-> unique to AM62. Let's add this note in the dwc3_suspend_common() check.
-
-Yes I will do that. Thanks!
+Hi!
+Work in progress, see:
+https://lists.linux.it/pipermail/ltp/2024-October/040433.html
 
 -- 
-cheers,
--roger
+Cyril Hrubis
+chrubis@suse.cz
 
