@@ -1,97 +1,189 @@
-Return-Path: <stable+bounces-83248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C41CF99719C
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 18:33:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E8259971E0
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 18:39:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39FF7B23823
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 16:33:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEC931F2B1D5
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 16:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE94D1E105E;
-	Wed,  9 Oct 2024 16:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bApfItvi"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6171E1E0DA5;
+	Wed,  9 Oct 2024 16:37:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64A31E0481;
-	Wed,  9 Oct 2024 16:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B1D1E00A9
+	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 16:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.86.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728491277; cv=none; b=Y6ltpNiu1NPm4Um6+xovLvWdU1nXkB4/Pv1raQTBbZWygSKH0gKFuNthUiGTm8uI5opnalgCAtV/Xi48RN3l29jg2X0h4nB9lnImkXRrsIPpLnpBpQDQNN6fx4ZeV+Nr4g9nu3nNxmxgXyg+GYGFwEc+J0TCsHGexMFSiOulj3s=
+	t=1728491865; cv=none; b=JQRMCgFRvAF2ni7Q4Jb2QS8Rtrw2V+Sbe1FdtoIB7+mfDiJGAClZpoR/ll/4wkpu6xpYwVev7hFVfWpXAmegZRmi7opqvuevREOmciA56ISvfIS8Cv3lyltiXJQoJnabMq98q0lSeAio2GKQKfSkQXep9aE9K8NId1mfCvMkQcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728491277; c=relaxed/simple;
-	bh=5IONwWAaygzDPnMaidc2cVsIS1VTE48ucYzxzIFEfRs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=czzc0gFI5J3ouR2ZvzD1TfZS/WkR98zbBZiLZxG2PqgrA2gg7zAZaO1raRT80X+UstvwayVAWPwCUm2I3gruHY+eB8qTg84urOyf3JoexTWcHRoEZT4HVRtSHAJ51654SnbYKQ6WHJwoDFoDw4USGG9It+rQdaF3FRKR/JUNLRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bApfItvi; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728491276; x=1760027276;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5IONwWAaygzDPnMaidc2cVsIS1VTE48ucYzxzIFEfRs=;
-  b=bApfItviV/I1Z0u3zLELfP9Wianikem1TIuWehvTqQcVHqyYVuzfj5+g
-   +MvVkBI/fTZoeCXa+1uw3Y5MdWjd28cDXio9OyszSKkqbWVStdvBVBfxi
-   KB+PTelXv9yGxHIFssu3LaRt5R7G5PmEXMFuIcEBEuuUyzSdz+8g+A9Wa
-   LlOeDj0XuDQmjfP8LRuwdNBEVFQOQwmMdrrNagfZki6mn/j8JoevqmMXY
-   U2rDWhSU9qrkwJZ/2ZtI03IYpxz8iEus1GoVq37vQgPlFX5MLNjwmJGB4
-   PaVn2nntkhS5xZa84QHhKKKqRGDQgO0NGL/nS7msZo8Sv3wS6mIrfW3L5
-   A==;
-X-CSE-ConnectionGUID: EpHP8rbZSiu9n8Z57vJU9A==
-X-CSE-MsgGUID: my6SKx7dQh2nmUustK0M4w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="27923222"
-X-IronPort-AV: E=Sophos;i="6.11,190,1725346800"; 
-   d="scan'208";a="27923222"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 09:27:55 -0700
-X-CSE-ConnectionGUID: oQoVtMfHTjmqz0Cmn1i1Zg==
-X-CSE-MsgGUID: CPHxacxfT/GicCpeJ5tzmQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,190,1725346800"; 
-   d="scan'208";a="80292162"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 09:27:54 -0700
-Date: Wed, 9 Oct 2024 09:33:44 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: Zhang Rui <rui.zhang@intel.com>
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, rafael.j.wysocki@intel.com,
-	x86@kernel.org, linux-pm@vger.kernel.org, hpa@zytor.com,
-	peterz@infradead.org, thorsten.blum@toblux.com,
-	yuntao.wang@linux.dev, tony.luck@intel.com, len.brown@intel.com,
-	srinivas.pandruvada@intel.com, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH V2] x86/apic: Stop the TSC Deadline timer during lapic
- timer shutdown
-Message-ID: <20241009163344.GA25814@ranerica-svr.sc.intel.com>
-References: <20241009072001.509508-1-rui.zhang@intel.com>
+	s=arc-20240116; t=1728491865; c=relaxed/simple;
+	bh=28jugDOhquh+90spPGv5MKQk4Y8RSQb7T1bWx5XH7I4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=rkCmgxDN5xQiiwPF3ICVKZ3vlHNUuokPAiOChmVzKMh3RGG5+WgMglgM/pXcZVAOtdEgmtVRR/024A0ksCfLdnwkv0Sagydh8AoYWxxSNFNLPbmoG1gaEp0U9t+7MINDQNH8rouqjEmIVNOJGB3Obg2flkm4U0yl9lU4jV+WXxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.86.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-133-m9nfg3y3MLyW_hUkH7wLog-1; Wed, 09 Oct 2024 17:37:33 +0100
+X-MC-Unique: m9nfg3y3MLyW_hUkH7wLog-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Wed, 9 Oct
+ 2024 17:37:32 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Wed, 9 Oct 2024 17:37:32 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Andrej Shadura' <andrew.shadura@collabora.co.uk>,
+	"linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>
+CC: Nathan Chancellor <nathan@kernel.org>, Justin Stitt
+	<justinstitt@google.com>, Aleksei Vetrov <vvvvvv@google.com>,
+	"llvm@lists.linux.dev" <llvm@lists.linux.dev>, "kernel@collabora.com"
+	<kernel@collabora.com>, George Burgess <gbiv@chromium.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH v2] Bluetooth: Fix type of len in
+ rfcomm_sock_getsockopt{,_old}()
+Thread-Topic: [PATCH v2] Bluetooth: Fix type of len in
+ rfcomm_sock_getsockopt{,_old}()
+Thread-Index: AQHbGllm5JoAzzHp/kq/PUrt6KxIY7J+nDog
+Date: Wed, 9 Oct 2024 16:37:32 +0000
+Message-ID: <49c81d21778b4ef5a7ab458b359a9993@AcuMS.aculab.com>
+References: <20241009121424.1472485-1-andrew.shadura@collabora.co.uk>
+In-Reply-To: <20241009121424.1472485-1-andrew.shadura@collabora.co.uk>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241009072001.509508-1-rui.zhang@intel.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 09, 2024 at 03:20:01PM +0800, Zhang Rui wrote:
-> This 12-year-old bug prevents some modern processors from achieving
-> maximum power savings during suspend. For example, Lunar Lake systems
+From: Andrej Shadura
+> Sent: 09 October 2024 13:14
+>=20
+> Commit 9bf4e919ccad worked around an issue introduced after an innocuous
+> optimisation change in LLVM main:
+>=20
+> > len is defined as an 'int' because it is assigned from
+> > '__user int *optlen'. However, it is clamped against the result of
+> > sizeof(), which has a type of 'size_t' ('unsigned long' for 64-bit
+> > platforms). This is done with min_t() because min() requires compatible
+> > types, which results in both len and the result of sizeof() being caste=
+d
+> > to 'unsigned int', meaning len changes signs and the result of sizeof()
+> > is truncated. From there, len is passed to copy_to_user(), which has a
+> > third parameter type of 'unsigned long', so it is widened and changes
+> > signs again.
 
-Two nits:
+That can't matter because the value is a small positive integer.
 
-> gets 0% package C-states during suspend to idle and this causes energy
-> star compliance tests to fail.
+> This excessive casting in combination with the KCSAN
+> > instrumentation causes LLVM to fail to eliminate the __bad_copy_from()
+> > call, failing the build.
+>=20
+> The same issue occurs in rfcomm in functions rfcomm_sock_getsockopt and
+> rfcomm_sock_getsockopt_old.
+>=20
+> Change the type of len to size_t in both rfcomm_sock_getsockopt and
+> rfcomm_sock_getsockopt_old and replace min_t() with min().
 
-s/gets/get/
-s/energy start/Energy Star/
+Isn't there still a problem if the application passed a negative length.
+You are converting it to a very large unsigned value and then reducing
+it to the structure size.
+Since the structure size will be less than 2GB it makes no difference
+whether the '__user int optlen' is ever converted to 64bits.
+I think you are just hiding a bug in a different way.
+
+Note that pretty much all the checks for 'optlen' have treated
+negative values as 4 since well before the min() and min_t()
+#defines were added.
+Look at the tcp code!
+
+I bet that globally fixing the test will cause some important
+application that is passing 'on stack garbage' to fail.
+
+=09David
+
+>=20
+> Cc: stable@vger.kernel.org
+> Co-authored-by: Aleksei Vetrov <vvvvvv@google.com>
+> Improves: 9bf4e919ccad ("Bluetooth: Fix type of len in {l2cap,sco}_sock_g=
+etsockopt_old()")
+> Link: https://github.com/ClangBuiltLinux/linux/issues/2007
+> Link: https://github.com/llvm/llvm-project/issues/85647
+> Signed-off-by: Andrej Shadura <andrew.shadura@collabora.co.uk>
+> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+>  net/bluetooth/rfcomm/sock.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
+> index 37d63d768afb..5f9d370e09b1 100644
+> --- a/net/bluetooth/rfcomm/sock.c
+> +++ b/net/bluetooth/rfcomm/sock.c
+> @@ -729,7 +729,8 @@ static int rfcomm_sock_getsockopt_old(struct socket *=
+sock, int optname, char __u
+>  =09struct sock *l2cap_sk;
+>  =09struct l2cap_conn *conn;
+>  =09struct rfcomm_conninfo cinfo;
+> -=09int len, err =3D 0;
+> +=09int err =3D 0;
+> +=09size_t len;
+>  =09u32 opt;
+>=20
+>  =09BT_DBG("sk %p", sk);
+> @@ -783,7 +784,7 @@ static int rfcomm_sock_getsockopt_old(struct socket *=
+sock, int optname, char __u
+>  =09=09cinfo.hci_handle =3D conn->hcon->handle;
+>  =09=09memcpy(cinfo.dev_class, conn->hcon->dev_class, 3);
+>=20
+> -=09=09len =3D min_t(unsigned int, len, sizeof(cinfo));
+> +=09=09len =3D min(len, sizeof(cinfo));
+>  =09=09if (copy_to_user(optval, (char *) &cinfo, len))
+>  =09=09=09err =3D -EFAULT;
+>=20
+> @@ -802,7 +803,8 @@ static int rfcomm_sock_getsockopt(struct socket *sock=
+, int level, int optname, c
+>  {
+>  =09struct sock *sk =3D sock->sk;
+>  =09struct bt_security sec;
+> -=09int len, err =3D 0;
+> +=09int err =3D 0;
+> +=09size_t len;
+>=20
+>  =09BT_DBG("sk %p", sk);
+>=20
+> @@ -827,7 +829,7 @@ static int rfcomm_sock_getsockopt(struct socket *sock=
+, int level, int optname, c
+>  =09=09sec.level =3D rfcomm_pi(sk)->sec_level;
+>  =09=09sec.key_size =3D 0;
+>=20
+> -=09=09len =3D min_t(unsigned int, len, sizeof(sec));
+> +=09=09len =3D min(len, sizeof(sec));
+>  =09=09if (copy_to_user(optval, (char *) &sec, len))
+>  =09=09=09err =3D -EFAULT;
+>=20
+> --
+> 2.43.0
+>=20
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
+
 
