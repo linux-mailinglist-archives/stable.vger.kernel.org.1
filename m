@@ -1,160 +1,234 @@
-Return-Path: <stable+bounces-83135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35402995EBE
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 06:51:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2652F995EF7
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 07:29:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B01F01F25790
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 04:51:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4625286BCB
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 05:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC2A1547D7;
-	Wed,  9 Oct 2024 04:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB2B168C3F;
+	Wed,  9 Oct 2024 05:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="lHQn7gpz"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="G5JruwTr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8A338DD3
-	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 04:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194C115F3FF
+	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 05:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728449512; cv=none; b=t1kuf9PvDfhmjYPygfrxhDBRwe02HBc4NgGtrwejR/h59icj6mCH6aQdi/vLFeVspOoN8zQ0yDMbbhh+nIMY63H0ym6jWvqiaSOl+WNUPGGeYi9sQSn/rnYGV/yEDqLte1SBk/6qis4qYFuBbw4oAm8fBFGGqEhiwlKmMJNe5HU=
+	t=1728451767; cv=none; b=dUQ4e8sKffM8NJ97JyNZliajNCCIQssmdu0x32c/dx3vcspL6Bh1o4dC+rjJ+o0FNthvrWjqOAWhebwXmdYEIHik12jo+iTNgTIgCsvd2WMprgei+ecNhIakJXSLbVOOTvDkzl2KH7a+xUeg395cXWWLj4CyR4xeJGt9qU/ftRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728449512; c=relaxed/simple;
-	bh=teltDqujW+3qHjfFE3DtofGiqCjnPIk9gncYNTvQdqg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B36uRLqUkFUW09sj+C+GvfIl+sORH6MdSLb55nT8D/9At0PSg94tVXPAx0HZUcEWgaFhxtGPCMo1/H0BSRJvVNS+vW6uhanEEn1Y9EMMIFrvo1SLvIEbQ9CH2UDzyEgG4wLQebmLVa5ZAFreaYPr5DHZs7Gb6YXgeVD1ijxuAjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=lHQn7gpz; arc=none smtp.client-ip=209.85.210.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-710daaadd9bso3558029a34.2
-        for <stable@vger.kernel.org>; Tue, 08 Oct 2024 21:51:50 -0700 (PDT)
+	s=arc-20240116; t=1728451767; c=relaxed/simple;
+	bh=OBoCzZArSFPgtY+XzpCWy7XGfDqTIIl94ILCcqhCr+w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ca5aBgX+1ZH7Hf5u8sYgrfzbmdY3dGZfBBxRrOY4r+oLO3RQbfVKx1MELrwikCyc27yejv9NZG+BLaQOzhtTPFG3TyzEHftL1y69moUvj8TgDJBexh8txrZR06R/R25j1pFzON6SXEMQgP9Gj9TO+NfuvNLb3GP+4l0y+gx+lTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=G5JruwTr; arc=none smtp.client-ip=209.85.222.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-84f96178a08so762130241.0
+        for <stable@vger.kernel.org>; Tue, 08 Oct 2024 22:29:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1728449509; x=1729054309; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1728451763; x=1729056563; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IJKEXKH5TAcRJpR+aDvOxAmg6X7WyjnAGUbW1+jsH78=;
-        b=lHQn7gpzAobWby+dnUnyuH3km95QE2WFHWly032P4BQWKP4KtzWnRtRzsTIsvNf2Gr
-         7VVObmW0NNcWeKD8+f5m2H1lpsav7CZwxnJv0Y7sA8YA9BNMlx2v7lvzEYvZFqpETRQI
-         4KxDYWG5x7lNTqkRQ/UjvA7EjjcmbK5OSP69M=
+        bh=tCiKLx9rR66lKJZ0yCzrSNrW64yAvgeD84o2+iatpFA=;
+        b=G5JruwTr6yAzbJ+rxUOBzQH9mQP/1ZpV/1PVtO6LgscpPoZxsekoez33g2LdUw7v15
+         bTkVVnJR9ZVWULELwFBOk/haB0qs3oH7MCnrg1D6eTY1yRvK1UlPx1cb/NunLyrgUT9R
+         WZvOqPDwAqE77BZSnFsC9dwsnArCIsreoDOGez7/l2TAm5cbIyChFXGfImTXUXh3PbhK
+         au0LgxxPh3HbPiwbp2G3fIxKpNjjET3Ai6MkXU3Kva4OWEqqMfXq4Ou8W380XEhrlsRk
+         1wSjm1VxInOSeThzx7WVqiWsmG/L9Cz6EK5+o+Au5X/hpDSXpSa4/v2xOf6St7SurtvX
+         d/qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728449509; x=1729054309;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1728451763; x=1729056563;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IJKEXKH5TAcRJpR+aDvOxAmg6X7WyjnAGUbW1+jsH78=;
-        b=qXb+1ZIXlk9kohf9Y3SqfibDTDeaAbYZj17HeqV1YjZ8BTA2l3lLNclQU+Iecmfhc8
-         yEjMcVoiRZUaKFSfpR1WHCnjfcj1XIB5Spiezd7HGZ1UmTVeY/qferyBQrq8tReiPIYR
-         VbA5I0N0qJNsH00ab3+nfSv2aZITS8WpQ59FhcbrtSYQVllGXvjDxRxEbq86xrbCQwwL
-         +HtzbSuKCGHYB93Q9mrr+aIusgt16G9LyaVUu53zwnsYxB8rOknkGH5jaDs4Fml2DuQE
-         JzGFB8p+eO23zFQt84JYsdUdnoWYPGOtat6JkutImJJqRtJ5dzJs4VqVGqdhEmg8aVik
-         TRNQ==
-X-Gm-Message-State: AOJu0Yxz6nUzTgg89Zuh/tQ08YY7lL17+vRV1OuaC0wPXFP8NIA13Yig
-	Hk42hsv4bnbmMiILieCAC2Zu2C44mOfAviHi6CvfBtJy+D9BvfQk+bswdX02r0oy1NSbpscn+Nc
-	xQA==
-X-Google-Smtp-Source: AGHT+IFFtxTZNarRAiQ7yj6Y9o7VRH+9nWVLkX1NwT4JJTh+P3IAMhr6EqBG9L8+tE/+k4GWSew/sQ==
-X-Received: by 2002:a05:6830:d17:b0:710:f375:a6c9 with SMTP id 46e09a7af769-716a41c0672mr1105710a34.7.1728449509433;
-        Tue, 08 Oct 2024 21:51:49 -0700 (PDT)
-Received: from tigerii.tok.corp.google.com ([2401:fa00:8f:203:7cab:8c3d:935:cbd2])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7e9f6c49803sm7667123a12.79.2024.10.08.21.51.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Oct 2024 21:51:49 -0700 (PDT)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: stable@vger.kernel.org
-Cc: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Jens Axboe <axboe@kernel.dk>,
-	Minchan Kim <minchan@kernel.org>,
-	Chris Li <chrisl@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6.y 2/2] zram: don't free statically defined names
-Date: Wed,  9 Oct 2024 13:51:40 +0900
-Message-ID: <20241009045140.840702-2-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.47.0.rc0.187.ge670bccf7e-goog
-In-Reply-To: <20241009045140.840702-1-senozhatsky@chromium.org>
-References: <2024100724-used-ventricle-7559@gregkh>
- <20241009045140.840702-1-senozhatsky@chromium.org>
+        bh=tCiKLx9rR66lKJZ0yCzrSNrW64yAvgeD84o2+iatpFA=;
+        b=uY7TWz6lE+FXkmpF9c9DEyWNPOLW6ylQdEIzNRSjlPQ2PHNgte/jSquKnOWfppUbVW
+         XVQfImCd8cECeDsKEj9gWVjH3ZOOh8ra3F7rmYepxoMY0cGYDCXazYfbvejlVwX5faDi
+         tLv8eCtBlpYzJu24cEZe7mabDykRQO6SZ7SZtBhEAfz1Z0pFcXnAC8jVPlczbhWji8oE
+         hg5Q5EBAQpwno0gZATY0PIgczvQe73MDHV88lkz93+4HRE2FcAeEKZ12FOmjd3WeFbBh
+         fWlrivUu13tzQ6b/D+r0Q9WVSZ4SGmBr3mrJG6MEHagg5Jg4fqboMl0v5xe/0UPl4vFc
+         Oq6Q==
+X-Gm-Message-State: AOJu0YxbDQlBkay0aOj2t/ZLa7DzwXPaMMk14xCmODljdfwcI0rO5xwo
+	2mhyjsJUD7vP3h9ZyGvMD20SlGShdP2aGwGej/7nvaJQEEx8LMwzBY3+CF+Yn2aS2AHNeybRdDA
+	fAy3IvoyIDD/p1vwVW6Oab2KqBvk+CU+g6lrJUQ==
+X-Google-Smtp-Source: AGHT+IEcGCHgN/Nj3U5qhLD6lgrzYU7T8ZcxgAgJFS75WLUI0nZsy/ZitTpWbJ/jXeNp0bK1KTTXpLFNuIpFI+P1egA=
+X-Received: by 2002:a05:6102:e0e:b0:4a3:c7ff:8263 with SMTP id
+ ada2fe7eead31-4a448e14dbbmr1647756137.20.1728451762845; Tue, 08 Oct 2024
+ 22:29:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 9 Oct 2024 10:59:11 +0530
+Message-ID: <CA+G9fYtKrtzVZve=R_QiUUya5KUpAYn2R5andSk+ghPU21z3Dw@mail.gmail.com>
+Subject: Re: [PATCH 6.11 000/558] 6.11.3-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+On Tue, 8 Oct 2024 at 18:08, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.11.3 release.
+> There are 558 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 10 Oct 2024 11:55:15 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.11.3-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.11.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-When CONFIG_ZRAM_MULTI_COMP isn't set ZRAM_SECONDARY_COMP can hold
-default_compressor, because it's the same offset as ZRAM_PRIMARY_COMP, so
-we need to make sure that we don't attempt to kfree() the statically
-defined compressor name.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-This is detected by KASAN.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-==================================================================
-  Call trace:
-   kfree+0x60/0x3a0
-   zram_destroy_comps+0x98/0x198 [zram]
-   zram_reset_device+0x22c/0x4a8 [zram]
-   reset_store+0x1bc/0x2d8 [zram]
-   dev_attr_store+0x44/0x80
-   sysfs_kf_write+0xfc/0x188
-   kernfs_fop_write_iter+0x28c/0x428
-   vfs_write+0x4dc/0x9b8
-   ksys_write+0x100/0x1f8
-   __arm64_sys_write+0x74/0xb8
-   invoke_syscall+0xd8/0x260
-   el0_svc_common.constprop.0+0xb4/0x240
-   do_el0_svc+0x48/0x68
-   el0_svc+0x40/0xc8
-   el0t_64_sync_handler+0x120/0x130
-   el0t_64_sync+0x190/0x198
-==================================================================
+## Build
+* kernel: 6.11.3-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: dd3578144a91f9258e2da8e085a412adc667dba5
+* git describe: v6.11.2-559-gdd3578144a91
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.11.y/build/v6.11=
+.2-559-gdd3578144a91
 
-Link: https://lkml.kernel.org/r/20240923164843.1117010-1-andrej.skvortzov@gmail.com
-Fixes: 684826f8271a ("zram: free secondary algorithms names")
-Signed-off-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-Closes: https://lore.kernel.org/lkml/57130e48-dbb6-4047-a8c7-ebf5aaea93f4@linux.vnet.ibm.com/
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-Cc: Chris Li <chrisl@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 486fd58af7ac1098b68370b1d4d9f94a2a1c7124)
----
- drivers/block/zram/zram_drv.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+## Test Regressions (compared to v6.11.1-696-g10e0eb4cf267)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index db729035fd6b..606f388c7a57 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1984,8 +1984,10 @@ static void zram_destroy_comps(struct zram *zram)
- 		zram->num_active_comps--;
- 	}
- 
--	for (prio = ZRAM_SECONDARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
--		kfree(zram->comp_algs[prio]);
-+	for (prio = ZRAM_PRIMARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
-+		/* Do not free statically defined compression algorithms */
-+		if (zram->comp_algs[prio] != default_compressor)
-+			kfree(zram->comp_algs[prio]);
- 		zram->comp_algs[prio] = NULL;
- 	}
- }
--- 
-2.47.0.rc0.187.ge670bccf7e-goog
+## Metric Regressions (compared to v6.11.1-696-g10e0eb4cf267)
 
+## Test Fixes (compared to v6.11.1-696-g10e0eb4cf267)
+
+## Metric Fixes (compared to v6.11.1-696-g10e0eb4cf267)
+
+## Test result summary
+total: 229679, pass: 200671, fail: 2692, skip: 26316, xfail: 0
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 131 total, 129 passed, 2 failed
+* arm64: 43 total, 43 passed, 0 failed
+* i386: 18 total, 16 passed, 2 failed
+* mips: 26 total, 25 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 35 passed, 1 failed
+* riscv: 16 total, 14 passed, 2 failed
+* s390: 14 total, 13 passed, 1 failed
+* sh: 5 total, 5 passed, 0 failed
+* sparc: 4 total, 3 passed, 1 failed
+* x86_64: 35 total, 35 passed, 0 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-rust
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
