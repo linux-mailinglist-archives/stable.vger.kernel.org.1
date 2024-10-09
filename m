@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-83182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC2A99686B
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 13:19:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 146E8996871
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 13:20:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BBBF1C22007
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 11:19:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74F58283DC4
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 11:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EBC192D6A;
-	Wed,  9 Oct 2024 11:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153D2197A87;
+	Wed,  9 Oct 2024 11:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="MFkklhY7";
-	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="mz5uD94U"
+	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="nxht8hmS";
+	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="EUWTp1Jr"
 X-Original-To: stable@vger.kernel.org
 Received: from mta-03.yadro.com (mta-03.yadro.com [89.207.88.253])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C5C191F85;
-	Wed,  9 Oct 2024 11:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF19192D6C;
+	Wed,  9 Oct 2024 11:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.207.88.253
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728472669; cv=none; b=CqFIhtrqzI5P7qLNrdPem5kFtvFrU419zHTfCvLDrRids4ZnmMaQzwflfDUz5ZXrC1BoFog+Zu3Fjmvs4F97Uix5ZXHyWj1s49SwyjDwj1j21adCFBp4uO0ureCi8ct80GtzKDz5chpLwHcdBCuggK2/6GlEQJCqwgTYh2r6mR4=
+	t=1728472671; cv=none; b=VcqNi03Nv7KY3U3f68ZXVqxj+q5axAx1i79HQkt8GL/u0riC9TgLrDsOYRi4H/vPQ6DfYlmimfho6P8sNcLKU8HqRZYVtlOcx297bl/5uGS5P+NGcWoSdWAaRFnzrdJXMeUQ218UEJqxFsHtM6c+thyea8ScvXyk4WYuJr1dGdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728472669; c=relaxed/simple;
-	bh=5aHOeAtBoQ4fy9LIVowu40CIt8+E+nZORgo1JCwLaMs=;
+	s=arc-20240116; t=1728472671; c=relaxed/simple;
+	bh=L3xl7Y45JnJJvfxHv9fI4yzTm9K8ZaJXo9/cApROCTo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZzL5quo8adsC8oGNTfapFjRmP6SIwxSULMWvpiXIda8wptaDJNu2kgptgvEqFBxGASFLBCnS0vffS8dv6P1KZdjNbR2da6p/ag6QPbN0TYOrooPbrLzOnbEKncQuorid4I2UDn6GWjzcWmSkY3gKFeVOW2EwzOOpSRLhN9yLVmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yadro.com; spf=pass smtp.mailfrom=yadro.com; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=MFkklhY7; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=mz5uD94U; arc=none smtp.client-ip=89.207.88.253
+	 MIME-Version:Content-Type; b=eJuq9Eow7ZtrcqNbMKGmQx3b/OBQS2JhUZyVMj5UUc91yugDy7rSIBfp5XXnTb5BL2x9YCYsRSG/rxfy481VNSknqzOXaSjqhMF/nOLtF8HsntJnW/2Rak8qkEpY0ja4HjzHV8NHSjHhnwbraqKMpCfi92rti8RnPNBygbKOIhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yadro.com; spf=pass smtp.mailfrom=yadro.com; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=nxht8hmS; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=EUWTp1Jr; arc=none smtp.client-ip=89.207.88.253
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yadro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yadro.com
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-03.yadro.com D3ED9E0010
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-03.yadro.com 74B68E0015
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
-	t=1728472661; bh=sB43ziImdTPLgJU6g+q4wMVcdAGDARS25Yq8tvz7Y9s=;
+	t=1728472667; bh=cWg6uv3EM0obnieXASGAm1ATa7D8mOki8svgc34Ic6c=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=MFkklhY7m6kgOTJesJMrQW2kHYM4UV4AticrjWsJMp0w3IgaSftEryyfrvF3fVucn
-	 TpkvPfzu4PQQov2McvHoLy4XgasZOddRnKsDx6Zjvdfh1lTe/xcZJ7/6juDF2MKPTo
-	 +KRn6oit0nWpR4yZeW8IclIGfZgXWMwIOOy5BQrLv6tclEECnjJ7c4iLdkZo3Blm27
-	 oyjLGrxyCvoY+2fzC9FBZsY2Om1T5ql5WHkxRFGnGE/viCTvAKYaFiIjjHJbZ6azfH
-	 jHwRxcHePCRxPPh85kC5Mw31YwPLZu8FP/oirPIsysCEEjq8KpD2p4aa6BMV03GZCL
-	 dQaDUGlfp/Cgg==
+	b=nxht8hmSBW3UmeW9u5Kw7fwlr8wUT02Z5lm+Lm8gIdAmYC29+2MUhPZjvltOQm0qt
+	 T3Fowhe6OYmXB5kgHK2Br/wrGEeTHohDV0UVItLCyHPjyL879Jmp/kJvptRhyDziwT
+	 QVI9DcrfzVfG08J0PqqDmVVn0JMj82wnFoqDuTNigCyt4TYIgOb1BaUCRbPVH4NRVl
+	 h5vAAh1eRANSr9aZk6SP9mHc90K0ZSPSsKfzXUlgrfJAYpZsoH90F2Mocba0GtuyOl
+	 MXmKuUVzVdheiCca7+ej7A9SYV0Y6TtptffRAZwNARXtykV3kTJiSBkcm2AYN7UkkP
+	 7IqJI7C60pFOA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
-	t=1728472661; bh=sB43ziImdTPLgJU6g+q4wMVcdAGDARS25Yq8tvz7Y9s=;
+	t=1728472667; bh=cWg6uv3EM0obnieXASGAm1ATa7D8mOki8svgc34Ic6c=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=mz5uD94UePKwv5w1OgF8sDDxDD+DnzmCYCTFvJfCDIjYhA/+Lq3/cWucyKkycMFmT
-	 rFvx6nB+gO+IFYTK1jEsVE0ZBfQXqcr+t0FmTQPIH+6x4GnIQGEnqkKo4w9WEFnnUv
-	 pI7o7X1QOVQnqndkMG7q9ph8U/jO98jU2daRKZlS+8cHYST9k9KMoCDtLjGQJO4/u2
-	 ySH3zwrO1TrchELcXXgikxkC7bf9dG3WTbN1IhtOP0j5w4PXiupeIwgyrv8+WETHGb
-	 zWD0JXQJccu4X11rfQnWvW0FdNuGca0TGaj/1GQp0nUD724sgto4fib5uMfV6M8CYw
-	 /efkezeodzwDg==
+	b=EUWTp1Jrndwijvbu06GzBtfcaG6sthgKuIGVhdXfMvMdt8tzyfmd6J/6KdAjlfrzZ
+	 6jF1Ew6edOmn7nu5FNZcNd3J8U9OhUVtTaOET7H35XST2Rnvkithg6GQ3OanozlFmQ
+	 BCRVviZzYtKnSFQGlsCgpk1GFcWRg0Kg/rSKAllnTiFqmmAvsQ9dzXVoRmYUqiviXl
+	 E6pD8Gqq3h80Aau2z3z6QqwVuUaQCzp1aCXmvtuIHZFR3nJc1QsxZT+pPMKKOQ4mjz
+	 iP4OyYYSamF2POWDeI3ylBYbGw9xALHNMwSIteLd6OgBS8yQwvcdyeWHkF8b4Jsi22
+	 3sbSePMc0amhA==
 From: Anastasia Kovaleva <a.kovaleva@yadro.com>
 To: <target-devel@vger.kernel.org>
 CC: <njavali@marvell.com>, <GR-QLogic-Storage-Upstream@marvell.com>,
@@ -58,9 +58,9 @@ CC: <njavali@marvell.com>, <GR-QLogic-Storage-Upstream@marvell.com>,
 	<bvanassche@acm.org>, <quinn.tran@cavium.com>, <himanshu.madhani@cavium.com>,
 	<linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<linux@yadro.com>, <hare@suse.de>, <stable@vger.kernel.org>
-Subject: [PATCH v2 1/3] scsi: qla2xxx: Drop starvation counter on success
-Date: Wed, 9 Oct 2024 14:16:52 +0300
-Message-ID: <20241009111654.4697-2-a.kovaleva@yadro.com>
+Subject: [PATCH v2 2/3] scsi: qla2xxx: Make target send correct LOGO
+Date: Wed, 9 Oct 2024 14:16:53 +0300
+Message-ID: <20241009111654.4697-3-a.kovaleva@yadro.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20241009111654.4697-1-a.kovaleva@yadro.com>
 References: <20241009111654.4697-1-a.kovaleva@yadro.com>
@@ -72,57 +72,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Type: text/plain
-X-ClientProxiedBy: T-Exch-05.corp.yadro.com (172.17.10.109) To
+X-ClientProxiedBy: T-EXCH-06.corp.yadro.com (172.17.10.110) To
  T-EXCH-09.corp.yadro.com (172.17.11.59)
 
-Long-lived sessions under high load can accumulate a starvation counter,
-and the current implementation does not allow this counter to be reset
-during an active session.
+Upon removing the ACL from the target, it sends a LOGO command to the
+initiator to break the connection. But HBA fills port_name and port_id
+of the LOGO command with all zeroes, which is not valid. The initiator
+sends a reject for this command, but it is not being processed on the
+target, since it assumes LOGO can never fail. This leaves a system in a
+state where the initiator thinks it is still logged in to the target and
+can send commands to it, but the target ignores all incoming commands
+from this initiator.
 
-If HBA sends correct ATIO IOCB, then it has enough resources to process
-commands and we should not call ISP recovery.
+If, in such a situation, the initiator sends some command (e.g. during a
+scan), after not receiving a response for a timeout duration, it sends
+ABORT for the command. After a timeout on receiving an ABORT response,
+the initiator sends LOGO to the target. Only after that, the initiator
+can successfully relogin to the target and restore the connection. In
+the end, this whole situation hangs the system for approximately a
+minute.
 
-Cc: stable@vger.kernel.org
-Fixes: ead038556f64 ("qla2xxx: Add Dual mode support in the driver")
+By default, the driver sends a LOGO command to HBA filling only port_id,
+expecting HBA to match port_id with the correct port_name from it's
+internal table. HBA doesn't do that, instead filling these fields with
+all zeroes.
+
+This patch makes the driver send a LOGO command to HBA with port_name
+and port_id in the I/O PARMETER fields. HBA then copies these values to
+corresponding fields in the LOGO command frame.
+
 Signed-off-by: Anastasia Kovaleva <a.kovaleva@yadro.com>
 Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/scsi/qla2xxx/qla_isr.c    | 4 ++++
- drivers/scsi/qla2xxx/qla_target.c | 6 ++++++
- 2 files changed, 10 insertions(+)
+ drivers/scsi/qla2xxx/qla_iocb.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/scsi/qla2xxx/qla_isr.c b/drivers/scsi/qla2xxx/qla_isr.c
-index fe98c76e9be3..5234ce0985e0 100644
---- a/drivers/scsi/qla2xxx/qla_isr.c
-+++ b/drivers/scsi/qla2xxx/qla_isr.c
-@@ -1959,6 +1959,10 @@ qla2x00_async_event(scsi_qla_host_t *vha, struct rsp_que *rsp, uint16_t *mb)
- 		ql_dbg(ql_dbg_async, vha, 0x5091, "Transceiver Removal\n");
- 		break;
+diff --git a/drivers/scsi/qla2xxx/qla_iocb.c b/drivers/scsi/qla2xxx/qla_iocb.c
+index 0b41e8a06602..90026fca14dc 100644
+--- a/drivers/scsi/qla2xxx/qla_iocb.c
++++ b/drivers/scsi/qla2xxx/qla_iocb.c
+@@ -2486,6 +2486,17 @@ qla24xx_logout_iocb(srb_t *sp, struct logio_entry_24xx *logio)
+ 	logio->port_id[1] = sp->fcport->d_id.b.area;
+ 	logio->port_id[2] = sp->fcport->d_id.b.domain;
+ 	logio->vp_index = sp->vha->vp_idx;
++	logio->io_parameter[0] = cpu_to_le32(sp->vha->d_id.b.al_pa |
++				 sp->vha->d_id.b.area << 8 |
++				 sp->vha->d_id.b.domain << 16);
++	logio->io_parameter[1] = cpu_to_le32(sp->vha->port_name[3] |
++				 sp->vha->port_name[2] << 8 |
++				 sp->vha->port_name[1] << 16 |
++				 sp->vha->port_name[0] << 24);
++	logio->io_parameter[2] = cpu_to_le32(sp->vha->port_name[7] |
++				 sp->vha->port_name[6] << 8 |
++				 sp->vha->port_name[5] << 16 |
++				 sp->vha->port_name[4] << 24);
+ }
  
-+	case MBA_REJECTED_FCP_CMD:
-+		ql_dbg(ql_dbg_async, vha, 0x5092, "LS_RJT was sent. No resources to process the ELS request.\n");
-+		break;
-+
- 	default:
- 		ql_dbg(ql_dbg_async, vha, 0x5057,
- 		    "Unknown AEN:%04x %04x %04x %04x\n",
-diff --git a/drivers/scsi/qla2xxx/qla_target.c b/drivers/scsi/qla2xxx/qla_target.c
-index d7551b1443e4..bc6b014eb422 100644
---- a/drivers/scsi/qla2xxx/qla_target.c
-+++ b/drivers/scsi/qla2xxx/qla_target.c
-@@ -6826,6 +6826,12 @@ qlt_24xx_process_atio_queue(struct scsi_qla_host *vha, uint8_t ha_locked)
- 			qlt_send_term_exchange(ha->base_qpair, NULL, pkt,
- 			    ha_locked, 0);
- 		} else {
-+			/*
-+			 * If we get correct ATIO, then HBA had enough memory
-+			 * to proceed without reset.
-+			 */
-+			WRITE_ONCE(&vha->hw->exch_starvation, 0);
-+
- 			qlt_24xx_atio_pkt_all_vps(vha,
- 			    (struct atio_from_isp *)pkt, ha_locked);
- 		}
+ static void
 -- 
 2.40.1
 
