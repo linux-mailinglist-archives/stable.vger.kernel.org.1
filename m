@@ -1,178 +1,137 @@
-Return-Path: <stable+bounces-83186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBAC39968B3
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 13:24:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 502779968B8
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 13:25:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BFC81C2265C
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 11:24:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 642A41C22CC6
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 11:25:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48E51922E5;
-	Wed,  9 Oct 2024 11:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E051191F7F;
+	Wed,  9 Oct 2024 11:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dCxoWYrK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NZSUDezJ"
 X-Original-To: stable@vger.kernel.org
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013027.outbound.protection.outlook.com [52.101.67.27])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A437D191F85;
-	Wed,  9 Oct 2024 11:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728473043; cv=fail; b=dImGNMPTBXQTlO72dK90tfIcVW0Mx76lWXNHLVeEnDkbs9nYlN2rFuVncyzodmog2kPAlpW24JoWfsCw7FVc6Q+zWbm6aV3YeNtbbz1OeaaBbGqJSgEWEt6S18/9geew8PKSf9b37tveZIovR4uw2SDoQXGRZkJGC5vXyy9t5ic=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728473043; c=relaxed/simple;
-	bh=syMpOAAg8Nkd35Vvo63j//9dUtLlQMewT7XHc11dVgE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Fh29MIJoItWZ1GXgrYT6R5dd+vVuWv+oCs994H03OiozZ72MFwsxvpHISCMZ+PqIkfjoXzzplwrZ8YXsT+THuw1b8i/nIQT/gvKHgjaePNbPMo8qUTs8IV1rDCvxCtz35fKDocZcwoL24jfQHolZW+jGDv22mBmDcee2HCbJjfE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dCxoWYrK; arc=fail smtp.client-ip=52.101.67.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rGLevRUBw8pV/sVMOb5cIh6CYVwAmKmnE6Hn+r4ytNy+GgV10nZYMHOER4j0z7u0gyMf7pzuoYz/SHV1LerL76wjWnDM29qbRsbrp+8vUNYH/aFob1JIwFonwtUYWV+fKp60I3Z23jlzCteB8a4ukiuPggGURwR8omCD4qrLS0T42cqN3K52Ud4iGFQJ9J0xlv7s/H554TVSw56vOAoTqUklHj/smDKivylCSH+lpo2+Ma9Pn8pbQvjU6PUEolZrE5sw4zWrY/UI0kpBUWReLQEIVolaBecb098hBHxaaWS5fpo0N+6/8MseVtYLlM+5CZ0l5TKWb0z5PTdGo5ezfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2bsbwrDAt8SGVXH/B+q5qrHE8AxLvDu5bMbnP9Q4Pt0=;
- b=RQ5dQzoAKT2HlML4ZEH6iU3ZCQsJvCDB0XqI5IZP/sBaKXngApWGSXp4nbmCMOswnf6hIOlDr/hItB2+MTEKYfx7rt6dwZGnAfbSwk3ULnMkhXgK88klBPL02PJE1OOpqCn7xNMhHnpZqHVLJmb0kdoxcFg+0Wa4OA/1jc6iiwz3qGrgFCEKJ0UZlG8s9mvuhbgVYLKeq1kSaG67mDRJC56jFMJESpcsszhHrUSUI397U9kxtMvgtghz2LndHvYutSusc1m/6QZb/y+FV9E3ckZf/6X4wxl0xoBnppyY15D6J2LP5x3W+Cu7iKwjSTF7iexDzEmv2ZClKljjq71W0g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2bsbwrDAt8SGVXH/B+q5qrHE8AxLvDu5bMbnP9Q4Pt0=;
- b=dCxoWYrKg9pXx7EE9Z81i20mig59X4JSMUr+tXz6Y0/3rVWhZ4w9qrFJfy5PpYnj8VgCnts7tBMYs/45yW74YDe0PwQhTeDvFrAYyeqryw8n6NWhwc7hH9EXPP70lBqisYmqtnDrTCixyxfiUiTdXrHTU34rs3BVfs2VDln2/WNs47EUIy5MdynC30La71gajCmlq2jeJ1cuX9RD+c4jfRhoAmCCXFxMm+FeH/pmYHV7uIQciC1I6guAuHb/fNRgGjEqU1LZwSvQy6gMN6vZaFIQmfTwm01BWag3PY1Q29XeFyEHaM0sBPUtBuJtqsyCpqBnEfce62LC2iZAc0XNJA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by VI1PR04MB7038.eurprd04.prod.outlook.com (2603:10a6:800:12d::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.16; Wed, 9 Oct
- 2024 11:23:53 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2%3]) with mapi id 15.20.8048.013; Wed, 9 Oct 2024
- 11:23:52 +0000
-Date: Wed, 9 Oct 2024 14:23:49 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, claudiu.manoil@nxp.com, ast@kernel.org,
-	daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	bpf@vger.kernel.org, stable@vger.kernel.org, imx@lists.linux.dev,
-	rkannoth@marvell.com, maciej.fijalkowski@intel.com,
-	sbhatta@marvell.com
-Subject: Re: [PATCH v3 net 1/3] net: enetc: remove xdp_drops statistic from
- enetc_xdp_drop()
-Message-ID: <20241009112349.ctk4gog4lhrcmxxs@skbuf>
-References: <20241009090327.146461-1-wei.fang@nxp.com>
- <20241009090327.146461-1-wei.fang@nxp.com>
- <20241009090327.146461-2-wei.fang@nxp.com>
- <20241009090327.146461-2-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241009090327.146461-2-wei.fang@nxp.com>
- <20241009090327.146461-2-wei.fang@nxp.com>
-X-ClientProxiedBy: VI1PR0102CA0024.eurprd01.prod.exchangelabs.com
- (2603:10a6:802::37) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FF3191489;
+	Wed,  9 Oct 2024 11:25:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728473104; cv=none; b=RNDzG5ZA94ssV+PgZ0tTBfp42HPv7uPeDlmfgu3I1QpsjxvADnrIVp0oLRP8HFORu+QeTe5csmPqDZEUuDnKjwCwDSOnj9QoSCD137XkvidWOjbqh2m+ogcOEVwaH/woesPYFy3JaQERhOB2qQAdKfeYvy15caVOEwCPXjj7W0g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728473104; c=relaxed/simple;
+	bh=wdVK+v3QsEtuvtnCGTz3cveAy5vFTYupGy1jeTMyays=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JmEKga+J54OQYhwXW0sv3RHVFoerUSMW8HI2FxhWEATjjqw/Z38NL2XXwmQrj1C0iNt5fRLIyKEo7BCQ/AlulGdvIgk2UstSWBi4yn/uWnv4qdenh8comgetp0Gu9Ugra8OZOKCGc9tNHNqKp4x2kadESYw1+X4QKTU2YBBT4ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NZSUDezJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92FF0C4CED6;
+	Wed,  9 Oct 2024 11:25:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728473103;
+	bh=wdVK+v3QsEtuvtnCGTz3cveAy5vFTYupGy1jeTMyays=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=NZSUDezJr2FNFo/5h9MKHZHW9EpDC5PTRl5QmmhfEUlHboopx1SfK8ijFoEim4CyS
+	 ZSNzs+XUL506O/vthSP4UelQF23X80UeMY1C+aT/MoIw5Jn5Zm02elXH0/zxheFGIT
+	 oMiTCz04oSw+ki+urg7LVIlejCcdOmosxEcNEXOQ6sLJbSnjJ2Tu/ojpHlBl6qCkrO
+	 +MD1hOOT1LulLnpKgCbshuHySZez+AA7RtxZJ69bNhrojP1MDPKhhoKPMYt/DI5IvP
+	 4rgRgPg0psnAbv/6cFWcJGm5fRd53IKc1qtPQbOQJiGNA8296n10/KKsaURa+Zk0dM
+	 KFXsNM5m9BVyA==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5e7ffcd95c1so808207eaf.2;
+        Wed, 09 Oct 2024 04:25:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU6ynlh+XN+/p47Jb4fso9TdKk7NsKf/16iMeAR7yPFh0+bzdrFu3mWN1jYMqsfipVKvBsDheiqtf0=@vger.kernel.org, AJvYcCVuzWEB9P5Hu5+0uSYqNsHvbRlB8XhAUHTokvmtO47+zoHwxdA6LfZ4GJ8BExLos7DJCcqUKQzU@vger.kernel.org, AJvYcCWhw9HE2DjGBZmn1VC7rddPGMdC3yGe+iRcgf3At6Bb8LOobfQ9DtuKxZ/7gozYwC9YKIRM8ZfI48oq1iU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOL+dxND07bXc0ZalNi8gbzNYvW4f20SAeUjURSFR32NEQ/1Fy
+	FxFeyzIEQfWNnD9r9i/9IbKVvUKrZd6gDqMkXxYNmzV90/s0kTKnxISz/rO9t+PcfJvOHp8uBUi
+	rq+/2xevusdXcyyQeBJQmCf88n6M=
+X-Google-Smtp-Source: AGHT+IH0r0T4Yr7HCO5EeAhxWkHvjmc/vhMxtPCtEhpbLjDxfuVyQYl4TBosMbKKV5BA0/S5YXTDNHg7rcUm2F11z9U=
+X-Received: by 2002:a05:6820:1b8c:b0:5e5:76ac:11f with SMTP id
+ 006d021491bc7-5e987c062a6mr1195870eaf.5.1728473102707; Wed, 09 Oct 2024
+ 04:25:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|VI1PR04MB7038:EE_
-X-MS-Office365-Filtering-Correlation-Id: fe32b6db-9f00-4017-f773-08dce854daeb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?SmAsx50MzocNlLnWt8d+rPHxqZcAXlFE0fiHBB4fnWpbETs9JPV9kx6AVYng?=
- =?us-ascii?Q?ebiaBrUzM0kxbst9YGUq4uv6ZK6w9Mi2r5akdy5W08XDSbrZLlJ1TRt69jhJ?=
- =?us-ascii?Q?P7cijmXqx4SV/AvvYmU53TzqPEtOmwGvJSsPtzo0QSEgxdPK0C7INnZ7o9g7?=
- =?us-ascii?Q?Llppeb/egrnA5D1tfJbSthW/KHyGqjttqGarF5XdBrg+8rCOQO1u58e2QLZr?=
- =?us-ascii?Q?vTSXUBDUYjWBiEWwdiVb/YozujL4+YxIWLJee2E+81raYymad+cIhJpjRYoJ?=
- =?us-ascii?Q?X7GwJ/05tvfdhOqrLhQcBPhJtM1g2oHB638dKKi0jpIyzRLPE306ZBEfk2dw?=
- =?us-ascii?Q?7p+iSu9323y4PhOYvPw0nhejeVYVPz5vMTbXRQPnENlDiAsJLoCzztOR8xls?=
- =?us-ascii?Q?UP1ZLFdvGJQtx9wXT/pRDsCYr6h9CxjUoDCHkbShXtEBTaaKXWSFdDDo6Qf1?=
- =?us-ascii?Q?yQG+DVEllfj2ZW0PagYwZ/vq+jfbh/a47lV0GelWF6u7WhAgTvxHvzSYFIiw?=
- =?us-ascii?Q?51OUV03WE4DawtW/EHTFwDCYCKVFNbRTGB8jrLwP/m8KSQV3IRxS3GM5QKyE?=
- =?us-ascii?Q?G5y53nggpcXhpbGko2DA0Hnh333jrQzEu6HjpACaJSxKYiXQAWNJzEMqYWFg?=
- =?us-ascii?Q?tnWnPTtPgoCE4EykJ7yvG0t1ac/UybfDHHtk+asm7YhBLGFwFmyAlVuam6jZ?=
- =?us-ascii?Q?Sb3X8tGj7uDg64om8+QbtaoVdnsGSgjXVEhYouFvpI/6aVv7OBs74xQle7do?=
- =?us-ascii?Q?OiIp9LDDtEZ+vpml/Cl1W3kQTNxrRTZfPUzJ99mxDhYbwBfP1O7rj/Mw/g50?=
- =?us-ascii?Q?SMNRjFlzygTbMfLo6ARWN7DVe2g+J2133sGqHROUovMu+TgaX/dsyPQ5UJcU?=
- =?us-ascii?Q?48B2cMTnoCALDyIVBG9FGHMNq3HP24qjOmwEuC58sui6W5ldpYe59ilYuYiB?=
- =?us-ascii?Q?TJHD/fB2bXJXGsTIBKjmZtvQkYvDqeRTGHBkgCCH6h6YYTqoa/1tsGhqp40S?=
- =?us-ascii?Q?fxQisY7ertLB+BxN7OT6s8n00Os+NCljBsVVooI/cNGhB71pf4GrOuJRGnjr?=
- =?us-ascii?Q?Gvui3XApBSNG1E98DR0kvTpNW3ZJdmS9Gm9e1dYQaG0zkwf+Uq6q4U5loLCV?=
- =?us-ascii?Q?3O6eso5r2l5IGZpPBY+c2ve0Yugfotba1/LliuSAZgzc/cecXWMVmjkL0o8E?=
- =?us-ascii?Q?R/cL2ivg645uH55CAvb16IpL/fQwOXBVNByujK3UIdDlrTfRCq78cF4qLgNN?=
- =?us-ascii?Q?gcFu7kSmsHpD9a8MhzkUkTj2HaaAqSgG94LQMjfZFg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xbNIj8+UGkAt0dKHtcp7F2c9AhMeusCHD19XkQv11qv8pLCX6kdNOi++uVJR?=
- =?us-ascii?Q?NO+MEjr4madQ2Lk/BUU77v/EHghRgjbJyYVmFv562QongucFW+Qc7sEBC07j?=
- =?us-ascii?Q?ydWWPQG7Kf5G7HrSLlKibVpvXMbLMPV3uvJU0iwuOW351bFvj+mi4OvXzl8y?=
- =?us-ascii?Q?5qGnShaNI0GWH4SPgUdpFADnvSih2mdILdh1EU3ECINoT+YUkcme6q8lV8O6?=
- =?us-ascii?Q?+r9W24tDSNmYIZyVZlA3H1s/URICsYJxsnI+OqhoxtX039XkHNftVMVGS0qd?=
- =?us-ascii?Q?gni3MOHgz0+pJ98s5Yzrm/UVIvXjoHHA2XrmHnqAJKH3l09Ul8pb+ldPrACq?=
- =?us-ascii?Q?7Zn+VNSS4Fl5WXIVAVKQqZqJR+j+lY1tozTXgl4I+UejMkfrUuAbCktXAtQc?=
- =?us-ascii?Q?aJld/Jp8QlEzkZhGvqyf0TUaZsHFDPjyNcZr8wtvLF8my23H5i4YgffvOwir?=
- =?us-ascii?Q?CuPeR/InWa7AXnKbwx+nafj3qNvIO2I/9ZG7TBPx3k23GrZqxG+1rXDoWL11?=
- =?us-ascii?Q?sFXwtA920twzAu/12fL1lTEaSZTx6o65ksKXgACvFdSSCO9WUNdQEUDEfW9/?=
- =?us-ascii?Q?Im6Qd4WCG9Tz5IALXJ2NinK6Y1fUfYDvwK95Vu7bdYt1c/RKxCyv9dxAYSEt?=
- =?us-ascii?Q?dLTRv51Ujdxgkt/3f70t6f3c5L9vsVU4DYETx9q6ymsG+lIG1m+5ctquINvB?=
- =?us-ascii?Q?/Jyvoby8tddWko/DBwSI2bVriCAxkKgnNxkAMcvMfec9GNC/joY5GATc9NgG?=
- =?us-ascii?Q?4dH4aHcKMZjXOwBKbq8dBENdYPJ+clE6BLGRdCyXA3avbNcabAzJb7bgt2qO?=
- =?us-ascii?Q?VnYUTu7L4f0ox0APjQtsJ4H4ey65v0Hmc837MaQA2DxHUswPp1LPR/MHp3i3?=
- =?us-ascii?Q?pEsUIAMIMsgtaF/AWgBCU8r8NY80+DJN3BKr2kzl1NGZcDMsPWkkqnimCL+7?=
- =?us-ascii?Q?B5xTCWpyYqubMH1suzS2DypBYpd6sSIj8t9t6nv+06UDPqNvvPN5oEXKBagG?=
- =?us-ascii?Q?/ZzIwzLiN7uFbTeFAlSWKBUY3VSHu0LvrmfbSOERJ+YdbU1VtA28Tg5WatZ4?=
- =?us-ascii?Q?HFIU/ms6TlsSHg8Wvxrrx+P14R2os1Qx03QeZLaq22fdfGhH4RiT/yWF6vQ3?=
- =?us-ascii?Q?Mj9wes98z3Pvg4ah8LUdMXnm9byL+toJfP7Ejm1qLoJ/pI5bE3rZYabN6GRM?=
- =?us-ascii?Q?NHnFkxR9HrN+wKCZw+zKcVrmZDOk/4YPw9BfARcLrPClawKtQzO31Rpc8O1H?=
- =?us-ascii?Q?SuEpoN25AbOhDofg9jvnZpc80mT9+NK2iUcvRIpJ9fOyJt4lsyoeu37Hs0Yi?=
- =?us-ascii?Q?qvT2W4U+SzIj/9R/23q135deYrQyy035kjKtNCMyHJB/uKj/aS/VPUvyQ77c?=
- =?us-ascii?Q?8hLYl+QvT1zeMwXhPCR3YSRl7qXFrQjtZD+4pwEbuQ5YP0grTeS4SC3J+Eh3?=
- =?us-ascii?Q?tETZHDIiw+Xm7mHjT7aaDr6WrM+B9dZoIHMbwtE5xfLt+ZF0bAxcvFceCvU9?=
- =?us-ascii?Q?3F3q/wLuzz/s9GzqZTCTutNwSV3UaJC9il6tln98w521AZXxnE0FXR3D9psx?=
- =?us-ascii?Q?F9IWjShF4b+k0xBqRL4mQ+sQoBEGE50vjJsFTFx2UDbpGKFUWOo+a7QooKE7?=
- =?us-ascii?Q?sA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe32b6db-9f00-4017-f773-08dce854daeb
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2024 11:23:52.9414
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xt/2MHlx+g1y/gz5Bald0OaohXp+9lBc9ZZBHh6BSTD9GAyj1MPu+kpvMKEHii4ylSYKGFvpyNPIeTcxGB8GgQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7038
+References: <20241009072001.509508-1-rui.zhang@intel.com>
+In-Reply-To: <20241009072001.509508-1-rui.zhang@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 9 Oct 2024 13:24:51 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hVhYhKbiNc_DAqbZqRNe=MAmS9QCiL4uAw-m-U19M=2A@mail.gmail.com>
+Message-ID: <CAJZ5v0hVhYhKbiNc_DAqbZqRNe=MAmS9QCiL4uAw-m-U19M=2A@mail.gmail.com>
+Subject: Re: [PATCH V2] x86/apic: Stop the TSC Deadline timer during lapic
+ timer shutdown
+To: Zhang Rui <rui.zhang@intel.com>, x86@kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, rafael.j.wysocki@intel.com, 
+	linux-pm@vger.kernel.org, hpa@zytor.com, peterz@infradead.org, 
+	thorsten.blum@toblux.com, yuntao.wang@linux.dev, tony.luck@intel.com, 
+	len.brown@intel.com, srinivas.pandruvada@intel.com, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 09, 2024 at 05:03:25PM +0800, Wei Fang wrote:
-> The xdp_drops statistic indicates the number of XDP frames dropped in
-> the Rx direction. However, enetc_xdp_drop() is also used in XDP_TX and
-> XDP_REDIRECT actions. If frame loss occurs in these two actions, the
-> frames loss count should not be included in xdp_drops, because there
-> are already xdp_tx_drops and xdp_redirect_failures to count the frame
-> loss of these two actions, so it's better to remove xdp_drops statistic
-> from enetc_xdp_drop() and increase xdp_drops in XDP_DROP action.
-> 
-> Fixes: 7ed2bc80074e ("net: enetc: add support for XDP_TX")
+On Wed, Oct 9, 2024 at 9:20=E2=80=AFAM Zhang Rui <rui.zhang@intel.com> wrot=
+e:
+>
+> This 12-year-old bug prevents some modern processors from achieving
+> maximum power savings during suspend. For example, Lunar Lake systems
+> gets 0% package C-states during suspend to idle and this causes energy
+> star compliance tests to fail.
+>
+> According to Intel SDM, for the local APIC timer,
+> 1. "The initial-count register is a read-write register. A write of 0 to
+>    the initial-count register effectively stops the local APIC timer, in
+>    both one-shot and periodic mode."
+> 2. "In TSC deadline mode, writes to the initial-count register are
+>    ignored; and current-count register always reads 0. Instead, timer
+>    behavior is controlled using the IA32_TSC_DEADLINE MSR."
+>    "In TSC-deadline mode, writing 0 to the IA32_TSC_DEADLINE MSR disarms
+>    the local-APIC timer."
+>
+> Stop the TSC Deadline timer in lapic_timer_shutdown() by writing 0 to
+> MSR_IA32_TSC_DEADLINE.
+>
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-> ---
+> Fixes: 279f1461432c ("x86: apic: Use tsc deadline for oneshot when availa=
+ble")
+> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
 
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+x86 folks, this is quite nasty, so please make it high-prio.
+
+Alternatively, I can take it through the PM tree.
+
+> ---
+> Changes since V1
+> - improve changelog
+> ---
+>  arch/x86/kernel/apic/apic.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+> index 6513c53c9459..d1006531729a 100644
+> --- a/arch/x86/kernel/apic/apic.c
+> +++ b/arch/x86/kernel/apic/apic.c
+> @@ -441,6 +441,10 @@ static int lapic_timer_shutdown(struct clock_event_d=
+evice *evt)
+>         v |=3D (APIC_LVT_MASKED | LOCAL_TIMER_VECTOR);
+>         apic_write(APIC_LVTT, v);
+>         apic_write(APIC_TMICT, 0);
+> +
+> +       if (boot_cpu_has(X86_FEATURE_TSC_DEADLINE_TIMER))
+> +               wrmsrl(MSR_IA32_TSC_DEADLINE, 0);
+> +
+>         return 0;
+>  }
+>
+> --
+> 2.34.1
+>
+>
 
