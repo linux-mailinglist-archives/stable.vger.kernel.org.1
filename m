@@ -1,152 +1,127 @@
-Return-Path: <stable+bounces-83265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D81599759B
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 21:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48BF89975A6
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 21:26:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3B09281FDC
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 19:26:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE4E8283289
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 19:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419911A0BD7;
-	Wed,  9 Oct 2024 19:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A9E1E0E08;
+	Wed,  9 Oct 2024 19:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Ki0k9YSb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IASgu2YC"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E903017BB28
-	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 19:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB5217837F;
+	Wed,  9 Oct 2024 19:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728501962; cv=none; b=YipcHXaU6/EEQ0pB7QWB0T1AW7fX9wvkdAk4RkUvRLIwBp1Eh+jDrTYxZmyWBybtw4qvWgF5+Z+LfWlwtqNp7xPgZco3EjQ8ApD4DriyfLnCUYRULB/YwaVAYkB0bEMhACRIqQ1xWzBroIKrKuB9Xp7XtSdiwoqP1hxuKG4EjIw=
+	t=1728501979; cv=none; b=Ru6bkx/JwGQcccsqZYr5jL9oT6g4G41Z7VGyx7jAg1KV4qLaDnA7r0XA8V2Y9HPxPdDghcCp9A5cFjnfadzp/Cum5rxnd2HhCJVCMqAFN6M20UYinRoi4zgDSMy+qmpXMNFPUvMDA68l2gRZKRDuL0W+Elhefl5UoQgyPIuckRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728501962; c=relaxed/simple;
-	bh=29B4ouze1AMCsi/DEaajUMrZB5tkgFLzr8riHT36tuc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QGIsobyBmwQAPPIodAQbgqVPtKySpn+MneAwOYpHiDsZvIdA1S6wTl/ulFf0wwgU/Mcv60sb8htlLj9m6ihYDTlEjj7oU9SVBJ4JEIQvL5nwY8CuxSXx1qQy45A4wG0duRduXA7KVqupVcSG871H6cRzNWixeJvwYAFe+/erP00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Ki0k9YSb; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Wed, 9 Oct 2024 12:25:48 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1728501956;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2Q6tIzhsoWpI8OActtQsa2+WNCC3Oz8pxLk/X6USEkU=;
-	b=Ki0k9YSbRb8hPkAO0EtbW+r+z11wP0Mkn1h3zKB6/Yt1r2h8wsoyzKRFz8d5NVwOKTvs9r
-	nuKoB7eqIH6esAO9KB7bLjRdjSjtAwwLTOXWRwSKBGZBafB6vEKIsg+6v0Oh7v+X/5FIPz
-	VpIHBYoS3XPmsOY27gBS51lyKCk+1Ks=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>, stable@vger.kernel.org,
-	Alexander Potapenko <glider@google.com>
-Subject: Re: [PATCH] KVM: arm64: Don't eagerly teardown the vgic on init error
-Message-ID: <ZwbYvHJdOqePYjDf@linux.dev>
-References: <20241009183603.3221824-1-maz@kernel.org>
+	s=arc-20240116; t=1728501979; c=relaxed/simple;
+	bh=Vuglrov0S5KUMROzD8A+tpB0125ZTYYW7D7CNFqovC4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MibPScZzA5LwYUqhl1oYWtztw5YpdMLTZXIB3E86YIhc5IHhuJf0vPzuZhlqXUkZD3Ak0DFjjXHxDYaeZ1rG40uKLuHdLICggNpjP0EbUN7DnRtYEnB9zpWIaaXjbiMRFflJdo5cA/YyHeT5OsrATpfJZ7DiWSEOXMljdK+AHlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IASgu2YC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDDA2C4CEC3;
+	Wed,  9 Oct 2024 19:26:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728501977;
+	bh=Vuglrov0S5KUMROzD8A+tpB0125ZTYYW7D7CNFqovC4=;
+	h=From:Subject:Date:To:Cc:From;
+	b=IASgu2YCRbcdjzxnkpBu7W5HXlRtuNGZaSsq5eRYRR8GXqrpMYXQ5hDQvdUcoue0u
+	 MgR788e9SCBga+F2f7ZMxoUJka9SQuLBTzDZJETdTRXlZuruAcSHZo53CrZrJNq8zY
+	 ScjnPastRxDgzDVG/9enS48TYznrcTNy1iXg0FzX9qzLivy+oYouyabJiv6TmRjBkl
+	 peSe/sJBjgVfUTvVuHf93ppRwCTfEe6edBMf/tKcojFqzscHlUgP4Jnoqep2rpQMQ5
+	 vpBcV0dw3sm2Y1V1LtYYAJLzEgHzqLv/GT4YLa9GBFb9WVehrihdRBxQWX8L+sh4AQ
+	 Nv0M80CXQ0GgQ==
+From: Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH v2 0/2] powerpc: Prepare for clang's per-task stack
+ protector support
+Date: Wed, 09 Oct 2024 12:26:07 -0700
+Message-Id: <20241009-powerpc-fix-stackprotector-test-clang-v2-0-12fb86b31857@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241009183603.3221824-1-maz@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAM/YBmcC/42NQQ6CMBBFr2Jm7Zi2qYCuvIdhgWWABkKbaYMaw
+ t0dSdy7fD95/62QiD0luB5WYFp88mEWMMcDuKGZe0LfCoNRxmqlLMbwJI4OO//ClBs3Rg6ZXA6
+ MmVJGN4mFlaWipLYyXWFAviKTCHvnXgsPPonx3rOL/q6/QvlnYdGoUFVOnx+muFiyt5F4pukUu
+ Id627YPm2g979sAAAA=
+X-Change-ID: 20241004-powerpc-fix-stackprotector-test-clang-84e67ed82f62
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Nick Desaulniers <ndesaulniers@google.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ Keith Packard <keithp@keithp.com>, linuxppc-dev@lists.ozlabs.org, 
+ llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2108; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=Vuglrov0S5KUMROzD8A+tpB0125ZTYYW7D7CNFqovC4=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDOlsN268aNQ6/+7BYqXi5rD1M+MLLVc8iD1ir7Bh5wv34
+ H9LpSQ1O0pZGMS4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBE1rYxMlwwNKtqdll99LuI
+ fvnqfydjcib/uJG2al5bbJxJ/qxpivsY/umWnKp/ufPhUuUzxmqp3/tvKS9mm/H5q8aPnf5WXLN
+ 1ijgB
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-On Wed, Oct 09, 2024 at 07:36:03PM +0100, Marc Zyngier wrote:
-> As there is very little ordering in the KVM API, userspace can
-> instanciate a half-baked GIC (missing its memory map, for example)
-> at almost any time.
-> 
-> This means that, with the right timing, a thread running vcpu-0
-> can enter the kernel without a GIC configured and get a GIC created
-> behind its back by another thread. Amusingly, it will pick up
-> that GIC and start messing with the data structures without the
-> GIC having been fully initialised.
+This series prepares the powerpc Kconfig and Kbuild files for clang's
+per-task stack protector support. clang requires
+'-mstack-protector-guard-offset' to always be passed with the other
+'-mstack-protector-guard' flags, which does not always happen with the
+powerpc implementation, unlike arm, arm64, and riscv implementations.
+This series brings powerpc in line with those other architectures, which
+allows clang's support to work right away when it is merged.
+Additionally, there is one other fix needed for the Kconfig test to work
+correctly when targeting 32-bit.
 
-Huh, I'm definitely missing something. Could you remind me where we open
-up this race between KVM_RUN && kvm_vgic_create()?
+I have tested this series in QEMU against LKDTM's REPORT_STACK_CANARY
+with ppc64le_guest_defconfig and pmac32_defconfig built with a toolchain
+that contains Keith's in-progress pull request, which should land for
+LLVM 20:
 
-I'd thought the fact that the latter takes all the vCPU mutexes and
-checks if any vCPU in the VM has run would be enough to guard against
-such a race, but clearly not...
+https://github.com/llvm/llvm-project/pull/110928
 
-> Similarly, a thread running vcpu-1 can enter the kernel, and try
-> to init the GIC that was previously created. Since this GIC isn't
-> properly configured (no memory map), it fails to correctly initialise.
-> 
-> And that's the point where we decide to teardown the GIC, freeing all
-> its resources. Behind vcpu-0's back. Things stop pretty abruptly,
-> with a variety of symptoms.  Clearly, this isn't good, we should be
-> a bit more careful about this.
-> 
-> It is obvious that this guest is not viable, as it is missing some
-> important part of its configuration. So instead of trying to tear
-> bits of it down, let's just mark it as *dead*. It means that any
-> further interaction from userspace will result in -EIO. The memory
-> will be released on the "normal" path, when userspace gives up.
-> 
-> Cc: stable@vger.kernel.org
-> Reported-by: Alexander Potapenko <glider@google.com>
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+Changes in v2:
+- Combined patch 1 and 3, as they are fixing the same test for similar
+  reasons; adjust commit message accordingly (Christophe)
+- Moved stack protector guard flags on one line in Makefile (Christophe)
+- Add 'Cc: stable' targeting 6.1 and newer for the sake of simplicity,
+  as it is the oldest stable release where this series applies cleanly
+  (folks who want it on earlier releases can request or perform a
+  backport separately).
+- Pick up Keith's Reviewed-by and Tested-by on both patches.
+- Add a blurb to commit message of patch 1 explaining why clang's
+  register selection behavior differs from GCC.
+- Link to v1: https://lore.kernel.org/r/20241007-powerpc-fix-stackprotector-test-clang-v1-0-08c15b2694e4@kernel.org
 
-Anyway, regarless of *how* we got here, it is pretty clear that tearing
-things down on the error path is a bad idea. So:
+---
+Nathan Chancellor (2):
+      powerpc: Fix stack protector Kconfig test for clang
+      powerpc: Adjust adding stack protector flags to KBUILD_CLAGS for clang
 
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+ arch/powerpc/Kconfig  |  4 ++--
+ arch/powerpc/Makefile | 13 ++++---------
+ 2 files changed, 6 insertions(+), 11 deletions(-)
+---
+base-commit: 8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b
+change-id: 20241004-powerpc-fix-stackprotector-test-clang-84e67ed82f62
 
-> ---
->  arch/arm64/kvm/arm.c            | 3 +++
->  arch/arm64/kvm/vgic/vgic-init.c | 6 +++---
->  2 files changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index a0d01c46e4084..b97ada19f06a7 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -997,6 +997,9 @@ static int kvm_vcpu_suspend(struct kvm_vcpu *vcpu)
->  static int check_vcpu_requests(struct kvm_vcpu *vcpu)
->  {
->  	if (kvm_request_pending(vcpu)) {
-> +		if (kvm_check_request(KVM_REQ_VM_DEAD, vcpu))
-> +			return -EIO;
-> +
->  		if (kvm_check_request(KVM_REQ_SLEEP, vcpu))
->  			kvm_vcpu_sleep(vcpu);
->  
-> diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
-> index e7c53e8af3d16..c4cbf798e71a4 100644
-> --- a/arch/arm64/kvm/vgic/vgic-init.c
-> +++ b/arch/arm64/kvm/vgic/vgic-init.c
-> @@ -536,10 +536,10 @@ int kvm_vgic_map_resources(struct kvm *kvm)
->  out:
->  	mutex_unlock(&kvm->arch.config_lock);
->  out_slots:
-> -	mutex_unlock(&kvm->slots_lock);
-> -
->  	if (ret)
-> -		kvm_vgic_destroy(kvm);
-> +		kvm_vm_dead(kvm);
-> +
-> +	mutex_unlock(&kvm->slots_lock);
->  
->  	return ret;
->  }
-> -- 
-> 2.39.2
-> 
-
+Best regards,
 -- 
-Thanks,
-Oliver
+Nathan Chancellor <nathan@kernel.org>
+
 
