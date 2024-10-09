@@ -1,93 +1,117 @@
-Return-Path: <stable+bounces-83278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD6999782B
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 00:03:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A573999786A
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 00:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DB141C226F1
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 22:03:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34B6B28468E
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 22:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF621E2833;
-	Wed,  9 Oct 2024 22:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A81D1E285F;
+	Wed,  9 Oct 2024 22:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WV6vF9/2"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="XO7OcFtN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [151.80.165.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0621A18CC1E;
-	Wed,  9 Oct 2024 22:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA6616BE3A
+	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 22:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=151.80.165.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728511401; cv=none; b=sPJwT+/gPK+sQT2/ofo+KFRbh2mqBZroJI6RhCfdMDlxLjFxHVn5zC57fYf7B29gJQjNxtSXhfo4XOo6H4efZqmiXXtk2iAVMpjuRoN9luoTfKMOcc2Vl5FOVGkAIq3wi5xFvkjD1uE+TUfbMMKOwKZKz2wTTm8UtUaz2tM7fYM=
+	t=1728512620; cv=none; b=Ch4vUHf/ZDQsLpHwPzlDQQxjA5h9Jhrk+Ej2EjOhSYwtCfLb/eXUGJ1zFrvl/U4lmLT2kw25IwdKyxKlLP4vgYXj5nA7D3eGpvL6jdYm2ahcCGq5+VQuWPigxnlZ8Nx1vnonf1hxN5w/SjZcC4EiuQS5lGYPAsv2/HKPfQL1tas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728511401; c=relaxed/simple;
-	bh=wHu0vL5OYfmu+L39nIZU7+e1wsKSMJA58f6KwHUZgcI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NVdmdWkdUm7he+ykE2K4H4G8XxJG7C9CeAK5lCVZO6kvYJ7MOA27R7pepGsqO+QUlDZLU3H6cN5bz5aJQTzQb0CFlY+FrBIlPhzhXLeOcHEt6AKApolMNyDakPR29kU8SuApjpP77jTELPg10x5SIG2Of6GdSOafak9HWVnsHKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WV6vF9/2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D998C4CEC3;
-	Wed,  9 Oct 2024 22:03:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728511399;
-	bh=wHu0vL5OYfmu+L39nIZU7+e1wsKSMJA58f6KwHUZgcI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WV6vF9/2fDQLRiQPFYPkhYe8w4fpee9+NbNJZy0nVD5UsYX/9qnd+VZN5aZqKkPa9
-	 fMNDVQcholTOjszBa+mA2ZH84jZ798H9vTL7erJBZm/O+W1DepFkMNBGeLz52Kwnpj
-	 fS1Gw3kxcO8cgDd5vwwko4bWQr1sHg3dGR6WvnpCUCqRw8mL5EVRy1LH9vBOnq1Oet
-	 mPuSzCByAW6VY9aRwT/feic4jL3wopgxfwXyYXDtoAAGMvEYKk4RFO09ffMIZG6baH
-	 veTgjlvlCFKSy5SMiVgCqdrmaDnB1h1MFQWxikEn+cZato8SeAGvDVcQWyTxiCMAS8
-	 tz8hPaEzluwmw==
-Date: Wed, 9 Oct 2024 18:03:17 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Jan Stancek <jstancek@redhat.com>
-Cc: Cyril Hrubis <chrubis@suse.cz>,
-	Anders Roxell <anders.roxell@linaro.org>, Jan Kara <jack@suse.cz>,
-	lkft-triage@lists.linaro.org, allen.lkml@gmail.com,
-	stable@vger.kernel.org, shuah@kernel.org, f.fainelli@gmail.com,
-	jonathanh@nvidia.com, patches@kernelci.org, linux@roeck-us.net,
-	srw@sladewatkins.net, broonie@kernel.org,
-	LTP List <ltp@lists.linux.it>,
-	Christian Brauner <brauner@kernel.org>,
-	Theodore Ts'o <tytso@mit.edu>, rwarsow@gmx.de, pavel@denx.de,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, conor@kernel.org,
-	patches@lists.linux.dev, akpm@linux-foundation.org,
-	torvalds@linux-foundation.org, sudipm.mukherjee@gmail.com
-Subject: Re: [LTP] [PATCH 6.10 000/482] 6.10.14-rc1 review
-Message-ID: <Zwb9pbX7MnPqGPoM@sashalap>
-References: <20241008115648.280954295@linuxfoundation.org>
- <CA+G9fYv=Ld-YCpWaV2X=ErcyfEQC8DA1jy+cOhmviEHGS9mh-w@mail.gmail.com>
- <CADYN=9KBXFJA1oU6KVJU66vcEej5p+6NcVYO0=SUrWW1nqJ8jQ@mail.gmail.com>
- <ZwZuuz2jTW5evZ6v@yuki.lan>
- <CAASaF6wdvXAZyPNn-H4F8qq6MpHmOOm9R+K+ir9T_sOG-nXpoA@mail.gmail.com>
+	s=arc-20240116; t=1728512620; c=relaxed/simple;
+	bh=xdtrjw5L1jBok1aTN8MpZ9ljT6J6Oyo+W1g5dFZ12b0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Rg5fTicCSN+/xIIFMDNrEC9s5We9m2/xLS9WSNV9qDBDIOEyy8uYLmNpUCiUvAHR+C9wecOJN8YUD6rpcXqLupBOF9rwDqiE/+UFS4vdvV7/R5X5wYTXyenBq1XwmnB1/0LFfZPvCXGmHix6u5GLga4/luMeLWHurF6EW9YL9QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=XO7OcFtN; arc=none smtp.client-ip=151.80.165.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
+	by relay2.mymailcheap.com (Postfix) with ESMTPS id 486683E8B0;
+	Thu, 10 Oct 2024 00:23:30 +0200 (CEST)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 239F7400D6;
+	Wed,  9 Oct 2024 22:23:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1728512608; bh=xdtrjw5L1jBok1aTN8MpZ9ljT6J6Oyo+W1g5dFZ12b0=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=XO7OcFtNV4+SOxzPbXyVDipRTe+F0XpujK9qs6UQWX5QD5CWFRNthhVV2eCGAYmTa
+	 PhR3lufNlW7/V8FnWpqc4nHyHPW0EBqMO0kP2md8ncFafbxgnaMRf6jLjNEqChDQQX
+	 p5xlug+tHks8X/qbC5VQl/uuQHxB+pQKTybCHwPU=
+Received: from [198.18.0.1] (unknown [58.32.43.121])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 12D6B40AD7;
+	Wed,  9 Oct 2024 22:23:26 +0000 (UTC)
+Message-ID: <15482b01-e576-4a0d-94ad-dabd2b5baabf@aosc.io>
+Date: Thu, 10 Oct 2024 06:23:24 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAASaF6wdvXAZyPNn-H4F8qq6MpHmOOm9R+K+ir9T_sOG-nXpoA@mail.gmail.com>
+User-Agent: Thunderbird Daily
+Subject: Re: [PATCH 6.11 000/558] 6.11.3-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+References: <20241008115702.214071228@linuxfoundation.org>
+Content-Language: en-US
+From: Kexy Biscuit <kexybiscuit@aosc.io>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: nf2.mymailcheap.com
+X-Rspamd-Queue-Id: 239F7400D6
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-0.09 / 10.00];
+	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	URIBL_BLOCKED(0.00)[aosc.io:email,mail20.mymailcheap.com:rdns,mail20.mymailcheap.com:helo];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TO_DN_SOME(0.00)[]
 
-On Wed, Oct 09, 2024 at 02:03:31PM +0200, Jan Stancek wrote:
->On Wed, Oct 9, 2024 at 1:56 PM Cyril Hrubis <chrubis@suse.cz> wrote:
->>
->> Hi!
->> Work in progress, see:
->> https://lists.linux.it/pipermail/ltp/2024-October/040433.html
->
->and https://lore.kernel.org/linux-ext4/20241004221556.19222-1-jack@suse.cz/
+On 10/8/2024 8:00 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.11.3 release.
+> There are 558 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 10 Oct 2024 11:55:15 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.3-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-I'll drop the offending commit, we can grab it along with the fix once
-it lands in Linus's tree.
+Building passed on amd64, arm64, loongarch64, ppc64el, and riscv64. 
+Smoke testing passed on 9 amd64 and 1 arm64 test systems.
 
+Tested-by: Kexy Biscuit <kexybiscuit@aosc.io>
+
+https://github.com/AOSC-Dev/aosc-os-abbs/pull/7680
 -- 
-Thanks,
-Sasha
+Best Regards,
+Kexy Biscuit
 
