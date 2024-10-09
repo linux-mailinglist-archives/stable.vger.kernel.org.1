@@ -1,215 +1,226 @@
-Return-Path: <stable+bounces-83200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAFA3996A0E
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 14:32:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B43996A9C
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 14:49:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4F221C21D27
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 12:32:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69695289F0C
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 12:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659F8192580;
-	Wed,  9 Oct 2024 12:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022011E0B6B;
+	Wed,  9 Oct 2024 12:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="gVXQV7iW"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m5cWThOb"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2057.outbound.protection.outlook.com [40.107.102.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B31D1E87B;
-	Wed,  9 Oct 2024 12:31:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728477117; cv=fail; b=BIFnBE+p+5OwE/41ktMYPSsrdA+MEpFH20ftbHFWMo9J4VD6cQ3gUTJxc7soZp01qX/FN4JOsGGtBxRjXAky8wY2yyODx7qrvQ+Fslf+gCJWjAizWqCdkDhxi/ZwI2hrI/wYNPAgdx2ClEBznD7pZLEES6p2aAWfsaK58fKxIgc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728477117; c=relaxed/simple;
-	bh=th/cdJzzPFc69nmQwBnxCDxBafDFGtqXMrDjvHGgeD0=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Q2+o7W31DlHFr+qKHYRz5TfuGWutzX0MODPXQnHef31xV+0j7rm0sm2avFKl4+iGYomemBW2cwQVjIbxD58YxJdfOb3anSCDzI8BaFxl1o3pu+TB9vCfaOr/Nm9P4ZXBx8uoUkTMjErl/ssY4qW517gEUVUpWpt83XIpT4e4Y6k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=gVXQV7iW; arc=fail smtp.client-ip=40.107.102.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mcT1j96/2zLcBGXHp5VhR15lJGY3uLdZ6zhHLhL3KZMrPOsJ9JR40paPWjlaScTugHL1CKKzwF/H2F0GE4WL2xDD6PJuKySFpVqyMo/k/dlGAexCx8Bwdy9lHLnv3exhn6AmQ2IUqwdJ6RIpurnjFNhZnnqps/r2TpsxBeZyrsqIub5gBbFXPQznGLf21nkJoN6TP+91EuEAHkJvFXvNLN5vNSZSdRfqGKBnf9lTvtJ2+EGdw0/K8GWtaSLzzXqizHAi90vEexS0v7lAymoQn+/Ys53eEUznw9Ld3w4LmOQs+Azdg0gnZ0Y712Qaie8ALeHCyR1+HvrMm/k95NB2Dw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KvFpFF/CoAkMPH3WvTVwhdczLDcIyraHxwEbWVC/3Fk=;
- b=ieau+wNqQIvCgksO5YDDZcHFqgkt4UcZisyIvJMbM375pphnUehbd8YQ70N5t/idigCSKv2/OgYOVMMc5Tpk2/ABUB2b3TOvb5Rsn51rf473X2mRPNCkUR5l7tPoYKEJQH9sSx/+1U/6cJSZ2GGMl9yicIuXJk81WRoM6WOb4eHK036jMX3tW8AcaFLiazusu/y8HfteQMbznkWUYgDQXxTMGbJSIjcA2acWAyd/bx1ftdsT4jP4TE/ko3BQpZG85zV5ve62lpHhHS4RJX1weeqkh5VpfjzP2SJPpbyvjClz4EOZShQzDyyxsZp2O8LHQrfd5hS7voZKS32Wod7X4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KvFpFF/CoAkMPH3WvTVwhdczLDcIyraHxwEbWVC/3Fk=;
- b=gVXQV7iWBcNRWlrgBCUTV4vfkCZ7QXCblNAoYJXXGaWkscbq0BquVlNE+pFxXpspOxQN534JXsMZnfDUJzKHSWpNKSY1VaKs7kdFtCU3p/abxVRefMlsCIjR/GTYV7kHzzIQ9vj6UfCJ0CikvP0OZrnlTXW0sEMCAeb/2wj2S88=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by SJ1PR12MB6124.namprd12.prod.outlook.com (2603:10b6:a03:459::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.23; Wed, 9 Oct
- 2024 12:31:53 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%2]) with mapi id 15.20.8026.020; Wed, 9 Oct 2024
- 12:31:53 +0000
-Message-ID: <6426b779-bd4d-4c85-b99d-4ddedf75d837@amd.com>
-Date: Wed, 9 Oct 2024 14:31:45 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/amdgpu: prevent BO_HANDLES error from being
- overwritten
-To: Mohammed Anees <pvmohammedanees2003@gmail.com>,
- alexander.deucher@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
- simona@ffwll.ch, srinivasan.shanmugam@amd.com, David.Wu3@amd.com,
- felix.kuehling@amd.com, YuanShang.Mao@amd.com,
- pierre-eric.pelloux-prayer@amd.com
-Cc: amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20241009122831.109809-1-pvmohammedanees2003@gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20241009122831.109809-1-pvmohammedanees2003@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0382.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f7::20) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FDE1E0E15
+	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 12:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728477842; cv=none; b=VNCO9RA9kOyU9WEyWfG2DOF8IfRhI0IpUvd30IXcTFNY6SeQfr0ojEt3vlx/KFpHgwC6a2IVPCv9GVf2s+rDdriAYWd6Cqog9rg9W4Juu897JkiP2Gunld2mpiIRcAyOeXbZi3gjn3Ls1cHxYRUxaRQPEVrA6fsa9UbSj0R0u90=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728477842; c=relaxed/simple;
+	bh=0bHcAwk1FtE7wnS8yZd3g7IH7HqaPqTuvx0X6BBDCTM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=iUAAUSdwIfylUwBSOJ10R6a7rzUmuhZ++EsiyeQxlPVU50kjwRymvjZvTFc/7VwOboYuzNTsA8PlVRt1wprGuT6US3z8Fw0XWVoG5oCbUQ99zKQsTAg8SAEZTA7BJkTJuM/Tc3Z0V/eMlAHCb/oPHiQVoxNNgRiD3RPO7uHu3XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m5cWThOb; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e1159fb161fso9514978276.1
+        for <stable@vger.kernel.org>; Wed, 09 Oct 2024 05:44:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1728477840; x=1729082640; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=EOQGqInYbwRKx9I5MqqmxixFjvxM615DnKf+PJhCNdk=;
+        b=m5cWThObbcHX3nv+egNTpszU/CLy5R7cPLXQqvH6bZpVZGBEo2D8mes/DJsnUrdX5c
+         Q7m9AII+uBXDjcD32KMdI8Q79T18+4M/rEkr9m+zDyf7e9/gAf4gk/LmLiD+f0VNQlkr
+         7uVLUjJG/ep9uFIRfIQTJWsB9jIEwt2obCbvdZehEvNiOv3IB7aEOa8ItVBH5f6cp5Ji
+         Mg2do4nd2rBkeKMp6XVbNsnW/X3DcsopplOFoY4N2l4+oKZ2J2W0TajZ+1GdhRX+Aj8i
+         DLeY5IdnbKLUuT7g7QenIo+1aXk+xtT2gPzdSA3tHL6smxY5KXLzPLNSSg6ussUARu+v
+         4BEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728477840; x=1729082640;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EOQGqInYbwRKx9I5MqqmxixFjvxM615DnKf+PJhCNdk=;
+        b=eQpJ0/XjX6YR9TzfNIUsHoiiNsy90kJbcZ5oFOrUTkWCN8rfcqMTdvok89Hpkdu3Gm
+         EPrXDh7TGQyp2sQ9gZTIzxfflHH886+plodtCEVeQDYNWCxknWgjSteABxoRuqiyDwzy
+         q7NluabiO1u5yMQLhOOEMk2KlE8FPO9p4X6aF54M7B82ls5fY9j0PKUMrUH44EtdAKJv
+         wR1hdCVrufER8EtFML8nzuWC56gdas9c89Eh8SMZSS/Jld+erKSMiI7hKSXzhzgKAMU7
+         c+8GdfJO6jZy8U9jlaop2pCI7OZ8lXVxWFPuyCFeR0LAdirGJd2Vf190z5tXquQPfnoZ
+         ZbpA==
+X-Forwarded-Encrypted: i=1; AJvYcCWvydCIge6EL4GSd1wmrjhp77R2NWUiaO3PJPdJni5GkP/EvQDcia05thMU2XF7tCfEwT11H8E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKS3HyXk29Ba1wEWalbz2lPPHOfMkFZSRjgikrIYkThENughDc
+	XdNJMivWoEGeRtvcFwuxU/x2ZXP/eUCBz5rd553+x4LkmQQknodhK0aPXCW6O4plZi5sqg==
+X-Google-Smtp-Source: AGHT+IEJxRS5v5JwaZ6SyyYklYdBADtytTHLbXNxpRbD72Gz4pQYyrhKTh2d3rdekoiaZZUxOons9M1K
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:7b:198d:ac11:8138])
+ (user=ardb job=sendgmr) by 2002:a25:abad:0:b0:e11:44fb:af26 with SMTP id
+ 3f1490d57ef6-e28fe31ff16mr1675276.2.1728477839944; Wed, 09 Oct 2024 05:43:59
+ -0700 (PDT)
+Date: Wed,  9 Oct 2024 14:43:53 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SJ1PR12MB6124:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0ee07cbc-7574-4448-0446-08dce85e5abd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OTNXRjR3cHA4TWlqUHI5cUxqR0ZCOTlTSittYXRGaEJ3M2xrbzRvVGJaSE5S?=
- =?utf-8?B?WCtVSDZsUEU3VU9oejR3TVhZY0I1Rkh2MFR6cGNUd3VKcG1ybStSbEE0LzZL?=
- =?utf-8?B?M0lqYUthVXFSTTM4UlVBamtDSlIrNmFVRWwzQzJra21PM0ZtMjE2ZVBBQm0r?=
- =?utf-8?B?aVdFeVN0b0puY0c0RGpqU1lWaFBIdGRVdmh5MGRNL1g5MlFJQUZBODc3UVBM?=
- =?utf-8?B?RnJGczV3c2lBdmEra1JRTHVCdzJQVnZhLzZnNVBWbUViQi9uWE1LdHkzOGtE?=
- =?utf-8?B?ZGRTQ2c3bkdjSnBuaXFlRWRFY3NNc3pxUnp0VGZ2SEx1Yy9lWU9vdE8yS2pD?=
- =?utf-8?B?Q3FVeXYra2ZPTlJ4WHVncmFHWGErWXAwYzRoV1oxL0VXaVJvTEhpeGZSVW9M?=
- =?utf-8?B?OWV2MEFsZkQvd2I0bVFEMm9qb2lmclNEZnU3TjhGM3BOdU5qRFZOcHpUcHlO?=
- =?utf-8?B?K0RYaENzcW5LQUVFNU13UGM0YzFhc1R5d2ZSSnVVT3FuVkpLQWZYRER0YXZB?=
- =?utf-8?B?Zml3ZHQ1L3FhMm9wdVp3RkNNVnJkQkxqRWlYV1ozalpVaVFRSlBQazNyL1NX?=
- =?utf-8?B?dW1jRCtzd1hpQWhyTWlndWFaWFVGSFFzaHE3VzBBSytEUnRsZjdPa1RqR0h4?=
- =?utf-8?B?TnhrUW5SUmhiWVc1cFAxVm5kYzBHRzBGVTZTdXlaalgxS0tGYmtSNXUybDUx?=
- =?utf-8?B?WEhtY09jWTJzTUgzVEV0WHZzdy8yaVRibEdNN0FyL042TmxuZTNYR3hpTHFu?=
- =?utf-8?B?MGROblI2YmxpYmlqSE16VS9NWkRDV0NPeTlsUDZ2MlhlOGk4clpPbXVkSGc4?=
- =?utf-8?B?bEtiams3a1ZUZXdXYXZWMWd1ek9kaC9DVkdVd0l5ZDZ1MVFxUzE2aE4zVFBh?=
- =?utf-8?B?VmNEdUNGa1g1dHk4VzUweDlEUVBraXNadXFDMEVVeStybmJ0enVzUldIdzJP?=
- =?utf-8?B?dHFnelZ6VXg4RXpxZkw0aG54UjRRbWsyT21RZkxDT2VNRTB4engrNzV5MVY4?=
- =?utf-8?B?dVdTd2xwU2RmQ0VzRERDc1RuYlhOTUExOVJRMU01TVQ2eFpZSEZva1lGRWV2?=
- =?utf-8?B?RFpJMmFVbi9EY3hUREhVS1B1L2hSTDJYWllxdGFkV25LcVlTR0RGaFFDTHFM?=
- =?utf-8?B?Y2tpRVBZV05SSm5xV1k3bnB4Qm0vazFoV20rdkxLcUR5OS9iYmlQSkU3SHlS?=
- =?utf-8?B?cnROYmJrYzRjdm1NSU9TWTJyWGFreEI4d2dqd0JZeUhXRGNYSjcrZzNxTXNt?=
- =?utf-8?B?eDNLSlBzSW1HUzBjMkJTaUF4YkVHMlpGVVppSDBWS3VyRzEyditFd3RXQWUx?=
- =?utf-8?B?QkJqUjRrMktuYXJOZ0ZvMWNHbTlNOFRjT1lQZW1QcTBVTy9oMkJGQ2wxWGJk?=
- =?utf-8?B?QzdlMVJHNmluY1JGWFBwajdWaVRGSTJDOW81cGd6L1lzZzFra2FQQ3BBblFl?=
- =?utf-8?B?TnZjN2hzZ2Y2MGNMa2Qyc2dtS3VzdUtNM0I3Wi9Qa0gwYjh5alQvdUFUbXpG?=
- =?utf-8?B?M2tvZEZ1Wk5MVTYremdlRmpZRjlQTVI2cEg5bGFid2tRdDdOTXQ0NXk5dmFZ?=
- =?utf-8?B?SEM3UGYrYldaOW9ibUNQTkI3Q0FDekRIbHJzR0dNVEs1TUx4SWR6RzlCU1hx?=
- =?utf-8?B?cEFpdW9yd3dMY21RNnpTMGN6MDNSaFVOUldSK0VBNWdZTEF2RnFhbnhleEE5?=
- =?utf-8?B?WE9mSmZodWJvV2kvajAxZlBBMXN4UlBHNzdLdkhkdWNYRGJuM0VlR1RTOVJV?=
- =?utf-8?Q?4SLB/NyNXfDuuc9wRVU5NDb6jXiPCUiji5hMEGa?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MDlEMEVWZk5sVzQ1ZFRrZ3MrT2Y5ZXdENVJUd2M3czc4S2I0VHlQNm5mOVlw?=
- =?utf-8?B?cVhDaCtYZ09vbktSWnNTUkpPTi8zLzUrVm4vQjB5VXA0S0JkT1RsUlRLclBY?=
- =?utf-8?B?VmpBbmo4MlE5THhiczZCeVV0SHAyTFcydDdkZ0hSVkZLSjRyTVkxeS9yLzhL?=
- =?utf-8?B?OWtHdUppREFpbklBY1dNdmw2bnp3eGR5TVljdUxVK0hTTm1rTi9remVmbkQ5?=
- =?utf-8?B?d2ZZVWs5UEJqZjlzMkdFZ0thQlYxRmJDMFFMUG5RVnR4U1JQQVZFTW1vWkNQ?=
- =?utf-8?B?UGpLWksvMDdsY0JIUWV0ZDZRRlNIUDNpSUxTUTZ0c0Zoc1dqT1dSdjBwdUFT?=
- =?utf-8?B?Vm95SmUyUS95WkZYd1BvdzZvWHJUWG5haVFsL0FXc3RRMkY5WVJmaXFmQk9P?=
- =?utf-8?B?WnRib1ExeUEySDlLdHRobE50TEZVdnA2NWFWeGlDc2hCMDZGamZWYUloaEk3?=
- =?utf-8?B?eVM1cWV1ZE9iSjFqbXdYWGt0VHRKNG53NTBpSE9KbFdEMkRBUGVRZXQvQnAy?=
- =?utf-8?B?enBsTXkzOVIvNzM2aGJCclNWeW8vTXlKTjRZdktxbk9VSkVLNFA2UEtWUEts?=
- =?utf-8?B?YkFWTFA4aGYza2EvMGNUNWpPZ04zaS82N1ZFMGxQcTJnem5mem0rNFVBZ2FO?=
- =?utf-8?B?VEN1UUlPUzUrZi9XLy9lL1RWb2dYcXh3TmNlaVp3cWd1eDdqQ0NwdnNQMlZs?=
- =?utf-8?B?aWxTenFaci9FTjNpWHIrZDFFL0p5T1JxQzA5WmFpYnI5THliOW8wcmkxdEVz?=
- =?utf-8?B?U0lkZkZpU1o4L3A1NDBQdGNMSDJaTVhJdnBZS3pHWHFWcll5ajVEaVlHTEJl?=
- =?utf-8?B?YW56MFd6dDM3QW9mL0t6blF2NWFmdERiTVllL0J5M1BlbVJMb3VmSCtZaWxj?=
- =?utf-8?B?NlRIejNZNDNPMDR2K21qUXl0QjRZcm1kUlo2dkYzRTl6aFowQU5hSEJXbzZw?=
- =?utf-8?B?YyswQlFuR1BzVURzVzRZSFBZaDZxZktyY3BUcEFKaW9OUTFOeitsU1JDU1NM?=
- =?utf-8?B?djkzYkQwYTVFaEUwZVBVbjdGZzBiVm9JT2JhWnFuSVplL0VCeTdQUzU0TVZJ?=
- =?utf-8?B?UEloLytEZXRhbm9uRTVOTkF2SVJtZVR4bXprVFpVWFBlR2hRZDJTZXdZMmNC?=
- =?utf-8?B?TlNJOWFudlFzYjBLbDM0WFZwRlRQZ2NGUFFnZEdGUzlia1BFVUVvbnF5VjRK?=
- =?utf-8?B?R0dZQzBqUmxUbXNMK2tmeUQvNTFqQmF2emwyVFZpVzEyazJVTTQ3clJCdFd5?=
- =?utf-8?B?bTQ3cW1XbUZGQ2hzYm1WaGlPT0JVbFJ3b3ptTVNhbnJ6TytOQ09oSVZwL2NO?=
- =?utf-8?B?dWgzSFh3WnY2WkMycGh6d2l0QnZiSnh6by9FMmVreEJSYVJTbHZ2M3hRMFdp?=
- =?utf-8?B?cTIzTURYUFY0dzR3WHc5VWxjL3pQVS9NbUppK0ZWamY5OHM2YXlRQXlsRk9y?=
- =?utf-8?B?SEovSWtlTWt1L0lldVZJOXZWTVFpTEFremc3T1J5dFhWQWdrZkxwdXZRYzBn?=
- =?utf-8?B?M3NOd1psakU1NFpsNjlwOSs5c1JQUUlab2ZJNFBWQ1FzamhKN1dYNE1OT05I?=
- =?utf-8?B?bVl6aGdmWkpwQW9wY2VGNTM3MHNGdmRZdEx2Wkxvd1ZSOEsrZGlHeDVtb1VW?=
- =?utf-8?B?VkE4OXdnN2ExWThZZWtDS2Nib3lnY3loa1ZzRXVtbktrQ1U1ck11MGhaQ1lO?=
- =?utf-8?B?aXFtM3p6c0RqR21LZkNJNU5TZE5LM05zMnYzcGFpM042YnQ1WlFuT01UY0Mw?=
- =?utf-8?B?ZGFzbklOU000RDUzUXNMb1JvK21qVDBINnNrQ0xwT0hXQ1Zod0Q3Y1kzNGw0?=
- =?utf-8?B?NVFCdjJzTE5KdFlyWS95MjFTUzlBaFJMTC9FNEdCWWtJd2VXKzR5QkJ5K01a?=
- =?utf-8?B?eUxFMXRsTmt6dmZ4OXhQOGhqN051U2Z3cVZFVmQzbnY2WjZyZ253L3IzSmwy?=
- =?utf-8?B?Q0V2ckY2TUROQ0NEaHJQNjU4enNjY3V5dkxNUlp4bUovZVN6Zjk1M2R2Uitq?=
- =?utf-8?B?clVERDZjQnl2aTlxVS94WFFHdER4QWUvak44UG84aTZhYk42T2ppdjhuSm0w?=
- =?utf-8?B?RVVwdk1weDNQMG93WjB1eTkraGd6SlAySzdXcGxPYTVWRVovbVlZTDhYVWk2?=
- =?utf-8?Q?Bc2Y=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0ee07cbc-7574-4448-0446-08dce85e5abd
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2024 12:31:52.9709
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9tjSMCzzHRao5LyF81vF7JKjTBq8zL4/aok+yJGydc722OAecrzKd9rHLmr9GDyf
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6124
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5424; i=ardb@kernel.org;
+ h=from:subject; bh=UDyw98mBYs75N34uUwJo9zjn819mhGUVva9KMoRGrbQ=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIZ2tqlMu4VpoLWdM0oba8P/clYL7b97ojO67+r1VQeBZV
+ L/k2XsdpSwMYhwMsmKKLAKz/77beXqiVK3zLFmYOaxMIEMYuDgFYCL34hgZNsceuz1DmeGr5xr1
+ uasn5t/X7JlUsuJbgHvSRna7r1qPAhn+2YtMD18T/KW162H3HGnbs2bpi5yWRK/fLSFxTieHa+k xPgA=
+X-Mailer: git-send-email 2.47.0.rc0.187.ge670bccf7e-goog
+Message-ID: <20241009124352.3105119-2-ardb+git@google.com>
+Subject: [PATCH v2] x86/stackprotector: Work around strict Clang TLS symbol requirements
+From: Ard Biesheuvel <ardb+git@google.com>
+To: x86@kernel.org
+Cc: llvm@lists.linux.dev, keescook@chromium.org, 
+	linux-hardening@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org, 
+	Fangrui Song <i@maskray.me>, Brian Gerst <brgerst@gmail.com>, Uros Bizjak <ubizjak@gmail.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Andy Lutomirski <luto@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Am 09.10.24 um 14:28 schrieb Mohammed Anees:
-> Before this patch, if multiple BO_HANDLES chunks were submitted,
-> the error -EINVAL would be correctly set but could be overwritten
-> by the return value from amdgpu_cs_p1_bo_handles(). This patch
-> ensures that if there are multiple BO_HANDLES, we stop.
->
-> Cc: stable@vger.kernel.org
-> Fixes: fec5f8e8c6bc ("drm/amdgpu: disallow multiple BO_HANDLES chunks in one submit")
-> Signed-off-by: Mohammed Anees <pvmohammedanees2003@gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
+GCC and Clang both implement stack protector support based on Thread
+Local Storage (TLS) variables, and this is used in the kernel to
+implement per-task stack cookies, by copying a task's stack cookie into
+a per-CPU variable every time it is scheduled in.
 
-@Pierre-Eric can you pick that one up and push to amd-staging-drm-next?
+Both now also implement -mstack-protector-guard-symbol=, which permits
+the TLS variable to be specified directly. This is useful because it
+will allow us to move away from using a fixed offset of 40 bytes into
+the per-CPU area on x86_64, which requires a lot of special handling in
+the per-CPU code and the runtime relocation code.
 
-Alex is currently on XDC and I'm a bit busy as well.
+However, while GCC is rather lax in its implementation of this command
+line option, Clang actually requires that the provided symbol name
+refers to a TLS variable (i.e., one declared with __thread), although it
+also permits the variable to be undeclared entirely, in which case it
+will use an implicit declaration of the right type.
 
-Thanks,
-Christian.
+The upshot of this is that Clang will emit the correct references to the
+stack cookie variable in most cases, e.g.,
 
-> ---
-> v2:
-> - Switched to goto free_partial_kdata for error handling, following the existing pattern.
-> ---
->   drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-> index 1e475eb01417..d891ab779ca7 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-> @@ -265,7 +265,7 @@ static int amdgpu_cs_pass1(struct amdgpu_cs_parser *p,
->   
->   			/* Only a single BO list is allowed to simplify handling. */
->   			if (p->bo_list)
-> -				ret = -EINVAL;
-> +				goto free_partial_kdata;
->   
->   			ret = amdgpu_cs_p1_bo_handles(p, p->chunks[i].kdata);
->   			if (ret)
+   10d:       64 a1 00 00 00 00       mov    %fs:0x0,%eax
+                      10f: R_386_32   __stack_chk_guard
+
+However, if a non-TLS definition of the symbol in question is visible in
+the same compilation unit (which amounts to the whole of vmlinux if LTO
+is enabled), it will drop the per-CPU prefix and emit a load from a
+bogus address.
+
+Work around this by using a symbol name that never occurs in C code, and
+emit it as an alias in the linker script.
+
+Fixes: 3fb0fdb3bbe7 ("x86/stackprotector/32: Make the canary into a regular percpu variable")
+Cc: <stable@vger.kernel.org>
+Cc: Fangrui Song <i@maskray.me>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Link: https://github.com/ClangBuiltLinux/linux/issues/1854
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+v2: add declaration of alias to asm-prototypes.h, but expose it only to
+    genksyms
+
+ arch/x86/Makefile                     |  5 +++--
+ arch/x86/entry/entry.S                | 16 ++++++++++++++++
+ arch/x86/include/asm/asm-prototypes.h |  3 +++
+ arch/x86/kernel/cpu/common.c          |  2 ++
+ arch/x86/kernel/vmlinux.lds.S         |  3 +++
+ 5 files changed, 27 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index cd75e78a06c1..5b773b34768d 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -142,9 +142,10 @@ ifeq ($(CONFIG_X86_32),y)
+ 
+     ifeq ($(CONFIG_STACKPROTECTOR),y)
+         ifeq ($(CONFIG_SMP),y)
+-			KBUILD_CFLAGS += -mstack-protector-guard-reg=fs -mstack-protector-guard-symbol=__stack_chk_guard
++            KBUILD_CFLAGS += -mstack-protector-guard-reg=fs \
++                             -mstack-protector-guard-symbol=__ref_stack_chk_guard
+         else
+-			KBUILD_CFLAGS += -mstack-protector-guard=global
++            KBUILD_CFLAGS += -mstack-protector-guard=global
+         endif
+     endif
+ else
+diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
+index d9feadffa972..a503e6d535f8 100644
+--- a/arch/x86/entry/entry.S
++++ b/arch/x86/entry/entry.S
+@@ -46,3 +46,19 @@ EXPORT_SYMBOL_GPL(mds_verw_sel);
+ .popsection
+ 
+ THUNK warn_thunk_thunk, __warn_thunk
++
++#ifndef CONFIG_X86_64
++/*
++ * Clang's implementation of TLS stack cookies requires the variable in
++ * question to be a TLS variable. If the variable happens to be defined as an
++ * ordinary variable with external linkage in the same compilation unit (which
++ * amounts to the whole of vmlinux with LTO enabled), Clang will drop the
++ * segment register prefix from the references, resulting in broken code. Work
++ * around this by avoiding the symbol used in -mstack-protector-guard-symbol=
++ * entirely in the C code, and use an alias emitted by the linker script
++ * instead.
++ */
++#ifdef CONFIG_STACKPROTECTOR
++EXPORT_SYMBOL(__ref_stack_chk_guard);
++#endif
++#endif
+diff --git a/arch/x86/include/asm/asm-prototypes.h b/arch/x86/include/asm/asm-prototypes.h
+index 25466c4d2134..3674006e3974 100644
+--- a/arch/x86/include/asm/asm-prototypes.h
++++ b/arch/x86/include/asm/asm-prototypes.h
+@@ -20,3 +20,6 @@
+ extern void cmpxchg8b_emu(void);
+ #endif
+ 
++#if defined(__GENKSYMS__) && defined(CONFIG_STACKPROTECTOR)
++extern unsigned long __ref_stack_chk_guard;
++#endif
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 07a34d723505..ba83f54dfaa8 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -2085,8 +2085,10 @@ void syscall_init(void)
+ 
+ #ifdef CONFIG_STACKPROTECTOR
+ DEFINE_PER_CPU(unsigned long, __stack_chk_guard);
++#ifndef CONFIG_SMP
+ EXPORT_PER_CPU_SYMBOL(__stack_chk_guard);
+ #endif
++#endif
+ 
+ #endif	/* CONFIG_X86_64 */
+ 
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index 2b7c8c14c6fd..a80ad2bf8da4 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -490,6 +490,9 @@ SECTIONS
+ . = ASSERT((_end - LOAD_OFFSET <= KERNEL_IMAGE_SIZE),
+ 	   "kernel image bigger than KERNEL_IMAGE_SIZE");
+ 
++/* needed for Clang - see arch/x86/entry/entry.S */
++PROVIDE(__ref_stack_chk_guard = __stack_chk_guard);
++
+ #ifdef CONFIG_X86_64
+ /*
+  * Per-cpu symbols which need to be offset from __per_cpu_load
+-- 
+2.47.0.rc0.187.ge670bccf7e-goog
 
 
