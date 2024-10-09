@@ -1,176 +1,91 @@
-Return-Path: <stable+bounces-83170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6416A9964CB
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 11:17:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B915299653B
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 11:25:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF56F1F261BC
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 09:17:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E12DC1C24093
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 09:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E4518FDBA;
-	Wed,  9 Oct 2024 09:16:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="AynCizNT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B05818DF78;
+	Wed,  9 Oct 2024 09:23:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6287618FC6B;
-	Wed,  9 Oct 2024 09:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+Received: from cmccmta1.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4388F1898ED;
+	Wed,  9 Oct 2024 09:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728465370; cv=none; b=iQ1adl6CmJc3/us+8kG0JmQ+1voqNJXt7wWqPnysaq6tV287yi7TNMGOEHM1HZiDdTYRVmGWbM2qakgsZri6UPsjC3y8PDjm569SS9H/03y71pNOuJz9RK8b5+88pDguAOtX+8HtTiHQjDdHKJezfnXeGXeitGqTQqCNlmxhpGo=
+	t=1728465795; cv=none; b=QSScxhteRTGB64gTbQoDrT37SASbhfHpAPyzLJ4k4go2snapTAhxCu1DhLSwpBuY4g2e2jS2cv5UNbM8IEC+wgTZdDDT8BE312AajIjYCj+XPCs5Ol4BhB75qRunnhiQE8CbkMUj1cdJxuN2iaAKhNRqTFHDuIELxWkwkxMY5sY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728465370; c=relaxed/simple;
-	bh=H1ziV5tyupxzZh4Cd1MkMsrgUXkihHsPR7l8O8TlpOg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hrgkCtRQ9/PGIec5+ErLduzIC/fANjgGfRoYo6w0h6YHX148epjpzSYd+5VrFDfmDKcJj4jpp0RluXRadlls1a9paOmYR2YjM1bL3ahuTHjLMpjEB4eCyZdYkzQwgA61OP0Es+9A3ZS0YFKzNdXbIleFWR3Nfk3uhxO0cQNP86o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=AynCizNT; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49986qRm025656;
-	Wed, 9 Oct 2024 09:15:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=fM+DrFtFwy1
-	+oio8hpHJjcoOsNaQT5+Glmr5yzAR83g=; b=AynCizNT5kk+4InbtS5j9Gy+Qgq
-	/53hLlYuRPLKMX173r5cq1gGiWNJKkfGcPDCmoal+jNLMIarCDfPx5MOk3sgh0lT
-	+jecP/okfFw0KOQTQ/htK5eoVdar42n9yibn30s0ctC91eoGllptucQ02v9OQTVx
-	zm+N2ENkho+/PGo6d2sVbkgsA/3Ee+tf0MpuWwGLuGw3RCnZvkiuUhXtsCFgZ13Q
-	VxbSxlRW5XYqusmz8v4yUDXO+610acCgHmpwbYsH/xHaTgZ4O8XcJ1v7zeBMe0pm
-	EjqSsZc36ynaZ84xDS9FkLE+haY7+Wq9I9iFmok17mvo1X7rdzvEtAL+3Sg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4258pst336-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Oct 2024 09:15:49 +0000 (GMT)
-Received: from pps.filterd (NALASPPMTA04.qualcomm.com [127.0.0.1])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 4999BNvR000864;
-	Wed, 9 Oct 2024 09:15:48 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 425cbww5gd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Oct 2024 09:15:48 +0000
-Received: from NALASPPMTA04.qualcomm.com (NALASPPMTA04.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49996RC2017554;
-	Wed, 9 Oct 2024 09:15:48 GMT
-Received: from hu-devc-lv-u22-c.qualcomm.com (hu-qianyu-lv.qualcomm.com [10.81.25.114])
-	by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 4999FmEM013694
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Oct 2024 09:15:48 +0000
-Received: by hu-devc-lv-u22-c.qualcomm.com (Postfix, from userid 4098150)
-	id 1D651656; Wed,  9 Oct 2024 02:15:48 -0700 (PDT)
-From: Qiang Yu <quic_qianyu@quicinc.com>
-To: manivannan.sadhasivam@linaro.org, vkoul@kernel.org, kishon@kernel.org,
-        robh@kernel.org, andersson@kernel.org, konradybcio@kernel.org,
-        krzk+dt@kernel.org, conor+dt@kernel.org, mturquette@baylibre.com,
-        sboyd@kernel.org, abel.vesa@linaro.org, quic_msarkar@quicinc.com,
-        quic_devipriy@quicinc.com
-Cc: dmitry.baryshkov@linaro.org, kw@linux.com, lpieralisi@kernel.org,
-        neil.armstrong@linaro.org, linux-arm-msm@vger.kernel.org,
-        linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-clk@vger.kernel.org, Qiang Yu <quic_qianyu@quicinc.com>,
-        stable@vger.kernel.org, Mike Tipton <quic_mdtipton@quicinc.com>,
-        Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH v5 5/7] clk: qcom: gcc-x1e80100: Fix halt_check for pipediv2 clocks
-Date: Wed,  9 Oct 2024 02:15:38 -0700
-Message-Id: <20241009091540.1446-6-quic_qianyu@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241009091540.1446-1-quic_qianyu@quicinc.com>
-References: <20241009091540.1446-1-quic_qianyu@quicinc.com>
+	s=arc-20240116; t=1728465795; c=relaxed/simple;
+	bh=1drW9l+6jSiyANAra8I6eaiXPKeY6uDJsAxn+KAd5n4=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=WP0XdpTlS8y9CugqiL1AC3be7qAyEimARMfNvJ0Zq4EbxqHoVPvqxgA3UfW4YytnK9DXhxTRfrLCzKf0hQpb3lDnGw3jiAoRDcp7QErl2kJ3CNOccL8cHXUvD9Foo2zFV85lr2jh0GAxZqOJHk7VE6MNVmzz7s945vXouzTuBwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; arc=none smtp.client-ip=111.22.67.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app04-12004 (RichMail) with SMTP id 2ee467064b7908c-bd98a;
+	Wed, 09 Oct 2024 17:23:08 +0800 (CST)
+X-RM-TRANSID:2ee467064b7908c-bd98a
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from ubuntu.localdomain (unknown[10.55.1.71])
+	by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee367064b7b117-e7fde;
+	Wed, 09 Oct 2024 17:23:08 +0800 (CST)
+X-RM-TRANSID:2ee367064b7b117-e7fde
+From: Zhu Jun <zhujun2@cmss.chinamobile.com>
+To: perex@perex.cz
+Cc: tiwai@suse.com,
+	g@b4.vu,
+	linux-sound@vger.kernel.org,
+	zhujun2@cmss.chinamobile.com,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] ALSA: scarlett2: Add error check after retrieving PEQ filter values
+Date: Wed,  9 Oct 2024 02:23:05 -0700
+Message-Id: <20241009092305.8570-1-zhujun2@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: X6R3JhV-EvWrRhHfP6My7FtSktUCkqYp
-X-Proofpoint-ORIG-GUID: X6R3JhV-EvWrRhHfP6My7FtSktUCkqYp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 mlxscore=0 bulkscore=0 impostorscore=0 clxscore=1011
- suspectscore=0 lowpriorityscore=0 phishscore=0 malwarescore=0 adultscore=0
- mlxlogscore=954 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410090060
 
-The pipediv2_clk's source from the same mux as pipe clock. So they have
-same limitation, which is that the PHY sequence requires to enable these
-local CBCs before the PHY is actually outputting a clock to them. This
-means the clock won't actually turn on when we vote them. Hence, let's
-skip the halt bit check of the pipediv2_clk, otherwise pipediv2_clk may
-stuck at off state during bootup.
+Add error check after retrieving PEQ filter values in scarlett2_update_filter_values
+that ensure function returns error if PEQ filter value retrieval fails.
 
-Cc: stable@vger.kernel.org
-Fixes: 161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
-Suggested-by: Mike Tipton <quic_mdtipton@quicinc.com>
-Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
-Reviewed-by: Konrad Dybcio <konradybcio@kernel.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
+Cc: <stable@vger.kernel.org>
 ---
- drivers/clk/qcom/gcc-x1e80100.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+V1 -> V2: 
+- commit wit a dot
+- add tag "Cc"
+- delete a blank before the return value check
 
-diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
-index 0f578771071f..81ba5ceab342 100644
---- a/drivers/clk/qcom/gcc-x1e80100.c
-+++ b/drivers/clk/qcom/gcc-x1e80100.c
-@@ -3123,7 +3123,7 @@ static struct clk_branch gcc_pcie_3_pipe_clk = {
+ sound/usb/mixer_scarlett2.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/sound/usb/mixer_scarlett2.c b/sound/usb/mixer_scarlett2.c
+index 1150cf104985..4cddf84db631 100644
+--- a/sound/usb/mixer_scarlett2.c
++++ b/sound/usb/mixer_scarlett2.c
+@@ -5613,6 +5613,8 @@ static int scarlett2_update_filter_values(struct usb_mixer_interface *mixer)
+ 			info->peq_flt_total_count *
+ 			SCARLETT2_BIQUAD_COEFFS,
+ 		peq_flt_values);
++	if (err < 0)
++		return err;
  
- static struct clk_branch gcc_pcie_3_pipediv2_clk = {
- 	.halt_reg = 0x58060,
--	.halt_check = BRANCH_HALT_VOTED,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.clkr = {
- 		.enable_reg = 0x52020,
- 		.enable_mask = BIT(5),
-@@ -3248,7 +3248,7 @@ static struct clk_branch gcc_pcie_4_pipe_clk = {
- 
- static struct clk_branch gcc_pcie_4_pipediv2_clk = {
- 	.halt_reg = 0x6b054,
--	.halt_check = BRANCH_HALT_VOTED,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.clkr = {
- 		.enable_reg = 0x52010,
- 		.enable_mask = BIT(27),
-@@ -3373,7 +3373,7 @@ static struct clk_branch gcc_pcie_5_pipe_clk = {
- 
- static struct clk_branch gcc_pcie_5_pipediv2_clk = {
- 	.halt_reg = 0x2f054,
--	.halt_check = BRANCH_HALT_VOTED,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.clkr = {
- 		.enable_reg = 0x52018,
- 		.enable_mask = BIT(19),
-@@ -3511,7 +3511,7 @@ static struct clk_branch gcc_pcie_6a_pipe_clk = {
- 
- static struct clk_branch gcc_pcie_6a_pipediv2_clk = {
- 	.halt_reg = 0x31060,
--	.halt_check = BRANCH_HALT_VOTED,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.clkr = {
- 		.enable_reg = 0x52018,
- 		.enable_mask = BIT(28),
-@@ -3649,7 +3649,7 @@ static struct clk_branch gcc_pcie_6b_pipe_clk = {
- 
- static struct clk_branch gcc_pcie_6b_pipediv2_clk = {
- 	.halt_reg = 0x8d060,
--	.halt_check = BRANCH_HALT_VOTED,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.clkr = {
- 		.enable_reg = 0x52010,
- 		.enable_mask = BIT(28),
+ 	for (i = 0, dst_idx = 0; i < info->dsp_input_count; i++) {
+ 		src_idx = i *
 -- 
-2.34.1
+2.17.1
+
+
 
 
