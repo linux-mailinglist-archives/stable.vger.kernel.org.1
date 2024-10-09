@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-83244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA56997028
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 17:59:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C6BF9970E5
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 18:16:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5129CB21881
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 15:59:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECE711C22243
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 16:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC091EF921;
-	Wed,  9 Oct 2024 15:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8A4206E98;
+	Wed,  9 Oct 2024 15:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eUETBDjs"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5071E1A0B;
-	Wed,  9 Oct 2024 15:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7EF1E5720;
+	Wed,  9 Oct 2024 15:53:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728487803; cv=none; b=JsNziedH6edDfcAO2okszuY0JujmHk3PXiGvzUYnUPga8HNXUPu0iiW4J8QSx6VeYGE0mfzT1t4/1sy24olNzw/yElnPSJwUXt8Oy0V3GHINhtVNA/wUwCNPWF7TB3TCFEiIBpFMU8K7MwHXYDk0ltASz4OvK7nNus3qpOBUZgs=
+	t=1728489222; cv=none; b=gbXBfq+tad0Qdc9TZndIKESX4r1QwzJnpl4E16OejiZSybu7hlMUga9Ovp6AUZUnsFVbHgM76uXbhOgdbyDOnoAsASpOZPP/eVyONsyI6rJE9AnKnvdNStWDK1zXHxWf4onabCDKmzZ2MWoJrkpb1ObtIDnIn8gsAbXydSLCO0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728487803; c=relaxed/simple;
-	bh=uzj/YTHLAYdtVJLjnUfGGOptx5plAB5ldi0vsg3/9UM=;
+	s=arc-20240116; t=1728489222; c=relaxed/simple;
+	bh=hkK5Jrqrdm/FF4dGenxODFf3qC3kWUYM29Uxerw9Kas=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y/SFLOA2aTJ7/eXl18w7HAraufbXNImYw0wi6gpaEJ/5feZ3CGQxLRiUki3Lxpgu8VI7OXr1gndeoDsCVYwqS5/7Kr43LRf0qlRYbNy3f4Ai9juHKNWjlKYZPjeVDwBOb4kNV7aGsgBonz/GEpLpCLHbXneKZmA/INq0Dk96TqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 25058FEC;
-	Wed,  9 Oct 2024 08:30:30 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C04373F64C;
-	Wed,  9 Oct 2024 08:29:58 -0700 (PDT)
-Date: Wed, 9 Oct 2024 16:29:52 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	nex.sw.ncis.osdt.itp.upstreaming@intel.com,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] firmware/psci: fix missing '%u' format literal in
- kthread_create_on_cpu()
-Message-ID: <ZwahcJu_K7bbeICS@J2N7QTR9R3>
-References: <20240930154433.521715-1-aleksander.lobakin@intel.com>
- <40f59adc-9d1e-4466-917a-69f3c8d77b5f@intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=FqOfdJq2zC/1BbZCyJ7pJy4hAi/kzULgDKvzp5Op8EzDe/T/VP6h8dmpAoXGVYlWvqZujzky10x2sOVbQz6T4MdFm5hLjbazq/SDexzrUOplIDd1LEebaMwZXX66yr7lzsDIzgtKTiq6cYTkYkL67cdZpesVn9i1DP2hnQ0q61o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eUETBDjs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8218C4CEC3;
+	Wed,  9 Oct 2024 15:53:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728489222;
+	bh=hkK5Jrqrdm/FF4dGenxODFf3qC3kWUYM29Uxerw9Kas=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eUETBDjs3lURnCvaymWMfD1f6IyTvPZ+Zd2I3Cz95mP+xd0N7eE4keZWVVR3bK/zK
+	 1TH3ILB/eRNcpmjzdTkqo/dMclMQzIVOjC+0XErbsfRtTWr5oE5PRpKroiMP95uu0/
+	 1gWN2FPlQpXueDusYtqZkQzr20ZZhlSaz4c/suxN7hBI5/YRBDZ5tTJOiqiKfSnWKE
+	 LnumpSx79x5ZgQkWQTlaOtJnJW04fObyPFJIgqZtcA6RbqK/Uvd2yCqpvdSfLVmKV8
+	 eGRQavwHOhFBEFtOTkYaBCw+VExhW26M7yfdmranc5QZKdQe1Y+cZ3VzQngjqCEVyI
+	 Ir3jkjx8SlW0A==
+Date: Wed, 9 Oct 2024 17:53:38 +0200
+From: Benjamin Tissoires <bentiss@kernel.org>
+To: "Gerecke, Jason" <killertofu@gmail.com>
+Cc: linux-kernel@vger.kernel.org, 
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>, Jiri Kosina <jikos@kernel.org>, Ping Cheng <pinglinux@gmail.com>, 
+	"Tobita, Tatsunosuke" <tatsunosuke.tobita@wacom.com>, Jason Gerecke <jason.gerecke@wacom.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] HID: wacom: Hardcode (non-inverted) AES pens as
+ BTN_TOOL_PEN
+Message-ID: <a34eifvhiqy7nu65pxcunjkvpreau57oizykk4mnzehkstox4r@h45cyy6f3b3l>
+References: <20241009001332.23353-1-jason.gerecke@wacom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,72 +59,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <40f59adc-9d1e-4466-917a-69f3c8d77b5f@intel.com>
+In-Reply-To: <20241009001332.23353-1-jason.gerecke@wacom.com>
 
-On Wed, Oct 09, 2024 at 05:26:18PM +0200, Alexander Lobakin wrote:
-> From: Alexander Lobakin <aleksander.lobakin@intel.com>
-> Date: Mon, 30 Sep 2024 17:44:33 +0200
+On Oct 08 2024, Gerecke, Jason wrote:
+> From: Jason Gerecke <jason.gerecke@wacom.com>
 > 
-> > kthread_create_on_cpu() always requires format string to contain one
-> > '%u' at the end, as it automatically adds the CPU ID when passing it
-> > to kthread_create_on_node(). The former isn't marked as __printf()
-> > as it's not printf-like itself, which effectively hides this from
-> > the compiler.
-> > If you convert this function to printf-like, you'll see the following:
-> > 
-> > In file included from drivers/firmware/psci/psci_checker.c:15:
-> > drivers/firmware/psci/psci_checker.c: In function 'suspend_tests':
-> > drivers/firmware/psci/psci_checker.c:401:48: warning: too many arguments for format [-Wformat-extra-args]
-> >      401 |                                                "psci_suspend_test");
-> >          |                                                ^~~~~~~~~~~~~~~~~~~
-> > drivers/firmware/psci/psci_checker.c:400:32: warning: data argument not used by format string [-Wformat-extra-args]
-> >      400 |                                                (void *)(long)cpu, cpu,
-> >          |                                                                   ^
-> >      401 |                                                "psci_suspend_test");
-> >          |                                                ~~~~~~~~~~~~~~~~~~~
-> > 
-> > Add the missing format literal to fix this. Now the corresponding
-> > kthread will be named as "psci_suspend_test-<cpuid>", as it's meant by
-> > kthread_create_on_cpu().
-> > 
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Closes: https://lore.kernel.org/oe-kbuild-all/202408141012.KhvKaxoh-lkp@intel.com
-> > Closes: https://lore.kernel.org/oe-kbuild-all/202408141243.eQiEOQQe-lkp@intel.com
-> > Fixes: ea8b1c4a6019 ("drivers: psci: PSCI checker module")
-> > Cc: stable@vger.kernel.org # 4.10+
-> > Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+> Unlike EMR tools which encode type information in their tool ID, tools
+> for AES sensors are all "generic pens". It is inappropriate to make use
+> of the wacom_intuos_get_tool_type function when dealing with these kinds
+> of devices. Instead, we should only ever report BTN_TOOL_PEN or
+> BTN_TOOL_RUBBER, as depending on the state of the Eraser and Invert
+> bits.
 > 
-> Ping? Who's taking this?
+> Fixes: 9c2913b962da ("HID: wacom: more appropriate tool type categorization")
+> Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+> Cc: stable@vger.kernel.org
 
-I would expect this to go through the soc tree.
+Thanks for the quick fix Jason.
 
-Arnd, are you happy to pick this up?
+You are however missing a few links/reported-by:
 
-FWIW:
+Reported-by: Daniel Jutz <daniel@djutz.com>
+Closes: https://lore.kernel.org/linux-input/3cd82004-c5b8-4f2a-9a3b-d88d855c65e4@heusel.eu/
+Bisected-by: Christian Heusel <christian@heusel.eu>
+Link: https://gitlab.freedesktop.org/libinput/libinput/-/issues/1041
+Link: https://github.com/linuxwacom/input-wacom/issues/440
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
 
-Acked-by: Mark Rutland <mark.rutland@arm.com>
+Hopefully with the above b4 would pick those out without having to send
+a v2.
 
-Mark.
+Cheers,
+Benjamin
 
+> ---
+>  drivers/hid/wacom_wac.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> > ---
-> >  drivers/firmware/psci/psci_checker.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/firmware/psci/psci_checker.c b/drivers/firmware/psci/psci_checker.c
-> > index 116eb465cdb4..ecc511c745ce 100644
-> > --- a/drivers/firmware/psci/psci_checker.c
-> > +++ b/drivers/firmware/psci/psci_checker.c
-> > @@ -398,7 +398,7 @@ static int suspend_tests(void)
-> >  
-> >  		thread = kthread_create_on_cpu(suspend_test_thread,
-> >  					       (void *)(long)cpu, cpu,
-> > -					       "psci_suspend_test");
-> > +					       "psci_suspend_test-%u");
-> >  		if (IS_ERR(thread))
-> >  			pr_err("Failed to create kthread on CPU %d\n", cpu);
-> >  		else
+> diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
+> index 59a13ad9371cd..413606bdf476d 100644
+> --- a/drivers/hid/wacom_wac.c
+> +++ b/drivers/hid/wacom_wac.c
+> @@ -2567,6 +2567,8 @@ static void wacom_wac_pen_report(struct hid_device *hdev,
+>  		/* Going into range select tool */
+>  		if (wacom_wac->hid_data.invert_state)
+>  			wacom_wac->tool[0] = BTN_TOOL_RUBBER;
+> +		else if (wacom_wac->features.quirks & WACOM_QUIRK_AESPEN)
+> +			wacom_wac->tool[0] = BTN_TOOL_PEN;
+>  		else if (wacom_wac->id[0])
+>  			wacom_wac->tool[0] = wacom_intuos_get_tool_type(wacom_wac->id[0]);
+>  		else
+> -- 
+> 2.46.2
 > 
-> Thanks,
-> Olek
 
