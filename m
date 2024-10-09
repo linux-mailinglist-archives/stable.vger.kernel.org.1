@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-83279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A573999786A
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 00:23:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E5B99787B
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 00:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34B6B28468E
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 22:23:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 782751F22EF9
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 22:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A81D1E285F;
-	Wed,  9 Oct 2024 22:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C5B19923C;
+	Wed,  9 Oct 2024 22:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="XO7OcFtN"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="vQc+eZKf"
 X-Original-To: stable@vger.kernel.org
-Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [151.80.165.199])
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA6616BE3A
-	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 22:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=151.80.165.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A2D16BE3A
+	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 22:24:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.248.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728512620; cv=none; b=Ch4vUHf/ZDQsLpHwPzlDQQxjA5h9Jhrk+Ej2EjOhSYwtCfLb/eXUGJ1zFrvl/U4lmLT2kw25IwdKyxKlLP4vgYXj5nA7D3eGpvL6jdYm2ahcCGq5+VQuWPigxnlZ8Nx1vnonf1hxN5w/SjZcC4EiuQS5lGYPAsv2/HKPfQL1tas=
+	t=1728512693; cv=none; b=jGelSjjZJ1bAo3kGiIx1tKJXL7bKYiZcSq23mBhzB0sDjfrXglZ2v9N8onnuRpnlNrewhS+UUBI3+N5ez6zd7xVM07tLTnsYOX73V57mE3Tgx2/HEPmsoHuhtn3Rk4tw1Ozve8sWGxTFDM8y7jeCYb3293znlpZycQujwVtIGBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728512620; c=relaxed/simple;
-	bh=xdtrjw5L1jBok1aTN8MpZ9ljT6J6Oyo+W1g5dFZ12b0=;
+	s=arc-20240116; t=1728512693; c=relaxed/simple;
+	bh=CV3g2nWQg4V1StBeMoclFV5EtNfoIyaZhNwh/5bzpiY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Rg5fTicCSN+/xIIFMDNrEC9s5We9m2/xLS9WSNV9qDBDIOEyy8uYLmNpUCiUvAHR+C9wecOJN8YUD6rpcXqLupBOF9rwDqiE/+UFS4vdvV7/R5X5wYTXyenBq1XwmnB1/0LFfZPvCXGmHix6u5GLga4/luMeLWHurF6EW9YL9QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=XO7OcFtN; arc=none smtp.client-ip=151.80.165.199
+	 In-Reply-To:Content-Type; b=V5jlH2GukmZVliV9fqkcqMy/tRqf2mj3O04DctUIptAFlwJPu5/neccmNa7AcChXk+HDMQU1kkMcu0j4kgIEtVN3xYVkNlUBdok+iXnqivdbYjRiCj/tKdxe3xYFgssl67zTFC0lnGv9C8JnmFIs2WECMS0cAeytQTs/mvvZ+ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=vQc+eZKf; arc=none smtp.client-ip=159.100.248.207
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+Received: from relay1.mymailcheap.com (relay1.mymailcheap.com [144.217.248.100])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id D6E7D26760
+	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 22:24:43 +0000 (UTC)
 Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay2.mymailcheap.com (Postfix) with ESMTPS id 486683E8B0;
-	Thu, 10 Oct 2024 00:23:30 +0200 (CEST)
+	by relay1.mymailcheap.com (Postfix) with ESMTPS id 01EF43E92F;
+	Wed,  9 Oct 2024 22:24:36 +0000 (UTC)
 Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 239F7400D6;
-	Wed,  9 Oct 2024 22:23:29 +0000 (UTC)
+	by nf2.mymailcheap.com (Postfix) with ESMTPSA id ABCC64002D;
+	Wed,  9 Oct 2024 22:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1728512608; bh=xdtrjw5L1jBok1aTN8MpZ9ljT6J6Oyo+W1g5dFZ12b0=;
+	t=1728512674; bh=CV3g2nWQg4V1StBeMoclFV5EtNfoIyaZhNwh/5bzpiY=;
 	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=XO7OcFtNV4+SOxzPbXyVDipRTe+F0XpujK9qs6UQWX5QD5CWFRNthhVV2eCGAYmTa
-	 PhR3lufNlW7/V8FnWpqc4nHyHPW0EBqMO0kP2md8ncFafbxgnaMRf6jLjNEqChDQQX
-	 p5xlug+tHks8X/qbC5VQl/uuQHxB+pQKTybCHwPU=
+	b=vQc+eZKfG0emYicpJBUq2pN1P3DBBHapwogJIIwQGexUmy6coXd4FjfPRCFOKD9N0
+	 zf2ktgMF2AAfO6K48cNcTqLd1GPIzh6CjLsMeNTodlKxgR5Tt6vIUgqhGF0IR4uF/E
+	 c7VTg61AwYsZGbL/xRwPbigFjF3NrQZZme2xHy+0=
 Received: from [198.18.0.1] (unknown [58.32.43.121])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 12D6B40AD7;
-	Wed,  9 Oct 2024 22:23:26 +0000 (UTC)
-Message-ID: <15482b01-e576-4a0d-94ad-dabd2b5baabf@aosc.io>
-Date: Thu, 10 Oct 2024 06:23:24 +0800
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id E9A8A40AD7;
+	Wed,  9 Oct 2024 22:24:33 +0000 (UTC)
+Message-ID: <eb978d27-5449-4242-a88d-7397c513c0d3@aosc.io>
+Date: Thu, 10 Oct 2024 06:24:31 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,16 +61,16 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Thunderbird Daily
-Subject: Re: [PATCH 6.11 000/558] 6.11.3-rc1 review
+Subject: Re: [PATCH 6.10 000/482] 6.10.14-rc1 review
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-References: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 Content-Language: en-US
 From: Kexy Biscuit <kexybiscuit@aosc.io>
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: nf2.mymailcheap.com
-X-Rspamd-Queue-Id: 239F7400D6
+X-Rspamd-Queue-Id: ABCC64002D
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.09 / 10.00];
 	MIME_GOOD(-0.10)[text/plain];
@@ -86,9 +89,9 @@ X-Spamd-Result: default: False [-0.09 / 10.00];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
 	TO_DN_SOME(0.00)[]
 
-On 10/8/2024 8:00 PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.11.3 release.
-> There are 558 patches in this series, all will be posted as a response
+On 10/8/2024 8:01 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.14 release.
+> There are 482 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
@@ -96,9 +99,9 @@ On 10/8/2024 8:00 PM, Greg Kroah-Hartman wrote:
 > Anything received after that time might be too late.
 > 
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.3-rc1.gz
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.14-rc1.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
 > and the diffstat can be found below.
 > 
 > thanks,
@@ -110,7 +113,7 @@ Smoke testing passed on 9 amd64 and 1 arm64 test systems.
 
 Tested-by: Kexy Biscuit <kexybiscuit@aosc.io>
 
-https://github.com/AOSC-Dev/aosc-os-abbs/pull/7680
+https://github.com/AOSC-Dev/aosc-os-abbs/pull/8222
 -- 
 Best Regards,
 Kexy Biscuit
