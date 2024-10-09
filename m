@@ -1,112 +1,84 @@
-Return-Path: <stable+bounces-83224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 843CB996D6F
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 16:17:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 310A1996D7B
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 16:18:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B59A01C20F26
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 14:17:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D17B51F257EF
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 14:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE6719C552;
-	Wed,  9 Oct 2024 14:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A7019AD71;
+	Wed,  9 Oct 2024 14:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l0TzdbhF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jny8lTLS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A10224DC;
-	Wed,  9 Oct 2024 14:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0308E18BBAE;
+	Wed,  9 Oct 2024 14:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728483435; cv=none; b=FDWwEfqf6TafoklQ7qYMrmyt9jXSX8GGR8aPA3wUyuvUFykkbJNWlUMhOLU5S3rRlKv29L4NlJyMjseGvKguVTe12vPQ4C9c2f4cIsIKHJiyocpJgMv6OoLtV1ZcOkqTlJI6hrlfs7Cj4aNmLh/SODHtxLKPRb3TJQgSdovccww=
+	t=1728483534; cv=none; b=nb3c3HO98W3KzHL5qU6yYgydyFpyAQnlLD9hVxQpYxPXDDWhZVTfCDqC0az3PEhUaAWU9/ex8Oxt7HYl+ihoHTgYPH1bRcZ28lC+7ok7fJrgHx/9CAe6a0Qs9ImpsjBUL4dIj2+v/4g3/EOrr4quPXAUZ/UvArr215C2VKSxt0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728483435; c=relaxed/simple;
-	bh=+t66X/Ryhu0xoS7clwdliHC1P2bHUBLcpyoNdRlStu4=;
+	s=arc-20240116; t=1728483534; c=relaxed/simple;
+	bh=VBskg2wVfEFkbPB53AfAAzDzNO02s+0TAmdzX//SQS4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NAXCOccCZ0EBCi8A0zkcg1UvUdTlOHtiV01zizNs4EhLb9IipEdd5atJCwl5u/949yjzCnoodJ05hpjKn6cFfUjqyd1w+Po8S2jtcnaVZgJh6i95khosDLvARuKFChHh8mCUcgU7YSXECJEteRJrPMtW3mOOBJCqXg+IjavVa/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l0TzdbhF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DC7C4CEC3;
-	Wed,  9 Oct 2024 14:17:14 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=rD0My1vFSgGBcMhNNQ48hMOoaqKCPdO6U9/7YMQllugafBIN6c6lz3PXvaMst53mIyphOqcWAldR6ZEv6v8ER85YqhNvCqwF20Tv7fgcZQao5z+SptnEc+bWiNiikzknWhZoII4yLnU3FjqW8T9TA9X5qwQ5YLGjRPZilzouiqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jny8lTLS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C5DC4CEC3;
+	Wed,  9 Oct 2024 14:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728483434;
-	bh=+t66X/Ryhu0xoS7clwdliHC1P2bHUBLcpyoNdRlStu4=;
+	s=k20201202; t=1728483533;
+	bh=VBskg2wVfEFkbPB53AfAAzDzNO02s+0TAmdzX//SQS4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=l0TzdbhFmEdbRDeQXlzf1yEBt8ALj1VOD2rRTNqlqzoxnOA/OUoM2uqijgdZObmkH
-	 4jsgkmKdrZekITqioUtyz84V3MaEUhofxtL+7UpFqoRZTN1NzwmdpAqbEJGgnEWxZ3
-	 heKwMfd/tkOjVGdACvKBAWRLwjktb9Oh65aJhGmn56REFxt/55IcCknfI0PFE77JP8
-	 FFqngHyEiLIZg4OzjaK9GNdRBOr9b2rOhAdUbADegnF0S/hUoDstwCsp+TYlG/w+sa
-	 FmRJe+INgNpgwr4enSy/msGzQTwFYvfJv8BXVtGeCLsob4SciZ096ahr6+W0YPz3g0
-	 rVwdq/NxuZ7gg==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1syXV7-000000003kS-1gTL;
-	Wed, 09 Oct 2024 16:17:18 +0200
-Date: Wed, 9 Oct 2024 16:17:17 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Doug Anderson <dianders@chromium.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, stable@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v2 4/7] serial: qcom-geni: fix receiver enable
-Message-ID: <ZwaQbcuIPrR9HwKi@hovoldconsulting.com>
-References: <20241001125033.10625-1-johan+linaro@kernel.org>
- <20241001125033.10625-5-johan+linaro@kernel.org>
- <CAD=FV=Vwmb8Miyca4kE1sdjMCx7LVCYqaXhLmPPqsojUHdEk-g@mail.gmail.com>
+	b=jny8lTLSc0kPAgazaL3Uq2KTTFs8VllU7bql+ZtlrxlxJkGwcfemEHtc6Nx9vfNuo
+	 OWASyn3Nf7OHYhWfvaujJTjLu3XX6KGAS9fhmsgpyQZ+pVgIeyHzn1Yq55DsbgjoYF
+	 n6B10hhAQPZaKz1NounvEb5el/JMauoNLh5YGscbd9/XKBdXXYxBuHqbdLjJeIZm3Y
+	 Cl4XIT63ynwn0sBnoOgrA3bfSgZjBj66FRooEkRzgNatilHzYzqC0lj6pZUNq7DXCV
+	 TXokP530hZGPMGnHRFsMwfSdLCByb1pplk1M9YLwl7uh9KUDGxaW5zkBvCsoh5Qsk0
+	 Ov4WQtRhJ+B4g==
+Date: Wed, 9 Oct 2024 16:18:48 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Damien Le Moal <dlemoal@kernel.org>
+Cc: Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	W <linuxcdeveloper@gmail.com>, stable@vger.kernel.org,
+	linux-ide@vger.kernel.org
+Subject: Re: [PATCH v2] ata: libata: avoid superfluous disk spin down + spin
+ up during hibernation
+Message-ID: <ZwaQyGkeRNNgLwef@x1-carbon.lan>
+References: <20241008135843.1266244-2-cassel@kernel.org>
+ <5bd13541-4ac0-4171-b4e5-0dedaa9e88b5@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=Vwmb8Miyca4kE1sdjMCx7LVCYqaXhLmPPqsojUHdEk-g@mail.gmail.com>
+In-Reply-To: <5bd13541-4ac0-4171-b4e5-0dedaa9e88b5@kernel.org>
 
-On Thu, Oct 03, 2024 at 01:10:47PM -0700, Doug Anderson wrote:
-> On Tue, Oct 1, 2024 at 5:51 AM Johan Hovold <johan+linaro@kernel.org> wrote:
-
-> > @@ -1179,6 +1179,11 @@ static int qcom_geni_serial_startup(struct uart_port *uport)
-> >                 if (ret)
-> >                         return ret;
-> >         }
-> > +
-> > +       uart_port_lock_irq(uport);
-> > +       qcom_geni_serial_start_rx(uport);
-> > +       uart_port_unlock_irq(uport);
+On Wed, Oct 09, 2024 at 07:44:31PM +0900, Damien Le Moal wrote:
+> On 10/8/24 22:58, Niklas Cassel wrote:
+> > A user reported that commit aa3998dbeb3a ("ata: libata-scsi: Disable scsi
+> > device manage_system_start_stop") introduced a spin down + immediate spin
+> > up of the disk both when entering and when resuming from hibernation.
+> > This behavior was not there before, and causes an increased latency both
+> > when when entering and when resuming from hibernation.
 > 
-> I _think_ you don't need the locking here. The documentation for the
-> "startup" callback say:
+> One too many "when".
+
+Will fix up when applying.
+
+
+> With the above nit fixed,
 > 
->  * Interrupts: globally disabled.
+> Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 
-Heh, yeah, that comment dates back to 2002 and probably wasn't even
-correct back then.
-
-This function is called with the port mutex held (and interrupts
-enabled), and I need to take the port lock to serialise against the
-console code.
-
-> Other than that, this looks reasonable to me. I seem to recall
-> previous discussions where _someone_ was relying on the
-> qcom_geni_serial_start_rx() at the end of termios for some reason
-> (which always felt like a bad design), but I can't find those old
-> discussions. I suspect that the fact that you've added the start_rx in
-> startup() is what we needed.
-
-Yeah, I tried to find a reason for why things were done this way, but it
-was probably just copied from the vendor driver. The hardware doesn't
-seem to require stopping rx in set_termios() (and tx is not stopped
-anyway), which could otherwise have been a reason.
-
-Johan
+Thanks!
 
