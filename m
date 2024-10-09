@@ -1,97 +1,142 @@
-Return-Path: <stable+bounces-83259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7984C9973E2
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 19:59:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E599974F9
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 20:36:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 243731F2474B
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 17:59:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA8F4284A3B
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 18:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0811A2547;
-	Wed,  9 Oct 2024 17:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2161E103B;
+	Wed,  9 Oct 2024 18:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="eIitQHSq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="un+u5UtC"
 X-Original-To: stable@vger.kernel.org
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5741A2651;
-	Wed,  9 Oct 2024 17:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884AE1E1037;
+	Wed,  9 Oct 2024 18:36:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728496787; cv=none; b=cDmrxiFvk+VRPW/SgsCBp/LcuyT2AuTvkJw8oko1edaM4cpO5U0fwiI9Y9T4+81oAc5i71ZAwmtTdfG2GpHpzdRr5MCVGsHyxDMPt3/P4UF1T0V0naf09Zx9dikQ4MoPrJr+26tVFS7qOxwbEOFQ9RUZWWdAO//TxnYBTKf+SU8=
+	t=1728498974; cv=none; b=USahXvbPMcyCTxTYGy72AzZdtrrNUPRudlnv1wF7hqSyviO03Dztj9aWKoJ9b+bev2uEiT+/NyDHDSB23Q3avLT/cPtOqhSJbySuU2gIxJxLywUipaQLqi3Z3un0WqEQgdXEOGAEJIpeST+iXNM+tCZbeo0adlJ+j9Q2dp+0kMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728496787; c=relaxed/simple;
-	bh=A8FLf6V4yhYuWHxakYl7wGgm6AgZdxYnrDZZ9Fhderc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z4gJGWeSbDZ98ywPoZH4/eFTzEWJXPAAh1cPLfYY8CKoGKjpbkcWs0mNJr9LkyWHdx0+71flRQIT9JMWMLYRzaa/DuhRxY0kqdJKVg3T/Y+EpNMMOXBKwqCx0o5nQQegP2Bz2+HxVJj9UthGBB+yyV2YcdCG2g96I+ztG8RJ0C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=eIitQHSq; arc=none smtp.client-ip=199.89.1.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4XP0yg24gHz6ClL9C;
-	Wed,  9 Oct 2024 17:59:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1728496772; x=1731088773; bh=o486qkRTmFm5kVHy1JFWCG8u
-	hHdivrYKhy+8m8fzBiA=; b=eIitQHSqyGw4bY2PL95rCyvMkA/zfDDa5a3oySod
-	iTjXK53q8kKqdC99N0Q/5oFDtvT50Y8gaACyFLXDFK8nKEN4+y+PQ/SHa5U2SEBj
-	a5tzviaH01H+6kNF+E4opRFwmuvaDHPQ/G13hNTs1KWfww/CZBfBWhgjIaksItTO
-	rklH7uhTYMT7tzbJj8LuwSqtIzQ/fmhhgcNu9ZKmucgqQxp+Te/zW+4zKLWYnG0W
-	F5/p7EXmFkymy0mRwv/1wKowcEH/M7GcaZZY9zGWd6RRX0qZprbmwiTVRaqdYE3L
-	rvC8Vf7lQonO8oTSamsjgd9Vt7ixYLlTIyRR1QhVkr21mA==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id vSbDe1On-c5q; Wed,  9 Oct 2024 17:59:32 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4XP0yQ5kLyz6ClL99;
-	Wed,  9 Oct 2024 17:59:26 +0000 (UTC)
-Message-ID: <53e04d93-63ff-456f-8bfa-8c68a136f580@acm.org>
-Date: Wed, 9 Oct 2024 10:59:24 -0700
+	s=arc-20240116; t=1728498974; c=relaxed/simple;
+	bh=M5VW0Gu9YVbBMQ306nAp0Pc7t8pAcoEFUBaMERzl5UM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rQsCV6ZrQCKBEfBwY8Wzd00j7yTXVuFlJfg2MalTdTn4xfOVjBDnWVStaLUmqKYxmLbmFPoD5HGt+/B7IqTWDCWPrqxVdu/A+EX/++NVKL1nTk6dMNw6Glf/LAHwgj0HkJnnQJ1l9Nw58gpNk/7v/XJ+A9nrVLAtoZXPHUowZGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=un+u5UtC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC5AC4CEC3;
+	Wed,  9 Oct 2024 18:36:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728498974;
+	bh=M5VW0Gu9YVbBMQ306nAp0Pc7t8pAcoEFUBaMERzl5UM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=un+u5UtCjY/0mVfkClFyMkfTvh8ud4sc6N0mD6dp5VOS/3XsdhSFDnAa98LXCfNHH
+	 dsYhBiVpYZ6IX51doBPlaphXpd/O1O4syvQl4kDCfaDuIheX9S3b6MC2jkbMYZodcj
+	 kOW9uC3wPBEVgt3sOB5dubW2JWOCPrFeNDhSxoky1D2KNzWw9J3KMlM9gN2fXKL5lR
+	 RnWdfQe7A3dqNWHXojILKZMFekUncXFGHOQ8MFxxLrxfbmhNbSwbj6ZNjeSJwwq4VM
+	 xpPk4Y01a7DPmcsAQAzhHj7RBCiQOdWm5Ou26wiYT5I+X9XavkVDrSt632vPgVz3Py
+	 vaKwM9st7lBPQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sybXf-001wO5-Kh;
+	Wed, 09 Oct 2024 19:36:11 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	stable@vger.kernel.org,
+	Alexander Potapenko <glider@google.com>
+Subject: [PATCH] KVM: arm64: Don't eagerly teardown the vgic on init error
+Date: Wed,  9 Oct 2024 19:36:03 +0100
+Message-Id: <20241009183603.3221824-1-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 2/2] ufs: core: requeue aborted request
-To: peter.wang@mediatek.com, linux-scsi@vger.kernel.org,
- martin.petersen@oracle.com, avri.altman@wdc.com, alim.akhtar@samsung.com,
- jejb@linux.ibm.com
-Cc: wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org,
- chun-hung.wu@mediatek.com, alice.chao@mediatek.com, cc.chou@mediatek.com,
- chaotian.jing@mediatek.com, jiajie.hao@mediatek.com, powen.kao@mediatek.com,
- qilin.tan@mediatek.com, lin.gui@mediatek.com, tun-yu.yu@mediatek.com,
- eddie.huang@mediatek.com, naomi.chu@mediatek.com, ed.tsai@mediatek.com,
- quic_nguyenb@quicinc.com, stable@vger.kernel.org
-References: <20241001091917.6917-1-peter.wang@mediatek.com>
- <20241001091917.6917-3-peter.wang@mediatek.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20241001091917.6917-3-peter.wang@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, stable@vger.kernel.org, glider@google.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 10/1/24 2:19 AM, peter.wang@mediatek.com wrote:
-> After the SQ cleanup fix, the CQ will receive a response with
-> the corresponding tag marked as OCS: ABORTED. To align with
-> the behavior of Legacy SDB mode, the handling of OCS: ABORTED
-> has been changed to match that of OCS_INVALID_COMMAND_STATUS
-> (SDB), with both returning a SCSI result of DID_REQUEUE.
-> 
-> Furthermore, the workaround implemented before the SQ cleanup
-> fix can be removed.
+As there is very little ordering in the KVM API, userspace can
+instanciate a half-baked GIC (missing its memory map, for example)
+at almost any time.
 
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+This means that, with the right timing, a thread running vcpu-0
+can enter the kernel without a GIC configured and get a GIC created
+behind its back by another thread. Amusingly, it will pick up
+that GIC and start messing with the data structures without the
+GIC having been fully initialised.
+
+Similarly, a thread running vcpu-1 can enter the kernel, and try
+to init the GIC that was previously created. Since this GIC isn't
+properly configured (no memory map), it fails to correctly initialise.
+
+And that's the point where we decide to teardown the GIC, freeing all
+its resources. Behind vcpu-0's back. Things stop pretty abruptly,
+with a variety of symptoms.  Clearly, this isn't good, we should be
+a bit more careful about this.
+
+It is obvious that this guest is not viable, as it is missing some
+important part of its configuration. So instead of trying to tear
+bits of it down, let's just mark it as *dead*. It means that any
+further interaction from userspace will result in -EIO. The memory
+will be released on the "normal" path, when userspace gives up.
+
+Cc: stable@vger.kernel.org
+Reported-by: Alexander Potapenko <glider@google.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ arch/arm64/kvm/arm.c            | 3 +++
+ arch/arm64/kvm/vgic/vgic-init.c | 6 +++---
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index a0d01c46e4084..b97ada19f06a7 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -997,6 +997,9 @@ static int kvm_vcpu_suspend(struct kvm_vcpu *vcpu)
+ static int check_vcpu_requests(struct kvm_vcpu *vcpu)
+ {
+ 	if (kvm_request_pending(vcpu)) {
++		if (kvm_check_request(KVM_REQ_VM_DEAD, vcpu))
++			return -EIO;
++
+ 		if (kvm_check_request(KVM_REQ_SLEEP, vcpu))
+ 			kvm_vcpu_sleep(vcpu);
+ 
+diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
+index e7c53e8af3d16..c4cbf798e71a4 100644
+--- a/arch/arm64/kvm/vgic/vgic-init.c
++++ b/arch/arm64/kvm/vgic/vgic-init.c
+@@ -536,10 +536,10 @@ int kvm_vgic_map_resources(struct kvm *kvm)
+ out:
+ 	mutex_unlock(&kvm->arch.config_lock);
+ out_slots:
+-	mutex_unlock(&kvm->slots_lock);
+-
+ 	if (ret)
+-		kvm_vgic_destroy(kvm);
++		kvm_vm_dead(kvm);
++
++	mutex_unlock(&kvm->slots_lock);
+ 
+ 	return ret;
+ }
+-- 
+2.39.2
+
 
