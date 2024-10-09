@@ -1,97 +1,97 @@
-Return-Path: <stable+bounces-83249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E2F9971B4
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 18:35:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C41CF99719C
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 18:33:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45CF5281C70
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 16:35:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39FF7B23823
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 16:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BBD31E1031;
-	Wed,  9 Oct 2024 16:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE94D1E105E;
+	Wed,  9 Oct 2024 16:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JYpjPk0p"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bApfItvi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5015919C563;
-	Wed,  9 Oct 2024 16:29:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64A31E0481;
+	Wed,  9 Oct 2024 16:27:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728491372; cv=none; b=UBiSylZn2iUhuiyvFMztWbJ9bXHCbrJUuPMmYVZicTKUsqX57BGYsG6xx5raB4r/Dht8vDajMqvzzfdbbxv4JTZ4vQ3cNc/J79MzNp6DLA0vpVxNbLYHzxkL+egYImFdXXeGHCVcEvmATAgiFQkZD/Ku+OmlM5k2SdmtZ22hAU8=
+	t=1728491277; cv=none; b=Y6ltpNiu1NPm4Um6+xovLvWdU1nXkB4/Pv1raQTBbZWygSKH0gKFuNthUiGTm8uI5opnalgCAtV/Xi48RN3l29jg2X0h4nB9lnImkXRrsIPpLnpBpQDQNN6fx4ZeV+Nr4g9nu3nNxmxgXyg+GYGFwEc+J0TCsHGexMFSiOulj3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728491372; c=relaxed/simple;
-	bh=WpKDaxI/W+NgcFtv51vOUNwp4op6/pUKdULfxWhhdvQ=;
+	s=arc-20240116; t=1728491277; c=relaxed/simple;
+	bh=5IONwWAaygzDPnMaidc2cVsIS1VTE48ucYzxzIFEfRs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XkUE3zLmUyW3oxONrboIThNjMyvKpiAesokQujjbN2eFXsyc8j+r3SYMr4TQF9eFlVydaNI6guwJFNR/eisqmBC6pH49B1AgUeeDCJTQPjeAFAM3YmWyjM8Y2dMYmJG1Oj4YqSj9TiJFebv4VIY6UcvcMmgiU4sR3PlClPb8Deo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JYpjPk0p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA94C4CECE;
-	Wed,  9 Oct 2024 16:29:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728491371;
-	bh=WpKDaxI/W+NgcFtv51vOUNwp4op6/pUKdULfxWhhdvQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JYpjPk0pqIGNTD3ujE4Z/aMlU3dLX7DpVkbtdJCHTW2ff+r8vISInbPTpbzIQVw0b
-	 n8pvIg8BtbsXlVSxqW9Pn2Ceym/nK3O15mB7o+RkIO/j3k2e9mfXkiooLJNJzwiavk
-	 9PGEcj+Sd+6/pwvoB9lr/48uJuswyAJpJN9G8zlwCKLF3kuvG85cTF4SlLi5BSPZzp
-	 eMJErYmjbY2hTXJjc9c1XXPjMD/bsEZwYt/NfxyZZwoJqvEAgfSCmH8zR6dpl47v8W
-	 zqWcn7jXqaFYiecD3ycUFH/Uwn6kFQlTwRvc9wqxE/3vhAS6aIXGdpEpZmN4ZhTlad
-	 tiSc6+s8RW5HA==
-Date: Wed, 9 Oct 2024 17:29:28 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Alain Volmat <alain.volmat@foss.st.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Valentin Caron <valentin.caron@foss.st.com>,
-	linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=czzc0gFI5J3ouR2ZvzD1TfZS/WkR98zbBZiLZxG2PqgrA2gg7zAZaO1raRT80X+UstvwayVAWPwCUm2I3gruHY+eB8qTg84urOyf3JoexTWcHRoEZT4HVRtSHAJ51654SnbYKQ6WHJwoDFoDw4USGG9It+rQdaF3FRKR/JUNLRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bApfItvi; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728491276; x=1760027276;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5IONwWAaygzDPnMaidc2cVsIS1VTE48ucYzxzIFEfRs=;
+  b=bApfItviV/I1Z0u3zLELfP9Wianikem1TIuWehvTqQcVHqyYVuzfj5+g
+   +MvVkBI/fTZoeCXa+1uw3Y5MdWjd28cDXio9OyszSKkqbWVStdvBVBfxi
+   KB+PTelXv9yGxHIFssu3LaRt5R7G5PmEXMFuIcEBEuuUyzSdz+8g+A9Wa
+   LlOeDj0XuDQmjfP8LRuwdNBEVFQOQwmMdrrNagfZki6mn/j8JoevqmMXY
+   U2rDWhSU9qrkwJZ/2ZtI03IYpxz8iEus1GoVq37vQgPlFX5MLNjwmJGB4
+   PaVn2nntkhS5xZa84QHhKKKqRGDQgO0NGL/nS7msZo8Sv3wS6mIrfW3L5
+   A==;
+X-CSE-ConnectionGUID: EpHP8rbZSiu9n8Z57vJU9A==
+X-CSE-MsgGUID: my6SKx7dQh2nmUustK0M4w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="27923222"
+X-IronPort-AV: E=Sophos;i="6.11,190,1725346800"; 
+   d="scan'208";a="27923222"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 09:27:55 -0700
+X-CSE-ConnectionGUID: oQoVtMfHTjmqz0Cmn1i1Zg==
+X-CSE-MsgGUID: CPHxacxfT/GicCpeJ5tzmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,190,1725346800"; 
+   d="scan'208";a="80292162"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 09:27:54 -0700
+Date: Wed, 9 Oct 2024 09:33:44 -0700
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: Zhang Rui <rui.zhang@intel.com>
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, rafael.j.wysocki@intel.com,
+	x86@kernel.org, linux-pm@vger.kernel.org, hpa@zytor.com,
+	peterz@infradead.org, thorsten.blum@toblux.com,
+	yuntao.wang@linux.dev, tony.luck@intel.com, len.brown@intel.com,
+	srinivas.pandruvada@intel.com, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] spi: stm32: fix missing device mode capability in
- stm32mp25
-Message-ID: <ZwavaP0QHQCyDbtB@finisterre.sirena.org.uk>
-References: <20241009-spi-mp25-device-fix-v1-1-8e5ca7db7838@foss.st.com>
+Subject: Re: [PATCH V2] x86/apic: Stop the TSC Deadline timer during lapic
+ timer shutdown
+Message-ID: <20241009163344.GA25814@ranerica-svr.sc.intel.com>
+References: <20241009072001.509508-1-rui.zhang@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nhlvC0ehYU1eXsqp"
-Content-Disposition: inline
-In-Reply-To: <20241009-spi-mp25-device-fix-v1-1-8e5ca7db7838@foss.st.com>
-X-Cookie: Editing is a rewording activity.
-
-
---nhlvC0ehYU1eXsqp
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20241009072001.509508-1-rui.zhang@intel.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 
-On Wed, Oct 09, 2024 at 06:15:52PM +0200, Alain Volmat wrote:
+On Wed, Oct 09, 2024 at 03:20:01PM +0800, Zhang Rui wrote:
+> This 12-year-old bug prevents some modern processors from achieving
+> maximum power savings during suspend. For example, Lunar Lake systems
 
-> Fixes: a4e7908abf0c ("spi: stm32: add st,stm32mp25-spi compatible supporting STM32MP25 soc")
-> Cc: stable@vger.kernel.org
+Two nits:
 
-That SHA1 doesn't exist...
+> gets 0% package C-states during suspend to idle and this causes energy
+> star compliance tests to fail.
 
---nhlvC0ehYU1eXsqp
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcGr2cACgkQJNaLcl1U
-h9BQYwf8DJmILKbY03TZr3Z+bBleGn5Ey9cfwTqSEWz24LYOMrmDUe8h4EhJpwrv
-/E3XpZC10q9Cj8nEJiTBOX8PW+sFKFZdKj8ej9DcufTn9ihaVrq4i6TzdX19cUFq
-BBkbxj/6jyBJD3Hjk+c7jFoQHGPBkdV/6+/KbjpExWnSLZvv5yBRuVvVMusiFUmj
-yfILJeZSYjAt3pHqeie+RMEiyw+5+ga+ZwKy13S5v56JG9HEEnre+9GPN7SW0cIm
-B2ksBiCORK8O/BDdmfZAT4iFz0QivhByfRIGLLlL6OpfvK5oXXW9DO+qvt+r7g99
-P9bWBZSNrbaIqlDvQEgvip+vdiLqMg==
-=UQzM
------END PGP SIGNATURE-----
-
---nhlvC0ehYU1eXsqp--
+s/gets/get/
+s/energy start/Energy Star/
 
