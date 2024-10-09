@@ -1,134 +1,279 @@
-Return-Path: <stable+bounces-83119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9934995C74
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 02:50:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BC92995C79
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 02:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61799286A35
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 00:50:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F9B91C21393
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 00:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E47C8E0;
-	Wed,  9 Oct 2024 00:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522427462;
+	Wed,  9 Oct 2024 00:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wQhpULs6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FOSxj2sd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95CB219EB
-	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 00:50:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78775684;
+	Wed,  9 Oct 2024 00:54:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728435008; cv=none; b=GaiCBFuUkFbMyHbXMSr/N8+YQq3jFQEwPfcOABT+RXI22s/pIvs23BzY9/P7jlLW3eYW+CLIf+dCDMPaXPV0HeuQfIbQ9i+/J1dI29mwSfLr62UCz33xilX8Rs+7MWFqOA1zklXh6O+kjsYjUb+7NwLC9MAPNT3OlvyeHIb6cKk=
+	t=1728435298; cv=none; b=lVtHMMyplqmhrAC2FgA6j8kaKTO6KKRV/8rWOL++xTz4TqZBKCayi5HuLmTz5IeNSNjUNG6mx0NGtmaNsS8bnmEqNH00Vx4H5w1WPvIg78S4Kk/gD6QMbUFgV7SU1+bmwEItGqwoudxAQshGMMJw7WMK4K5uKfdk9aU5TzalbN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728435008; c=relaxed/simple;
-	bh=P5xBkJBsHSVqAt+axJMzODbqA3UYAyFBsJSa47B8HB4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DIgOfLGHEw34QCUISC4Uve6ALdtOkIhyzHM5elRfKculCap3ETt5zWtuwPTE0S0sOGcD+Ni9dGR89EN5CmKl6yD5lnKYOEkY692eFQz4WUZEPSIOm5KCg4esr6r/Ioyu6n12AuaNns93PpGOHhJ2f5AY//lpnjVAG/Mmvp/iCIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wQhpULs6; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-42f6995dab8so122305e9.0
-        for <stable@vger.kernel.org>; Tue, 08 Oct 2024 17:50:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728435005; x=1729039805; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P5xBkJBsHSVqAt+axJMzODbqA3UYAyFBsJSa47B8HB4=;
-        b=wQhpULs6eJ3jSG2L+e4vjJ44HB5pmfIDFhHYLIvtGtycGlk072JDV2rO78H1awo/Bl
-         9CYQvG492yAoth9YColDI5pOCNQ/QkXNfD9xdnoUInBl5BZlF/LDuWd7Sq3IBdhsaWoj
-         KaE2mHf8Ceya7kd6xtdpaTLC6MVHs3UGfJsbhbuIvPHWJ3UvWBMQjNBO9HuC9/tvLtxH
-         PFK1iUcKcInGBWa1TtqClkFZ2+hrrbGLlWIN55CGGxl37i5pAhXR7lr3FSjBjDB3DkVT
-         8L1i2PVM54SHQDraaBpnaVk5vAWyU18c+3OshkuXSXbNOLWuiPJliZg/sGz/pc/z8otj
-         QbBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728435005; x=1729039805;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P5xBkJBsHSVqAt+axJMzODbqA3UYAyFBsJSa47B8HB4=;
-        b=raHbLJbdc/6tXEdiqFRvixFaYChZ3Fs2w3l/JXmYaXLHXOVoEUeG6W1zHHXmtDL4qe
-         MC2vZM8MPaC3E8WL6hNf/CZ6wtdGBjkSbXnCRceBIq8XtVTH+OrdOfwgZjAdsBmCdLJX
-         jg8m5FCwkoncJVqnBzEtCFfPaiva9M4gQRpCszn8keGPaV3Uh2Wl9DNVEL3nvfAxl30S
-         MtkL5ZF0QVBoThuOIfGaZzNoOawolwfzMdEBjz48Z+iO1erO55UQFvRnEC2Zday7btsz
-         I64Qf3fAbNlJj0rTkHVDE6qo2sUxeglT3DYCFMKZ55fDtFpF9JlRTkYDQF+cmGhlkybF
-         BamQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXsn9CE0vkAsqktDVxyDJuzGP7PPP2URFD/TK1hLSQ6VnckLQTJ9uCe58wuomvc5Cp7R1A1Rvk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVvJL0xkuWO+GOxkbh/605jsAzV5RdTCWii9KEu3hukuvtq4Sv
-	g1NyJrs3Im/WHR3MkX/dsEB8oQot4SWeJMDwdWaVZvAwcgWeAHZDAu4faxgEhjq0lhw6BFAxBrv
-	lTVtpJOl7GOjR/g1akdU584zlGjTen2z7xbnz
-X-Google-Smtp-Source: AGHT+IE8i1WoerH4tKasIfRlN/mHeEmDePbStRVFDY5RZAcV3AkdGjoAzKlazO6sInZgo+PAJdXEmCaNDOM+Ho3MuYA=
-X-Received: by 2002:a05:600c:cc3:b0:42c:9e35:cde6 with SMTP id
- 5b1f17b1804b1-43058cee8e2mr2199905e9.2.1728435004265; Tue, 08 Oct 2024
- 17:50:04 -0700 (PDT)
+	s=arc-20240116; t=1728435298; c=relaxed/simple;
+	bh=2wt8OZmZXZiHffk+E3soDo1i7Jyy9ZL3xsfV3wdF90c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lFwgIb3LnzhK5f1cD6kAEkVhMuVvXbKoPpy80xqpzZj7Jpmpqpx/cAR93vofmt0y4N87ZiqLxn2CxPfrNmFudWLSif6M/7I/RJQiqqk3qzhyULnFzLzruWA+XoPj3BAKINwRhTlDPR8NP/el01i+SMvM5aCC+GxIyfJD9LghJHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FOSxj2sd; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728435296; x=1759971296;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version:content-transfer-encoding;
+  bh=2wt8OZmZXZiHffk+E3soDo1i7Jyy9ZL3xsfV3wdF90c=;
+  b=FOSxj2sdVA/6zoKCJ5/zxefrPfNNySirIy9bn3f3QbYZ5jnKJRWREMcR
+   KsPrSYEnO7wR0lpv8z/5ZB+BMp6l2bnhRuenQjaZdDPlU9OZMyY35754C
+   i5moVlpzWmAhm2zE9u2BB3JQBQHTafEEBeKJ+eWlhEZb7IcEn9nDUwz8b
+   IQ72tbKGz1jGW2tqs6nJ2oBXTB1beOvV/f12vUMzYK5nMANimv14QcUgA
+   YxZls5KIXZNOQ3esTzj4giztBudS9efBrNCzIwQ8N2/R+4wLYxz04myfb
+   L42tC0TeGB8xODnVe+pq3ZSFKfDXbWtBz+Uy4p1HWIzXz4SuqOP7Fmslk
+   Q==;
+X-CSE-ConnectionGUID: fcKm6xFYSpCBkDVgKOZkMw==
+X-CSE-MsgGUID: GP1o26vFTTakHfukCh6f5A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="27182005"
+X-IronPort-AV: E=Sophos;i="6.11,188,1725346800"; 
+   d="scan'208";a="27182005"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2024 17:54:55 -0700
+X-CSE-ConnectionGUID: RIUbv4x9RO6dI75ZOq+IpA==
+X-CSE-MsgGUID: GtXaVDiGTdG+m+d1KQ1olg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,188,1725346800"; 
+   d="scan'208";a="106816873"
+Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2024 17:54:50 -0700
+From: "Huang, Ying" <ying.huang@intel.com>
+To: Kairui Song <kasong@tencent.com>
+Cc: akpm@linux-foundation.org,  chrisl@kernel.org,  david@redhat.com,
+  hannes@cmpxchg.org,  hughd@google.com,  kaleshsingh@google.com,
+  kasong@tencent.com,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
+  liyangouwen1@oppo.com,  mhocko@suse.com,  minchan@kernel.org,
+  sj@kernel.org,  stable@vger.kernel.org,  surenb@google.com,
+  v-songbaohua@oppo.com,  willy@infradead.org,  yosryahmed@google.com,
+  yuzhao@google.com, Barry Song <21cnbao@gmail.com>
+Subject: Re: [PATCH] mm: avoid unconditional one-tick sleep when
+ swapcache_prepare fails
+In-Reply-To: <20241008130807.40833-1-21cnbao@gmail.com> (Barry Song's message
+	of "Tue, 8 Oct 2024 21:08:07 +0800")
+References: <87ikuani1f.fsf@yhuang6-desk2.ccr.corp.intel.com>
+	<20241008130807.40833-1-21cnbao@gmail.com>
+Date: Wed, 09 Oct 2024 08:51:17 +0800
+Message-ID: <87set6m73u.fsf@yhuang6-desk2.ccr.corp.intel.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241007-move_normal_pmd-vs-collapse-fix-2-v1-1-5ead9631f2ea@google.com>
- <CAEXW_YSxcPJG8SrsrgXGQVOYOMwHRHMrEcB7Rp2ya0Zsn9ED1g@mail.gmail.com>
-In-Reply-To: <CAEXW_YSxcPJG8SrsrgXGQVOYOMwHRHMrEcB7Rp2ya0Zsn9ED1g@mail.gmail.com>
-From: Jann Horn <jannh@google.com>
-Date: Wed, 9 Oct 2024 02:49:26 +0200
-Message-ID: <CAG48ez1ZMo0K0JU321vs0ovXXF2giMvVo14AxNDPzgpGMGZpDA@mail.gmail.com>
-Subject: Re: [PATCH] mm/mremap: Fix move_normal_pmd/retract_page_tables race
-To: Joel Fernandes <joel@joelfernandes.org>
-Cc: akpm@linux-foundation.org, david@redhat.com, linux-mm@kvack.org, 
-	willy@infradead.org, hughd@google.com, lorenzo.stoakes@oracle.com, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 9, 2024 at 1:58=E2=80=AFAM Joel Fernandes <joel@joelfernandes.o=
-rg> wrote:
-> On Mon, Oct 7, 2024 at 5:42=E2=80=AFPM Jann Horn <jannh@google.com> wrote=
-:
-> Not to overthink it, but do you have any insight into why copy_vma()
-> only requires the rmap lock under this condition?
+Barry Song <21cnbao@gmail.com> writes:
+
+> On Thu, Oct 3, 2024 at 8:35=E2=80=AFAM Huang, Ying <ying.huang@intel.com>=
+ wrote:
+>>
+>> Barry Song <21cnbao@gmail.com> writes:
+>>
+>> > On Wed, Oct 2, 2024 at 8:43=E2=80=AFAM Huang, Ying <ying.huang@intel.c=
+om> wrote:
+>> >>
+>> >> Barry Song <21cnbao@gmail.com> writes:
+>> >>
+>> >> > On Tue, Oct 1, 2024 at 7:43=E2=80=AFAM Huang, Ying <ying.huang@inte=
+l.com> wrote:
+>> >> >>
+>> >> >> Barry Song <21cnbao@gmail.com> writes:
+>> >> >>
+>> >> >> > On Sun, Sep 29, 2024 at 3:43=E2=80=AFPM Huang, Ying <ying.huang@=
+intel.com> wrote:
+>> >> >> >>
+>> >> >> >> Hi, Barry,
+>> >> >> >>
+>> >> >> >> Barry Song <21cnbao@gmail.com> writes:
+>> >> >> >>
+>> >> >> >> > From: Barry Song <v-songbaohua@oppo.com>
+>> >> >> >> >
+>> >> >> >> > Commit 13ddaf26be32 ("mm/swap: fix race when skipping swapcac=
+he")
+>> >> >> >> > introduced an unconditional one-tick sleep when `swapcache_pr=
+epare()`
+>> >> >> >> > fails, which has led to reports of UI stuttering on latency-s=
+ensitive
+>> >> >> >> > Android devices. To address this, we can use a waitqueue to w=
+ake up
+>> >> >> >> > tasks that fail `swapcache_prepare()` sooner, instead of alwa=
+ys
+>> >> >> >> > sleeping for a full tick. While tasks may occasionally be wok=
+en by an
+>> >> >> >> > unrelated `do_swap_page()`, this method is preferable to two =
+scenarios:
+>> >> >> >> > rapid re-entry into page faults, which can cause livelocks, a=
+nd
+>> >> >> >> > multiple millisecond sleeps, which visibly degrade user exper=
+ience.
+>> >> >> >>
+>> >> >> >> In general, I think that this works. =C2=A0Why not extend the s=
+olution to
+>> >> >> >> cover schedule_timeout_uninterruptible() in __read_swap_cache_a=
+sync()
+>> >> >> >> too? =C2=A0We can call wake_up() when we clear SWAP_HAS_CACHE. =
+=C2=A0To avoid
+>> >> >> >
+>> >> >> > Hi Ying,
+>> >> >> > Thanks for your comments.
+>> >> >> > I feel extending the solution to __read_swap_cache_async() shoul=
+d be done
+>> >> >> > in a separate patch. On phones, I've never encountered any issue=
+s reported
+>> >> >> > on that path, so it might be better suited for an optimization r=
+ather than a
+>> >> >> > hotfix?
+>> >> >>
+>> >> >> Yes. =C2=A0It's fine to do that in another patch as optimization.
+>> >> >
+>> >> > Ok. I'll prepare a separate patch for optimizing that path.
+>> >>
+>> >> Thanks!
+>> >>
+>> >> >>
+>> >> >> >> overhead to call wake_up() when there's no task waiting, we can=
+ use an
+>> >> >> >> atomic to count waiting tasks.
+>> >> >> >
+>> >> >> > I'm not sure it's worth adding the complexity, as wake_up() on a=
+n empty
+>> >> >> > waitqueue should have a very low cost on its own?
+>> >> >>
+>> >> >> wake_up() needs to call spin_lock_irqsave() unconditionally on a g=
+lobal
+>> >> >> shared lock. =C2=A0On systems with many CPUs (such servers), this =
+may cause
+>> >> >> severe lock contention. =C2=A0Even the cache ping-pong may hurt pe=
+rformance
+>> >> >> much.
+>> >> >
+>> >> > I understand that cache synchronization was a significant issue bef=
+ore
+>> >> > qspinlock, but it seems to be less of a concern after its implement=
+ation.
+>> >>
+>> >> Unfortunately, qspinlock cannot eliminate cache ping-pong issue, as
+>> >> discussed in the following thread.
+>> >>
+>> >> https://lore.kernel.org/lkml/20220510192708.GQ76023@worktop.programmi=
+ng.kicks-ass.net/
+>> >>
+>> >> > However, using a global atomic variable would still trigger cache b=
+roadcasts,
+>> >> > correct?
+>> >>
+>> >> We can only change the atomic variable to non-zero when
+>> >> swapcache_prepare() returns non-zero, and call wake_up() when the ato=
+mic
+>> >> variable is non-zero. =C2=A0Because swapcache_prepare() returns 0 mos=
+t times,
+>> >> the atomic variable is 0 most times. =C2=A0If we don't change the val=
+ue of
+>> >> atomic variable, cache ping-pong will not be triggered.
+>> >
+>> > yes. this can be implemented by adding another atomic variable.
+>>
+>> Just realized that we don't need another atomic variable for this, just
+>> use waitqueue_active() before wake_up() should be enough.
+>>
+>> >>
+>> >> Hi, Kairui,
+>> >>
+>> >> Do you have some test cases to test parallel zram swap-in? =C2=A0If s=
+o, that
+>> >> can be used to verify whether cache ping-pong is an issue and whether=
+ it
+>> >> can be fixed via a global atomic variable.
+>> >>
+>> >
+>> > Yes, Kairui please run a test on your machine with lots of cores before
+>> > and after adding a global atomic variable as suggested by Ying. I am
+>> > sorry I don't have a server machine.
+>> >
+>> > if it turns out you find cache ping-pong can be an issue, another
+>> > approach would be a waitqueue hash:
+>>
+>> Yes. =C2=A0waitqueue hash may help reduce lock contention. =C2=A0And, we=
+ can have
+>> both waitqueue_active() and waitqueue hash if necessary. =C2=A0As the fi=
+rst
+>> step, waitqueue_active() appears simpler.
 >
-> *need_rmap_locks =3D (new_vma->vm_pgoff <=3D vma->vm_pgoff);
+> Hi Andrew,
+> If there are no objections, can you please squash the below change? Oven
+> has already tested the change and the original issue was still fixed with
+> it. If you want me to send v2 instead, please let me know.
 >
-> Could a collapse still occur when need_rmap_locks is false,
-> potentially triggering the bug you described? My assumption is no, but
-> I wanted to double-check.
+> From a5ca401da89f3b628c3a0147e54541d0968654b2 Mon Sep 17 00:00:00 2001
+> From: Barry Song <v-songbaohua@oppo.com>
+> Date: Tue, 8 Oct 2024 20:18:27 +0800
+> Subject: [PATCH] mm: wake_up only when swapcache_wq waitqueue is active
+>
+> wake_up() will acquire spinlock even waitqueue is empty. This might
+> involve cache sync overhead. Let's only call wake_up() when waitqueue
+> is active.
+>
+> Suggested-by: "Huang, Ying" <ying.huang@intel.com>
+> Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+> ---
+>  mm/memory.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/memory.c b/mm/memory.c
+> index fe21bd3beff5..4adb2d0bcc7a 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4623,7 +4623,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  	/* Clear the swap cache pin for direct swapin after PTL unlock */
+>  	if (need_clear_cache) {
+>  		swapcache_clear(si, entry, nr_pages);
+> -		wake_up(&swapcache_wq);
+> +		if (waitqueue_active(&swapcache_wq))
+> +			wake_up(&swapcache_wq);
+>  	}
+>  	if (si)
+>  		put_swap_device(si);
+> @@ -4641,7 +4642,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  	}
+>  	if (need_clear_cache) {
+>  		swapcache_clear(si, entry, nr_pages);
+> -		wake_up(&swapcache_wq);
+> +		if (waitqueue_active(&swapcache_wq))
+> +			wake_up(&swapcache_wq);
+>  	}
+>  	if (si)
+>  		put_swap_device(si);
 
-Ah, that code is a bit confusing. There are actually two circumstances
-under which we take rmap locks, and that condition only captures (part
-of) the first one:
+Hi, Kairui,
 
-1. when we might move PTEs against rmap traversal order (we need the
-lock so that concurrent rmap traversal can't miss the PTEs)
-2. when we move page tables (otherwise concurrent rmap traversal could
-race with page table changes)
+Do you have time to give this patch (combined with the previous patch
+from Barry) a test to check whether the overhead introduced in the
+previous patch has been eliminated?
 
-If you look at the four callsites of move_pgt_entry(), you can see
-that its parameter "need_rmap_locks" sometimes comes from the caller's
-"need_rmap_locks" variable (in the HPAGE_PUD and HPAGE_PMD cases), but
-other times it is just hardcoded to true (in the NORMAL_PUD and
-NORMAL_PMD cases).
-So move_normal_pmd() always holds rmap locks.
-(This code would probably be a bit clearer if we moved the rmap
-locking into the helpers move_{normal,huge}_{pmd,pud} and got rid of
-the helper move_pgt_entry()...)
-
-(Also, note that when undoing the PTE moves with the second
-move_page_tables() call, the "need_rmap_locks" parameter to
-move_page_tables() is hardcoded to true.)
-
-> The patch looks good to me overall. I was also curious if
-> move_normal_pud() would require a similar change, though I=E2=80=99m incl=
-ined
-> to think that path doesn't lead to a bug.
-
-Yeah, there is no path that would remove PUD entries pointing to page
-tables through the rmap, that's a special PMD entry thing. (Well, at
-least not in non-hugetlb code, I haven't looked at hugetlb in a long
-time - but hugetlb has an entirely separate codepath for moving page
-tables, move_hugetlb_page_tables().)
+--
+Best Regards,
+Huang, Ying
 
