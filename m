@@ -1,167 +1,114 @@
-Return-Path: <stable+bounces-83155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB4A9960FB
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 09:35:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 386A8996104
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 09:38:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54CA91C23B50
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 07:35:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52BD11C20B08
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 07:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C71617BB06;
-	Wed,  9 Oct 2024 07:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1848917C22A;
+	Wed,  9 Oct 2024 07:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="t9g9sYi9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y68iUmg4"
 X-Original-To: stable@vger.kernel.org
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02olkn2086.outbound.protection.outlook.com [40.92.48.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9204A1714B6
-	for <stable@vger.kernel.org>; Wed,  9 Oct 2024 07:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.48.86
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728459337; cv=fail; b=qqKL+ikRX4gvYJyR7RvF5H1s7oiGjzqshZR7E4i8TQZq/+w6GkAS2PdswqVqSnsfrMnohjnAdrp+6t5ddhktt6V07Lm6YYFwqULX+Cqkogi2kr3Q0NI2oCNBKvgPLMII38MtkQVNsP+Yv3KJvyIEcuB0RF3f3ANz82E4ZHym5Vg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728459337; c=relaxed/simple;
-	bh=K6940fB5DapIMG5Gkab9RTenLAefGrw17Z+pfTV68lc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=RCpb3BagbdBDtcfydjrSNTWsElgfGFoBOpf7OwRy2+/1ERS/ntvjjUe6Enbdq6zEV9nEjjyOoPuv+vTLG7MDjaACTD4bbKo7YDAPOklLAuhU9uZSPTnn3b55adP9CxmS9XkyFkhdJaICkQnW3a+m9LVYOW4neMjTv53cTRmLjEg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=t9g9sYi9; arc=fail smtp.client-ip=40.92.48.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MQP+aZpzy6SjFzzD8X3nFkcjS6qjNXV0ZIPBDXEktdHjH7o2OtPlF6hliHAt0+w7WHM59APLYSQY0R0JjDqP5N7RgUy+/cVf84t6nEwuXPIVOP1rAwhzaN9FUICrLpzEKbemfp/KYzaz8jn0v0ksgwFuiuusFnzjN1oePZbBqA8+SF2Fzoh+O/Z24yVBB8M1l2rMYUPkH9gAkMxtv9Q02acgZrn6pi4L+bdcCMRhBtkCdszOOsN+xXu2H8B9WSA7ayvwZUWB1cJ+fAJ00N3YBidDG0azoLpJhIKCcylSSlXhJkgnTpl73OJCuwPkhx327t2xBT3xQeMLNC1dcv/Mvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M/91dLmPDgpAeHWiQ6JyEXJo39tHDEgd4YwTDYO02HA=;
- b=cUZcK9J/ornCIx2KwItBfEp7raXslQn33eINEKVoPcu6ipsfQPDDMX6Wz4JoPEz12Se/qOW1EunXAe9aMeMQHIEWuotTidRAfVwh95wFt8UQRFliDdhimIkWhGWqZcD3D1BDk/zsMYl0WMpUa1BWsTI4F7UfAEm0OiJowDt9mykIZvKwK9LlXQ8fO97QUtTGURucyE4RMOEd0loe6kiMWtQoM7oiVA8ugqgdc7Q00FpH8F3TCS9ycOyjjFbhrn9iJJCsOnz2NWp5kagmXU0v1LrCnDk0DqICMzVD4YdI+a7caWpVvNZXW+SIaOhJj66zndAxNCjAn5wK/VjOR1XUIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M/91dLmPDgpAeHWiQ6JyEXJo39tHDEgd4YwTDYO02HA=;
- b=t9g9sYi9N2dXnKZ2eV3hP+MPQfdUaXEglkJ6Y4sRR7hV8ZzESZvIriZW2CR8GR3gbmR+HjSH8h5jYuSCZpk2OAUZ2Z5jG6fuUiHEN3/9awCgEdT/+VsU+zIhONfY0cldxmRdGfcGDB1z53H0fclHnaDqKGWo6r/GJnihftzGY1vjXJ+Gmrr5x0eqTMFZLN06s2FevGwwTRkz3R+c0+Wfxz3tPK7DLf+hrLTEOSuRtRgeJRqrmQ521sE7NaHk48yUqQnTDAvjDtTAd0OY4y9kKmLCLzI+Gr7OhzCcy3bRy3skqmkK+Ef7o1uPw1jYlHDjOGL4m3Mqs55NGRMh7RGU5w==
-Received: from AS8P190MB1285.EURP190.PROD.OUTLOOK.COM (2603:10a6:20b:2e0::21)
- by AM7P190MB0776.EURP190.PROD.OUTLOOK.COM (2603:10a6:20b:119::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.16; Wed, 9 Oct
- 2024 07:35:32 +0000
-Received: from AS8P190MB1285.EURP190.PROD.OUTLOOK.COM
- ([fe80::5307:a61:337b:f3fb]) by AS8P190MB1285.EURP190.PROD.OUTLOOK.COM
- ([fe80::5307:a61:337b:f3fb%4]) with mapi id 15.20.8026.020; Wed, 9 Oct 2024
- 07:35:32 +0000
-Message-ID:
- <AS8P190MB1285D7871E746D824330F1C4EC7F2@AS8P190MB1285.EURP190.PROD.OUTLOOK.COM>
-Date: Wed, 9 Oct 2024 00:35:28 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.11 168/558] ALSA: usb-audio: Support multiple control
- interfaces
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Takashi Iwai <tiwai@suse.de>,
- Sasha Levin <sashal@kernel.org>
-References: <20241008115702.214071228@linuxfoundation.org>
- <20241008115708.966425966@linuxfoundation.org>
-From: Karol Kosik <k.kosik@outlook.com>
-In-Reply-To: <20241008115708.966425966@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW2PR2101CA0010.namprd21.prod.outlook.com
- (2603:10b6:302:1::23) To AS8P190MB1285.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:2e0::21)
-X-Microsoft-Original-Message-ID:
- <f0457aa1-acc0-48c6-b546-47a87e92540b@outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F0B11CA9;
+	Wed,  9 Oct 2024 07:38:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728459525; cv=none; b=Kdj1Xbm9dMM7RpQrlnXpS1ozHYYOgDk52xX+UBr+Z9SYCJv0Qi5jKM8HasCKrv3wNwcX0FNmuTdtDlKGzgXnIMO09fpUzH0pRVW+2PiWzSrQgc3weqQbGnN4JBeQ9vhf2Dloe79Yu4MbzsnbCWedRjCuruGV1e+5dDt2HCVOS34=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728459525; c=relaxed/simple;
+	bh=2RyF8nwj/cvj+E/yNHIotQjQzUIGEOP30JiIx6mgg60=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Sl5FKsBAOEBCUxZbKLtGwDjPaj5jt7nhtezp/+6ZEBpC+iOCq739bHqS7ptWaJ5JTxtrXfwsZfplkIRzsWQEhjFeNJpsAQv+zHX0suT9vG7psL/A+iiHvJ2aV5ZQA1eUPcXUfr7lyKdSRyvssNodZeaOhb48DbRazW6eqxTARA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y68iUmg4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522C2C4CED1;
+	Wed,  9 Oct 2024 07:38:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728459525;
+	bh=2RyF8nwj/cvj+E/yNHIotQjQzUIGEOP30JiIx6mgg60=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Y68iUmg4iTAoNbzCOIRIx2DkZgcWD53ucRl+6P7R7YQIBRiWytzrL7ms8GP+wsOV2
+	 Umvowb3hgIeSM4AEKMEdw8V8VxkV5RClShLG8ApzvPueaDCFN/5rAY0sc9jsxgNOaz
+	 jUyeJJDCLn1rnAY9A5RYHW+XhhNdOleQs9Dc3hjvphYV0zgE2+50Y6LX+sEKGhcjOa
+	 jVHI0vWLNIpGJlUrXC3Ada421ZdRDvx9IZYFXWXZGpUFUdAbr66T6Qli4nMXlg7ZiV
+	 QnuSwuUtqhp/nqJBnTYg0n8qy/XcyR+CLg2bNHYyJMnJEG1HT7urY56LZD/5An+u4d
+	 p04k+y94Sht1Q==
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5399041167cso10356312e87.0;
+        Wed, 09 Oct 2024 00:38:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUq3ZWR/NP5XTLInZKTxv6ySFc2cMn7nw4mav6vjDw3JJiRL9iGeGIRX+Z+tgUwA3msF/6dAZYf@vger.kernel.org, AJvYcCVvig8rzqUxa2ojf/t6hA3joBIXer2EhlN9E5dS5dQ7ghQ4TgbrTKMSNJTqDXGWJrLb4ddYfakB83eRMo4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLT/Ds3P6OrtQylvxAXocwxnl7L9+Sc0hnoduvOmckZ81s1ngd
+	imMWIKd1JP+lqw5J/MXBNuyJ/Bkv9R55tItFebvzjZEh27nMZMVda+G86SwyKRDkefmNXQ6W+WF
+	EsZPLO5F7Rc600IwxJRquY+gWUME=
+X-Google-Smtp-Source: AGHT+IFxOX0737Ws11iCI0Sk/iqlwtLiRNezGiQM/0njq7wd5LtZKlh9lMt9mdRUL9ZhtXZxXaQ5G6n6C3s2PZdsI6o=
+X-Received: by 2002:a05:6512:224b:b0:539:8fbd:5218 with SMTP id
+ 2adb3069b0e04-539c4968223mr1196233e87.56.1728459523690; Wed, 09 Oct 2024
+ 00:38:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8P190MB1285:EE_|AM7P190MB0776:EE_
-X-MS-Office365-Filtering-Correlation-Id: 28541446-1dea-4a1c-53c1-08dce834f4b8
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|6090799003|8060799006|5072599009|19110799003|15080799006|7092599003|461199028|440099028|3412199025;
-X-Microsoft-Antispam-Message-Info:
-	T/oBjf1koOIe03ILd1NhTvG2HekkdRZmos9Y0WnOa9Q59HxkcrUYOduTKvbV+z3novp5PGGyDJu2xlIY6oiCP7reb6D8Ot+qm8Xd8nyJ0WXck8NRxEezpUr5Wml6owMBIaC3NDUNENaH0awvrB8e2N/gXS0N3w0cP4pHeP9gHXgaXozmS9zTWTpufj7cNl69txI/TBguazXnwqExyfRHjY4FB8EV6PwT8VwikSt03QiF7v4XNufLn9MIYyapOBUKhxBR8ZV41SvFc1ChdSM0UPZftgltZ89wGQxO3u0/xv517mWcBWfQMoYYFEE+8+VMA5/P5EvehiDAdg5Gtm6zi+RntrmFVzTE1DgIfeajwQ2E73ZGYFCDPKxcSAT899IjjTowtbIIo7iW37T7cPy1SUJy3orsKBPazcF2BkYShNBd9FRjphEM87k8jJLOL1wTQ2cSq8+v+vlDfMNa3DjM/lJE8ndy8DrBSpBrMtDzqN/fu9YeVo2eYCAWZ3X3AU6sQRtEdMVJ0tHaBzkybw7W9Fe0OcWouC7WzlXHZ3QVuAErCEY8IpQ6qGJw6LBvg2yISl/J6ND8KtK4g5zqaw7FOK9wxq5QdhDem9QWo/Y56Q76BNUEVuqAYB9/2ZZFcqRpeDMpqUxmGEDXx6vm/aGTTQhaeb0r2sOKT3YjQqFDmUTrMq+ssKPbpCdnuRBdtGVH/8nF1+EuMMdAzsgT3iPSCdyyMs6Azlqg96Iy7Sh9BXWC0JExjFISgY6xUtd3a6OXAEesxYgy5l3qczc1tW/O8w==
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ajdYSytpQ3lMTlhFK2JqZktlYkYwdDBGbXZDOVFpTDVDbnZTWGpETzZqMUFZ?=
- =?utf-8?B?ZW5WQUxtRVZBTTdZY0RybVNvSGR3Tng0VVdpM0FxTmh1UTBGZkRsdmpabThG?=
- =?utf-8?B?MEFYeVIyWnQ5emF6dzBJUUREYlRpT08rcFhVZjBqY3FZdVhYQUpodHp5cHZa?=
- =?utf-8?B?aW40RCtTT0QxS3g4UzRidlBIRWFCN1ZMbWUvVjd5RHlZVzQvMlNmYnVnZlZw?=
- =?utf-8?B?bEZhS3N2bTZXWkQ5cXl5blhEanJ4TDBzNHpGTDk0TlBUMVFnSkp4S1Jmc3lz?=
- =?utf-8?B?TWlKQ1ZONFBFYmIxa1MyazBWRGJ1cUZERXkrZFUrU1BTMVFheU4ycFlRYnJK?=
- =?utf-8?B?Sjd4TzRiMElTOFB2SVg2SnFyZ2c4TnZrMlNNT21zYUd0dWNSRkJCZ1VZNlBB?=
- =?utf-8?B?ZWI2MFdiMU81NXcrbG55UjRKMWwxRGFCeXNTYTJpTUtOcHMwOW9YK3NOd0Zu?=
- =?utf-8?B?Q1A3ak82aWEwVkpJTVJHWHhOWXhLWmtRQ2gzMGpmWXJBTXBUUHlLZGRVVjFN?=
- =?utf-8?B?aXcya1IwU2FrdTUzU0hOVjZyNk1RQ1ljWUpYTGF6MHlBVWhnNCtpTE5jNFY2?=
- =?utf-8?B?bUJYek4rajQ4QWJNWWpQZDhYSzFLVCtYZk4xU3o0NmFkKzM2WlIwakhzK2lE?=
- =?utf-8?B?RHR3bmNsdkc2VGVWVDRJVmhoaHgxZklQbzJCSHFDekRIY2ZVbnUvWXBsVVhT?=
- =?utf-8?B?d2pEVzZETHkyd3E1ZTc5YlhRN1VYUVpXYXhCc3gvRVA3N0JUUU5FSVNPN25k?=
- =?utf-8?B?dTh3T2dsaGRyai9JbktYcUpTU1d6L01VVUVLRmhtMTNzUEVSZm5hYWRuNWpK?=
- =?utf-8?B?TW9vZmtOY3NLU2JDODJZbGovcFZ6UFV3Yi9hUllPY3NtVmJ6eXFjK0x3aWEz?=
- =?utf-8?B?RjliOUx0bUkybGRYdE8wdTllckt4a3V4bmU2QVltTnZCU3FNSzlJOE9oMWdO?=
- =?utf-8?B?dXZPSVZtOEJoRnhVSTl6ZCtmZ1VSemF2R3pHY0l2Z2dId2RvV2FrdXVwdFNB?=
- =?utf-8?B?OGtYbzBpQnJHVTdmYkp6cmI4aUZOV1oraGFINnAreEwvS0w2M3FQZjdMM3lM?=
- =?utf-8?B?eHQrYytLTVFrWk5PUHZUalJ3ZkhTNHhJUnhWS1U4Y0dJekYvUk5yYy90RjNQ?=
- =?utf-8?B?cldpU09ROTNUOVltaUt5T1B3aTJBRkJENk5LUlM0WXlRWmxwdTc0aUJpTDE2?=
- =?utf-8?B?N3VtSjBEOHZnUEJKSUYxb0FEMGRHVGpEeGt0WGl4LzY5UVhNTU5IZ0htM1M5?=
- =?utf-8?B?S01LRTNSRHB0YUwwbVFQMGIvYnlPM1RrK29OTnpmdFFKblJUMGJqS0djaHJu?=
- =?utf-8?B?akpHWHZ6eEZqMEtBbXlRVnNjQ2cvSU15ZHk4aEJYMUM1QzIxQktuN2dyNHpY?=
- =?utf-8?B?VW81TnBqRUpJT1pBMFBLTzRhSUl2ZTRRZDVSVWFPR0lQVXRKa2JuVm1iRkZZ?=
- =?utf-8?B?dTEzK1lGZG1iM0ZrZFJXVitkRVIvRXN1b1pOdzNMZzZpaTZWb0x3UnBSWkhW?=
- =?utf-8?B?UUUvUmUvOUpBWXZmbFNTdTZiK3VvUUtiQVRKclBvNm52QTlvV2tNa2dpeXNp?=
- =?utf-8?B?bzRKTE1jbjZIMUJjUS8vNndMMllXa3l2L1lXTGF3U1YzWW8rYUlrN1dmVlkv?=
- =?utf-8?B?cUk4bWdySmdhclRrMHA3aytrbXY3VU5aNEU0ZWcwbVV3ejNkb2hsSFRma0Nl?=
- =?utf-8?B?WHE3L0RYTnZVR1JUOE9aRTZ2ZVNWZmpOVitLWlJpNWc2d3hFZTExT0YyV3lG?=
- =?utf-8?Q?K/L7xqhoTPOUD/Kjo8=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 28541446-1dea-4a1c-53c1-08dce834f4b8
-X-MS-Exchange-CrossTenant-AuthSource: AS8P190MB1285.EURP190.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2024 07:35:32.5624
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7P190MB0776
+References: <20240929140233.211800-1-heinrich.schuchardt@canonical.com>
+In-Reply-To: <20240929140233.211800-1-heinrich.schuchardt@canonical.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 9 Oct 2024 09:38:31 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFs=z6AYJm=2La5C28snjz5DSq24tApBDReQEbk1eAOhQ@mail.gmail.com>
+Message-ID: <CAMj1kXFs=z6AYJm=2La5C28snjz5DSq24tApBDReQEbk1eAOhQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] riscv: efi: Set NX compat flag in PE/COFF header
+To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, 
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+
+On Sun, 29 Sept 2024 at 16:02, Heinrich Schuchardt
+<heinrich.schuchardt@canonical.com> wrote:
+>
+> The IMAGE_DLLCHARACTERISTICS_NX_COMPAT informs the firmware that the
+> EFI binary does not rely on pages that are both executable and
+> writable.
+>
+> The flag is used by some distro versions of GRUB to decide if the EFI
+> binary may be executed.
+>
+> As the Linux kernel neither has RWX sections nor needs RWX pages for
+> relocation we should set the flag.
+>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
 
-
-On 10/8/24 05:03, Greg Kroah-Hartman wrote:
-> 6.11-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Karol Kosik <k.kosik@outlook.com>
-> 
-> [ Upstream commit 6aa8700150f7dc62f60b4cf5b1624e2e3d9ed78e ]
-> 
-> Registering Numark Party Mix II fails with error 'bogus bTerminalLink 1'.
-> The problem stems from the driver not being able to find input/output
-> terminals required to configure audio streaming. The information about
-> those terminals is stored in AudioControl Interface. Numark device
-> contains 2 AudioControl Interfaces and the driver checks only one of them.
-
-Please postpone (or skip) merging my patch to 6.11 due to regression.
-
-I've just learned that my change causes kernel crash when Apple USB-C
-headphones are connected and confirmed it's related to my change.
-
-TL;DR: The general idea is correct, but I missed one variable initialization
-when specific USB 3.0 audio device connects, as none of the devices I tested
-were relying on it.
-
-I'm sorry for the disruption caused by this commit. One line fix will be sent
-for review tomorrow after I re-run all tests, and I aim to get it into 6.12-rc3.
-
-Regards,
-Karol Kosik
+> ---
+>  arch/riscv/kernel/efi-header.S | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/riscv/kernel/efi-header.S b/arch/riscv/kernel/efi-header.S
+> index 515b2dfbca75..c5f17c2710b5 100644
+> --- a/arch/riscv/kernel/efi-header.S
+> +++ b/arch/riscv/kernel/efi-header.S
+> @@ -64,7 +64,7 @@ extra_header_fields:
+>         .long   efi_header_end - _start                 // SizeOfHeaders
+>         .long   0                                       // CheckSum
+>         .short  IMAGE_SUBSYSTEM_EFI_APPLICATION         // Subsystem
+> -       .short  0                                       // DllCharacteristics
+> +       .short  IMAGE_DLL_CHARACTERISTICS_NX_COMPAT     // DllCharacteristics
+>         .quad   0                                       // SizeOfStackReserve
+>         .quad   0                                       // SizeOfStackCommit
+>         .quad   0                                       // SizeOfHeapReserve
+> --
+> 2.45.2
+>
 
