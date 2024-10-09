@@ -1,119 +1,118 @@
-Return-Path: <stable+bounces-83220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7C6F996C7F
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 15:44:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7CB0996CC9
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 15:53:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83B9B28558B
-	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 13:44:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8954C28161C
+	for <lists+stable@lfdr.de>; Wed,  9 Oct 2024 13:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F18319995A;
-	Wed,  9 Oct 2024 13:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F349819924E;
+	Wed,  9 Oct 2024 13:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UptuULJ2"
+	dkim=pass (2048-bit key) header.d=damsy.net header.i=@damsy.net header.b="SG17PTYf";
+	dkim=permerror (0-bit key) header.d=damsy.net header.i=@damsy.net header.b="M1wTx2Sc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jeth.damsy.net (jeth.damsy.net [51.159.152.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189D7199921;
-	Wed,  9 Oct 2024 13:43:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EBB38DE5;
+	Wed,  9 Oct 2024 13:53:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.152.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728481425; cv=none; b=fx0tdFuH13aUomMOL8bUuTmL/TS35KBW7o6qYUJdvpIWxl9ZauUDmhMf0GccO6DyNXNiYZhAavSrWd79XLiX+HbdUNEfn2/mt56UH+T0YY9Oepg+yU0vdoE+WtH1bMBCleOvYuZ1ziNbc0d5wzi1BXlQaccCFLonqoJXuIZGfaU=
+	t=1728482031; cv=none; b=A+xHGW+2gopcWkq4LeWiRukBK/If7OKWaQAFr4vGD2rxI7Gvt83ZtzNm38OvMwAaMVx+0k9onKNWgvNxIoB21Vx+bBYO+jR+6+24DGe48ZjNHmLSjdvDltrivFHLdFHShrpNjFx1Mr3TO7B9qOSYiEpsVF/Ffy2sSrj20RpIWik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728481425; c=relaxed/simple;
-	bh=SkGQGwz41me2KDx1e7eudI1y5Dfn9Ort4t3pk5/4X2g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XpGoel95lXyIylj10ynHANlL98/rfxpoUW9MDKVG9CyWnWOzan8R5Lf31oiLotkldItF2Lb7QmcuqG0jc6l8cWwj3cxctnBqWtjBxsBpsOYdrKvKKwxtWXa9N6/1woQamB+gFcaUivyxz1WNT2vUnxZgxpkagZ7puuPisuAaQTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UptuULJ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2611C4CEC5;
-	Wed,  9 Oct 2024 13:43:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728481424;
-	bh=SkGQGwz41me2KDx1e7eudI1y5Dfn9Ort4t3pk5/4X2g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UptuULJ2OWWvYaBsfhT14SxtJBc3M4BwSr4+JlYqyyNmoobqO4kAomYNIfEM7khdc
-	 tJ1ZDCpFWFzX+xWHnWJreAuZ2XKvmqcSQWaE8MKQTg4TYFPv+DR9bNNrjInaa/OYtu
-	 KpARALZUXXjAnchtpsEN36xFPhIzN/ylGRppXGgmabk0MplICkWcNzW9sdHfiqk0af
-	 KxhtBa454eASlcIspF6GgKIkj9T+NT5WVNXPcPEwqB3wqadGNdnCRlvxnS1QHIAYHw
-	 ysISk4IOBa1vuPFnWVTbsiJfN2tBfvji5ySfbJ4gvcEnwPGghUTHWE7iAsX3iprOqA
-	 nOutjUn+m4WRg==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1syWyh-000000003ES-3FZF;
-	Wed, 09 Oct 2024 15:43:47 +0200
-Date: Wed, 9 Oct 2024 15:43:47 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, stable@vger.kernel.org,
-	Aniket Randive <quic_arandive@quicinc.com>
-Subject: Re: [PATCH v2 1/7] serial: qcom-geni: fix premature receiver enable
-Message-ID: <ZwaIk5MlqL3AL_qQ@hovoldconsulting.com>
-References: <20241001125033.10625-1-johan+linaro@kernel.org>
- <20241001125033.10625-2-johan+linaro@kernel.org>
- <b7c9b01a-3bf7-44f2-be8d-24ef5f3fce74@quicinc.com>
+	s=arc-20240116; t=1728482031; c=relaxed/simple;
+	bh=5XpzL+C41ruwKeHQeQXScxtkrBTKWe8j/b804iT3pfQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=J8oWXZnCUXmErrPoX2QghwbNeFYOsTqDYdKvE+JqgvqKeAtwjXtw3F6iadrCS2NK2HoRT9O21tVcieBy1ePzHfGhRM6bkQsOZE0BizoU3E9W+u50jvN1ET9ElTPpFJYVYXxEmN4hAOG/H+8x+d7MgN5LxKoCmIm/NNf23qd2OHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=damsy.net; spf=pass smtp.mailfrom=damsy.net; dkim=pass (2048-bit key) header.d=damsy.net header.i=@damsy.net header.b=SG17PTYf; dkim=permerror (0-bit key) header.d=damsy.net header.i=@damsy.net header.b=M1wTx2Sc; arc=none smtp.client-ip=51.159.152.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=damsy.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=damsy.net
+DKIM-Signature: v=1; a=rsa-sha256; s=202408r; d=damsy.net; c=relaxed/relaxed;
+	h=From:To:Subject:Date:Message-ID; t=1728481940; bh=y3vCb8lJ1Emv2BjETJYSa0m
+	f3wOwiCfAIlM3SGQVcTU=; b=SG17PTYfsJLrf+a9nco/vi8u78T2X/Us3sBVLRhbu4IIcfUY5H
+	yUkt7o3D5dLXXt27SvzEnc97pk3iUzfxfn1kkGnf9zmvcHijMw1y7Ss5XO3O5J8FwkcO/6M9rcx
+	t4wqkyPi/cgKJ6eOcJaY2JGRSEDwcugdNKeaQHIIb8Iqd2i3jrwjZyKG8XmmqFf4tcjB/3H0fxY
+	LCcL1hW0Ordt/a5wfbKfmFpbz/JCsJ2wrH+yMzjz1o9mmjATA7tcF8PH3MGfcU4UkMXtQ/pPCiT
+	qHjEppVY6e8A98DRLfJID8o6BGrPP3Aar7cXy7LBbdbK2NwUBkXUopIIFjTI5oJ0UTg==;
+DKIM-Signature: v=1; a=ed25519-sha256; s=202408e; d=damsy.net; c=relaxed/relaxed;
+	h=From:To:Subject:Date:Message-ID; t=1728481940; bh=y3vCb8lJ1Emv2BjETJYSa0m
+	f3wOwiCfAIlM3SGQVcTU=; b=M1wTx2ScrOP5wwUz4o7ImRLQ7lmcSGBc/71hYvs1Xz499ga30L
+	0ZY5s7SPIMlOilFB4Cq0LwdubBT5Z4L5w5CA==;
+Message-ID: <dc319be0-af47-4053-bdd2-8a4d53ec4679@damsy.net>
+Date: Wed, 9 Oct 2024 15:52:19 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b7c9b01a-3bf7-44f2-be8d-24ef5f3fce74@quicinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/amdgpu: prevent BO_HANDLES error from being
+ overwritten
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Mohammed Anees <pvmohammedanees2003@gmail.com>, alexander.deucher@amd.com,
+ Xinhui.Pan@amd.com, airlied@gmail.com, simona@ffwll.ch,
+ srinivasan.shanmugam@amd.com, David.Wu3@amd.com, felix.kuehling@amd.com,
+ YuanShang.Mao@amd.com, pierre-eric.pelloux-prayer@amd.com
+Cc: amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20241009122831.109809-1-pvmohammedanees2003@gmail.com>
+ <6426b779-bd4d-4c85-b99d-4ddedf75d837@amd.com>
+Content-Language: en-US
+From: Pierre-Eric Pelloux-Prayer <pierre-eric@damsy.net>
+In-Reply-To: <6426b779-bd4d-4c85-b99d-4ddedf75d837@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 01, 2024 at 07:20:36PM +0530, Mukesh Kumar Savaliya wrote:
-> Thanks Johan for the fixes.
+Thanks for the updated patch, looks good to me.
 
-Thanks for taking a look.
+Le 09/10/2024 à 14:31, Christian König a écrit :
+> Am 09.10.24 um 14:28 schrieb Mohammed Anees:
+>> Before this patch, if multiple BO_HANDLES chunks were submitted,
+>> the error -EINVAL would be correctly set but could be overwritten
+>> by the return value from amdgpu_cs_p1_bo_handles(). This patch
+>> ensures that if there are multiple BO_HANDLES, we stop.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: fec5f8e8c6bc ("drm/amdgpu: disallow multiple BO_HANDLES chunks in one submit")
+>> Signed-off-by: Mohammed Anees <pvmohammedanees2003@gmail.com>
+> 
+> Reviewed-by: Christian König <christian.koenig@amd.com>
+> 
+> @Pierre-Eric can you pick that one up and push to amd-staging-drm-next?
+> 
+> Alex is currently on XDC and I'm a bit busy as well.
 
-> On 10/1/2024 6:20 PM, Johan Hovold wrote:
-> > The receiver should not be enabled until the port is opened so drop the
-> > bogus call to start rx from the setup code which is shared with the
-> > console implementation.
-> > 
-> > This was added for some confused implementation of hibernation support,
-> > but the receiver must not be started unconditionally as the port may not
-> > have been open when hibernating the system.
-> > 
-> > Fixes: 35781d8356a2 ("tty: serial: qcom-geni-serial: Add support for Hibernation feature")
-> > Cc:stable@vger.kernel.org	# 6.2
-> > Cc: Aniket Randive<quic_arandive@quicinc.com>
-> > Signed-off-by: Johan Hovold<johan+linaro@kernel.org>
+Sure, will do.
 
-> > @@ -1152,7 +1152,6 @@ static int qcom_geni_serial_port_setup(struct uart_port *uport)
-> >   			       false, true, true);
-> >   	geni_se_init(&port->se, UART_RX_WM, port->rx_fifo_depth - 2);
-> >   	geni_se_select_mode(&port->se, port->dev_data->mode);
-> > -	qcom_geni_serial_start_rx(uport);
+Pierre-Eric
 
-> Does it mean hibernation will break now ? Not sure if its tested with 
-> hibernation. I can see this call was added to port_setup specifically 
-> for hibernation but now after removing it, where is it getting fixed ?
-> I think RX will not be initialized after hibernation.
+> 
+> Thanks,
+> Christian.
+> 
+>> ---
+>> v2:
+>> - Switched to goto free_partial_kdata for error handling, following the existing pattern.
+>> ---
+>>   drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+>> index 1e475eb01417..d891ab779ca7 100644
+>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+>> @@ -265,7 +265,7 @@ static int amdgpu_cs_pass1(struct amdgpu_cs_parser *p,
+>>               /* Only a single BO list is allowed to simplify handling. */
+>>               if (p->bo_list)
+>> -                ret = -EINVAL;
+>> +                goto free_partial_kdata;
+>>               ret = amdgpu_cs_p1_bo_handles(p, p->chunks[i].kdata);
+>>               if (ret)
 
-Correct. As I alluded to in the commit message this "hibernation
-support" is quite broken already, but I was trying to avoid spending
-more time on this driver than I already have and just look the other way
-for the time being.
-
-Note that rx is enabled by the serial core resume code, but then this
-hibernation hack added a call to the setup the port after resuming it,
-which would disable rx again were it not for this random call to
-start rx, which should never have been added here in the first place.
-
-But as these platforms do not support hibernation in mainline, and the
-code broken anyway, I'll just rip it all out for v3.
-
-Johan
 
