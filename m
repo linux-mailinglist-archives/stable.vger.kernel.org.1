@@ -1,137 +1,126 @@
-Return-Path: <stable+bounces-83389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6D599924A
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 21:27:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BBE899933D
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 21:56:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEB071C24AB6
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 19:27:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42B31B29EE9
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 19:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F171E1CF2A6;
-	Thu, 10 Oct 2024 19:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D921CFEDD;
+	Thu, 10 Oct 2024 19:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BPwlFp3x"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="TwbsnM3o"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A081C9ECA;
-	Thu, 10 Oct 2024 19:27:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53CC1CBEAB
+	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 19:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728588455; cv=none; b=mYhgTGUqfDqH40wiL7sizSE8WeGT9DGr+ti3ekROCP3/dpIQ9+/UXH7vUtLKiJFN91Hs8fV351yFPTxoUCo1gzRQsUtXnee5GFkNBu9i9ZGerxJid+4xfYix384Cp6FCnBsyvsay4dl1FYNgoWBtVZQ+NmPA/0QITN/JDDzGIcg=
+	t=1728589944; cv=none; b=dVz3Sn0mgdVAMCv+efCo/Mp33HJVoVhik+cxkF6NOxwkbtyp7Ku15IEhqPDAoNA4VxnuF9P8wQTloDbn9K6SPQfRhUbwzsLtw7He5dgJt/NWCCJWRg3B3PetMyubvxht1Ahfnv8gaEADZbbJYtRwCvWn8x9wdof36gScuWObQAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728588455; c=relaxed/simple;
-	bh=4s1F1amb2HpeSQnXE9kDw0v+CMKI1EweulQR8X5Vto0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lLGARUU/dE3BdvOT0lL4t96NgQXPst/gVVzXt4WjOfNm6ge28TLvNJQPpL9ouUy+ThpmyHaF7SGJviXxPzG0Ri1gFVoVTDD+9e851GIGtcSzY8pxAre/quyZmyIxlQ+wDDKDgCE/uJRsGl+HtMI8yc50e/JQ+HBs8En8PRLvMgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BPwlFp3x; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728588454; x=1760124454;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=4s1F1amb2HpeSQnXE9kDw0v+CMKI1EweulQR8X5Vto0=;
-  b=BPwlFp3xSnN+cyI/QXLW5BBG/Up9te6+D/AEJS9tkcjJGSDLnhwmDCSz
-   9ER2Xs5ODfX9UiIYsGpioz1hfGrhX/UrwX9iabCio8gPz1QOxT/bMC4z8
-   zoWkNNcXtQlyIW5uz2g5QrGYUm7oGZ0oRWWT8aB0nJEgAvZIF+f7zze9+
-   YU2H/AAQ+Px75nMID8K/7LzyCV3vmGzeTSXINfJCr2tqlED8KODBK+xFf
-   DCstAk1baeyCti3wesl6Av1UHngNM09lkLs3poUe7MW+QlqfFfDiQKSxy
-   iuzigE2Q5eqFAKwpis/QAs3Ee5K59KybzPKV/h39Bl9lMpG2TjdRlBufd
-   Q==;
-X-CSE-ConnectionGUID: JQ9ci/QlTtq259W/Mcvimg==
-X-CSE-MsgGUID: /iO1dgKZSzWTNpoSUS3Org==
-X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="31870235"
-X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
-   d="scan'208";a="31870235"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 12:27:31 -0700
-X-CSE-ConnectionGUID: 5tqLculqRhWIYOkGD0AAfg==
-X-CSE-MsgGUID: e5MYBkxkTFmsBXVLeIUGNQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
-   d="scan'208";a="76614755"
-Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
-  by orviesa010.jf.intel.com with ESMTP; 10 Oct 2024 12:27:31 -0700
-From: kan.liang@linux.intel.com
-To: peterz@infradead.org,
-	mingo@kernel.org,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	irogers@google.com,
-	adrian.hunter@intel.com,
-	ak@linux.intel.com,
-	linux-kernel@vger.kernel.org
-Cc: eranian@google.com,
-	thomas.falcon@intel.com,
-	Kan Liang <kan.liang@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH V2 1/3] perf/x86/intel: Fix ARCH_PERFMON_NUM_COUNTER_LEAF
-Date: Thu, 10 Oct 2024 12:28:42 -0700
-Message-Id: <20241010192844.1006990-2-kan.liang@linux.intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20241010192844.1006990-1-kan.liang@linux.intel.com>
-References: <20241010192844.1006990-1-kan.liang@linux.intel.com>
+	s=arc-20240116; t=1728589944; c=relaxed/simple;
+	bh=k1T3SKLXk4xT1EZ+pJJHSjTwS1Rlz/OMeCunvBztblY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hHLzW70+LuDMSM0yPeD5A3OuOPXrbaIIX2ykCnoneQRlqzH3C9VnXYU5bokoO63D5ZY69Eo57yTpMsbi1TDdNJujnjiPBqeyIIq2PZZthSqoRnI855IU/69hFoRj8E2VlBWQNpHhtCqQUyotKnTUIE0WttUSFWxlD8ulyWnp3Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=TwbsnM3o; arc=none smtp.client-ip=209.85.219.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e28fa2807eeso1365753276.1
+        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 12:52:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1728589941; x=1729194741; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H0yQGGhTqw9cUKWuDIB0GQqeru7Zb3BCIasRnoNpl7I=;
+        b=TwbsnM3oGC7matx0Kou9G0z6/L+iRPdDNLmve9ls1XPWl/SidF5b7YB+ea7XqONzKW
+         faUjXLJDXysJVZsc+F/qfxL+CU+7obwwxU6k3hiObXBU8eFtsrlT6Ea30NdNhuPDNK1j
+         xgS5oE7LnZdkysXUlQzfE+b3mbWavdHxgtHtQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728589941; x=1729194741;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H0yQGGhTqw9cUKWuDIB0GQqeru7Zb3BCIasRnoNpl7I=;
+        b=OpqpSOPx+SHPr4gC45VhICeM0GeYdtPnLE+n4hU6/G/YfAaG2GWS+SFLtE+lFLOCfj
+         +Lbu3q4RRcT25DeB2Ph2rics8GSSLhqBN598WSFVq708EOE2GwBVWALjgREp8IvYyhGL
+         l88bI4Xr2GDNUk66YDoTSa33MJmV+Ht2Vjqk5QAcew7POqzO56b0cxacF4pa50V5A65K
+         p8oMknwD/4P2vkt89+VMRHGqZS43H0AT0Ls9fY9PL+ljjn26EJ/tsnOxgKlIq+RWTsuR
+         Xg+bCdBGzkEE664J6Rl2+iYlhvvgD/vQMG7Mq6hCgtkuumnKqEfzDAOxijdFpRdYsyPW
+         EMVw==
+X-Forwarded-Encrypted: i=1; AJvYcCX3w4TEgjD+0qTtpnFH+ck43hr04XhG4Dc2KP3cOGKw+mHb6/jLXAF4wdLJB4fHHr8liIRLXT8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/YZeEySjm/mhLFWsg890z0mwVesD0SrP6PamidokK92PNqqG4
+	eRkPz2409o1UPOr46EMHWosSdH8ASCXRBHprQxzTLhTmAdxMn2aSTSSrJsaR5Aa2Y5XaT8M8b8r
+	8oEqFo7hFgG7VjjOK6jUBCWEPFODkKNGMniBH
+X-Google-Smtp-Source: AGHT+IFWC5y7eMICyQT90+3RF+9SJuIQFBfyId6svCfqtZ8VV8P2OhLGTFKN0YGn+Iylgx5+atjoJZzkAL3VP4f/CE0=
+X-Received: by 2002:a05:6902:1589:b0:e28:30f5:f33 with SMTP id
+ 3f1490d57ef6-e2919dadd2amr106480276.28.1728589940760; Thu, 10 Oct 2024
+ 12:52:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241002122429.1981822-1-kniv@yandex-team.ru>
+In-Reply-To: <20241002122429.1981822-1-kniv@yandex-team.ru>
+From: Zack Rusin <zack.rusin@broadcom.com>
+Date: Thu, 10 Oct 2024 15:52:10 -0400
+Message-ID: <CABQX2QNVpaTqBDzBnwDgW=2fi4QxeywXZRsbhywLkph3JgAmjQ@mail.gmail.com>
+Subject: Re: [PATCH] drm/vmwgfx: Handle surface check failure correctly
+To: Nikolay Kuratov <kniv@yandex-team.ru>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	stable@vger.kernel.org, lvc-project@linuxtesting.org, 
+	bcm-kernel-feedback-list@broadcom.com, Sinclair Yeh <syeh@vmware.com>, 
+	Thomas Hellstrom <thellstrom@vmware.com>, Simona Vetter <simona@ffwll.ch>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Kan Liang <kan.liang@linux.intel.com>
+On Wed, Oct 2, 2024 at 8:26=E2=80=AFAM Nikolay Kuratov <kniv@yandex-team.ru=
+> wrote:
+>
+> Currently if condition (!bo and !vmw_kms_srf_ok()) was met
+> we go to err_out with ret =3D=3D 0.
+> err_out dereferences vfb if ret =3D=3D 0, but in our case vfb is still NU=
+LL.
+>
+> Fix this by assigning sensible error to ret.
+>
+> Found by Linux Verification Center (linuxtesting.org) with SVACE
+>
+> Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+> Cc: stable@vger.kernel.org
+> Fixes: 810b3e1683d0 ("drm/vmwgfx: Support topology greater than texture s=
+ize")
+> ---
+>  drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx=
+/vmwgfx_kms.c
+> index 288ed0bb75cb..752510a11e1b 100644
+> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+> @@ -1539,6 +1539,7 @@ static struct drm_framebuffer *vmw_kms_fb_create(st=
+ruct drm_device *dev,
+>                 DRM_ERROR("Surface size cannot exceed %dx%d\n",
+>                         dev_priv->texture_max_width,
+>                         dev_priv->texture_max_height);
+> +               ret =3D -EINVAL;
+>                 goto err_out;
+>         }
+>
+> --
+> 2.34.1
+>
 
-The EAX of the CPUID Leaf 023H enumerates the mask of valid sub-leaves.
-To tell the availability of the sub-leaf 1 (enumerate the counter mask),
-perf should check the bit 1 (0x2) of EAS, rather than bit 0 (0x1).
+Thank you. I pushed it to drm-misc-fixes.
 
-The error is not user-visible on bare metal. Because the sub-leaf 0 and
-the sub-leaf 1 are always available. However, it may bring issues in a
-virtualization environment when a VMM only enumerates the sub-leaf 0.
-
-Fixes: eb467aaac21e ("perf/x86/intel: Support Architectural PerfMon Extension leaf")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: stable@vger.kernel.org
----
- arch/x86/events/intel/core.c      | 4 ++--
- arch/x86/include/asm/perf_event.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 7ca40002a19b..2f3bf3bbbd77 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -4886,8 +4886,8 @@ static void update_pmu_cap(struct x86_hybrid_pmu *pmu)
- 	if (ebx & ARCH_PERFMON_EXT_EQ)
- 		pmu->config_mask |= ARCH_PERFMON_EVENTSEL_EQ;
- 
--	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF_BIT) {
--		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF,
-+	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF) {
-+		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF_BIT,
- 			    &eax, &ebx, &ecx, &edx);
- 		pmu->cntr_mask64 = eax;
- 		pmu->fixed_cntr_mask64 = ebx;
-diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
-index 91b73571412f..41ace8431e01 100644
---- a/arch/x86/include/asm/perf_event.h
-+++ b/arch/x86/include/asm/perf_event.h
-@@ -190,7 +190,7 @@ union cpuid10_edx {
- #define ARCH_PERFMON_EXT_UMASK2			0x1
- #define ARCH_PERFMON_EXT_EQ			0x2
- #define ARCH_PERFMON_NUM_COUNTER_LEAF_BIT	0x1
--#define ARCH_PERFMON_NUM_COUNTER_LEAF		0x1
-+#define ARCH_PERFMON_NUM_COUNTER_LEAF		BIT(ARCH_PERFMON_NUM_COUNTER_LEAF_BIT)
- 
- /*
-  * Intel Architectural LBR CPUID detection/enumeration details:
--- 
-2.38.1
-
+z
 
