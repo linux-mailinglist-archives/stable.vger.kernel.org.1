@@ -1,94 +1,87 @@
-Return-Path: <stable+bounces-83339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23BCB99847C
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 13:07:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B29299847D
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 13:07:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDC5B1F21127
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 11:07:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1324285359
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 11:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FFA1C3F28;
-	Thu, 10 Oct 2024 11:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F9B1C2444;
+	Thu, 10 Oct 2024 11:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PCaWecAc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5MQR+dS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B4E1BFE12
-	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 11:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DBF1C231C;
+	Thu, 10 Oct 2024 11:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728558386; cv=none; b=dCFQZ5VznsFVrcUMKK2L80xzpN755RS1y6mDA770+LUwspCQQ1gRA2kjbbMsRDWHuOHxKW8LZWDNtlfMBafwrKq66ZGYqdsg82pS8ewu7fCaJZW3zcwKxG1ZEGc7eKei8jiNCMxDztIaZ4yy4TBEbnhRc9t3ywxctIPr57ZP1IY=
+	t=1728558401; cv=none; b=kZK7vbPecQroYH0CCcZiSKb19bJmR1TmvKBw1VLVEJ2UojOLLxn5PI7KN6OFVCwqEWu0xHGMyDpLBOUC9DKrY2CSq6uj8lzejreGgvNd3mqNTyUgUr60bMEZDjx8/myhQCpACCRk9BK02fMMgccCbbbyH5fKmRotxMYiaZ1bEYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728558386; c=relaxed/simple;
-	bh=ZMwcJD454pk2ZkrgECKttjWN+aKe5Uz7EajItvMlugA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gDGxkiWXnypyITnHAf59SFcrGNMaBQoOT8y67K3sv0a8w9nPDsa4dcY5OmzSs+hHNifP9Bru4CpE4NLyaexRQj+M4qNb7DFPbxIp5n3AqhGKjTiZHZb2OlsgZrTdmt81gnPqVsbv+LQgaynMS/d1CeRftzcr4Pw+c4IGF0YdRh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PCaWecAc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B1F2C4CEC6;
-	Thu, 10 Oct 2024 11:06:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728558385;
-	bh=ZMwcJD454pk2ZkrgECKttjWN+aKe5Uz7EajItvMlugA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCaWecAcICax7tU/Eo5not0FiGpinW6CrvpEA0nm0VzwerXXI2KNJ0oDDudWJ7A22
-	 j6lNnS3vLC6INZXZC5t3Nv6rZeKuZPGr1dXrpBsmplpVOrFSnd3frcwHKY7g8t+vJB
-	 Se3DmSAcPjC2OmohjvyVKekfeea3WcU1GLmJ/oj2GB2DRgWIyd2f0qLWitSP2oQFY+
-	 GxAhcilT8fjMF4w8m8dMYhUz8u1q5mz7B2r7nhZCIpj8p2P9gNRj/QtP9ilX0oCck2
-	 DGsRRflRwCiN4uEBsqz/1j/lSbkeID42uLw4SNiMiPmujwilqo9oz1BkedRPgO3qtj
-	 UtlVZ8xMNTHnQ==
-From: Will Deacon <will@kernel.org>
-To: linux-arm-kernel@lists.infradead.org,
-	Mark Rutland <mark.rutland@arm.com>
-Cc: catalin.marinas@arm.com,
-	kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	catalin.marnias@arm.com,
+	s=arc-20240116; t=1728558401; c=relaxed/simple;
+	bh=TSsUmplMGOAcnYoM40yD1Pqwn+rWMN1btaFW9HcDeDY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=roNl6Gm8FX3cIuIyyF2nTrM0vCrnJS0t1JCwiHYpougSDutCMp0K1b+d9vyswGRu3JUgIcGLiqhvlImEei7TheaJ+0/6xGLOotYWS7nPtkMezplsC8dejtOHfyWmBhnmTvCRgIrhuDJKEH/Ff+XQ3BC86ahDdQEikxuQ8jX2EZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5MQR+dS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D2CC4CEC6;
+	Thu, 10 Oct 2024 11:06:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1728558401;
+	bh=TSsUmplMGOAcnYoM40yD1Pqwn+rWMN1btaFW9HcDeDY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=H5MQR+dS7zDshzzWsz8H8/1Hd65LMQ7tWrF+S8r2HgZ3vHk+Pjeii8i3PK0Vven4h
+	 Sp7aR0oDF2uvZTUcUTxOTYUHvVSgOf77rKCWyvmtpwdusfe1iQCb6TaJf3VjoekWtY
+	 E05g8KhMRla80Ywmyg9/7iQmyUTwTpmnF3rey7uI=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 0/6] arm64: probes: fixes and cleanup
-Date: Thu, 10 Oct 2024 12:06:17 +0100
-Message-Id: <172848941572.620474.9652832732261228620.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20241008155851.801546-1-mark.rutland@arm.com>
-References: <20241008155851.801546-1-mark.rutland@arm.com>
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 6.6.56
+Date: Thu, 10 Oct 2024 13:06:36 +0200
+Message-ID: <2024101038-overhung-discard-e873@gregkh>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-On Tue, 08 Oct 2024 16:58:45 +0100, Mark Rutland wrote:
-> These patches address some issues I spotted while looking at kprobes and
-> uprobes.
-> 
-> Patch 1 is the most pressing, as a uprobes user can trigger a kernel
-> BUG(). Patches 2 and 3 fix latent endianness bugs which only manifest on
-> big-endian kernels, and patchs 4-6 clean things up so that it's harder
-> to get this wrong again in future.
-> 
-> [...]
+I'm announcing the release of the 6.6.56 kernel.
 
-Applied first three (fixes) to arm64 (for-next/fixes), thanks!
+This fixes a build error in perf that I should have caught before 6.6.55
+was released (my fault, it was correctly reported...).  If you do not
+use the perf tool in the 6.6.y tree, there is no need to upgrade.
 
-[1/6] arm64: probes: Remove broken LDR (literal) uprobe support
-      https://git.kernel.org/arm64/c/acc450aa0709
-[2/6] arm64: probes: Fix simulate_ldr*_literal()
-      https://git.kernel.org/arm64/c/50f813e57601
-[3/6] arm64: probes: Fix uprobes for big-endian kernels
-      https://git.kernel.org/arm64/c/13f8f1e05f1d
+The updated 6.6.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.6.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-Cheers,
--- 
-Will
+thanks,
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+greg k-h
+
+------------
+
+ Makefile                  |    4 ++--
+ tools/perf/util/machine.c |   17 ++---------------
+ tools/perf/util/thread.c  |    4 ----
+ tools/perf/util/thread.h  |    1 -
+ 4 files changed, 4 insertions(+), 22 deletions(-)
+
+Greg Kroah-Hartman (2):
+      Revert "perf callchain: Fix stitch LBR memory leaks"
+      Linux 6.6.56
+
 
