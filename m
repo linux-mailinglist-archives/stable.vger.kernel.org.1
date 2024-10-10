@@ -1,90 +1,90 @@
-Return-Path: <stable+bounces-83401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF05999547
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 00:37:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3C299954E
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 00:37:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 561F61F24621
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 22:37:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C77A1C2101F
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 22:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E001E47CE;
-	Thu, 10 Oct 2024 22:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8B51E885D;
+	Thu, 10 Oct 2024 22:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="FsKFA8us"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="CrC4/ZJK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3581E6DD4
-	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 22:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743B81E7C02
+	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 22:36:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728599812; cv=none; b=uJDNzcTxbQYN8lTMe0oFWLtojoMpI7O2jy8O8Nfwo6Fjfa63hnh2wQHK1GwzanjlK7rEfcSfRkf3JrelfT+X+dlgdYyDnaoOmqOqA9dbM5tZLnmGAJyw8a5mbT9MqATsCBN13sdKci5IwC01HhxQ5g8Xm+f2chqEuxdZvjXIjqA=
+	t=1728599821; cv=none; b=Q/jPhO3VVL8s7ZLZ5Y10FXWW6wUSC32JLxU//m7S9M0EUydcr/1m4ivc1nml3QmKuAbHve8CVKUXAEAFdGB4Cf/IWB4DGGKKdxa8M/UMRJht56gaODyU6AkluVPpMsLP+AlzF9JDa4xcTvMfTFrA1Y7staKHF7Apf4mkD432SDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728599812; c=relaxed/simple;
-	bh=S8MzrVyVXYrrKDN3sreSlr2FvATE3GpWfAgeOexSlnw=;
+	s=arc-20240116; t=1728599821; c=relaxed/simple;
+	bh=Oxl2smtTASJ6MycM3FoVyfEsgbMMCGZ1Gfzk4oNcX8Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pbWW9UuVG4IxihJArGdWY841i0cUABgHIC9LE5ISWlM0hOLvBFR7f91m4snPppRY29gNxU/e9443o5PiMtFmenqmBx1gD+JEr7UGGs2VUlpCM3a+3cOu7Jo2foew0AfUfG1zJe2dnBKj6gePdERgJgNu3p/2cXlKOT7tHqdXqWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=FsKFA8us; arc=none smtp.client-ip=209.85.167.43
+	 To:Cc:Content-Type; b=ewZd6R32W204Ayi6i7nCr/+aoBgfVH37APMd0pSsnamPeTOPQKIuTdIEH5U6hyAnmMRv7GYUQSw/4+Buw/UQmCJGGW3lULQSumDaZafQmw5DlmXbh1tJgj5Lp9fxoUSfvtD11MHEXkUBJ2oJUJMHPPWpmzcl3MGQF/hPmf6C4Ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=CrC4/ZJK; arc=none smtp.client-ip=209.85.208.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-53993564cb1so1793516e87.2
-        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 15:36:50 -0700 (PDT)
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2fb3110b964so2323221fa.1
+        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 15:36:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1728599808; x=1729204608; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1728599814; x=1729204614; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wWMUsztqHY1RJBiR4O9/uVA8A37ER1fCtc2N/7pUsd0=;
-        b=FsKFA8usXRJX97+bdZbl6ozfWfzewEPBAlxnb52EG3I9UHvlGeUj6DyrSUfmcKVzX0
-         xKXM/qK+hxStXMtt3j6viWeHQ2j4RMnhKFJ/F+nYrVwNslaYW86cdqgAhFt5IPkTULvf
-         vca2/f3JgNNzauQtYeC1M5tJ9iXmKZPV7qGmQ=
+        bh=VjeDbIjsUK09P9siScyxEtPwzKzblEFE3ZJjqNhSVcQ=;
+        b=CrC4/ZJK/XRWlvSVjGUOjlnjIiNfYEIiBTWSO0nUFsTA92R/R38QoZ+lQp8yc9RWhU
+         mNwNemzpfbJsUER9ohdpJyFvdyS3aZcXYgRtlN4dfNg4AXN1IEQGkBO2qATTgfUKFXPJ
+         LHoe/ghN9kxHqBvpxDB4cS2e8c6hcCXphzfhM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728599808; x=1729204608;
+        d=1e100.net; s=20230601; t=1728599814; x=1729204614;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wWMUsztqHY1RJBiR4O9/uVA8A37ER1fCtc2N/7pUsd0=;
-        b=sO4jz97eJ5ETHuPGDB0LqCRk96TFI36FylILDwhJZ9q9P1qYLJcu/h2X8SM7I/zhrT
-         5TMbm/SsllntijWYJTHXVy1r4F9l/bzRX8fE77EAowYfVnst5u3NXCmTzJ7QF4O0C5sG
-         Pf9IMuey54F084gg7pZof8aS0i2x/2LKbO7wh/XOxCRoc1blEDDqMLNTonMhK/ncToDi
-         cGz89eGLWn2NvtGv0aFhd/rHmKuHPIfjE5jVFdbeCZ2e1J3Py8ghqlmIics1T2zTEE5U
-         Yzd0KFDPLnEcjfxmH3/Lb07colDu+f/6CfkaYYpvdN9OfO4EO1nG44T/pY6d032o/5jg
-         L9jw==
-X-Forwarded-Encrypted: i=1; AJvYcCWTldg4FV7dY2kYv7pGlch+Uo2hZNhVB1aBHv15vX1/OM9kUb8CbdNQcB9UKBqCoIoy0AaM5eA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwncOkgSC6HKpXXNJh+6iw+xZUG94cn/f9HM4D4k6xRFtEX/aba
-	StweOZuV4gsSua/7pmo6hbrz5Q79DQZa0eMVorsEBtp5TWXvXwLQrE56QUU9VOizdpIByfEluAN
-	z8DKs
-X-Google-Smtp-Source: AGHT+IFdThhXeI3SlXeorN87o1AZYvSTO96iSbN7bjRISBeknn33KwaAyHTfSQKweveEFqbMI6N6LQ==
-X-Received: by 2002:a05:6512:308b:b0:535:d4e9:28c1 with SMTP id 2adb3069b0e04-539da3c6e43mr150290e87.20.1728599808369;
-        Thu, 10 Oct 2024 15:36:48 -0700 (PDT)
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com. [209.85.167.49])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-539cb8d8069sm405017e87.148.2024.10.10.15.36.47
+        bh=VjeDbIjsUK09P9siScyxEtPwzKzblEFE3ZJjqNhSVcQ=;
+        b=SHyrDPJXs2ZfjOb2qZv6QeWPJfD47hTkpYafWsaXwRQUhV/9HxUK/I7bC5DpvUt3FQ
+         js7AITRb4jfTBlbjR9lUsiaPZBLJr5f0Y1rpvkInl4sV7mgkM4xujN3r9boUnO2TZzw9
+         1Z1CbUsxPymE25++dRiFKVFDHCkJJ0HMeIt1pKdQ4HQ3gWPPwKc8mVd8W/wZ713BbpW8
+         /jBebraY6jj/hEvNJ+7CZZuKJB6bPOzd3VPQEXyqpaj75uI8kMGtb64tkBx3xSo21o+v
+         xTU+VolhJJdJnGhi/pse8/K6NV+HXqKUQm07UcOmBhsyRLAbDu1m1DKHbIqEz1c/qphD
+         iwqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWuALVbskw/sH43hZgQVNcWjuuaH94R0xQvQxy4bG4O+t4rG6XZsO60SV8Vo6pQotLtPtiOp4Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywn5G55N1/T0W28oqDkBdvXhtch2Rf8QL+Q27LX9pQ86yJheZ9m
+	sejqgjV/lf66rMwPvKSv0p6/CAH0Dx1+m2jC4zvXXh87jSxWCnpQ/gmJx9oinD85DilOwW1aaCt
+	WmBGW
+X-Google-Smtp-Source: AGHT+IHA31zBTiNl3GQjdqRJzqwFGZK2ktWfKvJ82JhGCAvk4bYQ6xPa7T3gELmk2ul5OxmLweOTFg==
+X-Received: by 2002:a05:6512:3a8d:b0:539:9155:e8d4 with SMTP id 2adb3069b0e04-539da3b20c7mr181447e87.8.1728599814123;
+        Thu, 10 Oct 2024 15:36:54 -0700 (PDT)
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com. [209.85.208.178])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-539cb6c1607sm409643e87.25.2024.10.10.15.36.50
         for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Oct 2024 15:36:47 -0700 (PDT)
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5366fd6fdf1so1839429e87.0
-        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 15:36:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVZ7jTCI3A6/XUBu4pN+b2Sca9nwNpPe4oNmW4/nxlK+HP5NT9ZlQGvd3w404SNixXTk+FnfEM=@vger.kernel.org
-X-Received: by 2002:a05:6512:3091:b0:52e:9f6b:64 with SMTP id
- 2adb3069b0e04-539da4e09a3mr158626e87.34.1728599806982; Thu, 10 Oct 2024
- 15:36:46 -0700 (PDT)
+        Thu, 10 Oct 2024 15:36:50 -0700 (PDT)
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2fac187eef2so15840821fa.3
+        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 15:36:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWM445f6KDT0m8OEpTdRq4VzNOnwZ4T3F/5avDNYg/atyIRcFnqFHmD/ddXpDs7SMVKI2zMJxg=@vger.kernel.org
+X-Received: by 2002:a05:6512:ad4:b0:539:8bc6:694a with SMTP id
+ 2adb3069b0e04-539da55f2c2mr163074e87.43.1728599809960; Thu, 10 Oct 2024
+ 15:36:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241009145110.16847-1-johan+linaro@kernel.org> <20241009145110.16847-4-johan+linaro@kernel.org>
-In-Reply-To: <20241009145110.16847-4-johan+linaro@kernel.org>
+References: <20241009145110.16847-1-johan+linaro@kernel.org> <20241009145110.16847-6-johan+linaro@kernel.org>
+In-Reply-To: <20241009145110.16847-6-johan+linaro@kernel.org>
 From: Doug Anderson <dianders@chromium.org>
-Date: Thu, 10 Oct 2024 15:36:30 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=WdxCbQm36sq4RtPMGyi+ZefPYoOQortAN+SDYTAY_m9g@mail.gmail.com>
-Message-ID: <CAD=FV=WdxCbQm36sq4RtPMGyi+ZefPYoOQortAN+SDYTAY_m9g@mail.gmail.com>
-Subject: Re: [PATCH v3 3/9] serial: qcom-geni: fix shutdown race
+Date: Thu, 10 Oct 2024 15:36:35 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=Ue8MRvb4h5f0ijRRNORXCrypSbpaNWZdv5S3C2kmYp3g@mail.gmail.com>
+Message-ID: <CAD=FV=Ue8MRvb4h5f0ijRRNORXCrypSbpaNWZdv5S3C2kmYp3g@mail.gmail.com>
+Subject: Re: [PATCH v3 5/9] serial: qcom-geni: fix receiver enable
 To: Johan Hovold <johan+linaro@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
 	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
@@ -99,31 +99,44 @@ Hi,
 On Wed, Oct 9, 2024 at 7:51=E2=80=AFAM Johan Hovold <johan+linaro@kernel.or=
 g> wrote:
 >
-> A commit adding back the stopping of tx on port shutdown failed to add
-> back the locking which had also been removed by commit e83766334f96
-> ("tty: serial: qcom_geni_serial: No need to stop tx/rx on UART
-> shutdown").
+> The receiver is supposed to be enabled in the startup() callback and not
+> in set_termios() which is called also during console setup.
 >
-> Holding the port lock is needed to serialise against the console code,
-> which may update the interrupt enable register and access the port
-> state.
+> This specifically avoids accepting input before the port has been opened
+> (and interrupts enabled), something which can also break the GENI
+> firmware (cancel fails and after abort, the "stale" counter handling
+> appears to be broken so that later input is not processed until twelve
+> chars have been received).
 >
-> Fixes: d8aca2f96813 ("tty: serial: qcom-geni-serial: stop operations in p=
-rogress at shutdown")
-> Fixes: 947cc4ecc06c ("serial: qcom-geni: fix soft lockup on sw flow contr=
-ol and suspend")
+> There also does not appear to be any need to keep the receiver disabled
+> while updating the port settings.
+>
+> Since commit 6f3c3cafb115 ("serial: qcom-geni: disable interrupts during
+> console writes") the calls to manipulate the secondary interrupts, which
+> were done without holding the port lock, can also lead to the receiver
+> being left disabled when set_termios() races with the console code (e.g.
+> when init opens the tty during boot). This can manifest itself as a
+> serial getty not accepting input.
+>
+> The calls to stop and start rx in set_termios() can similarly race with
+> DMA completion and, for example, cause the DMA buffer to be unmapped
+> twice or the mapping to be leaked.
+>
+> Fix this by only enabling the receiver during startup and while holding
+> the port lock to avoid racing with the console code.
+>
+> Fixes: 6f3c3cafb115 ("serial: qcom-geni: disable interrupts during consol=
+e writes")
+> Fixes: 2aaa43c70778 ("tty: serial: qcom-geni-serial: add support for seri=
+al engine DMA")
+> Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver sup=
+port for GENI based QUP")
 > Cc: stable@vger.kernel.org      # 6.3
-> Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 > ---
->  drivers/tty/serial/qcom_geni_serial.c | 2 ++
->  1 file changed, 2 insertions(+)
-
-Though this doesn't fix the preexisting bug I talked about [1] that
-we'll need to touch the same code to fix:
+>  drivers/tty/serial/qcom_geni_serial.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
 
 Reviewed-by: Douglas Anderson <dianders@chromium.org>
-
-[1] https://lore.kernel.org/r/CAD=3DFV=3DUZtZ1-0SkN2sOMp6YdU02em_RnK85Heg5z=
-0jkH4U30eQ@mail.gmail.com
 
