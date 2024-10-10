@@ -1,182 +1,129 @@
-Return-Path: <stable+bounces-83394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90CCD9993E5
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 22:48:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 041109993F0
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 22:53:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F090287475
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 20:48:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 342211C22758
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 20:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F161E04B5;
-	Thu, 10 Oct 2024 20:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377E21E1C1A;
+	Thu, 10 Oct 2024 20:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="R1T/8WrZ"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="NagXoIPD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F218919D064;
-	Thu, 10 Oct 2024 20:48:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A76E1CF7B8;
+	Thu, 10 Oct 2024 20:52:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728593299; cv=none; b=mVO5P2+vVrKwRAC483hzfFz/aBtehWlpRIj/V/vcwTmgEmD47sxZDDURdRoEfyTRDacsIeW2i1wg8BWIWrzSyIC2bKK7ILbJdCa4/qEUSe5JUfrDZtZPxzv0FTsOu44ssgMP+uVpF3kGHBc7MHM9+93zTMHauGIrtuXgRzHlZ7Y=
+	t=1728593577; cv=none; b=dX+cP7um/5ra1atvqc6SRT3m9L2SeM528GW18MomLXBDBrbK8I9JxPbDfhN0al6jkye3atmkeOOh7L8/onpEZW8tlEuM/o5Z8mWVAYkZvl+DT8T1YCPaGD+oJAfvP1M4laMxt213L87MYUGoY6o+ZW1VpsyDZyHaFz6844+iwe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728593299; c=relaxed/simple;
-	bh=7SjMNgYx9sTS4Z06fO/CTb2R4UVzNqiqGFjfpM2SXXE=;
-	h=Date:To:From:Subject:Message-Id; b=iOg1rehBzWuuuGMMh4mwmSlZzGpMU+9alaci1I5E5u7asPjlfO4u/c0UoEj8vAmT6C258aATbKcDpPEE70ORafdf5ct0mb1FHVA5nabWzE+zITlRepRmUH6UxlrzVvFFLhLCKZ0mf18NtziBOCRnB7IHd7Ie18bnlWnuU2ghVH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=R1T/8WrZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81927C4CEC5;
-	Thu, 10 Oct 2024 20:48:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1728593298;
-	bh=7SjMNgYx9sTS4Z06fO/CTb2R4UVzNqiqGFjfpM2SXXE=;
-	h=Date:To:From:Subject:From;
-	b=R1T/8WrZG9djrgH1xTqfqqs5jmZISmf7l8suAVlR0fhJiwM8XSxpRAPQkD1Vf/iHn
-	 jJxnT5raZ8FRQvZBGQ4WpM6nVr56heC1LrMR73EIr2FmQuUx8P3f+vBTOPgCxk4y8F
-	 XI2GaqjKM8sjySbJRpd9qN/AOxirXU2in7hPMliY=
-Date: Thu, 10 Oct 2024 13:48:17 -0700
-To: mm-commits@vger.kernel.org,w@1wt.eu,vbabka@suse.cz,stable@vger.kernel.org,riel@redhat.com,oleg@redhat.com,mhocko@suse.com,lorenzo.stoakes@oracle.com,lkp@intel.com,hughd@google.com,deller@gmx.de,ben@decadent.org.uk,jannh@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mm-enforce-a-minimal-stack-gap-even-against-inaccessible-vmas.patch removed from -mm tree
-Message-Id: <20241010204818.81927C4CEC5@smtp.kernel.org>
+	s=arc-20240116; t=1728593577; c=relaxed/simple;
+	bh=etEDntW0X/md7gzZZSsscb2sy5hgRhbqVNrPnRO1MkI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L0/SqCCgSBXrn7IWwpOa/C82x8bqMt9T0cMnzN8EnVt7icX5RMsveVGe3cGgdgHaSInWN11Daj9/22OgFGDksGjSO4Ud2DVvHEg+hngivAVROFmDG0cKVvfSir4HeJ0tfVwOQ4ZP4SpTsUbv4lrv4maEG+YHOPqM9MAnDfSBoGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=NagXoIPD; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49AJthn1001702;
+	Thu, 10 Oct 2024 20:52:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=wLyIh6+9gn3e4xbPSOwVBCRNfUEr4
+	1UaG6ybaOHaEqI=; b=NagXoIPDGGQhvlyp1LT5AFFKHu9sR6f7PrAt5gm7LY/lc
+	VjnPM4ZoEqSZ8JwzHhMvEoUAl9VJweQ39OpIDbSKR26LbFH7iyZQcWpwoDw2pzlP
+	yfK2ZBs1/SHLOMDnVEGRnOHHiYKNUpGbHhjgtS8Hsz+g5RFiVAuVTGD550U3wAJe
+	3ErxbGLHlGaVu1kz3DfbOq6NX5cbb7Hvtt1WkCK793HafO1f1QJg4SrPqufELOIn
+	MfBZkFdBMohhSdEO9WcXhC6mjAqzQChibo73Kf/X4QhBUMi0TZ3iLRrLdSKBRdyW
+	PauC08k8DgomkB23F1n+yUGLrverIoTNaWvDJvoKg==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 423063upts-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 10 Oct 2024 20:52:44 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49AKqJHd027694;
+	Thu, 10 Oct 2024 20:52:43 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 422uwakw24-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 10 Oct 2024 20:52:43 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49AKqg7i023518;
+	Thu, 10 Oct 2024 20:52:42 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 422uwakw0j-1;
+	Thu, 10 Oct 2024 20:52:42 +0000
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+To: christophe.jaillet@wanadoo.fr, Jacky Huang <ychuang3@nuvoton.com>,
+        Shan-Chun Hung <schung@nuvoton.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc: dan.carpenter@linaro.org, kernel-janitors@vger.kernel.org,
+        error27@gmail.com, harshit.m.mogalapalli@oracle.com,
+        stable@vger.kernel.org
+Subject: [PATCH] pinctrl: nuvoton: fix a double free in ma35_pinctrl_dt_node_to_map_func()
+Date: Thu, 10 Oct 2024 13:52:37 -0700
+Message-ID: <20241010205237.1245318-1-harshit.m.mogalapalli@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-10_15,2024-10-10_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0
+ mlxlogscore=999 mlxscore=0 suspectscore=0 adultscore=0 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2409260000 definitions=main-2410100137
+X-Proofpoint-ORIG-GUID: RLLLelALefeX2SGF4qW2m8rwk2iQWf2e
+X-Proofpoint-GUID: RLLLelALefeX2SGF4qW2m8rwk2iQWf2e
 
+'new_map' is allocated using devm_* which takes care of freeing the
+allocated data on device removal, call to
 
-The quilt patch titled
-     Subject: mm: enforce a minimal stack gap even against inaccessible VMAs
-has been removed from the -mm tree.  Its filename was
-     mm-enforce-a-minimal-stack-gap-even-against-inaccessible-vmas.patch
+	.dt_free_map = pinconf_generic_dt_free_map
 
-This patch was dropped because an updated version will be issued
+double frees the map as pinconf_generic_dt_free_map() calls
+pinctrl_utils_free_map().
 
-------------------------------------------------------
-From: Jann Horn <jannh@google.com>
-Subject: mm: enforce a minimal stack gap even against inaccessible VMAs
-Date: Tue, 08 Oct 2024 00:55:39 +0200
+Fix this by using kcalloc() instead of auto-managed devm_kcalloc().
 
-As explained in the comment block this change adds, we can't tell what
-userspace's intent is when the stack grows towards an inaccessible VMA.
-
-I have a (highly contrived) C testcase for 32-bit x86 userspace with glibc
-that mixes malloc(), pthread creation, and recursion in just the right way
-such that the main stack overflows into malloc() arena memory.
-
-I don't know of any specific scenario where this is actually exploitable,
-but it seems like it could be a security problem for sufficiently unlucky
-userspace.
-
-I believe we should ensure that, as long as code is compiled with
-something like -fstack-check, a stack overflow in it can never cause the
-main stack to overflow into adjacent heap memory.
-
-My fix effectively reverts the behavior for !vma_is_accessible() VMAs to
-the behavior before commit 1be7107fbe18 ("mm: larger stack guard gap,
-between vmas"), so I think it should be a fairly safe change even in case
-A.
-
-[akpm@linux-foundation.org: s/prev/next/ in !CONFIG_STACK_GROWSUP section, per Lorenzo]
-  Closes: https://lore.kernel.org/oe-kbuild-all/202410090632.brLG8w0b-lkp@intel.com/
-Link: https://lkml.kernel.org/r/20241008-stack-gap-inaccessible-v1-1-848d4d891f21@google.com
-Fixes: 561b5e0709e4 ("mm/mmap.c: do not blow on PROT_NONE MAP_FIXED holes in the stack")
-Signed-off-by: Jann Horn <jannh@google.com>
-Cc: Ben Hutchings <ben@decadent.org.uk>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Rik van Riel <riel@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Willy Tarreau <w@1wt.eu>
-Cc: <stable@vger.kernel.org>
-Cc: kernel test robot <lkp@intel.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: f805e356313b ("pinctrl: nuvoton: Add ma35d1 pinctrl and GPIO driver")
+Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 ---
+This is based on static analysis and reading code, only compile tested.
+Added the stable tag as the commit in Fixes is also in 6.11.y
+---
+ drivers/pinctrl/nuvoton/pinctrl-ma35.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- mm/mmap.c |   53 +++++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 46 insertions(+), 7 deletions(-)
-
---- a/mm/mmap.c~mm-enforce-a-minimal-stack-gap-even-against-inaccessible-vmas
-+++ a/mm/mmap.c
-@@ -1064,10 +1064,12 @@ static int expand_upwards(struct vm_area
- 		gap_addr = TASK_SIZE;
- 
- 	next = find_vma_intersection(mm, vma->vm_end, gap_addr);
--	if (next && vma_is_accessible(next)) {
--		if (!(next->vm_flags & VM_GROWSUP))
-+	if (next && !(next->vm_flags & VM_GROWSUP)) {
-+		/* see comments in expand_downwards() */
-+		if (vma_is_accessible(next))
-+			return -ENOMEM;
-+		if (address == next->vm_start)
- 			return -ENOMEM;
--		/* Check that both stack segments have the same anon_vma? */
+diff --git a/drivers/pinctrl/nuvoton/pinctrl-ma35.c b/drivers/pinctrl/nuvoton/pinctrl-ma35.c
+index 1fa00a23534a..59c4e7c6cdde 100644
+--- a/drivers/pinctrl/nuvoton/pinctrl-ma35.c
++++ b/drivers/pinctrl/nuvoton/pinctrl-ma35.c
+@@ -218,7 +218,7 @@ static int ma35_pinctrl_dt_node_to_map_func(struct pinctrl_dev *pctldev,
  	}
  
- 	if (next)
-@@ -1155,10 +1157,47 @@ int expand_downwards(struct vm_area_stru
- 	/* Enforce stack_guard_gap */
- 	prev = vma_prev(&vmi);
- 	/* Check that both stack segments have the same anon_vma? */
--	if (prev) {
--		if (!(prev->vm_flags & VM_GROWSDOWN) &&
--		    vma_is_accessible(prev) &&
--		    (address - prev->vm_end < stack_guard_gap))
-+	if (prev && !(prev->vm_flags & VM_GROWSDOWN) &&
-+	    (address - prev->vm_end < stack_guard_gap)) {
-+		/*
-+		 * If the previous VMA is accessible, this is the normal case
-+		 * where the main stack is growing down towards some unrelated
-+		 * VMA. Enforce the full stack guard gap.
-+		 */
-+		if (vma_is_accessible(prev))
-+			return -ENOMEM;
-+
-+		/*
-+		 * If the previous VMA is not accessible, we have a problem:
-+		 * We can't tell what userspace's intent is.
-+		 *
-+		 * Case A:
-+		 * Maybe userspace wants to use the previous VMA as a
-+		 * "guard region" at the bottom of the main stack, in which case
-+		 * userspace wants us to grow the stack until it is adjacent to
-+		 * the guard region. Apparently some Java runtime environments
-+		 * and Rust do that?
-+		 * That is kind of ugly, and in that case userspace really ought
-+		 * to ensure that the stack is fully expanded immediately, but
-+		 * we have to handle this case.
-+		 *
-+		 * Case B:
-+		 * But maybe the previous VMA is entirely unrelated to the stack
-+		 * and is only *temporarily* PROT_NONE. For example, glibc
-+		 * malloc arenas create a big PROT_NONE region and then
-+		 * progressively mark parts of it as writable.
-+		 * In that case, we must not let the stack become adjacent to
-+		 * the previous VMA. Otherwise, after the region later becomes
-+		 * writable, a stack overflow will cause the stack to grow into
-+		 * the previous VMA, and we won't have any stack gap to protect
-+		 * against this.
-+		 *
-+		 * As an ugly tradeoff, enforce a single-page gap.
-+		 * A single page will hopefully be small enough to not be
-+		 * noticed in case A, while providing the same level of
-+		 * protection in case B that normal userspace threads get.
-+		 */
-+		if (address == prev->vm_end)
- 			return -ENOMEM;
- 	}
+ 	map_num += grp->npins;
+-	new_map = devm_kcalloc(pctldev->dev, map_num, sizeof(*new_map), GFP_KERNEL);
++	new_map = kcalloc(map_num, sizeof(*new_map), GFP_KERNEL);
+ 	if (!new_map)
+ 		return -ENOMEM;
  
-_
-
-Patches currently in -mm which might be from jannh@google.com are
-
-mm-mremap-fix-move_normal_pmd-retract_page_tables-race.patch
+-- 
+2.39.3
 
 
