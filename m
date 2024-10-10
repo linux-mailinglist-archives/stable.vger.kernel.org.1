@@ -1,172 +1,119 @@
-Return-Path: <stable+bounces-83399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9FF9999539
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 00:30:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C1B0999544
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 00:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D529286342
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 22:30:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABBA21C20C11
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 22:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4351E7C2A;
-	Thu, 10 Oct 2024 22:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9651A2645;
+	Thu, 10 Oct 2024 22:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="PE6M7PAN"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Wa9j1rSx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE071E7C0C
-	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 22:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028F41C6888
+	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 22:36:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728599424; cv=none; b=O+FXGzEfMPPWluw4BtT8PfW90W51hyzXULGyqH1BgZRPujQc5XFdtfaa7xJl/3wQsKEhC6nvrhg+l5rpmfyMTsjvbTToAw/0eNyZu+3toRnV1gYL+rxw1UbM8mspOspxo0djrVKRP+yUfdXEoZulEX+MnAScGDkLxAwtZyrjWPs=
+	t=1728599801; cv=none; b=qkwRaIkuDMKzeAHrwcK2e6pF7zGadQbEqIZKJUIwd7Ui1Ludaf32gAk4exKGCWgKQjUxdwGS5G54biIy2H8jn9gcITOjW0sVXUm8NO2eRfzIxDHn50hsV5rfLAR/2Yl52sSMTPfu0Ti2toJnDY0/5nh9r3pPXrMalcRV7Td0Id0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728599424; c=relaxed/simple;
-	bh=CdmSXbDHAWq8dgUJmRamn05jbHQQT0TVNYOiCJ/xXdY=;
+	s=arc-20240116; t=1728599801; c=relaxed/simple;
+	bh=ndGUOdbmf0XLXi5qOt0/OM43ZwpMxj5j0YR7mZtrb0o=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=phjcLdWCvs1JqvDysYaZnR1g53ZDdQKoBodKK1CCYvXzX0l5omHmD8KeK4/3ZthG3a/Ha6Ve7+vXdibci4ADwChRtjgavgKWUPjR481tm9/TgRUy8JmB1NfFQRjI8gzX9ga3T5FKzIbws9u7owiSoKQdh+iuuFhWWgRfgGRZeVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=PE6M7PAN; arc=none smtp.client-ip=209.85.218.54
+	 To:Cc:Content-Type; b=L7x5jMTIduKTFx60oNWy6YYVbuXkVWdgUolTQG2WhOpCTYBtSXOQkpoGr9Ju+tX1A6kPcuMala3+oV6fQxpfTa5dt+fR0k/IicYrmFhWM88+u75BFuKVe757PA0zEuFn6ZboK+UqlhKdseNt2KnkIHrZD8x7U7sDQ4nD0pRLErE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Wa9j1rSx; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a99388e3009so198475366b.3
-        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 15:30:22 -0700 (PDT)
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5398e7dda5fso1432820e87.0
+        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 15:36:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1728599420; x=1729204220; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1728599796; x=1729204596; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1tjzEcZp4sdEI4rizDgYHU+pcwb4fTKSCVr7AMb0oZQ=;
-        b=PE6M7PANLNqAMURMXJVBC6WFAs2aw1PLurVOSZmQkQgRx+Xdx4vlMg298jctGcPQsM
-         FUco1B4ECmWEy9bUWmMw8LK1jkBY2QH+LivIYiKw596AwOTsVPztvNGeD6rIVX/axi3r
-         o58Lj/WGgPRuahBCl5exBJRntoKgTjIb2SAUs=
+        bh=eyyxlBvtxdIx44gC6sdEnPAxTnLbnwRQOcfiWPcHmqE=;
+        b=Wa9j1rSxtkPuaG2PLhc1lMwrXA3NrJHkqCdfv4ccIwGm28b7A1+vXWde6ATyk9H8VM
+         3ggLieKpgCmnkMzSEiC4mkpRH+n+Yqc9+YRskfJ4ygFPzs5jy2kDPypDteNjw7g9XvK2
+         tn9N+00xm58W35PV6dmdV3k8h8co4c3kY8tno=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728599420; x=1729204220;
+        d=1e100.net; s=20230601; t=1728599796; x=1729204596;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1tjzEcZp4sdEI4rizDgYHU+pcwb4fTKSCVr7AMb0oZQ=;
-        b=SWkrmMA48MVu6sntGw2inrI4kZUH7uZw3LcEqeLcbEdWXh8+QONyujXai5nXZBLNT7
-         2YzGHTWu1HbzFDGmGDxtqGwXfLRRiQu9/1YDvPxfXWFVWi6sSVbabgCSSwtsoKKp8+av
-         fxhhr2SU3KFyxPY2XGEBzoMTsz3iH2RLdDYhB05oKq77BjoQ0r7khU6J5zl64K7EBEpQ
-         t5ZuRVajdmprRWkrpw71yifBN5wx9929ucCKiOTrNzmBZ3dlBeanUmlZ+LxwQ4tHQe2Y
-         2zYu/OI06H3wz7JyC9OJ8ewu4L96ik/GS+kATS6bIi1LELOOxb29J6aPfHJvBFTMh6vT
-         k0nw==
-X-Forwarded-Encrypted: i=1; AJvYcCUNOvUaDfkV8rs4Do8hYEhFOBvoLMIBqefuR3Euwb2MaEUz7Ylq+k8irs/VgmXjea7+O3jWy5U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAsnunJJ2qRrSQGQ3QZ+RgUohrcovwWO3bRW8jONVP+vGtVQF3
-	Y6caG0Quhzkljpvndl2o5/oHTfPlUBAilKYizMZ5rj7Oxd/1TePQfSgS5eNvI9YwFP6webw3nKw
-	z0g==
-X-Google-Smtp-Source: AGHT+IGYWaYw/jwIH+m2lAbKvEZOUYbKDU7oiUUPqBRqUh9MDksLBInnIBZdiRfv1kudzCRpKSrrRg==
-X-Received: by 2002:a17:907:f74c:b0:a99:3729:f6e0 with SMTP id a640c23a62f3a-a99b957c970mr37295766b.14.1728599419738;
-        Thu, 10 Oct 2024 15:30:19 -0700 (PDT)
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com. [209.85.221.51])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99a80dc167sm141466566b.160.2024.10.10.15.30.18
+        bh=eyyxlBvtxdIx44gC6sdEnPAxTnLbnwRQOcfiWPcHmqE=;
+        b=QzSuib6YCY6n0d0QOiVSFSxJfhYpFdCCBA/8/N+fTR+1YaFgru0U87f0GDgjEiYAj+
+         TgUP0W/yO3PJYSD8bCRMCsL72WiSRhiCWivT4c70reeqO1WDVjXLbIpLqLqCjXhwiNS8
+         W/V7YFLMjkthgiajrCmXSM7gSa3NRCBw9/8oGuzjCQ6zssWIppf4x2zoN7wduQzSGJdX
+         C0UxcDhd+Ss4eaFWbae+P3xV0+ddJ7VXtJZZX12u8AsWA3WeopSeQrO1lIanMR3YjISk
+         frB3Buq+hDwZxQjLfJxImIXe2BENiWH2Y2IQ/B0wnuoQf2aOyV+++knJpyuS155gDGaM
+         21wA==
+X-Forwarded-Encrypted: i=1; AJvYcCW/kCGOK6qAic7hm2I9ywrG5mTRpAGUUtk/2HFk9bA39x8yPKDclB+ht3C13ZUebHNueavf/sA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsxrqRYG78b3yT9Wrq3Y5EwITiZYK7amEEgzqWTWj2h36FRBJG
+	SgjmsqURRCPnw+ajNKSn1boO5+KVUA9wbSjcNG1xPmmk0CzAyEPf1f+CL7GhrFEI4tpIVN/sP9g
+	eRHzN
+X-Google-Smtp-Source: AGHT+IGBFG/ToQAUlAGwPwIvM0POyl2iCR8kXAz6Em/4TiyWoRVKP5slcvMRs6iRzNzx0BaXK1qHnw==
+X-Received: by 2002:a05:6512:b0d:b0:539:8d9b:b624 with SMTP id 2adb3069b0e04-539da5939bemr171284e87.55.1728599795789;
+        Thu, 10 Oct 2024 15:36:35 -0700 (PDT)
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com. [209.85.167.49])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-539cb90516csm409108e87.251.2024.10.10.15.36.34
         for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Oct 2024 15:30:18 -0700 (PDT)
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-37d4ec26709so620849f8f.0
-        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 15:30:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVex1+Q3oEfc36gQWgOvYDqW8XWien3DjbPksg+5boDD1F9JcbBMHzcDY1TFuvrc8JkSXYZgIQ=@vger.kernel.org
-X-Received: by 2002:a05:6000:181a:b0:37c:cd1d:b87e with SMTP id
- ffacd0b85a97d-37d551d50a7mr437367f8f.18.1728599418059; Thu, 10 Oct 2024
- 15:30:18 -0700 (PDT)
+        Thu, 10 Oct 2024 15:36:34 -0700 (PDT)
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5399675e14cso1915290e87.3
+        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 15:36:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWKML4NJN8InqdRjYxqoK8PkobuLTKDrbYeCFXRjkBXW1AUgwkPXPWSw69rh9u8nV2kXsh2YiA=@vger.kernel.org
+X-Received: by 2002:a05:6512:3189:b0:535:6cbf:51a3 with SMTP id
+ 2adb3069b0e04-539da3d5293mr199479e87.25.1728599794291; Thu, 10 Oct 2024
+ 15:36:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241001125033.10625-1-johan+linaro@kernel.org>
- <20241001125033.10625-3-johan+linaro@kernel.org> <CAD=FV=UoU5Nd7sW66cjQzor+BP+W_f7uw0MGRaF6y7PH7KRN_g@mail.gmail.com>
- <ZwaO0hCKdPpojvnn@hovoldconsulting.com>
-In-Reply-To: <ZwaO0hCKdPpojvnn@hovoldconsulting.com>
+References: <20241009145110.16847-1-johan+linaro@kernel.org> <20241009145110.16847-2-johan+linaro@kernel.org>
+In-Reply-To: <20241009145110.16847-2-johan+linaro@kernel.org>
 From: Doug Anderson <dianders@chromium.org>
-Date: Thu, 10 Oct 2024 15:30:05 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=UZtZ1-0SkN2sOMp6YdU02em_RnK85Heg5z0jkH4U30eQ@mail.gmail.com>
-Message-ID: <CAD=FV=UZtZ1-0SkN2sOMp6YdU02em_RnK85Heg5z0jkH4U30eQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/7] serial: qcom-geni: fix shutdown race
-To: Johan Hovold <johan@kernel.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+Date: Thu, 10 Oct 2024 15:36:19 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=WvpOx1RHFdo7NSss3m922VqRSdsV6G+NnxyCjcp2XMVA@mail.gmail.com>
+Message-ID: <CAD=FV=WvpOx1RHFdo7NSss3m922VqRSdsV6G+NnxyCjcp2XMVA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/9] serial: qcom-geni: fix polled console initialisation
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
 	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-serial@vger.kernel.org, stable@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On Wed, Oct 9, 2024 at 7:10=E2=80=AFAM Johan Hovold <johan@kernel.org> wrot=
-e:
+On Wed, Oct 9, 2024 at 7:51=E2=80=AFAM Johan Hovold <johan+linaro@kernel.or=
+g> wrote:
 >
-> On Thu, Oct 03, 2024 at 11:30:08AM -0700, Doug Anderson wrote:
-> > On Tue, Oct 1, 2024 at 5:51=E2=80=AFAM Johan Hovold <johan+linaro@kerne=
-l.org> wrote:
-> > >
-> > > A commit adding back the stopping of tx on port shutdown failed to ad=
-d
-> > > back the locking which had also been removed by commit e83766334f96
-> > > ("tty: serial: qcom_geni_serial: No need to stop tx/rx on UART
-> > > shutdown").
-> >
-> > Hmmm, when I look at that commit it makes me think that the problem
-> > that commit e83766334f96 ("tty: serial: qcom_geni_serial: No need to
-> > stop tx/rx on UART shutdown") was fixing was re-introduced by commit
-> > d8aca2f96813 ("tty: serial: qcom-geni-serial: stop operations in
-> > progress at shutdown"). ...and indeed, it was. :(
-> >
-> > I can't interact with kgdb if I do this:
-> >
-> > 1. ssh over to DUT
-> > 2. Kill the console process (on ChromeOS stop console-ttyMSM0)
-> > 3. Drop in the debugger (echo g > /proc/sysrq-trigger)
+> The polled console (KGDB/KDB) implementation must not call port setup
+> unconditionally as the port may already be in use by the console or a
+> getty.
 >
-> Yeah, don't do that then. ;)
+> Only make sure that the receiver is enabled, but do not enable any
+> device interrupts.
+>
+> Fixes: d8851a96ba25 ("tty: serial: qcom-geni-serial: Add a poll_init() fu=
+nction")
+> Cc: stable@vger.kernel.org      # 6.4
+> Cc: Douglas Anderson <dianders@chromium.org>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+>  drivers/tty/serial/qcom_geni_serial.c | 20 +++++++++++++++++++-
+>  1 file changed, 19 insertions(+), 1 deletion(-)
 
-The problem is, I don't always have a choice. As talked about in the
-message of commit e83766334f96 ("tty: serial: qcom_geni_serial: No
-need to stop tx/rx on UART shutdown"), the above steps attempt to
-simulate what happened organically: a crash in late shutdown. During
-shutdown the agetty has been killed by the init system and I don't
-have a choice about it. If I get a kernel crash then (which isn't
-uncommon since shutdown code tends to trigger seldom-used code paths)
-then I can't debug it. :(
-
-We need to fix this.
-
-
-> Not sure how your "console process" works, but this should only happen
-> if you do not enable the serial console (console=3DttyMSM0) and then try
-> to use a polled console (as enabling the console will prevent port
-> shutdown from being called).
-
-That simply doesn't seem to be the case for me. The port shutdown
-seems to be called. To confirm, I put a printout at the start of
-qcom_geni_serial_shutdown(). I see in my /proc/cmdline:
-
-console=3DttyMSM0,115200n8
-
-...and I indeed verify that I see console messages on my UART. I then run:
-
-stop console-ttyMSM0
-
-...and I see on the UART:
-
-[   92.916964] DOUG: qcom_geni_serial_shutdown
-[   92.922703] init: console-ttyMSM0 main process (611) killed by TERM sign=
-al
-
-Console messages keep coming out the UART even though the agetty isn't
-there. Now I (via ssh) drop into the debugger:
-
-echo g > /proc/sysrq-trigger
-
-I see the "kgdb" prompt but I can't interact with it because
-qcom_geni_serial_shutdown() stopped RX.
-
-
--Doug
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
 
