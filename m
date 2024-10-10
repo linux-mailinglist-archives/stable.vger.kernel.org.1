@@ -1,121 +1,135 @@
-Return-Path: <stable+bounces-83358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B7C999881C
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 15:46:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3080998898
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 16:01:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA7F328ADB4
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 13:46:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F7191C23C27
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 14:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E67CD1C9DD3;
-	Thu, 10 Oct 2024 13:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776DC1C9DD8;
+	Thu, 10 Oct 2024 14:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S5E2cHXf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C/52gZ+O"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074851B5337
-	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 13:46:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBAC51BDA90
+	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 14:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728567964; cv=none; b=JyPD4jMIKea0VYP+KX9DK2Lt06jAAQ/qic8RUYvEg7PQ6akBPgeOP84KgCSibNy3U+3NrhhbjhlqgLMSGD7Ru1dboD4NEGMT/xxFfftmW26ILcP8dmQlItAdBvMsffHsFOIOA1WuhKArQnpPtub/TnUYLfupGHbwbwKyH65SxJY=
+	t=1728568889; cv=none; b=NbTuwrF8LbI/pbT21+L45BChQOl+SLV/j+lDX9OvAXMCSokSZ8UwMuGvz7JFFngHJfk5LyBVT3/37Lz7yOM27By+LSNGtzd9O1PZW0ECkgYRoCVbuFKI1qczWsDMgCMMzzn6aEMd/sMuerou0sr0Y4P3lsefm0vmu6I3anJjS2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728567964; c=relaxed/simple;
-	bh=aqf6FA1ModO8YdrSAdH7Rvzvf/NsbPNUiAWY1Oybvx4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f4EOx1GGOESnHunIR1V8ZOvzmrf5tk1gpfhanaPOH/U28JS7ybG0v/Q7opa9duXSEDfQT6khhGgh95j6P7DJk2gop+p7oHrzJ4JyrdTkV0X3cRhKh4uMfWpvEeuPb0jBcD2Kl01S0uwEzFaqx+5wOA7/R5itkVuaS1HzFJsLAWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=S5E2cHXf; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5398b2f43b9so1846906e87.1
-        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 06:46:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728567961; x=1729172761; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=daYbA/IQ2VsUidG5QXueWwrgZDxCl0o/PDmc/HXVE1k=;
-        b=S5E2cHXflWEEwtibALBgH4kskcjbcuEhXD5hvnfNFtJHyKZg5R/2OS1g0iEA/rnyvY
-         45o9zo5RzjOSqcLMk9T8wUI5HYBFyAyMsbiRf99DAKDwL0lE0KeiSsm9egzuA2yDuuMs
-         61NL2FUKJBFYqEJio5HgozpQTdVxRyOohEZqxV8ZTmd1u1Uix1krPnWpunJHY+UY+R3v
-         OFjRxNNKG637s4x0jJhDbYEnRGAebVZCfmhPy5hRMGQ0S7WVWtqQTyWdDP60rJn8K2q5
-         NL5exhGe9ghxWAySS8D/eQHE8Je0xBLIj6ZXDx1vAxhgrxuz071sgx0JGjhK10c+pMNw
-         YGYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728567961; x=1729172761;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=daYbA/IQ2VsUidG5QXueWwrgZDxCl0o/PDmc/HXVE1k=;
-        b=ce4I/qYQ8RqR+KOZx49pIXzKtW7ZN+6QhxWVaDibsj1lRx3dTGzcqHgKC9B7XbMnzX
-         JkuzXksMwnC8t0M3r9b9u4Nj7bywG3c5ZpxIAwEsuiZW99/3+ZdmPLYiPgYoN9cg7d+x
-         ncyRyBN7PRmD5IRCLZlFxUkwSYwwHkJfcqVDkFBbm+JcUEbG2YHqQebkxfZo9vFkwV7w
-         vgxwfp+vJothCNebyKBdFhmAVZxHnH81kW2yALou8FnSMvdVWoLCzDSbK39IWUk7GO6+
-         sWyzC2x83Tpiu2FEJ3YC0i/m93CXOjKHSJD6CwGpQulQpZri4ZWv3va7ki+9Ap3pP1Xq
-         7kGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU7TR1y5kd4jADGX666VyEP0D8KqQ5nhfIJDz6ciMnt7mp7l4i/CvrPefRHQZGQ2w/hQ5bYIs4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyr6mXbmA0PMs5XgKvhAPBTQ7grlf7kgk6YsB+/kLGsMNYdwjEx
-	6NVeuLkQxNk/lC2y3L+eekjQiXzNYbXOGXBA0+nUTWobu1d4wvuzsrV+2OclPRQ=
-X-Google-Smtp-Source: AGHT+IG8VZyQ2Csj/t2qN0rUAUd1Mt/8bM1qBklXVbOB/H5xxqv45UlS19dZiOWrZWbiyjsSdd4NFQ==
-X-Received: by 2002:a05:6512:3f0a:b0:539:8ee8:749e with SMTP id 2adb3069b0e04-539c985a7f0mr1301444e87.3.1728567961166;
-        Thu, 10 Oct 2024 06:46:01 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-539cb6c10b9sm262053e87.62.2024.10.10.06.45.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2024 06:45:59 -0700 (PDT)
-Date: Thu, 10 Oct 2024 16:45:57 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: neil.armstrong@linaro.org, Johan Hovold <johan+linaro@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Chris Lew <quic_clew@quicinc.com>, Stephan Gerhold <stephan.gerhold@linaro.org>, 
-	Abel Vesa <abel.vesa@linaro.org>, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	regressions@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] soc: qcom: mark pd-mapper as broken
-Message-ID: <jtxci47paynh3uuulwempryixgbdvcnx3fhtkru733s6rkip7l@jxoaaxdxvp3d>
-References: <20241010074246.15725-1-johan+linaro@kernel.org>
- <CAA8EJpoiu2hwKWGMTeA=Kr+ZaPL=JJFq1qQOJhUnYz6-uTmHWw@mail.gmail.com>
- <ZweoZwz73GaVlnLB@hovoldconsulting.com>
- <CAA8EJprg0ip=ejFOzBe3iisKHX14w0BnAQUDPqzuPRX6d8fvRA@mail.gmail.com>
- <Zwe-DYZKQpLJgUtp@hovoldconsulting.com>
- <c84dd670-d417-4df7-b95f-c0fbc1703c2d@linaro.org>
- <ZwfVg89DAIE74KGB@hovoldconsulting.com>
+	s=arc-20240116; t=1728568889; c=relaxed/simple;
+	bh=Zbm+qJJQ0R/QF9HbWCros9cHGg4g9SG4o5soieW3Cs8=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=IHuiRMsujp3bBuvWiSL2ui9RstA2+cx2jZcJApUyI5AKQEwJEiN5Gzc+KiM3PGHm3iPTlqn1muHfDQf59lGjka7IDF/Oa8GP0KAx6Sh3Sbw3Mq9G2Y52UKXdcTdZD1hJ8zpi/XtqxHAfEmzCxXcK86spduzU/m3yc+kvXTpxbpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C/52gZ+O; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728568887; x=1760104887;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Zbm+qJJQ0R/QF9HbWCros9cHGg4g9SG4o5soieW3Cs8=;
+  b=C/52gZ+OrqhD6PG5oNyIULIdokrHc8W5i1/hX9ZP9Ojc7SUSIMboq3vv
+   py1EIksmp6IZSoTEAOvnO7w7W2uk137j5y0mqWVY8I+1NS98YvswSX06l
+   IFcFQQzD9vW0JRCmawHKqshsF+pBk0oIKAghCTq+NZCk4MrhgOTbmntKw
+   +/9DeXiYHJINSIGARXC5yNej0bsAGURDXEdf3BSdB1r/tYpCYfohZYtx3
+   ZOH4INn0ldVxBf4g/NvQpmo8cLLbfgfPAkRq0abWBK+2WezculgFVEqEP
+   DgjNUh5jfmoPLWH6kRdGmHmTso4NtEqozZa2VWtpZHdCcZqizrRHjCAL2
+   A==;
+X-CSE-ConnectionGUID: l67qa5CpSZiFrsQypBoiLg==
+X-CSE-MsgGUID: bsKP1lWdQtunN7y5NMqEeQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="39294269"
+X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
+   d="scan'208";a="39294269"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 07:00:38 -0700
+X-CSE-ConnectionGUID: GNCH3032S/aRj9wYpsoRfQ==
+X-CSE-MsgGUID: 85AxBxU4SRG4yJXvH7a47Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
+   d="scan'208";a="76911442"
+Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.125.248.220]) ([10.125.248.220])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 07:00:24 -0700
+Message-ID: <9539f133-2cdb-4aa8-8eac-ddf649819d98@linux.intel.com>
+Date: Thu, 10 Oct 2024 22:00:21 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZwfVg89DAIE74KGB@hovoldconsulting.com>
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, stable <stable@vger.kernel.org>,
+ jroedel@suse.de, Sasha Levin <sashal@kernel.org>, x86@kernel.org
+Subject: Re: [regression]Boot Hang on Kernel 6.1.83+ with Dell PowerEdge R770
+ and Intel Xeon 6710E
+To: "Liang, Kan" <kan.liang@linux.intel.com>,
+ Jinpu Wang <jinpu.wang@ionos.com>, Greg KH <gregkh@linuxfoundation.org>
+References: <CAMGffE=dPofoPD_+giBnAC66-+=RqRmO2uBmC88-Ph1RgGN=0Q@mail.gmail.com>
+ <2024101006-scanner-unboxed-0190@gregkh>
+ <CAMGffE=HvMU4Syy7ATEevKQ+izAvndmpQ8-F9HN_WM+3PKwWyw@mail.gmail.com>
+ <2024101000-duplex-justify-97e6@gregkh>
+ <CAMGffE=xSDZ8Ad9o7ayg2xwnMyPDojyBDh_AHf+h7WBV7y630w@mail.gmail.com>
+ <635be050-f0ab-4242-ac79-db67d561dae9@linux.intel.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <635be050-f0ab-4242-ac79-db67d561dae9@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 10, 2024 at 03:24:19PM GMT, Johan Hovold wrote:
-> On Thu, Oct 10, 2024 at 01:46:48PM +0200, neil.armstrong@linaro.org wrote:
-> > >> On Thu, 10 Oct 2024 at 13:11, Johan Hovold <johan@kernel.org> wrote:
-> 
-> > >>> As I tried to explain in the commit message, there is currently nothing
-> > >>> indicating that these issues are specific to x1e80100 (even if you may
-> > >>> not hit them in your setup depending on things like probe order).
-> 
-> > The in-kernel pd-mapper works fine on SM8550 and SM8650, please just revert
-> > the X1E8 patch as suggested by Dmitry.
-> 
-> Again, you may just be lucky, we have x1e users that also don't hit
-> these issues due to how things are timed during boot in their setups.
-> 
-> If there's some actual evidence that suggests that this is limited to
-> x1e, then that would of course be a different matter, but I'm not aware
-> of anything like that currently.
+On 2024/10/10 21:25, Liang, Kan wrote:
+> On 2024-10-10 6:10 a.m., Jinpu Wang wrote:
+>> Hi Greg,
+>>
+>>
+>> On Thu, Oct 10, 2024 at 11:31 AM Greg KH<gregkh@linuxfoundation.org> wrote:
+>>> On Thu, Oct 10, 2024 at 11:13:42AM +0200, Jinpu Wang wrote:
+>>>> Hi Greg,
+>>>>
+>>>> On Thu, Oct 10, 2024 at 11:07 AM Greg KH<gregkh@linuxfoundation.org> wrote:
+>>>>> On Thu, Oct 10, 2024 at 09:31:37AM +0200, Jinpu Wang wrote:
+>>>>>> Hello all,
+>>>>>>
+>>>>>> We are experiencing a boot hang issue when booting kernel version
+>>>>>> 6.1.83+ on a Dell Inc. PowerEdge R770 equipped with an Intel Xeon
+>>>>>> 6710E processor. After extensive testing and use of `git bisect`, we
+>>>>>> have traced the issue to commit:
+>>>>>>
+>>>>>> `586e19c88a0c ("iommu/vt-d: Retrieve IOMMU perfmon capability information")`
+>>>>>>
+>>>>>> This commit appears to be part of a larger patchset, which can be found here:
+>>>>>> [Patchset on lore.kernel.org](https://lore.kernel.org/ 
+>>>>>> lkml/7c4b3e4e-1c5d-04f1-1891-84f686c94736@linux.intel.com/T/)
+>>>>>>
+>>>>>> We attempted to boot with the `intel_iommu=off` option, but the system
+>>>>>> hangs in the same manner. However, the system boots successfully after
+>>>>>> disabling `CONFIG_INTEL_IOMMU_PERF_EVENTS`.
+>>>>> Is there any error messages?  Does the latest 6.6.y tree work properly?
+>>>>> If so, why not just use that, no new hardware should be using older
+>>>>> kernel trees anyway 🙂
+>>>> No error, just hang, I've removed "quiet" and added "debug".
+>>>> Yes, the latest 6.6.y tree works for this, but there are other
+>>>> problems/dependency we have to solve.
+>>> Ok, that implies that we need to add some other patch to 6.1.y, OR we
+>>> can revert it from 6.1.y.  Let me know what you think is the better
+>>> thing to do.
+>>>
+>> I think better to revert both:
+>> 8c91a4bfc7f8 ("iommu: Fix compilation without CONFIG_IOMMU_INTEL")
+> I'm not sure about this one. May need baolu's comments.
 
-Is there an evidence that it is broken on other platforms? I have been
-daily driving the pd-mapper in my testing kernels for a long period of
-time.
+I can't find this commit in the mainline kernel. I guess it fixes a
+compilation issue in the stable tree? If so, it depends on whether the
+issue is still there.
 
--- 
-With best wishes
-Dmitry
+Thanks,
+baolu
 
