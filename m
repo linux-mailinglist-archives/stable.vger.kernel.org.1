@@ -1,103 +1,161 @@
-Return-Path: <stable+bounces-83372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 426F6998CB3
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 18:03:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD17998D54
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 18:26:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 590DC1C248D1
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 16:03:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7912B2A5AD
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 15:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558591CEE93;
-	Thu, 10 Oct 2024 16:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF711CBEBC;
+	Thu, 10 Oct 2024 15:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CHfk2wEx"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mN+aBLcq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0FE1CEE83;
-	Thu, 10 Oct 2024 16:03:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0F820DD2;
+	Thu, 10 Oct 2024 15:26:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728576183; cv=none; b=a0j+o6KiC7J+iioItiWF70yKI/pHizRKJeWqx87DFSOnjUQARQQsOugqx2HBHu19Mb99OKZZaLMBU+XlT6VAMt5PT/KybobFVhnsC/YShJEEbXpXPpGUBuGIR5N0u2HCuPYLfwqgLBYOqM0f10JxWDznxJZIF66gro8DtVxRFNk=
+	t=1728574020; cv=none; b=VsnCaTsVIoGRLOgqUYJHwqGtmyc4mRTzXifVQ6LiHiaU6P7wGt+30CEsmikf3Vw5NiOc3r23HjftBCRNUWqNLNv0ZHD2Fm700asMeO4S3ouH8oSsGBbXvV+FcNKM8rjXW+5D68Vdk4MnydjRLqJQZ06Z05PMjkPU13jWJbaH4SM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728576183; c=relaxed/simple;
-	bh=rAq/G8gwCb1+rwQzT/Y8bXAu/xz5ci3OpT4Ooh+KTUI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=kCT8Ctwb35Kh4zyBLcjNB1OhDhnksup6M1PG8bLie5v+YNmn5JOhOgirvj4LtsjXibukwTaHuF5URrqdY+zyZgA+5s2pXuuKHYizKtnZpjazGWrkGjcXGIJI1nLHQGZg2/Ipgy5zPs7/mE2v79ErCsMXQHIFBUKgH5fyBOeoslU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CHfk2wEx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A24C4CECC;
-	Thu, 10 Oct 2024 16:03:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728576182;
-	bh=rAq/G8gwCb1+rwQzT/Y8bXAu/xz5ci3OpT4Ooh+KTUI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=CHfk2wExM4tvXO7/iZhHlO35in43YiPzcfc1UARpkPfi428kghCZ2aPybwWAJalB3
-	 BAuDAKRqLLeKEHcEUJHzEHBydE8WvBiEP0OoHf83xTssqg1TN5OLIWQ188DdAHRvp2
-	 8bYeZ8q9SjEE9De7uiMYEcrNcI2ZH2awrpUGy/U9XQJCFbKRRrztXW48D1DZrKyLKQ
-	 V5NESYJB0TXLaW3CvyWwugOlUrLGDVhdG8VAtt+EzDcjfWOVDxQm36UVxZ3aBcLBK+
-	 MNauGk907pjUcT5f8EoqjFzaAadp3KmJVH2A0PGtsFPM6WBTSqMZ4IV75e8r8WYPga
-	 iCtjwE8+L1xSg==
-From: Mark Brown <broonie@kernel.org>
-To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Valentin Caron <valentin.caron@foss.st.com>, 
- Alain Volmat <alain.volmat@foss.st.com>
-Cc: linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20241010-spi-mp25-device-fix-v2-1-d13920de473d@foss.st.com>
-References: <20241010-spi-mp25-device-fix-v2-1-d13920de473d@foss.st.com>
-Subject: Re: [PATCH v2] spi: stm32: fix missing device mode capability in
- stm32mp25
-Message-Id: <172857618035.3841267.4703963999206968322.b4-ty@kernel.org>
-Date: Thu, 10 Oct 2024 17:03:00 +0100
+	s=arc-20240116; t=1728574020; c=relaxed/simple;
+	bh=ygDroZHA1j7JZxjtFU44rxkjVqjCtctM1ElAx6dSsDw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hVPV/luGBJ/S8Bz2VKL/WGD6IzAQ1dtSJV5Oi8282qh1/KYQmva0wtxV4FyM2dc9AQHIo8hXy8uEU4h5ZtUdbov9vIX/37adbx85v+pDrEZtoEwj+BH+vFd8Zr7Kh4IEnyIIE4yY3aseGJaydYIdsLso8RmAIRu/j5l4bn08bho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mN+aBLcq; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 14806FF807;
+	Thu, 10 Oct 2024 15:26:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1728574010;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JzE9jT9P4k/XrNuOOWoFuNHxaK3It9F/Ncn4nUJHRtA=;
+	b=mN+aBLcqL0fC5B2Nh/GqSp9zUw3YoO09GtFyfxct1Ky77mVi1M+Jf0Q4JE3C9nSHju8iQJ
+	yQiCJiwoYVvAbusHJNh93Kz9QIhhOsXMnOZBpI/Adoe7eTLXLhH7l8Ecbuo6Wths7iPsCc
+	+p97nw7y+I3U7jXe5oWcYkPox0y7nIuaUWJ95aouJ5SwTIrvjUDckluKRyHmSruPnq/F7o
+	kQrKswXvWxAmc4a54zLQORhIKT+p9VQCyRk+TD/00+FVuZ8GFCBYFqY3Ai4tNPzrm3vIdY
+	R/VaX75Fn8FFJIRc0ivySGkGaR4PvTnK+gK0lhaj1dIw7FePzm8IOGikrPDmBQ==
+Date: Thu, 10 Oct 2024 17:26:47 +0200
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: dri-devel@lists.freedesktop.org, Stefan Agner <stefan@agner.ch>,
+	Daniel Vetter <daniel.vetter@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	stable@vger.kernel.org, open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] drm/vblank: Require a driver register vblank support for
+ 0 or all CRTCs
+Message-ID: <ZwfyN3uwfODqcw4U@louis-chauvet-laptop>
+Mail-Followup-To: Lyude Paul <lyude@redhat.com>,
+	dri-devel@lists.freedesktop.org, Stefan Agner <stefan@agner.ch>,
+	Daniel Vetter <daniel.vetter@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	stable@vger.kernel.org, open list <linux-kernel@vger.kernel.org>
+References: <20240927203946.695934-2-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-99b12
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240927203946.695934-2-lyude@redhat.com>
+X-GND-Sasl: louis.chauvet@bootlin.com
 
-On Thu, 10 Oct 2024 15:33:03 +0200, Alain Volmat wrote:
-> The STM32MP25 SOC has capability to behave in device mode however
-> missing .has_device_mode within its stm32mp25_spi_cfg structure leads
-> to not being able to enable the device mode.
+Le 27/09/24 - 16:39, Lyude Paul a écrit :
+> Currently, there's nothing actually stopping a driver from only registering
+> vblank support for some of it's CRTCs and not for others. As far as I can
+> tell, this isn't really defined behavior on the C side of things - as the
+> documentation explicitly mentions to not use drm_vblank_init() if you don't
+> have vblank support - since DRM then steps in and adds its own vblank
+> emulation implementation.
 > 
+> So, let's fix this edge case and check to make sure it's all or none.
 > 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> Fixes: 3ed4351a83ca ("drm: Extract drm_vblank.[hc]")
+> Cc: Stefan Agner <stefan@agner.ch>
+> Cc: Daniel Vetter <daniel.vetter@intel.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v4.13+
+> ---
+>  drivers/gpu/drm/drm_vblank.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
+> index 94e45ed6869d0..4d00937e8ca2e 100644
+> --- a/drivers/gpu/drm/drm_vblank.c
+> +++ b/drivers/gpu/drm/drm_vblank.c
+> @@ -525,9 +525,19 @@ static void drm_vblank_init_release(struct drm_device *dev, void *ptr)
+>   */
+>  int drm_vblank_init(struct drm_device *dev, unsigned int num_crtcs)
+>  {
+> +	struct drm_crtc *crtc;
+>  	int ret;
+>  	unsigned int i;
+>  
+> +	// Confirm that the required vblank functions have been filled out for all CRTCS
+> +	drm_for_each_crtc(crtc, dev) {
+> +		if (!crtc->funcs->enable_vblank || !crtc->funcs->disable_vblank) {
+> +			drm_err(dev, "CRTC vblank functions not initialized for %s, abort\n",
+> +				crtc->name);
+> +			return -EINVAL;
+> +		}
+> +	}
+> +
 
-Applied to
+Hi,
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+I noticed that the kernel bot reported an issue with VKMS and this patch.
 
-Thanks!
+I did not take the time to reproduce the issue, but it may come from the 
+fact that VKMS call drm_vblank_init before calling 
+drmm_crtc_init_with_planes [1]. I don't see anything in the documentation 
+that requires the CRTC to be initialized before the vblank, is it a change 
+of the API or an issue in VKMS since 2018 [2]?
 
-[1/1] spi: stm32: fix missing device mode capability in stm32mp25
-      commit: b5a468199b995bd8ee3c26f169a416a181210c9e
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Anyway, if this is a requirement, can you explain it in the 
+drm_vblank_init documentation?
 
 Thanks,
-Mark
+Louis Chauvet
 
+[1]:https://elixir.bootlin.com/linux/v6.11.2/source/drivers/gpu/drm/vkms/vkms_drv.c#L209
+[2]:https://lore.kernel.org/all/5d9ca7b3884c1995bd4a983b1d2ff1b840eb7f1a.1531402095.git.rodrigosiqueiramelo@gmail.com/
+
+>  	spin_lock_init(&dev->vbl_lock);
+>  	spin_lock_init(&dev->vblank_time_lock);
+>  
+> 
+> base-commit: 22512c3ee0f47faab5def71c4453638923c62522
+> -- 
+> 2.46.1
+> 
+
+-- 
+Louis Chauvet, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
