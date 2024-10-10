@@ -1,135 +1,186 @@
-Return-Path: <stable+bounces-83308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE342997FC2
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 10:30:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC36997FD9
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 10:32:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 279C0B237E7
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 08:30:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECE0328106E
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 08:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48AFE1FCC4F;
-	Thu, 10 Oct 2024 07:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B788B20127D;
+	Thu, 10 Oct 2024 07:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MVtLcd07"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JaHy4hYI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07D91C5796;
-	Thu, 10 Oct 2024 07:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7507B1BBBCD;
+	Thu, 10 Oct 2024 07:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728546292; cv=none; b=mOmI4nSEsgZynwVi2+8nGZh7y5cOyUrkonKDAyiztk1Cg7alk5OYfh1+O54ANF+T26iSqdJFBc1C5wAlFYAGekMoJkBthY0HZpx/52n/h3FYWLdh5ZH1UGj/kOrIRlMgv7wyxyo2/DTMOaF27KFkbfNSrY8t53qZMk/NLZJjKVA=
+	t=1728546890; cv=none; b=gBYgT/S6mpgtvmj/v/Xi6eUD8usX9Wh4oKiCQ4p2LlUvXdDfy45Nd5Q9cq5PR/od/lTrcrt0MmKla6o36uXCjrA+Giut18l9ZbkXE0rUUx7gwNaO29aKXOI27Sa+z3fiYwQ+6VcNQmtrFVBQ0hi8Akv01jlV29HRd3BPA2hYays=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728546292; c=relaxed/simple;
-	bh=A20Cxip7h9+hwVZDDL8T9b50iOLKZr6WhzudD6Hbq8E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ORC6tS/HsJQS7bLmdieex06A4qw8f4QQdytxOUVHUa/MwR33Nl7gFE31sup8fYDl2YvabHckX5KNya5gukFnPTvNmvY6+CZpxsxGkXw2+es8X7CZZfYaVcuc60bsaojQuWBBoxthmOcv8Z5xBlTDRSIavVK1XkntxJCIVxnvqr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MVtLcd07; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74114C4CEC5;
-	Thu, 10 Oct 2024 07:44:51 +0000 (UTC)
+	s=arc-20240116; t=1728546890; c=relaxed/simple;
+	bh=PtEdfmqQ1KSB1LMZxHsgTo26bgv/5qlNE0mbtLFCjbI=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SZ2SKFaQ6sL4Aq7fRmQfAwjZ9FD/fD4pbwH0RDo5Z2xvOkED+kXMyVD/2yhSjw/NoonV6m49TlYpeZuBIhZVxDHWMmOlwenl+U0vb15CUv5CzYzPLzBIjCmRy6HtDks7sBsxEb3lEFQgu+RIyn0ma/qdiMUgefc/Qq8sQSxYIZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JaHy4hYI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13011C4CECC;
+	Thu, 10 Oct 2024 07:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728546291;
-	bh=A20Cxip7h9+hwVZDDL8T9b50iOLKZr6WhzudD6Hbq8E=;
-	h=From:To:Cc:Subject:Date:From;
-	b=MVtLcd07As1FA0eLjjXzFN7+2Swv38YSrDFoGa3CM0hUn3GteVeYvK/K6GbutNxyJ
-	 vjlDlXQvGS/VBAbX3ZZCEvXsot4rB4RsSwfJcg3/iUfmensZhh6sozHLAzkLClf1wm
-	 ERA7MFbVmLEXnYzNuRRpWiPJ3f+MyRAq53vDlKkrYE4p/pZjISE9wB4EpaS6m/X0n2
-	 lyAeW5//o1dMahL7tk0EE59nISwuCH8/hgJUFfyHylNX3a9y6bhImaE+tzIoYUaVlT
-	 ZhdZRoz06h/FdeFVOC3Y7k+DKJwAcoVi+wn03Fm2l858YxGRv4nFuINL4nrhCY4zpg
-	 iyls+R2aC7o9w==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1synqw-0000000047M-3YFJ;
-	Thu, 10 Oct 2024 09:44:55 +0200
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Chris Lew <quic_clew@quicinc.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] soc: qcom: mark pd-mapper as broken
-Date: Thu, 10 Oct 2024 09:42:46 +0200
-Message-ID: <20241010074246.15725-1-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.45.2
+	s=k20201202; t=1728546890;
+	bh=PtEdfmqQ1KSB1LMZxHsgTo26bgv/5qlNE0mbtLFCjbI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=JaHy4hYIHaiICwTlLPUd+w0GjHO0KBETGJY66GJZBuwuID5TLvmm+xw7yocCNd+sh
+	 ASNLxMqR1kQupaQNh7ZfGEW4R96I58VEd6RQZlHjNflI35owG70S8+Nw1POIrTvQfd
+	 ZXArmiTL1TC0/cais4WxdDLV4O7H8HN3mGn03oc9ISUnbz7m023fBAWnNwZgDWqzEb
+	 Icc6yzRJzpIXN/wgWUC+aWktaS7ZR0Xekq74CDgemX5B73hr0lS28a9n6rZLZRJUy5
+	 kdeh58ThvJyVrm1I1myRYxysdrb0pjxVh9niL0e+Pb+hnFns+rRdQd2tCjQR0UMmTt
+	 qFHZPBLG4n89Q==
+Received: from [82.132.186.234] (helo=wait-a-minute.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1syo0V-0025nn-8W;
+	Thu, 10 Oct 2024 08:54:47 +0100
+Date: Thu, 10 Oct 2024 08:54:43 +0100
+Message-ID: <875xq0v1do.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Oliver Upton <oliver.upton@linux.dev>
+Cc: Sean Christopherson <seanjc@google.com>,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	stable@vger.kernel.org,
+	Alexander Potapenko <glider@google.com>
+Subject: Re: [PATCH] KVM: arm64: Don't eagerly teardown the vgic on init error
+In-Reply-To: <ZwcRct7VWnW0bObA@linux.dev>
+References: <20241009183603.3221824-1-maz@kernel.org>
+	<ZwbYvHJdOqePYjDf@linux.dev>
+	<ZwbbQGpZpGQXaNYK@google.com>
+	<ZwcRct7VWnW0bObA@linux.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 82.132.186.234
+X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, seanjc@google.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, stable@vger.kernel.org, glider@google.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-When using the in-kernel pd-mapper on x1e80100, client drivers often
-fail to communicate with the firmware during boot, which specifically
-breaks battery and USB-C altmode notifications. This has been observed
-to happen on almost every second boot (41%) but likely depends on probe
-order:
+On Thu, 10 Oct 2024 00:27:46 +0100,
+Oliver Upton <oliver.upton@linux.dev> wrote:
+> 
+> On Wed, Oct 09, 2024 at 12:36:32PM -0700, Sean Christopherson wrote:
+> > On Wed, Oct 09, 2024, Oliver Upton wrote:
+> > > On Wed, Oct 09, 2024 at 07:36:03PM +0100, Marc Zyngier wrote:
+> > > > As there is very little ordering in the KVM API, userspace can
+> > > > instanciate a half-baked GIC (missing its memory map, for example)
+> > > > at almost any time.
+> > > >
+> > > > This means that, with the right timing, a thread running vcpu-0
+> > > > can enter the kernel without a GIC configured and get a GIC created
+> > > > behind its back by another thread. Amusingly, it will pick up
+> > > > that GIC and start messing with the data structures without the
+> > > > GIC having been fully initialised.
+> > > 
+> > > Huh, I'm definitely missing something. Could you remind me where we open
+> > > up this race between KVM_RUN && kvm_vgic_create()?
 
-    pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to send altmode request: 0x10 (-125)
-    pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to request altmode notifications: -125
+Sorry, I sent the patch bombs away and decided to get my life back for
+the evening... Doesn't help that the commit message isn't very clear
+(if not wrong in some respects),.
 
-    ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: failed to send UCSI read request: -125
+> Ah, duh, I see it now. kvm_arch_vcpu_run_pid_change() doesn't serialize
+> on a VM lock, and kvm_vgic_map_resources() has an early return for
+> vgic_ready() letting it blow straight past the config_lock.
 
-    qcom_battmgr.pmic_glink_power_supply pmic_glink.power-supply.0: failed to request power notifications
+That. The problem is not so much with the vgic creation (which doesn't
+do much) but with the vgic_init() part followed by the map_resources
+horror.
 
-In the same setup audio also fails to probe albeit much more rarely:
+> 
+> Then if we can't register the MMIO region for the distributor
+> everything comes crashing down and a vCPU has made it into the KVM_RUN
+> loop w/ the VGIC-shaped rug pulled out from under it. There's definitely
+> another functional bug here where a vCPU's attempts to poke the
+> distributor wind up reaching userspace as MMIO exits. But we can worry
+> about that another day.
 
-    PDR: avs/audio get domain list txn wait failed: -110
-    PDR: service lookup for avs/audio failed: -110
+I don't think that one is that bad. Userspace got us here, and they
+now see an MMIO exit for something that it is not prepared to handle.
+Suck it up and die (on a black size M t-shirt, please).
 
-Chris Lew has provided an analysis and is working on a fix for the
-ECANCELED (125) errors, but it is not yet clear whether this will also
-address the audio regression.
+> If memory serves, kvm_vgic_map_resources() used to do all of this behind
+> the config_lock to cure the race, but that wound up inverting lock
+> ordering on srcu.
 
-Even if this was first observed on x1e80100 there is currently no reason
-to believe that these issues are specific to that platform.
+Probably something like that. We also used to hold the kvm lock, which
+made everything much simpler, but awfully wrong.
 
-Disable the in-kernel pd-mapper for now, and make sure to backport this
-to stable to prevent users and distros from migrating away from the
-user-space service.
+> Note to self: Impose strict ordering on GIC initialization v. vCPU
+> creation if/when we get a new flavor of irqchip.
 
-Fixes: 1ebcde047c54 ("soc: qcom: add pd-mapper implementation")
-Cc: stable@vger.kernel.org	# 6.11
-Link: https://lore.kernel.org/lkml/Zqet8iInnDhnxkT9@hovoldconsulting.com/
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
+One of the things we should have done when introducing GICv3 is to
+impose that at KVM_DEV_ARM_VGIC_CTRL_INIT, the GIC memory map is
+final. I remember some push-back on the QEMU side of things, as they
+like to decouple things, but this has proved to be a nightmare.
 
-It's now been over two months since I reported this regression, and even
-if we seem to be making some progress on at least some of these issues I
-think we need disable the pd-mapper temporarily until the fixes are in
-place (e.g. to prevent distros from dropping the user-space service).
+>
+> > > I'd thought the fact that the latter takes all the vCPU mutexes and
+> > > checks if any vCPU in the VM has run would be enough to guard against
+> > > such a race, but clearly not...
+> > 
+> > Any chance that fixing bugs where vCPU0 can be accessed (and run!) before its
+> > fully online help?
+> 
+> That's an equally gross bug, but kvm_vgic_create() should still be safe
+> w.r.t. vCPU creation since both hold the kvm->lock in the right spot.
+> That is, since kvm_vgic_create() is called under the lock any vCPUs
+> visible to userspace should exist in the vCPU xarray.
+> 
+> The crappy assumption here is kvm_arch_vcpu_run_pid_change() and its
+> callees are allowed to destroy VM-scoped structures in error handling.
 
-Johan
+I think this is symptomatic of more general issue: we perform VM-wide
+configuration in the context of a vcpu. We have tons of this stuff to
+paper over the lack of a "this VM is fully configured" barrier.
 
+I wonder whether we could sidestep things by punting the finalisation
+of the VM to a different context (workqueue?)  and simply return
+-EAGAIN or -EINTR to userspace while we're processing it. That doesn't
+solve the "I'm missing parts of the address map and I'm going to die"
+part though.
 
-#regzbot introduced: 1ebcde047c54
+> > E.g. if that closes the vCPU0 hole, maybe the vCPU1 case can
+> > be handled a bit more gracefully?
+> 
+> I think this is about as graceful as we can be. The sorts of screw-ups
+> that precipitate this error handling may involve stupidity across
+> several KVM ioctls, meaning it is highly unlikely to be attributable /
+> recoverable.
 
+That's my take as well. We're faced with luserspace that's out to get
+us, and by the time we're in the context of a vcpu, it is too late.
 
- drivers/soc/qcom/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+I don't see how to fix this without mandating a UABI change.
 
-diff --git a/drivers/soc/qcom/Kconfig b/drivers/soc/qcom/Kconfig
-index 74b9121240f8..35ddab9338d4 100644
---- a/drivers/soc/qcom/Kconfig
-+++ b/drivers/soc/qcom/Kconfig
-@@ -78,6 +78,7 @@ config QCOM_PD_MAPPER
- 	select QCOM_PDR_MSG
- 	select AUXILIARY_BUS
- 	depends on NET && QRTR && (ARCH_QCOM || COMPILE_TEST)
-+	depends on BROKEN
- 	default QCOM_RPROC_COMMON
- 	help
- 	  The Protection Domain Mapper maps registered services to the domains
+Thanks,
+
+	M.
+
 -- 
-2.45.2
-
+Without deviation from the norm, progress is not possible.
 
