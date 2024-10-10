@@ -1,129 +1,235 @@
-Return-Path: <stable+bounces-83395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 041109993F0
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 22:53:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA6999943B
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 23:05:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 342211C22758
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 20:53:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9ACA1F2866F
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 21:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377E21E1C1A;
-	Thu, 10 Oct 2024 20:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E861B1E285E;
+	Thu, 10 Oct 2024 21:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="NagXoIPD"
+	dkim=pass (2048-bit key) header.d=dilger-ca.20230601.gappssmtp.com header.i=@dilger-ca.20230601.gappssmtp.com header.b="mDjHOYt2"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A76E1CF7B8;
-	Thu, 10 Oct 2024 20:52:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665931E231B
+	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 21:04:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728593577; cv=none; b=dX+cP7um/5ra1atvqc6SRT3m9L2SeM528GW18MomLXBDBrbK8I9JxPbDfhN0al6jkye3atmkeOOh7L8/onpEZW8tlEuM/o5Z8mWVAYkZvl+DT8T1YCPaGD+oJAfvP1M4laMxt213L87MYUGoY6o+ZW1VpsyDZyHaFz6844+iwe8=
+	t=1728594288; cv=none; b=IHVZ1wtChu1DhAyT7IU+l9NMrUmAt2SmNS44WihlklyexNOB5bKCQ9vxbiuZGJVzs/16kq0/goWIKRwi7bMXL2akESVPBIf/6J6xPi774HBstvBH4MSrxQBVT5EAjr9UFjK0bFqPaZ45WI3XANXmuQNBqAP6vZRRStCsZuNyXrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728593577; c=relaxed/simple;
-	bh=etEDntW0X/md7gzZZSsscb2sy5hgRhbqVNrPnRO1MkI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L0/SqCCgSBXrn7IWwpOa/C82x8bqMt9T0cMnzN8EnVt7icX5RMsveVGe3cGgdgHaSInWN11Daj9/22OgFGDksGjSO4Ud2DVvHEg+hngivAVROFmDG0cKVvfSir4HeJ0tfVwOQ4ZP4SpTsUbv4lrv4maEG+YHOPqM9MAnDfSBoGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=NagXoIPD; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49AJthn1001702;
-	Thu, 10 Oct 2024 20:52:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2023-11-20; bh=wLyIh6+9gn3e4xbPSOwVBCRNfUEr4
-	1UaG6ybaOHaEqI=; b=NagXoIPDGGQhvlyp1LT5AFFKHu9sR6f7PrAt5gm7LY/lc
-	VjnPM4ZoEqSZ8JwzHhMvEoUAl9VJweQ39OpIDbSKR26LbFH7iyZQcWpwoDw2pzlP
-	yfK2ZBs1/SHLOMDnVEGRnOHHiYKNUpGbHhjgtS8Hsz+g5RFiVAuVTGD550U3wAJe
-	3ErxbGLHlGaVu1kz3DfbOq6NX5cbb7Hvtt1WkCK793HafO1f1QJg4SrPqufELOIn
-	MfBZkFdBMohhSdEO9WcXhC6mjAqzQChibo73Kf/X4QhBUMi0TZ3iLRrLdSKBRdyW
-	PauC08k8DgomkB23F1n+yUGLrverIoTNaWvDJvoKg==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 423063upts-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 10 Oct 2024 20:52:44 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49AKqJHd027694;
-	Thu, 10 Oct 2024 20:52:43 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 422uwakw24-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 10 Oct 2024 20:52:43 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49AKqg7i023518;
-	Thu, 10 Oct 2024 20:52:42 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 422uwakw0j-1;
-	Thu, 10 Oct 2024 20:52:42 +0000
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-To: christophe.jaillet@wanadoo.fr, Jacky Huang <ychuang3@nuvoton.com>,
-        Shan-Chun Hung <schung@nuvoton.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc: dan.carpenter@linaro.org, kernel-janitors@vger.kernel.org,
-        error27@gmail.com, harshit.m.mogalapalli@oracle.com,
-        stable@vger.kernel.org
-Subject: [PATCH] pinctrl: nuvoton: fix a double free in ma35_pinctrl_dt_node_to_map_func()
-Date: Thu, 10 Oct 2024 13:52:37 -0700
-Message-ID: <20241010205237.1245318-1-harshit.m.mogalapalli@oracle.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1728594288; c=relaxed/simple;
+	bh=+lwrhBbfCHbY15soZ8qQFvmU9QO27WFLZclr11V0zkY=;
+	h=From:Message-Id:Content-Type:Mime-Version:Subject:Date:
+	 In-Reply-To:Cc:To:References; b=EBYi+rJ8pGadYU8WWGHiAEqLj7nftvX3pd2l9y5KSTHJepqysYlZtZy26rdmY2PvtkxzkRlUu2CQxFHWHmTKzUOHVPGsXpygYWrJd4qu8OIUhL7s87dmLOStbE3ymDYzvTqdkEPQ8JsAbkFvwlRHHiykyauyfHywmkxf08q3jwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dilger.ca; spf=pass smtp.mailfrom=dilger.ca; dkim=pass (2048-bit key) header.d=dilger-ca.20230601.gappssmtp.com header.i=@dilger-ca.20230601.gappssmtp.com header.b=mDjHOYt2; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dilger.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dilger.ca
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-20c56b816faso13380255ad.2
+        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 14:04:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dilger-ca.20230601.gappssmtp.com; s=20230601; t=1728594284; x=1729199084; darn=vger.kernel.org;
+        h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HOXAAWOUO42Iy9Fe066sbNSBqIXI7uWiqzyRC9lRxXQ=;
+        b=mDjHOYt2JZM9knW4TV72To8dGPF0BJRBKWJrTfG0z5EELcqPSAYvXEULd3l0dNBSBW
+         dqMPmPQtFfE+S4hZ8vYqomtht64WYGQcd5qwYI6QgFYE5t7ALlGMz1Sc+nsXWo3NJ/9E
+         Z6uwXipAZkJDlFVhDDdi9J00dRqo7z6zZStIIT00MTTGSe9DA0ub4s+lWzgdQcz5wAhM
+         qzp1TUy+wLmBg2bBNBGe3tsvmlYbZ0nU6hBNbifrm4/kwkuH7P7ksJPvpvh+MiL9/Msu
+         iWStkH/fX6BPaloxxJfY7281ZmEJ58Auv7mXiDig2M9+lcZhtPfDVlpDSPWzsON4BNnz
+         ncKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728594284; x=1729199084;
+        h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HOXAAWOUO42Iy9Fe066sbNSBqIXI7uWiqzyRC9lRxXQ=;
+        b=X7X+o3GoPbCVavA1KwF85x3wox07f0P2CxP/qZyCRCCkhU9md9tujeYBFqZ2dcml2G
+         MKxs7xEIOqWxvrgX5/zA79jhYXklc1fSyEIdyaT4ugdU4GwY7n5mIlMiBS6W1vPFtks2
+         ucX++2J3PMfWXRADahJGdC0tf+3P4WOtFxbiaEHZNoG/n93ILj3QDgTbxwhqheum2V4V
+         wu8LcgIOFFz9PULvtU5o75hNp2L+j5vbIX/Vwgg6YNZSB6R3bG+LnWRRph4Tlbdu2pLf
+         uuBxRtVcVH4kV3fHbPzXwXKaW71gssdZKgf6TFOF0jVLJBHPOjiwVBqTrmGkXID4ZH1R
+         uYtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUPH42ZHHJQEa8vN8XMJEHhORoBAIfboDGnVbyo9uKG/tcSuK8gHCMq9gImPsEGCqHH5Wb8oXE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSS2ebaPAGG3nNXj54+95bnw3lqWThaJ5gTEK2B+JuSG+inMvZ
+	d2Ib7XLnlaSaUTx09oXcHnLngSL3FoAuPjKgFTgCDO5SV5+CT+UOo742+TSuxj6b1/BRhhcEv+O
+	3
+X-Google-Smtp-Source: AGHT+IGfQSroh/1VmCw3y+pZWR9nNIoy24k2NTL449Btzyp91i/0YvQF2oSnGggy7CFITjsQGBa1ZA==
+X-Received: by 2002:a17:902:e549:b0:20b:6457:31db with SMTP id d9443c01a7336-20ca1466d0amr2991515ad.30.1728594284429;
+        Thu, 10 Oct 2024 14:04:44 -0700 (PDT)
+Received: from cabot.adilger.int (S01068c763f81ca4b.cg.shawcable.net. [70.77.200.158])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c8bad99ecsm13406815ad.3.2024.10.10.14.04.43
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 10 Oct 2024 14:04:43 -0700 (PDT)
+From: Andreas Dilger <adilger@dilger.ca>
+Message-Id: <198BCE25-4D30-409B-B7AA-5802E0D26621@dilger.ca>
+Content-Type: multipart/signed;
+ boundary="Apple-Mail=_D7F73B52-8651-4588-82F6-F30885017D58";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-10_15,2024-10-10_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0
- mlxlogscore=999 mlxscore=0 suspectscore=0 adultscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2409260000 definitions=main-2410100137
-X-Proofpoint-ORIG-GUID: RLLLelALefeX2SGF4qW2m8rwk2iQWf2e
-X-Proofpoint-GUID: RLLLelALefeX2SGF4qW2m8rwk2iQWf2e
+Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
+Subject: Re: [PATCH v3] ext4: prevent data-race that occur when read/write
+ ext4_group_desc structure members
+Date: Thu, 10 Oct 2024 15:04:47 -0600
+In-Reply-To: <20241003125337.47283-1-aha310510@gmail.com>
+Cc: Theodore Ts'o <tytso@mit.edu>,
+ akpm@osdl.org,
+ Ext4 Developers List <linux-ext4@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ stable@vger.kernel.org
+To: Jeongjun Park <aha310510@gmail.com>
+References: <20241003125337.47283-1-aha310510@gmail.com>
+X-Mailer: Apple Mail (2.3273)
 
-'new_map' is allocated using devm_* which takes care of freeing the
-allocated data on device removal, call to
 
-	.dt_free_map = pinconf_generic_dt_free_map
+--Apple-Mail=_D7F73B52-8651-4588-82F6-F30885017D58
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=us-ascii
 
-double frees the map as pinconf_generic_dt_free_map() calls
-pinctrl_utils_free_map().
+On Oct 3, 2024, at 6:53 AM, Jeongjun Park <aha310510@gmail.com> wrote:
+>=20
+> Currently, data-race like [1] occur in fs/ext4/ialloc.c
+>=20
+> find_group_other() and find_group_orlov() read *_lo, *_hi with
+> ext4_free_inodes_count without additional locking. This can cause =
+data-race,
+> but since the lock is held for most writes and free inodes value is =
+generally
+> not a problem even if it is incorrect, it is more appropriate to use
+> READ_ONCE()/WRITE_ONCE() than to add locking.
 
-Fix this by using kcalloc() instead of auto-managed devm_kcalloc().
+Thanks for the updated patch.
 
-Cc: stable@vger.kernel.org
-Fixes: f805e356313b ("pinctrl: nuvoton: Add ma35d1 pinctrl and GPIO driver")
-Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
----
-This is based on static analysis and reading code, only compile tested.
-Added the stable tag as the commit in Fixes is also in 6.11.y
----
- drivers/pinctrl/nuvoton/pinctrl-ma35.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
 
-diff --git a/drivers/pinctrl/nuvoton/pinctrl-ma35.c b/drivers/pinctrl/nuvoton/pinctrl-ma35.c
-index 1fa00a23534a..59c4e7c6cdde 100644
---- a/drivers/pinctrl/nuvoton/pinctrl-ma35.c
-+++ b/drivers/pinctrl/nuvoton/pinctrl-ma35.c
-@@ -218,7 +218,7 @@ static int ma35_pinctrl_dt_node_to_map_func(struct pinctrl_dev *pctldev,
- 	}
- 
- 	map_num += grp->npins;
--	new_map = devm_kcalloc(pctldev->dev, map_num, sizeof(*new_map), GFP_KERNEL);
-+	new_map = kcalloc(map_num, sizeof(*new_map), GFP_KERNEL);
- 	if (!new_map)
- 		return -ENOMEM;
- 
--- 
-2.39.3
+>=20
+> [1]
+>=20
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> BUG: KCSAN: data-race in ext4_free_inodes_count / ext4_free_inodes_set
+>=20
+> write to 0xffff88810404300e of 2 bytes by task 6254 on cpu 1:
+> ext4_free_inodes_set+0x1f/0x80 fs/ext4/super.c:405
+> __ext4_new_inode+0x15ca/0x2200 fs/ext4/ialloc.c:1216
+> ext4_symlink+0x242/0x5a0 fs/ext4/namei.c:3391
+> vfs_symlink+0xca/0x1d0 fs/namei.c:4615
+> do_symlinkat+0xe3/0x340 fs/namei.c:4641
+> __do_sys_symlinkat fs/namei.c:4657 [inline]
+> __se_sys_symlinkat fs/namei.c:4654 [inline]
+> __x64_sys_symlinkat+0x5e/0x70 fs/namei.c:4654
+> x64_sys_call+0x1dda/0x2d60 =
+arch/x86/include/generated/asm/syscalls_64.h:267
+> do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+> do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
+> entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>=20
+> read to 0xffff88810404300e of 2 bytes by task 6257 on cpu 0:
+> ext4_free_inodes_count+0x1c/0x80 fs/ext4/super.c:349
+> find_group_other fs/ext4/ialloc.c:594 [inline]
+> __ext4_new_inode+0x6ec/0x2200 fs/ext4/ialloc.c:1017
+> ext4_symlink+0x242/0x5a0 fs/ext4/namei.c:3391
+> vfs_symlink+0xca/0x1d0 fs/namei.c:4615
+> do_symlinkat+0xe3/0x340 fs/namei.c:4641
+> __do_sys_symlinkat fs/namei.c:4657 [inline]
+> __se_sys_symlinkat fs/namei.c:4654 [inline]
+> __x64_sys_symlinkat+0x5e/0x70 fs/namei.c:4654
+> x64_sys_call+0x1dda/0x2d60 =
+arch/x86/include/generated/asm/syscalls_64.h:267
+> do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+> do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
+> entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>=20
+> value changed: 0x185c -> 0x185b
+>=20
+> Cc: <stable@vger.kernel.org>
+> Fixes: ac27a0ec112a ("[PATCH] ext4: initial copy of files from ext3")
+> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+> ---
+> fs/ext4/super.c | 8 ++++----
+> 1 file changed, 4 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+> index 16a4ce704460..8337c4999f90 100644
+> --- a/fs/ext4/super.c
+> +++ b/fs/ext4/super.c
+> @@ -346,9 +346,9 @@ __u32 ext4_free_group_clusters(struct super_block =
+*sb,
+> __u32 ext4_free_inodes_count(struct super_block *sb,
+> 			      struct ext4_group_desc *bg)
+> {
+> -	return le16_to_cpu(bg->bg_free_inodes_count_lo) |
+> +	return le16_to_cpu(READ_ONCE(bg->bg_free_inodes_count_lo)) |
+> 		(EXT4_DESC_SIZE(sb) >=3D EXT4_MIN_DESC_SIZE_64BIT ?
+> -		 (__u32)le16_to_cpu(bg->bg_free_inodes_count_hi) << 16 : =
+0);
+> +		 =
+(__u32)le16_to_cpu(READ_ONCE(bg->bg_free_inodes_count_hi)) << 16 : 0);
+> }
+>=20
+> __u32 ext4_used_dirs_count(struct super_block *sb,
+> @@ -402,9 +402,9 @@ void ext4_free_group_clusters_set(struct =
+super_block *sb,
+> void ext4_free_inodes_set(struct super_block *sb,
+> 			  struct ext4_group_desc *bg, __u32 count)
+> {
+> -	bg->bg_free_inodes_count_lo =3D cpu_to_le16((__u16)count);
+> +	WRITE_ONCE(bg->bg_free_inodes_count_lo, =
+cpu_to_le16((__u16)count));
+> 	if (EXT4_DESC_SIZE(sb) >=3D EXT4_MIN_DESC_SIZE_64BIT)
+> -		bg->bg_free_inodes_count_hi =3D cpu_to_le16(count >> =
+16);
+> +		WRITE_ONCE(bg->bg_free_inodes_count_hi, =
+cpu_to_le16(count >> 16));
+> }
+>=20
+> void ext4_used_dirs_set(struct super_block *sb,
+> --
 
+
+Cheers, Andreas
+
+
+
+
+
+
+--Apple-Mail=_D7F73B52-8651-4588-82F6-F30885017D58
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+	filename=signature.asc
+Content-Type: application/pgp-signature;
+	name=signature.asc
+Content-Description: Message signed with OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+Comment: GPGTools - http://gpgtools.org
+
+iQIzBAEBCAAdFiEEDb73u6ZejP5ZMprvcqXauRfMH+AFAmcIQW8ACgkQcqXauRfM
+H+DDghAAoLVAiMC+T+w1FSCTI0cff6trG1fotAT5i3ow9mlKY5NpP5o6yZ5XsOsc
+xjzAYgqD3XTP+KdFzboSzeWB3R6UUjk/uvNzRz41xemzNWJhfPpW/M/lX+N0Jl0y
+STC72SHg0GreZd2eW4iuVljmGCRgPPVl8YFnb3r/dkSZ9aZClEZ0OoiimpyJOCpM
+rTFfXt/98MWMCgr8442iQ+Y2Tc9m2PzVDeo0cnFP94iCXZcX5oAHnf6VYK0E16ht
+LLN5sdJTDpb94/Gq1EtdUWlFU40VQZJOjMufd38rEnZXhHGR2qVq6BT7YHRSezHX
+NsUO4NepDyESsP6NdIrCoUeGKaAJRIymwzAbSHwQVR9VrFpzQJ4UCkQV/8d5/m8u
+oXuAvaTG8+35XYROR6jjBNMJKanPQXgo91Dl2uhZaPg5jA9ZX7fp0MlSI+SY4CyH
+YkfFBSNKOIqSEMzeak4JaOGCY/+nH3fSLN8kBOeAmDMMX/EJwmBRDAawo84qZ2hJ
+mCV6YJcnF+PBdhFLiYoo/6fYVjd/0Nz3TOegDKCeglLuUlDMp+g88+kwC0Q7WhA4
+atVSnkAu4jirjV11IDEr0Qe1Wf0gwevGH4z8PESrQrHP8SaLz5H4FERytfwqjF4C
+Z7cnbbSb9f3rQ5pBqpwPn+OIWy64nXVoO6L42MM+JE+pJRB4kNs=
+=wf4O
+-----END PGP SIGNATURE-----
+
+--Apple-Mail=_D7F73B52-8651-4588-82F6-F30885017D58--
 
