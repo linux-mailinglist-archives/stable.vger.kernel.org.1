@@ -1,192 +1,181 @@
-Return-Path: <stable+bounces-83359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCF6F99888E
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 16:00:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D03CE9988D4
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 16:10:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7930A287EFC
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 14:00:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A4EE289435
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 14:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B881C9B8A;
-	Thu, 10 Oct 2024 14:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF52D1CB31B;
+	Thu, 10 Oct 2024 14:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="BbyEINIG"
+	dkim=pass (2048-bit key) header.d=maxima.ru header.i=@maxima.ru header.b="oD7avbpK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ksmg01.maxima.ru (ksmg01.maxima.ru [81.200.124.38])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9515A1BDA90
-	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 14:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A651C9B67;
+	Thu, 10 Oct 2024 14:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728568836; cv=none; b=TQDT1sTyt6ElkSIVx2ZcoGLGD9+dPGDGP6YZOpP4MlBZj9BbXv2+vSlMLBFCXYvyTSHLlwU+EhKCsHo3cPVLppvSPkeN2LMQM15THdiOjnyZ+DTZD7tg5uoQr4FIvLNdCMwuvBnzsrQ1+BvWhzoN3AKDPS+AjRITQ88Q63+Iers=
+	t=1728569406; cv=none; b=N46pycW6V3VAqsABXMGIK5tLHHQNCqZS8FfEfAyW591asRiTaulvcdBzuE8otaoTrnw8h0e/8VewP804gV6OWdvSOtinIL23X9CSk9qS6XZe+OfuqduUcpEvSkfBXxsIQGToy7CNXfbI8y3KqMOiSTosYS6O3u+0TaUPYx1hfOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728568836; c=relaxed/simple;
-	bh=gLAM8r7qE6CVz5omgjNonixJXLEHbVuzzGOxsgzhh7I=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=VBtBQQxNTvE2EZGsdPBzDdeI6Z0tRCgvj8TWzG4NLGRAVIVYqxY0cNEZ7VAZlA1O1EJzCOA3GH3hAAnJjny8mvJBpLZkGNWqm5q9Te+3hBJEuk49wqBlWpPt7OqDd1F8rdyqeXvgTR8+fWZgaJ2OLX/GkWqE8EkH1+xVwjKnYn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=BbyEINIG; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a993f6916daso165696966b.1
-        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 07:00:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1728568833; x=1729173633; darn=vger.kernel.org;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vccuKvc83Vv38bDulBNrWqwQbq60HXVP3Eb0biFBOnw=;
-        b=BbyEINIGu+fnzmFLEHeLC7f0J4DAFHB85jQTGnAxMdaCdpU9+nFJ2NDGwBl/i7WNeZ
-         GP8rMF+Xafe3x0XfRWS0M4230C8j0SZ/3YMA3AP0H6AhRURuqjvUCHxIibFwi8dAAsuC
-         m4WrgPK8RAKbFewkzrXmJbkypcN2Fx2qK6miKliTzWKUGg4GmCt3g3IKEWoJ2cW1Xsds
-         LJ5dsnl6iXWnYPZLENik/61Nle2aQafr5AzngpNTBz/tjrA6Vh4Ghez5abLhT1a5gi0I
-         WyX5gn7gkL+bl3LR/wcOerN4sJkPErqwh/BVHXSCuohulVJum22B68zHKUhMrtganCb+
-         C9Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728568833; x=1729173633;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vccuKvc83Vv38bDulBNrWqwQbq60HXVP3Eb0biFBOnw=;
-        b=S9NUzxDLkNsCvx8AEwqjkmKwp6JDX38ZAYSr1kWsQI2jUBM7mqdLSmBrTr6w5xC/QB
-         tcRHd49y5rmFCeUH4kMtkqZlsjlxaEsb2PQkrFJRuNsr3nwLYKFz8RMoDsBK/TbOK51h
-         zaHsXE70ZE+Kts+XrpxJMNio+u1O6AhmNR8ln/c2dBeUXqgzacvRgS+KVB01qLOMTAcJ
-         ixCFGRSjkIf3EtAZPG3/EXARZ3f4YnJoTXoiwyiaTMvUzrUf9iEs/HsfU0FqCCKlWtFE
-         As+hT+2yM7UQnQfEKRN9zJYvtsN/yZfTkSaZTiY6TZLwcaCaV5yxZYCoMkG9lUXRxAPG
-         4LzA==
-X-Forwarded-Encrypted: i=1; AJvYcCWxTFL8giJHposwcwpSz/dykxJsgRuPFLSEdi9oPgqb6f4ZQ2Cy+FdfnlStjEP8vrnnubCN/vk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yybz7pxsZhrl96Q7g5DhECxWFmctGe/SokCM9rlLcprRwjMgYW6
-	68EokNcmF9RVsa01vdLsBD+pCX8Fm4C7LeEe3XOrr6CBKO9QGyV6m8SsxBxAZ48=
-X-Google-Smtp-Source: AGHT+IHs66jsGVsDIa6nU/GDZDjyrTOMBCVIgq4sUT8APnQVeWzsXntFRqDIlxWQ12IMQaG/q8PPxw==
-X-Received: by 2002:a17:907:9483:b0:a99:5601:7dc1 with SMTP id a640c23a62f3a-a998d327bb2mr546038066b.49.1728568831155;
-        Thu, 10 Oct 2024 07:00:31 -0700 (PDT)
-Received: from cloudflare.com ([2a09:bac5:506b:2dc::49:1d6])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99a80dca54sm91345866b.159.2024.10.10.07.00.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2024 07:00:30 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,  David Ahern
- <dsahern@kernel.org>,  Eric Dumazet <edumazet@google.com>,  Jakub Kicinski
- <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,
-  netdev@vger.kernel.org,  kernel-team@cloudflare.com,  Ivan Babrou
- <ivan@cloudflare.com>,  stable@vger.kernel.org
-Subject: Re: [PATCH net] udp: Compute L4 checksum as usual when not
- segmenting the skb
-In-Reply-To: <6707d74780461_2029212946a@willemb.c.googlers.com.notmuch>
-	(Willem de Bruijn's message of "Thu, 10 Oct 2024 09:31:51 -0400")
-References: <20241010-uso-swcsum-fixup-v1-1-a63fbd0a414c@cloudflare.com>
-	<6707d74780461_2029212946a@willemb.c.googlers.com.notmuch>
-User-Agent: mu4e 1.12.4; emacs 29.1
-Date: Thu, 10 Oct 2024 16:00:28 +0200
-Message-ID: <87ttdkxdkz.fsf@cloudflare.com>
+	s=arc-20240116; t=1728569406; c=relaxed/simple;
+	bh=rbj8Ml5y0TZf+zBBpOdNUB0GBpgNqjOeQWMM1fIVEE8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ankt9jtCObK6wIDZ8Hf3ZNJgEUFmoW4RUwxres4MTKPUjc5JBAeRDCCV4jdY1cg2FMU51FnsLsMIdyM72fmh+gj0fSw5zzs+2EFsPEWDzy0KUNAKkwDOgT9+lX6QpfWS4FgEpSlRp6u8i/7uIeI/oCOk2TUQsX46yFBfi3EJT3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maxima.ru; spf=pass smtp.mailfrom=maxima.ru; dkim=pass (2048-bit key) header.d=maxima.ru header.i=@maxima.ru header.b=oD7avbpK; arc=none smtp.client-ip=81.200.124.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maxima.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=maxima.ru
+Received: from ksmg01.maxima.ru (localhost [127.0.0.1])
+	by ksmg01.maxima.ru (Postfix) with ESMTP id 4355AC0009;
+	Thu, 10 Oct 2024 17:02:21 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg01.maxima.ru 4355AC0009
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maxima.ru; s=sl;
+	t=1728568941; bh=mTQWToLFTJPHNXH5pRrcnw/VZiXSpMsDPPC1XDk9tlU=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+	b=oD7avbpK1yQRZUz3zoMzLnagyTS6LacMWi6uIXfkUIPeezg1exNspSln79ObJlDev
+	 BogkCnD5JWoRJ3sFYvbKsN/MXKPGdm4F/n6uxDJNnwO3Gt4q+OrAOTweqLjNL61tAi
+	 tSdDXf3pMaEGNvHzipKrACViHrfxv7Lm9iKT1LE7SC8lEunZ24zHxJZqBgEF7+GDcg
+	 fMlCE50omIJ7huCXBc3O87r0SquYUmqS3O9FUXTtR0zRFEbjlJiszYxYvrdoLj5gCr
+	 X9JdzdvY30jqvesqR7rOkll5bIByJgl55y7VigrosZIaOpgjR/t9EcPBfiyU1VaM0j
+	 c9BErd69fOLgg==
+Received: from ksmg01.maxima.ru (autodiscover.maxima.ru [81.200.124.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
+	by ksmg01.maxima.ru (Postfix) with ESMTPS;
+	Thu, 10 Oct 2024 17:02:21 +0300 (MSK)
+Received: from localhost.maximatelecom.ru (10.0.247.250) by
+ mmail-p-exch01.mt.ru (81.200.124.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.1544.4; Thu, 10 Oct 2024 17:02:18 +0300
+From: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
+To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Vitaliy Shevtsov <v.shevtsov@maxima.ru>, Peter Ujfalusi
+	<peter.ujfalusi@linux.intel.com>, Ranjani Sridharan
+	<ranjani.sridharan@linux.intel.com>, Pierre-Louis Bossart
+	<pierre-louis.bossart@linux.intel.com>, Mark Brown <broonie@kernel.org>, Liam
+ Girdwood <lgirdwood@gmail.com>, Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>, Daniel Baluta
+	<daniel.baluta@nxp.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
+	<tiwai@suse.com>, <sound-open-firmware@alsa-project.org>,
+	<alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>
+Subject: [PATCH 6.1/6.6] ASoC: SOF: Fix runtime pm usage counter balance after fw exception
+Date: Thu, 10 Oct 2024 19:01:07 +0500
+Message-ID: <20241010140110.1153-3-v.shevtsov@maxima.ru>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-ClientProxiedBy: mt-exch-01.mt.ru (91.220.120.210) To mmail-p-exch01.mt.ru
+ (81.200.124.61)
+X-KSMG-Rule-ID: 7
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Lua-Profiles: 188361 [Oct 10 2024]
+X-KSMG-AntiSpam-Version: 6.1.0.4
+X-KSMG-AntiSpam-Envelope-From: v.shevtsov@maxima.ru
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Auth: dmarc=none header.from=maxima.ru;spf=none smtp.mailfrom=maxima.ru;dkim=none
+X-KSMG-AntiSpam-Info: LuaCore: 39 0.3.39 e168d0b3ce73b485ab2648dd465313add1404cce, {rep_avail}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, maxima.ru:7.1.1;127.0.0.199:7.1.2;81.200.124.61:7.1.2;msgid.link:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;ksmg01.maxima.ru:7.1.1, FromAlignment: s, ApMailHostAddress: 81.200.124.61
+X-MS-Exchange-Organization-SCL: -1
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiPhishing: Clean, bases: 2024/10/10 12:46:00
+X-KSMG-LinksScanning: Clean, bases: 2024/10/10 12:46:00
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2024/10/10 12:06:00 #26731330
+X-KSMG-AntiVirus-Status: Clean, skipped
 
-On Thu, Oct 10, 2024 at 09:31 AM -04, Willem de Bruijn wrote:
-> Jakub Sitnicki wrote:
->> If:
->> 
->>   1) the user requested USO, but
->>   2) there is not enough payload for GSO to kick in, and
->>   3) the egress device doesn't offer checksum offload, then
->> 
->> we want to compute the L4 checksum in software early on.
->> 
->> In the case when we taking the GSO path, but it has been requested, the
->
-> What does it refers to here?
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-That's a typo there. Will fix. It should have said:
+commit b30289e7fa927f921bfb4d0d04727461706ae822 upstream.
 
-  In the case when we *not* taking the GSO path, but it has been
-  requested, ...
+If the retain context is enabled we will unconditionally increment the
+device's pm use count on each exception and when the drivers are unloaded
+we do not correct this (as we don't know how many times we 'prevented
+d3 entry').
+Introduce a flag to make sure that we do not increment the use count more
+than once and on module unload decrement the use count if needed to
+balance it.
 
-Pseudo code-wise something like:
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://msgid.link/r/20240213114729.7055-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
+---
+ sound/soc/sof/core.c     | 10 ++++++++++
+ sound/soc/sof/debug.c    |  8 +++++---
+ sound/soc/sof/sof-priv.h |  1 +
+ 3 files changed, 16 insertions(+), 3 deletions(-)
 
-  s.setsockopt(SOL_UDP, UDP_SEGMENT, 1200)
-  s.sendto(b"x", ("192.0.2.1", 9))
+diff --git a/sound/soc/sof/core.c b/sound/soc/sof/core.c
+index 0938b259f703..cba0af5b86aa 100644
+--- a/sound/soc/sof/core.c
++++ b/sound/soc/sof/core.c
+@@ -477,6 +477,16 @@ int snd_sof_device_remove(struct device *dev)
+ 	 */
+ 	snd_sof_machine_unregister(sdev, pdata);
+ 
++	/*
++	 * Balance the runtime pm usage count in case we are faced with an
++	 * exception and we forcably prevented D3 power state to preserve
++	 * context
++	 */
++	if (sdev->d3_prevented) {
++		sdev->d3_prevented = false;
++		pm_runtime_put_noidle(sdev->dev);
++	}
++
+ 	if (sdev->fw_state > SOF_FW_BOOT_NOT_STARTED) {
+ 		sof_fw_trace_free(sdev);
+ 		ret = snd_sof_dsp_power_down_notify(sdev);
+diff --git a/sound/soc/sof/debug.c b/sound/soc/sof/debug.c
+index d547318e0d32..7c8aafca8fde 100644
+--- a/sound/soc/sof/debug.c
++++ b/sound/soc/sof/debug.c
+@@ -433,13 +433,15 @@ static void snd_sof_ipc_dump(struct snd_sof_dev *sdev)
+ 
+ void snd_sof_handle_fw_exception(struct snd_sof_dev *sdev, const char *msg)
+ {
+-	if (IS_ENABLED(CONFIG_SND_SOC_SOF_DEBUG_RETAIN_DSP_CONTEXT) ||
+-	    sof_debug_check_flag(SOF_DBG_RETAIN_CTX)) {
++	if ((IS_ENABLED(CONFIG_SND_SOC_SOF_DEBUG_RETAIN_DSP_CONTEXT) ||
++	    sof_debug_check_flag(SOF_DBG_RETAIN_CTX)) && !sdev->d3_prevented) {
+ 		/* should we prevent DSP entering D3 ? */
+ 		if (!sdev->ipc_dump_printed)
+ 			dev_info(sdev->dev,
+ 				 "Attempting to prevent DSP from entering D3 state to preserve context\n");
+-		pm_runtime_get_if_in_use(sdev->dev);
++
++		if (pm_runtime_get_if_in_use(sdev->dev) == 1)
++			sdev->d3_prevented = true;
+ 	}
+ 
+ 	/* dump vital information to the logs */
+diff --git a/sound/soc/sof/sof-priv.h b/sound/soc/sof/sof-priv.h
+index d4f6702e93dc..b27a5f9e1bc8 100644
+--- a/sound/soc/sof/sof-priv.h
++++ b/sound/soc/sof/sof-priv.h
+@@ -593,6 +593,7 @@ struct snd_sof_dev {
+ 	struct list_head dfsentry_list;
+ 	bool dbg_dump_printed;
+ 	bool ipc_dump_printed;
++	bool d3_prevented; /* runtime pm use count incremented to prevent context lost */
+ 
+ 	/* firmware loader */
+ 	struct sof_ipc_fw_ready fw_ready;
+-- 
+2.46.2
 
-
->> software checksum fallback in skb_segment doesn't get a chance to compute
->> the full checksum, if the egress device can't do it. As a result we end up
->> sending UDP datagrams with only a partial checksum filled in, which the
->> peer will discard.
->> 
->> Fixes: 10154dbded6d ("udp: Allow GSO transmit from devices with no checksum offload")
->> Reported-by: Ivan Babrou <ivan@cloudflare.com>
->> Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
->> Cc: stable@vger.kernel.org
->> ---
->> This shouldn't have fallen through the cracks. I clearly need to extend the
->> net/udpgso selftests further to cover the whole TX path for software
->> USO+csum case. I will follow up with that but I wanted to get the fix out
->> in the meantime. Apologies for the oversight.
->> ---
->>  net/ipv4/udp.c | 4 +++-
->>  net/ipv6/udp.c | 4 +++-
->>  2 files changed, 6 insertions(+), 2 deletions(-)
->> 
->> diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
->> index 8accbf4cb295..2849b273b131 100644
->> --- a/net/ipv4/udp.c
->> +++ b/net/ipv4/udp.c
->> @@ -951,8 +951,10 @@ static int udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4,
->>  			skb_shinfo(skb)->gso_type = SKB_GSO_UDP_L4;
->>  			skb_shinfo(skb)->gso_segs = DIV_ROUND_UP(datalen,
->>  								 cork->gso_size);
->> +
->> +			/* Don't checksum the payload, skb will get segmented */
->> +			goto csum_partial;
->>  		}
->> -		goto csum_partial;
->
-> The issue here is that GSO packets with CHECKSUM_NONE will get fixed
-> software checksummed in skb_segment, but no such fallback path is
-> entered for regular packets, right?
->
-> We could setup CHECKSUM_PARTIAL and rely on validate_xmit_skb. But
-> might as well do the software checksumming right here, as your
-> patch does.
-
-Yes, all correct.
-
-To add to it - I figured that marking the skb with CHECKSUM_PARTIAL,
-when device doesn't offer csum offload, would be more confusing.
-
->
-> If I follow this all, ACK from me. Just want to make sure.
-
-Thanks. I will carry it in v2.
-
-Will wait a bit before respinning it.
-Maybe Ivan can get a chance to this patch.
-
->>  	}
->>  
->>  	if (is_udplite)  				 /*     UDP-Lite      */
->> diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
->> index 52dfbb2ff1a8..0cef8ae5d1ea 100644
->> --- a/net/ipv6/udp.c
->> +++ b/net/ipv6/udp.c
->> @@ -1266,8 +1266,10 @@ static int udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6,
->>  			skb_shinfo(skb)->gso_type = SKB_GSO_UDP_L4;
->>  			skb_shinfo(skb)->gso_segs = DIV_ROUND_UP(datalen,
->>  								 cork->gso_size);
->> +
->> +			/* Don't checksum the payload, skb will get segmented */
->> +			goto csum_partial;
->>  		}
->> -		goto csum_partial;
->>  	}
->>  
->>  	if (is_udplite)
->> 
 
