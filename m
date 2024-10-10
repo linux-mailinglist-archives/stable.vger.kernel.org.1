@@ -1,92 +1,80 @@
-Return-Path: <stable+bounces-83366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9970998A7C
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 16:55:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3109E998AD8
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 17:03:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C55C1F2740F
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 14:55:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8B851F2AA8E
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 15:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F2DB1E47AA;
-	Thu, 10 Oct 2024 14:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F316C1E3DD6;
+	Thu, 10 Oct 2024 14:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sFwvTDLR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TsmPr2m6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325B61E47A4
-	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 14:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7D21D432A;
+	Thu, 10 Oct 2024 14:58:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728571334; cv=none; b=mafYC50Ag2FoOLl8fmgjiy8xgQgVph6cCkO1MA2yGY/jQ85DlYvOQoq96WiTRhLPPKm7yN/dDj+xw1Oax54MG/+AFsQxZFsyd4VNUQhN2eShCVIqQtyMy2c6EDMUNAnoH76DPHrmiSTO8oFWmdERx6+etU3GiVS0UNpK8zC3fFs=
+	t=1728572312; cv=none; b=VFa0msGb4im2DYFhItY5IqeU5VQt3pGpcn4YvZ1Cx1X6StemTAgOXheL+BJGXn1Pwj87NM1YBdkI9t+5wAVcH/hmMaua4tlBKibkrFGSj7mWwdp7DQxyEkoDmcoNNOamKjeYYVDZEEg6sS3LtSs+Fv5jIxzr5pyTvJhwAboWB4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728571334; c=relaxed/simple;
-	bh=J8h7ZogSRVYi3JZp242VuIB8P5Hx5C5R4FBhWsIGOgc=;
+	s=arc-20240116; t=1728572312; c=relaxed/simple;
+	bh=1kOWkynVp4rK5gUY/zt1gcriNQSJjm+QKCLYZq7uQsI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DbIQkfptijS0DuHXCVpBal4fs0djLb6fQvuX+kvp87LPFg2Ek4QT+Kz9EOHz4Snfk70OMGIDIBHKvppfJ0x7XXMDNZO7kC/+DQ1kcOC9VI14MbXnrVHpcL03mi3Fh+mEThr3bX95cH/GzrEpPcIcd+LWYLojx1ari18U7MpJdlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sFwvTDLR; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2fad100dd9fso15598091fa.3
-        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 07:42:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728571330; x=1729176130; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TSCYi8JcMLXDaF73CrzXwPeVuGXfVTJYUL9WPyu/FF4=;
-        b=sFwvTDLRAUoUFyGMt2lhgs0iOLJL8JKxM/29HP3LIkkwC1lvLo4hcExukLDQqOVAuf
-         GfnINho++2kGxZwwAWCLLEDZAGPARBdPetTTsz7BL479RaJHfeG/KT1RmQ95av20eQgf
-         D4xG/XXcw6QZQhwaYJmZJ64d5D8LSsOGe0KiHBYR2KCIp7nsttZ3OKaFeekT6QvOQ6tr
-         DMCp1idfFO2mrqYFwazzrOft5p3CBxvXhA7eTNXpOdCSakU6D7+h5Gh8gAA5Lbfrgs36
-         WugVMPPXgXcLGA+oY2dm4V3476VvctmoUYpQghM4VoR5hrTfHFSE3oqcKWzyfuZl1jEY
-         Otvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728571330; x=1729176130;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TSCYi8JcMLXDaF73CrzXwPeVuGXfVTJYUL9WPyu/FF4=;
-        b=RUNtyZjX/YSNbqCzHAFJd2E1Nu8N/VD8hq95HQh35UGJStZchdGiAyE1OogZB06Yzu
-         dt82vNhclEOhUVDdwh7P+12mpS+W9+ojK/hhShpKE4LRgizpdp922YYw7uletvqMaErw
-         Vb+Iqg8Jr4wBVVJCyHPZnKV3S7ln+7DDX9C0IqJSeLri6ftGqaasXsDFEKhf42i3LwOY
-         YwGLy6vopkVKy0VkL6eD+YqKTPZ4FF6herESm6jfeIPPSno7LiLuBLmrYFrUzlKt2mbC
-         99y8c8YLFJpK3Hi6H1juIi8g6cTZnf6xTs1HV7MypmRLRhpHdkrXqqgqv99UGviz/SOZ
-         N2vA==
-X-Forwarded-Encrypted: i=1; AJvYcCXS32jz/MT0184QCNh3QmFH6Jt2PjBkrzjLlh9rEWL86E1IZVio0We+VHRU92UUR1958egBnuY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeQX7NH6JWR3k2jYqaUeRF708Tcm/49oPhuqLvKzIKjvavcjsS
-	0mdExC1T6lPRXN6g3a/hu6R4EwVfrwbWOaVKA0Y9bUJumKQi624T7zWL8pgKUg9DuVx9Jdlm857
-	z/Lc=
-X-Google-Smtp-Source: AGHT+IHTXbpgPQx1CNya5s++GATNvkC8R0h710vIpZWBj7Fxa5x0RbTR+gUaQHMlnVb3y0lAfmds6g==
-X-Received: by 2002:a2e:be23:0:b0:2ef:1b1b:7f42 with SMTP id 38308e7fff4ca-2fb187e7de2mr63367001fa.36.1728571330142;
-        Thu, 10 Oct 2024 07:42:10 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fb2459c93esm2249621fa.55.2024.10.10.07.42.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2024 07:42:08 -0700 (PDT)
-Date: Thu, 10 Oct 2024 17:42:05 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: neil.armstrong@linaro.org, Johan Hovold <johan+linaro@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Chris Lew <quic_clew@quicinc.com>, Stephan Gerhold <stephan.gerhold@linaro.org>, 
-	Abel Vesa <abel.vesa@linaro.org>, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	regressions@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] soc: qcom: mark pd-mapper as broken
-Message-ID: <2fqd3hkj7j2lppxzfl2fjfzrik3jql2gk7chexaajeybcrz3kc@rvx565zzmlmp>
-References: <CAA8EJpoiu2hwKWGMTeA=Kr+ZaPL=JJFq1qQOJhUnYz6-uTmHWw@mail.gmail.com>
- <ZweoZwz73GaVlnLB@hovoldconsulting.com>
- <CAA8EJprg0ip=ejFOzBe3iisKHX14w0BnAQUDPqzuPRX6d8fvRA@mail.gmail.com>
- <Zwe-DYZKQpLJgUtp@hovoldconsulting.com>
- <c84dd670-d417-4df7-b95f-c0fbc1703c2d@linaro.org>
- <ZwfVg89DAIE74KGB@hovoldconsulting.com>
- <jtxci47paynh3uuulwempryixgbdvcnx3fhtkru733s6rkip7l@jxoaaxdxvp3d>
- <Zwffi40TyaMZruHj@hovoldconsulting.com>
- <CAA8EJppWgcyzS14rY2TfX2UNR1iqKBo1=qxHAbwkbeXLrZ2MPw@mail.gmail.com>
- <ZwfiuJW1gkYPFic1@hovoldconsulting.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=l7qrSvmAMJw1pX0+hwFFpWeb6AfsgFP63vdHcJ2sqB/fSTv0KBm3UDPTw2kms/nVjiB7kSFX04lZCesNp5Q/JDUced+4GeUIkMwLVqNUfhUUuVyjCK+djPipE+LC6hIlJgcUYHitn4jRzHQQN9R6F4DRf50WRv1qIYlNXv77f0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TsmPr2m6; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728572310; x=1760108310;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1kOWkynVp4rK5gUY/zt1gcriNQSJjm+QKCLYZq7uQsI=;
+  b=TsmPr2m6fagbTS4N66LA58LCk4jDTCketKQ5MAFEMQfXNYjLjHgTDDIt
+   2oyzQ3gXzPKganxWb7Iej+Tmxpnn+CzmwVB1J9VW8+P4+yIw/IS5oEZs5
+   jXPAN47x2JGIPqBBkCJESWF8W6fcPachOxyEfAgu2ofugytwrii9eyJEO
+   Lz1Uzb47Z48xyYQzJ3bFe02ymm0P/xvIiR58BKYmGCG8qMQJxVBfn+LMV
+   0AGIzMgF6FsXBdUID8NjiM8fZjJXJp6+GHQHrzhtdRLzs1GKI/SVPbpBA
+   akpXbgueW4ypCZ8aBlX3UkFAPtt56pM3Cso4+qbXIeNRmWV2n7KiHQSuK
+   A==;
+X-CSE-ConnectionGUID: kG10qj/3TtqDW15ob5LtPg==
+X-CSE-MsgGUID: c98afSp9SIiDv5AGzokkTQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="27828676"
+X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
+   d="scan'208";a="27828676"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 07:58:20 -0700
+X-CSE-ConnectionGUID: HCGVbAjDTLC/6a7OesI7qA==
+X-CSE-MsgGUID: xojyvDq3SrKCNO7YMFsKew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
+   d="scan'208";a="107337880"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 10 Oct 2024 07:58:15 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1syucH-000Asl-2J;
+	Thu, 10 Oct 2024 14:58:13 +0000
+Date: Thu, 10 Oct 2024 22:57:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: Anastasia Kovaleva <a.kovaleva@yadro.com>, target-devel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, njavali@marvell.com,
+	GR-QLogic-Storage-Upstream@marvell.com,
+	James.Bottomley@hansenpartnership.com, martin.petersen@oracle.com,
+	bvanassche@acm.org, quinn.tran@cavium.com,
+	himanshu.madhani@cavium.com, linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux@yadro.com, hare@suse.de,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] scsi: qla2xxx: Drop starvation counter on success
+Message-ID: <202410102244.4WCXxyGQ-lkp@intel.com>
+References: <20241009111654.4697-2-a.kovaleva@yadro.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,29 +83,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZwfiuJW1gkYPFic1@hovoldconsulting.com>
+In-Reply-To: <20241009111654.4697-2-a.kovaleva@yadro.com>
 
-On Thu, Oct 10, 2024 at 04:20:40PM GMT, Johan Hovold wrote:
-> On Thu, Oct 10, 2024 at 05:13:44PM +0300, Dmitry Baryshkov wrote:
-> > On Thu, 10 Oct 2024 at 17:07, Johan Hovold <johan@kernel.org> wrote:
-> 
-> > > Yes, Chris's analysis of the ECANCELED issue suggests that this is not
-> > > SoC specific.
-> > 
-> > "When the firmware implements the glink channel this way...", etc.
-> > Yes, it doesn't sound like being SoC-specific, but we don't know which
-> > SoC use this implementation.
-> 
-> So let's err on the safe side until we have more information and avoid
-> having distros drop the user-space daemon until these known bugs exposed
-> by the in-kernel pd-mapper have been fixed.
+Hi Anastasia,
 
-Then default n + revert X1E sounds like a better approach?
+kernel test robot noticed the following build errors:
 
-> 
-> Johan
+[auto build test ERROR on jejb-scsi/for-next]
+[also build test ERROR on mkp-scsi/for-next linus/master v6.12-rc2 next-20241010]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Anastasia-Kovaleva/scsi-qla2xxx-Drop-starvation-counter-on-success/20241009-192031
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi.git for-next
+patch link:    https://lore.kernel.org/r/20241009111654.4697-2-a.kovaleva%40yadro.com
+patch subject: [PATCH v2 1/3] scsi: qla2xxx: Drop starvation counter on success
+config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20241010/202410102244.4WCXxyGQ-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 13.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241010/202410102244.4WCXxyGQ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410102244.4WCXxyGQ-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from arch/alpha/include/asm/rwonce.h:33,
+                    from include/linux/compiler.h:317,
+                    from include/linux/build_bug.h:5,
+                    from include/linux/container_of.h:5,
+                    from include/linux/list.h:5,
+                    from include/linux/module.h:12,
+                    from drivers/scsi/qla2xxx/qla_target.c:17:
+   drivers/scsi/qla2xxx/qla_target.c: In function 'qlt_24xx_process_atio_queue':
+>> include/asm-generic/rwonce.h:55:32: error: lvalue required as unary '&' operand
+      55 |         *(volatile typeof(x) *)&(x) = (val);                            \
+         |                                ^
+   include/asm-generic/rwonce.h:61:9: note: in expansion of macro '__WRITE_ONCE'
+      61 |         __WRITE_ONCE(x, val);                                           \
+         |         ^~~~~~~~~~~~
+   drivers/scsi/qla2xxx/qla_target.c:6833:25: note: in expansion of macro 'WRITE_ONCE'
+    6833 |                         WRITE_ONCE(&vha->hw->exch_starvation, 0);
+         |                         ^~~~~~~~~~
+
+
+vim +55 include/asm-generic/rwonce.h
+
+e506ea451254ab Will Deacon 2019-10-15  52  
+e506ea451254ab Will Deacon 2019-10-15  53  #define __WRITE_ONCE(x, val)						\
+e506ea451254ab Will Deacon 2019-10-15  54  do {									\
+e506ea451254ab Will Deacon 2019-10-15 @55  	*(volatile typeof(x) *)&(x) = (val);				\
+e506ea451254ab Will Deacon 2019-10-15  56  } while (0)
+e506ea451254ab Will Deacon 2019-10-15  57  
 
 -- 
-With best wishes
-Dmitry
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
