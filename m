@@ -1,191 +1,170 @@
-Return-Path: <stable+bounces-83298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC22D997C9E
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 07:47:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E3E997CC7
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 08:01:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 452C22818F1
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 05:47:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F5EB1F22DAA
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 06:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD21192D8C;
-	Thu, 10 Oct 2024 05:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C9519D8B7;
+	Thu, 10 Oct 2024 06:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="CJdmmHDN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CLq9l48h"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931FD1925AF
-	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 05:47:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0742863D;
+	Thu, 10 Oct 2024 06:00:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728539238; cv=none; b=lKP5s2Fj6BYYCL2iHjzXVFOck4dltjaIXVjpzvTX4/W81mRwReYKerNYjOlN/xdTHPGCJv1eFEJisD/dnYqg6rLEYZ+zOTr7/igGzw7NoASXOGtlt9Nbna15Bnf1VJMAxZ0iSAui/g5vJ4PcVgLhJvPh3jYnznsNxK3amk/msjU=
+	t=1728540054; cv=none; b=WrTRKwMQ7ULW5AV6pphIuVjGAFOV6CcfOaqtwibZfjYC/V9YTKWPn6fdxEpfiTUwZehFk7cwMcoBlnwPQUgj4zL54wpAxJvm4gZHvxZvMP2VbZ4MtncsfgUzi/+MUk+ggmTFRGIrJhqZEEtNskuA4jbNJfTRf3KjnleuBtSogT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728539238; c=relaxed/simple;
-	bh=jGL8zKvOyMlgML4JIbc28fpjZwAaH9lvIYLew7E/IQ4=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
-	 Content-Type:References; b=GJU8UeOQ60Tm/DE1PUgpE0aaJEsKUTJ4cpl+0HP2kShzExvgdXRQF7ixbK7YYGnuEPTjckxG4qZt/WnqrB33g/EKfitJMeOFfAzjfUcESmQl0VmtPaoWmHH/RnxPhHLWqq4xSyA1nHJ387aSM62i84LV+XB8nr9ZUjImv8ykXZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=CJdmmHDN; arc=none smtp.client-ip=203.254.224.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas2p1.samsung.com (unknown [182.195.41.53])
-	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20241010054709epoutp03f05b0392778b6d32f353943b740d3798~9AUVOD8TX1502315023epoutp03a
-	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 05:47:09 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20241010054709epoutp03f05b0392778b6d32f353943b740d3798~9AUVOD8TX1502315023epoutp03a
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1728539229;
-	bh=BDhSr3UtrCq/7jL5Gp0c6QINts7kQkiI/80OXlIgyXE=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-	b=CJdmmHDNhBR5OF/cMLCfz7HgHAvQVRk5ZyBlweFWhOkINde32vhJw8IVPWIRAsuV7
-	 e1SGjG3wRlsjpWV8mVlk3HuwykTVTBpluQ4jjTNJIH2dQ03EcIui5/FbZT5EG9Lo0V
-	 To4PaucX/lzvOU5QCZrQIodZcGJpsCSHj4wDy21Y=
-Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
-	epcas2p3.samsung.com (KnoxPortal) with ESMTP id
-	20241010054708epcas2p3dac062372939aaa9fc5575670896b2c8~9AUUkzhy00500205002epcas2p3t;
-	Thu, 10 Oct 2024 05:47:08 +0000 (GMT)
-Received: from epsmgec2p1.samsung.com (unknown [182.195.36.90]) by
-	epsnrtp2.localdomain (Postfix) with ESMTP id 4XPJfz4Twhz4x9Q1; Thu, 10 Oct
-	2024 05:47:07 +0000 (GMT)
-Received: from epcas2p2.samsung.com ( [182.195.41.54]) by
-	epsmgec2p1.samsung.com (Symantec Messaging Gateway) with SMTP id
-	05.A5.08559.B5A67076; Thu, 10 Oct 2024 14:47:07 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-	epcas2p2.samsung.com (KnoxPortal) with ESMTPA id
-	20241010054707epcas2p28601eafc8da3c666f94058b1055e5943~9AUTQ4AqZ1367913679epcas2p2m;
-	Thu, 10 Oct 2024 05:47:07 +0000 (GMT)
-Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
-	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20241010054707epsmtrp1afba8ed9435a421b1a6af69886c5a18a~9AUTPqZCS3061030610epsmtrp17;
-	Thu, 10 Oct 2024 05:47:07 +0000 (GMT)
-X-AuditID: b6c32a43-ff266a800000216f-f2-67076a5b87a0
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-	epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
-	D7.E3.18937.A5A67076; Thu, 10 Oct 2024 14:47:06 +0900 (KST)
-Received: from KORCO164647 (unknown [10.229.38.229]) by epsmtip1.samsung.com
-	(KnoxPortal) with ESMTPA id
-	20241010054706epsmtip1111541d3ef4530e02089ff31f02e3b39~9AUS5z_Yd0549805498epsmtip1e;
-	Thu, 10 Oct 2024 05:47:06 +0000 (GMT)
-From: "Kiwoong Kim" <kwmad.kim@samsung.com>
-To: "'Seunghwan Baek'" <sh8267.baek@samsung.com>, "'Bart Van Assche'"
-	<bvanassche@acm.org>, <linux-kernel@vger.kernel.org>,
-	<linux-scsi@vger.kernel.org>, <martin.petersen@oracle.com>,
-	<James.Bottomley@HansenPartnership.com>, <avri.altman@wdc.com>,
-	<alim.akhtar@samsung.com>
-Cc: <grant.jung@samsung.com>, <jt77.jang@samsung.com>,
-	<junwoo80.lee@samsung.com>, <dh0421.hwang@samsung.com>,
-	<jangsub.yi@samsung.com>, <sh043.lee@samsung.com>, <cw9316.lee@samsung.com>,
-	<wkon.kim@samsung.com>, <stable@vger.kernel.org>, <sh425.lee@samsung.com>,
-	<hy50.seo@samsung.com>, <kwangwon.min@samsung.com>, <h10.kim@samsung.com>
-In-Reply-To: <017801db1942$ba6a5bb0$2f3f1310$@samsung.com>
-Subject: RE: [PATCH v1 1/1] ufs: core: set SDEV_OFFLINE when ufs shutdown.
-Date: Thu, 10 Oct 2024 14:47:06 +0900
-Message-ID: <032101db1ad7$d7039a70$850acf50$@samsung.com>
+	s=arc-20240116; t=1728540054; c=relaxed/simple;
+	bh=PK7oZMg/krXjhlNrDoVFQfXTxHOhq4hpTEDSiQrqDME=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J5ey1AIn9k0gQMTvRNJ+Cs0nbWCIfCxM44M6i18UPmRhKNVzDyebsOqWnE6KR1Mwui4WM/7MaZ+lhnWPyDjFYlGNJpgvj3DDydccg4AN7hsUzu5MpHVvcYzg/+vrHpXYbrG8ODv7tTicya8e1Ow4/M7MowI3ZtA6fgmMb4m7Qi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CLq9l48h; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728540052; x=1760076052;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=PK7oZMg/krXjhlNrDoVFQfXTxHOhq4hpTEDSiQrqDME=;
+  b=CLq9l48htPc3hUYt+pdpPHeEFm99xMaMmMKiC4SuBdccne4rwEhgG895
+   6jJCRVMzZsNe9InCOqQitDqVR8gibmBpQFBjjXRDG7LKPjbeH+JcB7htq
+   n5ha8DBhn3fNQDwoYZLr2Yp4puLKDHtFtJ7DXzMLEU+HjAlVwOy4A9DfA
+   NpGp29QAY9sPQVT9f7xWPNSB4DMCyyfS24RFfWOC0WVZ+qGig8K2n9KMw
+   uEHsVlvOPp5bkQcFG+EeisWcZ4fgana+N6TWsoZbyQgiA+RvSgNeEWTyq
+   XyJ5h2902dQyECnaAQOy2kH8z8lUgjXOgMBW+9qpkTrM2RRMH7neXAQLr
+   w==;
+X-CSE-ConnectionGUID: 5Sx2sbMNTPiTBv5tMSgPyw==
+X-CSE-MsgGUID: bq41FM1/SVO0b6yIbLPb2w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="15498886"
+X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; 
+   d="scan'208";a="15498886"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 23:00:52 -0700
+X-CSE-ConnectionGUID: BASR9FPEQmGnZyQhWB2nEg==
+X-CSE-MsgGUID: w4QsR1g9SImq5EPcW6Cc/w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; 
+   d="scan'208";a="76096954"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 09 Oct 2024 23:00:49 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1symEB-000AF7-1f;
+	Thu, 10 Oct 2024 06:00:47 +0000
+Date: Thu, 10 Oct 2024 14:00:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michal =?utf-8?B?Vm9rw6HEjQ==?= <michal.vokac@ysoft.com>,
+	Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, Dan Murphy <dmurphy@ti.com>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Michal =?utf-8?B?Vm9rw6HEjQ==?= <michal.vokac@ysoft.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] leds: lp55xx: Fix check for invalid channel number
+Message-ID: <202410101313.hQc9I8AL-lkp@intel.com>
+References: <1728464547-31722-1-git-send-email-michal.vokac@ysoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: ko
-Thread-Index: AQITd6wvsWq6bg+5ypABxh1kBxxfMwHy7pIVAtyJc3gCDAIdKwI4d05OAHuLQEsCcDBpNrGuwlgA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrAJsWRmVeSWpSXmKPExsWy7bCmmW50Fnu6weO1ShYP5m1js3j58yqb
-	xbQPP5ktZpxqY7XYd+0ku8Wvv+vZLf7evshqsXrxAxaLjf0cFh1bJzNZ7Hh+ht1i199mJout
-	N3ayWFzeNYfNovv6DjaL5cf/MVk0/dnHYrH031sWi2tnTrBaLNj4iNFi86VvLA6iHpeveHtM
-	m3SKzePj01ssHn1bVjF6fN4k59F+oJspgC0q2yYjNTEltUghNS85PyUzL91WyTs43jne1MzA
-	UNfQ0sJcSSEvMTfVVsnFJ0DXLTMH6B8lhbLEnFKgUEBicbGSvp1NUX5pSapCRn5xia1SakFK
-	ToF5gV5xYm5xaV66Xl5qiZWhgYGRKVBhQnZG86fEgvvcFW9mb2FrYJzJ2cXIySEhYCLRtuQQ
-	axcjF4eQwA5GiR/rnjJBOJ8YJc403maGcz7eecfYxcgB1tJ7JgYivpNR4vffy1DtLxkl9nU8
-	ZQSZyyagLTHt4W6whIjATCaJ/c3dLCAOs8ANJonZD1YwgVRxClhJ3LvSyQ5iCwt4SfzYdgIs
-	ziKgKnHy2lJmEJtXwFLi7PQ/TBC2oMTJmU9YQGxmAXmJ7W/nMEN8oSDx8+kyVoi4iMTszjaw
-	uIhAlETP3vVgiyUE/nNILPn0gBXiBxeJLzM9IXqFJV4d38IOYUtJvOxvg7KLJdbuuMoE0dvA
-	KLH61WmohLHErGft4LBgFtCUWL9LH2KkssSRW1Cn8Ul0HP7LDhHmlehoE4JoVJb4NWkyI4Qt
-	KTHz5h32CYxKs5A8NgvJY7OQPDMLYdcCRpZVjGKpBcW56anJRgWG8MhOzs/dxAhO6lrOOxiv
-	zP+nd4iRiYPxEKMEB7OSCK/uQtZ0Id6UxMqq1KL8+KLSnNTiQ4ymwKCeyCwlmpwPzCt5JfGG
-	JpYGJmZmhuZGpgbmSuK891rnpggJpCeWpGanphakFsH0MXFwSjUwNQn2Tn+9Zsu+93NvFlX+
-	2x7yxN5qclHm9e06gnxX7zCXSHFXxS+bmBNQ+3NyfY+yqNTbSwbt647V+zvq1+wV0Q1mj+hq
-	n7XzX+LPWaeE9M/9yy3X87j/JmE6d9w+jeuXHJgcEg7qzl/3cP3URdn/2s+LaEt9n708M194
-	84Ll/veOm7b02gUu3VPz9ZFMvZ29x6uOUE4F0fOvo8RsP4iyNC6WYDnkMnne0+aWHQsFSjZt
-	8VbrSpjL6rilZ2m9f+CjXZu05/yXXskX1LbmVOuNn3Jdz4TCvy/ZwSA3TcgvMYQz4ARnVHT8
-	jSiv9FtzFl251Z3SOlty4b7uTJ7qCf2z7RZ8YXofe+L22TirCXvmK7EUZyQaajEXFScCAMzE
-	ZgtzBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrBIsWRmVeSWpSXmKPExsWy7bCSnG5UFnu6wdlpphYP5m1js3j58yqb
-	xbQPP5ktZpxqY7XYd+0ku8Wvv+vZLf7evshqsXrxAxaLjf0cFh1bJzNZ7Hh+ht1i199mJout
-	N3ayWFzeNYfNovv6DjaL5cf/MVk0/dnHYrH031sWi2tnTrBaLNj4iNFi86VvLA6iHpeveHtM
-	m3SKzePj01ssHn1bVjF6fN4k59F+oJspgC2KyyYlNSezLLVI3y6BK6P5U2LBfe6KN7O3sDUw
-	zuTsYuTgkBAwkeg9E9PFyMkhJLCdUeLVZnMQW0JAUuLEzueMELawxP2WI6xdjFxANc8ZJWY3
-	LmMHSbAJaEtMe7gbLCEiMJ9J4sjZw+wgDrPACyaJvkufWSBafjBJNOzZA9bCKWAlce9KJ5gt
-	LOAl8WPbCSYQm0VAVeLktaXMIDavgKXE2el/mCBsQYmTM5+wgNjMQOt6H7YyQtjyEtvfzmGG
-	uE9B4ufTZawQcRGJ2Z1tYHERgSiJnr3rWSYwCs9CMmoWklGzkIyahaR9ASPLKkbR1ILi3PTc
-	5AJDveLE3OLSvHS95PzcTYzgyNYK2sG4bP1fvUOMTByMhxglOJiVRHh1F7KmC/GmJFZWpRbl
-	xxeV5qQWH2KU5mBREudVzulMERJITyxJzU5NLUgtgskycXBKNTD5rufMSMjVuyGQKN7XvCQn
-	1XD5p/yG0EqjqNkZNsufy3/wZXoWpD9jkoBCibG/SO/18wnxMgf2i6x/uzNwfnuDa8M0Y5Hr
-	/dFvuV+ktCydLNZ2//NZw6h7S6V4/n9hP3nAP5X9JJOVkMbjbAn3oPnn6k7c/+6udtv3Y2xl
-	4JqAc1z79VXWpnRY3Xm+aOfvDg79ea6CMjmH/G/sFHZ4/NW9R8uoecbz72LJKzbn3Uz7y7xh
-	+b/H0iF7xS75xIfM9++9sKha6N+eHyccba66GmQKJs3m0zT/4yv4Z+HtQ44dMlycDzZ/nsxl
-	mP4+LW7F04Z3Wc/f39sRztjLwsbA/ZLf441P/meZGX456gUP1ZVYijMSDbWYi4oTAU431Bdb
-	AwAA
-X-CMS-MailID: 20241010054707epcas2p28601eafc8da3c666f94058b1055e5943
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: AUTO_CONFIDENTIAL
-CMS-TYPE: 102P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20240829093921epcas1p35d28696b0f79e2ae39d8e3690f088e64
-References: <20240829093913.6282-1-sh8267.baek@samsung.com>
-	<CGME20240829093921epcas1p35d28696b0f79e2ae39d8e3690f088e64@epcas1p3.samsung.com>
-	<20240829093913.6282-2-sh8267.baek@samsung.com>
-	<fa8a4c1a-e583-496b-a0a2-bd86f86af508@acm.org>
-	<003201db0e27$df93f250$9ebbd6f0$@samsung.com>
-	<1845f326-e9eb-4351-9ed1-fce373c82cb0@acm.org> 
-	<017801db1942$ba6a5bb0$2f3f1310$@samsung.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1728464547-31722-1-git-send-email-michal.vokac@ysoft.com>
 
-> > > On 9/23/24 7:17 PM, Seunghwan Baek wrote:> That's because SSU (Start
-> > > Stop
-> > > Unit) command must be sent during
-> > > > shutdown process. If SDEV_OFFLINE is set for wlun, SSU command
-> > > > cannot be sent because it is rejected by the scsi layer.
-> > > > Therefore, we consider to set SDEV_QUIESCE for wlun, and set
-> > > > SDEV_OFFLINE for other lus.
-> > > Right. Since ufshcd_wl_shutdown() is expected to stop all DMA
-> > > related to the UFS host, shouldn't there be a
-> > > scsi_device_quiesce(sdev) call after the __ufshcd_wl_suspend(hba,
-> UFS_SHUTDOWN_PM) call?
-> > >
-> > > Thanks,
-> > >
-> > > Bart.
-> >
-> > Yes. __ufshcd_wl_suspend(hba, UFS_SHUTDOWN_PM) should be called after
-> > scsi_device_quiesce(sdev). Generally, the SSU command is the last
-> > command before UFS power off. Therefore, if __ufshcd_wl_suspend is
-> > performed before scsi_device_quiesce, other commands may be performed
-> > after the SSU command and UFS may not guarantee the operation of the
-> > SSU command, which may cause other problems. This order must be
-> guaranteed.
-> >
-> > And with SDEV_QUIESCE, deadlock issue cannot be avoided due to requeue.
-> > We need to return the i/o error with SDEV_OFFLINE to avoid the
-> > mentioned deadlock problem.
-> 
-> (+ more CC added.)
-> Dear All.
-> 
-> Could you please update for this patch?
-> If you have any opinions about this patch, share and comment it.
-> 
-> Thanks.
-> BRs.
+Hi Michal,
 
-Looks good to me.
+kernel test robot noticed the following build errors:
 
-Thanks.
-Kiwoong Kim.
+[auto build test ERROR on lee-leds/for-leds-next]
+[also build test ERROR on linus/master v6.12-rc2 next-20241009]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Michal-Vok/leds-lp55xx-Fix-check-for-invalid-channel-number/20241009-171340
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/lee/leds.git for-leds-next
+patch link:    https://lore.kernel.org/r/1728464547-31722-1-git-send-email-michal.vokac%40ysoft.com
+patch subject: [PATCH] leds: lp55xx: Fix check for invalid channel number
+config: xtensa-randconfig-r071-20241010 (https://download.01.org/0day-ci/archive/20241010/202410101313.hQc9I8AL-lkp@intel.com/config)
+compiler: xtensa-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241010/202410101313.hQc9I8AL-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410101313.hQc9I8AL-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from include/linux/device.h:15,
+                    from include/linux/acpi.h:14,
+                    from include/linux/i2c.h:13,
+                    from drivers/leds/leds-lp55xx-common.c:17:
+   drivers/leds/leds-lp55xx-common.c: In function 'lp55xx_parse_common_child':
+>> drivers/leds/leds-lp55xx-common.c:1130:25: error: 'dev' undeclared (first use in this function); did you mean 'cdev'?
+    1130 |                 dev_err(dev, "Use channel numbers between 0 and %d\n",
+         |                         ^~~
+   include/linux/dev_printk.h:110:25: note: in definition of macro 'dev_printk_index_wrap'
+     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+         |                         ^~~
+   drivers/leds/leds-lp55xx-common.c:1130:17: note: in expansion of macro 'dev_err'
+    1130 |                 dev_err(dev, "Use channel numbers between 0 and %d\n",
+         |                 ^~~~~~~
+   drivers/leds/leds-lp55xx-common.c:1130:25: note: each undeclared identifier is reported only once for each function it appears in
+    1130 |                 dev_err(dev, "Use channel numbers between 0 and %d\n",
+         |                         ^~~
+   include/linux/dev_printk.h:110:25: note: in definition of macro 'dev_printk_index_wrap'
+     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+         |                         ^~~
+   drivers/leds/leds-lp55xx-common.c:1130:17: note: in expansion of macro 'dev_err'
+    1130 |                 dev_err(dev, "Use channel numbers between 0 and %d\n",
+         |                 ^~~~~~~
 
 
+vim +1130 drivers/leds/leds-lp55xx-common.c
+
+  1111	
+  1112	static int lp55xx_parse_common_child(struct device_node *np,
+  1113					     struct lp55xx_led_config *cfg,
+  1114					     int led_number, int *chan_nr)
+  1115	{
+  1116		int ret;
+  1117	
+  1118		of_property_read_string(np, "chan-name",
+  1119					&cfg[led_number].name);
+  1120		of_property_read_u8(np, "led-cur",
+  1121				    &cfg[led_number].led_current);
+  1122		of_property_read_u8(np, "max-cur",
+  1123				    &cfg[led_number].max_current);
+  1124	
+  1125		ret = of_property_read_u32(np, "reg", chan_nr);
+  1126		if (ret)
+  1127			return ret;
+  1128	
+  1129		if (*chan_nr < 0 || *chan_nr >= cfg->max_channel) {
+> 1130			dev_err(dev, "Use channel numbers between 0 and %d\n",
+  1131				cfg->max_channel - 1);
+  1132			return -EINVAL;
+  1133		}
+  1134	
+  1135		return 0;
+  1136	}
+  1137	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
