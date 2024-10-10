@@ -1,97 +1,365 @@
-Return-Path: <stable+bounces-83301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2B96997D3F
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 08:32:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CDB6997D98
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 08:50:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91DE6285F1E
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 06:32:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E8F61C21DE9
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 06:50:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443F61A38E4;
-	Thu, 10 Oct 2024 06:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28F318BBB0;
+	Thu, 10 Oct 2024 06:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jcqCNNFX"
 X-Original-To: stable@vger.kernel.org
-Received: from cygnus.enyo.de (cygnus.enyo.de [79.140.189.114])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054DF18DF81;
-	Thu, 10 Oct 2024 06:32:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.140.189.114
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728541935; cv=none; b=dvD2fByHQwqo8htTHM5eTSsoIMpywWbVbxKsXV4sm41NX+9z0+1Ezt7TEqh5Shygd+alLJkScsbmGlX7Sz9i1R5TcJQX1bc6579zYkF2EZJxvkAJzO8UADhds0sjnLypOtnB4fw8sqPOirXih+JuDZUMGv1MtaVzgx3OiBfIZ3E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728541935; c=relaxed/simple;
-	bh=V2kO13Sp536cUh/fcCKZAzX5GRu3GPW5Wblh2HA5ICE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=tzuuO5VJdPxmuwg2lcq2CKhey/1RipXgloXf+ICAdi2TEIxUXQq8PguBuEp1njHUxw+K8/FIc2yO7BRP9YVT7vprLxlpj2IhqGi4KSbPKJx2zNA8CeDqEoNiEvZOyqB8BzX39hog5bfCJrW5MTNRD/5vuKxaTWzUOjuWH3DMsew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=deneb.enyo.de; spf=pass smtp.mailfrom=deneb.enyo.de; arc=none smtp.client-ip=79.140.189.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=deneb.enyo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deneb.enyo.de
-Received: from [172.17.203.2] (port=37769 helo=deneb.enyo.de)
-	by albireo.enyo.de ([172.17.140.2]) with esmtps (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	id 1symcq-0005LL-2t;
-	Thu, 10 Oct 2024 06:26:16 +0000
-Received: from fw by deneb.enyo.de with local (Exim 4.96)
-	(envelope-from <fw@deneb.enyo.de>)
-	id 1symcq-00142n-11;
-	Thu, 10 Oct 2024 08:26:16 +0200
-From: Florian Weimer <fw@deneb.enyo.de>
-To: Aleksa Sarai <cyphar@cyphar.com>
-Cc: Ingo Molnar <mingo@redhat.com>,  Peter Zijlstra <peterz@infradead.org>,
-  Juri Lelli <juri.lelli@redhat.com>,  Vincent Guittot
- <vincent.guittot@linaro.org>,  Dietmar Eggemann
- <dietmar.eggemann@arm.com>,  Steven Rostedt <rostedt@goodmis.org>,  Ben
- Segall <bsegall@google.com>,  Mel Gorman <mgorman@suse.de>,  Valentin
- Schneider <vschneid@redhat.com>,  Alexander Viro
- <viro@zeniv.linux.org.uk>,  Christian Brauner <brauner@kernel.org>,  Jan
- Kara <jack@suse.cz>,  Arnd Bergmann <arnd@arndb.de>,  Shuah Khan
- <shuah@kernel.org>,  Kees Cook <kees@kernel.org>,  Florian Weimer
- <fweimer@redhat.com>,  Mark Rutland <mark.rutland@arm.com>,
-  linux-kernel@vger.kernel.org,  linux-api@vger.kernel.org,
-  linux-fsdevel@vger.kernel.org,  linux-arch@vger.kernel.org,
-  linux-kselftest@vger.kernel.org,  stable@vger.kernel.org
-Subject: Re: [PATCH RFC v3 00/10] extensible syscalls: CHECK_FIELDS to allow
- for easier feature detection
-References: <20241010-extensible-structs-check_fields-v3-0-d2833dfe6edd@cyphar.com>
-Date: Thu, 10 Oct 2024 08:26:16 +0200
-In-Reply-To: <20241010-extensible-structs-check_fields-v3-0-d2833dfe6edd@cyphar.com>
-	(Aleksa Sarai's message of "Thu, 10 Oct 2024 07:40:33 +1100")
-Message-ID: <87jzegfp87.fsf@mid.deneb.enyo.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21301A304A
+	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 06:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728543010; cv=fail; b=MwkOKJFw4JGPraV6GdKOHixiVgttvUyJLji5rbvIDYuAcH3JLR+EceEFH3v4B+1XQb0PV2iumbTDK46VirsedIhG0G0p38dyXstE9xSsnlZHIxQo6RjSuuWM7ImCvWumBJRTLj+BSkpRqPazNfqT1lSb92dL4oo4rpFtGXwgDEE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728543010; c=relaxed/simple;
+	bh=O1L3gVV8IWQ3WadV9J00Pj0zDfX2NUJqZcurUHaTnf0=;
+	h=Date:From:To:CC:Subject:Message-ID:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=fkhgCFNIdEzkRypYTduAHKZtsJpO+F41R3Xm4WWEEX+oXF0AF4rxMbJzdkiRnB9NPJ5ZAq6SVXbfjTwvpV7hxC07q4xXFNH7Z0wup6KNpkK1B3a1MrJxP9w9mKAUubnkv/o5vnL3kvYyRm/8mzA88Pv/mOsjMxKYPlw+y5PrNQc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jcqCNNFX; arc=fail smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728543009; x=1760079009;
+  h=date:from:to:cc:subject:message-id:in-reply-to:
+   mime-version;
+  bh=O1L3gVV8IWQ3WadV9J00Pj0zDfX2NUJqZcurUHaTnf0=;
+  b=jcqCNNFXOknY7F0hHLJnmspYZCBy2kiDsvm00oTho4aPEHSECuSBbld6
+   G7c9oQtIycaArziiVn9BqlRyh4QOxjTLmZkiWogXzS6eWWjjui85fS82g
+   FYkQHK1FUtreGSH/PKfAKOW3ivgutS8yX+lh2yDVY33fiG1RTd7Rw5gU4
+   9DFsF78lLy1EGZhaXQu9DALoswZIGUN1FtCx6AysQMZGLWHQcUbMKRlzL
+   3MG+CFP9ADOYYWA3vtF4rT+w/KiUKuWoIfYzwMANR0rqmC26ceSrqwb13
+   YG+PNU3JOuTCRWrUec9PPqEa1BobUteUfCVYjZgAhL3skjAbAX5NMcNae
+   w==;
+X-CSE-ConnectionGUID: Xi3EfLB3Qg6vjdgaHE701A==
+X-CSE-MsgGUID: 5g9L1zVjSUa6IdPppoAdIQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="27829663"
+X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; 
+   d="scan'208";a="27829663"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 23:50:08 -0700
+X-CSE-ConnectionGUID: 6p3IfhMpQ02LD67dqQg9qA==
+X-CSE-MsgGUID: 4BF47FDQTQqd/0Yidf9okg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; 
+   d="scan'208";a="77321675"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 09 Oct 2024 23:50:07 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 9 Oct 2024 23:50:07 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Wed, 9 Oct 2024 23:50:06 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.174)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 9 Oct 2024 23:50:06 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WR9P6rgMpbxEKL8O3AUCY2WNW0Stni63GOVg01aU4Fce+ccx4lKtELbSok5TA6b8narhQP7ZQKXkvhUGLS6Cs2VL/Ui272alxCxWVTtV3akMO8pvMwJpOLq6/eafqHZu+UBSWaapm7oTjPjVkCTSPlcBexNC5HRQlLM8z3isv9TX15Swege/zvYgFQ41mi+WxI+elzEM/xqd/yhp/c+41pbAeyF4Q9vjALPo96jQV4lzDG+zmsRKi+VOxgMYP1aeDXoAockDw0QIQtYz6Maa/pBWhvX9Qk8XzFjZW4wVJHjOkJWMQsAxNSDLWG4oKXvQlH+jh83/IDuUTW4lIKhKGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mHKOStl3klsEPRwSTsOHbQ/hkOTgEenK83H7TT85j1A=;
+ b=ET9h0mNUplOl5N0wqkDktz058eO8cV5ZukqtMsVbQA3jBFJYYunYpZIkVXYm8AFCdksNfTk5Zje1I3BcgThvLzkYZeGwg8zYDZuJRjFUuzJMuiGfbPvZ8HTv6OPDmzt1JJM7Q9bAGLw9cglZTGR5lWv+8loaxKB+BAgEZ6aVAmyTjtgO2ueoWGi43JhgajWAcB+iAs8Gt1DPHOB7SOGewNcp1OVrP565i0D71yR+xK/ybtioyVLxpAJMS7MvCDye2g0T+isJE6g7HA1vjyAEktJkBQPpZBSBkP2Lzwfy0iVWRUQSh6/KQ/p5IaLrW7yYygkRbDaiCofGVX90FVXl7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
+ by CH3PR11MB8520.namprd11.prod.outlook.com (2603:10b6:610:1af::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.23; Thu, 10 Oct
+ 2024 06:50:02 +0000
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::4622:29cf:32b:7e5c]) by LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::4622:29cf:32b:7e5c%5]) with mapi id 15.20.8048.013; Thu, 10 Oct 2024
+ 06:50:02 +0000
+Date: Thu, 10 Oct 2024 14:49:51 +0800
+From: kernel test robot <oliver.sang@intel.com>
+To: Lyude Paul <lyude@redhat.com>
+CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, Stefan Agner <stefan@agner.ch>,
+	Daniel Vetter <daniel.vetter@intel.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>, <dri-devel@lists.freedesktop.org>,
+	<stable@vger.kernel.org>, <oliver.sang@intel.com>
+Subject: Re: [PATCH] drm/vblank: Require a driver register vblank support for
+ 0 or all CRTCs
+Message-ID: <202410101418.5704b4a5-lkp@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240927203946.695934-2-lyude@redhat.com>
+X-ClientProxiedBy: KU1PR03CA0039.apcprd03.prod.outlook.com
+ (2603:1096:802:19::27) To LV3PR11MB8603.namprd11.prod.outlook.com
+ (2603:10b6:408:1b6::9)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|CH3PR11MB8520:EE_
+X-MS-Office365-Filtering-Correlation-Id: a7983cbe-5d6d-4bd5-6d90-08dce8f7c439
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?ddeBkEGKL2rC3FCu1cwcOoCLWypV46NW5px8hpOjOIKwK5LyQ+4pWSYZR+i8?=
+ =?us-ascii?Q?Fr/0pzewE6XXgELgNk/f0lCmTu2/kRxxNhppRm4SHNyIQL4Zrs8Oq2AyGXyx?=
+ =?us-ascii?Q?zySY/lcDvy6tPb1FhUPn/Sykkjqk//O2OsByEZynDHoAhy/rQ2MuAx3OvypO?=
+ =?us-ascii?Q?0BgK9BrnVhRXSDHJFAc7dcHDLF/PjEI0L+jfKE/7mlV89jN14VZccxMTm186?=
+ =?us-ascii?Q?sbSrmBmOYRe64pwXU/555Xbadnb8ElK3EIWNyobTqug5LaA5hwbQAExsLH7B?=
+ =?us-ascii?Q?gbcFlOyVWv7Ot8oE1modd3Bq8JgFWtoBgXp+Yw16DjDkgz4vk8VFcYHC16oL?=
+ =?us-ascii?Q?oFE5e2Dzo9bVILpfLueTQXOhjT2T1sCmNiGMLIimJQ/qH2+CY+z+iW8mA9d1?=
+ =?us-ascii?Q?lvudQbt84PbhwAaHV/A5MR/c/wb5U16jCZONsZIFozH2pyjviUC/Wi7F2qDs?=
+ =?us-ascii?Q?LYsMQ2BmcmdFs06hUDUqkyfH0TDCooyoM542BhO1t8T1XOUkrqMHW3t0vOHq?=
+ =?us-ascii?Q?0QVnrGoVuXk0UoixlH2qnuHPxe16K8lclr9DtOPyuOPhoR3T9he4auoglkci?=
+ =?us-ascii?Q?OAaXCZfR0aR1U0IyQc/xbap/ahR96S+hRrO9QStBpJMKpaakfomJk2KYKynA?=
+ =?us-ascii?Q?O3qhDefFG740ub2WBi5pY67I06hZqxTK+/5OMCs13d+/98WCxIQ+IbcoK6PC?=
+ =?us-ascii?Q?dPpnYTolAkW+dpto1X7POGzA/wT52MjzeFm9d15zfgRgtNnGE/+Wo+oMXShB?=
+ =?us-ascii?Q?+rn4sSawZvAQHDeQs9UJtqJpYie/rVPQZqLZP3caldi5FPIu48IE9CwCeeou?=
+ =?us-ascii?Q?jvTeQaiYhc3YBzR8bLotxRGg1NlPttS7ebJehml/usz23KmPEkP/SbaliJSF?=
+ =?us-ascii?Q?3j6FIP18KOFuG0J1FJfpiT9wA1YnkPMoxhEL2qQ1wCfz0DYs6pfBBHucPfbg?=
+ =?us-ascii?Q?jtDVpzPbFrhIjDEUOxzUn6VcMtBZAMH0/ADHhCKrIhdR+nPpQGFDx7m4oUuq?=
+ =?us-ascii?Q?QErJ43yVQnScE+HQ3TsM3ClzLG5zVe2+qItvwGFrLzwlYIxWCCQ5z8V4ZxRP?=
+ =?us-ascii?Q?82sWFV6NKNRx3Ao2vQ2naqzkPOJS09ud0hxwvysZAe2koJBVGsKrNX+2ssxS?=
+ =?us-ascii?Q?U3B3BUTWiO7a9zj+C5klOJ0ItfCaD4HkTWmQi6anB300mtzKEsSBhQpqupvB?=
+ =?us-ascii?Q?IP4qvVquCwAwN6DHJUFguYAWLQGqUhtA2Oln2la+2cF443VRJhTLlYh3dQM?=
+ =?us-ascii?Q?=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?pyUGcuSsYkBK/xNq6EjhpprN/+mDxkQDyFn48ysDfgSNCjWhxSkG6vutAUUC?=
+ =?us-ascii?Q?JwK/Wvkt2oA3VHs5DD+782TlgK7rfodA3WTKdfrXWccqMja3dEcc0na1/91u?=
+ =?us-ascii?Q?bwoMBe0VZGG7ZyNygpBmbFM0W47nU3BfM3f8/QENT2g82NdqBGfYt77jRRLY?=
+ =?us-ascii?Q?wwEXOdlOx1PERssgAmtVmR+fWstP1QJS63RpEKkQ9gRDy7Sb5kcIg6rUtKlt?=
+ =?us-ascii?Q?Ll29PiATW4cmYS3H+hbu846uc8s2xd+snVBCi7Rp2LE3v1fDKNYkWJDd+kCF?=
+ =?us-ascii?Q?JGUVTCvD8b2LLlv0keoJ9K/Z1zLuI+ue5KYRWM+ltUntaAlrd/5+4/6nutc9?=
+ =?us-ascii?Q?I54hxm8gmAuLD6mmYrkZX/MAKhrfjkLRNvOFtFUEWS92sk4WP+d1puHSIyCW?=
+ =?us-ascii?Q?4vlDqbNSmXzi8j3S1+zsSq4YNdtmQPdXRttFZe1cY4kSdwZQ3c7WljnNy3OL?=
+ =?us-ascii?Q?BoAUwKuJcqpBC5WrDosvZuhv1Qd3B1U7tM1ieZyfce6m6WC4nckHhBEYDrS4?=
+ =?us-ascii?Q?Iivfy3s5Y3Z5Ccd3a4EDDh7CzEF2i5VtgFFDGDG7fo71izpu0DIQ0Bcbi8Wc?=
+ =?us-ascii?Q?tR/1YeYPWN/k3sb4m3bdJFL5whdV8MEsEl5S5z4xNhxWy9qhXHhKZ447ichi?=
+ =?us-ascii?Q?wZTk06YNXFpqHi82o/PwEBB8T1j7hKJ4ajOsBtfwpuJaXG54G5wS2lj4v8G0?=
+ =?us-ascii?Q?iPUAb3h2i9dtizXiQ0xTPBeBbTInhICecyrpQh9FrCxq1ucX8vsC0ZNWRiC7?=
+ =?us-ascii?Q?A+FexPf6Rmi6CGXdRSbsa1J+Y078vdsOlXNxMQ/5WK+QvXP4Qg07UdJWJpNC?=
+ =?us-ascii?Q?7hHo6zx2TyYHMXe9XrIqUV+ueJ9q8vbQdLYBl0khqNr/LLnQxsaiuMftMU+w?=
+ =?us-ascii?Q?gvdpy9hZaTVVxOLDEhGiEEkRi1e9LrnSUZYw698zgSqaN6U9ESdjoVcyA621?=
+ =?us-ascii?Q?5EZR1tbRmtRSuErP8rbTPlx6TrSLjR+txkqvDUsnjuOpqPiyLTz6DFFnP2ak?=
+ =?us-ascii?Q?se947Dw/rUd2kKEv3qL0K651j3S3cuYQ94Pc3flNw9pTDvDkURpJ/xc7TvXn?=
+ =?us-ascii?Q?OgXZcQ8TIklpZ7NsBx6nq3U39eyVDgO7+7rvTdYrM7ez5ECPWGmiC4wWuSgf?=
+ =?us-ascii?Q?NHWfzOYVlYGrsxjLkRT45izHWgA3CzuZhJLHb9FZOkgfoz2ecXrMqdpY0YyU?=
+ =?us-ascii?Q?tWap+tVPPdsQkxvvxcqHjN7uN9UUAtpOoo31xNpNN/kjnqe2llSmsV+YxkKQ?=
+ =?us-ascii?Q?rhhxXgmltv24oeanraMxpFO/cYVEAvKabop1jxx0Q0HRe/xOkab9anc045i9?=
+ =?us-ascii?Q?D3IXtebG5triTg5tN43+eiv60VE4rvMdLkTPYyC/lKSWOqq/bKEJvre1Ekr4?=
+ =?us-ascii?Q?ZOU9JRUfcYZnnxfWTKUvQYxbRNhj8h0LWlEv+pzyk1OnWd/QkbVMGCSQv/in?=
+ =?us-ascii?Q?NtxtRooQWJxoPgaR2M/PdcMzI59acH4QYnkdfcxqQdyuFI7QjIfv8pHGszvI?=
+ =?us-ascii?Q?0ZYoAS9Om152X3uZpDDGj72ksj/6t++98m3/8P5kkeXpo8e0tAWHj0zFn6cC?=
+ =?us-ascii?Q?kI91lMYS2rCRBblbvqeMUFEnvN5AkLRfa87+Ol7Ev799DbtKuXec4AgOwbYP?=
+ =?us-ascii?Q?NA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7983cbe-5d6d-4bd5-6d90-08dce8f7c439
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2024 06:50:02.8164
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lQXBdKT4LrCA6j0Jf7p1xv4FJGXfRoJO+QaUnARl8xp9kF3JWbbN7HZzy3YmrQW1krBetp/1IVgxx87d6S7VgA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8520
+X-OriginatorOrg: intel.com
 
-* Aleksa Sarai:
 
-> This is something that I've been thinking about for a while. We had a
-> discussion at LPC 2020 about this[1] but the proposals suggested there
-> never materialised.
->
-> In short, it is quite difficult for userspace to detect the feature
-> capability of syscalls at runtime. This is something a lot of programs
-> want to do, but they are forced to create elaborate scenarios to try to
-> figure out if a feature is supported without causing damage to the
-> system. For the vast majority of cases, each individual feature also
-> needs to be tested individually (because syscall results are
-> all-or-nothing), so testing even a single syscall's feature set can
-> easily inflate the startup time of programs.
->
-> This patchset implements the fairly minimal design I proposed in this
-> talk[2] and in some old LKML threads (though I can't find the exact
-> references ATM). The general flow looks like:
 
-By the way, I have recently tried to document things from a glibc
-perspective (which is a bit broader because we also have purely
-userspace types):
+Hello,
 
-  [PATCH RFC] manual: Document how types change
-  <https://inbox.sourceware.org/libc-alpha/8734m4n1ij.fsf@oldenburg3.str.redhat.com/>
+kernel test robot noticed "BUG:kernel_NULL_pointer_dereference,address" on:
 
-(This patch has not yet been reviewed.)
+commit: 8e1a430cf308254a61a2317a0dfc4d8f4b3e13cb ("[PATCH] drm/vblank: Require a driver register vblank support for 0 or all CRTCs")
+url: https://github.com/intel-lab-lkp/linux/commits/Lyude-Paul/drm-vblank-Require-a-driver-register-vblank-support-for-0-or-all-CRTCs/20240928-044210
+patch link: https://lore.kernel.org/all/20240927203946.695934-2-lyude@redhat.com/
+patch subject: [PATCH] drm/vblank: Require a driver register vblank support for 0 or all CRTCs
+
+in testcase: boot
+
+compiler: gcc-12
+test machine: qemu-system-i386 -enable-kvm -cpu SandyBridge -smp 2 -m 4G
+
+(please refer to attached dmesg/kmsg for entire log/backtrace)
+
+
++---------------------------------------------+------------+------------+
+|                                             | 22512c3ee0 | 8e1a430cf3 |
++---------------------------------------------+------------+------------+
+| boot_successes                              | 12         | 0          |
+| boot_failures                               | 0          | 12         |
+| BUG:kernel_NULL_pointer_dereference,address | 0          | 12         |
+| Oops:Oops:#[##]                             | 0          | 12         |
+| EIP:drm_vblank_init                         | 0          | 12         |
+| Kernel_panic-not_syncing:Fatal_exception    | 0          | 12         |
++---------------------------------------------+------------+------------+
+
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <oliver.sang@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202410101418.5704b4a5-lkp@intel.com
+
+
+[    4.727010][    T1] BUG: kernel NULL pointer dereference, address: 00000188
+[    4.728324][    T1] #PF: supervisor read access in kernel mode
+[    4.729456][    T1] #PF: error_code(0x0000) - not-present page
+[    4.729853][    T1] *pdpt = 0000000000000000 *pde = f000ff53f000ff53
+[    4.729853][    T1] Oops: Oops: 0000 [#1]
+[    4.729853][    T1] CPU: 0 UID: 0 PID: 1 Comm: swapper Tainted: G                T  6.11.0-rc7-01372-g8e1a430cf308 #1 577dd3e1adc1bccd6f381550d3179686c5f157a0
+[    4.729853][    T1] Tainted: [T]=RANDSTRUCT
+[    4.729853][    T1] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+[ 4.729853][ T1] EIP: drm_vblank_init (drivers/gpu/drm/drm_vblank.c:534) 
+[ 4.729853][ T1] Code: 89 c6 53 83 ec 08 89 55 ec 8b 90 64 05 00 00 39 d1 74 56 8d 42 f8 eb 12 90 8b 5a 04 85 db 74 17 8b 50 08 8d 42 f8 39 d1 74 3f <8b> 90 90 01 00 00 8b 7a 08 85 ff 75 e2 8b 40 10 85 f6 74 03 8b 76
+All code
+========
+   0:	89 c6                	mov    %eax,%esi
+   2:	53                   	push   %rbx
+   3:	83 ec 08             	sub    $0x8,%esp
+   6:	89 55 ec             	mov    %edx,-0x14(%rbp)
+   9:	8b 90 64 05 00 00    	mov    0x564(%rax),%edx
+   f:	39 d1                	cmp    %edx,%ecx
+  11:	74 56                	je     0x69
+  13:	8d 42 f8             	lea    -0x8(%rdx),%eax
+  16:	eb 12                	jmp    0x2a
+  18:	90                   	nop
+  19:	8b 5a 04             	mov    0x4(%rdx),%ebx
+  1c:	85 db                	test   %ebx,%ebx
+  1e:	74 17                	je     0x37
+  20:	8b 50 08             	mov    0x8(%rax),%edx
+  23:	8d 42 f8             	lea    -0x8(%rdx),%eax
+  26:	39 d1                	cmp    %edx,%ecx
+  28:	74 3f                	je     0x69
+  2a:*	8b 90 90 01 00 00    	mov    0x190(%rax),%edx		<-- trapping instruction
+  30:	8b 7a 08             	mov    0x8(%rdx),%edi
+  33:	85 ff                	test   %edi,%edi
+  35:	75 e2                	jne    0x19
+  37:	8b 40 10             	mov    0x10(%rax),%eax
+  3a:	85 f6                	test   %esi,%esi
+  3c:	74 03                	je     0x41
+  3e:	8b                   	.byte 0x8b
+  3f:	76                   	.byte 0x76
+
+Code starting with the faulting instruction
+===========================================
+   0:	8b 90 90 01 00 00    	mov    0x190(%rax),%edx
+   6:	8b 7a 08             	mov    0x8(%rdx),%edi
+   9:	85 ff                	test   %edi,%edi
+   b:	75 e2                	jne    0xffffffffffffffef
+   d:	8b 40 10             	mov    0x10(%rax),%eax
+  10:	85 f6                	test   %esi,%esi
+  12:	74 03                	je     0x17
+  14:	8b                   	.byte 0x8b
+  15:	76                   	.byte 0x76
+[    4.729853][    T1] EAX: fffffff8 EBX: 86802000 ECX: 86802564 EDX: 00000000
+[    4.729853][    T1] ESI: 86802000 EDI: 86813400 EBP: 85e1fe90 ESP: 85e1fe7c
+[    4.729853][    T1] DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00010282
+[    4.729853][    T1] CR0: 80050033 CR2: 00000188 CR3: 05182000 CR4: 000406b0
+[    4.729853][    T1] DR0: 00000000 DR1: 00000000 DR2: 00000000 DR3: 00000000
+[    4.729853][    T1] DR6: fffe0ff0 DR7: 00000400
+[    4.729853][    T1] Call Trace:
+[ 4.729853][ T1] ? show_regs (arch/x86/kernel/dumpstack.c:478) 
+[ 4.729853][ T1] ? __die (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:434) 
+[ 4.729853][ T1] ? page_fault_oops (arch/x86/mm/fault.c:715) 
+[ 4.729853][ T1] ? kernelmode_fixup_or_oops+0x54/0x68 
+[ 4.729853][ T1] ? __bad_area_nosemaphore+0x103/0x180 
+[ 4.729853][ T1] ? sched_clock_noinstr (arch/x86/kernel/tsc.c:267) 
+[ 4.729853][ T1] ? bad_area_nosemaphore (arch/x86/mm/fault.c:835) 
+[ 4.729853][ T1] ? do_user_addr_fault (arch/x86/mm/fault.c:1452) 
+[ 4.729853][ T1] ? exc_page_fault (arch/x86/include/asm/irqflags.h:26 arch/x86/include/asm/irqflags.h:87 arch/x86/include/asm/irqflags.h:147 arch/x86/mm/fault.c:1489 arch/x86/mm/fault.c:1539) 
+[ 4.729853][ T1] ? pvclock_clocksource_read_nowd (arch/x86/mm/fault.c:1494) 
+[ 4.729853][ T1] ? handle_exception (arch/x86/entry/entry_32.S:1054) 
+[ 4.729853][ T1] ? pvclock_clocksource_read_nowd (arch/x86/mm/fault.c:1494) 
+[ 4.729853][ T1] ? drm_vblank_init (drivers/gpu/drm/drm_vblank.c:534) 
+[ 4.729853][ T1] ? pvclock_clocksource_read_nowd (arch/x86/mm/fault.c:1494) 
+[ 4.729853][ T1] ? drm_vblank_init (drivers/gpu/drm/drm_vblank.c:534) 
+[ 4.729853][ T1] vkms_create (drivers/gpu/drm/vkms/vkms_drv.c:211) 
+[ 4.729853][ T1] vkms_init (drivers/gpu/drm/vkms/vkms_drv.c:254) 
+[ 4.729853][ T1] ? vgem_init (drivers/gpu/drm/vkms/vkms_drv.c:240) 
+[ 4.729853][ T1] do_one_initcall (init/main.c:1267) 
+[ 4.729853][ T1] do_initcalls (init/main.c:1328 init/main.c:1345) 
+[ 4.729853][ T1] kernel_init_freeable (init/main.c:1580) 
+[ 4.729853][ T1] ? rest_init (init/main.c:1459) 
+[ 4.729853][ T1] kernel_init (init/main.c:1469) 
+[ 4.729853][ T1] ret_from_fork (arch/x86/kernel/process.c:153) 
+[ 4.729853][ T1] ? rest_init (init/main.c:1459) 
+[ 4.729853][ T1] ret_from_fork_asm (arch/x86/entry/entry_32.S:737) 
+[ 4.729853][ T1] entry_INT80_32 (arch/x86/entry/entry_32.S:944) 
+[    4.729853][    T1] Modules linked in:
+[    4.729853][    T1] CR2: 0000000000000188
+[    4.729853][    T1] ---[ end trace 0000000000000000 ]---
+[ 4.729853][ T1] EIP: drm_vblank_init (drivers/gpu/drm/drm_vblank.c:534) 
+[ 4.729853][ T1] Code: 89 c6 53 83 ec 08 89 55 ec 8b 90 64 05 00 00 39 d1 74 56 8d 42 f8 eb 12 90 8b 5a 04 85 db 74 17 8b 50 08 8d 42 f8 39 d1 74 3f <8b> 90 90 01 00 00 8b 7a 08 85 ff 75 e2 8b 40 10 85 f6 74 03 8b 76
+All code
+========
+   0:	89 c6                	mov    %eax,%esi
+   2:	53                   	push   %rbx
+   3:	83 ec 08             	sub    $0x8,%esp
+   6:	89 55 ec             	mov    %edx,-0x14(%rbp)
+   9:	8b 90 64 05 00 00    	mov    0x564(%rax),%edx
+   f:	39 d1                	cmp    %edx,%ecx
+  11:	74 56                	je     0x69
+  13:	8d 42 f8             	lea    -0x8(%rdx),%eax
+  16:	eb 12                	jmp    0x2a
+  18:	90                   	nop
+  19:	8b 5a 04             	mov    0x4(%rdx),%ebx
+  1c:	85 db                	test   %ebx,%ebx
+  1e:	74 17                	je     0x37
+  20:	8b 50 08             	mov    0x8(%rax),%edx
+  23:	8d 42 f8             	lea    -0x8(%rdx),%eax
+  26:	39 d1                	cmp    %edx,%ecx
+  28:	74 3f                	je     0x69
+  2a:*	8b 90 90 01 00 00    	mov    0x190(%rax),%edx		<-- trapping instruction
+  30:	8b 7a 08             	mov    0x8(%rdx),%edi
+  33:	85 ff                	test   %edi,%edi
+  35:	75 e2                	jne    0x19
+  37:	8b 40 10             	mov    0x10(%rax),%eax
+  3a:	85 f6                	test   %esi,%esi
+  3c:	74 03                	je     0x41
+  3e:	8b                   	.byte 0x8b
+  3f:	76                   	.byte 0x76
+
+Code starting with the faulting instruction
+===========================================
+   0:	8b 90 90 01 00 00    	mov    0x190(%rax),%edx
+   6:	8b 7a 08             	mov    0x8(%rdx),%edi
+   9:	85 ff                	test   %edi,%edi
+   b:	75 e2                	jne    0xffffffffffffffef
+   d:	8b 40 10             	mov    0x10(%rax),%eax
+  10:	85 f6                	test   %esi,%esi
+  12:	74 03                	je     0x17
+  14:	8b                   	.byte 0x8b
+  15:	76                   	.byte 0x76
+
+
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20241010/202410101418.5704b4a5-lkp@intel.com
+
+
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
 
