@@ -1,94 +1,111 @@
-Return-Path: <stable+bounces-83324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF669982FD
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 11:57:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C9C599833C
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 12:10:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F069283072
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 09:57:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C13CB2579E
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 10:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F001BD039;
-	Thu, 10 Oct 2024 09:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A0F1C2327;
+	Thu, 10 Oct 2024 10:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rruOdLoe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TuLhCxS/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B5919E7D0;
-	Thu, 10 Oct 2024 09:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A191BF300;
+	Thu, 10 Oct 2024 10:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728554272; cv=none; b=cw7ppgM26H+gQVuRciXFlIl3oyb70Oxy5Uv2v/XNgxWsDC47X902bUy+Es0x7h0tpD8B+UcWMWRvyr0QMqdySNnOCJgoAJrakz0eg+Gc3GLpf5EtzczgXy+jpTxJkkJHjHQHx/zSXCtR0qDCuAqM/6BKwaBcNGt/uXnk/D5POzk=
+	t=1728554986; cv=none; b=rqE5vvcK1E0UYrSYKbxvHjZxaLQGRjcIV3NopUHG/D1dena7adKykfmeRtsuSUg6Pjl85Qs8x63MfQFqtVeuhkqTWEkPH3o91nsvxUusuZrv2JvOCW1FQtksDBulMVPyiB6YBX9XbyY0mxwSvLZ1H9vgRMoCl6zvzbb4YeRwYoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728554272; c=relaxed/simple;
-	bh=+DIUl1Brnx8rvfoXu1vBizxsvRwazzV35XPq5sS92BY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=coRgGaIhj3+hkpyy0mK/eMk0NDgNH/q4rrLrDccTdnFeLmZ8UWpVVWINFLQV14AeKbP7w0EHwtaXgrhrXSYbyV7ElSgV6z/rOzOxK9UsCW+Ra6w4ndHLRnH8HGuR2gQoB1/bYMYzfamZuknvPImEvooftNFRslLzcQT0HgNYxAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rruOdLoe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3667AC4CEC5;
-	Thu, 10 Oct 2024 09:57:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728554271;
-	bh=+DIUl1Brnx8rvfoXu1vBizxsvRwazzV35XPq5sS92BY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rruOdLoe0f46rS9FB9A8LqzTqMpq0F47CkK5owszz0M06RaFyD3eTN4ibBKO6P9L3
-	 fUtowtJ7JYcGLRzlEg3QCLYDP/wD+bHcGoFvh6RNcAGtn/zRDG4LcmeMfoD23C2NKi
-	 cnn4blW6ZNCAqkvuhynJ+6Q6/0434JDFci09mhnI=
-Date: Thu, 10 Oct 2024 11:57:48 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: =?iso-8859-1?B?Q3Pza+Fz?= Bence <csokas.bence@prolan.hu>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>, Sasha Levin <sashal@kernel.org>,
-	Wei Fang <wei.fang@nxp.com>
-Subject: Re: [PATCH 6.6 028/386] net: fec: Restart PPS after link state change
-Message-ID: <2024101033-primate-hacking-6d3c@gregkh>
-References: <20241008115629.309157387@linuxfoundation.org>
- <20241008115630.584472371@linuxfoundation.org>
- <1af647ce-69e4-4f86-b0a5-6ac76ec25d12@prolan.hu>
+	s=arc-20240116; t=1728554986; c=relaxed/simple;
+	bh=vCTqIl7jShZpEr0sVmMbfnvFvzmbv2n1ITL19Rj+AWQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tNPXgGwsclvxdA2mNiBQxhqw3cDS9KeIr44T6nPMEgbTX4kQcFamBjwqKQIrOcUji9UH5Dj9uYxT7a+0q5aXWkVvR1CryhfCa560poHlrRIxq7q6pMLydESbx8mVWGiXDcPWwmbhX+KzP5/v1LHSK8RhFil4PT+p08f/1FUa0kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TuLhCxS/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CBDC4CECC;
+	Thu, 10 Oct 2024 10:09:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728554985;
+	bh=vCTqIl7jShZpEr0sVmMbfnvFvzmbv2n1ITL19Rj+AWQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TuLhCxS/kum3UUxI2LxetVqLBebi9ov//MNFTqAdCuXEOE2k5dBBp3lBbyLXKK1UD
+	 +JnBouAShZSx0FpbD1wRXccZwC6S5evYkUqXkmc3pb7TwrRkNF7XTFMW+9jA1xhz6g
+	 BEVS/dNs7+Th8yU89mXKH4GwQV8YO2J+M+WF1DMgtm8X1SWYEWhYQc4lKKF6iKH7JL
+	 Q3vQcsttS3UHj3CZ29aCP1vYw+sX2AYnz93OehQpgxoxdgBDmK3DxHAjkCMHCl6dNS
+	 elj6E5VT44QVNzgeYiHWSZQ2IAZpulbv1bkoWqGkYStFVgf0vu/R9VZZAjmsUtGr9O
+	 egsFyXIZheGog==
+From: Christian Brauner <brauner@kernel.org>
+To: Aleksa Sarai <cyphar@cyphar.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Florian Weimer <fweimer@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mark Rutland <mark.rutland@arm.com>,
+	linux-kernel@vger.kernel.org,
+	linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	stable@vger.kernel.org,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>,
+	Shuah Khan <shuah@kernel.org>
+Subject: Re: (subset) [PATCH RFC v3 03/10] openat2: explicitly return -E2BIG for (usize > PAGE_SIZE)
+Date: Thu, 10 Oct 2024 12:09:35 +0200
+Message-ID: <20241010-pikant-neuer-4dbf48940683@brauner>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241010-extensible-structs-check_fields-v3-3-d2833dfe6edd@cyphar.com>
+References: <20241010-extensible-structs-check_fields-v3-0-d2833dfe6edd@cyphar.com> <20241010-extensible-structs-check_fields-v3-3-d2833dfe6edd@cyphar.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1115; i=brauner@kernel.org; h=from:subject:message-id; bh=vCTqIl7jShZpEr0sVmMbfnvFvzmbv2n1ITL19Rj+AWQ=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaSzL3/gcn99iY5JAhOL4eyvLi/V4x5oM8gLr39yhtl0e 47m5MrMjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgImI32X4K5d4O//zV+UpEjpp /sHnas908812W3pp/pJJfp53gmsuCTP84TN9cNBg4oRf+UorZZVbtjcUbzs4L+1Zj1eBQeMCj9y 3bAA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1af647ce-69e4-4f86-b0a5-6ac76ec25d12@prolan.hu>
 
-On Tue, Oct 08, 2024 at 03:30:51PM +0200, Csókás Bence wrote:
-> Hi!
+On Thu, 10 Oct 2024 07:40:36 +1100, Aleksa Sarai wrote:
+> While we do currently return -EFAULT in this case, it seems prudent to
+> follow the behaviour of other syscalls like clone3. It seems quite
+> unlikely that anyone depends on this error code being EFAULT, but we can
+> always revert this if it turns out to be an issue.
 > 
-> On 2024. 10. 08. 14:04, Greg Kroah-Hartman wrote:
-> > 6.6-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Csókás, Bence <csokas.bence@prolan.hu>
-> > 
-> > [ Upstream commit a1477dc87dc4996dcf65a4893d4e2c3a6b593002 ]
-> > 
-> > On link state change, the controller gets reset,
-> > causing PPS to drop out. Re-enable PPS if it was
-> > enabled before the controller reset.
-> > 
-> > Fixes: 6605b730c061 ("FEC: Add time stamping code and a PTP hardware clock")
-> > Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-> > Link: https://patch.msgid.link/20240924093705.2897329-1-csokas.bence@prolan.hu
-> > Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
 > 
-> There is a patch waiting to be merged that Fixes: this commit.
-> 
-> Link:
-> https://lore.kernel.org/netdev/20241008061153.1977930-1-wei.fang@nxp.com/
 
-Great, we can pick it up once it hits Linus's tree, please let us know
-when that happens.
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-greg k-h
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[03/10] openat2: explicitly return -E2BIG for (usize > PAGE_SIZE)
+        https://git.kernel.org/vfs/vfs/c/f92f0a1b0569
 
