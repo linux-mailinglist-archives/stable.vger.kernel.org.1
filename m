@@ -1,111 +1,145 @@
-Return-Path: <stable+bounces-83325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C9C599833C
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 12:10:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29144998344
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 12:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C13CB2579E
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 10:10:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 582CF1C22DE1
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 10:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A0F1C2327;
-	Thu, 10 Oct 2024 10:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6BB1BDAA5;
+	Thu, 10 Oct 2024 10:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TuLhCxS/"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="URwVLTPQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A191BF300;
-	Thu, 10 Oct 2024 10:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2921BF300
+	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 10:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728554986; cv=none; b=rqE5vvcK1E0UYrSYKbxvHjZxaLQGRjcIV3NopUHG/D1dena7adKykfmeRtsuSUg6Pjl85Qs8x63MfQFqtVeuhkqTWEkPH3o91nsvxUusuZrv2JvOCW1FQtksDBulMVPyiB6YBX9XbyY0mxwSvLZ1H9vgRMoCl6zvzbb4YeRwYoM=
+	t=1728555065; cv=none; b=fTebLohMIbR0aFDJSzK2GlsNGhMXhsVh4BH7+dRHAqP2k+acRy/U7kbY+Kot93kxpkESnHvB60bTuENs+4XdMu8cVuQRsvic28Y/xyp1t4SB4KR8fXhxd6pHcvSFfjlbdippuJrR/FpBTYEtPuO9iWFuQarMyin9+fYYRepIdLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728554986; c=relaxed/simple;
-	bh=vCTqIl7jShZpEr0sVmMbfnvFvzmbv2n1ITL19Rj+AWQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tNPXgGwsclvxdA2mNiBQxhqw3cDS9KeIr44T6nPMEgbTX4kQcFamBjwqKQIrOcUji9UH5Dj9uYxT7a+0q5aXWkVvR1CryhfCa560poHlrRIxq7q6pMLydESbx8mVWGiXDcPWwmbhX+KzP5/v1LHSK8RhFil4PT+p08f/1FUa0kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TuLhCxS/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CBDC4CECC;
-	Thu, 10 Oct 2024 10:09:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728554985;
-	bh=vCTqIl7jShZpEr0sVmMbfnvFvzmbv2n1ITL19Rj+AWQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TuLhCxS/kum3UUxI2LxetVqLBebi9ov//MNFTqAdCuXEOE2k5dBBp3lBbyLXKK1UD
-	 +JnBouAShZSx0FpbD1wRXccZwC6S5evYkUqXkmc3pb7TwrRkNF7XTFMW+9jA1xhz6g
-	 BEVS/dNs7+Th8yU89mXKH4GwQV8YO2J+M+WF1DMgtm8X1SWYEWhYQc4lKKF6iKH7JL
-	 Q3vQcsttS3UHj3CZ29aCP1vYw+sX2AYnz93OehQpgxoxdgBDmK3DxHAjkCMHCl6dNS
-	 elj6E5VT44QVNzgeYiHWSZQ2IAZpulbv1bkoWqGkYStFVgf0vu/R9VZZAjmsUtGr9O
-	 egsFyXIZheGog==
-From: Christian Brauner <brauner@kernel.org>
-To: Aleksa Sarai <cyphar@cyphar.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Florian Weimer <fweimer@redhat.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Mark Rutland <mark.rutland@arm.com>,
-	linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	stable@vger.kernel.org,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	Shuah Khan <shuah@kernel.org>
-Subject: Re: (subset) [PATCH RFC v3 03/10] openat2: explicitly return -E2BIG for (usize > PAGE_SIZE)
-Date: Thu, 10 Oct 2024 12:09:35 +0200
-Message-ID: <20241010-pikant-neuer-4dbf48940683@brauner>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241010-extensible-structs-check_fields-v3-3-d2833dfe6edd@cyphar.com>
-References: <20241010-extensible-structs-check_fields-v3-0-d2833dfe6edd@cyphar.com> <20241010-extensible-structs-check_fields-v3-3-d2833dfe6edd@cyphar.com>
+	s=arc-20240116; t=1728555065; c=relaxed/simple;
+	bh=2ZUtIX4eYIQT5jV6iYRcmEhTUULvAj4mCFnTN4cpGUY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GZsK0dYGPuBQeld7YCzGrmqLHNbVyN4F0jFTBQ3Ovs06UPyhbtqIulyzWF6f/ClHPMyLiYVCKnsMRL8tqDuby62nXw3id4Mh0dxXUIgMWfbwTqQ7WRZJoQX+hmaQh6XvgoBI/78lag2NJ3nEl+QLBsMIbUfMf3gjNvE/kWwUQKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=URwVLTPQ; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5c3df1a3cb6so119021a12.2
+        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 03:11:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1728555060; x=1729159860; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L6ny9nAyyOl7SJdnU7HLlJ1EiMW7cD0xQVIs0CZ9wvw=;
+        b=URwVLTPQrJH8sKoGJ3Jl7YoNi98iukqk4nxBERtNTqYpXiza7S89N+UC6WGycyeNkZ
+         bkrOWurKcxQ4dEJ2DHyIZd+rw3+RGoFGV+8Iw1i/y1M4dnK99MenAr0Gu6XV0AW9nhOk
+         x/y5tqJsx7DGTYt/faM4psx1dTfmwo42TdqL0N523s9lPlrPugIONfaUHqEg08oR0suS
+         RXEEyHCODZPmwKe5JeoG0IUsE+63wXGUxsRonMJn1s8M//r6Hpi6p7G2h7PxI0QFZeYz
+         KSk30k3k4RZJ9MRy2qUn0gDJ5gkVNxx3L/fh461tQP3lvBxoBWjuhrn+GgpgL8XnUUct
+         G8iA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728555060; x=1729159860;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L6ny9nAyyOl7SJdnU7HLlJ1EiMW7cD0xQVIs0CZ9wvw=;
+        b=jtaATC+FOrisDCBWX9gma0/xbLid6xFynJm3h7I3xLZfdm6w2SdVcIVZhYAlQXXIQ7
+         r6yYYCG2ClEaksWv+LY+mYeO2HsFlArugxhj2CTdA/8tbO76WixPmNvuVWEZ5sDlCUkD
+         /XvC275LQttMzO4d94Wwe7V7T2+1dezWv2HURDrvxe11zSXHrAluFO3Z0F7wJ0ZRkYU5
+         2tsUpnONDJxNX/AW0AbePxquHDsSu/JsfH31Q9MBAnat5LRSIUGJ4x6llaTTgFfpmEDv
+         tuGVHvUzF527vDnOuCpkNycmh1rVITvI8Rcg1sEEAKceZsTs2No7D6BKa1ROUQI2oSf7
+         JgsA==
+X-Gm-Message-State: AOJu0YyP5JwRWjwBVyfHwXOH1UX9ZLprG5dqQoUpZtXMrYO4Jh1fiMhX
+	EZLTIDKrRQpnO4xraUeI6K/GNrmuYsRn2NZwP2+kdKlFDKSjypq0ZwNJcdlsjFwMlOJrPj8xGdD
+	6DCc3xFNfHepa9rI+56uYtfrOEMMH/ExuexToLg==
+X-Google-Smtp-Source: AGHT+IFLhXXjnEmegvRiWI00Ssg29zpRgLGkrkI2ec1uUSg0oyjgVZ/d8xl1zhhexnQJ9j32IL+XsvvX5ES2v/z9QzM=
+X-Received: by 2002:a05:6402:3512:b0:5c8:aecf:8e87 with SMTP id
+ 4fb4d7f45d1cf-5c91d6992d1mr1661101a12.9.1728555059750; Thu, 10 Oct 2024
+ 03:10:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1115; i=brauner@kernel.org; h=from:subject:message-id; bh=vCTqIl7jShZpEr0sVmMbfnvFvzmbv2n1ITL19Rj+AWQ=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaSzL3/gcn99iY5JAhOL4eyvLi/V4x5oM8gLr39yhtl0e 47m5MrMjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgImI32X4K5d4O//zV+UpEjpp /sHnas908812W3pp/pJJfp53gmsuCTP84TN9cNBg4oRf+UorZZVbtjcUbzs4L+1Zj1eBQeMCj9y 3bAA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+References: <CAMGffE=dPofoPD_+giBnAC66-+=RqRmO2uBmC88-Ph1RgGN=0Q@mail.gmail.com>
+ <2024101006-scanner-unboxed-0190@gregkh> <CAMGffE=HvMU4Syy7ATEevKQ+izAvndmpQ8-F9HN_WM+3PKwWyw@mail.gmail.com>
+ <2024101000-duplex-justify-97e6@gregkh>
+In-Reply-To: <2024101000-duplex-justify-97e6@gregkh>
+From: Jinpu Wang <jinpu.wang@ionos.com>
+Date: Thu, 10 Oct 2024 12:10:49 +0200
+Message-ID: <CAMGffE=xSDZ8Ad9o7ayg2xwnMyPDojyBDh_AHf+h7WBV7y630w@mail.gmail.com>
+Subject: Re: [regression]Boot Hang on Kernel 6.1.83+ with Dell PowerEdge R770
+ and Intel Xeon 6710E
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable <stable@vger.kernel.org>, Kan Liang <kan.liang@linux.intel.com>, 
+	baolu.lu@linux.intel.com, jroedel@suse.de, Sasha Levin <sashal@kernel.org>, 
+	x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 10 Oct 2024 07:40:36 +1100, Aleksa Sarai wrote:
-> While we do currently return -EFAULT in this case, it seems prudent to
-> follow the behaviour of other syscalls like clone3. It seems quite
-> unlikely that anyone depends on this error code being EFAULT, but we can
-> always revert this if it turns out to be an issue.
-> 
-> 
+Hi Greg,
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+On Thu, Oct 10, 2024 at 11:31=E2=80=AFAM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
+>
+> On Thu, Oct 10, 2024 at 11:13:42AM +0200, Jinpu Wang wrote:
+> > Hi Greg,
+> >
+> > On Thu, Oct 10, 2024 at 11:07=E2=80=AFAM Greg KH <gregkh@linuxfoundatio=
+n.org> wrote:
+> > >
+> > > On Thu, Oct 10, 2024 at 09:31:37AM +0200, Jinpu Wang wrote:
+> > > > Hello all,
+> > > >
+> > > > We are experiencing a boot hang issue when booting kernel version
+> > > > 6.1.83+ on a Dell Inc. PowerEdge R770 equipped with an Intel Xeon
+> > > > 6710E processor. After extensive testing and use of `git bisect`, w=
+e
+> > > > have traced the issue to commit:
+> > > >
+> > > > `586e19c88a0c ("iommu/vt-d: Retrieve IOMMU perfmon capability infor=
+mation")`
+> > > >
+> > > > This commit appears to be part of a larger patchset, which can be f=
+ound here:
+> > > > [Patchset on lore.kernel.org](https://lore.kernel.org/lkml/7c4b3e4e=
+-1c5d-04f1-1891-84f686c94736@linux.intel.com/T/)
+> > > >
+> > > > We attempted to boot with the `intel_iommu=3Doff` option, but the s=
+ystem
+> > > > hangs in the same manner. However, the system boots successfully af=
+ter
+> > > > disabling `CONFIG_INTEL_IOMMU_PERF_EVENTS`.
+> > >
+> > > Is there any error messages?  Does the latest 6.6.y tree work properl=
+y?
+> > > If so, why not just use that, no new hardware should be using older
+> > > kernel trees anyway :)
+> > No error, just hang, I've removed "quiet" and added "debug".
+> > Yes, the latest 6.6.y tree works for this, but there are other
+> > problems/dependency we have to solve.
+>
+> Ok, that implies that we need to add some other patch to 6.1.y, OR we
+> can revert it from 6.1.y.  Let me know what you think is the better
+> thing to do.
+>
+I think better to revert both:
+8c91a4bfc7f8 ("iommu: Fix compilation without CONFIG_IOMMU_INTEL")
+586e19c88a0c ("iommu/vt-d: Retrieve IOMMU perfmon capability information")
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[03/10] openat2: explicitly return -E2BIG for (usize > PAGE_SIZE)
-        https://git.kernel.org/vfs/vfs/c/f92f0a1b0569
+unless other guys have a different opinon.
+> thanks,
+>
+> greg k-h
+Thanks!
 
