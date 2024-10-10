@@ -1,177 +1,179 @@
-Return-Path: <stable+bounces-83351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC5CA998618
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 14:33:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F640998689
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 14:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 868D628259C
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 12:33:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 927FDB21496
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 12:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373561C578B;
-	Thu, 10 Oct 2024 12:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AAC1C68B4;
+	Thu, 10 Oct 2024 12:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TTO1LpHX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HnVQ/ZeE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460071C4623
-	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 12:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92451C5798;
+	Thu, 10 Oct 2024 12:47:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728563605; cv=none; b=aPZ9vTW9VExofCJ9ijahTku4yxDfRJF97Kp/Gr+rAH6dB+IAI3NonQOW2yr3rumgGgqFJok+GlIA92zp1jfioyD2zFsKA2R8yQ/eM/sJieMrIRy+DH1tLI0O14PT5VRAZNmV9MwC9asmmZfdmcgy+1SebgeHNul3LZzeN6EEi8I=
+	t=1728564428; cv=none; b=Jv66M7s/JDIYiqMSvxLh5iztLXK7bx69HIaulBTiCRqmZ0gbfyh1DIDcAbDwwuet5wnqiueWPJHNa5gxTTdfPVSOgxaNFZRWVz15BkauG/QN1NIaCdWT6FWtLR6gbec00O/6029/pAb1F7J9VSURbeJbPmdAP82GDkp8rRHJvGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728563605; c=relaxed/simple;
-	bh=vTwVvG8iZlHzHza+YS67mEwp2zyunt+kNzBDYWtFYWc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Rz2Gtb1jIhhkUKTkZMgrmoF0uc1gp9zSEaQL0myvMY/Wz18Ljb4ILmWd5SxardtwFjUQwloXy25ZH2KzvUAnnYYA2CDXZa/r2L6BvE+L8Pf/kmzylK+KF8hSkgaWQldI7acfEuTY7DOxJnRvRhwRzxpEOI3Zjq9rtdEKjJAZO0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TTO1LpHX; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a99650da839so143741266b.2
-        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 05:33:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728563600; x=1729168400; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E7nKjwcfTxwC0PwN6GrPgJAgBaaTNk6QSx4URpDS/gc=;
-        b=TTO1LpHXOLabmIAmzM91/snWCtvv6wO0vkh5YbV7/cznHuH8zI/UVqt/Yn1UFIjZfG
-         Vwag2pcC6OZJN5VypGZvB5CwaKs9HTVj4XAoBJbosK94m5nyzBfvFdzW+w5rb3Us67b2
-         vOD2mx5tmBZWLokuzquBO3aILt5mrfOq21VBbGRF/K6v0G2WQj9EaMTh38GH7nGtbfpN
-         eDVQxW577vO/D/JRQfkhFHbOkK6DyTpP7dTsmjAbAnPXT2UiAEnOZBOjsqdTFhzevE+/
-         wW12RzmUA7q9+NAJlTNDtYHuhoO0OdTj01X6Kd9Hjh9fyWC5cXpEreQ5DMjg30zAYvU3
-         HutA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728563600; x=1729168400;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E7nKjwcfTxwC0PwN6GrPgJAgBaaTNk6QSx4URpDS/gc=;
-        b=hLq1crg6q8PFUTEy5tieLl0Ye4zFbK68KTsBEnJSJ20qXiocl9NVADXxaHFBYBU6Aj
-         XHdkyMqBbJXZYgC+Me34VN3DjO7yxxAAZOHA1cDHVQszOTlT9cPYEizlCbWEmpDcLfb+
-         A2QHecRIP0nhue3SdSgTsrguipJvlYuKCHuv3hOkuP25OPVToAwpZqWhjGkeya4k95+o
-         fNMqieO1LajLjdWxnK70Qb23Edhmx7nWgB2X7Whmpi1UjCyvx19XRq91FpTnBLdEFb4k
-         Bf50exR4Ac7axFN/DjQFMyDRVx/j1oI6gtgCxujizWPH0047H7SpCVeBAbe+O7lOjHIT
-         6CMA==
-X-Forwarded-Encrypted: i=1; AJvYcCW7ilG739iy7PWK9cK243a68k8k+tff32G39LMrYAz7rntTNYVOmDkNQGt6rfKvSj1HKOTNbiQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx20K4MCDlRdctl9c9Wn2kIeU5ADDv1pcwEIL8co2oHVVKI2oDZ
-	Y3EEupLtUklwLIP2EXObQq5aPb2Xp+L6hVVBhkAh1TTecnOOOEAZvp5oSr0ofzA=
-X-Google-Smtp-Source: AGHT+IHqASwGUMnDVgJgb4WJeQPIBPzArPqf/9fuxIBXwaaZeDpGjQ9ON98FkBxOBIkv3lrX0VtBMg==
-X-Received: by 2002:a17:907:7f94:b0:a7a:aa35:408c with SMTP id a640c23a62f3a-a998d10df8bmr555871766b.8.1728563600518;
-        Thu, 10 Oct 2024 05:33:20 -0700 (PDT)
-Received: from [127.0.0.1] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99a80c0723sm82416666b.135.2024.10.10.05.33.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2024 05:33:20 -0700 (PDT)
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Date: Thu, 10 Oct 2024 13:33:17 +0100
-Subject: [PATCH v6 1/4] media: ov08x40: Fix burst write sequence
+	s=arc-20240116; t=1728564428; c=relaxed/simple;
+	bh=SP9MED2OcZY+ELggC9MXpPB7Hg/40uqQ0bfhipI8oN4=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=g9m7VReTqTnhPsFF/99cyBXQwZ6rEQNJMxv0tJDcMfG4/gN1DXL0dC2t03+FDxe4CXM1TKK9SjC3FdWBzUMR27mhdxLhDTHh6UCMeLTcZyG2cyn0J/fWHz9SHgJpSLtSpC5w8gJc4CCBc0OM696suu9PIuiKR6Jmwp9GNcrgfZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HnVQ/ZeE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5ECC4CEC5;
+	Thu, 10 Oct 2024 12:47:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728564428;
+	bh=SP9MED2OcZY+ELggC9MXpPB7Hg/40uqQ0bfhipI8oN4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HnVQ/ZeEHx78m5NLTbAXpSAxfiUxCSrMaAsmyHeZ+JyK6fziJxUQHyjPZ/h7/IhtD
+	 zYkxDqG/PMovCrjBYsGZFhtx/2dBeFA581G3SrO/YAiPJJOJ+rG1MOggCqQtWexuW5
+	 8GQSFHErl2RA+Uxc0Rg+qU7ZTjIKSjxuPgiFoOk30rPoszzO4L8B21Y+lSFkagW/dp
+	 YNPtmaUpVvm3ysp5ndo+/ud5TQDGgy/my/8hmJx35za/346/GIk13zPUcweSvY7Rfz
+	 T0ztAKyGRXEijRglGyjPexUkLBkjADc0lUU686mPUeJmsYhabegL7PYZ8LAo/sZWyC
+	 JT9d0gOQFigSw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sysZO-002BTI-0F;
+	Thu, 10 Oct 2024 13:47:06 +0100
+Date: Thu, 10 Oct 2024 13:47:05 +0100
+Message-ID: <86plo85dme.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Oliver Upton <oliver.upton@linux.dev>
+Cc: Sean Christopherson <seanjc@google.com>,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	stable@vger.kernel.org,
+	Alexander Potapenko <glider@google.com>
+Subject: Re: [PATCH] KVM: arm64: Don't eagerly teardown the vgic on init error
+In-Reply-To: <ZweUiHMC3RNwNXzY@linux.dev>
+References: <20241009183603.3221824-1-maz@kernel.org>
+	<ZwbYvHJdOqePYjDf@linux.dev>
+	<ZwbbQGpZpGQXaNYK@google.com>
+	<ZwcRct7VWnW0bObA@linux.dev>
+	<875xq0v1do.wl-maz@kernel.org>
+	<ZweUiHMC3RNwNXzY@linux.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241010-b4-master-24-11-25-ov08x40-v6-1-cf966e34e685@linaro.org>
-References: <20241010-b4-master-24-11-25-ov08x40-v6-0-cf966e34e685@linaro.org>
-In-Reply-To: <20241010-b4-master-24-11-25-ov08x40-v6-0-cf966e34e685@linaro.org>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Jason Chen <jason.z.chen@intel.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Sergey Senozhatsky <senozhatsky@chromium.org>, 
- Hans Verkuil <hverkuil-cisco@xs4all.nl>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-dedf8
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, seanjc@google.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, stable@vger.kernel.org, glider@google.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-It is necessary to account for I2C quirks in the burst mode path of this
-driver. Not all I2C controllers can accept arbitrarily long writes and this
-is represented in the quirks field of the adapter structure.
+On Thu, 10 Oct 2024 09:47:04 +0100,
+Oliver Upton <oliver.upton@linux.dev> wrote:
+> 
+> On Thu, Oct 10, 2024 at 08:54:43AM +0100, Marc Zyngier wrote:
+> > On Thu, 10 Oct 2024 00:27:46 +0100, Oliver Upton <oliver.upton@linux.dev> wrote:
+> > > Then if we can't register the MMIO region for the distributor
+> > > everything comes crashing down and a vCPU has made it into the KVM_RUN
+> > > loop w/ the VGIC-shaped rug pulled out from under it. There's definitely
+> > > another functional bug here where a vCPU's attempts to poke the
+> > > distributor wind up reaching userspace as MMIO exits. But we can worry
+> > > about that another day.
+> > 
+> > I don't think that one is that bad. Userspace got us here, and they
+> > now see an MMIO exit for something that it is not prepared to handle.
+> > Suck it up and die (on a black size M t-shirt, please).
+> 
+> LOL, I'll remember that.
+> 
+> The situation I have in mind is a bit harder to blame on userspace,
+> though. Supposing that the whole VM was set up correctly, multiple vCPUs
+> entering KVM_RUN concurrently could cause this race and have 'unexpected'
+> MMIO exits go out to userspace.
+> 
+> 	vcpu-0				vcpu-1
+> 	======				======
+> 	kvm_vgic_map_resources()
+> 	  dist->ready = true
+> 	  mutex_unlock(config_lock)
+> 	  				kvm_vgic_map_resources()
+> 					  if (vgic_ready())
+> 					    return 0
+> 
+> 					< enter guest >
+> 					typer = writel(0, GICD_CTLR)
+> 
+> 					< data abort >
+> 					kvm_io_bus_write(...)	<= No GICD, out to userspace
+> 
+>        vgic_register_dist_iodev()
+> 
+> A small but stupid window to race with.
 
-Prior to this patch the following error message is seen on a Qualcomm
-X1E80100 CRD.
+Ah, gotcha. I guess getting rid of the early-out in
+kvm_vgic_map_resources() would plug that one. Want to post a fix for
+that?
 
-[   38.773524] i2c i2c-2: adapter quirk: msg too long (addr 0x0036, size 290, write)
-[   38.781454] ov08x40 2-0036: Failed regs transferred: -95
-[   38.787076] ov08x40 2-0036: ov08x40_start_streaming failed to set regs
+> 
+> > > If memory serves, kvm_vgic_map_resources() used to do all of this behind
+> > > the config_lock to cure the race, but that wound up inverting lock
+> > > ordering on srcu.
+> > 
+> > Probably something like that. We also used to hold the kvm lock, which
+> > made everything much simpler, but awfully wrong.
+> > 
+> > > Note to self: Impose strict ordering on GIC initialization v. vCPU
+> > > creation if/when we get a new flavor of irqchip.
+> > 
+> > One of the things we should have done when introducing GICv3 is to
+> > impose that at KVM_DEV_ARM_VGIC_CTRL_INIT, the GIC memory map is
+> > final. I remember some push-back on the QEMU side of things, as they
+> > like to decouple things, but this has proved to be a nightmare.
+> 
+> Pushing more of the initialization complexity into userspace feels like
+> the right thing. Since we clearly have no idea what we're doing :)
 
-Fix the error by breaking up the write sequence into the advertised maximum
-write size of the quirks field if the quirks field is populated.
+KVM APIv2?
 
-Fixes: 8f667d202384 ("media: ov08x40: Reduce start streaming time")
-Cc: stable@vger.kernel.org # v6.9+
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # x1e80100-crd
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
----
- drivers/media/i2c/ov08x40.c | 33 ++++++++++++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 5 deletions(-)
+> 
+> > > The crappy assumption here is kvm_arch_vcpu_run_pid_change() and its
+> > > callees are allowed to destroy VM-scoped structures in error handling.
+> > 
+> > I think this is symptomatic of more general issue: we perform VM-wide
+> > configuration in the context of a vcpu. We have tons of this stuff to
+> > paper over the lack of a "this VM is fully configured" barrier.
+> > 
+> > I wonder whether we could sidestep things by punting the finalisation
+> > of the VM to a different context (workqueue?)  and simply return
+> > -EAGAIN or -EINTR to userspace while we're processing it. That doesn't
+> > solve the "I'm missing parts of the address map and I'm going to die"
+> > part though.
+> 
+> Throwing it back at userspace would be nice, but unfortunately for ABI I
+> think we need to block/spin vCPUs in the kernel til the VM is in fully
+> working condition. A fragile userspace could explode for a 'spurious'
+> EAGAIN/EINTR where there wasn't one before.
 
-diff --git a/drivers/media/i2c/ov08x40.c b/drivers/media/i2c/ov08x40.c
-index 48df077522ad0bb2b5f64a6def8844c02af6a193..be25e45175b1322145dca428e845242d8fea2698 100644
---- a/drivers/media/i2c/ov08x40.c
-+++ b/drivers/media/i2c/ov08x40.c
-@@ -1339,15 +1339,13 @@ static int ov08x40_read_reg(struct ov08x40 *ov08x,
- 	return 0;
- }
- 
--static int ov08x40_burst_fill_regs(struct ov08x40 *ov08x, u16 first_reg,
--				   u16 last_reg,  u8 val)
-+static int __ov08x40_burst_fill_regs(struct i2c_client *client, u16 first_reg,
-+				     u16 last_reg, size_t num_regs, u8 val)
- {
--	struct i2c_client *client = v4l2_get_subdevdata(&ov08x->sd);
- 	struct i2c_msg msgs;
--	size_t i, num_regs;
-+	size_t i;
- 	int ret;
- 
--	num_regs = last_reg - first_reg + 1;
- 	msgs.addr = client->addr;
- 	msgs.flags = 0;
- 	msgs.len = 2 + num_regs;
-@@ -1373,6 +1371,31 @@ static int ov08x40_burst_fill_regs(struct ov08x40 *ov08x, u16 first_reg,
- 	return 0;
- }
- 
-+static int ov08x40_burst_fill_regs(struct ov08x40 *ov08x, u16 first_reg,
-+				   u16 last_reg,  u8 val)
-+{
-+	struct i2c_client *client = v4l2_get_subdevdata(&ov08x->sd);
-+	size_t num_regs, num_write_regs;
-+	int ret;
-+
-+	num_regs = last_reg - first_reg + 1;
-+	num_write_regs = num_regs;
-+
-+	if (client->adapter->quirks && client->adapter->quirks->max_write_len)
-+		num_write_regs = client->adapter->quirks->max_write_len - 2;
-+
-+	while (first_reg < last_reg) {
-+		ret = __ov08x40_burst_fill_regs(client, first_reg, last_reg,
-+						num_write_regs, val);
-+		if (ret)
-+			return ret;
-+
-+		first_reg += num_write_regs;
-+	}
-+
-+	return 0;
-+}
-+
- /* Write registers up to 4 at a time */
- static int ov08x40_write_reg(struct ov08x40 *ov08x,
- 			     u16 reg, u32 len, u32 __val)
+EINTR needs to be handled already, as this is how you report
+preemption by a signal. But yeah, overall, I'm not enthralled with
+much so far...
+
+	M.
 
 -- 
-2.46.2
-
+Without deviation from the norm, progress is not possible.
 
