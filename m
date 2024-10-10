@@ -1,173 +1,262 @@
-Return-Path: <stable+bounces-83293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B64997C53
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 07:18:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC37997C70
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 07:31:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46D311C230FB
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 05:18:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C32D4B23603
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 05:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238CA19E830;
-	Thu, 10 Oct 2024 05:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D07154BF0;
+	Thu, 10 Oct 2024 05:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jXSoDP4q"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fjA+PQGY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235E2196C86
-	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 05:18:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A74E1A00EE
+	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 05:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728537519; cv=none; b=L4AEQpmQ71LT+/dwZrl7/AZX5ZqpXZc2WEIbqdYj6JBY+OVP+smiRdYegRvcXUXEg2avt3WeI8G+HA8Z+kPLVUd0G4Q/s53idFUSOsYry8LkrLSm7a8PzWX5Bx0cJ3lPADwJmWa24m7K7BpSkGz7tspjIw/ydwFb9J9mjnk0nv0=
+	t=1728538297; cv=none; b=j/V8Izuo+q0WKGZbMty/9XIcGAIKz1uI3dlybWc3uCHFLmZmZPtJRaa3mZ8nhTBU5u3ynIkR+FAlegjlb9r6zxZ3ZLGZs/qqLAp8MV6XYWIL75LEw96K1a2J4zpQk7zsmJ3FqGYlS5/WYMVrCcLqlD19SgFlJ6b4W/4F6kKziCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728537519; c=relaxed/simple;
-	bh=NAaLcb1c56IZx8lzNsfJTIM5stUx1s5veN8SL1v17nM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Vl3DyfIWowPzVzHZYII5dCYOMzq95YqeXVSO7HH+Am8Z3RFtkY5wRNbBcHmd1ALd8NCOqtvBGFTArSoje+gaYiw0bGi0NsLPhRmErE1YfrXxdjG5mLD202uvnPs4RJ5+k76ILQ79SGQJAabQMpKAwp0G05jcTWAZj1LAUGjVMDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jXSoDP4q; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5c8daae8ae3so84163a12.0
-        for <stable@vger.kernel.org>; Wed, 09 Oct 2024 22:18:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728537516; x=1729142316; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=fKhs0S0gUj775pvsh1Bp/mrfRNzAsV4s0aKSxIUIYeA=;
-        b=jXSoDP4qzTaT6QwLQUdt0MZtywKA3AbYiXjmZPreVgriubqBCl1FsrFMlDCLVbneDE
-         xtpLZ5QxEryzLIAoCN2hPoBvFfdRKngftyTsH9gjkwQp/GdKXPT5qiZLWTlGna4mw4x2
-         Ng7JDaPd+q7pO5WIGTQSFJ68FVfDi98nFm3OL16hCpZwE7C/F+TJUzKZRcqPOBASgemZ
-         t8tfZAFdR2vEv2EvIeL5V4+3u6bwB4lMMzIlwKIjryjTeh69iM+44zLjWzgSuaueRjjv
-         xQFPXtHtmYxd3bH0I98AqGfqvmn5XNcLggFY7u10u5JDZ2OD1lk5WDyxfAWlWny1+uqn
-         ygqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728537516; x=1729142316;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fKhs0S0gUj775pvsh1Bp/mrfRNzAsV4s0aKSxIUIYeA=;
-        b=NE3Ok1BykCSuDSxMSnCkrYTDTmgEJzJdMNvCRzo6Rrgwj3FpDk7PqIBHo9MWozdUmz
-         PFEX7LmQuIjLBY10+g+ziTaEbYiaoLbo1VbSPqTnS3A14VF5HsIznjF+TLa2k2uyPnDN
-         zZDaSwsatbzA0KnVu5Dr44Qfq6hyWiPLUeQvmOTGRjr4zcvXhQN5bzmh1uV0F8BJNPKR
-         Hs5uqPLXh1jRZamKnvr2XxAX7sqTgdkV1suHMYh+tgH1bFMYk1CfOOAT8vzq4U+G5lfs
-         9qCjG1iPadf3S6+Meq0xJc9gDBIdJspKLzet1o9gTOGRtpxbcOi7gGoQZ4TCxaeZG+Kp
-         HuJw==
-X-Gm-Message-State: AOJu0YwxRZw9y9H2J+A40Yw6R7j1/Dw5+w03PQUrYZvXL8ML0BJt2yx2
-	fCeBNu2nLwjBmOs80ylEeXfoCmh4A0mknegaito0bzbgFy0ZvvzdHDNLBGuKZQw=
-X-Google-Smtp-Source: AGHT+IEp/yBMUunQRs1yALlfTSfnv5vE4xHYwvDb67zuYa6DMR5OjTvZRFRSU0fQnp3CPhCUkuiQbA==
-X-Received: by 2002:a17:906:c151:b0:a99:482c:b2c6 with SMTP id a640c23a62f3a-a998d1fe04dmr202804466b.8.1728537516271;
-        Wed, 09 Oct 2024 22:18:36 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.211.167])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99a7f27bd7sm32218566b.74.2024.10.09.22.18.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Oct 2024 22:18:34 -0700 (PDT)
-Message-ID: <f46623f3-b915-42db-a1e5-0427df310b8b@linaro.org>
-Date: Thu, 10 Oct 2024 07:18:32 +0200
+	s=arc-20240116; t=1728538297; c=relaxed/simple;
+	bh=d2jZ1MOXAGZxTiswnoXjwHmAchbcU3Onf2CP3isB7Us=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=mM27QFDwyy3zK6an/qCeAp1J7IUPn4SXYlm4vbPtrUL+9ZpHN1YQ7ZDCDjjFY7+ib9eDebsEQKQI/4yubKbiKGPf6THadLIrU6QTah46qYctMZcRuXe5DxzXksuO3Ar7VCNYlaa5RJsvFDOCy1fOfjhlSoUWFm5XlPFpEnoWtPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fjA+PQGY; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728538295; x=1760074295;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=d2jZ1MOXAGZxTiswnoXjwHmAchbcU3Onf2CP3isB7Us=;
+  b=fjA+PQGYc8IWZ+P4dIN4cbnXGN45d9wrxIgCcx+42pM0TVg6zcf2AaWo
+   5ZrUz3l1GHHJ8lusNgf2R/5HT5ftkqKGZdR44A3vKq1LXoDsFWe9knVhS
+   cz1qqGt8SQXSA7QYLksBzhrj9JfgIPV/13/bsgej8Z34S+4aY4o/lwMMy
+   eBEI0JqgWcM1Qo73EUAB8jV37VfX8XIRrZcRh5mRQkCpbg0R/1cn26OTP
+   PzziCZf1bkDGbKJkJtsrPWkDO/acrkK1GdYPviUHxD/hz6nvVa97Oi1JE
+   rAVEMJiffnW563Cau1R7mR8SAXOE5XiEGOkFoUqwGsKf8snwlcGFckCiq
+   A==;
+X-CSE-ConnectionGUID: eFX/Ew/uTUSXFPiTykUqMw==
+X-CSE-MsgGUID: N2jWGEJXRu2U3oDYXoqpig==
+X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="27991159"
+X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; 
+   d="scan'208";a="27991159"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 22:31:35 -0700
+X-CSE-ConnectionGUID: Mw9gF+PqRXOeNZambZM+qQ==
+X-CSE-MsgGUID: 2xT9wElGRZWLmkedC15/6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; 
+   d="scan'208";a="81047044"
+Received: from unknown (HELO yhuang6-mobl2.ccr.corp.intel.com) ([10.245.243.193])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 22:31:31 -0700
+From: Huang Ying <ying.huang@intel.com>
+To: stable@vger.kernel.org
+Cc: Huang Ying <ying.huang@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Baoquan He <bhe@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15.y -v2] resource: fix region_intersects() vs add_memory_driver_managed()
+Date: Thu, 10 Oct 2024 13:31:21 +0800
+Message-Id: <20241010053121.1226948-1-ying.huang@intel.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <2024100725-galore-pout-d68c@gregkh>
+References: <2024100725-galore-pout-d68c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ASoC: qcom: sdm845: add missing soundwire runtime stream
- alloc
-To: Alexey Klimov <alexey.klimov@linaro.org>, linux-sound@vger.kernel.org,
- srinivas.kandagatla@linaro.org, linux-arm-msm@vger.kernel.org
-Cc: stable@vger.kernel.org, broonie@kernel.org, dmitry.baryshkov@linaro.org,
- pierre-louis.bossart@linux.intel.com, vkoul@kernel.org, lgirdwood@gmail.com,
- perex@perex.cz, tiwai@suse.com, linux-kernel@vger.kernel.org
-References: <20241009213922.999355-1-alexey.klimov@linaro.org>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzTRLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnp5c3p0b2Yua296bG93c2tpQGxpbmFyby5vcmc+wsGUBBMBCgA+FiEE
- m9B+DgxR+NWWd7dUG5NDfTtBYpsFAmI+BxMCGwMFCRRfreEFCwkIBwIGFQoJCAsCBBYCAwEC
- HgECF4AACgkQG5NDfTtBYptgbhAAjAGunRoOTduBeC7V6GGOQMYIT5n3OuDSzG1oZyM4kyvO
- XeodvvYv49/ng473E8ZFhXfrre+c1olbr1A8pnz9vKVQs9JGVa6wwr/6ddH7/yvcaCQnHRPK
- mnXyP2BViBlyDWQ71UC3N12YCoHE2cVmfrn4JeyK/gHCvcW3hUW4i5rMd5M5WZAeiJj3rvYh
- v8WMKDJOtZFXxwaYGbvFJNDdvdTHc2x2fGaWwmXMJn2xs1ZyFAeHQvrp49mS6PBQZzcx0XL5
- cU9ZjhzOZDn6Apv45/C/lUJvPc3lo/pr5cmlOvPq1AsP6/xRXsEFX/SdvdxJ8w9KtGaxdJuf
- rpzLQ8Ht+H0lY2On1duYhmro8WglOypHy+TusYrDEry2qDNlc/bApQKtd9uqyDZ+rx8bGxyY
- qBP6bvsQx5YACI4p8R0J43tSqWwJTP/R5oPRQW2O1Ye1DEcdeyzZfifrQz58aoZrVQq+innR
- aDwu8qDB5UgmMQ7cjDSeAQABdghq7pqrA4P8lkA7qTG+aw8Z21OoAyZdUNm8NWJoQy8m4nUP
- gmeeQPRc0vjp5JkYPgTqwf08cluqO6vQuYL2YmwVBIbO7cE7LNGkPDA3RYMu+zPY9UUi/ln5
- dcKuEStFZ5eqVyqVoZ9eu3RTCGIXAHe1NcfcMT9HT0DPp3+ieTxFx6RjY3kYTGLOwU0EVUNc
- NAEQAM2StBhJERQvgPcbCzjokShn0cRA4q2SvCOvOXD+0KapXMRFE+/PZeDyfv4dEKuCqeh0
- hihSHlaxTzg3TcqUu54w2xYskG8Fq5tg3gm4kh1Gvh1LijIXX99ABA8eHxOGmLPRIBkXHqJY
- oHtCvPc6sYKNM9xbp6I4yF56xVLmHGJ61KaWKf5KKWYgA9kfHufbja7qR0c6H79LIsiYqf92
- H1HNq1WlQpu/fh4/XAAaV1axHFt/dY/2kU05tLMj8GjeQDz1fHas7augL4argt4e+jum3Nwt
- yupodQBxncKAUbzwKcDrPqUFmfRbJ7ARw8491xQHZDsP82JRj4cOJX32sBg8nO2N5OsFJOcd
- 5IE9v6qfllkZDAh1Rb1h6DFYq9dcdPAHl4zOj9EHq99/CpyccOh7SrtWDNFFknCmLpowhct9
- 5ZnlavBrDbOV0W47gO33WkXMFI4il4y1+Bv89979rVYn8aBohEgET41SpyQz7fMkcaZU+ok/
- +HYjC/qfDxT7tjKXqBQEscVODaFicsUkjheOD4BfWEcVUqa+XdUEciwG/SgNyxBZepj41oVq
- FPSVE+Ni2tNrW/e16b8mgXNngHSnbsr6pAIXZH3qFW+4TKPMGZ2rZ6zITrMip+12jgw4mGjy
- 5y06JZvA02rZT2k9aa7i9dUUFggaanI09jNGbRA/ABEBAAHCwXwEGAEKACYCGwwWIQSb0H4O
- DFH41ZZ3t1Qbk0N9O0FimwUCYDzvagUJFF+UtgAKCRAbk0N9O0Fim9JzD/0auoGtUu4mgnna
- oEEpQEOjgT7l9TVuO3Qa/SeH+E0m55y5Fjpp6ZToc481za3xAcxK/BtIX5Wn1mQ6+szfrJQ6
- 59y2io437BeuWIRjQniSxHz1kgtFECiV30yHRgOoQlzUea7FgsnuWdstgfWi6LxstswEzxLZ
- Sj1EqpXYZE4uLjh6dW292sO+j4LEqPYr53hyV4I2LPmptPE9Rb9yCTAbSUlzgjiyyjuXhcwM
- qf3lzsm02y7Ooq+ERVKiJzlvLd9tSe4jRx6Z6LMXhB21fa5DGs/tHAcUF35hSJrvMJzPT/+u
- /oVmYDFZkbLlqs2XpWaVCo2jv8+iHxZZ9FL7F6AHFzqEFdqGnJQqmEApiRqH6b4jRBOgJ+cY
- qc+rJggwMQcJL9F+oDm3wX47nr6jIsEB5ZftdybIzpMZ5V9v45lUwmdnMrSzZVgC4jRGXzsU
- EViBQt2CopXtHtYfPAO5nAkIvKSNp3jmGxZw4aTc5xoAZBLo0OV+Ezo71pg3AYvq0a3/oGRG
- KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
- fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20241009213922.999355-1-alexey.klimov@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 09/10/2024 23:39, Alexey Klimov wrote:
-> During the migration of Soundwire runtime stream allocation from
-> the Qualcomm Soundwire controller to SoC's soundcard drivers the sdm845
-> soundcard was forgotten.
-> 
-> At this point any playback attempt or audio daemon startup, for instance
-> on sdm845-db845c (Qualcomm RB3 board), will result in stream pointer
-> NULL dereference:
+commit b4afe4183ec77f230851ea139d91e5cf2644c68b upstream.
 
-...
+On a system with CXL memory, the resource tree (/proc/iomem) related to
+CXL memory may look like something as follows.
 
-> 
-> Reproduced and then fix was tested on db845c RB3 board.
-> 
-> Reported-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Cc: stable@vger.kernel.org
-> Fixes: 15c7fab0e047 ("ASoC: qcom: Move Soundwire runtime stream alloc to soundcards")
-> Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-> Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-> ---
+490000000-50fffffff : CXL Window 0
+  490000000-50fffffff : region0
+    490000000-50fffffff : dax0.0
+      490000000-50fffffff : System RAM (kmem)
 
-We should fix this everywhere, not only sdm845. I'll look at remaining
-sc7280.
+Because drivers/dax/kmem.c calls add_memory_driver_managed() during
+onlining CXL memory, which makes "System RAM (kmem)" a descendant of "CXL
+Window X".  This confuses region_intersects(), which expects all "System
+RAM" resources to be at the top level of iomem_resource.  This can lead to
+bugs.
 
->  sound/soc/qcom/sdm845.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
+For example, when the following command line is executed to write some
+memory in CXL memory range via /dev/mem,
 
+ $ dd if=data of=/dev/mem bs=$((1 << 10)) seek=$((0x490000000 >> 10)) count=1
+ dd: error writing '/dev/mem': Bad address
+ 1+0 records in
+ 0+0 records out
+ 0 bytes copied, 0.0283507 s, 0.0 kB/s
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+the command fails as expected.  However, the error code is wrong.  It
+should be "Operation not permitted" instead of "Bad address".  More
+seriously, the /dev/mem permission checking in devmem_is_allowed() passes
+incorrectly.  Although the accessing is prevented later because ioremap()
+isn't allowed to map system RAM, it is a potential security issue.  During
+command executing, the following warning is reported in the kernel log for
+calling ioremap() on system RAM.
 
-Best regards,
-Krzysztof
+ ioremap on RAM at 0x0000000490000000 - 0x0000000490000fff
+ WARNING: CPU: 2 PID: 416 at arch/x86/mm/ioremap.c:216 __ioremap_caller.constprop.0+0x131/0x35d
+ Call Trace:
+  memremap+0xcb/0x184
+  xlate_dev_mem_ptr+0x25/0x2f
+  write_mem+0x94/0xfb
+  vfs_write+0x128/0x26d
+  ksys_write+0xac/0xfe
+  do_syscall_64+0x9a/0xfd
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+The details of command execution process are as follows.  In the above
+resource tree, "System RAM" is a descendant of "CXL Window 0" instead of a
+top level resource.  So, region_intersects() will report no System RAM
+resources in the CXL memory region incorrectly, because it only checks the
+top level resources.  Consequently, devmem_is_allowed() will return 1
+(allow access via /dev/mem) for CXL memory region incorrectly.
+Fortunately, ioremap() doesn't allow to map System RAM and reject the
+access.
+
+So, region_intersects() needs to be fixed to work correctly with the
+resource tree with "System RAM" not at top level as above.  To fix it, if
+we found a unmatched resource in the top level, we will continue to search
+matched resources in its descendant resources.  So, we will not miss any
+matched resources in resource tree anymore.
+
+In the new implementation, an example resource tree
+
+|------------- "CXL Window 0" ------------|
+|-- "System RAM" --|
+
+will behave similar as the following fake resource tree for
+region_intersects(, IORESOURCE_SYSTEM_RAM, ),
+
+|-- "System RAM" --||-- "CXL Window 0a" --|
+
+Where "CXL Window 0a" is part of the original "CXL Window 0" that
+isn't covered by "System RAM".
+
+Link: https://lkml.kernel.org/r/20240906030713.204292-2-ying.huang@intel.com
+Fixes: c221c0b0308f ("device-dax: "Hotplug" persistent memory for use like normal RAM")
+Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+ kernel/resource.c | 58 ++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 50 insertions(+), 8 deletions(-)
+
+diff --git a/kernel/resource.c b/kernel/resource.c
+index cb441e3e7670..972bf1bf4d69 100644
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -480,20 +480,62 @@ EXPORT_SYMBOL_GPL(page_is_ram);
+ static int __region_intersects(resource_size_t start, size_t size,
+ 			unsigned long flags, unsigned long desc)
+ {
+-	struct resource res;
++	resource_size_t ostart, oend;
+ 	int type = 0; int other = 0;
+-	struct resource *p;
++	struct resource *p, *dp;
++	bool is_type, covered;
++	struct resource res;
+ 
+ 	res.start = start;
+ 	res.end = start + size - 1;
+ 
+ 	for (p = iomem_resource.child; p ; p = p->sibling) {
+-		bool is_type = (((p->flags & flags) == flags) &&
+-				((desc == IORES_DESC_NONE) ||
+-				 (desc == p->desc)));
+-
+-		if (resource_overlaps(p, &res))
+-			is_type ? type++ : other++;
++		if (!resource_overlaps(p, &res))
++			continue;
++		is_type = (p->flags & flags) == flags &&
++			(desc == IORES_DESC_NONE || desc == p->desc);
++		if (is_type) {
++			type++;
++			continue;
++		}
++		/*
++		 * Continue to search in descendant resources as if the
++		 * matched descendant resources cover some ranges of 'p'.
++		 *
++		 * |------------- "CXL Window 0" ------------|
++		 * |-- "System RAM" --|
++		 *
++		 * will behave similar as the following fake resource
++		 * tree when searching "System RAM".
++		 *
++		 * |-- "System RAM" --||-- "CXL Window 0a" --|
++		 */
++		covered = false;
++		ostart = max(res.start, p->start);
++		oend = min(res.end, p->end);
++		for (dp = p->child; dp; dp = next_resource(dp)) {
++			if (!resource_overlaps(dp, &res))
++				continue;
++			is_type = (dp->flags & flags) == flags &&
++				(desc == IORES_DESC_NONE || desc == dp->desc);
++			if (is_type) {
++				type++;
++				/*
++				 * Range from 'ostart' to 'dp->start'
++				 * isn't covered by matched resource.
++				 */
++				if (dp->start > ostart)
++					break;
++				if (dp->end >= oend) {
++					covered = true;
++					break;
++				}
++				/* Remove covered range */
++				ostart = max(ostart, dp->end + 1);
++			}
++		}
++		if (!covered)
++			other++;
+ 	}
+ 
+ 	if (type == 0)
+-- 
+2.39.2
 
 
