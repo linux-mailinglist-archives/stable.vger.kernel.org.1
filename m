@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-83327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 944BF998347
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 12:11:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5CA399835A
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 12:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54654283A85
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 10:11:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 510DBB2676A
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 10:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685021BE857;
-	Thu, 10 Oct 2024 10:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D423E18DF81;
+	Thu, 10 Oct 2024 10:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e/XnN8Wa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BjaLXhYg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198A618C03D;
-	Thu, 10 Oct 2024 10:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC0E1A08C5;
+	Thu, 10 Oct 2024 10:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728555108; cv=none; b=sY7wDf/OvoH0KRamRs/PugayI6tOWb0EPmPR4O8VfFccfkHMkn6LoyIMTWzvsrtfud7/9lpN+LdJTjOmLEWjr43nBUfo/yTITvhuPeBNU/rC3Ndhv+guhyYnHAJrS4ESpbWuMQePMDD5tuIAAubp6YTnqJO2jNMhQ6FTSbY2kBk=
+	t=1728555415; cv=none; b=DCAFQj/N74+lmj8Ip0Mvhc7PmbLCaG/Ho9BJs/vUCTgh3PR89QK8P85xD/3iQoiVIvhsUbdOskkaXO3uKnrFVCAIJZn+jd1OMMxKR+Zoq6FIlqFedoTHn4VLG80byVEMPF+J4MjkQ+upk98jxK0bHDY18ZqhzL082FsoM7eY3LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728555108; c=relaxed/simple;
-	bh=aIO9Pkp4ueULjUApT/2Yy6n5N7W05Lcnxb6dNtNN+8s=;
+	s=arc-20240116; t=1728555415; c=relaxed/simple;
+	bh=Fme7l61BXKKj579X5IywxISXdh4Ffu2sgMDrsdWnSLc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qhNWPX32CAY4nS1DkA10KcUko+qblWJosiRkfu/wadCjBLNM8hlqq0fiI52W1LNmosRMKVtkuPT+hvyMneBEQlPDMo7O0ughplEvwCzqmrDLVHEzGc31+a6IceV1+XY1eWfR60Mgd09roPczPSJqzS6o24kqvzRvNbTyMAIdIes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e/XnN8Wa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD87FC4CEC5;
-	Thu, 10 Oct 2024 10:11:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728555107;
-	bh=aIO9Pkp4ueULjUApT/2Yy6n5N7W05Lcnxb6dNtNN+8s=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=C29W9T/mhKPTZtW/0ZgtQp7wLNQvibpsiRKH0syxhs5O70cjMvPubJNEBlHgmLOh6WdjZ8ZTWKpT0AUR3NscfEZEDHbL/4KEcZRh+1gNBWZ9wLsbcVBJoBd1qfKm0fEog9QNMnSy65p1DnXqceXW8Z1ClXnLEjah6UwaqxGSOT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BjaLXhYg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47326C4CEC6;
+	Thu, 10 Oct 2024 10:16:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1728555415;
+	bh=Fme7l61BXKKj579X5IywxISXdh4Ffu2sgMDrsdWnSLc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e/XnN8WaJPLO5FQfkxq13PQdrHsTH8kXnZLLNW66K398+IKOyOUjNM9EPQeZrLlSI
-	 xijlMr1K9nuTS9WBsGfnMMICJ77SVXjU5LKGBpwNT+jV9C3tQCt8x/8olCS1usSd+X
-	 OUWch70wW6ACkprLJ/VSsBH6KKTfAqoButUazeIgtttkffyMQEZcxVxhd6zjoIJZAU
-	 Gu8t8zN7teFTBaVcKbbaeJe5vnQMHAuRqKjhkQw75FAfV/GSNkdVmQcq6Hi+Ldi0yf
-	 sbxNltZQzmvCzqT9uUazfTUj4pBoeS91oMtoW4T7606cpTIB4HfsFAUJtfnlQYWSj+
-	 Fvp/V1MD3DGdQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1syq99-0000000028Z-2pwL;
-	Thu, 10 Oct 2024 12:11:51 +0200
-Date: Thu, 10 Oct 2024 12:11:51 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Chris Lew <quic_clew@quicinc.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Abel Vesa <abel.vesa@linaro.org>, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] soc: qcom: mark pd-mapper as broken
-Message-ID: <ZweoZwz73GaVlnLB@hovoldconsulting.com>
-References: <20241010074246.15725-1-johan+linaro@kernel.org>
- <CAA8EJpoiu2hwKWGMTeA=Kr+ZaPL=JJFq1qQOJhUnYz6-uTmHWw@mail.gmail.com>
+	b=BjaLXhYgqtCJRrQdeqlRt6pERs7rTFhHPbKKbYwnDUjSI4gCPB9z8qI6wjtHSj+PK
+	 yvgQ+u8JOMwymFGneaTSq3336rfvemAi/riDvRSUpRez88/ceF/tkT9B4rfEnawnRV
+	 pV9vcI/QRKGNFWm1uRzWCjKn1/vBN7Un5adUhQY4=
+Date: Thu, 10 Oct 2024 12:16:52 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Darren Kenny <darren.kenny@oracle.com>
+Subject: Re: [PATCH 6.6 000/386] 6.6.55-rc1 review
+Message-ID: <2024101041-germinate-shuffling-9e19@gregkh>
+References: <20241008115629.309157387@linuxfoundation.org>
+ <894e27c0-c1e8-476d-ae16-11ab65853d1f@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,54 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAA8EJpoiu2hwKWGMTeA=Kr+ZaPL=JJFq1qQOJhUnYz6-uTmHWw@mail.gmail.com>
+In-Reply-To: <894e27c0-c1e8-476d-ae16-11ab65853d1f@oracle.com>
 
-On Thu, Oct 10, 2024 at 12:55:48PM +0300, Dmitry Baryshkov wrote:
-> On Thu, 10 Oct 2024 at 10:44, Johan Hovold <johan+linaro@kernel.org> wrote:
-> >
-> > When using the in-kernel pd-mapper on x1e80100, client drivers often
-> > fail to communicate with the firmware during boot, which specifically
-> > breaks battery and USB-C altmode notifications. This has been observed
-> > to happen on almost every second boot (41%) but likely depends on probe
-> > order:
-> >
-> >     pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to send altmode request: 0x10 (-125)
-> >     pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to request altmode notifications: -125
-> >
-> >     ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: failed to send UCSI read request: -125
-> >
-> >     qcom_battmgr.pmic_glink_power_supply pmic_glink.power-supply.0: failed to request power notifications
-> >
-> > In the same setup audio also fails to probe albeit much more rarely:
-> >
-> >     PDR: avs/audio get domain list txn wait failed: -110
-> >     PDR: service lookup for avs/audio failed: -110
-> >
-> > Chris Lew has provided an analysis and is working on a fix for the
-> > ECANCELED (125) errors, but it is not yet clear whether this will also
-> > address the audio regression.
-> >
-> > Even if this was first observed on x1e80100 there is currently no reason
-> > to believe that these issues are specific to that platform.
-> >
-> > Disable the in-kernel pd-mapper for now, and make sure to backport this
-> > to stable to prevent users and distros from migrating away from the
-> > user-space service.
-> >
-> > Fixes: 1ebcde047c54 ("soc: qcom: add pd-mapper implementation")
-> > Cc: stable@vger.kernel.org      # 6.11
-> > Link: https://lore.kernel.org/lkml/Zqet8iInnDhnxkT9@hovoldconsulting.com/
-> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+On Tue, Oct 08, 2024 at 08:28:57PM +0530, Harshit Mogalapalli wrote:
+> Hi Greg,
 > 
-> Please don't break what is working. pd_mapper is working on all
-> previous platforms. I suggest reverting commit bd6db1f1486e ("soc:
-> qcom: pd_mapper: Add X1E80100") instead.
+> On 08/10/24 17:34, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.6.55 release.
+> > There are 386 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Thu, 10 Oct 2024 11:55:15 +0000.
+> > Anything received after that time might be too late.
+> > 
+> ...
+> 
+> 
+> > Ian Rogers <irogers@google.com>
+> >      perf callchain: Fix stitch LBR memory leaks
+> > 
+> 
+> This patch is causing build failures for tools/perf/
+> 
+> util/machine.c: In function 'save_lbr_cursor_node':
+> util/machine.c:2540:9: error: implicit declaration of function
+> 'map_symbol__exit'; did you mean 'symbol__exit'?
+> [-Werror=implicit-function-declaration]
+>  2540 |         map_symbol__exit(&lbr_stitch->prev_lbr_cursor[idx].ms);
+>       |         ^~~~~~~~~~~~~~~~
+>       |         symbol__exit
+> ...
+> 
+> util/thread.c: In function 'thread__free_stitch_list':
+> util/thread.c:481:17: error: implicit declaration of function
+> 'map_symbol__exit'; did you mean 'symbol__exit'?
+> [-Werror=implicit-function-declaration]
+>   481 |                 map_symbol__exit(&pos->cursor.ms);
+>       |                 ^~~~~~~~~~~~~~~~
+>       |                 symbol__exit
+> 
 
-As I tried to explain in the commit message, there is currently nothing
-indicating that these issues are specific to x1e80100 (even if you may
-not hit them in your setup depending on things like probe order).
-
-Let's disable it until the underlying bugs have been addressed.
-
-Johan
+Argh, I missed this, let me go revert it in another release now...
 
