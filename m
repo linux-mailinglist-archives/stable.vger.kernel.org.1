@@ -1,96 +1,182 @@
-Return-Path: <stable+bounces-83393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A60649993A9
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 22:27:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90CCD9993E5
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 22:48:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45A6FB229D7
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 20:27:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F090287475
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 20:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D891C1E0495;
-	Thu, 10 Oct 2024 20:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F161E04B5;
+	Thu, 10 Oct 2024 20:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="oG3oURYs"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="R1T/8WrZ"
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9BC19C553;
-	Thu, 10 Oct 2024 20:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F218919D064;
+	Thu, 10 Oct 2024 20:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728592071; cv=none; b=bNBJgCymSx446Rxm2rnqCYYxGafwk05/OiqCerp7auvRF8v/yOlADb7M4XZTX8GVRQOy6LznkOxNVGtks82I6dNfHrE5PoG4CO/ncnwVg41roj5oFhC80cATzP/EQFjMx6eCt2E/k/Fn0LoA0FXM1BaKiQrkra/YqxRjJsm99TI=
+	t=1728593299; cv=none; b=mVO5P2+vVrKwRAC483hzfFz/aBtehWlpRIj/V/vcwTmgEmD47sxZDDURdRoEfyTRDacsIeW2i1wg8BWIWrzSyIC2bKK7ILbJdCa4/qEUSe5JUfrDZtZPxzv0FTsOu44ssgMP+uVpF3kGHBc7MHM9+93zTMHauGIrtuXgRzHlZ7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728592071; c=relaxed/simple;
-	bh=4aVUhPMcFnXsYa4v6FhSoRCef9bQJORiqotQO5K5zvY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mEl/M7Qxp9mOFzmNkLzFIFm6q35WXUTst+Nu5srSs9pWybMQ0xSSQKnJXnRUXUw1sDyNXkrKL+vLmhvkPfqqI+IGtsAVHZ+rkKM2tb57Xz+kMS6qH7TeoKkEKa5Fv9XccsVrpohiMnJSEuYDY03ZyXVLSXr3x+J4IFsMN6Uu4Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=oG3oURYs; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=6BFDLIxR9WZQ3uKsX2doi4YcoFJOtB9dymEl4xDgCKY=; b=oG3oURYslPRZUea9n1SaXowBOr
-	vo1i72GboeOY1D3CTjubkqfc98GbwQy8gWl0JcDDQ32K7+jwcQcLBzqrC6TuLE4NlOyiuY7GzbIB+
-	4UhDZ4EFRWUK5u+q9xmFkH+t/bcibWV3/STvqmXQRqf3gSKISqjZTv0kQOlugBkH5tJtf8bcPBbwr
-	dHbhDesrVpNIAafzAyJXJbSKNegmZw/4NkVxqTFai99xVcJB6ayUsS/zp1VWXJKZO7K4tDOlbWA85
-	clfHYz1h6B3peZNGFp55R+SDWKfnGy2C4LdUR4Zg4foYXyghVkM7qptbkB6oVSDcbE30537UezpS8
-	cOAf8BqA==;
-Received: from i53875b34.versanet.de ([83.135.91.52] helo=phil.lan)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1syzlE-0000lb-22; Thu, 10 Oct 2024 22:27:48 +0200
-From: Heiko Stuebner <heiko@sntech.de>
-To: linux-rockchip@lists.infradead.org,
-	Dragan Simic <dsimic@manjaro.org>
-Cc: Heiko Stuebner <heiko@sntech.de>,
-	robh@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	krzk+dt@kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] arm64: dts: rockchip: Prevent thermal runaways in RK3308 SoC dtsi
-Date: Thu, 10 Oct 2024 22:27:44 +0200
-Message-ID: <172859192266.2746127.3378168630215627036.b4-ty@sntech.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <d3e9dc4201d38894b09f3198368428153a3af1a4.1728555461.git.dsimic@manjaro.org>
-References: <d3e9dc4201d38894b09f3198368428153a3af1a4.1728555461.git.dsimic@manjaro.org>
+	s=arc-20240116; t=1728593299; c=relaxed/simple;
+	bh=7SjMNgYx9sTS4Z06fO/CTb2R4UVzNqiqGFjfpM2SXXE=;
+	h=Date:To:From:Subject:Message-Id; b=iOg1rehBzWuuuGMMh4mwmSlZzGpMU+9alaci1I5E5u7asPjlfO4u/c0UoEj8vAmT6C258aATbKcDpPEE70ORafdf5ct0mb1FHVA5nabWzE+zITlRepRmUH6UxlrzVvFFLhLCKZ0mf18NtziBOCRnB7IHd7Ie18bnlWnuU2ghVH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=R1T/8WrZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81927C4CEC5;
+	Thu, 10 Oct 2024 20:48:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1728593298;
+	bh=7SjMNgYx9sTS4Z06fO/CTb2R4UVzNqiqGFjfpM2SXXE=;
+	h=Date:To:From:Subject:From;
+	b=R1T/8WrZG9djrgH1xTqfqqs5jmZISmf7l8suAVlR0fhJiwM8XSxpRAPQkD1Vf/iHn
+	 jJxnT5raZ8FRQvZBGQ4WpM6nVr56heC1LrMR73EIr2FmQuUx8P3f+vBTOPgCxk4y8F
+	 XI2GaqjKM8sjySbJRpd9qN/AOxirXU2in7hPMliY=
+Date: Thu, 10 Oct 2024 13:48:17 -0700
+To: mm-commits@vger.kernel.org,w@1wt.eu,vbabka@suse.cz,stable@vger.kernel.org,riel@redhat.com,oleg@redhat.com,mhocko@suse.com,lorenzo.stoakes@oracle.com,lkp@intel.com,hughd@google.com,deller@gmx.de,ben@decadent.org.uk,jannh@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] mm-enforce-a-minimal-stack-gap-even-against-inaccessible-vmas.patch removed from -mm tree
+Message-Id: <20241010204818.81927C4CEC5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 
-On Thu, 10 Oct 2024 12:19:41 +0200, Dragan Simic wrote:
-> Until the TSADC, thermal zones, thermal trips and cooling maps are defined
-> in the RK3308 SoC dtsi, none of the CPU OPPs except the slowest one may be
-> enabled under any circumstances.  Allowing the DVFS to scale the CPU cores
-> up without even just the critical CPU thermal trip in place can rather easily
-> result in thermal runaways and damaged SoCs, which is bad.
-> 
-> Thus, leave only the lowest available CPU OPP enabled for now.
-> 
-> [...]
 
-Applied, thanks!
+The quilt patch titled
+     Subject: mm: enforce a minimal stack gap even against inaccessible VMAs
+has been removed from the -mm tree.  Its filename was
+     mm-enforce-a-minimal-stack-gap-even-against-inaccessible-vmas.patch
 
-[1/1] arm64: dts: rockchip: Prevent thermal runaways in RK3308 SoC dtsi
-      commit: 864f1a5b390278a4a8d4a6d7425c7022477c6c9f
+This patch was dropped because an updated version will be issued
 
-Best regards,
--- 
-Heiko Stuebner <heiko@sntech.de>
+------------------------------------------------------
+From: Jann Horn <jannh@google.com>
+Subject: mm: enforce a minimal stack gap even against inaccessible VMAs
+Date: Tue, 08 Oct 2024 00:55:39 +0200
+
+As explained in the comment block this change adds, we can't tell what
+userspace's intent is when the stack grows towards an inaccessible VMA.
+
+I have a (highly contrived) C testcase for 32-bit x86 userspace with glibc
+that mixes malloc(), pthread creation, and recursion in just the right way
+such that the main stack overflows into malloc() arena memory.
+
+I don't know of any specific scenario where this is actually exploitable,
+but it seems like it could be a security problem for sufficiently unlucky
+userspace.
+
+I believe we should ensure that, as long as code is compiled with
+something like -fstack-check, a stack overflow in it can never cause the
+main stack to overflow into adjacent heap memory.
+
+My fix effectively reverts the behavior for !vma_is_accessible() VMAs to
+the behavior before commit 1be7107fbe18 ("mm: larger stack guard gap,
+between vmas"), so I think it should be a fairly safe change even in case
+A.
+
+[akpm@linux-foundation.org: s/prev/next/ in !CONFIG_STACK_GROWSUP section, per Lorenzo]
+  Closes: https://lore.kernel.org/oe-kbuild-all/202410090632.brLG8w0b-lkp@intel.com/
+Link: https://lkml.kernel.org/r/20241008-stack-gap-inaccessible-v1-1-848d4d891f21@google.com
+Fixes: 561b5e0709e4 ("mm/mmap.c: do not blow on PROT_NONE MAP_FIXED holes in the stack")
+Signed-off-by: Jann Horn <jannh@google.com>
+Cc: Ben Hutchings <ben@decadent.org.uk>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Rik van Riel <riel@redhat.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Willy Tarreau <w@1wt.eu>
+Cc: <stable@vger.kernel.org>
+Cc: kernel test robot <lkp@intel.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/mmap.c |   53 +++++++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 46 insertions(+), 7 deletions(-)
+
+--- a/mm/mmap.c~mm-enforce-a-minimal-stack-gap-even-against-inaccessible-vmas
++++ a/mm/mmap.c
+@@ -1064,10 +1064,12 @@ static int expand_upwards(struct vm_area
+ 		gap_addr = TASK_SIZE;
+ 
+ 	next = find_vma_intersection(mm, vma->vm_end, gap_addr);
+-	if (next && vma_is_accessible(next)) {
+-		if (!(next->vm_flags & VM_GROWSUP))
++	if (next && !(next->vm_flags & VM_GROWSUP)) {
++		/* see comments in expand_downwards() */
++		if (vma_is_accessible(next))
++			return -ENOMEM;
++		if (address == next->vm_start)
+ 			return -ENOMEM;
+-		/* Check that both stack segments have the same anon_vma? */
+ 	}
+ 
+ 	if (next)
+@@ -1155,10 +1157,47 @@ int expand_downwards(struct vm_area_stru
+ 	/* Enforce stack_guard_gap */
+ 	prev = vma_prev(&vmi);
+ 	/* Check that both stack segments have the same anon_vma? */
+-	if (prev) {
+-		if (!(prev->vm_flags & VM_GROWSDOWN) &&
+-		    vma_is_accessible(prev) &&
+-		    (address - prev->vm_end < stack_guard_gap))
++	if (prev && !(prev->vm_flags & VM_GROWSDOWN) &&
++	    (address - prev->vm_end < stack_guard_gap)) {
++		/*
++		 * If the previous VMA is accessible, this is the normal case
++		 * where the main stack is growing down towards some unrelated
++		 * VMA. Enforce the full stack guard gap.
++		 */
++		if (vma_is_accessible(prev))
++			return -ENOMEM;
++
++		/*
++		 * If the previous VMA is not accessible, we have a problem:
++		 * We can't tell what userspace's intent is.
++		 *
++		 * Case A:
++		 * Maybe userspace wants to use the previous VMA as a
++		 * "guard region" at the bottom of the main stack, in which case
++		 * userspace wants us to grow the stack until it is adjacent to
++		 * the guard region. Apparently some Java runtime environments
++		 * and Rust do that?
++		 * That is kind of ugly, and in that case userspace really ought
++		 * to ensure that the stack is fully expanded immediately, but
++		 * we have to handle this case.
++		 *
++		 * Case B:
++		 * But maybe the previous VMA is entirely unrelated to the stack
++		 * and is only *temporarily* PROT_NONE. For example, glibc
++		 * malloc arenas create a big PROT_NONE region and then
++		 * progressively mark parts of it as writable.
++		 * In that case, we must not let the stack become adjacent to
++		 * the previous VMA. Otherwise, after the region later becomes
++		 * writable, a stack overflow will cause the stack to grow into
++		 * the previous VMA, and we won't have any stack gap to protect
++		 * against this.
++		 *
++		 * As an ugly tradeoff, enforce a single-page gap.
++		 * A single page will hopefully be small enough to not be
++		 * noticed in case A, while providing the same level of
++		 * protection in case B that normal userspace threads get.
++		 */
++		if (address == prev->vm_end)
+ 			return -ENOMEM;
+ 	}
+ 
+_
+
+Patches currently in -mm which might be from jannh@google.com are
+
+mm-mremap-fix-move_normal_pmd-retract_page_tables-race.patch
+
 
