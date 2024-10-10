@@ -1,282 +1,236 @@
-Return-Path: <stable+bounces-83291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7D37997AC7
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 04:53:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17840997C0E
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 06:59:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B3A5B21A1F
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 02:53:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97592281D2A
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 04:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA811885A4;
-	Thu, 10 Oct 2024 02:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2897A19DF7D;
+	Thu, 10 Oct 2024 04:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YfFUKLer"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B4513D8B2
-	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 02:53:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728528830; cv=fail; b=soUyLlyX2oxTMaXk4DTH3H9xjDZU8tOftFKYkpL4g3FyO6CZvN2SyzirLNkU3wO0WqPrOFyZcYmR/g8uibHn4PA1bxuqO+S7XiqEH9ONkD/cLzFB/OsJaq4Bsa4IvWW/mEeS1wtIkprgo7AkHuMML/Q5asMa2IR9fZaUZ2fIvVI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728528830; c=relaxed/simple;
-	bh=NWWx2QieQGCGvxUUTIm6mkgtQsq0sLckKUFH8I5SprI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=oOa1iDSrZ0SvEOmE53APRBPlFqjFw1YgQQfNnm1ve0gMXt1Wl7KWnhTzo0ZUMXPsN2It0dPKAUO5B+miU0oJ5QlxShua+VSOuxryIrvZC/9mIKmxb0sjtIFRtUhC8Wlntyg8tc96haAYzI7InYGIsauoWIE0Bs7aYI3kyfL6DeY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49A2JwFb023173;
-	Thu, 10 Oct 2024 02:53:42 GMT
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2176.outbound.protection.outlook.com [104.47.56.176])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 422tp459d8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Oct 2024 02:53:42 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ls69BkGTOEm/+T1surSmylMrCzZ+drkf/1edhUZExiLRANrmGitw4U+LhEA89zMQxusTbUzZ6ktM7EHTWbaYNL2Xx8lTcGPOPUHrb4evcGjLxrg665oweD/WW+B++5B1QDfSLEY5wTyc8I6Dk3ZVjeYlswC7GQ+ypJa75jQZFM7Ci2/osiQFEpostK3npH/AiaceknzMrrSo4aK7GB3czYliG731AFo2Ls3La5htzVtYw+DjirIkaWSl22OAoxG4DuICBoNv31GJP8tKJ2yoW3b2TscYYPGwAtmo27t14dIE0ZvBInYGaWC8ppAblzQc5b+NilfVDSPeNYqTJjGGKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OFuS9lk9M43yosiSsVD6wgRZnbkdsra5oh1ie+5yRdM=;
- b=cBI4bP0Fq5kZeVMtFhXxqSLtyT7xDV6szR2A21cJI7EGq8YXPPj6dsC+BMQfYuraTnEkVdTv5JGoQwREDeNK5QeuVAHiBWrUNXmeK3HRU4SPU/bf5tuQ48F6s07Zxgpa6rOB+fodSbSgV0lqDPDQCqofthLIQqx/nv5piOM5NF4m96P5vOS/jsh4bVa8Mkd/McIyoukK/CNl0V+feoYsotul03aIDdRQglwPkKjJ7z6EZZBBKKXNVT/fBX0rqlUHno5ILkGqPaCly2LY4ypcgYMypzCXKoonXGr0/FJ1lSGP4a4eQjPmJ+ant3Srhr6n/kGKF4YRk3zxNhAQKsbMKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from MW4PR11MB5824.namprd11.prod.outlook.com (2603:10b6:303:187::19)
- by CH3PR11MB8362.namprd11.prod.outlook.com (2603:10b6:610:175::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.18; Thu, 10 Oct
- 2024 02:53:37 +0000
-Received: from MW4PR11MB5824.namprd11.prod.outlook.com
- ([fe80::f5f6:a389:b6fc:dbc3]) by MW4PR11MB5824.namprd11.prod.outlook.com
- ([fe80::f5f6:a389:b6fc:dbc3%4]) with mapi id 15.20.8048.017; Thu, 10 Oct 2024
- 02:53:37 +0000
-Message-ID: <7cc2aa37-d7d0-4a46-bd9e-cccc03a2d295@windriver.com>
-Date: Thu, 10 Oct 2024 10:53:40 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1] Drivers: hv: vmbus: Leak pages if
- set_memory_encrypted() fails
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-References: <20241009081627.354405-1-xiangyu.chen@windriver.com>
- <2024100900-lavish-implosive-4107@gregkh>
-Content-Language: en-US
-From: Xiangyu Chen <xiangyu.chen@windriver.com>
-In-Reply-To: <2024100900-lavish-implosive-4107@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TY2PR0101CA0041.apcprd01.prod.exchangelabs.com
- (2603:1096:404:8000::27) To MW4PR11MB5824.namprd11.prod.outlook.com
- (2603:10b6:303:187::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D28C18F2FF;
+	Thu, 10 Oct 2024 04:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728536334; cv=none; b=Lvo7YpxW+9BUPBaQPoYMGfmR6KlVvc3cgA88c+OZ/dXfbsuZ3eXDfhrgPcRTAdAEIwUYeHAW2E+J+K9crKK8mw3RtHKuaXUE3lzA1ZsA/8MjzYP0t9BFlDRXNOdse7yqqF8Hv4nrIa7VHsKUIe2rNoS5AVHE7GAMtFc1NmLPRnQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728536334; c=relaxed/simple;
+	bh=rvPvWpE0WNaL4hil9zTCJfZ9UGfGvYk05TegTskFXHQ=;
+	h=From:Date:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=rIqAdAH/tGQvJs3R25tY3OUQwBWmIahjCyYfyC2zhG5FdR3Dux6iqTCXoWnJ3iMSKdgavq6Q28Cn/gRl9YO8KYCmHB2tEKxQ2Wxa6SmDaIwmV1hrXheNjlFhSCHt4IGGegS007m5VyjUBt3GL8Ku228YiE4fVbUivLLevm2lLnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YfFUKLer; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-71df0dbee46so397349b3a.0;
+        Wed, 09 Oct 2024 21:58:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728536332; x=1729141132; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:date:from
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9e/VPAlIyAZCli/ofmVddbzqeYWWWHaTukcajHAji3A=;
+        b=YfFUKLeryAGFC/4v2XD5bWxCujaWW6K6nK3a9L8DPxgkuV2uY1uSLZOTcFz2GJhUAg
+         Xiw+K8n0VXPTs6t49mDvC3VMsS2UCqXn/O/ju4w7MK1N1MNDVpcGuGqO4iO73IRUJpdg
+         4cfsPfzPNeIm0KDl29nFb+ojbh0ZK/ksG+a2yN+40pzBM3iXXBLcIwHA97wXAz/p83mm
+         PCIXUZ4dbkTING2+53X6+418BmdbEAz7EDM5yIXf/Y/h/YLJYlHIYlNYDLxPrIpdhTKs
+         NNqNwIYjh2/m9QxUFrltefdUHDVnfkiZ4XNVEcXbEtPrJZGf9qxm9tzVdZQGrZW/KXHR
+         sj1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728536332; x=1729141132;
+        h=content-disposition:mime-version:message-id:subject:cc:to:date:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9e/VPAlIyAZCli/ofmVddbzqeYWWWHaTukcajHAji3A=;
+        b=VvEBWefcq3KHKKT6NuOrepZEbC47AvEzCw71gnMn13zhikXXL1UKt+BvI+V/HXInka
+         VxBJtpg5s0ZpsMqtEzyBrIOWXiYhJyB+fhszTAH6nauxkC134Emkw3zCZu7ZynFBUbNF
+         LtpfvpMwbiINYBALK/wHvTKKoMMZZLIrHlXWI3f2wKL2iLudxEkT2oWBfB1gfk54X+66
+         rtvFWrryxm5T7OjqUM5/+1HIFM8iUkqfQN3A0eRBeZSovh6U2DgoksFK9b7bd9J8FcKO
+         SU1+ag+KBKo9x3eLgCp5ai3xRYiUBm83bvfkEbaxmD2/vC5bsDaCL0uIEOjNSUBilf2B
+         iZMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWaPTW015YYRlGZjKRa/onu0ARCHes90zvo0oytuvjTf6MdLvHuuVsGx3dZHbG6N3H+pcOiCW2yZfOmxJw=@vger.kernel.org, AJvYcCWc/OACV/Lvzoy0oT5oEqBYc7q4X3C46uWK4bPWaNVeWa8SlvVAsqlwteVIvuA1CFFWIHTsYpkb4IKk@vger.kernel.org
+X-Gm-Message-State: AOJu0YxT9cnsiCuf0g09PUhvXjSpArKAnHwS0z6Zdy5RmwxRMA0hKlJ+
+	cDSDQjdN+CUS2LNbPCKCirz6NROMcwB42ZnhpGQsV+m0dnlPcTpa5IQcHkn77Pk=
+X-Google-Smtp-Source: AGHT+IG2nyCkFOO52IwqGEVeGZFUcEZh6aaC4IsBlYqOzlbxD2W9HXO0B7BsiNtsD8i3f6tY+uFRHg==
+X-Received: by 2002:a05:6a00:3e16:b0:71e:14c:8d31 with SMTP id d2e1a72fcca58-71e1db858d1mr8318997b3a.16.1728536332042;
+        Wed, 09 Oct 2024 21:58:52 -0700 (PDT)
+Received: from gmail.com ([24.130.68.0])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e2ab0a50dsm262899b3a.195.2024.10.09.21.58.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Oct 2024 21:58:49 -0700 (PDT)
+From: Guo Xuenan <marcus.yu.56@gmail.com>
+X-Google-Original-From: Guo Xuenan <guoxuenan@huawei.com>
+Date: Wed, 9 Oct 2024 21:58:46 -0700
+To: stable@vger.kernel.org, gregkh@linuxfoundation.org, sashal@kernel.org
+Cc: leah.rumancik@gmail.com, djwong@kernel.org, linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+	marcus.yu.56@gmail.com
+Subject: [PATCH 5.15.y] xfs: fix super block buf log item UAF during force
+ shutdown
+Message-ID: <ZwdfBhBsMEG2_1Tr@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR11MB5824:EE_|CH3PR11MB8362:EE_
-X-MS-Office365-Filtering-Correlation-Id: e27fad22-0581-479c-13cb-08dce8d6bd08
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZHY0Nnk0WUVDbis3QXRWejhNUmkzRSt4NFlTdU5NanB5OXFMSTQ1L3l0YWlo?=
- =?utf-8?B?RG9yZWFJdlFQTlRiZFVwdzFBaWU0Z2Fld1o4VVBiQmtURml4NE4wbFdVR3lv?=
- =?utf-8?B?NEt3MmJIZ2RTeHdZQ2dkTHY3TWlGc05pYkFaR1V4ZWxyYTRnVjhMQUhwS0dH?=
- =?utf-8?B?SVRnYmd4Y0NNSkR0S2dvYjJWRTZDUlRHbVRFcnZKUTVkU2hkbGQvcnYxQnl3?=
- =?utf-8?B?dEdqeUc0VnpvcnhoVWFJdmMyYnU1L1ZKSHVRRXIrcWlqQmo3d01KOUJoV1VB?=
- =?utf-8?B?bHErck93TncrMlI2TmRzbStkWWhKS1duOGMrYnozOXgyaUt1THVZdW5RSWd2?=
- =?utf-8?B?eWZKTWJzblliYm4zNytSblJQVmpNbTZ2TmNjZXNxdUVxTTFtUTByUEF0dFlO?=
- =?utf-8?B?MFZJN0RvbGh0SGliYVVMeTRQMFM5eGJ5c1NLNjdFQ2o4RlA2OEJUWTQ0U3U1?=
- =?utf-8?B?c3plZTZ5S1JPaUw1ZkRJOU53VkZqZTFXY2lGKy82eHpUT1VUZE56NEZSOVlJ?=
- =?utf-8?B?RmFERU9vaFpRTkk2TEJlOVo3R0dYcVVKZkQ2Y2llZElzMUtsQ3Fub0hqUVR2?=
- =?utf-8?B?U1dSMGtReWxJUEF0SFp3SWh5TWQ2S0o5ODErTjRMRHo5NGVITU15TEd3UnFP?=
- =?utf-8?B?QU5GdmJxTVRzVGFKWW8wUUxpMDVuNkZodVFVNGVJMG9RRkVycktuZldmRWpC?=
- =?utf-8?B?SmxCUkRQRTljMlFlbXcxcUorQmpVMkxNdU1jb0ZoVTV1SWhMU3hudlJaQXVh?=
- =?utf-8?B?ZStIVXc4MkJoL2I5bVdCNFZTb3ZXZGl0bUt4SU9UajhSRTd5MEpNTW82ZkEw?=
- =?utf-8?B?THQxaEx2L0d2L1prQ1FISmtoNlRRSnJiNDByU2tSb0daYkdqQ2syWndoUkRo?=
- =?utf-8?B?Vy94VVM2anNyYSs2RExkQm9kTDRiNGRSRjFJaFNRaTVPTy9QZVVMNml0M0Mx?=
- =?utf-8?B?TzRLRklaSVl5WTkrRmt1R1oxdEh5TkZhZURwMUtOdTluZlV2Qmc2SkVLbHhu?=
- =?utf-8?B?UnpwM3ZvRmhSdHNRNW5ZRlkvbkI5QWRySmlzcXJsOGlVaGJXSDRkaG9TQU1D?=
- =?utf-8?B?OVZIMDJYUGVWdzh4NmI2NjB3Y2RZRWtJOHpUNWZUNVFDRllXd0FoUHl6bXda?=
- =?utf-8?B?UEUvYkN6Q2lqMldyT0cyTm1qNXc3WnVUTUUyZUNDZXNXSUsxNnZiVExxL1k5?=
- =?utf-8?B?MVBCZWhIclFlQWVjNXB0T0cydzBwcmx6ZnRKM1hUNkhYa1BEdFRQazZEZVJU?=
- =?utf-8?B?alRkSHpsT0pCQmpVaC9GWTBDSFp0aGJscm5QdjNSaDRpSHZRL0xnMkxaZXV2?=
- =?utf-8?B?NTlsTit2MDVjNjVyN1ZRSVlWS2xMaUh2M05GZU1Ed3VqVzJZVFViN3NmUjF0?=
- =?utf-8?B?OFR4ZTZMTVpadXNsRi9GT25hVktSdk13YXJXV1F1Y2p5UW9EdkhlUUlid3I3?=
- =?utf-8?B?VFJCMjF2WXEwQndUQ0w2dlBrQkNOQStsaXJET0t5UGR0djFqb3lqN2VWN2Ux?=
- =?utf-8?B?My9JVHFiY2sxTGxJeFlWb0taNXoyU0JSaXJMRmkvVWhIVkVTRUpwNzlQMHBI?=
- =?utf-8?B?dUZiaG5VWWtjQ09rV1ZwbmJSclZ4eUZYVFF1VW1mQnkrb0pIVTdwRjY5YzZa?=
- =?utf-8?B?b3kvQXozT1NINXhzU1V6dWE1aUNtZlc5UnRqMmVnZ0h3SEJvaDgwQ0dJRVRh?=
- =?utf-8?B?NU4xYnJEUWpheDN0N294aE9ieWFtc2V6RFF4VnRTTnlsbVo1MGlBWkJBPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5824.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VzJzZVcwZWpnczhhYUlFRmpGV1dRcTFtWGdacFY1WnVjYkp1QnNWd0Rjb1Nu?=
- =?utf-8?B?eHZsSGdHTGtBZkRDcytQZEhrWmNZdHFvZHpQRVNybzZ0MkNvNllHN3V3NHBB?=
- =?utf-8?B?RkdVSS9YdlU4UHBSTmVBRmsyRDJ5MzFBN01TU2dlSXVIYzZUaUsvdjdCVjAw?=
- =?utf-8?B?eHVOQVVXVEU3SXhTYmRxNDdXNmhLRHVIZjVIUWkydVQ2M1ltZmJObDdmc1lj?=
- =?utf-8?B?dVZCWDlTbGFFQ0Foa0c4TlMzaGd1ZGhncmx2cXNpZXVkWkZUYzNnOVo1TDN1?=
- =?utf-8?B?WTU1ZUx3dVhPRERmWkZPb0NjekYrN0piRnUrV1J6WmF6dFExc1JhVlIxZ1BJ?=
- =?utf-8?B?UDlTbjJZK2Y2djRBanE0NHZzaEdLY1NLZm4zNnZNSXZ2ekdmK1BZbUxIS2FP?=
- =?utf-8?B?TmFsWWsxa0R1WUczcVNrK2RsQ1pLcm5OdnZTSHdTWlhabWpJcnVIQjkvcE1j?=
- =?utf-8?B?Skp4MXhNQkxQY0ZzLytZaHNjeEJJa0xrU3ZWeWQ4MEducWEyZU91NTRBMytQ?=
- =?utf-8?B?QVVVOWFCS2FOb0hPMWJhMEF1ajh5MWFlWFRSVDdHTG1YZitYZXRLR0FyYmlo?=
- =?utf-8?B?cXBRSUxhTHlNRFppVTJidk9BNXFuUUpzS0l6aklSK3VHWGw1azI4SVE5cUZL?=
- =?utf-8?B?MkRmeEpjM1RkUW5CaDhFcEpMdE1vdGRQKzdlS2R4b2N0cG5oR0lxZVlQdzM4?=
- =?utf-8?B?MDVzdUZSNmVoZUlNUTlkSE1nblZodnlWL2U2Y0hkSCtSQnNOV3k2L21KVVE1?=
- =?utf-8?B?ZHNSNk1JVVB6Z3hBYWhuWUtzdks1MTlua3VZeVVHbUFvazVCS0drQTZKaGQv?=
- =?utf-8?B?TDRrcUJNczFpWlk4OTZwWVFjWEUxWE1JdDNrNlNQMENXR3pFS0lYVVdZcGJT?=
- =?utf-8?B?ZHNMUmVNVW03R2J3SWFLczFHeFdML2hNU2ROakdWUEtmUzhDbSt5Q2F5ZW9X?=
- =?utf-8?B?VlN2cVdGVGc3S25XR1UwcS9RZzhpRnZ4b3dGNjNoVml1YWZlKzNWdHQ5aits?=
- =?utf-8?B?T0hDdU1uQ0c4aTYxejI0cDVpeDRNcjJsMnZXREpKaXJYWWNLa3dLM1NpZFQz?=
- =?utf-8?B?NkpQenRjUjdkNlAxb0pNdlNpZmJJclNZaTFkWVZ3Q0FSUFhKQTl0SnMrSWZI?=
- =?utf-8?B?YSsxa0xOcUVoSDBnRUJKWWh1UXd3MnpGSm5Ea2d0UjR5VnYzTFB6Z29pYWZD?=
- =?utf-8?B?N1VQZDhyRmpRNlQzek85ckpBSVYyc2xPbU1VY0tnV2RsNHN4Y2d4WXIrdllS?=
- =?utf-8?B?djcyZmxzNXhBYlZ0a0FqeHJOeFFDaHZabzl3M3VIZlBNRnNZSGdZYks0bzBn?=
- =?utf-8?B?bnJUaVhLblFuYTVId2M2RUFmeE5nR0JrNzhwa1g1SzlURGxwRnRNWkRwVW9t?=
- =?utf-8?B?S21rYmpDYzBtTjNWL0RLVmZ2aVVnRGdTbFdwNGF0U2M4YUprb2dMMnNNWWk5?=
- =?utf-8?B?cWVqWC9CU3AybmRtbWtEK0hRd3RXZ0FOVWs0TWE2QWp3RUtrQUIzVzQ0T1VT?=
- =?utf-8?B?bG1wT2tzSy94akxjYkFPVkFxemo1b2JPc1FCb0tERHREWXpCNW1HTXZsMUQr?=
- =?utf-8?B?L3k4WDJjUEVxMW9qdXI2cnMvdDRiT213TkRKbmprNkx3bERBUTEveTNDQkNJ?=
- =?utf-8?B?SDJicTRMdGlzbjBPS1RTQzVQUXB3TjdjWjB4MUhaSnR0NXpENmdONVpGdmdh?=
- =?utf-8?B?UWREczFYdHpYallaMWcvYUFnWG9EanhHZmE5NnVFbVVIQm9sUFE4V21aTjRZ?=
- =?utf-8?B?N2lLSUN1UUxGRnRYamlVRFBVMWMxNWVVRkR5bXZuYmZBK3JLMEVXZkowK0V4?=
- =?utf-8?B?Q0FRb045ZThQMFM5aHlXb3BqeTNZd2srSStOMWt0REZldTBoMUxHNjcxRDht?=
- =?utf-8?B?NFdYZ0xqUk9UYlc1M0VXMXJUODJweUxreUNMaWRLSENIUWVjTTMxc0VYeXBP?=
- =?utf-8?B?cXBYajNydzQ5NXpPSFkraDZNcUY2Q1dzUkJLT2RNUWFUYlBEb0pFdDZsZ1A1?=
- =?utf-8?B?VWpReU9Xa2dtM0U5LzB4d2ltZDVYQ1gwNHp3SXMyRlZTOXE4Q1ptYXdweWlv?=
- =?utf-8?B?SGZ3amljM1VyRE5GRTNybWxtWXFwQlB5V25qcUVFbjZnTk43VTdrTXVvVDFj?=
- =?utf-8?B?WXRPSmZWeWQrY1lMbGNoOWM0WkpmcEVmK2lWVm9XUVpubzV0cXRMcXhEUnJ1?=
- =?utf-8?B?UkE9PQ==?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e27fad22-0581-479c-13cb-08dce8d6bd08
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5824.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2024 02:53:37.3055
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /aj+IgNQADeDKdjT6HpNCjXNENKskFFVEIvTBEsZsi0SDFtAt25WO+mOnptk846ZAJf0VkvFGpdfYPvlaPHlq1p0mACwSZDrVv1qDOb9SFs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8362
-X-Authority-Analysis: v=2.4 cv=XPtiShhE c=1 sm=1 tr=0 ts=670741b6 cx=c_pps a=/1KN1z/xraQh0Fnb7pnMZA==:117 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=DAUX931o1VcA:10 a=bRTqI5nwn0kA:10 a=QyXUC8HyAAAA:8 a=UqCG9HQmAAAA:8
- a=VwQbUJbxAAAA:8 a=t7CeM3EgAAAA:8 a=aXlCLAlfp_2NdpviTv0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: 7k5xzShzEGB8DLYvuhtC7FAygZE97RRm
-X-Proofpoint-GUID: 7k5xzShzEGB8DLYvuhtC7FAygZE97RRm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-09_23,2024-10-09_02,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- spamscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999 malwarescore=0
- suspectscore=0 impostorscore=0 adultscore=0 lowpriorityscore=0
- clxscore=1011 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2409260000 definitions=main-2410100017
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hello Greg,
+commit 575689fc0ffa6c4bb4e72fd18e31a6525a6124e0 upstream.
 
+xfs log io error will trigger xlog shut down, and end_io worker call
+xlog_state_shutdown_callbacks to unpin and release the buf log item.
+The race condition is that when there are some thread doing transaction
+commit and happened not to be intercepted by xlog_is_shutdown, then,
+these log item will be insert into CIL, when unpin and release these
+buf log item, UAF will occur. BTW, add delay before `xlog_cil_commit`
+can increase recurrence probability.
 
-On 10/9/24 21:33, Greg KH wrote:
-> CAUTION: This email comes from a non Wind River email account!
-> Do not click links or open attachments unless you recognize the sender and know the content is safe.
->
-> On Wed, Oct 09, 2024 at 04:16:26PM +0800, Xiangyu Chen wrote:
->> From: Rick Edgecombe <rick.p.edgecombe@intel.com>
->>
->> In CoCo VMs it is possible for the untrusted host to cause
->> set_memory_encrypted() or set_memory_decrypted() to fail such that an
->> error is returned and the resulting memory is shared. Callers need to
->> take care to handle these errors to avoid returning decrypted (shared)
->> memory to the page allocator, which could lead to functional or security
->> issues.
->>
->> VMBus code could free decrypted pages if set_memory_encrypted()/decrypted()
->> fails. Leak the pages if this happens.
->>
->> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
->> Signed-off-by: Michael Kelley <mhklinux@outlook.com>
->> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
->> Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
->> Link: https://lore.kernel.org/r/20240311161558.1310-2-mhklinux@outlook.com
->> Signed-off-by: Wei Liu <wei.liu@kernel.org>
->> Message-ID: <20240311161558.1310-2-mhklinux@outlook.com>
->> [Xiangyu: Modified to apply on 6.1.y]
->> Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
->> ---
->>   drivers/hv/connection.c | 11 ++++++++++-
->>   1 file changed, 10 insertions(+), 1 deletion(-)
-> Are you sure?  This is _VERY_ different from what you suggested for
-> 5.15.y and what is in mainline.  Also, you didn't show the git id for
-> the upstream commit.
+The following call graph actually encountered this bad situation.
+fsstress                    io end worker kworker/0:1H-216
+                            xlog_ioend_work
+                              ->xlog_force_shutdown
+                                ->xlog_state_shutdown_callbacks
+                                  ->xlog_cil_process_committed
+                                    ->xlog_cil_committed
+                                      ->xfs_trans_committed_bulk
+->xfs_trans_apply_sb_deltas             ->li_ops->iop_unpin(lip, 1);
+  ->xfs_trans_getsb
+    ->_xfs_trans_bjoin
+      ->xfs_buf_item_init
+        ->if (bip) { return 0;} //relog
+->xlog_cil_commit
+  ->xlog_cil_insert_items //insert into CIL
+                                           ->xfs_buf_ioend_fail(bp);
+                                             ->xfs_buf_ioend
+                                               ->xfs_buf_item_done
+                                                 ->xfs_buf_item_relse
+                                                   ->xfs_buf_item_free
 
+when cil push worker gather percpu cil and insert super block buf log item
+into ctx->log_items then uaf occurs.
 
-This commit is a fix for CVE-2024-36913,  currently, if we fully apply 
-the commit, we have to backport the
+==================================================================
+BUG: KASAN: use-after-free in xlog_cil_push_work+0x1c8f/0x22f0
+Write of size 8 at addr ffff88801800f3f0 by task kworker/u4:4/105
 
-following commits from upstream:
+CPU: 0 PID: 105 Comm: kworker/u4:4 Tainted: G W
+6.1.0-rc1-00001-g274115149b42 #136
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+1.13.0-1ubuntu1.1 04/01/2014
+Workqueue: xfs-cil/sda xlog_cil_push_work
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x4d/0x66
+ print_report+0x171/0x4a6
+ kasan_report+0xb3/0x130
+ xlog_cil_push_work+0x1c8f/0x22f0
+ process_one_work+0x6f9/0xf70
+ worker_thread+0x578/0xf30
+ kthread+0x28c/0x330
+ ret_from_fork+0x1f/0x30
+ </TASK>
 
-a5ddb745 : Drivers: hv: vmbus: Remove second mapping of VMBus monitor pages
+Allocated by task 2145:
+ kasan_save_stack+0x1e/0x40
+ kasan_set_track+0x21/0x30
+ __kasan_slab_alloc+0x54/0x60
+ kmem_cache_alloc+0x14a/0x510
+ xfs_buf_item_init+0x160/0x6d0
+ _xfs_trans_bjoin+0x7f/0x2e0
+ xfs_trans_getsb+0xb6/0x3f0
+ xfs_trans_apply_sb_deltas+0x1f/0x8c0
+ __xfs_trans_commit+0xa25/0xe10
+ xfs_symlink+0xe23/0x1660
+ xfs_vn_symlink+0x157/0x280
+ vfs_symlink+0x491/0x790
+ do_symlinkat+0x128/0x220
+ __x64_sys_symlink+0x7a/0x90
+ do_syscall_64+0x35/0x80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-d786e00d : drivers: hv, hyperv_fb: Untangle and refactor Hyper-V panic 
-notifiers
+Freed by task 216:
+ kasan_save_stack+0x1e/0x40
+ kasan_set_track+0x21/0x30
+ kasan_save_free_info+0x2a/0x40
+ __kasan_slab_free+0x105/0x1a0
+ kmem_cache_free+0xb6/0x460
+ xfs_buf_ioend+0x1e9/0x11f0
+ xfs_buf_item_unpin+0x3d6/0x840
+ xfs_trans_committed_bulk+0x4c2/0x7c0
+ xlog_cil_committed+0xab6/0xfb0
+ xlog_cil_process_committed+0x117/0x1e0
+ xlog_state_shutdown_callbacks+0x208/0x440
+ xlog_force_shutdown+0x1b3/0x3a0
+ xlog_ioend_work+0xef/0x1d0
+ process_one_work+0x6f9/0xf70
+ worker_thread+0x578/0xf30
+ kthread+0x28c/0x330
+ ret_from_fork+0x1f/0x30
 
-9c318a1d : Drivers: hv: move panic report code from vmbus to hv early 
-init code
+The buggy address belongs to the object at ffff88801800f388
+ which belongs to the cache xfs_buf_item of size 272
+The buggy address is located 104 bytes inside of
+ 272-byte region [ffff88801800f388, ffff88801800f498)
 
-a6fe0438 : Drivers: hv: Change hv_free_hyperv_page() to take void * argument
+The buggy address belongs to the physical page:
+page:ffffea0000600380 refcount:1 mapcount:0 mapping:0000000000000000
+index:0xffff88801800f208 pfn:0x1800e
+head:ffffea0000600380 order:1 compound_mapcount:0 compound_pincount:0
+flags: 0x1fffff80010200(slab|head|node=0|zone=1|lastcpupid=0x1fffff)
+raw: 001fffff80010200 ffffea0000699788 ffff88801319db50 ffff88800fb50640
+raw: ffff88801800f208 000000000015000a 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
 
-03f5a999 : Drivers: hv: vmbus: Leak pages if set_memory_encrypted() fails
+Memory state around the buggy address:
+ ffff88801800f280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff88801800f300: fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc fc
+>ffff88801800f380: fc fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                                             ^
+ ffff88801800f400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff88801800f480: fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc fc
+==================================================================
+Disabling lock debugging due to kernel taint
 
-Some of them are features, it might not be merged to current stable 
-branch, so another solution
+Signed-off-by: Guo Xuenan <guoxuenan@huawei.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Chang Yu <marcus.yu.56@gmail.com>
+---
 
-is modify the connect.c by manual.
+The fix 575689fc0ffa ("xfs: fix super block buf log item UAF
+during force shutdown") was first introduced in v6.2-rc1. Syzkaller
+reports that the UAF bug is still present in linux-5.15.y
+(https://syzkaller.appspot.com/bug?extid=4d9a694803b65e21655b).
+I think a backport should be beneficial here.
 
+---
 
- From the upstream commit 03f5a999(Drivers: hv: vmbus: Leak pages if 
-set_memory_encrypted() fails) we can see that
+ fs/xfs/xfs_buf_item.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-the commit aim to check set_memory_decrypted() result, if fails, the 
-encryption of memory state is unknown, so leak the
+diff --git a/fs/xfs/xfs_buf_item.c b/fs/xfs/xfs_buf_item.c
+index b1ab100c09e1..ffe318eb897f 100644
+--- a/fs/xfs/xfs_buf_item.c
++++ b/fs/xfs/xfs_buf_item.c
+@@ -1017,6 +1017,8 @@ xfs_buf_item_relse(
+ 	trace_xfs_buf_item_relse(bp, _RET_IP_);
+ 	ASSERT(!test_bit(XFS_LI_IN_AIL, &bip->bli_item.li_flags));
+ 
++	if (atomic_read(&bip->bli_refcount))
++		return;
+ 	bp->b_log_item = NULL;
+ 	xfs_buf_rele(bp);
+ 	xfs_buf_item_free(bip);
+-- 
+2.46.2
 
-memory.
-
-The commit modified 2 functions, vmbus_connect() and vmbus_disconnect().
-
-In vmbus_connect(), when set_memory_decrypted() fails, marking 
-vmbus_connection.monitor_pages[0]/[1] to NULL.
-
-In vmbus_disconnect(),  checking the monitor_pages[0]/[1] is valid, and 
-checking set_memory_encrypted() status, if fails, free and
-
-leak it.
-
-On current v6.1 branch, vmbus_disconnect() will free those memory 
-whatever set_memory_encrypted() is success or fails, so we can just
-
-add a monitor_pages valid checking in it.
-
-
-Could you please give a suggestion that which solution is following the 
-stable-branch rule, I will resend a V2 patch, thanks.
-
-
-
-Br,
-
-Xiangyu
-
->
-> Please work to figure this out and resend working versions for ALL
-> affected branches as new patches.
->
-> thanks,
->
-> greg k-h
 
