@@ -1,125 +1,96 @@
-Return-Path: <stable+bounces-83392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 878C599939F
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 22:25:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A60649993A9
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 22:27:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14413B21C4E
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 20:24:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45A6FB229D7
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 20:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719D81D31B2;
-	Thu, 10 Oct 2024 20:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D891C1E0495;
+	Thu, 10 Oct 2024 20:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QRgXUFyr"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="oG3oURYs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EE918C03D;
-	Thu, 10 Oct 2024 20:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9BC19C553;
+	Thu, 10 Oct 2024 20:27:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728591890; cv=none; b=QDtWiVhm94A+7F3WM86bv6XIJiFNQuQwKlgBtJ/5gkCU+wlAZrNI6VgHU2kNQtUCS8EgMuy7SSqlQX6B7JTImRVJmSGmwHiJxj243vUzcriGFcyJ6yK1jBzc0lfxu8R5W//XdQ0hHzR4haArjixHSj0/6GPxZi0YV9RCOZLymvI=
+	t=1728592071; cv=none; b=bNBJgCymSx446Rxm2rnqCYYxGafwk05/OiqCerp7auvRF8v/yOlADb7M4XZTX8GVRQOy6LznkOxNVGtks82I6dNfHrE5PoG4CO/ncnwVg41roj5oFhC80cATzP/EQFjMx6eCt2E/k/Fn0LoA0FXM1BaKiQrkra/YqxRjJsm99TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728591890; c=relaxed/simple;
-	bh=IWTNq7fFQedN+BbHAiMQNfXDmX3BvP2UTXL28YTkH5I=;
-	h=Date:To:From:Subject:Message-Id; b=hYucW2MtIOaL+q1dj7N8za0UMIuBEVjp8/9w84nrFOuF4n6cjSOeHLeKmigW8MU7PKX46p2vKoLUbQv8vTrJze7PTs5aXMjEexXvHV3z/L6gBJgHNkq7SK+EHNVp10LRylwdcSBfM0aGbnye9Xs4l82BgjLWKITqWz3RtRjv29Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QRgXUFyr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14A8C4CEC5;
-	Thu, 10 Oct 2024 20:24:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1728591889;
-	bh=IWTNq7fFQedN+BbHAiMQNfXDmX3BvP2UTXL28YTkH5I=;
-	h=Date:To:From:Subject:From;
-	b=QRgXUFyrHX24Fquav0YKWSMJaiy9I6IQ9MNcuc3rRYR0XnSAqlP/R1Upm/5nV81BJ
-	 BAFyxNpW6V6CoMfsHVKtut7wn3sQyEOSng0280R8jdYT2uxII0gHnPv4dgTK37jlHa
-	 oG60a4SGnKMwmU0pZzj+KbAG5GXRa2YN7uEZ8z+U=
-Date: Thu, 10 Oct 2024 13:24:48 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,ruanjinjie@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-fix-memory-leak-in-damon_sysfs_test_add_targets.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241010202449.A14A8C4CEC5@smtp.kernel.org>
+	s=arc-20240116; t=1728592071; c=relaxed/simple;
+	bh=4aVUhPMcFnXsYa4v6FhSoRCef9bQJORiqotQO5K5zvY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mEl/M7Qxp9mOFzmNkLzFIFm6q35WXUTst+Nu5srSs9pWybMQ0xSSQKnJXnRUXUw1sDyNXkrKL+vLmhvkPfqqI+IGtsAVHZ+rkKM2tb57Xz+kMS6qH7TeoKkEKa5Fv9XccsVrpohiMnJSEuYDY03ZyXVLSXr3x+J4IFsMN6Uu4Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=oG3oURYs; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=6BFDLIxR9WZQ3uKsX2doi4YcoFJOtB9dymEl4xDgCKY=; b=oG3oURYslPRZUea9n1SaXowBOr
+	vo1i72GboeOY1D3CTjubkqfc98GbwQy8gWl0JcDDQ32K7+jwcQcLBzqrC6TuLE4NlOyiuY7GzbIB+
+	4UhDZ4EFRWUK5u+q9xmFkH+t/bcibWV3/STvqmXQRqf3gSKISqjZTv0kQOlugBkH5tJtf8bcPBbwr
+	dHbhDesrVpNIAafzAyJXJbSKNegmZw/4NkVxqTFai99xVcJB6ayUsS/zp1VWXJKZO7K4tDOlbWA85
+	clfHYz1h6B3peZNGFp55R+SDWKfnGy2C4LdUR4Zg4foYXyghVkM7qptbkB6oVSDcbE30537UezpS8
+	cOAf8BqA==;
+Received: from i53875b34.versanet.de ([83.135.91.52] helo=phil.lan)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1syzlE-0000lb-22; Thu, 10 Oct 2024 22:27:48 +0200
+From: Heiko Stuebner <heiko@sntech.de>
+To: linux-rockchip@lists.infradead.org,
+	Dragan Simic <dsimic@manjaro.org>
+Cc: Heiko Stuebner <heiko@sntech.de>,
+	robh@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	krzk+dt@kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] arm64: dts: rockchip: Prevent thermal runaways in RK3308 SoC dtsi
+Date: Thu, 10 Oct 2024 22:27:44 +0200
+Message-ID: <172859192266.2746127.3378168630215627036.b4-ty@sntech.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <d3e9dc4201d38894b09f3198368428153a3af1a4.1728555461.git.dsimic@manjaro.org>
+References: <d3e9dc4201d38894b09f3198368428153a3af1a4.1728555461.git.dsimic@manjaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
+On Thu, 10 Oct 2024 12:19:41 +0200, Dragan Simic wrote:
+> Until the TSADC, thermal zones, thermal trips and cooling maps are defined
+> in the RK3308 SoC dtsi, none of the CPU OPPs except the slowest one may be
+> enabled under any circumstances.  Allowing the DVFS to scale the CPU cores
+> up without even just the critical CPU thermal trip in place can rather easily
+> result in thermal runaways and damaged SoCs, which is bad.
+> 
+> Thus, leave only the lowest available CPU OPP enabled for now.
+> 
+> [...]
 
-The patch titled
-     Subject: mm/damon/tests/sysfs-kunit.h: fix memory leak in damon_sysfs_test_add_targets()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-fix-memory-leak-in-damon_sysfs_test_add_targets.patch
+Applied, thanks!
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-fix-memory-leak-in-damon_sysfs_test_add_targets.patch
+[1/1] arm64: dts: rockchip: Prevent thermal runaways in RK3308 SoC dtsi
+      commit: 864f1a5b390278a4a8d4a6d7425c7022477c6c9f
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-Subject: mm/damon/tests/sysfs-kunit.h: fix memory leak in damon_sysfs_test_add_targets()
-Date: Thu, 10 Oct 2024 20:53:23 +0800
-
-The sysfs_target->regions allocated in damon_sysfs_regions_alloc() is not
-freed in damon_sysfs_test_add_targets(), which cause the following memory
-leak, free it to fix it.
-
-	unreferenced object 0xffffff80c2a8db80 (size 96):
-	  comm "kunit_try_catch", pid 187, jiffies 4294894363
-	  hex dump (first 32 bytes):
-	    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-	    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-	  backtrace (crc 0):
-	    [<0000000001e3714d>] kmemleak_alloc+0x34/0x40
-	    [<000000008e6835c1>] __kmalloc_cache_noprof+0x26c/0x2f4
-	    [<000000001286d9f8>] damon_sysfs_test_add_targets+0x1cc/0x738
-	    [<0000000032ef8f77>] kunit_try_run_case+0x13c/0x3ac
-	    [<00000000f3edea23>] kunit_generic_run_threadfn_adapter+0x80/0xec
-	    [<00000000adf936cf>] kthread+0x2e8/0x374
-	    [<0000000041bb1628>] ret_from_fork+0x10/0x20
-
-Link: https://lkml.kernel.org/r/20241010125323.3127187-1-ruanjinjie@huawei.com
-Fixes: b8ee5575f763 ("mm/damon/sysfs-test: add a unit test for damon_sysfs_set_targets()")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/damon/tests/sysfs-kunit.h |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/mm/damon/tests/sysfs-kunit.h~mm-damon-fix-memory-leak-in-damon_sysfs_test_add_targets
-+++ a/mm/damon/tests/sysfs-kunit.h
-@@ -67,6 +67,7 @@ static void damon_sysfs_test_add_targets
- 	damon_destroy_ctx(ctx);
- 	kfree(sysfs_targets->targets_arr);
- 	kfree(sysfs_targets);
-+	kfree(sysfs_target->regions);
- 	kfree(sysfs_target);
- }
- 
-_
-
-Patches currently in -mm which might be from ruanjinjie@huawei.com are
-
-mm-damon-fix-memory-leak-in-damon_sysfs_test_add_targets.patch
-
+Best regards,
+-- 
+Heiko Stuebner <heiko@sntech.de>
 
