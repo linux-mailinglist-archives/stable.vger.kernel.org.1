@@ -1,105 +1,97 @@
-Return-Path: <stable+bounces-83342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A565998496
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 13:14:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F789984A1
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 13:16:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BCD6282A55
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 11:14:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0F741F21B27
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 11:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1608F1C3F13;
-	Thu, 10 Oct 2024 11:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C0B1BDAA7;
+	Thu, 10 Oct 2024 11:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ex7U2jk4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H37yc6OI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD41A1C2DC8;
-	Thu, 10 Oct 2024 11:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04C633CD2;
+	Thu, 10 Oct 2024 11:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728558849; cv=none; b=oZlEYKmWazZYkCyyzu0SMcg3WDgKZGwehbXMob8KzVTQhog6bYt060D9UPT9wOc8Dnx2k0z7bo8ZCz6HWVpNRoikPn/PWMBMrxYtyjU07VkMoqbuMJFzLnK2EHdPKIIYruCP7VBjfHmCLEhXaIf5lcqtVvPxG/M9hJMsYxGBq/4=
+	t=1728558992; cv=none; b=Ei/PrjCJK39h7YkvEGLsgN/6aCxrLDLNu7+Nf8YMZ3XN7RVlkIl681Lb3lV9k31g4XdLUIwwPRCy19+/kp5eerECTiG0qInCdT5FMO7sGTf8G0uCGZQLJFYYQD3jiyxn7L8FCQR0BHbr8W818dxT8qDRos/FUIUqAo0Pw2mrdmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728558849; c=relaxed/simple;
-	bh=Xkcwtb0WrnxptNevR20ESVve7MqObs8X2QnVhJ8ogb8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=lYxuZh6BF4/6K9CnCchs8qnYiuXhALZhKGT4V8YuhyAjoH1lpCocAEg/YlkX2C5hZcBsGeS4ViZa9nIEKIzajp0GZjAlrjGu+rqLZYGuKO4KZ9RtmQVcqcgCflWWIeioioc47o4a+3Xk+jMo7HQpRTtwkKkSx+vWEu3cKF/KtgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ex7U2jk4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A5CC4CEC5;
-	Thu, 10 Oct 2024 11:14:06 +0000 (UTC)
+	s=arc-20240116; t=1728558992; c=relaxed/simple;
+	bh=MuiucDyIZsey9FoFIxtSbpdBAKLMfR3IEx+A5iRDpRk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HI2KEjmak9f1wJjxxwQ56eRgH1F57Obeil2vuC/KWMhjZS2BRH4a4w/CwLRkkxyXtOeKvhPai/F+r7dI2T7qT2Ong8v3e9xnMJcBjcBRhxpiMzlOszMWIu/x+zTrR2GJf8HXvpVIMmezLEqJJmqPo9aDEOmhuhjzBOm3NooQxNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H37yc6OI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD92C4CEC5;
+	Thu, 10 Oct 2024 11:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728558849;
-	bh=Xkcwtb0WrnxptNevR20ESVve7MqObs8X2QnVhJ8ogb8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Ex7U2jk477p6hZdg9nxjjM4IaQodev13qL6nKjaAlX575f8y1Wq7wXAW0MkOEQkqm
-	 BdCrnr7tCULO2QmQQRPyDgs9yfFIYxrPblJE6DnlF5o4TdeLG1Kwc08LnXLcLGxUc/
-	 ED6KZaVh+YdOKD4MQMVoe3h4vE6p9FcOVVQsT/qjoVm7PCV6eZKtCMu+c57BxvlBau
-	 1MYAJ/xdHWm3C9jSshsY6zwqfEiXl6sRIkN4ycvWNj3rEAzziYAiQ74ioKiHqjL35T
-	 6PDiDsuLqgLgcULBTBW9MKhGH2LCNgIyXcERliLLmoV5u+L/vAI2rGSNjB0pL72YSi
-	 85HA9jRDHaHRQ==
-From: Mark Brown <broonie@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Thierry Reding <thierry.reding@gmail.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, Benjamin Bara <bbara93@gmail.com>
-Cc: linux-sound@vger.kernel.org, linux-tegra@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Benjamin Bara <benjamin.bara@skidata.com>, 
- stable@vger.kernel.org
-In-Reply-To: <20241008-tegra-dapm-v2-1-5e999cb5f0e7@skidata.com>
-References: <20241008-tegra-dapm-v2-1-5e999cb5f0e7@skidata.com>
-Subject: Re: [PATCH v2] ASoC: dapm: avoid container_of() to get component
-Message-Id: <172855884665.3258793.1116462601049800083.b4-ty@kernel.org>
-Date: Thu, 10 Oct 2024 12:14:06 +0100
+	s=k20201202; t=1728558992;
+	bh=MuiucDyIZsey9FoFIxtSbpdBAKLMfR3IEx+A5iRDpRk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=H37yc6OI1/TpNKQO6irAJ8ZsrsCWXts0FkcvVCZEunxu0t1sHRChtpucmdgBzgqMS
+	 4HnnLuHkIR0SgH9tyK5kACeeMgerjDVQz5UsiKZUYogK7U8ISkPSRetAwxMFslyQht
+	 E4Y4EHaHw6rc8bosUyYtpgFsxt1sr3YnAfpFGiHUX1OeRpK7I4Fmj5QDcqhrGoW5C6
+	 rp1XsCUMnzWT+8jJLmGLshBJj3Rs2/g0SWhdbDqI7H+vvJVhG2cUOdSYV4io8B+fxM
+	 GPrXNrtn2OdatfpRi62mmG/XnlWQQpRuD/Lv55FORpSJYeIeZrraDPvqGN7xsz000v
+	 Qs7fLFNiSWdoQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	srw@sladewatkins.net,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 6.10 000/482] 6.10.14-rc1 review
+Date: Thu, 10 Oct 2024 13:16:19 +0200
+Message-ID: <20241010111619.119190-1-ojeda@kernel.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-99b12
+Content-Transfer-Encoding: 8bit
 
-On Tue, 08 Oct 2024 13:36:14 +0200, Benjamin Bara wrote:
-> The current implementation does not work for widgets of DAPMs without
-> component, as snd_soc_dapm_to_component() requires it. If the widget is
-> directly owned by the card, e.g. as it is the case for the tegra
-> implementation, the call leads to UB. Therefore directly access the
-> component of the widget's DAPM to be able to check if a component is
-> available.
-> 
-> [...]
+On Tue, 08 Oct 2024 14:01:03 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.10.14 release.
+> There are 482 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 10 Oct 2024 11:55:15 +0000.
+> Anything received after that time might be too late.
 
-Applied to
+Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
+for loongarch64:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
 Thanks!
 
-[1/1] ASoC: dapm: avoid container_of() to get component
-      commit: 3fe9f5882cf71573516749b0bb687ef88f470d1d
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Cheers,
+Miguel
 
