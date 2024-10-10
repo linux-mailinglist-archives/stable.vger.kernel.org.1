@@ -1,129 +1,137 @@
-Return-Path: <stable+bounces-83388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8FD7999167
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 20:58:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E6D599924A
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 21:27:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE7EEB2B23A
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 18:55:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEB071C24AB6
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 19:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6202E1CF2A3;
-	Thu, 10 Oct 2024 18:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F171E1CF2A6;
+	Thu, 10 Oct 2024 19:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dpUX0ozK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BPwlFp3x"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE551CEEB1
-	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 18:29:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A081C9ECA;
+	Thu, 10 Oct 2024 19:27:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728584971; cv=none; b=uEYPzEY7rx5MKv4dtmMxVqlHyX096dP1U50JKzh/dM9T+mAA2ah/1Xnptu1Ea2vsgGGvuRavZMEJQtC8AwtPx+i3MRI8IUSiC/A7stoszgkv0CUmOMZpM6BsTUsT2vQgdYTq9MLmVARrahpU9+f43jEzkzw/iIfWRnZZr14mbHU=
+	t=1728588455; cv=none; b=mYhgTGUqfDqH40wiL7sizSE8WeGT9DGr+ti3ekROCP3/dpIQ9+/UXH7vUtLKiJFN91Hs8fV351yFPTxoUCo1gzRQsUtXnee5GFkNBu9i9ZGerxJid+4xfYix384Cp6FCnBsyvsay4dl1FYNgoWBtVZQ+NmPA/0QITN/JDDzGIcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728584971; c=relaxed/simple;
-	bh=KRfmh0WHrI7FtdoIWOsXAyvWfe6pjfpG1SgCAo6iEf4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qmudlWczLp03ZZNQW4ENjvmIBxgl3qqt+BLFJtCtLXq97+XN0EcJXgdgtBB5dVDQM4SFCPX7CuN6dPuAXNXiVFHUDd2BDcrPjunzYfRY6K+uQLdR4Vq5F4C0G435ckGw6URuk5Ie+aw2FHT0PtASivk8GhtVVjVAUDGMpGuMxAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dpUX0ozK; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-45fb0ebb1d0so29861cf.1
-        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 11:29:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728584968; x=1729189768; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xv+6blBozM2tJRwlZos+lMwBmiKQ20KM1gSqpAhTd4s=;
-        b=dpUX0ozKJloDLXyLAXIRMIrOhIS3NIQYEZIGETtVFQjuavi2CMBINeiC+w2vXv6bd1
-         RJ6iAReezOcZxVwBhU1SQczNiI3NOz97in6fVMbyT9N756U8nvmsZ1UzqqSnqrZmTHo9
-         GmbHMWxRiZyeuuraQsCzZIQc+XOQVzoy/+W8X0F3kioWmlCCqD6Nug3FkjUA1jKOvzsS
-         mAnrDVlphTCe07xUv66Y0VJBRAvzTBl3qSPiPDSE2+VeTEE2Erjkfup7vXJk1+QITmPm
-         nH4TgwE+Emu7J77oynbdwXDIKGkNrwEFhm8XlV1SAujpwyaPyT6/86pPe6oWlToI30lV
-         gI4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728584968; x=1729189768;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xv+6blBozM2tJRwlZos+lMwBmiKQ20KM1gSqpAhTd4s=;
-        b=Xw2UL3lkg0QOyGbdeFgLXKtURzZC8sf7yoSyAaznEnWhn7lSyWIvQbIbHGxC5waZov
-         HCW5OuRERA76yM7j7RSZeN0hw3fWnN8rlwVE+Xk/Izfywuh+3gHSp0OaibaAX9u2emwn
-         B+P1o0hXSGz3gOvYDSiKg+kMzodx/l27ZbPPsNPFGjPxkjNndofprIrPBfokIC9Lal1b
-         DxGHB9/VcEn2qoHkbT0aOGRdPrkB1qzjXAyJMTelDe42siSS2ZRKPd68yHpNlyx4Nt4J
-         SXnPHAwvhDPBKZAo7gHvy+u1OhqzDalZsiTPpUi+oZA7xO6bm9eQmC437SjdpZzzk36w
-         IK7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV9/4x5XiAGpqTVZNpq+cmvWj6PKoENeDItqqehY1CkQm9nI3hQWzU8nZdEV++ONWDmm5EnLeA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxl1TtoRFNHQjj/gK7qe6z3/EQp4oUieIizvGF7yBFfPkNF3UR+
-	UUC0yFOlM1EjK/VipbWpKGO2GIti1Rzx0L6mAtsSj4wjA5CapldMjn0JioHEvg==
-X-Google-Smtp-Source: AGHT+IHV+5t5+Pa/8tpQ1guAZ+KwXSYIgwWjTWheVLG3xcLJD9Q+wlDOoff0ox795cO9eHIEx6CUfw==
-X-Received: by 2002:a05:622a:2998:b0:460:4841:8eb5 with SMTP id d75a77b69052e-4604b1650a1mr61751cf.19.1728584968131;
-        Thu, 10 Oct 2024 11:29:28 -0700 (PDT)
-Received: from google.com (201.215.168.34.bc.googleusercontent.com. [34.168.215.201])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c8badc9c3sm12199115ad.36.2024.10.10.11.29.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2024 11:29:26 -0700 (PDT)
-Date: Thu, 10 Oct 2024 18:29:21 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: gregkh@linuxfoundation.org
-Cc: zhiguo.niu@unisoc.com, boqun.feng@gmail.com, bvanassche@acm.org,
-	longman@redhat.com, paulmck@kernel.org, xuewen.yan@unisoc.com,
+	s=arc-20240116; t=1728588455; c=relaxed/simple;
+	bh=4s1F1amb2HpeSQnXE9kDw0v+CMKI1EweulQR8X5Vto0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=lLGARUU/dE3BdvOT0lL4t96NgQXPst/gVVzXt4WjOfNm6ge28TLvNJQPpL9ouUy+ThpmyHaF7SGJviXxPzG0Ri1gFVoVTDD+9e851GIGtcSzY8pxAre/quyZmyIxlQ+wDDKDgCE/uJRsGl+HtMI8yc50e/JQ+HBs8En8PRLvMgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BPwlFp3x; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728588454; x=1760124454;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=4s1F1amb2HpeSQnXE9kDw0v+CMKI1EweulQR8X5Vto0=;
+  b=BPwlFp3xSnN+cyI/QXLW5BBG/Up9te6+D/AEJS9tkcjJGSDLnhwmDCSz
+   9ER2Xs5ODfX9UiIYsGpioz1hfGrhX/UrwX9iabCio8gPz1QOxT/bMC4z8
+   zoWkNNcXtQlyIW5uz2g5QrGYUm7oGZ0oRWWT8aB0nJEgAvZIF+f7zze9+
+   YU2H/AAQ+Px75nMID8K/7LzyCV3vmGzeTSXINfJCr2tqlED8KODBK+xFf
+   DCstAk1baeyCti3wesl6Av1UHngNM09lkLs3poUe7MW+QlqfFfDiQKSxy
+   iuzigE2Q5eqFAKwpis/QAs3Ee5K59KybzPKV/h39Bl9lMpG2TjdRlBufd
+   Q==;
+X-CSE-ConnectionGUID: JQ9ci/QlTtq259W/Mcvimg==
+X-CSE-MsgGUID: /iO1dgKZSzWTNpoSUS3Org==
+X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="31870235"
+X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
+   d="scan'208";a="31870235"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 12:27:31 -0700
+X-CSE-ConnectionGUID: 5tqLculqRhWIYOkGD0AAfg==
+X-CSE-MsgGUID: e5MYBkxkTFmsBXVLeIUGNQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,193,1725346800"; 
+   d="scan'208";a="76614755"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by orviesa010.jf.intel.com with ESMTP; 10 Oct 2024 12:27:31 -0700
+From: kan.liang@linux.intel.com
+To: peterz@infradead.org,
+	mingo@kernel.org,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	irogers@google.com,
+	adrian.hunter@intel.com,
+	ak@linux.intel.com,
+	linux-kernel@vger.kernel.org
+Cc: eranian@google.com,
+	thomas.falcon@intel.com,
+	Kan Liang <kan.liang@linux.intel.com>,
 	stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] lockdep: fix deadlock issue between
- lockdep and rcu" failed to apply to 5.4-stable tree
-Message-ID: <ZwgdAXfbCDYmc8hd@google.com>
-References: <2024100226-unselfish-triangle-e5eb@gregkh>
+Subject: [PATCH V2 1/3] perf/x86/intel: Fix ARCH_PERFMON_NUM_COUNTER_LEAF
+Date: Thu, 10 Oct 2024 12:28:42 -0700
+Message-Id: <20241010192844.1006990-2-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20241010192844.1006990-1-kan.liang@linux.intel.com>
+References: <20241010192844.1006990-1-kan.liang@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024100226-unselfish-triangle-e5eb@gregkh>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 02, 2024 at 12:07:26PM +0200, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 5.4-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x a6f88ac32c6e63e69c595bfae220d8641704c9b7
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100226-unselfish-triangle-e5eb@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-> 
-> Possible dependencies:
-> 
-> a6f88ac32c6e ("lockdep: fix deadlock issue between lockdep and rcu")
-> 61cc4534b655 ("locking/lockdep: Avoid potential access of invalid memory in lock_class")
-> 248efb2158f1 ("locking/lockdep: Rework lockdep_lock")
-> 10476e630422 ("locking/lockdep: Fix bad recursion pattern")
-> 25016bd7f4ca ("locking/lockdep: Avoid recursion in lockdep_count_{for,back}ward_deps()")
-> 
-> thanks,
-> 
-> greg k-h
+From: Kan Liang <kan.liang@linux.intel.com>
 
-These 3 commits are the actual dependencies:
+The EAX of the CPUID Leaf 023H enumerates the mask of valid sub-leaves.
+To tell the availability of the sub-leaf 1 (enumerate the counter mask),
+perf should check the bit 1 (0x2) of EAS, rather than bit 0 (0x1).
 
-[1] 61cc4534b655 ("locking/lockdep: Avoid potential access of invalid memory in lock_class")
-[2] 248efb2158f1 ("locking/lockdep: Rework lockdep_lock")
-[3] 10476e630422 ("locking/lockdep: Fix bad recursion pattern")
+The error is not user-visible on bare metal. Because the sub-leaf 0 and
+the sub-leaf 1 are always available. However, it may bring issues in a
+virtualization environment when a VMM only enumerates the sub-leaf 0.
 
-It seems to me that [1] and [3] are fixes we would also want in 5.4.
-Possibly also [2] just to make the cherry-picks cleaner. If there are no
-objections I can send a patchset for linux-5.4.y with all 4?
+Fixes: eb467aaac21e ("perf/x86/intel: Support Architectural PerfMon Extension leaf")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: stable@vger.kernel.org
+---
+ arch/x86/events/intel/core.c      | 4 ++--
+ arch/x86/include/asm/perf_event.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-Regards,
-Carlos Llamas
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 7ca40002a19b..2f3bf3bbbd77 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4886,8 +4886,8 @@ static void update_pmu_cap(struct x86_hybrid_pmu *pmu)
+ 	if (ebx & ARCH_PERFMON_EXT_EQ)
+ 		pmu->config_mask |= ARCH_PERFMON_EVENTSEL_EQ;
+ 
+-	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF_BIT) {
+-		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF,
++	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF) {
++		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF_BIT,
+ 			    &eax, &ebx, &ecx, &edx);
+ 		pmu->cntr_mask64 = eax;
+ 		pmu->fixed_cntr_mask64 = ebx;
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 91b73571412f..41ace8431e01 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -190,7 +190,7 @@ union cpuid10_edx {
+ #define ARCH_PERFMON_EXT_UMASK2			0x1
+ #define ARCH_PERFMON_EXT_EQ			0x2
+ #define ARCH_PERFMON_NUM_COUNTER_LEAF_BIT	0x1
+-#define ARCH_PERFMON_NUM_COUNTER_LEAF		0x1
++#define ARCH_PERFMON_NUM_COUNTER_LEAF		BIT(ARCH_PERFMON_NUM_COUNTER_LEAF_BIT)
+ 
+ /*
+  * Intel Architectural LBR CPUID detection/enumeration details:
+-- 
+2.38.1
+
 
