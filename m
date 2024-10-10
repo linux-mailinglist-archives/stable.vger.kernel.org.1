@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-83294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC37997C70
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 07:31:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F85997C77
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 07:33:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C32D4B23603
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 05:31:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3EEB283AAA
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 05:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D07154BF0;
-	Thu, 10 Oct 2024 05:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46CF19DF52;
+	Thu, 10 Oct 2024 05:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fjA+PQGY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VzwE5Oud"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A74E1A00EE
-	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 05:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CD93D66
+	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 05:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728538297; cv=none; b=j/V8Izuo+q0WKGZbMty/9XIcGAIKz1uI3dlybWc3uCHFLmZmZPtJRaa3mZ8nhTBU5u3ynIkR+FAlegjlb9r6zxZ3ZLGZs/qqLAp8MV6XYWIL75LEw96K1a2J4zpQk7zsmJ3FqGYlS5/WYMVrCcLqlD19SgFlJ6b4W/4F6kKziCg=
+	t=1728538428; cv=none; b=ER7Iw+xrPmsN7/VQW3dUoLWCHNXrsf/cWRolwKpFTtvkzfcPBfkSvqmuS1+BudcT0wwbRpfaUAlJ4h8hzhXIsgXIqd4ZeMJF/i96o71ejtJN6AWayfxyKgoosUin0AIqKfauvzRKNH8L71nLProeg8TcyfaS/V1ph+CN7Twi1No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728538297; c=relaxed/simple;
-	bh=d2jZ1MOXAGZxTiswnoXjwHmAchbcU3Onf2CP3isB7Us=;
+	s=arc-20240116; t=1728538428; c=relaxed/simple;
+	bh=xBzyzdx0bKFntBMIx5ZHl0mCcws+O2m3B1DH6uBIVg8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mM27QFDwyy3zK6an/qCeAp1J7IUPn4SXYlm4vbPtrUL+9ZpHN1YQ7ZDCDjjFY7+ib9eDebsEQKQI/4yubKbiKGPf6THadLIrU6QTah46qYctMZcRuXe5DxzXksuO3Ar7VCNYlaa5RJsvFDOCy1fOfjhlSoUWFm5XlPFpEnoWtPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fjA+PQGY; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=twVCgzjxZhhECdjnRLyq7Z4+t67cOfkZM9Zbp4c4Qzfa9EXesVTiBzrXFelb+dLTLl8JKQvc7/XvlinDANaxOtu2kgy1JSIkQOyLSG8VLplpJS+KdcnKmPt43C6GwSmk4Ihy4oTDZKYin4cAW3jDmBkV2rhFy/3fBdtoCiC6s8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VzwE5Oud; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728538295; x=1760074295;
+  t=1728538427; x=1760074427;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=d2jZ1MOXAGZxTiswnoXjwHmAchbcU3Onf2CP3isB7Us=;
-  b=fjA+PQGYc8IWZ+P4dIN4cbnXGN45d9wrxIgCcx+42pM0TVg6zcf2AaWo
-   5ZrUz3l1GHHJ8lusNgf2R/5HT5ftkqKGZdR44A3vKq1LXoDsFWe9knVhS
-   cz1qqGt8SQXSA7QYLksBzhrj9JfgIPV/13/bsgej8Z34S+4aY4o/lwMMy
-   eBEI0JqgWcM1Qo73EUAB8jV37VfX8XIRrZcRh5mRQkCpbg0R/1cn26OTP
-   PzziCZf1bkDGbKJkJtsrPWkDO/acrkK1GdYPviUHxD/hz6nvVa97Oi1JE
-   rAVEMJiffnW563Cau1R7mR8SAXOE5XiEGOkFoUqwGsKf8snwlcGFckCiq
+  bh=xBzyzdx0bKFntBMIx5ZHl0mCcws+O2m3B1DH6uBIVg8=;
+  b=VzwE5Oud1iNm5AFUvjel93m4qQR7Opl/EIZyCW75KdQjF8T6wD0jy9TJ
+   WI+mN1crk5K52PkUB/lYYAWjsjkMsTb7TNhsEPCp6jvrE6P5vuHyJXMC4
+   JCizUFTktOgqx2Z4E3PrMbdsNQhC4jOLvMVRwGqEFGVDUshSHLbdBwz0b
+   0KVXzphVsSAMhkKHx0HXcCtuTOOb9Y2F5haI3/C26GLaPwTlEPww4CHSF
+   S/u4QR7tUNuNuBWzdH6kCVedf2yHHhQYx0Rtg1WtQh3OmiQmHPa/PCFvS
+   nRNVYbZjmC2br5JFN3QRu3JC793whTLMBrSptPwf3ABZfbA4jRD3Z4832
    A==;
-X-CSE-ConnectionGUID: eFX/Ew/uTUSXFPiTykUqMw==
-X-CSE-MsgGUID: N2jWGEJXRu2U3oDYXoqpig==
-X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="27991159"
+X-CSE-ConnectionGUID: AT6ciy6BQcyq0gP4Ck76Kw==
+X-CSE-MsgGUID: /4N/y2cBRJS9+6yvlw+ZUA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="27991335"
 X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; 
-   d="scan'208";a="27991159"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 22:31:35 -0700
-X-CSE-ConnectionGUID: Mw9gF+PqRXOeNZambZM+qQ==
-X-CSE-MsgGUID: 2xT9wElGRZWLmkedC15/6A==
+   d="scan'208";a="27991335"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 22:33:46 -0700
+X-CSE-ConnectionGUID: 4q82sDGQShWO0aRkda4AIw==
+X-CSE-MsgGUID: HwFMu/YnTumX0tjezu4jFA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; 
-   d="scan'208";a="81047044"
+   d="scan'208";a="76092997"
 Received: from unknown (HELO yhuang6-mobl2.ccr.corp.intel.com) ([10.245.243.193])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 22:31:31 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 22:33:43 -0700
 From: Huang Ying <ying.huang@intel.com>
 To: stable@vger.kernel.org
 Cc: Huang Ying <ying.huang@intel.com>,
@@ -74,12 +74,12 @@ Cc: Huang Ying <ying.huang@intel.com>,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	Baoquan He <bhe@redhat.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15.y -v2] resource: fix region_intersects() vs add_memory_driver_managed()
-Date: Thu, 10 Oct 2024 13:31:21 +0800
-Message-Id: <20241010053121.1226948-1-ying.huang@intel.com>
+Subject: [PATCH 5.10.y -v2] resource: fix region_intersects() vs add_memory_driver_managed()
+Date: Thu, 10 Oct 2024 13:33:38 +0800
+Message-Id: <20241010053338.1228245-1-ying.huang@intel.com>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <2024100725-galore-pout-d68c@gregkh>
-References: <2024100725-galore-pout-d68c@gregkh>
+In-Reply-To: <2024100732-disinfect-spied-83fc@gregkh>
+References: <2024100732-disinfect-spied-83fc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -182,12 +182,12 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
  1 file changed, 50 insertions(+), 8 deletions(-)
 
 diff --git a/kernel/resource.c b/kernel/resource.c
-index cb441e3e7670..972bf1bf4d69 100644
+index 100253d4909c..1087f33d70c4 100644
 --- a/kernel/resource.c
 +++ b/kernel/resource.c
-@@ -480,20 +480,62 @@ EXPORT_SYMBOL_GPL(page_is_ram);
- static int __region_intersects(resource_size_t start, size_t size,
- 			unsigned long flags, unsigned long desc)
+@@ -539,21 +539,63 @@ EXPORT_SYMBOL_GPL(page_is_ram);
+ int region_intersects(resource_size_t start, size_t size, unsigned long flags,
+ 		      unsigned long desc)
  {
 -	struct resource res;
 +	resource_size_t ostart, oend;
@@ -200,6 +200,7 @@ index cb441e3e7670..972bf1bf4d69 100644
  	res.start = start;
  	res.end = start + size - 1;
  
+ 	read_lock(&resource_lock);
  	for (p = iomem_resource.child; p ; p = p->sibling) {
 -		bool is_type = (((p->flags & flags) == flags) &&
 -				((desc == IORES_DESC_NONE) ||
@@ -230,7 +231,7 @@ index cb441e3e7670..972bf1bf4d69 100644
 +		covered = false;
 +		ostart = max(res.start, p->start);
 +		oend = min(res.end, p->end);
-+		for (dp = p->child; dp; dp = next_resource(dp)) {
++		for (dp = p->child; dp; dp = next_resource(dp, false)) {
 +			if (!resource_overlaps(dp, &res))
 +				continue;
 +			is_type = (dp->flags & flags) == flags &&
@@ -254,8 +255,8 @@ index cb441e3e7670..972bf1bf4d69 100644
 +		if (!covered)
 +			other++;
  	}
+ 	read_unlock(&resource_lock);
  
- 	if (type == 0)
 -- 
 2.39.2
 
