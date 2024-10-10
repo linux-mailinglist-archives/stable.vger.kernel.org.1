@@ -1,97 +1,101 @@
-Return-Path: <stable+bounces-83345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A574C9984D8
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 13:22:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02CC998541
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 13:44:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 645042815A7
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 11:22:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8571C1F22363
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 11:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E663F1C2450;
-	Thu, 10 Oct 2024 11:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38BA71C330A;
+	Thu, 10 Oct 2024 11:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R9lOGrIc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JZctK5N2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE42187859;
-	Thu, 10 Oct 2024 11:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A22183CD9;
+	Thu, 10 Oct 2024 11:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728559347; cv=none; b=mK/Kqg3dpjv6jvDzSRV7jPjtKeqME9Jiq/NRUmmjuyoo74sAZvCizXlfOG1GOAMQQ7nVr8WW4ERDzA3LrnChmwzGEc6ewDDhcQy+FD1whjzT93cjWSRB6rtmZbOsggeLAkSmSJFIEPR6Rdj719GmPr+S4pwzBHtdxGTgcOWixu4=
+	t=1728560650; cv=none; b=GHjXOBDH2wcz1RzYkli91yAMJV7mVUa2T3Pgl8BJNeDJsmcIKkXTpkLpVYzGOizs8WWIc9oGZ541KB5oAMfNfXffZzmGhg07YgPSa13Np/5qGW5veNf0KY9ZeQy/NWyyQ5lmkdqaxxIqvFUhPPwCUPla1Fz9DnJxj/Huyvqfj78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728559347; c=relaxed/simple;
-	bh=zb/sK7vdopk5pWKEaozXvIMoyy0gv3b/LLnVXReUieM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R9iuFO4bFS/nON4TSSYqpqDv/nkul8i+Z2PFAs1mFxqhsuGNyIZxSX59XX9HT0BztgU+3n4sQT0FZg94LzMUyd83ELTKg9XeyjUkt8o0T6exFNrrXTS6PwQd2o4r4C0+7gDjVnvpPqm0uorl/+RIH6M4evs6aBk4oLeKCT8zEc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R9lOGrIc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3962C4CEC5;
-	Thu, 10 Oct 2024 11:22:21 +0000 (UTC)
+	s=arc-20240116; t=1728560650; c=relaxed/simple;
+	bh=924nbl7oJ6hgR0cxyPzj+ki37xEkSk8stLPhluX3rwc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rcdAPd261XZKfutZCp/JK68D5YWPrZa4oCD7E311NJuMaXxqL8JYbc8iU4lseETj2k/1mBaS+t+MmBwmbPSa4/zENZaJGm19sOl5LZh5HarlHcPtocf8SOmvzM7Rzq9NjcSSA51ykLySRJlB5ebCESV4JcoAiF4jFaF2YdrEWAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JZctK5N2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D4CC4CECC;
+	Thu, 10 Oct 2024 11:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728559347;
-	bh=zb/sK7vdopk5pWKEaozXvIMoyy0gv3b/LLnVXReUieM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9lOGrIc573Or0MzEM8BxCCgoRQVjYySPoQalQvgL3qH1O4SfwER+k1cSrKXW/J8O
-	 OXBmH/jHbvLgMEQ1H6vbAC9rEqCNlFZRIiukROhgEAz8ZBEz8rHnrcKzFUjGwPBLoe
-	 Yq58StIOWGXYzULu23l/nqGJB+hc7cJNqIAPheM9f8kuSTz4XwD857DuP+vw0niaHf
-	 zoC4H5izokIEe8v5kboNVXcV2lpC/EpxkGKeBBO9gtIGeRm891X9gO/8ivRZW5MNBu
-	 sZn66qFobz0G3NylOS0N4ySPh27h3wavBu013SklPPZoL/9xm4JcI+YZ5XyBD9UKDG
-	 J2lcdMbaSPbsQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: akpm@linux-foundation.org,
-	allen.lkml@gmail.com,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@denx.de,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	srw@sladewatkins.net,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 6.11 000/558] 6.11.3-rc1 review
-Date: Thu, 10 Oct 2024 13:22:10 +0200
-Message-ID: <20241010112210.120135-1-ojeda@kernel.org>
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+	s=k20201202; t=1728560649;
+	bh=924nbl7oJ6hgR0cxyPzj+ki37xEkSk8stLPhluX3rwc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JZctK5N2ob01fsCrc5o9qLoZfsJ2NDWX0JA+FuuEnu4IJ1ZK1CSWlGGji4pw2gd0x
+	 7byZWbACdPWn70DziouElxDEG8BnY3DzhNCCgyWRbATZ7e6B0nv+t0BQy1IbxaNVAa
+	 Vfg32ppHsIKg0n/l9o7fCMRda+TAw4pJXs8BiRw7vUWuEM2aamjy+pQILFurjMb/kB
+	 2JhXiHXlY8w9luP7ZJIOPcVUEBxedBKCyyq69r52MIA436f1WbQGaTqBEwy0LWL6g/
+	 aPAQ7SPSjmxJCBPSjDK4ouTaNKIOvLygJ2ubMPGYExBUS3ySN5PKuZ+QfjZDeIOEfd
+	 3p3MEz7SciPBg==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1syraX-000000003L2-44x6;
+	Thu, 10 Oct 2024 13:44:14 +0200
+Date: Thu, 10 Oct 2024 13:44:13 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Chris Lew <quic_clew@quicinc.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Abel Vesa <abel.vesa@linaro.org>, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] soc: qcom: mark pd-mapper as broken
+Message-ID: <Zwe-DYZKQpLJgUtp@hovoldconsulting.com>
+References: <20241010074246.15725-1-johan+linaro@kernel.org>
+ <CAA8EJpoiu2hwKWGMTeA=Kr+ZaPL=JJFq1qQOJhUnYz6-uTmHWw@mail.gmail.com>
+ <ZweoZwz73GaVlnLB@hovoldconsulting.com>
+ <CAA8EJprg0ip=ejFOzBe3iisKHX14w0BnAQUDPqzuPRX6d8fvRA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAA8EJprg0ip=ejFOzBe3iisKHX14w0BnAQUDPqzuPRX6d8fvRA@mail.gmail.com>
 
-On Tue, 08 Oct 2024 14:00:30 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.11.3 release.
-> There are 558 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 10 Oct 2024 11:55:15 +0000.
-> Anything received after that time might be too late.
+On Thu, Oct 10, 2024 at 01:55:11PM +0300, Dmitry Baryshkov wrote:
+> On Thu, 10 Oct 2024 at 13:11, Johan Hovold <johan@kernel.org> wrote:
+> > On Thu, Oct 10, 2024 at 12:55:48PM +0300, Dmitry Baryshkov wrote:
 
-Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-for loongarch64:
+> > > Please don't break what is working. pd_mapper is working on all
+> > > previous platforms. I suggest reverting commit bd6db1f1486e ("soc:
+> > > qcom: pd_mapper: Add X1E80100") instead.
+> >
+> > As I tried to explain in the commit message, there is currently nothing
+> > indicating that these issues are specific to x1e80100 (even if you may
+> > not hit them in your setup depending on things like probe order).
+> 
+> I have the understanding that the issues are related to the ADSP
+> switching the firmware on the fly, which is only used on X1E8.
 
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
+Is this speculation on your part or something that has recently been
+confirmed to be the case? AFAIK, there is nothing SoC specific about the
+ECANCELED issue, and we also still do not know what is causing the audio
+regression.
 
-Thanks!
+The thing is, we have a working and well-tested solution in the
+user-space service so there is no rush to switch to the in-kernel one
+(and risk distros removing the user-space service) before this has been
+fixed.
 
-Cheers,
-Miguel
+Johan
 
