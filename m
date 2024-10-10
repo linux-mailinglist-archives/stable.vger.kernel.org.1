@@ -1,131 +1,125 @@
-Return-Path: <stable+bounces-83391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15AB799935C
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 22:09:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 878C599939F
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 22:25:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94440B2238E
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 20:09:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14413B21C4E
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 20:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8641CF2A8;
-	Thu, 10 Oct 2024 20:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719D81D31B2;
+	Thu, 10 Oct 2024 20:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=maxima.ru header.i=@maxima.ru header.b="Ci5tsXV9"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QRgXUFyr"
 X-Original-To: stable@vger.kernel.org
-Received: from ksmg01.maxima.ru (ksmg01.maxima.ru [81.200.124.38])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443FF15B0F2;
-	Thu, 10 Oct 2024 20:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EE918C03D;
+	Thu, 10 Oct 2024 20:24:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728590979; cv=none; b=ffnMriD/A+yyuoBbosW0y6wogUr4/TKNUnaZjSo6WCX/63GhTVGj33QcDwc29UQzaXtfKdNsQpoOiU3+PrGQ9MXvo7ph64R511nVcFnoxaIRpVGV4TazdAe2qr5ep6I4cTFs4xHFpg0fu6u7L2Y8nRoh2CVkY4gm5owH8CiVpsA=
+	t=1728591890; cv=none; b=QDtWiVhm94A+7F3WM86bv6XIJiFNQuQwKlgBtJ/5gkCU+wlAZrNI6VgHU2kNQtUCS8EgMuy7SSqlQX6B7JTImRVJmSGmwHiJxj243vUzcriGFcyJ6yK1jBzc0lfxu8R5W//XdQ0hHzR4haArjixHSj0/6GPxZi0YV9RCOZLymvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728590979; c=relaxed/simple;
-	bh=ScHtd03XmMsy/5ONHGpjp0TXFSfTz28aZMtUZmKPkuk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OD6zGfVWx8Tmf/MK9wrOsbYdKSOna/DqMaVQt/Dh7R4dh7MwlwP3jKLWdnLgZXZHDb6wJNoiMJzV1yoN0gw+G5qZO6/lKAxkc3iKYu5qtKJ2frsVokw9JLqrtsZ+tNQsBGQRd16jucgfid10Ws9CJmMogUFnBG6QD0qVmdVQUvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maxima.ru; spf=pass smtp.mailfrom=maxima.ru; dkim=pass (2048-bit key) header.d=maxima.ru header.i=@maxima.ru header.b=Ci5tsXV9; arc=none smtp.client-ip=81.200.124.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maxima.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=maxima.ru
-Received: from ksmg01.maxima.ru (localhost [127.0.0.1])
-	by ksmg01.maxima.ru (Postfix) with ESMTP id 0E3ECC000E;
-	Thu, 10 Oct 2024 23:09:32 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg01.maxima.ru 0E3ECC000E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maxima.ru; s=sl;
-	t=1728590972; bh=9RjdrpvF0dpMEdfTvZGOFgbwSOlSJKtjDlVDRQCOgww=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=Ci5tsXV9C0MvPjO1ZFbV1GYX3s+rtX9DNZ76QfGQ+WCVW82HL7zy6cA7D3gVi794p
-	 sOJkDF4iBzJYossBHD2L/rL0Sr4GJLiw1a0lZMcgYHcprHBVgiiS4FRqXH3xxmOFlT
-	 YAQ8shdzYil74ZFVym/YirwyY0n5kSWj+iLYNNUJaRgnChLMt5bQlxhbxzYtH5b144
-	 LqapO/eKC1zKdoRtgduzSCuiqFbO1PKNBmYTERXI58oudsKlqm4d7D8E2SAFbIg9y7
-	 UPdtMCCZMxEtUfAJh4wBKtZGwu+E0BIVgRCSko154kSR62uNUK5pkP1u5FnlrrjNhh
-	 iWpdftS2v95kg==
-Received: from ksmg01.maxima.ru (autodiscover.maxima.ru [81.200.124.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
-	by ksmg01.maxima.ru (Postfix) with ESMTPS;
-	Thu, 10 Oct 2024 23:09:31 +0300 (MSK)
-Received: from localhost.maximatelecom.ru (10.0.247.250) by
- mmail-p-exch01.mt.ru (81.200.124.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.1544.4; Thu, 10 Oct 2024 23:09:30 +0300
-From: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
-To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Vitaliy Shevtsov <v.shevtsov@maxima.ru>, Ranjani Sridharan
-	<ranjani.sridharan@linux.intel.com>, Bard Liao
-	<yung-chuan.liao@linux.intel.com>, Pierre-Louis Bossart
-	<pierre-louis.bossart@linux.intel.com>, Mark Brown <broonie@kernel.org>,
-	Cezary Rojewski <cezary.rojewski@intel.com>, Liam Girdwood
-	<liam.r.girdwood@linux.intel.com>, Peter Ujfalusi
-	<peter.ujfalusi@linux.intel.com>, Kai Vehmanen
-	<kai.vehmanen@linux.intel.com>, Jaroslav Kysela <perex@perex.cz>, Takashi
- Iwai <tiwai@suse.com>, <alsa-devel@alsa-project.org>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
-Subject: [PATCH 6.1] ASoC: Intel: sof_realtek_common: set ret = 0 as initial value
-Date: Fri, 11 Oct 2024 01:08:50 +0500
-Message-ID: <20241010200852.22365-2-v.shevtsov@maxima.ru>
-X-Mailer: git-send-email 2.46.2
+	s=arc-20240116; t=1728591890; c=relaxed/simple;
+	bh=IWTNq7fFQedN+BbHAiMQNfXDmX3BvP2UTXL28YTkH5I=;
+	h=Date:To:From:Subject:Message-Id; b=hYucW2MtIOaL+q1dj7N8za0UMIuBEVjp8/9w84nrFOuF4n6cjSOeHLeKmigW8MU7PKX46p2vKoLUbQv8vTrJze7PTs5aXMjEexXvHV3z/L6gBJgHNkq7SK+EHNVp10LRylwdcSBfM0aGbnye9Xs4l82BgjLWKITqWz3RtRjv29Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QRgXUFyr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14A8C4CEC5;
+	Thu, 10 Oct 2024 20:24:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1728591889;
+	bh=IWTNq7fFQedN+BbHAiMQNfXDmX3BvP2UTXL28YTkH5I=;
+	h=Date:To:From:Subject:From;
+	b=QRgXUFyrHX24Fquav0YKWSMJaiy9I6IQ9MNcuc3rRYR0XnSAqlP/R1Upm/5nV81BJ
+	 BAFyxNpW6V6CoMfsHVKtut7wn3sQyEOSng0280R8jdYT2uxII0gHnPv4dgTK37jlHa
+	 oG60a4SGnKMwmU0pZzj+KbAG5GXRa2YN7uEZ8z+U=
+Date: Thu, 10 Oct 2024 13:24:48 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,ruanjinjie@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-damon-fix-memory-leak-in-damon_sysfs_test_add_targets.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241010202449.A14A8C4CEC5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: mt-exch-01.mt.ru (91.220.120.210) To mmail-p-exch01.mt.ru
- (81.200.124.61)
-X-KSMG-Rule-ID: 7
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 188364 [Oct 10 2024]
-X-KSMG-AntiSpam-Version: 6.1.0.4
-X-KSMG-AntiSpam-Envelope-From: v.shevtsov@maxima.ru
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dmarc=none header.from=maxima.ru;spf=none smtp.mailfrom=maxima.ru;dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 39 0.3.39 e168d0b3ce73b485ab2648dd465313add1404cce, {rep_avail}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, maxima.ru:7.1.1;lore.kernel.org:7.1.1;ksmg01.maxima.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;81.200.124.61:7.1.2;127.0.0.199:7.1.2, FromAlignment: s, ApMailHostAddress: 81.200.124.61
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean, bases: 2024/10/10 19:30:00
-X-KSMG-LinksScanning: Clean, bases: 2024/10/10 19:30:00
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2024/10/10 18:55:00 #26733176
-X-KSMG-AntiVirus-Status: Clean, skipped
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-commit 47d2b66fec133cb27da3a551334686e465d19469 upstream.
+The patch titled
+     Subject: mm/damon/tests/sysfs-kunit.h: fix memory leak in damon_sysfs_test_add_targets()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-damon-fix-memory-leak-in-damon_sysfs_test_add_targets.patch
 
-'ret' will not be initialized if dai_fmt is not DSP_A or DSP_B.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-fix-memory-leak-in-damon_sysfs_test_add_targets.patch
 
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20221206212507.359993-4-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+Subject: mm/damon/tests/sysfs-kunit.h: fix memory leak in damon_sysfs_test_add_targets()
+Date: Thu, 10 Oct 2024 20:53:23 +0800
+
+The sysfs_target->regions allocated in damon_sysfs_regions_alloc() is not
+freed in damon_sysfs_test_add_targets(), which cause the following memory
+leak, free it to fix it.
+
+	unreferenced object 0xffffff80c2a8db80 (size 96):
+	  comm "kunit_try_catch", pid 187, jiffies 4294894363
+	  hex dump (first 32 bytes):
+	    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	  backtrace (crc 0):
+	    [<0000000001e3714d>] kmemleak_alloc+0x34/0x40
+	    [<000000008e6835c1>] __kmalloc_cache_noprof+0x26c/0x2f4
+	    [<000000001286d9f8>] damon_sysfs_test_add_targets+0x1cc/0x738
+	    [<0000000032ef8f77>] kunit_try_run_case+0x13c/0x3ac
+	    [<00000000f3edea23>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000adf936cf>] kthread+0x2e8/0x374
+	    [<0000000041bb1628>] ret_from_fork+0x10/0x20
+
+Link: https://lkml.kernel.org/r/20241010125323.3127187-1-ruanjinjie@huawei.com
+Fixes: b8ee5575f763 ("mm/damon/sysfs-test: add a unit test for damon_sysfs_set_targets()")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- sound/soc/intel/boards/sof_realtek_common.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/sof_realtek_common.c b/sound/soc/intel/boards/sof_realtek_common.c
-index ff2851fc8930..6c12ca92f371 100644
---- a/sound/soc/intel/boards/sof_realtek_common.c
-+++ b/sound/soc/intel/boards/sof_realtek_common.c
-@@ -267,7 +267,8 @@ static int rt1015_hw_params(struct snd_pcm_substream *substream,
- 	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
- 	struct snd_soc_dai_link *dai_link = rtd->dai_link;
- 	struct snd_soc_dai *codec_dai;
--	int i, clk_freq, ret;
-+	int i, clk_freq;
-+	int ret = 0;
+ mm/damon/tests/sysfs-kunit.h |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/mm/damon/tests/sysfs-kunit.h~mm-damon-fix-memory-leak-in-damon_sysfs_test_add_targets
++++ a/mm/damon/tests/sysfs-kunit.h
+@@ -67,6 +67,7 @@ static void damon_sysfs_test_add_targets
+ 	damon_destroy_ctx(ctx);
+ 	kfree(sysfs_targets->targets_arr);
+ 	kfree(sysfs_targets);
++	kfree(sysfs_target->regions);
+ 	kfree(sysfs_target);
+ }
  
- 	clk_freq = sof_dai_get_bclk(rtd);
- 
--- 
-2.46.2
+_
+
+Patches currently in -mm which might be from ruanjinjie@huawei.com are
+
+mm-damon-fix-memory-leak-in-damon_sysfs_test_add_targets.patch
 
 
