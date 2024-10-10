@@ -1,108 +1,96 @@
-Return-Path: <stable+bounces-83353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60015998785
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 15:22:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D66499878E
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 15:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E333289974
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 13:22:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2996CB24537
+	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 13:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C444F1C9B9A;
-	Thu, 10 Oct 2024 13:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1591C9B9F;
+	Thu, 10 Oct 2024 13:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="xdy6LJKZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aPruOcVf"
 X-Original-To: stable@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB7A1C3316;
-	Thu, 10 Oct 2024 13:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6A61C1ABE;
+	Thu, 10 Oct 2024 13:24:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728566561; cv=none; b=owSjsZjz+ttcTw+dfbrOnfLoYhilP56NHLG7m6welUVnfdn2fsZX3jb2ImylLQMdEmZ3NRaZUuWiatywbPCbPs1JYEt+OAsQrfyQXKmfX/WJkvZ6rzGx6g49nB4WLUlwKLoc21/eyY7L0leWuppvYotZrfchsaXjxOh1fX9ChFA=
+	t=1728566655; cv=none; b=Ic9uJj0vURnPmT7ZeUbHU0Boypa5oCoQmLsENWnCssuE0wdsyrr89FA3AcxaCfVnSTwdWqBoX4dRINmPVl90e6JUFk9v9X+PuhdEYtemOAujlyt5+5ioeZVLSqqypoMFcR36CGZhzDlcUGoLfDqOQ42BLDB4157H4jR37D9I//Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728566561; c=relaxed/simple;
-	bh=zU4OHd4fqQutU5LKhoOEeIxeaA4fdDxhCxQBuGiHw7Y=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CQz42fOL0Cst9ARD2hX1VtmibL8kaz8mMvdmKMVVfH7Cmx0Tzsq73qMWHf2ceUtMdF9DCqx5Yo+3RH53nrD4BRSNOHij/UNVYP/Wgdnsfl6XQZeHkioXUSozxZQ9CJGnvpedVguXj05vXLTnSYhX88OMCKnWIdQ3wPPTxuv371w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=xdy6LJKZ; arc=none smtp.client-ip=185.132.182.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49A8iLrg000495;
-	Thu, 10 Oct 2024 15:22:09 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=selector1; bh=Ccn+f/QO1SGOWh5NjiitG2bf
-	+psS5zLHBT5PvfxdYR8=; b=xdy6LJKZivFTdUh1VV1XDLky5AuuZTcrXAWwIwsO
-	xTDkhIVExC/Q0Tc5IPCvrDtczIXuyTotXmE5JDF6Z3ut433A1hs1hKYWg6B2x6p7
-	4iMon06BvLBivZOY0doHSLiNagHWbGlaD7Kh9/LJH9byEg8ll9GONLBWHTsA9SX5
-	abVuehsNY/FqSJqmR3tlxicJ7/MYbfL75u/OECm2Jz14ChQtjllpRIcqFfyJmJ5U
-	oFgZbhyXaXXAhq9czU7KQTV3g+K81baE6TEZQj2dZ0tjaZ+WR3SxdlyviILpudra
-	2GhehTbDClUyxmZyQ+YHZb1bdFzWlI3iq2NYlu1Q0pj6fw==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 423f1173q1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Oct 2024 15:22:09 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id AD4B54004C;
-	Thu, 10 Oct 2024 15:21:17 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 9A59E23CB43;
-	Thu, 10 Oct 2024 15:19:34 +0200 (CEST)
-Received: from gnbcxd0016.gnb.st.com (10.129.178.213) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Thu, 10 Oct
- 2024 15:19:34 +0200
-Date: Thu, 10 Oct 2024 15:19:29 +0200
-From: Alain Volmat <alain.volmat@foss.st.com>
-To: Mark Brown <broonie@kernel.org>
-CC: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue
-	<alexandre.torgue@foss.st.com>,
-        Valentin Caron <valentin.caron@foss.st.com>,
-        <linux-spi@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH] spi: stm32: fix missing device mode capability in
- stm32mp25
-Message-ID: <20241010131929.GA3275914@gnbcxd0016.gnb.st.com>
-References: <20241009-spi-mp25-device-fix-v1-1-8e5ca7db7838@foss.st.com>
- <ZwavaP0QHQCyDbtB@finisterre.sirena.org.uk>
+	s=arc-20240116; t=1728566655; c=relaxed/simple;
+	bh=yP11aur8Rt+Rw0tYaqkcFxSY5kmdndx3o4KpjKCWejM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MkhfVOZutHWTrY1Dip7MPz7OhzI/BQXWD0UKWzrFlFem1a0MN8xgtHRnecR+rE/zxZT8yiLJykWY9lQNvCFSgpn7bYARumrDd1OX1k54nKN9jyVWhGMZyJNGVvvwfHwn8r1rI+aymBelUyJKGAISYP64j+9iStjB/6+XzYaUkDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aPruOcVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98CBC4CEC5;
+	Thu, 10 Oct 2024 13:24:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728566654;
+	bh=yP11aur8Rt+Rw0tYaqkcFxSY5kmdndx3o4KpjKCWejM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aPruOcVf9a7yImnkIMPT5Qi2hcOUQZgNyvBh1PkUztPUB6D+bgsdPKFetO4b24n3/
+	 2GBXgw5FqXTsxRZZDl4djnjRK/Hz75LV8u8TCJI+kbsMKXPjlV9X3/uBExi2RtlVtM
+	 HfQyCPrnkgtROHFUgb/F4+QNv9rqlOPVis3SRokPq2diRhSc1ArlGek0Ek9+elIw5U
+	 32X6QPgP/+R/1atQg0l1DHelVFZnYsD7OaGV0mvTjpOyPVzPQVzV4gwefrMEl8JJ3y
+	 ycUvfRWeusiuUhZXDaynlDcUGsqrz9SN0YFpCMFYFUlO2BXwIjGcDIRl+ESTc6TvAn
+	 537M2tGZe3A5w==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1syt9P-000000004nT-2lyW;
+	Thu, 10 Oct 2024 15:24:19 +0200
+Date: Thu, 10 Oct 2024 15:24:19 +0200
+From: Johan Hovold <johan@kernel.org>
+To: neil.armstrong@linaro.org
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Chris Lew <quic_clew@quicinc.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Abel Vesa <abel.vesa@linaro.org>, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] soc: qcom: mark pd-mapper as broken
+Message-ID: <ZwfVg89DAIE74KGB@hovoldconsulting.com>
+References: <20241010074246.15725-1-johan+linaro@kernel.org>
+ <CAA8EJpoiu2hwKWGMTeA=Kr+ZaPL=JJFq1qQOJhUnYz6-uTmHWw@mail.gmail.com>
+ <ZweoZwz73GaVlnLB@hovoldconsulting.com>
+ <CAA8EJprg0ip=ejFOzBe3iisKHX14w0BnAQUDPqzuPRX6d8fvRA@mail.gmail.com>
+ <Zwe-DYZKQpLJgUtp@hovoldconsulting.com>
+ <c84dd670-d417-4df7-b95f-c0fbc1703c2d@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZwavaP0QHQCyDbtB@finisterre.sirena.org.uk>
-X-Disclaimer: ce message est personnel / this message is private
-X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+In-Reply-To: <c84dd670-d417-4df7-b95f-c0fbc1703c2d@linaro.org>
 
-Hi Mark,
+On Thu, Oct 10, 2024 at 01:46:48PM +0200, neil.armstrong@linaro.org wrote:
+> >> On Thu, 10 Oct 2024 at 13:11, Johan Hovold <johan@kernel.org> wrote:
 
-On Wed, Oct 09, 2024 at 05:29:28PM +0100, Mark Brown wrote:
-> On Wed, Oct 09, 2024 at 06:15:52PM +0200, Alain Volmat wrote:
-> 
-> > Fixes: a4e7908abf0c ("spi: stm32: add st,stm32mp25-spi compatible supporting STM32MP25 soc")
-> > Cc: stable@vger.kernel.org
-> 
-> That SHA1 doesn't exist...
+> >>> As I tried to explain in the commit message, there is currently nothing
+> >>> indicating that these issues are specific to x1e80100 (even if you may
+> >>> not hit them in your setup depending on things like probe order).
 
-Oups, sorry about that.  Sending a v2 with correct SHA1.
+> The in-kernel pd-mapper works fine on SM8550 and SM8650, please just revert
+> the X1E8 patch as suggested by Dmitry.
 
-Regards,
-Alain
+Again, you may just be lucky, we have x1e users that also don't hit
+these issues due to how things are timed during boot in their setups.
 
+If there's some actual evidence that suggests that this is limited to
+x1e, then that would of course be a different matter, but I'm not aware
+of anything like that currently.
 
+Johan
 
