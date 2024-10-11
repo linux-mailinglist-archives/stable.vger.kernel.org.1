@@ -1,135 +1,121 @@
-Return-Path: <stable+bounces-83463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD0C99A5E9
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 16:11:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FCD299A5CC
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 16:09:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A90E1C233CD
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 14:11:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FB0C1C21E57
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 14:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E781219C8C;
-	Fri, 11 Oct 2024 14:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40719218D90;
+	Fri, 11 Oct 2024 14:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ltps0kap"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R3Gz4Nc/"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDF2D517;
-	Fri, 11 Oct 2024 14:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5C92185AF;
+	Fri, 11 Oct 2024 14:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728655831; cv=none; b=bra1xIKtyG+OZ5qCP4EeqDjMk1ZqmjjoHwYQlNr1sipwKK436PqSgxJFSsSbSvwzx0/y253+FTUlxR/ZFhGaFOj2GfWebYnLQrmCraYjuZ/01JUXs8d5h4rS5KD3Oeq3NgUehZPLM+RAnBB8zUkgSDe9c60iQ/yxoNKB/klIiDU=
+	t=1728655783; cv=none; b=pwMaLr7iSaBTFSGu1ZPOZB7mWcik6hXl36vLTvn6VDubabWmB7B0+ftAQtrIE44qH6Pr4+lLygB2rOONaw61AYY9wCFi21sWKdEOmS+LWVsLQmT1b4HbMxIaIWPAjMja39ybPYeN1WhRDXT8Wtf0QfZkeXW/9NPtYhOSiB4roYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728655831; c=relaxed/simple;
-	bh=Brgos7CnbGWGJd2NtGmjE5E3I+CrnBntojNJAEtJTMs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JTkILvsz8BHzpbNrYWzJ2QMJvxADVNg3kMRiAvoi/B2JUNDaviKGdZ5169HbvVSreqLvgwQ2bwUeLHpgt6CssEdZKPNButr44C7taGVboiQZ+8TjWkJdiKFOyg8w0+3S3KF0VYppDgudsEbpbNuF39VmRAHV0MyGmdg0uZYNCj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ltps0kap; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49B8opDK002583;
-	Fri, 11 Oct 2024 14:10:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	gqsoG9dX1i/Jsd1PxLP9Cg2HimFmmvo9dg/nrBtxc7g=; b=ltps0kap7j0WfZVJ
-	UAfN8CuiVKWCK+pvom7yTdw/5e45BANmQCga7+YTrPOuK+mgK+uXl7BveCQB9T/6
-	S/4ubk/r3tRUg6NVyq/pNn3Nct2P7LegsVHAwKVRj6k3j6IiVCtAcDVed2EeQaGY
-	+XuRShBLXS83y4fFw1pylPs5VMOeNuOGOpqk4GAoSjc6sSqlqb9q6rJ67+//UsgQ
-	bEzo0knFXWkU4p7RmyQPlgSIrjiLHilsT0ew9lyI3Eq+RTy89aU7PxTaEXIwn+NM
-	NuZ8dsz+OhZRs6ifZ6tAdG14eg56UaYgWfVb3DcYSeDU3XrWaDAZjcpsmsOiS9U9
-	ovv2Ww==
-Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 426nc2jhs7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Oct 2024 14:10:16 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49BEAF49004511
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Oct 2024 14:10:15 GMT
-Received: from hu-vikramsa-hyd.qualcomm.com (10.80.80.8) by
- nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 11 Oct 2024 07:10:06 -0700
-From: Vikram Sharma <quic_vikramsa@quicinc.com>
-To: <rfoss@kernel.org>, <todor.too@gmail.com>, <bryan.odonoghue@linaro.org>,
-        <mchehab@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <akapatra@quicinc.com>, <hariramp@quicinc.com>,
-        <andersson@kernel.org>, <konradybcio@kernel.org>,
-        <hverkuil-cisco@xs4all.nl>, <cros-qcom-dts-watchers@chromium.org>,
-        <catalin.marinas@arm.com>, <will@kernel.org>
-CC: <linux-arm-kernel@lists.infradead.org>, <quic_vikramsa@quicinc.com>,
-        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel@quicinc.com>, <stable@vger.kernel.org>
-Subject: [PATCH v3 3/8] media: qcom: camss: Fix potential crash if domain attach fails
-Date: Fri, 11 Oct 2024 19:39:27 +0530
-Message-ID: <20241011140932.1744124-4-quic_vikramsa@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241011140932.1744124-1-quic_vikramsa@quicinc.com>
-References: <20241011140932.1744124-1-quic_vikramsa@quicinc.com>
+	s=arc-20240116; t=1728655783; c=relaxed/simple;
+	bh=kW9CDWhL8cU10uW30Ctc/KnAKpjn0N92tlitb9iuIII=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=NuboeepslK1QCVvJKSCJK8ZMb3e8znlyivij1+n8op0mKoNy6bbuhIlRQcGPoCytfaxoAHw3FWHlIvLAItfgiMZlJc4Rl4kqr6pk7kGQQq9bXO4quetL+VXlWIvqMrPAttH2HyPdcghklWGQxgbT2uJU7inDOLCK56Q/rZ3l5HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R3Gz4Nc/; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-46040dadedfso19676351cf.1;
+        Fri, 11 Oct 2024 07:09:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728655780; x=1729260580; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=csdorD/XI9vvOYRw8oWUox4UAr37xXSbNh8csh0YlvE=;
+        b=R3Gz4Nc/bwVzExpNfEDGgoyuoBVNd8rRZuY0XWVReV5uhrjKgXXGg844OqxHL2zV/+
+         af3Ms58epqjeGpUa5OEElE55uKwFdHYK3qTXHvEq3/azETGpT9DQq6TbT8IfbSMoPajF
+         kf4ad2JQJ69cK0fx6JGnzZcj1Y787VSzWWGhoB8oZa4OLB0He6U4X8n2L+pPH/jwoDmP
+         Zy8Nj+PSW3Q+MfsY8oondFCSldSCRV3U9hkzYWqjPlrLSm/voN4WStwe3IZKsYonLvGq
+         XFUpJS7jvIcOi0TgDvJ2x2XdllFu2Lt35NoBcsX1Gg+UcMIFrl33g/07g2/OCmVjl0NF
+         /73A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728655780; x=1729260580;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=csdorD/XI9vvOYRw8oWUox4UAr37xXSbNh8csh0YlvE=;
+        b=GaY8q+WtIPgrc6LwbN7/MZddMvERZinbO4tuzsc+3aN0ARKxv8ded7sR41eQ30t0SM
+         pTgqARSzV+MkZ1LNLjoyMTj/h7dq50GowCTNDzuqHj89Rm25CL2TLdWagrxE9HYQcUHb
+         te0g2h3ZUB9SXh/CsnidKMDTmSGTm1V6pSF30prswuH9mUuVRqpfdpTsMKZqAQuT0l+D
+         Ah4TVJd5Dns3Ls1dNm9POlyMajyqiDclz3O++9tAAnv5+/emILbLS0W1ZLnQg+lRRxAh
+         BQHxkiCzHBGF2Bzu4Uinhz5Dcy5xFGGIMibUUsrbUSbhR9wSp2oTyd5Eyyogdezy9QQ3
+         DpxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVcLBBBEuP5xKdDJxMMH4inoNfOby1gmF1Lz84zXEnKbAHoRasPK5pWJQdv0mGhVaEyUGwUtqU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKDkwws/5p2W7QqX4xRjlpubH5luJRsV08DQeCruYEX7JLgE40
+	NR5KMJuPAeWuZrRfV+/HFuyc6npfHkKNGf07RkB0nbqh4vxAUyqq
+X-Google-Smtp-Source: AGHT+IHLko3U+XuJKW4KKsn1xXk814wIHDBygDMBFuKBHZLLU6nMu+8vFr1dqz3VYQ9FPYHGnkmDPw==
+X-Received: by 2002:a05:622a:1f07:b0:458:4ded:fe99 with SMTP id d75a77b69052e-4604bc2e4ffmr44246951cf.42.1728655780094;
+        Fri, 11 Oct 2024 07:09:40 -0700 (PDT)
+Received: from localhost (86.235.150.34.bc.googleusercontent.com. [34.150.235.86])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46042789ba9sm15573261cf.14.2024.10.11.07.09.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Oct 2024 07:09:39 -0700 (PDT)
+Date: Fri, 11 Oct 2024 10:09:38 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jakub Sitnicki <jakub@cloudflare.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ David Ahern <dsahern@kernel.org>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, 
+ kernel-team@cloudflare.com, 
+ Ivan Babrou <ivan@cloudflare.com>, 
+ Jakub Sitnicki <jakub@cloudflare.com>, 
+ stable@vger.kernel.org
+Message-ID: <670931a2edb62_234aca29433@willemb.c.googlers.com.notmuch>
+In-Reply-To: <20241011-uso-swcsum-fixup-v2-1-6e1ddc199af9@cloudflare.com>
+References: <20241011-uso-swcsum-fixup-v2-1-6e1ddc199af9@cloudflare.com>
+Subject: Re: [PATCH net v2] udp: Compute L4 checksum as usual when not
+ segmenting the skb
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: WqnmlZC38mq4WpLIPdIrESwRRWUSQxPf
-X-Proofpoint-GUID: WqnmlZC38mq4WpLIPdIrESwRRWUSQxPf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- priorityscore=1501 bulkscore=0 mlxlogscore=999 lowpriorityscore=0
- malwarescore=0 clxscore=1011 suspectscore=0 impostorscore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410110098
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Fix a potential crash in camss by ensuring detach is skipped if attach
-is unsuccessful.
+Jakub Sitnicki wrote:
+> If:
+> 
+>   1) the user requested USO, but
+>   2) there is not enough payload for GSO to kick in, and
+>   3) the egress device doesn't offer checksum offload, then
+> 
+> we want to compute the L4 checksum in software early on.
+> 
+> In the case when we are not taking the GSO path, but it has been requested,
+> the software checksum fallback in skb_segment doesn't get a chance to
+> compute the full checksum, if the egress device can't do it. As a result we
+> end up sending UDP datagrams with only a partial checksum filled in, which
+> the peer will discard.
+> 
+> Fixes: 10154dbded6d ("udp: Allow GSO transmit from devices with no checksum offload")
+> Reported-by: Ivan Babrou <ivan@cloudflare.com>
+> Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+> Acked-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+> Cc: stable@vger.kernel.org
 
-Fixes: d89751c61279 ("media: qcom: camss: Add support for named power-domains")
-CC: stable@vger.kernel.org
-Signed-off-by: Vikram Sharma <quic_vikramsa@quicinc.com>
----
- drivers/media/platform/qcom/camss/camss.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-index d64985ca6e88..b6658df37709 100644
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -2131,8 +2131,7 @@ static int camss_configure_pd(struct camss *camss)
- 		camss->genpd = dev_pm_domain_attach_by_name(camss->dev,
- 							    camss->res->pd_name);
- 		if (IS_ERR(camss->genpd)) {
--			ret = PTR_ERR(camss->genpd);
--			goto fail_pm;
-+			return PTR_ERR(camss->genpd);
- 		}
- 	}
- 
-@@ -2149,7 +2148,7 @@ static int camss_configure_pd(struct camss *camss)
- 			ret = -ENODEV;
- 		else
- 			ret = PTR_ERR(camss->genpd);
--		goto fail_pm;
-+		return ret;
- 	}
- 	camss->genpd_link = device_link_add(camss->dev, camss->genpd,
- 					    DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME |
--- 
-2.25.1
-
+You already included my Acked-by, but just to confirm: LGTM.
 
