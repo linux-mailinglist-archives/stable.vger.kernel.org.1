@@ -1,75 +1,76 @@
-Return-Path: <stable+bounces-83489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A8399AC8F
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 21:22:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA94399AC92
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 21:22:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B2E228DA67
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 19:22:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E1A11F2273B
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 19:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5AC1CBE8F;
-	Fri, 11 Oct 2024 19:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2D91CF5DF;
+	Fri, 11 Oct 2024 19:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y8O7agWo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fpj8wYsV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716771E529;
-	Fri, 11 Oct 2024 19:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C5C1C9DFD;
+	Fri, 11 Oct 2024 19:22:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728674546; cv=none; b=Z1cTysJFx6UMNCQpswQgqrwwa8EUxC4N7oAkPW251vzGJdq95sCq6vTXVbO1GlwFyP2r5ohc3KTuwrz1VquE+FgZqMNzkPwazNgEqTx44ng05x3TTa8KNVi5EqAzH8J8QP7VwuaBY6Pxw+vQa0HkBQwJ2/DK1UtZxBDsE4id1Pw=
+	t=1728674547; cv=none; b=rDJRqIz21b3l7PxkDC1n6fOu7Dt223J2QOZxLYDtEiuKyqoix2NShNHHM/6+sSkSO/PL+/c5o49PaJVLxEcnRyuBHVjTUKlne7tXZRcxOfTViBUtsS6tSTPAQ+3rt6PosfNkBufxSx0JtGPe9jRt9/PwDsk/QfMn+jQjcZlSdFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728674546; c=relaxed/simple;
-	bh=CUgnykuigeyvSk+12QRyPfcuP3wIVJxY7aInDCemjsU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Kk0LFsnLWIyY+z1D7FIZwArJapq2CeOJaUFN8h1C1pqIi3Ovc4sKhbLS5aQwRRCKFRhyCjkC8oDmESId2N25BEcRg/NzPOnNEzAfSUDgseD9GkUIcYfrjvv8Nk5gVzlsAB2fInkKPIzX0OeHzEKhUfvSx7Nan/5sZRyZU7hhpX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y8O7agWo; arc=none smtp.client-ip=209.85.128.54
+	s=arc-20240116; t=1728674547; c=relaxed/simple;
+	bh=GACFWz+z5+whIxiIEf5wTm2vjO+WqH2Y46iheppGzXc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=WmnlTHmyWhQd4H0Ar+SeHM/uUrZ/2QmEJs/+KuJTwzlbCTkWOZBSxa++7uC1mvSCrNy1I0m7MTyWKQw6vWB2MaLh/uk2Raa1bYa6ZlliikM5ElS0RCbtNge9X6BVzxZH5l4uDQTj1k5WoZl3cnE0Fq8JwcHLjW5kjKKiaCxzaXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fpj8wYsV; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-431195c3538so14690295e9.3;
-        Fri, 11 Oct 2024 12:22:24 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-37d47eff9acso1287926f8f.3;
+        Fri, 11 Oct 2024 12:22:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728674543; x=1729279343; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=EYgQWgt/qKmfdHG9VXiGCkrR3Ne5T90ztqEtcBQu9CI=;
-        b=Y8O7agWonQS3ilRb2hy0CHkpToZ6Wrs1Xkaws0gEk1lCIsfSCsQeH6hxZSd6Lt+n56
-         g9AZtxPwrAdeSuXsXBRyzEJqkIV2apI2Nq5zlChZTBwKxfXTUbiZGYTeqYxHAZmZsL4O
-         VAEIKG9IL/p3ELHFiK/6kSK2SZ3jMZdZ7qWNJJgl+kRofUWb7Y/r5CxwUvGsR3YE+67h
-         wXGdnJmQr4MA9Z88ozZ+r+N0UU5uuRrrmvjimQfGUQNTbe1bOMv/rAbydZc0cJeL6xjY
-         gwCrcAamQzH0K9lha4bV9LKLJPn4dervXRmK5j7wpuT7VuGSRLIgiQr0SmyBk543Zd1Y
-         lStg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728674543; x=1729279343;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1728674544; x=1729279344; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=EYgQWgt/qKmfdHG9VXiGCkrR3Ne5T90ztqEtcBQu9CI=;
-        b=ovTch+lOaNXsTJLsKARZRZWyzJ7JzuJLfztqIM5UptqnDNS1hZfB9nM9/WcZI3HAUU
-         fi0Rp5ducFhc/uKNzqYhvFS1MwWmurF3p3a+Cpaxiw6g3DXvIaO/gCrqVTsuj5uI+snf
-         ZHDdNN2GieOsj3Vy/I7xqCItTdGZ6fReoAxuPfdntPAWKUr5e+JwHd82lXwrVcG78I9I
-         0StNI37mW90LXErCUIfmwhrb3XOwgp7cOrLAtpN9eALgbzFiXMvTLnji8QAzvTScpvSB
-         m1Q//Ybxrxr2H4lwlvpR2Um7/f2Yq7aDDm6ZC7DOiwO2vBVJMadh55fm0gFZlNeC1FjZ
-         OEcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW7ZHrPEdOouoFoze/eTRJw6GalyITfte5Jbo3U8MhaxPKYsQVNp8/xf5Bg1XHTujAxfHtrB/6k@vger.kernel.org, AJvYcCX7AhLKadQAZ4RMzRxnSicLdD0R3StvpX292yw6qfeYBNMuJHcZGJi1MfNwnk0XAZi0o2mGy3TGqW/r4Ls=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+SII3RteRaN2nX2yvGVJKisItz77My0/LuEsBvFo5gshByYrt
-	7UIVLX6x8EfrxIextSO2ohYYNauYhoRobDExJbuRLiCuEpSf3Fs9
-X-Google-Smtp-Source: AGHT+IHDrJkqntC5hbJBHUdbeUAjDp6V1K7XShBIFjrWbQhxHt6e86dahsDJxOy2EMtrhVQ1CrDX1w==
-X-Received: by 2002:a05:600c:1d26:b0:426:8884:2c58 with SMTP id 5b1f17b1804b1-4311deba2a8mr23732905e9.4.1728674542675;
-        Fri, 11 Oct 2024 12:22:22 -0700 (PDT)
+        bh=4kBIYBhNJLveBi0X8buyeW3/XiOUmPsQpigk1+cdvIw=;
+        b=fpj8wYsVg47kVtOutIzHhdZvmxMC++6OfaQ61RmkIukqh4nY8Rvl+lihNsO9Mg2dK5
+         cC1OxXE/aJ1rSgFCxQX2D2CNrntKOQodaRAkUI5PkzEO2S8WttbAGNQHx7I26YhRWYwp
+         FVqFuSVmWGO6W02iRph0ck4oT1CzvrJBIK/ghB0lAKQFK72JT33Ym/040GdPxgu4JbB1
+         xgBs1y24DJf64BlvwZJeSRdcCAWVKrxhOVNcmfD9SjyuxbKN2ZhiaeVAd82c2oo4jJx+
+         /B2Hwi9OCS7V0Ycwih8Es7EsHPnnlBTvj16yYCMoa/LNhpJ2gAYEkIJJlvNnyC4wywjm
+         hqFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728674544; x=1729279344;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4kBIYBhNJLveBi0X8buyeW3/XiOUmPsQpigk1+cdvIw=;
+        b=RdX82BUqGzW9OscYOt1A2lWuyvGGaUJYju2zlOI7mZS/VOSYBUmojFSt7AcTS4QIKQ
+         0sbnV4Xi+TZn/0mLygrTt/pTiNcVAnP5DAwZrmjFCZGOvhqM1quFuslu5tqJ7vA8cQVq
+         h9Ckoqbtz00VRvL8qm4hNOM+ME4ypN4jkSS5spwYVRwPoILlmg7l+JtZTS1SphZ25n6w
+         qhb9TNkSAKItIRzq8m7k4Nd7T/t1jBjgP0Y7ylbGkv0btMEzi6C8hw2pv+ih/JDW9yGa
+         mycFqPRxj4mUL2ZD+ktFJPW/CHI4C5/GPmb44Z9J2bar/BabJjZIoGPjt2dd1ob7Nn1y
+         /HWg==
+X-Forwarded-Encrypted: i=1; AJvYcCUBjh+dzUR6w0ohofyy4qsO2vT/vi20JS9jHRsHh0dkj92pK0MGvpYXPHbVdNsqg/KzbR4V5++B@vger.kernel.org, AJvYcCVxtMCwHL5sLihnBODaWMwdZAw5Q69PFg3UhE+wB5C07RnBl0QM2EyGsVMZx/KhYBq1kH1vJYMew4sDa3k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywak91vgBVGvFJvagHWLPgvhzisgKEB6fo5J8j1bW+qHtwadjDR
+	JG73X0iwr1hOWNzbkva6pgfjgimszf1aDThZdfAn20MR4AttCzCM
+X-Google-Smtp-Source: AGHT+IEPObY61TTZUljSGVbxJ83DtlRp1vP8GuFprN167lb4Pr6rcaZZVUv+UkSSbZYzG56rZDvzaA==
+X-Received: by 2002:adf:cc8f:0:b0:37d:4937:c9eb with SMTP id ffacd0b85a97d-37d5feb13acmr443072f8f.21.1728674544198;
+        Fri, 11 Oct 2024 12:22:24 -0700 (PDT)
 Received: from [127.0.1.1] (2a02-8389-41cf-e200-55c0-165d-e76c-a019.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:55c0:165d:e76c:a019])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b7ee49bsm4581663f8f.100.2024.10.11.12.22.21
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b7ee49bsm4581663f8f.100.2024.10.11.12.22.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2024 12:22:22 -0700 (PDT)
+        Fri, 11 Oct 2024 12:22:23 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Subject: [PATCH 0/2] drm/mediatek: Fix child node refcount handling and use
- scoped macro
-Date: Fri, 11 Oct 2024 21:21:50 +0200
-Message-Id: <20241011-mtk_drm_drv_memleak-v1-0-2b40c74c8d75@gmail.com>
+Date: Fri, 11 Oct 2024 21:21:51 +0200
+Subject: [PATCH 1/2] drm/mediatek: Fix child node refcount handling in
+ early exit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,9 +79,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAM56CWcC/x2M0QpAMBhGX0X/tZVfVvIqktg+/DG0SWp5d8vFu
- TgX50QK8IJATRbJ45Ygx56E84zMMuwzlNjkVBZlxQWzctfaW+8Sd+/gNgyr0qjHGpWGZUOpPD0
- mef5r273vB8+vyTdlAAAA
+Message-Id: <20241011-mtk_drm_drv_memleak-v1-1-2b40c74c8d75@gmail.com>
+References: <20241011-mtk_drm_drv_memleak-v1-0-2b40c74c8d75@gmail.com>
+In-Reply-To: <20241011-mtk_drm_drv_memleak-v1-0-2b40c74c8d75@gmail.com>
 To: Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
  Philipp Zabel <p.zabel@pengutronix.de>, David Airlie <airlied@gmail.com>, 
  Simona Vetter <simona@ffwll.ch>, Matthias Brugger <matthias.bgg@gmail.com>, 
@@ -91,34 +92,46 @@ Cc: dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728674541; l=800;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728674541; l=1023;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=CUgnykuigeyvSk+12QRyPfcuP3wIVJxY7aInDCemjsU=;
- b=VS2IFCGJyJpyQN++hbNfW+QHI8VE09TUL+q0ILjUhG8LFSsaeXapxeE08GCY6WIEkfxFiYrvq
- 3o6Dsm8HPgzAHTM2Gzm1+GZnOiqBBIM/R5LsZ4CcxFrH8NtRwbJSivg
+ bh=GACFWz+z5+whIxiIEf5wTm2vjO+WqH2Y46iheppGzXc=;
+ b=ctsLXzl8itXZ6YjbYlz1K50LW7nQRM1QFq2Ygrbx/fh9qsjr38w6zeU3uGz61wTvN3/n+WyDJ
+ l0VO+LnC28wBFlo1TkzxIJ42L0f2a0eNe3vsDXXc4rOBCnHRlQ/or2M
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-This series fixes a wrong handling of the child node within the
-for_each_child_of_node() by adding the missing call to of_node_put() to
-make it compatible with stable kernels that don't provide the scoped
-variant of the macro, which is more secure and was introduced early this
-year.
+Early exits (goto, break, return) from for_each_child_of_node() required
+an explicit call to of_node_put(), which was not introduced with the
+break if cnt == MAX_CRTC.
+
+Add the missing of_node_put() before the break.
+
+Cc: stable@vger.kernel.org
+Fixes: d761b9450e31 ("drm/mediatek: Add cnt checking for coverity issue")
 
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
-Javier Carrasco (2):
-      drm/mediatek: Fix child node refcount handling in early exit
-      drm/mediatek: Switch to for_each_child_of_node_scoped()
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
- drivers/gpu/drm/mediatek/mtk_drm_drv.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
----
-base-commit: d61a00525464bfc5fe92c6ad713350988e492b88
-change-id: 20241011-mtk_drm_drv_memleak-5e8b8e45ed1c
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+index a4594f8873d5..0878df832859 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -406,8 +406,10 @@ static bool mtk_drm_get_all_drm_priv(struct device *dev)
+ 		if (temp_drm_priv->mtk_drm_bound)
+ 			cnt++;
+ 
+-		if (cnt == MAX_CRTC)
++		if (cnt == MAX_CRTC) {
++			of_node_put(node);
+ 			break;
++		}
+ 	}
+ 
+ 	if (drm_priv->data->mmsys_dev_num == cnt) {
 
-Best regards,
 -- 
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
+2.43.0
 
 
