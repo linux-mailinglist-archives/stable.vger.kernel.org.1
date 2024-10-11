@@ -1,75 +1,74 @@
-Return-Path: <stable+bounces-83503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED3399AEEE
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 00:55:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3659499AEF4
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 00:59:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 338C9B21648
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 22:55:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C921C1F272B3
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 22:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2981D3561;
-	Fri, 11 Oct 2024 22:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0922F1E0B60;
+	Fri, 11 Oct 2024 22:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Cc0vY/LE"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="BecgcCiw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0871CF5E9
-	for <stable@vger.kernel.org>; Fri, 11 Oct 2024 22:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C771974EA;
+	Fri, 11 Oct 2024 22:58:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728687316; cv=none; b=tWXZnARttBd4CPNT8DobplTxDN1+2TYFITp28zdIVCj/a4DjejgR512+Jb6Md3fOp2a8URJXxcP5asOu2Er/vL+abUROoU2744JPHJCVj9YMqcNm/9iiQ3tRkIazL2teaxs5P6KuRGA0riPqE7xKmkWVGRbBUuP9BoermV3yJbE=
+	t=1728687539; cv=none; b=JmSv5jvum3xS/M5CAQ+iw0qNkyTuId8fOWO4J9xQAMRICyRdL2e9G+XUXiZMMhvupTgjTXz+j/USM74I8uZGQOcN8lyYBoe9idDEMR0xs3bTQfedv+5TfVUNczLTT1d+I4rVpa9/KDNwBGMTk3o5bnvJHJ7XAGEN9sHHrb1qA0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728687316; c=relaxed/simple;
-	bh=JiwuPzjgKOW+98aSOHdvXirT8c2zPb6r2BSYy66ajaA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lfXbSzMkr5M3JfZdE/en+CtaY10WS6WJAuxU+FAFxVEZz9y7O/Bkz+RRDfynG+5uIvDsMJIEaq+IsXDQyi294z3kAIqXJnA51LD1ctLosRkcpOJ8iA/XzfV92l8w9w5kYcUGV4QEnZe8kKE/08adicvFXxoM2E343xDManKPKMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Cc0vY/LE; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728687313; x=1760223313;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=JiwuPzjgKOW+98aSOHdvXirT8c2zPb6r2BSYy66ajaA=;
-  b=Cc0vY/LEIwDXaZTRqZXSFKxQhUVAv0O3O+TNQ8GIlP2VjF8M9jRSm4tB
-   bYGHcpCNdT+i8lyMUshyK39UXJ1kJ2Wav5wbJLyVP30W4eDrzy+TwIs14
-   niKSjn2Obdxb4wRe/YFjkE5oGE8i8o81/536C9NOpfEWwAw1vcpeBj1Kx
-   Yx5n8L+HATzLpcLRy8o85UYKmNn+NHUM0x+Cy8SqsRl+th5VH4/n0Lne5
-   0D2lfLPEnQk54hEnwLs7vkVg3xPCkJ3o8wBbiBSEGj8/5p+F5Y2KFelrd
-   FX9336hpgS/2KMlc6TLD4Cr3aYCxtiZfcercJ4LkvThgZ1B/N6w0cCOEW
-   g==;
-X-CSE-ConnectionGUID: lxdGYKosQdiIu7uz8xUDqg==
-X-CSE-MsgGUID: E9Uzv12hQmSMDEXm7MV4Ww==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="53519750"
-X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; 
-   d="scan'208";a="53519750"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 15:55:13 -0700
-X-CSE-ConnectionGUID: Y7C13T72STSMZ8qD41yjrA==
-X-CSE-MsgGUID: kst7psRUTM+NYYIBoLTDGA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; 
-   d="scan'208";a="77040410"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 15:55:13 -0700
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: intel-gfx@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 3/8] drm/i915/pmu: Fix crash due to use-after-free
-Date: Fri, 11 Oct 2024 15:54:25 -0700
-Message-ID: <20241011225430.1219345-4-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241011225430.1219345-1-lucas.demarchi@intel.com>
-References: <20241011225430.1219345-1-lucas.demarchi@intel.com>
+	s=arc-20240116; t=1728687539; c=relaxed/simple;
+	bh=dyvYrXMnl/7fmCe8wEUQbdaR72+Bt8WD6Lv8zTl5gPQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l7A7OZp3sHGi76ZZk8YagyxckhXzWpRhpv4IUL1nnHNNm9zd0KeOOArRPOsWYAKPFF0Lyj976XOAu4+Cy4NQ1L+2DTaqpRaJN2JrUftY/FSLmtTVuGCSKZIMo2/4YEWxv2yzP2yQFeB7pUPN8R2dxM3CBeFAsjFyqa3wP8NKryA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=BecgcCiw; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49BJJVM0029745;
+	Fri, 11 Oct 2024 22:58:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=tEQw/28X70aYEuY8Q7gZLBCtsQy4n
+	INcRrw63rY97Vg=; b=BecgcCiwCS6Exatt2uopZLI035JSLlj96fAPMSkWrMMJ/
+	GBLUgXlhsT1lXrKw0AAcRTfP7OZHqYMRaPhQu5NABzhPUPDpggmUmgpIyHrsTFfO
+	s725x1pN6k0xL8EyBiCQvIx/tr/C6AmpRt5WVloDtRw3G6MNT9Fj1Hts0Oe9PbAZ
+	vN9fyrcVXTNvJq+WjDuHJEI1k/N8lkFFa4XPB+tr1G5PewSwZMRflNF7SlMf4WP8
+	IugSWdXxvA4aBw0S0UtyGXc8vrpSg+vYF5Q8p8z385Tg7bAIAEXe7tcQuRquRpso
+	GWt2sN/Hw4pbH+YJWIXrXjEeLQ/pNar8JHYNWV4yg==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42308dwxkn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 11 Oct 2024 22:58:47 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49BKZZUY033518;
+	Fri, 11 Oct 2024 22:58:46 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 422uwbt584-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 11 Oct 2024 22:58:46 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49BMwj3U019358;
+	Fri, 11 Oct 2024 22:58:46 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 422uwbt57c-1;
+	Fri, 11 Oct 2024 22:58:45 +0000
+From: Sherry Yang <sherry.yang@oracle.com>
+To: stable@vger.kernel.org, sashal@kernel.org, gregkh@linuxfoundation.org
+Cc: zyjzyj2000@gmail.com, dledford@redhat.com, jgg@ziepe.ca,
+        monis@mellanox.com, andrew.boyer@dell.com, leon@kernel.org,
+        yonatanc@mellanox.com, linux-rdma@vger.kernel.org,
+        sherry.yang@oracle.com
+Subject: [PATCH 5.15.y 5.10.y 5.4.y] RDMA/rxe: Fix seg fault in rxe_comp_queue_pkt
+Date: Fri, 11 Oct 2024 15:58:43 -0700
+Message-ID: <20241011225843.1775390-1-sherry.yang@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,116 +76,65 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-11_20,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
+ phishscore=0 mlxscore=0 suspectscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2409260000 definitions=main-2410110160
+X-Proofpoint-ORIG-GUID: H2aDCU9JY5YrCgQ7KCypyMWga4l2yeA8
+X-Proofpoint-GUID: H2aDCU9JY5YrCgQ7KCypyMWga4l2yeA8
 
-When an i915 PMU counter is enabled and the driver is then unbound, the
-PMU will be unregistered via perf_pmu_unregister(), however the event
-will still be alive. i915 currently tries to deal with this situation
-by:
+From: Bob Pearson <rpearsonhpe@gmail.com>
 
-	a) Marking the pmu as "closed" and shortcut the calls from perf
-	b) Taking a reference from i915, that is put back when the event
-	   is destroyed.
-	c) Setting event_init to NULL to avoid any further event
+[ Upstream commit 2b23b6097303ed0ba5f4bc036a1c07b6027af5c6 ]
 
-(a) is ugly, but may be left as is since it protects not trying to
-access the HW that is now gone. Unless a pmu driver can call
-perf_pmu_unregister() and not receive any more calls, it's a necessary
-ugliness.
+In rxe_comp_queue_pkt() an incoming response packet skb is enqueued to the
+resp_pkts queue and then a decision is made whether to run the completer
+task inline or schedule it. Finally the skb is dereferenced to bump a 'hw'
+performance counter. This is wrong because if the completer task is
+already running in a separate thread it may have already processed the skb
+and freed it which can cause a seg fault.  This has been observed
+infrequently in testing at high scale.
 
-(b) doesn't really work: when the event is destroyed and the i915 ref is
-put it may free the i915 object, that contains the pmu, not only the
-event. After event->destroy() callback, perf still expects the pmu
-object to be alive.
+This patch fixes this by changing the order of enqueuing the packet until
+after the counter is accessed.
 
-Instead of pigging back on the event->destroy() to take and put the
-device reference, implement the new get()/put() on the pmu object for
-that purpose.
-
-(c) is only done to have a flag to avoid some function entrypoints when
-pmu is unregistered.
-
-Cc: stable@vger.kernel.org # 5.11+
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://lore.kernel.org/r/20240329145513.35381-4-rpearsonhpe@gmail.com
+Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
+Fixes: 0b1e5b99a48b ("IB/rxe: Add port protocol stats")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Sherry: bp to fix CVE-2024-38544. Fix conflict due to missing commit:
+dccb23f6c312 ("RDMA/rxe: Split rxe_run_task() into two subroutines")
+which is not necessary to backport]
+Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
 ---
- drivers/gpu/drm/i915/i915_pmu.c | 36 ++++++++++++++++++++-------------
- 1 file changed, 22 insertions(+), 14 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_comp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_pmu.c b/drivers/gpu/drm/i915/i915_pmu.c
-index 4d05d98f51b8e..dc9f753369170 100644
---- a/drivers/gpu/drm/i915/i915_pmu.c
-+++ b/drivers/gpu/drm/i915/i915_pmu.c
-@@ -515,15 +515,6 @@ static enum hrtimer_restart i915_sample(struct hrtimer *hrtimer)
- 	return HRTIMER_RESTART;
+diff --git a/drivers/infiniband/sw/rxe/rxe_comp.c b/drivers/infiniband/sw/rxe/rxe_comp.c
+index 48a3864ada29..250494306932 100644
+--- a/drivers/infiniband/sw/rxe/rxe_comp.c
++++ b/drivers/infiniband/sw/rxe/rxe_comp.c
+@@ -124,12 +124,12 @@ void rxe_comp_queue_pkt(struct rxe_qp *qp, struct sk_buff *skb)
+ {
+ 	int must_sched;
+ 
+-	skb_queue_tail(&qp->resp_pkts, skb);
+-
+-	must_sched = skb_queue_len(&qp->resp_pkts) > 1;
++	must_sched = skb_queue_len(&qp->resp_pkts) > 0;
+ 	if (must_sched != 0)
+ 		rxe_counter_inc(SKB_TO_PKT(skb)->rxe, RXE_CNT_COMPLETER_SCHED);
+ 
++	skb_queue_tail(&qp->resp_pkts, skb);
++
+ 	rxe_run_task(&qp->comp.task, must_sched);
  }
  
--static void i915_pmu_event_destroy(struct perf_event *event)
--{
--	struct i915_pmu *pmu = event_to_pmu(event);
--	struct drm_i915_private *i915 = pmu_to_i915(pmu);
--
--	drm_WARN_ON(&i915->drm, event->parent);
--
--	drm_dev_put(&i915->drm);
--}
- 
- static int
- engine_event_status(struct intel_engine_cs *engine,
-@@ -629,11 +620,6 @@ static int i915_pmu_event_init(struct perf_event *event)
- 	if (ret)
- 		return ret;
- 
--	if (!event->parent) {
--		drm_dev_get(&i915->drm);
--		event->destroy = i915_pmu_event_destroy;
--	}
--
- 	return 0;
- }
- 
-@@ -872,6 +858,24 @@ static int i915_pmu_event_event_idx(struct perf_event *event)
- 	return 0;
- }
- 
-+static struct pmu *i915_pmu_get(struct pmu *base)
-+{
-+	struct i915_pmu *pmu = container_of(base, struct i915_pmu, base);
-+	struct drm_i915_private *i915 = pmu_to_i915(pmu);
-+
-+	drm_dev_get(&i915->drm);
-+
-+	return base;
-+}
-+
-+static void i915_pmu_put(struct pmu *base)
-+{
-+	struct i915_pmu *pmu = container_of(base, struct i915_pmu, base);
-+	struct drm_i915_private *i915 = pmu_to_i915(pmu);
-+
-+	drm_dev_put(&i915->drm);
-+}
-+
- struct i915_str_attribute {
- 	struct device_attribute attr;
- 	const char *str;
-@@ -1154,6 +1158,8 @@ static void free_pmu(struct drm_device *dev, void *res)
- 	struct i915_pmu *pmu = res;
- 	struct drm_i915_private *i915 = pmu_to_i915(pmu);
- 
-+	perf_pmu_free(&pmu->base);
-+
- 	free_event_attributes(pmu);
- 	kfree(pmu->base.attr_groups);
- 	if (IS_DGFX(i915))
-@@ -1299,6 +1305,8 @@ void i915_pmu_register(struct drm_i915_private *i915)
- 	pmu->base.stop		= i915_pmu_event_stop;
- 	pmu->base.read		= i915_pmu_event_read;
- 	pmu->base.event_idx	= i915_pmu_event_event_idx;
-+	pmu->base.get		= i915_pmu_get;
-+	pmu->base.put		= i915_pmu_put;
- 
- 	ret = perf_pmu_register(&pmu->base, pmu->name, -1);
- 	if (ret)
 -- 
-2.47.0
+2.46.0
 
 
