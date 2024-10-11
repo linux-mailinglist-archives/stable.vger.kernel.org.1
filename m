@@ -1,271 +1,311 @@
-Return-Path: <stable+bounces-83476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F023899A81D
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 17:44:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5597C99A851
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 17:51:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 019432825CC
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 15:44:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96AB8282676
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 15:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D936195808;
-	Fri, 11 Oct 2024 15:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DCB198A1A;
+	Fri, 11 Oct 2024 15:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gHslUDHN"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ocQdl8Ww"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA64194AE8
-	for <stable@vger.kernel.org>; Fri, 11 Oct 2024 15:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728661454; cv=fail; b=IwATWwe+7Le3uoVe4dSN52OwaJuJPf2iYzBhNPAXIgd44e2VxmFf3+74o4KVIqFCerGrFB0w6gWcc7MFgx/CKgkb5R6P3WC7RXVtN4Csp13Ob9whIM+Jo4YzxwHoQpfgvNi7VH+EtZKJgmlIhJM7fU9UanVoT7c7ynDLgopbbvg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728661454; c=relaxed/simple;
-	bh=sENFTi+9GKO/now6s1I4O+D7hsxQChR2kstqlBmxU4A=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=T4IY+aTloSIp4EKyopfSldEnGAJl01ephLOX8CBS6usN68r4JgQi5atxMAf1V8p9t6CYMf3etkd7/oKW8acJBk3IqgjaJcKJApWP083veObYpfqIo4y4Ytj/aW0mtdG0PEdzyA/Pua4Nv9VbhvRYZ/UhF7AMxAQVbV/HEVtmhk8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gHslUDHN; arc=fail smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728661452; x=1760197452;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=sENFTi+9GKO/now6s1I4O+D7hsxQChR2kstqlBmxU4A=;
-  b=gHslUDHNMxhcN1O/L9jWlOp0klnVhHgkJ8xSxmL/uN+3T9CULA68saUv
-   kD3E64KerMuo0GumLC9cklXoNexyQ+RpnqGwe1lj7Yr0XBz5SldPExYQR
-   wD7hg4siZUDRKKLg+2ElqL9oisDysZjP6O2IDF6kkZCmahQLLzxd9O4Lk
-   l9qrl+YGmrOGyLJFAFh1snZYrZeVzNqtSh54+37k5XRTUTDPYL/lZJwAN
-   UT3oLcgUQV9ZDNZBNeVjegjXY5QnkIaH7gYiT0p0Z8OEFXoYyy1wgVKmr
-   qPp4bdZ5EfBQEq07qcKHlB3BKJBQEqM1OgDBbQJydZEpfQFczl9SbjIDp
-   A==;
-X-CSE-ConnectionGUID: 1nBdLsV3T9K++VtNrIaFKw==
-X-CSE-MsgGUID: APmUOciHTJO87Sd5buNKFw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="53471459"
-X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; 
-   d="scan'208";a="53471459"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 08:44:12 -0700
-X-CSE-ConnectionGUID: FYqbCdTsQjuylhrUS9H0qg==
-X-CSE-MsgGUID: SbJVl0bVRQmAzQyLHIeyZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; 
-   d="scan'208";a="81728608"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 11 Oct 2024 08:44:11 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 11 Oct 2024 08:44:11 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 11 Oct 2024 08:44:10 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Fri, 11 Oct 2024 08:44:10 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.49) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 11 Oct 2024 08:44:10 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JOLnrb6YaL+t35S4AZ61tmKKYdZ49YadVgxl3ZS+QfMBPncvM0OYyUrpwFvGnVBY6Swli28q/EpY22KGZikJgb3+/mjUpn2eEo7fTZx1I4ZeaO3bg+LUdZgrmUSr4O8ZshBMgmYlR7xvq79akzv/6QBgdaVpe4w2in3jEV8DnwRCXTc5vz/PafDZKINd0nJRTIv4lm+5+ZHqJWAH+wiqr2PC/+TMYECyqS6GZ2ICvO+dvtLFqe3vkIGj0tYM9AMEMXgLp+M1ODeGt3epfl7NB9PSAixQYTEl7oxUE5tmWSQ8ywiYpQ2Mom5ui98lTTO60zJHA1Rm3MT2V8JYvDWJxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sENFTi+9GKO/now6s1I4O+D7hsxQChR2kstqlBmxU4A=;
- b=tkBOHnr5ywzbRYuMo8QF3GtoqXnT8Jv4NLMH2xlD9Sdp52k/cTdD/rOanvE2Mnt8OLZUUyA7HRKJXyrVUkxPRKeG30ISdTIFJzodD1sjnGNaUjbT6CGmN8usM3kK7IudUIkeAAMRre90CHyXw9zmWpetOcSiuv5Yaa3YzXMxBblxNcQ3795KfM720dusKCf7DRGVhOVPf28axpRkY4ZeflvX7MlEBMc9/R3Qj9d7vEZvEE0amPU58hlmHzYNkV+UzNIb3NoYaWLns3jaAwErmR9NynmR1uaJisUH2GOQbu7u3FfI6DhTv/20FSmcGfd+rSqfvOpxJLwwHCcoUh2XMw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB6541.namprd11.prod.outlook.com (2603:10b6:8:d3::14) by
- SJ0PR11MB5151.namprd11.prod.outlook.com (2603:10b6:a03:2ac::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.18; Fri, 11 Oct
- 2024 15:44:08 +0000
-Received: from DS0PR11MB6541.namprd11.prod.outlook.com
- ([fe80::e268:87f2:3bd1:1347]) by DS0PR11MB6541.namprd11.prod.outlook.com
- ([fe80::e268:87f2:3bd1:1347%5]) with mapi id 15.20.8048.017; Fri, 11 Oct 2024
- 15:44:08 +0000
-Message-ID: <83c34df9-5c86-43f0-a029-786f0170747d@intel.com>
-Date: Fri, 11 Oct 2024 17:44:03 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/xe/ufence: ufence can be signaled right after
- wait_woken
-To: Matthew Auld <matthew.auld@intel.com>, <intel-xe@lists.freedesktop.org>
-CC: <stable@vger.kernel.org>, Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>
-References: <20241011132532.3845488-1-nirmoy.das@intel.com>
- <07151ff0-90b1-4ec8-9f64-f695fb411dbf@intel.com>
- <0e96d34e-1204-4208-bab6-5b8f585e672b@intel.com>
-Content-Language: en-US
-From: Nirmoy Das <nirmoy.das@intel.com>
-In-Reply-To: <0e96d34e-1204-4208-bab6-5b8f585e672b@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TL0P290CA0015.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:5::7)
- To DS0PR11MB6541.namprd11.prod.outlook.com (2603:10b6:8:d3::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D9E197A9E
+	for <stable@vger.kernel.org>; Fri, 11 Oct 2024 15:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728661878; cv=none; b=A9p736wBDmwHFLriGQdKvQjG4W4PIKyo3mNnAmDHPMJ3vhq2KmzNWuQO92wvszGO+v3dEL/09WoaQx9LQGE2eKAPabA6ouHSRb4K07sbPTc2+p2KP4TEEHqY1k+zbOG7D6a744HAhNzypyRSIanYTdbMlFF7v5kO1BCG7meNv9M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728661878; c=relaxed/simple;
+	bh=HUif9feDehDnmA4OSsbtnTJKJixKUTKSxisX6qbYo20=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=eSqJVUgjFVnnkP7JrRPH0gofmb3MoIG2PBkgzw/i3wypPdSUkDGQ+Xg2QuaxXmnBF/yJoXuo1U2horXgFf5wexdZKht9v74kOdmvKppFgZI0619qz+vu7zU4M0jnAVE3HIBtD/vH2V+MO2GgQ+lz8mW1CtVWbeLRgEbP9Y43ew8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ocQdl8Ww; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-539c10ea8adso17015e87.1
+        for <stable@vger.kernel.org>; Fri, 11 Oct 2024 08:51:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1728661874; x=1729266674; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9YRE8/CzNlPy/fMHd19CbAQn1zdYlnyMbeoTyUUS2vk=;
+        b=ocQdl8WwaJw1VZTcuDrhEOzAY67vBsuP09SGImObwyd89OzVq+rWnityFfYta+kMOn
+         Re9D5Qw5CMaCkBGv9cjSdZcNOYzAPSeGS97MSws8G+5E3DplSWsoL4LUVgHLxAmyDUXE
+         h6+Y0eM8mNHWES9wjBxW7JB9+iVzomcFFsGcan1Nk/U75j53H/KPsoJaGyJ6CnKqw+si
+         hfT8PyOpS0nfhRNHdl41W/tUyISC2OW/vJBx72hPVTO/OxqViL6ZSHdRMaRi1DPeTZUc
+         yuK8Fot6knmQ5+yPpJEMuujKlpEHBAriaSDirD85ZS0cQxxFcYFRkOFl300St+bG3o1y
+         qBgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728661874; x=1729266674;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9YRE8/CzNlPy/fMHd19CbAQn1zdYlnyMbeoTyUUS2vk=;
+        b=MN3EPRfWbWslRykj9n2SD+9SYogFD5MAw6woxXyFqU2M85LiCnJ/g/opWZBwRb3ZPL
+         ZVgaquJFh3wk3ZLJfJRYlHUvyBsm7DUpg3KjOwKO01bcDci6udKyt8f8/YpxkZoYkiQD
+         0zPtfssMAxBq/HgJtmzpCt2j2TK3SoI5QyuE/qm6vTNQGo6KXL0yE7PWEn0se+2UU+Qs
+         +l3UIBaa24SxnxT0kTGXB6ggR7y0vJZkxFJtdymBpLCiPQSvtMTjY4NTB3Flh+WAFBzM
+         NL3Fvx78XmhttbGA9lHg5eRgP2yZxp69K4Lb20u6oKCXuZXEOOBx8ca1EZc98mIJWO0Q
+         6lPA==
+X-Forwarded-Encrypted: i=1; AJvYcCXbaP0WTDjM10Hjwjluhi1f35zjewLuYGUALD7Amy7JMl/kiWhNfvjP1GdEzN5cETLG3m0ZdDM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YydClvGSwxOFJhSjaUItBQJc9aXSHyipAK8FiE/AJA8kuQL3fZs
+	WsPeQgPSKeb7LYEa5/AETAsRMbPVsRVYvU8Kq2/R0FJUFSh+tzh5VEM/8dqUSQ==
+X-Google-Smtp-Source: AGHT+IHbRO/TNFy7alHZxLobfYm/Oko0TRXn7KWSllCdtpS6OjkyKtxH3+hpEOvuWxvc/O2hrXqvBg==
+X-Received: by 2002:a05:6512:3e12:b0:538:9e44:3034 with SMTP id 2adb3069b0e04-539d6937c6cmr273779e87.6.1728661873505;
+        Fri, 11 Oct 2024 08:51:13 -0700 (PDT)
+Received: from localhost ([2a00:79e0:9d:4:b0bd:4045:f14c:aaf5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b79f9b4sm4248242f8f.86.2024.10.11.08.51.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Oct 2024 08:51:11 -0700 (PDT)
+From: Jann Horn <jannh@google.com>
+Date: Fri, 11 Oct 2024 17:50:54 +0200
+Subject: [PATCH RFC v2] mm: Enforce the stack gap when changing
+ inaccessible VMAs
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB6541:EE_|SJ0PR11MB5151:EE_
-X-MS-Office365-Filtering-Correlation-Id: a4f4894c-b8e4-467b-bfa0-08dcea0b8b66
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?cmxWVVI0N002a2tnV3o2R255b0xuY3lmbTlsT0ZrUzBjVWlLR1NUN01KYlBl?=
- =?utf-8?B?T1Jva093dld2R1o2V2RqZDJNUVRIKzNycFdJZFRZVUMraVcrcndSQnJ5VUFR?=
- =?utf-8?B?K3JqeVNpREZrTy9GS1NjTWN5aEw5Ujdndm5lYmZ2SDY4VWlwTEs1MTVUcGJk?=
- =?utf-8?B?b0Q5S1c4RjhZUUR0eW9yaUp0Z1orWW12dVA3NXRNSkFCSGRaTW9aNWpwdjIr?=
- =?utf-8?B?WUZteDQ3dmZBdHozK1pWKzcrWlJaYjJYdk1VbG1XYjFGWUtkY0t0eTd5SS9r?=
- =?utf-8?B?RUU1RzZ4eHFwZ3FDckxTR1lzWnUvb1FkeGpvSDVGb1ZEMXBPc3hSMVhnM3hR?=
- =?utf-8?B?bFFnd2hnVEo0WDFDVzBTYTRmcWpYdnB2c2JXWjVmMjVrRitIR29XaHNCY29T?=
- =?utf-8?B?ekJ4ZlBOU09VK0dqZUsxNkVUK2JHcFdQL2dIdjFWajhMZ1hPaUFVOHh6QXNs?=
- =?utf-8?B?MDdMVXlacXRIbHNWdnpTeWdYNEVwQ1JLT2dQWCtKSUJVNHVRS0lVcDg5dHRo?=
- =?utf-8?B?WEp0R05tSm4yZ3oxOWJ5akNuZE9ldmlia3NOUG0vbEFBN3Y1R2VCQjkxUTIy?=
- =?utf-8?B?MkJOSDl1NWR6Zzc4QzVRY1FVZWcrVThWR0JUanIvSHYrZjVCT0FlcVBtdW5q?=
- =?utf-8?B?NzJxYWNYWWU3VTAzN1hoR0FXMnpIbjJsTXFvVE91clZkOXZBVlB5NlNGcnZI?=
- =?utf-8?B?dHBkMGNCRm82b1prVXFsT2E3SDMvZEhwUDY2MjVDRTJEZEQ5T0FTdWRnMDVk?=
- =?utf-8?B?T3A0Nm9KTk9kdXdZa0lTRW8raHRzSThyNGxOdVVIYXloUWQ2TS9aZ3MyZitw?=
- =?utf-8?B?NGI4Rk1PSXhNZFVvMUM5c1RiT3F5K3FPaUJXV1MvUExxazEwL1FhR1Z0dDFT?=
- =?utf-8?B?QWVaZFNyQ0h6c0JXRjVReUk5QlVZdXR3NkRwdUNjbFBxRzhXWVd6ajF6TjFY?=
- =?utf-8?B?SzFvc0Q4MGoxSkIzZGY2ZDBXeDdXVjZUa1FvTk5qTkNVQm1NZVN5M2VBd0th?=
- =?utf-8?B?RkxLQ0hNc25qTVNENnlsbzVYMjh3ajdROTh2S2V2RC8vRFA5a1hNNFlyRG82?=
- =?utf-8?B?R3g3ZTZON2gyMFE1WnhGM3ExUlMzWXF3LzQrditPRjRxMEM2N0RMVXN2c1Bx?=
- =?utf-8?B?WWMxcHRRQnpKTFdDRW50TjU5VjllQ1h1aGlPa1lyUnF1bmoyenA4bnA5UUdw?=
- =?utf-8?B?QWJIWFl5c21lRFpTbEJlWFAwelNpaVNnTVFiQmkrMGZZVTA2dlU0T2Z1aVB1?=
- =?utf-8?B?M3ZFVjZmYzk3bFdpTkw4Zk9jektYcWdWNUowZDJhT2lpRmJFYlpza0V2Nk5t?=
- =?utf-8?B?bW05V2cxQWJjOEI1aVNGL0hpZStXL3BpbHdzUnZoTTllWk5QazQzSGVoOVZQ?=
- =?utf-8?B?TjdhNVVuQUhQTXIzT0wrdU9ralVyTmltb2pLMElmVVZVWUtVRUZpMU5mRU5D?=
- =?utf-8?B?b0d5bGRwNFkxK1hSRkZSWkEyUXNmMWhZbG1qYTRScGFmbE55MVZISHhxOGZV?=
- =?utf-8?B?SzIzT3dYaFNTUkNiQzZiQTFqRXBSSGJYQmxHS3VzODBQWGlRS21rbHBuMnFr?=
- =?utf-8?B?RUlGUnF5azA0bnZuZVdsYzhRcU5wUkFSSGw4dUxacXN4bTljaFNscGE4ejdo?=
- =?utf-8?Q?lXCSAqDnGjlZAYzU1IIneK+aeoLXe3/l9kunDXqgFnac=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB6541.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VCt4V091aWIzTk5EQWhjZmJCQzRoZjl5NDBJUlRocFdXUGprTTJHTjFBRVp4?=
- =?utf-8?B?cVlsczFMRGl0QXB6eGZsTTVmOFd1dFAvaVNuaU84dEY0ajJRUzVUb3V0QXBl?=
- =?utf-8?B?YVlQTFJ2cVgvNGVpa0FnY1dyczNuaTZhTk55RW1PdTFzUkE2TVRjOXdVcjZL?=
- =?utf-8?B?NnVmSnlsL296R2VwUmpFakxWR0Z1Z2gzZTZsWWdOL3k4dHo1SUlnZ2twTE9X?=
- =?utf-8?B?YWg0RTY0aTF0bzdYRWNGM1VQbXpQL1BuTy9CaXJhK0xFWWdaOXFkaDNVd1ov?=
- =?utf-8?B?Wks0T2kvMjdUWUx2VXpJcjNMSXF0Ym4wdVlxeWdsM2VSNkFkWjl2Wkt4WTVF?=
- =?utf-8?B?ZGRkK1dxNGk1aDB4QlQ0VmtoVlNtcTBmaHNEOVczNnVGNFJvT3AzNWxlMVA4?=
- =?utf-8?B?N0JwUDJBUHdPemFQOG52NnNHZHlwWlRibmJmOHB0MW5QTVhkZzNGZEJsRE5q?=
- =?utf-8?B?QkxGaXFzQWY2Slp1Nlk2d1E1SWZJbHFyU1ptNEppc3dmNytSMnNUYjZKekJw?=
- =?utf-8?B?UytrdlNOQ1R4TGNZdjFOV0trWGd0RVcyN0FPRTV2VS9MSElvOEpmL2cya2RJ?=
- =?utf-8?B?RENybER5cHdQOU5yNERjWDdqa0oxbHRsQ05ETVZ3UitoSTdYMm50QXh3cmgy?=
- =?utf-8?B?K0kzaTBWSmF5aXREWDE0eTMwTHNiTzdKem9DSms0Vi9sL0xPYXFSWXM4SE5C?=
- =?utf-8?B?V2VxcmRVMGdhY1JDN0RWMTRZTHNPWDRNN2pMa0lHczhNZTBPVXhSVXFkZGFv?=
- =?utf-8?B?R1N5QUx3WjNhVVdhUlo2MTZqTDZDRUxsZFFWZGdyZ0UzQXVWK0ppNlFKdWI1?=
- =?utf-8?B?cHJ4T2RKMjRrUjlTbERZbHNPWDZGNjF3cHpHdHBtMXJ3TGRtRXhNZ3Bkdm5y?=
- =?utf-8?B?bFd1d0NlUjJpY08xMVoxb0d0SCtKZWhPZWhrNXN3V3poMkdSd08wUUw1WmVv?=
- =?utf-8?B?dHFaK05tdUNoMWVCbUNQeG9MeHpETlZQSEl2TVpFK3VQME9RRjVObmVMSmNr?=
- =?utf-8?B?d3pPVDh3bmlmREt3NFN3dUlFWWVjL0VMWVNrcHY5TVRRTXVsSXNZenZWK3ZC?=
- =?utf-8?B?dmEzSTZzVkdTMHR0Z2lxY3hhckhicmx4bU1qamZCQXZOeUVscHdxeTNPVjU2?=
- =?utf-8?B?NXhvZXdqTGVndElxVk4ycGVraForcG9RcEV6YWx4cWxDN0FBTDJGZkIrOWc5?=
- =?utf-8?B?K3RBd250enlaaHFScEtMYlZzNlhHcjlzNFczdFg3V2QxUkFQeU9ETHJHM3NU?=
- =?utf-8?B?ZDZZRFVhYXBOWWttY1Nha1VoblFxMkRmbHBZUHVhV0JRbFhRNnBqVG5FN0lN?=
- =?utf-8?B?SEQyODdBaDBidHZsb3JVU3lDNllxa0EzVFF3Ym1LTHpDQUNvU2RGZCt1Rk4v?=
- =?utf-8?B?TkNzVEN4QmZBc1IxQUxac0pOTmg5aTltYW5VUDdwTnJ4bU9PRDRXK29IK1lP?=
- =?utf-8?B?OUZrUkVqTk5XeHd1RTNOQXlMYjI3QnVKS2RqbDhKMTMwbmQzRlNlOXYwNWty?=
- =?utf-8?B?WFlxZUhlcDRtQVJXQWZqaEdreWtHVU96THltU3M1Q013RjV2dmgzK2NZNjJX?=
- =?utf-8?B?UjlTWXAvVG0zV2p4RU1jbVRMUlZkalVPWkNuTTZKaXgxSWNCS3VHMSszM2x3?=
- =?utf-8?B?cVIzSVFUTmlBckc1aHpqUzg3N0w4am9pVlkvTUhGMlUwK3ovb0ZYUG9YeXFF?=
- =?utf-8?B?Y0hGaDdodWo2Yk1KSWJlektaUEZvcTlKNm9HMnZUc01sdkJrcXA4d1NGRXow?=
- =?utf-8?B?UjJ6THM0ajB5czNzWmFTZnJFNlZqc1kwRFdIRFVKcEFhUHhNd25pVGx1UFhj?=
- =?utf-8?B?Q0xWbGRGZGRlTnNKMms5UEtPN1FPRU1ld1gvcEZOVCtJWmtlUjNSZEt0RzZn?=
- =?utf-8?B?TWM1QlBTZHllaEwrSlpXUmx2M3YvWFdhYnlaaHdGZjVMdUY3VXBxNFA0QWxh?=
- =?utf-8?B?TmI0a3dkR1NkSlFpSmYzaVhydTRDRGxZWHd4KzBLcnhBdDdvWGh4SlZnOWt5?=
- =?utf-8?B?Wk5qM3M3RmNDOTI3K21TUGFHMXBrSi9QaXQ3WDB0eStWQVY4bGRxZ3dKd2Yx?=
- =?utf-8?B?RkMvbS9WOWZrNFpxMEw1MTlCbDUvWittUXJLaFhQWHVJRTNtNk05dmZnY2x0?=
- =?utf-8?Q?1oq1jWpf3q7KR/KKs38UmSFZf?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a4f4894c-b8e4-467b-bfa0-08dcea0b8b66
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB6541.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2024 15:44:08.6655
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iR5YOTLJyYkEqbhAMDRXyAh4YZR9SWl/NpCfdwlTKdQc+UBmXrzRNj0EwHDdJwT+VxcBubIpgwOg6zTzrGK68A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5151
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241011-stack-gap-inaccessible-v2-1-111b6a0ee2cb@google.com>
+X-B4-Tracking: v=1; b=H4sIAF1JCWcC/4WNQQqDMBBFryKzboqTBoxdFQo9QLfFRUzGOFSNJ
+ CIt4t0bvECX73/++xskikwJrsUGkVZOHKYM8lSA7c3kSbDLDLKUCstSi7QY+xbezIInYy2lxO1
+ AwlYXrLvKqRZbyOM5UsefQ/yC5+MOTQ57TkuI3+NsxaP6511RoNBKO+V0jZ3Emw/BD3S2YYRm3
+ /cft9gtJ8IAAAA=
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ Vlastimil Babka <vbabka@suse.cz>
+Cc: Hugh Dickins <hughd@google.com>, Oleg Nesterov <oleg@redhat.com>, 
+ Michal Hocko <mhocko@kernel.org>, Helge Deller <deller@gmx.de>, 
+ Ben Hutchings <ben@decadent.org.uk>, Willy Tarreau <w@1wt.eu>, 
+ Rik van Riel <riel@surriel.com>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Jann Horn <jannh@google.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728661866; l=8264;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=HUif9feDehDnmA4OSsbtnTJKJixKUTKSxisX6qbYo20=;
+ b=L/KAPOP/fjJFNJQs+u+BvgpI0X/1jnDmAhoZeLII7xgJiUM/TUvNiOJW8hDegFH/+QXqnxHNu
+ kasxkG6dsZTA1klbWQwFJoaRQw/4x/A/eKd8bMzIiSaBmMjRuMRsKHV
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
+
+As explained in the comment block this change adds, we can't tell what
+userspace's intent is when the stack grows towards an inaccessible VMA.
+
+We should ensure that, as long as code is compiled with something like
+-fstack-check, a stack overflow in this code can never cause the main stack
+to overflow into adjacent heap memory - so the bottom of a stack should
+never be directly adjacent to an accessible VMA.
+
+As suggested by Lorenzo, enforce this by blocking attempts to:
+
+ - make an inaccessible VMA accessible with mprotect() when it is too close
+   to a stack
+ - replace an inaccessible VMA with another VMA using MAP_FIXED when it is
+   too close to a stack
 
 
-On 10/11/2024 5:16 PM, Matthew Auld wrote:
-> On 11/10/2024 15:10, Nirmoy Das wrote:
->>
->> On 10/11/2024 3:25 PM, Nirmoy Das wrote:
->>> do_comapre() can return success after wait_woken() which is treated as
->>> -ETIME here.
->>
->> s/after wait_woken()/after timedout wait_woken()
->>
->> I will resend with that change.
->>
+I have a (highly contrived) C testcase for 32-bit x86 userspace with glibc
+that mixes malloc(), pthread creation, and recursion in just the right way
+such that the main stack overflows into malloc() arena memory, see the
+linked list post.
+
+I don't know of any specific scenario where this is actually exploitable,
+but it seems like it could be a security problem for sufficiently unlucky
+userspace.
+
+Link: https://lore.kernel.org/r/CAG48ez2v=r9-37JADA5DgnZdMLCjcbVxAjLt5eH5uoBohRdqsw@mail.gmail.com/
+Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Fixes: 561b5e0709e4 ("mm/mmap.c: do not blow on PROT_NONE MAP_FIXED holes in the stack")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+This is an attempt at the alternate fix approach suggested by Lorenzo.
+
+This turned into more code than I would prefer to have for a scenario
+like this...
+
+Also, the way the gap is enforced in my patch for MAP_FIXED_NOREPLACE is
+a bit ugly. In the existing code, __get_unmapped_area() normally already
+enforces the stack gap even when it is called with a hint; but when
+MAP_FIXED_NOREPLACE is used, we kinda lie to __get_unmapped_area() and
+tell it we'll do a MAP_FIXED mapping (introduced in commit
+a4ff8e8620d3f when MAP_FIXED_NOREPLACE was created), then afterwards
+manually reject overlapping mappings.
+So I ended up also doing the gap check separately for
+MAP_FIXED_NOREPLACE.
+
+The following test program exercises scenarios that could lead to the
+stack becoming directly adjacent to another accessible VMA,
+and passes with this patch applied:
+<<<
+
+int main(void) {
+  setbuf(stdout, NULL);
+
+  char *ptr = (char*)(  (unsigned long)(STACK_POINTER() - (1024*1024*4)/*4MiB*/) & ~0xfffUL  );
+  if (mmap(ptr, 0x1000, PROT_NONE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0) != ptr)
+    err(1, "mmap distant-from-stack");
+  *(volatile char *)(ptr + 0x1000); /* expand stack */
+  system("echo;cat /proc/$PPID/maps;echo");
+
+  /* test transforming PROT_NONE mapping adjacent to stack */
+  if (mprotect(ptr, 0x1000, PROT_READ|PROT_WRITE|PROT_EXEC) == 0)
+    errx(1, "mprotect adjacent to stack allowed");
+  if (mmap(ptr, 0x1000, PROT_READ|PROT_WRITE, MAP_ANONYMOUS|MAP_PRIVATE|MAP_FIXED, -1, 0) != MAP_FAILED)
+    errx(1, "MAP_FIXED adjacent to stack allowed");
+
+  if (munmap(ptr, 0x1000))
+    err(1, "munmap failed???");
+
+  /* test creating new mapping adjacent to stack */
+  if (mmap(ptr, 0x1000, PROT_READ|PROT_WRITE, MAP_ANONYMOUS|MAP_PRIVATE|MAP_FIXED_NOREPLACE, -1, 0) != MAP_FAILED)
+    errx(1, "MAP_FIXED_NOREPLACE adjacent to stack allowed");
+  if (mmap(ptr, 0x1000, PROT_READ|PROT_WRITE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0) == ptr)
+    errx(1, "mmap hint adjacent to stack accepted");
+
+  printf("all tests passed\n");
+}
 >>>
->>> Fixes: e670f0b4ef24 ("drm/xe/uapi: Return correct error code for xe_wait_user_fence_ioctl")
->>> Cc: <stable@vger.kernel.org> # v6.8+
->>> Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
->>> Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1630
->>> Cc: Matthew Auld <matthew.auld@intel.com>
->>> Cc: Matthew Brost <matthew.brost@intel.com>
->>> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
->>> ---
->>>   drivers/gpu/drm/xe/xe_wait_user_fence.c | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/gpu/drm/xe/xe_wait_user_fence.c b/drivers/gpu/drm/xe/xe_wait_user_fence.c
->>> index d46fa8374980..d532283d4aa3 100644
->>> --- a/drivers/gpu/drm/xe/xe_wait_user_fence.c
->>> +++ b/drivers/gpu/drm/xe/xe_wait_user_fence.c
->>> @@ -169,7 +169,7 @@ int xe_wait_user_fence_ioctl(struct drm_device *dev, void *data,
->>>               args->timeout = 0;
->>>       }
->>>   -    if (!timeout && !(err < 0))
->
-> Since err > 0 is impossible, this could be written as: && err == 0.
->
-> So I think this is saying: if we have timedout and err does not already have an error set then go ahead and set to -ETIME since we hit the timeout.
+---
+Changes in v2:
+- Entirely new approach (suggested by Lorenzo)
+- Link to v1: https://lore.kernel.org/r/20241008-stack-gap-inaccessible-v1-1-848d4d891f21@google.com
+---
+ include/linux/mm.h |  1 +
+ mm/mmap.c          | 65 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ mm/mprotect.c      |  6 +++++
+ 3 files changed, 72 insertions(+)
 
-This is the issue here. This assumption is wrong that if timeout happen then return -ETIME even though the fence is signaled.
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index ecf63d2b0582..ecd4afc304ca 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3520,6 +3520,7 @@ unsigned long change_prot_numa(struct vm_area_struct *vma,
+ 
+ struct vm_area_struct *find_extend_vma_locked(struct mm_struct *,
+ 		unsigned long addr);
++bool overlaps_stack_gap(struct mm_struct *mm, unsigned long addr, unsigned long len);
+ int remap_pfn_range(struct vm_area_struct *, unsigned long addr,
+ 			unsigned long pfn, unsigned long size, pgprot_t);
+ int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
+diff --git a/mm/mmap.c b/mm/mmap.c
+index dd4b35a25aeb..937361be3c48 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -359,6 +359,20 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
+ 			return -EEXIST;
+ 	}
+ 
++	/*
++	 * This does two things:
++	 *
++	 * 1. Disallow MAP_FIXED replacing a PROT_NONE VMA adjacent to a stack
++	 * with an accessible VMA.
++	 * 2. Disallow MAP_FIXED_NOREPLACE creating a new accessible VMA
++	 * adjacent to a stack.
++	 */
++	if ((flags & (MAP_FIXED_NOREPLACE | MAP_FIXED)) &&
++	    (prot & (PROT_READ | PROT_WRITE | PROT_EXEC)) &&
++	    !(vm_flags & (VM_GROWSUP|VM_GROWSDOWN)) &&
++	    overlaps_stack_gap(mm, addr, len))
++		return (flags & MAP_FIXED) ? -ENOMEM : -EEXIST;
++
+ 	if (flags & MAP_LOCKED)
+ 		if (!can_do_mlock())
+ 			return -EPERM;
+@@ -1341,6 +1355,57 @@ struct vm_area_struct *expand_stack(struct mm_struct *mm, unsigned long addr)
+ 	return vma;
+ }
+ 
++/*
++ * Does the specified VA range overlap the stack gap of a preceding or following
++ * stack VMA?
++ * Overlapping stack VMAs are ignored - so if someone deliberately creates a
++ * MAP_FIXED mapping in the middle of a stack or such, we let that go through.
++ *
++ * This is needed partly because userspace's intent when making PROT_NONE
++ * mappings is unclear; there are two different reasons for creating PROT_NONE
++ * mappings:
++ *
++ * A) Userspace wants to create its own guard mapping, for example for stacks.
++ * According to
++ * <https://lore.kernel.org/all/1499126133.2707.20.camel@decadent.org.uk/T/>,
++ * some Rust/Java programs do this with the main stack.
++ * Enforcing the kernel's stack gap between these userspace guard mappings and
++ * the main stack breaks stuff.
++ *
++ * B) Userspace wants to reserve some virtual address space for later mappings.
++ * This is done by memory allocators.
++ * In this case, we want to enforce a stack gap between the mapping and the
++ * stack.
++ *
++ * Because we can't tell these cases apart when a PROT_NONE mapping is created,
++ * we instead enforce the stack gap when a PROT_NONE mapping is made accessible
++ * (using mprotect()) or replaced with an accessible one (using MAP_FIXED).
++ */
++bool overlaps_stack_gap(struct mm_struct *mm, unsigned long addr, unsigned long len)
++{
++
++	struct vm_area_struct *vma, *prev_vma;
++
++	/* step 1: search for a non-overlapping following stack VMA */
++	vma = find_vma(mm, addr+len);
++	if (vma && vma->vm_start >= addr+len) {
++		/* is it too close? */
++		if (vma->vm_start - (addr+len) < stack_guard_start_gap(vma))
++			return true;
++	}
++
++	/* step 2: search for a non-overlapping preceding stack VMA */
++	if (!IS_ENABLED(CONFIG_STACK_GROWSUP))
++		return false;
++	vma = find_vma_prev(mm, addr, &prev_vma);
++	/* don't handle cases where the VA start overlaps a VMA */
++	if (vma && vma->vm_start < addr)
++		return false;
++	if (!prev_vma || !(prev_vma->vm_flags & VM_GROWSUP))
++		return false;
++	return addr - prev_vma->vm_end < stack_guard_gap;
++}
++
+ /* do_munmap() - Wrapper function for non-maple tree aware do_munmap() calls.
+  * @mm: The mm_struct
+  * @start: The start address to munmap
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 0c5d6d06107d..2300e2eff956 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -772,6 +772,12 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
+ 		}
+ 	}
+ 
++	error = -ENOMEM;
++	if ((prot & (PROT_READ | PROT_WRITE | PROT_EXEC)) &&
++	    !(vma->vm_flags & (VM_GROWSUP|VM_GROWSDOWN)) &&
++	    overlaps_stack_gap(current->mm, start, end - start))
++		goto out;
++
+ 	prev = vma_prev(&vmi);
+ 	if (start > vma->vm_start)
+ 		prev = vma;
 
+---
+base-commit: 8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b
+change-id: 20241008-stack-gap-inaccessible-c7319f7d4b1b
+-- 
+Jann Horn <jannh@google.com>
 
-> But it might have -EIO or -ERESTARTSYS for example, which should then take precedence over -ETIME...
->
->>> +    if (!timeout && err < 0)
->
-> ...this would then trample the existing err. The err can either be zero or an existing error at this point, so I think just remove this entire check:
->
-> -       if (!timeout && !(err < 0))
-> -               err = -ETIME;
-> -
->
-> ?
-
-
-Yes, this works for me. The for loops sets err correctly even when there is real timeout on not-signaled fence.
-
-I will resend a v2.
-
-
-Regards,
-
-Nirmoy
-
->
->>>           err = -ETIME;
->>>         if (q)
 
