@@ -1,77 +1,74 @@
-Return-Path: <stable+bounces-83422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F3BC999C1E
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 07:34:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E96B3999C3D
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 07:48:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 634C3B2289B
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 05:34:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1739A1C22252
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 05:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0C2194088;
-	Fri, 11 Oct 2024 05:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B387D1F8F19;
+	Fri, 11 Oct 2024 05:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="clI8qarG"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K5xphyqG"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEEF2F26;
-	Fri, 11 Oct 2024 05:34:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C074019CC16
+	for <stable@vger.kernel.org>; Fri, 11 Oct 2024 05:48:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728624871; cv=none; b=OxIF59WEe7MO4ieBfGi4XVVl/XFjmB/td41fyRLdbkvUyzNcJBh4ZehEjP9wmO5M5H8PQZqEDkgnoe+o1NLV6lmZg8LL4ElcpOEPUV9nZm4+ISeTwy7z7eq/fgneLgW9cL+vhR5ocY4WMw6X1KQb4es7ybtQcIRzzsCm4ctKp28=
+	t=1728625730; cv=none; b=mVDN2Cn5rIKhoKPGZTTGtSKpdiKLUAnwDKLASa5Sn1ZKCRPEsfIy584gCQzXen/8ddYuQ06Ky0ZMNeCWp8RWIyDIcH3hB5i6XyDi2rX5uMyspaRTZSwiolceoFyCgYQAU8XRdlTcet/UdQ13i9NYB4gq+w1s8/qrXr8RCGBP7iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728624871; c=relaxed/simple;
-	bh=obtioSTRwwRcBv5j9xguOwlGpsr+Bb/BJZ8PlRGyjvI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nVgX/9z/cLlacH/McveSMZdwN7NHRz1QeRmOyAjuFzKWQqc+EiR6z8Bca4i05yzN1QMi/sYh/eOPb1/0EhW5N9MOKkmcQBk/pzJFg3Gm1FSJ2jsGbHNkOR4fyz2EDtdym+ZYFNS48csv8LctdnVoj9KdM9+nhfGOWFXPZOE5SeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=clI8qarG; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728624869; x=1760160869;
-  h=subject:from:to:cc:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=obtioSTRwwRcBv5j9xguOwlGpsr+Bb/BJZ8PlRGyjvI=;
-  b=clI8qarGzdkGAVF8sK7+r9KEeTL1P1Ew6GWZEjzFJCYAGk3NBBDpEqBG
-   5R9fazGja54Elc0eldG59sfRY70b2XAQD2q1QT7xHwngL8ceWbQScrEVN
-   XS1CKxzL67+D2gjQ3ty7/LnZy6jK/dfUzypz5gYx1ELQkLj5qO5wfdWQO
-   pGz9lKlENjgOvxbtZBocTGgMHZOpmYQzxdzaRb9odxaE1fEn18FREiYRX
-   xY7D+ZKS1JL1eiz+lP3ubxOnc1kOSSylaVHKFRZl7E4s8HHv7Su797ZA6
-   m3eMiB0AY4lq7eJSpdGd4Gayxh5s1GkA0jkdZYGU4CEcNvDnvXKui/R1g
-   A==;
-X-CSE-ConnectionGUID: zlXdb/kCSlqzX/qV+dOXpg==
-X-CSE-MsgGUID: 7XO47e79SvCo6WoSST2aqA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="53416739"
-X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; 
-   d="scan'208";a="53416739"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 22:34:29 -0700
-X-CSE-ConnectionGUID: sR/lD/9QThOYEuzw1k7Pfw==
-X-CSE-MsgGUID: JsrE8DygRrei8KcvRSSP4g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; 
-   d="scan'208";a="114262380"
-Received: from inaky-mobl1.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.125.111.110])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 22:34:29 -0700
-Subject: [PATCH 4/5] cxl/port: Fix use-after-free,
- permit out-of-order decoder shutdown
-From: Dan Williams <dan.j.williams@intel.com>
-To: dave.jiang@intel.com, ira.weiny@intel.com
-Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Davidlohr Bueso <dave@stgolabs.net>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Alison Schofield <alison.schofield@intel.com>, Zijun Hu <zijun_hu@icloud.com>,
- vishal.l.verma@intel.com, linux-cxl@vger.kernel.org
-Date: Thu, 10 Oct 2024 22:34:26 -0700
-Message-ID: <172862486548.2150669.3548553804904171839.stgit@dwillia2-xfh.jf.intel.com>
-In-Reply-To: <172862483180.2150669.5564474284074502692.stgit@dwillia2-xfh.jf.intel.com>
-References: <172862483180.2150669.5564474284074502692.stgit@dwillia2-xfh.jf.intel.com>
-User-Agent: StGit/0.18-3-g996c
+	s=arc-20240116; t=1728625730; c=relaxed/simple;
+	bh=gSDr2qXiWunqD83kcCcfkWzmofL1UeyjfIsv5gb6YVw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HmdKNgxB/JPvGXmBwRK40Rh3ZIjcduRZhgODh3LEWLtL/tTlPZeVyHG32NhaHdn4mVic7GoDTPx46M6N3OOUkQcV260NOYZy1fDymLoGCRMsjxU8cLspYc++Vbsyq90Qmi7+jdFjpCptfLz46/GpsxCm3JtCYgarlktZd3q2Js8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K5xphyqG; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2fad75b46a3so16493971fa.2
+        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 22:48:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1728625727; x=1729230527; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kAUIBKUFiqHBE7OX0O7eWG2UC2nEpnjuYCzeR97fn5c=;
+        b=K5xphyqGvesNOdZhdTEFto1ShyNHS1P1jN2zpQl4Ps5Dg2JOv+Qhg0fZB/UJmrHbcQ
+         ZqqQcOsBVBGrbRPRzY5fNdWjsa2A+j6rlWD5dQzvX1KWIjJ4hoJA3F9+jry+pZyyuApe
+         rXxLTYRDaIoaBeEbVlPHd90yly5NvTRjOF8wYaR9uxHM+7Qm2YbBvttCu9qTIdbqFS72
+         WBOQYNjzwz9k9w/ZVe3fsqdsW0wPNqvQbI9wp9E8HZdi3QQlVmKihUCfSu0UBHmKxv91
+         /LfD/BPrwd2kXofVW+k+hohhEH1pQbKYiqHYj5Fov2r0zX1I3V/WdNvhtbhESLwcyJN6
+         jXIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728625727; x=1729230527;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kAUIBKUFiqHBE7OX0O7eWG2UC2nEpnjuYCzeR97fn5c=;
+        b=KLUu5JTwjtuGSGplg1pAL0HDFnl8UIaytbcXdjj6WXwd8EbDwnbTi60PR0fDiMVRe8
+         +BxhW2FCw0QsN3+Uext2GngW0MMNXmipXob1i7S0akFK16tRxURfXjW7AsMHkRbKQggd
+         Ln23zjV6SD/E99oGPnnoSdKCT/goFqmO62BYYQPOG9LGw94BHvd2AtSc8fLBdvUzX67+
+         3TD/QNX7tKj4ZXj1Z8Gzf3h/YAH/uoy4gI2liWPHjOFc2flIWHNCA7yuYy56zmazqrFD
+         wLIY4A+uvFCginRpL+2uQYufeoS6+GAcvK4YYjmCYHkhmf/jOk/oTxELXqVSMPIbMiJw
+         8O5g==
+X-Forwarded-Encrypted: i=1; AJvYcCUbCTAE4CmwYRTU++PwjvT6sMBzqC78p+NOQNQj7Z73iLYvG2BobQq94nig6Ize9QftiR/sw2Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcbGhvcCiXKX7MRHRqdg7okEVtBodAaKodXFCWS4xvi480bdx+
+	IHpjC243vXIlnVi5eCNKTaxxsGReX4nz/3FxBIKP6iDzChzlf1KNPNNF3MfN42w=
+X-Google-Smtp-Source: AGHT+IElgnZzJUF2VeU6qLAFyoymFdQaxiQWEzvuNGs2dbyEg43CbtOA9CKVQOGhLlMEcGoNVmZPew==
+X-Received: by 2002:a2e:be13:0:b0:2fa:c46a:eb4e with SMTP id 38308e7fff4ca-2fb326fe462mr3847561fa.3.1728625726600;
+        Thu, 10 Oct 2024 22:48:46 -0700 (PDT)
+Received: from umbar.lan ([192.130.178.90])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fb24770a41sm4186111fa.129.2024.10.10.22.48.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Oct 2024 22:48:45 -0700 (PDT)
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Fri, 11 Oct 2024 08:48:39 +0300
+Subject: [PATCH RESEND] thermal/drivers/qcom/lmh: remove false lockdep
+ backtrace
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,385 +77,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20241011-lmh-lockdep-v1-1-495cbbe6fef1@linaro.org>
+To: Amit Kucheria <amitk@kernel.org>, 
+ Thara Gopinath <thara.gopinath@gmail.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
+ Lukasz Luba <lukasz.luba@arm.com>
+Cc: Thara Gopinath <thara.gopinath@linaro.org>, linux-pm@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2582;
+ i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
+ bh=gSDr2qXiWunqD83kcCcfkWzmofL1UeyjfIsv5gb6YVw=;
+ b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBnCLw70Pj12BWKspOc3Iexi6FaN+ED1D3pwfnZc
+ rZjUEBmHieJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZwi8OwAKCRCLPIo+Aiko
+ 1ZIXB/9KZut2clhqKYo18Rw7gj6QdBb3gWOHFkHnZwIf4UKQIRvHY36O3T/LEj/iqLn6LnMhO/G
+ oMx2OjPb+s6le34h63v+PU0Zj6RUbR6lJyZhBpb3PIUhh/Xb7ncNroEgagZXa101Wx9RO4CsTls
+ Z9bELVN7jxZ5zni4l08TXgV6Rscm9Vz21wyTpAjytzy8zgjl38QVXbPVAxcZO76N1OOw3ZF3uoz
+ ny+8AZBw8zZDCmtq+Dxoi7ZA7JtXbPMHcjEqEnx491tIFMA7Sn2xliuZbpYj7WEtd9osPi0SBit
+ VqJfFGBlEVV4lDOCl0RBgJzUo7zRdNfg86xrvOnpfE+MH1KD
+X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
+ fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
 
-In support of investigating an initialization failure report [1],
-cxl_test was updated to register mock memory-devices after the mock
-root-port/bus device had been registered. That led to cxl_test crashing
-with a use-after-free bug with the following signature:
+Annotate LMH IRQs with lockdep classes so that the lockdep doesn't
+report possible recursive locking issue between LMH and GIC interrupts.
 
-    cxl_port_attach_region: cxl region3: cxl_host_bridge.0:port3 decoder3.0 add: mem0:decoder7.0 @ 0 next: cxl_switch_uport.0 nr_eps: 1 nr_targets: 1
-    cxl_port_attach_region: cxl region3: cxl_host_bridge.0:port3 decoder3.0 add: mem4:decoder14.0 @ 1 next: cxl_switch_uport.0 nr_eps: 2 nr_targets: 1
-    cxl_port_setup_targets: cxl region3: cxl_switch_uport.0:port6 target[0] = cxl_switch_dport.0 for mem0:decoder7.0 @ 0
-1)  cxl_port_setup_targets: cxl region3: cxl_switch_uport.0:port6 target[1] = cxl_switch_dport.4 for mem4:decoder14.0 @ 1
-    [..]
-    cxld_unregister: cxl decoder14.0:
-    cxl_region_decode_reset: cxl_region region3:
-    mock_decoder_reset: cxl_port port3: decoder3.0 reset
-2)  mock_decoder_reset: cxl_port port3: decoder3.0: out of order reset, expected decoder3.1
-    cxl_endpoint_decoder_release: cxl decoder14.0:
-    [..]
-    cxld_unregister: cxl decoder7.0:
-3)  cxl_region_decode_reset: cxl_region region3:
-    Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6bc3: 0000 [#1] PREEMPT SMP PTI
-    [..]
-    RIP: 0010:to_cxl_port+0x8/0x60 [cxl_core]
-    [..]
-    Call Trace:
-     <TASK>
-     cxl_region_decode_reset+0x69/0x190 [cxl_core]
-     cxl_region_detach+0xe8/0x210 [cxl_core]
-     cxl_decoder_kill_region+0x27/0x40 [cxl_core]
-     cxld_unregister+0x5d/0x60 [cxl_core]
+For the reference:
 
-At 1) a region has been established with 2 endpoint decoders (7.0 and
-14.0). Those endpoints share a common switch-decoder in the topology
-(3.0). At teardown, 2), decoder14.0 is the first to be removed and hits
-the "out of order reset case" in the switch decoder. The effect though
-is that region3 cleanup is aborted leaving it in-tact and
-referencing decoder14.0. At 3) the second attempt to teardown region3
-trips over the stale decoder14.0 object which has long since been
-deleted.
+       CPU0
+       ----
+  lock(&irq_desc_lock_class);
+  lock(&irq_desc_lock_class);
 
-The fix here is to recognize that the CXL specification places no
-mandate on in-order shutdown of switch-decoders, the driver enforces
-in-order allocation, and hardware enforces in-order commit. So, rather
-than fail and leave objects dangling, always remove them.
+ *** DEADLOCK ***
 
-In support of making cxl_region_decode_reset() always succeed,
-cxl_region_invalidate_memregion() failures are turned into warnings.
-Crashing the kernel is ok there since system integrity is at risk if
-caches cannot be managed around physical address mutation events like
-CXL region destruction.
+Call trace:
+ dump_backtrace+0x98/0xf0
+ show_stack+0x18/0x24
+ dump_stack_lvl+0x90/0xd0
+ dump_stack+0x18/0x24
+ print_deadlock_bug+0x258/0x348
+ __lock_acquire+0x1078/0x1f44
+ lock_acquire+0x1fc/0x32c
+ _raw_spin_lock_irqsave+0x60/0x88
+ __irq_get_desc_lock+0x58/0x98
+ enable_irq+0x38/0xa0
+ lmh_enable_interrupt+0x2c/0x38
+ irq_enable+0x40/0x8c
+ __irq_startup+0x78/0xa4
+ irq_startup+0x78/0x168
+ __enable_irq+0x70/0x7c
+ enable_irq+0x4c/0xa0
+ qcom_cpufreq_ready+0x20/0x2c
+ cpufreq_online+0x2a8/0x988
+ cpufreq_add_dev+0x80/0x98
+ subsys_interface_register+0x104/0x134
+ cpufreq_register_driver+0x150/0x234
+ qcom_cpufreq_hw_driver_probe+0x2a8/0x388
+ platform_probe+0x68/0xc0
+ really_probe+0xbc/0x298
+ __driver_probe_device+0x78/0x12c
+ driver_probe_device+0x3c/0x160
+ __device_attach_driver+0xb8/0x138
+ bus_for_each_drv+0x84/0xe0
+ __device_attach+0x9c/0x188
+ device_initial_probe+0x14/0x20
+ bus_probe_device+0xac/0xb0
+ deferred_probe_work_func+0x8c/0xc8
+ process_one_work+0x20c/0x62c
+ worker_thread+0x1bc/0x36c
+ kthread+0x120/0x124
+ ret_from_fork+0x10/0x20
 
-A new device_for_each_child_reverse_from() is added to cleanup
-port->commit_end after all dependent decoders have been disabled. In
-other words if decoders are allocated 0->1->2 and disabled 1->2->0 then
-port->commit_end only decrements from 2 after 2 has been disabled, and
-it decrements all the way to zero since 1 was disabled previously.
-
-Link: http://lore.kernel.org/20241004212504.1246-1-gourry@gourry.net [1]
-Cc: <stable@vger.kernel.org>
-Fixes: 176baefb2eb5 ("cxl/hdm: Commit decoder state to hardware")
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: Zijun Hu <zijun_hu@icloud.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Fixes: 53bca371cdf7 ("thermal/drivers/qcom: Add support for LMh driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 ---
- drivers/base/core.c          |   35 +++++++++++++++++++++++++++++
- drivers/cxl/core/hdm.c       |   50 +++++++++++++++++++++++++++++++++++-------
- drivers/cxl/core/region.c    |   48 +++++++++++-----------------------------
- drivers/cxl/cxl.h            |    3 ++-
- include/linux/device.h       |    3 +++
- tools/testing/cxl/test/cxl.c |   14 ++++--------
- 6 files changed, 100 insertions(+), 53 deletions(-)
+ drivers/thermal/qcom/lmh.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index a4c853411a6b..e42f1ad73078 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -4037,6 +4037,41 @@ int device_for_each_child_reverse(struct device *parent, void *data,
- }
- EXPORT_SYMBOL_GPL(device_for_each_child_reverse);
+diff --git a/drivers/thermal/qcom/lmh.c b/drivers/thermal/qcom/lmh.c
+index 5225b3621a56..d2d49264cf83 100644
+--- a/drivers/thermal/qcom/lmh.c
++++ b/drivers/thermal/qcom/lmh.c
+@@ -73,7 +73,14 @@ static struct irq_chip lmh_irq_chip = {
+ static int lmh_irq_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
+ {
+ 	struct lmh_hw_data *lmh_data = d->host_data;
++	static struct lock_class_key lmh_lock_key;
++	static struct lock_class_key lmh_request_key;
  
-+/**
-+ * device_for_each_child_reverse_from - device child iterator in reversed order.
-+ * @parent: parent struct device.
-+ * @from: optional starting point in child list
-+ * @fn: function to be called for each device.
-+ * @data: data for the callback.
-+ *
-+ * Iterate over @parent's child devices, starting at @from, and call @fn
-+ * for each, passing it @data. This helper is identical to
-+ * device_for_each_child_reverse() when @from is NULL.
-+ *
-+ * @fn is checked each iteration. If it returns anything other than 0,
-+ * iteration stop and that value is returned to the caller of
-+ * device_for_each_child_reverse_from();
-+ */
-+int device_for_each_child_reverse_from(struct device *parent,
-+				       struct device *from, const void *data,
-+				       int (*fn)(struct device *, const void *))
-+{
-+	struct klist_iter i;
-+	struct device *child;
-+	int error = 0;
-+
-+	if (!parent->p)
-+		return 0;
-+
-+	klist_iter_init_node(&parent->p->klist_children, &i,
-+			     (from ? &from->p->knode_parent : NULL));
-+	while ((child = prev_device(&i)) && !error)
-+		error = fn(child, data);
-+	klist_iter_exit(&i);
-+	return error;
-+}
-+EXPORT_SYMBOL_GPL(device_for_each_child_reverse_from);
-+
- /**
-  * device_find_child - device iterator for locating a particular device.
-  * @parent: parent struct device
-diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
-index 3df10517a327..223c273c0cd1 100644
---- a/drivers/cxl/core/hdm.c
-+++ b/drivers/cxl/core/hdm.c
-@@ -712,7 +712,44 @@ static int cxl_decoder_commit(struct cxl_decoder *cxld)
- 	return 0;
- }
- 
--static int cxl_decoder_reset(struct cxl_decoder *cxld)
-+static int commit_reap(struct device *dev, const void *data)
-+{
-+	struct cxl_port *port = to_cxl_port(dev->parent);
-+	struct cxl_decoder *cxld;
-+
-+	if (!is_switch_decoder(dev) && !is_endpoint_decoder(dev))
-+		return 0;
-+
-+	cxld = to_cxl_decoder(dev);
-+	if (port->commit_end == cxld->id &&
-+	    ((cxld->flags & CXL_DECODER_F_ENABLE) == 0)) {
-+		port->commit_end--;
-+		dev_dbg(&port->dev, "reap: %s commit_end: %d\n",
-+			dev_name(&cxld->dev), port->commit_end);
-+	}
-+
-+	return 0;
-+}
-+
-+void cxl_port_commit_reap(struct cxl_decoder *cxld)
-+{
-+	struct cxl_port *port = to_cxl_port(cxld->dev.parent);
-+
-+	lockdep_assert_held_write(&cxl_region_rwsem);
-+
 +	/*
-+	 * Once the highest committed decoder is disabled, free any other
-+	 * decoders that were pinned allocated by out-of-order release.
++	 * This lock class tells lockdep that GPIO irqs are in a different
++	 * category than their parents, so it won't report false recursion.
 +	 */
-+	port->commit_end--;
-+	dev_dbg(&port->dev, "reap: %s commit_end: %d\n", dev_name(&cxld->dev),
-+		port->commit_end);
-+	device_for_each_child_reverse_from(&port->dev, &cxld->dev, NULL,
-+					   commit_reap);
-+}
-+EXPORT_SYMBOL_NS_GPL(cxl_port_commit_reap, CXL);
-+
-+static void cxl_decoder_reset(struct cxl_decoder *cxld)
- {
- 	struct cxl_port *port = to_cxl_port(cxld->dev.parent);
- 	struct cxl_hdm *cxlhdm = dev_get_drvdata(&port->dev);
-@@ -721,14 +758,14 @@ static int cxl_decoder_reset(struct cxl_decoder *cxld)
- 	u32 ctrl;
++	irq_set_lockdep_class(irq, &lmh_lock_key, &lmh_request_key);
+ 	irq_set_chip_and_handler(irq, &lmh_irq_chip, handle_simple_irq);
+ 	irq_set_chip_data(irq, lmh_data);
  
- 	if ((cxld->flags & CXL_DECODER_F_ENABLE) == 0)
--		return 0;
-+		return;
- 
--	if (port->commit_end != id) {
-+	if (port->commit_end == id)
-+		cxl_port_commit_reap(cxld);
-+	else
- 		dev_dbg(&port->dev,
- 			"%s: out of order reset, expected decoder%d.%d\n",
- 			dev_name(&cxld->dev), port->id, port->commit_end);
--		return -EBUSY;
--	}
- 
- 	down_read(&cxl_dpa_rwsem);
- 	ctrl = readl(hdm + CXL_HDM_DECODER0_CTRL_OFFSET(id));
-@@ -741,7 +778,6 @@ static int cxl_decoder_reset(struct cxl_decoder *cxld)
- 	writel(0, hdm + CXL_HDM_DECODER0_BASE_LOW_OFFSET(id));
- 	up_read(&cxl_dpa_rwsem);
- 
--	port->commit_end--;
- 	cxld->flags &= ~CXL_DECODER_F_ENABLE;
- 
- 	/* Userspace is now responsible for reconfiguring this decoder */
-@@ -751,8 +787,6 @@ static int cxl_decoder_reset(struct cxl_decoder *cxld)
- 		cxled = to_cxl_endpoint_decoder(&cxld->dev);
- 		cxled->state = CXL_DECODER_STATE_MANUAL;
- 	}
--
--	return 0;
- }
- 
- static int cxl_setup_hdm_decoder_from_dvsec(
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index e701e4b04032..3478d2058303 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -232,8 +232,8 @@ static int cxl_region_invalidate_memregion(struct cxl_region *cxlr)
- 				"Bypassing cpu_cache_invalidate_memregion() for testing!\n");
- 			return 0;
- 		} else {
--			dev_err(&cxlr->dev,
--				"Failed to synchronize CPU cache state\n");
-+			dev_WARN(&cxlr->dev,
-+				 "Failed to synchronize CPU cache state\n");
- 			return -ENXIO;
- 		}
- 	}
-@@ -242,19 +242,17 @@ static int cxl_region_invalidate_memregion(struct cxl_region *cxlr)
- 	return 0;
- }
- 
--static int cxl_region_decode_reset(struct cxl_region *cxlr, int count)
-+static void cxl_region_decode_reset(struct cxl_region *cxlr, int count)
- {
- 	struct cxl_region_params *p = &cxlr->params;
--	int i, rc = 0;
-+	int i;
- 
- 	/*
--	 * Before region teardown attempt to flush, and if the flush
--	 * fails cancel the region teardown for data consistency
--	 * concerns
-+	 * Before region teardown attempt to flush, evict any data cached for
-+	 * this region, or scream loudly about missing arch / platform support
-+	 * for CXL teardown.
- 	 */
--	rc = cxl_region_invalidate_memregion(cxlr);
--	if (rc)
--		return rc;
-+	cxl_region_invalidate_memregion(cxlr);
- 
- 	for (i = count - 1; i >= 0; i--) {
- 		struct cxl_endpoint_decoder *cxled = p->targets[i];
-@@ -277,23 +275,17 @@ static int cxl_region_decode_reset(struct cxl_region *cxlr, int count)
- 			cxl_rr = cxl_rr_load(iter, cxlr);
- 			cxld = cxl_rr->decoder;
- 			if (cxld->reset)
--				rc = cxld->reset(cxld);
--			if (rc)
--				return rc;
-+				cxld->reset(cxld);
- 			set_bit(CXL_REGION_F_NEEDS_RESET, &cxlr->flags);
- 		}
- 
- endpoint_reset:
--		rc = cxled->cxld.reset(&cxled->cxld);
--		if (rc)
--			return rc;
-+		cxled->cxld.reset(&cxled->cxld);
- 		set_bit(CXL_REGION_F_NEEDS_RESET, &cxlr->flags);
- 	}
- 
- 	/* all decoders associated with this region have been torn down */
- 	clear_bit(CXL_REGION_F_NEEDS_RESET, &cxlr->flags);
--
--	return 0;
- }
- 
- static int commit_decoder(struct cxl_decoder *cxld)
-@@ -409,16 +401,8 @@ static ssize_t commit_store(struct device *dev, struct device_attribute *attr,
- 		 * still pending.
- 		 */
- 		if (p->state == CXL_CONFIG_RESET_PENDING) {
--			rc = cxl_region_decode_reset(cxlr, p->interleave_ways);
--			/*
--			 * Revert to committed since there may still be active
--			 * decoders associated with this region, or move forward
--			 * to active to mark the reset successful
--			 */
--			if (rc)
--				p->state = CXL_CONFIG_COMMIT;
--			else
--				p->state = CXL_CONFIG_ACTIVE;
-+			cxl_region_decode_reset(cxlr, p->interleave_ways);
-+			p->state = CXL_CONFIG_ACTIVE;
- 		}
- 	}
- 
-@@ -2054,13 +2038,7 @@ static int cxl_region_detach(struct cxl_endpoint_decoder *cxled)
- 	get_device(&cxlr->dev);
- 
- 	if (p->state > CXL_CONFIG_ACTIVE) {
--		/*
--		 * TODO: tear down all impacted regions if a device is
--		 * removed out of order
--		 */
--		rc = cxl_region_decode_reset(cxlr, p->interleave_ways);
--		if (rc)
--			goto out;
-+		cxl_region_decode_reset(cxlr, p->interleave_ways);
- 		p->state = CXL_CONFIG_ACTIVE;
- 	}
- 
-diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-index 0d8b810a51f0..5406e3ab3d4a 100644
---- a/drivers/cxl/cxl.h
-+++ b/drivers/cxl/cxl.h
-@@ -359,7 +359,7 @@ struct cxl_decoder {
- 	struct cxl_region *region;
- 	unsigned long flags;
- 	int (*commit)(struct cxl_decoder *cxld);
--	int (*reset)(struct cxl_decoder *cxld);
-+	void (*reset)(struct cxl_decoder *cxld);
- };
- 
- /*
-@@ -730,6 +730,7 @@ static inline bool is_cxl_root(struct cxl_port *port)
- int cxl_num_decoders_committed(struct cxl_port *port);
- bool is_cxl_port(const struct device *dev);
- struct cxl_port *to_cxl_port(const struct device *dev);
-+void cxl_port_commit_reap(struct cxl_decoder *cxld);
- struct pci_bus;
- int devm_cxl_register_pci_bus(struct device *host, struct device *uport_dev,
- 			      struct pci_bus *bus);
-diff --git a/include/linux/device.h b/include/linux/device.h
-index b4bde8d22697..667cb6db9019 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -1078,6 +1078,9 @@ int device_for_each_child(struct device *dev, void *data,
- 			  int (*fn)(struct device *dev, void *data));
- int device_for_each_child_reverse(struct device *dev, void *data,
- 				  int (*fn)(struct device *dev, void *data));
-+int device_for_each_child_reverse_from(struct device *parent,
-+				       struct device *from, const void *data,
-+				       int (*fn)(struct device *, const void *));
- struct device *device_find_child(struct device *dev, void *data,
- 				 int (*match)(struct device *dev, void *data));
- struct device *device_find_child_by_name(struct device *parent,
-diff --git a/tools/testing/cxl/test/cxl.c b/tools/testing/cxl/test/cxl.c
-index 90d5afd52dd0..c5bbd89b3192 100644
---- a/tools/testing/cxl/test/cxl.c
-+++ b/tools/testing/cxl/test/cxl.c
-@@ -693,26 +693,22 @@ static int mock_decoder_commit(struct cxl_decoder *cxld)
- 	return 0;
- }
- 
--static int mock_decoder_reset(struct cxl_decoder *cxld)
-+static void mock_decoder_reset(struct cxl_decoder *cxld)
- {
- 	struct cxl_port *port = to_cxl_port(cxld->dev.parent);
- 	int id = cxld->id;
- 
- 	if ((cxld->flags & CXL_DECODER_F_ENABLE) == 0)
--		return 0;
-+		return;
- 
- 	dev_dbg(&port->dev, "%s reset\n", dev_name(&cxld->dev));
--	if (port->commit_end != id) {
-+	if (port->commit_end == id)
-+		cxl_port_commit_reap(cxld);
-+	else
- 		dev_dbg(&port->dev,
- 			"%s: out of order reset, expected decoder%d.%d\n",
- 			dev_name(&cxld->dev), port->id, port->commit_end);
--		return -EBUSY;
--	}
--
--	port->commit_end--;
- 	cxld->flags &= ~CXL_DECODER_F_ENABLE;
--
--	return 0;
- }
- 
- static void default_mock_decoder(struct cxl_decoder *cxld)
+
+---
+base-commit: 797012914d2d031430268fe512af0ccd7d8e46ef
+change-id: 20240721-lmh-lockdep-88de09e77089
+
+Best regards,
+-- 
+Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
 
