@@ -1,194 +1,183 @@
-Return-Path: <stable+bounces-83430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F32A999A055
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 11:49:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2860C99A08D
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 11:57:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14811B21F78
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 09:49:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BBBB1F25AE3
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 09:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C569B20C496;
-	Fri, 11 Oct 2024 09:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF792101AA;
+	Fri, 11 Oct 2024 09:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="aK5gZFpB"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="rPrv72bI"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2078.outbound.protection.outlook.com [40.107.236.78])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56F220B1F3;
-	Fri, 11 Oct 2024 09:48:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.78
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728640127; cv=fail; b=AWSanH8Nw+/P6oD8mDGVO9k2H+muyqHHZ5YApdKK7nwQzQOLOImmmHGkptNaRA90r1sCmQk3+QNJeuooL7HD60CFxnvwgbpSKH/g2/D8On2h1x0wdtWvkMSqSadPEWZiGGTAUVN+CUM3UKX5I2X4+mtgQQdrUtqhdqpvJaHOUs4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728640127; c=relaxed/simple;
-	bh=SfithNTT8v13ihcMgq3/ClUM/cFo5QMaGX80TH85X0c=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FSAjlu1Ze/QLta0Jkc/WKrvNAYBTU0OgSHLkm/XTB0arJTASq+BjTeMqBISdHik8j1CpqjdEnAQjL8V9LjKHf3dvJdjcOtmRAD17u2B8ymHU/gvmbYSVvwJN126f5X2Gr1RstePKVYoyiqXcbTsc97OJNAsaJ64TawfTHZ5OP8E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=aK5gZFpB; arc=fail smtp.client-ip=40.107.236.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GbPEAeLDRFCwRUqWJPSNbMl++U0Bni9FR756pTDm91pHMPunDBQ1f3XFWr3u74HK5DLlpRsZg7aPqh7nUuhdB8uHd2eVo9MXzOtb8Na5el7116ndJ3NetEQzc4xmGyEOY3zm3ywLnNMzwZlffQiHQsiq9ZbDZjOoI123QembjjoZUN0WdNhieYL/H/+ytqxzwRZ2RB2kfssMS/u3nUDHS0cKr+z2eH09wXzErGQc9kjPEObSfrdW1vG1PYKPBQ0+3T1dEX7d+96wjmbViDjQDSAwtsbFaIoDUEs1mSJlMvjsnalSwm77ha72ZBgptVzevNgHWQsKW/rflFcyK9kXZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=phMai2nW7bDa0x3vWAdHVhmLpDF2/gW6hNR5kzEZ0wg=;
- b=m26WgewQCPawyR2WONtUnN3l01+k82WGj1KOQiBhXsuuxMgr+UHIph7QHdLd7cmAIowHWyw+uirfeBo/XDa8/zxWP91VQxn0Sh4Y2rPylE6/1E8O6aqNKc9PTHIEm9QboWSluLLZMsNezTihgI36SN9HuhprGVXjAoR50SgA8lnNmp0962t3d+ixFbFSUmWWzSmd+9XyM8vPwsj9uXDoWfK3/4LT00I5qtoIkDPV7H96ZrSLhpOc5Bvb+5AUuRRPaghvryWbp9PNixbbqAH+8uImvVoHTjpcUzuq8r1qhTEVLIXDRowJ/nexRA6F+C3IL3yNABoQKSgF9dW4fA9zIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=phMai2nW7bDa0x3vWAdHVhmLpDF2/gW6hNR5kzEZ0wg=;
- b=aK5gZFpBhjvOh0eDFhe9YMFG8pHWGDlMvB8X4vX3Wafd0wxHEaExZJJX8ByP65ls1JIfzcbZ9E9AwZgHD02VbaqgLAVrdOhZwJD8H4Lh2AU4uIvMXDC966wWUHhCQVyP3i3WE/K4dIbrNIgWS3yeaswlStLhd3qarEb0bXFasJhJFupcC6zYOLofVNCZvfRNQr6c6+qfhOzx5SxATYIg7gel40oL/tdlKFfP7tgR0sh7J3hm7iczUzmJ5jijijdAdxuIdeI9H4PAtuPhDno4/UFEgfvjKbxWLJDCZg5gXiKU2jLKVURJyDD2XIWTjMKHgHfcPF8sijk9dbxdY1EHAA==
-Received: from BYAPR04CA0018.namprd04.prod.outlook.com (2603:10b6:a03:40::31)
- by SJ2PR12MB9005.namprd12.prod.outlook.com (2603:10b6:a03:53d::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.18; Fri, 11 Oct
- 2024 09:48:38 +0000
-Received: from SJ1PEPF000023CD.namprd02.prod.outlook.com
- (2603:10b6:a03:40:cafe::89) by BYAPR04CA0018.outlook.office365.com
- (2603:10b6:a03:40::31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.19 via Frontend
- Transport; Fri, 11 Oct 2024 09:48:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- SJ1PEPF000023CD.mail.protection.outlook.com (10.167.244.8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8048.13 via Frontend Transport; Fri, 11 Oct 2024 09:48:38 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 11 Oct
- 2024 02:48:36 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Fri, 11 Oct 2024 02:48:36 -0700
-Received: from henryl-vm.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Fri, 11 Oct 2024 02:48:34 -0700
-From: Henry Lin <henryl@nvidia.com>
-To: Mathias Nyman <mathias.nyman@intel.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>, Petlozu Pravareshwar
-	<petlozup@nvidia.com>, Jim Lin <jilin@nvidia.com>,
-	<linux-usb@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <henryl@nvidia.com>, <stable@vger.kernel.org>
-Subject: [v2] xhci: tegra: fix checked USB2 port number
-Date: Fri, 11 Oct 2024 17:48:03 +0800
-Message-ID: <20241011094804.45528-1-henryl@nvidia.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC44B20FAAD;
+	Fri, 11 Oct 2024 09:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728640623; cv=none; b=AtlDcewtNzSpszyLrzqfv9kxftQl0d+F53VVrptGy8C2b0HfIiPF2eatON+JPwQlB2BChEIWbXAGdUtzrM2THbGzubKj5R9Ih23MWzEtXnzujJtO/dUn5OV6yeObB+rvvKiCnD3DHL0T0sheQ7aJp/G9SHdfmAWdSfW5xt0Hr5U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728640623; c=relaxed/simple;
+	bh=Gfcidkov4qGXk4naAdSzx+9W8NgThlSmTzasKaKXPlM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=T7gNS+Ulvk75+zsIBKPxcEiQ6SQSz+A1XQ2/7NX5HeuXxHAlJ3Gafsi9e0/sciIEx3llf6aL/kW/V99OnStifsJtPT/XRdmrg/c+qoJda8WXHhS/ILMgVZ16j3vxy49enHyYyHkmjyRD6yjSh0lRvBhYTBfVVgdtuSTnrkkvVA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=rPrv72bI; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ciLHEDlJFx/yBo6BbEQxX3v7o6dg6CNuVbDrI0ZaLuU=; b=rPrv72bIJD5WKQLxZ+70kkjCxd
+	iDF4Uxk8GKYZ2jhuCMXiozqOn0qq689M9/EuMsegjYPiIULTPlJME8de90LGLPmS/PHZLdH5KzT1i
+	XFMVNVkfB5/5kk7wOrUS0JmRBds+Nr4aON180g2F3wIYZucn2NkIOvitrICGCpY5p7o6285YGaTyi
+	CIMb3NAW19VfqANZK6KCxHR0awuzYIXKcY6IUNTUEzAVN6K6CWYc1uXuvN4Z/KphI9wpKzaPYP/Cp
+	brah8g5RCilRkadvT6RVZc8y39XRRYEtKB18QCyQlvQCqWPMsEkoqwpfZlh/xedpb3Obx3hcBNJXy
+	Ql8Q+2nA==;
+Received: from i53875b34.versanet.de ([83.135.91.52] helo=diego.localnet)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1szCO7-0005n5-Om; Fri, 11 Oct 2024 11:56:47 +0200
+From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+To: Jonas Karlman <jonas@kwiboo.se>, Dragan Simic <dsimic@manjaro.org>
+Cc: linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, stable@vger.kernel.org
+Subject:
+ Re: [PATCH] arm64: dts: rockchip: Prevent thermal runaways in RK3308 SoC dtsi
+Date: Fri, 11 Oct 2024 11:56:46 +0200
+Message-ID: <1831993.TLkxdtWsSY@diego>
+In-Reply-To: <01e42e08965e58a337b9b531c10446fd@manjaro.org>
+References:
+ <d3e9dc4201d38894b09f3198368428153a3af1a4.1728555461.git.dsimic@manjaro.org>
+ <86ff39fe-cc88-4cf4-a1ad-6398a74ceb11@kwiboo.se>
+ <01e42e08965e58a337b9b531c10446fd@manjaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000023CD:EE_|SJ2PR12MB9005:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e7825df-c667-4701-3678-08dce9d9e20a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|82310400026|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?jF5EUjkkiCNw+OBTHIAh8jWZRbaCaKvutI/Xe6/eh9Db+Koxovt1z9M+a3pU?=
- =?us-ascii?Q?CVRtXHMqUxCCwYoSfWFWWNgLE9+kWMxmyk7Gi0BDDDiJEVpaOApNSKgWsK9C?=
- =?us-ascii?Q?ZGvJ3qDueH28EZftnohtI3zF4WrsyvJD75jnSGnXBvxNOpr+VLnPIH2kF7XV?=
- =?us-ascii?Q?JXfoRNL1xK1nYL5xL1/O9cF5Zlfj5K4p7No7bh0WsDuQCjietduZw+0De69h?=
- =?us-ascii?Q?ylym0okHEOsH948brywb560ixj1HzGwk+O94GxusBnnVuw8p4MOJsgjbbjo4?=
- =?us-ascii?Q?X+p7/TY4C/5HV/kWi+bfz5EDy9zuMG2w/X57HXvFQHDYXwNk+pMzHN61oQV2?=
- =?us-ascii?Q?mLhwYhgQ7PQoRIsEthKZny0Y9Gl/Oi6HmDWhj5AQQ6A5PUrEzHMsd7fyFEbK?=
- =?us-ascii?Q?swbw1U/52S51b4mNALg+VeBQfhDURRgEj7mqX2LFOgayBfYJ0Z7NEiK6qBoC?=
- =?us-ascii?Q?ST4GhvUYHVf5Iz3iU2jfuyqhHaWeQBgV0/m/Ej2lRvit3XfZFHnXpyc+QzXz?=
- =?us-ascii?Q?0jApIwrO1FXdoC33/qhCZCcRlW2FxPeyBi6uol1bwyGXFxpWvfSwf4klA5PC?=
- =?us-ascii?Q?/K7sFBfDqXOBbwAw6f9BUMkF4HfaMAfQ5Isgx9IdhYXUk9rC6EtNo6ujPsCh?=
- =?us-ascii?Q?sIMFFI20i1m/fhDG8WhVBPxQYkg0hxNxCJzkIp79JVQRVmtaVhiwaKEf4P9R?=
- =?us-ascii?Q?hjZwuhdVd01XZpJWMv+izmzYQeY78YlWhT59YfFUrL9xLMoFERpm2I0P1eHY?=
- =?us-ascii?Q?0urMyY+JLCaEAJMBOteOS++1mwmBFfdyY0aZdNuvkk/2/ix8nvRH19fTt3Sf?=
- =?us-ascii?Q?m/C1GnI82ckDUohJ8/LnPYGX3NOZGZzg3ZVTSoZVQNLRggxYRq3NaCA1+6+e?=
- =?us-ascii?Q?nYMD8k/61LfXV7tYnF1a/0cLpSKnm5E8E9yhfCDj+rGaiLCIJg8/3rqtl31a?=
- =?us-ascii?Q?EXyk5MZChqp0kmH/pKTfrwH0kWuZgjpHs74trvpy/wFTAQ8bm3DBiaX1Ixa0?=
- =?us-ascii?Q?Xyx/HwbDFFXnU/QYB/rzUYZ4IilLCELYG/gtyaaAG/7sWyk7ycI6jr++eOnH?=
- =?us-ascii?Q?N9URgo81bhbPLwTHoqaMvG3ljzqOFCgqP403XOXfkUaY67YeuwLEbtOrQfE4?=
- =?us-ascii?Q?dZttahr/oI623DH6gKknyf/q1kdfsQJnVphOjBq57dufnN1x0j80rnZqLe6w?=
- =?us-ascii?Q?1nK+zg4Xe9ws4uzsQYW1Zg6ouzoFe7opxP9H9cT55GlfkjV86S5UPoDg8oL1?=
- =?us-ascii?Q?7saW2CKVvfkUsbjvBCrOQ6/yUS+XCiPWjopzPAakp+Ri4Dh0brkrDF2D8RTm?=
- =?us-ascii?Q?5yx59U75qmNpjIFcz+G8o/5wN0DeVqPkCxL+iOLrS8H/RK8FWJBqXsSa+hW/?=
- =?us-ascii?Q?EpcEyBI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2024 09:48:38.8794
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e7825df-c667-4701-3678-08dce9d9e20a
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000023CD.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9005
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-USB2 root hub in VF may contain less port number than supported USB2
-phy number. Checking all USB2 phy number here would cause invalid
-memory access.
+Am Freitag, 11. Oktober 2024, 11:04:38 CEST schrieb Dragan Simic:
+> Hello Jonas,
+> 
+> On 2024-10-11 10:52, Jonas Karlman wrote:
+> > On 2024-10-10 12:19, Dragan Simic wrote:
+> >> Until the TSADC, thermal zones, thermal trips and cooling maps are 
+> >> defined
+> >> in the RK3308 SoC dtsi, none of the CPU OPPs except the slowest one 
+> >> may be
+> >> enabled under any circumstances.  Allowing the DVFS to scale the CPU 
+> >> cores
+> >> up without even just the critical CPU thermal trip in place can rather 
+> >> easily
+> >> result in thermal runaways and damaged SoCs, which is bad.
+> >> 
+> >> Thus, leave only the lowest available CPU OPP enabled for now.
+> > 
+> > This feel like a very aggressive limitation, to only allow the
+> > opp-suspend rate, that is not even used under normal load.
+> > 
+> > I let my Rock Pi S board with a RK3308B variant run "stress -c 8" for
+> > around 10 hours and the reported temp only reach around 50-55 deg c,
+> > ambient temp around 20 deg c and board laying flat on a table without
+> > any enclosure or heat sink.
+> > 
+> > This was running with performance as scaling_governor and cpu running
+> > the 1008000 opp.
+> 
+> Thanks for testing all that!  That's very low CPU temperature under
+> stress testing indeed.  Maybe the cooling gets worse and the CPU
+> temperature goes higher if the board is installed into some small
+> enclosure with no natural or forced airflow?
+> 
+> > Most RK3308 variants datasheets list 1.3 GHz as max rate for CPU,
+> > the K-variant lists 1.2 GHz, and the -S-variants seem to have both
+> > reduced voltage and max rate.
+> > 
+> > The OPPs for this SoC already limits max rate to 1 GHz and is more than
+> > likely good enough to not reach the max temperature of 115-125 deg c as
+> > rated in datasheets and vendor DTs.
+> > 
+> > Adding the tsadc and trips (same/similar as px30) will probably allow 
+> > us
+> > to add/use the "missing" 1.2 and 1.3 GHz OPPs.
+> 
+> With these insights, I agree that the patch might have been a bit
+> too extreme, but it also promotes good practices when it comes to
+> upstreaming.  The general rule is not to add CPU or GPU OPPs with
+> no proper thermal configuration already in place.
+> 
+> The patch has already been merged, and as I already noted, [1] I'll
+> try to implement, test and submit the proper thermal configuration
+> ASAP.  It's up Heiko to decide whether to drop this patch or not.
 
-[  116.923438] Unable to handle kernel paging request at virtual address 006c622f7665642f
-...
-[  117.213640] Call trace:
-[  117.216783]  tegra_xusb_enter_elpg+0x23c/0x658
-[  117.222021]  tegra_xusb_runtime_suspend+0x40/0x68
-[  117.227260]  pm_generic_runtime_suspend+0x30/0x50
-[  117.232847]  __rpm_callback+0x84/0x3c0
-[  117.237038]  rpm_suspend+0x2dc/0x740
-[  117.241229] pm_runtime_work+0xa0/0xb8
-[  117.245769]  process_scheduled_works+0x24c/0x478
-[  117.251007]  worker_thread+0x23c/0x328
-[  117.255547]  kthread+0x104/0x1b0
-[  117.259389]  ret_from_fork+0x10/0x20
-[  117.263582] Code: 54000222 f9461ae8 f8747908 b4ffff48 (f9400100)
+Hmm, interesting question ;-) .
 
-Cc: <stable@vger.kernel.org> # 6.3+
-Fixes: a30951d31b25 ("xhci: tegra: USB2 pad power controls")
-Signed-off-by: Henry Lin <henryl@nvidia.com>
----
-v2:
-- Added Fixes tag and the cc stable line
+Dropping the patch is of course still possible and so far we haven't
+actually seen anyone with real-world problems.
 
- drivers/usb/host/xhci-tegra.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+And with Jonas' stress test, it does look like nobody will in the
+(hopefully short) time till we have thermal management.
 
-diff --git a/drivers/usb/host/xhci-tegra.c b/drivers/usb/host/xhci-tegra.c
-index 6246d5ad1468..76f228e7443c 100644
---- a/drivers/usb/host/xhci-tegra.c
-+++ b/drivers/usb/host/xhci-tegra.c
-@@ -2183,7 +2183,7 @@ static int tegra_xusb_enter_elpg(struct tegra_xusb *tegra, bool runtime)
- 		goto out;
- 	}
- 
--	for (i = 0; i < tegra->num_usb_phys; i++) {
-+	for (i = 0; i < xhci->usb2_rhub.num_ports; i++) {
- 		if (!xhci->usb2_rhub.ports[i])
- 			continue;
- 		portsc = readl(xhci->usb2_rhub.ports[i]->addr);
--- 
-2.25.1
+@Dragan, if you're in favor of that I'll drop the patch.
+
+
+Heiko
+
+
+> 
+> [1] 
+> https://lore.kernel.org/linux-rockchip/df92710498f66bcb4580cb2cd1573fb2@manjaro.org/
+> 
+> >> Fixes: 6913c45239fd ("arm64: dts: rockchip: Add core dts for RK3308 
+> >> SOC")
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+> >> ---
+> >>  arch/arm64/boot/dts/rockchip/rk3308.dtsi | 3 +++
+> >>  1 file changed, 3 insertions(+)
+> >> 
+> >> diff --git a/arch/arm64/boot/dts/rockchip/rk3308.dtsi 
+> >> b/arch/arm64/boot/dts/rockchip/rk3308.dtsi
+> >> index 31c25de2d689..a7698e1f6b9e 100644
+> >> --- a/arch/arm64/boot/dts/rockchip/rk3308.dtsi
+> >> +++ b/arch/arm64/boot/dts/rockchip/rk3308.dtsi
+> >> @@ -120,16 +120,19 @@ opp-600000000 {
+> >>  			opp-hz = /bits/ 64 <600000000>;
+> >>  			opp-microvolt = <950000 950000 1340000>;
+> >>  			clock-latency-ns = <40000>;
+> >> +			status = "disabled";
+> >>  		};
+> >>  		opp-816000000 {
+> >>  			opp-hz = /bits/ 64 <816000000>;
+> >>  			opp-microvolt = <1025000 1025000 1340000>;
+> >>  			clock-latency-ns = <40000>;
+> >> +			status = "disabled";
+> >>  		};
+> >>  		opp-1008000000 {
+> >>  			opp-hz = /bits/ 64 <1008000000>;
+> >>  			opp-microvolt = <1125000 1125000 1340000>;
+> >>  			clock-latency-ns = <40000>;
+> >> +			status = "disabled";
+> >>  		};
+> >>  	};
+> 
+
+
+
 
 
