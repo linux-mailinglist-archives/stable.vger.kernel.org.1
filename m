@@ -1,176 +1,203 @@
-Return-Path: <stable+bounces-83436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE5D99A1B3
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 12:42:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F40DD99A208
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 12:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E97E81F23DED
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 10:42:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AED71C23536
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 10:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DAD21502E;
-	Fri, 11 Oct 2024 10:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1931212F10;
+	Fri, 11 Oct 2024 10:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="lKaxJGWH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cLErmwLa"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17BD213ED8;
-	Fri, 11 Oct 2024 10:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5545F210C11;
+	Fri, 11 Oct 2024 10:53:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728643329; cv=none; b=EUCVAH9TFuuK+Il/KRW4FrNS0rLBbLHrk95z+iFq8CJpvxySFPFOXIEVR5NIE32f0FrPfN9ZHyiDSFwJrAz7sKegVXl7YSA8zE3vlvocoLKxQZ6KURkyvfiMZC3PHSPyUMRDJZ4Eru1iTQONdlFRKJvUlCCnPpfqeslZU+p56Nw=
+	t=1728644022; cv=none; b=M/wt1kAzA9FZEU/nyrNNVA+/aZ/Ai8EB71NpA9hW/bgTqKSYxKDdAnYNTCgbpN3CP+QIR1Ccr6qMvZwsbAyVdNsMhThXf0iYrVwv1q7ae/HmyeS6shotUxVJ7iJUUCAtK7gxGuWHdqGMHVKwgyxqCQPyGUnht6vSWP1+FCij2s8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728643329; c=relaxed/simple;
-	bh=H1ziV5tyupxzZh4Cd1MkMsrgUXkihHsPR7l8O8TlpOg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WLtQsYsMBOOsEXKNzvjN3lylWjLeKT2GhK06CHrQJIbLRkjQU5E8bes9rXNS5gEcGcMYwOoXvmEJtmhMYK7y9cwgMdQovRKpbVA/lTOvSBSi02E+HYbHe3tW1jAizXoTc5XNNZ1FxskWz7uG3PSXqNsivTourAfmAYbtBnwpNaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=lKaxJGWH; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49B3aUd8027261;
-	Fri, 11 Oct 2024 10:41:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=fM+DrFtFwy1
-	+oio8hpHJjcoOsNaQT5+Glmr5yzAR83g=; b=lKaxJGWH32hvgH5dZe2CPNjm/TJ
-	azew8lrajBRWhcKR5JWAKWRiKjJ0COzmebUogISxwyCMGOd/Vyv4Bdy0nELzMahq
-	KySVnC3KuB4YKuWxbdNjEEULnjkwriTbsp5H+xpJTcO/AxU8zZOyrhuswMFOSQ/H
-	NVkJ8E4Fv9zNxdGlg1T24CZ7o/g7S1EVFDRFldbHHpIXEGB441IWsWS5i4W4IQvG
-	iq/h5sItCOOvJ3HJUzGwVIjbfJSZaSBvumkDgLLda/2qLV/XKg3hz8E8NVAPluSv
-	viC72vxtbiUNVELFUbM7LFpxRg4ZGUvsw403Zl+1jIT6tra3MURW12qrhRw==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 426fj6u1a1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Oct 2024 10:41:48 +0000 (GMT)
-Received: from pps.filterd (NALASPPMTA02.qualcomm.com [127.0.0.1])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 49BAU4NY016719;
-	Fri, 11 Oct 2024 10:41:47 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by NALASPPMTA02.qualcomm.com (PPS) with ESMTPS id 426uxek3yb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Oct 2024 10:41:47 +0000
-Received: from NALASPPMTA02.qualcomm.com (NALASPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49BAfl4a000500;
-	Fri, 11 Oct 2024 10:41:47 GMT
-Received: from hu-devc-lv-u22-c.qualcomm.com (hu-qianyu-lv.qualcomm.com [10.81.25.114])
-	by NALASPPMTA02.qualcomm.com (PPS) with ESMTPS id 49BAfkjj000499
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Oct 2024 10:41:47 +0000
-Received: by hu-devc-lv-u22-c.qualcomm.com (Postfix, from userid 4098150)
-	id DA296651; Fri, 11 Oct 2024 03:41:46 -0700 (PDT)
-From: Qiang Yu <quic_qianyu@quicinc.com>
-To: manivannan.sadhasivam@linaro.org, vkoul@kernel.org, kishon@kernel.org,
-        robh@kernel.org, andersson@kernel.org, konradybcio@kernel.org,
-        krzk+dt@kernel.org, conor+dt@kernel.org, mturquette@baylibre.com,
-        sboyd@kernel.org, abel.vesa@linaro.org, quic_msarkar@quicinc.com,
-        quic_devipriy@quicinc.com
-Cc: dmitry.baryshkov@linaro.org, kw@linux.com, lpieralisi@kernel.org,
-        neil.armstrong@linaro.org, linux-arm-msm@vger.kernel.org,
-        linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-clk@vger.kernel.org, Qiang Yu <quic_qianyu@quicinc.com>,
-        stable@vger.kernel.org, Mike Tipton <quic_mdtipton@quicinc.com>,
-        Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH v6 5/8] clk: qcom: gcc-x1e80100: Fix halt_check for pipediv2 clocks
-Date: Fri, 11 Oct 2024 03:41:39 -0700
-Message-Id: <20241011104142.1181773-6-quic_qianyu@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241011104142.1181773-1-quic_qianyu@quicinc.com>
-References: <20241011104142.1181773-1-quic_qianyu@quicinc.com>
+	s=arc-20240116; t=1728644022; c=relaxed/simple;
+	bh=SMSAwURTM1d5RipIGE/rB4foIsdd0HI1hdITJc1eIWQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=eZGydDBvoHBYn276TR2bKUH4wjZ7jsE0mt6xFGxNaSdCyFKgz3k7dhamXizfa+WZDxjib/oangdy9MXMXFevXLW1n11s3er/W4bLQ74LkZYMWBRWv4sDYn94WZjLM7Kz+1P21OsVOQrdU7QhIEL5Sa57Y/M2oy8nms2vq8rYbIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cLErmwLa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003D0C4CECC;
+	Fri, 11 Oct 2024 10:53:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728644021;
+	bh=SMSAwURTM1d5RipIGE/rB4foIsdd0HI1hdITJc1eIWQ=;
+	h=From:Date:Subject:To:Cc:From;
+	b=cLErmwLayP9ONrUIcQ5NUPsnImMlfKAGPKJ94ZbYel10Dj+DNS407zuPUdOltR1yI
+	 dE/kXlW62n+LiAwl7WoS1VqzWbeal8kj9AKZKJiiAc5SjxZYmhieBXIdmTB3iEUPNf
+	 CiNfXwBJipRyhScvz9EijSkBxBloCXYUx5PK5pOqrROd534d/exqMc9UwOxIZGtuiE
+	 4jR0DzKmL9lboZa4+81fz4Wsla1bXdMAFVlzsTKxZfY8t24yPBzPxo4Ir3sDU4UHWm
+	 ZOD7ZXdqdBvuEldcvkFJ02vCVNb/A87pmYSCjAVj5kdYfWXh+SPA/KtFNvfu+R1UGQ
+	 UTW3BFMKp1zsA==
+From: Roger Quadros <rogerq@kernel.org>
+Date: Fri, 11 Oct 2024 13:53:24 +0300
+Subject: [PATCH v3] usb: dwc3: core: Fix system suspend on TI AM62
+ platforms
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: CkvloQ8YEJCuLTC0qJycda0ol7u3FqzL
-X-Proofpoint-ORIG-GUID: CkvloQ8YEJCuLTC0qJycda0ol7u3FqzL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=954
- lowpriorityscore=0 spamscore=0 malwarescore=0 adultscore=0 suspectscore=0
- clxscore=1015 mlxscore=0 impostorscore=0 priorityscore=1501 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2410110073
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241011-am62-lpm-usb-v3-1-562d445625b5@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAKMDCWcC/13MSw6CMBSF4a2Qjq3pvWCbOmIfxgGlF2jklVYbD
+ WHvFkbi8Jzk/xYWyDsK7JotzFN0wU1jGvkpY3VXjS1xZ9NmKLAQGnNeDRJ5Pw/8FQxvChQalLF
+ KKJaS2VPj3jt3u6fdufCc/GfXI2zvDoEQcIQicOBagzQKQF4aVT7Ij9SfJ9+yTYr4W+u/GlNtK
+ 5S1qC0aoEO9rusXCIoagucAAAA=
+To: "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nishanth Menon <nm@ti.com>, 
+ Tero Kristo <kristo@kernel.org>, Santosh Shilimkar <ssantosh@kernel.org>, 
+ Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: Dhruva Gole <d-gole@ti.com>, Vishal Mahaveer <vishalm@ti.com>, 
+ msp@baylibre.com, srk@ti.com, linux-pm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-usb@vger.kernel.org, stable@vger.kernel.org, 
+ Roger Quadros <rogerq@kernel.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4130; i=rogerq@kernel.org;
+ h=from:subject:message-id; bh=SMSAwURTM1d5RipIGE/rB4foIsdd0HI1hdITJc1eIWQ=;
+ b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBnCQOxqBmfPC7eJ+c6SU8SoLZDV4m1FX17mmtof
+ Pg59HytZ4OJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCZwkDsQAKCRDSWmvTvnYw
+ kxCiEACzojewd1nrTI35G+GeuXLP49y/iaIJEt2DCqrgIZY0S58KivuWPzK3Y9X/576gwoYO3kl
+ 0NM6jUpW26tCZYFxxkT6IdaFbtwNTB7qYqAcnUFHURd46OlD06etXmtjDlLT8i9wxK1+mZDSMUP
+ F9Pi5/ZipbtYeUVG6f7p+dNH+pqo9Vr3Q44RdThtCgaekEAJSUF00ZvV0bDJMymcOIqsvvGtxkC
+ IeIP8fBSdx64NamC6Nimr7pYI8cP4DkMma1j1StVp/bwJ4fiZlz4lV6UAXSY27rOJkXwfSrNteE
+ IHSBGIZP3Abml1QGT2jPjnyyjFRcHo39XrQ3L/uVDE06QoImjWZOezAQTZ821BwjfhMOrKQeXwk
+ GkBTJwyrZ8+SrqrgdlQ1UUtsAqWtEojqpJVKLx8J7Gm4k1oqrwa6YymSIcVcseSz70rhlu0CITp
+ vVU3wu+n8l9P1+Nmwcz1+0IITxyGjiGhwZ/hDqfuS359JypOos5OTmik2ZVFe1QktKaGpWYRUA9
+ YQ6vJNhomn991yh4QK76hhu57RC7uGjLGNb5EoPl2fT31zAyOkvUemJKJCKXRaGMgJmqn8vs0Gb
+ QCXZQ2cj1gkjWLNvWUiRTeykn3uBW8jtNnwf48ODXw/tZ+ROfQcl8hKzn+rSOezSxJLcL/RNgtE
+ DVucmURkWBVLcsA==
+X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
+ fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
 
-The pipediv2_clk's source from the same mux as pipe clock. So they have
-same limitation, which is that the PHY sequence requires to enable these
-local CBCs before the PHY is actually outputting a clock to them. This
-means the clock won't actually turn on when we vote them. Hence, let's
-skip the halt bit check of the pipediv2_clk, otherwise pipediv2_clk may
-stuck at off state during bootup.
+Since commit 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init"),
+system suspend is broken on AM62 TI platforms.
 
-Cc: stable@vger.kernel.org
-Fixes: 161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
-Suggested-by: Mike Tipton <quic_mdtipton@quicinc.com>
-Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
-Reviewed-by: Konrad Dybcio <konradybcio@kernel.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Before that commit, both DWC3_GUSB3PIPECTL_SUSPHY and DWC3_GUSB2PHYCFG_SUSPHY
+bits (hence forth called 2 SUSPHY bits) were being set during core
+initialization and even during core re-initialization after a system
+suspend/resume.
+
+These bits are required to be set for system suspend/resume to work correctly
+on AM62 platforms.
+
+Since that commit, the 2 SUSPHY bits are not set for DEVICE/OTG mode if gadget
+driver is not loaded and started.
+For Host mode, the 2 SUSPHY bits are set before the first system suspend but
+get cleared at system resume during core re-init and are never set again.
+
+This patch resovles these two issues by ensuring the 2 SUSPHY bits are set
+before system suspend and restored to the original state during system resume.
+
+Cc: stable@vger.kernel.org # v6.9+
+Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
+Link: https://lore.kernel.org/all/1519dbe7-73b6-4afc-bfe3-23f4f75d772f@kernel.org/
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 ---
- drivers/clk/qcom/gcc-x1e80100.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Changes in v3:
+- Fix single line comment style
+- add DWC3_GUSB3PIPECTL_SUSPHY to documentation of susphy_state
+- Added Acked-by tag
+- Link to v2: https://lore.kernel.org/r/20241009-am62-lpm-usb-v2-1-da26c0cd2b1e@kernel.org
 
-diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
-index 0f578771071f..81ba5ceab342 100644
---- a/drivers/clk/qcom/gcc-x1e80100.c
-+++ b/drivers/clk/qcom/gcc-x1e80100.c
-@@ -3123,7 +3123,7 @@ static struct clk_branch gcc_pcie_3_pipe_clk = {
+Changes in v2:
+- Fix comment style
+- Use both USB3 and USB2 SUSPHY bits to determine susphy_state during system suspend/resume.
+- Restore SUSPHY bits at system resume regardless if it was set or cleared before system suspend.
+- Link to v1: https://lore.kernel.org/r/20241001-am62-lpm-usb-v1-1-9916b71165f7@kernel.org
+---
+ drivers/usb/dwc3/core.c | 19 +++++++++++++++++++
+ drivers/usb/dwc3/core.h |  3 +++
+ 2 files changed, 22 insertions(+)
+
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 9eb085f359ce..ca77f0b186c4 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -2336,6 +2336,11 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ 	u32 reg;
+ 	int i;
  
- static struct clk_branch gcc_pcie_3_pipediv2_clk = {
- 	.halt_reg = 0x58060,
--	.halt_check = BRANCH_HALT_VOTED,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.clkr = {
- 		.enable_reg = 0x52020,
- 		.enable_mask = BIT(5),
-@@ -3248,7 +3248,7 @@ static struct clk_branch gcc_pcie_4_pipe_clk = {
++	dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
++			    DWC3_GUSB2PHYCFG_SUSPHY) ||
++			    (dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0)) &
++			    DWC3_GUSB3PIPECTL_SUSPHY);
++
+ 	switch (dwc->current_dr_role) {
+ 	case DWC3_GCTL_PRTCAP_DEVICE:
+ 		if (pm_runtime_suspended(dwc->dev))
+@@ -2387,6 +2392,15 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ 		break;
+ 	}
  
- static struct clk_branch gcc_pcie_4_pipediv2_clk = {
- 	.halt_reg = 0x6b054,
--	.halt_check = BRANCH_HALT_VOTED,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.clkr = {
- 		.enable_reg = 0x52010,
- 		.enable_mask = BIT(27),
-@@ -3373,7 +3373,7 @@ static struct clk_branch gcc_pcie_5_pipe_clk = {
++	if (!PMSG_IS_AUTO(msg)) {
++		/*
++		 * TI AM62 platform requires SUSPHY to be
++		 * enabled for system suspend to work.
++		 */
++		if (!dwc->susphy_state)
++			dwc3_enable_susphy(dwc, true);
++	}
++
+ 	return 0;
+ }
  
- static struct clk_branch gcc_pcie_5_pipediv2_clk = {
- 	.halt_reg = 0x2f054,
--	.halt_check = BRANCH_HALT_VOTED,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.clkr = {
- 		.enable_reg = 0x52018,
- 		.enable_mask = BIT(19),
-@@ -3511,7 +3511,7 @@ static struct clk_branch gcc_pcie_6a_pipe_clk = {
+@@ -2454,6 +2468,11 @@ static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
+ 		break;
+ 	}
  
- static struct clk_branch gcc_pcie_6a_pipediv2_clk = {
- 	.halt_reg = 0x31060,
--	.halt_check = BRANCH_HALT_VOTED,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.clkr = {
- 		.enable_reg = 0x52018,
- 		.enable_mask = BIT(28),
-@@ -3649,7 +3649,7 @@ static struct clk_branch gcc_pcie_6b_pipe_clk = {
++	if (!PMSG_IS_AUTO(msg)) {
++		/* restore SUSPHY state to that before system suspend. */
++		dwc3_enable_susphy(dwc, dwc->susphy_state);
++	}
++
+ 	return 0;
+ }
  
- static struct clk_branch gcc_pcie_6b_pipediv2_clk = {
- 	.halt_reg = 0x8d060,
--	.halt_check = BRANCH_HALT_VOTED,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.clkr = {
- 		.enable_reg = 0x52010,
- 		.enable_mask = BIT(28),
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index c71240e8f7c7..31de4b57ae7c 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1150,6 +1150,8 @@ struct dwc3_scratchpad_array {
+  * @sys_wakeup: set if the device may do system wakeup.
+  * @wakeup_configured: set if the device is configured for remote wakeup.
+  * @suspended: set to track suspend event due to U3/L2.
++ * @susphy_state: state of DWC3_GUSB2PHYCFG_SUSPHY + DWC3_GUSB3PIPECTL_SUSPHY
++ *		  before PM suspend.
+  * @imod_interval: set the interrupt moderation interval in 250ns
+  *			increments or 0 to disable.
+  * @max_cfg_eps: current max number of IN eps used across all USB configs.
+@@ -1382,6 +1384,7 @@ struct dwc3 {
+ 	unsigned		sys_wakeup:1;
+ 	unsigned		wakeup_configured:1;
+ 	unsigned		suspended:1;
++	unsigned		susphy_state:1;
+ 
+ 	u16			imod_interval;
+ 
+
+---
+base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+change-id: 20240923-am62-lpm-usb-f420917bd707
+
+Best regards,
 -- 
-2.34.1
+Roger Quadros <rogerq@kernel.org>
 
 
