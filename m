@@ -1,74 +1,76 @@
-Return-Path: <stable+bounces-83420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E980999C1D
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 07:34:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4B3999C1C
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 07:34:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C17CB22D2B
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4E04285928
 	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 05:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887C319A285;
-	Fri, 11 Oct 2024 05:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9D01F9410;
+	Fri, 11 Oct 2024 05:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c2+fq54q"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="htPjWPNe"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B21194088;
-	Fri, 11 Oct 2024 05:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2802E2F26;
+	Fri, 11 Oct 2024 05:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728624839; cv=none; b=Rg0rQB60I4PYvEMb7Y0siZjdOhZoyTqHO/qA9BDkwmEHlqNW7ShL/gAIWnBSAH/lzCCj2lSnay4m6jDSIG2s7SOe9TUaNhk5zR+hZbw3Y35lEN/w52dUSvOW6HA/VkNIzXsfJJbYXLuzEK+dDKwN7KbJajn5kF8zpr3KLSO0WJE=
+	t=1728624847; cv=none; b=E7FlMzDEhQtxKtQ+UDVX8fOaODpQcoPnGNiIiOYlZ8Jpnx+pAusvsahH94h5F9uOqtxdEG1mcSnJRyWaf5V68XHi96df08fjH+qEFR3GF1l6kmJrL+73la1egG6j30q2VivPYzJkZxFPJYgJpYQwYjLVBLldsGmNanwSI5BDMoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728624839; c=relaxed/simple;
-	bh=NsxdIIwYHFf0138CTC+6ydgAfFnZVbKm5fxxekCvu8E=;
-	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=j1TLke/3n/lwRjcCRIR1HAIIdEInHH1Ctsqi2QhgJD7X40Pp2P/62rsEha4rkl6B8TodM06UI4tbrD17IoHr9DOohS2uP6+wnfuvJvhLQlsAWfLar6NHBSqELa83G3gFPNiWjT5mVs4JKZd1O2Rw16o0X1K+eFGXt2EgdMNsuek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c2+fq54q; arc=none smtp.client-ip=198.175.65.17
+	s=arc-20240116; t=1728624847; c=relaxed/simple;
+	bh=ULtgtOIlkVwYdScG5guVFKkOrJW54pUZLqgsTvXscJU=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=B6X7FHB4r+WaKtIXacXMiYBdWFVc2nIRb125BjNk0k4pzblC5cni1/a2zn6Xi/ND2Rx/gR0956TaUMqlKBaZ5nJf3/5gBRdH7ROziPfbtFqGbOKoovllNKwD0QMzqkFwAeU7a4M6aqGv263FwDQdU6vC4Cb0tfqvOw2rp/xEzRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=htPjWPNe; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728624836; x=1760160836;
-  h=subject:from:to:cc:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=NsxdIIwYHFf0138CTC+6ydgAfFnZVbKm5fxxekCvu8E=;
-  b=c2+fq54qyqAf/tbP/GKLXmDHjtYLTtl5w3Gx1JqiaJmN0U+czMVOqjfn
-   6GP9HJUf4/LycJDTCwF0LgrFGYrOcLQ53bw25pm1AkmXUewyI1YXCMZqr
-   A1K4a82EUZGWF20NntklHc9s+5yYEWaIYU98230RA76Oj1TfGklKu1Xdj
-   pDkUx7/Sz3F0D4pHbYtmQsQglqhlhcLV9Yzd1d+PiO1Vb00xMKKKz7S4H
-   sXhVOsdmmXZUY1Dx3PuuVwlmM4hL5LT3SFtvjRWry2v9XiT7u/kNWfPdn
-   RxW+KL72CzXk0xi/BmZhkez52GnjP516OUwWB9eRIpxvj+EPvisEWYa/w
-   w==;
-X-CSE-ConnectionGUID: 0qyd7hutSxO3C6UKZCxbuQ==
-X-CSE-MsgGUID: wlFouyE2SN2L2rU7PUvpkQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="28124532"
+  t=1728624845; x=1760160845;
+  h=subject:from:to:cc:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ULtgtOIlkVwYdScG5guVFKkOrJW54pUZLqgsTvXscJU=;
+  b=htPjWPNe8paVFDcFlbJDXH7PJBuA+HvPLtblQaulMcCn/QeJvJtuZziQ
+   cNh6K4VYVbnQKYdxkqmVD8UnIGVXK2zSFTy2tITMeI4L+8NMIxWfyuL4E
+   qm7ZNjGqZvXhPgY54sx9yavvQCDloJPTTy/zXm74JYZZCMsBEB7ZcfZuQ
+   bJPhHvf3ZoeY5u39Cc8inkobGYiWD5vQbtgTdSZkVov3np0qW4QcxwGlh
+   WMhHEfJAEutwlHag6V0XHDwcg9m/7fZ4Rq/De7N0gRcbCeOZgRpGLM5ty
+   8PL8bZV3CQFiHDLUiPLn/KeWWlqnd2Bp8O5TqXKR1a8KA7470GzsvJGjx
+   g==;
+X-CSE-ConnectionGUID: 3vGeTBW3SEKP5qPE/4W8mA==
+X-CSE-MsgGUID: WZTP8ivQRBSFchGSbpSSLQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="28124543"
 X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; 
-   d="scan'208";a="28124532"
+   d="scan'208";a="28124543"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 22:33:56 -0700
-X-CSE-ConnectionGUID: iJrwIJSbRmmosvl8Rbvtyg==
-X-CSE-MsgGUID: uyX7M/OySj6Msbbk7IP1EA==
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 22:34:04 -0700
+X-CSE-ConnectionGUID: AW9v4LBzTHqtfECgjm8KwA==
+X-CSE-MsgGUID: LC0t25+gTYybLvJaHATJOg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; 
-   d="scan'208";a="80814127"
+   d="scan'208";a="80814144"
 Received: from inaky-mobl1.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.125.111.110])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 22:33:55 -0700
-Subject: [PATCH 0/5] cxl: Initialization and shutdown fixes
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 22:34:03 -0700
+Subject: [PATCH 1/5] cxl/port: Fix CXL port initialization order when the
+ subsystem is built-in
 From: Dan Williams <dan.j.williams@intel.com>
 To: dave.jiang@intel.com, ira.weiny@intel.com
-Cc: Davidlohr Bueso <dave@stgolabs.net>,
- Jonathan Cameron <jonathan.cameron@huawei.com>, stable@vger.kernel.org,
- Zijun Hu <zijun_hu@icloud.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Gregory Price <gourry@gourry.net>, Gregory Price <gourry@gourry.net>,
+ stable@vger.kernel.org, Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
  Alison Schofield <alison.schofield@intel.com>,
- Gregory Price <gourry@gourry.net>, Vishal Verma <vishal.l.verma@intel.com>,
- linux-cxl@vger.kernel.org
-Date: Thu, 10 Oct 2024 22:33:53 -0700
-Message-ID: <172862483180.2150669.5564474284074502692.stgit@dwillia2-xfh.jf.intel.com>
+ Vishal Verma <vishal.l.verma@intel.com>, linux-cxl@vger.kernel.org
+Date: Thu, 10 Oct 2024 22:34:02 -0700
+Message-ID: <172862484072.2150669.9910214123827630595.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <172862483180.2150669.5564474284074502692.stgit@dwillia2-xfh.jf.intel.com>
+References: <172862483180.2150669.5564474284074502692.stgit@dwillia2-xfh.jf.intel.com>
 User-Agent: StGit/0.18-3-g996c
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -79,48 +81,76 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-Gregory's modest proposal to fix CXL cxl_mem_probe() failures due to
-delayed arrival of the CXL "root" infrastructure [1] prompted questions
-of how the existing mechanism for retrying cxl_mem_probe() could be
-failing.
+When the CXL subsystem is built-in the module init order is determined
+by Makefile order. That order violates expectations. The expectation is
+that cxl_acpi and cxl_mem can race to attach and that if cxl_acpi wins
+the race cxl_mem will find the enabled CXL root ports it needs and if
+cxl_acpi loses the race it will retrigger cxl_mem to attach via
+cxl_bus_rescan(). That only works if cxl_acpi can assume ports are
+enabled immediately upone cxl_acpi_probe() return. That in turn can only
+happen in the CONFIG_CXL_ACPI=y case if the cxl_port object appears
+before the cxl_acpi object in the Makefile.
 
-The critical missing piece in the debug was that Gregory's setup had
-almost all CXL modules built-in to the kernel.
+Fix up the order to prevent initialization failures, and make sure that
+cxl_port is built-in if cxl_acpi is also built-in.
 
-On the way to that discovery several other bugs and init-order corner
-cases were discovered.
+As for what contributed to this not being found earlier, the CXL
+regression environment, cxl_test, builds all CXL functionality as a
+module to allow to symbol mocking and other dynamic reload tests.  As a
+result there is no regression coverage for the built-in case.
 
-The main fix is to make sure the drivers/cxl/Makefile object order
-supports root CXL ports being fully initialized upon cxl_acpi_probe()
-exit. The modular case has some similar potential holes that are fixed
-with MODULE_SOFTDEP() and other fix ups. Finally, an attempt to update
-cxl_test to reproduce the original report resulted in the discovery of a
-separate long standing use after free bug in cxl_region_detach().
-
-[1]: http://lore.kernel.org/20241004212504.1246-1-gourry@gourry.net
-
+Reported-by: Gregory Price <gourry@gourry.net>
+Closes: http://lore.kernel.org/20241004212504.1246-1-gourry@gourry.net
+Tested-by: Gregory Price <gourry@gourry.net>
+Fixes: 8dd2bc0f8e02 ("cxl/mem: Add the cxl_mem driver")
+Cc: <stable@vger.kernel.org>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
+ drivers/cxl/Kconfig  |    1 +
+ drivers/cxl/Makefile |   12 ++++++------
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-Dan Williams (5):
-      cxl/port: Fix CXL port initialization order when the subsystem is built-in
-      cxl/port: Fix cxl_bus_rescan() vs bus_rescan_devices()
-      cxl/acpi: Ensure ports ready at cxl_acpi_probe() return
-      cxl/port: Fix use-after-free, permit out-of-order decoder shutdown
-      cxl/test: Improve init-order fidelity relative to real-world systems
+diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+index 29c192f20082..876469e23f7a 100644
+--- a/drivers/cxl/Kconfig
++++ b/drivers/cxl/Kconfig
+@@ -60,6 +60,7 @@ config CXL_ACPI
+ 	default CXL_BUS
+ 	select ACPI_TABLE_LIB
+ 	select ACPI_HMAT
++	select CXL_PORT
+ 	help
+ 	  Enable support for host managed device memory (HDM) resources
+ 	  published by a platform's ACPI CXL memory layout description.  See
+diff --git a/drivers/cxl/Makefile b/drivers/cxl/Makefile
+index db321f48ba52..374829359275 100644
+--- a/drivers/cxl/Makefile
++++ b/drivers/cxl/Makefile
+@@ -1,13 +1,13 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-y += core/
+-obj-$(CONFIG_CXL_PCI) += cxl_pci.o
+-obj-$(CONFIG_CXL_MEM) += cxl_mem.o
++obj-$(CONFIG_CXL_PORT) += cxl_port.o
+ obj-$(CONFIG_CXL_ACPI) += cxl_acpi.o
++obj-$(CONFIG_CXL_PCI) += cxl_pci.o
+ obj-$(CONFIG_CXL_PMEM) += cxl_pmem.o
+-obj-$(CONFIG_CXL_PORT) += cxl_port.o
++obj-$(CONFIG_CXL_MEM) += cxl_mem.o
+ 
+-cxl_mem-y := mem.o
+-cxl_pci-y := pci.o
++cxl_port-y := port.o
+ cxl_acpi-y := acpi.o
++cxl_pci-y := pci.o
+ cxl_pmem-y := pmem.o security.o
+-cxl_port-y := port.o
++cxl_mem-y := mem.o
 
-
- drivers/base/core.c          |   35 +++++++
- drivers/cxl/Kconfig          |    1
- drivers/cxl/Makefile         |   12 +--
- drivers/cxl/acpi.c           |    7 +
- drivers/cxl/core/hdm.c       |   50 +++++++++--
- drivers/cxl/core/port.c      |   13 ++-
- drivers/cxl/core/region.c    |   48 +++-------
- drivers/cxl/cxl.h            |    3 -
- include/linux/device.h       |    3 +
- tools/testing/cxl/test/cxl.c |  200 +++++++++++++++++++++++-------------------
- tools/testing/cxl/test/mem.c |    1
- 11 files changed, 228 insertions(+), 145 deletions(-)
-
-base-commit: 8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b
 
