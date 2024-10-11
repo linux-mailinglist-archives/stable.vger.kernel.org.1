@@ -1,83 +1,143 @@
-Return-Path: <stable+bounces-83413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B204999B14
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 05:17:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E34F4999B17
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 05:20:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00BA91F246C9
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 03:17:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C6321C2197F
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 03:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8134E1E130D;
-	Fri, 11 Oct 2024 03:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E261E283D;
+	Fri, 11 Oct 2024 03:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DNuQ9DRQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDk9Scza"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368AF12E5B;
-	Fri, 11 Oct 2024 03:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545A41C6F45;
+	Fri, 11 Oct 2024 03:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728616657; cv=none; b=n0jJ4sarolc32ydc+5pB9GAF+RKZHucdDt/MHrimL7JrQFSPSOMlE8XaNs15tZsjdb3Ge+ZG21RhwKuyWGmQj3pR9N+CR68QlLwYn+8RNELpIucrPLzU1Tc8n7uxSxS5IYanxUeKmarVpcHUBbepKkZbZI7QG/67cq1e93D2ZIE=
+	t=1728616811; cv=none; b=YrS2FGIuI09DZXXi0JTJP7oEmIdI8DweZXjRbZqTcWFfUmQIF+nS7hULEYPgvWGyriaXAmONHA9XwxX/v5c9LnC8sNLncBIn2pl48o6wWA66inhDzASfYgus1jGudXexX/CpxJfjqYcKwsai16UlIal+ruwTADUtQVow+bSHg38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728616657; c=relaxed/simple;
-	bh=Ahf7hOb4kthw840y6W9cnC0lmdkLkCWjbEtMzFw/BqY=;
+	s=arc-20240116; t=1728616811; c=relaxed/simple;
+	bh=lEctRmfjjcNQmqS5QoKjxTuZy2C8mA9FeD0H6fQ9f3Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s0v6rEfoFVO3fQTfEXGe2mQRva6sB1qMkaqPQX2/JWLCmgjGn3Jtynbcih2GE013DqDLZPQDVmlWHV0KQl7D9k2YwqjKj4MTkodYo8/mi8ksnA8265Rzt1oiaXibM6w3rOkOUThCye0wR/xpbI32x5MBoRgHM1rv45bqZu0iCGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DNuQ9DRQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2808C4CEC3;
-	Fri, 11 Oct 2024 03:17:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728616656;
-	bh=Ahf7hOb4kthw840y6W9cnC0lmdkLkCWjbEtMzFw/BqY=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=NELqZxhSc4xMc9DXOHVpHInecAaRAvmyILKvoypiN6YsmUp8H+p6UNz49PewTihW1q6kYBqOXPpPRb9sECHBnlyJ5IYT/BSGmz/39Bp7NoV/7yGyZSWcUomzSQE5uZtg1g7jLDqgzojFdHAYFgPJsMr/ViaJ88b29eswp0haS7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDk9Scza; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D93C4CEC3;
+	Fri, 11 Oct 2024 03:20:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1728616810;
+	bh=lEctRmfjjcNQmqS5QoKjxTuZy2C8mA9FeD0H6fQ9f3Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DNuQ9DRQyGh4e2O4nLpqsfB/JoaaWPHswYwgzRUqKCsX6otObXTir8Nm4RTcFoZux
-	 TaKGx+NDftvJ77xYb/BUQENjYmRJjQCOPWixuA9A0U30WZ0E0KKPXG/OIdQMKUSDTd
-	 fFYal4c5d3GklNm+ebmRzup9XdXKp9FycJNksTSF6oPGWO/npuQLcDXsEqZOro4RB8
-	 IsiF+le0HNzcaFI4uATnf88/I5GXILT69e9T0B4F/Yy/ypw34pNmuEExJYViDU7oJ5
-	 l6v030GbgHOy0Ldx89CZZ+THSDiwpnn+PxBaIzVIHgwt5Mw/u3VoKBkqazQ27655Nh
-	 WdOhlvIc9OlLw==
-Date: Fri, 11 Oct 2024 11:17:32 +0800
-From: Tzung-Bi Shih <tzungbi@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Prashant Malani <pmalani@chromium.org>,
-	Benson Leung <bleung@chromium.org>,
-	Guenter Roeck <groeck@chromium.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Enric Balletbo i Serra <eballetbo@kernel.org>,
-	chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] platform/chrome: cross_ec_type: fix missing fwnode
- reference decrement
-Message-ID: <ZwiYzGzbfK4rmOxq@tzungbi-laptop>
-References: <20241009-cross_ec_typec_fwnode_handle_put-v1-1-f17bdb48d780@gmail.com>
- <7767afd2-0ada-4cca-8861-ccdc874d555b@gmail.com>
+	b=HDk9Sczapv3qhXj+fUbk0t5Qg2aNLXTefGAGW4QCSgV/FXie7VoNwk498Ks1jDqsP
+	 AOkox7R2gDpcjD5TNKDFT9k4Rra1pFvuS9bMsclpQZzj4OSnP6EiNkaxJ7ujn2/7ac
+	 0Lvbs+/bUM2T8mlcMuW4Tmkrj6fuFky7ONC7p03M=
+Date: Fri, 11 Oct 2024 05:20:07 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: =?iso-8859-1?B?Q3Pza+Fz?= Bence <csokas.bence@prolan.hu>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"patches@lists.linux.dev" <patches@lists.linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6 028/386] net: fec: Restart PPS after link state change
+Message-ID: <2024101158-amid-unselfish-8bd7@gregkh>
+References: <20241008115629.309157387@linuxfoundation.org>
+ <20241008115630.584472371@linuxfoundation.org>
+ <1af647ce-69e4-4f86-b0a5-6ac76ec25d12@prolan.hu>
+ <2024101033-primate-hacking-6d3c@gregkh>
+ <PAXPR04MB8510F6DD068CE335D6D7202188792@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <7767afd2-0ada-4cca-8861-ccdc874d555b@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <PAXPR04MB8510F6DD068CE335D6D7202188792@PAXPR04MB8510.eurprd04.prod.outlook.com>
 
-On Wed, Oct 09, 2024 at 09:00:41PM +0200, Javier Carrasco wrote:
-> On 09/10/2024 20:55, Javier Carrasco wrote:
-> > By the way, I wonder why all error paths are redirected to the same
-> > label to unregister ports, even before registering them (which seems to
-> > be harmless because unregistered ports are ignored, but still). With this
+On Fri, Oct 11, 2024 at 01:50:58AM +0000, Wei Fang wrote:
+> > -----Original Message-----
+> > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Sent: 2024年10月10日 17:58
+> > To: Csókás Bence <csokas.bence@prolan.hu>
+> > Cc: stable@vger.kernel.org; patches@lists.linux.dev; Paolo Abeni
+> > <pabeni@redhat.com>; Sasha Levin <sashal@kernel.org>; Wei Fang
+> > <wei.fang@nxp.com>
+> > Subject: Re: [PATCH 6.6 028/386] net: fec: Restart PPS after link state change
+> > 
+> > On Tue, Oct 08, 2024 at 03:30:51PM +0200, Csókás Bence wrote:
+> > > Hi!
+> > >
+> > > On 2024. 10. 08. 14:04, Greg Kroah-Hartman wrote:
+> > > > 6.6-stable review patch.  If anyone has any objections, please let me know.
+> > > >
+> > > > ------------------
+> > > >
+> > > > From: Csókás, Bence <csokas.bence@prolan.hu>
+> > > >
+> > > > [ Upstream commit a1477dc87dc4996dcf65a4893d4e2c3a6b593002 ]
+> > > >
+> > > > On link state change, the controller gets reset, causing PPS to drop
+> > > > out. Re-enable PPS if it was enabled before the controller reset.
+> > > >
+> > > > Fixes: 6605b730c061 ("FEC: Add time stamping code and a PTP hardware
+> > > > clock")
+> > > > Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+> > > > Link:
+> > > > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpa
+> > > >
+> > tch.msgid.link%2F20240924093705.2897329-1-csokas.bence%40prolan.hu&d
+> > > >
+> > ata=05%7C02%7Cwei.fang%40nxp.com%7C80acbc9bb01544f3e84808dce912
+> > 01e0%
+> > > >
+> > 7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C6386415107715770
+> > 46%7CUn
+> > > >
+> > known%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik
+> > 1h
+> > > >
+> > aWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=sQygTTDEvCmMBFcgolXp13
+> > 8w4XkG3J
+> > > > e0d5rPLnDrhwM%3D&reserved=0
+> > > > Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> > > > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > >
+> > > There is a patch waiting to be merged that Fixes: this commit.
+> > >
+> > > Link:
+> > > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore
+> > > .kernel.org%2Fnetdev%2F20241008061153.1977930-1-wei.fang%40nxp.co
+> > m%2F&
+> > >
+> > data=05%7C02%7Cwei.fang%40nxp.com%7C80acbc9bb01544f3e84808dce91
+> > 201e0%7
+> > >
+> > C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C63864151077160040
+> > 3%7CUnkno
+> > >
+> > wn%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1ha
+> > WwiL
+> > >
+> > CJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=7IXriaU8I%2BO%2F2rxZueqJtf%2B
+> > VyF4ZQIR
+> > > PNZvnKMpuctk%3D&reserved=0
+> > 
+> > Great, we can pick it up once it hits Linus's tree, please let us know when that
+> > happens.
+> > 
+> 
+> Hi Greg,
+> 
+> The patch has been applied to Linus's tree, thanks.
 
-I don't know the context a lot.  But it looks like just a way to unregister
-the registered ones in the error path.
-
-> Small typo in the description, should be cross_ec_typec (last c is
-> missing). I will fix that for v2, but I will wait for feedback and
-> reviews to this first version.
-
-Also cross -> cros.  Otherwise, the fix looks good to me.
+What is the git id of the commit?
 
