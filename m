@@ -1,112 +1,323 @@
-Return-Path: <stable+bounces-83492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 613AA99AD20
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 21:55:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7273C99AD4D
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 22:01:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 032301F22AB9
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 19:55:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 753391C21AD5
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 20:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12721D0E2F;
-	Fri, 11 Oct 2024 19:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879121D0492;
+	Fri, 11 Oct 2024 20:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="awnF2X1u"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LyqjS/Nt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1801D0DE2
-	for <stable@vger.kernel.org>; Fri, 11 Oct 2024 19:55:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B64F19E979
+	for <stable@vger.kernel.org>; Fri, 11 Oct 2024 20:01:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728676550; cv=none; b=ea2gpE+a+/jOTqManjCgrxycUFZEgLztIq9VnNXKdzhdY+Wb+YLqnVal+omOpkY1oSbOXto9tzf2YRIJQjn5wYUpYf/zPt227cEuRGASyqt5fysCBkROi6oOV+tMH2IHvAgdepuN5dHizwYpv0FlBhiTKa/Ta+6aF/IsE4nd/R4=
+	t=1728676894; cv=none; b=XfMm8vNzr9poy8dg0k3Z8JNCNqawNooMXA34tXWNIkw90Vmi+swhPrD6Dj16ddO9zNS1j1hgU55Q6wtxgaX+sLi5d6OHidDY2rx30Oayl/GI/8n42bvOYe+enKT+UUtYHq4ZuT383KrpMUkD2zYQ7/vnsYQpxPnjKZoGCl3j6F4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728676550; c=relaxed/simple;
-	bh=a5D6CRKK6FRSWd/adGyc0iCMDGRKCSw2V0dQAJdi94Y=;
+	s=arc-20240116; t=1728676894; c=relaxed/simple;
+	bh=/DWBKvQagS0Wp6H3EYcCbjltX14fRPftp0PNm4ch5+w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cjwE8tLl8HnNPyopD5Goif0/bxr4aVQT8sHlETc2M1lUNMuGR7a0QpXDkZJo21X/YpK0KuVw/b5tlr/kCpkvo2FDTZTaUzMcWQJn5MmTQXgQVkOsb1jcMVvQefaJKqP6rEIu2xzOLnWB9FOZZ8LBI9kD5ejPibAoDHfxpxdckRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=awnF2X1u; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-6e2346f164cso21246737b3.3
-        for <stable@vger.kernel.org>; Fri, 11 Oct 2024 12:55:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728676548; x=1729281348; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qkBoPVksNssq3kk3PRQvLrV5w199+kZDVbn+dDVtSPE=;
-        b=awnF2X1u+JGwPCfYeQaZfeTDKaUYR3fh61rrprJM9QiweC9+dsMVCOFoVDjvs0DGX9
-         Evai97b86I+IM+lRYGckAzIgyH1aWiHIiJ54snKQ8kNU5yDOjzcWyWeC0GqL7jVHbBgs
-         tC7SHh2OqiAnSo/WWfXJUHKCanJmkJW/eQrXightxqbWm6ZCvFGPcYUGSN9yUl0BGA7p
-         T3d5Vb0mkEIiGscz2YLm92RhuEaGzs7EHsdNu5DKrTMHl6CcB2+Fi75tzBD0TTwxHv0S
-         GH+RIwd6KCMa7BEulMKO4I16X19sqKRZb/Ax5yXiFIoN+McS0+jaAMj+Y+ZlKNLsGR98
-         gQ+w==
+	 To:Cc:Content-Type; b=Q1aasaxVxJ3NpbQ/El423jPDHcm2YxqeOsWPAy9U7+0NYfjKIRMllBTf8xDTmpDl+DxJLSu3+U2hsPKWyHt5aDl6QL63CpK80FMHgKjPH2ojaDJYHZknCMhgDzLA0yqHii7mFC9Y9v4DFTie8Pr7vo7nObu5RO6MCg9UCy5+tVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LyqjS/Nt; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1728676891;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WHDuypZTtVZT0WxYjMHnNs3JOH4av880z38/C+Cs02I=;
+	b=LyqjS/Nt5pWXPnQrJ9W4K00xclr2Je4gn+Kwbxw78w6nsIdwUgnQDY7AzGyO+nBL+WYwG8
+	FiH6w0VcLeGXGVHl5lktn5ssBCM4tTANfu5zwv5J+TP79wnEiL4KveJMnXL+OLejlVuQp1
+	/2L3kQx4Oo5PWNr7IMy61lPdi6TZFqk=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-520-9C_1XAnzN8etAFIufxnlyw-1; Fri, 11 Oct 2024 16:01:29 -0400
+X-MC-Unique: 9C_1XAnzN8etAFIufxnlyw-1
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-5c95ac2d13bso108270a12.2
+        for <stable@vger.kernel.org>; Fri, 11 Oct 2024 13:01:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728676548; x=1729281348;
+        d=1e100.net; s=20230601; t=1728676888; x=1729281688;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qkBoPVksNssq3kk3PRQvLrV5w199+kZDVbn+dDVtSPE=;
-        b=V+Y/xlS6oBcU/PQ61KF7B4e+PnRuDOtGJpc+ZorjdJJbXxYeFWpEks6uDN3aoI9ViV
-         KK0+BT9xDtyCHOW+6SY+UfqVCZQh6wQRgrPY0wXmJahiNYjymjY9aZlPi2VwKM1VcMA4
-         s2GN/XG55CgXQX9DaLD12Uun+skYerdOtMtru8oZ81HUSQn+7eGm9GQ3oFVix+4ksM5x
-         KYlgC4CpVE39UNwW9z7Vwy9GdtKi8bJjLj9bOnR+3eSe+zlJoGilASt1O7TrbXpieQqj
-         Zbql1GKCVSt1iG52zLz7sHcPX08Bg7Oa12k3t/2kMotiEtoD9+hQ5tt3bJDNNfpn0y2f
-         UE7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXm2rnFwNM/vd1deZhC1iLZ1Vv8Z+LR2MgojkVKYaLTWjk6PJD+xQt7VE27k/0PTF6CrpaGdKg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+7hYmKv4K+g41RDExWXJokM6ppFl8aLpYPde5xPq9O1S83VU7
-	V7GjFliHjwpp2/hFAoqC1nS0Jtca8FB3oteCiIijY7b37SrdaDlOtGwhy9MRgC4KTX9jBsRVl56
-	fWQP5J0vqEHsaMkDoUPzyyxNhJTZuS2LMljq41A==
-X-Google-Smtp-Source: AGHT+IEm/NZLoO0B4BF4b0vFgq+5uRsH3TsYvJLQRrk7Qkb93mKDfqxwigJ4J2wXtENbFFnnkwnUAWOGHOtZzCq2V6I=
-X-Received: by 2002:a05:690c:ecb:b0:6e2:ad08:490e with SMTP id
- 00721157ae682-6e3477c014bmr38960987b3.5.1728676547975; Fri, 11 Oct 2024
- 12:55:47 -0700 (PDT)
+        bh=WHDuypZTtVZT0WxYjMHnNs3JOH4av880z38/C+Cs02I=;
+        b=KcgAfHJfzeUhz9WYWgv+WxvE/G5NAuh7PrQS4A7AcLhZGUc4h6QcmPt6G3kQd43rhJ
+         Tc9TiHXUXQkvmB0A/NCodhjsJZGsKPY7HrqHQawUa7wzJJ9nqtpcd559CrS8m73gfyRT
+         qkrvWuHAlT+Lr16TlsRpkYB3cPLTjjSX5OM6B6/dRsZtOjKeDl5bOQLduhdba4u9R2RM
+         fleRxkU78SJj20LijHnOsy379bSq+GiH7ZBq3FCXdD+fmg86AHRHxIEUnIlTzMFK+OwV
+         mafkriJ1iMeCoNNcJmHHMwTgIOT/LR2xD4UQDEVGqP/VcDq+btNAs4ZiUbqoiAMPythd
+         iYiw==
+X-Forwarded-Encrypted: i=1; AJvYcCWUqngqEKwcNBb7RHpOKKzviAILxKz9+OrtXpIKeLgZJRs1q7L/8smu8quAftmrR6Vk5nTiIUM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjSQegV6U6lhINccQ0OLUiJw8WXLlrEtxJ63M67UK8a6EpneJ6
+	0e1kupghk7o+edysMOkHIEqOjjGKRqsqF/gX0NBgSzLu5lmD0PkMjDblWgkkEvS7VfidkDYG7ys
+	tauUGbzk9VQI4fVxm6Qybfpq+17CwR0+eUt8jLK72C7HFkTwgyrhmgLgbw5xCo0Ate7vQ7ZX5lx
+	oWfdzi3zmkxTiAL1ZI+ku1+pKVZHfR
+X-Received: by 2002:a17:907:2cc2:b0:a8d:439d:5c3c with SMTP id a640c23a62f3a-a99e3b20d62mr73874266b.8.1728676888376;
+        Fri, 11 Oct 2024 13:01:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGzqaLnNTTJDMSJpxjLSBWIDWp1dphCWFd4g5vqnZlvpdthp8xNF7Q+BOq5TKSx8qoxkC8Hl6JDsYnkjncqws=
+X-Received: by 2002:a17:907:2cc2:b0:a8d:439d:5c3c with SMTP id
+ a640c23a62f3a-a99e3b20d62mr73872066b.8.1728676887892; Fri, 11 Oct 2024
+ 13:01:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241010205237.1245318-1-harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20241010205237.1245318-1-harshit.m.mogalapalli@oracle.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Fri, 11 Oct 2024 21:55:36 +0200
-Message-ID: <CACRpkdYy9JL_tE=N1=4aK7JG82usxGN6eteTxsopTbFsU0Vh_g@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: nuvoton: fix a double free in ma35_pinctrl_dt_node_to_map_func()
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: christophe.jaillet@wanadoo.fr, Jacky Huang <ychuang3@nuvoton.com>, 
-	Shan-Chun Hung <schung@nuvoton.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	dan.carpenter@linaro.org, kernel-janitors@vger.kernel.org, error27@gmail.com, 
+References: <20241010221801.35462-1-okorniev@redhat.com> <Zwk4mAhnaoFe43Gy@tissot.1015granger.net>
+ <f824c20c2eda23bcd98c75dc5313f0f8da5e6b84.camel@kernel.org>
+In-Reply-To: <f824c20c2eda23bcd98c75dc5313f0f8da5e6b84.camel@kernel.org>
+From: Olga Kornievskaia <okorniev@redhat.com>
+Date: Fri, 11 Oct 2024 16:01:16 -0400
+Message-ID: <CACSpFtCj5zpLKp_=kbjFkfjK6FOrE_n1oDNC2N20b+07c+Luug@mail.gmail.com>
+Subject: Re: [PATCH 1/1] nfsd: fix race between laundromat and free_stateid
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Chuck Lever <chuck.lever@oracle.com>, linux-nfs@vger.kernel.org, 
 	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 10, 2024 at 10:52=E2=80=AFPM Harshit Mogalapalli
-<harshit.m.mogalapalli@oracle.com> wrote:
+On Fri, Oct 11, 2024 at 12:17=E2=80=AFPM Jeff Layton <jlayton@kernel.org> w=
+rote:
+>
+> On Fri, 2024-10-11 at 10:39 -0400, Chuck Lever wrote:
+> > On Thu, Oct 10, 2024 at 06:18:01PM -0400, Olga Kornievskaia wrote:
+> > > There is a race between laundromat handling of revoked delegations
+> > > and a client sending free_stateid operation. Laundromat thread
+> > > finds that delegation has expired and needs to be revoked so it
+> > > marks the delegation stid revoked and it puts it on a reaper list
+> > > but then it unlock the state lock and the actual delegation revocatio=
+n
+> > > happens without the lock. Once the stid is marked revoked a racing
+> > > free_stateid processing thread does the following (1) it calls
+> > > list_del_init() which removes it from the reaper list and (2) frees
+> > > the delegation stid structure. The laundromat thread ends up not
+> > > calling the revoke_delegation() function for this particular delegati=
+on
+> > > but that means it will no release the lock lease that exists on
+> > > the file.
+> > >
+> > > Now, a new open for this file comes in and ends up finding that
+> > > lease list isn't empty and calls nfsd_breaker_owns_lease() which ends
+> > > up trying to derefence a freed delegation stateid. Leading to the
+> > > followint use-after-free KASAN warning:
+> > >
+> > > kernel: =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > > kernel: BUG: KASAN: slab-use-after-free in nfsd_breaker_owns_lease+0x=
+140/0x160 [nfsd]
+> > > kernel: Read of size 8 at addr ffff0000e73cd0c8 by task nfsd/6205
+> > > kernel:
+> > > kernel: CPU: 2 UID: 0 PID: 6205 Comm: nfsd Kdump: loaded Not tainted =
+6.11.0-rc7+ #9
+> > > kernel: Hardware name: Apple Inc. Apple Virtualization Generic Platfo=
+rm, BIOS 2069.0.0.0.0 08/03/2024
+> > > kernel: Call trace:
+> > > kernel: dump_backtrace+0x98/0x120
+> > > kernel: show_stack+0x1c/0x30
+> > > kernel: dump_stack_lvl+0x80/0xe8
+> > > kernel: print_address_description.constprop.0+0x84/0x390
+> > > kernel: print_report+0xa4/0x268
+> > > kernel: kasan_report+0xb4/0xf8
+> > > kernel: __asan_report_load8_noabort+0x1c/0x28
+> > > kernel: nfsd_breaker_owns_lease+0x140/0x160 [nfsd]
+> > > kernel: leases_conflict+0x68/0x370
+> > > kernel: __break_lease+0x204/0xc38
+> > > kernel: nfsd_open_break_lease+0x8c/0xf0 [nfsd]
+> > > kernel: nfsd_file_do_acquire+0xb3c/0x11d0 [nfsd]
+> > > kernel: nfsd_file_acquire_opened+0x84/0x110 [nfsd]
+> > > kernel: nfs4_get_vfs_file+0x634/0x958 [nfsd]
+> > > kernel: nfsd4_process_open2+0xa40/0x1a40 [nfsd]
+> > > kernel: nfsd4_open+0xa08/0xe80 [nfsd]
+> > > kernel: nfsd4_proc_compound+0xb8c/0x2130 [nfsd]
+> > > kernel: nfsd_dispatch+0x22c/0x718 [nfsd]
+> > > kernel: svc_process_common+0x8e8/0x1960 [sunrpc]
+> > > kernel: svc_process+0x3d4/0x7e0 [sunrpc]
+> > > kernel: svc_handle_xprt+0x828/0xe10 [sunrpc]
+> > > kernel: svc_recv+0x2cc/0x6a8 [sunrpc]
+> > > kernel: nfsd+0x270/0x400 [nfsd]
+> > > kernel: kthread+0x288/0x310
+> > > kernel: ret_from_fork+0x10/0x20
+> > >
+> > > Proposing to have laundromat thread hold the state_lock over both
+> > > marking thru revoking the delegation as well as making free_stateid
+> > > acquire state_lock before accessing the list. Making sure that
+> > > revoke_delegation() (ie kernel_setlease(unlock)) is called for
+> > > every delegation that was revoked and added to the reaper list.
+> > >
+> > > CC: stable@vger.kernel.org
+> > > Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+> > >
+> > > --- I can't figure out the Fixes: tag. Laundromat's behaviour has
+> > > been like that forever. But the free_stateid bits wont apply before
+> > > the 1e3577a4521e ("SUNRPC: discard sv_refcnt, and svc_get/svc_put").
+> > > But we used that fixes tag already with a previous fix for a differen=
+t
+> > > problem.
+> > > ---
+> > >  fs/nfsd/nfs4state.c | 4 +++-
+> > >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+> > > index 9c2b1d251ab3..c97907d7fb38 100644
+> > > --- a/fs/nfsd/nfs4state.c
+> > > +++ b/fs/nfsd/nfs4state.c
+> > > @@ -6605,13 +6605,13 @@ nfs4_laundromat(struct nfsd_net *nn)
+> > >             unhash_delegation_locked(dp, SC_STATUS_REVOKED);
+> > >             list_add(&dp->dl_recall_lru, &reaplist);
+> > >     }
+> > > -   spin_unlock(&state_lock);
+> > >     while (!list_empty(&reaplist)) {
+> > >             dp =3D list_first_entry(&reaplist, struct nfs4_delegation=
+,
+> > >                                     dl_recall_lru);
+> > >             list_del_init(&dp->dl_recall_lru);
+> > >             revoke_delegation(dp);
+> > >     }
+> > > +   spin_unlock(&state_lock);
+> >
+> > Code review suggests revoke_delegation() (and in particular,
+> > destroy_unhashed_deleg(), must not be called while holding
+> > state_lock().
+> >
+>
+> We'd be calling nfs4_unlock_deleg_lease with a spinlock held, which is
+> sort of gross.
+>
+> That said, I don't love this fix either.
+>
+> >
+> > >     spin_lock(&nn->client_lock);
+> > >     while (!list_empty(&nn->close_lru)) {
+> > > @@ -7213,7 +7213,9 @@ nfsd4_free_stateid(struct svc_rqst *rqstp, stru=
+ct nfsd4_compound_state *cstate,
+> > >             if (s->sc_status & SC_STATUS_REVOKED) {
+> > >                     spin_unlock(&s->sc_lock);
+> > >                     dp =3D delegstateid(s);
+> > > +                   spin_lock(&state_lock);
+> > >                     list_del_init(&dp->dl_recall_lru);
+> > > +                   spin_unlock(&state_lock);
+> >
+> > Existing code is inconsistent about how manipulation of
+> > dl_recall_lru is protected. Most instances do use state_lock for
+> > this purpose, but a few, including this one, use cl->cl_lock. Does
+> > the other instance using cl_lock need review and correction as well?
+> >
+> > I'd prefer to see this fix make the protection of dl_recall_lru
+> > consistent everywhere.
+> >
+>
+> Agreed. The locking around the delegation handling has been a mess for
+> a long time. I'd really like to have a way to fix this that didn't
+> require having to rework all of this code however.
+>
+> How about something like this patch instead? Olga, thoughts?
 
-> 'new_map' is allocated using devm_* which takes care of freeing the
-> allocated data on device removal, call to
->
->         .dt_free_map =3D pinconf_generic_dt_free_map
->
-> double frees the map as pinconf_generic_dt_free_map() calls
-> pinctrl_utils_free_map().
->
-> Fix this by using kcalloc() instead of auto-managed devm_kcalloc().
->
-> Cc: stable@vger.kernel.org
-> Fixes: f805e356313b ("pinctrl: nuvoton: Add ma35d1 pinctrl and GPIO drive=
-r")
-> Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+I think this patch will prevent the UAF but it doesn't work for
+another reason (tested it too). As the free_stateid operation can come
+in before the freeable flag is set (and so the nfsd4_free_stateid
+function would not do anything). But it needs to remove this
+delegation from cl_revoked which the laundromat puts it on as a part
+of revoked_delegation() otherwise the server never clears
+recallable_state_revoked. And I think this put_stid() that
+free_stateid does is also needed. So what happens is free_stateid
+comes and goes and the sequence flag is set and is never cleared.
 
-Patch applied for fixes.
+Laundromat threat when it starts revocation process it either needs to
+'finish it' but it needs to make sure that if free_stateid arrives in
+the meanwhile it has to wait but still run. Or I was thinking that
+perhaps, we can make free_stateid act like delegreturn. but I wasn't
+sure if free_stateid is allowed to act like delegreturn. but this also
+fixes the problem if the free_stateid arrives and takes the work away
+from the laundromat thread then free_stateid finishes the return just
+like a delegreturn (which unlocks the lease). But I'm unclear if there
+isn't any races between revoke_delegation and destroy_delegation.
 
-Yours,
-Linus Walleij
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 56b261608af4..1ef6933b1ccb 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -7159,6 +7159,7 @@ nfsd4_free_stateid(struct svc_rqst *rqstp,
+struct nfsd4_compound_state *cstate,
+                        dp =3D delegstateid(s);
+                        list_del_init(&dp->dl_recall_lru);
+                        spin_unlock(&cl->cl_lock);
++                       destroy_delegation(dp);
+                        nfs4_put_stid(s);
+                        ret =3D nfs_ok;
+                        goto out;
+
+
+
+> [PATCH] nfsd: add new SC_STATUS_FREEABLE to prevent race with  FREE_STATE=
+ID
+>
+> Olga identified a race between the laundromat and FREE_STATEID handling.
+> The crux of the problem is that free_stateid can proceed while the
+> laundromat is still processing the revocation.
+>
+> Add a new SC_STATUS_FREEABLE flag that is set once the revocation is
+> complete. Have nfsd4_free_stateid only consider delegations that have
+> this flag set.
+>
+> Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> ---
+>  fs/nfsd/nfs4state.c | 3 ++-
+>  fs/nfsd/state.h     | 1 +
+>  2 files changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+> index 73c4b983c048..b71a2cc7f2dd 100644
+> --- a/fs/nfsd/nfs4state.c
+> +++ b/fs/nfsd/nfs4state.c
+> @@ -1371,6 +1371,7 @@ static void revoke_delegation(struct nfs4_delegatio=
+n *dp)
+>                 spin_lock(&clp->cl_lock);
+>                 refcount_inc(&dp->dl_stid.sc_count);
+>                 list_add(&dp->dl_recall_lru, &clp->cl_revoked);
+> +               dp->dl_stid.sc_status |=3D SC_STATUS_FREEABLE;
+>                 spin_unlock(&clp->cl_lock);
+>         }
+>         destroy_unhashed_deleg(dp);
+> @@ -7207,7 +7208,7 @@ nfsd4_free_stateid(struct svc_rqst *rqstp, struct n=
+fsd4_compound_state *cstate,
+>         spin_lock(&s->sc_lock);
+>         switch (s->sc_type) {
+>         case SC_TYPE_DELEG:
+> -               if (s->sc_status & SC_STATUS_REVOKED) {
+> +               if (s->sc_status & SC_STATUS_FREEABLE) {
+>                         spin_unlock(&s->sc_lock);
+>                         dp =3D delegstateid(s);
+>                         list_del_init(&dp->dl_recall_lru);
+> diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
+> index 874fcab2b183..4f3b941b09d3 100644
+> --- a/fs/nfsd/state.h
+> +++ b/fs/nfsd/state.h
+> @@ -114,6 +114,7 @@ struct nfs4_stid {
+>  /* For a deleg stateid kept around only to process free_stateid's: */
+>  #define SC_STATUS_REVOKED      BIT(1)
+>  #define SC_STATUS_ADMIN_REVOKED        BIT(2)
+> +#define SC_STATUS_FREEABLE     BIT(3)
+>         unsigned short          sc_status;
+>
+>         struct list_head        sc_cp_list;
+> --
+> 2.47.0
+>
+
 
