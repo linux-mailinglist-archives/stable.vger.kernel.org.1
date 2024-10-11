@@ -1,179 +1,193 @@
-Return-Path: <stable+bounces-83406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF35A9995E2
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 01:58:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D492999803
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 02:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B007284805
-	for <lists+stable@lfdr.de>; Thu, 10 Oct 2024 23:58:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 889441F209B3
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 00:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE491CF5C3;
-	Thu, 10 Oct 2024 23:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8579633E7;
+	Fri, 11 Oct 2024 00:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eD7QHdQ9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qfKtxrHX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911D41C9B93
-	for <stable@vger.kernel.org>; Thu, 10 Oct 2024 23:58:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412BF1372;
+	Fri, 11 Oct 2024 00:34:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728604709; cv=none; b=HwulfHN/1N9p8p42gZmiE+YteBKx0b8WddtugQ6Xvsn8z6vhjRlQROMJm1aqIK6uNLQn1iWJzKa4Mf2ifok7bHiEP1xPLnY0SHyEWZ61+7BoTFr1uVyU77Q7EwYr2+C6WXhLnMH8k6bd8KJWFzqHqLiJpHdP0va42F0bcsiIX3o=
+	t=1728606843; cv=none; b=V6HkYmfV+Rhq/B0gQswlc67L5IEmQEq7wvfgD2ewevxrFTmxY51in+Wo9fqadbykIfZzcoqnT61X12yY4me5afoGoEQhmpzruojeNZFVcIafObLMZJ8OVO8QI27cWaAPB6CRJ+ak+6rU4Baifi/z7vFKL5MhmaMlR/QIk0kW7kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728604709; c=relaxed/simple;
-	bh=G1QqrAj2olhu9EGBEQJEbfv0Osn+9IOanCWYAuC+Tbc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sc++mmRkfV572gAIU8vEjjTG8ZTrmJ2WaWJdHXACMMuCTOg5BjsIwlQy1PCLbFbeqhRIvZ74kxGdEN22nLo+ILGpsYShKHhJtfhA8axdbD+GOqt9XnddLmTrW3LWoOWXXCtIy4w2CH4HZ5wBHk0ax/2E70LCW+ugDA8f0dvdBrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eD7QHdQ9; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-71dfe07489dso1252042b3a.3
-        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 16:58:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728604706; x=1729209506; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w5Eor/lXdsrMQiNQ8VDsC5vCLxBQGoEuzevbVvC8lEg=;
-        b=eD7QHdQ9lPNLwg/qP1jA5ZVI9kKjRP4mllNs2J8+HKf0pnhV/rzzsUoXR9uGNS5oQh
-         ALeTmEDYUiA2++cDZsBJB12tF7FCkKPh/twtjCRepBFDgrf0nxQne8bBflbkIoy76Xha
-         qwIik+Eumw2m8Sk0KU5KrnujnGy5BSQEivaPMaVDicwZW8Z853AZD2p9niC2kd6TsEu+
-         j7nhWOTeJMm2p494QSkzwNuzu/uzXRZQkMzdt8kbyKx18bvpfGGa75LnjzkE8GAw+dSY
-         wd6urgfPOOFE81iaExsistn+lhfhMvML91vJS6/D3XwABdS81zcnMvrMeel41+cAkMc+
-         qAtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728604706; x=1729209506;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w5Eor/lXdsrMQiNQ8VDsC5vCLxBQGoEuzevbVvC8lEg=;
-        b=grwlWnXQdYIVm6LtR66ZdzqGAbCzxZmMTPuHLL4oZFs4YMiQzEj5m1nAzLvKDsP7u9
-         ggj0E2zY2ggISqTPrdwEcdcfScvmHo6zMV/mtrU4KK0ohbIXPEBByYlOQ/5Xzs6SZu7Y
-         m83fYdl4tZt1c5OjMsc1hQe2eHMf7waG4VGUkiITl86plnl+JvqvcyUm3RBikEq8o2hE
-         FgQ1rvUYRdEqkF83vk6WEYnARSNov2JNWetsVPKYhgQTbclxQyBqBrakEFwBDXOkXLUU
-         jJbHWb0Biy0mgvcJ/8dbalaNgSApRaI62EKss2ywD/Z07Mo5xnEuJddlCrMHRKygO6HU
-         w+BA==
-X-Gm-Message-State: AOJu0YwCl+9xV7n7DSrJlntp4QPxbbhWe3OwfLhRpNU8QIlxB9SQZ6rO
-	Qoio6OqgpHhswZd8K5wnwxeDPAH1CY3EXHF22sTGEK1/EXGmwXLcjtHEsw==
-X-Google-Smtp-Source: AGHT+IH8nYTxwgeIzv2/oPJjnjMpR/2RQgoTeQJea7aozDk3b0TlWinoc9xonVbQqwFEQMnLNKUMZQ==
-X-Received: by 2002:aa7:81c2:0:b0:71e:3b51:e856 with SMTP id d2e1a72fcca58-71e3b51e94cmr367615b3a.1.1728604706350;
-        Thu, 10 Oct 2024 16:58:26 -0700 (PDT)
-Received: from localhost.localdomain (88.sub-174-204-69.myvzw.com. [174.204.69.88])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e2a9eb274sm1600485b3a.32.2024.10.10.16.58.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2024 16:58:25 -0700 (PDT)
-From: Mitchell Levy <levymitchell0@gmail.com>
-To: stable@vger.kernel.org
-Cc: Mitchell Levy <levymitchell0@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.15.y] x86/fpu: Avoid writing LBR bit to IA32_XSS unless supported
-Date: Thu, 10 Oct 2024 16:57:31 -0700
-Message-Id: <20241010235731.10876-1-levymitchell0@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2024090809-plaything-sash-1d57@gregkh>
-References: <2024090809-plaything-sash-1d57@gregkh>
+	s=arc-20240116; t=1728606843; c=relaxed/simple;
+	bh=YdKcjvajEaw9ZkKtENi8Kq8HKWaf+KWOalkBj/HFoss=;
+	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YESzKPHxQdIeoHaehj2YdR63dYbbrz/UD2hcpdjBkvNIMxOIihIO4NIc94KhJwlxVMDpI7pOwTborq9wD/tITQkP/769da8MVww9GUF52ZAjVknL7weMiReixXw0iCqmaXKWrM3tcL57NfIF98yrm5Eh2BFe85op4cqs+vzMddk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qfKtxrHX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EBBC4CEC5;
+	Fri, 11 Oct 2024 00:34:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728606842;
+	bh=YdKcjvajEaw9ZkKtENi8Kq8HKWaf+KWOalkBj/HFoss=;
+	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
+	b=qfKtxrHXeUj9F0Xt3B7CuQejmrkA2AdWE1FVnqXZBDAPh1/CHdAO1iZC3o1RFtAhS
+	 u065sIsFXTQvqwJ3At91EFPJOXefCS26TgDXRarJY257RAutBoEcZ9Bz/77OqC2Z+d
+	 7bwDLOB/cCEzirKP3Tw+w7gT/rAAkol7SS/Hcde8xdRgpsF24czxv+9xiqr+n5eJEZ
+	 ZFqRhRC/9DZvKPM++Y/4JbLJvD6oEsbzwpTnJjn3k0oZCo+IiIVZWIJM/acKLkHWEO
+	 d6Y7xtbeGPOYR2oKRHg90E55ux5CPoHNrbeyvdCu9BEDZcCPuIch0T6fNODMuF+tYK
+	 U1PFa1PlpCRgQ==
+Date: Thu, 10 Oct 2024 17:34:02 -0700
+Subject: [PATCHSET v5.0 3/9] xfs: metadata inode directory trees
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: djwong@kernel.org
+Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org, hch@lst.de
+Message-ID: <172860641935.4176876.5699259080908526243.stgit@frogsfrogsfrogs>
+In-Reply-To: <20241011002402.GB21877@frogsfrogsfrogs>
+References: <20241011002402.GB21877@frogsfrogsfrogs>
+User-Agent: StGit/0.19
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-There are two distinct CPU features related to the use of XSAVES and LBR:
-whether LBR is itself supported and whether XSAVES supports LBR. The LBR
-subsystem correctly checks both in intel_pmu_arch_lbr_init(), but the
-XSTATE subsystem does not.
+Hi all,
 
-The LBR bit is only removed from xfeatures_mask_independent when LBR is not
-supported by the CPU, but there is no validation of XSTATE support.
-If XSAVES does not support LBR the write to IA32_XSS causes a #GP fault,
-leaving the state of IA32_XSS unchanged, i.e. zero. The fault is handled
-with a warning and the boot continues.
+This series delivers a new feature -- metadata inode directories.  This
+is a separate directory tree (rooted in the superblock) that contains
+only inodes that contain filesystem metadata.  Different metadata
+objects can be looked up with regular paths.
 
-Consequently the next XRSTORS which tries to restore supervisor state fails
-with #GP because the RFBM has zero for all supervisor features, which does
-not match the XCOMP_BV field.
+Start by creating xfs_imeta{dir,file}* functions to mediate access to
+the metadata directory tree.  By the end of this mega series, all
+existing metadata inodes (rt+quota) will use this directory tree instead
+of the superblock.
 
-As XFEATURE_MASK_FPSTATE includes supervisor features setting up the FPU
-causes a #GP, which ends up in fpu_reset_from_exception_fixup(). That fails
-due to the same problem resulting in recursive #GPs until the kernel runs
-out of stack space and double faults.
+Next, define the metadir on-disk format, which consists of marking
+inodes with a new iflag that says they're metadata.  This prevents
+bulkstat and friends from ever getting their hands on fs metadata files.
 
-Prevent this by storing the supported independent features in
-fpu_kernel_cfg during XSTATE initialization and use that cached value for
-retrieving the independent feature bits to be written into IA32_XSS.
+If you're going to start using this code, I strongly recommend pulling
+from my git trees, which are linked below.
 
-[ tglx: Massaged change log ]
+This has been running on the djcloud for months with no problems.  Enjoy!
+Comments and questions are, as always, welcome.
 
-Fixes: f0dccc9da4c0 ("x86/fpu/xstate: Support dynamic supervisor feature for LBR")
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-[ Mitchell Levy: Backport to 5.15, since struct fpu_config is not
-  introduced until 578971f4e228 and feature masks are not included in
-  said struct until 1c253ff2287f ]
-Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240812-xsave-lbr-fix-v3-1-95bac1bf62f4@gmail.com
+--D
+
+kernel git tree:
+https://git.kernel.org/cgit/linux/kernel/git/djwong/xfs-linux.git/log/?h=metadata-directory-tree
+
+xfsprogs git tree:
+https://git.kernel.org/cgit/linux/kernel/git/djwong/xfsprogs-dev.git/log/?h=metadata-directory-tree
 ---
- arch/x86/include/asm/fpu/xstate.h | 5 +++--
- arch/x86/kernel/fpu/xstate.c      | 7 +++++++
- 2 files changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/include/asm/fpu/xstate.h b/arch/x86/include/asm/fpu/xstate.h
-index d91df71f60fb..3bc08b5313b0 100644
---- a/arch/x86/include/asm/fpu/xstate.h
-+++ b/arch/x86/include/asm/fpu/xstate.h
-@@ -85,6 +85,7 @@
- #endif
- 
- extern u64 xfeatures_mask_all;
-+extern u64 xfeatures_mask_indep;
- 
- static inline u64 xfeatures_mask_supervisor(void)
- {
-@@ -124,9 +125,9 @@ static inline u64 xfeatures_mask_fpstate(void)
- static inline u64 xfeatures_mask_independent(void)
- {
- 	if (!boot_cpu_has(X86_FEATURE_ARCH_LBR))
--		return XFEATURE_MASK_INDEPENDENT & ~XFEATURE_MASK_LBR;
-+		return xfeatures_mask_indep & ~XFEATURE_MASK_LBR;
- 
--	return XFEATURE_MASK_INDEPENDENT;
-+	return xfeatures_mask_indep;
- }
- 
- extern u64 xstate_fx_sw_bytes[USER_XSTATE_FX_SW_WORDS];
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 81891f0fff6f..3772577462a0 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -60,6 +60,11 @@ static short xsave_cpuid_features[] __initdata = {
-  * XSAVE buffer, both supervisor and user xstates.
-  */
- u64 xfeatures_mask_all __ro_after_init;
-+/*
-+ * This represents the "independent" xfeatures that are supported by XSAVES, but not managed as part
-+ * of the FPU core, such as LBR.
-+ */
-+u64 xfeatures_mask_indep __ro_after_init;
- EXPORT_SYMBOL_GPL(xfeatures_mask_all);
- 
- static unsigned int xstate_offsets[XFEATURE_MAX] __ro_after_init =
-@@ -768,6 +773,8 @@ void __init fpu__init_system_xstate(void)
- 		goto out_disable;
- 	}
- 
-+	xfeatures_mask_indep = xfeatures_mask_all & XFEATURE_MASK_INDEPENDENT;
-+
- 	/*
- 	 * Clear XSAVE features that are disabled in the normal CPUID.
- 	 */
--- 
-2.34.1
+Commits in this patchset:
+ * xfs: constify the xfs_sb predicates
+ * xfs: constify the xfs_inode predicates
+ * xfs: define the on-disk format for the metadir feature
+ * xfs: undefine the sb_bad_features2 when metadir is enabled
+ * xfs: iget for metadata inodes
+ * xfs: load metadata directory root at mount time
+ * xfs: enforce metadata inode flag
+ * xfs: read and write metadata inode directory tree
+ * xfs: disable the agi rotor for metadata inodes
+ * xfs: hide metadata inodes from everyone because they are special
+ * xfs: advertise metadata directory feature
+ * xfs: allow bulkstat to return metadata directories
+ * xfs: don't count metadata directory files to quota
+ * xfs: mark quota inodes as metadata files
+ * xfs: adjust xfs_bmap_add_attrfork for metadir
+ * xfs: record health problems with the metadata directory
+ * xfs: refactor directory tree root predicates
+ * xfs: do not count metadata directory files when doing online quotacheck
+ * xfs: don't fail repairs on metadata files with no attr fork
+ * xfs: metadata files can have xattrs if metadir is enabled
+ * xfs: adjust parent pointer scrubber for sb-rooted metadata files
+ * xfs: fix di_metatype field of inodes that won't load
+ * xfs: scrub metadata directories
+ * xfs: check the metadata directory inumber in superblocks
+ * xfs: move repair temporary files to the metadata directory tree
+ * xfs: check metadata directory file path connectivity
+ * xfs: confirm dotdot target before replacing it during a repair
+ * xfs: repair metadata directory file path connectivity
+---
+ fs/xfs/Makefile                 |    5 
+ fs/xfs/libxfs/xfs_attr.c        |    5 
+ fs/xfs/libxfs/xfs_bmap.c        |    5 
+ fs/xfs/libxfs/xfs_format.h      |  176 ++++++++++---
+ fs/xfs/libxfs/xfs_fs.h          |   25 ++
+ fs/xfs/libxfs/xfs_health.h      |    6 
+ fs/xfs/libxfs/xfs_ialloc.c      |   58 +++-
+ fs/xfs/libxfs/xfs_inode_buf.c   |   83 ++++++
+ fs/xfs/libxfs/xfs_inode_buf.h   |    3 
+ fs/xfs/libxfs/xfs_inode_util.c  |    2 
+ fs/xfs/libxfs/xfs_log_format.h  |    2 
+ fs/xfs/libxfs/xfs_metadir.c     |  481 ++++++++++++++++++++++++++++++++++++
+ fs/xfs/libxfs/xfs_metadir.h     |   47 ++++
+ fs/xfs/libxfs/xfs_metafile.c    |   52 ++++
+ fs/xfs/libxfs/xfs_metafile.h    |   31 ++
+ fs/xfs/libxfs/xfs_ondisk.h      |    2 
+ fs/xfs/libxfs/xfs_sb.c          |   33 ++
+ fs/xfs/scrub/agheader.c         |   14 +
+ fs/xfs/scrub/common.c           |   65 ++++-
+ fs/xfs/scrub/common.h           |    5 
+ fs/xfs/scrub/dir.c              |   10 +
+ fs/xfs/scrub/dir_repair.c       |   20 +
+ fs/xfs/scrub/dirtree.c          |   32 ++
+ fs/xfs/scrub/dirtree.h          |   12 -
+ fs/xfs/scrub/findparent.c       |   28 ++
+ fs/xfs/scrub/health.c           |    1 
+ fs/xfs/scrub/inode.c            |   35 ++-
+ fs/xfs/scrub/inode_repair.c     |   34 ++-
+ fs/xfs/scrub/metapath.c         |  521 +++++++++++++++++++++++++++++++++++++++
+ fs/xfs/scrub/nlinks.c           |    4 
+ fs/xfs/scrub/nlinks_repair.c    |    4 
+ fs/xfs/scrub/orphanage.c        |    4 
+ fs/xfs/scrub/parent.c           |   39 ++-
+ fs/xfs/scrub/parent_repair.c    |   37 ++-
+ fs/xfs/scrub/quotacheck.c       |    7 -
+ fs/xfs/scrub/repair.c           |   22 +-
+ fs/xfs/scrub/repair.h           |    3 
+ fs/xfs/scrub/scrub.c            |    9 +
+ fs/xfs/scrub/scrub.h            |    2 
+ fs/xfs/scrub/stats.c            |    1 
+ fs/xfs/scrub/tempfile.c         |  105 ++++++++
+ fs/xfs/scrub/tempfile.h         |    3 
+ fs/xfs/scrub/trace.c            |    1 
+ fs/xfs/scrub/trace.h            |   42 +++
+ fs/xfs/xfs_dquot.c              |    1 
+ fs/xfs/xfs_health.c             |    2 
+ fs/xfs/xfs_icache.c             |   73 +++++
+ fs/xfs/xfs_inode.c              |   15 +
+ fs/xfs/xfs_inode.h              |   34 ++-
+ fs/xfs/xfs_inode_item.c         |    7 -
+ fs/xfs/xfs_inode_item_recover.c |    5 
+ fs/xfs/xfs_ioctl.c              |    7 +
+ fs/xfs/xfs_iops.c               |   15 +
+ fs/xfs/xfs_itable.c             |   33 ++
+ fs/xfs/xfs_itable.h             |    3 
+ fs/xfs/xfs_mount.c              |   31 ++
+ fs/xfs/xfs_mount.h              |    3 
+ fs/xfs/xfs_qm.c                 |   36 +++
+ fs/xfs/xfs_quota.h              |    5 
+ fs/xfs/xfs_rtalloc.c            |   38 ++-
+ fs/xfs/xfs_super.c              |    4 
+ fs/xfs/xfs_trace.c              |    2 
+ fs/xfs/xfs_trace.h              |  102 ++++++++
+ fs/xfs/xfs_trans_dquot.c        |    6 
+ 64 files changed, 2302 insertions(+), 196 deletions(-)
+ create mode 100644 fs/xfs/libxfs/xfs_metadir.c
+ create mode 100644 fs/xfs/libxfs/xfs_metadir.h
+ create mode 100644 fs/xfs/libxfs/xfs_metafile.c
+ create mode 100644 fs/xfs/libxfs/xfs_metafile.h
+ create mode 100644 fs/xfs/scrub/metapath.c
 
 
