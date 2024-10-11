@@ -1,97 +1,82 @@
-Return-Path: <stable+bounces-83468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C3099A688
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 16:40:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B31299A694
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 16:41:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD20AB24AE5
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 14:40:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA84A1C22649
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 14:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CD81957E2;
-	Fri, 11 Oct 2024 14:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D978172A;
+	Fri, 11 Oct 2024 14:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="AJm4uHty";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="Yx26fgpG"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="l6MpjNGE"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2050.outbound.protection.outlook.com [40.107.22.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D261917D9;
-	Fri, 11 Oct 2024 14:39:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E6478C6D;
+	Fri, 11 Oct 2024 14:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728657573; cv=fail; b=CiXu8vfKcsXMfqeAOg1eWenP57q/KnbB3cwquJidSRYZh2ekARUpRgxksxGNeVF2xjcj74jF5QFnJ+TnOVbqKAUM8d3qN/cOgPPCqHFHHFJRxT/21pGkqSpnNXAYoh/VVjlJFwaCm8DupvwRHBSm7Nd+LQJZFfdlhSgyzwBD56w=
+	t=1728657619; cv=fail; b=lFXjq7syo8kZqsmEfhX4qAQMiPtCKfsIUW09Tc8brueton1R3f57DfjZ8WsKz7mhjOidHy53hEFgl5gna8AnFBbhUF2tWPiWZxusJcZaDFa8ZPWgkc5pv2MmDbzZ9tNwD7J4xdo8SRFo+yzrqliMFHp/SDGKU/tA9baEdXF6gfQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728657573; c=relaxed/simple;
-	bh=nSoBqSi/Mw6akD1RsfxDb9wd77C4Rdgjf3nYQWKIgc0=;
+	s=arc-20240116; t=1728657619; c=relaxed/simple;
+	bh=YYcE9KvYPVIrjNLzA2lCrBX3x+HXTreEJ0wTrIWULj0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=NHAxP1aTlyuBcc19sX5ozc+4XzOfriOCbo7WDggG62nEAaDyWULfLBU29HYlVeitGsvwVpIC/1Mnl3RqLJxvWLtx6te3JfZxw39opR6YXGU8F1OdT3Gp/TXNaE6RBbH774eJSCoy49KQR4ZodsHEyWb65rm+s/HxNRlCb+7BrLA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=AJm4uHty; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=Yx26fgpG; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49BCpYb1025422;
-	Fri, 11 Oct 2024 14:39:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2023-11-20; bh=sC8XvH/tZTNRHxviEc
-	FLo2Egpnhz8ZxbIRzfztLpxs8=; b=AJm4uHtyzsoRzucgFfaLV4lwb/p9DICKWI
-	A0tOoOo+qn2tJtzs8mItAIh4zgry1g3bVTjNbAKFfo6WgB59N4mACPOD+5hRayJd
-	iNYWVVJBDKk7UVQXzaXGACYXIuTZ3oc8vhuWbW4gITKBJD0XR4VnrboVPuaZpF3v
-	GHCpwDctrWvUx0djxOWNHQODrQiKf7sR/dlFfoctT1yurZPuu4WuQaFyVWK0bPyb
-	bMWCiyhSV3xVejou+9zAv7Oa9rj7BqnCleYvFLtPMZoVlLYzICnkJDTQceW7P9ly
-	t8YHb2BqHGpH7QdOq8tPvm63ufirGn1isxKS8SML2DZm1ZoyjWeg==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42302pmt6b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 11 Oct 2024 14:39:26 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49BEBq01033310;
-	Fri, 11 Oct 2024 14:39:26 GMT
-Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02lp2045.outbound.protection.outlook.com [104.47.56.45])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 422uwbc27h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 11 Oct 2024 14:39:26 +0000
+	 Content-Disposition:In-Reply-To:MIME-Version; b=pNWxlJQPgM/65h/NqJ4YrE9Q/yfRuVvfPPGRBoiChvghblI0d0kn2BzNQWdV/YwvvwzlsG5pudX7gF4ygLXcjGU+P0shyDrMSYKXlj1Wy9ny+lI/XZzlLJ4gGwPlZextY/nzQ5o9drzztDodKkux43JgoXupByNJLeByxpmlp6c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=l6MpjNGE; arc=fail smtp.client-ip=40.107.22.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Fq7HP745MdYC9ccIVpaF9xX/M7l37Lt/IwgiEswIaMKBvgHuWdDvdV2zkYJGfFpGrukY1o+J5Asp1NufkhJvSCQw0Y0OirVW+tW0luxBEhWw2kPBhinLQvNh/DyLEpDzes4hpFl7jCuvBxTClVgIX3nrpfZ4qFb9GrpHxjwUAQyTN0MVqZLSni6rKAXvHDRj9TMAIxIkW4im1i69AKRjDWedhouufC0hITlnKmVD+X49mhA81Dt9sEtUj4oz0a0fVZp4NFiqFyc2Kgs1dTuKMuZXOoX0RYJkkYqUFLUv/aI17nMXY/YQqNk4sg0u4epqB9L2l9f3Pw78YAAxZ4N5IA==
+ b=Duwvlxs7vwyLnc1x+iId/KvILqoJ3oMeutrPtEbjzJqveAVXaDdPbmBwjClYlQabvosv8ZDsu0k50qUhBcoYom/h7Ypd1VmAQD9vvcffll/0MrhlI0MdIMNIU7oXAJt82XbkHtprFb0nRiM9fp6fAKtXZfV11W8WF2TwavAXezSD1YYBASGuOkq0WY35MX9StQnVgqRfCeASN5DEIbCBY41IVuUYwETjoBQfdm+Zp3kwmdNzvLJL7B251oV/d+CdCbLiGntdb3LMWpSZ7GZuaSsReezKZvBUjnpkzASr/DknwSuuhaIKelm5m37z8FnuFoGGQN4DPMG+KgiNOkvG8g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sC8XvH/tZTNRHxviEcFLo2Egpnhz8ZxbIRzfztLpxs8=;
- b=lNr8FWtYCUAZQHSc8/BudSZEhrwbIcQYLDkMYT+icIGMeAuwmZCjbETm9hBuMxCapwIeYKWkVozoJ+hndttXOkjtM8E1zhsY/i5XNVTsRcInqzEGnrS/8K3nkhipeSD+yS5rQZ5TKxfK1Tr6UQhdjrkihk6jXvz089rHmhBbs5rBpu5IJqk2jHvTASRvg6RvM+j8PJjbB82F2QQFuXtm4eB7lV2T3sseF0C8zlE0b1/u/w2hzyOtx38bOtIgN/LkJBMCkeZ7TKz9lqDT2rLTqvuYkDuVrUo8yl79+/Hz6j6uaQoDx7/HrQk44sQ47XkBVEETSAF//q6TBVyTz/qVbA==
+ bh=Z7GxwD5nJM5u7NLSyZiscJFhoKoCGC38EiGj+g2h6pc=;
+ b=kE3qdjN9BpvLgohxNnMFPMRSa0DEzMzvRRJPo2t92ISDyVkKUdAIaKWPe7PODQVpdpqsJp5TkzwraxAnvbsYbHL6vqR+h7X98iG11t7FveTp3AhjfriDbI0yzLt/BRti4k3Ob0D7elPo+M6nN0vByy+obFUSxqDD0Fh/U+pQ6P9wPYWVl22AFVc1vym9CUa3kfW4qpwovKAE16rjygfn87YEle+i1L6XmLIGdJh75yovK74RzasFAKfd9b2kHoUo5OvNghRg/4VYwivmw5KcUFp38B1A9A5dx3yRsSlphjNaU0v5MzSjtV6u0VGvstnSRE3JcEfNtvHIvvThpQZlDQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sC8XvH/tZTNRHxviEcFLo2Egpnhz8ZxbIRzfztLpxs8=;
- b=Yx26fgpGGxuGz7re84xCp7qYjt66j3NQJt5Sa0+A3bZlJEcH6nuaICwJ90jiHTiDTyOaH7XZlTaVWO/4JOKM8Z3rVncJHRz2pUjB8tIyjaUp7IYWByjM7E/AFiY3faMPSAPMRfYfZgX+wDrHv3kgHZA0L7sZvMYnix6GKlOedTI=
-Received: from BN0PR10MB5128.namprd10.prod.outlook.com (2603:10b6:408:117::24)
- by CH2PR10MB4359.namprd10.prod.outlook.com (2603:10b6:610:af::9) with
+ bh=Z7GxwD5nJM5u7NLSyZiscJFhoKoCGC38EiGj+g2h6pc=;
+ b=l6MpjNGECfYvEVigSIdpGKQK0z3KyUnTMUG0/xBPVCvy4Vkz3SABe8sDcZF+Gdyu+G70mjbdXvjqcXyEQ/zh43if/S1B/3Xic4crlicLxNSY2shhBnJShXj/C4Iqg24zb9brwGN8HyjiIPSKYz/c+R9cCjMGUkMnEME+NEB8lnL0wg4JWfOGDZqaAeXv/jSwEl/20Aoirw2KeSsrKv4+CnkETzyI1RCxeZOMyus+4ME+/JfPCJ5JCVQx8DD6V5gcKD332cFug0OaryMVCZIBaeAO47Th9NQ81Zx8UuGS8aZ5K5THaRvb7Yl3IXk2ca4fPz/BN736ev1V2PlJPHR2UA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
+ by GVXPR04MB10562.eurprd04.prod.outlook.com (2603:10a6:150:214::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.20; Fri, 11 Oct
- 2024 14:39:23 +0000
-Received: from BN0PR10MB5128.namprd10.prod.outlook.com
- ([fe80::743a:3154:40da:cf90]) by BN0PR10MB5128.namprd10.prod.outlook.com
- ([fe80::743a:3154:40da:cf90%6]) with mapi id 15.20.8048.018; Fri, 11 Oct 2024
- 14:39:23 +0000
-Date: Fri, 11 Oct 2024 10:39:20 -0400
-From: Chuck Lever <chuck.lever@oracle.com>
-To: Olga Kornievskaia <okorniev@redhat.com>
-Cc: jlayton@kernel.org, linux-nfs@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] nfsd: fix race between laundromat and free_stateid
-Message-ID: <Zwk4mAhnaoFe43Gy@tissot.1015granger.net>
-References: <20241010221801.35462-1-okorniev@redhat.com>
+ 2024 14:40:12 +0000
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2%3]) with mapi id 15.20.8048.013; Fri, 11 Oct 2024
+ 14:40:12 +0000
+Date: Fri, 11 Oct 2024 17:40:09 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, claudiu.manoil@nxp.com, ast@kernel.org,
+	daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	bpf@vger.kernel.org, stable@vger.kernel.org, imx@lists.linux.dev,
+	rkannoth@marvell.com, maciej.fijalkowski@intel.com,
+	sbhatta@marvell.com
+Subject: Re: [PATCH v4 net 3/4] net: enetc: disable Tx BD rings after they
+ are empty
+Message-ID: <20241011144009.ydoyf5vlxqrdj2pu@skbuf>
+References: <20241010092056.298128-1-wei.fang@nxp.com>
+ <20241010092056.298128-4-wei.fang@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241010221801.35462-1-okorniev@redhat.com>
-X-ClientProxiedBy: CH0P221CA0031.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:610:11d::13) To BN0PR10MB5128.namprd10.prod.outlook.com
- (2603:10b6:408:117::24)
+In-Reply-To: <20241010092056.298128-4-wei.fang@nxp.com>
+X-ClientProxiedBy: VI1PR04CA0054.eurprd04.prod.outlook.com
+ (2603:10a6:802:2::25) To AM8PR04MB7779.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24b::14)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,207 +84,111 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN0PR10MB5128:EE_|CH2PR10MB4359:EE_
-X-MS-Office365-Filtering-Correlation-Id: f14f1c69-c48f-4c33-1bce-08dcea027fba
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|GVXPR04MB10562:EE_
+X-MS-Office365-Filtering-Correlation-Id: e6ea86af-2514-4f34-001a-08dcea029ce4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/J3T4/oK4mteCHeKc3PUhOS5NuEdgzZn8oPWvC8qroWh4laOlGLwdSrIq7CR?=
- =?us-ascii?Q?2IO51mRlWNpyBOrGbSdW/FNCQ231womLU92KImfguJPRVydUQtqzzytDkI0F?=
- =?us-ascii?Q?u2J9SYc6iAiNTkmXaIvPU28Qtp2kuzvhTGfIgtYA2YuxGhEnzTCD0dGTkBqD?=
- =?us-ascii?Q?YaxQHI2soLYnS3jLTczOacpuNrrf667w8Rp9nGP0noPvCqE4q/r422RQBBpA?=
- =?us-ascii?Q?B3NiUwD0aebnsYnwvosx3OIBAZkSdbZNGsbVErlOncGQzdO7KswPRqeb55P7?=
- =?us-ascii?Q?FWuHyAfHqLxonNvCJPDte/3AxY8p1w4XGTYrtw+ZN9pDp22/JYYa4rUi+N5T?=
- =?us-ascii?Q?tQCvqj/tS9oD+9o7cjWx5k4tSqyKFpLmSIZQFNWE91tiLY3ZiHeWtG0NSqHD?=
- =?us-ascii?Q?BcRqdlOGGo313HXK0+47gXGwI8xJABiOZB7qYlyzz/VT06d8Xnv05vxIGR3E?=
- =?us-ascii?Q?jKlv2jAEXOos5P501xwnEcpxGb2gl+dywM91jMHhR5qt77i0H9jlrkwXWVCQ?=
- =?us-ascii?Q?oTjXEmjp2i/k3IsjIpp1cSDE+TuWG74xJY9MlEE/s9cVyO+pUBBOdjGrXI8r?=
- =?us-ascii?Q?msyaomEdk7DFAlxsgAu8X/tsicl+pdBlbON7sxWLwNXgcioHBUyN9NviAseA?=
- =?us-ascii?Q?z+3BBiCchHZdmPbo4k8mgjNrWc4QsuRTPUTCEi4hdDt966+4WruHkXmOLTWf?=
- =?us-ascii?Q?/h6eSAkP5X+snIqKD0iCTkugMCm2OIe7DAaKszZ5sfUG1EZfpm2Oo0b2y389?=
- =?us-ascii?Q?NYPddjWX3vFOlXFcLRkNxP8lVzDJbKSViLwqhKg772qmGwXR6dgPERzIyUQm?=
- =?us-ascii?Q?hTdYmWlhSLYD0EaKmtXrt7+rs2jpsuJqrC1VGNhnJ5ENbNeN5+a+g8y5WTU0?=
- =?us-ascii?Q?x6aEcmpHUH8K1UUInNTQqPWh1Rf7ezw/hR/aiyZsxxCvm4uHESjNH0rAPCdi?=
- =?us-ascii?Q?MfUwxiqazV+vf71gDW/IDhaN6cK/EDk9gOJ1vj6oGq84vsTo1uc+2aqBaCcn?=
- =?us-ascii?Q?6Q+O4LPkaoVymOcPrqyG7gJJ17EHUyCk0FCeuNFpF3SMWRqsEcw5i4Lm9gkf?=
- =?us-ascii?Q?3uXPdSb14jv4waVslqh/+U+PSVXQeAmgFbOMV9Nl59rybWSwqXR9mkhjcIHQ?=
- =?us-ascii?Q?Bre/mQ67qCWtp/S/b4MS9rBHZkDK7ayecEdrVXFydTefdvsG8t6tAQD5e8YC?=
- =?us-ascii?Q?WbL104fMtGY2vvHU/oF7lWYspIUCrI4iRLwBY9qo1B9YC4dlu9ijHr5+t5ht?=
- =?us-ascii?Q?HEop5eM8a7g11XI4LSETgjGemEkPI5a7hx6pJV/DLQ=3D=3D?=
+	=?us-ascii?Q?gDchBetlcWTE+STv4j6sYAkXWebeN2j2LIW11jNM10VrBTwPIPA0FoAmfh6u?=
+ =?us-ascii?Q?v18yw1GLSwI0S+OZEKk60I3qahTJx+JMk36wvVCA+BnffaqAbyohglt2Wfvb?=
+ =?us-ascii?Q?i+iv+GP7D66u7xkGBlUR5+Q4zN/6jQqGHYoJYGyAdQjTA9vq8iprdKnQPYiK?=
+ =?us-ascii?Q?rZfcFUMUGg87uwTHH41YShcJj4iQZ8AirTEgJnOxdLHXqbdPUtKkLRvqRvyy?=
+ =?us-ascii?Q?+ahABZtN8r9sg+vKtvlXeRZ7l3vjLPw9gp+f+M4MRAvGMFwbptikKv2vsEfx?=
+ =?us-ascii?Q?qGFJnKLV15UpRN5IjQdYn9CmXbxKLQvbwAYtLliIrOQEoV1fTuvjmen4vmKU?=
+ =?us-ascii?Q?Y+OiCUj/TVsZQFfkglwyla8eRGQzWzWHsL/TRQRPmhbtSwZht3xyftNOGRFO?=
+ =?us-ascii?Q?/1LVp3ZHYjlsTx13N0cYHSdqQ+we3to7a13L+yzURPP5OK36elWw1s9AH833?=
+ =?us-ascii?Q?gAUtzPSjnygi1kXu5KgSRIzo4wwmuz3RJFdrG00t75kJFyK50WzgnQVln4GR?=
+ =?us-ascii?Q?sVCfqdLrRQhulDqEGJ+255LbTVytRkI069HfopJ8Fb3ZwqqIhNl81URMM2uX?=
+ =?us-ascii?Q?CPjoF/WrduV6cRauUJLYq6NjkwJ9ieRlFV8x7n8lKWVLIC4TppZMc9nxBwt9?=
+ =?us-ascii?Q?ChLIh6/WNWdYv27MD4A52mSrdxLnJdyRvA5o58wFYDyB0ozXB6q4uHsMh1bB?=
+ =?us-ascii?Q?WCbxfXMYc6ZiAjKsTKdnzaQ96xirk09kzcZmjwd4lPzHzXk940XkHeBae1SZ?=
+ =?us-ascii?Q?TbtCh2U0LkIZofkE/Gql//BuHXzHbPsQ6jUrzyuuJTFyUslcEnQuixIjcUj3?=
+ =?us-ascii?Q?J2cvBmAdytFE/1fqyDN/+IXKmu3LPTjZx+dGHymnj3UspGQJfB8LtkpopV1M?=
+ =?us-ascii?Q?5TL7YpKgpR+DVMMty60zEAhxEgkPsWLi9oAHbfim4xhDoPZlrsS8LegD1ZcM?=
+ =?us-ascii?Q?vDhBpOrLz2dEf8VTDze7+i2vqmk2LK9l4ZQbmAVpRJm+8pjlzEWxDFf65CkW?=
+ =?us-ascii?Q?qPC2FI2sxl4VQvh1bT1r6pEGo32Ipwe2OlZRCKioCptflrZfzF4NfK1HtYJL?=
+ =?us-ascii?Q?787EAMmQBxYcaexEToHmkWBgnkJEzCaJFYXJbEIng6cbgGGQabhROD7uT4rH?=
+ =?us-ascii?Q?Lnn14eT6jtxoC5Y9RWdTOP7NagLQcupfBDx1NrdFPm1DRQ29WzcwayuS3uzf?=
+ =?us-ascii?Q?A6UmKVhDR2HXvpmkDd9mCQyEwF+RKzBHsHroPiv6qhNAxvQ9C54NXhXEWd/i?=
+ =?us-ascii?Q?CME2SAaumQo+jD/Fjzv8l8U4gznBaj6fRLsHSplNiw=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN0PR10MB5128.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?euZP1rgdAs3Ta2vLHQrj3FNjAW6Hp0Ll4hYoSMhpzn4n0VC8gxyOEqjO7sd1?=
- =?us-ascii?Q?sLXG4kWvOMa+DTKL5QbSREtoSeNthXz4M1RIY+SrW3LFVD47FtUlu9rjxuvY?=
- =?us-ascii?Q?LuO4IeexZSIZiFBrow9YzlXjypRttJNgcJ4/I4Su9mS8waTB0p8RlyhPxmgq?=
- =?us-ascii?Q?2rlRjfravot8xsimRqSP0FKsMvQYSJ4a04TWdX2jM63Lf/1/CZS6gYgEKNHz?=
- =?us-ascii?Q?8OH+9/jpKPFcHcY9D9RLz4n/jP1UkKmHt1AavHEIqRyHo3noqUqcjt0eHFSU?=
- =?us-ascii?Q?WytEo2KNCEXHZ3Do0xaGkb/2fE/aq+JaJe0FyZKuZS0C49PhN8XWuYMSNNPP?=
- =?us-ascii?Q?wAkp4p6+3E/VANUUb3xbsTHkEGaurVIJkoM+UNfKehwnN5+Lk56keNveqWgh?=
- =?us-ascii?Q?UhOW2kwcJBb6Tx2LpCTPs0wKRk88109iU2i+NhqwW5e2NtHLlO4jOd754IGU?=
- =?us-ascii?Q?CKHsY33bAd99YXZ47vuN/jYd5u2Eq/NKrZO0Z8YVym3NtexhOWgVYsKVRfPH?=
- =?us-ascii?Q?CtuDMWv8o9D8y/0fAxNvlXB4j8ERd5OrgEH/FdYjqxwQu5j56SJ9SV0EClBR?=
- =?us-ascii?Q?T9noVLREmsUXj/sBz+/5gtG+eXq79M1/LGgp4whHQxg5Q4HZyEW5H+1A/olE?=
- =?us-ascii?Q?C6CgrKm8s/dxO8tu/duGuPZ+X1nS338WECi6Hju0Be+O+6VqsybYl8yRzZUL?=
- =?us-ascii?Q?SwvT1GHG8N6/TZm3IwfvxFRGCL+oQa3Zb7S+hadmIZn9xS6fE2+kbzPPfA2a?=
- =?us-ascii?Q?F3NCnQe/gxGGWtpZzsj9YaG6RvlaW3IbzdPFlX5RJoKOla1LE19F/Arb+FGL?=
- =?us-ascii?Q?QWlVaOXzp791XvUcdmFvnU/aRHl+GphDOp8sJ3T2eBlRcUSMAd4VmNgkXZGi?=
- =?us-ascii?Q?m0KhUkiyXKlvzkCQ7dRTm14YW5+NIYGqToCMwJAY2lcKsBePm+UADTq65YX/?=
- =?us-ascii?Q?Kxf+k7XvV/tTKGcAC2pjZ4IgEqvyVuqXv/G9fmATWR7vyCJc+fU5dcUf1V7P?=
- =?us-ascii?Q?OiJadm9xi0e4rC8ahshdE4wj5U6L5D5VTyfHUh6m1Nqe7uqjHkI1rpTXLQGi?=
- =?us-ascii?Q?JDzK4YsWNVa7r0T5g+Z7Td1L+ZP1dSWhFO12CBxwOtwRH4BvleT8rXpekfQM?=
- =?us-ascii?Q?wx+accM3eVYoCfrCFUMGydtk9UWLR3dGDMIH/n+vpBe/jK2u5hOVVfotsJdt?=
- =?us-ascii?Q?N2fmne4qnpg2Ah+7IOyxK2II7roqTB9hQrhiWc2czY0qBd+6yKNyK+5lfW9V?=
- =?us-ascii?Q?tfAv4GKJ6XPmGLqCCVuu1CK8k5WYj8WdXWW4nftlrgQqIwKmEwRsvtfnYUJt?=
- =?us-ascii?Q?kQld2M5P7iSQhH0jGJZdOBv7hpF1Fsd4ITfhbwAhUh2aQr/aA0RdrVq/tmoV?=
- =?us-ascii?Q?VhOj7jI4DPDkugyinrsLnzOig+Q2ushQf/HnAd5crV0mOF6Q+snhF9JZcrjc?=
- =?us-ascii?Q?1NMVcn7yZxMOcT8Fqf0b8okG1m//+bCYWaAo/gizgmmz5vIVGSR+JL8l2G3A?=
- =?us-ascii?Q?fDyUunm6bgKKP5xv7MlsRJD9ki8Fm6/7hmzSaS3JTdi9IwAiaqi3Ke4q35Vj?=
- =?us-ascii?Q?1FBzqTacKWV3HzkJIDD6G2WBxcaurvl8330QG/QJ?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	5UwUeNf3twriP9tzniMBBwQeFgZfED/T+NljhWxKSYVqaD26AWVmrN+XSVZFZeE4+uI2H1CgDVaZyEhdLOfsqF7fRE5Ib/hdrongtDJC5XhcyGCUV/w/WK7enPnJE6bu8pvjyiTWFCYUihDfiQSnMpgMsPNWluUJ/ygyY02OIMOeV0LjcygDiVsVLiO6Jf1NmCEmpsSBg5wgW1S+V+Gyu339THTsIMJXx2DQUhV6ZRUXglFETDVuwoerAonFHnWNL+MD225VPENyErcY/w5Taj76GHYiLhcRgi3vzERvaIdi63ECiiwUMRNDna/Ch9hvAnNzouTg+3GXDLBn8HhC3MAOV4em5R8OZzXSO6KKJGF49F8Npo7OxBhplbfaSYinTYY6DlrYqXsjZSheFyDzkyoT2LJXBRWsUF40WZgLQgcnNJa7UK75XyJcv/dT8PfH7XgUyGmWojrhROcFRyBAvk0Sl+dkDaqijfqSjhAtI8YXZ+nqUn97Yz1WqIsqRqaMfExPP7T3uo3YhF3P/3QfqLFtok0WdtuEGbMM0oNOZw0M/O3G8ozdohFVUb6WKZX1KGdfaOCoWc1fnSj5cy4DDG3TB/w2cu/O6vYEdmdr/jg=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f14f1c69-c48f-4c33-1bce-08dcea027fba
-X-MS-Exchange-CrossTenant-AuthSource: BN0PR10MB5128.namprd10.prod.outlook.com
+	=?us-ascii?Q?lSs6fpCdFHKSplmiCXp9cMX4fpKGgKlD77+so4RIQ5/knRxURgaZ8HIbXdaK?=
+ =?us-ascii?Q?pnc2BYkI7y8gtYz/KqQ73XFxEJCGjMetmdc/H5na9uWvBWeNcWtEmFIrzeWx?=
+ =?us-ascii?Q?Ky0Nq+IthgXCMVXc0NwU4u3iDDeZu3mebl1AMXtpFBaYEYHGqL0eZ7rdUW6p?=
+ =?us-ascii?Q?ZHo3tiqlbsbmHmZ58a/6pY0BnDvWY/j3NgjVd5pfC0rRCzdD00KKxcdMgzy6?=
+ =?us-ascii?Q?v+DTH84c4/ABZNq+fmDgwdUPkL/DVOtRDZlMoIFZTvOxq2gfK9wPG3CAt/6t?=
+ =?us-ascii?Q?jHx1ilyNe9lL8LHlfLU3LKeg+VSdjPgI92tF31jtt2PCXgXA0WCZlBRuaQCU?=
+ =?us-ascii?Q?+RSNHBGPZACdcVHrJ8ppw5TJUDvPQgR28d/HLLKjfINzdstTJYqooPQ97DRG?=
+ =?us-ascii?Q?3i+0EXmearEXuYtfzUnfJMjrwO+Fl+WJZ5qP9elJ0V6WlXPPxwnieguu5LH9?=
+ =?us-ascii?Q?vvSt42dpdvkSY70wTiNnwAv7BGVFq5wmhj6hTm/dCDXQHsyfeOXd5T4NjQ4F?=
+ =?us-ascii?Q?FY/ZpQ37O2hhLH0llc+CstlgeNqOhPCrCXWVdWo+25Wbnood/NYrng1pp8IM?=
+ =?us-ascii?Q?V2U8C7HL+OWZL1Knip2kRZq+7XVn/yOQWAoS72AdHqwbjvY1KWh8uHAU6Hi2?=
+ =?us-ascii?Q?ETpzzjK/NG0KqvhJ42/MaYLeIdrTkkyrdA/Q+ztFIlhWDKx6SwL6j/UhxxTN?=
+ =?us-ascii?Q?5MUpiSwYvpmI8seo6giz6gSGUO9VPoh9WUt62maZm+R5HPkfhAAiFfl1H3AV?=
+ =?us-ascii?Q?sA0fjuQISnxzc9ifi6EvAuHpRKRY0j8iDyq+dynKD8eai7ipIRH5vYrVNTVZ?=
+ =?us-ascii?Q?ZQWvQn6BGDPekCGYOXAlouVIpKPVCmmGluCtR4j1Dh7GeWEhY9onECQY0bWM?=
+ =?us-ascii?Q?uNTHpZNHMMxTqKKoe98UoD4J88I0/i6oEBLUDXuckDbHPBwHaIduQ7Aywplr?=
+ =?us-ascii?Q?2dxtEI79B4b9L2lew7Vr7Rk7F/ayO9b3peK0Ig/97BfRT8XSqRgQKOkDhQ/3?=
+ =?us-ascii?Q?8yj68dLaKTdAOtjledC21qKHwDy7Sc+9R08mbuFUeRG5TeBI0bgGPcg4tpHN?=
+ =?us-ascii?Q?f8lIj2J0IkJRfGCbBtGy/nrP1xmDMKRiV0oDjkI2w2iB1wecX1Z4oEtmuCiT?=
+ =?us-ascii?Q?qLjk4uOS9apJnz3x8iwyls2J+xzFrGpLb9X2h91LFJ4t7HkmtV85xO/pM7cF?=
+ =?us-ascii?Q?nyAG1CWGgBTDdXSIyexkW/8XcDC3gIaljott9RyDAnLHhN7fTnS+nUMe6soF?=
+ =?us-ascii?Q?qTXM1xNbTKJaeNpxGM52SSNR3wqPU9gOnAAHfNTCWa00ABDyrnhLSKT/MT97?=
+ =?us-ascii?Q?lL1O9OQEKHrvdkDgvcLvE55+1A+NxORlBk+OyxeV8ucLNeP27KJe94D4jF02?=
+ =?us-ascii?Q?D6kugO2KS6jJplREg/mQYMcIRaVIiVayjX2mpVs5F/b4nuHqP3LOulkDXFpD?=
+ =?us-ascii?Q?A2x0ENioXxSI25Lsn73GSoLQOVOHP2W7e7XFQJIWLNFO+bsgCQLpSKW0gO2R?=
+ =?us-ascii?Q?X1nPB+P/EN2fp8wFKqUUjW788i5qZT0Y4TTa10MYhAYl9dAtDw9aczygqkf5?=
+ =?us-ascii?Q?KMCbG7Iu/fbYVh5qfF2orCp4GnTkfhfxJ8TSsoTQF8AJXX94YZyIwAkzJHNA?=
+ =?us-ascii?Q?Wg=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e6ea86af-2514-4f34-001a-08dcea029ce4
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2024 14:39:23.4849
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2024 14:40:12.8928
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0SQnF6I3L7NBbt1D40q1tN2Q9Q570lPr2CKhtZGMOPcwOOGUsfQa7P3As1Cvm5UgFkxbgO6kraylQJYfAHOauQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR10MB4359
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-11_12,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
- phishscore=0 mlxscore=0 suspectscore=0 bulkscore=0 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2409260000 definitions=main-2410110101
-X-Proofpoint-ORIG-GUID: ghIWZgFuL7U-4KxfWwYblfiWb9aiEG5V
-X-Proofpoint-GUID: ghIWZgFuL7U-4KxfWwYblfiWb9aiEG5V
+X-MS-Exchange-CrossTenant-UserPrincipalName: 86iEWGEaYhiPU5rZ9QaiPjrRwC2DCDiPpxhoS9VLunDouyUzSu6uSJJHhtbeX1SMf7yQGZBcl9sKR5IApT1+Qw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10562
 
-On Thu, Oct 10, 2024 at 06:18:01PM -0400, Olga Kornievskaia wrote:
-> There is a race between laundromat handling of revoked delegations
-> and a client sending free_stateid operation. Laundromat thread
-> finds that delegation has expired and needs to be revoked so it
-> marks the delegation stid revoked and it puts it on a reaper list
-> but then it unlock the state lock and the actual delegation revocation
-> happens without the lock. Once the stid is marked revoked a racing
-> free_stateid processing thread does the following (1) it calls
-> list_del_init() which removes it from the reaper list and (2) frees
-> the delegation stid structure. The laundromat thread ends up not
-> calling the revoke_delegation() function for this particular delegation
-> but that means it will no release the lock lease that exists on
-> the file.
+On Thu, Oct 10, 2024 at 05:20:55PM +0800, Wei Fang wrote:
+> The Tx BD rings are disabled first in enetc_stop() and the driver
+> waits for them to become empty. This operation is not safe while
+> the ring is actively transmitting frames, and will cause the ring
+> to not be empty and hardware exception. As described in the NETC
+> block guide, software should only disable an active Tx ring after
+> all pending ring entries have been consumed (i.e. when PI = CI).
+> Disabling a transmit ring that is actively processing BDs risks
+> a HW-SW race hazard whereby a hardware resource becomes assigned
+> to work on one or more ring entries only to have those entries be
+> removed due to the ring becoming disabled.
 > 
-> Now, a new open for this file comes in and ends up finding that
-> lease list isn't empty and calls nfsd_breaker_owns_lease() which ends
-> up trying to derefence a freed delegation stateid. Leading to the
-> followint use-after-free KASAN warning:
+> When testing XDP_REDIRECT feautre, although all frames were blocked
+> from being put into Tx rings during ring reconfiguration, the similar
+> warning log was still encountered:
 > 
-> kernel: ==================================================================
-> kernel: BUG: KASAN: slab-use-after-free in nfsd_breaker_owns_lease+0x140/0x160 [nfsd]
-> kernel: Read of size 8 at addr ffff0000e73cd0c8 by task nfsd/6205
-> kernel:
-> kernel: CPU: 2 UID: 0 PID: 6205 Comm: nfsd Kdump: loaded Not tainted 6.11.0-rc7+ #9
-> kernel: Hardware name: Apple Inc. Apple Virtualization Generic Platform, BIOS 2069.0.0.0.0 08/03/2024
-> kernel: Call trace:
-> kernel: dump_backtrace+0x98/0x120
-> kernel: show_stack+0x1c/0x30
-> kernel: dump_stack_lvl+0x80/0xe8
-> kernel: print_address_description.constprop.0+0x84/0x390
-> kernel: print_report+0xa4/0x268
-> kernel: kasan_report+0xb4/0xf8
-> kernel: __asan_report_load8_noabort+0x1c/0x28
-> kernel: nfsd_breaker_owns_lease+0x140/0x160 [nfsd]
-> kernel: leases_conflict+0x68/0x370
-> kernel: __break_lease+0x204/0xc38
-> kernel: nfsd_open_break_lease+0x8c/0xf0 [nfsd]
-> kernel: nfsd_file_do_acquire+0xb3c/0x11d0 [nfsd]
-> kernel: nfsd_file_acquire_opened+0x84/0x110 [nfsd]
-> kernel: nfs4_get_vfs_file+0x634/0x958 [nfsd]
-> kernel: nfsd4_process_open2+0xa40/0x1a40 [nfsd]
-> kernel: nfsd4_open+0xa08/0xe80 [nfsd]
-> kernel: nfsd4_proc_compound+0xb8c/0x2130 [nfsd]
-> kernel: nfsd_dispatch+0x22c/0x718 [nfsd]
-> kernel: svc_process_common+0x8e8/0x1960 [sunrpc]
-> kernel: svc_process+0x3d4/0x7e0 [sunrpc]
-> kernel: svc_handle_xprt+0x828/0xe10 [sunrpc]
-> kernel: svc_recv+0x2cc/0x6a8 [sunrpc]
-> kernel: nfsd+0x270/0x400 [nfsd]
-> kernel: kthread+0x288/0x310
-> kernel: ret_from_fork+0x10/0x20
+> fsl_enetc 0000:00:00.2 eno2: timeout for tx ring #6 clear
+> fsl_enetc 0000:00:00.2 eno2: timeout for tx ring #7 clear
 > 
-> Proposing to have laundromat thread hold the state_lock over both
-> marking thru revoking the delegation as well as making free_stateid
-> acquire state_lock before accessing the list. Making sure that
-> revoke_delegation() (ie kernel_setlease(unlock)) is called for
-> every delegation that was revoked and added to the reaper list.
+> The reason is that when there are still unsent frames in the Tx ring,
+> disabling the Tx ring causes the remaining frames to be unable to be
+> sent out. And the Tx ring cannot be restored, which means that even
+> if the xdp program is uninstalled, the Tx frames cannot be sent out
+> anymore. Therefore, correct the operation order in enect_start() and
+> enect_stop().
+
+Typos, no need to resend for this: enect -> enetc.
+
 > 
-> CC: stable@vger.kernel.org
-> Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-> 
-> --- I can't figure out the Fixes: tag. Laundromat's behaviour has
-> been like that forever. But the free_stateid bits wont apply before
-> the 1e3577a4521e ("SUNRPC: discard sv_refcnt, and svc_get/svc_put").
-> But we used that fixes tag already with a previous fix for a different
-> problem.
+> Fixes: ff58fda09096 ("net: enetc: prioritize ability to go down over packet processing")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
 > ---
->  fs/nfsd/nfs4state.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-> index 9c2b1d251ab3..c97907d7fb38 100644
-> --- a/fs/nfsd/nfs4state.c
-> +++ b/fs/nfsd/nfs4state.c
-> @@ -6605,13 +6605,13 @@ nfs4_laundromat(struct nfsd_net *nn)
->  		unhash_delegation_locked(dp, SC_STATUS_REVOKED);
->  		list_add(&dp->dl_recall_lru, &reaplist);
->  	}
-> -	spin_unlock(&state_lock);
->  	while (!list_empty(&reaplist)) {
->  		dp = list_first_entry(&reaplist, struct nfs4_delegation,
->  					dl_recall_lru);
->  		list_del_init(&dp->dl_recall_lru);
->  		revoke_delegation(dp);
->  	}
-> +	spin_unlock(&state_lock);
 
-Code review suggests revoke_delegation() (and in particular,
-destroy_unhashed_deleg(), must not be called while holding
-state_lock().
-
-
->  	spin_lock(&nn->client_lock);
->  	while (!list_empty(&nn->close_lru)) {
-> @@ -7213,7 +7213,9 @@ nfsd4_free_stateid(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
->  		if (s->sc_status & SC_STATUS_REVOKED) {
->  			spin_unlock(&s->sc_lock);
->  			dp = delegstateid(s);
-> +			spin_lock(&state_lock);
->  			list_del_init(&dp->dl_recall_lru);
-> +			spin_unlock(&state_lock);
-
-Existing code is inconsistent about how manipulation of
-dl_recall_lru is protected. Most instances do use state_lock for
-this purpose, but a few, including this one, use cl->cl_lock. Does
-the other instance using cl_lock need review and correction as well?
-
-I'd prefer to see this fix make the protection of dl_recall_lru
-consistent everywhere.
-
-
->  			spin_unlock(&cl->cl_lock);
->  			nfs4_put_stid(s);
->  			ret = nfs_ok;
-> -- 
-> 2.43.5
-> 
-
--- 
-Chuck Lever
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 
