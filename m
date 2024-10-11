@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-83457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D678499A570
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 15:52:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DEB99A575
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 15:52:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 133EB1C233E9
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 13:52:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 977EF1F256F6
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 13:52:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4638A219486;
-	Fri, 11 Oct 2024 13:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BEDB218D9A;
+	Fri, 11 Oct 2024 13:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bOoYVCGz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mdfuTpzC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F102E218D85;
-	Fri, 11 Oct 2024 13:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529412185B9;
+	Fri, 11 Oct 2024 13:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728654695; cv=none; b=gJ+yp5/F4uajDXkfZt7ZMOHeuSOxEe8RvssCVLx0PzG2F6wx5P6N2ceOWycrBiIWmKIKBO/XqO2l+UXfO9HVuP69P5qYl3/xxdkikC91baqJYKnYdOcnrJFuQf/GOILqi+5/MV50lwI6TlIGKzsbzytHfyPuSevtWI7l3SjlWNs=
+	t=1728654770; cv=none; b=J6M+IHUEmeP7OrbCpQET2PRk6n8NVFJNh3Lho1mBJXmKtMQKjDIXFjxew0FPSgUftY92zGBwmACvKvBngR2xozYElE+Obgts/XzGEcRA7bZzzaxrf1ZkkcBHBIOo/hfPNGMEoEHHKy1HGTVq3Rp9tD6X85rXO5cjmus/sxPUyjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728654695; c=relaxed/simple;
-	bh=w/9I9oR+tCtf8XejSYH+CNdH6JiviGudQ6e3P98frT0=;
+	s=arc-20240116; t=1728654770; c=relaxed/simple;
+	bh=YpimA8c5con0pxEYgdVuNfg3HKik8NZXlPfITZ9AJIk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qvL7K0OIKJtxA6GcnlbFFx6sAwLSYD8E7mRuVftM1XHUCbVUWLMJzGVuNZE52PHCnVzxpNj4u3GhJ8EOBeYY3AxJZrOnuXBCFIbR+XAfm4byxl1vwT9W4T9JITUj6mlFR70sNQC0l/i+lYkPXX3v9nr0dPGvDAYxoTY722wC9Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bOoYVCGz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE97C4CEC3;
-	Fri, 11 Oct 2024 13:51:34 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=eMyDlqnqgJJLla21NKlKf+axhcORUYk63RJihP4fYQqg1UBYw8q4Xkgg4+Ga9G2FPIGmtBWPxqqzUYY3rre/QgqYeNcHljIlzT64GcLiSeEimLblPMBcLBcGZTE82H6yZi5fQfm2BgGdzS51xS5CAdCeo8GnPxnVGak7Ee7fcHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mdfuTpzC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A33AEC4CECE;
+	Fri, 11 Oct 2024 13:52:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728654694;
-	bh=w/9I9oR+tCtf8XejSYH+CNdH6JiviGudQ6e3P98frT0=;
+	s=k20201202; t=1728654769;
+	bh=YpimA8c5con0pxEYgdVuNfg3HKik8NZXlPfITZ9AJIk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bOoYVCGzEPmCmKDJyWEsx6T/OE8BZznnFyXiwXZqDen93w+RefmXMBpRRr1ofqp61
-	 JiO+u0i2yeg3c/IDQqd9porY6ZjioS8RQGVvMhXjUDCxeAiFILPgsQxNG5YoH7dOBg
-	 IauOnc3jJ8dwhMzPFuSY7pS/Y/RG3pls+5gGhJZLf9SYeHukkSci6OZK9NbLFnp1Eo
-	 YfWNHj29wJQP1DnLpUww8vBDPd2eh4iCvh4j/WNwNgutEWFS21cq5HcIftrplebnN3
-	 booiXbcXwVjrjLC0B/nDmxst2MQ+DE3sreBdg+DazyczQAwmHXE8oznK/6KYdD8Vo0
-	 zTR34eLOz5uCw==
-Date: Fri, 11 Oct 2024 09:51:32 -0400
+	b=mdfuTpzC99Wu2IlCQBN0xUDH9VJORgNpbEqSQnpkaG7BExPTz63IgZYtQrl3v7I2k
+	 qDN5NCRD3HmbRiBOOPVgj7ZIxECOHp104qFI0jtv7Yg8rFRGq2WgPBWBOG7btKdqlu
+	 D224i9t/5ukkuQJunKIDlmnR1CNadf4MHBgFHcRfsr+1r8JxObLz7AhFad2Smiu8Tg
+	 au69aw548N6DPjtYLOo0thE92VUu2WbZqGtATMDeJZVu2q07qGvRTSaX9RHd77Ndum
+	 jMjL0fhx5pMmUyXCeTJjjJJjhXkiso+6ss0DzGs2ddNmJenKVIy8DYYpATVhj2XceI
+	 6QPhkWem5Pwzw==
+Date: Fri, 11 Oct 2024 09:52:48 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Miklos Szeredi <miklos@szeredi.hu>
+To: James Chapman <jchapman@katalix.com>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Amir Goldstein <amir73il@gmail.com>, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.11 48/76] fuse: allow O_PATH fd for
- FUSE_DEV_IOC_BACKING_OPEN
-Message-ID: <ZwktZCHlm1G3Uh9D@sashalap>
-References: <20241004181828.3669209-1-sashal@kernel.org>
- <20241004181828.3669209-48-sashal@kernel.org>
- <CAJfpegtNF6CkSsE7yWq8-4W7HP3aOjE4xnAzJp0uiU-S7Wb8pg@mail.gmail.com>
+	Tom Parkin <tparkin@katalix.com>,
+	"David S . Miller" <davem@davemloft.net>, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.6 030/139] l2tp: don't use tunnel socket
+ sk_user_data in ppp procfs output
+Message-ID: <ZwktsCI3Lsd0kaJq@sashalap>
+References: <20240925121137.1307574-1-sashal@kernel.org>
+ <20240925121137.1307574-30-sashal@kernel.org>
+ <20e00433-dc5c-74aa-6195-16281867dbb1@katalix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,58 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <CAJfpegtNF6CkSsE7yWq8-4W7HP3aOjE4xnAzJp0uiU-S7Wb8pg@mail.gmail.com>
+In-Reply-To: <20e00433-dc5c-74aa-6195-16281867dbb1@katalix.com>
 
-On Mon, Oct 07, 2024 at 12:15:45PM +0200, Miklos Szeredi wrote:
->On Fri, 4 Oct 2024 at 20:19, Sasha Levin <sashal@kernel.org> wrote:
+On Wed, Sep 25, 2024 at 03:27:23PM +0100, James Chapman wrote:
+>On 25/09/2024 13:07, Sasha Levin wrote:
+>>From: James Chapman <jchapman@katalix.com>
 >>
->> From: Miklos Szeredi <mszeredi@redhat.com>
+>>[ Upstream commit eeb11209e000797d555aefd642e24ed6f4e70140 ]
 >>
->> [ Upstream commit efad7153bf93db8565128f7567aab1d23e221098 ]
+>>l2tp's ppp procfs output can be used to show internal state of
+>>pppol2tp. It includes a 'user-data-ok' field, which is derived from
+>>the tunnel socket's sk_user_data being non-NULL. Use tunnel->sock
+>>being non-NULL to indicate this instead.
 >>
->> Only f_path is used from backing files registered with
->> FUSE_DEV_IOC_BACKING_OPEN, so it makes sense to allow O_PATH descriptors.
+>>Signed-off-by: James Chapman <jchapman@katalix.com>
+>>Signed-off-by: Tom Parkin <tparkin@katalix.com>
+>>Signed-off-by: David S. Miller <davem@davemloft.net>
+>>Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>---
+>>  net/l2tp/l2tp_ppp.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
 >>
->> O_PATH files have an empty f_op, so don't check read_iter/write_iter.
->>
->> Reviewed-by: Amir Goldstein <amir73il@gmail.com>
->> Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>  fs/fuse/passthrough.c | 7 ++-----
->>  1 file changed, 2 insertions(+), 5 deletions(-)
->>
->> diff --git a/fs/fuse/passthrough.c b/fs/fuse/passthrough.c
->> index 9666d13884ce5..62aee8289d110 100644
->> --- a/fs/fuse/passthrough.c
->> +++ b/fs/fuse/passthrough.c
->> @@ -228,16 +228,13 @@ int fuse_backing_open(struct fuse_conn *fc, struct fuse_backing_map *map)
->>         if (map->flags || map->padding)
->>                 goto out;
->>
->> -       file = fget(map->fd);
->> +       file = fget_raw(map->fd);
->>         res = -EBADF;
->>         if (!file)
->>                 goto out;
->>
->> -       res = -EOPNOTSUPP;
->> -       if (!file->f_op->read_iter || !file->f_op->write_iter)
->> -               goto out_fput;
->> -
->>         backing_sb = file_inode(file)->i_sb;
->> +       pr_info("%s: %x:%pD %i\n", __func__, backing_sb->s_dev, file, backing_sb->s_stack_depth);
+>>diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
+>>index 6146e4e67bbb5..6ab8c47487161 100644
+>>--- a/net/l2tp/l2tp_ppp.c
+>>+++ b/net/l2tp/l2tp_ppp.c
+>>@@ -1511,7 +1511,7 @@ static void pppol2tp_seq_tunnel_show(struct seq_file *m, void *v)
+>>  	seq_printf(m, "\nTUNNEL '%s', %c %d\n",
+>>  		   tunnel->name,
+>>-		   (tunnel == tunnel->sock->sk_user_data) ? 'Y' : 'N',
+>>+		   tunnel->sock ? 'Y' : 'N',
+>>  		   refcount_read(&tunnel->ref_count) - 1);
+>>  	seq_printf(m, " %08x %ld/%ld/%ld %ld/%ld/%ld\n",
+>>  		   0,
 >
->That's a stray debug line that wasn't in there when I posted the patch
->for review[1], but somehow made it into the pull...
->
->Since this isn't a bug fix, it would be easiest to just drop the patch
->from the stable queues.
->
->But I'm okay with just dropping this stray line from the backport, or
->waiting for an upstream fix which does that.
+>This change isn't needed in 6.6. The commit was part of a series for 
+>6.12 that removed use of sk_user_data in l2tp tunnel sockets.
 
-I'll just drop it, thanks!
+I'll drop it, thanks!
 
 -- 
 Thanks,
