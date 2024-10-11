@@ -1,188 +1,152 @@
-Return-Path: <stable+bounces-83423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E96B3999C3D
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 07:48:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 387BB999D20
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 08:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1739A1C22252
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 05:48:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A54D1C2194D
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 06:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B387D1F8F19;
-	Fri, 11 Oct 2024 05:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405DE209694;
+	Fri, 11 Oct 2024 06:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K5xphyqG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uRBQYA7G"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C074019CC16
-	for <stable@vger.kernel.org>; Fri, 11 Oct 2024 05:48:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B7E635;
+	Fri, 11 Oct 2024 06:51:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728625730; cv=none; b=mVDN2Cn5rIKhoKPGZTTGtSKpdiKLUAnwDKLASa5Sn1ZKCRPEsfIy584gCQzXen/8ddYuQ06Ky0ZMNeCWp8RWIyDIcH3hB5i6XyDi2rX5uMyspaRTZSwiolceoFyCgYQAU8XRdlTcet/UdQ13i9NYB4gq+w1s8/qrXr8RCGBP7iE=
+	t=1728629495; cv=none; b=a6g0hQ6tGEV8bCnJmKxqPAXdugBDSNUw2G8Obvk8XbTvYZsFjINDnt+sygCKSZJeZSeBXNmUG9YHrFiL0yAryghHS88gKzvVYpqEiM/jouwKoZaUlNYKKAniFtno+iyqVkTC0O12420Ro24IwWq8GiuPe0Tz899sh8J8lp09wuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728625730; c=relaxed/simple;
-	bh=gSDr2qXiWunqD83kcCcfkWzmofL1UeyjfIsv5gb6YVw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HmdKNgxB/JPvGXmBwRK40Rh3ZIjcduRZhgODh3LEWLtL/tTlPZeVyHG32NhaHdn4mVic7GoDTPx46M6N3OOUkQcV260NOYZy1fDymLoGCRMsjxU8cLspYc++Vbsyq90Qmi7+jdFjpCptfLz46/GpsxCm3JtCYgarlktZd3q2Js8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K5xphyqG; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2fad75b46a3so16493971fa.2
-        for <stable@vger.kernel.org>; Thu, 10 Oct 2024 22:48:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728625727; x=1729230527; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kAUIBKUFiqHBE7OX0O7eWG2UC2nEpnjuYCzeR97fn5c=;
-        b=K5xphyqGvesNOdZhdTEFto1ShyNHS1P1jN2zpQl4Ps5Dg2JOv+Qhg0fZB/UJmrHbcQ
-         ZqqQcOsBVBGrbRPRzY5fNdWjsa2A+j6rlWD5dQzvX1KWIjJ4hoJA3F9+jry+pZyyuApe
-         rXxLTYRDaIoaBeEbVlPHd90yly5NvTRjOF8wYaR9uxHM+7Qm2YbBvttCu9qTIdbqFS72
-         WBOQYNjzwz9k9w/ZVe3fsqdsW0wPNqvQbI9wp9E8HZdi3QQlVmKihUCfSu0UBHmKxv91
-         /LfD/BPrwd2kXofVW+k+hohhEH1pQbKYiqHYj5Fov2r0zX1I3V/WdNvhtbhESLwcyJN6
-         jXIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728625727; x=1729230527;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kAUIBKUFiqHBE7OX0O7eWG2UC2nEpnjuYCzeR97fn5c=;
-        b=KLUu5JTwjtuGSGplg1pAL0HDFnl8UIaytbcXdjj6WXwd8EbDwnbTi60PR0fDiMVRe8
-         +BxhW2FCw0QsN3+Uext2GngW0MMNXmipXob1i7S0akFK16tRxURfXjW7AsMHkRbKQggd
-         Ln23zjV6SD/E99oGPnnoSdKCT/goFqmO62BYYQPOG9LGw94BHvd2AtSc8fLBdvUzX67+
-         3TD/QNX7tKj4ZXj1Z8Gzf3h/YAH/uoy4gI2liWPHjOFc2flIWHNCA7yuYy56zmazqrFD
-         wLIY4A+uvFCginRpL+2uQYufeoS6+GAcvK4YYjmCYHkhmf/jOk/oTxELXqVSMPIbMiJw
-         8O5g==
-X-Forwarded-Encrypted: i=1; AJvYcCUbCTAE4CmwYRTU++PwjvT6sMBzqC78p+NOQNQj7Z73iLYvG2BobQq94nig6Ize9QftiR/sw2Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcbGhvcCiXKX7MRHRqdg7okEVtBodAaKodXFCWS4xvi480bdx+
-	IHpjC243vXIlnVi5eCNKTaxxsGReX4nz/3FxBIKP6iDzChzlf1KNPNNF3MfN42w=
-X-Google-Smtp-Source: AGHT+IElgnZzJUF2VeU6qLAFyoymFdQaxiQWEzvuNGs2dbyEg43CbtOA9CKVQOGhLlMEcGoNVmZPew==
-X-Received: by 2002:a2e:be13:0:b0:2fa:c46a:eb4e with SMTP id 38308e7fff4ca-2fb326fe462mr3847561fa.3.1728625726600;
-        Thu, 10 Oct 2024 22:48:46 -0700 (PDT)
-Received: from umbar.lan ([192.130.178.90])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fb24770a41sm4186111fa.129.2024.10.10.22.48.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2024 22:48:45 -0700 (PDT)
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Fri, 11 Oct 2024 08:48:39 +0300
-Subject: [PATCH RESEND] thermal/drivers/qcom/lmh: remove false lockdep
- backtrace
+	s=arc-20240116; t=1728629495; c=relaxed/simple;
+	bh=+0iB7lhXfWq7DqrCSFd6XGMnOkBMJBJqsGrenA+Xx88=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tIg6Nm5zKCloazIUwxJ+gvGndnKBK/x0pUqPMlYSwSqif75QVJ+5wfJp2Oxih12K8PJDsxO6bhGpudKxGQT6NDUE2AHFgPYf3lnq3sfsie8mw/SPdR9/ImtVzKlKCFnJvPsjh67Vnf7nqICNQGj9OKkJ2P/G5aaWUzh7GQ/aUK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uRBQYA7G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77380C4CEC3;
+	Fri, 11 Oct 2024 06:51:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728629493;
+	bh=+0iB7lhXfWq7DqrCSFd6XGMnOkBMJBJqsGrenA+Xx88=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uRBQYA7GFLuhHYSd66dZg2SxXhrLQ7eVgv5miU9v0Z2IKctjswjEQAr4ld1mfWVx2
+	 uxODuFIllGfIVrC7zroT21W0ypzHBUFTh5Ni2/o+JInbcR7QFYDCIJydpqMptHERJm
+	 /rPzn9HsSomN489uWpoIZagIVZc0ItcTOYW1pUQndAz3B9vcqHFVUxK/wMW07gcJlU
+	 oDE0XDzL51/j3pM9tGo6Uac2E8MZGEuvqdeGTOZ8eNo/NK21oFhT0AsoCvLLg/tEqD
+	 MVcScuL+TSus/TBhJh04INQtPIosxPnfBHNGbV58HTHssFFeqiEhPBaKHkKMUv2yqc
+	 hkPgmOKgLK90g==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1sz9Uw-000000002k0-1PKt;
+	Fri, 11 Oct 2024 08:51:39 +0200
+Date: Fri, 11 Oct 2024 08:51:38 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Doug Anderson <dianders@chromium.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org, stable@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH v2 2/7] serial: qcom-geni: fix shutdown race
+Message-ID: <ZwjK-s0sMn9HOF04@hovoldconsulting.com>
+References: <20241001125033.10625-1-johan+linaro@kernel.org>
+ <20241001125033.10625-3-johan+linaro@kernel.org>
+ <CAD=FV=UoU5Nd7sW66cjQzor+BP+W_f7uw0MGRaF6y7PH7KRN_g@mail.gmail.com>
+ <ZwaO0hCKdPpojvnn@hovoldconsulting.com>
+ <CAD=FV=UZtZ1-0SkN2sOMp6YdU02em_RnK85Heg5z0jkH4U30eQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241011-lmh-lockdep-v1-1-495cbbe6fef1@linaro.org>
-To: Amit Kucheria <amitk@kernel.org>, 
- Thara Gopinath <thara.gopinath@gmail.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
- Lukasz Luba <lukasz.luba@arm.com>
-Cc: Thara Gopinath <thara.gopinath@linaro.org>, linux-pm@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2582;
- i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
- bh=gSDr2qXiWunqD83kcCcfkWzmofL1UeyjfIsv5gb6YVw=;
- b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBnCLw70Pj12BWKspOc3Iexi6FaN+ED1D3pwfnZc
- rZjUEBmHieJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZwi8OwAKCRCLPIo+Aiko
- 1ZIXB/9KZut2clhqKYo18Rw7gj6QdBb3gWOHFkHnZwIf4UKQIRvHY36O3T/LEj/iqLn6LnMhO/G
- oMx2OjPb+s6le34h63v+PU0Zj6RUbR6lJyZhBpb3PIUhh/Xb7ncNroEgagZXa101Wx9RO4CsTls
- Z9bELVN7jxZ5zni4l08TXgV6Rscm9Vz21wyTpAjytzy8zgjl38QVXbPVAxcZO76N1OOw3ZF3uoz
- ny+8AZBw8zZDCmtq+Dxoi7ZA7JtXbPMHcjEqEnx491tIFMA7Sn2xliuZbpYj7WEtd9osPi0SBit
- VqJfFGBlEVV4lDOCl0RBgJzUo7zRdNfg86xrvOnpfE+MH1KD
-X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
- fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD=FV=UZtZ1-0SkN2sOMp6YdU02em_RnK85Heg5z0jkH4U30eQ@mail.gmail.com>
 
-Annotate LMH IRQs with lockdep classes so that the lockdep doesn't
-report possible recursive locking issue between LMH and GIC interrupts.
+On Thu, Oct 10, 2024 at 03:30:05PM -0700, Doug Anderson wrote:
+> On Wed, Oct 9, 2024 at 7:10 AM Johan Hovold <johan@kernel.org> wrote:
+> > On Thu, Oct 03, 2024 at 11:30:08AM -0700, Doug Anderson wrote:
 
-For the reference:
+> > > Hmmm, when I look at that commit it makes me think that the problem
+> > > that commit e83766334f96 ("tty: serial: qcom_geni_serial: No need to
+> > > stop tx/rx on UART shutdown") was fixing was re-introduced by commit
+> > > d8aca2f96813 ("tty: serial: qcom-geni-serial: stop operations in
+> > > progress at shutdown"). ...and indeed, it was. :(
+> > >
+> > > I can't interact with kgdb if I do this:
+> > >
+> > > 1. ssh over to DUT
+> > > 2. Kill the console process (on ChromeOS stop console-ttyMSM0)
+> > > 3. Drop in the debugger (echo g > /proc/sysrq-trigger)
+> >
+> > Yeah, don't do that then. ;)
+> 
+> The problem is, I don't always have a choice. As talked about in the
+> message of commit e83766334f96 ("tty: serial: qcom_geni_serial: No
+> need to stop tx/rx on UART shutdown"), the above steps attempt to
+> simulate what happened organically: a crash in late shutdown. During
+> shutdown the agetty has been killed by the init system and I don't
+> have a choice about it. If I get a kernel crash then (which isn't
+> uncommon since shutdown code tends to trigger seldom-used code paths)
+> then I can't debug it. :(
 
-       CPU0
-       ----
-  lock(&irq_desc_lock_class);
-  lock(&irq_desc_lock_class);
+Ok, thanks for clarifying.
 
- *** DEADLOCK ***
+> > Not sure how your "console process" works, but this should only happen
+> > if you do not enable the serial console (console=ttyMSM0) and then try
+> > to use a polled console (as enabling the console will prevent port
+> > shutdown from being called).
+> 
+> That simply doesn't seem to be the case for me. The port shutdown
+> seems to be called. To confirm, I put a printout at the start of
+> qcom_geni_serial_shutdown(). I see in my /proc/cmdline:
+> 
+> console=ttyMSM0,115200n8
+> 
+> ...and I indeed verify that I see console messages on my UART. I then run:
+> 
+> stop console-ttyMSM0
+> 
+> ...and I see on the UART:
+> 
+> [   92.916964] DOUG: qcom_geni_serial_shutdown
+> [   92.922703] init: console-ttyMSM0 main process (611) killed by TERM signal
+> 
+> Console messages keep coming out the UART even though the agetty isn't
+> there.
 
-Call trace:
- dump_backtrace+0x98/0xf0
- show_stack+0x18/0x24
- dump_stack_lvl+0x90/0xd0
- dump_stack+0x18/0x24
- print_deadlock_bug+0x258/0x348
- __lock_acquire+0x1078/0x1f44
- lock_acquire+0x1fc/0x32c
- _raw_spin_lock_irqsave+0x60/0x88
- __irq_get_desc_lock+0x58/0x98
- enable_irq+0x38/0xa0
- lmh_enable_interrupt+0x2c/0x38
- irq_enable+0x40/0x8c
- __irq_startup+0x78/0xa4
- irq_startup+0x78/0x168
- __enable_irq+0x70/0x7c
- enable_irq+0x4c/0xa0
- qcom_cpufreq_ready+0x20/0x2c
- cpufreq_online+0x2a8/0x988
- cpufreq_add_dev+0x80/0x98
- subsys_interface_register+0x104/0x134
- cpufreq_register_driver+0x150/0x234
- qcom_cpufreq_hw_driver_probe+0x2a8/0x388
- platform_probe+0x68/0xc0
- really_probe+0xbc/0x298
- __driver_probe_device+0x78/0x12c
- driver_probe_device+0x3c/0x160
- __device_attach_driver+0xb8/0x138
- bus_for_each_drv+0x84/0xe0
- __device_attach+0x9c/0x188
- device_initial_probe+0x14/0x20
- bus_probe_device+0xac/0xb0
- deferred_probe_work_func+0x8c/0xc8
- process_one_work+0x20c/0x62c
- worker_thread+0x1bc/0x36c
- kthread+0x120/0x124
- ret_from_fork+0x10/0x20
+And this is with a Chromium kernel, not mainline? 
 
-Fixes: 53bca371cdf7 ("thermal/drivers/qcom: Add support for LMh driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
----
- drivers/thermal/qcom/lmh.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+If you take a look at tty_port_shutdown() there's a hack in there for
+consoles that was added back in 2010 and that prevents shutdown() from
+called for console ports.
 
-diff --git a/drivers/thermal/qcom/lmh.c b/drivers/thermal/qcom/lmh.c
-index 5225b3621a56..d2d49264cf83 100644
---- a/drivers/thermal/qcom/lmh.c
-+++ b/drivers/thermal/qcom/lmh.c
-@@ -73,7 +73,14 @@ static struct irq_chip lmh_irq_chip = {
- static int lmh_irq_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
- {
- 	struct lmh_hw_data *lmh_data = d->host_data;
-+	static struct lock_class_key lmh_lock_key;
-+	static struct lock_class_key lmh_request_key;
- 
-+	/*
-+	 * This lock class tells lockdep that GPIO irqs are in a different
-+	 * category than their parents, so it won't report false recursion.
-+	 */
-+	irq_set_lockdep_class(irq, &lmh_lock_key, &lmh_request_key);
- 	irq_set_chip_and_handler(irq, &lmh_irq_chip, handle_simple_irq);
- 	irq_set_chip_data(irq, lmh_data);
- 
+Put perhaps you manage to hit shutdown() via some other path. Serial
+core is not yet using tty_port_hangup() so a hangup might trigger
+that...
 
----
-base-commit: 797012914d2d031430268fe512af0ccd7d8e46ef
-change-id: 20240721-lmh-lockdep-88de09e77089
+Could you check that with a dump_stack()?
 
-Best regards,
--- 
-Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Now I (via ssh) drop into the debugger:
+> 
+> echo g > /proc/sysrq-trigger
+> 
+> I see the "kgdb" prompt but I can't interact with it because
+> qcom_geni_serial_shutdown() stopped RX.
 
+How about simply amending poll_get_char() so that it enables the
+receiver if it's not already enabled?
+
+Johan
 
