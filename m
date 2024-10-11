@@ -1,193 +1,317 @@
-Return-Path: <stable+bounces-83506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADCAF99AF23
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 01:13:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B7F99AF77
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 01:40:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF8501C2446E
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 23:13:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 504C61F23007
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 23:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE6F1D278A;
-	Fri, 11 Oct 2024 23:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3800D1E3786;
+	Fri, 11 Oct 2024 23:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L+6pzHk6"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="gznUbumH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pv50p00im-ztdg10011901.me.com (pv50p00im-ztdg10011901.me.com [17.58.6.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9ACB28EB;
-	Fri, 11 Oct 2024 23:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634E81D27A9
+	for <stable@vger.kernel.org>; Fri, 11 Oct 2024 23:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728688377; cv=none; b=YRdERXWlf8nnKjCI7drE7GY0Moj4N9JuhWk5h8Czi8zujQejfUYoLYujIynQh0kOG4uxie5lgjvPoec4yod+bwgwvfRBg54vbDkY2w46njiClFukInKmPudzhivVbAadQ+ctAUUv4u+XJvSWABFBqdrEEt/Qx8b1sRNgdPoDaCs=
+	t=1728690025; cv=none; b=OFJuyVXniYvZzFWCbPL7r3UkB+/h9eTcXIlK66xuQPd4QeVDLD+qKGiDB6L9EIKpBNai/cWDsiEdYsDncJDhTXT/Agp51GPMCt7OPMO6nYcE+OnYjp6soBaJSqcqQyq4Q99Q6aZJA3GvX0TR4jFYAfhRfAXmwOgvUyYdnWrOxG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728688377; c=relaxed/simple;
-	bh=auAhPt31Xt+AgKaDcyvXxW6DNEn+hNzH4SmSDSvruqc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aefW/KhAOAtuu3LcuWlGwy2Kg+6UJsd507SAmvvOFU+oYbDEsZDEavFj3LtMsxx61H2nV3P8PYTQ5U6bzuD1Hvgv7EddENpUs7Ao2x9CPq9PUEZENal1V2Zsn9Rv2XscXyzZabE8MiHk7qw+SO/MtD1XxuRO/gJ+a9/8mdle9Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L+6pzHk6; arc=none smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4603d3e456bso20260051cf.2;
-        Fri, 11 Oct 2024 16:12:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728688375; x=1729293175; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=vHFnPxtUSSTOxvi5ge8xazxjEmltcPwcI4eJ2m8KsA0=;
-        b=L+6pzHk6kLeRQE7kWuzIJVYa2yne5qHGLFmHyyJlygNKW8YwbLHwtaPPn/wDdmzmQL
-         1fwU581aVZn1zq7ad0QgQY3qbnmw7UXNA408GfNi39nv69Z76fogIBayDSpHjcVdlTZK
-         F9Iy7rGDxjy9dhdy1jXIWFJjivrprlcrQ96UizTK0zEf4zCb4lldV5TWzMFE/zfw0Vgu
-         gKun1FYV0ajO3+99O1NfO281L+O8KHqaKHYzsVG+McxbckaTGOPNTviAreKYgE4/m1c6
-         o+3+eb6PVoY55gP1LDztC8FclOjoK1htP6P6EaRmj5ocqWhG792gXeOZllV0xhi1DhF7
-         C5/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728688375; x=1729293175;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:feedback-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vHFnPxtUSSTOxvi5ge8xazxjEmltcPwcI4eJ2m8KsA0=;
-        b=v6kDrvxNDP/OOHdM18xVK8IHqgFhd1Y4DgJzU4EBBIc4s0B68sk0WPg/BkzgIlcdh9
-         NY4NoEXh2YLCLyRuv+pl0WTJwdnw1xetfFpQiFnieAUDmmzYGsRYwdQVgFDbj658v3wG
-         aooFJqXRt8UwEIoEUNPaJXJZf70fU8sYAfJPeevb6PnyB4pi8TnDbJiNQxhUap6JBYko
-         bo78iyMJeO7ElrY9ltt/NO25YOxdVJF+7oM48xkaCQSEBI+Y9RAIbaBxDjuwB5eHuGZ8
-         qqu4TXpFhW8nDIJeIsO5UIJzhnk8Bkns2eq1e5uY7B3s1iLqweGeY9VzfKgG/3SO4zK+
-         r+wg==
-X-Forwarded-Encrypted: i=1; AJvYcCUoDugXmq6JBF36BiXcbMPIgXd3+eqyExk8tH0UVe6UQm5X7IlDWTJ/GbVnz9Egq3qVRl/obdJZ64W9snV7eQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKTp2UI7vftTmEkYHKTmx/AQOtqvpbIF7erCgTfwl2Ouaz6L3F
-	m2YBOIn1rJoBJeroPKbECcJ8HNNosutONlnESuJs0V4Olj0qkQ6M
-X-Google-Smtp-Source: AGHT+IHF+cpsbmeZQPPJToJxbLgArS79LCL4pU5OLVi4da4nP491ue2MxH5v+x0nndQzhkE+PQm0SA==
-X-Received: by 2002:a05:622a:401a:b0:446:5952:2725 with SMTP id d75a77b69052e-4604bbb796bmr50897971cf.16.1728688374749;
-        Fri, 11 Oct 2024 16:12:54 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b1148e0948sm179121885a.48.2024.10.11.16.12.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2024 16:12:54 -0700 (PDT)
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C55321200066;
-	Fri, 11 Oct 2024 19:12:53 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Fri, 11 Oct 2024 19:12:53 -0400
-X-ME-Sender: <xms:9bAJZ5AfSjHUO9UI9_eAKNqXgNtZ9F71Y5ARybJBsTGdjY_1sYNtrg>
-    <xme:9bAJZ3jsoNV8JPUaAWCl05E8BWrDAHkefhg_WtFptPfq5kWtKPuYbXoZ6BQs9Mcuy
-    qYKCKlMmyB_lWELVQ>
-X-ME-Received: <xmr:9bAJZ0nX-I8XGQzcJlwJhNJE8Qm4UtN23kOU16WVpED7VxBwNk5FIpU3Od0Qfg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdefledgvddtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhephffvvefufffkofgggfestdekredtredttdenucfh
-    rhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtoh
-    hmqeenucggtffrrghtthgvrhhnpeekjeelgfeiveelgfegjeeutddugedvfeduveehkeej
-    veeugfdvudehjedufeetheenucffohhmrghinhepiihulhhiphgthhgrthdrtghomhdpkh
-    gvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghi
-    lhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqie
-    elvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdr
-    tghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmh
-    htphhouhhtpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtohepshgrshhhrghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrh
-    gvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrrdhh
-    ihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghjohhrnhefpghghh
-    esphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhn
-    uhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghoqhhunhdrfhgvnh
-    hgsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgv
-    rdgtohhmpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuh
-X-ME-Proxy: <xmx:9bAJZzysjuhV3ShFdR10bDy8vvxW0R9bBIFvJWNp3FCfb9Zn1WOUbQ>
-    <xmx:9bAJZ-QBET_pqahOn7m6nWNNDuDDWC8gvgvHeg7Aq_lkCnLXcjxl1Q>
-    <xmx:9bAJZ2ZCBxm3gOBDbH9Ntx6NX_DPZ2N3K9TxDc1dzdz8PhL5JwnMqw>
-    <xmx:9bAJZ_R6ZEpr-baA8fj4q_p0ahbvX7udtAYuWnWj0H6uw3sRNF1wWg>
-    <xmx:9bAJZ8Be4Oz3gd_Sjdl6J-E3CMBKp-A8J2iRK7r6uFsem-R7aC79j9jn>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 11 Oct 2024 19:12:53 -0400 (EDT)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: stable@vger.kernel.org,
-	sashal@kernel.org,
-	gregkh@linuxfoundation.org
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	rust-for-linux@vger.kernel.org,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.1.y] rust: macros: provide correct provenance when constructing THIS_MODULE
-Date: Fri, 11 Oct 2024 16:12:28 -0700
-Message-ID: <20241011231228.4070521-1-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1728690025; c=relaxed/simple;
+	bh=hzmriMm1SlBGJ794Cddrkfm/jHhZdGdWaKuc0Hj0ZFQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=atKCrvAnrsUbh5EhEjwKAgdjLbUkpDQ2dN6QspjsAo2RZlVneAoCs2l6IICcdPs+iT7dfBWUvrdtBjIoFkCvPpb519Z1Uhxz3KPw5b56mcik38NTxeNYhXd2mbOdnRko2zaxYwZ3yQQpv4+h3LzqrZkBUa3GDQkQFNkKVqgoiug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=gznUbumH; arc=none smtp.client-ip=17.58.6.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1728690023;
+	bh=rC/dMbnugMRawoRxS2uRVhimv+ms1/XM7Yr5Pb3hCoA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	b=gznUbumHUDA1uaHgKsfzgAnxv+kG5j6ikHE//fBa9stmsXh41VWRVv2Dpic4ieQfV
+	 iWh78db4bpMCJ01AOjsV/8pZvrCwrX6RP4X44Qecnat3PIqVb6sotaU3ODqFNhVogs
+	 BZh6Xrtmv6yAwYsA+7e5wXAXlsqzYzsAePtxt1d8Z8sce8rWYq/mqUyTou0LfQ9Kzi
+	 FF4HJ/tcmnjKLQxewzTzULyK62OOzebnxb1vUWQ71WaDpdwdjMEjPePQnNWDkY4Qjw
+	 yrnrfsLugPdXbSK94SL6V51NHoPdDwm7e4PidbpYLDgN6oMJiVSq9bQWi4LVrPnIqY
+	 Vpt7iO8q7xUZA==
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-ztdg10011901.me.com (Postfix) with ESMTPSA id B5D903A02D6;
+	Fri, 11 Oct 2024 23:40:17 +0000 (UTC)
+Message-ID: <060193f9-5de1-422b-abfb-6328a1c7b806@icloud.com>
+Date: Sat, 12 Oct 2024 07:40:13 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] cxl/port: Fix use-after-free, permit out-of-order
+ decoder shutdown
+To: Dan Williams <dan.j.williams@intel.com>, dave.jiang@intel.com,
+ ira.weiny@intel.com
+Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Alison Schofield <alison.schofield@intel.com>, vishal.l.verma@intel.com,
+ linux-cxl@vger.kernel.org
+References: <172862483180.2150669.5564474284074502692.stgit@dwillia2-xfh.jf.intel.com>
+ <172862486548.2150669.3548553804904171839.stgit@dwillia2-xfh.jf.intel.com>
+ <a7b8a007-907a-4fda-9a35-68faed109ed3@icloud.com>
+ <6709647f66d94_964f2294ae@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Language: en-US
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <6709647f66d94_964f2294ae@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: SdAq2sLRtK5itv8SkkUuMB5ydBc9zxot
+X-Proofpoint-GUID: SdAq2sLRtK5itv8SkkUuMB5ydBc9zxot
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-11_21,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 phishscore=0 spamscore=0
+ adultscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2410110164
 
-commit a5a3c952e82c1ada12bf8c55b73af26f1a454bd2 upstream.
+On 2024/10/12 01:46, Dan Williams wrote:
+> Zijun Hu wrote:
+>> On 2024/10/11 13:34, Dan Williams wrote:
+>>> In support of investigating an initialization failure report [1],
+>>> cxl_test was updated to register mock memory-devices after the mock
+>>> root-port/bus device had been registered. That led to cxl_test crashing
+>>> with a use-after-free bug with the following signature:
+>>>
+>>>     cxl_port_attach_region: cxl region3: cxl_host_bridge.0:port3 decoder3.0 add: mem0:decoder7.0 @ 0 next: cxl_switch_uport.0 nr_eps: 1 nr_targets: 1
+>>>     cxl_port_attach_region: cxl region3: cxl_host_bridge.0:port3 decoder3.0 add: mem4:decoder14.0 @ 1 next: cxl_switch_uport.0 nr_eps: 2 nr_targets: 1
+>>>     cxl_port_setup_targets: cxl region3: cxl_switch_uport.0:port6 target[0] = cxl_switch_dport.0 for mem0:decoder7.0 @ 0
+>>> 1)  cxl_port_setup_targets: cxl region3: cxl_switch_uport.0:port6 target[1] = cxl_switch_dport.4 for mem4:decoder14.0 @ 1
+>>>     [..]
+>>>     cxld_unregister: cxl decoder14.0:
+>>>     cxl_region_decode_reset: cxl_region region3:
+>>>     mock_decoder_reset: cxl_port port3: decoder3.0 reset
+>>> 2)  mock_decoder_reset: cxl_port port3: decoder3.0: out of order reset, expected decoder3.1
+>>>     cxl_endpoint_decoder_release: cxl decoder14.0:
+>>>     [..]
+>>>     cxld_unregister: cxl decoder7.0:
+>>> 3)  cxl_region_decode_reset: cxl_region region3:
+>>>     Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6bc3: 0000 [#1] PREEMPT SMP PTI
+>>>     [..]
+>>>     RIP: 0010:to_cxl_port+0x8/0x60 [cxl_core]
+>>>     [..]
+>>>     Call Trace:
+>>>      <TASK>
+>>>      cxl_region_decode_reset+0x69/0x190 [cxl_core]
+>>>      cxl_region_detach+0xe8/0x210 [cxl_core]
+>>>      cxl_decoder_kill_region+0x27/0x40 [cxl_core]
+>>>      cxld_unregister+0x5d/0x60 [cxl_core]
+>>>
+>>> At 1) a region has been established with 2 endpoint decoders (7.0 and
+>>> 14.0). Those endpoints share a common switch-decoder in the topology
+>>> (3.0). At teardown, 2), decoder14.0 is the first to be removed and hits
+>>> the "out of order reset case" in the switch decoder. The effect though
+>>> is that region3 cleanup is aborted leaving it in-tact and
+>>> referencing decoder14.0. At 3) the second attempt to teardown region3
+>>> trips over the stale decoder14.0 object which has long since been
+>>> deleted.
+>>>
+>>> The fix here is to recognize that the CXL specification places no
+>>> mandate on in-order shutdown of switch-decoders, the driver enforces
+>>> in-order allocation, and hardware enforces in-order commit. So, rather
+>>> than fail and leave objects dangling, always remove them.
+>>>
+>>> In support of making cxl_region_decode_reset() always succeed,
+>>> cxl_region_invalidate_memregion() failures are turned into warnings.
+>>> Crashing the kernel is ok there since system integrity is at risk if
+>>> caches cannot be managed around physical address mutation events like
+>>> CXL region destruction.
+>>>
+>>> A new device_for_each_child_reverse_from() is added to cleanup
+>>> port->commit_end after all dependent decoders have been disabled. In
+>>> other words if decoders are allocated 0->1->2 and disabled 1->2->0 then
+>>> port->commit_end only decrements from 2 after 2 has been disabled, and
+>>> it decrements all the way to zero since 1 was disabled previously.
+>>>
+>>> Link: http://lore.kernel.org/20241004212504.1246-1-gourry@gourry.net [1]
+>>> Cc: <stable@vger.kernel.org>
+>>> Fixes: 176baefb2eb5 ("cxl/hdm: Commit decoder state to hardware")
+>>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>>> Cc: Davidlohr Bueso <dave@stgolabs.net>
+>>> Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+>>> Cc: Dave Jiang <dave.jiang@intel.com>
+>>> Cc: Alison Schofield <alison.schofield@intel.com>
+>>> Cc: Ira Weiny <ira.weiny@intel.com>
+>>> Cc: Zijun Hu <zijun_hu@icloud.com>
+>>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+>>> ---
+>>>  drivers/base/core.c          |   35 +++++++++++++++++++++++++++++
+>>>  drivers/cxl/core/hdm.c       |   50 +++++++++++++++++++++++++++++++++++-------
+>>>  drivers/cxl/core/region.c    |   48 +++++++++++-----------------------------
+>>>  drivers/cxl/cxl.h            |    3 ++-
+>>>  include/linux/device.h       |    3 +++
+>>>  tools/testing/cxl/test/cxl.c |   14 ++++--------
+>>>  6 files changed, 100 insertions(+), 53 deletions(-)
+>>>
+>>> diff --git a/drivers/base/core.c b/drivers/base/core.c
+>>> index a4c853411a6b..e42f1ad73078 100644
+>>> --- a/drivers/base/core.c
+>>> +++ b/drivers/base/core.c
+>>> @@ -4037,6 +4037,41 @@ int device_for_each_child_reverse(struct device *parent, void *data,
+>>>  }
+>>>  EXPORT_SYMBOL_GPL(device_for_each_child_reverse);
+>>>  
+>>> +/**
+>>> + * device_for_each_child_reverse_from - device child iterator in reversed order.
+>>> + * @parent: parent struct device.
+>>> + * @from: optional starting point in child list
+>>> + * @fn: function to be called for each device.
+>>> + * @data: data for the callback.
+>>> + *
+>>> + * Iterate over @parent's child devices, starting at @from, and call @fn
+>>> + * for each, passing it @data. This helper is identical to
+>>> + * device_for_each_child_reverse() when @from is NULL.
+>>> + *
+>>> + * @fn is checked each iteration. If it returns anything other than 0,
+>>> + * iteration stop and that value is returned to the caller of
+>>> + * device_for_each_child_reverse_from();
+>>> + */
+>>> +int device_for_each_child_reverse_from(struct device *parent,
+>>> +				       struct device *from, const void *data,
+>>> +				       int (*fn)(struct device *, const void *))
+>>> +{
+>>> +	struct klist_iter i;
+>>> +	struct device *child;
+>>> +	int error = 0;
+>>> +
+>>> +	if (!parent->p)
+>>> +		return 0;
+>>> +
+>>> +	klist_iter_init_node(&parent->p->klist_children, &i,
+>>> +			     (from ? &from->p->knode_parent : NULL));
+>>> +	while ((child = prev_device(&i)) && !error)
+>>> +		error = fn(child, data);
+>>> +	klist_iter_exit(&i);
+>>> +	return error;
+>>> +}
+>>> +EXPORT_SYMBOL_GPL(device_for_each_child_reverse_from);
+>>> +
+>>
+>> it does NOT deserve, also does NOT need to introduce a new core driver
+>> API device_for_each_child_reverse_from(). existing
+>> device_for_each_child_reverse() can do what the _from() wants to do.
+>>
+>> we can use similar approach as below link shown:
+>> https://lore.kernel.org/all/20240815-const_dfc_prepare-v2-2-8316b87b8ff9@quicinc.com/
+> 
+> No, just have a simple starting point parameter. I understand that more
+> logic can be placed around device_for_each_child_reverse() to achieve
+> the same effect, but the core helpers should be removing logic from
+> consumers, not forcing them to add more.
+> 
+> If bloat is a concern, then after your const cleanups go through
+> device_for_each_child_reverse() can be rewritten in terms of
+> device_for_each_child_reverse_from() as (untested):
+> 
 
-Currently while defining `THIS_MODULE` symbol in `module!()`, the
-pointer used to construct `ThisModule` is derived from an immutable
-reference of `__this_module`, which means the pointer doesn't have
-the provenance for writing, and that means any write to that pointer
-is UB regardless of data races or not. However, the usage of
-`THIS_MODULE` includes passing this pointer to functions that may write
-to it (probably in unsafe code), and this will create soundness issues.
+bloat is one aspect, the other aspect is that there are redundant
+between both driver core APIs, namely, there are a question:
 
-One way to fix this is using `addr_of_mut!()` but that requires the
-unstable feature "const_mut_refs". So instead of `addr_of_mut()!`,
-an extern static `Opaque` is used here: since `Opaque<T>` is transparent
-to `T`, an extern static `Opaque` will just wrap the C symbol (defined
-in a C compile unit) in an `Opaque`, which provides a pointer with
-writable provenance via `Opaque::get()`. This fix the potential UBs
-because of pointer provenance unmatched.
+why to still need device_for_each_child_reverse() if it is same as
+_from(..., NULL, ...) ?
 
-Reported-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/x/topic/x/near/465412664
-Fixes: 1fbde52bde73 ("rust: add `macros` crate")
-Cc: stable@vger.kernel.org # 6.6.x: be2ca1e03965: ("rust: types: Make Opaque::get const")
-Link: https://lore.kernel.org/r/20240828180129.4046355-1-boqun.feng@gmail.com
-[ Fixed two typos, reworded title. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-[ Boqun: Use `UnsafeCell` since `Opaque` is not in v6.1, as suggested by
-  Gary Guo, `UnsafeCell` also suffices for this particular case because
-  `__this_module` is only used to create `THIS_MODULE`, no other Rust
-  code will touch it. ]
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
----
-Backports for 6.6+ are already done automatically, we have to do a
-special backport for 6.1 because of lacking an API.
+So i suggest use existing API now.
+if there are more users who have such starting point requirement, then
+add the parameter into device_for_each_child_reverse() which is
+consistent with other existing *_for_each_*() core APIs such as
+(class|driver|bus)_for_each_device() and bus_for_each_drv(), that may
+need much efforts.
 
-I've tested it on x86 with the rust_minimal module based on 6.1.112
 
- rust/macros/module.rs | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+could you please contains your proposal "fixing this allocation
+order validation" of below link into this patch series with below
+reason? and Cc me (^^)
 
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 031028b3dc41..94a92ab82b6b 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -183,7 +183,11 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-             // freed until the module is unloaded.
-             #[cfg(MODULE)]
-             static THIS_MODULE: kernel::ThisModule = unsafe {{
--                kernel::ThisModule::from_ptr(&kernel::bindings::__this_module as *const _ as *mut _)
-+                extern \"C\" {{
-+                    static __this_module: core::cell::UnsafeCell<kernel::bindings::module>;
-+                }}
-+
-+                kernel::ThisModule::from_ptr(__this_module.get())
-             }};
-             #[cfg(not(MODULE))]
-             static THIS_MODULE: kernel::ThisModule = unsafe {{
--- 
-2.45.2
+https://lore.kernel.org/all/670835f5a2887_964f229474@dwillia2-xfh.jf.intel.com.notmuch/
+
+A)
+  the proposal depends on this patch series.
+B)
+  one of the issues the proposal fix is match_free_decoder()  error
+logic which is also relevant issues this patch series fix, the proposal
+also can fix the other device_find_child()'s match() issue i care about.
+
+C)
+ Actually, it is a bit difficult for me to understand the proposal since
+ i don't have any basic knowledge about CXL. (^^)
+
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index e42f1ad73078..2571c910da46 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -4007,36 +4007,6 @@ int device_for_each_child(struct device *parent, void *data,
+>  }
+>  EXPORT_SYMBOL_GPL(device_for_each_child);
+>  
+> -/**
+> - * device_for_each_child_reverse - device child iterator in reversed order.
+> - * @parent: parent struct device.
+> - * @fn: function to be called for each device.
+> - * @data: data for the callback.
+> - *
+> - * Iterate over @parent's child devices, and call @fn for each,
+> - * passing it @data.
+> - *
+> - * We check the return of @fn each time. If it returns anything
+> - * other than 0, we break out and return that value.
+> - */
+> -int device_for_each_child_reverse(struct device *parent, void *data,
+> -				  int (*fn)(struct device *dev, void *data))
+> -{
+> -	struct klist_iter i;
+> -	struct device *child;
+> -	int error = 0;
+> -
+> -	if (!parent || !parent->p)
+> -		return 0;
+> -
+> -	klist_iter_init(&parent->p->klist_children, &i);
+> -	while ((child = prev_device(&i)) && !error)
+> -		error = fn(child, data);
+> -	klist_iter_exit(&i);
+> -	return error;
+> -}
+> -EXPORT_SYMBOL_GPL(device_for_each_child_reverse);
+> -
+>  /**
+>   * device_for_each_child_reverse_from - device child iterator in reversed order.
+>   * @parent: parent struct device.
+> diff --git a/include/linux/device.h b/include/linux/device.h
+> index 667cb6db9019..96a2c072bf5b 100644
+> --- a/include/linux/device.h
+> +++ b/include/linux/device.h
+> @@ -1076,11 +1076,14 @@ DEFINE_FREE(device_del, struct device *, if (_T) device_del(_T))
+>  
+>  int device_for_each_child(struct device *dev, void *data,
+>  			  int (*fn)(struct device *dev, void *data));
+> -int device_for_each_child_reverse(struct device *dev, void *data,
+> -				  int (*fn)(struct device *dev, void *data));
+>  int device_for_each_child_reverse_from(struct device *parent,
+>  				       struct device *from, const void *data,
+>  				       int (*fn)(struct device *, const void *));
+> +static inline int device_for_each_child_reverse(struct device *dev, const void *data,
+> +						int (*fn)(struct device *, const void *))
+> +{
+> +	return device_for_each_child_reverse_from(dev, NULL, data, fn);
+> +}
+>  struct device *device_find_child(struct device *dev, void *data,
+>  				 int (*match)(struct device *dev, void *data));
+>  struct device *device_find_child_by_name(struct device *parent,
 
 
