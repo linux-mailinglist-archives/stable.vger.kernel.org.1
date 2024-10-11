@@ -1,218 +1,217 @@
-Return-Path: <stable+bounces-83486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43BD199AAB8
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 19:55:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83AEC99AB74
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 20:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C086F1F22B22
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 17:55:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CB94284900
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 18:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD5F61BB6BB;
-	Fri, 11 Oct 2024 17:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C641CFEB6;
+	Fri, 11 Oct 2024 18:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="e8Ydhu3N"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L+E0N0xt"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6699195811;
-	Fri, 11 Oct 2024 17:55:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5483A1CDA0A
+	for <stable@vger.kernel.org>; Fri, 11 Oct 2024 18:47:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728669335; cv=none; b=HdWabj67lPzLZJlOPKXwIm8T6yYrFrk/ujncq2SWfxB/Yz/cjCUjcwR9B8iM762JUBR78y51Qx1hh2/y+OxcdGkn3BLfPBogzuFjfmL8zdFuRJceP/7LKQfND10KUXrMODc9JwaxKo58BuINQD42+ROHHSjs1EvgA6RuQoR9A+k=
+	t=1728672426; cv=none; b=qoTAttwhhHLR+ccNsIm0bQizi9Cx4H1GIDCLmJX05NVLpzBD4ZlW1N1P+7+MpoNiD+iv8hdQZYEody7//wHnFx5h03ZHC7Ko8cSCToneE91vOu88Kqmlu1UVd6n3eNUXPU1MdF69ejPFLXT+95/0xtQAkOKuLtqRqaQyUpd/zUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728669335; c=relaxed/simple;
-	bh=CT798ZPWR9VTz5Dx5l8Vw/iGAKdOvqGkdEaOVACV7PE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CFPwytz/+oAwupK3MtRMcERiuBX2maSJNT4kMLDoxHzf1M+C2vSVD7r+aH5LLchS/h6pMFDESzVFaF4U5sHWa5loqgM8fboKvMxYTeU2Mfx/SP79uqjRhCBsdbRsHKRUkHNYP08j21Gg3dbz5OExnuTXdSyYN4xsY+wLuXN2/vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=e8Ydhu3N; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49BCpY5t029765;
-	Fri, 11 Oct 2024 17:55:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2023-11-20; bh=pyICVjXcybLbovmc
-	CE7Wu349rBpWSS3W1If9knEy2+4=; b=e8Ydhu3N5kJpQGAs9+RIfsxBtQbLtfyP
-	VrEW+Z3GN9pNfuMFJKXsGBtSAJ/yai+wPXFkn37K11KF244D9O7fIFrk2b4mOIHp
-	JmeGjwqDMkvrKopUBd47m8K8BhQhSrJjpP2EkiKzbU1ns4t6aqzIN6ns8sc6jd4u
-	ID1pTO+Xrk/KXXdRLWEkU5NGJ357rS/8dbY4ZBeZ4qvmmF4q79k75PhKLeIctIqW
-	R3RuLdzEq94ecEinxLIgXjZyMlP2V7D6tJ31GuKPpFp8q14PI9dAahE14tooxkgP
-	WX32PuuSyTbuSlWMUkHheIgMHjLxHY2g81HpC7pdTx9B0xiTWkIwgg==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42308dwh9b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 11 Oct 2024 17:55:25 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49BGAPaE005946;
-	Fri, 11 Oct 2024 17:55:24 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 422uwbkbvc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 11 Oct 2024 17:55:24 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49BHtOev021019;
-	Fri, 11 Oct 2024 17:55:24 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 422uwbkbue-1;
-	Fri, 11 Oct 2024 17:55:23 +0000
-From: Sherry Yang <sherry.yang@oracle.com>
-To: stable@vger.kernel.org, sashal@kernel.org, gregkh@linuxfoundation.org
-Cc: kenneth.t.chan@gmail.com, hdegoede@redhat.com, mgross@linux.intel.com,
-        xi.wang@gmail.com, mjg@redhat.com, platform-driver-x86@vger.kernel.org,
-        sherry.yang@oracle.com
-Subject: [PATCH 5.15.y] platform/x86: panasonic-laptop: Fix SINF array out of bounds accesses
-Date: Fri, 11 Oct 2024 10:55:21 -0700
-Message-ID: <20241011175521.1758191-1-sherry.yang@oracle.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1728672426; c=relaxed/simple;
+	bh=GXiXoMKDHZODULsqhNnitTHecjzxazifbVVQeopfNJ8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=VQOemtDCcXjam2sHZW1upSNP8x6Y2sN0PSoERcOqs49vlV5SzMyIdDPJEowBDy6eizBlBzelWXYjQtc39wr72dLkKhxM16Tlguer92DgCHoT6hNbYghEf0XtCLUImtGMxBjogE1/reUlDwomFozsZFwX1ZkWHxTj0DjLDxUvm3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L+E0N0xt; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-539c10ea8adso3351e87.1
+        for <stable@vger.kernel.org>; Fri, 11 Oct 2024 11:47:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1728672422; x=1729277222; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eX3HkjI6Zaa2TFFdkwiH3pZsKN0shfauRmPc72yF3JA=;
+        b=L+E0N0xtoapVHAUeWYQsn5LMT0XxnC8kauYe09QWJR/1ORce2Us1Jp/e8Jd+stslL7
+         eOsPmxzSqNrcDgTOf2kqBepuj3znHZnRn+Cl9h7cbHbXobm2yS7mE/hAv4yJyE0gK5pd
+         yW6A1jJb/W4f1C7z1gaBLVfbCiCAbj1KUA8TeXaxUQaiN7GR53maUEwnIhZf9l5NcBuL
+         Mw8JsWjrzFwwXAErKtDuMD8sYU4Lsy0QvJC1MR0TLx+kpZY4feBz6NGGO2H0kS9AiW/H
+         7QQ41jkYKak/Vmps30OzwAecmEkRtyLxzniv+VekTpOfOwyX8Crd/w0x33d9l70160im
+         p8/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728672422; x=1729277222;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eX3HkjI6Zaa2TFFdkwiH3pZsKN0shfauRmPc72yF3JA=;
+        b=PWOwmVUv9eBSKyB5VZhzEdNhywgVq8V2nsfT0T7ngwut0Q5Ngo70zV1RxThRwiPZj3
+         l9+k+BnN/2PKCGIMDrxDzVTp2OyUmzFJRI+Q7yY8H0R7J6xpLD3V8riSaov15SsgzW9i
+         97PWpvvdCwNOZ6fq+QKSlGBcT+eEtXwS/CePpjeUmIqW47TMqQv/zcYq0a3kxk/CeVWl
+         dbHU4lyFSnO5Z7xG19Pa3YaAFrtAfq27fuKp6TyS12gpLhik0bM1zNczAP1RiXATiSrb
+         rxyot0xAjvUeQAHm6QLAXw7yERVzJvFKB4CPu6ieirzY1AF6qY0SqED5z2PHiA0UIgX+
+         VwOg==
+X-Forwarded-Encrypted: i=1; AJvYcCVnEx7N8Hx3cqABwzP4HVEh/yKaTcgJQ8ZngbubuU1Di+2b0NyT+GoiW7NClQnJE+N7HV2aYsc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFiqGBHq8zUUi1S//6xkreXZVeUL5fX7/tPISkjZOoUFIMjn45
+	anzPNQwasE9h0N53hVeb50lm6tvCha6z6jsXOJH+zCypx96y3xdlWRRYnVINnI6j6S52ZAm3PzS
+	DHa3mRWVYk05Kjd5TJloezeK3lbvezVaFvMd3
+X-Google-Smtp-Source: AGHT+IEpsGIBekk+TDxVRpGTKk+rvvy2DrAz7Z6lJU9X6FNw2REhZ2lq2Ony9IlWMCI/Pg8y632cDd0FBh1e/rpHWXo=
+X-Received: by 2002:a05:6512:acf:b0:52e:8475:7c23 with SMTP id
+ 2adb3069b0e04-539e60a65ebmr35995e87.7.1728672421904; Fri, 11 Oct 2024
+ 11:47:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-11_15,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0
- mlxlogscore=999 mlxscore=0 suspectscore=0 adultscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2409260000 definitions=main-2410110124
-X-Proofpoint-ORIG-GUID: 0Y2H9Qx-AfOVMo7DmiNdzEaBPbCekNU3
-X-Proofpoint-GUID: 0Y2H9Qx-AfOVMo7DmiNdzEaBPbCekNU3
+References: <20241011-stack-gap-inaccessible-v2-1-111b6a0ee2cb@google.com> <dantzkqu2pyeypcbljes6omc2wuyqjguhgd4lcrk2tijfyyd2g@fx46a4mynnsh>
+In-Reply-To: <dantzkqu2pyeypcbljes6omc2wuyqjguhgd4lcrk2tijfyyd2g@fx46a4mynnsh>
+From: Jann Horn <jannh@google.com>
+Date: Fri, 11 Oct 2024 20:46:24 +0200
+Message-ID: <CAG48ez2ZrTqEwnV18isAeYLT-FE1r2io+eXcqNp=ck1n0E08zg@mail.gmail.com>
+Subject: Re: [PATCH RFC v2] mm: Enforce the stack gap when changing
+ inaccessible VMAs
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Hugh Dickins <hughd@google.com>, Oleg Nesterov <oleg@redhat.com>, 
+	Michal Hocko <mhocko@kernel.org>, Helge Deller <deller@gmx.de>, Ben Hutchings <ben@decadent.org.uk>, 
+	Willy Tarreau <w@1wt.eu>, Rik van Riel <riel@surriel.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Hans de Goede <hdegoede@redhat.com>
+On Fri, Oct 11, 2024 at 7:55=E2=80=AFPM Liam R. Howlett <Liam.Howlett@oracl=
+e.com> wrote:
+> * Jann Horn <jannh@google.com> [241011 11:51]:
+> > As explained in the comment block this change adds, we can't tell what
+> > userspace's intent is when the stack grows towards an inaccessible VMA.
+> >
+> > We should ensure that, as long as code is compiled with something like
+> > -fstack-check, a stack overflow in this code can never cause the main s=
+tack
+> > to overflow into adjacent heap memory - so the bottom of a stack should
+> > never be directly adjacent to an accessible VMA.
+[...]
+> > diff --git a/mm/mmap.c b/mm/mmap.c
+> > index dd4b35a25aeb..937361be3c48 100644
+> > --- a/mm/mmap.c
+> > +++ b/mm/mmap.c
+> > @@ -359,6 +359,20 @@ unsigned long do_mmap(struct file *file, unsigned =
+long addr,
+> >                       return -EEXIST;
+> >       }
+> >
+> > +     /*
+> > +      * This does two things:
+> > +      *
+> > +      * 1. Disallow MAP_FIXED replacing a PROT_NONE VMA adjacent to a =
+stack
+> > +      * with an accessible VMA.
+> > +      * 2. Disallow MAP_FIXED_NOREPLACE creating a new accessible VMA
+> > +      * adjacent to a stack.
+> > +      */
+> > +     if ((flags & (MAP_FIXED_NOREPLACE | MAP_FIXED)) &&
+> > +         (prot & (PROT_READ | PROT_WRITE | PROT_EXEC)) &&
+> > +         !(vm_flags & (VM_GROWSUP|VM_GROWSDOWN)) &&
+> > +         overlaps_stack_gap(mm, addr, len))
+> > +             return (flags & MAP_FIXED) ? -ENOMEM : -EEXIST;
+> > +
+>
+> This is probably going to impact performance for allocators by causing
+> two walks of the tree any time they protect a portion of mmaped area.
 
-commit f52e98d16e9bd7dd2b3aef8e38db5cbc9899d6a4 upstream.
+Well, it's one extra walk except on parisc, thanks to the "if
+(!IS_ENABLED(CONFIG_STACK_GROWSUP))" bailout - but point taken, it
+would be better to avoid that.
 
-The panasonic laptop code in various places uses the SINF array with index
-values of 0 - SINF_CUR_BRIGHT(0x0d) without checking that the SINF array
-is big enough.
+> In the mmap_region() code, there is a place we know next/prev on
+> MAP_FIXED, and next for MAP_FIXED_NOREPLACE - which has a vma iterator
+> that would be lower cost than a tree walk.  That area may be a better
+> place to check these requirements.  Unfortunately, it may cause a vma
+> split in the vms_gather_munmap_vmas() call prior to this check, but
+> considering the rarity it may not be that big of a deal?
 
-Not all panasonic laptops have this many SINF array entries, for example
-the Toughbook CF-18 model only has 10 SINF array entries. So it only
-supports the AC+DC brightness entries and mute.
+Hmm, yeah, that sounds fine to me.
 
-Check that the SINF array has a minimum size which covers all AC+DC
-brightness entries and refuse to load if the SINF array is smaller.
+[...]
+> > diff --git a/mm/mprotect.c b/mm/mprotect.c
+> > index 0c5d6d06107d..2300e2eff956 100644
+> > --- a/mm/mprotect.c
+> > +++ b/mm/mprotect.c
+> > @@ -772,6 +772,12 @@ static int do_mprotect_pkey(unsigned long start, s=
+ize_t len,
+> >               }
+> >       }
+> >
+> > +     error =3D -ENOMEM;
+> > +     if ((prot & (PROT_READ | PROT_WRITE | PROT_EXEC)) &&
+> > +         !(vma->vm_flags & (VM_GROWSUP|VM_GROWSDOWN)) &&
+> > +         overlaps_stack_gap(current->mm, start, end - start))
+> > +             goto out;
+> > +
+>
+> We have prev just below your call here, so we could reuse that.  Getting
+> the vma after the mprotect range doesn't seem that easy.  I guess we
+> need to make the loop even more complicated and find the next vma (and
+> remember the fixup can merge).  This isn't as straight forward as what
+> you have, but would be faster.
 
-For higher SINF indexes hide the sysfs attributes when the SINF array
-does not contain an entry for that attribute, avoiding show()/store()
-accessing the array out of bounds and add bounds checking to the probe()
-and resume() code accessing these.
+For mprotect, maybe one option would be to do it inside the loop?
+Something like this:
 
-Fixes: e424fb8cc4e6 ("panasonic-laptop: avoid overflow in acpi_pcc_hotkey_add()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240909113227.254470-1-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Sherry: clean cherry-pick backport, fix CVE-2024-46859]
-Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
----
- drivers/platform/x86/panasonic-laptop.c | 49 ++++++++++++++++++++-----
- 1 file changed, 39 insertions(+), 10 deletions(-)
+```
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index d0e3ebfadef8..2873cc254eaf 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -790,6 +790,24 @@ static int do_mprotect_pkey(unsigned long start,
+size_t len,
+                        break;
+                }
 
-diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
-index 7ca49b3fc6c2..b06382dcecf7 100644
---- a/drivers/platform/x86/panasonic-laptop.c
-+++ b/drivers/platform/x86/panasonic-laptop.c
-@@ -773,6 +773,24 @@ static DEVICE_ATTR_RW(dc_brightness);
- static DEVICE_ATTR_RW(current_brightness);
- static DEVICE_ATTR_RW(cdpower);
- 
-+static umode_t pcc_sysfs_is_visible(struct kobject *kobj, struct attribute *attr, int idx)
-+{
-+	struct device *dev = kobj_to_dev(kobj);
-+	struct acpi_device *acpi = to_acpi_device(dev);
-+	struct pcc_acpi *pcc = acpi_driver_data(acpi);
++               if (IS_ENABLED(CONFIG_STACK_GROWSUP) && vma->vm_start
+=3D=3D start) {
++                       /* just do an extra lookup here, we do this
+only on parisc */
++                       if (overlaps_stack_gap_growsup([...])) {
++                               error =3D -ENOMEM;
++                               break;
++                       }
++               }
++               if (vma->vm_end =3D=3D end) {
++                       /* peek ahead */
++                       struct vma_iterator vmi_peek =3D vmi;
++                       struct vm_area_struct *next =3D vma_next(&vmi_peek)=
+;
 +
-+	if (attr == &dev_attr_mute.attr)
-+		return (pcc->num_sifr > SINF_MUTE) ? attr->mode : 0;
++                       if (next && overlaps_stack_gap_growsdown([...], nex=
+t)) {
++                               error =3D -ENOMEM;
++                               break;
++                       }
++               }
 +
-+	if (attr == &dev_attr_eco_mode.attr)
-+		return (pcc->num_sifr > SINF_ECO_MODE) ? attr->mode : 0;
-+
-+	if (attr == &dev_attr_current_brightness.attr)
-+		return (pcc->num_sifr > SINF_CUR_BRIGHT) ? attr->mode : 0;
-+
-+	return attr->mode;
-+}
-+
- static struct attribute *pcc_sysfs_entries[] = {
- 	&dev_attr_numbatt.attr,
- 	&dev_attr_lcdtype.attr,
-@@ -787,8 +805,9 @@ static struct attribute *pcc_sysfs_entries[] = {
- };
- 
- static const struct attribute_group pcc_attr_group = {
--	.name	= NULL,		/* put in device directory */
--	.attrs	= pcc_sysfs_entries,
-+	.name		= NULL,		/* put in device directory */
-+	.attrs		= pcc_sysfs_entries,
-+	.is_visible	= pcc_sysfs_is_visible,
- };
- 
- 
-@@ -941,12 +960,15 @@ static int acpi_pcc_hotkey_resume(struct device *dev)
- 	if (!pcc)
- 		return -EINVAL;
- 
--	acpi_pcc_write_sset(pcc, SINF_MUTE, pcc->mute);
--	acpi_pcc_write_sset(pcc, SINF_ECO_MODE, pcc->eco_mode);
-+	if (pcc->num_sifr > SINF_MUTE)
-+		acpi_pcc_write_sset(pcc, SINF_MUTE, pcc->mute);
-+	if (pcc->num_sifr > SINF_ECO_MODE)
-+		acpi_pcc_write_sset(pcc, SINF_ECO_MODE, pcc->eco_mode);
- 	acpi_pcc_write_sset(pcc, SINF_STICKY_KEY, pcc->sticky_key);
- 	acpi_pcc_write_sset(pcc, SINF_AC_CUR_BRIGHT, pcc->ac_brightness);
- 	acpi_pcc_write_sset(pcc, SINF_DC_CUR_BRIGHT, pcc->dc_brightness);
--	acpi_pcc_write_sset(pcc, SINF_CUR_BRIGHT, pcc->current_brightness);
-+	if (pcc->num_sifr > SINF_CUR_BRIGHT)
-+		acpi_pcc_write_sset(pcc, SINF_CUR_BRIGHT, pcc->current_brightness);
- 
- 	return 0;
- }
-@@ -963,8 +985,12 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
- 
- 	num_sifr = acpi_pcc_get_sqty(device);
- 
--	if (num_sifr < 0 || num_sifr > 255) {
--		pr_err("num_sifr out of range");
-+	/*
-+	 * pcc->sinf is expected to at least have the AC+DC brightness entries.
-+	 * Accesses to higher SINF entries are checked against num_sifr.
-+	 */
-+	if (num_sifr <= SINF_DC_CUR_BRIGHT || num_sifr > 255) {
-+		pr_err("num_sifr %d out of range %d - 255\n", num_sifr, SINF_DC_CUR_BRIGHT + 1);
- 		return -ENODEV;
- 	}
- 
-@@ -1016,11 +1042,14 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
- 	acpi_pcc_write_sset(pcc, SINF_STICKY_KEY, 0);
- 	pcc->sticky_key = 0;
- 
--	pcc->eco_mode = pcc->sinf[SINF_ECO_MODE];
--	pcc->mute = pcc->sinf[SINF_MUTE];
- 	pcc->ac_brightness = pcc->sinf[SINF_AC_CUR_BRIGHT];
- 	pcc->dc_brightness = pcc->sinf[SINF_DC_CUR_BRIGHT];
--	pcc->current_brightness = pcc->sinf[SINF_CUR_BRIGHT];
-+	if (pcc->num_sifr > SINF_MUTE)
-+		pcc->mute = pcc->sinf[SINF_MUTE];
-+	if (pcc->num_sifr > SINF_ECO_MODE)
-+		pcc->eco_mode = pcc->sinf[SINF_ECO_MODE];
-+	if (pcc->num_sifr > SINF_CUR_BRIGHT)
-+		pcc->current_brightness = pcc->sinf[SINF_CUR_BRIGHT];
- 
- 	/* add sysfs attributes */
- 	result = sysfs_create_group(&device->dev.kobj, &pcc_attr_group);
--- 
-2.46.0
+                /* Does the application expect PROT_READ to imply PROT_EXEC=
+ */
+                if (rier && (vma->vm_flags & VM_MAYEXEC))
+                        prot |=3D PROT_EXEC;
+```
 
+Assuming that well-behaved userspace only calls mprotect() ranges that
+are fully covered by VMAs, that should be good enough?
+
+(I don't know how you feel about the idea of peeking ahead from a VMA
+iterator by copying the iterator, I imagine you might have a better
+way to do that...)
+
+> >       prev =3D vma_prev(&vmi);
+> >       if (start > vma->vm_start)
+> >               prev =3D vma;
 
