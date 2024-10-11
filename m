@@ -1,107 +1,147 @@
-Return-Path: <stable+bounces-83425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C388B999D37
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 08:54:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F622999FAD
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 11:03:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B9FE1F251A6
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 06:54:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62B931C23901
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 09:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A915209F3C;
-	Fri, 11 Oct 2024 06:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19D420C469;
+	Fri, 11 Oct 2024 09:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BnxQB/Jq"
+	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="slSlc4ZM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [149.28.215.223])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1B4209F2F;
-	Fri, 11 Oct 2024 06:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AB320C463
+	for <stable@vger.kernel.org>; Fri, 11 Oct 2024 09:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=149.28.215.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728629655; cv=none; b=EZztrpYRdiTdrMVoQPf+6442xlX4PNfez115hNgvAQJwN0VlHEpU++R9it2SphHmDho+fW+AOKAbM5xBP4eJNtrBo0WEZ4E1hH6w6pvMooyIezaGiykSvOvNsxzzU4Owod0NQqL+1dQBKIgsr+jVWF3kU6WOKv+w0Hw1zGFqWNY=
+	t=1728637371; cv=none; b=LMIhsq4c9A4KQIoATRtS8CfP7PQ1uRJRJYhn9hlso7/XP4YxKb9loUdSHMLuTTYyETN0ufYM0aX4RAAaqfFwbTmkPJEqnpZjYmlt0e8+G3waH11n+Sv6RzjxlRBNa/fZkUKTMs37sIS8/p704aWwJI5oM3xIcoQC9MJEHP8ABtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728629655; c=relaxed/simple;
-	bh=tP6XRrVFUY3D3iHVhKDKvI6f9k1MYiokv4nWapYBHBY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gXjYpZ8qQog6uhrQ6Lh/lmtxN/PEQrchKkLx1L02tIz0VFl1KCQiTJXJC+jD/CZDNI2aTjuOz14iINv2t1+BC6nVWKRVuzDbSx+Mj1NDq7iDjii5OXH8YGysCAs0qJAV5em/YJ6xZrRp9EbvksaDGMNLDKKCbjrx85iPlgv1QpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BnxQB/Jq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D107C4CEC3;
-	Fri, 11 Oct 2024 06:54:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728629655;
-	bh=tP6XRrVFUY3D3iHVhKDKvI6f9k1MYiokv4nWapYBHBY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BnxQB/JqPwjkEDlC0h+FoFEOXay8hzJYe0gOq50Ge30FOSMul+DXeXERgvgSPBcec
-	 yH5tF64RFS+p+SQ8c05JGGHIsxNS7lf8WPWwYeq2kmPBPNTxZtGYSL5AKUTzL+X9NT
-	 a5LjrxEoGEMW1zV10z9i2jyACw/zlfVOiASFNM8fRP+GY/ami4pZ+Yz4f3Ic3es6uy
-	 FLz1GHYmwkMRfELHOU9fsbSOjoibV8pY6E9C061xC2XAF7cQLt7XN4GXUzNHPRGpeB
-	 GvyGahUmm08EKsU4P8AQ+p2nXlDWbwvwIbEf1U/6y4GTyUvu84TQD26OFhjz3znToa
-	 LQaAhtEWaF6jA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1sz9XY-000000002mG-44DH;
-	Fri, 11 Oct 2024 08:54:21 +0200
-Date: Fri, 11 Oct 2024 08:54:20 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Doug Anderson <dianders@chromium.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, stable@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v3 3/9] serial: qcom-geni: fix shutdown race
-Message-ID: <ZwjLnIvKZny2joZ1@hovoldconsulting.com>
-References: <20241009145110.16847-1-johan+linaro@kernel.org>
- <20241009145110.16847-4-johan+linaro@kernel.org>
- <CAD=FV=WdxCbQm36sq4RtPMGyi+ZefPYoOQortAN+SDYTAY_m9g@mail.gmail.com>
+	s=arc-20240116; t=1728637371; c=relaxed/simple;
+	bh=19z3d0aqkHvJwN+Hk7S9ZrvGY/Nf3msL/Lxq7i9eJyA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mD9o95HGhwea54KgtJOEFDcPCevKo/W8JrAfGIgBAHwCr7uyKeSw3nAILgTBcTGFj4tLM/Q/n5qBVNQE6wos03rPqeFpM4vMlBTU0wHQo+l08rX9CucWZvZ3TMzX1TAtxklKGZ7lcuNtHK7PmsfedBGOE6jw8eCWI86dsohQc6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=slSlc4ZM; arc=none smtp.client-ip=149.28.215.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kwiboo.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kwiboo.se;
+ h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
+ Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
+ s=fe-e1b5cab7be; t=1728637367;
+ bh=PR7Qyd/O87/6PBrhIOrZqQvu9qgOrZhgZxSmRsZHQyM=;
+ b=slSlc4ZMiqYtv6xtlf/LBI9QAFKlTKcLt4DfUrLKmERh+r+8WanJ04EN8W440RwtgXeN3++di
+ aI9Id8C0Cl4tuOfR9MdTRs9naNavtHHmfURqpOtIS6JdmqLln6HcjFsKSQmJ2pEcgZavXSPQg4+
+ +C75E8jZDHlecGNu4Up9EjuNl1UBr/ffcoJABJtCxUXO3c7Ig3h0YgdRKDPgONfaeXwqjOvUoY/
+ /DDh2Cn/QfBjq7oqfsK5hmlztSQrnMQ6zCa9JTqoI79uyWIduqPyftsD7rn/btHiqGmU0KFWxcg
+ RsplSa+h833d046ZVcNmq7OZTy245qifAT5i8W+Bagfg==
+Message-ID: <86ff39fe-cc88-4cf4-a1ad-6398a74ceb11@kwiboo.se>
+Date: Fri, 11 Oct 2024 10:52:19 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=WdxCbQm36sq4RtPMGyi+ZefPYoOQortAN+SDYTAY_m9g@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: rockchip: Prevent thermal runaways in RK3308
+ SoC dtsi
+To: Dragan Simic <dsimic@manjaro.org>, heiko@sntech.de
+Cc: linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, stable@vger.kernel.org
+References: <d3e9dc4201d38894b09f3198368428153a3af1a4.1728555461.git.dsimic@manjaro.org>
+Content-Language: en-US
+From: Jonas Karlman <jonas@kwiboo.se>
+In-Reply-To: <d3e9dc4201d38894b09f3198368428153a3af1a4.1728555461.git.dsimic@manjaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Report-Abuse-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-ForwardEmail-Version: 0.4.40
+X-ForwardEmail-Sender: rfc822; jonas@kwiboo.se, smtp.forwardemail.net,
+ 149.28.215.223
+X-ForwardEmail-ID: 6708e747ea3bbe7728966137
 
-On Thu, Oct 10, 2024 at 03:36:30PM -0700, Doug Anderson wrote:
-> On Wed, Oct 9, 2024 at 7:51 AM Johan Hovold <johan+linaro@kernel.org> wrote:
-> >
-> > A commit adding back the stopping of tx on port shutdown failed to add
-> > back the locking which had also been removed by commit e83766334f96
-> > ("tty: serial: qcom_geni_serial: No need to stop tx/rx on UART
-> > shutdown").
-> >
-> > Holding the port lock is needed to serialise against the console code,
-> > which may update the interrupt enable register and access the port
-> > state.
-> >
-> > Fixes: d8aca2f96813 ("tty: serial: qcom-geni-serial: stop operations in progress at shutdown")
-> > Fixes: 947cc4ecc06c ("serial: qcom-geni: fix soft lockup on sw flow control and suspend")
-> > Cc: stable@vger.kernel.org      # 6.3
-> > Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> > ---
-> >  drivers/tty/serial/qcom_geni_serial.c | 2 ++
-> >  1 file changed, 2 insertions(+)
+Hi Dragan,
+
+On 2024-10-10 12:19, Dragan Simic wrote:
+> Until the TSADC, thermal zones, thermal trips and cooling maps are defined
+> in the RK3308 SoC dtsi, none of the CPU OPPs except the slowest one may be
+> enabled under any circumstances.  Allowing the DVFS to scale the CPU cores
+> up without even just the critical CPU thermal trip in place can rather easily
+> result in thermal runaways and damaged SoCs, which is bad.
 > 
-> Though this doesn't fix the preexisting bug I talked about [1] that
-> we'll need to touch the same code to fix:
+> Thus, leave only the lowest available CPU OPP enabled for now.
+
+This feel like a very aggressive limitation, to only allow the
+opp-suspend rate, that is not even used under normal load.
+
+I let my Rock Pi S board with a RK3308B variant run "stress -c 8" for
+around 10 hours and the reported temp only reach around 50-55 deg c,
+ambient temp around 20 deg c and board laying flat on a table without
+any enclosure or heat sink.
+
+This was running with performance as scaling_governor and cpu running
+the 1008000 opp.
+
+Most RK3308 variants datasheets list 1.3 GHz as max rate for CPU,
+the K-variant lists 1.2 GHz, and the -S-variants seem to have both
+reduced voltage and max rate.
+
+The OPPs for this SoC already limits max rate to 1 GHz and is more than
+likely good enough to not reach the max temperature of 115-125 deg c as
+rated in datasheets and vendor DTs.
+
+Adding the tsadc and trips (same/similar as px30) will probably allow us
+to add/use the "missing" 1.2 and 1.3 GHz OPPs.
+
+Regards,
+Jonas
+
 > 
-> Reviewed-by: Douglas Anderson <dianders@chromium.org>
+> Fixes: 6913c45239fd ("arm64: dts: rockchip: Add core dts for RK3308 SOC")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+> ---
+>  arch/arm64/boot/dts/rockchip/rk3308.dtsi | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3308.dtsi b/arch/arm64/boot/dts/rockchip/rk3308.dtsi
+> index 31c25de2d689..a7698e1f6b9e 100644
+> --- a/arch/arm64/boot/dts/rockchip/rk3308.dtsi
+> +++ b/arch/arm64/boot/dts/rockchip/rk3308.dtsi
+> @@ -120,16 +120,19 @@ opp-600000000 {
+>  			opp-hz = /bits/ 64 <600000000>;
+>  			opp-microvolt = <950000 950000 1340000>;
+>  			clock-latency-ns = <40000>;
+> +			status = "disabled";
+>  		};
+>  		opp-816000000 {
+>  			opp-hz = /bits/ 64 <816000000>;
+>  			opp-microvolt = <1025000 1025000 1340000>;
+>  			clock-latency-ns = <40000>;
+> +			status = "disabled";
+>  		};
+>  		opp-1008000000 {
+>  			opp-hz = /bits/ 64 <1008000000>;
+>  			opp-microvolt = <1125000 1125000 1340000>;
+>  			clock-latency-ns = <40000>;
+> +			status = "disabled";
+>  		};
+>  	};
+>  
+> 
+> _______________________________________________
+> Linux-rockchip mailing list
+> Linux-rockchip@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-rockchip
 
-Yeah, let's address that separately. Thanks for reviewing!
-
-Johan
-
-> [1] https://lore.kernel.org/r/CAD=FV=UZtZ1-0SkN2sOMp6YdU02em_RnK85Heg5z0jkH4U30eQ@mail.gmail.com
 
