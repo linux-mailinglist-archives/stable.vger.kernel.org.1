@@ -1,150 +1,191 @@
-Return-Path: <stable+bounces-83432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3822999A0A6
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 12:02:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1D999A0D8
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 12:09:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94F66B25115
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 10:02:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B951285033
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 10:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13EBB20FAA4;
-	Fri, 11 Oct 2024 10:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94938210182;
+	Fri, 11 Oct 2024 10:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="b8ytZvPD"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="S7pgaULO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2985920C47B
-	for <stable@vger.kernel.org>; Fri, 11 Oct 2024 10:01:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673C721018F;
+	Fri, 11 Oct 2024 10:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728640916; cv=none; b=cPGvDUUBmPV9m8KuUxr+kO/9SDCTBGmlBCp0XmvND1ttpDnSv9j8ZWQlOl2F2Re5jiuWdXtXHp2frwbiMLMsbBirXIW4/7f1VXf3b5GI0NeakREjB7vaKxZ3/rv/bkzBKudw6oI2Lfa9c53Ss1ZQpfpwiZJz8koCNeEkcC4Ns8k=
+	t=1728641388; cv=none; b=obwVzfbBSFJC/YNuK0YOHcIvj4/jyUN8X0ga7G9YXf5+JimDao+jtiHf6RCOMInVFlx0q5RpZ/exx8m+uLK6zzkuwUjmgdh8sIMtUAW8ZT1gQKOLrXDiuz4LPtkgViVR/nuSnH8/CooUnloh3gETtU5eVnrZ/fju56dIg08SJdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728640916; c=relaxed/simple;
-	bh=jsyNTz8SHA7nxe3/5MPyH26re/WNrInxe546jVpWsmA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C5tqxKhHNUPBkoDpDLRzeM9/HDhsIiHh5sNW/RsOeT121OmtT+po0e7OPvEVUf8Fl3XRnKwtPmTdxrK8Mvm8ZSxAbgwrZotxz6UlKNoFh4jBHNDRTuoMpT52wZ2kHWtDeVeZpm02eSdGQNg4DTvFehJpvfVzDVLGocvMPA+FMhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=b8ytZvPD; arc=none smtp.client-ip=209.85.128.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-4305413aec9so16822595e9.2
-        for <stable@vger.kernel.org>; Fri, 11 Oct 2024 03:01:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728640913; x=1729245713; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WYmgZL38NDm39MG1prjLNzZFwsGRIsr31TKe+HTiJcM=;
-        b=b8ytZvPDQHWDncTsKgs6aPE+yT+wIPGzwASn/ZlkG7zQeOjnCNFJRYEGkhikeAOoPq
-         nEh7PGArkitFT2//+ThUjSyGqGoLwOTzYex8Mf4r0ASMW3mMo7PAOAMRWbkdPvC3A5dA
-         zbFMIUITq+gqrqXWRj6aQTDu1ExHhMzg0sKXTn8n+wrsDl795v6w8deUJ0LOI5yeXQrf
-         RrncudmAQKtwsbzazYKw3D6r2/DGGHzzKA7ongptobJY83oa21yIIKoLZiWWsmkLvgbo
-         2gImM6v98gcsa0nC8HY5VT3ZE7ECAnCzZSiqA0qQUZPEpLms4M7XGd4gwRAJz0HKc0LP
-         C2SQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728640913; x=1729245713;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WYmgZL38NDm39MG1prjLNzZFwsGRIsr31TKe+HTiJcM=;
-        b=lJqxzkccRfGQWalYafSzYcpXPxN2jSsXyhU+1JaPyKjv7ArCiUpBbob+kOBvpfB0Oy
-         DiUkgirAneoL3HVGSN7mW4WxpGBx3UNsomRQxwnWyqGkoGwdZP8A2BrkdqEz8OsEFBuO
-         fmDboyHxrzsRxkRz4dz0x45kMEwrQv3CWN+efxrlKdFqciq4aXo4t/8NM0ViWoB3s+n1
-         M7fHvRanGyPfS00xXOq20ftFQz1IYdT/OQ/W7mQv5AP2c9Dw4Ry+N8kQ7y88+wG3xLVU
-         YA/42xL8Y6Iig/aTONCAuKzgEDzY5n3o1GCYeBfNk2bTGtBX0QEAFLnjczhmRZZNsdEb
-         sQsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV8yHaM4SJNs8SRfGgX9IKYZJwBfJ7yFcL/ncITlkpAAcvvXKZF4pb1e9oifA07W9APBRBiCdI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/37YBRLtaKpiOAqGAziLZgDXvi5bzA74a32KxjkuN5864IMwN
-	pin8wToQL7o6wmEObrrZt808RqahaYbJqAKNcEDY/argk5g8TZfsPewli7+adB8=
-X-Google-Smtp-Source: AGHT+IF0ytwGCNwotFa0kqIscorptwHA73zjxzrHv0mhxbNPlHAg7bWkMb2p5Q+EtDwDrN6aPzUudg==
-X-Received: by 2002:adf:f98a:0:b0:37c:ce58:5a1a with SMTP id ffacd0b85a97d-37d552d22efmr1416647f8f.54.1728640913296;
-        Fri, 11 Oct 2024 03:01:53 -0700 (PDT)
-Received: from linaro.org ([2a02:2454:ff21:ef80:63d1:4749:f717:d9e7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431182d790fsm37618915e9.6.2024.10.11.03.01.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2024 03:01:53 -0700 (PDT)
-Date: Fri, 11 Oct 2024 12:01:48 +0200
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
-To: Johan Hovold <johan+linaro@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Chris Lew <quic_clew@quicinc.com>, Abel Vesa <abel.vesa@linaro.org>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] soc: qcom: mark pd-mapper as broken
-Message-ID: <Zwj3jDhc9fRoCCn6@linaro.org>
-References: <20241010074246.15725-1-johan+linaro@kernel.org>
+	s=arc-20240116; t=1728641388; c=relaxed/simple;
+	bh=GgdE/KRxmxGku8Db7OjN9ZtzylbPhfQW3JleUzMzBc4=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=TmZpIvuZSSAne0bGg3jdZpUbs2rymKBOLZMalo3oulnQaf5y/6J6YpS1ivU4vRqk6PT6DC4qN6ICVS091u+6wBPEPxj8osr4h0sh6lRFTAiyjplCIL2Uc6QDxm4lk4JZVKwtKBgAu6R0I50Po8hHAWPWRnevRMO8IGb4pH3va/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=S7pgaULO; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241010074246.15725-1-johan+linaro@kernel.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1728641382;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SWU2UpgBCfCJMwy9JjQ8I9dxjTB9H0Tqnkcy1NXZygY=;
+	b=S7pgaULOwew5O7Z1ueadeyzswZQWrLWWkRRDEkhEwTIQHeMprTJlKAGBFoCfkfcX6u9lIj
+	C3zTQhoMe8J3FdXUD0JNHUR26HT6sz4NFsaugTLY5tgvmL8q54BFN2eAwbicfs5foExbum
+	m++VmXszaid2ZWBeFnWjJGrC0Ugw1a75gOLfgtUTLSKOr8cSX8O4f7gpdlJxqB8CWS6p7o
+	2qePQKKYAMgRydSr/MUODMBDM8FTdPIh0RsZIFZwbPZKLAK7AFXyD6rLEfgzSPmykFBZft
+	+/tXVT+5zHfesAnF84LdLiBhr+5k9DoE1AD/0eWgoWoX6R4oyzQUX3/S58oNYQ==
+Date: Fri, 11 Oct 2024 12:09:41 +0200
+From: Dragan Simic <dsimic@manjaro.org>
+To: =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>
+Cc: Jonas Karlman <jonas@kwiboo.se>, linux-rockchip@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: rockchip: Prevent thermal runaways in RK3308
+ SoC dtsi
+In-Reply-To: <1831993.TLkxdtWsSY@diego>
+References: <d3e9dc4201d38894b09f3198368428153a3af1a4.1728555461.git.dsimic@manjaro.org>
+ <86ff39fe-cc88-4cf4-a1ad-6398a74ceb11@kwiboo.se>
+ <01e42e08965e58a337b9b531c10446fd@manjaro.org> <1831993.TLkxdtWsSY@diego>
+Message-ID: <7a189327fc87e594f4c7b8e5d745ebeb@manjaro.org>
+X-Sender: dsimic@manjaro.org
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-On Thu, Oct 10, 2024 at 09:42:46AM +0200, Johan Hovold wrote:
-> When using the in-kernel pd-mapper on x1e80100, client drivers often
-> fail to communicate with the firmware during boot, which specifically
-> breaks battery and USB-C altmode notifications. This has been observed
-> to happen on almost every second boot (41%) but likely depends on probe
-> order:
-> 
->     pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to send altmode request: 0x10 (-125)
->     pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to request altmode notifications: -125
-> 
->     ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: failed to send UCSI read request: -125
-> 
->     qcom_battmgr.pmic_glink_power_supply pmic_glink.power-supply.0: failed to request power notifications
-> 
-> In the same setup audio also fails to probe albeit much more rarely:
-> 
->     PDR: avs/audio get domain list txn wait failed: -110
->     PDR: service lookup for avs/audio failed: -110
-> 
-> Chris Lew has provided an analysis and is working on a fix for the
-> ECANCELED (125) errors, but it is not yet clear whether this will also
-> address the audio regression.
-> 
-> Even if this was first observed on x1e80100 there is currently no reason
-> to believe that these issues are specific to that platform.
-> 
-> Disable the in-kernel pd-mapper for now, and make sure to backport this
-> to stable to prevent users and distros from migrating away from the
-> user-space service.
-> 
-> Fixes: 1ebcde047c54 ("soc: qcom: add pd-mapper implementation")
-> Cc: stable@vger.kernel.org	# 6.11
-> Link: https://lore.kernel.org/lkml/Zqet8iInnDhnxkT9@hovoldconsulting.com/
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
-> 
-> It's now been over two months since I reported this regression, and even
-> if we seem to be making some progress on at least some of these issues I
-> think we need disable the pd-mapper temporarily until the fixes are in
-> place (e.g. to prevent distros from dropping the user-space service).
-> 
+Hello Heiko,
 
-This is just a random thought, but I wonder if we could insert a delay
-somewhere as temporary workaround to make the in-kernel pd-mapper more
-reliable. I just tried replicating the userspace pd-mapper timing on
-X1E80100 CRD by:
+On 2024-10-11 11:56, Heiko Stübner wrote:
+> Am Freitag, 11. Oktober 2024, 11:04:38 CEST schrieb Dragan Simic:
+>> On 2024-10-11 10:52, Jonas Karlman wrote:
+>> > On 2024-10-10 12:19, Dragan Simic wrote:
+>> >> Until the TSADC, thermal zones, thermal trips and cooling maps are
+>> >> defined
+>> >> in the RK3308 SoC dtsi, none of the CPU OPPs except the slowest one
+>> >> may be
+>> >> enabled under any circumstances.  Allowing the DVFS to scale the CPU
+>> >> cores
+>> >> up without even just the critical CPU thermal trip in place can rather
+>> >> easily
+>> >> result in thermal runaways and damaged SoCs, which is bad.
+>> >>
+>> >> Thus, leave only the lowest available CPU OPP enabled for now.
+>> >
+>> > This feel like a very aggressive limitation, to only allow the
+>> > opp-suspend rate, that is not even used under normal load.
+>> >
+>> > I let my Rock Pi S board with a RK3308B variant run "stress -c 8" for
+>> > around 10 hours and the reported temp only reach around 50-55 deg c,
+>> > ambient temp around 20 deg c and board laying flat on a table without
+>> > any enclosure or heat sink.
+>> >
+>> > This was running with performance as scaling_governor and cpu running
+>> > the 1008000 opp.
+>> 
+>> Thanks for testing all that!  That's very low CPU temperature under
+>> stress testing indeed.  Maybe the cooling gets worse and the CPU
+>> temperature goes higher if the board is installed into some small
+>> enclosure with no natural or forced airflow?
+>> 
+>> > Most RK3308 variants datasheets list 1.3 GHz as max rate for CPU,
+>> > the K-variant lists 1.2 GHz, and the -S-variants seem to have both
+>> > reduced voltage and max rate.
+>> >
+>> > The OPPs for this SoC already limits max rate to 1 GHz and is more than
+>> > likely good enough to not reach the max temperature of 115-125 deg c as
+>> > rated in datasheets and vendor DTs.
+>> >
+>> > Adding the tsadc and trips (same/similar as px30) will probably allow
+>> > us
+>> > to add/use the "missing" 1.2 and 1.3 GHz OPPs.
+>> 
+>> With these insights, I agree that the patch might have been a bit
+>> too extreme, but it also promotes good practices when it comes to
+>> upstreaming.  The general rule is not to add CPU or GPU OPPs with
+>> no proper thermal configuration already in place.
+>> 
+>> The patch has already been merged, and as I already noted, [1] I'll
+>> try to implement, test and submit the proper thermal configuration
+>> ASAP.  It's up Heiko to decide whether to drop this patch or not.
+> 
+> Hmm, interesting question ;-) .
+> 
+> Dropping the patch is of course still possible and so far we haven't
+> actually seen anyone with real-world problems.
+> 
+> And with Jonas' stress test, it does look like nobody will in the
+> (hopefully short) time till we have thermal management.
+> 
+> @Dragan, if you're in favor of that I'll drop the patch.
 
- 1. Disabling auto-loading of qcom_pd_mapper
-    (modprobe.blacklist=qcom_pd_mapper)
- 2. Adding a systemd service that does nothing except running
-    "modprobe qcom_pd_mapper" at the same point in time where the 
-    userspace pd-mapper would usually be started.
+I hope I'll have the proper RK3308 thermal configuration available
+for the 6.14 merge window, also with higher OPPs in place.  Knowing
+that we've seemingly had no RK3308 SoCs releasing the magic smoke
+(yet? :), I think we can keep the status quo for a couple of months
+or so, so let's drop this patch.
 
-This seems to work quite well for me, I haven't seen any of the
-mentioned errors anymore in a couple of boot tests. Clearly, there is no
-actual bug in the in-kernel pd-mapper, only worse timing.
+Thanks again to Jonas for all the stress testing!
 
-Thanks,
-Stephan
+>> [1]
+>> https://lore.kernel.org/linux-rockchip/df92710498f66bcb4580cb2cd1573fb2@manjaro.org/
+>> 
+>> >> Fixes: 6913c45239fd ("arm64: dts: rockchip: Add core dts for RK3308
+>> >> SOC")
+>> >> Cc: stable@vger.kernel.org
+>> >> Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+>> >> ---
+>> >>  arch/arm64/boot/dts/rockchip/rk3308.dtsi | 3 +++
+>> >>  1 file changed, 3 insertions(+)
+>> >>
+>> >> diff --git a/arch/arm64/boot/dts/rockchip/rk3308.dtsi
+>> >> b/arch/arm64/boot/dts/rockchip/rk3308.dtsi
+>> >> index 31c25de2d689..a7698e1f6b9e 100644
+>> >> --- a/arch/arm64/boot/dts/rockchip/rk3308.dtsi
+>> >> +++ b/arch/arm64/boot/dts/rockchip/rk3308.dtsi
+>> >> @@ -120,16 +120,19 @@ opp-600000000 {
+>> >>  			opp-hz = /bits/ 64 <600000000>;
+>> >>  			opp-microvolt = <950000 950000 1340000>;
+>> >>  			clock-latency-ns = <40000>;
+>> >> +			status = "disabled";
+>> >>  		};
+>> >>  		opp-816000000 {
+>> >>  			opp-hz = /bits/ 64 <816000000>;
+>> >>  			opp-microvolt = <1025000 1025000 1340000>;
+>> >>  			clock-latency-ns = <40000>;
+>> >> +			status = "disabled";
+>> >>  		};
+>> >>  		opp-1008000000 {
+>> >>  			opp-hz = /bits/ 64 <1008000000>;
+>> >>  			opp-microvolt = <1125000 1125000 1340000>;
+>> >>  			clock-latency-ns = <40000>;
+>> >> +			status = "disabled";
+>> >>  		};
+>> >>  	};
+>> 
+> 
+> 
+> 
+> 
+> 
+> _______________________________________________
+> Linux-rockchip mailing list
+> Linux-rockchip@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-rockchip
 
