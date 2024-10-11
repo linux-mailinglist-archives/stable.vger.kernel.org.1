@@ -1,93 +1,123 @@
-Return-Path: <stable+bounces-83441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADF599A37B
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 14:12:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD42499A383
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 14:13:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F5531F21837
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 12:12:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C855281B9E
+	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 12:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B02D21500F;
-	Fri, 11 Oct 2024 12:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3CF9216A0B;
+	Fri, 11 Oct 2024 12:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QW0DGp7y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OGWltYYN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DD119923C
-	for <stable@vger.kernel.org>; Fri, 11 Oct 2024 12:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B63215F55
+	for <stable@vger.kernel.org>; Fri, 11 Oct 2024 12:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728648748; cv=none; b=hhiGddcBt2ufEwWHV3qYx5DeOhQBFgYxuOsWFf45OtgDRmqfZMEXiA/Hiq5E5MmmTqYGsOrh088Kc1YZGEvJbv7B8vpLZQZsIlWoWDRY08MX+DAbk8JaLCZ3aLKAqWpwrnKwkBl//QkyJR2ZuSkqjp6MWssjSZT6L4xuJ9QL8sQ=
+	t=1728648807; cv=none; b=S1ydYjWm0XGDvcltDtgdJBlswXmwEp/0MWowaqb21rm+5aztdevTR84Y6yh8en9BcjCL1JdJ5QR3GOYH//N/tGiVikx01Uv7BWel2KsO0T80qixl0OUGRmvhzmLmT/xOJVqqycYgyW+2W3ESVSUyVLyZxweyNkeIqJKvQDLQtVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728648748; c=relaxed/simple;
-	bh=pthbJVocnuF2tKe9LzoHKqYPYh55qaegrUEbEf7+O1w=;
+	s=arc-20240116; t=1728648807; c=relaxed/simple;
+	bh=HCLPY4ySjPKAZgNliDyP37Pk1kRu4x5jEZJh8SnVrUE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hvSUbW7X2JK7t4WoBxaSvCcUJhNtorzQYf7LaM13/1JEAnEVE9VlC5PstgYRCVIqmws9mmXxuNueksV+bzIEt7VB0+sFcapF+LBaqi6kw1sl29ulw78FsJ7Ta+0fgiuAs+8+qPovCYc5/N7LyNFUreAZv3KoVDXLUr4AQqIglsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QW0DGp7y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83463C4CEC3;
-	Fri, 11 Oct 2024 12:12:25 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=R8rhUiVWA0OgGMdsm9R903X8jE7aI3dhlKkCzp9RqrA5Wa2CbXPVoTRoCGVOhD/bqAJGbunXjv+AU9max6HgS0ue37aw6iiqz99e8atczul9NF3krQQG3UKzXtepuaMaX+9Bu0mGx6pB1I3vmQ9IG8fBGfVp3tlmFGukbclTGPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OGWltYYN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7CAC4CEC3;
+	Fri, 11 Oct 2024 12:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728648745;
-	bh=pthbJVocnuF2tKe9LzoHKqYPYh55qaegrUEbEf7+O1w=;
+	s=k20201202; t=1728648806;
+	bh=HCLPY4ySjPKAZgNliDyP37Pk1kRu4x5jEZJh8SnVrUE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QW0DGp7yrV5aFhQ2xLd/CAFTRg1AsrYfFkUEslZ46ppaoGUQawgNGdt+h+s+oeX6n
-	 uLXyoSc78GwauWKyCuhQMr8BDaAoZNwAi4eCdkgDLV5SLgG7hTW7NaehG3uxznDyQl
-	 oHVzWGsAZOscCRrPsyFLzz0YbzWCSt8C+JM30W5LtpDXkT418aunGu9TL/MsR3exDo
-	 KS6BRYM9HK3SxjKj25Zf90PQCbDmI5nYmAZzj21xKtRVQg4Z+GbsNToZxwNujeRzIC
-	 0qWA1byEctWk80WFcZEyid8oneKCi/dAFjEAohBX0PjKIqeiiWjwssHqJnirvTEKPB
-	 VCiKEvrk2EqXw==
-Date: Fri, 11 Oct 2024 08:12:23 -0400
+	b=OGWltYYNPxSobjiSp7dyWYBh22cjuf9KMKhMr4kYthpnfUnTEDBN/gwwRdHb2GcE1
+	 W3FkG6PgX+musw/cznRUOdGWJukjU+n9q8xjWUOVoetvu+OZMSnCq8US6VF2NygDy4
+	 6o1lxqavRvyDl64N2TERJ/I3IneIrFB0Cs/LNPWy3lw9ZYDJFdmpEyknJDf7IrkJsP
+	 VETJNlKXBc/bAk+etxriiJL/LxVJXBVkJdaRgFr7EXyipsSZnJf+2QX7rndG+BFjXO
+	 AMtHwmMtqIHC8YNCnVw8AbzDTWJwDqfVa7u0o66vy0VPJkB0RKOSMFCPevluHQb0gn
+	 c2Yv+nwHrv6jQ==
+Date: Fri, 11 Oct 2024 08:13:24 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Cc: stable@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-	Christoph Hellwig <hch@infradead.org>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	kernel-dev@igalia.com, Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 6.1 3/3] blk-integrity: register sysfs attributes on
- struct device
-Message-ID: <ZwkWJ-ya6-z0Cj9Z@sashalap>
-References: <20241008165145.4170229-1-cascardo@igalia.com>
- <20241008165145.4170229-4-cascardo@igalia.com>
+To: Francis Laniel <flaniel@linux.microsoft.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+	Sherry Yang <sherry.yang@oracle.com>,
+	linux-stable <stable@vger.kernel.org>,
+	"jeyu@kernel.org" <jeyu@kernel.org>,
+	"rostedt@goodmis.org" <rostedt@goodmis.org>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"ast@kernel.org" <ast@kernel.org>,
+	"jolsa@kernel.org" <jolsa@kernel.org>,
+	"mhiramat@kernel.org" <mhiramat@kernel.org>
+Subject: Re: [PATCH 5.10.y 0/4] Backport fix commit for
+ kprobe_non_uniq_symbol.tc test failure
+Message-ID: <ZwkWZHfJRtKSewVq@sashalap>
+References: <20241008222948.1084461-1-sherry.yang@oracle.com>
+ <2024100909-neatness-kennel-c24d@gregkh>
+ <D36D144A-02BB-4F79-B992-00C2BF6FB8C9@oracle.com>
+ <2204888.irdbgypaU6@pwmachine>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241008165145.4170229-4-cascardo@igalia.com>
+In-Reply-To: <2204888.irdbgypaU6@pwmachine>
 
-On Tue, Oct 08, 2024 at 01:51:45PM -0300, Thadeu Lima de Souza Cascardo wrote:
->From: Thomas Wei�schuh <linux@weissschuh.net>
+On Fri, Oct 11, 2024 at 01:30:28PM +0200, Francis Laniel wrote:
+>Hi!
 >
->Upstream commit ff53cd52d9bdbf4074d2bbe9b591729997780bd3.
+>Le jeudi 10 octobre 2024, 18:11:51 CEST Sherry Yang a écrit :
+>> > On Oct 9, 2024, at 6:36 AM, Greg KH <gregkh@linuxfoundation.org> wrote:
+>> >
+>> > On Tue, Oct 08, 2024 at 03:29:44PM -0700, Sherry Yang wrote:
+>> >
+>> >> 5.10.y backported the commit
+>> >> 09bcf9254838 ("selftests/ftrace: Add new test case which checks non
+>> >> unique symbol")
+> which added a new test case to check non-unique symbol.
+>> >> However, 5.10.y didn't backport the kernel commit
+>> >> b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches
+>> >> several symbols")to support the functionality from kernel side. Backport
+>> >> it in this patch series.
 >
->The "integrity" kobject only acted as a holder for static sysfs entries.
->It also was embedded into struct gendisk without managing it, violating
->assumptions of the driver core.
+>> >> The first two patches are presiquisites. The 4th commit is a fix commit
+>> >> for the 3rd one.
+>> >
+>> >
+>> > Should we just revert the selftest test instead?  That seems simpler
+>> > instead of adding a new feature to this old and obsolete kernel tree,
+>> > right?
+>>
+>>
+>> Sorry about the confusion. If kprobe attaches a function which is not the
+>> user wants to attach to, I would say it’s a bug. The test case uncovers the
+>> bug, so it’s a fix.
 >
->Instead register the sysfs entries directly onto the struct device.
+>> Sherry
+>>
+>>
 >
->Also drop the now unused member integrity_kobj from struct gendisk.
+>Let me add a bit of context as I wrote the third patch of this set.
 >
->Suggested-by: Christoph Hellwig <hch@infradead.org>
->Signed-off-by: Thomas Wei�schuh <linux@weissschuh.net>
->Reviewed-by: Christoph Hellwig <hch@lst.de>
->Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
->Link: https://lore.kernel.org/r/20230309-kobj_release-gendisk_integrity-v3-3-ceccb4493c46@weissschuh.net
->Signed-off-by: Jens Axboe <axboe@kernel.dk>
->[cascardo: conflict because of constification of integrity_ktype]
->Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+>It all started with a problem I had when trying to trace symbol names
+>corresponding to different functions [1].
+>The patch was accepted to upstream and I wanted to backport it to stables.
+>Sadly, the patch itself was relying on other patches which were not present in
+>some stable kernels, which leaded to various problems while releasing the new
+>stable kernels (once again: sorry about having caused troubles here) [2]...
+>
+>The current series seems to hold all the patches for the third one to work, so
+>I guess we can now have it merged to stable without problems.
 
-I've queued these up, thanks!
+Queued up, thanks!
 
 -- 
 Thanks,
