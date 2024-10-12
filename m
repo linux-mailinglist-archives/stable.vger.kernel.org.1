@@ -1,317 +1,228 @@
-Return-Path: <stable+bounces-83507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B7F99AF77
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 01:40:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A13E199B000
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 04:08:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 504C61F23007
-	for <lists+stable@lfdr.de>; Fri, 11 Oct 2024 23:40:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D3311C20EBE
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 02:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3800D1E3786;
-	Fri, 11 Oct 2024 23:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30703DDC1;
+	Sat, 12 Oct 2024 02:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="gznUbumH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DOlKh1w7"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-ztdg10011901.me.com (pv50p00im-ztdg10011901.me.com [17.58.6.50])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634E81D27A9
-	for <stable@vger.kernel.org>; Fri, 11 Oct 2024 23:40:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728690025; cv=none; b=OFJuyVXniYvZzFWCbPL7r3UkB+/h9eTcXIlK66xuQPd4QeVDLD+qKGiDB6L9EIKpBNai/cWDsiEdYsDncJDhTXT/Agp51GPMCt7OPMO6nYcE+OnYjp6soBaJSqcqQyq4Q99Q6aZJA3GvX0TR4jFYAfhRfAXmwOgvUyYdnWrOxG8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728690025; c=relaxed/simple;
-	bh=hzmriMm1SlBGJ794Cddrkfm/jHhZdGdWaKuc0Hj0ZFQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=atKCrvAnrsUbh5EhEjwKAgdjLbUkpDQ2dN6QspjsAo2RZlVneAoCs2l6IICcdPs+iT7dfBWUvrdtBjIoFkCvPpb519Z1Uhxz3KPw5b56mcik38NTxeNYhXd2mbOdnRko2zaxYwZ3yQQpv4+h3LzqrZkBUa3GDQkQFNkKVqgoiug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=gznUbumH; arc=none smtp.client-ip=17.58.6.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1728690023;
-	bh=rC/dMbnugMRawoRxS2uRVhimv+ms1/XM7Yr5Pb3hCoA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	b=gznUbumHUDA1uaHgKsfzgAnxv+kG5j6ikHE//fBa9stmsXh41VWRVv2Dpic4ieQfV
-	 iWh78db4bpMCJ01AOjsV/8pZvrCwrX6RP4X44Qecnat3PIqVb6sotaU3ODqFNhVogs
-	 BZh6Xrtmv6yAwYsA+7e5wXAXlsqzYzsAePtxt1d8Z8sce8rWYq/mqUyTou0LfQ9Kzi
-	 FF4HJ/tcmnjKLQxewzTzULyK62OOzebnxb1vUWQ71WaDpdwdjMEjPePQnNWDkY4Qjw
-	 yrnrfsLugPdXbSK94SL6V51NHoPdDwm7e4PidbpYLDgN6oMJiVSq9bQWi4LVrPnIqY
-	 Vpt7iO8q7xUZA==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-ztdg10011901.me.com (Postfix) with ESMTPSA id B5D903A02D6;
-	Fri, 11 Oct 2024 23:40:17 +0000 (UTC)
-Message-ID: <060193f9-5de1-422b-abfb-6328a1c7b806@icloud.com>
-Date: Sat, 12 Oct 2024 07:40:13 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D45DDAB
+	for <stable@vger.kernel.org>; Sat, 12 Oct 2024 02:08:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728698885; cv=fail; b=evkhnba4M5QBWlkEPUbws24Cgc+ML0NnNZ9UcM2/vdt1OnE3C9ACXFlYoXDFFoPosKX23y/ixsJC9zntJR//gdu41vLwLPvbFVNsjxkODUG4HFvxGy0+azeA+0WRifxK0nZfjMqqwmW8JiXLYYXa8HNdluwXj84LKXtfW5vihHo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728698885; c=relaxed/simple;
+	bh=q/t+cIzPCBIZdoc8sCCO+GHf29huJ0R28e/iEfN7pv8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=DkqvdBr5uBIKDTTei5iZxgO6DHxQALLo2O6Csy4R0lOz+dTlzDJSdU2oeQY/LQCXSfq+USbYirfOJkr4nkUJ5GQ+UChGlaJ49Vk9C7Qb1l6Lw9cQ5gy1Iau99g2K90FOHOM6LdiArWMuJmrlvfcLl4OQerRTlTd8eFOXeEXecSI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DOlKh1w7; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728698884; x=1760234884;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=q/t+cIzPCBIZdoc8sCCO+GHf29huJ0R28e/iEfN7pv8=;
+  b=DOlKh1w7QFHnPfoDtNJNODRQQAJ+dZPuk0rzq3M75LX6Kr17v9BUOe3R
+   eGqbyUrxba2tfJcHLaNeeFL21Tw6knSZwTv1Q+EKFo0mGKcmRTrUL8Z/l
+   cJElb08g6zq99bSw+JM6RYMgMlUVszTXEZkNa5JksCqHLDMnW5rl38v92
+   Ths9odFTiX9EB8nS4HPyTeT5W+O31BFzSMiKNG2Cv44ftDFsMhcEauPvP
+   eEfVUIdd4mrRUKpg0IkfKr1Q+RgiWjVAxO/ZlmoWTTgRgSn5E7h8q+/lv
+   vlHo4Hr32Jta4+R8zkJH58RbI7loGUcKdT6Xq/T7pe9heiJISPh0H9Onx
+   g==;
+X-CSE-ConnectionGUID: bg+Acu0GStyC+Qv6ga2CCA==
+X-CSE-MsgGUID: UB488RVfSum9/Ge2wX+oeQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28216294"
+X-IronPort-AV: E=Sophos;i="6.11,197,1725346800"; 
+   d="scan'208";a="28216294"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 19:08:04 -0700
+X-CSE-ConnectionGUID: Py/fGeGsR8GAaPpyJ1S1Rw==
+X-CSE-MsgGUID: iCP1oBfQT0KKIdXeNh/S2w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,197,1725346800"; 
+   d="scan'208";a="81851467"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 11 Oct 2024 19:08:04 -0700
+Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Fri, 11 Oct 2024 19:08:02 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Fri, 11 Oct 2024 19:08:02 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Fri, 11 Oct 2024 19:08:02 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.45) by
+ edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 11 Oct 2024 19:08:02 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WUOCqE9ykWhQ18VA5ZvoBStluW4NgnUfjUj+zAGerHGSSATrYNIr7KBIjcDs2521Owc1+GSAQQjxixe7mZtbLCq+spVgx6IqGHwgxw3oYv7cDLbxIlrn064w3ZJ7+HvYRqnxrGXsm2M7tSRTYik3gqmEuSGNBymIWooEGa2Y/R9MKE7197nFPc53oVtDESRDbKzZgOiPh+uHJhrN+evVv7GXgj2tnN2znMGD9OM5OX5jNZyd3OEqhSD5GuzLONGjEB2kYDZ0ViDUExu5u6wII2bxKrEsNQfG11VavH5GRgPgxXvcaCjJW1PzLrfhXpXbFckzz5xuCC3wkx3NKU6z9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VniUH0UgVQvoKkQJJ1uRabehJ9oVTnSkmdllutjYMiU=;
+ b=sHx7aKYTF8jQV9AZwcqTSFG8shNNsmKbZgHBy/4RQW/HvBXkxyl5o4dhTIMJkvIjiQmg4pMppJlHJ5uM/jj7S1RxzZFYNBE3C5xrH32kz43KVaOypaY829l7B/fk6xRwiMoerdOM4uF17atYm1tl59nHp56kZ/OdyKTRktj0YQ92uOC+gUfX4OZUXITtZydzLhhB279eHhE7hYTAQAEMw+Ct/Dc3HET3is8sj8sfymKGcZoZtyOugvE8C7ftn25Sjli//4kUwsAaX65cSzPo0Oxcg9f8omVqizglvIgLzAHddIr1oIsJ91j3gh4hfrCGKOlTFwHFNatQBsD5Q+mlGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by IA1PR11MB8152.namprd11.prod.outlook.com (2603:10b6:208:446::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.18; Sat, 12 Oct
+ 2024 02:08:00 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%6]) with mapi id 15.20.8048.017; Sat, 12 Oct 2024
+ 02:08:00 +0000
+Date: Sat, 12 Oct 2024 02:07:36 +0000
+From: Matthew Brost <matthew.brost@intel.com>
+To: Nirmoy Das <nirmoy.das@intel.com>
+CC: <intel-xe@lists.freedesktop.org>, <stable@vger.kernel.org>, "Bommu
+ Krishnaiah" <krishnaiah.bommu@intel.com>, Matthew Auld
+	<matthew.auld@intel.com>
+Subject: Re: [PATCH v2] drm/xe/ufence: ufence can be signaled right after
+ wait_woken
+Message-ID: <ZwnZ6FZQVcvwuPuW@DUT025-TGLU.fm.intel.com>
+References: <20241011151029.4160630-1-nirmoy.das@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20241011151029.4160630-1-nirmoy.das@intel.com>
+X-ClientProxiedBy: BYAPR06CA0012.namprd06.prod.outlook.com
+ (2603:10b6:a03:d4::25) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] cxl/port: Fix use-after-free, permit out-of-order
- decoder shutdown
-To: Dan Williams <dan.j.williams@intel.com>, dave.jiang@intel.com,
- ira.weiny@intel.com
-Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Davidlohr Bueso <dave@stgolabs.net>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Alison Schofield <alison.schofield@intel.com>, vishal.l.verma@intel.com,
- linux-cxl@vger.kernel.org
-References: <172862483180.2150669.5564474284074502692.stgit@dwillia2-xfh.jf.intel.com>
- <172862486548.2150669.3548553804904171839.stgit@dwillia2-xfh.jf.intel.com>
- <a7b8a007-907a-4fda-9a35-68faed109ed3@icloud.com>
- <6709647f66d94_964f2294ae@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <6709647f66d94_964f2294ae@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: SdAq2sLRtK5itv8SkkUuMB5ydBc9zxot
-X-Proofpoint-GUID: SdAq2sLRtK5itv8SkkUuMB5ydBc9zxot
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-11_21,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 phishscore=0 spamscore=0
- adultscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2410110164
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|IA1PR11MB8152:EE_
+X-MS-Office365-Filtering-Correlation-Id: 72b9a7f8-bc80-44ad-5aa8-08dcea62b260
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?q8OBhFLMrVMcwbvZvhxN89bLRXFyvp5EHUawELRbasfZQ5WzKd+THmWCNeF/?=
+ =?us-ascii?Q?6aH1GxqElqGFbzJSmPUZymVl8IFZO9CnoMIlSwtA9gv+n0woBeiA+QsUH7vK?=
+ =?us-ascii?Q?HfxfqaKz1GU4PIQSDgq7CFOm2pWWNqPLBJIEv0A7GoppVps3CqXBjFQVoo5j?=
+ =?us-ascii?Q?rT7mc0Ig1kfVA629R7Vv2R8dxQAZJFB+/+oIKO0NBUixSPJ0sA0orGi9lQB8?=
+ =?us-ascii?Q?2cd3x6iupSGj5T1iaRR5UpL03hR/kQP55xzvfejJBcHDXhdepNMLRQENDt4U?=
+ =?us-ascii?Q?DvpP3eaVhrUemnTSFNPzvFmL859+FXmZaVI5m88jgA7Tc0imF+ox8drgUixE?=
+ =?us-ascii?Q?IP4UPXdY2Ll76bUaBc1TX/cCTqnGx30b1+YWq9gcnkUzF0xk9kC1h+8M8drJ?=
+ =?us-ascii?Q?8Mww1ERqDoQ+aXXuai2SDNsW4izEBQ21kaVD7CaPlr7IFWI7Rmi3BYc1NYWL?=
+ =?us-ascii?Q?ROoM3xLmOFvYiMQfex48OiC8LY2XE0xm2++MPeR9lmW+qFk6WmeLEPYGWp53?=
+ =?us-ascii?Q?X7sQ4eFxcbQXRKQCx7QG2YEWz6Ol/Y9i4GKIEZtU1IYzBKqBq5jCz8Q88M8t?=
+ =?us-ascii?Q?tGRoQXLBi2IS4aG0FaoXPyRMl21w8Xz/IlpyY1f/d8S++eBpVuhAaPM99+SC?=
+ =?us-ascii?Q?xwRaoUjwpwKjcZ1yLLyUI8P9UQD9WsutxnlWJk5x85g2PZaPG48ETMWsyVpu?=
+ =?us-ascii?Q?QjSqaaSHGxCB60KCBTTojnoeg54hyey5jVxq3iXS7K4UwWmIdHugyjM9tuVV?=
+ =?us-ascii?Q?9FYgBXovlUDm8pPTKnGg84k9zX/FNBxR5iv3i/vOVU/JYz8tBOZX5jM266Lt?=
+ =?us-ascii?Q?hJu3HOSa6CLpomUMQf4arhstykNaV38FFzx3ouj54165Ef1Q89ymx4JNZyjB?=
+ =?us-ascii?Q?JLV2Q0hUnr3t7ITywBrBNuOkkFqOI2tMLvV/gvBmyxUSSomVzzJbJ6j9jcC3?=
+ =?us-ascii?Q?Xbr3440Uucjbom0VPkL/VveK53m4PTr/Gz3rQrZ0pUJuFqYYCMDzPj4Wp4Lk?=
+ =?us-ascii?Q?KUbkIxbdHwuf4caOAVsZaX9LPAtloW4aDQ5t7wURg9xOnrm+9oya+DCEcsf2?=
+ =?us-ascii?Q?SF8yiLN0b/28Bpf6GaPmpqekEEglO4hraOEaqlfcHsM4e41b3A1Bnb6NDejv?=
+ =?us-ascii?Q?wMa0/h2uD1hNmRXyP9Eo7ycAnGIxNuBMr3W1tEmS7/TV2ZIJ0Bcz4Bmvn4rC?=
+ =?us-ascii?Q?/2cJEE3FrdWOgcrXefQKF6zFVmY/rZNBKi2sZaXhnc+Ll14RDSJ3Cbu5/h0?=
+ =?us-ascii?Q?=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?v2hcySojmyDh1kSZCx04lfDxpoKA0+Azf3Tu0RN5mivnoyRPIyWX6fdGjtr5?=
+ =?us-ascii?Q?BY5L00813pNVWRR1LOKz4wTJ6/jOJaWiO8kjoCbK8gcO+nZedZCPktDCcKYH?=
+ =?us-ascii?Q?pVbW3AwbCUx0FwQIqShVusFDBn0Qo80yhqrvvT+dtByfa4JEDzWU12wMiIt6?=
+ =?us-ascii?Q?IBCBwfbTz3/E3IJAsuVBf+ibezc+wY5oTvDYVaZY1CKOK2LaVgWTFQBccdcu?=
+ =?us-ascii?Q?luCiZwCB+YpKehskZHdX1zIpNTm4qG2ECn42CcWuBVeEZwyahHr4e+Z8SlNM?=
+ =?us-ascii?Q?dKvHQs9GHOBpXbOYbb/Op2G6AGAxJdujg97oqZf5zLdZa/7dgTqS7bRdRQ/y?=
+ =?us-ascii?Q?Xh10k/MLCY7jxqWNFbnjZ65Br1tV6horiKrGBB8fjo3++EypVAcMAVu2HN9y?=
+ =?us-ascii?Q?NYpZrqxnz5H4TVkPls4J6taQizTejhPICnB98Sj7RfIcsEXI/tEFgWgGBwib?=
+ =?us-ascii?Q?WNABgA/6JgkapZFiQ4nsAegLKCkZt5I7ZnxznhJo5YGhsBV/RFNLMonsmBv0?=
+ =?us-ascii?Q?rcF+EzOUMB+HvenSGSwzHUOOcO5oz/w7CA5TSERdf2nNYjHCCTAszHiZcvnL?=
+ =?us-ascii?Q?8RmHbFd/FpYW+yoY29NVkj3GCZm0ZnGCiwDU2dPjupd9IO8CKzUtrDg1NTWk?=
+ =?us-ascii?Q?bYh2z/nmHiHsKUfH52xZwJSCGg/JoESwF0GSLgPVKTty82ycy/yHe7bKDfy6?=
+ =?us-ascii?Q?VSOTsCdSbIY4LT6GujqQjNpK33ythsSr+SwrC7rTnWB/R0jv8t1X68OxaWYS?=
+ =?us-ascii?Q?gzPQOS0BvZszZgarPzXca6qvnRw0Tcgl5sYKrNXIC101wDjt6i/1LvH88aBc?=
+ =?us-ascii?Q?sRiyCuOzyqjxuwfdNSiBAW5XedGA2ePHWUwiuEWTGTxNttf+b9VErB7+UiPD?=
+ =?us-ascii?Q?Ii/XXahNTc8UohtFGX0iH2oAGjKKf8fnwcwqqLAYegz04gjtbEMtwHxtpbTJ?=
+ =?us-ascii?Q?V3kmv/wHN573wIdQwi8wSNEnwq5jR9zKp2KzYeJkyD+W23gFnT25erEpjP/c?=
+ =?us-ascii?Q?u/NOVmlsLl8DsiQkHO9/wuBSgzShkDE7p7+WS3h6ejczzU8AYki8t3FpfoEi?=
+ =?us-ascii?Q?G4cIWvUvZteMw110SMbv0pLn10xKMMB1KkJDkRzRn/j7HlEcEK7gqRliig+A?=
+ =?us-ascii?Q?LFzw3657zKUgJyv6xcPXZjFmfDyOEdZaUaX57vGPIGLl2OYesOs11cU65koW?=
+ =?us-ascii?Q?Z2+FSTmcSeucDeaEgz6pfauf5qOx25Lxv5610v9H02NDx/NjmgZq22INmHv7?=
+ =?us-ascii?Q?w+iPSIgdW/Oa37GIs01lcQQBfYheOicswk+cB0CluuMXh8mb7PRtYoub3z6A?=
+ =?us-ascii?Q?LHLHZT5kv3RDvq0cIXs4kdUFNUdrnK5DYX4Vco7ly9Nb4jlU/MviEsWFuTFK?=
+ =?us-ascii?Q?WjfR1kBNlcG1L511twjSbTyHwXn2ub9UtChCNL4BtJtbNIlZct1VMKzDEzq9?=
+ =?us-ascii?Q?TQ1F90BtYe12Z9ID38zXSznDl0ZFm6Lfu0a6kXFnXBhyJrSh9i82YFJuGgfa?=
+ =?us-ascii?Q?A6TFgbovH1USKdnahz29AzirI8yjqQwH9reOH0ev/ZOgNxXLt+y6bE0l5YAU?=
+ =?us-ascii?Q?uwEFzoR+0F7pn4R5JwJWksvC7IZN5c4KW8Jtoq7NPYFKicj5MFim2XgJzOz/?=
+ =?us-ascii?Q?QQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72b9a7f8-bc80-44ad-5aa8-08dcea62b260
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2024 02:08:00.1109
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yFBJPyS+w/A/RXrdCA++tQuDYNEDkbY3nJgvUamUgXyfWfZ9gL6fPBJmM8VqmaLi9VKlJB+rE09L+qXXnyM9SQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB8152
+X-OriginatorOrg: intel.com
 
-On 2024/10/12 01:46, Dan Williams wrote:
-> Zijun Hu wrote:
->> On 2024/10/11 13:34, Dan Williams wrote:
->>> In support of investigating an initialization failure report [1],
->>> cxl_test was updated to register mock memory-devices after the mock
->>> root-port/bus device had been registered. That led to cxl_test crashing
->>> with a use-after-free bug with the following signature:
->>>
->>>     cxl_port_attach_region: cxl region3: cxl_host_bridge.0:port3 decoder3.0 add: mem0:decoder7.0 @ 0 next: cxl_switch_uport.0 nr_eps: 1 nr_targets: 1
->>>     cxl_port_attach_region: cxl region3: cxl_host_bridge.0:port3 decoder3.0 add: mem4:decoder14.0 @ 1 next: cxl_switch_uport.0 nr_eps: 2 nr_targets: 1
->>>     cxl_port_setup_targets: cxl region3: cxl_switch_uport.0:port6 target[0] = cxl_switch_dport.0 for mem0:decoder7.0 @ 0
->>> 1)  cxl_port_setup_targets: cxl region3: cxl_switch_uport.0:port6 target[1] = cxl_switch_dport.4 for mem4:decoder14.0 @ 1
->>>     [..]
->>>     cxld_unregister: cxl decoder14.0:
->>>     cxl_region_decode_reset: cxl_region region3:
->>>     mock_decoder_reset: cxl_port port3: decoder3.0 reset
->>> 2)  mock_decoder_reset: cxl_port port3: decoder3.0: out of order reset, expected decoder3.1
->>>     cxl_endpoint_decoder_release: cxl decoder14.0:
->>>     [..]
->>>     cxld_unregister: cxl decoder7.0:
->>> 3)  cxl_region_decode_reset: cxl_region region3:
->>>     Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6bc3: 0000 [#1] PREEMPT SMP PTI
->>>     [..]
->>>     RIP: 0010:to_cxl_port+0x8/0x60 [cxl_core]
->>>     [..]
->>>     Call Trace:
->>>      <TASK>
->>>      cxl_region_decode_reset+0x69/0x190 [cxl_core]
->>>      cxl_region_detach+0xe8/0x210 [cxl_core]
->>>      cxl_decoder_kill_region+0x27/0x40 [cxl_core]
->>>      cxld_unregister+0x5d/0x60 [cxl_core]
->>>
->>> At 1) a region has been established with 2 endpoint decoders (7.0 and
->>> 14.0). Those endpoints share a common switch-decoder in the topology
->>> (3.0). At teardown, 2), decoder14.0 is the first to be removed and hits
->>> the "out of order reset case" in the switch decoder. The effect though
->>> is that region3 cleanup is aborted leaving it in-tact and
->>> referencing decoder14.0. At 3) the second attempt to teardown region3
->>> trips over the stale decoder14.0 object which has long since been
->>> deleted.
->>>
->>> The fix here is to recognize that the CXL specification places no
->>> mandate on in-order shutdown of switch-decoders, the driver enforces
->>> in-order allocation, and hardware enforces in-order commit. So, rather
->>> than fail and leave objects dangling, always remove them.
->>>
->>> In support of making cxl_region_decode_reset() always succeed,
->>> cxl_region_invalidate_memregion() failures are turned into warnings.
->>> Crashing the kernel is ok there since system integrity is at risk if
->>> caches cannot be managed around physical address mutation events like
->>> CXL region destruction.
->>>
->>> A new device_for_each_child_reverse_from() is added to cleanup
->>> port->commit_end after all dependent decoders have been disabled. In
->>> other words if decoders are allocated 0->1->2 and disabled 1->2->0 then
->>> port->commit_end only decrements from 2 after 2 has been disabled, and
->>> it decrements all the way to zero since 1 was disabled previously.
->>>
->>> Link: http://lore.kernel.org/20241004212504.1246-1-gourry@gourry.net [1]
->>> Cc: <stable@vger.kernel.org>
->>> Fixes: 176baefb2eb5 ("cxl/hdm: Commit decoder state to hardware")
->>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>> Cc: Davidlohr Bueso <dave@stgolabs.net>
->>> Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
->>> Cc: Dave Jiang <dave.jiang@intel.com>
->>> Cc: Alison Schofield <alison.schofield@intel.com>
->>> Cc: Ira Weiny <ira.weiny@intel.com>
->>> Cc: Zijun Hu <zijun_hu@icloud.com>
->>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
->>> ---
->>>  drivers/base/core.c          |   35 +++++++++++++++++++++++++++++
->>>  drivers/cxl/core/hdm.c       |   50 +++++++++++++++++++++++++++++++++++-------
->>>  drivers/cxl/core/region.c    |   48 +++++++++++-----------------------------
->>>  drivers/cxl/cxl.h            |    3 ++-
->>>  include/linux/device.h       |    3 +++
->>>  tools/testing/cxl/test/cxl.c |   14 ++++--------
->>>  6 files changed, 100 insertions(+), 53 deletions(-)
->>>
->>> diff --git a/drivers/base/core.c b/drivers/base/core.c
->>> index a4c853411a6b..e42f1ad73078 100644
->>> --- a/drivers/base/core.c
->>> +++ b/drivers/base/core.c
->>> @@ -4037,6 +4037,41 @@ int device_for_each_child_reverse(struct device *parent, void *data,
->>>  }
->>>  EXPORT_SYMBOL_GPL(device_for_each_child_reverse);
->>>  
->>> +/**
->>> + * device_for_each_child_reverse_from - device child iterator in reversed order.
->>> + * @parent: parent struct device.
->>> + * @from: optional starting point in child list
->>> + * @fn: function to be called for each device.
->>> + * @data: data for the callback.
->>> + *
->>> + * Iterate over @parent's child devices, starting at @from, and call @fn
->>> + * for each, passing it @data. This helper is identical to
->>> + * device_for_each_child_reverse() when @from is NULL.
->>> + *
->>> + * @fn is checked each iteration. If it returns anything other than 0,
->>> + * iteration stop and that value is returned to the caller of
->>> + * device_for_each_child_reverse_from();
->>> + */
->>> +int device_for_each_child_reverse_from(struct device *parent,
->>> +				       struct device *from, const void *data,
->>> +				       int (*fn)(struct device *, const void *))
->>> +{
->>> +	struct klist_iter i;
->>> +	struct device *child;
->>> +	int error = 0;
->>> +
->>> +	if (!parent->p)
->>> +		return 0;
->>> +
->>> +	klist_iter_init_node(&parent->p->klist_children, &i,
->>> +			     (from ? &from->p->knode_parent : NULL));
->>> +	while ((child = prev_device(&i)) && !error)
->>> +		error = fn(child, data);
->>> +	klist_iter_exit(&i);
->>> +	return error;
->>> +}
->>> +EXPORT_SYMBOL_GPL(device_for_each_child_reverse_from);
->>> +
->>
->> it does NOT deserve, also does NOT need to introduce a new core driver
->> API device_for_each_child_reverse_from(). existing
->> device_for_each_child_reverse() can do what the _from() wants to do.
->>
->> we can use similar approach as below link shown:
->> https://lore.kernel.org/all/20240815-const_dfc_prepare-v2-2-8316b87b8ff9@quicinc.com/
+On Fri, Oct 11, 2024 at 05:10:29PM +0200, Nirmoy Das wrote:
+> do_comapre() can return success after a timedout wait_woken() which was
+> treated as -ETIME. The loop calling wait_woken() sets correct err so
+> there is no need to re-evaluate err.
 > 
-> No, just have a simple starting point parameter. I understand that more
-> logic can be placed around device_for_each_child_reverse() to achieve
-> the same effect, but the core helpers should be removing logic from
-> consumers, not forcing them to add more.
+> v2: Remove entire check that reevaluate err at the end(Matt)
 > 
-> If bloat is a concern, then after your const cleanups go through
-> device_for_each_child_reverse() can be rewritten in terms of
-> device_for_each_child_reverse_from() as (untested):
+> Fixes: e670f0b4ef24 ("drm/xe/uapi: Return correct error code for xe_wait_user_fence_ioctl")
+> Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1630
+> Cc: <stable@vger.kernel.org> # v6.8+
+> Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+
+> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+> ---
+>  drivers/gpu/drm/xe/xe_wait_user_fence.c | 3 ---
+>  1 file changed, 3 deletions(-)
 > 
-
-bloat is one aspect, the other aspect is that there are redundant
-between both driver core APIs, namely, there are a question:
-
-why to still need device_for_each_child_reverse() if it is same as
-_from(..., NULL, ...) ?
-
-So i suggest use existing API now.
-if there are more users who have such starting point requirement, then
-add the parameter into device_for_each_child_reverse() which is
-consistent with other existing *_for_each_*() core APIs such as
-(class|driver|bus)_for_each_device() and bus_for_each_drv(), that may
-need much efforts.
-
-
-could you please contains your proposal "fixing this allocation
-order validation" of below link into this patch series with below
-reason? and Cc me (^^)
-
-https://lore.kernel.org/all/670835f5a2887_964f229474@dwillia2-xfh.jf.intel.com.notmuch/
-
-A)
-  the proposal depends on this patch series.
-B)
-  one of the issues the proposal fix is match_free_decoder()  error
-logic which is also relevant issues this patch series fix, the proposal
-also can fix the other device_find_child()'s match() issue i care about.
-
-C)
- Actually, it is a bit difficult for me to understand the proposal since
- i don't have any basic knowledge about CXL. (^^)
-
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index e42f1ad73078..2571c910da46 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -4007,36 +4007,6 @@ int device_for_each_child(struct device *parent, void *data,
->  }
->  EXPORT_SYMBOL_GPL(device_for_each_child);
+> diff --git a/drivers/gpu/drm/xe/xe_wait_user_fence.c b/drivers/gpu/drm/xe/xe_wait_user_fence.c
+> index d46fa8374980..f5deb81eba01 100644
+> --- a/drivers/gpu/drm/xe/xe_wait_user_fence.c
+> +++ b/drivers/gpu/drm/xe/xe_wait_user_fence.c
+> @@ -169,9 +169,6 @@ int xe_wait_user_fence_ioctl(struct drm_device *dev, void *data,
+>  			args->timeout = 0;
+>  	}
 >  
-> -/**
-> - * device_for_each_child_reverse - device child iterator in reversed order.
-> - * @parent: parent struct device.
-> - * @fn: function to be called for each device.
-> - * @data: data for the callback.
-> - *
-> - * Iterate over @parent's child devices, and call @fn for each,
-> - * passing it @data.
-> - *
-> - * We check the return of @fn each time. If it returns anything
-> - * other than 0, we break out and return that value.
-> - */
-> -int device_for_each_child_reverse(struct device *parent, void *data,
-> -				  int (*fn)(struct device *dev, void *data))
-> -{
-> -	struct klist_iter i;
-> -	struct device *child;
-> -	int error = 0;
+> -	if (!timeout && !(err < 0))
+> -		err = -ETIME;
 > -
-> -	if (!parent || !parent->p)
-> -		return 0;
-> -
-> -	klist_iter_init(&parent->p->klist_children, &i);
-> -	while ((child = prev_device(&i)) && !error)
-> -		error = fn(child, data);
-> -	klist_iter_exit(&i);
-> -	return error;
-> -}
-> -EXPORT_SYMBOL_GPL(device_for_each_child_reverse);
-> -
->  /**
->   * device_for_each_child_reverse_from - device child iterator in reversed order.
->   * @parent: parent struct device.
-> diff --git a/include/linux/device.h b/include/linux/device.h
-> index 667cb6db9019..96a2c072bf5b 100644
-> --- a/include/linux/device.h
-> +++ b/include/linux/device.h
-> @@ -1076,11 +1076,14 @@ DEFINE_FREE(device_del, struct device *, if (_T) device_del(_T))
+>  	if (q)
+>  		xe_exec_queue_put(q);
 >  
->  int device_for_each_child(struct device *dev, void *data,
->  			  int (*fn)(struct device *dev, void *data));
-> -int device_for_each_child_reverse(struct device *dev, void *data,
-> -				  int (*fn)(struct device *dev, void *data));
->  int device_for_each_child_reverse_from(struct device *parent,
->  				       struct device *from, const void *data,
->  				       int (*fn)(struct device *, const void *));
-> +static inline int device_for_each_child_reverse(struct device *dev, const void *data,
-> +						int (*fn)(struct device *, const void *))
-> +{
-> +	return device_for_each_child_reverse_from(dev, NULL, data, fn);
-> +}
->  struct device *device_find_child(struct device *dev, void *data,
->  				 int (*match)(struct device *dev, void *data));
->  struct device *device_find_child_by_name(struct device *parent,
-
+> -- 
+> 2.46.0
+> 
 
