@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-83586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A192B99B460
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:49:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6CB99B463
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:50:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F711B238E8
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:49:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74D341F25ADC
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9ACE205E20;
-	Sat, 12 Oct 2024 11:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E4A1A265D;
+	Sat, 12 Oct 2024 11:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="icUV8Qjv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R5/VrxyK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773F4205E11;
-	Sat, 12 Oct 2024 11:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E8D206047;
+	Sat, 12 Oct 2024 11:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728732601; cv=none; b=Oy7PXk6BANO7s3q/b39VMtDZka3HKgKhHGzVPPLAiKSsgyEK+5/0WSnX92EpY7ys5G5k3loz5J7jTaCECuwSgbJDPb6iui9yjlne883OxivzEvv4Fo5I8nMsv5ZNYWWpHGtibYDgHIeslTnPiKh+1hENWe9rGIz3tw+tCtLk680=
+	t=1728732602; cv=none; b=HPb3H+ephSf9a7YMTTnkuB1TOvNfx49cV196CsWsjgpSghzsjcuQP+iPB+gyB+r/UF86g+JYwnHEPGdBZeLd36g4U4KRGE2gDfPS1CzHAvW4plDraJ/514klcu5Gur2V2WU+hiJopyX4EvKtTVLd9ZBCscSjmLkLHtIXDzI4Y9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728732601; c=relaxed/simple;
-	bh=mmhBkxJq8mzJIprwJgv8yMGf2dMntwHjpI9DcPhE5V8=;
+	s=arc-20240116; t=1728732602; c=relaxed/simple;
+	bh=ftaZRHD5hqouTbzrWn8/bG8js8icJYEI7jfe3BGfZUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pcK/OS+4QFvk0I+ax484RHi4ANz0VLe9E9noFxXmWB4MpOk034mnauItnwCPXRKP6cFgBXnFb/jHAv8tkLTyfactQz93soKtsh/F29MPQY6bPhNHn2V6Rh6gBz4T4Dm5RFAsWlbfOiZPKO94s6sAydbfWQl7XmH93V/2fVUI2CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=icUV8Qjv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C0AAC4CECE;
-	Sat, 12 Oct 2024 11:30:00 +0000 (UTC)
+	 MIME-Version; b=sVmTjN3H/kaU6kuVuRx0qFBqVDEneQN5Ho8bFBzsM7CujXKdcX2ejRn4B0/CwmHEEHARqW1BhIkL0tlGk9M0BWiEYJM3ClbWF8RatjWZhWZOIM57ui6nY3dZtitaXRd1hh8xfLpv/Pvv6CXo6bkRd0GU3QVOIMkTOg03MsCN2co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R5/VrxyK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78AE5C4CED2;
+	Sat, 12 Oct 2024 11:30:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728732601;
-	bh=mmhBkxJq8mzJIprwJgv8yMGf2dMntwHjpI9DcPhE5V8=;
+	s=k20201202; t=1728732602;
+	bh=ftaZRHD5hqouTbzrWn8/bG8js8icJYEI7jfe3BGfZUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=icUV8QjvFxachl6lMPeRks7AhURg9egO2cELzCP4A2tOe4J88UNCckHMi0zTO/xO4
-	 c8Vugb4IHRr7nm6ZNwtH6ikIpR/N0sGZjj8JvnCCkfM24W/mDHdRJ9sZwpR+l37NKh
-	 jbNybRAUOLWQWpjY5FzaOXrrX0e7Ovn+CruU6toS/bo72bRytLFmYQXI0RSocMWrxb
-	 C9Xg5huaSD2BwHguW1arYwrqyOOaD2HJn5+eEgFlJppT3vOjSb9TRuTF1o9k+qtWdf
-	 g2ZechnhwrHAivEBf84X9wXwtz5Bh/Enu5tcOS9f0um87aKCd5HwCl+Q6/9Ibxs5sD
-	 sH9HiCOU8qdEw==
+	b=R5/VrxyKGSJo4k+XJm06Morvuu3VRld+hCu8mRZNaLjOLXqB6EBMX1Fo+t2177znh
+	 2nxo/eQxe+MAt44+FMN3AUANz60sGEJRL2VfXZ3wnppOBDHt7lJQysBPdltbktYD9x
+	 e7xqmY1lsq9JuZoh0i9CojPdw4GRCMHeEpN5oFG9m0uGoo8G0tu6/EsTBInZSrgRQL
+	 zd8HO3lVaPfXL0EaZfjHUGknd6qeXGLJA+IjpXokxcbN5ZRtSTihWBKMRmGVPjQEUX
+	 bDz3NTTjsCRiPH84lgEKpe+KefOYTwW/zjLztLdvwWkY91Q4m0R6+95qeEJ4R7wRBZ
+	 8AYxCR+RaCuRA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Phillip Lougher <phillip@squashfs.org.uk>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.4 5/7] Squashfs: sanity check symbolic link size
-Date: Sat, 12 Oct 2024 07:29:40 -0400
-Message-ID: <20241012112948.1764454-5-sashal@kernel.org>
+Cc: Stefan Wiehler <stefan.wiehler@nokia.com>,
+	Rob Herring <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	saravanak@google.com,
+	devicetree@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 6/7] of/irq: Prevent device address out-of-bounds read in interrupt map walk
+Date: Sat, 12 Oct 2024 07:29:41 -0400
+Message-ID: <20241012112948.1764454-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241012112948.1764454-1-sashal@kernel.org>
 References: <20241012112948.1764454-1-sashal@kernel.org>
@@ -66,66 +66,128 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.284
 Content-Transfer-Encoding: 8bit
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Stefan Wiehler <stefan.wiehler@nokia.com>
 
-[ Upstream commit 810ee43d9cd245d138a2733d87a24858a23f577d ]
+[ Upstream commit b739dffa5d570b411d4bdf4bb9b8dfd6b7d72305 ]
 
-Syzkiller reports a "KMSAN: uninit-value in pick_link" bug.
+When of_irq_parse_raw() is invoked with a device address smaller than
+the interrupt parent node (from #address-cells property), KASAN detects
+the following out-of-bounds read when populating the initial match table
+(dyndbg="func of_irq_parse_* +p"):
 
-This is caused by an uninitialised page, which is ultimately caused
-by a corrupted symbolic link size read from disk.
+  OF: of_irq_parse_one: dev=/soc@0/picasso/watchdog, index=0
+  OF:  parent=/soc@0/pci@878000000000/gpio0@17,0, intsize=2
+  OF:  intspec=4
+  OF: of_irq_parse_raw: ipar=/soc@0/pci@878000000000/gpio0@17,0, size=2
+  OF:  -> addrsize=3
+  ==================================================================
+  BUG: KASAN: slab-out-of-bounds in of_irq_parse_raw+0x2b8/0x8d0
+  Read of size 4 at addr ffffff81beca5608 by task bash/764
 
-The reason why the corrupted symlink size causes an uninitialised
-page is due to the following sequence of events:
+  CPU: 1 PID: 764 Comm: bash Tainted: G           O       6.1.67-484c613561-nokia_sm_arm64 #1
+  Hardware name: Unknown Unknown Product/Unknown Product, BIOS 2023.01-12.24.03-dirty 01/01/2023
+  Call trace:
+   dump_backtrace+0xdc/0x130
+   show_stack+0x1c/0x30
+   dump_stack_lvl+0x6c/0x84
+   print_report+0x150/0x448
+   kasan_report+0x98/0x140
+   __asan_load4+0x78/0xa0
+   of_irq_parse_raw+0x2b8/0x8d0
+   of_irq_parse_one+0x24c/0x270
+   parse_interrupts+0xc0/0x120
+   of_fwnode_add_links+0x100/0x2d0
+   fw_devlink_parse_fwtree+0x64/0xc0
+   device_add+0xb38/0xc30
+   of_device_add+0x64/0x90
+   of_platform_device_create_pdata+0xd0/0x170
+   of_platform_bus_create+0x244/0x600
+   of_platform_notify+0x1b0/0x254
+   blocking_notifier_call_chain+0x9c/0xd0
+   __of_changeset_entry_notify+0x1b8/0x230
+   __of_changeset_apply_notify+0x54/0xe4
+   of_overlay_fdt_apply+0xc04/0xd94
+   ...
 
-1. squashfs_read_inode() is called to read the symbolic
-   link from disk.  This assigns the corrupted value
-   3875536935 to inode->i_size.
+  The buggy address belongs to the object at ffffff81beca5600
+   which belongs to the cache kmalloc-128 of size 128
+  The buggy address is located 8 bytes inside of
+   128-byte region [ffffff81beca5600, ffffff81beca5680)
 
-2. Later squashfs_symlink_read_folio() is called, which assigns
-   this corrupted value to the length variable, which being a
-   signed int, overflows producing a negative number.
+  The buggy address belongs to the physical page:
+  page:00000000230d3d03 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1beca4
+  head:00000000230d3d03 order:1 compound_mapcount:0 compound_pincount:0
+  flags: 0x8000000000010200(slab|head|zone=2)
+  raw: 8000000000010200 0000000000000000 dead000000000122 ffffff810000c300
+  raw: 0000000000000000 0000000000200020 00000001ffffffff 0000000000000000
+  page dumped because: kasan: bad access detected
 
-3. The following loop that fills in the page contents checks that
-   the copied bytes is less than length, which being negative means
-   the loop is skipped, producing an uninitialised page.
+  Memory state around the buggy address:
+   ffffff81beca5500: 04 fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+   ffffff81beca5580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+  >ffffff81beca5600: 00 fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+                        ^
+   ffffff81beca5680: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+   ffffff81beca5700: 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc fc
+  ==================================================================
+  OF:  -> got it !
 
-This patch adds a sanity check which checks that the symbolic
-link size is not larger than expected.
+Prevent the out-of-bounds read by copying the device address into a
+buffer of sufficient size.
 
---
-
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Link: https://lore.kernel.org/r/20240811232821.13903-1-phillip@squashfs.org.uk
-Reported-by: Lizhi Xu <lizhi.xu@windriver.com>
-Reported-by: syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000a90e8c061e86a76b@google.com/
-V2: fix spelling mistake.
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
+Link: https://lore.kernel.org/r/20240812100652.3800963-1-stefan.wiehler@nokia.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/squashfs/inode.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/of/irq.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
-index 24463145b3513..f31649080a881 100644
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -276,8 +276,13 @@ int squashfs_read_inode(struct inode *inode, long long ino)
- 		if (err < 0)
- 			goto failed_read;
+diff --git a/drivers/of/irq.c b/drivers/of/irq.c
+index 352e14b007e78..ad0cb49e233ac 100644
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -288,7 +288,8 @@ int of_irq_parse_one(struct device_node *device, int index, struct of_phandle_ar
+ 	struct device_node *p;
+ 	const __be32 *addr;
+ 	u32 intsize;
+-	int i, res;
++	int i, res, addr_len;
++	__be32 addr_buf[3] = { 0 };
  
--		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
- 		inode->i_size = le32_to_cpu(sqsh_ino->symlink_size);
-+		if (inode->i_size > PAGE_SIZE) {
-+			ERROR("Corrupted symlink\n");
-+			return -EINVAL;
-+		}
+ 	pr_debug("of_irq_parse_one: dev=%pOF, index=%d\n", device, index);
+ 
+@@ -297,13 +298,19 @@ int of_irq_parse_one(struct device_node *device, int index, struct of_phandle_ar
+ 		return of_irq_parse_oldworld(device, index, out_irq);
+ 
+ 	/* Get the reg property (if any) */
+-	addr = of_get_property(device, "reg", NULL);
++	addr = of_get_property(device, "reg", &addr_len);
 +
-+		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
- 		inode->i_op = &squashfs_symlink_inode_ops;
- 		inode_nohighmem(inode);
- 		inode->i_data.a_ops = &squashfs_symlink_aops;
++	/* Prevent out-of-bounds read in case of longer interrupt parent address size */
++	if (addr_len > (3 * sizeof(__be32)))
++		addr_len = 3 * sizeof(__be32);
++	if (addr)
++		memcpy(addr_buf, addr, addr_len);
+ 
+ 	/* Try the new-style interrupts-extended first */
+ 	res = of_parse_phandle_with_args(device, "interrupts-extended",
+ 					"#interrupt-cells", index, out_irq);
+ 	if (!res)
+-		return of_irq_parse_raw(addr, out_irq);
++		return of_irq_parse_raw(addr_buf, out_irq);
+ 
+ 	/* Look for the interrupt parent. */
+ 	p = of_irq_find_parent(device);
+@@ -333,7 +340,7 @@ int of_irq_parse_one(struct device_node *device, int index, struct of_phandle_ar
+ 
+ 
+ 	/* Check if there are any interrupt-map translations to process */
+-	res = of_irq_parse_raw(addr, out_irq);
++	res = of_irq_parse_raw(addr_buf, out_irq);
+  out:
+ 	of_node_put(p);
+ 	return res;
 -- 
 2.43.0
 
