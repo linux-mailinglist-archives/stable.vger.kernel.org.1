@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-83580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9001B99B433
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:44:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5BA99B435
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:45:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09785B20EB5
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:44:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A819B22F77
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926B91FCC44;
-	Sat, 12 Oct 2024 11:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCD51FCC78;
+	Sat, 12 Oct 2024 11:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rdHGK88a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t3rhUbMl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF6B1FBCBA;
-	Sat, 12 Oct 2024 11:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DB11FCC66;
+	Sat, 12 Oct 2024 11:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728732581; cv=none; b=NcqC5aKDeke//J7Q8vuCDs/9wdDnqFuHKh6sLCRoBt8nlVRjxLaFtaXc6se+5N7A3SAVe3CTm/B8N4othhjpkuZp1U6qgX5F72OJ1Hyg0bwd/M2+juyk3TuNIMC4UdctT8iAazZfItHzPnWFQbylFlsO5CbfAuw9NnRYA5gA6I8=
+	t=1728732582; cv=none; b=XMcyYL2Yf7UaHruIsgZrh/r+2iIqtfRTWHR7NMFHe2ur0+rcU14TUiRwh/4zNjdFejXkfmX5JaLS4jPnHBW+E/MtebD36asc0CQ4DMuc5FNlYoahz7JSQMfdb49CFpydJKOVcurWA2H4bFsIdbWezVZGZJ3l/Gi3DxybG5xJGRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728732581; c=relaxed/simple;
-	bh=s6a75ygW/XR1hPToCJ4pwziJfz1cgmCxHl4xM3zC+eM=;
+	s=arc-20240116; t=1728732582; c=relaxed/simple;
+	bh=nuDHZL0R8SpjRBAt4YFJOLzjwVCJe0Myzqm1d8Rvkus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P3PO3KODuCbLl9D8UjdUuxxFRYWy3BNKilmpmVBCe1WT1yAI+PMm/54UiiyYVcFxQvAvQZK3zRnDj0UTO+fYfDTA6Mzh/2stkQSl4Y80I+nPi7WOu8SOQWoFlR5kdshpJsfRWAYzDxNUltfmtc/0Z3CyahDUtgGBTEzFQH9tryg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rdHGK88a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F23C4CECE;
-	Sat, 12 Oct 2024 11:29:40 +0000 (UTC)
+	 MIME-Version; b=AE40WP40Fn1Oz/Crpw3VMlofXp/o36OsNvzu/7vcCfzAaYdPLVzFcLERC/vANBuN124QFZm+vdNZurbpUBFwjlTiT5McSZiGMslYBqjB5MPg2F5xG2GV89ZFXmlVSb6sXDKpQASgiF5KMm4CJLq0WZm/aDKFKWefh4fNQjAidUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t3rhUbMl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F77FC4CEC6;
+	Sat, 12 Oct 2024 11:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728732580;
-	bh=s6a75ygW/XR1hPToCJ4pwziJfz1cgmCxHl4xM3zC+eM=;
+	s=k20201202; t=1728732582;
+	bh=nuDHZL0R8SpjRBAt4YFJOLzjwVCJe0Myzqm1d8Rvkus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rdHGK88aDUvmUvj6zIR36ELlhzDZ4tVVuy7fDo8RMzzkoFpktX0Dt7Bm+mPc57TyD
-	 i4ejEbVxaVWPx8N2YrxWXthPWl2tVC1HXyzlzgbq14lQJqHq3pfPBiG0jxNCxXCGop
-	 WcEBnBgbW9xCGa8bQZp/LH/4EDKFa75D1AIkWUByxWyjfiRPc8ma39L0FYiyfWkSJk
-	 1i3EgH47NJSfBnyqPa/jKDzQPtUdtN9EGGqrol0gpSR9I68eDQkBKco4/aF3AS9zOA
-	 UUZpE2aMymo50hudBtJidJQyalBS5p/8PoamGh4p+wyfCTM4uagIhd5oBQTPX/G6b1
-	 04FpZq/yeHznw==
+	b=t3rhUbMlO4PYEJ+FrS83CZcVBwCUpLqK3UH+aX/k+ZvvMBsaKI5lUbsqh+NJ76oiH
+	 mPRHZflWtBlz+OGN2NJreA7PFAG0pl3fF/EMWp57WX+b1x4ymbnspxyVdb8LlM2wWi
+	 oT0vW1PfST0znOo6pXM3EnGR0akRu/SOaM5t/thMJn961l3XowaGIvqi+E34D1G0pi
+	 UwiATRrLCbNp+4vpcIlD8GxCo8NixHflexI8C8bYIN1JjOZP72iursUVcTUsk5SQsl
+	 SpuNdBq8CwRHgxQV3gMBfvXiILp30jeJapdK9e8Rf+LXPiziC+gvr0EfxnjqcVr5Kb
+	 GuLxTIxVRSWIA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.10 8/9] lib/generic-radix-tree.c: Fix rare race in __genradix_ptr_alloc()
-Date: Sat, 12 Oct 2024 07:29:13 -0400
-Message-ID: <20241012112922.1764240-8-sashal@kernel.org>
+Cc: Jeff Layton <jlayton@kernel.org>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>,
+	clm@fb.com,
+	josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 9/9] btrfs: update target inode's ctime on unlink
+Date: Sat, 12 Oct 2024 07:29:14 -0400
+Message-ID: <20241012112922.1764240-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241012112922.1764240-1-sashal@kernel.org>
 References: <20241012112922.1764240-1-sashal@kernel.org>
@@ -63,37 +67,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.226
 Content-Transfer-Encoding: 8bit
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit b2f11c6f3e1fc60742673b8675c95b78447f3dae ]
+[ Upstream commit 3bc2ac2f8f0b78a13140fc72022771efe0c9b778 ]
 
-If we need to increase the tree depth, allocate a new node, and then
-race with another thread that increased the tree depth before us, we'll
-still have a preallocated node that might be used later.
+Unlink changes the link count on the target inode. POSIX mandates that
+the ctime must also change when this occurs.
 
-If we then use that node for a new non-root node, it'll still have a
-pointer to the old root instead of being zeroed - fix this by zeroing it
-in the cmpxchg failure path.
+According to https://pubs.opengroup.org/onlinepubs/9699919799/functions/unlink.html:
 
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+"Upon successful completion, unlink() shall mark for update the last data
+ modification and last file status change timestamps of the parent
+ directory. Also, if the file's link count is not 0, the last file status
+ change timestamp of the file shall be marked for update."
+
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: David Sterba <dsterba@suse.com>
+[ add link to the opengroup docs ]
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/generic-radix-tree.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/generic-radix-tree.c b/lib/generic-radix-tree.c
-index f25eb111c0516..34d3ac52de894 100644
---- a/lib/generic-radix-tree.c
-+++ b/lib/generic-radix-tree.c
-@@ -131,6 +131,8 @@ void *__genradix_ptr_alloc(struct __genradix *radix, size_t offset,
- 		if ((v = cmpxchg_release(&radix->root, r, new_root)) == r) {
- 			v = new_root;
- 			new_node = NULL;
-+		} else {
-+			new_node->children[0] = NULL;
- 		}
- 	}
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 1f99d7dced17a..4a6c85df7b3ce 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -3704,6 +3704,7 @@ static int __btrfs_unlink_inode(struct btrfs_trans_handle *trans,
  
+ 	btrfs_i_size_write(dir, dir->vfs_inode.i_size - name_len * 2);
+ 	inode_inc_iversion(&inode->vfs_inode);
++	inode_set_ctime_current(&inode->vfs_inode);
+ 	inode_inc_iversion(&dir->vfs_inode);
+ 	inode->vfs_inode.i_ctime = dir->vfs_inode.i_mtime =
+ 		dir->vfs_inode.i_ctime = current_time(&inode->vfs_inode);
 -- 
 2.43.0
 
