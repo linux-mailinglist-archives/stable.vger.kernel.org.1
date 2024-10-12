@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-83549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 223C899B3D4
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:36:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E944699B3D7
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:36:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83BBDB23AD6
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:36:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A97672863B5
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3451C9EBF;
-	Sat, 12 Oct 2024 11:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D351CC171;
+	Sat, 12 Oct 2024 11:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zv7GplDe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tOmzOEmp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7182A161310;
-	Sat, 12 Oct 2024 11:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46101CBEB8;
+	Sat, 12 Oct 2024 11:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728732481; cv=none; b=Hwd7ChECQ7ILWIghi4/ueBYXlnUeZyOJCygscUAVG7eUhiQIed4zmmNhdWtXg4NbtXQ2jacPhBTKY2JE1INeocAI9Eg/uZk9KzxrneAKkVIbPjho3axUjVbv8XVfKWyu52p3A7/8EP2w3ERAORHt76O6xRuw3Ysx6cNBzf2g3GE=
+	t=1728732482; cv=none; b=oD0gkj1w490gUbQzYihXCYrhPHscjfK0qVpYLkcEVNNv3yNRWa0nd5ZShewXMJmV7aZggxiHNT1301Immzip5DCXYzQaqLvdtln5KPaq+FthNidoN+H2JEYtUzDva3Lvwf+BVS09eP5ueISpMNaWmBmctF4wYT3ci+p9jQKJecM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728732481; c=relaxed/simple;
-	bh=puTmv4xsqmpJFI+PMGcQwnS9bPy4XtIzMU074nWDteA=;
+	s=arc-20240116; t=1728732482; c=relaxed/simple;
+	bh=YDVSGA/jFK4M17MfyjQFVNfdTrCHk87aLypRffFNPO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YA+4UDgWogXtWIeNeAPbOivprBiWE79NMaQC1VMN7c7t8Gt8A+GrdzLnsPQf02ahh2NY7eCLTTS8dbwU+x2Tp+lYSJMMAny90vifF6ELu21SnhClGimiRVQaR6l5irfLv5jYw/WPAVx+NkOsdH2hE9+gMF24IO9z14tpmGZRASQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zv7GplDe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3025FC4CEC7;
-	Sat, 12 Oct 2024 11:27:59 +0000 (UTC)
+	 MIME-Version; b=Hvhd32ISGK+12ynkd6B1ASL4SbFCelxWhz/l+mRj6amh0bETXluP9GgAuzi3fKNBz9I4GBAF26UXysGPzvQAD4xG8mobL3g7gXcOMmuSpt6+4kEt0W95KYd5JeCD+Lg61D1jyt8VPrYGFj/BPBORUI3v5/CLLH9Rhgyz+nObjXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tOmzOEmp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B31CC4CEC6;
+	Sat, 12 Oct 2024 11:28:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728732481;
-	bh=puTmv4xsqmpJFI+PMGcQwnS9bPy4XtIzMU074nWDteA=;
+	s=k20201202; t=1728732482;
+	bh=YDVSGA/jFK4M17MfyjQFVNfdTrCHk87aLypRffFNPO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zv7GplDewklujL8JgOan25g0blEshr2AiM+AARcdBxksJJ5wY/O5a+w1v4rhpK8Ip
-	 nb0094khM8Sr380fK2fz3Fgp1TLwjsv3HM5dcN+JGEaTqCoi2QDjz7OoBYgCSHDrEG
-	 O7YdJ0yAU464nAvOQMNrLC7hKYyY8apSH3kwnm7E0r8eVBZm+6pwz2UsfhJArDJKXN
-	 9osX+wfAS47iRRY5EHlCQFg10tXqjWr/DhhiC0Gf+lVXU0SfuZv778eGg0Obet4vou
-	 z2xPV3Oa1x2DFKRVxI3JIfNy7wzeWMETgw974as+hpoDr6ETenkl1byZEgT70aKSad
-	 V9dECtBJodSkg==
+	b=tOmzOEmp3jBevQUFYtJJkqoFzTX3IRNm4FMPUWhrRRMLuaHGeZDOsG7CzOLlO8aFH
+	 7Gftn/znxcx1fRm9PlMzJus1dueKtRrc/cz+rFMsp13DNN8VduTexMbkygT/xXWHw0
+	 C/0MIbV+ZzmjdZw6L1BnID8hRWAB368C8xRy4bwUEdpBstMjvEJYBBicSWY9YITRb+
+	 hh6RijuOn74TqMzavQICZQLf3s4zA+pXlYRRgiYYbJjYF3ozL/B/UDpO7lH6f0Stbm
+	 et8HegJWngKrmq+/UC1lIILdT/CprYBW/Wkyhvos60FSxtz7mOyhQ6SZuMVpUAEeTK
+	 tLqDA5zIL438A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Jeff Layton <jlayton@kernel.org>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	yisen.zhuang@huawei.com,
-	salil.mehta@huawei.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	horms@kernel.org,
-	liuyonglong@huawei.com,
-	lanhao@huawei.com,
-	shenjian15@huawei.com,
-	chenhao418@huawei.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 19/20] net: hns3: use correct release function during uninitialization
-Date: Sat, 12 Oct 2024 07:26:51 -0400
-Message-ID: <20241012112715.1763241-19-sashal@kernel.org>
+	clm@fb.com,
+	josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 20/20] btrfs: update target inode's ctime on unlink
+Date: Sat, 12 Oct 2024 07:26:52 -0400
+Message-ID: <20241012112715.1763241-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241012112715.1763241-1-sashal@kernel.org>
 References: <20241012112715.1763241-1-sashal@kernel.org>
@@ -76,37 +67,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.56
 Content-Transfer-Encoding: 8bit
 
-From: Peiyang Wang <wangpeiyang1@huawei.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 7660833d217528c8f2385528951ab820a031e4e3 ]
+[ Upstream commit 3bc2ac2f8f0b78a13140fc72022771efe0c9b778 ]
 
-pci_request_regions is called to apply for PCI I/O and memory resources
-when the driver is initialized, Therefore, when the driver is uninstalled,
-pci_release_regions should be used to release PCI I/O and memory resources
-instead of pci_release_mem_regions is used to release memory reasouces
-only.
+Unlink changes the link count on the target inode. POSIX mandates that
+the ctime must also change when this occurs.
 
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+According to https://pubs.opengroup.org/onlinepubs/9699919799/functions/unlink.html:
+
+"Upon successful completion, unlink() shall mark for update the last data
+ modification and last file status change timestamps of the parent
+ directory. Also, if the file's link count is not 0, the last file status
+ change timestamp of the file shall be marked for update."
+
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: David Sterba <dsterba@suse.com>
+[ add link to the opengroup docs ]
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index c8059d96f64be..3b01447478159 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -11358,7 +11358,7 @@ static void hclge_pci_uninit(struct hclge_dev *hdev)
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 5ddee801a8303..173b16ae510b0 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4145,6 +4145,7 @@ static int __btrfs_unlink_inode(struct btrfs_trans_handle *trans,
  
- 	pcim_iounmap(pdev, hdev->hw.hw.io_base);
- 	pci_free_irq_vectors(pdev);
--	pci_release_mem_regions(pdev);
-+	pci_release_regions(pdev);
- 	pci_disable_device(pdev);
- }
- 
+ 	btrfs_i_size_write(dir, dir->vfs_inode.i_size - name->len * 2);
+ 	inode_inc_iversion(&inode->vfs_inode);
++	inode_set_ctime_current(&inode->vfs_inode);
+ 	inode_inc_iversion(&dir->vfs_inode);
+ 	inode_set_ctime_current(&inode->vfs_inode);
+ 	dir->vfs_inode.i_mtime = inode_set_ctime_current(&dir->vfs_inode);
 -- 
 2.43.0
 
