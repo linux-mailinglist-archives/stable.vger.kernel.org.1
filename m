@@ -1,117 +1,124 @@
-Return-Path: <stable+bounces-83510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390F399B05C
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 05:12:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DAF999B07C
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 05:38:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD3B31F21C46
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 03:12:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96D12B215D5
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 03:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F9B84A27;
-	Sat, 12 Oct 2024 03:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E521126BE1;
+	Sat, 12 Oct 2024 03:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BD+0rAkO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Onmg9MY+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A950C83A09;
-	Sat, 12 Oct 2024 03:12:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E2B41C6E;
+	Sat, 12 Oct 2024 03:37:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728702726; cv=none; b=uPfHTRJ1sgO5ytPO6Ju75vlSC0YbFAymZ23j+xm/YcYKptisW2jVKtfFySqvADie8g7ZMEaBp3pEAurdgVrJU6m98gcg/BmPwKPDGkO34511I3nU27zoHcZlCkA702Q0ZQAtqwZKqMQM5nvJ0qY+pWrLMaKWT9v+C69HUf7ivew=
+	t=1728704275; cv=none; b=BoIzl74tesKgSRk/JXYmLQ/lYLNuHAcronOj1C9bly3TudMpH+pXNMh+bU8HQeFVdLOlUGV47wi/93wXtfrHx8zWO7nQovnBBpnrjyInoISln3+Mwxlf2GjywCLlu+UwzMFBe3RSHRuLl/wc2myNvbLaaheuAPBHns+XlLAP+UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728702726; c=relaxed/simple;
-	bh=N6QnKyCgH86gZ1rm4E6UpKa9Rp30p/4gvNo01+zrWLU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VhzmzutwJj47WYXyZo5g4U99FdxR4PEzLcw2VaoTIdt11L3FitAIkE9WWXqOI6nBDcd1OQL2My46sFAeDIukj6SQDArGWA8gpbuhgwn2UID3TP42XhXckvLnfAz+3yBtWhtZpTk/+/nfcPE9ogeJGAFyZ1Ugg+cmkw8G9xhVJ8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BD+0rAkO; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1728704275; c=relaxed/simple;
+	bh=nDTLNW21/SY6L/1mKys6bWAEfSqQxK7ebVskE/LZEU4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g0Y0JraxDTBDDW+CMULE8SaIr1uBl1tRpFlWxVEOJeg2g9Ox6oh20+VmKdrjHIZ60spufHSdqjYBlNtkrMrBy7eoKGM8cXKkx0hv39G4tmZR8JkvmwoMjpC6h1TG4ivQyGYyyA9mCU4ptfAqHJazd7w7u12bsnA5omw1KzwWkv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Onmg9MY+; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728702725; x=1760238725;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=N6QnKyCgH86gZ1rm4E6UpKa9Rp30p/4gvNo01+zrWLU=;
-  b=BD+0rAkO121UOxcydhP8RBIFYet/L8217N2Ji+xs/4E8Xma51dzVExyu
-   WY1BfM3v8y67T408jqC4GKqEJHmvPnDWi44EzzcZSM7BZqTEp5WbhG1Fs
-   0h3pNyo8lJoH01WcmeQJkzX2ykQ2wZFw7V24iF1XnAst42wH6EoEXVdW1
-   Hxn1eIfHnVvh9zBNyCIaQCAfMk2msXMvbf2J8G+bRFGs3HF/3fPAbhOPG
-   ypEJVPL+r0MYeov7db9EN+WrHOPUo+W8+bfY+x/wjJE7Y0EsAjKKKOCSt
-   CqNwZWtvHwOhsq6c0Bf9oLmJpuRFL5epJ2VzS7NcSeDwvHWeMH3bCA6qA
-   w==;
-X-CSE-ConnectionGUID: HUbSiW75QMur1aOsMRQqjQ==
-X-CSE-MsgGUID: CL1Y7wfwQd2eeZEsrbkXCA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="53538813"
+  t=1728704274; x=1760240274;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=nDTLNW21/SY6L/1mKys6bWAEfSqQxK7ebVskE/LZEU4=;
+  b=Onmg9MY+R2xtj3pq1bd4j6xv8QMaln1iK+m/yIU+eBW3PAio8VfWhwcw
+   I1fTPbOuh1GkS46L7TyEg3oRlD7vwpT63EuytEXlofpbdWW/jmDNRKxcS
+   Vt9O2TfhYMQkkI+LbKX/eu9cUOrLw1sTFxuvVCHNiMLs3zzDNvMq/YZnd
+   3FWqd1QbhGexjE65qTXgRSvPKSdvsRM6fhJYLB+uJlhSTD7Uybdgd1iiK
+   vPmSU+dv7iQI3HCWbNS1D0agydoBcsx+WlkmbMlNbv0CqwvPwDI3Z7Zi0
+   nlqKavuxp1vwe2gr5QXf9sY/+FKhGNhP4NZs+TKayi0u+cbKrtBhe9sQt
+   Q==;
+X-CSE-ConnectionGUID: SEAZWXkIQgq07nDam9VJQA==
+X-CSE-MsgGUID: kAMzX8qcQEGcwjzdtUlPKA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="45589902"
 X-IronPort-AV: E=Sophos;i="6.11,197,1725346800"; 
-   d="scan'208";a="53538813"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 20:12:04 -0700
-X-CSE-ConnectionGUID: 6oBZTLuaRVOQ+Xz/37utTw==
-X-CSE-MsgGUID: OWcJ48xrQy2eGmlBYI3UuA==
+   d="scan'208";a="45589902"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 20:37:54 -0700
+X-CSE-ConnectionGUID: UWAFK5xlQImDOpIn5TSDug==
+X-CSE-MsgGUID: /sCsxcU+TXWuOY4tkY0i7A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,197,1725346800"; 
-   d="scan'208";a="76707677"
-Received: from allen-box.sh.intel.com ([10.239.159.127])
-  by fmviesa006.fm.intel.com with ESMTP; 11 Oct 2024 20:12:02 -0700
-From: Lu Baolu <baolu.lu@linux.intel.com>
-To: Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>
-Cc: Todd Brandt <todd.e.brandt@intel.com>,
-	iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/1] iommu/vt-d: Fix incorrect pci_for_each_dma_alias() for non-PCI devices
-Date: Sat, 12 Oct 2024 11:07:20 +0800
-Message-ID: <20241012030720.90218-1-baolu.lu@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+   d="scan'208";a="77557665"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 11 Oct 2024 20:37:51 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1szSwu-000D0l-1M;
+	Sat, 12 Oct 2024 03:37:48 +0000
+Date: Sat, 12 Oct 2024 11:37:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, stable@vger.kernel.org,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Steev Klimaszewski <steev@kali.org>
+Subject: Re: [PATCH] ASoC: qcom: sc7280: Fix missing Soundwire runtime stream
+ alloc
+Message-ID: <202410121144.H6lBicv6-lkp@intel.com>
+References: <20241010054109.16938-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241010054109.16938-1-krzysztof.kozlowski@linaro.org>
 
-Previously, the domain_context_clear() function incorrectly called
-pci_for_each_dma_alias() to set up context entries for non-PCI devices.
-This could lead to kernel hangs or other unexpected behavior.
+Hi Krzysztof,
 
-Add a check to only call pci_for_each_dma_alias() for PCI devices. For
-non-PCI devices, domain_context_clear_one() is called directly.
+kernel test robot noticed the following build errors:
 
-Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219363
-Fixes: 9a16ab9d6402 ("iommu/vt-d: Make context clearing consistent with context mapping")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
----
- drivers/iommu/intel/iommu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+[auto build test ERROR on broonie-sound/for-next]
+[also build test ERROR on linus/master v6.12-rc2 next-20241011]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 9f6b0780f2ef..e860bc9439a2 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -3340,8 +3340,10 @@ static int domain_context_clear_one_cb(struct pci_dev *pdev, u16 alias, void *op
-  */
- static void domain_context_clear(struct device_domain_info *info)
- {
--	if (!dev_is_pci(info->dev))
-+	if (!dev_is_pci(info->dev)) {
- 		domain_context_clear_one(info, info->bus, info->devfn);
-+		return;
-+	}
- 
- 	pci_for_each_dma_alias(to_pci_dev(info->dev),
- 			       &domain_context_clear_one_cb, info);
+url:    https://github.com/intel-lab-lkp/linux/commits/Krzysztof-Kozlowski/ASoC-qcom-sc7280-Fix-missing-Soundwire-runtime-stream-alloc/20241010-134305
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+patch link:    https://lore.kernel.org/r/20241010054109.16938-1-krzysztof.kozlowski%40linaro.org
+patch subject: [PATCH] ASoC: qcom: sc7280: Fix missing Soundwire runtime stream alloc
+config: powerpc64-randconfig-r052-20241011 (https://download.01.org/0day-ci/archive/20241012/202410121144.H6lBicv6-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 70e0a7e7e6a8541bcc46908c592eed561850e416)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241012/202410121144.H6lBicv6-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410121144.H6lBicv6-lkp@intel.com/
+
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+WARNING: modpost: missing MODULE_DESCRIPTION() in mm/kasan/kasan_test.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in mm/kasan/kasan_test_module.o
+>> ERROR: modpost: "qcom_snd_sdw_startup" [sound/soc/qcom/snd-soc-sc7280.ko] undefined!
+
 -- 
-2.43.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
