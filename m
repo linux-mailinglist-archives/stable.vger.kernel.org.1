@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-83559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0796999B3F3
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:39:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE6599B3F4
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:39:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4C1DB217D8
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:39:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5EBF288753
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD271D1F60;
-	Sat, 12 Oct 2024 11:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2AC1E6316;
+	Sat, 12 Oct 2024 11:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZGpBLTAd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MsevqKbf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE3D155330;
-	Sat, 12 Oct 2024 11:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7371E630D;
+	Sat, 12 Oct 2024 11:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728732521; cv=none; b=c8FZBy9ilUCNNUKDoggB1lkSd7DU3uvVg7w9KzW8Ek7yVvRlQEmw6MYCiCtxSHMY7yQUdmM2WNZAubCLX+LSK/GC/wGaRZNa+teH0f5zW0qNVpB2Lf8fjjO9Of/LtZFMkdpNq+slxHBt77bHfmrxh39oYWfC9mgrccRxSVKBthw=
+	t=1728732523; cv=none; b=Qrfu4s9JPlMFUv6qyCfi36hsmUilSel98c4JgSMBjDvDxix+pLuF8bdFGh/kpkenf+Hf6U+lAwsjNEmeh21g8uO57qV1xEuPAgGFDhwtVVcmSD4N+cQEFvelDiVD4bK2EwuYGDKvs/SvQwXQKcq8Lmd08oi6Oqam49SMEkS8kDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728732521; c=relaxed/simple;
-	bh=ZTPbxuQvV6jqCBSrT0OYW3+1G2s/lDk827YHZs04KpM=;
+	s=arc-20240116; t=1728732523; c=relaxed/simple;
+	bh=mmhBkxJq8mzJIprwJgv8yMGf2dMntwHjpI9DcPhE5V8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1CxgAnqK3KD2KGztU59tBKXjdUS3Jjw2HI1eJ2yGjVkM9zoWqMfnL74Tb+T1BTkmtzzcwyzR8v4yb5oZBsll709XMJrYUyCphfgUvPdqimKZ+iEEwdaSwlcHYgifOhqH5x4z0qnFwC+aQcoutUzexgdl8O4vcQRbB5RuCG5/xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZGpBLTAd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF4CC4CECE;
-	Sat, 12 Oct 2024 11:28:39 +0000 (UTC)
+	 MIME-Version; b=oVItouvWvkfqUMxkDAJ75IVgmrzFZVWQv4Rum+nRyDINlqwuh7Xc4CYWA1DvRODVUFCt0a7fLfNPT8SWRA6vjMClaMEOJhIgDAQe/vmpSkc/BRMldjdZ1K5g6lG4FL5rNqkTuExJoFp/MyuaEfydOmvB/xLGPNd0VtWCFuCyUyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MsevqKbf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2B7C4CEC6;
+	Sat, 12 Oct 2024 11:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728732521;
-	bh=ZTPbxuQvV6jqCBSrT0OYW3+1G2s/lDk827YHZs04KpM=;
+	s=k20201202; t=1728732522;
+	bh=mmhBkxJq8mzJIprwJgv8yMGf2dMntwHjpI9DcPhE5V8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZGpBLTAdroY5rs/G2aI15Hjc/NgEopx27oLLoah/GawY/vyTJcCkZJ7duWn7DMgYk
-	 AcBh/pgwmtLZtb80jvas3WilVemopqBNQ9rung3gCyowBwKbv5MsduJbV9zcadi8ni
-	 sriBiE0E7hNdnpE+ePXjDv6qmWlJicAwz4SIb2AgxnO2O3q4OX2yi2WR7KwQ5zcGyw
-	 LZrRfu8Dxu8AxyMW1NnLtOn7oAYVROjtjkS5WcsK5GM2HqV7449/WqgKwygvimgx73
-	 p9Njye5IFdNEodtnoa795k6lXZuhRvbIhg8YIxn1Wkw0aNME3GS4e+o5evtSxK4eHA
-	 ZGbN03/keiTeA==
+	b=MsevqKbfRr8tDZqpS2pRvRPG2eJvtkVKapSo80+OBqL1cnFVbp2IfFEB4fYVmJXpP
+	 0j0W2q2P4TNvPNDSnBemeyWB7WhrbBHQmhULok46nPB5IDOpPjQ9lU2ok7hyvzPFR/
+	 rdJ3y0ZvSC4Lfte1cOVxZMtndChM+ietpZD6UNTKRyVChXPFteF+Yink63Py8ZYamo
+	 TuDLCxghk1AsUayA/3SKtW/tzDU+tl/5J+CaCvrXZItWb3ddAh/ABbGTHAQM+gYpMh
+	 gl7Q2Ln7KMwjk85ulM/pkR7cn1z7SzwdE0oTx24HMPWAs/XVt0Uu+27sgE0oaYNsKC
+	 ZjqfU9iEHnYqg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>,
-	hbathini@linux.ibm.com,
-	rostedt@goodmis.org,
-	gregkh@linuxfoundation.org,
-	bhe@redhat.com,
-	arnd@arndb.de,
-	willy@infradead.org,
-	rppt@kernel.org,
-	pasha.tatashin@soleen.com,
-	tzimmermann@suse.de,
-	kent.overstreet@linux.dev,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.1 09/13] powerpc/mm: Fix boot warning with hugepages and CONFIG_DEBUG_VIRTUAL
-Date: Sat, 12 Oct 2024 07:27:58 -0400
-Message-ID: <20241012112818.1763719-9-sashal@kernel.org>
+Cc: Phillip Lougher <phillip@squashfs.org.uk>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 10/13] Squashfs: sanity check symbolic link size
+Date: Sat, 12 Oct 2024 07:27:59 -0400
+Message-ID: <20241012112818.1763719-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241012112818.1763719-1-sashal@kernel.org>
 References: <20241012112818.1763719-1-sashal@kernel.org>
@@ -75,83 +66,66 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.112
 Content-Transfer-Encoding: 8bit
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-[ Upstream commit e7e846dc6c73fbc94ae8b4ec20d05627646416f2 ]
+[ Upstream commit 810ee43d9cd245d138a2733d87a24858a23f577d ]
 
-Booting with CONFIG_DEBUG_VIRTUAL leads to following warning when
-passing hugepage reservation on command line:
+Syzkiller reports a "KMSAN: uninit-value in pick_link" bug.
 
-  Kernel command line: hugepagesz=1g hugepages=1 hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1 noreboot
-  HugeTLB: allocating 1 of page size 1.00 GiB failed.  Only allocated 0 hugepages.
-  ------------[ cut here ]------------
-  WARNING: CPU: 0 PID: 0 at arch/powerpc/include/asm/io.h:948 __alloc_bootmem_huge_page+0xd4/0x284
-  Modules linked in:
-  CPU: 0 PID: 0 Comm: swapper Not tainted 6.10.0-rc6-00396-g6b0e82791bd0-dirty #936
-  Hardware name: MPC8544DS e500v2 0x80210030 MPC8544 DS
-  NIP:  c1020240 LR: c10201d0 CTR: 00000000
-  REGS: c13fdd30 TRAP: 0700   Not tainted  (6.10.0-rc6-00396-g6b0e82791bd0-dirty)
-  MSR:  00021000 <CE,ME>  CR: 44084288  XER: 20000000
+This is caused by an uninitialised page, which is ultimately caused
+by a corrupted symbolic link size read from disk.
 
-  GPR00: c10201d0 c13fde20 c130b560 e8000000 e8001000 00000000 00000000 c1420000
-  GPR08: 00000000 00028001 00000000 00000004 44084282 01066ac0 c0eb7c9c efffe149
-  GPR16: c0fc4228 0000005f ffffffff c0eb7d0c c0eb7cc0 c0eb7ce0 ffffffff 00000000
-  GPR24: c1441cec efffe153 e8001000 c14240c0 00000000 c1441d64 00000000 e8000000
-  NIP [c1020240] __alloc_bootmem_huge_page+0xd4/0x284
-  LR [c10201d0] __alloc_bootmem_huge_page+0x64/0x284
-  Call Trace:
-  [c13fde20] [c10201d0] __alloc_bootmem_huge_page+0x64/0x284 (unreliable)
-  [c13fde50] [c10207b8] hugetlb_hstate_alloc_pages+0x8c/0x3e8
-  [c13fdeb0] [c1021384] hugepages_setup+0x240/0x2cc
-  [c13fdef0] [c1000574] unknown_bootoption+0xfc/0x280
-  [c13fdf30] [c0078904] parse_args+0x200/0x4c4
-  [c13fdfa0] [c1000d9c] start_kernel+0x238/0x7d0
-  [c13fdff0] [c0000434] set_ivor+0x12c/0x168
-  Code: 554aa33e 7c042840 3ce0c142 80a7427c 5109a016 50caa016 7c9a2378 7fdcf378 4180000c 7c052040 41810160 7c095040 <0fe00000> 38c00000 40800108 3c60c0eb
-  ---[ end trace 0000000000000000 ]---
+The reason why the corrupted symlink size causes an uninitialised
+page is due to the following sequence of events:
 
-This is due to virt_addr_valid() using high_memory before it is set.
+1. squashfs_read_inode() is called to read the symbolic
+   link from disk.  This assigns the corrupted value
+   3875536935 to inode->i_size.
 
-high_memory is set in mem_init() using max_low_pfn, but max_low_pfn
-is available long before, it is set in mem_topology_setup(). So just
-like commit daa9ada2093e ("powerpc/mm: Fix boot crash with FLATMEM")
-moved the setting of max_mapnr immediately after the call to
-mem_topology_setup(), the same can be done for high_memory.
+2. Later squashfs_symlink_read_folio() is called, which assigns
+   this corrupted value to the length variable, which being a
+   signed int, overflows producing a negative number.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/62b69c4baad067093f39e7e60df0fe27a86b8d2a.1723100702.git.christophe.leroy@csgroup.eu
+3. The following loop that fills in the page contents checks that
+   the copied bytes is less than length, which being negative means
+   the loop is skipped, producing an uninitialised page.
+
+This patch adds a sanity check which checks that the symbolic
+link size is not larger than expected.
+
+--
+
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Link: https://lore.kernel.org/r/20240811232821.13903-1-phillip@squashfs.org.uk
+Reported-by: Lizhi Xu <lizhi.xu@windriver.com>
+Reported-by: syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000a90e8c061e86a76b@google.com/
+V2: fix spelling mistake.
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/setup-common.c | 1 +
- arch/powerpc/mm/mem.c              | 2 --
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ fs/squashfs/inode.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index 59b4ac57bfaf7..56f6b958926d7 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -948,6 +948,7 @@ void __init setup_arch(char **cmdline_p)
- 	mem_topology_setup();
- 	/* Set max_mapnr before paging_init() */
- 	set_max_mapnr(max_pfn);
-+	high_memory = (void *)__va(max_low_pfn * PAGE_SIZE);
+diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
+index 24463145b3513..f31649080a881 100644
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -276,8 +276,13 @@ int squashfs_read_inode(struct inode *inode, long long ino)
+ 		if (err < 0)
+ 			goto failed_read;
  
- 	/*
- 	 * Release secondary cpus out of their spinloops at 0x60 now that
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index c7599b1737099..40f4a31f001c2 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -287,8 +287,6 @@ void __init mem_init(void)
- 	swiotlb_init(ppc_swiotlb_enable, ppc_swiotlb_flags);
- #endif
- 
--	high_memory = (void *) __va(max_low_pfn * PAGE_SIZE);
--
- 	kasan_late_init();
- 
- 	memblock_free_all();
+-		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		inode->i_size = le32_to_cpu(sqsh_ino->symlink_size);
++		if (inode->i_size > PAGE_SIZE) {
++			ERROR("Corrupted symlink\n");
++			return -EINVAL;
++		}
++
++		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		inode->i_op = &squashfs_symlink_inode_ops;
+ 		inode_nohighmem(inode);
+ 		inode->i_data.a_ops = &squashfs_symlink_aops;
 -- 
 2.43.0
 
