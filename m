@@ -1,112 +1,111 @@
-Return-Path: <stable+bounces-83595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8720C99B525
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 15:45:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0DF99B574
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 16:19:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C9911F21BA9
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:45:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98CB8284A74
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 14:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92CEF188905;
-	Sat, 12 Oct 2024 13:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 134CB19308A;
+	Sat, 12 Oct 2024 14:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eQRLqgj5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="juZrLeF8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468341865E5;
-	Sat, 12 Oct 2024 13:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCAEF38384;
+	Sat, 12 Oct 2024 14:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728740717; cv=none; b=RpBn+Vkvf0NctsA9ATiNS4BuU9NNkX5EaZiYPm/gARwM4D4pFT/Q3BvgT7UF1vWR5iSy1OvRL4XTxNZgxvxFKmfrU8Z5V2SZYrLYgSaaM1hCkg/11gxa4npU6QjSSU4RMjapTDqf5+m6Pu3Y5XmG5WYpl3PI6C9yePmM9EiPeEI=
+	t=1728742788; cv=none; b=NuXKxSzBMQdk/nBZ451sXza6s9yEEdgj3PR4p6k4O8vCeUpZNp2EWSSDM9rftAJnu39MyL9qMCf2ycZ6k9Z6Rnhm3HJe0qm16CcFemL9XbBmW4acrXHCS5GkdcIcViIxW1SLI6RqhS/PTVwd67av8ls6PMgnhzhp/nkJbzpgiiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728740717; c=relaxed/simple;
-	bh=wFO/BEkxAv0jnR74dC7SV1DUeOypHs1KnzH88SIcVbk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JBFJsUddVXbJLxGtsu6KqxvBv44iQ+v7Y76d1Cvs1Zy/fWWRiBies7EE+xuJoA4hf6Q1jBsC16YiZxPx9OKJHY5RM3jUG1GUElVuZTEVm10OF5B3Stz3N0PKpH2MZyGSMkxekxDg/IbRF6y40vfLAhvQ+zrfWeByltfJDN2be5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eQRLqgj5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 320E5C4CEC6;
-	Sat, 12 Oct 2024 13:45:11 +0000 (UTC)
+	s=arc-20240116; t=1728742788; c=relaxed/simple;
+	bh=UGX0PCuMoBfiAAVtFvwd7UVBfTp9C13ZWy2aAjRvrdU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=pXyu7xAlEaY0GHSFJQZnchMPFAdWqYuVTctFCRx2mZBcVcGJUx0G1Oj50igwh7sm6CM8klvG/pDcNW3cN6UDmBWN56biKjiiL/I4dO0RQBTsZi7DaINq/1CP9vycr3FFR9+bUC9In8i53Sne7tbd1c6AisisbnGrKr3R8O2+Oeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=juZrLeF8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08886C4CEC6;
+	Sat, 12 Oct 2024 14:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728740716;
-	bh=wFO/BEkxAv0jnR74dC7SV1DUeOypHs1KnzH88SIcVbk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eQRLqgj5XlXG3GF32bVL4NXFRBzU35TzISHvO2DutQvf8/yRoxPp06jIcP6Yi/aBe
-	 NuSt+6nd11fLOcDWY0yHm6LoRDsSH3Q4CY+qWt39R39TQVeOpQtcJZDKQx0pVKbXLN
-	 0VMvFuzYc6GVbWh8T9RyOCCTESLT/YhJw5zNxmMmLh+1jTeZs351Q6xgqMGWb1bE/W
-	 4oIzKaKJetmsEwRR7Ag1JQhS07tAWGpFSbcRqJiLn7xhtRWUEZSW9MeJMqQP6ny4LS
-	 JTLMrPbtp1uEUhPMQ0GmANhJF8GiGTfFOYhVepTWcWR9rLpu3+BENwks3RqNjFq/g2
-	 kFmr3e/YLJ7KQ==
-Date: Sat, 12 Oct 2024 14:45:07 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- dletchner@baylibre.com, Mark Brown <broonie@kernel.org>,
- stable@vger.kernel.org
-Subject: Re: [PATCH v5 01/10] iio: dac: adi-axi-dac: fix wrong register
- bitfield
-Message-ID: <20241012144507.216027e1@jic23-huawei>
-In-Reply-To: <20241008-wip-bl-ad3552r-axi-v0-iio-testing-v5-1-3d410944a63d@baylibre.com>
-References: <20241008-wip-bl-ad3552r-axi-v0-iio-testing-v5-0-3d410944a63d@baylibre.com>
-	<20241008-wip-bl-ad3552r-axi-v0-iio-testing-v5-1-3d410944a63d@baylibre.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=k20201202; t=1728742788;
+	bh=UGX0PCuMoBfiAAVtFvwd7UVBfTp9C13ZWy2aAjRvrdU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=juZrLeF8mJ676GPmN4cI3Ys7qEok0aQk9imB3bBDPsrZnHWOw+lDEJzQJikQlnvQG
+	 M3+ENaCImlwltHqeGHITaqClk2acdHX+HfGXb8JtQtWDCuIShZlNT7/lfHYFdV6goQ
+	 utF2xRBFsFb05j1aILJaANR4xkcmDLjRIePGvyJzE+zA+yEeSALaU9MsAQLmMl90/R
+	 YPZ4yJBN9pBnnmgCbfuykGvC5rIqygtDDqhf8EG/+1PZ1hRj3GXVtuDDIgQkHaTiOO
+	 wtZn3QgY2Ce3GW7G+Y2VoEwEmKeuCG54QdPOwKP57XtS/FcEygU9qQ+ZVi6Q/O2VSo
+	 8n63dxCzljr5g==
+Date: Sat, 12 Oct 2024 09:19:44 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Todd Brandt <todd.e.brandt@intel.com>, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Marcin =?utf-8?B?TWlyb3PFgmF3?= <marcin@mejor.pl>,
+	regressions@leemhuis.info
+Subject: Re: [PATCH 1/1] iommu/vt-d: Fix incorrect pci_for_each_dma_alias()
+ for non-PCI devices
+Message-ID: <20241012141944.GA603705@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241012030720.90218-1-baolu.lu@linux.intel.com>
 
-On Tue, 08 Oct 2024 17:43:33 +0200
-Angelo Dureghello <adureghello@baylibre.com> wrote:
+[+cc Marcin, Thorsten]
 
-> From: Angelo Dureghello <adureghello@baylibre.com>
+On Sat, Oct 12, 2024 at 11:07:20AM +0800, Lu Baolu wrote:
+> Previously, the domain_context_clear() function incorrectly called
+> pci_for_each_dma_alias() to set up context entries for non-PCI devices.
+> This could lead to kernel hangs or other unexpected behavior.
 > 
-> Fix ADI_DAC_R1_MODE of AXI_DAC_REG_CNTRL_2.
+> Add a check to only call pci_for_each_dma_alias() for PCI devices. For
+> non-PCI devices, domain_context_clear_one() is called directly.
 > 
-> Both generic DAC and ad3552r DAC IPs docs are reporting
-> bit 5 for it.
-> 
-> Link: https://wiki.analog.com/resources/fpga/docs/axi_dac_ip
-> Fixes: 4e3949a192e4 ("iio: dac: add support for AXI DAC IP core")
+> Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219363
+
+Likely the same problem reported earlier by Marcin at
+https://bugzilla.kernel.org/show_bug.cgi?id=219349
+
+Thanks to Thorsten for pointing this out.
+
+> Fixes: 9a16ab9d6402 ("iommu/vt-d: Make context clearing consistent with context mapping")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Because we have a series built on top of this, I've picked it up in the
-togreg branch of iio.git - not as the fixes-togreg branch.
-That means it will go upstream and get pulled into stable etc next
-merge window.
-
-If anyone needs it quicker shout and I can rethink that.
-
+> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
 > ---
->  drivers/iio/dac/adi-axi-dac.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/iommu/intel/iommu.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
-> index 0cb00f3bec04..b8b4171b8043 100644
-> --- a/drivers/iio/dac/adi-axi-dac.c
-> +++ b/drivers/iio/dac/adi-axi-dac.c
-> @@ -46,7 +46,7 @@
->  #define AXI_DAC_REG_CNTRL_1		0x0044
->  #define   AXI_DAC_SYNC			BIT(0)
->  #define AXI_DAC_REG_CNTRL_2		0x0048
-> -#define	  ADI_DAC_R1_MODE		BIT(4)
-> +#define	  ADI_DAC_R1_MODE		BIT(5)
->  #define AXI_DAC_DRP_STATUS		0x0074
->  #define   AXI_DAC_DRP_LOCKED		BIT(17)
->  /* DAC Channel controls */
+> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+> index 9f6b0780f2ef..e860bc9439a2 100644
+> --- a/drivers/iommu/intel/iommu.c
+> +++ b/drivers/iommu/intel/iommu.c
+> @@ -3340,8 +3340,10 @@ static int domain_context_clear_one_cb(struct pci_dev *pdev, u16 alias, void *op
+>   */
+>  static void domain_context_clear(struct device_domain_info *info)
+>  {
+> -	if (!dev_is_pci(info->dev))
+> +	if (!dev_is_pci(info->dev)) {
+>  		domain_context_clear_one(info, info->bus, info->devfn);
+> +		return;
+> +	}
+>  
+>  	pci_for_each_dma_alias(to_pci_dev(info->dev),
+>  			       &domain_context_clear_one_cb, info);
+> -- 
+> 2.43.0
 > 
-
 
