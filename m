@@ -1,152 +1,184 @@
-Return-Path: <stable+bounces-83513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 575A499B2BF
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:56:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7AA99B2D9
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 12:11:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6E4AB22F00
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 09:56:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40AE21C219A7
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 10:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A153E15573D;
-	Sat, 12 Oct 2024 09:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2564F1537D9;
+	Sat, 12 Oct 2024 10:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ikFdJkMz"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K5/hcQvu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B1914EC73;
-	Sat, 12 Oct 2024 09:55:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DC51514F6
+	for <stable@vger.kernel.org>; Sat, 12 Oct 2024 10:11:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728726942; cv=none; b=X+wGS2aEldJoUC85AI1giok4sdtrn+Q91/ZSzEigr/85iQuywnjq3BquAZ2qVYkNtR7HdNuOB3/pR+J10lXrGT3BoQPK9f0O8x4UOCaSjXKpCwxYnBHv3TqfdNmx5SD57FtvoeSox+/6iIPplRRGzZ8vYxtwW9qXn8v20YT/5Wo=
+	t=1728727878; cv=none; b=cK3yGu+OF4dP3bwEcR949ipNEfOVT+8DDVQm7MpkjodxjFyhi2/1COMs2tMeaGh0qtfW/dZr01pI0Vd3sL7j3KfAn0wi8mif+iu+2zkrmrHstp9EjRYS/Wcf+KWDJl2gmNS7t8i7uF0Gg1wSUz63zq9QoDqLxJYMrrexJH0jBV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728726942; c=relaxed/simple;
-	bh=OHBEqpSE2yLuJGFPNyn+i72FET0rIUgTS5kPDw/JRqc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SNIE73s4w+4yoSoHJeJ0lBuVMFyyJiS9tjSalYDDhkvGy4LtG6j6dxs/Gj2aOahAJvi9VWLw0VLZGwsxNtW24x8NDefOw6wGu31kmzDsc3xeFVZJn6F2znliXvJUmrGYG8fX3W0fGh1or+p0SnOTgIFHo0shZQS29kNndYUYKdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ikFdJkMz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E80C4CEC6;
-	Sat, 12 Oct 2024 09:55:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728726941;
-	bh=OHBEqpSE2yLuJGFPNyn+i72FET0rIUgTS5kPDw/JRqc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ikFdJkMzaYH1B3l0E8/1JuEfI0oVf2wXryW7quGhPQpdipXLpMbJLwCY6/SOpxlJ5
-	 1RPeZjIqjoEOtqejed5hUsMmgFi99lCO79zH/U3Fp+RZGgBZ/bixCm2MRBMhKoEDdf
-	 gmPjLq3iOExf1J729di01MUItIDB+WKuhFBJhIJ9MwRkM6FOv6VKOaeAdneCTSfNv7
-	 m3EFE7JDqSXkxvC1YAANwW1vWiQU15R20iF0n+9brEpkTwMS5fsi08RjTaAHcIKOMP
-	 bMtZLTtEPA6EH8WKimEyqZ0PzuXsuge7IVq3+gloqLvTDYreC5NV68/vq9eYTGG8WN
-	 WfJDIqvX9QzqQ==
-Message-ID: <ff48995d-99b5-4563-b548-ebc58fd7ed45@kernel.org>
-Date: Sat, 12 Oct 2024 11:55:34 +0200
+	s=arc-20240116; t=1728727878; c=relaxed/simple;
+	bh=l+g7ZZNhOPkyAa9Dk/e5/JWOw85ZtEH+kE4rgPB/cPM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I6cWrgDGxvblY51Q9cVTx1iJiNPrHxYw8lAqp8OMse/P6exsyp3w8SEdN34WWxAb5kY5tnRsWahX3uWfP61esakcMwBqU4Ydq3PsBm3PqOLlkfQnaTXidN+WGLij1EXnZmv0Qs2hSUghAt+Qxez2A8K/su4L/RRreWD8Vld0ZSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K5/hcQvu; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5c940ac7ca2so429548a12.1
+        for <stable@vger.kernel.org>; Sat, 12 Oct 2024 03:11:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1728727875; x=1729332675; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6e6wpy4k42n/aq7+kncSL6a1K05K8zISJjrIyP9jbEU=;
+        b=K5/hcQvuyllzQwB8/+dgVPNx+bSqdBMHqjwndOELuddoJ3l+TLbIlWYm4lvXupnNY1
+         oy1A6MdeXuBbCCHOOg1aSa3RjKt9bD0hkR3scXCi9//vvN5mot7FWZksYb12JUsvTb6v
+         kHoCi82cDMuJPxAnBHM29HULFE+Xd0zsoYQtE5IrFRiaM+Fto/+ecjZPfeCnON9ES3FG
+         z+gOh+JQ5CMBYJK19xGlVyFuRlLs1EmxmzjBr+Qpprid2tSQXcdMjGPid8tHNZFZ5zgl
+         HT2BtSBq4/g8dyY8ZWRhzKsFJaBMLwoRnPZcv64t0PqCMLvyzRwNIpYjlZNrmrvbYsUe
+         wUQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728727875; x=1729332675;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6e6wpy4k42n/aq7+kncSL6a1K05K8zISJjrIyP9jbEU=;
+        b=F6o6a2vpeqdVt6xj2zGW6BkIVY1CoT6uvyt29oUXm5Gn7DNP7aPlfPCz3gweBO4aRp
+         jq/mt9iM0bq131mvU2SrF0Zi2B9xJflEqTz8VGoTcXJxQF9HWOBe0QJtOAoZaP5i2/cV
+         z+kuGsveODeXYs9LeGT7xt1+LvpNenoU49cgeyVwGUiOXNdjws8KAHP45NNrKuZhuEx2
+         VYfRkp9Isph4DcmBfIdBKTk7IqE3JIquCcwzwDwZ9lxWlLO+3a1rn7tyMks69ymITPd/
+         BbFr5Orxznn+CPbQUMTaErd56eFKD77HU/PMYxlb7bRKxtAPabvp2exm99GpjgfWywNq
+         StXw==
+X-Gm-Message-State: AOJu0YwVSVo2Oi1gc0hNm+Sh3XKwYMyGvZ2kcMz6mYcpKE3IbgqA6qVn
+	w47UmF1o8u4BrXzLCYViCroQ4g5+Q5QQ3RvmjTS21yEURo3wK1UymAXLvUCAjeo=
+X-Google-Smtp-Source: AGHT+IFZ+zSFFM+kAEHqjV12bdV/1nmPVCq1BXVd98k15pNtl3iqmXvxXbLVK3Eb4vJrDA7H1qMnhw==
+X-Received: by 2002:a05:6402:2790:b0:5c9:3fd:2fb0 with SMTP id 4fb4d7f45d1cf-5c948cb2d72mr1410534a12.3.1728727875476;
+        Sat, 12 Oct 2024 03:11:15 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.211.167])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c93711ab3asm2749539a12.30.2024.10.12.03.11.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Oct 2024 03:11:14 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	linux-sound@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Steev Klimaszewski <steev@kali.org>
+Subject: [PATCH v2] ASoC: qcom: sc7280: Fix missing Soundwire runtime stream alloc
+Date: Sat, 12 Oct 2024 12:11:08 +0200
+Message-ID: <20241012101108.129476-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ASoC: qcom: sc7280: Fix missing Soundwire runtime stream
- alloc
-To: kernel test robot <lkp@intel.com>,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
- linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, stable@vger.kernel.org,
- Alexey Klimov <alexey.klimov@linaro.org>, Steev Klimaszewski <steev@kali.org>
-References: <20241010054109.16938-1-krzysztof.kozlowski@linaro.org>
- <202410121144.H6lBicv6-lkp@intel.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <202410121144.H6lBicv6-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 12/10/2024 05:37, kernel test robot wrote:
-> Hi Krzysztof,
-> 
-> kernel test robot noticed the following build errors:
-> 
-> [auto build test ERROR on broonie-sound/for-next]
-> [also build test ERROR on linus/master v6.12-rc2 next-20241011]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Krzysztof-Kozlowski/ASoC-qcom-sc7280-Fix-missing-Soundwire-runtime-stream-alloc/20241010-134305
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-> patch link:    https://lore.kernel.org/r/20241010054109.16938-1-krzysztof.kozlowski%40linaro.org
-> patch subject: [PATCH] ASoC: qcom: sc7280: Fix missing Soundwire runtime stream alloc
-> config: powerpc64-randconfig-r052-20241011 (https://download.01.org/0day-ci/archive/20241012/202410121144.H6lBicv6-lkp@intel.com/config)
-> compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 70e0a7e7e6a8541bcc46908c592eed561850e416)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241012/202410121144.H6lBicv6-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202410121144.H6lBicv6-lkp@intel.com/
-> 
-> All errors (new ones prefixed by >>, old ones prefixed by <<):
-> 
-> WARNING: modpost: missing MODULE_DESCRIPTION() in mm/kasan/kasan_test.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in mm/kasan/kasan_test_module.o
->>> ERROR: modpost: "qcom_snd_sdw_startup" [sound/soc/qcom/snd-soc-sc7280.ko] undefined!
-> 
+Commit 15c7fab0e047 ("ASoC: qcom: Move Soundwire runtime stream alloc to
+soundcards") moved the allocation of Soundwire stream runtime from the
+Qualcomm Soundwire driver to each individual machine sound card driver,
+except that it forgot to update SC7280 card.
 
-I'll fix it up. Already applied sdm845 also has this issue, I think, so
-I will send a follow up.
+Just like for other Qualcomm sound cards using Soundwire, the card
+driver should allocate and release the runtime.  Otherwise sound
+playback will result in a NULL pointer dereference or other effect of
+uninitialized memory accesses (which was confirmed on SDM845 having
+similar issue).
 
-Best regards,
-Krzysztof
+Cc: stable@vger.kernel.org
+Cc: Alexey Klimov <alexey.klimov@linaro.org>
+Cc: Steev Klimaszewski <steev@kali.org>
+Fixes: 15c7fab0e047 ("ASoC: qcom: Move Soundwire runtime stream alloc to soundcards")
+Link: https://lore.kernel.org/r/20241010054109.16938-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+---
+
+Changes in v2:
+1. Add missing 'select SND_SOC_QCOM_SDW' as reported by LKP
+---
+ sound/soc/qcom/Kconfig  |  1 +
+ sound/soc/qcom/sc7280.c | 10 +++++++++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/sound/soc/qcom/Kconfig b/sound/soc/qcom/Kconfig
+index 3687b9db5ed4..ca7a30ebd26a 100644
+--- a/sound/soc/qcom/Kconfig
++++ b/sound/soc/qcom/Kconfig
+@@ -209,6 +209,7 @@ config SND_SOC_SC7280
+ 	tristate "SoC Machine driver for SC7280 boards"
+ 	depends on I2C && SOUNDWIRE
+ 	select SND_SOC_QCOM_COMMON
++	select SND_SOC_QCOM_SDW
+ 	select SND_SOC_LPASS_SC7280
+ 	select SND_SOC_MAX98357A
+ 	select SND_SOC_WCD938X_SDW
+diff --git a/sound/soc/qcom/sc7280.c b/sound/soc/qcom/sc7280.c
+index 207ac5da4dd4..230af8d7b205 100644
+--- a/sound/soc/qcom/sc7280.c
++++ b/sound/soc/qcom/sc7280.c
+@@ -23,6 +23,7 @@
+ #include "common.h"
+ #include "lpass.h"
+ #include "qdsp6/q6afe.h"
++#include "sdw.h"
+ 
+ #define DEFAULT_MCLK_RATE              19200000
+ #define RT5682_PLL_FREQ (48000 * 512)
+@@ -316,6 +317,7 @@ static void sc7280_snd_shutdown(struct snd_pcm_substream *substream)
+ 	struct snd_soc_card *card = rtd->card;
+ 	struct sc7280_snd_data *data = snd_soc_card_get_drvdata(card);
+ 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
++	struct sdw_stream_runtime *sruntime = data->sruntime[cpu_dai->id];
+ 
+ 	switch (cpu_dai->id) {
+ 	case MI2S_PRIMARY:
+@@ -333,6 +335,9 @@ static void sc7280_snd_shutdown(struct snd_pcm_substream *substream)
+ 	default:
+ 		break;
+ 	}
++
++	data->sruntime[cpu_dai->id] = NULL;
++	sdw_release_stream(sruntime);
+ }
+ 
+ static int sc7280_snd_startup(struct snd_pcm_substream *substream)
+@@ -347,6 +352,8 @@ static int sc7280_snd_startup(struct snd_pcm_substream *substream)
+ 	switch (cpu_dai->id) {
+ 	case MI2S_PRIMARY:
+ 		ret = sc7280_rt5682_init(rtd);
++		if (ret)
++			return ret;
+ 		break;
+ 	case SECONDARY_MI2S_RX:
+ 		codec_dai_fmt |= SND_SOC_DAIFMT_NB_NF | SND_SOC_DAIFMT_I2S;
+@@ -360,7 +367,8 @@ static int sc7280_snd_startup(struct snd_pcm_substream *substream)
+ 	default:
+ 		break;
+ 	}
+-	return ret;
++
++	return qcom_snd_sdw_startup(substream);
+ }
+ 
+ static const struct snd_soc_ops sc7280_ops = {
+-- 
+2.43.0
 
 
