@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-83532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE3399B39E
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:30:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA1D99B3A2
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CB021C22965
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:30:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2260DB23A15
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013A118453C;
-	Sat, 12 Oct 2024 11:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F356F1946C2;
+	Sat, 12 Oct 2024 11:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HWmGiMG4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J3PlRjri"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BEA15575F;
-	Sat, 12 Oct 2024 11:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98521A01D8;
+	Sat, 12 Oct 2024 11:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728732439; cv=none; b=VCuoGtRE/SP5lQj2+2InrKFg+RUa5YzammmQKGg/qa94XGAPxXOYBtyoKv2bL2fCQzKNfrqsuDfcmRr56bno7vtywMqStFnVrgSw/FJX/3h+sw6F9/QyM1jHchWVDumtcYZkkWs/FuJdWOMbWtedGLZsawzRaNguhlgPdXR7GgI=
+	t=1728732442; cv=none; b=HerB+a3TzawNGKG1tVxr/IAkgWE9RIYF5knpMWK3Je4dvaJ5uZPzm5iAR+206O6qhpz7+NeAWNHBcuaI6lvkEonlA7FEmt4aaeoHWHEtpjU9BPNSuLVwO8EE8ABpPULsn6myKcf7K2RMvCABMs/x4LFgqznOYO5LypSjilmnsWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728732439; c=relaxed/simple;
-	bh=v2wnjtboE4A5dStbXmvaNVO761Oyx566cwmAfXkbPBw=;
+	s=arc-20240116; t=1728732442; c=relaxed/simple;
+	bh=yyLRPc7BWlh0n3nzjsmQdJGceCFz05ihd1PqC5TEijI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZtO0wd97T+Sz24i3OICDCyFUyxk0F8K3Z/x8wlII99NqXNfQKLhoTxttxFrULh69qy7VLntIIvUpwGAdNgRAZ9JE4IFOEQY39XCJi/oT0OClKOYqoHVXpijsBBgpIoKd5MorkM2mf27J9RECVlJRflG8XjYz3yi3aVR+243NlPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HWmGiMG4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B5FC4CECE;
-	Sat, 12 Oct 2024 11:27:18 +0000 (UTC)
+	 MIME-Version; b=FbTGonnoj3Fxw3IJCJc71QyZafw41JrLgp+Li8qliodx+cGvQuL0E3qqysUwialvIYSyt4w2ru/9TT8gds0bsHJrGYnQQjwSKUHyfDJuBJIv96WwgHo0kLc6GRLUaIW8k0AFp4D62eqMH1aaIBi6IXZ/pa03TZCnuHLXMyJ9fv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J3PlRjri; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F6DC4CEC7;
+	Sat, 12 Oct 2024 11:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728732439;
-	bh=v2wnjtboE4A5dStbXmvaNVO761Oyx566cwmAfXkbPBw=;
+	s=k20201202; t=1728732442;
+	bh=yyLRPc7BWlh0n3nzjsmQdJGceCFz05ihd1PqC5TEijI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HWmGiMG48m1/gk+1XPfL49nOn8tQtJBxT3mHt92rzpWsRN2cLxOF8KYmNPe4D5VOu
-	 kItLzdjhaQ0yUlE9QEZE66Fijubl6vNqVCjL7JAHTWadwi2HbFeKHZqriCyT1Di13x
-	 IXpsLnx2CwrJ3V0k22OYnOcY5rkXJzLjqIeugf3qn7A0hoMXWFmxnYeiHxun/H7W9G
-	 NqcT4iflwT7bAuCMaVDo7lXJ8xt1ISWIDF0TU39KpUxYAfgQOOYi88KCwLFrdoNO79
-	 6uB3r92niaZBAB2FDgNyWJK15YLaiHYjbd4HpZsGaBXlwIUg4yyeCqY3oQdYy5Bbsg
-	 PfsTlYI+KYZkw==
+	b=J3PlRjribwI8vpt7Ff7t/ad9Tk8k2D20lMPkCoFs+x7UYhsm9rGk3UZh3Xm3imNYz
+	 WK5e6+W/jnwF/nnygoyGq1U4u6lUxNXXvA4sb9rZqxivK7XsKv7J7rpGrrmCggjK+9
+	 ndgFnHhrxZyjXYzH/LqyPemE7c/yvfjgetykXLHeDduDMPtiXIQN/nvKIhrczN0XXD
+	 syRm08fK6GQhPk5+gF8xm7dujkVwmamjLsm4gu6JjzzA4a40iy27mS6XZdmV9FGZIT
+	 hfhFVj3+/VWOf8oS8MBdTKJe1jAMNwVpvnMqJd25RZMuFaW2I/mzadX/+eMlwG9lwN
+	 KFl9mvWnnCbNg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Namjae Jeon <linkinjeon@kernel.org>,
-	Sangsoo Lee <constant.lee@samsung.com>,
-	Steve French <stfrench@microsoft.com>,
+Cc: Oliver Neukum <oneukum@suse.com>,
+	Foster Snowhill <forst@pen.gy>,
+	Georgi Valkov <gvalkov@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	sfrench@samba.org,
-	linux-cifs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 02/20] ksmbd: override fsids for smb2_query_info()
-Date: Sat, 12 Oct 2024 07:26:34 -0400
-Message-ID: <20241012112715.1763241-2-sashal@kernel.org>
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 03/20] usbnet: ipheth: race between ipheth_close and error handling
+Date: Sat, 12 Oct 2024 07:26:35 -0400
+Message-ID: <20241012112715.1763241-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241012112715.1763241-1-sashal@kernel.org>
 References: <20241012112715.1763241-1-sashal@kernel.org>
@@ -67,54 +71,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.56
 Content-Transfer-Encoding: 8bit
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit f6bd41280a44dcc2e0a25ed72617d25f586974a7 ]
+[ Upstream commit e5876b088ba03a62124266fa20d00e65533c7269 ]
 
-Sangsoo reported that a DAC denial error occurred when accessing
-files through the ksmbd thread. This patch override fsids for
-smb2_query_info().
+ipheth_sndbulk_callback() can submit carrier_work
+as a part of its error handling. That means that
+the driver must make sure that the work is cancelled
+after it has made sure that no more URB can terminate
+with an error condition.
 
-Reported-by: Sangsoo Lee <constant.lee@samsung.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Hence the order of actions in ipheth_close() needs
+to be inverted.
+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Tested-by: Georgi Valkov <gvalkov@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/usb/ipheth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 646c874d151a8..cfc5c6dd880f8 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -5596,6 +5596,11 @@ int smb2_query_info(struct ksmbd_work *work)
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index 687d70cfc5563..6eeef10edadad 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -475,8 +475,8 @@ static int ipheth_close(struct net_device *net)
+ {
+ 	struct ipheth_device *dev = netdev_priv(net);
  
- 	ksmbd_debug(SMB, "GOT query info request\n");
+-	cancel_delayed_work_sync(&dev->carrier_work);
+ 	netif_stop_queue(net);
++	cancel_delayed_work_sync(&dev->carrier_work);
+ 	return 0;
+ }
  
-+	if (ksmbd_override_fsids(work)) {
-+		rc = -ENOMEM;
-+		goto err_out;
-+	}
-+
- 	switch (req->InfoType) {
- 	case SMB2_O_INFO_FILE:
- 		ksmbd_debug(SMB, "GOT SMB2_O_INFO_FILE\n");
-@@ -5614,6 +5619,7 @@ int smb2_query_info(struct ksmbd_work *work)
- 			    req->InfoType);
- 		rc = -EOPNOTSUPP;
- 	}
-+	ksmbd_revert_fsids(work);
- 
- 	if (!rc) {
- 		rsp->StructureSize = cpu_to_le16(9);
-@@ -5623,6 +5629,7 @@ int smb2_query_info(struct ksmbd_work *work)
- 					le32_to_cpu(rsp->OutputBufferLength));
- 	}
- 
-+err_out:
- 	if (rc < 0) {
- 		if (rc == -EACCES)
- 			rsp->hdr.Status = STATUS_ACCESS_DENIED;
 -- 
 2.43.0
 
