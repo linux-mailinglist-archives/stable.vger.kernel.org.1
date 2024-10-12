@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-83527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF01499B38D
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:29:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6751199B391
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:29:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 678571F226B2
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:29:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 278F728200A
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFCDB171066;
-	Sat, 12 Oct 2024 11:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F096A1714C8;
+	Sat, 12 Oct 2024 11:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g8YtnqLj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="glycJtuR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DDC19E81F;
-	Sat, 12 Oct 2024 11:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE13B19F12D;
+	Sat, 12 Oct 2024 11:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728732406; cv=none; b=JuHw0plbxPotsCNARd83rI0pfnTy4iIiQpQMHzxgs6ds4E8h8blp20QYRY9VfF+gVDgHWw8dbMrgQ2iyZwXfqNdBlM0e8DzgPvj802rL24jPX8bIiVNXPMly9JqiU4JjTJ6YGnSGWG0o52/tnII3W/Nxp91LnDY83jEFAIh3Bec=
+	t=1728732408; cv=none; b=ptzcUqEuMGjVSPTHH+8tFHV1lUAgeXuCT3adWnoWAhZOriGGD/cTt7qwIvdZhKh2Tl1O4qvTEpec82gjJC0dSSyXxHVqSCNt7tGWvJAi7bcBnewUkU2fiUASs5uZYkohh3SCW6OLu841QpEoJ1cBjF7CnytPhcUZws3XbzGiKbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728732406; c=relaxed/simple;
-	bh=RYKxMQZaoDwJVc3ulr4USCHdZNWpiZJlL+QIdT0Bn6Q=;
+	s=arc-20240116; t=1728732408; c=relaxed/simple;
+	bh=atjmffrzZgLCNMCiFzOqBVE3wLBEiqWkaoBHeOfXNHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pEXYSun8Rmed0Ub08EO6RuM/8feRasVZ7+ejRaUKgwtHIs1FJndaC+J/kzxx3VQJ+DLRpXGYtMhmOYT8p1TyEZ6b77Z8Bn84qrzacuX+vMbgtteX8L0fzoGKLEQDGj9vTkhQKO4eH4sze9wUVJB/juqOr2eDR520TCaHl0FV/bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g8YtnqLj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19422C4CEC6;
-	Sat, 12 Oct 2024 11:26:45 +0000 (UTC)
+	 MIME-Version; b=MVx8RXArh57lLylZe7BEiIzplbNF9KtMc4n79+DYhf/WKKApHPGafGIRDoEtrmrj74MgX1c5afDDdl0wGfc+9XDLA2tX8cb5P4aN2CTxhrPqF53nMZxCNOTa1daMuL1JAr0gL75sU7+v+8sGPnrqPuoZwWKd6Pd19AoYuafv2Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=glycJtuR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E13AC4CECE;
+	Sat, 12 Oct 2024 11:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728732406;
-	bh=RYKxMQZaoDwJVc3ulr4USCHdZNWpiZJlL+QIdT0Bn6Q=;
+	s=k20201202; t=1728732408;
+	bh=atjmffrzZgLCNMCiFzOqBVE3wLBEiqWkaoBHeOfXNHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g8YtnqLjOBMzxvPP5Y4WAJDILy1WF/NllTXyVkLMfoTpOf5GKfGLvW9y15Qy8B49S
-	 NBAQeS7aKrNOMtU6FkqwEUhJDd//pX+5iHHoTxZuoLmhk/feTYHPlbyJ/nRz+APwcx
-	 9WISHfbL9UNYJMpjhf/nsUU2Ranmk5mTDS0CZ4qmw5LgMp4ZuC897cAOy01J1a63/n
-	 nkvjAwrUiK4DgAazeBKbcsYcflIRJVIiW9sRW/17vOv7QR0Pdbu6ae4eHk77UrrhfO
-	 r52dMdEJ1/J5e4kKtDoh0AWhgEDxOoofSvwFgPYsv/walmWXgXJTSuGz5wISinLuSg
-	 AWXt7Et3OjUug==
+	b=glycJtuRKya+u46WceaOwk5jKyZaicIPmpEVLAzSYmBZvxIJeDSshzrqrAtBGyL8B
+	 T9zKG/7KgeppoX9VI28D9Zy2D9SpAHSfZTniy0hncWsWjjE21TfQXCAdzvGe77/sTM
+	 TdUudb/WhLOKmhLLmsyQhoWH0DSiBsBlE+s+SbC8MISKcUF/NoI9Nwk9U5HTKL230B
+	 DG7z+8oJIRC01lw44uf1SaQW3APkn+BI6N52VEPX8NLC8oCVqCf51l/sKwaZR1l/D6
+	 CibjOGol89HUXLX8eD/JM+E64e3hWmavPMtae0OhXtU3e9J8wxOhXeMYFWyr1AkRsc
+	 YFL6Lpon794yw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jan Kara <jack@suse.cz>,
-	syzbot+701037856c25b143f1ad@syzkaller.appspotmail.com,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Josef Bacik <josef@toxicpanda.com>,
+Cc: Gustavo Sousa <gustavo.sousa@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 13/16] fsnotify: Avoid data race between fsnotify_recalc_mask() and fsnotify_object_watched()
-Date: Sat, 12 Oct 2024 07:26:09 -0400
-Message-ID: <20241012112619.1762860-13-sashal@kernel.org>
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.11 14/16] drm/xe/mcr: Use Xe2_LPM steering tables for Xe2_HPM
+Date: Sat, 12 Oct 2024 07:26:10 -0400
+Message-ID: <20241012112619.1762860-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241012112619.1762860-1-sashal@kernel.org>
 References: <20241012112619.1762860-1-sashal@kernel.org>
@@ -67,125 +75,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.3
 Content-Transfer-Encoding: 8bit
 
-From: Jan Kara <jack@suse.cz>
+From: Gustavo Sousa <gustavo.sousa@intel.com>
 
-[ Upstream commit 35ceae44742e1101f9d20adadbbbd92c05d7d659 ]
+[ Upstream commit 7929ffce0f8b9c76cb5c2a67d1966beaed20ab61 ]
 
-When __fsnotify_recalc_mask() recomputes the mask on the watched object,
-the compiler can "optimize" the code to perform partial updates to the
-mask (including zeroing it at the beginning). Thus places checking
-the object mask without conn->lock such as fsnotify_object_watched()
-could see invalid states of the mask. Make sure the mask update is
-performed by one memory store using WRITE_ONCE().
+According to Bspec, Xe2 steering tables must be used for Xe2_HPM, just
+as it is with Xe2_LPM. Update our driver to reflect that.
 
-Reported-by: syzbot+701037856c25b143f1ad@syzkaller.appspotmail.com
-Reported-by: Dmitry Vyukov <dvyukov@google.com>
-Link: https://lore.kernel.org/all/CACT4Y+Zk0ohwwwHSD63U2-PQ=UuamXczr1mKBD6xtj2dyYKBvA@mail.gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Link: https://patch.msgid.link/20240717140623.27768-1-jack@suse.cz
+Bspec: 71186
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240920211459.255181-2-gustavo.sousa@intel.com
+(cherry picked from commit 21ae035ae5c33ef176f4062bd9d4aa973dde240b)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fsnotify.c             | 21 ++++++++++++---------
- fs/notify/inotify/inotify_user.c |  2 +-
- fs/notify/mark.c                 |  8 ++++++--
- 3 files changed, 19 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_mcr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/notify/fsnotify.c b/fs/notify/fsnotify.c
-index 272c8a1dab3c2..82ae8254c068b 100644
---- a/fs/notify/fsnotify.c
-+++ b/fs/notify/fsnotify.c
-@@ -183,8 +183,10 @@ static bool fsnotify_event_needs_parent(struct inode *inode, __u32 mnt_mask,
- 	BUILD_BUG_ON(FS_EVENTS_POSS_ON_CHILD & ~FS_EVENTS_POSS_TO_PARENT);
+diff --git a/drivers/gpu/drm/xe/xe_gt_mcr.c b/drivers/gpu/drm/xe/xe_gt_mcr.c
+index 6d948a4691264..d57a765a1a969 100644
+--- a/drivers/gpu/drm/xe/xe_gt_mcr.c
++++ b/drivers/gpu/drm/xe/xe_gt_mcr.c
+@@ -407,7 +407,7 @@ void xe_gt_mcr_init(struct xe_gt *gt)
+ 	if (gt->info.type == XE_GT_TYPE_MEDIA) {
+ 		drm_WARN_ON(&xe->drm, MEDIA_VER(xe) < 13);
  
- 	/* Did either inode/sb/mount subscribe for events with parent/name? */
--	marks_mask |= fsnotify_parent_needed_mask(inode->i_fsnotify_mask);
--	marks_mask |= fsnotify_parent_needed_mask(inode->i_sb->s_fsnotify_mask);
-+	marks_mask |= fsnotify_parent_needed_mask(
-+				READ_ONCE(inode->i_fsnotify_mask));
-+	marks_mask |= fsnotify_parent_needed_mask(
-+				READ_ONCE(inode->i_sb->s_fsnotify_mask));
- 	marks_mask |= fsnotify_parent_needed_mask(mnt_mask);
- 
- 	/* Did they subscribe for this event with parent/name info? */
-@@ -195,8 +197,8 @@ static bool fsnotify_event_needs_parent(struct inode *inode, __u32 mnt_mask,
- static inline bool fsnotify_object_watched(struct inode *inode, __u32 mnt_mask,
- 					   __u32 mask)
- {
--	__u32 marks_mask = inode->i_fsnotify_mask | mnt_mask |
--			   inode->i_sb->s_fsnotify_mask;
-+	__u32 marks_mask = READ_ONCE(inode->i_fsnotify_mask) | mnt_mask |
-+			   READ_ONCE(inode->i_sb->s_fsnotify_mask);
- 
- 	return mask & marks_mask & ALL_FSNOTIFY_EVENTS;
- }
-@@ -213,7 +215,8 @@ int __fsnotify_parent(struct dentry *dentry, __u32 mask, const void *data,
- 		      int data_type)
- {
- 	const struct path *path = fsnotify_data_path(data, data_type);
--	__u32 mnt_mask = path ? real_mount(path->mnt)->mnt_fsnotify_mask : 0;
-+	__u32 mnt_mask = path ?
-+		READ_ONCE(real_mount(path->mnt)->mnt_fsnotify_mask) : 0;
- 	struct inode *inode = d_inode(dentry);
- 	struct dentry *parent;
- 	bool parent_watched = dentry->d_flags & DCACHE_FSNOTIFY_PARENT_WATCHED;
-@@ -557,13 +560,13 @@ int fsnotify(__u32 mask, const void *data, int data_type, struct inode *dir,
- 	    (!inode2 || !inode2->i_fsnotify_marks))
- 		return 0;
- 
--	marks_mask = sb->s_fsnotify_mask;
-+	marks_mask = READ_ONCE(sb->s_fsnotify_mask);
- 	if (mnt)
--		marks_mask |= mnt->mnt_fsnotify_mask;
-+		marks_mask |= READ_ONCE(mnt->mnt_fsnotify_mask);
- 	if (inode)
--		marks_mask |= inode->i_fsnotify_mask;
-+		marks_mask |= READ_ONCE(inode->i_fsnotify_mask);
- 	if (inode2)
--		marks_mask |= inode2->i_fsnotify_mask;
-+		marks_mask |= READ_ONCE(inode2->i_fsnotify_mask);
- 
- 
- 	/*
-diff --git a/fs/notify/inotify/inotify_user.c b/fs/notify/inotify/inotify_user.c
-index 4ffc30606e0b9..e163a4b790224 100644
---- a/fs/notify/inotify/inotify_user.c
-+++ b/fs/notify/inotify/inotify_user.c
-@@ -569,7 +569,7 @@ static int inotify_update_existing_watch(struct fsnotify_group *group,
- 		/* more bits in old than in new? */
- 		int dropped = (old_mask & ~new_mask);
- 		/* more bits in this fsn_mark than the inode's mask? */
--		int do_inode = (new_mask & ~inode->i_fsnotify_mask);
-+		int do_inode = (new_mask & ~READ_ONCE(inode->i_fsnotify_mask));
- 
- 		/* update the inode with this new fsn_mark */
- 		if (dropped || do_inode)
-diff --git a/fs/notify/mark.c b/fs/notify/mark.c
-index 5e170e7130886..c45b222cf9c11 100644
---- a/fs/notify/mark.c
-+++ b/fs/notify/mark.c
-@@ -128,7 +128,7 @@ __u32 fsnotify_conn_mask(struct fsnotify_mark_connector *conn)
- 	if (WARN_ON(!fsnotify_valid_obj_type(conn->type)))
- 		return 0;
- 
--	return *fsnotify_conn_mask_p(conn);
-+	return READ_ONCE(*fsnotify_conn_mask_p(conn));
- }
- 
- static void fsnotify_get_sb_watched_objects(struct super_block *sb)
-@@ -245,7 +245,11 @@ static void *__fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
- 		    !(mark->flags & FSNOTIFY_MARK_FLAG_NO_IREF))
- 			want_iref = true;
- 	}
--	*fsnotify_conn_mask_p(conn) = new_mask;
-+	/*
-+	 * We use WRITE_ONCE() to prevent silly compiler optimizations from
-+	 * confusing readers not holding conn->lock with partial updates.
-+	 */
-+	WRITE_ONCE(*fsnotify_conn_mask_p(conn), new_mask);
- 
- 	return fsnotify_update_iref(conn, want_iref);
- }
+-		if (MEDIA_VER(xe) >= 20) {
++		if (MEDIA_VERx100(xe) >= 1301) {
+ 			gt->steering[OADDRM].ranges = xe2lpm_gpmxmt_steering_table;
+ 			gt->steering[INSTANCE0].ranges = xe2lpm_instance0_steering_table;
+ 		} else {
 -- 
 2.43.0
 
