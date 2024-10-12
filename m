@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-83592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CB8F99B47A
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F5A99B47D
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:53:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16EBC1F261BE
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:52:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 253971F260D2
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA801207A1E;
-	Sat, 12 Oct 2024 11:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0449208963;
+	Sat, 12 Oct 2024 11:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jy8h+1dS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X7BS3vqZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45151865EB;
-	Sat, 12 Oct 2024 11:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E52F20823D;
+	Sat, 12 Oct 2024 11:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728732620; cv=none; b=nWnMNJXYQTrg9CjpAwx+dHuQmmLNA3WVlXIncnOnpeStB5GIw5O4ltTPIUAkHyBS26muvQshWCtMAarjCJEy2lmQHWKa11uAh9EPfKfE0EgwLiy6NCkfrZOHFNibIwd3ynm5LHRx6179Afr11GyeAsmFLpyht2By2JMq+Coo6U0=
+	t=1728732622; cv=none; b=CaPt0eG2fpBZXduY9vaxHfemyNCdipJWje1oWtjdzyiOO1OAiA7jIZelfohl+PyCwnI9zOKBsT9VzMP1IkzJ8qrHAf9s8AOzFCDRIN4la+Rhk4npHZCmbLmaQoZgihhj48IiLffOaf/NfgxjDbLvx/UNe/UFLr5C9f3MxoYz9NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728732620; c=relaxed/simple;
-	bh=ewWdFYs6EezhQAgp5OSuv91igPdOBaRQyHwPqn+SdnA=;
+	s=arc-20240116; t=1728732622; c=relaxed/simple;
+	bh=MN7u8tGEjpoxeEYLXqFBL/ktRmGnrAIKHSIM85jOWSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UXnsZSuH3kAaqaqq+wxIR6RBrDjODPxIseAf7j1bfjzTaoHSwdnogzmnWdu/MeDLXzc8vub7q/lIxmji0yIznEpuRBZRn6wbET+WVW5Sc40gB8TZ2n4Kd4esYxp6gSF+YK2yv+PzcCceen0QI6ThQexL9CnDN3nl+1Z/bEmOhvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jy8h+1dS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBCAC4CECF;
-	Sat, 12 Oct 2024 11:30:19 +0000 (UTC)
+	 MIME-Version; b=sgxYBidflC6uFCTtg29eBy9cYYz++nBT/hQ+Q46NJI27yetlfxuS6cvTbgj8WHWuPPyZ71rGpIYbCxr5yzCzqxsaw19hF7/TN8Jnqo3Rb23fYBqdf/Wf93TAB7KLffQe1+d0XKzCUuN+bmZ3+p9N7eqRQQAXgTe21b8TuRZ2lOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X7BS3vqZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0458EC4CEC6;
+	Sat, 12 Oct 2024 11:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728732620;
-	bh=ewWdFYs6EezhQAgp5OSuv91igPdOBaRQyHwPqn+SdnA=;
+	s=k20201202; t=1728732621;
+	bh=MN7u8tGEjpoxeEYLXqFBL/ktRmGnrAIKHSIM85jOWSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jy8h+1dSBnvp8iiv/9m0M4ZzjpUu9e8WzC6M/eXocEPrZqK1dQn9jqxh3R7ixbhVI
-	 ZpB2qJFbWH6BpowzdrB++Q7BXoLRfKi/Ryi/ROTKrX+QnvENzK2irjRPyklZ78O3+B
-	 EHizWExbWRojm9Y3eOHgQG3cNUhGWqfmXyQ5BQLaWcZGoAWXllqEekLAPXdNafY1nG
-	 ZdRe0pY12RNbpwc2wK8DSQq75jw6fA538PnID+R09Kg37g/JGfH1gUvkjyuK9znrAN
-	 JA1Zwa5Ag9wGkNQTsNwvhtdSr4lJyHSUkihTrtzD54VALTx/mDFVGnz1eRODCE6XKZ
-	 k/6cJrdClY8Fw==
+	b=X7BS3vqZXDMRRyhe3rL1lDKxMrcdZb1GD0fg9PtEz513eo/mLq/jDv+346XkMPVYQ
+	 D/fMgA6YxSAVPCGqQmgEVsSN6gefB1FMjLDgVkFGo9p4XiHmHO5nELjIZFstyLxO2w
+	 NefX/eESwVhhKmMB4nPuy/eXgjXpp+NOAxf6k4ZCe6QW4G62MhvXLSQ+jhbngulxPj
+	 ffPx02cl1n1UuoIT4PlCgcZNdYoIvWB74IB7DWYY01TbLgwuJwgkGCSsqTvxFwU7GR
+	 ZhrBMoUg++F6yM64/AJEVTIhygWW3RHqXLGWJ0mvy/VLEg+fEnN8L2yk43U1liffe+
+	 hnrb6JWl7WKmw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Pawel Dembicki <paweldembicki@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 4/6] net: phy: vitesse: repair vsc73xx autonegotiation
-Date: Sat, 12 Oct 2024 07:30:01 -0400
-Message-ID: <20241012113009.1764620-4-sashal@kernel.org>
+Cc: Phillip Lougher <phillip@squashfs.org.uk>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 5/6] Squashfs: sanity check symbolic link size
+Date: Sat, 12 Oct 2024 07:30:02 -0400
+Message-ID: <20241012113009.1764620-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241012113009.1764620-1-sashal@kernel.org>
 References: <20241012113009.1764620-1-sashal@kernel.org>
@@ -71,74 +66,66 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.322
 Content-Transfer-Encoding: 8bit
 
-From: Pawel Dembicki <paweldembicki@gmail.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-[ Upstream commit de7a670f8defe4ed2115552ad23dea0f432f7be4 ]
+[ Upstream commit 810ee43d9cd245d138a2733d87a24858a23f577d ]
 
-When the vsc73xx mdio bus work properly, the generic autonegotiation
-configuration works well.
+Syzkiller reports a "KMSAN: uninit-value in pick_link" bug.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This is caused by an uninitialised page, which is ultimately caused
+by a corrupted symbolic link size read from disk.
+
+The reason why the corrupted symlink size causes an uninitialised
+page is due to the following sequence of events:
+
+1. squashfs_read_inode() is called to read the symbolic
+   link from disk.  This assigns the corrupted value
+   3875536935 to inode->i_size.
+
+2. Later squashfs_symlink_read_folio() is called, which assigns
+   this corrupted value to the length variable, which being a
+   signed int, overflows producing a negative number.
+
+3. The following loop that fills in the page contents checks that
+   the copied bytes is less than length, which being negative means
+   the loop is skipped, producing an uninitialised page.
+
+This patch adds a sanity check which checks that the symbolic
+link size is not larger than expected.
+
+--
+
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Link: https://lore.kernel.org/r/20240811232821.13903-1-phillip@squashfs.org.uk
+Reported-by: Lizhi Xu <lizhi.xu@windriver.com>
+Reported-by: syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000a90e8c061e86a76b@google.com/
+V2: fix spelling mistake.
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/vitesse.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ fs/squashfs/inode.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/vitesse.c b/drivers/net/phy/vitesse.c
-index fbf9ad429593c..697b07fdf3ec7 100644
---- a/drivers/net/phy/vitesse.c
-+++ b/drivers/net/phy/vitesse.c
-@@ -241,16 +241,6 @@ static int vsc739x_config_init(struct phy_device *phydev)
- 	return genphy_config_init(phydev);
- }
+diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
+index e9793b1e49a56..89ac1c6de97bf 100644
+--- a/fs/squashfs/inode.c
++++ b/fs/squashfs/inode.c
+@@ -289,8 +289,13 @@ int squashfs_read_inode(struct inode *inode, long long ino)
+ 		if (err < 0)
+ 			goto failed_read;
  
--static int vsc73xx_config_aneg(struct phy_device *phydev)
--{
--	/* The VSC73xx switches does not like to be instructed to
--	 * do autonegotiation in any way, it prefers that you just go
--	 * with the power-on/reset defaults. Writing some registers will
--	 * just make autonegotiation permanently fail.
--	 */
--	return 0;
--}
--
- /* This adds a skew for both TX and RX clocks, so the skew should only be
-  * applied to "rgmii-id" interfaces. It may not work as expected
-  * on "rgmii-txid", "rgmii-rxid" or "rgmii" interfaces. */
-@@ -459,7 +449,6 @@ static struct phy_driver vsc82xx_driver[] = {
- 	.phy_id_mask    = 0x000ffff0,
- 	.features       = PHY_GBIT_FEATURES,
- 	.config_init    = vsc738x_config_init,
--	.config_aneg    = vsc73xx_config_aneg,
- 	.read_page      = vsc73xx_read_page,
- 	.write_page     = vsc73xx_write_page,
- }, {
-@@ -468,7 +457,6 @@ static struct phy_driver vsc82xx_driver[] = {
- 	.phy_id_mask    = 0x000ffff0,
- 	.features       = PHY_GBIT_FEATURES,
- 	.config_init    = vsc738x_config_init,
--	.config_aneg    = vsc73xx_config_aneg,
- 	.read_page      = vsc73xx_read_page,
- 	.write_page     = vsc73xx_write_page,
- }, {
-@@ -477,7 +465,6 @@ static struct phy_driver vsc82xx_driver[] = {
- 	.phy_id_mask    = 0x000ffff0,
- 	.features       = PHY_GBIT_FEATURES,
- 	.config_init    = vsc739x_config_init,
--	.config_aneg    = vsc73xx_config_aneg,
- 	.read_page      = vsc73xx_read_page,
- 	.write_page     = vsc73xx_write_page,
- }, {
-@@ -486,7 +473,6 @@ static struct phy_driver vsc82xx_driver[] = {
- 	.phy_id_mask    = 0x000ffff0,
- 	.features       = PHY_GBIT_FEATURES,
- 	.config_init    = vsc739x_config_init,
--	.config_aneg    = vsc73xx_config_aneg,
- 	.read_page      = vsc73xx_read_page,
- 	.write_page     = vsc73xx_write_page,
- }, {
+-		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		inode->i_size = le32_to_cpu(sqsh_ino->symlink_size);
++		if (inode->i_size > PAGE_SIZE) {
++			ERROR("Corrupted symlink\n");
++			return -EINVAL;
++		}
++
++		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		inode->i_op = &squashfs_symlink_inode_ops;
+ 		inode_nohighmem(inode);
+ 		inode->i_data.a_ops = &squashfs_symlink_aops;
 -- 
 2.43.0
 
