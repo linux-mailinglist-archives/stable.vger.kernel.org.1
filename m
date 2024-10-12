@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-83521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE0CB99B378
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:27:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E5199B37E
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 13:27:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9FC4B22B39
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:27:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B77A31F22658
+	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 11:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FDB156C69;
-	Sat, 12 Oct 2024 11:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402311993A9;
+	Sat, 12 Oct 2024 11:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uQPj3HUy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UJZcFpUI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CAE197A6A;
-	Sat, 12 Oct 2024 11:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF35F199249;
+	Sat, 12 Oct 2024 11:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728732394; cv=none; b=s1OE0AelsI42xI/G3HxgxxC/RDANoOCDcBILCOKLvlL4xHrpdL1T3uc3UlzZwCPAHdx8h6o5f7ksQfGBVDupm5Ccs74npDPNlWbbTXaBnj+/N0zHnz0DiSuCwKsR/9Qz9WBxXnHO9vdTCjiW/3Cq6n6NHuSeLbLoXXts7Q1nfjQ=
+	t=1728732398; cv=none; b=Np2eHlqcT5tpsyeuUcDfzRxhPxy3Gp/hvr59QVC8rul6MSlrNUL235Kt1HXpzq9GgpKhQyGa+5fLn0OuBpHHjfIVDzCAirda9sQe+Fpzb5TU+UrhSFpqrGDSB0ecWvIl+WiAv9LtgiksIHIT++0e/d3ulRKM8ZnKllgxnwF9euk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728732394; c=relaxed/simple;
-	bh=zxAKMMdIqxL9YefAm6u+AhtgLghb/GgZUPvtgFgmYsg=;
+	s=arc-20240116; t=1728732398; c=relaxed/simple;
+	bh=1skIrtuzhEdXdjRYtE21RMLEdVtdi4q6N2SdiwO/CYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEPbLqYx2DF4tS1HQjxjAcYSf6GPPunUPmH63tZsDtRev2vWGG+UpNW5Y4d1VQRN6M3y8xgZePVuzzmX+no8gjH4V/MWqvD+VpEpdbf3yqgWvfzgDkNdiKpb8AqIJOthpQpD6LwkN8QoGiX4dVx4YysHKVF7WxIrpzQoFVvPz6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uQPj3HUy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B4FC4CEC6;
-	Sat, 12 Oct 2024 11:26:33 +0000 (UTC)
+	 MIME-Version; b=K0f2h8KghxEFGwjzyUmLcUZXa+qv/+gPdxGp9N8GalaxTVsL2/lQ/6w3QotU6s6m836BbaeP0lesW2nY09N6hkyQVbkMf0HoLXhSA75hXR55gVy5NRa8J27Sc0uaYmfVmcYv88mhSSq5rSZPkVic3xsFERw20sApptoY9ZqhFFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UJZcFpUI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46074C4CEC7;
+	Sat, 12 Oct 2024 11:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728732394;
-	bh=zxAKMMdIqxL9YefAm6u+AhtgLghb/GgZUPvtgFgmYsg=;
+	s=k20201202; t=1728732397;
+	bh=1skIrtuzhEdXdjRYtE21RMLEdVtdi4q6N2SdiwO/CYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uQPj3HUyJFyj+Xe67FB1CETT2UWQTk4xcyXiHrpozkEV0x1opvfWLHRfBGG/ETwKQ
-	 wNj4DaGSTgHRMq9vvr7lq2WEy4l+vHI8PuawiWQ16o1SxnnKqQqTsNigOhkeC56eSR
-	 tUAvtx9cEtOaevldtK2WB2GupkKUIt7MiguIFgeq7vD35mUDmwv3h2zqtWnw7BzFm9
-	 kWSdVgsvmPrg/DO5durUZB6I31fhPFwhB2XNyICDo/B2UZLi8BjpCpEC/LxbBUyjNn
-	 UNI9u+VRr+9Jl4EMpEyenUO1Z7NIyCXlwuh2BjgJWODpySINvygAfOBM2QTlvIf1kA
-	 G8OXwbpkQRplg==
+	b=UJZcFpUIv1dWhYNnZz18aKsryFyNJLddQC4u7b0EE90SlxTD8hrwhBzX7bBERZKcD
+	 2ET7mWyl5b6ITd+BO2qlsm8T2Lx9ORP1tlnHubRcbZURvwcupwV2vU3m4wCmEBNmop
+	 B+Ron8EqU3R+oDrsaT8gBv4S1ek0OfVQSpiNEy1LonoNnfXV5ud4dn78hW9Q0krYEX
+	 fWGUhe6evH6qgEKN3RCTs/2L6SI+/fvfOHasEdFVKfM1/Gdt5VgVWKsZHyFxkvVPcy
+	 aoSUG0r58zjYIUX083xcyHq78qmrgUeMJhuSzwY6MCuAkHd1sFr0wOblJ3RPXw549x
+	 bUHSFmJLfm2Tw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zhao Mengmeng <zhaomengmeng@kylinos.cn>,
-	Jan Kara <jack@suse.cz>,
+Cc: Jaroslav Kysela <perex@perex.cz>,
+	Zeno Endemann <zeno.endemann@mailbox.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	jack@suse.com
-Subject: [PATCH AUTOSEL 6.11 07/16] udf: refactor udf_current_aext() to handle error
-Date: Sat, 12 Oct 2024 07:26:03 -0400
-Message-ID: <20241012112619.1762860-7-sashal@kernel.org>
+	tiwai@suse.com,
+	tglx@linutronix.de,
+	cezary.rojewski@intel.com,
+	yung-chuan.liao@linux.intel.com,
+	peter.ujfalusi@linux.intel.com,
+	pierre-louis.bossart@linux.dev,
+	songxiebing@kylinos.cn,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 08/16] ALSA: hda: fix trigger_tstamp_latched
+Date: Sat, 12 Oct 2024 07:26:04 -0400
+Message-ID: <20241012112619.1762860-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241012112619.1762860-1-sashal@kernel.org>
 References: <20241012112619.1762860-1-sashal@kernel.org>
@@ -65,185 +73,84 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.3
 Content-Transfer-Encoding: 8bit
 
-From: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+From: Jaroslav Kysela <perex@perex.cz>
 
-[ Upstream commit ee703a7068f95764cfb62b57db1d36e465cb9b26 ]
+[ Upstream commit df5215618fbe425875336d3a2d31bd599ae8c401 ]
 
-As Jan suggested in links below, refactor udf_current_aext() to
-differentiate between error, hit EOF and success, it now takes pointer to
-etype to store the extent type, return 1 when getting etype success,
-return 0 when hitting EOF and return -errno when err.
+When the trigger_tstamp_latched flag is set, the PCM core code assumes that
+the low-level driver handles the trigger timestamping itself. Ensure that
+runtime->trigger_tstamp is always updated.
 
-Link: https://lore.kernel.org/all/20240912111235.6nr3wuqvktecy3vh@quack3/
-Signed-off-by: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20241001115425.266556-2-zhaomzhao@126.com
+Buglink: https://github.com/alsa-project/alsa-lib/issues/387
+Reported-by: Zeno Endemann <zeno.endemann@mailbox.org>
+Signed-off-by: Jaroslav Kysela <perex@perex.cz>
+Link: https://patch.msgid.link/20241002081306.1788405-1-perex@perex.cz
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/inode.c    | 40 ++++++++++++++++++++++++++--------------
- fs/udf/truncate.c | 10 ++++++++--
- fs/udf/udfdecl.h  |  5 +++--
- 3 files changed, 37 insertions(+), 18 deletions(-)
+ include/sound/hdaudio.h        | 2 +-
+ sound/hda/hdac_stream.c        | 6 +++++-
+ sound/pci/hda/hda_controller.c | 3 +--
+ 3 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/fs/udf/inode.c b/fs/udf/inode.c
-index 4726a4d014b60..c64c2eff3399a 100644
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -1955,6 +1955,7 @@ int udf_setup_indirect_aext(struct inode *inode, udf_pblk_t block,
- 	struct extent_position nepos;
- 	struct kernel_lb_addr neloc;
- 	int ver, adsize;
-+	int err = 0;
+diff --git a/include/sound/hdaudio.h b/include/sound/hdaudio.h
+index 7e39d486374a6..b098ceadbe74b 100644
+--- a/include/sound/hdaudio.h
++++ b/include/sound/hdaudio.h
+@@ -590,7 +590,7 @@ void snd_hdac_stream_sync_trigger(struct hdac_stream *azx_dev, bool set,
+ void snd_hdac_stream_sync(struct hdac_stream *azx_dev, bool start,
+ 			  unsigned int streams);
+ void snd_hdac_stream_timecounter_init(struct hdac_stream *azx_dev,
+-				      unsigned int streams);
++				      unsigned int streams, bool start);
+ int snd_hdac_get_stream_stripe_ctl(struct hdac_bus *bus,
+ 				struct snd_pcm_substream *substream);
  
- 	if (UDF_I(inode)->i_alloc_type == ICBTAG_FLAG_AD_SHORT)
- 		adsize = sizeof(struct short_ad);
-@@ -1999,10 +2000,12 @@ int udf_setup_indirect_aext(struct inode *inode, udf_pblk_t block,
- 	if (epos->offset + adsize > sb->s_blocksize) {
- 		struct kernel_lb_addr cp_loc;
- 		uint32_t cp_len;
--		int cp_type;
-+		int8_t cp_type;
- 
- 		epos->offset -= adsize;
--		cp_type = udf_current_aext(inode, epos, &cp_loc, &cp_len, 0);
-+		err = udf_current_aext(inode, epos, &cp_loc, &cp_len, &cp_type, 0);
-+		if (err <= 0)
-+			goto err_out;
- 		cp_len |= ((uint32_t)cp_type) << 30;
- 
- 		__udf_add_aext(inode, &nepos, &cp_loc, cp_len, 1);
-@@ -2017,6 +2020,9 @@ int udf_setup_indirect_aext(struct inode *inode, udf_pblk_t block,
- 	*epos = nepos;
- 
- 	return 0;
-+err_out:
-+	brelse(bh);
-+	return err;
- }
- 
- /*
-@@ -2167,9 +2173,12 @@ int8_t udf_next_aext(struct inode *inode, struct extent_position *epos,
+diff --git a/sound/hda/hdac_stream.c b/sound/hda/hdac_stream.c
+index b53de020309f2..0411a8fe9d6f1 100644
+--- a/sound/hda/hdac_stream.c
++++ b/sound/hda/hdac_stream.c
+@@ -664,7 +664,7 @@ static void azx_timecounter_init(struct hdac_stream *azx_dev,
+  * updated accordingly, too.
+  */
+ void snd_hdac_stream_timecounter_init(struct hdac_stream *azx_dev,
+-				      unsigned int streams)
++				      unsigned int streams, bool start)
  {
- 	int8_t etype;
- 	unsigned int indirections = 0;
-+	int ret = 0;
+ 	struct hdac_bus *bus = azx_dev->bus;
+ 	struct snd_pcm_runtime *runtime = azx_dev->substream->runtime;
+@@ -672,6 +672,9 @@ void snd_hdac_stream_timecounter_init(struct hdac_stream *azx_dev,
+ 	bool inited = false;
+ 	u64 cycle_last = 0;
  
--	while ((etype = udf_current_aext(inode, epos, eloc, elen, inc)) ==
--	       (EXT_NEXT_EXTENT_ALLOCDESCS >> 30)) {
-+	while ((ret = udf_current_aext(inode, epos, eloc, elen,
-+				       &etype, inc)) > 0) {
-+		if (etype != (EXT_NEXT_EXTENT_ALLOCDESCS >> 30))
-+			break;
- 		udf_pblk_t block;
- 
- 		if (++indirections > UDF_MAX_INDIR_EXTS) {
-@@ -2190,14 +2199,17 @@ int8_t udf_next_aext(struct inode *inode, struct extent_position *epos,
- 		}
- 	}
- 
--	return etype;
-+	return ret > 0 ? etype : -1;
- }
- 
--int8_t udf_current_aext(struct inode *inode, struct extent_position *epos,
--			struct kernel_lb_addr *eloc, uint32_t *elen, int inc)
-+/*
-+ * Returns 1 on success, -errno on error, 0 on hit EOF.
-+ */
-+int udf_current_aext(struct inode *inode, struct extent_position *epos,
-+		     struct kernel_lb_addr *eloc, uint32_t *elen, int8_t *etype,
-+		     int inc)
- {
- 	int alen;
--	int8_t etype;
- 	uint8_t *ptr;
- 	struct short_ad *sad;
- 	struct long_ad *lad;
-@@ -2224,8 +2236,8 @@ int8_t udf_current_aext(struct inode *inode, struct extent_position *epos,
- 	case ICBTAG_FLAG_AD_SHORT:
- 		sad = udf_get_fileshortad(ptr, alen, &epos->offset, inc);
- 		if (!sad)
--			return -1;
--		etype = le32_to_cpu(sad->extLength) >> 30;
-+			return 0;
-+		*etype = le32_to_cpu(sad->extLength) >> 30;
- 		eloc->logicalBlockNum = le32_to_cpu(sad->extPosition);
- 		eloc->partitionReferenceNum =
- 				iinfo->i_location.partitionReferenceNum;
-@@ -2234,17 +2246,17 @@ int8_t udf_current_aext(struct inode *inode, struct extent_position *epos,
- 	case ICBTAG_FLAG_AD_LONG:
- 		lad = udf_get_filelongad(ptr, alen, &epos->offset, inc);
- 		if (!lad)
--			return -1;
--		etype = le32_to_cpu(lad->extLength) >> 30;
-+			return 0;
-+		*etype = le32_to_cpu(lad->extLength) >> 30;
- 		*eloc = lelb_to_cpu(lad->extLocation);
- 		*elen = le32_to_cpu(lad->extLength) & UDF_EXTENT_LENGTH_MASK;
- 		break;
- 	default:
- 		udf_debug("alloc_type = %u unsupported\n", iinfo->i_alloc_type);
--		return -1;
-+		return -EINVAL;
- 	}
- 
--	return etype;
-+	return 1;
- }
- 
- static int udf_insert_aext(struct inode *inode, struct extent_position epos,
-diff --git a/fs/udf/truncate.c b/fs/udf/truncate.c
-index a686c10fd709d..4758ba7b5f51c 100644
---- a/fs/udf/truncate.c
-+++ b/fs/udf/truncate.c
-@@ -188,6 +188,7 @@ int udf_truncate_extents(struct inode *inode)
- 	loff_t byte_offset;
- 	int adsize;
- 	struct udf_inode_info *iinfo = UDF_I(inode);
-+	int ret = 0;
- 
- 	if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_SHORT)
- 		adsize = sizeof(struct short_ad);
-@@ -217,8 +218,8 @@ int udf_truncate_extents(struct inode *inode)
- 	else
- 		lenalloc -= sizeof(struct allocExtDesc);
- 
--	while ((etype = udf_current_aext(inode, &epos, &eloc,
--					 &elen, 0)) != -1) {
-+	while ((ret = udf_current_aext(inode, &epos, &eloc,
-+				       &elen, &etype, 0)) > 0) {
- 		if (etype == (EXT_NEXT_EXTENT_ALLOCDESCS >> 30)) {
- 			udf_write_aext(inode, &epos, &neloc, nelen, 0);
- 			if (indirect_ext_len) {
-@@ -253,6 +254,11 @@ int udf_truncate_extents(struct inode *inode)
- 		}
- 	}
- 
-+	if (ret < 0) {
-+		brelse(epos.bh);
-+		return ret;
-+	}
++	if (!start)
++		goto skip;
 +
- 	if (indirect_ext_len) {
- 		BUG_ON(!epos.bh);
- 		udf_free_blocks(sb, NULL, &epos.block, 0, indirect_ext_len);
-diff --git a/fs/udf/udfdecl.h b/fs/udf/udfdecl.h
-index 88692512a4668..d893db95ac70e 100644
---- a/fs/udf/udfdecl.h
-+++ b/fs/udf/udfdecl.h
-@@ -171,8 +171,9 @@ extern void udf_write_aext(struct inode *, struct extent_position *,
- extern int8_t udf_delete_aext(struct inode *, struct extent_position);
- extern int8_t udf_next_aext(struct inode *, struct extent_position *,
- 			    struct kernel_lb_addr *, uint32_t *, int);
--extern int8_t udf_current_aext(struct inode *, struct extent_position *,
--			       struct kernel_lb_addr *, uint32_t *, int);
-+extern int udf_current_aext(struct inode *inode, struct extent_position *epos,
-+			    struct kernel_lb_addr *eloc, uint32_t *elen,
-+			    int8_t *etype, int inc);
- extern void udf_update_extra_perms(struct inode *inode, umode_t mode);
+ 	list_for_each_entry(s, &bus->stream_list, list) {
+ 		if ((streams & (1 << s->index))) {
+ 			azx_timecounter_init(s, inited, cycle_last);
+@@ -682,6 +685,7 @@ void snd_hdac_stream_timecounter_init(struct hdac_stream *azx_dev,
+ 		}
+ 	}
  
- /* misc.c */
++skip:
+ 	snd_pcm_gettime(runtime, &runtime->trigger_tstamp);
+ 	runtime->trigger_tstamp_latched = true;
+ }
+diff --git a/sound/pci/hda/hda_controller.c b/sound/pci/hda/hda_controller.c
+index 5d86e5a9c814a..f3330b7e0fcfc 100644
+--- a/sound/pci/hda/hda_controller.c
++++ b/sound/pci/hda/hda_controller.c
+@@ -275,8 +275,7 @@ static int azx_pcm_trigger(struct snd_pcm_substream *substream, int cmd)
+ 	spin_lock(&bus->reg_lock);
+ 	/* reset SYNC bits */
+ 	snd_hdac_stream_sync_trigger(hstr, false, sbits, sync_reg);
+-	if (start)
+-		snd_hdac_stream_timecounter_init(hstr, sbits);
++	snd_hdac_stream_timecounter_init(hstr, sbits, start);
+ 	spin_unlock(&bus->reg_lock);
+ 	return 0;
+ }
 -- 
 2.43.0
 
