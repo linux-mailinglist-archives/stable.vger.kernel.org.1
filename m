@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-83634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9CAE99BA03
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 17:26:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E84E99BA06
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 17:27:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27D761C20A94
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 15:26:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C370FB21029
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 15:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF4F146D6A;
-	Sun, 13 Oct 2024 15:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C05D146A63;
+	Sun, 13 Oct 2024 15:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3pB/zuO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MDR56DNI"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B281DFFC
-	for <Stable@vger.kernel.org>; Sun, 13 Oct 2024 15:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D37814600F
+	for <Stable@vger.kernel.org>; Sun, 13 Oct 2024 15:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728833208; cv=none; b=SIpzTsrEZCo5t6kN0T6m/CS0/oYl4J1DV97DV+nVaTwbanmbMe9CA+Q1IMoNFPQbJCwlEMXe0Enu/ppyOwH+wePuGWCRHcetoqRIQ81wfn4to9AS39vtBOvwmn471f4FQF36RAJouYeue58NfjO95i6/XyT53xFQ59lpXAivV1c=
+	t=1728833214; cv=none; b=HRljucQW/AlzTjpPtVDAJGCuHzKdVDnSyHH50YjxtIWruwq3UExx2Ger1ydqRKPD+dENBgy5GkDIW+vgFcDD2HE+h72xT0xmluoSQo1tiCrCGyq3Ee75dnijDpooHI9noB5ZdNFfk68890zIXXjzGjTM0ZdiKh0ajF7MpJSKF40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728833208; c=relaxed/simple;
-	bh=WUOSrlXFNJ3/WS4+l+FSKTYFEK7ADAwwh0gLlUw0MUQ=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=nRYLfXe5YZldCV1E6XA2KXB9WS7YqkYbqwO+GVbMuxUypADkrk+qz3+kDVEYiUXZWwFkUGi+KxtE97wDkCSccnbnIrFxZyUyrFzCX7LLwtmu6phT/G28eFV0dKmqRdGLBhZahL6H6HDyH+b0NZ4LRTP4lt5L/tQms21/QB/cEyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3pB/zuO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6356DC4CED0;
-	Sun, 13 Oct 2024 15:26:47 +0000 (UTC)
+	s=arc-20240116; t=1728833214; c=relaxed/simple;
+	bh=AY/kMoDLw3agCnTMu8clSbzeOTTRN+/gDAocw7VSnbU=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=OFMXPtUTPEvedjHLtKNSoRtrqWA9Qc5oGP0WvvzaF343vYf7s8eViYg49zRDcJVGIt2FFKgvT6ioI853thRLhfEtBbzl716b19YtRIH59RN0DPD+jPxydX2h87ZFsxSKt4FMrttJz5SgjP1cQf8n8N+mV+YSOFCZLSrxtsJg1oM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MDR56DNI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8145C4CEC5;
+	Sun, 13 Oct 2024 15:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728833207;
-	bh=WUOSrlXFNJ3/WS4+l+FSKTYFEK7ADAwwh0gLlUw0MUQ=;
+	s=korg; t=1728833214;
+	bh=AY/kMoDLw3agCnTMu8clSbzeOTTRN+/gDAocw7VSnbU=;
 	h=Subject:To:From:Date:From;
-	b=S3pB/zuOGH0JyzmClK0H+KJqLVjNmfk6UGeYRIBZrmZngldiZAQf1S0UEdOG20Iyq
-	 POci36ZnyqEg25Tk6ZDilptjgx9L9HlEuaGnJKXh4UHB3k0JKchk68PhQea8U1r/pP
-	 G9Hybk0hSnyyJMlvtuU4ZCKCo2pym79rCHGufKFU=
-Subject: patch "iio: light: bu27008: add missing select IIO_(TRIGGERED_)BUFFER in" added to char-misc-linus
-To: javier.carrasco.cruz@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,mazziesaccount@gmail.com
+	b=MDR56DNIkP3iaLqmk0OO84UG3Vj9iE3+L9mLohe7HMS3xU1gGUmc+ZPIGL17tQGNf
+	 cOJgwTLNG6EBxE9u1raueklMLaKvjsA1MJR5UI1aaSjS9fOZtIF81ATSqkVsEItVBT
+	 CfEOAAkg3ehWAGx6wOspvgY7eiG4DYEBMK04S4o8=
+Subject: patch "iio: magnetometer: af8133j: add missing select IIO_(TRIGGERED_)BUFFER" added to char-misc-linus
+To: javier.carrasco.cruz@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,andrej.skvortzov@gmail.com
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 13 Oct 2024 17:26:01 +0200
-Message-ID: <2024101301-prayer-dividend-b959@gregkh>
+Date: Sun, 13 Oct 2024 17:26:02 +0200
+Message-ID: <2024101302-maggot-gorgeous-2875@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: light: bu27008: add missing select IIO_(TRIGGERED_)BUFFER in
+    iio: magnetometer: af8133j: add missing select IIO_(TRIGGERED_)BUFFER
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,40 +69,40 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From aa99ef68eff5bc6df4959a372ae355b3b73f9930 Mon Sep 17 00:00:00 2001
+From fbb913895e3da36cb42e1e7a5a3cae1c6d150cf6 Mon Sep 17 00:00:00 2001
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Thu, 3 Oct 2024 23:04:56 +0200
-Subject: iio: light: bu27008: add missing select IIO_(TRIGGERED_)BUFFER in
- Kconfig
+Date: Thu, 3 Oct 2024 23:04:57 +0200
+Subject: iio: magnetometer: af8133j: add missing select IIO_(TRIGGERED_)BUFFER
+ in Kconfig
 
 This driver makes use of triggered buffers, but does not select the
 required modules.
 
 Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
 
-Fixes: 41ff93d14f78 ("iio: light: ROHM BU27008 color sensor")
+Fixes: 1d8f4b04621f ("iio: magnetometer: add a driver for Voltafield AF8133J magnetometer")
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Link: https://patch.msgid.link/20241003-iio-select-v1-10-67c0385197cd@gmail.com
+Reviewed-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+Link: https://patch.msgid.link/20241003-iio-select-v1-11-67c0385197cd@gmail.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/light/Kconfig | 2 ++
+ drivers/iio/magnetometer/Kconfig | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-index 515ff46b5b82..f2f3e414849a 100644
---- a/drivers/iio/light/Kconfig
-+++ b/drivers/iio/light/Kconfig
-@@ -335,6 +335,8 @@ config ROHM_BU27008
+diff --git a/drivers/iio/magnetometer/Kconfig b/drivers/iio/magnetometer/Kconfig
+index 8eb718f5e50f..f69ac75500f9 100644
+--- a/drivers/iio/magnetometer/Kconfig
++++ b/drivers/iio/magnetometer/Kconfig
+@@ -11,6 +11,8 @@ config AF8133J
  	depends on I2C
+ 	depends on OF
  	select REGMAP_I2C
- 	select IIO_GTS_HELPER
 +	select IIO_BUFFER
 +	select IIO_TRIGGERED_BUFFER
  	help
- 	  Enable support for the ROHM BU27008 color sensor.
- 	  The ROHM BU27008 is a sensor with 5 photodiodes (red, green,
+ 	  Say yes here to build support for Voltafield AF8133J I2C-based
+ 	  3-axis magnetometer chip.
 -- 
 2.47.0
 
