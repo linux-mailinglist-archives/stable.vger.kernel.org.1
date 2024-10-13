@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-83638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B47DB99BA07
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 17:27:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8314C99BA09
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 17:27:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 776B2281BF5
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 15:27:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F8991F21251
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 15:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293DC146D6A;
-	Sun, 13 Oct 2024 15:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1ED146A63;
+	Sun, 13 Oct 2024 15:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0e73fMi8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rKWxnNoy"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E059C14600F
-	for <Stable@vger.kernel.org>; Sun, 13 Oct 2024 15:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B38314600F
+	for <Stable@vger.kernel.org>; Sun, 13 Oct 2024 15:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728833221; cv=none; b=FQqgCLCdCK1OMveNYgOLClXb0D6ih50GMJJ+DmbHdcaXeKJi172kHZsVgJ7STeKhS/5Olm+SvHzoPbAaYjt7JdBOyzRW8HCOYVnRjNqfg8mUTjAX2sGf3L5haDYaWXJvyyrRTaWMUUHGKuHjL3aZt8Q9Ib5SKdlYuSqAPS2CHZA=
+	t=1728833227; cv=none; b=LntpFYVUwy2xDtYO9wyNL93i713Z3W6ItCqAT6n87iG7mRgpI2lTyR/xGkixHnCWYNG+f1vkF3a0xC9ICfIvBpDqkGhEumBrWhrA3H6oycregKZgjPAqnyKpbfqrM1IQqoCDQMaVCGeoc/GyNfWT4zgr/YQHcskGR2CczOakxVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728833221; c=relaxed/simple;
-	bh=rYmM6GT4xnGw94FcYcVApWWQooAdU6j7lx3SVDb997Y=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=gT2s6XHv1jNO6MAiL+crBiIJNxm4JNefJRGKUvnzqVCuoVqUgVFgRfSdLa+a0HpFawAHFkgA+GvmNZVehB7j1ej6Oc6OnaUIwpbLkC7nsXbEoh4LUCv8OWgPNFXDo7e6qLhzTfoxtVGKLftfVRQyFm8Uwb+fLAoYSZ6SUcEezk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0e73fMi8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D94C4CEC5;
-	Sun, 13 Oct 2024 15:27:00 +0000 (UTC)
+	s=arc-20240116; t=1728833227; c=relaxed/simple;
+	bh=PUV03K7IrBZ9KGgICiYntCWRTq5/eHSPJMplJDPDVMk=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=oPY3SnYUjiGSblrawsRpE39oeAEfYGfFn37ZtlTABbU12KHWd6CQBUfcCdR9TEn9XtDbOEHwNFZgH4k4oAPctQPvH3udMa9Q/hXOruAbezyzzB+NxHHkeiPSInuAyknbDIWHcUlEgTqmu89bdeTxI47qQB78q9Pezy5BsUX6GPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rKWxnNoy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A79C4CEC5;
+	Sun, 13 Oct 2024 15:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728833220;
-	bh=rYmM6GT4xnGw94FcYcVApWWQooAdU6j7lx3SVDb997Y=;
+	s=korg; t=1728833227;
+	bh=PUV03K7IrBZ9KGgICiYntCWRTq5/eHSPJMplJDPDVMk=;
 	h=Subject:To:From:Date:From;
-	b=0e73fMi86DolGcl+5ptVi/ErajqkTVfCJc2zpR5zAhBaLWWY/Ns/qZ1APqHG3Lfdg
-	 Cwe97t+EkDc1POtlOd39pLvBvresyGqZvjOfY/1t3JLBM5yG07u0wqBwJ2rrkGKjZP
-	 o62nt5HNUcaYm1SyIEeYXyX90mWP55y5iqe4szj4=
-Subject: patch "iio: resolver: ad2s1210 add missing select REGMAP in Kconfig" added to char-misc-linus
-To: javier.carrasco.cruz@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dlechner@baylibre.com
+	b=rKWxnNoy0Cc3nN886Hwp/1PVOdgj2XmHGJ32bFjq+Uu96nf0iMJxZcoKPUb7ESuGy
+	 ZAWP2LQpgjIhZV8Icy4vlzgsli/K8fsQOsYYKfXQe5OHUveAPA1yKb7UxghpCu0ltL
+	 2R5KMaPnWG3J6J/E8x93JZU0OWguvEei1xc07kOo=
+Subject: patch "iio: frequency: adf4377: add missing select REMAP_SPI in Kconfig" added to char-misc-linus
+To: javier.carrasco.cruz@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 13 Oct 2024 17:26:03 +0200
-Message-ID: <2024101303-professor-reformer-172a@gregkh>
+Date: Sun, 13 Oct 2024 17:26:04 +0200
+Message-ID: <2024101304-awhile-tutu-6525@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: resolver: ad2s1210 add missing select REGMAP in Kconfig
+    iio: frequency: adf4377: add missing select REMAP_SPI in Kconfig
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,37 +69,36 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 17a99360184cf02b2b3bc3c1972e777326bfa63b Mon Sep 17 00:00:00 2001
+From c64643ed4eaa5dfd0b3bab7ef1c50b84f3dbaba4 Mon Sep 17 00:00:00 2001
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Thu, 3 Oct 2024 18:49:33 +0200
-Subject: iio: resolver: ad2s1210 add missing select REGMAP in Kconfig
+Date: Thu, 3 Oct 2024 18:49:35 +0200
+Subject: iio: frequency: adf4377: add missing select REMAP_SPI in Kconfig
 
-This driver makes use of regmap, but does not select the required
+This driver makes use of regmap_spi, but does not select the required
 module.
-Add the missing 'select REGMAP'.
+Add the missing 'select REGMAP_SPI'.
 
-Fixes: b3689e14415a ("staging: iio: resolver: ad2s1210: use regmap for config registers")
+Fixes: eda549e2e524 ("iio: frequency: adf4377: add support for ADF4377")
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-1-4019453f8c33@gmail.com
+Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-3-4019453f8c33@gmail.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/resolver/Kconfig | 1 +
+ drivers/iio/frequency/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/resolver/Kconfig b/drivers/iio/resolver/Kconfig
-index 424529d36080..640aef3e5c94 100644
---- a/drivers/iio/resolver/Kconfig
-+++ b/drivers/iio/resolver/Kconfig
-@@ -31,6 +31,7 @@ config AD2S1210
- 	depends on SPI
- 	depends on COMMON_CLK
- 	depends on GPIOLIB || COMPILE_TEST
-+	select REGMAP
+diff --git a/drivers/iio/frequency/Kconfig b/drivers/iio/frequency/Kconfig
+index c455be7d4a1c..89ae09db5ca5 100644
+--- a/drivers/iio/frequency/Kconfig
++++ b/drivers/iio/frequency/Kconfig
+@@ -53,6 +53,7 @@ config ADF4371
+ config ADF4377
+ 	tristate "Analog Devices ADF4377 Microwave Wideband Synthesizer"
+ 	depends on SPI && COMMON_CLK
++	select REGMAP_SPI
  	help
- 	  Say yes here to build support for Analog Devices spi resolver
- 	  to digital converters, ad2s1210, provides direct access via sysfs.
+ 	  Say yes here to build support for Analog Devices ADF4377 Microwave
+ 	  Wideband Synthesizer.
 -- 
 2.47.0
 
