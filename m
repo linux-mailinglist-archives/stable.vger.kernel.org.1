@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-83620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D1B599B993
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 15:20:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6205B99B999
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 15:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F7DE1C20BC3
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 13:20:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C4501C20C90
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 13:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21C44086A;
-	Sun, 13 Oct 2024 13:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC331459F7;
+	Sun, 13 Oct 2024 13:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P9inCbJW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NQCUyUTB"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA57140E30;
-	Sun, 13 Oct 2024 13:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619E6144D01;
+	Sun, 13 Oct 2024 13:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728825631; cv=none; b=jeiJEthTeN7Tr/7qACNL69UJC+FMpMAE2QvRFVH+PDedsH76NpEPrF73cEjXaQodNkI2I4Z3OU+376IwKtFG1hXQl7ojUsx6mDNm/lNMLk64tDq6gpnx5Bl9RXrqU2dR1YtXgwbhsK57FKoOYxOY8IUqpAkSUGa+yvRcUacPYRs=
+	t=1728826170; cv=none; b=O8+BHBpHuFjUIWZ6cQ438sknngdZtK/DQJWDwgV6TbcKUBegFn1BTaXAp27BCayvXWKD0Vp1BeUOqhr7r0FPyJSejs0fbUPlnOBszXPjctzu+s91x5iSGZeHeq51Yr4YzksPaxIYZqLF0P4nvc1kqo7iGOE9+LmHYmJrVUYuq/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728825631; c=relaxed/simple;
-	bh=C0S6mqfORLoWtEDyItiveXpTLIy6WbtUFcSND0AtIsE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=rwEzdJx5axJsS5cnwldvJsaFlcL97XaWmtbw9u3abbWmh5PutpaHHk24xW1foOLjBlO0+7jI5YRGLJ7VHR8z9Sf566I8EICKFZG0vbG92JCcUwNUWaVXOXNjyMbChdw6XeKoDC0SGFnVm15Sy/PGdU/W1Vi+6Jiz+UDzYmjHwRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P9inCbJW; arc=none smtp.client-ip=209.85.221.49
+	s=arc-20240116; t=1728826170; c=relaxed/simple;
+	bh=SAEC5JBEGvTQMw649wbR32F7xQSAMSlWb1WlKc8U8S0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=QwKN6pqamUJq1YrTa2sieSOQnavpiofN460Lz0cJD/rxJQ94q+qd2otTsKUxrdc7zHgaGF9Pgkx/1Z/m5LYSQOrBaWd2oyjeNM1AUEeXKACD+uly2Qqd9lZe1kX7uFySU7EUSqrNwr3kEIBzO+zh62iDW6TGscOFy6uLgji/ZCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NQCUyUTB; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-37d4c1b1455so2399139f8f.3;
-        Sun, 13 Oct 2024 06:20:29 -0700 (PDT)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-37d473c4bb6so2615403f8f.3;
+        Sun, 13 Oct 2024 06:29:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728825628; x=1729430428; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728826166; x=1729430966; darn=vger.kernel.org;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yp6pw/0C23KPENHuWOvywUiHbaiRAvFFE4mKQ3z1tKE=;
-        b=P9inCbJWBbURbfZCnwpEiNKisK/nWO1GBKqwqWdiRCgftpUYQBHqS4GagU3mQuhAMv
-         fNZje0+wLraUN7DhradKI5CEeW/QQQSCYSiSdRe6nNCL3RcdauFUp1iLjHVomaodqgRz
-         6n7wFAE3K78nZ8/k0YC4c85+On5VCkTHBvPwWk+xEyui+aR4XBvhhIrLXTfivyII7pxu
-         K3MfpqutlMjK1AU0ABojkE8vHliq7K5xbcRE5oZVuopztPmsLFlvzNYoZ7QiRxWpxQ0P
-         T+TulbYvAClHwhZjiV24a6KR7VF2/3Stwy7nF1wQrOkQbGJpwo4zrJQcXMXKppfHOgXO
-         Ngbg==
+        bh=NGlXEzSiP5z6yP6nCSdenZ8uyY+JlklNBTVpENkMXes=;
+        b=NQCUyUTBNe9ASVRFRuQC9+n+noQ9GtcIPboOV5qgbxAsFD1wKFzmD7t1EP5Omyp48N
+         QR3Uqh4CIHtd+FfxHUgEvr2NPHeaUYgVNssY7lmeQTOJBHkwR9FoFNcMYa/tbOS5mN/6
+         GShaja0lWB9/9ezQCDtUSbg5/t8NzVPgO47mv53FHb3Q8vxzXYA0a0M0y7oaYDdJvJZ9
+         xcbTZgFuxaI/d5MCFqazqrqYlijoCvbuXXSHqkUZFBPKKD6Uy4PbvuMKdqPgwSB6IWcR
+         A2hvK6RmWzGfLxYkBdSElc5ICXAxm2lXODLkii5N7Dp28Y7vVTC0w9NmoLT0eKjo49Nz
+         pOWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728825628; x=1729430428;
+        d=1e100.net; s=20230601; t=1728826166; x=1729430966;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=yp6pw/0C23KPENHuWOvywUiHbaiRAvFFE4mKQ3z1tKE=;
-        b=Uyb0ZNHop0PnFx5qCS0dBztJXDZR5RTIJcvbDGg2PUhY9KNIvB586f9/ZAwRwIEHyk
-         HZv8F5vKmr1pTugVlpxk2uTe+civwzNvNB0zLf7CbwqoI0nY3W5fGdDyzDfBjSDqXaxr
-         fo/Jmv/UuhY/8Y23tvSQ9XOHa9wUfUU0Y7+EceUXpibEZHxPXE8fXxeYYQKV/2QSUzWU
-         V7cpQLCUQ67TNvUV8hZxsfMPttWyESlfVW7NdXRL48GyLi/eiE4JS5A0P1anNqC8at1u
-         SonRqn2OVJL/Bo6wsGUC0yYIsNv5tkhVuHCO2AFfarf0d8sDt/vz98VHgCE38lASMWXe
-         8HRg==
-X-Forwarded-Encrypted: i=1; AJvYcCVrs8ZSMzroerBn+efw/KSQX+TbyEt+bOJI68XNVTHnHwbtr2Ueg8wpZRLWYAIMqSpititlLEa5iCbOhGY=@vger.kernel.org, AJvYcCXxQU+CmVzb3ODeWdX7+G945qzOKrZlUDyazQjy6GSAr6+EH6oI9EqXAlTvZpiraf8C6V+tPo2U@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzdkKOtBmEPBUl/m2GXmC3CHpWIsMgX8BN2pYVQQVQykAoaljQ
-	vvsnnLNM/u3LO8Hf05BBcsSIriKX3IHUNtOrTDKbsu7e9ITEhuwG
-X-Google-Smtp-Source: AGHT+IHyxkV2Ch48vA8q5r/fE7A3H2kOejnw9ANFN69fKq7TKDidmMYePuKbSBRYvCKrpIBUaOmyAQ==
-X-Received: by 2002:a5d:570d:0:b0:374:c8e5:d568 with SMTP id ffacd0b85a97d-37d551d6b43mr6355803f8f.29.1728825627943;
-        Sun, 13 Oct 2024 06:20:27 -0700 (PDT)
+        bh=NGlXEzSiP5z6yP6nCSdenZ8uyY+JlklNBTVpENkMXes=;
+        b=AtuxcYnnz8jutUPEzJ77HgVeqqCdJAylm1Wpj//UpLr3aJU2nHBNpBvd7vPZJfeXOP
+         CyiKmfyrZpvJ5X9jMQD5mSklw7csmSG9wkyV3ZDBH2sjW+6Zmv5rOhSV8LdlblPoqpIl
+         qDc1C3e6bqmqToXYiMicFxo85Ggzg5COQTsPukCjq/X5JLg9iJLj1e73oA/u9rTHudpH
+         8Zwt059XUAkMgmXWx5CnkEPVUFtAihJnMwHdcye2tNcKc341cJWOucz1Xcd4qbF5W0Gn
+         x1e4gENsBAl3m8tD6oRT14PZodnAP7qvOyz8L+cqXTXkWfRmWbylH8ngjCYlKuOYkMvo
+         8VNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXe+qlnxFL9uSItfRpfbec6DSQ0VXbb2a5imlFaQbK1UdhuRmTsakaA+v9yrP9keuqqd6MxY8DW@vger.kernel.org, AJvYcCXmOybpsj3tPW7Nx38McMjmKrKJnnCWGLF7zo0j43idrj5KylULMKxdE4iAorbcGIHSoOk3u+jqGtGU65E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrwUc0LBXMurZPA75QjE2vvLv2XApAHqPZ5WaCeJ0tpl6Sdza9
+	FiAqWTkD+V55wu9TYAixxm9OtTuGzEju1vp8KEhVwqiUopL/TZP/
+X-Google-Smtp-Source: AGHT+IE8fC2geMshENVGb1hea7AhB6LAexPh3d8xXlpLs/ktse8QKUVqQH3fLCN/Mpne6NvatqohrQ==
+X-Received: by 2002:a5d:6a42:0:b0:37d:4cf9:e08b with SMTP id ffacd0b85a97d-37d5ffa36e1mr5005643f8f.31.1728826166513;
+        Sun, 13 Oct 2024 06:29:26 -0700 (PDT)
 Received: from [127.0.1.1] (2a02-8389-41cf-e200-a034-352b-6ceb-bf05.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:a034:352b:6ceb:bf05])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6a8911sm8642547f8f.14.2024.10.13.06.20.26
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b9190f7sm8655165f8f.114.2024.10.13.06.29.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Oct 2024 06:20:27 -0700 (PDT)
+        Sun, 13 Oct 2024 06:29:25 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Sun, 13 Oct 2024 15:20:24 +0200
-Subject: [PATCH v2] platform/chrome: cros_ec_typec: fix missing fwnode
- reference decrement
+Date: Sun, 13 Oct 2024 15:29:17 +0200
+Subject: [PATCH] soc: fsl: rcpm: fix missing of_node_put() in
+ copy_ippdexpcr1_setting()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,68 +77,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241013-cross_ec_typec_fwnode_handle_put-v2-1-9182b2cd7767@gmail.com>
-X-B4-Tracking: v=1; b=H4sIABfJC2cC/5WNQQqDMBREryJ/3ZTEhqpdeY8iwSQ/+kGNJNZWx
- Ls39QbdDLxheLNDxEAY4ZHtEHClSH5KkF8yMH07dcjIJoac51JwXjETfIwKjVq2OaV7T96iSlM
- 7oJpfC6ucuGmprbwXDpJmDujoc148m8Q9xcWH7Xxcxa/9Q74KJpgThbZalrYoed2NLQ1X40doj
- uP4AhhjikTQAAAA
-To: Prashant Malani <pmalani@chromium.org>, 
- Benson Leung <bleung@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>, 
- Guenter Roeck <groeck@chromium.org>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Enric Balletbo i Serra <eballetbo@kernel.org>
-Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Message-Id: <20241013-rcpm-of_node_put-v1-1-9a8e55a01eae@gmail.com>
+X-B4-Tracking: v=1; b=H4sIACzLC2cC/x3MTQqAIBBA4avErBP8qUVdJUJKx5pFKloRSHdPW
+ n6L9wpkTIQZxqZAwpsyBV8h2gbMvvgNGdlqkFx2ggvFkokHC077YFHH62Q9Dh32qxNScahZTOj
+ o+ZfT/L4fhLKd9GIAAAA=
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Li Yang <leoyang.li@nxp.com>, Ran Wang <ran.wang_1@nxp.com>, 
+ Biwen Li <biwen.li@nxp.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728825626; l=1709;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728826165; l=985;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=C0S6mqfORLoWtEDyItiveXpTLIy6WbtUFcSND0AtIsE=;
- b=vG1BHbGA8jidaNJrfj9eSQ38uVJkBe5+Gqwl2/D4PeNpr94Pw3akMfi0956Z/2JdY/WvxToo7
- zZbdK/bi27bBRqb3zxJkn+5duGHxRzpw0NwDMNZZXrLen5iVrbP6dL7
+ bh=SAEC5JBEGvTQMw649wbR32F7xQSAMSlWb1WlKc8U8S0=;
+ b=Tzw1jc++TZAlsNFa2eLf/X1m6vznngoB7tdjupyfxfOzpZpnbegGJ4VkNZYJOxkT0Cb1leguC
+ 4SfKNsaEQt4A+fLcXtT7kBPAK+pcVcJPdx+ZMr699dS8TLODbjBzgk3
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-The device_for_each_child_node() macro requires explicit calls to
-fwnode_handle_put() upon early exits (return, break, goto) to decrement
-the fwnode's refcount, and avoid levaing a node reference behind.
+of_find_compatible_node() requires a call to of_node_put() when the
+pointer to the node is not required anymore to decrement its refcount
+and avoid leaking memory.
 
-Add the missing fwnode_handle_put() after the common label for all error
-paths.
+Add the missing call to of_node_put() after the node has been used.
 
 Cc: stable@vger.kernel.org
-Fixes: fdc6b21e2444 ("platform/chrome: Add Type C connector class driver")
+Fixes: e95f287deed2 ("soc: fsl: handle RCPM errata A-008646 on SoC LS1021A")
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
-I usually switch to the scoped variant of the macro to fix such issues,
-but given that the fix is relevant for stable kernels, I have provided
-the "classical" approach by adding the missing fwnode_handle_put().
-
-If switching to the scoped variant is desired, please let me know.
-This driver and cross_typec_switch could be easily converted.
----
-Changes in v2:
-- fix typos in the commit description.
-- Link to v1: https://lore.kernel.org/r/20241009-cross_ec_typec_fwnode_handle_put-v1-1-f17bdb48d780@gmail.com
----
- drivers/platform/chrome/cros_ec_typec.c | 1 +
+ drivers/soc/fsl/rcpm.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/platform/chrome/cros_ec_typec.c b/drivers/platform/chrome/cros_ec_typec.c
-index c7781aea0b88..f1324466efac 100644
---- a/drivers/platform/chrome/cros_ec_typec.c
-+++ b/drivers/platform/chrome/cros_ec_typec.c
-@@ -409,6 +409,7 @@ static int cros_typec_init_ports(struct cros_typec_data *typec)
- 	return 0;
+diff --git a/drivers/soc/fsl/rcpm.c b/drivers/soc/fsl/rcpm.c
+index 3d0cae30c769..06bd94b29fb3 100644
+--- a/drivers/soc/fsl/rcpm.c
++++ b/drivers/soc/fsl/rcpm.c
+@@ -36,6 +36,7 @@ static void copy_ippdexpcr1_setting(u32 val)
+ 		return;
  
- unregister_ports:
-+	fwnode_handle_put(fwnode);
- 	cros_unregister_ports(typec);
- 	return ret;
- }
+ 	regs = of_iomap(np, 0);
++	of_node_put(np);
+ 	if (!regs)
+ 		return;
+ 
 
 ---
-base-commit: b6270c3bca987530eafc6a15f9d54ecd0033e0e3
-change-id: 20241009-cross_ec_typec_fwnode_handle_put-9f13b4bd467f
+base-commit: d61a00525464bfc5fe92c6ad713350988e492b88
+change-id: 20241013-rcpm-of_node_put-5e94e5bf1230
 
 Best regards,
 -- 
