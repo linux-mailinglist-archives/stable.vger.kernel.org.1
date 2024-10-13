@@ -1,159 +1,93 @@
-Return-Path: <stable+bounces-83654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B63FD99BBAE
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 22:29:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24EB799BC47
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 23:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 762FC281743
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 20:29:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC9E2B2181C
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 21:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F2A14D2A0;
-	Sun, 13 Oct 2024 20:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC99231CAE;
+	Sun, 13 Oct 2024 21:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="efblilPo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QKkk+Sno"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A701494DC;
-	Sun, 13 Oct 2024 20:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1468D2744E
+	for <stable@vger.kernel.org>; Sun, 13 Oct 2024 21:31:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728851370; cv=none; b=UBudumjK1vEOyzNtn1j1etiCXl6GaOHgFvmLJdCobD5I3zFVfmnIVFW+yPreEKJ8W285gBt4bue3z1lbpJNPbMh7i4CGZ7X5CuFbcgfdZeBZITF7/PbhfiltaXJhE143jNvajyCNnDEz0Y9V279M9+B2J8DCvciRp+HznGTFyRI=
+	t=1728855067; cv=none; b=KgFuzWXOSAJLFFcdupahIit2XStdDPNs2GdaIH61LMa1NkLNj1i8JVi3pGLJOsr5HO3+qp8l4wQa4QHxmtxzE/fGw3cj/stKwl5q+LOW0/9vf4wmjtpSoeMFNoyahUdThyzFwRzRXk5xGfzxY5vzVTuQfpcplvdC9VIErKfbJso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728851370; c=relaxed/simple;
-	bh=0gMXlYpnIPAuJgx2PAz1Y+xtbMNK0rxJnrXsXAV5+O4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t/fJ4tY7/W7c13Hk/z/5jWZbWffqxpGUAaE+arSLtgyhSTGVhoepM17Qmk4eso8qJ/dn/u1Evj1rfRe6CHbOAXhsgma1FS+xF+QbEQSRq2dD5/KfP/V3U8HNdY7xcchCFeWcD+mDkKYamv3SLTtFLcmytyxY+dcgkn5fhuhGsz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=efblilPo; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1728851357; x=1729456157; i=wahrenst@gmx.net;
-	bh=kZp4oZNcSAAVej1Qag41DuMe8LJUyQ0UO62YYClJjt0=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=efblilPoRYsJRMDDke5Z6vgo/bilWLUr31qX8t8oydM3hPrtgh5hHjqzgl+0Hu7a
-	 BWMdv+1xrSaXL3Tsg5wov2cewpuA8HvAB3gPIrl4iwXNIMfqR2kOoDHGwX14j5uz1
-	 jfQvcbqyLZVUUXER1M/oNKMaiUZZQy56lI2eNlpB7ZubATj6wRqR2OWovcGHu8v+j
-	 Jl+OiyFqPO18RHD0IntC0xklIu0VIhARuKPamZIBAGew7CgbLlkaUgLcwCnkfV2MF
-	 kBdKDiNFKAGra6nri87OgRDbfg0I/mgXmgaVeqTd6vObiAVTxip3nsCRwjQ65bOT3
-	 0/+ky+k7qGbR6T7Oxg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.104] ([37.4.248.43]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MVeMA-1tPPbN2l2y-00Wg3p; Sun, 13
- Oct 2024 22:29:17 +0200
-Message-ID: <b176520b-5578-40b0-9d68-b1051810c5bb@gmx.net>
-Date: Sun, 13 Oct 2024 22:29:16 +0200
+	s=arc-20240116; t=1728855067; c=relaxed/simple;
+	bh=5xmURMaQB+kGaBR3ftXlO/ng8uDZS60gJunFqpNO3LI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TaazYkIlDUQ2+f8QIoQryZUHG4oMdHEGUn9/h+QfBeQn+Pc2/M1FznzT/1PkJhQFIWhOW400wBpUeAhOvtJMeD3B5cjwh5SDf2KZz6ZALfZ3AS2Q4peN1LBRWPLHpxxJKnwK/KHFWO7piA15/FSenVM22Aqo5t5i5yRniDSu2fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QKkk+Sno; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-37d3ecad390so2917217f8f.1
+        for <stable@vger.kernel.org>; Sun, 13 Oct 2024 14:31:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728855064; x=1729459864; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5xmURMaQB+kGaBR3ftXlO/ng8uDZS60gJunFqpNO3LI=;
+        b=QKkk+Sno9FDPaw5WLxsEwPk+F65Z7cyIXtPqujrdTlBx0k4pWaWVwB4xVFSwtEHLtG
+         kENTboKCU1ldzjMZ1FQE11g4WnlVFgXnf/rhxGrv3ADIqfizwJ/WdN3a6/9CwfUTPIh6
+         bk50E0+4ILek3tB/uVaqhv1WdmrFoZK+eCO+SeLvWyYP6+WuU5xrQOlr4c0L8G1zL8cu
+         OHDlG50zQwv5tT+7eZMOTrB91r5OENN0IWfa70eRKylMLAueW/zmD/71mAsFqB3G1IKK
+         xpHIjJgIajTSPPjJc1An1UVNDBn4K908FtVaOnKCpsnlk94ke8iuWBSjyOlXY7VITlZo
+         jenA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728855064; x=1729459864;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5xmURMaQB+kGaBR3ftXlO/ng8uDZS60gJunFqpNO3LI=;
+        b=gbWsZqZq9c/VTL4iiWUSuVPJorV1uLEwbuRITwwX9zYKS8dL9st+vmNMsbtB7IJ/L2
+         TGvFRFU1mTO/6nAubH8r5koj+EIeM03/PMJuQ0o60Km0OGUkYTiixUlSwk5b04oofQMx
+         ddSF10Wh1j2oK1ZCPPuleC+oJ+1indH18LqawWe3MKJNp6oQD6eLbUZYaE61S/I5BmJX
+         e/n9iifJSzuDrf1agqZTQtVjzHTuXTWMD1SlEVTN/lMU6W8g8EZj2TW4JlOlUo3mWnV2
+         9iWjJM/nj6MVlBjIMnLyqafK8nIpPK12uVaAFJzg6jHbu1nhpYGwKl7A/bkdAgLgoR4b
+         /sgg==
+X-Forwarded-Encrypted: i=1; AJvYcCXhaMFa1jaEqwTXHJQnj5GVHnnxcGDn6r9V0i2bzE0wDkRkPQARnsc+665Kp82A/qCAjAN5JXc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YysIvdeh76lrdq8CSwNJpK06BRWEod/pMaDOF9y5KJtUi5RvgJW
+	D1UfkC+MCkcPq1EC+pTvA8L761C9uOcIzVxXPm6WKxeKrec20tahSj7peyIq
+X-Google-Smtp-Source: AGHT+IGz9v7rDMqSJARiljy8htrk4kg2Dmg1qxC2+iB38XQ4EDYnr7OU5moms3j0Ydhr9mjD5DBZOA==
+X-Received: by 2002:adf:f805:0:b0:377:94b:4f51 with SMTP id ffacd0b85a97d-37d5529bc83mr6691981f8f.22.1728855064210;
+        Sun, 13 Oct 2024 14:31:04 -0700 (PDT)
+Received: from localhost.localdomain ([109.175.243.76])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6a88c9sm9639468f8f.20.2024.10.13.14.31.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Oct 2024 14:31:03 -0700 (PDT)
+From: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
+To: mario.limonciello@amd.com
+Cc: Hamza.Mahfooz@amd.com,
+	Marc.Rossi@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] drm/amd/display: Disable PSR-SU on Parade 08-01 TCON too
+Date: Sun, 13 Oct 2024 22:31:03 +0100
+Message-ID: <20241013213103.55357-1-stuart.a.hayhurst@gmail.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240205211233.2601-1-mario.limonciello@amd.com>
+References: <20240205211233.2601-1-mario.limonciello@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] staging: vchiq_arm: Utilize devm_kzalloc in the probe()
- function
-To: Umang Jain <umang.jain@ideasonboard.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: linux-rpi-kernel@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Dan Carpenter <dan.carpenter@linaro.org>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- kernel-list@raspberrypi.com, Javier Carrasco
- <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
-References: <20241013171613.457070-1-umang.jain@ideasonboard.com>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <20241013171613.457070-1-umang.jain@ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:o9jjF+w3KoP0/0RAbm/FdeAV+qPWlYVd+WBzsUBqMhM20aPAXUW
- 8ZUHnI5ZJHAaxIe9OcysTndkA/+gOET7NDvG8cmFOD6KbrqMcJh9pku6/AMWudq3YeQvWps
- H6MtYX+ba4gEf3PPY3k/T7Rjt5nWD3DyAoRkjmwycX8JDR4Z0FQLZkLgQM1IXhb9WXccODK
- l0KW+lhKu58dOgnoUXKKQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:1+62h/DBdPI=;XwHz3UcBoVhQo7w2bYTTKyAEfYW
- vru6Tp/68/ilNsSAHZyBY1RK/vkCIHmenl8+zaWXepCQsyP0/sXKDOEqLOMh0GURo8Y4tfAO7
- gVxcE6KP2van52uYN4dF4MWMR43nl3D1ct7mExZWDV4ExTbJZyrcvXOefYnwaLOpRDLJ8KvOk
- +/WuONwQ0GjNt9ZEYqSuL+xxFTRalTE6RcJU9e1nyuPqeJxT+wbQlIPyZhA2U07Qsmel2jEEb
- z58wZfcicmgi20BWuhkngJDf1YM4cGuL3BC1sgfDh/cGEBtXMMsdA1TcJkEAk9EYzNGpMZ/H7
- gaky6T7EB2dGwn93siFLE+Gu/Ed6nWAalbv18WNSvZM3GIQ+ffHDf+BUePgcQnbzt3hPwIZDh
- nSIog7FVmjTisY8PfZsB40plmcBMxzT9mT6cVj+0LCYfZx4pQPKtu0oE8y6rfVDUDxTzHQSY1
- z5DNh/jrStKoXuqo9CO55y23fe4gumr8kQx3GtasAIixMHdU6KYTwOQY4gQ8AAHZqdzNxn3zc
- 4qUjSndmqYRXgvtbogubboX8EvEpgIispZ56xqEfKD0gfhu1zk5u/ojVt2tbkhVgBa01ooNcK
- ZmWHsvlvPz0sE2wbcbk6Mfyk33NxZZB7svi1GoCUVq+J7hsWL8LUVx28F/s+uPcvdZj4InhVb
- ZoFFfGR4KerLg44odVSRvrWIVy3CNjZ6MdWWOqm2HnWcKRSO+p2QvkNgRmmejlg4HFc3OCXYs
- BSjuKGLJQmYM9F7NDMgmht8b8A6Kp3rdUOmaEs1BZPc4DZlEXuWLRkY8yy0hdS2E1WCxXAgAH
- NJIVCOm2uV1SJA2Yiwvb5Q+Q==
+Content-Transfer-Encoding: 8bit
 
-Hi Umang,
-
-Am 13.10.24 um 19:16 schrieb Umang Jain:
-> The two resources, 'mgmt' and 'platform_state' are currently allocated
-> dynamically using kzalloc(). Unfortunately, both are subject to memory
-> leaks in the error handling paths of the probe() function.
->
-> To address this issue, use device resource management helper devm_kzallo=
-c()
-> for proper cleanup during allocation.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 1c9e16b73166 ("staging: vc04_services: vchiq_arm: Split driver st=
-atic and runtime data")
-> Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
-> ---
->   .../staging/vc04_services/interface/vchiq_arm/vchiq_arm.c   | 6 ++----
->   1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm=
-.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-> index 29e78700463f..373cfdd5b020 100644
-> --- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-> +++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-> @@ -285,7 +285,7 @@ vchiq_platform_init_state(struct vchiq_state *state)
->   {
->   	struct vchiq_arm_state *platform_state;
->
-> -	platform_state =3D kzalloc(sizeof(*platform_state), GFP_KERNEL);
-> +	platform_state =3D devm_kzalloc(state->dev, sizeof(*platform_state), G=
-FP_KERNEL);
- From my understand this leak has been there from the beginning and
-platform_state is never freed. So I think this patch should be splitted,
-because the Fixes applies only to the rest of the patch.
-
-Regards
->   	if (!platform_state)
->   		return -ENOMEM;
->
-> @@ -1344,7 +1344,7 @@ static int vchiq_probe(struct platform_device *pde=
-v)
->   		return -ENOENT;
->   	}
->
-> -	mgmt =3D kzalloc(sizeof(*mgmt), GFP_KERNEL);
-> +	mgmt =3D devm_kzalloc(&pdev->dev, sizeof(*mgmt), GFP_KERNEL);
->   	if (!mgmt)
->   		return -ENOMEM;
->
-> @@ -1402,8 +1402,6 @@ static void vchiq_remove(struct platform_device *p=
-dev)
->
->   	arm_state =3D vchiq_platform_get_arm_state(&mgmt->state);
->   	kthread_stop(arm_state->ka_thread);
-> -
-> -	kfree(mgmt);
->   }
->
->   static struct platform_driver vchiq_driver =3D {
-
+Hi, can this be considered again please? Still facing issues with the 660M in
+my Lenovo Yoga 7 14ARB7. This fixes the weird behaviour I have with black
+screens, back-traces and flickering.
 
