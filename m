@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-83637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA0A99BA05
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 17:27:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B47DB99BA07
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 17:27:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A65591F21667
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 15:27:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 776B2281BF5
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 15:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD85146D78;
-	Sun, 13 Oct 2024 15:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293DC146D6A;
+	Sun, 13 Oct 2024 15:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+mRyfxu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0e73fMi8"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3A314600F
-	for <Stable@vger.kernel.org>; Sun, 13 Oct 2024 15:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E059C14600F
+	for <Stable@vger.kernel.org>; Sun, 13 Oct 2024 15:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728833217; cv=none; b=FAh0ivKlPV5m7yfX0ZWzqOJhSJWUerXsCzQkXPW6Tq7VzfYtBOCx9t04U2RpNdh5t/vuUZaw5pvVu1eaT234+Xdh3LfQMq/RYjI5/yCe60riVy05bss+UlQ+Yu07dQOS2TQ8Khhs+Twj9w3+lJTJZHIXJ5UmQPXo1hsZEPDY8bc=
+	t=1728833221; cv=none; b=FQqgCLCdCK1OMveNYgOLClXb0D6ih50GMJJ+DmbHdcaXeKJi172kHZsVgJ7STeKhS/5Olm+SvHzoPbAaYjt7JdBOyzRW8HCOYVnRjNqfg8mUTjAX2sGf3L5haDYaWXJvyyrRTaWMUUHGKuHjL3aZt8Q9Ib5SKdlYuSqAPS2CHZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728833217; c=relaxed/simple;
-	bh=EfDhPMRhv9XL0H9bQbHL7WMAYO7LJ9+KbyRdDV7DTfw=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=hUIHNMryLWZxWi4w7YBUrDI6o5nNbzJ7FB9CqBZeOCgHGLvkCt6O9Eqh3OJMe+FyU+OPYuvK63kNWsjy88Fhdzz0ZMqpo6JWKogsquPBsAD5ZSavo+IW27ZhkymGv0i1/FAUEDyZmj9QxZp/w6PiK0uGDnZgYJavgXbw/pXemrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+mRyfxu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288E7C4CEC5;
-	Sun, 13 Oct 2024 15:26:56 +0000 (UTC)
+	s=arc-20240116; t=1728833221; c=relaxed/simple;
+	bh=rYmM6GT4xnGw94FcYcVApWWQooAdU6j7lx3SVDb997Y=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=gT2s6XHv1jNO6MAiL+crBiIJNxm4JNefJRGKUvnzqVCuoVqUgVFgRfSdLa+a0HpFawAHFkgA+GvmNZVehB7j1ej6Oc6OnaUIwpbLkC7nsXbEoh4LUCv8OWgPNFXDo7e6qLhzTfoxtVGKLftfVRQyFm8Uwb+fLAoYSZ6SUcEezk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0e73fMi8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D94C4CEC5;
+	Sun, 13 Oct 2024 15:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728833217;
-	bh=EfDhPMRhv9XL0H9bQbHL7WMAYO7LJ9+KbyRdDV7DTfw=;
+	s=korg; t=1728833220;
+	bh=rYmM6GT4xnGw94FcYcVApWWQooAdU6j7lx3SVDb997Y=;
 	h=Subject:To:From:Date:From;
-	b=v+mRyfxuHrGSqmVEGBmnRFeyrI9daTJXpMgK4D94P4cULfgLMBifN5swvmTwsvuG2
-	 I2qtoGkTx/MskG0X8MkjLBl8+syju2RrJCfnYBrKMAeASX/DHQ2uJlF6FQ2gBn1TDV
-	 9qwJC+vJkovyuRU+CyP/7YEtSis2JRT8DINDycaY=
-Subject: patch "iio: proximity: mb1232: add missing select IIO_(TRIGGERED_)BUFFER in" added to char-misc-linus
-To: javier.carrasco.cruz@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
+	b=0e73fMi86DolGcl+5ptVi/ErajqkTVfCJc2zpR5zAhBaLWWY/Ns/qZ1APqHG3Lfdg
+	 Cwe97t+EkDc1POtlOd39pLvBvresyGqZvjOfY/1t3JLBM5yG07u0wqBwJ2rrkGKjZP
+	 o62nt5HNUcaYm1SyIEeYXyX90mWP55y5iqe4szj4=
+Subject: patch "iio: resolver: ad2s1210 add missing select REGMAP in Kconfig" added to char-misc-linus
+To: javier.carrasco.cruz@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dlechner@baylibre.com
 From: <gregkh@linuxfoundation.org>
 Date: Sun, 13 Oct 2024 17:26:03 +0200
-Message-ID: <2024101303-batch-iciness-4359@gregkh>
+Message-ID: <2024101303-professor-reformer-172a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: proximity: mb1232: add missing select IIO_(TRIGGERED_)BUFFER in
+    iio: resolver: ad2s1210 add missing select REGMAP in Kconfig
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,39 +69,37 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 75461a0b15d7c026924d0001abce0476bbc7eda8 Mon Sep 17 00:00:00 2001
+From 17a99360184cf02b2b3bc3c1972e777326bfa63b Mon Sep 17 00:00:00 2001
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Thu, 3 Oct 2024 23:04:59 +0200
-Subject: iio: proximity: mb1232: add missing select IIO_(TRIGGERED_)BUFFER in
- Kconfig
+Date: Thu, 3 Oct 2024 18:49:33 +0200
+Subject: iio: resolver: ad2s1210 add missing select REGMAP in Kconfig
 
-This driver makes use of triggered buffers, but does not select the
-required modules.
+This driver makes use of regmap, but does not select the required
+module.
+Add the missing 'select REGMAP'.
 
-Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
-
-Fixes: 16b05261537e ("mb1232.c: add distance iio sensor with i2c")
+Fixes: b3689e14415a ("staging: iio: resolver: ad2s1210: use regmap for config registers")
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241003-iio-select-v1-13-67c0385197cd@gmail.com
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-1-4019453f8c33@gmail.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/proximity/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/resolver/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/proximity/Kconfig b/drivers/iio/proximity/Kconfig
-index 31c679074b25..a562a78b7d0d 100644
---- a/drivers/iio/proximity/Kconfig
-+++ b/drivers/iio/proximity/Kconfig
-@@ -86,6 +86,8 @@ config LIDAR_LITE_V2
- config MB1232
- 	tristate "MaxSonar I2CXL family ultrasonic sensors"
- 	depends on I2C
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
+diff --git a/drivers/iio/resolver/Kconfig b/drivers/iio/resolver/Kconfig
+index 424529d36080..640aef3e5c94 100644
+--- a/drivers/iio/resolver/Kconfig
++++ b/drivers/iio/resolver/Kconfig
+@@ -31,6 +31,7 @@ config AD2S1210
+ 	depends on SPI
+ 	depends on COMMON_CLK
+ 	depends on GPIOLIB || COMPILE_TEST
++	select REGMAP
  	help
- 	  Say Y to build a driver for the ultrasonic sensors I2CXL of
- 	  MaxBotix which have an i2c interface. It can be used to measure
+ 	  Say yes here to build support for Analog Devices spi resolver
+ 	  to digital converters, ad2s1210, provides direct access via sysfs.
 -- 
 2.47.0
 
