@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-83646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA53799BA0F
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 17:27:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 829D599BA11
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 17:27:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25712B21001
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 15:27:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45AEE281BEC
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 15:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C180146A83;
-	Sun, 13 Oct 2024 15:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592F4146A63;
+	Sun, 13 Oct 2024 15:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAByCOkM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8tW5Jvs"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD9014600F
-	for <Stable@vger.kernel.org>; Sun, 13 Oct 2024 15:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BB614600F
+	for <Stable@vger.kernel.org>; Sun, 13 Oct 2024 15:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728833246; cv=none; b=e362WE9mrO9vmWtasHySaLeEKPhDUD4qYIfAKoe6PQN15dl23n7aPm4osmUZBDtmRLhAmUE/FVae6os3dXesF5liVdrwUdrpNHS+SUpnMmSLIx6Mk9Lg0rwJr0ayUXkd3d1B7gglprYyGTMFg3izsSFiI9zRuJfmK5p2jJaUfQU=
+	t=1728833255; cv=none; b=eDQNuKd56tznAZo+aUzkOoB54ynoLPxhIHkWH1/YIlNd2nR1XrZt7vCAm9htN2Gt5aknZpJ7IG1nOP7eih4y84/Ycq/HxM4iwF9oL3CsF3q0/mUeSVmHD3onlcaulHnYzPBUFzYC5vOG1k3i6HjvCeI0keILwsb4EvfQhu4edc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728833246; c=relaxed/simple;
-	bh=nrpckQPbJ2S0SkXLO5lo68MQrOXTxv/TDnX9S5CRT+0=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=E7UbZ3EqSyCV3yyBptdjmJ2XdEwfu6aBwNvlbQ/0WZl150kxcv2kwAA6tI/n8NYl9f39//wmYDSbNOwb5vlgtYslHDfj/btykRb9V5bacen7JAJ4xSzlJKgnlzD/9nn3Pi6wSGuac5Ri3NgAwUKeiR9pGzw1sJYQ4RfqPxplYlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAByCOkM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEBF7C4CEC5;
-	Sun, 13 Oct 2024 15:27:25 +0000 (UTC)
+	s=arc-20240116; t=1728833255; c=relaxed/simple;
+	bh=D4EhhlWZR/WWA78hcR6WhSpVSv2Z62vGEezGvO60S64=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=YaOFDsBHa1W7k+v6h1Z6zCxEZSi/y6asau1TRaS/DALbdAGwV/TcJd0fGiIzWlfDn7oycxAKri1AsXJmFYveC9gEgiDJ36MMGRaaxmSW0ujlrE/RQ/2xdQO6uA2ZIK9gSA8J6BTTrwMW3LGfFY5BdaOaZIALA5klrvEcQtpeg54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8tW5Jvs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 963FCC4CEC5;
+	Sun, 13 Oct 2024 15:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728833246;
-	bh=nrpckQPbJ2S0SkXLO5lo68MQrOXTxv/TDnX9S5CRT+0=;
+	s=korg; t=1728833255;
+	bh=D4EhhlWZR/WWA78hcR6WhSpVSv2Z62vGEezGvO60S64=;
 	h=Subject:To:From:Date:From;
-	b=rAByCOkMGZUEDjHBlr0IZit3fmbWv18Jx80a1kVHLASwFR+4FTyHgkRZSYfjocpGD
-	 bBP5UC7aoPB8VbkXsVTleA3jSmQW68ArvTLwhnKTp8YxH1RrG9/bGU1MpzgpvyD5kN
-	 OjuUDHAhM0AdM/dcANUj3Q9KR4d3bI52EpAe8oRg=
-Subject: patch "iio: hid-sensors: Fix an error handling path in" added to char-misc-linus
-To: christophe.jaillet@wanadoo.fr,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,srinivas.pandruvada@linux.intel.com
+	b=Q8tW5Jvsm10SaaMOc2/9hqxLax6oW5TAdiRd8XaA+jxHbD7oBRa+Tc1K3VLWSP1Xe
+	 lNcmpYLm2bKpepTqqEIwkpweCnGLQyTZq5BMSWgDIXfvK9CY0e35afSoESagLtCswJ
+	 eRJ/cLTMw1Xrtiu1bwmA7au9opYrysip3WG87s3A=
+Subject: patch "iio: adc: ti-ads8688: add missing select IIO_(TRIGGERED_)BUFFER in" added to char-misc-linus
+To: javier.carrasco.cruz@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,sean@geanix.com
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 13 Oct 2024 17:26:07 +0200
-Message-ID: <2024101307-shorty-simmering-d20b@gregkh>
+Date: Sun, 13 Oct 2024 17:26:08 +0200
+Message-ID: <2024101308-sampling-upcoming-6d8c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: hid-sensors: Fix an error handling path in
+    iio: adc: ti-ads8688: add missing select IIO_(TRIGGERED_)BUFFER in
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,38 +69,40 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 3a29b84cf7fbf912a6ab1b9c886746f02b74ea25 Mon Sep 17 00:00:00 2001
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Thu, 3 Oct 2024 20:41:12 +0200
-Subject: iio: hid-sensors: Fix an error handling path in
- _hid_sensor_set_report_latency()
+From 4c4834fd8696a949d1b1f1c2c5b96e1ad2083b02 Mon Sep 17 00:00:00 2001
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Date: Thu, 3 Oct 2024 23:04:50 +0200
+Subject: iio: adc: ti-ads8688: add missing select IIO_(TRIGGERED_)BUFFER in
+ Kconfig
 
-If hid_sensor_set_report_latency() fails, the error code should be returned
-instead of a value likely to be interpreted as 'success'.
+This driver makes use of triggered buffers, but does not select the
+required modules.
 
-Fixes: 138bc7969c24 ("iio: hid-sensor-hub: Implement batch mode")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/c50640665f091a04086e5092cf50f73f2055107a.1727980825.git.christophe.jaillet@wanadoo.fr
+Fixes: 2a86487786b5 ("iio: adc: ti-ads8688: add trigger and buffer support")
+Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
+
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reviewed-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20241003-iio-select-v1-4-67c0385197cd@gmail.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/common/hid-sensors/hid-sensor-trigger.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-index ad8910e6ad59..abb09fefc792 100644
---- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-+++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-@@ -32,7 +32,7 @@ static ssize_t _hid_sensor_set_report_latency(struct device *dev,
- 	latency = integer * 1000 + fract / 1000;
- 	ret = hid_sensor_set_report_latency(attrb, latency);
- 	if (ret < 0)
--		return len;
-+		return ret;
- 
- 	attrb->latency_ms = hid_sensor_get_report_latency(attrb);
- 
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index c1197ee3dc68..1bf915c3d053 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -1483,6 +1483,8 @@ config TI_ADS8344
+ config TI_ADS8688
+ 	tristate "Texas Instruments ADS8688"
+ 	depends on SPI
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
+ 	help
+ 	  If you say yes here you get support for Texas Instruments ADS8684 and
+ 	  and ADS8688 ADC chips
 -- 
 2.47.0
 
