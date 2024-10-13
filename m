@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-83633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1684A99BA02
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 17:26:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A75C99B9FF
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 17:26:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B50191F21744
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 15:26:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1398281826
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 15:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB78146A63;
-	Sun, 13 Oct 2024 15:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CD3146A83;
+	Sun, 13 Oct 2024 15:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnRHHIXI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKStwxjx"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123B214600F
-	for <Stable@vger.kernel.org>; Sun, 13 Oct 2024 15:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598381DFFC
+	for <Stable@vger.kernel.org>; Sun, 13 Oct 2024 15:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728833205; cv=none; b=avzX4gPOXtrP03mRHfUwHph9QCdmI199RACO5U4KKXiH/n+CjDiAIVRvXtBZn6ty5psk2rrDFfeKUcwpxkxykPqd+VGRmMnvmbh2NGr/Lj3F3EdcZ/zwkJorR2VrYXdI1/RySOForbarRsBdcK36LQwyXuDguogA8OJZFCSR/p8=
+	t=1728833198; cv=none; b=r61KEaL2J1/99M6VeattrOXnVoAU/fE0bVI3k9DOfiJjrNdfxYVF+1R5COKLrDgVoOoJ/GBBPBVQDEn2AWGq1/qzwvkdKuXOGa68d9yXeAdB6vR9unGQG5KtAdzmG0ajLNi+aKJYSm6tGnO+5f0nxPrMksjEUH8UsLf3f/zE7Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728833205; c=relaxed/simple;
-	bh=OzdeRAv/97m0p+DxEvzKPpDAV0cucGg/dvdjqjcywQI=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=Ml+j4FOdg8cd9BQK4pgLnfxewIT5hX0OPHRNWAM6OvsGETYiR+xSpLPkvNhW69DlNeY4GXg5rB6i51vjKT2gMUO2ixzGJtZCYTLJP8lAFmj7pejTUaQhELRebpdSBtx3W5x/gIerI6iSvrbcfQXsF6gYCsrS3c9ICJ8khRTFIQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnRHHIXI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DDC2C4CEC5;
-	Sun, 13 Oct 2024 15:26:44 +0000 (UTC)
+	s=arc-20240116; t=1728833198; c=relaxed/simple;
+	bh=Rk9Fz6e50W0u8FhkVO0qUPBFgUAC7Vl7ZvUbM79cshs=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=J3jPXcNfIU2AmBeYLe7rs+tmBNLJygDla2Jgb86LH4GHqOWCcHLm7Sdzd7wPdWE/zwqxiY2qygzOhA55uGew7vdY4jnygw2Fkp0myndk9fXNygdtT8RdXaGL6RWr2TNVCdVvzKM27u2DesGrqqH2HyPpBbMI0jNLmUwEKYIu1UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKStwxjx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6070C4CEC5;
+	Sun, 13 Oct 2024 15:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728833204;
-	bh=OzdeRAv/97m0p+DxEvzKPpDAV0cucGg/dvdjqjcywQI=;
+	s=korg; t=1728833198;
+	bh=Rk9Fz6e50W0u8FhkVO0qUPBFgUAC7Vl7ZvUbM79cshs=;
 	h=Subject:To:From:Date:From;
-	b=WnRHHIXITSf/3x/1lWrM01wPebLQm88ed4dlHWnob4u4UUKxW/t4NFt5lBqmBlCBg
-	 fyFQOFVErtBTwb1kndfiP5T0vZgxXOcBipNv0xXM6pKfRj8cSWMFrGYa1VrQupsWV5
-	 8CzNVzCqXICGwEB/H9HzlugAX8nlnEKkUPje0V9M=
-Subject: patch "iio: adc: ti-lmp92064: add missing select IIO_(TRIGGERED_)BUFFER in" added to char-misc-linus
+	b=fKStwxjxppUrLDUpe/iF2+HxKLnJX0Bw5RgN4Y6nRjrJfUaKJTmVL/z8gNZNgcyAF
+	 VR7sYHqlHtwBqS1U0rItRn/8c3hLciqLVzKZ0STeAGDl34Ws5t+9tN9satT/efohY9
+	 elfCNEPZOVLSo2ghtKCGrPeL9nsidbkmMav4wWzA=
+Subject: patch "iio: dac: ad3552r: add missing select IIO_(TRIGGERED_)BUFFER in" added to char-misc-linus
 To: javier.carrasco.cruz@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
 Date: Sun, 13 Oct 2024 17:26:00 +0200
-Message-ID: <2024101359-cultural-latticed-dac2@gregkh>
+Message-ID: <2024101300-stipend-ouch-9b30@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: ti-lmp92064: add missing select IIO_(TRIGGERED_)BUFFER in
+    iio: dac: ad3552r: add missing select IIO_(TRIGGERED_)BUFFER in
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,10 +69,10 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From a985576af824426e33100554a5958a6beda60a13 Mon Sep 17 00:00:00 2001
+From 5bede948670f447154df401458aef4e2fd446ba8 Mon Sep 17 00:00:00 2001
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Thu, 3 Oct 2024 23:04:52 +0200
-Subject: iio: adc: ti-lmp92064: add missing select IIO_(TRIGGERED_)BUFFER in
+Date: Thu, 3 Oct 2024 23:04:53 +0200
+Subject: iio: dac: ad3552r: add missing select IIO_(TRIGGERED_)BUFFER in
  Kconfig
 
 This driver makes use of triggered buffers, but does not select the
@@ -80,28 +80,28 @@ required modules.
 
 Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
 
-Fixes: 6c7bc1d27bb2 ("iio: adc: ti-lmp92064: add buffering support")
+Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241003-iio-select-v1-6-67c0385197cd@gmail.com
+Link: https://patch.msgid.link/20241003-iio-select-v1-7-67c0385197cd@gmail.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/Kconfig | 2 ++
+ drivers/iio/dac/Kconfig | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 68640fa26f4e..c1197ee3dc68 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1530,6 +1530,8 @@ config TI_LMP92064
- 	tristate "Texas Instruments LMP92064 ADC driver"
- 	depends on SPI
- 	select REGMAP_SPI
+diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+index 1cfd7e2a622f..9d4600ce0427 100644
+--- a/drivers/iio/dac/Kconfig
++++ b/drivers/iio/dac/Kconfig
+@@ -9,6 +9,8 @@ menu "Digital to analog converters"
+ config AD3552R
+ 	tristate "Analog Devices AD3552R DAC driver"
+ 	depends on SPI_MASTER
 +	select IIO_BUFFER
 +	select IIO_TRIGGERED_BUFFER
  	help
- 	  Say yes here to build support for the LMP92064 Precision Current and Voltage
- 	  sensor.
+ 	  Say yes here to build support for Analog Devices AD3552R
+ 	  Digital to Analog Converter.
 -- 
 2.47.0
 
