@@ -1,138 +1,146 @@
-Return-Path: <stable+bounces-83611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D1F99B7B3
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 01:25:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A614B99B7F7
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 04:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D57E9B216B6
-	for <lists+stable@lfdr.de>; Sat, 12 Oct 2024 23:25:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1330B20DC5
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 02:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83ABF1474A4;
-	Sat, 12 Oct 2024 23:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81411876;
+	Sun, 13 Oct 2024 02:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Vldu+kBS"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="CC7XrcKv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2955126C15
-	for <stable@vger.kernel.org>; Sat, 12 Oct 2024 23:25:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25D017C9;
+	Sun, 13 Oct 2024 02:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728775537; cv=none; b=plL4ZaqhaMjPxCvDjix8ritlQ3DPdyGnUf3pJpBBXn5ClB2IdhPgDf9E7oXHkl6Utfb1AU2WcmTtgslRyhn8nm2Ev6Uc+zEQLyaPNwRbx8IUnEJspqiH60XV8XfB+qnx+ZORGnw0tAdShjlgkn2AZCPP/DFUeNFWaZ9+d20Ryeo=
+	t=1728786236; cv=none; b=L9P2uZm6CgWRlGq3OC/nZbgY8GOFBc6OUFVsfCi9Ayi2BfTrTAYX67/aT4HQ/n6lLMnUAcGTKmqKBvYFZbb/Olg9GRLC9dxI2LsxDjAKp4OAgmdsu2eLHTFwfu9AgmXX0bCxq8Q9YtlLbAflVZrjwUwD5Y7X5NV6/pPTh993G4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728775537; c=relaxed/simple;
-	bh=Beb2LoaSh9glIra4Yg3S3/npzf0u6bXtYw7crPtOego=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gmlmfRXz5WYyAnhQCbJYQ4Y3tvMbZ+71qeSro6snoXUDuBcDNoFXfKJn5I+SDR9ORIiN+zUq3nt6dOJSQbD34hfvOUPg1AxnBUuatt2twvYWsEFjClhUfUdrywklLEAC/r7ivFmeXU9yV0KrEe1wOC46NhWDuFffht5EsEBSOnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Vldu+kBS; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-20c87b0332cso94155ad.1
-        for <stable@vger.kernel.org>; Sat, 12 Oct 2024 16:25:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728775534; x=1729380334; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CjM5EfvRmGH7Cfw6M7RPzw10H88y3DRi+sDa3xaXdkk=;
-        b=Vldu+kBS3PL+PtZ+m4b/IRwiIcy+kCrkgxA1pjW+nsF6bysYROFTylTO+FuH2KV+2e
-         DR22e/ggFHfGv/v7NMSjLX45UghFsAcH0K3omUgS8LZXl7R5tByfdSuRFQyGOP07A2hp
-         NnyqOrVr7nJWBjt7co3v6fyOrnY50/uDKFxN5+STlM7fkh6ujT69+4Jl4sLQE7hcqXrB
-         lJ+9rl1Cfp/V4ZmE7ncAVq63CI7sBAZNsgMTa/SFALau/dL6wFF9YQB0KiZp16EFFLgW
-         cXopEkgrtMFRm+C9T3Rt7GwzIaGCGgUoFnpejWYC8XkrHxvf2/untgFMbuL5VRuqHeSr
-         sBcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728775534; x=1729380334;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CjM5EfvRmGH7Cfw6M7RPzw10H88y3DRi+sDa3xaXdkk=;
-        b=Uero3AT/kr66ZBinNhPwwA4p1EEZIwjiKgqpo0fJG23CyIHWU6Elw7sUHkLXRLZXNG
-         zgyFfQkxbFI6V9hW+okoOE457BmAogMfHZo3wyZKTgGW1iNY63jXt9tlabtpMMg2bVYX
-         6Q8oQ5RzrLTHqjwvHJgiKPs18m/y6jOLaJ+CBa53KjdkvSMHZam97oczAkaAMZaTmnrm
-         mCQMSpikTTG/ZWsp3sa9/6+EYv9MXt5OIuUZsa8GlubavGe0zih+EpvJngrWUcKvKJDz
-         DPBs1EHOSJaUfP3ZDvTtFhyA81qfsBfK6q+yhPRAbISDHj9IcdtRFmyRTYZ09UqUI0jk
-         NL+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWAuh8bWTyP1ByTSTPVr2CMDJ1ZnNzeL1LGevUc6e/oSvTIEZQOYkXAD09UNLdh6Blb/e+knKo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/hK/K22sqtAl0lmwSH80Qc3bjVhzHgDKjYS1y0+HaZprDk9Zj
-	Q+TqgEAFKdOsxVZyfrOvgia5qQAOFH3gqMxTYr+jLkuBcTLtp9hf4blQwbj3ew==
-X-Google-Smtp-Source: AGHT+IFQSJpjwjPuPRFnScQ+rZk1z/9WXYhnAqRSxCh0IUCNYcxFjhSfxFPqJSDZV8RDbJsjObAq4w==
-X-Received: by 2002:a17:903:22c6:b0:209:dc6d:76a7 with SMTP id d9443c01a7336-20cbce2f692mr1888465ad.14.1728775533708;
-        Sat, 12 Oct 2024 16:25:33 -0700 (PDT)
-Received: from google.com (201.215.168.34.bc.googleusercontent.com. [34.168.215.201])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e2a5712738sm7914268a91.31.2024.10.12.16.25.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Oct 2024 16:25:33 -0700 (PDT)
-Date: Sat, 12 Oct 2024 23:25:28 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: gregkh@linuxfoundation.org, zhiguo.niu@unisoc.com, boqun.feng@gmail.com,
-	bvanassche@acm.org, longman@redhat.com, paulmck@kernel.org,
-	xuewen.yan@unisoc.com, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] lockdep: fix deadlock issue between
- lockdep and rcu" failed to apply to 5.4-stable tree
-Message-ID: <ZwsFaPcHsXqxbL8V@google.com>
-References: <2024100226-unselfish-triangle-e5eb@gregkh>
- <ZwgdAXfbCDYmc8hd@google.com>
- <Zwrkj6GC2wT11kb3@sashalap>
+	s=arc-20240116; t=1728786236; c=relaxed/simple;
+	bh=Id3b4OChEeEWEa/SlZuDWsSVwqlKveSdPvqc+lK/CZI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SYQpGtjw2EZmIveufaG9YvXe6ReYI1E87Ak/7vi7QbY0v9n07TMl5J9nejtfjm9rHILIlLFuyn1Ve0hapARlo0C8wSzsQ1YStqXQNVU3ZTDcUqf9g9bI2cgylHP+Qx0ugyDJvpAIeYN55ThYVV/DERvIGXQRghl/AVyK2y1pr+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=CC7XrcKv; arc=none smtp.client-ip=54.243.244.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1728786124;
+	bh=6i+CZeniLVHL//OkWrbBnihzv00EfEX/9KZ4U14pjhE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=CC7XrcKvCg1M09+lyWFtX4rhd0ZwWhMd7yjM1j63AcCBQnA5AlZNGZgLFioBa3nDx
+	 ya9cqSkcnt4UYhTpjdvtm7DR7vRLTPZ/cvxQtuXdQ0IHpl4RePz7jTs+rha0Fh25xT
+	 asSC+xvJINXC4t+ThD1rU/KhLc34z8pSqQ8Kvx6Y=
+X-QQ-mid: bizesmtpip4t1728786101to0n30e
+X-QQ-Originating-IP: kFr3Gnjj9upqWNurIfWhLUarrIlikvQORTMvas81gZ8=
+Received: from avenger-OMEN-by-HP-Gaming-Lapto ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sun, 13 Oct 2024 10:21:39 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 5663206268251501140
+From: WangYuli <wangyuli@uniontech.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: helugang@uniontech.com,
+	jkosina@suse.com,
+	bentiss@kernel.org,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 6.1+] HID: multitouch: Add support for lenovo Y9000P Touchpad
+Date: Sun, 13 Oct 2024 10:21:26 +0800
+Message-ID: <219F185A4FC20A60+20241013022126.44197-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zwrkj6GC2wT11kb3@sashalap>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: NpWR2/YALQX3DXJLAfdsrsrxj3ckTgaFD+YLrdKtdkbQMKCFgQetw+Y2
+	ZcdvKt5QfRSUnD6Cs14H1wep1hiwbZzwRclWIl6+N/ec9ohGPnrW+/tQI11EnTJ8/+lQEEL
+	//MSxOvVA61WBAbfJ2HezA3YbI7cioQtJEL5GlZONl/w53Tmv3EgxTVWzTapDIB61lNxcMO
+	OOnGJjNl5lgX3RdPxhGfJureI9/MHh7S5ysvEPDlVOoWknZVbm7/vq5usPDxwKfTNlaatwg
+	DqqbVpNxdCYKCMQBw6L490i8/0VI7YD9RvkNjSsV6h+ZlMP1BUP95T7jbN5izmqBs8B/1IT
+	FzTgnWvVfkdczcfR+btogKVeSqomptUd1n3UJn3CCSdBTP6ec452ulLNC2DG1BgqXy4bxZY
+	zr8enJb5AGtey37wQgQN+v8HNtbPctTT2DEZd8B6iKXkY8iDWdmdpw/BFB4D0VSDyX7VKqy
+	GMrl2I7emNIpgPSH0YcRNCL5jo/F/+OHuTGfew98QRtvXr8pRAMMXgjPqeuAiNuIkjdkXj+
+	Z2QDgJ+Yz9dpypa1w6Z4yl96Ll4ys++AGcVkbXR3DsI6m5wf+jiURc7STLA4372eRSYMkDS
+	gtW18cFBta6PrksgZX8o3j7cO/qbIE6hEs/lx0PHG5VEVaV0xMkK1p24PU0xnsL7rbL7vb8
+	ZNW+Tt+uQN+f/sOYD9TjO4cR6YSE6AQuVoTORRo/IS5aWLExXeMrBMOlCVuYi7PDlZx+sR0
+	A0r7kWrIqr7p+f2EshvLg1G1VUHxIgqoVjHfRdS0K4uxX5fwPGe87xYKWD32ZQa8cnbHGOZ
+	AlTxHSEZsMV1TnpfjuEqMr6CZ7JLhkGIZFK1vuuzieHnaKuT+9ikla+GG3HcrUDNcOND/mW
+	vADdQdt7ylaG/v3LT+HkRfjJQzmwHPh2bcXXUTOOgxr8D+iQzrr3ToEdVV+medExVmNVhl6
+	Huc0LXu/YJJpBeUtwQSb9yLTi+wp6Nxx9gqU=
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+X-QQ-RECHKSPAM: 0
 
-On Sat, Oct 12, 2024 at 05:05:19PM -0400, Sasha Levin wrote:
-> On Thu, Oct 10, 2024 at 06:29:21PM +0000, Carlos Llamas wrote:
-> > On Wed, Oct 02, 2024 at 12:07:26PM +0200, gregkh@linuxfoundation.org wrote:
-> > > 
-> > > The patch below does not apply to the 5.4-stable tree.
-> > > If someone wants it applied there, or to any other stable or longterm
-> > > tree, then please email the backport, including the original git commit
-> > > id to <stable@vger.kernel.org>.
-> > > 
-> > > To reproduce the conflict and resubmit, you may use the following commands:
-> > > 
-> > > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-> > > git checkout FETCH_HEAD
-> > > git cherry-pick -x a6f88ac32c6e63e69c595bfae220d8641704c9b7
-> > > # <resolve conflicts, build, test, etc.>
-> > > git commit -s
-> > > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100226-unselfish-triangle-e5eb@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-> > > 
-> > > Possible dependencies:
-> > > 
-> > > a6f88ac32c6e ("lockdep: fix deadlock issue between lockdep and rcu")
-> > > 61cc4534b655 ("locking/lockdep: Avoid potential access of invalid memory in lock_class")
-> > > 248efb2158f1 ("locking/lockdep: Rework lockdep_lock")
-> > > 10476e630422 ("locking/lockdep: Fix bad recursion pattern")
-> > > 25016bd7f4ca ("locking/lockdep: Avoid recursion in lockdep_count_{for,back}ward_deps()")
-> > > 
-> > > thanks,
-> > > 
-> > > greg k-h
-> > 
-> > These 3 commits are the actual dependencies:
-> > 
-> > [1] 61cc4534b655 ("locking/lockdep: Avoid potential access of invalid memory in lock_class")
-> > [2] 248efb2158f1 ("locking/lockdep: Rework lockdep_lock")
-> > [3] 10476e630422 ("locking/lockdep: Fix bad recursion pattern")
-> > 
-> > It seems to me that [1] and [3] are fixes we would also want in 5.4.
-> > Possibly also [2] just to make the cherry-picks cleaner. If there are no
-> > objections I can send a patchset for linux-5.4.y with all 4?
-> 
-> SGTM!
+From: He Lugang <helugang@uniontech.com>
 
-OK, I've sent the patches here:
-https://lore.kernel.org/all/20241012232244.2768048-1-cmllamas@google.com/
+[ Upstream commit 251efae73bd46b097deec4f9986d926813aed744 ]
 
-Cheers,
-Carlos Llamas
+The 2024 Lenovo Y9000P which use GT7868Q chip also needs a fixup.
+The information of the chip is as follows:
+I2C HID v1.00 Mouse [GXTP5100:00 27C6:01E0]
+
+Signed-off-by: He Lugang <helugang@uniontech.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+---
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-multitouch.c | 8 ++++++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 06104a4e0fdc..86820a3d9766 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -505,6 +505,7 @@
+ #define USB_DEVICE_ID_GENERAL_TOUCH_WIN8_PIT_E100 0xe100
+ 
+ #define I2C_VENDOR_ID_GOODIX		0x27c6
++#define I2C_DEVICE_ID_GOODIX_01E0	0x01e0
+ #define I2C_DEVICE_ID_GOODIX_01E8	0x01e8
+ #define I2C_DEVICE_ID_GOODIX_01E9	0x01e9
+ #define I2C_DEVICE_ID_GOODIX_01F0	0x01f0
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index c4a6908bbe54..847462650549 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1446,7 +1446,8 @@ static __u8 *mt_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ {
+ 	if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
+ 	    (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
+-	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
++	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9 ||
++		 hdev->product == I2C_DEVICE_ID_GOODIX_01E0)) {
+ 		if (rdesc[607] == 0x15) {
+ 			rdesc[607] = 0x25;
+ 			dev_info(
+@@ -2065,7 +2066,10 @@ static const struct hid_device_id mt_devices[] = {
+ 		     I2C_DEVICE_ID_GOODIX_01E8) },
+ 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
+ 	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
+-		     I2C_DEVICE_ID_GOODIX_01E8) },
++		     I2C_DEVICE_ID_GOODIX_01E9) },
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
++	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
++		     I2C_DEVICE_ID_GOODIX_01E0) },
+ 
+ 	/* GoodTouch panels */
+ 	{ .driver_data = MT_CLS_NSMU,
+-- 
+2.45.2
+
 
