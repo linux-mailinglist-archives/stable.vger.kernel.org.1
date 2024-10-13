@@ -1,79 +1,121 @@
-Return-Path: <stable+bounces-83622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED87999B9B2
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 16:23:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C11A99B9E0
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 16:55:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A7472819DC
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 14:23:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F442281D2B
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 14:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C90813D53F;
-	Sun, 13 Oct 2024 14:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749C714658D;
+	Sun, 13 Oct 2024 14:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z58M19WU"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="s15h6lrC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A85B231CA8
-	for <stable@vger.kernel.org>; Sun, 13 Oct 2024 14:23:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FFC14601C
+	for <stable@vger.kernel.org>; Sun, 13 Oct 2024 14:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728829410; cv=none; b=fW2qLmzzUv2okNNZLXgJcFxDUPTT4PIh/G/APOkF4btUwgz3EggFvo/W/ElLraoZBNFtUYDHVP/4P6GsPnLEGq3U+ybm3V4Fb2Goi9iFzh+z0swarUaLRp0xYkOOU7d4ap9LQjZqGceX8zsOmbqUvzsqmVUywEu1Fs0f++CY7Ho=
+	t=1728831337; cv=none; b=VPfWweznJfSueH5zDY5/HKc6ritN6Yh34rjsDIGpF3QrX9eSS3DcgFxR6ckYF9eG5cbSEIcPivQsOsSW4wrSsSmlHB344PhRODJnHVE73KPVFurtzKkcIVTL7AiD0XTZ4Hj/opccgAbdUdWVdqhFAjjz44bJL1kYaa6nRpS7y3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728829410; c=relaxed/simple;
-	bh=cL2Qyj9gV1gZ4gX65Ol6OfkqCpMbRMgaNM6R/fC4PyI=;
+	s=arc-20240116; t=1728831337; c=relaxed/simple;
+	bh=RkAcVw7imkH83Lnz9Bl0fGaXr29lw9m1rZVlseqBl4Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OxBmrjznBXNGlD+F4HES5a3xNc46YRF7CMGc1pYvXewQqdoW+XY9k44dcNaETZ1K7ofo0trKzuPJwXdDpBC4eR5vqo/OjPZ+UWM7VQkaUU8nkqgnwd/CPNfTykKKpR4O0Y8aragL8yZHBoQ4ESrR9VbVSIe7i9DsE83ZajCFp4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z58M19WU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B57C4CEC5;
-	Sun, 13 Oct 2024 14:23:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728829409;
-	bh=cL2Qyj9gV1gZ4gX65Ol6OfkqCpMbRMgaNM6R/fC4PyI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z58M19WU5mkgrm2snTnQ3rbWgkX/85ZD8HCMQssfCocaJNMIgNtE6E/P2HTEdS3fS
-	 H9Z3Cj1bPQudWVrgEdAcot2cWAkjHaiIwDmefLbjybqGPh313KlCXENzBOYGy7nGK6
-	 GyEfbXdfFRAMZBnMW3GVk9xkvI7N5z5bmN00wNGUElS5maguyAogwxGNJgFxa0sqXM
-	 Og4t+Uv8B+mHXrA85hXWUd8yUF3JD9XgSmi75aGCCxa8EIZHlicaY1ZvF8VUBwT6PP
-	 k6I7bQf6qKkjJQgF18fz9ZLmD7A1Yksa/8+PWP4fx1nb15BFrcO7A8w63d+r+vyqak
-	 b2EaB06b68ijA==
-Date: Sun, 13 Oct 2024 10:23:26 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Carlos Llamas <cmllamas@google.com>
-Cc: stable@vger.kernel.org, boqun.feng@gmail.com, bvanassche@acm.org,
-	gregkh@linuxfoundation.org, longman@redhat.com, paulmck@kernel.org,
-	xuewen.yan@unisoc.com, zhiguo.niu@unisoc.com,
-	kernel-team@android.com, penguin-kernel@i-love.sakura.ne.jp,
-	peterz@infradead.org
-Subject: Re: [PATCH 5.4.y 0/4] lockdep: deadlock fix and dependencies
-Message-ID: <ZwvX3kxg6OoarzW9@sashalap>
-References: <20241012232244.2768048-1-cmllamas@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=KexpCdV9CQw496/BlXXWQtmCuBQFYqX0XGiOQMteSsLmLlrh/gwHUf9+jpkq9psp7wnVEgegq1up1yNGKSYMktXRJ8lbdiyav7r07qhRu8VI79uJVy9/XFW2uAj5hdjidq4W6K9qWh51YpduYLaNcC+pUt438ZdkHGipW+st0OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=s15h6lrC; arc=none smtp.client-ip=95.215.58.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Sun, 13 Oct 2024 22:55:24 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1728831327;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uYqRfss1NBTVeKYiNPPzCz5FIOGRLaUuCoy3A+BmjfQ=;
+	b=s15h6lrC6VPLqgaN7mFH23tSUn6W8ayRJVR8GxXO409adtjdnhAfQ7h5dW7Ce4YjmDLgpL
+	DSf2xWD2kKeqBNxE3gNLi1Wrt3bv1hSvrOZkfFhf2daQZFWJHMntQRuIVVw1bP7sD8H59q
+	t7oEJnp2V64HZZfecGHOpEiV+TAff+g=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Leo Yan <leo.yan@linux.dev>
+To: Julien Meunier <julien.meunier@nokia.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@linaro.org>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	stable@vger.kernel.org, coresight@lists.linaro.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] coresight: etm4x: Fix PID tracing when perf is run in
+ an init PID namespace
+Message-ID: <20241013145524.GB45976@debian-dev>
+References: <20240925131357.9468-1-julien.meunier@nokia.com>
+ <20241008200226.12229-1-julien.meunier@nokia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241012232244.2768048-1-cmllamas@google.com>
+In-Reply-To: <20241008200226.12229-1-julien.meunier@nokia.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Sat, Oct 12, 2024 at 11:22:40PM +0000, Carlos Llamas wrote:
->This patchset adds the dependencies to apply commit a6f88ac32c6e
->("lockdep: fix deadlock issue between lockdep and rcu") to the
->5.4-stable tree. See the "FAILED" report at [1].
->
->Note the dependencies actually fix a UAF and a bad recursion pattern.
->Thus it makes sense to also backport them.
+On Tue, Oct 08, 2024 at 10:02:25PM +0200, Julien Meunier wrote:
+> The previous implementation limited the tracing capabilities when perf
+> was run in the init PID namespace, making it impossible to trace
+> applications in non-init PID namespaces.
+> 
+> This update improves the tracing process by verifying the event owner.
+> This allows us to determine whether the user has the necessary
+> permissions to trace the application.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: aab473867fed ("coresight: etm4x: Don't trace PID for non-root PID namespace")
+> Signed-off-by: Julien Meunier <julien.meunier@nokia.com>
 
-Hm, it does not seem to apply on 5.4 for me. Could you please take a
-look?
+Reviewed-by: Leo Yan <leo.yan@linux.dev>
 
--- 
-Thanks,
-Sasha
+> ---
+> Changes in v2:
+> * Update comments
+> ---
+>  drivers/hwtracing/coresight/coresight-etm4x-core.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> index 66d44a404ad0..cf41c42399e1 100644
+> --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> @@ -693,9 +693,9 @@ static int etm4_parse_event_config(struct coresight_device *csdev,
+>  		config->cfg |= TRCCONFIGR_TS;
+>  	}
+>  
+> -	/* Only trace contextID when runs in root PID namespace */
+> +	/* Only trace contextID when the event owner is in root PID namespace */
+>  	if ((attr->config & BIT(ETM_OPT_CTXTID)) &&
+> -	    task_is_in_init_pid_ns(current))
+> +	    task_is_in_init_pid_ns(event->owner))
+>  		/* bit[6], Context ID tracing bit */
+>  		config->cfg |= TRCCONFIGR_CID;
+>  
+> @@ -709,8 +709,8 @@ static int etm4_parse_event_config(struct coresight_device *csdev,
+>  			ret = -EINVAL;
+>  			goto out;
+>  		}
+> -		/* Only trace virtual contextID when runs in root PID namespace */
+> -		if (task_is_in_init_pid_ns(current))
+> +		/* Only trace virtual contextID when the event owner is in root PID namespace */
+> +		if (task_is_in_init_pid_ns(event->owner))
+>  			config->cfg |= TRCCONFIGR_VMID | TRCCONFIGR_VMIDOPT;
+>  	}
+>  
+> -- 
+> 2.34.1
+> 
 
