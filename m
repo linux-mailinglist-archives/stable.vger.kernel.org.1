@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-83614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCF3999B907
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 12:14:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B09299B914
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 12:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B55B1F2143F
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 10:14:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C673A281C28
+	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 10:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50FD113C9A4;
-	Sun, 13 Oct 2024 10:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D92B813D245;
+	Sun, 13 Oct 2024 10:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IZ6PMeYH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FHxpn/LF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A7E182BD;
-	Sun, 13 Oct 2024 10:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0ED61DA32;
+	Sun, 13 Oct 2024 10:42:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728814491; cv=none; b=NKTY5vwW+9XtJkbYCemrmSNcOVy2U/k+dFtezlgYrF7V95MrbmG+8ndaLWuLsu9eHM9m8KpUpyNUCcPot0FQ0MV9wdDPgGOR6S1iI4SbnN0/P41mI4UXFNN4Fd/7wEiG9By9ViF7RDX9+hq5FNZZ0Tw/UCyE15UsgtfzUitZROo=
+	t=1728816161; cv=none; b=ahs2w0G5tY3nWwVGH+7jauoGr/txVviqvdQ02Ei7aRYPJzo8ipgLR9Cj9ERmq/ZQR+wxecGmQIEAqWb0uCP3z/HF+p4NaDTbdeDM/PTIMMYV00YDJmOKY3M+vHDjX8xOqksqNEYN7ywEHS1/8Hw6qavHe1gvslD2T97U7dWqCYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728814491; c=relaxed/simple;
-	bh=7+RcficBzc14ETf8NEF5WHyfEtENBovrl6Xqlc98hLA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=kiHzV8oUpIdMLJNHaMPYVBadUVoyx7hlleE8cadvkEWpMXEF+wWzwWOCy/yE2XUYrpfEgT3hnuNVkZGVjGO5cF7Eu2KQzD4WoRyobCJtnWmFK5MGrkEsFXqT5sd0machbkWZAaxM7IkOaWgw7VQj27fKery7MbE2YGcuf0FM9CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IZ6PMeYH; arc=none smtp.client-ip=209.85.128.43
+	s=arc-20240116; t=1728816161; c=relaxed/simple;
+	bh=RvVa1Hdz0npBvLce7iPzTIjWN+LlLgRw3t8ryHuP8Y4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Ts0PvVF/Lx+EA5MKIFW4DU6oseMd0835T9Km77rf6s6xMBSC5DqzthQFoclRgI97h0BLOAiVz/PciQ4fT/lJSXeJ9lFM5GbWMVnUJkduOxrs0Dtq2TGxsAMJ5otEA5Ypih1dLCUGO6xk8pssZeFr2vmjdFtIkXSheauZINKoV1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FHxpn/LF; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4311fd48032so13273025e9.0;
-        Sun, 13 Oct 2024 03:14:49 -0700 (PDT)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4311ae6426aso20051805e9.2;
+        Sun, 13 Oct 2024 03:42:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728814488; x=1729419288; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728816158; x=1729420958; darn=vger.kernel.org;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/mk73CKrklNspB81avVAhd0DlaNLFtrpaW5syyiDkJo=;
-        b=IZ6PMeYHNO72yOt8bFf8p7h1VcZnQDveVbyXvHwQiW9v2LH72N8Gz8Um4FLEz7wqAo
-         3/PDnDec2gP/OAXGaRoNr8K80vwjA65IKaCRNo2QEVTp5pGNGklO0Fbdkzv1o5Gj84zB
-         hFq/UFttUIUvESgnQ2qiV0lDW21ULA7F3JCXZcpO3JDGlU7+suFJm4wvbjo0JyiEkt15
-         IfOcsiMPDA3v81+2ZW5UN6771O2HRdZrMVRP6sZ8GrBL+40izRC/srgUyhb3eyvCvo8d
-         nKIFmtdKYgaLVVxLkzBBnGYz7HsL1NZX8noXj3Tsi9Ez6ncxQZz9GW1Inuy53qAWLNAt
-         480Q==
+        bh=sI0NVFrf3pRuZLAIx9mivd2k+klWW713Wqz1uXcf1I4=;
+        b=FHxpn/LFzgBCWSnwxkY8xajU/HrLqfe0JCYqI7iFE5/StuiIgeaJ4iutZZEDUFs2in
+         Kj+I2VWmzE6GxMme5DRHAI5FJ0zYLIGwc3q3MzPL7gRxxAPGltFS+K+SSt8ZRbEqT9zL
+         LfRf9F3pE2O1gS/680k/6/1k/JKlZ4+EwdLmnU7unglyoqoV006LaNq9jQtvOHX3ye13
+         ttxMRWaEMHAzAn/o46NBmv7Dz4zytzh1DNI+QKKh3idGXFhUI681bkScR+xf7Zd3lbBL
+         LIBBxC8vJdDLZ1LpOkH26pBYHMUDGZroQ+RepaG9dqlQqdGVaksKuHiPLLrMHz8Uo57V
+         T5Qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728814488; x=1729419288;
+        d=1e100.net; s=20230601; t=1728816158; x=1729420958;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/mk73CKrklNspB81avVAhd0DlaNLFtrpaW5syyiDkJo=;
-        b=kU5A2YecShwjnwi0SpjZwcjBeOepIU0JgV6pdYqoGI81uUmhPIaV+YbNXjFusBf4Et
-         WHRKRZHw/jt+RXMQ7qGd6bk1TAf0gJs6lJ8g8JafeAAlRKcmeJNOvXNIu6BSJ2X2bdnR
-         ehMfOlP9NvTMaBRVFxsTX5WSuaa+0w1AMNhR4w6N0bjTW5NYbsOC37Gt8xjum5+cDr+/
-         eeI4vYsgto6mfCV+WAFR/UHnGRnGswSfF1IhdLFzfddcktftnvsKfFhXMmeq6YE3Vdeh
-         gSPVrsJo8Zj+yEz7rB9IZ9Ea5N9NkRSgtpikvvp8Ucxra7j32li763RZAei1f3PkvORE
-         xVVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVyWYh7Mj2eH3pYS4K+JGH1Wai8AF/eqtbSRAci+Qpo/pi40hX7s9qJyN0mZ9yS0saqgQLTdGY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTCJCwHhNza2/1lSy3RQ3UZPjDXrAdGgdpHftunYPkiC6sJJ3I
-	P5QLh+rrfr7GY9WO5JMuIwEtGpFOFNWQDS8SDqd+TCBxkQglUeDC
-X-Google-Smtp-Source: AGHT+IGCOgNIc4rS+8pa7uJsokRdoIQLWUs7Eyp7Z4Ome3ezHBMJMFCoQgFlnyEsp4DG53u9u1J/eQ==
-X-Received: by 2002:adf:b1c9:0:b0:37d:2e59:68ca with SMTP id ffacd0b85a97d-37d551f19b3mr5278932f8f.28.1728814487367;
-        Sun, 13 Oct 2024 03:14:47 -0700 (PDT)
+        bh=sI0NVFrf3pRuZLAIx9mivd2k+klWW713Wqz1uXcf1I4=;
+        b=EftfhZWyzD7qxIMTy6M2QpY95C4oqzW10gEKcCLOxcFuoWMRbsTsNB1TJ9efh3nC81
+         72p1ziwQWokj4IACP2FBFldu/Ak/2kgDclWmQOTg/+X7Hu5AeXgzpB8FNR/G77CPRKzC
+         0z8XlE6Zp0z8CgtHfSGR22ttzWoC4ycqxy6OTplwM59Sty5sNp07fTm7aoZRUI92MH9G
+         zRWjtR0WQJZrcszChAzQAEGEPkq1e87V+94Mqzr/ZaNJuImczjJbF/1VtFgI/0AxrSOF
+         AKm1zk5PVsTAOF24y0JV/1tKXazvXk6n8UsZ5kUeOy1qtbHbJqnHQj7AFFS/n3EWjyLv
+         eAGA==
+X-Forwarded-Encrypted: i=1; AJvYcCWMvV7CPx5+XbelaIfhTtr7kP/Q9CXP+eXKwHoJEdKQzm+PcktiajCV9BITDgC+3772Bs3VTyDo@vger.kernel.org, AJvYcCXb5SQx5lHCdKrgLZkcafbrdHyzF53i2lHwxdd6fJBAOMHhOmDrq525wvcpf0cvYKGpFEYZtr94Tj7LArc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIKso5ZTkrU5NPQo2eWOwf/UU/yzfz6zlbrUcNhmj2H49xQotu
+	PN4MBIaagFXMpooeAtw/Bwatn5DA4h5GbKRm6sT2Si4rlH56Go5f
+X-Google-Smtp-Source: AGHT+IGufmCYtx1yjlM7P4W+1+XvlivxR/a4dbQTa29lFsAyi/NYHTq2CdMAlBpQXoURmLlJxn9+RA==
+X-Received: by 2002:a05:600c:1f8c:b0:430:c3a5:652a with SMTP id 5b1f17b1804b1-4311ded53cbmr62215745e9.12.1728816157942;
+        Sun, 13 Oct 2024 03:42:37 -0700 (PDT)
 Received: from [127.0.1.1] (2a02-8389-41cf-e200-01f9-6cb5-d67b-9d29.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:1f9:6cb5:d67b:9d29])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b79f679sm8235568f8f.73.2024.10.13.03.14.46
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-430d70b4462sm120913475e9.30.2024.10.13.03.42.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Oct 2024 03:14:46 -0700 (PDT)
+        Sun, 13 Oct 2024 03:42:36 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Sun, 13 Oct 2024 12:14:45 +0200
-Subject: [PATCH] clocksource/drivers/timer-ti-dm: fix child node refcount
- handling
+Date: Sun, 13 Oct 2024 12:42:32 +0200
+Subject: [PATCH] staging: vchiq_arm: Fix missing refcount decrement in
+ error path for fw_node
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,56 +77,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241013-timer-ti-dm-systimer-of_node_put-v1-1-0cf0c9a37684@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAJSdC2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxNDA0Nj3ZLM3NQiIKmbkqtbXFkM4eanxeflp6TGF5SW6KaYGJkbm5pZmJt
- ZWigBjSkoSk3LrABbER1bWwsAyFlRn3IAAAA=
-To: Daniel Lezcano <daniel.lezcano@linaro.org>, 
- Thomas Gleixner <tglx@linutronix.de>, Tony Lindgren <tony@atomide.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+Message-Id: <20241013-vchiq_arm-of_node_put-v1-1-f72b2a6e47d0@gmail.com>
+X-B4-Tracking: v=1; b=H4sIABekC2cC/x3MTQqAIBBA4avErBO0X+gqETLkWLNIS0uC6O5Jy
+ 2/x3gORAlOEoXggUOLI3mWosoB5RbeQYJMNlawaJVUt0rzyoTFswlvtvCG9X6foJLaEiNb0EnK
+ 7B7J8/99xet8P1l9UCWcAAAA=
+To: Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Stefan Wahren <wahrenst@gmx.net>, Umang Jain <umang.jain@ideasonboard.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: linux-rpi-kernel@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728814486; l=1481;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728816154; l=2125;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=7+RcficBzc14ETf8NEF5WHyfEtENBovrl6Xqlc98hLA=;
- b=PeONw693MDWIV8OHMec0Fa78BjjJWFwtICqLMxfbu980WynbvxWD14jkdPBQNtZ5ecSW3a0vv
- 40vd6GJmVLIDRo9lvN/GrcNdXnsY59rb+fMioipwwRhI6lGJkcAukes
+ bh=RvVa1Hdz0npBvLce7iPzTIjWN+LlLgRw3t8ryHuP8Y4=;
+ b=dZJuhHm54XpgX1j7LLyPpshdmuzxcgLz23pgRbrWVZwDHB9bpO03XnysqoYVpQtJCGkni0cTr
+ qRM3Pxgi1HIDmf8HV3buNwX3ZwQ1Q1xohQbNo14frQOy1FR4vcIeAH/
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-of_find_compatible_node() increments the node's refcount, and it must be
-decremented again with a call to of_node_put() when the pointer is no
-longer required to avoid leaking memory.
+An error path was introduced without including the required call to
+of_node_put() to decrement the node's refcount and avoid leaking memory.
+If the call to kzalloc() for 'mgmt' fails, the probe returns without
+decrementing the refcount.
 
-Add the missing calls to of_node_put() in dmtimer_percpu_quirck_init()
-for the 'arm_timer' device node.
+Use the automatic cleanup facility to fix the bug and protect the code
+against new error paths where the call to of_node_put() might be missing
+again.
 
 Cc: stable@vger.kernel.org
-Fixes: 25de4ce5ed02 ("clocksource/drivers/timer-ti-dm: Handle dra7 timer wrap errata i940")
+Fixes: 1c9e16b73166 ("staging: vc04_services: vchiq_arm: Split driver static and runtime data")
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/clocksource/timer-ti-dm-systimer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
-index c2dcd8d68e45..23be1d21ce21 100644
---- a/drivers/clocksource/timer-ti-dm-systimer.c
-+++ b/drivers/clocksource/timer-ti-dm-systimer.c
-@@ -691,8 +691,10 @@ static int __init dmtimer_percpu_quirk_init(struct device_node *np, u32 pa)
- 	arm_timer = of_find_compatible_node(NULL, NULL, "arm,armv7-timer");
- 	if (of_device_is_available(arm_timer)) {
- 		pr_warn_once("ARM architected timer wrap issue i940 detected\n");
-+		of_node_put(arm_timer);
- 		return 0;
- 	}
-+	of_node_put(arm_timer);
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+index 27ceaac8f6cc..792cf3a807e1 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+@@ -1332,7 +1332,8 @@ MODULE_DEVICE_TABLE(of, vchiq_of_match);
  
- 	if (pa == 0x4882c000)           /* dra7 dmtimer15 */
- 		return dmtimer_percpu_timer_init(np, 0);
+ static int vchiq_probe(struct platform_device *pdev)
+ {
+-	struct device_node *fw_node;
++	struct device_node *fw_node __free(device_node) =
++		of_find_compatible_node(NULL, NULL, "raspberrypi,bcm2835-firmware");
+ 	const struct vchiq_platform_info *info;
+ 	struct vchiq_drv_mgmt *mgmt;
+ 	int ret;
+@@ -1341,8 +1342,6 @@ static int vchiq_probe(struct platform_device *pdev)
+ 	if (!info)
+ 		return -EINVAL;
+ 
+-	fw_node = of_find_compatible_node(NULL, NULL,
+-					  "raspberrypi,bcm2835-firmware");
+ 	if (!fw_node) {
+ 		dev_err(&pdev->dev, "Missing firmware node\n");
+ 		return -ENOENT;
+@@ -1353,7 +1352,6 @@ static int vchiq_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	mgmt->fw = devm_rpi_firmware_get(&pdev->dev, fw_node);
+-	of_node_put(fw_node);
+ 	if (!mgmt->fw)
+ 		return -EPROBE_DEFER;
+ 
 
 ---
 base-commit: d61a00525464bfc5fe92c6ad713350988e492b88
-change-id: 20241013-timer-ti-dm-systimer-of_node_put-d42735687698
+change-id: 20241013-vchiq_arm-of_node_put-60a5eaaafd70
 
 Best regards,
 -- 
