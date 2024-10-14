@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-83850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A5399CCD6
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:25:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F72999D221
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CC33282244
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:25:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3C84B26049
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA631A7AC7;
-	Mon, 14 Oct 2024 14:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0C81C4606;
+	Mon, 14 Oct 2024 15:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbXO92Kn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJ9uGTOP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC40AE571;
-	Mon, 14 Oct 2024 14:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB6B1ABEC9;
+	Mon, 14 Oct 2024 15:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915932; cv=none; b=IC9F9LZ2xQlzA5xczurV128mxd+kWEr5V/LsJ064tjNapSr0HjsMeKgabQzu07QMEc7YNgNqGN3HaTSgu562TG31xAd8nZBzXg91+WxiAjvqBw3HVvOXTWQkCsZdUGcC197j83CaGFpWwBkosHErHohmVGGceo25gkYuc2DdiJc=
+	t=1728919233; cv=none; b=P+2jyUwuCwmQz3F8rJuIU5wUrvqc+kA5XXOHhhr2cOCoxeWEb85kR2OeRc0/legBN2frkGa/Hi3Ngfp1KXOrG9Hk3iYlzdQ0HgR2C3AWfGT1BWyeyRqCbE4P1ot6B/D6YlPkG6BXlm9ZCFrrqgMmgcZEQXtxQ+IuqPRU7Z+est0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915932; c=relaxed/simple;
-	bh=ee9yF+lvlwds6D8C2S3MA4Ty0EH7+g0X549qqeZ2s5s=;
+	s=arc-20240116; t=1728919233; c=relaxed/simple;
+	bh=Ifcjl8MayWZAMuEDDuaDk/WByt7h1ixWJpsXqZ6Rqss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kaNAHb1/ZmKr0WFFMwyFQME4zAPokuknOuPVhsSRzN91dIPQ2NudHJAyahgR2MB1pBAiqgnJxsLvJYY/oE/4KptxiE6RATr8nUKi5jZI50Xsnus/KCsQdwz7mjYaFORyl3nlk5NF67LtCrrCVHC0BduMUvHQsZ4RCb8O9hFxW14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbXO92Kn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3F4C4CEC3;
-	Mon, 14 Oct 2024 14:25:31 +0000 (UTC)
+	 MIME-Version; b=SPYeOiI6RkU9H1vtxP7PCRv9BwwmM6VP26kUGJ969EzmHvDk/S8X0h+FdMyDeN57WCsg8IaIq52BPPJJ64NIzGjqHOGekCP+CPb9HLOBSegYUzvXozS/y59j6Umpx6MGC+MpcTb1aWQoUYJUUmUkgM+6V+sBXha46UxzGlHWjqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJ9uGTOP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D70FC4CEC3;
+	Mon, 14 Oct 2024 15:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915931;
-	bh=ee9yF+lvlwds6D8C2S3MA4Ty0EH7+g0X549qqeZ2s5s=;
+	s=korg; t=1728919233;
+	bh=Ifcjl8MayWZAMuEDDuaDk/WByt7h1ixWJpsXqZ6Rqss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pbXO92KnvlGr4nQxwKqCfvzR7P5xwPopelxobCouvdg/gAtWD3wxP1vgmP7cmeX5g
-	 /8Sa6/1UTELRuNv8pUtxPK4bmAPfor9bK100i4Ykzo9xlvNjV9hrGn+j96j/6AAgli
-	 PrPCPhOF/UDQyGS+xiV+Aw5LYHcvWTZz+lFHAonc=
+	b=FJ9uGTOPzTxAGtoK/+zPRWVffaNtlZvf2+iq5MRqEsZX0qmCskp2lNicoq42PkAeW
+	 wUD82kveGLcCiyNxDw3KgGiqEqEZ5japUFTFIVeFR8Edvg/iCC6JNmRZ7O1YN8KGx3
+	 D2ypaQN2C1j5aXsYpB8ahjNB0F+cwBrRP1peNehk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 041/214] mfd: intel_soc_pmic_chtwc: Make Lenovo Yoga Tab 3 X90F DMI match less strict
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 550/798] ext4: fix double brelse() the buffer of the extents path
 Date: Mon, 14 Oct 2024 16:18:24 +0200
-Message-ID: <20241014141046.592821636@linuxfoundation.org>
+Message-ID: <20241014141239.605386246@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit ae7eee56cdcfcb6a886f76232778d6517fd58690 ]
+commit dcaa6c31134c0f515600111c38ed7750003e1b9c upstream.
 
-There are 2G and 4G RAM versions of the Lenovo Yoga Tab 3 X90F and it
-turns out that the 2G version has a DMI product name of
-"CHERRYVIEW D1 PLATFORM" where as the 4G version has
-"CHERRYVIEW C0 PLATFORM". The sys-vendor + product-version check are
-unique enough that the product-name check is not necessary.
+In ext4_ext_try_to_merge_up(), set path[1].p_bh to NULL after it has been
+released, otherwise it may be released twice. An example of what triggers
+this is as follows:
 
-Drop the product-name check so that the existing DMI match for the 4G
-RAM version also matches the 2G RAM version.
+  split2    map    split1
+|--------|-------|--------|
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://lore.kernel.org/r/20240825132617.8809-1-hdegoede@redhat.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ext4_ext_map_blocks
+ ext4_ext_handle_unwritten_extents
+  ext4_split_convert_extents
+   // path->p_depth == 0
+   ext4_split_extent
+     // 1. do split1
+     ext4_split_extent_at
+       |ext4_ext_insert_extent
+       |  ext4_ext_create_new_leaf
+       |    ext4_ext_grow_indepth
+       |      le16_add_cpu(&neh->eh_depth, 1)
+       |    ext4_find_extent
+       |      // return -ENOMEM
+       |// get error and try zeroout
+       |path = ext4_find_extent
+       |  path->p_depth = 1
+       |ext4_ext_try_to_merge
+       |  ext4_ext_try_to_merge_up
+       |    path->p_depth = 0
+       |    brelse(path[1].p_bh)  ---> not set to NULL here
+       |// zeroout success
+     // 2. update path
+     ext4_find_extent
+     // 3. do split2
+     ext4_split_extent_at
+       ext4_ext_insert_extent
+         ext4_ext_create_new_leaf
+           ext4_ext_grow_indepth
+             le16_add_cpu(&neh->eh_depth, 1)
+           ext4_find_extent
+             path[0].p_bh = NULL;
+             path->p_depth = 1
+             read_extent_tree_block  ---> return err
+             // path[1].p_bh is still the old value
+             ext4_free_ext_path
+               ext4_ext_drop_refs
+                 // path->p_depth == 1
+                 brelse(path[1].p_bh)  ---> brelse a buffer twice
+
+Finally got the following WARRNING when removing the buffer from lru:
+
+============================================
+VFS: brelse: Trying to free free buffer
+WARNING: CPU: 2 PID: 72 at fs/buffer.c:1241 __brelse+0x58/0x90
+CPU: 2 PID: 72 Comm: kworker/u19:1 Not tainted 6.9.0-dirty #716
+RIP: 0010:__brelse+0x58/0x90
+Call Trace:
+ <TASK>
+ __find_get_block+0x6e7/0x810
+ bdev_getblk+0x2b/0x480
+ __ext4_get_inode_loc+0x48a/0x1240
+ ext4_get_inode_loc+0xb2/0x150
+ ext4_reserve_inode_write+0xb7/0x230
+ __ext4_mark_inode_dirty+0x144/0x6a0
+ ext4_ext_insert_extent+0x9c8/0x3230
+ ext4_ext_map_blocks+0xf45/0x2dc0
+ ext4_map_blocks+0x724/0x1700
+ ext4_do_writepages+0x12d6/0x2a70
+[...]
+============================================
+
+Fixes: ecb94f5fdf4b ("ext4: collapse a single extent tree block into the inode if possible")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20240822023545.1994557-9-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/intel_soc_pmic_chtwc.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/ext4/extents.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mfd/intel_soc_pmic_chtwc.c b/drivers/mfd/intel_soc_pmic_chtwc.c
-index 7fce3ef7ab453..2a83f540d4c9d 100644
---- a/drivers/mfd/intel_soc_pmic_chtwc.c
-+++ b/drivers/mfd/intel_soc_pmic_chtwc.c
-@@ -178,7 +178,6 @@ static const struct dmi_system_id cht_wc_model_dmi_ids[] = {
- 		.driver_data = (void *)(long)INTEL_CHT_WC_LENOVO_YT3_X90,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
- 			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
- 		},
- 	},
--- 
-2.43.0
-
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -1877,6 +1877,7 @@ static void ext4_ext_try_to_merge_up(han
+ 	path[0].p_hdr->eh_max = cpu_to_le16(max_root);
+ 
+ 	brelse(path[1].p_bh);
++	path[1].p_bh = NULL;
+ 	ext4_free_blocks(handle, inode, NULL, blk, 1,
+ 			 EXT4_FREE_BLOCKS_METADATA | EXT4_FREE_BLOCKS_FORGET);
+ }
 
 
 
