@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-84024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26DD99CDC0
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0315D99D30A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FF401C22D8A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7BC2289DD2
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A91117C77;
-	Mon, 14 Oct 2024 14:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F4F3B298;
+	Mon, 14 Oct 2024 15:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0ZuNEqu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxDGtyKY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D9B4A24;
-	Mon, 14 Oct 2024 14:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812F31AC884;
+	Mon, 14 Oct 2024 15:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916548; cv=none; b=hQLfyFpvUuFn3oR9paqUGjnWwSubtqNm3nvmBLowkl1jTfi6ZmDXu9gomd8QX6kFzKYa8AaTjaVXcOqgKlbBjkwfMuudbrVquo55i4kgUmmO9LnUXEFCqA44Mih0cApo7c1NtJuh976C/Xc7jixhKnoUpILwBFv18+xu6AcZ6EY=
+	t=1728919783; cv=none; b=jphEIavUheYDKjRzoxdcV+5owxCPukSWff6uS3Iyj1aET07rwuAlbfpnsjcpxPOkqnhg4y/F8vflzsvDFIhzybxPTUK964q8NH8B76wT2Mx7DpIZoRUQfCtJJ3bWJbNh6q9FKQItOXOcDuOAUkBow5i9ZvpYHTmoX3MM0te7X9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916548; c=relaxed/simple;
-	bh=LRAXUBwPH7szKZWWXidJbipFUticwpYV15V0gFKJKv0=;
+	s=arc-20240116; t=1728919783; c=relaxed/simple;
+	bh=8FL6jkXHP4w/YOPYHkr2jLoIyFZEzZUn7yUTh7tEA1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4VZ//Fp6bb68BSyUUOzKbdbPSKWsgsa/aTsik8pMO5iM7ayeuzTviHBkZcj5UV5ShJNWdvQBsXwyLuCaQ0fBoOnAYxPIoBBuv8M+I1bMOHq7yb5CN7IgMozXcvstum5nWDFBl/+bF1S7ybYNOY9m+sJq2PP7mQklRHJ3VT4G9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0ZuNEqu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD837C4CEC3;
-	Mon, 14 Oct 2024 14:35:47 +0000 (UTC)
+	 MIME-Version; b=fDzlcpxA6jbDb0WxOVA4qre81d512GtElO1RN81LGgZ2isLxuPd09iDnAv7oeoC/Mlwy13Y4QMn+bwhBMN0mujSxUtnD1D94DgvxiM1yR0e7tUqHWGGN5M61zvqu/tLazcmvUT/qbUy+Ykhsdzbr8jvbsD2msKl7Tbv+P/SWMAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxDGtyKY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E5BC4CEC3;
+	Mon, 14 Oct 2024 15:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916548;
-	bh=LRAXUBwPH7szKZWWXidJbipFUticwpYV15V0gFKJKv0=;
+	s=korg; t=1728919783;
+	bh=8FL6jkXHP4w/YOPYHkr2jLoIyFZEzZUn7yUTh7tEA1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F0ZuNEqu6ih9CP++SHpTg49uAOHMWSKK9UFYETGkWmVEKnMQtJT5m1tFe9gTFAv+M
-	 Zzmj0fagPTmDN4ydBb+qrC6qugeQOYhf0NVw5vRCrZZnFmdLRmnAcIwFaHS7gVBoY2
-	 z+xOku/mv6Fj0jQr+vCiAFX028uOG3PPWN5iWJqk=
+	b=hxDGtyKYxglqpxhECpBZzzeesXR4Wg/Dxfhu44ViJkyXMyiXNrP3AFjxZVWSqwnWX
+	 VMQstSO8uWH9ozcRM4vPjscqPdOdI2t6hngcxuJmaIXyVfQs9YU5ZcLpeZEYmeb9HH
+	 s1MWCmihMCwbEk1lNo34TY+Eq3r9l9+M69oGwyE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.11 196/214] net: phy: realtek: Fix MMD access on RTL8126A-integrated PHY
-Date: Mon, 14 Oct 2024 16:20:59 +0200
-Message-ID: <20241014141052.625422046@linuxfoundation.org>
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 706/798] RDMA/mlx5: Enforce umem boundaries for explicit ODP page faults
+Date: Mon, 14 Oct 2024 16:21:00 +0200
+Message-ID: <20241014141245.804656302@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-commit a6ad589c1d118f9d5b1bc4c6888d42919f830340 upstream.
+[ Upstream commit 8c6d097d830f779fc1725fbaa1314f20a7a07b4b ]
 
-All MMD reads return 0 for the RTL8126A-integrated PHY. Therefore phylib
-assumes it doesn't support EEE, what results in higher power consumption,
-and a significantly higher chip temperature in my case.
-To fix this split out the PHY driver for the RTL8126A-integrated PHY
-and set the read_mmd/write_mmd callbacks to read from vendor-specific
-registers.
+The new memory scheme page faults are requesting the driver to fetch
+additinal pages to the faulted memory access.
+This is done in order to prefetch pages before and after the area that
+got the page fault, assuming this will reduce the total amount of page
+faults.
 
-Fixes: 5befa3728b85 ("net: phy: realtek: add support for RTL8126A-integrated 5Gbps PHY")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The driver should ensure it handles only the pages that are within the
+umem range.
+
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://patch.msgid.link/20240909100504.29797-5-michaelgur@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/realtek.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/odp.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
-index c15d2f66ef0d..166f6a728373 100644
---- a/drivers/net/phy/realtek.c
-+++ b/drivers/net/phy/realtek.c
-@@ -1081,6 +1081,16 @@ static int rtl8221b_vn_cg_c45_match_phy_device(struct phy_device *phydev)
- 	return rtlgen_is_c45_match(phydev, RTL_8221B_VN_CG, true);
- }
- 
-+static int rtl8251b_c22_match_phy_device(struct phy_device *phydev)
-+{
-+	return rtlgen_is_c45_match(phydev, RTL_8251B, false);
-+}
-+
-+static int rtl8251b_c45_match_phy_device(struct phy_device *phydev)
-+{
-+	return rtlgen_is_c45_match(phydev, RTL_8251B, true);
-+}
-+
- static int rtlgen_resume(struct phy_device *phydev)
+diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
+index af73c5ebe6ac5..d3cada2ae5a5b 100644
+--- a/drivers/infiniband/hw/mlx5/odp.c
++++ b/drivers/infiniband/hw/mlx5/odp.c
+@@ -734,24 +734,31 @@ static int pagefault_dmabuf_mr(struct mlx5_ib_mr *mr, size_t bcnt,
+  *  >0: Number of pages mapped
+  */
+ static int pagefault_mr(struct mlx5_ib_mr *mr, u64 io_virt, size_t bcnt,
+-			u32 *bytes_mapped, u32 flags)
++			u32 *bytes_mapped, u32 flags, bool permissive_fault)
  {
- 	int ret = genphy_resume(phydev);
-@@ -1418,7 +1428,7 @@ static struct phy_driver realtek_drvs[] = {
- 		.suspend        = genphy_c45_pma_suspend,
- 		.resume         = rtlgen_c45_resume,
- 	}, {
--		PHY_ID_MATCH_EXACT(0x001cc862),
-+		.match_phy_device = rtl8251b_c45_match_phy_device,
- 		.name           = "RTL8251B 5Gbps PHY",
- 		.get_features   = rtl822x_get_features,
- 		.config_aneg    = rtl822x_config_aneg,
-@@ -1427,6 +1437,18 @@ static struct phy_driver realtek_drvs[] = {
- 		.resume         = rtlgen_resume,
- 		.read_page      = rtl821x_read_page,
- 		.write_page     = rtl821x_write_page,
-+	}, {
-+		.match_phy_device = rtl8251b_c22_match_phy_device,
-+		.name           = "RTL8126A-internal 5Gbps PHY",
-+		.get_features   = rtl822x_get_features,
-+		.config_aneg    = rtl822x_config_aneg,
-+		.read_status    = rtl822x_read_status,
-+		.suspend        = genphy_suspend,
-+		.resume         = rtlgen_resume,
-+		.read_page      = rtl821x_read_page,
-+		.write_page     = rtl821x_write_page,
-+		.read_mmd	= rtl822x_read_mmd,
-+		.write_mmd	= rtl822x_write_mmd,
- 	}, {
- 		PHY_ID_MATCH_EXACT(0x001ccad0),
- 		.name		= "RTL8224 2.5Gbps PHY",
+ 	struct ib_umem_odp *odp = to_ib_umem_odp(mr->umem);
+ 
+-	if (unlikely(io_virt < mr->ibmr.iova))
++	if (unlikely(io_virt < mr->ibmr.iova) && !permissive_fault)
+ 		return -EFAULT;
+ 
+ 	if (mr->umem->is_dmabuf)
+ 		return pagefault_dmabuf_mr(mr, bcnt, bytes_mapped, flags);
+ 
+ 	if (!odp->is_implicit_odp) {
++		u64 offset = io_virt < mr->ibmr.iova ? 0 : io_virt - mr->ibmr.iova;
+ 		u64 user_va;
+ 
+-		if (check_add_overflow(io_virt - mr->ibmr.iova,
+-				       (u64)odp->umem.address, &user_va))
++		if (check_add_overflow(offset, (u64)odp->umem.address,
++				       &user_va))
+ 			return -EFAULT;
+-		if (unlikely(user_va >= ib_umem_end(odp) ||
+-			     ib_umem_end(odp) - user_va < bcnt))
++
++		if (permissive_fault) {
++			if (user_va < ib_umem_start(odp))
++				user_va = ib_umem_start(odp);
++			if ((user_va + bcnt) > ib_umem_end(odp))
++				bcnt = ib_umem_end(odp) - user_va;
++		} else if (unlikely(user_va >= ib_umem_end(odp) ||
++				    ib_umem_end(odp) - user_va < bcnt))
+ 			return -EFAULT;
+ 		return pagefault_real_mr(mr, odp, user_va, bcnt, bytes_mapped,
+ 					 flags);
+@@ -858,7 +865,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
+ 	case MLX5_MKEY_MR:
+ 		mr = container_of(mmkey, struct mlx5_ib_mr, mmkey);
+ 
+-		ret = pagefault_mr(mr, io_virt, bcnt, bytes_mapped, 0);
++		ret = pagefault_mr(mr, io_virt, bcnt, bytes_mapped, 0, false);
+ 		if (ret < 0)
+ 			goto end;
+ 
+@@ -1724,7 +1731,7 @@ static void mlx5_ib_prefetch_mr_work(struct work_struct *w)
+ 	for (i = 0; i < work->num_sge; ++i) {
+ 		ret = pagefault_mr(work->frags[i].mr, work->frags[i].io_virt,
+ 				   work->frags[i].length, &bytes_mapped,
+-				   work->pf_flags);
++				   work->pf_flags, false);
+ 		if (ret <= 0)
+ 			continue;
+ 		mlx5_update_odp_stats(work->frags[i].mr, prefetch, ret);
+@@ -1775,7 +1782,7 @@ static int mlx5_ib_prefetch_sg_list(struct ib_pd *pd,
+ 		if (IS_ERR(mr))
+ 			return PTR_ERR(mr);
+ 		ret = pagefault_mr(mr, sg_list[i].addr, sg_list[i].length,
+-				   &bytes_mapped, pf_flags);
++				   &bytes_mapped, pf_flags, false);
+ 		if (ret < 0) {
+ 			mlx5r_deref_odp_mkey(&mr->mmkey);
+ 			return ret;
 -- 
-2.47.0
+2.43.0
 
 
 
