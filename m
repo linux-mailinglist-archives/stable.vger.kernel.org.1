@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-83675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C8599BE8B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:01:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE23199BE8F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:01:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A72B91C22A08
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 04:01:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03B5C1C22C37
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 04:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291391547C9;
-	Mon, 14 Oct 2024 03:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3D415665C;
+	Mon, 14 Oct 2024 03:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udrVIOnu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oB9llIhR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F2913B287;
-	Mon, 14 Oct 2024 03:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A987315624B;
+	Mon, 14 Oct 2024 03:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728878280; cv=none; b=kgF7Vwga6ZHErUGdYvUdjfRwa/MAhK56Uu0FKQgRPsPOIdmBR59ZnHERyS9kNvSiK/T6lLv3BdSL9zjYlE1gU3vMI0bWVgHFCgXL1b+M35NyUoTSUh4HefUj/HxqN90NGnS58NWzCNOLyNBv2TV5JlXl6l602uR74YNhgvIwhwg=
+	t=1728878283; cv=none; b=O6FtiQslI52sangiy6UKh+Uj9gLIoaRUh3C87ECxNFCealN7YEMeN/3UgsACDkr5jmLacl/IJ9NdSicpYx0jzU+VOddxRaBxlzrvHbcxjBMSvGeSNoAQpMqk1LfmIYrKFoAwfvNg6Lggqp240bvaZBgGcQ3vpQOa9olLVDjk+b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728878280; c=relaxed/simple;
-	bh=75eMdPfFBZse2z7wYOUlPmrguTaItmzpVR+YPuGwHMU=;
+	s=arc-20240116; t=1728878283; c=relaxed/simple;
+	bh=qCICDlZnGDoXb58vGlFU3fU9K0Vyajcva5EQv963CPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b07YTCDdH6GYlwCctZsAglLu66ee5l/YhFodvj/8SMxOMAwqH5bhJuyyAmx1hbJa2qmeaRyTGujzrAHt0pch6dFHOOjJ/moBpEHr/hDY8UBKHPqAM4oYrojzczF+iHtbj4Y7JUOQyLoBqWUHzyAUyjIjcLNly2ch3lmQHoXvESs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=udrVIOnu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E5DC4CECE;
-	Mon, 14 Oct 2024 03:57:59 +0000 (UTC)
+	 MIME-Version; b=uNAY+qomPRxPjGvADg+qV/dydTN61WRowKNc16Ur8VjMIgniCJ7q5WSWKUYIdYiJMlsP6F1clyL3D6Q5CIpMIxuSfBec1I7CxSLSsjEGSSTrOxjgvLTXBi4Fw362ZojzCqhFVxGnRA1IF1WOn3w19fr29GfnfBcKPh7+RifPYak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oB9llIhR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D36C4CECE;
+	Mon, 14 Oct 2024 03:58:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728878280;
-	bh=75eMdPfFBZse2z7wYOUlPmrguTaItmzpVR+YPuGwHMU=;
+	s=k20201202; t=1728878283;
+	bh=qCICDlZnGDoXb58vGlFU3fU9K0Vyajcva5EQv963CPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=udrVIOnurw9V2+B67EXBJ5JwUgwNA2kBhnqZ4qJZTclCECCTplk27v4sbo+mNUyj3
-	 xRh171ZHxzsmYGCKB1drZTD2EYeSAi4bcNs979uU038t7I7cvwd4to4tnsP62Vj1DK
-	 ylv1jI6W95acm9189yN0YEgJ6MrQks+uPxme22usHzQv+Z9Z8exZAM+9eEK4BeJqrf
-	 czvxgPYjhsO32Uk3vZGOis5MxUhzlPO/v1S4H5dZ6rVw6/fUBDvk53gXUtckmsFUS0
-	 iA5sZYzAaAFDYzCPN4RDzEQvb3RigaVNvtm7C+ngFuRw8c1IUepGcofcbJvQoFjQ5m
-	 lC61vyH+Z+nFw==
+	b=oB9llIhRwE/k8udl1Xlcsxo5b6EH7MixnHrfnEaYKVT6FUaUIQNvJZPaH23Ne83Ds
+	 avuT8fgFUEjhFtbR9T/TKhoSaGiEt8PKdRLm7dAjyY9X+cWlnoYvgDJIvAIA9bItku
+	 3KwBEuB4qUb1mLordxIOMPVHvsKeCWZjHlU+rdOBb41un3czbFwldku71TG0VdPBiU
+	 y4sF0EzuyLfoEGNuXd5dE9zBOoZC1hpCzz/i0GoKIRQga70bBisNpaqleu6gUxQf+A
+	 xmtPCNMnyuPIEOgY2eq1ucq1HAnt/46ObACs1ySoe9I3xoW12bVSSSNMpayqpIMfPD
+	 vB67aTHgFPoew==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zhang Rui <rui.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Daniel Palmer <daniel@0x0f.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	daniel.lezcano@linaro.org,
-	andriy.shevchenko@linux.intel.com,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 17/20] thermal: intel: int340x: processor: Add MMIO RAPL PL4 support
-Date: Sun, 13 Oct 2024 23:57:19 -0400
-Message-ID: <20241014035731.2246632-17-sashal@kernel.org>
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	quic_jjohnson@quicinc.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 18/20] net: amd: mvme147: Fix probe banner message
+Date: Sun, 13 Oct 2024 23:57:20 -0400
+Message-ID: <20241014035731.2246632-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241014035731.2246632-1-sashal@kernel.org>
 References: <20241014035731.2246632-1-sashal@kernel.org>
@@ -69,41 +70,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.3
 Content-Transfer-Encoding: 8bit
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Daniel Palmer <daniel@0x0f.com>
 
-[ Upstream commit 3fb0eea8a1c4be5884e0731ea76cbd3ce126e1f3 ]
+[ Upstream commit 82c5b53140faf89c31ea2b3a0985a2f291694169 ]
 
-Similar to the MSR RAPL interface, MMIO RAPL supports PL4 too, so add
-MMIO RAPL PL4d support to the processor_thermal driver.
+Currently this driver prints this line with what looks like
+a rogue format specifier when the device is probed:
+[    2.840000] eth%d: MVME147 at 0xfffe1800, irq 12, Hardware Address xx:xx:xx:xx:xx:xx
 
-As a result, the powercap sysfs for MMIO RAPL will show a new "peak
-power" constraint.
+Change the printk() for netdev_info() and move it after the
+registration has completed so it prints out the name of the
+interface properly.
 
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20240930081801.28502-7-rui.zhang@intel.com
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../thermal/intel/int340x_thermal/processor_thermal_rapl.c    | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/amd/mvme147.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
-index 769510e748c0b..bde2cc386afdd 100644
---- a/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
-+++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
-@@ -13,9 +13,9 @@ static struct rapl_if_priv rapl_mmio_priv;
+diff --git a/drivers/net/ethernet/amd/mvme147.c b/drivers/net/ethernet/amd/mvme147.c
+index c156566c09064..f19b04b92fa9f 100644
+--- a/drivers/net/ethernet/amd/mvme147.c
++++ b/drivers/net/ethernet/amd/mvme147.c
+@@ -105,10 +105,6 @@ static struct net_device * __init mvme147lance_probe(void)
+ 	macaddr[3] = address&0xff;
+ 	eth_hw_addr_set(dev, macaddr);
  
- static const struct rapl_mmio_regs rapl_mmio_default = {
- 	.reg_unit = 0x5938,
--	.regs[RAPL_DOMAIN_PACKAGE] = { 0x59a0, 0x593c, 0x58f0, 0, 0x5930},
-+	.regs[RAPL_DOMAIN_PACKAGE] = { 0x59a0, 0x593c, 0x58f0, 0, 0x5930, 0x59b0},
- 	.regs[RAPL_DOMAIN_DRAM] = { 0x58e0, 0x58e8, 0x58ec, 0, 0},
--	.limits[RAPL_DOMAIN_PACKAGE] = BIT(POWER_LIMIT2),
-+	.limits[RAPL_DOMAIN_PACKAGE] = BIT(POWER_LIMIT2) | BIT(POWER_LIMIT4),
- 	.limits[RAPL_DOMAIN_DRAM] = BIT(POWER_LIMIT2),
- };
+-	printk("%s: MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
+-	       dev->name, dev->base_addr, MVME147_LANCE_IRQ,
+-	       dev->dev_addr);
+-
+ 	lp = netdev_priv(dev);
+ 	lp->ram = __get_dma_pages(GFP_ATOMIC, 3);	/* 32K */
+ 	if (!lp->ram) {
+@@ -138,6 +134,9 @@ static struct net_device * __init mvme147lance_probe(void)
+ 		return ERR_PTR(err);
+ 	}
+ 
++	netdev_info(dev, "MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
++		    dev->base_addr, MVME147_LANCE_IRQ, dev->dev_addr);
++
+ 	return dev;
+ }
  
 -- 
 2.43.0
