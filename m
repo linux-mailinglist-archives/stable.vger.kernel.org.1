@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5560899CEE1
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:48:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E1299D323
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F31831F24200
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:48:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A7C528A9DE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D831B4F23;
-	Mon, 14 Oct 2024 14:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DA71CACF8;
+	Mon, 14 Oct 2024 15:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8racGtN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJJa+74l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600271B4F25;
-	Mon, 14 Oct 2024 14:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812531CACE8;
+	Mon, 14 Oct 2024 15:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917202; cv=none; b=Rn448NyCUGhCkc9lji/sVJBVzsa4Z76evfLq8tLjwZo4n4GRCZ29Z9ddBX3zA4wS+dFo/584K3Pfm+ZVVU5kPwvDGw1FtOWiLi8Ji9GY3vVAnEKg2FAnfF/2upGg6CWUDQ9d6/LQyNwFWCHNaAZ2t6n8JvJYU4bgyimQ5D7LYTM=
+	t=1728919862; cv=none; b=HfhVUfFFXeTS/gaqPG3oEE3+iNPeHBJlpyi/4hxkdb9bINR8oc/trHRzS/h2OJ9YubqPrzZ2CDBabpHoeEf1S50SWsLUo/EJyc9iA/TBkXEcQMRctlqBdBXWfcDZbYHjekUz84ht92CTvhOwdEz86Ff87o/cmpzslZnnbZdms2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917202; c=relaxed/simple;
-	bh=41s/XLmh8T6etMV3wMpEU5Z9Sy/CyV+m06ZmaITgB4M=;
+	s=arc-20240116; t=1728919862; c=relaxed/simple;
+	bh=IUjEBIxP79hQj07Rc2BEhkDGli2s2v4t8Z+lB6aUTfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UTqRhQdCoqJjfy+2z+7CoFoUcbp8736wdXLjs+8/VkiWctzc5sVMZ74XdgBF2511vjbKvRCjCylL/NU1Peh7sjMEHg57mHCFd1JOd6mxhrYrWTkPesr0auy2EJNogOCMWsKyO/EFeh0bPcdQvjgB7JOLQaadVeXt1djFHnULiOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8racGtN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D764DC4CECF;
-	Mon, 14 Oct 2024 14:46:41 +0000 (UTC)
+	 MIME-Version; b=PAGkjTp3RXEM5smQhLzcpW1ybhA3SB1HDhrSnZuycJd8IgglCDDst5QWvZ88B9oEhOZWk6FHkzRislxIsO10mV3iEPHZ2JXMFxo6BE6qtM+OxDMdbfuun9oHHAeghmiTwQBmRx5PueLHoaAaUmklg/TiQVT8MjduYKaec7lBQHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJJa+74l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2A2C4CEC3;
+	Mon, 14 Oct 2024 15:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917202;
-	bh=41s/XLmh8T6etMV3wMpEU5Z9Sy/CyV+m06ZmaITgB4M=;
+	s=korg; t=1728919862;
+	bh=IUjEBIxP79hQj07Rc2BEhkDGli2s2v4t8Z+lB6aUTfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z8racGtNHVLdvmENgjiRRRthva4QR/IGJllZHkYp/mtJHQw1a629PokfilLZssegM
-	 IyO1UJfMho4B7VPBAQq1PdZpR7tGcQQqodcLEwLSgLMxUHq4nnsVoI90ZpZCdIBDiD
-	 UvnDgKPXqNkvFNEPNKwPmEF8Wj3Vp1ewjBe7mHN0=
+	b=oJJa+74l/yMmbkeNYPUgMV6EEJJHpbarVOewIHReJQbMbTE43ntpSICqnyL63WDLS
+	 CYwN7tcHEPZ2uQ3SaUerP36RQRuzD+WJsBsJO9kW2D8RJZgr26TElyyGJodLRfVBER
+	 /2Mz9QvI3uyeXha7xTEYZ8hho7Q6ZmojTItku0Do=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Colberg <peter.colberg@intel.com>,
-	Michael Adler <michael.adler@intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/213] hwmon: intel-m10-bmc-hwmon: relabel Columbiaville to CVL Die Temperature
-Date: Mon, 14 Oct 2024 16:21:20 +0200
-Message-ID: <20241014141049.758157545@linuxfoundation.org>
+Subject: [PATCH 6.1 727/798] NFSD: Mark filecache "down" if init fails
+Date: Mon, 14 Oct 2024 16:21:21 +0200
+Message-ID: <20241014141246.633530292@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Colberg <peter.colberg@intel.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit a017616fafc6b2a6b3043bf46f6381ef2611c188 ]
+[ Upstream commit dc0d0f885aa422f621bc1c2124133eff566b0bc8 ]
 
-Consistently use CVL instead of Columbiaville, since CVL is already
-being used in all other sensor labels for the Intel N6000 card.
+NeilBrown says:
+> The handling of NFSD_FILE_CACHE_UP is strange.  nfsd_file_cache_init()
+> sets it, but doesn't clear it on failure.  So if nfsd_file_cache_init()
+> fails for some reason, nfsd_file_cache_shutdown() would still try to
+> clean up if it was called.
 
-Fixes: e1983220ae14 ("hwmon: intel-m10-bmc-hwmon: Add N6000 sensors")
-Signed-off-by: Peter Colberg <peter.colberg@intel.com>
-Reviewed-by: Michael Adler <michael.adler@intel.com>
-Message-ID: <20240919173417.867640-1-peter.colberg@intel.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reported-by: NeilBrown <neilb@suse.de>
+Fixes: c7b824c3d06c ("NFSD: Replace the "init once" mechanism")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/intel-m10-bmc-hwmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/filecache.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/intel-m10-bmc-hwmon.c b/drivers/hwmon/intel-m10-bmc-hwmon.c
-index ca2dff1589251..96397ae6ff18f 100644
---- a/drivers/hwmon/intel-m10-bmc-hwmon.c
-+++ b/drivers/hwmon/intel-m10-bmc-hwmon.c
-@@ -358,7 +358,7 @@ static const struct m10bmc_sdata n6000bmc_temp_tbl[] = {
- 	{ 0x4f0, 0x4f4, 0x4f8, 0x52c, 0x0, 500, "Board Top Near FPGA Temperature" },
- 	{ 0x4fc, 0x500, 0x504, 0x52c, 0x0, 500, "Board Bottom Near CVL Temperature" },
- 	{ 0x508, 0x50c, 0x510, 0x52c, 0x0, 500, "Board Top East Near VRs Temperature" },
--	{ 0x514, 0x518, 0x51c, 0x52c, 0x0, 500, "Columbiaville Die Temperature" },
-+	{ 0x514, 0x518, 0x51c, 0x52c, 0x0, 500, "CVL Die Temperature" },
- 	{ 0x520, 0x524, 0x528, 0x52c, 0x0, 500, "Board Rear Side Temperature" },
- 	{ 0x530, 0x534, 0x538, 0x52c, 0x0, 500, "Board Front Side Temperature" },
- 	{ 0x53c, 0x540, 0x544, 0x0, 0x0, 500, "QSFP1 Case Temperature" },
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index 9e81f3a9097e0..c9393c732889a 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -718,7 +718,7 @@ nfsd_file_cache_init(void)
+ 
+ 	ret = rhltable_init(&nfsd_file_rhltable, &nfsd_file_rhash_params);
+ 	if (ret)
+-		return ret;
++		goto out;
+ 
+ 	ret = -ENOMEM;
+ 	nfsd_filecache_wq = alloc_workqueue("nfsd_filecache", 0, 0);
+@@ -770,6 +770,8 @@ nfsd_file_cache_init(void)
+ 
+ 	INIT_DELAYED_WORK(&nfsd_filecache_laundrette, nfsd_file_gc_worker);
+ out:
++	if (ret)
++		clear_bit(NFSD_FILE_CACHE_UP, &nfsd_file_flags);
+ 	return ret;
+ out_notifier:
+ 	lease_unregister_notifier(&nfsd_file_lease_notifier);
 -- 
 2.43.0
 
