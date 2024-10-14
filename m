@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-84768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5497A99D208
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BACDF99CCBA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:24:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5407B26047
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FFC71F22E94
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4B31BB6BB;
-	Mon, 14 Oct 2024 15:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AAC8E571;
+	Mon, 14 Oct 2024 14:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUnFYk3d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ksq6/L70"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983CD19E7ED;
-	Mon, 14 Oct 2024 15:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164891DFEF;
+	Mon, 14 Oct 2024 14:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919147; cv=none; b=ZD4BercLKqEhIS+Pxz2/Or2UZUxtUY3ZyEwcsiU14mHpESQbE861nRSUugmt5ys+m/jUpHTZQkgU7OdBCsgLDk/0qRcMVc7eokKM+/7Iso47yFZeMILhNAYSNef98FKzk1meJ6chXIjHWjeQGzHeqHnCBbUjl0xPjqVNb5xmAVo=
+	t=1728915842; cv=none; b=i3VGTj1N0EPPUe/y4MJh1F6yb1u72y+2nfE76BmXwcDjp4nlnqBvyfydwff73rKhsw2rG9WUEOZ60UfVOT6cGQbhlHVAnKmpjZVhspx3y6p+WzhdEJe4lmcWlf2Fv41R+XKqf7CgZc4BbWBCPeRGkVZX1uCtfxUjv5tINuqGUX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919147; c=relaxed/simple;
-	bh=+fTDXqyN41RsroQ3i8xC98GMzo9wNbyxbwZUcdNNoWw=;
+	s=arc-20240116; t=1728915842; c=relaxed/simple;
+	bh=DAoRWsP8cz9yeMI9NAIZbJ+0EMJ3LOByJrLck3dnkic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NMdicJ0luFvnHxNsqebJ4PgHOveMBqd0pA8TOEaK3hdxp0nRwiosclnZjDBjaj1c+X25IlAM/BdkVn1B+OwGKd/2iYVPz9TmeZc7gsJLn3Jcdg4pbqQ+wLCtSJtEEDlfKnarlGeFLTfgnsRQTCDN51QHFyGDeUQb1I6o7DMnsJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUnFYk3d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09134C4CEC3;
-	Mon, 14 Oct 2024 15:19:06 +0000 (UTC)
+	 MIME-Version; b=V5UR8xjAFe5T3W6riXjx2k8bE9VQIWsg/m3vqUbcyZilqOAW4cuoYWz6Wr/O5GsvuvLfXp7q0tgC38t79WGo9WLEKwwMvSM+WChmkCQ82kSHGuSAD7Y+zhlWYThyyKCYdFIszqqcfGFfX5sk/mjnqCU/PnVhFWSjSCFYa11x/bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ksq6/L70; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0102BC4CEC3;
+	Mon, 14 Oct 2024 14:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919147;
-	bh=+fTDXqyN41RsroQ3i8xC98GMzo9wNbyxbwZUcdNNoWw=;
+	s=korg; t=1728915841;
+	bh=DAoRWsP8cz9yeMI9NAIZbJ+0EMJ3LOByJrLck3dnkic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iUnFYk3dje2W4QuiKoqoZAcXGaPKsopg43xouOntk3EI/VjfgESKSMf1zurHVO5kd
-	 1O7bmf/AihbmQUFHrRkYv9sBaMaQOAPE0wyujo1+t4zcJuBIIDeMFHIEJBlS+7wtE7
-	 EsFucF7EsDRXWJYs34BUz0E240DWpOLpJOzDm7ZE=
+	b=Ksq6/L70vWgnVQSHMpdSMIqYlogfHitdRNadDeKcUQJ48GW/My2pWpurF7tOSVifW
+	 E8Aj9cK0c0l2iZiJLvWM0QxeARU1+Qu87KslfSCcWFLQFyMfFzc/dX5lq/qB93q/Vs
+	 NsYwYK5XYpyeITQ996BlgogM3jM1z27qvoRPQWcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Zach Wade <zachwade.k@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.1 524/798] platform/x86: ISST: Fix the KASAN report slab-out-of-bounds bug
+	Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Jens Axboe <axboe@kernel.dk>,
+	Minchan Kim <minchan@kernel.org>,
+	Chris Li <chrisl@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 015/214] zram: dont free statically defined names
 Date: Mon, 14 Oct 2024 16:17:58 +0200
-Message-ID: <20241014141238.565742332@linuxfoundation.org>
+Message-ID: <20241014141045.588644436@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,127 +68,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zach Wade <zachwade.k@gmail.com>
+From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
 
-commit 7d59ac07ccb58f8f604f8057db63b8efcebeb3de upstream.
+[ Upstream commit 486fd58af7ac1098b68370b1d4d9f94a2a1c7124 ]
 
-Attaching SST PCI device to VM causes "BUG: KASAN: slab-out-of-bounds".
-kasan report:
-[   19.411889] ==================================================================
-[   19.413702] BUG: KASAN: slab-out-of-bounds in _isst_if_get_pci_dev+0x3d5/0x400 [isst_if_common]
-[   19.415634] Read of size 8 at addr ffff888829e65200 by task cpuhp/16/113
-[   19.417368]
-[   19.418627] CPU: 16 PID: 113 Comm: cpuhp/16 Tainted: G            E      6.9.0 #10
-[   19.420435] Hardware name: VMware, Inc. VMware20,1/440BX Desktop Reference Platform, BIOS VMW201.00V.20192059.B64.2207280713 07/28/2022
-[   19.422687] Call Trace:
-[   19.424091]  <TASK>
-[   19.425448]  dump_stack_lvl+0x5d/0x80
-[   19.426963]  ? _isst_if_get_pci_dev+0x3d5/0x400 [isst_if_common]
-[   19.428694]  print_report+0x19d/0x52e
-[   19.430206]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-[   19.431837]  ? _isst_if_get_pci_dev+0x3d5/0x400 [isst_if_common]
-[   19.433539]  kasan_report+0xf0/0x170
-[   19.435019]  ? _isst_if_get_pci_dev+0x3d5/0x400 [isst_if_common]
-[   19.436709]  _isst_if_get_pci_dev+0x3d5/0x400 [isst_if_common]
-[   19.438379]  ? __pfx_sched_clock_cpu+0x10/0x10
-[   19.439910]  isst_if_cpu_online+0x406/0x58f [isst_if_common]
-[   19.441573]  ? __pfx_isst_if_cpu_online+0x10/0x10 [isst_if_common]
-[   19.443263]  ? ttwu_queue_wakelist+0x2c1/0x360
-[   19.444797]  cpuhp_invoke_callback+0x221/0xec0
-[   19.446337]  cpuhp_thread_fun+0x21b/0x610
-[   19.447814]  ? __pfx_cpuhp_thread_fun+0x10/0x10
-[   19.449354]  smpboot_thread_fn+0x2e7/0x6e0
-[   19.450859]  ? __pfx_smpboot_thread_fn+0x10/0x10
-[   19.452405]  kthread+0x29c/0x350
-[   19.453817]  ? __pfx_kthread+0x10/0x10
-[   19.455253]  ret_from_fork+0x31/0x70
-[   19.456685]  ? __pfx_kthread+0x10/0x10
-[   19.458114]  ret_from_fork_asm+0x1a/0x30
-[   19.459573]  </TASK>
-[   19.460853]
-[   19.462055] Allocated by task 1198:
-[   19.463410]  kasan_save_stack+0x30/0x50
-[   19.464788]  kasan_save_track+0x14/0x30
-[   19.466139]  __kasan_kmalloc+0xaa/0xb0
-[   19.467465]  __kmalloc+0x1cd/0x470
-[   19.468748]  isst_if_cdev_register+0x1da/0x350 [isst_if_common]
-[   19.470233]  isst_if_mbox_init+0x108/0xff0 [isst_if_mbox_msr]
-[   19.471670]  do_one_initcall+0xa4/0x380
-[   19.472903]  do_init_module+0x238/0x760
-[   19.474105]  load_module+0x5239/0x6f00
-[   19.475285]  init_module_from_file+0xd1/0x130
-[   19.476506]  idempotent_init_module+0x23b/0x650
-[   19.477725]  __x64_sys_finit_module+0xbe/0x130
-[   19.476506]  idempotent_init_module+0x23b/0x650
-[   19.477725]  __x64_sys_finit_module+0xbe/0x130
-[   19.478920]  do_syscall_64+0x82/0x160
-[   19.480036]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   19.481292]
-[   19.482205] The buggy address belongs to the object at ffff888829e65000
- which belongs to the cache kmalloc-512 of size 512
-[   19.484818] The buggy address is located 0 bytes to the right of
- allocated 512-byte region [ffff888829e65000, ffff888829e65200)
-[   19.487447]
-[   19.488328] The buggy address belongs to the physical page:
-[   19.489569] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff888829e60c00 pfn:0x829e60
-[   19.491140] head: order:3 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-[   19.492466] anon flags: 0x57ffffc0000840(slab|head|node=1|zone=2|lastcpupid=0x1fffff)
-[   19.493914] page_type: 0xffffffff()
-[   19.494988] raw: 0057ffffc0000840 ffff88810004cc80 0000000000000000 0000000000000001
-[   19.496451] raw: ffff888829e60c00 0000000080200018 00000001ffffffff 0000000000000000
-[   19.497906] head: 0057ffffc0000840 ffff88810004cc80 0000000000000000 0000000000000001
-[   19.499379] head: ffff888829e60c00 0000000080200018 00000001ffffffff 0000000000000000
-[   19.500844] head: 0057ffffc0000003 ffffea0020a79801 ffffea0020a79848 00000000ffffffff
-[   19.502316] head: 0000000800000000 0000000000000000 00000000ffffffff 0000000000000000
-[   19.503784] page dumped because: kasan: bad access detected
-[   19.505058]
-[   19.505970] Memory state around the buggy address:
-[   19.507172]  ffff888829e65100: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   19.508599]  ffff888829e65180: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   19.510013] >ffff888829e65200: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   19.510014]                    ^
-[   19.510016]  ffff888829e65280: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   19.510018]  ffff888829e65300: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   19.515367] ==================================================================
+When CONFIG_ZRAM_MULTI_COMP isn't set ZRAM_SECONDARY_COMP can hold
+default_compressor, because it's the same offset as ZRAM_PRIMARY_COMP, so
+we need to make sure that we don't attempt to kfree() the statically
+defined compressor name.
 
-The reason for this error is physical_package_ids assigned by VMware VMM
-are not continuous and have gaps. This will cause value returned by
-topology_physical_package_id() to be more than topology_max_packages().
+This is detected by KASAN.
 
-Here the allocation uses topology_max_packages(). The call to
-topology_max_packages() returns maximum logical package ID not physical
-ID. Hence use topology_logical_package_id() instead of
-topology_physical_package_id().
+==================================================================
+  Call trace:
+   kfree+0x60/0x3a0
+   zram_destroy_comps+0x98/0x198 [zram]
+   zram_reset_device+0x22c/0x4a8 [zram]
+   reset_store+0x1bc/0x2d8 [zram]
+   dev_attr_store+0x44/0x80
+   sysfs_kf_write+0xfc/0x188
+   kernfs_fop_write_iter+0x28c/0x428
+   vfs_write+0x4dc/0x9b8
+   ksys_write+0x100/0x1f8
+   __arm64_sys_write+0x74/0xb8
+   invoke_syscall+0xd8/0x260
+   el0_svc_common.constprop.0+0xb4/0x240
+   do_el0_svc+0x48/0x68
+   el0_svc+0x40/0xc8
+   el0t_64_sync_handler+0x120/0x130
+   el0t_64_sync+0x190/0x198
+==================================================================
 
-Fixes: 9a1aac8a96dc ("platform/x86: ISST: PUNIT device mapping with Sub-NUMA clustering")
-Cc: stable@vger.kernel.org
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Zach Wade <zachwade.k@gmail.com>
-Link: https://lore.kernel.org/r/20240923144508.1764-1-zachwade.k@gmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20240923164843.1117010-1-andrej.skvortzov@gmail.com
+Fixes: 684826f8271a ("zram: free secondary algorithms names")
+Signed-off-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+Closes: https://lore.kernel.org/lkml/57130e48-dbb6-4047-a8c7-ebf5aaea93f4@linux.vnet.ibm.com/
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+Cc: Chris Li <chrisl@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/speed_select_if/isst_if_common.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/block/zram/zram_drv.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-@@ -306,7 +306,9 @@ static struct pci_dev *_isst_if_get_pci_
- 	    cpu >= nr_cpu_ids || cpu >= num_possible_cpus())
- 		return NULL;
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 1a875ac43d566..f25b1670e91ca 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1990,8 +1990,10 @@ static void zram_destroy_comps(struct zram *zram)
+ 		zram->num_active_comps--;
+ 	}
  
--	pkg_id = topology_physical_package_id(cpu);
-+	pkg_id = topology_logical_package_id(cpu);
-+	if (pkg_id >= topology_max_packages())
-+		return NULL;
- 
- 	bus_number = isst_cpu_info[cpu].bus_info[bus_no];
- 	if (bus_number < 0)
+-	for (prio = ZRAM_SECONDARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
+-		kfree(zram->comp_algs[prio]);
++	for (prio = ZRAM_PRIMARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
++		/* Do not free statically defined compression algorithms */
++		if (zram->comp_algs[prio] != default_compressor)
++			kfree(zram->comp_algs[prio]);
+ 		zram->comp_algs[prio] = NULL;
+ 	}
+ }
+-- 
+2.43.0
+
 
 
 
