@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58BFF99D2CF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:30:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA7099CD68
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:32:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72E0A1C22807
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:30:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 764811F2390B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07271ADFE9;
-	Mon, 14 Oct 2024 15:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175851AB528;
+	Mon, 14 Oct 2024 14:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObZ0C18h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VP+0HNzE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3221CACE4;
-	Mon, 14 Oct 2024 15:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AFF1798C;
+	Mon, 14 Oct 2024 14:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919648; cv=none; b=VTUW9DLaf0C9UQlWyganwd4TpH7TQmxn7S2b7x6+eG/e4XcLMN5Ydmab8tc01bKRzDg/GEr1wfx5kW51f5ules0MzQdnHrHwrIn9F7e80ewZg7jeMv0oH2WNjhFCEmIzabYpvRonCc99cXcMxnNkqV4LkPPE6otiPnt7/L+coQo=
+	t=1728916341; cv=none; b=Awpwf6Fg/Tjv4iebh7v3f3awDkudeUTmQELuuLobxBa9Mfe/vxESEk1QBbed5MvNOnYGsWX/qPveUtNq4k1wJtwtYLh0w8zruGVGnAHx7SpjYhJ8v7/Zdmdus+i8z228jQOAFBv4QNfF9ilw6rX8qLMrt4iAHdJmIoFyQsjS42Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919648; c=relaxed/simple;
-	bh=d3CBh4BXCrbWa3Q11AjiIQwXw1yLvfBnfjBNpqvgOWk=;
+	s=arc-20240116; t=1728916341; c=relaxed/simple;
+	bh=bp4/XTy1mvJuIy35jhZttRsbmGmult6hEuS3oJROtF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nK01CSVk0w28r9vWeoOUYNZ8MJWsBl38ooEwLBTtN0BXTWJ+L7+R+xvOoGynR820yeNnYek/qLK/kBPHjrJBY0WDAvZFiqQMDM+/ThoeE/Mi16Baviu0TFbJEUxEqEX9MJ0s/wnz3B+7sY5E7HCJ+6KWFh2tjJKjoUEhrC0VM5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObZ0C18h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB411C4CED2;
-	Mon, 14 Oct 2024 15:27:27 +0000 (UTC)
+	 MIME-Version; b=TNg8jABJ47L5YPkhIq911/DsSbaVjIf0cV3FfpL4ZRA1L2y3tkqp8cL1n1w5uoOwWqV25Wr58plRYsbw6/KX2KgXz/mXPcn6j0lJ4eU1huOm/cnKFAIzlD3bOlJXYw/mVw9FtgbbyrfenbOgHUw0AG1sqNCLIgdEdFDgsg7K1/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VP+0HNzE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397A8C4CEC7;
+	Mon, 14 Oct 2024 14:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919648;
-	bh=d3CBh4BXCrbWa3Q11AjiIQwXw1yLvfBnfjBNpqvgOWk=;
+	s=korg; t=1728916341;
+	bh=bp4/XTy1mvJuIy35jhZttRsbmGmult6hEuS3oJROtF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ObZ0C18hGOLD8kRXWIzvOUBNmDEipl1BsgAZHqJkhz5LN3jIqxvEHakeUYJ3do6//
-	 qARSqgRopVLTzjqPUHhJCbRf/zhF2KW6tQKxf5qq0GSzeoN2x4GEDkFDIAX51w4ALb
-	 tRkFOh/h9dARDg7rCigunxWXXg8MwJi/JpyQMEeo=
+	b=VP+0HNzEQu+kSK02yGNsuJyMOU8mnkeHwM6egnsTCbijOfRN7uPvMHNx2qMXrg89p
+	 lTtMsTCMoSLQb9ogewoCv42tQr++n208vZmOnGKgHveXHWYkX7k09Ml1+Kz6IHa/py
+	 SrwLKcWgcKhAaHCLSasJF+be4xQXQDYrMfhqY5/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Lee Jones <lee@kernel.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 637/798] clk: imx6ul: add ethernet refclock mux support
+Subject: [PATCH 6.11 128/214] drm/xe: Restore GT freq on GSC load error
 Date: Mon, 14 Oct 2024 16:19:51 +0200
-Message-ID: <20241014141243.066548149@linuxfoundation.org>
+Message-ID: <20241014141049.988246428@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,136 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
 
-[ Upstream commit 4e197ee880c24ecb63f7fe17449b3653bc64b03c ]
+[ Upstream commit 3fd76be868ae5c7e9f905f3bcc2ce0e3d8f5aa08 ]
 
-Add ethernet refclock mux support and set it to internal clock by
-default. This configuration will not affect existing boards.
+As part of a Wa_22019338487, ensure that GT freq is restored
+even when GSC reload is not successful.
 
-clock tree before this patch:
-fec1 <- enet1_ref_125m (gate) <- enet1_ref (divider) <-,
-                                                       |- pll6_enet
-fec2 <- enet2_ref_125m (gate) <- enet2_ref (divider) <-´
+Fixes: 3b1592fb7835 ("drm/xe/lnl: Apply Wa_22019338487")
 
-after this patch:
-fec1 <- enet1_ref_sel(mux) <- enet1_ref_125m (gate) <- ...
-               `--<> enet1_ref_pad                      |- pll6_enet
-fec2 <- enet2_ref_sel(mux) <- enet2_ref_125m (gate) <- ...
-               `--<> enet2_ref_pad
-
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Acked-by: Lee Jones <lee@kernel.org>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20230131084642.709385-17-o.rempel@pengutronix.de
-Stable-dep-of: 32c055ef563c ("clk: imx6ul: fix clock parent for IMX6UL_CLK_ENETx_REF_SEL")
+Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240925204918.1989574-1-vinay.belgaumkar@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit 491418a258322bbd7f045e36884d2849b673f23d)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx6ul.c                | 26 +++++++++++++++++++++
- include/dt-bindings/clock/imx6ul-clock.h    |  6 ++++-
- include/linux/mfd/syscon/imx6q-iomuxc-gpr.h |  6 +++--
- 3 files changed, 35 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_gt.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk-imx6ul.c b/drivers/clk/imx/clk-imx6ul.c
-index 777c4d2b87b3f..3e802befa2d4d 100644
---- a/drivers/clk/imx/clk-imx6ul.c
-+++ b/drivers/clk/imx/clk-imx6ul.c
-@@ -10,6 +10,7 @@
- #include <linux/err.h>
- #include <linux/init.h>
- #include <linux/io.h>
-+#include <linux/mfd/syscon/imx6q-iomuxc-gpr.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
- #include <linux/of_irq.h>
-@@ -94,6 +95,17 @@ static const struct clk_div_table video_div_table[] = {
- 	{ }
- };
+diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
+index cb9df15e71376..0062a5e4d5fac 100644
+--- a/drivers/gpu/drm/xe/xe_gt.c
++++ b/drivers/gpu/drm/xe/xe_gt.c
+@@ -874,7 +874,9 @@ int xe_gt_sanitize_freq(struct xe_gt *gt)
+ 	int ret = 0;
  
-+static const char * enet1_ref_sels[] = { "enet1_ref_125m", "enet1_ref_pad", };
-+static const u32 enet1_ref_sels_table[] = { IMX6UL_GPR1_ENET1_TX_CLK_DIR,
-+					    IMX6UL_GPR1_ENET1_CLK_SEL };
-+static const u32 enet1_ref_sels_table_mask = IMX6UL_GPR1_ENET1_TX_CLK_DIR |
-+					     IMX6UL_GPR1_ENET1_CLK_SEL;
-+static const char * enet2_ref_sels[] = { "enet2_ref_125m", "enet2_ref_pad", };
-+static const u32 enet2_ref_sels_table[] = { IMX6UL_GPR1_ENET2_TX_CLK_DIR,
-+					    IMX6UL_GPR1_ENET2_CLK_SEL };
-+static const u32 enet2_ref_sels_table_mask = IMX6UL_GPR1_ENET2_TX_CLK_DIR |
-+					     IMX6UL_GPR1_ENET2_CLK_SEL;
-+
- static u32 share_count_asrc;
- static u32 share_count_audio;
- static u32 share_count_sai1;
-@@ -472,6 +484,17 @@ static void __init imx6ul_clocks_init(struct device_node *ccm_node)
- 	/* mask handshake of mmdc */
- 	imx_mmdc_mask_handshake(base, 0);
+ 	if ((!xe_uc_fw_is_available(&gt->uc.gsc.fw) ||
+-	     xe_uc_fw_is_loaded(&gt->uc.gsc.fw)) && XE_WA(gt, 22019338487))
++	     xe_uc_fw_is_loaded(&gt->uc.gsc.fw) ||
++	     xe_uc_fw_is_in_error_state(&gt->uc.gsc.fw)) &&
++	    XE_WA(gt, 22019338487))
+ 		ret = xe_guc_pc_restore_stashed_freq(&gt->uc.guc.pc);
  
-+	hws[IMX6UL_CLK_ENET1_REF_PAD] = imx_obtain_fixed_of_clock(ccm_node, "enet1_ref_pad", 0);
-+
-+	hws[IMX6UL_CLK_ENET1_REF_SEL] = imx_clk_gpr_mux("enet1_ref_sel", "fsl,imx6ul-iomuxc-gpr",
-+				IOMUXC_GPR1, enet1_ref_sels, ARRAY_SIZE(enet1_ref_sels),
-+				enet1_ref_sels_table, enet1_ref_sels_table_mask);
-+	hws[IMX6UL_CLK_ENET2_REF_PAD] = imx_obtain_fixed_of_clock(ccm_node, "enet2_ref_pad", 0);
-+
-+	hws[IMX6UL_CLK_ENET2_REF_SEL] = imx_clk_gpr_mux("enet2_ref_sel", "fsl,imx6ul-iomuxc-gpr",
-+				IOMUXC_GPR1, enet2_ref_sels, ARRAY_SIZE(enet2_ref_sels),
-+				enet2_ref_sels_table, enet2_ref_sels_table_mask);
-+
- 	imx_check_clk_hws(hws, IMX6UL_CLK_END);
- 
- 	of_clk_add_hw_provider(np, of_clk_hw_onecell_get, clk_hw_data);
-@@ -516,6 +539,9 @@ static void __init imx6ul_clocks_init(struct device_node *ccm_node)
- 		clk_set_parent(hws[IMX6ULL_CLK_EPDC_PRE_SEL]->clk, hws[IMX6UL_CLK_PLL3_PFD2]->clk);
- 
- 	clk_set_parent(hws[IMX6UL_CLK_ENFC_SEL]->clk, hws[IMX6UL_CLK_PLL2_PFD2]->clk);
-+
-+	clk_set_parent(hws[IMX6UL_CLK_ENET1_REF_SEL]->clk, hws[IMX6UL_CLK_ENET_REF]->clk);
-+	clk_set_parent(hws[IMX6UL_CLK_ENET2_REF_SEL]->clk, hws[IMX6UL_CLK_ENET2_REF]->clk);
- }
- 
- CLK_OF_DECLARE(imx6ul, "fsl,imx6ul-ccm", imx6ul_clocks_init);
-diff --git a/include/dt-bindings/clock/imx6ul-clock.h b/include/dt-bindings/clock/imx6ul-clock.h
-index b44920f1edb0d..66239ebc0e233 100644
---- a/include/dt-bindings/clock/imx6ul-clock.h
-+++ b/include/dt-bindings/clock/imx6ul-clock.h
-@@ -257,7 +257,11 @@
- #define IMX6UL_CLK_GPIO5		248
- #define IMX6UL_CLK_MMDC_P1_IPG		249
- #define IMX6UL_CLK_ENET1_REF_125M	250
-+#define IMX6UL_CLK_ENET1_REF_SEL	251
-+#define IMX6UL_CLK_ENET1_REF_PAD	252
-+#define IMX6UL_CLK_ENET2_REF_SEL	253
-+#define IMX6UL_CLK_ENET2_REF_PAD	254
- 
--#define IMX6UL_CLK_END			251
-+#define IMX6UL_CLK_END			255
- 
- #endif /* __DT_BINDINGS_CLOCK_IMX6UL_H */
-diff --git a/include/linux/mfd/syscon/imx6q-iomuxc-gpr.h b/include/linux/mfd/syscon/imx6q-iomuxc-gpr.h
-index d4b5e527a7a3b..09c6b3184bb04 100644
---- a/include/linux/mfd/syscon/imx6q-iomuxc-gpr.h
-+++ b/include/linux/mfd/syscon/imx6q-iomuxc-gpr.h
-@@ -451,8 +451,10 @@
- #define IMX6SX_GPR12_PCIE_RX_EQ_2			(0x2 << 0)
- 
- /* For imx6ul iomux gpr register field define */
--#define IMX6UL_GPR1_ENET1_CLK_DIR		(0x1 << 17)
--#define IMX6UL_GPR1_ENET2_CLK_DIR		(0x1 << 18)
-+#define IMX6UL_GPR1_ENET2_TX_CLK_DIR		BIT(18)
-+#define IMX6UL_GPR1_ENET1_TX_CLK_DIR		BIT(17)
-+#define IMX6UL_GPR1_ENET2_CLK_SEL		BIT(14)
-+#define IMX6UL_GPR1_ENET1_CLK_SEL		BIT(13)
- #define IMX6UL_GPR1_ENET1_CLK_OUTPUT		(0x1 << 17)
- #define IMX6UL_GPR1_ENET2_CLK_OUTPUT		(0x1 << 18)
- #define IMX6UL_GPR1_ENET_CLK_DIR		(0x3 << 17)
+ 	return ret;
 -- 
 2.43.0
 
