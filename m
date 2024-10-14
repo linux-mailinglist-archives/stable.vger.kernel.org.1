@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F208899CE8F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:45:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E144299CDC1
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CB4B288267
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:45:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15D7E1C22EFE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E97375809;
-	Mon, 14 Oct 2024 14:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D89C1AA793;
+	Mon, 14 Oct 2024 14:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lj7Ak0VC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNnwE/CO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF17D49659;
-	Mon, 14 Oct 2024 14:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAA24A24;
+	Mon, 14 Oct 2024 14:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917107; cv=none; b=ZnAvkHxxpPcTSMJoHv9TvUZemXh8cQQA8JNwlpNMbdjm8rP+tbBB8AZx9cczjKL+MXc+jjWiX2pgm+RWKvDKcTrhDeEA/Ww+dGGz4oGehiv0BeFpq3m/Lnwl+Euc+NAyROPeOwggQVnPXKXWsCnvu3ILM/AYoOR5DYDcWBbTGM0=
+	t=1728916551; cv=none; b=piBOQ0A6UP6fnsYL1ABIQFvHg+siGli4vr/jJYRmxtTlqNN1oVCV4wMUuwcrkasJuOSvgd1aY+f8PKw064nCL5h21sT+YiHr948NoNuCvN496ubCxZXCxCxMgL0/lX7y8BZemMyTeTAfOhggsYKYc2iKRb1m9xvUmk/qComLUB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917107; c=relaxed/simple;
-	bh=XIiy2En0ZPKzwpBBgcbkWKbSAAQ3mbiDxr8WD9PH2TI=;
+	s=arc-20240116; t=1728916551; c=relaxed/simple;
+	bh=bWZgJcyuJDPWtquun8GjdlGHecm/im51dA13oFoRP0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a1iYPCjW2bRnb9xOuPqcCTETcUw/42OR7smwde45ERrEA3XclT/EKg8+LHrE08qskpDBSdYIIA9LzD0yYMEWNFWQcl/IsMNlpCGtUFHG9wN1SjkFx4P1NMBg136311dkm/MO5eaK50Vm6tDEspURJ17OrKlr1CvbAtJ1vocIYZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lj7Ak0VC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D65C4CED0;
-	Mon, 14 Oct 2024 14:45:07 +0000 (UTC)
+	 MIME-Version; b=bV1OCD3wrxTDnf+pA2pjPnAfWPXEu49HocOoEtRTvOkg3z+myI/OC65utL1AB4b+nAHmPHi1Nh8QZypxnIiTzKJ4JbPox5gMjaTYxrdK5gD4WW2fiEZ6/I26tls+zR0q0BSc0oSDqDh6YsmXp7pwUmDh8hvJsOE4pEwaa2T2WrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNnwE/CO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F58EC4CEC3;
+	Mon, 14 Oct 2024 14:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917107;
-	bh=XIiy2En0ZPKzwpBBgcbkWKbSAAQ3mbiDxr8WD9PH2TI=;
+	s=korg; t=1728916551;
+	bh=bWZgJcyuJDPWtquun8GjdlGHecm/im51dA13oFoRP0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lj7Ak0VC12eA2JjN+DBETpBy8v5gVZ0lSSYjmR9+MUgWpbpEOCax0jjk1Y6W9VkFQ
-	 6lfAoFXJVe+l1ZYbbBEg3eeHwjwc8ru049J8NeBUo5cYJZanlVUvUbLbotaz7mhlxy
-	 6a/w7MZu+Y2vSJ8k3qX6+eA5IDQIpWyWKbyYTzvQ=
+	b=aNnwE/COYnuPrZVP8BvsPIecoGYsuBH514T0yD6s2/CasFvJEpiUE4DV/5JzfGxeq
+	 bYex2OgmqqLl/bDVDXBiyOM6OvpItKyo4nWS0nUO0jBHgLWPl/5ULD9Szz17p0Wxec
+	 XesYzFKMDSzPei7V+dAeovP85MlhtEKkNw7D+mDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 154/213] bridge: Handle error of rtnl_register_module().
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.11 197/214] mptcp: handle consistently DSS corruption
 Date: Mon, 14 Oct 2024 16:21:00 +0200
-Message-ID: <20241014141048.981387448@linuxfoundation.org>
+Message-ID: <20241014141052.664725060@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit cba5e43b0b757734b1e79f624d93a71435e31136 ]
+commit e32d262c89e2b22cb0640223f953b548617ed8a6 upstream.
 
-Since introduced, br_vlan_rtnl_init() has been ignoring the returned
-value of rtnl_register_module(), which could fail silently.
+Bugged peer implementation can send corrupted DSS options, consistently
+hitting a few warning in the data path. Use DEBUG_NET assertions, to
+avoid the splat on some builds and handle consistently the error, dumping
+related MIBs and performing fallback and/or reset according to the
+subflow type.
 
-Handling the error allows users to view a module as an all-or-nothing
-thing in terms of the rtnetlink functionality.  This prevents syzkaller
-from reporting spurious errors from its tests, where OOM often occurs
-and module is automatically loaded.
-
-Let's handle the errors by rtnl_register_many().
-
-Fixes: 8dcea187088b ("net: bridge: vlan: add rtm definitions and dump support")
-Fixes: f26b296585dc ("net: bridge: vlan: add new rtm message support")
-Fixes: adb3ce9bcb0f ("net: bridge: vlan: add del rtm message support")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Fixes: 6771bfd9ee24 ("mptcp: update mptcp ack sequence from work queue")
+Cc: stable@vger.kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241008-net-mptcp-fallback-fixes-v1-1-c6fb8e93e551@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_netlink.c |  6 +++++-
- net/bridge/br_private.h |  5 +++--
- net/bridge/br_vlan.c    | 19 +++++++++----------
- 3 files changed, 17 insertions(+), 13 deletions(-)
+ net/mptcp/mib.c      |    2 ++
+ net/mptcp/mib.h      |    2 ++
+ net/mptcp/protocol.c |   24 +++++++++++++++++++++---
+ net/mptcp/subflow.c  |    4 +++-
+ 4 files changed, 28 insertions(+), 4 deletions(-)
 
-diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
-index 4488faf059a36..4b80ec5ae5700 100644
---- a/net/bridge/br_netlink.c
-+++ b/net/bridge/br_netlink.c
-@@ -1905,7 +1905,10 @@ int __init br_netlink_init(void)
- {
- 	int err;
+--- a/net/mptcp/mib.c
++++ b/net/mptcp/mib.c
+@@ -26,6 +26,8 @@ static const struct snmp_mib mptcp_snmp_
+ 	SNMP_MIB_ITEM("MPJoinAckRx", MPTCP_MIB_JOINACKRX),
+ 	SNMP_MIB_ITEM("MPJoinAckHMacFailure", MPTCP_MIB_JOINACKMAC),
+ 	SNMP_MIB_ITEM("DSSNotMatching", MPTCP_MIB_DSSNOMATCH),
++	SNMP_MIB_ITEM("DSSCorruptionFallback", MPTCP_MIB_DSSCORRUPTIONFALLBACK),
++	SNMP_MIB_ITEM("DSSCorruptionReset", MPTCP_MIB_DSSCORRUPTIONRESET),
+ 	SNMP_MIB_ITEM("InfiniteMapTx", MPTCP_MIB_INFINITEMAPTX),
+ 	SNMP_MIB_ITEM("InfiniteMapRx", MPTCP_MIB_INFINITEMAPRX),
+ 	SNMP_MIB_ITEM("DSSNoMatchTCP", MPTCP_MIB_DSSTCPMISMATCH),
+--- a/net/mptcp/mib.h
++++ b/net/mptcp/mib.h
+@@ -21,6 +21,8 @@ enum linux_mptcp_mib_field {
+ 	MPTCP_MIB_JOINACKRX,		/* Received an ACK + MP_JOIN */
+ 	MPTCP_MIB_JOINACKMAC,		/* HMAC was wrong on ACK + MP_JOIN */
+ 	MPTCP_MIB_DSSNOMATCH,		/* Received a new mapping that did not match the previous one */
++	MPTCP_MIB_DSSCORRUPTIONFALLBACK,/* DSS corruption detected, fallback */
++	MPTCP_MIB_DSSCORRUPTIONRESET,	/* DSS corruption detected, MPJ subflow reset */
+ 	MPTCP_MIB_INFINITEMAPTX,	/* Sent an infinite mapping */
+ 	MPTCP_MIB_INFINITEMAPRX,	/* Received an infinite mapping */
+ 	MPTCP_MIB_DSSTCPMISMATCH,	/* DSS-mapping did not map with TCP's sequence numbers */
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -620,6 +620,18 @@ static bool mptcp_check_data_fin(struct
+ 	return ret;
+ }
  
--	br_vlan_rtnl_init();
-+	err = br_vlan_rtnl_init();
-+	if (err)
-+		goto out;
++static void mptcp_dss_corruption(struct mptcp_sock *msk, struct sock *ssk)
++{
++	if (READ_ONCE(msk->allow_infinite_fallback)) {
++		MPTCP_INC_STATS(sock_net(ssk),
++				MPTCP_MIB_DSSCORRUPTIONFALLBACK);
++		mptcp_do_fallback(ssk);
++	} else {
++		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DSSCORRUPTIONRESET);
++		mptcp_subflow_reset(ssk);
++	}
++}
 +
- 	rtnl_af_register(&br_af_ops);
+ static bool __mptcp_move_skbs_from_subflow(struct mptcp_sock *msk,
+ 					   struct sock *ssk,
+ 					   unsigned int *bytes)
+@@ -692,10 +704,16 @@ static bool __mptcp_move_skbs_from_subfl
+ 				moved += len;
+ 			seq += len;
  
- 	err = rtnl_link_register(&br_link_ops);
-@@ -1916,6 +1919,7 @@ int __init br_netlink_init(void)
- 
- out_af:
- 	rtnl_af_unregister(&br_af_ops);
-+out:
- 	return err;
- }
- 
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index e4f1a08322da9..72d80fd943a8a 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -1547,7 +1547,7 @@ void br_vlan_get_stats(const struct net_bridge_vlan *v,
- void br_vlan_port_event(struct net_bridge_port *p, unsigned long event);
- int br_vlan_bridge_event(struct net_device *dev, unsigned long event,
- 			 void *ptr);
--void br_vlan_rtnl_init(void);
-+int br_vlan_rtnl_init(void);
- void br_vlan_rtnl_uninit(void);
- void br_vlan_notify(const struct net_bridge *br,
- 		    const struct net_bridge_port *p,
-@@ -1778,8 +1778,9 @@ static inline int br_vlan_bridge_event(struct net_device *dev,
- 	return 0;
- }
- 
--static inline void br_vlan_rtnl_init(void)
-+static inline int br_vlan_rtnl_init(void)
- {
-+	return 0;
- }
- 
- static inline void br_vlan_rtnl_uninit(void)
-diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
-index 15f44d026e75a..be714b4d7b430 100644
---- a/net/bridge/br_vlan.c
-+++ b/net/bridge/br_vlan.c
-@@ -2296,19 +2296,18 @@ static int br_vlan_rtm_process(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	return err;
- }
- 
--void br_vlan_rtnl_init(void)
-+static const struct rtnl_msg_handler br_vlan_rtnl_msg_handlers[] = {
-+	{THIS_MODULE, PF_BRIDGE, RTM_NEWVLAN, br_vlan_rtm_process, NULL, 0},
-+	{THIS_MODULE, PF_BRIDGE, RTM_DELVLAN, br_vlan_rtm_process, NULL, 0},
-+	{THIS_MODULE, PF_BRIDGE, RTM_GETVLAN, NULL, br_vlan_rtm_dump, 0},
-+};
+-			if (WARN_ON_ONCE(map_remaining < len))
+-				break;
++			if (unlikely(map_remaining < len)) {
++				DEBUG_NET_WARN_ON_ONCE(1);
++				mptcp_dss_corruption(msk, ssk);
++			}
+ 		} else {
+-			WARN_ON_ONCE(!fin);
++			if (unlikely(!fin)) {
++				DEBUG_NET_WARN_ON_ONCE(1);
++				mptcp_dss_corruption(msk, ssk);
++			}
 +
-+int br_vlan_rtnl_init(void)
- {
--	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_GETVLAN, NULL,
--			     br_vlan_rtm_dump, 0);
--	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_NEWVLAN,
--			     br_vlan_rtm_process, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_DELVLAN,
--			     br_vlan_rtm_process, NULL, 0);
-+	return rtnl_register_many(br_vlan_rtnl_msg_handlers);
- }
+ 			sk_eat_skb(ssk, skb);
+ 			done = true;
+ 		}
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -971,8 +971,10 @@ static bool skb_is_fully_mapped(struct s
+ 	unsigned int skb_consumed;
  
- void br_vlan_rtnl_uninit(void)
- {
--	rtnl_unregister(PF_BRIDGE, RTM_GETVLAN);
--	rtnl_unregister(PF_BRIDGE, RTM_NEWVLAN);
--	rtnl_unregister(PF_BRIDGE, RTM_DELVLAN);
-+	rtnl_unregister_many(br_vlan_rtnl_msg_handlers);
- }
--- 
-2.43.0
-
+ 	skb_consumed = tcp_sk(ssk)->copied_seq - TCP_SKB_CB(skb)->seq;
+-	if (WARN_ON_ONCE(skb_consumed >= skb->len))
++	if (unlikely(skb_consumed >= skb->len)) {
++		DEBUG_NET_WARN_ON_ONCE(1);
+ 		return true;
++	}
+ 
+ 	return skb->len - skb_consumed <= subflow->map_data_len -
+ 					  mptcp_subflow_get_map_offset(subflow);
 
 
 
