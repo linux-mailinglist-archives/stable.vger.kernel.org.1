@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-83928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F8C099CD38
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E4C99CE4D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BED87281C81
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DA262861A5
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D961825757;
-	Mon, 14 Oct 2024 14:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55552611E;
+	Mon, 14 Oct 2024 14:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xH7pdIoj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5ZWYpsu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C8720EB;
-	Mon, 14 Oct 2024 14:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13AFA1A0724;
+	Mon, 14 Oct 2024 14:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916222; cv=none; b=l5S+JSx0C8BQXQy48lnOoAz+16kD2Cxadpg6SvCk0Ko2V4fhfNQLbX12zgR6gYzpy9bN5+aA2QQkDm3+T39ST/cMd3EV22/a3ECSDp9OVteFWRLBi+tb6yDpqW1qQD2r5EYoiRNd/MqH/Y9eg7p5Uy8hDpimV0o7CtXt7nfmBpQ=
+	t=1728916937; cv=none; b=AP08gio8XC4H0wzbnJZIurVEq1js8Y3UVYAGc6DyV9sYqkkuERK+21Sj/XMQw3u6ACN68ZwBQvxdwUJOht32E9YWDspca/gvcSWE9yiouW3OEY5xh+BIFtum56JydN1sGHw6zaQ+gd0pzQCR+wTVuT1+L+/vnv2qQ+NuHNhscdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916222; c=relaxed/simple;
-	bh=zOyImEWgYNLE4ecWLGGuroKQw5XAtHAR1CCaJ/FJxeo=;
+	s=arc-20240116; t=1728916937; c=relaxed/simple;
+	bh=qgdTC5cBTl45qxLzRw+m3iexeL9UX6To9ygHWYPmLu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ijK51kiF/qh3qkhWIbPn267qUNZYZjvhQcPBHN8vX7UNR09bBrcn+JTX/1XFjOg5ibr7MtuUNJKy3QWUaolJCq9n0PdRdT6ZPu8STSkjs2y5DJ4+ncByUeUH9s07+tdTesZlpQxpl5rkdrCDy/l5IzGCo2V3ztXf6g95Yp412tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xH7pdIoj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08473C4CEC3;
-	Mon, 14 Oct 2024 14:30:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=vDjubapSIrRY+f6gq5o6S/HMM5MumoaIt3AYd9BhCzdkez2RGgF2CbNnNg5lcTWwtNImQxwL4la3QzDnHG1Z6lhH6eFo/zAybKX41vhznWU/wOrTe5tTiySinExMcVsSFOSnMtLBvX1xYK8ZtSldUaKMM9+IA09BzEpnpdrJUFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5ZWYpsu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461C9C4CEC3;
+	Mon, 14 Oct 2024 14:42:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916222;
-	bh=zOyImEWgYNLE4ecWLGGuroKQw5XAtHAR1CCaJ/FJxeo=;
+	s=korg; t=1728916936;
+	bh=qgdTC5cBTl45qxLzRw+m3iexeL9UX6To9ygHWYPmLu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xH7pdIojjW9MjKbieG/v0EebCkjgvwwb19FjdmgE41aGjXRJpUC0YoYpDaMoeAWps
-	 3i960Scn8ql0qeDtiIGxl0Fl+iHE+wqyvWQ4/IYf5fDr8zC2OG+BoXk5OPxYLLVMXi
-	 +ydOgsmSUbuuFTb9Vbu1yk6jU8HmyZa6AiMxqi2Y=
+	b=J5ZWYpsu7uZx69hULlxsPGCDbXw5LXI8ER6fluEQ4xLtyAK53A+92Ps6QVOBVAdOf
+	 X+COtUSbJrMHjHGL6QbxYXx9Kg4zkNrI57KQhwfP3YhuNzsnuTJmd9MVOQAKfp8715
+	 T+5lW4RkBPe0hRTNPkrm2Q3uFKWlPRiiWsrUtmvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niels Dettenbach <nd@syndicat.com>,
-	Juergen Gross <jgross@suse.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	zdravko delineshev <delineshev@outlook.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 118/214] x86/xen: mark boot CPU of PV guest in MSR_IA32_APICBASE
+Subject: [PATCH 6.6 075/213] PCI: Mark Creative Labs EMU20k2 INTx masking as broken
 Date: Mon, 14 Oct 2024 16:19:41 +0200
-Message-ID: <20241014141049.596514959@linuxfoundation.org>
+Message-ID: <20241014141045.910119149@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit bf56c410162dbf2e27906acbdcd904cbbfdba302 ]
+[ Upstream commit 2910306655a7072640021563ec9501bfa67f0cb1 ]
 
-Recent topology checks of the x86 boot code uncovered the need for
-PV guests to have the boot cpu marked in the APICBASE MSR.
+Per user reports, the Creative Labs EMU20k2 (Sound Blaster X-Fi
+Titanium Series) generates spurious interrupts when used with
+vfio-pci unless DisINTx masking support is disabled.
 
-Fixes: 9d22c96316ac ("x86/topology: Handle bogus ACPI tables correctly")
-Reported-by: Niels Dettenbach <nd@syndicat.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Thus, quirk the device to mark INTx masking as broken.
+
+Closes: https://lore.kernel.org/all/VI1PR10MB8207C507DB5420AB4C7281E0DB9A2@VI1PR10MB8207.EURPRD10.PROD.OUTLOOK.COM
+Link: https://lore.kernel.org/linux-pci/20240912215331.839220-1-alex.williamson@redhat.com
+Reported-by: zdravko delineshev <delineshev@outlook.com>
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/enlighten_pv.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pci/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index 2c12ae42dc8bd..d6818c6cafda1 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -1032,6 +1032,10 @@ static u64 xen_do_read_msr(unsigned int msr, int *err)
- 	switch (msr) {
- 	case MSR_IA32_APICBASE:
- 		val &= ~X2APIC_ENABLE;
-+		if (smp_processor_id() == 0)
-+			val |= MSR_IA32_APICBASE_BSP;
-+		else
-+			val &= ~MSR_IA32_APICBASE_BSP;
- 		break;
- 	}
- 	return val;
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 486efe7b7cae1..54061b65a2b72 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -3614,6 +3614,8 @@ DECLARE_PCI_FIXUP_FINAL(0x1814, 0x0601, /* Ralink RT2800 802.11n PCI */
+ 			quirk_broken_intx_masking);
+ DECLARE_PCI_FIXUP_FINAL(0x1b7c, 0x0004, /* Ceton InfiniTV4 */
+ 			quirk_broken_intx_masking);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_CREATIVE, PCI_DEVICE_ID_CREATIVE_20K2,
++			quirk_broken_intx_masking);
+ 
+ /*
+  * Realtek RTL8169 PCI Gigabit Ethernet Controller (rev 10)
 -- 
 2.43.0
 
