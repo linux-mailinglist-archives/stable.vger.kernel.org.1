@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-83951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5390499CD51
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:31:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EC399CE47
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:42:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 836891C22652
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:31:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E96701C2158D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6DA17C77;
-	Mon, 14 Oct 2024 14:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A5D1AAE02;
+	Mon, 14 Oct 2024 14:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IMuIZ0Oi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3RxNqW9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA03920EB;
-	Mon, 14 Oct 2024 14:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639BC1A76A5;
+	Mon, 14 Oct 2024 14:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916297; cv=none; b=QO2qRd0KuFBD55+CGIO6N6ADbkQCEGhSgU0BlLMgOla4Ist/1a6ekaT9ahge6o59wwmy5dxSF9tTZDmwQG1C5vW/a6e6kmZAqnBLPhAj/4Be4OmXhbXerQke9cGoS1MN9mn20DsDdcyDnWTKdQgUQfkll48HTfbw2GEebzCGJIM=
+	t=1728916917; cv=none; b=hU5E0q0P9vi/P0GUpONBh2S6+3MdiwNPF34apfprY5utL5QdZ/4B03K/asXKJgoY3IVrnK7BSt/NAE0U+d8quyAYk/XLaFubW9TPN1zd8FUmprg4OIoUNp1Ee+fakLAM1w+l4E9DGr/hVZWoGAJIv2Oj6185PffS5Pb+VQEMsKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916297; c=relaxed/simple;
-	bh=VMsg7KM3r0D2jle2EoEKFe0HDmKYqyXYF/T+ST27+/g=;
+	s=arc-20240116; t=1728916917; c=relaxed/simple;
+	bh=YoYCttugoxuNzJArINEPszTf021PvloiE73O67JihVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vf/Y/EQ1fRjUgPaRHfv2TxDYO7HFKDpfGyydLxGaXWarwNK7RjchYpD/FT6ovrzAE8Fz4rRternVCPES0nXaJhsx6+FRhNTABIIzsUBC6mg/JDXyq67Ha4CT/+sB9CtS5hXCnrTw129iMSQ6YclBjQzWgWNZzby6UnYArTLMv2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMuIZ0Oi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E04C4CEC3;
-	Mon, 14 Oct 2024 14:31:36 +0000 (UTC)
+	 MIME-Version; b=f6hZrKZYpVrz/Ui97FMllhOXG9LiFYPW2R4G/osOgLV3Uh0x6nns/hwHrUg2sxj9397bmdO4OpuFWNlPL7u9LMT01Nf0s6niHemR3ja1XeCpb9z+WgIIXL5shWrnJ6sn/B3Qd8U23M6ir//2TW2Mi6jLbD70OyIxIxhBzRHJ6fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3RxNqW9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA5CC4CED0;
+	Mon, 14 Oct 2024 14:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916297;
-	bh=VMsg7KM3r0D2jle2EoEKFe0HDmKYqyXYF/T+ST27+/g=;
+	s=korg; t=1728916917;
+	bh=YoYCttugoxuNzJArINEPszTf021PvloiE73O67JihVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IMuIZ0OiYxInWuTIXGDfEs49r8RcQNUT5oStQseA2Cdbqj8q4WFSO+V4Yb7Nm73RW
-	 c7YlIj0wsyPBg7Il48eop4S0V8BR+ZhQPRh80D8bl2n1Dc/W/X8hF+J0lMfN40DMiM
-	 OdzRP59EUWXlaxS+whi6m4GePWSSH2B+/x24ftPc=
+	b=b3RxNqW95kyDN0B8v+p6eadSUVUld2N4rfuW5eTIKkQjALFAGg/PFkv7dVe550TB4
+	 EA+6zHXh9vnTLu04/CNs4sFaYEVrbQN3SslYTjyjHV89cs7xb3jLrmvqDSDHBla4/T
+	 swt09ysRjKUW5SGUupTTpt7aTbEpVhQGD/uFA90k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 142/214] vxlan: Handle error of rtnl_register_module().
-Date: Mon, 14 Oct 2024 16:20:05 +0200
-Message-ID: <20241014141050.529591590@linuxfoundation.org>
+Subject: [PATCH 6.6 100/213] driver core: bus: Return -EIO instead of 0 when show/store invalid bus attribute
+Date: Mon, 14 Oct 2024 16:20:06 +0200
+Message-ID: <20241014141046.873443432@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 78b7b991838a4a6baeaad934addc4db2c5917eb8 ]
+[ Upstream commit c0fd973c108cdc22a384854bc4b3e288a9717bb2 ]
 
-Since introduced, vxlan_vnifilter_init() has been ignoring the
-returned value of rtnl_register_module(), which could fail silently.
+Return -EIO instead of 0 for below erroneous bus attribute operations:
+ - read a bus attribute without show().
+ - write a bus attribute without store().
 
-Handling the error allows users to view a module as an all-or-nothing
-thing in terms of the rtnetlink functionality.  This prevents syzkaller
-from reporting spurious errors from its tests, where OOM often occurs
-and module is automatically loaded.
-
-Let's handle the errors by rtnl_register_many().
-
-Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20240724-bus_fix-v2-1-5adbafc698fb@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c      |  6 +++++-
- drivers/net/vxlan/vxlan_private.h   |  2 +-
- drivers/net/vxlan/vxlan_vnifilter.c | 19 +++++++++----------
- 3 files changed, 15 insertions(+), 12 deletions(-)
+ drivers/base/bus.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index ba59e92ab941d..02919c529dc2d 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -4913,9 +4913,13 @@ static int __init vxlan_init_module(void)
- 	if (rc)
- 		goto out4;
- 
--	vxlan_vnifilter_init();
-+	rc = vxlan_vnifilter_init();
-+	if (rc)
-+		goto out5;
- 
- 	return 0;
-+out5:
-+	rtnl_link_unregister(&vxlan_link_ops);
- out4:
- 	unregister_switchdev_notifier(&vxlan_switchdev_notifier_block);
- out3:
-diff --git a/drivers/net/vxlan/vxlan_private.h b/drivers/net/vxlan/vxlan_private.h
-index b35d96b788437..76a351a997d51 100644
---- a/drivers/net/vxlan/vxlan_private.h
-+++ b/drivers/net/vxlan/vxlan_private.h
-@@ -202,7 +202,7 @@ int vxlan_vni_in_use(struct net *src_net, struct vxlan_dev *vxlan,
- int vxlan_vnigroup_init(struct vxlan_dev *vxlan);
- void vxlan_vnigroup_uninit(struct vxlan_dev *vxlan);
- 
--void vxlan_vnifilter_init(void);
-+int vxlan_vnifilter_init(void);
- void vxlan_vnifilter_uninit(void);
- void vxlan_vnifilter_count(struct vxlan_dev *vxlan, __be32 vni,
- 			   struct vxlan_vni_node *vninode,
-diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index 9c59d0bf8c3de..d2023e7131bd4 100644
---- a/drivers/net/vxlan/vxlan_vnifilter.c
-+++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -992,19 +992,18 @@ static int vxlan_vnifilter_process(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	return err;
- }
- 
--void vxlan_vnifilter_init(void)
-+static const struct rtnl_msg_handler vxlan_vnifilter_rtnl_msg_handlers[] = {
-+	{THIS_MODULE, PF_BRIDGE, RTM_GETTUNNEL, NULL, vxlan_vnifilter_dump, 0},
-+	{THIS_MODULE, PF_BRIDGE, RTM_NEWTUNNEL, vxlan_vnifilter_process, NULL, 0},
-+	{THIS_MODULE, PF_BRIDGE, RTM_DELTUNNEL, vxlan_vnifilter_process, NULL, 0},
-+};
-+
-+int vxlan_vnifilter_init(void)
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index e7761e0ef5a55..d4361ad3b433f 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -152,7 +152,8 @@ static ssize_t bus_attr_show(struct kobject *kobj, struct attribute *attr,
  {
--	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_GETTUNNEL, NULL,
--			     vxlan_vnifilter_dump, 0);
--	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_NEWTUNNEL,
--			     vxlan_vnifilter_process, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_DELTUNNEL,
--			     vxlan_vnifilter_process, NULL, 0);
-+	return rtnl_register_many(vxlan_vnifilter_rtnl_msg_handlers);
- }
+ 	struct bus_attribute *bus_attr = to_bus_attr(attr);
+ 	struct subsys_private *subsys_priv = to_subsys_private(kobj);
+-	ssize_t ret = 0;
++	/* return -EIO for reading a bus attribute without show() */
++	ssize_t ret = -EIO;
  
- void vxlan_vnifilter_uninit(void)
+ 	if (bus_attr->show)
+ 		ret = bus_attr->show(subsys_priv->bus, buf);
+@@ -164,7 +165,8 @@ static ssize_t bus_attr_store(struct kobject *kobj, struct attribute *attr,
  {
--	rtnl_unregister(PF_BRIDGE, RTM_GETTUNNEL);
--	rtnl_unregister(PF_BRIDGE, RTM_NEWTUNNEL);
--	rtnl_unregister(PF_BRIDGE, RTM_DELTUNNEL);
-+	rtnl_unregister_many(vxlan_vnifilter_rtnl_msg_handlers);
- }
+ 	struct bus_attribute *bus_attr = to_bus_attr(attr);
+ 	struct subsys_private *subsys_priv = to_subsys_private(kobj);
+-	ssize_t ret = 0;
++	/* return -EIO for writing a bus attribute without store() */
++	ssize_t ret = -EIO;
+ 
+ 	if (bus_attr->store)
+ 		ret = bus_attr->store(subsys_priv->bus, buf, count);
 -- 
 2.43.0
 
