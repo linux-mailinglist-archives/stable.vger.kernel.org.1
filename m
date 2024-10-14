@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-84038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27D5C99CDD3
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:36:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 033D499D258
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:24:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F8DB1C22FBD
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:36:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCE9F28561C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 115AE1AB507;
-	Mon, 14 Oct 2024 14:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE831BE86E;
+	Mon, 14 Oct 2024 15:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfo0UzCq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00jvaNWw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C338D25632;
-	Mon, 14 Oct 2024 14:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DB51BE238;
+	Mon, 14 Oct 2024 15:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916600; cv=none; b=SNjs6lON6gYwXiWthhnFxtQW9LeCzyYCae1QwkkcNHXy6A14AS69LFtJdJnDUi42vyL8CI+1u7fMHWo42u6epWpZEi/k7e6k+ptLThKSl+3A9iqiFBLtCoW7eZclZ2Lko5rB3uYjyvLstjN58M+BCfdU981no38jfC7h8bYEj2E=
+	t=1728919397; cv=none; b=r/ff1Cz8v/KMNbz3pbr/jlkwtbXlB8OFHCNbUcH7hFnDkdpFwRbhEEkf2/FFOcxmUrQZyTxSMcL/atrgSgLRTOZnh/yEiqkRLs60kMBtr1MDQQqXTpQMmYn0urmUaUhcgyXL8ZwzqrGAbNb6cw6+jzSJLf7jBYqD43KplTujXsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916600; c=relaxed/simple;
-	bh=T0DTHg79owquzueyO1VmuqC2QdOLd88rIXrd5LUA5TY=;
+	s=arc-20240116; t=1728919397; c=relaxed/simple;
+	bh=X7EtL53/oJZ2AsKp1r8moR7YnLokQH7S8oYKDWB2CZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ci7MFdFH9GpR3ok+aybgOzA/H5Gsp3G9LWBH8C5PU9ND8F1Ie2LR7AgdPPLTbNNO+6QnmH1CwIKilNUsqG6w15RZbnR9DCOC4MNJWjhyO0zsxIfvkbkHnr5+51LvoaPDxX5ljD7InOtEVHzt14x8y1ie98UFQe8yBh4E7lwxy/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfo0UzCq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F49C4CEC3;
-	Mon, 14 Oct 2024 14:36:39 +0000 (UTC)
+	 MIME-Version; b=sv/yFKzBNtIWfO9knCEn0T1R9htaEAYDQaU6Ovk9lOFQ+VDYk4d80D8+sIXfwSouwn4u/xHKjx/Ks12esqMGhicjwv9iMawg/VRUd8oUtSmaxYtqmZ/Lxel2IDGbspElC+bOu7oH0xzykPAq1nhJjFQMLP5tDxZM3h9dHk8O89A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00jvaNWw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44733C4CEC3;
+	Mon, 14 Oct 2024 15:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916600;
-	bh=T0DTHg79owquzueyO1VmuqC2QdOLd88rIXrd5LUA5TY=;
+	s=korg; t=1728919396;
+	bh=X7EtL53/oJZ2AsKp1r8moR7YnLokQH7S8oYKDWB2CZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pfo0UzCquIv1jznXbaiBj8qQSaeS0JY6T44tOuj4IRlPWlf0gERh8BPUEdfE5NCMB
-	 git6X9PR6QRP+c2kThC5MuMYsJZBtqXh0m9uR4UxpeqXWwvLpzUcgZn/iU7LY/o5na
-	 iMSIuIhuxHsiJcjZknttjo4UjWOSdB48lSQX3aIo=
+	b=00jvaNWw/MTIUdUinBM5baGgnWXcPj3aFaNch1a50w8MQM3raxO+5jghz3ul8vlSu
+	 K3IpvhIYnctFEegFK6FzD0HrgaWFkBnfDwJ2RYf/vi34t0X/q3fx4m/wllQmcZgbQ1
+	 Qzfn0nhfhWUEla951UyW0nDrHhhQ13FxuNOwQ4SE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jean-Lo=C3=AFc=20Charroud?= <lagiraudiere+linux@free.fr>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/213] ALSA: hda/realtek: cs35l41: Fix order and duplicates in quirks table
-Date: Mon, 14 Oct 2024 16:18:40 +0200
-Message-ID: <20241014141043.539319267@linuxfoundation.org>
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	syzbot+9709e73bae885b05314b@syzkaller.appspotmail.com,
+	Heming Zhao <heming.zhao@suse.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 567/798] ocfs2: fix uninit-value in ocfs2_get_block()
+Date: Mon, 14 Oct 2024 16:18:41 +0200
+Message-ID: <20241014141240.273668859@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +67,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Loïc Charroud <lagiraudiere+linux@free.fr>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
 
-[ Upstream commit 852d432a14dbcd34e15a3a3910c5c6869a6d1929 ]
+commit 2af148ef8549a12f8025286b8825c2833ee6bcb8 upstream.
 
-Move entry {0x1043, 0x16a3, "ASUS UX3402VA"} following device ID order.
-Remove duplicate entry for device {0x1043, 0x1f62, "ASUS UX7602ZM"}.
+syzbot reported an uninit-value BUG:
 
-Fixes: 51d976079976 ("ALSA: hda/realtek: Add quirks for ASUS Zenbook 2022 Models")
-Signed-off-by: Jean-Loïc Charroud <lagiraudiere+linux@free.fr>
-Link: https://lore.kernel.org/r/1969151851.650354669.1707867864074.JavaMail.zimbra@free.fr
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: KMSAN: uninit-value in ocfs2_get_block+0xed2/0x2710 fs/ocfs2/aops.c:159
+ocfs2_get_block+0xed2/0x2710 fs/ocfs2/aops.c:159
+do_mpage_readpage+0xc45/0x2780 fs/mpage.c:225
+mpage_readahead+0x43f/0x840 fs/mpage.c:374
+ocfs2_readahead+0x269/0x320 fs/ocfs2/aops.c:381
+read_pages+0x193/0x1110 mm/readahead.c:160
+page_cache_ra_unbounded+0x901/0x9f0 mm/readahead.c:273
+do_page_cache_ra mm/readahead.c:303 [inline]
+force_page_cache_ra+0x3b1/0x4b0 mm/readahead.c:332
+force_page_cache_readahead mm/internal.h:347 [inline]
+generic_fadvise+0x6b0/0xa90 mm/fadvise.c:106
+vfs_fadvise mm/fadvise.c:185 [inline]
+ksys_fadvise64_64 mm/fadvise.c:199 [inline]
+__do_sys_fadvise64 mm/fadvise.c:214 [inline]
+__se_sys_fadvise64 mm/fadvise.c:212 [inline]
+__x64_sys_fadvise64+0x1fb/0x3a0 mm/fadvise.c:212
+x64_sys_call+0xe11/0x3ba0
+arch/x86/include/generated/asm/syscalls_64.h:222
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+This is because when ocfs2_extent_map_get_blocks() fails, p_blkno is
+uninitialized.  So the error log will trigger the above uninit-value
+access.
+
+The error log is out-of-date since get_blocks() was removed long time ago.
+And the error code will be logged in ocfs2_extent_map_get_blocks() once
+ocfs2_get_cluster() fails, so fix this by only logging inode and block.
+
+Link: https://syzkaller.appspot.com/bug?extid=9709e73bae885b05314b
+Link: https://lkml.kernel.org/r/20240925090600.3643376-1-joseph.qi@linux.alibaba.com
+Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: syzbot+9709e73bae885b05314b@syzkaller.appspotmail.com
+Tested-by: syzbot+9709e73bae885b05314b@syzkaller.appspotmail.com
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/ocfs2/aops.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index ebdd7c4323363..5cfeda80cbf10 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10053,6 +10053,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1662, "ASUS GV301QH", ALC294_FIXUP_ASUS_DUAL_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x1663, "ASUS GU603ZV", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1683, "ASUS UM3402YAR", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x16a3, "ASUS UX3402VA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x16b2, "ASUS GU603", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x16e3, "ASUS UX50", ALC269_FIXUP_STEREO_DMIC),
- 	SND_PCI_QUIRK(0x1043, 0x1740, "ASUS UX430UA", ALC295_FIXUP_ASUS_DACS),
-@@ -10090,8 +10091,6 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1d4e, "ASUS TM420", ALC256_FIXUP_ASUS_HPE),
- 	SND_PCI_QUIRK(0x1043, 0x1da2, "ASUS UP6502ZA/ZD", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
--	SND_PCI_QUIRK(0x1043, 0x16a3, "ASUS UX3402VA", ALC245_FIXUP_CS35L41_SPI_2),
--	SND_PCI_QUIRK(0x1043, 0x1f62, "ASUS UX7602ZM", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
- 	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM6702RA/RC", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e51, "ASUS Zephyrus M15", ALC294_FIXUP_ASUS_GU502_PINS),
--- 
-2.43.0
-
+--- a/fs/ocfs2/aops.c
++++ b/fs/ocfs2/aops.c
+@@ -156,9 +156,8 @@ int ocfs2_get_block(struct inode *inode,
+ 	err = ocfs2_extent_map_get_blocks(inode, iblock, &p_blkno, &count,
+ 					  &ext_flags);
+ 	if (err) {
+-		mlog(ML_ERROR, "Error %d from get_blocks(0x%p, %llu, 1, "
+-		     "%llu, NULL)\n", err, inode, (unsigned long long)iblock,
+-		     (unsigned long long)p_blkno);
++		mlog(ML_ERROR, "get_blocks() failed, inode: 0x%p, "
++		     "block: %llu\n", inode, (unsigned long long)iblock);
+ 		goto bail;
+ 	}
+ 
 
 
 
