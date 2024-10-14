@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-83899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C953B99CD15
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:28:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0BA799D270
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:25:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7523C1F23240
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:28:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1ECB3B20C04
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A581A76A5;
-	Mon, 14 Oct 2024 14:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7381AB6FD;
+	Mon, 14 Oct 2024 15:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLSdvQL4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DaMO0mH2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747581547F3;
-	Mon, 14 Oct 2024 14:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C171798C;
+	Mon, 14 Oct 2024 15:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916118; cv=none; b=ia9Rq6SVTG3I1baKv/hWXdqr54dzEg/J/vRpS3n8hgNZFen4oqGFvz66Ek6twO8WnTnVt8GdHupHykmUzg1ry71/psFyHYBRA5T8QXJ0tTU2ElXP1JxCEQY3x2srAw+/6F9yXKoMh+OuKG3kXGHqXkHI7V/ztUxJN/0syvoWI7o=
+	t=1728919471; cv=none; b=JFnK8A0KNXto+q/tMIuHWBIEdVcNYa9gYmFQis+7CPBTsQG5AZmq7hyyQ7f6TGpYKfw+AOqrGhQdbhFnA6F9jTc9VaUa4ZT4VybBqOIo81mz20zkAQDfEWBIGVitGfAsOXD6yQrSh+R1tAX0e28LEayJU05l/tPcLBkKLLDKpm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916118; c=relaxed/simple;
-	bh=NcqJFnape+HNKi/YWFKxI0Hns4w05t/CWSWWDpqlNr4=;
+	s=arc-20240116; t=1728919471; c=relaxed/simple;
+	bh=LKay1aRuaE/u5eF/ZqkLguD3fSpLdtPkXCwgVGG99z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lMKieevHSa9ZtWFmYqgW8xo+tP978iH5NwjSQ4GoNNUlWdMqUZTq2jt//VsIbVGG8JYPM8HWeVColGoxK/go+6Y884Z8591cz3vYxMRnBTMJ0B1EVEnC9PMg/kWcm4EvkvQWX3AsH9Pv1LWlV0z3Z5ju/VvgS1DLYvvv4OIx3I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLSdvQL4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B80C4CEC3;
-	Mon, 14 Oct 2024 14:28:37 +0000 (UTC)
+	 MIME-Version; b=tTSKE4QO552JIdlxJxkaJTGQSwMKTuNNHBdWxLmQT46EyBUW+bsJA+pyYPKqRWdW+/m/783dw1ujQbdRAp55wrZoflpmRAIOv12flMUwld/I/P5yAmIy7Aj7X2vEwAnH8N530GsXp9E9ck3kzpijfmWDckCEBhHm8fiY8/VEygA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DaMO0mH2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F777C4CECF;
+	Mon, 14 Oct 2024 15:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916118;
-	bh=NcqJFnape+HNKi/YWFKxI0Hns4w05t/CWSWWDpqlNr4=;
+	s=korg; t=1728919471;
+	bh=LKay1aRuaE/u5eF/ZqkLguD3fSpLdtPkXCwgVGG99z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wLSdvQL4WcFQ7S9+0Qak7zpOKLdvk9HBzUJn7xPWPoLax/nwUuhAeF6gEszTVCqw8
-	 ptipnx6oaZ3Dmew64a0PvKQTn2jMzN/hG6BhcAN7qlU35TZvpogeGuIC1nnr3dfhdj
-	 9RQEZuJuBTG6xrzp2xHveNDPQzND/1lXxEmPlbVw=
+	b=DaMO0mH2gm10wUWUztwx5MtQEG3gsTLEGM+0qP6ybJX1hh3olkTQu+swZDawunanR
+	 MJDEFMB/NlWZesP+E+9qcVZIdMHeY1W0Jk2SsX0gRHGqHEtb5XM+qqqlL/qX9a1/ks
+	 4vrSx5rSkns0OFbgwjiBdbbRq/roNXP8GL52CHiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 088/214] SUNRPC: Fix integer overflow in decode_rc_list()
-Date: Mon, 14 Oct 2024 16:19:11 +0200
-Message-ID: <20241014141048.428854478@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.1 598/798] rtc: at91sam9: fix OF node leak in probe() error path
+Date: Mon, 14 Oct 2024 16:19:12 +0200
+Message-ID: <20241014141241.497482215@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 6dbf1f341b6b35bcc20ff95b6b315e509f6c5369 ]
+commit 73580e2ee6adfb40276bd420da3bb1abae204e10 upstream.
 
-The math in "rc_list->rcl_nrefcalls * 2 * sizeof(uint32_t)" could have an
-integer overflow.  Add bounds checking on rc_list->rcl_nrefcalls to fix
-that.
+Driver is leaking an OF node reference obtained from
+of_parse_phandle_with_fixed_args().
 
-Fixes: 4aece6a19cf7 ("nfs41: cb_sequence xdr implementation")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 43e112bb3dea ("rtc: at91sam9: make use of syscon/regmap to access GPBR registers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240825183103.102904-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/callback_xdr.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/rtc/rtc-at91sam9.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfs/callback_xdr.c b/fs/nfs/callback_xdr.c
-index 6df77f008d3fa..fdeb0b34a3d39 100644
---- a/fs/nfs/callback_xdr.c
-+++ b/fs/nfs/callback_xdr.c
-@@ -375,6 +375,8 @@ static __be32 decode_rc_list(struct xdr_stream *xdr,
+--- a/drivers/rtc/rtc-at91sam9.c
++++ b/drivers/rtc/rtc-at91sam9.c
+@@ -368,6 +368,7 @@ static int at91_rtc_probe(struct platfor
+ 		return ret;
  
- 	rc_list->rcl_nrefcalls = ntohl(*p++);
- 	if (rc_list->rcl_nrefcalls) {
-+		if (unlikely(rc_list->rcl_nrefcalls > xdr->buf->len))
-+			goto out;
- 		p = xdr_inline_decode(xdr,
- 			     rc_list->rcl_nrefcalls * 2 * sizeof(uint32_t));
- 		if (unlikely(p == NULL))
--- 
-2.43.0
-
+ 	rtc->gpbr = syscon_node_to_regmap(args.np);
++	of_node_put(args.np);
+ 	rtc->gpbr_offset = args.args[0];
+ 	if (IS_ERR(rtc->gpbr)) {
+ 		dev_err(&pdev->dev, "failed to retrieve gpbr regmap, aborting.\n");
 
 
 
