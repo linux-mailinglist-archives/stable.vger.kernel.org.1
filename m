@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-84875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE8C99D29E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1203B99CE02
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEB181F24549
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4147A1C22FFF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879F51ADFFC;
-	Mon, 14 Oct 2024 15:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036091AB517;
+	Mon, 14 Oct 2024 14:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMOc5yhy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJuVfVIA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4380D3A1B6;
-	Mon, 14 Oct 2024 15:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A2E4A24;
+	Mon, 14 Oct 2024 14:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919527; cv=none; b=KY/+xCdLNe8PU1023tDaXtlZ1Cf6YYnOA9wDi4OE7AjjUDb3gn6OdDOkvUmX9rknl39jbn+DxnlF26gfaSvJhZA4u6t2GRASunVBKFqNIaFCZgsD26qLvdZbPd/VukadF1mJHJyoR7Af24yqb2i11CFGysgOjv6FQnsn8KosLX4=
+	t=1728916721; cv=none; b=LOiGFwSav7cFy1lBE/VzOfNb+IfEf8mzt3U4yn2VwAeckISiXJRuSzTrbDgVW7nqi1a62XoyH8+CRGmsrjfffGRLhSArwRrorLLU9/ylg1vCCakprP79zNSt4Oh4tgPVJLHLBbTbK2b58Hk9LuWNyYURNobCouEJdA1uILRsjro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919527; c=relaxed/simple;
-	bh=19mGbdggNrfQOe1W1I3NvUGQpyj3/EZGAGRgCc1IuoM=;
+	s=arc-20240116; t=1728916721; c=relaxed/simple;
+	bh=f+cCkPcYqhMQw6dPkm8DeISKdW5w9mFpQDGoetA2S18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/QAReMcb24+C5HtZK0h+58oPWdLAG7jESDEkbIv5vKh+Qg1alNmvXi/lPiuiEtHeLW+3hWjGwuSNrBiKnbEHqZEK6oCjKEQSr6ntEN06AzP37VQcMRrXtaQcrjRD02bWDxbJQ3UkGWNncwTy45Exj71KiqJZJ9S39grHDyUTEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMOc5yhy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69918C4CEC3;
-	Mon, 14 Oct 2024 15:25:26 +0000 (UTC)
+	 MIME-Version; b=rUEDHScbsVpduwLBmd9MzP7cR1RNf+wp5DlZ/U2njUKYoE1mJMKROK89DM0HP015YmL/2a2hzV5Vwq+yMWsN//wAUZ5oSLFzgS/d9HdQZCG9wQXaWmCwMe14fB7GBtlhAhviSeQsOkPdIs07EnsZWq9RMe6mjk+ovf75p1Tktn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YJuVfVIA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 300D6C4CEC3;
+	Mon, 14 Oct 2024 14:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919526;
-	bh=19mGbdggNrfQOe1W1I3NvUGQpyj3/EZGAGRgCc1IuoM=;
+	s=korg; t=1728916721;
+	bh=f+cCkPcYqhMQw6dPkm8DeISKdW5w9mFpQDGoetA2S18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mMOc5yhyfJuseVqQY2RXkSeuY3ryt0RBhpwX7sDv8GsiLDo/iaWexQd44CodYYh8t
-	 oly6Ciql2NnrFhkEvqh+iQA/iJzh64QkcopLPcedaSkPlFa9rWL5vCOvb0OmxMJgmB
-	 zUGY2BdfkVXWJ8eaai6sYBvvRv7SECnh+T7JSQ8g=
+	b=YJuVfVIA6cSkb99qV47VSu9TY8Q/F8MpkIzFE3OQK1TV/cTO2zecorPBZzbGb2Ptx
+	 ycHuQUO48DyjD2LFr5DOUB4bu7prke63YlnB94txcAsFvG2zTeAvhd82A2fjO+CVOf
+	 rjy2cuVyurhmPuOzz5pJn7nV5z6TOuvOkcg6AZuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.1 600/798] Input: adp5589-keys - fix adp5589_gpio_get_value()
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 048/213] fs/ntfs3: Do not call file_modified if collapse range failed
 Date: Mon, 14 Oct 2024 16:19:14 +0200
-Message-ID: <20241014141241.575182860@linuxfoundation.org>
+Message-ID: <20241014141044.865866027@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit c684771630e64bc39bddffeb65dd8a6612a6b249 upstream.
+[ Upstream commit 2db86f7995fe6b62a4d6fee9f3cdeba3c6d27606 ]
 
-The adp5589 seems to have the same behavior as similar devices as
-explained in commit 910a9f5636f5 ("Input: adp5588-keys - get value from
-data out when dir is out").
-
-Basically, when the gpio is set as output we need to get the value from
-ADP5589_GPO_DATA_OUT_A register instead of ADP5589_GPI_STATUS_A.
-
-Fixes: 9d2e173644bb ("Input: ADP5589 - new driver for I2C Keypad Decoder and I/O Expander")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20241001-b4-dev-adp5589-fw-conversion-v1-2-fca0149dfc47@analog.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/keyboard/adp5589-keys.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ fs/ntfs3/file.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/input/keyboard/adp5589-keys.c
-+++ b/drivers/input/keyboard/adp5589-keys.c
-@@ -391,10 +391,17 @@ static int adp5589_gpio_get_value(struct
- 	struct adp5589_kpad *kpad = gpiochip_get_data(chip);
- 	unsigned int bank = kpad->var->bank(kpad->gpiomap[off]);
- 	unsigned int bit = kpad->var->bit(kpad->gpiomap[off]);
-+	int val;
- 
--	return !!(adp5589_read(kpad->client,
--			       kpad->var->reg(ADP5589_GPI_STATUS_A) + bank) &
--			       bit);
-+	mutex_lock(&kpad->gpio_lock);
-+	if (kpad->dir[bank] & bit)
-+		val = kpad->dat_out[bank];
-+	else
-+		val = adp5589_read(kpad->client,
-+				   kpad->var->reg(ADP5589_GPI_STATUS_A) + bank);
-+	mutex_unlock(&kpad->gpio_lock);
-+
-+	return !!(val & bit);
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index cd69cbd0aaae7..f14d21b6c6d39 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -418,7 +418,7 @@ static int ntfs_truncate(struct inode *inode, loff_t new_size)
  }
  
- static void adp5589_gpio_set_value(struct gpio_chip *chip,
+ /*
+- * ntfs_fallocate
++ * ntfs_fallocate - file_operations::ntfs_fallocate
+  *
+  * Preallocate space for a file. This implements ntfs's fallocate file
+  * operation, which gets called from sys_fallocate system call. User
+@@ -553,6 +553,8 @@ static long ntfs_fallocate(struct file *file, int mode, loff_t vbo, loff_t len)
+ 		ni_lock(ni);
+ 		err = attr_collapse_range(ni, vbo, len);
+ 		ni_unlock(ni);
++		if (err)
++			goto out;
+ 	} else if (mode & FALLOC_FL_INSERT_RANGE) {
+ 		/* Check new size. */
+ 		err = inode_newsize_ok(inode, new_size);
+-- 
+2.43.0
+
 
 
 
