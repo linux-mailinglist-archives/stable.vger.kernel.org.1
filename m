@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-84964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63DF499D322
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B858999CECA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:47:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76D8CB27266
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61FEE1F241F8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4921C1C9B91;
-	Mon, 14 Oct 2024 15:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61BF9145B18;
+	Mon, 14 Oct 2024 14:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLJT4NhG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efKM5XWG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0744E1537AA;
-	Mon, 14 Oct 2024 15:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB52481B7;
+	Mon, 14 Oct 2024 14:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919832; cv=none; b=urIEoZf2zq9J0MuOpDfBJaBF/bjj8x4JevgjDpwb53WJVyNilaxCux6PL2bSSp2qtl1mFUi2wi4Te6ADkRMlpB25hIPpVUfMClpetQNdGFRL4syfsY2qzwC3Fetor22CrdVmpE37IfDH2Th02vdOR8xLzVuNj9lq44VcDG0UiPY=
+	t=1728917156; cv=none; b=FiUBvqYWAmPJSVfr5xM7E6rjtVv3it72Oo/WqIxW3Iu31vxzWhzEHrhbEvHKFODMjx42+ZJ4t7m/yWWNIFoNLa/SMMCrfRhQU7ML2pQqHttYDKKr1w0Xr+BR88Lno9kIZ9vKnvmRD7uyYAS29LsM+LlN36xqIgw+oqj3XLimhzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919832; c=relaxed/simple;
-	bh=XM64NmLjjqqtYIwojBr4zYIiFGEnMvKTED3HHySYEVE=;
+	s=arc-20240116; t=1728917156; c=relaxed/simple;
+	bh=RPLtWdfXMbFV5Gf2LtaTxJT/6DbfWAg1Edv5Lgndnts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PaxqxkU0J3s6oTH5se3alMGoW1celqhK/Z45f7v8eJLM7z1Z/2VrQnxnhFQrhxwuh5tnKViiLX3c+M0vlEFTd8eRauSUnpb86ejQWoTlZJkZ1Ip9yp/PwczOIXLdWhCbiOsI6gP3kulxgH+Lwrlr+WtZV1t1NYcmEk26g3fA0do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLJT4NhG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6F4C4CEC3;
-	Mon, 14 Oct 2024 15:30:30 +0000 (UTC)
+	 MIME-Version; b=rvDVE/Shlc0E17FoIvOQlqj2NerJ19AdL4VpHXQ/w42liBG20YZPv1FeoNdaPwhUWHBwAbbtp7AdB1XAdvpz+ugsBincZx1q18SqjFQDMuGcwrNKj6JszLt/cGTqQCujm2Yos5ephU0//KEf9w/Bt0Fpd1wHQsOhPgpq62t3l2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efKM5XWG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828AAC4CEC3;
+	Mon, 14 Oct 2024 14:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919831;
-	bh=XM64NmLjjqqtYIwojBr4zYIiFGEnMvKTED3HHySYEVE=;
+	s=korg; t=1728917156;
+	bh=RPLtWdfXMbFV5Gf2LtaTxJT/6DbfWAg1Edv5Lgndnts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pLJT4NhG/k3gFQ7JHyspn5fW4sd2iDSvK+vAPVGrXeL47N+vmBouuI8qN8Qi6uQ2N
-	 UzPIi6Ele4nMwtBSpnVOdvGDXioR+NJvnaNmV6MLt+5PSgOwUh6Lr+7MgsKnrnHXCf
-	 hkJtB+RyoFZMOfeGEA/GZ1kElgJxd06ENAXcZ98w=
+	b=efKM5XWGEdg2n6Vt4CqENDO9ZKpqdajcwIz7wPt3eLaeDvwOqaWeQYGOwtfZnwAVk
+	 u1ZkxrXv20e1djd+CVCaTy328oqL7fTOYTwmutMwlfxLO0fXjPytHv8HaK5c2Fp1DC
+	 LqwxR7/a+uKzfJeVc7YjdaPJ00dpcI+63cKy11jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 719/798] driver core: bus: Return -EIO instead of 0 when show/store invalid bus attribute
+Subject: [PATCH 6.6 167/213] HID: i2c-hid: Remove I2C_HID_QUIRK_SET_PWR_WAKEUP_DEV quirk
 Date: Mon, 14 Oct 2024 16:21:13 +0200
-Message-ID: <20241014141246.317022694@linuxfoundation.org>
+Message-ID: <20241014141049.487474973@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit c0fd973c108cdc22a384854bc4b3e288a9717bb2 ]
+[ Upstream commit bd008acdac45011f2246ec2518ef19c2da9e6008 ]
 
-Return -EIO instead of 0 for below erroneous bus attribute operations:
- - read a bus attribute without show().
- - write a bus attribute without store().
+Re-trying the power-on command on failure on all devices should
+not be a problem, drop the I2C_HID_QUIRK_SET_PWR_WAKEUP_DEV quirk
+and simply retry power-on on all devices.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20240724-bus_fix-v2-1-5adbafc698fb@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Stable-dep-of: 26dd6a5667f5 ("HID: i2c-hid: Skip SET_POWER SLEEP for Cirque touchpad on system suspend")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/bus.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hid/i2c-hid/i2c-hid-core.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-index 7ca47e5b3c1f4..339a9edcde5f5 100644
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -104,7 +104,8 @@ static ssize_t bus_attr_show(struct kobject *kobj, struct attribute *attr,
- {
- 	struct bus_attribute *bus_attr = to_bus_attr(attr);
- 	struct subsys_private *subsys_priv = to_subsys_private(kobj);
--	ssize_t ret = 0;
-+	/* return -EIO for reading a bus attribute without show() */
-+	ssize_t ret = -EIO;
+diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
+index 799ad0ef9c4af..59dececbb340e 100644
+--- a/drivers/hid/i2c-hid/i2c-hid-core.c
++++ b/drivers/hid/i2c-hid/i2c-hid-core.c
+@@ -44,7 +44,6 @@
+ #include "i2c-hid.h"
  
- 	if (bus_attr->show)
- 		ret = bus_attr->show(subsys_priv->bus, buf);
-@@ -116,7 +117,8 @@ static ssize_t bus_attr_store(struct kobject *kobj, struct attribute *attr,
- {
- 	struct bus_attribute *bus_attr = to_bus_attr(attr);
- 	struct subsys_private *subsys_priv = to_subsys_private(kobj);
--	ssize_t ret = 0;
-+	/* return -EIO for writing a bus attribute without store() */
-+	ssize_t ret = -EIO;
+ /* quirks to control the device */
+-#define I2C_HID_QUIRK_SET_PWR_WAKEUP_DEV	BIT(0)
+ #define I2C_HID_QUIRK_NO_IRQ_AFTER_RESET	BIT(1)
+ #define I2C_HID_QUIRK_BOGUS_IRQ			BIT(4)
+ #define I2C_HID_QUIRK_RESET_ON_RESUME		BIT(5)
+@@ -119,8 +118,6 @@ static const struct i2c_hid_quirks {
+ 	__u16 idProduct;
+ 	__u32 quirks;
+ } i2c_hid_quirks[] = {
+-	{ USB_VENDOR_ID_WEIDA, HID_ANY_ID,
+-		I2C_HID_QUIRK_SET_PWR_WAKEUP_DEV },
+ 	{ I2C_VENDOR_ID_HANTICK, I2C_PRODUCT_ID_HANTICK_5288,
+ 		I2C_HID_QUIRK_NO_IRQ_AFTER_RESET },
+ 	{ I2C_VENDOR_ID_ITE, I2C_DEVICE_ID_ITE_VOYO_WINPAD_A15,
+@@ -389,8 +386,7 @@ static int i2c_hid_set_power(struct i2c_hid *ihid, int power_state)
+ 	 * The call will get a return value (EREMOTEIO) but device will be
+ 	 * triggered and activated. After that, it goes like a normal device.
+ 	 */
+-	if (power_state == I2C_HID_PWR_ON &&
+-	    ihid->quirks & I2C_HID_QUIRK_SET_PWR_WAKEUP_DEV) {
++	if (power_state == I2C_HID_PWR_ON) {
+ 		ret = i2c_hid_set_power_command(ihid, I2C_HID_PWR_ON);
  
- 	if (bus_attr->store)
- 		ret = bus_attr->store(subsys_priv->bus, buf, count);
+ 		/* Device was already activated */
 -- 
 2.43.0
 
