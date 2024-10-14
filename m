@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-83824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BACDF99CCBA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:24:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F3E999D207
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FFC71F22E94
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:24:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEC3A2834DB
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AAC8E571;
-	Mon, 14 Oct 2024 14:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1411BD03B;
+	Mon, 14 Oct 2024 15:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ksq6/L70"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyEmtTa4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164891DFEF;
-	Mon, 14 Oct 2024 14:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1971D1B86CC;
+	Mon, 14 Oct 2024 15:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915842; cv=none; b=i3VGTj1N0EPPUe/y4MJh1F6yb1u72y+2nfE76BmXwcDjp4nlnqBvyfydwff73rKhsw2rG9WUEOZ60UfVOT6cGQbhlHVAnKmpjZVhspx3y6p+WzhdEJe4lmcWlf2Fv41R+XKqf7CgZc4BbWBCPeRGkVZX1uCtfxUjv5tINuqGUX0=
+	t=1728919151; cv=none; b=Mp3qyS6toyOVGtyG2bplC0N13MOv56xdCKxD1jdo83DmGijE7DRaFFmfXR7+WGJlCI1IWtHDjzon9Dk2wBpKoE2LcYqKIc9fiNC5dDM0oWCTe9Nr43QTdR6hWlhuQozzJjlKUEi6HNjWNSUNYacP951rQ2xH0LgNb+q1MSDBZxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915842; c=relaxed/simple;
-	bh=DAoRWsP8cz9yeMI9NAIZbJ+0EMJ3LOByJrLck3dnkic=;
+	s=arc-20240116; t=1728919151; c=relaxed/simple;
+	bh=F4TvSckTmLOKHsfUuCtDT62VjNrHnBP8l3KibBmf0DY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V5UR8xjAFe5T3W6riXjx2k8bE9VQIWsg/m3vqUbcyZilqOAW4cuoYWz6Wr/O5GsvuvLfXp7q0tgC38t79WGo9WLEKwwMvSM+WChmkCQ82kSHGuSAD7Y+zhlWYThyyKCYdFIszqqcfGFfX5sk/mjnqCU/PnVhFWSjSCFYa11x/bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ksq6/L70; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0102BC4CEC3;
-	Mon, 14 Oct 2024 14:24:00 +0000 (UTC)
+	 MIME-Version; b=Ns/5zY0FjuoXddZ0igKUrV9ycXF9UX0Nlt/FkvULYaq8B6DuBIO6F6obUacluK3g4rXFuVAJwumAWmdnXciq6WrfvchhYC17V1rLB82dIVsBwSx6pmpVaA2Xly8f4DbBMmA5QcHwru9HlynK6fX+RzPtQO6XbloqKSHaHDqx2uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyEmtTa4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D284C4CEC3;
+	Mon, 14 Oct 2024 15:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915841;
-	bh=DAoRWsP8cz9yeMI9NAIZbJ+0EMJ3LOByJrLck3dnkic=;
+	s=korg; t=1728919151;
+	bh=F4TvSckTmLOKHsfUuCtDT62VjNrHnBP8l3KibBmf0DY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ksq6/L70vWgnVQSHMpdSMIqYlogfHitdRNadDeKcUQJ48GW/My2pWpurF7tOSVifW
-	 E8Aj9cK0c0l2iZiJLvWM0QxeARU1+Qu87KslfSCcWFLQFyMfFzc/dX5lq/qB93q/Vs
-	 NsYwYK5XYpyeITQ996BlgogM3jM1z27qvoRPQWcU=
+	b=dyEmtTa4yPV7f/rbkiOBlBjqseaw40NSCj3Guw4d/+xGa4DyS6FVR/SXycVulR+II
+	 YiTALH/p7obdeuxHZqp8XBXBZn0axGVmUzkQDe+bDpWLmVzl3s8HnnhkP6bAXTetPX
+	 KaTkQAu+2KuC/VuQqtguHJOgVjFHG0FiHOWh4B+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Jens Axboe <axboe@kernel.dk>,
-	Minchan Kim <minchan@kernel.org>,
-	Chris Li <chrisl@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 015/214] zram: dont free statically defined names
-Date: Mon, 14 Oct 2024 16:17:58 +0200
-Message-ID: <20241014141045.588644436@linuxfoundation.org>
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Marek Vasut <marex@denx.de>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.1 525/798] i2c: stm32f7: Do not prepare/unprepare clock during runtime suspend/resume
+Date: Mon, 14 Oct 2024 16:17:59 +0200
+Message-ID: <20241014141238.604819054@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,80 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 486fd58af7ac1098b68370b1d4d9f94a2a1c7124 ]
+commit 048bbbdbf85e5e00258dfb12f5e368f908801d7b upstream.
 
-When CONFIG_ZRAM_MULTI_COMP isn't set ZRAM_SECONDARY_COMP can hold
-default_compressor, because it's the same offset as ZRAM_PRIMARY_COMP, so
-we need to make sure that we don't attempt to kfree() the statically
-defined compressor name.
+In case there is any sort of clock controller attached to this I2C bus
+controller, for example Versaclock or even an AIC32x4 I2C codec, then
+an I2C transfer triggered from the clock controller clk_ops .prepare
+callback may trigger a deadlock on drivers/clk/clk.c prepare_lock mutex.
 
-This is detected by KASAN.
+This is because the clock controller first grabs the prepare_lock mutex
+and then performs the prepare operation, including its I2C access. The
+I2C access resumes this I2C bus controller via .runtime_resume callback,
+which calls clk_prepare_enable(), which attempts to grab the prepare_lock
+mutex again and deadlocks.
 
-==================================================================
-  Call trace:
-   kfree+0x60/0x3a0
-   zram_destroy_comps+0x98/0x198 [zram]
-   zram_reset_device+0x22c/0x4a8 [zram]
-   reset_store+0x1bc/0x2d8 [zram]
-   dev_attr_store+0x44/0x80
-   sysfs_kf_write+0xfc/0x188
-   kernfs_fop_write_iter+0x28c/0x428
-   vfs_write+0x4dc/0x9b8
-   ksys_write+0x100/0x1f8
-   __arm64_sys_write+0x74/0xb8
-   invoke_syscall+0xd8/0x260
-   el0_svc_common.constprop.0+0xb4/0x240
-   do_el0_svc+0x48/0x68
-   el0_svc+0x40/0xc8
-   el0t_64_sync_handler+0x120/0x130
-   el0t_64_sync+0x190/0x198
-==================================================================
+Since the clock are already prepared since probe() and unprepared in
+remove(), use simple clk_enable()/clk_disable() calls to enable and
+disable the clock on runtime suspend and resume, to avoid hitting the
+prepare_lock mutex.
 
-Link: https://lkml.kernel.org/r/20240923164843.1117010-1-andrej.skvortzov@gmail.com
-Fixes: 684826f8271a ("zram: free secondary algorithms names")
-Signed-off-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-Closes: https://lore.kernel.org/lkml/57130e48-dbb6-4047-a8c7-ebf5aaea93f4@linux.vnet.ibm.com/
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-Cc: Chris Li <chrisl@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Fixes: 4e7bca6fc07b ("i2c: i2c-stm32f7: add PM Runtime support")
+Cc: <stable@vger.kernel.org> # v5.0+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/zram/zram_drv.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-stm32f7.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 1a875ac43d566..f25b1670e91ca 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1990,8 +1990,10 @@ static void zram_destroy_comps(struct zram *zram)
- 		zram->num_active_comps--;
- 	}
+--- a/drivers/i2c/busses/i2c-stm32f7.c
++++ b/drivers/i2c/busses/i2c-stm32f7.c
+@@ -2353,7 +2353,7 @@ static int __maybe_unused stm32f7_i2c_ru
+ 	struct stm32f7_i2c_dev *i2c_dev = dev_get_drvdata(dev);
  
--	for (prio = ZRAM_SECONDARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
--		kfree(zram->comp_algs[prio]);
-+	for (prio = ZRAM_PRIMARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
-+		/* Do not free statically defined compression algorithms */
-+		if (zram->comp_algs[prio] != default_compressor)
-+			kfree(zram->comp_algs[prio]);
- 		zram->comp_algs[prio] = NULL;
- 	}
+ 	if (!stm32f7_i2c_is_slave_registered(i2c_dev))
+-		clk_disable_unprepare(i2c_dev->clk);
++		clk_disable(i2c_dev->clk);
+ 
+ 	return 0;
  }
--- 
-2.43.0
-
+@@ -2364,9 +2364,9 @@ static int __maybe_unused stm32f7_i2c_ru
+ 	int ret;
+ 
+ 	if (!stm32f7_i2c_is_slave_registered(i2c_dev)) {
+-		ret = clk_prepare_enable(i2c_dev->clk);
++		ret = clk_enable(i2c_dev->clk);
+ 		if (ret) {
+-			dev_err(dev, "failed to prepare_enable clock\n");
++			dev_err(dev, "failed to enable clock\n");
+ 			return ret;
+ 		}
+ 	}
 
 
 
