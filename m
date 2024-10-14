@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-84976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F0899D335
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C90199CED9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:47:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1E43B274A1
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 757941C232FA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 209981CBE8F;
-	Mon, 14 Oct 2024 15:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5946280027;
+	Mon, 14 Oct 2024 14:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkzsvAd1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7rGOg7W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4A01C1ADB;
-	Mon, 14 Oct 2024 15:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174A1481B3;
+	Mon, 14 Oct 2024 14:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919872; cv=none; b=jutTPE7zPfdAjSzQW6rV/PuLRReTeQbCB1MoDQkTiBCNcNy9fSCpjcb1H6xCs03GOWGfCCZWgUXZSCphmP7CMu9jFRnDi0FqQkntWsecUP07Qkfa7qAku4L8kBVum/5yKOtDoS5q/EsqI6PfIq12qgHzZQe1/wLcs7hqSUUZjLU=
+	t=1728917196; cv=none; b=ppc3csAXSCevCfQdLVbePJTwwYcIQ4/6Ai7P2lfIppE0V/0tZBEenwaPrgDIf+z9JlnErSPw5FHPFCjOgMwvpDa61SZKg3CS5aaITUHNJdmwWDfPzIPpJKom5vGMU1p4sUZ3QtF4gAMY+I7jMjhnFNL844gNY/cjLGzBr6heV9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919872; c=relaxed/simple;
-	bh=Mv/OwGGjI28OBvr6LjYLTKQRE8S5NYCnm0pz6okIEZA=;
+	s=arc-20240116; t=1728917196; c=relaxed/simple;
+	bh=DloLLRpy2KqGfWXZxc677I7z0Ompid/BKy3WAnPXz1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VdI9Z1JsPPKSnJHl8cfrgOflExVQv7dl/64fftCYHH2PkzH/diMaum+fr3ETzechr4MZ1QmecuCyPfV+s4no45DFfUy12FtpNdNnVJf3+lJKFUqS8FolIw4/vQSzNtdRwbqxIYg2dzZ26mVvqaTmDjAumAyQG8r0crq6ZM6VgmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkzsvAd1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36994C4CEC3;
-	Mon, 14 Oct 2024 15:31:12 +0000 (UTC)
+	 MIME-Version; b=XNvu9+Ze1QWXwHKKnqCGyPLKzII1ld1I8f5vRJA2QhcGfpAZZSZxoVQPVjVVRl9S0qTbXhgsFBECsFjST30GPwcZCB1f2tlNvbHNaR4/Jm90RP+sneAvzW7nQN93EnhRqT939d7NtaaJq15Bc493qjuQvdbnRYGRfXidKXYSmRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7rGOg7W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B068C4CEC3;
+	Mon, 14 Oct 2024 14:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919872;
-	bh=Mv/OwGGjI28OBvr6LjYLTKQRE8S5NYCnm0pz6okIEZA=;
+	s=korg; t=1728917195;
+	bh=DloLLRpy2KqGfWXZxc677I7z0Ompid/BKy3WAnPXz1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fkzsvAd1gt/4LY5U3PJ9RGYA+mHM5dhs2XwxbDEaq0xitK0K0gxKO2C0JEQXDFwGl
-	 TbAak4zIN5ubXrWSx1CtS36WEwsMSBzuKlpqliTeoLDzhCv4YNqBthgsIyEFFtwq1j
-	 LazxKubLeJLEBqUUfQRI89LZqCTWXRmP8Arx9G2U=
+	b=u7rGOg7WxI6au9js68V+ScqKajSM9Vn9YNq0HFtmoWXZLdSlGdx8/gRYvpVv25stj
+	 hqIxMewTLqJATFevR4VvnU5E2ylcARuvZ2JxW+YbGqVRupOXVz4CpnYj8j+HxE29pV
+	 hBZDB6uqsMpWWdpIHMhZ3PBV7X6+5sKF9zXnoLBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Subramanian Ananthanarayanan <quic_skananth@quicinc.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 700/798] PCI: Add ACS quirk for Qualcomm SA8775P
+Subject: [PATCH 6.6 148/213] sctp: ensure sk_state is set to CLOSED if hashing fails in sctp_listen_start
 Date: Mon, 14 Oct 2024 16:20:54 +0200
-Message-ID: <20241014141245.570896110@linuxfoundation.org>
+Message-ID: <20241014141048.744510052@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Subramanian Ananthanarayanan <quic_skananth@quicinc.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 026f84d3fa62d215b11cbeb5a5d97df941e93b5c ]
+[ Upstream commit 4d5c70e6155d5eae198bade4afeab3c1b15073b6 ]
 
-The Qualcomm SA8775P root ports don't advertise an ACS capability, but they
-do provide ACS-like features to disable peer transactions and validate bus
-numbers in requests.
+If hashing fails in sctp_listen_start(), the socket remains in the
+LISTENING state, even though it was not added to the hash table.
+This can lead to a scenario where a socket appears to be listening
+without actually being accessible.
 
-Thus, add an ACS quirk for the SA8775P.
+This patch ensures that if the hashing operation fails, the sk_state
+is set back to CLOSED before returning an error.
 
-Link: https://lore.kernel.org/linux-pci/20240906052228.1829485-1-quic_skananth@quicinc.com
-Signed-off-by: Subramanian Ananthanarayanan <quic_skananth@quicinc.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Note that there is no need to undo the autobind operation if hashing
+fails, as the bind port can still be used for next listen() call on
+the same socket.
+
+Fixes: 76c6d988aeb3 ("sctp: add sock_reuseport for the sock in __sctp_hash_endpoint")
+Reported-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/sctp/socket.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 7ebce76778f71..131c75769b993 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4972,6 +4972,8 @@ static const struct pci_dev_acs_enabled {
- 	/* QCOM QDF2xxx root ports */
- 	{ PCI_VENDOR_ID_QCOM, 0x0400, pci_quirk_qcom_rp_acs },
- 	{ PCI_VENDOR_ID_QCOM, 0x0401, pci_quirk_qcom_rp_acs },
-+	/* QCOM SA8775P root port */
-+	{ PCI_VENDOR_ID_QCOM, 0x0115, pci_quirk_qcom_rp_acs },
- 	/* HXT SD4800 root ports. The ACS design is same as QCOM QDF2xxx */
- 	{ PCI_VENDOR_ID_HXT, 0x0401, pci_quirk_qcom_rp_acs },
- 	/* Intel PCH root ports */
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 4a1ebe46d045d..108a0745c0c3c 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -8525,6 +8525,7 @@ static int sctp_listen_start(struct sock *sk, int backlog)
+ 	struct sctp_endpoint *ep = sp->ep;
+ 	struct crypto_shash *tfm = NULL;
+ 	char alg[32];
++	int err;
+ 
+ 	/* Allocate HMAC for generating cookie. */
+ 	if (!sp->hmac && sp->sctp_hmac_alg) {
+@@ -8552,18 +8553,25 @@ static int sctp_listen_start(struct sock *sk, int backlog)
+ 	inet_sk_set_state(sk, SCTP_SS_LISTENING);
+ 	if (!ep->base.bind_addr.port) {
+ 		if (sctp_autobind(sk)) {
+-			inet_sk_set_state(sk, SCTP_SS_CLOSED);
+-			return -EAGAIN;
++			err = -EAGAIN;
++			goto err;
+ 		}
+ 	} else {
+ 		if (sctp_get_port(sk, inet_sk(sk)->inet_num)) {
+-			inet_sk_set_state(sk, SCTP_SS_CLOSED);
+-			return -EADDRINUSE;
++			err = -EADDRINUSE;
++			goto err;
+ 		}
+ 	}
+ 
+ 	WRITE_ONCE(sk->sk_max_ack_backlog, backlog);
+-	return sctp_hash_endpoint(ep);
++	err = sctp_hash_endpoint(ep);
++	if (err)
++		goto err;
++
++	return 0;
++err:
++	inet_sk_set_state(sk, SCTP_SS_CLOSED);
++	return err;
+ }
+ 
+ /*
 -- 
 2.43.0
 
