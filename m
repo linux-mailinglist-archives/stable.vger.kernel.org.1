@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-83827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8915299CCBE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:24:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7097099D235
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C771283E92
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:24:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B1CF1F25053
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1421AA7A5;
-	Mon, 14 Oct 2024 14:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FDF43AA9;
+	Mon, 14 Oct 2024 15:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDCx7fdW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2evBTwm4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098E31547F3;
-	Mon, 14 Oct 2024 14:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405C31AE006;
+	Mon, 14 Oct 2024 15:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915852; cv=none; b=dXiga3ZHz3xmOVwXvxQ7h8i2yuAy8vuEWM98VQhT2x7OITXvrq4Ic+CXCumC+NNSLGngQ3PXMeXJpisbFHwMyJ23GWp0VdBiF8eVlCLdOkoJX9NDGBfmIiIXNfqexBWhZJ9Y1yREGQHFA8SQVN8us8tJe2ukUs4J/QLBxxecW6A=
+	t=1728919298; cv=none; b=rylMLTQARAsfuOFN53rMbxjo5sAI6INNDavquXwtum3MSwPWGgXBejqCH9TDRCssFsjRmrM8BtCWUG03T9Tu3dB0S4PTjW28ogCAdyMFViREdIni/Vl/a7r2v0m7ZyTETZCCypRHjGHni/l7HR1bj8HKmJimfO8ozmpOEugMmoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915852; c=relaxed/simple;
-	bh=S89xMwi3hP1Nod/Bz9V7j2wvttpsXI23FVM3hPCZDsQ=;
+	s=arc-20240116; t=1728919298; c=relaxed/simple;
+	bh=fvuMPbb/n+Sye56h3MSCbDUYur2cvNwK1M0Et5m+1xo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aroLNiXfAVGFlfCqAwCBGReL/7zJIC9u+mbIhLAKQbw4byJvGUmEGzUAWWEA5L1YJq4VX7Xuvh0DYoiSaWrHm3SyRmd3cSm0MMxNYALnzpSO/+BckOpkiHXYQcoFHACeaWg9xq08aeJZ3rzIRf2xElclRhaxIY+/CnA7xvY/g+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDCx7fdW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D5EC4CEC7;
-	Mon, 14 Oct 2024 14:24:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LJD/fhJnbHspH/W6l2ZxmCwtONaDfhpddSHPzwRlAl0SVzGCK67b+jsQHqFlc7TGwHt2HT2LONUyW/BMD3IFCahxMVqtHs33Qyrheh026hKCzz9E6vB17zai095+wjyUWiCbFaE1bV16jiuRYLHQsCUlzwREN8ZyvuqiVTEKiWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2evBTwm4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA06DC4CEC3;
+	Mon, 14 Oct 2024 15:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915851;
-	bh=S89xMwi3hP1Nod/Bz9V7j2wvttpsXI23FVM3hPCZDsQ=;
+	s=korg; t=1728919298;
+	bh=fvuMPbb/n+Sye56h3MSCbDUYur2cvNwK1M0Et5m+1xo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BDCx7fdWzVNEjkNQkl7clEfws5enxvGIF8Un8mlbNXr7f84EQ0IH9TjArQZCKVSE9
-	 BbtnAqzcF7EMcDk95W7mBEkGiT03W9aM/eJ+n4JdPVWpp6fdSE4I507gSmYb1SSAl0
-	 4rVJ6VZwQhwDG9uiydtkoIiS+FHaHs8sicXbjiVw=
+	b=2evBTwm4crUGg+yfQ1JLrLK3JeMmxg7GRbcLJcdWKsVWG/tY+iYCS+Pb527QCEoYr
+	 bZZ5NKdUGdO7X9fEhvras+EQBtlInovXSdGERyPGa3g7QDLfATukXGRUATQbaAUpK2
+	 78OXncy2EDXCEhcIsYxpDCncX2I8detca+8vWJLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinke Han <jinkehan@didiglobal.com>,
-	Tao Chen <chen.dylane@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 018/214] bpf: Check percpu map value size first
-Date: Mon, 14 Oct 2024 16:18:01 +0200
-Message-ID: <20241014141045.703244032@linuxfoundation.org>
+	Alexander Shiyan <eagle.alexander923@gmail.com>,
+	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.1 528/798] media: i2c: ar0521: Use cansleep version of gpiod_set_value()
+Date: Mon, 14 Oct 2024 16:18:02 +0200
+Message-ID: <20241014141238.732814396@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +61,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Chen <chen.dylane@gmail.com>
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
 
-[ Upstream commit 1d244784be6b01162b732a5a7d637dfc024c3203 ]
+commit bee1aed819a8cda47927436685d216906ed17f62 upstream.
 
-Percpu map is often used, but the map value size limit often ignored,
-like issue: https://github.com/iovisor/bcc/issues/2519. Actually,
-percpu map value size is bound by PCPU_MIN_UNIT_SIZE, so we
-can check the value size whether it exceeds PCPU_MIN_UNIT_SIZE first,
-like percpu map of local_storage. Maybe the error message seems clearer
-compared with "cannot allocate memory".
+If we use GPIO reset from I2C port expander, we must use *_cansleep()
+variant of GPIO functions.
+This was not done in ar0521_power_on()/ar0521_power_off() functions.
+Let's fix that.
 
-Signed-off-by: Jinke Han <jinkehan@didiglobal.com>
-Signed-off-by: Tao Chen <chen.dylane@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240910144111.1464912-2-chen.dylane@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 11 at drivers/gpio/gpiolib.c:3496 gpiod_set_value+0x74/0x7c
+Modules linked in:
+CPU: 0 PID: 11 Comm: kworker/u16:0 Not tainted 6.10.0 #53
+Hardware name: Diasom DS-RK3568-SOM-EVB (DT)
+Workqueue: events_unbound deferred_probe_work_func
+pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : gpiod_set_value+0x74/0x7c
+lr : ar0521_power_on+0xcc/0x290
+sp : ffffff8001d7ab70
+x29: ffffff8001d7ab70 x28: ffffff80027dcc90 x27: ffffff8003c82000
+x26: ffffff8003ca9250 x25: ffffffc080a39c60 x24: ffffff8003ca9088
+x23: ffffff8002402720 x22: ffffff8003ca9080 x21: ffffff8003ca9088
+x20: 0000000000000000 x19: ffffff8001eb2a00 x18: ffffff80efeeac80
+x17: 756d2d6332692f30 x16: 0000000000000000 x15: 0000000000000000
+x14: ffffff8001d91d40 x13: 0000000000000016 x12: ffffffc080e98930
+x11: ffffff8001eb2880 x10: 0000000000000890 x9 : ffffff8001d7a9f0
+x8 : ffffff8001d92570 x7 : ffffff80efeeac80 x6 : 000000003fc6e780
+x5 : ffffff8001d91c80 x4 : 0000000000000002 x3 : 0000000000000000
+x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000001
+Call trace:
+ gpiod_set_value+0x74/0x7c
+ ar0521_power_on+0xcc/0x290
+...
+
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+Fixes: 852b50aeed15 ("media: On Semi AR0521 sensor driver")
+Cc: stable@vger.kernel.org
+Acked-by: Krzysztof Hałasa <khalasa@piap.pl>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/arraymap.c | 3 +++
- kernel/bpf/hashtab.c  | 3 +++
- 2 files changed, 6 insertions(+)
+ drivers/media/i2c/ar0521.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
-index feabc01938525..a5c6f8aa49015 100644
---- a/kernel/bpf/arraymap.c
-+++ b/kernel/bpf/arraymap.c
-@@ -73,6 +73,9 @@ int array_map_alloc_check(union bpf_attr *attr)
- 	/* avoid overflow on round_up(map->value_size) */
- 	if (attr->value_size > INT_MAX)
- 		return -E2BIG;
-+	/* percpu map value size is bound by PCPU_MIN_UNIT_SIZE */
-+	if (percpu && round_up(attr->value_size, 8) > PCPU_MIN_UNIT_SIZE)
-+		return -E2BIG;
+--- a/drivers/media/i2c/ar0521.c
++++ b/drivers/media/i2c/ar0521.c
+@@ -718,7 +718,8 @@ static int ar0521_power_off(struct devic
+ 	clk_disable_unprepare(sensor->extclk);
  
- 	return 0;
- }
-diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
-index 06115f8728e89..bcb74ac880cb5 100644
---- a/kernel/bpf/hashtab.c
-+++ b/kernel/bpf/hashtab.c
-@@ -462,6 +462,9 @@ static int htab_map_alloc_check(union bpf_attr *attr)
- 		 * kmalloc-able later in htab_map_update_elem()
- 		 */
- 		return -E2BIG;
-+	/* percpu map value size is bound by PCPU_MIN_UNIT_SIZE */
-+	if (percpu && round_up(attr->value_size, 8) > PCPU_MIN_UNIT_SIZE)
-+		return -E2BIG;
+ 	if (sensor->reset_gpio)
+-		gpiod_set_value(sensor->reset_gpio, 1); /* assert RESET signal */
++		/* assert RESET signal */
++		gpiod_set_value_cansleep(sensor->reset_gpio, 1);
  
- 	return 0;
- }
--- 
-2.43.0
-
+ 	for (i = ARRAY_SIZE(ar0521_supply_names) - 1; i >= 0; i--) {
+ 		if (sensor->supplies[i])
+@@ -752,7 +753,7 @@ static int ar0521_power_on(struct device
+ 
+ 	if (sensor->reset_gpio)
+ 		/* deassert RESET signal */
+-		gpiod_set_value(sensor->reset_gpio, 0);
++		gpiod_set_value_cansleep(sensor->reset_gpio, 0);
+ 	usleep_range(4500, 5000); /* min 45000 clocks */
+ 
+ 	for (cnt = 0; cnt < ARRAY_SIZE(initial_regs); cnt++) {
 
 
 
