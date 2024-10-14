@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-84812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572AF99D234
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7540599CCF1
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:27:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E74A1F24F98
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3080B2820E8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865D226296;
-	Mon, 14 Oct 2024 15:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7171AAE08;
+	Mon, 14 Oct 2024 14:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGJsId12"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttPUpTKH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409971AC44D;
-	Mon, 14 Oct 2024 15:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEE21547F3;
+	Mon, 14 Oct 2024 14:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919295; cv=none; b=JOKBEC5xONvwvLYSkLy2ZVkyWD6V41tx37KR9JXuXxlmgPbOWj2fem4lZ9QjFL31V/JFsLhYVhA5xgHjCo7p4G0wBhu92Rgs4vx8X0ZkS5JEcnZNoTyddQN3JZmH8JM+4oXriQGJB+Dg3MLidF74WXPqh9lESY1ocVQDEnOW98w=
+	t=1728916010; cv=none; b=NATBIerNCDyahh0v98N2Ms0SJ6rhPEagBMbOe+kMwsT7OwvJkNH/S/YlcUECWnyEUW51Uar7eKMK9TEfnH53brOpVd17vnrWM6ukThu3h62Rz5655+wFc/w2gjirIdidV80hnvHGjiT0OpMeceYqP5Ospu11klDgCq9Z/FrakV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919295; c=relaxed/simple;
-	bh=qtSvVnm/nZcr7PZriW4iJ6QubyO8C7Wm5kQ2KwAYZ+s=;
+	s=arc-20240116; t=1728916010; c=relaxed/simple;
+	bh=aLbGIHC2Y+tPD2Qd70DQhUU+PjXiur/PBc1bRW26IkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FzEFQ7C/4RIZxTvQb+w1FufS9RbkuVmAmq5ILeMnlTTQWeLz3uyMJVJ1WWRSkwfTEVib35zPFE4N4ldf+YfzSnoO5sYHXz2+jfPD7MdlZIFBv3Y0ejKf6TWUzSeEnSw5Pf8xmzmbocPodSRdHuO1aFOO1EjcjPQ8FF7WIjhYEtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGJsId12; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9406C4CEC3;
-	Mon, 14 Oct 2024 15:21:34 +0000 (UTC)
+	 MIME-Version; b=S3D9QA+oAsiQwPwcRAOYgImSRVZO38ekk/0sr78mh+g4D5NJEBMwefqpL/ZBkVd7zWwEcd77twJNGXNBgfuRStKRNWpB9ufihtznIBZlIrt5biPqMPQL8PuNNVi938XP0gusXHprxFSXGCfK0lqzQsVAESiiI1VF5GdfQwhngiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttPUpTKH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A66C4CEC3;
+	Mon, 14 Oct 2024 14:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919295;
-	bh=qtSvVnm/nZcr7PZriW4iJ6QubyO8C7Wm5kQ2KwAYZ+s=;
+	s=korg; t=1728916010;
+	bh=aLbGIHC2Y+tPD2Qd70DQhUU+PjXiur/PBc1bRW26IkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FGJsId127aR3Of1oNvgox3FwSaHIsJrkTEgtAvhmI+PxWtY7cQ+5a3HRaDuHA1fPQ
-	 RmcONpF8fMC6HJXkmkb2th3Fs3QnbRSu/95DXfgH1sohAnSCJFL5Vjpc+euSAGU7JW
-	 jsh8dIRMla34v22UkO9Ug3Us0Xw68AqBfbMI4bOA=
+	b=ttPUpTKHarY2roBN2V3rWyoc/UBfkKbtJ4aOANTzybd6yymCO0xudwbd/SnmbCuNO
+	 P1gdbXasy1d8m6EVNrPpWfHx62kdz3zE3Ekt9KdCTXbODrk/7lbumMJL8Y4PnyR/Uz
+	 kHRWZznZEZP1TH5KnFKupZIK0TFBcbPm00N+Wx/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Lalinsky <lalinsky@c4.cz>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 537/798] ALSA: usb-audio: Add native DSD support for Luxman D-08u
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	"John Warthog9 Hawley (Tenstorrent)" <warthog9@eaglescrag.net>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 028/214] ktest.pl: Avoid false positives with grub2 skip regex
 Date: Mon, 14 Oct 2024 16:18:11 +0200
-Message-ID: <20241014141239.094962519@linuxfoundation.org>
+Message-ID: <20241014141046.091051555@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Lalinsky <lalinsky@c4.cz>
+From: Daniel Jordan <daniel.m.jordan@oracle.com>
 
-commit 6b0bde5d8d4078ca5feec72fd2d828f0e5cf115d upstream.
+[ Upstream commit 2351e8c65404aabc433300b6bf90c7a37e8bbc4d ]
 
-Add native DSD support for Luxman D-08u DAC, by adding the PID/VID 1852:5062.
-This makes DSD playback work, and also sound quality when playing PCM files
-is improved, crackling sounds are gone.
+Some distros have grub2 config files with the lines
 
-Signed-off-by: Jan Lalinsky <lalinsky@c4.cz>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241003030811.2655735-1-lalinsky@c4.cz
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    if [ x"${feature_menuentry_id}" = xy ]; then
+      menuentry_id_option="--id"
+    else
+      menuentry_id_option=""
+    fi
+
+which match the skip regex defined for grub2 in get_grub_index():
+
+    $skip = '^\s*menuentry';
+
+These false positives cause the grub number to be higher than it
+should be, and the wrong kernel can end up booting.
+
+Grub documents the menuentry command with whitespace between it and the
+title, so make the skip regex reflect this.
+
+Link: https://lore.kernel.org/20240904175530.84175-1-daniel.m.jordan@oracle.com
+Signed-off-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Acked-by: John 'Warthog9' Hawley (Tenstorrent) <warthog9@eaglescrag.net>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/ktest/ktest.pl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2121,6 +2121,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_DISABLE_AUTOSUSPEND),
- 	DEVICE_FLG(0x17aa, 0x104d, /* Lenovo ThinkStation P620 Internal Speaker + Front Headset */
- 		   QUIRK_FLAG_DISABLE_AUTOSUSPEND),
-+	DEVICE_FLG(0x1852, 0x5062, /* Luxman D-08u */
-+		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
- 	DEVICE_FLG(0x1852, 0x5065, /* Luxman DA-06 */
- 		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
- 	DEVICE_FLG(0x1901, 0x0191, /* GE B850V3 CP2114 audio interface */
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index eb31cd9c977bf..e24cd825e70a6 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -2047,7 +2047,7 @@ sub get_grub_index {
+     } elsif ($reboot_type eq "grub2") {
+ 	$command = "cat $grub_file";
+ 	$target = '^\s*menuentry.*' . $grub_menu_qt;
+-	$skip = '^\s*menuentry';
++	$skip = '^\s*menuentry\s';
+ 	$submenu = '^\s*submenu\s';
+     } elsif ($reboot_type eq "grub2bls") {
+ 	$command = $grub_bls_get;
+-- 
+2.43.0
+
 
 
 
