@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-84063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 247E199CDF6
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:38:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8990399CCE4
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:26:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE0F6283E73
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:38:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E9881F235C2
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25561AA793;
-	Mon, 14 Oct 2024 14:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88691AB52D;
+	Mon, 14 Oct 2024 14:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJu7UTvr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsv6taRk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7F025632;
-	Mon, 14 Oct 2024 14:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646251AB505;
+	Mon, 14 Oct 2024 14:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916690; cv=none; b=r8la1kyJA/8xLr4+Mw8MfuhbLOF8iKCnpb+3IK3n5SN+sBRDV9yhKM02rVGkIUQqrz9y/Gw2LTkzCQjBEw8LTIOIe9WlLL2CU+Y7d7ULynWWgAnwEmfJV3cwTUUik7uUVQR/Kk/iG9egAgWh1Wxo4A26GBXsr92uYwGwPwQ+vOU=
+	t=1728915974; cv=none; b=ZVy9r1CORQpH4lFg8WR4BrSJQMW4dK0fxTbn37kLUlSbIY2fnNI6rLFudnV1oR3j+1Pd76Y6L/ShkRUYZp/I9ifcinySKL+W64N9rMde+A5rzObp/hwSuK6Zl8hJWMQN2PaU9LjBfvwOec7ICf2zITTW9SRe4YynCr5Jai8G0nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916690; c=relaxed/simple;
-	bh=ivwGnSnytXHHIDfuAAEiDKEycktn6BRORXTackE+0Jk=;
+	s=arc-20240116; t=1728915974; c=relaxed/simple;
+	bh=WLjtRDynmlCAAt6KAHlU1h+MeuiBunfoMqtiYuKB6N0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WVpAiVxou9PSyQgjRNO+W46uxF9dSwjq0SYxndIfHDv2TLpkw63wuYKmheiwCzPzJ0YtoyJ6cjJN4Ik+OU2ZvF2vvJI1p4L10EJylzG5KdON6g+VFCUC/AfZqXWYva+dFLoajK+dUiq8XMB0QXslAKNcg0lAYTwO2eEfwSFdd78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJu7UTvr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15394C4CEC3;
-	Mon, 14 Oct 2024 14:38:09 +0000 (UTC)
+	 MIME-Version; b=N0EjyDXtFBJxwL9I7sjPi6x83PZfi5AfTU84kz6LSugb0MJLwFjx+8YY7eVbH87WCJIJYYHTYbdSzH+nGpiB0gdZZqQr1W1MsMR8WeoR+xkAGGakulyGaAVDZZQlJG27f5h6QPG2uqnRGWVNAe3//HVRX80DXdYJVlj04T73xv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsv6taRk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3515C4CED5;
+	Mon, 14 Oct 2024 14:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916690;
-	bh=ivwGnSnytXHHIDfuAAEiDKEycktn6BRORXTackE+0Jk=;
+	s=korg; t=1728915974;
+	bh=WLjtRDynmlCAAt6KAHlU1h+MeuiBunfoMqtiYuKB6N0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cJu7UTvrwwZvrLgY8fK3QkVyxSdx1u9frS2YFQu9f9IKOWxeKoHxvXX+rQ/BsjJF4
-	 wYUxJw+BlbMUHshgg/si9VjVbYynTS8QuiQmoyOdIWlFXHdLsJXsLPAtB2NI0LSV/q
-	 BOeNHjv+/7cVdv5hr+pi6tqk0kPOUBIzNPbSjxHs=
+	b=lsv6taRkfEiBcnEszcps7wypCBMgikDMMgxm7W4KSsozcIqROIoaxflHasB5c9ge8
+	 ptLDWJMTs1kF7FTCYs3hwRnHKPFf3kbJl1ithcYdjJyAVq/EtOYKjLoxRbNT13+HER
+	 jbOB85tfUFwIMCtf/6dsB2ju5M1KV86t2qhOa0IY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Yunke Cao <yunkec@chromium.org>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/213] gfs2: Revert "introduce qd_bh_get_or_undo"
-Date: Mon, 14 Oct 2024 16:18:33 +0200
-Message-ID: <20241014141043.264794245@linuxfoundation.org>
+Subject: [PATCH 6.11 051/214] media: videobuf2-core: clear memory related fields in __vb2_plane_dmabuf_put()
+Date: Mon, 14 Oct 2024 16:18:34 +0200
+Message-ID: <20241014141046.982207440@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Yunke Cao <yunkec@chromium.org>
 
-[ Upstream commit 2aedfe847b4d91eabee11a44c27244055cef4eb3 ]
+[ Upstream commit 6a9c97ab6b7e85697e0b74e86062192a5ffffd99 ]
 
-The qd_bh_get_or_undo() helper introduced by that commit doesn't improve
-the code much, so revert it and clean things up in a more useful way in
-the next commit.
+Clear vb2_plane's memory related fields in __vb2_plane_dmabuf_put(),
+including bytesused, length, fd and data_offset.
 
-This reverts commit 7dbc6ae60dd7089d8ed42892b6a66c138f0aa7a0.
+Remove the duplicated code in __prepare_dmabuf().
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Stable-dep-of: 4b4b6374dc61 ("gfs2: Revert "ignore negated quota changes"")
+Signed-off-by: Yunke Cao <yunkec@chromium.org>
+Acked-by: Tomasz Figa <tfiga@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/quota.c | 36 +++++++++++++++++-------------------
- 1 file changed, 17 insertions(+), 19 deletions(-)
+ drivers/media/common/videobuf2/videobuf2-core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-index 299b6d6aaa795..62522d4011106 100644
---- a/fs/gfs2/quota.c
-+++ b/fs/gfs2/quota.c
-@@ -475,20 +475,6 @@ static int qd_check_sync(struct gfs2_sbd *sdp, struct gfs2_quota_data *qd,
- 	return 1;
+diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
+index 8b0de1cb08808..97605c2e25dac 100644
+--- a/drivers/media/common/videobuf2/videobuf2-core.c
++++ b/drivers/media/common/videobuf2/videobuf2-core.c
+@@ -311,6 +311,10 @@ static void __vb2_plane_dmabuf_put(struct vb2_buffer *vb, struct vb2_plane *p)
+ 	p->mem_priv = NULL;
+ 	p->dbuf = NULL;
+ 	p->dbuf_mapped = 0;
++	p->bytesused = 0;
++	p->length = 0;
++	p->m.fd = 0;
++	p->data_offset = 0;
  }
  
--static int qd_bh_get_or_undo(struct gfs2_sbd *sdp, struct gfs2_quota_data *qd)
--{
--	int error;
--
--	error = bh_get(qd);
--	if (!error)
--		return 0;
--
--	clear_bit(QDF_LOCKED, &qd->qd_flags);
--	slot_put(qd);
--	qd_put(qd);
--	return error;
--}
--
- static int qd_fish(struct gfs2_sbd *sdp, struct gfs2_quota_data **qdp)
- {
- 	struct gfs2_quota_data *qd = NULL, *iter;
-@@ -511,12 +497,17 @@ static int qd_fish(struct gfs2_sbd *sdp, struct gfs2_quota_data **qdp)
- 	spin_unlock(&qd_lock);
+ /*
+@@ -1420,10 +1424,6 @@ static int __prepare_dmabuf(struct vb2_buffer *vb)
  
- 	if (qd) {
--		error = qd_bh_get_or_undo(sdp, qd);
--		if (error)
-+		error = bh_get(qd);
-+		if (error) {
-+			clear_bit(QDF_LOCKED, &qd->qd_flags);
-+			slot_put(qd);
-+			qd_put(qd);
- 			return error;
--		*qdp = qd;
-+		}
- 	}
+ 		/* Release previously acquired memory if present */
+ 		__vb2_plane_dmabuf_put(vb, &vb->planes[plane]);
+-		vb->planes[plane].bytesused = 0;
+-		vb->planes[plane].length = 0;
+-		vb->planes[plane].m.fd = 0;
+-		vb->planes[plane].data_offset = 0;
  
-+	*qdp = qd;
-+
- 	return 0;
- }
- 
-@@ -1171,8 +1162,15 @@ void gfs2_quota_unlock(struct gfs2_inode *ip)
- 		if (!found)
- 			continue;
- 
--		if (!qd_bh_get_or_undo(sdp, qd))
--			qda[count++] = qd;
-+		gfs2_assert_warn(sdp, qd->qd_change_sync);
-+		if (bh_get(qd)) {
-+			clear_bit(QDF_LOCKED, &qd->qd_flags);
-+			slot_put(qd);
-+			qd_put(qd);
-+			continue;
-+		}
-+
-+		qda[count++] = qd;
- 	}
- 
- 	if (count) {
+ 		/* Acquire each plane's memory */
+ 		mem_priv = call_ptr_memop(attach_dmabuf,
 -- 
 2.43.0
 
