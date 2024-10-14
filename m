@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-84435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB33799D030
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:01:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA6699D002
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:59:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85C41286664
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:01:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD9161C2349D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BFE1C2DB2;
-	Mon, 14 Oct 2024 15:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D46143AA9;
+	Mon, 14 Oct 2024 14:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BzOk7vnm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcTzDYY8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027BC1AE00C;
-	Mon, 14 Oct 2024 15:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD643BBF2;
+	Mon, 14 Oct 2024 14:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918009; cv=none; b=kKf9IdDH64zHhkFb9DibRWQ0BAwRl5jJ2SYKk0dtMTmFoxnvqoREhSFFgJbHR6QNJTMwubRsiCTjnokbbXZz3rcFax2TahSUvryVkf7GgeWkdiD3lxZOjaKCZH4HBcJ51KwHtOpK0UvAfQl8k+qljw3YidF+e78C5dTpZmpTzwE=
+	t=1728917889; cv=none; b=Z/O0HGcl5riZ8jHq9xJ1Q9xY4RyCbBDKegcm4Rj7dyw7aCrYlxNMRsnr72Bl1+y1Hth9exFw6hSQduoqoRLfPA/tkxBB05V2LeeyPFb3yx9zOLbJ79f3+iXAHG7PdsO4H5jxgKYzBF5A7I5JIA0Kc3lM1MAD/PtKASm725MSCEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918009; c=relaxed/simple;
-	bh=aFPjnewCxqgLe4FceFK0gE/MfBlfuqHCdpArKNDA+54=;
+	s=arc-20240116; t=1728917889; c=relaxed/simple;
+	bh=Q3/5aC9uID+nFPZvydrBHWFcInWtNYgS9jgdfDMIvFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BpaPe8uiFRQkgPcZx64QwNs/Cu0nrP3kTiL+rb5LnaENPMTMVPd5sFsz9Gi/Tlg4+bx+9s+d93HlEXo0hkTOo0jG1yy5rO62VzqjfCbGnZwOCq2jhCt7ATTFaLmYjPKD8pIDTmcHFO/qK022CFe/QY3EhzKzkpJeIfoM1SATwIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BzOk7vnm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68708C4CEC3;
-	Mon, 14 Oct 2024 15:00:08 +0000 (UTC)
+	 MIME-Version; b=i/Yq6YNIO5h6CPXZo70PuY7pYxZb7wsx5HGoIshIoxEQsrtkS6wOxuEx+BE6FE6Lmgx33BpP4TxK0nH0mhdmGcETTexfNlEnnpCtXlTvwN+QqtUsAKUaWpFV4uTGY6GnS5CYtdcg01OsZNMh4YduxicCmxsk7JkDMkq20hJCkOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcTzDYY8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C4EC4CEC3;
+	Mon, 14 Oct 2024 14:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918008;
-	bh=aFPjnewCxqgLe4FceFK0gE/MfBlfuqHCdpArKNDA+54=;
+	s=korg; t=1728917889;
+	bh=Q3/5aC9uID+nFPZvydrBHWFcInWtNYgS9jgdfDMIvFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BzOk7vnmvxNLShoOKJwZDfgU1Gbl6YyJ90op60OcOKDugC9yNAArdSrouth5+2l+9
-	 xc/niuS4sKKC5eAduUCtjRx2GwwUzBF5WGNmsW3HggKWT/nb5GRM+UUt51Lt6kkalt
-	 G1bTGTyCPPsTyi6vjg5y/DVbVyRadp1CvWHtyfkY=
+	b=zcTzDYY8vcQoWjyfhfE+fPz1yYEqYnblKlXVtOlYZS8fcXSL9tgX21GblhAA5NsGz
+	 JdPgevXyxoRXRGInjbhyGpr2ybDURWRdcbY9+Ar+K9dv5KHUAkKkzngm3yJCgoGfmK
+	 ESkFdAVXosIPbO3w/u3RuHD8CI9Zv6Mw6CBSXUVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tony Ambardar <tony.ambardar@gmail.com>,
 	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 155/798] selftests/bpf: Fix errors compiling cg_storage_multi.h with musl libc
-Date: Mon, 14 Oct 2024 16:11:49 +0200
-Message-ID: <20241014141224.004271631@linuxfoundation.org>
+Subject: [PATCH 6.1 156/798] selftests/bpf: Fix error compiling test_lru_map.c
+Date: Mon, 14 Oct 2024 16:11:50 +0200
+Message-ID: <20241014141224.043064145@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -68,45 +68,42 @@ Content-Transfer-Encoding: 8bit
 
 From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 730561d3c08d4a327cceaabf11365958a1c00cec ]
+[ Upstream commit cacf2a5a78cd1f5f616eae043ebc6f024104b721 ]
 
-Remove a redundant include of '<asm/types.h>', whose needed definitions are
-already included (via '<linux/types.h>') in cg_storage_multi_egress_only.c,
-cg_storage_multi_isolated.c, and cg_storage_multi_shared.c. This avoids
-redefinition errors seen compiling for mips64el/musl-libc like:
+Although the post-increment in macro 'CPU_SET(next++, &cpuset)' seems safe,
+the sequencing can raise compile errors, so move the increment outside the
+macro. This avoids an error seen using gcc 12.3.0 for mips64el/musl-libc:
 
-  In file included from progs/cg_storage_multi_egress_only.c:13:
-  In file included from progs/cg_storage_multi.h:6:
-  In file included from /usr/mips64el-linux-gnuabi64/include/asm/types.h:23:
-  /usr/include/asm-generic/int-l64.h:29:25: error: typedef redefinition with different types ('long' vs 'long long')
-     29 | typedef __signed__ long __s64;
-        |                         ^
-  /usr/include/asm-generic/int-ll64.h:30:44: note: previous definition is here
-     30 | __extension__ typedef __signed__ long long __s64;
-        |                                            ^
+  In file included from test_lru_map.c:11:
+  test_lru_map.c: In function 'sched_next_online':
+  test_lru_map.c:129:29: error: operation on 'next' may be undefined [-Werror=sequence-point]
+    129 |                 CPU_SET(next++, &cpuset);
+        |                             ^
+  cc1: all warnings being treated as errors
 
-Fixes: 9e5bd1f7633b ("selftests/bpf: Test CGROUP_STORAGE map can't be used by multiple progs")
+Fixes: 3fbfadce6012 ("bpf: Fix test_lru_sanity5() in test_lru_map.c")
 Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
 Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/4f4702e9f6115b7f84fea01b2326ca24c6df7ba8.1721713597.git.tony.ambardar@gmail.com
+Link: https://lore.kernel.org/bpf/22993dfb11ccf27925a626b32672fd3324cb76c4.1722244708.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/cg_storage_multi.h | 2 --
- 1 file changed, 2 deletions(-)
+ tools/testing/selftests/bpf/test_lru_map.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/cg_storage_multi.h b/tools/testing/selftests/bpf/progs/cg_storage_multi.h
-index a0778fe7857a1..41d59f0ee606c 100644
---- a/tools/testing/selftests/bpf/progs/cg_storage_multi.h
-+++ b/tools/testing/selftests/bpf/progs/cg_storage_multi.h
-@@ -3,8 +3,6 @@
- #ifndef __PROGS_CG_STORAGE_MULTI_H
- #define __PROGS_CG_STORAGE_MULTI_H
+diff --git a/tools/testing/selftests/bpf/test_lru_map.c b/tools/testing/selftests/bpf/test_lru_map.c
+index 4d0650cfb5cd8..fda7589c50236 100644
+--- a/tools/testing/selftests/bpf/test_lru_map.c
++++ b/tools/testing/selftests/bpf/test_lru_map.c
+@@ -126,7 +126,8 @@ static int sched_next_online(int pid, int *next_to_try)
  
--#include <asm/types.h>
--
- struct cgroup_value {
- 	__u32 egress_pkts;
- 	__u32 ingress_pkts;
+ 	while (next < nr_cpus) {
+ 		CPU_ZERO(&cpuset);
+-		CPU_SET(next++, &cpuset);
++		CPU_SET(next, &cpuset);
++		next++;
+ 		if (!sched_setaffinity(pid, sizeof(cpuset), &cpuset)) {
+ 			ret = 0;
+ 			break;
 -- 
 2.43.0
 
