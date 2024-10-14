@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-84866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CBED99D28D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:27:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43BD399CE54
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:42:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC9A0285C75
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:27:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F01381F23CCC
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C33D1AC44C;
-	Mon, 14 Oct 2024 15:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5319517C77;
+	Mon, 14 Oct 2024 14:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/iEfszY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TsfVzF+k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C271CBE8A;
-	Mon, 14 Oct 2024 15:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2961AA7A5;
+	Mon, 14 Oct 2024 14:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919496; cv=none; b=G3qujAKdY2dKwAg2/+loJzhO9q4hGEKmnq2BQn/uToQZYkmRPcHVp8rO0/PsOjUc58GFg0zKTv9vEauK/PcCu35Sbs2Ce1E44Ig7xCtYbuXSmmQ7oqSJmRTp01BgO+kW4371PrESzX5lVA28SaAEYxCBdkeldG68xnGcFk8MHCQ=
+	t=1728916958; cv=none; b=raDjA+YxMKnmjeM3Bl8ikkSTDopSOO24341QVYzLYJ9ucO7K2Ea08bSYJpAJOWjSTc15+2TOVqeRtS5Cn5fJkE37ey/Cm945OdkQWfSKTgkRWmHGbdmZmsHNfT10Qh1+2IfA/mwZs6GxgY6LbRAumJ+tVA/tRLNtDGRFZwJCgbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919496; c=relaxed/simple;
-	bh=S3t5aQJiQWolK8ZBAzVteTlz6ZJl6IbB6K6AdR9m5ow=;
+	s=arc-20240116; t=1728916958; c=relaxed/simple;
+	bh=XCua2k03eyzHuHPbDyu5iAAp3plmULQlonsXJ7e0mlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iRjCcEgmUSkvyoLwLNhY+eMRxzRSg4O21VhW/4HukhWy7+FjOxSyPsv/HfLOid204jPv1JUd63tEKHbzHDFkCK1+/Kz/BOVumGN2/hsNgtG3/bxz2eaMHTOuJfQo02djJZrYsDVV9/Hnso/IgYo92QM0ngU+6eVTFDTH9Pcfxqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/iEfszY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EDBAC4CEC7;
-	Mon, 14 Oct 2024 15:24:54 +0000 (UTC)
+	 MIME-Version; b=owBdcE+vNcDmGays67A9ij4s7JUiv0xcz6SO7/wzwxJ3l4PZNMBH486dTy566Wrt1vh+xmzv9gVfybO5C0EloALxeZIVLa3wYnX3kOl/pqOusB5EPWBI7wrJjP2CBSRW3c95lUZ8RrmKg7q3+m1dhknRv9bwnubQ0HgI+i70+VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TsfVzF+k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FD3C4CEC3;
+	Mon, 14 Oct 2024 14:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919495;
-	bh=S3t5aQJiQWolK8ZBAzVteTlz6ZJl6IbB6K6AdR9m5ow=;
+	s=korg; t=1728916957;
+	bh=XCua2k03eyzHuHPbDyu5iAAp3plmULQlonsXJ7e0mlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/iEfszYZQTH8Rad0rY4WuP1dskEZ2w9mZxlB7nqYl0DKH/066EAMNXRT5lmr81Wn
-	 GAefwsMaTAEwkBVhe1XstRaYMTeZcgQBePfKwY6P8tsyVfCw3ZnM8jzA8gCsbSjqhG
-	 bUetxV2YjM8l7LfUQNmCAaKA4hTYFWs8c2Zf7+dw=
+	b=TsfVzF+ktMqF9lzMRup31zAnt+S6ZAzPnlrl8s5MSGm0kprfyn1WMoR50G7N/YA2M
+	 HvT4lAXSMX70pmZwn1Uz7v7VpqMX4xEsC724FrMiUzW8jWilyzhFDyq43uQvC2d7BI
+	 ZWf+ydsiNdxr+EehvOrPYMsAgKyDIh4q10CBUL0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Virag <virag.david003@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	SiyuLi <siyuli@glenfly.com>,
+	WangYuli <wangyuli@uniontech.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 622/798] dt-bindings: clock: exynos7885: Fix duplicated binding
+Subject: [PATCH 6.6 070/213] PCI: Add function 0 DMA alias quirk for Glenfly Arise chip
 Date: Mon, 14 Oct 2024 16:19:36 +0200
-Message-ID: <20241014141242.475925254@linuxfoundation.org>
+Message-ID: <20241014141045.716640185@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Virag <virag.david003@gmail.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit abf3a3ea9acb5c886c8729191a670744ecd42024 ]
+[ Upstream commit 9246b487ab3c3b5993aae7552b7a4c541cc14a49 ]
 
-The numbering in Exynos7885's FSYS CMU bindings has 4 duplicated by
-accident, with the rest of the bindings continuing with 5.
+Add DMA support for audio function of Glenfly Arise chip, which uses
+Requester ID of function 0.
 
-Fix this by moving CLK_MOUT_FSYS_USB30DRD_USER to the end as 11.
-
-Since CLK_MOUT_FSYS_USB30DRD_USER is not used in any device tree as of
-now, and there are no other clocks affected (maybe apart from
-CLK_MOUT_FSYS_MMC_SDIO_USER which the number was shared with, also not
-used in a device tree), this is the least impactful way to solve this
-problem.
-
-Fixes: cd268e309c29 ("dt-bindings: clock: Add bindings for Exynos7885 CMU_FSYS")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Virag <virag.david003@gmail.com>
-Link: https://lore.kernel.org/r/20240806121157.479212-2-virag.david003@gmail.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/CA2BBD087345B6D1+20240823095708.3237375-1-wangyuli@uniontech.com
+Signed-off-by: SiyuLi <siyuli@glenfly.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+[bhelgaas: lower-case hex to match local code, drop unused Device IDs]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/clock/exynos7885.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/quirks.c      | 4 ++++
+ include/linux/pci_ids.h   | 2 ++
+ sound/pci/hda/hda_intel.c | 2 +-
+ 3 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/dt-bindings/clock/exynos7885.h b/include/dt-bindings/clock/exynos7885.h
-index 8256e7430b63d..a363eb63dba7c 100644
---- a/include/dt-bindings/clock/exynos7885.h
-+++ b/include/dt-bindings/clock/exynos7885.h
-@@ -139,13 +139,13 @@
- #define CLK_MOUT_FSYS_MMC_CARD_USER	2
- #define CLK_MOUT_FSYS_MMC_EMBD_USER	3
- #define CLK_MOUT_FSYS_MMC_SDIO_USER	4
--#define CLK_MOUT_FSYS_USB30DRD_USER	4
- #define CLK_GOUT_MMC_CARD_ACLK		5
- #define CLK_GOUT_MMC_CARD_SDCLKIN	6
- #define CLK_GOUT_MMC_EMBD_ACLK		7
- #define CLK_GOUT_MMC_EMBD_SDCLKIN	8
- #define CLK_GOUT_MMC_SDIO_ACLK		9
- #define CLK_GOUT_MMC_SDIO_SDCLKIN	10
--#define FSYS_NR_CLK			11
-+#define CLK_MOUT_FSYS_USB30DRD_USER	11
-+#define FSYS_NR_CLK			12
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 0b08ac45effbb..a35f72b443cef 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4252,6 +4252,10 @@ static void quirk_dma_func0_alias(struct pci_dev *dev)
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe832, quirk_dma_func0_alias);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe476, quirk_dma_func0_alias);
  
- #endif /* _DT_BINDINGS_CLOCK_EXYNOS_7885_H */
++/* Some Glenfly chips use function 0 as the PCIe Requester ID for DMA */
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d40, quirk_dma_func0_alias);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d41, quirk_dma_func0_alias);
++
+ static void quirk_dma_func1_alias(struct pci_dev *dev)
+ {
+ 	if (PCI_FUNC(dev->devfn) != 1)
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index abff4e3b6a58b..cebfd1bb9dfa1 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -2653,6 +2653,8 @@
+ #define PCI_DEVICE_ID_DCI_PCCOM8	0x0002
+ #define PCI_DEVICE_ID_DCI_PCCOM2	0x0004
+ 
++#define PCI_VENDOR_ID_GLENFLY		0x6766
++
+ #define PCI_VENDOR_ID_INTEL		0x8086
+ #define PCI_DEVICE_ID_INTEL_EESSC	0x0008
+ #define PCI_DEVICE_ID_INTEL_HDA_CML_LP	0x02c8
+diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+index a6a9d353fe635..134c6f6e0959a 100644
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -2682,7 +2682,7 @@ static const struct pci_device_id azx_ids[] = {
+ 	  .driver_data = AZX_DRIVER_ATIHDMI_NS | AZX_DCAPS_PRESET_ATI_HDMI_NS |
+ 	  AZX_DCAPS_PM_RUNTIME },
+ 	/* GLENFLY */
+-	{ PCI_DEVICE(0x6766, PCI_ANY_ID),
++	{ PCI_DEVICE(PCI_VENDOR_ID_GLENFLY, PCI_ANY_ID),
+ 	  .class = PCI_CLASS_MULTIMEDIA_HD_AUDIO << 8,
+ 	  .class_mask = 0xffffff,
+ 	  .driver_data = AZX_DRIVER_GFHDMI | AZX_DCAPS_POSFIX_LPIB |
 -- 
 2.43.0
 
