@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32FCE99CDAE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49BB399D32D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D34D51F20F1B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BBEC1C22983
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BE21ABECD;
-	Mon, 14 Oct 2024 14:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036651AB6FC;
+	Mon, 14 Oct 2024 15:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFxiWuqr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o07DSKmE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C32F1798C;
-	Mon, 14 Oct 2024 14:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50A41AB50D;
+	Mon, 14 Oct 2024 15:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916499; cv=none; b=NLCwJ8syYniSr0euRHDY6GS4ee8ouMednJzDm/SnZgvJV2qYcFE0tVWJMArYHLMHYfWQJL7pmibZReoFIxC9PD1SGL8+AGS3c4CNkKDTzcCQWJsJ8XV2yeCQluQgAWrWfSn+lUMeRuxPKJssOUVLtrCCUjpcZiXPydOIdf1Ya0k=
+	t=1728919882; cv=none; b=BSfujR3lTQHdqhc7DbTF4UQ/t2ZHbVXyH+buwMk12GADngty15thiph+xtguSNV44F43LjQEm65SVtf1OtEuBNivEPZjRPWWHosxFLU+g8/HXKuBv2PtA8Q2d0bmdZ1WKS/1KM+VJkdwYtrb8q6SzvjpcPHwMESR1pPH0CIEsac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916499; c=relaxed/simple;
-	bh=qtswmeQsMoZLPebWyEc/Fyp0iTC9p7WDuEWYbASYECg=;
+	s=arc-20240116; t=1728919882; c=relaxed/simple;
+	bh=Vzx6sI2RJvlL1XLnyRdlBBpAUfFToB3XO4DwPOlSKhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=blwGQpHHjNIlRXz4djA1HuvnG53gMmkIXxuKyU/8f+tRpNjujPEmjLgQRlWHHHmeTPZ6v/sINoq1hrJ1JF1miVIRUAr8lAXRZpTncjFGzyh1scXFWlcA71L79SF22sybLhAFAu+UWRMhmF1vMEdL5w5kpfRj0ejQRPyHY3RV1mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFxiWuqr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2277C4CEC7;
-	Mon, 14 Oct 2024 14:34:58 +0000 (UTC)
+	 MIME-Version; b=Wnvy5q2Rh6qXMXCPTpb5tXmKjJ69Nmp2sEpJ0QDmZY6ftr6UqHmcjDvz0LYl0bKczuEXUgeOdPlYJWhcM4m0PBkHi+E6DNnB/xqq/81dnUeMagjfGkRUOPODiHj3Iy+xMFvXElQIEsvMGiEXMLAh8GfOa96ydPjlB4xKUQGj1UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o07DSKmE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294E8C4CEC3;
+	Mon, 14 Oct 2024 15:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916499;
-	bh=qtswmeQsMoZLPebWyEc/Fyp0iTC9p7WDuEWYbASYECg=;
+	s=korg; t=1728919882;
+	bh=Vzx6sI2RJvlL1XLnyRdlBBpAUfFToB3XO4DwPOlSKhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XFxiWuqrLjbf+NybrATr2Ukhd9YKWuxT7ukVqbuZWnIWbIZ65fQJaGMmdOW7J2sFT
-	 608FzKpSOUK2aN2L8nrs4irgcH801ubnJ5yvaUO52hfL42kWGh/b4y3eCov8Ta3ujo
-	 SvCN7aKSKK7sYf53nn8mxldxttXURwLX/hXC1G4I=
+	b=o07DSKmEOhQr/OTJVmfKoudW2ZeE5KEl3Z8v8nDfkRfMBwc/5njdcld/LTKLmGqUS
+	 T9ts99dMqYqiGPPbDw4/yG3TSeWbaxdeHgje0wd4nzmHsf6ASHQ3C58MB9FOankSOC
+	 T9cNepuAz9fiacqhUtV6FSmD7kq5ea8fGX+n/Gvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anatolij Gustschin <agust@denx.de>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.11 194/214] net: dsa: lan9303: ensure chip reset and wait for READY status
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 703/798] RISC-V: Dont have MAX_PHYSMEM_BITS exceed phys_addr_t
 Date: Mon, 14 Oct 2024 16:20:57 +0200
-Message-ID: <20241014141052.547920069@linuxfoundation.org>
+Message-ID: <20241014141245.686365884@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anatolij Gustschin <agust@denx.de>
+From: Palmer Dabbelt <palmer@rivosinc.com>
 
-commit 5c14e51d2d7df49fe0d4e64a12c58d2542f452ff upstream.
+[ Upstream commit ad380f6a0a5e82e794b45bb2eaec24ed51a56846 ]
 
-Accessing device registers seems to be not reliable, the chip
-revision is sometimes detected wrongly (0 instead of expected 1).
+I recently ended up with a warning on some compilers along the lines of
 
-Ensure that the chip reset is performed via reset GPIO and then
-wait for 'Device Ready' status in HW_CFG register before doing
-any register initializations.
+      CC      kernel/resource.o
+    In file included from include/linux/ioport.h:16,
+                     from kernel/resource.c:15:
+    kernel/resource.c: In function 'gfr_start':
+    include/linux/minmax.h:49:37: error: conversion from 'long long unsigned int' to 'resource_size_t' {aka 'unsigned int'} changes value from '17179869183' to '4294967295' [-Werror=overflow]
+       49 |         ({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
+          |                                     ^
+    include/linux/minmax.h:52:9: note: in expansion of macro '__cmp_once_unique'
+       52 |         __cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+          |         ^~~~~~~~~~~~~~~~~
+    include/linux/minmax.h:161:27: note: in expansion of macro '__cmp_once'
+      161 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
+          |                           ^~~~~~~~~~
+    kernel/resource.c:1829:23: note: in expansion of macro 'min_t'
+     1829 |                 end = min_t(resource_size_t, base->end,
+          |                       ^~~~~
+    kernel/resource.c: In function 'gfr_continue':
+    include/linux/minmax.h:49:37: error: conversion from 'long long unsigned int' to 'resource_size_t' {aka 'unsigned int'} changes value from '17179869183' to '4294967295' [-Werror=overflow]
+       49 |         ({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
+          |                                     ^
+    include/linux/minmax.h:52:9: note: in expansion of macro '__cmp_once_unique'
+       52 |         __cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+          |         ^~~~~~~~~~~~~~~~~
+    include/linux/minmax.h:161:27: note: in expansion of macro '__cmp_once'
+      161 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
+          |                           ^~~~~~~~~~
+    kernel/resource.c:1847:24: note: in expansion of macro 'min_t'
+     1847 |                addr <= min_t(resource_size_t, base->end,
+          |                        ^~~~~
+    cc1: all warnings being treated as errors
 
-Cc: stable@vger.kernel.org
-Fixes: a1292595e006 ("net: dsa: add new DSA switch driver for the SMSC-LAN9303")
-Signed-off-by: Anatolij Gustschin <agust@denx.de>
-[alex: reworked using read_poll_timeout()]
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://patch.msgid.link/20241004113655.3436296-1-alexander.sverdlin@siemens.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+which looks like a real problem: our phys_addr_t is only 32 bits now, so
+having 34-bit masks is just going to result in overflows.
+
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240731162159.9235-2-palmer@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/lan9303-core.c |   29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ arch/riscv/include/asm/sparsemem.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/dsa/lan9303-core.c
-+++ b/drivers/net/dsa/lan9303-core.c
-@@ -6,6 +6,7 @@
- #include <linux/module.h>
- #include <linux/gpio/consumer.h>
- #include <linux/regmap.h>
-+#include <linux/iopoll.h>
- #include <linux/mutex.h>
- #include <linux/mii.h>
- #include <linux/of.h>
-@@ -839,6 +840,8 @@ static void lan9303_handle_reset(struct
- 	if (!chip->reset_gpio)
- 		return;
- 
-+	gpiod_set_value_cansleep(chip->reset_gpio, 1);
-+
- 	if (chip->reset_duration != 0)
- 		msleep(chip->reset_duration);
- 
-@@ -864,8 +867,34 @@ static int lan9303_disable_processing(st
- static int lan9303_check_device(struct lan9303 *chip)
- {
- 	int ret;
-+	int err;
- 	u32 reg;
- 
-+	/* In I2C-managed configurations this polling loop will clash with
-+	 * switch's reading of EEPROM right after reset and this behaviour is
-+	 * not configurable. While lan9303_read() already has quite long retry
-+	 * timeout, seems not all cases are being detected as arbitration error.
-+	 *
-+	 * According to datasheet, EEPROM loader has 30ms timeout (in case of
-+	 * missing EEPROM).
-+	 *
-+	 * Loading of the largest supported EEPROM is expected to take at least
-+	 * 5.9s.
-+	 */
-+	err = read_poll_timeout(lan9303_read, ret,
-+				!ret && reg & LAN9303_HW_CFG_READY,
-+				20000, 6000000, false,
-+				chip->regmap, LAN9303_HW_CFG, &reg);
-+	if (ret) {
-+		dev_err(chip->dev, "failed to read HW_CFG reg: %pe\n",
-+			ERR_PTR(ret));
-+		return ret;
-+	}
-+	if (err) {
-+		dev_err(chip->dev, "HW_CFG not ready: 0x%08x\n", reg);
-+		return err;
-+	}
-+
- 	ret = lan9303_read(chip->regmap, LAN9303_CHIP_REV, &reg);
- 	if (ret) {
- 		dev_err(chip->dev, "failed to read chip revision register: %d\n",
+diff --git a/arch/riscv/include/asm/sparsemem.h b/arch/riscv/include/asm/sparsemem.h
+index 63acaecc33747..2f901a410586d 100644
+--- a/arch/riscv/include/asm/sparsemem.h
++++ b/arch/riscv/include/asm/sparsemem.h
+@@ -7,7 +7,7 @@
+ #ifdef CONFIG_64BIT
+ #define MAX_PHYSMEM_BITS	56
+ #else
+-#define MAX_PHYSMEM_BITS	34
++#define MAX_PHYSMEM_BITS	32
+ #endif /* CONFIG_64BIT */
+ #define SECTION_SIZE_BITS	27
+ #endif /* CONFIG_SPARSEMEM */
+-- 
+2.43.0
+
 
 
 
