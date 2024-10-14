@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-83897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1295D99CD11
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:28:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3529899CD17
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:28:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B07A1C22667
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:28:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4CE71F21A08
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEAB1AAE23;
-	Mon, 14 Oct 2024 14:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758571A76AC;
+	Mon, 14 Oct 2024 14:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOjmt6mq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nahcDaXT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13B21AA793;
-	Mon, 14 Oct 2024 14:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BA61547F3;
+	Mon, 14 Oct 2024 14:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916111; cv=none; b=eLqXG26tRwaGsT+q78JnXAu5Zk9KaVx5Qo3zZpXqVAdGzlESmy0CgMBUPHA6Fm42FqAJRTMf+bfIKQlXMgjgSllL0oua2DXBUfgIYRpaqcKlBpECMtuFLXNBMZ87+d0QgBCgc8gLvivPQ8oC516nrt4B9zEqmy0aEKVssEiA0E4=
+	t=1728916128; cv=none; b=fu8SdJC06ZP7aGVdOlO6Wkn9JwlvugQ7V4VCOAVAIPIxjN8ws3H46vD/2ecqzdvOvdNKG1N7kHuLiJMImtiniqcHfmymQkNqOzPnrTSzsa9sEDk21ZJgrCN+QInnW7jlGt3ZTZtIxzU+ESTn9SlQ8IcWIxUfrpuz7r4m11q+wvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916111; c=relaxed/simple;
-	bh=+ryevX4ee89OFn4L3F4FkUpcyUlkj6X5xMWkXgIpfio=;
+	s=arc-20240116; t=1728916128; c=relaxed/simple;
+	bh=Wx63BEMQO+i5hpOjeK4g4WsXr6oWJ+5/Hyf9hpAOWPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=beP9UQelQad73kkZp719XNGKZiJtxTBf25GULzlT3MpWtcUkLQ04dx9qaVOSsLL7Hf/E3DZXcopaLVxRCZi/95LyN9nXJ7Dhv4QEksrvacBvhl9e2IT1D9vvI9zwn1NcPc+TPPsc1koI+fV+1wxHg/Ib2zNc98fxqHhRBFoVQBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOjmt6mq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B30CC4CEC3;
-	Mon, 14 Oct 2024 14:28:31 +0000 (UTC)
+	 MIME-Version; b=DA/9Az0TNIe+TKA0eqKqEZPvjj0QvXZotQF+Y0lBbfqHujPAJjUNUupYYHH32DsI8qxLGvS1H/DvjaRN5aR/MTWA52EUHLvtb+xfayVxP6O6GpNvDsvO9LPugcUj7Nj3YYrNF7FLUvKrkdrtq7tByGvhi7P2+tdxW/g+KIUMGDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nahcDaXT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A5BC4CEC3;
+	Mon, 14 Oct 2024 14:28:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916111;
-	bh=+ryevX4ee89OFn4L3F4FkUpcyUlkj6X5xMWkXgIpfio=;
+	s=korg; t=1728916128;
+	bh=Wx63BEMQO+i5hpOjeK4g4WsXr6oWJ+5/Hyf9hpAOWPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jOjmt6mq5qPQFvDFA2ACoL8CsdoD2RNhijMhgEyoBeCa/WC7mV9xndy/K+Fk4wC48
-	 /JhMacv04UnuHC8n+++rmZ5MyPZpnxGWj3xViQwA13vbuASVatyk5VZJsFQ4Aa7vfh
-	 lL4OElPGcXQZQ+D5CkFpEVlvnkhNpjAXCcn0BppM=
+	b=nahcDaXTqAaaMX1O3QLTn4xAaU+vd9AurtmSoeTh5lLd8I78RCVKlD56YsNOjgZYG
+	 xRB14gs5yNKvOetlYlKE+FVsALsvF+5kqgPR44/rKjq8wrX7TmFSiAnQRtPAlBdlQM
+	 4e2ym7i/T1m6YrwlBf+p77VepqF6/CWwMXpimSm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
+	Ruffalo Lavoisier <RuffaloLavoisier@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 060/214] usb: host: xhci-plat: Parse xhci-missing_cas_quirk and apply quirk
-Date: Mon, 14 Oct 2024 16:18:43 +0200
-Message-ID: <20241014141047.331795982@linuxfoundation.org>
+Subject: [PATCH 6.11 061/214] comedi: ni_routing: tools: Check when the file could not be opened
+Date: Mon, 14 Oct 2024 16:18:44 +0200
+Message-ID: <20241014141047.371486394@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
 References: <20241014141044.974962104@linuxfoundation.org>
@@ -65,39 +65,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Ruffalo Lavoisier <ruffalolavoisier@gmail.com>
 
-[ Upstream commit a6cd2b3fa89468b5f28b83d211bd25cc589f9eba ]
+[ Upstream commit 5baeb157b341b1d26a5815aeaa4d3bb9e0444fda ]
 
-Parse software managed property 'xhci-skip-phy-init-quirk' and
-'xhci-skip-phy-init-quirk' to apply related quirk. It allows usb glue layer
-driver apply these quirk.
+- After fopen check NULL before using the file pointer use
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240906-dwc-mp-v5-1-ea8ec6774e7b@nxp.com
+Signed-off-by: Ruffalo Lavoisier <RuffaloLavoisier@gmail.com>
+Link: https://lore.kernel.org/r/20240906203025.89588-1-RuffaloLavoisier@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-plat.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
-index 31bdfa52eeb25..ecaa75718e592 100644
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -259,6 +259,12 @@ int xhci_plat_probe(struct platform_device *pdev, struct device *sysdev, const s
- 		if (device_property_read_bool(tmpdev, "write-64-hi-lo-quirk"))
- 			xhci->quirks |= XHCI_WRITE_64_HI_LO;
+diff --git a/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c b/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c
+index d55521b5bdcb2..892a66b2cea66 100644
+--- a/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c
++++ b/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c
+@@ -140,6 +140,11 @@ int main(void)
+ {
+ 	FILE *fp = fopen("ni_values.py", "w");
  
-+		if (device_property_read_bool(tmpdev, "xhci-missing-cas-quirk"))
-+			xhci->quirks |= XHCI_MISSING_CAS;
++	if (fp == NULL) {
++		fprintf(stderr, "Could not open file!");
++		return -1;
++	}
 +
-+		if (device_property_read_bool(tmpdev, "xhci-skip-phy-init-quirk"))
-+			xhci->quirks |= XHCI_SKIP_PHY_INIT;
-+
- 		device_property_read_u32(tmpdev, "imod-interval-ns",
- 					 &xhci->imod_interval);
- 	}
+ 	/* write route register values */
+ 	fprintf(fp, "ni_route_values = {\n");
+ 	for (int i = 0; ni_all_route_values[i]; ++i)
 -- 
 2.43.0
 
