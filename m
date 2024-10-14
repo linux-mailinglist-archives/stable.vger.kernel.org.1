@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-84186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7FD99CEC4
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:46:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93EAC99CDB1
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FDF42882B9
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:46:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C49EA1C22A30
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805DE4CDEC;
-	Mon, 14 Oct 2024 14:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A924E25632;
+	Mon, 14 Oct 2024 14:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BjHATtAo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVC5hr80"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD621AB6FD;
-	Mon, 14 Oct 2024 14:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B3C1AAE08;
+	Mon, 14 Oct 2024 14:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917135; cv=none; b=Dl1b1Xnvc0ngsqpax0RYw2A4cSPAHAPhEAXVNcJ6r1xQmZVARLvlHmlDs+KoABt6H73acUqcdqzwWJ6AEorbU4al0LjZT1H6tuw1ZMuMhcxpMRBNnF6ynwaTYvaGJg2Z/r8DRhs9YlFyiETYy+vo779kgD/5YMHL+zQNnCdfLwY=
+	t=1728916506; cv=none; b=ZMi3Hw0sOIAN+qEaC6JNoOiOtwmVTvOOva/6Z88ONw5+Wk8KMKKmL6VACH5abgnJiTE8zs84MUE3zjhO6VsYvdp0Ye0fpRyvIpnxp040nCU2L34AqUNJ3AyflWLuNXBjsXZvQ000KsB0eELV5fuGuURsPit7fisPL0ekCmotvb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917135; c=relaxed/simple;
-	bh=tnuI5jgqib0aVd4bah0ulQCFa3w77EK/qAy2yacvO9o=;
+	s=arc-20240116; t=1728916506; c=relaxed/simple;
+	bh=MgNb5yWnowP30fo1Z6WAkffMnXdC7C3g1pmaoNrBzWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PKBxK1TGwTosjFvY7Po08mYldzlORR4g+59Gd+VLTbSOkhYOJzkmDjTmFXGGtmmcK9uvSEJQcddjuArrLdBM50a4yt8zpKRrgLvrUuj7NS/pAVt2z2J85nxtUP0FmzuBdCeBhfXR5Iz5XXlEr1u/BRIJqZy8Nqtuv1/g7twrdxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BjHATtAo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A63C4CEC3;
-	Mon, 14 Oct 2024 14:45:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RMwCDRtk8XCxWkvR/1rBZczzmUybYgT+ZlIxvCS+qSaHK+Meq5khzfia/74Y0SUyG5TZPe2BccLcAPqevIR/hqqPwglrpOPq8kAL2ApKbIiZEde14ASgQdBVBqM9ErQGPr6z4jfJxWd9OiyZ3degqa9NIpb6ayrnYhN/C3C6fzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVC5hr80; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C7BC4CEC3;
+	Mon, 14 Oct 2024 14:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917135;
-	bh=tnuI5jgqib0aVd4bah0ulQCFa3w77EK/qAy2yacvO9o=;
+	s=korg; t=1728916506;
+	bh=MgNb5yWnowP30fo1Z6WAkffMnXdC7C3g1pmaoNrBzWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BjHATtAoP+MQCnv3g/dyr2XgEuX3+clrTiatTK7xQsrnt0t2KduvBc217FLjgftSu
-	 uZQ6RbM6ZadNlj+Mcpw3L5YJtJq4upVo7vlGQUFF2LH16Oq1c0PgO8xqOxj7GifDGa
-	 B9W/dp6Ax5EEWiGZUhZuCCyZmQCF/5/HhpE6aHW8=
+	b=xVC5hr80homVszeNn2Yymxax/bw40V8X5XL+NklL/nYE9bJUi6VpzX7IzpGfILgqG
+	 glp4zdRDcm7bDQaYwjLQXTE/Xa2yF6g1u3Jbl5KgnlFezCjpHDKASVwkOoSDody2Ds
+	 k7Phj/9ev5z2LiPVV/VITphlPUtQRL8jL8ott04Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <courmisch@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 161/213] phonet: Handle error of rtnl_register_module().
+	Donet Tom <donettom@linux.ibm.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+	Kees Cook <keescook@chromium.org>,
+	Mark Brown <broonie@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	Jason Gunthorpe <jgg@mellanox.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 204/214] selftests/mm: fix incorrect buffer->mirror size in hmm2 double_map test
 Date: Mon, 14 Oct 2024 16:21:07 +0200
-Message-ID: <20241014141049.255772258@linuxfoundation.org>
+Message-ID: <20241014141052.937830058@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +71,66 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Donet Tom <donettom@linux.ibm.com>
 
-[ Upstream commit b5e837c86041bef60f36cf9f20a641a30764379a ]
+commit 76503e1fa1a53ef041a120825d5ce81c7fe7bdd7 upstream.
 
-Before commit addf9b90de22 ("net: rtnetlink: use rcu to free rtnl
-message handlers"), once the first rtnl_register_module() allocated
-rtnl_msg_handlers[PF_PHONET], the following calls never failed.
+The hmm2 double_map test was failing due to an incorrect buffer->mirror
+size.  The buffer->mirror size was 6, while buffer->ptr size was 6 *
+PAGE_SIZE.  The test failed because the kernel's copy_to_user function was
+attempting to copy a 6 * PAGE_SIZE buffer to buffer->mirror.  Since the
+size of buffer->mirror was incorrect, copy_to_user failed.
 
-However, after the commit, rtnl_register_module() could fail silently
-to allocate rtnl_msg_handlers[PF_PHONET][msgtype] and requires error
-handling for each call.
+This patch corrects the buffer->mirror size to 6 * PAGE_SIZE.
 
-Handling the error allows users to view a module as an all-or-nothing
-thing in terms of the rtnetlink functionality.  This prevents syzkaller
-from reporting spurious errors from its tests, where OOM often occurs
-and module is automatically loaded.
+Test Result without this patch
+==============================
+ #  RUN           hmm2.hmm2_device_private.double_map ...
+ # hmm-tests.c:1680:double_map:Expected ret (-14) == 0 (0)
+ # double_map: Test terminated by assertion
+ #          FAIL  hmm2.hmm2_device_private.double_map
+ not ok 53 hmm2.hmm2_device_private.double_map
 
-Let's use rtnl_register_many() to handle the errors easily.
+Test Result with this patch
+===========================
+ #  RUN           hmm2.hmm2_device_private.double_map ...
+ #            OK  hmm2.hmm2_device_private.double_map
+ ok 53 hmm2.hmm2_device_private.double_map
 
-Fixes: addf9b90de22 ("net: rtnetlink: use rcu to free rtnl message handlers")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Rémi Denis-Courmont <courmisch@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240927050752.51066-1-donettom@linux.ibm.com
+Fixes: fee9f6d1b8df ("mm/hmm/test: add selftests for HMM")
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Jérôme Glisse <jglisse@redhat.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Ralph Campbell <rcampbell@nvidia.com>
+Cc: Jason Gunthorpe <jgg@mellanox.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/phonet/pn_netlink.c | 28 +++++++++++-----------------
- 1 file changed, 11 insertions(+), 17 deletions(-)
+ tools/testing/selftests/mm/hmm-tests.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/phonet/pn_netlink.c b/net/phonet/pn_netlink.c
-index 7008d402499d5..894e5c72d6bff 100644
---- a/net/phonet/pn_netlink.c
-+++ b/net/phonet/pn_netlink.c
-@@ -285,23 +285,17 @@ static int route_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
- 	return err;
- }
+--- a/tools/testing/selftests/mm/hmm-tests.c
++++ b/tools/testing/selftests/mm/hmm-tests.c
+@@ -1657,7 +1657,7 @@ TEST_F(hmm2, double_map)
  
-+static const struct rtnl_msg_handler phonet_rtnl_msg_handlers[] __initdata_or_module = {
-+	{THIS_MODULE, PF_PHONET, RTM_NEWADDR, addr_doit, NULL, 0},
-+	{THIS_MODULE, PF_PHONET, RTM_DELADDR, addr_doit, NULL, 0},
-+	{THIS_MODULE, PF_PHONET, RTM_GETADDR, NULL, getaddr_dumpit, 0},
-+	{THIS_MODULE, PF_PHONET, RTM_NEWROUTE, route_doit, NULL, 0},
-+	{THIS_MODULE, PF_PHONET, RTM_DELROUTE, route_doit, NULL, 0},
-+	{THIS_MODULE, PF_PHONET, RTM_GETROUTE, NULL, route_dumpit,
-+	 RTNL_FLAG_DUMP_UNLOCKED},
-+};
-+
- int __init phonet_netlink_register(void)
- {
--	int err = rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_NEWADDR,
--				       addr_doit, NULL, 0);
--	if (err)
--		return err;
--
--	/* Further rtnl_register_module() cannot fail */
--	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_DELADDR,
--			     addr_doit, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_GETADDR,
--			     NULL, getaddr_dumpit, 0);
--	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_NEWROUTE,
--			     route_doit, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_DELROUTE,
--			     route_doit, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_GETROUTE,
--			     NULL, route_dumpit, RTNL_FLAG_DUMP_UNLOCKED);
--	return 0;
-+	return rtnl_register_many(phonet_rtnl_msg_handlers);
- }
--- 
-2.43.0
-
+ 	buffer->fd = -1;
+ 	buffer->size = size;
+-	buffer->mirror = malloc(npages);
++	buffer->mirror = malloc(size);
+ 	ASSERT_NE(buffer->mirror, NULL);
+ 
+ 	/* Reserve a range of addresses. */
 
 
 
