@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-85003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5584199D346
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C598099CF3E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:53:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F21BD1F251AF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34F9BB251EA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BE31B85C5;
-	Mon, 14 Oct 2024 15:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A050A1C302E;
+	Mon, 14 Oct 2024 14:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmHZTvbc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ty97VGh3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EC249659;
-	Mon, 14 Oct 2024 15:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593CA1C3021;
+	Mon, 14 Oct 2024 14:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919963; cv=none; b=j7gRXH53uGhHYtth4WvP8WnYPbXR7+nBqnsKMTJFqNf9fLYtlGekE08HHaCAMWmcDc4xxHA2C1dJFtGaIWuHuR/kEYfo+nBmrSu/JyvuYAfecm+ddw7BAuQUCeqHMUjSEKrLlduwfe7E7Aq1ibovPv29E5MsoiOXeDdgdVWE1bg=
+	t=1728917337; cv=none; b=muUEqZV6FTxlAUTpJxhqjaW/PPrfYNMw2WagNM+jTIwg5k7T2UcA5MzFv0YWjr4RTAqznbgh+Uzu7rFIUGd0fZ/ZVLyq+s3HfszeeAktEGXJOh83N76U7vflLMUh5Wlj1CDAXMo/glPpAliDQT5NrPTdl38pO3Gli1+Hvi7YTOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919963; c=relaxed/simple;
-	bh=Ec93hXZF0LM9ZLpuxSTZ7zQO8Cl1cqhdcNFcmEaDZKo=;
+	s=arc-20240116; t=1728917337; c=relaxed/simple;
+	bh=1DURJ1DSMnS6UgxLHs3OefAx1HOc2P1KKzgDQbzTBbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ICv0xHAoVoUtq5WcxjX+ZBrvn48gRXogXbgZ6aNbizJJWnKGeRU4kx/KYk4QEpNxdZrYSXebIqbUFNwXK59Jl1YDAnP2i3Y1VbftiphNKiUqvd1wGFFp7q3d768bKY5BcySZiQ2RBpqVVMICcnbRnUIE9d6QuEICMSoINfcwU68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmHZTvbc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5608CC4CEC3;
-	Mon, 14 Oct 2024 15:32:42 +0000 (UTC)
+	 MIME-Version; b=c39ljMnYByskpOpkh1G/BY59FxgGrYKwBVgOsD7GLIYxXJk4AIeHlnXSd7A8g6u9HMDDAzh4XNmYPILiOpVH4dE8rL4VWOmY3ueuUObjcOHRNE8mP+HyMa2hr617xCCg5+iZ3Y7SPikTs4nuOz6uib04fOJYSRXhLbP5PrJob5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ty97VGh3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF778C4CEC3;
+	Mon, 14 Oct 2024 14:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919962;
-	bh=Ec93hXZF0LM9ZLpuxSTZ7zQO8Cl1cqhdcNFcmEaDZKo=;
+	s=korg; t=1728917337;
+	bh=1DURJ1DSMnS6UgxLHs3OefAx1HOc2P1KKzgDQbzTBbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KmHZTvbcD535J1plJk2FpDWMdGxGpBnUrsOrSxaoZx0pjQGu6e3ZZUw8lbTiYtumB
-	 WXltTAaF4xOiMxRk2VzqNSBN2IXgio5ZoEil/gAM6sb6goTr8V5FbYjBJruT4sw80A
-	 lBJclSaVtlA3ZKG1nfFqU2H93t7fGfmwAcmNWkI8=
+	b=Ty97VGh3475Fo5A6iXf5pMlo4JTXZC9YHYws9m57X/QNunql4QfXq2pfX8YLLZkl1
+	 Ux7+qz1/13VZkixbtMyJEdVZq0hEy2JIvZB0nldh4BD7fC3Lpp7ds0JrTBxOk8cQKb
+	 pNTG4FTwHlGRQor3PpbEyBNIxqszuRPJLrqzydMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 758/798] net: ibm/emac: allocate dummy net_device dynamically
-Date: Mon, 14 Oct 2024 16:21:52 +0200
-Message-ID: <20241014141247.847669086@linuxfoundation.org>
+	Luca Stefani <luca.stefani.ge1@gmail.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 207/213] btrfs: split remaining space to discard in chunks
+Date: Mon, 14 Oct 2024 16:21:53 +0200
+Message-ID: <20241014141051.040525697@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Luca Stefani <luca.stefani.ge1@gmail.com>
 
-[ Upstream commit 2eb5e25d84956c264dc03fc45deb3701f3a0ccea ]
+commit a99fcb0158978ed332009449b484e5f3ca2d7df4 upstream.
 
-Embedding net_device into structures prohibits the usage of flexible
-arrays in the net_device structure. For more details, see the discussion
-at [1].
+Per Qu Wenruo in case we have a very large disk, e.g. 8TiB device,
+mostly empty although we will do the split according to our super block
+locations, the last super block ends at 256G, we can submit a huge
+discard for the range [256G, 8T), causing a large delay.
 
-Un-embed the net_device from the private struct by converting it
-into a pointer. Then use the leverage the new alloc_netdev_dummy()
-helper to allocate and initialize dummy devices.
+Split the space left to discard based on BTRFS_MAX_DISCARD_CHUNK_SIZE in
+preparation of introduction of cancellation points to trim. The value
+of the chunk size is arbitrary, it can be higher or derived from actual
+device capabilities but we can't easily read that using
+bio_discard_limit().
 
-[1] https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 080ddc22f3b0 ("net: ibm: emac: mal: add dcr_unmap to _remove")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219180
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1229737
+CC: stable@vger.kernel.org # 5.15+
+Signed-off-by: Luca Stefani <luca.stefani.ge1@gmail.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ibm/emac/mal.c | 14 +++++++++++---
- drivers/net/ethernet/ibm/emac/mal.h |  2 +-
- 2 files changed, 12 insertions(+), 4 deletions(-)
+ fs/btrfs/extent-tree.c |   19 +++++++++++++++----
+ fs/btrfs/volumes.h     |    6 ++++++
+ 2 files changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/ibm/emac/mal.c b/drivers/net/ethernet/ibm/emac/mal.c
-index a93c9230e982f..7a74975c15fa5 100644
---- a/drivers/net/ethernet/ibm/emac/mal.c
-+++ b/drivers/net/ethernet/ibm/emac/mal.c
-@@ -603,9 +603,13 @@ static int mal_probe(struct platform_device *ofdev)
- 	INIT_LIST_HEAD(&mal->list);
- 	spin_lock_init(&mal->lock);
- 
--	init_dummy_netdev(&mal->dummy_dev);
-+	mal->dummy_dev = alloc_netdev_dummy(0);
-+	if (!mal->dummy_dev) {
-+		err = -ENOMEM;
-+		goto fail_unmap;
-+	}
- 
--	netif_napi_add_weight(&mal->dummy_dev, &mal->napi, mal_poll,
-+	netif_napi_add_weight(mal->dummy_dev, &mal->napi, mal_poll,
- 			      CONFIG_IBM_EMAC_POLL_WEIGHT);
- 
- 	/* Load power-on reset defaults */
-@@ -635,7 +639,7 @@ static int mal_probe(struct platform_device *ofdev)
- 					  GFP_KERNEL);
- 	if (mal->bd_virt == NULL) {
- 		err = -ENOMEM;
--		goto fail_unmap;
-+		goto fail_dummy;
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -1303,13 +1303,24 @@ static int btrfs_issue_discard(struct bl
+ 		bytes_left = end - start;
  	}
  
- 	for (i = 0; i < mal->num_tx_chans; ++i)
-@@ -701,6 +705,8 @@ static int mal_probe(struct platform_device *ofdev)
- 	free_irq(mal->serr_irq, mal);
-  fail2:
- 	dma_free_coherent(&ofdev->dev, bd_size, mal->bd_virt, mal->bd_dma);
-+ fail_dummy:
-+	free_netdev(mal->dummy_dev);
-  fail_unmap:
- 	dcr_unmap(mal->dcr_host, 0x100);
-  fail:
-@@ -732,6 +738,8 @@ static int mal_remove(struct platform_device *ofdev)
- 
- 	mal_reset(mal);
- 
-+	free_netdev(mal->dummy_dev);
+-	if (bytes_left) {
++	while (bytes_left) {
++		u64 bytes_to_discard = min(BTRFS_MAX_DISCARD_CHUNK_SIZE, bytes_left);
 +
- 	dma_free_coherent(&ofdev->dev,
- 			  sizeof(struct mal_descriptor) *
- 			  (NUM_TX_BUFF * mal->num_tx_chans +
-diff --git a/drivers/net/ethernet/ibm/emac/mal.h b/drivers/net/ethernet/ibm/emac/mal.h
-index d212373a72e7c..e0ddc41186a28 100644
---- a/drivers/net/ethernet/ibm/emac/mal.h
-+++ b/drivers/net/ethernet/ibm/emac/mal.h
-@@ -205,7 +205,7 @@ struct mal_instance {
- 	int			index;
- 	spinlock_t		lock;
+ 		ret = blkdev_issue_discard(bdev, start >> SECTOR_SHIFT,
+-					   bytes_left >> SECTOR_SHIFT,
++					   bytes_to_discard >> SECTOR_SHIFT,
+ 					   GFP_NOFS);
+-		if (!ret)
+-			*discarded_bytes += bytes_left;
++
++		if (ret) {
++			if (ret != -EOPNOTSUPP)
++				break;
++			continue;
++		}
++
++		start += bytes_to_discard;
++		bytes_left -= bytes_to_discard;
++		*discarded_bytes += bytes_to_discard;
+ 	}
++
+ 	return ret;
+ }
  
--	struct net_device	dummy_dev;
-+	struct net_device	*dummy_dev;
+--- a/fs/btrfs/volumes.h
++++ b/fs/btrfs/volumes.h
+@@ -15,6 +15,12 @@
  
- 	unsigned int features;
- };
--- 
-2.43.0
-
+ #define BTRFS_MAX_DATA_CHUNK_SIZE	(10ULL * SZ_1G)
+ 
++/*
++ * Arbitratry maximum size of one discard request to limit potentially long time
++ * spent in blkdev_issue_discard().
++ */
++#define BTRFS_MAX_DISCARD_CHUNK_SIZE	(SZ_1G)
++
+ extern struct mutex uuid_mutex;
+ 
+ #define BTRFS_STRIPE_LEN		SZ_64K
 
 
 
