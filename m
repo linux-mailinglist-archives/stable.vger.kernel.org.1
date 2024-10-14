@@ -1,53 +1,58 @@
-Return-Path: <stable+bounces-84744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 779C399D1ED
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A038199D1B7
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:20:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A95701C21537
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14DE5B252F8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1471AE01F;
-	Mon, 14 Oct 2024 15:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E111C82F0;
+	Mon, 14 Oct 2024 15:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jqQibnLQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ft8rldrK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABF71AB6DC;
-	Mon, 14 Oct 2024 15:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC791C82E3;
+	Mon, 14 Oct 2024 15:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919060; cv=none; b=MgA1Ivr4qZlit+Tlajlz0kUN4oEFXrQTqM4Vj9iYVnLo55NopB0xDjc33IRe+qB6BFLtZeIxjjSC/DrS8KTGv3Get2iL05GN2oj2NmcEgTQpTU39xSMlUnPNLqWRu9+2O3QELBdGo7w0Jz4F96mfmLVS3+06H7Z9yOrxAu3ZgOQ=
+	t=1728918947; cv=none; b=BK6Eii6HpQVIspKYoePGRTt/QdaNE36gy2zV78WFJcBOPHweYU7iWJ3Ze29tXByolZ9Es5gOkV86NdSyxmeqVGBL0oRczFq/rNgl+cu8FIu3e6A5Xo/ZQBkmPmiTslnJwROmRYb8h9lsDiNfqF5QsRlAyVYeroqWgNHE90ivb34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919060; c=relaxed/simple;
-	bh=oc0/1VS7C8sBpPAJlpS6TSOMnJlR0z2WpDRKgWOvB4Y=;
+	s=arc-20240116; t=1728918947; c=relaxed/simple;
+	bh=Jrc4VZB2umRz1ycUABXQg/ATNo7BlqJI+wPp14aWuY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mQYfUYGsP4pGUeLAzgduTwBO1/9sk1baFOU8XJUMwbeWH+Xflj9l5/pb7T/4WPuQiaQ+J4rT1nhEhL4XpCDBECeMU3TXgmrNYpdGYlz/XEX5ejt0nemFz5AARBOH03UPZhjlUT/+f/eWjd2K+doWLe+qkRqcpx9+ggKLtMVaKJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jqQibnLQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1619C4CEC3;
-	Mon, 14 Oct 2024 15:17:39 +0000 (UTC)
+	 MIME-Version; b=GdQS1WMTI+USnDGOZ6123s9Be9AZ/Gq9z8JRvmlnNMTGRcVJCuvlqo9rY3kUR960qqKXTH8B6UEU4AmtR7ckS2vDkOnwZWBW4Wb0P+GB42ls4UUrDFY3NpU1HMWV62BCGHA0qSf9KFyQK7VmqZVatpy6JFaoCG49kwAUM+gTY6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ft8rldrK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05092C4CED1;
+	Mon, 14 Oct 2024 15:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919060;
-	bh=oc0/1VS7C8sBpPAJlpS6TSOMnJlR0z2WpDRKgWOvB4Y=;
+	s=korg; t=1728918946;
+	bh=Jrc4VZB2umRz1ycUABXQg/ATNo7BlqJI+wPp14aWuY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jqQibnLQVaIiR+Qo7lBioXYNZMCuUeY22R+j3I5JVnNpRZV8OZP6Gl64+FwDusqHy
-	 mX10/Pyi2NamV0wzcO8GcHstvhoulmQ2qrxcJXmvxqcEzwlfPWmc8nPh0yBlNhBCzw
-	 HGI12NYWkTW2IFgNV+Aesn6qwcfLBEOC74LOEPug=
+	b=Ft8rldrKUCCeojxm5znUm9VGmGULKscnQt9mCWMMLNVzJL6i3aqv/lvIgx0z0OzCb
+	 zXBrLfvU9h9sLBIDdiCBQfYInchHqw1E/GiqFFParJGkhGS0redTu0nbVAeYEf52M+
+	 NN1HTumbIrWXBzW2GA4Pse8E5HDPrl7RZllHV9c8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Tao Liu <ltao@redhat.com>,
+	Steve Wahl <steve.wahl@hpe.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
+	Pavin Joseph <me@pavinjoseph.com>,
+	Sarah Brofeldt <srhb@dbc.dk>,
+	Eric Hagberg <ehagberg@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 460/798] tools/x86/kcpuid: Protect against faulty "max subleaf" values
-Date: Mon, 14 Oct 2024 16:16:54 +0200
-Message-ID: <20241014141236.045859245@linuxfoundation.org>
+Subject: [PATCH 6.1 461/798] x86/kexec: Add EFI config table identity mapping for kexec kernel
+Date: Mon, 14 Oct 2024 16:16:55 +0200
+Message-ID: <20241014141236.085284554@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -60,70 +65,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: Tao Liu <ltao@redhat.com>
 
-[ Upstream commit cf96ab1a966b87b09fdd9e8cc8357d2d00776a3a ]
+[ Upstream commit 5760929f6545c651682de3c2c6c6786816b17bb1 ]
 
-Protect against the kcpuid code parsing faulty max subleaf numbers
-through a min() expression.  Thus, ensuring that max_subleaf will always
-be ≤ MAX_SUBLEAF_NUM.
+A kexec kernel boot failure is sometimes observed on AMD CPUs due to an
+unmapped EFI config table array.  This can be seen when "nogbpages" is on
+the kernel command line, and has been observed as a full BIOS reboot rather
+than a successful kexec.
 
-Use "u32" for the subleaf numbers since kcpuid is compiled with -Wextra,
-which includes signed/unsigned comparisons warnings.
+This was also the cause of reported regressions attributed to Commit
+7143c5f4cf20 ("x86/mm/ident_map: Use gbpages only where full GB page should
+be mapped.") which was subsequently reverted.
 
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+To avoid this page fault, explicitly include the EFI config table array in
+the kexec identity map.
+
+Further explanation:
+
+The following 2 commits caused the EFI config table array to be
+accessed when enabling sev at kernel startup.
+
+    commit ec1c66af3a30 ("x86/compressed/64: Detect/setup SEV/SME features
+                          earlier during boot")
+    commit c01fce9cef84 ("x86/compressed: Add SEV-SNP feature
+                          detection/setup")
+
+This is in the code that examines whether SEV should be enabled or not, so
+it can even affect systems that are not SEV capable.
+
+This may result in a page fault if the EFI config table array's address is
+unmapped. Since the page fault occurs before the new kernel establishes its
+own identity map and page fault routines, it is unrecoverable and kexec
+fails.
+
+Most often, this problem is not seen because the EFI config table array
+gets included in the map by the luck of being placed at a memory address
+close enough to other memory areas that *are* included in the map created
+by kexec.
+
+Both the "nogbpages" command line option and the "use gpbages only where
+full GB page should be mapped" change greatly reduce the chance of being
+included in the map by luck, which is why the problem appears.
+
+Signed-off-by: Tao Liu <ltao@redhat.com>
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20240718134755.378115-5-darwi@linutronix.de
+Tested-by: Pavin Joseph <me@pavinjoseph.com>
+Tested-by: Sarah Brofeldt <srhb@dbc.dk>
+Tested-by: Eric Hagberg <ehagberg@gmail.com>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/all/20240717213121.3064030-2-steve.wahl@hpe.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/arch/x86/kcpuid/kcpuid.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ arch/x86/kernel/machine_kexec_64.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/tools/arch/x86/kcpuid/kcpuid.c b/tools/arch/x86/kcpuid/kcpuid.c
-index dae75511fef71..bbeb2dc86410b 100644
---- a/tools/arch/x86/kcpuid/kcpuid.c
-+++ b/tools/arch/x86/kcpuid/kcpuid.c
-@@ -7,7 +7,8 @@
- #include <string.h>
- #include <getopt.h>
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index 0611fd83858e6..24b6eaacc81eb 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -28,6 +28,7 @@
+ #include <asm/setup.h>
+ #include <asm/set_memory.h>
+ #include <asm/cpu.h>
++#include <asm/efi.h>
  
--#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
-+#define ARRAY_SIZE(x)	(sizeof(x) / sizeof((x)[0]))
-+#define min(a, b)	(((a) < (b)) ? (a) : (b))
- 
- typedef unsigned int u32;
- typedef unsigned long long u64;
-@@ -203,12 +204,9 @@ static void raw_dump_range(struct cpuid_range *range)
- #define MAX_SUBLEAF_NUM		32
- struct cpuid_range *setup_cpuid_range(u32 input_eax)
+ #ifdef CONFIG_ACPI
+ /*
+@@ -90,6 +91,8 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
  {
--	u32 max_func, idx_func;
--	int subleaf;
-+	u32 max_func, idx_func, subleaf, max_subleaf;
-+	u32 eax, ebx, ecx, edx, f = input_eax;
- 	struct cpuid_range *range;
--	u32 eax, ebx, ecx, edx;
--	u32 f = input_eax;
--	int max_subleaf;
- 	bool allzero;
+ #ifdef CONFIG_EFI
+ 	unsigned long mstart, mend;
++	void *kaddr;
++	int ret;
  
- 	eax = input_eax;
-@@ -254,7 +252,7 @@ struct cpuid_range *setup_cpuid_range(u32 input_eax)
- 		 * others have to be tried (0xf)
- 		 */
- 		if (f == 0x7 || f == 0x14 || f == 0x17 || f == 0x18)
--			max_subleaf = (eax & 0xff) + 1;
-+			max_subleaf = min((eax & 0xff) + 1, max_subleaf);
+ 	if (!efi_enabled(EFI_BOOT))
+ 		return 0;
+@@ -105,6 +108,30 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
+ 	if (!mstart)
+ 		return 0;
  
- 		if (f == 0xb)
- 			max_subleaf = 2;
++	ret = kernel_ident_mapping_init(info, level4p, mstart, mend);
++	if (ret)
++		return ret;
++
++	kaddr = memremap(mstart, mend - mstart, MEMREMAP_WB);
++	if (!kaddr) {
++		pr_err("Could not map UEFI system table\n");
++		return -ENOMEM;
++	}
++
++	mstart = efi_config_table;
++
++	if (efi_enabled(EFI_64BIT)) {
++		efi_system_table_64_t *stbl = (efi_system_table_64_t *)kaddr;
++
++		mend = mstart + sizeof(efi_config_table_64_t) * stbl->nr_tables;
++	} else {
++		efi_system_table_32_t *stbl = (efi_system_table_32_t *)kaddr;
++
++		mend = mstart + sizeof(efi_config_table_32_t) * stbl->nr_tables;
++	}
++
++	memunmap(kaddr);
++
+ 	return kernel_ident_mapping_init(info, level4p, mstart, mend);
+ #endif
+ 	return 0;
 -- 
 2.43.0
 
