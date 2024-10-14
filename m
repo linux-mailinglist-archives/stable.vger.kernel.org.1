@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-83986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CAFE99CD8C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:34:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD0D99CE75
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:44:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCE4D2815B5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:34:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB8901F23CB4
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822781AB6F8;
-	Mon, 14 Oct 2024 14:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8439E1AB52F;
+	Mon, 14 Oct 2024 14:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uo8RpNNU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FMiqtXWJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3BD1A76A5;
-	Mon, 14 Oct 2024 14:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF1319E802;
+	Mon, 14 Oct 2024 14:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916413; cv=none; b=P17pA+5kfY6OkoHUqJvlGLgnyxXQ/MoaOYuo80cwmwWxfWiTe27l+bkrGYodPByNWrb8YusoV2m2mbBQMow/x87iPK0m0b8eA6u+O4vCCF0ClQNZfsemEtGC0A1BAQ6NDzLblkLsWyFY36OiJFYm9bhd6Yu982RKuB/QjGsR5Pw=
+	t=1728917038; cv=none; b=Cc9FmzNRBiB+XVGP1OwIOQ0FmoJRz909SuAKBLL9ogMhT98MuFSaXlmqvouARAbCps7DgpvHuClZ8Wbeces87zFsekCb/zxL9F+yviWDHUBdfbfbH+FB2bPUu7DeXxh91AinPWxvX05NzKaXgc1WiPd2vH0+XmmKqV2d/EIbcRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916413; c=relaxed/simple;
-	bh=WK8u8ts0Rp2VgU2LffSO02cLHmwNmrJY8oQwtahDhQs=;
+	s=arc-20240116; t=1728917038; c=relaxed/simple;
+	bh=AwMWXfJbt1oSU2yMscpTmnJxWXJEBGPcN5Fv9rW0m0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mINuuRqY6Q+Pkqipw+z/CuheFkEohEQxbg2+7oaQUyE0PR4/2WI5vUWnw+untRZ/bsvbaL7WZKUacfDAv7YvOnQf1tSLUGWoiIBCqcj2SRpwn9zfYnuGPUMRy1Cnax1qvjWmLt9zAo7zk6weBS2KbZM39TrF0iaFiiZqmzmxfiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uo8RpNNU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7025C4CEC3;
-	Mon, 14 Oct 2024 14:33:32 +0000 (UTC)
+	 MIME-Version; b=Etdzl8be/s5SOK+JAzdRvF8AKZ4bhAZ8pqYbLGg6flHoa/dRRKRyXB7LVYxtSgCdhJMZSI7gpwA6VYd6rmKi+5TeWCs9CvZqlmmi/NWN/oEk3wZcsYad3yShcsrEPT6qN2oCN4nFJjuHhU3vA56wrGEN9SemwDpWp/LsfrGQ/vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FMiqtXWJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA9BC4CECF;
+	Mon, 14 Oct 2024 14:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916413;
-	bh=WK8u8ts0Rp2VgU2LffSO02cLHmwNmrJY8oQwtahDhQs=;
+	s=korg; t=1728917037;
+	bh=AwMWXfJbt1oSU2yMscpTmnJxWXJEBGPcN5Fv9rW0m0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uo8RpNNUhdYBAdOm/CGoQMepd903JXtkBAQx9+yDmHosQmCLWmUrN5UWKnDd5x3Mj
-	 2g5nkT6DB6nYIMhMtULwyxeKe1JLBMooNPKf/rbpV61SAA+p3UW9mm8ZPSxQSXH6Ut
-	 pUl2yq8HfH8n31KoyT0+93uRDDNtm2h9pTQL+xBw=
+	b=FMiqtXWJKmB53R4vtrDaMXLRAsanvo4tpSO/XO15CBeKkJL5Papaj1Nx+PSAWZFdY
+	 tcMDoOWnGoyhUrxJ5PeWl76H/fxb4S5seahsoKoKqnpG7JEbZwh6NoVl3AzlAifMJ9
+	 sFvEkv2OxSQCJDaUpFHM/PrCKU0t54vPe1UGXk2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Badal Nilawar <badal.nilawar@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 177/214] drm/xe/guc_submit: fix xa_store() error checking
+	Yonatan Maman <Ymaman@Nvidia.com>,
+	Gal Shalom <GalShalom@Nvidia.com>,
+	Ben Skeggs <bskeggs@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 134/213] nouveau/dmem: Fix privileged error in copy engine channel
 Date: Mon, 14 Oct 2024 16:20:40 +0200
-Message-ID: <20241014141051.886212537@linuxfoundation.org>
+Message-ID: <20241014141048.199539409@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Yonatan Maman <Ymaman@Nvidia.com>
 
-commit 42465603a31089a89b5fe25966ecedb841eeaa0f upstream.
+[ Upstream commit 04e0481526e30ab8c7e7580033d2f88b7ef2da3f ]
 
-Looks like we are meant to use xa_err() to extract the error encoded in
-the ptr.
+When `nouveau_dmem_copy_one` is called, the following error occurs:
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Badal Nilawar <badal.nilawar@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241001084346.98516-7-matthew.auld@intel.com
-(cherry picked from commit f040327238b1a8311598c40ac94464e77fff368c)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[272146.675156] nouveau 0000:06:00.0: fifo: PBDMA9: 00000004 [HCE_PRIV]
+ch 1 00000300 00003386
+
+This indicates that a copy push command triggered a Host Copy Engine
+Privileged error on channel 1 (Copy Engine channel). To address this
+issue, modify the Copy Engine channel to allow privileged push commands
+
+Fixes: 6de125383a5c ("drm/nouveau/fifo: expose runlist topology info on all chipsets")
+Signed-off-by: Yonatan Maman <Ymaman@Nvidia.com>
+Co-developed-by: Gal Shalom <GalShalom@Nvidia.com>
+Signed-off-by: Gal Shalom <GalShalom@Nvidia.com>
+Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241008115943.990286-2-ymaman@nvidia.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_drm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -393,7 +393,6 @@ static void __release_guc_id(struct xe_g
- static int alloc_guc_id(struct xe_guc *guc, struct xe_exec_queue *q)
- {
- 	int ret;
--	void *ptr;
- 	int i;
- 
- 	/*
-@@ -413,12 +412,10 @@ static int alloc_guc_id(struct xe_guc *g
- 	q->guc->id = ret;
- 
- 	for (i = 0; i < q->width; ++i) {
--		ptr = xa_store(&guc->submission_state.exec_queue_lookup,
--			       q->guc->id + i, q, GFP_NOWAIT);
--		if (IS_ERR(ptr)) {
--			ret = PTR_ERR(ptr);
-+		ret = xa_err(xa_store(&guc->submission_state.exec_queue_lookup,
-+				      q->guc->id + i, q, GFP_NOWAIT));
-+		if (ret)
- 			goto err_release;
--		}
+diff --git a/drivers/gpu/drm/nouveau/nouveau_drm.c b/drivers/gpu/drm/nouveau/nouveau_drm.c
+index c39284dc7d73b..ac15a662e0604 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_drm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
+@@ -343,7 +343,7 @@ nouveau_accel_ce_init(struct nouveau_drm *drm)
+ 		return;
  	}
  
- 	return 0;
+-	ret = nouveau_channel_new(&drm->client, false, runm, NvDmaFB, NvDmaTT, &drm->cechan);
++	ret = nouveau_channel_new(&drm->client, true, runm, NvDmaFB, NvDmaTT, &drm->cechan);
+ 	if (ret)
+ 		NV_ERROR(drm, "failed to create ce channel, %d\n", ret);
+ }
+-- 
+2.43.0
+
 
 
 
