@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F87799D29F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8621199CE03
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:38:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFE07283C71
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 070161F23C70
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2A71AE863;
-	Mon, 14 Oct 2024 15:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9019D1A0724;
+	Mon, 14 Oct 2024 14:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6iIIB6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glxYJbyB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAB71ABEA1;
-	Mon, 14 Oct 2024 15:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1C720EB;
+	Mon, 14 Oct 2024 14:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919530; cv=none; b=lL0Wu330GTqzL9yvKizUxt6Z6sD0wojaAXGOMffj7wjf4bJbLGjBK0DFjrwO0+h7Yguwv+OXVqB57RsKO+GUGrumhYv7SStggDBApTImCs/Glf/JwqMkJbBe6U37ef/1bkzlAIxJEO8L3QmhtTqZ4rCcZY9V/ZAr4Z4bf6jRx5w=
+	t=1728916725; cv=none; b=g1BYkLqlg8m4YK0rbq1EEwOUTi8bbi1YzSaTXPDcxfU/0sk63cJ/oYQl2gLRKr6RCP4sK1ZaMWCwYSHkNC8pQFf0+jFOonvJ6V7Ku+RhvdkvBxTxRwIUGZl5ifW7fuZHvK7bae0037A3IFctNN7Wrzbv48OGc2UKn/A08uCdqVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919530; c=relaxed/simple;
-	bh=Df619HFUOMG71kAGbW/aT74sQNqwo5ppBxp37laaZW8=;
+	s=arc-20240116; t=1728916725; c=relaxed/simple;
+	bh=Wt2tVUOQglO6gjacWaIOPLrUKdhsWIbwghuC39Q0BoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BG34abuNfJM4J+ICfWiRU+dhD/cGR7TkQ82YTelwZDEkxUe0gs3LlTu3SuuIxxwW6mXSnl6X4HVBNt7LsULl+BzIBOsdTRa5KQhyZcrpwO5cQ7TAr/A4oNUhuCBv0x7NiRxdyvX1UbwoxnyJcjEuxxD1fcuaI7NJn2saPVCInIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A6iIIB6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC79C4CEC3;
-	Mon, 14 Oct 2024 15:25:29 +0000 (UTC)
+	 MIME-Version; b=q9ghJZG4RtQLWZCqLz++SH6GctyQroZ4dplkQb6UhXiCKjTun7SD7iFiBxt5Vl2siWDQGWQfuYYBT5lffTW2Rds92mIO37RxrsGVLq2Rn3ObN3xCqaIkAu5MJjnrQQnT1vMb5Qww9GbWd9XiZklJIkmg/CMkqhfhilP8mZw6H50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glxYJbyB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1760C4CEC3;
+	Mon, 14 Oct 2024 14:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919530;
-	bh=Df619HFUOMG71kAGbW/aT74sQNqwo5ppBxp37laaZW8=;
+	s=korg; t=1728916725;
+	bh=Wt2tVUOQglO6gjacWaIOPLrUKdhsWIbwghuC39Q0BoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A6iIIB6zYmAgCNiGF5RYgX6v4uZEmCLuslZkz1Dd52NHozCFa9GeESqKZhoMavtGI
-	 On71cvUHRRty7Dcx6mVuYMfbjEAxtABo3MiU+Rrl6+FFwnOnVkzWgnZLqvhPJeFebA
-	 jOwNzKjTGS4SJS2vIgxyT+hrQE/JB8Y4xuL4xcjA=
+	b=glxYJbyBimmC+pc/PC6Bg6I+oe9dli9KacnERQs6xiYQ4srimw2Q1dt8/mavtNsmp
+	 co0qr1Vj33qP0rmwGKBlKVETQi2EnLCcSESEGC/sARXQs7m7dHocSzk3pMp1dENivc
+	 FrKxNFnoM7SAIJ7NJ9R/IHeZRkcoAMW/jU7V3gB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 601/798] cachefiles: fix dentry leak in cachefiles_open_file()
+	kernel test robot <lkp@intel.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 049/213] fs/ntfs3: Fix sparse warning in ni_fiemap
 Date: Mon, 14 Oct 2024 16:19:15 +0200
-Message-ID: <20241014141241.623154851@linuxfoundation.org>
+Message-ID: <20241014141044.906207597@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit da6ef2dffe6056aad3435e6cf7c6471c2a62187c upstream.
+[ Upstream commit 62fea783f96ce825f0ac9e40ce9530ddc1ea2a29 ]
 
-A dentry leak may be caused when a lookup cookie and a cull are concurrent:
+The interface of fiemap_fill_next_extent_k() was modified
+to eliminate the sparse warning.
 
-            P1             |             P2
------------------------------------------------------------
-cachefiles_lookup_cookie
-  cachefiles_look_up_object
-    lookup_one_positive_unlocked
-     // get dentry
-                            cachefiles_cull
-                              inode->i_flags |= S_KERNEL_FILE;
-    cachefiles_open_file
-      cachefiles_mark_inode_in_use
-        __cachefiles_mark_inode_in_use
-          can_use = false
-          if (!(inode->i_flags & S_KERNEL_FILE))
-            can_use = true
-	  return false
-        return false
-        // Returns an error but doesn't put dentry
-
-After that the following WARNING will be triggered when the backend folder
-is umounted:
-
-==================================================================
-BUG: Dentry 000000008ad87947{i=7a,n=Dx_1_1.img}  still in use (1) [unmount of ext4 sda]
-WARNING: CPU: 4 PID: 359261 at fs/dcache.c:1767 umount_check+0x5d/0x70
-CPU: 4 PID: 359261 Comm: umount Not tainted 6.6.0-dirty #25
-RIP: 0010:umount_check+0x5d/0x70
-Call Trace:
- <TASK>
- d_walk+0xda/0x2b0
- do_one_tree+0x20/0x40
- shrink_dcache_for_umount+0x2c/0x90
- generic_shutdown_super+0x20/0x160
- kill_block_super+0x1a/0x40
- ext4_kill_sb+0x22/0x40
- deactivate_locked_super+0x35/0x80
- cleanup_mnt+0x104/0x160
-==================================================================
-
-Whether cachefiles_open_file() returns true or false, the reference count
-obtained by lookup_positive_unlocked() in cachefiles_look_up_object()
-should be released.
-
-Therefore release that reference count in cachefiles_look_up_object() to
-fix the above issue and simplify the code.
-
-Fixes: 1f08c925e7a3 ("cachefiles: Implement backing file wrangling")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240829083409.3788142-1-libaokun@huaweicloud.com
-Acked-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d57431c6f511 ("fs/ntfs3: Do copy_to_user out of run_lock")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202406271920.hndE8N6D-lkp@intel.com/
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/namei.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ fs/ntfs3/frecord.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
---- a/fs/cachefiles/namei.c
-+++ b/fs/cachefiles/namei.c
-@@ -593,14 +593,12 @@ static bool cachefiles_open_file(struct
- 	 * write and readdir but not lookup or open).
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index f7c381730b396..61055bcfe8277 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -1900,13 +1900,13 @@ enum REPARSE_SIGN ni_parse_reparse(struct ntfs_inode *ni, struct ATTRIB *attr,
+ 
+ /*
+  * fiemap_fill_next_extent_k - a copy of fiemap_fill_next_extent
+- * but it accepts kernel address for fi_extents_start
++ * but it uses 'fe_k' instead of fieinfo->fi_extents_start
+  */
+ static int fiemap_fill_next_extent_k(struct fiemap_extent_info *fieinfo,
+-				     u64 logical, u64 phys, u64 len, u32 flags)
++				     struct fiemap_extent *fe_k, u64 logical,
++				     u64 phys, u64 len, u32 flags)
+ {
+ 	struct fiemap_extent extent;
+-	struct fiemap_extent __user *dest = fieinfo->fi_extents_start;
+ 
+ 	/* only count the extents */
+ 	if (fieinfo->fi_extents_max == 0) {
+@@ -1930,8 +1930,7 @@ static int fiemap_fill_next_extent_k(struct fiemap_extent_info *fieinfo,
+ 	extent.fe_length = len;
+ 	extent.fe_flags = flags;
+ 
+-	dest += fieinfo->fi_extents_mapped;
+-	memcpy(dest, &extent, sizeof(extent));
++	memcpy(fe_k + fieinfo->fi_extents_mapped, &extent, sizeof(extent));
+ 
+ 	fieinfo->fi_extents_mapped++;
+ 	if (fieinfo->fi_extents_mapped == fieinfo->fi_extents_max)
+@@ -1949,7 +1948,6 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 	      __u64 vbo, __u64 len)
+ {
+ 	int err = 0;
+-	struct fiemap_extent __user *fe_u = fieinfo->fi_extents_start;
+ 	struct fiemap_extent *fe_k = NULL;
+ 	struct ntfs_sb_info *sbi = ni->mi.sbi;
+ 	u8 cluster_bits = sbi->cluster_bits;
+@@ -2008,7 +2006,6 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 		err = -ENOMEM;
+ 		goto out;
+ 	}
+-	fieinfo->fi_extents_start = fe_k;
+ 
+ 	end = vbo + len;
+ 	alloc_size = le64_to_cpu(attr->nres.alloc_size);
+@@ -2098,8 +2095,8 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 			if (vbo + dlen >= end)
+ 				flags |= FIEMAP_EXTENT_LAST;
+ 
+-			err = fiemap_fill_next_extent_k(fieinfo, vbo, lbo, dlen,
+-							flags);
++			err = fiemap_fill_next_extent_k(fieinfo, fe_k, vbo, lbo,
++							dlen, flags);
+ 
+ 			if (err < 0)
+ 				break;
+@@ -2120,7 +2117,7 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 		if (vbo + bytes >= end)
+ 			flags |= FIEMAP_EXTENT_LAST;
+ 
+-		err = fiemap_fill_next_extent_k(fieinfo, vbo, lbo, bytes,
++		err = fiemap_fill_next_extent_k(fieinfo, fe_k, vbo, lbo, bytes,
+ 						flags);
+ 		if (err < 0)
+ 			break;
+@@ -2137,15 +2134,13 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 	/*
+ 	 * Copy to user memory out of lock
  	 */
- 	touch_atime(&file->f_path);
--	dput(dentry);
- 	return true;
- 
- check_failed:
- 	fscache_cookie_lookup_negative(object->cookie);
- 	cachefiles_unmark_inode_in_use(object, file);
- 	fput(file);
--	dput(dentry);
- 	if (ret == -ESTALE)
- 		return cachefiles_create_file(object);
- 	return false;
-@@ -609,7 +607,6 @@ error_fput:
- 	fput(file);
- error:
- 	cachefiles_do_unmark_inode_in_use(object, d_inode(dentry));
--	dput(dentry);
- 	return false;
- }
- 
-@@ -652,7 +649,9 @@ bool cachefiles_look_up_object(struct ca
- 		goto new_file;
+-	if (copy_to_user(fe_u, fe_k,
++	if (copy_to_user(fieinfo->fi_extents_start, fe_k,
+ 			 fieinfo->fi_extents_max *
+ 				 sizeof(struct fiemap_extent))) {
+ 		err = -EFAULT;
  	}
  
--	if (!cachefiles_open_file(object, dentry))
-+	ret = cachefiles_open_file(object, dentry);
-+	dput(dentry);
-+	if (!ret)
- 		return false;
- 
- 	_leave(" = t [%lu]", file_inode(object->file)->i_ino);
+ out:
+-	/* Restore original pointer. */
+-	fieinfo->fi_extents_start = fe_u;
+ 	kfree(fe_k);
+ 	return err;
+ }
+-- 
+2.43.0
+
 
 
 
