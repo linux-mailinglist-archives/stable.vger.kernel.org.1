@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-83973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5928099CD73
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:33:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D466399D2AB
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B26A1C2263E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:33:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B4C4B27079
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4277412D758;
-	Mon, 14 Oct 2024 14:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 382761B4F24;
+	Mon, 14 Oct 2024 15:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1c52fis"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5hoouqD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0642BCF5;
-	Mon, 14 Oct 2024 14:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E803D1B4F1C;
+	Mon, 14 Oct 2024 15:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916369; cv=none; b=s2mx7LN+YYHwNqPGPwDkgSW5aRE1zXXI5DLvdSyhngDlmqOiLkC3mUCeeZFYVZSWsXNZJpfVht75N5DNW87BFmh+Hjosq+zb3iqEqcnpCMC5nWpR8xftbVQB2SFxJfdGYTUtWMHfSjWKQPShKc4HU1eDSpoocaP9Ns1ACQzI9NA=
+	t=1728919558; cv=none; b=iACIbgOeY8KUUxGyHi+BJRfFuifEgY0UaJbW+K+ixUl21jFG4Johe9Ea0NQSrPVAGHVhlPzS4kYUVsBouTO86j+4adhyySRTn0jpXSSiGLJCMkHkbysPX6jxZeD17LMJajDTMvc8kwJTy04wtih4OT/7Ybs/K2MyZRvHd9+gm4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916369; c=relaxed/simple;
-	bh=2cTfGKQVu/eZ2KlQd9a0AoWLHk5K/DvQovSnZQ0efRs=;
+	s=arc-20240116; t=1728919558; c=relaxed/simple;
+	bh=zdG3W5hGdtq+nP8b8PLzuZh2K5PtKkdSpsqc+OiOZzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IsrwcY0F+ZwE5j1ZJJ0zBxwzNpiB4aYXjg7t4PKms0upcscPduYWm0gwm7btfcdjQF1D7k+HeTIEhVkhoUzoMf6PWgp+EbYsOcCtUmRQuGOmT+AQi/OXKUM/v38lPOzdnuvc/94Bz3fSuKSn21dwprk1hdo105JVjyDell2+qBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1c52fis; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A77DC4CEC3;
-	Mon, 14 Oct 2024 14:32:48 +0000 (UTC)
+	 MIME-Version; b=JBbzQcY/qQLwJbm3ItjCtx6LRZy2OuwpJfxFmBh6kxqY6q8Zp1x5fpi5OdLVrVzJzcJHLB15K+iiAxFNKBtEG+oBQV61Ik8is0D4PgqpK8hNJuGLCilTXEemjfF4/G/v0gIarSjCPh7RfzlKlm1KJRLgrDZh87DDVexP0PNVRN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5hoouqD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B112C4CEC7;
+	Mon, 14 Oct 2024 15:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916368;
-	bh=2cTfGKQVu/eZ2KlQd9a0AoWLHk5K/DvQovSnZQ0efRs=;
+	s=korg; t=1728919557;
+	bh=zdG3W5hGdtq+nP8b8PLzuZh2K5PtKkdSpsqc+OiOZzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s1c52fisRNkNV4o0bC4HOcmsQROSIwTYnDdwzdZUixqmy+1G+6ca7bP1cRGsfdjk+
-	 0D3uniROIDHvHi1UIM/BawmXOolgyexIQeXiZSkjVyiSN+y3ozPLLyM7AhoWbKY9pw
-	 Gl6TBMYZT5uE746Vk8+4aowbY5R+I5wYw1MQq7LQ=
+	b=S5hoouqDfx9nuE4ISbArG7WW+5xlFvMr/R+XwnGzbRszoA5cdFGlbtVz8eRM+mDUv
+	 QQY+i+rzQ2lo0mRJKm3Cb3LE4wHpS/ljpvXdFnpTkpw48RnrAMzjuhPp8DGi1AZ9Ik
+	 kH2QQ/8y4RPSSbmPOPWCtoiEzYrx1k+0iCBHj99k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Umang Jain <umang.jain@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 132/214] btrfs: zoned: fix missing RCU locking in error message when loading zone info
+Subject: [PATCH 6.1 641/798] media: imx335: Fix reset-gpio handling
 Date: Mon, 14 Oct 2024 16:19:55 +0200
-Message-ID: <20241014141050.143224431@linuxfoundation.org>
+Message-ID: <20241014141243.222799205@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +64,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Umang Jain <umang.jain@ideasonboard.com>
 
-[ Upstream commit fe4cd7ed128fe82ab9fe4f9fc8a73d4467699787 ]
+[ Upstream commit 99d30e2fdea4086be4e66e2deb10de854b547ab8 ]
 
-At btrfs_load_zone_info() we have an error path that is dereferencing
-the name of a device which is a RCU string but we are not holding a RCU
-read lock, which is incorrect.
+Rectify the logical value of reset-gpio so that it is set to
+0 (disabled) during power-on and to 1 (enabled) during power-off.
 
-Fix this by using btrfs_err_in_rcu() instead of btrfs_err().
+Set the reset-gpio to GPIO_OUT_HIGH at initialization time to make
+sure it starts off in reset. Also drop the "Set XCLR" comment which
+is not-so-informative.
 
-The problem is there since commit 08e11a3db098 ("btrfs: zoned: load zone's
-allocation offset"), back then at btrfs_load_block_group_zone_info() but
-then later on that code was factored out into the helper
-btrfs_load_zone_info() by commit 09a46725cc84 ("btrfs: zoned: factor out
-per-zone logic from btrfs_load_block_group_zone_info").
+The existing usage of imx335 had reset-gpios polarity inverted
+(GPIO_ACTIVE_HIGH) in their device-tree sources. With this patch
+included, those DTS will not be able to stream imx335 anymore. The
+reset-gpio polarity will need to be rectified in the device-tree
+sources as shown in [1] example, in order to get imx335 functional
+again (as it remains in reset prior to this fix).
 
-Fixes: 08e11a3db098 ("btrfs: zoned: load zone's allocation offset")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Fixes: 45d19b5fb9ae ("media: i2c: Add imx335 camera sensor driver")
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/linux-media/20240729110437.199428-1-umang.jain@ideasonboard.com/
+Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/zoned.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/imx335.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index 047e3337852e1..ff02fd44fb7cd 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -1352,7 +1352,7 @@ static int btrfs_load_zone_info(struct btrfs_fs_info *fs_info, int zone_idx,
- 	switch (zone.cond) {
- 	case BLK_ZONE_COND_OFFLINE:
- 	case BLK_ZONE_COND_READONLY:
--		btrfs_err(fs_info,
-+		btrfs_err_in_rcu(fs_info,
- 		"zoned: offline/readonly zone %llu on device %s (devid %llu)",
- 			  (info->physical >> device->zone_info->zone_size_shift),
- 			  rcu_str_deref(device->name), device->devid);
+diff --git a/drivers/media/i2c/imx335.c b/drivers/media/i2c/imx335.c
+index d173a456ea046..d8f47cf335d16 100644
+--- a/drivers/media/i2c/imx335.c
++++ b/drivers/media/i2c/imx335.c
+@@ -792,7 +792,7 @@ static int imx335_parse_hw_config(struct imx335 *imx335)
+ 
+ 	/* Request optional reset pin */
+ 	imx335->reset_gpio = devm_gpiod_get_optional(imx335->dev, "reset",
+-						     GPIOD_OUT_LOW);
++						     GPIOD_OUT_HIGH);
+ 	if (IS_ERR(imx335->reset_gpio)) {
+ 		dev_err(imx335->dev, "failed to get reset gpio %ld",
+ 			PTR_ERR(imx335->reset_gpio));
+@@ -898,8 +898,7 @@ static int imx335_power_on(struct device *dev)
+ 
+ 	usleep_range(500, 550); /* Tlow */
+ 
+-	/* Set XCLR */
+-	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
++	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
+ 
+ 	ret = clk_prepare_enable(imx335->inclk);
+ 	if (ret) {
+@@ -912,7 +911,7 @@ static int imx335_power_on(struct device *dev)
+ 	return 0;
+ 
+ error_reset:
+-	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
++	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
+ 	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
+ 
+ 	return ret;
+@@ -929,7 +928,7 @@ static int imx335_power_off(struct device *dev)
+ 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
+ 	struct imx335 *imx335 = to_imx335(sd);
+ 
+-	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
++	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
+ 	clk_disable_unprepare(imx335->inclk);
+ 	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
+ 
 -- 
 2.43.0
 
