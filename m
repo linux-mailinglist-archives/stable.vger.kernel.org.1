@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-84967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074FE99D31C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32CCD99CDC8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:36:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6F9628464D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A48A1C22C08
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697DF1AD3E1;
-	Mon, 14 Oct 2024 15:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8AF25632;
+	Mon, 14 Oct 2024 14:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAculUbc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXjkr9QL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263DE1537AA;
-	Mon, 14 Oct 2024 15:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E9D4A24;
+	Mon, 14 Oct 2024 14:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919842; cv=none; b=kELiLLry14Qhy50CgqUWjDOVJeQSBbvyxPkkbRktAfUr2I75d+xqUevJSRwmLHIfnsPy5OA8LHtX7GahtrPZa93nz4m72+lnBjB58L3Q2nXIHJdEytN8Owa+QCW4uofhIL99rY3X7BTtshBYaZ/A/slT4olU7UQcaDznK1F6AP8=
+	t=1728916575; cv=none; b=QZsO8h1f2rp0jlpQZQqTmkFScyaKKfeqliT02cpueaDW5qhjKqEHfVz5GfkY0kfbYGp4W5LdYwF3tLHzrDyzDl20q+llRABAAaJpTUgNIt/oK0ash90bTrAe/KtwCCglYBWHqywal/AiAiT/iGXRdusfI1OjZoORbEAdUuIpi04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919842; c=relaxed/simple;
-	bh=ejvLoxXSt1N5U+0Ojrvm/G58eyV7rbEa/FWPtOoZACY=;
+	s=arc-20240116; t=1728916575; c=relaxed/simple;
+	bh=e5r201K0kw7qCo2KjtbAXfD/RxQ9jxqd8ej6pZI41j4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UpEalEzQAbRHri0VIYIpgGAjQV+LDX2/qHfwkVMOqNqSdwCukm4VXIDS4q5ULkvsUjoftX76VQXQ01jwKL+C+vk0hXLKVmToIX7SoWnH7rJSX/mOJNugK2MlE+SE5Kv2S51jCQpkUK9SA5ln7hLcvbzJphTg7A574Mfl69fdFfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAculUbc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB1CC4CEC3;
-	Mon, 14 Oct 2024 15:30:41 +0000 (UTC)
+	 MIME-Version; b=dtkO+PPWZ/lwd5FHGzt0WB7te1w4Z/rmZGl3SpmfhFgcVtDVbb0rntddnMuWHBmmM3owH08eOdZ92fLpgIEoI8ERbIGnHd0cqV2O8il87LMtnLOawW1TFqAoAD61VSscYMDujet3cD5xRnWZaifK2HA2D+AlbvHSemBLCszEA2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXjkr9QL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE352C4CEC3;
+	Mon, 14 Oct 2024 14:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919842;
-	bh=ejvLoxXSt1N5U+0Ojrvm/G58eyV7rbEa/FWPtOoZACY=;
+	s=korg; t=1728916575;
+	bh=e5r201K0kw7qCo2KjtbAXfD/RxQ9jxqd8ej6pZI41j4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iAculUbcqyjeoN7ztHrG6rkCtAza7shXJ13nm/IN95VzidkxIygZxBN7IDiFu1e/L
-	 87BCXYEsbXwSHWVuxWl0UTa2Q4NeHgA/h7tONQoouV1avO5zMWcMql8ReP1G/r1a5w
-	 ga7/mmAlczQgUwS7GrFPQwTrWkyZGWm1nDqLTVf8=
+	b=VXjkr9QLUg4Sndjten/v4H4Nq7N4cOVeLNLjoyfrh9j9xJHPDrcJAq0tz0ksgRDEl
+	 tDob9mjkZmWKwx9sKmurU6Cd8F0j0fl3lcOs2Mtu5ZQM0e4Cnt1KTlsO46FEFVCETx
+	 T9g7Jshua8aJBRNMLOo+n3ut1eyyiK/m0r0X4JDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 722/798] drm/amd/display: Check null pointer before dereferencing se
-Date: Mon, 14 Oct 2024 16:21:16 +0200
-Message-ID: <20241014141246.436337525@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.11 214/214] io_uring/rw: fix cflags posting for single issue multishot read
+Date: Mon, 14 Oct 2024 16:21:17 +0200
+Message-ID: <20241014141053.326812530@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +60,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit ff599ef6970ee000fa5bc38d02fa5ff5f3fc7575 ]
+Commit c9d952b9103b600ddafc5d1c0e2f2dbd30f0b805 upstream.
 
-[WHAT & HOW]
-se is null checked previously in the same function, indicating
-it might be null; therefore, it must be checked when used again.
+If multishot gets disabled, and hence the request will get terminated
+rather than persist for more iterations, then posting the CQE with the
+right cflags is still important. Most notably, the buffer reference
+needs to be included.
 
-This fixes 1 FORWARD_NULL issue reported by Coverity.
+Refactor the return of __io_read() a bit, so that the provided buffer
+is always put correctly, and hence returned to the application.
 
-Acked-by: Alex Hung <alex.hung@amd.com>
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Sharon Rosner <Sharon Rosner>
+Link: https://github.com/axboe/liburing/issues/1257
+Cc: stable@vger.kernel.org
+Fixes: 2a975d426c82 ("io_uring/rw: don't allow multishot reads without NOWAIT support")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/rw.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 2d514e2e91a04..2721842af8067 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -1659,7 +1659,7 @@ bool dc_validate_boot_timing(const struct dc *dc,
- 		if (crtc_timing->pix_clk_100hz != pix_clk_100hz)
- 			return false;
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -973,17 +973,21 @@ int io_read_mshot(struct io_kiocb *req,
+ 		if (issue_flags & IO_URING_F_MULTISHOT)
+ 			return IOU_ISSUE_SKIP_COMPLETE;
+ 		return -EAGAIN;
+-	}
+-
+-	/*
+-	 * Any successful return value will keep the multishot read armed.
+-	 */
+-	if (ret > 0 && req->flags & REQ_F_APOLL_MULTISHOT) {
++	} else if (ret <= 0) {
++		io_kbuf_recycle(req, issue_flags);
++		if (ret < 0)
++			req_set_fail(req);
++	} else {
+ 		/*
+-		 * Put our buffer and post a CQE. If we fail to post a CQE, then
++		 * Any successful return value will keep the multishot read
++		 * armed, if it's still set. Put our buffer and post a CQE. If
++		 * we fail to post a CQE, or multishot is no longer set, then
+ 		 * jump to the termination path. This request is then done.
+ 		 */
+ 		cflags = io_put_kbuf(req, issue_flags);
++		if (!(req->flags & REQ_F_APOLL_MULTISHOT))
++			goto done;
++
+ 		rw->len = 0; /* similarly to above, reset len to 0 */
  
--		if (!se->funcs->dp_get_pixel_format)
-+		if (!se || !se->funcs->dp_get_pixel_format)
- 			return false;
- 
- 		if (!se->funcs->dp_get_pixel_format(
--- 
-2.43.0
-
+ 		if (io_req_post_cqe(req, ret, cflags | IORING_CQE_F_MORE)) {
+@@ -1004,6 +1008,7 @@ int io_read_mshot(struct io_kiocb *req,
+ 	 * Either an error, or we've hit overflow posting the CQE. For any
+ 	 * multishot request, hitting overflow will terminate it.
+ 	 */
++done:
+ 	io_req_set_res(req, ret, cflags);
+ 	io_req_rw_cleanup(req, issue_flags);
+ 	if (issue_flags & IO_URING_F_MULTISHOT)
 
 
 
