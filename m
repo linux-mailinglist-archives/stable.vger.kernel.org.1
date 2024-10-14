@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-84073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8621199CE03
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:38:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 341B799CD24
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:29:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 070161F23C70
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:38:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A32DEB220D5
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9019D1A0724;
-	Mon, 14 Oct 2024 14:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECD418035;
+	Mon, 14 Oct 2024 14:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glxYJbyB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNk/4M0x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1C720EB;
-	Mon, 14 Oct 2024 14:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCEC13B7A1;
+	Mon, 14 Oct 2024 14:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916725; cv=none; b=g1BYkLqlg8m4YK0rbq1EEwOUTi8bbi1YzSaTXPDcxfU/0sk63cJ/oYQl2gLRKr6RCP4sK1ZaMWCwYSHkNC8pQFf0+jFOonvJ6V7Ku+RhvdkvBxTxRwIUGZl5ifW7fuZHvK7bae0037A3IFctNN7Wrzbv48OGc2UKn/A08uCdqVI=
+	t=1728916152; cv=none; b=cBUfWpAc3Vq39DGIVjqEotqXlrY0El+qlb5690kKtXhoD+kmV5qkNe11x7xj34NSXSjMiF0qCgeqD5Phqv00B4e4FEy3eXGi+tW6LQlkMU2zr4CXtIkL++g4rfp4IDFQopwAkuO+fSwUqmmgMtuwXYZOjATKK8J/G8c23mhYG2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916725; c=relaxed/simple;
-	bh=Wt2tVUOQglO6gjacWaIOPLrUKdhsWIbwghuC39Q0BoY=;
+	s=arc-20240116; t=1728916152; c=relaxed/simple;
+	bh=tDuCTZrMkuWXD/4GK0NeDyZ3WGyImIvPITUZSBL8uIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q9ghJZG4RtQLWZCqLz++SH6GctyQroZ4dplkQb6UhXiCKjTun7SD7iFiBxt5Vl2siWDQGWQfuYYBT5lffTW2Rds92mIO37RxrsGVLq2Rn3ObN3xCqaIkAu5MJjnrQQnT1vMb5Qww9GbWd9XiZklJIkmg/CMkqhfhilP8mZw6H50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glxYJbyB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1760C4CEC3;
-	Mon, 14 Oct 2024 14:38:44 +0000 (UTC)
+	 MIME-Version; b=WErqINR5s+CSiKmmibKF6f3N0gXuSGx6uCXpfF1Lq/P1ni3xtHClY3tky/LJ9EeBTTY1mplc9zeGrPcQIThvnkoX/NcMDZbrn7hzxvMXEQ7GNB74v/1IagplGsGlRq/lJen5d49px43/eMVJx4qiyM4jG2cVrovpft/x97MkUFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNk/4M0x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6F4C4CED0;
+	Mon, 14 Oct 2024 14:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916725;
-	bh=Wt2tVUOQglO6gjacWaIOPLrUKdhsWIbwghuC39Q0BoY=;
+	s=korg; t=1728916152;
+	bh=tDuCTZrMkuWXD/4GK0NeDyZ3WGyImIvPITUZSBL8uIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glxYJbyBimmC+pc/PC6Bg6I+oe9dli9KacnERQs6xiYQ4srimw2Q1dt8/mavtNsmp
-	 co0qr1Vj33qP0rmwGKBlKVETQi2EnLCcSESEGC/sARXQs7m7dHocSzk3pMp1dENivc
-	 FrKxNFnoM7SAIJ7NJ9R/IHeZRkcoAMW/jU7V3gB8=
+	b=SNk/4M0xxRQ5FUVZWKlCzgRH8bWSKLFuxO6pMYnir27fi/q6ibXYxymMjr6x/O1I0
+	 urmAgwliBWkQxsAw2+tF1eyua8iQErgMpuZeXzKPATEyQZfWbb18Rb0sbLUk7zASwO
+	 toKvsbU6Zp6/LtsnE+GevbjvDrUdkKZnWf5nLl+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Abhishek Chauhan <quic_abchauha@quicinc.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/213] fs/ntfs3: Fix sparse warning in ni_fiemap
+Subject: [PATCH 6.11 092/214] net: phy: aquantia: AQR115c fix up PMA capabilities
 Date: Mon, 14 Oct 2024 16:19:15 +0200
-Message-ID: <20241014141044.906207597@linuxfoundation.org>
+Message-ID: <20241014141048.586158868@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Abhishek Chauhan <quic_abchauha@quicinc.com>
 
-[ Upstream commit 62fea783f96ce825f0ac9e40ce9530ddc1ea2a29 ]
+[ Upstream commit 17cbfcdd85f6c93b2e9565d61110ad0b90440436 ]
 
-The interface of fiemap_fill_next_extent_k() was modified
-to eliminate the sparse warning.
+AQR115c reports incorrect PMA capabilities which includes
+10G/5G and also incorrectly disables capabilities like autoneg
+and 10Mbps support.
 
-Fixes: d57431c6f511 ("fs/ntfs3: Do copy_to_user out of run_lock")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202406271920.hndE8N6D-lkp@intel.com/
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+AQR115c as per the Marvell databook supports speeds up to 2.5Gbps
+with autonegotiation.
+
+Fixes: 0ebc581f8a4b ("net: phy: aquantia: add support for aqr115c")
+Link: https://lore.kernel.org/all/20240913011635.1286027-1-quic_abchauha@quicinc.com/T/
+Signed-off-by: Abhishek Chauhan <quic_abchauha@quicinc.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20241001224626.2400222-2-quic_abchauha@quicinc.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/frecord.c | 21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ drivers/net/phy/aquantia/aquantia_main.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index f7c381730b396..61055bcfe8277 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -1900,13 +1900,13 @@ enum REPARSE_SIGN ni_parse_reparse(struct ntfs_inode *ni, struct ATTRIB *attr,
- 
- /*
-  * fiemap_fill_next_extent_k - a copy of fiemap_fill_next_extent
-- * but it accepts kernel address for fi_extents_start
-+ * but it uses 'fe_k' instead of fieinfo->fi_extents_start
-  */
- static int fiemap_fill_next_extent_k(struct fiemap_extent_info *fieinfo,
--				     u64 logical, u64 phys, u64 len, u32 flags)
-+				     struct fiemap_extent *fe_k, u64 logical,
-+				     u64 phys, u64 len, u32 flags)
- {
- 	struct fiemap_extent extent;
--	struct fiemap_extent __user *dest = fieinfo->fi_extents_start;
- 
- 	/* only count the extents */
- 	if (fieinfo->fi_extents_max == 0) {
-@@ -1930,8 +1930,7 @@ static int fiemap_fill_next_extent_k(struct fiemap_extent_info *fieinfo,
- 	extent.fe_length = len;
- 	extent.fe_flags = flags;
- 
--	dest += fieinfo->fi_extents_mapped;
--	memcpy(dest, &extent, sizeof(extent));
-+	memcpy(fe_k + fieinfo->fi_extents_mapped, &extent, sizeof(extent));
- 
- 	fieinfo->fi_extents_mapped++;
- 	if (fieinfo->fi_extents_mapped == fieinfo->fi_extents_max)
-@@ -1949,7 +1948,6 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 	      __u64 vbo, __u64 len)
- {
- 	int err = 0;
--	struct fiemap_extent __user *fe_u = fieinfo->fi_extents_start;
- 	struct fiemap_extent *fe_k = NULL;
- 	struct ntfs_sb_info *sbi = ni->mi.sbi;
- 	u8 cluster_bits = sbi->cluster_bits;
-@@ -2008,7 +2006,6 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 		err = -ENOMEM;
- 		goto out;
- 	}
--	fieinfo->fi_extents_start = fe_k;
- 
- 	end = vbo + len;
- 	alloc_size = le64_to_cpu(attr->nres.alloc_size);
-@@ -2098,8 +2095,8 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 			if (vbo + dlen >= end)
- 				flags |= FIEMAP_EXTENT_LAST;
- 
--			err = fiemap_fill_next_extent_k(fieinfo, vbo, lbo, dlen,
--							flags);
-+			err = fiemap_fill_next_extent_k(fieinfo, fe_k, vbo, lbo,
-+							dlen, flags);
- 
- 			if (err < 0)
- 				break;
-@@ -2120,7 +2117,7 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 		if (vbo + bytes >= end)
- 			flags |= FIEMAP_EXTENT_LAST;
- 
--		err = fiemap_fill_next_extent_k(fieinfo, vbo, lbo, bytes,
-+		err = fiemap_fill_next_extent_k(fieinfo, fe_k, vbo, lbo, bytes,
- 						flags);
- 		if (err < 0)
- 			break;
-@@ -2137,15 +2134,13 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 	/*
- 	 * Copy to user memory out of lock
- 	 */
--	if (copy_to_user(fe_u, fe_k,
-+	if (copy_to_user(fieinfo->fi_extents_start, fe_k,
- 			 fieinfo->fi_extents_max *
- 				 sizeof(struct fiemap_extent))) {
- 		err = -EFAULT;
- 	}
- 
- out:
--	/* Restore original pointer. */
--	fieinfo->fi_extents_start = fe_u;
- 	kfree(fe_k);
- 	return err;
+diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
+index 4d156d406bab9..1bb39664a5cb1 100644
+--- a/drivers/net/phy/aquantia/aquantia_main.c
++++ b/drivers/net/phy/aquantia/aquantia_main.c
+@@ -731,6 +731,19 @@ static int aqr113c_fill_interface_modes(struct phy_device *phydev)
+ 	return aqr107_fill_interface_modes(phydev);
  }
+ 
++static int aqr115c_get_features(struct phy_device *phydev)
++{
++	unsigned long *supported = phydev->supported;
++
++	/* PHY supports speeds up to 2.5G with autoneg. PMA capabilities
++	 * are not useful.
++	 */
++	linkmode_or(supported, supported, phy_gbit_features);
++	linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, supported);
++
++	return 0;
++}
++
+ static int aqr113c_config_init(struct phy_device *phydev)
+ {
+ 	int ret;
+@@ -1046,6 +1059,7 @@ static struct phy_driver aqr_driver[] = {
+ 	.get_sset_count = aqr107_get_sset_count,
+ 	.get_strings    = aqr107_get_strings,
+ 	.get_stats      = aqr107_get_stats,
++	.get_features   = aqr115c_get_features,
+ 	.link_change_notify = aqr107_link_change_notify,
+ 	.led_brightness_set = aqr_phy_led_brightness_set,
+ 	.led_hw_is_supported = aqr_phy_led_hw_is_supported,
 -- 
 2.43.0
 
