@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-83700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0112599BEC8
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:07:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 301CE99BECA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:07:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29BB31C22755
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 04:07:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D03761F22D61
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 04:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F05A1A4F13;
-	Mon, 14 Oct 2024 03:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DE21A706F;
+	Mon, 14 Oct 2024 03:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DqO/OBqz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ADpDTbrf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CFC145B18;
-	Mon, 14 Oct 2024 03:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1192B1A7062;
+	Mon, 14 Oct 2024 03:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728878336; cv=none; b=GNsoPa01M6Tmwajg+hAueTQc+m5D7j44iXf7X7kAKOOu6qE666T1BZLu97h2Y7Zk0Jvf8VPujfA6ZJwLeBbEM4PpNJeBYMK6pI2C/cz1vqfWfPB5PULsuBsq3Eb9W2+lc54KeLlWq3HsUnhgrdgBLKI9BgO67xVdDUt+8Z/Lh4c=
+	t=1728878338; cv=none; b=i6mMaaXQrMkJd6jerzx0mZag9R18PnTSbvOTU9T/DfYcQyomdl+LCGbuouBowJxKWzsZCnKNQ0ZLR26Us7Fj0DPRxd13WywOx++9pHDbMj8yggvBIhK6NAnneQXoRwEVKRjHP1Z9NaJKRElOI+7dqxTIGa2vGu3xS9V5HHkIMVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728878336; c=relaxed/simple;
-	bh=l9CPfeX3T6QhLr8nM+G9xBjbSUfXhNiE8pZfFYilJyw=;
+	s=arc-20240116; t=1728878338; c=relaxed/simple;
+	bh=EEwQJM6UjH6LfciOUNPLG6CzjG0L+/ES9mq8B59X8bQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I4IUoqd3wth6qed7narKbz/X5T33zfOkKnlVqe0wsgH+h2EU+KwpWGheYVsSw9jfZGRxkuBxb7WTFRxM1Rr2BlFcdYfqrqpi6XSxLaWqe0U1iajcL06hY7APJSEX0Qaw1+JeUXjbrFtEjqk8Pz2AqhAfRy0PgmjILV1uaIdRmcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DqO/OBqz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EC1C4CECE;
-	Mon, 14 Oct 2024 03:58:55 +0000 (UTC)
+	 MIME-Version; b=cPBf3jQwm5DUFuny7fG8BmI8bjDFCIlAe9xBBLOg6cvLHH/P2VXEvo86umiMrUJuc07yhrA0sFeYzV8K6QoUM253Lz+va1G21gvRikg8v8A3cW830WZVTB8CSQqO9iX7e9XwQUNuvkv7pcs66vXJc6tC5BuGtbC/tc2Cq0+o/OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ADpDTbrf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D19C4CEC3;
+	Mon, 14 Oct 2024 03:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728878336;
-	bh=l9CPfeX3T6QhLr8nM+G9xBjbSUfXhNiE8pZfFYilJyw=;
+	s=k20201202; t=1728878337;
+	bh=EEwQJM6UjH6LfciOUNPLG6CzjG0L+/ES9mq8B59X8bQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DqO/OBqzHi4XzDGLjIt4/5nQCYdScKwcrjGsSYo9328CXTKAndXih9LOp7L+YkQ1b
-	 5Q2TsYbLJSJ/9UQ5ab1/0ZsK4hLDzfkkisr9L7QdzA8h00A0En2Lfar09nJiMO/Mu9
-	 F92hZkQLtM53iuguCu2zDiguLb8GMbk6LND56E9OQPc9apyFyo5P3WOki4knhKiDL7
-	 Hje2lCkH0zCdJox8r1Hk6AxV925pU3oLXw38pYhnURt+k19pYKnsB879oVvkXKShCt
-	 +yNQdejFB607BejjBJc9gEpEE4luO6SH9fcUORgj8mQPN/5NB4nOnd2rsJOfaVzc85
-	 NkbnAsPPXu1+Q==
+	b=ADpDTbrf4AS2zDz1GwvqnfFCEn//A3GvUZ8BUdZMxmApnIov9St2dYiMw/XFpP+yV
+	 LSaR/sMYTNY/IKIpJ2LcEoZFOE3J99vg8PAiwpU7J7RyUVdwmJO0rD7sj85UthWN1y
+	 y0FTxX6HLctFMVKifGj/QCZUyR/oJewxdthNDpHzmIjLvE28dJ+k46kRphQJrRbxqK
+	 kCn8vYpuiom49NttpJoKx8GoMNESGVJVmARMRPjQZ0Z3Z3Go4g7Yc6QJfnSW5OXnLj
+	 U2uOqkPKIYstoc3Ydwg9uLvsqDRD5UTcNsvrkZQKDg9CpZ6PXyLV9m1TDsVyO8Id93
+	 9kj4EvL0pPubA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	syzbot+3bfd2cc059ab93efcdb4@syzkaller.appspotmail.com,
+Cc: Benjamin Marzinski <bmarzins@redhat.com>,
+	"Ewan D . Milne" <emilne@redhat.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ntfs3@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.1 05/10] fs/ntfs3: Additional check in ni_clear()
-Date: Sun, 13 Oct 2024 23:58:40 -0400
-Message-ID: <20241014035848.2247549-5-sashal@kernel.org>
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 06/10] scsi: scsi_transport_fc: Allow setting rport state to current state
+Date: Sun, 13 Oct 2024 23:58:41 -0400
+Message-ID: <20241014035848.2247549-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241014035848.2247549-1-sashal@kernel.org>
 References: <20241014035848.2247549-1-sashal@kernel.org>
@@ -65,35 +67,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.112
 Content-Transfer-Encoding: 8bit
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit d178944db36b3369b78a08ba520de109b89bf2a9 ]
+[ Upstream commit d539a871ae47a1f27a609a62e06093fa69d7ce99 ]
 
-Checking of NTFS_FLAGS_LOG_REPLAYING added to prevent access to
-uninitialized bitmap during replay process.
+The only input fc_rport_set_marginal_state() currently accepts is
+"Marginal" when port_state is "Online", and "Online" when the port_state
+is "Marginal". It should also allow setting port_state to its current
+state, either "Marginal or "Online".
 
-Reported-by: syzbot+3bfd2cc059ab93efcdb4@syzkaller.appspotmail.com
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Link: https://lore.kernel.org/r/20240917230643.966768-1-bmarzins@redhat.com
+Reviewed-by: Ewan D. Milne <emilne@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/frecord.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/scsi_transport_fc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index b3299cda59622..44bcc9c7591d9 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -102,7 +102,9 @@ void ni_clear(struct ntfs_inode *ni)
- {
- 	struct rb_node *node;
- 
--	if (!ni->vfs_inode.i_nlink && ni->mi.mrec && is_rec_inuse(ni->mi.mrec))
-+	if (!ni->vfs_inode.i_nlink && ni->mi.mrec &&
-+	    is_rec_inuse(ni->mi.mrec) &&
-+	    !(ni->mi.sbi->flags & NTFS_FLAGS_LOG_REPLAYING))
- 		ni_delete_all(ni);
- 
- 	al_destroy(ni);
+diff --git a/drivers/scsi/scsi_transport_fc.c b/drivers/scsi/scsi_transport_fc.c
+index 8934160c4a33b..1aaeb0ead7a71 100644
+--- a/drivers/scsi/scsi_transport_fc.c
++++ b/drivers/scsi/scsi_transport_fc.c
+@@ -1252,7 +1252,7 @@ static ssize_t fc_rport_set_marginal_state(struct device *dev,
+ 		 */
+ 		if (rport->port_state == FC_PORTSTATE_ONLINE)
+ 			rport->port_state = port_state;
+-		else
++		else if (port_state != rport->port_state)
+ 			return -EINVAL;
+ 	} else if (port_state == FC_PORTSTATE_ONLINE) {
+ 		/*
+@@ -1262,7 +1262,7 @@ static ssize_t fc_rport_set_marginal_state(struct device *dev,
+ 		 */
+ 		if (rport->port_state == FC_PORTSTATE_MARGINAL)
+ 			rport->port_state = port_state;
+-		else
++		else if (port_state != rport->port_state)
+ 			return -EINVAL;
+ 	} else
+ 		return -EINVAL;
 -- 
 2.43.0
 
