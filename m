@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-84929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2148099D2E8
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:31:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D73CF99CD8A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:34:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8ABB1B24A47
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:31:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D6F71F23A71
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C311AE001;
-	Mon, 14 Oct 2024 15:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B0A1AB6DC;
+	Mon, 14 Oct 2024 14:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRGM2tcu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZVOEF53"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADADE1AAE00;
-	Mon, 14 Oct 2024 15:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33621AB6D8;
+	Mon, 14 Oct 2024 14:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919705; cv=none; b=Yb6PEG3Dih2wAO6rs4mLdY7BoWuoc88Cd5jf6ITAkyXhMqE40MmzbbaSyur5QZxwVORieUF0lPYar90hgoljockeDJ90pzWNRxFC5+bUW1dCP3ifYKV6D11fHmDLvqL7FEvWlZUOQro0EluD9aQQMiHFUwx462laN8LSrvZi0wM=
+	t=1728916406; cv=none; b=F/DLa5VDA7GFELWd2vOa+Us7guAIb9KQqZAut2DSP1jD2eZssAbKrdYlK1Z2EkF/P2MtwYbYv+xRGVi3Beu955jXJvNigqlXwvuWMNGZvSdXLSeYeLlW2QTMQIyURwYGwYBUc0XsQ4kieACEm0cTCYK14ob7enjZ/FKYezrgWrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919705; c=relaxed/simple;
-	bh=m8Hkxij51fWIW/1wDyWbwKxSdeaRJVJQWdbychv/XZc=;
+	s=arc-20240116; t=1728916406; c=relaxed/simple;
+	bh=HbnGTA4yZ1lHFqUMdBCqwtcQT1F/6QvfpKRkr92CurY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZ2EzYsZJslSZKwWtyFzSojLsGAoQF2AMN673x5SOthFCHSWkYe060sIBT2t+SGXfc7I9eJnNopftiaTf+lR0gqua0yby4BohSx5oCFKWGPmmhDDSWOHFbQUYYyvfTgHQLqTZ2+fmeyCY7ztIZnSIJY8ODqDoIuaHofapTNHrO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRGM2tcu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D58FC4CECF;
-	Mon, 14 Oct 2024 15:28:24 +0000 (UTC)
+	 MIME-Version; b=IXOWA6zR/5X1lqCV+o/sYqSjCCiru9gEhU8E6xxN0G8OElhsDhKhzs+0uZHsU1PKf5XpvroSrFwExY/b9Vn9FO5OCeA1VsbZZRWyf6B0djRdPUoNLYtltF8HQC3DiWym7tKNGT6zVIIFaQABJ2Fu4Xc/iWQUtD0XPWcJ4f8nBLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZVOEF53; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D5F6C4CEC3;
+	Mon, 14 Oct 2024 14:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919705;
-	bh=m8Hkxij51fWIW/1wDyWbwKxSdeaRJVJQWdbychv/XZc=;
+	s=korg; t=1728916406;
+	bh=HbnGTA4yZ1lHFqUMdBCqwtcQT1F/6QvfpKRkr92CurY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KRGM2tcuBBEG0X386Mb942PWKAfJc/FkH/vsTyZMBbgkk0ULnd70pBO4UXTlPK0/p
-	 7hmCa2GO1rdsi00qkz71/ahvNxMQrS5sLd5keSqa6AF+wHehZHeVR0gqN5/P6w1AXA
-	 2UhlkogfcOu0ZLAvm5IxFR11+QJC8l6F6oR3hPUw=
+	b=nZVOEF534SvwOgF6Om9CjzFW4K7kP5ZL94eQzv+/g8Bu2si+C5QMa7oSvt3Gt/RRp
+	 z90bwKB8jg2/28Dp6zaI5yIzcIZ5f08xQG2j0JhOp48QtsR9Kvh6NzdLH8ZpTbtEMD
+	 /Ntg4YPYSg9uodLu22rPiLN62ot90REdyRUpY4C8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 684/798] virtio_console: fix misc probe bugs
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Lang Yu <lang.yu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.11 175/214] drm/amdkfd: Fix an eviction fence leak
 Date: Mon, 14 Oct 2024 16:20:38 +0200
-Message-ID: <20241014141244.942410616@linuxfoundation.org>
+Message-ID: <20241014141051.809455136@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Lang Yu <lang.yu@amd.com>
 
-[ Upstream commit b9efbe2b8f0177fa97bfab290d60858900aa196b ]
+commit d7d7b947a4fa6d0a82ff2bf0db413edc63738e3a upstream.
 
-This fixes the following issue discovered by code review:
+Only creating a new reference for each process instead of each VM.
 
-after vqs have been created, a buggy device can send an interrupt.
-
-A control vq callback will then try to schedule control_work which has
-not been initialized yet. Similarly for config interrupt.  Further, in
-and out vq callbacks invoke find_port_by_vq which attempts to take
-ports_lock which also has not been initialized.
-
-To fix, init all locks and work before creating vqs.
-
-Message-ID: <ad982e975a6160ad110c623c016041311ca15b4f.1726511547.git.mst@redhat.com>
-Fixes: 17634ba25544 ("virtio: console: Add a new MULTIPORT feature, support for generic ports")
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9a1c1339abf9 ("drm/amdkfd: Run restore_workers on freezable WQs")
+Suggested-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Lang Yu <lang.yu@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5fa436289483ae56427b0896c31f72361223c758)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/virtio_console.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    4 ++--
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c         |    7 +++++--
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/char/virtio_console.c b/drivers/char/virtio_console.c
-index 9fa3c76a267f5..899036ce3802c 100644
---- a/drivers/char/virtio_console.c
-+++ b/drivers/char/virtio_console.c
-@@ -2055,25 +2055,27 @@ static int virtcons_probe(struct virtio_device *vdev)
- 		multiport = true;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -1438,8 +1438,8 @@ static int init_kfd_vm(struct amdgpu_vm
+ 	list_add_tail(&vm->vm_list_node,
+ 			&(vm->process_info->vm_list_head));
+ 	vm->process_info->n_vms++;
+-
+-	*ef = dma_fence_get(&vm->process_info->eviction_fence->base);
++	if (ef)
++		*ef = dma_fence_get(&vm->process_info->eviction_fence->base);
+ 	mutex_unlock(&vm->process_info->lock);
+ 
+ 	return 0;
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -1676,12 +1676,15 @@ int kfd_process_device_init_vm(struct kf
+ 
+ 	ret = amdgpu_amdkfd_gpuvm_acquire_process_vm(dev->adev, avm,
+ 						     &p->kgd_process_info,
+-						     &ef);
++						     p->ef ? NULL : &ef);
+ 	if (ret) {
+ 		dev_err(dev->adev->dev, "Failed to create process VM object\n");
+ 		return ret;
  	}
- 
--	err = init_vqs(portdev);
--	if (err < 0) {
--		dev_err(&vdev->dev, "Error %d initializing vqs\n", err);
--		goto free_chrdev;
--	}
--
- 	spin_lock_init(&portdev->ports_lock);
- 	INIT_LIST_HEAD(&portdev->ports);
- 	INIT_LIST_HEAD(&portdev->list);
- 
--	virtio_device_ready(portdev->vdev);
--
- 	INIT_WORK(&portdev->config_work, &config_work_handler);
- 	INIT_WORK(&portdev->control_work, &control_work_handler);
- 
- 	if (multiport) {
- 		spin_lock_init(&portdev->c_ivq_lock);
- 		spin_lock_init(&portdev->c_ovq_lock);
-+	}
- 
-+	err = init_vqs(portdev);
-+	if (err < 0) {
-+		dev_err(&vdev->dev, "Error %d initializing vqs\n", err);
-+		goto free_chrdev;
-+	}
+-	RCU_INIT_POINTER(p->ef, ef);
 +
-+	virtio_device_ready(portdev->vdev);
++	if (!p->ef)
++		RCU_INIT_POINTER(p->ef, ef);
 +
-+	if (multiport) {
- 		err = fill_queue(portdev->c_ivq, &portdev->c_ivq_lock);
- 		if (err < 0) {
- 			dev_err(&vdev->dev,
--- 
-2.43.0
-
+ 	pdd->drm_priv = drm_file->private_data;
+ 
+ 	ret = kfd_process_device_reserve_ib_mem(pdd);
 
 
 
