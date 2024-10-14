@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-83677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4298599BE92
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:01:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5590799BE94
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:02:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E35931F22D70
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 04:01:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3CDB1F22C7C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 04:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0EA2156C5E;
-	Mon, 14 Oct 2024 03:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54844156F5E;
+	Mon, 14 Oct 2024 03:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xry5cscb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BX89CoFT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2B715689A;
-	Mon, 14 Oct 2024 03:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08406156F4A;
+	Mon, 14 Oct 2024 03:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728878285; cv=none; b=q3b4FUtNZxslBkyUMi+4eZjbVrfO4IpOhchntZsyF8LZsRM8FINvjhwOgc2rZkVfjsEifyS9DygR9x26hlyU1pz167mQaLKxp+O/uffQDRmezQKx54obPa6pvVWro75Q0jY2YxaEzfu8ileY5AK01dRA2BGVRzbGYi5Mble9YT0=
+	t=1728878287; cv=none; b=ZCnigT45bEEdBMg/4FeKNunkaJ6I5JQRci6795Q0Ut6HzhHCPvkoIVOZW4bpWD/NU7VwdNDgOo8A2ajI3gAPe+C3DViBWoYLqGkk7UXizXzQxDdgqHNgs6EnRshBDNDHOe880KKD2X579JwLkVhrnG6wCGknsE2+1XlC+HLYD/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728878285; c=relaxed/simple;
-	bh=Oh8++S/Or6Y7qB0AgdmomXqyxttMef1PmZOGxJ2SyQ8=;
+	s=arc-20240116; t=1728878287; c=relaxed/simple;
+	bh=dcNoutaCYprY/fPFsdy1DjGim1HPEM8NvoKTD5CKerU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KeFT9zO8DFTJsjkC8OcWXUQj+Jajgz42FazHJBLyU88diZW3Ya3zS+LX9pYmmlM9LNsuXDAK370Rdok8g/8C83D/LCURj99F+IJbrxdQBMurL3fwNiWyB0I0Rkovw5Sc+rVafP3KU4NmdMKu0lNKnM+dzcdcWcQuAWozaH2medI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xry5cscb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C840C4CECE;
-	Mon, 14 Oct 2024 03:58:03 +0000 (UTC)
+	 MIME-Version; b=AX9u4UIEh4p0oVQj4vv/TsfH1lcJQKRnGN0ehF0JyWxYAoFpyYFeDMiZCkUnX7uxpFgPvnISPuCbro481ouq247ZZgmTbvuHawSxoEuOxpRwjGLQbiGL3nfAuG+pSTyxGV0aRfT5E8gXhZIf0nR/KszEZfS6tLfKAaG+58qIR3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BX89CoFT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26C7C4CEC3;
+	Mon, 14 Oct 2024 03:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728878285;
-	bh=Oh8++S/Or6Y7qB0AgdmomXqyxttMef1PmZOGxJ2SyQ8=;
+	s=k20201202; t=1728878286;
+	bh=dcNoutaCYprY/fPFsdy1DjGim1HPEM8NvoKTD5CKerU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xry5cscbvbfnsR+YjiRiIjqdF4/tfhmP2YDFjad/zT7T1NrtcM6chhU6/WvrAuhir
-	 sSBFR95HSxme1V0loidHRqQgTqdV7XOdq6TyyEvjC1HEbvAqRhdlJBTPJ8i80MnzL+
-	 YbtbBlYEGQ+JVdnVarVBSUi8VkPzRg20M4izAUY76HpL8gK3WHMspyT8Z4hzb1yosW
-	 8f7l4uU9GMorcJkg/+Pm0BSxvTexKNLx/BtL8oz5LFNqk0L1B0kF08+4utwrvwhyf5
-	 zPQV8rLDg537aIayR3vyUDsXxjFF0EyynS9cZ60+hkJfHWDVvxEQ9Kp8nJp/5z3AV5
-	 azjJBjB2zyd+g==
+	b=BX89CoFT4rf8hVm+xPw2n74ezsrNHycOIR5Tw32IXPSpkZzOwYtYqxXPrmdarzYaM
+	 OewPvYM+1vmcNlVzGy4ClKQyqMWYwntL1skktI+lMYnTKc49JrsnEYZWkspmR0Mdaw
+	 y1mFCvNmwneuB56/iyv6klnUnp0Ls6lF9KDTtCyfTUNqh2pgkRd68nzVyQHn/dB4UB
+	 tjlXDJn2I2Z2pU0k8WlOZFlxN4IGZPNXJU/lxnb+1K1fUdni0W2RezHjYMMaUIxzj5
+	 WJ+Eqgm2eU3eGunQuM8oaWeaCCI88XDH15hfMpdm7Wp4IragaA2fqZBM2rcXbWZSfm
+	 PJwo2nMW5vFIg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dai Ngo <dai.ngo@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+Cc: Dimitri Sivanich <sivanich@hpe.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	linux-nfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 19/20] NFS: remove revoked delegation from server's delegation list
-Date: Sun, 13 Oct 2024 23:57:21 -0400
-Message-ID: <20241014035731.2246632-19-sashal@kernel.org>
+	dimitri.sivanich@hpe.com,
+	gregkh@linuxfoundation.org
+Subject: [PATCH AUTOSEL 6.11 20/20] misc: sgi-gru: Don't disable preemption in GRU driver
+Date: Sun, 13 Oct 2024 23:57:22 -0400
+Message-ID: <20241014035731.2246632-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241014035731.2246632-1-sashal@kernel.org>
 References: <20241014035731.2246632-1-sashal@kernel.org>
@@ -68,54 +66,94 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.3
 Content-Transfer-Encoding: 8bit
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Dimitri Sivanich <sivanich@hpe.com>
 
-[ Upstream commit 7ef60108069b7e3cc66432304e1dd197d5c0a9b5 ]
+[ Upstream commit b983b271662bd6104d429b0fd97af3333ba760bf ]
 
-After the delegation is returned to the NFS server remove it
-from the server's delegations list to reduce the time it takes
-to scan this list.
+Disabling preemption in the GRU driver is unnecessary, and clashes with
+sleeping locks in several code paths.  Remove preempt_disable and
+preempt_enable from the GRU driver.
 
-Network trace captured while running the below script shows the
-time taken to service the CB_RECALL increases gradually due to
-the overhead of traversing the delegation list in
-nfs_delegation_find_inode_server.
-
-The NFS server in this test is a Solaris server which issues
-CB_RECALL when receiving the all-zero stateid in the SETATTR.
-
-mount=/mnt/data
-for i in $(seq 1 20)
-do
-   echo $i
-   mkdir $mount/testtarfile$i
-   time  tar -C $mount/testtarfile$i -xf 5000_files.tar
-done
-
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Dimitri Sivanich <sivanich@hpe.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/delegation.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/misc/sgi-gru/grukservices.c | 2 --
+ drivers/misc/sgi-gru/grumain.c      | 4 ----
+ drivers/misc/sgi-gru/grutlbpurge.c  | 2 --
+ 3 files changed, 8 deletions(-)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index 20cb2008f9e46..035ba52742a50 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -1001,6 +1001,11 @@ void nfs_delegation_mark_returned(struct inode *inode,
+diff --git a/drivers/misc/sgi-gru/grukservices.c b/drivers/misc/sgi-gru/grukservices.c
+index 37e804bbb1f28..205945ce9e86a 100644
+--- a/drivers/misc/sgi-gru/grukservices.c
++++ b/drivers/misc/sgi-gru/grukservices.c
+@@ -258,7 +258,6 @@ static int gru_get_cpu_resources(int dsr_bytes, void **cb, void **dsr)
+ 	int lcpu;
+ 
+ 	BUG_ON(dsr_bytes > GRU_NUM_KERNEL_DSR_BYTES);
+-	preempt_disable();
+ 	bs = gru_lock_kernel_context(-1);
+ 	lcpu = uv_blade_processor_id();
+ 	*cb = bs->kernel_cb + lcpu * GRU_HANDLE_STRIDE;
+@@ -272,7 +271,6 @@ static int gru_get_cpu_resources(int dsr_bytes, void **cb, void **dsr)
+ static void gru_free_cpu_resources(void *cb, void *dsr)
+ {
+ 	gru_unlock_kernel_context(uv_numa_blade_id());
+-	preempt_enable();
+ }
+ 
+ /*
+diff --git a/drivers/misc/sgi-gru/grumain.c b/drivers/misc/sgi-gru/grumain.c
+index 0f5b09e290c89..3036c15f36892 100644
+--- a/drivers/misc/sgi-gru/grumain.c
++++ b/drivers/misc/sgi-gru/grumain.c
+@@ -937,10 +937,8 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
+ 
+ again:
+ 	mutex_lock(&gts->ts_ctxlock);
+-	preempt_disable();
+ 
+ 	if (gru_check_context_placement(gts)) {
+-		preempt_enable();
+ 		mutex_unlock(&gts->ts_ctxlock);
+ 		gru_unload_context(gts, 1);
+ 		return VM_FAULT_NOPAGE;
+@@ -949,7 +947,6 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
+ 	if (!gts->ts_gru) {
+ 		STAT(load_user_context);
+ 		if (!gru_assign_gru_context(gts)) {
+-			preempt_enable();
+ 			mutex_unlock(&gts->ts_ctxlock);
+ 			set_current_state(TASK_INTERRUPTIBLE);
+ 			schedule_timeout(GRU_ASSIGN_DELAY);  /* true hack ZZZ */
+@@ -965,7 +962,6 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
+ 				vma->vm_page_prot);
  	}
  
- 	nfs_mark_delegation_revoked(delegation);
-+	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
-+	spin_unlock(&delegation->lock);
-+	if (nfs_detach_delegation(NFS_I(inode), delegation, NFS_SERVER(inode)))
-+		nfs_put_delegation(delegation);
-+	goto out_rcu_unlock;
+-	preempt_enable();
+ 	mutex_unlock(&gts->ts_ctxlock);
  
- out_clear_returning:
- 	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
+ 	return VM_FAULT_NOPAGE;
+diff --git a/drivers/misc/sgi-gru/grutlbpurge.c b/drivers/misc/sgi-gru/grutlbpurge.c
+index 10921cd2608df..1107dd3e2e9fa 100644
+--- a/drivers/misc/sgi-gru/grutlbpurge.c
++++ b/drivers/misc/sgi-gru/grutlbpurge.c
+@@ -65,7 +65,6 @@ static struct gru_tlb_global_handle *get_lock_tgh_handle(struct gru_state
+ 	struct gru_tlb_global_handle *tgh;
+ 	int n;
+ 
+-	preempt_disable();
+ 	if (uv_numa_blade_id() == gru->gs_blade_id)
+ 		n = get_on_blade_tgh(gru);
+ 	else
+@@ -79,7 +78,6 @@ static struct gru_tlb_global_handle *get_lock_tgh_handle(struct gru_state
+ static void get_unlock_tgh_handle(struct gru_tlb_global_handle *tgh)
+ {
+ 	unlock_tgh_handle(tgh);
+-	preempt_enable();
+ }
+ 
+ /*
 -- 
 2.43.0
 
