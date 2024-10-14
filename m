@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-84223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21CF799CF1F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:51:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F0BA99D33E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA28928AC44
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:51:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 903621C22B3E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCF91ABEA1;
-	Mon, 14 Oct 2024 14:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CAF1B4F25;
+	Mon, 14 Oct 2024 15:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5o8B4xB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PNNjQEfh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6845B1AE009;
-	Mon, 14 Oct 2024 14:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB7614AA9;
+	Mon, 14 Oct 2024 15:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917258; cv=none; b=JATNbOSNvzgjufpgSmQVNUbkX3hnEd8JnRUCNk+lMkrqvL5XMjTXI9cjLx3kACUJatsROUk6WzQ1SKUxvravjr6uS39BXfmcaMXRTAXdIBMAWl6mvRXWYfp//K15I0z+PwxxJGFGIk1Lk9xkDHMMZMDN5lJ/sH8EZPcIw+OIY2I=
+	t=1728919936; cv=none; b=lW5eeq3AEnbuQfX0jdEnMiPUaVsgafXGDJ6q2XHxaNgpoEXQ/ZzKKI+9bfBiSzpTCijQBL4UQlWc8z1YT3sCTgx4zFzBjXbmaTGd4r6z/LdDdReKesHBkRaARVG/iHgNVvd8YOqIsKQI4fk5xAfiPNgJiO23ezLanUvaj3069SI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917258; c=relaxed/simple;
-	bh=h5lRCekdvc+JAtbkMdG47xlV75Mpas/BBghgEF2Ng1M=;
+	s=arc-20240116; t=1728919936; c=relaxed/simple;
+	bh=L994VCHCHqGfKq7eCK0eOVW5QPNWCygjzv5/0Gxue2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDkcvUCwSrkVuXLzKmpiSg5gylfD7tm0mL7VJCchk0l0Z/hpx036mcRuOHFtyL6Ti+cBBwuJvhmtKPQOcsonlemdNUBMHVqZC4qa6UtS1DFxRvghe70TQ9/Ij5Em7IkxeoE7qccBwb/639d2aupV9fiQ+Nwr5ZjpLTmHq4CJaeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5o8B4xB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B7FC4CEC7;
-	Mon, 14 Oct 2024 14:47:37 +0000 (UTC)
+	 MIME-Version; b=BdDA+/dBGIpMbIdp1/SIDtwlqoH+TexRlhca8zdsph0fSZ22aSqDVXDrPfVdI+4YCZr/3q6T3n2TVBLfQLiI0iiSE8q7Yc0rVvOAz95onpkvb2BufR648WittgxbRUQoR95trpMqmIlciHxBKhKucjpBg3VeInKVT+bibLN8a8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PNNjQEfh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A362C4CEC3;
+	Mon, 14 Oct 2024 15:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917258;
-	bh=h5lRCekdvc+JAtbkMdG47xlV75Mpas/BBghgEF2Ng1M=;
+	s=korg; t=1728919935;
+	bh=L994VCHCHqGfKq7eCK0eOVW5QPNWCygjzv5/0Gxue2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s5o8B4xBVWYVJdZmBr3ww8KEQiS341IFTTdwLq6RP8wTTxhigA8nwOEmuXlHCGvZp
-	 4kqZCg2FlfGV2U17WnjlQB/U6Qv5T8cQCl0H12ZBb/ptsSB9VKNCa0Aj+aG+pH/Jfl
-	 kEmVh4fDRTKvdJJ6S/ghv5qCaaDXTvwVFI3HVB30=
+	b=PNNjQEfhYXWz4dsou1agtErEyCTsANH2nmObG7CpzM0NlvoD4jYea+sMEn7lFkQb1
+	 pGMNUnR0txP2qDCTCKmBGFHybSP3AqpLZKrSALIITHay+vUp+cpCFINMSM/58nUwO2
+	 tccjZQG6KWCQfICKsht4bwucvcAcuiM/K9DsMCoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anatolij Gustschin <agust@denx.de>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 198/213] net: dsa: lan9303: ensure chip reset and wait for READY status
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 750/798] i40e: Fix macvlan leak by synchronizing access to mac_filter_hash
 Date: Mon, 14 Oct 2024 16:21:44 +0200
-Message-ID: <20241014141050.688354543@linuxfoundation.org>
+Message-ID: <20241014141247.533424924@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anatolij Gustschin <agust@denx.de>
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-commit 5c14e51d2d7df49fe0d4e64a12c58d2542f452ff upstream.
+[ Upstream commit dac6c7b3d33756d6ce09f00a96ea2ecd79fae9fb ]
 
-Accessing device registers seems to be not reliable, the chip
-revision is sometimes detected wrongly (0 instead of expected 1).
+This patch addresses a macvlan leak issue in the i40e driver caused by
+concurrent access to vsi->mac_filter_hash. The leak occurs when multiple
+threads attempt to modify the mac_filter_hash simultaneously, leading to
+inconsistent state and potential memory leaks.
 
-Ensure that the chip reset is performed via reset GPIO and then
-wait for 'Device Ready' status in HW_CFG register before doing
-any register initializations.
+To fix this, we now wrap the calls to i40e_del_mac_filter() and zeroing
+vf->default_lan_addr.addr with spin_lock/unlock_bh(&vsi->mac_filter_hash_lock),
+ensuring atomic operations and preventing concurrent access.
 
-Cc: stable@vger.kernel.org
-Fixes: a1292595e006 ("net: dsa: add new DSA switch driver for the SMSC-LAN9303")
-Signed-off-by: Anatolij Gustschin <agust@denx.de>
-[alex: reworked using read_poll_timeout()]
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://patch.msgid.link/20241004113655.3436296-1-alexander.sverdlin@siemens.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Additionally, we add lockdep_assert_held(&vsi->mac_filter_hash_lock) in
+i40e_add_mac_filter() to help catch similar issues in the future.
+
+Reproduction steps:
+1. Spawn VFs and configure port vlan on them.
+2. Trigger concurrent macvlan operations (e.g., adding and deleting
+	portvlan and/or mac filters).
+3. Observe the potential memory leak and inconsistent state in the
+	mac_filter_hash.
+
+This synchronization ensures the integrity of the mac_filter_hash and prevents
+the described leak.
+
+Fixes: fed0d9f13266 ("i40e: Fix VF's MAC Address change on VM")
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/lan9303-core.c |   29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_main.c        | 1 +
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 2 ++
+ 2 files changed, 3 insertions(+)
 
---- a/drivers/net/dsa/lan9303-core.c
-+++ b/drivers/net/dsa/lan9303-core.c
-@@ -6,6 +6,7 @@
- #include <linux/module.h>
- #include <linux/gpio/consumer.h>
- #include <linux/regmap.h>
-+#include <linux/iopoll.h>
- #include <linux/mutex.h>
- #include <linux/mii.h>
- #include <linux/of.h>
-@@ -839,6 +840,8 @@ static void lan9303_handle_reset(struct
- 	if (!chip->reset_gpio)
- 		return;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 1194dcacbd29e..5f46a0677d195 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -1730,6 +1730,7 @@ struct i40e_mac_filter *i40e_add_mac_filter(struct i40e_vsi *vsi,
+ 	struct hlist_node *h;
+ 	int bkt;
  
-+	gpiod_set_value_cansleep(chip->reset_gpio, 1);
-+
- 	if (chip->reset_duration != 0)
- 		msleep(chip->reset_duration);
- 
-@@ -864,8 +867,34 @@ static int lan9303_disable_processing(st
- static int lan9303_check_device(struct lan9303 *chip)
- {
- 	int ret;
-+	int err;
- 	u32 reg;
- 
-+	/* In I2C-managed configurations this polling loop will clash with
-+	 * switch's reading of EEPROM right after reset and this behaviour is
-+	 * not configurable. While lan9303_read() already has quite long retry
-+	 * timeout, seems not all cases are being detected as arbitration error.
-+	 *
-+	 * According to datasheet, EEPROM loader has 30ms timeout (in case of
-+	 * missing EEPROM).
-+	 *
-+	 * Loading of the largest supported EEPROM is expected to take at least
-+	 * 5.9s.
-+	 */
-+	err = read_poll_timeout(lan9303_read, ret,
-+				!ret && reg & LAN9303_HW_CFG_READY,
-+				20000, 6000000, false,
-+				chip->regmap, LAN9303_HW_CFG, &reg);
-+	if (ret) {
-+		dev_err(chip->dev, "failed to read HW_CFG reg: %pe\n",
-+			ERR_PTR(ret));
-+		return ret;
-+	}
-+	if (err) {
-+		dev_err(chip->dev, "HW_CFG not ready: 0x%08x\n", reg);
-+		return err;
-+	}
-+
- 	ret = lan9303_read(chip->regmap, LAN9303_CHIP_REV, &reg);
- 	if (ret) {
- 		dev_err(chip->dev, "failed to read chip revision register: %d\n",
++	lockdep_assert_held(&vsi->mac_filter_hash_lock);
+ 	if (vsi->info.pvid)
+ 		return i40e_add_filter(vsi, macaddr,
+ 				       le16_to_cpu(vsi->info.pvid));
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index a5f0c95cba8b5..11e9858cc86a0 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -2215,8 +2215,10 @@ static int i40e_vc_get_vf_resources_msg(struct i40e_vf *vf, u8 *msg)
+ 		vfres->vsi_res[0].qset_handle
+ 					  = le16_to_cpu(vsi->info.qs_handle[0]);
+ 		if (!(vf->driver_caps & VIRTCHNL_VF_OFFLOAD_USO) && !vf->pf_set_mac) {
++			spin_lock_bh(&vsi->mac_filter_hash_lock);
+ 			i40e_del_mac_filter(vsi, vf->default_lan_addr.addr);
+ 			eth_zero_addr(vf->default_lan_addr.addr);
++			spin_unlock_bh(&vsi->mac_filter_hash_lock);
+ 		}
+ 		ether_addr_copy(vfres->vsi_res[0].default_mac_addr,
+ 				vf->default_lan_addr.addr);
+-- 
+2.43.0
+
 
 
 
