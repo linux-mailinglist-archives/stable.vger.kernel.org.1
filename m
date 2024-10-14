@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-84245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F7199CF3C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:53:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D9099D353
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A81EE28C33C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:53:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D8811F2224C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0821B4F14;
-	Mon, 14 Oct 2024 14:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64B91C2335;
+	Mon, 14 Oct 2024 15:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlp0bghV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/AiHqs4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF8D1B4F1E;
-	Mon, 14 Oct 2024 14:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749481AB536;
+	Mon, 14 Oct 2024 15:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917334; cv=none; b=C2WVKNJSuqbH3M/w+fM4AMFMO4ogRuUoY4A6OLmxpWQ6LCNm7AMC8697A8g1EzLA5gTskh0PWCrVlHzsyhM6NrB89WVACluw9JHKdAx+jzKP9QwDCz3n8Qabjh4bXurEvY0A96oLIm1rlUiqwBGdEsUqHYJI7TW/IQi6Uz3SKs0=
+	t=1728920011; cv=none; b=biP+vOelB4qRF7nnCZOCzOFO1NjW0La8m767VpZGAv8KFdP7a6JWGoQS91IOn3BugNa1la/u0+JIppTaeoCYBeOuWGtE91+X5WSjtg8MEQrxxKIaPKUmXXg+oniAAST2hvvpSIYNOE/qYHdNguQo1X67JTxaSyfoKztb26dwncM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917334; c=relaxed/simple;
-	bh=DjzQ0GOyOc1FgGmFykqDBuqxg6GVs1QaI1jMuskdsps=;
+	s=arc-20240116; t=1728920011; c=relaxed/simple;
+	bh=eoOrIC03XxZ+KnSr4p/8d3a5P8t/bFL+KZ6AgV+BHeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BBjceV+D4Y2sXWR9Hcc8mi2XF7qj1y6asAaAdohM7ocq1OFe5RpfUCMsinyheihkSfIqHxP0iq167FMZs3BtjWFk54isXZ38bHY6O22Mvzi7GXq00wdJguQQMdLPorM1z3lPE+lg3j+8JkJKUFNKtKKQEUw9Cc6HvtseLToR+zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlp0bghV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622ACC4CEC3;
-	Mon, 14 Oct 2024 14:48:53 +0000 (UTC)
+	 MIME-Version; b=F6lfWoseIdL1FRDClSKuCuHutzXXcdWSueHrei5JSmkvNZU7wp0dBVU8J8vuf8iNF3um2PD4C66IbYBk2X6WudnsRfgOvy0WLFJBmOXofbe5CfIGgZ8pRfnPQ9nL/RpYbN2yPTczhbmpZ59QVG/dEK50B793oWGTZMS9xZFLU3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/AiHqs4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0226C4CEC3;
+	Mon, 14 Oct 2024 15:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917333;
-	bh=DjzQ0GOyOc1FgGmFykqDBuqxg6GVs1QaI1jMuskdsps=;
+	s=korg; t=1728920011;
+	bh=eoOrIC03XxZ+KnSr4p/8d3a5P8t/bFL+KZ6AgV+BHeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nlp0bghV22gY6TlkkPB4j0hufzZWFJUrvXEXCnb14PwJY4Yvbl1CYe7f3AV3RRd2c
-	 ESZmKSyL3egdFgU4Gd+meB3jE1ZnT8J97hU+cvU9J+111jVafLLqH0cW5N1pjgGPeM
-	 oX7BlUH4ZsTHfhRyfKQuQzfAZ7vTZF5eJvsuiKIg=
+	b=L/AiHqs4/26ba4DENikfuyTa9jAQelm9saXgQ4lnyLyvVZV4ZsiWL1BEFXolW+adj
+	 6cUE0gV6joZP6T8i91hsoSHeG02cxoD5lLojlviafB+FMpIYVJ7Dlnqmj8H9G2tiP5
+	 wm3hq3GxvzSrxgLQgJQWFrpdUZYGUDwhn9wDIYuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 213/213] scsi: Revert "scsi: sd: Do not repeat the starting disk message"
+	Alice Ryhl <aliceryhl@google.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 765/798] rust: macros: provide correct provenance when constructing THIS_MODULE
 Date: Mon, 14 Oct 2024 16:21:59 +0200
-Message-ID: <20241014141051.273396615@linuxfoundation.org>
+Message-ID: <20241014141248.121641181@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +66,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Boqun Feng <boqun.feng@gmail.com>
 
-commit da3e19ef0b3de0aa4b25595bdc214c02a04f19b8 upstream.
+commit a5a3c952e82c1ada12bf8c55b73af26f1a454bd2 upstream.
 
-This reverts commit 7a6bbc2829d4ab592c7e440a6f6f5deb3cd95db4.
+Currently while defining `THIS_MODULE` symbol in `module!()`, the
+pointer used to construct `ThisModule` is derived from an immutable
+reference of `__this_module`, which means the pointer doesn't have
+the provenance for writing, and that means any write to that pointer
+is UB regardless of data races or not. However, the usage of
+`THIS_MODULE` includes passing this pointer to functions that may write
+to it (probably in unsafe code), and this will create soundness issues.
 
-The offending commit tried to suppress a double "Starting disk" message for
-some drivers, but instead started spamming the log with bogus messages
-every five seconds:
+One way to fix this is using `addr_of_mut!()` but that requires the
+unstable feature "const_mut_refs". So instead of `addr_of_mut()!`,
+an extern static `Opaque` is used here: since `Opaque<T>` is transparent
+to `T`, an extern static `Opaque` will just wrap the C symbol (defined
+in a C compile unit) in an `Opaque`, which provides a pointer with
+writable provenance via `Opaque::get()`. This fix the potential UBs
+because of pointer provenance unmatched.
 
-	[  311.798956] sd 0:0:0:0: [sda] Starting disk
-	[  316.919103] sd 0:0:0:0: [sda] Starting disk
-	[  322.040775] sd 0:0:0:0: [sda] Starting disk
-	[  327.161140] sd 0:0:0:0: [sda] Starting disk
-	[  332.281352] sd 0:0:0:0: [sda] Starting disk
-	[  337.401878] sd 0:0:0:0: [sda] Starting disk
-	[  342.521527] sd 0:0:0:0: [sda] Starting disk
-	[  345.850401] sd 0:0:0:0: [sda] Starting disk
-	[  350.967132] sd 0:0:0:0: [sda] Starting disk
-	[  356.090454] sd 0:0:0:0: [sda] Starting disk
-	...
-
-on machines that do not actually stop the disk on runtime suspend (e.g.
-the Qualcomm sc8280xp CRD with UFS).
-
-Let's just revert for now to address the regression.
-
-Fixes: 7a6bbc2829d4 ("scsi: sd: Do not repeat the starting disk message")
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240716161101.30692-1-johan+linaro@kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/x/topic/x/near/465412664
+Fixes: 1fbde52bde73 ("rust: add `macros` crate")
+Cc: stable@vger.kernel.org # 6.6.x: be2ca1e03965: ("rust: types: Make Opaque::get const")
+Link: https://lore.kernel.org/r/20240828180129.4046355-1-boqun.feng@gmail.com
+[ Fixed two typos, reworded title. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+[ Boqun: Use `UnsafeCell` since `Opaque` is not in v6.1, as suggested by
+  Gary Guo, `UnsafeCell` also suffices for this particular case because
+  `__this_module` is only used to create `THIS_MODULE`, no other Rust
+  code will touch it. ]
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sd.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ rust/macros/module.rs | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -3955,6 +3955,8 @@ static int sd_resume(struct device *dev)
- {
- 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
- 
-+	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index 031028b3dc41b..94a92ab82b6b3 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -183,7 +183,11 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+             // freed until the module is unloaded.
+             #[cfg(MODULE)]
+             static THIS_MODULE: kernel::ThisModule = unsafe {{
+-                kernel::ThisModule::from_ptr(&kernel::bindings::__this_module as *const _ as *mut _)
++                extern \"C\" {{
++                    static __this_module: core::cell::UnsafeCell<kernel::bindings::module>;
++                }}
 +
- 	if (opal_unlock_from_suspend(sdkp->opal_dev)) {
- 		sd_printk(KERN_NOTICE, sdkp, "OPAL unlock failed\n");
- 		return -EIO;
-@@ -3971,13 +3973,12 @@ static int sd_resume_common(struct devic
- 	if (!sdkp)	/* E.g.: runtime resume at the start of sd_probe() */
- 		return 0;
- 
--	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
--
- 	if (!sd_do_start_stop(sdkp->device, runtime)) {
- 		sdkp->suspended = false;
- 		return 0;
- 	}
- 
-+	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
- 	ret = sd_start_stop_device(sdkp, 1);
- 	if (!ret) {
- 		sd_resume(dev);
++                kernel::ThisModule::from_ptr(__this_module.get())
+             }};
+             #[cfg(not(MODULE))]
+             static THIS_MODULE: kernel::ThisModule = unsafe {{
+-- 
+2.43.0
+
 
 
 
