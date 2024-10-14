@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0EA99CDC4
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:36:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F34A99CEA9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:46:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95B721F23AB9
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:36:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03EEC28835E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE6317C77;
-	Mon, 14 Oct 2024 14:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65AC226296;
+	Mon, 14 Oct 2024 14:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uv1k/2iy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GguAIles"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2A31A28C;
-	Mon, 14 Oct 2024 14:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A5E1AE001;
+	Mon, 14 Oct 2024 14:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916562; cv=none; b=K+mxTVInfrZsj3rJBCknpMgjBOSshBIKmVI4yR2jBtqTk35Qc/2DO2adXNUmMTZve7axcx0w0ECR6XNw4aLkZQi4AdJ7fmptFqZ+zeCgPdIIg1C+DR06km58NgvFU40uEg03X8VHYudrhDPnfzq8DCR137r3MTbXpuEFkTAUY4g=
+	t=1728917118; cv=none; b=n082ZzggMDEwPGnpsZkEOmxowGNPMcfnzy1lbFliJqXbDYFbrmp0182ULeXwk0Q+YCJFPV5m2/y3V8xrCiqPQBTGhr4fLPEnIxexp/pA5p16o6ESOB9DNZ7kntMWK/IQeStMU8UIYC0XsMTrpvfp4NrJJsbZEQj0eV46+sw05yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916562; c=relaxed/simple;
-	bh=0CUtIHbsIBU1WMSA0GIDpablTuk6lEOzJcT2c+fVC/U=;
+	s=arc-20240116; t=1728917118; c=relaxed/simple;
+	bh=9px6pNxj3xITxTQbk+j3eyTRdlqVJdIveRXX1Fcxkw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=frHuMYTQuZYl6tK9VHeuhfMB3l6iH7xsP9kKTtJ34YAQNGhcZ/bkU5xtiA3ZniEH7JcQ6gvZnMc20PiJIIlHCBxHjEN14jn1u/5or5HbBCyb+zmOr+TuUbBEXsxsn4cbS9FKS/1nBQ4eG2d/9efbwIdnkN3els9smCKDJHItZg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uv1k/2iy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6181DC4CEC3;
-	Mon, 14 Oct 2024 14:36:01 +0000 (UTC)
+	 MIME-Version; b=je3J4VIEN+xJe6U40+h/BKYVrnsoV+PcbFwWYQrh4ZVBYUoHelwSSOx4DiQd3/J5LfsMdY7AB1pEveoRsevs2D9lQwD2NtMuIA/8kiZjnbgOx+DUySKjvk5GXzRvA62LJgV25oxbEfiAt3DjW8MVBe5ZNc31fdn0hOP6BztIvZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GguAIles; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857BAC4CECF;
+	Mon, 14 Oct 2024 14:45:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916561;
-	bh=0CUtIHbsIBU1WMSA0GIDpablTuk6lEOzJcT2c+fVC/U=;
+	s=korg; t=1728917118;
+	bh=9px6pNxj3xITxTQbk+j3eyTRdlqVJdIveRXX1Fcxkw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uv1k/2iys4ESyZAZuitxUofkLslWzQc4jcAjT8TQ//5uzGnRYzxrQwjuw4aRcy63p
-	 sFj16nSQk3aJMTfdo8p8bofuARGiZpbgk0lJcMrh6PvwtOrxX5/UZylmQ2ZOwBVP4w
-	 ev1yY7C7N4pOLA4DhhykL6V6yK5+ZX/eNPVGI8s8=
+	b=GguAIleskwe4mHdq9yLnDpRPy5zIz/qvtHRKcME6QcUQwoo7IgQsAOiY7bR4AQ/5H
+	 sRD4m2g1qrrzfRRhfk+evvG53GtYdS5+/r/QCfTHfgqd5x+luiPqdzoXxbRweG1CJq
+	 XxMcnjY/5anryXgfPxRerFVK7EmI6nelVhumeq5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@outlook.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.11 200/214] ice: Fix improper handling of refcount in ice_dpll_init_rclk_pins()
+	Eric Dumazet <edumazet@google.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 157/213] rtnetlink: add RTNL_FLAG_DUMP_UNLOCKED flag
 Date: Mon, 14 Oct 2024 16:21:03 +0200
-Message-ID: <20241014141052.780047570@linuxfoundation.org>
+Message-ID: <20241014141049.098673157@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@outlook.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit ccca30a18e36a742e606d5bf0630e75be7711d0a upstream.
+[ Upstream commit 386520e0ecc01004d3a29c70c5a77d4bbf8a8420 ]
 
-This patch addresses a reference count handling issue in the
-ice_dpll_init_rclk_pins() function. The function calls ice_dpll_get_pins(),
-which increments the reference count of the relevant resources. However,
-if the condition WARN_ON((!vsi || !vsi->netdev)) is met, the function
-currently returns an error without properly releasing the resources
-acquired by ice_dpll_get_pins(), leading to a reference count leak.
+Similarly to RTNL_FLAG_DOIT_UNLOCKED, this new flag
+allows dump operations registered via rtnl_register()
+or rtnl_register_module() to opt-out from RTNL protection.
 
-To resolve this, the check has been moved to the top of the function. This
-ensures that the function verifies the state before any resources are
-acquired, avoiding the need for additional resource management in the
-error path.
-
-This bug was identified by an experimental static analysis tool developed
-by our team. The tool specializes in analyzing reference count operations
-and detecting potential issues where resources are not properly managed.
-In this case, the tool flagged the missing release operation as a
-potential problem, which led to the development of this patch.
-
-Fixes: d7999f5ea64b ("ice: implement dpll interface to control cgu")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@outlook.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 5be2062e3080 ("mpls: Handle error of rtnl_register_module().")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_dpll.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/netlink.h  | 2 ++
+ include/net/rtnetlink.h  | 1 +
+ net/core/rtnetlink.c     | 2 ++
+ net/netlink/af_netlink.c | 3 +++
+ 4 files changed, 8 insertions(+)
 
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -1628,6 +1628,8 @@ ice_dpll_init_rclk_pins(struct ice_pf *p
- 	struct dpll_pin *parent;
- 	int ret, i;
+diff --git a/include/linux/netlink.h b/include/linux/netlink.h
+index 75d7de34c9087..e8d713a37d176 100644
+--- a/include/linux/netlink.h
++++ b/include/linux/netlink.h
+@@ -289,6 +289,7 @@ struct netlink_callback {
+ 	u16			answer_flags;
+ 	u32			min_dump_alloc;
+ 	unsigned int		prev_seq, seq;
++	int			flags;
+ 	bool			strict_check;
+ 	union {
+ 		u8		ctx[48];
+@@ -321,6 +322,7 @@ struct netlink_dump_control {
+ 	void *data;
+ 	struct module *module;
+ 	u32 min_dump_alloc;
++	int flags;
+ };
  
-+	if (WARN_ON((!vsi || !vsi->netdev)))
-+		return -EINVAL;
- 	ret = ice_dpll_get_pins(pf, pin, start_idx, ICE_DPLL_RCLK_NUM_PER_PF,
- 				pf->dplls.clock_id);
- 	if (ret)
-@@ -1643,8 +1645,6 @@ ice_dpll_init_rclk_pins(struct ice_pf *p
- 		if (ret)
- 			goto unregister_pins;
- 	}
--	if (WARN_ON((!vsi || !vsi->netdev)))
--		return -EINVAL;
- 	dpll_netdev_pin_set(vsi->netdev, pf->dplls.rclk.pin);
+ int __netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
+diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
+index 0bd400be3f8d9..c1fa6fee0acfa 100644
+--- a/include/net/rtnetlink.h
++++ b/include/net/rtnetlink.h
+@@ -12,6 +12,7 @@ typedef int (*rtnl_dumpit_func)(struct sk_buff *, struct netlink_callback *);
+ enum rtnl_link_flags {
+ 	RTNL_FLAG_DOIT_UNLOCKED		= BIT(0),
+ 	RTNL_FLAG_BULK_DEL_SUPPORTED	= BIT(1),
++	RTNL_FLAG_DUMP_UNLOCKED		= BIT(2),
+ };
  
- 	return 0;
+ enum rtnl_kinds {
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index ffa1334cddf44..c76c54879fddd 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -6405,6 +6405,7 @@ static int rtnetlink_rcv_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		}
+ 		owner = link->owner;
+ 		dumpit = link->dumpit;
++		flags = link->flags;
+ 
+ 		if (type == RTM_GETLINK - RTM_BASE)
+ 			min_dump_alloc = rtnl_calcit(skb, nlh);
+@@ -6422,6 +6423,7 @@ static int rtnetlink_rcv_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 				.dump		= dumpit,
+ 				.min_dump_alloc	= min_dump_alloc,
+ 				.module		= owner,
++				.flags		= flags,
+ 			};
+ 			err = netlink_dump_start(rtnl, skb, nlh, &c);
+ 			/* netlink_dump_start() will keep a reference on
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index e40376997f393..8e7d5f17c58b8 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -2263,6 +2263,8 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
+ 
+ 		cb->extack = &extack;
+ 
++		if (cb->flags & RTNL_FLAG_DUMP_UNLOCKED)
++			extra_mutex = NULL;
+ 		if (extra_mutex)
+ 			mutex_lock(extra_mutex);
+ 		nlk->dump_done_errno = cb->dump(skb, cb);
+@@ -2357,6 +2359,7 @@ int __netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
+ 	cb->data = control->data;
+ 	cb->module = control->module;
+ 	cb->min_dump_alloc = control->min_dump_alloc;
++	cb->flags = control->flags;
+ 	cb->skb = skb;
+ 
+ 	cb->strict_check = nlk_test_bit(STRICT_CHK, NETLINK_CB(skb).sk);
+-- 
+2.43.0
+
 
 
 
