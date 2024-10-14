@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-83956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 975D499CD57
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:31:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B9999D2BB
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:29:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AF95283225
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:31:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D25801F252E1
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED9724B34;
-	Mon, 14 Oct 2024 14:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B021C4605;
+	Mon, 14 Oct 2024 15:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMJ0Sldy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iEbmaVb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D430610B;
-	Mon, 14 Oct 2024 14:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8B61C3F26;
+	Mon, 14 Oct 2024 15:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916313; cv=none; b=nrgy+PQWTw1X1jm6Ux4L9hRpQ2pWBxBVmSyldt79wfJcJ+WYvtGCbnsFCPNtLGHF72sKF9ad5UDyrIEsmg1KG9UKe5ju1qx79qbFwswHSugqc2TKFlrKRBpG878EwFHlnJhaUc/wygC+n3ZuSMK35YS9qnMAyObs2Hq6GizzW/w=
+	t=1728919608; cv=none; b=H/It7VzpD7m1qZbHkxSQ4uCKrznIbfW/sCQIQw91u9EP1onSh3F2EbZsdfxRfEAR/33389HjAUiVt9h3tCJ8k3i+7EjmW8cqR3tSr6VlFpxYrySFvAghdR4cGU1uZBIJXvm30uycVa+6CsteEtelfBZQPk2r4k/0xaYkixiq+MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916313; c=relaxed/simple;
-	bh=fTgIZz8/tOaINbyvRH1a6NuUREqFdUZSIxTHtpxguUM=;
+	s=arc-20240116; t=1728919608; c=relaxed/simple;
+	bh=JgoZCu5Q6iGRY0D8qn/QEoGHtZMR5kUB2CwVV3TPtzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jG6eNXo+xXeOfEg11DlUJzCI+y/CERwTWeOi71FnMlDo917iPRuuXq6obNhv3oqVDJnaihLBoOUx8QF6Mvw6LyvFDJP5j1ENpQ0e4tZJ21tmwKTXDwpEzBJaReIf2U8utNyBSsLzC5xviyqi3SQoDkAGiRLYucjqet/1KXvt+AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HMJ0Sldy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1295BC4CED0;
-	Mon, 14 Oct 2024 14:31:52 +0000 (UTC)
+	 MIME-Version; b=PPJTSoiVgDY6xp79VllEoQxHFyQpAeFy+gQkaV2rL6nv+i3MFAiuHjXTRHWA8A1xuxt1Ixmrk3aeabbokDDl9wDmehX1yHgFjJokr06G4Cbp/QJMmFpIhd/IUw1HZPXHmN5AQvNz7HaOyVt4MuaYGfUsk9MOmDXsA3wWgSplM1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iEbmaVb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB75C4CEC3;
+	Mon, 14 Oct 2024 15:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916313;
-	bh=fTgIZz8/tOaINbyvRH1a6NuUREqFdUZSIxTHtpxguUM=;
+	s=korg; t=1728919607;
+	bh=JgoZCu5Q6iGRY0D8qn/QEoGHtZMR5kUB2CwVV3TPtzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HMJ0SldymcKeDDJWr6U6QKP/l8brC/71Jbg4by6lElWT1X06kz+XJqUiH5nIO/PzP
-	 DkmBWZcMwpRP2z3pJcKhFXzu2GFRQuT/ZKx6iiUAY84QdCnF6h6fIMDFkQIJBQ4Ed+
-	 RpmTfDsfe2PaEVeWSky8W8gZhf5iAWbdkhKm3HnU=
+	b=2iEbmaVbAe1zgi+MgOMzKufnK+R+MUbUFajYobbxEF8OSnG146kApDdZZWutIsVck
+	 rvTPu049ELcRGdHwNziPp28JMo3JdtqJMhVZoZrRbIMf8VTaK1pXxN9BwRKWYq7wJu
+	 0jAJWln70yfw50ZOr2wz6yJYouE3p2CTCbBqZrdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <courmisch@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 146/214] phonet: Handle error of rtnl_register_module().
+	"linux-erofs@lists.ozlabs.org, LKML" <linux-kernel@vger.kernel.org>,
+	Yue Hu <huyue2@coolpad.com>,
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.1 655/798] erofs: get rid of z_erofs_do_map_blocks() forward declaration
 Date: Mon, 14 Oct 2024 16:20:09 +0200
-Message-ID: <20241014141050.684530744@linuxfoundation.org>
+Message-ID: <20241014141243.783321537@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +61,296 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit b5e837c86041bef60f36cf9f20a641a30764379a ]
+commit 999f2f9a63f475192d837a2b8595eb0962984d21 upstream.
 
-Before commit addf9b90de22 ("net: rtnetlink: use rcu to free rtnl
-message handlers"), once the first rtnl_register_module() allocated
-rtnl_msg_handlers[PF_PHONET], the following calls never failed.
+The code can be neater without forward declarations.  Let's
+get rid of z_erofs_do_map_blocks() forward declaration.
 
-However, after the commit, rtnl_register_module() could fail silently
-to allocate rtnl_msg_handlers[PF_PHONET][msgtype] and requires error
-handling for each call.
-
-Handling the error allows users to view a module as an all-or-nothing
-thing in terms of the rtnetlink functionality.  This prevents syzkaller
-from reporting spurious errors from its tests, where OOM often occurs
-and module is automatically loaded.
-
-Let's use rtnl_register_many() to handle the errors easily.
-
-Fixes: addf9b90de22 ("net: rtnetlink: use rcu to free rtnl message handlers")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Rémi Denis-Courmont <courmisch@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Stable-dep-of: 9ed50b8231e3 ("erofs: fix incorrect symlink detection in fast symlink")
+Link: https://lore.kernel.org/r/20230204093040.97967-5-hsiangkao@linux.alibaba.com
+[ Gao Xiang: apply this to 6.6.y to avoid further backport twists
+             due to obsoleted EROFS_BLKSIZ. ]
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/phonet/pn_netlink.c | 28 +++++++++++-----------------
- 1 file changed, 11 insertions(+), 17 deletions(-)
+ fs/erofs/zmap.c |  242 +++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 119 insertions(+), 123 deletions(-)
 
-diff --git a/net/phonet/pn_netlink.c b/net/phonet/pn_netlink.c
-index 7008d402499d5..894e5c72d6bff 100644
---- a/net/phonet/pn_netlink.c
-+++ b/net/phonet/pn_netlink.c
-@@ -285,23 +285,17 @@ static int route_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -7,10 +7,6 @@
+ #include <asm/unaligned.h>
+ #include <trace/events/erofs.h>
+ 
+-static int z_erofs_do_map_blocks(struct inode *inode,
+-				 struct erofs_map_blocks *map,
+-				 int flags);
+-
+ int z_erofs_fill_inode(struct inode *inode)
+ {
+ 	struct erofs_inode *const vi = EROFS_I(inode);
+@@ -29,125 +25,6 @@ int z_erofs_fill_inode(struct inode *ino
+ 	return 0;
+ }
+ 
+-static int z_erofs_fill_inode_lazy(struct inode *inode)
+-{
+-	struct erofs_inode *const vi = EROFS_I(inode);
+-	struct super_block *const sb = inode->i_sb;
+-	int err, headnr;
+-	erofs_off_t pos;
+-	struct erofs_buf buf = __EROFS_BUF_INITIALIZER;
+-	void *kaddr;
+-	struct z_erofs_map_header *h;
+-
+-	if (test_bit(EROFS_I_Z_INITED_BIT, &vi->flags)) {
+-		/*
+-		 * paired with smp_mb() at the end of the function to ensure
+-		 * fields will only be observed after the bit is set.
+-		 */
+-		smp_mb();
+-		return 0;
+-	}
+-
+-	if (wait_on_bit_lock(&vi->flags, EROFS_I_BL_Z_BIT, TASK_KILLABLE))
+-		return -ERESTARTSYS;
+-
+-	err = 0;
+-	if (test_bit(EROFS_I_Z_INITED_BIT, &vi->flags))
+-		goto out_unlock;
+-
+-	pos = ALIGN(erofs_iloc(inode) + vi->inode_isize + vi->xattr_isize, 8);
+-	kaddr = erofs_read_metabuf(&buf, sb, erofs_blknr(pos), EROFS_KMAP);
+-	if (IS_ERR(kaddr)) {
+-		err = PTR_ERR(kaddr);
+-		goto out_unlock;
+-	}
+-
+-	h = kaddr + erofs_blkoff(pos);
+-	/*
+-	 * if the highest bit of the 8-byte map header is set, the whole file
+-	 * is stored in the packed inode. The rest bits keeps z_fragmentoff.
+-	 */
+-	if (h->h_clusterbits >> Z_EROFS_FRAGMENT_INODE_BIT) {
+-		vi->z_advise = Z_EROFS_ADVISE_FRAGMENT_PCLUSTER;
+-		vi->z_fragmentoff = le64_to_cpu(*(__le64 *)h) ^ (1ULL << 63);
+-		vi->z_tailextent_headlcn = 0;
+-		goto done;
+-	}
+-	vi->z_advise = le16_to_cpu(h->h_advise);
+-	vi->z_algorithmtype[0] = h->h_algorithmtype & 15;
+-	vi->z_algorithmtype[1] = h->h_algorithmtype >> 4;
+-
+-	headnr = 0;
+-	if (vi->z_algorithmtype[0] >= Z_EROFS_COMPRESSION_MAX ||
+-	    vi->z_algorithmtype[++headnr] >= Z_EROFS_COMPRESSION_MAX) {
+-		erofs_err(sb, "unknown HEAD%u format %u for nid %llu, please upgrade kernel",
+-			  headnr + 1, vi->z_algorithmtype[headnr], vi->nid);
+-		err = -EOPNOTSUPP;
+-		goto out_put_metabuf;
+-	}
+-
+-	vi->z_logical_clusterbits = LOG_BLOCK_SIZE + (h->h_clusterbits & 7);
+-	if (!erofs_sb_has_big_pcluster(EROFS_SB(sb)) &&
+-	    vi->z_advise & (Z_EROFS_ADVISE_BIG_PCLUSTER_1 |
+-			    Z_EROFS_ADVISE_BIG_PCLUSTER_2)) {
+-		erofs_err(sb, "per-inode big pcluster without sb feature for nid %llu",
+-			  vi->nid);
+-		err = -EFSCORRUPTED;
+-		goto out_put_metabuf;
+-	}
+-	if (vi->datalayout == EROFS_INODE_FLAT_COMPRESSION &&
+-	    !(vi->z_advise & Z_EROFS_ADVISE_BIG_PCLUSTER_1) ^
+-	    !(vi->z_advise & Z_EROFS_ADVISE_BIG_PCLUSTER_2)) {
+-		erofs_err(sb, "big pcluster head1/2 of compact indexes should be consistent for nid %llu",
+-			  vi->nid);
+-		err = -EFSCORRUPTED;
+-		goto out_put_metabuf;
+-	}
+-
+-	if (vi->z_advise & Z_EROFS_ADVISE_INLINE_PCLUSTER) {
+-		struct erofs_map_blocks map = {
+-			.buf = __EROFS_BUF_INITIALIZER
+-		};
+-
+-		vi->z_idata_size = le16_to_cpu(h->h_idata_size);
+-		err = z_erofs_do_map_blocks(inode, &map,
+-					    EROFS_GET_BLOCKS_FINDTAIL);
+-		erofs_put_metabuf(&map.buf);
+-
+-		if (!map.m_plen ||
+-		    erofs_blkoff(map.m_pa) + map.m_plen > EROFS_BLKSIZ) {
+-			erofs_err(sb, "invalid tail-packing pclustersize %llu",
+-				  map.m_plen);
+-			err = -EFSCORRUPTED;
+-		}
+-		if (err < 0)
+-			goto out_put_metabuf;
+-	}
+-
+-	if (vi->z_advise & Z_EROFS_ADVISE_FRAGMENT_PCLUSTER &&
+-	    !(h->h_clusterbits >> Z_EROFS_FRAGMENT_INODE_BIT)) {
+-		struct erofs_map_blocks map = {
+-			.buf = __EROFS_BUF_INITIALIZER
+-		};
+-
+-		vi->z_fragmentoff = le32_to_cpu(h->h_fragmentoff);
+-		err = z_erofs_do_map_blocks(inode, &map,
+-					    EROFS_GET_BLOCKS_FINDTAIL);
+-		erofs_put_metabuf(&map.buf);
+-		if (err < 0)
+-			goto out_put_metabuf;
+-	}
+-done:
+-	/* paired with smp_mb() at the beginning of the function */
+-	smp_mb();
+-	set_bit(EROFS_I_Z_INITED_BIT, &vi->flags);
+-out_put_metabuf:
+-	erofs_put_metabuf(&buf);
+-out_unlock:
+-	clear_and_wake_up_bit(EROFS_I_BL_Z_BIT, &vi->flags);
+-	return err;
+-}
+-
+ struct z_erofs_maprecorder {
+ 	struct inode *inode;
+ 	struct erofs_map_blocks *map;
+@@ -732,6 +609,125 @@ unmap_out:
  	return err;
  }
  
-+static const struct rtnl_msg_handler phonet_rtnl_msg_handlers[] __initdata_or_module = {
-+	{THIS_MODULE, PF_PHONET, RTM_NEWADDR, addr_doit, NULL, 0},
-+	{THIS_MODULE, PF_PHONET, RTM_DELADDR, addr_doit, NULL, 0},
-+	{THIS_MODULE, PF_PHONET, RTM_GETADDR, NULL, getaddr_dumpit, 0},
-+	{THIS_MODULE, PF_PHONET, RTM_NEWROUTE, route_doit, NULL, 0},
-+	{THIS_MODULE, PF_PHONET, RTM_DELROUTE, route_doit, NULL, 0},
-+	{THIS_MODULE, PF_PHONET, RTM_GETROUTE, NULL, route_dumpit,
-+	 RTNL_FLAG_DUMP_UNLOCKED},
-+};
++static int z_erofs_fill_inode_lazy(struct inode *inode)
++{
++	struct erofs_inode *const vi = EROFS_I(inode);
++	struct super_block *const sb = inode->i_sb;
++	int err, headnr;
++	erofs_off_t pos;
++	struct erofs_buf buf = __EROFS_BUF_INITIALIZER;
++	void *kaddr;
++	struct z_erofs_map_header *h;
 +
- int __init phonet_netlink_register(void)
++	if (test_bit(EROFS_I_Z_INITED_BIT, &vi->flags)) {
++		/*
++		 * paired with smp_mb() at the end of the function to ensure
++		 * fields will only be observed after the bit is set.
++		 */
++		smp_mb();
++		return 0;
++	}
++
++	if (wait_on_bit_lock(&vi->flags, EROFS_I_BL_Z_BIT, TASK_KILLABLE))
++		return -ERESTARTSYS;
++
++	err = 0;
++	if (test_bit(EROFS_I_Z_INITED_BIT, &vi->flags))
++		goto out_unlock;
++
++	pos = ALIGN(erofs_iloc(inode) + vi->inode_isize + vi->xattr_isize, 8);
++	kaddr = erofs_read_metabuf(&buf, sb, erofs_blknr(pos), EROFS_KMAP);
++	if (IS_ERR(kaddr)) {
++		err = PTR_ERR(kaddr);
++		goto out_unlock;
++	}
++
++	h = kaddr + erofs_blkoff(pos);
++	/*
++	 * if the highest bit of the 8-byte map header is set, the whole file
++	 * is stored in the packed inode. The rest bits keeps z_fragmentoff.
++	 */
++	if (h->h_clusterbits >> Z_EROFS_FRAGMENT_INODE_BIT) {
++		vi->z_advise = Z_EROFS_ADVISE_FRAGMENT_PCLUSTER;
++		vi->z_fragmentoff = le64_to_cpu(*(__le64 *)h) ^ (1ULL << 63);
++		vi->z_tailextent_headlcn = 0;
++		goto done;
++	}
++	vi->z_advise = le16_to_cpu(h->h_advise);
++	vi->z_algorithmtype[0] = h->h_algorithmtype & 15;
++	vi->z_algorithmtype[1] = h->h_algorithmtype >> 4;
++
++	headnr = 0;
++	if (vi->z_algorithmtype[0] >= Z_EROFS_COMPRESSION_MAX ||
++	    vi->z_algorithmtype[++headnr] >= Z_EROFS_COMPRESSION_MAX) {
++		erofs_err(sb, "unknown HEAD%u format %u for nid %llu, please upgrade kernel",
++			  headnr + 1, vi->z_algorithmtype[headnr], vi->nid);
++		err = -EOPNOTSUPP;
++		goto out_put_metabuf;
++	}
++
++	vi->z_logical_clusterbits = LOG_BLOCK_SIZE + (h->h_clusterbits & 7);
++	if (!erofs_sb_has_big_pcluster(EROFS_SB(sb)) &&
++	    vi->z_advise & (Z_EROFS_ADVISE_BIG_PCLUSTER_1 |
++			    Z_EROFS_ADVISE_BIG_PCLUSTER_2)) {
++		erofs_err(sb, "per-inode big pcluster without sb feature for nid %llu",
++			  vi->nid);
++		err = -EFSCORRUPTED;
++		goto out_put_metabuf;
++	}
++	if (vi->datalayout == EROFS_INODE_FLAT_COMPRESSION &&
++	    !(vi->z_advise & Z_EROFS_ADVISE_BIG_PCLUSTER_1) ^
++	    !(vi->z_advise & Z_EROFS_ADVISE_BIG_PCLUSTER_2)) {
++		erofs_err(sb, "big pcluster head1/2 of compact indexes should be consistent for nid %llu",
++			  vi->nid);
++		err = -EFSCORRUPTED;
++		goto out_put_metabuf;
++	}
++
++	if (vi->z_advise & Z_EROFS_ADVISE_INLINE_PCLUSTER) {
++		struct erofs_map_blocks map = {
++			.buf = __EROFS_BUF_INITIALIZER
++		};
++
++		vi->z_idata_size = le16_to_cpu(h->h_idata_size);
++		err = z_erofs_do_map_blocks(inode, &map,
++					    EROFS_GET_BLOCKS_FINDTAIL);
++		erofs_put_metabuf(&map.buf);
++
++		if (!map.m_plen ||
++		    erofs_blkoff(map.m_pa) + map.m_plen > EROFS_BLKSIZ) {
++			erofs_err(sb, "invalid tail-packing pclustersize %llu",
++				  map.m_plen);
++			err = -EFSCORRUPTED;
++		}
++		if (err < 0)
++			goto out_put_metabuf;
++	}
++
++	if (vi->z_advise & Z_EROFS_ADVISE_FRAGMENT_PCLUSTER &&
++	    !(h->h_clusterbits >> Z_EROFS_FRAGMENT_INODE_BIT)) {
++		struct erofs_map_blocks map = {
++			.buf = __EROFS_BUF_INITIALIZER
++		};
++
++		vi->z_fragmentoff = le32_to_cpu(h->h_fragmentoff);
++		err = z_erofs_do_map_blocks(inode, &map,
++					    EROFS_GET_BLOCKS_FINDTAIL);
++		erofs_put_metabuf(&map.buf);
++		if (err < 0)
++			goto out_put_metabuf;
++	}
++done:
++	/* paired with smp_mb() at the beginning of the function */
++	smp_mb();
++	set_bit(EROFS_I_Z_INITED_BIT, &vi->flags);
++out_put_metabuf:
++	erofs_put_metabuf(&buf);
++out_unlock:
++	clear_and_wake_up_bit(EROFS_I_BL_Z_BIT, &vi->flags);
++	return err;
++}
++
+ int z_erofs_map_blocks_iter(struct inode *inode, struct erofs_map_blocks *map,
+ 			    int flags)
  {
--	int err = rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_NEWADDR,
--				       addr_doit, NULL, 0);
--	if (err)
--		return err;
--
--	/* Further rtnl_register_module() cannot fail */
--	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_DELADDR,
--			     addr_doit, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_GETADDR,
--			     NULL, getaddr_dumpit, 0);
--	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_NEWROUTE,
--			     route_doit, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_DELROUTE,
--			     route_doit, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_GETROUTE,
--			     NULL, route_dumpit, RTNL_FLAG_DUMP_UNLOCKED);
--	return 0;
-+	return rtnl_register_many(phonet_rtnl_msg_handlers);
- }
--- 
-2.43.0
-
 
 
 
