@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1005999D225
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD9DB99CCDC
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:25:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C443F284800
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55B9EB21364
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97CED1AC459;
-	Mon, 14 Oct 2024 15:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FDD21A0BE7;
+	Mon, 14 Oct 2024 14:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLp0xx5G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZzvNAndv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A5719E98B;
-	Mon, 14 Oct 2024 15:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA4DE571;
+	Mon, 14 Oct 2024 14:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919251; cv=none; b=k26KdzsKDYnnHhKdLtkwwLlz9Ygzzn5gqH3o1tL6tiskUy7RII4YodBZz4srJ0Qp8mFe9H+GfmKbs0ixW8pmwvB9T5fM/XWnQSMECjtuEj1XMlLa3w8qtnuZ8/OH+Z6ovLDE6xqBIxkMNz8t8W6rcNOofK6mx+e4OYcIvQPb/YE=
+	t=1728915952; cv=none; b=GvXOCYKtVNQy8+lsGPrrDUhypEtHSOVQ5sVXgyIxTYn9C+DNiLJzYZSq4zedhp2C3rPrrQ8LtUDiraImX3R2mvmPXtqWgfm9EUCM3z3TMEzkxHJtenj/ClFjRiK3IX3OawbQ/BRUhylYkb8YShCvCDiP6mHcFEOSYZUJfVEsXCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919251; c=relaxed/simple;
-	bh=VVLghEOOhk4lPtbrHmO00zqsI+dJZYu7vFf1UKeKH8A=;
+	s=arc-20240116; t=1728915952; c=relaxed/simple;
+	bh=h7vP5/gSzkZU6myHRzjSwJ0z2Ggb9fPRXGG99woB1oU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XRYfGWdXrIZadkQgulJZkgq8qSEnFHlQ2wfgpABbB8/K12RcEBPb+S/MoTU019IsE0+yR2d0IAcH4vkY30SE+uoMO0ub/rjpCic9DN1QaR6CAXXxZN2knwacW3op5/tFVTGg95VccWS1Flj4sKfTdtbE8erQs3tyw08GQVqP5kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLp0xx5G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA519C4CEC3;
-	Mon, 14 Oct 2024 15:20:50 +0000 (UTC)
+	 MIME-Version; b=bD/N5lO+DZsfnL/OEm7VsoRhu5b8mNOdYacYWLDp6r4M7OfKO6Fhci6u8rEs1m3ZzcMWXShqZAnPsVYQiE/QyHleJy+Hbas9rqaFIz97w2rauLkdKmkCy9pMbJDPAPDozCDZdTgJTxbXwQxlyTPfo4WButUWDPCuvvwq8ch7BDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzvNAndv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F97C4CEC3;
+	Mon, 14 Oct 2024 14:25:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919251;
-	bh=VVLghEOOhk4lPtbrHmO00zqsI+dJZYu7vFf1UKeKH8A=;
+	s=korg; t=1728915952;
+	bh=h7vP5/gSzkZU6myHRzjSwJ0z2Ggb9fPRXGG99woB1oU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pLp0xx5Gx64jW6lS3VpXOrNIQh7GbpfgxJ8u0OSXp1o2HmFGbklxh8af8yXDsfbLU
-	 +hNKHznU7YZZFekhNKkLi66bzrqJLVUc1JfaAhD6yAAcZ1Lz1sjIopM+9IMVJw8eY+
-	 tKokxmACP9sDdvazFqyGUnlnhCelnrycS431GrQU=
+	b=ZzvNAndvydo/L88usT9CqGWxCbF0ZNefJ43X4ghh1Ubu1s8yyOI/faYcbMkw10Tz2
+	 0clIj2kRLDIEXV35vF75DnvBLKfmll/mU4sHy1j4m1Pggz/XpNUQ9PIWEsg5L/njHi
+	 xEpytP43zF4mu2eEXj2lyA7FjkR796v2+LYI8Tj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.1 555/798] ext4: use handle to mark fc as ineligible in __track_dentry_update()
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 046/214] RDMA/mlx5: Enforce umem boundaries for explicit ODP page faults
 Date: Mon, 14 Oct 2024 16:18:29 +0200
-Message-ID: <20241014141239.799384733@linuxfoundation.org>
+Message-ID: <20241014141046.787577663@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-commit faab35a0370fd6e0821c7a8dd213492946fc776f upstream.
+[ Upstream commit 8c6d097d830f779fc1725fbaa1314f20a7a07b4b ]
 
-Calling ext4_fc_mark_ineligible() with a NULL handle is racy and may result
-in a fast-commit being done before the filesystem is effectively marked as
-ineligible.  This patch fixes the calls to this function in
-__track_dentry_update() by adding an extra parameter to the callback used in
-ext4_fc_track_template().
+The new memory scheme page faults are requesting the driver to fetch
+additinal pages to the faulted memory access.
+This is done in order to prefetch pages before and after the area that
+got the page fault, assuming this will reduce the total amount of page
+faults.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240923104909.18342-2-luis.henriques@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The driver should ensure it handles only the pages that are within the
+umem range.
+
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://patch.msgid.link/20240909100504.29797-5-michaelgur@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/fast_commit.c |   19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/infiniband/hw/mlx5/odp.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -379,7 +379,7 @@ void ext4_fc_mark_ineligible(struct supe
+diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
+index a524181f34df9..3a4605fda6d57 100644
+--- a/drivers/infiniband/hw/mlx5/odp.c
++++ b/drivers/infiniband/hw/mlx5/odp.c
+@@ -733,24 +733,31 @@ static int pagefault_dmabuf_mr(struct mlx5_ib_mr *mr, size_t bcnt,
+  *  >0: Number of pages mapped
   */
- static int ext4_fc_track_template(
- 	handle_t *handle, struct inode *inode,
--	int (*__fc_track_fn)(struct inode *, void *, bool),
-+	int (*__fc_track_fn)(handle_t *handle, struct inode *, void *, bool),
- 	void *args, int enqueue)
+ static int pagefault_mr(struct mlx5_ib_mr *mr, u64 io_virt, size_t bcnt,
+-			u32 *bytes_mapped, u32 flags)
++			u32 *bytes_mapped, u32 flags, bool permissive_fault)
  {
- 	bool update = false;
-@@ -396,7 +396,7 @@ static int ext4_fc_track_template(
- 		ext4_fc_reset_inode(inode);
- 		ei->i_sync_tid = tid;
- 	}
--	ret = __fc_track_fn(inode, args, update);
-+	ret = __fc_track_fn(handle, inode, args, update);
- 	mutex_unlock(&ei->i_fc_lock);
+ 	struct ib_umem_odp *odp = to_ib_umem_odp(mr->umem);
  
- 	if (!enqueue)
-@@ -420,7 +420,8 @@ struct __track_dentry_update_args {
- };
+-	if (unlikely(io_virt < mr->ibmr.iova))
++	if (unlikely(io_virt < mr->ibmr.iova) && !permissive_fault)
+ 		return -EFAULT;
  
- /* __track_fn for directory entry updates. Called with ei->i_fc_lock. */
--static int __track_dentry_update(struct inode *inode, void *arg, bool update)
-+static int __track_dentry_update(handle_t *handle, struct inode *inode,
-+				 void *arg, bool update)
- {
- 	struct ext4_fc_dentry_update *node;
- 	struct ext4_inode_info *ei = EXT4_I(inode);
-@@ -435,14 +436,14 @@ static int __track_dentry_update(struct
+ 	if (mr->umem->is_dmabuf)
+ 		return pagefault_dmabuf_mr(mr, bcnt, bytes_mapped, flags);
  
- 	if (IS_ENCRYPTED(dir)) {
- 		ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_ENCRYPTED_FILENAME,
--					NULL);
-+					handle);
- 		mutex_lock(&ei->i_fc_lock);
- 		return -EOPNOTSUPP;
- 	}
+ 	if (!odp->is_implicit_odp) {
++		u64 offset = io_virt < mr->ibmr.iova ? 0 : io_virt - mr->ibmr.iova;
+ 		u64 user_va;
  
- 	node = kmem_cache_alloc(ext4_fc_dentry_cachep, GFP_NOFS);
- 	if (!node) {
--		ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_NOMEM, NULL);
-+		ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_NOMEM, handle);
- 		mutex_lock(&ei->i_fc_lock);
- 		return -ENOMEM;
- 	}
-@@ -454,7 +455,7 @@ static int __track_dentry_update(struct
- 		node->fcd_name.name = kmalloc(dentry->d_name.len, GFP_NOFS);
- 		if (!node->fcd_name.name) {
- 			kmem_cache_free(ext4_fc_dentry_cachep, node);
--			ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_NOMEM, NULL);
-+			ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_NOMEM, handle);
- 			mutex_lock(&ei->i_fc_lock);
- 			return -ENOMEM;
- 		}
-@@ -576,7 +577,8 @@ void ext4_fc_track_create(handle_t *hand
- }
+-		if (check_add_overflow(io_virt - mr->ibmr.iova,
+-				       (u64)odp->umem.address, &user_va))
++		if (check_add_overflow(offset, (u64)odp->umem.address,
++				       &user_va))
+ 			return -EFAULT;
+-		if (unlikely(user_va >= ib_umem_end(odp) ||
+-			     ib_umem_end(odp) - user_va < bcnt))
++
++		if (permissive_fault) {
++			if (user_va < ib_umem_start(odp))
++				user_va = ib_umem_start(odp);
++			if ((user_va + bcnt) > ib_umem_end(odp))
++				bcnt = ib_umem_end(odp) - user_va;
++		} else if (unlikely(user_va >= ib_umem_end(odp) ||
++				    ib_umem_end(odp) - user_va < bcnt))
+ 			return -EFAULT;
+ 		return pagefault_real_mr(mr, odp, user_va, bcnt, bytes_mapped,
+ 					 flags);
+@@ -857,7 +864,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
+ 	case MLX5_MKEY_MR:
+ 		mr = container_of(mmkey, struct mlx5_ib_mr, mmkey);
  
- /* __track_fn for inode tracking */
--static int __track_inode(struct inode *inode, void *arg, bool update)
-+static int __track_inode(handle_t *handle, struct inode *inode, void *arg,
-+			 bool update)
- {
- 	if (update)
- 		return -EEXIST;
-@@ -614,7 +616,8 @@ struct __track_range_args {
- };
+-		ret = pagefault_mr(mr, io_virt, bcnt, bytes_mapped, 0);
++		ret = pagefault_mr(mr, io_virt, bcnt, bytes_mapped, 0, false);
+ 		if (ret < 0)
+ 			goto end;
  
- /* __track_fn for tracking data updates */
--static int __track_range(struct inode *inode, void *arg, bool update)
-+static int __track_range(handle_t *handle, struct inode *inode, void *arg,
-+			 bool update)
- {
- 	struct ext4_inode_info *ei = EXT4_I(inode);
- 	ext4_lblk_t oldstart;
+@@ -1710,7 +1717,7 @@ static void mlx5_ib_prefetch_mr_work(struct work_struct *w)
+ 	for (i = 0; i < work->num_sge; ++i) {
+ 		ret = pagefault_mr(work->frags[i].mr, work->frags[i].io_virt,
+ 				   work->frags[i].length, &bytes_mapped,
+-				   work->pf_flags);
++				   work->pf_flags, false);
+ 		if (ret <= 0)
+ 			continue;
+ 		mlx5_update_odp_stats(work->frags[i].mr, prefetch, ret);
+@@ -1761,7 +1768,7 @@ static int mlx5_ib_prefetch_sg_list(struct ib_pd *pd,
+ 		if (IS_ERR(mr))
+ 			return PTR_ERR(mr);
+ 		ret = pagefault_mr(mr, sg_list[i].addr, sg_list[i].length,
+-				   &bytes_mapped, pf_flags);
++				   &bytes_mapped, pf_flags, false);
+ 		if (ret < 0) {
+ 			mlx5r_deref_odp_mkey(&mr->mmkey);
+ 			return ret;
+-- 
+2.43.0
+
 
 
 
