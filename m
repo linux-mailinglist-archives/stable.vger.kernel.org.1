@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-83793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15FC899C985
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 13:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 802A299C986
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 13:55:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C10061F2546C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 11:55:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 118AF1F25471
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 11:55:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3625189521;
-	Mon, 14 Oct 2024 11:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4719F13CABC;
+	Mon, 14 Oct 2024 11:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1MJCSzP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seRgrWwr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A8519E982
-	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 11:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040B119E982
+	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 11:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728906903; cv=none; b=a6MLIHlLRQjrZ4kfs+NQLuxmut0qygtzaW+Zx1VsqdeehK6mZ6jK8uGP0mHFOoMmrd9bi27UM8qXpuqZ8FJ/pgaz1CuKfnS/7zhEXO9fDSWbXFD7rlvh6oOahFrBbG6axTZBtnXZjd2guESXAmAHL6DjbMDOIhNf/kEPrVpP/T8=
+	t=1728906916; cv=none; b=L6ld1fIlNNxJipeREFHfQjEFk9vFBpyZU3fVMlf/PEo5HXq4FO7smi4fOV4BONBQQVc7AFc/iDeOfAMjQfD8S8biNR6+YdpXhoDFQIphYnlGayyalW1ISciGCUeUwGjtRC8R0CYn35gdymFhICQb5MpVpdU8WNl8QJSKzmI7m9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728906903; c=relaxed/simple;
-	bh=Befm2DYvsLfiO5OvwetV2pv/Eo206V722lYWy9SHMXs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PQUKu97IlFJCMezlI9jRGZUb6FYbsslh+CJocOGqZDsY43BqYCK+HG21SMrKNO+JpzVxbJTy1IP9sCFXoDY6fj2xT7cVVJT4IO8JM4HsrLivqDlB2Zz9YeLa/2YK8BbZjinibYyAMiGHUHjVWrg5HrFskjoImH6qnac7bmGdU4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1MJCSzP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB398C4CEC3;
-	Mon, 14 Oct 2024 11:55:02 +0000 (UTC)
+	s=arc-20240116; t=1728906916; c=relaxed/simple;
+	bh=FKFxfYxivZn3uK877wXkjz7fURo4qkQI0B5eB7Hul6E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Wysu1q3upvQeINmOfy8R/Pwmw1URmrovRp8CwYHDWy4o8DT37OiQUCesOyIMPkbWm3+Xq2UgsijZv3s9+Z6YZMX/1040HyawibEZX8RRQ0bMfeTVBiMwRu/vtSDrD9cSjyNFdIRrgCdRvIveuQXkRKCl8929w1mkr6YHF7OD1Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seRgrWwr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EA8C4CEC7;
+	Mon, 14 Oct 2024 11:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728906903;
-	bh=Befm2DYvsLfiO5OvwetV2pv/Eo206V722lYWy9SHMXs=;
+	s=korg; t=1728906915;
+	bh=FKFxfYxivZn3uK877wXkjz7fURo4qkQI0B5eB7Hul6E=;
 	h=Subject:To:Cc:From:Date:From;
-	b=s1MJCSzPl0qc974gFvHx+FMYMcegoX8468HIz5kwudwVDI2kS5Wafkf7H040obk8B
-	 yNe2TfvEY84+tj93fZhBVXxeS3j11J6QBj/rRJ64F3X1aFgTC7n71Ne2WnqMcbZLBd
-	 VCgCqsFCVK0JvpnYAi4M17/hJ0Hz/GiGyi50e7ww=
-Subject: FAILED: patch "[PATCH] btrfs: split remaining space to discard in chunks" failed to apply to 5.15-stable tree
+	b=seRgrWwrFF9amwZd2DagFiWqxIqBRd7WcGqvFc4Gz5ubxwfB1TIjpB/EP/1wtTDbw
+	 vHDmOwiTQxH9LZtFeGepdjKABuqsbvY9KcJ0AqyPUgXFRlhniJxdPCUcGY5maLhtOA
+	 4qpPH0ycEf9aaIz1wXHXJTcW0vtWuw8c7AFqxYto=
+Subject: FAILED: patch "[PATCH] btrfs: add cancellation points to trim loops" failed to apply to 6.6-stable tree
 To: luca.stefani.ge1@gmail.com,dsterba@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 14 Oct 2024 13:54:59 +0200
-Message-ID: <2024101458-lyrically-defile-5bc8@gregkh>
+Date: Mon, 14 Oct 2024 13:55:12 +0200
+Message-ID: <2024101412-diaphragm-sly-ea40@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x a99fcb0158978ed332009449b484e5f3ca2d7df4
+git cherry-pick -x 69313850dce33ce8c24b38576a279421f4c60996
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024101458-lyrically-defile-5bc8@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024101412-diaphragm-sly-ea40@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
+69313850dce3 ("btrfs: add cancellation points to trim loops")
 a99fcb015897 ("btrfs: split remaining space to discard in chunks")
-29e70be261d9 ("btrfs: use SECTOR_SHIFT to convert physical offset to LBA")
-b7d463a1d125 ("btrfs: store a pointer to the original btrfs_bio in struct compressed_bio")
-690834e47cf7 ("btrfs: pass a btrfs_bio to btrfs_submit_compressed_read")
-7edb9a3e7200 ("btrfs: move zero filling of compressed read bios into common code")
-32586c5bca72 ("btrfs: factor out a btrfs_free_compressed_pages helper")
-10e924bc320a ("btrfs: factor out a btrfs_add_compressed_bio_pages helper")
-d7294e4deeb9 ("btrfs: use the bbio file offset in add_ra_bio_pages")
-e7aff33e3161 ("btrfs: use the bbio file offset in btrfs_submit_compressed_read")
-798c9fc74d03 ("btrfs: remove redundant free_extent_map in btrfs_submit_compressed_read")
-544fe4a903ce ("btrfs: embed a btrfs_bio into struct compressed_bio")
-d5e4377d5051 ("btrfs: split zone append bios in btrfs_submit_bio")
-35a8d7da3ca8 ("btrfs: remove now spurious bio submission helpers")
-285599b6fe15 ("btrfs: remove the fs_info argument to btrfs_submit_bio")
-48253076c3a9 ("btrfs: open code submit_encoded_read_bio")
-30493ff49f81 ("btrfs: remove stripe boundary calculation for compressed I/O")
-2380220e1e13 ("btrfs: remove stripe boundary calculation for buffered I/O")
-67d669825090 ("btrfs: pass the iomap bio to btrfs_submit_bio")
-852eee62d31a ("btrfs: allow btrfs_submit_bio to split bios")
-69ccf3f4244a ("btrfs: handle recording of zoned writes in the storage layer")
+602035d7fecf ("btrfs: add forward declarations and headers, part 2")
+22b46bdc5f11 ("btrfs: add forward declarations and headers, part 1")
+2b712e3bb2c4 ("btrfs: remove unused included headers")
+f86f7a75e2fb ("btrfs: use the flags of an extent map to identify the compression type")
+1a9fb16c6052 ("btrfs: avoid useless rbtree iterations when attempting to merge extent map")
+ad21f15b0f79 ("btrfs: switch to the new mount API")
+f044b318675f ("btrfs: handle the ro->rw transition for mounting different subvolumes")
+3bb17a25bcb0 ("btrfs: add get_tree callback for new mount API")
+eddb1a433f26 ("btrfs: add reconfigure callback for fs_context")
+0f85e244dfc5 ("btrfs: add fs context handling functions")
+17b3612022fe ("btrfs: add parse_param callback for the new mount API")
+15ddcdd34ebf ("btrfs: add fs_parameter definitions")
+a6a8f22a4af6 ("btrfs: move space cache settings into open_ctree")
+2b41b19dd6d0 ("btrfs: split out the mount option validation code into its own helper")
+3c0e918b8fb3 ("btrfs: remove no longer used EXTENT_MAP_DELALLOC block start value")
+7dc66abb5a47 ("btrfs: use a dedicated data structure for chunk maps")
+2ecec0d6a5b5 ("btrfs: unexport extent_map_block_end()")
+3128b548c759 ("btrfs: split assert into two different asserts when removing block group")
 
 thanks,
 
@@ -96,21 +96,20 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a99fcb0158978ed332009449b484e5f3ca2d7df4 Mon Sep 17 00:00:00 2001
+From 69313850dce33ce8c24b38576a279421f4c60996 Mon Sep 17 00:00:00 2001
 From: Luca Stefani <luca.stefani.ge1@gmail.com>
-Date: Tue, 17 Sep 2024 22:33:04 +0200
-Subject: [PATCH] btrfs: split remaining space to discard in chunks
+Date: Tue, 17 Sep 2024 22:33:05 +0200
+Subject: [PATCH] btrfs: add cancellation points to trim loops
 
-Per Qu Wenruo in case we have a very large disk, e.g. 8TiB device,
-mostly empty although we will do the split according to our super block
-locations, the last super block ends at 256G, we can submit a huge
-discard for the range [256G, 8T), causing a large delay.
+There are reports that system cannot suspend due to running trim because
+the task responsible for trimming the device isn't able to finish in
+time, especially since we have a free extent discarding phase, which can
+trim a lot of unallocated space. There are no limits on the trim size
+(unlike the block group part).
 
-Split the space left to discard based on BTRFS_MAX_DISCARD_CHUNK_SIZE in
-preparation of introduction of cancellation points to trim. The value
-of the chunk size is arbitrary, it can be higher or derived from actual
-device capabilities but we can't easily read that using
-bio_discard_limit().
+Since trime isn't a critical call it can be interrupted at any time,
+in such cases we stop the trim, report the amount of discarded bytes and
+return an error.
 
 Link: https://bugzilla.kernel.org/show_bug.cgi?id=219180
 Link: https://bugzilla.suse.com/show_bug.cgi?id=1229737
@@ -120,54 +119,75 @@ Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 
 diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index a5966324607d..ad70548d1f72 100644
+index ad70548d1f72..d9f511babd89 100644
 --- a/fs/btrfs/extent-tree.c
 +++ b/fs/btrfs/extent-tree.c
-@@ -1300,13 +1300,24 @@ static int btrfs_issue_discard(struct block_device *bdev, u64 start, u64 len,
- 		bytes_left = end - start;
+@@ -1316,6 +1316,11 @@ static int btrfs_issue_discard(struct block_device *bdev, u64 start, u64 len,
+ 		start += bytes_to_discard;
+ 		bytes_left -= bytes_to_discard;
+ 		*discarded_bytes += bytes_to_discard;
++
++		if (btrfs_trim_interrupted()) {
++			ret = -ERESTARTSYS;
++			break;
++		}
  	}
  
--	if (bytes_left) {
-+	while (bytes_left) {
-+		u64 bytes_to_discard = min(BTRFS_MAX_DISCARD_CHUNK_SIZE, bytes_left);
-+
- 		ret = blkdev_issue_discard(bdev, start >> SECTOR_SHIFT,
--					   bytes_left >> SECTOR_SHIFT,
-+					   bytes_to_discard >> SECTOR_SHIFT,
- 					   GFP_NOFS);
--		if (!ret)
--			*discarded_bytes += bytes_left;
-+
-+		if (ret) {
-+			if (ret != -EOPNOTSUPP)
-+				break;
-+			continue;
-+		}
-+
-+		start += bytes_to_discard;
-+		bytes_left -= bytes_to_discard;
-+		*discarded_bytes += bytes_to_discard;
- 	}
-+
  	return ret;
+@@ -6470,7 +6475,7 @@ static int btrfs_trim_free_extents(struct btrfs_device *device, u64 *trimmed)
+ 		start += len;
+ 		*trimmed += bytes;
+ 
+-		if (fatal_signal_pending(current)) {
++		if (btrfs_trim_interrupted()) {
+ 			ret = -ERESTARTSYS;
+ 			break;
+ 		}
+diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
+index eaa1dbd31352..f4bcb2530660 100644
+--- a/fs/btrfs/free-space-cache.c
++++ b/fs/btrfs/free-space-cache.c
+@@ -3809,7 +3809,7 @@ static int trim_no_bitmap(struct btrfs_block_group *block_group,
+ 		if (async && *total_trimmed)
+ 			break;
+ 
+-		if (fatal_signal_pending(current)) {
++		if (btrfs_trim_interrupted()) {
+ 			ret = -ERESTARTSYS;
+ 			break;
+ 		}
+@@ -4000,7 +4000,7 @@ static int trim_bitmaps(struct btrfs_block_group *block_group,
+ 		}
+ 		block_group->discard_cursor = start;
+ 
+-		if (fatal_signal_pending(current)) {
++		if (btrfs_trim_interrupted()) {
+ 			if (start != offset)
+ 				reset_trimming_bitmap(ctl, offset);
+ 			ret = -ERESTARTSYS;
+diff --git a/fs/btrfs/free-space-cache.h b/fs/btrfs/free-space-cache.h
+index 83774bfd7b3b..9f1dbfdee8ca 100644
+--- a/fs/btrfs/free-space-cache.h
++++ b/fs/btrfs/free-space-cache.h
+@@ -10,6 +10,7 @@
+ #include <linux/list.h>
+ #include <linux/spinlock.h>
+ #include <linux/mutex.h>
++#include <linux/freezer.h>
+ #include "fs.h"
+ 
+ struct inode;
+@@ -56,6 +57,11 @@ static inline bool btrfs_free_space_trimming_bitmap(
+ 	return (info->trim_state == BTRFS_TRIM_STATE_TRIMMING);
  }
  
-diff --git a/fs/btrfs/volumes.h b/fs/btrfs/volumes.h
-index 03d2d60afe0c..4481575dd70f 100644
---- a/fs/btrfs/volumes.h
-+++ b/fs/btrfs/volumes.h
-@@ -30,6 +30,12 @@ struct btrfs_zoned_device_info;
- 
- #define BTRFS_MAX_DATA_CHUNK_SIZE	(10ULL * SZ_1G)
- 
-+/*
-+ * Arbitratry maximum size of one discard request to limit potentially long time
-+ * spent in blkdev_issue_discard().
-+ */
-+#define BTRFS_MAX_DISCARD_CHUNK_SIZE	(SZ_1G)
++static inline bool btrfs_trim_interrupted(void)
++{
++	return fatal_signal_pending(current) || freezing(current);
++}
 +
- extern struct mutex uuid_mutex;
- 
- #define BTRFS_STRIPE_LEN		SZ_64K
+ /*
+  * Deltas are an effective way to populate global statistics.  Give macro names
+  * to make it clear what we're doing.  An example is discard_extents in
 
 
