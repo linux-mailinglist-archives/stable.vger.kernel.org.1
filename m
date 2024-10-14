@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-84168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DED499CE81
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:44:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B13799CD69
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:32:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F23E1C23171
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:44:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA9D71F2366F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:32:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69621AB536;
-	Mon, 14 Oct 2024 14:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7240A2BCF5;
+	Mon, 14 Oct 2024 14:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYRKSEZD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1UCf9So"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A581AAE08;
-	Mon, 14 Oct 2024 14:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F459610B;
+	Mon, 14 Oct 2024 14:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917073; cv=none; b=Os4vZGdkJwpVswa9b9igJKK9rWM31q03UMdB6kpkVbw4IvEPb/JPu/T7FbYd8m86dBR5oBG7RJLeP29a/yJohOMXlsUHwjMP+kUelxSNGnJLJXvaNh1MZZnDVxd0fM4q17kDJNSvf/9R8vK1gEUVg0bhjk5reLmM9H9FYw9rGxA=
+	t=1728916345; cv=none; b=T2Nu6cXWkkKKQLkU+GMdmnbo+S8fpYzajiCknphoThBZttqtUGQkkgvqhvGJL/eTl/WaAIkJvGboa5Fb23908G2LHjZk09XqKBa6GgLgoUJQvdVZfWserGbMR4qiAP02AFoZScrRqNXDXP0iFn/63DkhQogwRTDeDvMuKvrZKSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917073; c=relaxed/simple;
-	bh=E1weDg2EZMA9lN7g5A3EmlCtbnkG6jq86596Ips2chQ=;
+	s=arc-20240116; t=1728916345; c=relaxed/simple;
+	bh=QhQjyP2fEj0FDj4CrzdDgB2WUn7PkEp1LvGB/FRH1Hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oyr/asiO7J7/VzAwlSAlrWI0b6Yw6yOH4Jiqio1a8+ldk4EG8pyhbF+XqYLkt7pWWELOIXKOvML9jOoJ7gu0iGlMdYvUgndI6NmsrdXeGzUDtdo6J8T8V1grFlpJbyXNPEVF9ARhLDjGKhZC/J9Q9yVwli3nMqtEOPQbs3/3Z1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYRKSEZD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB66CC4CEC3;
-	Mon, 14 Oct 2024 14:44:32 +0000 (UTC)
+	 MIME-Version; b=hio+aIo8znFo0zc0Mw3rojvMVFVj0fdgzZwLjlcO7jiRJvilmH7/bfzyc/xMHeBo7jlGOtPDGQMSYg5I0OMSkObNAJNscEiIPJXeCxnRsIwx5l1RhBplg9L/q78SPXZIR5u0O/A+JR7Orc2W5/A2P23Tg1nu8Opt7audQkskGTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1UCf9So; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96CA7C4CEC3;
+	Mon, 14 Oct 2024 14:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917073;
-	bh=E1weDg2EZMA9lN7g5A3EmlCtbnkG6jq86596Ips2chQ=;
+	s=korg; t=1728916345;
+	bh=QhQjyP2fEj0FDj4CrzdDgB2WUn7PkEp1LvGB/FRH1Hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zYRKSEZDSypHvZvp/K6ulNI3v7xxN34Wv4+2XL5efWejzS5BHrjUUmwq157S7UapO
-	 qDBhG2XmWVsagC691TT+ihL35ARzsz6jEh5aI1Tu/y8px7aJS6gfMc2G6doucSDvKI
-	 4kc9zBQ/ZS0ieJ/elKULc4HK05qNOKCbcItxZJVk=
+	b=o1UCf9SorJXxTTB/XZre5gzdBP+bC+jailvgzh6nWY+6ldEwP0TakAHfN2flksS22
+	 kE/N/ZZ6/qE9Q2TliUnv8616w7gMd483mbgU1GXloPIEBoO7TnbsnwGPuEozUb3caC
+	 ny9oYJM0aP3TYeepcRDyzcgdCkG2l7sjXJHGsxcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 112/213] SUNRPC: Fix integer overflow in decode_rc_list()
+Subject: [PATCH 6.11 155/214] hwmon: (mc34vr500) Add missing dependency on REGMAP_I2C
 Date: Mon, 14 Oct 2024 16:20:18 +0200
-Message-ID: <20241014141047.339787255@linuxfoundation.org>
+Message-ID: <20241014141051.037590774@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 6dbf1f341b6b35bcc20ff95b6b315e509f6c5369 ]
+[ Upstream commit 56c77c0f4a7c9043e7d1d94e0aace264361e6717 ]
 
-The math in "rc_list->rcl_nrefcalls * 2 * sizeof(uint32_t)" could have an
-integer overflow.  Add bounds checking on rc_list->rcl_nrefcalls to fix
-that.
+This driver requires REGMAP_I2C to be selected in order to get access to
+regmap_config and devm_regmap_init_i2c. Add the missing dependency.
 
-Fixes: 4aece6a19cf7 ("nfs41: cb_sequence xdr implementation")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: 07830d9ab34c ("hwmon: add initial NXP MC34VR500 PMIC monitoring support")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Message-ID: <20241002-mc34vr500-select-regmap_i2c-v1-1-a01875d0a2e5@gmail.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/callback_xdr.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hwmon/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfs/callback_xdr.c b/fs/nfs/callback_xdr.c
-index 321af81c456e2..d5f6437da352d 100644
---- a/fs/nfs/callback_xdr.c
-+++ b/fs/nfs/callback_xdr.c
-@@ -372,6 +372,8 @@ static __be32 decode_rc_list(struct xdr_stream *xdr,
- 
- 	rc_list->rcl_nrefcalls = ntohl(*p++);
- 	if (rc_list->rcl_nrefcalls) {
-+		if (unlikely(rc_list->rcl_nrefcalls > xdr->buf->len))
-+			goto out;
- 		p = xdr_inline_decode(xdr,
- 			     rc_list->rcl_nrefcalls * 2 * sizeof(uint32_t));
- 		if (unlikely(p == NULL))
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index 543c40630d67e..d9799d1b7d3c6 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -1275,6 +1275,7 @@ config SENSORS_MAX31790
+ config SENSORS_MC34VR500
+ 	tristate "NXP MC34VR500 hardware monitoring driver"
+ 	depends on I2C
++	select REGMAP_I2C
+ 	help
+ 	  If you say yes here you get support for the temperature and input
+ 	  voltage sensors of the NXP MC34VR500.
 -- 
 2.43.0
 
