@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-84205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F6599CEDB
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:47:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75D7C99D2F3
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:32:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E56C28856E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:47:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32E032842AA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:32:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2521AE01E;
-	Mon, 14 Oct 2024 14:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87EA21B85D7;
+	Mon, 14 Oct 2024 15:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZkXYnImF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2NWtCtw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FA11AE018;
-	Mon, 14 Oct 2024 14:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448251B85CD;
+	Mon, 14 Oct 2024 15:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917199; cv=none; b=qvphe5t9yHoU2dHRvQVR2sGgGvZNYLAh7dfHswTbgiYDF6IHjChsDLFz/L5aAlVkJ+m29TIWAgVVNv6gsD592JSHeB10e9cpUgWOmJSJhOSdl59yLkgDDKW0QHOQ9lQCbuRga+Nnoz3V31bh9H5dFG1OyEvL/g/OgoNn4/XsRQA=
+	t=1728919730; cv=none; b=Tt4Cmf7ZJIXNELWBreqaaoaF6aNz5X+N5yEswFlpSnjUI2HMpa3DFKJwJ78gC1K5pcQGmr2K35H01v0H53UjWx2Vrv/DlPc6QTjJzvd9WOlH16aEp5hE+tlhOA41J/ZW/AT0sFBWb14Ig/PgeiPM8mP0eypbx9zT+pGbx4iaiY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917199; c=relaxed/simple;
-	bh=gb13GpWfB4qxwXZIuvv/3aOANRUEEwzeo6IgmGOLv7c=;
+	s=arc-20240116; t=1728919730; c=relaxed/simple;
+	bh=uCVScCKgRhHd0mvvXl0Qr1D1ru4OpSrurPXRgZB1lks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tPfbnYb4A/2bCR7gQ2i2IOxg9f8GPVcS5R95TYjS/tsPv36KqcBTG46UdGAfDRs25GJgHdFwv3Y0bdQ7PrG+8ZuGR+dAR0cTnOeI6Xrz8kNyg2Zrsc9Eszgf2hwT6BD3NkgIWYjKCtWS0RgqlbPlv+UC2rjf/NSiPGanJ/KJiOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZkXYnImF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C375C4CEC3;
-	Mon, 14 Oct 2024 14:46:38 +0000 (UTC)
+	 MIME-Version; b=UEIyKjWzHSDmGhUF5GfSjbDY0ropI77PGlMsjkAZr4sSsuPatdTDcHC3FUblyezv2aldQWj6B6AFRma8PgqZhWI9JReQbXHs/aqzs7RzUJGSRR97uPtnW008JpeTVuwUDPB5g9/91FUH0rWzfYlPFWg+mrAzNGUY9xTgJ0xXf4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2NWtCtw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95F2C4CED0;
+	Mon, 14 Oct 2024 15:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917199;
-	bh=gb13GpWfB4qxwXZIuvv/3aOANRUEEwzeo6IgmGOLv7c=;
+	s=korg; t=1728919730;
+	bh=uCVScCKgRhHd0mvvXl0Qr1D1ru4OpSrurPXRgZB1lks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZkXYnImFikdmn5Dh8UFALAaVk18QdMMfsQ5VAwzzniBHS20eA1uCB9OJ2bJY5aHyK
-	 km0I+Ub5giLYvWDoSE9yltxRcmzcH/NSBmcX6f3sRTiYajFm5mWCXyo+VcmnDsr7JZ
-	 Lmxu7JhpwkixCAK8DtsT8jlGC+6SqgexJffhw5n8=
+	b=F2NWtCtwqztud8jSP7lzA6DQ6HGNkFMjkOW1TwYW0aUn5cRIDXT7X4HK3Y7rzMdi9
+	 4QoNf9/8Vk9alXNvEpaLeBSsi3JDvqXx0djYUD4f2F1olc2AfC/NVKM2qIAHNxNQL1
+	 HZeZcSNLmW660C3lekYgSvXUDyxTxeHdeMtb1hGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 139/213] ice: Fix netif_is_ice() in Safe Mode
+Subject: [PATCH 6.1 691/798] ext4: dont set SB_RDONLY after filesystem errors
 Date: Mon, 14 Oct 2024 16:20:45 +0200
-Message-ID: <20241014141048.395544068@linuxfoundation.org>
+Message-ID: <20241014141245.217528727@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 8e60dbcbaaa177dacef55a61501790e201bf8c88 ]
+[ Upstream commit d3476f3dad4ad68ae5f6b008ea6591d1520da5d8 ]
 
-netif_is_ice() works by checking the pointer to netdev ops. However, it
-only checks for the default ice_netdev_ops, not ice_netdev_safe_mode_ops,
-so in Safe Mode it always returns false, which is unintuitive. While it
-doesn't look like netif_is_ice() is currently being called anywhere in Safe
-Mode, this could change and potentially lead to unexpected behaviour.
+When the filesystem is mounted with errors=remount-ro, we were setting
+SB_RDONLY flag to stop all filesystem modifications. We knew this misses
+proper locking (sb->s_umount) and does not go through proper filesystem
+remount procedure but it has been the way this worked since early ext2
+days and it was good enough for catastrophic situation damage
+mitigation. Recently, syzbot has found a way (see link) to trigger
+warnings in filesystem freezing because the code got confused by
+SB_RDONLY changing under its hands. Since these days we set
+EXT4_FLAGS_SHUTDOWN on the superblock which is enough to stop all
+filesystem modifications, modifying SB_RDONLY shouldn't be needed. So
+stop doing that.
 
-Fixes: df006dd4b1dc ("ice: Add initial support framework for LAG")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/all/000000000000b90a8e061e21d12f@google.com
+Reported-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Link: https://patch.msgid.link/20240805201241.27286-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ext4/super.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 4d3a9fc79a6c1..511064ab3fe3b 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -84,7 +84,8 @@ ice_indr_setup_tc_cb(struct net_device *netdev, struct Qdisc *sch,
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 3db39758486e9..3bf214d4afef5 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -692,11 +692,12 @@ static void ext4_handle_error(struct super_block *sb, bool force_ro, int error,
  
- bool netif_is_ice(const struct net_device *dev)
- {
--	return dev && (dev->netdev_ops == &ice_netdev_ops);
-+	return dev && (dev->netdev_ops == &ice_netdev_ops ||
-+		       dev->netdev_ops == &ice_netdev_safe_mode_ops);
+ 	ext4_msg(sb, KERN_CRIT, "Remounting filesystem read-only");
+ 	/*
+-	 * Make sure updated value of ->s_mount_flags will be visible before
+-	 * ->s_flags update
++	 * EXT4_FLAGS_SHUTDOWN was set which stops all filesystem
++	 * modifications. We don't set SB_RDONLY because that requires
++	 * sb->s_umount semaphore and setting it without proper remount
++	 * procedure is confusing code such as freeze_super() leading to
++	 * deadlocks and other problems.
+ 	 */
+-	smp_wmb();
+-	sb->s_flags |= SB_RDONLY;
  }
  
- /**
+ static void flush_stashed_error_work(struct work_struct *work)
 -- 
 2.43.0
 
