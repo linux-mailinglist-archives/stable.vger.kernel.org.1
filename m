@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-84953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669C499D30E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D60399CEB5
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:46:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E4A51C2159E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EECB1C23220
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 439711C830B;
-	Mon, 14 Oct 2024 15:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288CB1B4F24;
+	Mon, 14 Oct 2024 14:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9tCF4bb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDGksb4q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E3F1C82F4;
-	Mon, 14 Oct 2024 15:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF13F1ADFE9;
+	Mon, 14 Oct 2024 14:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919794; cv=none; b=O0WEqBowVZPhz0IhfCCCad0OpNaDPBv+sisE5NB9soZd/8wwneF4OZTT9PCZkoCpeuu43g+BVm0/ux3RrmSM7fTXm4X3ShN6DC2BXF9PRzXp57kJrNe7JTZpVizO6r3eBlaBg2XWQwopW46jD5Z/MC0Ud5uOekBa0l08SxQKqYw=
+	t=1728917121; cv=none; b=IqGA8qY0sJaquyL/CV5mLMESf1ysXco0FcmN5ejulLbLp7F4XMfBV+c8i/1etpQWfef7ykEMEiny/vU7V8vjOzSMSBRzdPAIBUZyZIMaH6K+i+Z1trul5kI26mnGKVg393gpI7sW56GC0MpY9aS68skZJ51hT9IUX4ceO442cb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919794; c=relaxed/simple;
-	bh=E8zL575Y17abfJsL1+1urThZuqI4J3eylNEYp53BSN0=;
+	s=arc-20240116; t=1728917121; c=relaxed/simple;
+	bh=q0926fGT68bGzS/x5MusEIL8u4WdB6l/tJqr9HJ/gtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xr1PLrC/kT3c98Gs+/Lhnk7gRibxvDfUVc7YIwWHnYlc4jCG09vu1yLdshkkyV4EAlVOHLGguYBq4hvLGQe+cMlN3cf4ssdyB4+fG72sGpVZ4JM2LmlORjb/TFUGEwRFaAmEUK7R4k01iHGlTFIkaDjyvfsl+dHy4+OEuz1qftA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O9tCF4bb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E68BC4CEC3;
-	Mon, 14 Oct 2024 15:29:53 +0000 (UTC)
+	 MIME-Version; b=GG5EN3ji4F9msGJAHHy3kCwyIM1q0J6Hged6wnDEtsUH0jhxbWnl9sAZPJCgXypST0+RiESC1DpepR5UNBCYQ54ARZC41tz60Bw/15vt1L6vfYggQX1my5jP/MwuY841xqAz29q6JYaxIiH2JcS/t+Jk3loYc1rTammY3wuGSCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDGksb4q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E061AC4CEC3;
+	Mon, 14 Oct 2024 14:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919793;
-	bh=E8zL575Y17abfJsL1+1urThZuqI4J3eylNEYp53BSN0=;
+	s=korg; t=1728917121;
+	bh=q0926fGT68bGzS/x5MusEIL8u4WdB6l/tJqr9HJ/gtw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O9tCF4bbU+5biL02ziZEz7GSzqBOyX9wG2UNpCFtmJ5epLGUPAd6/viUXaS8yWYI4
-	 hf34ihccJ0k5jsc/xI52hmzqUGtejkowXMikViu+JTzmPULUJtcnZRSZP+pEM2y4eB
-	 8Dc/84iS8mqbLUHfpaQF9bkYvGgY7KH3VEieIMN4=
+	b=iDGksb4qCup6twiDuHoGbMsgBW4SN014s/4ZjkUUZLDtXC1h38ngAZDAtIKPnoojU
+	 f0G8eI4Fz9hsQ9ldxGuDAbPoJr7F1bszNDrX6oUC3W65srnBby1PGtMnJER3RtdWBI
+	 yxZ5HJo//Kyy2V3Iy4n+S8EBufISOXiV2+otdYfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 709/798] remoteproc: imx_rproc: Use imx specific hook for find_loaded_rsc_table
-Date: Mon, 14 Oct 2024 16:21:03 +0200
-Message-ID: <20241014141245.922676951@linuxfoundation.org>
+Subject: [PATCH 6.6 158/213] mpls: no longer hold RTNL in mpls_netconf_dump_devconf()
+Date: Mon, 14 Oct 2024 16:21:04 +0200
+Message-ID: <20241014141049.138116002@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e954a1bd16102abc800629f9900715d8ec4c3130 ]
+[ Upstream commit e0f89d2864b062b027196925ea19f94b2ce50d6a ]
 
-If there is a resource table device tree node, use the address as
-the resource table address, otherwise use the address(where
-.resource_table section loaded) inside the Cortex-M elf file.
+- Use for_each_netdev_dump() to no longer rely
+  on net->dev_index_head hash table.
 
-And there is an update in NXP SDK that Resource Domain Control(RDC)
-enabled to protect TCM, linux not able to write the TCM space when
-updating resource table status and cause kernel dump. So use the address
-from device tree could avoid kernel dump.
+- No longer care of net->dev_base_seq
 
-Note: NXP M4 SDK not check resource table update, so it does not matter
-use whether resource table address specified in elf file or in device
-tree. But to reflect the fact that if people specific resource table
-address in device tree, it means people are aware and going to use it,
-not the address specified in elf file.
+- Fix return value at the end of a dump,
+  so that NLMSG_DONE can be appended to current skb,
+  saving one recvmsg() system call.
 
-Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://lore.kernel.org/r/20240719-imx_rproc-v2-2-10d0268c7eb1@nxp.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+- No longer grab RTNL, RCU protection is enough,
+  afer adding one READ_ONCE(mdev->input_enabled)
+  in mpls_netconf_fill_devconf()
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240410111951.2673193-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 5be2062e3080 ("mpls: Handle error of rtnl_register_module().")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/imx_rproc.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ net/mpls/af_mpls.c | 59 +++++++++++++++++-----------------------------
+ 1 file changed, 22 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 00a0c8f4a2200..bbaba453383dd 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -537,6 +537,17 @@ static struct resource_table *imx_rproc_get_loaded_rsc_table(struct rproc *rproc
- 	return (struct resource_table *)priv->rsc_table;
+diff --git a/net/mpls/af_mpls.c b/net/mpls/af_mpls.c
+index 1af29af653885..ba034fcd59f0d 100644
+--- a/net/mpls/af_mpls.c
++++ b/net/mpls/af_mpls.c
+@@ -1154,7 +1154,7 @@ static int mpls_netconf_fill_devconf(struct sk_buff *skb, struct mpls_dev *mdev,
+ 
+ 	if ((all || type == NETCONFA_INPUT) &&
+ 	    nla_put_s32(skb, NETCONFA_INPUT,
+-			mdev->input_enabled) < 0)
++			READ_ONCE(mdev->input_enabled)) < 0)
+ 		goto nla_put_failure;
+ 
+ 	nlmsg_end(skb, nlh);
+@@ -1303,11 +1303,12 @@ static int mpls_netconf_dump_devconf(struct sk_buff *skb,
+ {
+ 	const struct nlmsghdr *nlh = cb->nlh;
+ 	struct net *net = sock_net(skb->sk);
+-	struct hlist_head *head;
++	struct {
++		unsigned long ifindex;
++	} *ctx = (void *)cb->ctx;
+ 	struct net_device *dev;
+ 	struct mpls_dev *mdev;
+-	int idx, s_idx;
+-	int h, s_h;
++	int err = 0;
+ 
+ 	if (cb->strict_check) {
+ 		struct netlink_ext_ack *extack = cb->extack;
+@@ -1324,40 +1325,23 @@ static int mpls_netconf_dump_devconf(struct sk_buff *skb,
+ 		}
+ 	}
+ 
+-	s_h = cb->args[0];
+-	s_idx = idx = cb->args[1];
+-
+-	for (h = s_h; h < NETDEV_HASHENTRIES; h++, s_idx = 0) {
+-		idx = 0;
+-		head = &net->dev_index_head[h];
+-		rcu_read_lock();
+-		cb->seq = net->dev_base_seq;
+-		hlist_for_each_entry_rcu(dev, head, index_hlist) {
+-			if (idx < s_idx)
+-				goto cont;
+-			mdev = mpls_dev_get(dev);
+-			if (!mdev)
+-				goto cont;
+-			if (mpls_netconf_fill_devconf(skb, mdev,
+-						      NETLINK_CB(cb->skb).portid,
+-						      nlh->nlmsg_seq,
+-						      RTM_NEWNETCONF,
+-						      NLM_F_MULTI,
+-						      NETCONFA_ALL) < 0) {
+-				rcu_read_unlock();
+-				goto done;
+-			}
+-			nl_dump_check_consistent(cb, nlmsg_hdr(skb));
+-cont:
+-			idx++;
+-		}
+-		rcu_read_unlock();
++	rcu_read_lock();
++	for_each_netdev_dump(net, dev, ctx->ifindex) {
++		mdev = mpls_dev_get(dev);
++		if (!mdev)
++			continue;
++		err = mpls_netconf_fill_devconf(skb, mdev,
++						NETLINK_CB(cb->skb).portid,
++						nlh->nlmsg_seq,
++						RTM_NEWNETCONF,
++						NLM_F_MULTI,
++						NETCONFA_ALL);
++		if (err < 0)
++			break;
+ 	}
+-done:
+-	cb->args[0] = h;
+-	cb->args[1] = idx;
++	rcu_read_unlock();
+ 
+-	return skb->len;
++	return err;
  }
  
-+static struct resource_table *
-+imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *fw)
-+{
-+	struct imx_rproc *priv = rproc->priv;
-+
-+	if (priv->rsc_table)
-+		return (struct resource_table *)priv->rsc_table;
-+
-+	return rproc_elf_find_loaded_rsc_table(rproc, fw);
-+}
-+
- static const struct rproc_ops imx_rproc_ops = {
- 	.prepare	= imx_rproc_prepare,
- 	.attach		= imx_rproc_attach,
-@@ -546,7 +557,7 @@ static const struct rproc_ops imx_rproc_ops = {
- 	.da_to_va       = imx_rproc_da_to_va,
- 	.load		= rproc_elf_load_segments,
- 	.parse_fw	= imx_rproc_parse_fw,
--	.find_loaded_rsc_table = rproc_elf_find_loaded_rsc_table,
-+	.find_loaded_rsc_table = imx_rproc_elf_find_loaded_rsc_table,
- 	.get_loaded_rsc_table = imx_rproc_get_loaded_rsc_table,
- 	.sanity_check	= rproc_elf_sanity_check,
- 	.get_boot_addr	= rproc_elf_get_boot_addr,
+ #define MPLS_PERDEV_SYSCTL_OFFSET(field)	\
+@@ -2771,7 +2755,8 @@ static int __init mpls_init(void)
+ 			     mpls_getroute, mpls_dump_routes, 0);
+ 	rtnl_register_module(THIS_MODULE, PF_MPLS, RTM_GETNETCONF,
+ 			     mpls_netconf_get_devconf,
+-			     mpls_netconf_dump_devconf, 0);
++			     mpls_netconf_dump_devconf,
++			     RTNL_FLAG_DUMP_UNLOCKED);
+ 	err = ipgre_tunnel_encap_add_mpls_ops();
+ 	if (err)
+ 		pr_err("Can't add mpls over gre tunnel ops\n");
 -- 
 2.43.0
 
