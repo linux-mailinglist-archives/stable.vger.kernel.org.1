@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-85002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA7899D345
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8417199CF2A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:52:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E73421F25115
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14CA61F21572
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22ED1B85DB;
-	Mon, 14 Oct 2024 15:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B1F1AF4EE;
+	Mon, 14 Oct 2024 14:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcuhPLt+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8Qldc6d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBC11B4F08;
-	Mon, 14 Oct 2024 15:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7EE481B3;
+	Mon, 14 Oct 2024 14:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919959; cv=none; b=eaHpUUgWtKcjhEC/SS345cyM2SUWo/8hUVUrt3oe3FaYd1RMuiVexHhD+j7izifnnRgp8H1rYk/lBzpMiT1HZSBwHrkZ80Vk6uxzMRcDWW+CjcR5W+aXDcb2k/kxBfV5NX5WZYlmAEigvwy+JwYiI24cnWRJSqeRMRuF0JEHjyk=
+	t=1728917289; cv=none; b=Rqm04GX1PtUhpPBEw25dc4hEJILTXYlF8uUUxI1LJ/1UVwm4vtms+KM7GAwnXJDdPxy4vKR8EQH+Emy45hY3Bqgrdgyw239LxKhfjvGgool+joUTJT4buTvlOk1n5TwCBGnFJYiVi94RwAmyPg5zoZkbrxe9pQsuyKZKVSr/3BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919959; c=relaxed/simple;
-	bh=I68Ozh+cb+UH1yjWOzesXAQnmRLNyfJ146mOflYea/E=;
+	s=arc-20240116; t=1728917289; c=relaxed/simple;
+	bh=/mNCmmI7sy6okCSU/K0mpQJbBcvuzTAm1gx7gSI1gFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OVJBrGufOeikvQX7Sr+g7brFzomygGV/iNIsjwWnOsslHEnPw92vfFeT9Qjur6EeHcQaFIzxgQJsNswUSZkl/1GCCjZ8sy93HePMeABWUFACldX/2DTwPMw5Zl2Nht3jb76oWm63RwOjBm2pLtOWXMvkXwN9vqrRVb8UYuIFkQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcuhPLt+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E76C4CEC3;
-	Mon, 14 Oct 2024 15:32:38 +0000 (UTC)
+	 MIME-Version; b=RTmkYEXakl1ApPJUZKORF+hG5nEYXqWpMgKN20XC56wW8AWPc6kBk+/hL+wPwyDiJQlPeQbTmmbn6hoaEtUjZfDxdQB4GBCl5OTRcJgZ1WdLHPCRCxqoCuoWFzqYxGrk56fEQrxX4/EJ4fyBuYo0xC3ZYiRYJaf2e5AWOsRHwC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8Qldc6d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC27C4CEC3;
+	Mon, 14 Oct 2024 14:48:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919959;
-	bh=I68Ozh+cb+UH1yjWOzesXAQnmRLNyfJ146mOflYea/E=;
+	s=korg; t=1728917289;
+	bh=/mNCmmI7sy6okCSU/K0mpQJbBcvuzTAm1gx7gSI1gFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WcuhPLt+lAv2y6MTdLUVttZiCxK78mKyjzmMCgO3NQWn7b5fUeAI0P+UtIqOCtogG
-	 P4raSi0nw60Riqs4Q50mUdVLvf7qxPyrDdFmHVs37Zru/BO66tZmmfkBe6AnDG8K5J
-	 YiSLjv1mxkC162k6bbG0HvQZglyjQ1kx7NubiFXg=
+	b=g8Qldc6daf+rGMOQkYSaBsy+ov3IVXItkUkmAR4gKPzSG2d6Eq/Dxrc4r6Amt02k4
+	 qmgXR+XuIg7F9lyF4njPMWQlebZG6Gn8wDGu3anvkh8o8Ewj6ZkNLCj4upk3pIcw++
+	 nENqoVDBxYUkpqq4wAT0kWXIrMajvQwCd22Jcaeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 757/798] netfilter: fib: check correct rtable in vrf setups
-Date: Mon, 14 Oct 2024 16:21:51 +0200
-Message-ID: <20241014141247.809212711@linuxfoundation.org>
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Carlos ODonell <carlos@redhat.com>,
+	Florian Weimer <fweimer@redhat.com>,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH 6.6 206/213] selftests/rseq: Fix mm_cid test failure
+Date: Mon, 14 Oct 2024 16:21:52 +0200
+Message-ID: <20241014141051.001836938@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +67,248 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 
-[ Upstream commit 05ef7055debc804e8083737402127975e7244fc4 ]
+commit a0cc649353bb726d4aa0db60dce467432197b746 upstream.
 
-We need to init l3mdev unconditionally, else main routing table is searched
-and incorrect result is returned unless strict (iif keyword) matching is
-requested.
+Adapt the rseq.c/rseq.h code to follow GNU C library changes introduced by:
 
-Next patch adds a selftest for this.
+glibc commit 2e456ccf0c34 ("Linux: Make __rseq_size useful for feature detection (bug 31965)")
 
-Fixes: 2a8a7c0eaa87 ("netfilter: nft_fib: Fix for rpath check with VRF devices")
-Closes: https://bugzilla.netfilter.org/show_bug.cgi?id=1761
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Without this fix, rseq selftests for mm_cid fail:
+
+./run_param_test.sh
+Default parameters
+Running test spinlock
+Running compare-twice test spinlock
+Running mm_cid test spinlock
+Error: cpu id getter unavailable
+
+Fixes: 18c2355838e7 ("selftests/rseq: Implement rseq mm_cid field support")
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+CC: Boqun Feng <boqun.feng@gmail.com>
+CC: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+CC: Carlos O'Donell <carlos@redhat.com>
+CC: Florian Weimer <fweimer@redhat.com>
+CC: linux-kselftest@vger.kernel.org
+CC: stable@vger.kernel.org
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/netfilter/nft_fib_ipv4.c | 4 +---
- net/ipv6/netfilter/nft_fib_ipv6.c | 5 +++--
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ tools/testing/selftests/rseq/rseq.c |  110 ++++++++++++++++++++++++------------
+ tools/testing/selftests/rseq/rseq.h |   10 ---
+ 2 files changed, 77 insertions(+), 43 deletions(-)
 
-diff --git a/net/ipv4/netfilter/nft_fib_ipv4.c b/net/ipv4/netfilter/nft_fib_ipv4.c
-index fc65d69f23e16..edec5c8f59ac8 100644
---- a/net/ipv4/netfilter/nft_fib_ipv4.c
-+++ b/net/ipv4/netfilter/nft_fib_ipv4.c
-@@ -66,6 +66,7 @@ void nft_fib4_eval(const struct nft_expr *expr, struct nft_regs *regs,
- 		.flowi4_scope = RT_SCOPE_UNIVERSE,
- 		.flowi4_iif = LOOPBACK_IFINDEX,
- 		.flowi4_uid = sock_net_uid(nft_net(pkt), NULL),
-+		.flowi4_l3mdev = l3mdev_master_ifindex_rcu(nft_in(pkt)),
- 	};
- 	const struct net_device *oif;
- 	const struct net_device *found;
-@@ -84,9 +85,6 @@ void nft_fib4_eval(const struct nft_expr *expr, struct nft_regs *regs,
- 	else
- 		oif = NULL;
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -60,12 +60,6 @@ unsigned int rseq_size = -1U;
+ /* Flags used during rseq registration.  */
+ unsigned int rseq_flags;
  
--	if (priv->flags & NFTA_FIB_F_IIF)
--		fl4.flowi4_l3mdev = l3mdev_master_ifindex_rcu(oif);
+-/*
+- * rseq feature size supported by the kernel. 0 if the registration was
+- * unsuccessful.
+- */
+-unsigned int rseq_feature_size = -1U;
 -
- 	if (nft_hook(pkt) == NF_INET_PRE_ROUTING &&
- 	    nft_fib_is_loopback(pkt->skb, nft_in(pkt))) {
- 		nft_fib_store_result(dest, priv, nft_in(pkt));
-diff --git a/net/ipv6/netfilter/nft_fib_ipv6.c b/net/ipv6/netfilter/nft_fib_ipv6.c
-index 36dc14b34388c..c9f1634b3838a 100644
---- a/net/ipv6/netfilter/nft_fib_ipv6.c
-+++ b/net/ipv6/netfilter/nft_fib_ipv6.c
-@@ -41,8 +41,6 @@ static int nft_fib6_flowi_init(struct flowi6 *fl6, const struct nft_fib *priv,
- 	if (ipv6_addr_type(&fl6->daddr) & IPV6_ADDR_LINKLOCAL) {
- 		lookup_flags |= RT6_LOOKUP_F_IFACE;
- 		fl6->flowi6_oif = get_ifindex(dev ? dev : pkt->skb->dev);
--	} else if (priv->flags & NFTA_FIB_F_IIF) {
--		fl6->flowi6_l3mdev = l3mdev_master_ifindex_rcu(dev);
+ static int rseq_ownership;
+ static int rseq_reg_success;	/* At least one rseq registration has succeded. */
+ 
+@@ -111,6 +105,43 @@ int rseq_available(void)
  	}
+ }
  
- 	if (ipv6_addr_type(&fl6->saddr) & IPV6_ADDR_UNICAST)
-@@ -75,6 +73,8 @@ static u32 __nft_fib6_eval_type(const struct nft_fib *priv,
- 	else if (priv->flags & NFTA_FIB_F_OIF)
- 		dev = nft_out(pkt);
- 
-+	fl6.flowi6_l3mdev = l3mdev_master_ifindex_rcu(dev);
++/* The rseq areas need to be at least 32 bytes. */
++static
++unsigned int get_rseq_min_alloc_size(void)
++{
++	unsigned int alloc_size = rseq_size;
 +
- 	nft_fib6_flowi_init(&fl6, priv, pkt, dev, iph);
++	if (alloc_size < ORIG_RSEQ_ALLOC_SIZE)
++		alloc_size = ORIG_RSEQ_ALLOC_SIZE;
++	return alloc_size;
++}
++
++/*
++ * Return the feature size supported by the kernel.
++ *
++ * Depending on the value returned by getauxval(AT_RSEQ_FEATURE_SIZE):
++ *
++ * 0:   Return ORIG_RSEQ_FEATURE_SIZE (20)
++ * > 0: Return the value from getauxval(AT_RSEQ_FEATURE_SIZE).
++ *
++ * It should never return a value below ORIG_RSEQ_FEATURE_SIZE.
++ */
++static
++unsigned int get_rseq_kernel_feature_size(void)
++{
++	unsigned long auxv_rseq_feature_size, auxv_rseq_align;
++
++	auxv_rseq_align = getauxval(AT_RSEQ_ALIGN);
++	assert(!auxv_rseq_align || auxv_rseq_align <= RSEQ_THREAD_AREA_ALLOC_SIZE);
++
++	auxv_rseq_feature_size = getauxval(AT_RSEQ_FEATURE_SIZE);
++	assert(!auxv_rseq_feature_size || auxv_rseq_feature_size <= RSEQ_THREAD_AREA_ALLOC_SIZE);
++	if (auxv_rseq_feature_size)
++		return auxv_rseq_feature_size;
++	else
++		return ORIG_RSEQ_FEATURE_SIZE;
++}
++
+ int rseq_register_current_thread(void)
+ {
+ 	int rc;
+@@ -119,7 +150,7 @@ int rseq_register_current_thread(void)
+ 		/* Treat libc's ownership as a successful registration. */
+ 		return 0;
+ 	}
+-	rc = sys_rseq(&__rseq_abi, rseq_size, 0, RSEQ_SIG);
++	rc = sys_rseq(&__rseq_abi, get_rseq_min_alloc_size(), 0, RSEQ_SIG);
+ 	if (rc) {
+ 		if (RSEQ_READ_ONCE(rseq_reg_success)) {
+ 			/* Incoherent success/failure within process. */
+@@ -140,28 +171,12 @@ int rseq_unregister_current_thread(void)
+ 		/* Treat libc's ownership as a successful unregistration. */
+ 		return 0;
+ 	}
+-	rc = sys_rseq(&__rseq_abi, rseq_size, RSEQ_ABI_FLAG_UNREGISTER, RSEQ_SIG);
++	rc = sys_rseq(&__rseq_abi, get_rseq_min_alloc_size(), RSEQ_ABI_FLAG_UNREGISTER, RSEQ_SIG);
+ 	if (rc)
+ 		return -1;
+ 	return 0;
+ }
  
- 	if (dev && nf_ipv6_chk_addr(nft_net(pkt), &fl6.daddr, dev, true))
-@@ -165,6 +165,7 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
- 		.flowi6_iif = LOOPBACK_IFINDEX,
- 		.flowi6_proto = pkt->tprot,
- 		.flowi6_uid = sock_net_uid(nft_net(pkt), NULL),
-+		.flowi6_l3mdev = l3mdev_master_ifindex_rcu(nft_in(pkt)),
- 	};
- 	struct rt6_info *rt;
- 	int lookup_flags;
--- 
-2.43.0
-
+-static
+-unsigned int get_rseq_feature_size(void)
+-{
+-	unsigned long auxv_rseq_feature_size, auxv_rseq_align;
+-
+-	auxv_rseq_align = getauxval(AT_RSEQ_ALIGN);
+-	assert(!auxv_rseq_align || auxv_rseq_align <= RSEQ_THREAD_AREA_ALLOC_SIZE);
+-
+-	auxv_rseq_feature_size = getauxval(AT_RSEQ_FEATURE_SIZE);
+-	assert(!auxv_rseq_feature_size || auxv_rseq_feature_size <= RSEQ_THREAD_AREA_ALLOC_SIZE);
+-	if (auxv_rseq_feature_size)
+-		return auxv_rseq_feature_size;
+-	else
+-		return ORIG_RSEQ_FEATURE_SIZE;
+-}
+-
+ static __attribute__((constructor))
+ void rseq_init(void)
+ {
+@@ -178,28 +193,54 @@ void rseq_init(void)
+ 	}
+ 	if (libc_rseq_size_p && libc_rseq_offset_p && libc_rseq_flags_p &&
+ 			*libc_rseq_size_p != 0) {
++		unsigned int libc_rseq_size;
++
+ 		/* rseq registration owned by glibc */
+ 		rseq_offset = *libc_rseq_offset_p;
+-		rseq_size = *libc_rseq_size_p;
++		libc_rseq_size = *libc_rseq_size_p;
+ 		rseq_flags = *libc_rseq_flags_p;
+-		rseq_feature_size = get_rseq_feature_size();
+-		if (rseq_feature_size > rseq_size)
+-			rseq_feature_size = rseq_size;
++
++		/*
++		 * Previous versions of glibc expose the value
++		 * 32 even though the kernel only supported 20
++		 * bytes initially. Therefore treat 32 as a
++		 * special-case. glibc 2.40 exposes a 20 bytes
++		 * __rseq_size without using getauxval(3) to
++		 * query the supported size, while still allocating a 32
++		 * bytes area. Also treat 20 as a special-case.
++		 *
++		 * Special-cases are handled by using the following
++		 * value as active feature set size:
++		 *
++		 *   rseq_size = min(32, get_rseq_kernel_feature_size())
++		 */
++		switch (libc_rseq_size) {
++		case ORIG_RSEQ_FEATURE_SIZE:
++			fallthrough;
++		case ORIG_RSEQ_ALLOC_SIZE:
++		{
++			unsigned int rseq_kernel_feature_size = get_rseq_kernel_feature_size();
++
++			if (rseq_kernel_feature_size < ORIG_RSEQ_ALLOC_SIZE)
++				rseq_size = rseq_kernel_feature_size;
++			else
++				rseq_size = ORIG_RSEQ_ALLOC_SIZE;
++			break;
++		}
++		default:
++			/* Otherwise just use the __rseq_size from libc as rseq_size. */
++			rseq_size = libc_rseq_size;
++			break;
++		}
+ 		return;
+ 	}
+ 	rseq_ownership = 1;
+ 	if (!rseq_available()) {
+ 		rseq_size = 0;
+-		rseq_feature_size = 0;
+ 		return;
+ 	}
+ 	rseq_offset = (void *)&__rseq_abi - rseq_thread_pointer();
+ 	rseq_flags = 0;
+-	rseq_feature_size = get_rseq_feature_size();
+-	if (rseq_feature_size == ORIG_RSEQ_FEATURE_SIZE)
+-		rseq_size = ORIG_RSEQ_ALLOC_SIZE;
+-	else
+-		rseq_size = RSEQ_THREAD_AREA_ALLOC_SIZE;
+ }
+ 
+ static __attribute__((destructor))
+@@ -209,7 +250,6 @@ void rseq_exit(void)
+ 		return;
+ 	rseq_offset = 0;
+ 	rseq_size = -1U;
+-	rseq_feature_size = -1U;
+ 	rseq_ownership = 0;
+ }
+ 
+--- a/tools/testing/selftests/rseq/rseq.h
++++ b/tools/testing/selftests/rseq/rseq.h
+@@ -68,12 +68,6 @@ extern unsigned int rseq_size;
+ /* Flags used during rseq registration. */
+ extern unsigned int rseq_flags;
+ 
+-/*
+- * rseq feature size supported by the kernel. 0 if the registration was
+- * unsuccessful.
+- */
+-extern unsigned int rseq_feature_size;
+-
+ enum rseq_mo {
+ 	RSEQ_MO_RELAXED = 0,
+ 	RSEQ_MO_CONSUME = 1,	/* Unused */
+@@ -193,7 +187,7 @@ static inline uint32_t rseq_current_cpu(
+ 
+ static inline bool rseq_node_id_available(void)
+ {
+-	return (int) rseq_feature_size >= rseq_offsetofend(struct rseq_abi, node_id);
++	return (int) rseq_size >= rseq_offsetofend(struct rseq_abi, node_id);
+ }
+ 
+ /*
+@@ -207,7 +201,7 @@ static inline uint32_t rseq_current_node
+ 
+ static inline bool rseq_mm_cid_available(void)
+ {
+-	return (int) rseq_feature_size >= rseq_offsetofend(struct rseq_abi, mm_cid);
++	return (int) rseq_size >= rseq_offsetofend(struct rseq_abi, mm_cid);
+ }
+ 
+ static inline uint32_t rseq_current_mm_cid(void)
 
 
 
