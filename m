@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-83845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B9E99CCD0
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:25:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8FDD99D219
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C47E41C22425
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:25:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9FDB1C233FE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCBB1AA7A5;
-	Mon, 14 Oct 2024 14:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A55A1C304F;
+	Mon, 14 Oct 2024 15:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxpUKeUf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FphoDhTN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E094119E802;
-	Mon, 14 Oct 2024 14:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7F13B298;
+	Mon, 14 Oct 2024 15:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915915; cv=none; b=GTLlntWE6QRy6BLrcRJC5Ty1ssiftmriMWUjVSojk0pHow+VWMwJ7YVS/fzmZ4TN13ZVmVcGV7LH3q6/+Zk+VnCU9YTMh9quHfJ1hmciUVu+4V+bFZl4/lhbahXiLLGGn5aydJtakklBIbTTjt+M58tOZUvnNDLT9wgUlEYWT88=
+	t=1728919213; cv=none; b=s3Mt1kOmZ9u+QUqtRZzEmWl/gxwM4yBGsgo5em4MwJ4WE3ICO/hn0SzG9SfYv5BzQr/JXsyiSj/Ns5eLJ1SRSRyWcEgmCOdpGYKrLTHjbKJ/AtTPI1FfPJenmPkafx1z9djkb6eBEkhJ6BUKDW1tDxgPtlh3gzVr5VTuINTnfds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915915; c=relaxed/simple;
-	bh=W8gQ142pFSnpMCuFjizy35b8zTgqvJ4bUwFRs3h3z0E=;
+	s=arc-20240116; t=1728919213; c=relaxed/simple;
+	bh=AYwov/BOMkWtDQNgSM7iuDHZiMf3mshllNBERTyNIrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mu3vNreeR3qinnw5111F9XbMpZYlHPn6sdHLPXcBPC7YzYsstzVtjBiEMkm7HsvSnVjwGW2GnalhPYg/QRZE+cRear46CNFwxU87HD6xamEUkLCXBXzkWvx4WkFLUKOCJNCBrxKHRztWIkT15oIvUIq8DZiP+Obl6QcQyUrJzG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxpUKeUf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EEC6C4CEC3;
-	Mon, 14 Oct 2024 14:25:14 +0000 (UTC)
+	 MIME-Version; b=qGo8p7JNl2k2YCz5W7LJ7nBLrJtMPQdK6CWwfr6LI8FgmMp3JL0Nltn5eSOpX0LAg7KOvUmJQJdiK4g8/xCwPQ2HuXBY6KdNMeLFayG++28vwF75/U5+L20DTWGbNHLnBgFEpkE+JZKu6nCPZ5M7Ki1xIFaBbwH9kgdki5Xgjg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FphoDhTN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5843FC4CEC3;
+	Mon, 14 Oct 2024 15:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915914;
-	bh=W8gQ142pFSnpMCuFjizy35b8zTgqvJ4bUwFRs3h3z0E=;
+	s=korg; t=1728919212;
+	bh=AYwov/BOMkWtDQNgSM7iuDHZiMf3mshllNBERTyNIrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sxpUKeUfCX9vT7G4mKKRt/2vnpxAvZBIQEM+SpLFM6vTe3OoqSbVdcFv1UrKHemuc
-	 LmMz9quko79JJ6CRC3XograZfOkgl0q6PB9bIrJg2Rud8E1QACIkwWiEDDFiLtvLip
-	 WXtP9AeJW3rI/zXx/n/COjIsFIS0MuZaRSezee7s=
+	b=FphoDhTNYZOf4ZMHsNJ85hQm114AkVsgz0DmbWqWo/b1XUs/e9Mzk+2gJlGtyKRjl
+	 JSDd52KBRqSZdncEE1QChDU2wm4nXj20KIdweYAZIudfvW/xoDvBeXR8y6pBGhRsde
+	 YojhBhsXD2bnG7avO1SxNbS6US7tetbtA+OaSw24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zdravko delineshev <delineshev@outlook.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 036/214] PCI: Mark Creative Labs EMU20k2 INTx masking as broken
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.1 545/798] ext4: fix incorrect tid assumption in ext4_fc_mark_ineligible()
 Date: Mon, 14 Oct 2024 16:18:19 +0200
-Message-ID: <20241014141046.400557485@linuxfoundation.org>
+Message-ID: <20241014141239.409606010@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-[ Upstream commit 2910306655a7072640021563ec9501bfa67f0cb1 ]
+commit ebc4b2c1ac92fc0f8bf3f5a9c285a871d5084a6b upstream.
 
-Per user reports, the Creative Labs EMU20k2 (Sound Blaster X-Fi
-Titanium Series) generates spurious interrupts when used with
-vfio-pci unless DisINTx masking support is disabled.
+Function jbd2_journal_shrink_checkpoint_list() assumes that '0' is not a
+valid value for transaction IDs, which is incorrect.
 
-Thus, quirk the device to mark INTx masking as broken.
+Furthermore, the sbi->s_fc_ineligible_tid handling also makes the same
+assumption by being initialised to '0'.  Fortunately, the sb flag
+EXT4_MF_FC_INELIGIBLE can be used to check whether sbi->s_fc_ineligible_tid
+has been previously set instead of comparing it with '0'.
 
-Closes: https://lore.kernel.org/all/VI1PR10MB8207C507DB5420AB4C7281E0DB9A2@VI1PR10MB8207.EURPRD10.PROD.OUTLOOK.COM
-Link: https://lore.kernel.org/linux-pci/20240912215331.839220-1-alex.williamson@redhat.com
-Reported-by: zdravko delineshev <delineshev@outlook.com>
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240724161119.13448-5-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/fast_commit.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 85666ee2d8691..dccb60c1d9cc3 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3621,6 +3621,8 @@ DECLARE_PCI_FIXUP_FINAL(0x1814, 0x0601, /* Ralink RT2800 802.11n PCI */
- 			quirk_broken_intx_masking);
- DECLARE_PCI_FIXUP_FINAL(0x1b7c, 0x0004, /* Ceton InfiniTV4 */
- 			quirk_broken_intx_masking);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_CREATIVE, PCI_DEVICE_ID_CREATIVE_20K2,
-+			quirk_broken_intx_masking);
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -339,22 +339,29 @@ void ext4_fc_mark_ineligible(struct supe
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	tid_t tid;
++	bool has_transaction = true;
++	bool is_ineligible;
  
- /*
-  * Realtek RTL8169 PCI Gigabit Ethernet Controller (rev 10)
--- 
-2.43.0
-
+ 	if (ext4_fc_disabled(sb))
+ 		return;
+ 
+-	ext4_set_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
+ 	if (handle && !IS_ERR(handle))
+ 		tid = handle->h_transaction->t_tid;
+ 	else {
+ 		read_lock(&sbi->s_journal->j_state_lock);
+-		tid = sbi->s_journal->j_running_transaction ?
+-				sbi->s_journal->j_running_transaction->t_tid : 0;
++		if (sbi->s_journal->j_running_transaction)
++			tid = sbi->s_journal->j_running_transaction->t_tid;
++		else
++			has_transaction = false;
+ 		read_unlock(&sbi->s_journal->j_state_lock);
+ 	}
+ 	spin_lock(&sbi->s_fc_lock);
+-	if (tid_gt(tid, sbi->s_fc_ineligible_tid))
++	is_ineligible = ext4_test_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
++	if (has_transaction &&
++	    (!is_ineligible ||
++	     (is_ineligible && tid_gt(tid, sbi->s_fc_ineligible_tid))))
+ 		sbi->s_fc_ineligible_tid = tid;
++	ext4_set_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
+ 	spin_unlock(&sbi->s_fc_lock);
+ 	WARN_ON(reason >= EXT4_FC_REASON_MAX);
+ 	sbi->s_fc_stats.fc_ineligible_reason_count[reason]++;
 
 
 
