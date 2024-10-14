@@ -1,74 +1,48 @@
-Return-Path: <stable+bounces-83747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42C7D99C3FF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 10:49:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6E299C40A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 10:51:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAE121F24311
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 08:49:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCF8B1C22C51
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 08:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C7B14A62E;
-	Mon, 14 Oct 2024 08:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC93154BFE;
+	Mon, 14 Oct 2024 08:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iFZyEC2D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jmaTdHlJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF251A270;
-	Mon, 14 Oct 2024 08:49:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016CD154BFB;
+	Mon, 14 Oct 2024 08:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728895773; cv=none; b=OajG4WRluiIYRy8lF2sJP7+0htC0TE7aQgzAVDVbsgdaKhWuJgr7pLUn7S4fv0yWLMu4yAoSOjqb2fa5Y6iypAbqhSg5BhSNXgZOYVzpTnkVdbyA0xQGd/1bQkM0PcQLEL+TELm8h+Jx00XJ4QFRKWBo4+uzHyxnYRX5SAb9OJw=
+	t=1728895896; cv=none; b=Wjmv9gnuhh4ctB5b2eu6HRWB9y0TXoxZyfQasYb4zmB6g85FAvddAXE0psl0oUg6iUvzN4Uev09Y7KZqfWatGLUktQb7Ny5ksOFz6VSwACgkPrtBVtWvnLqT96bbOE5cPZs0Jz5G+1wrn9t9jQE92d1t1jwcHnC+up9qdlN9kqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728895773; c=relaxed/simple;
-	bh=0FnX3kslkJmARMtmR5XzRR5CxoTQbloPjTXJKUtr1BA=;
+	s=arc-20240116; t=1728895896; c=relaxed/simple;
+	bh=4hcP/x3fAzVQhFkDBiUme9mzWAr2o0rZJpMEeAgZ7ok=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YSZYT7H6hWilDBNsDsAr78lYNZitkodCPYVc98EH3gdHXVvvBGyZIfWt5lTm/ad1DVa0GAtsuFKpIYXbOJ1EJ/tPEFcA+gX7A7LU7RHwu+vgSCUkO3OE8aPBQGXsJ7dc11sIWHNTmm7kGBu8tAWKp92qshGsVFtL0uBPI95WI6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iFZyEC2D; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5c9634c9160so1671760a12.2;
-        Mon, 14 Oct 2024 01:49:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728895770; x=1729500570; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=N/pc6u088b0sZFymIkJ7ThisTP08fpmM8RFfE7zodyE=;
-        b=iFZyEC2DTX1E8rgRCYmTFgGktKaubFnP4krgXAo7D6ZvEsU1wa6CH7+KttH8FG8sjZ
-         afSfA/bdSuhtHMXGoPmYQAD45L4TIP8Sb08/tG6kHdLXcpaI3HmkTcTNLk7JXtLRuPww
-         sZB5RaLmGuAvYRrGRqLNYDKj3yawiBVxf0dPaq1Cu22yHfwX0nDVaLVM/nfwhzUr98Ry
-         T4DnL2msvmX9mcoHRV7zh52vt6znZWW4RfeNcWve5F+DpcICeEki1fss2NYVn5/ESGJ/
-         T39xxZV5zN5IWq9KQUbyd3E8P3UgYmy1pK2f9Jl1VVj0T+JlDGPLf4FKbA8jYqtuFmfo
-         HvMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728895770; x=1729500570;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N/pc6u088b0sZFymIkJ7ThisTP08fpmM8RFfE7zodyE=;
-        b=bTmdmS+GWpV3XpeMBq3UzMcWeQeZ4xgjJSRqP2KVV9y7k3LFHHhoA6c87BNVJgJA4q
-         WNcXRVL/zjp3n3sdM2CSMoolU21ylk6oqFxFO7ODSn03IcJQO5UG5riBn92UXXKVGkU/
-         CTuAbzDsu7OF7E29KmNNvuaG1uVsa4F6al+xPbqX1VIPGZ6Db0fLzOTz8rgCU/dHAk/O
-         3Q2ZDNtM1BknFU+59jT+E3r+KO+pc7iirkGQlRLZcUC9ndT6wKQHcauelNkCLeclPHtp
-         Y7ik+5alInyNy7pLIOvt51uLBNZGCrm7fIF9ETHGie9613/2Ax7Bbyxg8qrQWAahE/CJ
-         Xh+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUm+mRjKuqR0tP6Qw5oHfIrQHHavx3UGzun2zvCAdnHOSjI9nIa8QaJLacWFa+/6xuRXMift3bNxNEGE6E=@vger.kernel.org, AJvYcCWjNjkM2B681G5QoBH8s23mzMunKcGOpcNgyPkb8UOtxpiz1IlKJkoJDYGVCksWi/T7CyaBaAC1@vger.kernel.org
-X-Gm-Message-State: AOJu0YyB/Giz4sCWfVDmYkR9sRpXwkHqOdUdh6mPquRYN3/sIrhjrjNM
-	zWDcL4uXuRlONVwNpsufxulK3PmmISw8R928qsiGFEmBlWUINdCd
-X-Google-Smtp-Source: AGHT+IF7onz7xq/lQNOnFDIr2wn5OnIJSIVfCPqEkOhi3dcJunRv41jwKHXl3xS+WE+yHR/3TgQkHQ==
-X-Received: by 2002:a05:6402:1e8c:b0:5c9:806a:c921 with SMTP id 4fb4d7f45d1cf-5c9806ad393mr940321a12.32.1728895770364;
-        Mon, 14 Oct 2024 01:49:30 -0700 (PDT)
-Received: from [10.10.12.27] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c937260964sm4639710a12.69.2024.10.14.01.49.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Oct 2024 01:49:29 -0700 (PDT)
-Message-ID: <a3a8418a-57f2-4f3e-80a3-011de2af1296@gmail.com>
-Date: Mon, 14 Oct 2024 10:49:28 +0200
+	 In-Reply-To:Content-Type; b=eat3hCQOK9aOsKty1MKqvEGdHXV7nc3I2waGJoEEPqq+SLlL2NZWZ5H7eSNikKh8uduvL40ogpNsgrZ0MWHSuia9sB69R0j/uU1dpIEb3Kj8uXMhBq48cacTvTLHEp4+FUIJXSSo4tmBt148gEm4CTEe5A4RWkMQCTtVU5mZuk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jmaTdHlJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F35AC4CEC3;
+	Mon, 14 Oct 2024 08:51:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728895895;
+	bh=4hcP/x3fAzVQhFkDBiUme9mzWAr2o0rZJpMEeAgZ7ok=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jmaTdHlJGLdT70w+tRHmzdBTESBBs9uzAq72yOME8xYrnPDSlJcNuKIMvmM2Nzpis
+	 JN/rSlqjbM23hxQux0FWBoK76Mr8NGLnBaxGZEiD3dJPtjjKQONX9F6QUdVwv9moXQ
+	 kftOW06BrklPD2FGYlRUOYcsBBT1KNWnFO7yM8KIZSIixYol0e1Gco5xsxdFWcO+FH
+	 hidweBEqWabuJ5B3hFcTsVBldlrWGc8AeHLHP6VmuyPqDkeL/zft7WjwlIZxPdHPMS
+	 p9khtAaJ2LBSjA5gmD/GeIF1hreZD9qiS+wA35qOw9LMt3U5nCWxgu2A2og+f3DRAH
+	 xVO7qzKlgrE6w==
+Message-ID: <a406ef56-bcb7-4d12-9666-2f354bdba3dd@kernel.org>
+Date: Mon, 14 Oct 2024 10:51:30 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,7 +52,8 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] staging: vchiq_arm: Fix missing refcount decrement in
  error path for fw_node
-To: Dan Carpenter <dan.carpenter@linaro.org>
+To: Dan Carpenter <dan.carpenter@linaro.org>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
 Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
  Broadcom internal kernel review list
  <bcm-kernel-feedback-list@broadcom.com>,
@@ -90,67 +65,83 @@ Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
  stable@vger.kernel.org
 References: <20241013-vchiq_arm-of_node_put-v1-1-f72b2a6e47d0@gmail.com>
  <a4283afc-f869-4048-90b4-1775acb9adda@stanley.mountain>
- <47c7694c-25e1-4fe1-ae3c-855178d3d065@gmail.com>
- <767f08b7-be82-4b5e-bf82-3aa012a2ca5a@stanley.mountain>
- <8c0bbde9-aba9-433f-b36b-2d467f6a1b66@gmail.com>
- <20d12a96-c06b-4204-9a57-69a4bac02867@stanley.mountain>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <20d12a96-c06b-4204-9a57-69a4bac02867@stanley.mountain>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <a4283afc-f869-4048-90b4-1775acb9adda@stanley.mountain>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 14/10/2024 10:39, Dan Carpenter wrote:
-> On Mon, Oct 14, 2024 at 10:15:25AM +0200, Javier Carrasco wrote:
->> On 14/10/2024 10:12, Dan Carpenter wrote:
->>> On Mon, Oct 14, 2024 at 09:59:49AM +0200, Javier Carrasco wrote:
->>>> This approach is great as long as the maintainer accepts mid-scope
->>>> variable declaration and the goto instructions get refactored, as stated
->>>> in cleanup.h.
->>>>
->>>> The first point is not being that problematic so far, but the second one
->>>> is trickier, and we all have to take special care to avoid such issues,
->>>> even if they don't look dangerous in the current code, because adding a
->>>> goto where there cleanup attribute is already used can be overlooked as
->>>> well.
->>>>
->>>
->>> To be honest, I don't really understand this paragraph.  I think maybe you're
->>> talking about if we declare the variable at the top and forget to initialize it
->>> to NULL?  It leads to an uninitialized variable if we exit the function before
->>> it is initialized.
->>>
->>
->> No, I am talking about declaring the variable mid-scope, and later on
->> adding a goto before that declaration in a different patch, let's say
->> far above the variable declaration. As soon as a goto is added, care
->> must be taken to make sure that we don't have variables with the cleanup
->> attribute in the scope. Just something to take into account.
->>
+On 14/10/2024 09:22, Dan Carpenter wrote:
+>> @@ -1341,8 +1342,6 @@ static int vchiq_probe(struct platform_device *pdev)
+>>  	if (!info)
+>>  		return -EINVAL;
+>>  
+>> -	fw_node = of_find_compatible_node(NULL, NULL,
+>> -					  "raspberrypi,bcm2835-firmware");
 > 
-> Huh.  That's an interesting point.  If you have:
+> Perhaps it's better to declare the variable here so that the function and the
+> error handling are next to each other.
 > 
-> 	if (ret)
-> 		goto done;
+> 	if (!info)
+> 		return -EINVAL;
 > 
-> 	struct device_node *fw_node __free(device_node) = something;
+> 	struct device_node *fw_node __free(device_node) =
+> 		of_find_compatible_node(NULL, NULL, "raspberrypi,bcm2835-firmware");
+> 	if (!fw_node) {
 > 
-> Then fw_node isn't initialized when we get to done.  However, in my simple test
-> this triggered a build failure with Clang so I believe we would catch this sort
-> of bug pretty quickly.
+> 	...
 > 
-> regards,
-> dan carpenter
+> This is why we lifted the rule that variables had to be declared at the start
+> of a function.
 > 
 
-Yes, the only pity is that GCC (I guess still the most common compiler
-for the Linux kernel) stays silent, and it happily builds a buggy image.
-But as you said, the patch will trigger some alarms as soon as it is
-sent upstream.
 
-In this particular case, and as Greg pointed out, that is not a real
-threat anyway. My digression comes to an end, and v2 is on its way.
+Ack, this is how this should look like.
 
-Thanks and best regards,
-Javier Carrasco
+Best regards,
+Krzysztof
+
 
