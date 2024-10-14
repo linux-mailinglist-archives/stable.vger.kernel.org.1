@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-84159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD0D99CE75
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:44:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A0099CD8E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:34:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB8901F23CB4
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:44:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55C91B22453
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8439E1AB52F;
-	Mon, 14 Oct 2024 14:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B770A1AB6FD;
+	Mon, 14 Oct 2024 14:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FMiqtXWJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AyB51LNW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF1319E802;
-	Mon, 14 Oct 2024 14:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A4DE571;
+	Mon, 14 Oct 2024 14:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917038; cv=none; b=Cc9FmzNRBiB+XVGP1OwIOQ0FmoJRz909SuAKBLL9ogMhT98MuFSaXlmqvouARAbCps7DgpvHuClZ8Wbeces87zFsekCb/zxL9F+yviWDHUBdfbfbH+FB2bPUu7DeXxh91AinPWxvX05NzKaXgc1WiPd2vH0+XmmKqV2d/EIbcRY=
+	t=1728916416; cv=none; b=eyBQcKIZ70sXNoo8E0oMPer6D2IBOj/i7krSkMk3KTWGIn5rvHddWvujA0RKmIy1arROUo/NMCswP8Um7zH7bpRNOcWahR26Jms17h5ZMBWFWd1JMI8XthrTojRhPJYtiTY1KJJTZy3wqXg+tMBwAGi1OKlYOZptIRqE7rzxv7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917038; c=relaxed/simple;
-	bh=AwMWXfJbt1oSU2yMscpTmnJxWXJEBGPcN5Fv9rW0m0E=;
+	s=arc-20240116; t=1728916416; c=relaxed/simple;
+	bh=h++N79ZdjPPum1iT66tjnb4YZ7BVD9WAHMK94d25LNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Etdzl8be/s5SOK+JAzdRvF8AKZ4bhAZ8pqYbLGg6flHoa/dRRKRyXB7LVYxtSgCdhJMZSI7gpwA6VYd6rmKi+5TeWCs9CvZqlmmi/NWN/oEk3wZcsYad3yShcsrEPT6qN2oCN4nFJjuHhU3vA56wrGEN9SemwDpWp/LsfrGQ/vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FMiqtXWJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA9BC4CECF;
-	Mon, 14 Oct 2024 14:43:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PIrvEpRaQDV7w/ViXlfKA8bHQVHS4KrQjU5j3yT7H9ijQ6abLyuTZedqZ867bv44Bu6JcOAd91wcyXpRqBe3yY7O1L6xfRtI3QU7r5n2HZNy/67VYVBH6wMSn796ubdVC74Lrcwi3eKLb6AaJ6r4NVE3imfHNpk/sS24Lxsb3PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AyB51LNW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D822CC4CEC3;
+	Mon, 14 Oct 2024 14:33:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917037;
-	bh=AwMWXfJbt1oSU2yMscpTmnJxWXJEBGPcN5Fv9rW0m0E=;
+	s=korg; t=1728916416;
+	bh=h++N79ZdjPPum1iT66tjnb4YZ7BVD9WAHMK94d25LNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FMiqtXWJKmB53R4vtrDaMXLRAsanvo4tpSO/XO15CBeKkJL5Papaj1Nx+PSAWZFdY
-	 tcMDoOWnGoyhUrxJ5PeWl76H/fxb4S5seahsoKoKqnpG7JEbZwh6NoVl3AzlAifMJ9
-	 sFvEkv2OxSQCJDaUpFHM/PrCKU0t54vPe1UGXk2s=
+	b=AyB51LNWSHYDm7XirAdGz5cRpjMAZW8QUpzDN3WDdcmOxGt6i41buBlj85zHXA/aC
+	 FJUdijor0fEgpLg6rc0S2nQowrj3BVKklRcD9mfShWLyJ+6zhPwF5GoDNaKVYiFXOs
+	 mDL/y5K10JPUv6S3ut4r/TjT6QKkKXLdJFKecZyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonatan Maman <Ymaman@Nvidia.com>,
-	Gal Shalom <GalShalom@Nvidia.com>,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/213] nouveau/dmem: Fix privileged error in copy engine channel
-Date: Mon, 14 Oct 2024 16:20:40 +0200
-Message-ID: <20241014141048.199539409@linuxfoundation.org>
+	Sean Paul <seanpaul@chromium.org>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.11 178/214] drm/i915/hdcp: fix connector refcounting
+Date: Mon, 14 Oct 2024 16:20:41 +0200
+Message-ID: <20241014141051.925530692@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonatan Maman <Ymaman@Nvidia.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 04e0481526e30ab8c7e7580033d2f88b7ef2da3f ]
+commit 4cc2718f621a6a57a02581125bb6d914ce74d23b upstream.
 
-When `nouveau_dmem_copy_one` is called, the following error occurs:
+We acquire a connector reference before scheduling an HDCP prop work,
+and expect the work function to release the reference.
 
-[272146.675156] nouveau 0000:06:00.0: fifo: PBDMA9: 00000004 [HCE_PRIV]
-ch 1 00000300 00003386
+However, if the work was already queued, it won't be queued multiple
+times, and the reference is not dropped.
 
-This indicates that a copy push command triggered a Host Copy Engine
-Privileged error on channel 1 (Copy Engine channel). To address this
-issue, modify the Copy Engine channel to allow privileged push commands
+Release the reference immediately if the work was already queued.
 
-Fixes: 6de125383a5c ("drm/nouveau/fifo: expose runlist topology info on all chipsets")
-Signed-off-by: Yonatan Maman <Ymaman@Nvidia.com>
-Co-developed-by: Gal Shalom <GalShalom@Nvidia.com>
-Signed-off-by: Gal Shalom <GalShalom@Nvidia.com>
-Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241008115943.990286-2-ymaman@nvidia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a6597faa2d59 ("drm/i915: Protect workers against disappearing connectors")
+Cc: Sean Paul <seanpaul@chromium.org>
+Cc: Suraj Kandpal <suraj.kandpal@intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: stable@vger.kernel.org # v5.10+
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240924153022.2255299-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit abc0742c79bdb3b164eacab24aea0916d2ec1cb5)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_drm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_hdcp.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_drm.c b/drivers/gpu/drm/nouveau/nouveau_drm.c
-index c39284dc7d73b..ac15a662e0604 100644
---- a/drivers/gpu/drm/nouveau/nouveau_drm.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
-@@ -343,7 +343,7 @@ nouveau_accel_ce_init(struct nouveau_drm *drm)
- 		return;
+--- a/drivers/gpu/drm/i915/display/intel_hdcp.c
++++ b/drivers/gpu/drm/i915/display/intel_hdcp.c
+@@ -1089,7 +1089,8 @@ static void intel_hdcp_update_value(stru
+ 	hdcp->value = value;
+ 	if (update_property) {
+ 		drm_connector_get(&connector->base);
+-		queue_work(i915->unordered_wq, &hdcp->prop_work);
++		if (!queue_work(i915->unordered_wq, &hdcp->prop_work))
++			drm_connector_put(&connector->base);
+ 	}
+ }
+ 
+@@ -2517,7 +2518,8 @@ void intel_hdcp_update_pipe(struct intel
+ 		mutex_lock(&hdcp->mutex);
+ 		hdcp->value = DRM_MODE_CONTENT_PROTECTION_DESIRED;
+ 		drm_connector_get(&connector->base);
+-		queue_work(i915->unordered_wq, &hdcp->prop_work);
++		if (!queue_work(i915->unordered_wq, &hdcp->prop_work))
++			drm_connector_put(&connector->base);
+ 		mutex_unlock(&hdcp->mutex);
  	}
  
--	ret = nouveau_channel_new(&drm->client, false, runm, NvDmaFB, NvDmaTT, &drm->cechan);
-+	ret = nouveau_channel_new(&drm->client, true, runm, NvDmaFB, NvDmaTT, &drm->cechan);
- 	if (ret)
- 		NV_ERROR(drm, "failed to create ce channel, %d\n", ret);
- }
--- 
-2.43.0
-
+@@ -2534,7 +2536,9 @@ void intel_hdcp_update_pipe(struct intel
+ 		 */
+ 		if (!desired_and_not_enabled && !content_protection_type_changed) {
+ 			drm_connector_get(&connector->base);
+-			queue_work(i915->unordered_wq, &hdcp->prop_work);
++			if (!queue_work(i915->unordered_wq, &hdcp->prop_work))
++				drm_connector_put(&connector->base);
++
+ 		}
+ 	}
+ 
 
 
 
