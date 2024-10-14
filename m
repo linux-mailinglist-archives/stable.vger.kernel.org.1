@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-84861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E3F99D271
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:25:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFE699CD2C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:29:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8032C1F22FFC
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:25:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 028B7282355
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C391B4F3E;
-	Mon, 14 Oct 2024 15:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E41A1AB52D;
+	Mon, 14 Oct 2024 14:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5+t+Cj9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3yYakov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C5483A14;
-	Mon, 14 Oct 2024 15:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4341AB508;
+	Mon, 14 Oct 2024 14:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919478; cv=none; b=kOh5rqT4y9vOh82UBiz17k+0s7mu1XpiY5WsdKZvEArm3q3Q6OJS8xy+CXN0ZVjIm4mQ6dUCByOcA0O1YQbCnS2dJ4TacPgSsmNNVgMnPB5sl0R9LISqJp4Z7YwieW5NMWxuJNSCU4HpZH77SXi3DmWG3YnPiGWTltjUm/e1dAw=
+	t=1728916183; cv=none; b=YLxFjs0FM/sGLRYkBNfe0dumyozsxsF5gWAwyahlgLJpbl6l+UPUDDfUyDDwYBTt0fmlmHMWGO4041LBNaCq7T8e04ZzZ4FlW9tGIzAZDt2ovKRJMRRPyr8XLzXZr1HcFHm4LIqiZslkj8T6LF8m3OQGU6p1b7ApQhB2UCEFlIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919478; c=relaxed/simple;
-	bh=yvlx4w7xSzDx1cGumehxkxoesN+DAN08e/5vqpF6yec=;
+	s=arc-20240116; t=1728916183; c=relaxed/simple;
+	bh=pBhfDn2vncCod7kFTMV2RRj92XzMFRo7ggLSpFdbrCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iZZRef6GeR3gJchngzlWQRw9TmTQDFTEu5j9yI0wnVhGzi6sh8RM9ukd0l914JJl/0/2LqHaiwudEz3Yea9GKp0PQqLhYT2OHhCef9WDjDdVWgDn1UEGlxOTJ87xssEwJNZXYZ/av/JIDFgv8/AaJewSCaTs7xaH8gTxJYeuH/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5+t+Cj9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7926C4CEC3;
-	Mon, 14 Oct 2024 15:24:37 +0000 (UTC)
+	 MIME-Version; b=ThPMpOo6cU1GRux8HQK6kMTvHmdvMadie7TuDu/9AbOjFHteD0Zpcvs6hyoRlU7fybd1zFvuOKPW+1Je2FX+J35P0OglswxWdZ+9MXcFkmZmnN2ZlIll9dKp9B96hpXJcX+fJvmKhqiy2vxC0gD0PsQrFm71KU06wW1tpLeiqAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3yYakov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93A4C4CED1;
+	Mon, 14 Oct 2024 14:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919478;
-	bh=yvlx4w7xSzDx1cGumehxkxoesN+DAN08e/5vqpF6yec=;
+	s=korg; t=1728916183;
+	bh=pBhfDn2vncCod7kFTMV2RRj92XzMFRo7ggLSpFdbrCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b5+t+Cj96kR5g7t6DlzrGDoG3q1sUUF9EkuSrKkcglppNtiTehfl+cea2QzWZ/yYc
-	 /CRwC9nm40d3SZAx71SP6yvGbvwWmi6GhcFscUYmEkOg747L/deKU709KVoBuNZyRq
-	 q6KOkegh1oPWoVK2ymzrWCMIIB8iURaR4D26hWuY=
+	b=Q3yYakovnDLHgrCClZRt8vlj/mH2y0AbpzzzerC6ScW5si92Vj27pU2ltPPua/iEM
+	 5uLXqqZuJo+fHTFX9vv58tpglQs/6JRfEfkBBqObV9SMMMKVZRcnBnwsZagLMwdJKf
+	 UAbAfJJ5wu1yec3oYE9cuWGbQrHFRi4sRgYb19Vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 617/798] kconfig: qconf: fix buffer overflow in debug links
+Subject: [PATCH 6.11 108/214] net: ethernet: adi: adin1110: Fix some error handling path in adin1110_read_fifo()
 Date: Mon, 14 Oct 2024 16:19:31 +0200
-Message-ID: <20241014141242.280771494@linuxfoundation.org>
+Message-ID: <20241014141049.211571401@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 984ed20ece1c6c20789ece040cbff3eb1a388fa9 ]
+[ Upstream commit 83211ae1640516accae645de82f5a0a142676897 ]
 
-If you enable "Option -> Show Debug Info" and click a link, the program
-terminates with the following error:
+If 'frame_size' is too small or if 'round_len' is an error code, it is
+likely that an error code should be returned to the caller.
 
-    *** buffer overflow detected ***: terminated
+Actually, 'ret' is likely to be 0, so if one of these sanity checks fails,
+'success' is returned.
 
-The buffer overflow is caused by the following line:
+Return -EINVAL instead.
 
-    strcat(data, "$");
-
-The buffer needs one more byte to accommodate the additional character.
-
-Fixes: c4f7398bee9c ("kconfig: qconf: make debug links work again")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: bc93e19d088b ("net: ethernet: adi: Add ADIN1110 support")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://patch.msgid.link/8ff73b40f50d8fa994a454911b66adebce8da266.1727981562.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/qconf.cc | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/adi/adin1110.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/kconfig/qconf.cc b/scripts/kconfig/qconf.cc
-index 78087b2d9ac67..61b679f6c2f2a 100644
---- a/scripts/kconfig/qconf.cc
-+++ b/scripts/kconfig/qconf.cc
-@@ -1172,7 +1172,7 @@ void ConfigInfoView::clicked(const QUrl &url)
- {
- 	QByteArray str = url.toEncoded();
- 	const std::size_t count = str.size();
--	char *data = new char[count + 1];
-+	char *data = new char[count + 2];  // '$' + '\0'
- 	struct symbol **result;
- 	struct menu *m = NULL;
+diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/adi/adin1110.c
+index 0713f1e2c7f38..bf2e513295bb7 100644
+--- a/drivers/net/ethernet/adi/adin1110.c
++++ b/drivers/net/ethernet/adi/adin1110.c
+@@ -318,11 +318,11 @@ static int adin1110_read_fifo(struct adin1110_port_priv *port_priv)
+ 	 * from the  ADIN1110 frame header.
+ 	 */
+ 	if (frame_size < ADIN1110_FRAME_HEADER_LEN + ADIN1110_FEC_LEN)
+-		return ret;
++		return -EINVAL;
  
+ 	round_len = adin1110_round_len(frame_size);
+ 	if (round_len < 0)
+-		return ret;
++		return -EINVAL;
+ 
+ 	frame_size_no_fcs = frame_size - ADIN1110_FRAME_HEADER_LEN - ADIN1110_FEC_LEN;
+ 	memset(priv->data, 0, ADIN1110_RD_HEADER_LEN);
 -- 
 2.43.0
 
