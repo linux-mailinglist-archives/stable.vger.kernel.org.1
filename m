@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-84050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62E699CDE5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:37:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF94199CCFA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:27:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CF1D1F23C58
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:37:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9412D281F41
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B39D1A0724;
-	Mon, 14 Oct 2024 14:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E4921AB52F;
+	Mon, 14 Oct 2024 14:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SeC9+2VG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWTOtRrN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2991A28C;
-	Mon, 14 Oct 2024 14:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12951AAE2C;
+	Mon, 14 Oct 2024 14:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916644; cv=none; b=pGmRzjVOwNwJffWNuiAjcCx6eQtQno2+ynFvuxsbgKxr1pliT1zo6ucPs1efHWXkHAcjuaIGdg8UBTw2pt2boMzA1L4B1YD43UWioWQ5vdfoGOZp0rdjK5hYaEmiHAtnrhZmZaWj6ZAGitTvKhlVfpdpSFuPuAMOqG6g7oCrRXw=
+	t=1728916036; cv=none; b=dAyvKWfXi0H1oXvmu6nm3Kk3nmX59sgklPEV+w8Sqk2zzpFkFYIRtznlYu88+q1CAEVkW6cj3nklGY57gHfnUBDQ444X58NT3g05mrmJF98R2fsVJMtdpC9Z18OtN/YKtdxuG83GplRewlM9kVqZLHCsrUKV2oQMnhzfM64RtzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916644; c=relaxed/simple;
-	bh=Pe22cCzdkna3632rhpUXl+9u9JLiBjKA4P7m3MIM86E=;
+	s=arc-20240116; t=1728916036; c=relaxed/simple;
+	bh=RSW588COH2tQaQ8X+CGYYaPSAgsa+Q2L3pzbxQrqS+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b9zp5BNyAa2OqdiqxLgIcQHdXGx93br/uzhs/9ShpIvAPYpwRP4D2mBJQCkTVMb4zx2P7uy+CTHnq7nErtWEwd5lKAIzpJgJMvhWqJsG7d4ElaKH9N3zRFa4ZDjiz+0QMdjcsfdtwLPqCMWcFlLtV6nwnXVeMGt18DCXMox+klk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SeC9+2VG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0773C4CEC3;
-	Mon, 14 Oct 2024 14:37:23 +0000 (UTC)
+	 MIME-Version; b=rn0qky+libSV/cFWnYZcErZguDFIfZXe5DwUderXCnp2yiSM2qflPqDemX8DFAUODz+8hRdODewqEvMGLKm0muTWst4F2dGFSDurIz8Xm0PTH8U9tutXGNXR0o8tL5BBhvh0TUANLpvafEwOsEi1SssppQOFAY2JmqutDiYnMbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWTOtRrN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C95C4CEC3;
+	Mon, 14 Oct 2024 14:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916644;
-	bh=Pe22cCzdkna3632rhpUXl+9u9JLiBjKA4P7m3MIM86E=;
+	s=korg; t=1728916036;
+	bh=RSW588COH2tQaQ8X+CGYYaPSAgsa+Q2L3pzbxQrqS+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SeC9+2VGtxZwhWIhSoLsY+ykbZqv2Th9nn69r6PoJmp+VoTcyFqTrWx2ujRqoboN0
-	 9QsYaSv2rf5TomDlqc3plidUxRDjMzhmFdElFsbAFE9MODy5jju2holb4S5XCPfcMj
-	 lsozYQEBeErqjuR5/yEkhrdPJHm/lDBcmrmJQPpY=
+	b=FWTOtRrN9YScbXE8coXVtwUnvSCuImzSVrBd03Iac+s4mNQKYtIhdJ/G6OorU9EvJ
+	 jI00FwDDKHiQQxdBq/42pel99311QaLzw1WsPCxIfcVM5tqPL4zi8JZIL+5gSzp5yp
+	 8BJS2MZbRCuKTExQakcBP6d5SnXzlT7G8NFE6s8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Mete Durlu <meted@linux.ibm.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Abhishek Tamboli <abhishektamboli9@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/213] tracing: Have saved_cmdlines arrays all in one allocation
+Subject: [PATCH 6.11 068/214] usb: gadget: uvc: Fix ERR_PTR dereference in uvc_v4l2.c
 Date: Mon, 14 Oct 2024 16:18:51 +0200
-Message-ID: <20241014141043.968312036@linuxfoundation.org>
+Message-ID: <20241014141047.643887587@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,106 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Abhishek Tamboli <abhishektamboli9@gmail.com>
 
-[ Upstream commit 0b18c852cc6fb8284ac0ab97e3e840974a6a8a64 ]
+[ Upstream commit a7bb96b18864225a694e3887ac2733159489e4b0 ]
 
-The saved_cmdlines have three arrays for mapping PIDs to COMMs:
+Fix potential dereferencing of ERR_PTR() in find_format_by_pix()
+and uvc_v4l2_enum_format().
 
- - map_pid_to_cmdline[]
- - map_cmdline_to_pid[]
- - saved_cmdlines
+Fix the following smatch errors:
 
-The map_pid_to_cmdline[] is PID_MAX_DEFAULT in size and holds the index
-into the other arrays. The map_cmdline_to_pid[] is a mapping back to the
-full pid as it can be larger than PID_MAX_DEFAULT. And the
-saved_cmdlines[] just holds the COMMs associated to the pids.
+drivers/usb/gadget/function/uvc_v4l2.c:124 find_format_by_pix()
+error: 'fmtdesc' dereferencing possible ERR_PTR()
 
-Currently the map_pid_to_cmdline[] and saved_cmdlines[] are allocated
-together (in reality the saved_cmdlines is just in the memory of the
-rounding of the allocation of the structure as it is always allocated in
-powers of two). The map_cmdline_to_pid[] array is allocated separately.
+drivers/usb/gadget/function/uvc_v4l2.c:392 uvc_v4l2_enum_format()
+error: 'fmtdesc' dereferencing possible ERR_PTR()
 
-Since the rounding to a power of two is rather large (it allows for 8000
-elements in saved_cmdlines), also include the map_cmdline_to_pid[] array.
-(This drops it to 6000 by default, which is still plenty for most use
-cases). This saves even more memory as the map_cmdline_to_pid[] array
-doesn't need to be allocated.
+Also, fix similar issue in uvc_v4l2_try_format() for potential
+dereferencing of ERR_PTR().
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240212174011.068211d9@gandalf.local.home/
-Link: https://lore.kernel.org/linux-trace-kernel/20240220140703.182330529@goodmis.org
-
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Tim Chen <tim.c.chen@linux.intel.com>
-Cc: Vincent Donnefort <vdonnefort@google.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Mete Durlu <meted@linux.ibm.com>
-Fixes: 44dc5c41b5b1 ("tracing: Fix wasted memory in saved_cmdlines logic")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Abhishek Tamboli <abhishektamboli9@gmail.com>
+Link: https://lore.kernel.org/r/20240815102202.594812-1-abhishektamboli9@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ drivers/usb/gadget/function/uvc_v4l2.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index be878005e3449..4f93d57cc0299 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -2316,6 +2316,10 @@ struct saved_cmdlines_buffer {
- };
- static struct saved_cmdlines_buffer *savedcmd;
+diff --git a/drivers/usb/gadget/function/uvc_v4l2.c b/drivers/usb/gadget/function/uvc_v4l2.c
+index a024aecb76dc3..de1736f834e6b 100644
+--- a/drivers/usb/gadget/function/uvc_v4l2.c
++++ b/drivers/usb/gadget/function/uvc_v4l2.c
+@@ -121,6 +121,9 @@ static struct uvcg_format *find_format_by_pix(struct uvc_device *uvc,
+ 	list_for_each_entry(format, &uvc->header->formats, entry) {
+ 		const struct uvc_format_desc *fmtdesc = to_uvc_format(format->fmt);
  
-+/* Holds the size of a cmdline and pid element */
-+#define SAVED_CMDLINE_MAP_ELEMENT_SIZE(s)			\
-+	(TASK_COMM_LEN + sizeof((s)->map_cmdline_to_pid[0]))
++		if (IS_ERR(fmtdesc))
++			continue;
 +
- static inline char *get_saved_cmdlines(int idx)
- {
- 	return &savedcmd->saved_cmdlines[idx * TASK_COMM_LEN];
-@@ -2330,7 +2334,6 @@ static void free_saved_cmdlines_buffer(struct saved_cmdlines_buffer *s)
- {
- 	int order = get_order(sizeof(*s) + s->cmdline_num * TASK_COMM_LEN);
+ 		if (fmtdesc->fcc == pixelformat) {
+ 			uformat = format->fmt;
+ 			break;
+@@ -240,6 +243,7 @@ uvc_v4l2_try_format(struct file *file, void *fh, struct v4l2_format *fmt)
+ 	struct uvc_video *video = &uvc->video;
+ 	struct uvcg_format *uformat;
+ 	struct uvcg_frame *uframe;
++	const struct uvc_format_desc *fmtdesc;
+ 	u8 *fcc;
  
--	kfree(s->map_cmdline_to_pid);
- 	kmemleak_free(s);
- 	free_pages((unsigned long)s, order);
- }
-@@ -2343,7 +2346,7 @@ static struct saved_cmdlines_buffer *allocate_cmdlines_buffer(unsigned int val)
- 	int order;
+ 	if (fmt->type != video->queue.queue.type)
+@@ -277,7 +281,10 @@ uvc_v4l2_try_format(struct file *file, void *fh, struct v4l2_format *fmt)
+ 		fmt->fmt.pix.height = uframe->frame.w_height;
+ 		fmt->fmt.pix.bytesperline = uvc_v4l2_get_bytesperline(uformat, uframe);
+ 		fmt->fmt.pix.sizeimage = uvc_get_frame_size(uformat, uframe);
+-		fmt->fmt.pix.pixelformat = to_uvc_format(uformat)->fcc;
++		fmtdesc = to_uvc_format(uformat);
++		if (IS_ERR(fmtdesc))
++			return PTR_ERR(fmtdesc);
++		fmt->fmt.pix.pixelformat = fmtdesc->fcc;
+ 	}
+ 	fmt->fmt.pix.field = V4L2_FIELD_NONE;
+ 	fmt->fmt.pix.colorspace = V4L2_COLORSPACE_SRGB;
+@@ -389,6 +396,9 @@ uvc_v4l2_enum_format(struct file *file, void *fh, struct v4l2_fmtdesc *f)
+ 		return -EINVAL;
  
- 	/* Figure out how much is needed to hold the given number of cmdlines */
--	orig_size = sizeof(*s) + val * TASK_COMM_LEN;
-+	orig_size = sizeof(*s) + val * SAVED_CMDLINE_MAP_ELEMENT_SIZE(s);
- 	order = get_order(orig_size);
- 	size = 1 << (order + PAGE_SHIFT);
- 	page = alloc_pages(GFP_KERNEL, order);
-@@ -2355,16 +2358,11 @@ static struct saved_cmdlines_buffer *allocate_cmdlines_buffer(unsigned int val)
- 	memset(s, 0, sizeof(*s));
+ 	fmtdesc = to_uvc_format(uformat);
++	if (IS_ERR(fmtdesc))
++		return PTR_ERR(fmtdesc);
++
+ 	f->pixelformat = fmtdesc->fcc;
  
- 	/* Round up to actual allocation */
--	val = (size - sizeof(*s)) / TASK_COMM_LEN;
-+	val = (size - sizeof(*s)) / SAVED_CMDLINE_MAP_ELEMENT_SIZE(s);
- 	s->cmdline_num = val;
- 
--	s->map_cmdline_to_pid = kmalloc_array(val,
--					      sizeof(*s->map_cmdline_to_pid),
--					      GFP_KERNEL);
--	if (!s->map_cmdline_to_pid) {
--		free_saved_cmdlines_buffer(s);
--		return NULL;
--	}
-+	/* Place map_cmdline_to_pid array right after saved_cmdlines */
-+	s->map_cmdline_to_pid = (unsigned *)&s->saved_cmdlines[val * TASK_COMM_LEN];
- 
- 	s->cmdline_idx = 0;
- 	memset(&s->map_pid_to_cmdline, NO_CMDLINE_MAP,
+ 	return 0;
 -- 
 2.43.0
 
