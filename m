@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C07199D2B5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE8999CE41
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:41:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DA6A1C221A6
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FA4C1C23179
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3B41ACDED;
-	Mon, 14 Oct 2024 15:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3041AAE02;
+	Mon, 14 Oct 2024 14:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhaBdJcg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSzdfP7F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD531AB6E9;
-	Mon, 14 Oct 2024 15:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2911720EB;
+	Mon, 14 Oct 2024 14:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919592; cv=none; b=QKJep4PTAmM05l64ruwiTTscGuDtWygkLsdSk1puKyI/fS8tx0Gl5br8AqJpY0YUI601BDqcaNpIq5wdPTn/jJNymkvMmrqiF4wsMXXYhKubOnS4fXsEWyp5XUR2IcJN3VHDfO/UECQEXLo3conPtrjAluuBIsbhpP/pE3Kjb1U=
+	t=1728916907; cv=none; b=nnK+QQoJJooGoW5T10nTec6UC9JmjTtpx3e84EBrXLLgM0gFmNMSmkDJitfAbvbNhKgmGQzGAj+SvKRAjPGsdhx6716n5DeDaFjjyVTn7Z4pDqWzsUhiYloHvL5JSRhEfXqALUZkWPNnhCmH8rw6Tho8UFBULz42ojmBomgLHkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919592; c=relaxed/simple;
-	bh=PzQLZOPoDtaTqW2wQkDavBPDOwRAznzmubL6oUfB5uY=;
+	s=arc-20240116; t=1728916907; c=relaxed/simple;
+	bh=t7I48BFwI7szDBY4hTphbkFSWEGmskcnVgiHZ+HixVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=makxKidf84rDD0UeGpheveqZ8+iNHHpqsXWbUMhRZYjJSi2a7gTfQaFl0N9qHDB3LFJr95PP9an0EGHgWi9dV+Msdk67YtDnalud+kyRLRwIfxQ5htFqAFLe69YA/J/PrJTv8lmIFIJBnqHfwN8wEqFlpsh88N4n9/sh6cHymgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhaBdJcg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4BDC4CEC3;
-	Mon, 14 Oct 2024 15:26:31 +0000 (UTC)
+	 MIME-Version; b=K1c8fAOY4DIern9WwPz96EI/FyOsb/YOrPvBVri7rYZyBGFLAmENTxQoBN/GoZKIpL2ApUA0/lMzmQdpXjUlmV2053+/nRVjYg1igp2Ft1HA5gwN5CY59ft3g8ev/NcNhJGfJvG2Zh3IQIsLPYLiIemTSCHM9hSvY8z3zAQfKIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSzdfP7F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60351C4CEC3;
+	Mon, 14 Oct 2024 14:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919591;
-	bh=PzQLZOPoDtaTqW2wQkDavBPDOwRAznzmubL6oUfB5uY=;
+	s=korg; t=1728916907;
+	bh=t7I48BFwI7szDBY4hTphbkFSWEGmskcnVgiHZ+HixVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhaBdJcgOMr/OJn4LnWX6gr8LPA/Das+B8HmpKZeYYE2dlHOgCl13hdIK5GQBq3rH
-	 Rxf7yRPLUYnfznA8Ev+XSDNxTvT3saOZsCbWemGariDDUtQt7fSI5JS3Rq8gzBmy6j
-	 SK81WovtmqaXJWfW5drSrLjaPJ8gXKMoUX1KScUY=
+	b=eSzdfP7Ft3vkVmTIHvs4jSbIx45NmCCHOPFR1+S8fizbQIjaynhOkqDDb8kII4JmW
+	 RR2HNY5ikvk5R4Pej5v3ErnNu7yJPcmvYTlOxc5aLELoKhLPt0N+IOdq1wnIAPEm63
+	 Z+JNmZq/h23LJvhkaoFnAMb+ySyyflIKnroXhq9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Riyan Dhiman <riyandhiman14@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 650/798] clk: qcom: gcc-sc8180x: Add GPLL9 support
+Subject: [PATCH 6.6 098/213] staging: vme_user: added bound check to geoid
 Date: Mon, 14 Oct 2024 16:20:04 +0200
-Message-ID: <20241014141243.588425736@linuxfoundation.org>
+Message-ID: <20241014141046.794045976@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Riyan Dhiman <riyandhiman14@gmail.com>
 
-[ Upstream commit 818a2f8d5e4ad2c1e39a4290158fe8e39a744c70 ]
+[ Upstream commit a8a8b54350229f59c8ba6496fb5689a1632a59be ]
 
-Add the missing GPLL9 pll and fix the gcc_parents_7 data to use
-the correct pll hw.
+The geoid is a module parameter that allows users to hardcode the slot number.
+A bound check for geoid was added in the probe function because only values
+between 0 and less than VME_MAX_SLOT are valid.
 
-Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
-Cc: stable@vger.kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-3-8b3eaa5fb856@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Riyan Dhiman <riyandhiman14@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240827125604.42771-2-riyandhiman14@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc8180x.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/staging/vme_user/vme_fake.c   | 6 ++++++
+ drivers/staging/vme_user/vme_tsi148.c | 6 ++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
-index 8c986a60e62c7..ba004281f2944 100644
---- a/drivers/clk/qcom/gcc-sc8180x.c
-+++ b/drivers/clk/qcom/gcc-sc8180x.c
-@@ -143,6 +143,23 @@ static struct clk_alpha_pll gpll7 = {
- 	},
- };
+diff --git a/drivers/staging/vme_user/vme_fake.c b/drivers/staging/vme_user/vme_fake.c
+index 7c53a8a7b79b8..95730d1270af8 100644
+--- a/drivers/staging/vme_user/vme_fake.c
++++ b/drivers/staging/vme_user/vme_fake.c
+@@ -1064,6 +1064,12 @@ static int __init fake_init(void)
+ 	struct vme_slave_resource *slave_image;
+ 	struct vme_lm_resource *lm;
  
-+static struct clk_alpha_pll gpll9 = {
-+	.offset = 0x1c000,
-+	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_TRION],
-+	.clkr = {
-+		.enable_reg = 0x52000,
-+		.enable_mask = BIT(9),
-+		.hw.init = &(const struct clk_init_data) {
-+			.name = "gpll9",
-+			.parent_data = &(const struct clk_parent_data) {
-+				.fw_name = "bi_tcxo",
-+			},
-+			.num_parents = 1,
-+			.ops = &clk_alpha_pll_fixed_trion_ops,
-+		},
-+	},
-+};
++	if (geoid < 0 || geoid >= VME_MAX_SLOTS) {
++		pr_err("VME geographical address must be between 0 and %d (exclusive), but got %d\n",
++			VME_MAX_SLOTS, geoid);
++		return -EINVAL;
++	}
 +
- static const struct parent_map gcc_parent_map_0[] = {
- 	{ P_BI_TCXO, 0 },
- 	{ P_GPLL0_OUT_MAIN, 1 },
-@@ -242,7 +259,7 @@ static const struct parent_map gcc_parent_map_7[] = {
- static const struct clk_parent_data gcc_parents_7[] = {
- 	{ .fw_name = "bi_tcxo", },
- 	{ .hw = &gpll0.clkr.hw },
--	{ .name = "gppl9" },
-+	{ .hw = &gpll9.clkr.hw },
- 	{ .hw = &gpll4.clkr.hw },
- 	{ .hw = &gpll0_out_even.clkr.hw },
- };
-@@ -4420,6 +4437,7 @@ static struct clk_regmap *gcc_sc8180x_clocks[] = {
- 	[GPLL1] = &gpll1.clkr,
- 	[GPLL4] = &gpll4.clkr,
- 	[GPLL7] = &gpll7.clkr,
-+	[GPLL9] = &gpll9.clkr,
- };
+ 	/* We need a fake parent device */
+ 	vme_root = root_device_register("vme");
+ 	if (IS_ERR(vme_root))
+diff --git a/drivers/staging/vme_user/vme_tsi148.c b/drivers/staging/vme_user/vme_tsi148.c
+index 2f5eafd509340..4566e391d913f 100644
+--- a/drivers/staging/vme_user/vme_tsi148.c
++++ b/drivers/staging/vme_user/vme_tsi148.c
+@@ -2252,6 +2252,12 @@ static int tsi148_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	struct vme_dma_resource *dma_ctrlr;
+ 	struct vme_lm_resource *lm;
  
- static const struct qcom_reset_map gcc_sc8180x_resets[] = {
++	if (geoid < 0 || geoid >= VME_MAX_SLOTS) {
++		dev_err(&pdev->dev, "VME geographical address must be between 0 and %d (exclusive), but got %d\n",
++			VME_MAX_SLOTS, geoid);
++		return -EINVAL;
++	}
++
+ 	/* If we want to support more than one of each bridge, we need to
+ 	 * dynamically generate this so we get one per device
+ 	 */
 -- 
 2.43.0
 
