@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0252199CE19
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:39:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B88F99D274
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:25:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACA711F21D2B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:39:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97534B26980
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4C11A0724;
-	Mon, 14 Oct 2024 14:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052B51A76CE;
+	Mon, 14 Oct 2024 15:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zCq/Wgw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyRRA57f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C65220EB;
-	Mon, 14 Oct 2024 14:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70041798C;
+	Mon, 14 Oct 2024 15:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916795; cv=none; b=CAzXBP1gM1wEhQIQYTQo12hwSxPZQJEX7O0TaPoNw07MRAXEa0sjmCLcm5le6xVzCU1zayEX8mIyDW6Z5CA4jl9Ygg7o+4Q8CcRv5jwucLUeOb0+uu3gsF9uAkDOcPeAs+MIF3YRexQYY5TLbCIP14euYqCs5IAvAnl/LlD/vh4=
+	t=1728919481; cv=none; b=ndPQEbUABGxw8iCJX5m/QJDofegS/+kZ/1DbvvCCtyNoOh34zPmgzF4pfN+MYhGH2LQvRCqEJY8RuoIyTpc8FMd6mxlO/mxkxRdqfPMrpnQAwtI96+pvVXao0hieku2Z4hcYswE9QuxnWMolXXSyEDesILa+m6Qm+rlpL4eN4fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916795; c=relaxed/simple;
-	bh=i1IjRjZHXm9eYFThdamZ5Cg5BJF4j29ButzrieB0ZCM=;
+	s=arc-20240116; t=1728919481; c=relaxed/simple;
+	bh=l6jDgfPtWX2ce0IRPTg6hjdxaDdMRohWNxhT92Zbd7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXOjpBCpx+YBCpS0LTD42bTucwOuV63CSx6Q/QkW4PvqTPGvafb1uteQPdUTZp7ts493yYsqtb91KOWTTZxUB04rjqMLjXcggCHuHSyCsvCTSvaX/beWmLrA7JkI/DO3hfd4ZUQ5sUakVQkxNqAmVRFM8C/XL3RKmBXp/k5DGKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zCq/Wgw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB303C4CEC3;
-	Mon, 14 Oct 2024 14:39:54 +0000 (UTC)
+	 MIME-Version; b=oN1135Efh/HIE2L3eg18j8WCTi7/4dgewWR5Yml716Jdsh2SEMyexPcggMi8nvFjx4FB+r8Ml1xA1J6Ba99FyoBoDQa8SIrWyawIO9JC0+AUCYoAmxbeajYJNkz+oloV674gSYYTelaetTx4MJNKplOqT3aU2obWvm3bZA/tvQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyRRA57f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FA9C4CEC3;
+	Mon, 14 Oct 2024 15:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916795;
-	bh=i1IjRjZHXm9eYFThdamZ5Cg5BJF4j29ButzrieB0ZCM=;
+	s=korg; t=1728919481;
+	bh=l6jDgfPtWX2ce0IRPTg6hjdxaDdMRohWNxhT92Zbd7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zCq/Wgw1QGoBAVzfRMdvT67JTOO/YD5cFhEFbZ+MjAuqYjJS2dyW5Wqs+3UY9SalN
-	 ByYFXAtJ0MWB8Y24qg+1e8wo7eNnESX2mzx17axsikkrXFLSB3RxX3K8mmDtxQFQ46
-	 7dCenps5Avw7aTdUOqXz2QBQAngjHh+/aWlfb2x8=
+	b=JyRRA57fYoLlsUUag8uUtRZ1TfwcD3SiU859F768Ov/0IM0mwFdHp6JC/vox8wWxf
+	 cPpBaSBgp03ocaJ5cX9Ck5BYyrqAkjg5/T4m7yGUtNLV30pOcOi3tPVEYjVvq9EuQX
+	 CvsY03WWw5Bcd204UlQ3S5ncjLdEicLRE73wx4mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Kuohai <xukuohai@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/213] bpf: Prevent tail call between progs attached to different hooks
+Subject: [PATCH 6.1 618/798] i2c: create debugfs entry per adapter
 Date: Mon, 14 Oct 2024 16:19:32 +0200
-Message-ID: <20241014141045.561030804@linuxfoundation.org>
+Message-ID: <20241014141242.319843526@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Kuohai <xukuohai@huawei.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 28ead3eaabc16ecc907cfb71876da028080f6356 ]
+[ Upstream commit 73febd775bdbdb98c81255ff85773ac410ded5c4 ]
 
-bpf progs can be attached to kernel functions, and the attached functions
-can take different parameters or return different return values. If
-prog attached to one kernel function tail calls prog attached to another
-kernel function, the ctx access or return value verification could be
-bypassed.
+Two drivers already implement custom debugfs handling for their
+i2c_adapter and more will come. So, let the core create a debugfs
+directory per adapter and pass that to drivers for their debugfs files.
 
-For example, if prog1 is attached to func1 which takes only 1 parameter
-and prog2 is attached to func2 which takes two parameters. Since verifier
-assumes the bpf ctx passed to prog2 is constructed based on func2's
-prototype, verifier allows prog2 to access the second parameter from
-the bpf ctx passed to it. The problem is that verifier does not prevent
-prog1 from passing its bpf ctx to prog2 via tail call. In this case,
-the bpf ctx passed to prog2 is constructed from func1 instead of func2,
-that is, the assumption for ctx access verification is bypassed.
-
-Another example, if BPF LSM prog1 is attached to hook file_alloc_security,
-and BPF LSM prog2 is attached to hook bpf_lsm_audit_rule_known. Verifier
-knows the return value rules for these two hooks, e.g. it is legal for
-bpf_lsm_audit_rule_known to return positive number 1, and it is illegal
-for file_alloc_security to return positive number. So verifier allows
-prog2 to return positive number 1, but does not allow prog1 to return
-positive number. The problem is that verifier does not prevent prog1
-from calling prog2 via tail call. In this case, prog2's return value 1
-will be used as the return value for prog1's hook file_alloc_security.
-That is, the return value rule is bypassed.
-
-This patch adds restriction for tail call to prevent such bypasses.
-
-Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
-Link: https://lore.kernel.org/r/20240719110059.797546-4-xukuohai@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Stable-dep-of: 8d3cefaf6592 ("i2c: core: Lock address during client device instantiation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h |  1 +
- kernel/bpf/core.c   | 21 ++++++++++++++++++---
- 2 files changed, 19 insertions(+), 3 deletions(-)
+ drivers/i2c/i2c-core-base.c | 11 +++++++++++
+ include/linux/i2c.h         |  2 ++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 722102518dc95..1e05cc80e0485 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -288,6 +288,7 @@ struct bpf_map {
- 	 * same prog type, JITed flag and xdp_has_frags flag.
- 	 */
- 	struct {
-+		const struct btf_type *attach_func_proto;
- 		spinlock_t lock;
- 		enum bpf_prog_type type;
- 		bool jited;
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 4124805ad7ba5..58ee17f429a33 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -2259,6 +2259,7 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 643c7f1e5bfd4..4417b2656f875 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -16,6 +16,7 @@
+ #include <linux/acpi.h>
+ #include <linux/clk/clk-conf.h>
+ #include <linux/completion.h>
++#include <linux/debugfs.h>
+ #include <linux/delay.h>
+ #include <linux/err.h>
+ #include <linux/errno.h>
+@@ -66,6 +67,8 @@ static int i2c_detect(struct i2c_adapter *adapter, struct i2c_driver *driver);
+ static DEFINE_STATIC_KEY_FALSE(i2c_trace_msg_key);
+ static bool is_registered;
+ 
++static struct dentry *i2c_debugfs_root;
++
+ int i2c_transfer_trace_reg(void)
  {
- 	enum bpf_prog_type prog_type = resolve_prog_type(fp);
- 	bool ret;
-+	struct bpf_prog_aux *aux = fp->aux;
- 
- 	if (fp->kprobe_override)
- 		return false;
-@@ -2268,7 +2269,7 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
- 	 * in the case of devmap and cpumap). Until device checks
- 	 * are implemented, prohibit adding dev-bound programs to program maps.
- 	 */
--	if (bpf_prog_is_dev_bound(fp->aux))
-+	if (bpf_prog_is_dev_bound(aux))
- 		return false;
- 
- 	spin_lock(&map->owner.lock);
-@@ -2278,12 +2279,26 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
- 		 */
- 		map->owner.type  = prog_type;
- 		map->owner.jited = fp->jited;
--		map->owner.xdp_has_frags = fp->aux->xdp_has_frags;
-+		map->owner.xdp_has_frags = aux->xdp_has_frags;
-+		map->owner.attach_func_proto = aux->attach_func_proto;
- 		ret = true;
- 	} else {
- 		ret = map->owner.type  == prog_type &&
- 		      map->owner.jited == fp->jited &&
--		      map->owner.xdp_has_frags == fp->aux->xdp_has_frags;
-+		      map->owner.xdp_has_frags == aux->xdp_has_frags;
-+		if (ret &&
-+		    map->owner.attach_func_proto != aux->attach_func_proto) {
-+			switch (prog_type) {
-+			case BPF_PROG_TYPE_TRACING:
-+			case BPF_PROG_TYPE_LSM:
-+			case BPF_PROG_TYPE_EXT:
-+			case BPF_PROG_TYPE_STRUCT_OPS:
-+				ret = false;
-+				break;
-+			default:
-+				break;
-+			}
-+		}
+ 	static_branch_inc(&i2c_trace_msg_key);
+@@ -1528,6 +1531,8 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
+ 		goto out_list;
  	}
- 	spin_unlock(&map->owner.lock);
+ 
++	adap->debugfs = debugfs_create_dir(dev_name(&adap->dev), i2c_debugfs_root);
++
+ 	res = i2c_setup_smbus_alert(adap);
+ 	if (res)
+ 		goto out_reg;
+@@ -1567,6 +1572,7 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
+ 	return 0;
+ 
+ out_reg:
++	debugfs_remove_recursive(adap->debugfs);
+ 	init_completion(&adap->dev_released);
+ 	device_unregister(&adap->dev);
+ 	wait_for_completion(&adap->dev_released);
+@@ -1768,6 +1774,8 @@ void i2c_del_adapter(struct i2c_adapter *adap)
+ 
+ 	i2c_host_notify_irq_teardown(adap);
+ 
++	debugfs_remove_recursive(adap->debugfs);
++
+ 	/* wait until all references to the device are gone
+ 	 *
+ 	 * FIXME: This is old code and should ideally be replaced by an
+@@ -2065,6 +2073,8 @@ static int __init i2c_init(void)
+ 
+ 	is_registered = true;
+ 
++	i2c_debugfs_root = debugfs_create_dir("i2c", NULL);
++
+ #ifdef CONFIG_I2C_COMPAT
+ 	i2c_adapter_compat_class = class_compat_register("i2c-adapter");
+ 	if (!i2c_adapter_compat_class) {
+@@ -2103,6 +2113,7 @@ static void __exit i2c_exit(void)
+ #ifdef CONFIG_I2C_COMPAT
+ 	class_compat_unregister(i2c_adapter_compat_class);
+ #endif
++	debugfs_remove_recursive(i2c_debugfs_root);
+ 	bus_unregister(&i2c_bus_type);
+ 	tracepoint_synchronize_unregister();
+ }
+diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+index 4f5285b87a7f0..96432b0a05d4d 100644
+--- a/include/linux/i2c.h
++++ b/include/linux/i2c.h
+@@ -750,6 +750,8 @@ struct i2c_adapter {
+ 
+ 	struct irq_domain *host_notify_domain;
+ 	struct regulator *bus_regulator;
++
++	struct dentry *debugfs;
+ };
+ #define to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
  
 -- 
 2.43.0
