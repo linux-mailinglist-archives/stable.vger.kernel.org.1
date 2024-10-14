@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-84401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A016899D003
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:59:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A5C99CFDD
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:58:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C748B24534
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:59:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1483B1F230CF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60238155342;
-	Mon, 14 Oct 2024 14:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F781BBBC4;
+	Mon, 14 Oct 2024 14:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HvIgahDA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOOuyyWs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1586B44C77;
-	Mon, 14 Oct 2024 14:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D831AAE27;
+	Mon, 14 Oct 2024 14:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917883; cv=none; b=gDZM9uKl4/c5ku0Wm7YZrlkpi7Es9ybrStC/67Ov5o1jOEo4+C089r6K/EVzSBgZMHrZF8bwYRUPeZCJ4eroG8f/jAJdgeyamle3R/IIPQjIE8F9S5KjxOTUKMj1EfSNnxI512NSinyH4i3Q5QyiaZZnBbZJCmscfmksWVFticA=
+	t=1728917774; cv=none; b=qJ2wG7wv9LKcy43lE4bb9huDo8o0T0AnrIoCeh9c1RS9qpCWD1XZst/lPZL5B+srqo2+c1wknUnrkXpdvTrk1MfenJ5VZqEkzWk3zDNSBENe9xtS17/P0yDlAb9wKtNXYPYetwOsoIO0RZOufj4TlrxhaX5PPdju1yKTkJtDbWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917883; c=relaxed/simple;
-	bh=MW39PBLtr38kkkCoPKKDjDVMG00kIFfeN3yhYABkRpQ=;
+	s=arc-20240116; t=1728917774; c=relaxed/simple;
+	bh=qU6M8/Va0NCFhQE7R2wOtiWXIAAJV+HyDkH2Tapl2C4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4ikhtOJRH1QdL8eXVWqLW6/836PeY1aS8eEVscXDAzvuqrf1YBiVbfQLBRfRIuQKyxw5WOsZCXXgVK/iAK03QW5dbZwyVfAQ9pSMKyZLlM/MRKI6IjqNqLesL4YBrUvVj6VeTxz1ccw+INh69pJcFi2y0cO+S10hYOBf0TW3YQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HvIgahDA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B04C4CEC3;
-	Mon, 14 Oct 2024 14:58:01 +0000 (UTC)
+	 MIME-Version; b=s4taJUTcAhd3KePw3mrumDv2ZbqOVTHi7CZt+XZENWOA3mRcTWtu50dzHVxMof0u713FEv45/tIv2zSnRASJSfCcPseQcfaMcCyjZC5ZScC3Us7gOaNGtB0zttjixd7IQWlFqZmQ5JS0oa7qAZuVH5t0pRRHqJvyi6R7APIsVjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOOuyyWs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 081D6C4CEC3;
+	Mon, 14 Oct 2024 14:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917882;
-	bh=MW39PBLtr38kkkCoPKKDjDVMG00kIFfeN3yhYABkRpQ=;
+	s=korg; t=1728917774;
+	bh=qU6M8/Va0NCFhQE7R2wOtiWXIAAJV+HyDkH2Tapl2C4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HvIgahDA7ItQueQss/I2mvz/milt/owN+dGPzQxaERgjyjgjaRFtkCTf0F4OYP/BE
-	 qj8M783WNJrz/1NoGoB/VQ/pr/cjTOItsl2/aHuW2ovH/DkCRa/Zp/cxIQc3sO/+YN
-	 uIOMtzEqfn/n/EkfeXN2bRKy7TNPgvdg/muHxqGY=
+	b=GOOuyyWsushH6KgFajzWT55o89UoGgSrsg1Snte90hLhtheETUvWFzQvMKHOrPPXE
+	 71r8uUHKaRuhjCf1tM5zwHgfuDiKNjVYVHYK9m4bSWT3msyQ75FokAh6sA7noGfGkt
+	 L+6JUk5jPFApJQTxn9uDXOUxfAqZlETLNuofhXwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sherry Yang <sherry.yang@oracle.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Yuesong Li <liyuesong@vivo.com>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 130/798] drm/msm: fix %s null argument error
-Date: Mon, 14 Oct 2024 16:11:24 +0200
-Message-ID: <20241014141223.030040659@linuxfoundation.org>
+Subject: [PATCH 6.1 131/798] drivers:drm:exynos_drm_gsc:Fix wrong assignment in gsc_bind()
+Date: Mon, 14 Oct 2024 16:11:25 +0200
+Message-ID: <20241014141223.068809324@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -67,46 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sherry Yang <sherry.yang@oracle.com>
+From: Yuesong Li <liyuesong@vivo.com>
 
-[ Upstream commit 25b85075150fe8adddb096db8a4b950353045ee1 ]
+[ Upstream commit 94ebc3d3235c5c516f67315059ce657e5090e94b ]
 
-The following build error was triggered because of NULL string argument:
+cocci reported a double assignment problem. Upon reviewing previous
+commits, it appears this may actually be an incorrect assignment.
 
-BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c: In function 'mdp5_smp_dump':
-BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c:352:51: error: '%s' directive argument is null [-Werror=format-overflow=]
-BUILDSTDERR:   352 |                         drm_printf(p, "%s:%d\t%d\t%s\n",
-BUILDSTDERR:       |                                                   ^~
-BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c:352:51: error: '%s' directive argument is null [-Werror=format-overflow=]
-
-This happens from the commit a61ddb4393ad ("drm: enable (most) W=1
-warnings by default across the subsystem"). Using "(null)" instead
-to fix it.
-
-Fixes: bc5289eed481 ("drm/msm/mdp5: add debugfs to show smp block status")
-Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/611071/
-Link: https://lore.kernel.org/r/20240827165337.1075904-1-sherry.yang@oracle.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 8b9550344d39 ("drm/ipp: clean up debug messages")
+Signed-off-by: Yuesong Li <liyuesong@vivo.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c | 2 +-
+ drivers/gpu/drm/exynos/exynos_drm_gsc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
-index 56a3063545ec4..12d07e93a4c47 100644
---- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
-+++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
-@@ -356,7 +356,7 @@ void mdp5_smp_dump(struct mdp5_smp *smp, struct drm_printer *p)
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_gsc.c b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
+index 68ea92742b06b..f8b45fc5b15ad 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_gsc.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
+@@ -1173,7 +1173,7 @@ static int gsc_bind(struct device *dev, struct device *master, void *data)
+ 	struct exynos_drm_ipp *ipp = &ctx->ipp;
  
- 			drm_printf(p, "%s:%d\t%d\t%s\n",
- 				pipe2name(pipe), j, inuse,
--				plane ? plane->name : NULL);
-+				plane ? plane->name : "(null)");
+ 	ctx->drm_dev = drm_dev;
+-	ctx->drm_dev = drm_dev;
++	ipp->drm_dev = drm_dev;
+ 	exynos_drm_register_dma(drm_dev, dev, &ctx->dma_priv);
  
- 			total += inuse;
- 		}
+ 	exynos_drm_ipp_register(dev, ipp, &ipp_funcs,
 -- 
 2.43.0
 
