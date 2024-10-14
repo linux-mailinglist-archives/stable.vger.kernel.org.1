@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-84549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F8E099D0BA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:06:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E27C499D0BC
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:06:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CCD5287A2E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:06:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16BBD1C22318
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5F41DA53;
-	Mon, 14 Oct 2024 15:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 483134087C;
+	Mon, 14 Oct 2024 15:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubBnpBHy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NVMQDby3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E601798C;
-	Mon, 14 Oct 2024 15:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D9A1798C;
+	Mon, 14 Oct 2024 15:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918390; cv=none; b=oLEPpMZdkuoUOCaQQJaNcacFdqY7sh2h597EHJ+dTr1fw1dBEeaDQQV+ZCx+p6532RMgDZjluJG09uFtf+f22ZwMqt6MHUceMUSXkvZGpT6Rir1OoVjM3O/Dv1rGJaAhYpUooN/Y+arBoFaDMP4idkPQ0L1ARJygOPh53hKGhXQ=
+	t=1728918397; cv=none; b=DD+WqVzqAJguzPvx+IbGmQmYy83N51fEqS+qIRgyMkU4sAO+hFI8oRHIia4+zw3q+2YtfJkZCbjaGKg3VjwNslclT9s7NCe5fZLfs0D6Z/dYE2fK6dadO0JhnE/slTXL61klvPCPidQnYyv6gAx85qh/FwUqV4u7ZALMaT1Fq+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918390; c=relaxed/simple;
-	bh=5KzafU7FVn1C1Gh34FeRmVVTHFAz3/Ph/Xb3GEm70ws=;
+	s=arc-20240116; t=1728918397; c=relaxed/simple;
+	bh=QeSmgzq9YhCx2QYTV8gQWRzlIFJtbUiMXU6hspciSkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPhNS/EfxUOO+a4+Lkz2AUUsrL4yDYvPOF7dmCuC7rQprjmpr+WUehewZNfB1EZvAkud5sqZk3dO6AC+ffkvXvoq8OVohoQnfjeeYCsSY6dbgOPdkZPotmsVnL1Ytt+vSvMgzx4RPtQztd22HqDBeV8wwGuR50kUhqcZfAYw55s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubBnpBHy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1FCC4CEC3;
-	Mon, 14 Oct 2024 15:06:29 +0000 (UTC)
+	 MIME-Version; b=C9f25GgYkjcDTXApbkqYJU+olTz2U7Lyr77EAoIGarrZ/ohm/wwbcuDE3+JHCUYA2p7c3lxPCeR/cow3gy6MzV9Ij6S1ERWC75CneYaNGs0dhVy5cHQ3w5lQGLul3jCOGEK4xnE8DQ0qmfSml6eXDJwx+J7QmqhDZiD7cUE8Upg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NVMQDby3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C3AC4CEC3;
+	Mon, 14 Oct 2024 15:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918390;
-	bh=5KzafU7FVn1C1Gh34FeRmVVTHFAz3/Ph/Xb3GEm70ws=;
+	s=korg; t=1728918396;
+	bh=QeSmgzq9YhCx2QYTV8gQWRzlIFJtbUiMXU6hspciSkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ubBnpBHyIzYerhkpEcbXFIR1xjzhkLQQ8Aww/RQeYUQFlxGuimeHz6CofgnSkfZfI
-	 CzkbdWatX4FPIh/uEQbKKfiO2/fsQsnwp+5TJxAS6RN57pGy81yeqpWHcXsh7YETUe
-	 zC0+9R+E/dXReeDP0Fpif7/LeriF1KN/C/eW7RMY=
+	b=NVMQDby3scQ9ZADPQ3+/C53maTnJGUw9c6be8+cnVTpLMW9JhcFsOHWFHYgkupORn
+	 AhPD0Z53dD0choQy3fh7THGUHIzNYYhA29HgD4uAg2EVoQ0rqZBShKRrzkRJEwZjF6
+	 Mtv06oCe+E72wPo+K/4YcWOUvHezUtsbjAVYVqeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 309/798] USB: class: CDC-ACM: fix race between get_serial and set_serial
-Date: Mon, 14 Oct 2024 16:14:23 +0200
-Message-ID: <20241014141230.088245898@linuxfoundation.org>
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.1 310/798] usb: cdnsp: Fix incorrect usb_request status
+Date: Mon, 14 Oct 2024 16:14:24 +0200
+Message-ID: <20241014141230.126532045@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -65,42 +65,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Pawel Laszczak <pawell@cadence.com>
 
-commit b41c1fa155ba56d125885b0191aabaf3c508d0a3 upstream.
+commit 1702bec4477cc7d31adb4a760d14d33fac928b7a upstream.
 
-TIOCGSERIAL is an ioctl. Thus it must be atomic. It returns
-two values. Racing with set_serial it can return an inconsistent
-result. The mutex must be taken.
+Fix changes incorrect usb_request->status returned during disabling
+endpoints. Before fix the status returned during dequeuing requests
+while disabling endpoint was ECONNRESET.
+Patch change it to ESHUTDOWN.
 
-In terms of logic the bug is as old as the driver. In terms of
-code it goes back to the conversion to the get_serial and
-set_serial methods.
+Patch fixes issue detected during testing UVC gadget.
+During stopping streaming the class starts dequeuing usb requests and
+controller driver returns the -ECONNRESET status. After completion
+requests the class or application "uvc-gadget" try to queue this
+request again. Changing this status to ESHUTDOWN cause that UVC assumes
+that endpoint is disabled, or device is disconnected and stops
+re-queuing usb requests.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Fixes: 99f75a1fcd865 ("cdc-acm: switch to ->[sg]et_serial()")
-Link: https://lore.kernel.org/r/20240912141916.1044393-1-oneukum@suse.com
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+cc: stable@vger.kernel.org
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Reviewed-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/PH7PR07MB9538E8CA7A2096AAF6A3718FDD9E2@PH7PR07MB9538.namprd07.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-acm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/cdns3/cdnsp-ring.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -938,10 +938,12 @@ static int get_serial_info(struct tty_st
- 	struct acm *acm = tty->driver_data;
+--- a/drivers/usb/cdns3/cdnsp-ring.c
++++ b/drivers/usb/cdns3/cdnsp-ring.c
+@@ -718,7 +718,8 @@ int cdnsp_remove_request(struct cdnsp_de
+ 	seg = cdnsp_trb_in_td(pdev, cur_td->start_seg, cur_td->first_trb,
+ 			      cur_td->last_trb, hw_deq);
  
- 	ss->line = acm->minor;
-+	mutex_lock(&acm->port.mutex);
- 	ss->close_delay	= jiffies_to_msecs(acm->port.close_delay) / 10;
- 	ss->closing_wait = acm->port.closing_wait == ASYNC_CLOSING_WAIT_NONE ?
- 				ASYNC_CLOSING_WAIT_NONE :
- 				jiffies_to_msecs(acm->port.closing_wait) / 10;
-+	mutex_unlock(&acm->port.mutex);
- 	return 0;
- }
- 
+-	if (seg && (pep->ep_state & EP_ENABLED))
++	if (seg && (pep->ep_state & EP_ENABLED) &&
++	    !(pep->ep_state & EP_DIS_IN_RROGRESS))
+ 		cdnsp_find_new_dequeue_state(pdev, pep, preq->request.stream_id,
+ 					     cur_td, &deq_state);
+ 	else
+@@ -736,7 +737,8 @@ int cdnsp_remove_request(struct cdnsp_de
+ 	 * During disconnecting all endpoint will be disabled so we don't
+ 	 * have to worry about updating dequeue pointer.
+ 	 */
+-	if (pdev->cdnsp_state & CDNSP_STATE_DISCONNECT_PENDING) {
++	if (pdev->cdnsp_state & CDNSP_STATE_DISCONNECT_PENDING ||
++	    pep->ep_state & EP_DIS_IN_RROGRESS) {
+ 		status = -ESHUTDOWN;
+ 		ret = cdnsp_cmd_set_deq(pdev, pep, &deq_state);
+ 	}
 
 
 
