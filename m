@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-84898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDE4799D2B9
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:29:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18CA699CE4A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:42:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AC85B21556
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:29:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C27201F23CFA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362F91BFE05;
-	Mon, 14 Oct 2024 15:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA751AB6C1;
+	Mon, 14 Oct 2024 14:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cNjZ6C/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yNXOK02o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FF619E98B;
-	Mon, 14 Oct 2024 15:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2512C1AB52F;
+	Mon, 14 Oct 2024 14:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919605; cv=none; b=o/qP0zwLxp3wEoa4l7c/DJY9vUvhUYBtRcYW07s/eRaUWZj7rhNkvk20SXuikhvu4eImOY0q4SRLvUURDQugVrvYACWcUoGeqcgLJR+biZuTx/2ENCObYVo67xRyM6CxdjEfV6ghZ3dPNoZy9Al0v1Wtqu2bvIpi5TaOdnosz9g=
+	t=1728916927; cv=none; b=AQII0h5dkqWS4jqGAyKFEmgP+5gpwhtUmh+dYjJuTRB2uh4L6NQDFnY7n85FCuAAOqkORbd0vq/JTg/qRX44DZHogr1sirv4TC4ChkaElO/cdvTFw81fVpywxumXjHTtY1f0HZXYuLOEMJbm06zTVc+Dnt9gWrA3+c6ZImR5x7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919605; c=relaxed/simple;
-	bh=6yjZbBK3T2HbJsV73tsSnmUNlCWw5+vv4P+RFm0kf/g=;
+	s=arc-20240116; t=1728916927; c=relaxed/simple;
+	bh=2aMmNJ7M+HP5EG+jVGtRHec7ROiHfwZVxPY5hLmJi14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y+uWJvn7n40pxEk+Cadx0rM/uMTC8s045fpIvR7zUGfr+R/CVx24wiBLUQifVIZwWQsRu87a6xWBRXYNhoG0rLoxoa5ZWzqQdYPLVWiIyw/PfpDSEo2k1MY9O6LSpcUDpDRqAVx7VxbKeR3U3riUiHt1zDasX42/gKqufmIyNzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cNjZ6C/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2466BC4CEC3;
-	Mon, 14 Oct 2024 15:26:43 +0000 (UTC)
+	 MIME-Version; b=XZtrB6+jEBJM8fn53Ym9TQVa99BF31LsGwx8Q3JgVH7sK3dVO+vMjAOJIbCPS186ppXPoYHfbB3cV9odF5jAB+2g+29HpuK2ue5RfC+uoL9NvLDEkH0CWCVvJBPBk2ubdbUZt+D5s7kApkmDf3Yeg/bOmPLexVBwZPIYgNukanY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yNXOK02o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978A4C4CEC3;
+	Mon, 14 Oct 2024 14:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919604;
-	bh=6yjZbBK3T2HbJsV73tsSnmUNlCWw5+vv4P+RFm0kf/g=;
+	s=korg; t=1728916927;
+	bh=2aMmNJ7M+HP5EG+jVGtRHec7ROiHfwZVxPY5hLmJi14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1cNjZ6C/ocSszgOFIgFqbz2rRq08F+pnk+NdlkYEtHT7nCcIJmOxzDjOK6th84tMp
-	 BATB8I07Vuy88kfUjYuhW38MmQFYsub8EGx9icwZKIWtAy/pWG7kXb7te1rnXafI/P
-	 PUzP1vrASLBuBwS4x4GcViwFhdAzhEUiCxnOj1l0=
+	b=yNXOK02oFu7+plg4aNDPfkh31hAkI1wJTsRMVsPxITuShWOZNnybz2RtkQesvKDDB
+	 mu8FPvCpo5PvzXVQ6kgaAel0pW2NOAecnDVUmW2mcCIuL+ptz3Si7PNH9GNoQOO8Yq
+	 G8w5U9GIJndbURWeoDRhMZNWSDlDl+KeV/ioio5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"linux-erofs@lists.ozlabs.org, LKML" <linux-kernel@vger.kernel.org>,
-	Yue Hu <huyue2@coolpad.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	Chao Yu <chao@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 6.1 654/798] erofs: get rid of erofs_inode_datablocks()
-Date: Mon, 14 Oct 2024 16:20:08 +0200
-Message-ID: <20241014141243.744899671@linuxfoundation.org>
+	Alex Hung <alex.hung@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 103/213] drm/amd/display: Check null pointer before dereferencing se
+Date: Mon, 14 Oct 2024 16:20:09 +0200
+Message-ID: <20241014141046.990156775@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Alex Hung <alex.hung@amd.com>
 
-commit 4efdec36dc9907628e590a68193d6d8e5e74d032 upstream.
+[ Upstream commit ff599ef6970ee000fa5bc38d02fa5ff5f3fc7575 ]
 
-erofs_inode_datablocks() has the only one caller, let's just get
-rid of it entirely.  No logic changes.
+[WHAT & HOW]
+se is null checked previously in the same function, indicating
+it might be null; therefore, it must be checked when used again.
 
-Reviewed-by: Yue Hu <huyue2@coolpad.com>
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Stable-dep-of: 9ed50b8231e3 ("erofs: fix incorrect symlink detection in fast symlink")
-Link: https://lore.kernel.org/r/20230204093040.97967-1-hsiangkao@linux.alibaba.com
-[ Gao Xiang: apply this to 6.6.y to avoid further backport twists
-             due to obsoleted EROFS_BLKSIZ. ]
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This fixes 1 FORWARD_NULL issue reported by Coverity.
+
+Acked-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Obsoleted EROFS_BLKSIZ impedes efforts to backport
- 9ed50b8231e3 ("erofs: fix incorrect symlink detection in fast symlink")
- 9e2f9d34dd12 ("erofs: handle overlapped pclusters out of crafted images properly")
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-To avoid further bugfix conflicts due to random EROFS_BLKSIZs
-around the whole codebase, just backport the dependencies for 6.1.y.
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index a7a6f6c5c7655..c2efe18ceacd0 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -1691,7 +1691,7 @@ bool dc_validate_boot_timing(const struct dc *dc,
+ 		if (crtc_timing->pix_clk_100hz != pix_clk_100hz)
+ 			return false;
+ 
+-		if (!se->funcs->dp_get_pixel_format)
++		if (!se || !se->funcs->dp_get_pixel_format)
+ 			return false;
+ 
+ 		if (!se->funcs->dp_get_pixel_format(
+-- 
+2.43.0
 
- fs/erofs/internal.h |    6 ------
- fs/erofs/namei.c    |   18 +++++-------------
- 2 files changed, 5 insertions(+), 19 deletions(-)
-
---- a/fs/erofs/internal.h
-+++ b/fs/erofs/internal.h
-@@ -347,12 +347,6 @@ static inline erofs_off_t erofs_iloc(str
- 		(EROFS_I(inode)->nid << sbi->islotbits);
- }
- 
--static inline unsigned long erofs_inode_datablocks(struct inode *inode)
--{
--	/* since i_size cannot be changed */
--	return DIV_ROUND_UP(inode->i_size, EROFS_BLKSIZ);
--}
--
- static inline unsigned int erofs_bitrange(unsigned int value, unsigned int bit,
- 					  unsigned int bits)
- {
---- a/fs/erofs/namei.c
-+++ b/fs/erofs/namei.c
-@@ -5,7 +5,6 @@
-  * Copyright (C) 2022, Alibaba Cloud
-  */
- #include "xattr.h"
--
- #include <trace/events/erofs.h>
- 
- struct erofs_qstr {
-@@ -87,19 +86,13 @@ static struct erofs_dirent *find_target_
- 	return ERR_PTR(-ENOENT);
- }
- 
--static void *find_target_block_classic(struct erofs_buf *target,
--				       struct inode *dir,
--				       struct erofs_qstr *name,
--				       int *_ndirents)
-+static void *erofs_find_target_block(struct erofs_buf *target,
-+		struct inode *dir, struct erofs_qstr *name, int *_ndirents)
- {
--	unsigned int startprfx, endprfx;
--	int head, back;
-+	int head = 0, back = DIV_ROUND_UP(dir->i_size, EROFS_BLKSIZ) - 1;
-+	unsigned int startprfx = 0, endprfx = 0;
- 	void *candidate = ERR_PTR(-ENOENT);
- 
--	startprfx = endprfx = 0;
--	head = 0;
--	back = erofs_inode_datablocks(dir) - 1;
--
- 	while (head <= back) {
- 		const int mid = head + (back - head) / 2;
- 		struct erofs_buf buf = __EROFS_BUF_INITIALIZER;
-@@ -180,8 +173,7 @@ int erofs_namei(struct inode *dir, const
- 	qn.end = name->name + name->len;
- 
- 	ndirents = 0;
--
--	de = find_target_block_classic(&buf, dir, &qn, &ndirents);
-+	de = erofs_find_target_block(&buf, dir, &qn, &ndirents);
- 	if (IS_ERR(de))
- 		return PTR_ERR(de);
- 
 
 
 
