@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-83820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC9199CCB4
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:23:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F0299D203
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A83451F238AC
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:23:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B8B91F24FBA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845EF1AAE02;
-	Mon, 14 Oct 2024 14:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 284551B85D4;
+	Mon, 14 Oct 2024 15:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DudhOkPY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjCaE4Zp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FE2E571;
-	Mon, 14 Oct 2024 14:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFDF1B4F2E;
+	Mon, 14 Oct 2024 15:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915828; cv=none; b=GSJcMoBGJ2C0fi6ahEGDRK3SSIvrcdP33fN8Gxl/7mlU2c7SdeLwTbO6UjosBF/u+1oG1r+MEofpv7zDZ+Ndz/WO0+vN/LVzwIi58AEDwqmvCO0ApWSVrV57zS6XaiDUOLFFR8SZHBjuLSmDU4TquWdiLvbt+7NRAkjlQaGDBXg=
+	t=1728919133; cv=none; b=A3tUq1++KlIWII9KQPgjwLP/OU4sb9OpT7djpDTeNyZPv+BfDVq36h1/E74dKyBxJZWKG68UAHVuARQb+IYrleO3SqIXheHt+tl5uLVuo3eIPDe8dcSmVti6+XGgbAiCB6Qjnc3mUyiSymXMpWv30QpddZO641rhQFM89m24RRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915828; c=relaxed/simple;
-	bh=I7NLEYV0n01ilu5idESXd4W/KYQAXC0n8blzwWjRrZI=;
+	s=arc-20240116; t=1728919133; c=relaxed/simple;
+	bh=JJzi76kQFpSMEsq0f6phmJ6FAaNYPHXbYl7J6bgchhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XFuO5MGbBgU3TOAFtcgb4iZkvYK/aW44akzFecdGHN/1tbOFhAP1w5beMeDdNG2s9mOyjg9ZlRzJBvtzSRPVCbRfxv1viDXa3FrAFg9J5TOXqORrKBOQAm4+odNsNalGNQVRJLaIOk5S+MDdPDi81HBDphX2c+jLOhbO5F+sW/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DudhOkPY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60493C4CEC7;
-	Mon, 14 Oct 2024 14:23:47 +0000 (UTC)
+	 MIME-Version; b=AzMjaPNCoMpSH5GufYukbBdkzal4LXZBw4Vm861H3S2MIUn2Sc0FsgI1dEIVE/H0TTipODkhW7rpMCqUNrXqKP88fqy+xedKYyZqeM16tNa2OrrFfSYVAoJwkYjqEaOT5O50LFgddc14bG0yA5UjJrw3MmUlNek/FKbexe8e2Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjCaE4Zp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA6CC4CEC3;
+	Mon, 14 Oct 2024 15:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915827;
-	bh=I7NLEYV0n01ilu5idESXd4W/KYQAXC0n8blzwWjRrZI=;
+	s=korg; t=1728919133;
+	bh=JJzi76kQFpSMEsq0f6phmJ6FAaNYPHXbYl7J6bgchhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DudhOkPYHTNz+vX7CDjzswphr/auuEvNX+AfQKzS6RF2kMEH4eIw1F3RQae4JmHNm
-	 O6qI1gO9WTFdey9FriO21wai/meR/GCN5io2f8UTCxweK4Y0w5ftpqyeASwFL/HXGY
-	 LZcit+oR2un3McPK4UNMNWKhUdEL8j1nE0SRBZ78=
+	b=mjCaE4ZpzhZoNT6C7wOlIxNLRAYlrzIF5Q3h/NiWsfKYU66keBiWMRLHultV92B4p
+	 cNW23UNkWSMJb2lhNyKxX+wn8XzMDljENhSU+fa+JxUBvY1GmVcTbdy4cW+srUW1+f
+	 v8Db7740RzwH9M2RBflOdxQfh/wGQnJv1tCUcSoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7f71f79bbfb4427b00e1@syzkaller.appspotmail.com,
-	Diogo Jahchan Koike <djahchankoike@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Jens Remus <jremus@linux.ibm.com>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 011/214] ntfs3: Change to non-blocking allocation in ntfs_d_hash
-Date: Mon, 14 Oct 2024 16:17:54 +0200
-Message-ID: <20241014141045.433734362@linuxfoundation.org>
+Subject: [PATCH 6.1 521/798] selftests: vDSO: fix ELF hash table entry size for s390x
+Date: Mon, 14 Oct 2024 16:17:55 +0200
+Message-ID: <20241014141238.448240239@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Diogo Jahchan Koike <djahchankoike@gmail.com>
+From: Jens Remus <jremus@linux.ibm.com>
 
-[ Upstream commit 589996bf8c459deb5bbc9747d8f1c51658608103 ]
+[ Upstream commit 14be4e6f35221c4731b004553ecf7cbc6dc1d2d8 ]
 
-d_hash is done while under "rcu-walk" and should not sleep.
-__get_name() allocates using GFP_KERNEL, having the possibility
-to sleep when under memory pressure. Change the allocation to
-GFP_NOWAIT.
+The vDSO self tests fail on s390x for a vDSO linked with the GNU linker
+ld as follows:
 
-Reported-by: syzbot+7f71f79bbfb4427b00e1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7f71f79bbfb4427b00e1
-Fixes: d392e85fd1e8 ("fs/ntfs3: Fix the format of the "nocase" mount option")
-Signed-off-by: Diogo Jahchan Koike <djahchankoike@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+  # ./vdso_test_gettimeofday
+  Floating point exception (core dumped)
+
+On s390x the ELF hash table entries are 64 bits instead of 32 bits in
+size (see Glibc sysdeps/unix/sysv/linux/s390/bits/elfclass.h).
+
+Fixes: 40723419f407 ("kselftest: Enable vDSO test on non x86 platforms")
+Reported-by: Heiko Carstens <hca@linux.ibm.com>
+Tested-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/namei.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/vDSO/parse_vdso.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
-index f16d318c4372a..0a70c36585463 100644
---- a/fs/ntfs3/namei.c
-+++ b/fs/ntfs3/namei.c
-@@ -395,7 +395,7 @@ static int ntfs_d_hash(const struct dentry *dentry, struct qstr *name)
+diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
+index d9ccc5acac182..7dd5668ea8a6e 100644
+--- a/tools/testing/selftests/vDSO/parse_vdso.c
++++ b/tools/testing/selftests/vDSO/parse_vdso.c
+@@ -36,6 +36,12 @@
+ #define ELF_BITS_XFORM(bits, x) ELF_BITS_XFORM2(bits, x)
+ #define ELF(x) ELF_BITS_XFORM(ELF_BITS, x)
+ 
++#ifdef __s390x__
++#define ELF_HASH_ENTRY ELF(Xword)
++#else
++#define ELF_HASH_ENTRY ELF(Word)
++#endif
++
+ static struct vdso_info
+ {
+ 	bool valid;
+@@ -47,8 +53,8 @@ static struct vdso_info
+ 	/* Symbol table */
+ 	ELF(Sym) *symtab;
+ 	const char *symstrings;
+-	ELF(Word) *bucket, *chain;
+-	ELF(Word) nbucket, nchain;
++	ELF_HASH_ENTRY *bucket, *chain;
++	ELF_HASH_ENTRY nbucket, nchain;
+ 
+ 	/* Version table */
+ 	ELF(Versym) *versym;
+@@ -115,7 +121,7 @@ void vdso_init_from_sysinfo_ehdr(uintptr_t base)
  	/*
- 	 * Try slow way with current upcase table
+ 	 * Fish out the useful bits of the dynamic table.
  	 */
--	uni = __getname();
-+	uni = kmem_cache_alloc(names_cachep, GFP_NOWAIT);
- 	if (!uni)
- 		return -ENOMEM;
- 
-@@ -417,7 +417,7 @@ static int ntfs_d_hash(const struct dentry *dentry, struct qstr *name)
- 	err = 0;
- 
- out:
--	__putname(uni);
-+	kmem_cache_free(names_cachep, uni);
- 	return err;
- }
- 
+-	ELF(Word) *hash = 0;
++	ELF_HASH_ENTRY *hash = 0;
+ 	vdso_info.symstrings = 0;
+ 	vdso_info.symtab = 0;
+ 	vdso_info.versym = 0;
+@@ -133,7 +139,7 @@ void vdso_init_from_sysinfo_ehdr(uintptr_t base)
+ 				 + vdso_info.load_offset);
+ 			break;
+ 		case DT_HASH:
+-			hash = (ELF(Word) *)
++			hash = (ELF_HASH_ENTRY *)
+ 				((uintptr_t)dyn[i].d_un.d_ptr
+ 				 + vdso_info.load_offset);
+ 			break;
 -- 
 2.43.0
 
