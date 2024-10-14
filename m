@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-84106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A4E399CE29
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:40:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E95C99D2CE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:30:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D22BB1F23AB0
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:40:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89348B240DE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CCC1AAE02;
-	Mon, 14 Oct 2024 14:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2861C8776;
+	Mon, 14 Oct 2024 15:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sD4cm88S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikLec7of"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF134595B;
-	Mon, 14 Oct 2024 14:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C61C1CACE1;
+	Mon, 14 Oct 2024 15:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916848; cv=none; b=gq/9sW9M55aK3jIMZ7yUb10oB+iP4oB99R/H6HHxDYQpeLXtDHc1DB2A6/P6hEoNne01gYJk9Qmtv5+iNxyr20Jk/lvCK0Z8Xz/edTASc3HI7yddfyVeczwvfj7SOYC8nRTQtTfkqbMZKm8heZvpDzT7a40mphdnzhIHLSU+pUc=
+	t=1728919638; cv=none; b=BU1y9YpujXb7JXppZza4Nyd3iGp2szZEApcqXWv4hBs8aHU8AjR5WaH4gDPsnmhd89PD58Xi2wY0IVlk0Og+v05yJYlJhea7Bf8eBtx0+QKvmHaCmsAZgioBHpehBJRBx2qbO/G9e6fj0loGvXm9Jd7b3/N70aZzxrbtRPQvcIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916848; c=relaxed/simple;
-	bh=ske3gUz9LLWeJK8NE9nTo9EdF118Ql31vsHXXdTToZ4=;
+	s=arc-20240116; t=1728919638; c=relaxed/simple;
+	bh=zbLMyyPxT7ruyuc1dvltKZUe5TjHvg9rdqnWsH2/ymM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ehBWTLm0YC8VjVttzz2fdv0tNeFw3XZnm2Mn/xyMzS4ctHsoaCJn5lLgj0/V7fPwuHR/V/b9EkyMMo/1e4taP8qSnC3mBJViG175W58J2vJKrdbxoSYUt8RJNS7epRPztrnPz+6eXlXcHyI3M22yE8N7Qj9Alu4rkuieojmOfY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sD4cm88S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36EA2C4CEC7;
-	Mon, 14 Oct 2024 14:40:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mFIgPaRr228I2nq3XsKg9eb9fDAhSJ3sxWCFgyb+oFi/HgAyRBJO679ahAQJskREgF69HU7y7TKJCUwpuKGiK8BWU0sQF41HaXIojzMFNMX/3GGgrXDgkenaY+zNv3qt3vBEPmSxYM5pvVxGI4wGRA3Ru2oG7UXM0G/tA0S2GkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikLec7of; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DBCC4CED0;
+	Mon, 14 Oct 2024 15:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916848;
-	bh=ske3gUz9LLWeJK8NE9nTo9EdF118Ql31vsHXXdTToZ4=;
+	s=korg; t=1728919638;
+	bh=zbLMyyPxT7ruyuc1dvltKZUe5TjHvg9rdqnWsH2/ymM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sD4cm88SinsbJ9VrO+WsAFKfVuvyCGrb3jplzvvdmC44EooI56G9NecK6CI46kSjs
-	 jBg5ZOJFL23nQSUhucNyN+aaJJMiKLeTqPDnPpigEFkvj6/UG4QP8ignssqwzSxExd
-	 rBZUDHNNUz6tQ9tPgR7wqE9Aekq2Uowoea7IzHDA=
+	b=ikLec7of7fJhN1fKV7Tk4PpAZxaZShokFRZWZqGBdSECzqTGsMbUrwKNA8bUnrZVl
+	 0tkrEA8urvS02hUZ3LzuaLyO8uh1EvUmJQKmD8rWi6GeTId/sONhEV6Gk6KX7QMt6d
+	 IVj2dYBQYv4541yWJzQjXzapJmzrkIGYQn3kkW4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Wang Yong <wang.yong12@zte.com.cn>,
+	Yang Yang <yang.yang29@zte.com.cn>,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/213] RDMA/mlx5: Enforce umem boundaries for explicit ODP page faults
+Subject: [PATCH 6.1 634/798] delayacct: improve the average delay precision of getdelay tool to microsecond
 Date: Mon, 14 Oct 2024 16:19:48 +0200
-Message-ID: <20241014141046.179968397@linuxfoundation.org>
+Message-ID: <20241014141242.949100876@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,102 +62,164 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Guralnik <michaelgur@nvidia.com>
+From: Wang Yong <wang.yong12@zte.com.cn>
 
-[ Upstream commit 8c6d097d830f779fc1725fbaa1314f20a7a07b4b ]
+[ Upstream commit eca7de7cdc382eb6e0d344c07b1449ed75f5b435 ]
 
-The new memory scheme page faults are requesting the driver to fetch
-additinal pages to the faulted memory access.
-This is done in order to prefetch pages before and after the area that
-got the page fault, assuming this will reduce the total amount of page
-faults.
+Improve the average delay precision of getdelay tool to microsecond.  When
+using the getdelay tool, it is sometimes found that the average delay
+except CPU is not 0, but display is 0, because the precison is too low.
+For example, see delay average of SWAP below when using ZRAM.
 
-The driver should ensure it handles only the pages that are within the
-umem range.
+print delayacct stats ON
+PID	32915
+CPU             count     real total  virtual total    delay total  delay average
+               339202     2793871936     9233585504        7951112          0.000ms
+IO              count    delay total  delay average
+                   41      419296904             10ms
+SWAP            count    delay total  delay average
+               242589     1045792384              0ms
 
-Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://patch.msgid.link/20240909100504.29797-5-michaelgur@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+This wrong display is misleading, so improve the millisecond precision of
+the average delay to microsecond just like CPU.  Then user would get more
+accurate information of delay time.
+
+Link: https://lkml.kernel.org/r/202302131408087983857@zte.com.cn
+Signed-off-by: Wang Yong <wang.yong12@zte.com.cn>
+Reviewed-by: Yang Yang <yang.yang29@zte.com.cn>
+Cc: David Hildenbrand <david@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 3840cbe24cf0 ("sched: psi: fix bogus pressure spikes from aggregation race")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/odp.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ Documentation/accounting/delay-accounting.rst | 14 +++++------
+ .../zh_CN/accounting/delay-accounting.rst     | 10 ++++----
+ tools/accounting/getdelays.c                  | 24 +++++++++----------
+ 3 files changed, 24 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
-index a524181f34df9..3a4605fda6d57 100644
---- a/drivers/infiniband/hw/mlx5/odp.c
-+++ b/drivers/infiniband/hw/mlx5/odp.c
-@@ -733,24 +733,31 @@ static int pagefault_dmabuf_mr(struct mlx5_ib_mr *mr, size_t bcnt,
-  *  >0: Number of pages mapped
-  */
- static int pagefault_mr(struct mlx5_ib_mr *mr, u64 io_virt, size_t bcnt,
--			u32 *bytes_mapped, u32 flags)
-+			u32 *bytes_mapped, u32 flags, bool permissive_fault)
- {
- 	struct ib_umem_odp *odp = to_ib_umem_odp(mr->umem);
+diff --git a/Documentation/accounting/delay-accounting.rst b/Documentation/accounting/delay-accounting.rst
+index 7103b62ba6d7e..79f537c9f160b 100644
+--- a/Documentation/accounting/delay-accounting.rst
++++ b/Documentation/accounting/delay-accounting.rst
+@@ -109,17 +109,17 @@ Get sum of delays, since system boot, for all pids with tgid 5::
+ 	CPU             count     real total  virtual total    delay total  delay average
+ 	                    8        7000000        6872122        3382277          0.423ms
+ 	IO              count    delay total  delay average
+-		            0              0              0ms
++                   0              0          0.000ms
+ 	SWAP            count    delay total  delay average
+-	                    0              0              0ms
++                       0              0          0.000ms
+ 	RECLAIM         count    delay total  delay average
+-		            0              0              0ms
++                   0              0          0.000ms
+ 	THRASHING       count    delay total  delay average
+-	                    0              0              0ms
++                       0              0          0.000ms
+ 	COMPACT         count    delay total  delay average
+-	                    0              0              0ms
+-        WPCOPY          count    delay total  delay average
+-                            0              0              0ms
++                       0              0          0.000ms
++   WPCOPY          count    delay total  delay average
++                       0              0          0.000ms
  
--	if (unlikely(io_virt < mr->ibmr.iova))
-+	if (unlikely(io_virt < mr->ibmr.iova) && !permissive_fault)
- 		return -EFAULT;
+ Get IO accounting for pid 1, it works only with -p::
  
- 	if (mr->umem->is_dmabuf)
- 		return pagefault_dmabuf_mr(mr, bcnt, bytes_mapped, flags);
+diff --git a/Documentation/translations/zh_CN/accounting/delay-accounting.rst b/Documentation/translations/zh_CN/accounting/delay-accounting.rst
+index a01dc3d5b0dbb..7b8693ccf80a9 100644
+--- a/Documentation/translations/zh_CN/accounting/delay-accounting.rst
++++ b/Documentation/translations/zh_CN/accounting/delay-accounting.rst
+@@ -92,15 +92,15 @@ getdelays命令的一般格式::
+ 	CPU             count     real total  virtual total    delay total  delay average
+ 	                    8        7000000        6872122        3382277          0.423ms
+ 	IO              count    delay total  delay average
+-	                    0              0              0ms
++	                    0              0              0.000ms
+ 	SWAP            count    delay total  delay average
+-	                    0              0              0ms
++	                    0              0              0.000ms
+ 	RECLAIM         count    delay total  delay average
+-	                    0              0              0ms
++	                    0              0              0.000ms
+ 	THRASHING       count    delay total  delay average
+-	                    0              0              0ms
++	                    0              0              0.000ms
+ 	COMPACT         count    delay total  delay average
+-	                    0              0              0ms
++	                    0              0              0.000ms
+     WPCOPY          count    delay total  delay average
+                        0              0              0ms
  
- 	if (!odp->is_implicit_odp) {
-+		u64 offset = io_virt < mr->ibmr.iova ? 0 : io_virt - mr->ibmr.iova;
- 		u64 user_va;
+diff --git a/tools/accounting/getdelays.c b/tools/accounting/getdelays.c
+index 938dec0dfaad8..23a15d8f2bf4f 100644
+--- a/tools/accounting/getdelays.c
++++ b/tools/accounting/getdelays.c
+@@ -198,17 +198,17 @@ static void print_delayacct(struct taskstats *t)
+ 	printf("\n\nCPU   %15s%15s%15s%15s%15s\n"
+ 	       "      %15llu%15llu%15llu%15llu%15.3fms\n"
+ 	       "IO    %15s%15s%15s\n"
+-	       "      %15llu%15llu%15llums\n"
++          "      %15llu%15llu%15.3fms\n"
+ 	       "SWAP  %15s%15s%15s\n"
+-	       "      %15llu%15llu%15llums\n"
++          "      %15llu%15llu%15.3fms\n"
+ 	       "RECLAIM  %12s%15s%15s\n"
+-	       "      %15llu%15llu%15llums\n"
++          "      %15llu%15llu%15.3fms\n"
+ 	       "THRASHING%12s%15s%15s\n"
+-	       "      %15llu%15llu%15llums\n"
++          "      %15llu%15llu%15.3fms\n"
+ 	       "COMPACT  %12s%15s%15s\n"
+-	       "      %15llu%15llu%15llums\n"
++          "      %15llu%15llu%15.3fms\n"
+ 	       "WPCOPY   %12s%15s%15s\n"
+-	       "      %15llu%15llu%15llums\n",
++          "      %15llu%15llu%15.3fms\n",
+ 	       "count", "real total", "virtual total",
+ 	       "delay total", "delay average",
+ 	       (unsigned long long)t->cpu_count,
+@@ -219,27 +219,27 @@ static void print_delayacct(struct taskstats *t)
+ 	       "count", "delay total", "delay average",
+ 	       (unsigned long long)t->blkio_count,
+ 	       (unsigned long long)t->blkio_delay_total,
+-	       average_ms(t->blkio_delay_total, t->blkio_count),
++          average_ms((double)t->blkio_delay_total, t->blkio_count),
+ 	       "count", "delay total", "delay average",
+ 	       (unsigned long long)t->swapin_count,
+ 	       (unsigned long long)t->swapin_delay_total,
+-	       average_ms(t->swapin_delay_total, t->swapin_count),
++          average_ms((double)t->swapin_delay_total, t->swapin_count),
+ 	       "count", "delay total", "delay average",
+ 	       (unsigned long long)t->freepages_count,
+ 	       (unsigned long long)t->freepages_delay_total,
+-	       average_ms(t->freepages_delay_total, t->freepages_count),
++          average_ms((double)t->freepages_delay_total, t->freepages_count),
+ 	       "count", "delay total", "delay average",
+ 	       (unsigned long long)t->thrashing_count,
+ 	       (unsigned long long)t->thrashing_delay_total,
+-	       average_ms(t->thrashing_delay_total, t->thrashing_count),
++          average_ms((double)t->thrashing_delay_total, t->thrashing_count),
+ 	       "count", "delay total", "delay average",
+ 	       (unsigned long long)t->compact_count,
+ 	       (unsigned long long)t->compact_delay_total,
+-	       average_ms(t->compact_delay_total, t->compact_count),
++          average_ms((double)t->compact_delay_total, t->compact_count),
+ 	       "count", "delay total", "delay average",
+ 	       (unsigned long long)t->wpcopy_count,
+ 	       (unsigned long long)t->wpcopy_delay_total,
+-	       average_ms(t->wpcopy_delay_total, t->wpcopy_count));
++          average_ms((double)t->wpcopy_delay_total, t->wpcopy_count));
+ }
  
--		if (check_add_overflow(io_virt - mr->ibmr.iova,
--				       (u64)odp->umem.address, &user_va))
-+		if (check_add_overflow(offset, (u64)odp->umem.address,
-+				       &user_va))
- 			return -EFAULT;
--		if (unlikely(user_va >= ib_umem_end(odp) ||
--			     ib_umem_end(odp) - user_va < bcnt))
-+
-+		if (permissive_fault) {
-+			if (user_va < ib_umem_start(odp))
-+				user_va = ib_umem_start(odp);
-+			if ((user_va + bcnt) > ib_umem_end(odp))
-+				bcnt = ib_umem_end(odp) - user_va;
-+		} else if (unlikely(user_va >= ib_umem_end(odp) ||
-+				    ib_umem_end(odp) - user_va < bcnt))
- 			return -EFAULT;
- 		return pagefault_real_mr(mr, odp, user_va, bcnt, bytes_mapped,
- 					 flags);
-@@ -857,7 +864,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
- 	case MLX5_MKEY_MR:
- 		mr = container_of(mmkey, struct mlx5_ib_mr, mmkey);
- 
--		ret = pagefault_mr(mr, io_virt, bcnt, bytes_mapped, 0);
-+		ret = pagefault_mr(mr, io_virt, bcnt, bytes_mapped, 0, false);
- 		if (ret < 0)
- 			goto end;
- 
-@@ -1710,7 +1717,7 @@ static void mlx5_ib_prefetch_mr_work(struct work_struct *w)
- 	for (i = 0; i < work->num_sge; ++i) {
- 		ret = pagefault_mr(work->frags[i].mr, work->frags[i].io_virt,
- 				   work->frags[i].length, &bytes_mapped,
--				   work->pf_flags);
-+				   work->pf_flags, false);
- 		if (ret <= 0)
- 			continue;
- 		mlx5_update_odp_stats(work->frags[i].mr, prefetch, ret);
-@@ -1761,7 +1768,7 @@ static int mlx5_ib_prefetch_sg_list(struct ib_pd *pd,
- 		if (IS_ERR(mr))
- 			return PTR_ERR(mr);
- 		ret = pagefault_mr(mr, sg_list[i].addr, sg_list[i].length,
--				   &bytes_mapped, pf_flags);
-+				   &bytes_mapped, pf_flags, false);
- 		if (ret < 0) {
- 			mlx5r_deref_odp_mkey(&mr->mmkey);
- 			return ret;
+ static void task_context_switch_counts(struct taskstats *t)
 -- 
 2.43.0
 
