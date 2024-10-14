@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-84640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40FFB99D12B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:11:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 230F199D108
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB1E71F237DF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:11:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D556E284BE8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892B71AB51B;
-	Mon, 14 Oct 2024 15:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842E71AB508;
+	Mon, 14 Oct 2024 15:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hblCh/Gj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzWSlFfA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4606A1AA793;
-	Mon, 14 Oct 2024 15:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BFA55896;
+	Mon, 14 Oct 2024 15:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918707; cv=none; b=YIpF+pFbYYWYK/3cMHENdcLcK4UJw5vU3YL4n1Uqst8djulBpzATyb4lj+xoGl6N6j0VwKeJmFll9kGkqkMUPUq6/6LPAxWPeFxDdeNqra93tlXfR9GTyr9hbyRYxAct6aRX/iZ1LXr9QVZCIe3stdYnJXKRvZOp3NxrLtwC27I=
+	t=1728918595; cv=none; b=d9Zq/ERp+d5LQDasP2eNXR1hMDDDsHfQJTa6M/oI4uScfJC34zabEDKKKRAT8QCuMjBNqmU0SxuLcfZz1tHobp3sb15sdQ/Ay8o20a8Su4etIj3CJxsohIGOGpAs7ZteNCyQD5r+p+ApYy38+3j57MNIgK1wCKokGVYRKPsT5zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918707; c=relaxed/simple;
-	bh=o5w3q98MHN1EGXiR9TMS6QGWGfo7oFatSWSYGjhHq8M=;
+	s=arc-20240116; t=1728918595; c=relaxed/simple;
+	bh=WDJarqXweP2u3dqJHbBsvz/k201p9zBGPlq4TTeAIAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CfnLONar+ZO9MdGamSIVROP59NmWbmLzP6hh8gLPCy83h3iHAD7DgBBvbbI0Llal6R1i4mSJQXKJKc4Pl8K06MKrQChHipAhVkFe5II3Cq5EGQh7LrWpQG8eg/27UovH20EJU/Nid3uZQJ3clL1mVSie9ZWgWWC3qhPDJlmlyJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hblCh/Gj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A9BC4CEC3;
-	Mon, 14 Oct 2024 15:11:46 +0000 (UTC)
+	 MIME-Version; b=eASrhAf+sFJPX/tCLOA+mC0phnmwSzS2t6V3b3QY3Asw04ljnhD68Kk+eKXjKRqgz1o7BASNTQ9twFuZS7QgQVr0ahxg3Qk2rLmFrpCmCMf6PMIm7ho13C6CAUqLxm2y7PKfkNZnEs3z3ZioR1EcQjIeMLUnh4bj/uWZ74uw7v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzWSlFfA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C69C4CECF;
+	Mon, 14 Oct 2024 15:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918707;
-	bh=o5w3q98MHN1EGXiR9TMS6QGWGfo7oFatSWSYGjhHq8M=;
+	s=korg; t=1728918595;
+	bh=WDJarqXweP2u3dqJHbBsvz/k201p9zBGPlq4TTeAIAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hblCh/GjthEHstqGVeHjTqDEqJr/45/eGTScs9UuclwR6MBFfNKcq4OE9d92ZeSVR
-	 LBrw6tk+SLZRUpLz0mXK30nNbk8ZFoQNplqSWTEYRuHYMhVd0PeIyMq15BLAvRnvnd
-	 +Topc7ALqjLad7k1reg0D4VcrBZaETUQVvkQ2o+4=
+	b=WzWSlFfAn/36Vd5v/GpqFkD09t9o3OY76bCywShfzdjhF4D47cMq49gCy960CUCCt
+	 No/zOS5YuCkKkXNEup2l2zcAfbY5J8ogw/0qEmFAnczzoj8B5w1Sqb29FfTuXpqiau
+	 HVsDAwyuNb8bIUc4MJHKoOuxsdRMVnPzpYl+F5dw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kairui Song <kasong@tencent.com>,
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 358/798] mm/filemap: return early if failed to allocate memory for split
-Date: Mon, 14 Oct 2024 16:15:12 +0200
-Message-ID: <20241014141232.005642258@linuxfoundation.org>
+Subject: [PATCH 6.1 359/798] lib/xarray: introduce a new helper xas_get_order
+Date: Mon, 14 Oct 2024 16:15:13 +0200
+Message-ID: <20241014141232.046071201@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -68,39 +68,176 @@ Content-Transfer-Encoding: 8bit
 
 From: Kairui Song <kasong@tencent.com>
 
-commit de60fd8ddeda2b41fbe11df11733838c5f684616 upstream.
+commit a4864671ca0bf51c8e78242951741df52c06766f upstream.
 
-xas_split_alloc could fail with NOMEM, and in such case, it should abort
-early instead of keep going and fail the xas_split below.
+It can be used after xas_load to check the order of loaded entries.
+Compared to xa_get_order, it saves an XA_STATE and avoid a rewalk.
 
-Link: https://lkml.kernel.org/r/20240416071722.45997-1-ryncsn@gmail.com
-Link: https://lkml.kernel.org/r/20240415171857.19244-1-ryncsn@gmail.com
-Link: https://lkml.kernel.org/r/20240415171857.19244-2-ryncsn@gmail.com
+Added new test for xas_get_order, to make the test work, we have to export
+xas_get_order with EXPORT_SYMBOL_GPL.
+
+Also fix a sparse warning by checking the slot value with xa_entry instead
+of accessing it directly, as suggested by Matthew Wilcox.
+
+[kasong@tencent.com: simplify comment, sparse warning fix, per Matthew Wilcox]
+  Link: https://lkml.kernel.org/r/20240416071722.45997-4-ryncsn@gmail.com
+Link: https://lkml.kernel.org/r/20240415171857.19244-4-ryncsn@gmail.com
 Signed-off-by: Kairui Song <kasong@tencent.com>
-Acked-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Stable-dep-of: 6758c1128ceb ("mm/filemap: optimize filemap folio adding")
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/filemap.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/xarray.h |    6 ++++++
+ lib/test_xarray.c      |   34 ++++++++++++++++++++++++++++++++++
+ lib/xarray.c           |   49 +++++++++++++++++++++++++++++++------------------
+ 3 files changed, 71 insertions(+), 18 deletions(-)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -867,9 +867,12 @@ noinline int __filemap_add_folio(struct
- 		unsigned int order = xa_get_order(xas.xa, xas.xa_index);
- 		void *entry, *old = NULL;
+--- a/include/linux/xarray.h
++++ b/include/linux/xarray.h
+@@ -1530,6 +1530,7 @@ void xas_create_range(struct xa_state *)
  
--		if (order > folio_order(folio))
-+		if (order > folio_order(folio)) {
- 			xas_split_alloc(&xas, xa_load(xas.xa, xas.xa_index),
- 					order, gfp);
-+			if (xas_error(&xas))
-+				goto error;
+ #ifdef CONFIG_XARRAY_MULTI
+ int xa_get_order(struct xarray *, unsigned long index);
++int xas_get_order(struct xa_state *xas);
+ void xas_split(struct xa_state *, void *entry, unsigned int order);
+ void xas_split_alloc(struct xa_state *, void *entry, unsigned int order, gfp_t);
+ #else
+@@ -1537,6 +1538,11 @@ static inline int xa_get_order(struct xa
+ {
+ 	return 0;
+ }
++
++static inline int xas_get_order(struct xa_state *xas)
++{
++	return 0;
++}
+ 
+ static inline void xas_split(struct xa_state *xas, void *entry,
+ 		unsigned int order)
+--- a/lib/test_xarray.c
++++ b/lib/test_xarray.c
+@@ -1756,6 +1756,39 @@ static noinline void check_get_order(str
+ 	}
+ }
+ 
++static noinline void check_xas_get_order(struct xarray *xa)
++{
++	XA_STATE(xas, xa, 0);
++
++	unsigned int max_order = IS_ENABLED(CONFIG_XARRAY_MULTI) ? 20 : 1;
++	unsigned int order;
++	unsigned long i, j;
++
++	for (order = 0; order < max_order; order++) {
++		for (i = 0; i < 10; i++) {
++			xas_set_order(&xas, i << order, order);
++			do {
++				xas_lock(&xas);
++				xas_store(&xas, xa_mk_value(i));
++				xas_unlock(&xas);
++			} while (xas_nomem(&xas, GFP_KERNEL));
++
++			for (j = i << order; j < (i + 1) << order; j++) {
++				xas_set_order(&xas, j, 0);
++				rcu_read_lock();
++				xas_load(&xas);
++				XA_BUG_ON(xa, xas_get_order(&xas) != order);
++				rcu_read_unlock();
++			}
++
++			xas_lock(&xas);
++			xas_set_order(&xas, i << order, order);
++			xas_store(&xas, NULL);
++			xas_unlock(&xas);
 +		}
- 		xas_lock_irq(&xas);
- 		xas_for_each_conflict(&xas, entry) {
- 			old = entry;
++	}
++}
++
+ static noinline void check_destroy(struct xarray *xa)
+ {
+ 	unsigned long index;
+@@ -1805,6 +1838,7 @@ static int xarray_checks(void)
+ 	check_reserve(&xa0);
+ 	check_multi_store(&array);
+ 	check_get_order(&array);
++	check_xas_get_order(&array);
+ 	check_xa_alloc();
+ 	check_find(&array);
+ 	check_find_entry(&array);
+--- a/lib/xarray.c
++++ b/lib/xarray.c
+@@ -1752,39 +1752,52 @@ unlock:
+ EXPORT_SYMBOL(xa_store_range);
+ 
+ /**
+- * xa_get_order() - Get the order of an entry.
+- * @xa: XArray.
+- * @index: Index of the entry.
++ * xas_get_order() - Get the order of an entry.
++ * @xas: XArray operation state.
++ *
++ * Called after xas_load, the xas should not be in an error state.
+  *
+  * Return: A number between 0 and 63 indicating the order of the entry.
+  */
+-int xa_get_order(struct xarray *xa, unsigned long index)
++int xas_get_order(struct xa_state *xas)
+ {
+-	XA_STATE(xas, xa, index);
+-	void *entry;
+ 	int order = 0;
+ 
+-	rcu_read_lock();
+-	entry = xas_load(&xas);
+-
+-	if (!entry)
+-		goto unlock;
+-
+-	if (!xas.xa_node)
+-		goto unlock;
++	if (!xas->xa_node)
++		return 0;
+ 
+ 	for (;;) {
+-		unsigned int slot = xas.xa_offset + (1 << order);
++		unsigned int slot = xas->xa_offset + (1 << order);
+ 
+ 		if (slot >= XA_CHUNK_SIZE)
+ 			break;
+-		if (!xa_is_sibling(xas.xa_node->slots[slot]))
++		if (!xa_is_sibling(xa_entry(xas->xa, xas->xa_node, slot)))
+ 			break;
+ 		order++;
+ 	}
+ 
+-	order += xas.xa_node->shift;
+-unlock:
++	order += xas->xa_node->shift;
++	return order;
++}
++EXPORT_SYMBOL_GPL(xas_get_order);
++
++/**
++ * xa_get_order() - Get the order of an entry.
++ * @xa: XArray.
++ * @index: Index of the entry.
++ *
++ * Return: A number between 0 and 63 indicating the order of the entry.
++ */
++int xa_get_order(struct xarray *xa, unsigned long index)
++{
++	XA_STATE(xas, xa, index);
++	int order = 0;
++	void *entry;
++
++	rcu_read_lock();
++	entry = xas_load(&xas);
++	if (entry)
++		order = xas_get_order(&xas);
+ 	rcu_read_unlock();
+ 
+ 	return order;
 
 
 
