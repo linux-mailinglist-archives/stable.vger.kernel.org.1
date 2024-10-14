@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-84447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F6FA99D03E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:02:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A6A99D048
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:02:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 522C0286AC0
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:02:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D9DF1C235F8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E8E1C3050;
-	Mon, 14 Oct 2024 15:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD5FD1AC458;
+	Mon, 14 Oct 2024 15:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gic1jhhX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTBxMEpa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7031B4F2B;
-	Mon, 14 Oct 2024 15:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF981ABEBF;
+	Mon, 14 Oct 2024 15:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918049; cv=none; b=HPkeLTTIqoDp+OR/4Ayenj2xhCnIpgngYfHI+DNnDp7pIsp6Wr63as6u3jaGwDBxYCDxjgW5AC61YDYvevbZaG99Kh05CxydUecdwew4WvYVUk+S/1Q1yvnsYapOuVk48zWReht6Z7Xf2onnG9bBL9Lia+3c2sTmKlvgSTmjFDs=
+	t=1728918086; cv=none; b=ezbSrD3ZwOJxkf9+zwpO/n0fjz1Z5LPz7avACCpGqELH9I6bGUQ2ZjWa6PkWuosrE7IjNjnIY0hBvNrraHiMZ+I99E3UzzREdspySx7UP0IRB+rV+u0PyRj1Grd23UU60gACj0K0RrKc9GLa1fj1AmgoyfUsEkqFQOQokFPRX4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918049; c=relaxed/simple;
-	bh=6Y1SrdgK5T5DAKl3EwmrlBxi9RUEbMGYDEIDNTjwJ/Y=;
+	s=arc-20240116; t=1728918086; c=relaxed/simple;
+	bh=Hs506wZfFjvYSNm8PJUPIL7e2BIoxMKNC8exGSjWqBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D8DW6e5qhuq1ANiSA0rvU3LT1PfARrg3kxU5Udy3Gw/TOnvG2mN45ptxNq8yWVg2JYZvw64H7/Gckx+EA5kr4SkeRry4CB5IqIYhHpOs9KfzLOim/swJ6OijpyxjSdSy/MMzY3WZng8tv1SjTh8wzYW+HoiGGwABdCr0ej6QAy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gic1jhhX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14571C4CEC3;
-	Mon, 14 Oct 2024 15:00:48 +0000 (UTC)
+	 MIME-Version; b=Xa0/AnpbQdE0VY4BWDABCmGvnOjhcfX5TA0pcEpoUOI6vpAY+oYbDq8m5fekbWM4MLXDrbBURLx8irgZm/ALk3yMXyFXEH5H3GG7EDozQxdoIUQHqobqALWkF5CvQS3/NlhaPtmxAvi8IXD8m03NOP945sbtN8Q0209AnlpNSuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NTBxMEpa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043B7C4CEC3;
+	Mon, 14 Oct 2024 15:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918049;
-	bh=6Y1SrdgK5T5DAKl3EwmrlBxi9RUEbMGYDEIDNTjwJ/Y=;
+	s=korg; t=1728918086;
+	bh=Hs506wZfFjvYSNm8PJUPIL7e2BIoxMKNC8exGSjWqBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gic1jhhXpJKsH7giku8aH1dhujrWwyAzZr856gxk6ozMShQaKf53KYvOJx3ueIMft
-	 4yObacdlbDJQN56OxmNtd/ov1rcylM/AWh9nIMBBfqkwvPuGtiGl0ViUG63S2slxl7
-	 RnV4RaAqrVji57rx3/8i1Zb4utUgi4HewTv7jChs=
+	b=NTBxMEpaffR89NQJyt6eUJidc6PTw8GeJCgBIry0eqj9HaJ3mMym+JQ2aacgnt7oh
+	 ORCwYtIXNPga39o33jrfcoYwwulCURzXVANAgE2IIoJOSxUR3isnYmtoFzT7B+FKko
+	 CwHTdlekBQK/PuPlTDG53XtwAveVONBCskBxeVjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Terry Lv <terry.lv@nxp.com>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>,
 	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 190/798] clk: imx: imx8qxp: Parent should be initialized earlier than the clock
-Date: Mon, 14 Oct 2024 16:12:24 +0200
-Message-ID: <20241014141225.395821998@linuxfoundation.org>
+Subject: [PATCH 6.1 191/798] remoteproc: imx_rproc: Correct ddr alias for i.MX8M
+Date: Mon, 14 Oct 2024 16:12:25 +0200
+Message-ID: <20241014141225.434491224@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -68,52 +71,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 766c386c16c9899461b83573a06380d364c6e261 ]
+[ Upstream commit c901f817792822eda9cec23814a4621fa3e66695 ]
 
-The initialization order of SCU clocks affects the sequence of SCU clock
-resume. If there are no other effects, the earlier the initialization,
-the earlier the resume. During SCU clock resume, the clock rate is
-restored. As SCFW guidelines, configure the parent clock rate before
-configuring the child rate.
+The DDR Alias address should be 0x40000000 according to RM, so correct
+it.
 
-Fixes: babfaa9556d7 ("clk: imx: scu: add more scu clocks")
+Fixes: 4ab8f9607aad ("remoteproc: imx_rproc: support i.MX8MQ/M")
+Reported-by: Terry Lv <terry.lv@nxp.com>
+Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
 Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20240607133347.3291040-15-peng.fan@oss.nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Link: https://lore.kernel.org/r/20240719-imx_rproc-v2-1-10d0268c7eb1@nxp.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8qxp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/remoteproc/imx_rproc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk-imx8qxp.c b/drivers/clk/imx/clk-imx8qxp.c
-index fd89f0090779f..28265e28856c2 100644
---- a/drivers/clk/imx/clk-imx8qxp.c
-+++ b/drivers/clk/imx/clk-imx8qxp.c
-@@ -166,8 +166,8 @@ static int imx8qxp_clk_probe(struct platform_device *pdev)
- 	imx_clk_scu("pwm_clk",   IMX_SC_R_LCD_0_PWM_0, IMX_SC_PM_CLK_PER);
- 	imx_clk_scu("elcdif_pll", IMX_SC_R_ELCDIF_PLL, IMX_SC_PM_CLK_PLL);
- 	imx_clk_scu2("lcd_clk", lcd_sels, ARRAY_SIZE(lcd_sels), IMX_SC_R_LCD_0, IMX_SC_PM_CLK_PER);
--	imx_clk_scu2("lcd_pxl_clk", lcd_pxl_sels, ARRAY_SIZE(lcd_pxl_sels), IMX_SC_R_LCD_0, IMX_SC_PM_CLK_MISC0);
- 	imx_clk_scu("lcd_pxl_bypass_div_clk", IMX_SC_R_LCD_0, IMX_SC_PM_CLK_BYPASS);
-+	imx_clk_scu2("lcd_pxl_clk", lcd_pxl_sels, ARRAY_SIZE(lcd_pxl_sels), IMX_SC_R_LCD_0, IMX_SC_PM_CLK_MISC0);
- 
- 	/* Audio SS */
- 	imx_clk_scu("audio_pll0_clk", IMX_SC_R_AUDIO_PLL_0, IMX_SC_PM_CLK_PLL);
-@@ -207,11 +207,11 @@ static int imx8qxp_clk_probe(struct platform_device *pdev)
- 	imx_clk_scu2("dc0_disp1_clk", dc0_sels, ARRAY_SIZE(dc0_sels), IMX_SC_R_DC_0, IMX_SC_PM_CLK_MISC1);
- 	imx_clk_scu("dc0_bypass1_clk", IMX_SC_R_DC_0_VIDEO1, IMX_SC_PM_CLK_BYPASS);
- 
--	imx_clk_scu2("dc1_disp0_clk", dc1_sels, ARRAY_SIZE(dc1_sels), IMX_SC_R_DC_1, IMX_SC_PM_CLK_MISC0);
--	imx_clk_scu2("dc1_disp1_clk", dc1_sels, ARRAY_SIZE(dc1_sels), IMX_SC_R_DC_1, IMX_SC_PM_CLK_MISC1);
- 	imx_clk_scu("dc1_pll0_clk", IMX_SC_R_DC_1_PLL_0, IMX_SC_PM_CLK_PLL);
- 	imx_clk_scu("dc1_pll1_clk", IMX_SC_R_DC_1_PLL_1, IMX_SC_PM_CLK_PLL);
- 	imx_clk_scu("dc1_bypass0_clk", IMX_SC_R_DC_1_VIDEO0, IMX_SC_PM_CLK_BYPASS);
-+	imx_clk_scu2("dc1_disp0_clk", dc1_sels, ARRAY_SIZE(dc1_sels), IMX_SC_R_DC_1, IMX_SC_PM_CLK_MISC0);
-+	imx_clk_scu2("dc1_disp1_clk", dc1_sels, ARRAY_SIZE(dc1_sels), IMX_SC_R_DC_1, IMX_SC_PM_CLK_MISC1);
- 	imx_clk_scu("dc1_bypass1_clk", IMX_SC_R_DC_1_VIDEO1, IMX_SC_PM_CLK_BYPASS);
- 
- 	/* MIPI-LVDS SS */
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index bc26fe5416627..7dad5cbec7ede 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -160,7 +160,7 @@ static const struct imx_rproc_att imx_rproc_att_imx8mq[] = {
+ 	/* QSPI Code - alias */
+ 	{ 0x08000000, 0x08000000, 0x08000000, 0 },
+ 	/* DDR (Code) - alias */
+-	{ 0x10000000, 0x80000000, 0x0FFE0000, 0 },
++	{ 0x10000000, 0x40000000, 0x0FFE0000, 0 },
+ 	/* TCML */
+ 	{ 0x1FFE0000, 0x007E0000, 0x00020000, ATT_OWN  | ATT_IOMEM},
+ 	/* TCMU */
 -- 
 2.43.0
 
