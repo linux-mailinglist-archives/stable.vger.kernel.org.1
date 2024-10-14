@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-83965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAA7099CD68
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:32:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D91599CD6D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 764811F2390B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:32:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6B7F283540
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175851AB528;
-	Mon, 14 Oct 2024 14:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011C11A3A8D;
+	Mon, 14 Oct 2024 14:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VP+0HNzE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ReoGFDsH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AFF1798C;
-	Mon, 14 Oct 2024 14:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B178739FCE;
+	Mon, 14 Oct 2024 14:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916341; cv=none; b=Awpwf6Fg/Tjv4iebh7v3f3awDkudeUTmQELuuLobxBa9Mfe/vxESEk1QBbed5MvNOnYGsWX/qPveUtNq4k1wJtwtYLh0w8zruGVGnAHx7SpjYhJ8v7/Zdmdus+i8z228jQOAFBv4QNfF9ilw6rX8qLMrt4iAHdJmIoFyQsjS42Q=
+	t=1728916358; cv=none; b=HR6n2eEcBoO6BOn4/y4FCVvtAwMSs9LyZJDfSmXn7JSCtd194zxpZGzgrcesy87Uk2OVc91R7xOuIzDUhLMncsnxgn1euKOrDW7ZzckXCZPsU/tcC2vo5wpTVhU0F+AbM9XW7knjLnGDeEkoQp5IxhRAxAKc/6II28nbhDY4iHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916341; c=relaxed/simple;
-	bh=bp4/XTy1mvJuIy35jhZttRsbmGmult6hEuS3oJROtF0=;
+	s=arc-20240116; t=1728916358; c=relaxed/simple;
+	bh=8hfmwvNc8f3XWsxzEsGeKr9V81+G1Es09nIJD50p3MY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TNg8jABJ47L5YPkhIq911/DsSbaVjIf0cV3FfpL4ZRA1L2y3tkqp8cL1n1w5uoOwWqV25Wr58plRYsbw6/KX2KgXz/mXPcn6j0lJ4eU1huOm/cnKFAIzlD3bOlJXYw/mVw9FtgbbyrfenbOgHUw0AG1sqNCLIgdEdFDgsg7K1/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VP+0HNzE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397A8C4CEC7;
-	Mon, 14 Oct 2024 14:32:20 +0000 (UTC)
+	 MIME-Version; b=EX4ucZzwJ12DMek85aVJcru5wmgHip7GhmOiSyrkvqt/tgmEnewgC3/KKxWa5zeBFPSiACsl6Th8z/4+u7eX6ZK/md2Y/NyaEs4SMppNnPAKjx5eCbdDeWGDTEh300Cq5DL4TIf1d62aSP2SPNjKQYKQ4OwwmYHG1Ootc58PYOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ReoGFDsH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20221C4CEC3;
+	Mon, 14 Oct 2024 14:32:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916341;
-	bh=bp4/XTy1mvJuIy35jhZttRsbmGmult6hEuS3oJROtF0=;
+	s=korg; t=1728916358;
+	bh=8hfmwvNc8f3XWsxzEsGeKr9V81+G1Es09nIJD50p3MY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VP+0HNzEQu+kSK02yGNsuJyMOU8mnkeHwM6egnsTCbijOfRN7uPvMHNx2qMXrg89p
-	 lTtMsTCMoSLQb9ogewoCv42tQr++n208vZmOnGKgHveXHWYkX7k09Ml1+Kz6IHa/py
-	 SrwLKcWgcKhAaHCLSasJF+be4xQXQDYrMfhqY5/s=
+	b=ReoGFDsH3pR1LuoRnBKRAa2LB9Qnqrx1a1rBqIb/WNLwat8Vzjix8lrtrX/GdojUQ
+	 B+ZJl47D1bUEHnwt3hzKVMIGuTbVR0aOY+UkrAb+VIPbWp9MnGJ2mMhuLCATs4juKo
+	 CGzYkzOv4vLr79yujx0IDTPC4Z/pjl4R4t21kQbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
 	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Gustavo Sousa <gustavo.sousa@intel.com>,
 	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 128/214] drm/xe: Restore GT freq on GSC load error
-Date: Mon, 14 Oct 2024 16:19:51 +0200
-Message-ID: <20241014141049.988246428@linuxfoundation.org>
+Subject: [PATCH 6.11 129/214] drm/xe: Make wedged_mode debugfs writable
+Date: Mon, 14 Oct 2024 16:19:52 +0200
+Message-ID: <20241014141050.027434223@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
 References: <20241014141044.974962104@linuxfoundation.org>
@@ -67,41 +68,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+From: Matt Roper <matthew.d.roper@intel.com>
 
-[ Upstream commit 3fd76be868ae5c7e9f905f3bcc2ce0e3d8f5aa08 ]
+[ Upstream commit 1badf482816417dca71f8120b4c540cdc82aa03c ]
 
-As part of a Wa_22019338487, ensure that GT freq is restored
-even when GSC reload is not successful.
+The intent of this debugfs entry is to allow modification of wedging
+behavior, either from IGT tests or during manual debug; it should be
+marked as writable to properly reflect this.  In practice this hasn't
+caused a problem because we always access wedged_mode as root, which
+ignores file permissions, but it's still misleading to have the entry
+incorrectly marked as RO.
 
-Fixes: 3b1592fb7835 ("drm/xe/lnl: Apply Wa_22019338487")
-
-Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240925204918.1989574-1-vinay.belgaumkar@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit 491418a258322bbd7f045e36884d2849b673f23d)
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 6b8ef44cc0a9 ("drm/xe: Introduce the wedged_mode debugfs")
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241002230620.1249258-2-matthew.d.roper@intel.com
+(cherry picked from commit 93d93813422758f6c99289de446b19184019ef5a)
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
-index cb9df15e71376..0062a5e4d5fac 100644
---- a/drivers/gpu/drm/xe/xe_gt.c
-+++ b/drivers/gpu/drm/xe/xe_gt.c
-@@ -874,7 +874,9 @@ int xe_gt_sanitize_freq(struct xe_gt *gt)
- 	int ret = 0;
+diff --git a/drivers/gpu/drm/xe/xe_debugfs.c b/drivers/gpu/drm/xe/xe_debugfs.c
+index 1011e5d281fa9..c87e6bca64d86 100644
+--- a/drivers/gpu/drm/xe/xe_debugfs.c
++++ b/drivers/gpu/drm/xe/xe_debugfs.c
+@@ -190,7 +190,7 @@ void xe_debugfs_register(struct xe_device *xe)
+ 	debugfs_create_file("forcewake_all", 0400, root, xe,
+ 			    &forcewake_all_fops);
  
- 	if ((!xe_uc_fw_is_available(&gt->uc.gsc.fw) ||
--	     xe_uc_fw_is_loaded(&gt->uc.gsc.fw)) && XE_WA(gt, 22019338487))
-+	     xe_uc_fw_is_loaded(&gt->uc.gsc.fw) ||
-+	     xe_uc_fw_is_in_error_state(&gt->uc.gsc.fw)) &&
-+	    XE_WA(gt, 22019338487))
- 		ret = xe_guc_pc_restore_stashed_freq(&gt->uc.guc.pc);
+-	debugfs_create_file("wedged_mode", 0400, root, xe,
++	debugfs_create_file("wedged_mode", 0600, root, xe,
+ 			    &wedged_mode_fops);
  
- 	return ret;
+ 	for (mem_type = XE_PL_VRAM0; mem_type <= XE_PL_VRAM1; ++mem_type) {
 -- 
 2.43.0
 
