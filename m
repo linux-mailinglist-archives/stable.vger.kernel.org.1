@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97BC699D2D2
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:30:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 836B799CD72
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:33:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8D3C1C21F72
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:30:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8D42282000
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4838B1C8781;
-	Mon, 14 Oct 2024 15:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD9F1AB52B;
+	Mon, 14 Oct 2024 14:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwjsSREf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSHCeDSp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BA11AB51B;
-	Mon, 14 Oct 2024 15:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF2524B34;
+	Mon, 14 Oct 2024 14:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919655; cv=none; b=lyYFwXNXuoKSxhGXRwcRYBJS8Q2QWULROVR+XSlrm49sIy/oATlBkwJCIG00LI+wy64UWHS/AxF/krPZwhDuUgZlxm2+bhSjSjur+P4I3bpHDZuA5gHmzAbAXfUJvRP+tiPymqPHvw0XJt2qZv2Pcdq99TiobzRtK6+0JZ6RyBM=
+	t=1728916365; cv=none; b=iKbRGwYOQsYioX1tjaPjJx/qBckJvBtaFiy+PWeS/E0ifrbDgu5U/5yjMNn04plPectmA7OTy79XN96tXRJn0rkvMuucKIz7QLxIV8vzrrFZjGo+CiaVppxgp8NCRipOJ1QHAj79LNhXDcFLBTdnTo+Lxs1q17xV53qHV3AqedU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919655; c=relaxed/simple;
-	bh=9TDQONxgwEy++51YkPICAkD3pNOwH0FXvABJFv95VAI=;
+	s=arc-20240116; t=1728916365; c=relaxed/simple;
+	bh=34XnZspkRSdBE+ZwTINkqDh/NyUXne+f2Pgv+zupuRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b1Pd46iVopnfpLgMNmDkhFsCCNStMMtQa8ekgBVZnqfdRuC0kkxViQybkfZFoaqkHVhWUIP3jOk9HFJM46tehFNtzDq580qg4zIeUJwWl//sqAh2PHdrI3cugcsOgYtyhY65giKY2kE7Cp0nC6gfgzSnYH5flTps1nTcJ7OaYeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwjsSREf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B9D9C4CEC7;
-	Mon, 14 Oct 2024 15:27:34 +0000 (UTC)
+	 MIME-Version; b=cE63zzpXFmW297Y0Pju7sLlQY4Y06Y8qhJjQfqDuBeMjh8IoJZjbWfmAz3dIViX6XgiGNlyIOcqRtFb57BYMak1QSLyMwxAf5uIdnqGgnfGbltiLNZoR+8wGhZ1zB2fQQ1NUTVfF7UsZ5DIWLiqXwaP7bZe4a+lPoe1sb2xog5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSHCeDSp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C204CC4CEC7;
+	Mon, 14 Oct 2024 14:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919654;
-	bh=9TDQONxgwEy++51YkPICAkD3pNOwH0FXvABJFv95VAI=;
+	s=korg; t=1728916365;
+	bh=34XnZspkRSdBE+ZwTINkqDh/NyUXne+f2Pgv+zupuRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pwjsSREfC1VDT9wF31cd66FRvm/PmO9Nl2N7s0A2MMFqGNgvlTvCWVGRG9Y7cn6r9
-	 2t7C93Zr5RjnZmAJnfp3P8tde3xORqqGzFjA1oLhK94xhSPC1ySDOIHdqK0BBd9d+y
-	 HJEt0CE/f88+U/awdP0JKktMGLXyEupKjB/o2Flc=
+	b=vSHCeDSpG7FBYM8l2VR0Gs2bmgtOWGvF5mLNXIvZTzHswR3nS8LGTubgY9S7AHwgm
+	 pIgGbPQkUmkJzXNSRDBReVRNI55S0+eevftLQxsrDl1WKzCqnzLOHgkzIfrGTwBL1s
+	 RmP0oz+uynQT5nhKDmTjknWUuTmjf5LpxQJCqLew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Michel <alex.michel@wiedemann-group.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 639/798] clk: imx6ul: fix clock parent for IMX6UL_CLK_ENETx_REF_SEL
-Date: Mon, 14 Oct 2024 16:19:53 +0200
-Message-ID: <20241014141243.145467547@linuxfoundation.org>
+Subject: [PATCH 6.11 131/214] net: ti: icssg-prueth: Fix race condition for VLAN table access
+Date: Mon, 14 Oct 2024 16:19:54 +0200
+Message-ID: <20241014141050.104436253@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michel Alex <Alex.Michel@wiedemann-group.com>
+From: MD Danish Anwar <danishanwar@ti.com>
 
-[ Upstream commit 32c055ef563c3a4a73a477839f591b1b170bde8e ]
+[ Upstream commit ff8ee11e778520c5716b7f165d2c7ce14d6a068b ]
 
-Commit 4e197ee880c24ecb63f7fe17449b3653bc64b03c ("clk: imx6ul: add
-ethernet refclock mux support") sets the internal clock as default
-ethernet clock.
+The VLAN table is a shared memory between the two ports/slices
+in a ICSSG cluster and this may lead to race condition when the
+common code paths for both ports are executed in different CPUs.
 
-Since IMX6UL_CLK_ENET_REF cannot be parent for IMX6UL_CLK_ENET1_REF_SEL,
-the call to clk_set_parent() fails. IMX6UL_CLK_ENET1_REF_125M is the correct
-parent and shall be used instead.
-Same applies for IMX6UL_CLK_ENET2_REF_SEL, for which IMX6UL_CLK_ENET2_REF_125M
-is the correct parent.
+Fix the race condition access by locking the shared memory access
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Alex Michel <alex.michel@wiedemann-group.com>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/r/AS1P250MB0608F9CE4009DCE65C61EEDEA9922@AS1P250MB0608.EURP250.PROD.OUTLOOK.COM
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Fixes: 487f7323f39a ("net: ti: icssg-prueth: Add helper functions to configure FDB")
+Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx6ul.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/ti/icssg/icssg_config.c | 2 ++
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 1 +
+ drivers/net/ethernet/ti/icssg/icssg_prueth.h | 2 ++
+ 3 files changed, 5 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-imx6ul.c b/drivers/clk/imx/clk-imx6ul.c
-index ef6c94b732684..c4266d732f7c1 100644
---- a/drivers/clk/imx/clk-imx6ul.c
-+++ b/drivers/clk/imx/clk-imx6ul.c
-@@ -540,8 +540,8 @@ static void __init imx6ul_clocks_init(struct device_node *ccm_node)
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_config.c b/drivers/net/ethernet/ti/icssg/icssg_config.c
+index dae52a83a3786..5be020d0887ac 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_config.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_config.c
+@@ -733,6 +733,7 @@ void icssg_vtbl_modify(struct prueth_emac *emac, u8 vid, u8 port_mask,
+ 	u8 fid_c1;
  
- 	clk_set_parent(hws[IMX6UL_CLK_ENFC_SEL]->clk, hws[IMX6UL_CLK_PLL2_PFD2]->clk);
+ 	tbl = prueth->vlan_tbl;
++	spin_lock(&prueth->vtbl_lock);
+ 	fid_c1 = tbl[vid].fid_c1;
  
--	clk_set_parent(hws[IMX6UL_CLK_ENET1_REF_SEL]->clk, hws[IMX6UL_CLK_ENET_REF]->clk);
--	clk_set_parent(hws[IMX6UL_CLK_ENET2_REF_SEL]->clk, hws[IMX6UL_CLK_ENET2_REF]->clk);
-+	clk_set_parent(hws[IMX6UL_CLK_ENET1_REF_SEL]->clk, hws[IMX6UL_CLK_ENET1_REF_125M]->clk);
-+	clk_set_parent(hws[IMX6UL_CLK_ENET2_REF_SEL]->clk, hws[IMX6UL_CLK_ENET2_REF_125M]->clk);
+ 	/* FID_C1: bit0..2 port membership mask,
+@@ -748,6 +749,7 @@ void icssg_vtbl_modify(struct prueth_emac *emac, u8 vid, u8 port_mask,
+ 	}
  
- 	imx_register_uart_clocks();
+ 	tbl[vid].fid_c1 = fid_c1;
++	spin_unlock(&prueth->vtbl_lock);
  }
+ EXPORT_SYMBOL_GPL(icssg_vtbl_modify);
+ 
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index e3451beed3238..33cb3590a5cde 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -1262,6 +1262,7 @@ static int prueth_probe(struct platform_device *pdev)
+ 		icss_iep_init_fw(prueth->iep1);
+ 	}
+ 
++	spin_lock_init(&prueth->vtbl_lock);
+ 	/* setup netdev interfaces */
+ 	if (eth0_node) {
+ 		ret = prueth_netdev_init(prueth, eth0_node);
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+index f678d656a3ed3..4d1c895dacdb6 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+@@ -282,6 +282,8 @@ struct prueth {
+ 	bool is_switchmode_supported;
+ 	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
+ 	int default_vlan;
++	/** @vtbl_lock: Lock for vtbl in shared memory */
++	spinlock_t vtbl_lock;
+ };
+ 
+ struct emac_tx_ts_response {
 -- 
 2.43.0
 
