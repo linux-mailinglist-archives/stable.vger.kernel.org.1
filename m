@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-83929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17B599CD39
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB3FD99CE4F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:42:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F26B51C226EF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A9AFB208A8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5DD1798C;
-	Mon, 14 Oct 2024 14:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1711AB6DC;
+	Mon, 14 Oct 2024 14:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SOMX4W9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Re+4IR/e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA9220EB;
-	Mon, 14 Oct 2024 14:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE4717C77;
+	Mon, 14 Oct 2024 14:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916226; cv=none; b=DTweMKeSx8zsaT6+B2YfirqdygbA9vnNZD2+BBrRD0g8Hgx1OipVie6/hDPIsTPt5c0bVeKV7C3cA87IRY5HmvTskiFk/jnU632r2nuPJgsyZ4U3FRnuYDUy3GtddFvc8SyqPrBvYDyU8DYc9i+AKDzU+w8LEGm2+EaV/p4iHqc=
+	t=1728916940; cv=none; b=DaR/TMiWLa1bBjCLT/8KyqW6O3SDWyMX1A2dycwyemj7EDTOkonQPyw/nq83JqulluY414L/xHOQs+j0XRfmBocx1Z7psLdNIZb4PL61EjGezou7OPq7i9NZGXwkIPJC9sovNvqxx5QFvU7wdJUz4i63u2nQ1KwdLu6Sn/3lR4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916226; c=relaxed/simple;
-	bh=4miN0n4k3STDAfcLuxwtAwe0StPz8qyGUjGJtCd4CbQ=;
+	s=arc-20240116; t=1728916940; c=relaxed/simple;
+	bh=GjaasAFYCZ8JqFgbwO8Gd1u7I1ZPcHkR9FxJQIatLX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f3UhnoFZsL6pqap1rkSOGDxAIm+INq3Wb4ej+yoHBSnWsAO6g87MndXSxsn9zSUMpRZhvH6ecIlXFr9O58Z1OLovHA84FBuW7/W5XJfF5W9Y1ddKLb8xdXtUOcSp5XRIljL2VIORHbxiGnYLe+2QcJSlIDbd+lL3mz9bzuxGVaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SOMX4W9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD43C4CEC3;
-	Mon, 14 Oct 2024 14:30:25 +0000 (UTC)
+	 MIME-Version; b=Cc4VBZviCwspvAKif7A16yW3EyDlFdZ64/BK8hiZTeKbX84rUtMozKjtSR9iTYYixSZLiwADonuNnDOyZDr/YJWoa97NhqCwXX2rC9EB5purjn27MTlEHAHjv9aqh28OemIwL4DG4eLG0lQrO/BOGFYzIyKbENJ6kBl6whn7Vl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Re+4IR/e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59EB9C4CEC3;
+	Mon, 14 Oct 2024 14:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916226;
-	bh=4miN0n4k3STDAfcLuxwtAwe0StPz8qyGUjGJtCd4CbQ=;
+	s=korg; t=1728916939;
+	bh=GjaasAFYCZ8JqFgbwO8Gd1u7I1ZPcHkR9FxJQIatLX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SOMX4W9H7lD3mbiK0dCY3s0g/rBrsf9zf7OuAvXCMiCv8s9XIIY7sbJ84k4RaGZfZ
-	 RPAs1eb/J2jhqz8/Wvq/WFXfK67bWo4Nx7JtaYrufgk9H7WK9aL9VoOMo+hf1Jns1l
-	 DBqd6Au6lMHOfGtbF8a6oUrFKuc5a5zV6fzDDEKU=
+	b=Re+4IR/ea492sduiv94tTAc93NTyEoGf5gabuFVgoc/7IDtp+K+wFaMGK4qIfOaEJ
+	 xz3ggHX1A9X0K1d9V36B45uccJBVNoX8Xh6lPKMc0znp1Hto3tuTmmgjf85Ta3Dut3
+	 04MMWURbN1F7HQQkH9FJvdoi3jxUe1Gg9o/Qbu8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 119/214] powercap: intel_rapl_tpmi: Ignore minor version change
+Subject: [PATCH 6.6 076/213] i3c: master: cdns: Fix use after free vulnerability in cdns_i3c_master Driver Due to Race Condition
 Date: Mon, 14 Oct 2024 16:19:42 +0200
-Message-ID: <20241014141049.635755084@linuxfoundation.org>
+Message-ID: <20241014141045.948595019@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
 
-[ Upstream commit 1d390923974cc233245649cf23833e06b15a9ef7 ]
+[ Upstream commit 609366e7a06d035990df78f1562291c3bf0d4a12 ]
 
-The hardware definition of every TPMI feature contains a major and minor
-version. When there is a change in the MMIO offset or change in the
-definition of a field, hardware will change major version. For addition
-of new fields without modifying existing MMIO offsets or fields, only
-the minor version is changed.
+In the cdns_i3c_master_probe function, &master->hj_work is bound with
+cdns_i3c_master_hj. And cdns_i3c_master_interrupt can call
+cnds_i3c_master_demux_ibis function to start the work.
 
-If the driver has not been updated to recognize a new hardware major
-version, it cannot provide the RAPL interface to users due to possible
-register layout incompatibilities. However, the driver does not need to
-be updated every time the hardware minor version changes because in that
-case it will just miss some new functionality exposed by the hardware.
+If we remove the module which will call cdns_i3c_master_remove to
+make cleanup, it will free master->base through i3c_master_unregister
+while the work mentioned above will be used. The sequence of operations
+that may lead to a UAF bug is as follows:
 
-The current implementation causes the driver to refuse to work for any
-hardware version change which is unnecessarily restrictive.
+CPU0                                      CPU1
 
-If there is a minor version mismatch, log an information message and
-continue, but if there is a major version mismatch, log a warning and
-exit (as before).
+                                     | cdns_i3c_master_hj
+cdns_i3c_master_remove               |
+i3c_master_unregister(&master->base) |
+device_unregister(&master->dev)      |
+device_release                       |
+//free master->base                  |
+                                     | i3c_master_do_daa(&master->base)
+                                     | //use master->base
 
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20240930081801.28502-4-rui.zhang@intel.com
-Fixes: 9eef7f9da928 ("powercap: intel_rapl: Introduce RAPL TPMI interface driver")
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fix it by ensuring that the work is canceled before proceeding with
+the cleanup in cdns_i3c_master_remove.
+
+Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+Link: https://lore.kernel.org/r/20240911153544.848398-1-kxwang23@m.fudan.edu.cn
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/intel_rapl_tpmi.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/i3c/master/i3c-master-cdns.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/powercap/intel_rapl_tpmi.c b/drivers/powercap/intel_rapl_tpmi.c
-index 947544e4d229a..0c55a80d01909 100644
---- a/drivers/powercap/intel_rapl_tpmi.c
-+++ b/drivers/powercap/intel_rapl_tpmi.c
-@@ -15,7 +15,8 @@
- #include <linux/module.h>
- #include <linux/slab.h>
+diff --git a/drivers/i3c/master/i3c-master-cdns.c b/drivers/i3c/master/i3c-master-cdns.c
+index fa5aaaf446181..d8426847c2837 100644
+--- a/drivers/i3c/master/i3c-master-cdns.c
++++ b/drivers/i3c/master/i3c-master-cdns.c
+@@ -1666,6 +1666,7 @@ static void cdns_i3c_master_remove(struct platform_device *pdev)
+ {
+ 	struct cdns_i3c_master *master = platform_get_drvdata(pdev);
  
--#define TPMI_RAPL_VERSION 1
-+#define TPMI_RAPL_MAJOR_VERSION 0
-+#define TPMI_RAPL_MINOR_VERSION 1
++	cancel_work_sync(&master->hj_work);
+ 	i3c_master_unregister(&master->base);
  
- /* 1 header + 10 registers + 5 reserved. 8 bytes for each. */
- #define TPMI_RAPL_DOMAIN_SIZE 128
-@@ -154,11 +155,21 @@ static int parse_one_domain(struct tpmi_rapl_package *trp, u32 offset)
- 	tpmi_domain_size = tpmi_domain_header >> 16 & 0xff;
- 	tpmi_domain_flags = tpmi_domain_header >> 32 & 0xffff;
- 
--	if (tpmi_domain_version != TPMI_RAPL_VERSION) {
--		pr_warn(FW_BUG "Unsupported version:%d\n", tpmi_domain_version);
-+	if (tpmi_domain_version == TPMI_VERSION_INVALID) {
-+		pr_warn(FW_BUG "Invalid version\n");
- 		return -ENODEV;
- 	}
- 
-+	if (TPMI_MAJOR_VERSION(tpmi_domain_version) != TPMI_RAPL_MAJOR_VERSION) {
-+		pr_warn(FW_BUG "Unsupported major version:%ld\n",
-+			TPMI_MAJOR_VERSION(tpmi_domain_version));
-+		return -ENODEV;
-+	}
-+
-+	if (TPMI_MINOR_VERSION(tpmi_domain_version) > TPMI_RAPL_MINOR_VERSION)
-+		pr_info("Ignore: Unsupported minor version:%ld\n",
-+			TPMI_MINOR_VERSION(tpmi_domain_version));
-+
- 	/* Domain size: in unit of 128 Bytes */
- 	if (tpmi_domain_size != 1) {
- 		pr_warn(FW_BUG "Invalid Domain size %d\n", tpmi_domain_size);
+ 	clk_disable_unprepare(master->sysclk);
 -- 
 2.43.0
 
