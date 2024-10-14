@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-83988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77D4599CD8D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:34:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8770999CE5C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:43:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F5481C22C7D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:34:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B9F8286ABE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818951AB6FF;
-	Mon, 14 Oct 2024 14:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9311AB528;
+	Mon, 14 Oct 2024 14:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pcsoia32"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ig34IEcp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC1824B34;
-	Mon, 14 Oct 2024 14:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA641AAE08;
+	Mon, 14 Oct 2024 14:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916420; cv=none; b=MuobjtHYeZ5EOTQETv7ehpFmW74QeishdBIhJXW+dvsmjbyYc7yF3aZ8V6CueBRp8mOcP+bjGbg4KAUSqkz4SOexx33CtOcW/t2L8AsNt9kp2K47CPwD+J5MZvCbN+St9kCiU8ABfszobWJdpxpbX+HFL/Sxqvr++vnTo2ej9B4=
+	t=1728916980; cv=none; b=m4xgi0xIK6wjzHn/u49J79F0m6Uct+EfdFk2dfFTyBA5hW9OriOWY40t23vxuAukxoJXLCQtnr1Khp8AA9vUk8Ds79JK8AKXqjypDWLFzkiMfkpX1RewFMOdrwxha9pfcFqmVI49psGOcx37nvOj1rZwjKewnN402HuTLo6TI/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916420; c=relaxed/simple;
-	bh=XPbo3Sd1v6k1z7MjFycYmBziMsfGgYYO6Yn7iVtTGs0=;
+	s=arc-20240116; t=1728916980; c=relaxed/simple;
+	bh=2u4KIZvytcDgAbfrX+FXB3AyxXowIccrM8K4dAHhyYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VOkB9Kh1b4raLgHZaPyKH/WvfC8O3Ad6y17p5zkywPe+s/1+MS4Vrv7XLi0exHwdilkxdZTwXuU1OlTyR1B4VJq+WPT8g+GvxrD0TwW9wg0iBbWIlBG5rYIt0l66GaUBlL7UG8rbnVaetNTJp3KXukPnrLgprWiGsOthbKax6jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pcsoia32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7445DC4CEC3;
-	Mon, 14 Oct 2024 14:33:39 +0000 (UTC)
+	 MIME-Version; b=reDM42WwpLpiqMFbP+BC1TmC0m3ff6XuZ9JB25Xlfi5XVN+2fvBAvPi7XgjkSrn5vSNStGwZpnpgK8GMrrvSUy4uJ0J1BqBs88hFl9owd4lYGm207MNLSMhuHJCH4mmK4nzbXZ28Olu2qXNZTBCvnFy6Wgw4PU+PRStrB/RknD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ig34IEcp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92FF9C4CEC3;
+	Mon, 14 Oct 2024 14:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916420;
-	bh=XPbo3Sd1v6k1z7MjFycYmBziMsfGgYYO6Yn7iVtTGs0=;
+	s=korg; t=1728916980;
+	bh=2u4KIZvytcDgAbfrX+FXB3AyxXowIccrM8K4dAHhyYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pcsoia32fh1pWzoQw/+342Z0Ulyu2dvZ0/QHZ3ITuSZE1+aH+CO55tjg2lc3xiSWO
-	 WDifbq5mMiyhBhx4BCZm3KTMkrMP/IhV0IJhxl4QSXjW0ZlLCeuCZZ0QRqiVz6Smfx
-	 EpLrlXieHXCI76YJmkWe4AgYLjYwrY9zmGlcTLCQ=
+	b=Ig34IEcpb7Bdn87UGbKLdtCvhatT1DEFsqfrht66/G2FiY5bDhci76DY0DZ/AKtUE
+	 hywXfoQwLajSV84/8h285KB82XOITiXTSy4SO95yCLoymYDeEncUgiicRIukoAOIsp
+	 Coa9WP0/whYG9Rj4K1wg3y/wUFD97fJ9vxcq9kGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Jutz <daniel@djutz.com>,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Jiri Kosina <jkosina@suse.com>,
-	Christian Heusel <christian@heusel.eu>
-Subject: [PATCH 6.11 161/214] HID: wacom: Hardcode (non-inverted) AES pens as BTN_TOOL_PEN
+	Neal Cardwell <ncardwell@google.com>,
+	Yuchung Cheng <ycheng@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 118/213] tcp: fix TFO SYN_RECV to not zero retrans_stamp with retransmits out
 Date: Mon, 14 Oct 2024 16:20:24 +0200
-Message-ID: <20241014141051.269299387@linuxfoundation.org>
+Message-ID: <20241014141047.573363140@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gerecke <jason.gerecke@wacom.com>
+From: Neal Cardwell <ncardwell@google.com>
 
-commit 2934b12281abf4eb5f915086fd5699de5c497ccd upstream.
+[ Upstream commit 27c80efcc20486c82698f05f00e288b44513c86b ]
 
-Unlike EMR tools which encode type information in their tool ID, tools
-for AES sensors are all "generic pens". It is inappropriate to make use
-of the wacom_intuos_get_tool_type function when dealing with these kinds
-of devices. Instead, we should only ever report BTN_TOOL_PEN or
-BTN_TOOL_RUBBER, as depending on the state of the Eraser and Invert
-bits.
+Fix tcp_rcv_synrecv_state_fastopen() to not zero retrans_stamp
+if retransmits are outstanding.
 
-Reported-by: Daniel Jutz <daniel@djutz.com>
-Closes: https://lore.kernel.org/linux-input/3cd82004-c5b8-4f2a-9a3b-d88d855c65e4@heusel.eu/
-Bisected-by: Christian Heusel <christian@heusel.eu>
-Fixes: 9c2913b962da ("HID: wacom: more appropriate tool type categorization")
-Link: https://gitlab.freedesktop.org/libinput/libinput/-/issues/1041
-Link: https://github.com/linuxwacom/input-wacom/issues/440
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Cc: stable@vger.kernel.org
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+tcp_fastopen_synack_timer() sets retrans_stamp, so typically we'll
+need to zero retrans_stamp here to prevent spurious
+retransmits_timed_out(). The logic to zero retrans_stamp is from this
+2019 commit:
+
+commit cd736d8b67fb ("tcp: fix retrans timestamp on passive Fast Open")
+
+However, in the corner case where the ACK of our TFO SYNACK carried
+some SACK blocks that caused us to enter TCP_CA_Recovery then that
+non-zero retrans_stamp corresponds to the active fast recovery, and we
+need to leave retrans_stamp with its current non-zero value, for
+correct ETIMEDOUT and undo behavior.
+
+Fixes: cd736d8b67fb ("tcp: fix retrans timestamp on passive Fast Open")
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241001200517.2756803-4-ncardwell.sw@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/tcp_input.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -2501,6 +2501,8 @@ static void wacom_wac_pen_report(struct
- 		/* Going into range select tool */
- 		if (wacom_wac->hid_data.invert_state)
- 			wacom_wac->tool[0] = BTN_TOOL_RUBBER;
-+		else if (wacom_wac->features.quirks & WACOM_QUIRK_AESPEN)
-+			wacom_wac->tool[0] = BTN_TOOL_PEN;
- 		else if (wacom_wac->id[0])
- 			wacom_wac->tool[0] = wacom_intuos_get_tool_type(wacom_wac->id[0]);
- 		else
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index d472f7052cd32..fb053942dba2a 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -6554,10 +6554,17 @@ static void tcp_rcv_synrecv_state_fastopen(struct sock *sk)
+ 	if (inet_csk(sk)->icsk_ca_state == TCP_CA_Loss && !tp->packets_out)
+ 		tcp_try_undo_recovery(sk);
+ 
+-	/* Reset rtx states to prevent spurious retransmits_timed_out() */
+ 	tcp_update_rto_time(tp);
+-	tp->retrans_stamp = 0;
+ 	inet_csk(sk)->icsk_retransmits = 0;
++	/* In tcp_fastopen_synack_timer() on the first SYNACK RTO we set
++	 * retrans_stamp but don't enter CA_Loss, so in case that happened we
++	 * need to zero retrans_stamp here to prevent spurious
++	 * retransmits_timed_out(). However, if the ACK of our SYNACK caused us
++	 * to enter CA_Recovery then we need to leave retrans_stamp as it was
++	 * set entering CA_Recovery, for correct retransmits_timed_out() and
++	 * undo behavior.
++	 */
++	tcp_retrans_stamp_cleanup(sk);
+ 
+ 	/* Once we leave TCP_SYN_RECV or TCP_FIN_WAIT_1,
+ 	 * we no longer need req so release it.
+-- 
+2.43.0
+
 
 
 
