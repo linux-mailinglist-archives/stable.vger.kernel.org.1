@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-84516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D916B99D092
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:05:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8411E99D09C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:05:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 740DEB2692B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:05:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 499F1284F4B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2CE4CDEC;
-	Mon, 14 Oct 2024 15:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA0F4087C;
+	Mon, 14 Oct 2024 15:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W12mmU0+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1qPx9eja"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C26481B3;
-	Mon, 14 Oct 2024 15:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB305611E;
+	Mon, 14 Oct 2024 15:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918277; cv=none; b=mIxX4fhrA2D08jQtiZM7vtrdq+WTg+o2wOcRn3K+J4KjGeBRYge29BRq4qDWfleJwKOIyh0WCiaSubTKoSKDJVu0GpmkfG0FUykWdMW3bwSq8kUmaeez/f1hgualv10hYz66C0LGqJRkLM/bvSrw5NupAFLTUeSRIkUG/PkVcWY=
+	t=1728918315; cv=none; b=QzIL7pFja/st2jYoqKGTgolC5vkCthLhwTBfk4e6Z3RWh+EIpCwrXvRl/GMBHDV4croII/0fh/6UzKGG7bVizcNwLnLjgLBbnozmoNVb+eZcJ7RGrSUNwwjybraH1a5AE/GSTJNRwvU34OPukReUDeD0lvZ6FYmh2e1MOMp9dNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918277; c=relaxed/simple;
-	bh=FRcU4Ecsl2NuxfEeY4Gf6DRsbZrGRuzAsIlMw08Feq4=;
+	s=arc-20240116; t=1728918315; c=relaxed/simple;
+	bh=8w5eZQmFf2jSdR0oBmCd5L9x42ZXB9k+Ngx4VmmMYhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XAbJpEXMC7tTF6hs12G+wrPigEEz83GxjXyf5S89TJbFe/biEOrle9nXFpurcPJ/Ec0NCPUf3eVFi0mCldrOPQuCkd23EycedMpwl8pjsIi6/bQvpo2tblq2wnE+okcISqMSk56+5BoLy7OYRHXEKHl9wsplgCt/JgPNa2ih5Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W12mmU0+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20A6C4CEC3;
-	Mon, 14 Oct 2024 15:04:36 +0000 (UTC)
+	 MIME-Version; b=RY2YTIxIN69B/XEUkCtpxHWTTNZs4A65+vzAkmfThAI3fOY7uXVaHZhO1GrEMsc7TlI4I5kNQXrwqVXiEhjC25ZRio/evlBfgO4rq9Z4vBBvqoTftEstuO6HhDa85RqWPnRls3xF9dQC5EPJ68Dm+2Jz+qZpqW15IMY4/GR7JcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1qPx9eja; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DDEAC4CEC3;
+	Mon, 14 Oct 2024 15:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918277;
-	bh=FRcU4Ecsl2NuxfEeY4Gf6DRsbZrGRuzAsIlMw08Feq4=;
+	s=korg; t=1728918315;
+	bh=8w5eZQmFf2jSdR0oBmCd5L9x42ZXB9k+Ngx4VmmMYhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W12mmU0+cdg8QgHgwUpXaIXwfqTSX1OOhj0nULrkuqoSHifisfFytAOp1LO9lglid
-	 bcAHWqTyKd6/aoqquDxyC4FDbwkMnae4ANNWXzp+AP1kRJtNoKJ5u+h+DgMTU5n6iy
-	 k5S+w96sBQ0h+ti5kGUOMPnhJ402px49mcm9MIe8=
+	b=1qPx9ejaz8mErqAd7/tmTNF/KF13Tuq3Poaia30DszFHs0PrxyQokuc3J5/oi8bXv
+	 2VF4JKsZAjws3U4x9+aRQOzDW1iEF4BdMIuHD5rzIaULA8x6dPVLHdcsDIojKHCkH2
+	 AR28oE88XrEjJoeg/MJCstE04eW8nVSe1b989ihg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Nikita Shubin <nikita.shubin@maquefel.me>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 258/798] vhost_vdpa: assign irq bypass producer token correctly
-Date: Mon, 14 Oct 2024 16:13:32 +0200
-Message-ID: <20241014141228.071564704@linuxfoundation.org>
+Subject: [PATCH 6.1 259/798] ep93xx: clock: Fix off by one in ep93xx_div_recalc_rate()
+Date: Mon, 14 Oct 2024 16:13:33 +0200
+Message-ID: <20241014141228.110557367@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -67,93 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jason Wang <jasowang@redhat.com>
+From: Dan Carpenter <alexander.sverdlin@gmail.com>
 
-[ Upstream commit 02e9e9366fefe461719da5d173385b6685f70319 ]
+[ Upstream commit c7f06284a6427475e3df742215535ec3f6cd9662 ]
 
-We used to call irq_bypass_unregister_producer() in
-vhost_vdpa_setup_vq_irq() which is problematic as we don't know if the
-token pointer is still valid or not.
+The psc->div[] array has psc->num_div elements.  These values come from
+when we call clk_hw_register_div().  It's adc_divisors and
+ARRAY_SIZE(adc_divisors)) and so on.  So this condition needs to be >=
+instead of > to prevent an out of bounds read.
 
-Actually, we use the eventfd_ctx as the token so the life cycle of the
-token should be bound to the VHOST_SET_VRING_CALL instead of
-vhost_vdpa_setup_vq_irq() which could be called by set_status().
-
-Fixing this by setting up irq bypass producer's token when handling
-VHOST_SET_VRING_CALL and un-registering the producer before calling
-vhost_vring_ioctl() to prevent a possible use after free as eventfd
-could have been released in vhost_vring_ioctl(). And such registering
-and unregistering will only be done if DRIVER_OK is set.
-
-Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
-Tested-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Fixes: 2cf1ba9a4d15 ("vhost_vdpa: implement IRQ offloading in vhost_vdpa")
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20240816031900.18013-1-jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: 9645ccc7bd7a ("ep93xx: clock: convert in-place to COMMON_CLK")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Reviewed-by: Nikita Shubin <nikita.shubin@maquefel.me>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Link: https://lore.kernel.org/r/1caf01ad4c0a8069535813c26c7f0b8ea011155e.camel@linaro.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vdpa.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ arch/arm/mach-ep93xx/clock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index ef9e845a5a5c5..59587f9880d3c 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -191,11 +191,9 @@ static void vhost_vdpa_setup_vq_irq(struct vhost_vdpa *v, u16 qid)
- 	if (irq < 0)
- 		return;
+diff --git a/arch/arm/mach-ep93xx/clock.c b/arch/arm/mach-ep93xx/clock.c
+index 85a496ddc6197..e9f72a529b508 100644
+--- a/arch/arm/mach-ep93xx/clock.c
++++ b/arch/arm/mach-ep93xx/clock.c
+@@ -359,7 +359,7 @@ static unsigned long ep93xx_div_recalc_rate(struct clk_hw *hw,
+ 	u32 val = __raw_readl(psc->reg);
+ 	u8 index = (val & psc->mask) >> psc->shift;
  
--	irq_bypass_unregister_producer(&vq->call_ctx.producer);
- 	if (!vq->call_ctx.ctx)
- 		return;
+-	if (index > psc->num_div)
++	if (index >= psc->num_div)
+ 		return 0;
  
--	vq->call_ctx.producer.token = vq->call_ctx.ctx;
- 	vq->call_ctx.producer.irq = irq;
- 	ret = irq_bypass_register_producer(&vq->call_ctx.producer);
- 	if (unlikely(ret))
-@@ -571,6 +569,14 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
- 			vq->last_avail_idx = vq_state.split.avail_index;
- 		}
- 		break;
-+	case VHOST_SET_VRING_CALL:
-+		if (vq->call_ctx.ctx) {
-+			if (ops->get_status(vdpa) &
-+			    VIRTIO_CONFIG_S_DRIVER_OK)
-+				vhost_vdpa_unsetup_vq_irq(v, idx);
-+			vq->call_ctx.producer.token = NULL;
-+		}
-+		break;
- 	}
- 
- 	r = vhost_vring_ioctl(&v->vdev, cmd, argp);
-@@ -603,13 +609,16 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
- 			cb.callback = vhost_vdpa_virtqueue_cb;
- 			cb.private = vq;
- 			cb.trigger = vq->call_ctx.ctx;
-+			vq->call_ctx.producer.token = vq->call_ctx.ctx;
-+			if (ops->get_status(vdpa) &
-+			    VIRTIO_CONFIG_S_DRIVER_OK)
-+				vhost_vdpa_setup_vq_irq(v, idx);
- 		} else {
- 			cb.callback = NULL;
- 			cb.private = NULL;
- 			cb.trigger = NULL;
- 		}
- 		ops->set_vq_cb(vdpa, idx, &cb);
--		vhost_vdpa_setup_vq_irq(v, idx);
- 		break;
- 
- 	case VHOST_SET_VRING_NUM:
-@@ -1235,6 +1244,7 @@ static int vhost_vdpa_open(struct inode *inode, struct file *filep)
- 	for (i = 0; i < nvqs; i++) {
- 		vqs[i] = &v->vqs[i];
- 		vqs[i]->handle_kick = handle_vq_kick;
-+		vqs[i]->call_ctx.ctx = NULL;
- 	}
- 	vhost_dev_init(dev, vqs, nvqs, 0, 0, 0, false,
- 		       vhost_vdpa_process_iotlb_msg);
+ 	return DIV_ROUND_UP_ULL(parent_rate, psc->div[index]);
 -- 
 2.43.0
 
