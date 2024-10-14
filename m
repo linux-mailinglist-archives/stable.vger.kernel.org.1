@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729EF99CE77
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:44:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3639B99D2EA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:31:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 378C2287478
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:44:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0F401F24D04
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84581AB507;
-	Mon, 14 Oct 2024 14:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D2C1AE016;
+	Mon, 14 Oct 2024 15:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p22DXGV1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2du+uCY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DB319E802;
-	Mon, 14 Oct 2024 14:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585521CA8D;
+	Mon, 14 Oct 2024 15:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917044; cv=none; b=Ngxq7eDd9JvmV1kIF/jWNWPAFT9fGsZ9pM/nSlTEY8QwwQ8LM1zHiUkNoPeRadGapnVkJybnT5OfHP0xO4XRuX0pEzEGjMkxYwGKPosyp18aFokRczyy/gjg6Q4qFdMHt48DHL5QBFq3jPcty16WAEUr422rHnEwpIlO02G0R8Q=
+	t=1728919716; cv=none; b=ToD5YeLD2d01Y6ilyYnF6UQimsNm9GLTFyutlhdqJkCAIWht6183rhTjwCzuVbznBtzFdxlwoEDtRlBwIZPTkpcZqLBLok97k8aKp5b3HX5ozQo3dHvgjVZiM4IPnaDab73RDga2r7EjQWzkczE5js90Ebcs8gT6EWwSC9VS55Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917044; c=relaxed/simple;
-	bh=Z9Vs0DkQEFRppSpbePD5ddbuKoHaBQdKK/8mqhhDiS8=;
+	s=arc-20240116; t=1728919716; c=relaxed/simple;
+	bh=Rl3eGqcy8eld/LojM7P2XbtoS4lt34VJo8bIfVX2ywo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=orxw7PSWbAm7wU0ePu3vYiwRBwJ/kmopqsLI62/h9W3MOUx1RI/sHb5HoXrqRnzEr7ZRkNWgtv2cqrKFL7mAp64vyVToIpi75YaqmKmSfWy727U9w7cFsat/m5GXftvQP1tr72XLsubh/+TWhwA4syIygdyJ6Cn3oLGdMRaZGSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p22DXGV1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8ABC4CEC3;
-	Mon, 14 Oct 2024 14:44:03 +0000 (UTC)
+	 MIME-Version; b=i/PmnujfoJDfNZoRU1hFY25PjPLa3Ogbtij3C74pD9Jks1qLD6KKUojw1Rv+LREb6GrMsCUHISfTiSU+WvHQnzuwDMQRGmS6NhgdffJbPnj4krrWiMpaBgqM6ebqkT/A0dhd6p/jIyCqzUdLkboBt8Mg9Etna9/qktwaaVH+/sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2du+uCY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB114C4CECF;
+	Mon, 14 Oct 2024 15:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917044;
-	bh=Z9Vs0DkQEFRppSpbePD5ddbuKoHaBQdKK/8mqhhDiS8=;
+	s=korg; t=1728919716;
+	bh=Rl3eGqcy8eld/LojM7P2XbtoS4lt34VJo8bIfVX2ywo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p22DXGV1UY/W9TaEZFpgF/5YcQes8kMAi3RfuE71ApDTmw/48gsQxYbChrv88WIyY
-	 Lm9Z07NbJXRhdvCHs3Bv9ZZqkLqBRuSKmAYJZ0ec/2aofPxsL/sceHW1qb2I/Nbvqu
-	 QlX2/ZIqSY1tI4lI8v9tCUFuQ6VU52bJqNqoAwGk=
+	b=f2du+uCY3XyiKFqt4V02Bijg0V5BWdU4a1F0iN13HUdHezbqUn0K15Aq1s57Ygyg0
+	 a5GPQ3CS2Fo+k/GRW7OEUj0InWIuhAvbpJXb/y+mZbc5nGlBNsOpS3AKp5uqNfPUa9
+	 3WNdmKYXksIqeTwj/WM1oHgUQ16dr3GJ59ncLd/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 135/213] gpio: aspeed: Add the flush write to ensure the write complete.
+Subject: [PATCH 6.1 687/798] s390/boot: Compile all files with the same march flag
 Date: Mon, 14 Oct 2024 16:20:41 +0200
-Message-ID: <20241014141048.237752081@linuxfoundation.org>
+Message-ID: <20241014141245.060384795@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Billy Tsai <billy_tsai@aspeedtech.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 1bb5a99e1f3fd27accb804aa0443a789161f843c ]
+[ Upstream commit fccb175bc89a0d37e3ff513bb6bf1f73b3a48950 ]
 
-Performing a dummy read ensures that the register write operation is fully
-completed, mitigating any potential bus delays that could otherwise impact
-the frequency of bitbang usage. E.g., if the JTAG application uses GPIO to
-control the JTAG pins (TCK, TMS, TDI, TDO, and TRST), and the application
-sets the TCK clock to 1 MHz, the GPIO's high/low transitions will rely on
-a delay function to ensure the clock frequency does not exceed 1 MHz.
-However, this can lead to rapid toggling of the GPIO because the write
-operation is POSTed and does not wait for a bus acknowledgment.
+Only a couple of files of the decompressor are compiled with the
+minimum architecture level. This is problematic for potential function
+calls between compile units, especially if a target function is within
+a compile until compiled for a higher architecture level, since that
+may lead to an unexpected operation exception.
 
-Fixes: 361b79119a4b ("gpio: Add Aspeed driver")
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-Link: https://lore.kernel.org/r/20241008081450.1490955-2-billy_tsai@aspeedtech.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Therefore compile all files of the decompressor for the same (minimum)
+architecture level.
+
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-aspeed.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/s390/boot/Makefile | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpio/gpio-aspeed.c b/drivers/gpio/gpio-aspeed.c
-index 58f107194fdaf..017f083bc8c29 100644
---- a/drivers/gpio/gpio-aspeed.c
-+++ b/drivers/gpio/gpio-aspeed.c
-@@ -406,6 +406,8 @@ static void __aspeed_gpio_set(struct gpio_chip *gc, unsigned int offset,
- 	gpio->dcache[GPIO_BANK(offset)] = reg;
+diff --git a/arch/s390/boot/Makefile b/arch/s390/boot/Makefile
+index d52c3e2e16bc5..a010491585e88 100644
+--- a/arch/s390/boot/Makefile
++++ b/arch/s390/boot/Makefile
+@@ -9,11 +9,8 @@ UBSAN_SANITIZE := n
+ KASAN_SANITIZE := n
+ KCSAN_SANITIZE := n
  
- 	iowrite32(reg, addr);
-+	/* Flush write */
-+	ioread32(addr);
- }
+-KBUILD_AFLAGS := $(KBUILD_AFLAGS_DECOMPRESSOR)
+-KBUILD_CFLAGS := $(KBUILD_CFLAGS_DECOMPRESSOR)
+-
+ #
+-# Use minimum architecture for als.c to be able to print an error
++# Use minimum architecture level so it is possible to print an error
+ # message if the kernel is started on a machine which is too old
+ #
+ ifndef CONFIG_CC_IS_CLANG
+@@ -22,16 +19,10 @@ else
+ CC_FLAGS_MARCH_MINIMUM := -march=z10
+ endif
  
- static void aspeed_gpio_set(struct gpio_chip *gc, unsigned int offset,
+-ifneq ($(CC_FLAGS_MARCH),$(CC_FLAGS_MARCH_MINIMUM))
+-AFLAGS_REMOVE_head.o		+= $(CC_FLAGS_MARCH)
+-AFLAGS_head.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-AFLAGS_REMOVE_mem.o		+= $(CC_FLAGS_MARCH)
+-AFLAGS_mem.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-CFLAGS_REMOVE_als.o		+= $(CC_FLAGS_MARCH)
+-CFLAGS_als.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-CFLAGS_REMOVE_sclp_early_core.o	+= $(CC_FLAGS_MARCH)
+-CFLAGS_sclp_early_core.o	+= $(CC_FLAGS_MARCH_MINIMUM)
+-endif
++KBUILD_AFLAGS := $(filter-out $(CC_FLAGS_MARCH),$(KBUILD_AFLAGS_DECOMPRESSOR))
++KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_MARCH),$(KBUILD_CFLAGS_DECOMPRESSOR))
++KBUILD_AFLAGS += $(CC_FLAGS_MARCH_MINIMUM)
++KBUILD_CFLAGS += $(CC_FLAGS_MARCH_MINIMUM)
+ 
+ CFLAGS_sclp_early_core.o += -I$(srctree)/drivers/s390/char
+ 
 -- 
 2.43.0
 
