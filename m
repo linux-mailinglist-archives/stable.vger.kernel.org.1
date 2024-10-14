@@ -1,52 +1,48 @@
-Return-Path: <stable+bounces-83734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0B899C037
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 08:45:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C66E99C061
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 08:51:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCC21B2318A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:45:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FAD91C2242B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:51:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD8213C670;
-	Mon, 14 Oct 2024 06:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA87A1448C7;
+	Mon, 14 Oct 2024 06:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="z51YFBRP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OikLSEgx"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B8536B;
-	Mon, 14 Oct 2024 06:45:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67ACD13A24D;
+	Mon, 14 Oct 2024 06:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728888345; cv=none; b=duNsipHlHlK7uGusfETpU+i6BfLL8vIAW1JIx+OkM9tB/OSDnOm9Zx7p3jD8+Szob7BUpxNQXfQdI8njwPyyTqaJYd3p+e5sdX4r6L6Z+g8GEfrh38hhghfWiiHiGbCRqECEaDuDtCT7e37gygpn7/LmsUoOJ2rFytVcCSa5MK0=
+	t=1728888657; cv=none; b=VX0IlYKMdjVtyLlQPvIWYfEoiNFeQUaGOweF47Bb/EHqtQQukWS87EdEiF8FHJcOE1rG+spbLNnY3MKKJhP221cHda6AePGG9xofDXkjuN59SXtnUizQo6CJhD3W09oXlT4/347YBZL9jg9Yd1418PfuhCCKd4BSMyjxse0zhh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728888345; c=relaxed/simple;
-	bh=5+7U5NsPCJJ1SeC7sthTmtpMjLOa80ghowv7qWW2nio=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=A/ZIxf8snGIdlT/bMVHXHhaXxMK95Hsls5nfeFC22NBEfnjVJ+NblYoakPDmg+ZYeA+gLfg7Y1IcotcA8RDAc5344mZih0oZgVM4TG8aWuAfL//1jC5BpeL3ZnScnJVIJvX6BB+eEz2EkKOEdm1ul1WXYXr4exGrLDaeTcU+KzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=z51YFBRP; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Cc:From:References:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=zfAhj9c9aib/1i6GUjRiuU0PI8OaiFSyn9NGekauN9U=; t=1728888344;
-	x=1729320344; b=z51YFBRPPSV94xmfSo3YYSTUZXPMBj7XiTLKwkuRv3VTRWqmBxL+FkPlnpPU1
-	CTonKWpOAoamBjrOWNDM8JSF6uwqJCzQNpKfagb1dSoRMgsqjkafKPaHPcFm8L4QTRBgoSmUf3Amt
-	juoBmTKV4Z7Mg8IQWUmbEqqYvs/JNPEZ3YI99UW5b/f3DqNX9zV+DMO+yMjwnmEi+fEXYJOOVRN3v
-	JAC80aXMBTheZQved93S1CLKvwKfEck3k+MpHrpJU8X1A4AVa5Avb5WkxDMncwz4Xxp64Y0C2hryy
-	hHILJ7jWS3rRqbXTrDYtu9FhQdSqXCw2AI8x2Zqdt/lKyyWOWA==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1t0Epj-0000HP-9Q; Mon, 14 Oct 2024 08:45:35 +0200
-Message-ID: <06bab5c5-e9fd-4741-bab7-6b199cfac18a@leemhuis.info>
-Date: Mon, 14 Oct 2024 08:45:34 +0200
+	s=arc-20240116; t=1728888657; c=relaxed/simple;
+	bh=5fwQDtuZJ/Bi5IWJSnGY6namt6pSnRXtrjudA9qIXhQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q6AIYsiw8+JuzfpC1CcTc6xSbCdlLqzwdyAGxWX5AWZeAfrJIrY81RYIybHLuRLEp9BJWULOV9BTud8MBxskJJPrPIyGbP2rApdb1HvBDVSZqlY9fpgZ5c8mlfv9zamY/3PGinZH4VRPpO4NsXvJuw6dAyUSfU+rBBYgwI1S3ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OikLSEgx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E4BC4CECE;
+	Mon, 14 Oct 2024 06:50:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728888656;
+	bh=5fwQDtuZJ/Bi5IWJSnGY6namt6pSnRXtrjudA9qIXhQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OikLSEgxvQ/fcEAxUnjoMJaWuQcyDjzgHvleJaYTLT1RavHgsL3i0/Yzy0wNeJrQQ
+	 eTEhsKcI3zUd7snnF2VraEuaCezkG5TpwnMA+8VM1eB5QUmjvNugJutc7JG3Ynp3oZ
+	 abFprHe8KBSibQM71ElL/fMdt6iYMGBXhYFqMxBzdbfNH1mqUs8wfU4nNbKfo1V5sB
+	 9yOapvIO+Bdkk6AkaDpE6FE6Any7H6oaqogkDm30mwQmJhu3oIG680Kj7eFdNmmvMD
+	 xknVzMO2qml7hhuj8oMYZCn6BZMrp4rK3BcZzA8SZx6dQKWHG17xMdSuFm4U6QgQGX
+	 YNmHPIIOMAXng==
+Message-ID: <52ce41b7-72e1-48ad-86e4-5cfac67f8174@kernel.org>
+Date: Mon, 14 Oct 2024 08:50:50 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,64 +50,127 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Bad commit backported on the v5.15.y branch ?
-To: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
-References: <AM9P192MB1316ABE1A8E1D41C4243F596D7792@AM9P192MB1316.EURP192.PROD.OUTLOOK.COM>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Cc: Greg KH <gregkh@linuxfoundation.org>,
- Linux kernel regressions list <regressions@lists.linux.dev>,
- Sasha Levin <sashal@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
- Joel GUITTET <jguittet.opensource@witekio.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-In-Reply-To: <AM9P192MB1316ABE1A8E1D41C4243F596D7792@AM9P192MB1316.EURP192.PROD.OUTLOOK.COM>
+Subject: Re: [PATCH] staging: vchiq_arm: Fix missing refcount decrement in
+ error path for fw_node
+To: Umang Jain <umang.jain@ideasonboard.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Stefan Wahren <wahrenst@gmx.net>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: linux-rpi-kernel@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20241013-vchiq_arm-of_node_put-v1-1-f72b2a6e47d0@gmail.com>
+ <e88e5faf-d88a-4ce9-948a-c976c2969cad@ideasonboard.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <e88e5faf-d88a-4ce9-948a-c976c2969cad@ideasonboard.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1728888344;2a23363c;
-X-HE-SMSGID: 1t0Epj-0000HP-9Q
 
-On 11.10.24 10:48, Joel GUITTET wrote:
+On 13/10/2024 13:36, Umang Jain wrote:
+> Hi Javier,
 > 
-> I faced some issue related to scaling frequency on ZynqMP device
-> using v5.15.167 kernel. As an exemple setting the scaling frequency
-> below show it's not properly set:
+> Thank you for the patch.
 > 
-> cat /sys/devices/system/cpu/cpufreq/policy0/
-> scaling_available_frequencies 299999 399999 599999 1199999
+> On 13/10/24 4:12 pm, Javier Carrasco wrote:
+>> An error path was introduced without including the required call to
+>> of_node_put() to decrement the node's refcount and avoid leaking memory.
+>> If the call to kzalloc() for 'mgmt' fails, the probe returns without
+>> decrementing the refcount.
+>>
+>> Use the automatic cleanup facility to fix the bug and protect the code
+>> against new error paths where the call to of_node_put() might be missing
+>> again.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 1c9e16b73166 ("staging: vc04_services: vchiq_arm: Split driver static and runtime data")
+>> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+>> ---
+>>   drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 6 ++----
+>>   1 file changed, 2 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+>> index 27ceaac8f6cc..792cf3a807e1 100644
+>> --- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+>> +++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+>> @@ -1332,7 +1332,8 @@ MODULE_DEVICE_TABLE(of, vchiq_of_match);
+>>   
+>>   static int vchiq_probe(struct platform_device *pdev)
+>>   {
+>> -	struct device_node *fw_node;
+>> +	struct device_node *fw_node __free(device_node) =
+>> +		of_find_compatible_node(NULL, NULL, "raspberrypi,bcm2835-firmware");
 > 
-> echo 399999 > /sys/devices/system/cpu/cpufreq/policy0/
-> scaling_setspeed
+> How about :
 > 
-> cat /sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq 399999
+> +	struct device_node *fw_node __free(device_node) = NULL;
 > 
-> cat /sys/devices/system/cpu/cpufreq/policy0/cpuinfo_cur_freq 299999
-> ====> Should be 399999
+>>   	const struct vchiq_platform_info *info;
+>>   	struct vchiq_drv_mgmt *mgmt;
+>>   	int ret;
+>> @@ -1341,8 +1342,6 @@ static int vchiq_probe(struct platform_device *pdev)
+>>   	if (!info)
+>>   		return -EINVAL;
+>>   
+>> -	fw_node = of_find_compatible_node(NULL, NULL,
+>> -					  "raspberrypi,bcm2835-firmware");
 > 
-> After analysis of this issue with the help of Xilinx, it appears
-> that a commit was backported on the 5.15.y branch, but probably it
-> should not, or not as is. The commit is
-> 9117fc44fd3a9538261e530ba5a022dfc9519620 modifying drivers/clk/
-> zynqmp/divider.c.
+> And undo this (i.e. keep the of_find_compatible_node() call here
 
-FWIW, that is 1fe15be1fb6135 ("drivers: clk: zynqmp: update divider
-round rate logic") [v6.8-rc1].
+The point of using cleanup is to have constructor and destructor in one
+place, not split. This is not in the spirit of cleanup. Linus also
+commented on this and cleanup.h *explicitly* recommends not doing so. It
+also lead to real bugs from time to time, so no, please do not insist on
+such weird way.
 
-> Is anybody reading this message able to answer why it was
-> backported ?
+Best regards,
+Krzysztof
 
-Looks like because it fixes a bug. I CCed the original author and those
-that handled the patch, maybe they can help us out and tell us what's
-the best strategy forward here.
-
-> The information I have until now is that it is intended
-> recent kernel version. Dependencies for this modification is
-> currently under clarification with Xilinx (maybe another commit to
-> backport).
-> 
-> By the way, reverting this commit fix the issue shown above.
-Does 6.12-rc work fine for you? Because if not, we should fix the
-problem there.
-
-Ciao, Thorsten
 
