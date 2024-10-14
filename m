@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-83980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A36D99CD84
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC9099D2E2
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:31:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2563B20D28
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:33:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBC85B24755
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0351AC44D;
-	Mon, 14 Oct 2024 14:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AFE51ADFE4;
+	Mon, 14 Oct 2024 15:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fkhIjD2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sVv6CLcf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8AE1A76AC;
-	Mon, 14 Oct 2024 14:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBF5156256;
+	Mon, 14 Oct 2024 15:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916393; cv=none; b=SeAwiBLSidbfUKQrxjyJvKFcewVUul0vUt+xIzSftjCqnXXBWKWqpccHVsfvKsXKaNiFKK9XMf6/z9TyrCs+X/7GT5c1Rjukw4ntiOGxDuWK7+AQEgmxJiWxamHLYtLienBAj74SsNdqTaztZSvMu74KhSuQNU3fD7GYuW6zWg8=
+	t=1728919689; cv=none; b=md/X3sTcs5cVnxj3wY3+c2YmXHd9n+xgWgAiD3qzollEdajDUX7Oxw7ZWpWtTdTZGUHoRE+EfH4ORgSmh0O1BdzKdhvzsO5DvM5OzTVRU0ixr+8VgsZkFUQrjYfyDvlufZIWX5ACuTptvjJRBD/UruRzhieDcFLV9rEPdT5Vgtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916393; c=relaxed/simple;
-	bh=K9ngkVvaPYV5ByL1UOZDS4XQLA7uWaD4aRx3Fq8pzJk=;
+	s=arc-20240116; t=1728919689; c=relaxed/simple;
+	bh=MRAgylme8droz3dOhoWl1pJq6qvRoKI9gQtRPRDexAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LuQDRQ1jytaub+5v6JEXHsYvLSMFOxQGEsrIH0q8Mb72tJxTUuEJwVpr6SoWmzWBy4ZN7sAXG98jKGZl/HSW2QAEOi9tPGA5aEWUQXHfDNM81hqB30dWWMxRFqiBC9YcVcxiKsrU0Mim0BQL3I2Cehkc5f1ld1U2mQhUQnHs4Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fkhIjD2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5FEEC4CEC3;
-	Mon, 14 Oct 2024 14:33:12 +0000 (UTC)
+	 MIME-Version; b=XDbB/JEY9KAGJBK2mZY8sy3sAmE9W2z4qDiBRfvizunjKpUSJQPeS73IhF+lRujTEAvN8DXAVkYMIqkZzZggxC/sdoWD8zJNjTjrECvKFUkE0dzgWCMK9nR3drS+HfnoGPyGy/I8lZB1M4U1sivmokFB0QCAEsSsxsK8KKSFtuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sVv6CLcf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E68BC4CECF;
+	Mon, 14 Oct 2024 15:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916393;
-	bh=K9ngkVvaPYV5ByL1UOZDS4XQLA7uWaD4aRx3Fq8pzJk=;
+	s=korg; t=1728919688;
+	bh=MRAgylme8droz3dOhoWl1pJq6qvRoKI9gQtRPRDexAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1fkhIjD2ZaHtbw9BWUbkEhBDSoJ+pMpW3f8f+lQzX3yv2p1E44lwk+um9L/Wwn6ZR
-	 KVjsGb4OzT15EpqAJ+IUhPMovnA7HdTVAOOp8djK7PSognPeWiBjBJqkqAQ8p0oRWy
-	 KS2NAgqp0XScNcq7HdDXToh4ugsE0feSyJuJ/9gY=
+	b=sVv6CLcfn3ZMG+9+PdBWpNELr13/6TPsEUQH1M95Z2PZbdENwIndo7irpds2A01nH
+	 upgcQlaaAn3QaIgmK2KvRYih44YSVP03sixl0oa3FwzlOle8IoBw+zaPbMEBBuasby
+	 SI6WPZ3feRumxDMA9G0RP9UfTmiOXoU5QHuwQUks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.11 171/214] drm/amdgpu: partially revert powerplay `__counted_by` changes
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 680/798] Bluetooth: Fix usage of __hci_cmd_sync_status
 Date: Mon, 14 Oct 2024 16:20:34 +0200
-Message-ID: <20241014141051.651873149@linuxfoundation.org>
+Message-ID: <20241014141244.786133290@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,141 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit d6b9f492e229be1d1bd360c3ac5bee4635bacf99 upstream.
+[ Upstream commit 87be7b189b2c50d4b51512f59e4e97db4eedee8a ]
 
-Partially revert
-commit 0ca9f757a0e2 ("drm/amd/pm: powerplay: Add `__counted_by` attribute for flexible arrays")
+__hci_cmd_sync_status shall only be used if hci_req_sync_lock is _not_
+required which is not the case of hci_dev_cmd so it needs to use
+hci_cmd_sync_status which uses hci_req_sync_lock internally.
 
-The count attribute for these arrays does not get set until
-after the arrays are allocated and populated leading to false
-UBSAN warnings.
-
-Fixes: 0ca9f757a0e2 ("drm/amd/pm: powerplay: Add `__counted_by` attribute for flexible arrays")
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3662
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8a5ae927b653b43623e55610d2215ee94c027e8c)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f1a8f402f13f ("Bluetooth: L2CAP: Fix deadlock")
+Reported-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h | 26 ++++++++++----------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ net/bluetooth/hci_core.c | 27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h b/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
-index 9118fcddbf11..227bf0e84a13 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
-+++ b/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
-@@ -60,7 +60,7 @@ struct vi_dpm_level {
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index dc19a0b1a2f6d..993b98257bc28 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -721,8 +721,8 @@ int hci_dev_cmd(unsigned int cmd, void __user *arg)
  
- struct vi_dpm_table {
- 	uint32_t count;
--	struct vi_dpm_level dpm_level[] __counted_by(count);
-+	struct vi_dpm_level dpm_level[];
- };
+ 	switch (cmd) {
+ 	case HCISETAUTH:
+-		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_AUTH_ENABLE,
+-					    1, &dr.dev_opt, HCI_CMD_TIMEOUT);
++		err = hci_cmd_sync_status(hdev, HCI_OP_WRITE_AUTH_ENABLE,
++					  1, &dr.dev_opt, HCI_CMD_TIMEOUT);
+ 		break;
  
- #define PCIE_PERF_REQ_REMOVE_REGISTRY   0
-@@ -91,7 +91,7 @@ struct phm_set_power_state_input {
+ 	case HCISETENCRYPT:
+@@ -733,23 +733,21 @@ int hci_dev_cmd(unsigned int cmd, void __user *arg)
  
- struct phm_clock_array {
- 	uint32_t count;
--	uint32_t values[] __counted_by(count);
-+	uint32_t values[];
- };
+ 		if (!test_bit(HCI_AUTH, &hdev->flags)) {
+ 			/* Auth must be enabled first */
+-			err = __hci_cmd_sync_status(hdev,
+-						    HCI_OP_WRITE_AUTH_ENABLE,
+-						    1, &dr.dev_opt,
+-						    HCI_CMD_TIMEOUT);
++			err = hci_cmd_sync_status(hdev,
++						  HCI_OP_WRITE_AUTH_ENABLE,
++						  1, &dr.dev_opt,
++						  HCI_CMD_TIMEOUT);
+ 			if (err)
+ 				break;
+ 		}
  
- struct phm_clock_voltage_dependency_record {
-@@ -123,7 +123,7 @@ struct phm_acpclock_voltage_dependency_record {
+-		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_ENCRYPT_MODE,
+-					    1, &dr.dev_opt,
+-					    HCI_CMD_TIMEOUT);
++		err = hci_cmd_sync_status(hdev, HCI_OP_WRITE_ENCRYPT_MODE,
++					  1, &dr.dev_opt, HCI_CMD_TIMEOUT);
+ 		break;
  
- struct phm_clock_voltage_dependency_table {
- 	uint32_t count;
--	struct phm_clock_voltage_dependency_record entries[] __counted_by(count);
-+	struct phm_clock_voltage_dependency_record entries[];
- };
+ 	case HCISETSCAN:
+-		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_SCAN_ENABLE,
+-					    1, &dr.dev_opt,
+-					    HCI_CMD_TIMEOUT);
++		err = hci_cmd_sync_status(hdev, HCI_OP_WRITE_SCAN_ENABLE,
++					  1, &dr.dev_opt, HCI_CMD_TIMEOUT);
  
- struct phm_phase_shedding_limits_record {
-@@ -140,7 +140,7 @@ struct phm_uvd_clock_voltage_dependency_record {
+ 		/* Ensure that the connectable and discoverable states
+ 		 * get correctly modified as this was a non-mgmt change.
+@@ -761,9 +759,8 @@ int hci_dev_cmd(unsigned int cmd, void __user *arg)
+ 	case HCISETLINKPOL:
+ 		policy = cpu_to_le16(dr.dev_opt);
  
- struct phm_uvd_clock_voltage_dependency_table {
- 	uint8_t count;
--	struct phm_uvd_clock_voltage_dependency_record entries[] __counted_by(count);
-+	struct phm_uvd_clock_voltage_dependency_record entries[];
- };
+-		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_DEF_LINK_POLICY,
+-					    2, &policy,
+-					    HCI_CMD_TIMEOUT);
++		err = hci_cmd_sync_status(hdev, HCI_OP_WRITE_DEF_LINK_POLICY,
++					  2, &policy, HCI_CMD_TIMEOUT);
+ 		break;
  
- struct phm_acp_clock_voltage_dependency_record {
-@@ -150,7 +150,7 @@ struct phm_acp_clock_voltage_dependency_record {
- 
- struct phm_acp_clock_voltage_dependency_table {
- 	uint32_t count;
--	struct phm_acp_clock_voltage_dependency_record entries[] __counted_by(count);
-+	struct phm_acp_clock_voltage_dependency_record entries[];
- };
- 
- struct phm_vce_clock_voltage_dependency_record {
-@@ -161,32 +161,32 @@ struct phm_vce_clock_voltage_dependency_record {
- 
- struct phm_phase_shedding_limits_table {
- 	uint32_t count;
--	struct phm_phase_shedding_limits_record  entries[] __counted_by(count);
-+	struct phm_phase_shedding_limits_record  entries[];
- };
- 
- struct phm_vceclock_voltage_dependency_table {
- 	uint8_t count;
--	struct phm_vceclock_voltage_dependency_record entries[] __counted_by(count);
-+	struct phm_vceclock_voltage_dependency_record entries[];
- };
- 
- struct phm_uvdclock_voltage_dependency_table {
- 	uint8_t count;
--	struct phm_uvdclock_voltage_dependency_record entries[] __counted_by(count);
-+	struct phm_uvdclock_voltage_dependency_record entries[];
- };
- 
- struct phm_samuclock_voltage_dependency_table {
- 	uint8_t count;
--	struct phm_samuclock_voltage_dependency_record entries[] __counted_by(count);
-+	struct phm_samuclock_voltage_dependency_record entries[];
- };
- 
- struct phm_acpclock_voltage_dependency_table {
- 	uint32_t count;
--	struct phm_acpclock_voltage_dependency_record entries[] __counted_by(count);
-+	struct phm_acpclock_voltage_dependency_record entries[];
- };
- 
- struct phm_vce_clock_voltage_dependency_table {
- 	uint8_t count;
--	struct phm_vce_clock_voltage_dependency_record entries[] __counted_by(count);
-+	struct phm_vce_clock_voltage_dependency_record entries[];
- };
- 
- 
-@@ -393,7 +393,7 @@ union phm_cac_leakage_record {
- 
- struct phm_cac_leakage_table {
- 	uint32_t count;
--	union phm_cac_leakage_record entries[] __counted_by(count);
-+	union phm_cac_leakage_record entries[];
- };
- 
- struct phm_samu_clock_voltage_dependency_record {
-@@ -404,7 +404,7 @@ struct phm_samu_clock_voltage_dependency_record {
- 
- struct phm_samu_clock_voltage_dependency_table {
- 	uint8_t count;
--	struct phm_samu_clock_voltage_dependency_record entries[] __counted_by(count);
-+	struct phm_samu_clock_voltage_dependency_record entries[];
- };
- 
- struct phm_cac_tdp_table {
+ 	case HCISETLINKMODE:
 -- 
-2.47.0
+2.43.0
 
 
 
