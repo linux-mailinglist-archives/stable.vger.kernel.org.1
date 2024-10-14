@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-84026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A2F999CDC2
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB7399CE99
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA98B1F23B00
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FF2BB222F8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7224B1AA7A5;
-	Mon, 14 Oct 2024 14:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79861ABEB7;
+	Mon, 14 Oct 2024 14:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wx12qeAL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JATGUXOo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259FB4A24;
-	Mon, 14 Oct 2024 14:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15821ABEA1;
+	Mon, 14 Oct 2024 14:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916555; cv=none; b=f+rHLG/z0Hkjs7pgWd+MTJFdcmE7wZPC84jHv36lchCfaioh7fmip45i9R/NWtgjugwL7wsDqxuQtuBPb9BNLkgb0D6yjdFb/40S+Wl7jQ5ysBW4r8V7+jEJCWTEUlNlVIg8trPFEzCy7XweXWXfPk0IEmgnCAs3dHXN8Sk//5E=
+	t=1728917114; cv=none; b=WKwzuVWPOXxn6MfIFoVqND+mcDpur6z/xLx1mLT+Awlw32YlqD9wtKjd7lwRb/6evtpBNXCg5bj5cqTggBavDBsFr20BEvFYTsHGireFHJs7e6CUYVkHwXr9BizDiZEcihpGBaafg2V1lgGJIYOP2EJ9p58WtlkSlw+flt53EgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916555; c=relaxed/simple;
-	bh=A9GbwNHcYboLi8gMKLwYDIcsaM3oDnEjL29z90F6u30=;
+	s=arc-20240116; t=1728917114; c=relaxed/simple;
+	bh=BT+DCkexdLHm7GdH2I9olnBOleUjhCMqVI4VXrtGq2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fz2woguBqZdSw3jEnlafkfsVCbbWXS6lVuYPxd7VTNUrNnaj7c4v1PvzgKt55JvMWFz4rrYmLhBm5wDZCQLDjwghtT1BUxdFDPdr/30hvvUt8d7nAuG+qrvhHvlKP4GmeaZvPOOJhldRwt89oY5Wy1RHahLlu1rzdlv7xBKWW60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wx12qeAL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AFAC4CEC3;
-	Mon, 14 Oct 2024 14:35:54 +0000 (UTC)
+	 MIME-Version; b=ebVGX2T4Zrr7kXjYrlt+iyogTikVnfnoU5hfyiOMwe32zzhO8x6IsxzJgtPzIBXa1+xyuOe9GO5A7aMCj/U3Xj6O/857wseKcI4rRLQ4GvwS4m6JAl/Om0ybAArHgl5v6qoPAO2rvvqPnAQ3Gt+02V60K/PT4I/dzj9ctzgPJW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JATGUXOo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E837AC4CEC3;
+	Mon, 14 Oct 2024 14:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916555;
-	bh=A9GbwNHcYboLi8gMKLwYDIcsaM3oDnEjL29z90F6u30=;
+	s=korg; t=1728917114;
+	bh=BT+DCkexdLHm7GdH2I9olnBOleUjhCMqVI4VXrtGq2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wx12qeAL1ciz+6+8nJhuvezNKuicO/We8qG9K8OyRnMs9jhnEkzv1AeWW2zBk74eU
-	 tqRHNIeRs9wvVsKxzHXxJpdM6WYPVhvvvlAufPbqfFoGIMMSPuTy30SvR29zcOihj6
-	 X9NcR1APH1HWtpP7rfAC37ExspkQ8PtOU+oTsPDM=
+	b=JATGUXOoU08d0KaiQ/DuOqgGQt0xxCJUo9W0daGCBE1i28HHpMblaZtPVStc2ntgp
+	 9WmaWL7ESHKWdvGLc//oaMSM0GbMkGveEBPJFjMVTZBMDC4jhrzcvInEJHoS41g/uw
+	 Ax2TAfJASUHZxhJ4/NHMZUsy8zj2/swimpO4gpUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.11 198/214] mptcp: pm: do not remove closing subflows
-Date: Mon, 14 Oct 2024 16:21:01 +0200
-Message-ID: <20241014141052.703427469@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 156/213] rtnetlink: change nlk->cb_mutex role
+Date: Mon, 14 Oct 2024 16:21:02 +0200
+Message-ID: <20241014141049.058899024@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit db0a37b7ac27d8ca27d3dc676a16d081c16ec7b9 upstream.
+[ Upstream commit e39951d965bf58b5aba7f61dc1140dcb8271af22 ]
 
-In a previous fix, the in-kernel path-manager has been modified not to
-retrigger the removal of a subflow if it was already closed, e.g. when
-the initial subflow is removed, but kept in the subflows list.
+In commit af65bdfce98d ("[NETLINK]: Switch cb_lock spinlock
+to mutex and allow to override it"), Patrick McHardy used
+a common mutex to protect both nlk->cb and the dump() operations.
 
-To be complete, this fix should also skip the subflows that are in any
-closing state: mptcp_close_ssk() will initiate the closure, but the
-switch to the TCP_CLOSE state depends on the other peer.
+The override is used for rtnl dumps, registered with
+rntl_register() and rntl_register_module().
 
-Fixes: 58e1b66b4e4b ("mptcp: pm: do not remove already closed subflows")
-Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241008-net-mptcp-fallback-fixes-v1-4-c6fb8e93e551@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+We want to be able to opt-out some dump() operations
+to not acquire RTNL, so we need to protect nlk->cb
+with a per socket mutex.
+
+This patch renames nlk->cb_def_mutex to nlk->nl_cb_mutex
+
+The optional pointer to the mutex used to protect dump()
+call is stored in nlk->dump_cb_mutex
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 5be2062e3080 ("mpls: Handle error of rtnl_register_module().")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/netlink/af_netlink.c | 32 ++++++++++++++++++--------------
+ net/netlink/af_netlink.h |  5 +++--
+ 2 files changed, 21 insertions(+), 16 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -856,7 +856,8 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 			int how = RCV_SHUTDOWN | SEND_SHUTDOWN;
- 			u8 id = subflow_get_local_id(subflow);
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index db49fc4d42cf7..e40376997f393 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -636,7 +636,7 @@ static struct proto netlink_proto = {
+ };
  
--			if (inet_sk_state_load(ssk) == TCP_CLOSE)
-+			if ((1 << inet_sk_state_load(ssk)) &
-+			    (TCPF_FIN_WAIT1 | TCPF_FIN_WAIT2 | TCPF_CLOSING | TCPF_CLOSE))
- 				continue;
- 			if (rm_type == MPTCP_MIB_RMADDR && remote_id != rm_id)
- 				continue;
+ static int __netlink_create(struct net *net, struct socket *sock,
+-			    struct mutex *cb_mutex, int protocol,
++			    struct mutex *dump_cb_mutex, int protocol,
+ 			    int kern)
+ {
+ 	struct sock *sk;
+@@ -651,15 +651,11 @@ static int __netlink_create(struct net *net, struct socket *sock,
+ 	sock_init_data(sock, sk);
+ 
+ 	nlk = nlk_sk(sk);
+-	if (cb_mutex) {
+-		nlk->cb_mutex = cb_mutex;
+-	} else {
+-		nlk->cb_mutex = &nlk->cb_def_mutex;
+-		mutex_init(nlk->cb_mutex);
+-		lockdep_set_class_and_name(nlk->cb_mutex,
++	mutex_init(&nlk->nl_cb_mutex);
++	lockdep_set_class_and_name(&nlk->nl_cb_mutex,
+ 					   nlk_cb_mutex_keys + protocol,
+ 					   nlk_cb_mutex_key_strings[protocol]);
+-	}
++	nlk->dump_cb_mutex = dump_cb_mutex;
+ 	init_waitqueue_head(&nlk->wait);
+ 
+ 	sk->sk_destruct = netlink_sock_destruct;
+@@ -2211,7 +2207,7 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
+ 	int alloc_size;
+ 
+ 	if (!lock_taken)
+-		mutex_lock(nlk->cb_mutex);
++		mutex_lock(&nlk->nl_cb_mutex);
+ 	if (!nlk->cb_running) {
+ 		err = -EINVAL;
+ 		goto errout_skb;
+@@ -2263,14 +2259,22 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
+ 	netlink_skb_set_owner_r(skb, sk);
+ 
+ 	if (nlk->dump_done_errno > 0) {
++		struct mutex *extra_mutex = nlk->dump_cb_mutex;
++
+ 		cb->extack = &extack;
++
++		if (extra_mutex)
++			mutex_lock(extra_mutex);
+ 		nlk->dump_done_errno = cb->dump(skb, cb);
++		if (extra_mutex)
++			mutex_unlock(extra_mutex);
++
+ 		cb->extack = NULL;
+ 	}
+ 
+ 	if (nlk->dump_done_errno > 0 ||
+ 	    skb_tailroom(skb) < nlmsg_total_size(sizeof(nlk->dump_done_errno))) {
+-		mutex_unlock(nlk->cb_mutex);
++		mutex_unlock(&nlk->nl_cb_mutex);
+ 
+ 		if (sk_filter(sk, skb))
+ 			kfree_skb(skb);
+@@ -2304,13 +2308,13 @@ static int netlink_dump(struct sock *sk, bool lock_taken)
+ 	WRITE_ONCE(nlk->cb_running, false);
+ 	module = cb->module;
+ 	skb = cb->skb;
+-	mutex_unlock(nlk->cb_mutex);
++	mutex_unlock(&nlk->nl_cb_mutex);
+ 	module_put(module);
+ 	consume_skb(skb);
+ 	return 0;
+ 
+ errout_skb:
+-	mutex_unlock(nlk->cb_mutex);
++	mutex_unlock(&nlk->nl_cb_mutex);
+ 	kfree_skb(skb);
+ 	return err;
+ }
+@@ -2333,7 +2337,7 @@ int __netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
+ 	}
+ 
+ 	nlk = nlk_sk(sk);
+-	mutex_lock(nlk->cb_mutex);
++	mutex_lock(&nlk->nl_cb_mutex);
+ 	/* A dump is in progress... */
+ 	if (nlk->cb_running) {
+ 		ret = -EBUSY;
+@@ -2384,7 +2388,7 @@ int __netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
+ 	module_put(control->module);
+ error_unlock:
+ 	sock_put(sk);
+-	mutex_unlock(nlk->cb_mutex);
++	mutex_unlock(&nlk->nl_cb_mutex);
+ error_free:
+ 	kfree_skb(skb);
+ 	return ret;
+diff --git a/net/netlink/af_netlink.h b/net/netlink/af_netlink.h
+index 2145979b9986a..9751e29d4bbb9 100644
+--- a/net/netlink/af_netlink.h
++++ b/net/netlink/af_netlink.h
+@@ -39,8 +39,9 @@ struct netlink_sock {
+ 	bool			cb_running;
+ 	int			dump_done_errno;
+ 	struct netlink_callback	cb;
+-	struct mutex		*cb_mutex;
+-	struct mutex		cb_def_mutex;
++	struct mutex		nl_cb_mutex;
++
++	struct mutex		*dump_cb_mutex;
+ 	void			(*netlink_rcv)(struct sk_buff *skb);
+ 	int			(*netlink_bind)(struct net *net, int group);
+ 	void			(*netlink_unbind)(struct net *net, int group);
+-- 
+2.43.0
+
 
 
 
