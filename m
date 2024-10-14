@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-84857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F21E99D26B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:25:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B80EE99CE14
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:39:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7FB4284A2D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:25:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B5831F23CB3
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FDA1B4F1F;
-	Mon, 14 Oct 2024 15:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C67E1AB517;
+	Mon, 14 Oct 2024 14:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zaNPWu+2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6l0GUS9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E617A1798C;
-	Mon, 14 Oct 2024 15:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9501A76A5;
+	Mon, 14 Oct 2024 14:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919464; cv=none; b=R6La2yX1pUv/SLLTN7+zss36/UB3fRwHf7wH+fOUaOOZtTuhMupBj/XkEiDSFYhHNJAhykfq5a4zUgqHaIF9ANgNTmiOFQRcxMAi2VnFcGMobt0Ge5TJe82mnCpaYLY3dSzs2+S+YvD6Td6USmJk/zgkguDqeuP9EQeEoLDvjqM=
+	t=1728916777; cv=none; b=HKZXGjsk+kFGEepceF1tQKDg/jezFvTfY20tPJqJA4ELtx4y+WHr9KEAip96jXlrxZ07HMlyiGyVizbxBxWN2+0sd069bPtDkc+SEvdHBgFNiFPMy9lH/i4pPDV058yXQ6SzK2UHsF6Oa7S9d9UzkUsWqqNjFCjs3nJajSfrBKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919464; c=relaxed/simple;
-	bh=iMOkDWi0DzgsRjCBWSckQ03GQgg+j0uXsBHPEGshYk8=;
+	s=arc-20240116; t=1728916777; c=relaxed/simple;
+	bh=gy/zzEoRAcGBDtDyf2UUw2m7gWEZMFylIa9sMy+7dY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rMFqPVz/oTfKBfVWmvHhXD6rUTsvEfTz+3TvLj80sm8tBYzziqIy6/OLhZCzZqdqar39nUpdhaxtLGjCBMOFieUxpA/zbENsqCIjDt02ogrgkkNjwtFTcD9nY+XzhMID02cEDiQKDHZjuF+KvfJ7QuKmKdc1Kj5l8pP+avkkzX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zaNPWu+2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55261C4CEC3;
-	Mon, 14 Oct 2024 15:24:23 +0000 (UTC)
+	 MIME-Version; b=ig6u9G+crX1fUXg7v8wwxDzQBOuC8LOy618CyJaDoIkO+8xBgWcSGXuBzKrKIIDEaaMes6SmcRNXgayYpFtnee3hfH+p7qdxY4q9gIpiqPrJL+g0PEDv0titV4YJ9zN67lwhR3xE7oDuG8v2BJP1OGJheJA1ofql3pta74mOwsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6l0GUS9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F4E4C4CEC3;
+	Mon, 14 Oct 2024 14:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919463;
-	bh=iMOkDWi0DzgsRjCBWSckQ03GQgg+j0uXsBHPEGshYk8=;
+	s=korg; t=1728916777;
+	bh=gy/zzEoRAcGBDtDyf2UUw2m7gWEZMFylIa9sMy+7dY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zaNPWu+2yPgv0il0Ct8mjUpt2Gl/pE8qmceQ7Gm8USPnobN7aFVqKLNGlu+4o2TwM
-	 eLddNkiE5DlgxkgpKXbfW3MeQ2iAe/YMspVmA7gRLAdxIZf3Gg4DUq6ein8Ma27Wbf
-	 7966vr6JXSQwvEh3dvglNLtKj9ce6MAdpb+JajLA=
+	b=l6l0GUS9kL9/1KjWGGGMepsytFqSBYKAq7SoorMnWstL3kCc9BRO/io2w+PuiRn3P
+	 OD5JgTidMfcxzPQS1/dgGBhIa9yWvithoR5v4WavmSdL5+h8xEMLekAOXmOzwumgAI
+	 XR0SYE1M8jMKa+7NVCvqpCADPNxhsSNdEryZ3Hv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Luben Tuikov <ltuikov89@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	dri-devel@lists.freedesktop.org,
-	Philipp Stanner <pstanner@redhat.com>
-Subject: [PATCH 6.1 614/798] drm/sched: Add locking to drm_sched_entity_modify_sched
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 062/213] ext4: dont set SB_RDONLY after filesystem errors
 Date: Mon, 14 Oct 2024 16:19:28 +0200
-Message-ID: <20241014141242.156418902@linuxfoundation.org>
+Message-ID: <20241014141045.407482412@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,57 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 4286cc2c953983d44d248c9de1c81d3a9643345c upstream.
+[ Upstream commit d3476f3dad4ad68ae5f6b008ea6591d1520da5d8 ]
 
-Without the locking amdgpu currently can race between
-amdgpu_ctx_set_entity_priority() (via drm_sched_entity_modify_sched()) and
-drm_sched_job_arm(), leading to the latter accesing potentially
-inconsitent entity->sched_list and entity->num_sched_list pair.
+When the filesystem is mounted with errors=remount-ro, we were setting
+SB_RDONLY flag to stop all filesystem modifications. We knew this misses
+proper locking (sb->s_umount) and does not go through proper filesystem
+remount procedure but it has been the way this worked since early ext2
+days and it was good enough for catastrophic situation damage
+mitigation. Recently, syzbot has found a way (see link) to trigger
+warnings in filesystem freezing because the code got confused by
+SB_RDONLY changing under its hands. Since these days we set
+EXT4_FLAGS_SHUTDOWN on the superblock which is enough to stop all
+filesystem modifications, modifying SB_RDONLY shouldn't be needed. So
+stop doing that.
 
-v2:
- * Improve commit message. (Philipp)
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: b37aced31eb0 ("drm/scheduler: implement a function to modify sched list")
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Luben Tuikov <ltuikov89@gmail.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org
-Cc: Philipp Stanner <pstanner@redhat.com>
-Cc: <stable@vger.kernel.org> # v5.7+
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240913160559.49054-2-tursulin@igalia.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/all/000000000000b90a8e061e21d12f@google.com
+Reported-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Link: https://patch.msgid.link/20240805201241.27286-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/super.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -110,8 +110,10 @@ void drm_sched_entity_modify_sched(struc
- {
- 	WARN_ON(!num_sched_list || !sched_list);
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index ed0dc4cc1d28e..1d14a38017a7f 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -744,11 +744,12 @@ static void ext4_handle_error(struct super_block *sb, bool force_ro, int error,
  
-+	spin_lock(&entity->rq_lock);
- 	entity->sched_list = sched_list;
- 	entity->num_sched_list = num_sched_list;
-+	spin_unlock(&entity->rq_lock);
+ 	ext4_msg(sb, KERN_CRIT, "Remounting filesystem read-only");
+ 	/*
+-	 * Make sure updated value of ->s_mount_flags will be visible before
+-	 * ->s_flags update
++	 * EXT4_FLAGS_SHUTDOWN was set which stops all filesystem
++	 * modifications. We don't set SB_RDONLY because that requires
++	 * sb->s_umount semaphore and setting it without proper remount
++	 * procedure is confusing code such as freeze_super() leading to
++	 * deadlocks and other problems.
+ 	 */
+-	smp_wmb();
+-	sb->s_flags |= SB_RDONLY;
  }
- EXPORT_SYMBOL(drm_sched_entity_modify_sched);
  
+ static void update_super_work(struct work_struct *work)
+-- 
+2.43.0
+
 
 
 
