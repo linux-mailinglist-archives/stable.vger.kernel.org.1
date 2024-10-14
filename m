@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-84851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34AF99D263
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:25:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4876599CE0B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:39:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F6661F2530A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:25:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E4BD281790
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780961AC887;
-	Mon, 14 Oct 2024 15:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48A81A76A5;
+	Mon, 14 Oct 2024 14:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oK/dPzme"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQvXluZN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AE015D5C5;
-	Mon, 14 Oct 2024 15:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736FE4A24;
+	Mon, 14 Oct 2024 14:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919433; cv=none; b=joDALT9YN36AYvEe/rfhe4sml31F2BTZ+/tA3xCEdi1Z0TGaxwjZK+r8hUhCPKFPxuCdwfLokBdx1hFlMCBEj5FF/3UliTLhcReLziGg4rYp1Yv0hM/xYDE2PVlb0muYao+vqMH/DWOkTmIxO90gXVaJ8AXe/YRUG9RSCwGlYSo=
+	t=1728916757; cv=none; b=CCkNctMtx6OAse7o321QSw8W5S05u2g78WymjrixRBRhzZiEbGQmH0ILYeN9kB0KrRz1DKUMCuo0k1JlpCUgPoZI3IYg0A7AuC+vr4MFHaGD7/IUkusVLgy/fcQBft2n6ntokVyJ6xjwFexGSMlLxAIc1WF2PCzupchC3yB+StI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919433; c=relaxed/simple;
-	bh=VRMnyVQQuKg4u0hkUVe1uuLmttL43SlnURJdILL/EBo=;
+	s=arc-20240116; t=1728916757; c=relaxed/simple;
+	bh=v1VAMGVtRJygQKTX5QRJ4lG8JNOKY33bZCjhEFkF4Nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kyET9fz7rpFkPdSlKhBYjdU9WAYGBh4eAzMMI6Xo4FTP382QbxM368IokEM7o9HtcU8PwBe+mC/L9U/ko/1hm9Pn5NNS6xtRWyQKSoVsxVDDRrpsrGeSoHt7vKlpk4oF1uFMaQLI7NyM0pKPnHHHA6PJsCwshtiNCXA2037KtvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oK/dPzme; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0D2C4CEC3;
-	Mon, 14 Oct 2024 15:23:52 +0000 (UTC)
+	 MIME-Version; b=pSuj/DzcKFV0yQJQsKKGKQ2UJHSXUx1UDNtYPjY1Eij/OUcIHakzVmCPZaNuhmCtMEuU0COO0e8sxfJttMzUrfA3qMf/wlcrvtKUFD1HGU7UaQ2SBMf+ZaogNXVVwvgb/s/UQHp9+eSu/jY9+F2BUXuGa80l5xUphPt7QrWYDoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQvXluZN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCE2C4CEC3;
+	Mon, 14 Oct 2024 14:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919433;
-	bh=VRMnyVQQuKg4u0hkUVe1uuLmttL43SlnURJdILL/EBo=;
+	s=korg; t=1728916757;
+	bh=v1VAMGVtRJygQKTX5QRJ4lG8JNOKY33bZCjhEFkF4Nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oK/dPzmekqPHz1K1nf/Iu9Y2E7NYbm64c7s2DRJkPKt365TwLSjuj4BhFthJVWWCT
-	 WyHZPa/ycdNb3atgQY/3OAXgWPauICu8KUHphYj7qM5Y2JY32xKwzzS4d72ciEe0e5
-	 cL9k1HMGqaamtzIC/jwV+mgsVVG7UN3zMEVbMhqk=
+	b=mQvXluZNBEeFeVBhZhZFKm3LBOtyIQ5pqnaVn6rrFfliYEp7U2rvuUF05wQxgKQhU
+	 wD4POZU6tJ4E0manQ4FrJZSbILEBSBoSDqnY1FXgI2MynXHhaG9GSEIaFku7Bn7Ps0
+	 cAIfKAltPvAiB3HkZhD8Rd35FeG0PF6v/HtuQOPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Kiran K <kiran.k@intel.com>
-Subject: [PATCH 6.1 608/798] Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 056/213] selftests/bpf: Fix ARG_PTR_TO_LONG {half-,}uninitialized test
 Date: Mon, 14 Oct 2024 16:19:22 +0200
-Message-ID: <20241014141241.906193535@linuxfoundation.org>
+Message-ID: <20241014141045.176971869@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit b25e11f978b63cb7857890edb3a698599cddb10e upstream.
+[ Upstream commit b8e188f023e07a733b47d5865311ade51878fe40 ]
 
-This aligned BR/EDR JUST_WORKS method with LE which since 92516cd97fd4
-("Bluetooth: Always request for user confirmation for Just Works")
-always request user confirmation with confirm_hint set since the
-likes of bluetoothd have dedicated policy around JUST_WORKS method
-(e.g. main.conf:JustWorksRepairing).
+The assumption of 'in privileged mode reads from uninitialized stack locations
+are permitted' is not quite correct since the verifier was probing for read
+access rather than write access. Both tests need to be annotated as __success
+for privileged and unprivileged.
 
-CVE: CVE-2024-8805
-Cc: stable@vger.kernel.org
-Fixes: ba15a58b179e ("Bluetooth: Fix SSP acceptor just-works confirmation without MITM")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Tested-by: Kiran K <kiran.k@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20240913191754.13290-6-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c |   13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ tools/testing/selftests/bpf/progs/verifier_int_ptr.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -5422,19 +5422,16 @@ static void hci_user_confirm_request_evt
- 		goto unlock;
- 	}
+diff --git a/tools/testing/selftests/bpf/progs/verifier_int_ptr.c b/tools/testing/selftests/bpf/progs/verifier_int_ptr.c
+index 589e8270de462..d873da71f1436 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_int_ptr.c
++++ b/tools/testing/selftests/bpf/progs/verifier_int_ptr.c
+@@ -8,7 +8,6 @@
+ SEC("socket")
+ __description("ARG_PTR_TO_LONG uninitialized")
+ __success
+-__failure_unpriv __msg_unpriv("invalid indirect read from stack R4 off -16+0 size 8")
+ __naked void arg_ptr_to_long_uninitialized(void)
+ {
+ 	asm volatile ("					\
+@@ -36,9 +35,7 @@ __naked void arg_ptr_to_long_uninitialized(void)
  
--	/* If no side requires MITM protection; auto-accept */
-+	/* If no side requires MITM protection; use JUST_CFM method */
- 	if ((!loc_mitm || conn->remote_cap == HCI_IO_NO_INPUT_OUTPUT) &&
- 	    (!rem_mitm || conn->io_capability == HCI_IO_NO_INPUT_OUTPUT)) {
- 
--		/* If we're not the initiators request authorization to
--		 * proceed from user space (mgmt_user_confirm with
--		 * confirm_hint set to 1). The exception is if neither
--		 * side had MITM or if the local IO capability is
--		 * NoInputNoOutput, in which case we do auto-accept
-+		/* If we're not the initiator of request authorization and the
-+		 * local IO capability is not NoInputNoOutput, use JUST_WORKS
-+		 * method (mgmt_user_confirm with confirm_hint set to 1).
- 		 */
- 		if (!test_bit(HCI_CONN_AUTH_PEND, &conn->flags) &&
--		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT &&
--		    (loc_mitm || rem_mitm)) {
-+		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT) {
- 			bt_dev_dbg(hdev, "Confirming auto-accept as acceptor");
- 			confirm_hint = 1;
- 			goto confirm;
+ SEC("socket")
+ __description("ARG_PTR_TO_LONG half-uninitialized")
+-/* in privileged mode reads from uninitialized stack locations are permitted */
+-__success __failure_unpriv
+-__msg_unpriv("invalid indirect read from stack R4 off -16+4 size 8")
++__success
+ __retval(0)
+ __naked void ptr_to_long_half_uninitialized(void)
+ {
+-- 
+2.43.0
+
 
 
 
