@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-84539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E14599D0AE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:06:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 081F899D0BB
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:06:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FDE91C236CA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:06:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B65AD287A49
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885151AB534;
-	Mon, 14 Oct 2024 15:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAB44CDEC;
+	Mon, 14 Oct 2024 15:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyriphnc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiTdPOWy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E27487A7;
-	Mon, 14 Oct 2024 15:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B60F1798C;
+	Mon, 14 Oct 2024 15:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918357; cv=none; b=KLkv3McV/quRJGhpFfy7U4ZlIctU5nacJgYrj0qArqkr+ohTgcikqstYyQt3S/9TSOsf2f7c74mJrRroFm83mdmL7Gy+R/I8po+WhmFmU5td5QhDtyyArnlstivdXbU8EBM+bFX1ziAypVqQHfrWZP9ROCuC6kbtacqgt9WhoYE=
+	t=1728918394; cv=none; b=X0JqHWdGeG0+NbsWZpwPbVnqQ+4ci5TMgTdlGMMSRrTAmXItGijgsJG6zB8P7kMw/BJykfQ9Cc9fKOX5dcEsURpHxldMTJCiL2zGxtj+f23X4vDUCJpDhN86oKvZ/SHIqtBud2GvNjxUaoTLRZmRNA4xGY/fNWhMNQD8HDrXIi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918357; c=relaxed/simple;
-	bh=Ec+Nh7rIBfp7PVszjgQrQ3FicGSxW2geZnX9rYQNkV8=;
+	s=arc-20240116; t=1728918394; c=relaxed/simple;
+	bh=Imh3Yjt3STeXKiGvaha7hB/8D0v5iiGETRRFqwyJUDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PtXAJeXutEgy7GvIvNt7L8spOQ9pPBzZd69h/8dwnMZO4Y50+e/4WPvoOHdAm4/A/xPFSMnPsDjne9euEv+NwMW5Ef3YGNDcXoh1lnPHwD40G6mnFu/CaDVULzzxvltXCEh9SZiOMi4SrV64vRlLNTzzmcNGtnz7xBu9aUzMegE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyriphnc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46654C4CEC3;
-	Mon, 14 Oct 2024 15:05:56 +0000 (UTC)
+	 MIME-Version; b=sRolIUI/LZazH7oj82SbDTo/O19sw/G0Tp5C36SxLWcR1B5ciRO8HxMxuyVho5qrTzx/wOuW6qS0CK0hGPQ75kzHn4IeraBxW+FGypcjee4RMNXwTMhR4isOiiBTESkZDXjlGsTNaRWd1snkIXK7KfxNZlZYkCwH2jDyTO+e3wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiTdPOWy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5747CC4CEC3;
+	Mon, 14 Oct 2024 15:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918356;
-	bh=Ec+Nh7rIBfp7PVszjgQrQ3FicGSxW2geZnX9rYQNkV8=;
+	s=korg; t=1728918393;
+	bh=Imh3Yjt3STeXKiGvaha7hB/8D0v5iiGETRRFqwyJUDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zyriphncNlONSyfEuvJGKUWYnZ4wI0kVg5vAUKme8F5GBRarbOrphawaIxOt6qHxG
-	 D7vEOneodn9zEewYW+pIc16u8okZq6skViFt6kD+UpPuBm55uarxcC4Su4VI02jE3r
-	 76spDPCFnJbz2nL4CiTjo4HOduqERRvQQJAmk4gU=
+	b=HiTdPOWyPH+63NC9IBycA+5aMQdtPoUvc05xaSSP1zef5Vz/yTP7VqlooiRfyJKym
+	 AKi0tvPEj/RwKggL6FngxWoYBKh0ukP3OjOEmihPtP+zwVFjsx7Xj8xN5H5pRVVNOq
+	 WJzpSUS3sQhAhvucuwUAb6PjKxBEOlL58XroJ+RY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 291/798] KVM: x86: Enforce x2APICs must-be-zero reserved ICR bits
-Date: Mon, 14 Oct 2024 16:14:05 +0200
-Message-ID: <20241014141229.376290512@linuxfoundation.org>
+Subject: [PATCH 6.1 292/798] KVM: x86: Move x2APIC ICR helper above kvm_apic_write_nodecode()
+Date: Mon, 14 Oct 2024 16:14:06 +0200
+Message-ID: <20241014141229.415434633@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -66,47 +66,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Sean Christopherson <seanjc@google.com>
 
-commit 71bf395a276f0578d19e0ae137a7d1d816d08e0e upstream.
+commit d33234342f8b468e719e05649fd26549fb37ef8a upstream.
 
-Inject a #GP on a WRMSR(ICR) that attempts to set any reserved bits that
-are must-be-zero on both Intel and AMD, i.e. any reserved bits other than
-the BUSY bit, which Intel ignores and basically says is undefined.
+Hoist kvm_x2apic_icr_write() above kvm_apic_write_nodecode() so that a
+local helper to _read_ the x2APIC ICR can be added and used in the
+nodecode path without needing a forward declaration.
 
-KVM's xapic_state_test selftest has been fudging the bug since commit
-4b88b1a518b3 ("KVM: selftests: Enhance handling WRMSR ICR register in
-x2APIC mode"), which essentially removed the testcase instead of fixing
-the bug.
-
-WARN if the nodecode path triggers a #GP, as the CPU is supposed to check
-reserved bits for ICR when it's partially virtualized.
+No functional change intended.
 
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240719235107.3023592-2-seanjc@google.com
+Link: https://lore.kernel.org/r/20240719235107.3023592-3-seanjc@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/lapic.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ arch/x86/kvm/lapic.c |   46 +++++++++++++++++++++++-----------------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
 
 --- a/arch/x86/kvm/lapic.c
 +++ b/arch/x86/kvm/lapic.c
-@@ -2314,7 +2314,7 @@ void kvm_apic_write_nodecode(struct kvm_
- 	 * maybe-unecessary write, and both are in the noise anyways.
- 	 */
- 	if (apic_x2apic_mode(apic) && offset == APIC_ICR)
--		kvm_x2apic_icr_write(apic, kvm_lapic_get_reg64(apic, APIC_ICR));
-+		WARN_ON_ONCE(kvm_x2apic_icr_write(apic, kvm_lapic_get_reg64(apic, APIC_ICR)));
- 	else
- 		kvm_lapic_reg_write(apic, offset, kvm_lapic_get_reg(apic, offset));
+@@ -2297,6 +2297,29 @@ void kvm_lapic_set_eoi(struct kvm_vcpu *
  }
-@@ -2936,8 +2936,21 @@ int kvm_lapic_set_vapic_addr(struct kvm_
- 	return 0;
- }
+ EXPORT_SYMBOL_GPL(kvm_lapic_set_eoi);
  
 +#define X2APIC_ICR_RESERVED_BITS (GENMASK_ULL(31, 20) | GENMASK_ULL(17, 16) | BIT(13))
 +
- int kvm_x2apic_icr_write(struct kvm_lapic *apic, u64 data)
- {
++int kvm_x2apic_icr_write(struct kvm_lapic *apic, u64 data)
++{
 +	if (data & X2APIC_ICR_RESERVED_BITS)
 +		return 1;
 +
@@ -118,9 +103,47 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +	 * behavior will "win".  Arbitrarily clear the BUSY bit, as there is no
 +	 * sane way to provide consistent behavior with respect to hardware.
 +	 */
- 	data &= ~APIC_ICR_BUSY;
++	data &= ~APIC_ICR_BUSY;
++
++	kvm_apic_send_ipi(apic, (u32)data, (u32)(data >> 32));
++	kvm_lapic_set_reg64(apic, APIC_ICR, data);
++	trace_kvm_apic_write(APIC_ICR, data);
++	return 0;
++}
++
+ /* emulate APIC access in a trap manner */
+ void kvm_apic_write_nodecode(struct kvm_vcpu *vcpu, u32 offset)
+ {
+@@ -2936,29 +2959,6 @@ int kvm_lapic_set_vapic_addr(struct kvm_
+ 	return 0;
+ }
  
- 	kvm_apic_send_ipi(apic, (u32)data, (u32)(data >> 32));
+-#define X2APIC_ICR_RESERVED_BITS (GENMASK_ULL(31, 20) | GENMASK_ULL(17, 16) | BIT(13))
+-
+-int kvm_x2apic_icr_write(struct kvm_lapic *apic, u64 data)
+-{
+-	if (data & X2APIC_ICR_RESERVED_BITS)
+-		return 1;
+-
+-	/*
+-	 * The BUSY bit is reserved on both Intel and AMD in x2APIC mode, but
+-	 * only AMD requires it to be zero, Intel essentially just ignores the
+-	 * bit.  And if IPI virtualization (Intel) or x2AVIC (AMD) is enabled,
+-	 * the CPU performs the reserved bits checks, i.e. the underlying CPU
+-	 * behavior will "win".  Arbitrarily clear the BUSY bit, as there is no
+-	 * sane way to provide consistent behavior with respect to hardware.
+-	 */
+-	data &= ~APIC_ICR_BUSY;
+-
+-	kvm_apic_send_ipi(apic, (u32)data, (u32)(data >> 32));
+-	kvm_lapic_set_reg64(apic, APIC_ICR, data);
+-	trace_kvm_apic_write(APIC_ICR, data);
+-	return 0;
+-}
+-
+ static int kvm_lapic_msr_read(struct kvm_lapic *apic, u32 reg, u64 *data)
+ {
+ 	u32 low;
 
 
 
