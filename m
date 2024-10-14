@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E50299CE3C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:41:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A039999D2AF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3490C1F23B54
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:41:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44AF71F25151
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B849B1AB525;
-	Mon, 14 Oct 2024 14:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D351B86CC;
+	Mon, 14 Oct 2024 15:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8iWH28w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBrP97yD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772851AA7A5;
-	Mon, 14 Oct 2024 14:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30E11AC8A2;
+	Mon, 14 Oct 2024 15:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916890; cv=none; b=m0+PI4d0oqYM4q8Q7a76Bg/23oxJoKOlY/dCL0wOGCKmiJtY2nvMth2hlxR8f/TmEIzgHpb83VkUnAmd5fEvvYphO94abz9u3Bs3nnTbzAN9ey6gHpoQdldiebra7SEOTYz/xP8j5Ravn3UFfJj52WLLUL9MXGRzsw4tIYtax5I=
+	t=1728919571; cv=none; b=fgNa1HDzsCimdhULGmg8RtU/X+mobc9icT9Z57tDsXU0bejwHtjv5ZYMcqsIoZcrtmCrxx/mg0X5FwzT4t9oo5ktIQ8zBN3C1mY4BoeepBENt57nOYBExJJjQPl+kToKYwNmnaavlZX1G+3lIXe2u1pzN4bfjsdU9vpWLUem/ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916890; c=relaxed/simple;
-	bh=f7wzQBUinYt1JnCTDfeMb90bk0kFq6Y8UC/XScY8GBQ=;
+	s=arc-20240116; t=1728919571; c=relaxed/simple;
+	bh=o/OTxOXiiwlq3JlOl5gtouOnbM8UhEYzSpnvlLnqpgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FlwCatbUeW3pM1YedvXkwd5nCzjawOC0KZLUgcphhrvzkvkjgW29qvOBSv8Yd8gHTORcltvwDSNqzEbdZddRmsTxIPnrViesOLJTP91UoznLDilnMfDMiyWjv5JDiw5wCtdwS/gv7i9tKjgxSDS9IyeiGqtJ9EM6g9iFcBejVyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8iWH28w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027E4C4CEC3;
-	Mon, 14 Oct 2024 14:41:29 +0000 (UTC)
+	 MIME-Version; b=Zd0VtMaKMY5Fzt1wzRM1THfDKxAVdTSI9wdYId3s9qRfJS1llOOpvAGbRz71vwbgQhDfHap+lcYxqUpiSKGGWzQ8kz3xhj+THpp896ySeCke9uyn8ktwJkAvZHsK9ASy0G9pG1lYRC+HhZ8V/agIPRRwy/c2SR1bq6jlKNCgrbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBrP97yD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12AA9C4CEC3;
+	Mon, 14 Oct 2024 15:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916890;
-	bh=f7wzQBUinYt1JnCTDfeMb90bk0kFq6Y8UC/XScY8GBQ=;
+	s=korg; t=1728919571;
+	bh=o/OTxOXiiwlq3JlOl5gtouOnbM8UhEYzSpnvlLnqpgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e8iWH28wSalc21qGMm3IsOt2hmJmBz/0uncu+1mHbpAor2tEnZwxK6t2j1m7Q6SUE
-	 wB6fwhd3XHAWl2weyxGk3AL0etUCNpZYQ5nsFh5wGSkfghspRVH7MfiV5wFo2458Vj
-	 8NM6upQvo9iv83riaOO9S3e9lhm6Z9Doiw7vVnsc=
+	b=zBrP97yDvwt5aiAQm2BpxhlB7MMnUjpvDwg0Dsxz0iaMWFLFCBudKF5IiX7zqdwdx
+	 aU45KajTMiEnSO27GqpraTI3Hfm1Qnj2QQQKWeSDHVIpFnksURxq7OylS646jITk0F
+	 R/c+7AlGYb1K7sS6Gy30CS7CpYTYCmJtZCTKfh04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuli Wang <wangyuli@uniontech.com>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/213] LoongArch: Fix memleak in pci_acpi_scan_root()
+Subject: [PATCH 6.1 645/798] dt-bindings: clock: qcom: Add GPLL9 support on gcc-sc8180x
 Date: Mon, 14 Oct 2024 16:19:59 +0200
-Message-ID: <20241014141046.600555902@linuxfoundation.org>
+Message-ID: <20241014141243.389792069@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Guan <guanwentao@uniontech.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-[ Upstream commit 5016c3a31a6d74eaf2fdfdec673eae8fcf90379e ]
+[ Upstream commit 648b4bde0aca2980ebc0b90cdfbb80d222370c3d ]
 
-Add kfree(root_ops) in this case to avoid memleak of root_ops,
-leaks when pci_find_bus() != 0.
+Add the missing GPLL9 which is required for the gcc sdcc2 clock.
 
-Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 0fadcdfdcf57 ("dt-bindings: clock: Add SC8180x GCC binding")
+Cc: stable@vger.kernel.org
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-2-8b3eaa5fb856@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/pci/acpi.c | 1 +
+ include/dt-bindings/clock/qcom,gcc-sc8180x.h | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/loongarch/pci/acpi.c b/arch/loongarch/pci/acpi.c
-index 365f7de771cbb..1da4dc46df43e 100644
---- a/arch/loongarch/pci/acpi.c
-+++ b/arch/loongarch/pci/acpi.c
-@@ -225,6 +225,7 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 	if (bus) {
- 		memcpy(bus->sysdata, info->cfg, sizeof(struct pci_config_window));
- 		kfree(info);
-+		kfree(root_ops);
- 	} else {
- 		struct pci_bus *child;
+diff --git a/include/dt-bindings/clock/qcom,gcc-sc8180x.h b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
+index 90c6e021a0356..2569f874fe13c 100644
+--- a/include/dt-bindings/clock/qcom,gcc-sc8180x.h
++++ b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
+@@ -248,6 +248,7 @@
+ #define GCC_USB3_SEC_CLKREF_CLK					238
+ #define GCC_UFS_MEM_CLKREF_EN					239
+ #define GCC_UFS_CARD_CLKREF_EN					240
++#define GPLL9							241
  
+ #define GCC_EMAC_BCR						0
+ #define GCC_GPU_BCR						1
 -- 
 2.43.0
 
