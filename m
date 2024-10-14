@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95DAF99CE1A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:40:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0073299D272
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:25:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C78F61C22591
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:40:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8FE828679C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0598820EB;
-	Mon, 14 Oct 2024 14:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFCB1B85CC;
+	Mon, 14 Oct 2024 15:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RxQljgp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYFHuy7O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76B139FCE;
-	Mon, 14 Oct 2024 14:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E811ABEDF;
+	Mon, 14 Oct 2024 15:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916798; cv=none; b=A2IUdKjyho4NjnW1QT9sGBqVmmypV3h1bpTe3eba//6LX3nurwzkFSEgwOoX3E2TFKWPytvUmFvRH3advHaX7z38ySg2cbW6RrbD6QnGZSRWYYVllhuF+Fk1fNbMSEBDV4cW/rIWckrPM67lhOUv2f4iVlx2ef2RmAt6JDew6oc=
+	t=1728919485; cv=none; b=FBLCf2w9+lPppnSht/V+88id/zx6O0PYj4w3YWHkF3jAuL4uPP0Lm4w2qwKofRJqODSYVALgtnn8goH0lg8MjyH+mzVMoop3C71HKXQexyMO7CycssIAyUijxOvugXJYw+kxmeEZoqULAQl025oxBZJyuE4Vyt6vdvOsCM+vg3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916798; c=relaxed/simple;
-	bh=2BFatXnHcEu8Mz4EDMYYew9Hy5m7iQXa/Vb2iwTldII=;
+	s=arc-20240116; t=1728919485; c=relaxed/simple;
+	bh=kSTh9KaI1RKAdE4Qc7pjsdsRMqgbucqNq3cIQD3xOkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kdv4t5A9iiLc3fuxPVR7dpn0ekR3BF9KGrEFs+rM1lEZIxxma20lntGR/e0qmxQjkVzOpkPS33deyNZ0yCxgYBvmFiv+N4ikHvWAXbNwLQ7ARrgNtLHEALe+HCZLJOsTRWx1sIVj7MsKSiZC7dxq1UxBByIP3/tAc/LRBaHJ9Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RxQljgp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24352C4CEC3;
-	Mon, 14 Oct 2024 14:39:57 +0000 (UTC)
+	 MIME-Version; b=GHjf7rmiDBWoHbz39cO1aweNDB900mMfFCv727Au0b+KNQImDpxc0RD1MGoGx49EzjmOjmpLBmU7iJlR1/GAZq5cB2bv0aqxILjkIstKrcXa92pDZLtwjjqsHN9kG+d+xJSdtfOIpAHvNz7viYnhhhLsEWwNAhl492RvkoDJf0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYFHuy7O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE1CC4CEC7;
+	Mon, 14 Oct 2024 15:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916798;
-	bh=2BFatXnHcEu8Mz4EDMYYew9Hy5m7iQXa/Vb2iwTldII=;
+	s=korg; t=1728919485;
+	bh=kSTh9KaI1RKAdE4Qc7pjsdsRMqgbucqNq3cIQD3xOkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1RxQljgpoVKDKy+vtrXM5olkZp0DJDLKJVGH3RlcjDwrKmWwx91beLX+E/v26JB1c
-	 6DxUzQD4CDJY46C9Lx+xCzO6+A78dXldr4JNRYok/8KnbBn5AaglizzZzjv4AI1/Ad
-	 BpzGW36/W8GvUZYGZsDVri28ymqdGwYAMmqE7KGM=
+	b=NYFHuy7O3Vwot9Bxnv+bKEsbgtpZr/LYV3A5c9QGFnLgS9WPZ6b/9ZQlG5zFPrGKx
+	 syXMbowZRDvwqt/tsjS1iu9MZM4Szmf9LT2CCmFl78xEY/+CCSCR4y9uilWrvGGXhR
+	 CLZH+UfMKrlahSBPxzq9ICieVPgcSeI65NOYxplE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	"John Warthog9 Hawley (Tenstorrent)" <warthog9@eaglescrag.net>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Krzysztof Piotr Oledzki <ole@ans.pl>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/213] ktest.pl: Avoid false positives with grub2 skip regex
+Subject: [PATCH 6.1 619/798] i2c: core: Lock address during client device instantiation
 Date: Mon, 14 Oct 2024 16:19:33 +0200
-Message-ID: <20241014141045.599528934@linuxfoundation.org>
+Message-ID: <20241014141242.358272051@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Jordan <daniel.m.jordan@oracle.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 2351e8c65404aabc433300b6bf90c7a37e8bbc4d ]
+[ Upstream commit 8d3cefaf659265aa82b0373a563fdb9d16a2b947 ]
 
-Some distros have grub2 config files with the lines
+Krzysztof reported an issue [0] which is caused by parallel attempts to
+instantiate the same I2C client device. This can happen if driver
+supports auto-detection, but certain devices are also instantiated
+explicitly.
+The original change isn't actually wrong, it just revealed that I2C core
+isn't prepared yet to handle this scenario.
+Calls to i2c_new_client_device() can be nested, therefore we can't use a
+simple mutex here. Parallel instantiation of devices at different addresses
+is ok, so we just have to prevent parallel instantiation at the same address.
+We can use a bitmap with one bit per 7-bit I2C client address, and atomic
+bit operations to set/check/clear bits.
+Now a parallel attempt to instantiate a device at the same address will
+result in -EBUSY being returned, avoiding the "sysfs: cannot create duplicate
+filename" splash.
 
-    if [ x"${feature_menuentry_id}" = xy ]; then
-      menuentry_id_option="--id"
-    else
-      menuentry_id_option=""
-    fi
+Note: This patch version includes small cosmetic changes to the Tested-by
+      version, only functional change is that address locking is supported
+      for slave addresses too.
 
-which match the skip regex defined for grub2 in get_grub_index():
+[0] https://lore.kernel.org/linux-i2c/9479fe4e-eb0c-407e-84c0-bd60c15baf74@ans.pl/T/#m12706546e8e2414d8f1a0dc61c53393f731685cc
 
-    $skip = '^\s*menuentry';
-
-These false positives cause the grub number to be higher than it
-should be, and the wrong kernel can end up booting.
-
-Grub documents the menuentry command with whitespace between it and the
-title, so make the skip regex reflect this.
-
-Link: https://lore.kernel.org/20240904175530.84175-1-daniel.m.jordan@oracle.com
-Signed-off-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Acked-by: John 'Warthog9' Hawley (Tenstorrent) <warthog9@eaglescrag.net>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Fixes: caba40ec3531 ("eeprom: at24: Probe for DDR3 thermal sensor in the SPD case")
+Cc: stable@vger.kernel.org
+Tested-by: Krzysztof Piotr Oledzki <ole@ans.pl>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/i2c-core-base.c | 28 ++++++++++++++++++++++++++++
+ include/linux/i2c.h         |  3 +++
+ 2 files changed, 31 insertions(+)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index 24451f8f42910..045090085ac5b 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -2043,7 +2043,7 @@ sub get_grub_index {
-     } elsif ($reboot_type eq "grub2") {
- 	$command = "cat $grub_file";
- 	$target = '^\s*menuentry.*' . $grub_menu_qt;
--	$skip = '^\s*menuentry';
-+	$skip = '^\s*menuentry\s';
- 	$submenu = '^\s*submenu\s';
-     } elsif ($reboot_type eq "grub2bls") {
- 	$command = $grub_bls_get;
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 4417b2656f875..f7e3fc0b3a1da 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -919,6 +919,27 @@ int i2c_dev_irq_from_resources(const struct resource *resources,
+ 	return 0;
+ }
+ 
++/*
++ * Serialize device instantiation in case it can be instantiated explicitly
++ * and by auto-detection
++ */
++static int i2c_lock_addr(struct i2c_adapter *adap, unsigned short addr,
++			 unsigned short flags)
++{
++	if (!(flags & I2C_CLIENT_TEN) &&
++	    test_and_set_bit(addr, adap->addrs_in_instantiation))
++		return -EBUSY;
++
++	return 0;
++}
++
++static void i2c_unlock_addr(struct i2c_adapter *adap, unsigned short addr,
++			    unsigned short flags)
++{
++	if (!(flags & I2C_CLIENT_TEN))
++		clear_bit(addr, adap->addrs_in_instantiation);
++}
++
+ /**
+  * i2c_new_client_device - instantiate an i2c device
+  * @adap: the adapter managing the device
+@@ -966,6 +987,10 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
+ 		goto out_err_silent;
+ 	}
+ 
++	status = i2c_lock_addr(adap, client->addr, client->flags);
++	if (status)
++		goto out_err_silent;
++
+ 	/* Check for address business */
+ 	status = i2c_check_addr_busy(adap, i2c_encode_flags_to_addr(client));
+ 	if (status)
+@@ -997,6 +1022,8 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
+ 	dev_dbg(&adap->dev, "client [%s] registered with bus id %s\n",
+ 		client->name, dev_name(&client->dev));
+ 
++	i2c_unlock_addr(adap, client->addr, client->flags);
++
+ 	return client;
+ 
+ out_remove_swnode:
+@@ -1008,6 +1035,7 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
+ 	dev_err(&adap->dev,
+ 		"Failed to register i2c client %s at 0x%02x (%d)\n",
+ 		client->name, client->addr, status);
++	i2c_unlock_addr(adap, client->addr, client->flags);
+ out_err_silent:
+ 	if (need_put)
+ 		put_device(&client->dev);
+diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+index 96432b0a05d4d..87b403a6d7e41 100644
+--- a/include/linux/i2c.h
++++ b/include/linux/i2c.h
+@@ -752,6 +752,9 @@ struct i2c_adapter {
+ 	struct regulator *bus_regulator;
+ 
+ 	struct dentry *debugfs;
++
++	/* 7bit address space */
++	DECLARE_BITMAP(addrs_in_instantiation, 1 << 7);
+ };
+ #define to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
+ 
 -- 
 2.43.0
 
