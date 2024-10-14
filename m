@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-84994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D68F99D340
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FFF99CF32
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:52:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 447C1B285AE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B5A4B24E6B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73B21B4F1E;
-	Mon, 14 Oct 2024 15:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527021B85CF;
+	Mon, 14 Oct 2024 14:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="voMFEkTb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0DG0NF7E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938021AC458;
-	Mon, 14 Oct 2024 15:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9DB481B3;
+	Mon, 14 Oct 2024 14:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919931; cv=none; b=RTnBDdfLUlaFvE8BKUWi7KZCN27ojEIibl5UveR/rDbKWwwYnHVgw46019qHxLTEGBy1vFGLo2ffU5VtBS3RBnWH5LeZiukrXypb9GIkCROeevV0Zx9JYRhbaVvWnT7UWXVWGc9wzHdpmzVEd9caMHF3axSAW3UrcKS0yj/OHqk=
+	t=1728917303; cv=none; b=pAa+BHr8mgetmYMDs45PFucznUqSLwf/BgA1TZQmYzJ06SY4jY/M8yAGtbtxUlEGEEsW+0Ew5sO3yZdPRrMmf19WfsgIEIPdvkS751+t+Egm9VaCLFVMdkqETDgc/tBp/QOSk+WOPOMzii61xYbZC6ri/CRqb00uS+Br0gFQudw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919931; c=relaxed/simple;
-	bh=8b46HxIBQNpbj62u+ivqmXtfP0nO4I/jQ6t3jbd8SSk=;
+	s=arc-20240116; t=1728917303; c=relaxed/simple;
+	bh=t672hWjjwfLSIvSldNplw6xnVxqlBYZfpy+wsv0BDIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0mFu6Jr6148yI8j4mHizp0vJp8kHuP2s4ixBu1Tn0wenXiQTw8qqqcOEnQpXnAnDTd54TmrS9hkiuz+cs3jHHsrCUyoema6puZ5RBylY6tBpkIb3pH1HwW/SU+1m3IyRCzJdffPI8YKSIv0h7wBGVxj89cYmMwM6t342GbHyjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=voMFEkTb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11224C4CEC3;
-	Mon, 14 Oct 2024 15:32:10 +0000 (UTC)
+	 MIME-Version; b=rIUBX3/6x2my9i2+zps1DuP5KgOnbugr849xBsSm5syqhnGEywZ0/urxwDlnlqdfBaqYHlu5J2aroOn5090YrG1ZsoQnz9q+vLLnpqKJ2eR2s80rByEoRMldG/ErppnoQjH3WBrquuaP4Dih76DaoS2c0neb+3Ve5eA2u2Lodds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0DG0NF7E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 730B0C4CEC3;
+	Mon, 14 Oct 2024 14:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919931;
-	bh=8b46HxIBQNpbj62u+ivqmXtfP0nO4I/jQ6t3jbd8SSk=;
+	s=korg; t=1728917302;
+	bh=t672hWjjwfLSIvSldNplw6xnVxqlBYZfpy+wsv0BDIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=voMFEkTbnCEvg61JXg5i7n7VayQsiqzOdEaTH0skEY7zD7jD1nfMeM81EDCtm4xB+
-	 CnmLsgVpwIwKUmlgDiFVO8zd4ITjUytQMUekSvtewsMnCZby/X+IkmvIkvaEnj6mvF
-	 qN0NErjgKxlYkic4ge31JjtC1U/OMmDKKrXx4PSQ=
+	b=0DG0NF7EyIrRSIvdpXNVhQs/Tl9rtxcsIF2loCg3wsFmkGiJj9K3yns1FbFlf9HID
+	 nyJzMTaH1TaO1VS6ntyYQIuN3k6efjmEqAjCF3abHEdlPfeH4/PqiIMy6w9iDjuUWP
+	 EIk6c5xvashnTRNsx1VYQLRTleArIjy+eRX0iCvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geumhwan Yu <geumhwan.yu@samsung.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 732/798] tcp: fix to allow timestamp undo if no retransmits were sent
+	He Lugang <helugang@uniontech.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 6.6 180/213] HID: multitouch: Add support for lenovo Y9000P Touchpad
 Date: Mon, 14 Oct 2024 16:21:26 +0200
-Message-ID: <20241014141246.828707619@linuxfoundation.org>
+Message-ID: <20241014141049.991924776@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: He Lugang <helugang@uniontech.com>
 
-[ Upstream commit e37ab7373696e650d3b6262a5b882aadad69bb9e ]
+commit 251efae73bd46b097deec4f9986d926813aed744 upstream.
 
-Fix the TCP loss recovery undo logic in tcp_packet_delayed() so that
-it can trigger undo even if TSQ prevents a fast recovery episode from
-reaching tcp_retransmit_skb().
+The 2024 Lenovo Y9000P which use GT7868Q chip also needs a fixup.
+The information of the chip is as follows:
+I2C HID v1.00 Mouse [GXTP5100:00 27C6:01E0]
 
-Geumhwan Yu <geumhwan.yu@samsung.com> recently reported that after
-this commit from 2019:
-
-commit bc9f38c8328e ("tcp: avoid unconditional congestion window undo
-on SYN retransmit")
-
-...and before this fix we could have buggy scenarios like the
-following:
-
-+ Due to reordering, a TCP connection receives some SACKs and enters a
-  spurious fast recovery.
-
-+ TSQ prevents all invocations of tcp_retransmit_skb(), because many
-  skbs are queued in lower layers of the sending machine's network
-  stack; thus tp->retrans_stamp remains 0.
-
-+ The connection receives a TCP timestamp ECR value echoing a
-  timestamp before the fast recovery, indicating that the fast
-  recovery was spurious.
-
-+ The connection fails to undo the spurious fast recovery because
-  tp->retrans_stamp is 0, and thus tcp_packet_delayed() returns false,
-  due to the new logic in the 2019 commit: commit bc9f38c8328e ("tcp:
-  avoid unconditional congestion window undo on SYN retransmit")
-
-This fix tweaks the logic to be more similar to the
-tcp_packet_delayed() logic before bc9f38c8328e, except that we take
-care not to be fooled by the FLAG_SYN_ACKED code path zeroing out
-tp->retrans_stamp (the bug noted and fixed by Yuchung in
-bc9f38c8328e).
-
-Note that this returns the high-level behavior of tcp_packet_delayed()
-to again match the comment for the function, which says: "Nothing was
-retransmitted or returned timestamp is less than timestamp of the
-first retransmission." Note that this comment is in the original
-2005-04-16 Linux git commit, so this is evidently long-standing
-behavior.
-
-Fixes: bc9f38c8328e ("tcp: avoid unconditional congestion window undo on SYN retransmit")
-Reported-by: Geumhwan Yu <geumhwan.yu@samsung.com>
-Diagnosed-by: Geumhwan Yu <geumhwan.yu@samsung.com>
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Yuchung Cheng <ycheng@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241001200517.2756803-2-ncardwell.sw@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: He Lugang <helugang@uniontech.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/hid/hid-ids.h        |    1 +
+ drivers/hid/hid-multitouch.c |    8 ++++++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 4c7a2702d904d..5b7345a3a96e4 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -2440,8 +2440,22 @@ static bool tcp_skb_spurious_retrans(const struct tcp_sock *tp,
-  */
- static inline bool tcp_packet_delayed(const struct tcp_sock *tp)
- {
--	return tp->retrans_stamp &&
--	       tcp_tsopt_ecr_before(tp, tp->retrans_stamp);
-+	const struct sock *sk = (const struct sock *)tp;
-+
-+	if (tp->retrans_stamp &&
-+	    tcp_tsopt_ecr_before(tp, tp->retrans_stamp))
-+		return true;  /* got echoed TS before first retransmission */
-+
-+	/* Check if nothing was retransmitted (retrans_stamp==0), which may
-+	 * happen in fast recovery due to TSQ. But we ignore zero retrans_stamp
-+	 * in TCP_SYN_SENT, since when we set FLAG_SYN_ACKED we also clear
-+	 * retrans_stamp even if we had retransmitted the SYN.
-+	 */
-+	if (!tp->retrans_stamp &&	   /* no record of a retransmit/SYN? */
-+	    sk->sk_state != TCP_SYN_SENT)  /* not the FLAG_SYN_ACKED case? */
-+		return true;  /* nothing was retransmitted */
-+
-+	return false;
- }
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -505,6 +505,7 @@
+ #define USB_DEVICE_ID_GENERAL_TOUCH_WIN8_PIT_E100 0xe100
  
- /* Undo procedures. */
--- 
-2.43.0
-
+ #define I2C_VENDOR_ID_GOODIX		0x27c6
++#define I2C_DEVICE_ID_GOODIX_01E0	0x01e0
+ #define I2C_DEVICE_ID_GOODIX_01E8	0x01e8
+ #define I2C_DEVICE_ID_GOODIX_01E9	0x01e9
+ #define I2C_DEVICE_ID_GOODIX_01F0	0x01f0
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1447,7 +1447,8 @@ static __u8 *mt_report_fixup(struct hid_
+ {
+ 	if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
+ 	    (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
+-	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
++	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9 ||
++		 hdev->product == I2C_DEVICE_ID_GOODIX_01E0)) {
+ 		if (rdesc[607] == 0x15) {
+ 			rdesc[607] = 0x25;
+ 			dev_info(
+@@ -2068,7 +2069,10 @@ static const struct hid_device_id mt_dev
+ 		     I2C_DEVICE_ID_GOODIX_01E8) },
+ 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
+ 	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
+-		     I2C_DEVICE_ID_GOODIX_01E8) },
++		     I2C_DEVICE_ID_GOODIX_01E9) },
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
++	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
++		     I2C_DEVICE_ID_GOODIX_01E0) },
+ 
+ 	/* GoodTouch panels */
+ 	{ .driver_data = MT_CLS_NSMU,
 
 
 
