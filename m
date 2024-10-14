@@ -1,203 +1,129 @@
-Return-Path: <stable+bounces-83752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F5099C470
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 10:58:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CBF99C43F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 10:57:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 097D11C225B7
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 08:58:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 699541C22266
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 08:57:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817D5155A5D;
-	Mon, 14 Oct 2024 08:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5F0155CB0;
+	Mon, 14 Oct 2024 08:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="l+APxzGq";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="09iJ4u/N";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="l+APxzGq";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="09iJ4u/N"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ky/t0jVT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2B9154BE2
-	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 08:57:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0B6155C8A;
+	Mon, 14 Oct 2024 08:56:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728896270; cv=none; b=OxipxfeAkv/13m831GhcbpYD5otfv/B5JwOHB5QQJ5KS91c3YFc5ZhvhBxTCS2N2mXYjk2H4ldtJhNfZWFnpXTWBJQ61lKoCtFCLu2+4sbXOADBCO7CzXsX45tZcYXmgR7TeHjBJL5PLH4Wm6VhLVqsjGgtuODs1goZLX8shCHE=
+	t=1728896214; cv=none; b=lABP4zRKteG1gXuEv9DYI3SzXxZ+Hq+AD4hiWkZY+MEfWHZG/LVTbN/5xlLgiIu0ciZhKdzSL1ADhhIxPR04CSr/pfwugxrGjtr7kidaPjF1VMPaAfXdqQ6GiMtGE1murVbxoaPJqclzyP6T6dRCMd+e4PCXA34pQ/FgiRfLQeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728896270; c=relaxed/simple;
-	bh=k3nxD1M3EKPRQSvzoHBdbfY67rmOzqFO1LnK7ZHxDtM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W6Bh3TnkpYdJatK2aLNh5OBxPlZ11COYfAIcFLD1c8ilpILbuRWtvaIzC19KmKquH5PluInPC7TmZaAz9pVqJCtZAXPHrmZPeY1BBzIW6nXs2x5bsmEJ+QHxagWlyXDuIEa1C7PcsAbSekWXu98u1q47bxYx6ysV+IlY/qDqV7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=l+APxzGq; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=09iJ4u/N; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=l+APxzGq; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=09iJ4u/N; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A010421C2B;
-	Mon, 14 Oct 2024 08:57:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1728896266; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SwCcgLz6S2p+8e6z9b1FWpbGjw0nwSTC12GpMVcwUJw=;
-	b=l+APxzGqyOOOsFX6VZPsHUmQu5a/CZ2nkNAKQ6b2aAIVJLdbuiR4H8/AU8bKw9e4UTYnzp
-	8CkRECyt169oea/L2CtleQlppqU3+n2GTSbcBLDNx1PbPU58RDWEdJNLnC1QzU2ZS14W7q
-	hGArtfMeZ2++yP2BvF6q9dnYAeQ+Kk4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1728896266;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SwCcgLz6S2p+8e6z9b1FWpbGjw0nwSTC12GpMVcwUJw=;
-	b=09iJ4u/Nbd2rzEgbtWfKm3gcFzxPuu7Vf0DaVVb5L8EpIGj9xYxxVyTGsi8+S1uDOBuEIy
-	oRd+Ali8YCCyBcAA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=l+APxzGq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="09iJ4u/N"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1728896266; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SwCcgLz6S2p+8e6z9b1FWpbGjw0nwSTC12GpMVcwUJw=;
-	b=l+APxzGqyOOOsFX6VZPsHUmQu5a/CZ2nkNAKQ6b2aAIVJLdbuiR4H8/AU8bKw9e4UTYnzp
-	8CkRECyt169oea/L2CtleQlppqU3+n2GTSbcBLDNx1PbPU58RDWEdJNLnC1QzU2ZS14W7q
-	hGArtfMeZ2++yP2BvF6q9dnYAeQ+Kk4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1728896266;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SwCcgLz6S2p+8e6z9b1FWpbGjw0nwSTC12GpMVcwUJw=;
-	b=09iJ4u/Nbd2rzEgbtWfKm3gcFzxPuu7Vf0DaVVb5L8EpIGj9xYxxVyTGsi8+S1uDOBuEIy
-	oRd+Ali8YCCyBcAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4643913A79;
-	Mon, 14 Oct 2024 08:57:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id sHTpDwrdDGfXfAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 14 Oct 2024 08:57:46 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: simona@ffwll.ch,
-	airlied@gmail.com,
-	javierm@redhat.com,
-	jfalempe@redhat.com
-Cc: dri-devel@lists.freedesktop.org,
-	amd-gfx@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	kernel test robot <lkp@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	stable@vger.kernel.org,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>
-Subject: [PATCH v4 03/12] drm/fbdev-dma: Select FB_DEFERRED_IO
-Date: Mon, 14 Oct 2024 10:55:17 +0200
-Message-ID: <20241014085740.582287-4-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20241014085740.582287-1-tzimmermann@suse.de>
-References: <20241014085740.582287-1-tzimmermann@suse.de>
+	s=arc-20240116; t=1728896214; c=relaxed/simple;
+	bh=deoA6W7KISJU4Lqs4NPTSSLQ+sPbpJvu3bhsGmcntkY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DGIcu6UJdPyk60bwNQhd2IyTgUhBJaHwsnSFsBNeHwLvy7Ef476j9caGoapeW2vZK9PLOYDHkvo0RbgO44G35yVYYpHrXNrzfKbo6DS/gj0lqgWPfe2s0e79eH8zKmKQyjkuhDACEonapQYjgtHv1NbtoYOnJJmXqJoE0XdAc34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ky/t0jVT; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5c42e7adbddso5319989a12.2;
+        Mon, 14 Oct 2024 01:56:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728896211; x=1729501011; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bka1XtdhEywlqdYAZ4vAB5CJJ60IdylXCrsQgeEz6GI=;
+        b=Ky/t0jVTQBIkiIcdDpZ5EFB1bQbpkXBnZHMwyk8dVR/9yvt2CfSIMJrtNHHz+wM4zv
+         lzRYmKcRGmLs5mR9+VGYtnpp5HpzKHT6rLlpfUcdc7Eh+D8NIOxPOS8AELl3F0n2HILV
+         OApsZALUrFFKZzs9uMiVj/xKQckb64PioAEseHGNKlQsBfNXvgAAfgijDMupEOuxpYYl
+         4tqKXJ02zRbv94yxiRc/tyiEQlg43e+X5+pWHYVa4OIuXJSRIBHXm2fgxGmylmMdo+7o
+         S2+WnFWnjJ89a4M3+hTB+T2OBU01CRjd9y/BfFqd2HJmwESYooFSuUTKjSw5iqarKtxy
+         Ahkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728896211; x=1729501011;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Bka1XtdhEywlqdYAZ4vAB5CJJ60IdylXCrsQgeEz6GI=;
+        b=Su2tjmk/MPFwwxXoWDocOTNyXieaX24aa0d//DC6evdIOfmDZnz7jqy7RqxjFAqPnz
+         D2OmnH1zeMz3YUQB6MI+yvKAR0aXLPV5TF4gAVtiLQQPfNBeD18fq+3cx26jVCl0eMMI
+         r2x4rGMfBZt5PddYqQkb0zSE6HM1WRKRxgBjT1DXh0uteTYizzt9VOILZZAXuk76EXlD
+         itbuKdUEYTPjMoP4fyseC4eJo/5RJoV4rBulntRnpcGtEuwrjpCFkGMgkKLDGYQrEb6c
+         09j6aZJ+3dmG31MsDQPb3r9i7c+jf2oVysj/m5FwzI/h+8DEqmsQXQuJzRQfSryrqUX2
+         DEcw==
+X-Forwarded-Encrypted: i=1; AJvYcCVfziOxqkmNZt16WCabispSqrby88+ZPn106059EoZC9rcA/xYJKYy1InvImWqUBFRxf9n4IZy+@vger.kernel.org, AJvYcCWoWgw3kWw9ZnI8mymD76+sl7cdJUMuuaL8WFdTJ/8OMOsV3pDpkp4xWA2bUbQ4j6NrzC9LrWC66MTD30U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtAu5rubgNNYgHIl5pzcS8b9+9WPlSnITgWL0HurgEzkkx71Hb
+	8P28uD7czHo4ZLBkFftLtmJXrCZfY+HaRzlmceirX6xBUkFFV7F70zAnAPN6
+X-Google-Smtp-Source: AGHT+IGDJQrFJVmLNzaOGm//MX2LnTO5StHI/IaPJSK+vM3ey2DDnOs01a7EiS7Ktr8Rdy6PAFN7xg==
+X-Received: by 2002:a05:6402:354b:b0:5c9:488b:1dd9 with SMTP id 4fb4d7f45d1cf-5c95ac416b3mr4767381a12.24.1728896210311;
+        Mon, 14 Oct 2024 01:56:50 -0700 (PDT)
+Received: from [127.0.1.1] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c9370d2296sm4635091a12.15.2024.10.14.01.56.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Oct 2024 01:56:48 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH v2 0/2] staging: vchiq_arm: Fix missing refcount decrement
+ in error path for fw_node
+Date: Mon, 14 Oct 2024 10:56:35 +0200
+Message-Id: <20241014-vchiq_arm-of_node_put-v2-0-cafe0a4c2666@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A010421C2B
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FREEMAIL_TO(0.00)[ffwll.ch,gmail.com,redhat.com];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,suse.de:mid,intel.com:email];
-	FROM_EQ_ENVFROM(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
-X-Spam-Flag: NO
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMPcDGcC/4WNQQ6CMBBFr0JmbU1bERJX3sOQZqRTmEQotthoS
+ O9u5QIu30v++xtECkwRLtUGgRJH9nMBfaigH3EeSLAtDFrqWkl1Eqkf+WkwTMI7M3tLZnmtopF
+ 4JkR0tpVQtksgx++9e+sKjxxXHz77TVI/+6+YlFDCtfqusaG6tfI6TMiPY+8n6HLOX5kF3Ou6A
+ AAA
+To: Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Stefan Wahren <wahrenst@gmx.net>, Umang Jain <umang.jain@ideasonboard.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: linux-rpi-kernel@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728896207; l=961;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=deoA6W7KISJU4Lqs4NPTSSLQ+sPbpJvu3bhsGmcntkY=;
+ b=ziGzncipHzJsiNZ8mCCJaD/J81b7kY8naAZ9Qg/cp3Ux6cTrCppMq5petwUtH9bPQ44NEESyJ
+ KiKLKjJ7rhRDIKMtTtOTTTMGWfjbCpneZwkkSC2TLJ4z0EnR3mYoK0H
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-Commit 808a40b69468 ("drm/fbdev-dma: Implement damage handling and
-deferred I/O") added deferred I/O for fbdev-dma. Also select the
-Kconfig symbol FB_DEFERRED_IO (via FB_DMAMEM_HELPERS_DEFERRED). Fixes
-build errors about missing fbdefio, such as
+This series refactors some useless goto instructions as a preparation
+for the fix of a missing of_node_put() by means of the cleanup
+attribute.
 
-drivers/gpu/drm/drm_fbdev_dma.c:218:26: error: 'struct drm_fb_helper' has no member named 'fbdefio'
-  218 |                 fb_helper->fbdefio.delay = HZ / 20;
-      |                          ^~
-drivers/gpu/drm/drm_fbdev_dma.c:219:26: error: 'struct drm_fb_helper' has no member named 'fbdefio'
-  219 |                 fb_helper->fbdefio.deferred_io = drm_fb_helper_deferred_io;
-      |                          ^~
-drivers/gpu/drm/drm_fbdev_dma.c:221:21: error: 'struct fb_info' has no member named 'fbdefio'
-  221 |                 info->fbdefio = &fb_helper->fbdefio;
-      |                     ^~
-drivers/gpu/drm/drm_fbdev_dma.c:221:43: error: 'struct drm_fb_helper' has no member named 'fbdefio'
-  221 |                 info->fbdefio = &fb_helper->fbdefio;
-      |                                           ^~
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202410050241.Mox9QRjP-lkp@intel.com/
-Fixes: 808a40b69468 ("drm/fbdev-dma: Implement damage handling and deferred I/O")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: <stable@vger.kernel.org> # v6.11+
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/gpu/drm/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+- Refactor vchiq_probe() to remove goto instructions.
+- Declare and initialize the node right before its first usage.
+- Link to v1: https://lore.kernel.org/r/20241013-vchiq_arm-of_node_put-v1-1-f72b2a6e47d0@gmail.com
 
-diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index 1df4e627e3d3..db2e206a117c 100644
---- a/drivers/gpu/drm/Kconfig
-+++ b/drivers/gpu/drm/Kconfig
-@@ -338,7 +338,7 @@ config DRM_TTM_HELPER
- config DRM_GEM_DMA_HELPER
- 	tristate
- 	depends on DRM
--	select FB_DMAMEM_HELPERS if DRM_FBDEV_EMULATION
-+	select FB_DMAMEM_HELPERS_DEFERRED if DRM_FBDEV_EMULATION
- 	help
- 	  Choose this if you need the GEM DMA helper functions
- 
+---
+Javier Carrasco (2):
+      staging: vchiq_arm: refactor goto instructions in vchiq_probe()
+      staging: vchiq_arm: Fix missing refcount decrement in error path for fw_node
+
+ .../vc04_services/interface/vchiq_arm/vchiq_arm.c     | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
+---
+base-commit: d61a00525464bfc5fe92c6ad713350988e492b88
+change-id: 20241013-vchiq_arm-of_node_put-60a5eaaafd70
+
+Best regards,
 -- 
-2.46.0
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 
