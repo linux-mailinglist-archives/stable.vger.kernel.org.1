@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-84934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1965699D2F0
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:31:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B6299CD90
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5CBAB249AE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:31:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C78C1C22B62
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E2B1CC8B1;
-	Mon, 14 Oct 2024 15:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB1739FCE;
+	Mon, 14 Oct 2024 14:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/adQCqP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QaGOMyBK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8581CACE3;
-	Mon, 14 Oct 2024 15:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B1420322;
+	Mon, 14 Oct 2024 14:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919723; cv=none; b=sCaygJNP/FcIntXtcvC6M+AXi36ajSyo48THCkkU0pIGqlgYtM1udhBtBZsrrrlsNnry3RJh2wmSC64HC3gdfG1EvoyQaKNFsHloGK0Igxi9hSWJ9pw1ZCWkqfaD/tEamlbb9VLJCd1ex4lq+2+N4GiK17f0l4xkkjAkfn2XqKw=
+	t=1728916427; cv=none; b=BfrtdXcU+/7kaqrUtZFr3bUoodY+gQYzyuQFeiXTbuNcDBI8RD8ZQqeHfN/gAkXgic/diYFG/7HBpqVlQxQL6sK/0EGrV/30pAE43VORByrSKUnT7qby/W16yY0/tVFtCA4wm+jtlzw7QZRgvgoV0BQrDLTUzj7tRXv6MT7oQ5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919723; c=relaxed/simple;
-	bh=C/kJkLs6lvNjcUsQIJoGzImYSry0Mj9QOSnRFRmTkSw=;
+	s=arc-20240116; t=1728916427; c=relaxed/simple;
+	bh=BrVuhQVgYazvbVa0YD+aTvXS6NQy/QlImy8+7PWNbEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NjmeePXMoqBChY9y9WLSngc+tjKE6LTxEurN/Wk/MdmShPWwVqW/uIX9XUj7x1tv/tiV8XBY9Q6FzMB/PKbIn6BqucDe0c9u3Pi0dXAZxyMeAay2JKig2ClIz+XxJHvEKSjWvXMf11HYPpuSc+Kps0vcNmlIru53ASiS4fj/rqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/adQCqP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3274C4CEC3;
-	Mon, 14 Oct 2024 15:28:42 +0000 (UTC)
+	 MIME-Version; b=LWCVxA5/LePBhOz5A7q4q/UA0sSHYyEbUKBptet1lo4LIqaxEKLIlCyhP4T/RZbIX+/NJsCBdSU2Dk/bBukjVn74DbSWXnjudsGWg5ok9ymRtNB7HtAkGQNEYtS1PwhV/zptyL7rj9PNdilQ6EtEPQMSPSPtMLUaW3W+HJt83Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QaGOMyBK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C525C4CEC3;
+	Mon, 14 Oct 2024 14:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919723;
-	bh=C/kJkLs6lvNjcUsQIJoGzImYSry0Mj9QOSnRFRmTkSw=;
+	s=korg; t=1728916427;
+	bh=BrVuhQVgYazvbVa0YD+aTvXS6NQy/QlImy8+7PWNbEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p/adQCqPlwwILoRMcca2Zl+Qv46QVVnv8qV6QRxCh46i55q/t8ePKr3t1SbhUSzDQ
-	 avf5jOdDIYCEMcXv+IvV7Kro9/KYj4Jt9pjUT4JBtWb6YwvHKE3xvVMdYLGVNH2aJI
-	 CPbeKf4ZUXNlxrUCgEl7IcGaTkMUnATUE913fnBw=
+	b=QaGOMyBKA8sxgiMwX0OQBAGYWRiOhA3T5N6NvjuIBNITnOp6MPJbumbcKqo27lRkJ
+	 JL6v4GWInmQZY/JPsT5dEeCGc64HB9Oqw9JCJmAQMN2YR92x7XVqVIFTrEyvRJGHyy
+	 T9fQTBn+xHl7MHj8MrFz/MjHsAIzyB4aa2K8DnTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 689/798] s390/mm: Add cond_resched() to cmm_alloc/free_pages()
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Badal Nilawar <badal.nilawar@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 180/214] drm/xe/ct: fix xa_store() error checking
 Date: Mon, 14 Oct 2024 16:20:43 +0200
-Message-ID: <20241014141245.140440318@linuxfoundation.org>
+Message-ID: <20241014141052.004825098@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit 131b8db78558120f58c5dc745ea9655f6b854162 ]
+commit e863781abe4fe430406dd075ca0cab99165b4e63 upstream.
 
-Adding/removing large amount of pages at once to/from the CMM balloon
-can result in rcu_sched stalls or workqueue lockups, because of busy
-looping w/o cond_resched().
+Looks like we are meant to use xa_err() to extract the error encoded in
+the ptr.
 
-Prevent this by adding a cond_resched(). cmm_free_pages() holds a
-spin_lock while looping, so it cannot be added directly to the existing
-loop. Instead, introduce a wrapper function that operates on maximum 256
-pages at once, and add it there.
-
-Signed-off-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Badal Nilawar <badal.nilawar@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241001084346.98516-6-matthew.auld@intel.com
+(cherry picked from commit 1aa4b7864707886fa40d959483591f3d3937fa28)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/mm/cmm.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_guc_ct.c |   23 ++++++++---------------
+ 1 file changed, 8 insertions(+), 15 deletions(-)
 
-diff --git a/arch/s390/mm/cmm.c b/arch/s390/mm/cmm.c
-index 9141ed4c52e90..02e030ad38c5f 100644
---- a/arch/s390/mm/cmm.c
-+++ b/arch/s390/mm/cmm.c
-@@ -95,11 +95,12 @@ static long cmm_alloc_pages(long nr, long *counter,
- 		(*counter)++;
- 		spin_unlock(&cmm_lock);
- 		nr--;
-+		cond_resched();
- 	}
- 	return nr;
- }
+--- a/drivers/gpu/drm/xe/xe_guc_ct.c
++++ b/drivers/gpu/drm/xe/xe_guc_ct.c
+@@ -658,16 +658,12 @@ static int __guc_ct_send_locked(struct x
+ 		num_g2h = 1;
  
--static long cmm_free_pages(long nr, long *counter, struct cmm_page_array **list)
-+static long __cmm_free_pages(long nr, long *counter, struct cmm_page_array **list)
- {
- 	struct cmm_page_array *pa;
- 	unsigned long addr;
-@@ -123,6 +124,21 @@ static long cmm_free_pages(long nr, long *counter, struct cmm_page_array **list)
- 	return nr;
- }
+ 		if (g2h_fence_needs_alloc(g2h_fence)) {
+-			void *ptr;
+-
+ 			g2h_fence->seqno = next_ct_seqno(ct, true);
+-			ptr = xa_store(&ct->fence_lookup,
+-				       g2h_fence->seqno,
+-				       g2h_fence, GFP_ATOMIC);
+-			if (IS_ERR(ptr)) {
+-				ret = PTR_ERR(ptr);
++			ret = xa_err(xa_store(&ct->fence_lookup,
++					      g2h_fence->seqno, g2h_fence,
++					      GFP_ATOMIC));
++			if (ret)
+ 				goto out;
+-			}
+ 		}
  
-+static long cmm_free_pages(long nr, long *counter, struct cmm_page_array **list)
-+{
-+	long inc = 0;
-+
-+	while (nr) {
-+		inc = min(256L, nr);
-+		nr -= inc;
-+		inc = __cmm_free_pages(inc, counter, list);
-+		if (inc)
-+			break;
-+		cond_resched();
-+	}
-+	return nr + inc;
-+}
-+
- static int cmm_oom_notify(struct notifier_block *self,
- 			  unsigned long dummy, void *parm)
- {
--- 
-2.43.0
-
+ 		seqno = g2h_fence->seqno;
+@@ -870,14 +866,11 @@ retry:
+ retry_same_fence:
+ 	ret = guc_ct_send(ct, action, len, 0, 0, &g2h_fence);
+ 	if (unlikely(ret == -ENOMEM)) {
+-		void *ptr;
+-
+ 		/* Retry allocation /w GFP_KERNEL */
+-		ptr = xa_store(&ct->fence_lookup,
+-			       g2h_fence.seqno,
+-			       &g2h_fence, GFP_KERNEL);
+-		if (IS_ERR(ptr))
+-			return PTR_ERR(ptr);
++		ret = xa_err(xa_store(&ct->fence_lookup, g2h_fence.seqno,
++				      &g2h_fence, GFP_KERNEL));
++		if (ret)
++			return ret;
+ 
+ 		goto retry_same_fence;
+ 	} else if (unlikely(ret)) {
 
 
 
