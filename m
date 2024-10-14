@@ -1,93 +1,256 @@
-Return-Path: <stable+bounces-83655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24EB799BC47
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 23:33:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0599199BD4F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 03:29:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC9E2B2181C
-	for <lists+stable@lfdr.de>; Sun, 13 Oct 2024 21:33:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B438281D42
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 01:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC99231CAE;
-	Sun, 13 Oct 2024 21:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C2412B73;
+	Mon, 14 Oct 2024 01:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QKkk+Sno"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="EOgRh8fC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pv50p00im-tydg10011801.me.com (pv50p00im-tydg10011801.me.com [17.58.6.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1468D2744E
-	for <stable@vger.kernel.org>; Sun, 13 Oct 2024 21:31:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B981171C
+	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 01:29:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728855067; cv=none; b=KgFuzWXOSAJLFFcdupahIit2XStdDPNs2GdaIH61LMa1NkLNj1i8JVi3pGLJOsr5HO3+qp8l4wQa4QHxmtxzE/fGw3cj/stKwl5q+LOW0/9vf4wmjtpSoeMFNoyahUdThyzFwRzRXk5xGfzxY5vzVTuQfpcplvdC9VIErKfbJso=
+	t=1728869370; cv=none; b=DfisLSqvpj5bnVaYVZrBS3c6ScKjrHBwxQnpCz6zV6913VGiu3dlA9tvrIOI5+JE9U2Ya9OHcjzMINQoKCtO2Fgtd7E3H8T+lx1EijbWjIbhcoT4wHLv51XM4kZtLaJeYRbsfTJGZq1N2ZQowxUb//gfFKB9uBN/vUL0M4Cy8cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728855067; c=relaxed/simple;
-	bh=5xmURMaQB+kGaBR3ftXlO/ng8uDZS60gJunFqpNO3LI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TaazYkIlDUQ2+f8QIoQryZUHG4oMdHEGUn9/h+QfBeQn+Pc2/M1FznzT/1PkJhQFIWhOW400wBpUeAhOvtJMeD3B5cjwh5SDf2KZz6ZALfZ3AS2Q4peN1LBRWPLHpxxJKnwK/KHFWO7piA15/FSenVM22Aqo5t5i5yRniDSu2fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QKkk+Sno; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-37d3ecad390so2917217f8f.1
-        for <stable@vger.kernel.org>; Sun, 13 Oct 2024 14:31:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728855064; x=1729459864; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5xmURMaQB+kGaBR3ftXlO/ng8uDZS60gJunFqpNO3LI=;
-        b=QKkk+Sno9FDPaw5WLxsEwPk+F65Z7cyIXtPqujrdTlBx0k4pWaWVwB4xVFSwtEHLtG
-         kENTboKCU1ldzjMZ1FQE11g4WnlVFgXnf/rhxGrv3ADIqfizwJ/WdN3a6/9CwfUTPIh6
-         bk50E0+4ILek3tB/uVaqhv1WdmrFoZK+eCO+SeLvWyYP6+WuU5xrQOlr4c0L8G1zL8cu
-         OHDlG50zQwv5tT+7eZMOTrB91r5OENN0IWfa70eRKylMLAueW/zmD/71mAsFqB3G1IKK
-         xpHIjJgIajTSPPjJc1An1UVNDBn4K908FtVaOnKCpsnlk94ke8iuWBSjyOlXY7VITlZo
-         jenA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728855064; x=1729459864;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5xmURMaQB+kGaBR3ftXlO/ng8uDZS60gJunFqpNO3LI=;
-        b=gbWsZqZq9c/VTL4iiWUSuVPJorV1uLEwbuRITwwX9zYKS8dL9st+vmNMsbtB7IJ/L2
-         TGvFRFU1mTO/6nAubH8r5koj+EIeM03/PMJuQ0o60Km0OGUkYTiixUlSwk5b04oofQMx
-         ddSF10Wh1j2oK1ZCPPuleC+oJ+1indH18LqawWe3MKJNp6oQD6eLbUZYaE61S/I5BmJX
-         e/n9iifJSzuDrf1agqZTQtVjzHTuXTWMD1SlEVTN/lMU6W8g8EZj2TW4JlOlUo3mWnV2
-         9iWjJM/nj6MVlBjIMnLyqafK8nIpPK12uVaAFJzg6jHbu1nhpYGwKl7A/bkdAgLgoR4b
-         /sgg==
-X-Forwarded-Encrypted: i=1; AJvYcCXhaMFa1jaEqwTXHJQnj5GVHnnxcGDn6r9V0i2bzE0wDkRkPQARnsc+665Kp82A/qCAjAN5JXc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YysIvdeh76lrdq8CSwNJpK06BRWEod/pMaDOF9y5KJtUi5RvgJW
-	D1UfkC+MCkcPq1EC+pTvA8L761C9uOcIzVxXPm6WKxeKrec20tahSj7peyIq
-X-Google-Smtp-Source: AGHT+IGz9v7rDMqSJARiljy8htrk4kg2Dmg1qxC2+iB38XQ4EDYnr7OU5moms3j0Ydhr9mjD5DBZOA==
-X-Received: by 2002:adf:f805:0:b0:377:94b:4f51 with SMTP id ffacd0b85a97d-37d5529bc83mr6691981f8f.22.1728855064210;
-        Sun, 13 Oct 2024 14:31:04 -0700 (PDT)
-Received: from localhost.localdomain ([109.175.243.76])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6a88c9sm9639468f8f.20.2024.10.13.14.31.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Oct 2024 14:31:03 -0700 (PDT)
-From: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
-To: mario.limonciello@amd.com
-Cc: Hamza.Mahfooz@amd.com,
-	Marc.Rossi@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] drm/amd/display: Disable PSR-SU on Parade 08-01 TCON too
-Date: Sun, 13 Oct 2024 22:31:03 +0100
-Message-ID: <20241013213103.55357-1-stuart.a.hayhurst@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240205211233.2601-1-mario.limonciello@amd.com>
-References: <20240205211233.2601-1-mario.limonciello@amd.com>
+	s=arc-20240116; t=1728869370; c=relaxed/simple;
+	bh=S5HwfiMBsCuQ8Bq2X7geGaQx9JB5AGW8Yq8J7Tcpo48=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RbIXEs+ft9fjAwlfPOAG3szM0f9jh+VcJFR/MEJCkU+3JbeDmFGYvY4rEzQt3QHxNhZ+wPia2V/k7zF3bWtARIu3W9b2U152fVVj3TCbvG7x37HmcwmiTpU0Cq5Q4KhBKbpOBlVMVjLJvkCIfbBZSq3G+eNGkOv30HyjJxCMUfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=EOgRh8fC; arc=none smtp.client-ip=17.58.6.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1728869369;
+	bh=p/0isTr9qkbLy7LpIsD3AA4pI52RUqudxo5eFWiJE0s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	b=EOgRh8fCsfjvy4mq7ZwAhx5JS4ZqwKeIOldwcbyCw0N2OETXzQ+oC2/qF9iZXkoIs
+	 jbkkIU8eoWvLTIQKFbsUwOiEcMsFqAKoagQemacjndLRgelf+t09+PR+PePk4IMPm8
+	 15y/8GBCSJUzDaf4C/zVzqiPXtf786AUuh+BtnLy/+bVFQwNXVvAeVxfwCC5abDQPI
+	 yEXQMjeuU953WkPTSeOGyrm+6r3TCgEkJZ3LAvelda//ORm03QaLpw/yNHT0Jhy2+F
+	 0KgNqi2vU3PMXAnvRyW6Dk6Cn7QKrMY7hXv939MGXQOXz1InGbNHjjpUlFHJNLkJb6
+	 7/g5YZvoKxGcg==
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-tydg10011801.me.com (Postfix) with ESMTPSA id 73F2D8001E4;
+	Mon, 14 Oct 2024 01:29:24 +0000 (UTC)
+Message-ID: <695d1a26-255f-464b-884b-47a5b7421128@icloud.com>
+Date: Mon, 14 Oct 2024 09:29:17 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] cxl/port: Fix use-after-free, permit out-of-order
+ decoder shutdown
+To: Dan Williams <dan.j.williams@intel.com>, dave.jiang@intel.com,
+ ira.weiny@intel.com
+Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Alison Schofield <alison.schofield@intel.com>, vishal.l.verma@intel.com,
+ linux-cxl@vger.kernel.org
+References: <172862483180.2150669.5564474284074502692.stgit@dwillia2-xfh.jf.intel.com>
+ <172862486548.2150669.3548553804904171839.stgit@dwillia2-xfh.jf.intel.com>
+ <a7b8a007-907a-4fda-9a35-68faed109ed3@icloud.com>
+ <6709647f66d94_964f2294ae@dwillia2-xfh.jf.intel.com.notmuch>
+ <060193f9-5de1-422b-abfb-6328a1c7b806@icloud.com>
+ <670af54931b8_964fe29427@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Language: en-US
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <670af54931b8_964fe29427@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 39yAAcbnvXMxmaUbiIE4G_uzBrweEicy
+X-Proofpoint-ORIG-GUID: 39yAAcbnvXMxmaUbiIE4G_uzBrweEicy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-13_17,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 bulkscore=0
+ suspectscore=0 mlxscore=0 spamscore=0 malwarescore=0 phishscore=0
+ adultscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2308100000 definitions=main-2410140009
 
-Hi, can this be considered again please? Still facing issues with the 660M in
-my Lenovo Yoga 7 14ARB7. This fixes the weird behaviour I have with black
-screens, back-traces and flickering.
+On 2024/10/13 06:16, Dan Williams wrote:
+> Zijun Hu wrote:
+> [..]
+>>>> it does NOT deserve, also does NOT need to introduce a new core driver
+>>>> API device_for_each_child_reverse_from(). existing
+>>>> device_for_each_child_reverse() can do what the _from() wants to do.
+>>>>
+>>>> we can use similar approach as below link shown:
+>>>> https://lore.kernel.org/all/20240815-const_dfc_prepare-v2-2-8316b87b8ff9@quicinc.com/
+>>>
+>>> No, just have a simple starting point parameter. I understand that more
+>>> logic can be placed around device_for_each_child_reverse() to achieve
+>>> the same effect, but the core helpers should be removing logic from
+>>> consumers, not forcing them to add more.
+>>>
+>>> If bloat is a concern, then after your const cleanups go through
+>>> device_for_each_child_reverse() can be rewritten in terms of
+>>> device_for_each_child_reverse_from() as (untested):
+>>>
+>>
+>> bloat is one aspect, the other aspect is that there are redundant
+>> between both driver core APIs, namely, there are a question:
+>>
+>> why to still need device_for_each_child_reverse() if it is same as
+>> _from(..., NULL, ...) ?
+> 
+> To allow access to the new functionality without burdening existing
+> callers. With device_for_each_child_reverse() re-written to internally
+> use device_for_each_child_reverse_from() Linux gets more functionality
+> with no disruption to existing users and no bloat. This is typical API
+> evolution.
+> 
+>> So i suggest use existing API now.
+> 
+> No, I am failing to understand your concern.
+> 
+>> if there are more users who have such starting point requirement, then
+>> add the parameter into device_for_each_child_reverse() which is
+>> consistent with other existing *_for_each_*() core APIs such as
+>> (class|driver|bus)_for_each_device() and bus_for_each_drv(), that may
+>> need much efforts.
+> 
+> There are ~370 existing device_for_each* callers. Let's not thrash them.
+> 
+> Introduce new superset calls with the additional parameter and then
+> rewrite the old routines to just have a simple wrapper that passes a
+> NULL @start parameter.
+> 
+> Now, if Greg has the appetite to go touch all ~370 existing callers, so
+> be it, but introducing a superset-iterator-helper and a compat-wrapper
+> for legacy is the path I would take.
+> 
+
+current kernel tree ONLY has 15 usages of
+device_for_each_child_reverse(), i would like to
+add an extra parameter @start as existing
+(class|driver)_for_each_device() and bus_for_each_(dev|drv)() do
+if it is required.
+
+>> could you please contains your proposal "fixing this allocation
+>> order validation" of below link into this patch series with below
+>> reason? and Cc me (^^)
+>>
+>> https://lore.kernel.org/all/670835f5a2887_964f229474@dwillia2-xfh.jf.intel.com.notmuch/
+>>
+>> A)
+>>   the proposal depends on this patch series.
+>> B)
+>>   one of the issues the proposal fix is match_free_decoder()  error
+>> logic which is also relevant issues this patch series fix, the proposal
+>> also can fix the other device_find_child()'s match() issue i care about.
+>>
+>> C)
+>>  Actually, it is a bit difficult for me to understand the proposal since
+>>  i don't have any basic knowledge about CXL. (^^)
+> 
+> If I understand your question correctly you are asking how does
+> device_for_each_child_reverse_from() get used in
+> cxl_region_find_decoder() to enforce in-order allocation?
+> 
+
+yes. your recommendation may help me understand it.
+
+> The recommendation is the following:
+> 
+> -- 8< --
+> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+> index 3478d2058303..32cde18ff31b 100644
+> --- a/drivers/cxl/core/region.c
+> +++ b/drivers/cxl/core/region.c
+> @@ -778,26 +778,50 @@ static size_t show_targetN(struct cxl_region *cxlr, char *buf, int pos)
+>  	return rc;
+>  }
+>  
+> +static int check_commit_order(struct device *dev, const void *data)
+> +{
+> +	struct cxl_decoder *cxld = to_cxl_decoder(dev);
+> +
+> +	/*
+> +	 * if port->commit_end is not the only free decoder, then out of
+> +	 * order shutdown has occurred, block further allocations until
+> +	 * that is resolved
+> +	 */
+> +	if (((cxld->flags & CXL_DECODER_F_ENABLE) == 0))
+> +		return -EBUSY;
+> +	return 0;
+> +}
+> +
+>  static int match_free_decoder(struct device *dev, void *data)
+>  {
+> +	struct cxl_port *port = to_cxl_port(dev->parent);
+>  	struct cxl_decoder *cxld;
+> -	int *id = data;
+> +	int rc;
+>  
+>  	if (!is_switch_decoder(dev))
+>  		return 0;
+>  
+>  	cxld = to_cxl_decoder(dev);
+>  
+> -	/* enforce ordered allocation */
+> -	if (cxld->id != *id)
+> +	if (cxld->id != port->commit_end + 1)
+>  		return 0;
+>  
+
+for a port, is it possible that there are multiple CXLDs with same IDs?
+
+> -	if (!cxld->region)
+> -		return 1;
+> -
+> -	(*id)++;
+> +	if (cxld->region) {
+> +		dev_dbg(dev->parent,
+> +			"next decoder to commit is already reserved\n",
+> +			dev_name(dev));
+> +		return 0;
+> +	}
+>  
+> -	return 0;
+> +	rc = device_for_each_child_reverse_from(dev->parent, dev, NULL,
+> +						check_commit_order);
+> +	if (rc) {
+> +		dev_dbg(dev->parent,
+> +			"unable to allocate %s due to out of order shutdown\n",
+> +			dev_name(dev));
+> +		return 0;
+> +	}
+> +	return 1;
+>  }
+>  
+>  static int match_auto_decoder(struct device *dev, void *data)
+> @@ -824,7 +848,6 @@ cxl_region_find_decoder(struct cxl_port *port,
+>  			struct cxl_region *cxlr)
+>  {
+>  	struct device *dev;
+> -	int id = 0;
+>  
+>  	if (port == cxled_to_port(cxled))
+>  		return &cxled->cxld;
+> @@ -833,7 +856,7 @@ cxl_region_find_decoder(struct cxl_port *port,
+>  		dev = device_find_child(&port->dev, &cxlr->params,
+>  					match_auto_decoder);
+>  	else
+> -		dev = device_find_child(&port->dev, &id, match_free_decoder);
+> +		dev = device_find_child(&port->dev, NULL, match_free_decoder);
+>  	if (!dev)
+>  		return NULL;
+>  	/*
+
 
