@@ -1,124 +1,117 @@
-Return-Path: <stable+bounces-85061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4705899D4C1
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 18:34:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2687D99D4D4
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 18:38:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57A4EB213DE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:34:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5E89280EF4
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C14E1ABEC1;
-	Mon, 14 Oct 2024 16:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 612C2288B1;
+	Mon, 14 Oct 2024 16:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="oFKtHA7z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lkEysTOm"
 X-Original-To: stable@vger.kernel.org
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351944B5AE;
-	Mon, 14 Oct 2024 16:34:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B7A231C92
+	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 16:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728923648; cv=none; b=jmYiYFznNH1U4Rxai12wMblJ0ahIj3bCswO2aCVV3LMJwwdyIaLY/QtIRiGm31ujEiv4/LJM1Fdta2/LuuXv+AAcffAhuyGOLp7AJjFN8Zjry9LNtsf0byL3xH0S7d4lISF9nNYE1G2v91EKLTVjuarhOox3FghcsBDSxSE29bg=
+	t=1728923918; cv=none; b=ty09q6F0Aj4gTQxFU4qhef7VLZhV0jrzWJfHMZqXDZhXO71BHRpv6d3KtWZdN1ZCs47/wWrh8fwJXYsAPqWceyoGYSSTJ4oRIxMrAC3n53Z/k3prq31DyY+gQCQTRqwWzcc4ILOb0QNZ8DwonEFa32FDJuIlhRIPZjdxUc9+v2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728923648; c=relaxed/simple;
-	bh=Re5ZNIjxd2wz32xEqIt5Mq5PCNxAtDitjb5BYY1ye4g=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tgCQQ61hueS166rRijQ07lCSGmHjFG5yAHqNHErkU+yLismSW0GbiobEoTMZe08KBbibY7UDzBPdGDMM2qTEflQKVLolYslYubKlI/L8mmaniCPgn7fam1fsfdBBh12lQl0LMHguoYFpYD/qb7F7JFfzA+FtijkHyi3EoOmU1o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=oFKtHA7z; arc=none smtp.client-ip=198.47.23.248
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 49EGXpl9094829;
-	Mon, 14 Oct 2024 11:33:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1728923631;
-	bh=+kmYsnRSxgBQfl5oIRzC21ET9kJt498XpPwSEuIKuIw=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=oFKtHA7za/V4aS1nUfpFsFQLigi4doV0pDtsg4LvJIMMn/kLeXb17gJiAf1dYIXbG
-	 ZMrXJQTjBIg99510kwPqwrbTYcOkKGF/xCE90+6NH0LwczZG5sXsxj/tZ5M6y0pQ3t
-	 fWcMX/5UfeKS56OvqX77yHu0iUO/yNcBAwgEuDAw=
-Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49EGXpBM082054;
-	Mon, 14 Oct 2024 11:33:51 -0500
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE110.ent.ti.com
- (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 14
- Oct 2024 11:33:51 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 14 Oct 2024 11:33:51 -0500
-Received: from localhost (lcpd911.dhcp.ti.com [172.24.227.226])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49EGXoXS127959;
-	Mon, 14 Oct 2024 11:33:50 -0500
-Date: Mon, 14 Oct 2024 22:03:49 +0530
-From: Dhruva Gole <d-gole@ti.com>
-To: Roger Quadros <rogerq@kernel.org>
-CC: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <len.brown@intel.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
-        Santosh
- Shilimkar <ssantosh@kernel.org>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Vishal Mahaveer <vishalm@ti.com>, <msp@baylibre.com>, <srk@ti.com>,
-        <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-usb@vger.kernel.org>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH v3] usb: dwc3: core: Fix system suspend on TI AM62
- platforms
-Message-ID: <20241014163349.oiqocvg6pjmqulus@lcpd911>
-References: <20241011-am62-lpm-usb-v3-1-562d445625b5@kernel.org>
+	s=arc-20240116; t=1728923918; c=relaxed/simple;
+	bh=yyU3R7qUtKGClEduDT1qq4PwhvXLOOsu89t//ztsvwU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QTlFeYaJnfydRobX6asu5AHkCKjfbjaI67wemRoFHFwEfCOaKPxFRVpqQLQFHCkxRh1UefuiOcJC77RCNKmnF/EKJB3Wa4M1M770oY7yYcrfOlkwFRkXnGXqBGNurAWKsshWopW/e7HnHYX8lNqwS3iA2oW7/HMZKahInGDXXy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lkEysTOm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA4CC4CEC3;
+	Mon, 14 Oct 2024 16:38:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728923917;
+	bh=yyU3R7qUtKGClEduDT1qq4PwhvXLOOsu89t//ztsvwU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lkEysTOmKBHKGl2m0eRraANuQ5Eh54H/XjBwbRpZONmslvoLpZuXSA58WHN4yCiI0
+	 ypYpb5YdDrDACcpS3mEIEGQaTO7M0MnJGRLHoDLmN4Y7pNII6I+t81uvI5mdkCamDV
+	 YftfAWCqyHDixHbJbqxTRHaQFhBrjcPbeefIkn1jLGw0au3IzpI5qfL+V913pczZ2I
+	 vOhT7AvStItIFzHvVVJecMIAtEvknToHk4ExdJqOQTb+LYsaCU/3pso9ol7ZPpSyNU
+	 yDfTH9xc+q2K5wcVdktZdU72Fx2kWmjaEbpYUve7eprAd/HbKeBlmSGmw18qIKNMPR
+	 koylfjWFqfhrg==
+Date: Mon, 14 Oct 2024 19:35:03 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Patrick Roy <roypat@amazon.co.uk>
+Subject: Re: [PATCH 5.15.y] secretmem: disable memfd_secret() if arch cannot
+ set direct map
+Message-ID: <Zw1IN_Gm8LZjWEO4@kernel.org>
+References: <2024101412-prowling-snowflake-9fe0@gregkh>
+ <20241014152103.1328260-1-rppt@kernel.org>
+ <2024101410-jiffy-handsaw-43e3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241011-am62-lpm-usb-v3-1-562d445625b5@kernel.org>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+In-Reply-To: <2024101410-jiffy-handsaw-43e3@gregkh>
 
-On Oct 11, 2024 at 13:53:24 +0300, Roger Quadros wrote:
-> Since commit 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init"),
-> system suspend is broken on AM62 TI platforms.
+On Mon, Oct 14, 2024 at 05:55:22PM +0200, Greg KH wrote:
+> On Mon, Oct 14, 2024 at 06:21:03PM +0300, Mike Rapoport wrote:
+> > From: Patrick Roy <roypat@amazon.co.uk>
+> > 
+> > Return -ENOSYS from memfd_secret() syscall if !can_set_direct_map().
+> > This is the case for example on some arm64 configurations, where marking
+> > 4k PTEs in the direct map not present can only be done if the direct map
+> > is set up at 4k granularity in the first place (as ARM's
+> > break-before-make semantics do not easily allow breaking apart
+> > large/gigantic pages).
+> > 
+> > More precisely, on arm64 systems with !can_set_direct_map(),
+> > set_direct_map_invalid_noflush() is a no-op, however it returns success
+> > (0) instead of an error. This means that memfd_secret will seemingly
+> > "work" (e.g. syscall succeeds, you can mmap the fd and fault in pages),
+> > but it does not actually achieve its goal of removing its memory from
+> > the direct map.
+> > 
+> > Note that with this patch, memfd_secret() will start erroring on systems
+> > where can_set_direct_map() returns false (arm64 with
+> > CONFIG_RODATA_FULL_DEFAULT_ENABLED=n, CONFIG_DEBUG_PAGEALLOC=n and
+> > CONFIG_KFENCE=n), but that still seems better than the current silent
+> > failure. Since CONFIG_RODATA_FULL_DEFAULT_ENABLED defaults to 'y', most
+> > arm64 systems actually have a working memfd_secret() and aren't be
+> > affected.
+> > 
+> > >>From going through the iterations of the original memfd_secret patch
+> > series, it seems that disabling the syscall in these scenarios was the
+> > intended behavior [1] (preferred over having
+> > set_direct_map_invalid_noflush return an error as that would result in
+> > SIGBUSes at page-fault time), however the check for it got dropped
+> > between v16 [2] and v17 [3], when secretmem moved away from CMA
+> > allocations.
+> > 
+> > [1]: https://lore.kernel.org/lkml/20201124164930.GK8537@kernel.org/
+> > [2]: https://lore.kernel.org/lkml/20210121122723.3446-11-rppt@kernel.org/#t
+> > [3]: https://lore.kernel.org/lkml/20201125092208.12544-10-rppt@kernel.org/
+> > 
+> > Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+> > Signed-off-by: Patrick Roy <roypat@amazon.co.uk>
+> > Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >  mm/secretmem.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Before that commit, both DWC3_GUSB3PIPECTL_SUSPHY and DWC3_GUSB2PHYCFG_SUSPHY
-> bits (hence forth called 2 SUSPHY bits) were being set during core
-> initialization and even during core re-initialization after a system
-> suspend/resume.
-> 
-> These bits are required to be set for system suspend/resume to work correctly
-> on AM62 platforms.
-> 
-> Since that commit, the 2 SUSPHY bits are not set for DEVICE/OTG mode if gadget
-> driver is not loaded and started.
-> For Host mode, the 2 SUSPHY bits are set before the first system suspend but
-> get cleared at system resume during core re-init and are never set again.
-> 
-> This patch resovles these two issues by ensuring the 2 SUSPHY bits are set
-> before system suspend and restored to the original state during system resume.
+> What is the git id of this change in Linus's tree?
 
-Thanks for the fix Roger,
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-
-> 
-> Cc: stable@vger.kernel.org # v6.9+
-> Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
-> Link: https://lore.kernel.org/all/1519dbe7-73b6-4afc-bfe3-23f4f75d772f@kernel.org/
-> Signed-off-by: Roger Quadros <rogerq@kernel.org>
-> Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-> ---
-> Changes in v3:
-[...]
+532b53cebe58f34ce1c0f34d866f5c0e335c53c6
 
 -- 
-Best regards,
-Dhruva Gole
-Texas Instruments Incorporated
+Sincerely yours,
+Mike.
 
