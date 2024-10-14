@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-83868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53EF799CCF2
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:27:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 572AF99D234
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2432B222BB
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:27:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E74A1F24F98
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF031AB6DD;
-	Mon, 14 Oct 2024 14:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865D226296;
+	Mon, 14 Oct 2024 15:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZwzA323"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGJsId12"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6201AA7A5;
-	Mon, 14 Oct 2024 14:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409971AC44D;
+	Mon, 14 Oct 2024 15:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916008; cv=none; b=oi6mbaxx0rSdUohmy2V3erOx76UmLG5ENacg64WTTiQTmqxFHBJUHkzv4XrZhcsFWJXL5fR8MK7y/vahM/vkFT8AeTZ+N02TM7alQIF0ujJ6bKbW5FfGyUn1uCOfN6E4iaj2GnppC4OumerhBt8R4dikFDI6KgV8N1Le2eNk4Tc=
+	t=1728919295; cv=none; b=JOKBEC5xONvwvLYSkLy2ZVkyWD6V41tx37KR9JXuXxlmgPbOWj2fem4lZ9QjFL31V/JFsLhYVhA5xgHjCo7p4G0wBhu92Rgs4vx8X0ZkS5JEcnZNoTyddQN3JZmH8JM+4oXriQGJB+Dg3MLidF74WXPqh9lESY1ocVQDEnOW98w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916008; c=relaxed/simple;
-	bh=7+hdCF8axviVZuCRU5S1mlkILcfIevbXmbyyG9ZUXLU=;
+	s=arc-20240116; t=1728919295; c=relaxed/simple;
+	bh=qtSvVnm/nZcr7PZriW4iJ6QubyO8C7Wm5kQ2KwAYZ+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bzw0AiQnd6JG2/qAKT9KBHfDkChYXl0Oh8+8u9zpZqXYQex/0KmsTxvnZT+szGNdaQjDM16x2Uz9+tbJI95u5Qtmf6uQjETwVhyjXHWs7zApfL7PnVERXFR3ZxuMc3Tp44XmiH/BldS4/DIYNl9nhsyOBUfKfB+05dpJDSmusgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZwzA323; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F44C4CEC3;
-	Mon, 14 Oct 2024 14:26:46 +0000 (UTC)
+	 MIME-Version; b=FzEFQ7C/4RIZxTvQb+w1FufS9RbkuVmAmq5ILeMnlTTQWeLz3uyMJVJ1WWRSkwfTEVib35zPFE4N4ldf+YfzSnoO5sYHXz2+jfPD7MdlZIFBv3Y0ejKf6TWUzSeEnSw5Pf8xmzmbocPodSRdHuO1aFOO1EjcjPQ8FF7WIjhYEtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGJsId12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9406C4CEC3;
+	Mon, 14 Oct 2024 15:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916007;
-	bh=7+hdCF8axviVZuCRU5S1mlkILcfIevbXmbyyG9ZUXLU=;
+	s=korg; t=1728919295;
+	bh=qtSvVnm/nZcr7PZriW4iJ6QubyO8C7Wm5kQ2KwAYZ+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZwzA323JgG1YcWSGhwlFnV00quiNQ/ZdmSvmVCzXw8GbEEu/iCYAD2q+5nJjMskm
-	 77AKSeYzbFmpFrzZcL0dtUvxR/j5eDRb+qdRzkH4tFcRHsnmLavIusENhNFcK36hTL
-	 2vvq/8IY0CYY5vyW5IcYNJ3w/Py+Y4oQVaabmvXw=
+	b=FGJsId127aR3Of1oNvgox3FwSaHIsJrkTEgtAvhmI+PxWtY7cQ+5a3HRaDuHA1fPQ
+	 RmcONpF8fMC6HJXkmkb2th3Fs3QnbRSu/95DXfgH1sohAnSCJFL5Vjpc+euSAGU7JW
+	 jsh8dIRMla34v22UkO9Ug3Us0Xw68AqBfbMI4bOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Kuohai <xukuohai@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 027/214] bpf: Prevent tail call between progs attached to different hooks
-Date: Mon, 14 Oct 2024 16:18:10 +0200
-Message-ID: <20241014141046.052616465@linuxfoundation.org>
+	Jan Lalinsky <lalinsky@c4.cz>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 537/798] ALSA: usb-audio: Add native DSD support for Luxman D-08u
+Date: Mon, 14 Oct 2024 16:18:11 +0200
+Message-ID: <20241014141239.094962519@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Kuohai <xukuohai@huawei.com>
+From: Jan Lalinsky <lalinsky@c4.cz>
 
-[ Upstream commit 28ead3eaabc16ecc907cfb71876da028080f6356 ]
+commit 6b0bde5d8d4078ca5feec72fd2d828f0e5cf115d upstream.
 
-bpf progs can be attached to kernel functions, and the attached functions
-can take different parameters or return different return values. If
-prog attached to one kernel function tail calls prog attached to another
-kernel function, the ctx access or return value verification could be
-bypassed.
+Add native DSD support for Luxman D-08u DAC, by adding the PID/VID 1852:5062.
+This makes DSD playback work, and also sound quality when playing PCM files
+is improved, crackling sounds are gone.
 
-For example, if prog1 is attached to func1 which takes only 1 parameter
-and prog2 is attached to func2 which takes two parameters. Since verifier
-assumes the bpf ctx passed to prog2 is constructed based on func2's
-prototype, verifier allows prog2 to access the second parameter from
-the bpf ctx passed to it. The problem is that verifier does not prevent
-prog1 from passing its bpf ctx to prog2 via tail call. In this case,
-the bpf ctx passed to prog2 is constructed from func1 instead of func2,
-that is, the assumption for ctx access verification is bypassed.
-
-Another example, if BPF LSM prog1 is attached to hook file_alloc_security,
-and BPF LSM prog2 is attached to hook bpf_lsm_audit_rule_known. Verifier
-knows the return value rules for these two hooks, e.g. it is legal for
-bpf_lsm_audit_rule_known to return positive number 1, and it is illegal
-for file_alloc_security to return positive number. So verifier allows
-prog2 to return positive number 1, but does not allow prog1 to return
-positive number. The problem is that verifier does not prevent prog1
-from calling prog2 via tail call. In this case, prog2's return value 1
-will be used as the return value for prog1's hook file_alloc_security.
-That is, the return value rule is bypassed.
-
-This patch adds restriction for tail call to prevent such bypasses.
-
-Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
-Link: https://lore.kernel.org/r/20240719110059.797546-4-xukuohai@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jan Lalinsky <lalinsky@c4.cz>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241003030811.2655735-1-lalinsky@c4.cz
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/bpf.h |  1 +
- kernel/bpf/core.c   | 21 ++++++++++++++++++---
- 2 files changed, 19 insertions(+), 3 deletions(-)
+ sound/usb/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 70fa4ffc3879f..f3e5ce397b8ef 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -294,6 +294,7 @@ struct bpf_map {
- 	 * same prog type, JITed flag and xdp_has_frags flag.
- 	 */
- 	struct {
-+		const struct btf_type *attach_func_proto;
- 		spinlock_t lock;
- 		enum bpf_prog_type type;
- 		bool jited;
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 7ee62e38faf0e..4e07cc057d6f2 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -2302,6 +2302,7 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
- {
- 	enum bpf_prog_type prog_type = resolve_prog_type(fp);
- 	bool ret;
-+	struct bpf_prog_aux *aux = fp->aux;
- 
- 	if (fp->kprobe_override)
- 		return false;
-@@ -2311,7 +2312,7 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
- 	 * in the case of devmap and cpumap). Until device checks
- 	 * are implemented, prohibit adding dev-bound programs to program maps.
- 	 */
--	if (bpf_prog_is_dev_bound(fp->aux))
-+	if (bpf_prog_is_dev_bound(aux))
- 		return false;
- 
- 	spin_lock(&map->owner.lock);
-@@ -2321,12 +2322,26 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
- 		 */
- 		map->owner.type  = prog_type;
- 		map->owner.jited = fp->jited;
--		map->owner.xdp_has_frags = fp->aux->xdp_has_frags;
-+		map->owner.xdp_has_frags = aux->xdp_has_frags;
-+		map->owner.attach_func_proto = aux->attach_func_proto;
- 		ret = true;
- 	} else {
- 		ret = map->owner.type  == prog_type &&
- 		      map->owner.jited == fp->jited &&
--		      map->owner.xdp_has_frags == fp->aux->xdp_has_frags;
-+		      map->owner.xdp_has_frags == aux->xdp_has_frags;
-+		if (ret &&
-+		    map->owner.attach_func_proto != aux->attach_func_proto) {
-+			switch (prog_type) {
-+			case BPF_PROG_TYPE_TRACING:
-+			case BPF_PROG_TYPE_LSM:
-+			case BPF_PROG_TYPE_EXT:
-+			case BPF_PROG_TYPE_STRUCT_OPS:
-+				ret = false;
-+				break;
-+			default:
-+				break;
-+			}
-+		}
- 	}
- 	spin_unlock(&map->owner.lock);
- 
--- 
-2.43.0
-
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2121,6 +2121,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_DISABLE_AUTOSUSPEND),
+ 	DEVICE_FLG(0x17aa, 0x104d, /* Lenovo ThinkStation P620 Internal Speaker + Front Headset */
+ 		   QUIRK_FLAG_DISABLE_AUTOSUSPEND),
++	DEVICE_FLG(0x1852, 0x5062, /* Luxman D-08u */
++		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
+ 	DEVICE_FLG(0x1852, 0x5065, /* Luxman DA-06 */
+ 		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
+ 	DEVICE_FLG(0x1901, 0x0191, /* GE B850V3 CP2114 audio interface */
 
 
 
