@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-84674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA4299D16C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:16:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B816B99D12F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:12:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 532C91F2436C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:16:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C22D285A1E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:12:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17B41AC458;
-	Mon, 14 Oct 2024 15:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E16D1ABEA6;
+	Mon, 14 Oct 2024 15:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VL44IHB0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/FMbKGt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEC11ABEC6;
-	Mon, 14 Oct 2024 15:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285A21AB6FC;
+	Mon, 14 Oct 2024 15:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918821; cv=none; b=rJpmRX7HAvTxwCKsY6scin0B5r90r1JpRCMrufqgmBewWft2AuHLEWczR1xF+te/yaYP+jliYDuCkpvT9P1xrCi4YopejfyNswQVZN3ZuMN0xJJOFdLueeOv2NgXcWF9n635FxuUBKuMR6+Y4GOMJanHKHZYa95HFLBdr8H2Iok=
+	t=1728918714; cv=none; b=BjEge144dEFp4FpReZ156J4g0tLHw68rvDmP38XtRC807RgcHap37/6q6WK10E9/2jag1QDX82vW+bqOrZJlFBKAmut+Dk9d9uEJszyQh1NjgD+Tj1idHoV4gYldZ0DxpHBUJPVRrFZ1sWyHiToiNaL4AZVmjyuZ4B5Rc3qFnNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918821; c=relaxed/simple;
-	bh=Zl6/NS5zhQQTdAXpUiELCZQggdq0UMsxS9QxP052yd0=;
+	s=arc-20240116; t=1728918714; c=relaxed/simple;
+	bh=UxDW5M3YAYv02NrJp4hDCwR3bONhrHA8w2wyLuM6NuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mahaONVfcmOWM7kHIR1FDEL6FzkdSSIrsaH1KzwmqwWrgyztiEYFVPLbnEBLBcTLsSi32uq0ZK8OhFhBYX0/G5CuFqW+Kl2i3Vamo7Ifcpq4Ma2kfIc8NThyiR0cYMgJahFh95/jq6Y5koFwfzHp5cICvaIRsngwYgbKfVdb+D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VL44IHB0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6C0C4CEC7;
-	Mon, 14 Oct 2024 15:13:40 +0000 (UTC)
+	 MIME-Version; b=T33DIkKCNVDeXeiivOZqCnoLitOwlhpLtxj5FkjYYCesFmiJN2GkU65QnIJ3+0IWQTJ+JcU5xUFb38IUEvxHd6fspBoG5GaMd1WuU+I68g/zdWEDdG1PPXHr3FYUs5c3kJQcwgFP2wcrDwX8WuQMw095FY6YDPU6okDqSyJenew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/FMbKGt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B7C2C4CEC3;
+	Mon, 14 Oct 2024 15:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918821;
-	bh=Zl6/NS5zhQQTdAXpUiELCZQggdq0UMsxS9QxP052yd0=;
+	s=korg; t=1728918714;
+	bh=UxDW5M3YAYv02NrJp4hDCwR3bONhrHA8w2wyLuM6NuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VL44IHB0WSZDw9VcFyM2q6uNI9u34c9MsyL6EcvNVqrtBdvPAzk6N9h8KFjfC2Obo
-	 tq2pyDCU41T3G1lKSv322v99UmrD1E0Ltb/UEpWbDtyH72yunYWQQwzaTPx4sQV9Nx
-	 yaMpfzUDxsx0aUvbLjvu80RK4VyCnbUH6grAqkcs=
+	b=F/FMbKGtXWrd/hvuY4r0XaPlaAAUFgY3IUfuJr7/bymKrS/LYLoZ7HF+pkivEuHmy
+	 H6OOZRnZhNnWBHMiRL7yCNC61r/78l/iSCLDE+tErIrAHGm1lqn/YTQORFAj9d5Y5l
+	 QEjjYv0TAQ2Z+ZQVBsaa7Bvf3Hq8LTrJ+J/7tfas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bd8d55ee2acd0a71d8ce@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Tom Parkin <tparkin@katalix.com>,
-	James Chapman <jchapman@katalix.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shiyang Ruan <ruansy.fnst@fujitsu.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Alistair Popple <apopple@nvidia.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Chinner <david@fromorbit.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 401/798] ppp: do not assume bh is held in ppp_channel_bridge_input()
-Date: Mon, 14 Oct 2024 16:15:55 +0200
-Message-ID: <20241014141233.699437518@linuxfoundation.org>
+Subject: [PATCH 6.1 402/798] fsdax,xfs: port unshare to fsdax
+Date: Mon, 14 Oct 2024 16:15:56 +0200
+Message-ID: <20241014141233.740568579@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -69,140 +72,124 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Shiyang Ruan <ruansy.fnst@fujitsu.com>
 
-[ Upstream commit aec7291003df78cb71fd461d7b672912bde55807 ]
+[ Upstream commit d984648e428bf88cbd94ebe346c73632cb92fffb ]
 
-Networking receive path is usually handled from BH handler.
-However, some protocols need to acquire the socket lock, and
-packets might be stored in the socket backlog is the socket was
-owned by a user process.
+Implement unshare in fsdax mode: copy data from srcmap to iomap.
 
-In this case, release_sock(), __release_sock(), and sk_backlog_rcv()
-might call the sk->sk_backlog_rcv() handler in process context.
-
-sybot caught ppp was not considering this case in
-ppp_channel_bridge_input() :
-
-WARNING: inconsistent lock state
-6.11.0-rc7-syzkaller-g5f5673607153 #0 Not tainted
---------------------------------
-inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
-ksoftirqd/1/24 [HC0[0]:SC1[1]:HE1:SE0] takes:
- ffff0000db7f11e0 (&pch->downl){+.?.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
- ffff0000db7f11e0 (&pch->downl){+.?.}-{2:2}, at: ppp_channel_bridge_input drivers/net/ppp/ppp_generic.c:2272 [inline]
- ffff0000db7f11e0 (&pch->downl){+.?.}-{2:2}, at: ppp_input+0x16c/0x854 drivers/net/ppp/ppp_generic.c:2304
-{SOFTIRQ-ON-W} state was registered at:
-   lock_acquire+0x240/0x728 kernel/locking/lockdep.c:5759
-   __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
-   _raw_spin_lock+0x48/0x60 kernel/locking/spinlock.c:154
-   spin_lock include/linux/spinlock.h:351 [inline]
-   ppp_channel_bridge_input drivers/net/ppp/ppp_generic.c:2272 [inline]
-   ppp_input+0x16c/0x854 drivers/net/ppp/ppp_generic.c:2304
-   pppoe_rcv_core+0xfc/0x314 drivers/net/ppp/pppoe.c:379
-   sk_backlog_rcv include/net/sock.h:1111 [inline]
-   __release_sock+0x1a8/0x3d8 net/core/sock.c:3004
-   release_sock+0x68/0x1b8 net/core/sock.c:3558
-   pppoe_sendmsg+0xc8/0x5d8 drivers/net/ppp/pppoe.c:903
-   sock_sendmsg_nosec net/socket.c:730 [inline]
-   __sock_sendmsg net/socket.c:745 [inline]
-   __sys_sendto+0x374/0x4f4 net/socket.c:2204
-   __do_sys_sendto net/socket.c:2216 [inline]
-   __se_sys_sendto net/socket.c:2212 [inline]
-   __arm64_sys_sendto+0xd8/0xf8 net/socket.c:2212
-   __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
-   invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
-   el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
-   do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
-   el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:712
-   el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
-   el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
-irq event stamp: 282914
- hardirqs last  enabled at (282914): [<ffff80008b42e30c>] __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:151 [inline]
- hardirqs last  enabled at (282914): [<ffff80008b42e30c>] _raw_spin_unlock_irqrestore+0x38/0x98 kernel/locking/spinlock.c:194
- hardirqs last disabled at (282913): [<ffff80008b42e13c>] __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:108 [inline]
- hardirqs last disabled at (282913): [<ffff80008b42e13c>] _raw_spin_lock_irqsave+0x2c/0x7c kernel/locking/spinlock.c:162
- softirqs last  enabled at (282904): [<ffff8000801f8e88>] softirq_handle_end kernel/softirq.c:400 [inline]
- softirqs last  enabled at (282904): [<ffff8000801f8e88>] handle_softirqs+0xa3c/0xbfc kernel/softirq.c:582
- softirqs last disabled at (282909): [<ffff8000801fbdf8>] run_ksoftirqd+0x70/0x158 kernel/softirq.c:928
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(&pch->downl);
-  <Interrupt>
-    lock(&pch->downl);
-
- *** DEADLOCK ***
-
-1 lock held by ksoftirqd/1/24:
-  #0: ffff80008f74dfa0 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire+0x10/0x4c include/linux/rcupdate.h:325
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 24 Comm: ksoftirqd/1 Not tainted 6.11.0-rc7-syzkaller-g5f5673607153 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-Call trace:
-  dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:319
-  show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:326
-  __dump_stack lib/dump_stack.c:93 [inline]
-  dump_stack_lvl+0xe4/0x150 lib/dump_stack.c:119
-  dump_stack+0x1c/0x28 lib/dump_stack.c:128
-  print_usage_bug+0x698/0x9ac kernel/locking/lockdep.c:4000
- mark_lock_irq+0x980/0xd2c
-  mark_lock+0x258/0x360 kernel/locking/lockdep.c:4677
-  __lock_acquire+0xf48/0x779c kernel/locking/lockdep.c:5096
-  lock_acquire+0x240/0x728 kernel/locking/lockdep.c:5759
-  __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
-  _raw_spin_lock+0x48/0x60 kernel/locking/spinlock.c:154
-  spin_lock include/linux/spinlock.h:351 [inline]
-  ppp_channel_bridge_input drivers/net/ppp/ppp_generic.c:2272 [inline]
-  ppp_input+0x16c/0x854 drivers/net/ppp/ppp_generic.c:2304
-  ppp_async_process+0x98/0x150 drivers/net/ppp/ppp_async.c:495
-  tasklet_action_common+0x318/0x3f4 kernel/softirq.c:785
-  tasklet_action+0x68/0x8c kernel/softirq.c:811
-  handle_softirqs+0x2e4/0xbfc kernel/softirq.c:554
-  run_ksoftirqd+0x70/0x158 kernel/softirq.c:928
-  smpboot_thread_fn+0x4b0/0x90c kernel/smpboot.c:164
-  kthread+0x288/0x310 kernel/kthread.c:389
-  ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:860
-
-Fixes: 4cf476ced45d ("ppp: add PPPIOCBRIDGECHAN and PPPIOCUNBRIDGECHAN ioctls")
-Reported-by: syzbot+bd8d55ee2acd0a71d8ce@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/66f661e2.050a0220.38ace9.000f.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Tom Parkin <tparkin@katalix.com>
-Cc: James Chapman <jchapman@katalix.com>
-Link: https://patch.msgid.link/20240927074553.341910-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lkml.kernel.org/r/1669908753-169-1-git-send-email-ruansy.fnst@fujitsu.com
+Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Dave Chinner <david@fromorbit.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: a311a08a4237 ("iomap: constrain the file range passed to iomap_file_unshare")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_generic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/dax.c             | 52 ++++++++++++++++++++++++++++++++++++++++++++
+ fs/xfs/xfs_reflink.c |  8 +++++--
+ include/linux/dax.h  |  2 ++
+ 3 files changed, 60 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index 5a6fa566e722f..de14e89619c5e 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -2269,7 +2269,7 @@ static bool ppp_channel_bridge_input(struct channel *pch, struct sk_buff *skb)
- 	if (!pchb)
- 		goto out_rcu;
+diff --git a/fs/dax.c b/fs/dax.c
+index 1c6867810cbd6..626745bc1ad86 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -1221,6 +1221,58 @@ static vm_fault_t dax_pmd_load_hole(struct xa_state *xas, struct vm_fault *vmf,
+ }
+ #endif /* CONFIG_FS_DAX_PMD */
  
--	spin_lock(&pchb->downl);
-+	spin_lock_bh(&pchb->downl);
- 	if (!pchb->chan) {
- 		/* channel got unregistered */
- 		kfree_skb(skb);
-@@ -2281,7 +2281,7 @@ static bool ppp_channel_bridge_input(struct channel *pch, struct sk_buff *skb)
- 		kfree_skb(skb);
++static s64 dax_unshare_iter(struct iomap_iter *iter)
++{
++	struct iomap *iomap = &iter->iomap;
++	const struct iomap *srcmap = iomap_iter_srcmap(iter);
++	loff_t pos = iter->pos;
++	loff_t length = iomap_length(iter);
++	int id = 0;
++	s64 ret = 0;
++	void *daddr = NULL, *saddr = NULL;
++
++	/* don't bother with blocks that are not shared to start with */
++	if (!(iomap->flags & IOMAP_F_SHARED))
++		return length;
++	/* don't bother with holes or unwritten extents */
++	if (srcmap->type == IOMAP_HOLE || srcmap->type == IOMAP_UNWRITTEN)
++		return length;
++
++	id = dax_read_lock();
++	ret = dax_iomap_direct_access(iomap, pos, length, &daddr, NULL);
++	if (ret < 0)
++		goto out_unlock;
++
++	ret = dax_iomap_direct_access(srcmap, pos, length, &saddr, NULL);
++	if (ret < 0)
++		goto out_unlock;
++
++	ret = copy_mc_to_kernel(daddr, saddr, length);
++	if (ret)
++		ret = -EIO;
++
++out_unlock:
++	dax_read_unlock(id);
++	return ret;
++}
++
++int dax_file_unshare(struct inode *inode, loff_t pos, loff_t len,
++		const struct iomap_ops *ops)
++{
++	struct iomap_iter iter = {
++		.inode		= inode,
++		.pos		= pos,
++		.len		= len,
++		.flags		= IOMAP_WRITE | IOMAP_UNSHARE | IOMAP_DAX,
++	};
++	int ret;
++
++	while ((ret = iomap_iter(&iter, ops)) > 0)
++		iter.processed = dax_unshare_iter(&iter);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(dax_file_unshare);
++
+ static int dax_memzero(struct iomap_iter *iter, loff_t pos, size_t size)
+ {
+ 	const struct iomap *iomap = &iter->iomap;
+diff --git a/fs/xfs/xfs_reflink.c b/fs/xfs/xfs_reflink.c
+index 93bdd25680bc9..fe46bce8cae63 100644
+--- a/fs/xfs/xfs_reflink.c
++++ b/fs/xfs/xfs_reflink.c
+@@ -1693,8 +1693,12 @@ xfs_reflink_unshare(
  
- outl:
--	spin_unlock(&pchb->downl);
-+	spin_unlock_bh(&pchb->downl);
- out_rcu:
- 	rcu_read_unlock();
+ 	inode_dio_wait(inode);
  
+-	error = iomap_file_unshare(inode, offset, len,
+-			&xfs_buffered_write_iomap_ops);
++	if (IS_DAX(inode))
++		error = dax_file_unshare(inode, offset, len,
++				&xfs_dax_write_iomap_ops);
++	else
++		error = iomap_file_unshare(inode, offset, len,
++				&xfs_buffered_write_iomap_ops);
+ 	if (error)
+ 		goto out;
+ 
+diff --git a/include/linux/dax.h b/include/linux/dax.h
+index ba985333e26bf..2b5ecb5910591 100644
+--- a/include/linux/dax.h
++++ b/include/linux/dax.h
+@@ -205,6 +205,8 @@ static inline void dax_unlock_mapping_entry(struct address_space *mapping,
+ }
+ #endif
+ 
++int dax_file_unshare(struct inode *inode, loff_t pos, loff_t len,
++		const struct iomap_ops *ops);
+ int dax_zero_range(struct inode *inode, loff_t pos, loff_t len, bool *did_zero,
+ 		const struct iomap_ops *ops);
+ int dax_truncate_page(struct inode *inode, loff_t pos, bool *did_zero,
 -- 
 2.43.0
 
