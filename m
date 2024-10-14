@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-85017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D9099D353
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F38E799D35B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D8811F2224C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 310691C22F49
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64B91C2335;
-	Mon, 14 Oct 2024 15:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40351B4F23;
+	Mon, 14 Oct 2024 15:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/AiHqs4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIheH9Ln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749481AB536;
-	Mon, 14 Oct 2024 15:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729811AB51B;
+	Mon, 14 Oct 2024 15:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728920011; cv=none; b=biP+vOelB4qRF7nnCZOCzOFO1NjW0La8m767VpZGAv8KFdP7a6JWGoQS91IOn3BugNa1la/u0+JIppTaeoCYBeOuWGtE91+X5WSjtg8MEQrxxKIaPKUmXXg+oniAAST2hvvpSIYNOE/qYHdNguQo1X67JTxaSyfoKztb26dwncM=
+	t=1728920049; cv=none; b=LPdiEHanuAsprnn8mrrh0zBHae58lbXJGqEvBTdABex7oP9O1Ps2HLydGc3eyW4N2ucteKr7uvUIWV3zwrewDQQv0WktSswOPqx5SwI2OvbZAA/qfuuggzWe+MYfd7GlWWBDqUREvnnejRE/Y3LZCwNo7bwFy8kddTpvBLwIPtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728920011; c=relaxed/simple;
-	bh=eoOrIC03XxZ+KnSr4p/8d3a5P8t/bFL+KZ6AgV+BHeg=;
+	s=arc-20240116; t=1728920049; c=relaxed/simple;
+	bh=pF4r/P5pLWXM/bepUwMaqQYB9h9NluTq626LWp0aKw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6lfWoseIdL1FRDClSKuCuHutzXXcdWSueHrei5JSmkvNZU7wp0dBVU8J8vuf8iNF3um2PD4C66IbYBk2X6WudnsRfgOvy0WLFJBmOXofbe5CfIGgZ8pRfnPQ9nL/RpYbN2yPTczhbmpZ59QVG/dEK50B793oWGTZMS9xZFLU3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/AiHqs4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0226C4CEC3;
-	Mon, 14 Oct 2024 15:33:30 +0000 (UTC)
+	 MIME-Version; b=BjZ8Fz87C3IkgErzkVs0akeuwgXawjmQJDJkRz96H+tZIurBP8LCItHF0CL0gTES4NveF+zFxas3t9z91oOtX3QaHF60hiNtY873UrQqDzglE08y0QAh6LOImCDHcYP7xWy807R9N7heo38Rw9JoPy8y0fD0zADpzbs0aTmQzNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIheH9Ln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D532CC4CEC3;
+	Mon, 14 Oct 2024 15:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728920011;
-	bh=eoOrIC03XxZ+KnSr4p/8d3a5P8t/bFL+KZ6AgV+BHeg=;
+	s=korg; t=1728920049;
+	bh=pF4r/P5pLWXM/bepUwMaqQYB9h9NluTq626LWp0aKw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/AiHqs4/26ba4DENikfuyTa9jAQelm9saXgQ4lnyLyvVZV4ZsiWL1BEFXolW+adj
-	 6cUE0gV6joZP6T8i91hsoSHeG02cxoD5lLojlviafB+FMpIYVJ7Dlnqmj8H9G2tiP5
-	 wm3hq3GxvzSrxgLQgJQWFrpdUZYGUDwhn9wDIYuY=
+	b=XIheH9LniKlWJgyjNKI90YHhVJ4DBY1RFgrP0AxkaAs3SXD7ZUzOPWEKb3ub4/rNS
+	 2ggRPye/Kvk39/QG+SfEY/kINf7AfTIPHZVWvmSCcbpmf+fbWoocImmQ+lNj4a76p6
+	 mQk493irlUEix90IOBAWxuC7ypwGvrl937AK5wY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	He Lugang <helugang@uniontech.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 765/798] rust: macros: provide correct provenance when constructing THIS_MODULE
-Date: Mon, 14 Oct 2024 16:21:59 +0200
-Message-ID: <20241014141248.121641181@linuxfoundation.org>
+Subject: [PATCH 6.1 766/798] HID: multitouch: Add support for lenovo Y9000P Touchpad
+Date: Mon, 14 Oct 2024 16:22:00 +0200
+Message-ID: <20241014141248.161623357@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -70,65 +66,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Boqun Feng <boqun.feng@gmail.com>
+From: He Lugang <helugang@uniontech.com>
 
-commit a5a3c952e82c1ada12bf8c55b73af26f1a454bd2 upstream.
+[ Upstream commit 251efae73bd46b097deec4f9986d926813aed744 ]
 
-Currently while defining `THIS_MODULE` symbol in `module!()`, the
-pointer used to construct `ThisModule` is derived from an immutable
-reference of `__this_module`, which means the pointer doesn't have
-the provenance for writing, and that means any write to that pointer
-is UB regardless of data races or not. However, the usage of
-`THIS_MODULE` includes passing this pointer to functions that may write
-to it (probably in unsafe code), and this will create soundness issues.
+The 2024 Lenovo Y9000P which use GT7868Q chip also needs a fixup.
+The information of the chip is as follows:
+I2C HID v1.00 Mouse [GXTP5100:00 27C6:01E0]
 
-One way to fix this is using `addr_of_mut!()` but that requires the
-unstable feature "const_mut_refs". So instead of `addr_of_mut()!`,
-an extern static `Opaque` is used here: since `Opaque<T>` is transparent
-to `T`, an extern static `Opaque` will just wrap the C symbol (defined
-in a C compile unit) in an `Opaque`, which provides a pointer with
-writable provenance via `Opaque::get()`. This fix the potential UBs
-because of pointer provenance unmatched.
-
-Reported-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/x/topic/x/near/465412664
-Fixes: 1fbde52bde73 ("rust: add `macros` crate")
-Cc: stable@vger.kernel.org # 6.6.x: be2ca1e03965: ("rust: types: Make Opaque::get const")
-Link: https://lore.kernel.org/r/20240828180129.4046355-1-boqun.feng@gmail.com
-[ Fixed two typos, reworded title. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-[ Boqun: Use `UnsafeCell` since `Opaque` is not in v6.1, as suggested by
-  Gary Guo, `UnsafeCell` also suffices for this particular case because
-  `__this_module` is only used to create `THIS_MODULE`, no other Rust
-  code will touch it. ]
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: He Lugang <helugang@uniontech.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/macros/module.rs | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-multitouch.c | 8 ++++++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 031028b3dc41b..94a92ab82b6b3 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -183,7 +183,11 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-             // freed until the module is unloaded.
-             #[cfg(MODULE)]
-             static THIS_MODULE: kernel::ThisModule = unsafe {{
--                kernel::ThisModule::from_ptr(&kernel::bindings::__this_module as *const _ as *mut _)
-+                extern \"C\" {{
-+                    static __this_module: core::cell::UnsafeCell<kernel::bindings::module>;
-+                }}
-+
-+                kernel::ThisModule::from_ptr(__this_module.get())
-             }};
-             #[cfg(not(MODULE))]
-             static THIS_MODULE: kernel::ThisModule = unsafe {{
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index ede3a052ead55..5f98c33ed67ba 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -506,6 +506,7 @@
+ #define USB_DEVICE_ID_GENERAL_TOUCH_WIN8_PIT_E100 0xe100
+ 
+ #define I2C_VENDOR_ID_GOODIX		0x27c6
++#define I2C_DEVICE_ID_GOODIX_01E0	0x01e0
+ #define I2C_DEVICE_ID_GOODIX_01E8	0x01e8
+ #define I2C_DEVICE_ID_GOODIX_01E9	0x01e9
+ #define I2C_DEVICE_ID_GOODIX_01F0	0x01f0
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 6d76463f5896f..e7199ae2e3d91 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1447,7 +1447,8 @@ static __u8 *mt_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ {
+ 	if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
+ 	    (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
+-	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
++	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9 ||
++		 hdev->product == I2C_DEVICE_ID_GOODIX_01E0)) {
+ 		if (rdesc[607] == 0x15) {
+ 			rdesc[607] = 0x25;
+ 			dev_info(
+@@ -2068,7 +2069,10 @@ static const struct hid_device_id mt_devices[] = {
+ 		     I2C_DEVICE_ID_GOODIX_01E8) },
+ 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
+ 	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
+-		     I2C_DEVICE_ID_GOODIX_01E8) },
++		     I2C_DEVICE_ID_GOODIX_01E9) },
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
++	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
++		     I2C_DEVICE_ID_GOODIX_01E0) },
+ 
+ 	/* GoodTouch panels */
+ 	{ .driver_data = MT_CLS_NSMU,
 -- 
 2.43.0
 
