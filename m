@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-83924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C034599CD34
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C4699D28F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D95921C2271C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 114861F24749
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:27:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8FC13B7A1;
-	Mon, 14 Oct 2024 14:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF671C7B99;
+	Mon, 14 Oct 2024 15:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNgqiWZ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vysbm7jE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A88420EB;
-	Mon, 14 Oct 2024 14:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D1E1ADFFB;
+	Mon, 14 Oct 2024 15:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916209; cv=none; b=DH3kJH2wyRraw9N5XET6hjSbNQXxkCgITx3XbydqGPKwYz/0KXKmE9TuJfeKsJD212JId62OsQx2gqy6k98ujVuIHdrNu0cUFSAyBJ2hhAlIJ+TmgN2/8jB3iP8uYuF4osIwl1OTDfzNDoWU8U9oSjs0oQ3DOzEhfnE7cO8oXbE=
+	t=1728919499; cv=none; b=d7KOXnjHZG6OlDug1DLV+jOn9clpuKXFU8XvxhTQFwB+gLXae3W3+4767pkY78I5HzWs+m4dc74rYOsrMhfkII9WMkGRBARVReeK89jgF4DgfOC4W1aiyvvsIh+/xIKQM2hP+J7a3vxELFVjevYHeV4ke7DKiZXHkS2/wAQWzd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916209; c=relaxed/simple;
-	bh=lb6O5e9SQhw5lI1tyfzOuELZb2PqhDCZw0qLyruHWIg=;
+	s=arc-20240116; t=1728919499; c=relaxed/simple;
+	bh=Y3ijdciqb8aetLxTYCUj1pdwsV8aPQr4iOAbQLTufwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YfP+KiFag1+JGiyrMGa2Meyul+693nRkwdiUBcz3GpHrAeqRz8oh+DJt9OirZsO86YBN8i6QtJVcAGrKRQC09vfbxsy8xqPRHVeUgFkanLcT9Wm0RvC0kYWh0TjzSZWQiQX/waTtZbXqJmgpSGjkyFeg0ASDaeU8qIDvPqFqHpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNgqiWZ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1909C4CEC7;
-	Mon, 14 Oct 2024 14:30:08 +0000 (UTC)
+	 MIME-Version; b=Puo4ehWgCscCEFfEkmsQ+PJi2VuWTESQze/JbZzjbwGi+IH+WANj6Q+4HLLQggZRc/iVEPSl9KnQZGlnhKI5aoY8ao7+m6HRJTTY3dvWAIxooY5HH+VyF7JGH2RI13qw/MpwRMrn5E5vKOhEQilcXqCaFf5qSSui/r5k3fymmbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vysbm7jE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE7CAC4CEC3;
+	Mon, 14 Oct 2024 15:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916209;
-	bh=lb6O5e9SQhw5lI1tyfzOuELZb2PqhDCZw0qLyruHWIg=;
+	s=korg; t=1728919499;
+	bh=Y3ijdciqb8aetLxTYCUj1pdwsV8aPQr4iOAbQLTufwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JNgqiWZ83y8r8rRgkwYqwYnlizy/kXbBGrezCbAtjt1yRMM3W624qVC8C21XU7DSu
-	 5mbQMDTCyvB2GXysLhdG16M2sgQo8qhZTs+GxohyqOe2VEBsLFWIcx2/HO5ceOXlr+
-	 gfVYBxTLgaScd9AdOLaCKDuG7uEdbVcQ4xXUV6cA=
+	b=vysbm7jEI8ICKpjQRQ0HFO69cYuMoS9Rij5IO5vrCVkbivNkajiwH8rBkz9KwBQ1K
+	 hP3DSrB585TJgwEr7Jky5XFQ0AT+OsAappjsQdu84TGKWtDkZjOU+HKvC6g7KfjvNB
+	 z2v+foejFl5WRXgl6e38vRM74mku8A4XqJB1YWGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 114/214] drm/nouveau: pass cli to nouveau_channel_new() instead of drm+device
+Subject: [PATCH 6.1 623/798] spi: bcm63xx: Fix missing pm_runtime_disable()
 Date: Mon, 14 Oct 2024 16:19:37 +0200
-Message-ID: <20241014141049.441430626@linuxfoundation.org>
+Message-ID: <20241014141242.514019901@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,200 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Skeggs <bskeggs@nvidia.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 5cca41ac70e5877383ed925bd017884c37edf09b ]
+[ Upstream commit 265697288ec2160ca84707565d6641d46f69b0ff ]
 
-Both of these are stored in nouveau_cli already, and also allows the
-removal of some void casts.
+The pm_runtime_disable() is missing in the remove function, fix it
+by using devm_pm_runtime_enable(), so the pm_runtime_disable() in
+the probe error path can also be removed.
 
-Signed-off-by: Ben Skeggs <bskeggs@nvidia.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240726043828.58966-32-bskeggs@nvidia.com
-Stable-dep-of: 04e0481526e3 ("nouveau/dmem: Fix privileged error in copy engine channel")
+Fixes: 2d13f2ff6073 ("spi: bcm63xx-spi: fix pm_runtime")
+Cc: stable@vger.kernel.org # v5.13+
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://patch.msgid.link/20240819123349.4020472-3-ruanjinjie@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/dispnv04/crtc.c |  2 +-
- drivers/gpu/drm/nouveau/nouveau_abi16.c |  2 +-
- drivers/gpu/drm/nouveau/nouveau_bo.c    |  2 +-
- drivers/gpu/drm/nouveau/nouveau_chan.c  | 21 +++++++++++----------
- drivers/gpu/drm/nouveau/nouveau_chan.h  |  3 ++-
- drivers/gpu/drm/nouveau/nouveau_drm.c   |  4 ++--
- 6 files changed, 18 insertions(+), 16 deletions(-)
+ drivers/spi/spi-bcm63xx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/dispnv04/crtc.c b/drivers/gpu/drm/nouveau/dispnv04/crtc.c
-index 4310ad71870b1..8fed62e002fea 100644
---- a/drivers/gpu/drm/nouveau/dispnv04/crtc.c
-+++ b/drivers/gpu/drm/nouveau/dispnv04/crtc.c
-@@ -1157,7 +1157,7 @@ nv04_crtc_page_flip(struct drm_crtc *crtc, struct drm_framebuffer *fb,
- 	chan = drm->channel;
- 	if (!chan)
- 		return -ENODEV;
--	cli = (void *)chan->user.client;
-+	cli = chan->cli;
- 	push = chan->chan.push;
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 51296615536a9..695ac74571286 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -595,13 +595,15 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
  
- 	s = kzalloc(sizeof(*s), GFP_KERNEL);
-diff --git a/drivers/gpu/drm/nouveau/nouveau_abi16.c b/drivers/gpu/drm/nouveau/nouveau_abi16.c
-index d56909071de66..0dd38e73676da 100644
---- a/drivers/gpu/drm/nouveau/nouveau_abi16.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_abi16.c
-@@ -356,7 +356,7 @@ nouveau_abi16_ioctl_channel_alloc(ABI16_IOCTL_ARGS)
- 	list_add(&chan->head, &abi16->channels);
+ 	bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
  
- 	/* create channel object and initialise dma and fence management */
--	ret = nouveau_channel_new(drm, device, false, runm, init->fb_ctxdma_handle,
-+	ret = nouveau_channel_new(cli, false, runm, init->fb_ctxdma_handle,
- 				  init->tt_ctxdma_handle, &chan->chan);
- 	if (ret)
- 		goto done;
-diff --git a/drivers/gpu/drm/nouveau/nouveau_bo.c b/drivers/gpu/drm/nouveau/nouveau_bo.c
-index 70fb003a66669..933356e938903 100644
---- a/drivers/gpu/drm/nouveau/nouveau_bo.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
-@@ -859,7 +859,7 @@ nouveau_bo_move_m2mf(struct ttm_buffer_object *bo, int evict,
- {
- 	struct nouveau_drm *drm = nouveau_bdev(bo->bdev);
- 	struct nouveau_channel *chan = drm->ttm.chan;
--	struct nouveau_cli *cli = (void *)chan->user.client;
-+	struct nouveau_cli *cli = chan->cli;
- 	struct nouveau_fence *fence;
- 	int ret;
+-	pm_runtime_enable(&pdev->dev);
++	ret = devm_pm_runtime_enable(&pdev->dev);
++	if (ret)
++		goto out_clk_disable;
  
-diff --git a/drivers/gpu/drm/nouveau/nouveau_chan.c b/drivers/gpu/drm/nouveau/nouveau_chan.c
-index 7c97b28868076..cee36b1efd391 100644
---- a/drivers/gpu/drm/nouveau/nouveau_chan.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_chan.c
-@@ -52,7 +52,7 @@ static int
- nouveau_channel_killed(struct nvif_event *event, void *repv, u32 repc)
- {
- 	struct nouveau_channel *chan = container_of(event, typeof(*chan), kill);
--	struct nouveau_cli *cli = (void *)chan->user.client;
-+	struct nouveau_cli *cli = chan->cli;
- 
- 	NV_PRINTK(warn, cli, "channel %d killed!\n", chan->chid);
- 
-@@ -66,7 +66,7 @@ int
- nouveau_channel_idle(struct nouveau_channel *chan)
- {
- 	if (likely(chan && chan->fence && !atomic_read(&chan->killed))) {
--		struct nouveau_cli *cli = (void *)chan->user.client;
-+		struct nouveau_cli *cli = chan->cli;
- 		struct nouveau_fence *fence = NULL;
- 		int ret;
- 
-@@ -142,10 +142,11 @@ nouveau_channel_wait(struct nvif_push *push, u32 size)
- }
- 
- static int
--nouveau_channel_prep(struct nouveau_drm *drm, struct nvif_device *device,
-+nouveau_channel_prep(struct nouveau_cli *cli,
- 		     u32 size, struct nouveau_channel **pchan)
- {
--	struct nouveau_cli *cli = (void *)device->object.client;
-+	struct nouveau_drm *drm = cli->drm;
-+	struct nvif_device *device = &cli->device;
- 	struct nv_dma_v0 args = {};
- 	struct nouveau_channel *chan;
- 	u32 target;
-@@ -155,6 +156,7 @@ nouveau_channel_prep(struct nouveau_drm *drm, struct nvif_device *device,
- 	if (!chan)
- 		return -ENOMEM;
- 
-+	chan->cli = cli;
- 	chan->device = device;
- 	chan->drm = drm;
- 	chan->vmm = nouveau_cli_vmm(cli);
-@@ -254,7 +256,7 @@ nouveau_channel_prep(struct nouveau_drm *drm, struct nvif_device *device,
- }
- 
- static int
--nouveau_channel_ctor(struct nouveau_drm *drm, struct nvif_device *device, bool priv, u64 runm,
-+nouveau_channel_ctor(struct nouveau_cli *cli, bool priv, u64 runm,
- 		     struct nouveau_channel **pchan)
- {
- 	const struct nvif_mclass hosts[] = {
-@@ -279,7 +281,7 @@ nouveau_channel_ctor(struct nouveau_drm *drm, struct nvif_device *device, bool p
- 		struct nvif_chan_v0 chan;
- 		char name[TASK_COMM_LEN+16];
- 	} args;
--	struct nouveau_cli *cli = (void *)device->object.client;
-+	struct nvif_device *device = &cli->device;
- 	struct nouveau_channel *chan;
- 	const u64 plength = 0x10000;
- 	const u64 ioffset = plength;
-@@ -298,7 +300,7 @@ nouveau_channel_ctor(struct nouveau_drm *drm, struct nvif_device *device, bool p
- 		size = ioffset + ilength;
- 
- 	/* allocate dma push buffer */
--	ret = nouveau_channel_prep(drm, device, size, &chan);
-+	ret = nouveau_channel_prep(cli, size, &chan);
- 	*pchan = chan;
- 	if (ret)
- 		return ret;
-@@ -493,13 +495,12 @@ nouveau_channel_init(struct nouveau_channel *chan, u32 vram, u32 gart)
- }
- 
- int
--nouveau_channel_new(struct nouveau_drm *drm, struct nvif_device *device,
-+nouveau_channel_new(struct nouveau_cli *cli,
- 		    bool priv, u64 runm, u32 vram, u32 gart, struct nouveau_channel **pchan)
- {
--	struct nouveau_cli *cli = (void *)device->object.client;
- 	int ret;
- 
--	ret = nouveau_channel_ctor(drm, device, priv, runm, pchan);
-+	ret = nouveau_channel_ctor(cli, priv, runm, pchan);
+ 	/* register and we are done */
+ 	ret = devm_spi_register_master(dev, master);
  	if (ret) {
- 		NV_PRINTK(dbg, cli, "channel create, %d\n", ret);
- 		return ret;
-diff --git a/drivers/gpu/drm/nouveau/nouveau_chan.h b/drivers/gpu/drm/nouveau/nouveau_chan.h
-index 5de2ef4e98c2b..260febd634ee2 100644
---- a/drivers/gpu/drm/nouveau/nouveau_chan.h
-+++ b/drivers/gpu/drm/nouveau/nouveau_chan.h
-@@ -12,6 +12,7 @@ struct nouveau_channel {
- 		struct nvif_push *push;
- 	} chan;
- 
-+	struct nouveau_cli *cli;
- 	struct nvif_device *device;
- 	struct nouveau_drm *drm;
- 	struct nouveau_vmm *vmm;
-@@ -62,7 +63,7 @@ struct nouveau_channel {
- int nouveau_channels_init(struct nouveau_drm *);
- void nouveau_channels_fini(struct nouveau_drm *);
- 
--int  nouveau_channel_new(struct nouveau_drm *, struct nvif_device *, bool priv, u64 runm,
-+int  nouveau_channel_new(struct nouveau_cli *, bool priv, u64 runm,
- 			 u32 vram, u32 gart, struct nouveau_channel **);
- void nouveau_channel_del(struct nouveau_channel **);
- int  nouveau_channel_idle(struct nouveau_channel *);
-diff --git a/drivers/gpu/drm/nouveau/nouveau_drm.c b/drivers/gpu/drm/nouveau/nouveau_drm.c
-index a58c31089613e..88413b5c8684a 100644
---- a/drivers/gpu/drm/nouveau/nouveau_drm.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
-@@ -356,7 +356,7 @@ nouveau_accel_ce_init(struct nouveau_drm *drm)
- 		return;
+ 		dev_err(dev, "spi register failed\n");
+-		goto out_pm_disable;
++		goto out_clk_disable;
  	}
  
--	ret = nouveau_channel_new(drm, device, false, runm, NvDmaFB, NvDmaTT, &drm->cechan);
-+	ret = nouveau_channel_new(&drm->client, false, runm, NvDmaFB, NvDmaTT, &drm->cechan);
- 	if (ret)
- 		NV_ERROR(drm, "failed to create ce channel, %d\n", ret);
- }
-@@ -384,7 +384,7 @@ nouveau_accel_gr_init(struct nouveau_drm *drm)
- 		return;
- 	}
+ 	dev_info(dev, "at %pr (irq %d, FIFOs size %d)\n",
+@@ -609,8 +611,6 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
  
--	ret = nouveau_channel_new(drm, device, false, runm, NvDmaFB, NvDmaTT, &drm->channel);
-+	ret = nouveau_channel_new(&drm->client, false, runm, NvDmaFB, NvDmaTT, &drm->channel);
- 	if (ret) {
- 		NV_ERROR(drm, "failed to create kernel channel, %d\n", ret);
- 		nouveau_accel_gr_fini(drm);
+ 	return 0;
+ 
+-out_pm_disable:
+-	pm_runtime_disable(&pdev->dev);
+ out_clk_disable:
+ 	clk_disable_unprepare(clk);
+ out_err:
 -- 
 2.43.0
 
