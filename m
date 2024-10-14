@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-83834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E7F99CCC5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:24:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60EE499D1F9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D15D284066
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:24:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BF611F24F8A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F501A76A5;
-	Mon, 14 Oct 2024 14:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6181B0137;
+	Mon, 14 Oct 2024 15:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1VxVGVq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8RAHKOu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D819E571;
-	Mon, 14 Oct 2024 14:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1E21ABEA2;
+	Mon, 14 Oct 2024 15:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915877; cv=none; b=TtE0FWvobntOYiEYhIlQ/UdCoKLepvV4DmYNY6OS3GCzi0q/ck7RcrErTGAHq71qkugUAQmpO7bVlLGsfmwE37V8MKzOLTxxz+x+Fqve8UMAi9EP5OnS0mBPFyI6McBWfR5uBEgpRM3vNVOYT3t1SXd5rgX8YIrrZnwbfK1hsww=
+	t=1728919097; cv=none; b=KoqgcEqzPwE7YenS6ZXjre2vEgwG8PoWK9SknpEcB2E5CHH1Pf1JKEaByROcqdxupMN84L6+gLUE2ArIoSJPN5Q6PEusatsv1Vp2oA9BqNtJQVlLrheUL0auv7QhDfl+fFp63fNNsoxL2h9aNGMHGWHBmfDbw43XTlsWdCNQtnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915877; c=relaxed/simple;
-	bh=GoaL2BArruFLiZ2CyJzK2rBUa+59JR1NiJjf8/mzBpc=;
+	s=arc-20240116; t=1728919097; c=relaxed/simple;
+	bh=AQbRg0jjSw8cgz/HKzCfP/aI55kUE6QqOFo3ahrwar4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hbl7E5E9WKE+0gtkxR0+lsebHFKIbGh3GAi5c8y04ajWDb2Jj6KUI1Pu9EjbZPMJWyLtvBH0cZjjjgezrWofPCsXAPZ/kRBiIOFUOqeYO/NFDOLC6Uw/Nj5PHyRLWRA/r5IijrX1Hoj7mZWHPjzcx/L4eDkPoswhv2QGjwYQAaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1VxVGVq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD8DC4CEC3;
-	Mon, 14 Oct 2024 14:24:35 +0000 (UTC)
+	 MIME-Version; b=uW3NQO2Awvd9StY9Ox/TphE3iDTAfzClYLpDrgOgYX3fbyOQ2yBuITPad9Vyog6owZjDJYEb7U0MinpVOz+Ga0QMQrVXjZLY1KgcB5ZLaVt/pxrq67eY9YpGkJyjYVowQf740kCNHYeX9evQ1/IryBRP3oH0TbgE6HqMtNZqWM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8RAHKOu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8FB3C4CEC3;
+	Mon, 14 Oct 2024 15:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915876;
-	bh=GoaL2BArruFLiZ2CyJzK2rBUa+59JR1NiJjf8/mzBpc=;
+	s=korg; t=1728919097;
+	bh=AQbRg0jjSw8cgz/HKzCfP/aI55kUE6QqOFo3ahrwar4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r1VxVGVq+tp2RijvWSW2RyS/iH5ap72hGAzei0L7iGmpkBEJNsuYl/R4ZZUlTMIHQ
-	 gXYdwq7n4bVn9GDrpiTaetReeJlla5jsHFH5eog29ax9NBVKqMBGI82YHIyrBZyOla
-	 4iUoHYLiQERqXzHLAj/jdmi8rVZDgeH6P+ZK9fIE=
+	b=G8RAHKOucjUa7GEh3EAhrT6GKmn9bnudqJnhhTo+ZgQMLszK1QpZ4Qxy7vvh1JuTo
+	 vwwmF9WFS8HdAjX92x8N/WGGQltu0LX2GCITY9ecTuoFb2ZLwU3qZnq18PPPw4ajIY
+	 E7bIVcn/KjeCHxks3vMb8WxyW+UaCkBba7RGdm7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 004/214] fs/ntfs3: Optimize large writes into sparse file
+Subject: [PATCH 6.1 513/798] spi: spi-imx: Fix pm_runtime_set_suspended() with runtime pm enabled
 Date: Mon, 14 Oct 2024 16:17:47 +0200
-Message-ID: <20241014141045.163253948@linuxfoundation.org>
+Message-ID: <20241014141238.134872650@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit acdbd67bf939577d6f9e3cf796a005c31cec52d8 ]
+[ Upstream commit b6e05ba0844139dde138625906015c974c86aa93 ]
 
-Optimized cluster allocation by allocating a large chunk in advance
-before writing, instead of allocating during the writing process
-by clusters.
-Essentially replicates the logic of fallocate.
+It is not valid to call pm_runtime_set_suspended() for devices
+with runtime PM enabled because it returns -EAGAIN if it is enabled
+already and working. So, call pm_runtime_disable() before to fix it.
 
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 43b6bf406cd0 ("spi: imx: fix runtime pm support for !CONFIG_PM")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20240923040015.3009329-2-ruanjinjie@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/file.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ drivers/spi/spi-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index cddc51f9a93b2..d31eae611fe06 100644
---- a/fs/ntfs3/file.c
-+++ b/fs/ntfs3/file.c
-@@ -408,6 +408,42 @@ static int ntfs_extend(struct inode *inode, loff_t pos, size_t count,
- 		err = 0;
- 	}
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 93e83fbc3403f..df73a2c7120c9 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1856,8 +1856,8 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 		spi_imx_sdma_exit(spi_imx);
+ out_runtime_pm_put:
+ 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
+-	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(spi_imx->dev);
++	pm_runtime_set_suspended(&pdev->dev);
  
-+	if (file && is_sparsed(ni)) {
-+		/*
-+		 * This code optimizes large writes to sparse file.
-+		 * TODO: merge this fragment with fallocate fragment.
-+		 */
-+		struct ntfs_sb_info *sbi = ni->mi.sbi;
-+		CLST vcn = pos >> sbi->cluster_bits;
-+		CLST cend = bytes_to_cluster(sbi, end);
-+		CLST cend_v = bytes_to_cluster(sbi, ni->i_valid);
-+		CLST lcn, clen;
-+		bool new;
-+
-+		if (cend_v > cend)
-+			cend_v = cend;
-+
-+		/*
-+		 * Allocate and zero new clusters.
-+		 * Zeroing these clusters may be too long.
-+		 */
-+		for (; vcn < cend_v; vcn += clen) {
-+			err = attr_data_get_block(ni, vcn, cend_v - vcn, &lcn,
-+						  &clen, &new, true);
-+			if (err)
-+				goto out;
-+		}
-+		/*
-+		 * Allocate but not zero new clusters.
-+		 */
-+		for (; vcn < cend; vcn += clen) {
-+			err = attr_data_get_block(ni, vcn, cend - vcn, &lcn,
-+						  &clen, &new, false);
-+			if (err)
-+				goto out;
-+		}
-+	}
-+
- 	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
- 	mark_inode_dirty(inode);
- 
+ 	clk_disable_unprepare(spi_imx->clk_ipg);
+ out_put_per:
 -- 
 2.43.0
 
