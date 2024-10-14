@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1BC99CDBE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 756BB99CE8B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 192431C22C08
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21CDB1F23B4D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD14C24B34;
-	Mon, 14 Oct 2024 14:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A9B1AB6EB;
+	Mon, 14 Oct 2024 14:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8PUp0mc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSaVoCjN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4DD1A28C;
-	Mon, 14 Oct 2024 14:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9C31AB6C1;
+	Mon, 14 Oct 2024 14:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916541; cv=none; b=JidXdX60PXzqbLbTBnx+tH/Bq0qlDbAs1tMIjTwuyEEJ5VzlyyC83ATLglSIB5eR6Z0Y0g1e2Qa/6euU71ACtZ840eoTV4WuCgq1ro8eaBupCnyB1l9+Kw+46wzcL1lMV4jI2FP0LJgMY6Wbhhj/a1hfFSKlsAPxYd4oLGTbdoo=
+	t=1728917104; cv=none; b=jxhPU/qj1t8xsQqqdxWdOx6+wNZrD5/3R2+iUe4pMpq7n+jz5zeboaD67J7lUI7EPP9uVfxqiJw7Ysx/STsAUyGZ8x9Jw2Bu3qPs21V9jtdjeXlTC5FZK2i+8DdYPS7V669LU7BeUMj8ZDVrMrdFLVngp1i2ofpwQL1h2zlkrFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916541; c=relaxed/simple;
-	bh=4oaJUhaWp3AT3+kNeh1SbKYSTTkKnlPP+ZM/umlc0Bw=;
+	s=arc-20240116; t=1728917104; c=relaxed/simple;
+	bh=DpfwiGUqoeThG3cI7M85ab3XNQdTqGpJp4Fvd1vrP90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jeGQEvfTHKXe/PKYbauORk7cwMTerWqtVySyMFLO91BlsWMHLBAsTx0VQMsM0y33qFja3LxhK9mkmkcHyGMdJfkOfc2BkbJw/aYZjGd10c5zeJiSCMSGieLmdHkLLwKnexf4dS4XznWxPfptkXP/gim6m7DJ4vx4HVaWcaS6Ua8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8PUp0mc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A8FC4CEC3;
-	Mon, 14 Oct 2024 14:35:40 +0000 (UTC)
+	 MIME-Version; b=EBsHrIjRd/3JDqy4pqZGrf6qrYrPpp0yhJemhWN0D4t+nvzCahmP5lTUNPOLoiXAT5pCzEapOJtKhrlXx+E6PtTwJM+Q2Oi8nqNb3/mCcIPs1kcyOH7xna4fHoE4t66EdbZt3oDP+n8WNYt/IMELe+rLde5sPxuNq6D4dRnkcjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nSaVoCjN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E75C4CEC7;
+	Mon, 14 Oct 2024 14:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916541;
-	bh=4oaJUhaWp3AT3+kNeh1SbKYSTTkKnlPP+ZM/umlc0Bw=;
+	s=korg; t=1728917104;
+	bh=DpfwiGUqoeThG3cI7M85ab3XNQdTqGpJp4Fvd1vrP90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A8PUp0mcHGDcsMrYVAW8PyRNv2OhPiniRCaTlEWarAsKE9bDIEgbyBrxgYTFbLJbV
-	 Oj5DtDwCsAAFNpuXVdGAFW1KRnDoQSD3KSgE/rfyuxG27XNe4HKpTfF+H7AquiMcqK
-	 TQ/w09DrJGSbkwNnsQ0CmGWG9iq46HcziH+GJWTo=
+	b=nSaVoCjN94JhMJPmzYgwLWbstFnHBhgDJsQdt3oY/k8D+aqbtCnRuRGzLb5gQKX6z
+	 GJzkCf7iVOLUNH41RmrkIWLtQznQFXHzWt7hlO2RyXKsknEQc3FuNaAc0Dl7qFqiit
+	 ZcMsEGKgV3YB+V/idXC+B4BNPaHMNI0/MJnGPooQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.11 195/214] net: phy: Remove LED entry from LEDs list on unregister
-Date: Mon, 14 Oct 2024 16:20:58 +0200
-Message-ID: <20241014141052.586390479@linuxfoundation.org>
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 153/213] vxlan: Handle error of rtnl_register_module().
+Date: Mon, 14 Oct 2024 16:20:59 +0200
+Message-ID: <20241014141048.942751239@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit f50b5d74c68e551667e265123659b187a30fe3a5 upstream.
+[ Upstream commit 78b7b991838a4a6baeaad934addc4db2c5917eb8 ]
 
-Commit c938ab4da0eb ("net: phy: Manual remove LEDs to ensure correct
-ordering") correctly fixed a problem with using devm_ but missed
-removing the LED entry from the LEDs list.
+Since introduced, vxlan_vnifilter_init() has been ignoring the
+returned value of rtnl_register_module(), which could fail silently.
 
-This cause kernel panic on specific scenario where the port for the PHY
-is torn down and up and the kmod for the PHY is removed.
+Handling the error allows users to view a module as an all-or-nothing
+thing in terms of the rtnetlink functionality.  This prevents syzkaller
+from reporting spurious errors from its tests, where OOM often occurs
+and module is automatically loaded.
 
-On setting the port down the first time, the assosiacted LEDs are
-correctly unregistered. The associated kmod for the PHY is now removed.
-The kmod is now added again and the port is now put up, the associated LED
-are registered again.
-On putting the port down again for the second time after these step, the
-LED list now have 4 elements. With the first 2 already unregistered
-previously and the 2 new one registered again.
+Let's handle the errors by rtnl_register_many().
 
-This cause a kernel panic as the first 2 element should have been
-removed.
-
-Fix this by correctly removing the element when LED is unregistered.
-
-Reported-by: Daniel Golle <daniel@makrotopia.org>
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Cc: stable@vger.kernel.org
-Fixes: c938ab4da0eb ("net: phy: Manual remove LEDs to ensure correct ordering")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241004182759.14032-1-ansuelsmth@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_device.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/vxlan/vxlan_core.c      |  6 +++++-
+ drivers/net/vxlan/vxlan_private.h   |  2 +-
+ drivers/net/vxlan/vxlan_vnifilter.c | 19 +++++++++----------
+ 3 files changed, 15 insertions(+), 12 deletions(-)
 
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -3249,10 +3249,11 @@ static __maybe_unused int phy_led_hw_is_
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 8268fa331826e..c114c91b558bd 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -4819,9 +4819,13 @@ static int __init vxlan_init_module(void)
+ 	if (rc)
+ 		goto out4;
  
- static void phy_leds_unregister(struct phy_device *phydev)
- {
--	struct phy_led *phyled;
-+	struct phy_led *phyled, *tmp;
+-	vxlan_vnifilter_init();
++	rc = vxlan_vnifilter_init();
++	if (rc)
++		goto out5;
  
--	list_for_each_entry(phyled, &phydev->leds, list) {
-+	list_for_each_entry_safe(phyled, tmp, &phydev->leds, list) {
- 		led_classdev_unregister(&phyled->led_cdev);
-+		list_del(&phyled->list);
- 	}
+ 	return 0;
++out5:
++	rtnl_link_unregister(&vxlan_link_ops);
+ out4:
+ 	unregister_switchdev_notifier(&vxlan_switchdev_notifier_block);
+ out3:
+diff --git a/drivers/net/vxlan/vxlan_private.h b/drivers/net/vxlan/vxlan_private.h
+index 817fa3075842e..85b6d0c347e3b 100644
+--- a/drivers/net/vxlan/vxlan_private.h
++++ b/drivers/net/vxlan/vxlan_private.h
+@@ -202,7 +202,7 @@ int vxlan_vni_in_use(struct net *src_net, struct vxlan_dev *vxlan,
+ int vxlan_vnigroup_init(struct vxlan_dev *vxlan);
+ void vxlan_vnigroup_uninit(struct vxlan_dev *vxlan);
+ 
+-void vxlan_vnifilter_init(void);
++int vxlan_vnifilter_init(void);
+ void vxlan_vnifilter_uninit(void);
+ void vxlan_vnifilter_count(struct vxlan_dev *vxlan, __be32 vni,
+ 			   struct vxlan_vni_node *vninode,
+diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+index 9c59d0bf8c3de..d2023e7131bd4 100644
+--- a/drivers/net/vxlan/vxlan_vnifilter.c
++++ b/drivers/net/vxlan/vxlan_vnifilter.c
+@@ -992,19 +992,18 @@ static int vxlan_vnifilter_process(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	return err;
  }
  
+-void vxlan_vnifilter_init(void)
++static const struct rtnl_msg_handler vxlan_vnifilter_rtnl_msg_handlers[] = {
++	{THIS_MODULE, PF_BRIDGE, RTM_GETTUNNEL, NULL, vxlan_vnifilter_dump, 0},
++	{THIS_MODULE, PF_BRIDGE, RTM_NEWTUNNEL, vxlan_vnifilter_process, NULL, 0},
++	{THIS_MODULE, PF_BRIDGE, RTM_DELTUNNEL, vxlan_vnifilter_process, NULL, 0},
++};
++
++int vxlan_vnifilter_init(void)
+ {
+-	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_GETTUNNEL, NULL,
+-			     vxlan_vnifilter_dump, 0);
+-	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_NEWTUNNEL,
+-			     vxlan_vnifilter_process, NULL, 0);
+-	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_DELTUNNEL,
+-			     vxlan_vnifilter_process, NULL, 0);
++	return rtnl_register_many(vxlan_vnifilter_rtnl_msg_handlers);
+ }
+ 
+ void vxlan_vnifilter_uninit(void)
+ {
+-	rtnl_unregister(PF_BRIDGE, RTM_GETTUNNEL);
+-	rtnl_unregister(PF_BRIDGE, RTM_NEWTUNNEL);
+-	rtnl_unregister(PF_BRIDGE, RTM_DELTUNNEL);
++	rtnl_unregister_many(vxlan_vnifilter_rtnl_msg_handlers);
+ }
+-- 
+2.43.0
+
 
 
 
