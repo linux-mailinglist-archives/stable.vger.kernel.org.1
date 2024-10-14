@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-83846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E712E99CCD2
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:25:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E703C99D21A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22CAE1C222AC
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:25:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23C7A1C22C46
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5AE1AAE25;
-	Mon, 14 Oct 2024 14:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3EE1C3052;
+	Mon, 14 Oct 2024 15:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UPXtOZG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOSClT2P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D451A76C4;
-	Mon, 14 Oct 2024 14:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC801A76CE;
+	Mon, 14 Oct 2024 15:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915918; cv=none; b=Gl2wSxgbP8XW4s5jkrLaH+fOhGTrM92D2zO5n4iIp+WCvTUkQJ2KivBZDBlMWy92FWUV2Hpo1CA2U4lwVaoSPWTEgQ8Ob6UWax9agkvgHrdL444eA2px+E5tsPrsybVHPvzhniMAqg/XVnUThVZ0GgZOpda6rSEufyhUAfuoJfY=
+	t=1728919216; cv=none; b=Z7skA2uLyvTlX8ivE+qopPSB2lFijrDp/8E30FQzKIQt5+0Nq3WgXzOt0n9ontWsa9HGx710dT5pFTjUHKJpOL50RjuJwAJX6bQPCxEBuHaFXmQc669gbdLIVlByQ8VWcSfy6OAQXMRgWP85qrXDE9AoRCJCn6fARMhhT1u3kZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915918; c=relaxed/simple;
-	bh=f9M893cL+iUT5rTMukE/iFmLkx0JlPoG20G2SYjZgC8=;
+	s=arc-20240116; t=1728919216; c=relaxed/simple;
+	bh=As0XCfSyV+XES3asAuix5zBFpKPwxc1B9NlzC7uhqIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WZSB5MX9+S5dpWAb+2+DKFua0mhL5Cka2j7B33P6w6DFKE8YUJKigMp5vNPeE9BldAg9rhCZe2Y5JFossh7iFa/4yXuQZi9sqLEDqzbMj02anGnxSR/sSW+8Y3sjiZNT0cU/Y9hf8nPifEO6dp2yCjXpImE0sCkOxEwa1X9ItRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UPXtOZG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB6B4C4CEC3;
-	Mon, 14 Oct 2024 14:25:17 +0000 (UTC)
+	 MIME-Version; b=WXWX9/nNDvucofLH+BYn4Y3B2c1LVIwdMbcu4GuDTViQYC8qMz3PCnZ90xlMVwyq0eAv2qblnF1KYuClpwyModJc3pfdal9Y3jaB9dGbpcp5HHCBit4uZyFWda2Pm9So1waU5sVXVCf1nMtg90KoDCW4gEVBDJqbKx/qL3W2szg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOSClT2P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA20C4CEC3;
+	Mon, 14 Oct 2024 15:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915918;
-	bh=f9M893cL+iUT5rTMukE/iFmLkx0JlPoG20G2SYjZgC8=;
+	s=korg; t=1728919216;
+	bh=As0XCfSyV+XES3asAuix5zBFpKPwxc1B9NlzC7uhqIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2UPXtOZGr4+8YVHe+pNw94uzFpnG+yiLTgvkMGpjH3gdqsh/y9ZiVPvlDqj1u5/9B
-	 nBQ6vUsDGuURE6zcbaB6wlLi0qwwS61J96QtFjm/6JsHhYEZWImL6USZwxx2qFFgXm
-	 LRJL4zXOJFVGlOWmqu3X05irbFiKYuFVTfzrAQ0I=
+	b=cOSClT2PxtzjcWvBE+zxFwjMiVFUr5kUDormMeIn1h6Pcd95B9bZM9lET2FRe8UOO
+	 NUHt8Uqj/dhibH9k3PlZsRyrAokOBm3rrKMKQ6Zbobz4PB+29dXAcDAhfC/9w8dnUO
+	 7/T3TAdBInSoAtRkUqUujg9EhKbPhtdhqbQcdol4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 037/214] i3c: master: cdns: Fix use after free vulnerability in cdns_i3c_master Driver Due to Race Condition
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 546/798] ext4: dax: fix overflowing extents beyond inode size when partially writing
 Date: Mon, 14 Oct 2024 16:18:20 +0200
-Message-ID: <20241014141046.439881511@linuxfoundation.org>
+Message-ID: <20241014141239.448815291@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 609366e7a06d035990df78f1562291c3bf0d4a12 ]
+commit dda898d7ffe85931f9cca6d702a51f33717c501e upstream.
 
-In the cdns_i3c_master_probe function, &master->hj_work is bound with
-cdns_i3c_master_hj. And cdns_i3c_master_interrupt can call
-cnds_i3c_master_demux_ibis function to start the work.
+The dax_iomap_rw() does two things in each iteration: map written blocks
+and copy user data to blocks. If the process is killed by user(See signal
+handling in dax_iomap_iter()), the copied data will be returned and added
+on inode size, which means that the length of written extents may exceed
+the inode size, then fsck will fail. An example is given as:
 
-If we remove the module which will call cdns_i3c_master_remove to
-make cleanup, it will free master->base through i3c_master_unregister
-while the work mentioned above will be used. The sequence of operations
-that may lead to a UAF bug is as follows:
+dd if=/dev/urandom of=file bs=4M count=1
+ dax_iomap_rw
+  iomap_iter // round 1
+   ext4_iomap_begin
+    ext4_iomap_alloc // allocate 0~2M extents(written flag)
+  dax_iomap_iter // copy 2M data
+  iomap_iter // round 2
+   iomap_iter_advance
+    iter->pos += iter->processed // iter->pos = 2M
+   ext4_iomap_begin
+    ext4_iomap_alloc // allocate 2~4M extents(written flag)
+  dax_iomap_iter
+   fatal_signal_pending
+  done = iter->pos - iocb->ki_pos // done = 2M
+ ext4_handle_inode_extension
+  ext4_update_inode_size // inode size = 2M
 
-CPU0                                      CPU1
+fsck reports: Inode 13, i_size is 2097152, should be 4194304.  Fix?
 
-                                     | cdns_i3c_master_hj
-cdns_i3c_master_remove               |
-i3c_master_unregister(&master->base) |
-device_unregister(&master->dev)      |
-device_release                       |
-//free master->base                  |
-                                     | i3c_master_do_daa(&master->base)
-                                     | //use master->base
+Fix the problem by truncating extents if the written length is smaller
+than expected.
 
-Fix it by ensuring that the work is canceled before proceeding with
-the cleanup in cdns_i3c_master_remove.
-
-Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-Link: https://lore.kernel.org/r/20240911153544.848398-1-kxwang23@m.fudan.edu.cn
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 776722e85d3b ("ext4: DAX iomap write support")
+CC: stable@vger.kernel.org
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219136
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Link: https://patch.msgid.link/20240809121532.2105494-1-chengzhihao@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/i3c-master-cdns.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/file.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/i3c/master/i3c-master-cdns.c b/drivers/i3c/master/i3c-master-cdns.c
-index c1627f3552ce3..c2d26beb3da2b 100644
---- a/drivers/i3c/master/i3c-master-cdns.c
-+++ b/drivers/i3c/master/i3c-master-cdns.c
-@@ -1666,6 +1666,7 @@ static void cdns_i3c_master_remove(struct platform_device *pdev)
+--- a/fs/ext4/file.c
++++ b/fs/ext4/file.c
+@@ -324,10 +324,10 @@ static ssize_t ext4_handle_inode_extensi
+  * Clean up the inode after DIO or DAX extending write has completed and the
+  * inode size has been updated using ext4_handle_inode_extension().
+  */
+-static void ext4_inode_extension_cleanup(struct inode *inode, ssize_t count)
++static void ext4_inode_extension_cleanup(struct inode *inode, bool need_trunc)
  {
- 	struct cdns_i3c_master *master = platform_get_drvdata(pdev);
+ 	lockdep_assert_held_write(&inode->i_rwsem);
+-	if (count < 0) {
++	if (need_trunc) {
+ 		ext4_truncate_failed_write(inode);
+ 		/*
+ 		 * If the truncate operation failed early, then the inode may
+@@ -567,7 +567,7 @@ static ssize_t ext4_dio_write_iter(struc
+ 		 * writeback of delalloc blocks.
+ 		 */
+ 		WARN_ON_ONCE(ret == -EIOCBQUEUED);
+-		ext4_inode_extension_cleanup(inode, ret);
++		ext4_inode_extension_cleanup(inode, ret < 0);
+ 	}
  
-+	cancel_work_sync(&master->hj_work);
- 	i3c_master_unregister(&master->base);
+ out:
+@@ -651,7 +651,7 @@ ext4_dax_write_iter(struct kiocb *iocb,
  
- 	clk_disable_unprepare(master->sysclk);
--- 
-2.43.0
-
+ 	if (extend) {
+ 		ret = ext4_handle_inode_extension(inode, offset, ret);
+-		ext4_inode_extension_cleanup(inode, ret);
++		ext4_inode_extension_cleanup(inode, ret < (ssize_t)count);
+ 	}
+ out:
+ 	inode_unlock(inode);
 
 
 
