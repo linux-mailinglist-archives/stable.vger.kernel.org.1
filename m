@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-84664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7A8899D149
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:13:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D1299D164
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:15:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0472C1C21331
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:13:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23FB11C23658
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687D7481B3;
-	Mon, 14 Oct 2024 15:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82071C8773;
+	Mon, 14 Oct 2024 15:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mz0YS5/+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrjQv7wf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25AC31A76A5;
-	Mon, 14 Oct 2024 15:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817CD1C7B99;
+	Mon, 14 Oct 2024 15:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918782; cv=none; b=iVGYOJ9Dj2AeOcf5yzZXmAbZPcj49vPcDchxJda24RusZa42tyPucQP+EK7HEuY2FAm3KIgLqIisSX2IVLn2hhfk3qIBH0nve6hajDbjq8r26hxqwEuKzEhDB6/A81vFAWUADfWwgsj9y7i/w/MygdWCXOTbFY2pTqitrnFPbwU=
+	t=1728918804; cv=none; b=cb+kpmY+FddNt2qodPv2X1x7C61bHpK0JKOSL7vufTHssaIcMWkLS/pqFwY0itCzRmE4mcYWVhN95foawd2Cemqd5CS7rVf+BuJV4sSCuiE7NaJUWqOctAuLa9x1VVKeswtQJ/XmvRB3tXeskJm5dOZ4jPaYd4r2Qf40ck/M7LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918782; c=relaxed/simple;
-	bh=2XRTV2ZRiRCHqDjsM/+2t5opdohrePOkRb3R1bY+AJY=;
+	s=arc-20240116; t=1728918804; c=relaxed/simple;
+	bh=XvOBHhL/qa8QHaWXZ2u90QnTOwLezNn42qs7+UTmGnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=soPSRUEFQBXTZ2Ec+8stzI9qUb42FNXlHKSEOiZRMXGSM7FQBhGNb3RfTWmpwP3rqqtI/GWF+AaklcJuvk1yQtmem0hl8ZiliqpCqh/x+nwVto32OU9HIUaphhbier9l1MGpAh/SUqC8P3xiarU0a+JdMjQCHGwUhatO/A27RlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mz0YS5/+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891A1C4CEC7;
-	Mon, 14 Oct 2024 15:13:01 +0000 (UTC)
+	 MIME-Version; b=bzkZDlaIQZ1JzCGUiGCy1Y8IFEQM1Kh10hKEtXmwOwFD6Fk3KpycYVj+34ymf986c5BsoixOe8cpUMRVqlPyqf04YrDalLLB5AJbFHHrHtOCUKZrxpUyKyjSYCOLZYH/hxuHXC6ZiGYHcdhmBfFAdcnP4ZrdhK+YqIhQi8a4V2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrjQv7wf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B093CC4CED0;
+	Mon, 14 Oct 2024 15:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918782;
-	bh=2XRTV2ZRiRCHqDjsM/+2t5opdohrePOkRb3R1bY+AJY=;
+	s=korg; t=1728918804;
+	bh=XvOBHhL/qa8QHaWXZ2u90QnTOwLezNn42qs7+UTmGnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mz0YS5/+jUFZwKn71gCIgZ7FyavyDS3s8O8p8b3tkbkDTr/wcKdUim4YRBkQlAvcT
-	 lgDowpVhYQEtGJyJEtDawWL6v15E7raEQrawFF1BuA4sR3IaA9kQppnHa/+f2hSzr3
-	 r+tN7wUUtzDBCl5sLvVE3SEwbMUpYXqOZWnkyraU=
+	b=zrjQv7wfJfGUjWrZbZbX/suc7AZnE56HtQoisB2cJje1eph1AQbZkdJRTsnp67xYe
+	 LeVe/oD1gKNpKgFpVrraObJf40ij0c7xlBzTtzAHDfXMXZlaM7fJDqPA/+KuJ5N4ko
+	 OAW5chHENDaUo3wQaYeLJ/KETjfmlYJgqlPidblg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 395/798] Bluetooth: btmrvl: Use IRQF_NO_AUTOEN flag in request_irq()
-Date: Mon, 14 Oct 2024 16:15:49 +0200
-Message-ID: <20241014141233.462072895@linuxfoundation.org>
+Subject: [PATCH 6.1 396/798] net: ethernet: lantiq_etop: fix memory disclosure
+Date: Mon, 14 Oct 2024 16:15:50 +0200
+Message-ID: <20241014141233.500845999@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -66,43 +68,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 7b1ab460592ca818e7b52f27cd3ec86af79220d1 ]
+[ Upstream commit 45c0de18ff2dc9af01236380404bbd6a46502c69 ]
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+When applying padding, the buffer is not zeroed, which results in memory
+disclosure. The mentioned data is observed on the wire. This patch uses
+skb_put_padto() to pad Ethernet frames properly. The mentioned function
+zeroes the expanded buffer.
 
-Fixes: bb7f4f0bcee6 ("btmrvl: add platform specific wakeup interrupt support")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+In case the packet cannot be padded it is silently dropped. Statistics
+are also not incremented. This driver does not support statistics in the
+old 32-bit format or the new 64-bit format. These will be added in the
+future. In its current form, the patch should be easily backported to
+stable versions.
+
+Ethernet MACs on Amazon-SE and Danube cannot do padding of the packets
+in hardware, so software padding must be applied.
+
+Fixes: 504d4721ee8e ("MIPS: Lantiq: Add ethernet driver")
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20240923214949.231511-2-olek2@wp.pl
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btmrvl_sdio.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/lantiq_etop.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btmrvl_sdio.c b/drivers/bluetooth/btmrvl_sdio.c
-index ba057ebfda5c2..981b43f79e4a3 100644
---- a/drivers/bluetooth/btmrvl_sdio.c
-+++ b/drivers/bluetooth/btmrvl_sdio.c
-@@ -92,7 +92,7 @@ static int btmrvl_sdio_probe_of(struct device *dev,
- 		} else {
- 			ret = devm_request_irq(dev, cfg->irq_bt,
- 					       btmrvl_wake_irq_bt,
--					       0, "bt_wake", card);
-+					       IRQF_NO_AUTOEN, "bt_wake", card);
- 			if (ret) {
- 				dev_err(dev,
- 					"Failed to request irq_bt %d (%d)\n",
-@@ -101,7 +101,6 @@ static int btmrvl_sdio_probe_of(struct device *dev,
+diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
+index 61baf1da76eea..c33c31019562f 100644
+--- a/drivers/net/ethernet/lantiq_etop.c
++++ b/drivers/net/ethernet/lantiq_etop.c
+@@ -482,7 +482,9 @@ ltq_etop_tx(struct sk_buff *skb, struct net_device *dev)
+ 	unsigned long flags;
+ 	u32 byte_offset;
  
- 			/* Configure wakeup (enabled by default) */
- 			device_init_wakeup(dev, true);
--			disable_irq(cfg->irq_bt);
- 		}
- 	}
+-	len = skb->len < ETH_ZLEN ? ETH_ZLEN : skb->len;
++	if (skb_put_padto(skb, ETH_ZLEN))
++		return NETDEV_TX_OK;
++	len = skb->len;
  
+ 	if ((desc->ctl & (LTQ_DMA_OWN | LTQ_DMA_C)) || ch->skb[ch->dma.desc]) {
+ 		netdev_err(dev, "tx ring full\n");
 -- 
 2.43.0
 
