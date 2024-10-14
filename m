@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-84503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D685899D081
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:04:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A3F99D05B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:03:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9437F284DC6
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:04:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0164B262C8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:03:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988A71AB505;
-	Mon, 14 Oct 2024 15:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C431AE01D;
+	Mon, 14 Oct 2024 15:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A3F8z8Gz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxX2UfpN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4419D481B3;
-	Mon, 14 Oct 2024 15:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC7B1AC8AE;
+	Mon, 14 Oct 2024 15:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918233; cv=none; b=c7biWtikQSTGr4XqyKRILtCX4FZBoSNcHNGyx3zbxJuKM2/aRdbqo7aWMuYnP+IhDhLJ9wSSv9Sf5oVy/4A2UsRCmPaOp2bDJ1HQSBlWuLNKMEBnVe1hIlfPAAhrxtqQNPm2wPW9BkOdtpUemHP5gRXHupi1uDH77B3LLywlSP0=
+	t=1728918129; cv=none; b=QkSMKXID5fdpRLoMNUbAw1PGidK19vIYTXYCpyhLKNJScY+TjkcsDG2YvAAIyINPFAHCXFRU6z59Bve1B9u9d2w6mGNaQjhY0L2BB+PKp8qPSHXnB0TWSJledtL5ImW0CV2ofxXl+Tasxh7i76ae71DCVhYlqWqAGGFacieKAJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918233; c=relaxed/simple;
-	bh=OaIq2iyylXQh8iqT3GsfMo3QE6DdTUx2xzb4ScJ9N+A=;
+	s=arc-20240116; t=1728918129; c=relaxed/simple;
+	bh=76hQJEJJRVMLDaNlkc6hWPLhaPhFFpiRQKMsHtqlm/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wa7oED9sxlSe9r8DOGjCAbpbpzRDs2igCqI25rHcvsfILBRdqxtYYuG2anOQb9o9iJQZbE6VIvHQ3OCnELH0lM8E8ySycgu0hSvaZcap5bonKOnpugyj7+DzOIPsXAYlDv/XwIBPGQtqAjVotwCw1VbjENIipuLNePraDRnGY3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A3F8z8Gz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7423C4CEC3;
-	Mon, 14 Oct 2024 15:03:52 +0000 (UTC)
+	 MIME-Version; b=Wv57wKKHZd0ArjrzOYIjNQsx4TwN/B0hRb1xumScXNjK2hyg1zvbUjcvo1WAipRf3DjWcNbl3ahWFvEDn7FL3NusYjYL3bGqVsHT9PdsGcpTMMqNtNiwlpo46162gPU5cFkKvZIcRhOuimoro7fXVDBvJU0SKZuiFTJxFrJh37Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxX2UfpN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED22C4CEC3;
+	Mon, 14 Oct 2024 15:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918233;
-	bh=OaIq2iyylXQh8iqT3GsfMo3QE6DdTUx2xzb4ScJ9N+A=;
+	s=korg; t=1728918129;
+	bh=76hQJEJJRVMLDaNlkc6hWPLhaPhFFpiRQKMsHtqlm/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A3F8z8GzOet/4IlxdoGwdCXIzGe1lg1aMtuNvZSek2eI91FlfiMokmg5Ly8lXytdc
-	 cuQImZvZBIuw85Z0CgR9D2x7YA5ic3QZ8f8ZhlJ7U7jIvPFt14dCOOAT5Ua5k/UYss
-	 +tFH5NFcZYiZi15s+HA5m6QUJ49d4CEHf5XX3N3A=
+	b=vxX2UfpNsHlqe1kOraqQVLJcKz00t8Izge2Jv945kFO/Z1bIiI310SSxJJ1PxxSI5
+	 EG0/XGvbZrAkCYdeSGLlPYy1R209Z5Iem2XWZb2GrPU91HqpELA7ai6mMD54mIFaHO
+	 zObBPerlWYBml1HeT8jAwsxbWnOEBfRdM8UEcumc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Dai <jerry.dai@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jon Mason <jdmason@kudzu.us>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 231/798] ntb: Force physically contiguous allocation of rx ring buffers
-Date: Mon, 14 Oct 2024 16:13:05 +0200
-Message-ID: <20241014141226.997428009@linuxfoundation.org>
+	Guoqing Jiang <guoqing.jiang@linux.dev>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 6.1 232/798] nfsd: call cache_put if xdr_reserve_space returns NULL
+Date: Mon, 14 Oct 2024 16:13:06 +0200
+Message-ID: <20241014141227.036511082@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -67,86 +67,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Guoqing Jiang <guoqing.jiang@linux.dev>
 
-[ Upstream commit 061a785a114f159e990ea8ed8d1b7dca4b41120f ]
+[ Upstream commit d078cbf5c38de83bc31f83c47dcd2184c04a50c7 ]
 
-Physical addresses under IOVA on x86 platform are mapped contiguously
-as a side effect before the patch that removed CONFIG_DMA_REMAP. The
-NTB rx buffer ring is a single chunk DMA buffer that is allocated
-against the NTB PCI device. If the receive side is using a DMA device,
-then the buffers are remapped against the DMA device before being
-submitted via the dmaengine API. This scheme becomes a problem when
-the physical memory is discontiguous. When dma_map_page() is called
-on the kernel virtual address from the dma_alloc_coherent() call, the
-new IOVA mapping no longer points to all the physical memory allocated
-due to being discontiguous. Change dma_alloc_coherent() to dma_alloc_attrs()
-in order to force DMA_ATTR_FORCE_CONTIGUOUS attribute. This is the best
-fix for the circumstance. A potential future solution may be having the DMA
-mapping API providing a way to alias an existing IOVA mapping to a new
-device perhaps.
+If not enough buffer space available, but idmap_lookup has triggered
+lookup_fn which calls cache_get and returns successfully. Then we
+missed to call cache_put here which pairs with cache_get.
 
-This fix is not to fix the patch pointed to by the fixes tag, but to fix
-the issue arised in the ntb_transport driver on x86 platforms after the
-said patch is applied.
-
-Reported-by: Jerry Dai <jerry.dai@intel.com>
-Fixes: f5ff79fddf0e ("dma-mapping: remove CONFIG_DMA_REMAP")
-Tested-by: Jerry Dai <jerry.dai@intel.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Fixes: ddd1ea563672 ("nfsd4: use xdr_reserve_space in attribute encoding")
+Signed-off-by: Guoqing Jiang <guoqing.jiang@linux.dev>
+Reviwed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/ntb_transport.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ fs/nfsd/nfs4idmap.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
-index 9532108d2dce1..5b25260e59253 100644
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -807,16 +807,29 @@ static void ntb_free_mw(struct ntb_transport_ctx *nt, int num_mw)
+diff --git a/fs/nfsd/nfs4idmap.c b/fs/nfsd/nfs4idmap.c
+index 5e9809aff37eb..717e400b16b86 100644
+--- a/fs/nfsd/nfs4idmap.c
++++ b/fs/nfsd/nfs4idmap.c
+@@ -581,6 +581,7 @@ static __be32 idmap_id_to_name(struct xdr_stream *xdr,
+ 		.id = id,
+ 		.type = type,
+ 	};
++	__be32 status = nfs_ok;
+ 	__be32 *p;
+ 	int ret;
+ 	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
+@@ -593,12 +594,16 @@ static __be32 idmap_id_to_name(struct xdr_stream *xdr,
+ 		return nfserrno(ret);
+ 	ret = strlen(item->name);
+ 	WARN_ON_ONCE(ret > IDMAP_NAMESZ);
++
+ 	p = xdr_reserve_space(xdr, ret + 4);
+-	if (!p)
+-		return nfserr_resource;
+-	p = xdr_encode_opaque(p, item->name, ret);
++	if (unlikely(!p)) {
++		status = nfserr_resource;
++		goto out_put;
++	}
++	xdr_encode_opaque(p, item->name, ret);
++out_put:
+ 	cache_put(&item->h, nn->idtoname_cache);
+-	return 0;
++	return status;
  }
  
- static int ntb_alloc_mw_buffer(struct ntb_transport_mw *mw,
--			       struct device *dma_dev, size_t align)
-+			       struct device *ntb_dev, size_t align)
- {
- 	dma_addr_t dma_addr;
- 	void *alloc_addr, *virt_addr;
- 	int rc;
- 
--	alloc_addr = dma_alloc_coherent(dma_dev, mw->alloc_size,
--					&dma_addr, GFP_KERNEL);
-+	/*
-+	 * The buffer here is allocated against the NTB device. The reason to
-+	 * use dma_alloc_*() call is to allocate a large IOVA contiguous buffer
-+	 * backing the NTB BAR for the remote host to write to. During receive
-+	 * processing, the data is being copied out of the receive buffer to
-+	 * the kernel skbuff. When a DMA device is being used, dma_map_page()
-+	 * is called on the kvaddr of the receive buffer (from dma_alloc_*())
-+	 * and remapped against the DMA device. It appears to be a double
-+	 * DMA mapping of buffers, but first is mapped to the NTB device and
-+	 * second is to the DMA device. DMA_ATTR_FORCE_CONTIGUOUS is necessary
-+	 * in order for the later dma_map_page() to not fail.
-+	 */
-+	alloc_addr = dma_alloc_attrs(ntb_dev, mw->alloc_size,
-+				     &dma_addr, GFP_KERNEL,
-+				     DMA_ATTR_FORCE_CONTIGUOUS);
- 	if (!alloc_addr) {
--		dev_err(dma_dev, "Unable to alloc MW buff of size %zu\n",
-+		dev_err(ntb_dev, "Unable to alloc MW buff of size %zu\n",
- 			mw->alloc_size);
- 		return -ENOMEM;
- 	}
-@@ -845,7 +858,7 @@ static int ntb_alloc_mw_buffer(struct ntb_transport_mw *mw,
- 	return 0;
- 
- err:
--	dma_free_coherent(dma_dev, mw->alloc_size, alloc_addr, dma_addr);
-+	dma_free_coherent(ntb_dev, mw->alloc_size, alloc_addr, dma_addr);
- 
- 	return rc;
- }
+ static bool
 -- 
 2.43.0
 
