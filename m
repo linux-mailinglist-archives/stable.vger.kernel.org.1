@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4B199CDC5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:36:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6908099D30F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E0E81C22DE3
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:36:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A4901C20A42
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A39EF24B34;
-	Mon, 14 Oct 2024 14:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB11E1C8774;
+	Mon, 14 Oct 2024 15:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3IuKXBx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTqDLLr+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6099A1A28C;
-	Mon, 14 Oct 2024 14:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6FB1C82F4;
+	Mon, 14 Oct 2024 15:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916565; cv=none; b=PcK5F7qKy0OOP0UoF0jVjPvmmKuhprgLfC4daUeXex6zK1sV2H+kHqe3lDSng4a4yYqION4BfrUBhWz90jlAgT8eL2BCdp+nlTdDL+8gYLXAyqBDnclDuymKihAlePc/UJZiKI6otF7blG4PAB4fepRH2Lrg57HXXS/huYC51fU=
+	t=1728919797; cv=none; b=aqeYCzysFRG7Zo2hvNrahSxGDECd6a1nwIxOrwiMmkBKqjIlbVicfPMSbPhuG7XhppASohd2FnTGl/Vm/Zu8bAYBPOcnPHghj3TfH/NNaDmKVL+4qrW8C894vbWN/rIxjmM9jNl2tDFq1oWtgYT3EsLLOrFnuCHxnkDS6oZH1dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916565; c=relaxed/simple;
-	bh=EAv43SH2mnrKiYPPRjCjLh9BnRQuuKKOLPSspHdpyeo=;
+	s=arc-20240116; t=1728919797; c=relaxed/simple;
+	bh=JiaPQ+rxjz6fUccVLkkwvwjJgGw8orIqEcp3If1Edds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SQ3XnMmwckDZeur27Y0hXc1IeUMqq1ml2Wgaz4HBfitssRgwYMamjFjVOjQCQv+tfkSiD7HBlxDMdkaR3EJOJjw/IwzOFTyu8VWBYcBqvCPUVrTg4q1xOYS1PgUp/v6GqNRcoNiMvMaxRAvrSxppn/TA7/pLrtJDSr1xLfuogCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3IuKXBx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDCB6C4CEC3;
-	Mon, 14 Oct 2024 14:36:04 +0000 (UTC)
+	 MIME-Version; b=fWQCFgEHUpaTRzVEKLy/cJSrYOtp1/HLXD8WEBR/VJxDYjSC+gnynmHTO749YxozPRZP3B/BrR4SpxhjKmddZ/ulzL28odJ1SmBW+TRkI2eEcHy+v1Ka7Sph6kHOIUz1eF1Qmb1k4umr8tWwdMV/x3VsWpaJFc/CE7yTnc57VD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTqDLLr+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A43C4CEC3;
+	Mon, 14 Oct 2024 15:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916565;
-	bh=EAv43SH2mnrKiYPPRjCjLh9BnRQuuKKOLPSspHdpyeo=;
+	s=korg; t=1728919797;
+	bh=JiaPQ+rxjz6fUccVLkkwvwjJgGw8orIqEcp3If1Edds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z3IuKXBxuM0ypMKHEUO6kJ58mXQwF8e305B+5lmAtXnxFYgTY/f0UqNkTdkrcAEPp
-	 lioFVd4/z1FAHpO8HounPK17sPkmKx/+jUu3eMM8zLhm4JqX5WhoNClIZ7cL7DLmL4
-	 U/W7jcz2U+69jX+B4tmpnXMA8AI+NWaLgFkrznUI=
+	b=ZTqDLLr+Dkrl5mOD7Osq+Uu0iZJk5gkevyI+YPHS+rdSCClHrQgnN2GYo64+nRRx5
+	 uE5xX90aK/VmLUs76sKA4qhWh2JSgowgmnU6RtJ8bpm1K2vaACU1ZJgXjqX+rbHO5/
+	 EPvMahoJNFk8SUbVs0l7OHOKCWyVEioQcH0n9UMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@outlook.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.11 201/214] ice: Fix improper handling of refcount in ice_sriov_set_msix_vec_count()
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 710/798] clk: imx: Remove CLK_SET_PARENT_GATE for DRAM mux for i.MX7D
 Date: Mon, 14 Oct 2024 16:21:04 +0200
-Message-ID: <20241014141052.820154141@linuxfoundation.org>
+Message-ID: <20241014141245.962129940@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@outlook.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit d517cf89874c6039e6294b18d66f40988e62502a upstream.
+[ Upstream commit a54c441b46a0745683c2eef5a359d22856d27323 ]
 
-This patch addresses an issue with improper reference count handling in the
-ice_sriov_set_msix_vec_count() function.
+For i.MX7D DRAM related mux clock, the clock source change should ONLY
+be done done in low level asm code without accessing DRAM, and then
+calling clk API to sync the HW clock status with clk tree, it should never
+touch real clock source switch via clk API, so CLK_SET_PARENT_GATE flag
+should NOT be added, otherwise, DRAM's clock parent will be disabled when
+DRAM is active, and system will hang.
 
-First, the function calls ice_get_vf_by_id(), which increments the
-reference count of the vf pointer. If the subsequent call to
-ice_get_vf_vsi() fails, the function currently returns an error without
-decrementing the reference count of the vf pointer, leading to a reference
-count leak. The correct behavior, as implemented in this patch, is to
-decrement the reference count using ice_put_vf(vf) before returning an
-error when vsi is NULL.
-
-Second, the function calls ice_sriov_get_irqs(), which sets
-vf->first_vector_idx. If this call returns a negative value, indicating an
-error, the function returns an error without decrementing the reference
-count of the vf pointer, resulting in another reference count leak. The
-patch addresses this by adding a call to ice_put_vf(vf) before returning
-an error when vf->first_vector_idx < 0.
-
-This bug was identified by an experimental static analysis tool developed
-by our team. The tool specializes in analyzing reference count operations
-and identifying potential mismanagement of reference counts. In this case,
-the tool flagged the missing decrement operation as a potential issue,
-leading to this patch.
-
-Fixes: 4035c72dc1ba ("ice: reconfig host after changing MSI-X on VF")
-Fixes: 4d38cb44bd32 ("ice: manage VFs MSI-X using resource tracking")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@outlook.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20240607133347.3291040-8-peng.fan@oss.nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_sriov.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/clk/imx/clk-imx7d.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-@@ -1096,8 +1096,10 @@ int ice_sriov_set_msix_vec_count(struct
- 		return -ENOENT;
- 
- 	vsi = ice_get_vf_vsi(vf);
--	if (!vsi)
-+	if (!vsi) {
-+		ice_put_vf(vf);
- 		return -ENOENT;
-+	}
- 
- 	prev_msix = vf->num_msix;
- 	prev_queues = vf->num_vf_qs;
-@@ -1145,8 +1147,10 @@ unroll:
- 	vf->num_msix = prev_msix;
- 	vf->num_vf_qs = prev_queues;
- 	vf->first_vector_idx = ice_sriov_get_irqs(pf, vf->num_msix);
--	if (vf->first_vector_idx < 0)
-+	if (vf->first_vector_idx < 0) {
-+		ice_put_vf(vf);
- 		return -EINVAL;
-+	}
- 
- 	if (needs_rebuild) {
- 		vsi->req_txq = prev_queues;
+diff --git a/drivers/clk/imx/clk-imx7d.c b/drivers/clk/imx/clk-imx7d.c
+index cbf8131c63f7e..f26b85e8f3292 100644
+--- a/drivers/clk/imx/clk-imx7d.c
++++ b/drivers/clk/imx/clk-imx7d.c
+@@ -498,9 +498,9 @@ static void __init imx7d_clocks_init(struct device_node *ccm_node)
+ 	hws[IMX7D_ENET_AXI_ROOT_SRC] = imx_clk_hw_mux2_flags("enet_axi_src", base + 0x8900, 24, 3, enet_axi_sel, ARRAY_SIZE(enet_axi_sel), CLK_SET_PARENT_GATE);
+ 	hws[IMX7D_NAND_USDHC_BUS_ROOT_SRC] = imx_clk_hw_mux2_flags("nand_usdhc_src", base + 0x8980, 24, 3, nand_usdhc_bus_sel, ARRAY_SIZE(nand_usdhc_bus_sel), CLK_SET_PARENT_GATE);
+ 	hws[IMX7D_DRAM_PHYM_ROOT_SRC] = imx_clk_hw_mux2_flags("dram_phym_src", base + 0x9800, 24, 1, dram_phym_sel, ARRAY_SIZE(dram_phym_sel), CLK_SET_PARENT_GATE);
+-	hws[IMX7D_DRAM_ROOT_SRC] = imx_clk_hw_mux2_flags("dram_src", base + 0x9880, 24, 1, dram_sel, ARRAY_SIZE(dram_sel), CLK_SET_PARENT_GATE);
++	hws[IMX7D_DRAM_ROOT_SRC] = imx_clk_hw_mux2("dram_src", base + 0x9880, 24, 1, dram_sel, ARRAY_SIZE(dram_sel));
+ 	hws[IMX7D_DRAM_PHYM_ALT_ROOT_SRC] = imx_clk_hw_mux2_flags("dram_phym_alt_src", base + 0xa000, 24, 3, dram_phym_alt_sel, ARRAY_SIZE(dram_phym_alt_sel), CLK_SET_PARENT_GATE);
+-	hws[IMX7D_DRAM_ALT_ROOT_SRC]  = imx_clk_hw_mux2_flags("dram_alt_src", base + 0xa080, 24, 3, dram_alt_sel, ARRAY_SIZE(dram_alt_sel), CLK_SET_PARENT_GATE);
++	hws[IMX7D_DRAM_ALT_ROOT_SRC]  = imx_clk_hw_mux2("dram_alt_src", base + 0xa080, 24, 3, dram_alt_sel, ARRAY_SIZE(dram_alt_sel));
+ 	hws[IMX7D_USB_HSIC_ROOT_SRC] = imx_clk_hw_mux2_flags("usb_hsic_src", base + 0xa100, 24, 3, usb_hsic_sel, ARRAY_SIZE(usb_hsic_sel), CLK_SET_PARENT_GATE);
+ 	hws[IMX7D_PCIE_CTRL_ROOT_SRC] = imx_clk_hw_mux2_flags("pcie_ctrl_src", base + 0xa180, 24, 3, pcie_ctrl_sel, ARRAY_SIZE(pcie_ctrl_sel), CLK_SET_PARENT_GATE);
+ 	hws[IMX7D_PCIE_PHY_ROOT_SRC] = imx_clk_hw_mux2_flags("pcie_phy_src", base + 0xa200, 24, 3, pcie_phy_sel, ARRAY_SIZE(pcie_phy_sel), CLK_SET_PARENT_GATE);
+-- 
+2.43.0
+
 
 
 
