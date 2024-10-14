@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-84880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886AA99D2A7
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E94CE99CE08
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:39:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E1F3B25D88
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DB941C22FC9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5901ABEBD;
-	Mon, 14 Oct 2024 15:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D951A76A5;
+	Mon, 14 Oct 2024 14:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrWNI8xc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUjERXLL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BB43B298;
-	Mon, 14 Oct 2024 15:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14BC20EB;
+	Mon, 14 Oct 2024 14:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919544; cv=none; b=tBU/VlcA4NHF4gN27kXo5FRJiwpGX+fEPBU7emNgBnIHq11UCl3DfJS7+2sfi48PAW12pIWYBg70F/XlTYSCQD98eMod8kixD501ZZ81EhmHTaYkZd2dc9TCOXEU/BG8DdbFrpJCjKDXh572wjSyM9PUImM+bAL0/dDKIt1A/3g=
+	t=1728916747; cv=none; b=f9wg7LXfTnJZTKWendPqQTlhOXL4JFEMHwXrzLiS8VkdxjuXIFDR/3ySH0XSjGycdndeU8mgYzKfh/x1MbKsD7xWMU/MldNb9Be554+zwxjJli8qzuaVW8WFWEH4ScW6hKCtvcYmHRWoUuvI8/qXkOYydtyNN9WllrTtafiAtRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919544; c=relaxed/simple;
-	bh=p75u0bzuxcyuJgdQM4uq6QWhi+3U3tuyT25NJnzcPQE=;
+	s=arc-20240116; t=1728916747; c=relaxed/simple;
+	bh=O0qqJnF/FLJ3jB15awx3Eqyf81jZv2ufURFOQyFtO6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m5tpdvHl9lG2uOXHNMzeEKyC8FWFuxbWdiLLwwaZPeRmHdMqe7+IHwGdaC4zeZ0l2acr7LkvcbrFB5EiBjTB9RVUuEGRa88QWg1MoIVRDIj5sQkhEfxQ3NqImAb6nUAsZSF+nTzM3ouL9WGO9heosT0V9Z2iGd9OJ7cNzneGEvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrWNI8xc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99BD0C4CEC3;
-	Mon, 14 Oct 2024 15:25:43 +0000 (UTC)
+	 MIME-Version; b=g1UUCK+Gv2Z/ZkJbNSthPqEnQTGXBxyfVOS62b4jHbuCDdzPD11F5ZG3neLkda3Kd2RKvFLlBr0ek2PTWRiXYW6sHnpC/oZQHkEdEZAguSo2V1Mz0SYTtH+RxhFyJm6CBPPRC+zDp7HaCzmwbsMyE/Ica52ropzMnaI0RHJ7zGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUjERXLL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511D9C4CEC3;
+	Mon, 14 Oct 2024 14:39:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919544;
-	bh=p75u0bzuxcyuJgdQM4uq6QWhi+3U3tuyT25NJnzcPQE=;
+	s=korg; t=1728916746;
+	bh=O0qqJnF/FLJ3jB15awx3Eqyf81jZv2ufURFOQyFtO6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nrWNI8xc8vPt6/qnqpl/8z2dCjwN+GVHwFSnyCv10C+otmxIUJIWbgdpU8YCjodTC
-	 HK//2jhbonNs0+sjukIAB8It8eWLNO5CpzbXE9TdIWPXjAidAFSlHI5geN1IO4SJmc
-	 zmud+3ftsLZlL7/dGz+K3ELxKH7MgPzElAcVZJcQ=
+	b=DUjERXLLsGvAKSo3wJnbbgSGAvv9HMS+4231YZNZV0iS/Nt6EyPppWR5DcLqq+lDD
+	 oJ7K3e745v9e+zX91I+XnGw1fO98AMji7qcj9CgfRImRXJpqYE7COF3oC3XTF5Kxh8
+	 EeBuCofHePyZsmLZSGl38eXpAo2NnkTb5w1bzQ/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Millwood <thebenmachine@gmail.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 605/798] btrfs: send: fix invalid clone operation for file that got its size decreased
-Date: Mon, 14 Oct 2024 16:19:19 +0200
-Message-ID: <20241014141241.779057768@linuxfoundation.org>
+	Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Jens Axboe <axboe@kernel.dk>,
+	Minchan Kim <minchan@kernel.org>,
+	Chris Li <chrisl@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 054/213] zram: dont free statically defined names
+Date: Mon, 14 Oct 2024 16:19:20 +0200
+Message-ID: <20241014141045.100280177@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,133 +68,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
 
-commit fa630df665aa9ddce3a96ce7b54e10a38e4d2a2b upstream.
+[ Upstream commit 486fd58af7ac1098b68370b1d4d9f94a2a1c7124 ]
 
-During an incremental send we may end up sending an invalid clone
-operation, for the last extent of a file which ends at an unaligned offset
-that matches the final i_size of the file in the send snapshot, in case
-the file had its initial size (the size in the parent snapshot) decreased
-in the send snapshot. In this case the destination will fail to apply the
-clone operation because its end offset is not sector size aligned and it
-ends before the current size of the file.
+When CONFIG_ZRAM_MULTI_COMP isn't set ZRAM_SECONDARY_COMP can hold
+default_compressor, because it's the same offset as ZRAM_PRIMARY_COMP, so
+we need to make sure that we don't attempt to kfree() the statically
+defined compressor name.
 
-Sending the truncate operation always happens when we finish processing an
-inode, after we process all its extents (and xattrs, names, etc). So fix
-this by ensuring the file has a valid size before we send a clone
-operation for an unaligned extent that ends at the final i_size of the
-file. The size we truncate to matches the start offset of the clone range
-but it could be any value between that start offset and the final size of
-the file since the clone operation will expand the i_size if the current
-size is smaller than the end offset. The start offset of the range was
-chosen because it's always sector size aligned and avoids a truncation
-into the middle of a page, which results in dirtying the page due to
-filling part of it with zeroes and then making the clone operation at the
-receiver trigger IO.
+This is detected by KASAN.
 
-The following test reproduces the issue:
+==================================================================
+  Call trace:
+   kfree+0x60/0x3a0
+   zram_destroy_comps+0x98/0x198 [zram]
+   zram_reset_device+0x22c/0x4a8 [zram]
+   reset_store+0x1bc/0x2d8 [zram]
+   dev_attr_store+0x44/0x80
+   sysfs_kf_write+0xfc/0x188
+   kernfs_fop_write_iter+0x28c/0x428
+   vfs_write+0x4dc/0x9b8
+   ksys_write+0x100/0x1f8
+   __arm64_sys_write+0x74/0xb8
+   invoke_syscall+0xd8/0x260
+   el0_svc_common.constprop.0+0xb4/0x240
+   do_el0_svc+0x48/0x68
+   el0_svc+0x40/0xc8
+   el0t_64_sync_handler+0x120/0x130
+   el0t_64_sync+0x190/0x198
+==================================================================
 
-  $ cat test.sh
-  #!/bin/bash
-
-  DEV=/dev/sdi
-  MNT=/mnt/sdi
-
-  mkfs.btrfs -f $DEV
-  mount $DEV $MNT
-
-  # Create a file with a size of 256K + 5 bytes, having two extents, one
-  # with a size of 128K and another one with a size of 128K + 5 bytes.
-  last_ext_size=$((128 * 1024 + 5))
-  xfs_io -f -d -c "pwrite -S 0xab -b 128K 0 128K" \
-         -c "pwrite -S 0xcd -b $last_ext_size 128K $last_ext_size" \
-         $MNT/foo
-
-  # Another file which we will later clone foo into, but initially with
-  # a larger size than foo.
-  xfs_io -f -c "pwrite -S 0xef 0 1M" $MNT/bar
-
-  btrfs subvolume snapshot -r $MNT/ $MNT/snap1
-
-  # Now resize bar and clone foo into it.
-  xfs_io -c "truncate 0" \
-         -c "reflink $MNT/foo" $MNT/bar
-
-  btrfs subvolume snapshot -r $MNT/ $MNT/snap2
-
-  rm -f /tmp/send-full /tmp/send-inc
-  btrfs send -f /tmp/send-full $MNT/snap1
-  btrfs send -p $MNT/snap1 -f /tmp/send-inc $MNT/snap2
-
-  umount $MNT
-  mkfs.btrfs -f $DEV
-  mount $DEV $MNT
-
-  btrfs receive -f /tmp/send-full $MNT
-  btrfs receive -f /tmp/send-inc $MNT
-
-  umount $MNT
-
-Running it before this patch:
-
-  $ ./test.sh
-  (...)
-  At subvol snap1
-  At snapshot snap2
-  ERROR: failed to clone extents to bar: Invalid argument
-
-A test case for fstests will be sent soon.
-
-Reported-by: Ben Millwood <thebenmachine@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/CAJhrHS2z+WViO2h=ojYvBPDLsATwLbg+7JaNCyYomv0fUxEpQQ@mail.gmail.com/
-Fixes: 46a6e10a1ab1 ("btrfs: send: allow cloning non-aligned extent if it ends at i_size")
-CC: stable@vger.kernel.org # 6.11
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20240923164843.1117010-1-andrej.skvortzov@gmail.com
+Fixes: 684826f8271a ("zram: free secondary algorithms names")
+Signed-off-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+Closes: https://lore.kernel.org/lkml/57130e48-dbb6-4047-a8c7-ebf5aaea93f4@linux.vnet.ibm.com/
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+Cc: Chris Li <chrisl@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c |   23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ drivers/block/zram/zram_drv.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -5941,8 +5941,29 @@ static int send_write_or_clone(struct se
- 	if (ret < 0)
- 		return ret;
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index db729035fd6bf..606f388c7a571 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1984,8 +1984,10 @@ static void zram_destroy_comps(struct zram *zram)
+ 		zram->num_active_comps--;
+ 	}
  
--	if (clone_root->offset + num_bytes == info.size)
-+	if (clone_root->offset + num_bytes == info.size) {
-+		/*
-+		 * The final size of our file matches the end offset, but it may
-+		 * be that its current size is larger, so we have to truncate it
-+		 * to any value between the start offset of the range and the
-+		 * final i_size, otherwise the clone operation is invalid
-+		 * because it's unaligned and it ends before the current EOF.
-+		 * We do this truncate to the final i_size when we finish
-+		 * processing the inode, but it's too late by then. And here we
-+		 * truncate to the start offset of the range because it's always
-+		 * sector size aligned while if it were the final i_size it
-+		 * would result in dirtying part of a page, filling part of a
-+		 * page with zeroes and then having the clone operation at the
-+		 * receiver trigger IO and wait for it due to the dirty page.
-+		 */
-+		if (sctx->parent_root != NULL) {
-+			ret = send_truncate(sctx, sctx->cur_ino,
-+					    sctx->cur_inode_gen, offset);
-+			if (ret < 0)
-+				return ret;
-+		}
- 		goto clone_data;
-+	}
- 
- write_data:
- 	ret = send_extent_data(sctx, path, offset, num_bytes);
+-	for (prio = ZRAM_SECONDARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
+-		kfree(zram->comp_algs[prio]);
++	for (prio = ZRAM_PRIMARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
++		/* Do not free statically defined compression algorithms */
++		if (zram->comp_algs[prio] != default_compressor)
++			kfree(zram->comp_algs[prio]);
+ 		zram->comp_algs[prio] = NULL;
+ 	}
+ }
+-- 
+2.43.0
+
 
 
 
