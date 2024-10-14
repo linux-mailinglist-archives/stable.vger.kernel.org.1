@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-84966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E334899D324
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9303499CECE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:47:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6D12B27230
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 249961F24248
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8371CACD2;
-	Mon, 14 Oct 2024 15:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C35CD1AC423;
+	Mon, 14 Oct 2024 14:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKF9cDDC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nn6qKkCb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9884D1537AA;
-	Mon, 14 Oct 2024 15:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813D73B298;
+	Mon, 14 Oct 2024 14:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919838; cv=none; b=G1waIWhhFQYr4iFNZzaxSC0TmcpaAF/TIgoTpetVLAmB8YqTA2zaJkmYNVXDgJeHfV1zWpPT3LDfF1xTLvSmWc3ggweYk//+whBJSNX3Zwkv+WoBMGxbDENQUqSlj87VwLbuRpFANeO28I+rpOYESzNcwCC2n2Zk0HNYkQjzXvM=
+	t=1728917169; cv=none; b=Z8WHLdhCpZik65b0aODG2vpqq3brs6ifOxxek1A7dOKeqFskJReT8GGQTwc5RLFV49P2k2i3avAJNAZUHXa5xfISFLIyU58Ksmt8V45jdatHAocU9Ks9wVHY7+J+mYxstztxTNgvgyP0Dicy3Dy7xPgpdxIMQCD+/Z/0ThYt5Yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919838; c=relaxed/simple;
-	bh=2cvf4jREyV1t2YHHaQ8Jf3IFNFVZvrA2ousMne4zDHw=;
+	s=arc-20240116; t=1728917169; c=relaxed/simple;
+	bh=xCdky8StFfTywCpWUXTbdLvdhkem6BJl/ALbv+SV24c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VryWFZ62N+erDbH4R1FBD3jsaeL/06K3mwgadYAT8sQ8Y2nCXpF2XD7+UvY2n/4gnCq07hjIxCmZ2gljU8LagGCAkwRvfmO0M5ueDDkjsUhOXLgfeDfmcbfsVdydC2Nnpma8EobZkH/SY2n2fHkCabdpeSHgXcjUU6YbVfSdOTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKF9cDDC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08CC2C4CEC3;
-	Mon, 14 Oct 2024 15:30:37 +0000 (UTC)
+	 MIME-Version; b=nNBhMFRj4dA2Lm9Xye+lE5pCjmi6DIZMrzGD5hInjPWd3PS677Nm9DWaM/KICkmQRfGVmdvj9aDoHi3EmOoeHuVByAP3CXO9ArC6KH7ntj3so+6ElGBYDLyiwtcSyghQ95wFdZwkkDNK+sNK8OTFA6XJdRRz/kvHcP4lDzn1LVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nn6qKkCb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E0AC4CEC3;
+	Mon, 14 Oct 2024 14:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919838;
-	bh=2cvf4jREyV1t2YHHaQ8Jf3IFNFVZvrA2ousMne4zDHw=;
+	s=korg; t=1728917169;
+	bh=xCdky8StFfTywCpWUXTbdLvdhkem6BJl/ALbv+SV24c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wKF9cDDCTDTVsYO0wjhI+RkPd3HI6gmGMH1lReCFtXfSbr0uXIonWcdyj75R5Beiz
-	 o4RkKTTj+6EEiojWv5C9R83kKscEdLHFhXyKZOSAIe7RXAF0qwufxJqltRn/HMdl1H
-	 edEjNDhNz/MKYzSUotihQWjdMLFS+QTcP4AONsbk=
+	b=nn6qKkCb2BecgTwj8OlP1O2n5TuZKRyHxqsTqadvS15Q7k82s5cJfUFCi9t1gGNsh
+	 QSp6eCC4iKuqrQZmqBTMRYfLCqa3JghG8PxOYkMnJRSZL0EWOvHiUfqfBHQmv9dbzy
+	 LHg/lmxrOI5vlDVDmiPdbDLn7TBUt2+y6Z2/YGqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 721/798] scsi: lpfc: Ensure DA_ID handling completion before deleting an NPIV instance
-Date: Mon, 14 Oct 2024 16:21:15 +0200
-Message-ID: <20241014141246.394803469@linuxfoundation.org>
+Subject: [PATCH 6.6 170/213] HID: asus: add ROG Ally N-Key ID and keycodes
+Date: Mon, 14 Oct 2024 16:21:16 +0200
+Message-ID: <20241014141049.604538733@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,147 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Luke D. Jones <luke@ljones.dev>
 
-[ Upstream commit 0a3c84f71680684c1d41abb92db05f95c09111e8 ]
+[ Upstream commit 08b50c6b0b0940a304b481346cc187d489c6a751 ]
 
-Deleting an NPIV instance requires all fabric ndlps to be released before
-an NPIV's resources can be torn down.  Failure to release fabric ndlps
-beforehand opens kref imbalance race conditions.  Fix by forcing the DA_ID
-to complete synchronously with usage of wait_queue.
+A handful of buttons on the ROG Ally are not actually part of the xpad
+device and are instead keyboard keys (a typical use of the MCU that asus
+uses). We attach a group of F<num> key codes which aren't used much and
+which the handheld community has already accepted as defaults here.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240912232447.45607-6-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_ct.c    | 12 ++++++++++
- drivers/scsi/lpfc/lpfc_disc.h  |  7 ++++++
- drivers/scsi/lpfc/lpfc_vport.c | 43 ++++++++++++++++++++++++++++------
- 3 files changed, 55 insertions(+), 7 deletions(-)
+ drivers/hid/hid-asus.c | 8 +++++++-
+ drivers/hid/hid-ids.h  | 1 +
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_ct.c b/drivers/scsi/lpfc/lpfc_ct.c
-index e941a99aa9659..8006b0eea3fbd 100644
---- a/drivers/scsi/lpfc/lpfc_ct.c
-+++ b/drivers/scsi/lpfc/lpfc_ct.c
-@@ -1663,6 +1663,18 @@ lpfc_cmpl_ct(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
- 	}
+diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
+index 88cbb2fe6ac8c..0616df83adc75 100644
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -881,7 +881,10 @@ static int asus_input_mapping(struct hid_device *hdev,
+ 		case 0xb3: asus_map_key_clear(KEY_PROG3);	break; /* Fn+Left next aura */
+ 		case 0x6a: asus_map_key_clear(KEY_F13);		break; /* Screenpad toggle */
+ 		case 0x4b: asus_map_key_clear(KEY_F14);		break; /* Arrows/Pg-Up/Dn toggle */
+-
++		case 0xa5: asus_map_key_clear(KEY_F15);		break; /* ROG Ally left back */
++		case 0xa6: asus_map_key_clear(KEY_F16);		break; /* ROG Ally QAM button */
++		case 0xa7: asus_map_key_clear(KEY_F17);		break; /* ROG Ally ROG long-press */
++		case 0xa8: asus_map_key_clear(KEY_F18);		break; /* ROG Ally ROG long-press-release */
  
- out:
-+	/* If the caller wanted a synchronous DA_ID completion, signal the
-+	 * wait obj and clear flag to reset the vport.
-+	 */
-+	if (ndlp->save_flags & NLP_WAIT_FOR_DA_ID) {
-+		if (ndlp->da_id_waitq)
-+			wake_up(ndlp->da_id_waitq);
-+	}
-+
-+	spin_lock_irq(&ndlp->lock);
-+	ndlp->save_flags &= ~NLP_WAIT_FOR_DA_ID;
-+	spin_unlock_irq(&ndlp->lock);
-+
- 	lpfc_ct_free_iocb(phba, cmdiocb);
- 	lpfc_nlp_put(ndlp);
- 	return;
-diff --git a/drivers/scsi/lpfc/lpfc_disc.h b/drivers/scsi/lpfc/lpfc_disc.h
-index f82615d87c4bb..f5ae8cc158205 100644
---- a/drivers/scsi/lpfc/lpfc_disc.h
-+++ b/drivers/scsi/lpfc/lpfc_disc.h
-@@ -90,6 +90,8 @@ enum lpfc_nlp_save_flags {
- 	NLP_IN_RECOV_POST_DEV_LOSS	= 0x1,
- 	/* wait for outstanding LOGO to cmpl */
- 	NLP_WAIT_FOR_LOGO		= 0x2,
-+	/* wait for outstanding DA_ID to finish */
-+	NLP_WAIT_FOR_DA_ID              = 0x4
- };
+ 		default:
+ 			/* ASUS lazily declares 256 usages, ignore the rest,
+@@ -1273,6 +1276,9 @@ static const struct hid_device_id asus_devices[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
+ 	    USB_DEVICE_ID_ASUSTEK_ROG_NKEY_KEYBOARD3),
+ 	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
++	    USB_DEVICE_ID_ASUSTEK_ROG_NKEY_ALLY),
++	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
+ 	    USB_DEVICE_ID_ASUSTEK_ROG_CLAYMORE_II_KEYBOARD),
+ 	  QUIRK_ROG_CLAYMORE_II_KEYBOARD },
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index f1d49db9fddce..1301d15e5680b 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -208,6 +208,7 @@
+ #define USB_DEVICE_ID_ASUSTEK_ROG_NKEY_KEYBOARD	0x1866
+ #define USB_DEVICE_ID_ASUSTEK_ROG_NKEY_KEYBOARD2	0x19b6
+ #define USB_DEVICE_ID_ASUSTEK_ROG_NKEY_KEYBOARD3	0x1a30
++#define USB_DEVICE_ID_ASUSTEK_ROG_NKEY_ALLY		0x1abe
+ #define USB_DEVICE_ID_ASUSTEK_ROG_CLAYMORE_II_KEYBOARD	0x196b
+ #define USB_DEVICE_ID_ASUSTEK_FX503VD_KEYBOARD	0x1869
  
- struct lpfc_nodelist {
-@@ -159,7 +161,12 @@ struct lpfc_nodelist {
- 	uint32_t nvme_fb_size; /* NVME target's supported byte cnt */
- #define NVME_FB_BIT_SHIFT 9    /* PRLI Rsp first burst in 512B units. */
- 	uint32_t nlp_defer_did;
-+
-+	/* These wait objects are NPIV specific.  These IOs must complete
-+	 * synchronously.
-+	 */
- 	wait_queue_head_t *logo_waitq;
-+	wait_queue_head_t *da_id_waitq;
- };
- 
- struct lpfc_node_rrq {
-diff --git a/drivers/scsi/lpfc/lpfc_vport.c b/drivers/scsi/lpfc/lpfc_vport.c
-index 6b4259894584f..fe7c3064c097a 100644
---- a/drivers/scsi/lpfc/lpfc_vport.c
-+++ b/drivers/scsi/lpfc/lpfc_vport.c
-@@ -643,6 +643,7 @@ lpfc_vport_delete(struct fc_vport *fc_vport)
- 	struct Scsi_Host *shost = lpfc_shost_from_vport(vport);
- 	struct lpfc_hba  *phba = vport->phba;
- 	int rc;
-+	DECLARE_WAIT_QUEUE_HEAD_ONSTACK(waitq);
- 
- 	if (vport->port_type == LPFC_PHYSICAL_PORT) {
- 		lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
-@@ -698,21 +699,49 @@ lpfc_vport_delete(struct fc_vport *fc_vport)
- 	if (!ndlp)
- 		goto skip_logo;
- 
-+	/* Send the DA_ID and Fabric LOGO to cleanup the NPIV fabric entries. */
- 	if (ndlp && ndlp->nlp_state == NLP_STE_UNMAPPED_NODE &&
- 	    phba->link_state >= LPFC_LINK_UP &&
- 	    phba->fc_topology != LPFC_TOPOLOGY_LOOP) {
- 		if (vport->cfg_enable_da_id) {
--			/* Send DA_ID and wait for a completion. */
-+			/* Send DA_ID and wait for a completion.  This is best
-+			 * effort.  If the DA_ID fails, likely the fabric will
-+			 * "leak" NportIDs but at least the driver issued the
-+			 * command.
-+			 */
-+			ndlp = lpfc_findnode_did(vport, NameServer_DID);
-+			if (!ndlp)
-+				goto issue_logo;
-+
-+			spin_lock_irq(&ndlp->lock);
-+			ndlp->da_id_waitq = &waitq;
-+			ndlp->save_flags |= NLP_WAIT_FOR_DA_ID;
-+			spin_unlock_irq(&ndlp->lock);
-+
- 			rc = lpfc_ns_cmd(vport, SLI_CTNS_DA_ID, 0, 0);
--			if (rc) {
--				lpfc_printf_log(vport->phba, KERN_WARNING,
--						LOG_VPORT,
--						"1829 CT command failed to "
--						"delete objects on fabric, "
--						"rc %d\n", rc);
-+			if (!rc) {
-+				wait_event_timeout(waitq,
-+				   !(ndlp->save_flags & NLP_WAIT_FOR_DA_ID),
-+				   msecs_to_jiffies(phba->fc_ratov * 2000));
- 			}
-+
-+			lpfc_printf_vlog(vport, KERN_INFO, LOG_VPORT | LOG_ELS,
-+					 "1829 DA_ID issue status %d. "
-+					 "SFlag x%x NState x%x, NFlag x%x "
-+					 "Rpi x%x\n",
-+					 rc, ndlp->save_flags, ndlp->nlp_state,
-+					 ndlp->nlp_flag, ndlp->nlp_rpi);
-+
-+			/* Remove the waitq and save_flags.  It no
-+			 * longer matters if the wake happened.
-+			 */
-+			spin_lock_irq(&ndlp->lock);
-+			ndlp->da_id_waitq = NULL;
-+			ndlp->save_flags &= ~NLP_WAIT_FOR_DA_ID;
-+			spin_unlock_irq(&ndlp->lock);
- 		}
- 
-+issue_logo:
- 		/*
- 		 * If the vpi is not registered, then a valid FDISC doesn't
- 		 * exist and there is no need for a ELS LOGO.  Just cleanup
 -- 
 2.43.0
 
