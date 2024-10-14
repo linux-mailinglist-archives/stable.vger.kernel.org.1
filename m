@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-84788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E703C99D21A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1778799CCD3
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:25:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23C7A1C22C46
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4653C1C214C6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3EE1C3052;
-	Mon, 14 Oct 2024 15:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23781A7AC7;
+	Mon, 14 Oct 2024 14:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOSClT2P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOS7x0f+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC801A76CE;
-	Mon, 14 Oct 2024 15:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF1216190B;
+	Mon, 14 Oct 2024 14:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919216; cv=none; b=Z7skA2uLyvTlX8ivE+qopPSB2lFijrDp/8E30FQzKIQt5+0Nq3WgXzOt0n9ontWsa9HGx710dT5pFTjUHKJpOL50RjuJwAJX6bQPCxEBuHaFXmQc669gbdLIVlByQ8VWcSfy6OAQXMRgWP85qrXDE9AoRCJCn6fARMhhT1u3kZE=
+	t=1728915921; cv=none; b=DFECck1cpSHMchLJFhG+YqY4T4sKbqpHznntpaWlPrgSuL+o6yQ8M/ASfA4ZMWWbupVCFO+78hRbXdmaV2kGjrZhnzoul5evCldMf56X7LvZhVrQliQShe3jNXw2hD2sKUCqF5RZQjmp+aXPbdNh0ECjLLpFxqpk1C1iTsbBy4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919216; c=relaxed/simple;
-	bh=As0XCfSyV+XES3asAuix5zBFpKPwxc1B9NlzC7uhqIg=;
+	s=arc-20240116; t=1728915921; c=relaxed/simple;
+	bh=UsCFGdmS3KP9aEM4UBXj5PzKcfFqMw4yu/728Kbzeco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WXWX9/nNDvucofLH+BYn4Y3B2c1LVIwdMbcu4GuDTViQYC8qMz3PCnZ90xlMVwyq0eAv2qblnF1KYuClpwyModJc3pfdal9Y3jaB9dGbpcp5HHCBit4uZyFWda2Pm9So1waU5sVXVCf1nMtg90KoDCW4gEVBDJqbKx/qL3W2szg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOSClT2P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA20C4CEC3;
-	Mon, 14 Oct 2024 15:20:15 +0000 (UTC)
+	 MIME-Version; b=tTIz55waKcO4+2kahIQZWizyo5t/vMz/vJoRd+PP8VcoX98660ZMJBRko4Wv3rQwdkYogTHiUkhpNERinPMgncy+GV1/i7acY/eoceiJurmXCy4oYJTQEQLdDk/k7fnb7AkTlBk0/bTAKQgAm/OPcEIMwXwKvW6AlLmm+DYkwQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOS7x0f+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C5BC4CEC3;
+	Mon, 14 Oct 2024 14:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919216;
-	bh=As0XCfSyV+XES3asAuix5zBFpKPwxc1B9NlzC7uhqIg=;
+	s=korg; t=1728915921;
+	bh=UsCFGdmS3KP9aEM4UBXj5PzKcfFqMw4yu/728Kbzeco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOSClT2PxtzjcWvBE+zxFwjMiVFUr5kUDormMeIn1h6Pcd95B9bZM9lET2FRe8UOO
-	 NUHt8Uqj/dhibH9k3PlZsRyrAokOBm3rrKMKQ6Zbobz4PB+29dXAcDAhfC/9w8dnUO
-	 7/T3TAdBInSoAtRkUqUujg9EhKbPhtdhqbQcdol4=
+	b=xOS7x0f+ysp0ilEXwPcqJOzIasMtQm4tzCEe2Y5JV7KEg8VqNubU/Fvhlb/7Qt8Va
+	 PLrw8HRUi0vsvxR/8Ik/3LCn818vNtxTM2+Tp97C/jtRP2XmR+ZyCkBSUiZ/S/GvNC
+	 xc3Gw30ue/1IRwf0aQWdElWG8iTMBUUeABlVyzHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 546/798] ext4: dax: fix overflowing extents beyond inode size when partially writing
-Date: Mon, 14 Oct 2024 16:18:20 +0200
-Message-ID: <20241014141239.448815291@linuxfoundation.org>
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 038/214] RISC-V: Dont have MAX_PHYSMEM_BITS exceed phys_addr_t
+Date: Mon, 14 Oct 2024 16:18:21 +0200
+Message-ID: <20241014141046.477867283@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Palmer Dabbelt <palmer@rivosinc.com>
 
-commit dda898d7ffe85931f9cca6d702a51f33717c501e upstream.
+[ Upstream commit ad380f6a0a5e82e794b45bb2eaec24ed51a56846 ]
 
-The dax_iomap_rw() does two things in each iteration: map written blocks
-and copy user data to blocks. If the process is killed by user(See signal
-handling in dax_iomap_iter()), the copied data will be returned and added
-on inode size, which means that the length of written extents may exceed
-the inode size, then fsck will fail. An example is given as:
+I recently ended up with a warning on some compilers along the lines of
 
-dd if=/dev/urandom of=file bs=4M count=1
- dax_iomap_rw
-  iomap_iter // round 1
-   ext4_iomap_begin
-    ext4_iomap_alloc // allocate 0~2M extents(written flag)
-  dax_iomap_iter // copy 2M data
-  iomap_iter // round 2
-   iomap_iter_advance
-    iter->pos += iter->processed // iter->pos = 2M
-   ext4_iomap_begin
-    ext4_iomap_alloc // allocate 2~4M extents(written flag)
-  dax_iomap_iter
-   fatal_signal_pending
-  done = iter->pos - iocb->ki_pos // done = 2M
- ext4_handle_inode_extension
-  ext4_update_inode_size // inode size = 2M
+      CC      kernel/resource.o
+    In file included from include/linux/ioport.h:16,
+                     from kernel/resource.c:15:
+    kernel/resource.c: In function 'gfr_start':
+    include/linux/minmax.h:49:37: error: conversion from 'long long unsigned int' to 'resource_size_t' {aka 'unsigned int'} changes value from '17179869183' to '4294967295' [-Werror=overflow]
+       49 |         ({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
+          |                                     ^
+    include/linux/minmax.h:52:9: note: in expansion of macro '__cmp_once_unique'
+       52 |         __cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+          |         ^~~~~~~~~~~~~~~~~
+    include/linux/minmax.h:161:27: note: in expansion of macro '__cmp_once'
+      161 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
+          |                           ^~~~~~~~~~
+    kernel/resource.c:1829:23: note: in expansion of macro 'min_t'
+     1829 |                 end = min_t(resource_size_t, base->end,
+          |                       ^~~~~
+    kernel/resource.c: In function 'gfr_continue':
+    include/linux/minmax.h:49:37: error: conversion from 'long long unsigned int' to 'resource_size_t' {aka 'unsigned int'} changes value from '17179869183' to '4294967295' [-Werror=overflow]
+       49 |         ({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
+          |                                     ^
+    include/linux/minmax.h:52:9: note: in expansion of macro '__cmp_once_unique'
+       52 |         __cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+          |         ^~~~~~~~~~~~~~~~~
+    include/linux/minmax.h:161:27: note: in expansion of macro '__cmp_once'
+      161 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
+          |                           ^~~~~~~~~~
+    kernel/resource.c:1847:24: note: in expansion of macro 'min_t'
+     1847 |                addr <= min_t(resource_size_t, base->end,
+          |                        ^~~~~
+    cc1: all warnings being treated as errors
 
-fsck reports: Inode 13, i_size is 2097152, should be 4194304.  Fix?
+which looks like a real problem: our phys_addr_t is only 32 bits now, so
+having 34-bit masks is just going to result in overflows.
 
-Fix the problem by truncating extents if the written length is smaller
-than expected.
-
-Fixes: 776722e85d3b ("ext4: DAX iomap write support")
-CC: stable@vger.kernel.org
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219136
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Link: https://patch.msgid.link/20240809121532.2105494-1-chengzhihao@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240731162159.9235-2-palmer@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/file.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/riscv/include/asm/sparsemem.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/file.c
-+++ b/fs/ext4/file.c
-@@ -324,10 +324,10 @@ static ssize_t ext4_handle_inode_extensi
-  * Clean up the inode after DIO or DAX extending write has completed and the
-  * inode size has been updated using ext4_handle_inode_extension().
-  */
--static void ext4_inode_extension_cleanup(struct inode *inode, ssize_t count)
-+static void ext4_inode_extension_cleanup(struct inode *inode, bool need_trunc)
- {
- 	lockdep_assert_held_write(&inode->i_rwsem);
--	if (count < 0) {
-+	if (need_trunc) {
- 		ext4_truncate_failed_write(inode);
- 		/*
- 		 * If the truncate operation failed early, then the inode may
-@@ -567,7 +567,7 @@ static ssize_t ext4_dio_write_iter(struc
- 		 * writeback of delalloc blocks.
- 		 */
- 		WARN_ON_ONCE(ret == -EIOCBQUEUED);
--		ext4_inode_extension_cleanup(inode, ret);
-+		ext4_inode_extension_cleanup(inode, ret < 0);
- 	}
- 
- out:
-@@ -651,7 +651,7 @@ ext4_dax_write_iter(struct kiocb *iocb,
- 
- 	if (extend) {
- 		ret = ext4_handle_inode_extension(inode, offset, ret);
--		ext4_inode_extension_cleanup(inode, ret);
-+		ext4_inode_extension_cleanup(inode, ret < (ssize_t)count);
- 	}
- out:
- 	inode_unlock(inode);
+diff --git a/arch/riscv/include/asm/sparsemem.h b/arch/riscv/include/asm/sparsemem.h
+index 63acaecc33747..2f901a410586d 100644
+--- a/arch/riscv/include/asm/sparsemem.h
++++ b/arch/riscv/include/asm/sparsemem.h
+@@ -7,7 +7,7 @@
+ #ifdef CONFIG_64BIT
+ #define MAX_PHYSMEM_BITS	56
+ #else
+-#define MAX_PHYSMEM_BITS	34
++#define MAX_PHYSMEM_BITS	32
+ #endif /* CONFIG_64BIT */
+ #define SECTION_SIZE_BITS	27
+ #endif /* CONFIG_SPARSEMEM */
+-- 
+2.43.0
+
 
 
 
