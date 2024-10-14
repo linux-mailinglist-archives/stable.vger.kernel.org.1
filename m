@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-83963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42A599CD65
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:32:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C4499D309
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5ADB328318E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:32:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5852028A24F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DCA24B34;
-	Mon, 14 Oct 2024 14:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1654F1C75E2;
+	Mon, 14 Oct 2024 15:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4uDR8UM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z568USCQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD61610B;
-	Mon, 14 Oct 2024 14:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A091D0942;
+	Mon, 14 Oct 2024 15:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916335; cv=none; b=iyxwwWkRPvYbZSrratzKyvjPYjnGjTO3P+IksgjP/VzGleIpwtCwbZ4WUdLQtuyya+sZiGApEORCu8WGp0r7zRmZKxQtiKGg5/iGRy4Ze6e7BCKl1T8CUpMIw2wcUf0+Zx/FEibWyFayYXQ8nUKbiK0pnEMl/sd3dbJsoMFKmc0=
+	t=1728919776; cv=none; b=VjAQhkKFWUeE2Xb7zDxSGt/w8vtD88Rr17eO27Gd+XALYmVOl2XFi4MiXfQaEsovV5wY2RXFFzrotT7E++LCyHMCx9wOVZGKQUM5Qrh7f1ZK52H3LVIMbZ+HP5EYmgsVDXXPkJwfUca8IJolE/R0xdo4UxWpCF/MSNcOIYuFOds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916335; c=relaxed/simple;
-	bh=3Ubm44YpUSZBHEYQBgLlXkgmsw8bASQieU4mGEMTuHs=;
+	s=arc-20240116; t=1728919776; c=relaxed/simple;
+	bh=DzwcWCfw4yxYBDAFLJM1CcyiRHI9xBtOsfeFFx1y+N8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H82F2euzN/15EGesQWSA19wpcojVnGqylpKBaPCFefc1zUFqb0FpWpSzSmIzAXm7y6LPaKrPoHjCEBJjCGRa+P3V8YEJ/MNwtGe/eZHMHZFN0ff/JQ8ne+48CzO16Rm3UhxnbHGHqrzXqavIkSxLh8Huw+C+5wAmQo8LJ9cbmhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4uDR8UM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65C3C4CEC3;
-	Mon, 14 Oct 2024 14:32:14 +0000 (UTC)
+	 MIME-Version; b=sCXRRvEY8fOB9AAlbfYdCLc8Ycq75/GQP9fv0GziEsm088uuGwtI6urfntGigxTSqOd8cLwlFm7aURafTMLdRn28aWDrEcBk4SbFT+OGT3maA2R7Rd1JSiwxv0vQXXN3yK9+FnCqN58k+VW7lUzBxkGvzQlsX5ntihjp8+gaR+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z568USCQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC36C4CED1;
+	Mon, 14 Oct 2024 15:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916335;
-	bh=3Ubm44YpUSZBHEYQBgLlXkgmsw8bASQieU4mGEMTuHs=;
+	s=korg; t=1728919776;
+	bh=DzwcWCfw4yxYBDAFLJM1CcyiRHI9xBtOsfeFFx1y+N8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j4uDR8UM8qtIKC3zYmjOLfikfGP00FvrZV2RqOoV5D8IdQddMCrsL/KDRWOK0LfW1
-	 QxXTIWgefii3sgNRXrrfJaQB3GXKssbKNthdYi7DlQF8WlAc6ubW/QilqFWaVje5lr
-	 nUoQ3eG33Wd3LMWM/cSY8uhTb2PIGq5IHTRkqi3g=
+	b=z568USCQ96ef4eVAcu/dZ31vw9jfhXmuznGB16UCX2x7LpUYb/HIYlwgKJ4CCEanS
+	 vmLZSxwbRPke48B2/fwWv6cgibfqrH1A2aPHxWoXj87Fj/jgjqgqdQVzZFVNKTbYyy
+	 mOjtLnUocKyqxEkfejE8eTUi1dH2GMsdkej49mLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Colberg <peter.colberg@intel.com>,
-	Michael Adler <michael.adler@intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 153/214] hwmon: intel-m10-bmc-hwmon: relabel Columbiaville to CVL Die Temperature
-Date: Mon, 14 Oct 2024 16:20:16 +0200
-Message-ID: <20241014141050.959723979@linuxfoundation.org>
+	Shiyang Ruan <ruansy.fnst@fujitsu.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Alistair Popple <apopple@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 663/798] fsdax: unshare: zero destination if srcmap is HOLE or UNWRITTEN
+Date: Mon, 14 Oct 2024 16:20:17 +0200
+Message-ID: <20241014141244.099503797@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +68,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Colberg <peter.colberg@intel.com>
+From: Shiyang Ruan <ruansy.fnst@fujitsu.com>
 
-[ Upstream commit a017616fafc6b2a6b3043bf46f6381ef2611c188 ]
+commit 13dd4e04625f600e5affb1b3f0b6c35268ab839b upstream.
 
-Consistently use CVL instead of Columbiaville, since CVL is already
-being used in all other sensor labels for the Intel N6000 card.
+unshare copies data from source to destination.  But if the source is
+HOLE or UNWRITTEN extents, we should zero the destination, otherwise
+the HOLE or UNWRITTEN part will be user-visible old data of the new
+allocated extent.
 
-Fixes: e1983220ae14 ("hwmon: intel-m10-bmc-hwmon: Add N6000 sensors")
-Signed-off-by: Peter Colberg <peter.colberg@intel.com>
-Reviewed-by: Michael Adler <michael.adler@intel.com>
-Message-ID: <20240919173417.867640-1-peter.colberg@intel.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by running generic/649 while mounting with -o dax=always on pmem.
+
+Link: https://lkml.kernel.org/r/1679483469-2-1-git-send-email-ruansy.fnst@fujitsu.com
+Fixes: d984648e428b ("fsdax,xfs: port unshare to fsdax")
+Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Darrick J. Wong <djwong@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/intel-m10-bmc-hwmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/dax.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/intel-m10-bmc-hwmon.c b/drivers/hwmon/intel-m10-bmc-hwmon.c
-index ca2dff1589251..96397ae6ff18f 100644
---- a/drivers/hwmon/intel-m10-bmc-hwmon.c
-+++ b/drivers/hwmon/intel-m10-bmc-hwmon.c
-@@ -358,7 +358,7 @@ static const struct m10bmc_sdata n6000bmc_temp_tbl[] = {
- 	{ 0x4f0, 0x4f4, 0x4f8, 0x52c, 0x0, 500, "Board Top Near FPGA Temperature" },
- 	{ 0x4fc, 0x500, 0x504, 0x52c, 0x0, 500, "Board Bottom Near CVL Temperature" },
- 	{ 0x508, 0x50c, 0x510, 0x52c, 0x0, 500, "Board Top East Near VRs Temperature" },
--	{ 0x514, 0x518, 0x51c, 0x52c, 0x0, 500, "Columbiaville Die Temperature" },
-+	{ 0x514, 0x518, 0x51c, 0x52c, 0x0, 500, "CVL Die Temperature" },
- 	{ 0x520, 0x524, 0x528, 0x52c, 0x0, 500, "Board Rear Side Temperature" },
- 	{ 0x530, 0x534, 0x538, 0x52c, 0x0, 500, "Board Front Side Temperature" },
- 	{ 0x53c, 0x540, 0x544, 0x0, 0x0, 500, "QSFP1 Case Temperature" },
--- 
-2.43.0
-
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -1234,15 +1234,20 @@ static s64 dax_unshare_iter(struct iomap
+ 	/* don't bother with blocks that are not shared to start with */
+ 	if (!(iomap->flags & IOMAP_F_SHARED))
+ 		return length;
+-	/* don't bother with holes or unwritten extents */
+-	if (srcmap->type == IOMAP_HOLE || srcmap->type == IOMAP_UNWRITTEN)
+-		return length;
+ 
+ 	id = dax_read_lock();
+ 	ret = dax_iomap_direct_access(iomap, pos, length, &daddr, NULL);
+ 	if (ret < 0)
+ 		goto out_unlock;
+ 
++	/* zero the distance if srcmap is HOLE or UNWRITTEN */
++	if (srcmap->flags & IOMAP_F_SHARED || srcmap->type == IOMAP_UNWRITTEN) {
++		memset(daddr, 0, length);
++		dax_flush(iomap->dax_dev, daddr, length);
++		ret = length;
++		goto out_unlock;
++	}
++
+ 	ret = dax_iomap_direct_access(srcmap, pos, length, &saddr, NULL);
+ 	if (ret < 0)
+ 		goto out_unlock;
 
 
 
