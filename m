@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-84129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18CA699CE4A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:42:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 975D499CD57
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:31:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C27201F23CFA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:42:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AF95283225
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA751AB6C1;
-	Mon, 14 Oct 2024 14:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED9724B34;
+	Mon, 14 Oct 2024 14:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yNXOK02o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMJ0Sldy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2512C1AB52F;
-	Mon, 14 Oct 2024 14:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D430610B;
+	Mon, 14 Oct 2024 14:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916927; cv=none; b=AQII0h5dkqWS4jqGAyKFEmgP+5gpwhtUmh+dYjJuTRB2uh4L6NQDFnY7n85FCuAAOqkORbd0vq/JTg/qRX44DZHogr1sirv4TC4ChkaElO/cdvTFw81fVpywxumXjHTtY1f0HZXYuLOEMJbm06zTVc+Dnt9gWrA3+c6ZImR5x7o=
+	t=1728916313; cv=none; b=nrgy+PQWTw1X1jm6Ux4L9hRpQ2pWBxBVmSyldt79wfJcJ+WYvtGCbnsFCPNtLGHF72sKF9ad5UDyrIEsmg1KG9UKe5ju1qx79qbFwswHSugqc2TKFlrKRBpG878EwFHlnJhaUc/wygC+n3ZuSMK35YS9qnMAyObs2Hq6GizzW/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916927; c=relaxed/simple;
-	bh=2aMmNJ7M+HP5EG+jVGtRHec7ROiHfwZVxPY5hLmJi14=;
+	s=arc-20240116; t=1728916313; c=relaxed/simple;
+	bh=fTgIZz8/tOaINbyvRH1a6NuUREqFdUZSIxTHtpxguUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XZtrB6+jEBJM8fn53Ym9TQVa99BF31LsGwx8Q3JgVH7sK3dVO+vMjAOJIbCPS186ppXPoYHfbB3cV9odF5jAB+2g+29HpuK2ue5RfC+uoL9NvLDEkH0CWCVvJBPBk2ubdbUZt+D5s7kApkmDf3Yeg/bOmPLexVBwZPIYgNukanY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yNXOK02o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978A4C4CEC3;
-	Mon, 14 Oct 2024 14:42:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jG6eNXo+xXeOfEg11DlUJzCI+y/CERwTWeOi71FnMlDo917iPRuuXq6obNhv3oqVDJnaihLBoOUx8QF6Mvw6LyvFDJP5j1ENpQ0e4tZJ21tmwKTXDwpEzBJaReIf2U8utNyBSsLzC5xviyqi3SQoDkAGiRLYucjqet/1KXvt+AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HMJ0Sldy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1295BC4CED0;
+	Mon, 14 Oct 2024 14:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916927;
-	bh=2aMmNJ7M+HP5EG+jVGtRHec7ROiHfwZVxPY5hLmJi14=;
+	s=korg; t=1728916313;
+	bh=fTgIZz8/tOaINbyvRH1a6NuUREqFdUZSIxTHtpxguUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yNXOK02oFu7+plg4aNDPfkh31hAkI1wJTsRMVsPxITuShWOZNnybz2RtkQesvKDDB
-	 mu8FPvCpo5PvzXVQ6kgaAel0pW2NOAecnDVUmW2mcCIuL+ptz3Si7PNH9GNoQOO8Yq
-	 G8w5U9GIJndbURWeoDRhMZNWSDlDl+KeV/ioio5I=
+	b=HMJ0SldymcKeDDJWr6U6QKP/l8brC/71Jbg4by6lElWT1X06kz+XJqUiH5nIO/PzP
+	 DkmBWZcMwpRP2z3pJcKhFXzu2GFRQuT/ZKx6iiUAY84QdCnF6h6fIMDFkQIJBQ4Ed+
+	 RpmTfDsfe2PaEVeWSky8W8gZhf5iAWbdkhKm3HnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <courmisch@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 103/213] drm/amd/display: Check null pointer before dereferencing se
+Subject: [PATCH 6.11 146/214] phonet: Handle error of rtnl_register_module().
 Date: Mon, 14 Oct 2024 16:20:09 +0200
-Message-ID: <20241014141046.990156775@linuxfoundation.org>
+Message-ID: <20241014141050.684530744@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit ff599ef6970ee000fa5bc38d02fa5ff5f3fc7575 ]
+[ Upstream commit b5e837c86041bef60f36cf9f20a641a30764379a ]
 
-[WHAT & HOW]
-se is null checked previously in the same function, indicating
-it might be null; therefore, it must be checked when used again.
+Before commit addf9b90de22 ("net: rtnetlink: use rcu to free rtnl
+message handlers"), once the first rtnl_register_module() allocated
+rtnl_msg_handlers[PF_PHONET], the following calls never failed.
 
-This fixes 1 FORWARD_NULL issue reported by Coverity.
+However, after the commit, rtnl_register_module() could fail silently
+to allocate rtnl_msg_handlers[PF_PHONET][msgtype] and requires error
+handling for each call.
 
-Acked-by: Alex Hung <alex.hung@amd.com>
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Handling the error allows users to view a module as an all-or-nothing
+thing in terms of the rtnetlink functionality.  This prevents syzkaller
+from reporting spurious errors from its tests, where OOM often occurs
+and module is automatically loaded.
+
+Let's use rtnl_register_many() to handle the errors easily.
+
+Fixes: addf9b90de22 ("net: rtnetlink: use rcu to free rtnl message handlers")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Rémi Denis-Courmont <courmisch@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/phonet/pn_netlink.c | 28 +++++++++++-----------------
+ 1 file changed, 11 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index a7a6f6c5c7655..c2efe18ceacd0 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -1691,7 +1691,7 @@ bool dc_validate_boot_timing(const struct dc *dc,
- 		if (crtc_timing->pix_clk_100hz != pix_clk_100hz)
- 			return false;
+diff --git a/net/phonet/pn_netlink.c b/net/phonet/pn_netlink.c
+index 7008d402499d5..894e5c72d6bff 100644
+--- a/net/phonet/pn_netlink.c
++++ b/net/phonet/pn_netlink.c
+@@ -285,23 +285,17 @@ static int route_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
+ 	return err;
+ }
  
--		if (!se->funcs->dp_get_pixel_format)
-+		if (!se || !se->funcs->dp_get_pixel_format)
- 			return false;
- 
- 		if (!se->funcs->dp_get_pixel_format(
++static const struct rtnl_msg_handler phonet_rtnl_msg_handlers[] __initdata_or_module = {
++	{THIS_MODULE, PF_PHONET, RTM_NEWADDR, addr_doit, NULL, 0},
++	{THIS_MODULE, PF_PHONET, RTM_DELADDR, addr_doit, NULL, 0},
++	{THIS_MODULE, PF_PHONET, RTM_GETADDR, NULL, getaddr_dumpit, 0},
++	{THIS_MODULE, PF_PHONET, RTM_NEWROUTE, route_doit, NULL, 0},
++	{THIS_MODULE, PF_PHONET, RTM_DELROUTE, route_doit, NULL, 0},
++	{THIS_MODULE, PF_PHONET, RTM_GETROUTE, NULL, route_dumpit,
++	 RTNL_FLAG_DUMP_UNLOCKED},
++};
++
+ int __init phonet_netlink_register(void)
+ {
+-	int err = rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_NEWADDR,
+-				       addr_doit, NULL, 0);
+-	if (err)
+-		return err;
+-
+-	/* Further rtnl_register_module() cannot fail */
+-	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_DELADDR,
+-			     addr_doit, NULL, 0);
+-	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_GETADDR,
+-			     NULL, getaddr_dumpit, 0);
+-	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_NEWROUTE,
+-			     route_doit, NULL, 0);
+-	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_DELROUTE,
+-			     route_doit, NULL, 0);
+-	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_GETROUTE,
+-			     NULL, route_dumpit, RTNL_FLAG_DUMP_UNLOCKED);
+-	return 0;
++	return rtnl_register_many(phonet_rtnl_msg_handlers);
+ }
 -- 
 2.43.0
 
