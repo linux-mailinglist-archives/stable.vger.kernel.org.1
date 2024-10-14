@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-84974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F5999D327
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F1199CF25
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:52:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95D3F1F2526A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 491FF1C2340A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22EED1CBE82;
-	Mon, 14 Oct 2024 15:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE1A1AE01D;
+	Mon, 14 Oct 2024 14:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CyZIUG2f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjPO2Gs7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23CA1CBE8B;
-	Mon, 14 Oct 2024 15:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BAB80027;
+	Mon, 14 Oct 2024 14:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919865; cv=none; b=Fl5dANYqUYHQ4ojhQDtEYZbmYj9RNPKwHlo9+n7SjB9LfVxaiC2e/t49Qz1zPlIcexC5wahlNg2p6IEGGE+QY74zYDcyQCXcx2ZGpSBZ+PRUBGUJYQvZYifAX73O+i0koz37zfCc6VyRoDtwezXUWXjsVCt/CmA0WjIokPD7NjA=
+	t=1728917275; cv=none; b=PL6dR2Whv0c8AXBuGVibkjsNOy8eP7YCOWuR2F+SHBLw8COrGgzz318o+3m82TOu4jNBiMHv3Pw1MGFKMi2SN35KJ0wvWf72leIJw2DDGVz8DkCvH+dLp/fq7BHg0/q1ZPO+FWlwSvql57xZazcVWtfN1OYgHJq3AvqmXToTBss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919865; c=relaxed/simple;
-	bh=giqtbApfFCdP4Af9snZJ3LxGk82gFh7khPkoCK1q2Gc=;
+	s=arc-20240116; t=1728917275; c=relaxed/simple;
+	bh=Rs+IKpkC58X/Lnc1QwyaapxWtkrCs1RNvPs9y13L4Zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AkpnehjxYLQKPbUOrHle78BlYDTU+CrqeRbUAay+XTYZSwD0nhtYWGc34BgahQUd5O35gr7mGD8EnJ/72+s2q5m8x7QPXWAoTUV7StP2om01ypO88HW1MOAOZeG1AnLVVLw+IdGcndE2dCnnc3ecyA7PgIotug/2WpiQE65qqxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CyZIUG2f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCE6C4CEC3;
-	Mon, 14 Oct 2024 15:31:05 +0000 (UTC)
+	 MIME-Version; b=f2LHhx96zYllfTdIdxLfOY/3phlhwpH+3Zz95wHXeqWDQ8oQ2UFyMjA7aT6ugg2ZbT9R6tnHpKI9QP0U4mhWoRj/bynm7w9QZKGCYWjaHysoJR4Qo+NBXSPZJSZ+f0m+/6cs/JjqTcx+4w3dDU/AgVLXK7Po7nhueaCAp0JZBgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjPO2Gs7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9971C4CEC3;
+	Mon, 14 Oct 2024 14:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919865;
-	bh=giqtbApfFCdP4Af9snZJ3LxGk82gFh7khPkoCK1q2Gc=;
+	s=korg; t=1728917275;
+	bh=Rs+IKpkC58X/Lnc1QwyaapxWtkrCs1RNvPs9y13L4Zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CyZIUG2fvwiHoo4AnI0h9mIt4x+m0uQJXy5ci0DeFk6c4kBu3EdPqoD8ll6K1g7Yd
-	 ri4DIY4OcRwAFpdFpIJmYkarAoN1UVuTSfLoVOC2wM1nf4mE10FClqeo0BFN+cqVUM
-	 ifdazD/ut59Ny/Z8zlAIL5xMcY4WCHdSw9mU9iyk=
+	b=xjPO2Gs7nVoxFN6NVhsqL5ehF7+SHwVgp5lcimZkxzX3Z2cA10WPPhyo/KX+5AIXX
+	 teXWS6ukbKv02woBdy4fN7RFya0LAQ+hOvikpgjaBEQWEV7kdqNe5yKkRJEofAJf8x
+	 XkPhousDTUuTAIS04yl5O3Tk25IQJo/39lzjNFJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.1 728/798] ice: fix VLAN replay after reset
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 176/213] hwmon: (mc34vr500) Add missing dependency on REGMAP_I2C
 Date: Mon, 14 Oct 2024 16:21:22 +0200
-Message-ID: <20241014141246.671655789@linuxfoundation.org>
+Message-ID: <20241014141049.834562687@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Ertman <david.m.ertman@intel.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 0eae2c136cb624e4050092feb59f18159b4f2512 ]
+[ Upstream commit 56c77c0f4a7c9043e7d1d94e0aace264361e6717 ]
 
-There is a bug currently when there are more than one VLAN defined
-and any reset that affects the PF is initiated, after the reset rebuild
-no traffic will pass on any VLAN but the last one created.
+This driver requires REGMAP_I2C to be selected in order to get access to
+regmap_config and devm_regmap_init_i2c. Add the missing dependency.
 
-This is caused by the iteration though the VLANs during replay each
-clearing the vsi_map bitmap of the VSI that is being replayed.  The
-problem is that during rhe replay, the pointer to the vsi_map bitmap
-is used by each successive vlan to determine if it should be replayed
-on this VSI.
-
-The logic was that the replay of the VLAN would replace the bit in the map
-before the next VLAN would iterate through.  But, since the replay copies
-the old bitmap pointer to filt_replay_rules and creates a new one for the
-recreated VLANS, it does not do this, and leaves the old bitmap broken
-to be used to replay the remaining VLANs.
-
-Since the old bitmap will be cleaned up in post replay cleanup, there is
-no need to alter it and break following VLAN replay, so don't clear the
-bit.
-
-Fixes: 334cb0626de1 ("ice: Implement VSI replay framework")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Dave Ertman <david.m.ertman@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 07830d9ab34c ("hwmon: add initial NXP MC34VR500 PMIC monitoring support")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Message-ID: <20241002-mc34vr500-select-regmap_i2c-v1-1-a01875d0a2e5@gmail.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_switch.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/hwmon/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
-index dc4ce3bd412d2..3a29ae46fb397 100644
---- a/drivers/net/ethernet/intel/ice/ice_switch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_switch.c
-@@ -6317,8 +6317,6 @@ ice_replay_vsi_fltr(struct ice_hw *hw, u16 vsi_handle, u8 recp_id,
- 		if (!itr->vsi_list_info ||
- 		    !test_bit(vsi_handle, itr->vsi_list_info->vsi_map))
- 			continue;
--		/* Clearing it so that the logic can add it back */
--		clear_bit(vsi_handle, itr->vsi_list_info->vsi_map);
- 		f_entry.fltr_info.vsi_handle = vsi_handle;
- 		f_entry.fltr_info.fltr_act = ICE_FWD_TO_VSI;
- 		/* update the src in case it is VSI num */
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index b46c85e2197c0..393ac124012ec 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -1200,6 +1200,7 @@ config SENSORS_MAX31790
+ config SENSORS_MC34VR500
+ 	tristate "NXP MC34VR500 hardware monitoring driver"
+ 	depends on I2C
++	select REGMAP_I2C
+ 	help
+ 	  If you say yes here you get support for the temperature and input
+ 	  voltage sensors of the NXP MC34VR500.
 -- 
 2.43.0
 
