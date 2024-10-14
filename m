@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-84959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7434699D314
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8125E99CDB4
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C63A1C217DA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 080401F23B52
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C9717C69;
-	Mon, 14 Oct 2024 15:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4A820322;
+	Mon, 14 Oct 2024 14:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvJ44Xfp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5RHpeMd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F091C2DB0;
-	Mon, 14 Oct 2024 15:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4154A24;
+	Mon, 14 Oct 2024 14:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919814; cv=none; b=uWeEBqkrFqI7jJESz2B44tpqBqX3oarwmeUFGjb5FIp1U7CItLDedUokcpNPcJYj+VrWKFle6TPirGjqE0aXOQxa1n6PufCay95MoMRDvfmtFlBDrOeCzMYp2VVHwdH7s549gl24Vu3X9sDxMnKm0B9ouLqSIRU5bRGcmnQy2f4=
+	t=1728916513; cv=none; b=de6aK9tc1T96MOHKoqgS6hpuKliPgRVZIepFGIUmU0BjuigwafAj41oBsvC9aBGT+uFfSziWHESRBg8HvPcrZgejE3yJywDJUOUccpsRILXGkOZ4JEV4KuSuRKpnTrjSRVHMRKDJw3M4jDQ93Y42sEMiemRg3nEFHfp70X4r3Ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919814; c=relaxed/simple;
-	bh=ztLQK3uYHoIf8CvGCn3F0PvT37Re79OzHWOhZblXTaY=;
+	s=arc-20240116; t=1728916513; c=relaxed/simple;
+	bh=dKT554eqLeAoxzkpsqN8SwRKug21F6V+cRVBnYUM5Eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KNCPDtzk03Ip+9iCd1/IPAkTBdjqcWTtX9TOX6MFvL7DgSS3prs9MTSouPQCa+kJu6Pj2vutIb3h3INfyxTtJSKmWEB0lo1m5b0WE8ieMJB5GNKpPH0lSv8kVYr7mL9JIyFVdGM3jh2uCv/i2QulqXYgycC+OwlcjPaecFbQzzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvJ44Xfp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED27AC4CEC3;
-	Mon, 14 Oct 2024 15:30:13 +0000 (UTC)
+	 MIME-Version; b=ttqEpVYvDmbOuz6Uhu/PxejOKCxevTEj1V4DYO9dcRcaOUEUw56siqTS4t+/BDL0JsiIJMIqsqTxiN4zM++Un+tRaFjZqEyKARuCvL4rN+Kfc65iZZdtcCJ4e5aqWCANlpWuCr3QPxYQ6cVami3tMEM2FK7reMnPeGLl8wcmhUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5RHpeMd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FFAC4CEC3;
+	Mon, 14 Oct 2024 14:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919814;
-	bh=ztLQK3uYHoIf8CvGCn3F0PvT37Re79OzHWOhZblXTaY=;
+	s=korg; t=1728916513;
+	bh=dKT554eqLeAoxzkpsqN8SwRKug21F6V+cRVBnYUM5Eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uvJ44Xfp8HRRqwYukwkYqsgi55ANMooxM/KoKCE9wSsTRn5nBhW5UFpnFw0vZoirS
-	 y27lvypKp/xohxrGOiXb3ZUJ9FWo/GhKOSJvdKllAlRPo0fAZr1DU1mLEDkff/YdIm
-	 9W2uq+JrSu8ixrVrnzNBuQdG5R75V/5l2FaG27Ok=
+	b=A5RHpeMdM427YO6G+RusLZ3siLSfP5sMPfQ4LpNGlDc/0vGX1TL+HN8mLZB5fyvbw
+	 Fg7cTquaJ61tKR2SGQu8kaiNaW66iMzNlWHQFL2ZWekpKgVAinVg0evpo4RXoMZ4nt
+	 VtLJmwrHbwvrt40gyz0B6ovpBhoOey3DrRVd0S58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 715/798] netfilter: nf_reject: Fix build warning when CONFIG_BRIDGE_NETFILTER=n
+	Luca Stefani <luca.stefani.ge1@gmail.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.11 206/214] btrfs: split remaining space to discard in chunks
 Date: Mon, 14 Oct 2024 16:21:09 +0200
-Message-ID: <20241014141246.157105360@linuxfoundation.org>
+Message-ID: <20241014141053.015034356@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Luca Stefani <luca.stefani.ge1@gmail.com>
 
-[ Upstream commit fc56878ca1c288e49b5cbb43860a5938e3463654 ]
+commit a99fcb0158978ed332009449b484e5f3ca2d7df4 upstream.
 
-If CONFIG_BRIDGE_NETFILTER is not enabled, which is the case for x86_64
-defconfig, then building nf_reject_ipv4.c and nf_reject_ipv6.c with W=1
-using gcc-14 results in the following warnings, which are treated as
-errors:
+Per Qu Wenruo in case we have a very large disk, e.g. 8TiB device,
+mostly empty although we will do the split according to our super block
+locations, the last super block ends at 256G, we can submit a huge
+discard for the range [256G, 8T), causing a large delay.
 
-net/ipv4/netfilter/nf_reject_ipv4.c: In function 'nf_send_reset':
-net/ipv4/netfilter/nf_reject_ipv4.c:243:23: error: variable 'niph' set but not used [-Werror=unused-but-set-variable]
-  243 |         struct iphdr *niph;
-      |                       ^~~~
-cc1: all warnings being treated as errors
-net/ipv6/netfilter/nf_reject_ipv6.c: In function 'nf_send_reset6':
-net/ipv6/netfilter/nf_reject_ipv6.c:286:25: error: variable 'ip6h' set but not used [-Werror=unused-but-set-variable]
-  286 |         struct ipv6hdr *ip6h;
-      |                         ^~~~
-cc1: all warnings being treated as errors
+Split the space left to discard based on BTRFS_MAX_DISCARD_CHUNK_SIZE in
+preparation of introduction of cancellation points to trim. The value
+of the chunk size is arbitrary, it can be higher or derived from actual
+device capabilities but we can't easily read that using
+bio_discard_limit().
 
-Address this by reducing the scope of these local variables to where
-they are used, which is code only compiled when CONFIG_BRIDGE_NETFILTER
-enabled.
-
-Compile tested and run through netfilter selftests.
-
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Closes: https://lore.kernel.org/netfilter-devel/20240906145513.567781-1-andriy.shevchenko@linux.intel.com/
-Signed-off-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219180
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1229737
+CC: stable@vger.kernel.org # 5.15+
+Signed-off-by: Luca Stefani <luca.stefani.ge1@gmail.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/netfilter/nf_reject_ipv4.c | 10 ++++------
- net/ipv6/netfilter/nf_reject_ipv6.c |  5 ++---
- 2 files changed, 6 insertions(+), 9 deletions(-)
+ fs/btrfs/extent-tree.c |   19 +++++++++++++++----
+ fs/btrfs/volumes.h     |    6 ++++++
+ 2 files changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
-index fc761915c5f6f..675b5bbed638e 100644
---- a/net/ipv4/netfilter/nf_reject_ipv4.c
-+++ b/net/ipv4/netfilter/nf_reject_ipv4.c
-@@ -239,9 +239,8 @@ static int nf_reject_fill_skb_dst(struct sk_buff *skb_in)
- void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 		   int hook)
- {
--	struct sk_buff *nskb;
--	struct iphdr *niph;
- 	const struct tcphdr *oth;
-+	struct sk_buff *nskb;
- 	struct tcphdr _oth;
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -1300,13 +1300,24 @@ static int btrfs_issue_discard(struct bl
+ 		bytes_left = end - start;
+ 	}
  
- 	oth = nf_reject_ip_tcphdr_get(oldskb, &_oth, hook);
-@@ -266,14 +265,12 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	nskb->mark = IP4_REPLY_MARK(net, oldskb->mark);
+-	if (bytes_left) {
++	while (bytes_left) {
++		u64 bytes_to_discard = min(BTRFS_MAX_DISCARD_CHUNK_SIZE, bytes_left);
++
+ 		ret = blkdev_issue_discard(bdev, start >> SECTOR_SHIFT,
+-					   bytes_left >> SECTOR_SHIFT,
++					   bytes_to_discard >> SECTOR_SHIFT,
+ 					   GFP_NOFS);
+-		if (!ret)
+-			*discarded_bytes += bytes_left;
++
++		if (ret) {
++			if (ret != -EOPNOTSUPP)
++				break;
++			continue;
++		}
++
++		start += bytes_to_discard;
++		bytes_left -= bytes_to_discard;
++		*discarded_bytes += bytes_to_discard;
+ 	}
++
+ 	return ret;
+ }
  
- 	skb_reserve(nskb, LL_MAX_HEADER);
--	niph = nf_reject_iphdr_put(nskb, oldskb, IPPROTO_TCP,
--				   ip4_dst_hoplimit(skb_dst(nskb)));
-+	nf_reject_iphdr_put(nskb, oldskb, IPPROTO_TCP,
-+			    ip4_dst_hoplimit(skb_dst(nskb)));
- 	nf_reject_ip_tcphdr_put(nskb, oldskb, oth);
- 	if (ip_route_me_harder(net, sk, nskb, RTN_UNSPEC))
- 		goto free_nskb;
+--- a/fs/btrfs/volumes.h
++++ b/fs/btrfs/volumes.h
+@@ -30,6 +30,12 @@ struct btrfs_zoned_device_info;
  
--	niph = ip_hdr(nskb);
--
- 	/* "Never happens" */
- 	if (nskb->len > dst_mtu(skb_dst(nskb)))
- 		goto free_nskb;
-@@ -290,6 +287,7 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	 */
- 	if (nf_bridge_info_exists(oldskb)) {
- 		struct ethhdr *oeth = eth_hdr(oldskb);
-+		struct iphdr *niph = ip_hdr(nskb);
- 		struct net_device *br_indev;
+ #define BTRFS_MAX_DATA_CHUNK_SIZE	(10ULL * SZ_1G)
  
- 		br_indev = nf_bridge_get_physindev(oldskb, net);
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index 690d1c0476913..4e0976534648c 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -273,7 +273,6 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	const struct tcphdr *otcph;
- 	unsigned int otcplen, hh_len;
- 	const struct ipv6hdr *oip6h = ipv6_hdr(oldskb);
--	struct ipv6hdr *ip6h;
- 	struct dst_entry *dst = NULL;
- 	struct flowi6 fl6;
++/*
++ * Arbitratry maximum size of one discard request to limit potentially long time
++ * spent in blkdev_issue_discard().
++ */
++#define BTRFS_MAX_DISCARD_CHUNK_SIZE	(SZ_1G)
++
+ extern struct mutex uuid_mutex;
  
-@@ -329,8 +328,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	nskb->mark = fl6.flowi6_mark;
- 
- 	skb_reserve(nskb, hh_len + dst->header_len);
--	ip6h = nf_reject_ip6hdr_put(nskb, oldskb, IPPROTO_TCP,
--				    ip6_dst_hoplimit(dst));
-+	nf_reject_ip6hdr_put(nskb, oldskb, IPPROTO_TCP, ip6_dst_hoplimit(dst));
- 	nf_reject_ip6_tcphdr_put(nskb, oldskb, otcph, otcplen);
- 
- 	nf_ct_attach(nskb, oldskb);
-@@ -345,6 +343,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	 */
- 	if (nf_bridge_info_exists(oldskb)) {
- 		struct ethhdr *oeth = eth_hdr(oldskb);
-+		struct ipv6hdr *ip6h = ipv6_hdr(nskb);
- 		struct net_device *br_indev;
- 
- 		br_indev = nf_bridge_get_physindev(oldskb, net);
--- 
-2.43.0
-
+ #define BTRFS_STRIPE_LEN		SZ_64K
 
 
 
