@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-84299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0694399CF7A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:55:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E68099CF8B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF13B287E8D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:55:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 048151F20FC6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8641AB6E6;
-	Mon, 14 Oct 2024 14:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9773A1BFE0D;
+	Mon, 14 Oct 2024 14:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eA0ZJDhA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRP+r25B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D6F43AA9;
-	Mon, 14 Oct 2024 14:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FCF1BFDFC;
+	Mon, 14 Oct 2024 14:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917534; cv=none; b=BSjAc4lKCTjRcOpRSUveilulRj2ktT89ya7NPTzn8rSwxG9OVc/ZoDnJlyzMmAiEiRdLBekkdvLrKM28h3dylpM+g/TKcyL5YuD44lY/pvyeglKcYgauSx0APefnp0p7WkzXGx/y0scC+6iv4iNzbbFvYo0WDVADyOY/F8gF+qk=
+	t=1728917575; cv=none; b=Z4emutIu4YLGWY5qWIfyCEPmYotSiwPx+VXsp0nHrGxQIbLvX47HPNDpWI2SSF4TQ6eQRRWNKpLvOAtrGnkBjEEH4nSZKBmZw9yb6+sJprPuPWd4/AmGq5sYHNkX2u7F+6earBqbWHU6iuk++G/Oxe3mOynbuu2V2JzSLN1Za7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917534; c=relaxed/simple;
-	bh=NBDxGNmqXGvRiKCuYQUTlgAXTlOQfkie0VYAypn0WjU=;
+	s=arc-20240116; t=1728917575; c=relaxed/simple;
+	bh=CJeO1Cyw8ows7Ev+75A5wJxC3FVsKRR7WBHbrdYqWDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PNhyzdhFziInfKBcOr8hNgw1g4pWxVhJQH3jTn4zwnb4RZQqsbj9tb5fNbJHMFxpGfWiYIMKQiyvpB+NpjX7TqjuIRCml66AQrCcPV9cI6oIHtd36tPxjf/3CAmL6P1f57QRM1IL6DPCCa78jD82foiZqn3w1QKDhov25vrAfsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eA0ZJDhA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAFE3C4CEC3;
-	Mon, 14 Oct 2024 14:52:13 +0000 (UTC)
+	 MIME-Version; b=jjhOPLngfYJoqyDR/9Bdom4OJ0z5UBHkpJkoWY3+vyJe0BEOj2wtQfhr7IdGi1rSwF3uYfNT+tn3f25sKVIrPuUv1npLqwmPY+ZCHx0OF5VBim95YWFNLBIfpw9J1AZG3Hn1uLw6q28txGbhHooADbPMjDKFqHamGOkn0PCHUS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRP+r25B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B73C4CED0;
+	Mon, 14 Oct 2024 14:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917534;
-	bh=NBDxGNmqXGvRiKCuYQUTlgAXTlOQfkie0VYAypn0WjU=;
+	s=korg; t=1728917575;
+	bh=CJeO1Cyw8ows7Ev+75A5wJxC3FVsKRR7WBHbrdYqWDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eA0ZJDhA7tPaKvgwLPxtavbpncAbbpfIen3HyS57hWx6OPUxuoqVl+eodHtFTTAEH
-	 JfsxNpCKM1yB023Qm9jNf0cIC2W5fHc3bdejDQuMpH2pl674RzShCJD2th9tYRcxkz
-	 GPKeMwMBUoECMPluSo5k71s8kPYpztXo5uAeKq6U=
+	b=uRP+r25BHkPUlTOtNGgE+7fLXGzLu86S8a5ObdcLNWilbJtWyYuWxtRarqo5Poy6I
+	 OUcH4dSw9O7LLn5E6wY1mGyOI02d13cyV9UFMR/IwTAaLXkav0OiKrlMrYjHifd4BJ
+	 RSs211TLESHJeT2LT+Cv0C4u535dLgR6JGB+r07k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Kiran K <kiran.k@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/798] can: m_can: m_can_close(): stop clocks after device has been shut down
-Date: Mon, 14 Oct 2024 16:10:07 +0200
-Message-ID: <20241014141220.027301984@linuxfoundation.org>
+Subject: [PATCH 6.1 054/798] Bluetooth: btusb: Fix not handling ZPL/short-transfer
+Date: Mon, 14 Oct 2024 16:10:08 +0200
+Message-ID: <20241014141220.066746195@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -65,47 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 2c09b50efcad985cf920ca88baa9aa52b1999dcc ]
+[ Upstream commit 7b05933340f4490ef5b09e84d644d12484b05fdf ]
 
-After calling m_can_stop() an interrupt may be pending or NAPI might
-still be executed. This means the driver might still touch registers
-of the IP core after the clocks have been disabled. This is not good
-practice and might lead to aborts depending on the SoC integration.
+Requesting transfers of the exact same size of wMaxPacketSize may result
+in ZPL/short-transfer since the USB stack cannot handle it as we are
+limiting the buffer size to be the same as wMaxPacketSize.
 
-To avoid these potential problems, make m_can_close() symmetric to
-m_can_open(), i.e. stop the clocks at the end, right before shutting
-down the transceiver.
+Also, in terms of throughput this change has the same effect to
+interrupt endpoint as 290ba200815f "Bluetooth: Improve USB driver throughput
+by increasing the frame size" had for the bulk endpoint, so users of the
+advertisement bearer (e.g. BT Mesh) may benefit from this change.
 
-Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
-Link: https://patch.msgid.link/20240910-can-m_can-fix-ifup-v3-2-6c1720ba45ce@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: 5e23b923da03 ("[Bluetooth] Add generic driver for Bluetooth USB devices")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Tested-by: Kiran K <kiran.k@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/m_can/m_can.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btusb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index d8e6a081118b7..e77b4b60f4e61 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -1556,7 +1556,6 @@ static int m_can_close(struct net_device *dev)
- 	netif_stop_queue(dev);
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 2d8c405a27a6c..dc5150f677236 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -1189,7 +1189,10 @@ static int btusb_submit_intr_urb(struct hci_dev *hdev, gfp_t mem_flags)
+ 	if (!urb)
+ 		return -ENOMEM;
  
- 	m_can_stop(dev);
--	m_can_clk_stop(cdev);
- 	free_irq(dev->irq, dev);
+-	size = le16_to_cpu(data->intr_ep->wMaxPacketSize);
++	/* Use maximum HCI Event size so the USB stack handles
++	 * ZPL/short-transfer automatically.
++	 */
++	size = HCI_MAX_EVENT_SIZE;
  
- 	if (cdev->is_peripheral) {
-@@ -1570,6 +1569,7 @@ static int m_can_close(struct net_device *dev)
- 
- 	close_candev(dev);
- 
-+	m_can_clk_stop(cdev);
- 	phy_power_off(cdev->transceiver);
- 
- 	return 0;
+ 	buf = kmalloc(size, mem_flags);
+ 	if (!buf) {
 -- 
 2.43.0
 
