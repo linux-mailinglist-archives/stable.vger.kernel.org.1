@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-84457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B316199D04A
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8753999D049
 	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:02:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44D12B25E68
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:02:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B4B72811AC
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E661AB51B;
-	Mon, 14 Oct 2024 15:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F8F1AC427;
+	Mon, 14 Oct 2024 15:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8FpDsl7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3KpcMUD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B761AC427;
-	Mon, 14 Oct 2024 15:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4251E1AB536;
+	Mon, 14 Oct 2024 15:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918084; cv=none; b=O305fqAuwh0nMvfMC1We56h3biIPYPRNg0g3ZP0H+nrArJW9jypHRgPXx+WZhQAmrDHrBFeY0aBdWLMidLf5fCaOs3os1BYyDNkaYeJZl1Uok+njSTeDKDJl/2rbP8g4MB/jlH3I3gjdo/hxkmWh4a9IicQ8VOgUAypBtxB/+dU=
+	t=1728918090; cv=none; b=SykIgSx9l33ATXBIegQW4WV3nPwk6m0J4UpjaK+Qt1cFcpHWP5UX6rcxPa9VW7O8h+0z0/86744lTbODIyPH+m1ZIXXCMqyVxwwcn5q28UuweHqKDWEMWG+Z2ncgriq+OKhNtMB0z9zTG5BrVR0PevdEbSwAG9icTEyzW2+DC8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918084; c=relaxed/simple;
-	bh=G0qoEQ0I4aXUmkhx6NAvdml/N5js4LRkEqazOxXm0qs=;
+	s=arc-20240116; t=1728918090; c=relaxed/simple;
+	bh=CHFZ679rqspxGizqYrV7GXBKR334bVQpkDfgKOgGsqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AKbduKE8fovCaqgMSiHyqFDBfIAlTrfFlIFTXhZB+RkG3151zQfXgm668aLu4J9j+mfmR9kwcEPnTsP83kgd+k2h2XYQlq3rSRYsearfHEqD2KNSABVVAy+hEUyp/zwZg30dJQ83kCxTmg5MMLtu1f6z27on8K50ik/FLqb57Ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8FpDsl7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFAF7C4CED0;
-	Mon, 14 Oct 2024 15:01:22 +0000 (UTC)
+	 MIME-Version; b=DdLlTBxepT+dGfAlEfvpWEVqMSldG4dWXJ9CPFhNVFAnrbEnO3vtkLRtTp4PEE/dCTI1L1AfLhNT6mE5AFd0LyEuca14WLBDQfLNMeXvkB8+D9dT+FNZvEDgCenqoR/TndI+DEbuDLmjwoPNlzljFHGCh5xvHzVFxw5MzGEbptw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3KpcMUD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352D1C4CEC3;
+	Mon, 14 Oct 2024 15:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918083;
-	bh=G0qoEQ0I4aXUmkhx6NAvdml/N5js4LRkEqazOxXm0qs=;
+	s=korg; t=1728918089;
+	bh=CHFZ679rqspxGizqYrV7GXBKR334bVQpkDfgKOgGsqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8FpDsl7mwFm67G1xIBe7QIX+g9sOoZLi0brXOut+06ovbjgB2qKbBwE47T/QY2zR
-	 T6rXIyVqHcWdM8jz5ZWA7JIWVuSUhM1bZZZmO6IcfpxlM9b0wExzh1secn44P/Gink
-	 AWQEWih0bafmXyIKazrwXSPuW1RFdfJkhfekhwxI=
+	b=L3KpcMUD0nGKRTZyzEzqSTnGbVmtP7qBzlusDiGgM+sADrDfl4+U3NvhP4JeR65dq
+	 ezeyDM45rgtNarHExG1AqLxLUWhs3gt0ySIXL1vZ2HaI571soQEjFtrzKysYzM4wKO
+	 5jJlOa28GWhb4BWZ61Koz65Opc+QSS5E/6leIUks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheng Xu <chengyou@linux.alibaba.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Jonas Blixt <jonas.blixt@actia.se>,
+	Anson Huang <anson.huang@nxp.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 217/798] RDMA/erdma: Return QP state in erdma_query_qp
-Date: Mon, 14 Oct 2024 16:12:51 +0200
-Message-ID: <20241014141226.456060216@linuxfoundation.org>
+Subject: [PATCH 6.1 218/798] watchdog: imx_sc_wdt: Dont disable WDT in suspend
+Date: Mon, 14 Oct 2024 16:12:52 +0200
+Message-ID: <20241014141226.494705541@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -66,69 +68,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Cheng Xu <chengyou@linux.alibaba.com>
+From: Jonas Blixt <jonas.blixt@actia.se>
 
-[ Upstream commit e77127ff6416b17e0b3e630ac46ee5c9a6570f57 ]
+[ Upstream commit 2d9d6d300fb0a4ae4431bb308027ac9385746d42 ]
 
-Fix qp_state and cur_qp_state to return correct values in
-struct ib_qp_attr.
+Parts of the suspend and resume chain is left unprotected if we disable
+the WDT here.
 
-Fixes: 155055771704 ("RDMA/erdma: Add verbs implementation")
-Signed-off-by: Cheng Xu <chengyou@linux.alibaba.com>
-Link: https://patch.msgid.link/20240902112920.58749-4-chengyou@linux.alibaba.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+>From experiments we can see that the SCU disables and re-enables the WDT
+when we enter and leave suspend to ram. By not touching the WDT here we
+are protected by the WDT all the way to the SCU.
+
+Signed-off-by: Jonas Blixt <jonas.blixt@actia.se>
+CC: Anson Huang <anson.huang@nxp.com>
+Fixes: 986857acbc9a ("watchdog: imx_sc: Add i.MX system controller watchdog support")
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20240801121845.1465765-1-jonas.blixt@actia.se
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/erdma/erdma_verbs.c | 25 ++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ drivers/watchdog/imx_sc_wdt.c | 24 ------------------------
+ 1 file changed, 24 deletions(-)
 
-diff --git a/drivers/infiniband/hw/erdma/erdma_verbs.c b/drivers/infiniband/hw/erdma/erdma_verbs.c
-index 654d8513873ec..2edf0d882c6a2 100644
---- a/drivers/infiniband/hw/erdma/erdma_verbs.c
-+++ b/drivers/infiniband/hw/erdma/erdma_verbs.c
-@@ -1292,11 +1292,31 @@ int erdma_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr, int attr_mask,
- 	return ret;
+diff --git a/drivers/watchdog/imx_sc_wdt.c b/drivers/watchdog/imx_sc_wdt.c
+index 8ac021748d160..79649b0e89e47 100644
+--- a/drivers/watchdog/imx_sc_wdt.c
++++ b/drivers/watchdog/imx_sc_wdt.c
+@@ -213,29 +213,6 @@ static int imx_sc_wdt_probe(struct platform_device *pdev)
+ 	return devm_watchdog_register_device(dev, wdog);
  }
  
-+static enum ib_qp_state query_qp_state(struct erdma_qp *qp)
-+{
-+	switch (qp->attrs.state) {
-+	case ERDMA_QP_STATE_IDLE:
-+		return IB_QPS_INIT;
-+	case ERDMA_QP_STATE_RTR:
-+		return IB_QPS_RTR;
-+	case ERDMA_QP_STATE_RTS:
-+		return IB_QPS_RTS;
-+	case ERDMA_QP_STATE_CLOSING:
-+		return IB_QPS_ERR;
-+	case ERDMA_QP_STATE_TERMINATE:
-+		return IB_QPS_ERR;
-+	case ERDMA_QP_STATE_ERROR:
-+		return IB_QPS_ERR;
-+	default:
-+		return IB_QPS_ERR;
-+	}
-+}
-+
- int erdma_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
- 		   int qp_attr_mask, struct ib_qp_init_attr *qp_init_attr)
- {
--	struct erdma_qp *qp;
- 	struct erdma_dev *dev;
-+	struct erdma_qp *qp;
- 
- 	if (ibqp && qp_attr && qp_init_attr) {
- 		qp = to_eqp(ibqp);
-@@ -1323,6 +1343,9 @@ int erdma_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
- 
- 	qp_init_attr->cap = qp_attr->cap;
- 
-+	qp_attr->qp_state = query_qp_state(qp);
-+	qp_attr->cur_qp_state = query_qp_state(qp);
-+
- 	return 0;
- }
- 
+-static int __maybe_unused imx_sc_wdt_suspend(struct device *dev)
+-{
+-	struct imx_sc_wdt_device *imx_sc_wdd = dev_get_drvdata(dev);
+-
+-	if (watchdog_active(&imx_sc_wdd->wdd))
+-		imx_sc_wdt_stop(&imx_sc_wdd->wdd);
+-
+-	return 0;
+-}
+-
+-static int __maybe_unused imx_sc_wdt_resume(struct device *dev)
+-{
+-	struct imx_sc_wdt_device *imx_sc_wdd = dev_get_drvdata(dev);
+-
+-	if (watchdog_active(&imx_sc_wdd->wdd))
+-		imx_sc_wdt_start(&imx_sc_wdd->wdd);
+-
+-	return 0;
+-}
+-
+-static SIMPLE_DEV_PM_OPS(imx_sc_wdt_pm_ops,
+-			 imx_sc_wdt_suspend, imx_sc_wdt_resume);
+-
+ static const struct of_device_id imx_sc_wdt_dt_ids[] = {
+ 	{ .compatible = "fsl,imx-sc-wdt", },
+ 	{ /* sentinel */ }
+@@ -247,7 +224,6 @@ static struct platform_driver imx_sc_wdt_driver = {
+ 	.driver		= {
+ 		.name	= "imx-sc-wdt",
+ 		.of_match_table = imx_sc_wdt_dt_ids,
+-		.pm	= &imx_sc_wdt_pm_ops,
+ 	},
+ };
+ module_platform_driver(imx_sc_wdt_driver);
 -- 
 2.43.0
 
