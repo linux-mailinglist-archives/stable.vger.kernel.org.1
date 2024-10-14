@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-84675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6D899D16E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:16:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BAB599D12C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:11:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF1D41C23792
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:16:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D22A1C20B82
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427041AC45F;
-	Mon, 14 Oct 2024 15:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5F71AB517;
+	Mon, 14 Oct 2024 15:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLKRHkf/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9gYAJI3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33AD1AC8A2;
-	Mon, 14 Oct 2024 15:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6B219E802;
+	Mon, 14 Oct 2024 15:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918825; cv=none; b=q9pIhZW5QcdNWHJNRPFqFIY+HdVr2HChJo2gEQwEWpYNQCLU5wGljeHnanIccFZ2T0xUXQmz8ToaD/CYbBbG2l79Bc6Kc3c+cbo6fI8gkQRsEB83YmY4e3iwHqlQb1hxZ2SDlFKP4O5AuCAM4McTM+/vb0f9+z0COPKvb7TzE+w=
+	t=1728918710; cv=none; b=l60Uw0N0MS7/cSkO3AvL93gJB5YWz10e8B5UN0xf0PrnwUkVgkSM5iEUqkT71EUFQulpka1mxzSxl0rrZagXmh4vZzLHIcLqWcI7Stx520eZDG1x1ba5Dmli4v8366d3KoiD2Nl9QHGJ9i14295YxMRP+NxPJXYRcUVCKXWnU/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918825; c=relaxed/simple;
-	bh=dI+FpOcF0G2v1uhIO3e77aDxdDAivSb0ktnSQKIbzHU=;
+	s=arc-20240116; t=1728918710; c=relaxed/simple;
+	bh=OmbgVPamCxsp+hPRRVKmdHFNmW4svwdVqTwFOL4Y9eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b1ph0CsskyZHaz/zsCMRzLAtR/N9QGhlgiCYVp2dAA08WjEw7qwhAm4dZValrl5Ni2T01Zop3XOuDBQh+CtH/S84pJXi3mvhokeN7FhO35NU11aR8Hv+XyLX2s9TNfuWA1S1OP+CXkmUSuUnMtKZ1fsWIyxc0VS2V7y18H9rry0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLKRHkf/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D7FEC4CEC7;
-	Mon, 14 Oct 2024 15:13:43 +0000 (UTC)
+	 MIME-Version; b=M67FVw7y2ea3bjTX1lEKCaFmlUrlZdXtzFmVMRex8ZRWWEJrYOEc1X9zCMDEOp94sUoa5tXtMjrHQicqcDxTz+gIAUinZcWZPLJOJl9H+Vy/jc0YP6lUaZnzXxlsD+3BMdkcXT9GIaWT6RkizlawBzp5vr0rGvC8oCJbAOoOGJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9gYAJI3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD1AC4CEC3;
+	Mon, 14 Oct 2024 15:11:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918824;
-	bh=dI+FpOcF0G2v1uhIO3e77aDxdDAivSb0ktnSQKIbzHU=;
+	s=korg; t=1728918710;
+	bh=OmbgVPamCxsp+hPRRVKmdHFNmW4svwdVqTwFOL4Y9eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XLKRHkf/buqSMVygid2tyYsPYMUMoT9YMrEb/RT/tbcj9w+VkPqk27aJAjtvGoSSj
-	 O7WcjbK902CN1UJI7leC8bLYY7JrryxEaqli+1Q0ghKhpgP0Fp39v6flj6ICaTR6WT
-	 z/IImk2YpsValMImRkwzMPKkiRwccREUCHSFvquk=
+	b=T9gYAJI3a1RXLj3pNsO5+6C3z0DFvQkExxrAnuezOKQ8wODJtcX8dF7or/TNbSnOC
+	 1Ey8n1hrfEQvG1yh9zB50njrW+yi88PR8L8AlS5UY7JQWkYe12U9Eca3HNPVJtDkaR
+	 0sChvV9CwMRP0jNVbrn6Wvi0o0hdTPaK4VspdS9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 392/798] net: wwan: qcom_bam_dmux: Fix missing pm_runtime_disable()
-Date: Mon, 14 Oct 2024 16:15:46 +0200
-Message-ID: <20241014141233.344904369@linuxfoundation.org>
+Subject: [PATCH 6.1 393/798] selftests: netfilter: Fix nft_audit.sh for newer nft binaries
+Date: Mon, 14 Oct 2024 16:15:47 +0200
+Message-ID: <20241014141233.383203336@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -68,66 +66,132 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit d505d3593b52b6c43507f119572409087416ba28 ]
+[ Upstream commit 8a89015644513ef69193a037eb966f2d55fe385a ]
 
-It's important to undo pm_runtime_use_autosuspend() with
-pm_runtime_dont_use_autosuspend() at driver exit time.
+As a side-effect of nftables' commit dbff26bfba833 ("cache: consolidate
+reset command"), audit logs changed when more objects were reset than
+fit into a single netlink message.
 
-But the pm_runtime_disable() and pm_runtime_dont_use_autosuspend()
-is missing in the error path for bam_dmux_probe(). So add it.
+Since the objects' distribution in netlink messages is not relevant,
+implement a summarizing function which combines repeated audit logs into
+a single one with summed up 'entries=' value.
 
-Found by code review. Compile-tested only.
-
-Fixes: 21a0ffd9b38c ("net: wwan: Add Qualcomm BAM-DMUX WWAN network driver")
-Suggested-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 203bb9d39866 ("selftests: netfilter: Extend nft_audit.sh")
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/qcom_bam_dmux.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ .../testing/selftests/netfilter/nft_audit.sh  | 57 ++++++++++---------
+ 1 file changed, 29 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
-index 17d46f4d29139..174a9156b3233 100644
---- a/drivers/net/wwan/qcom_bam_dmux.c
-+++ b/drivers/net/wwan/qcom_bam_dmux.c
-@@ -823,17 +823,17 @@ static int bam_dmux_probe(struct platform_device *pdev)
- 	ret = devm_request_threaded_irq(dev, pc_ack_irq, NULL, bam_dmux_pc_ack_irq,
- 					IRQF_ONESHOT, NULL, dmux);
- 	if (ret)
--		return ret;
-+		goto err_disable_pm;
+diff --git a/tools/testing/selftests/netfilter/nft_audit.sh b/tools/testing/selftests/netfilter/nft_audit.sh
+index 99ed5bd6e8402..e4717444d38e7 100755
+--- a/tools/testing/selftests/netfilter/nft_audit.sh
++++ b/tools/testing/selftests/netfilter/nft_audit.sh
+@@ -25,12 +25,31 @@ logread_pid=$!
+ trap 'kill $logread_pid; rm -f $logfile $rulefile' EXIT
+ exec 3<"$logfile"
  
- 	ret = devm_request_threaded_irq(dev, dmux->pc_irq, NULL, bam_dmux_pc_irq,
- 					IRQF_ONESHOT, NULL, dmux);
- 	if (ret)
--		return ret;
-+		goto err_disable_pm;
- 
- 	ret = irq_get_irqchip_state(dmux->pc_irq, IRQCHIP_STATE_LINE_LEVEL,
- 				    &dmux->pc_state);
- 	if (ret)
--		return ret;
-+		goto err_disable_pm;
- 
- 	/* Check if remote finished initialization before us */
- 	if (dmux->pc_state) {
-@@ -844,6 +844,11 @@ static int bam_dmux_probe(struct platform_device *pdev)
- 	}
- 
- 	return 0;
++lsplit='s/^\(.*\) entries=\([^ ]*\) \(.*\)$/pfx="\1"\nval="\2"\nsfx="\3"/'
++summarize_logs() {
++	sum=0
++	while read line; do
++		eval $(sed "$lsplit" <<< "$line")
++		[[ $sum -gt 0 ]] && {
++			[[ "$pfx $sfx" == "$tpfx $tsfx" ]] && {
++				let "sum += val"
++				continue
++			}
++			echo "$tpfx entries=$sum $tsfx"
++		}
++		tpfx="$pfx"
++		tsfx="$sfx"
++		sum=$val
++	done
++	echo "$tpfx entries=$sum $tsfx"
++}
 +
-+err_disable_pm:
-+	pm_runtime_disable(dev);
-+	pm_runtime_dont_use_autosuspend(dev);
-+	return ret;
- }
+ do_test() { # (cmd, log)
+ 	echo -n "testing for cmd: $1 ... "
+ 	cat <&3 >/dev/null
+ 	$1 >/dev/null || exit 1
+ 	sleep 0.1
+-	res=$(diff -a -u <(echo "$2") - <&3)
++	res=$(diff -a -u <(echo "$2") <(summarize_logs <&3))
+ 	[ $? -eq 0 ] && { echo "OK"; return; }
+ 	echo "FAIL"
+ 	grep -v '^\(---\|+++\|@@\)' <<< "$res"
+@@ -129,31 +148,17 @@ do_test 'nft reset rules t1 c2' \
+ 'table=t1 family=2 entries=3 op=nft_reset_rule'
  
- static int bam_dmux_remove(struct platform_device *pdev)
+ do_test 'nft reset rules table t1' \
+-'table=t1 family=2 entries=3 op=nft_reset_rule
+-table=t1 family=2 entries=3 op=nft_reset_rule
+-table=t1 family=2 entries=3 op=nft_reset_rule'
++'table=t1 family=2 entries=9 op=nft_reset_rule'
+ 
+ do_test 'nft reset rules t2 c3' \
+-'table=t2 family=2 entries=189 op=nft_reset_rule
+-table=t2 family=2 entries=188 op=nft_reset_rule
+-table=t2 family=2 entries=126 op=nft_reset_rule'
++'table=t2 family=2 entries=503 op=nft_reset_rule'
+ 
+ do_test 'nft reset rules t2' \
+-'table=t2 family=2 entries=3 op=nft_reset_rule
+-table=t2 family=2 entries=3 op=nft_reset_rule
+-table=t2 family=2 entries=186 op=nft_reset_rule
+-table=t2 family=2 entries=188 op=nft_reset_rule
+-table=t2 family=2 entries=129 op=nft_reset_rule'
++'table=t2 family=2 entries=509 op=nft_reset_rule'
+ 
+ do_test 'nft reset rules' \
+-'table=t1 family=2 entries=3 op=nft_reset_rule
+-table=t1 family=2 entries=3 op=nft_reset_rule
+-table=t1 family=2 entries=3 op=nft_reset_rule
+-table=t2 family=2 entries=3 op=nft_reset_rule
+-table=t2 family=2 entries=3 op=nft_reset_rule
+-table=t2 family=2 entries=180 op=nft_reset_rule
+-table=t2 family=2 entries=188 op=nft_reset_rule
+-table=t2 family=2 entries=135 op=nft_reset_rule'
++'table=t1 family=2 entries=9 op=nft_reset_rule
++table=t2 family=2 entries=509 op=nft_reset_rule'
+ 
+ # resetting sets and elements
+ 
+@@ -177,13 +182,11 @@ do_test 'nft reset counters t1' \
+ 'table=t1 family=2 entries=1 op=nft_reset_obj'
+ 
+ do_test 'nft reset counters t2' \
+-'table=t2 family=2 entries=342 op=nft_reset_obj
+-table=t2 family=2 entries=158 op=nft_reset_obj'
++'table=t2 family=2 entries=500 op=nft_reset_obj'
+ 
+ do_test 'nft reset counters' \
+ 'table=t1 family=2 entries=1 op=nft_reset_obj
+-table=t2 family=2 entries=341 op=nft_reset_obj
+-table=t2 family=2 entries=159 op=nft_reset_obj'
++table=t2 family=2 entries=500 op=nft_reset_obj'
+ 
+ # resetting quotas
+ 
+@@ -194,13 +197,11 @@ do_test 'nft reset quotas t1' \
+ 'table=t1 family=2 entries=1 op=nft_reset_obj'
+ 
+ do_test 'nft reset quotas t2' \
+-'table=t2 family=2 entries=315 op=nft_reset_obj
+-table=t2 family=2 entries=185 op=nft_reset_obj'
++'table=t2 family=2 entries=500 op=nft_reset_obj'
+ 
+ do_test 'nft reset quotas' \
+ 'table=t1 family=2 entries=1 op=nft_reset_obj
+-table=t2 family=2 entries=314 op=nft_reset_obj
+-table=t2 family=2 entries=186 op=nft_reset_obj'
++table=t2 family=2 entries=500 op=nft_reset_obj'
+ 
+ # deleting rules
+ 
 -- 
 2.43.0
 
