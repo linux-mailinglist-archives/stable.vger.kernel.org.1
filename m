@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-84037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D4C99CDD5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:36:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD5D99CCF0
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:27:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 272A9B22DC5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:36:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B74DF1F211E9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933CD1AB536;
-	Mon, 14 Oct 2024 14:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94A01AB6EB;
+	Mon, 14 Oct 2024 14:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RZzGZsg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSi2Xk2M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBFC1AA797;
-	Mon, 14 Oct 2024 14:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D181AAE02;
+	Mon, 14 Oct 2024 14:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916597; cv=none; b=eVXNH7BeF5PP0XEuYn7Ma0ZjHxap2KfpgmvLhx/KjS7xDQvLjHJmbLjG0FpNWcUif9HhQ3SRWK+vNVECVOF67V91hQjJX+AQFyl6HrAhedyF51uBGkrJuYXnzh4T/mrYGkASQabM7PmtaJzoDyD7/DxPfaGgRfD2Gw5GMkvjdA4=
+	t=1728916004; cv=none; b=sv70qcKXND2mM5Rsz0cQFirsUBB8WK+tWjkAIlKZRXUMvFSDq4sQpICXqq6rNC9Sid7eH5bmLTb2H7FFlsyq5gB7ftEfMMSV4VZq7X60n+vgiKEu4X7dVLiMFfFZ3fAOu4rQO9NOdMH+3LmZWRUKY+te0wskCBL67E7hGuJuSEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916597; c=relaxed/simple;
-	bh=HwJKvhwJ13TyIUPWfrRVmuD2MJ4oLE1eM3+5WDrLU80=;
+	s=arc-20240116; t=1728916004; c=relaxed/simple;
+	bh=zX1+NLfyGFZVRb2chfr9SyVec9t5pBlFlqT3iJl+bbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m3cR2NYI+7av0JG9fBoa/AO2ON1FWZyXI9EEEyU0HQ9fc35S4ZUoC31jaM/ITK0aQssvb6JzqCdUsyOvC/FzLU2e7n/+8zYN69XlZN6z8TV9nHIaAqpfc9EVWU/bfpo9DZDHu0dU/XRy+6TIZcO3NFGVdwGO0uR7W3YN30lwCgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RZzGZsg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD74BC4CEC7;
-	Mon, 14 Oct 2024 14:36:35 +0000 (UTC)
+	 MIME-Version; b=LbiHVzTKatdJ3mIC/W8EX/Xl++qlh67swryj20p/V5M77NPSClp3ubObDHonnFqJ7g72yTebvDS409a5BokUXwegRpFEiZfDlR8Gs1KGHJGCnuW8m9eGlO2Dt6VeCDUtfA2rzMc/u7se/7hPSqHaIyAnfsrFlFhRkLgxRCoV2Tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSi2Xk2M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A73C4CEC3;
+	Mon, 14 Oct 2024 14:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916597;
-	bh=HwJKvhwJ13TyIUPWfrRVmuD2MJ4oLE1eM3+5WDrLU80=;
+	s=korg; t=1728916004;
+	bh=zX1+NLfyGFZVRb2chfr9SyVec9t5pBlFlqT3iJl+bbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1RZzGZsgdhqu1UMDmc9J1Nvr8LUNSLCQe2zguVa6C0ROFRm32e74R0S1WamXBBh9e
-	 UqWSBVOjpQAMsP1V0/uUzPIm6HtCg6xZ/1pIfx0JdpfROk8yxFwdL/0uvgLuEEr/qN
-	 k0zfkuxUusPORpp1Y3/V+jCiwatkhLFX/sxnTNaA=
+	b=hSi2Xk2MwFKpxRq4dzLBv4KdcWoy7dt/orUFZexNH85P8P1g68xAcs7LKufYKeThF
+	 L2dp5M1Lfp/+03KYBIowHjxblj6Im22yt4ogu50hEqkqnzKaBNw46NmL6tfpscgYma
+	 V5X8LEHyhUhiXZujGoqzVBnH4HxKAKpHpDctda50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sachin Sant <sachinp@linux.ibm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/213] tracing: Remove precision vsnprintf() check from print event
+Subject: [PATCH 6.11 056/214] usb: typec: ucsi: Dont truncate the reads
 Date: Mon, 14 Oct 2024 16:18:39 +0200
-Message-ID: <20241014141043.500650507@linuxfoundation.org>
+Message-ID: <20241014141047.176486299@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-[ Upstream commit 5efd3e2aef91d2d812290dcb25b2058e6f3f532c ]
+[ Upstream commit 1d05c382ddb4e43ce251a50f308df5e42a2f6088 ]
 
-This reverts 60be76eeabb3d ("tracing: Add size check when printing
-trace_marker output"). The only reason the precision check was added
-was because of a bug that miscalculated the write size of the string into
-the ring buffer and it truncated it removing the terminating nul byte. On
-reading the trace it crashed the kernel. But this was due to the bug in
-the code that happened during development and should never happen in
-practice. If anything, the precision can hide bugs where the string in the
-ring buffer isn't nul terminated and it will not be checked.
+That may silently corrupt the data. Instead, failing attempts
+to read more than the interface can handle.
 
-Link: https://lore.kernel.org/all/C7E7AF1A-D30F-4D18-B8E5-AF1EF58004F5@linux.ibm.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20240227125706.04279ac2@gandalf.local.home
-Link: https://lore.kernel.org/all/20240302111244.3a1674be@gandalf.local.home/
-Link: https://lore.kernel.org/linux-trace-kernel/20240304174341.2a561d9f@gandalf.local.home
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Fixes: 60be76eeabb3d ("tracing: Add size check when printing trace_marker output")
-Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-Tested-by: Sachin Sant <sachinp@linux.ibm.com>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
+Link: https://lore.kernel.org/r/20240816135859.3499351-3-heikki.krogerus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_output.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c | 8 ++------
+ drivers/usb/typec/ucsi/ucsi.h | 2 ++
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/trace/trace_output.c b/kernel/trace/trace_output.c
-index 3b7d3e9eb6ea4..db575094c4982 100644
---- a/kernel/trace/trace_output.c
-+++ b/kernel/trace/trace_output.c
-@@ -1587,12 +1587,11 @@ static enum print_line_t trace_print_print(struct trace_iterator *iter,
- {
- 	struct print_entry *field;
- 	struct trace_seq *s = &iter->seq;
--	int max = iter->ent_size - offsetof(struct print_entry, buf);
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 8cc43c866130a..8a81fec9efe36 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -103,12 +103,8 @@ static int ucsi_run_command(struct ucsi *ucsi, u64 command, u32 *cci,
  
- 	trace_assign_type(field, iter->ent);
+ 	*cci = 0;
  
- 	seq_print_ip_sym(s, field->ip, flags);
--	trace_seq_printf(s, ": %.*s", max, field->buf);
-+	trace_seq_printf(s, ": %s", field->buf);
+-	/*
+-	 * Below UCSI 2.0, MESSAGE_IN was limited to 16 bytes. Truncate the
+-	 * reads here.
+-	 */
+-	if (ucsi->version <= UCSI_VERSION_1_2)
+-		size = clamp(size, 0, 16);
++	if (size > UCSI_MAX_DATA_LENGTH(ucsi))
++		return -EINVAL;
  
- 	return trace_handle_return(s);
- }
-@@ -1601,11 +1600,10 @@ static enum print_line_t trace_print_raw(struct trace_iterator *iter, int flags,
- 					 struct trace_event *event)
- {
- 	struct print_entry *field;
--	int max = iter->ent_size - offsetof(struct print_entry, buf);
+ 	ret = ucsi->ops->sync_control(ucsi, command);
+ 	if (ucsi->ops->read_cci(ucsi, cci))
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 5a3481d36d7ab..db90b513f78a8 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -435,6 +435,8 @@ struct ucsi {
+ #define UCSI_DELAY_DEVICE_PDOS	BIT(1)	/* Reading PDOs fails until the parter is in PD mode */
+ };
  
- 	trace_assign_type(field, iter->ent);
++#define UCSI_MAX_DATA_LENGTH(u) (((u)->version < UCSI_VERSION_2_0) ? 0x10 : 0xff)
++
+ #define UCSI_MAX_SVID		5
+ #define UCSI_MAX_ALTMODES	(UCSI_MAX_SVID * 6)
  
--	trace_seq_printf(&iter->seq, "# %lx %.*s", field->ip, max, field->buf);
-+	trace_seq_printf(&iter->seq, "# %lx %s", field->ip, field->buf);
- 
- 	return trace_handle_return(&iter->seq);
- }
 -- 
 2.43.0
 
