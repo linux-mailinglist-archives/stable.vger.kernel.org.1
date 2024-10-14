@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-85010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B3A599D366
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E8199CEE2
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:48:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4309B2754B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 967941C2329D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A794E1BF81B;
-	Mon, 14 Oct 2024 15:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CFE1B85CC;
+	Mon, 14 Oct 2024 14:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yo2ceKMW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7ZqQaM4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656831ABEA7;
-	Mon, 14 Oct 2024 15:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECB71B4F2D;
+	Mon, 14 Oct 2024 14:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919987; cv=none; b=XFCr6HagFV/C5bcftk7j28cIUbL9MHjemBeVAer8oPCR7ptJSqIbQvPGf4r8h7raCi+UjeeDnJKUYznhuRZ+Xi2/81xnnLS+82QKVzxC4wOPSvV8qSf3+g9GoB9grNkeDrIUNLLnHJcx0N496UIdTUZqtdotzD2Z0kJkpIGv5RQ=
+	t=1728917206; cv=none; b=QEtEFXDmVeP39vRVlVTO59xqSvE0683S5nTbv87gPXfWiqKCxsxi82mIedMXk/h+2n5DDtz0mUd9Olo7/bpI0dwEqH9eErJpe+miFdxHOLm2sj94YQ+ZgotqfxVT2f5zPS8VY3/zKHpVjcAObuuG7cTUDNqxSMewQnRdXEsH3dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919987; c=relaxed/simple;
-	bh=ldIh8lYXiSZwyESVOZzGkGnZ47fjimVAE6GDl8NWM84=;
+	s=arc-20240116; t=1728917206; c=relaxed/simple;
+	bh=1ZjcxIm/wyFtuUnpi789j8+8PcqfCrS29NpejmZYuos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=myAM6CGO9TfoC2R2FA6snM7oFRtZQDdHnkxYL3kcF8acBPd3n6yJ9uqPyd0tSMHFKQEyxZYMjEjDwEAuMnVCyXY0NL6QWYYCI/pBY3PYg+mdGqLXxJFOVv4czjzSn7vC9J7m9L6433p6bs04En5Mo4LuAj7DMIvSCuk4SHI+yB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yo2ceKMW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C7AC4CEC3;
-	Mon, 14 Oct 2024 15:33:06 +0000 (UTC)
+	 MIME-Version; b=hypyloWiq/jGrsJQ1YGNMDhcx1JEWHXdRWXawbCQHe1Kr4OIS5KKorzrARjnGV5bJzUh6B8fONknFA2ZszvAXantGYyI1gmoG/pKkftt1UDViKcOoCzcgxYUJpN3hH+Qv5fxRFGv4kAwGZvo7RzadlizBgicwFzrpPjWtPQlw8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7ZqQaM4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301F2C4CEC3;
+	Mon, 14 Oct 2024 14:46:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919987;
-	bh=ldIh8lYXiSZwyESVOZzGkGnZ47fjimVAE6GDl8NWM84=;
+	s=korg; t=1728917205;
+	bh=1ZjcxIm/wyFtuUnpi789j8+8PcqfCrS29NpejmZYuos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yo2ceKMWCbRq0HbYfM0idQYJ/67UHaDuscVWWAd4EUZs/WSUoX0T12O1rT/XPPR6y
-	 5vSR/uLOdKjW5zk84JO1pEkPl8BOK6xIbfNJmiDKDWTsJu+MNi/YoG+/W3zIWmDm3p
-	 Kx5YBKR37hQS+2De3ctRt8AmP3Gj6E2IozGnfSQI=
+	b=O7ZqQaM4XBPXknXHRk3Hquk8kG2XjIPxY0ZueGMLZ5lY+pTEkF3If0FEM4uVoHkd9
+	 wG/E/e7p1duCs5G56MXLIaONO/VM7NQwEfdEAjJY+8uFbYwa2TlE/ty0/LgcA3VN1k
+	 L4Dt+JSGT1CG86uhyawIWUZs1sfv58m+pOvujToE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Andy Roulin <aroulin@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 734/798] netfilter: br_netfilter: fix panic with metadata_dst skb
-Date: Mon, 14 Oct 2024 16:21:28 +0200
-Message-ID: <20241014141246.907695757@linuxfoundation.org>
+	stable@kernel.org,
+	Selvarasu Ganesan <selvarasu.g@samsung.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.6 183/213] usb: dwc3: core: Stop processing of pending events if controller is halted
+Date: Mon, 14 Oct 2024 16:21:29 +0200
+Message-ID: <20241014141050.106883509@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,184 +62,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Roulin <aroulin@nvidia.com>
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
 
-[ Upstream commit f9ff7665cd128012868098bbd07e28993e314fdb ]
+commit 0d410e8913f5cffebcca79ffdd596009d4a13a28 upstream.
 
-Fix a kernel panic in the br_netfilter module when sending untagged
-traffic via a VxLAN device.
-This happens during the check for fragmentation in br_nf_dev_queue_xmit.
+This commit addresses an issue where events were being processed when
+the controller was in a halted state. To fix this issue by stop
+processing the events as the event count was considered stale or
+invalid when the controller was halted.
 
-It is dependent on:
-1) the br_netfilter module being loaded;
-2) net.bridge.bridge-nf-call-iptables set to 1;
-3) a bridge with a VxLAN (single-vxlan-device) netdevice as a bridge port;
-4) untagged frames with size higher than the VxLAN MTU forwarded/flooded
-
-When forwarding the untagged packet to the VxLAN bridge port, before
-the netfilter hooks are called, br_handle_egress_vlan_tunnel is called and
-changes the skb_dst to the tunnel dst. The tunnel_dst is a metadata type
-of dst, i.e., skb_valid_dst(skb) is false, and metadata->dst.dev is NULL.
-
-Then in the br_netfilter hooks, in br_nf_dev_queue_xmit, there's a check
-for frames that needs to be fragmented: frames with higher MTU than the
-VxLAN device end up calling br_nf_ip_fragment, which in turns call
-ip_skb_dst_mtu.
-
-The ip_dst_mtu tries to use the skb_dst(skb) as if it was a valid dst
-with valid dst->dev, thus the crash.
-
-This case was never supported in the first place, so drop the packet
-instead.
-
-PING 10.0.0.2 (10.0.0.2) from 0.0.0.0 h1-eth0: 2000(2028) bytes of data.
-[  176.291791] Unable to handle kernel NULL pointer dereference at
-virtual address 0000000000000110
-[  176.292101] Mem abort info:
-[  176.292184]   ESR = 0x0000000096000004
-[  176.292322]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  176.292530]   SET = 0, FnV = 0
-[  176.292709]   EA = 0, S1PTW = 0
-[  176.292862]   FSC = 0x04: level 0 translation fault
-[  176.293013] Data abort info:
-[  176.293104]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-[  176.293488]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[  176.293787]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[  176.293995] user pgtable: 4k pages, 48-bit VAs, pgdp=0000000043ef5000
-[  176.294166] [0000000000000110] pgd=0000000000000000,
-p4d=0000000000000000
-[  176.294827] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-[  176.295252] Modules linked in: vxlan ip6_udp_tunnel udp_tunnel veth
-br_netfilter bridge stp llc ipv6 crct10dif_ce
-[  176.295923] CPU: 0 PID: 188 Comm: ping Not tainted
-6.8.0-rc3-g5b3fbd61b9d1 #2
-[  176.296314] Hardware name: linux,dummy-virt (DT)
-[  176.296535] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS
-BTYPE=--)
-[  176.296808] pc : br_nf_dev_queue_xmit+0x390/0x4ec [br_netfilter]
-[  176.297382] lr : br_nf_dev_queue_xmit+0x2ac/0x4ec [br_netfilter]
-[  176.297636] sp : ffff800080003630
-[  176.297743] x29: ffff800080003630 x28: 0000000000000008 x27:
-ffff6828c49ad9f8
-[  176.298093] x26: ffff6828c49ad000 x25: 0000000000000000 x24:
-00000000000003e8
-[  176.298430] x23: 0000000000000000 x22: ffff6828c4960b40 x21:
-ffff6828c3b16d28
-[  176.298652] x20: ffff6828c3167048 x19: ffff6828c3b16d00 x18:
-0000000000000014
-[  176.298926] x17: ffffb0476322f000 x16: ffffb7e164023730 x15:
-0000000095744632
-[  176.299296] x14: ffff6828c3f1c880 x13: 0000000000000002 x12:
-ffffb7e137926a70
-[  176.299574] x11: 0000000000000001 x10: ffff6828c3f1c898 x9 :
-0000000000000000
-[  176.300049] x8 : ffff6828c49bf070 x7 : 0008460f18d5f20e x6 :
-f20e0100bebafeca
-[  176.300302] x5 : ffff6828c7f918fe x4 : ffff6828c49bf070 x3 :
-0000000000000000
-[  176.300586] x2 : 0000000000000000 x1 : ffff6828c3c7ad00 x0 :
-ffff6828c7f918f0
-[  176.300889] Call trace:
-[  176.301123]  br_nf_dev_queue_xmit+0x390/0x4ec [br_netfilter]
-[  176.301411]  br_nf_post_routing+0x2a8/0x3e4 [br_netfilter]
-[  176.301703]  nf_hook_slow+0x48/0x124
-[  176.302060]  br_forward_finish+0xc8/0xe8 [bridge]
-[  176.302371]  br_nf_hook_thresh+0x124/0x134 [br_netfilter]
-[  176.302605]  br_nf_forward_finish+0x118/0x22c [br_netfilter]
-[  176.302824]  br_nf_forward_ip.part.0+0x264/0x290 [br_netfilter]
-[  176.303136]  br_nf_forward+0x2b8/0x4e0 [br_netfilter]
-[  176.303359]  nf_hook_slow+0x48/0x124
-[  176.303803]  __br_forward+0xc4/0x194 [bridge]
-[  176.304013]  br_flood+0xd4/0x168 [bridge]
-[  176.304300]  br_handle_frame_finish+0x1d4/0x5c4 [bridge]
-[  176.304536]  br_nf_hook_thresh+0x124/0x134 [br_netfilter]
-[  176.304978]  br_nf_pre_routing_finish+0x29c/0x494 [br_netfilter]
-[  176.305188]  br_nf_pre_routing+0x250/0x524 [br_netfilter]
-[  176.305428]  br_handle_frame+0x244/0x3cc [bridge]
-[  176.305695]  __netif_receive_skb_core.constprop.0+0x33c/0xecc
-[  176.306080]  __netif_receive_skb_one_core+0x40/0x8c
-[  176.306197]  __netif_receive_skb+0x18/0x64
-[  176.306369]  process_backlog+0x80/0x124
-[  176.306540]  __napi_poll+0x38/0x17c
-[  176.306636]  net_rx_action+0x124/0x26c
-[  176.306758]  __do_softirq+0x100/0x26c
-[  176.307051]  ____do_softirq+0x10/0x1c
-[  176.307162]  call_on_irq_stack+0x24/0x4c
-[  176.307289]  do_softirq_own_stack+0x1c/0x2c
-[  176.307396]  do_softirq+0x54/0x6c
-[  176.307485]  __local_bh_enable_ip+0x8c/0x98
-[  176.307637]  __dev_queue_xmit+0x22c/0xd28
-[  176.307775]  neigh_resolve_output+0xf4/0x1a0
-[  176.308018]  ip_finish_output2+0x1c8/0x628
-[  176.308137]  ip_do_fragment+0x5b4/0x658
-[  176.308279]  ip_fragment.constprop.0+0x48/0xec
-[  176.308420]  __ip_finish_output+0xa4/0x254
-[  176.308593]  ip_finish_output+0x34/0x130
-[  176.308814]  ip_output+0x6c/0x108
-[  176.308929]  ip_send_skb+0x50/0xf0
-[  176.309095]  ip_push_pending_frames+0x30/0x54
-[  176.309254]  raw_sendmsg+0x758/0xaec
-[  176.309568]  inet_sendmsg+0x44/0x70
-[  176.309667]  __sys_sendto+0x110/0x178
-[  176.309758]  __arm64_sys_sendto+0x28/0x38
-[  176.309918]  invoke_syscall+0x48/0x110
-[  176.310211]  el0_svc_common.constprop.0+0x40/0xe0
-[  176.310353]  do_el0_svc+0x1c/0x28
-[  176.310434]  el0_svc+0x34/0xb4
-[  176.310551]  el0t_64_sync_handler+0x120/0x12c
-[  176.310690]  el0t_64_sync+0x190/0x194
-[  176.311066] Code: f9402e61 79402aa2 927ff821 f9400023 (f9408860)
-[  176.315743] ---[ end trace 0000000000000000 ]---
-[  176.316060] Kernel panic - not syncing: Oops: Fatal exception in
-interrupt
-[  176.316371] Kernel Offset: 0x37e0e3000000 from 0xffff800080000000
-[  176.316564] PHYS_OFFSET: 0xffff97d780000000
-[  176.316782] CPU features: 0x0,88000203,3c020000,0100421b
-[  176.317210] Memory Limit: none
-[  176.317527] ---[ end Kernel panic - not syncing: Oops: Fatal
-Exception in interrupt ]---\
-
-Fixes: 11538d039ac6 ("bridge: vlan dst_metadata hooks in ingress and egress paths")
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Andy Roulin <aroulin@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20241001154400.22787-2-aroulin@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
+Cc: stable@kernel.org
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20240916231813.206-1-selvarasu.g@samsung.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_netfilter_hooks.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/dwc3/core.c   |   22 +++++++++++++++++++---
+ drivers/usb/dwc3/core.h   |    4 ----
+ drivers/usb/dwc3/gadget.c |   11 -----------
+ 3 files changed, 19 insertions(+), 18 deletions(-)
 
-diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-index 9229300881b5f..5c6ed1d49b92c 100644
---- a/net/bridge/br_netfilter_hooks.c
-+++ b/net/bridge/br_netfilter_hooks.c
-@@ -33,6 +33,7 @@
- #include <net/ip.h>
- #include <net/ipv6.h>
- #include <net/addrconf.h>
-+#include <net/dst_metadata.h>
- #include <net/route.h>
- #include <net/netfilter/br_netfilter.h>
- #include <net/netns/generic.h>
-@@ -871,6 +872,10 @@ static int br_nf_dev_queue_xmit(struct net *net, struct sock *sk, struct sk_buff
- 		return br_dev_queue_push_xmit(net, sk, skb);
- 	}
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -533,6 +533,7 @@ static int dwc3_alloc_event_buffers(stru
+ int dwc3_event_buffers_setup(struct dwc3 *dwc)
+ {
+ 	struct dwc3_event_buffer	*evt;
++	u32				reg;
  
-+	/* Fragmentation on metadata/template dst is not supported */
-+	if (unlikely(!skb_valid_dst(skb)))
-+		goto drop;
+ 	if (!dwc->ev_buf)
+ 		return 0;
+@@ -545,8 +546,10 @@ int dwc3_event_buffers_setup(struct dwc3
+ 			upper_32_bits(evt->dma));
+ 	dwc3_writel(dwc->regs, DWC3_GEVNTSIZ(0),
+ 			DWC3_GEVNTSIZ_SIZE(evt->length));
+-	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), 0);
+ 
++	/* Clear any stale event */
++	reg = dwc3_readl(dwc->regs, DWC3_GEVNTCOUNT(0));
++	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), reg);
+ 	return 0;
+ }
+ 
+@@ -573,7 +576,10 @@ void dwc3_event_buffers_cleanup(struct d
+ 	dwc3_writel(dwc->regs, DWC3_GEVNTADRHI(0), 0);
+ 	dwc3_writel(dwc->regs, DWC3_GEVNTSIZ(0), DWC3_GEVNTSIZ_INTMASK
+ 			| DWC3_GEVNTSIZ_SIZE(0));
+-	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), 0);
 +
- 	/* This is wrong! We should preserve the original fragment
- 	 * boundaries by preserving frag_list rather than refragmenting.
- 	 */
--- 
-2.43.0
-
++	/* Clear any stale event */
++	reg = dwc3_readl(dwc->regs, DWC3_GEVNTCOUNT(0));
++	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), reg);
+ }
+ 
+ static void dwc3_core_num_eps(struct dwc3 *dwc)
+@@ -2254,7 +2260,11 @@ static int dwc3_runtime_resume(struct de
+ 
+ 	switch (dwc->current_dr_role) {
+ 	case DWC3_GCTL_PRTCAP_DEVICE:
+-		dwc3_gadget_process_pending_events(dwc);
++		if (dwc->pending_events) {
++			pm_runtime_put(dwc->dev);
++			dwc->pending_events = false;
++			enable_irq(dwc->irq_gadget);
++		}
+ 		break;
+ 	case DWC3_GCTL_PRTCAP_HOST:
+ 	default:
+@@ -2341,6 +2351,12 @@ static void dwc3_complete(struct device
+ static const struct dev_pm_ops dwc3_dev_pm_ops = {
+ 	SET_SYSTEM_SLEEP_PM_OPS(dwc3_suspend, dwc3_resume)
+ 	.complete = dwc3_complete,
++
++	/*
++	 * Runtime suspend halts the controller on disconnection. It relies on
++	 * platforms with custom connection notification to start the controller
++	 * again.
++	 */
+ 	SET_RUNTIME_PM_OPS(dwc3_runtime_suspend, dwc3_runtime_resume,
+ 			dwc3_runtime_idle)
+ };
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1643,7 +1643,6 @@ static inline void dwc3_otg_host_init(st
+ #if !IS_ENABLED(CONFIG_USB_DWC3_HOST)
+ int dwc3_gadget_suspend(struct dwc3 *dwc);
+ int dwc3_gadget_resume(struct dwc3 *dwc);
+-void dwc3_gadget_process_pending_events(struct dwc3 *dwc);
+ #else
+ static inline int dwc3_gadget_suspend(struct dwc3 *dwc)
+ {
+@@ -1655,9 +1654,6 @@ static inline int dwc3_gadget_resume(str
+ 	return 0;
+ }
+ 
+-static inline void dwc3_gadget_process_pending_events(struct dwc3 *dwc)
+-{
+-}
+ #endif /* !IS_ENABLED(CONFIG_USB_DWC3_HOST) */
+ 
+ #if IS_ENABLED(CONFIG_USB_DWC3_ULPI)
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4741,14 +4741,3 @@ int dwc3_gadget_resume(struct dwc3 *dwc)
+ 
+ 	return dwc3_gadget_soft_connect(dwc);
+ }
+-
+-void dwc3_gadget_process_pending_events(struct dwc3 *dwc)
+-{
+-	if (dwc->pending_events) {
+-		dwc3_interrupt(dwc->irq_gadget, dwc->ev_buf);
+-		dwc3_thread_interrupt(dwc->irq_gadget, dwc->ev_buf);
+-		pm_runtime_put(dwc->dev);
+-		dwc->pending_events = false;
+-		enable_irq(dwc->irq_gadget);
+-	}
+-}
 
 
 
