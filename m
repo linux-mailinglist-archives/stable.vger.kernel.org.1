@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-84538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D442899D0B0
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:06:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5FC799D082
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:04:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68B75B26D2F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:06:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20A1C1C2364C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D0E19F40B;
-	Mon, 14 Oct 2024 15:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623D37C6E6;
+	Mon, 14 Oct 2024 15:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQxR+3SL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kbghRw/u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F521BDC3;
-	Mon, 14 Oct 2024 15:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE2F4CDEC;
+	Mon, 14 Oct 2024 15:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918353; cv=none; b=t/Ww/BSNV+Gij9WthrCikByR3tQZtGjWUjSHuK8w5epaKZ5HMQ+c1UR5cx7C3fMPrGar/AsnGNIxxWRYFRt73itoCbVrRneVmf9nZ0Y/IUjaFK0oai+D5kp8SlrQpEtl65dXZTqosB2XIPLa8zMLNfXs8c3BtVwnH2CEoQ4jlR8=
+	t=1728918240; cv=none; b=mulWvr33c3zkfUpCA6LNaK532HnQakWqqrDUl4R6XKvsnVCte4Vn2F3vqaMP0HyRFQU1ysM+hibbI5aGLf4+SVpxR+6k/0aNvRiPloRmmKDXSIY8JdvZ1y9kYP5lWe4iZH6rt9MvBITYEArCAbk3kfL0n8zy5yARpNh9CDF5YLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918353; c=relaxed/simple;
-	bh=3PNMWv/al0xUoixjl+SchFmnJIox29ZYqvkJm4c2Hgs=;
+	s=arc-20240116; t=1728918240; c=relaxed/simple;
+	bh=yqRGUNNB0RqNu6A4wgT0NM2JbNPt/f5atU25z8ZyUHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZbloX2AYorcXOc/hKJytzxV3OukwANBpK+65U5fAq55rixG6UZEmdvSejKByXfcvsKb15EuuQkKha382lNbCrs525/O4pPDEUmac17xGRulpQEUlIsauqfhvzKUNcalsOwIpztQ6HThuUMTPvXe0nl5ag1hxXLfil58uSMMu+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQxR+3SL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA63C4CEC3;
-	Mon, 14 Oct 2024 15:05:52 +0000 (UTC)
+	 MIME-Version; b=D77IHJDpFKhRzFMPqBW3wSzBmsxFaVYvzX4sOHbfdOHjvGCtlY1oCP7unG1b0NPyFSrEzwkTUCWEQyHiDe7A8z2PV0fwotXcQ4aVGbQd2+uHWrcKFtLYuR4LPf/H2RggLYEKD4Mgafwm5uRp45H8RFucDKdrLYosVrAmLJT6ASo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kbghRw/u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B92C4CEC3;
+	Mon, 14 Oct 2024 15:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918353;
-	bh=3PNMWv/al0xUoixjl+SchFmnJIox29ZYqvkJm4c2Hgs=;
+	s=korg; t=1728918240;
+	bh=yqRGUNNB0RqNu6A4wgT0NM2JbNPt/f5atU25z8ZyUHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HQxR+3SLqfQNybzSIq6I+146H/ZCW7kc51UcpGK7XAZX4c/n09JeVIVi9MxXBM/dD
-	 GH02QC1JMG7Ox9xR20IczGZ0+nEDzsqZIjS+Xaj9ZAf/Tcg4n66WgowdPSI9xoxHYP
-	 P4O/iOcjGfX6YAz420wHmBqRdsp+UhuaRvmV4kCc=
+	b=kbghRw/uSYHxk4ukEGd94thKULe4Y8x9RMUAvhTAcTDmp9Ym6kvH/3lTI+WXAgPft
+	 vPYLPm3167BDoE88X5AkdX+JyrEYrC7jY+1K//R378I2XgDLDQZ7xXYDEUU7NailPR
+	 gngmFl+1dwyGE3TA9IpUm4EvBVVD2s4BDtuOtFMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Yanfei Xu <yanfei.xu@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Xie Yongji <xieyongji@bytedance.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 256/798] cxl/pci: Fix to record only non-zero ranges
-Date: Mon, 14 Oct 2024 16:13:30 +0200
-Message-ID: <20241014141227.991974168@linuxfoundation.org>
+Subject: [PATCH 6.1 257/798] vdpa: Add eventfd for the vdpa callback
+Date: Mon, 14 Oct 2024 16:13:31 +0200
+Message-ID: <20241014141228.031999125@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -68,64 +67,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yanfei Xu <yanfei.xu@intel.com>
+From: Xie Yongji <xieyongji@bytedance.com>
 
-[ Upstream commit 55e268694e8b07026c88191f9b6949b6887d9ce3 ]
+[ Upstream commit 5e68470f4e80a4120e9ecec408f6ab4ad386bd4a ]
 
-The function cxl_dvsec_rr_decode() retrieves and records DVSEC ranges
-into info->dvsec_range[], regardless of whether it is non-zero range,
-and the variable info->ranges indicates the number of non-zero ranges.
-However, in cxl_hdm_decode_init(), the validation for
-info->dvsec_range[] occurs in a for loop that iterates based on
-info->ranges. It may result in zero range to be validated but non-zero
-range not be validated, in turn, the number of allowed ranges is to be
-0. Address it by only record non-zero ranges.
+Add eventfd for the vdpa callback so that user
+can signal it directly instead of triggering the
+callback. It will be used for vhost-vdpa case.
 
-This fix is not urgent as it requires a configuration that zeroes out
-the first dvsec range while populating the second. This has not been
-observed, but it is theoretically possible. If this gets picked up for
--stable, no harm done, but there is no urgency to backport.
-
-Fixes: 560f78559006 ("cxl/pci: Retrieve CXL DVSEC memory info")
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Yanfei Xu <yanfei.xu@intel.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Link: https://patch.msgid.link/20240828084231.1378789-2-yanfei.xu@intel.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Xie Yongji <xieyongji@bytedance.com>
+Message-Id: <20230323053043.35-9-xieyongji@bytedance.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Stable-dep-of: 02e9e9366fef ("vhost_vdpa: assign irq bypass producer token correctly")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/pci.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/vhost/vdpa.c         | 2 ++
+ drivers/virtio/virtio_vdpa.c | 1 +
+ include/linux/vdpa.h         | 6 ++++++
+ 3 files changed, 9 insertions(+)
 
-diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
-index 194c8024216df..8d92a24fd73d9 100644
---- a/drivers/cxl/core/pci.c
-+++ b/drivers/cxl/core/pci.c
-@@ -471,10 +471,6 @@ static int cxl_dvsec_rr_decode(struct device *dev, int d,
- 
- 		size |= temp & CXL_DVSEC_MEM_SIZE_LOW_MASK;
- 		if (!size) {
--			info->dvsec_range[i] = (struct range) {
--				.start = 0,
--				.end = CXL_RESOURCE_NONE,
--			};
- 			continue;
+diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+index 55f88eeb78a72..ef9e845a5a5c5 100644
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -602,9 +602,11 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
+ 		if (vq->call_ctx.ctx) {
+ 			cb.callback = vhost_vdpa_virtqueue_cb;
+ 			cb.private = vq;
++			cb.trigger = vq->call_ctx.ctx;
+ 		} else {
+ 			cb.callback = NULL;
+ 			cb.private = NULL;
++			cb.trigger = NULL;
  		}
+ 		ops->set_vq_cb(vdpa, idx, &cb);
+ 		vhost_vdpa_setup_vq_irq(v, idx);
+diff --git a/drivers/virtio/virtio_vdpa.c b/drivers/virtio/virtio_vdpa.c
+index 9670cc79371d8..056ba6c5bb083 100644
+--- a/drivers/virtio/virtio_vdpa.c
++++ b/drivers/virtio/virtio_vdpa.c
+@@ -188,6 +188,7 @@ virtio_vdpa_setup_vq(struct virtio_device *vdev, unsigned int index,
+ 	/* Setup virtqueue callback */
+ 	cb.callback = callback ? virtio_vdpa_virtqueue_cb : NULL;
+ 	cb.private = info;
++	cb.trigger = NULL;
+ 	ops->set_vq_cb(vdpa, index, &cb);
+ 	ops->set_vq_num(vdpa, index, virtqueue_get_vring_size(vq));
  
-@@ -492,12 +488,10 @@ static int cxl_dvsec_rr_decode(struct device *dev, int d,
+diff --git a/include/linux/vdpa.h b/include/linux/vdpa.h
+index 6d0f5e4e82c25..41bc78b3b8360 100644
+--- a/include/linux/vdpa.h
++++ b/include/linux/vdpa.h
+@@ -13,10 +13,16 @@
+  * struct vdpa_calllback - vDPA callback definition.
+  * @callback: interrupt callback function
+  * @private: the data passed to the callback function
++ * @trigger: the eventfd for the callback (Optional).
++ *           When it is set, the vDPA driver must guarantee that
++ *           signaling it is functional equivalent to triggering
++ *           the callback. Then vDPA parent can signal it directly
++ *           instead of triggering the callback.
+  */
+ struct vdpa_callback {
+ 	irqreturn_t (*callback)(void *data);
+ 	void *private;
++	struct eventfd_ctx *trigger;
+ };
  
- 		base |= temp & CXL_DVSEC_MEM_BASE_LOW_MASK;
- 
--		info->dvsec_range[i] = (struct range) {
-+		info->dvsec_range[ranges++] = (struct range) {
- 			.start = base,
- 			.end = base + size - 1
- 		};
--
--		ranges++;
- 	}
- 
- 	info->ranges = ranges;
+ /**
 -- 
 2.43.0
 
