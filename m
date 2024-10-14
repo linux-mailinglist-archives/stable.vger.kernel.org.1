@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-84357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D43499CFCC
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:58:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D0B99CFD5
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:58:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99171B24B65
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:58:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C8D928203F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99ED11AB536;
-	Mon, 14 Oct 2024 14:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C135E1B85C4;
+	Mon, 14 Oct 2024 14:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPWFwNdt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oP4WENdF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548B21BDC3;
-	Mon, 14 Oct 2024 14:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E84B1BDC3;
+	Mon, 14 Oct 2024 14:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917732; cv=none; b=HZRIzJzky9wHR2rK8xjmzU8CkBqBarvoDur76tvlhTIO8XSzNElyl/wQWW5NHY0YUdsUZzmmLTY0FCt/tuo6tpa8c3ikhri2B9qN1Yww3vygtlzS5TlgLVXvk5G9nY7k3qcnNlswxrjdjLkXdFM7EgeBJ4agcS49FkQ2n1BjsX4=
+	t=1728917748; cv=none; b=O7QOO4DrFSkF/NMkPM6vi04gLRA14/oBicLP+m+g0s8BdDfV/VVYjA7Ti/c/3YwadItWO5fABA4r/N+t9Q4wUjfcJ0rF1dNguCnamFQcPNatX0MaIsV0F7giQQxf0t5vk14c/Qzm+XxR3Ogm51NHU5mG38VuE/Sgada/hkhMloI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917732; c=relaxed/simple;
-	bh=Xpf7iqDhylOvP30WoNcaU3yLxI4TO2W1eGtpw6PGqy4=;
+	s=arc-20240116; t=1728917748; c=relaxed/simple;
+	bh=p7U0TD5GZCnyN/k2t5qlysEzw0MY4hOFgAfO2DRUwWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnkYlzqpU3Pies0ih4Li2GN9cabqCAJrs6/K9D7Xt7WbZ0tXroEjRWUjF45plTpDUNV5tj8PIo6qi9vYXh3xsduRaKpOj8OoHyZfYhN3HnxiAO1h8RJdD26Eq1w/dh47ev9exG1bzynlgVN3333kOOeeLottDoTOSJ6EqUO0l+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPWFwNdt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69057C4CEC3;
-	Mon, 14 Oct 2024 14:55:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=p8Df6/zpddgzmIDMg+396qk+v0CejQl9zER2OEnWO8IAa71nU9U1o8VtE39S3UkcSo1h54CPzUo0lFtN3f7KxOSZLfOHrHeKd493mbN/KkyDkTBjo4pE4tO1MtkT0XCfjUlWinRKzj//SjgdDcQCbfR8hhbo0c/s+381mTaQihk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oP4WENdF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7E2C4CEC3;
+	Mon, 14 Oct 2024 14:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917731;
-	bh=Xpf7iqDhylOvP30WoNcaU3yLxI4TO2W1eGtpw6PGqy4=;
+	s=korg; t=1728917748;
+	bh=p7U0TD5GZCnyN/k2t5qlysEzw0MY4hOFgAfO2DRUwWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPWFwNdtWFgtUQMWvTfM95M/Ld6Vi2/CG6Sam4ZCI2ysl6oFdsMEESN1zIwqIpVoT
-	 JWHoncHoVxTVapZUzwZ0ZIBAfs+BEyrqrMxxWnuGy3ujLGTA+dAmfHtOx7bizNkKVR
-	 k/2gXkYSlHUZENZ3dYSPPF8L/mgRnznLVdMaq8rI=
+	b=oP4WENdFm0Xm/LU2Q2G0ajth0iC0v8ShKjPFA1om0ps5/dswxb0j9jNtUhIxI3O7X
+	 s5TaJavalKeqMHelQZ3MP7ljVZgqmr02Z56Mz+Y5QP5O3O/7CFbemqj546LP8VVJAp
+	 Riu9GIb1DH23knMExvogxZNz4Fui0XGUNEm18MNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	linux-mtd@lists.infradead.org,
+	Mirsad Todorovac <mtodorovac69@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 090/798] hwmon: (max16065) Fix alarm attributes
-Date: Mon, 14 Oct 2024 16:10:44 +0200
-Message-ID: <20241014141221.469821571@linuxfoundation.org>
+Subject: [PATCH 6.1 091/798] mtd: slram: insert break after errors in parsing the map
+Date: Mon, 14 Oct 2024 16:10:45 +0200
+Message-ID: <20241014141221.508271197@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -60,74 +63,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Mirsad Todorovac <mtodorovac69@gmail.com>
 
-[ Upstream commit 119abf7d1815f098f7f91ae7abc84324a19943d7 ]
+[ Upstream commit 336c218dd7f0588ed8a7345f367975a00a4f003f ]
 
-Chips reporting overcurrent alarms report it in the second alarm register.
-That means the second alarm register has to be read, even if the chip only
-supports 8 or fewer ADC channels.
+GCC 12.3.0 compiler on linux-next next-20240709 tree found the execution
+path in which, due to lazy evaluation, devlength isn't initialised with the
+parsed string:
 
-MAX16067 and MAX16068 report undervoltage and overvoltage alarms in
-separate registers. Fold register contents together to report both with
-the existing alarm attribute. This requires actually storing the chip type
-in struct max16065_data. Rename the variable 'chip' to match the variable
-name used in the probe function.
+   289		while (map) {
+   290			devname = devstart = devlength = NULL;
+   291
+   292			if (!(devname = strsep(&map, ","))) {
+   293				E("slram: No devicename specified.\n");
+   294				break;
+   295			}
+   296			T("slram: devname = %s\n", devname);
+   297			if ((!map) || (!(devstart = strsep(&map, ",")))) {
+   298				E("slram: No devicestart specified.\n");
+   299			}
+   300			T("slram: devstart = %s\n", devstart);
+ → 301			if ((!map) || (!(devlength = strsep(&map, ",")))) {
+   302				E("slram: No devicelength / -end specified.\n");
+   303			}
+ → 304			T("slram: devlength = %s\n", devlength);
+   305			if (parse_cmdline(devname, devstart, devlength) != 0) {
+   306				return(-EINVAL);
+   307			}
 
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Parsing should be finished after map == NULL, so a break is best inserted after
+each E("slram: ... \n") error message.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: linux-mtd@lists.infradead.org
+Signed-off-by: Mirsad Todorovac <mtodorovac69@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240711234319.637824-1-mtodorovac69@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/max16065.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/mtd/devices/slram.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
-index ab3c75bda5a03..24612f6c3d9c9 100644
---- a/drivers/hwmon/max16065.c
-+++ b/drivers/hwmon/max16065.c
-@@ -79,7 +79,7 @@ static const bool max16065_have_current[] = {
- };
- 
- struct max16065_data {
--	enum chips type;
-+	enum chips chip;
- 	struct i2c_client *client;
- 	const struct attribute_group *groups[4];
- 	struct mutex update_lock;
-@@ -162,10 +162,17 @@ static struct max16065_data *max16065_update_device(struct device *dev)
- 						     MAX16065_CURR_SENSE);
+diff --git a/drivers/mtd/devices/slram.c b/drivers/mtd/devices/slram.c
+index 28131a127d065..8297b366a0669 100644
+--- a/drivers/mtd/devices/slram.c
++++ b/drivers/mtd/devices/slram.c
+@@ -296,10 +296,12 @@ static int __init init_slram(void)
+ 		T("slram: devname = %s\n", devname);
+ 		if ((!map) || (!(devstart = strsep(&map, ",")))) {
+ 			E("slram: No devicestart specified.\n");
++			break;
  		}
- 
--		for (i = 0; i < DIV_ROUND_UP(data->num_adc, 8); i++)
-+		for (i = 0; i < 2; i++)
- 			data->fault[i]
- 			  = i2c_smbus_read_byte_data(client, MAX16065_FAULT(i));
- 
-+		/*
-+		 * MAX16067 and MAX16068 have separate undervoltage and
-+		 * overvoltage alarm bits. Squash them together.
-+		 */
-+		if (data->chip == max16067 || data->chip == max16068)
-+			data->fault[0] |= data->fault[1];
-+
- 		data->last_updated = jiffies;
- 		data->valid = true;
- 	}
-@@ -514,6 +521,7 @@ static int max16065_probe(struct i2c_client *client)
- 	if (unlikely(!data))
- 		return -ENOMEM;
- 
-+	data->chip = chip;
- 	data->client = client;
- 	mutex_init(&data->update_lock);
- 
+ 		T("slram: devstart = %s\n", devstart);
+ 		if ((!map) || (!(devlength = strsep(&map, ",")))) {
+ 			E("slram: No devicelength / -end specified.\n");
++			break;
+ 		}
+ 		T("slram: devlength = %s\n", devlength);
+ 		if (parse_cmdline(devname, devstart, devlength) != 0) {
 -- 
 2.43.0
 
