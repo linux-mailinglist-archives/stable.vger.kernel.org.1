@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-84185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE10799CEC3
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:46:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC41E99CDB0
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8282C288678
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:46:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92D451F23AB9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583D51AB6FF;
-	Mon, 14 Oct 2024 14:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA001AC887;
+	Mon, 14 Oct 2024 14:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtdtpjJD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ALWjHs/D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1729B4CDEC;
-	Mon, 14 Oct 2024 14:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F360F1AC42C;
+	Mon, 14 Oct 2024 14:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917132; cv=none; b=q7kTTvg5VRruGIPBdV0J7LfRmqHFwUcH2Z70FbOdZZAb8hjKHz4OAGpWFLA8Koly15dloGyTv09gL6Ci0i2XV42rJ8pq1/YPeBdZ/nrkguVt7Vh1Q0KlG+iqRLhCpPif/0iNyITfFbhpTbRLlTvlnckh2dA8fiQGAEbtfG3M+rw=
+	t=1728916503; cv=none; b=C5HRwfYFVwRFnKgawX1HlGKwOodtAsXXEIVs0+Y6XfLADc731Wu4KEsIvyvHc6H8TuyV4E++4hxPd+WKuv+ZxP8oG7Ij7vN6Jk6ribbGFtmz+6zkv2v08SDwN0e77+L9Sao9oTlBZhkZxR9G0LaZmtNMaUtPL/hZsDWAoHagmnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917132; c=relaxed/simple;
-	bh=XekIE4Z7b9gVcb/RaN0LVRcNGjQ5VcEjVn5+iK3fROY=;
+	s=arc-20240116; t=1728916503; c=relaxed/simple;
+	bh=Ut8DJ8QCNpqka+OYJKs5Py1D3RBuPH8xLro9XAUBfDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rOEt/kcmGqyw20+asnqoUwQqyWtc0zq0hy227P4tvmUz16VIQRpspTLmy4+vmbZAHDe5aBeh0bVBD5uZn//Jx/uMZNxwU1AvwqaaKiL+lT+/ff5UFWI4anviZMilaZz3E162Qw39jRGVvIfrq2u6gHUxQnpo4mItVSr/pvozEOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtdtpjJD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7215CC4CEC3;
-	Mon, 14 Oct 2024 14:45:31 +0000 (UTC)
+	 MIME-Version; b=aTkMdllWcSRuTkoHaBbn1C1viQsMqKB5azEwZB0TS7ffBnhJQZU5unDF/uIts/2VksO3gGwW1N8KAJrhPwnkuQaZxooUvrZwCKkYMD7jYzXRBo5bzarZPkoa+neMRv/+QG5vXK/qhbAG6D2YRV1XUgLMgAIDkvWMDq8KDnohLd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ALWjHs/D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E44C4CEC3;
+	Mon, 14 Oct 2024 14:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917131;
-	bh=XekIE4Z7b9gVcb/RaN0LVRcNGjQ5VcEjVn5+iK3fROY=;
+	s=korg; t=1728916502;
+	bh=Ut8DJ8QCNpqka+OYJKs5Py1D3RBuPH8xLro9XAUBfDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtdtpjJDmucHDxWanNoEwync1H1+QBls0lug1sA5Xafo7GYdLaDe7RIVfps0Z31Dd
-	 vZij1cujA/eq9xLW9YhkucpPa1nK3tmfn/zKkiTtPD8hzYSVRVFZAroM4ejrk9I0HG
-	 uGgB0VIB5D+da/TRcw/HLVW0Qdx1NOwWocX9OMm8=
+	b=ALWjHs/DwPrS511BUyf8H/4gCiMAzH2nuaHu++t6jjwtjrZfPBfyRxDjBTzdi1IDG
+	 56eFUwU0tceIjtVNiL8bFo12MDehiUG7MVUvw346eF1NimnzLDaxMznCd6jsxGmEyU
+	 bFlYLyC1AoleG0OyxgUZ6qRuaEW/11ZJYErlENIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Remi Denis-Courmont <courmisch@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 160/213] phonet: no longer hold RTNL in route_dumpit()
+	Zhang Rui <rui.zhang@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.11 203/214] powercap: intel_rapl_tpmi: Fix bogus register reading
 Date: Mon, 14 Oct 2024 16:21:06 +0200
-Message-ID: <20241014141049.216872420@linuxfoundation.org>
+Message-ID: <20241014141052.897822576@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit 58a4ff5d77b187086eb12d41d613749420947f19 ]
+commit 91e8f835a7eda4ba2c0c4002a3108a0e3b22d34e upstream.
 
-route_dumpit() already relies on RCU, RTNL is not needed.
+The TPMI_RAPL_REG_DOMAIN_INFO value needs to be multiplied by 8 to get
+the register offset.
 
-Also change return value at the end of a dump.
-This allows NLMSG_DONE to be appended to the current
-skb at the end of a dump, saving a couple of recvmsg()
-system calls.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Remi Denis-Courmont <courmisch@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240507121748.416287-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: b5e837c86041 ("phonet: Handle error of rtnl_register_module().")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: All applicable <stable@vger.kernel.org>
+Fixes: 903eb9fb85e3 ("powercap: intel_rapl_tpmi: Fix System Domain probing")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Link: https://patch.msgid.link/20240930081801.28502-2-rui.zhang@intel.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/phonet/pn_netlink.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/powercap/intel_rapl_tpmi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/phonet/pn_netlink.c b/net/phonet/pn_netlink.c
-index dd4c7e9a634fb..7008d402499d5 100644
---- a/net/phonet/pn_netlink.c
-+++ b/net/phonet/pn_netlink.c
-@@ -178,7 +178,7 @@ static int fill_route(struct sk_buff *skb, struct net_device *dev, u8 dst,
- 	rtm->rtm_type = RTN_UNICAST;
- 	rtm->rtm_flags = 0;
- 	if (nla_put_u8(skb, RTA_DST, dst) ||
--	    nla_put_u32(skb, RTA_OIF, dev->ifindex))
-+	    nla_put_u32(skb, RTA_OIF, READ_ONCE(dev->ifindex)))
- 		goto nla_put_failure;
- 	nlmsg_end(skb, nlh);
- 	return 0;
-@@ -263,6 +263,7 @@ static int route_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
- static int route_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	struct net *net = sock_net(skb->sk);
-+	int err = 0;
- 	u8 addr;
- 
- 	rcu_read_lock();
-@@ -272,16 +273,16 @@ static int route_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
- 		if (!dev)
- 			continue;
- 
--		if (fill_route(skb, dev, addr << 2, NETLINK_CB(cb->skb).portid,
--			       cb->nlh->nlmsg_seq, RTM_NEWROUTE) < 0)
--			goto out;
-+		err = fill_route(skb, dev, addr << 2,
-+				 NETLINK_CB(cb->skb).portid,
-+				 cb->nlh->nlmsg_seq, RTM_NEWROUTE);
-+		if (err < 0)
-+			break;
- 	}
--
--out:
- 	rcu_read_unlock();
- 	cb->args[0] = addr;
- 
--	return skb->len;
-+	return err;
- }
- 
- int __init phonet_netlink_register(void)
-@@ -301,6 +302,6 @@ int __init phonet_netlink_register(void)
- 	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_DELROUTE,
- 			     route_doit, NULL, 0);
- 	rtnl_register_module(THIS_MODULE, PF_PHONET, RTM_GETROUTE,
--			     NULL, route_dumpit, 0);
-+			     NULL, route_dumpit, RTNL_FLAG_DUMP_UNLOCKED);
- 	return 0;
- }
--- 
-2.43.0
-
+--- a/drivers/powercap/intel_rapl_tpmi.c
++++ b/drivers/powercap/intel_rapl_tpmi.c
+@@ -192,7 +192,7 @@ static int parse_one_domain(struct tpmi_
+ 			pr_warn(FW_BUG "System domain must support Domain Info register\n");
+ 			return -ENODEV;
+ 		}
+-		tpmi_domain_info = readq(trp->base + offset + TPMI_RAPL_REG_DOMAIN_INFO);
++		tpmi_domain_info = readq(trp->base + offset + TPMI_RAPL_REG_DOMAIN_INFO * 8);
+ 		if (!(tpmi_domain_info & TPMI_RAPL_DOMAIN_ROOT))
+ 			return 0;
+ 		domain_type = RAPL_DOMAIN_PLATFORM;
 
 
 
