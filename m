@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-84955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1106599D318
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDCDB99CDC6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A654CB27215
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1FAE28387E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DF71C82F4;
-	Mon, 14 Oct 2024 15:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A4F4595B;
+	Mon, 14 Oct 2024 14:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPkU9ygh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16z/hpOD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145541C331A;
-	Mon, 14 Oct 2024 15:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217871A28C;
+	Mon, 14 Oct 2024 14:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919801; cv=none; b=El2LpkYPYFmMFVG2rma8W20uchvtN0miThVv49KzFTNMo+tj4+6NwCQaCoNbCsjoiGMNw/qgZOqTwAMujcX+BYfU4DlsIl/p7Ld3yKv/jOkn3WGTTyOYZ03t0XIuksx4QgPcujIqRz/5TXDd3UZs/c/3nR0TP0PQkwAqNgrA2mY=
+	t=1728916569; cv=none; b=FgLgZJcj3Hwl0dedc5k32p0UBdjf3STLMaz9ymmXglwFyiBz/32J7MjrCg4Ch0xJ7M/vKNK4h+pPf3sdLIO2Gdpr6YJ/5RiHe2o1FkKH1d3z+CF4lHh3vMJCWBuSN1RiKQWG5dXM9gStWwXH0EoScEGWDsa545SBObnzsomA//0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919801; c=relaxed/simple;
-	bh=xFhJHpJWYC9/OlD+Q7nFlBKf3ELFtiHbvSCvIXZ5ggU=;
+	s=arc-20240116; t=1728916569; c=relaxed/simple;
+	bh=DTQhO/4o1ceMK+uoG142RSmvSFRfZh0spaGJ7U76cqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rbhISF7c9pt6uwN/ieY5yKv3MjNTbbxOm/IQ5bZyqBzg2YJ0FoQ1cpmYec5X54Ag7ivMGshH5O4f9OTxW0cid1PWEZ4/4fXEeHzIzNW4uWI286sFKePnvTHdBAxB+sx9cIGAEKM12MZOsu0BJtP7YmCZ68TLPrOt/C8gEL3WESU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPkU9ygh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E685C4CEC3;
-	Mon, 14 Oct 2024 15:30:00 +0000 (UTC)
+	 MIME-Version; b=iYuO1exyL94KSOKCnKcNLI6e8YMV3/NszCjolXC+4BPK+ZOuHhnNEMtKxUby2ifyF/Fsocn1WMY64UpsfY2wg8CqrLFHXb22flpaCSBXc6F16BkubR9RKL9tRIpsEOTMS7+l9KMEHKUvcbfpOST6OXykWVqLb5i9OMmvNTbTX1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16z/hpOD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3F4C4CEC3;
+	Mon, 14 Oct 2024 14:36:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919800;
-	bh=xFhJHpJWYC9/OlD+Q7nFlBKf3ELFtiHbvSCvIXZ5ggU=;
+	s=korg; t=1728916568;
+	bh=DTQhO/4o1ceMK+uoG142RSmvSFRfZh0spaGJ7U76cqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UPkU9yghz342KGaVy2LqNPwl7ygZoXcw8ga7UUxZyd6weHaZpYk7n1fS6otOfg+Sc
-	 MdMy0/9y7m09xVpJpk1yy87dtvvZQ5KXT/l/8slPZbZdEJNd1ZRvNJbRXfo0xk49Dg
-	 lFi4cHDPBUIDsBWvplupmBC/nawGV3TFYbzuFOtY=
+	b=16z/hpODwIWGxZmbPExcDk/o/JR2zQHkXBP+rtcc17frXVQtTL6k6oWY1q9O6g2FT
+	 fD2WWZg4lTENmgTX89DTnX2zsUdsS6FpkHWBepM8Y56HtJhzX1y7wZM4UKQPi6gBu3
+	 Q7zxzAUBzfhCGRy1qmEkLefURiWWxPVlKXKzzy0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Peter Chen <peter.chen@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 711/798] usb: chipidea: udc: enable suspend interrupt after usb reset
+	Yonatan Maman <Ymaman@Nvidia.com>,
+	Gal Shalom <GalShalom@Nvidia.com>,
+	Ben Skeggs <bskeggs@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.11 202/214] nouveau/dmem: Fix vulnerability in migrate_to_ram upon copy error
 Date: Mon, 14 Oct 2024 16:21:05 +0200
-Message-ID: <20241014141246.000893044@linuxfoundation.org>
+Message-ID: <20241014141052.859117128@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Yonatan Maman <Ymaman@Nvidia.com>
 
-[ Upstream commit e4fdcc10092fb244218013bfe8ff01c55d54e8e4 ]
+commit 835745a377a4519decd1a36d6b926e369b3033e2 upstream.
 
-Currently, suspend interrupt is enabled before pullup enable operation.
-This will cause a suspend interrupt assert right after pullup DP. This
-suspend interrupt is meaningless, so this will ignore such interrupt
-by enable it after usb reset completed.
+The `nouveau_dmem_copy_one` function ensures that the copy push command is
+sent to the device firmware but does not track whether it was executed
+successfully.
 
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20240823073832.1702135-1-xu.yang_2@nxp.com
+In the case of a copy error (e.g., firmware or hardware failure), the
+copy push command will be sent via the firmware channel, and
+`nouveau_dmem_copy_one` will likely report success, leading to the
+`migrate_to_ram` function returning a dirty HIGH_USER page to the user.
+
+This can result in a security vulnerability, as a HIGH_USER page that may
+contain sensitive or corrupted data could be returned to the user.
+
+To prevent this vulnerability, we allocate a zero page. Thus, in case of
+an error, a non-dirty (zero) page will be returned to the user.
+
+Fixes: 5be73b690875 ("drm/nouveau/dmem: device memory helpers for SVM")
+Signed-off-by: Yonatan Maman <Ymaman@Nvidia.com>
+Co-developed-by: Gal Shalom <GalShalom@Nvidia.com>
+Signed-off-by: Gal Shalom <GalShalom@Nvidia.com>
+Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241008115943.990286-3-ymaman@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/udc.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_dmem.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-index 8c3e3a635ac2d..35dfc05854fb7 100644
---- a/drivers/usb/chipidea/udc.c
-+++ b/drivers/usb/chipidea/udc.c
-@@ -86,7 +86,7 @@ static int hw_device_state(struct ci_hdrc *ci, u32 dma)
- 		hw_write(ci, OP_ENDPTLISTADDR, ~0, dma);
- 		/* interrupt, error, port change, reset, sleep/suspend */
- 		hw_write(ci, OP_USBINTR, ~0,
--			     USBi_UI|USBi_UEI|USBi_PCI|USBi_URI|USBi_SLI);
-+			     USBi_UI|USBi_UEI|USBi_PCI|USBi_URI);
- 	} else {
- 		hw_write(ci, OP_USBINTR, ~0, 0);
- 	}
-@@ -876,6 +876,7 @@ __releases(ci->lock)
- __acquires(ci->lock)
- {
- 	int retval;
-+	u32 intr;
- 
- 	spin_unlock(&ci->lock);
- 	if (ci->gadget.speed != USB_SPEED_UNKNOWN)
-@@ -889,6 +890,11 @@ __acquires(ci->lock)
- 	if (retval)
+--- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
++++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+@@ -193,7 +193,7 @@ static vm_fault_t nouveau_dmem_migrate_t
+ 	if (!spage || !(src & MIGRATE_PFN_MIGRATE))
  		goto done;
  
-+	/* clear SLI */
-+	hw_write(ci, OP_USBSTS, USBi_SLI, USBi_SLI);
-+	intr = hw_read(ci, OP_USBINTR, ~0);
-+	hw_write(ci, OP_USBINTR, ~0, intr | USBi_SLI);
-+
- 	ci->status = usb_ep_alloc_request(&ci->ep0in->ep, GFP_ATOMIC);
- 	if (ci->status == NULL)
- 		retval = -ENOMEM;
--- 
-2.43.0
-
+-	dpage = alloc_page_vma(GFP_HIGHUSER, vmf->vma, vmf->address);
++	dpage = alloc_page_vma(GFP_HIGHUSER | __GFP_ZERO, vmf->vma, vmf->address);
+ 	if (!dpage)
+ 		goto done;
+ 
 
 
 
