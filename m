@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-84868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8886B99D290
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:27:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5725C99CE46
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:42:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BF4C2841B2
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:27:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D598285D21
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7769B1CC881;
-	Mon, 14 Oct 2024 15:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5F21ABED7;
+	Mon, 14 Oct 2024 14:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QeI6S4SU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvbwhnNV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3353B1C7617;
-	Mon, 14 Oct 2024 15:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD8D1ABEBA;
+	Mon, 14 Oct 2024 14:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919503; cv=none; b=nJynzR0E99ULzwNADRGafMxPOdR8/wATGYQgFS5fHEo+2TXFbTWCAZKhHhGnDMfGWc45djuOXzuMsAQrvQCPZ1L4fPB6BGuZ8ZO5q1oCAZ+7tzCqpbQ6AH9ECo20kY91zdtR8geXJ8vJTP58B126WmbFYtyYlbxeHfyFmBDyYJ4=
+	t=1728916914; cv=none; b=Zu5RRMvppm8AonMwSWky4v8G4Zkq8aU/OcWidMdGrbgddTzBvXSpEQ94f8x5JFPHNrVsoyDWHWJepLp+Uhk4dY5FBQOhdd4TEZp0DM+y517PLsnt9HslTbqLLML+ovA7SLgvIeb1PpMX76mkDfat0Jjh11cKDCpJtLv4c8USiwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919503; c=relaxed/simple;
-	bh=1GoaPfLQ84iWGdlMtTwtwD5xjUpqEJmFCGIhxXHA0q0=;
+	s=arc-20240116; t=1728916914; c=relaxed/simple;
+	bh=3ksP918lUtu8ckSBuhRLmUldy3uArrflFaAz16u7tDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kMm3pZkILHYfewCpchaYLkPwF9bWHxS/RFQMfTY2088l9K2Cu138QXmJSe17hHEuCJUoVW9i08xNtuTTyz+XBHugq9vfL6Nto6v5MQWM7t1SPsK9Ymk+sL3c+5S0uxxxuOAUS9WLjDR+Q79lwxaZeSEP/UYJcQ63w25TxcCf3eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QeI6S4SU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFD7C4CEC3;
-	Mon, 14 Oct 2024 15:25:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HGs6vpdyN9Lk9VMJb32cpF/b1KGPMnHIs4qV1+E0n0aMLpcpsOYR5N+OsKBjmwpi4mOufO1SsPNGBgj8WMLepNXWTgb6HGK3YrInMmACAIHsyl2Ds4g5HOlpI5emnimNCgkYGdnQ4Vivx8VnIzQYOBJVSiM+N2iCArkoUIr5le4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvbwhnNV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2C2C4CEC3;
+	Mon, 14 Oct 2024 14:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919502;
-	bh=1GoaPfLQ84iWGdlMtTwtwD5xjUpqEJmFCGIhxXHA0q0=;
+	s=korg; t=1728916913;
+	bh=3ksP918lUtu8ckSBuhRLmUldy3uArrflFaAz16u7tDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QeI6S4SUhYpSgimP4UGiLNrCdTShZ2vhFcqoiR3Q47fh5YlBhE0U49sfN98EoUztx
-	 vq21kJImqh9R3WTPuT99R7l9sxA5jhR02oaeEgG80ew8nvhDTEXtmYeD4KZ4zMQckK
-	 d1UQitE9ZdU0Y519GEqfyN6x95GFAQ1rG7VLSQX0=
+	b=zvbwhnNVaHMuXdnz3cSG9sIFtLSoTG34w/HlLc2voUlwvsABrrwzGGLFbXx2j433k
+	 K5s9FzF/7ha3WfkjuJhJctqpBcILECRhU80zNtFHJW/bezR+z88DM06Ss4K8NJFzuV
+	 C7O3FKX7y2MWpeJ2G/lJkYQ7G84V8S2L9J3Bzlak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	James Morse <james.morse@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
+	Subramanian Ananthanarayanan <quic_skananth@quicinc.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 624/798] arm64: Add Cortex-715 CPU part definition
-Date: Mon, 14 Oct 2024 16:19:38 +0200
-Message-ID: <20241014141242.554119006@linuxfoundation.org>
+Subject: [PATCH 6.6 073/213] PCI: Add ACS quirk for Qualcomm SA8775P
+Date: Mon, 14 Oct 2024 16:19:39 +0200
+Message-ID: <20241014141045.832942670@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,55 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anshuman Khandual <anshuman.khandual@arm.com>
+From: Subramanian Ananthanarayanan <quic_skananth@quicinc.com>
 
-[ Upstream commit 07e39e60bbf0ccd5f895568e1afca032193705c0 ]
+[ Upstream commit 026f84d3fa62d215b11cbeb5a5d97df941e93b5c ]
 
-Add the CPU Partnumbers for the new Arm designs.
+The Qualcomm SA8775P root ports don't advertise an ACS capability, but they
+do provide ACS-like features to disable peer transactions and validate bus
+numbers in requests.
 
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20221116140915.356601-2-anshuman.khandual@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Mark: Trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Thus, add an ACS quirk for the SA8775P.
+
+Link: https://lore.kernel.org/linux-pci/20240906052228.1829485-1-quic_skananth@quicinc.com
+Signed-off-by: Subramanian Ananthanarayanan <quic_skananth@quicinc.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
+ drivers/pci/quirks.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index a0a028a6b9670..9916346948ba2 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -82,6 +82,7 @@
- #define ARM_CPU_PART_CORTEX_A510	0xD46
- #define ARM_CPU_PART_CORTEX_A520	0xD80
- #define ARM_CPU_PART_CORTEX_A710	0xD47
-+#define ARM_CPU_PART_CORTEX_A715	0xD4D
- #define ARM_CPU_PART_CORTEX_X2		0xD48
- #define ARM_CPU_PART_NEOVERSE_N2	0xD49
- #define ARM_CPU_PART_CORTEX_A78C	0xD4B
-@@ -156,6 +157,7 @@
- #define MIDR_CORTEX_A510 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A510)
- #define MIDR_CORTEX_A520 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A520)
- #define MIDR_CORTEX_A710 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A710)
-+#define MIDR_CORTEX_A715 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A715)
- #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
- #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
- #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index a35f72b443cef..486efe7b7cae1 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5080,6 +5080,8 @@ static const struct pci_dev_acs_enabled {
+ 	/* QCOM QDF2xxx root ports */
+ 	{ PCI_VENDOR_ID_QCOM, 0x0400, pci_quirk_qcom_rp_acs },
+ 	{ PCI_VENDOR_ID_QCOM, 0x0401, pci_quirk_qcom_rp_acs },
++	/* QCOM SA8775P root port */
++	{ PCI_VENDOR_ID_QCOM, 0x0115, pci_quirk_qcom_rp_acs },
+ 	/* HXT SD4800 root ports. The ACS design is same as QCOM QDF2xxx */
+ 	{ PCI_VENDOR_ID_HXT, 0x0401, pci_quirk_qcom_rp_acs },
+ 	/* Intel PCH root ports */
 -- 
 2.43.0
 
