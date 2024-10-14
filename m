@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-83907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D96899CD21
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:29:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 322EC99CDE3
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:37:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D7D11F235C4
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:29:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E045E283BE7
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D0A1AA7A5;
-	Mon, 14 Oct 2024 14:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBC719E802;
+	Mon, 14 Oct 2024 14:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXnY1A67"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A13LKL5I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774C51AAC4;
-	Mon, 14 Oct 2024 14:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0594A24;
+	Mon, 14 Oct 2024 14:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916145; cv=none; b=KYXOhCD/AaQDOSivCCp81qCx8jgLvcftGIqbeQ/J+Ko+oWxwYR6to+VBNBCNhvJpks2ROyq6k9+T8MQmMWXNhQJrUJEFA0ZdVH822AlclrcwIfSWuI1Ljm8ALp0JJbESs3Dfb+chsGQdiMSc61BmhEYhBPLRD4fz5HvSrrNKV80=
+	t=1728916641; cv=none; b=JdZukkvYCGs/II27ceqPyGavKNoKibFuPjV11LAidoZ/MtKm77REvfEvXReYz0vrHg3G995lHFZykMlE3W40hm8a0FWkpfWxPxUi+75eVJAE46X4RDZpb/ILl+MSCQhm7UeF6tK5xKcaEbwAf658woqax4PEMgEwjA/CoLRnOX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916145; c=relaxed/simple;
-	bh=7Z1xa+Lhwr0GaafrAoyUoR4zVjwS26npvgRxowU85WE=;
+	s=arc-20240116; t=1728916641; c=relaxed/simple;
+	bh=BpcHcOPsL/Yf9cl7HNx/DUkKWELcYoM6vJ0zaLx9mVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ul9vNJlzjWVkK81Vxmw66lUAKVhZ8FDL+73Zy8NYMIcdzc+R7FrYYKG8AfJodGk/G2ZalPFHPbF/cYfFeYYrRcm8KYu1tuto0svBoG4DB7bb8zHCzD8+UZWftQMyxZydSZsNvMQGX2P/0UTe8fgkvQLVBvPoPUqNdtUuybVsXmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXnY1A67; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9736EC4CEC3;
-	Mon, 14 Oct 2024 14:29:04 +0000 (UTC)
+	 MIME-Version; b=dDdtUxDZ/1ydid973HrvM75Im0LuTi1SbEVY+cEmrxkDt+Ffoh2dULrlHsyypFKfOagXZmjc/42ZXe6qI0B1OTPbBNT9kaqjDCFdIGd84ejh8w8jHrZ1w2dzzLpa9OadgxZcjS+t8ppuijpUa9bWObAHqBk8XpsXaEvFcru2gRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A13LKL5I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A12B5C4CEC3;
+	Mon, 14 Oct 2024 14:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916145;
-	bh=7Z1xa+Lhwr0GaafrAoyUoR4zVjwS26npvgRxowU85WE=;
+	s=korg; t=1728916641;
+	bh=BpcHcOPsL/Yf9cl7HNx/DUkKWELcYoM6vJ0zaLx9mVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bXnY1A67AcS/bPCYcqDQVq+mfYVcVq8xMVjYr5/VIjuHb15al+CZQq0xB/DfzSTBL
-	 CxDMaGdw6QL1tp+X4iGw0k8OtOxdwCh3BJ7o5D4QHpMuIV/7vXFjU9XHqHnVUDY4/8
-	 +QO0D4jSA1rM976/As6+rZ9/s7JGkxriCfiB4Lqc=
+	b=A13LKL5IK+GJd6SkhiUAXdV8DZy8AcVwiGoIBoYh70TDCHeSt00M96PJrNsGH/ifz
+	 qnHdpb2AknoRmfovsVog6Mfum+jS1kHya38YBKnBCNdx8I8Rn8UD/0mkfDyv0rWrbD
+	 kHe49mRAZ6WQaDN61dpW5t5gDHmofakrTluCxEg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Jun <zhujun2@cmss.chinamobile.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Luis Henriques <lhenriques@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 066/214] tools/iio: Add memory allocation failure check for trigger_name
-Date: Mon, 14 Oct 2024 16:18:49 +0200
-Message-ID: <20241014141047.567089076@linuxfoundation.org>
+Subject: [PATCH 6.6 024/213] libceph: init the cursor when preparing sparse read in msgr2
+Date: Mon, 14 Oct 2024 16:18:50 +0200
+Message-ID: <20241014141043.929601567@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Jun <zhujun2@cmss.chinamobile.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit 3c6b818b097dd6932859bcc3d6722a74ec5931c1 ]
+[ Upstream commit 321e3c3de53c7530cd518219d01f04e7e32a9d23 ]
 
-Added a check to handle memory allocation failure for `trigger_name`
-and return `-ENOMEM`.
+The cursor is no longer initialized in the OSD client, causing the
+sparse read state machine to fall into an infinite loop.  The cursor
+should be initialized in IN_S_PREPARE_SPARSE_DATA state.
 
-Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
-Link: https://patch.msgid.link/20240828093129.3040-1-zhujun2@cmss.chinamobile.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ idryomov: use msg instead of con->in_msg, changelog ]
+
+Link: https://tracker.ceph.com/issues/64607
+Fixes: 8e46a2d068c9 ("libceph: just wait for more data to be available on the socket")
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Tested-by: Luis Henriques <lhenriques@suse.de>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/iio/iio_generic_buffer.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/ceph/messenger_v2.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
-index 0d0a7a19d6f95..9ef5ee087eda3 100644
---- a/tools/iio/iio_generic_buffer.c
-+++ b/tools/iio/iio_generic_buffer.c
-@@ -498,6 +498,10 @@ int main(int argc, char **argv)
- 			return -ENOMEM;
- 		}
- 		trigger_name = malloc(IIO_MAX_NAME_LENGTH);
-+		if (!trigger_name) {
-+			ret = -ENOMEM;
-+			goto error;
-+		}
- 		ret = read_sysfs_string("name", trig_dev_name, trigger_name);
- 		free(trig_dev_name);
- 		if (ret < 0) {
+diff --git a/net/ceph/messenger_v2.c b/net/ceph/messenger_v2.c
+index a901cae2f1060..f9ed6bf6c4776 100644
+--- a/net/ceph/messenger_v2.c
++++ b/net/ceph/messenger_v2.c
+@@ -2038,6 +2038,9 @@ static int prepare_sparse_read_data(struct ceph_connection *con)
+ 	if (!con_secure(con))
+ 		con->in_data_crc = -1;
+ 
++	ceph_msg_data_cursor_init(&con->v2.in_cursor, msg,
++				  msg->sparse_read_total);
++
+ 	reset_in_kvecs(con);
+ 	con->v2.in_state = IN_S_PREPARE_SPARSE_DATA_CONT;
+ 	con->v2.data_len_remain = data_len(msg);
 -- 
 2.43.0
 
