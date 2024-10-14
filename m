@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-84928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A69799D2E6
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:31:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4CD799CE72
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:44:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FB32287961
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:31:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01F431C21717
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838C71ADFFC;
-	Mon, 14 Oct 2024 15:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D399C1AC423;
+	Mon, 14 Oct 2024 14:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVEWjXgu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOdon2cs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411E1156256;
-	Mon, 14 Oct 2024 15:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A6F1AB522;
+	Mon, 14 Oct 2024 14:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919702; cv=none; b=X/ubVi0CYU4gens5hCSPGfbAelesOnCuusa9muYX6bk00GAtbEefrrqGc6MKbn3rbykwHg4YCfBcaroXmSasATVJNla6m4jEKGh4Wnm4JQQ6KEacvm+19RBG79knYC2BVQ2gIfcBS5FW3K/YzK6b+8Z63SrfCQXrISlurkawB+k=
+	t=1728917027; cv=none; b=Qh2tm+4TvRgrlDzTJlJzCwmIxgTfpJqrWGyaLKpbJvPr0S15uT/JeRBqPB9ltg1Pr330sGuLZ2KqBXKpNTVXZd0NwpUZrjSEaK3du1gMwp1Y2y4XdM3C+t9XJsrxu3TZygxH/BWREUMarlUZ/VclASpCJX4EXdJUGfNjHa8ep8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919702; c=relaxed/simple;
-	bh=3FAebbm7bt4M9E03ngKCfijbViHwGDCS1A+Nt4sVGJ0=;
+	s=arc-20240116; t=1728917027; c=relaxed/simple;
+	bh=q2//NrV2AicymKqkQm9KKWgpMXt7WoyIONNPIq4Vz9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uyi+d89xQ08YgntLtIq4I7BZATICVAUkgsXi9AD6IxtpmUYJRnDy3m7JkxFTWD0fxmlHJjrI3dlleZwwXqwM75rx0ec/x2kjnasiYxhaEnuGooUvGCNDW064A1ANa57fKyzFGLoIx8O7dXIOL6YRGFTL0UbZ/Afy316o1y7TOPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVEWjXgu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6F5C4CEC3;
-	Mon, 14 Oct 2024 15:28:21 +0000 (UTC)
+	 MIME-Version; b=TPr8hB8bVQDMGvpy6FDAziReVn0GoiMM3xqXp9G2BsEc1ljKnAEYQOfG8/u3qIp8pKde1+HCTmb2E1mkE12lmG1WCnMhQZUMf/OS9VH3tdcWBuH22xSYCtMdkJlWifllIL/INOMNPC5To22012x12BufC5ZhjwPoPIQIY5AM8/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOdon2cs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D5EC4CEC7;
+	Mon, 14 Oct 2024 14:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919702;
-	bh=3FAebbm7bt4M9E03ngKCfijbViHwGDCS1A+Nt4sVGJ0=;
+	s=korg; t=1728917027;
+	bh=q2//NrV2AicymKqkQm9KKWgpMXt7WoyIONNPIq4Vz9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZVEWjXgu8yj5DNkyMp/zOOqen89GJkke9zUpv1ub96FsJe36eALqhgloRoQYNYATs
-	 +g8f7dJvl59S0tLf5/2T6fgzGZSHmMu8VJLcdjcXfWAAcm4t8vMO8p522uAFWY3xDo
-	 m90OB5ahdoPQuuYTuurbLJrzeQ+z2rc6+YeCH7rQ=
+	b=yOdon2csFHZ/UWzfHAMmcswJ6lyQGTFSIRN1Sg0/xoTPyb885a8xLfbwQoXyN6+Gr
+	 Dj+DUYuFxI2C3DHZ0v1o9QU+BXajLm3PsRbiYAGMyVimNDQoJxEpybGRKVMBFzxTKW
+	 KpuUgVrMXz8A0sqAn9dKVeeYObwfEuLMziTokdVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 683/798] fs/ntfs3: Refactor enum_rstbl to suppress static checker
+Subject: [PATCH 6.6 131/213] net: dsa: b53: allow lower MTUs on BCM5325/5365
 Date: Mon, 14 Oct 2024 16:20:37 +0200
-Message-ID: <20241014141244.902470130@linuxfoundation.org>
+Message-ID: <20241014141048.082739918@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 56c16d5459d5c050a97a138a00a82b105a8e0a66 ]
+[ Upstream commit e4b294f88a32438baf31762441f3dd1c996778be ]
 
-Comments and brief description of function enum_rstbl added.
+While BCM5325/5365 do not support jumbo frames, they do support slightly
+oversized frames, so do not error out if requesting a supported MTU for
+them.
 
-Fixes: b46acd6a6a62 ("fs/ntfs3: Add NTFS journal")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/fslog.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
-index 8e23bd6cd0f2f..339ce5aa3c75b 100644
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -609,14 +609,29 @@ static inline void add_client(struct CLIENT_REC *ca, u16 index, __le16 *head)
- 	*head = cpu_to_le16(index);
- }
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index b43b414b26969..51b41eb660134 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -2267,7 +2267,7 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
+ 	bool allow_10_100;
  
-+/*
-+ * Enumerate restart table.
-+ *
-+ * @t - table to enumerate.
-+ * @c - current enumerated element.
-+ *
-+ * enumeration starts with @c == NULL
-+ * returns next element or NULL
-+ */
- static inline void *enum_rstbl(struct RESTART_TABLE *t, void *c)
- {
- 	__le32 *e;
- 	u32 bprt;
--	u16 rsize = t ? le16_to_cpu(t->size) : 0;
-+	u16 rsize;
-+
-+	if (!t)
-+		return NULL;
-+
-+	rsize = le16_to_cpu(t->size);
+ 	if (is5325(dev) || is5365(dev))
+-		return -EOPNOTSUPP;
++		return 0;
  
- 	if (!c) {
--		if (!t || !t->total)
-+		/* start enumeration. */
-+		if (!t->total)
- 			return NULL;
- 		e = Add2Ptr(t, sizeof(struct RESTART_TABLE));
- 	} else {
+ 	if (!dsa_is_cpu_port(ds, port))
+ 		return 0;
 -- 
 2.43.0
 
