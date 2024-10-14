@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-84139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3EF99CE56
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:42:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3529099D302
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC60C1C228C6
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:42:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97833289CD5
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0971AA797;
-	Mon, 14 Oct 2024 14:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910281D0490;
+	Mon, 14 Oct 2024 15:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E2x4t1qf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1bM9ocB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB3D1DA53;
-	Mon, 14 Oct 2024 14:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5D51C3050;
+	Mon, 14 Oct 2024 15:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916965; cv=none; b=LKRzgQqBJl/SgZg754XourQB/CbR2sIW3ZgmpjCDF7Hc+VngW6rbqHWwaOjwq7lCi8lHyf0DwUrOBFwhs7Ya2BCjaMEydEOgDramPpWHqAbRbq+uKS0YLoPqiy22TqlVS8CQlkw+BuytxmVZUv3bvfhEImX0rJEQ+6RHFkt2Nyc=
+	t=1728919756; cv=none; b=jPaMfMZtN4TqmqOiJBdSHA5gqvoAFjQJbjvdMZpSBFxTvpn9etfEnXr0ytbYM8Rrnz8lY4GEWORgT8jA9w/OyuyEYkQIhgFqMX2iE2O8TVy9/e9VQvJwYBQbM0iHszn/VOrmRUZjeOWAYogtFOTXPLeDIs1ELsac3/1//hJNtOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916965; c=relaxed/simple;
-	bh=bA+qTZi4AvJN7+LCBB3wIpJ2396go4gFclqYU3hhap4=;
+	s=arc-20240116; t=1728919756; c=relaxed/simple;
+	bh=H2NJSzuMmsrG+EmMCqFeAw+cz90LixF74Wu2XHCNNE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uSI4xMWfC/YElo/ISh4e/nic+hoT38y9qt1caBef1Kl+cDMcV6MUyZSv47T51eHVDjf7o7CJDdJifJ/eAE7rhFVQWo9Q65P28ET+NGZRiKVAiovpPj+JnA7woxc7zpFujFe95MV7LQBqu3vmNnFs/JWc5Yl3DOTBk7HHYf8YEqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E2x4t1qf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227F4C4CEC3;
-	Mon, 14 Oct 2024 14:42:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nm5pqPgPyeKgdAGn1qvOIh+3mHC126DywYVCpc1+JpbekfEPCPuYd5H63MzNgxl4jfnwc40L8HQsokmuPJMUruzM1ISNViXGWP9YwnHu9xAsfev2xiiitEUXJ2nlNeO9uq0MkL+mkHg86Mez4vpVDBmdEI86/VmjVWtTsfec4+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1bM9ocB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D5BC4CEC3;
+	Mon, 14 Oct 2024 15:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916964;
-	bh=bA+qTZi4AvJN7+LCBB3wIpJ2396go4gFclqYU3hhap4=;
+	s=korg; t=1728919756;
+	bh=H2NJSzuMmsrG+EmMCqFeAw+cz90LixF74Wu2XHCNNE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E2x4t1qfP4Vs8AQrDWGobPaVJK3pCdqix7D7AsHA308goUsmxkGNuUgXoju012tnX
-	 3mUgabQvfvzlPZHLTJylDIIv0K0UYYqlOaaL0bnkIP/a6+s5CU1uaE7n6+aa/q8KfQ
-	 uOf16ncf8/JvEyEPaTNxjva54sfKVYKcjyJL+9+o=
+	b=P1bM9ocBKATQHPHEE93W/R7SzUnxrbmMnUhCKH8zfNZl9LSzSQ3Brvw51xvHgvYLr
+	 0pl47liGJi8G3aRhQF6i77C7ZmIF269CtrslfbdnUUDhqicZyp/hzTzbJgrkl0//wf
+	 6VKmXv80dcsWlPUyU07bDlAgfLeU7ZcKSCQyufmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geumhwan Yu <geumhwan.yu@samsung.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Jean-Lo=C3=AFc=20Charroud?= <lagiraudiere+linux@free.fr>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/213] tcp: fix to allow timestamp undo if no retransmits were sent
+Subject: [PATCH 6.1 667/798] ALSA: hda/realtek: cs35l41: Fix order and duplicates in quirks table
 Date: Mon, 14 Oct 2024 16:20:21 +0200
-Message-ID: <20241014141047.458164268@linuxfoundation.org>
+Message-ID: <20241014141244.269102266@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Jean-Loïc Charroud <lagiraudiere+linux@free.fr>
 
-[ Upstream commit e37ab7373696e650d3b6262a5b882aadad69bb9e ]
+[ Upstream commit 852d432a14dbcd34e15a3a3910c5c6869a6d1929 ]
 
-Fix the TCP loss recovery undo logic in tcp_packet_delayed() so that
-it can trigger undo even if TSQ prevents a fast recovery episode from
-reaching tcp_retransmit_skb().
+Move entry {0x1043, 0x16a3, "ASUS UX3402VA"} following device ID order.
+Remove duplicate entry for device {0x1043, 0x1f62, "ASUS UX7602ZM"}.
 
-Geumhwan Yu <geumhwan.yu@samsung.com> recently reported that after
-this commit from 2019:
-
-commit bc9f38c8328e ("tcp: avoid unconditional congestion window undo
-on SYN retransmit")
-
-...and before this fix we could have buggy scenarios like the
-following:
-
-+ Due to reordering, a TCP connection receives some SACKs and enters a
-  spurious fast recovery.
-
-+ TSQ prevents all invocations of tcp_retransmit_skb(), because many
-  skbs are queued in lower layers of the sending machine's network
-  stack; thus tp->retrans_stamp remains 0.
-
-+ The connection receives a TCP timestamp ECR value echoing a
-  timestamp before the fast recovery, indicating that the fast
-  recovery was spurious.
-
-+ The connection fails to undo the spurious fast recovery because
-  tp->retrans_stamp is 0, and thus tcp_packet_delayed() returns false,
-  due to the new logic in the 2019 commit: commit bc9f38c8328e ("tcp:
-  avoid unconditional congestion window undo on SYN retransmit")
-
-This fix tweaks the logic to be more similar to the
-tcp_packet_delayed() logic before bc9f38c8328e, except that we take
-care not to be fooled by the FLAG_SYN_ACKED code path zeroing out
-tp->retrans_stamp (the bug noted and fixed by Yuchung in
-bc9f38c8328e).
-
-Note that this returns the high-level behavior of tcp_packet_delayed()
-to again match the comment for the function, which says: "Nothing was
-retransmitted or returned timestamp is less than timestamp of the
-first retransmission." Note that this comment is in the original
-2005-04-16 Linux git commit, so this is evidently long-standing
-behavior.
-
-Fixes: bc9f38c8328e ("tcp: avoid unconditional congestion window undo on SYN retransmit")
-Reported-by: Geumhwan Yu <geumhwan.yu@samsung.com>
-Diagnosed-by: Geumhwan Yu <geumhwan.yu@samsung.com>
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Yuchung Cheng <ycheng@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241001200517.2756803-2-ncardwell.sw@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 51d976079976 ("ALSA: hda/realtek: Add quirks for ASUS Zenbook 2022 Models")
+Signed-off-by: Jean-Loïc Charroud <lagiraudiere+linux@free.fr>
+Link: https://lore.kernel.org/r/1969151851.650354669.1707867864074.JavaMail.zimbra@free.fr
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index b565c8a8e7bad..31e4f7bce00ce 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -2452,8 +2452,22 @@ static bool tcp_skb_spurious_retrans(const struct tcp_sock *tp,
-  */
- static inline bool tcp_packet_delayed(const struct tcp_sock *tp)
- {
--	return tp->retrans_stamp &&
--	       tcp_tsopt_ecr_before(tp, tp->retrans_stamp);
-+	const struct sock *sk = (const struct sock *)tp;
-+
-+	if (tp->retrans_stamp &&
-+	    tcp_tsopt_ecr_before(tp, tp->retrans_stamp))
-+		return true;  /* got echoed TS before first retransmission */
-+
-+	/* Check if nothing was retransmitted (retrans_stamp==0), which may
-+	 * happen in fast recovery due to TSQ. But we ignore zero retrans_stamp
-+	 * in TCP_SYN_SENT, since when we set FLAG_SYN_ACKED we also clear
-+	 * retrans_stamp even if we had retransmitted the SYN.
-+	 */
-+	if (!tp->retrans_stamp &&	   /* no record of a retransmit/SYN? */
-+	    sk->sk_state != TCP_SYN_SENT)  /* not the FLAG_SYN_ACKED case? */
-+		return true;  /* nothing was retransmitted */
-+
-+	return false;
- }
- 
- /* Undo procedures. */
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 7bb32a98f1761..279857edc0f70 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9896,6 +9896,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1662, "ASUS GV301QH", ALC294_FIXUP_ASUS_DUAL_SPK),
+ 	SND_PCI_QUIRK(0x1043, 0x1663, "ASUS GU603ZV", ALC285_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1683, "ASUS UM3402YAR", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x1043, 0x16a3, "ASUS UX3402VA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x16b2, "ASUS GU603", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x16e3, "ASUS UX50", ALC269_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1740, "ASUS UX430UA", ALC295_FIXUP_ASUS_DACS),
+@@ -9926,8 +9927,6 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1d4e, "ASUS TM420", ALC256_FIXUP_ASUS_HPE),
+ 	SND_PCI_QUIRK(0x1043, 0x1da2, "ASUS UP6502ZA/ZD", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x16a3, "ASUS UX3402VA", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x1f62, "ASUS UX7602ZM", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
+ 	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM6702RA/RC", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1e51, "ASUS Zephyrus M15", ALC294_FIXUP_ASUS_GU502_PINS),
 -- 
 2.43.0
 
