@@ -1,143 +1,109 @@
-Return-Path: <stable+bounces-84916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A499199D2D8
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:30:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9206099D43D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 18:07:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67EB7287148
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:30:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 445F01F21284
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3681CB531;
-	Mon, 14 Oct 2024 15:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DAE1AC8AE;
+	Mon, 14 Oct 2024 16:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="J0wSZSHz"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="FrsoNnpi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BD51AE00C
-	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 15:27:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F461AB53A
+	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 16:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919664; cv=none; b=SBUTU+cflRXJHgz9BuB4FMhzkHkGpF7gj7fFJWJB3Fo1R2J6v+kA/GCWWxPd8oNHxRWqTiGctA1dSKugbs8OnhgqEWAWXOLz4l/4d52igikXqQF1YzoqsAtDR/dSJ8YpRyTYew5MLRUyTt3Z79US3WePx+9ypqonGOEF5PMXBsM=
+	t=1728922023; cv=none; b=fZtqRESLULa/9amULpmR9q0mBV+LCbZ99pT1PUSP2FirZTaYJdoezlbDadFB/CJpSspXgg9V+1rmfwK4VOvadNWH0BjqC1s8E4pMztQaS+C60WBAvyZ0ZyaPzyK8sJOvXy2SetL8wQElz1IxIrjs/9hp9PjCaEzKlqq0o9KiKMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919664; c=relaxed/simple;
-	bh=b6yahaVdr8hTpYrymapwr8Gi+VRT/0jILQ68OOYwggY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SFVqvyzV4jQC2l5euEb1aKmZqPhM/FXX8krZDi7l7I8B/TS0cQCiPBqh8QJC6MDbhpNVcA58dbPr94eByUtVPEaV9jf4cORv7dJl2ZMrMW9EcvCvfWtOs5+yWB38y+hp7Xq28PCQ62/VcbwaXLFPaUg0MAjbqxJkkgmx0nwu+JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=J0wSZSHz; arc=none smtp.client-ip=209.85.210.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-716a5b30089so264268a34.3
-        for <stable@vger.kernel.org>; Mon, 14 Oct 2024 08:27:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1728919661; x=1729524461; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z9yIRP/KsLjcxcxII5/lXPcFtxtuaU6xnyFBDOKX70k=;
-        b=J0wSZSHz7jfKiplh5hlAMnwHZL6GVkmQ8aiu9dFw0U9pD7W+XLAQHziBcXfwsbUqEC
-         SpS4BdH2SsGQhZqG7u6ilWq5h1ejCeIUSP9ufg/ywf9+aJTAiAi6prF83OW45YYahMcg
-         +5/g7ly9pStnPj403BWMsDGzVtim8teltumtY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728919661; x=1729524461;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Z9yIRP/KsLjcxcxII5/lXPcFtxtuaU6xnyFBDOKX70k=;
-        b=JD0UB156eR9E8heI5ZY2iMIVKGKBvvnBtZdfwnwjlkJ7dpNBfG/Y7r9kGeHBETPN8k
-         d2/tk+JS2+DUmsZksEIbkU4pAMJDIn0j/1AM4g7Nv9uRnLxgeAJyY2gr4wYYTbAJLfgE
-         5mVKUYbTQ/E96dc5tUZE5YjRol2NYgHheEai1L+YP8AGkUpv8gHOIcEF+oLD0c12Ewsh
-         +DT66vBhy830oqYdRBKW12Qw6fm1Bkhy2oumUhDo3ja8rLGRxVcCFqsOnI2M3oa8wgwp
-         e7/NQPTR4wjEUUaHOwcXGjA/UCdy835aocKcCIWZVXefu8vI9lx9lc6uU9kZNw8xDPUB
-         /hyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXtABBgN2PszBE7bTkjPrYs5hldWNPZAo7H0o29fjadTJse7T61K6kNMnYvGlO2P62IuuMBc+k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0bbRqWzpBpuydK7oqb7ChfthiOM8MnsMCtC/7zp+K0NyoiBMV
-	KJv4rXDqofsIjFZjQk6jY8TrbSKd8nJy0MIurJOW1N6lkZUJvwBkCfaoYj61z+TTAQL/iaJnIv7
-	tZDlPePHtUIZ06LlsbhO+JDna5GLjSpHFT4NGa9i6+o9U/a8=
-X-Google-Smtp-Source: AGHT+IEziAPSxkdF8eMOp1RXN7d7s544AwYMwxr/wUwFC7ODFvd8sIDGR1p6z81kLbwviBR4qLmSxoKaxW0zWGIF+0c=
-X-Received: by 2002:a05:6870:e416:b0:27b:73dd:2a85 with SMTP id
- 586e51a60fabf-2886dd50b7amr2143445fac.1.1728919661579; Mon, 14 Oct 2024
- 08:27:41 -0700 (PDT)
+	s=arc-20240116; t=1728922023; c=relaxed/simple;
+	bh=WYSp7ZoZEyPijf1hEQ6LZbUfFxdbvCBeCjlq9cqrgJY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QkKeeKaeP7IbJGdN/20LpMcwAK474RJRL06ZbROYQpYAEXf3hj56nHKLHjaaDkHI4l0AkW0epyYdpiKzArhlg0iihrvwZxtqDo9pDEpZXq4GgLsouqtFJqkfPjKqLE/FWonmrFy6jpkD3FOIJAbz26RCvSIRnFGN1b9O+eF9Wko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=FrsoNnpi; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49EEfcn5024102;
+	Mon, 14 Oct 2024 16:06:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=QpOfCbuktHSThkGSRy14M1MTgynTF
+	Oo8SmeAZFLnvMo=; b=FrsoNnpiXzFlEJTZnW9LHVu31Sy18iQLEoqfMZuhBfEvl
+	rhlvpHe6zKtn9i/hCRMrgRqcw2yRows3zdBO2Vrs+ptKnmIkHiAVVaUzAxRx65YO
+	kHV3eyPMniE1CoPoL3vCldncpd0iBtppv+iMWhxG3ax3/ThKbdpsZVULc3gAkFyN
+	mpojQkzh2/vqz2NyvQp7lSnd5JCgDp/AEPBde1uDh4HOINwz4t0Xs9U/sF2dUleW
+	8FLmfLZLR2oMIb+P0ZgUdEuWcMoKsbHCNzkjKoR32MxOHhEdBVODoQfYiBgrdZR3
+	kffnSbJWmBlMrOeJD8ZpxCAy02VsyMaUudVnJzNgg==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427hnt6u5b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 14 Oct 2024 16:06:55 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49EFPRl2038561;
+	Mon, 14 Oct 2024 16:06:53 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 427fjchk26-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 14 Oct 2024 16:06:53 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49EG4YYe036561;
+	Mon, 14 Oct 2024 16:06:53 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 427fjchk1a-1;
+	Mon, 14 Oct 2024 16:06:53 +0000
+From: Sherry Yang <sherry.yang@oracle.com>
+To: stable@vger.kernel.org, sashal@kernel.org, gregkh@linuxfoundation.org
+Cc: rostedt@goodmis.org, mingo@redhat.com, sherry.yang@oracle.com
+Subject: [PATCH 5.4.y 0/2] tracing/kprobes: Backport request about
+Date: Mon, 14 Oct 2024 09:06:50 -0700
+Message-ID: <20241014160652.2622878-1-sherry.yang@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CABi2SkW0Q8zAkmVg8qz9WV+Fkjft4stO67ajx0Gos82Sc4vjhg@mail.gmail.com>
- <2024101439-scotch-ceremony-c2a8@gregkh>
-In-Reply-To: <2024101439-scotch-ceremony-c2a8@gregkh>
-From: Jeff Xu <jeffxu@chromium.org>
-Date: Mon, 14 Oct 2024 08:27:29 -0700
-Message-ID: <CABi2SkWSLHfcBhsa2OQqtTjUa-gNRYXWthwPeWrrEQ1pUhfnJg@mail.gmail.com>
-Subject: Re: backport mseal and mseal_test to 6.10
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Pedro Falcato <pedro.falcato@gmail.com>, 
-	stable@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
-	Oleg Nesterov <oleg@redhat.com>, Kees Cook <keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-14_10,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0 bulkscore=0
+ spamscore=0 phishscore=0 malwarescore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
+ definitions=main-2410140117
+X-Proofpoint-ORIG-GUID: dQPMOF0vXd-D7PnsDgw6DXHHwN1h0hf2
+X-Proofpoint-GUID: dQPMOF0vXd-D7PnsDgw6DXHHwN1h0hf2
 
-On Sun, Oct 13, 2024 at 10:54=E2=80=AFPM Greg KH <gregkh@linuxfoundation.or=
-g> wrote:
->
-> On Sun, Oct 13, 2024 at 10:17:48PM -0700, Jeff Xu wrote:
-> > Hi Greg,
-> >
-> > How are you?
-> >
-> > What is the process to backport Pedro's recent mseal fixes to 6.10 ?
->
-> Please read:
->     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.ht=
-ml
-> for how all of this works :)
->
-> > Specifically those 5 commits:
-> >
-> > 67203f3f2a63d429272f0c80451e5fcc469fdb46
-> >     selftests/mm: add mseal test for no-discard madvise
-> >
-> > 4d1b3416659be70a2251b494e85e25978de06519
-> >     mm: move can_modify_vma to mm/vma.h
-> >
-> >  4a2dd02b09160ee43f96c759fafa7b56dfc33816
-> >   mm/mprotect: replace can_modify_mm with can_modify_vma
-> >
-> > 23c57d1fa2b9530e38f7964b4e457fed5a7a0ae8
-> >       mseal: replace can_modify_mm_madv with a vma variant
-> >
-> > f28bdd1b17ec187eaa34845814afaaff99832762
-> >    selftests/mm: add more mseal traversal tests
-> >
-> > There will be merge conflicts, I  can backport them to 5.10 and test
-> > to help the backporting process.
->
-> 5.10 or 6.10?
->
-6.10.
+The added test case from commit 
+09bcf9254838 ("selftests/ftrace: Add new test case which checks non unique symbol") 
+failed, it is fixed by 
+b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols"). 
+Backport it and its fix commit to 5.4.y together. Resolved minor context change conflicts.
 
-> And why 6.10?  If you look at the front page of kernel.org you will see
-> that 6.10 is now end-of-life, so why does that kernel matter to you
-> anymore?
->
-OK, I didn't know that. Less work is nice :-)
+Resend the patch series after backpporting to 5.10.y first.
 
-Thanks!
--Jeff
+Andrii Nakryiko (1):
+  tracing/kprobes: Fix symbol counting logic by looking at modules as
+    well
 
-> > Those 5 fixes are needed for two reasons: maintain the consistency of
-> > mseal's semantics across releases, and for ease of backporting future
-> > fixes.
->
-> Backporting more to 6.10?  Again, it's end-of-life, who would be
-> backporting anything else?
->
-> confused,
->
-> greg k-h
+Francis Laniel (1):
+  tracing/kprobes: Return EADDRNOTAVAIL when func matches several
+    symbols
+
+ kernel/trace/trace_kprobe.c | 76 +++++++++++++++++++++++++++++++++++++
+ kernel/trace/trace_probe.h  |  1 +
+ 2 files changed, 77 insertions(+)
+
+-- 
+2.46.0
+
 
