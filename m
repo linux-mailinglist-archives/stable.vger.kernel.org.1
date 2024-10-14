@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-83837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A2C99CCC8
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:24:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE0799D1FF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F491282545
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:24:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19BD8B25F7F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B244A1A76C4;
-	Mon, 14 Oct 2024 14:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3411B4F17;
+	Mon, 14 Oct 2024 15:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRfLGcu8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igWgYdOq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED2D1547F3;
-	Mon, 14 Oct 2024 14:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461D41AAE3B;
+	Mon, 14 Oct 2024 15:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915886; cv=none; b=OZNQkMkCfSEOZ2jSPAd+9ROUscJVYcFcEYP6v0ZJ0GWQ/HbZex2+jvOPCgvstw4rfyOgGCAqBgnvn+iG3C2T9gJBE+vHYxKF7ByOWP8MB9C7O8qj9owGrcKeC+1Ut3SpeUnf8/UQt/CUB0ptU6Fug3PdP95ZPdA0ZofCuOSRU7A=
+	t=1728919111; cv=none; b=OT0wSGwHrLOcHdxjERp3nKbQa0Zi3sGomsVC0eWhl4VWAzCOJ+Z9phv5pmhIzXyacXy4sLn9Ob1/2BEANcWPNKGZSDF9ZG7CQ9itj+5nSyO7ZfVK0+3F7QI3j1HLbbsXsvlI5coxBbmuopi+STEdeIkgYEj0xH/vv+SJYHLJuBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915886; c=relaxed/simple;
-	bh=FhVMr4apfiGxz5s23f/FwU6E8KAw1hT+k4U/JGWI8C8=;
+	s=arc-20240116; t=1728919111; c=relaxed/simple;
+	bh=/XpN1+7wOXGMHhBg78UgAKbwPI5c97zqfJzrp7+x7s8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tbr1kuM0CLEmphkBpWuOQB6tcjAgUBH/BjrsS3dXP7WPgU7kYtD3JX1g0ucfLceXp9HzEHy8Fued+BN5AuDK5zuHEYzP/pKshRqR1+fs08ee5RGet5oje/a+1eYP7tlh7+8CdZLjrBwdjJ6d0cgVy8n8S0lNTRymJbam5nBTzOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRfLGcu8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB465C4CEC3;
-	Mon, 14 Oct 2024 14:24:45 +0000 (UTC)
+	 MIME-Version; b=dNqG0JB1xmTBuA0ZZrW/qRYQ16A4NWzZ/J3m51fftLFI8rCogDeeUvy8XZk5vIQLVn7zKF0gIjOgVY5xXLyTSzBwqnE7wduhKkQFBWmP0U5jIyKlr6FddocB9eBlTC8OT+RBcTiQvuWnGKoPr+NUni39VPFF/OEpeYLfnHw00Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igWgYdOq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7590C4CEC3;
+	Mon, 14 Oct 2024 15:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915886;
-	bh=FhVMr4apfiGxz5s23f/FwU6E8KAw1hT+k4U/JGWI8C8=;
+	s=korg; t=1728919111;
+	bh=/XpN1+7wOXGMHhBg78UgAKbwPI5c97zqfJzrp7+x7s8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LRfLGcu8R0p3TNkWMgnLIUKJJiR58/phg+pcdRkRDT/1SI7VEgIbkzDnxzzF0tnFi
-	 NUPHmgnsQyxeirgiVVgTv7ggxNJqjTWsY9WrBZn0C2MxXSAJjpoiCmDqy5bbytmSfx
-	 K04uIn+Z9KzFQAaZOCR3ws7ovbEW0wWGVBWZSt4A=
+	b=igWgYdOqEHVahoauEq/Kjz8FRmwsm1hkIVboffzqBNKZIk3Ic06dWcFPZDXef5YlE
+	 QMDOZILk1YKjWBIYvHz76j3HH0h6FVWIsvQh5T3KATabdwmZvnFiatUmUdj+5ABgbe
+	 iCHRwwqIYzOKdP7Tqkvmj9AoKWgKMX8Vh4axq/P8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 007/214] fs/ntfs3: Refactor enum_rstbl to suppress static checker
+Subject: [PATCH 6.1 516/798] selftests: vDSO: fix vDSO name for powerpc
 Date: Mon, 14 Oct 2024 16:17:50 +0200
-Message-ID: <20241014141045.279133666@linuxfoundation.org>
+Message-ID: <20241014141238.251577729@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 56c16d5459d5c050a97a138a00a82b105a8e0a66 ]
+[ Upstream commit 59eb856c3ed9b3552befd240c0c339f22eed3fa1 ]
 
-Comments and brief description of function enum_rstbl added.
+Following error occurs when running vdso_test_correctness on powerpc:
 
-Fixes: b46acd6a6a62 ("fs/ntfs3: Add NTFS journal")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+~ # ./vdso_test_correctness
+[WARN]	failed to find vDSO
+[SKIP]	No vDSO, so skipping clock_gettime() tests
+[SKIP]	No vDSO, so skipping clock_gettime64() tests
+[RUN]	Testing getcpu...
+[OK]	CPU 0: syscall: cpu 0, node 0
+
+On powerpc, vDSO is neither called linux-vdso.so.1 nor linux-gate.so.1
+but linux-vdso32.so.1 or linux-vdso64.so.1.
+
+Also search those two names before giving up.
+
+Fixes: c7e5789b24d3 ("kselftest: Move test_vdso to the vDSO test suite")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/fslog.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ tools/testing/selftests/vDSO/vdso_test_correctness.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
-index c64dd114ac652..d0d530f4e2b95 100644
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -609,14 +609,29 @@ static inline void add_client(struct CLIENT_REC *ca, u16 index, __le16 *head)
- 	*head = cpu_to_le16(index);
- }
- 
-+/*
-+ * Enumerate restart table.
-+ *
-+ * @t - table to enumerate.
-+ * @c - current enumerated element.
-+ *
-+ * enumeration starts with @c == NULL
-+ * returns next element or NULL
-+ */
- static inline void *enum_rstbl(struct RESTART_TABLE *t, void *c)
- {
- 	__le32 *e;
- 	u32 bprt;
--	u16 rsize = t ? le16_to_cpu(t->size) : 0;
-+	u16 rsize;
-+
-+	if (!t)
-+		return NULL;
-+
-+	rsize = le16_to_cpu(t->size);
- 
- 	if (!c) {
--		if (!t || !t->total)
-+		/* start enumeration. */
-+		if (!t->total)
- 			return NULL;
- 		e = Add2Ptr(t, sizeof(struct RESTART_TABLE));
- 	} else {
+diff --git a/tools/testing/selftests/vDSO/vdso_test_correctness.c b/tools/testing/selftests/vDSO/vdso_test_correctness.c
+index e691a3cf14911..cdb697ae8343c 100644
+--- a/tools/testing/selftests/vDSO/vdso_test_correctness.c
++++ b/tools/testing/selftests/vDSO/vdso_test_correctness.c
+@@ -114,6 +114,12 @@ static void fill_function_pointers()
+ 	if (!vdso)
+ 		vdso = dlopen("linux-gate.so.1",
+ 			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
++	if (!vdso)
++		vdso = dlopen("linux-vdso32.so.1",
++			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
++	if (!vdso)
++		vdso = dlopen("linux-vdso64.so.1",
++			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
+ 	if (!vdso) {
+ 		printf("[WARN]\tfailed to find vDSO\n");
+ 		return;
 -- 
 2.43.0
 
