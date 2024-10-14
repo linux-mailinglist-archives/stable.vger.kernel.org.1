@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-84157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C99E599CE73
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:44:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2148099D2E8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 071F01C21CA7
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:44:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8ABB1B24A47
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC681AB522;
-	Mon, 14 Oct 2024 14:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C311AE001;
+	Mon, 14 Oct 2024 15:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="030OgEam"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRGM2tcu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0D31AC426;
-	Mon, 14 Oct 2024 14:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADADE1AAE00;
+	Mon, 14 Oct 2024 15:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917031; cv=none; b=Fbgndn9y4klB4QuW2u8IcCHe4oQSzPe105rP9f8k9eAaMl7Bn3XeaMLslm8c5iLBRTSp673iXT0+0DlOyqoiuP0mBX5J9HLA6D1CuEv5RvXKY2xdD6iBXAec2uo0PBHKMmV6Mu4lUUSdJ/+1ouRbPMqSEb3qhO65ubws59STY1U=
+	t=1728919705; cv=none; b=Yb6PEG3Dih2wAO6rs4mLdY7BoWuoc88Cd5jf6ITAkyXhMqE40MmzbbaSyur5QZxwVORieUF0lPYar90hgoljockeDJ90pzWNRxFC5+bUW1dCP3ifYKV6D11fHmDLvqL7FEvWlZUOQro0EluD9aQQMiHFUwx462laN8LSrvZi0wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917031; c=relaxed/simple;
-	bh=LYpt2sqCjISsYz2MqXJ1LzmVKGdbky7tiMutPVv3DEI=;
+	s=arc-20240116; t=1728919705; c=relaxed/simple;
+	bh=m8Hkxij51fWIW/1wDyWbwKxSdeaRJVJQWdbychv/XZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F+ZQtbp678dAqliPXZPEx+Vrdb5OJR16Ry04uS5lxLuCPi+1GCSGE/fryHahNimCrD5qGghmYQ5la6mv3lVv0rk9G6TNcC5RQg1Nnq6OM3MunjdOq1YmvFpYEK8uyX7TCVNDMdX73MK0CmU8J5i5ytEpSBlmg3F79RugdL3kQL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=030OgEam; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79FC1C4CECF;
-	Mon, 14 Oct 2024 14:43:50 +0000 (UTC)
+	 MIME-Version; b=uZ2EzYsZJslSZKwWtyFzSojLsGAoQF2AMN673x5SOthFCHSWkYe060sIBT2t+SGXfc7I9eJnNopftiaTf+lR0gqua0yby4BohSx5oCFKWGPmmhDDSWOHFbQUYYyvfTgHQLqTZ2+fmeyCY7ztIZnSIJY8ODqDoIuaHofapTNHrO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRGM2tcu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D58FC4CECF;
+	Mon, 14 Oct 2024 15:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917031;
-	bh=LYpt2sqCjISsYz2MqXJ1LzmVKGdbky7tiMutPVv3DEI=;
+	s=korg; t=1728919705;
+	bh=m8Hkxij51fWIW/1wDyWbwKxSdeaRJVJQWdbychv/XZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=030OgEamVka8LVVxQ5P6JpSq0yTRZCjrfcbBvPkE0q1skCjnC3CsJIFcHzsP9kZbo
-	 /vQF64/aYaVnVT4vrvpFgYvOahwA+9ZapvaqHdnZfqVdKSqAi6BpFzcHABkAVtPW15
-	 EKgIbOyS1ZJKSlI1CGgb8bfBVWT21sCPJoO0IZ1A=
+	b=KRGM2tcuBBEG0X386Mb942PWKAfJc/FkH/vsTyZMBbgkk0ULnd70pBO4UXTlPK0/p
+	 7hmCa2GO1rdsi00qkz71/ahvNxMQrS5sLd5keSqa6AF+wHehZHeVR0gqN5/P6w1AXA
+	 2UhlkogfcOu0ZLAvm5IxFR11+QJC8l6F6oR3hPUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/213] net: dsa: b53: fix jumbo frames on 10/100 ports
+Subject: [PATCH 6.1 684/798] virtio_console: fix misc probe bugs
 Date: Mon, 14 Oct 2024 16:20:38 +0200
-Message-ID: <20241014141048.121929163@linuxfoundation.org>
+Message-ID: <20241014141244.942410616@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit 2f3dcd0d39affe5b9ba1c351ce0e270c8bdd5109 ]
+[ Upstream commit b9efbe2b8f0177fa97bfab290d60858900aa196b ]
 
-All modern chips support and need the 10_100 bit set for supporting jumbo
-frames on 10/100 ports, so instead of enabling it only for 583XX enable
-it for everything except bcm63xx, where the bit is writeable, but does
-nothing.
+This fixes the following issue discovered by code review:
 
-Tested on BCM53115, where jumbo frames were dropped at 10/100 speeds
-without the bit set.
+after vqs have been created, a buggy device can send an interrupt.
 
-Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+A control vq callback will then try to schedule control_work which has
+not been initialized yet. Similarly for config interrupt.  Further, in
+and out vq callbacks invoke find_port_by_vq which attempts to take
+ports_lock which also has not been initialized.
+
+To fix, init all locks and work before creating vqs.
+
+Message-ID: <ad982e975a6160ad110c623c016041311ca15b4f.1726511547.git.mst@redhat.com>
+Fixes: 17634ba25544 ("virtio: console: Add a new MULTIPORT feature, support for generic ports")
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/virtio_console.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 51b41eb660134..4a2c9a9134d8c 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2273,7 +2273,7 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
- 		return 0;
+diff --git a/drivers/char/virtio_console.c b/drivers/char/virtio_console.c
+index 9fa3c76a267f5..899036ce3802c 100644
+--- a/drivers/char/virtio_console.c
++++ b/drivers/char/virtio_console.c
+@@ -2055,25 +2055,27 @@ static int virtcons_probe(struct virtio_device *vdev)
+ 		multiport = true;
+ 	}
  
- 	enable_jumbo = (mtu > ETH_DATA_LEN);
--	allow_10_100 = (dev->chip_id == BCM583XX_DEVICE_ID);
-+	allow_10_100 = !is63xx(dev);
+-	err = init_vqs(portdev);
+-	if (err < 0) {
+-		dev_err(&vdev->dev, "Error %d initializing vqs\n", err);
+-		goto free_chrdev;
+-	}
+-
+ 	spin_lock_init(&portdev->ports_lock);
+ 	INIT_LIST_HEAD(&portdev->ports);
+ 	INIT_LIST_HEAD(&portdev->list);
  
- 	return b53_set_jumbo(dev, enable_jumbo, allow_10_100);
- }
+-	virtio_device_ready(portdev->vdev);
+-
+ 	INIT_WORK(&portdev->config_work, &config_work_handler);
+ 	INIT_WORK(&portdev->control_work, &control_work_handler);
+ 
+ 	if (multiport) {
+ 		spin_lock_init(&portdev->c_ivq_lock);
+ 		spin_lock_init(&portdev->c_ovq_lock);
++	}
+ 
++	err = init_vqs(portdev);
++	if (err < 0) {
++		dev_err(&vdev->dev, "Error %d initializing vqs\n", err);
++		goto free_chrdev;
++	}
++
++	virtio_device_ready(portdev->vdev);
++
++	if (multiport) {
+ 		err = fill_queue(portdev->c_ivq, &portdev->c_ivq_lock);
+ 		if (err < 0) {
+ 			dev_err(&vdev->dev,
 -- 
 2.43.0
 
