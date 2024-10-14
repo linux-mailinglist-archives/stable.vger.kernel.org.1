@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-84017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356CE99CDB6
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F25D99D325
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 669AF1C22BAB
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2E73B27345
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8791A76AC;
-	Mon, 14 Oct 2024 14:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906641C9B97;
+	Mon, 14 Oct 2024 15:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgRb+URO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZX7rSfR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9144595B;
-	Mon, 14 Oct 2024 14:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8C14C3D0;
+	Mon, 14 Oct 2024 15:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916519; cv=none; b=eGNfPZ7ITvFz3VH8MVkDGzAHrERBgBlK0z1H37py4JlrLiRW6kIaHVxZeFukD4iU/rUSNIbBeeeeK32CgE03dBogtmHejVbWoRIaBD4CvJEtIHfZlL9qt2F3+c0J1GOQRo05rjxaeFhNSbk9K/Y5CPZo9xHJRlNapUEx6vMsMtk=
+	t=1728919828; cv=none; b=dPNaidY3TI8NP9ci6meOyrf2U4+amu1zTLtlQv0teLgpeXJ8VjEquGU7TjVJgHpVSjbfa66uvPvDQ6xxFdc7oIlhbDlZ1Yh4q0M2o//7Jr4lMBGd35GzX39bwapTeUdgv/HTI1mSGOyUxfZEVsnAnPFXWMwLQXTf86SJrdSkW+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916519; c=relaxed/simple;
-	bh=ua23tWhqj+xE83m/RXzAl/11Hv9LGGS7gCTCuooiVXs=;
+	s=arc-20240116; t=1728919828; c=relaxed/simple;
+	bh=rnLYbKiqbarBLeRvFBpN/OynZVqIQHipXbsiepvYADg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dS511DEg6HpOWvSk8ZfEX/3weXsdqWS3Da2sjENrBeJmIHIV+k8b+VnDfYGuDE3LkHTDFckNvvMON2i5LWastAQhQZ/L+4ul/djWmU5sIjUtejmzZburEUnDg1BVLvJLhaxZ66/BA+E0fLR6YzCfjirYRLkpaxFnwRjzlth0A9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgRb+URO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3330AC4CEC3;
-	Mon, 14 Oct 2024 14:35:18 +0000 (UTC)
+	 MIME-Version; b=S0GQfc+fOz8KdMcbonnag3C0pFT0qYlhdErfhHPOMFxCDTNXjnSznHPTtruDZ1DckErA2Rnf0D8iHIyIeLlYkd2jAtGLGM3l062elOSGYg+/CA0aWKwLxPmtkXx4M8P5wimjWlFYK8kKB+ik1NmcPsgMBkJ4GcKngrUPOPmb0kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZX7rSfR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1328C4CEC3;
+	Mon, 14 Oct 2024 15:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916519;
-	bh=ua23tWhqj+xE83m/RXzAl/11Hv9LGGS7gCTCuooiVXs=;
+	s=korg; t=1728919828;
+	bh=rnLYbKiqbarBLeRvFBpN/OynZVqIQHipXbsiepvYADg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FgRb+UROaczyh4cDfBEmiolkgNECSc/Qay93GGNeUCsjouE9LMueFlHUrqxXrUkqU
-	 +gFEP8zNZxoxmJSKRDxSoZOmDW7BW89mC/YyTp85N/u7nOLrUjWu925yvpwKPUEJok
-	 VgKNzA6hWmdtMiWkLbEu3NVm/V6huDO2RSHYpf8Y=
+	b=gZX7rSfRAQ5tt/fMvDE35/INeD63Qa4DwrKMLS7xtC8/S+StI8KQxIIe/TzqHJ8bO
+	 CG8zFvZt3SVlNLclzXTLyDHTxoGaP1Lmhe1dQgeVxfheW59wNKFTQwBQW0fMoi/Ib7
+	 xVqTgqLtqm8TvcI//Og1JvrU4WD2mH14T9erA4SQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.11 208/214] PM: domains: Fix alloc/free in dev_pm_domain_attach|detach_list()
-Date: Mon, 14 Oct 2024 16:21:11 +0200
-Message-ID: <20241014141053.094901868@linuxfoundation.org>
+	Riyan Dhiman <riyandhiman14@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 718/798] staging: vme_user: added bound check to geoid
+Date: Mon, 14 Oct 2024 16:21:12 +0200
+Message-ID: <20241014141246.277222667@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Riyan Dhiman <riyandhiman14@gmail.com>
 
-commit 7738568885f2eaecfc10a3f530a2693e5f0ae3d0 upstream.
+[ Upstream commit a8a8b54350229f59c8ba6496fb5689a1632a59be ]
 
-The dev_pm_domain_attach|detach_list() functions are not resource managed,
-hence they should not use devm_* helpers to manage allocation/freeing of
-data. Let's fix this by converting to the traditional alloc/free functions.
+The geoid is a module parameter that allows users to hardcode the slot number.
+A bound check for geoid was added in the probe function because only values
+between 0 and less than VME_MAX_SLOT are valid.
 
-Fixes: 161e16a5e50a ("PM: domains: Add helper functions to attach/detach multiple PM domains")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://lore.kernel.org/r/20241002122232.194245-3-ulf.hansson@linaro.org
+Signed-off-by: Riyan Dhiman <riyandhiman14@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240827125604.42771-2-riyandhiman14@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/common.c |   25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ drivers/staging/vme_user/vme_fake.c   | 6 ++++++
+ drivers/staging/vme_user/vme_tsi148.c | 6 ++++++
+ 2 files changed, 12 insertions(+)
 
---- a/drivers/base/power/common.c
-+++ b/drivers/base/power/common.c
-@@ -195,6 +195,7 @@ int dev_pm_domain_attach_list(struct dev
- 	struct device *pd_dev = NULL;
- 	int ret, i, num_pds = 0;
- 	bool by_id = true;
-+	size_t size;
- 	u32 pd_flags = data ? data->pd_flags : 0;
- 	u32 link_flags = pd_flags & PD_FLAG_NO_DEV_LINK ? 0 :
- 			DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME;
-@@ -217,19 +218,17 @@ int dev_pm_domain_attach_list(struct dev
- 	if (num_pds <= 0)
- 		return 0;
+diff --git a/drivers/staging/vme_user/vme_fake.c b/drivers/staging/vme_user/vme_fake.c
+index 1ee432c223e2b..0c4d60aa00ab2 100644
+--- a/drivers/staging/vme_user/vme_fake.c
++++ b/drivers/staging/vme_user/vme_fake.c
+@@ -1071,6 +1071,12 @@ static int __init fake_init(void)
+ 	struct vme_slave_resource *slave_image;
+ 	struct vme_lm_resource *lm;
  
--	pds = devm_kzalloc(dev, sizeof(*pds), GFP_KERNEL);
-+	pds = kzalloc(sizeof(*pds), GFP_KERNEL);
- 	if (!pds)
- 		return -ENOMEM;
- 
--	pds->pd_devs = devm_kcalloc(dev, num_pds, sizeof(*pds->pd_devs),
--				    GFP_KERNEL);
--	if (!pds->pd_devs)
--		return -ENOMEM;
--
--	pds->pd_links = devm_kcalloc(dev, num_pds, sizeof(*pds->pd_links),
--				     GFP_KERNEL);
--	if (!pds->pd_links)
--		return -ENOMEM;
-+	size = sizeof(*pds->pd_devs) + sizeof(*pds->pd_links);
-+	pds->pd_devs = kcalloc(num_pds, size, GFP_KERNEL);
-+	if (!pds->pd_devs) {
-+		ret = -ENOMEM;
-+		goto free_pds;
++	if (geoid < 0 || geoid >= VME_MAX_SLOTS) {
++		pr_err("VME geographical address must be between 0 and %d (exclusive), but got %d\n",
++			VME_MAX_SLOTS, geoid);
++		return -EINVAL;
 +	}
-+	pds->pd_links = (void *)(pds->pd_devs + num_pds);
- 
- 	if (link_flags && pd_flags & PD_FLAG_DEV_LINK_ON)
- 		link_flags |= DL_FLAG_RPM_ACTIVE;
-@@ -272,6 +271,9 @@ err_attach:
- 			device_link_del(pds->pd_links[i]);
- 		dev_pm_domain_detach(pds->pd_devs[i], true);
- 	}
-+	kfree(pds->pd_devs);
-+free_pds:
-+	kfree(pds);
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(dev_pm_domain_attach_list);
-@@ -318,6 +320,9 @@ void dev_pm_domain_detach_list(struct de
- 			device_link_del(list->pd_links[i]);
- 		dev_pm_domain_detach(list->pd_devs[i], true);
- 	}
 +
-+	kfree(list->pd_devs);
-+	kfree(list);
- }
- EXPORT_SYMBOL_GPL(dev_pm_domain_detach_list);
+ 	/* We need a fake parent device */
+ 	vme_root = __root_device_register("vme", THIS_MODULE);
+ 	if (IS_ERR(vme_root))
+diff --git a/drivers/staging/vme_user/vme_tsi148.c b/drivers/staging/vme_user/vme_tsi148.c
+index 0171f46d1848f..0e649c8b259d1 100644
+--- a/drivers/staging/vme_user/vme_tsi148.c
++++ b/drivers/staging/vme_user/vme_tsi148.c
+@@ -2261,6 +2261,12 @@ static int tsi148_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	struct vme_dma_resource *dma_ctrlr;
+ 	struct vme_lm_resource *lm;
  
++	if (geoid < 0 || geoid >= VME_MAX_SLOTS) {
++		dev_err(&pdev->dev, "VME geographical address must be between 0 and %d (exclusive), but got %d\n",
++			VME_MAX_SLOTS, geoid);
++		return -EINVAL;
++	}
++
+ 	/* If we want to support more than one of each bridge, we need to
+ 	 * dynamically generate this so we get one per device
+ 	 */
+-- 
+2.43.0
+
 
 
 
