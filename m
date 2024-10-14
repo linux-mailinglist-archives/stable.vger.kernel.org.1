@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-83932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3350599CD3B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2769A99CE52
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:42:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63D181C21C2C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 403951C22E4E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659A920322;
-	Mon, 14 Oct 2024 14:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D06B1AB6FC;
+	Mon, 14 Oct 2024 14:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TIfu4nEE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qa//XmO/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22529610B;
-	Mon, 14 Oct 2024 14:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3391AB521;
+	Mon, 14 Oct 2024 14:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916236; cv=none; b=ltPKSj72JSEm890pFyGPzinIcwJPLXgdc1Yt2h8kIEX67Dr0xOS4DwZz1AY1HWUGeNob4Laagl7NaiOpShqgiZ+HZK7jqFKvgAkCMF/qt2UzbunkwiNpxP5k9yko96RlqvWkncFeb9ijEUJ4mN3EzI6/kNGFjxTJBmLt8jYGLl0=
+	t=1728916946; cv=none; b=iw96sk+p7Gj5mFLyqFha7Ij6tuh6FmbyjxRJxK78v+bozrhXDLtsvABt8AVPRdozykblR930AZAKriCtbH5NhWKP+QWN6N02HT2ik8QHuvcZSADsJtet71jcpUMAqJNP4jX4ku4eCHzmfO+sI/SnpcToathvFOO3ZAE3psPiAtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916236; c=relaxed/simple;
-	bh=6D7w2DAD2CTFivULAzbS190war7cozXRYS2WYdPMzp0=;
+	s=arc-20240116; t=1728916946; c=relaxed/simple;
+	bh=P2/nVTV2sMZa1dEwF9uRNa5XtbJX/e+KKlF8iUlh6bE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hd9GTG94v0JKxzGURBSAW6teblh+8g9KwCSU6/K9bDeFrFaeujJFRy315gWgrAWt7S4tmEdm7HNzjFEKvxK2yOLYw0cRIhacUZv63WPUiKEXseQlB4DYRs4xDlm+dUrdhiFlUPP42R9XXrf6kR+BoraeD5s0R6ZxSU/qLylyb0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TIfu4nEE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B98C4CEC7;
-	Mon, 14 Oct 2024 14:30:35 +0000 (UTC)
+	 MIME-Version; b=sP8SwXBn9NiHjtfwvVgAhcgkxooqFiBbh7zXj/MGoqxYz7E6JPlOtCVq0BYEmHVeNYopftLUz40yaM8WLfUpAvmfnX8AfnRBsLHcgEsgiyef8mXx++fN50+PchqtpP9+xO7tz6j7+feuwk/S/pDJNYwdmN2KUkNI9LQubfuyY2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qa//XmO/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E2EC4CEC3;
+	Mon, 14 Oct 2024 14:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916235;
-	bh=6D7w2DAD2CTFivULAzbS190war7cozXRYS2WYdPMzp0=;
+	s=korg; t=1728916946;
+	bh=P2/nVTV2sMZa1dEwF9uRNa5XtbJX/e+KKlF8iUlh6bE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TIfu4nEE1NsJD5/yGXxF5V0hSzsmeWN/qrtPVXAyIL6BV/t/qQ2IHNNxw41+H9DqB
-	 V3v7eg97KkjI1dH59/5sYO+zU/mArx2rbpLAFaz5DTadLXFWRDWr27dGGiS05vRqyJ
-	 8XBAax4DDeG+kjzAxVMjmZJYSzTTNsgbAhN5+yFM=
+	b=Qa//XmO/OFzTCd95QejGllsp+9T3KYvIo4EZAnLVY0z+cTDZqKmZr18yrikuiR/3x
+	 qSNY6CGE27zgdOAYTuIRf8fvaZkQckZGijylTTI9w7Q7hRqI9gDWEh/nkmgRrEyV9V
+	 7FU3yPa7PBBToJgRcqGrd3FOMI67HCF3kXsZuJK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	syzbot+5fca234bd7eb378ff78e@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 121/214] ice: Fix netif_is_ice() in Safe Mode
+Subject: [PATCH 6.6 078/213] io_uring: check if we need to reschedule during overflow flush
 Date: Mon, 14 Oct 2024 16:19:44 +0200
-Message-ID: <20241014141049.712634384@linuxfoundation.org>
+Message-ID: <20241014141046.025015422@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 8e60dbcbaaa177dacef55a61501790e201bf8c88 ]
+[ Upstream commit eac2ca2d682f94f46b1973bdf5e77d85d77b8e53 ]
 
-netif_is_ice() works by checking the pointer to netdev ops. However, it
-only checks for the default ice_netdev_ops, not ice_netdev_safe_mode_ops,
-so in Safe Mode it always returns false, which is unintuitive. While it
-doesn't look like netif_is_ice() is currently being called anywhere in Safe
-Mode, this could change and potentially lead to unexpected behaviour.
+In terms of normal application usage, this list will always be empty.
+And if an application does overflow a bit, it'll have a few entries.
+However, nothing obviously prevents syzbot from running a test case
+that generates a ton of overflow entries, and then flushing them can
+take quite a while.
 
-Fixes: df006dd4b1dc ("ice: Add initial support framework for LAG")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Check for needing to reschedule while flushing, and drop our locks and
+do so if necessary. There's no state to maintain here as overflows
+always prune from head-of-list, hence it's fine to drop and reacquire
+the locks at the end of the loop.
+
+Link: https://lore.kernel.org/io-uring/66ed061d.050a0220.29194.0053.GAE@google.com/
+Reported-by: syzbot+5fca234bd7eb378ff78e@syzkaller.appspotmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 5bd0d7252081c..39f89cb590cf2 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -86,7 +86,8 @@ ice_indr_setup_tc_cb(struct net_device *netdev, struct Qdisc *sch,
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 7b0a100e1139a..39d8d1fc5c2bc 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -701,6 +701,21 @@ static void __io_cqring_overflow_flush(struct io_ring_ctx *ctx)
+ 		memcpy(cqe, &ocqe->cqe, cqe_size);
+ 		list_del(&ocqe->list);
+ 		kfree(ocqe);
++
++		/*
++		 * For silly syzbot cases that deliberately overflow by huge
++		 * amounts, check if we need to resched and drop and
++		 * reacquire the locks if so. Nothing real would ever hit this.
++		 * Ideally we'd have a non-posting unlock for this, but hard
++		 * to care for a non-real case.
++		 */
++		if (need_resched()) {
++			io_cq_unlock_post(ctx);
++			mutex_unlock(&ctx->uring_lock);
++			cond_resched();
++			mutex_lock(&ctx->uring_lock);
++			io_cq_lock(ctx);
++		}
+ 	}
  
- bool netif_is_ice(const struct net_device *dev)
- {
--	return dev && (dev->netdev_ops == &ice_netdev_ops);
-+	return dev && (dev->netdev_ops == &ice_netdev_ops ||
-+		       dev->netdev_ops == &ice_netdev_safe_mode_ops);
- }
- 
- /**
+ 	if (list_empty(&ctx->cq_overflow_list)) {
 -- 
 2.43.0
 
