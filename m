@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-84633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E1899D123
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:11:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA6D899D16E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:16:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD840B2418B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:11:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF1D41C23792
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE221AB536;
-	Mon, 14 Oct 2024 15:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427041AC45F;
+	Mon, 14 Oct 2024 15:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h66k20Vx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLKRHkf/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD1E1A76A5;
-	Mon, 14 Oct 2024 15:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33AD1AC8A2;
+	Mon, 14 Oct 2024 15:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918684; cv=none; b=Ner6G25g1pae6U83ItXXXVRB4Bif8OYiCdUHSGwlhPDAsUpZmra3QcSpoReCV4JDGE9/pDSDlU6/21vQDoXWb+ILy8cdRr2DNuQDWLBOH45aNdNr0gAxkyMfRgyNv8HRcb+wJT0ts+5WAzNIttQCIVQahB+gNSnMTaa5oCf6Z8k=
+	t=1728918825; cv=none; b=q9pIhZW5QcdNWHJNRPFqFIY+HdVr2HChJo2gEQwEWpYNQCLU5wGljeHnanIccFZ2T0xUXQmz8ToaD/CYbBbG2l79Bc6Kc3c+cbo6fI8gkQRsEB83YmY4e3iwHqlQb1hxZ2SDlFKP4O5AuCAM4McTM+/vb0f9+z0COPKvb7TzE+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918684; c=relaxed/simple;
-	bh=Wr+7CDrG623tWsTZ3LCZhOaEqXQWrZBi7N4edjiCNWk=;
+	s=arc-20240116; t=1728918825; c=relaxed/simple;
+	bh=dI+FpOcF0G2v1uhIO3e77aDxdDAivSb0ktnSQKIbzHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UrfUeSEDWE3GaLa7ywv7BxiGTCqKJJkUyCdwtkxR+wPbSsmMrOwKa8g6JRCxpvaq0cXxpKTwiCocr8tcHPHwXnq2a3Cev4gNnVwlM5bR0X7aAbDRlSu4+kXoiQhbYLI2t3UrDDrbQEZ8UVOV8yfKnngb8QCKhjYaQtf4LNpYo+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h66k20Vx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F778C4CEC3;
-	Mon, 14 Oct 2024 15:11:23 +0000 (UTC)
+	 MIME-Version; b=b1ph0CsskyZHaz/zsCMRzLAtR/N9QGhlgiCYVp2dAA08WjEw7qwhAm4dZValrl5Ni2T01Zop3XOuDBQh+CtH/S84pJXi3mvhokeN7FhO35NU11aR8Hv+XyLX2s9TNfuWA1S1OP+CXkmUSuUnMtKZ1fsWIyxc0VS2V7y18H9rry0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLKRHkf/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D7FEC4CEC7;
+	Mon, 14 Oct 2024 15:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918683;
-	bh=Wr+7CDrG623tWsTZ3LCZhOaEqXQWrZBi7N4edjiCNWk=;
+	s=korg; t=1728918824;
+	bh=dI+FpOcF0G2v1uhIO3e77aDxdDAivSb0ktnSQKIbzHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h66k20VxfS7aUEBBawzjTsMWuNSMa/RnRMN3ueNmTpQlGVuq5nbQwqbSgx+8lki/n
-	 xTC1SsdPRu+/I/C/czx8KkXlWJ6K6jyTCpBr3DdU2IKw45aDXpCWn5QGOHVN9aq2RH
-	 Hw9cVaAs6ms8JgTNg/RDBh5kwT0mqyjLEZrC5Dt8=
+	b=XLKRHkf/buqSMVygid2tyYsPYMUMoT9YMrEb/RT/tbcj9w+VkPqk27aJAjtvGoSSj
+	 O7WcjbK902CN1UJI7leC8bLYY7JrryxEaqli+1Q0ghKhpgP0Fp39v6flj6ICaTR6WT
+	 z/IImk2YpsValMImRkwzMPKkiRwccREUCHSFvquk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
 	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 391/798] net: ieee802154: mcr20a: Use IRQF_NO_AUTOEN flag in request_irq()
-Date: Mon, 14 Oct 2024 16:15:45 +0200
-Message-ID: <20241014141233.305923297@linuxfoundation.org>
+Subject: [PATCH 6.1 392/798] net: wwan: qcom_bam_dmux: Fix missing pm_runtime_disable()
+Date: Mon, 14 Oct 2024 16:15:46 +0200
+Message-ID: <20241014141233.344904369@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -69,44 +70,64 @@ Content-Transfer-Encoding: 8bit
 
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 09573b1cc76e7ff8f056ab29ea1cdc152ec8c653 ]
+[ Upstream commit d505d3593b52b6c43507f119572409087416ba28 ]
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+It's important to undo pm_runtime_use_autosuspend() with
+pm_runtime_dont_use_autosuspend() at driver exit time.
 
-Fixes: 8c6ad9cc5157 ("ieee802154: Add NXP MCR20A IEEE 802.15.4 transceiver driver")
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+But the pm_runtime_disable() and pm_runtime_dont_use_autosuspend()
+is missing in the error path for bam_dmux_probe(). So add it.
+
+Found by code review. Compile-tested only.
+
+Fixes: 21a0ffd9b38c ("net: wwan: Add Qualcomm BAM-DMUX WWAN network driver")
+Suggested-by: Stephan Gerhold <stephan.gerhold@linaro.org>
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/20240911094234.1922418-1-ruanjinjie@huawei.com
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ieee802154/mcr20a.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/net/wwan/qcom_bam_dmux.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ieee802154/mcr20a.c b/drivers/net/ieee802154/mcr20a.c
-index 2fe0e4a0a0c4c..2a03bc22ef535 100644
---- a/drivers/net/ieee802154/mcr20a.c
-+++ b/drivers/net/ieee802154/mcr20a.c
-@@ -1306,16 +1306,13 @@ mcr20a_probe(struct spi_device *spi)
- 		irq_type = IRQF_TRIGGER_FALLING;
+diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
+index 17d46f4d29139..174a9156b3233 100644
+--- a/drivers/net/wwan/qcom_bam_dmux.c
++++ b/drivers/net/wwan/qcom_bam_dmux.c
+@@ -823,17 +823,17 @@ static int bam_dmux_probe(struct platform_device *pdev)
+ 	ret = devm_request_threaded_irq(dev, pc_ack_irq, NULL, bam_dmux_pc_ack_irq,
+ 					IRQF_ONESHOT, NULL, dmux);
+ 	if (ret)
+-		return ret;
++		goto err_disable_pm;
  
- 	ret = devm_request_irq(&spi->dev, spi->irq, mcr20a_irq_isr,
--			       irq_type, dev_name(&spi->dev), lp);
-+			       irq_type | IRQF_NO_AUTOEN, dev_name(&spi->dev), lp);
- 	if (ret) {
- 		dev_err(&spi->dev, "could not request_irq for mcr20a\n");
- 		ret = -ENODEV;
- 		goto free_dev;
+ 	ret = devm_request_threaded_irq(dev, dmux->pc_irq, NULL, bam_dmux_pc_irq,
+ 					IRQF_ONESHOT, NULL, dmux);
+ 	if (ret)
+-		return ret;
++		goto err_disable_pm;
+ 
+ 	ret = irq_get_irqchip_state(dmux->pc_irq, IRQCHIP_STATE_LINE_LEVEL,
+ 				    &dmux->pc_state);
+ 	if (ret)
+-		return ret;
++		goto err_disable_pm;
+ 
+ 	/* Check if remote finished initialization before us */
+ 	if (dmux->pc_state) {
+@@ -844,6 +844,11 @@ static int bam_dmux_probe(struct platform_device *pdev)
  	}
  
--	/* disable_irq by default and wait for starting hardware */
--	disable_irq(spi->irq);
--
- 	ret = ieee802154_register_hw(hw);
- 	if (ret) {
- 		dev_crit(&spi->dev, "ieee802154_register_hw failed\n");
+ 	return 0;
++
++err_disable_pm:
++	pm_runtime_disable(dev);
++	pm_runtime_dont_use_autosuspend(dev);
++	return ret;
+ }
+ 
+ static int bam_dmux_remove(struct platform_device *pdev)
 -- 
 2.43.0
 
