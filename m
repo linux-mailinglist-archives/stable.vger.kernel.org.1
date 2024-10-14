@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-84991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A32B99D33A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E8199CF15
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:51:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05DE91F25399
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E0B4B23C2F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:51:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A9D1AE01B;
-	Mon, 14 Oct 2024 15:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FEF1CC171;
+	Mon, 14 Oct 2024 14:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hde7pIm7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYnCi6D2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C9A1AE016;
-	Mon, 14 Oct 2024 15:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DA21ADFE8;
+	Mon, 14 Oct 2024 14:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919921; cv=none; b=X3MOugUV4zT1wKDaGpKvjxNb4BBPUDE+XedUS/IRK38Fy76Z7ryoDeNENXHxd6OOBtSNq/HjUNDBFeEqtX7rCfluxGIA/ivozteNAfMn8Ai6cTzlOkWl04fFY5/ak+murzuJipH/Gc3RP5bONo3UbNfFu/ZfthGG1AcvewJj25g=
+	t=1728917248; cv=none; b=K1dxAiAkBCnd5tdtBNfJp1X/rUndR6YhI3jBUkV6WTu9uaqbUOSE8XsIf3peFFrajEmdVtju07zwNT7HcExLgOo+l2NHnERk6WPJN7vKJ5AtgDj2JoY///q+zXCFpINh3f22fkZjh7fb6jcm7NxWWLazajNF148aULDYym3su+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919921; c=relaxed/simple;
-	bh=oUXXhSRTH0REa0pLmfWmDi9LbY19H601rvO51+Lcm0s=;
+	s=arc-20240116; t=1728917248; c=relaxed/simple;
+	bh=7UT5cKVCoE2IMN7Elx/CHQ93R3cECy2LIqRTn/CXgIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r5WwcSz88W/CrdFRpbOtaZqPcSJEvbnFQqjbBCcVJd9StSo9/IZi6dEVqMdOTRsH0kEQ3L98CbN1iUMHz2Z2LCFRn2aTmSZjSF+KPdLB/73yXr1MMCuPHPEAaD+oADsmWLpJY4O3dxdEUSR8mwTIcNx7hBV/oeB212ANCBPc5Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hde7pIm7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A757C4CEC3;
-	Mon, 14 Oct 2024 15:32:00 +0000 (UTC)
+	 MIME-Version; b=cEa2AOhu1bsdPgkXlhUY6XpjUUoor+9sbdn2lLl5IS9m9C767imUWSdUcatTADtPPAePrpkhxPWxSLH5xutr02q0Cur3+pS4aLNLVMKoWRCzQAaOzOE34dvrMwV6VSX2Uljn5JTd+FHMw6Z0Cc7FGDZzys6td9R7MefhUVJnTMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYnCi6D2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EEB1C4CEC3;
+	Mon, 14 Oct 2024 14:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919921;
-	bh=oUXXhSRTH0REa0pLmfWmDi9LbY19H601rvO51+Lcm0s=;
+	s=korg; t=1728917248;
+	bh=7UT5cKVCoE2IMN7Elx/CHQ93R3cECy2LIqRTn/CXgIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hde7pIm7emGp0nGmEoMCHnEgFIpPiA9pGSF524ZqqjQoAeu4zspdT+nHRdDOQGs7T
-	 g7cScLR3X3ZC3xi3BwxcNO+zjXUhomC/cGOZk4hGGQ9qRRSNRwv0ZFvzJbVnFTVi9P
-	 IeWuGChr+tjj68TC2zeXymEhI1tBN/Idv4Yb0R1w=
+	b=mYnCi6D2pMbPRRoc6dIPYaUYdE0MxhCMSj4KQUboqs0Y6KziiSADdLRStLKVN3HBo
+	 m/NretHN6uokAxNEQJNVem7oj6y9kx7oHf/QHcLqZjXyQRVo5EeyLTwa4XhhQxzHep
+	 CqXBnt0Rospyh0lGHyktGL/bUMCY0mMjG6Ftgqrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 747/798] gpio: aspeed: Add the flush write to ensure the write complete.
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.6 195/213] ata: libata: avoid superfluous disk spin down + spin up during hibernation
 Date: Mon, 14 Oct 2024 16:21:41 +0200
-Message-ID: <20241014141247.415491665@linuxfoundation.org>
+Message-ID: <20241014141050.571007473@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Billy Tsai <billy_tsai@aspeedtech.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 1bb5a99e1f3fd27accb804aa0443a789161f843c ]
+commit a38719e3157118428e34fbd45b0d0707a5877784 upstream.
 
-Performing a dummy read ensures that the register write operation is fully
-completed, mitigating any potential bus delays that could otherwise impact
-the frequency of bitbang usage. E.g., if the JTAG application uses GPIO to
-control the JTAG pins (TCK, TMS, TDI, TDO, and TRST), and the application
-sets the TCK clock to 1 MHz, the GPIO's high/low transitions will rely on
-a delay function to ensure the clock frequency does not exceed 1 MHz.
-However, this can lead to rapid toggling of the GPIO because the write
-operation is POSTed and does not wait for a bus acknowledgment.
+A user reported that commit aa3998dbeb3a ("ata: libata-scsi: Disable scsi
+device manage_system_start_stop") introduced a spin down + immediate spin
+up of the disk both when entering and when resuming from hibernation.
+This behavior was not there before, and causes an increased latency both
+when entering and when resuming from hibernation.
 
-Fixes: 361b79119a4b ("gpio: Add Aspeed driver")
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-Link: https://lore.kernel.org/r/20241008081450.1490955-2-billy_tsai@aspeedtech.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Hibernation is done by three consecutive PM events, in the following order:
+1) PM_EVENT_FREEZE
+2) PM_EVENT_THAW
+3) PM_EVENT_HIBERNATE
+
+Commit aa3998dbeb3a ("ata: libata-scsi: Disable scsi device
+manage_system_start_stop") modified ata_eh_handle_port_suspend() to call
+ata_dev_power_set_standby() (which spins down the disk), for both event
+PM_EVENT_FREEZE and event PM_EVENT_HIBERNATE.
+
+Documentation/driver-api/pm/devices.rst, section "Entering Hibernation",
+explicitly mentions that PM_EVENT_FREEZE does not have to be put the device
+in a low-power state, and actually recommends not doing so. Thus, let's not
+spin down the disk on PM_EVENT_FREEZE. (The disk will instead be spun down
+during the subsequent PM_EVENT_HIBERNATE event.)
+
+This way, PM_EVENT_FREEZE will behave as it did before commit aa3998dbeb3a
+("ata: libata-scsi: Disable scsi device manage_system_start_stop"), while
+PM_EVENT_HIBERNATE will continue to spin down the disk.
+
+This will avoid the superfluous spin down + spin up when entering and
+resuming from hibernation, while still making sure that the disk is spun
+down before actually entering hibernation.
+
+Cc: stable@vger.kernel.org # v6.6+
+Fixes: aa3998dbeb3a ("ata: libata-scsi: Disable scsi device manage_system_start_stop")
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20241008135843.1266244-2-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-aspeed.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ata/libata-eh.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpio-aspeed.c b/drivers/gpio/gpio-aspeed.c
-index 42d3e1cf73528..3cfb2c6103c6b 100644
---- a/drivers/gpio/gpio-aspeed.c
-+++ b/drivers/gpio/gpio-aspeed.c
-@@ -404,6 +404,8 @@ static void __aspeed_gpio_set(struct gpio_chip *gc, unsigned int offset,
- 	gpio->dcache[GPIO_BANK(offset)] = reg;
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -4049,10 +4049,20 @@ static void ata_eh_handle_port_suspend(s
  
- 	iowrite32(reg, addr);
-+	/* Flush write */
-+	ioread32(addr);
- }
+ 	WARN_ON(ap->pflags & ATA_PFLAG_SUSPENDED);
  
- static void aspeed_gpio_set(struct gpio_chip *gc, unsigned int offset,
--- 
-2.43.0
-
+-	/* Set all devices attached to the port in standby mode */
+-	ata_for_each_link(link, ap, HOST_FIRST) {
+-		ata_for_each_dev(dev, link, ENABLED)
+-			ata_dev_power_set_standby(dev);
++	/*
++	 * We will reach this point for all of the PM events:
++	 * PM_EVENT_SUSPEND (if runtime pm, PM_EVENT_AUTO will also be set)
++	 * PM_EVENT_FREEZE, and PM_EVENT_HIBERNATE.
++	 *
++	 * We do not want to perform disk spin down for PM_EVENT_FREEZE.
++	 * (Spin down will be performed by the subsequent PM_EVENT_HIBERNATE.)
++	 */
++	if (!(ap->pm_mesg.event & PM_EVENT_FREEZE)) {
++		/* Set all devices attached to the port in standby mode */
++		ata_for_each_link(link, ap, HOST_FIRST) {
++			ata_for_each_dev(dev, link, ENABLED)
++				ata_dev_power_set_standby(dev);
++		}
+ 	}
+ 
+ 	/*
 
 
 
