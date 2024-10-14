@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-84147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A462C99CE66
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:43:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3736399CDAB
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5BBB1C21275
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:43:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5B4B1F21600
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258751AB526;
-	Mon, 14 Oct 2024 14:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4B11AC426;
+	Mon, 14 Oct 2024 14:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qy/SZztj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdjINK48"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FCBE571;
-	Mon, 14 Oct 2024 14:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7701014A614;
+	Mon, 14 Oct 2024 14:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916996; cv=none; b=o/jFXkyxUOnf3ZZ8vSczwZPjkl8a2LJPpLwD+RI184rEKy0wT/9VqNwEvVuljKmYbMaVZmVK2DoOn05dCSffS+bVakaN9ZOvjLciFgi9dvnRJDps/+DJ9GB8C77RKaqBkIINW70CbpslyfwNkJwDawKGxUWjMXmP0v0xrCS8mTc=
+	t=1728916489; cv=none; b=NQqUfIzSKPFQnatR+rj+085A8gPml+ci36ZEpsdS/7tiTlcC3fWasSWMAYm/1rZPYo0hhp5mXNN6ioCAuMVu3JGHxiUFY5zzjN2TxoZd2V8dJLYyhYKFR2rZEBFfT3293RRgclKNtb1N7n17LRfEtmBLBbMlRZHfoiQ0+1BC/nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916996; c=relaxed/simple;
-	bh=Gwu2uwQGBgufY1GONbCTr6lWuaW+IM+4S5sSfgMfOFE=;
+	s=arc-20240116; t=1728916489; c=relaxed/simple;
+	bh=QgXgV/F1bVP6byyki1zaAhDcvfAsr1ENNhTDH4VilKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MKGNTpZbB5tKtR4VJF4ORkB5b+GkxD0R1GY/o6Qq4UcwawOEqzMm0xWR1qLohXYAna4sruQENHA0dIImQhFGqbCj72kA57Yu7d52oFkLZgEbQmKdu5GVA4YGt9miLJobA0d3X6dXyPxc8aRToiSA+NLnt2xGZ43twlnLHKBfdlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qy/SZztj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48828C4CEC3;
-	Mon, 14 Oct 2024 14:43:16 +0000 (UTC)
+	 MIME-Version; b=icCtMT4RZ/RFaIFDaop+eH8Y6hgoheJ4mM7l+oFw5Jno3SR4DFosSlmMTsqD6jUMde7b0BLYzZIK3kNFLy0XcmU5sZ2SERIc3QSmu0f+1fUFHgBlxjrUuoqNnsEivmzbLN/OP7sxCakASz2JwogD7dF05vF9hSE77Y09DKnC4rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdjINK48; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9920C4CEC3;
+	Mon, 14 Oct 2024 14:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916996;
-	bh=Gwu2uwQGBgufY1GONbCTr6lWuaW+IM+4S5sSfgMfOFE=;
+	s=korg; t=1728916489;
+	bh=QgXgV/F1bVP6byyki1zaAhDcvfAsr1ENNhTDH4VilKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qy/SZztj701TVPrsWe7WfRWlRpg286QlIybxcwxwrsGbEymyIyIWNbLc37fgORWvt
-	 uri3ELmNg3rLDBNJeaNo8DRi/ulgtpbFAQ5htNz/QvsTXHHA1cAlUKkb9hMl/+M0cU
-	 3L8etnlkflj1ZLMkju0W/RaXsgfOZGUiOdz3q0no=
+	b=QdjINK48xgx9Hd/0pM/kvsfpXjaLNk2XNbi8qcaGUpO0Ici9d6lrVMYzJy5UZROzK
+	 8NVJCLWMDuLncDgNyP0qa8nFRcTCGdPiGOl16A75ILJP7qzQtwbbN7CJHndTytrfxj
+	 Dlwp5snzbGhYZV52XEJnxPZCiwaEXEPkz9TALyzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 123/213] net: phy: bcm84881: Fix some error handling paths
-Date: Mon, 14 Oct 2024 16:20:29 +0200
-Message-ID: <20241014141047.769531078@linuxfoundation.org>
+	John Keeping <jkeeping@inmusicbrands.com>
+Subject: [PATCH 6.11 167/214] usb: gadget: core: force synchronous registration
+Date: Mon, 14 Oct 2024 16:20:30 +0200
+Message-ID: <20241014141051.498767264@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: John Keeping <jkeeping@inmusicbrands.com>
 
-[ Upstream commit 9234a2549cb6ac038bec36cc7c084218e9575513 ]
+commit df9158826b00e53f42c67d62c887a84490d80a0a upstream.
 
-If phy_read_mmd() fails, the error code stored in 'bmsr' should be returned
-instead of 'val' which is likely to be 0.
+Registering a gadget driver is expected to complete synchronously and
+immediately after calling driver_register() this function checks that
+the driver has bound so as to return an error.
 
-Fixes: 75f4d8d10e01 ("net: phy: add Broadcom BCM84881 PHY driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://patch.msgid.link/3e1755b0c40340d00e089d6adae5bca2f8c79e53.1727982168.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Set PROBE_FORCE_SYNCHRONOUS to ensure this is the case even when
+asynchronous probing is set as the default.
+
+Fixes: fc274c1e99731 ("USB: gadget: Add a new bus for gadgets")
+Cc: stable@vger.kernel.org
+Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
+Link: https://lore.kernel.org/r/20240913102325.2826261-1-jkeeping@inmusicbrands.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/bcm84881.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/udc/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/phy/bcm84881.c b/drivers/net/phy/bcm84881.c
-index 9717a1626f3fa..37a64a37b2ae3 100644
---- a/drivers/net/phy/bcm84881.c
-+++ b/drivers/net/phy/bcm84881.c
-@@ -120,7 +120,7 @@ static int bcm84881_aneg_done(struct phy_device *phydev)
- 
- 	bmsr = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_C22 + MII_BMSR);
- 	if (bmsr < 0)
--		return val;
-+		return bmsr;
- 
- 	return !!(val & MDIO_AN_STAT1_COMPLETE) &&
- 	       !!(bmsr & BMSR_ANEGCOMPLETE);
-@@ -146,7 +146,7 @@ static int bcm84881_read_status(struct phy_device *phydev)
- 
- 	bmsr = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_C22 + MII_BMSR);
- 	if (bmsr < 0)
--		return val;
-+		return bmsr;
- 
- 	phydev->autoneg_complete = !!(val & MDIO_AN_STAT1_COMPLETE) &&
- 				   !!(bmsr & BMSR_ANEGCOMPLETE);
--- 
-2.43.0
-
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1696,6 +1696,7 @@ int usb_gadget_register_driver_owner(str
+ 	driver->driver.bus = &gadget_bus_type;
+ 	driver->driver.owner = owner;
+ 	driver->driver.mod_name = mod_name;
++	driver->driver.probe_type = PROBE_FORCE_SYNCHRONOUS;
+ 	ret = driver_register(&driver->driver);
+ 	if (ret) {
+ 		pr_warn("%s: driver registration failed: %d\n",
 
 
 
