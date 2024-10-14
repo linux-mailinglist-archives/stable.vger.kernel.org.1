@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-83860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CCC699CCDF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:26:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 247E199CDF6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:38:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 845981C21AA4
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:26:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE0F6283E73
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E121AA793;
-	Mon, 14 Oct 2024 14:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25561AA793;
+	Mon, 14 Oct 2024 14:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwH18iwa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJu7UTvr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB0C1547F3;
-	Mon, 14 Oct 2024 14:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7F025632;
+	Mon, 14 Oct 2024 14:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915971; cv=none; b=jTSqPLdV4iDsggUb3d2myc3tn8fL3ugm+oPBtiiDbhiE5AXwEMNsAlnHK9Mt3vZP4xa5Yx8Co9h+uIShyVjMn9Lyrs4EbXzB6l9VQjkkTeEjhEa31CzpoMvEJCISLut3YxoY0FhmM6Z59ji9JEEyFxEEFiZXdWslScVyizynKRE=
+	t=1728916690; cv=none; b=r8la1kyJA/8xLr4+Mw8MfuhbLOF8iKCnpb+3IK3n5SN+sBRDV9yhKM02rVGkIUQqrz9y/Gw2LTkzCQjBEw8LTIOIe9WlLL2CU+Y7d7ULynWWgAnwEmfJV3cwTUUik7uUVQR/Kk/iG9egAgWh1Wxo4A26GBXsr92uYwGwPwQ+vOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915971; c=relaxed/simple;
-	bh=YPO5gM7VZopvrEV5Q6IrPa5LpqVgI7Z2wHxslr3hUXs=;
+	s=arc-20240116; t=1728916690; c=relaxed/simple;
+	bh=ivwGnSnytXHHIDfuAAEiDKEycktn6BRORXTackE+0Jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EfyoaGqqQTIxWdlQkqoG+6MZm9q4iJ6ZUabdXx71DA89t9nq9Avo2i98UHc2Sl9aYTw3flrw9jncgOumgAEMXyz2whc05rd26aMQu0+4nS1+iYFl9y8Q0SbBv5vCuRjWGwsQLfwU08jEz8KiM2pIsBV/JEiSfL7bbRgViaImsk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwH18iwa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38F5C4CEC3;
-	Mon, 14 Oct 2024 14:26:10 +0000 (UTC)
+	 MIME-Version; b=WVpAiVxou9PSyQgjRNO+W46uxF9dSwjq0SYxndIfHDv2TLpkw63wuYKmheiwCzPzJ0YtoyJ6cjJN4Ik+OU2ZvF2vvJI1p4L10EJylzG5KdON6g+VFCUC/AfZqXWYva+dFLoajK+dUiq8XMB0QXslAKNcg0lAYTwO2eEfwSFdd78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJu7UTvr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15394C4CEC3;
+	Mon, 14 Oct 2024 14:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915971;
-	bh=YPO5gM7VZopvrEV5Q6IrPa5LpqVgI7Z2wHxslr3hUXs=;
+	s=korg; t=1728916690;
+	bh=ivwGnSnytXHHIDfuAAEiDKEycktn6BRORXTackE+0Jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rwH18iwaJMi/EOBJP6fbOodzHo3AOjNmW0Fx48AKIb6SbvjNq7fsfUrAuwXvDP0eT
-	 40RZmEsauBjISDRcGYb7kLS06zFvZ0XOWXG6xWd4Eky6seCiVSj0lXQFHj6beTNEji
-	 1sHd3FGz+ZxRIJEaz1i4l/wTZmPAoPjbuk1xzOY4=
+	b=cJu7UTvrwwZvrLgY8fK3QkVyxSdx1u9frS2YFQu9f9IKOWxeKoHxvXX+rQ/BsjJF4
+	 wYUxJw+BlbMUHshgg/si9VjVbYynTS8QuiQmoyOdIWlFXHdLsJXsLPAtB2NI0LSV/q
+	 BOeNHjv+/7cVdv5hr+pi6tqk0kPOUBIzNPbSjxHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Tesarik <petr@tesarici.cz>,
-	Ying Sun <sunying@isrc.iscas.ac.cn>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 050/214] riscv/kexec_file: Fix relocation type R_RISCV_ADD16 and R_RISCV_SUB16 unknown
+Subject: [PATCH 6.6 007/213] gfs2: Revert "introduce qd_bh_get_or_undo"
 Date: Mon, 14 Oct 2024 16:18:33 +0200
-Message-ID: <20241014141046.943776620@linuxfoundation.org>
+Message-ID: <20241014141043.264794245@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ying Sun <sunying@isrc.iscas.ac.cn>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit c6ebf2c528470a09be77d0d9df2c6617ea037ac5 ]
+[ Upstream commit 2aedfe847b4d91eabee11a44c27244055cef4eb3 ]
 
-Runs on the kernel with CONFIG_RISCV_ALTERNATIVE enabled:
-  kexec -sl vmlinux
+The qd_bh_get_or_undo() helper introduced by that commit doesn't improve
+the code much, so revert it and clean things up in a more useful way in
+the next commit.
 
-Error:
-  kexec_image: Unknown rela relocation: 34
-  kexec_image: Error loading purgatory ret=-8
-and
-  kexec_image: Unknown rela relocation: 38
-  kexec_image: Error loading purgatory ret=-8
+This reverts commit 7dbc6ae60dd7089d8ed42892b6a66c138f0aa7a0.
 
-The purgatory code uses the 16-bit addition and subtraction relocation
-type, but not handled, resulting in kexec_file_load failure.
-So add handle to arch_kexec_apply_relocations_add().
-
-Tested on RISC-V64 Qemu-virt, issue fixed.
-
-Co-developed-by: Petr Tesarik <petr@tesarici.cz>
-Signed-off-by: Petr Tesarik <petr@tesarici.cz>
-Signed-off-by: Ying Sun <sunying@isrc.iscas.ac.cn>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20240711083236.2859632-1-sunying@isrc.iscas.ac.cn
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Stable-dep-of: 4b4b6374dc61 ("gfs2: Revert "ignore negated quota changes"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/elf_kexec.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/gfs2/quota.c | 36 +++++++++++++++++-------------------
+ 1 file changed, 17 insertions(+), 19 deletions(-)
 
-diff --git a/arch/riscv/kernel/elf_kexec.c b/arch/riscv/kernel/elf_kexec.c
-index 11c0d2e0becfe..3c37661801f95 100644
---- a/arch/riscv/kernel/elf_kexec.c
-+++ b/arch/riscv/kernel/elf_kexec.c
-@@ -451,6 +451,12 @@ int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
- 			*(u32 *)loc = CLEAN_IMM(CJTYPE, *(u32 *)loc) |
- 				 ENCODE_CJTYPE_IMM(val - addr);
- 			break;
-+		case R_RISCV_ADD16:
-+			*(u16 *)loc += val;
-+			break;
-+		case R_RISCV_SUB16:
-+			*(u16 *)loc -= val;
-+			break;
- 		case R_RISCV_ADD32:
- 			*(u32 *)loc += val;
- 			break;
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index 299b6d6aaa795..62522d4011106 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -475,20 +475,6 @@ static int qd_check_sync(struct gfs2_sbd *sdp, struct gfs2_quota_data *qd,
+ 	return 1;
+ }
+ 
+-static int qd_bh_get_or_undo(struct gfs2_sbd *sdp, struct gfs2_quota_data *qd)
+-{
+-	int error;
+-
+-	error = bh_get(qd);
+-	if (!error)
+-		return 0;
+-
+-	clear_bit(QDF_LOCKED, &qd->qd_flags);
+-	slot_put(qd);
+-	qd_put(qd);
+-	return error;
+-}
+-
+ static int qd_fish(struct gfs2_sbd *sdp, struct gfs2_quota_data **qdp)
+ {
+ 	struct gfs2_quota_data *qd = NULL, *iter;
+@@ -511,12 +497,17 @@ static int qd_fish(struct gfs2_sbd *sdp, struct gfs2_quota_data **qdp)
+ 	spin_unlock(&qd_lock);
+ 
+ 	if (qd) {
+-		error = qd_bh_get_or_undo(sdp, qd);
+-		if (error)
++		error = bh_get(qd);
++		if (error) {
++			clear_bit(QDF_LOCKED, &qd->qd_flags);
++			slot_put(qd);
++			qd_put(qd);
+ 			return error;
+-		*qdp = qd;
++		}
+ 	}
+ 
++	*qdp = qd;
++
+ 	return 0;
+ }
+ 
+@@ -1171,8 +1162,15 @@ void gfs2_quota_unlock(struct gfs2_inode *ip)
+ 		if (!found)
+ 			continue;
+ 
+-		if (!qd_bh_get_or_undo(sdp, qd))
+-			qda[count++] = qd;
++		gfs2_assert_warn(sdp, qd->qd_change_sync);
++		if (bh_get(qd)) {
++			clear_bit(QDF_LOCKED, &qd->qd_flags);
++			slot_put(qd);
++			qd_put(qd);
++			continue;
++		}
++
++		qda[count++] = qd;
+ 	}
+ 
+ 	if (count) {
 -- 
 2.43.0
 
