@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-83843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F290E99CCCF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:25:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A5B99D218
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E9311F21220
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:25:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E14F2822BF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8C31AB508;
-	Mon, 14 Oct 2024 14:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634A81C2337;
+	Mon, 14 Oct 2024 15:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ix9g3d3Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U981R5AZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6789B1AA7A5;
-	Mon, 14 Oct 2024 14:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5833B298;
+	Mon, 14 Oct 2024 15:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915908; cv=none; b=hZbfS1rFuZ4v8RXJ2+GEjWBKDuKMNlwGq/S0RRjWFciSZ20p/sDzgsCaF8E7NBL6ycOjaDFnNSjh7fUKiNN0BqvCZEu+1ZejvNdkfa9b3mRKeuuPLlpv056lZ/mVw2FSzQER0tXWH1IkDUVPo0uTcQAaAhMETuH+KXMb1LILwas=
+	t=1728919206; cv=none; b=ksjlVQX5vheeLHJ18XjOCyHFGmny1aC/xY7lDthECMZF1nw4C7ijQxmt+p0pjz3hhg5qzbRf4SNXM1zHVxviMoG9Y+mmfx82eCTeKHd4SZw2Yjz08pLMUs+Kw3hHREoCwqy59w1dnfxl/NycoZ7N0zNLUYOfyFoKQBjzPXOyyV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915908; c=relaxed/simple;
-	bh=Nwgu/jLKF42JQwW3Py2qsLkUiZpKzGkYmKHBx+a+gME=;
+	s=arc-20240116; t=1728919206; c=relaxed/simple;
+	bh=fbesbrJAOA9U3w7tqvOioQCzkJxrvP0jgb+ZlQgr8qY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a8JzLFLwsSz3ZFnKylw/Nxn3k+19K4xc4K0f6Np+ja4z7smC0jgKUwxGQ5Sc3LVK1A9zPgr/1ay1r0L6rnZvpBbHHsozdRXUlSMZZM1JY2J22dWSRgDB714a8k0BEkI2BjMjuIkupft9IcacR+D88Tjzdct4y+nP+B6KNYSggL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ix9g3d3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89EE1C4CEC3;
-	Mon, 14 Oct 2024 14:25:07 +0000 (UTC)
+	 MIME-Version; b=D6MZI2WcCHi33QqndSh1p/GzYdBlfKmEwj6YCuXpD0FLEuLBevVQhr6lQBtOrKdZwcFFOc1Fenmxw1XSgAq0KW+4Rr57tmObr3IBpvw/sgm98jDRfbH8vQLNWPSKvifDY50Asa6N23ammRe8k3iO3WKUyaGUc7BeC5RBIrWwHM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U981R5AZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B785C4CEC3;
+	Mon, 14 Oct 2024 15:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915908;
-	bh=Nwgu/jLKF42JQwW3Py2qsLkUiZpKzGkYmKHBx+a+gME=;
+	s=korg; t=1728919206;
+	bh=fbesbrJAOA9U3w7tqvOioQCzkJxrvP0jgb+ZlQgr8qY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ix9g3d3Qap2JfDHVpBihjatHtnqN1LHJ6Pod++wPW9U2njkR8zR1Ije7SCK1RcVrp
-	 lNvyah3U/Ba1HD2NnlicRvIr8Vmo+5dTaw/GmiYqlIYpXxrT12tKBcm1cemVYaCn4E
-	 +WSJ+KcDFwq4dmKs/uIEU/XlNfcEWxxkmtY2a1Gc=
+	b=U981R5AZzx5s2KYElSy/IjHFAPNl5MMSThPcvmAVBHEPOs+BIIyn51mHBvGeCz/TK
+	 ku8tWeyYQVk33F862SLfkaaOIbA7xXv+lPkQZvby7TmPnj+psretJWFiTZ6qDGGa3P
+	 En7gO4rBUITEzJxIH1MMNLS3JBcHvqk3Ap4iWptI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Subramanian Ananthanarayanan <quic_skananth@quicinc.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 034/214] PCI: Add ACS quirk for Qualcomm SA8775P
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 543/798] ext4: fix slab-use-after-free in ext4_split_extent_at()
 Date: Mon, 14 Oct 2024 16:18:17 +0200
-Message-ID: <20241014141046.319589978@linuxfoundation.org>
+Message-ID: <20241014141239.331939955@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,134 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Subramanian Ananthanarayanan <quic_skananth@quicinc.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 026f84d3fa62d215b11cbeb5a5d97df941e93b5c ]
+commit c26ab35702f8cd0cdc78f96aa5856bfb77be798f upstream.
 
-The Qualcomm SA8775P root ports don't advertise an ACS capability, but they
-do provide ACS-like features to disable peer transactions and validate bus
-numbers in requests.
+We hit the following use-after-free:
 
-Thus, add an ACS quirk for the SA8775P.
+==================================================================
+BUG: KASAN: slab-use-after-free in ext4_split_extent_at+0xba8/0xcc0
+Read of size 2 at addr ffff88810548ed08 by task kworker/u20:0/40
+CPU: 0 PID: 40 Comm: kworker/u20:0 Not tainted 6.9.0-dirty #724
+Call Trace:
+ <TASK>
+ kasan_report+0x93/0xc0
+ ext4_split_extent_at+0xba8/0xcc0
+ ext4_split_extent.isra.0+0x18f/0x500
+ ext4_split_convert_extents+0x275/0x750
+ ext4_ext_handle_unwritten_extents+0x73e/0x1580
+ ext4_ext_map_blocks+0xe20/0x2dc0
+ ext4_map_blocks+0x724/0x1700
+ ext4_do_writepages+0x12d6/0x2a70
+[...]
 
-Link: https://lore.kernel.org/linux-pci/20240906052228.1829485-1-quic_skananth@quicinc.com
-Signed-off-by: Subramanian Ananthanarayanan <quic_skananth@quicinc.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Allocated by task 40:
+ __kmalloc_noprof+0x1ac/0x480
+ ext4_find_extent+0xf3b/0x1e70
+ ext4_ext_map_blocks+0x188/0x2dc0
+ ext4_map_blocks+0x724/0x1700
+ ext4_do_writepages+0x12d6/0x2a70
+[...]
+
+Freed by task 40:
+ kfree+0xf1/0x2b0
+ ext4_find_extent+0xa71/0x1e70
+ ext4_ext_insert_extent+0xa22/0x3260
+ ext4_split_extent_at+0x3ef/0xcc0
+ ext4_split_extent.isra.0+0x18f/0x500
+ ext4_split_convert_extents+0x275/0x750
+ ext4_ext_handle_unwritten_extents+0x73e/0x1580
+ ext4_ext_map_blocks+0xe20/0x2dc0
+ ext4_map_blocks+0x724/0x1700
+ ext4_do_writepages+0x12d6/0x2a70
+[...]
+==================================================================
+
+The flow of issue triggering is as follows:
+
+ext4_split_extent_at
+  path = *ppath
+  ext4_ext_insert_extent(ppath)
+    ext4_ext_create_new_leaf(ppath)
+      ext4_find_extent(orig_path)
+        path = *orig_path
+        read_extent_tree_block
+          // return -ENOMEM or -EIO
+        ext4_free_ext_path(path)
+          kfree(path)
+        *orig_path = NULL
+  a. If err is -ENOMEM:
+  ext4_ext_dirty(path + path->p_depth)
+  // path use-after-free !!!
+  b. If err is -EIO and we have EXT_DEBUG defined:
+  ext4_ext_show_leaf(path)
+    eh = path[depth].p_hdr
+    // path also use-after-free !!!
+
+So when trying to zeroout or fix the extent length, call ext4_find_extent()
+to update the path.
+
+In addition we use *ppath directly as an ext4_ext_show_leaf() input to
+avoid possible use-after-free when EXT_DEBUG is defined, and to avoid
+unnecessary path updates.
+
+Fixes: dfe5080939ea ("ext4: drop EXT4_EX_NOFREE_ON_ERR from rest of extents handling code")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20240822023545.1994557-4-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/extents.c |   21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 979901a0e1f97..85666ee2d8691 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5087,6 +5087,8 @@ static const struct pci_dev_acs_enabled {
- 	/* QCOM QDF2xxx root ports */
- 	{ PCI_VENDOR_ID_QCOM, 0x0400, pci_quirk_qcom_rp_acs },
- 	{ PCI_VENDOR_ID_QCOM, 0x0401, pci_quirk_qcom_rp_acs },
-+	/* QCOM SA8775P root port */
-+	{ PCI_VENDOR_ID_QCOM, 0x0115, pci_quirk_qcom_rp_acs },
- 	/* HXT SD4800 root ports. The ACS design is same as QCOM QDF2xxx */
- 	{ PCI_VENDOR_ID_HXT, 0x0401, pci_quirk_qcom_rp_acs },
- 	/* Intel PCH root ports */
--- 
-2.43.0
-
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3232,6 +3232,25 @@ static int ext4_split_extent_at(handle_t
+ 	if (err != -ENOSPC && err != -EDQUOT && err != -ENOMEM)
+ 		goto out;
+ 
++	/*
++	 * Update path is required because previous ext4_ext_insert_extent()
++	 * may have freed or reallocated the path. Using EXT4_EX_NOFAIL
++	 * guarantees that ext4_find_extent() will not return -ENOMEM,
++	 * otherwise -ENOMEM will cause a retry in do_writepages(), and a
++	 * WARN_ON may be triggered in ext4_da_update_reserve_space() due to
++	 * an incorrect ee_len causing the i_reserved_data_blocks exception.
++	 */
++	path = ext4_find_extent(inode, ee_block, ppath,
++				flags | EXT4_EX_NOFAIL);
++	if (IS_ERR(path)) {
++		EXT4_ERROR_INODE(inode, "Failed split extent on %u, err %ld",
++				 split, PTR_ERR(path));
++		return PTR_ERR(path);
++	}
++	depth = ext_depth(inode);
++	ex = path[depth].p_ext;
++	*ppath = path;
++
+ 	if (EXT4_EXT_MAY_ZEROOUT & split_flag) {
+ 		if (split_flag & (EXT4_EXT_DATA_VALID1|EXT4_EXT_DATA_VALID2)) {
+ 			if (split_flag & EXT4_EXT_DATA_VALID1) {
+@@ -3284,7 +3303,7 @@ fix_extent_len:
+ 	ext4_ext_dirty(handle, inode, path + path->p_depth);
+ 	return err;
+ out:
+-	ext4_ext_show_leaf(inode, path);
++	ext4_ext_show_leaf(inode, *ppath);
+ 	return err;
+ }
+ 
 
 
 
