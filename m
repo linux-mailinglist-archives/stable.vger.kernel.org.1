@@ -1,75 +1,76 @@
-Return-Path: <stable+bounces-83750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45CBF99C43F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 10:57:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C55699C442
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 10:57:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 699541C22266
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 08:57:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6A442859D3
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 08:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5F0155CB0;
-	Mon, 14 Oct 2024 08:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897C7156F5E;
+	Mon, 14 Oct 2024 08:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ky/t0jVT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VC4QX28a"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0B6155C8A;
-	Mon, 14 Oct 2024 08:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1E9156886;
+	Mon, 14 Oct 2024 08:56:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728896214; cv=none; b=lABP4zRKteG1gXuEv9DYI3SzXxZ+Hq+AD4hiWkZY+MEfWHZG/LVTbN/5xlLgiIu0ciZhKdzSL1ADhhIxPR04CSr/pfwugxrGjtr7kidaPjF1VMPaAfXdqQ6GiMtGE1murVbxoaPJqclzyP6T6dRCMd+e4PCXA34pQ/FgiRfLQeU=
+	t=1728896218; cv=none; b=cJYLkz1junxp2S2xboJx1JCS3UqNUWUYQksv14zp54uFDZjDzx71NPPVtnwCP6ZGl+J01O6+FpONmQeEn9sINdv9Nu4wDkfQ1diCNWVAscRHSxAgqRZ6quoCDMsTTKde0a8ewOhEhYQIt3gr8kWCmi+xZCUtemsKxDIkkOPdA5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728896214; c=relaxed/simple;
-	bh=deoA6W7KISJU4Lqs4NPTSSLQ+sPbpJvu3bhsGmcntkY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DGIcu6UJdPyk60bwNQhd2IyTgUhBJaHwsnSFsBNeHwLvy7Ef476j9caGoapeW2vZK9PLOYDHkvo0RbgO44G35yVYYpHrXNrzfKbo6DS/gj0lqgWPfe2s0e79eH8zKmKQyjkuhDACEonapQYjgtHv1NbtoYOnJJmXqJoE0XdAc34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ky/t0jVT; arc=none smtp.client-ip=209.85.208.50
+	s=arc-20240116; t=1728896218; c=relaxed/simple;
+	bh=cgQO1UwCPIWBof6xKNlDEdY6kW2vr7t1iwZgCtqmWls=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=GSyc71/TRRmVeqhiUT/q3LTzSTPLauQTilwmGZq84I4BfO832JW0b1rOWE9Iv6rlQ2NpYXs0eMGdHWroRKk6OUKPLmCE6BR40JvDhmRHSUvA1xa4BYhMAofgbGBjbJ4pfdNu+ptOj6ZrDzbk2WQMMK5avzl/xwgQJCpWSH/NyrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VC4QX28a; arc=none smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5c42e7adbddso5319989a12.2;
-        Mon, 14 Oct 2024 01:56:52 -0700 (PDT)
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5c97cc83832so936268a12.0;
+        Mon, 14 Oct 2024 01:56:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728896211; x=1729501011; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bka1XtdhEywlqdYAZ4vAB5CJJ60IdylXCrsQgeEz6GI=;
-        b=Ky/t0jVTQBIkiIcdDpZ5EFB1bQbpkXBnZHMwyk8dVR/9yvt2CfSIMJrtNHHz+wM4zv
-         lzRYmKcRGmLs5mR9+VGYtnpp5HpzKHT6rLlpfUcdc7Eh+D8NIOxPOS8AELl3F0n2HILV
-         OApsZALUrFFKZzs9uMiVj/xKQckb64PioAEseHGNKlQsBfNXvgAAfgijDMupEOuxpYYl
-         4tqKXJ02zRbv94yxiRc/tyiEQlg43e+X5+pWHYVa4OIuXJSRIBHXm2fgxGmylmMdo+7o
-         S2+WnFWnjJ89a4M3+hTB+T2OBU01CRjd9y/BfFqd2HJmwESYooFSuUTKjSw5iqarKtxy
-         Ahkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728896211; x=1729501011;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1728896215; x=1729501015; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Bka1XtdhEywlqdYAZ4vAB5CJJ60IdylXCrsQgeEz6GI=;
-        b=Su2tjmk/MPFwwxXoWDocOTNyXieaX24aa0d//DC6evdIOfmDZnz7jqy7RqxjFAqPnz
-         D2OmnH1zeMz3YUQB6MI+yvKAR0aXLPV5TF4gAVtiLQQPfNBeD18fq+3cx26jVCl0eMMI
-         r2x4rGMfBZt5PddYqQkb0zSE6HM1WRKRxgBjT1DXh0uteTYizzt9VOILZZAXuk76EXlD
-         itbuKdUEYTPjMoP4fyseC4eJo/5RJoV4rBulntRnpcGtEuwrjpCFkGMgkKLDGYQrEb6c
-         09j6aZJ+3dmG31MsDQPb3r9i7c+jf2oVysj/m5FwzI/h+8DEqmsQXQuJzRQfSryrqUX2
-         DEcw==
-X-Forwarded-Encrypted: i=1; AJvYcCVfziOxqkmNZt16WCabispSqrby88+ZPn106059EoZC9rcA/xYJKYy1InvImWqUBFRxf9n4IZy+@vger.kernel.org, AJvYcCWoWgw3kWw9ZnI8mymD76+sl7cdJUMuuaL8WFdTJ/8OMOsV3pDpkp4xWA2bUbQ4j6NrzC9LrWC66MTD30U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtAu5rubgNNYgHIl5pzcS8b9+9WPlSnITgWL0HurgEzkkx71Hb
-	8P28uD7czHo4ZLBkFftLtmJXrCZfY+HaRzlmceirX6xBUkFFV7F70zAnAPN6
-X-Google-Smtp-Source: AGHT+IGDJQrFJVmLNzaOGm//MX2LnTO5StHI/IaPJSK+vM3ey2DDnOs01a7EiS7Ktr8Rdy6PAFN7xg==
-X-Received: by 2002:a05:6402:354b:b0:5c9:488b:1dd9 with SMTP id 4fb4d7f45d1cf-5c95ac416b3mr4767381a12.24.1728896210311;
-        Mon, 14 Oct 2024 01:56:50 -0700 (PDT)
+        bh=IZtKiNo2Id4aizdmJ3+JWafU0x2IXYEJ4ykrMWfdUD4=;
+        b=VC4QX28ahK5JDVM7d6zKx8TUQnCikKVY6CSjOUBmbFs2kR4mBFCBVUufTD5PvgldJm
+         OM04/qvW+Hs1v+QgFXSu6Usvr79CDVczcgFZvEGf75MVJPQ3oVVrJhbv3o1jBZbllnUK
+         o1HKBzToRmw8RSL/I6NkQSz/fu/F+SqWYYnBGMkkKMOCCx0EVywEq8sng9z21xSzWE2P
+         gP83KfvfgKmF1Ey0hE10EVfAXg8OD4x7wQpFB1r82TwGw7Eeg1+JxjC3/UNM6shitSWC
+         3bbo3mvISj2DbRiNrMA7hbQ/YYVQJkSsI63P+iXWCskfUS7+9cRQCJywWtClIsOgMD3I
+         rPsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728896215; x=1729501015;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IZtKiNo2Id4aizdmJ3+JWafU0x2IXYEJ4ykrMWfdUD4=;
+        b=niJNRfwfP2WukCCx4RFbBy2LX0SHsTzHqtyif5SHJqUDHXciUya6QLMQ57EadzbVET
+         FzkSNTd0UFbqCL6yZ/yv7KM4L1eUsrVlDrh9Ir/H20//BXJjvMkeT9ozj0I6j44B07aS
+         lBVvP/PrgFyryrmmDw/tujD48HVy9WBoBfjcNo6wYD5lM/y7Ogyz9UMiOjZy3G2gn8TS
+         KXV9sDDw5/yG/CZw9XnBqe2MfILmtN1fptitOAW+ouMaIK7fCj3yT8Y5fLWiA+kS5Tq/
+         t3A5u+7D+huVkIlTQGbFBB9MaDAAKTEldbdr+NVBVWMhaAa5nGR9Mpzmp0l0aRxqxSPJ
+         fspg==
+X-Forwarded-Encrypted: i=1; AJvYcCVojqSnaf8su8KY0j2UT9Qhf1F+rW8cfaETb86d6qZuzmt4iBRcuRHZzzmNHAx8e87IuBjqbe36@vger.kernel.org, AJvYcCWsS3ZLKELpl6ZhJq8mdnR85tZj5wbxq2JxJvS2OKNeqdD//ZIB3ZvC5rXpkN6bBAKn2zx6qeBOGwCv6Fs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJ79j0WMREyiIepP5vdiyLxQpvwxHlGF2swy4TRI+PzjT8D3ds
+	4gIcRXFDBjxI2fCwlBMSww/MyAuAjF8046EaiwV4hcLece19HBJj81PwONOc
+X-Google-Smtp-Source: AGHT+IE4Tebx2zedc1mf+9ffSBCm5CEIg+axVw0KgnFRYtSFdJGxxHajwNWdgYanJ3YncO+DPc1FjA==
+X-Received: by 2002:a05:6402:42d1:b0:5c4:14fe:971e with SMTP id 4fb4d7f45d1cf-5c948d58e4bmr8108654a12.23.1728896214496;
+        Mon, 14 Oct 2024 01:56:54 -0700 (PDT)
 Received: from [127.0.1.1] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c9370d2296sm4635091a12.15.2024.10.14.01.56.47
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c9370d2296sm4635091a12.15.2024.10.14.01.56.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Oct 2024 01:56:48 -0700 (PDT)
+        Mon, 14 Oct 2024 01:56:54 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Subject: [PATCH v2 0/2] staging: vchiq_arm: Fix missing refcount decrement
+Date: Mon, 14 Oct 2024 10:56:37 +0200
+Subject: [PATCH v2 2/2] staging: vchiq_arm: Fix missing refcount decrement
  in error path for fw_node
-Date: Mon, 14 Oct 2024 10:56:35 +0200
-Message-Id: <20241014-vchiq_arm-of_node_put-v2-0-cafe0a4c2666@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,10 +79,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMPcDGcC/4WNQQ6CMBBFr0JmbU1bERJX3sOQZqRTmEQotthoS
- O9u5QIu30v++xtECkwRLtUGgRJH9nMBfaigH3EeSLAtDFrqWkl1Eqkf+WkwTMI7M3tLZnmtopF
- 4JkR0tpVQtksgx++9e+sKjxxXHz77TVI/+6+YlFDCtfqusaG6tfI6TMiPY+8n6HLOX5kF3Ou6A
- AAA
+Message-Id: <20241014-vchiq_arm-of_node_put-v2-2-cafe0a4c2666@gmail.com>
+References: <20241014-vchiq_arm-of_node_put-v2-0-cafe0a4c2666@gmail.com>
+In-Reply-To: <20241014-vchiq_arm-of_node_put-v2-0-cafe0a4c2666@gmail.com>
 To: Florian Fainelli <florian.fainelli@broadcom.com>, 
  Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -92,38 +92,63 @@ Cc: linux-rpi-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728896207; l=961;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728896207; l=1950;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=deoA6W7KISJU4Lqs4NPTSSLQ+sPbpJvu3bhsGmcntkY=;
- b=ziGzncipHzJsiNZ8mCCJaD/J81b7kY8naAZ9Qg/cp3Ux6cTrCppMq5petwUtH9bPQ44NEESyJ
- KiKLKjJ7rhRDIKMtTtOTTTMGWfjbCpneZwkkSC2TLJ4z0EnR3mYoK0H
+ bh=cgQO1UwCPIWBof6xKNlDEdY6kW2vr7t1iwZgCtqmWls=;
+ b=z8dlOAj/8FIYM9IbUkY70cYe7S9l19ri5R7gxEkCqRIXIL34pJkUIGwLA8NJtm6fID+dxXhB9
+ l+cV2UsHREeCPEOwnnztwEcLzm2lYoVDIPK3cOQXJLAOnaP4gIN5z+0
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-This series refactors some useless goto instructions as a preparation
-for the fix of a missing of_node_put() by means of the cleanup
-attribute.
+An error path was introduced without including the required call to
+of_node_put() to decrement the node's refcount and avoid leaking memory.
+If the call to kzalloc() for 'mgmt' fails, the probe returns without
+decrementing the refcount.
 
+Use the automatic cleanup facility to fix the bug and protect the code
+against new error paths where the call to of_node_put() might be missing
+again.
+
+Cc: stable@vger.kernel.org
+Fixes: 1c9e16b73166 ("staging: vc04_services: vchiq_arm: Split driver static and runtime data")
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
-Changes in v2:
-- Refactor vchiq_probe() to remove goto instructions.
-- Declare and initialize the node right before its first usage.
-- Link to v1: https://lore.kernel.org/r/20241013-vchiq_arm-of_node_put-v1-1-f72b2a6e47d0@gmail.com
+ drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
----
-Javier Carrasco (2):
-      staging: vchiq_arm: refactor goto instructions in vchiq_probe()
-      staging: vchiq_arm: Fix missing refcount decrement in error path for fw_node
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+index 81b2887d1ae0..bf2024929d07 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+@@ -1332,7 +1332,6 @@ MODULE_DEVICE_TABLE(of, vchiq_of_match);
+ 
+ static int vchiq_probe(struct platform_device *pdev)
+ {
+-	struct device_node *fw_node;
+ 	const struct vchiq_platform_info *info;
+ 	struct vchiq_drv_mgmt *mgmt;
+ 	int ret;
+@@ -1341,8 +1340,8 @@ static int vchiq_probe(struct platform_device *pdev)
+ 	if (!info)
+ 		return -EINVAL;
+ 
+-	fw_node = of_find_compatible_node(NULL, NULL,
+-					  "raspberrypi,bcm2835-firmware");
++	struct device_node *fw_node __free(device_node) =
++		of_find_compatible_node(NULL, NULL, "raspberrypi,bcm2835-firmware");
+ 	if (!fw_node) {
+ 		dev_err(&pdev->dev, "Missing firmware node\n");
+ 		return -ENOENT;
+@@ -1353,7 +1352,6 @@ static int vchiq_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	mgmt->fw = devm_rpi_firmware_get(&pdev->dev, fw_node);
+-	of_node_put(fw_node);
+ 	if (!mgmt->fw)
+ 		return -EPROBE_DEFER;
+ 
 
- .../vc04_services/interface/vchiq_arm/vchiq_arm.c     | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
----
-base-commit: d61a00525464bfc5fe92c6ad713350988e492b88
-change-id: 20241013-vchiq_arm-of_node_put-60a5eaaafd70
-
-Best regards,
 -- 
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
+2.43.0
 
 
