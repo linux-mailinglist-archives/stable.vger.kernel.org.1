@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E4C99CE4D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:42:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B19B99D29D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DA262861A5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:42:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 887EBB228CF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55552611E;
-	Mon, 14 Oct 2024 14:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855FC1CDFAF;
+	Mon, 14 Oct 2024 15:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5ZWYpsu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LfDIGLOY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13AFA1A0724;
-	Mon, 14 Oct 2024 14:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CF11AD3F6;
+	Mon, 14 Oct 2024 15:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916937; cv=none; b=AP08gio8XC4H0wzbnJZIurVEq1js8Y3UVYAGc6DyV9sYqkkuERK+21Sj/XMQw3u6ACN68ZwBQvxdwUJOht32E9YWDspca/gvcSWE9yiouW3OEY5xh+BIFtum56JydN1sGHw6zaQ+gd0pzQCR+wTVuT1+L+/vnv2qQ+NuHNhscdA=
+	t=1728919520; cv=none; b=MR/Sx0wY0NJvtM6RVUY4bq9N3kQE3B3rgb4LnB2d//Mf9N0tbdakZm312/Gk9OfAWf4GrIlt1Xiq5w9y2WbiwvcgKMrIh8tPacSq7ek6njZ5CSNTn6uDlvJC/Z2Bu/lcHSEGAiqpUPsNvx8NECXsjyUD5m3MEAtaSQoe7Grc3IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916937; c=relaxed/simple;
-	bh=qgdTC5cBTl45qxLzRw+m3iexeL9UX6To9ygHWYPmLu0=;
+	s=arc-20240116; t=1728919520; c=relaxed/simple;
+	bh=RSUZy5ktQcUw/AyNKiLs2eXy4B5oUkXSISe/g0XaoXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vDjubapSIrRY+f6gq5o6S/HMM5MumoaIt3AYd9BhCzdkez2RGgF2CbNnNg5lcTWwtNImQxwL4la3QzDnHG1Z6lhH6eFo/zAybKX41vhznWU/wOrTe5tTiySinExMcVsSFOSnMtLBvX1xYK8ZtSldUaKMM9+IA09BzEpnpdrJUFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5ZWYpsu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461C9C4CEC3;
-	Mon, 14 Oct 2024 14:42:16 +0000 (UTC)
+	 MIME-Version; b=c0X+jgsiMy3fpiFp8JYgwflrWfytHDPVnZ3IPh+9y/MP+APkVgTxaMrJFHkDiUnyBlnBHzeBd8857PCOzQMA11JcKhnSiluF2pSbONBNQh9mGcBLlonPN1vT+oHuG47+uVbdBQYDyfyS6JQebWvI9ucPH+N+xjhgMJFZWgwP+aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LfDIGLOY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B451FC4CECF;
+	Mon, 14 Oct 2024 15:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916936;
-	bh=qgdTC5cBTl45qxLzRw+m3iexeL9UX6To9ygHWYPmLu0=;
+	s=korg; t=1728919520;
+	bh=RSUZy5ktQcUw/AyNKiLs2eXy4B5oUkXSISe/g0XaoXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J5ZWYpsu7uZx69hULlxsPGCDbXw5LXI8ER6fluEQ4xLtyAK53A+92Ps6QVOBVAdOf
-	 X+COtUSbJrMHjHGL6QbxYXx9Kg4zkNrI57KQhwfP3YhuNzsnuTJmd9MVOQAKfp8715
-	 T+5lW4RkBPe0hRTNPkrm2Q3uFKWlPRiiWsrUtmvM=
+	b=LfDIGLOYUaTNcY8nfoygFiY+sUUQ/Fvti/s5kCSMoLbij3rgQmUMPV7LAIMnqBNLE
+	 38EMtpV93h7S+ZtgMWoP70LIwxd/AhALzytT6HsAjTeGXPfLMmqAMN+N+TWLCcoPym
+	 f1cIOPn/1rdLV5sc4Y18CAxHHnbCKN8YY329DfBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zdravko delineshev <delineshev@outlook.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/213] PCI: Mark Creative Labs EMU20k2 INTx masking as broken
-Date: Mon, 14 Oct 2024 16:19:41 +0200
-Message-ID: <20241014141045.910119149@linuxfoundation.org>
+Subject: [PATCH 6.1 628/798] uprobes: fix kernel info leak via "[uprobes]" vma
+Date: Mon, 14 Oct 2024 16:19:42 +0200
+Message-ID: <20241014141242.710973038@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 2910306655a7072640021563ec9501bfa67f0cb1 ]
+commit 34820304cc2cd1804ee1f8f3504ec77813d29c8e upstream.
 
-Per user reports, the Creative Labs EMU20k2 (Sound Blaster X-Fi
-Titanium Series) generates spurious interrupts when used with
-vfio-pci unless DisINTx masking support is disabled.
+xol_add_vma() maps the uninitialized page allocated by __create_xol_area()
+into userspace. On some architectures (x86) this memory is readable even
+without VM_READ, VM_EXEC results in the same pgprot_t as VM_EXEC|VM_READ,
+although this doesn't really matter, debugger can read this memory anyway.
 
-Thus, quirk the device to mark INTx masking as broken.
+Link: https://lore.kernel.org/all/20240929162047.GA12611@redhat.com/
 
-Closes: https://lore.kernel.org/all/VI1PR10MB8207C507DB5420AB4C7281E0DB9A2@VI1PR10MB8207.EURPRD10.PROD.OUTLOOK.COM
-Link: https://lore.kernel.org/linux-pci/20240912215331.839220-1-alex.williamson@redhat.com
-Reported-by: zdravko delineshev <delineshev@outlook.com>
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reported-by: Will Deacon <will@kernel.org>
+Fixes: d4b3b6384f98 ("uprobes/core: Allocate XOL slots for uprobes use")
+Cc: stable@vger.kernel.org
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/events/uprobes.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 486efe7b7cae1..54061b65a2b72 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3614,6 +3614,8 @@ DECLARE_PCI_FIXUP_FINAL(0x1814, 0x0601, /* Ralink RT2800 802.11n PCI */
- 			quirk_broken_intx_masking);
- DECLARE_PCI_FIXUP_FINAL(0x1b7c, 0x0004, /* Ceton InfiniTV4 */
- 			quirk_broken_intx_masking);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_CREATIVE, PCI_DEVICE_ID_CREATIVE_20K2,
-+			quirk_broken_intx_masking);
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 8a5989d46c930..9ee25351cecac 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1494,7 +1494,7 @@ static struct xol_area *__create_xol_area(unsigned long vaddr)
  
- /*
-  * Realtek RTL8169 PCI Gigabit Ethernet Controller (rev 10)
+ 	area->xol_mapping.name = "[uprobes]";
+ 	area->xol_mapping.pages = area->pages;
+-	area->pages[0] = alloc_page(GFP_HIGHUSER);
++	area->pages[0] = alloc_page(GFP_HIGHUSER | __GFP_ZERO);
+ 	if (!area->pages[0])
+ 		goto free_bitmap;
+ 	area->pages[1] = NULL;
 -- 
 2.43.0
 
