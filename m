@@ -1,310 +1,126 @@
-Return-Path: <stable+bounces-83723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 460E599BF36
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F3F99BF51
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 07:18:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C6201C216E2
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 04:54:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D8331C21529
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 05:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C747F48C;
-	Mon, 14 Oct 2024 04:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDF74F20C;
+	Mon, 14 Oct 2024 05:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="cNQRk0kj"
 X-Original-To: stable@vger.kernel.org
-Received: from cosmicgizmosystems.com (beyond-windows.com [63.249.102.155])
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F53D4A1C;
-	Mon, 14 Oct 2024 04:54:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.249.102.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5CD44C7E
+	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 05:18:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728881655; cv=none; b=PDemHl7SR3+1YnWEv2/dZHmtClE6lG6JqnUNpRG74D1EpfVugbKwM7UMFNUITK95ltn22f3kY4DgEGXy4nrEx4dMPeUZ84+Om/owEcOnc53WJSmc8K2uXyAq6qYvzVM//IN4MfSCNm6cWvazrgCeIAUyLsFnmjulKXQH37ZCEIQ=
+	t=1728883082; cv=none; b=KAoqYXsMOsDNzTVZmdB5VUh1yDX8rJA0WYbS1V5MX9hXYaDWXVH0PJfXgGakJyvYogUDrNDC+uvkiZLIzI5Axb8O23G0yVhCc1PDTOme4xwWRo6DrDB6OlckGNIZ2nsdP1v+5treZt5Rb3kcfosxZBhxO20uJ6sfy+7mNEFqriI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728881655; c=relaxed/simple;
-	bh=WTSxNEFV87UUOCvE3AFLbbV3O/wp3BlqSEnenjaV7xE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hi/3JVcmTHr5QvN9yAQ9v2ofsJoupm0HV53S8i/vzs3PdRppk7+eHbv4qZZ4eLJbD76oiVMZrx8Q3rrBV/9+L5QxoMnqT1S17PuvM0piiDNm4RbVwLBuQ6avvIAgwc4q8q+ADXjuQLNupmvHSSJm7waYL9IOdzbbdyD+2PBsqls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cosmicgizmosystems.com; spf=pass smtp.mailfrom=cosmicgizmosystems.com; arc=none smtp.client-ip=63.249.102.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cosmicgizmosystems.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cosmicgizmosystems.com
-Received: from [10.0.0.101] (c-73-190-111-195.hsd1.wa.comcast.net [73.190.111.195])
-	by host11.cruzio.com (Postfix) with ESMTPSA id 5FB2E275BF53;
-	Sun, 13 Oct 2024 21:47:38 -0700 (PDT)
-Message-ID: <234020be-e030-4271-9cc1-a1f6d04eeeed@cosmicgizmosystems.com>
-Date: Sun, 13 Oct 2024 21:47:37 -0700
+	s=arc-20240116; t=1728883082; c=relaxed/simple;
+	bh=dBXNFah00QnG2qYNzAu4gkeZhXocfmsU1zzXZjTcd1Q=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=aytH8Ozdh/A5M8Kaw1/a5Nv/z6ZyMSsgJCVP6yv23ir9Prwk4J442ha2d72QqnyMb8fjUU9GeFxn3hMgWqRRnOtwBI/+FV8pTQ2QmdF0rXRCiliSNNd8W1b3tXxNs7nyUAldMOMzQzno6ixNeB8ihu3O7zjsWOtwdvwcN6zWs+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=cNQRk0kj; arc=none smtp.client-ip=209.85.160.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-288a5765bb9so34887fac.3
+        for <stable@vger.kernel.org>; Sun, 13 Oct 2024 22:18:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1728883080; x=1729487880; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pZqdnd/M8grsLw0V7qaa3EKv94X/atMg+zy+8M6cuA0=;
+        b=cNQRk0kjDJSvkFnS3CYzAHY41wlFm50efxiQ6IJgZxx8gHvDpsimxZe0g2yTXTyDag
+         +Adg6sUYiEnTncUk06qONxu5X4GQsncBmKTtUmKLvIgL0TBy16jYbptAEsDRzWz4zkF7
+         mbvxGhqftGQL2SSMr6xdFssL8Q+hlunTRi/Zo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728883080; x=1729487880;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pZqdnd/M8grsLw0V7qaa3EKv94X/atMg+zy+8M6cuA0=;
+        b=n4eb/4cSJB7rGTZVCcYZh4CYXTPx8XCkjzNVYPknHUx+B0yFZJY4h3HhWiY3aOOlZh
+         UM365iAoCLdl1891DdQg1qd/CD56RgouZGASc/RLuxbBtv3DL1lBtTpU3LluyH9JoAhB
+         O6ICMUXwuCYKyQAEIhRKo9zHISHbnuGSdnlJKPFDh3MqbgIBXWOAjaVdB4kr4A6Nxdbt
+         X6VNZjN1jZOkFqxOY+6nHc9NS5KSbt8N5zuD/NFbeRsVp76TI7+Ynl0qVHJD8frV+3Me
+         YzjL59YxELYoHhJhKITZfHEbf5wJIRt0sTODEW+U87VHXWvpzGQJqv7yEPVPNdOjA0tv
+         PB/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW8wJwS5b3tyqo/g/8TwEcQ26IlLhmHB7/2wXarue0VCNnAT0oUlBAWIpshehKlnWBK9/gtePs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWz1pRDFs1fRD5UHOln0Fp50SLR+EQ00iyp5lQxikr3QenJ0oi
+	Xfhc6JMbrNVo3xxXuVapOBmOrZVc5uAIODIVp3YFvI+UwuqUl+vj+uO/y5ToI6aSy/96hE5Uyuc
+	meM+xfphKnQjwKCgE58WnrCYjFyvaBRPnkqEZ
+X-Google-Smtp-Source: AGHT+IHp32OrZHVC+V1P/Lyygpq7x+P4mmHKkb6tWf7cYUk8+LdloiAZzfuJI9YzoNUF0vpLquz31PwuC8QR8w+722s=
+X-Received: by 2002:a05:6870:51e:b0:285:82b3:6313 with SMTP id
+ 586e51a60fabf-2886de506camr1892001fac.6.1728883079880; Sun, 13 Oct 2024
+ 22:17:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] HID: plantronics: Update to map micmute controls
-To: "Wang, Wade" <wade.wang@hp.com>, Benjamin Tissoires <bentiss@kernel.org>
-Cc: "jikos@kernel.org" <jikos@kernel.org>,
- "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20240913060800.1325954-1-wade.wang@hp.com>
- <s36bnt7ptdarrxpejm6n62gf3rvvwfagmmpyq4unpv3hn7v2jf@up2vjv7shl2q>
- <EA2PR84MB378051BB14F857BA84E662818B602@EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM>
- <EA2PR84MB378082C6FA58AA25258DC74B8B682@EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM>
- <bc92e409-cebe-4da1-a225-c48915c5dcba@cosmicgizmosystems.com>
- <EA2PR84MB37807C9F2191AFE41F9372328B6A2@EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM>
- <EA2PR84MB378022DD0D3D06901404BEDB8B792@EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM>
-Content-Language: en-US
-From: Terry Junge <linuxhid@cosmicgizmosystems.com>
-In-Reply-To: <EA2PR84MB378022DD0D3D06901404BEDB8B792@EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Jeff Xu <jeffxu@chromium.org>
+Date: Sun, 13 Oct 2024 22:17:48 -0700
+Message-ID: <CABi2SkW0Q8zAkmVg8qz9WV+Fkjft4stO67ajx0Gos82Sc4vjhg@mail.gmail.com>
+Subject: backport mseal and mseal_test to 6.10
+To: Greg KH <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Pedro Falcato <pedro.falcato@gmail.com>, stable@vger.kernel.org, 
+	Michael Ellerman <mpe@ellerman.id.au>, Oleg Nesterov <oleg@redhat.com>, Kees Cook <keescook@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Wade,
+Hi Greg,
 
-Short answer is no, not until some fix is put into the kernel or user 
-space so the majority of Plantronics/Poly/HP headsets bind to the mixer 
-so the host feeds back settings on the audio control interface for the 
-volume level and mute state. The problem is in the names that the kernel 
-creates for the various controls.
+How are you?
 
-After a couple of weeks torture and two days to repair/recover my system 
-after following Ubuntu's instructions on building and installing the 
-kernel, I was able to test the behavior with a modified hid-plantronics 
-driver. I removed all the quirks that have been added since I retired 
-and just added allowing the telephony mute event to be mapped by the core.
+What is the process to backport Pedro's recent mseal fixes to 6.10 ?
 
-The quirks, by the way, are just masking the as designed behavior of the 
-headsets. Both the repeated *same* volume event and the *opposite* 
-volume event can occur depending on feedback (or lack of feedback) from 
-the host on the audio control interface. Blame Windows...
+Specifically those 5 commits:
 
-I don't have many headsets around to test with but I'll describe the 
-mute behavior with a DA80. It's PID is AF01 but I would expect all AFxx 
-and 43xx PID devices would do the same as the control names are the same 
-for all.
+67203f3f2a63d429272f0c80451e5fcc469fdb46
+    selftests/mm: add mseal test for no-discard madvise
 
-1. Plug in the headset.
-2. Open Ubuntu Settings menu and select Sound.
-3. Select the headset as the output and input devices.
-4. Mute the Input Volume by clicking on the microphone icon.
-5. Start pressing the mute button on the headset.
+4d1b3416659be70a2251b494e85e25978de06519
+    mm: move can_modify_vma to mm/vma.h
 
-Note that the mute state in the mixer is now out of synchronization with 
-the headset. Every time you press the headset mute button they both 
-toggle so one or the other is always muted and the microphone is useless.
+ 4a2dd02b09160ee43f96c759fafa7b56dfc33816
+  mm/mprotect: replace can_modify_mm with can_modify_vma
 
-Also, if you unplug the headset when the mixer is muted but the headset 
-is unmuted, when you plug it in again the mixer is still muted. So the 
-microphone is still useless. You have to go back to the Sound Settings 
-dialog and set the mute to match the headset state to resynchronize them.
+23c57d1fa2b9530e38f7964b4e457fed5a7a0ae8
+      mseal: replace can_modify_mm_madv with a vma variant
 
-I also tested a BT600 Bluetooth dongle which binds to the mixer volume 
-and mute controls. Mute synchronization works as expected.
+f28bdd1b17ec187eaa34845814afaaff99832762
+   selftests/mm: add more mseal traversal tests
 
-So before we uncork the telephony mute event and hope user space will 
-fix something in the future, let's fix it so the headsets all bind to 
-the mixer and things just work before we pull the cork. The issue is in 
-the names...
+There will be merge conflicts, I  can backport them to 5.10 and test
+to help the backporting process.
 
-Of the headsets I have these are the names that don't bind.
+Those 5 fixes are needed for two reasons: maintain the consistency of
+mseal's semantics across releases, and for ease of backporting future
+fixes.
 
-Control: name="Headset Earphone Playback Volume"
-Control: name="Headset Microphone Capture Switch"
-Control: name="Receive Playback Volume"
-Control: name="Transmit Capture Switch"
+PS: There are also three other commits for munmap and remap (see below),
+ they have dependency on Michael Ellerman's  arch_unmap() patch [1] and maybe
+uprobe change [2]. If Michael and Oleg are OK with backporting their
+patches, then great !
+Otherwise, since those commits below don't change mseal's semantics, I
+think it is OK to just backport above 5 patches.
 
-These are the names that do bind.
+df2a7df9a9aa32c3df227de346693e6e802c8591
+     mm/munmap: replace can_modify_mm with can_modify_vma
+38075679b5f157eeacd46c900e9cfc684bdbc167
+   mm/mremap: replace can_modify_mm with can_modify_vma
+5b3db2b812a1f86dfab587324d198a5d10c7a5cf
+   mm: remove can_modify_mm()
 
-Control: name="Headset Capture Switch"
-Control: name="PCM Playback Volume"
+[1] https://lore.kernel.org/all/20240812082605.743814-1-mpe@ellerman.id.au/
+[2] https://lore.kernel.org/all/20240911131320.GA3448@redhat.com/
 
-These names are created by the kernel in:
-
-sound/usb/mixer.c function __build_feature_ctl
-
-I have a patch I am trying to test that will clean up the names only for 
-VID=047F (Plantronics) devices so the broken names will come out as 
-"Headset Capture Switch" and "Headset Playback Volume". I was able to 
-modprobe the hid_plantronics module into the running kernel to test it 
-but modprobe fails loading the snd_usb_audio module (which contains the 
-patch) so I will have to install the full kernel. The last time I tried 
-that it broke the kernel. I think some of the packages that the build 
-created are not supposed to be installed? Not sure which ones to install 
-and in what order.
-
-Here's what a full build
-
-fakeroot debian/rules binary
-
-created:
-
-linux-buildinfo-6.8.0-45-generic_6.8.0-45.45+test1_amd64.deb
-linux-cloud-tools-6.8.0-45_6.8.0-45.45+test1_amd64.deb
-linux-cloud-tools-6.8.0-45-generic_6.8.0-45.45+test1_amd64.deb
-linux-cloud-tools-common_6.8.0-45.45+test1_all.deb
-linux-doc_6.8.0-45.45+test1_all.deb
-linux-headers-6.8.0-45_6.8.0-45.45+test1_all.deb
-linux-headers-6.8.0-45-generic_6.8.0-45.45+test1_amd64.deb
-linux-image-unsigned-6.8.0-45-generic_6.8.0-45.45+test1_amd64.deb
-linux-libc-dev_6.8.0-45.45+test1_amd64.deb
-linux-lib-rust-6.8.0-45-generic_6.8.0-45.45+test1_amd64.deb
-linux-modules-6.8.0-45-generic_6.8.0-45.45+test1_amd64.deb
-linux-modules-extra-6.8.0-45-generic_6.8.0-45.45+test1_amd64.deb
-linux-modules-ipu6-6.8.0-45-generic_6.8.0-45.45+test1_amd64.deb
-linux-modules-iwlwifi-6.8.0-45-generic_6.8.0-45.45+test1_amd64.deb
-linux-modules-usbio-6.8.0-45-generic_6.8.0-45.45+test1_amd64.deb
-linux-source-6.8.0_6.8.0-45.45+test1_all.deb
-linux-tools-6.8.0-45_6.8.0-45.45+test1_amd64.deb
-linux-tools-6.8.0-45-generic_6.8.0-45.45+test1_amd64.deb
-linux-tools-common_6.8.0-45.45+test1_all.deb
-linux-tools-host_6.8.0-45.45+test1_all.deb
-
-I'm going to git the ALSA branch tomorrow so I can create an actual 
-patch. Maybe I can pass it to you to build and test on your machines 
-with as many headsets as possible?
-
-Thanks and regards,
-Terry
-
-On 10/10/24 9:03 PM, Wang, Wade wrote:
-> Hi Terry,
-> 
-> Is it OK to apply? At least we will have a chance to improve user experience in userspace after apply this patch. Looking forward to your comments. Thanks
-> 
-> Regards
-> Wade
-> 
-> -----Original Message-----
-> From: Wang, Wade
-> Sent: Thursday, September 26, 2024 9:58 AM
-> To: Terry Junge <linuxhid@cosmicgizmosystems.com>; Benjamin Tissoires <bentiss@kernel.org>
-> Cc: jikos@kernel.org; linux-input@vger.kernel.org; linux-kernel@vger.kernel.org; stable@vger.kernel.org
-> Subject: RE: [PATCH] HID: plantronics: Update to map micmute controls
-> 
-> Hi Terry,
-> 
-> 1. Per our testing, Poly headset will maintain Mute status at headset side, whatever host send feedback or not.
-> 2. Mute led is off when Poly USB headset connect to host, so host will keep same Mute status with headset because of toggle Mute key event.
-> 3. Even Ubuntu and Chromebooks have to feedback Poly headset mute state, it should be done at user space instead of kernel. The precondition is kernel should report Mute key event first, then user space has chance to do this kind of improvement in future
-> 
-> So following standard HID rule is necessary.
-> 
-> BTW, on MSFT Windows, After receive mute key, the host switch the mute control status of the audio control interface, whatever mute status in headset FW is correct or not. I think it make sense than LED page mute LED.
-> 
-> Thanks,
-> Wade
-> 
-> -----Original Message-----
-> From: Terry Junge <linuxhid@cosmicgizmosystems.com>
-> Sent: Wednesday, September 25, 2024 11:32 AM
-> To: Wang, Wade <wade.wang@hp.com>; Benjamin Tissoires <bentiss@kernel.org>
-> Cc: jikos@kernel.org; linux-input@vger.kernel.org; linux-kernel@vger.kernel.org; stable@vger.kernel.org
-> Subject: Re: [PATCH] HID: plantronics: Update to map micmute controls
-> 
-> CAUTION: External Email
-> 
-> Hi Wade,
-> 
-> I retired from Plantronics in 2020. The original driver did not allow mute button to be mapped as there were mute synchronization issues.
-> 
-> The headset needs to receive some type of feedback from the host when it sends the mute event in order to synchronize with the host, ideally the host setting or clearing the mute control in the audio control interface but setting/clearing the mute LED would also work.
-> 
-> At the time Ubuntu and Chromebooks did not feedback mute state and it was possible to mute from the headset and then unmute from the mixer or keyboard and the headset would stay muted. The only way to unmute was with the headset button. This was an unacceptable user experience so we blocked mapping.
-> 
-> If you want to try mapping mute event then you also need to allow mapping the mute LED for possible host feedback.
-> 
-> (HID_UP_TELEPHONY | 0x2f) is telephony page mute button (HID_UP_LED | 0x09) is LED page mute LED
-> 
-> Then you need to test more than just the event getting to user space.
-> You need to check mute synchronization with the host mixer under all mute/unmute use cases.
-> 
-> Regards,
-> Terry Junge
-> 
-> 
-> On 9/24/24 2:00 AM, Wang, Wade wrote:
->> Hi Benjamin and Greg,
->>
->> May I know the review progress and anything I need to change? Thanks
->>
->> Regards
->> Wade
->>
->> -----Original Message-----
->> From: Wang, Wade
->> Sent: Monday, September 16, 2024 4:13 PM
->> To: Benjamin Tissoires <bentiss@kernel.org>
->> Cc: jikos@kernel.org; linux-input@vger.kernel.org;
->> linux-kernel@vger.kernel.org; stable@vger.kernel.org
->> Subject: RE: [PATCH] HID: plantronics: Update to map micmute controls
->>
->> Hi Benjamin,
->>
->> This patch is for all Poly HS devices, and it does not depends on other patches, it can apply directly by " git am -3".
->>
->> With this patch, MicMute button key event will be send to user space, I have tested on the below Poly devices:
->>           Plantronics EncorePro 500 Series
->>           Plantronics Blackwire_3325 Series
->>           Poly Voyager 4320 HS + BT700 Dongle
->>
->> Regards
->> Wade
->>
->> -----Original Message-----
->> From: Benjamin Tissoires <bentiss@kernel.org>
->> Sent: Friday, September 13, 2024 10:04 PM
->> To: Wang, Wade <wade.wang@hp.com>
->> Cc: jikos@kernel.org; linux-input@vger.kernel.org;
->> linux-kernel@vger.kernel.org; stable@vger.kernel.org
->> Subject: Re: [PATCH] HID: plantronics: Update to map micmute controls
->>
->> CAUTION: External Email
->>
->> On Sep 13 2024, Wade Wang wrote:
->>> telephony page of Plantronics headset is ignored currently, it caused
->>> micmute button no function, Now follow native HID key mapping for
->>> telephony page map, telephony micmute key is enabled by default
->>
->> For which devices this patch is required? Is it related to the other patch you sent today? If so please make a mention of the concerned devices and make sure both patches are sent in a single v3 series.
->>
->> Also, have you tested this change with other Plantronics headsets? Where there any changes in behavior from them?
->>
->> Cheers,
->> Benjamin
->>
->>>
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Wade Wang <wade.wang@hp.com>
->>> ---
->>>    drivers/hid/hid-plantronics.c | 4 ++--
->>>    1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/hid/hid-plantronics.c
->>> b/drivers/hid/hid-plantronics.c index 2a19f3646ecb..2d17534fce61
->>> 100644
->>> --- a/drivers/hid/hid-plantronics.c
->>> +++ b/drivers/hid/hid-plantronics.c
->>> @@ -77,10 +77,10 @@ static int plantronics_input_mapping(struct hid_device *hdev,
->>>                 }
->>>         }
->>>         /* handle standard types - plt_type is 0xffa0uuuu or 0xffa2uuuu */
->>> -     /* 'basic telephony compliant' - allow default consumer page map */
->>> +     /* 'basic telephony compliant' - allow default consumer &
->>> + telephony page map */
->>>         else if ((plt_type & HID_USAGE) >= PLT_BASIC_TELEPHONY &&
->>>                  (plt_type & HID_USAGE) != PLT_BASIC_EXCEPTION) {
->>> -             if (PLT_ALLOW_CONSUMER)
->>> +             if (PLT_ALLOW_CONSUMER || (usage->hid & HID_USAGE_PAGE)
->>> + == HID_UP_TELEPHONY)
->>>                         goto defaulted;
->>>         }
->>>         /* not 'basic telephony' - apply legacy mapping */
->>> --
->>> 2.34.1
->>>
->>
->>
-> 
-
+Thanks!
+-Jeff
 
