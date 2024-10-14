@@ -1,114 +1,122 @@
-Return-Path: <stable+bounces-85057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC50299D465
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 18:13:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C9E499D44B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 18:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 190F61C20B5D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:13:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68CF21C20EB3
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74FD31B4F08;
-	Mon, 14 Oct 2024 16:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BA61ABECD;
+	Mon, 14 Oct 2024 16:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aC9Gr4Eu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SC6bAct9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DBC01AE003
-	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 16:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258F01ABEA0
+	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 16:09:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728922350; cv=none; b=c/udhNxeyx11FxQw5++DGnTIvh81S2x6mYwSWJ7e9PQ/Ui+wYTsTV8XOWNYK8c5Jr6Y4TZO8vebZGCLb2iTSNTwXgJDNTwBBCGqOm3JHkGa45JoJu3u51LVSeT5fqqwEqNCyBnYNy1epLwZ1p8kMF/3S1h/wzhT8rm2w3xLU0ks=
+	t=1728922182; cv=none; b=tFT836X4RBOnrVCttTncPyCzu4xjyrcCsnbqh1aOPKjSTksNDtOd0Xa78AvugzZVIMx9F23vhxrIYcIMzhQM6FyBhPkSKDTpP1n2ivbYRntfn31gFI2ttQI2pw112jXNOXjC89n+0zL+CqBBaXP/SjwjxTlmYLtgDSla0yEUvFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728922350; c=relaxed/simple;
-	bh=OAUV6ISm7p7vDSvm5tc9L4GqRgcVOrGjRLuc34K4bOQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NQbd7sX9lNgcQjcslz8DkCXCq+l1nySjNHhkC8mzneGHJzCfHsSZ/l6u82TbgZsVuQDqMVP+qZb+D8+JmY6lHEth5CMhLHTRcwyRx88dDN8FTL9GuSwjRHGuRPZxAIz/bQidzfJDmeqWbM4+JzR7LNww/6Hp1YUJ3judba5ujfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aC9Gr4Eu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E627C4CEC3;
-	Mon, 14 Oct 2024 16:12:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728922349;
-	bh=OAUV6ISm7p7vDSvm5tc9L4GqRgcVOrGjRLuc34K4bOQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aC9Gr4EunwdCeL3UHW4vptrip3g6211sG+aA4xVW/4nRd5v6mBZpXpTVif9GhqZBo
-	 tDLRpGJHRmRgtoC4A57It9ZXG44Dxmb4Nz5e6hJyRmDc6R9/mAIfg4MQMec0zDtQkf
-	 Z5Q+u97Umcp7UPXVsqnBkbFIS7szoR/PA7Ojot0A=
-Date: Mon, 14 Oct 2024 17:56:13 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jeff Xu <jeffxu@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Pedro Falcato <pedro.falcato@gmail.com>, stable@vger.kernel.org,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Oleg Nesterov <oleg@redhat.com>, Kees Cook <keescook@chromium.org>
-Subject: Re: backport mseal and mseal_test to 6.10
-Message-ID: <2024101437-taco-confusion-379f@gregkh>
-References: <CABi2SkW0Q8zAkmVg8qz9WV+Fkjft4stO67ajx0Gos82Sc4vjhg@mail.gmail.com>
- <2024101439-scotch-ceremony-c2a8@gregkh>
- <CABi2SkWSLHfcBhsa2OQqtTjUa-gNRYXWthwPeWrrEQ1pUhfnJg@mail.gmail.com>
+	s=arc-20240116; t=1728922182; c=relaxed/simple;
+	bh=Qnv02q9ID0opb9y+eBj++9oNKzynDcChPobJVDYMsPM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bonKUJTTP511izu15xXWOdV3LjQUlNIN83U5ShPwQ9nDJtATXsxSA6c57EJsFiOQY1K+vMPJDiI2gMMgCWA91R+JBwr2KEc0ireP0h4uURhNICvFqhNCtv1Uk+WSbb27O171pcG8qQ7x1CNIM80/zBWaj9WblrsYvCkhYOY4xhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SC6bAct9; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728922180; x=1760458180;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Qnv02q9ID0opb9y+eBj++9oNKzynDcChPobJVDYMsPM=;
+  b=SC6bAct9GP6uzHGIOtbJuA4YGE1Q7Qc4AzrZmX/DubIlw4g7wF4kSpZo
+   ilJFkJ8xtMCStNiHcHepaSiJQRffqspgkBmqx36p2KWxu29tqE0dOic4u
+   NdNYpADgKQJxBhKThVGm54QYyZxdTIehn34YrieCZkCEqHh7vv00Kj4Z0
+   cJQR686TGOdBPy44yGWII84+eld2o/nNBMOLV6opD0alCIWC661J5u3M+
+   cURzXi06X+H80rxwohkcdpGkMxM9g1prA5kG4vwQXRlSeV3lkphzrQ16R
+   JAGq5eLgB6Sh+eyENZGdO/L5tELiu6eyFlNhYdCiWFL3PvCZ6IaCoqG9X
+   A==;
+X-CSE-ConnectionGUID: znLkoTwcSJWaYbND6tLF+A==
+X-CSE-MsgGUID: aY8oCSwkQkGn9LjCD8lVFQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11224"; a="28408479"
+X-IronPort-AV: E=Sophos;i="6.11,203,1725346800"; 
+   d="scan'208";a="28408479"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2024 09:09:39 -0700
+X-CSE-ConnectionGUID: bScTTqBnQY6FfKili8oakg==
+X-CSE-MsgGUID: auhFY9CbTRyXrgY44mG+DQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,203,1725346800"; 
+   d="scan'208";a="77720745"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by fmviesa008.fm.intel.com with SMTP; 14 Oct 2024 09:09:38 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Mon, 14 Oct 2024 19:09:36 +0300
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: dri-devel@lists.freedesktop.org
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	stable@vger.kernel.org,
+	Erhard Furtner <erhard_f@mailbox.org>
+Subject: [PATCH] drm/radeon: Fix encoder->possible_clones
+Date: Mon, 14 Oct 2024 19:09:36 +0300
+Message-ID: <20241014160936.24886-1-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABi2SkWSLHfcBhsa2OQqtTjUa-gNRYXWthwPeWrrEQ1pUhfnJg@mail.gmail.com>
 
-On Mon, Oct 14, 2024 at 08:27:29AM -0700, Jeff Xu wrote:
-> On Sun, Oct 13, 2024 at 10:54 PM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Sun, Oct 13, 2024 at 10:17:48PM -0700, Jeff Xu wrote:
-> > > Hi Greg,
-> > >
-> > > How are you?
-> > >
-> > > What is the process to backport Pedro's recent mseal fixes to 6.10 ?
-> >
-> > Please read:
-> >     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> > for how all of this works :)
-> >
-> > > Specifically those 5 commits:
-> > >
-> > > 67203f3f2a63d429272f0c80451e5fcc469fdb46
-> > >     selftests/mm: add mseal test for no-discard madvise
-> > >
-> > > 4d1b3416659be70a2251b494e85e25978de06519
-> > >     mm: move can_modify_vma to mm/vma.h
-> > >
-> > >  4a2dd02b09160ee43f96c759fafa7b56dfc33816
-> > >   mm/mprotect: replace can_modify_mm with can_modify_vma
-> > >
-> > > 23c57d1fa2b9530e38f7964b4e457fed5a7a0ae8
-> > >       mseal: replace can_modify_mm_madv with a vma variant
-> > >
-> > > f28bdd1b17ec187eaa34845814afaaff99832762
-> > >    selftests/mm: add more mseal traversal tests
-> > >
-> > > There will be merge conflicts, I  can backport them to 5.10 and test
-> > > to help the backporting process.
-> >
-> > 5.10 or 6.10?
-> >
-> 6.10.
-> 
-> > And why 6.10?  If you look at the front page of kernel.org you will see
-> > that 6.10 is now end-of-life, so why does that kernel matter to you
-> > anymore?
-> >
-> OK, I didn't know that. Less work is nice :-)
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-So, now that you don't care about 6.10.y, what about 6.11.y?  Are any of
-these actually bugfixes that people need?
+Include the encoder itself in its possible_clones bitmask.
+In the past nothing validated that drivers were populating
+possible_clones correctly, but that changed in commit
+74d2aacbe840 ("drm: Validate encoder->possible_clones").
+Looks like radeon never got the memo and is still not
+following the rules 100% correctly.
 
-thanks,
+This results in some warnings during driver initialization:
+Bogus possible_clones: [ENCODER:46:TV-46] possible_clones=0x4 (full encoder mask=0x7)
+WARNING: CPU: 0 PID: 170 at drivers/gpu/drm/drm_mode_config.c:615 drm_mode_config_validate+0x113/0x39c
+...
 
-greg k-h
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: amd-gfx@lists.freedesktop.org
+Cc: stable@vger.kernel.org
+Fixes: 74d2aacbe840 ("drm: Validate encoder->possible_clones")
+Reported-by: Erhard Furtner <erhard_f@mailbox.org>
+Closes: https://lore.kernel.org/dri-devel/20241009000321.418e4294@yea/
+Tested-by: Erhard Furtner <erhard_f@mailbox.org>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ drivers/gpu/drm/radeon/radeon_encoders.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/radeon/radeon_encoders.c b/drivers/gpu/drm/radeon/radeon_encoders.c
+index 0f723292409e..fafed331e0a0 100644
+--- a/drivers/gpu/drm/radeon/radeon_encoders.c
++++ b/drivers/gpu/drm/radeon/radeon_encoders.c
+@@ -43,7 +43,7 @@ static uint32_t radeon_encoder_clones(struct drm_encoder *encoder)
+ 	struct radeon_device *rdev = dev->dev_private;
+ 	struct radeon_encoder *radeon_encoder = to_radeon_encoder(encoder);
+ 	struct drm_encoder *clone_encoder;
+-	uint32_t index_mask = 0;
++	uint32_t index_mask = drm_encoder_mask(encoder);
+ 	int count;
+ 
+ 	/* DIG routing gets problematic */
+-- 
+2.45.2
+
 
