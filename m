@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-83826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3966599CCBC
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:24:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A5A99D209
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0550283DC9
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:24:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C73D2833FF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69871AB505;
-	Mon, 14 Oct 2024 14:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E994F1BE223;
+	Mon, 14 Oct 2024 15:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1soCQR1z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHacpb8Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DF31A76C4;
-	Mon, 14 Oct 2024 14:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A401B86CC;
+	Mon, 14 Oct 2024 15:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915848; cv=none; b=eJij4rT2881/aLMCRTnGJzqYme7Ym91bWw6EQN43usk2P/otchCAZsGGJwJut0FeZcfA+LVW27iTYPTZhP09D+qXHOsbqLUyasvVtkOwaMuNvK22iCze/+FkTwUvvquWAVVUgp5H9zuZf/lz5Z59k0QffuUMOQrNOVFrUdtNOLk=
+	t=1728919154; cv=none; b=HLH+UxMmbngjRIomuf7pqUPO9Pz0fnCci3JEds9+P7zLYSJC2G4cmPnKiRAHceyIJIaLdGL8EQ7d0523nm/URSoh017OT5Hr0Sv2AZzxIIXCA3l/sDHR4JO2oipKjpd4xCOZphwAmxYRTTs2VALoNxImIcgWg5Pv9+hhePsmcNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915848; c=relaxed/simple;
-	bh=C9W9Wf4g6gu+NDD3/O+TH0eWXIbs5+vXdJq9phta8uA=;
+	s=arc-20240116; t=1728919154; c=relaxed/simple;
+	bh=smRawrV3m9iqcj2t5Glqaee4/O+6Epn3ZTcxoLSaMhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y+PnERDSZiekH+1Y5oDjUvycLikIZowE7HWsBPilIR8e2gyWfgalWHAnnT0BFgUZraG9yx3ggyC2f5oWMXxDfqcKJyklm3OT6vgg+OIiMXcrb4D/Kx7N/w+oZRmH4XzwQrtwzlpRcg87uRGINebPfR3nKqx5w2i/R4vdZU/KNcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1soCQR1z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D101AC4CEC3;
-	Mon, 14 Oct 2024 14:24:07 +0000 (UTC)
+	 MIME-Version; b=OmKb6/+A9UCAUs0Bs2HVd7YMvJaOJuin5uVTsrUStBgNgoyJauqw+U3I0OZHo0W+E++DuoEblxQOfvTe1VT2tQgYhL78cOboP8LZMi2vKDIj7ZgQOw7QYImiI42MQohIURKw6/35L8mCOZMnTSFqdcP/o4vZsGjBwIu7ME/Ysdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHacpb8Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17CE6C4CEC3;
+	Mon, 14 Oct 2024 15:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915848;
-	bh=C9W9Wf4g6gu+NDD3/O+TH0eWXIbs5+vXdJq9phta8uA=;
+	s=korg; t=1728919154;
+	bh=smRawrV3m9iqcj2t5Glqaee4/O+6Epn3ZTcxoLSaMhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1soCQR1zyE+d850FnXDulG6633PNp8y4DEMH0+ceFEUn833HUrGa/W5TgSET80P7F
-	 HUfNhcbTZs2p558eY9ej63ZEm5s2hTT0oYSX/mPYJUPJlz+FfPwHq9ETtUruXwnyLG
-	 p/5mdy6eFtyBTt1Ycz8vFlzwEZaN27VcuUPx1n2U=
+	b=ZHacpb8ZGUEUApNM33X3cZvcDRUS3CBf+pWmUd7Z1w54qep5KmqAyKp1q8iPCTA+o
+	 +f52MzAP6N5gTxTe4XS3CTJJbBGasfpilJ1Wy2Nw9Kx+qo4DaeEa9FDzI+oaNUQtRi
+	 Zsha9vSsoB1qNdRzQ5mPqSE0iJhLbKVHrbbvGGWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 017/214] selftests/bpf: Fix ARG_PTR_TO_LONG {half-,}uninitialized test
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.1 526/798] i2c: qcom-geni: Use IRQF_NO_AUTOEN flag in request_irq()
 Date: Mon, 14 Oct 2024 16:18:00 +0200
-Message-ID: <20241014141045.665368827@linuxfoundation.org>
+Message-ID: <20241014141238.651964698@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit b8e188f023e07a733b47d5865311ade51878fe40 ]
+commit e2c85d85a05f16af2223fcc0195ff50a7938b372 upstream.
 
-The assumption of 'in privileged mode reads from uninitialized stack locations
-are permitted' is not quite correct since the verifier was probing for read
-access rather than write access. Both tests need to be annotated as __success
-for privileged and unprivileged.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20240913191754.13290-6-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 37692de5d523 ("i2c: i2c-qcom-geni: Add bus driver for the Qualcomm GENI I2C controller")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: <stable@vger.kernel.org> # v4.19+
+Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/progs/verifier_int_ptr.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-qcom-geni.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/verifier_int_ptr.c b/tools/testing/selftests/bpf/progs/verifier_int_ptr.c
-index 9fc3fae5cd833..87206803c0255 100644
---- a/tools/testing/selftests/bpf/progs/verifier_int_ptr.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_int_ptr.c
-@@ -8,7 +8,6 @@
- SEC("socket")
- __description("ARG_PTR_TO_LONG uninitialized")
- __success
--__failure_unpriv __msg_unpriv("invalid indirect read from stack R4 off -16+0 size 8")
- __naked void arg_ptr_to_long_uninitialized(void)
- {
- 	asm volatile ("					\
-@@ -36,9 +35,7 @@ __naked void arg_ptr_to_long_uninitialized(void)
- 
- SEC("socket")
- __description("ARG_PTR_TO_LONG half-uninitialized")
--/* in privileged mode reads from uninitialized stack locations are permitted */
--__success __failure_unpriv
--__msg_unpriv("invalid indirect read from stack R4 off -16+4 size 8")
-+__success
- __retval(0)
- __naked void ptr_to_long_half_uninitialized(void)
- {
--- 
-2.43.0
-
+--- a/drivers/i2c/busses/i2c-qcom-geni.c
++++ b/drivers/i2c/busses/i2c-qcom-geni.c
+@@ -821,15 +821,13 @@ static int geni_i2c_probe(struct platfor
+ 	init_completion(&gi2c->done);
+ 	spin_lock_init(&gi2c->lock);
+ 	platform_set_drvdata(pdev, gi2c);
+-	ret = devm_request_irq(dev, gi2c->irq, geni_i2c_irq, 0,
++	ret = devm_request_irq(dev, gi2c->irq, geni_i2c_irq, IRQF_NO_AUTOEN,
+ 			       dev_name(dev), gi2c);
+ 	if (ret) {
+ 		dev_err(dev, "Request_irq failed:%d: err:%d\n",
+ 			gi2c->irq, ret);
+ 		return ret;
+ 	}
+-	/* Disable the interrupt so that the system can enter low-power mode */
+-	disable_irq(gi2c->irq);
+ 	i2c_set_adapdata(&gi2c->adap, gi2c);
+ 	gi2c->adap.dev.parent = dev;
+ 	gi2c->adap.dev.of_node = dev->of_node;
 
 
 
