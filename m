@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-83902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3529899CD17
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:28:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9EFB99CDDB
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4CE71F21A08
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:28:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27A251C22FB4
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758571A76AC;
-	Mon, 14 Oct 2024 14:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15EEC1A0BE7;
+	Mon, 14 Oct 2024 14:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nahcDaXT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEIjmvnJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BA61547F3;
-	Mon, 14 Oct 2024 14:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C823419E802;
+	Mon, 14 Oct 2024 14:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916128; cv=none; b=fu8SdJC06ZP7aGVdOlO6Wkn9JwlvugQ7V4VCOAVAIPIxjN8ws3H46vD/2ecqzdvOvdNKG1N7kHuLiJMImtiniqcHfmymQkNqOzPnrTSzsa9sEDk21ZJgrCN+QInnW7jlGt3ZTZtIxzU+ESTn9SlQ8IcWIxUfrpuz7r4m11q+wvk=
+	t=1728916618; cv=none; b=heKJsNriJ1d5Rvs5l55ihB7P0VJSDp4u8eBsoZgPG5JLswudPXxmHB6ncnldeqjo2Ru7tmEU59y5dJuUrSvNvODCYsSqb7UB2VM/cEavGjxAY3mlN4VN8NcfCsj0EoRU9M4Gc7jxx8YZzw/aYpc34FUcVcvd4dO/UH/PxvbohcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916128; c=relaxed/simple;
-	bh=Wx63BEMQO+i5hpOjeK4g4WsXr6oWJ+5/Hyf9hpAOWPY=;
+	s=arc-20240116; t=1728916618; c=relaxed/simple;
+	bh=IJCNeWeY3rQq8gxrPwbSA9NnNlyZSHrmS8LjCP9xhcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DA/9Az0TNIe+TKA0eqKqEZPvjj0QvXZotQF+Y0lBbfqHujPAJjUNUupYYHH32DsI8qxLGvS1H/DvjaRN5aR/MTWA52EUHLvtb+xfayVxP6O6GpNvDsvO9LPugcUj7Nj3YYrNF7FLUvKrkdrtq7tByGvhi7P2+tdxW/g+KIUMGDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nahcDaXT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A5BC4CEC3;
-	Mon, 14 Oct 2024 14:28:47 +0000 (UTC)
+	 MIME-Version; b=RsIrufVIYhMj9eMONhKyqkSqHwGJzmLja5DsAV680k/aU7A4O7zVeAnlKNx5LP48riaDLZU8Tuo+Q21vdM6322Phv9cThT0uo7ZFirw2NKtu0mjPY94ocrJx6F9xyfdzjCgv7SlfezdYwtRw/8lVpM1ylsZzqxjMI2VkOVr2k4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEIjmvnJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3831FC4CEC3;
+	Mon, 14 Oct 2024 14:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916128;
-	bh=Wx63BEMQO+i5hpOjeK4g4WsXr6oWJ+5/Hyf9hpAOWPY=;
+	s=korg; t=1728916618;
+	bh=IJCNeWeY3rQq8gxrPwbSA9NnNlyZSHrmS8LjCP9xhcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nahcDaXTqAaaMX1O3QLTn4xAaU+vd9AurtmSoeTh5lLd8I78RCVKlD56YsNOjgZYG
-	 xRB14gs5yNKvOetlYlKE+FVsALsvF+5kqgPR44/rKjq8wrX7TmFSiAnQRtPAlBdlQM
-	 4e2ym7i/T1m6YrwlBf+p77VepqF6/CWwMXpimSm8=
+	b=VEIjmvnJ/DxBV55rh2IQUzWpHI7H3Qf0si/+XXiUKKOXJaWw6o2tr2uCqu3wd4C5b
+	 lRUE9MSVhU0V38HJxC+IDhX/GGvLzP4LPt36xYCE6JfTcEqBaZhvaRXIkzMgX23FT4
+	 v0PVXXNKKUHeEWbW7s8I9Jh95StgoGSjCGw57Dsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ruffalo Lavoisier <RuffaloLavoisier@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 061/214] comedi: ni_routing: tools: Check when the file could not be opened
+Subject: [PATCH 6.6 018/213] bus: mhi: ep: Introduce async read/write callbacks
 Date: Mon, 14 Oct 2024 16:18:44 +0200
-Message-ID: <20241014141047.371486394@linuxfoundation.org>
+Message-ID: <20241014141043.695972341@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruffalo Lavoisier <ruffalolavoisier@gmail.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 5baeb157b341b1d26a5815aeaa4d3bb9e0444fda ]
+[ Upstream commit 8b786ed8fb089e347af21d13ba5677325fcd4cd8 ]
 
-- After fopen check NULL before using the file pointer use
+These callbacks can be implemented by the controller drivers to perform
+async read/write operation that increases the throughput.
 
-Signed-off-by: Ruffalo Lavoisier <RuffaloLavoisier@gmail.com>
-Link: https://lore.kernel.org/r/20240906203025.89588-1-RuffaloLavoisier@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For aiding the async operation, a completion callback is also introduced.
+
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Stable-dep-of: c7d0b2db5bc5 ("bus: mhi: ep: Do not allocate memory for MHI objects from DMA zone")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/mhi_ep.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c b/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c
-index d55521b5bdcb2..892a66b2cea66 100644
---- a/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c
-+++ b/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c
-@@ -140,6 +140,11 @@ int main(void)
- {
- 	FILE *fp = fopen("ni_values.py", "w");
- 
-+	if (fp == NULL) {
-+		fprintf(stderr, "Could not open file!");
-+		return -1;
-+	}
+diff --git a/include/linux/mhi_ep.h b/include/linux/mhi_ep.h
+index b96b543bf2f65..14c6e8d3f5736 100644
+--- a/include/linux/mhi_ep.h
++++ b/include/linux/mhi_ep.h
+@@ -54,11 +54,16 @@ struct mhi_ep_db_info {
+  * @dev_addr: Address of the buffer in endpoint
+  * @host_addr: Address of the bufffer in host
+  * @size: Size of the buffer
++ * @cb: Callback to be executed by controller drivers after transfer completion (async)
++ * @cb_buf: Opaque buffer to be passed to the callback
+  */
+ struct mhi_ep_buf_info {
+ 	void *dev_addr;
+ 	u64 host_addr;
+ 	size_t size;
 +
- 	/* write route register values */
- 	fprintf(fp, "ni_route_values = {\n");
- 	for (int i = 0; ni_all_route_values[i]; ++i)
++	void (*cb)(struct mhi_ep_buf_info *buf_info);
++	void *cb_buf;
+ };
+ 
+ /**
+@@ -96,6 +101,8 @@ struct mhi_ep_buf_info {
+  * @unmap_free: CB function to unmap and free the allocated memory in endpoint for storing host context
+  * @read_sync: CB function for reading from host memory synchronously
+  * @write_sync: CB function for writing to host memory synchronously
++ * @read_async: CB function for reading from host memory asynchronously
++ * @write_async: CB function for writing to host memory asynchronously
+  * @mhi_state: MHI Endpoint state
+  * @max_chan: Maximum channels supported by the endpoint controller
+  * @mru: MRU (Maximum Receive Unit) value of the endpoint controller
+@@ -151,6 +158,8 @@ struct mhi_ep_cntrl {
+ 			   void __iomem *virt, size_t size);
+ 	int (*read_sync)(struct mhi_ep_cntrl *mhi_cntrl, struct mhi_ep_buf_info *buf_info);
+ 	int (*write_sync)(struct mhi_ep_cntrl *mhi_cntrl, struct mhi_ep_buf_info *buf_info);
++	int (*read_async)(struct mhi_ep_cntrl *mhi_cntrl, struct mhi_ep_buf_info *buf_info);
++	int (*write_async)(struct mhi_ep_cntrl *mhi_cntrl, struct mhi_ep_buf_info *buf_info);
+ 
+ 	enum mhi_state mhi_state;
+ 
 -- 
 2.43.0
 
