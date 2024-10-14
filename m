@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-84369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD6099CFDC
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:58:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CF8499CFE8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:59:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D59132836DA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:58:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07A1D1F2349F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66AE41B85E3;
-	Mon, 14 Oct 2024 14:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7BA71ABEBF;
+	Mon, 14 Oct 2024 14:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvOVkoRG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UX+W5gWS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249241AAE27;
-	Mon, 14 Oct 2024 14:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6535D81749;
+	Mon, 14 Oct 2024 14:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917771; cv=none; b=u1WEysyoEa8uGHfDzQh/lBcm5/ZA4Nhg0PkuHuWJtaMKC4fOpfpmit1KMNGtCpSFsq22HfiktVvio0tH72HjUzyaDeitrItlUZspQNue7ZLXl8OYCt6Seh1SBXxQ1vKvaDOW1Ar8JMQXW2d7c0tJlfo5pDZc52WOtyJe4slm56A=
+	t=1728917808; cv=none; b=gFrBTxG8TIGqu1EbckAEo8ZGS3L/RuJZf/jTG8oucOGQDSWeCbjvepq8hm7lYAW5Vr6moXXgelkJSIpr67DLfz9FdD1sKwFG32wRUkGjP61mjFTdDUkBWv1psQne3s3oVLDBtrK4+GnKVpBJSaLaQuCfr3wWg8WS0VaHCDrj1Pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917771; c=relaxed/simple;
-	bh=LWJya6Xt1APev4tbyEgex3tBAVRgStxU4zeXYrtbW6U=;
+	s=arc-20240116; t=1728917808; c=relaxed/simple;
+	bh=s4uJxc1UEcywNfkCqSQ6f2MhKHA0H09u77t24VEsFgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lKSRFMiyXH4lRtVLpVezRwpg6VQm8H1AR4CyKn9vTItfNSfHEIWSS2XXAqhq3lAdjcER4KwgNncNc20kMb8dCcPX4KVm3ZOxMDfC5gYZFzLlsovHvh9cZmrZkY6X6IfXF1899+IcNsPC6+xeGQxbkUXmvOD1KbZwzF0GzY/lOgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvOVkoRG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F51CC4CEC3;
-	Mon, 14 Oct 2024 14:56:10 +0000 (UTC)
+	 MIME-Version; b=hpuJK7H1cZl7eW8bwG0YOy0RlXSCts5avxwsGQ8w1vGPzM9A3MI3cPubz00NYYwYlsp39zfFwrfMbTYLTHvvlTZjCrkFfodsrbk1MDULB8Ou2Tz7om25nkuu0FrVkDLCCttLpODmSMAPZyXgHFlFkEzPK1pig5CVQwPQoT6W/mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UX+W5gWS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5AFC4CEC3;
+	Mon, 14 Oct 2024 14:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917771;
-	bh=LWJya6Xt1APev4tbyEgex3tBAVRgStxU4zeXYrtbW6U=;
+	s=korg; t=1728917808;
+	bh=s4uJxc1UEcywNfkCqSQ6f2MhKHA0H09u77t24VEsFgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TvOVkoRG3tYrrq2JpGmKWGNmt3SxQiTcWNjCL9IfUlNvrG4WEYjOFISvfCBwqkSiq
-	 QhioiNK/pekldifL/S6OYzSQz5QdAgz3KqXWh1tqQMPqKM2HxOGtFyOgnCL49vx+6g
-	 A5FhQUElhXWFdy6ENziW1wm20I+20kwKW87v2BOI=
+	b=UX+W5gWSYqWn8mYygFINsWxszdhl8DLjwsV75ZpseJy2Kv9vw7WA5diOvZ+6sCfyD
+	 8u4hrZ9hFVsyGEL5RkxRzcoX7cv63NAH7Yx8fkZ+DQQUEgle+e+l0oHX2Jltuyxd+S
+	 wLihsY2EeP5b9jIU/5uKktN+nh/c3ftITf5hAH7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/798] powerpc/8xx: Fix initial memory mapping
-Date: Mon, 14 Oct 2024 16:11:16 +0200
-Message-ID: <20241014141222.714138300@linuxfoundation.org>
+Subject: [PATCH 6.1 123/798] powerpc/8xx: Fix kernel vs user address comparison
+Date: Mon, 14 Oct 2024 16:11:17 +0200
+Message-ID: <20241014141222.753635871@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -68,43 +68,58 @@ Content-Transfer-Encoding: 8bit
 
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit f9f2bff64c2f0dbee57be3d8c2741357ad3d05e6 ]
+[ Upstream commit 65a82e117ffeeab0baf6f871a1cab11a28ace183 ]
 
-Commit cf209951fa7f ("powerpc/8xx: Map linear memory with huge pages")
-introduced an initial mapping of kernel TEXT using PAGE_KERNEL_TEXT,
-but the pages that contain kernel TEXT may also contain kernel RODATA,
-and depending on selected debug options PAGE_KERNEL_TEXT may be either
-RWX or ROX. RODATA must be writable during init because it also
-contains ro_after_init data.
+Since commit 9132a2e82adc ("powerpc/8xx: Define a MODULE area below
+kernel text"), module exec space is below PAGE_OFFSET so not only
+space above PAGE_OFFSET, but space above TASK_SIZE need to be seen
+as kernel space.
 
-So use PAGE_KERNEL_X instead to be sure it is RWX.
+Until now the problem went undetected because by default TASK_SIZE
+is 0x8000000 which means address space is determined by just
+checking upper address bit. But when TASK_SIZE is over 0x80000000,
+PAGE_OFFSET is used for comparison, leading to thinking module
+addresses are part of user space.
 
-Fixes: cf209951fa7f ("powerpc/8xx: Map linear memory with huge pages")
+Fix it by using TASK_SIZE instead of PAGE_OFFSET for address
+comparison.
+
+Fixes: 9132a2e82adc ("powerpc/8xx: Define a MODULE area below kernel text")
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/dac7a828d8497c4548c91840575a706657baa4f1.1724173828.git.christophe.leroy@csgroup.eu
+Link: https://msgid.link/3f574c9845ff0a023b46cb4f38d2c45aecd769bd.1724173828.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/nohash/8xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/head_8xx.S | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
-index dbbfe897455dc..52f24fda2d5f6 100644
---- a/arch/powerpc/mm/nohash/8xx.c
-+++ b/arch/powerpc/mm/nohash/8xx.c
-@@ -147,11 +147,11 @@ unsigned long __init mmu_mapin_ram(unsigned long base, unsigned long top)
+diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+index 0b05f2be66b9f..f267e1587a9ba 100644
+--- a/arch/powerpc/kernel/head_8xx.S
++++ b/arch/powerpc/kernel/head_8xx.S
+@@ -40,12 +40,12 @@
+ #include "head_32.h"
  
- 	mmu_mapin_immr();
+ .macro compare_to_kernel_boundary scratch, addr
+-#if CONFIG_TASK_SIZE <= 0x80000000 && CONFIG_PAGE_OFFSET >= 0x80000000
++#if CONFIG_TASK_SIZE <= 0x80000000 && MODULES_VADDR >= 0x80000000
+ /* By simply checking Address >= 0x80000000, we know if its a kernel address */
+ 	not.	\scratch, \addr
+ #else
+ 	rlwinm	\scratch, \addr, 16, 0xfff8
+-	cmpli	cr0, \scratch, PAGE_OFFSET@h
++	cmpli	cr0, \scratch, TASK_SIZE@h
+ #endif
+ .endm
  
--	mmu_mapin_ram_chunk(0, boundary, PAGE_KERNEL_TEXT, true);
-+	mmu_mapin_ram_chunk(0, boundary, PAGE_KERNEL_X, true);
- 	if (debug_pagealloc_enabled_or_kfence()) {
- 		top = boundary;
- 	} else {
--		mmu_mapin_ram_chunk(boundary, einittext8, PAGE_KERNEL_TEXT, true);
-+		mmu_mapin_ram_chunk(boundary, einittext8, PAGE_KERNEL_X, true);
- 		mmu_mapin_ram_chunk(einittext8, top, PAGE_KERNEL, true);
- 	}
+@@ -403,7 +403,7 @@ FixupDAR:/* Entry point for dcbx workaround. */
+ 	mfspr	r10, SPRN_SRR0
+ 	mtspr	SPRN_MD_EPN, r10
+ 	rlwinm	r11, r10, 16, 0xfff8
+-	cmpli	cr1, r11, PAGE_OFFSET@h
++	cmpli	cr1, r11, TASK_SIZE@h
+ 	mfspr	r11, SPRN_M_TWB	/* Get level 1 table */
+ 	blt+	cr1, 3f
  
 -- 
 2.43.0
