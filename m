@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-84152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F065499CE6D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:43:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5AA099D2E0
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:31:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B350B287518
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:43:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 712291F23BC3
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9741AB52B;
-	Mon, 14 Oct 2024 14:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155301AB538;
+	Mon, 14 Oct 2024 15:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykHVRfRH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evf1jhVs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068F719E802;
-	Mon, 14 Oct 2024 14:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C691415D5C5;
+	Mon, 14 Oct 2024 15:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917014; cv=none; b=GBib7kK/snXGp/MNZvcTLxBcH1MrK/lfX0jtVYXgN7Hs4/yyANgsVS08h+Qz1VLOtcWgLamg0Z8beQ0p6KpK9j3U6bV2qNYfEMw/+3e1UzYAX7TFWUhPAAJvDnVdD/unjJzD98A41U2tAk+NVZVu4oE+Ao2BOcqWs1cTJt9Ka+c=
+	t=1728919685; cv=none; b=gTFq2SE4K5pxK6qiBk82iMPvQcQ3VRZsiPb5diTE53kyCWtJr7IqBIq8mAk/TCGaGdSxdiLGGJaha7B6ySlRLVJ6Sls/iipXQYO7t8/tMSdnltc6XRrv7nSqJfDsCAk/3A0FQXgVVRITbvYf8Mu+zLmIj5R4e0ulkt414W073PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917014; c=relaxed/simple;
-	bh=SZFmlSObVdEdNqnsqcXbCO5Y6VY+vOIFnEGb761Qnd0=;
+	s=arc-20240116; t=1728919685; c=relaxed/simple;
+	bh=YX84QDnycb6AFbLPMgvNuo23HrN/knBdkx6QPmLS+N8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgWkUXpgsjOACReRsmh473qeT9wVd3hZo75RiQSo4zFpxD9oHIuJzzN2xXn4aGPRiN0cC7WqyICnLJZZprE3fv4CsoizFOWfdrb1O3CBTARZwvalxj/0YQh6cjScfGL63i3izmdOcS6/U+w5jfW4o1DH8/+tHxM4PfPIoz3Xl3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ykHVRfRH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D68C4CEC3;
-	Mon, 14 Oct 2024 14:43:33 +0000 (UTC)
+	 MIME-Version; b=s5RILWysEMde+rsdcKwfRpMaVkgxKSiIDdND5BfLSQTI9SGxevSjc+jAx8oFi96ed8U/uWgLS/fP1RjMOWxmB2DNHzcoYWgZeiv1itdHlAMUTSWp3r5p+BVbvaJMyBfazo8U5U5UWe5kBQsDyQG9mj7yoa8+/gcYhUPOgx4GWLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evf1jhVs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7196C4CEC3;
+	Mon, 14 Oct 2024 15:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917013;
-	bh=SZFmlSObVdEdNqnsqcXbCO5Y6VY+vOIFnEGb761Qnd0=;
+	s=korg; t=1728919685;
+	bh=YX84QDnycb6AFbLPMgvNuo23HrN/knBdkx6QPmLS+N8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ykHVRfRHrq941+d9AbnPA7WXzQOK7R8pZ1DSm3mu+YNau1wflgd5k0DoH5zFzB9tn
-	 WTOS73FRCmURlc2W21TAtNcn6ebiyJI93PRnsh15aAgnOda3lcNggwMqTlRb7q3NRP
-	 XT7jJY3k9xcvmwj2IvyvOjniiY9cdRMntfY1u/5I=
+	b=evf1jhVs4qeIsCVjbatTENORYh85jjyv0kO0RHnPJj+Xnpqqn2YPA5DKUP59vCIa+
+	 HL6P/6bPhdVwkovTsdiagPlTsVf65J2En3adrGk+IWWEZ/sny5gFMcGFDhsR7j7UsV
+	 XlHjS6Y4buIrSX0mRtVihzr/TM0KL0Dg7Lvhkg9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 127/213] net: ethernet: adi: adin1110: Fix some error handling path in adin1110_read_fifo()
+Subject: [PATCH 6.1 679/798] selftests: net: Remove executable bits from library scripts
 Date: Mon, 14 Oct 2024 16:20:33 +0200
-Message-ID: <20241014141047.927597885@linuxfoundation.org>
+Message-ID: <20241014141244.746906500@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Benjamin Poirier <bpoirier@nvidia.com>
 
-[ Upstream commit 83211ae1640516accae645de82f5a0a142676897 ]
+[ Upstream commit 9d851dd4dab63e95c1911a2fa847796d1ec5d58d ]
 
-If 'frame_size' is too small or if 'round_len' is an error code, it is
-likely that an error code should be returned to the caller.
+setup_loopback.sh and net_helper.sh are meant to be sourced from other
+scripts, not executed directly. Therefore, remove the executable bits from
+those files' permissions.
 
-Actually, 'ret' is likely to be 0, so if one of these sanity checks fails,
-'success' is returned.
+This change is similar to commit 49078c1b80b6 ("selftests: forwarding:
+Remove executable bits from lib.sh")
 
-Return -EINVAL instead.
-
-Fixes: bc93e19d088b ("net: ethernet: adi: Add ADIN1110 support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://patch.msgid.link/8ff73b40f50d8fa994a454911b66adebce8da266.1727981562.git.christophe.jaillet@wanadoo.fr
+Fixes: 7d1575014a63 ("selftests/net: GRO coalesce test")
+Fixes: 3bdd9fd29cb0 ("selftests/net: synchronize udpgro tests' tx and rx connection")
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
+Link: https://lore.kernel.org/r/20240131140848.360618-4-bpoirier@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/adi/adin1110.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/net_helper.sh     | 0
+ tools/testing/selftests/net/setup_loopback.sh | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+ mode change 100755 => 100644 tools/testing/selftests/net/net_helper.sh
+ mode change 100755 => 100644 tools/testing/selftests/net/setup_loopback.sh
 
-diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/adi/adin1110.c
-index d7c274af6d4da..3c26176316a38 100644
---- a/drivers/net/ethernet/adi/adin1110.c
-+++ b/drivers/net/ethernet/adi/adin1110.c
-@@ -318,11 +318,11 @@ static int adin1110_read_fifo(struct adin1110_port_priv *port_priv)
- 	 * from the  ADIN1110 frame header.
- 	 */
- 	if (frame_size < ADIN1110_FRAME_HEADER_LEN + ADIN1110_FEC_LEN)
--		return ret;
-+		return -EINVAL;
- 
- 	round_len = adin1110_round_len(frame_size);
- 	if (round_len < 0)
--		return ret;
-+		return -EINVAL;
- 
- 	frame_size_no_fcs = frame_size - ADIN1110_FRAME_HEADER_LEN - ADIN1110_FEC_LEN;
- 	memset(priv->data, 0, ADIN1110_RD_HEADER_LEN);
+diff --git a/tools/testing/selftests/net/net_helper.sh b/tools/testing/selftests/net/net_helper.sh
+old mode 100755
+new mode 100644
+diff --git a/tools/testing/selftests/net/setup_loopback.sh b/tools/testing/selftests/net/setup_loopback.sh
+old mode 100755
+new mode 100644
 -- 
 2.43.0
 
