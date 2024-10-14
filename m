@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-83931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0246D99CD3C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7411799D2A3
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A15B31F21759
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A42CC1C218FE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405021798C;
-	Mon, 14 Oct 2024 14:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380E71ABEA1;
+	Mon, 14 Oct 2024 15:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0ehQdi4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5OPeUnq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A5CF9DA;
-	Mon, 14 Oct 2024 14:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82B414AA9;
+	Mon, 14 Oct 2024 15:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916234; cv=none; b=OWw5SUKabCgmzRQDPhL5Zf/9KjhNRx9F2Thy6fto7s8rBmP4MmhDd9pFBYX2gVeAYMVCWWVtMvmKGbK1ub6z7/RgJtqN5j1lmXWYItsq2OJBeSrgLoG1Yut3XdlMFNrXTc+rY7hpIATa9JjNMzvtMM054F+4gT0MjBgxiAQ0vNQ=
+	t=1728919538; cv=none; b=lSZqjgFx3Jdvy+nqUDvJ8OfSPSpLJXeESBS5A7LYWKNytd5/D9gnhCf0C6nabGU4jbW86lRoh/pkxYXFD9Lx8HQ8v6AuxJNnUjjFR5E3qDaFubFaFapzxegQLDNrQfXW8ST3ODPmRW2wk0Y7qEvppbBUPJGi0tBFURzzsvJ0pJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916234; c=relaxed/simple;
-	bh=qm9DNSwvZrr/8J2xswl3IwfJZe5nVsfVYdtAPEh2iMI=;
+	s=arc-20240116; t=1728919538; c=relaxed/simple;
+	bh=P0oFhWYA9EP2EuH9rrmipOMbzhuvJ1zISw3YRZub26c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0zxLcnFo3S/KQFcbyI9St+/OcJ+mR5RgwcomvHlxEP32UYBdqE4irrtVRwLcwe0aDzAYLmVnOG8OtnGD4fKgcnOI4WD2Ac0rxA4VrbblzkzEeOalV/dP5XJ8WxGIgusiNBxquSkYCJDKYLh32g95tZHWWGu7wdSJ5jczoExaj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0ehQdi4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1236FC4CECF;
-	Mon, 14 Oct 2024 14:30:31 +0000 (UTC)
+	 MIME-Version; b=eHjrMWxfGi82GVm04v1gJlro4Q6Nw/cp1xkhNi3Tuei2syFw347zxZehVJXyzucuoZe2Tb914iDkNm1vKcQKZ5hk00Rpsmm6D+Amsva17quYnnZEOjTR/5334mvY1mtPw/6SQIYA8A1Hzi0tNu6h7JuCBBpJ/mkqaXaXLP0zISk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5OPeUnq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4CD0C4CEC3;
+	Mon, 14 Oct 2024 15:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916232;
-	bh=qm9DNSwvZrr/8J2xswl3IwfJZe5nVsfVYdtAPEh2iMI=;
+	s=korg; t=1728919537;
+	bh=P0oFhWYA9EP2EuH9rrmipOMbzhuvJ1zISw3YRZub26c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0ehQdi4teeNBj7M19Dwc6Sxo3K3O5WtarkGDgyITldcEjSmwS1J/25RPyYsm9y95
-	 h5VdrI++Q8N3RTvyPIv7gsEti+hwccmnc70OYScurF6gasWIHG9w/DAGf3EENBit0/
-	 UavPstJeFYElc4WRpHdIii7gKC/gKGIleVBdiGGs=
+	b=A5OPeUnqGKP1B7qJ+iRDvX4sKM2J0qLOSbzetDRuHj8cYOSfGF8Y5iI7s70s+xLbV
+	 6/2Z6OM+HWguqpqZo/zy639sdlyjOKOoFeEnhK+APYwoG68wbhq0Ev/2+KzAOnmywm
+	 XkNyNEbY8qU/hg/lh2TX6H2fVYCKZdCoDaPntLBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geumhwan Yu <geumhwan.yu@samsung.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 094/214] tcp: fix to allow timestamp undo if no retransmits were sent
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 603/798] ACPI: resource: Add Asus ExpertBook B2502CVA to irq1_level_low_skip_override[]
 Date: Mon, 14 Oct 2024 16:19:17 +0200
-Message-ID: <20241014141048.664130172@linuxfoundation.org>
+Message-ID: <20241014141241.700698057@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit e37ab7373696e650d3b6262a5b882aadad69bb9e ]
+commit 056301e7c7c886f96d799edd36f3406cc30e1822 upstream.
 
-Fix the TCP loss recovery undo logic in tcp_packet_delayed() so that
-it can trigger undo even if TSQ prevents a fast recovery episode from
-reaching tcp_retransmit_skb().
+Like other Asus ExpertBook models the B2502CVA has its keybopard IRQ (1)
+described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
+which breaks the keyboard.
 
-Geumhwan Yu <geumhwan.yu@samsung.com> recently reported that after
-this commit from 2019:
+Add the B2502CVA to the irq1_level_low_skip_override[] quirk table to fix
+this.
 
-commit bc9f38c8328e ("tcp: avoid unconditional congestion window undo
-on SYN retransmit")
-
-...and before this fix we could have buggy scenarios like the
-following:
-
-+ Due to reordering, a TCP connection receives some SACKs and enters a
-  spurious fast recovery.
-
-+ TSQ prevents all invocations of tcp_retransmit_skb(), because many
-  skbs are queued in lower layers of the sending machine's network
-  stack; thus tp->retrans_stamp remains 0.
-
-+ The connection receives a TCP timestamp ECR value echoing a
-  timestamp before the fast recovery, indicating that the fast
-  recovery was spurious.
-
-+ The connection fails to undo the spurious fast recovery because
-  tp->retrans_stamp is 0, and thus tcp_packet_delayed() returns false,
-  due to the new logic in the 2019 commit: commit bc9f38c8328e ("tcp:
-  avoid unconditional congestion window undo on SYN retransmit")
-
-This fix tweaks the logic to be more similar to the
-tcp_packet_delayed() logic before bc9f38c8328e, except that we take
-care not to be fooled by the FLAG_SYN_ACKED code path zeroing out
-tp->retrans_stamp (the bug noted and fixed by Yuchung in
-bc9f38c8328e).
-
-Note that this returns the high-level behavior of tcp_packet_delayed()
-to again match the comment for the function, which says: "Nothing was
-retransmitted or returned timestamp is less than timestamp of the
-first retransmission." Note that this comment is in the original
-2005-04-16 Linux git commit, so this is evidently long-standing
-behavior.
-
-Fixes: bc9f38c8328e ("tcp: avoid unconditional congestion window undo on SYN retransmit")
-Reported-by: Geumhwan Yu <geumhwan.yu@samsung.com>
-Diagnosed-by: Geumhwan Yu <geumhwan.yu@samsung.com>
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Yuchung Cheng <ycheng@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241001200517.2756803-2-ncardwell.sw@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217760
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20240927141606.66826-4-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/acpi/resource.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index e37488d3453f0..e6d73f6131ceb 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -2473,8 +2473,22 @@ static bool tcp_skb_spurious_retrans(const struct tcp_sock *tp,
-  */
- static inline bool tcp_packet_delayed(const struct tcp_sock *tp)
- {
--	return tp->retrans_stamp &&
--	       tcp_tsopt_ecr_before(tp, tp->retrans_stamp);
-+	const struct sock *sk = (const struct sock *)tp;
-+
-+	if (tp->retrans_stamp &&
-+	    tcp_tsopt_ecr_before(tp, tp->retrans_stamp))
-+		return true;  /* got echoed TS before first retransmission */
-+
-+	/* Check if nothing was retransmitted (retrans_stamp==0), which may
-+	 * happen in fast recovery due to TSQ. But we ignore zero retrans_stamp
-+	 * in TCP_SYN_SENT, since when we set FLAG_SYN_ACKED we also clear
-+	 * retrans_stamp even if we had retransmitted the SYN.
-+	 */
-+	if (!tp->retrans_stamp &&	   /* no record of a retransmit/SYN? */
-+	    sk->sk_state != TCP_SYN_SENT)  /* not the FLAG_SYN_ACKED case? */
-+		return true;  /* nothing was retransmitted */
-+
-+	return false;
- }
- 
- /* Undo procedures. */
--- 
-2.43.0
-
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -514,6 +514,13 @@ static const struct dmi_system_id mainge
+ 		}
+ 	},
+ 	{
++		/* Asus ExpertBook B2502CVA */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "B2502CVA"),
++		},
++	},
++	{
+ 		/* TongFang GMxXGxx/TUXEDO Polaris 15 Gen5 AMD */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxx"),
 
 
 
