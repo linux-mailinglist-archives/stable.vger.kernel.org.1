@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-84080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D143B99CE0A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:39:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E84399D24F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:24:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F0801C214F4
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:39:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4965C1F250E1
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D1FD1A0724;
-	Mon, 14 Oct 2024 14:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B291B85E3;
+	Mon, 14 Oct 2024 15:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMNtE8XI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7+EKx/N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2E720EB;
-	Mon, 14 Oct 2024 14:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC3B1AE01F;
+	Mon, 14 Oct 2024 15:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916753; cv=none; b=Kbm/7r7CYafyvGAfiK6aWaactvrQ4i65L9s38MskaCsWVgXe2cqvGAvE0mf0YINT7w9a/is3pdLtLEWG5M4oHo8/5+2GvQXP0sTFFDVunxluHru2FeEmTH19ZojYzVslHne2+XVXD68vIusCadwcDG2h3p8bxmCg7XJvqQwZVKs=
+	t=1728919372; cv=none; b=Qw+u1FiQf6XIH2s1/HPE1t2enbbV30e5Jsi9bV9jEKIeHbPYDUyVCnP7ENG4rkOBHyDG/ykg3rf0CvCi6i9M2sZLjI/dVdmhpEgk8BlA23nWcV+/0sXg9hMsXu3Y92EVW7cDLhIfeZhuQ6Mx81ExenqtcBH/4d4SzJiWBGknr5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916753; c=relaxed/simple;
-	bh=WmO65fj0xH8c1gXRbauisboKCoPrPrKLi8UJah+TnzQ=;
+	s=arc-20240116; t=1728919372; c=relaxed/simple;
+	bh=5l7HWN54Sg5ptCCW3jOB5TVemOxBrpmzbY223kQ1ARc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h4fSl5WnPSD7rwFlJUzHJM+9rFmKc/uSEnX0F0ASmDhpR6iQqOcumVm1CSW+y3VjxJHB4rUQMzKQTXpbn3VPIuWhFCAxx5pqlNQbDYZbgZnRsMe/Kfm71dpoNDnSs2xK4jaUUmIz489DrgAAkE3H18tcsSUCO3zv74jmsyGQXrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMNtE8XI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD11C4CEC3;
-	Mon, 14 Oct 2024 14:39:12 +0000 (UTC)
+	 MIME-Version; b=dXb0CTLT8N+5f76mRa9hj00WnEDc5/56ubtwIiOeLVPeDutUX1UwEyXCyGFt31uZOsmr1VlzFw1SxwtF2eoFyselgbTat4oqpH44rqTsIQZVf5M166tvsBNLIpoLJQVST1VGKdqkqK6nvVKGB6O5Cc8T+EFiETwHFP3C8HR1cN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7+EKx/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DFCC4CEC3;
+	Mon, 14 Oct 2024 15:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916753;
-	bh=WmO65fj0xH8c1gXRbauisboKCoPrPrKLi8UJah+TnzQ=;
+	s=korg; t=1728919372;
+	bh=5l7HWN54Sg5ptCCW3jOB5TVemOxBrpmzbY223kQ1ARc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WMNtE8XI19aKgRg9AgyugHpIoYp1e5r/gtGlp15znFRja3dwPCiTuKXDs4In+Bp6Q
-	 j7T+rTWNpnM6yt4S4+DeujOTb+O2dMYjkhmIFy0vzjzXdOH1aFueL+879FI7HsusmO
-	 skJiGwftocwBop1ZvxEbWgmywGQ/glcjreS4YVhw=
+	b=Z7+EKx/NRToiGz0mX3tpHmW/u1rCxu9jMpNn2OGuapYF61sjopcn6oXf1h2wABrg1
+	 fCUeyK5j3rEBK8K2pX/iRRCmBZ7QPAH6ZeGDAmwPBb0VYWvhVpVHaHk8l/gHJMhtki
+	 AY5gGnmn5DWvf6r5GzjBDJo/JICJrAoEFgl3/HFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Jihong <yangjihong1@huawei.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/213] perf sched: Move curr_thread initialization to perf_sched__map()
-Date: Mon, 14 Oct 2024 16:19:04 +0200
-Message-ID: <20241014141044.477272498@linuxfoundation.org>
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 591/798] clk: qcom: gcc-sc8180x: Fix the sdcc2 and sdcc4 clocks freq table
+Date: Mon, 14 Oct 2024 16:19:05 +0200
+Message-ID: <20241014141241.223499476@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Jihong <yangjihong1@huawei.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-[ Upstream commit 5e895278697c014e95ae7ae5e79a72ef68c5184e ]
+commit b8acaf2de8081371761ab4cf1e7a8ee4e7acc139 upstream.
 
-The curr_thread is used only for the 'perf sched map'. Put initialization
-in perf_sched__map() to reduce unnecessary actions in other commands.
+Update the frequency tables of gcc_sdcc2_apps_clk and gcc_sdcc4_apps_clk
+as per the latest frequency plan.
 
-Simple functional testing:
-
-  # perf sched record perf bench sched messaging
-  # Running 'sched/messaging' benchmark:
-  # 20 sender and receiver processes per group
-  # 10 groups == 400 processes run
-
-       Total time: 0.197 [sec]
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 15.526 MB perf.data (140095 samples) ]
-
-  # perf sched map
-    *A0                                                               451264.532445 secs A0 => migration/0:15
-    *.                                                                451264.532468 secs .  => swapper:0
-     .  *B0                                                           451264.532537 secs B0 => migration/1:21
-     .  *.                                                            451264.532560 secs
-     .   .  *C0                                                       451264.532644 secs C0 => migration/2:27
-     .   .  *.                                                        451264.532668 secs
-     .   .   .  *D0                                                   451264.532753 secs D0 => migration/3:33
-     .   .   .  *.                                                    451264.532778 secs
-     .   .   .   .  *E0                                               451264.532861 secs E0 => migration/4:39
-     .   .   .   .  *.                                                451264.532886 secs
-     .   .   .   .   .  *F0                                           451264.532973 secs F0 => migration/5:45
-  <SNIP>
-     A7  A7  A7  A7  A7 *A7  .   .   .   .   .   .   .   .   .   .    451264.790785 secs
-     A7  A7  A7  A7  A7  A7 *A7  .   .   .   .   .   .   .   .   .    451264.790858 secs
-     A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .   .   .   .   .   .    451264.790934 secs
-     A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .   .   .   .   .    451264.791004 secs
-     A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .   .   .   .    451264.791075 secs
-     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .   .   .    451264.791143 secs
-     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .   .    451264.791232 secs
-     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .    451264.791336 secs
-     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .    451264.791407 secs
-     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .    451264.791484 secs
-     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7   451264.791553 secs
-  # echo $?
-  0
-
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240206083228.172607-4-yangjihong1@huawei.com
-Stable-dep-of: 1a5efc9e13f3 ("libsubcmd: Don't free the usage string")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
+Cc: stable@vger.kernel.org
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-4-8b3eaa5fb856@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/builtin-sched.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/clk/qcom/gcc-sc8180x.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index 8143828fdc585..e498b559ea68a 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -3310,9 +3310,13 @@ static int perf_sched__map(struct perf_sched *sched)
- {
- 	int rc = -1;
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -895,7 +895,7 @@ static const struct freq_tbl ftbl_gcc_sd
+ 	F(25000000, P_GPLL0_OUT_MAIN, 12, 1, 2),
+ 	F(50000000, P_GPLL0_OUT_MAIN, 12, 0, 0),
+ 	F(100000000, P_GPLL0_OUT_MAIN, 6, 0, 0),
+-	F(200000000, P_GPLL0_OUT_MAIN, 3, 0, 0),
++	F(202000000, P_GPLL9_OUT_MAIN, 4, 0, 0),
+ 	{ }
+ };
  
--	if (setup_map_cpus(sched))
-+	sched->curr_thread = calloc(MAX_CPUS, sizeof(*(sched->curr_thread)));
-+	if (!sched->curr_thread)
- 		return rc;
+@@ -918,9 +918,8 @@ static const struct freq_tbl ftbl_gcc_sd
+ 	F(400000, P_BI_TCXO, 12, 1, 4),
+ 	F(9600000, P_BI_TCXO, 2, 0, 0),
+ 	F(19200000, P_BI_TCXO, 1, 0, 0),
+-	F(37500000, P_GPLL0_OUT_MAIN, 16, 0, 0),
+ 	F(50000000, P_GPLL0_OUT_MAIN, 12, 0, 0),
+-	F(75000000, P_GPLL0_OUT_MAIN, 8, 0, 0),
++	F(100000000, P_GPLL0_OUT_MAIN, 6, 0, 0),
+ 	{ }
+ };
  
-+	if (setup_map_cpus(sched))
-+		goto out_free_curr_thread;
-+
- 	if (setup_color_pids(sched))
- 		goto out_put_map_cpus;
- 
-@@ -3335,6 +3339,9 @@ static int perf_sched__map(struct perf_sched *sched)
- out_put_map_cpus:
- 	zfree(&sched->map.comp_cpus);
- 	perf_cpu_map__put(sched->map.cpus);
-+
-+out_free_curr_thread:
-+	zfree(&sched->curr_thread);
- 	return rc;
- }
- 
-@@ -3620,11 +3627,6 @@ int cmd_sched(int argc, const char **argv)
- 	unsigned int i;
- 	int ret = 0;
- 
--	sched.curr_thread = calloc(MAX_CPUS, sizeof(*sched.curr_thread));
--	if (!sched.curr_thread) {
--		ret = -ENOMEM;
--		goto out;
--	}
- 	sched.cpu_last_switched = calloc(MAX_CPUS, sizeof(*sched.cpu_last_switched));
- 	if (!sched.cpu_last_switched) {
- 		ret = -ENOMEM;
-@@ -3706,7 +3708,6 @@ int cmd_sched(int argc, const char **argv)
- out:
- 	free(sched.curr_pid);
- 	free(sched.cpu_last_switched);
--	free(sched.curr_thread);
- 
- 	return ret;
- }
--- 
-2.43.0
-
 
 
 
