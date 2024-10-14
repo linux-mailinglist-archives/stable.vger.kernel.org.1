@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-83903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D3099CD19
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:28:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9D599CDDC
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:37:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3A671F23024
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:28:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B4361F23ADB
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00BE31547F3;
-	Mon, 14 Oct 2024 14:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585E024B34;
+	Mon, 14 Oct 2024 14:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QsPRZTq3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PS5Qotg0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EF01AAC4;
-	Mon, 14 Oct 2024 14:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164634A24;
+	Mon, 14 Oct 2024 14:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916131; cv=none; b=lj9EmW77DCbBNqcpebxqpwQyj/kzmevI4W4Hq6Mfi8I22Bf6XRBRzsG+EfR8Ep//mJs3hQWjgPxKHdBHBnoaI1b7mqqglerJiX1wGHCXFIsK9PgOJDXRwAx6PJPUy+rNSv+XCPPeg/bkLl+7h8ZxdR1dw8sROd80f1qnXAdQ7tg=
+	t=1728916622; cv=none; b=WMC0XgkTjEqYEz7QKEzVDViTfDUA9XdxYxGvxJn00KfdYCmeeo+5nZS8+OAjAjcdE10dWI5fHA1eckULtgReyI899BKswp7KjwcRM7VPH1ROFe95gfTgj9D4AbEZzC1zw7MpDAreultmNz9Ljv/DOZ95WaHA3pbdnLzNQ/3SfiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916131; c=relaxed/simple;
-	bh=esL/GuGXURYy9OncXEbhBFVxmC4wdaa8Ti429tAOptY=;
+	s=arc-20240116; t=1728916622; c=relaxed/simple;
+	bh=eywVfrXIgqhr7KUwFI/KZjugmm2yToNV2R+1lJzaUAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P52mSLsMMQT3q9WDfXi34hP4hJj/ZGGZmlH68572a73gkGY8FO7w1Q4Ecx1dlQewySpIUQo9qMaXQLuv7ne5rFqixdaK1184veesB0AG4r2LrCnIqf0qPG7TxLwPTxRc03J0+SN6u2W+fwmKqZ3aMI51j+O7tRACSPJ/7OC9g4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsPRZTq3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A163C4CEC3;
-	Mon, 14 Oct 2024 14:28:50 +0000 (UTC)
+	 MIME-Version; b=ANoqCNxbJcpfdNU9MMHfXd0Mnf3LG8YO5x7T6rkHCicjtNxWZ1/UCuXr+saKQOcJ2u5HOuX3X6SbI3mBL52X/0A5Wq4bCAR1nwbSkSIuz4jCuwL6StSnCcDMc9b8imQIH+duLk1aQYurvTs8Ya65K/Ai5psyLM7DmdQOp5e+Xi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PS5Qotg0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1CEC4CEC3;
+	Mon, 14 Oct 2024 14:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916131;
-	bh=esL/GuGXURYy9OncXEbhBFVxmC4wdaa8Ti429tAOptY=;
+	s=korg; t=1728916622;
+	bh=eywVfrXIgqhr7KUwFI/KZjugmm2yToNV2R+1lJzaUAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QsPRZTq3gt3k7HCixwwxszHPIa0S9JpsHe+VBnkh872CT4aMKp3OBcfK4cRqBD76f
-	 vWQpvV3MmUUjtWani3/ayxPCBarhRnFS55FOrljPZIuOAVIPtxm6NUxLAbCIQ/V+Ls
-	 1XChGcI0l8CiNENiLsUrN78AfPweog3/Iy1s5Cq8=
+	b=PS5Qotg0AFc4NmUk73w5t3yZBbRoJZZDeXeiZ1vATLxC2XASduh62zWxCtVlBRjcU
+	 IDx3girnOZhZ2FqN1plUdLjpPHBngM+mutGIvMHYJhDvglCFALrapnbJXmsSOSxU0Z
+	 rMvhq5gAJ706l+qMumoYJThBi8v4Z3ZmEjTwWW94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuli Wang <wangyuli@uniontech.com>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 062/214] LoongArch: Fix memleak in pci_acpi_scan_root()
+Subject: [PATCH 6.6 019/213] bus: mhi: ep: Add support for async DMA write operation
 Date: Mon, 14 Oct 2024 16:18:45 +0200
-Message-ID: <20241014141047.410697280@linuxfoundation.org>
+Message-ID: <20241014141043.734244023@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +61,234 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Guan <guanwentao@uniontech.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 5016c3a31a6d74eaf2fdfdec673eae8fcf90379e ]
+[ Upstream commit ee08acb58fe47fc3bc2c137965985cdb1df40b35 ]
 
-Add kfree(root_ops) in this case to avoid memleak of root_ops,
-leaks when pci_find_bus() != 0.
+In order to optimize the data transfer, let's use the async DMA operation
+for writing (queuing) data to the host.
 
-Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+In the async path, the completion event for the transfer ring will only be
+sent to the host when the controller driver notifies the MHI stack of the
+actual transfer completion using the callback (mhi_ep_skb_completion)
+supplied in "struct mhi_ep_buf_info".
+
+Also to accommodate the async operation, the transfer ring read offset
+(ring->rd_offset) is cached in the "struct mhi_ep_chan" and updated locally
+to let the stack queue further ring items to the controller driver. But the
+actual read offset of the transfer ring will only be updated in the
+completion callback.
+
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Stable-dep-of: c7d0b2db5bc5 ("bus: mhi: ep: Do not allocate memory for MHI objects from DMA zone")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/pci/acpi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/bus/mhi/ep/internal.h |  1 +
+ drivers/bus/mhi/ep/main.c     | 74 +++++++++++++++++++++++++----------
+ include/linux/mhi_ep.h        |  4 ++
+ 3 files changed, 59 insertions(+), 20 deletions(-)
 
-diff --git a/arch/loongarch/pci/acpi.c b/arch/loongarch/pci/acpi.c
-index 365f7de771cbb..1da4dc46df43e 100644
---- a/arch/loongarch/pci/acpi.c
-+++ b/arch/loongarch/pci/acpi.c
-@@ -225,6 +225,7 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 	if (bus) {
- 		memcpy(bus->sysdata, info->cfg, sizeof(struct pci_config_window));
- 		kfree(info);
-+		kfree(root_ops);
- 	} else {
- 		struct pci_bus *child;
+diff --git a/drivers/bus/mhi/ep/internal.h b/drivers/bus/mhi/ep/internal.h
+index a2125fa5fe2f9..accbf3a51d0cf 100644
+--- a/drivers/bus/mhi/ep/internal.h
++++ b/drivers/bus/mhi/ep/internal.h
+@@ -159,6 +159,7 @@ struct mhi_ep_chan {
+ 	void (*xfer_cb)(struct mhi_ep_device *mhi_dev, struct mhi_result *result);
+ 	enum mhi_ch_state state;
+ 	enum dma_data_direction dir;
++	size_t rd_offset;
+ 	u64 tre_loc;
+ 	u32 tre_size;
+ 	u32 tre_bytes_left;
+diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
+index 1ec9552d2b519..8765a7fb3d2c0 100644
+--- a/drivers/bus/mhi/ep/main.c
++++ b/drivers/bus/mhi/ep/main.c
+@@ -183,6 +183,8 @@ static int mhi_ep_process_cmd_ring(struct mhi_ep_ring *ring, struct mhi_ring_ele
  
+ 				goto err_unlock;
+ 			}
++
++			mhi_chan->rd_offset = ch_ring->rd_offset;
+ 		}
+ 
+ 		/* Set channel state to RUNNING */
+@@ -312,7 +314,7 @@ bool mhi_ep_queue_is_empty(struct mhi_ep_device *mhi_dev, enum dma_data_directio
+ 	struct mhi_ep_cntrl *mhi_cntrl = mhi_dev->mhi_cntrl;
+ 	struct mhi_ep_ring *ring = &mhi_cntrl->mhi_chan[mhi_chan->chan].ring;
+ 
+-	return !!(ring->rd_offset == ring->wr_offset);
++	return !!(mhi_chan->rd_offset == ring->wr_offset);
+ }
+ EXPORT_SYMBOL_GPL(mhi_ep_queue_is_empty);
+ 
+@@ -339,7 +341,7 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
+ 			return -ENODEV;
+ 		}
+ 
+-		el = &ring->ring_cache[ring->rd_offset];
++		el = &ring->ring_cache[mhi_chan->rd_offset];
+ 
+ 		/* Check if there is data pending to be read from previous read operation */
+ 		if (mhi_chan->tre_bytes_left) {
+@@ -418,6 +420,7 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
+ 				tr_done = true;
+ 			}
+ 
++			mhi_chan->rd_offset = (mhi_chan->rd_offset + 1) % ring->ring_size;
+ 			mhi_ep_ring_inc_index(ring);
+ 		}
+ 
+@@ -478,6 +481,35 @@ static int mhi_ep_process_ch_ring(struct mhi_ep_ring *ring, struct mhi_ring_elem
+ 	return 0;
+ }
+ 
++static void mhi_ep_skb_completion(struct mhi_ep_buf_info *buf_info)
++{
++	struct mhi_ep_device *mhi_dev = buf_info->mhi_dev;
++	struct mhi_ep_cntrl *mhi_cntrl = mhi_dev->mhi_cntrl;
++	struct mhi_ep_chan *mhi_chan = mhi_dev->dl_chan;
++	struct mhi_ep_ring *ring = &mhi_cntrl->mhi_chan[mhi_chan->chan].ring;
++	struct mhi_ring_element *el = &ring->ring_cache[ring->rd_offset];
++	struct device *dev = &mhi_dev->dev;
++	struct mhi_result result = {};
++	int ret;
++
++	if (mhi_chan->xfer_cb) {
++		result.buf_addr = buf_info->cb_buf;
++		result.dir = mhi_chan->dir;
++		result.bytes_xferd = buf_info->size;
++
++		mhi_chan->xfer_cb(mhi_dev, &result);
++	}
++
++	ret = mhi_ep_send_completion_event(mhi_cntrl, ring, el, buf_info->size,
++					   buf_info->code);
++	if (ret) {
++		dev_err(dev, "Error sending transfer completion event\n");
++		return;
++	}
++
++	mhi_ep_ring_inc_index(ring);
++}
++
+ /* TODO: Handle partially formed TDs */
+ int mhi_ep_queue_skb(struct mhi_ep_device *mhi_dev, struct sk_buff *skb)
+ {
+@@ -488,7 +520,6 @@ int mhi_ep_queue_skb(struct mhi_ep_device *mhi_dev, struct sk_buff *skb)
+ 	struct mhi_ring_element *el;
+ 	u32 buf_left, read_offset;
+ 	struct mhi_ep_ring *ring;
+-	enum mhi_ev_ccs code;
+ 	size_t tr_len;
+ 	u32 tre_len;
+ 	int ret;
+@@ -512,7 +543,7 @@ int mhi_ep_queue_skb(struct mhi_ep_device *mhi_dev, struct sk_buff *skb)
+ 			goto err_exit;
+ 		}
+ 
+-		el = &ring->ring_cache[ring->rd_offset];
++		el = &ring->ring_cache[mhi_chan->rd_offset];
+ 		tre_len = MHI_TRE_DATA_GET_LEN(el);
+ 
+ 		tr_len = min(buf_left, tre_len);
+@@ -521,33 +552,35 @@ int mhi_ep_queue_skb(struct mhi_ep_device *mhi_dev, struct sk_buff *skb)
+ 		buf_info.dev_addr = skb->data + read_offset;
+ 		buf_info.host_addr = MHI_TRE_DATA_GET_PTR(el);
+ 		buf_info.size = tr_len;
++		buf_info.cb = mhi_ep_skb_completion;
++		buf_info.cb_buf = skb;
++		buf_info.mhi_dev = mhi_dev;
+ 
+-		dev_dbg(dev, "Writing %zd bytes to channel (%u)\n", tr_len, ring->ch_id);
+-		ret = mhi_cntrl->write_sync(mhi_cntrl, &buf_info);
+-		if (ret < 0) {
+-			dev_err(dev, "Error writing to the channel\n");
+-			goto err_exit;
+-		}
+-
+-		buf_left -= tr_len;
+ 		/*
+ 		 * For all TREs queued by the host for DL channel, only the EOT flag will be set.
+ 		 * If the packet doesn't fit into a single TRE, send the OVERFLOW event to
+ 		 * the host so that the host can adjust the packet boundary to next TREs. Else send
+ 		 * the EOT event to the host indicating the packet boundary.
+ 		 */
+-		if (buf_left)
+-			code = MHI_EV_CC_OVERFLOW;
++		if (buf_left - tr_len)
++			buf_info.code = MHI_EV_CC_OVERFLOW;
+ 		else
+-			code = MHI_EV_CC_EOT;
++			buf_info.code = MHI_EV_CC_EOT;
+ 
+-		ret = mhi_ep_send_completion_event(mhi_cntrl, ring, el, tr_len, code);
+-		if (ret) {
+-			dev_err(dev, "Error sending transfer completion event\n");
++		dev_dbg(dev, "Writing %zd bytes to channel (%u)\n", tr_len, ring->ch_id);
++		ret = mhi_cntrl->write_async(mhi_cntrl, &buf_info);
++		if (ret < 0) {
++			dev_err(dev, "Error writing to the channel\n");
+ 			goto err_exit;
+ 		}
+ 
+-		mhi_ep_ring_inc_index(ring);
++		buf_left -= tr_len;
++
++		/*
++		 * Update the read offset cached in mhi_chan. Actual read offset
++		 * will be updated by the completion handler.
++		 */
++		mhi_chan->rd_offset = (mhi_chan->rd_offset + 1) % ring->ring_size;
+ 	} while (buf_left);
+ 
+ 	mutex_unlock(&mhi_chan->lock);
+@@ -787,7 +820,7 @@ static void mhi_ep_ch_ring_worker(struct work_struct *work)
+ 		}
+ 
+ 		/* Sanity check to make sure there are elements in the ring */
+-		if (ring->rd_offset == ring->wr_offset) {
++		if (chan->rd_offset == ring->wr_offset) {
+ 			mutex_unlock(&chan->lock);
+ 			kmem_cache_free(mhi_cntrl->ring_item_cache, itr);
+ 			continue;
+@@ -1431,6 +1464,7 @@ int mhi_ep_register_controller(struct mhi_ep_cntrl *mhi_cntrl,
+ 		ret = -ENOMEM;
+ 		goto err_destroy_tre_buf_cache;
+ 	}
++
+ 	INIT_WORK(&mhi_cntrl->state_work, mhi_ep_state_worker);
+ 	INIT_WORK(&mhi_cntrl->reset_work, mhi_ep_reset_worker);
+ 	INIT_WORK(&mhi_cntrl->cmd_ring_work, mhi_ep_cmd_ring_worker);
+diff --git a/include/linux/mhi_ep.h b/include/linux/mhi_ep.h
+index 14c6e8d3f5736..11bf3212f7822 100644
+--- a/include/linux/mhi_ep.h
++++ b/include/linux/mhi_ep.h
+@@ -51,16 +51,20 @@ struct mhi_ep_db_info {
+ 
+ /**
+  * struct mhi_ep_buf_info - MHI Endpoint transfer buffer info
++ * @mhi_dev: MHI device associated with this buffer
+  * @dev_addr: Address of the buffer in endpoint
+  * @host_addr: Address of the bufffer in host
+  * @size: Size of the buffer
++ * @code: Transfer completion code
+  * @cb: Callback to be executed by controller drivers after transfer completion (async)
+  * @cb_buf: Opaque buffer to be passed to the callback
+  */
+ struct mhi_ep_buf_info {
++	struct mhi_ep_device *mhi_dev;
+ 	void *dev_addr;
+ 	u64 host_addr;
+ 	size_t size;
++	int code;
+ 
+ 	void (*cb)(struct mhi_ep_buf_info *buf_info);
+ 	void *cb_buf;
 -- 
 2.43.0
 
