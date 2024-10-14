@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-84008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3736399CDAB
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D922C99D2DE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:31:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5B4B1F21600
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 906791F24ABA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4B11AC426;
-	Mon, 14 Oct 2024 14:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1717D1C7608;
+	Mon, 14 Oct 2024 15:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdjINK48"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYBAbh59"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7701014A614;
-	Mon, 14 Oct 2024 14:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C659F43AA9;
+	Mon, 14 Oct 2024 15:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916489; cv=none; b=NQqUfIzSKPFQnatR+rj+085A8gPml+ci36ZEpsdS/7tiTlcC3fWasSWMAYm/1rZPYo0hhp5mXNN6ioCAuMVu3JGHxiUFY5zzjN2TxoZd2V8dJLYyhYKFR2rZEBFfT3293RRgclKNtb1N7n17LRfEtmBLBbMlRZHfoiQ0+1BC/nA=
+	t=1728919675; cv=none; b=huf8WxgTxkheOL0mG9g3C5VuoxdAFxXlCCzV7objB4fml4brseGbPjrGc/zpjsudHfLKEIafnmrzqZgioMweAtO1GjM/p9QIYJmysV8UdZmYcQ82AH3QUFcw4obVoxQAvDBnneJ/iPTwWH5iZibiHdHpNtfYJQPdbzUoENcuJIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916489; c=relaxed/simple;
-	bh=QgXgV/F1bVP6byyki1zaAhDcvfAsr1ENNhTDH4VilKk=;
+	s=arc-20240116; t=1728919675; c=relaxed/simple;
+	bh=Wps9GTuz5wk3jqcrwZC72jAJwsXLfZNo6NiQtZfA74I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=icCtMT4RZ/RFaIFDaop+eH8Y6hgoheJ4mM7l+oFw5Jno3SR4DFosSlmMTsqD6jUMde7b0BLYzZIK3kNFLy0XcmU5sZ2SERIc3QSmu0f+1fUFHgBlxjrUuoqNnsEivmzbLN/OP7sxCakASz2JwogD7dF05vF9hSE77Y09DKnC4rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdjINK48; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9920C4CEC3;
-	Mon, 14 Oct 2024 14:34:48 +0000 (UTC)
+	 MIME-Version; b=NWZMgWEaxyC3HCRn77TRTm49h6+TDLwZfMOiw837E6NiCDNt9dtW4s9e/4HoymAVS/Kgpm2JQ7Td3ZncnKf4xuyrhaDg33JvesCiyeKLAsMgDCPTN0azl6qCPugWIW6z/iF+P/HzVysztEBNwgukff7YMg46SXpPQu9aKTEloyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYBAbh59; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02FE7C4CEC3;
+	Mon, 14 Oct 2024 15:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916489;
-	bh=QgXgV/F1bVP6byyki1zaAhDcvfAsr1ENNhTDH4VilKk=;
+	s=korg; t=1728919675;
+	bh=Wps9GTuz5wk3jqcrwZC72jAJwsXLfZNo6NiQtZfA74I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QdjINK48xgx9Hd/0pM/kvsfpXjaLNk2XNbi8qcaGUpO0Ici9d6lrVMYzJy5UZROzK
-	 8NVJCLWMDuLncDgNyP0qa8nFRcTCGdPiGOl16A75ILJP7qzQtwbbN7CJHndTytrfxj
-	 Dlwp5snzbGhYZV52XEJnxPZCiwaEXEPkz9TALyzg=
+	b=HYBAbh5916ewoOzPuKxolX3Sw27Z1+/JXEH9wziE6iiE2YWlMZyhKahOv+ssto8OG
+	 c+9AuKOIOarytHxXhJaFMjbnbIqbuenYHpC85xSGXOXUq8i0fZu/ZttLXye+oG2oCP
+	 XbLN7DC539pZHIsJq4Y1f+nRwq//mvO82X+/oCG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Keeping <jkeeping@inmusicbrands.com>
-Subject: [PATCH 6.11 167/214] usb: gadget: core: force synchronous registration
+	Yang Jihong <yangjihong1@huawei.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 676/798] perf sched: Move curr_thread initialization to perf_sched__map()
 Date: Mon, 14 Oct 2024 16:20:30 +0200
-Message-ID: <20241014141051.498767264@linuxfoundation.org>
+Message-ID: <20241014141244.625151562@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Yang Jihong <yangjihong1@huawei.com>
 
-commit df9158826b00e53f42c67d62c887a84490d80a0a upstream.
+[ Upstream commit 5e895278697c014e95ae7ae5e79a72ef68c5184e ]
 
-Registering a gadget driver is expected to complete synchronously and
-immediately after calling driver_register() this function checks that
-the driver has bound so as to return an error.
+The curr_thread is used only for the 'perf sched map'. Put initialization
+in perf_sched__map() to reduce unnecessary actions in other commands.
 
-Set PROBE_FORCE_SYNCHRONOUS to ensure this is the case even when
-asynchronous probing is set as the default.
+Simple functional testing:
 
-Fixes: fc274c1e99731 ("USB: gadget: Add a new bus for gadgets")
-Cc: stable@vger.kernel.org
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Link: https://lore.kernel.org/r/20240913102325.2826261-1-jkeeping@inmusicbrands.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  # perf sched record perf bench sched messaging
+  # Running 'sched/messaging' benchmark:
+  # 20 sender and receiver processes per group
+  # 10 groups == 400 processes run
+
+       Total time: 0.197 [sec]
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 15.526 MB perf.data (140095 samples) ]
+
+  # perf sched map
+    *A0                                                               451264.532445 secs A0 => migration/0:15
+    *.                                                                451264.532468 secs .  => swapper:0
+     .  *B0                                                           451264.532537 secs B0 => migration/1:21
+     .  *.                                                            451264.532560 secs
+     .   .  *C0                                                       451264.532644 secs C0 => migration/2:27
+     .   .  *.                                                        451264.532668 secs
+     .   .   .  *D0                                                   451264.532753 secs D0 => migration/3:33
+     .   .   .  *.                                                    451264.532778 secs
+     .   .   .   .  *E0                                               451264.532861 secs E0 => migration/4:39
+     .   .   .   .  *.                                                451264.532886 secs
+     .   .   .   .   .  *F0                                           451264.532973 secs F0 => migration/5:45
+  <SNIP>
+     A7  A7  A7  A7  A7 *A7  .   .   .   .   .   .   .   .   .   .    451264.790785 secs
+     A7  A7  A7  A7  A7  A7 *A7  .   .   .   .   .   .   .   .   .    451264.790858 secs
+     A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .   .   .   .   .   .    451264.790934 secs
+     A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .   .   .   .   .    451264.791004 secs
+     A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .   .   .   .    451264.791075 secs
+     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .   .   .    451264.791143 secs
+     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .   .    451264.791232 secs
+     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .    451264.791336 secs
+     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .    451264.791407 secs
+     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .    451264.791484 secs
+     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7   451264.791553 secs
+  # echo $?
+  0
+
+Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240206083228.172607-4-yangjihong1@huawei.com
+Stable-dep-of: 1a5efc9e13f3 ("libsubcmd: Don't free the usage string")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/builtin-sched.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -1696,6 +1696,7 @@ int usb_gadget_register_driver_owner(str
- 	driver->driver.bus = &gadget_bus_type;
- 	driver->driver.owner = owner;
- 	driver->driver.mod_name = mod_name;
-+	driver->driver.probe_type = PROBE_FORCE_SYNCHRONOUS;
- 	ret = driver_register(&driver->driver);
- 	if (ret) {
- 		pr_warn("%s: driver registration failed: %d\n",
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index 8abd48a99ec5e..0cdb220229d39 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -3298,9 +3298,13 @@ static int perf_sched__map(struct perf_sched *sched)
+ {
+ 	int rc = -1;
+ 
+-	if (setup_map_cpus(sched))
++	sched->curr_thread = calloc(MAX_CPUS, sizeof(*(sched->curr_thread)));
++	if (!sched->curr_thread)
+ 		return rc;
+ 
++	if (setup_map_cpus(sched))
++		goto out_free_curr_thread;
++
+ 	if (setup_color_pids(sched))
+ 		goto out_put_map_cpus;
+ 
+@@ -3323,6 +3327,9 @@ static int perf_sched__map(struct perf_sched *sched)
+ out_put_map_cpus:
+ 	zfree(&sched->map.comp_cpus);
+ 	perf_cpu_map__put(sched->map.cpus);
++
++out_free_curr_thread:
++	zfree(&sched->curr_thread);
+ 	return rc;
+ }
+ 
+@@ -3608,11 +3615,6 @@ int cmd_sched(int argc, const char **argv)
+ 	unsigned int i;
+ 	int ret = 0;
+ 
+-	sched.curr_thread = calloc(MAX_CPUS, sizeof(*sched.curr_thread));
+-	if (!sched.curr_thread) {
+-		ret = -ENOMEM;
+-		goto out;
+-	}
+ 	sched.cpu_last_switched = calloc(MAX_CPUS, sizeof(*sched.cpu_last_switched));
+ 	if (!sched.cpu_last_switched) {
+ 		ret = -ENOMEM;
+@@ -3694,7 +3696,6 @@ int cmd_sched(int argc, const char **argv)
+ out:
+ 	free(sched.curr_pid);
+ 	free(sched.cpu_last_switched);
+-	free(sched.curr_thread);
+ 
+ 	return ret;
+ }
+-- 
+2.43.0
+
 
 
 
