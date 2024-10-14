@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-83999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE8D99CD9E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5870B99D304
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D87CD1F22A4C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 899E41C205E1
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448111AB52F;
-	Mon, 14 Oct 2024 14:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80CEE1C3F32;
+	Mon, 14 Oct 2024 15:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJu1PWsZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDia543H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D531AB521;
-	Mon, 14 Oct 2024 14:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327DE19E98B;
+	Mon, 14 Oct 2024 15:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916459; cv=none; b=ZxSnS/lQOWxuF5evQUkWFOzeq1MFa54V29a0cIWPGpmnQ2J7x1q+V7PH7kuLDpBHKYTs5qp6rgJCgeD2VqD6JTUHOD4BR2u77gvjqAT51C4+4dyW7sIwN4NL6L1LZ6MtIt/1F68Wg/7C1tKKGU7O9+lvJnYy/p90ns8UsxbRDms=
+	t=1728919770; cv=none; b=fFcSSbI1uFX373oyaq4+zmaVb9NH5zm1oA8OrsEfPFGfv7CBrlisvAkaOLyRhZ919rYWdIVaqK134eLCxW7QUmEClUSwDwDS4/K0oijYsKCkDBLrNjpqcvbEbr7pZqZ/jVIKuP15SIVvFshLarc250x1g4Zg4tXkRVWfw71hDOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916459; c=relaxed/simple;
-	bh=o0txfGK4Yj8XdBIyeMIP+zeTDCTChYF4hEM8yq9kjek=;
+	s=arc-20240116; t=1728919770; c=relaxed/simple;
+	bh=a4rCDzt2MRuusoZjrfuUd6MzMN/vGKAWBrkKKkDKG6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C9Zhy8D8ekvbJHWwiP0VdLMw39A3OMX6OIsEQUyLHVni6hT3Dl43wG7mnrjxEV+rdoDxu+Mwozprh4eqbp/54WYSpxgm/QBZWQRuv+GcjBKikp9NiG6bz6ElhQpLD6rYQFRkb0K9miKYw5VtYf557g3D0lvqcRzfMUkP5vem7uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJu1PWsZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3DCC4CEC3;
-	Mon, 14 Oct 2024 14:34:18 +0000 (UTC)
+	 MIME-Version; b=YQZ3vrwfEE1Tj4lGZxyOzfL1xOjcp+0nxSFzXwRxMPIAmUziJXfparOMPFAnOYKwPsj56ocuQ+ybikfNtpoLO3yhHlxwFEEDUpbc7wc4hIcZD/0u9iQ9H+PiKB6wFt9SYWr3JVtDJpzgwsLp4ohF7cmHxv0q6gE4g42ZOw+cznQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDia543H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369F9C4CEC3;
+	Mon, 14 Oct 2024 15:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916458;
-	bh=o0txfGK4Yj8XdBIyeMIP+zeTDCTChYF4hEM8yq9kjek=;
+	s=korg; t=1728919769;
+	bh=a4rCDzt2MRuusoZjrfuUd6MzMN/vGKAWBrkKKkDKG6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJu1PWsZs3w3KC1z8cP3D8BXCJ9DtDFwOPo6sduC+hdxGW2iMhPSbdYHabiDE4JH0
-	 BH2d9VkssZ6JycWquYoyUZY8mA6aEgXpM5PviC4DBPNZtF4+j6D28clUWCZhnY7WXK
-	 lG7xXbkHJD7SSY3IdfGhKQZzCyf7cRHLeIZyGvJk=
+	b=xDia543Hp6yEcgnPXVM1lFv3mL84733N2S9g2OghbN6lc5Yvg2MX6zMIVcBb2JMDq
+	 n2hy/OVWzHCB/C7EFDAB34sAtaUIcCk8soAZ+kwawuPuXeJW5FyswdbJHeN4BOkmIn
+	 Pe0v0nQQVHUzN8XQxqQDL3xDDbT0KD7Q5265pH1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.11 162/214] Revert "usb: yurex: Replace snprintf() with the safer scnprintf() variant"
+	kernel test robot <lkp@intel.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 671/798] bootconfig: Fix the kerneldoc of _xbc_exit()
 Date: Mon, 14 Oct 2024 16:20:25 +0200
-Message-ID: <20241014141051.307451309@linuxfoundation.org>
+Message-ID: <20241014141244.427239171@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 71c717cd8a2e180126932cc6851ff21c1d04d69a upstream.
+[ Upstream commit 298b871cd55a607037ac8af0011b9fdeb54c1e65 ]
 
-This reverts commit 86b20af11e84c26ae3fde4dcc4f490948e3f8035.
+Fix the kerneldoc of _xbc_exit() which is updated to have an @early
+argument and the function name is changed.
 
-This patch leads to passing 0 to simple_read_from_buffer()
-as a fifth argument, turning the read method into a nop.
-The change is fundamentally flawed, as it breaks the driver.
+Link: https://lore.kernel.org/all/171321744474.599864.13532445969528690358.stgit@devnote2/
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20241007094004.242122-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202404150036.kPJ3HEFA-lkp@intel.com/
+Fixes: 89f9a1e876b5 ("bootconfig: use memblock_free_late to free xbc memory to buddy")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/yurex.c |   19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ lib/bootconfig.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/misc/yurex.c
-+++ b/drivers/usb/misc/yurex.c
-@@ -34,8 +34,6 @@
- #define YUREX_BUF_SIZE		8
- #define YUREX_WRITE_TIMEOUT	(HZ*2)
- 
--#define MAX_S64_STRLEN 20 /* {-}922337203685477580{7,8} */
--
- /* table of devices that work with this driver */
- static struct usb_device_id yurex_table[] = {
- 	{ USB_DEVICE(YUREX_VENDOR_ID, YUREX_PRODUCT_ID) },
-@@ -403,7 +401,8 @@ static ssize_t yurex_read(struct file *f
- {
- 	struct usb_yurex *dev;
- 	int len = 0;
--	char in_buffer[MAX_S64_STRLEN];
-+	char in_buffer[20];
-+	unsigned long flags;
- 
- 	dev = file->private_data;
- 
-@@ -413,16 +412,14 @@ static ssize_t yurex_read(struct file *f
- 		return -ENODEV;
- 	}
- 
--	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN)) {
--		mutex_unlock(&dev->io_mutex);
--		return -EIO;
--	}
--
--	spin_lock_irq(&dev->lock);
--	scnprintf(in_buffer, MAX_S64_STRLEN, "%lld\n", dev->bbu);
--	spin_unlock_irq(&dev->lock);
-+	spin_lock_irqsave(&dev->lock, flags);
-+	len = snprintf(in_buffer, 20, "%lld\n", dev->bbu);
-+	spin_unlock_irqrestore(&dev->lock, flags);
- 	mutex_unlock(&dev->io_mutex);
- 
-+	if (WARN_ON_ONCE(len >= sizeof(in_buffer)))
-+		return -EIO;
-+
- 	return simple_read_from_buffer(buffer, count, ppos, in_buffer, len);
+diff --git a/lib/bootconfig.c b/lib/bootconfig.c
+index 8841554432d5b..97f8911ea339e 100644
+--- a/lib/bootconfig.c
++++ b/lib/bootconfig.c
+@@ -901,7 +901,8 @@ static int __init xbc_parse_tree(void)
  }
  
+ /**
+- * xbc_exit() - Clean up all parsed bootconfig
++ * _xbc_exit() - Clean up all parsed bootconfig
++ * @early: Set true if this is called before budy system is initialized.
+  *
+  * This clears all data structures of parsed bootconfig on memory.
+  * If you need to reuse xbc_init() with new boot config, you can
+-- 
+2.43.0
+
 
 
 
