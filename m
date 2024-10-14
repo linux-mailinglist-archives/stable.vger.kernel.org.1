@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-84414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D828799D015
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:00:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 265E099D024
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:01:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15A2D1C215B2
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:00:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAFA41F23D1E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD991B85C0;
-	Mon, 14 Oct 2024 14:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992C41B85DF;
+	Mon, 14 Oct 2024 14:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpGgJupt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sL7FD0NE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB223481B3;
-	Mon, 14 Oct 2024 14:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C011AC8A2;
+	Mon, 14 Oct 2024 14:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917931; cv=none; b=g8lNhvtpEfSy8fzH7+WG1iPgAC1p1S0kuMwqTv+EzNLVFLe8imZYhxrwr4d/Yn1hH+r42rmQqzM2x0rOBfjKuNmRw1HOzpvDxgKQEmDB7BKdj3IFU9aJ2bb1TjBeediSGPJqlBXk84Cd1M8tOqq490SRTNLYHuP3QhwbTfIXJx8=
+	t=1728917969; cv=none; b=Q1YBjqJCtzoIDN+3+z3JU28TqFjAj95M+L0k/7TVLLzGRNiiL8cNGfmQpJtts9K84JoXroT710pN8FAiOviK4S/OnOKg2JQ29EnROLOs8qCRZ1PSmMvxFishUmh1HfaLjpf7d0sHCd9bT97bxhMsZlSGD8IhvhH9/hS8vW4YHd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917931; c=relaxed/simple;
-	bh=DQyg8Fr5SuxqDR33HBNsRQbxr1zeHZmBKREXPNpAzgc=;
+	s=arc-20240116; t=1728917969; c=relaxed/simple;
+	bh=d6+Be0FgZeGR6n2N+WlbL3qKgKUkqPnbxcVKUHthStk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hwv5bFCt2mZh6pwMFNkH9Nh40tnMBYL/TYt86QYZh9G2DBYgBeZsolRRYH/bVzKlHUiAkaYx5r+l79YDMrs/QdDwqdPul8CLPWqYOsfkS1U9ZiKLjgrZAibuoAB+FmJ8JqRBYuWZQSbi7eGtYvXX5kx5ZXaRbRgElrzr+NMVTp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpGgJupt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D1AC4CEC3;
-	Mon, 14 Oct 2024 14:58:50 +0000 (UTC)
+	 MIME-Version; b=fIG+VWWcNpXUYj+dWRmvryjzcVl4j67l6yCY5C8Yu4Mjg9Lw2Dfw5n6qlAQt6eMbgBHcPfw9MHaZXZxfqAF59cb7P38rbqovCl/6teQ6oQzMeasa5Oqum7oY95vCjALeVO/3GClNPMP7WaKefPzWMglnjea1JyuwGEnI/S++ikM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sL7FD0NE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A5CC4CEC3;
+	Mon, 14 Oct 2024 14:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917931;
-	bh=DQyg8Fr5SuxqDR33HBNsRQbxr1zeHZmBKREXPNpAzgc=;
+	s=korg; t=1728917968;
+	bh=d6+Be0FgZeGR6n2N+WlbL3qKgKUkqPnbxcVKUHthStk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EpGgJuptLNLTBYu3IY4QXpDIFtDj9y9I+PcUu7X3dTsLLJ+lKhtzbhYJEUZN/bNCl
-	 O4ZYgWHgbl7hT+L7sjCJ6D2foCyo9IkLTsoOXZejR2PwlsVlU31XLDwFhNY8ganQ37
-	 /44RENW7ZQJX0XH6E8lAz84nYNVZpb4MfPqLctH4=
+	b=sL7FD0NEefRvNnFgZtPlt1uC0bWNIFjSkpZcKxikjMUc8xsKNvwSmGMvTi6/HENyu
+	 7BZ9yzXgb+KmLAGZ1Dufr2dZEtR90qK7d2VBvPQHxvYr9gMPXaoCZkta4p+KeKExow
+	 UFMeqH3sLEtxluxXlmUvQB196VHLX4WatIDo6BB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
 	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 157/798] selftests/bpf: Fix C++ compile error from missing _Bool type
-Date: Mon, 14 Oct 2024 16:11:51 +0200
-Message-ID: <20241014141224.082705503@linuxfoundation.org>
+Subject: [PATCH 6.1 158/798] selftests/bpf: Replace extract_build_id with read_build_id
+Date: Mon, 14 Oct 2024 16:11:52 +0200
+Message-ID: <20241014141224.121098980@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -66,53 +67,179 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit aa95073fd290b5b3e45f067fa22bb25e59e1ff7c ]
+[ Upstream commit dcc46f51d770bde625e4845cac42e808b3302b62 ]
 
-While building, bpftool makes a skeleton from test_core_extern.c, which
-itself includes <stdbool.h> and uses the 'bool' type. However, the skeleton
-test_core_extern.skel.h generated *does not* include <stdbool.h> or use the
-'bool' type, instead using the C-only '_Bool' type. Compiling test_cpp.cpp
-with g++ 12.3 for mips64el/musl-libc then fails with error:
+Replacing extract_build_id with read_build_id that parses out
+build id directly from elf without using readelf tool.
 
-  In file included from test_cpp.cpp:9:
-  test_core_extern.skel.h:45:17: error: '_Bool' does not name a type
-     45 |                 _Bool CONFIG_BOOL;
-        |                 ^~~~~
-
-This was likely missed previously because glibc uses a GNU extension for
-<stdbool.h> with C++ (#define _Bool bool), not supported by musl libc.
-
-Normally, a C fragment would include <stdbool.h> and use the 'bool' type,
-and thus cleanly work after import by C++. The ideal fix would be for
-'bpftool gen skeleton' to output the correct type/include supporting C++,
-but in the meantime add a conditional define as above.
-
-Fixes: 7c8dce4b1661 ("bpftool: Make skeleton C code compilable with C++ compiler")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/6fc1dd28b8bda49e51e4f610bdc9d22f4455632d.1722244708.git.tony.ambardar@gmail.com
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20230331093157.1749137-4-jolsa@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: c9a83e76b5a9 ("selftests/bpf: Fix compile if backtrace support missing in libc")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_cpp.cpp | 4 ++++
- 1 file changed, 4 insertions(+)
+ .../bpf/prog_tests/stacktrace_build_id.c      | 19 ++++++--------
+ .../bpf/prog_tests/stacktrace_build_id_nmi.c  | 17 +++++--------
+ tools/testing/selftests/bpf/test_progs.c      | 25 -------------------
+ tools/testing/selftests/bpf/test_progs.h      |  1 -
+ 4 files changed, 13 insertions(+), 49 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_cpp.cpp b/tools/testing/selftests/bpf/test_cpp.cpp
-index 19ad172036daa..2d2ffd772228d 100644
---- a/tools/testing/selftests/bpf/test_cpp.cpp
-+++ b/tools/testing/selftests/bpf/test_cpp.cpp
-@@ -6,6 +6,10 @@
- #pragma GCC diagnostic pop
- #include <bpf/bpf.h>
- #include <bpf/btf.h>
-+
-+#ifndef _Bool
-+#define _Bool bool
-+#endif
- #include "test_core_extern.skel.h"
+diff --git a/tools/testing/selftests/bpf/prog_tests/stacktrace_build_id.c b/tools/testing/selftests/bpf/prog_tests/stacktrace_build_id.c
+index 9ad09a6c538a5..b7ba5cd47d96f 100644
+--- a/tools/testing/selftests/bpf/prog_tests/stacktrace_build_id.c
++++ b/tools/testing/selftests/bpf/prog_tests/stacktrace_build_id.c
+@@ -7,13 +7,12 @@ void test_stacktrace_build_id(void)
  
- template <typename T>
+ 	int control_map_fd, stackid_hmap_fd, stackmap_fd, stack_amap_fd;
+ 	struct test_stacktrace_build_id *skel;
+-	int err, stack_trace_len;
++	int err, stack_trace_len, build_id_size;
+ 	__u32 key, prev_key, val, duration = 0;
+-	char buf[256];
+-	int i, j;
++	char buf[BPF_BUILD_ID_SIZE];
+ 	struct bpf_stack_build_id id_offs[PERF_MAX_STACK_DEPTH];
+ 	int build_id_matches = 0;
+-	int retry = 1;
++	int i, retry = 1;
+ 
+ retry:
+ 	skel = test_stacktrace_build_id__open_and_load();
+@@ -52,9 +51,10 @@ void test_stacktrace_build_id(void)
+ 		  "err %d errno %d\n", err, errno))
+ 		goto cleanup;
+ 
+-	err = extract_build_id(buf, 256);
++	build_id_size = read_build_id("urandom_read", buf, sizeof(buf));
++	err = build_id_size < 0 ? build_id_size : 0;
+ 
+-	if (CHECK(err, "get build_id with readelf",
++	if (CHECK(err, "read_build_id",
+ 		  "err %d errno %d\n", err, errno))
+ 		goto cleanup;
+ 
+@@ -64,8 +64,6 @@ void test_stacktrace_build_id(void)
+ 		goto cleanup;
+ 
+ 	do {
+-		char build_id[64];
+-
+ 		err = bpf_map_lookup_elem(stackmap_fd, &key, id_offs);
+ 		if (CHECK(err, "lookup_elem from stackmap",
+ 			  "err %d, errno %d\n", err, errno))
+@@ -73,10 +71,7 @@ void test_stacktrace_build_id(void)
+ 		for (i = 0; i < PERF_MAX_STACK_DEPTH; ++i)
+ 			if (id_offs[i].status == BPF_STACK_BUILD_ID_VALID &&
+ 			    id_offs[i].offset != 0) {
+-				for (j = 0; j < 20; ++j)
+-					sprintf(build_id + 2 * j, "%02x",
+-						id_offs[i].build_id[j] & 0xff);
+-				if (strstr(buf, build_id) != NULL)
++				if (memcmp(buf, id_offs[i].build_id, build_id_size) == 0)
+ 					build_id_matches = 1;
+ 			}
+ 		prev_key = key;
+diff --git a/tools/testing/selftests/bpf/prog_tests/stacktrace_build_id_nmi.c b/tools/testing/selftests/bpf/prog_tests/stacktrace_build_id_nmi.c
+index 704f7f6c3704a..5db9eec24b5bd 100644
+--- a/tools/testing/selftests/bpf/prog_tests/stacktrace_build_id_nmi.c
++++ b/tools/testing/selftests/bpf/prog_tests/stacktrace_build_id_nmi.c
+@@ -13,11 +13,10 @@ void test_stacktrace_build_id_nmi(void)
+ 		.config = PERF_COUNT_HW_CPU_CYCLES,
+ 	};
+ 	__u32 key, prev_key, val, duration = 0;
+-	char buf[256];
+-	int i, j;
++	char buf[BPF_BUILD_ID_SIZE];
+ 	struct bpf_stack_build_id id_offs[PERF_MAX_STACK_DEPTH];
+-	int build_id_matches = 0;
+-	int retry = 1;
++	int build_id_matches = 0, build_id_size;
++	int i, retry = 1;
+ 
+ 	attr.sample_freq = read_perf_max_sample_freq();
+ 
+@@ -79,7 +78,8 @@ void test_stacktrace_build_id_nmi(void)
+ 		  "err %d errno %d\n", err, errno))
+ 		goto cleanup;
+ 
+-	err = extract_build_id(buf, 256);
++	build_id_size = read_build_id("urandom_read", buf, sizeof(buf));
++	err = build_id_size < 0 ? build_id_size : 0;
+ 
+ 	if (CHECK(err, "get build_id with readelf",
+ 		  "err %d errno %d\n", err, errno))
+@@ -91,8 +91,6 @@ void test_stacktrace_build_id_nmi(void)
+ 		goto cleanup;
+ 
+ 	do {
+-		char build_id[64];
+-
+ 		err = bpf_map__lookup_elem(skel->maps.stackmap, &key, sizeof(key),
+ 					   id_offs, sizeof(id_offs), 0);
+ 		if (CHECK(err, "lookup_elem from stackmap",
+@@ -101,10 +99,7 @@ void test_stacktrace_build_id_nmi(void)
+ 		for (i = 0; i < PERF_MAX_STACK_DEPTH; ++i)
+ 			if (id_offs[i].status == BPF_STACK_BUILD_ID_VALID &&
+ 			    id_offs[i].offset != 0) {
+-				for (j = 0; j < 20; ++j)
+-					sprintf(build_id + 2 * j, "%02x",
+-						id_offs[i].build_id[j] & 0xff);
+-				if (strstr(buf, build_id) != NULL)
++				if (memcmp(buf, id_offs[i].build_id, build_id_size) == 0)
+ 					build_id_matches = 1;
+ 			}
+ 		prev_key = key;
+diff --git a/tools/testing/selftests/bpf/test_progs.c b/tools/testing/selftests/bpf/test_progs.c
+index a952d614ffbbd..513ee92e4f67c 100644
+--- a/tools/testing/selftests/bpf/test_progs.c
++++ b/tools/testing/selftests/bpf/test_progs.c
+@@ -583,31 +583,6 @@ int compare_stack_ips(int smap_fd, int amap_fd, int stack_trace_len)
+ 	return err;
+ }
+ 
+-int extract_build_id(char *build_id, size_t size)
+-{
+-	FILE *fp;
+-	char *line = NULL;
+-	size_t len = 0;
+-
+-	fp = popen("readelf -n ./urandom_read | grep 'Build ID'", "r");
+-	if (fp == NULL)
+-		return -1;
+-
+-	if (getline(&line, &len, fp) == -1)
+-		goto err;
+-	pclose(fp);
+-
+-	if (len > size)
+-		len = size;
+-	memcpy(build_id, line, len);
+-	build_id[len] = '\0';
+-	free(line);
+-	return 0;
+-err:
+-	pclose(fp);
+-	return -1;
+-}
+-
+ static int finit_module(int fd, const char *param_values, int flags)
+ {
+ 	return syscall(__NR_finit_module, fd, param_values, flags);
+diff --git a/tools/testing/selftests/bpf/test_progs.h b/tools/testing/selftests/bpf/test_progs.h
+index b090996daee5c..924764f6ba976 100644
+--- a/tools/testing/selftests/bpf/test_progs.h
++++ b/tools/testing/selftests/bpf/test_progs.h
+@@ -380,7 +380,6 @@ static inline void *u64_to_ptr(__u64 ptr)
+ int bpf_find_map(const char *test, struct bpf_object *obj, const char *name);
+ int compare_map_keys(int map1_fd, int map2_fd);
+ int compare_stack_ips(int smap_fd, int amap_fd, int stack_trace_len);
+-int extract_build_id(char *build_id, size_t size);
+ int kern_sync_rcu(void);
+ int trigger_module_test_read(int read_sz);
+ int trigger_module_test_write(int write_sz);
 -- 
 2.43.0
 
