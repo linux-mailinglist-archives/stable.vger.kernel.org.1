@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-83925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCB599CD35
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA6699CE31
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 167921F23154
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5806D284CD0
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1426C20322;
-	Mon, 14 Oct 2024 14:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA57E1A76A5;
+	Mon, 14 Oct 2024 14:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UjjdAtIk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kG7YXcRT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76CD200CB;
-	Mon, 14 Oct 2024 14:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8558D20EB;
+	Mon, 14 Oct 2024 14:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916212; cv=none; b=V6IGCatZqbCllz9SHyjCV+wyI8hOgrrS+sT7pbwElE1rWu2dT8eGnHfA7FRuCedXhOEYFsRAct7I+gqaluTGsWhxc0XqqepuU4MEYrLWebRcgh2wcH9czMKAoyEIGT0qRA8KZwoPrSrF7hS8YgjVkhtlqTyiymZ3i2QiUtdU0IU=
+	t=1728916876; cv=none; b=X9LYR75YTFyPPhLjZYKkouF+BlcsgMEgd5v+xYTWvZdEK2tUFpD21IaqoWKdNKSh0fAmad9CnNGUnxJEGtNy0MgmsRTPyP50ACAZyU33BpqzWsnTCbnVpkrxm+dcrzJHl2Y0pjTH+Tf+eKHC2HdcP/XX+HFK8WP8u70CnDZUtLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916212; c=relaxed/simple;
-	bh=5fxguFS5ektI9xbjVye3LSTdrQA4rA3xP4EQmrrD3Oo=;
+	s=arc-20240116; t=1728916876; c=relaxed/simple;
+	bh=RxzxvwyzQivninrxMY1mM20yk7Yg2/5Fbs9+QuVKjuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f2gPeGJb2fPBpv8YlkPldc5GQEa886APOH7PNaFYlmzO71NVxjFL4bHH/S/v56IycQhughSfg0z5A2l6/hG1iApqJrBvlqFE3r5dl0/Fj9or4vWshXvxBvRzCln8jo+gAWxm/GjIyY+V4xeEbeFE0qLJs++JXL1PmFss8ww3CbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UjjdAtIk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0127FC4CEC3;
-	Mon, 14 Oct 2024 14:30:11 +0000 (UTC)
+	 MIME-Version; b=O5vVPUdzMBmokXfrMdc6U57EhSCyNUKyTfK9bTVjK+gK2niOdRpz8xRwNnJ2cDx2G0vstLIjkRcKXIcCiMk/HQmqMeGdu63L2AZIi8X6/X+/Vzj4J2NZWMX3IRT1KbSDbVBKrDvUgU9EjSr9J4ZA7yrDPu2O3Nc4UdRv9bmE1Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kG7YXcRT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05FC4C4CEC7;
+	Mon, 14 Oct 2024 14:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916212;
-	bh=5fxguFS5ektI9xbjVye3LSTdrQA4rA3xP4EQmrrD3Oo=;
+	s=korg; t=1728916876;
+	bh=RxzxvwyzQivninrxMY1mM20yk7Yg2/5Fbs9+QuVKjuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UjjdAtIkxpqWy9k4NXRIZcXSpLDn6QgWHi0A6x97Cmq5YosX3W6a+oc/ms0hh5aje
-	 jOidtfphHqPovtlpVlaZKYcdE71huWYXyT/e4bYFjaEtbtZKLJfGp4uetTePLjVhuR
-	 we0RS/LQOU09RUAHSpSf07ykHxTzi0un4e6IuIQI=
+	b=kG7YXcRTEUNhT7OBLHyvAvNHtZdAZ/H1BQHew/h10wncsGq96ieX5aMYqsPREW8dt
+	 wq79cimJQdqnFuNzkPBIQRcBNU++ACJ1AIp+vz1CQmwbt+yiQIUiaE+Arqf8++pA01
+	 pIfc2JCKPGDM5IrAlxw2Jb6lMegdBmvwp/Wu18BE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonatan Maman <Ymaman@Nvidia.com>,
-	Gal Shalom <GalShalom@Nvidia.com>,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 115/214] nouveau/dmem: Fix privileged error in copy engine channel
+Subject: [PATCH 6.6 072/213] clk: bcm: bcm53573: fix OF node leak in init
 Date: Mon, 14 Oct 2024 16:19:38 +0200
-Message-ID: <20241014141049.480767431@linuxfoundation.org>
+Message-ID: <20241014141045.793087668@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonatan Maman <Ymaman@Nvidia.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 04e0481526e30ab8c7e7580033d2f88b7ef2da3f ]
+[ Upstream commit f92d67e23b8caa81f6322a2bad1d633b00ca000e ]
 
-When `nouveau_dmem_copy_one` is called, the following error occurs:
+Driver code is leaking OF node reference from of_get_parent() in
+bcm53573_ilp_init().  Usage of of_get_parent() is not needed in the
+first place, because the parent node will not be freed while we are
+processing given node (triggered by CLK_OF_DECLARE()).  Thus fix the
+leak by accessing parent directly, instead of of_get_parent().
 
-[272146.675156] nouveau 0000:06:00.0: fifo: PBDMA9: 00000004 [HCE_PRIV]
-ch 1 00000300 00003386
-
-This indicates that a copy push command triggered a Host Copy Engine
-Privileged error on channel 1 (Copy Engine channel). To address this
-issue, modify the Copy Engine channel to allow privileged push commands
-
-Fixes: 6de125383a5c ("drm/nouveau/fifo: expose runlist topology info on all chipsets")
-Signed-off-by: Yonatan Maman <Ymaman@Nvidia.com>
-Co-developed-by: Gal Shalom <GalShalom@Nvidia.com>
-Signed-off-by: Gal Shalom <GalShalom@Nvidia.com>
-Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241008115943.990286-2-ymaman@nvidia.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240826065801.17081-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_drm.c | 2 +-
+ drivers/clk/bcm/clk-bcm53573-ilp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_drm.c b/drivers/gpu/drm/nouveau/nouveau_drm.c
-index 88413b5c8684a..bfba4e374df44 100644
---- a/drivers/gpu/drm/nouveau/nouveau_drm.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
-@@ -356,7 +356,7 @@ nouveau_accel_ce_init(struct nouveau_drm *drm)
- 		return;
+diff --git a/drivers/clk/bcm/clk-bcm53573-ilp.c b/drivers/clk/bcm/clk-bcm53573-ilp.c
+index 84f2af736ee8a..83ef41d618be3 100644
+--- a/drivers/clk/bcm/clk-bcm53573-ilp.c
++++ b/drivers/clk/bcm/clk-bcm53573-ilp.c
+@@ -112,7 +112,7 @@ static void bcm53573_ilp_init(struct device_node *np)
+ 		goto err_free_ilp;
  	}
  
--	ret = nouveau_channel_new(&drm->client, false, runm, NvDmaFB, NvDmaTT, &drm->cechan);
-+	ret = nouveau_channel_new(&drm->client, true, runm, NvDmaFB, NvDmaTT, &drm->cechan);
- 	if (ret)
- 		NV_ERROR(drm, "failed to create ce channel, %d\n", ret);
- }
+-	ilp->regmap = syscon_node_to_regmap(of_get_parent(np));
++	ilp->regmap = syscon_node_to_regmap(np->parent);
+ 	if (IS_ERR(ilp->regmap)) {
+ 		err = PTR_ERR(ilp->regmap);
+ 		goto err_free_ilp;
 -- 
 2.43.0
 
