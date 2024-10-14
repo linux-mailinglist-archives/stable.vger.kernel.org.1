@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-84803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A6D99D22A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CCC699CCDF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:26:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C82392867D0
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 845981C21AA4
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF8F1AD41F;
-	Mon, 14 Oct 2024 15:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E121AA793;
+	Mon, 14 Oct 2024 14:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8wkIeHc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwH18iwa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B53F1AC44C;
-	Mon, 14 Oct 2024 15:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB0C1547F3;
+	Mon, 14 Oct 2024 14:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919268; cv=none; b=Wk89PzhAca5moKJjGVX2A9ISEbGpBiOVuEAUe4mmp0mTLG2Q0vmRg0PGkW5V26JXWlGJv79PuTtfuTej+YlPlxQksMmXEo05UMMvZtP1V6jc7gufO8/0WbfxAUnHLNsrmEcwppK6UpU3xNighPiiWGtuIIdbetZFLyqO3/QKMSs=
+	t=1728915971; cv=none; b=jTSqPLdV4iDsggUb3d2myc3tn8fL3ugm+oPBtiiDbhiE5AXwEMNsAlnHK9Mt3vZP4xa5Yx8Co9h+uIShyVjMn9Lyrs4EbXzB6l9VQjkkTeEjhEa31CzpoMvEJCISLut3YxoY0FhmM6Z59ji9JEEyFxEEFiZXdWslScVyizynKRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919268; c=relaxed/simple;
-	bh=dc6DTZU0aKnFEpVzmCy8Y8xVYc/rbDH+Q/gyY4ZPt5I=;
+	s=arc-20240116; t=1728915971; c=relaxed/simple;
+	bh=YPO5gM7VZopvrEV5Q6IrPa5LpqVgI7Z2wHxslr3hUXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y6iNyuGs1CXkgH6UIDVe71/l65CBH3eOnUMHJN/mI9ZcsvoXNe7H0BS3oj5G6kdp1lyLw44KLlkF1MxTubv+uOJBInANwPsgCoFKgc+mqSD3kPrkf1MpVzirVmubbF4JciHMMY1TpQPOnvRW2URl91F0ap/9HtFHFaZo9WKc3og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8wkIeHc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2518C4CEC3;
-	Mon, 14 Oct 2024 15:21:07 +0000 (UTC)
+	 MIME-Version; b=EfyoaGqqQTIxWdlQkqoG+6MZm9q4iJ6ZUabdXx71DA89t9nq9Avo2i98UHc2Sl9aYTw3flrw9jncgOumgAEMXyz2whc05rd26aMQu0+4nS1+iYFl9y8Q0SbBv5vCuRjWGwsQLfwU08jEz8KiM2pIsBV/JEiSfL7bbRgViaImsk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwH18iwa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38F5C4CEC3;
+	Mon, 14 Oct 2024 14:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919268;
-	bh=dc6DTZU0aKnFEpVzmCy8Y8xVYc/rbDH+Q/gyY4ZPt5I=;
+	s=korg; t=1728915971;
+	bh=YPO5gM7VZopvrEV5Q6IrPa5LpqVgI7Z2wHxslr3hUXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n8wkIeHc6A7cOpVW57wO4nvuTtQBSKm8QVoN/IXgW6Dru27oeGQxV45jmzXlrC/82
-	 iPYnv/FpGeKqmsQqi+ilRmPm8OmEOCAkbHDElfzlfrq9UwXLVk9f0j00yOQJShEzq5
-	 rdTNL/k/Ly+o2Sy8pTf7VOg2Q3zPKsYxTh8tXICU=
+	b=rwH18iwaJMi/EOBJP6fbOodzHo3AOjNmW0Fx48AKIb6SbvjNq7fsfUrAuwXvDP0eT
+	 40RZmEsauBjISDRcGYb7kLS06zFvZ0XOWXG6xWd4Eky6seCiVSj0lXQFHj6beTNEji
+	 1sHd3FGz+ZxRIJEaz1i4l/wTZmPAoPjbuk1xzOY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.1 559/798] drm/rockchip: vop: clear DMA stop bit on RK3066
+	Petr Tesarik <petr@tesarici.cz>,
+	Ying Sun <sunying@isrc.iscas.ac.cn>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 050/214] riscv/kexec_file: Fix relocation type R_RISCV_ADD16 and R_RISCV_SUB16 unknown
 Date: Mon, 14 Oct 2024 16:18:33 +0200
-Message-ID: <20241014141239.958352392@linuxfoundation.org>
+Message-ID: <20241014141046.943776620@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Ying Sun <sunying@isrc.iscas.ac.cn>
 
-commit 6b44aa559d6c7f4ea591ef9d2352a7250138d62a upstream.
+[ Upstream commit c6ebf2c528470a09be77d0d9df2c6617ea037ac5 ]
 
-The RK3066 VOP sets a dma_stop bit when it's done scanning out a frame
-and needs the driver to acknowledge that by clearing the bit.
+Runs on the kernel with CONFIG_RISCV_ALTERNATIVE enabled:
+  kexec -sl vmlinux
 
-Unless we clear it "between" frames, the RGB output only shows noise
-instead of the picture. atomic_flush is the place for it that least
-affects other code (doing it on vblank would require converting all
-other usages of the reg_lock to spin_(un)lock_irq, which would affect
-performance for everyone).
+Error:
+  kexec_image: Unknown rela relocation: 34
+  kexec_image: Error loading purgatory ret=-8
+and
+  kexec_image: Unknown rela relocation: 38
+  kexec_image: Error loading purgatory ret=-8
 
-This seems to be a redundant synchronization mechanism that was removed
-in later iterations of the VOP hardware block.
+The purgatory code uses the 16-bit addition and subtraction relocation
+type, but not handled, resulting in kexec_file_load failure.
+So add handle to arch_kexec_apply_relocations_add().
 
-Fixes: f4a6de855eae ("drm: rockchip: vop: add rk3066 vop definitions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Val Packett <val@packett.cool>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240624204054.5524-2-val@packett.cool
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested on RISC-V64 Qemu-virt, issue fixed.
+
+Co-developed-by: Petr Tesarik <petr@tesarici.cz>
+Signed-off-by: Petr Tesarik <petr@tesarici.cz>
+Signed-off-by: Ying Sun <sunying@isrc.iscas.ac.cn>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20240711083236.2859632-1-sunying@isrc.iscas.ac.cn
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop.c |    4 ++++
- drivers/gpu/drm/rockchip/rockchip_drm_vop.h |    1 +
- drivers/gpu/drm/rockchip/rockchip_vop_reg.c |    1 +
- 3 files changed, 6 insertions(+)
+ arch/riscv/kernel/elf_kexec.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-@@ -1559,6 +1559,10 @@ static void vop_crtc_atomic_flush(struct
- 	VOP_AFBC_SET(vop, enable, s->enable_afbc);
- 	vop_cfg_done(vop);
- 
-+	/* Ack the DMA transfer of the previous frame (RK3066). */
-+	if (VOP_HAS_REG(vop, common, dma_stop))
-+		VOP_REG_SET(vop, common, dma_stop, 0);
-+
- 	spin_unlock(&vop->reg_lock);
- 
- 	/*
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
-@@ -117,6 +117,7 @@ struct vop_common {
- 	struct vop_reg lut_buffer_index;
- 	struct vop_reg gate_en;
- 	struct vop_reg mmu_en;
-+	struct vop_reg dma_stop;
- 	struct vop_reg out_mode;
- 	struct vop_reg standby;
- };
---- a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
-@@ -431,6 +431,7 @@ static const struct vop_output rk3066_ou
- };
- 
- static const struct vop_common rk3066_common = {
-+	.dma_stop = VOP_REG(RK3066_SYS_CTRL0, 0x1, 0),
- 	.standby = VOP_REG(RK3066_SYS_CTRL0, 0x1, 1),
- 	.out_mode = VOP_REG(RK3066_DSP_CTRL0, 0xf, 0),
- 	.cfg_done = VOP_REG(RK3066_REG_CFG_DONE, 0x1, 0),
+diff --git a/arch/riscv/kernel/elf_kexec.c b/arch/riscv/kernel/elf_kexec.c
+index 11c0d2e0becfe..3c37661801f95 100644
+--- a/arch/riscv/kernel/elf_kexec.c
++++ b/arch/riscv/kernel/elf_kexec.c
+@@ -451,6 +451,12 @@ int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
+ 			*(u32 *)loc = CLEAN_IMM(CJTYPE, *(u32 *)loc) |
+ 				 ENCODE_CJTYPE_IMM(val - addr);
+ 			break;
++		case R_RISCV_ADD16:
++			*(u16 *)loc += val;
++			break;
++		case R_RISCV_SUB16:
++			*(u16 *)loc -= val;
++			break;
+ 		case R_RISCV_ADD32:
+ 			*(u32 *)loc += val;
+ 			break;
+-- 
+2.43.0
+
 
 
 
