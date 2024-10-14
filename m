@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-84195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 252B899CECD
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:47:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A9899CDBD
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D43B12886C7
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:47:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5FE92839FD
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65811AC427;
-	Mon, 14 Oct 2024 14:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E8A1AB536;
+	Mon, 14 Oct 2024 14:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9+NBrCL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlV2aQSa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6269F26296;
-	Mon, 14 Oct 2024 14:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0724419E802;
+	Mon, 14 Oct 2024 14:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917166; cv=none; b=bvBdbJMyok1Z66fIb/yZouf/Bpc23sQOhgsmu5mtiqGJtuBR1ikPNI7BA3itzgooothyVNQgWd8A12ni6mboM0IpaFESNdO68LoPpWJ+1bwVqQynKDM3Sn9FNiugntjGy5Zs5cmorkGw+nplD35fexD0fMx2Ffwh3c7GibkyDN0=
+	t=1728916538; cv=none; b=qllVtrLxE4uXaq4aM+Vgotyvq0Ik1Z6YX3+9IcY+EK6eU8AmpvpfLM3j44W4DhKR3MhuB/0FnJViEGai4vMxnvXYcgdqaxThFiePoJvQahaawnIa23aOcVvnL1+yuX8Crau9SQg6oSj9p1WP6dGtwXdvGC6MAWIQBSCkE5P9L5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917166; c=relaxed/simple;
-	bh=SkHJMSLuHyELeKGqqXIAE6VAbmpg3FAGtmdf5Ywd844=;
+	s=arc-20240116; t=1728916538; c=relaxed/simple;
+	bh=bOnwC81/UpNdBnEqIe6JhimC24tkIPhf6y2L1l1l4L4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lpFoclkE3qYsKK0InnLhjseR5/Z87hZoCDKDKdb+b0UeAW3VYtgrYTNulmFoCMz8EZlvuUwGWj8Ez44pIXUhlUzh0EANVIASukKG162u9yxZG0D8d86oVxTx5ofv7OfOu4qKebFkAz8hhDeksSxTMS5MdPqULWDIqMvO6n+e2Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9+NBrCL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88BF1C4CEC3;
-	Mon, 14 Oct 2024 14:46:05 +0000 (UTC)
+	 MIME-Version; b=Fm2xboPjrwqIixWcgCYEWhBU7eazGt6H7Kk+DnieVdvxL7OdG9oXlPiMiweHhwF2zXFwkyK+azLkYy/0bZfB1FFopxUivcDoSCn/AVLi+HTtSx1af5jOAeX6EkQD99jjo1OveUu+wux1gbtyH6oBWdLyOPP42+BRY8IIFcpcsnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlV2aQSa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BE4C4CEC3;
+	Mon, 14 Oct 2024 14:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917166;
-	bh=SkHJMSLuHyELeKGqqXIAE6VAbmpg3FAGtmdf5Ywd844=;
+	s=korg; t=1728916537;
+	bh=bOnwC81/UpNdBnEqIe6JhimC24tkIPhf6y2L1l1l4L4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j9+NBrCLOmUoMmTQ7yGCiXUpWqvw+764gPXDfawv5VZa8Ow8N5z1D+xcFPoUouiMK
-	 197wwkdEx2Dc9iE+FLeXt4sTG6qCvxCKxk8LVbZsIyYnIlRWJSCvlZaCF8JrVPUctR
-	 FscTaPmohyBm3z9F7zclw1Fud071J8nlebjLnFy8=
+	b=FlV2aQSaosG144yUVOQS9FQYX5Vd6ofzwLizdKR/EMArQwwy4d/KlYDGujtVs+ZzD
+	 claFOWdjkLUC56clqbOoMg9nmdlQqP3mSFjA/ucwf3si/taMOO7a6xgsvzB+ojmX37
+	 +/f9fUpk6WmWBGmcxsBC2jmSHsiZCG24XxEJZ3bM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 169/213] HID: i2c-hid: Skip SET_POWER SLEEP for Cirque touchpad on system suspend
+	Patrick Roy <roypat@amazon.co.uk>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	David Hildenbrand <david@redhat.com>,
+	James Gowans <jgowans@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 212/214] secretmem: disable memfd_secret() if arch cannot set direct map
 Date: Mon, 14 Oct 2024 16:21:15 +0200
-Message-ID: <20241014141049.565319887@linuxfoundation.org>
+Message-ID: <20241014141053.250150809@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Patrick Roy <roypat@amazon.co.uk>
 
-[ Upstream commit 26dd6a5667f500c5d991f90a9ac5998a71afaf5c ]
+commit 532b53cebe58f34ce1c0f34d866f5c0e335c53c6 upstream.
 
-There's a Cirque touchpad that wakes system up without anything touched
-the touchpad. The input report is empty when this happens.
-The reason is stated in HID over I2C spec, 7.2.8.2:
-"If the DEVICE wishes to wake the HOST from its low power state, it can
-issue a wake by asserting the interrupt."
+Return -ENOSYS from memfd_secret() syscall if !can_set_direct_map().  This
+is the case for example on some arm64 configurations, where marking 4k
+PTEs in the direct map not present can only be done if the direct map is
+set up at 4k granularity in the first place (as ARM's break-before-make
+semantics do not easily allow breaking apart large/gigantic pages).
 
-This is fine if OS can put system back to suspend by identifying input
-wakeup count stays the same on resume, like Chrome OS Dark Resume [0].
-But for regular distro such policy is lacking.
+More precisely, on arm64 systems with !can_set_direct_map(),
+set_direct_map_invalid_noflush() is a no-op, however it returns success
+(0) instead of an error.  This means that memfd_secret will seemingly
+"work" (e.g.  syscall succeeds, you can mmap the fd and fault in pages),
+but it does not actually achieve its goal of removing its memory from the
+direct map.
 
-Though the change doesn't bring any impact on power consumption for
-touchpad is minimal, other i2c-hid device may depends on SLEEP control
-power. So use a quirk to limit the change scope.
+Note that with this patch, memfd_secret() will start erroring on systems
+where can_set_direct_map() returns false (arm64 with
+CONFIG_RODATA_FULL_DEFAULT_ENABLED=n, CONFIG_DEBUG_PAGEALLOC=n and
+CONFIG_KFENCE=n), but that still seems better than the current silent
+failure.  Since CONFIG_RODATA_FULL_DEFAULT_ENABLED defaults to 'y', most
+arm64 systems actually have a working memfd_secret() and aren't be
+affected.
 
-[0] https://chromium.googlesource.com/chromiumos/platform2/+/HEAD/power_manager/docs/dark_resume.md
+>From going through the iterations of the original memfd_secret patch
+series, it seems that disabling the syscall in these scenarios was the
+intended behavior [1] (preferred over having
+set_direct_map_invalid_noflush return an error as that would result in
+SIGBUSes at page-fault time), however the check for it got dropped between
+v16 [2] and v17 [3], when secretmem moved away from CMA allocations.
 
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1]: https://lore.kernel.org/lkml/20201124164930.GK8537@kernel.org/
+[2]: https://lore.kernel.org/lkml/20210121122723.3446-11-rppt@kernel.org/#t
+[3]: https://lore.kernel.org/lkml/20201125092208.12544-10-rppt@kernel.org/
+
+Link: https://lkml.kernel.org/r/20241001080056.784735-1-roypat@amazon.co.uk
+Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+Signed-off-by: Patrick Roy <roypat@amazon.co.uk>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: James Gowans <jgowans@amazon.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ids.h              | 3 +++
- drivers/hid/i2c-hid/i2c-hid-core.c | 6 +++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ mm/secretmem.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index f7bf744ba7548..f1d49db9fddce 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -298,6 +298,9 @@
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -238,7 +238,7 @@ SYSCALL_DEFINE1(memfd_secret, unsigned i
+ 	/* make sure local flags do not confict with global fcntl.h */
+ 	BUILD_BUG_ON(SECRETMEM_FLAGS_MASK & O_CLOEXEC);
  
- #define USB_VENDOR_ID_CIDC		0x1677
+-	if (!secretmem_enable)
++	if (!secretmem_enable || !can_set_direct_map())
+ 		return -ENOSYS;
  
-+#define I2C_VENDOR_ID_CIRQUE           0x0488
-+#define I2C_PRODUCT_ID_CIRQUE_1063     0x1063
-+
- #define USB_VENDOR_ID_CJTOUCH		0x24b8
- #define USB_DEVICE_ID_CJTOUCH_MULTI_TOUCH_0020	0x0020
- #define USB_DEVICE_ID_CJTOUCH_MULTI_TOUCH_0040	0x0040
-diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
-index 6f1eb77cbcded..045db6f0fb4c4 100644
---- a/drivers/hid/i2c-hid/i2c-hid-core.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-core.c
-@@ -49,6 +49,7 @@
- #define I2C_HID_QUIRK_RESET_ON_RESUME		BIT(2)
- #define I2C_HID_QUIRK_BAD_INPUT_SIZE		BIT(3)
- #define I2C_HID_QUIRK_NO_WAKEUP_AFTER_RESET	BIT(4)
-+#define I2C_HID_QUIRK_NO_SLEEP_ON_SUSPEND	BIT(5)
+ 	if (flags & ~(SECRETMEM_FLAGS_MASK | O_CLOEXEC))
+@@ -280,7 +280,7 @@ static struct file_system_type secretmem
  
- /* Command opcodes */
- #define I2C_HID_OPCODE_RESET			0x01
-@@ -130,6 +131,8 @@ static const struct i2c_hid_quirks {
- 		 I2C_HID_QUIRK_RESET_ON_RESUME },
- 	{ USB_VENDOR_ID_ITE, I2C_DEVICE_ID_ITE_LENOVO_LEGION_Y720,
- 		I2C_HID_QUIRK_BAD_INPUT_SIZE },
-+	{ I2C_VENDOR_ID_CIRQUE, I2C_PRODUCT_ID_CIRQUE_1063,
-+		I2C_HID_QUIRK_NO_SLEEP_ON_SUSPEND },
- 	/*
- 	 * Sending the wakeup after reset actually break ELAN touchscreen controller
- 	 */
-@@ -945,7 +948,8 @@ static int i2c_hid_core_suspend(struct i2c_hid *ihid, bool force_poweroff)
- 		return ret;
+ static int __init secretmem_init(void)
+ {
+-	if (!secretmem_enable)
++	if (!secretmem_enable || !can_set_direct_map())
+ 		return 0;
  
- 	/* Save some power */
--	i2c_hid_set_power(ihid, I2C_HID_PWR_SLEEP);
-+	if (!(ihid->quirks & I2C_HID_QUIRK_NO_SLEEP_ON_SUSPEND))
-+		i2c_hid_set_power(ihid, I2C_HID_PWR_SLEEP);
- 
- 	disable_irq(client->irq);
- 
--- 
-2.43.0
-
+ 	secretmem_mnt = kern_mount(&secretmem_fs);
 
 
 
