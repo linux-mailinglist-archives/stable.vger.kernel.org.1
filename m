@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-84971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DA0099D326
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 192D599CED8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:47:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78D60B273DE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32BDA1C2334B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C203F1CACD0;
-	Mon, 14 Oct 2024 15:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F591AAE38;
+	Mon, 14 Oct 2024 14:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6Hm+rZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ll+JW4LY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA081AB51B;
-	Mon, 14 Oct 2024 15:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4EDA1BDC3;
+	Mon, 14 Oct 2024 14:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919855; cv=none; b=PCtAlhnsBUjWIt+xoaQs6kYzkl8IMmHhxeCvL43sk3QfrvfQL7g7kCxfw8qcPvbBefSHQELYe+Hgefh3n5cTq23x8SyXiPIlPpXRZFgO64NfKE6XONyPhNx+2qiSAD/pYwCoIaZEPEb0jPTBk22GCIZapG1kFTFGFAo0wi5ANyE=
+	t=1728917192; cv=none; b=SuBUGl9IWJUIdJ8ydCHstte3OS9FBf0gmFCw5rUnwVqqVkswkCmvO01tofKPYIESIpLrmN9e7+uirbTTMRPkmaQeSLeNsvyG8I0uw8G3IOB/yfxIqXl+y2xxGzH4/WC24Jfl54Uxdae9ybUyscgxin2rxZExV96Xyf4YiO9Ptso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919855; c=relaxed/simple;
-	bh=8wwUF7tGxKWFPL1jr3b0x1BkXoy1ru+0j/90ntuAE/s=;
+	s=arc-20240116; t=1728917192; c=relaxed/simple;
+	bh=590uqMqj87aVEKhSab7hNAoDcRS5fTaY8qAYkA259Aw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JyLgg7oxMgWcDjtA5xDwrjlq91tQTpr9jAELW48Snk9N/o4RUGK4k7IxKyzvN5f7ByKINUsL642n2DzqyMsUAkjf6wQxb3pFmbwoMYHM0X7P/5UPYLimlFs/d/VdJAjRXLMqaKSoEFjT1Wj+Rta755KqnKABnw/D9PHeMDI93TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6Hm+rZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36FEC4CEC3;
-	Mon, 14 Oct 2024 15:30:54 +0000 (UTC)
+	 MIME-Version; b=Fui5wClCmAk7OqJrX3B4KeIUZz6t57G8RSZtZYFQ3Wflv6tknqBZmSXJmS3Ue6HY+IK2yt+qIl7Z6UhhV1rZtKU+G2KOYscTA77FE0KQXXs7+H4ejG7IN5KJxFvxgBbCyyJ9OzC7Xd5S82xs1mwJEqcH3DMaxUJL+DwMnLEJWCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ll+JW4LY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45946C4CEC3;
+	Mon, 14 Oct 2024 14:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919855;
-	bh=8wwUF7tGxKWFPL1jr3b0x1BkXoy1ru+0j/90ntuAE/s=;
+	s=korg; t=1728917192;
+	bh=590uqMqj87aVEKhSab7hNAoDcRS5fTaY8qAYkA259Aw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w6Hm+rZA5/jWmLIUUHqCAEBD0y1KIbxLxKK+PTiRR9prC8IzTODxdqqHwWFvG9dSM
-	 eNTHZI0FHPv72pUjDDRAUvWjC+KoZczfgxc0hPrmBpqyoeMFxua/hc3zVfDUsETxkD
-	 B3UsyvLiiwtzj1tpyRiR4TBVg4XCfRCgNinh2f70=
+	b=ll+JW4LYytDOnMX1aQJ3QmCURIDk1f8geqCK8W0kkeDIJ5i0HG/La954/FXpFB7+V
+	 K4w2JEz/BqhmCL3lL4e8FZOW80lpowyVo8C64p9V5tQQVUnTdA0xj2FCLfC/0ns7OM
+	 I7tqveTM/qUOQULk12UupvsswIYcHsmIpscXPTwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 699/798] clk: bcm: bcm53573: fix OF node leak in init
+Subject: [PATCH 6.6 147/213] btrfs: zoned: fix missing RCU locking in error message when loading zone info
 Date: Mon, 14 Oct 2024 16:20:53 +0200
-Message-ID: <20241014141245.532377035@linuxfoundation.org>
+Message-ID: <20241014141048.705401847@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit f92d67e23b8caa81f6322a2bad1d633b00ca000e ]
+[ Upstream commit fe4cd7ed128fe82ab9fe4f9fc8a73d4467699787 ]
 
-Driver code is leaking OF node reference from of_get_parent() in
-bcm53573_ilp_init().  Usage of of_get_parent() is not needed in the
-first place, because the parent node will not be freed while we are
-processing given node (triggered by CLK_OF_DECLARE()).  Thus fix the
-leak by accessing parent directly, instead of of_get_parent().
+At btrfs_load_zone_info() we have an error path that is dereferencing
+the name of a device which is a RCU string but we are not holding a RCU
+read lock, which is incorrect.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240826065801.17081-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fix this by using btrfs_err_in_rcu() instead of btrfs_err().
+
+The problem is there since commit 08e11a3db098 ("btrfs: zoned: load zone's
+allocation offset"), back then at btrfs_load_block_group_zone_info() but
+then later on that code was factored out into the helper
+btrfs_load_zone_info() by commit 09a46725cc84 ("btrfs: zoned: factor out
+per-zone logic from btrfs_load_block_group_zone_info").
+
+Fixes: 08e11a3db098 ("btrfs: zoned: load zone's allocation offset")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/bcm/clk-bcm53573-ilp.c | 2 +-
+ fs/btrfs/zoned.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/bcm/clk-bcm53573-ilp.c b/drivers/clk/bcm/clk-bcm53573-ilp.c
-index 84f2af736ee8a..83ef41d618be3 100644
---- a/drivers/clk/bcm/clk-bcm53573-ilp.c
-+++ b/drivers/clk/bcm/clk-bcm53573-ilp.c
-@@ -112,7 +112,7 @@ static void bcm53573_ilp_init(struct device_node *np)
- 		goto err_free_ilp;
- 	}
- 
--	ilp->regmap = syscon_node_to_regmap(of_get_parent(np));
-+	ilp->regmap = syscon_node_to_regmap(np->parent);
- 	if (IS_ERR(ilp->regmap)) {
- 		err = PTR_ERR(ilp->regmap);
- 		goto err_free_ilp;
+diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
+index 2784f6cb44822..c4463c3f2068d 100644
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -1357,7 +1357,7 @@ static int btrfs_load_zone_info(struct btrfs_fs_info *fs_info, int zone_idx,
+ 	switch (zone.cond) {
+ 	case BLK_ZONE_COND_OFFLINE:
+ 	case BLK_ZONE_COND_READONLY:
+-		btrfs_err(fs_info,
++		btrfs_err_in_rcu(fs_info,
+ 		"zoned: offline/readonly zone %llu on device %s (devid %llu)",
+ 			  (info->physical >> device->zone_info->zone_size_shift),
+ 			  rcu_str_deref(device->name), device->devid);
 -- 
 2.43.0
 
