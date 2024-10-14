@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-84005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3AFD99CDA7
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C44199D2DA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:31:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A7BBB23566
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABF371F23FF2
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFB020322;
-	Mon, 14 Oct 2024 14:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25DED1CC171;
+	Mon, 14 Oct 2024 15:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpZofUwC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgPu5ls6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588F61798C;
-	Mon, 14 Oct 2024 14:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D490E1CC154;
+	Mon, 14 Oct 2024 15:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916479; cv=none; b=bxEDFiqhc69w8yN3hUno4l+9c2SbW8KFYwNMKdbe4UXRdsK7fTmYIvMNTx4AWEUNNCl5YlNV/EljcZj3E3Q8Bpw4S1JKhdCpgAw8s+lqISzVdEXMitp/9o/tyoDyQJYmQsJtYLRv0GAQa9kqFr/dS9vTX5AatSFDIGy6TiF7Auw=
+	t=1728919665; cv=none; b=cFBCIs8VXOxCJE3mkGNG5u8Afs0V3azD1SxNdadGE0wP6BmOXv2KzuB/mouVlCRhgG9zMbcYESU11E/u0K3NT8d6ZCW/Y1OFj2j0u8s68qU7495vfZBapE9cyCfca2vl0LTRljhFp5C7nFBCu4mCkIxe6ECnQErTst/35l5O+oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916479; c=relaxed/simple;
-	bh=WdflzNwmjTcV+HKXj5h9sFIHuvgdzmf5j2y3RmmUlZM=;
+	s=arc-20240116; t=1728919665; c=relaxed/simple;
+	bh=2CEzetiLcKmt7LjOOge3CHj7ZGxtO9DlvF4Nbza2YNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nlYj24lkkdmYgN98iatim2b2w0TIYwcdJLrMaT+LFGAX5SIXZWoyg3DXytVlBDQsUrHiPBDHAcVro5gxAVKF9a+xQ/wc/DiUK1jeI7atKhL91skCYZgofezKyGRTXGSH1zEALsfGeiArP4lP6tAS8ctMDxXZFYr6Rww20mOyXp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpZofUwC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD96C4CEC3;
-	Mon, 14 Oct 2024 14:34:38 +0000 (UTC)
+	 MIME-Version; b=IGxlq3LFyZpRxyuYbolKrp0CacrlmKGahhMXRaTgFlWA/FqJsQzQiL/fE0EheWkC7Kg7FwG+TJDncpzCi85jzbGyV06CNg9HdvFSDGfnhAIeN0XNqChtvxpV2HCy7BK4cVRHY9Qv9fm2FXn/6Yupo7PN3nSCg7ZnO4mkEzBvTK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgPu5ls6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06FEC4CEC7;
+	Mon, 14 Oct 2024 15:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916478;
-	bh=WdflzNwmjTcV+HKXj5h9sFIHuvgdzmf5j2y3RmmUlZM=;
+	s=korg; t=1728919665;
+	bh=2CEzetiLcKmt7LjOOge3CHj7ZGxtO9DlvF4Nbza2YNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zpZofUwCeRdJ9hVR+nAgdgcVLCHAwYFZ9wXBPVitH6DLPWNeZyrwI9O0fpk2GG1ok
-	 R3ZhQ0I7uURk4y2h3umh768iflT3tCWK/HQ/ExTKllHHqAuk+hkD1o0MByWvk6LoX1
-	 By4zHJioxdqKtobPPB9QaVJHCrF/gSkFpcouBX5E=
+	b=wgPu5ls6Hx5TfxPRDu9ZtoATbusKyTHFhdHN39z+8Gj7I60SV/DTeEFAHVGbQS5JN
+	 x3Fd8CMkC/yfrJG07PBp+A54jm+QodNRChh4EXPamzYUFt7csms8lvQ6KEoF9oGNxe
+	 x6cRbDeUmb/sh+qg/l3ky3ad7D7A1VzsniqnMxus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Alberto Reguero <jose.alberto.reguero@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.11 164/214] usb: xhci: Fix problem with xhci resume from suspend
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 673/798] perf sched: Avoid large stack allocations
 Date: Mon, 14 Oct 2024 16:20:27 +0200
-Message-ID: <20241014141051.383561443@linuxfoundation.org>
+Message-ID: <20241014141244.505741581@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +69,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Alberto Reguero <jose.alberto.reguero@gmail.com>
+From: Ian Rogers <irogers@google.com>
 
-commit d44238d8254a36249d576c96473269dbe500f5e4 upstream.
+[ Upstream commit 232418a0b2e8b8e72dac003b19352f1b647cdb31 ]
 
-I have a ASUS PN51 S mini pc that has two xhci devices. One from AMD,
-and other from ASMEDIA. The one from ASMEDIA have problems when resume
-from suspend, and keep broken until unplug the  power cord. I use this
-kernel parameter: xhci-hcd.quirks=128 and then it works ok. I make a
-path to reset only the ASMEDIA xhci.
+Commit 5ded57ac1bdb ("perf inject: Remove static variables") moved
+static variables to local, however, in this case 3 MAX_CPUS (4096)
+sized arrays were moved onto the stack making the stack frame quite
+large. Avoid the stack usage by dynamically allocating the arrays.
 
-Signed-off-by: Jose Alberto Reguero <jose.alberto.reguero@gmail.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240919184202.22249-1-jose.alberto.reguero@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230527034324.2597593-2-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 1a5efc9e13f3 ("libsubcmd: Don't free the usage string")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ tools/perf/builtin-sched.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -79,6 +79,7 @@
- #define PCI_DEVICE_ID_ASMEDIA_1042A_XHCI		0x1142
- #define PCI_DEVICE_ID_ASMEDIA_1142_XHCI			0x1242
- #define PCI_DEVICE_ID_ASMEDIA_2142_XHCI			0x2142
-+#define PCI_DEVICE_ID_ASMEDIA_3042_XHCI			0x3042
- #define PCI_DEVICE_ID_ASMEDIA_3242_XHCI			0x3242
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index d83a7569db0e2..3eff78e7b67a2 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -193,8 +193,8 @@ struct perf_sched {
+  * weird events, such as a task being switched away that is not current.
+  */
+ 	struct perf_cpu	 max_cpu;
+-	u32		 curr_pid[MAX_CPUS];
+-	struct thread	 *curr_thread[MAX_CPUS];
++	u32		 *curr_pid;
++	struct thread	 **curr_thread;
+ 	char		 next_shortname1;
+ 	char		 next_shortname2;
+ 	unsigned int	 replay_repeat;
+@@ -224,7 +224,7 @@ struct perf_sched {
+ 	u64		 run_avg;
+ 	u64		 all_runtime;
+ 	u64		 all_count;
+-	u64		 cpu_last_switched[MAX_CPUS];
++	u64		 *cpu_last_switched;
+ 	struct rb_root_cached atom_root, sorted_atom_root, merged_atom_root;
+ 	struct list_head sort_list, cmp_pid;
+ 	bool force;
+@@ -3590,7 +3590,22 @@ int cmd_sched(int argc, const char **argv)
  
- #define PCI_DEVICE_ID_CADENCE				0x17CD
-@@ -457,6 +458,10 @@ static void xhci_pci_quirks(struct devic
- 		pdev->device == PCI_DEVICE_ID_ASMEDIA_1042A_XHCI)
- 		xhci->quirks |= XHCI_ASMEDIA_MODIFY_FLOWCONTROL;
+ 	mutex_init(&sched.start_work_mutex);
+ 	mutex_init(&sched.work_done_wait_mutex);
+-	for (i = 0; i < ARRAY_SIZE(sched.curr_pid); i++)
++	sched.curr_thread = calloc(MAX_CPUS, sizeof(*sched.curr_thread));
++	if (!sched.curr_thread) {
++		ret = -ENOMEM;
++		goto out;
++	}
++	sched.cpu_last_switched = calloc(MAX_CPUS, sizeof(*sched.cpu_last_switched));
++	if (!sched.cpu_last_switched) {
++		ret = -ENOMEM;
++		goto out;
++	}
++	sched.curr_pid = malloc(MAX_CPUS * sizeof(*sched.curr_pid));
++	if (!sched.curr_pid) {
++		ret = -ENOMEM;
++		goto out;
++	}
++	for (i = 0; i < MAX_CPUS; i++)
+ 		sched.curr_pid[i] = -1;
  
-+	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA &&
-+	    pdev->device == PCI_DEVICE_ID_ASMEDIA_3042_XHCI)
-+		xhci->quirks |= XHCI_RESET_ON_RESUME;
-+
- 	if (pdev->vendor == PCI_VENDOR_ID_TI && pdev->device == 0x8241)
- 		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_7;
+ 	argc = parse_options_subcommand(argc, argv, sched_options, sched_subcommands,
+@@ -3659,6 +3674,9 @@ int cmd_sched(int argc, const char **argv)
+ 	}
  
+ out:
++	free(sched.curr_pid);
++	free(sched.cpu_last_switched);
++	free(sched.curr_thread);
+ 	mutex_destroy(&sched.start_work_mutex);
+ 	mutex_destroy(&sched.work_done_wait_mutex);
+ 
+-- 
+2.43.0
+
 
 
 
