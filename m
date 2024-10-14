@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-84871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4646F99D296
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B838499CD36
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F101E280F3B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BC1B281453
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61AB1AAE1D;
-	Mon, 14 Oct 2024 15:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D24A200CB;
+	Mon, 14 Oct 2024 14:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4bYgMPy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqghlcFK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6531D481B3;
-	Mon, 14 Oct 2024 15:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2734D20EB;
+	Mon, 14 Oct 2024 14:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919513; cv=none; b=e2t5IW6HTdpysUwOsNVrtsqt8oFqe0RKMU+NOO+/Tc4l8uamMBMtRh/kuJH4z7bL93AE0CeO5/FRZzTkDW2WF8SJL6de7t/eu6/JVYsWMBDxk07XPAoo/6+mg/UT5QYDjGuNRyRuDJmE6s1/4ukcA2W0dNkY2v6ypnUqbPd4SVU=
+	t=1728916219; cv=none; b=qrWa/kA/6bNLgpQJ+D/D7O4Dw8Z0pFVw3xkyd4yty5qrLJgK4dNEEzE5VEvKFoUtrLPYAYrJlhiXBmH1mTbPz99HUV7cnvtQmkJNsld+JeucFPDkH17rsqUnCN0xmEKTqohfyj6z9GuCB6LYzu4Xv9hZ2jFlGMqZcQeUE/12Qns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919513; c=relaxed/simple;
-	bh=ZIDuRjlni3GAW8GoUUp+afwv3xJegUfq7UXFbdatGyY=;
+	s=arc-20240116; t=1728916219; c=relaxed/simple;
+	bh=uBJ0oCBqhgxeN6zEJCGxk3pe/iTTfg0ngl8egsCQ8+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PYf18LojDF9RQVW+31HqlhbLoViykrgOSXTgG3jIF7X9ZQ8bB/nuLjuR6G7GJgw8zjVXjkXnYjE9EEcR+bw+XUaTjgBwZM8fL6AY/1mQFUFtxgEKbrKLxogvUKeNqHqV9/tOeeQrTlJ+czSU2Ye2SV7wyGWG92A4mVd3XAxTzGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4bYgMPy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5086C4CEC3;
-	Mon, 14 Oct 2024 15:25:12 +0000 (UTC)
+	 MIME-Version; b=tbiBBPXQzXOWJdqWOkHe6pYIxLUDtw9kXh3CoVGLPB+Zbw+CR5Ob3XUk5PBMhJY8DCYpNU3aNf0kCio5sTcZqJeQ+pAA50ba1JYl8S3of6H1sBVnXLyggwLTsAlGYLIPohCXYRnKt01yy7190w8eAWNipdswyWFivB8zI8ZdG3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqghlcFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B51AC4CEC3;
+	Mon, 14 Oct 2024 14:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919513;
-	bh=ZIDuRjlni3GAW8GoUUp+afwv3xJegUfq7UXFbdatGyY=;
+	s=korg; t=1728916219;
+	bh=uBJ0oCBqhgxeN6zEJCGxk3pe/iTTfg0ngl8egsCQ8+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4bYgMPyHYTHa2EBvFj6+NfJ5TnxOvBy+7w5iTZICqhikMlrXS9WIqV383G+oc7lO
-	 eq2hu/mkPoHHH+THaSlcBWyWN650Bx/3IY9cjxI+1OlDKCkPEnmNnLVvszbgeNBVCU
-	 swamrrLRziO3QnXJmzTSuyWUjh1C7SJE04AVeDvE=
+	b=KqghlcFKZtFR3H4YJZ5fTnn0SNrQJDaDD1MA20sYF25XgqeoNqX1KuJSMQiystUw1
+	 PgfI+gUtoeNMe+S0TErdq+SRhWIMnq/BNRBKiVGt/H5jxJ/b+SjuZdTMUm9+yIMYvf
+	 Q/tvXym4Cz5Ye1o9PiSNxEbAYOBXAeGMXv4oVbAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 626/798] arm64: errata: Expand speculative SSBS workaround once more
+Subject: [PATCH 6.11 117/214] gpio: aspeed: Use devm_clk api to manage clock source
 Date: Mon, 14 Oct 2024 16:19:40 +0200
-Message-ID: <20241014141242.631915941@linuxfoundation.org>
+Message-ID: <20241014141049.558140089@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,116 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Billy Tsai <billy_tsai@aspeedtech.com>
 
-[ Upstream commit 081eb7932c2b244f63317a982c5e3990e2c7fbdd ]
+[ Upstream commit a6191a3d18119184237f4ee600039081ad992320 ]
 
-A number of Arm Ltd CPUs suffer from errata whereby an MSR to the SSBS
-special-purpose register does not affect subsequent speculative
-instructions, permitting speculative store bypassing for a window of
-time.
+Replace of_clk_get with devm_clk_get_enabled to manage the clock source.
 
-We worked around this for a number of CPUs in commits:
-
-* 7187bb7d0b5c7dfa ("arm64: errata: Add workaround for Arm errata 3194386 and 3312417")
-* 75b3c43eab594bfb ("arm64: errata: Expand speculative SSBS workaround")
-* 145502cac7ea70b5 ("arm64: errata: Expand speculative SSBS workaround (again)")
-
-Since then, a (hopefully final) batch of updates have been published,
-with two more affected CPUs. For the affected CPUs the existing
-mitigation is sufficient, as described in their respective Software
-Developer Errata Notice (SDEN) documents:
-
-* Cortex-A715 (MP148) SDEN v15.0, erratum 3456084
-  https://developer.arm.com/documentation/SDEN-2148827/1500/
-
-* Neoverse-N3 (MP195) SDEN v5.0, erratum 3456111
-  https://developer.arm.com/documentation/SDEN-3050973/0500/
-
-Enable the existing mitigation by adding the relevant MIDRs to
-erratum_spec_ssbs_list, and update silicon-errata.rst and the
-Kconfig text accordingly.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240930111705.3352047-3-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: fix conflict in silicon-errata.rst, handle move ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Fixes: 5ae4cb94b313 ("gpio: aspeed: Add debounce support")
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+Link: https://lore.kernel.org/r/20241008081450.1490955-3-billy_tsai@aspeedtech.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/arm64/silicon-errata.rst | 4 ++++
- arch/arm64/Kconfig                     | 2 ++
- arch/arm64/kernel/cpu_errata.c         | 2 ++
- 3 files changed, 8 insertions(+)
+ drivers/gpio/gpio-aspeed.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
-index 6451e9198fef7..e7b50babd0d5c 100644
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -135,6 +135,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A710     | #3324338        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A715     | #3456084        | ARM64_ERRATUM_3194386       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A720     | #3456091        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A725     | #3456106        | ARM64_ERRATUM_3194386       |
-@@ -171,6 +173,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N2     | #3324339        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-N3     | #3456111        | ARM64_ERRATUM_3194386       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V1     | #3324341        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V2     | #3324336        | ARM64_ERRATUM_3194386       |
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 2ef939075039d..1a62ef142a988 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1012,6 +1012,7 @@ config ARM64_ERRATUM_3194386
- 	  * ARM Cortex-A78C erratum 3324346
- 	  * ARM Cortex-A78C erratum 3324347
- 	  * ARM Cortex-A710 erratam 3324338
-+	  * ARM Cortex-A715 errartum 3456084
- 	  * ARM Cortex-A720 erratum 3456091
- 	  * ARM Cortex-A725 erratum 3456106
- 	  * ARM Cortex-X1 erratum 3324344
-@@ -1022,6 +1023,7 @@ config ARM64_ERRATUM_3194386
- 	  * ARM Cortex-X925 erratum 3324334
- 	  * ARM Neoverse-N1 erratum 3324349
- 	  * ARM Neoverse N2 erratum 3324339
-+	  * ARM Neoverse-N3 erratum 3456111
- 	  * ARM Neoverse-V1 erratum 3324341
- 	  * ARM Neoverse V2 erratum 3324336
- 	  * ARM Neoverse-V3 erratum 3312417
-diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-index 7640031e1b845..78aea409b092b 100644
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -442,6 +442,7 @@ static const struct midr_range erratum_spec_ssbs_list[] = {
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-+	MIDR_ALL_VERSIONS(MIDR_CORTEX_A715),
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A720),
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A725),
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
-@@ -452,6 +453,7 @@ static const struct midr_range erratum_spec_ssbs_list[] = {
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X925),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-+	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N3),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
+diff --git a/drivers/gpio/gpio-aspeed.c b/drivers/gpio/gpio-aspeed.c
+index 98551b7f6de2e..ea40ad43a79ba 100644
+--- a/drivers/gpio/gpio-aspeed.c
++++ b/drivers/gpio/gpio-aspeed.c
+@@ -1193,7 +1193,7 @@ static int __init aspeed_gpio_probe(struct platform_device *pdev)
+ 	if (!gpio_id)
+ 		return -EINVAL;
+ 
+-	gpio->clk = of_clk_get(pdev->dev.of_node, 0);
++	gpio->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(gpio->clk)) {
+ 		dev_warn(&pdev->dev,
+ 				"Failed to get clock from devicetree, debouncing disabled\n");
 -- 
 2.43.0
 
