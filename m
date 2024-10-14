@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-84146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB93C99CE65
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:43:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94BB699CDA9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3E601C21EE1
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:43:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C8521F23ABE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F009B1ABED7;
-	Mon, 14 Oct 2024 14:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF601ABEA1;
+	Mon, 14 Oct 2024 14:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOhzhjJF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4se4Yh1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCB21ABECB;
-	Mon, 14 Oct 2024 14:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0561AB6DD;
+	Mon, 14 Oct 2024 14:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916993; cv=none; b=LXepWzBfDPFaHWSExN298saxMsvqbOd/i3rH6x+uCEdgDogqkh9/4bDlfp9nRsUOgPwIWAx766IMNlzyLEiAeGboYV2gCOU2YSgKW0rshdR0KgqqZgXwttylgdnxXhPYxNXjMWr4z1FzAhs6rhj43+r7lP1y6GxmDvF5Sb9+zfA=
+	t=1728916482; cv=none; b=fwN3DxeJ9bK2a46/x8DaohR3XC0pLAqZeq03sFmUL74cbASBePu6HchHvtaExBYzUwpRfeSu6RsmvcZRKcIUMrI9qnAI+yF/D2X3srDHlcqDlTt7Fy7T5Ra0+RELWyPxFW/+SkD+LlcNf8MmeAvZOql9a1gBhZ5UJPWKSZarVBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916993; c=relaxed/simple;
-	bh=X5qFfRTROoTupOtJdl7MhGD3TM0USo6g6+Z0TZhmaR4=;
+	s=arc-20240116; t=1728916482; c=relaxed/simple;
+	bh=e0qcGTWIdFgOhCvZXA2Qg8fhbqrWsBfGHgM9u+k8t1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sz8buJiIDXBTB3yXdC02TVxwHMWGwIdornVXv8chop104HniAe7+TR6h6NOVWkJpy/3TvwrbEcf+GXy+X6PCgxsvpVC5hW7Fsfmixm+hNrCSyObgiE/xduQh71Bb8uEzuDf0gdgUwHGpBsnqU0rjO0/g+jt7X77ZDFn9Wze12fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOhzhjJF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D655C4CECF;
-	Mon, 14 Oct 2024 14:43:12 +0000 (UTC)
+	 MIME-Version; b=r++6uIs0v88yuWjSte+prlqJituHcHvuHEB1uyvSp8xJCPl1/n2+1G3g71qL9P1CTguWGQto6V9c8qB2on8uZyPBxoHvM5Xx3ZvYo/HF2TX7McaS2GOOObQ+tyoGumt3CUNvB6Xxx/Qi6rQl0s+l2Cch3KEg6pPvAvx3XIx3zwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4se4Yh1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E25C4CEC3;
+	Mon, 14 Oct 2024 14:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916993;
-	bh=X5qFfRTROoTupOtJdl7MhGD3TM0USo6g6+Z0TZhmaR4=;
+	s=korg; t=1728916482;
+	bh=e0qcGTWIdFgOhCvZXA2Qg8fhbqrWsBfGHgM9u+k8t1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tOhzhjJFLNApYpiIbHunHg3NLkRxOsK8yLCJn7kLJyfcuGiv+Xrfr43sPlG41mGoS
-	 geHIKazU2zBRhUGlQ7PJWAyS7dExTXcc2jta5JkZuhURpwIj1HCsOb0XCjZJffQ31l
-	 dLGCVHLk7ECHIWzRR+hMccAkoAV2so3X2swk59xE=
+	b=v4se4Yh1isnEItzZg19u2J4rjgTLxCJTuJUuHN7OmiFkbyn3TUKCqPPx/YbEfyw3h
+	 1lWbwx5R9p3bz6owgB4BOTmNa3XaS8gnAvTUcbynZiRmmBw4eSFi72XbvkmLDdsSVZ
+	 WYNmL4eimylzs//n6QEU07vGG84MnghuwfFdx1Tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d7ce59b06b3eb14fd218@syzkaller.appspotmail.com,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/213] Bluetooth: RFCOMM: FIX possible deadlock in rfcomm_sk_state_change
+	Icenowy Zheng <uwu@icenowy.me>,
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.11 165/214] usb: storage: ignore bogus device raised by JieLi BR21 USB sound chip
 Date: Mon, 14 Oct 2024 16:20:28 +0200
-Message-ID: <20241014141047.730284443@linuxfoundation.org>
+Message-ID: <20241014141051.422157754@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-[ Upstream commit 08d1914293dae38350b8088980e59fbc699a72fe ]
+commit a6555cb1cb69db479d0760e392c175ba32426842 upstream.
 
-rfcomm_sk_state_change attempts to use sock_lock so it must never be
-called with it locked but rfcomm_sock_ioctl always attempt to lock it
-causing the following trace:
+JieLi tends to use SCSI via USB Mass Storage to implement their own
+proprietary commands instead of implementing another USB interface.
+Enumerating it as a generic mass storage device will lead to a Hardware
+Error sense key get reported.
 
-======================================================
-WARNING: possible circular locking dependency detected
-6.8.0-syzkaller-08951-gfe46a7dd189e #0 Not tainted
-------------------------------------------------------
-syz-executor386/5093 is trying to acquire lock:
-ffff88807c396258 (sk_lock-AF_BLUETOOTH-BTPROTO_RFCOMM){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1671 [inline]
-ffff88807c396258 (sk_lock-AF_BLUETOOTH-BTPROTO_RFCOMM){+.+.}-{0:0}, at: rfcomm_sk_state_change+0x5b/0x310 net/bluetooth/rfcomm/sock.c:73
+Ignore this bogus device to prevent appearing a unusable sdX device
+file.
 
-but task is already holding lock:
-ffff88807badfd28 (&d->lock){+.+.}-{3:3}, at: __rfcomm_dlc_close+0x226/0x6a0 net/bluetooth/rfcomm/core.c:491
-
-Reported-by: syzbot+d7ce59b06b3eb14fd218@syzkaller.appspotmail.com
-Tested-by: syzbot+d7ce59b06b3eb14fd218@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d7ce59b06b3eb14fd218
-Fixes: 3241ad820dbb ("[Bluetooth] Add timestamp support to L2CAP, RFCOMM and SCO")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Cc: stable <stable@kernel.org>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20241001083407.8336-1-uwu@icenowy.me
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/rfcomm/sock.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/usb/storage/unusual_devs.h |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
-index 29aa07e9db9d7..cbff37b327340 100644
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -865,9 +865,7 @@ static int rfcomm_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned lon
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -2423,6 +2423,17 @@ UNUSUAL_DEV(  0xc251, 0x4003, 0x0100, 0x
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_NOT_LOCKABLE),
  
- 	if (err == -ENOIOCTLCMD) {
- #ifdef CONFIG_BT_RFCOMM_TTY
--		lock_sock(sk);
- 		err = rfcomm_dev_ioctl(sk, cmd, (void __user *) arg);
--		release_sock(sk);
- #else
- 		err = -EOPNOTSUPP;
- #endif
--- 
-2.43.0
-
++/*
++ * Reported by Icenowy Zheng <uwu@icenowy.me>
++ * This is an interface for vendor-specific cryptic commands instead
++ * of real USB storage device.
++ */
++UNUSUAL_DEV(  0xe5b7, 0x0811, 0x0100, 0x0100,
++		"ZhuHai JieLi Technology",
++		"JieLi BR21",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_IGNORE_DEVICE),
++
+ /* Reported by Andrew Simmons <andrew.simmons@gmail.com> */
+ UNUSUAL_DEV(  0xed06, 0x4500, 0x0001, 0x0001,
+ 		"DataStor",
 
 
 
