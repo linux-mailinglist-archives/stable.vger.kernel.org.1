@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-84688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C23A699D186
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:17:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C84A99D193
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EE89B235ED
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:17:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 001631F2456C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F0E1B85C0;
-	Mon, 14 Oct 2024 15:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F281171671;
+	Mon, 14 Oct 2024 15:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2h7kP4LP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iFPM+gIL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF3C1ABEB1;
-	Mon, 14 Oct 2024 15:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E6F1C2327;
+	Mon, 14 Oct 2024 15:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918867; cv=none; b=OvmbJokHa79otI3sxjTwMsKtEWLDE3pP84tsYu/XqoxPfvUACwGosYOY1pJD1MU9DuyBECEQtGnSOOGsDNyrH7ttv+Ria60pXURXwpd0bkjlGNvMB72GRo/SGZYNcvlq7/YZrD9K5nqZEMsR8+5qqH3tDcKUhlk/prQiWtOEU+Q=
+	t=1728918904; cv=none; b=IBdfgfxcALFsiHH5F1NuorySo6oQGVq9thJOCQu543A2zXzxpKeYKcAglofaHKYVDxYLr61NanxcmNGY16vkmFtx9zOcUe/Z2WZtQa4oWenIQT/lAp1AFT3k8TYE1uXncHDG9UYX6MzojQM+r5PsdZDNcAEtQqvFoCjWWXKFIb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918867; c=relaxed/simple;
-	bh=d6Ri0FnK1WrGgrKW/k3ig2qs3VE06D73IQ6A43/yF1w=;
+	s=arc-20240116; t=1728918904; c=relaxed/simple;
+	bh=r4wLQCaBtvNXoo0kE0XuovDa4m2vqiyUsMEm/vdEAZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lvNGMqMNWrdFmynuDJzLiF2WTQklewSo7dXacxsjP1Ueu1fojeonIIJyo0no3Pro4pYEOvASDsiXANYWpYU8b0jGJZ6TfcOU+ZGkDlOTISBZeDqtfG9560K54zd6HENBJQeP361nzculXDVOeMAmfOsxrLmTRrJ7xij9Ee6vRwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2h7kP4LP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D90FC4CEC7;
-	Mon, 14 Oct 2024 15:14:26 +0000 (UTC)
+	 MIME-Version; b=bBhPOOwABFVHQ2fOWLRtSxpHwlRk50svIuhU+DrfQ7C0/Mz8TjO2irq5E7AAYvzTc1uOfyeUeIYLjka1CqdX0KEuH0oWxtEDoM/xaUXJBGwWOmpVBdLY5suefekUofIxBCua63D0I3Jw9nxRdyDlZ0oRw1XKbt4K9plNxDoIdNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFPM+gIL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B01C4CEC3;
+	Mon, 14 Oct 2024 15:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918866;
-	bh=d6Ri0FnK1WrGgrKW/k3ig2qs3VE06D73IQ6A43/yF1w=;
+	s=korg; t=1728918904;
+	bh=r4wLQCaBtvNXoo0kE0XuovDa4m2vqiyUsMEm/vdEAZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2h7kP4LPc50Yoi1urYd/5lj09K7qHP1kgLi74uOVEeGgWbrI4tkd2DGMNzgL1xGWn
-	 TiQ0eIGWFZgTS+7Jn+rVWPaMQmJ8rakpchvO714c4eS1uClzZQgd39Skd8AhQgQ0XW
-	 R2UNpgEL+kwvmkwZQI81IcuPIE09zV5hPfESdZmc=
+	b=iFPM+gILHQbJuoXDA6o6ajPGCd7hHUOA+d5YbJj61Iu16oRwhKiQikPJqneQrFLQW
+	 vw4ic3tfsPy44XCoTfh9h5WnOlipaN3jDlEJRU90/IaJQ2i8i1nP3OJsP0fzKayu9i
+	 HcpJq/HjK0sChkvcMa9JlSymKX49LpHFCNHEdEIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 428/798] ACPICA: Fix memory leak if acpi_ps_get_next_field() fails
-Date: Mon, 14 Oct 2024 16:16:22 +0200
-Message-ID: <20241014141234.765493063@linuxfoundation.org>
+Subject: [PATCH 6.1 429/798] wifi: mt76: mt7915: disable tx worker during tx BA session enable/disable
+Date: Mon, 14 Oct 2024 16:16:23 +0200
+Message-ID: <20241014141234.807985256@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -66,88 +65,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit e6169a8ffee8a012badd8c703716e761ce851b15 ]
+[ Upstream commit 256cbd26fbafb30ba3314339106e5c594e9bd5f9 ]
 
-ACPICA commit 1280045754264841b119a5ede96cd005bc09b5a7
+Avoids firmware race condition.
 
-If acpi_ps_get_next_field() fails, the previously created field list
-needs to be properly disposed before returning the status code.
-
-Link: https://github.com/acpica/acpica/commit/12800457
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-[ rjw: Rename local variable to avoid compiler confusion ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/20240827093011.18621-7-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/psargs.c | 39 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/acpica/psargs.c b/drivers/acpi/acpica/psargs.c
-index 919a7aebcc036..418d56203e27a 100644
---- a/drivers/acpi/acpica/psargs.c
-+++ b/drivers/acpi/acpica/psargs.c
-@@ -25,6 +25,8 @@ acpi_ps_get_next_package_length(struct acpi_parse_state *parser_state);
- static union acpi_parse_object *acpi_ps_get_next_field(struct acpi_parse_state
- 						       *parser_state);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 65f07cc2acdd4..44fbfe3775e06 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -661,13 +661,17 @@ int mt7915_mcu_add_tx_ba(struct mt7915_dev *dev,
+ {
+ 	struct mt7915_sta *msta = (struct mt7915_sta *)params->sta->drv_priv;
+ 	struct mt7915_vif *mvif = msta->vif;
++	int ret;
  
-+static void acpi_ps_free_field_list(union acpi_parse_object *start);
-+
- /*******************************************************************************
-  *
-  * FUNCTION:    acpi_ps_get_next_package_length
-@@ -683,6 +685,39 @@ static union acpi_parse_object *acpi_ps_get_next_field(struct acpi_parse_state
- 	return_PTR(field);
++	mt76_worker_disable(&dev->mt76.tx_worker);
+ 	if (enable && !params->amsdu)
+ 		msta->wcid.amsdu = false;
++	ret = mt76_connac_mcu_sta_ba(&dev->mt76, &mvif->mt76, params,
++				     MCU_EXT_CMD(STA_REC_UPDATE),
++				     enable, true);
++	mt76_worker_enable(&dev->mt76.tx_worker);
+ 
+-	return mt76_connac_mcu_sta_ba(&dev->mt76, &mvif->mt76, params,
+-				      MCU_EXT_CMD(STA_REC_UPDATE),
+-				      enable, true);
++	return ret;
  }
  
-+/*******************************************************************************
-+ *
-+ * FUNCTION:    acpi_ps_free_field_list
-+ *
-+ * PARAMETERS:  start               - First Op in field list
-+ *
-+ * RETURN:      None.
-+ *
-+ * DESCRIPTION: Free all Op objects inside a field list.
-+ *
-+ ******************************************************************************/
-+
-+static void acpi_ps_free_field_list(union acpi_parse_object *start)
-+{
-+	union acpi_parse_object *cur = start;
-+	union acpi_parse_object *next;
-+	union acpi_parse_object *arg;
-+
-+	while (cur) {
-+		next = cur->common.next;
-+
-+		/* AML_INT_CONNECTION_OP can have a single argument */
-+
-+		arg = acpi_ps_get_arg(cur, 0);
-+		if (arg) {
-+			acpi_ps_free_op(arg);
-+		}
-+
-+		acpi_ps_free_op(cur);
-+		cur = next;
-+	}
-+}
-+
- /*******************************************************************************
-  *
-  * FUNCTION:    acpi_ps_get_next_arg
-@@ -751,6 +786,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_state,
- 			while (parser_state->aml < parser_state->pkg_end) {
- 				field = acpi_ps_get_next_field(parser_state);
- 				if (!field) {
-+					if (arg) {
-+						acpi_ps_free_field_list(arg);
-+					}
-+
- 					return_ACPI_STATUS(AE_NO_MEMORY);
- 				}
- 
+ int mt7915_mcu_add_rx_ba(struct mt7915_dev *dev,
 -- 
 2.43.0
 
