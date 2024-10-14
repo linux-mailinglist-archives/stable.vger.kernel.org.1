@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-84172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58C7A99CE85
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:44:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D2DF99D2F5
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:32:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 187512881F1
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:44:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E581B24C10
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6850C1AB525;
-	Mon, 14 Oct 2024 14:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA7E1B85D4;
+	Mon, 14 Oct 2024 15:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYegqydY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqxJZER0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248AA4595B;
-	Mon, 14 Oct 2024 14:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88EA61AC891;
+	Mon, 14 Oct 2024 15:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917087; cv=none; b=GyTrl235VXESBvrGyfFyZaqzEvLMx2hYkSfOpoT0CyjF8D3frNxOD9RbWhQcASJpUoU7M7RpP5k8U8VQ8UvKQjtC3XZYaVAmwLP2IrB6Tib86GWe2OMnSLhyNOjbXeaonlimNTm0bCdJ2OGib7b83zXICFw8x35q3T6IzJv6ypk=
+	t=1728919733; cv=none; b=WPT2VhVIwKX5tW2uXl37Ks+ZFHilKMnFmcGq1db5Vkg8NSO5Qt5V5o+L7qrxKOaQZQBaRbW3qT1uOje33R+pxuPKpxKMKStEp4ck+wlNWECMJHco9H7XNAc2r6SFdtIbNDe+Lsv4+2qaNvVSfMfD9gUyNZ7ZZbm5jZnAPTaqSz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917087; c=relaxed/simple;
-	bh=t4mNrdwxMbK4uqlNzjnRRe/r5Yx5ROHH5iWo5knZpBg=;
+	s=arc-20240116; t=1728919733; c=relaxed/simple;
+	bh=HzvgZFEMzG8E1S6FtVtFGHkFEhiKG0byrniF2h1xU68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PyY3xpFapQ6vNGauJzZCHfJP2oTGFRLSYE6LHxyBUYQTVJxMP+Nc102FyuUMsZUFNYNh0xT19nXuxS6y/v5ryHTKErCfoQNwXP8C4+3RqJzH052icMhJ2F/RtNAck6CoN26O8q6Oc1RWwUqNWPpNOr78yh+Qk1zpvQRuq10H/rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYegqydY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81303C4CEC3;
-	Mon, 14 Oct 2024 14:44:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SmWjMSzyCVwPIbQAJRy+K7TXa2pFLe95pua8Tq88EDcXVIsooqbnlYZF1gdyVucA3G0q6KrcYyac92n8+/a04w2/0OwEUT+5rbX1SwiJYHh0e/UC02QTwzHtREBAkPm2z3y4558i2hrNL0SEcoCpJZNBM8rIfeJKDOIcr1bvTiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqxJZER0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE52C4CEC3;
+	Mon, 14 Oct 2024 15:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917087;
-	bh=t4mNrdwxMbK4uqlNzjnRRe/r5Yx5ROHH5iWo5knZpBg=;
+	s=korg; t=1728919733;
+	bh=HzvgZFEMzG8E1S6FtVtFGHkFEhiKG0byrniF2h1xU68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nYegqydYK+LZ3mU77Rq2ZVWg1pwFoYpLM0+LeP7VCObwHDFpsSKmkIsXm2PdMpOCk
-	 GhbA2P8bSyV0pLZsuK+9CZrlSV2fZrXswC5Make2WEmOxaFxSgwuXlY7jX9TjpVSXM
-	 REfK92NRwvq2Ux1WdgzO6+SdYFhPEqsqnVs1HYcs=
+	b=pqxJZER0aJ2+hEnCl9kHufEh5PiCY7UidFE4r7nbwf0KQUPxmyBcV0UXFcTimRcf/
+	 8L7c3WznTlEQljpgL9cISioE3tGtFlBlXgoA4s0l1BSrPF9jYBFA+rY8lamNkn0aMA
+	 jTho6N3f2zlpgD0xL7faJ3BcQtMUU5Z7a57cV/XQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Piotr Raczynski <piotr.raczynski@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	=?UTF-8?q?Wojciech=20G=C5=82adysz?= <wojciech.gladysz@infogain.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 140/213] ice: rename switchdev to eswitch
+Subject: [PATCH 6.1 692/798] ext4: nested locking for xattr inode
 Date: Mon, 14 Oct 2024 16:20:46 +0200
-Message-ID: <20241014141048.434649664@linuxfoundation.org>
+Message-ID: <20241014141245.257128275@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,359 +60,191 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Wojciech Gładysz <wojciech.gladysz@infogain.com>
 
-[ Upstream commit 5a841e4eb8ed2fea91025b19af8a9ba544f63323 ]
+[ Upstream commit d1bc560e9a9c78d0b2314692847fc8661e0aeb99 ]
 
-Eswitch is used as a prefix for related functions. Main structure
-storing all data related to eswitch should also be named as eswitch
-instead of ice_switchdev_info. Rename it.
+Add nested locking with I_MUTEX_XATTR subclass to avoid lockdep warning
+while handling xattr inode on file open syscall at ext4_xattr_inode_iget.
 
-Also rename switchdev to eswitch where the context is not about eswitch
-mode.
+Backtrace
+EXT4-fs (loop0): Ignoring removed oldalloc option
+======================================================
+WARNING: possible circular locking dependency detected
+5.10.0-syzkaller #0 Not tainted
+------------------------------------------------------
+syz-executor543/2794 is trying to acquire lock:
+ffff8880215e1a48 (&ea_inode->i_rwsem#7/1){+.+.}-{3:3}, at: inode_lock include/linux/fs.h:782 [inline]
+ffff8880215e1a48 (&ea_inode->i_rwsem#7/1){+.+.}-{3:3}, at: ext4_xattr_inode_iget+0x42a/0x5c0 fs/ext4/xattr.c:425
 
-::uplink_netdev was changed to netdev for simplicity. There is no other
-netdev in function scope so it is obvious.
+but task is already holding lock:
+ffff8880215e3278 (&ei->i_data_sem/3){++++}-{3:3}, at: ext4_setattr+0x136d/0x19c0 fs/ext4/inode.c:5559
 
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Piotr Raczynski <piotr.raczynski@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: fbcb968a98ac ("ice: Flush FDB entries before reset")
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (&ei->i_data_sem/3){++++}-{3:3}:
+       lock_acquire+0x197/0x480 kernel/locking/lockdep.c:5566
+       down_write+0x93/0x180 kernel/locking/rwsem.c:1564
+       ext4_update_i_disksize fs/ext4/ext4.h:3267 [inline]
+       ext4_xattr_inode_write fs/ext4/xattr.c:1390 [inline]
+       ext4_xattr_inode_lookup_create fs/ext4/xattr.c:1538 [inline]
+       ext4_xattr_set_entry+0x331a/0x3d80 fs/ext4/xattr.c:1662
+       ext4_xattr_ibody_set+0x124/0x390 fs/ext4/xattr.c:2228
+       ext4_xattr_set_handle+0xc27/0x14e0 fs/ext4/xattr.c:2385
+       ext4_xattr_set+0x219/0x390 fs/ext4/xattr.c:2498
+       ext4_xattr_user_set+0xc9/0xf0 fs/ext4/xattr_user.c:40
+       __vfs_setxattr+0x404/0x450 fs/xattr.c:177
+       __vfs_setxattr_noperm+0x11d/0x4f0 fs/xattr.c:208
+       __vfs_setxattr_locked+0x1f9/0x210 fs/xattr.c:266
+       vfs_setxattr+0x112/0x2c0 fs/xattr.c:283
+       setxattr+0x1db/0x3e0 fs/xattr.c:548
+       path_setxattr+0x15a/0x240 fs/xattr.c:567
+       __do_sys_setxattr fs/xattr.c:582 [inline]
+       __se_sys_setxattr fs/xattr.c:578 [inline]
+       __x64_sys_setxattr+0xc5/0xe0 fs/xattr.c:578
+       do_syscall_64+0x6d/0xa0 arch/x86/entry/common.c:62
+       entry_SYSCALL_64_after_hwframe+0x61/0xcb
+
+-> #0 (&ea_inode->i_rwsem#7/1){+.+.}-{3:3}:
+       check_prev_add kernel/locking/lockdep.c:2988 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3113 [inline]
+       validate_chain+0x1695/0x58f0 kernel/locking/lockdep.c:3729
+       __lock_acquire+0x12fd/0x20d0 kernel/locking/lockdep.c:4955
+       lock_acquire+0x197/0x480 kernel/locking/lockdep.c:5566
+       down_write+0x93/0x180 kernel/locking/rwsem.c:1564
+       inode_lock include/linux/fs.h:782 [inline]
+       ext4_xattr_inode_iget+0x42a/0x5c0 fs/ext4/xattr.c:425
+       ext4_xattr_inode_get+0x138/0x410 fs/ext4/xattr.c:485
+       ext4_xattr_move_to_block fs/ext4/xattr.c:2580 [inline]
+       ext4_xattr_make_inode_space fs/ext4/xattr.c:2682 [inline]
+       ext4_expand_extra_isize_ea+0xe70/0x1bb0 fs/ext4/xattr.c:2774
+       __ext4_expand_extra_isize+0x304/0x3f0 fs/ext4/inode.c:5898
+       ext4_try_to_expand_extra_isize fs/ext4/inode.c:5941 [inline]
+       __ext4_mark_inode_dirty+0x591/0x810 fs/ext4/inode.c:6018
+       ext4_setattr+0x1400/0x19c0 fs/ext4/inode.c:5562
+       notify_change+0xbb6/0xe60 fs/attr.c:435
+       do_truncate+0x1de/0x2c0 fs/open.c:64
+       handle_truncate fs/namei.c:2970 [inline]
+       do_open fs/namei.c:3311 [inline]
+       path_openat+0x29f3/0x3290 fs/namei.c:3425
+       do_filp_open+0x20b/0x450 fs/namei.c:3452
+       do_sys_openat2+0x124/0x460 fs/open.c:1207
+       do_sys_open fs/open.c:1223 [inline]
+       __do_sys_open fs/open.c:1231 [inline]
+       __se_sys_open fs/open.c:1227 [inline]
+       __x64_sys_open+0x221/0x270 fs/open.c:1227
+       do_syscall_64+0x6d/0xa0 arch/x86/entry/common.c:62
+       entry_SYSCALL_64_after_hwframe+0x61/0xcb
+
+other info that might help us debug this:
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&ei->i_data_sem/3);
+                               lock(&ea_inode->i_rwsem#7/1);
+                               lock(&ei->i_data_sem/3);
+  lock(&ea_inode->i_rwsem#7/1);
+
+ *** DEADLOCK ***
+
+5 locks held by syz-executor543/2794:
+ #0: ffff888026fbc448 (sb_writers#4){.+.+}-{0:0}, at: mnt_want_write+0x4a/0x2a0 fs/namespace.c:365
+ #1: ffff8880215e3488 (&sb->s_type->i_mutex_key#7){++++}-{3:3}, at: inode_lock include/linux/fs.h:782 [inline]
+ #1: ffff8880215e3488 (&sb->s_type->i_mutex_key#7){++++}-{3:3}, at: do_truncate+0x1cf/0x2c0 fs/open.c:62
+ #2: ffff8880215e3310 (&ei->i_mmap_sem){++++}-{3:3}, at: ext4_setattr+0xec4/0x19c0 fs/ext4/inode.c:5519
+ #3: ffff8880215e3278 (&ei->i_data_sem/3){++++}-{3:3}, at: ext4_setattr+0x136d/0x19c0 fs/ext4/inode.c:5559
+ #4: ffff8880215e30c8 (&ei->xattr_sem){++++}-{3:3}, at: ext4_write_trylock_xattr fs/ext4/xattr.h:162 [inline]
+ #4: ffff8880215e30c8 (&ei->xattr_sem){++++}-{3:3}, at: ext4_try_to_expand_extra_isize fs/ext4/inode.c:5938 [inline]
+ #4: ffff8880215e30c8 (&ei->xattr_sem){++++}-{3:3}, at: __ext4_mark_inode_dirty+0x4fb/0x810 fs/ext4/inode.c:6018
+
+stack backtrace:
+CPU: 1 PID: 2794 Comm: syz-executor543 Not tainted 5.10.0-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x177/0x211 lib/dump_stack.c:118
+ print_circular_bug+0x146/0x1b0 kernel/locking/lockdep.c:2002
+ check_noncircular+0x2cc/0x390 kernel/locking/lockdep.c:2123
+ check_prev_add kernel/locking/lockdep.c:2988 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3113 [inline]
+ validate_chain+0x1695/0x58f0 kernel/locking/lockdep.c:3729
+ __lock_acquire+0x12fd/0x20d0 kernel/locking/lockdep.c:4955
+ lock_acquire+0x197/0x480 kernel/locking/lockdep.c:5566
+ down_write+0x93/0x180 kernel/locking/rwsem.c:1564
+ inode_lock include/linux/fs.h:782 [inline]
+ ext4_xattr_inode_iget+0x42a/0x5c0 fs/ext4/xattr.c:425
+ ext4_xattr_inode_get+0x138/0x410 fs/ext4/xattr.c:485
+ ext4_xattr_move_to_block fs/ext4/xattr.c:2580 [inline]
+ ext4_xattr_make_inode_space fs/ext4/xattr.c:2682 [inline]
+ ext4_expand_extra_isize_ea+0xe70/0x1bb0 fs/ext4/xattr.c:2774
+ __ext4_expand_extra_isize+0x304/0x3f0 fs/ext4/inode.c:5898
+ ext4_try_to_expand_extra_isize fs/ext4/inode.c:5941 [inline]
+ __ext4_mark_inode_dirty+0x591/0x810 fs/ext4/inode.c:6018
+ ext4_setattr+0x1400/0x19c0 fs/ext4/inode.c:5562
+ notify_change+0xbb6/0xe60 fs/attr.c:435
+ do_truncate+0x1de/0x2c0 fs/open.c:64
+ handle_truncate fs/namei.c:2970 [inline]
+ do_open fs/namei.c:3311 [inline]
+ path_openat+0x29f3/0x3290 fs/namei.c:3425
+ do_filp_open+0x20b/0x450 fs/namei.c:3452
+ do_sys_openat2+0x124/0x460 fs/open.c:1207
+ do_sys_open fs/open.c:1223 [inline]
+ __do_sys_open fs/open.c:1231 [inline]
+ __se_sys_open fs/open.c:1227 [inline]
+ __x64_sys_open+0x221/0x270 fs/open.c:1227
+ do_syscall_64+0x6d/0xa0 arch/x86/entry/common.c:62
+ entry_SYSCALL_64_after_hwframe+0x61/0xcb
+RIP: 0033:0x7f0cde4ea229
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 21 18 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffd81d1c978 EFLAGS: 00000246 ORIG_RAX: 0000000000000002
+RAX: ffffffffffffffda RBX: 0030656c69662f30 RCX: 00007f0cde4ea229
+RDX: 0000000000000089 RSI: 00000000000a0a00 RDI: 00000000200001c0
+RBP: 2f30656c69662f2e R08: 0000000000208000 R09: 0000000000208000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffd81d1c9c0
+R13: 00007ffd81d1ca00 R14: 0000000000080000 R15: 0000000000000003
+EXT4-fs error (device loop0): ext4_expand_extra_isize_ea:2730: inode #13: comm syz-executor543: corrupted in-inode xattr
+
+Signed-off-by: Wojciech Gładysz <wojciech.gladysz@infogain.com>
+Link: https://patch.msgid.link/20240801143827.19135-1-wojciech.gladysz@infogain.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice.h          |  6 +-
- drivers/net/ethernet/intel/ice/ice_eswitch.c  | 63 ++++++++++---------
- .../net/ethernet/intel/ice/ice_eswitch_br.c   | 12 ++--
- drivers/net/ethernet/intel/ice/ice_tc_lib.c   |  4 +-
- 4 files changed, 43 insertions(+), 42 deletions(-)
+ fs/ext4/xattr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index 7b3ce30ba38fa..f943964ec05ae 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -518,7 +518,7 @@ enum ice_misc_thread_tasks {
- 	ICE_MISC_THREAD_NBITS		/* must be last */
- };
- 
--struct ice_switchdev_info {
-+struct ice_eswitch {
- 	struct ice_vsi *control_vsi;
- 	struct ice_vsi *uplink_vsi;
- 	struct ice_esw_br_offloads *br_offloads;
-@@ -631,7 +631,7 @@ struct ice_pf {
- 	struct ice_link_default_override_tlv link_dflt_override;
- 	struct ice_lag *lag; /* Link Aggregation information */
- 
--	struct ice_switchdev_info switchdev;
-+	struct ice_eswitch eswitch;
- 	struct ice_esw_br_port *br_port;
- 
- #define ICE_INVALID_AGG_NODE_ID		0
-@@ -838,7 +838,7 @@ static inline struct ice_vsi *ice_find_vsi(struct ice_pf *pf, u16 vsi_num)
-  */
- static inline bool ice_is_switchdev_running(struct ice_pf *pf)
- {
--	return pf->switchdev.is_running;
-+	return pf->eswitch.is_running;
- }
- 
- #define ICE_FD_STAT_CTR_BLOCK_COUNT	256
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-index a655d499abfa8..e7f1e53314d76 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-@@ -16,12 +16,12 @@
-  * @vf: pointer to VF struct
-  *
-  * This function adds advanced rule that forwards packets with
-- * VF's VSI index to the corresponding switchdev ctrl VSI queue.
-+ * VF's VSI index to the corresponding eswitch ctrl VSI queue.
-  */
- static int
- ice_eswitch_add_vf_sp_rule(struct ice_pf *pf, struct ice_vf *vf)
- {
--	struct ice_vsi *ctrl_vsi = pf->switchdev.control_vsi;
-+	struct ice_vsi *ctrl_vsi = pf->eswitch.control_vsi;
- 	struct ice_adv_rule_info rule_info = { 0 };
- 	struct ice_adv_lkup_elem *list;
- 	struct ice_hw *hw = &pf->hw;
-@@ -59,7 +59,7 @@ ice_eswitch_add_vf_sp_rule(struct ice_pf *pf, struct ice_vf *vf)
-  * @vf: pointer to the VF struct
-  *
-  * Delete the advanced rule that was used to forward packets with the VF's VSI
-- * index to the corresponding switchdev ctrl VSI queue.
-+ * index to the corresponding eswitch ctrl VSI queue.
-  */
- static void ice_eswitch_del_vf_sp_rule(struct ice_vf *vf)
- {
-@@ -70,7 +70,7 @@ static void ice_eswitch_del_vf_sp_rule(struct ice_vf *vf)
- }
- 
- /**
-- * ice_eswitch_setup_env - configure switchdev HW filters
-+ * ice_eswitch_setup_env - configure eswitch HW filters
-  * @pf: pointer to PF struct
-  *
-  * This function adds HW filters configuration specific for switchdev
-@@ -78,18 +78,18 @@ static void ice_eswitch_del_vf_sp_rule(struct ice_vf *vf)
-  */
- static int ice_eswitch_setup_env(struct ice_pf *pf)
- {
--	struct ice_vsi *uplink_vsi = pf->switchdev.uplink_vsi;
--	struct net_device *uplink_netdev = uplink_vsi->netdev;
--	struct ice_vsi *ctrl_vsi = pf->switchdev.control_vsi;
-+	struct ice_vsi *uplink_vsi = pf->eswitch.uplink_vsi;
-+	struct ice_vsi *ctrl_vsi = pf->eswitch.control_vsi;
-+	struct net_device *netdev = uplink_vsi->netdev;
- 	struct ice_vsi_vlan_ops *vlan_ops;
- 	bool rule_added = false;
- 
- 	ice_remove_vsi_fltr(&pf->hw, uplink_vsi->idx);
- 
--	netif_addr_lock_bh(uplink_netdev);
--	__dev_uc_unsync(uplink_netdev, NULL);
--	__dev_mc_unsync(uplink_netdev, NULL);
--	netif_addr_unlock_bh(uplink_netdev);
-+	netif_addr_lock_bh(netdev);
-+	__dev_uc_unsync(netdev, NULL);
-+	__dev_mc_unsync(netdev, NULL);
-+	netif_addr_unlock_bh(netdev);
- 
- 	if (ice_vsi_add_vlan_zero(uplink_vsi))
- 		goto err_def_rx;
-@@ -132,10 +132,10 @@ static int ice_eswitch_setup_env(struct ice_pf *pf)
- }
- 
- /**
-- * ice_eswitch_remap_rings_to_vectors - reconfigure rings of switchdev ctrl VSI
-+ * ice_eswitch_remap_rings_to_vectors - reconfigure rings of eswitch ctrl VSI
-  * @pf: pointer to PF struct
-  *
-- * In switchdev number of allocated Tx/Rx rings is equal.
-+ * In eswitch number of allocated Tx/Rx rings is equal.
-  *
-  * This function fills q_vectors structures associated with representor and
-  * move each ring pairs to port representor netdevs. Each port representor
-@@ -144,7 +144,7 @@ static int ice_eswitch_setup_env(struct ice_pf *pf)
-  */
- static void ice_eswitch_remap_rings_to_vectors(struct ice_pf *pf)
- {
--	struct ice_vsi *vsi = pf->switchdev.control_vsi;
-+	struct ice_vsi *vsi = pf->eswitch.control_vsi;
- 	int q_id;
- 
- 	ice_for_each_txq(vsi, q_id) {
-@@ -189,7 +189,7 @@ static void ice_eswitch_remap_rings_to_vectors(struct ice_pf *pf)
- /**
-  * ice_eswitch_release_reprs - clear PR VSIs configuration
-  * @pf: poiner to PF struct
-- * @ctrl_vsi: pointer to switchdev control VSI
-+ * @ctrl_vsi: pointer to eswitch control VSI
-  */
- static void
- ice_eswitch_release_reprs(struct ice_pf *pf, struct ice_vsi *ctrl_vsi)
-@@ -223,7 +223,7 @@ ice_eswitch_release_reprs(struct ice_pf *pf, struct ice_vsi *ctrl_vsi)
-  */
- static int ice_eswitch_setup_reprs(struct ice_pf *pf)
- {
--	struct ice_vsi *ctrl_vsi = pf->switchdev.control_vsi;
-+	struct ice_vsi *ctrl_vsi = pf->eswitch.control_vsi;
- 	int max_vsi_num = 0;
- 	struct ice_vf *vf;
- 	unsigned int bkt;
-@@ -359,7 +359,7 @@ ice_eswitch_port_start_xmit(struct sk_buff *skb, struct net_device *netdev)
- }
- 
- /**
-- * ice_eswitch_set_target_vsi - set switchdev context in Tx context descriptor
-+ * ice_eswitch_set_target_vsi - set eswitch context in Tx context descriptor
-  * @skb: pointer to send buffer
-  * @off: pointer to offload struct
-  */
-@@ -382,7 +382,7 @@ ice_eswitch_set_target_vsi(struct sk_buff *skb,
- }
- 
- /**
-- * ice_eswitch_release_env - clear switchdev HW filters
-+ * ice_eswitch_release_env - clear eswitch HW filters
-  * @pf: pointer to PF struct
-  *
-  * This function removes HW filters configuration specific for switchdev
-@@ -390,8 +390,8 @@ ice_eswitch_set_target_vsi(struct sk_buff *skb,
-  */
- static void ice_eswitch_release_env(struct ice_pf *pf)
- {
--	struct ice_vsi *uplink_vsi = pf->switchdev.uplink_vsi;
--	struct ice_vsi *ctrl_vsi = pf->switchdev.control_vsi;
-+	struct ice_vsi *uplink_vsi = pf->eswitch.uplink_vsi;
-+	struct ice_vsi *ctrl_vsi = pf->eswitch.control_vsi;
- 	struct ice_vsi_vlan_ops *vlan_ops;
- 
- 	vlan_ops = ice_get_compat_vsi_vlan_ops(uplink_vsi);
-@@ -407,7 +407,7 @@ static void ice_eswitch_release_env(struct ice_pf *pf)
- }
- 
- /**
-- * ice_eswitch_vsi_setup - configure switchdev control VSI
-+ * ice_eswitch_vsi_setup - configure eswitch control VSI
-  * @pf: pointer to PF structure
-  * @pi: pointer to port_info structure
-  */
-@@ -486,12 +486,12 @@ static int ice_eswitch_enable_switchdev(struct ice_pf *pf)
- 		return -EINVAL;
+diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
+index 7c35ca15571b8..5598aec757752 100644
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -422,7 +422,7 @@ static int ext4_xattr_inode_iget(struct inode *parent, unsigned long ea_ino,
+ 		ext4_set_inode_state(inode, EXT4_STATE_LUSTRE_EA_INODE);
+ 		ext4_xattr_inode_set_ref(inode, 1);
+ 	} else {
+-		inode_lock(inode);
++		inode_lock_nested(inode, I_MUTEX_XATTR);
+ 		inode->i_flags |= S_NOQUOTA;
+ 		inode_unlock(inode);
  	}
+@@ -990,7 +990,7 @@ static int ext4_xattr_inode_update_ref(handle_t *handle, struct inode *ea_inode,
+ 	s64 ref_count;
+ 	int ret;
  
--	pf->switchdev.control_vsi = ice_eswitch_vsi_setup(pf, pf->hw.port_info);
--	if (!pf->switchdev.control_vsi)
-+	pf->eswitch.control_vsi = ice_eswitch_vsi_setup(pf, pf->hw.port_info);
-+	if (!pf->eswitch.control_vsi)
- 		return -ENODEV;
+-	inode_lock(ea_inode);
++	inode_lock_nested(ea_inode, I_MUTEX_XATTR);
  
--	ctrl_vsi = pf->switchdev.control_vsi;
--	pf->switchdev.uplink_vsi = uplink_vsi;
-+	ctrl_vsi = pf->eswitch.control_vsi;
-+	pf->eswitch.uplink_vsi = uplink_vsi;
- 
- 	if (ice_eswitch_setup_env(pf))
- 		goto err_vsi;
-@@ -526,12 +526,12 @@ static int ice_eswitch_enable_switchdev(struct ice_pf *pf)
- }
- 
- /**
-- * ice_eswitch_disable_switchdev - disable switchdev resources
-+ * ice_eswitch_disable_switchdev - disable eswitch resources
-  * @pf: pointer to PF structure
-  */
- static void ice_eswitch_disable_switchdev(struct ice_pf *pf)
- {
--	struct ice_vsi *ctrl_vsi = pf->switchdev.control_vsi;
-+	struct ice_vsi *ctrl_vsi = pf->eswitch.control_vsi;
- 
- 	ice_eswitch_napi_disable(pf);
- 	ice_eswitch_br_offloads_deinit(pf);
-@@ -625,7 +625,7 @@ void ice_eswitch_release(struct ice_pf *pf)
- 		return;
- 
- 	ice_eswitch_disable_switchdev(pf);
--	pf->switchdev.is_running = false;
-+	pf->eswitch.is_running = false;
- }
- 
- /**
-@@ -636,14 +636,15 @@ int ice_eswitch_configure(struct ice_pf *pf)
- {
- 	int status;
- 
--	if (pf->eswitch_mode == DEVLINK_ESWITCH_MODE_LEGACY || pf->switchdev.is_running)
-+	if (pf->eswitch_mode == DEVLINK_ESWITCH_MODE_LEGACY ||
-+	    pf->eswitch.is_running)
- 		return 0;
- 
- 	status = ice_eswitch_enable_switchdev(pf);
- 	if (status)
- 		return status;
- 
--	pf->switchdev.is_running = true;
-+	pf->eswitch.is_running = true;
- 	return 0;
- }
- 
-@@ -693,7 +694,7 @@ void ice_eswitch_stop_all_tx_queues(struct ice_pf *pf)
-  */
- int ice_eswitch_rebuild(struct ice_pf *pf)
- {
--	struct ice_vsi *ctrl_vsi = pf->switchdev.control_vsi;
-+	struct ice_vsi *ctrl_vsi = pf->eswitch.control_vsi;
- 	int status;
- 
- 	ice_eswitch_napi_disable(pf);
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch_br.c b/drivers/net/ethernet/intel/ice/ice_eswitch_br.c
-index 67bfd1f61cdd4..8944f01e7a0b0 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch_br.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch_br.c
-@@ -947,7 +947,7 @@ ice_eswitch_br_vf_repr_port_init(struct ice_esw_br *bridge,
- static int
- ice_eswitch_br_uplink_port_init(struct ice_esw_br *bridge, struct ice_pf *pf)
- {
--	struct ice_vsi *vsi = pf->switchdev.uplink_vsi;
-+	struct ice_vsi *vsi = pf->eswitch.uplink_vsi;
- 	struct ice_esw_br_port *br_port;
- 	int err;
- 
-@@ -1185,7 +1185,7 @@ ice_eswitch_br_port_event(struct notifier_block *nb,
- static void
- ice_eswitch_br_offloads_dealloc(struct ice_pf *pf)
- {
--	struct ice_esw_br_offloads *br_offloads = pf->switchdev.br_offloads;
-+	struct ice_esw_br_offloads *br_offloads = pf->eswitch.br_offloads;
- 
- 	ASSERT_RTNL();
- 
-@@ -1194,7 +1194,7 @@ ice_eswitch_br_offloads_dealloc(struct ice_pf *pf)
- 
- 	ice_eswitch_br_deinit(br_offloads, br_offloads->bridge);
- 
--	pf->switchdev.br_offloads = NULL;
-+	pf->eswitch.br_offloads = NULL;
- 	kfree(br_offloads);
- }
- 
-@@ -1205,14 +1205,14 @@ ice_eswitch_br_offloads_alloc(struct ice_pf *pf)
- 
- 	ASSERT_RTNL();
- 
--	if (pf->switchdev.br_offloads)
-+	if (pf->eswitch.br_offloads)
- 		return ERR_PTR(-EEXIST);
- 
- 	br_offloads = kzalloc(sizeof(*br_offloads), GFP_KERNEL);
- 	if (!br_offloads)
- 		return ERR_PTR(-ENOMEM);
- 
--	pf->switchdev.br_offloads = br_offloads;
-+	pf->eswitch.br_offloads = br_offloads;
- 	br_offloads->pf = pf;
- 
- 	return br_offloads;
-@@ -1223,7 +1223,7 @@ ice_eswitch_br_offloads_deinit(struct ice_pf *pf)
- {
- 	struct ice_esw_br_offloads *br_offloads;
- 
--	br_offloads = pf->switchdev.br_offloads;
-+	br_offloads = pf->eswitch.br_offloads;
- 	if (!br_offloads)
- 		return;
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-index 2bc89a8f6655f..c213121aa5010 100644
---- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-@@ -660,7 +660,7 @@ static int ice_tc_setup_redirect_action(struct net_device *filter_dev,
- 		   ice_tc_is_dev_uplink(target_dev)) {
- 		repr = ice_netdev_to_repr(filter_dev);
- 
--		fltr->dest_vsi = repr->src_vsi->back->switchdev.uplink_vsi;
-+		fltr->dest_vsi = repr->src_vsi->back->eswitch.uplink_vsi;
- 		fltr->direction = ICE_ESWITCH_FLTR_EGRESS;
- 	} else if (ice_tc_is_dev_uplink(filter_dev) &&
- 		   ice_is_port_repr_netdev(target_dev)) {
-@@ -772,7 +772,7 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
- 		rule_info.sw_act.src = hw->pf_id;
- 		rule_info.flags_info.act = ICE_SINGLE_ACT_LB_ENABLE;
- 	} else if (fltr->direction == ICE_ESWITCH_FLTR_EGRESS &&
--		   fltr->dest_vsi == vsi->back->switchdev.uplink_vsi) {
-+		   fltr->dest_vsi == vsi->back->eswitch.uplink_vsi) {
- 		/* VF to Uplink */
- 		rule_info.sw_act.flag |= ICE_FLTR_TX;
- 		rule_info.sw_act.src = vsi->idx;
+ 	ret = ext4_reserve_inode_write(handle, ea_inode, &iloc);
+ 	if (ret)
 -- 
 2.43.0
 
