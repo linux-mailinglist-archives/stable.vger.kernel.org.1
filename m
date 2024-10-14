@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-84016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257B099CDB5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA83F99D316
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 572A31C22DE9
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F20428A4FF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC331AA797;
-	Mon, 14 Oct 2024 14:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7361C7281;
+	Mon, 14 Oct 2024 15:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lGhLknNd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nd58eAY2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A28A1A0724;
-	Mon, 14 Oct 2024 14:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699C31C6F55;
+	Mon, 14 Oct 2024 15:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916516; cv=none; b=BVbs2O+21+I6YvgASh85LBNIl/IABUF+5FjtAUj4cgsOJSE+mc6ssWdVtb2aROBNBf/umtGbLbvU2egE9SjglMwenJLFgP3p2+y/i5FY5/i3i4E75z3TOIPLV6bvsDvtyR3GkDDtDqxQtYvSSTPV+hcf/gQAOYdA7NqZxBoQOjE=
+	t=1728919821; cv=none; b=QhA4AhKFipZS+JcTl4EeHd6m+V0Diy9rGt+J5SY1HldgSjyDC7h5FAUK/lU5v/vXdAIUcaPdjctg5xbqHB+foigM5m8vz0f0qVr9dpL9uUNVBheP+0eKhqUxalXJ6yBv2XlvWsfQnFJHF2LuLhOgaUJCf1VKqpAfy6pV5Xs0LkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916516; c=relaxed/simple;
-	bh=0tDraqkuVFhgYaChb/eBYalSv7102RH1deb1EPAVjks=;
+	s=arc-20240116; t=1728919821; c=relaxed/simple;
+	bh=yw8bFlcuoYW6CUfl41SnGEKKbsiyBVEurfzGaOnaPaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SfOzBYFqLSOzft1VDpWMG4sYjUC7sxRx/QHqek0GVwjNDkaHHhUTLit6A7Y3Yf0YJu5Qt5d5nYQ+7v4BpDxczXCEi+6DxhFXP3Cr/PO8iRsNTYsORYwgIZ9PvcZAbTNcT44F2Ek8qigrwQE7IL+FPkiCNmFOAwgYHCxUAyCZJTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lGhLknNd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0949C4CEC3;
-	Mon, 14 Oct 2024 14:35:15 +0000 (UTC)
+	 MIME-Version; b=D/ZuqIxOiOtJgWA57EHSw42cU1AytYecUhpIl4aIaUpG7sKjwEhci/Ol/xlUlv/+Y/C6AZZ36cBKl9Zmc3nNc4+4SfITvzRZG2NJSyTtqpZo9ZWo88PKNJaGc3/JilFzyfkiptql6Tkk+FWTtSHvNUTB0Cv20hDpUBxef1wBfNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nd58eAY2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFDAC4CEC3;
+	Mon, 14 Oct 2024 15:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916516;
-	bh=0tDraqkuVFhgYaChb/eBYalSv7102RH1deb1EPAVjks=;
+	s=korg; t=1728919821;
+	bh=yw8bFlcuoYW6CUfl41SnGEKKbsiyBVEurfzGaOnaPaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lGhLknNdAhIxUc1wSXgeQoHBiB5qQG/ynx/XDwyqTqrOrm5zcAB6KWV6qqeBlYEuA
-	 ad/FBZvR3sqWZPumktgpZcIP8Py42unI1R5TeSxup4ZOsJoX3dWl96sXZjzsY02RiN
-	 thz+Gx8Uds4XQ+WeV3XAI3HBd4l2wAYX1se83IKc=
+	b=Nd58eAY2JQoEhiPZWl6Q5+P0jlP/BIy5ST/N7rfCq8f7k0TRoPjh5AJkmrKkeQnE0
+	 ocm37p9dpX+FcbSUtDQi+LKFRKyUk+sM5bceZT4RmZkel9pHGrRRnCdN+/EDxRisnw
+	 4k1J4gY06KtffOyJhf0xP8HAgGnLjOJ9eBKR559o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Stefani <luca.stefani.ge1@gmail.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.11 207/214] btrfs: add cancellation points to trim loops
+	Philip Chen <philipchen@chromium.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 716/798] virtio_pmem: Check device status before requesting flush
 Date: Mon, 14 Oct 2024 16:21:10 +0200
-Message-ID: <20241014141053.054450350@linuxfoundation.org>
+Message-ID: <20241014141246.195593584@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Stefani <luca.stefani.ge1@gmail.com>
+From: Philip Chen <philipchen@chromium.org>
 
-commit 69313850dce33ce8c24b38576a279421f4c60996 upstream.
+[ Upstream commit e25fbcd97cf52c3c9824d44b5c56c19673c3dd50 ]
 
-There are reports that system cannot suspend due to running trim because
-the task responsible for trimming the device isn't able to finish in
-time, especially since we have a free extent discarding phase, which can
-trim a lot of unallocated space. There are no limits on the trim size
-(unlike the block group part).
+If a pmem device is in a bad status, the driver side could wait for
+host ack forever in virtio_pmem_flush(), causing the system to hang.
 
-Since trime isn't a critical call it can be interrupted at any time,
-in such cases we stop the trim, report the amount of discarded bytes and
-return an error.
+So add a status check in the beginning of virtio_pmem_flush() to return
+early if the device is not activated.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219180
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1229737
-CC: stable@vger.kernel.org # 5.15+
-Signed-off-by: Luca Stefani <luca.stefani.ge1@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Philip Chen <philipchen@chromium.org>
+Message-Id: <20240826215313.2673566-1-philipchen@chromium.org>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-tree.c      |    7 ++++++-
- fs/btrfs/free-space-cache.c |    4 ++--
- fs/btrfs/free-space-cache.h |    6 ++++++
- 3 files changed, 14 insertions(+), 3 deletions(-)
+ drivers/nvdimm/nd_virtio.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -1316,6 +1316,11 @@ static int btrfs_issue_discard(struct bl
- 		start += bytes_to_discard;
- 		bytes_left -= bytes_to_discard;
- 		*discarded_bytes += bytes_to_discard;
+diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
+index c6a648fd8744a..a78e17a43a9d2 100644
+--- a/drivers/nvdimm/nd_virtio.c
++++ b/drivers/nvdimm/nd_virtio.c
+@@ -44,6 +44,15 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
+ 	unsigned long flags;
+ 	int err, err1;
+ 
++	/*
++	 * Don't bother to submit the request to the device if the device is
++	 * not activated.
++	 */
++	if (vdev->config->get_status(vdev) & VIRTIO_CONFIG_S_NEEDS_RESET) {
++		dev_info(&vdev->dev, "virtio pmem device needs a reset\n");
++		return -EIO;
++	}
 +
-+		if (btrfs_trim_interrupted()) {
-+			ret = -ERESTARTSYS;
-+			break;
-+		}
- 	}
- 
- 	return ret;
-@@ -6470,7 +6475,7 @@ static int btrfs_trim_free_extents(struc
- 		start += len;
- 		*trimmed += bytes;
- 
--		if (fatal_signal_pending(current)) {
-+		if (btrfs_trim_interrupted()) {
- 			ret = -ERESTARTSYS;
- 			break;
- 		}
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -3809,7 +3809,7 @@ next:
- 		if (async && *total_trimmed)
- 			break;
- 
--		if (fatal_signal_pending(current)) {
-+		if (btrfs_trim_interrupted()) {
- 			ret = -ERESTARTSYS;
- 			break;
- 		}
-@@ -4000,7 +4000,7 @@ next:
- 		}
- 		block_group->discard_cursor = start;
- 
--		if (fatal_signal_pending(current)) {
-+		if (btrfs_trim_interrupted()) {
- 			if (start != offset)
- 				reset_trimming_bitmap(ctl, offset);
- 			ret = -ERESTARTSYS;
---- a/fs/btrfs/free-space-cache.h
-+++ b/fs/btrfs/free-space-cache.h
-@@ -10,6 +10,7 @@
- #include <linux/list.h>
- #include <linux/spinlock.h>
- #include <linux/mutex.h>
-+#include <linux/freezer.h>
- #include "fs.h"
- 
- struct inode;
-@@ -56,6 +57,11 @@ static inline bool btrfs_free_space_trim
- 	return (info->trim_state == BTRFS_TRIM_STATE_TRIMMING);
- }
- 
-+static inline bool btrfs_trim_interrupted(void)
-+{
-+	return fatal_signal_pending(current) || freezing(current);
-+}
-+
- /*
-  * Deltas are an effective way to populate global statistics.  Give macro names
-  * to make it clear what we're doing.  An example is discard_extents in
+ 	might_sleep();
+ 	req_data = kmalloc(sizeof(*req_data), GFP_KERNEL);
+ 	if (!req_data)
+-- 
+2.43.0
+
 
 
 
