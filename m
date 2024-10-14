@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-83948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2824899CD4E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:31:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2F6B99D2B2
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0BAF1F21445
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:31:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87CAC280DAB
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D373B24B34;
-	Mon, 14 Oct 2024 14:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E641BD03B;
+	Mon, 14 Oct 2024 15:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBiykfLj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lp35FtY8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9269C1798C;
-	Mon, 14 Oct 2024 14:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253653B298;
+	Mon, 14 Oct 2024 15:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916288; cv=none; b=ckoM+lxx3HkfeeezsMvzqEZp6zHF2lownC92nQ8Z0c/1HqZzsXdxpuBxup4CGznfxyExTToXnJhnJeL1GgVYUrR/WWmj4k5vn3UQ3ic5FLJqU26IFXPFyDQMoEOxXtyHrlrczcQwuBXb4ATe1wxec5LbS+MoKlm5dTbgmtuKsCc=
+	t=1728919582; cv=none; b=CHLzdQOkjPQcK7omGps/HngHdCwsqA+G+NRbY2Dvh7kezd14c62K31SILilmDQErSAfX+zA5sdX68VHwo8o4dAYMeSs0u2LFfNMm/2gqJ5MsFTLTeEcjki15HH9/5cr4Z06ZZ/9kH4ITFI48snLXPeYbjjfq50mJ/yMLmBhQGJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916288; c=relaxed/simple;
-	bh=sHOvTNkSWMioRijk87nSB0qFA/AzWKqYJmO1hEKZTWA=;
+	s=arc-20240116; t=1728919582; c=relaxed/simple;
+	bh=tMH0vUD8BIMncS3GPYppMIxJmHv5KSpKmKoUpBmqQzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NxnBMmirkEwTMX8k7WbLK+YrhdWuSWCh5eTyKQkXqxrsTa0xEOOs3jPloRvOtUvz98IbRLJKfd8Wnb9k+uKwACWm9fjJ0ujlByZWLrVPqPB7bIB87Va2fOMozPRprzpxkKu2jcECrme3n3/7vmyFlyKsKoGriw/bZhSHvmueRD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBiykfLj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1565EC4CEC3;
-	Mon, 14 Oct 2024 14:31:27 +0000 (UTC)
+	 MIME-Version; b=smfYjfV0ylIJEgSpC+xm8jf/29ishuTssODiSOac88PlzLdCh0lDxpgWEstRk8oxG2CI1h7tdCgm/sLGFqdIySCtlI6kbBpkSYj4soFEghNCSTeUtKn5Ihd2UCaYU7Gf5MccPojDXDEVBTWBE4a4YQecNIhnonXz+cKrDgXw7sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lp35FtY8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66887C4CEC3;
+	Mon, 14 Oct 2024 15:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916288;
-	bh=sHOvTNkSWMioRijk87nSB0qFA/AzWKqYJmO1hEKZTWA=;
+	s=korg; t=1728919582;
+	bh=tMH0vUD8BIMncS3GPYppMIxJmHv5KSpKmKoUpBmqQzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NBiykfLj79yazcMi2xS3+pIGkLEvhszMpR9lY4vgpmTbKdh7ZH6rWYHQZfGJMxMv0
-	 dedrhNkzT4Hh8uqqdq9dQRERcs6cSs3LmjqI+tK4DUf5awblZT8Csc/cRXRwwIgMg6
-	 lkqsAeS3a+QprpaoSl5AyvXIMG3zMRCB5+5Gf9wQ=
+	b=lp35FtY8AtXs9nVkTUJkJBahLWxMM+NhlIzx/7wfab5WRoqiAohWeHQHq/r4kADvj
+	 4UEoNtNuRF5p9x4I7mJqfnw8cATl9EvCSNccQ1xOXfsBRB7tf1Vnzx4XpWmYK08tbQ
+	 Noq0kSSEzT8fOSOc9BohoxoSRUP2h1xT2ujb7vlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janne Grunau <j@jannau.net>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 139/214] drm/fbdev-dma: Only cleanup deferred I/O if necessary
+Subject: [PATCH 6.1 648/798] r8169: Fix spelling mistake: "tx_underun" -> "tx_underrun"
 Date: Mon, 14 Oct 2024 16:20:02 +0200
-Message-ID: <20241014141050.414348299@linuxfoundation.org>
+Message-ID: <20241014141243.509214380@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janne Grunau <j@jannau.net>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit fcddc71ec7ecf15b4df3c41288c9cf0b8e886111 ]
+[ Upstream commit 8df9439389a44fb2cc4ef695e08d6a8870b1616c ]
 
-Commit 5a498d4d06d6 ("drm/fbdev-dma: Only install deferred I/O if
-necessary") initializes deferred I/O only if it is used.
-drm_fbdev_dma_fb_destroy() however calls fb_deferred_io_cleanup()
-unconditionally with struct fb_info.fbdefio == NULL. KASAN with the
-out-of-tree Apple silicon display driver posts following warning from
-__flush_work() of a random struct work_struct instead of the expected
-NULL pointer derefs.
+There is a spelling mistake in the struct field tx_underun, rename
+it to tx_underrun.
 
-[   22.053799] ------------[ cut here ]------------
-[   22.054832] WARNING: CPU: 2 PID: 1 at kernel/workqueue.c:4177 __flush_work+0x4d8/0x580
-[   22.056597] Modules linked in: uhid bnep uinput nls_ascii ip6_tables ip_tables i2c_dev loop fuse dm_multipath nfnetlink zram hid_magicmouse btrfs xor xor_neon brcmfmac_wcc raid6_pq hci_bcm4377 bluetooth brcmfmac hid_apple brcmutil nvmem_spmi_mfd simple_mfd_spmi dockchannel_hid cfg80211 joydev regmap_spmi nvme_apple ecdh_generic ecc macsmc_hid rfkill dwc3 appledrm snd_soc_macaudio macsmc_power nvme_core apple_isp phy_apple_atc apple_sart apple_rtkit_helper apple_dockchannel tps6598x macsmc_hwmon snd_soc_cs42l84 videobuf2_v4l2 spmi_apple_controller nvmem_apple_efuses videobuf2_dma_sg apple_z2 videobuf2_memops spi_nor panel_summit videobuf2_common asahi videodev pwm_apple apple_dcp snd_soc_apple_mca apple_admac spi_apple clk_apple_nco i2c_pasemi_platform snd_pcm_dmaengine mc i2c_pasemi_core mux_core ofpart adpdrm drm_dma_helper apple_dart apple_soc_cpufreq leds_pwm phram
-[   22.073768] CPU: 2 UID: 0 PID: 1 Comm: systemd-shutdow Not tainted 6.11.2-asahi+ #asahi-dev
-[   22.075612] Hardware name: Apple MacBook Pro (13-inch, M2, 2022) (DT)
-[   22.077032] pstate: 01400005 (nzcv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[   22.078567] pc : __flush_work+0x4d8/0x580
-[   22.079471] lr : __flush_work+0x54/0x580
-[   22.080345] sp : ffffc000836ef820
-[   22.081089] x29: ffffc000836ef880 x28: 0000000000000000 x27: ffff80002ddb7128
-[   22.082678] x26: dfffc00000000000 x25: 1ffff000096f0c57 x24: ffffc00082d3e358
-[   22.084263] x23: ffff80004b7862b8 x22: dfffc00000000000 x21: ffff80005aa1d470
-[   22.085855] x20: ffff80004b786000 x19: ffff80004b7862a0 x18: 0000000000000000
-[   22.087439] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000005
-[   22.089030] x14: 1ffff800106ddf0a x13: 0000000000000000 x12: 0000000000000000
-[   22.090618] x11: ffffb800106ddf0f x10: dfffc00000000000 x9 : 1ffff800106ddf0e
-[   22.092206] x8 : 0000000000000000 x7 : aaaaaaaaaaaaaaaa x6 : 0000000000000001
-[   22.093790] x5 : ffffc000836ef728 x4 : 0000000000000000 x3 : 0000000000000020
-[   22.095368] x2 : 0000000000000008 x1 : 00000000000000aa x0 : 0000000000000000
-[   22.096955] Call trace:
-[   22.097505]  __flush_work+0x4d8/0x580
-[   22.098330]  flush_delayed_work+0x80/0xb8
-[   22.099231]  fb_deferred_io_cleanup+0x3c/0x130
-[   22.100217]  drm_fbdev_dma_fb_destroy+0x6c/0xe0 [drm_dma_helper]
-[   22.101559]  unregister_framebuffer+0x210/0x2f0
-[   22.102575]  drm_fb_helper_unregister_info+0x48/0x60
-[   22.103683]  drm_fbdev_dma_client_unregister+0x4c/0x80 [drm_dma_helper]
-[   22.105147]  drm_client_dev_unregister+0x1cc/0x230
-[   22.106217]  drm_dev_unregister+0x58/0x570
-[   22.107125]  apple_drm_unbind+0x50/0x98 [appledrm]
-[   22.108199]  component_del+0x1f8/0x3a8
-[   22.109042]  dcp_platform_shutdown+0x24/0x38 [apple_dcp]
-[   22.110357]  platform_shutdown+0x70/0x90
-[   22.111219]  device_shutdown+0x368/0x4d8
-[   22.112095]  kernel_restart+0x6c/0x1d0
-[   22.112946]  __arm64_sys_reboot+0x1c8/0x328
-[   22.113868]  invoke_syscall+0x78/0x1a8
-[   22.114703]  do_el0_svc+0x124/0x1a0
-[   22.115498]  el0_svc+0x3c/0xe0
-[   22.116181]  el0t_64_sync_handler+0x70/0xc0
-[   22.117110]  el0t_64_sync+0x190/0x198
-[   22.117931] ---[ end trace 0000000000000000 ]---
-
-Signed-off-by: Janne Grunau <j@jannau.net>
-Fixes: 5a498d4d06d6 ("drm/fbdev-dma: Only install deferred I/O if necessary")
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/ZwLNuZL-8Gh5UUQb@robin
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/20240909140021.64884-1-colin.i.king@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: ced8e8b8f40a ("r8169: add tally counter fields added with RTL8125")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_fbdev_dma.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_fbdev_dma.c b/drivers/gpu/drm/drm_fbdev_dma.c
-index b0602c4f36283..51c2d742d1998 100644
---- a/drivers/gpu/drm/drm_fbdev_dma.c
-+++ b/drivers/gpu/drm/drm_fbdev_dma.c
-@@ -50,7 +50,8 @@ static void drm_fbdev_dma_fb_destroy(struct fb_info *info)
- 	if (!fb_helper->dev)
- 		return;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index b187371fa2f0a..beebb2dcd00f5 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -563,7 +563,7 @@ struct rtl8169_counters {
+ 	__le64	rx_broadcast;
+ 	__le32	rx_multicast;
+ 	__le16	tx_aborted;
+-	__le16	tx_underun;
++	__le16	tx_underrun;
+ };
  
--	fb_deferred_io_cleanup(info);
-+	if (info->fbdefio)
-+		fb_deferred_io_cleanup(info);
- 	drm_fb_helper_fini(fb_helper);
+ struct rtl8169_tc_offsets {
+@@ -1710,7 +1710,7 @@ static void rtl8169_get_ethtool_stats(struct net_device *dev,
+ 	data[9] = le64_to_cpu(counters->rx_broadcast);
+ 	data[10] = le32_to_cpu(counters->rx_multicast);
+ 	data[11] = le16_to_cpu(counters->tx_aborted);
+-	data[12] = le16_to_cpu(counters->tx_underun);
++	data[12] = le16_to_cpu(counters->tx_underrun);
+ }
  
- 	drm_client_buffer_vunmap(fb_helper->buffer);
+ static void rtl8169_get_strings(struct net_device *dev, u32 stringset, u8 *data)
 -- 
 2.43.0
 
