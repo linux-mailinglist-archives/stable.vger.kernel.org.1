@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-83884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B1499CD05
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:28:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02AA099CDEF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:38:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D7671F23635
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:28:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAE6B28391B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E771AB6FF;
-	Mon, 14 Oct 2024 14:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE051AAE08;
+	Mon, 14 Oct 2024 14:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XufvMeVD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8xfx1EY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17471AAC4;
-	Mon, 14 Oct 2024 14:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5E939FCE;
+	Mon, 14 Oct 2024 14:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916060; cv=none; b=lO9HkjaxHmOUOn46ZxbO5imb/IqBwTQrLjrn/4V95+79K1km4OmIvoS5HE5JZai6Y7pg5EsvZoXKOCHkoExVOqrVxc3oS208gahCZ3idQaDSzr17S8OKK+GifjqfcbfJDGxyo1Kdhe4bIECMgPmQp+b1edOCEpAjKFtIYIK9Wgk=
+	t=1728916677; cv=none; b=IyKQ2jm79aRNvZQElDLAM5gFNm0c1G5uO9c8D6HWYKII2w6sV3lG8gLGBCQvpGp+3RFDAnIn4cYN5r8paJ6C/Y2Thyp7HMxcGpX1rzA4j84NUh3vcF7/WnAERPvAa9OPG8nrvN37ArM9S2hYaWpPlALTgz6dW+Xeo2ES2NFeQdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916060; c=relaxed/simple;
-	bh=fZZrT4RG4pALLKzsv4gM3SflNpEQYUL7Ef0RzU0MDW0=;
+	s=arc-20240116; t=1728916677; c=relaxed/simple;
+	bh=r2fy/UptG0vmJKytxheZ7hcFcHDcvbS2b0m8Kxuggd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LzxlU6YkRPnDDWWrsu6YEWQ7NGsi1h/B181IvkhkrdekWaDnLETaGNxLbirNI5TF2rr0cwo4EHCg479cX9CO0lr3FmdgmIQPDhGHCQ9YOmv5SszrXTP7tqkjG9ZxtifQF8hrYyNOT+ncuw6P2jHTIlrWVdtampF2TwRMsZETAoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XufvMeVD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B243C4CECF;
-	Mon, 14 Oct 2024 14:27:39 +0000 (UTC)
+	 MIME-Version; b=hZrVwpbI01w/ctdBNjNq7C/Dnxp+ezLRwPBMOe2Dn0ItcJIRfQBfqvLHvdkhdyUlKXFjgU8dDzLEZ44ZK2k4RxzyXFcdEn7bmlBipSMNoqSOUxXT5heMnpKGW7Y2M4cFmnuztwr02bO5bDmimt2lKgCvHfTroOFq5PI+je+kPG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8xfx1EY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469E1C4CEC3;
+	Mon, 14 Oct 2024 14:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916060;
-	bh=fZZrT4RG4pALLKzsv4gM3SflNpEQYUL7Ef0RzU0MDW0=;
+	s=korg; t=1728916676;
+	bh=r2fy/UptG0vmJKytxheZ7hcFcHDcvbS2b0m8Kxuggd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XufvMeVDbpYdtGjDDE2x7XA4kDlOWvF6U5sLI6kvcveufXfOeGzoav/m0iVuqHl9u
-	 GUhrhUlB4fIRm71OhGcpo96hFXnOEkG1dm4G5L9MjQYXLVA7Jc97nHVO4gzn4zUT3V
-	 V+jytwSekRjD+7wIsgROqeXlAyHM/bAFob87HADY=
+	b=P8xfx1EY0KsK2qAXPRu8ZUVWm/69703XBtFzjkFnxPACRLUXQiDMQ3KqxH75tpwsF
+	 CHMOSakm3CrPjESW0mTVncZEMkGCkQNmBVAA0KgH5Ma84d7uPpGRDfXr9D2tWaVhYg
+	 teYLH8AQavKTPHIQCUC9xmeyH922ZM3+nwiqH/u4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>,
-	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 075/214] drm/xe/oa: Fix overflow in oa batch buffer
-Date: Mon, 14 Oct 2024 16:18:58 +0200
-Message-ID: <20241014141047.914500829@linuxfoundation.org>
+	Martin Zaharinov <micron10@gmail.com>,
+	Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Arpana Arland <arpanax.arland@intel.com>
+Subject: [PATCH 6.6 033/213] i40e: Include types.h to some headers
+Date: Mon, 14 Oct 2024 16:18:59 +0200
+Message-ID: <20241014141044.281897623@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +64,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Roberto de Souza <jose.souza@intel.com>
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
 
-[ Upstream commit 6c10ba06bb1b48acce6d4d9c1e33beb9954f1788 ]
+[ Upstream commit 9cfd3b502153810b66ac0ce47f1fba682228f2d2 ]
 
-By default xe_bb_create_job() appends a MI_BATCH_BUFFER_END to batch
-buffer, this is not a problem if batch buffer is only used once but
-oa reuses the batch buffer for the same metric and at each call
-it appends a MI_BATCH_BUFFER_END, printing the warning below and then
-overflowing.
+Commit 56df345917c0 ("i40e: Remove circular header dependencies and fix
+headers") redistributed a number of includes from one large header file
+to the locations they were needed. In some environments, types.h is not
+included and causing compile issues. The driver should not rely on
+implicit inclusion from other locations; explicitly include it to these
+files.
 
-[  381.072016] ------------[ cut here ]------------
-[  381.072019] xe 0000:00:02.0: [drm] Assertion `bb->len * 4 + bb_prefetch(q->gt) <= size` failed!
-               platform: LUNARLAKE subplatform: 1
-               graphics: Xe2_LPG / Xe2_HPG 20.04 step B0
-               media: Xe2_LPM / Xe2_HPM 20.00 step B0
-               tile: 0 VRAM 0 B
-               GT: 0 type 1
+Snippet of issue. Entire log can be seen through the Closes: link.
 
-So here checking if batch buffer already have MI_BATCH_BUFFER_END if
-not append it.
+In file included from drivers/net/ethernet/intel/i40e/i40e_diag.h:7,
+                 from drivers/net/ethernet/intel/i40e/i40e_diag.c:4:
+drivers/net/ethernet/intel/i40e/i40e_adminq_cmd.h:33:9: error: unknown type name '__le16'
+   33 |         __le16 flags;
+      |         ^~~~~~
+drivers/net/ethernet/intel/i40e/i40e_adminq_cmd.h:34:9: error: unknown type name '__le16'
+   34 |         __le16 opcode;
+      |         ^~~~~~
+...
+drivers/net/ethernet/intel/i40e/i40e_diag.h:22:9: error: unknown type name 'u32'
+   22 |         u32 elements;   /* number of elements if array */
+      |         ^~~
+drivers/net/ethernet/intel/i40e/i40e_diag.h:23:9: error: unknown type name 'u32'
+   23 |         u32 stride;     /* bytes between each element */
 
-v2:
-- simply fix, suggestion from Ashutosh
-
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240912153842.35813-1-jose.souza@intel.com
-(cherry picked from commit 9ba0e0f30ca42a98af3689460063edfb6315718a)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reported-by: Martin Zaharinov <micron10@gmail.com>
+Closes: https://lore.kernel.org/netdev/21BBD62A-F874-4E42-B347-93087EEA8126@gmail.com/
+Fixes: 56df345917c0 ("i40e: Remove circular header dependencies and fix headers")
+Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20240117172534.3555162-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_bb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_adminq_cmd.h | 1 +
+ drivers/net/ethernet/intel/i40e/i40e_diag.h       | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_bb.c b/drivers/gpu/drm/xe/xe_bb.c
-index a13e0b3a169ed..ef777dbdf4ecc 100644
---- a/drivers/gpu/drm/xe/xe_bb.c
-+++ b/drivers/gpu/drm/xe/xe_bb.c
-@@ -65,7 +65,8 @@ __xe_bb_create_job(struct xe_exec_queue *q, struct xe_bb *bb, u64 *addr)
- {
- 	u32 size = drm_suballoc_size(bb->bo);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_adminq_cmd.h b/drivers/net/ethernet/intel/i40e/i40e_adminq_cmd.h
+index 18a1c3b6d72c5..c8f35d4de271a 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_adminq_cmd.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_adminq_cmd.h
+@@ -5,6 +5,7 @@
+ #define _I40E_ADMINQ_CMD_H_
  
--	bb->cs[bb->len++] = MI_BATCH_BUFFER_END;
-+	if (bb->len == 0 || bb->cs[bb->len - 1] != MI_BATCH_BUFFER_END)
-+		bb->cs[bb->len++] = MI_BATCH_BUFFER_END;
+ #include <linux/bits.h>
++#include <linux/types.h>
  
- 	xe_gt_assert(q->gt, bb->len * 4 + bb_prefetch(q->gt) <= size);
+ /* This header file defines the i40e Admin Queue commands and is shared between
+  * i40e Firmware and Software.
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_diag.h b/drivers/net/ethernet/intel/i40e/i40e_diag.h
+index ece3a6b9a5c61..ab20202a3da3c 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_diag.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_diag.h
+@@ -4,6 +4,7 @@
+ #ifndef _I40E_DIAG_H_
+ #define _I40E_DIAG_H_
  
++#include <linux/types.h>
+ #include "i40e_adminq_cmd.h"
+ 
+ /* forward-declare the HW struct for the compiler */
 -- 
 2.43.0
 
