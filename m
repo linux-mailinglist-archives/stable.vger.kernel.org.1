@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-85028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F38E799D35B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE5C999D368
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 310691C22F49
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFE251C233FF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40351B4F23;
-	Mon, 14 Oct 2024 15:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932AE1AB6FF;
+	Mon, 14 Oct 2024 15:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIheH9Ln"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnIkSp2y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729811AB51B;
-	Mon, 14 Oct 2024 15:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AEC1AAC4;
+	Mon, 14 Oct 2024 15:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728920049; cv=none; b=LPdiEHanuAsprnn8mrrh0zBHae58lbXJGqEvBTdABex7oP9O1Ps2HLydGc3eyW4N2ucteKr7uvUIWV3zwrewDQQv0WktSswOPqx5SwI2OvbZAA/qfuuggzWe+MYfd7GlWWBDqUREvnnejRE/Y3LZCwNo7bwFy8kddTpvBLwIPtM=
+	t=1728920093; cv=none; b=NFmSw40hb2+QhFQNzOsOyWW22Qdsp3CbYdhvBPeF9lG2XLoXJGph9nFTVXcWMzfWxCTMttwJz5qKldBPBy0Eg85KsYKwQaorLvN3rmS7dAtqATx/8KmWJkA+4Vac6tYGnsWjHeIBwzORLnwG4LqBjZHRvga/kQPct2VvOA8Sr50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728920049; c=relaxed/simple;
-	bh=pF4r/P5pLWXM/bepUwMaqQYB9h9NluTq626LWp0aKw8=;
+	s=arc-20240116; t=1728920093; c=relaxed/simple;
+	bh=Rttkjbapv8X8wOnwnwSxFt7DKOIXUfRcU1afmVpMMik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BjZ8Fz87C3IkgErzkVs0akeuwgXawjmQJDJkRz96H+tZIurBP8LCItHF0CL0gTES4NveF+zFxas3t9z91oOtX3QaHF60hiNtY873UrQqDzglE08y0QAh6LOImCDHcYP7xWy807R9N7heo38Rw9JoPy8y0fD0zADpzbs0aTmQzNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIheH9Ln; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D532CC4CEC3;
-	Mon, 14 Oct 2024 15:34:08 +0000 (UTC)
+	 MIME-Version; b=B9yLOqEfa4UQJAVJickE1FY7pKf+pr7IKKyyQZtvRu3tLMnoZCrME8BKZIyPfTSV94Wazfrd8RwAsmqM4GtlkkynxUYTSNX2hLvOYsc5EshLb2031b23Aucs2T9JTsRLwg8EOOmrb7oirzKJouI9cYKCj+0gIyDmZNpWtxYQ4VE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnIkSp2y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6197AC4CEC3;
+	Mon, 14 Oct 2024 15:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728920049;
-	bh=pF4r/P5pLWXM/bepUwMaqQYB9h9NluTq626LWp0aKw8=;
+	s=korg; t=1728920092;
+	bh=Rttkjbapv8X8wOnwnwSxFt7DKOIXUfRcU1afmVpMMik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XIheH9LniKlWJgyjNKI90YHhVJ4DBY1RFgrP0AxkaAs3SXD7ZUzOPWEKb3ub4/rNS
-	 2ggRPye/Kvk39/QG+SfEY/kINf7AfTIPHZVWvmSCcbpmf+fbWoocImmQ+lNj4a76p6
-	 mQk493irlUEix90IOBAWxuC7ypwGvrl937AK5wY8=
+	b=lnIkSp2yv2DzR9GtiuqqtOvZKB7xu8wzTdbPSRHdZB/UfTvcJ16GZIQs9w+RI8RPo
+	 tKMs/zRYNwZmbMaAIlXKtwoBW2nSsUke8v/ajCHjETxRCrB14hhjmlkETZKuZkXOwf
+	 6XyiV3+peU3QXEWYeIrBw9otG75QvBy+sBcvn7JA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	He Lugang <helugang@uniontech.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 766/798] HID: multitouch: Add support for lenovo Y9000P Touchpad
-Date: Mon, 14 Oct 2024 16:22:00 +0200
-Message-ID: <20241014141248.161623357@linuxfoundation.org>
+	Shay Drory <shayd@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>
+Subject: [PATCH 6.1 767/798] net/mlx5: Always drain health in shutdown callback
+Date: Mon, 14 Oct 2024 16:22:01 +0200
+Message-ID: <20241014141248.199970693@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -66,60 +70,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: He Lugang <helugang@uniontech.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 251efae73bd46b097deec4f9986d926813aed744 ]
+[ Upstream commit 1b75da22ed1e6171e261bc9265370162553d5393 ]
 
-The 2024 Lenovo Y9000P which use GT7868Q chip also needs a fixup.
-The information of the chip is as follows:
-I2C HID v1.00 Mouse [GXTP5100:00 27C6:01E0]
+There is no point in recovery during device shutdown. if health
+work started need to wait for it to avoid races and NULL pointer
+access.
 
-Signed-off-by: He Lugang <helugang@uniontech.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Hence, drain health WQ on shutdown callback.
+
+Fixes: 1958fc2f0712 ("net/mlx5: SF, Add auxiliary device driver")
+Fixes: d2aa060d40fa ("net/mlx5: Cancel health poll before sending panic teardown command")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/20240730061638.1831002-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Xiangyu: Modified to apply on 6.1.y to fix CVE-2024-43866]
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h        | 1 +
- drivers/hid/hid-multitouch.c | 8 ++++++--
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/main.c          | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index ede3a052ead55..5f98c33ed67ba 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -506,6 +506,7 @@
- #define USB_DEVICE_ID_GENERAL_TOUCH_WIN8_PIT_E100 0xe100
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 76af59cfdd0e6..825ad7663fa45 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1950,7 +1950,6 @@ static int mlx5_try_fast_unload(struct mlx5_core_dev *dev)
+ 	/* Panic tear down fw command will stop the PCI bus communication
+ 	 * with the HCA, so the health poll is no longer needed.
+ 	 */
+-	mlx5_drain_health_wq(dev);
+ 	mlx5_stop_health_poll(dev, false);
  
- #define I2C_VENDOR_ID_GOODIX		0x27c6
-+#define I2C_DEVICE_ID_GOODIX_01E0	0x01e0
- #define I2C_DEVICE_ID_GOODIX_01E8	0x01e8
- #define I2C_DEVICE_ID_GOODIX_01E9	0x01e9
- #define I2C_DEVICE_ID_GOODIX_01F0	0x01f0
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 6d76463f5896f..e7199ae2e3d91 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1447,7 +1447,8 @@ static __u8 *mt_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 	ret = mlx5_cmd_fast_teardown_hca(dev);
+@@ -1985,6 +1984,7 @@ static void shutdown(struct pci_dev *pdev)
+ 
+ 	mlx5_core_info(dev, "Shutdown was called\n");
+ 	set_bit(MLX5_BREAK_FW_WAIT, &dev->intf_state);
++	mlx5_drain_health_wq(dev);
+ 	err = mlx5_try_fast_unload(dev);
+ 	if (err)
+ 		mlx5_unload_one(dev, false);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+index 2424cdf9cca99..d6850eb0ed7f4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+@@ -75,6 +75,7 @@ static void mlx5_sf_dev_shutdown(struct auxiliary_device *adev)
  {
- 	if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
- 	    (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
--	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
-+	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9 ||
-+		 hdev->product == I2C_DEVICE_ID_GOODIX_01E0)) {
- 		if (rdesc[607] == 0x15) {
- 			rdesc[607] = 0x25;
- 			dev_info(
-@@ -2068,7 +2069,10 @@ static const struct hid_device_id mt_devices[] = {
- 		     I2C_DEVICE_ID_GOODIX_01E8) },
- 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
- 	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
--		     I2C_DEVICE_ID_GOODIX_01E8) },
-+		     I2C_DEVICE_ID_GOODIX_01E9) },
-+	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
-+	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
-+		     I2C_DEVICE_ID_GOODIX_01E0) },
+ 	struct mlx5_sf_dev *sf_dev = container_of(adev, struct mlx5_sf_dev, adev);
  
- 	/* GoodTouch panels */
- 	{ .driver_data = MT_CLS_NSMU,
++	mlx5_drain_health_wq(sf_dev->mdev);
+ 	mlx5_unload_one(sf_dev->mdev, false);
+ }
+ 
 -- 
 2.43.0
 
