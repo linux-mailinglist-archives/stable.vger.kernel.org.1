@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-84784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D2599D216
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F290E99CCCF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:25:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 302291F2502A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E9311F21220
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1272139D0B;
-	Mon, 14 Oct 2024 15:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8C31AB508;
+	Mon, 14 Oct 2024 14:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KL1b7gti"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ix9g3d3Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D06B49659;
-	Mon, 14 Oct 2024 15:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6789B1AA7A5;
+	Mon, 14 Oct 2024 14:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919202; cv=none; b=qZ/hCDMyTJscKpsWpiHOhhfLjOll/MbFQuRA6aYoKH90bE9MZyBr9EjLkAdGpGRdEyzC1uQw29XF9Mz6UqnVwL/WgsND60UmhX1Xl9YFZhcA7efxb0Wd2qwlHyX4GJuRiWWFtE0DJEaH1A8mAZYuR2tzmSL8hfQXrcZ6/OoqCJE=
+	t=1728915908; cv=none; b=hZbfS1rFuZ4v8RXJ2+GEjWBKDuKMNlwGq/S0RRjWFciSZ20p/sDzgsCaF8E7NBL6ycOjaDFnNSjh7fUKiNN0BqvCZEu+1ZejvNdkfa9b3mRKeuuPLlpv056lZ/mVw2FSzQER0tXWH1IkDUVPo0uTcQAaAhMETuH+KXMb1LILwas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919202; c=relaxed/simple;
-	bh=wwcixA0P/8naAN1y2B5m3j03+6MaQJnEagNOEm9jYUc=;
+	s=arc-20240116; t=1728915908; c=relaxed/simple;
+	bh=Nwgu/jLKF42JQwW3Py2qsLkUiZpKzGkYmKHBx+a+gME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cCqGNzzw/cqWwZt0nIaZZ9TGTs6622H+9blXvAHe/FfUVisKHc1OhpKvq59IwIFa5CR5w4IVdcaNdMwCWRLxHG8gYHv6e5cCQzbsVnzBZ85q7eBioWUeCzrQldTSmOpq3yK4MA54oLL7q9lKBCwFml5ON75ctWb3sij771UdR/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KL1b7gti; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0463EC4CEC3;
-	Mon, 14 Oct 2024 15:20:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a8JzLFLwsSz3ZFnKylw/Nxn3k+19K4xc4K0f6Np+ja4z7smC0jgKUwxGQ5Sc3LVK1A9zPgr/1ay1r0L6rnZvpBbHHsozdRXUlSMZZM1JY2J22dWSRgDB714a8k0BEkI2BjMjuIkupft9IcacR+D88Tjzdct4y+nP+B6KNYSggL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ix9g3d3Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89EE1C4CEC3;
+	Mon, 14 Oct 2024 14:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919202;
-	bh=wwcixA0P/8naAN1y2B5m3j03+6MaQJnEagNOEm9jYUc=;
+	s=korg; t=1728915908;
+	bh=Nwgu/jLKF42JQwW3Py2qsLkUiZpKzGkYmKHBx+a+gME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KL1b7gtiGWUW8T1yNaHZvPw4aS0t5eOTtepgGZ9Xy8VnWNHz8A4rOe7kVhIwypBOE
-	 0hjjh2zqf7rNDNTFo6xl0fOofEQXS826N1ewdKbQeP8kE7wDLXFQkYtcL3wdBGCdhZ
-	 sKA4DSRbdSiQEWGgo6ZeFw/83KNx1xvQpn9sl+1E=
+	b=Ix9g3d3Qap2JfDHVpBihjatHtnqN1LHJ6Pod++wPW9U2njkR8zR1Ije7SCK1RcVrp
+	 lNvyah3U/Ba1HD2NnlicRvIr8Vmo+5dTaw/GmiYqlIYpXxrT12tKBcm1cemVYaCn4E
+	 +WSJ+KcDFwq4dmKs/uIEU/XlNfcEWxxkmtY2a1Gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"yao.ly" <yao.ly@linux.alibaba.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.1 542/798] ext4: correct encrypted dentry name hash when not casefolded
-Date: Mon, 14 Oct 2024 16:18:16 +0200
-Message-ID: <20241014141239.292669603@linuxfoundation.org>
+	Subramanian Ananthanarayanan <quic_skananth@quicinc.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 034/214] PCI: Add ACS quirk for Qualcomm SA8775P
+Date: Mon, 14 Oct 2024 16:18:17 +0200
+Message-ID: <20241014141046.319589978@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yao.ly <yao.ly@linux.alibaba.com>
+From: Subramanian Ananthanarayanan <quic_skananth@quicinc.com>
 
-commit 70dd7b573afeba9b8f8a33f2ae1e4a9a2ec8c1ec upstream.
+[ Upstream commit 026f84d3fa62d215b11cbeb5a5d97df941e93b5c ]
 
-EXT4_DIRENT_HASH and EXT4_DIRENT_MINOR_HASH will access struct
-ext4_dir_entry_hash followed ext4_dir_entry. But there is no ext4_dir_entry_hash
-followed when inode is encrypted and not casefolded
+The Qualcomm SA8775P root ports don't advertise an ACS capability, but they
+do provide ACS-like features to disable peer transactions and validate bus
+numbers in requests.
 
-Signed-off-by: yao.ly <yao.ly@linux.alibaba.com>
-Link: https://patch.msgid.link/1719816219-128287-1-git-send-email-yao.ly@linux.alibaba.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thus, add an ACS quirk for the SA8775P.
+
+Link: https://lore.kernel.org/linux-pci/20240906052228.1829485-1-quic_skananth@quicinc.com
+Signed-off-by: Subramanian Ananthanarayanan <quic_skananth@quicinc.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/dir.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/pci/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/ext4/dir.c
-+++ b/fs/ext4/dir.c
-@@ -279,12 +279,20 @@ static int ext4_readdir(struct file *fil
- 					struct fscrypt_str de_name =
- 							FSTR_INIT(de->name,
- 								de->name_len);
-+					u32 hash;
-+					u32 minor_hash;
-+
-+					if (IS_CASEFOLDED(inode)) {
-+						hash = EXT4_DIRENT_HASH(de);
-+						minor_hash = EXT4_DIRENT_MINOR_HASH(de);
-+					} else {
-+						hash = 0;
-+						minor_hash = 0;
-+					}
- 
- 					/* Directory is encrypted */
- 					err = fscrypt_fname_disk_to_usr(inode,
--						EXT4_DIRENT_HASH(de),
--						EXT4_DIRENT_MINOR_HASH(de),
--						&de_name, &fstr);
-+						hash, minor_hash, &de_name, &fstr);
- 					de_name = fstr;
- 					fstr.len = save_len;
- 					if (err)
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 979901a0e1f97..85666ee2d8691 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5087,6 +5087,8 @@ static const struct pci_dev_acs_enabled {
+ 	/* QCOM QDF2xxx root ports */
+ 	{ PCI_VENDOR_ID_QCOM, 0x0400, pci_quirk_qcom_rp_acs },
+ 	{ PCI_VENDOR_ID_QCOM, 0x0401, pci_quirk_qcom_rp_acs },
++	/* QCOM SA8775P root port */
++	{ PCI_VENDOR_ID_QCOM, 0x0115, pci_quirk_qcom_rp_acs },
+ 	/* HXT SD4800 root ports. The ACS design is same as QCOM QDF2xxx */
+ 	{ PCI_VENDOR_ID_HXT, 0x0401, pci_quirk_qcom_rp_acs },
+ 	/* Intel PCH root ports */
+-- 
+2.43.0
+
 
 
 
