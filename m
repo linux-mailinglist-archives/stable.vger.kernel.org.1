@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-84867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C4699D28F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CCB599CD35
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 114861F24749
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:27:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 167921F23154
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF671C7B99;
-	Mon, 14 Oct 2024 15:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1426C20322;
+	Mon, 14 Oct 2024 14:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vysbm7jE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UjjdAtIk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D1E1ADFFB;
-	Mon, 14 Oct 2024 15:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76CD200CB;
+	Mon, 14 Oct 2024 14:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919499; cv=none; b=d7KOXnjHZG6OlDug1DLV+jOn9clpuKXFU8XvxhTQFwB+gLXae3W3+4767pkY78I5HzWs+m4dc74rYOsrMhfkII9WMkGRBARVReeK89jgF4DgfOC4W1aiyvvsIh+/xIKQM2hP+J7a3vxELFVjevYHeV4ke7DKiZXHkS2/wAQWzd4=
+	t=1728916212; cv=none; b=V6IGCatZqbCllz9SHyjCV+wyI8hOgrrS+sT7pbwElE1rWu2dT8eGnHfA7FRuCedXhOEYFsRAct7I+gqaluTGsWhxc0XqqepuU4MEYrLWebRcgh2wcH9czMKAoyEIGT0qRA8KZwoPrSrF7hS8YgjVkhtlqTyiymZ3i2QiUtdU0IU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919499; c=relaxed/simple;
-	bh=Y3ijdciqb8aetLxTYCUj1pdwsV8aPQr4iOAbQLTufwI=;
+	s=arc-20240116; t=1728916212; c=relaxed/simple;
+	bh=5fxguFS5ektI9xbjVye3LSTdrQA4rA3xP4EQmrrD3Oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Puo4ehWgCscCEFfEkmsQ+PJi2VuWTESQze/JbZzjbwGi+IH+WANj6Q+4HLLQggZRc/iVEPSl9KnQZGlnhKI5aoY8ao7+m6HRJTTY3dvWAIxooY5HH+VyF7JGH2RI13qw/MpwRMrn5E5vKOhEQilcXqCaFf5qSSui/r5k3fymmbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vysbm7jE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE7CAC4CEC3;
-	Mon, 14 Oct 2024 15:24:58 +0000 (UTC)
+	 MIME-Version; b=f2gPeGJb2fPBpv8YlkPldc5GQEa886APOH7PNaFYlmzO71NVxjFL4bHH/S/v56IycQhughSfg0z5A2l6/hG1iApqJrBvlqFE3r5dl0/Fj9or4vWshXvxBvRzCln8jo+gAWxm/GjIyY+V4xeEbeFE0qLJs++JXL1PmFss8ww3CbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UjjdAtIk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0127FC4CEC3;
+	Mon, 14 Oct 2024 14:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919499;
-	bh=Y3ijdciqb8aetLxTYCUj1pdwsV8aPQr4iOAbQLTufwI=;
+	s=korg; t=1728916212;
+	bh=5fxguFS5ektI9xbjVye3LSTdrQA4rA3xP4EQmrrD3Oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vysbm7jEI8ICKpjQRQ0HFO69cYuMoS9Rij5IO5vrCVkbivNkajiwH8rBkz9KwBQ1K
-	 hP3DSrB585TJgwEr7Jky5XFQ0AT+OsAappjsQdu84TGKWtDkZjOU+HKvC6g7KfjvNB
-	 z2v+foejFl5WRXgl6e38vRM74mku8A4XqJB1YWGI=
+	b=UjjdAtIkxpqWy9k4NXRIZcXSpLDn6QgWHi0A6x97Cmq5YosX3W6a+oc/ms0hh5aje
+	 jOidtfphHqPovtlpVlaZKYcdE71huWYXyT/e4bYFjaEtbtZKLJfGp4uetTePLjVhuR
+	 we0RS/LQOU09RUAHSpSf07ykHxTzi0un4e6IuIQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Yonatan Maman <Ymaman@Nvidia.com>,
+	Gal Shalom <GalShalom@Nvidia.com>,
+	Ben Skeggs <bskeggs@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 623/798] spi: bcm63xx: Fix missing pm_runtime_disable()
-Date: Mon, 14 Oct 2024 16:19:37 +0200
-Message-ID: <20241014141242.514019901@linuxfoundation.org>
+Subject: [PATCH 6.11 115/214] nouveau/dmem: Fix privileged error in copy engine channel
+Date: Mon, 14 Oct 2024 16:19:38 +0200
+Message-ID: <20241014141049.480767431@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Yonatan Maman <Ymaman@Nvidia.com>
 
-[ Upstream commit 265697288ec2160ca84707565d6641d46f69b0ff ]
+[ Upstream commit 04e0481526e30ab8c7e7580033d2f88b7ef2da3f ]
 
-The pm_runtime_disable() is missing in the remove function, fix it
-by using devm_pm_runtime_enable(), so the pm_runtime_disable() in
-the probe error path can also be removed.
+When `nouveau_dmem_copy_one` is called, the following error occurs:
 
-Fixes: 2d13f2ff6073 ("spi: bcm63xx-spi: fix pm_runtime")
-Cc: stable@vger.kernel.org # v5.13+
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20240819123349.4020472-3-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+[272146.675156] nouveau 0000:06:00.0: fifo: PBDMA9: 00000004 [HCE_PRIV]
+ch 1 00000300 00003386
+
+This indicates that a copy push command triggered a Host Copy Engine
+Privileged error on channel 1 (Copy Engine channel). To address this
+issue, modify the Copy Engine channel to allow privileged push commands
+
+Fixes: 6de125383a5c ("drm/nouveau/fifo: expose runlist topology info on all chipsets")
+Signed-off-by: Yonatan Maman <Ymaman@Nvidia.com>
+Co-developed-by: Gal Shalom <GalShalom@Nvidia.com>
+Signed-off-by: Gal Shalom <GalShalom@Nvidia.com>
+Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241008115943.990286-2-ymaman@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm63xx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_drm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 51296615536a9..695ac74571286 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -595,13 +595,15 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 
- 	bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
- 
--	pm_runtime_enable(&pdev->dev);
-+	ret = devm_pm_runtime_enable(&pdev->dev);
-+	if (ret)
-+		goto out_clk_disable;
- 
- 	/* register and we are done */
- 	ret = devm_spi_register_master(dev, master);
- 	if (ret) {
- 		dev_err(dev, "spi register failed\n");
--		goto out_pm_disable;
-+		goto out_clk_disable;
+diff --git a/drivers/gpu/drm/nouveau/nouveau_drm.c b/drivers/gpu/drm/nouveau/nouveau_drm.c
+index 88413b5c8684a..bfba4e374df44 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_drm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
+@@ -356,7 +356,7 @@ nouveau_accel_ce_init(struct nouveau_drm *drm)
+ 		return;
  	}
  
- 	dev_info(dev, "at %pr (irq %d, FIFOs size %d)\n",
-@@ -609,8 +611,6 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
--out_pm_disable:
--	pm_runtime_disable(&pdev->dev);
- out_clk_disable:
- 	clk_disable_unprepare(clk);
- out_err:
+-	ret = nouveau_channel_new(&drm->client, false, runm, NvDmaFB, NvDmaTT, &drm->cechan);
++	ret = nouveau_channel_new(&drm->client, true, runm, NvDmaFB, NvDmaTT, &drm->cechan);
+ 	if (ret)
+ 		NV_ERROR(drm, "failed to create ce channel, %d\n", ret);
+ }
 -- 
 2.43.0
 
