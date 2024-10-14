@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-84973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E1299D323
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E82599CF03
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:50:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A7C528A9DE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6FE4289925
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DA71CACF8;
-	Mon, 14 Oct 2024 15:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B08971C876F;
+	Mon, 14 Oct 2024 14:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJJa+74l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqNrlgi/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812531CACE8;
-	Mon, 14 Oct 2024 15:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC5E1C82FB;
+	Mon, 14 Oct 2024 14:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919862; cv=none; b=HfhVUfFFXeTS/gaqPG3oEE3+iNPeHBJlpyi/4hxkdb9bINR8oc/trHRzS/h2OJ9YubqPrzZ2CDBabpHoeEf1S50SWsLUo/EJyc9iA/TBkXEcQMRctlqBdBXWfcDZbYHjekUz84ht92CTvhOwdEz86Ff87o/cmpzslZnnbZdms2s=
+	t=1728917238; cv=none; b=omOfG/Curdx6sCzdEzVMqHjb0ohIia3Ki8klMkeMYVtVPA4rSJr5EioVzuD3Kgo0V/CysHcnfZcx6Unk4EhiDp7858V6IRSz8UT7bYmc+dl5ROFP1CtCDSMMZpI701OTlLZh4Qq1cICBa8dHswJs6Pss22xZuRwBFk7GtTjekKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919862; c=relaxed/simple;
-	bh=IUjEBIxP79hQj07Rc2BEhkDGli2s2v4t8Z+lB6aUTfo=;
+	s=arc-20240116; t=1728917238; c=relaxed/simple;
+	bh=tJyqG4AmNascUd2rxiAk2blCsLp/9l71rczjt0C29+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PAGkjTp3RXEM5smQhLzcpW1ybhA3SB1HDhrSnZuycJd8IgglCDDst5QWvZ88B9oEhOZWk6FHkzRislxIsO10mV3iEPHZ2JXMFxo6BE6qtM+OxDMdbfuun9oHHAeghmiTwQBmRx5PueLHoaAaUmklg/TiQVT8MjduYKaec7lBQHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJJa+74l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2A2C4CEC3;
-	Mon, 14 Oct 2024 15:31:01 +0000 (UTC)
+	 MIME-Version; b=c9gBLwvDuEiHBTpw5Wt5brEGu1YWcRK6KF003xMmbCPv/qnyWIdp1Wh4HnPF6TBfwCmOyWXI/V0IrDdzvoJJu0tCvTxTsEnziIcrcOBOwzmYpr1v/T5x5agUUKa4DjozTXeyHk6EpsXLl2Wind6/QoEEfjJ28VkcTWHJlyX3atc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqNrlgi/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF44C4CEC3;
+	Mon, 14 Oct 2024 14:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919862;
-	bh=IUjEBIxP79hQj07Rc2BEhkDGli2s2v4t8Z+lB6aUTfo=;
+	s=korg; t=1728917238;
+	bh=tJyqG4AmNascUd2rxiAk2blCsLp/9l71rczjt0C29+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJJa+74l/yMmbkeNYPUgMV6EEJJHpbarVOewIHReJQbMbTE43ntpSICqnyL63WDLS
-	 CYwN7tcHEPZ2uQ3SaUerP36RQRuzD+WJsBsJO9kW2D8RJZgr26TElyyGJodLRfVBER
-	 /2Mz9QvI3uyeXha7xTEYZ8hho7Q6ZmojTItku0Do=
+	b=AqNrlgi/T0tnpaDhUhid1I64QoPM37OUYpJatyIkbtsCiUb47FEp07ahVFZtgGZrv
+	 vDx7t08TEDSi6CaMPEKiZsqlLjojnIUYzQy97s3wPOCxBDR1UGrTolcHYR0i/GM93D
+	 l2gfIxxS1HbFGeDf5OGHACUO065Wo0kNkgFhssBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	kernel test robot <lkp@intel.com>,
+	Eric Tremblay <etremblay@distech-controls.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 727/798] NFSD: Mark filecache "down" if init fails
+Subject: [PATCH 6.6 175/213] hwmon: (tmp513) Add missing dependency on REGMAP_I2C
 Date: Mon, 14 Oct 2024 16:21:21 +0200
-Message-ID: <20241014141246.633530292@linuxfoundation.org>
+Message-ID: <20241014141049.796462535@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit dc0d0f885aa422f621bc1c2124133eff566b0bc8 ]
+[ Upstream commit 193bc02c664999581a1f38c152f379fce91afc0c ]
 
-NeilBrown says:
-> The handling of NFSD_FILE_CACHE_UP is strange.  nfsd_file_cache_init()
-> sets it, but doesn't clear it on failure.  So if nfsd_file_cache_init()
-> fails for some reason, nfsd_file_cache_shutdown() would still try to
-> clean up if it was called.
+0-day reports:
 
-Reported-by: NeilBrown <neilb@suse.de>
-Fixes: c7b824c3d06c ("NFSD: Replace the "init once" mechanism")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+drivers/hwmon/tmp513.c:162:21: error:
+	variable 'tmp51x_regmap_config' has initializer but incomplete type
+162 | static const struct regmap_config tmp51x_regmap_config = {
+    |                     ^
+
+struct regmap_config is only available if REGMAP is enabled.
+Add the missing Kconfig dependency to fix the problem.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202410020246.2cTDDx0X-lkp@intel.com/
+Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
+Cc: Eric Tremblay <etremblay@distech-controls.com>
+Reviewed-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/filecache.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hwmon/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 9e81f3a9097e0..c9393c732889a 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -718,7 +718,7 @@ nfsd_file_cache_init(void)
- 
- 	ret = rhltable_init(&nfsd_file_rhltable, &nfsd_file_rhash_params);
- 	if (ret)
--		return ret;
-+		goto out;
- 
- 	ret = -ENOMEM;
- 	nfsd_filecache_wq = alloc_workqueue("nfsd_filecache", 0, 0);
-@@ -770,6 +770,8 @@ nfsd_file_cache_init(void)
- 
- 	INIT_DELAYED_WORK(&nfsd_filecache_laundrette, nfsd_file_gc_worker);
- out:
-+	if (ret)
-+		clear_bit(NFSD_FILE_CACHE_UP, &nfsd_file_flags);
- 	return ret;
- out_notifier:
- 	lease_unregister_notifier(&nfsd_file_lease_notifier);
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index ec38c88921589..b46c85e2197c0 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -2137,6 +2137,7 @@ config SENSORS_TMP464
+ config SENSORS_TMP513
+ 	tristate "Texas Instruments TMP513 and compatibles"
+ 	depends on I2C
++	select REGMAP_I2C
+ 	help
+ 	  If you say yes here you get support for Texas Instruments TMP512,
+ 	  and TMP513 temperature and power supply sensor chips.
 -- 
 2.43.0
 
