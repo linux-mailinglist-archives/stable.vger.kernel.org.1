@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-83783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF98C99C96A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 13:52:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF5299C96B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 13:52:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C99271C22306
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 11:52:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E5331C21398
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 11:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8F619E96E;
-	Mon, 14 Oct 2024 11:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA2E19E806;
+	Mon, 14 Oct 2024 11:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDeGk73g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huvsbwE+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2EB19E806
-	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 11:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EB81684B4
+	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 11:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728906756; cv=none; b=DX897MMOt9uWkubNJ132+BAohxzzZKVAQWQUrI2tyJgGA0CnLre5ZOU7Wm0ptMKzj/gb38AZDh4Sai1c5TMoCJSpkYuinUtKo6GV+HjkffAcNFBglS5Dzg5dZPfw3USNwPxayAGTjdiMvnXK/VpXL+4rtGx87LShBn+T0FQISbE=
+	t=1728906759; cv=none; b=ukb9hXFbfmpiZNcu2g50sResIEU7fbtflkcO2WJ48JyDTIJI7OZLg2F2qPUYPBHaoB+mQa8jTVtDw0O61lnV98mPZ96wDSmPzMeh/1LZ00H13eSWLy5T3N29j6OwjSURbRXW7XrHY///5UnZp2IVbv8UbmzzLA8RY3g2jv34imU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728906756; c=relaxed/simple;
-	bh=oRXhNUCDEh+Ln0eP0c+1HfM2YOSYH2QCh9xN83Fpgoc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=P7l8A4a5MX6rElZlMO8Y+tTJA0LOdMnFIHA4542rckG0x4pp0XHBpS72cNPdtYugrFGvGuc7V9qABR4itQiqz6A5RRdZWApQ8E9qfsFdQv+qsEj9lb6WEzsIHt4Qo7qkM7QrNPwdxKD8zEkyBW4aVLc7glx5LaFPyHVL/adJoOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDeGk73g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B93C4CEC3;
-	Mon, 14 Oct 2024 11:52:35 +0000 (UTC)
+	s=arc-20240116; t=1728906759; c=relaxed/simple;
+	bh=rp9I1dL4TsbdLydJFUje6SrxA5zjnaX7jUWQx3C5wy4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MiZdB0jtTEGv1d7GVGFzLD2AGmythMQeNQHe6h5w/0v3oWzU2Fb5gtF/9/h38WfNUmkJG1NoZGAo3C3Z59jEL88a552CvjbieLB2fxLaXJ83fMMntSIv0JcOwQWdBn1EadkkzBEqPkb+WtsY27Pv+wN0VPlMjHWgm9qALl0kpOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huvsbwE+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E54C4CEC3;
+	Mon, 14 Oct 2024 11:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728906755;
-	bh=oRXhNUCDEh+Ln0eP0c+1HfM2YOSYH2QCh9xN83Fpgoc=;
+	s=korg; t=1728906759;
+	bh=rp9I1dL4TsbdLydJFUje6SrxA5zjnaX7jUWQx3C5wy4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=NDeGk73gZSmCLm8f+IuKlp5rsOhF3/Vx6alTnhXTfPlXEvkZpPzelrNI2X2akA42A
-	 2LgNewlVpIuGX8LlhcOZLjyzMq23byxcsCFNdc9TQcGlH9J2aG/V7ELfg+5ZSTRqvf
-	 cdyqFjzrGEuROnRb/hIt0R8s/sI+nN3RT0aQ/boU=
-Subject: FAILED: patch "[PATCH] tcp: fix mptcp DSS corruption due to large pmtu xmit" failed to apply to 6.11-stable tree
+	b=huvsbwE+AYPBCvVQaSwdQQXwUpGsUPa7SXzGh4506mmP/hiYCl+eUgI0K0K8DU936
+	 Dj1Em6lWyZgsiqOVLoAetg924cv3+zIh6nNeggxVLwLraSNkHAB62JyFMPVfiCk35n
+	 I9lBladhE68nUW8EcoBDUWtazv39x/qOD4uluPr0=
+Subject: FAILED: patch "[PATCH] tcp: fix mptcp DSS corruption due to large pmtu xmit" failed to apply to 6.6-stable tree
 To: pabeni@redhat.com,kuba@kernel.org,matttbe@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 14 Oct 2024 13:52:32 +0200
-Message-ID: <2024101432-shucking-snagged-7c42@gregkh>
+Date: Mon, 14 Oct 2024 13:52:34 +0200
+Message-ID: <2024101434-refuse-multiply-eddc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.11-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.11.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4dabcdf581217e60690467a37c956a5b8dbc6bd9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024101432-shucking-snagged-7c42@gregkh' --subject-prefix 'PATCH 6.11.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024101434-refuse-multiply-eddc@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 4dabcdf58121 ("tcp: fix mptcp DSS corruption due to large pmtu xmit")
 65249feb6b3d ("net: add support for skbs with unreadable frags")
+071115301838 ("tcp: wrap mptcp and decrypted checks into tcp_skb_can_collapse_rx()")
+e958da0ddbe8 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
 
 thanks,
 
