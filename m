@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-84527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8411E99D09C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:05:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F7499D0A6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:05:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 499F1284F4B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:05:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 832F9B26BC9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA0F4087C;
-	Mon, 14 Oct 2024 15:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0EA19E806;
+	Mon, 14 Oct 2024 15:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1qPx9eja"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHVhNXLc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB305611E;
-	Mon, 14 Oct 2024 15:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB68B611E;
+	Mon, 14 Oct 2024 15:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918315; cv=none; b=QzIL7pFja/st2jYoqKGTgolC5vkCthLhwTBfk4e6Z3RWh+EIpCwrXvRl/GMBHDV4croII/0fh/6UzKGG7bVizcNwLnLjgLBbnozmoNVb+eZcJ7RGrSUNwwjybraH1a5AE/GSTJNRwvU34OPukReUDeD0lvZ6FYmh2e1MOMp9dNc=
+	t=1728918333; cv=none; b=iy+lUvcObO6qu3j1en2KcJC89DWZhHLFzBVrXnPLVh3LtBWh5zNvKqQgy5HXZdluSJY9xAddVskWlHTg74Q33jTg9ixt2hfZDXMPULcO1h2gELrwquYfjyGUcNOxMy/BpkiJ6Gu/TmPSANbfcMV+TpSr1mOkPO/asLthevIALi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918315; c=relaxed/simple;
-	bh=8w5eZQmFf2jSdR0oBmCd5L9x42ZXB9k+Ngx4VmmMYhc=;
+	s=arc-20240116; t=1728918333; c=relaxed/simple;
+	bh=cKfIfIJkzsNVyFteg4LLvCqg9OOZy6UEMYzz8LTUoWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RY2YTIxIN69B/XEUkCtpxHWTTNZs4A65+vzAkmfThAI3fOY7uXVaHZhO1GrEMsc7TlI4I5kNQXrwqVXiEhjC25ZRio/evlBfgO4rq9Z4vBBvqoTftEstuO6HhDa85RqWPnRls3xF9dQC5EPJ68Dm+2Jz+qZpqW15IMY4/GR7JcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1qPx9eja; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DDEAC4CEC3;
-	Mon, 14 Oct 2024 15:05:15 +0000 (UTC)
+	 MIME-Version; b=C0hSvHgh1eT+oyh+rjROBzzsw/KG1Lt0R+gLieyJPGWszDq2INDBt5vngCeyfq7tRdl0q9JLUD1BA33bYpfokjPGWqXj8w+cMyKsr43Isy1xIdyyUvJlckpqkDeideZIbKi0MhmpnrN77seA42wHzxpEd88OmESr/uB7PDszLwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHVhNXLc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4838AC4CECF;
+	Mon, 14 Oct 2024 15:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918315;
-	bh=8w5eZQmFf2jSdR0oBmCd5L9x42ZXB9k+Ngx4VmmMYhc=;
+	s=korg; t=1728918332;
+	bh=cKfIfIJkzsNVyFteg4LLvCqg9OOZy6UEMYzz8LTUoWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1qPx9ejaz8mErqAd7/tmTNF/KF13Tuq3Poaia30DszFHs0PrxyQokuc3J5/oi8bXv
-	 2VF4JKsZAjws3U4x9+aRQOzDW1iEF4BdMIuHD5rzIaULA8x6dPVLHdcsDIojKHCkH2
-	 AR28oE88XrEjJoeg/MJCstE04eW8nVSe1b989ihg=
+	b=gHVhNXLcFQx1fCfEAJnFVOFs0gTIijPid4BatiycobpDTKExTcRHM/6nrKKXzbunG
+	 k80t3/Xv1OBzJ6L3VK+zOLGxZrMKNMIXAIcKKsefSvInf5/GDdZS8tBm6OoE4d1LAx
+	 NIzMmcvK8fJpV+bezKW9ZlRkAFBK0nVBQbwt1Hgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Nikita Shubin <nikita.shubin@maquefel.me>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Zdenek Kabelac <zkabelac@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 259/798] ep93xx: clock: Fix off by one in ep93xx_div_recalc_rate()
-Date: Mon, 14 Oct 2024 16:13:33 +0200
-Message-ID: <20241014141228.110557367@linuxfoundation.org>
+Subject: [PATCH 6.1 260/798] Revert "dm: requeue IO if mapping table not yet available"
+Date: Mon, 14 Oct 2024 16:13:34 +0200
+Message-ID: <20241014141228.149736048@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -68,40 +66,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <alexander.sverdlin@gmail.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit c7f06284a6427475e3df742215535ec3f6cd9662 ]
+[ Upstream commit c8691cd0fc11197515ed148de0780d927bfca38b ]
 
-The psc->div[] array has psc->num_div elements.  These values come from
-when we call clk_hw_register_div().  It's adc_divisors and
-ARRAY_SIZE(adc_divisors)) and so on.  So this condition needs to be >=
-instead of > to prevent an out of bounds read.
+This reverts commit fa247089de9936a46e290d4724cb5f0b845600f5.
 
-Fixes: 9645ccc7bd7a ("ep93xx: clock: convert in-place to COMMON_CLK")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Reviewed-by: Nikita Shubin <nikita.shubin@maquefel.me>
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Link: https://lore.kernel.org/r/1caf01ad4c0a8069535813c26c7f0b8ea011155e.camel@linaro.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+The following sequence of commands causes a livelock - there will be
+workqueue process looping and consuming 100% CPU:
+
+dmsetup create --notable test
+truncate -s 1MiB testdata
+losetup /dev/loop0 testdata
+dmsetup load test --table '0 2048 linear /dev/loop0 0'
+dd if=/dev/zero of=/dev/dm-0 bs=16k count=1 conv=fdatasync
+
+The livelock is caused by the commit fa247089de99. The commit claims that
+it fixes a race condition, however, it is unknown what the actual race
+condition is and what program is involved in the race condition.
+
+When the inactive table is loaded, the nodes /dev/dm-0 and
+/sys/block/dm-0 are created. /dev/dm-0 has zero size at this point. When
+the device is suspended and resumed, the nodes /dev/mapper/test and
+/dev/disk/* are created.
+
+If some program opens a block device before it is created by dmsetup or
+lvm, the program is buggy, so dm could just report an error as it used to
+do before.
+
+Reported-by: Zdenek Kabelac <zkabelac@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: fa247089de99 ("dm: requeue IO if mapping table not yet available")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-ep93xx/clock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-rq.c |  4 +++-
+ drivers/md/dm.c    | 11 ++++++++---
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/mach-ep93xx/clock.c b/arch/arm/mach-ep93xx/clock.c
-index 85a496ddc6197..e9f72a529b508 100644
---- a/arch/arm/mach-ep93xx/clock.c
-+++ b/arch/arm/mach-ep93xx/clock.c
-@@ -359,7 +359,7 @@ static unsigned long ep93xx_div_recalc_rate(struct clk_hw *hw,
- 	u32 val = __raw_readl(psc->reg);
- 	u8 index = (val & psc->mask) >> psc->shift;
+diff --git a/drivers/md/dm-rq.c b/drivers/md/dm-rq.c
+index 80f46e01bca44..6685dc3b8b448 100644
+--- a/drivers/md/dm-rq.c
++++ b/drivers/md/dm-rq.c
+@@ -493,8 +493,10 @@ static blk_status_t dm_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
  
--	if (index > psc->num_div)
-+	if (index >= psc->num_div)
- 		return 0;
+ 		map = dm_get_live_table(md, &srcu_idx);
+ 		if (unlikely(!map)) {
++			DMERR_LIMIT("%s: mapping table unavailable, erroring io",
++				    dm_device_name(md));
+ 			dm_put_live_table(md, srcu_idx);
+-			return BLK_STS_RESOURCE;
++			return BLK_STS_IOERR;
+ 		}
+ 		ti = dm_table_find_target(map, 0);
+ 		dm_put_live_table(md, srcu_idx);
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index ddd44a7f79dbf..f70129bc703b8 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -1789,10 +1789,15 @@ static void dm_submit_bio(struct bio *bio)
+ 	struct dm_table *map;
  
- 	return DIV_ROUND_UP_ULL(parent_rate, psc->div[index]);
+ 	map = dm_get_live_table(md, &srcu_idx);
++	if (unlikely(!map)) {
++		DMERR_LIMIT("%s: mapping table unavailable, erroring io",
++			    dm_device_name(md));
++		bio_io_error(bio);
++		goto out;
++	}
+ 
+-	/* If suspended, or map not yet available, queue this IO for later */
+-	if (unlikely(test_bit(DMF_BLOCK_IO_FOR_SUSPEND, &md->flags)) ||
+-	    unlikely(!map)) {
++	/* If suspended, queue this IO for later */
++	if (unlikely(test_bit(DMF_BLOCK_IO_FOR_SUSPEND, &md->flags))) {
+ 		if (bio->bi_opf & REQ_NOWAIT)
+ 			bio_wouldblock_error(bio);
+ 		else if (bio->bi_opf & REQ_RAHEAD)
 -- 
 2.43.0
 
