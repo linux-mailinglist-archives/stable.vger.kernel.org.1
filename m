@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-84703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3116499D1AE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:19:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 779C399D1ED
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6F6E1F24927
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:19:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A95701C21537
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526B71D1726;
-	Mon, 14 Oct 2024 15:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1471AE01F;
+	Mon, 14 Oct 2024 15:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZH2+NpG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jqQibnLQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABAF1D1512;
-	Mon, 14 Oct 2024 15:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABF71AB6DC;
+	Mon, 14 Oct 2024 15:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918920; cv=none; b=OqK9nhuv+PqAshmcT16nXGeyM7fBB/WeG9nTrKpc45qf1vpiYPgCdtIqE+R82JXJZMZiVaO7a8mxRVrHxi/sx+RA2Rr4N0qXWhN04t47yyVH+IhlEwJNNmcHC+Xeb8GsED7onK10/IDADje+udHWcH6vzkeugsBWpe0q1AMoG5M=
+	t=1728919060; cv=none; b=MgA1Ivr4qZlit+Tlajlz0kUN4oEFXrQTqM4Vj9iYVnLo55NopB0xDjc33IRe+qB6BFLtZeIxjjSC/DrS8KTGv3Get2iL05GN2oj2NmcEgTQpTU39xSMlUnPNLqWRu9+2O3QELBdGo7w0Jz4F96mfmLVS3+06H7Z9yOrxAu3ZgOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918920; c=relaxed/simple;
-	bh=kaLGVaB6yuiRZcW0EGBq+ESV+eES6uM2kylexJP59pU=;
+	s=arc-20240116; t=1728919060; c=relaxed/simple;
+	bh=oc0/1VS7C8sBpPAJlpS6TSOMnJlR0z2WpDRKgWOvB4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oSQlqjJtojPVlhumbEswpnx2/vn9VaX5mjh8o+Q1trEMCNnk5zanb3gPfBBKML0VSNpX/WNKGrhw/aMDl4GI8zIt9YNVKdrvCCg3/AY9pLyd6RzIpWrq0DusW9Opp8I5bQBxyN/RTLvyc+NZSL8IeH/g9MpdVR85FYvJCZYiaQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZH2+NpG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A39C4CEC7;
-	Mon, 14 Oct 2024 15:15:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mQYfUYGsP4pGUeLAzgduTwBO1/9sk1baFOU8XJUMwbeWH+Xflj9l5/pb7T/4WPuQiaQ+J4rT1nhEhL4XpCDBECeMU3TXgmrNYpdGYlz/XEX5ejt0nemFz5AARBOH03UPZhjlUT/+f/eWjd2K+doWLe+qkRqcpx9+ggKLtMVaKJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jqQibnLQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1619C4CEC3;
+	Mon, 14 Oct 2024 15:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918919;
-	bh=kaLGVaB6yuiRZcW0EGBq+ESV+eES6uM2kylexJP59pU=;
+	s=korg; t=1728919060;
+	bh=oc0/1VS7C8sBpPAJlpS6TSOMnJlR0z2WpDRKgWOvB4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BZH2+NpGY9jtd42/2IlNiUAIiNSGL5CVUDS5G3xsxim+xNcK/XbChaIO46sRWQHY6
-	 SH6WEpG9D0gcbguKyQU2UxKROOrmNls9rdi6XzrGffinPS2wun1Ksll8Bwg3u23Hf1
-	 rrRfafS6vGkrgogYsKRm9BpbNvEJmP7uk0tW//pY=
+	b=jqQibnLQVaIiR+Qo7lBioXYNZMCuUeY22R+j3I5JVnNpRZV8OZP6Gl64+FwDusqHy
+	 mX10/Pyi2NamV0wzcO8GcHstvhoulmQ2qrxcJXmvxqcEzwlfPWmc8nPh0yBlNhBCzw
+	 HGI12NYWkTW2IFgNV+Aesn6qwcfLBEOC74LOEPug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 459/798] ASoC: codecs: wsa883x: Handle reading version failure
-Date: Mon, 14 Oct 2024 16:16:53 +0200
-Message-ID: <20241014141236.007594729@linuxfoundation.org>
+Subject: [PATCH 6.1 460/798] tools/x86/kcpuid: Protect against faulty "max subleaf" values
+Date: Mon, 14 Oct 2024 16:16:54 +0200
+Message-ID: <20241014141236.045859245@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -60,76 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-[ Upstream commit 2fbf16992e5aa14acf0441320033a01a32309ded ]
+[ Upstream commit cf96ab1a966b87b09fdd9e8cc8357d2d00776a3a ]
 
-If reading version and variant from registers fails (which is unlikely
-but possible, because it is a read over bus), the driver will proceed
-and perform device configuration based on uninitialized stack variables.
-Handle it a bit better - bail out without doing any init and failing the
-update status Soundwire callback.
+Protect against the kcpuid code parsing faulty max subleaf numbers
+through a min() expression.  Thus, ensuring that max_subleaf will always
+be ≤ MAX_SUBLEAF_NUM.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20240710-asoc-wsa88xx-version-v1-2-f1c54966ccde@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Use "u32" for the subleaf numbers since kcpuid is compiled with -Wextra,
+which includes signed/unsigned comparisons warnings.
+
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20240718134755.378115-5-darwi@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wsa883x.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ tools/arch/x86/kcpuid/kcpuid.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/codecs/wsa883x.c b/sound/soc/codecs/wsa883x.c
-index f4b81ebab3537..639fb77170ac8 100644
---- a/sound/soc/codecs/wsa883x.c
-+++ b/sound/soc/codecs/wsa883x.c
-@@ -1002,15 +1002,19 @@ static const struct reg_sequence reg_init[] = {
- 	{WSA883X_GMAMP_SUP1, 0xE2},
- };
+diff --git a/tools/arch/x86/kcpuid/kcpuid.c b/tools/arch/x86/kcpuid/kcpuid.c
+index dae75511fef71..bbeb2dc86410b 100644
+--- a/tools/arch/x86/kcpuid/kcpuid.c
++++ b/tools/arch/x86/kcpuid/kcpuid.c
+@@ -7,7 +7,8 @@
+ #include <string.h>
+ #include <getopt.h>
  
--static void wsa883x_init(struct wsa883x_priv *wsa883x)
-+static int wsa883x_init(struct wsa883x_priv *wsa883x)
+-#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
++#define ARRAY_SIZE(x)	(sizeof(x) / sizeof((x)[0]))
++#define min(a, b)	(((a) < (b)) ? (a) : (b))
+ 
+ typedef unsigned int u32;
+ typedef unsigned long long u64;
+@@ -203,12 +204,9 @@ static void raw_dump_range(struct cpuid_range *range)
+ #define MAX_SUBLEAF_NUM		32
+ struct cpuid_range *setup_cpuid_range(u32 input_eax)
  {
- 	struct regmap *regmap = wsa883x->regmap;
--	int variant, version;
-+	int variant, version, ret;
+-	u32 max_func, idx_func;
+-	int subleaf;
++	u32 max_func, idx_func, subleaf, max_subleaf;
++	u32 eax, ebx, ecx, edx, f = input_eax;
+ 	struct cpuid_range *range;
+-	u32 eax, ebx, ecx, edx;
+-	u32 f = input_eax;
+-	int max_subleaf;
+ 	bool allzero;
  
--	regmap_read(regmap, WSA883X_OTP_REG_0, &variant);
-+	ret = regmap_read(regmap, WSA883X_OTP_REG_0, &variant);
-+	if (ret)
-+		return ret;
- 	wsa883x->variant = variant & WSA883X_ID_MASK;
+ 	eax = input_eax;
+@@ -254,7 +252,7 @@ struct cpuid_range *setup_cpuid_range(u32 input_eax)
+ 		 * others have to be tried (0xf)
+ 		 */
+ 		if (f == 0x7 || f == 0x14 || f == 0x17 || f == 0x18)
+-			max_subleaf = (eax & 0xff) + 1;
++			max_subleaf = min((eax & 0xff) + 1, max_subleaf);
  
--	regmap_read(regmap, WSA883X_CHIP_ID0, &version);
-+	ret = regmap_read(regmap, WSA883X_CHIP_ID0, &version);
-+	if (ret)
-+		return ret;
- 	wsa883x->version = version;
- 
- 	switch (wsa883x->variant) {
-@@ -1045,6 +1049,8 @@ static void wsa883x_init(struct wsa883x_priv *wsa883x)
- 				   WSA883X_DRE_OFFSET_MASK,
- 				   wsa883x->comp_offset);
- 	}
-+
-+	return 0;
- }
- 
- static int wsa883x_update_status(struct sdw_slave *slave,
-@@ -1053,7 +1059,7 @@ static int wsa883x_update_status(struct sdw_slave *slave,
- 	struct wsa883x_priv *wsa883x = dev_get_drvdata(&slave->dev);
- 
- 	if (status == SDW_SLAVE_ATTACHED && slave->dev_num > 0)
--		wsa883x_init(wsa883x);
-+		return wsa883x_init(wsa883x);
- 
- 	return 0;
- }
+ 		if (f == 0xb)
+ 			max_subleaf = 2;
 -- 
 2.43.0
 
