@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-84228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F1199CF25
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:52:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0D099D329
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 491FF1C2340A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:52:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC5B91C2244D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE1A1AE01D;
-	Mon, 14 Oct 2024 14:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D77D1C75EB;
+	Mon, 14 Oct 2024 15:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjPO2Gs7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HvBru0Dw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BAB80027;
-	Mon, 14 Oct 2024 14:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592C51C0DFD;
+	Mon, 14 Oct 2024 15:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917275; cv=none; b=PL6dR2Whv0c8AXBuGVibkjsNOy8eP7YCOWuR2F+SHBLw8COrGgzz318o+3m82TOu4jNBiMHv3Pw1MGFKMi2SN35KJ0wvWf72leIJw2DDGVz8DkCvH+dLp/fq7BHg0/q1ZPO+FWlwSvql57xZazcVWtfN1OYgHJq3AvqmXToTBss=
+	t=1728919869; cv=none; b=DsRDKYuIWoLBwYOGvgV/H+ZCZra7ePaiMtq5A7tqD/0W+55ON3ac2UUHiU0Bxc4I5kAHqLrItA6DJclO4QnqQ5BkWY95EnzDCTUrw7j7m98VjSuGfvkZY7wxorGq6mC/tT4Kxv8k/RUGD96nJoQqvd9us+AsyNlLzMbjjBPVAH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917275; c=relaxed/simple;
-	bh=Rs+IKpkC58X/Lnc1QwyaapxWtkrCs1RNvPs9y13L4Zo=;
+	s=arc-20240116; t=1728919869; c=relaxed/simple;
+	bh=oBqs+yrF8OsmtRblPMZVsUx8vATfwx7LienMoXL2SpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f2LHhx96zYllfTdIdxLfOY/3phlhwpH+3Zz95wHXeqWDQ8oQ2UFyMjA7aT6ugg2ZbT9R6tnHpKI9QP0U4mhWoRj/bynm7w9QZKGCYWjaHysoJR4Qo+NBXSPZJSZ+f0m+/6cs/JjqTcx+4w3dDU/AgVLXK7Po7nhueaCAp0JZBgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjPO2Gs7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9971C4CEC3;
-	Mon, 14 Oct 2024 14:47:54 +0000 (UTC)
+	 MIME-Version; b=n1j7SZSb6D2eyX9T7OnMAxGy2hD4ZMvVIXq12eKOp21Q0F3c27Jr8B4sjyA+wfFSC/jpe0Hyl9Dedn43/VXrjv5WmIKOzd2bRDxGHKN9qAlVVTq/n8KrI8RuoAP3tlrX595ll9h9vGYp+gmhdARVJSdbCGIg6GJnfiKkg+JKZ+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HvBru0Dw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B757BC4CEC3;
+	Mon, 14 Oct 2024 15:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917275;
-	bh=Rs+IKpkC58X/Lnc1QwyaapxWtkrCs1RNvPs9y13L4Zo=;
+	s=korg; t=1728919869;
+	bh=oBqs+yrF8OsmtRblPMZVsUx8vATfwx7LienMoXL2SpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xjPO2Gs7nVoxFN6NVhsqL5ehF7+SHwVgp5lcimZkxzX3Z2cA10WPPhyo/KX+5AIXX
-	 teXWS6ukbKv02woBdy4fN7RFya0LAQ+hOvikpgjaBEQWEV7kdqNe5yKkRJEofAJf8x
-	 XkPhousDTUuTAIS04yl5O3Tk25IQJo/39lzjNFJw=
+	b=HvBru0Dw9grItS31upan01lRLIYFmFCykLswpEGmSzjKC90a6HK7JHdMYOmBI4kev
+	 LEvByd6/3FuJkzqZeZ+ayX6c5OjuCfjLy2yPDhhKpGlWr4jIwMVBWeoFxkCtFomc8h
+	 JhnqMVArwONootxseXAq3fBMy1BeTvWnIZ2U/vYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 176/213] hwmon: (mc34vr500) Add missing dependency on REGMAP_I2C
-Date: Mon, 14 Oct 2024 16:21:22 +0200
-Message-ID: <20241014141049.834562687@linuxfoundation.org>
+Subject: [PATCH 6.1 729/798] SUNRPC: Fix integer overflow in decode_rc_list()
+Date: Mon, 14 Oct 2024 16:21:23 +0200
+Message-ID: <20241014141246.712328370@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 56c77c0f4a7c9043e7d1d94e0aace264361e6717 ]
+[ Upstream commit 6dbf1f341b6b35bcc20ff95b6b315e509f6c5369 ]
 
-This driver requires REGMAP_I2C to be selected in order to get access to
-regmap_config and devm_regmap_init_i2c. Add the missing dependency.
+The math in "rc_list->rcl_nrefcalls * 2 * sizeof(uint32_t)" could have an
+integer overflow.  Add bounds checking on rc_list->rcl_nrefcalls to fix
+that.
 
-Fixes: 07830d9ab34c ("hwmon: add initial NXP MC34VR500 PMIC monitoring support")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Message-ID: <20241002-mc34vr500-select-regmap_i2c-v1-1-a01875d0a2e5@gmail.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 4aece6a19cf7 ("nfs41: cb_sequence xdr implementation")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/callback_xdr.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-index b46c85e2197c0..393ac124012ec 100644
---- a/drivers/hwmon/Kconfig
-+++ b/drivers/hwmon/Kconfig
-@@ -1200,6 +1200,7 @@ config SENSORS_MAX31790
- config SENSORS_MC34VR500
- 	tristate "NXP MC34VR500 hardware monitoring driver"
- 	depends on I2C
-+	select REGMAP_I2C
- 	help
- 	  If you say yes here you get support for the temperature and input
- 	  voltage sensors of the NXP MC34VR500.
+diff --git a/fs/nfs/callback_xdr.c b/fs/nfs/callback_xdr.c
+index d0cccddb7d088..fa519ce5c841f 100644
+--- a/fs/nfs/callback_xdr.c
++++ b/fs/nfs/callback_xdr.c
+@@ -372,6 +372,8 @@ static __be32 decode_rc_list(struct xdr_stream *xdr,
+ 
+ 	rc_list->rcl_nrefcalls = ntohl(*p++);
+ 	if (rc_list->rcl_nrefcalls) {
++		if (unlikely(rc_list->rcl_nrefcalls > xdr->buf->len))
++			goto out;
+ 		p = xdr_inline_decode(xdr,
+ 			     rc_list->rcl_nrefcalls * 2 * sizeof(uint32_t));
+ 		if (unlikely(p == NULL))
 -- 
 2.43.0
 
