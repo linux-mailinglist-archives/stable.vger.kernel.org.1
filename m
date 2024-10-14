@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-83849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFFB599CCD5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:25:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B744899D21F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3F042820A0
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:25:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E77D11C2327F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC39D1A0BE7;
-	Mon, 14 Oct 2024 14:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37891C3F0A;
+	Mon, 14 Oct 2024 15:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKaYTkhP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyJtWbMZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC0CE571;
-	Mon, 14 Oct 2024 14:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24941ABEDC;
+	Mon, 14 Oct 2024 15:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915928; cv=none; b=fiej15WcnI5u9KvhSaDfUl/9bpDQ6ApKC8MRObmv2afSxu4pM1EfWgxuquSJlXphEAdnadAim5nu7y7eL8qsCxvfWzFk4flNzGg35ehwY9MILrO8DBZiUvGjQxhf1NPKDzTpWZBqQJZgYY1E1WLTfUbtJnPfO/7Hr9fh9BBOE6g=
+	t=1728919230; cv=none; b=VCrBuYlWSig9wUw9XD0HgxaDD4htDapkY1GBFaufP+ugz6GSQdZtRvCJCT9hUG/lXBKrMqnz23Xu4Le4CRmtA4P3F5uN6EG6ulbJWRrPEOVht3ArlBd4xOL4GfA/PfO4/FmvtFsaZBjVCnvDwYlMz/XMaQf7aW2R5K//EjuhzKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915928; c=relaxed/simple;
-	bh=J03i1HQyM7iUdbvZSudJr0Ioru5sMhP5qg7smyfT7mQ=;
+	s=arc-20240116; t=1728919230; c=relaxed/simple;
+	bh=2CJHhwLPQ9y6UVdsH7lrMA2MewNgswMrV/HxFgeATVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g80DyMDYaIsP4hiQXnNphqxKodFFi4sOalyOPvJkOm0oB98U2FgVsnDb1IsA9y9wYVTQOsvsFeYzRB0lyv7gA/tV08tfqCre/KojADNlT4ZgZAQ9WQxi1aQu3Bw3aX+oGi6hyQt0nYPce5l0Q0x1tkJzqFDUeLkEcT9GRV3w1w0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKaYTkhP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7B1C4CEC3;
-	Mon, 14 Oct 2024 14:25:27 +0000 (UTC)
+	 MIME-Version; b=O/Mz+x7cq/kU5v7SIbHNL7WXCFmn4ywckc1IcGtVuktjm5jGM6Kf/TZDUeBtxLUVNbaHT7EUcevB33F9WKYRqvTQP/L5r48z9i+Oer14pj+rNqNDg0S2pKRykzq8gVZ9lpF7gqouTFwHmR2xAmoP+f7r33ShSTsewT/Hp7yXd0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyJtWbMZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB5DC4CEC3;
+	Mon, 14 Oct 2024 15:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915928;
-	bh=J03i1HQyM7iUdbvZSudJr0Ioru5sMhP5qg7smyfT7mQ=;
+	s=korg; t=1728919230;
+	bh=2CJHhwLPQ9y6UVdsH7lrMA2MewNgswMrV/HxFgeATVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CKaYTkhPwYglIy3/q1Lkmz2HtdkwhdQGo5yg+UuGaXfYdJ0hhRoe4D1oU+p6uQdJK
-	 410c6g0LepTO9J55z1AvlH6OynavgzK2Hj6xDXs7zlT9MQmKoxKVNMfYF29bE5hzuX
-	 fpdciLaMZdj0pkmJe/h8S4j1VLLzqdt6vz/fxtxY=
+	b=vyJtWbMZBxARNpEdUcWX1XPs5ms0kS+zaRb//Y+CPjt3XTY0YZXOW63wBOX1iDM07
+	 2fXRk64fj3x2cfeoDz60NOqlYexZhJ8hKirBagHdOCw4Ae5UT1IjBKsggyDQCprl5i
+	 o6OmtVPdNae27xBczqQBMreVmAY0TFIhdrRUIHJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Jon Mason <jdmason@kudzu.us>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 040/214] ntb: ntb_hw_switchtec: Fix use after free vulnerability in switchtec_ntb_remove due to race condition
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 549/798] ext4: aovid use-after-free in ext4_ext_insert_extent()
 Date: Mon, 14 Oct 2024 16:18:23 +0200
-Message-ID: <20241014141046.554056498@linuxfoundation.org>
+Message-ID: <20241014141239.566388795@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit e51aded92d42784313ba16c12f4f88cc4f973bbb ]
+commit a164f3a432aae62ca23d03e6d926b122ee5b860d upstream.
 
-In the switchtec_ntb_add function, it can call switchtec_ntb_init_sndev
-function, then &sndev->check_link_status_work is bound with
-check_link_status_work. switchtec_ntb_link_notification may be called
-to start the work.
+As Ojaswin mentioned in Link, in ext4_ext_insert_extent(), if the path is
+reallocated in ext4_ext_create_new_leaf(), we'll use the stale path and
+cause UAF. Below is a sample trace with dummy values:
 
-If we remove the module which will call switchtec_ntb_remove to make
-cleanup, it will free sndev through kfree(sndev), while the work
-mentioned above will be used. The sequence of operations that may lead
-to a UAF bug is as follows:
+ext4_ext_insert_extent
+  path = *ppath = 2000
+  ext4_ext_create_new_leaf(ppath)
+    ext4_find_extent(ppath)
+      path = *ppath = 2000
+      if (depth > path[0].p_maxdepth)
+            kfree(path = 2000);
+            *ppath = path = NULL;
+      path = kcalloc() = 3000
+      *ppath = 3000;
+      return path;
+  /* here path is still 2000, UAF! */
+  eh = path[depth].p_hdr
 
-CPU0                                 CPU1
+==================================================================
+BUG: KASAN: slab-use-after-free in ext4_ext_insert_extent+0x26d4/0x3330
+Read of size 8 at addr ffff8881027bf7d0 by task kworker/u36:1/179
+CPU: 3 UID: 0 PID: 179 Comm: kworker/u6:1 Not tainted 6.11.0-rc2-dirty #866
+Call Trace:
+ <TASK>
+ ext4_ext_insert_extent+0x26d4/0x3330
+ ext4_ext_map_blocks+0xe22/0x2d40
+ ext4_map_blocks+0x71e/0x1700
+ ext4_do_writepages+0x1290/0x2800
+[...]
 
-                        | check_link_status_work
-switchtec_ntb_remove    |
-kfree(sndev);           |
-                        | if (sndev->link_force_down)
-                        | // use sndev
+Allocated by task 179:
+ ext4_find_extent+0x81c/0x1f70
+ ext4_ext_map_blocks+0x146/0x2d40
+ ext4_map_blocks+0x71e/0x1700
+ ext4_do_writepages+0x1290/0x2800
+ ext4_writepages+0x26d/0x4e0
+ do_writepages+0x175/0x700
+[...]
 
-Fix it by ensuring that the work is canceled before proceeding with
-the cleanup in switchtec_ntb_remove.
+Freed by task 179:
+ kfree+0xcb/0x240
+ ext4_find_extent+0x7c0/0x1f70
+ ext4_ext_insert_extent+0xa26/0x3330
+ ext4_ext_map_blocks+0xe22/0x2d40
+ ext4_map_blocks+0x71e/0x1700
+ ext4_do_writepages+0x1290/0x2800
+ ext4_writepages+0x26d/0x4e0
+ do_writepages+0x175/0x700
+[...]
+==================================================================
 
-Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So use *ppath to update the path to avoid the above problem.
+
+Reported-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Closes: https://lore.kernel.org/r/ZqyL6rmtwl6N4MWR@li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com
+Fixes: 10809df84a4d ("ext4: teach ext4_ext_find_extent() to realloc path if necessary")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240822023545.1994557-7-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/hw/mscc/ntb_hw_switchtec.c | 1 +
+ fs/ext4/extents.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-index 31946387badf0..ad1786be2554b 100644
---- a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-+++ b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-@@ -1554,6 +1554,7 @@ static void switchtec_ntb_remove(struct device *dev)
- 	switchtec_ntb_deinit_db_msg_irq(sndev);
- 	switchtec_ntb_deinit_shared_mw(sndev);
- 	switchtec_ntb_deinit_crosslink(sndev);
-+	cancel_work_sync(&sndev->check_link_status_work);
- 	kfree(sndev);
- 	dev_info(dev, "ntb device unregistered\n");
- }
--- 
-2.43.0
-
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -2103,6 +2103,7 @@ prepend:
+ 				       ppath, newext);
+ 	if (err)
+ 		goto cleanup;
++	path = *ppath;
+ 	depth = ext_depth(inode);
+ 	eh = path[depth].p_hdr;
+ 
 
 
 
