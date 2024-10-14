@@ -1,322 +1,153 @@
-Return-Path: <stable+bounces-85070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5267F99D784
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 21:33:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0266B99D84E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 22:35:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 712161C22921
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 19:33:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 214E11C209BB
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 20:35:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C101C8776;
-	Mon, 14 Oct 2024 19:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C13142E77;
+	Mon, 14 Oct 2024 20:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yt5Ym90d"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J42UJivW"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92171A7273;
-	Mon, 14 Oct 2024 19:33:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728934397; cv=fail; b=KPVTImohhyuAsdr0WUojqLQP8FHPAsBJ2+1xthRxuyzO9IP4VR9tFuq6LrKXHuRH6wtiYyRr87UtKbRMVxpmYW3XaptZd76avu3bzL0D+9dgZARHvmyCkWNy8ejhWGAF2Bdrj5djalX1K89rzjhdQDdvh0WrimeYeY7jOHvo1Ls=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728934397; c=relaxed/simple;
-	bh=RHbdoCH4cPPoXd97s/5lNA8223QzmVPDU2Fd+vt/AEA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=dW8d34A/j5rVbRKJnlO9c5cT27KoZK1mnF9RCr1OJWCrXgPBIG2f3cvZmEWHLu8EpdPZjMqJsA+CbHr4zvLUHSn1ov2MiM5QHJwkxDv72KUkMtytmAeMvBN2Q8zQd28kuB73R5yOVDLtrI4Pj6BsW+6/7JEQmRhiKs05w+ob69s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yt5Ym90d; arc=fail smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728934395; x=1760470395;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=RHbdoCH4cPPoXd97s/5lNA8223QzmVPDU2Fd+vt/AEA=;
-  b=Yt5Ym90dIiMGr0kYDbbbdlqWJvyAC4qxcB+ZvLZbtv6LNzCL8LThFmtU
-   yIR7Tzk/zNJO7p3p+G8/D/kR4YdWmeCwbT3uc93mUrAi8RreYXxdIWpJy
-   bZgf5ul/N90ctPmdGixNOnZzETXPXdUJTq2aZD2jRRKMcCB1nx+uHSANl
-   3eg5XlrhG1KCeqD4B2tJx6Mp0FvOM1HvO2WdqHJr1FSGlOUY+TrdXmyYe
-   jkj50V/MQ/XLrj5ewkNZlMfxcF7IWs+dtshBofDHwEBoZSbnmrnnd9yLr
-   14ODwPdVCQsoNBWNolT7wyQFwrac7HPC++k3zluqj9hepT+43iL0wLyOM
-   w==;
-X-CSE-ConnectionGUID: pN8gV28HSO6WshNlOVVM0g==
-X-CSE-MsgGUID: 1Zp5CdsJQ1CzxI1DgE21Tg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11225"; a="32100941"
-X-IronPort-AV: E=Sophos;i="6.11,203,1725346800"; 
-   d="scan'208";a="32100941"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2024 12:33:05 -0700
-X-CSE-ConnectionGUID: 5r+t1+iCR4eilP/dKNjFJQ==
-X-CSE-MsgGUID: 0cZ46BhGQ8WXt9m9AeAbrw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,203,1725346800"; 
-   d="scan'208";a="82438188"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 14 Oct 2024 12:33:04 -0700
-Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 14 Oct 2024 12:33:03 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 14 Oct 2024 12:33:00 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 14 Oct 2024 12:33:00 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.172)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 14 Oct 2024 12:32:09 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tMDhj2J1hhpR29SvPROMcwufP2OakB9w+AM9Mcw5ubHPlqWASEPuPqzgIF1omkR0MZgMUM7e410BKD0rUIRMFTKr9mJPOGsDss9zWc3qia4I9KXV/n/45dC0/kpWaseTf17u//LdZhb2Y1dlbQFol4ULIWDHtlTmk4A+g6PtmY7zuIGKSWfOz6fvKNK/gZ3kb4FPvlJ13lhQmNEq6s1IAVHQBGe/JhLCLsi0NnBWtOYt1+YzS2BEugd7NVPSCPE2HOx+Mft27NAwxMaZ9ock3x8ch9s8ijNkuSxhOaQE/EUYhmhFBdba2JU9GSnHtW0y2CMbxkOWAJOwZ5DAGD7Zmg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e+kPtw0snwn/kJRhpzyTJvRuqyANIQyFgsFszT7hUEk=;
- b=RSsEEBwRQ/z4OfvTklwD6fHdStfuOLoM+1eFekfr3D6A+AGmHrYFSeG458bt2DhPv5fo11/MqMhK/ev7dTbyQa0lsPgI5VD2JX3VF1+JyKgDfpHQ+f4Q0KfWyAfJ6t0JAXBUTigc9T7VTQJyr6fCOVYZtQDUHKNoUd67HePi9J31n29cx5qf7rqxwIgkXysMX5uJJazyU20udrFHvBOACdPTd/Vr27FaMVbMNBmS5ebsYJqplhZwgy8VJWfpyOyPigbCwT/yS18w5GDGgW7fksVagHRlfqLEgoO+sRN6LSx4k8BUEaTLGXiYeYzmeHTOfjSq9olQFYsZ+pvv2hhFaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by IA1PR11MB8246.namprd11.prod.outlook.com (2603:10b6:208:445::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.24; Mon, 14 Oct
- 2024 19:32:06 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%5]) with mapi id 15.20.8048.020; Mon, 14 Oct 2024
- 19:32:06 +0000
-Date: Mon, 14 Oct 2024 12:32:03 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Zijun Hu <zijun_hu@icloud.com>, Dan Williams <dan.j.williams@intel.com>,
-	<dave.jiang@intel.com>, <ira.weiny@intel.com>
-CC: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron
-	<jonathan.cameron@huawei.com>, Alison Schofield <alison.schofield@intel.com>,
-	<vishal.l.verma@intel.com>, <linux-cxl@vger.kernel.org>
-Subject: Re: [PATCH 4/5] cxl/port: Fix use-after-free, permit out-of-order
- decoder shutdown
-Message-ID: <670d71b354c30_3ee2294c4@dwillia2-xfh.jf.intel.com.notmuch>
-References: <172862483180.2150669.5564474284074502692.stgit@dwillia2-xfh.jf.intel.com>
- <172862486548.2150669.3548553804904171839.stgit@dwillia2-xfh.jf.intel.com>
- <a7b8a007-907a-4fda-9a35-68faed109ed3@icloud.com>
- <6709647f66d94_964f2294ae@dwillia2-xfh.jf.intel.com.notmuch>
- <060193f9-5de1-422b-abfb-6328a1c7b806@icloud.com>
- <670af54931b8_964fe29427@dwillia2-xfh.jf.intel.com.notmuch>
- <695d1a26-255f-464b-884b-47a5b7421128@icloud.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <695d1a26-255f-464b-884b-47a5b7421128@icloud.com>
-X-ClientProxiedBy: MW4PR04CA0181.namprd04.prod.outlook.com
- (2603:10b6:303:86::6) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52751D0F79;
+	Mon, 14 Oct 2024 20:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728938125; cv=none; b=kvpKpnHhYZrTLMS3TCQ95fdWtbDhn4F+53yayeB6gkJYfTcwU9BnvAxwPgFcfALDUZhzNXmDqiUZl6uqvvlAvMbTg3E8B8+u/kUZt9HtNfbCfkuofWnUJxrin3XDn1r9HqFs4Sn+OuepE16P4xk2hCBeAhq2FzKUU30rS4+X9hI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728938125; c=relaxed/simple;
+	bh=zUKIh96AOoscnKFUvHFFxsjuLKwoeDpDZkU6IAm3I8M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L8867YQVjMaFrHULj5iYCQpvz1dNukQp5urkTnoqW3Cyyb2amv4r5R3GL3oBx0+jo9YTNvx07ZLsitZGSib/cEVIVs8s0XqF9mz7yjqZ7CwvZV38vZqKREqIqKd/uIhXK3295CRQPXlTdeBklzakk+qAmYvca/RYRDQaK+60Mhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J42UJivW; arc=none smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4604b48293dso30858191cf.0;
+        Mon, 14 Oct 2024 13:35:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728938123; x=1729542923; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=OzS3I4dx6YLA6yr/693oMCouTXOBfKTG+g21VPclfFY=;
+        b=J42UJivWYXJ/GRpWv9OaBQLvee9FnoFHXVEPyVLhQeFfaLXQVWFnlJ1Kaz6CeCmMeP
+         wIDhKKPPqRf3fpE4EMr6m2v9rPLPW2V/c/qFOrJCw7tWo8GoA/k5AWp4cbN56u5aBzC6
+         /oG/DF2xut0zAwXdmFoN3ynb9Bev3YZcB270ej7X2bD1JvHzyqmim4P/5dwtwoM0bf9w
+         dJxzG2lSF+8gzv9dRHobV2EtFLZDzcyyWXjNR7ciRuvc8nP1cwwughsnxiy3AE51N2G/
+         T6twT/KNekrg/y3rxe6IaqQLl/309in3gn0Us8PpqYfSBh+DH3uhbnJr189mRowll8Fl
+         VWwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728938123; x=1729542923;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OzS3I4dx6YLA6yr/693oMCouTXOBfKTG+g21VPclfFY=;
+        b=dO2KoZhUzvehiLen4PttWZx4213yZDK4lS8DGQoYQAUt0om14RsFh5M/YtgvJnUsIB
+         epsop1WhWm8zWbes/otCLZniPduNxQZI+UhJKrjVqfole0OpO/9zJowxa6tpY52B8y2q
+         ti/S3G7PcTJIYp21RCG7Ab9coWqmz1vpVndtJrga4Er5nTsRRXWad8ceqKDxWkRi/ysF
+         u+nShTz5JFGAwYuWfPkBIw4kZH2iKzpcw9aTXA5HaRDRCBL7rwvzvKPdzpUXjkYk6G3W
+         bWMUIw0VrqP4ob0U1DXqoxv34vcvEcYyQRPoy8Rzjtc6/UWdEugYbRdnQx1+ueQHf005
+         BYaA==
+X-Forwarded-Encrypted: i=1; AJvYcCUJnlol5vJ5wVsS1UBs/nhGIhk5KXqn/eHNwW5RPtBu4tgYdyF/HFrqma3zY1w9zkHFV9DpYavEdDljOlg=@vger.kernel.org, AJvYcCWWoakgSU5g0DXz8Hqm90wjCeiC1JCBqSTmtQYQ8ClokedtKMJNzrQB5AMD8sZVlvLAQNKaDFt1@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHoxGKF5EI27CXYkAGrtDmLL78Eujc5JzS7BpmFXedWGKGqEnZ
+	dZa14RxRPVQfO0uak5ZHg8eUlMkUbKuOiILRWU+hArGO5c26/+ZQ
+X-Google-Smtp-Source: AGHT+IFozEPKPltAcdtxlEwwbAW0fDGauG8/U5vhNblNesvVptDpoDkpofPtg4yJrShcBjY/4sJiAQ==
+X-Received: by 2002:a05:622a:145:b0:460:4dd:20bb with SMTP id d75a77b69052e-4603f5909c6mr298265441cf.8.1728938122498;
+        Mon, 14 Oct 2024 13:35:22 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46042789a5csm48398391cf.20.2024.10.14.13.35.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Oct 2024 13:35:21 -0700 (PDT)
+Message-ID: <431a7cdd-f5d8-4355-82fe-1fc541fbd622@gmail.com>
+Date: Mon, 14 Oct 2024 13:35:18 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|IA1PR11MB8246:EE_
-X-MS-Office365-Filtering-Correlation-Id: 41613195-630e-4b05-f709-08dcec86e327
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?+v5jxsoXsIgq+nbQcJTKvPbkPHXTmGaS6vVAs+hz9jauoALp9P8RVAJ2Q9dw?=
- =?us-ascii?Q?+aBVW9d6KUe0t4A0ev44DVLKc81jChAeFJyP09S3MdZB6NEt/8xGqG9Kemfh?=
- =?us-ascii?Q?VeC/NknfHXTqF/e/xpNcO58OJEPDx6QtNey7aVMfMbrRrsiBHzVCl0LT75f+?=
- =?us-ascii?Q?PtKGazk7dbJfNXVuSDQDMm/JUTs2E80QCEoCGm2Ss0EDv/JY0hX1v2iTR7No?=
- =?us-ascii?Q?n0NeziYSerfst9YkRFpdyZ1uQ62PxQuDwQ06TtedNgMBBGo23mijod7vqFVd?=
- =?us-ascii?Q?Dj44REaGWECxjVryvHjy1bynqWHW8mW8OHeB9vgUQ//KjOw+eop/ovWgBSdX?=
- =?us-ascii?Q?+fzGW2XmcZ1f0m8POk+a6vq5J/kSzMVOhdztCm8Vwxj9kQhtGdpMqzhQX9On?=
- =?us-ascii?Q?8vH7fbft5xA3nCH02BgkR/FtsnSjIsgrthY831lkZkhXR6Xal+iN/3L9DApV?=
- =?us-ascii?Q?cVGwj6xNcs5RbgW+hqORKGrQP3Zz8EUprHdpY/kdSK83tW396UI36FN9mTCM?=
- =?us-ascii?Q?MzDCaL6lUKBOJR5a2zwC20AEQAay81sh6CN33Uw5TiYL04SShgNNc5tDsTp9?=
- =?us-ascii?Q?tFMb5DfQGXdYUjrBCqswkC6y5c0iseFeTkxH8piFxfHRQdvJqPHBkpmmh9ir?=
- =?us-ascii?Q?6lov1d2cKXQA/v6l5L1dnAAIbLfuwiCcicMZM/qpMRYVrPVxtyJd+nso4uKO?=
- =?us-ascii?Q?DoNP/PCsVFPTYarpq8zjlPctUvzSRwnKvaRO6E9bPmOR23RW4QsdeD8JgRoO?=
- =?us-ascii?Q?4Yim62shY324yTuX6dtmNcIVR5CAbg5HGEryzMQUaSlxnY6C3eVIE3Y7uv9s?=
- =?us-ascii?Q?tVeg5Qa9ekHfeHQe8a7OLwvll/XmATwra/fSKCmVFATzuW2cjBXMjksgVn1l?=
- =?us-ascii?Q?GuLtHooL6304SZ3uVWkdieUw0SPPucF2HSKpcFCaXeyWSl9fWIhpPfFzrwmm?=
- =?us-ascii?Q?DaEqxm4+nno+e2tDtzt7Fz8OiZQFGTrHlsj2B1SOj4ZFt+y1GWPgonyzdd38?=
- =?us-ascii?Q?DUbtco3AZhVdWjbcETrkwVHNl4aEJayCotzeSvkUjhrWw6o9+EPMo/v6lmZV?=
- =?us-ascii?Q?DopVybNKt2Le+t6gOqaXTCleUEBDvhGf/faLXjFZcLX7DL7nhL0IKn1WeEfr?=
- =?us-ascii?Q?pchgwZ3FYWiOdw8P/mq4IvyBmS/HAHr89V4ma2S3v5o6X30e+l9X3f9z/+N4?=
- =?us-ascii?Q?RA8duyXg01MySgSD8YsOSuCm4/e7ZFgpRUv6nzFDyjwbKfpfK3/VkEjHcY89?=
- =?us-ascii?Q?BcJIfWQwMephbTRSAzILk3p/7rjo+9pSck1j14crPA=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TarvfS24CGpiJZIxySGpNkLtuvy3AzY9qkGc2t2pVhajQ1fefindML2PltG3?=
- =?us-ascii?Q?hKt7r84SUENyZKLHgy1vmAjaJAVdCwkjp/bKLaa0ltgzqxQzrExvqPW1R4iv?=
- =?us-ascii?Q?EmwyYVnWaDXnIHYMecdMm/8nozoB7EiOwpfQRQ3EldS2vR7fwokMBHMw8JAA?=
- =?us-ascii?Q?XWFHH6YRg5G+xdeFvgfuy8MLVG37CEA8FY79jl/yDQ4+Df5bOaUWVyLqNXcY?=
- =?us-ascii?Q?HKQpXcvg/FSBA7sDlAwWDRU33G3Vae87K8rH7w4hXw8YwAU3O//OZzH9DSQi?=
- =?us-ascii?Q?VgbY9sAhgnkZmjaxkglYihBxjylpU6EBdKCVFcz28thNsD1NAXWmBulCP71z?=
- =?us-ascii?Q?fAaGfqfm/IAmQtlyQRrdsYksfbH7uM6EcA3QBfnXYc3f0TX/n7tAjv/z7FJM?=
- =?us-ascii?Q?ntp7U24ljvSeFF2AgBYN3lA9hie8OfKtPu4JaiNFcP9sd85rgxhULAod62y2?=
- =?us-ascii?Q?ARDLn5s9/9coPG9dIHIZ19V4rAmrH9hNhDI6RD6m0zovBLJIuZzi8puiE8JV?=
- =?us-ascii?Q?y+IzSYVyh8W2waYwhQHCjFbrVrB8UMsBTorkGPt2a1FHzw2jxYbIidyaSgbp?=
- =?us-ascii?Q?iu/lgyeXcsHnbEeQGSI0vEpY17PgEVMGwV3iSJcho9uZTw4oMTV5lGulfaGI?=
- =?us-ascii?Q?o7SmiKjtOI2VRT9cDGh1q/yA8Q0zNKBygnI17c0BJQ9bRipZJtasSBn95j8g?=
- =?us-ascii?Q?p/V3MdylwNH7TeuYwxBtqBs/nfbwWI7tUzrZ3zXLEIWLgY0eqLUSIUI04l14?=
- =?us-ascii?Q?PDyFfzALECWEjW8WLtAq8o+y0QDukuyxdCmR1gMX35TmqwjzQYEYElCuq22O?=
- =?us-ascii?Q?btrLkCZbRJsiLCkBhxBfuKxcw36KJx46g2cYeIbAGIzhSwfwiv8WL1zSeqeW?=
- =?us-ascii?Q?yyZF0ZfZqoGXJ90pu1lR7siCuCF3eygPNQ9++PsEu0H85v2bI+1RQHM38w0g?=
- =?us-ascii?Q?oZTbltHP7g4gf1I5gVvFpXSdnZyWNVr+nJUWjfGqKAXpYaCUorj9TTcP1A8t?=
- =?us-ascii?Q?IQ273ezJNK17Iv450yRQDEX+bUA++6cmFB7iwDgPeMILgHA24Av/0CvpIW54?=
- =?us-ascii?Q?TDSqfMZiiUN5BflIC36ZvIZO1uTFKNd58bROukZLolZ27CKyA5mdtB8ooaO0?=
- =?us-ascii?Q?TB2adlErWOy/DocLNCovKvEgyYB23xVcmZOEdCWIEdCkk8Na4KORzYEHiKhE?=
- =?us-ascii?Q?9GhV6g/JG8LHOdpgSLLprtnN8pGdZmISxjM9cxbRXaQ9CbiHgT6nb8hGlKFd?=
- =?us-ascii?Q?IMeICO6f/Z8dLzXyztsFNEOTITK6OvMPRjBWRRp0S4S5SHGI1A/KIrd6RQnt?=
- =?us-ascii?Q?V+g5vljS5xSbx7C+iNU+51zw7/I/hE/ZK1YEcDlfWceTu6tvKp7zGyYt88HF?=
- =?us-ascii?Q?UHxAoiyeMKdHS3MgdjY8dlow3GlWXQ/lqq1ETN/q5na7TK7sf9IM1tNfRlPJ?=
- =?us-ascii?Q?JvgdYROueXt9B+bx47xZ0UP8rZNZNT/K1bQA4I+cSv1uWbUPN0QvIUtQ1x9z?=
- =?us-ascii?Q?PiaYvamBXvv8QvgoD5b/8tp6Rr/M0cGeu9qkRRcaX7klpmR9GQmEawN8OvBG?=
- =?us-ascii?Q?c9JIbpOtL/PcTKtuS29hd4DKy+D8GVTj5mTWUy0rxf5ahcQNqAz94qeBQmB2?=
- =?us-ascii?Q?Dw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41613195-630e-4b05-f709-08dcec86e327
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2024 19:32:06.2358
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kTiPS+RWqsdvP8hYqqc00WMCEiIWWBx0G78qAkkUkwEQfH6WEnM671ITPdFg84y4h0dWzZXUs1wW9/ZUdZWAVZFY6aajd7KZMRHk7FHOkgk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB8246
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/798] 6.1.113-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20241014141217.941104064@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ HGuUuzv+GKZ6nsysJw==
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Zijun Hu wrote:
-> On 2024/10/13 06:16, Dan Williams wrote:
-> > Zijun Hu wrote:
-> > [..]
-> >>>> it does NOT deserve, also does NOT need to introduce a new core driver
-> >>>> API device_for_each_child_reverse_from(). existing
-> >>>> device_for_each_child_reverse() can do what the _from() wants to do.
-> >>>>
-> >>>> we can use similar approach as below link shown:
-> >>>> https://lore.kernel.org/all/20240815-const_dfc_prepare-v2-2-8316b87b8ff9@quicinc.com/
-> >>>
-> >>> No, just have a simple starting point parameter. I understand that more
-> >>> logic can be placed around device_for_each_child_reverse() to achieve
-> >>> the same effect, but the core helpers should be removing logic from
-> >>> consumers, not forcing them to add more.
-> >>>
-> >>> If bloat is a concern, then after your const cleanups go through
-> >>> device_for_each_child_reverse() can be rewritten in terms of
-> >>> device_for_each_child_reverse_from() as (untested):
-> >>>
-> >>
-> >> bloat is one aspect, the other aspect is that there are redundant
-> >> between both driver core APIs, namely, there are a question:
-> >>
-> >> why to still need device_for_each_child_reverse() if it is same as
-> >> _from(..., NULL, ...) ?
-> > 
-> > To allow access to the new functionality without burdening existing
-> > callers. With device_for_each_child_reverse() re-written to internally
-> > use device_for_each_child_reverse_from() Linux gets more functionality
-> > with no disruption to existing users and no bloat. This is typical API
-> > evolution.
-> > 
-> >> So i suggest use existing API now.
-> > 
-> > No, I am failing to understand your concern.
-> > 
-> >> if there are more users who have such starting point requirement, then
-> >> add the parameter into device_for_each_child_reverse() which is
-> >> consistent with other existing *_for_each_*() core APIs such as
-> >> (class|driver|bus)_for_each_device() and bus_for_each_drv(), that may
-> >> need much efforts.
-> > 
-> > There are ~370 existing device_for_each* callers. Let's not thrash them.
-> > 
-> > Introduce new superset calls with the additional parameter and then
-> > rewrite the old routines to just have a simple wrapper that passes a
-> > NULL @start parameter.
-> > 
-> > Now, if Greg has the appetite to go touch all ~370 existing callers, so
-> > be it, but introducing a superset-iterator-helper and a compat-wrapper
-> > for legacy is the path I would take.
-> > 
+On 10/14/24 07:09, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.113 release.
+> There are 798 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> current kernel tree ONLY has 15 usages of
-> device_for_each_child_reverse(), i would like to
-> add an extra parameter @start as existing
-> (class|driver)_for_each_device() and bus_for_each_(dev|drv)() do
-> if it is required.
+> Responses should be made by Wed, 16 Oct 2024 14:09:57 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.113-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-A new parameter to a new wrapper symbol sounds fine to me. Otherwise,
-please do not go thrash all the call sites to pass an unused NULL @start
-parameter. Just accept that device_for_each_* did not follow the
-{class,driver,bus}_for_each_* example and instead introduce a new symbol
-to wrap the new functionality that so far only has the single CXL user.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-[..]
-> > If I understand your question correctly you are asking how does
-> > device_for_each_child_reverse_from() get used in
-> > cxl_region_find_decoder() to enforce in-order allocation?
-> > 
-> 
-> yes. your recommendation may help me understand it.
-> 
-> > The recommendation is the following:
-> > 
-> > -- 8< --
-> > diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> > index 3478d2058303..32cde18ff31b 100644
-> > --- a/drivers/cxl/core/region.c
-> > +++ b/drivers/cxl/core/region.c
-> > @@ -778,26 +778,50 @@ static size_t show_targetN(struct cxl_region *cxlr, char *buf, int pos)
-> >  	return rc;
-> >  }
-> >  
-> > +static int check_commit_order(struct device *dev, const void *data)
-> > +{
-> > +	struct cxl_decoder *cxld = to_cxl_decoder(dev);
-> > +
-> > +	/*
-> > +	 * if port->commit_end is not the only free decoder, then out of
-> > +	 * order shutdown has occurred, block further allocations until
-> > +	 * that is resolved
-> > +	 */
-> > +	if (((cxld->flags & CXL_DECODER_F_ENABLE) == 0))
-> > +		return -EBUSY;
-> > +	return 0;
-> > +}
-> > +
-> >  static int match_free_decoder(struct device *dev, void *data)
-> >  {
-> > +	struct cxl_port *port = to_cxl_port(dev->parent);
-> >  	struct cxl_decoder *cxld;
-> > -	int *id = data;
-> > +	int rc;
-> >  
-> >  	if (!is_switch_decoder(dev))
-> >  		return 0;
-> >  
-> >  	cxld = to_cxl_decoder(dev);
-> >  
-> > -	/* enforce ordered allocation */
-> > -	if (cxld->id != *id)
-> > +	if (cxld->id != port->commit_end + 1)
-> >  		return 0;
-> >  
-> 
-> for a port, is it possible that there are multiple CXLDs with same IDs?
-
-Not possible, that is also enforced by the driver core, all kernel
-object names must be unique (at least if they have the same parent), and
-the local subsystem convention is that all decoders are registered in
-id-order.
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
