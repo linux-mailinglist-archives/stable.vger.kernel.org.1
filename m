@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-83804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CFFB99C9DA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:14:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2CC99CA00
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:23:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D73C2B21AED
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 12:14:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C77091C22688
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 12:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 167C61A00CB;
-	Mon, 14 Oct 2024 12:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21325156F3F;
+	Mon, 14 Oct 2024 12:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHhZ7x8h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eo41eizd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBBD158A19
-	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 12:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D590A8F64
+	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 12:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728908090; cv=none; b=sK5lXv4UBpZ3YLJLN4Tod5eghG79OP5NDOIbtL7hsLZz1y++r3FCHgT3Tg6hT0nWDpJwxsvPfsGNyME/1U5c0rRFS6RJcZ2EH93CVd6/kSKBIeadwAkFbEixBDjoQphU2oalFxeIvoe0sSSWwMGlSrT1D8jislyogerXzpjwzyY=
+	t=1728908626; cv=none; b=doU8TvxKuugCCFp+tBf62EwC6k0Dkt35cz/RvN7528bwk4BKzOUWMgh10d7XpUqUaVKT0rWTkDHPzAhHHbWQ3X7e3EGO2K/2sPY/NjJ24toDLPDUvQzcHqh5oLD+7vp49R3xX9mFTMiA46cVxR2xPKNPrq31b1kF7IF0iTXuGVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728908090; c=relaxed/simple;
-	bh=/GTZ9p8qfbSCPlkSw2CIDHZk5Q8NdTCpoZmn3skPumA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OxN7KKf/gWspEJJyfKmM0aa22d6PZlib1V++dNjtWeykAwykSpY2U85G1cTxe0XtL/TYKzLkOZCTpmxTamEJCGZEFZ8GzzZFTDRRecnT5sid5piHDMXf8LoUhxs/nKdrxqCaYJoIl996Waq+Ah7lG4jcTL9N90JLtEyL3TMreWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHhZ7x8h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB61DC4CEC6;
-	Mon, 14 Oct 2024 12:14:49 +0000 (UTC)
+	s=arc-20240116; t=1728908626; c=relaxed/simple;
+	bh=UODD3ylU9ucQo2DPyhy0Pn34keS/Nx/We3UN/nhx/hk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ndIUpUd/rBoUXRAz80GVV1PlpdZW4DTCiXeEu9SQH5bw+ISW4+LqGuEwjYVbkMFOYcgpoIM0onh+93TcdYwIDOGwbEGLiGDYs2x3uuofW3nD+twN+BpzFoECO5ckCEH0IdqjDGHKJjwDvX2Bv7LLN9BxdkHad8eA5HqX5afvshA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eo41eizd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1381FC4CEC3;
+	Mon, 14 Oct 2024 12:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728908090;
-	bh=/GTZ9p8qfbSCPlkSw2CIDHZk5Q8NdTCpoZmn3skPumA=;
+	s=korg; t=1728908626;
+	bh=UODD3ylU9ucQo2DPyhy0Pn34keS/Nx/We3UN/nhx/hk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=KHhZ7x8hp8/B2YovIu6WvjU71eJ410WPP+lCx45S7TrkQgwrliK7vUJl3aocPBzLA
-	 ubbPy1qRjUbyC8gSZ+yAQVxkNRD3qU4HIaAd3IuI90D/UjZPKtwVhgxrE9H8vy5L2v
-	 LWJZxzrI/eMDDqil63Vd2NMbP/2JzcT4ftzBOnqw=
-Subject: FAILED: patch "[PATCH] Bluetooth: hci_conn: Fix UAF in hci_enhanced_setup_sync" failed to apply to 6.1-stable tree
-To: luiz.von.dentz@intel.com
+	b=eo41eizduS+EsSbh1Kb2Zezc6DX8+o69Kt7v279/9OWmM5R/t6LgP5EfhdLDsp9HY
+	 xtpI0YRfkZUkYFmLN9exlOHlv7BdoGRLK8NDqwc2JevS+wimHE6civjwra/lOnfEKm
+	 7smfwVc1fujrqY/BWwZSymJRQ240eGFwNDtQeRCI=
+Subject: FAILED: patch "[PATCH] mptcp: fallback when MPTCP opts are dropped after 1st data" failed to apply to 5.15-stable tree
+To: matttbe@kernel.org,cpaasch@apple.com,kuba@kernel.org,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 14 Oct 2024 14:14:47 +0200
-Message-ID: <2024101446-approve-rants-581d@gregkh>
+Date: Mon, 14 Oct 2024 14:23:43 +0200
+Message-ID: <2024101443-lunchroom-refinish-4251@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 18fd04ad856df07733f5bb07e7f7168e7443d393
+git cherry-pick -x 119d51e225febc8152476340a880f5415a01e99e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024101446-approve-rants-581d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024101443-lunchroom-refinish-4251@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-18fd04ad856d ("Bluetooth: hci_conn: Fix UAF in hci_enhanced_setup_sync")
+119d51e225fe ("mptcp: fallback when MPTCP opts are dropped after 1st data")
+ae66fb2ba6c3 ("mptcp: Do TCP fallback on early DSS checksum failure")
+4cf86ae84c71 ("mptcp: strict local address ID selection")
 
 thanks,
 
@@ -77,96 +79,84 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 18fd04ad856df07733f5bb07e7f7168e7443d393 Mon Sep 17 00:00:00 2001
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Date: Wed, 2 Oct 2024 11:17:26 -0400
-Subject: [PATCH] Bluetooth: hci_conn: Fix UAF in hci_enhanced_setup_sync
+From 119d51e225febc8152476340a880f5415a01e99e Mon Sep 17 00:00:00 2001
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Tue, 8 Oct 2024 13:04:54 +0200
+Subject: [PATCH] mptcp: fallback when MPTCP opts are dropped after 1st data
 
-This checks if the ACL connection remains valid as it could be destroyed
-while hci_enhanced_setup_sync is pending on cmd_sync leading to the
-following trace:
+As reported by Christoph [1], before this patch, an MPTCP connection was
+wrongly reset when a host received a first data packet with MPTCP
+options after the 3wHS, but got the next ones without.
 
-BUG: KASAN: slab-use-after-free in hci_enhanced_setup_sync+0x91b/0xa60
-Read of size 1 at addr ffff888002328ffd by task kworker/u5:2/37
+According to the MPTCP v1 specs [2], a fallback should happen in this
+case, because the host didn't receive a DATA_ACK from the other peer,
+nor receive data for more than the initial window which implies a
+DATA_ACK being received by the other peer.
 
-CPU: 0 UID: 0 PID: 37 Comm: kworker/u5:2 Not tainted 6.11.0-rc6-01300-g810be445d8d6 #7099
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
-Workqueue: hci0 hci_cmd_sync_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x5d/0x80
- ? hci_enhanced_setup_sync+0x91b/0xa60
- print_report+0x152/0x4c0
- ? hci_enhanced_setup_sync+0x91b/0xa60
- ? __virt_addr_valid+0x1fa/0x420
- ? hci_enhanced_setup_sync+0x91b/0xa60
- kasan_report+0xda/0x1b0
- ? hci_enhanced_setup_sync+0x91b/0xa60
- hci_enhanced_setup_sync+0x91b/0xa60
- ? __pfx_hci_enhanced_setup_sync+0x10/0x10
- ? __pfx___mutex_lock+0x10/0x10
- hci_cmd_sync_work+0x1c2/0x330
- process_one_work+0x7d9/0x1360
- ? __pfx_lock_acquire+0x10/0x10
- ? __pfx_process_one_work+0x10/0x10
- ? assign_work+0x167/0x240
- worker_thread+0x5b7/0xf60
- ? __kthread_parkme+0xac/0x1c0
- ? __pfx_worker_thread+0x10/0x10
- ? __pfx_worker_thread+0x10/0x10
- kthread+0x293/0x360
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x2f/0x70
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+The patch here re-uses the same logic as the one used in other places:
+by looking at allow_infinite_fallback, which is disabled at the creation
+of an additional subflow. It's not looking at the first DATA_ACK (or
+implying one received from the other side) as suggested by the RFC, but
+it is in continuation with what was already done, which is safer, and it
+fixes the reported issue. The next step, looking at this first DATA_ACK,
+is tracked in [4].
 
-Allocated by task 34:
- kasan_save_stack+0x30/0x50
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0x8f/0xa0
- __hci_conn_add+0x187/0x17d0
- hci_connect_sco+0x2e1/0xb90
- sco_sock_connect+0x2a2/0xb80
- __sys_connect+0x227/0x2a0
- __x64_sys_connect+0x6d/0xb0
- do_syscall_64+0x71/0x140
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+This patch has been validated using the following Packetdrill script:
 
-Freed by task 37:
- kasan_save_stack+0x30/0x50
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3b/0x60
- __kasan_slab_free+0x101/0x160
- kfree+0xd0/0x250
- device_release+0x9a/0x210
- kobject_put+0x151/0x280
- hci_conn_del+0x448/0xbf0
- hci_abort_conn_sync+0x46f/0x980
- hci_cmd_sync_work+0x1c2/0x330
- process_one_work+0x7d9/0x1360
- worker_thread+0x5b7/0xf60
- kthread+0x293/0x360
- ret_from_fork+0x2f/0x70
- ret_from_fork_asm+0x1a/0x30
+   0 socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 3
+  +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
+  +0 bind(3, ..., ...) = 0
+  +0 listen(3, 1) = 0
 
+  // 3WHS is OK
+  +0.0 < S  0:0(0)       win 65535  <mss 1460, sackOK, nop, nop, nop, wscale 6, mpcapable v1 flags[flag_h] nokey>
+  +0.0 > S. 0:0(0) ack 1            <mss 1460, nop, nop, sackOK, nop, wscale 8, mpcapable v1 flags[flag_h] key[skey]>
+  +0.1 <  . 1:1(0) ack 1 win 2048                                              <mpcapable v1 flags[flag_h] key[ckey=2, skey]>
+  +0 accept(3, ..., ...) = 4
+
+  // Data from the client with valid MPTCP options (no DATA_ACK: normal)
+  +0.1 < P. 1:501(500) ack 1 win 2048 <mpcapable v1 flags[flag_h] key[skey, ckey] mpcdatalen 500, nop, nop>
+  // From here, the MPTCP options will be dropped by a middlebox
+  +0.0 >  . 1:1(0)     ack 501        <dss dack8=501 dll=0 nocs>
+
+  +0.1 read(4, ..., 500) = 500
+  +0   write(4, ..., 100) = 100
+
+  // The server replies with data, still thinking MPTCP is being used
+  +0.0 > P. 1:101(100)   ack 501          <dss dack8=501 dsn8=1 ssn=1 dll=100 nocs, nop, nop>
+  // But the client already did a fallback to TCP, because the two previous packets have been received without MPTCP options
+  +0.1 <  . 501:501(0)   ack 101 win 2048
+
+  +0.0 < P. 501:601(100) ack 101 win 2048
+  // The server should fallback to TCP, not reset: it didn't get a DATA_ACK, nor data for more than the initial window
+  +0.0 >  . 101:101(0)   ack 601
+
+Note that this script requires Packetdrill with MPTCP support, see [3].
+
+Fixes: dea2b1ea9c70 ("mptcp: do not reset MP_CAPABLE subflow on mapping errors")
 Cc: stable@vger.kernel.org
-Fixes: e07a06b4eb41 ("Bluetooth: Convert SCO configure_datapath to hci_sync")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Christoph Paasch <cpaasch@apple.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/518 [1]
+Link: https://datatracker.ietf.org/doc/html/rfc8684#name-fallback [2]
+Link: https://github.com/multipath-tcp/packetdrill [3]
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/519 [4]
+Reviewed-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241008-net-mptcp-fallback-fixes-v1-3-c6fb8e93e551@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index d083117ee36c..c4c74b82ed21 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -289,6 +289,9 @@ static int hci_enhanced_setup_sync(struct hci_dev *hdev, void *data)
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index e1046a696ab5..25dde81bcb75 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1282,7 +1282,7 @@ static bool subflow_can_fallback(struct mptcp_subflow_context *subflow)
+ 	else if (READ_ONCE(msk->csum_enabled))
+ 		return !subflow->valid_csum_seen;
+ 	else
+-		return !subflow->fully_established;
++		return READ_ONCE(msk->allow_infinite_fallback);
+ }
  
- 	kfree(conn_handle);
- 
-+	if (!hci_conn_valid(hdev, conn))
-+		return -ECANCELED;
-+
- 	bt_dev_dbg(hdev, "hcon %p", conn);
- 
- 	configure_datapath_sync(hdev, &conn->codec);
+ static void mptcp_subflow_fail(struct mptcp_sock *msk, struct sock *ssk)
 
 
