@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-84995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F0BA99D33E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ABF899CF21
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 903621C22B3E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BFF01C21F3C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CAF1B4F25;
-	Mon, 14 Oct 2024 15:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D881AB507;
+	Mon, 14 Oct 2024 14:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PNNjQEfh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XK+D1r98"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB7614AA9;
-	Mon, 14 Oct 2024 15:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906321AAE38;
+	Mon, 14 Oct 2024 14:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919936; cv=none; b=lW5eeq3AEnbuQfX0jdEnMiPUaVsgafXGDJ6q2XHxaNgpoEXQ/ZzKKI+9bfBiSzpTCijQBL4UQlWc8z1YT3sCTgx4zFzBjXbmaTGd4r6z/LdDdReKesHBkRaARVG/iHgNVvd8YOqIsKQI4fk5xAfiPNgJiO23ezLanUvaj3069SI=
+	t=1728917261; cv=none; b=iQUJ2yPhNEPOr5x+h6Hq2BhvTqLjeg9ObcRVgdM5xlfgD/2j2dLuVExENZyKT18ywaQ73QkEqmrMua1RVQdRPPy+m2XepTsu3plCDbZ4sYmyor+UHNX6DLQQii7F/ZFw0S2koSoIIICE1K03oQz6tsjoK4pjl82BgNKQszfYlT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919936; c=relaxed/simple;
-	bh=L994VCHCHqGfKq7eCK0eOVW5QPNWCygjzv5/0Gxue2w=;
+	s=arc-20240116; t=1728917261; c=relaxed/simple;
+	bh=5Th43cCYoIe/c32yrT7odTRGBC+YIeEj6t1R00dS6dQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BdDA+/dBGIpMbIdp1/SIDtwlqoH+TexRlhca8zdsph0fSZ22aSqDVXDrPfVdI+4YCZr/3q6T3n2TVBLfQLiI0iiSE8q7Yc0rVvOAz95onpkvb2BufR648WittgxbRUQoR95trpMqmIlciHxBKhKucjpBg3VeInKVT+bibLN8a8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PNNjQEfh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A362C4CEC3;
-	Mon, 14 Oct 2024 15:32:14 +0000 (UTC)
+	 MIME-Version; b=KRmw+BA7FO5bEZRIxK6k6yxdN/QVn4EpLgTEE5xNHbNH8/1GB4+QpM1eTMRikdKBq4ugoY2nuRH1St6ZUE3x3EkgD/vkMG2u2DW35BlWm9dLIL7IbxGMkx8uh5Ne/I14nE5hxbkOgZ/HFXEpc9+ReEcqPWmIJesnOlu5FBT2p6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XK+D1r98; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8F7C4CEC3;
+	Mon, 14 Oct 2024 14:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919935;
-	bh=L994VCHCHqGfKq7eCK0eOVW5QPNWCygjzv5/0Gxue2w=;
+	s=korg; t=1728917261;
+	bh=5Th43cCYoIe/c32yrT7odTRGBC+YIeEj6t1R00dS6dQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PNNjQEfhYXWz4dsou1agtErEyCTsANH2nmObG7CpzM0NlvoD4jYea+sMEn7lFkQb1
-	 pGMNUnR0txP2qDCTCKmBGFHybSP3AqpLZKrSALIITHay+vUp+cpCFINMSM/58nUwO2
-	 tccjZQG6KWCQfICKsht4bwucvcAcuiM/K9DsMCoE=
+	b=XK+D1r98RbSUp454gmsvsbTdVMinv8ZOuSJ78BRvQDcO2G1XVBSRVN+dE1GEnv2do
+	 OjmrXe/P8YbWS80oIJlx7/Y28wN+jH/bUbFnBQNqi7wFlgavRHytUQ87jXB8rMPgh8
+	 x4GVe+qnfprmQiR7Yo7WGCITfS0qeStkAXOPFhjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 750/798] i40e: Fix macvlan leak by synchronizing access to mac_filter_hash
-Date: Mon, 14 Oct 2024 16:21:44 +0200
-Message-ID: <20241014141247.533424924@linuxfoundation.org>
+	Daniel Golle <daniel@makrotopia.org>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 199/213] net: phy: Remove LED entry from LEDs list on unregister
+Date: Mon, 14 Oct 2024 16:21:45 +0200
+Message-ID: <20241014141050.727501538@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit dac6c7b3d33756d6ce09f00a96ea2ecd79fae9fb ]
+commit f50b5d74c68e551667e265123659b187a30fe3a5 upstream.
 
-This patch addresses a macvlan leak issue in the i40e driver caused by
-concurrent access to vsi->mac_filter_hash. The leak occurs when multiple
-threads attempt to modify the mac_filter_hash simultaneously, leading to
-inconsistent state and potential memory leaks.
+Commit c938ab4da0eb ("net: phy: Manual remove LEDs to ensure correct
+ordering") correctly fixed a problem with using devm_ but missed
+removing the LED entry from the LEDs list.
 
-To fix this, we now wrap the calls to i40e_del_mac_filter() and zeroing
-vf->default_lan_addr.addr with spin_lock/unlock_bh(&vsi->mac_filter_hash_lock),
-ensuring atomic operations and preventing concurrent access.
+This cause kernel panic on specific scenario where the port for the PHY
+is torn down and up and the kmod for the PHY is removed.
 
-Additionally, we add lockdep_assert_held(&vsi->mac_filter_hash_lock) in
-i40e_add_mac_filter() to help catch similar issues in the future.
+On setting the port down the first time, the assosiacted LEDs are
+correctly unregistered. The associated kmod for the PHY is now removed.
+The kmod is now added again and the port is now put up, the associated LED
+are registered again.
+On putting the port down again for the second time after these step, the
+LED list now have 4 elements. With the first 2 already unregistered
+previously and the 2 new one registered again.
 
-Reproduction steps:
-1. Spawn VFs and configure port vlan on them.
-2. Trigger concurrent macvlan operations (e.g., adding and deleting
-	portvlan and/or mac filters).
-3. Observe the potential memory leak and inconsistent state in the
-	mac_filter_hash.
+This cause a kernel panic as the first 2 element should have been
+removed.
 
-This synchronization ensures the integrity of the mac_filter_hash and prevents
-the described leak.
+Fix this by correctly removing the element when LED is unregistered.
 
-Fixes: fed0d9f13266 ("i40e: Fix VF's MAC Address change on VM")
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Daniel Golle <daniel@makrotopia.org>
+Tested-by: Daniel Golle <daniel@makrotopia.org>
+Cc: stable@vger.kernel.org
+Fixes: c938ab4da0eb ("net: phy: Manual remove LEDs to ensure correct ordering")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241004182759.14032-1-ansuelsmth@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c        | 1 +
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 2 ++
- 2 files changed, 3 insertions(+)
+ drivers/net/phy/phy_device.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 1194dcacbd29e..5f46a0677d195 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -1730,6 +1730,7 @@ struct i40e_mac_filter *i40e_add_mac_filter(struct i40e_vsi *vsi,
- 	struct hlist_node *h;
- 	int bkt;
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -3082,10 +3082,11 @@ static __maybe_unused int phy_led_hw_is_
  
-+	lockdep_assert_held(&vsi->mac_filter_hash_lock);
- 	if (vsi->info.pvid)
- 		return i40e_add_filter(vsi, macaddr,
- 				       le16_to_cpu(vsi->info.pvid));
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index a5f0c95cba8b5..11e9858cc86a0 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -2215,8 +2215,10 @@ static int i40e_vc_get_vf_resources_msg(struct i40e_vf *vf, u8 *msg)
- 		vfres->vsi_res[0].qset_handle
- 					  = le16_to_cpu(vsi->info.qs_handle[0]);
- 		if (!(vf->driver_caps & VIRTCHNL_VF_OFFLOAD_USO) && !vf->pf_set_mac) {
-+			spin_lock_bh(&vsi->mac_filter_hash_lock);
- 			i40e_del_mac_filter(vsi, vf->default_lan_addr.addr);
- 			eth_zero_addr(vf->default_lan_addr.addr);
-+			spin_unlock_bh(&vsi->mac_filter_hash_lock);
- 		}
- 		ether_addr_copy(vfres->vsi_res[0].default_mac_addr,
- 				vf->default_lan_addr.addr);
--- 
-2.43.0
-
+ static void phy_leds_unregister(struct phy_device *phydev)
+ {
+-	struct phy_led *phyled;
++	struct phy_led *phyled, *tmp;
+ 
+-	list_for_each_entry(phyled, &phydev->leds, list) {
++	list_for_each_entry_safe(phyled, tmp, &phydev->leds, list) {
+ 		led_classdev_unregister(&phyled->led_cdev);
++		list_del(&phyled->list);
+ 	}
+ }
+ 
 
 
 
