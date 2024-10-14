@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-84904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C8899D2C6
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:30:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8A599CD77
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 477D91F23E33
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:30:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 375B8B21227
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321AF1C9ED5;
-	Mon, 14 Oct 2024 15:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E024595B;
+	Mon, 14 Oct 2024 14:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4SmIaii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EyaqYXIz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03701C9B71;
-	Mon, 14 Oct 2024 15:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B104717C77;
+	Mon, 14 Oct 2024 14:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919625; cv=none; b=KBftNdaCeEzhmawHsRtCWIa9XFOsVe546Ur7MYmAX6ixSgDXmQwHvii0XkqQtW0kezqBCLjcp+F2ydNIIgVNrStXCWbtW7JuDA+fJ/LqqkygB/0giSqYqZDx9DuSb6vAY2FjTp+Ne+5JCyf/Jzimp9vJruBo75ThVzZGGpjmHgk=
+	t=1728916379; cv=none; b=DqqrxsvwCeL53ZcnvidD/q9S8iHFONtaAsLr66UZxILrr1Hr+pom5++MmMzhTTeTSffcMOIiu1/hz9McKm6kNprJ3Iu/MiU7MbB0mgFAv1r4QwqsFo8/3SulFyngYdyEzx3uKaOsjgLiWLaXe9aeuLuDkWPrvR8Ep6i3auuETHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919625; c=relaxed/simple;
-	bh=0LrMa9WBGAWK8AuJGBoOxXsSXppcR/mXmpjL/gVY+T8=;
+	s=arc-20240116; t=1728916379; c=relaxed/simple;
+	bh=P8HYulczVQZA1laviGSGDRUfkA4kLTLQQzJs3GoMikM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e1hdoE5ID6GfVPuDXjfY3oqPmrV9zeHeTYsQG+t6KB84ASNFf2xpAPv+kRoRfjxcC0JzYAAgjh+a9GDQdvbi/+vTWmxQaYaCzIjin5/dnl6SuHIN986HY4go45THgAmlG1rXhf8kQ17Y+joMAizqFjhcXp56vOL4/fte3SuszxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4SmIaii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F7BC4CECF;
-	Mon, 14 Oct 2024 15:27:04 +0000 (UTC)
+	 MIME-Version; b=Y3IPkV8WNNPv79sy4nXYpvR670NA50ZRTCmvPXx13v5cyShk5X4hCs7O+sf+QFNuD/UiaFv91eKE1UEf9vXTf+kWeMwoXhIcrRMXQCqdG2HOQdXtgpTmbX+eIrI86mSEZiiN7l1JdHQPXzslMdDyoFsjB8YaTToqoizmMGQq0Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EyaqYXIz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E427C4CEC3;
+	Mon, 14 Oct 2024 14:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919624;
-	bh=0LrMa9WBGAWK8AuJGBoOxXsSXppcR/mXmpjL/gVY+T8=;
+	s=korg; t=1728916379;
+	bh=P8HYulczVQZA1laviGSGDRUfkA4kLTLQQzJs3GoMikM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q4SmIaiiEOzvc7TS2D3NUnBOoRESlQVLTuIraJeNk7/+1F7FQwh0uRQ3VTna+6RC4
-	 3fzqdpocXwRUYjtrnvNRB2W5ti6vaLUG+f3jyQ54xxxvci8SzRq8VcIXLp12P9dJeO
-	 77Y0M9r98x9qBODNAh7vVAvv6r+d/cyTsD85AJxo=
+	b=EyaqYXIzn3h3xM+o3PenojsM6fWDauPEmI6EzFK1YyzyOPF6hP6oTKkUwntsMNjBZ
+	 Uv7Ir4wfQh0P2hn0mNVk4z5Z4fQZEAPphg5zPB5QsdDWQ3kElZ7Ndt2Lk+NIIelAdz
+	 kvMGvFh8qSfGVVin25hkl6D9vEXtlzmP/Or9gIdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanteng Si <siyanteng@loongson.cn>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 633/798] docs/zh_CN: Update the translation of delay-accounting to 6.1-rc8
-Date: Mon, 14 Oct 2024 16:19:47 +0200
-Message-ID: <20241014141242.908091636@linuxfoundation.org>
+	Mohamed Khalfella <mkhalfella@purestorage.com>,
+	Yuanyuan Zhong <yzhong@purestorage.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.11 125/214] igb: Do not bring the device up after non-fatal error
+Date: Mon, 14 Oct 2024 16:19:48 +0200
+Message-ID: <20241014141049.867402039@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +63,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yanteng Si <siyanteng@loongson.cn>
+From: Mohamed Khalfella <mkhalfella@purestorage.com>
 
-[ Upstream commit 6ab587e8e8b434ffc2decdd6db17dff0ef2b13ab ]
+[ Upstream commit 330a699ecbfc9c26ec92c6310686da1230b4e7eb ]
 
-Update to commit f347c9d2697f ("filemap: make the accounting
-of thrashing more consistent").
+Commit 004d25060c78 ("igb: Fix igb_down hung on surprise removal")
+changed igb_io_error_detected() to ignore non-fatal pcie errors in order
+to avoid hung task that can happen when igb_down() is called multiple
+times. This caused an issue when processing transient non-fatal errors.
+igb_io_resume(), which is called after igb_io_error_detected(), assumes
+that device is brought down by igb_io_error_detected() if the interface
+is up. This resulted in panic with stacktrace below.
 
-Commit 662ce1dc9caf ("delayacct: track delays from write-protect copy").
+[ T3256] igb 0000:09:00.0 haeth0: igb: haeth0 NIC Link is Down
+[  T292] pcieport 0000:00:1c.5: AER: Uncorrected (Non-Fatal) error received: 0000:09:00.0
+[  T292] igb 0000:09:00.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Requester ID)
+[  T292] igb 0000:09:00.0:   device [8086:1537] error status/mask=00004000/00000000
+[  T292] igb 0000:09:00.0:    [14] CmpltTO [  200.105524,009][  T292] igb 0000:09:00.0: AER:   TLP Header: 00000000 00000000 00000000 00000000
+[  T292] pcieport 0000:00:1c.5: AER: broadcast error_detected message
+[  T292] igb 0000:09:00.0: Non-correctable non-fatal error reported.
+[  T292] pcieport 0000:00:1c.5: AER: broadcast mmio_enabled message
+[  T292] pcieport 0000:00:1c.5: AER: broadcast resume message
+[  T292] ------------[ cut here ]------------
+[  T292] kernel BUG at net/core/dev.c:6539!
+[  T292] invalid opcode: 0000 [#1] PREEMPT SMP
+[  T292] RIP: 0010:napi_enable+0x37/0x40
+[  T292] Call Trace:
+[  T292]  <TASK>
+[  T292]  ? die+0x33/0x90
+[  T292]  ? do_trap+0xdc/0x110
+[  T292]  ? napi_enable+0x37/0x40
+[  T292]  ? do_error_trap+0x70/0xb0
+[  T292]  ? napi_enable+0x37/0x40
+[  T292]  ? napi_enable+0x37/0x40
+[  T292]  ? exc_invalid_op+0x4e/0x70
+[  T292]  ? napi_enable+0x37/0x40
+[  T292]  ? asm_exc_invalid_op+0x16/0x20
+[  T292]  ? napi_enable+0x37/0x40
+[  T292]  igb_up+0x41/0x150
+[  T292]  igb_io_resume+0x25/0x70
+[  T292]  report_resume+0x54/0x70
+[  T292]  ? report_frozen_detected+0x20/0x20
+[  T292]  pci_walk_bus+0x6c/0x90
+[  T292]  ? aer_print_port_info+0xa0/0xa0
+[  T292]  pcie_do_recovery+0x22f/0x380
+[  T292]  aer_process_err_devices+0x110/0x160
+[  T292]  aer_isr+0x1c1/0x1e0
+[  T292]  ? disable_irq_nosync+0x10/0x10
+[  T292]  irq_thread_fn+0x1a/0x60
+[  T292]  irq_thread+0xe3/0x1a0
+[  T292]  ? irq_set_affinity_notifier+0x120/0x120
+[  T292]  ? irq_affinity_notify+0x100/0x100
+[  T292]  kthread+0xe2/0x110
+[  T292]  ? kthread_complete_and_exit+0x20/0x20
+[  T292]  ret_from_fork+0x2d/0x50
+[  T292]  ? kthread_complete_and_exit+0x20/0x20
+[  T292]  ret_from_fork_asm+0x11/0x20
+[  T292]  </TASK>
 
-Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
-Link: https://lore.kernel.org/r/798990521e991697f9f2b75f4dc4a485d31c1311.1670642548.git.siyanteng@loongson.cn
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Stable-dep-of: 3840cbe24cf0 ("sched: psi: fix bogus pressure spikes from aggregation race")
+To fix this issue igb_io_resume() checks if the interface is running and
+the device is not down this means igb_io_error_detected() did not bring
+the device down and there is no need to bring it up.
+
+Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Reviewed-by: Yuanyuan Zhong <yzhong@purestorage.com>
+Fixes: 004d25060c78 ("igb: Fix igb_down hung on surprise removal")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../translations/zh_CN/accounting/delay-accounting.rst     | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/igb/igb_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/translations/zh_CN/accounting/delay-accounting.rst b/Documentation/translations/zh_CN/accounting/delay-accounting.rst
-index f1849411018e9..a01dc3d5b0dbb 100644
---- a/Documentation/translations/zh_CN/accounting/delay-accounting.rst
-+++ b/Documentation/translations/zh_CN/accounting/delay-accounting.rst
-@@ -17,8 +17,9 @@ a) 等待一个CPU（任务为可运行）
- b) 完成由该任务发起的块I/O同步请求
- c) 页面交换
- d) 内存回收
--e) 页缓存抖动
-+e) 抖动
- f) 直接规整
-+g) 写保护复制
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index 1ef4cb871452a..f1d0881687233 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -9651,6 +9651,10 @@ static void igb_io_resume(struct pci_dev *pdev)
+ 	struct igb_adapter *adapter = netdev_priv(netdev);
  
- 并将这些统计信息通过taskstats接口提供给用户空间。
- 
-@@ -42,7 +43,7 @@ f) 直接规整
-      include/uapi/linux/taskstats.h
- 
- 其描述了延时计数相关字段。系统通常以计数器形式返回 CPU、同步块 I/O、交换、内存
--回收、页缓存抖动、直接规整等的累积延时。
-+回收、页缓存抖动、直接规整、写保护复制等的累积延时。
- 
- 取任务某计数器两个连续读数的差值，将得到任务在该时间间隔内等待对应资源的总延时。
- 
-@@ -100,6 +101,8 @@ getdelays命令的一般格式::
- 	                    0              0              0ms
- 	COMPACT         count    delay total  delay average
- 	                    0              0              0ms
-+    WPCOPY          count    delay total  delay average
-+                       0              0              0ms
- 
- 获取pid为1的IO计数，它只和-p一起使用::
- 	# ./getdelays -i -p 1
+ 	if (netif_running(netdev)) {
++		if (!test_bit(__IGB_DOWN, &adapter->state)) {
++			dev_dbg(&pdev->dev, "Resuming from non-fatal error, do nothing.\n");
++			return;
++		}
+ 		if (igb_up(adapter)) {
+ 			dev_err(&pdev->dev, "igb_up failed after reset\n");
+ 			return;
 -- 
 2.43.0
 
