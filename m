@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-84847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E2199D25F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:25:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71AE999CDFA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:38:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D241F1C23A8C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:25:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31787283BEF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C0326296;
-	Mon, 14 Oct 2024 15:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C2C1A0724;
+	Mon, 14 Oct 2024 14:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZbQytyb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PNxi8lFt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8181B85DF;
-	Mon, 14 Oct 2024 15:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF5625632;
+	Mon, 14 Oct 2024 14:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919419; cv=none; b=pn3Mf527THeRySPa1ADap88SYpidBCZdT37rlnh02k6wS00NPtKGbhW7fYi+XNmo0SIBmM8+4NfeH35seUTHZnacYvIneYTAYwQ5puAF77jXSWhYLvr3yZbQddOlogIXUw5NfHaXFUhSvrSA7Y+j1qS8MwMORFcWSCoLEqMAclQ=
+	t=1728916704; cv=none; b=FW/ksW2WcCbxnc1Wuamb05a/iVsKAuwETp9CG8VZwv/fZfwHyfZpMvGwjDdPpAU5mLhTiaLv4mlEn9e1GxxfWlHN6kvKoO2oN7vGRid56a7IjSDbKSB6ZkAbNajF7b3vagIxFkTmXNgCyUwB55/3ieF+ZguOw8LYi0NUapkuiu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919419; c=relaxed/simple;
-	bh=muKD786iKPMLGRDRxyhINjBzibHGT3vMaMJjBJmBRcc=;
+	s=arc-20240116; t=1728916704; c=relaxed/simple;
+	bh=wW8x2KUm3qyNKN8u7aAFzwhrWi67wQCU9Beq7qpmvs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LwQ+Mvzev8FUJZ+9ggz0FbKARuE1xVvvr100gzYo3h5KPniYUMKAqFwK/PoIDyBERKvrU9yjSQPvjdMlt7TxTdSqSjkC2PrTwWC4dnvBZylSfk8L5vMDH9fShR8WpRs8Hv1xprrN+rfBHMZoU+6L5mbu0j62YlMLG/IwQE7mrBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZbQytyb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9507CC4CEC3;
-	Mon, 14 Oct 2024 15:23:38 +0000 (UTC)
+	 MIME-Version; b=Z2blYumpwutPz+uZadhjmjkJg007+CXvsyOXLM2OaAOx7l2S7GK+C/QQWkR/pDQ57xFk/ofS8Vh94Q/hrHkq4YxNX/QuFH8l08NxD8zgVh4V3ESWT2f/PIvtoXJGBF0sIPUDqOKxtDau2feA96qud/yhiNlgfWyejKZnY5fz21w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PNxi8lFt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B37ABC4CEC3;
+	Mon, 14 Oct 2024 14:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919419;
-	bh=muKD786iKPMLGRDRxyhINjBzibHGT3vMaMJjBJmBRcc=;
+	s=korg; t=1728916704;
+	bh=wW8x2KUm3qyNKN8u7aAFzwhrWi67wQCU9Beq7qpmvs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tZbQytybIefLoClDcFcSmQOVA1oAGVNNRjCTw+IiswG92WDOIAJRLfAN7DzFgF3xE
-	 mmNnFozVUQjKkkE7jmyrC6AMXxtjqMYlwoB4JRd2hPTArOp8Lpf886kcgOxK6GNeXh
-	 czhIMEZYIZJBymkNAUwPDL3ZPE2dJqzF7rqnZLys=
+	b=PNxi8lFt02O+EasdOlvz4O4F8OIHnH/b/aIIaf2FZGhAAIljttPkzIhrGJpsUOscT
+	 YLj9pHv0jLN8KkFZr2A39mXRfAloWchysf9SkRzAykYb9K9W+cfyu0wSfgPOeJU2GL
+	 T331s6YyvFchztbihRdD6Xv6AqGPRJV40hF4gy8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Baoquan He <bhe@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 562/798] resource: fix region_intersects() vs add_memory_driver_managed()
-Date: Mon, 14 Oct 2024 16:18:36 +0200
-Message-ID: <20241014141240.078175043@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 011/213] net: ethernet: cortina: Drop TSO support
+Date: Mon, 14 Oct 2024 16:18:37 +0200
+Message-ID: <20241014141043.421013343@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,179 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang Ying <ying.huang@intel.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-commit b4afe4183ec77f230851ea139d91e5cf2644c68b upstream.
+[ Upstream commit ac631873c9e7a50d2a8de457cfc4b9f86666403e ]
 
-On a system with CXL memory, the resource tree (/proc/iomem) related to
-CXL memory may look like something as follows.
+The recent change to allow large frames without hardware checksumming
+slotted in software checksumming in the driver if hardware could not
+do it.
 
-490000000-50fffffff : CXL Window 0
-  490000000-50fffffff : region0
-    490000000-50fffffff : dax0.0
-      490000000-50fffffff : System RAM (kmem)
+This will however upset TSO (TCP Segment Offloading). Typical
+error dumps includes this:
 
-Because drivers/dax/kmem.c calls add_memory_driver_managed() during
-onlining CXL memory, which makes "System RAM (kmem)" a descendant of "CXL
-Window X".  This confuses region_intersects(), which expects all "System
-RAM" resources to be at the top level of iomem_resource.  This can lead to
-bugs.
+skb len=2961 headroom=222 headlen=66 tailroom=0
+(...)
+WARNING: CPU: 0 PID: 956 at net/core/dev.c:3259 skb_warn_bad_offload+0x7c/0x108
+gemini-ethernet-port: caps=(0x0000010000154813, 0x00002007ffdd7889)
 
-For example, when the following command line is executed to write some
-memory in CXL memory range via /dev/mem,
+And the packets do not go through.
 
- $ dd if=data of=/dev/mem bs=$((1 << 10)) seek=$((0x490000000 >> 10)) count=1
- dd: error writing '/dev/mem': Bad address
- 1+0 records in
- 0+0 records out
- 0 bytes copied, 0.0283507 s, 0.0 kB/s
+The TSO implementation is bogus: a TSO enabled driver must propagate
+the skb_shinfo(skb)->gso_size value to the TSO engine on the NIC.
 
-the command fails as expected.  However, the error code is wrong.  It
-should be "Operation not permitted" instead of "Bad address".  More
-seriously, the /dev/mem permission checking in devmem_is_allowed() passes
-incorrectly.  Although the accessing is prevented later because ioremap()
-isn't allowed to map system RAM, it is a potential security issue.  During
-command executing, the following warning is reported in the kernel log for
-calling ioremap() on system RAM.
+Drop the size check and TSO offloading features for now: this
+needs to be fixed up properly.
 
- ioremap on RAM at 0x0000000490000000 - 0x0000000490000fff
- WARNING: CPU: 2 PID: 416 at arch/x86/mm/ioremap.c:216 __ioremap_caller.constprop.0+0x131/0x35d
- Call Trace:
-  memremap+0xcb/0x184
-  xlate_dev_mem_ptr+0x25/0x2f
-  write_mem+0x94/0xfb
-  vfs_write+0x128/0x26d
-  ksys_write+0xac/0xfe
-  do_syscall_64+0x9a/0xfd
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+After this ethernet works fine on Gemini devices with a direct connected
+PHY such as D-Link DNS-313.
 
-The details of command execution process are as follows.  In the above
-resource tree, "System RAM" is a descendant of "CXL Window 0" instead of a
-top level resource.  So, region_intersects() will report no System RAM
-resources in the CXL memory region incorrectly, because it only checks the
-top level resources.  Consequently, devmem_is_allowed() will return 1
-(allow access via /dev/mem) for CXL memory region incorrectly.
-Fortunately, ioremap() doesn't allow to map System RAM and reject the
-access.
+Also tested to still be working with a DSA switch using the Gemini
+ethernet as conduit interface.
 
-So, region_intersects() needs to be fixed to work correctly with the
-resource tree with "System RAM" not at top level as above.  To fix it, if
-we found a unmatched resource in the top level, we will continue to search
-matched resources in its descendant resources.  So, we will not miss any
-matched resources in resource tree anymore.
-
-In the new implementation, an example resource tree
-
-|------------- "CXL Window 0" ------------|
-|-- "System RAM" --|
-
-will behave similar as the following fake resource tree for
-region_intersects(, IORESOURCE_SYSTEM_RAM, ),
-
-|-- "System RAM" --||-- "CXL Window 0a" --|
-
-Where "CXL Window 0a" is part of the original "CXL Window 0" that
-isn't covered by "System RAM".
-
-Link: https://lkml.kernel.org/r/20240906030713.204292-2-ying.huang@intel.com
-Fixes: c221c0b0308f ("device-dax: "Hotplug" persistent memory for use like normal RAM")
-Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/netdev/CANn89iJLfxng1sYL5Zk0mknXpyYQPCp83m3KgD2KJ2_hKCpEUg@mail.gmail.com/
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Fixes: d4d0c5b4d279 ("net: ethernet: cortina: Handle large frames")
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/resource.c |   58 ++++++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 50 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 15 ++-------------
+ 1 file changed, 2 insertions(+), 13 deletions(-)
 
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -493,20 +493,62 @@ static int __region_intersects(struct re
- 			       size_t size, unsigned long flags,
- 			       unsigned long desc)
- {
--	struct resource res;
-+	resource_size_t ostart, oend;
- 	int type = 0; int other = 0;
--	struct resource *p;
-+	struct resource *p, *dp;
-+	bool is_type, covered;
-+	struct resource res;
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index f69d974a23a1f..956cfb293ee19 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -79,8 +79,7 @@ MODULE_PARM_DESC(debug, "Debug level (0=none,...,16=all)");
+ #define GMAC0_IRQ4_8 (GMAC0_MIB_INT_BIT | GMAC0_RX_OVERRUN_INT_BIT)
  
- 	res.start = start;
- 	res.end = start + size - 1;
+ #define GMAC_OFFLOAD_FEATURES (NETIF_F_SG | NETIF_F_IP_CSUM | \
+-		NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM | \
+-		NETIF_F_TSO | NETIF_F_TSO_ECN | NETIF_F_TSO6)
++			       NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM)
  
- 	for (p = parent->child; p ; p = p->sibling) {
--		bool is_type = (((p->flags & flags) == flags) &&
--				((desc == IORES_DESC_NONE) ||
--				 (desc == p->desc)));
+ /**
+  * struct gmac_queue_page - page buffer per-page info
+@@ -1148,23 +1147,13 @@ static int gmac_map_tx_bufs(struct net_device *netdev, struct sk_buff *skb,
+ 	struct gmac_txdesc *txd;
+ 	skb_frag_t *skb_frag;
+ 	dma_addr_t mapping;
+-	unsigned short mtu;
+ 	void *buffer;
+ 	int ret;
+ 
+-	mtu  = ETH_HLEN;
+-	mtu += netdev->mtu;
+-	if (skb->protocol == htons(ETH_P_8021Q))
+-		mtu += VLAN_HLEN;
 -
--		if (resource_overlaps(p, &res))
--			is_type ? type++ : other++;
-+		if (!resource_overlaps(p, &res))
-+			continue;
-+		is_type = (p->flags & flags) == flags &&
-+			(desc == IORES_DESC_NONE || desc == p->desc);
-+		if (is_type) {
-+			type++;
-+			continue;
-+		}
-+		/*
-+		 * Continue to search in descendant resources as if the
-+		 * matched descendant resources cover some ranges of 'p'.
-+		 *
-+		 * |------------- "CXL Window 0" ------------|
-+		 * |-- "System RAM" --|
-+		 *
-+		 * will behave similar as the following fake resource
-+		 * tree when searching "System RAM".
-+		 *
-+		 * |-- "System RAM" --||-- "CXL Window 0a" --|
-+		 */
-+		covered = false;
-+		ostart = max(res.start, p->start);
-+		oend = min(res.end, p->end);
-+		for_each_resource(p, dp, false) {
-+			if (!resource_overlaps(dp, &res))
-+				continue;
-+			is_type = (dp->flags & flags) == flags &&
-+				(desc == IORES_DESC_NONE || desc == dp->desc);
-+			if (is_type) {
-+				type++;
-+				/*
-+				 * Range from 'ostart' to 'dp->start'
-+				 * isn't covered by matched resource.
-+				 */
-+				if (dp->start > ostart)
-+					break;
-+				if (dp->end >= oend) {
-+					covered = true;
-+					break;
-+				}
-+				/* Remove covered range */
-+				ostart = max(ostart, dp->end + 1);
-+			}
-+		}
-+		if (!covered)
-+			other++;
- 	}
++	/* TODO: implement proper TSO using MTU in word3 */
+ 	word1 = skb->len;
+ 	word3 = SOF_BIT;
  
- 	if (type == 0)
+-	if (word1 > mtu) {
+-		word1 |= TSS_MTU_ENABLE_BIT;
+-		word3 |= mtu;
+-	}
+-
+ 	if (skb->len >= ETH_FRAME_LEN) {
+ 		/* Hardware offloaded checksumming isn't working on frames
+ 		 * bigger than 1514 bytes. A hypothesis about this is that the
+-- 
+2.43.0
+
 
 
 
