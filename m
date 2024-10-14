@@ -1,124 +1,117 @@
-Return-Path: <stable+bounces-83733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D56B099C022
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 08:39:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E0B899C037
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 08:45:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC5E91C224BE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:39:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCC21B2318A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8699140E34;
-	Mon, 14 Oct 2024 06:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD8213C670;
+	Mon, 14 Oct 2024 06:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MsC/mUOC"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="z51YFBRP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FC6136353
-	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 06:39:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B8536B;
+	Mon, 14 Oct 2024 06:45:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728887990; cv=none; b=QTGkrw4ZXfFyiQhnt5rRl6+hfYZ6ckV1R2rcu6WBF5owT77EMcBc0ypKx5+Sthj0cRL0TdBCPFaNvO0+gdTfs56rWsgq0/zs9ZIjXKwygRjOftNV4OsOuUb7I40ya6O4qQzeKtvvpNNF0ZsY3fTCyydRSHirz+L/R0xmW663Bb0=
+	t=1728888345; cv=none; b=duNsipHlHlK7uGusfETpU+i6BfLL8vIAW1JIx+OkM9tB/OSDnOm9Zx7p3jD8+Szob7BUpxNQXfQdI8njwPyyTqaJYd3p+e5sdX4r6L6Z+g8GEfrh38hhghfWiiHiGbCRqECEaDuDtCT7e37gygpn7/LmsUoOJ2rFytVcCSa5MK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728887990; c=relaxed/simple;
-	bh=FQphEFLBshXmaOE3JlV8b4bsc8E8MCSy4Ag9EHta9/c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V9fR1s0wc1xOEh0oL1aLOUMlXglzqvtJyCU9a/7FFeCU0HQxTNcjvQXWy85SOIOnai7hJLoEQJ1/NFRDtV8Wc85ira4wo/YLQeSN1IQnPS2qXmOgwP2YXVxxikHay3MhkW8F9OX30N2YTICSquwyjPrAcnCPuue9tyi2FQy8wqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MsC/mUOC; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a9952ea05c5so606057566b.2
-        for <stable@vger.kernel.org>; Sun, 13 Oct 2024 23:39:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728887987; x=1729492787; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TRglJQJqC3kB/kH32ye3qji7yvxN38IgBxBdJmfg+rI=;
-        b=MsC/mUOCd+/tH4VAk8FfvGu+bkjTDSY7kAb4HJPI0M/gD91bivIC4zecikPKHSZFjP
-         8X+a5e0ZPRPEGhrVWolYW1T5iKJJyhN4iUrrtk0b/hA0KT5kndunjTmiEQaqL3N0osbL
-         22SvV4+0ALZpEOUPw4H6qhdD8irH8tXp+HhsdPLL+SsAo9Te/4sDTpEodzRkHliEnQlj
-         vrL8K2yU8ShMFDXE4aYKcURn0G4KVNfJaBwUNCxppwAl+KQX1Q/qw4ctu+H3sD4IMh3n
-         7LSP42BzV2nDhqAlt4hqfcy/eqImuvCGaia1cYn23vfmQamcngqYze8wcLlHgbit0uZ1
-         BmoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728887987; x=1729492787;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TRglJQJqC3kB/kH32ye3qji7yvxN38IgBxBdJmfg+rI=;
-        b=tiZOwoZbtQx/VFLyeeAxa/CBUfbGXWq62KDhtEx1FlTmkXYNycWUxjlEXkiHEG3yyo
-         EX5VmsTn/5PF3eWr6Mbp/ajvC/kg/UsXycqBMEsOw+DH5luLO7Ld4qm44+ejBVBlD/h9
-         zr0/aIsLB7aQ8JNW0DvBl6moepAS1ZGI81haQ4P+eI5zhYilYw95k/28RMm5Pn2WDRBl
-         pTvjgz5eyu5ulKdPozo0QpmrdD/jO5J0VlT1DJmoOF5k5K5fdnLP98xWuC0J/9r3OjFk
-         sKct1OENl1Q0QXXVM8z8rEItzJnUWHptA1ZEPEFWqsvpwFO363jgWw6H6aNMKuePJnNn
-         pcNA==
-X-Forwarded-Encrypted: i=1; AJvYcCWHaZYsP2Y3NpcdsfgcdmyIMYa1nW47CWc0f4oLI05BRskxpDg2jih1b29sbGTve7i+4m0uCw4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZnCCKAzUvlfpB+0VsVogbAsm9r8tKzFOpmFuWB+WW0vFUEGqQ
-	/zMhrRuh2JHirnjj+oCRmE8BexrIlwupw2R4qja5DGNn4QnpdWBznl+jHcY8Djw=
-X-Google-Smtp-Source: AGHT+IGEOBmGpibQOzzCmzYJ/UdGfI18YNbVf3R8nb5+9YuL5TW0UD8qfNB6tNPfAZALkQ3UkrXf3A==
-X-Received: by 2002:a17:907:3f99:b0:a99:f4fd:31c8 with SMTP id a640c23a62f3a-a99f4fd33b7mr460434866b.22.1728887987168;
-        Sun, 13 Oct 2024 23:39:47 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99e97b13b6sm294033366b.151.2024.10.13.23.39.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Oct 2024 23:39:46 -0700 (PDT)
-Date: Mon, 14 Oct 2024 09:39:42 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Umang Jain <umang.jain@ideasonboard.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	kernel-list@raspberrypi.com, Stefan Wahren <wahrenst@gmx.net>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] staging: vchiq_arm: Utilise devm_kzalloc() for
- allocation
-Message-ID: <43471db1-f34b-4e4c-af58-4fc0f45248bd@stanley.mountain>
-References: <20241014061256.21858-1-umang.jain@ideasonboard.com>
- <20241014061256.21858-2-umang.jain@ideasonboard.com>
+	s=arc-20240116; t=1728888345; c=relaxed/simple;
+	bh=5+7U5NsPCJJ1SeC7sthTmtpMjLOa80ghowv7qWW2nio=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
+	 In-Reply-To:Content-Type; b=A/ZIxf8snGIdlT/bMVHXHhaXxMK95Hsls5nfeFC22NBEfnjVJ+NblYoakPDmg+ZYeA+gLfg7Y1IcotcA8RDAc5344mZih0oZgVM4TG8aWuAfL//1jC5BpeL3ZnScnJVIJvX6BB+eEz2EkKOEdm1ul1WXYXr4exGrLDaeTcU+KzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=z51YFBRP; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Cc:From:References:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=zfAhj9c9aib/1i6GUjRiuU0PI8OaiFSyn9NGekauN9U=; t=1728888344;
+	x=1729320344; b=z51YFBRPPSV94xmfSo3YYSTUZXPMBj7XiTLKwkuRv3VTRWqmBxL+FkPlnpPU1
+	CTonKWpOAoamBjrOWNDM8JSF6uwqJCzQNpKfagb1dSoRMgsqjkafKPaHPcFm8L4QTRBgoSmUf3Amt
+	juoBmTKV4Z7Mg8IQWUmbEqqYvs/JNPEZ3YI99UW5b/f3DqNX9zV+DMO+yMjwnmEi+fEXYJOOVRN3v
+	JAC80aXMBTheZQved93S1CLKvwKfEck3k+MpHrpJU8X1A4AVa5Avb5WkxDMncwz4Xxp64Y0C2hryy
+	hHILJ7jWS3rRqbXTrDYtu9FhQdSqXCw2AI8x2Zqdt/lKyyWOWA==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1t0Epj-0000HP-9Q; Mon, 14 Oct 2024 08:45:35 +0200
+Message-ID: <06bab5c5-e9fd-4741-bab7-6b199cfac18a@leemhuis.info>
+Date: Mon, 14 Oct 2024 08:45:34 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241014061256.21858-2-umang.jain@ideasonboard.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Bad commit backported on the v5.15.y branch ?
+To: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+References: <AM9P192MB1316ABE1A8E1D41C4243F596D7792@AM9P192MB1316.EURP192.PROD.OUTLOOK.COM>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+ Linux kernel regressions list <regressions@lists.linux.dev>,
+ Sasha Levin <sashal@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+ Joel GUITTET <jguittet.opensource@witekio.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+In-Reply-To: <AM9P192MB1316ABE1A8E1D41C4243F596D7792@AM9P192MB1316.EURP192.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1728888344;2a23363c;
+X-HE-SMSGID: 1t0Epj-0000HP-9Q
 
-On Mon, Oct 14, 2024 at 11:42:55AM +0530, Umang Jain wrote:
-> The struct vchiq_arm_state 'platform_state' is currently allocated
-> dynamically using kzalloc(). Unfortunately, it is never freed and is
-> subjected to memory leaks in the error handling paths of the probe()
-> function.
+On 11.10.24 10:48, Joel GUITTET wrote:
 > 
-> To address the issue, use device resource management helper
-> devm_kzalloc(), to ensure cleanup after its allocation.
+> I faced some issue related to scaling frequency on ZynqMP device
+> using v5.15.167 kernel. As an exemple setting the scaling frequency
+> below show it's not properly set:
 > 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
-> ---
+> cat /sys/devices/system/cpu/cpufreq/policy0/
+> scaling_available_frequencies 299999 399999 599999 1199999
+> 
+> echo 399999 > /sys/devices/system/cpu/cpufreq/policy0/
+> scaling_setspeed
+> 
+> cat /sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq 399999
+> 
+> cat /sys/devices/system/cpu/cpufreq/policy0/cpuinfo_cur_freq 299999
+> ====> Should be 399999
+> 
+> After analysis of this issue with the help of Xilinx, it appears
+> that a commit was backported on the 5.15.y branch, but probably it
+> should not, or not as is. The commit is
+> 9117fc44fd3a9538261e530ba5a022dfc9519620 modifying drivers/clk/
+> zynqmp/divider.c.
 
-Checkpatch warns that:
+FWIW, that is 1fe15be1fb6135 ("drivers: clk: zynqmp: update divider
+round rate logic") [v6.8-rc1].
 
-WARNING: The commit message has 'stable@', perhaps it also needs a 'Fixes:' tag?
+> Is anybody reading this message able to answer why it was
+> backported ?
 
-(I'm the person who created this checkpatch warning.)  Fixes tags aren't just
-for regressions they're for any bug fixes.  So the Fixes tag here should point
-to when the driver was introduced.
+Looks like because it fixes a bug. I CCed the original author and those
+that handled the patch, maybe they can help us out and tell us what's
+the best strategy forward here.
 
-Even if the Fixes tag points to the first git commit, it's useful information
-so, please, always include it.
+> The information I have until now is that it is intended
+> recent kernel version. Dependencies for this modification is
+> currently under clarification with Xilinx (maybe another commit to
+> backport).
+> 
+> By the way, reverting this commit fix the issue shown above.
+Does 6.12-rc work fine for you? Because if not, we should fix the
+problem there.
 
-regards,
-dan carpenter
-
+Ciao, Thorsten
 
