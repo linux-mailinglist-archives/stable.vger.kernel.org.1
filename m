@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-84469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8EF99D057
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:03:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 075E299D031
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:01:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 532EB1F23DAB
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:03:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B37751F23F60
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8CB1AE00B;
-	Mon, 14 Oct 2024 15:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42A155896;
+	Mon, 14 Oct 2024 15:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryeFMhqE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRxVXRVH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79AE1AAE38;
-	Mon, 14 Oct 2024 15:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FBF3BBF2;
+	Mon, 14 Oct 2024 15:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918122; cv=none; b=FUFSVr4ILSCtRPeNePxLsZGP/yELPHrwLEFio1pDk5EnnJmOl78/PUfF3dDlqI2/DlsdJZgoYvjneJNOKn1yUS3BZYouS/pd3iKr/EuR4rBjufJ5QgNQT3D4pwnwVytz+njkoLvWL1t5gyS5qTRlAMo69j1WaDY5OwCJzWh0s2Y=
+	t=1728918012; cv=none; b=bneLx8Bs7sAqdcMMu15AjpXBXqe+M15tT96p5e/rh7N6Hzf6pTImextdLcF5CcxYaGPK1L7eZhgT1FFkhSyzECI8mlfEgJ61HJLgtTYkklVei9lYCNS6x4ptoChyP1Y3vZh5c5UVdhqMUQ2Jfg7G7hi07hpw5bOmxNYQtiYpdew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918122; c=relaxed/simple;
-	bh=5PghueAgGF/erTYkFo/NS+qUrorsSmv2pJYHDaR4cgQ=;
+	s=arc-20240116; t=1728918012; c=relaxed/simple;
+	bh=LrAqnipSkaw5HiMrYilN4bB1GIKu25nfmJNFeog/6QA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S9aOHaKTyJyjHqZFmARkwy+4dnU2/AlTk9YSA2X9D11ByBIYZ/mTGTAzl/8IR43zAp2aehcFmqr1Z7QW5tVPFi4X5idxtJq2ZiTKbctyHKeZ4khQcnlDRjz7ZIqSOXv5ZOydcKj845TSg685sVwmi/p4/kCDBUs4HmKmEJG55/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryeFMhqE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170A7C4CEC3;
-	Mon, 14 Oct 2024 15:02:01 +0000 (UTC)
+	 MIME-Version; b=u+RtWFS28LmCKvmyCOZe3f2+t+HWCv7mIrCiE76dYde2oUGmy0kE2BpCuGRHu10eSAe+6kEDVoQH9Jwp+u+616/Wg5o5CxVLqGe1UnQ0ladzlgW4ygAbffyFLwvbRcIpv16J59uYtoYLHpQBduz25DoA1gpNYHGzlvrmRINCWYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRxVXRVH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD09C4CEC3;
+	Mon, 14 Oct 2024 15:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918122;
-	bh=5PghueAgGF/erTYkFo/NS+qUrorsSmv2pJYHDaR4cgQ=;
+	s=korg; t=1728918012;
+	bh=LrAqnipSkaw5HiMrYilN4bB1GIKu25nfmJNFeog/6QA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ryeFMhqErudkfG8HXL1u3atfw6A622uo82tvIQGfAApq4EctNrNM+B6vwO2FzBKvG
-	 si454+IqLigLb3rJ6VlqaPp+V5qJTBB+ucHYcz5ZD/qx8TCHfpMXXcx0rLDu75pENa
-	 TdA+GoxiIfS62lEn5RfPLgcEIb8HRxarPkgMXBf4=
+	b=xRxVXRVHrC9ahnH/yqS02h1LVkmE2rxkx9NBrk3llZH6tX9kso9TdRfiOZcdId7vE
+	 vyavoXeBchboXbK+2TKBiI8LzAhk0Av/O5altD7anQHYXiBYgQGNsVW8Gc+Q0PAk9v
+	 pz6/eyeCq/lN73BdYia4ijZi66s/6Gjz1OBivs6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Wang <zhipeng.wang_1@nxp.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
 	Peng Fan <peng.fan@nxp.com>,
 	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 188/798] clk: imx: imx8mp: fix clock tree update of TF-A managed clocks
-Date: Mon, 14 Oct 2024 16:12:22 +0200
-Message-ID: <20241014141225.319219165@linuxfoundation.org>
+Subject: [PATCH 6.1 189/798] clk: imx: imx8qxp: Register dc0_bypass0_clk before disp clk
+Date: Mon, 14 Oct 2024 16:12:23 +0200
+Message-ID: <20241014141225.357506202@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -68,59 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 3d29036853b9cb07ac49e8261fca82a940be5c41 ]
+[ Upstream commit e61352d5ecdc0da2e7253121c15d9a3e040f78a1 ]
 
-On the i.MX8M*, the TF-A exposes a SiP (Silicon Provider) service
-for DDR frequency scaling. The imx8m-ddrc-devfreq driver calls the
-SiP and then does clk_set_parent on the DDR muxes to synchronize
-the clock tree.
+The initialization order of SCU clocks affects the sequence of SCU clock
+resume. If there are no other effects, the earlier the initialization,
+the earlier the resume. During SCU clock resume, the clock rate is
+restored. As SCFW guidelines, configure the parent clock rate before
+configuring the child rate.
 
-since commit 936c383673b9 ("clk: imx: fix composite peripheral flags"),
-these TF-A managed muxes have SET_PARENT_GATE set, which results
-in imx8m-ddrc-devfreq's clk_set_parent after SiP failing with -EBUSY:
-
-clk_set_parent(dram_apb_src, sys1_pll_40m);(busfreq-imx8mq.c)
-
-commit 926bf91248dd
-("clk: imx8m: fix clock tree update of TF-A managed clocks") adds this
-method and enables 8mm, 8mn and 8mq. i.MX8MP also needs it.
-
-This is safe to do, because updating the Linux clock tree to reflect
-reality will always be glitch-free.
-
-Another reason to this patch is that powersave image BT music
-requires dram to be 400MTS, so clk_set_parent(dram_alt_src,
-sys1_pll_800m); is required. Without this patch, it will not succeed.
-
-Fixes: 936c383673b9 ("clk: imx: fix composite peripheral flags")
-Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Fixes: 91e916771de0 ("clk: imx: scu: remove legacy scu clock binding support")
 Signed-off-by: Peng Fan <peng.fan@nxp.com>
 Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20240607133347.3291040-7-peng.fan@oss.nxp.com
+Link: https://lore.kernel.org/r/20240607133347.3291040-14-peng.fan@oss.nxp.com
 Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8mp.c | 4 ++--
+ drivers/clk/imx/clk-imx8qxp.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
-index 3d0d8f2c02dc1..2de49bbc40f30 100644
---- a/drivers/clk/imx/clk-imx8mp.c
-+++ b/drivers/clk/imx/clk-imx8mp.c
-@@ -550,8 +550,8 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
+diff --git a/drivers/clk/imx/clk-imx8qxp.c b/drivers/clk/imx/clk-imx8qxp.c
+index 1066ea16de625..fd89f0090779f 100644
+--- a/drivers/clk/imx/clk-imx8qxp.c
++++ b/drivers/clk/imx/clk-imx8qxp.c
+@@ -200,11 +200,11 @@ static int imx8qxp_clk_probe(struct platform_device *pdev)
+ 	imx_clk_scu("usb3_lpm_div", IMX_SC_R_USB_2, IMX_SC_PM_CLK_MISC);
  
- 	hws[IMX8MP_CLK_IPG_ROOT] = imx_clk_hw_divider2("ipg_root", "ahb_root", ccm_base + 0x9080, 0, 1);
+ 	/* Display controller SS */
+-	imx_clk_scu2("dc0_disp0_clk", dc0_sels, ARRAY_SIZE(dc0_sels), IMX_SC_R_DC_0, IMX_SC_PM_CLK_MISC0);
+-	imx_clk_scu2("dc0_disp1_clk", dc0_sels, ARRAY_SIZE(dc0_sels), IMX_SC_R_DC_0, IMX_SC_PM_CLK_MISC1);
+ 	imx_clk_scu("dc0_pll0_clk", IMX_SC_R_DC_0_PLL_0, IMX_SC_PM_CLK_PLL);
+ 	imx_clk_scu("dc0_pll1_clk", IMX_SC_R_DC_0_PLL_1, IMX_SC_PM_CLK_PLL);
+ 	imx_clk_scu("dc0_bypass0_clk", IMX_SC_R_DC_0_VIDEO0, IMX_SC_PM_CLK_BYPASS);
++	imx_clk_scu2("dc0_disp0_clk", dc0_sels, ARRAY_SIZE(dc0_sels), IMX_SC_R_DC_0, IMX_SC_PM_CLK_MISC0);
++	imx_clk_scu2("dc0_disp1_clk", dc0_sels, ARRAY_SIZE(dc0_sels), IMX_SC_R_DC_0, IMX_SC_PM_CLK_MISC1);
+ 	imx_clk_scu("dc0_bypass1_clk", IMX_SC_R_DC_0_VIDEO1, IMX_SC_PM_CLK_BYPASS);
  
--	hws[IMX8MP_CLK_DRAM_ALT] = imx8m_clk_hw_composite("dram_alt", imx8mp_dram_alt_sels, ccm_base + 0xa000);
--	hws[IMX8MP_CLK_DRAM_APB] = imx8m_clk_hw_composite_critical("dram_apb", imx8mp_dram_apb_sels, ccm_base + 0xa080);
-+	hws[IMX8MP_CLK_DRAM_ALT] = imx8m_clk_hw_fw_managed_composite("dram_alt", imx8mp_dram_alt_sels, ccm_base + 0xa000);
-+	hws[IMX8MP_CLK_DRAM_APB] = imx8m_clk_hw_fw_managed_composite_critical("dram_apb", imx8mp_dram_apb_sels, ccm_base + 0xa080);
- 	hws[IMX8MP_CLK_VPU_G1] = imx8m_clk_hw_composite("vpu_g1", imx8mp_vpu_g1_sels, ccm_base + 0xa100);
- 	hws[IMX8MP_CLK_VPU_G2] = imx8m_clk_hw_composite("vpu_g2", imx8mp_vpu_g2_sels, ccm_base + 0xa180);
- 	hws[IMX8MP_CLK_CAN1] = imx8m_clk_hw_composite("can1", imx8mp_can1_sels, ccm_base + 0xa200);
+ 	imx_clk_scu2("dc1_disp0_clk", dc1_sels, ARRAY_SIZE(dc1_sels), IMX_SC_R_DC_1, IMX_SC_PM_CLK_MISC0);
 -- 
 2.43.0
 
