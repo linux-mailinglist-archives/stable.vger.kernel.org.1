@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-85009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6773B99D34B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8367F99CF3B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:53:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F53F1C2307D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4A1B1C214A5
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30CAA1BE238;
-	Mon, 14 Oct 2024 15:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07BB1ABEA2;
+	Mon, 14 Oct 2024 14:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOM/Z+RV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pwt1JLas"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E380019F43B;
-	Mon, 14 Oct 2024 15:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDD41B4F14;
+	Mon, 14 Oct 2024 14:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919984; cv=none; b=NM4HeTOwqUQQUNAut/I1D9T1+wXt45pdga3k6mCquedSGy/Vj9TPRMpSpXztDrFpo5zTCZ6Cl4OTarw1ntRYcqkpEdAS44BMk9NO6XvnJHWKd2kfQJI90RyufKgErPy8yrD8DY0YeECqasaWNA0cSzjKKFGI9FLmtxqK/7FD8VI=
+	t=1728917330; cv=none; b=C19ifFNbmgmloMgHDxUByO+p+Upfn5jqpVxvdEEnL5DOWt4Z3jkM//7iNl1gRRB5s94ihaW6OyMuEXh79gPGKYf5dFkIoZDLhtuoABLwilYCN/cnp4nPe1o4Zeyyd7LDzPopHtMgBh4gOKVwXlZDtual9ZIt5TRrla5QayPiE/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919984; c=relaxed/simple;
-	bh=xn5VIKdw7mNIRxyiIG56x7vwKIBeySX/BnJTVfV4r/U=;
+	s=arc-20240116; t=1728917330; c=relaxed/simple;
+	bh=e0//OWB6a2v2tmXi9Bi+4QKFR5uMUn426ITt38maviM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0GuEkXC3OtaXcFPZjzy/2IQSZ3rsVHIJIgkACRxAu4CIkoka+95pgqZ4lYdU4XWYiUbgIQ+tb1Zt4OFYViuYwFd3lLxfciqzV7oucyZEZLbV6os1VibrKhNMNvrlnEXp3SYvrKz3r+mNvjOZSYe+TkTxlY7EBYZOq3iLGeSURY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOM/Z+RV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2283BC4CEC3;
-	Mon, 14 Oct 2024 15:33:02 +0000 (UTC)
+	 MIME-Version; b=mXXV9A/jNeOJnvF/U0zYiLmblt2u/UeXH20eJ9d4ZiLX+adpZAaXg3DSXarqcTSuY+4DcLOfy92VRazXLfOmBwSu1yxMUAa/5LMimg4bXFgtIhC+2qJIQXLxAQlNOr+CxL3Xr5JF8ch0wbnQkQYNtCtUmZ6Hoh3vJBHmWs192N4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pwt1JLas; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1592C4CEC3;
+	Mon, 14 Oct 2024 14:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919983;
-	bh=xn5VIKdw7mNIRxyiIG56x7vwKIBeySX/BnJTVfV4r/U=;
+	s=korg; t=1728917330;
+	bh=e0//OWB6a2v2tmXi9Bi+4QKFR5uMUn426ITt38maviM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GOM/Z+RVdKgzuv7sIdUz3tFBHsmCwJdPeaWqUsy2HDOcL9mmacYG55eHs9BGjU0xX
-	 B49OUCe9SL5j3LFfq81ei4ZHoZ9IDqsjrLztyyCErvoQdicMaaFURkWtJ4ME6FqzJx
-	 NY2+rNrkErgd40HRxKMcoYazNdwAjTz7hEFzOsGI=
+	b=Pwt1JLas8SHWH3eU33ZgND34MNoBKDD8Fa8vEQG4z+nxlG9/8MTw01L6kQ9DZeTWf
+	 GvotT3gf2SKX2VkjIv2KQSKXrQIT42SQcE1dd8xDYBRLvGooymPG9QGFdp1N3NYGBT
+	 4jCSh+1JKECFWHMuzocUKVLc5RwFspG2TzXKB3cQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1d121645899e7692f92a@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
+	Todd Brandt <todd.e.brandt@intel.com>,
+	Dieter Mummenschanz <dmummenschanz@web.de>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 763/798] ppp: fix ppp_async_encode() illegal access
-Date: Mon, 14 Oct 2024 16:21:57 +0200
-Message-ID: <20241014141248.043202430@linuxfoundation.org>
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Subject: [PATCH 6.6 212/213] e1000e: fix force smbus during suspend flow
+Date: Mon, 14 Oct 2024 16:21:58 +0200
+Message-ID: <20241014141051.233693731@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +66,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-[ Upstream commit 40dddd4b8bd08a69471efd96107a4e1c73fabefc ]
+commit 76a0a3f9cc2fbd0e56671706bb74a9a988397898 upstream.
 
-syzbot reported an issue in ppp_async_encode() [1]
+Commit 861e8086029e ("e1000e: move force SMBUS from enable ulp function
+to avoid PHY loss issue") resolved a PHY access loss during suspend on
+Meteor Lake consumer platforms, but it affected corporate systems
+incorrectly.
 
-In this case, pppoe_sendmsg() is called with a zero size.
-Then ppp_async_encode() is called with an empty skb.
+A better fix, working for both consumer and corporate systems, was
+proposed in commit bfd546a552e1 ("e1000e: move force SMBUS near the end
+of enable_ulp function"). However, it introduced a regression on older
+devices, such as [8086:15B8], [8086:15F9], [8086:15BE].
 
-BUG: KMSAN: uninit-value in ppp_async_encode drivers/net/ppp/ppp_async.c:545 [inline]
- BUG: KMSAN: uninit-value in ppp_async_push+0xb4f/0x2660 drivers/net/ppp/ppp_async.c:675
-  ppp_async_encode drivers/net/ppp/ppp_async.c:545 [inline]
-  ppp_async_push+0xb4f/0x2660 drivers/net/ppp/ppp_async.c:675
-  ppp_async_send+0x130/0x1b0 drivers/net/ppp/ppp_async.c:634
-  ppp_channel_bridge_input drivers/net/ppp/ppp_generic.c:2280 [inline]
-  ppp_input+0x1f1/0xe60 drivers/net/ppp/ppp_generic.c:2304
-  pppoe_rcv_core+0x1d3/0x720 drivers/net/ppp/pppoe.c:379
-  sk_backlog_rcv+0x13b/0x420 include/net/sock.h:1113
-  __release_sock+0x1da/0x330 net/core/sock.c:3072
-  release_sock+0x6b/0x250 net/core/sock.c:3626
-  pppoe_sendmsg+0x2b8/0xb90 drivers/net/ppp/pppoe.c:903
-  sock_sendmsg_nosec net/socket.c:729 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:744
-  ____sys_sendmsg+0x903/0xb60 net/socket.c:2602
-  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2656
-  __sys_sendmmsg+0x3c1/0x960 net/socket.c:2742
-  __do_sys_sendmmsg net/socket.c:2771 [inline]
-  __se_sys_sendmmsg net/socket.c:2768 [inline]
-  __x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2768
-  x64_sys_call+0xb6e/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:308
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+This patch aims to fix the secondary regression, by limiting the scope of
+the changes to Meteor Lake platforms only.
 
-Uninit was created at:
-  slab_post_alloc_hook mm/slub.c:4092 [inline]
-  slab_alloc_node mm/slub.c:4135 [inline]
-  kmem_cache_alloc_node_noprof+0x6bf/0xb80 mm/slub.c:4187
-  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:587
-  __alloc_skb+0x363/0x7b0 net/core/skbuff.c:678
-  alloc_skb include/linux/skbuff.h:1322 [inline]
-  sock_wmalloc+0xfe/0x1a0 net/core/sock.c:2732
-  pppoe_sendmsg+0x3a7/0xb90 drivers/net/ppp/pppoe.c:867
-  sock_sendmsg_nosec net/socket.c:729 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:744
-  ____sys_sendmsg+0x903/0xb60 net/socket.c:2602
-  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2656
-  __sys_sendmmsg+0x3c1/0x960 net/socket.c:2742
-  __do_sys_sendmmsg net/socket.c:2771 [inline]
-  __se_sys_sendmmsg net/socket.c:2768 [inline]
-  __x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2768
-  x64_sys_call+0xb6e/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:308
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-CPU: 1 UID: 0 PID: 5411 Comm: syz.1.14 Not tainted 6.12.0-rc1-syzkaller-00165-g360c1f1f24c6 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+1d121645899e7692f92a@syzkaller.appspotmail.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Fixes: bfd546a552e1 ("e1000e: move force SMBUS near the end of enable_ulp function")
+Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218940
+Reported-by: Dieter Mummenschanz <dmummenschanz@web.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218936
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241009185802.3763282-1-edumazet@google.com
+Link: https://patch.msgid.link/20240709203123.2103296-1-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ppp/ppp_async.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/e1000e/ich8lan.c |   73 ++++++++++++++++++++--------
+ 1 file changed, 53 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/ppp/ppp_async.c b/drivers/net/ppp/ppp_async.c
-index abc65c4d7a303..669a3a9aa5cb8 100644
---- a/drivers/net/ppp/ppp_async.c
-+++ b/drivers/net/ppp/ppp_async.c
-@@ -550,7 +550,7 @@ ppp_async_encode(struct asyncppp *ap)
- 	 * and 7 (code-reject) must be sent as though no options
- 	 * had been negotiated.
- 	 */
--	islcp = proto == PPP_LCP && 1 <= data[2] && data[2] <= 7;
-+	islcp = proto == PPP_LCP && count >= 3 && 1 <= data[2] && data[2] <= 7;
+--- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
++++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+@@ -1109,6 +1109,46 @@ static s32 e1000_platform_pm_pch_lpt(str
+ }
  
- 	if (i == 0) {
- 		if (islcp)
--- 
-2.43.0
-
+ /**
++ *  e1000e_force_smbus - Force interfaces to transition to SMBUS mode.
++ *  @hw: pointer to the HW structure
++ *
++ *  Force the MAC and the PHY to SMBUS mode. Assumes semaphore already
++ *  acquired.
++ *
++ * Return: 0 on success, negative errno on failure.
++ **/
++static s32 e1000e_force_smbus(struct e1000_hw *hw)
++{
++	u16 smb_ctrl = 0;
++	u32 ctrl_ext;
++	s32 ret_val;
++
++	/* Switching PHY interface always returns MDI error
++	 * so disable retry mechanism to avoid wasting time
++	 */
++	e1000e_disable_phy_retry(hw);
++
++	/* Force SMBus mode in the PHY */
++	ret_val = e1000_read_phy_reg_hv_locked(hw, CV_SMB_CTRL, &smb_ctrl);
++	if (ret_val) {
++		e1000e_enable_phy_retry(hw);
++		return ret_val;
++	}
++
++	smb_ctrl |= CV_SMB_CTRL_FORCE_SMBUS;
++	e1000_write_phy_reg_hv_locked(hw, CV_SMB_CTRL, smb_ctrl);
++
++	e1000e_enable_phy_retry(hw);
++
++	/* Force SMBus mode in the MAC */
++	ctrl_ext = er32(CTRL_EXT);
++	ctrl_ext |= E1000_CTRL_EXT_FORCE_SMBUS;
++	ew32(CTRL_EXT, ctrl_ext);
++
++	return 0;
++}
++
++/**
+  *  e1000_enable_ulp_lpt_lp - configure Ultra Low Power mode for LynxPoint-LP
+  *  @hw: pointer to the HW structure
+  *  @to_sx: boolean indicating a system power state transition to Sx
+@@ -1165,6 +1205,14 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000
+ 	if (ret_val)
+ 		goto out;
+ 
++	if (hw->mac.type != e1000_pch_mtp) {
++		ret_val = e1000e_force_smbus(hw);
++		if (ret_val) {
++			e_dbg("Failed to force SMBUS: %d\n", ret_val);
++			goto release;
++		}
++	}
++
+ 	/* Si workaround for ULP entry flow on i127/rev6 h/w.  Enable
+ 	 * LPLU and disable Gig speed when entering ULP
+ 	 */
+@@ -1225,27 +1273,12 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000
+ 	}
+ 
+ release:
+-	/* Switching PHY interface always returns MDI error
+-	 * so disable retry mechanism to avoid wasting time
+-	 */
+-	e1000e_disable_phy_retry(hw);
+-
+-	/* Force SMBus mode in PHY */
+-	ret_val = e1000_read_phy_reg_hv_locked(hw, CV_SMB_CTRL, &phy_reg);
+-	if (ret_val) {
+-		e1000e_enable_phy_retry(hw);
+-		hw->phy.ops.release(hw);
+-		goto out;
++	if (hw->mac.type == e1000_pch_mtp) {
++		ret_val = e1000e_force_smbus(hw);
++		if (ret_val)
++			e_dbg("Failed to force SMBUS over MTL system: %d\n",
++			      ret_val);
+ 	}
+-	phy_reg |= CV_SMB_CTRL_FORCE_SMBUS;
+-	e1000_write_phy_reg_hv_locked(hw, CV_SMB_CTRL, phy_reg);
+-
+-	e1000e_enable_phy_retry(hw);
+-
+-	/* Force SMBus mode in MAC */
+-	mac_reg = er32(CTRL_EXT);
+-	mac_reg |= E1000_CTRL_EXT_FORCE_SMBUS;
+-	ew32(CTRL_EXT, mac_reg);
+ 
+ 	hw->phy.ops.release(hw);
+ out:
 
 
 
