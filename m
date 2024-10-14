@@ -1,147 +1,135 @@
-Return-Path: <stable+bounces-83748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB6E299C40A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 10:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDFF499C430
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 10:55:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCF8B1C22C51
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 08:51:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B66B1C2190E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 08:55:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC93154BFE;
-	Mon, 14 Oct 2024 08:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B66155342;
+	Mon, 14 Oct 2024 08:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jmaTdHlJ"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YqiJ0JbC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016CD154BFB;
-	Mon, 14 Oct 2024 08:51:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18DC231C8E;
+	Mon, 14 Oct 2024 08:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728895896; cv=none; b=Wjmv9gnuhh4ctB5b2eu6HRWB9y0TXoxZyfQasYb4zmB6g85FAvddAXE0psl0oUg6iUvzN4Uev09Y7KZqfWatGLUktQb7Ny5ksOFz6VSwACgkPrtBVtWvnLqT96bbOE5cPZs0Jz5G+1wrn9t9jQE92d1t1jwcHnC+up9qdlN9kqM=
+	t=1728896094; cv=none; b=hkp5Z16Vm8IrhuCQrQydQHC4YT47c/TBbSAEeL2VMe8FTfLdwCs2gzHqzsqgslis+pID9vvwKk2558STZsjGjZMCDnjEfHrWzPtH5EimeVi4FlHvkv+TV4WmbbFqTPy4YXWN3HVNZzc9IMinHzqvh+S7h17mKnGUfZsZk4Oe6NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728895896; c=relaxed/simple;
-	bh=4hcP/x3fAzVQhFkDBiUme9mzWAr2o0rZJpMEeAgZ7ok=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eat3hCQOK9aOsKty1MKqvEGdHXV7nc3I2waGJoEEPqq+SLlL2NZWZ5H7eSNikKh8uduvL40ogpNsgrZ0MWHSuia9sB69R0j/uU1dpIEb3Kj8uXMhBq48cacTvTLHEp4+FUIJXSSo4tmBt148gEm4CTEe5A4RWkMQCTtVU5mZuk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jmaTdHlJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F35AC4CEC3;
-	Mon, 14 Oct 2024 08:51:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728895895;
-	bh=4hcP/x3fAzVQhFkDBiUme9mzWAr2o0rZJpMEeAgZ7ok=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jmaTdHlJGLdT70w+tRHmzdBTESBBs9uzAq72yOME8xYrnPDSlJcNuKIMvmM2Nzpis
-	 JN/rSlqjbM23hxQux0FWBoK76Mr8NGLnBaxGZEiD3dJPtjjKQONX9F6QUdVwv9moXQ
-	 kftOW06BrklPD2FGYlRUOYcsBBT1KNWnFO7yM8KIZSIixYol0e1Gco5xsxdFWcO+FH
-	 hidweBEqWabuJ5B3hFcTsVBldlrWGc8AeHLHP6VmuyPqDkeL/zft7WjwlIZxPdHPMS
-	 p9khtAaJ2LBSjA5gmD/GeIF1hreZD9qiS+wA35qOw9LMt3U5nCWxgu2A2og+f3DRAH
-	 xVO7qzKlgrE6w==
-Message-ID: <a406ef56-bcb7-4d12-9666-2f354bdba3dd@kernel.org>
-Date: Mon, 14 Oct 2024 10:51:30 +0200
+	s=arc-20240116; t=1728896094; c=relaxed/simple;
+	bh=334/kP1ZS9qqdH61za7BkXxyez1dWPdwP5jxmw2QOgc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=EqciLPWRe6j53FvXlpBbaQW2tB/EahaxhcC21hwAlASevQynblqJt/pe9JoN1p2drsvht2DK9dwJ6H2EB598xZzK1D4UDAwuJsEm6F3AM1XHx2Ha82/yL7kS2lE7SzDvxDp5hN+oWeM3T1CmnKjVmdZm89FGRPoxArlGJs36vrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YqiJ0JbC; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49E8LkHf026351;
+	Mon, 14 Oct 2024 08:54:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:in-reply-to:references:date:message-id
+	:mime-version:content-type:content-transfer-encoding; s=pp1; bh=
+	g20+vSwQPCR+VxKd35Vza9wQi09ArdNbwM3n/b5/10w=; b=YqiJ0JbCyE8gGssW
+	ZM8K3f7M+CZziAbwJuAVxqAnz95lBx4tZCAZjFb7PdMrbHEdbeH+5yHIVavgYeeC
+	ZixJEqDToRA2ncV2qqjVBsRcmmIhRX4gMj7agqmq32O073cMcSXG9kQwgZHtaCtx
+	AHGCNRqLJdDk+EvSa34lrw201IfD6Y742MIKVZe3id/xyy8mBmRD4qlL5PeIarKw
+	NgQUKZ8s83jR81T0rCKa7DsiOOt0QKgdJcsmfxoxMdMaUKT8h7qqIX//gbzyATsm
+	/m/AvPpkerYHQc9AeZ6kzN7erbqdtmBjBuKSPomBehsu8aAtbWmDhUVKmhw+OIwc
+	9vM7kw==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 428yq4046p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Oct 2024 08:54:33 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49E8QQse006843;
+	Mon, 14 Oct 2024 08:54:33 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4284xjwdpy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Oct 2024 08:54:33 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49E8sTBO23790106
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 14 Oct 2024 08:54:29 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5774920043;
+	Mon, 14 Oct 2024 08:54:29 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0AB3D2004B;
+	Mon, 14 Oct 2024 08:54:29 +0000 (GMT)
+Received: from tuxmaker.linux.ibm.com (unknown [9.152.85.9])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 14 Oct 2024 08:54:28 +0000 (GMT)
+From: Sven Schnelle <svens@linux.ibm.com>
+To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger
+ <borntraeger@linux.ibm.com>,
+        "Guilherme G. Piccoli"
+ <gpiccoli@igalia.com>,
+        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 0/2] s390: two bugfixes (for kunit)
+In-Reply-To: <20241014-s390-kunit-v1-0-941defa765a6@linutronix.de> ("Thomas
+	=?utf-8?Q?Wei=C3=9Fschuh=22's?= message of "Mon, 14 Oct 2024 07:50:05
+ +0200")
+References: <20241014-s390-kunit-v1-0-941defa765a6@linutronix.de>
+Date: Mon, 14 Oct 2024 10:54:28 +0200
+Message-ID: <yt9dmsj712uz.fsf@linux.ibm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] staging: vchiq_arm: Fix missing refcount decrement in
- error path for fw_node
-To: Dan Carpenter <dan.carpenter@linaro.org>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Stefan Wahren <wahrenst@gmx.net>, Umang Jain <umang.jain@ideasonboard.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241013-vchiq_arm-of_node_put-v1-1-f72b2a6e47d0@gmail.com>
- <a4283afc-f869-4048-90b4-1775acb9adda@stanley.mountain>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <a4283afc-f869-4048-90b4-1775acb9adda@stanley.mountain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: IMkdp4OlovZoU_cFZnvrm2k4wYUXoIk-
+X-Proofpoint-GUID: IMkdp4OlovZoU_cFZnvrm2k4wYUXoIk-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-14_07,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ suspectscore=0 mlxlogscore=548 priorityscore=1501 adultscore=0
+ impostorscore=0 spamscore=0 bulkscore=0 phishscore=0 lowpriorityscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410140060
 
-On 14/10/2024 09:22, Dan Carpenter wrote:
->> @@ -1341,8 +1342,6 @@ static int vchiq_probe(struct platform_device *pdev)
->>  	if (!info)
->>  		return -EINVAL;
->>  
->> -	fw_node = of_find_compatible_node(NULL, NULL,
->> -					  "raspberrypi,bcm2835-firmware");
-> 
-> Perhaps it's better to declare the variable here so that the function and the
-> error handling are next to each other.
-> 
-> 	if (!info)
-> 		return -EINVAL;
-> 
-> 	struct device_node *fw_node __free(device_node) =
-> 		of_find_compatible_node(NULL, NULL, "raspberrypi,bcm2835-firmware");
-> 	if (!fw_node) {
-> 
-> 	...
-> 
-> This is why we lifted the rule that variables had to be declared at the start
-> of a function.
-> 
+Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de> writes:
 
+> When trying to use kunit for s390 with
+> ./tools/testing/kunit/kunit.py run --arch=3Ds390 --kunitconfig drivers/ba=
+se/test --cross_compile=3D$CROSS_COMPILE
+> I ran into some bugs.
+>
+> Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
+> ---
+> Thomas Wei=C3=9Fschuh (2):
+>       s390/sclp: deactivate sclp after all its users
+>       s390/sclp_vt220: convert newlines to CRLF instead of LFCR
+>
+>  drivers/s390/char/sclp.c       | 3 ++-
+>  drivers/s390/char/sclp_vt220.c | 4 ++--
+>  2 files changed, 4 insertions(+), 3 deletions(-)
+> ---
+> base-commit: 6485cf5ea253d40d507cd71253c9568c5470cd27
+> change-id: 20241014-s390-kunit-47cbc26a99e6
 
-Ack, this is how this should look like.
+Looks good to me. For both patches:
 
-Best regards,
-Krzysztof
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
 
+Thanks!
+Sven
 
