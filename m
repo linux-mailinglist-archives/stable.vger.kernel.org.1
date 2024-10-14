@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-83927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B838499CD36
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0350B99CE4C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:42:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BC1B281453
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE0571F23CDC
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D24A200CB;
-	Mon, 14 Oct 2024 14:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D571AB6D4;
+	Mon, 14 Oct 2024 14:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqghlcFK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzvyrQhI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2734D20EB;
-	Mon, 14 Oct 2024 14:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12041AB6DA;
+	Mon, 14 Oct 2024 14:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916219; cv=none; b=qrWa/kA/6bNLgpQJ+D/D7O4Dw8Z0pFVw3xkyd4yty5qrLJgK4dNEEzE5VEvKFoUtrLPYAYrJlhiXBmH1mTbPz99HUV7cnvtQmkJNsld+JeucFPDkH17rsqUnCN0xmEKTqohfyj6z9GuCB6LYzu4Xv9hZ2jFlGMqZcQeUE/12Qns=
+	t=1728916933; cv=none; b=W4MIe6fc91bLpGV9NvWXx4CuXA55RtEIc6EJ0XrWv05vIRopMFP57SFZBQCVppQx4dia6CEI3To/21My5kmDZXxOhk/c9j5mwfK9yJxA4cvLM8hT9kyxBbTLsI1Bertfx7ijZGZnSM1tg2TU024bpa0J7DRMV29WYirhhjtBDUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916219; c=relaxed/simple;
-	bh=uBJ0oCBqhgxeN6zEJCGxk3pe/iTTfg0ngl8egsCQ8+M=;
+	s=arc-20240116; t=1728916933; c=relaxed/simple;
+	bh=BGemfGgqagF4eo3XCANohC63Grz7XH//PfJc3jpMFYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tbiBBPXQzXOWJdqWOkHe6pYIxLUDtw9kXh3CoVGLPB+Zbw+CR5Ob3XUk5PBMhJY8DCYpNU3aNf0kCio5sTcZqJeQ+pAA50ba1JYl8S3of6H1sBVnXLyggwLTsAlGYLIPohCXYRnKt01yy7190w8eAWNipdswyWFivB8zI8ZdG3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqghlcFK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B51AC4CEC3;
-	Mon, 14 Oct 2024 14:30:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C7eG0RxIWnAqJJnJoHUI47cBDL2Xh/+EWAnshT92cgkFsKiZod4BCVidoaXx6ikEnMQakynbZXlePfsffLJJTtCxflIua+yK3KjwbRHforlXD2QGN/Da/y+MqrQXqStdmiQR7DICxtwsL9nVDT8sRUvsYa0Epxa2cBf7oDALa/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzvyrQhI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01EF5C4CEC3;
+	Mon, 14 Oct 2024 14:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916219;
-	bh=uBJ0oCBqhgxeN6zEJCGxk3pe/iTTfg0ngl8egsCQ8+M=;
+	s=korg; t=1728916933;
+	bh=BGemfGgqagF4eo3XCANohC63Grz7XH//PfJc3jpMFYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KqghlcFKZtFR3H4YJZ5fTnn0SNrQJDaDD1MA20sYF25XgqeoNqX1KuJSMQiystUw1
-	 PgfI+gUtoeNMe+S0TErdq+SRhWIMnq/BNRBKiVGt/H5jxJ/b+SjuZdTMUm9+yIMYvf
-	 Q/tvXym4Cz5Ye1o9PiSNxEbAYOBXAeGMXv4oVbAI=
+	b=CzvyrQhIl+HeHII9i9IWxurR8UjbTjJMd5zU9gP9/kBHwPrHxVaHA8Cmxvztnki09
+	 y8cqAFcF8TluPZBse0AACphEpq/ZfuLzz/Tsr/1E/UatVIGmO1pK552upptl7XjRC+
+	 OYtsfsDdr6ERxVzCMqmLNjPON+bf8DCoDVVH4T/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 117/214] gpio: aspeed: Use devm_clk api to manage clock source
+Subject: [PATCH 6.6 074/213] i2c: i801: Use a different adapter-name for IDF adapters
 Date: Mon, 14 Oct 2024 16:19:40 +0200
-Message-ID: <20241014141049.558140089@linuxfoundation.org>
+Message-ID: <20241014141045.871261011@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Billy Tsai <billy_tsai@aspeedtech.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit a6191a3d18119184237f4ee600039081ad992320 ]
+[ Upstream commit 43457ada98c824f310adb7bd96bd5f2fcd9a3279 ]
 
-Replace of_clk_get with devm_clk_get_enabled to manage the clock source.
+On chipsets with a second 'Integrated Device Function' SMBus controller use
+a different adapter-name for the second IDF adapter.
 
-Fixes: 5ae4cb94b313 ("gpio: aspeed: Add debounce support")
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-Link: https://lore.kernel.org/r/20241008081450.1490955-3-billy_tsai@aspeedtech.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+This allows platform glue code which is looking for the primary i801
+adapter to manually instantiate i2c_clients on to differentiate
+between the 2.
+
+This allows such code to find the primary i801 adapter by name, without
+needing to duplicate the PCI-ids to feature-flags mapping from i2c-i801.c.
+
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-aspeed.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-i801.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-aspeed.c b/drivers/gpio/gpio-aspeed.c
-index 98551b7f6de2e..ea40ad43a79ba 100644
---- a/drivers/gpio/gpio-aspeed.c
-+++ b/drivers/gpio/gpio-aspeed.c
-@@ -1193,7 +1193,7 @@ static int __init aspeed_gpio_probe(struct platform_device *pdev)
- 	if (!gpio_id)
- 		return -EINVAL;
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index 3410add34aad2..2b8bcd121ffa5 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -1754,8 +1754,15 @@ static int i801_probe(struct pci_dev *dev, const struct pci_device_id *id)
  
--	gpio->clk = of_clk_get(pdev->dev.of_node, 0);
-+	gpio->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(gpio->clk)) {
- 		dev_warn(&pdev->dev,
- 				"Failed to get clock from devicetree, debouncing disabled\n");
+ 	i801_add_tco(priv);
+ 
++	/*
++	 * adapter.name is used by platform code to find the main I801 adapter
++	 * to instantiante i2c_clients, do not change.
++	 */
+ 	snprintf(priv->adapter.name, sizeof(priv->adapter.name),
+-		"SMBus I801 adapter at %04lx", priv->smba);
++		 "SMBus %s adapter at %04lx",
++		 (priv->features & FEATURE_IDF) ? "I801 IDF" : "I801",
++		 priv->smba);
++
+ 	err = i2c_add_adapter(&priv->adapter);
+ 	if (err) {
+ 		platform_device_unregister(priv->tco_pdev);
 -- 
 2.43.0
 
