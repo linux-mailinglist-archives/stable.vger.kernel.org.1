@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B69F99D301
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:32:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 026FE99CD9C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC7271C21188
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:32:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD4961F20B59
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6C91C3054;
-	Mon, 14 Oct 2024 15:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2B71AC8A6;
+	Mon, 14 Oct 2024 14:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tda1yt2C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tjbs4TWg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3F91C3050;
-	Mon, 14 Oct 2024 15:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789EE4595B;
+	Mon, 14 Oct 2024 14:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919753; cv=none; b=EoHHa2HXmh6nbcxnaiqaqRuYbirKLq9XJ7VdAhU8wpvdKg0w/MOLG5wywNxMb3XtN46Q9tPvxbWTTwa5IYMxqUYmhkisGHCUbBQH5MfqzmgQrwrxskZ53R+94/0tGxI8u976ZDlVtLH5V0LXTkfBuFYLcEHc9MB6sFBT2U4NNVs=
+	t=1728916449; cv=none; b=nIXFopURK9rtJPM3VeIgQ/KPjbzlMvFzWqHBgJZ4R41uOj6nt3bE5rozVw8Ryps0x0c9VnDLE0dHngV+ZHUdj5QSomenuhiB7TbLUJMx10ASGl3stT3z4SYmFbK5EQv1jvinPUIK+JZ4hEjJ7Yeye2K7TzVTU6U2dhQnblihlxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919753; c=relaxed/simple;
-	bh=1xNBLg0C9zYkhGCUHTPCxsJJ2A0j6POo56mb4Pfgr04=;
+	s=arc-20240116; t=1728916449; c=relaxed/simple;
+	bh=uCnS4DiiRhL6pEezC8AfYVnHbTkAvhI4RtOfLSnxrSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BDgMISXZopJIDHknwW6yijRC9jUZsxX5moxqe+lQLZg2bqF20qlZ7N0vxYseXduidLlcS0rxOpwmWVpVG6YhehEBzmufbh1Tvw848dnLR1EYXQv3GJK4LG6xoB9h2+U/ZQyDiFVY7mNOiEau9LlNpaGePWO8nHfdVm8jyXUsQCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tda1yt2C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04876C4CED0;
-	Mon, 14 Oct 2024 15:29:11 +0000 (UTC)
+	 MIME-Version; b=dzUPNwEQhnp8uwu2NvuP+ZT6RKFTKrvSGSQtYc+PnwvgNfAlkCEqymMhpsQI2o+F5GGKaCRkLylrPSsd6NxXGCWsApugz3ErOc+F/nXwer6YgYpz6Fxq/2nX3wKWDMBWrB15dqZ753FISqstretddIRH/7nGuzTL+iiyqxw7n2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tjbs4TWg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CD9C4CEC3;
+	Mon, 14 Oct 2024 14:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919752;
-	bh=1xNBLg0C9zYkhGCUHTPCxsJJ2A0j6POo56mb4Pfgr04=;
+	s=korg; t=1728916449;
+	bh=uCnS4DiiRhL6pEezC8AfYVnHbTkAvhI4RtOfLSnxrSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tda1yt2CFKQK7nZNDj+gyN4f4AQqP8kk0ugD7Oc3V8LxLil5ETA98HVGnktD0RlgP
-	 p1QHT/79OzEos0ENjjeqVf1KhBYxa5XrTM7jhgVC+PqkCGZXEab3XfCn+/SM4W7mCz
-	 Yhe9YR0B7WerD8N9A+yOolx1NgR1Xh6ssKh5JsC8=
+	b=Tjbs4TWgukgN+HVCncf54dqIDuU22NyWZiiyEOmyXbnxAhkwRZZlHztd/ikKYOip8
+	 ZBbg24uYJDRt7eUBIwtIkh/HJbeWpbYTrHdtHVQrA4TJONwC4nUkeqz18ATKc0P6xW
+	 iK9R0knF2C+mY3od4zKMd8aJ9UPUJtb6lXc5QP1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	"John Warthog9 Hawley (Tenstorrent)" <warthog9@eaglescrag.net>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 695/798] ktest.pl: Avoid false positives with grub2 skip regex
+	Avri Altman <avri.altman@wdc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.11 186/214] scsi: ufs: Use pre-calculated offsets in ufshcd_init_lrb()
 Date: Mon, 14 Oct 2024 16:20:49 +0200
-Message-ID: <20241014141245.372962347@linuxfoundation.org>
+Message-ID: <20241014141052.238282012@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Jordan <daniel.m.jordan@oracle.com>
+From: Avri Altman <avri.altman@wdc.com>
 
-[ Upstream commit 2351e8c65404aabc433300b6bf90c7a37e8bbc4d ]
+commit d5130c5a093257aa4542aaded8034ef116a7624a upstream.
 
-Some distros have grub2 config files with the lines
+Replace manual offset calculations for response_upiu and prd_table in
+ufshcd_init_lrb() with pre-calculated offsets already stored in the
+utp_transfer_req_desc structure. The pre-calculated offsets are set
+differently in ufshcd_host_memory_configure() based on the
+UFSHCD_QUIRK_PRDT_BYTE_GRAN quirk, ensuring correct alignment and
+access.
 
-    if [ x"${feature_menuentry_id}" = xy ]; then
-      menuentry_id_option="--id"
-    else
-      menuentry_id_option=""
-    fi
-
-which match the skip regex defined for grub2 in get_grub_index():
-
-    $skip = '^\s*menuentry';
-
-These false positives cause the grub number to be higher than it
-should be, and the wrong kernel can end up booting.
-
-Grub documents the menuentry command with whitespace between it and the
-title, so make the skip regex reflect this.
-
-Link: https://lore.kernel.org/20240904175530.84175-1-daniel.m.jordan@oracle.com
-Signed-off-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Acked-by: John 'Warthog9' Hawley (Tenstorrent) <warthog9@eaglescrag.net>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 26f968d7de82 ("scsi: ufs: Introduce UFSHCD_QUIRK_PRDT_BYTE_GRAN quirk")
+Cc: stable@vger.kernel.org
+Signed-off-by: Avri Altman <avri.altman@wdc.com>
+Link: https://lore.kernel.org/r/20240910044543.3812642-1-avri.altman@wdc.com
+Acked-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/ktest/ktest.pl | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index 449e45bd69665..99e17a0a13649 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -2036,7 +2036,7 @@ sub get_grub_index {
-     } elsif ($reboot_type eq "grub2") {
- 	$command = "cat $grub_file";
- 	$target = '^\s*menuentry.*' . $grub_menu_qt;
--	$skip = '^\s*menuentry';
-+	$skip = '^\s*menuentry\s';
- 	$submenu = '^\s*submenu\s';
-     } elsif ($reboot_type eq "grub2bls") {
- 	$command = $grub_bls_get;
--- 
-2.43.0
-
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -2920,9 +2920,8 @@ static void ufshcd_init_lrb(struct ufs_h
+ 	struct utp_transfer_req_desc *utrdlp = hba->utrdl_base_addr;
+ 	dma_addr_t cmd_desc_element_addr = hba->ucdl_dma_addr +
+ 		i * ufshcd_get_ucd_size(hba);
+-	u16 response_offset = offsetof(struct utp_transfer_cmd_desc,
+-				       response_upiu);
+-	u16 prdt_offset = offsetof(struct utp_transfer_cmd_desc, prd_table);
++	u16 response_offset = le16_to_cpu(utrdlp[i].response_upiu_offset);
++	u16 prdt_offset = le16_to_cpu(utrdlp[i].prd_table_offset);
+ 
+ 	lrb->utr_descriptor_ptr = utrdlp + i;
+ 	lrb->utrd_dma_addr = hba->utrdl_dma_addr +
 
 
 
