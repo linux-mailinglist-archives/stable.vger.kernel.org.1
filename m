@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-84224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ABF899CF21
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:51:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C3799D34F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BFF01C21F3C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:51:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC9FEB285EF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D881AB507;
-	Mon, 14 Oct 2024 14:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E05F14AA9;
+	Mon, 14 Oct 2024 15:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XK+D1r98"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IV+NSfg2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906321AAE38;
-	Mon, 14 Oct 2024 14:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F3D1AC458;
+	Mon, 14 Oct 2024 15:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917261; cv=none; b=iQUJ2yPhNEPOr5x+h6Hq2BhvTqLjeg9ObcRVgdM5xlfgD/2j2dLuVExENZyKT18ywaQ73QkEqmrMua1RVQdRPPy+m2XepTsu3plCDbZ4sYmyor+UHNX6DLQQii7F/ZFw0S2koSoIIICE1K03oQz6tsjoK4pjl82BgNKQszfYlT8=
+	t=1728919939; cv=none; b=agIaoc4cw4+OZNajfBYKJW+jdSx4gSrDI+SquMhUSSZ46ci79s9hJvAWrVEqKOCgKs4eHjkmyhK9iWpKv8SdRFnLOzseUuW8mA/LkQjuAvT6ALL9NhRT5DKgy7eU2pID77o0cjB87P7TGast7T+Rjm6gnf2fJQbKeOtk0/Zg51M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917261; c=relaxed/simple;
-	bh=5Th43cCYoIe/c32yrT7odTRGBC+YIeEj6t1R00dS6dQ=;
+	s=arc-20240116; t=1728919939; c=relaxed/simple;
+	bh=X1QqVBGh70pAok82oJL2iNrL1mmjTUKvLApFZD8dxCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KRmw+BA7FO5bEZRIxK6k6yxdN/QVn4EpLgTEE5xNHbNH8/1GB4+QpM1eTMRikdKBq4ugoY2nuRH1St6ZUE3x3EkgD/vkMG2u2DW35BlWm9dLIL7IbxGMkx8uh5Ne/I14nE5hxbkOgZ/HFXEpc9+ReEcqPWmIJesnOlu5FBT2p6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XK+D1r98; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8F7C4CEC3;
-	Mon, 14 Oct 2024 14:47:40 +0000 (UTC)
+	 MIME-Version; b=siQAMnI9/gr6oE5teyXpmH1IRjJulC69n/mQebiqSJE66DsurY52cr37j0duJ55EOvZD9SBu41O2B5Fl+xcz5TWERI5H+OIEbqfi1TRp3V9VZxR9ppguRseWV3AqTw+r5tVcdVVRcUcROCZpu6fViXx0Fkr6lG4Qf+MpTeqMOco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IV+NSfg2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C113C4CEC3;
+	Mon, 14 Oct 2024 15:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917261;
-	bh=5Th43cCYoIe/c32yrT7odTRGBC+YIeEj6t1R00dS6dQ=;
+	s=korg; t=1728919938;
+	bh=X1QqVBGh70pAok82oJL2iNrL1mmjTUKvLApFZD8dxCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XK+D1r98RbSUp454gmsvsbTdVMinv8ZOuSJ78BRvQDcO2G1XVBSRVN+dE1GEnv2do
-	 OjmrXe/P8YbWS80oIJlx7/Y28wN+jH/bUbFnBQNqi7wFlgavRHytUQ87jXB8rMPgh8
-	 x4GVe+qnfprmQiR7Yo7WGCITfS0qeStkAXOPFhjg=
+	b=IV+NSfg2147dzR8KsEp/ejHdhC8eSAYc0P9qqQzBXlpfsgNADoXrZ2eRWRzWTiRjh
+	 XIjI4sdu/ltreVBsSTuIpeTg1+5jSQ1NpM5MmitqLa4+DJIDKeWbru++gmBWytSLOU
+	 7BxSBveXHkOaDT4z6smGZqqZBcJdKkp2nkqJJYII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 199/213] net: phy: Remove LED entry from LEDs list on unregister
+	Mohamed Khalfella <mkhalfella@purestorage.com>,
+	Yuanyuan Zhong <yzhong@purestorage.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.1 751/798] igb: Do not bring the device up after non-fatal error
 Date: Mon, 14 Oct 2024 16:21:45 +0200
-Message-ID: <20241014141050.727501538@linuxfoundation.org>
+Message-ID: <20241014141247.574664703@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +65,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Mohamed Khalfella <mkhalfella@purestorage.com>
 
-commit f50b5d74c68e551667e265123659b187a30fe3a5 upstream.
+[ Upstream commit 330a699ecbfc9c26ec92c6310686da1230b4e7eb ]
 
-Commit c938ab4da0eb ("net: phy: Manual remove LEDs to ensure correct
-ordering") correctly fixed a problem with using devm_ but missed
-removing the LED entry from the LEDs list.
+Commit 004d25060c78 ("igb: Fix igb_down hung on surprise removal")
+changed igb_io_error_detected() to ignore non-fatal pcie errors in order
+to avoid hung task that can happen when igb_down() is called multiple
+times. This caused an issue when processing transient non-fatal errors.
+igb_io_resume(), which is called after igb_io_error_detected(), assumes
+that device is brought down by igb_io_error_detected() if the interface
+is up. This resulted in panic with stacktrace below.
 
-This cause kernel panic on specific scenario where the port for the PHY
-is torn down and up and the kmod for the PHY is removed.
+[ T3256] igb 0000:09:00.0 haeth0: igb: haeth0 NIC Link is Down
+[  T292] pcieport 0000:00:1c.5: AER: Uncorrected (Non-Fatal) error received: 0000:09:00.0
+[  T292] igb 0000:09:00.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Requester ID)
+[  T292] igb 0000:09:00.0:   device [8086:1537] error status/mask=00004000/00000000
+[  T292] igb 0000:09:00.0:    [14] CmpltTO [  200.105524,009][  T292] igb 0000:09:00.0: AER:   TLP Header: 00000000 00000000 00000000 00000000
+[  T292] pcieport 0000:00:1c.5: AER: broadcast error_detected message
+[  T292] igb 0000:09:00.0: Non-correctable non-fatal error reported.
+[  T292] pcieport 0000:00:1c.5: AER: broadcast mmio_enabled message
+[  T292] pcieport 0000:00:1c.5: AER: broadcast resume message
+[  T292] ------------[ cut here ]------------
+[  T292] kernel BUG at net/core/dev.c:6539!
+[  T292] invalid opcode: 0000 [#1] PREEMPT SMP
+[  T292] RIP: 0010:napi_enable+0x37/0x40
+[  T292] Call Trace:
+[  T292]  <TASK>
+[  T292]  ? die+0x33/0x90
+[  T292]  ? do_trap+0xdc/0x110
+[  T292]  ? napi_enable+0x37/0x40
+[  T292]  ? do_error_trap+0x70/0xb0
+[  T292]  ? napi_enable+0x37/0x40
+[  T292]  ? napi_enable+0x37/0x40
+[  T292]  ? exc_invalid_op+0x4e/0x70
+[  T292]  ? napi_enable+0x37/0x40
+[  T292]  ? asm_exc_invalid_op+0x16/0x20
+[  T292]  ? napi_enable+0x37/0x40
+[  T292]  igb_up+0x41/0x150
+[  T292]  igb_io_resume+0x25/0x70
+[  T292]  report_resume+0x54/0x70
+[  T292]  ? report_frozen_detected+0x20/0x20
+[  T292]  pci_walk_bus+0x6c/0x90
+[  T292]  ? aer_print_port_info+0xa0/0xa0
+[  T292]  pcie_do_recovery+0x22f/0x380
+[  T292]  aer_process_err_devices+0x110/0x160
+[  T292]  aer_isr+0x1c1/0x1e0
+[  T292]  ? disable_irq_nosync+0x10/0x10
+[  T292]  irq_thread_fn+0x1a/0x60
+[  T292]  irq_thread+0xe3/0x1a0
+[  T292]  ? irq_set_affinity_notifier+0x120/0x120
+[  T292]  ? irq_affinity_notify+0x100/0x100
+[  T292]  kthread+0xe2/0x110
+[  T292]  ? kthread_complete_and_exit+0x20/0x20
+[  T292]  ret_from_fork+0x2d/0x50
+[  T292]  ? kthread_complete_and_exit+0x20/0x20
+[  T292]  ret_from_fork_asm+0x11/0x20
+[  T292]  </TASK>
 
-On setting the port down the first time, the assosiacted LEDs are
-correctly unregistered. The associated kmod for the PHY is now removed.
-The kmod is now added again and the port is now put up, the associated LED
-are registered again.
-On putting the port down again for the second time after these step, the
-LED list now have 4 elements. With the first 2 already unregistered
-previously and the 2 new one registered again.
+To fix this issue igb_io_resume() checks if the interface is running and
+the device is not down this means igb_io_error_detected() did not bring
+the device down and there is no need to bring it up.
 
-This cause a kernel panic as the first 2 element should have been
-removed.
-
-Fix this by correctly removing the element when LED is unregistered.
-
-Reported-by: Daniel Golle <daniel@makrotopia.org>
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Cc: stable@vger.kernel.org
-Fixes: c938ab4da0eb ("net: phy: Manual remove LEDs to ensure correct ordering")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241004182759.14032-1-ansuelsmth@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Reviewed-by: Yuanyuan Zhong <yzhong@purestorage.com>
+Fixes: 004d25060c78 ("igb: Fix igb_down hung on surprise removal")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_device.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/igb/igb_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -3082,10 +3082,11 @@ static __maybe_unused int phy_led_hw_is_
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index f2f719a952f8d..2e2caf559d00a 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -9666,6 +9666,10 @@ static void igb_io_resume(struct pci_dev *pdev)
+ 	struct igb_adapter *adapter = netdev_priv(netdev);
  
- static void phy_leds_unregister(struct phy_device *phydev)
- {
--	struct phy_led *phyled;
-+	struct phy_led *phyled, *tmp;
- 
--	list_for_each_entry(phyled, &phydev->leds, list) {
-+	list_for_each_entry_safe(phyled, tmp, &phydev->leds, list) {
- 		led_classdev_unregister(&phyled->led_cdev);
-+		list_del(&phyled->list);
- 	}
- }
- 
+ 	if (netif_running(netdev)) {
++		if (!test_bit(__IGB_DOWN, &adapter->state)) {
++			dev_dbg(&pdev->dev, "Resuming from non-fatal error, do nothing.\n");
++			return;
++		}
+ 		if (igb_up(adapter)) {
+ 			dev_err(&pdev->dev, "igb_up failed after reset\n");
+ 			return;
+-- 
+2.43.0
+
 
 
 
