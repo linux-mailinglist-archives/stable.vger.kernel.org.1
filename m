@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-83671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1707F99BE80
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:00:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A00A99BE83
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:00:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE1E11F22C8B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 04:00:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 086F9281AB6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 04:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9898414F9EE;
-	Mon, 14 Oct 2024 03:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDCF15350B;
+	Mon, 14 Oct 2024 03:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Go6E/+iV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KaOckwhb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AD614F132;
-	Mon, 14 Oct 2024 03:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F2D1531DB;
+	Mon, 14 Oct 2024 03:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728878271; cv=none; b=DwV5thgZTvBDyxjzxM6gUZMEMR/g+c2TR3Gpe99kLbd7KauBYUTMuhFc8f1A13VLkKlbSFacx9023bArHOgDdZO/VU3AnHo8ZEcDY7QL8eJ10IgiOQDmieflF+G8SiQ0eNeWrC0JGl9ST2GADeQceMcL/LaTaYdVFXUgs9QQHEg=
+	t=1728878273; cv=none; b=lR0zBLPqVefHKYk8Qozt7U1QkBkt7N16cqvwLk9Ac7vurOD0cT90mXHcQ2v3HRLxe9grGwyFigLowG6LOLeFGaSH2d3BUmv1OHZVW7zSG5GJGpk7vwh2XgnKj7ocxfDIHbe1jsADTjddtkOWJ8y1QtHtVMoQA/QaEkZ51gWjpjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728878271; c=relaxed/simple;
-	bh=Ie+1DLJ05/DyAFDwgGExnGmZl13T2cQQCB3mmbQAOwg=;
+	s=arc-20240116; t=1728878273; c=relaxed/simple;
+	bh=6s3OGOHRU58VqivfciXiddSG7EoSd0koQvzd8DNnfSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MoxoBgev4MaogI3YRWsUUvj8I6q6YTWZ3/IWrZ7PW2wDZnLShWpym9DWWcnsxglQGVh/dZQi4b/CZ30y1U+tmQd+/p02PI+lJgbauIai//2ktypEJ05cRoZGXmeSUjbiLlU8y1rMeGF+fTgV253sqMyK8OpwgEOyJ1xAU98of/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Go6E/+iV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3823DC4CECE;
-	Mon, 14 Oct 2024 03:57:50 +0000 (UTC)
+	 MIME-Version; b=ofWz7O/glaRSVr+n5zVYvEPuG9gswxSZPKSkJB2S8GAo4aSAZKRQo4Vu+3d7kgwPeSH1/qM+DP+R8H7GWUKQ4tMSZnJ4kY5+94DgD5eKyNiKkvzYZAeNAnPWeapi81UkIegbFwiHhdaBtWQUB7LxhWQT5evwAcG1VqhFqofR2j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KaOckwhb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4FAC4CECE;
+	Mon, 14 Oct 2024 03:57:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728878271;
-	bh=Ie+1DLJ05/DyAFDwgGExnGmZl13T2cQQCB3mmbQAOwg=;
+	s=k20201202; t=1728878272;
+	bh=6s3OGOHRU58VqivfciXiddSG7EoSd0koQvzd8DNnfSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Go6E/+iVyI8eLDNeo8vukHei2xz/auV69KCyIhEbWbO3wtJg8h+Z5KnkKYTDJ4j3+
-	 drex6cVjZuAHnbEn0TtsTh/dE1qJjg+IwNcpwhkDFpeHuYMmiafFGPoP6+15879maB
-	 hLMA95F45Vk88TrArRm7MNuyDPkiy//mn9QHmeX3k9MBcV9quDDa0HkAGtryZwPgcP
-	 Vwt9CLeOG4xLGKRcFHP/lIUev+CzjNjXASSIYmDnepzlWR3E5HQgShmpoq1RYy9Lc6
-	 rL7DxGTRHtUKNBXeBggOqTtkhnHeBSrNes8UkTTrxNyKIujq8pYrxADoXtJSET1UMe
-	 9enX1Ach+5eZw==
+	b=KaOckwhb6araNAVhOuuEoqi9n/FyZ4T/sds1lNewfFiETtCiN9wyKjZ7pod2lczRI
+	 QVHrdqXezeGxgUMSSvEQSQHmfw+lo7e6B7XQpkGzfa+HH8naEWs+KxvclS8mdY1bMH
+	 SnYa1svAdA5xqGdgwZv2TICGh8T5VfEnIWeLnm7dfYxgR6tmh8Q0zB5bPV59dg+vU2
+	 ln7DwZX0i5VSt4U1WVA9nc3h4qm6CBFtBVP3eVf3m7qLVDDmHbKIPGzB0AoCxRONNH
+	 beZrMp0rsj+alxmkuOp3tUoTBxPhwKzVA1oxCI7hZKh991jKtWiLc9h+g6EhHxZOob
+	 PiDWm+ko1y7RA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	sfrench@samba.org,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: [PATCH AUTOSEL 6.11 13/20] cifs: Fix creating native symlinks pointing to current or parent directory
-Date: Sun, 13 Oct 2024 23:57:15 -0400
-Message-ID: <20241014035731.2246632-13-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 14/20] ACPI: resource: Fold Asus Vivobook Pro N6506M* DMI quirks together
+Date: Sun, 13 Oct 2024 23:57:16 -0400
+Message-ID: <20241014035731.2246632-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241014035731.2246632-1-sashal@kernel.org>
 References: <20241014035731.2246632-1-sashal@kernel.org>
@@ -62,69 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.3
 Content-Transfer-Encoding: 8bit
 
-From: Pali Rohár <pali@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 63271b7d569fbe924bccc7dadc17d3d07a4e5f7a ]
+[ Upstream commit 1af7e441feb08cdaab8f4a320577ed0bba1f5896 ]
 
-Calling 'ln -s . symlink' or 'ln -s .. symlink' creates symlink pointing to
-some object name which ends with U+F029 unicode codepoint. This is because
-trailing dot in the object name is replaced by non-ASCII unicode codepoint.
+Asus Vivobook Pro 15 OLED comes in 3 N6506M* models:
 
-So Linux SMB client currently is not able to create native symlink pointing
-to current or parent directory on Windows SMB server which can be read by
-either on local Windows server or by any other SMB client which does not
-implement compatible-reverse character replacement.
+N6506MU: Intel Ultra 9 185H, 3K OLED, RTX4060
+N6506MV: Intel Ultra 7 155H, 3K OLED, RTX4050
+N6506MJ: Intel Ultra 7 155H, FHD OLED, RTX3050
 
-Fix this problem in cifsConvertToUTF16() function which is doing that
-character replacement. Function comment already says that it does not need
-to handle special cases '.' and '..', but after introduction of native
-symlinks in reparse point form, this handling is needed.
+Fold the 3 DMI quirks for these into a single quirk to reduce the number
+of quirks.
 
-Note that this change depends on the previous change
-"cifs: Improve creating native symlinks pointing to directory".
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20241005212819.354681-5-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifs_unicode.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/acpi/resource.c | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
-diff --git a/fs/smb/client/cifs_unicode.c b/fs/smb/client/cifs_unicode.c
-index 79d99a9139441..4cc6e0896fad3 100644
---- a/fs/smb/client/cifs_unicode.c
-+++ b/fs/smb/client/cifs_unicode.c
-@@ -484,10 +484,21 @@ cifsConvertToUTF16(__le16 *target, const char *source, int srclen,
- 			/**
- 			 * Remap spaces and periods found at the end of every
- 			 * component of the path. The special cases of '.' and
--			 * '..' do not need to be dealt with explicitly because
--			 * they are addressed in namei.c:link_path_walk().
-+			 * '..' are need to be handled because of symlinks.
-+			 * They are treated as non-end-of-string to avoid
-+			 * remapping and breaking symlinks pointing to . or ..
- 			 **/
--			if ((i == srclen - 1) || (source[i+1] == '\\'))
-+			if ((i == 0 || source[i-1] == '\\') &&
-+			    source[i] == '.' &&
-+			    (i == srclen-1 || source[i+1] == '\\'))
-+				end_of_string = false; /* "." case */
-+			else if (i >= 1 &&
-+				 (i == 1 || source[i-2] == '\\') &&
-+				 source[i-1] == '.' &&
-+				 source[i] == '.' &&
-+				 (i == srclen-1 || source[i+1] == '\\'))
-+				end_of_string = false; /* ".." case */
-+			else if ((i == srclen - 1) || (source[i+1] == '\\'))
- 				end_of_string = true;
- 			else
- 				end_of_string = false;
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 3d74ebe9dbd80..03110ed6a4f7a 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -532,24 +532,10 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+ 		},
+ 	},
+ 	{
+-		/* Asus Vivobook Pro N6506MV */
++		/* Asus Vivobook Pro N6506M* */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_MATCH(DMI_BOARD_NAME, "N6506MV"),
+-		},
+-	},
+-	{
+-		/* Asus Vivobook Pro N6506MU */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_MATCH(DMI_BOARD_NAME, "N6506MU"),
+-		},
+-	},
+-	{
+-		/* Asus Vivobook Pro N6506MJ */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_MATCH(DMI_BOARD_NAME, "N6506MJ"),
++			DMI_MATCH(DMI_BOARD_NAME, "N6506M"),
+ 		},
+ 	},
+ 	{
 -- 
 2.43.0
 
