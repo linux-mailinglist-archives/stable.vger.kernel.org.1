@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-83971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 336FD99CD6E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:32:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7787C99CE2E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:41:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 649021C2086A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:32:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E1A71F23CB2
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:41:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274501798C;
-	Mon, 14 Oct 2024 14:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39611AA797;
+	Mon, 14 Oct 2024 14:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIrtanX+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iFXef8Qg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB01820322;
-	Mon, 14 Oct 2024 14:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B174A20EB;
+	Mon, 14 Oct 2024 14:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916361; cv=none; b=KGN7nhbvRcvLzBUWoeB63k8MrTu+lDRGh9SbDRXYIqI7GVIi05xvJ+qRYva4l5CNjA97e1R4OWKgzMsVXfhG158ChrD9Ilq3Rwx+1aUFFu3TbFQq/aF0I6Tz2CG1XrMXw87tvpKNt8h4lNqUN5QePOUS+DicR93djAYc/z+ecgg=
+	t=1728916865; cv=none; b=mszxS8quAxCFHJzsWZY+f7VzRFAMwbKXpmRPKAKIh0oucevnahe4dK0n9197Y232+TgEWKAfCUDcsmthoOa5v1FIQ0gG6s2OGUwQmBkMTLP3Dgof0Dty1N4LOHdNRc5Ea7+Be0CXz/p0CjlxdkVpctZRCDBbmxZz/GbWm4RRLGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916361; c=relaxed/simple;
-	bh=zpWxnC4RJTVY3O48sx5iD410tFFcA2G5NIAyTM4B//8=;
+	s=arc-20240116; t=1728916865; c=relaxed/simple;
+	bh=xWaUjF564L15CHUBnr3c5xEKtN4Aiby2rK6/wIqEY/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWFWohr9L4jZ6V8W1Sqv1r8QY526fPsyjoGs3Dpx6SNik2fZEgNdZJOqcqSxwv3KkJmXNem35LsUP2i3ACPF3cjHuWMfyTiBng73uOMiB4aTLZOzDFr4CWhBbQNSm3XJVY5ieDC44sHH8yPwBZB09e34Ji4qBXS0eTilpU7j7Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIrtanX+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6489BC4CEC3;
-	Mon, 14 Oct 2024 14:32:41 +0000 (UTC)
+	 MIME-Version; b=m7Q3FcQaoYhGlnxHrPp6pXs2r7yGwdnW8oebNXLiY0CtBh2D1s8goWNc7wynP1Qv/Rn9rkokf980dPHICQafjYsVR+xYBVTKQ0Uzhirzpfifwa4u1goxno6jnHs4ETTvDc/hFDKa/7PwoVbazS+CHV82DCq2boCKbJcEypYsh4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFXef8Qg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1951FC4CEC3;
+	Mon, 14 Oct 2024 14:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916361;
-	bh=zpWxnC4RJTVY3O48sx5iD410tFFcA2G5NIAyTM4B//8=;
+	s=korg; t=1728916865;
+	bh=xWaUjF564L15CHUBnr3c5xEKtN4Aiby2rK6/wIqEY/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eIrtanX+K1lAglH/w/OXo9eHYBVBC8aRDFfX+tWrK5kzI66Lbu3TCKtqSvPAEYIMk
-	 95UrXO4viNJeCn9rCixyNN2w4XGqS+B3HYs2ieRyIz/zIzhGC0a0Ey/AZZHflOGj07
-	 39DQWnP0ZLyS8XizDi4af5TgP0ltN83b+r2aqzTg=
+	b=iFXef8QgXCsRlMWHVhgyliel3pKELnZE2MW5z/G9yrhAUlQpMSX5mqgRiBwBlDear
+	 J+A7YLeilevEaVvKC3qNDJ2hm1NBWKMmkcyMfjov0hUm+mWYPAqnxQngoorrUXnagx
+	 E6h/HnYSN495nQu3tr7SmMALFrddzEWlnX2nkETY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 130/214] net: ibm: emac: mal: fix wrong goto
+Subject: [PATCH 6.6 087/213] clk: imx: Remove CLK_SET_PARENT_GATE for DRAM mux for i.MX7D
 Date: Mon, 14 Oct 2024 16:19:53 +0200
-Message-ID: <20241014141050.065833064@linuxfoundation.org>
+Message-ID: <20241014141046.369274224@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 08c8acc9d8f3f70d62dd928571368d5018206490 ]
+[ Upstream commit a54c441b46a0745683c2eef5a359d22856d27323 ]
 
-dcr_map is called in the previous if and therefore needs to be unmapped.
+For i.MX7D DRAM related mux clock, the clock source change should ONLY
+be done done in low level asm code without accessing DRAM, and then
+calling clk API to sync the HW clock status with clk tree, it should never
+touch real clock source switch via clk API, so CLK_SET_PARENT_GATE flag
+should NOT be added, otherwise, DRAM's clock parent will be disabled when
+DRAM is active, and system will hang.
 
-Fixes: 1ff0fcfcb1a6 ("ibm_newemac: Fix new MAL feature handling")
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Link: https://patch.msgid.link/20241007235711.5714-1-rosenp@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20240607133347.3291040-8-peng.fan@oss.nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ibm/emac/mal.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/imx/clk-imx7d.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/ibm/emac/mal.c b/drivers/net/ethernet/ibm/emac/mal.c
-index d92dd9c83031e..0c5e22d14372a 100644
---- a/drivers/net/ethernet/ibm/emac/mal.c
-+++ b/drivers/net/ethernet/ibm/emac/mal.c
-@@ -578,7 +578,7 @@ static int mal_probe(struct platform_device *ofdev)
- 		printk(KERN_ERR "%pOF: Support for 405EZ not enabled!\n",
- 				ofdev->dev.of_node);
- 		err = -ENODEV;
--		goto fail;
-+		goto fail_unmap;
- #endif
- 	}
- 
+diff --git a/drivers/clk/imx/clk-imx7d.c b/drivers/clk/imx/clk-imx7d.c
+index 2b77d1fc7bb94..1e1296e748357 100644
+--- a/drivers/clk/imx/clk-imx7d.c
++++ b/drivers/clk/imx/clk-imx7d.c
+@@ -498,9 +498,9 @@ static void __init imx7d_clocks_init(struct device_node *ccm_node)
+ 	hws[IMX7D_ENET_AXI_ROOT_SRC] = imx_clk_hw_mux2_flags("enet_axi_src", base + 0x8900, 24, 3, enet_axi_sel, ARRAY_SIZE(enet_axi_sel), CLK_SET_PARENT_GATE);
+ 	hws[IMX7D_NAND_USDHC_BUS_ROOT_SRC] = imx_clk_hw_mux2_flags("nand_usdhc_src", base + 0x8980, 24, 3, nand_usdhc_bus_sel, ARRAY_SIZE(nand_usdhc_bus_sel), CLK_SET_PARENT_GATE);
+ 	hws[IMX7D_DRAM_PHYM_ROOT_SRC] = imx_clk_hw_mux2_flags("dram_phym_src", base + 0x9800, 24, 1, dram_phym_sel, ARRAY_SIZE(dram_phym_sel), CLK_SET_PARENT_GATE);
+-	hws[IMX7D_DRAM_ROOT_SRC] = imx_clk_hw_mux2_flags("dram_src", base + 0x9880, 24, 1, dram_sel, ARRAY_SIZE(dram_sel), CLK_SET_PARENT_GATE);
++	hws[IMX7D_DRAM_ROOT_SRC] = imx_clk_hw_mux2("dram_src", base + 0x9880, 24, 1, dram_sel, ARRAY_SIZE(dram_sel));
+ 	hws[IMX7D_DRAM_PHYM_ALT_ROOT_SRC] = imx_clk_hw_mux2_flags("dram_phym_alt_src", base + 0xa000, 24, 3, dram_phym_alt_sel, ARRAY_SIZE(dram_phym_alt_sel), CLK_SET_PARENT_GATE);
+-	hws[IMX7D_DRAM_ALT_ROOT_SRC]  = imx_clk_hw_mux2_flags("dram_alt_src", base + 0xa080, 24, 3, dram_alt_sel, ARRAY_SIZE(dram_alt_sel), CLK_SET_PARENT_GATE);
++	hws[IMX7D_DRAM_ALT_ROOT_SRC]  = imx_clk_hw_mux2("dram_alt_src", base + 0xa080, 24, 3, dram_alt_sel, ARRAY_SIZE(dram_alt_sel));
+ 	hws[IMX7D_USB_HSIC_ROOT_SRC] = imx_clk_hw_mux2_flags("usb_hsic_src", base + 0xa100, 24, 3, usb_hsic_sel, ARRAY_SIZE(usb_hsic_sel), CLK_SET_PARENT_GATE);
+ 	hws[IMX7D_PCIE_CTRL_ROOT_SRC] = imx_clk_hw_mux2_flags("pcie_ctrl_src", base + 0xa180, 24, 3, pcie_ctrl_sel, ARRAY_SIZE(pcie_ctrl_sel), CLK_SET_PARENT_GATE);
+ 	hws[IMX7D_PCIE_PHY_ROOT_SRC] = imx_clk_hw_mux2_flags("pcie_phy_src", base + 0xa200, 24, 3, pcie_phy_sel, ARRAY_SIZE(pcie_phy_sel), CLK_SET_PARENT_GATE);
 -- 
 2.43.0
 
