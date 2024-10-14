@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-83896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5753E99CD13
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:28:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3604399D2A5
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C382FB22D25
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:28:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB4872844B2
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96CB21A0724;
-	Mon, 14 Oct 2024 14:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A9A1ABEDC;
+	Mon, 14 Oct 2024 15:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtogZuvW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O2bnDZjz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5497019E802;
-	Mon, 14 Oct 2024 14:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39D014AA9;
+	Mon, 14 Oct 2024 15:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916108; cv=none; b=JnHx2IoAgSmaKz+C2V+en10srLfnbMm4Lj95wApZJg/ikUP4WrTzartGpLiIV+go76VnjJnORYpIFH8MxbwQqbU1odysd2mmAgUZsCt3rbzArmS9epWP0QpEIa9y/bs2m04v1uZP4CKdnTh5ODyQk6kRrzS0qPPo2fRPEOAtwNY=
+	t=1728919548; cv=none; b=d9lMfFhVJQ2miXmg+fnN+F1uJ6fiUSeH5gkwVlDYyqInILT4lkYTFKVJ+CswYcocKZwQfsTaY3+OqBSuoOZ6Mr5yUQdoq+a4LYKWGi6KrOk4X27MYxGPExkCIBR7MbTeUJ0FAv8RGF0cprSVvX1hAIqmHORUg81g26oD16sEWtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916108; c=relaxed/simple;
-	bh=Y3IjOLey9ZMVS9WZq49dbkWFuMVZ4EpE+sDvzG2a1qU=;
+	s=arc-20240116; t=1728919548; c=relaxed/simple;
+	bh=J1lZUnJLirdc0alkth/sa1qaqHgtl8x8hchWh5IbPyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bVlbtQAUFmAXHGf6yF+8DQ3C9XBaXDI2UsrEDP1RnyCuV+/e6/nbaeocsiGZ+0aOxuN90u1FzR+gtRRXVumOE+sT/F70F3q2SkIi1USY94tNhBPn6bBOh6UNlLEzGj4vM5065wgSZW3vp46yC773ypL7BH8270O4DLcviNSLN/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PtogZuvW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83FCC4CEC3;
-	Mon, 14 Oct 2024 14:28:27 +0000 (UTC)
+	 MIME-Version; b=WTlpNb2EDq5l1HaT1TZjYH6w4PgS15icp2AomoiFGClf5OtTpI/tGr5Oh1Q3oMLosv5ZfdfswwpJFufx+yCNOD34epHZ3gCAxhI80MTaNXlGdzNhJBOxzXK8iOwnN96ij9/0a5nQ9C3zNokBorSLzMNtlBoJuU/DA330cshMs7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O2bnDZjz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03747C4CECF;
+	Mon, 14 Oct 2024 15:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916108;
-	bh=Y3IjOLey9ZMVS9WZq49dbkWFuMVZ4EpE+sDvzG2a1qU=;
+	s=korg; t=1728919547;
+	bh=J1lZUnJLirdc0alkth/sa1qaqHgtl8x8hchWh5IbPyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PtogZuvWjGLM+KF8E7C3zkVjrxAQE+b+ODrso1acAhYcbqMeBUuacZHmyC68Q4MNf
-	 N3jjUGVqOuem507qCbbN3BiE5OLmED46OsIYHcSKVOYgwJuhtz8I9X1NrC7yWFlJrB
-	 ghJvz7XGYAXr0FnwSXCAnVVOvrCumAnXw+XrGpEI=
+	b=O2bnDZjzcba1KjehHFIvYmUBXQG08JxX8Syr6lBdGxA4nBLqL7kMYLNtfyf0dAoBB
+	 gFdzctde9wcIWemuY1XOiVfu6QWkDYqaITX6OeS6iIRbN9GYzVM9ryeu1fvUzLKzOX
+	 W9B1bnm5JNBLn+4SojXwAOYDKHZxpm5dYdXHGE10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.11 086/214] ice: disallow DPLL_PIN_STATE_SELECTABLE for dpll output pins
-Date: Mon, 14 Oct 2024 16:19:09 +0200
-Message-ID: <20241014141048.347790911@linuxfoundation.org>
+	Alfred Agrell <blubban@gmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Subject: [PATCH 6.1 596/798] tomoyo: fallback to realpath if symlinks pathname does not exist
+Date: Mon, 14 Oct 2024 16:19:10 +0200
+Message-ID: <20241014141241.418334588@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit afe6e30e7701979f536f8fbf6fdef7212441f61a ]
+commit ada1986d07976d60bed5017aa38b7f7cf27883f7 upstream.
 
-Currently the user may request DPLL_PIN_STATE_SELECTABLE for an output
-pin, and this would actually set the DISCONNECTED state instead.
+Alfred Agrell found that TOMOYO cannot handle execveat(AT_EMPTY_PATH)
+inside chroot environment where /dev and /proc are not mounted, for
+commit 51f39a1f0cea ("syscalls: implement execveat() system call") missed
+that TOMOYO tries to canonicalize argv[0] when the filename fed to the
+executed program as argv[0] is supplied using potentially nonexistent
+pathname.
 
-It doesn't make any sense. SELECTABLE is valid only in case of input pins
-(on AUTOMATIC type dpll), where dpll itself would select best valid input.
-For the output pin only CONNECTED/DISCONNECTED are expected.
+Since "/dev/fd/<fd>" already lost symlink information used for obtaining
+that <fd>, it is too late to reconstruct symlink's pathname. Although
+<filename> part of "/dev/fd/<fd>/<filename>" might not be canonicalized,
+TOMOYO cannot use tomoyo_realpath_nofollow() when /dev or /proc is not
+mounted. Therefore, fallback to tomoyo_realpath_from_path() when
+tomoyo_realpath_nofollow() failed.
 
-Fixes: d7999f5ea64b ("ice: implement dpll interface to control cgu")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Alfred Agrell <blubban@gmail.com>
+Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1082001
+Fixes: 51f39a1f0cea ("syscalls: implement execveat() system call")
+Cc: stable@vger.kernel.org # v3.19+
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_dpll.c | 2 ++
- 1 file changed, 2 insertions(+)
+ security/tomoyo/domain.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index e92be6f130a3d..3d20c3b232aa9 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -651,6 +651,8 @@ ice_dpll_output_state_set(const struct dpll_pin *pin, void *pin_priv,
- 	struct ice_dpll_pin *p = pin_priv;
- 	struct ice_dpll *d = dpll_priv;
- 
-+	if (state == DPLL_PIN_STATE_SELECTABLE)
-+		return -EINVAL;
- 	if (!enable && p->state[d->dpll_idx] == DPLL_PIN_STATE_DISCONNECTED)
- 		return 0;
- 
--- 
-2.43.0
-
+--- a/security/tomoyo/domain.c
++++ b/security/tomoyo/domain.c
+@@ -723,10 +723,13 @@ int tomoyo_find_next_domain(struct linux
+ 	ee->r.obj = &ee->obj;
+ 	ee->obj.path1 = bprm->file->f_path;
+ 	/* Get symlink's pathname of program. */
+-	retval = -ENOENT;
+ 	exename.name = tomoyo_realpath_nofollow(original_name);
+-	if (!exename.name)
+-		goto out;
++	if (!exename.name) {
++		/* Fallback to realpath if symlink's pathname does not exist. */
++		exename.name = tomoyo_realpath_from_path(&bprm->file->f_path);
++		if (!exename.name)
++			goto out;
++	}
+ 	tomoyo_fill_path_info(&exename);
+ retry:
+ 	/* Check 'aggregator' directive. */
 
 
 
