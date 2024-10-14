@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-85008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6657D99D34A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D51D99CF3D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:53:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24EB428B988
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87B65B250C8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D28F1BD00A;
-	Mon, 14 Oct 2024 15:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D2C1CF7D0;
+	Mon, 14 Oct 2024 14:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="At6Vb5hA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8qs8pUW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BACB19F43B;
-	Mon, 14 Oct 2024 15:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456A21B4F14;
+	Mon, 14 Oct 2024 14:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919980; cv=none; b=JDXZxef45fVRnrj7VZVwvoclUqFyXOQsteroFrnIDGGWNVF7kBlQUC2mLKomKz7602stezVFlLmzpxU/WeXHMcJHW2sC5XfxR5sB6IOmiFQU5nInw/XCOnNCLI75eJxqqamIPv9MPJxqlFOpUcRUwoxmNwDdAHw+EPd7qdw6vyA=
+	t=1728917327; cv=none; b=QA0r34DstW+N9mmWOnJbRv1UE8jVaTLKdeBboFNpqwo+frrXFMWHtCFd74P+SRx40uKu881WCuaVmul8jlsbtGdLY7Tx9npJ61qN9z2tFUVSQnu/alF5dJZ8Lifi+q8fn5uy68YgM8UghuX63ACfv+Ut6x4RjRPd1RffacvqtgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919980; c=relaxed/simple;
-	bh=MZb96Sup1b7A0vP+DGVU5v+qPm5qwr9eqdcA3IpntC8=;
+	s=arc-20240116; t=1728917327; c=relaxed/simple;
+	bh=3Z+Zu4xd8P1CCw15f0eXxfa38TIoJTvXQ1aoubzYHxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GdbypCGn4xCgNBUh+nP8UjWcvFS0GgFbRBZe9vSzqZMP+PkCfav9Lk9/h215FvXisFc07PAzlY0gpnWZTrrOhJVJM14Jbo4xvNs6Jiw2XN3lPxzqsF+2a9DRYClOJ2NAFUu4jl/IwWSgXLHesFPeOYpMcmak7tr0L1TCHYwuZ/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=At6Vb5hA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E25CC4CEC3;
-	Mon, 14 Oct 2024 15:32:59 +0000 (UTC)
+	 MIME-Version; b=QV5o0HlvV+X9uMRMYcZ/MDrLT933jADg/4jXTIxJtydy0ILZAcmezZK+osgkznvpJXsjB2Tb8n4xcPUy592kugvdCIVM7W1jAtQMYMYVkjxJHaj4h7K8R55+++cLNuZsiQWEwBWSrmeFpfD19PHfgkQZBPi4Fnt2Sv0+co44Icg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8qs8pUW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A894C4CECF;
+	Mon, 14 Oct 2024 14:48:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919980;
-	bh=MZb96Sup1b7A0vP+DGVU5v+qPm5qwr9eqdcA3IpntC8=;
+	s=korg; t=1728917326;
+	bh=3Z+Zu4xd8P1CCw15f0eXxfa38TIoJTvXQ1aoubzYHxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=At6Vb5hAp/t81PoVQRMv/+kt6h9NUTbg9VdTJqXFVunYr3HHOYyiDXeuVShuH7XCr
-	 I78M/KWdwPZWJfLqoTZWRHxNusn7aYeLWYv+Uh5h/As9TK4ZGlng+Np+nv/4+cFl1d
-	 HYgvvNFl08B1GwwUy4Dz1XByesc+PjhUyg72ToM8=
+	b=m8qs8pUWvDu8SFlFkyNwzDVHKKdFACQR9Tg1oE//dLY1xXB6W4MFDWvDxtxuFAro6
+	 v77qCu6ww7MqxnQ3wfbvE8055mvPfLlkkCneDLQWgVS1TkMUILbz3qZwH/DY31QpXy
+	 tlwbu/8vgu0fG9aVhUrnuKHmL4azGAuuEjyAY1lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 762/798] mctp: Handle error of rtnl_register_module().
-Date: Mon, 14 Oct 2024 16:21:56 +0200
-Message-ID: <20241014141248.004288078@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 211/213] net: ethernet: cortina: Restore TSO support
+Date: Mon, 14 Oct 2024 16:21:57 +0200
+Message-ID: <20241014141051.194300027@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,223 +62,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit d51705614f668254cc5def7490df76f9680b4659 ]
+commit 2942dfab630444d46aaa37fb7d629b620abbf6ba upstream.
 
-Since introduced, mctp has been ignoring the returned value of
-rtnl_register_module(), which could fail silently.
+An earlier commit deleted the TSO support in the Cortina Gemini
+driver because the driver was confusing gso_size and MTU,
+probably because what the Linux kernel calls "gso_size" was
+called "MTU" in the datasheet.
 
-Handling the error allows users to view a module as an all-or-nothing
-thing in terms of the rtnetlink functionality.  This prevents syzkaller
-from reporting spurious errors from its tests, where OOM often occurs
-and module is automatically loaded.
+Restore the functionality properly reading the gso_size from
+the skbuff.
 
-Let's handle the errors by rtnl_register_many().
+Tested with iperf3, running a server on a different machine
+and client on the device with the cortina gemini ethernet:
 
-Fixes: 583be982d934 ("mctp: Add device handling and netlink interface")
-Fixes: 831119f88781 ("mctp: Add neighbour netlink interface")
-Fixes: 06d2f4c583a7 ("mctp: Add netlink route management")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Connecting to host 192.168.1.2, port 5201
+60008000.ethernet-port eth0: segment offloading mss = 05ea len=1c8a
+60008000.ethernet-port eth0: segment offloading mss = 05ea len=1c8a
+60008000.ethernet-port eth0: segment offloading mss = 05ea len=27da
+60008000.ethernet-port eth0: segment offloading mss = 05ea len=0b92
+60008000.ethernet-port eth0: segment offloading mss = 05ea len=2bda
+(...)
+
+(The hardware MSS 0x05ea here includes the ethernet headers.)
+
+If I disable all segment offloading on the receiving host and
+dump packets using tcpdump -xx like this:
+
+ethtool -K enp2s0 gro off gso off tso off
+tcpdump -xx -i enp2s0 host 192.168.1.136
+
+I get segmented packages such as this when running iperf3:
+
+23:16:54.024139 IP OpenWrt.lan.59168 > Fecusia.targus-getdata1:
+Flags [.], seq 1486:2934, ack 1, win 4198,
+options [nop,nop,TS val 3886192908 ecr 3601341877], length 1448
+0x0000:  fc34 9701 a0c6 14d6 4da8 3c4f 0800 4500
+0x0010:  05dc 16a0 4000 4006 9aa1 c0a8 0188 c0a8
+0x0020:  0102 e720 1451 ff25 9822 4c52 29cf 8010
+0x0030:  1066 ac8c 0000 0101 080a e7a2 990c d6a8
+(...)
+0x05c0:  5e49 e109 fe8c 4617 5e18 7a82 7eae d647
+0x05d0:  e8ee ae64 dc88 c897 3f8a 07a4 3a33 6b1b
+0x05e0:  3501 a30f 2758 cc44 4b4a
+
+Several such packets often follow after each other verifying
+the segmentation into 0x05a8 (1448) byte packages also on the
+reveiving end. As can be seen, the ethernet frames are
+0x05ea (1514) in size.
+
+Performance with iperf3 before this patch: ~15.5 Mbit/s
+Performance with iperf3 after this patch: ~175 Mbit/s
+
+This was running a 60 second test (twice) the best measurement
+was 179 Mbit/s.
+
+For comparison if I run iperf3 with UDP I get around 1.05 Mbit/s
+both before and after this patch.
+
+While this is a gigabit ethernet interface, the CPU is a cheap
+D-Link DIR-685 router (based on the ARMv5 Faraday FA526 at
+~50 MHz), and the software is not supposed to drive traffic,
+as the device has a DSA chip, so this kind of numbers can be
+expected.
+
+Fixes: ac631873c9e7 ("net: ethernet: cortina: Drop TSO support")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/mctp.h |  2 +-
- net/mctp/af_mctp.c |  6 +++++-
- net/mctp/device.c  | 30 ++++++++++++++++++------------
- net/mctp/neigh.c   | 31 +++++++++++++++++++------------
- net/mctp/route.c   | 33 +++++++++++++++++++++++----------
- 5 files changed, 66 insertions(+), 36 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c |   23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/mctp.h b/include/net/mctp.h
-index 7ed84054f4623..afeda2ad22d6d 100644
---- a/include/net/mctp.h
-+++ b/include/net/mctp.h
-@@ -293,7 +293,7 @@ void mctp_neigh_remove_dev(struct mctp_dev *mdev);
- int mctp_routes_init(void);
- void mctp_routes_exit(void);
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -79,7 +79,8 @@ MODULE_PARM_DESC(debug, "Debug level (0=
+ #define GMAC0_IRQ4_8 (GMAC0_MIB_INT_BIT | GMAC0_RX_OVERRUN_INT_BIT)
  
--void mctp_device_init(void);
-+int mctp_device_init(void);
- void mctp_device_exit(void);
+ #define GMAC_OFFLOAD_FEATURES (NETIF_F_SG | NETIF_F_IP_CSUM | \
+-			       NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM)
++			       NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM | \
++			       NETIF_F_TSO | NETIF_F_TSO_ECN | NETIF_F_TSO6)
  
- #endif /* __NET_MCTP_H */
-diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
-index 3150f3f0c8725..2316e7772b785 100644
---- a/net/mctp/af_mctp.c
-+++ b/net/mctp/af_mctp.c
-@@ -677,10 +677,14 @@ static __init int mctp_init(void)
- 	if (rc)
- 		goto err_unreg_routes;
+ /**
+  * struct gmac_queue_page - page buffer per-page info
+@@ -1148,13 +1149,25 @@ static int gmac_map_tx_bufs(struct net_d
+ 	skb_frag_t *skb_frag;
+ 	dma_addr_t mapping;
+ 	void *buffer;
++	u16 mss;
+ 	int ret;
  
--	mctp_device_init();
-+	rc = mctp_device_init();
-+	if (rc)
-+		goto err_unreg_neigh;
+-	/* TODO: implement proper TSO using MTU in word3 */
+ 	word1 = skb->len;
+ 	word3 = SOF_BIT;
  
- 	return 0;
- 
-+err_unreg_neigh:
-+	mctp_neigh_exit();
- err_unreg_routes:
- 	mctp_routes_exit();
- err_unreg_proto:
-diff --git a/net/mctp/device.c b/net/mctp/device.c
-index acb97b2574289..85cc5f31f1e7c 100644
---- a/net/mctp/device.c
-+++ b/net/mctp/device.c
-@@ -524,25 +524,31 @@ static struct notifier_block mctp_dev_nb = {
- 	.priority = ADDRCONF_NOTIFY_PRIORITY,
- };
- 
--void __init mctp_device_init(void)
-+static const struct rtnl_msg_handler mctp_device_rtnl_msg_handlers[] = {
-+	{THIS_MODULE, PF_MCTP, RTM_NEWADDR, mctp_rtm_newaddr, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_DELADDR, mctp_rtm_deladdr, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_GETADDR, NULL, mctp_dump_addrinfo, 0},
-+};
-+
-+int __init mctp_device_init(void)
- {
--	register_netdevice_notifier(&mctp_dev_nb);
-+	int err;
- 
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_GETADDR,
--			     NULL, mctp_dump_addrinfo, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_NEWADDR,
--			     mctp_rtm_newaddr, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_DELADDR,
--			     mctp_rtm_deladdr, NULL, 0);
-+	register_netdevice_notifier(&mctp_dev_nb);
- 	rtnl_af_register(&mctp_af_ops);
-+
-+	err = rtnl_register_many(mctp_device_rtnl_msg_handlers);
-+	if (err) {
-+		rtnl_af_unregister(&mctp_af_ops);
-+		unregister_netdevice_notifier(&mctp_dev_nb);
+-	if (skb->len >= ETH_FRAME_LEN) {
++	mss = skb_shinfo(skb)->gso_size;
++	if (mss) {
++		/* This means we are dealing with TCP and skb->len is the
++		 * sum total of all the segments. The TSO will deal with
++		 * chopping this up for us.
++		 */
++		/* The accelerator needs the full frame size here */
++		mss += skb_tcp_all_headers(skb);
++		netdev_dbg(netdev, "segment offloading mss = %04x len=%04x\n",
++			   mss, skb->len);
++		word1 |= TSS_MTU_ENABLE_BIT;
++		word3 |= mss;
++	} else if (skb->len >= ETH_FRAME_LEN) {
+ 		/* Hardware offloaded checksumming isn't working on frames
+ 		 * bigger than 1514 bytes. A hypothesis about this is that the
+ 		 * checksum buffer is only 1518 bytes, so when the frames get
+@@ -1169,7 +1182,9 @@ static int gmac_map_tx_bufs(struct net_d
+ 				return ret;
+ 		}
+ 		word1 |= TSS_BYPASS_BIT;
+-	} else if (skb->ip_summed == CHECKSUM_PARTIAL) {
 +	}
 +
-+	return err;
- }
++	if (skb->ip_summed == CHECKSUM_PARTIAL) {
+ 		int tcp = 0;
  
- void __exit mctp_device_exit(void)
- {
-+	rtnl_unregister_many(mctp_device_rtnl_msg_handlers);
- 	rtnl_af_unregister(&mctp_af_ops);
--	rtnl_unregister(PF_MCTP, RTM_DELADDR);
--	rtnl_unregister(PF_MCTP, RTM_NEWADDR);
--	rtnl_unregister(PF_MCTP, RTM_GETADDR);
--
- 	unregister_netdevice_notifier(&mctp_dev_nb);
- }
-diff --git a/net/mctp/neigh.c b/net/mctp/neigh.c
-index ffa0f9e0983fb..590f642413e4e 100644
---- a/net/mctp/neigh.c
-+++ b/net/mctp/neigh.c
-@@ -322,22 +322,29 @@ static struct pernet_operations mctp_net_ops = {
- 	.exit = mctp_neigh_net_exit,
- };
- 
-+static const struct rtnl_msg_handler mctp_neigh_rtnl_msg_handlers[] = {
-+	{THIS_MODULE, PF_MCTP, RTM_NEWNEIGH, mctp_rtm_newneigh, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_DELNEIGH, mctp_rtm_delneigh, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_GETNEIGH, NULL, mctp_rtm_getneigh, 0},
-+};
-+
- int __init mctp_neigh_init(void)
- {
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_NEWNEIGH,
--			     mctp_rtm_newneigh, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_DELNEIGH,
--			     mctp_rtm_delneigh, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_GETNEIGH,
--			     NULL, mctp_rtm_getneigh, 0);
--
--	return register_pernet_subsys(&mctp_net_ops);
-+	int err;
-+
-+	err = register_pernet_subsys(&mctp_net_ops);
-+	if (err)
-+		return err;
-+
-+	err = rtnl_register_many(mctp_neigh_rtnl_msg_handlers);
-+	if (err)
-+		unregister_pernet_subsys(&mctp_net_ops);
-+
-+	return err;
- }
- 
--void __exit mctp_neigh_exit(void)
-+void mctp_neigh_exit(void)
- {
-+	rtnl_unregister_many(mctp_neigh_rtnl_msg_handlers);
- 	unregister_pernet_subsys(&mctp_net_ops);
--	rtnl_unregister(PF_MCTP, RTM_GETNEIGH);
--	rtnl_unregister(PF_MCTP, RTM_DELNEIGH);
--	rtnl_unregister(PF_MCTP, RTM_NEWNEIGH);
- }
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index 05ab4fddc82e9..ea7cb9973128d 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -1413,26 +1413,39 @@ static struct pernet_operations mctp_net_ops = {
- 	.exit = mctp_routes_net_exit,
- };
- 
-+static const struct rtnl_msg_handler mctp_route_rtnl_msg_handlers[] = {
-+	{THIS_MODULE, PF_MCTP, RTM_NEWROUTE, mctp_newroute, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_DELROUTE, mctp_delroute, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_GETROUTE, NULL, mctp_dump_rtinfo, 0},
-+};
-+
- int __init mctp_routes_init(void)
- {
-+	int err;
-+
- 	dev_add_pack(&mctp_packet_type);
- 
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_GETROUTE,
--			     NULL, mctp_dump_rtinfo, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_NEWROUTE,
--			     mctp_newroute, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_DELROUTE,
--			     mctp_delroute, NULL, 0);
-+	err = register_pernet_subsys(&mctp_net_ops);
-+	if (err)
-+		goto err_pernet;
-+
-+	err = rtnl_register_many(mctp_route_rtnl_msg_handlers);
-+	if (err)
-+		goto err_rtnl;
- 
--	return register_pernet_subsys(&mctp_net_ops);
-+	return 0;
-+
-+err_rtnl:
-+	unregister_pernet_subsys(&mctp_net_ops);
-+err_pernet:
-+	dev_remove_pack(&mctp_packet_type);
-+	return err;
- }
- 
- void mctp_routes_exit(void)
- {
-+	rtnl_unregister_many(mctp_route_rtnl_msg_handlers);
- 	unregister_pernet_subsys(&mctp_net_ops);
--	rtnl_unregister(PF_MCTP, RTM_DELROUTE);
--	rtnl_unregister(PF_MCTP, RTM_NEWROUTE);
--	rtnl_unregister(PF_MCTP, RTM_GETROUTE);
- 	dev_remove_pack(&mctp_packet_type);
- }
- 
--- 
-2.43.0
-
+ 		/* We do not switch off the checksumming on non TCP/UDP
 
 
 
