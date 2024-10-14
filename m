@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B6999CF27
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:52:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA56A99D343
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22A76B23EE3
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:52:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7018B28B74F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271B61AB536;
-	Mon, 14 Oct 2024 14:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E86AE1B85D2;
+	Mon, 14 Oct 2024 15:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lw5bPFOo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4XYNtgq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA12B1BDC3;
-	Mon, 14 Oct 2024 14:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F781B85C5;
+	Mon, 14 Oct 2024 15:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917278; cv=none; b=h6d5pnzSaWIFBkEKPGc/PKt27ylzmHs2Sd1IL/E4FkXDGJ4OxFZs1NSt8nH2erVCQmyL1oWLsTIsBgS/GZdaCBtjgv96j1iWlXUH6PdLF1uW15pAw9xqYSazowQ+KoSWATrBzolDbqTd5lsj/aCOTlyr5j4TBfJUWbaX5dxXxEk=
+	t=1728919952; cv=none; b=KjkmN2WbboQnTRLLer8AdbwSkYdXBEoB2vEHuLPBztBkRWDecfJ4uPAj3E7fBoy9O5nCsuV7mbkg2UK7eDiuERP8XE1PhoaHuyMCuEsVNcRp81pMIgjjZxZWkUFWqbtZCs6z5gKqW43ZFg/t2L27OwDKYRilP1CkMaZnr/RRQ3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917278; c=relaxed/simple;
-	bh=UuaQMiMtzQS1tp+PlCSVYLaUDRwDorQhXCbknLNgFys=;
+	s=arc-20240116; t=1728919952; c=relaxed/simple;
+	bh=kSU8hZHOEkMAuxqMK6MI1cjkkB/JogGxPQIGjdhk4v0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XuQlC2mCLnbvfOnk7Vp5NpbjUB8MQhnK++YLm5dBflEIQWlld2ewi9HsZdFJppHFcVBZ9GFKmfeMCTnMlzn6+NdgVA9q91V8yUDKjJD0rSByU8SagYWlyCAKZXYBGPvR1KQxUEqK3XcRzqki83FOaDNHhin4zIWyjH4xwW3KBRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lw5bPFOo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5214DC4CEC3;
-	Mon, 14 Oct 2024 14:47:58 +0000 (UTC)
+	 MIME-Version; b=Js5Wsjx6nDUUqheCwDIgXdvpJJirXn0ijAdr8KUbW8XyyjBCHIPiLBoVKrY7Ad5WlD2mGsuRtgZChH8QLJif+2yqFfeavgVOuU2eMFVtntf3vD+3WzA+tTx2rFX+NM4CQkpfD2G1a53RbhfZQ6aH6HS2mQIo5Bbqqwv/KLwUiiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4XYNtgq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48FEC4CEC3;
+	Mon, 14 Oct 2024 15:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917278;
-	bh=UuaQMiMtzQS1tp+PlCSVYLaUDRwDorQhXCbknLNgFys=;
+	s=korg; t=1728919952;
+	bh=kSU8hZHOEkMAuxqMK6MI1cjkkB/JogGxPQIGjdhk4v0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lw5bPFOoW0SQ27c1cyyjlUW6RWrj2/m4p5NKJgn4nEIK4k7x0iSYxPX5A4zvEoOY5
-	 anMxwKGrIvQV/1WKj7GVeZBIrSYtx1mBTtZ45BDuHrg45TURQ/1xCv6vsfTv5gAbnj
-	 Y66FzsA5jOeVArw6IASeMp+l9YSBhz8A9TLImVIo=
+	b=P4XYNtgqHfKtktxl9OdwO8KPbbmORzG+qk9iLw1tx+9hevC3VUobc7N3NTj3MV15R
+	 Pz/5XgTLSsgQ5fSWFpv3+GPwwM5AqJaQxKugA4j8Mj5yi9gIpNJfPITDuFn0SOVt6V
+	 eCsLxOX6y8IXnRo6GrIFYO59XsBu7h/NkX10sqcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonatan Maman <Ymaman@Nvidia.com>,
-	Gal Shalom <GalShalom@Nvidia.com>,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.6 203/213] nouveau/dmem: Fix vulnerability in migrate_to_ram upon copy error
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 755/798] sctp: ensure sk_state is set to CLOSED if hashing fails in sctp_listen_start
 Date: Mon, 14 Oct 2024 16:21:49 +0200
-Message-ID: <20241014141050.882479182@linuxfoundation.org>
+Message-ID: <20241014141247.731444396@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonatan Maman <Ymaman@Nvidia.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-commit 835745a377a4519decd1a36d6b926e369b3033e2 upstream.
+[ Upstream commit 4d5c70e6155d5eae198bade4afeab3c1b15073b6 ]
 
-The `nouveau_dmem_copy_one` function ensures that the copy push command is
-sent to the device firmware but does not track whether it was executed
-successfully.
+If hashing fails in sctp_listen_start(), the socket remains in the
+LISTENING state, even though it was not added to the hash table.
+This can lead to a scenario where a socket appears to be listening
+without actually being accessible.
 
-In the case of a copy error (e.g., firmware or hardware failure), the
-copy push command will be sent via the firmware channel, and
-`nouveau_dmem_copy_one` will likely report success, leading to the
-`migrate_to_ram` function returning a dirty HIGH_USER page to the user.
+This patch ensures that if the hashing operation fails, the sk_state
+is set back to CLOSED before returning an error.
 
-This can result in a security vulnerability, as a HIGH_USER page that may
-contain sensitive or corrupted data could be returned to the user.
+Note that there is no need to undo the autobind operation if hashing
+fails, as the bind port can still be used for next listen() call on
+the same socket.
 
-To prevent this vulnerability, we allocate a zero page. Thus, in case of
-an error, a non-dirty (zero) page will be returned to the user.
-
-Fixes: 5be73b690875 ("drm/nouveau/dmem: device memory helpers for SVM")
-Signed-off-by: Yonatan Maman <Ymaman@Nvidia.com>
-Co-developed-by: Gal Shalom <GalShalom@Nvidia.com>
-Signed-off-by: Gal Shalom <GalShalom@Nvidia.com>
-Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241008115943.990286-3-ymaman@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 76c6d988aeb3 ("sctp: add sock_reuseport for the sock in __sctp_hash_endpoint")
+Reported-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_dmem.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sctp/socket.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
-@@ -193,7 +193,7 @@ static vm_fault_t nouveau_dmem_migrate_t
- 	if (!spage || !(src & MIGRATE_PFN_MIGRATE))
- 		goto done;
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 98b8eb9a21bdf..0b201cd811a1f 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -8520,6 +8520,7 @@ static int sctp_listen_start(struct sock *sk, int backlog)
+ 	struct sctp_endpoint *ep = sp->ep;
+ 	struct crypto_shash *tfm = NULL;
+ 	char alg[32];
++	int err;
  
--	dpage = alloc_page_vma(GFP_HIGHUSER, vmf->vma, vmf->address);
-+	dpage = alloc_page_vma(GFP_HIGHUSER | __GFP_ZERO, vmf->vma, vmf->address);
- 	if (!dpage)
- 		goto done;
+ 	/* Allocate HMAC for generating cookie. */
+ 	if (!sp->hmac && sp->sctp_hmac_alg) {
+@@ -8547,18 +8548,25 @@ static int sctp_listen_start(struct sock *sk, int backlog)
+ 	inet_sk_set_state(sk, SCTP_SS_LISTENING);
+ 	if (!ep->base.bind_addr.port) {
+ 		if (sctp_autobind(sk)) {
+-			inet_sk_set_state(sk, SCTP_SS_CLOSED);
+-			return -EAGAIN;
++			err = -EAGAIN;
++			goto err;
+ 		}
+ 	} else {
+ 		if (sctp_get_port(sk, inet_sk(sk)->inet_num)) {
+-			inet_sk_set_state(sk, SCTP_SS_CLOSED);
+-			return -EADDRINUSE;
++			err = -EADDRINUSE;
++			goto err;
+ 		}
+ 	}
  
+ 	WRITE_ONCE(sk->sk_max_ack_backlog, backlog);
+-	return sctp_hash_endpoint(ep);
++	err = sctp_hash_endpoint(ep);
++	if (err)
++		goto err;
++
++	return 0;
++err:
++	inet_sk_set_state(sk, SCTP_SS_CLOSED);
++	return err;
+ }
+ 
+ /*
+-- 
+2.43.0
+
 
 
 
