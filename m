@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-84012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC41E99CDB0
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3068799D311
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92D451F23AB9
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 621451C2156F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA001AC887;
-	Mon, 14 Oct 2024 14:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289BD1C2DC8;
+	Mon, 14 Oct 2024 15:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ALWjHs/D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFpaNErR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F360F1AC42C;
-	Mon, 14 Oct 2024 14:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6DAF1AA7AB;
+	Mon, 14 Oct 2024 15:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916503; cv=none; b=C5HRwfYFVwRFnKgawX1HlGKwOodtAsXXEIVs0+Y6XfLADc731Wu4KEsIvyvHc6H8TuyV4E++4hxPd+WKuv+ZxP8oG7Ij7vN6Jk6ribbGFtmz+6zkv2v08SDwN0e77+L9Sao9oTlBZhkZxR9G0LaZmtNMaUtPL/hZsDWAoHagmnw=
+	t=1728919807; cv=none; b=XJLS3EvcTcYlLWqdj7uhJFZOaFQCle7U2E5ajaOAwug411WE/+JNXhDxJzBfNVee6yOXTe6I50XlrgG3hdmt8UEw71DHR576xZe6L6JqzF8kA85LM3b0YZMJ7dWQvkPW6YrCnNIL7HcukJRGF0dabTtB6GLnid/+20y1PjYJY+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916503; c=relaxed/simple;
-	bh=Ut8DJ8QCNpqka+OYJKs5Py1D3RBuPH8xLro9XAUBfDM=;
+	s=arc-20240116; t=1728919807; c=relaxed/simple;
+	bh=oQh/LF993gN5SU9H5+DmDSRtzN1vIe3uoRKgGE8cYWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aTkMdllWcSRuTkoHaBbn1C1viQsMqKB5azEwZB0TS7ffBnhJQZU5unDF/uIts/2VksO3gGwW1N8KAJrhPwnkuQaZxooUvrZwCKkYMD7jYzXRBo5bzarZPkoa+neMRv/+QG5vXK/qhbAG6D2YRV1XUgLMgAIDkvWMDq8KDnohLd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ALWjHs/D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E44C4CEC3;
-	Mon, 14 Oct 2024 14:35:02 +0000 (UTC)
+	 MIME-Version; b=FEkS/CyBg4maB8G8oDiCwfmdFBMCKlF2/sLlO3JMqsRPghmx88MF6cLCvhZBUbpGErvRX6bgKgMbPvOd7Z5VEi0Epo1+PUlrUrjM+5rlVPeHKzRpFMcEprpFbLad24AdF1iIt87naqnctXeEsFXJDbiCopGpUXctQVK1JNuqWVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFpaNErR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329E2C4CEC3;
+	Mon, 14 Oct 2024 15:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916502;
-	bh=Ut8DJ8QCNpqka+OYJKs5Py1D3RBuPH8xLro9XAUBfDM=;
+	s=korg; t=1728919807;
+	bh=oQh/LF993gN5SU9H5+DmDSRtzN1vIe3uoRKgGE8cYWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ALWjHs/DwPrS511BUyf8H/4gCiMAzH2nuaHu++t6jjwtjrZfPBfyRxDjBTzdi1IDG
-	 56eFUwU0tceIjtVNiL8bFo12MDehiUG7MVUvw346eF1NimnzLDaxMznCd6jsxGmEyU
-	 bFlYLyC1AoleG0OyxgUZ6qRuaEW/11ZJYErlENIY=
+	b=mFpaNErRTVv0MtrRi0+LVck6qdnbX3nEU4lXgUHD7epIQQuVwl+qaan6x5nXZGmEW
+	 ceAkECGgUxqjDVVAR1vaefEkTkJzG7etO0B/ThEY4xNFXXq8edx2WLa4HcSYs6/dam
+	 0hhsMg+/3ZqWArRW1gExwOl6RpbCUPt7oYgP7T2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.11 203/214] powercap: intel_rapl_tpmi: Fix bogus register reading
-Date: Mon, 14 Oct 2024 16:21:06 +0200
-Message-ID: <20241014141052.897822576@linuxfoundation.org>
+	Ruffalo Lavoisier <RuffaloLavoisier@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 713/798] comedi: ni_routing: tools: Check when the file could not be opened
+Date: Mon, 14 Oct 2024 16:21:07 +0200
+Message-ID: <20241014141246.078741518@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Ruffalo Lavoisier <ruffalolavoisier@gmail.com>
 
-commit 91e8f835a7eda4ba2c0c4002a3108a0e3b22d34e upstream.
+[ Upstream commit 5baeb157b341b1d26a5815aeaa4d3bb9e0444fda ]
 
-The TPMI_RAPL_REG_DOMAIN_INFO value needs to be multiplied by 8 to get
-the register offset.
+- After fopen check NULL before using the file pointer use
 
-Cc: All applicable <stable@vger.kernel.org>
-Fixes: 903eb9fb85e3 ("powercap: intel_rapl_tpmi: Fix System Domain probing")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://patch.msgid.link/20240930081801.28502-2-rui.zhang@intel.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Ruffalo Lavoisier <RuffaloLavoisier@gmail.com>
+Link: https://lore.kernel.org/r/20240906203025.89588-1-RuffaloLavoisier@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/intel_rapl_tpmi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/powercap/intel_rapl_tpmi.c
-+++ b/drivers/powercap/intel_rapl_tpmi.c
-@@ -192,7 +192,7 @@ static int parse_one_domain(struct tpmi_
- 			pr_warn(FW_BUG "System domain must support Domain Info register\n");
- 			return -ENODEV;
- 		}
--		tpmi_domain_info = readq(trp->base + offset + TPMI_RAPL_REG_DOMAIN_INFO);
-+		tpmi_domain_info = readq(trp->base + offset + TPMI_RAPL_REG_DOMAIN_INFO * 8);
- 		if (!(tpmi_domain_info & TPMI_RAPL_DOMAIN_ROOT))
- 			return 0;
- 		domain_type = RAPL_DOMAIN_PLATFORM;
+diff --git a/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c b/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c
+index d55521b5bdcb2..892a66b2cea66 100644
+--- a/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c
++++ b/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c
+@@ -140,6 +140,11 @@ int main(void)
+ {
+ 	FILE *fp = fopen("ni_values.py", "w");
+ 
++	if (fp == NULL) {
++		fprintf(stderr, "Could not open file!");
++		return -1;
++	}
++
+ 	/* write route register values */
+ 	fprintf(fp, "ni_route_values = {\n");
+ 	for (int i = 0; ni_all_route_values[i]; ++i)
+-- 
+2.43.0
+
 
 
 
