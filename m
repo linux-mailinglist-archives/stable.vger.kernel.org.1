@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5A799CE71
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A69799D2E6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:31:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A624C287A5D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:44:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FB32287961
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEDA1AC44C;
-	Mon, 14 Oct 2024 14:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838C71ADFFC;
+	Mon, 14 Oct 2024 15:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYQHe3ar"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVEWjXgu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7BC1ABECB;
-	Mon, 14 Oct 2024 14:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411E1156256;
+	Mon, 14 Oct 2024 15:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917024; cv=none; b=Q6Y42xd8P0zDZN7Ey8DYCBb3uGTJdNNuizAYH7RkBb64fwypZ1qlMPNTQWM2KE05fJXlrfDdlB5e/WpBa+ACkDz89K0w2cvetXp3r3Yj78Xm7rL7lDAFYBqE6mRuEkqBlpExTKxUAX4Z1OWJArS/7DeLfNfnHfZUv3DcF69OaD4=
+	t=1728919702; cv=none; b=X/ubVi0CYU4gens5hCSPGfbAelesOnCuusa9muYX6bk00GAtbEefrrqGc6MKbn3rbykwHg4YCfBcaroXmSasATVJNla6m4jEKGh4Wnm4JQQ6KEacvm+19RBG79knYC2BVQ2gIfcBS5FW3K/YzK6b+8Z63SrfCQXrISlurkawB+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917024; c=relaxed/simple;
-	bh=PRPfMoRnpNwebJgY/daLy88rmvw46zf76rvNyTHByRU=;
+	s=arc-20240116; t=1728919702; c=relaxed/simple;
+	bh=3FAebbm7bt4M9E03ngKCfijbViHwGDCS1A+Nt4sVGJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TEOAO560EeAcwJxRuAR/OGw54Cf/H7nDnt4zVMoSZhEPt37H+HvJxqzkFsZnrhsJ4PI23flaxh8PryDiaYD4i85aoA3psH/mkcby9Ot+jUL7BOqHrcK0wiAa9A/yJadN6q/5x7C5zeqjUFzxXuvqfd+of/+8J5W3AQ1/391I+2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYQHe3ar; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7B7C4CEC7;
-	Mon, 14 Oct 2024 14:43:43 +0000 (UTC)
+	 MIME-Version; b=uyi+d89xQ08YgntLtIq4I7BZATICVAUkgsXi9AD6IxtpmUYJRnDy3m7JkxFTWD0fxmlHJjrI3dlleZwwXqwM75rx0ec/x2kjnasiYxhaEnuGooUvGCNDW064A1ANa57fKyzFGLoIx8O7dXIOL6YRGFTL0UbZ/Afy316o1y7TOPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVEWjXgu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6F5C4CEC3;
+	Mon, 14 Oct 2024 15:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917024;
-	bh=PRPfMoRnpNwebJgY/daLy88rmvw46zf76rvNyTHByRU=;
+	s=korg; t=1728919702;
+	bh=3FAebbm7bt4M9E03ngKCfijbViHwGDCS1A+Nt4sVGJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SYQHe3ar8TQMriYvtjqJe997KXXeyHUjDZQaxMZs4FFF8LxXXDSaam3JSv2GoV0Dh
-	 /ZDJ0Dh2MXZi2P+FLPxBtgNdHCHQJ16X75kgo2NL51CNPnWrhyv07iSmW0vFu9N55w
-	 k/8ZaA5KOgpTrya7HuuAAWDNeyzHDMBLop+LpZNk=
+	b=ZVEWjXgu8yj5DNkyMp/zOOqen89GJkke9zUpv1ub96FsJe36eALqhgloRoQYNYATs
+	 +g8f7dJvl59S0tLf5/2T6fgzGZSHmMu8VJLcdjcXfWAAcm4t8vMO8p522uAFWY3xDo
+	 m90OB5ahdoPQuuYTuurbLJrzeQ+z2rc6+YeCH7rQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/213] net: dsa: b53: fix max MTU for BCM5325/BCM5365
-Date: Mon, 14 Oct 2024 16:20:36 +0200
-Message-ID: <20241014141048.043574631@linuxfoundation.org>
+Subject: [PATCH 6.1 683/798] fs/ntfs3: Refactor enum_rstbl to suppress static checker
+Date: Mon, 14 Oct 2024 16:20:37 +0200
+Message-ID: <20241014141244.902470130@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit ca8c1f71c10193c270f772d70d34b15ad765d6a8 ]
+[ Upstream commit 56c16d5459d5c050a97a138a00a82b105a8e0a66 ]
 
-BCM5325/BCM5365 do not support jumbo frames, so we should not report a
-jumbo frame mtu for them. But they do support so called "oversized"
-frames up to 1536 bytes long by default, so report an appropriate MTU.
+Comments and brief description of function enum_rstbl added.
 
-Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: b46acd6a6a62 ("fs/ntfs3: Add NTFS journal")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ntfs3/fslog.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 0a1f7f1315721..b43b414b26969 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -225,6 +225,7 @@ static const struct b53_mib_desc b53_mibs_58xx[] = {
- 
- #define B53_MIBS_58XX_SIZE	ARRAY_SIZE(b53_mibs_58xx)
- 
-+#define B53_MAX_MTU_25		(1536 - ETH_HLEN - VLAN_HLEN - ETH_FCS_LEN)
- #define B53_MAX_MTU		(9720 - ETH_HLEN - VLAN_HLEN - ETH_FCS_LEN)
- 
- static int b53_do_vlan_op(struct b53_device *dev, u8 op)
-@@ -2279,6 +2280,11 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
- 
- static int b53_get_max_mtu(struct dsa_switch *ds, int port)
- {
-+	struct b53_device *dev = ds->priv;
-+
-+	if (is5325(dev) || is5365(dev))
-+		return B53_MAX_MTU_25;
-+
- 	return B53_MAX_MTU;
+diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
+index 8e23bd6cd0f2f..339ce5aa3c75b 100644
+--- a/fs/ntfs3/fslog.c
++++ b/fs/ntfs3/fslog.c
+@@ -609,14 +609,29 @@ static inline void add_client(struct CLIENT_REC *ca, u16 index, __le16 *head)
+ 	*head = cpu_to_le16(index);
  }
  
++/*
++ * Enumerate restart table.
++ *
++ * @t - table to enumerate.
++ * @c - current enumerated element.
++ *
++ * enumeration starts with @c == NULL
++ * returns next element or NULL
++ */
+ static inline void *enum_rstbl(struct RESTART_TABLE *t, void *c)
+ {
+ 	__le32 *e;
+ 	u32 bprt;
+-	u16 rsize = t ? le16_to_cpu(t->size) : 0;
++	u16 rsize;
++
++	if (!t)
++		return NULL;
++
++	rsize = le16_to_cpu(t->size);
+ 
+ 	if (!c) {
+-		if (!t || !t->total)
++		/* start enumeration. */
++		if (!t->total)
+ 			return NULL;
+ 		e = Add2Ptr(t, sizeof(struct RESTART_TABLE));
+ 	} else {
 -- 
 2.43.0
 
