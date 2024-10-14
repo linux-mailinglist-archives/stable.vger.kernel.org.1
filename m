@@ -1,56 +1,78 @@
-Return-Path: <stable+bounces-84004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D9999CDA5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A145099D305
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C011B23FF8
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58C3E1F24F29
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2950E571;
-	Mon, 14 Oct 2024 14:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A23141C3F26;
+	Mon, 14 Oct 2024 15:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+H7jSgv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sd5jvjzW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F58320322;
-	Mon, 14 Oct 2024 14:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587371C331A;
+	Mon, 14 Oct 2024 15:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916475; cv=none; b=W/HPUackLgRHiJXambZf5xf+6X9iWQG6bhbeqH+2O5ywAeO6OyIL6rVfds6rA/kwQndievmwRLPB1tj+UoYNFVpIjJTJqiESZ/1d/ovyF/S2+rI2h6Q+tH4l9E7iohmT3PZomrUfSQo5Si4vYUIfAMTowQESt3hlMe7VhNy3z8g=
+	t=1728919773; cv=none; b=SXu69d8b0B8Joh9jRXsuz32MszugJLwsU9xMqFC6m5f6jkrmtCqUltq6F6A/9bpHYek6Yfct5XonKlFAKcpkL0hXLhlL0uuCPBYhuELNaxrh3/3a5nzEF4uzC3uNDjmNRCxePxBcFTNpdH0t4X2jKafvRm6wIqEabS1VwTNsit4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916475; c=relaxed/simple;
-	bh=Cj2DcmimW88qUqcuhCOSSfHv/GZNJD1qsyyDXsF6ZuU=;
+	s=arc-20240116; t=1728919773; c=relaxed/simple;
+	bh=HliaOWIpuVeAXXP13yhqEmagwyLUvC0iDnxujig54Ys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kDcqLyKa3YME0Thh+bnJYLFM0b0VJFP9NW4ntAjd3BEk8OYFkocP5PxjOFge28wLBZio09RIaBfGWtPsGPNEsZY5NIvp7ciwItYC52FgjxspZyAosfqT7cRM7LWP0ukkqNBRdVpy5P3NGmqYoPOz8lNgDUYWFiwzvZQ0oPvKJPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+H7jSgv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26501C4CEC3;
-	Mon, 14 Oct 2024 14:34:34 +0000 (UTC)
+	 MIME-Version; b=DIGDvBYliE/H4fxwWCxFsy7URDzh8pnpucdeQdvUYQQahA9xwL+wsB63ArTR1Wu+/QKDlKI0fY4/9Evwq31AMDEnCFQRvEUxlFfFPDoeVrI0HGhRN15AlHNViyxCgAcGy/kQDGtRcpFXu8nHEUkk1fCT1sUot8Yufv1kwNnen/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sd5jvjzW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5AAC4CEC3;
+	Mon, 14 Oct 2024 15:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916475;
-	bh=Cj2DcmimW88qUqcuhCOSSfHv/GZNJD1qsyyDXsF6ZuU=;
+	s=korg; t=1728919773;
+	bh=HliaOWIpuVeAXXP13yhqEmagwyLUvC0iDnxujig54Ys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H+H7jSgvn00lr028uuh6VibSyrsPFys0THIWA0bOrjd+64SEFEBMuymQH/0B3rK16
-	 y6oCgY4um5SvzJW1EiiL7awp+zHA4ny5eCW++ox7Xl+un0F7wC3ro6A7VyaLi15r/R
-	 YvgIXKwCsLyDcDph3xiWXEpCJsv4Klr5BQoNGHJg=
+	b=sd5jvjzWEWYQDn6BwfytyJ/8P/wb8AnDesENi+qJwk+pBYOb4HdICp12eiF3NKz26
+	 FEgCnzt3pN6SdZCqIzj1zK/Tv9PlkGSu1dsnma/dIUMH4wIBlGbGheklFA4Fc00SQ/
+	 uqTTpjg073lg2U6j/vyeVQFLCebAFeBco7jczVxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Selvarasu Ganesan <selvarasu.g@samsung.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.11 163/214] usb: dwc3: core: Stop processing of pending events if controller is halted
+	Ian Rogers <irogers@google.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ross Zwisler <zwisler@chromium.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Yang Jihong <yangjihong1@huawei.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Leo Yan <leo.yan@linaro.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Ingo Molnar <mingo@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 672/798] perf lock: Dynamically allocate lockhash_table
 Date: Mon, 14 Oct 2024 16:20:26 +0200
-Message-ID: <20241014141051.345500382@linuxfoundation.org>
+Message-ID: <20241014141244.466609490@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +84,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+From: Ian Rogers <irogers@google.com>
 
-commit 0d410e8913f5cffebcca79ffdd596009d4a13a28 upstream.
+[ Upstream commit eef4fee5e52071d563d9a851df1c09869215ee15 ]
 
-This commit addresses an issue where events were being processed when
-the controller was in a halted state. To fix this issue by stop
-processing the events as the event count was considered stale or
-invalid when the controller was halted.
+lockhash_table is 32,768 bytes in .bss, make it a memory allocation so
+that the space is freed for non-lock perf commands.
 
-Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
-Cc: stable@kernel.org
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
-Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240916231813.206-1-selvarasu.g@samsung.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20230526183401.2326121-10-irogers@google.com
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Ross Zwisler <zwisler@chromium.org>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Yang Jihong <yangjihong1@huawei.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-perf-users@vger.kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 1a5efc9e13f3 ("libsubcmd: Don't free the usage string")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c   |   22 +++++++++++++++++++---
- drivers/usb/dwc3/core.h   |    4 ----
- drivers/usb/dwc3/gadget.c |   11 -----------
- 3 files changed, 19 insertions(+), 18 deletions(-)
+ tools/perf/builtin-lock.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -544,6 +544,7 @@ static int dwc3_alloc_event_buffers(stru
- int dwc3_event_buffers_setup(struct dwc3 *dwc)
- {
- 	struct dwc3_event_buffer	*evt;
-+	u32				reg;
+diff --git a/tools/perf/builtin-lock.c b/tools/perf/builtin-lock.c
+index 470106643ed52..28fa76ecc0822 100644
+--- a/tools/perf/builtin-lock.c
++++ b/tools/perf/builtin-lock.c
+@@ -45,7 +45,7 @@ static struct target target;
+ #define LOCKHASH_BITS		12
+ #define LOCKHASH_SIZE		(1UL << LOCKHASH_BITS)
  
- 	if (!dwc->ev_buf)
- 		return 0;
-@@ -556,8 +557,10 @@ int dwc3_event_buffers_setup(struct dwc3
- 			upper_32_bits(evt->dma));
- 	dwc3_writel(dwc->regs, DWC3_GEVNTSIZ(0),
- 			DWC3_GEVNTSIZ_SIZE(evt->length));
--	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), 0);
+-static struct hlist_head lockhash_table[LOCKHASH_SIZE];
++static struct hlist_head *lockhash_table;
  
-+	/* Clear any stale event */
-+	reg = dwc3_readl(dwc->regs, DWC3_GEVNTCOUNT(0));
-+	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), reg);
- 	return 0;
- }
+ #define __lockhashfn(key)	hash_long((unsigned long)key, LOCKHASH_BITS)
+ #define lockhashentry(key)	(lockhash_table + __lockhashfn((key)))
+@@ -1645,16 +1645,22 @@ static int __cmd_contention(int argc, const char **argv)
+ 	};
+ 	struct lock_contention con = {
+ 		.target = &target,
+-		.result = &lockhash_table[0],
+ 		.map_nr_entries = bpf_map_entries,
+ 		.max_stack = max_stack_depth,
+ 		.stack_skip = stack_skip,
+ 	};
  
-@@ -584,7 +587,10 @@ void dwc3_event_buffers_cleanup(struct d
- 	dwc3_writel(dwc->regs, DWC3_GEVNTADRHI(0), 0);
- 	dwc3_writel(dwc->regs, DWC3_GEVNTSIZ(0), DWC3_GEVNTSIZ_INTMASK
- 			| DWC3_GEVNTSIZ_SIZE(0));
--	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), 0);
++	lockhash_table = calloc(LOCKHASH_SIZE, sizeof(*lockhash_table));
++	if (!lockhash_table)
++		return -ENOMEM;
 +
-+	/* Clear any stale event */
-+	reg = dwc3_readl(dwc->regs, DWC3_GEVNTCOUNT(0));
-+	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), reg);
- }
- 
- static void dwc3_core_num_eps(struct dwc3 *dwc)
-@@ -2499,7 +2505,11 @@ static int dwc3_runtime_resume(struct de
- 
- 	switch (dwc->current_dr_role) {
- 	case DWC3_GCTL_PRTCAP_DEVICE:
--		dwc3_gadget_process_pending_events(dwc);
-+		if (dwc->pending_events) {
-+			pm_runtime_put(dwc->dev);
-+			dwc->pending_events = false;
-+			enable_irq(dwc->irq_gadget);
-+		}
- 		break;
- 	case DWC3_GCTL_PRTCAP_HOST:
- 	default:
-@@ -2589,6 +2599,12 @@ static void dwc3_complete(struct device
- static const struct dev_pm_ops dwc3_dev_pm_ops = {
- 	SET_SYSTEM_SLEEP_PM_OPS(dwc3_suspend, dwc3_resume)
- 	.complete = dwc3_complete,
++	con.result = &lockhash_table[0];
 +
-+	/*
-+	 * Runtime suspend halts the controller on disconnection. It relies on
-+	 * platforms with custom connection notification to start the controller
-+	 * again.
-+	 */
- 	SET_RUNTIME_PM_OPS(dwc3_runtime_suspend, dwc3_runtime_resume,
- 			dwc3_runtime_idle)
- };
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -1675,7 +1675,6 @@ static inline void dwc3_otg_host_init(st
- #if !IS_ENABLED(CONFIG_USB_DWC3_HOST)
- int dwc3_gadget_suspend(struct dwc3 *dwc);
- int dwc3_gadget_resume(struct dwc3 *dwc);
--void dwc3_gadget_process_pending_events(struct dwc3 *dwc);
- #else
- static inline int dwc3_gadget_suspend(struct dwc3 *dwc)
- {
-@@ -1687,9 +1686,6 @@ static inline int dwc3_gadget_resume(str
- 	return 0;
+ 	session = perf_session__new(use_bpf ? NULL : &data, &eops);
+ 	if (IS_ERR(session)) {
+ 		pr_err("Initializing perf session failed\n");
+-		return PTR_ERR(session);
++		err = PTR_ERR(session);
++		goto out_delete;
+ 	}
+ 
+ 	con.machine = &session->machines.host;
+@@ -1755,6 +1761,7 @@ static int __cmd_contention(int argc, const char **argv)
+ 	evlist__delete(con.evlist);
+ 	lock_contention_finish();
+ 	perf_session__delete(session);
++	zfree(&lockhash_table);
+ 	return err;
  }
  
--static inline void dwc3_gadget_process_pending_events(struct dwc3 *dwc)
--{
--}
- #endif /* !IS_ENABLED(CONFIG_USB_DWC3_HOST) */
+@@ -1946,6 +1953,10 @@ int cmd_lock(int argc, const char **argv)
+ 	unsigned int i;
+ 	int rc = 0;
  
- #if IS_ENABLED(CONFIG_USB_DWC3_ULPI)
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4728,14 +4728,3 @@ int dwc3_gadget_resume(struct dwc3 *dwc)
++	lockhash_table = calloc(LOCKHASH_SIZE, sizeof(*lockhash_table));
++	if (!lockhash_table)
++		return -ENOMEM;
++
+ 	for (i = 0; i < LOCKHASH_SIZE; i++)
+ 		INIT_HLIST_HEAD(lockhash_table + i);
  
- 	return dwc3_gadget_soft_connect(dwc);
+@@ -1967,7 +1978,7 @@ int cmd_lock(int argc, const char **argv)
+ 		rc = __cmd_report(false);
+ 	} else if (!strcmp(argv[0], "script")) {
+ 		/* Aliased to 'perf script' */
+-		return cmd_script(argc, argv);
++		rc = cmd_script(argc, argv);
+ 	} else if (!strcmp(argv[0], "info")) {
+ 		if (argc) {
+ 			argc = parse_options(argc, argv,
+@@ -1996,5 +2007,6 @@ int cmd_lock(int argc, const char **argv)
+ 		usage_with_options(lock_usage, lock_options);
+ 	}
+ 
++	zfree(&lockhash_table);
+ 	return rc;
  }
--
--void dwc3_gadget_process_pending_events(struct dwc3 *dwc)
--{
--	if (dwc->pending_events) {
--		dwc3_interrupt(dwc->irq_gadget, dwc->ev_buf);
--		dwc3_thread_interrupt(dwc->irq_gadget, dwc->ev_buf);
--		pm_runtime_put(dwc->dev);
--		dwc->pending_events = false;
--		enable_irq(dwc->irq_gadget);
--	}
--}
+-- 
+2.43.0
+
 
 
 
