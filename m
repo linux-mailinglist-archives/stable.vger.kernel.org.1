@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-84058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD7D99CDEE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:37:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77B1499CD05
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:28:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28CC91C22608
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:37:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D7671F23635
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC801A76A5;
-	Mon, 14 Oct 2024 14:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E771AB6FF;
+	Mon, 14 Oct 2024 14:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="galEPMjy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XufvMeVD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A09025632;
-	Mon, 14 Oct 2024 14:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17471AAC4;
+	Mon, 14 Oct 2024 14:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916673; cv=none; b=nsIyKIMQOH0mhqavH/onLfsE8wHgFEhuUsw+YqtdNu18VK6/v/8vDeZ8iOlyJNHthQR5A8+H8zhhyoOFYSHkkiob2soB6r4gx7Jsq1M9jIAZibbZMLOAiT6XveNVg6iBfVrh5wXr6g48StfAsQxJAWMjPmRiEKyPcIuG4oZhpNg=
+	t=1728916060; cv=none; b=lO9HkjaxHmOUOn46ZxbO5imb/IqBwTQrLjrn/4V95+79K1km4OmIvoS5HE5JZai6Y7pg5EsvZoXKOCHkoExVOqrVxc3oS208gahCZ3idQaDSzr17S8OKK+GifjqfcbfJDGxyo1Kdhe4bIECMgPmQp+b1edOCEpAjKFtIYIK9Wgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916673; c=relaxed/simple;
-	bh=dtxJq9TtleoRczsxhBJpkSh0napwXjPvw3i3KLd65vI=;
+	s=arc-20240116; t=1728916060; c=relaxed/simple;
+	bh=fZZrT4RG4pALLKzsv4gM3SflNpEQYUL7Ef0RzU0MDW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uhSYaKG7PySVCPksAU7yfV1cRGv9RSyft93ZPU6Vur4QSxBhQzQovpTWJ7emi/zIBW+kjRHE4GUEA4B0bxmXIRhVdwTBKGd8obBp9tN+j3gQtEVbipFh1/uBTkeoMcWYno5UbIhdEDbjDfS1RM8cJAajkvcwAtIoU2mo1sjfFEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=galEPMjy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC30CC4CEC3;
-	Mon, 14 Oct 2024 14:37:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LzxlU6YkRPnDDWWrsu6YEWQ7NGsi1h/B181IvkhkrdekWaDnLETaGNxLbirNI5TF2rr0cwo4EHCg479cX9CO0lr3FmdgmIQPDhGHCQ9YOmv5SszrXTP7tqkjG9ZxtifQF8hrYyNOT+ncuw6P2jHTIlrWVdtampF2TwRMsZETAoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XufvMeVD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B243C4CECF;
+	Mon, 14 Oct 2024 14:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916673;
-	bh=dtxJq9TtleoRczsxhBJpkSh0napwXjPvw3i3KLd65vI=;
+	s=korg; t=1728916060;
+	bh=fZZrT4RG4pALLKzsv4gM3SflNpEQYUL7Ef0RzU0MDW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=galEPMjyb99vI7ZfQZqkkKOmv9/kEpKr7uAx8UQ+oquwFF2sEbPTU0WySMZFG5f/V
-	 uFdmvokFgzgTYimrAgArGESuEH/XQQD1zDwBYhZxNW/UqsUYAcBsy4RcXcvivOsLgN
-	 WthjHskMN9ZTKyIwpGqeS6I4jiDuBPx8Ww2STxks=
+	b=XufvMeVDbpYdtGjDDE2x7XA4kDlOWvF6U5sLI6kvcveufXfOeGzoav/m0iVuqHl9u
+	 GUhrhUlB4fIRm71OhGcpo96hFXnOEkG1dm4G5L9MjQYXLVA7Jc97nHVO4gzn4zUT3V
+	 V+jytwSekRjD+7wIsgROqeXlAyHM/bAFob87HADY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Vecera <ivecera@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.6 032/213] i40e: Fix ST code value for Clause 45
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 075/214] drm/xe/oa: Fix overflow in oa batch buffer
 Date: Mon, 14 Oct 2024 16:18:58 +0200
-Message-ID: <20241014141044.240827479@linuxfoundation.org>
+Message-ID: <20241014141047.914500829@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: José Roberto de Souza <jose.souza@intel.com>
 
-[ Upstream commit 9b3daf2b0443eeba23c3888059342aec920dfd53 ]
+[ Upstream commit 6c10ba06bb1b48acce6d4d9c1e33beb9954f1788 ]
 
-ST code value for clause 45 that has been changed by
-commit 8196b5fd6c73 ("i40e: Refactor I40E_MDIO_CLAUSE* macros")
-is currently wrong.
+By default xe_bb_create_job() appends a MI_BATCH_BUFFER_END to batch
+buffer, this is not a problem if batch buffer is only used once but
+oa reuses the batch buffer for the same metric and at each call
+it appends a MI_BATCH_BUFFER_END, printing the warning below and then
+overflowing.
 
-The mentioned commit refactored ..MDIO_CLAUSE??_STCODE_MASK so
-their value is the same for both clauses. The value is correct
-for clause 22 but not for clause 45.
+[  381.072016] ------------[ cut here ]------------
+[  381.072019] xe 0000:00:02.0: [drm] Assertion `bb->len * 4 + bb_prefetch(q->gt) <= size` failed!
+               platform: LUNARLAKE subplatform: 1
+               graphics: Xe2_LPG / Xe2_HPG 20.04 step B0
+               media: Xe2_LPM / Xe2_HPM 20.00 step B0
+               tile: 0 VRAM 0 B
+               GT: 0 type 1
 
-Fix the issue by adding a parameter to I40E_GLGEN_MSCA_STCODE_MASK
-macro that specifies required value.
+So here checking if batch buffer already have MI_BATCH_BUFFER_END if
+not append it.
 
-Fixes: 8196b5fd6c73 ("i40e: Refactor I40E_MDIO_CLAUSE* macros")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+v2:
+- simply fix, suggestion from Ashutosh
+
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240912153842.35813-1-jose.souza@intel.com
+(cherry picked from commit 9ba0e0f30ca42a98af3689460063edfb6315718a)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_register.h | 2 +-
- drivers/net/ethernet/intel/i40e/i40e_type.h     | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_bb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_register.h b/drivers/net/ethernet/intel/i40e/i40e_register.h
-index 989c186824733..d3c82ba3835a7 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_register.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_register.h
-@@ -204,7 +204,7 @@
- #define I40E_GLGEN_MSCA_OPCODE_SHIFT 26
- #define I40E_GLGEN_MSCA_OPCODE_MASK(_i) I40E_MASK(_i, I40E_GLGEN_MSCA_OPCODE_SHIFT)
- #define I40E_GLGEN_MSCA_STCODE_SHIFT 28
--#define I40E_GLGEN_MSCA_STCODE_MASK I40E_MASK(0x1, I40E_GLGEN_MSCA_STCODE_SHIFT)
-+#define I40E_GLGEN_MSCA_STCODE_MASK(_i) I40E_MASK(_i, I40E_GLGEN_MSCA_STCODE_SHIFT)
- #define I40E_GLGEN_MSCA_MDICMD_SHIFT 30
- #define I40E_GLGEN_MSCA_MDICMD_MASK I40E_MASK(0x1, I40E_GLGEN_MSCA_MDICMD_SHIFT)
- #define I40E_GLGEN_MSCA_MDIINPROGEN_SHIFT 31
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_type.h b/drivers/net/ethernet/intel/i40e/i40e_type.h
-index 4092f82bcfb12..6e7cb2081ab37 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_type.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_type.h
-@@ -40,11 +40,11 @@ typedef void (*I40E_ADMINQ_CALLBACK)(struct i40e_hw *, struct i40e_aq_desc *);
- #define I40E_QTX_CTL_VM_QUEUE	0x1
- #define I40E_QTX_CTL_PF_QUEUE	0x2
+diff --git a/drivers/gpu/drm/xe/xe_bb.c b/drivers/gpu/drm/xe/xe_bb.c
+index a13e0b3a169ed..ef777dbdf4ecc 100644
+--- a/drivers/gpu/drm/xe/xe_bb.c
++++ b/drivers/gpu/drm/xe/xe_bb.c
+@@ -65,7 +65,8 @@ __xe_bb_create_job(struct xe_exec_queue *q, struct xe_bb *bb, u64 *addr)
+ {
+ 	u32 size = drm_suballoc_size(bb->bo);
  
--#define I40E_MDIO_CLAUSE22_STCODE_MASK		I40E_GLGEN_MSCA_STCODE_MASK
-+#define I40E_MDIO_CLAUSE22_STCODE_MASK		I40E_GLGEN_MSCA_STCODE_MASK(1)
- #define I40E_MDIO_CLAUSE22_OPCODE_WRITE_MASK	I40E_GLGEN_MSCA_OPCODE_MASK(1)
- #define I40E_MDIO_CLAUSE22_OPCODE_READ_MASK	I40E_GLGEN_MSCA_OPCODE_MASK(2)
+-	bb->cs[bb->len++] = MI_BATCH_BUFFER_END;
++	if (bb->len == 0 || bb->cs[bb->len - 1] != MI_BATCH_BUFFER_END)
++		bb->cs[bb->len++] = MI_BATCH_BUFFER_END;
  
--#define I40E_MDIO_CLAUSE45_STCODE_MASK		I40E_GLGEN_MSCA_STCODE_MASK
-+#define I40E_MDIO_CLAUSE45_STCODE_MASK		I40E_GLGEN_MSCA_STCODE_MASK(0)
- #define I40E_MDIO_CLAUSE45_OPCODE_ADDRESS_MASK	I40E_GLGEN_MSCA_OPCODE_MASK(0)
- #define I40E_MDIO_CLAUSE45_OPCODE_WRITE_MASK	I40E_GLGEN_MSCA_OPCODE_MASK(1)
- #define I40E_MDIO_CLAUSE45_OPCODE_READ_MASK	I40E_GLGEN_MSCA_OPCODE_MASK(3)
+ 	xe_gt_assert(q->gt, bb->len * 4 + bb_prefetch(q->gt) <= size);
+ 
 -- 
 2.43.0
 
