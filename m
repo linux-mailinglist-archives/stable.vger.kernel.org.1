@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-84922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F46099D2E1
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:31:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FD8499CD7D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7271FB24908
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:31:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1044B218A7
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80CB01AB534;
-	Mon, 14 Oct 2024 15:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBEDF4595B;
+	Mon, 14 Oct 2024 14:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLSpWA5e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IH2Onvw/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6AC156256;
-	Mon, 14 Oct 2024 15:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F711AAE02;
+	Mon, 14 Oct 2024 14:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919682; cv=none; b=eIklTHFy/GJk2fJ4hJi8tqNNIpHscAziShApcwDhvA3ayLCVVAjsGjrUMARqVdWowmvbEWIcPPeSQ1J/D8WwnTNQvNwlDHjRLGUYGdnTpc4WvXtQcTPs+UlxCDC8RbgTk1+TJwweULV0OfMikyVlgJiGt6dEeAfNxxCwhUz5JSk=
+	t=1728916386; cv=none; b=tnSZaV3sY5LjwAC5VdazQhLJ+rpc+gUWOzUSoObQv7Er1bEdBxBLVCkAWtLUGhrXSWcHAjnV0AGkKYp8HeeTp4/sLn5Cn9x4jjGH/Hl8s7xb+8u4O+74tEaFiax+2cO3LCFHDhyEl3lwGEtbE4fs4aTswcTd2t22XXH4EyWtvnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919682; c=relaxed/simple;
-	bh=+qy+RpVfqMDgR9vdbPVcMRfhdsGu4kMVshP1hMdt3W0=;
+	s=arc-20240116; t=1728916386; c=relaxed/simple;
+	bh=snMuU3y33INBcR6e8NeXBM2vID+lOQq4bipJii6tSkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GzavzK8mpDq2j9bOV46byRI0XaeoC9AEa5oe2vN5YB9sgYHtODSlQ3WtEjZNl4ZZ6XtnkTLy2TtYZChI5A0ub7U/oUoBCrxAzXrwVA6ROGW1v2BPhBlyyXnY0OFu47BNa3XBfItZVIWJq+9vV/Uq6HeWkwUGBNSnRtQjxgd3eaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLSpWA5e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6090FC4CEC3;
-	Mon, 14 Oct 2024 15:28:01 +0000 (UTC)
+	 MIME-Version; b=M0YhNvxE5Y9BDdjdJiG+jiZMnYPbrRtLrPU16vTiz4zCiO4ckRO7EVNYxMKp+cZNTG4Rl476AYFkAiVaLVz/61msdaMyB3hu9s0oC/4IDgg+ihsnLEzawMggRdpnCO44vt8Bsd2CXrT4U+kYWi9O2LSDzdUILDfq28Shc8X/u4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IH2Onvw/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0FF2C4CEC3;
+	Mon, 14 Oct 2024 14:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919682;
-	bh=+qy+RpVfqMDgR9vdbPVcMRfhdsGu4kMVshP1hMdt3W0=;
+	s=korg; t=1728916386;
+	bh=snMuU3y33INBcR6e8NeXBM2vID+lOQq4bipJii6tSkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLSpWA5e6S3+57AoBYUlyYXDv47k334aGIDF6wJ9fZWD6iDJB4mZniAuI/m58WzXM
-	 R7O9NiRslm3pdab7zSEUt481DJl9t7ebbrnP4959xiLR8zg/joIdW+ww/rrBVGKOkD
-	 mW7OLnie42zNjIAjn0xq/8M8i18Gi2wCnsaA83lc=
+	b=IH2Onvw/0jVuG+QOzi4jyPcDsyuYomopsVeWz+5fLZb9JkYsA4ODxClA2Abr5Lpna
+	 JJXsSu5YzylfMne0UKDCZDHwbN8LzEU4xe0zD4/jMoQEJ916Ny3X9zadOoPzL5Vn1B
+	 zr+1EuPSJSgE+otLPJmjPZbRfmQVRGrBt+uMZL4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Aditya Gupta <adityag@linux.ibm.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Disha Goel <disgoel@linux.vnet.ibm.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kajol Jain <kjain@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 678/798] libsubcmd: Dont free the usage string
+	Stefan Blum <stefan.blum@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.11 169/214] ACPI: resource: Make Asus ExpertBook B2402 matches cover more models
 Date: Mon, 14 Oct 2024 16:20:32 +0200
-Message-ID: <20241014141244.707363001@linuxfoundation.org>
+Message-ID: <20241014141051.575245197@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,187 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Gupta <adityag@linux.ibm.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 1a5efc9e13f357abc396dbf445b25d08914c8060 ]
+commit 564a278573783cd8859829767851744087e676d8 upstream.
 
-Currently, commands which depend on 'parse_options_subcommand()' don't
-show the usage string, and instead show '(null)'
+The Asus ExpertBook B2402CBA / B2402FBA are the non flip / flip versions
+of the 14" Asus ExpertBook B2 with 12th gen Intel processors.
 
-    $ ./perf sched
-	Usage: (null)
+It has been reported that the B2402FVA which is the 14" Asus ExpertBook
+B2 flip with 13th gen Intel processors needs to skip the IRQ override too.
 
-    -D, --dump-raw-trace  dump raw trace in ASCII
-    -f, --force           don't complain, do it
-    -i, --input <file>    input file name
-    -v, --verbose         be more verbose (show symbol address, etc)
+And looking at Asus website there also is a B2402CVA which is the non flip
+model with 13th gen Intel processors.
 
-'parse_options_subcommand()' is generally expected to initialise the usage
-string, with information in the passed 'subcommands[]' array
+Summarizing the following 4 models of the Asus ExpertBook B2 are known:
 
-This behaviour was changed in:
+B2402CBA: 12th gen Intel CPU, non flip
+B2402FBA: 12th gen Intel CPU, flip
+B2402CVA: 13th gen Intel CPU, non flip
+B2402FVA: 13th gen Intel CPU, flip
 
-  230a7a71f92212e7 ("libsubcmd: Fix parse-options memory leak")
+Fold the 2 existing quirks for the B2402CBA and B2402FBA into a single
+quirk covering B2402* to also cover the 2 other models while at the same
+time reducing the number of quirks.
 
-Where the generated usage string is deallocated, and usage[0] string is
-reassigned as NULL.
-
-As discussed in [1], free the allocated usage string in the main
-function itself, and don't reset usage string to NULL in
-parse_options_subcommand
-
-With this change, the behaviour is restored.
-
-    $ ./perf sched
-        Usage: perf sched [<options>] {record|latency|map|replay|script|timehist}
-
-           -D, --dump-raw-trace  dump raw trace in ASCII
-           -f, --force           don't complain, do it
-           -i, --input <file>    input file name
-           -v, --verbose         be more verbose (show symbol address, etc)
-
-[1]: https://lore.kernel.org/linux-perf-users/htq5vhx6piet4nuq2mmhk7fs2bhfykv52dbppwxmo3s7du2odf@styd27tioc6e/
-
-Fixes: 230a7a71f92212e7 ("libsubcmd: Fix parse-options memory leak")
-Suggested-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Disha Goel <disgoel@linux.vnet.ibm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240904061836.55873-2-adityag@linux.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Stefan Blum <stefan.blum@gmail.com>
+Closes: https://lore.kernel.org/platform-driver-x86/a983e6d5-c7ab-4758-be9b-7dcfc1b44ed3@gmail.com/
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20241005212819.354681-2-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/subcmd/parse-options.c | 8 +++-----
- tools/perf/builtin-kmem.c        | 2 ++
- tools/perf/builtin-kvm.c         | 3 +++
- tools/perf/builtin-kwork.c       | 3 +++
- tools/perf/builtin-lock.c        | 3 +++
- tools/perf/builtin-mem.c         | 3 +++
- tools/perf/builtin-sched.c       | 3 +++
- 7 files changed, 20 insertions(+), 5 deletions(-)
+ drivers/acpi/resource.c |   11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/tools/lib/subcmd/parse-options.c b/tools/lib/subcmd/parse-options.c
-index d943d78b787ed..9fa75943f2ed1 100644
---- a/tools/lib/subcmd/parse-options.c
-+++ b/tools/lib/subcmd/parse-options.c
-@@ -633,10 +633,11 @@ int parse_options_subcommand(int argc, const char **argv, const struct option *o
- 			const char *const subcommands[], const char *usagestr[], int flags)
- {
- 	struct parse_opt_ctx_t ctx;
--	char *buf = NULL;
- 
- 	/* build usage string if it's not provided */
- 	if (subcommands && !usagestr[0]) {
-+		char *buf = NULL;
-+
- 		astrcatf(&buf, "%s %s [<options>] {", subcmd_config.exec_name, argv[0]);
- 
- 		for (int i = 0; subcommands[i]; i++) {
-@@ -678,10 +679,7 @@ int parse_options_subcommand(int argc, const char **argv, const struct option *o
- 			astrcatf(&error_buf, "unknown switch `%c'", *ctx.opt);
- 		usage_with_options(usagestr, options);
- 	}
--	if (buf) {
--		usagestr[0] = NULL;
--		free(buf);
--	}
-+
- 	return parse_options_end(&ctx);
- }
- 
-diff --git a/tools/perf/builtin-kmem.c b/tools/perf/builtin-kmem.c
-index 40dd52acc48ae..c74c0da7c8052 100644
---- a/tools/perf/builtin-kmem.c
-+++ b/tools/perf/builtin-kmem.c
-@@ -2048,6 +2048,8 @@ int cmd_kmem(int argc, const char **argv)
- 
- out_delete:
- 	perf_session__delete(session);
-+	/* free usage string allocated by parse_options_subcommand */
-+	free((void *)kmem_usage[0]);
- 
- 	return ret;
- }
-diff --git a/tools/perf/builtin-kvm.c b/tools/perf/builtin-kvm.c
-index 7d9ec1bac1a25..ba6654862883f 100644
---- a/tools/perf/builtin-kvm.c
-+++ b/tools/perf/builtin-kvm.c
-@@ -1651,5 +1651,8 @@ int cmd_kvm(int argc, const char **argv)
- 	else
- 		usage_with_options(kvm_usage, kvm_options);
- 
-+	/* free usage string allocated by parse_options_subcommand */
-+	free((void *)kvm_usage[0]);
-+
- 	return 0;
- }
-diff --git a/tools/perf/builtin-kwork.c b/tools/perf/builtin-kwork.c
-index 25cba0d61736c..4b612a41cdc10 100644
---- a/tools/perf/builtin-kwork.c
-+++ b/tools/perf/builtin-kwork.c
-@@ -1831,5 +1831,8 @@ int cmd_kwork(int argc, const char **argv)
- 	} else
- 		usage_with_options(kwork_usage, kwork_options);
- 
-+	/* free usage string allocated by parse_options_subcommand */
-+	free((void *)kwork_usage[0]);
-+
- 	return 0;
- }
-diff --git a/tools/perf/builtin-lock.c b/tools/perf/builtin-lock.c
-index 28fa76ecc0822..27bbc513aeb94 100644
---- a/tools/perf/builtin-lock.c
-+++ b/tools/perf/builtin-lock.c
-@@ -2007,6 +2007,9 @@ int cmd_lock(int argc, const char **argv)
- 		usage_with_options(lock_usage, lock_options);
- 	}
- 
-+	/* free usage string allocated by parse_options_subcommand */
-+	free((void *)lock_usage[0]);
-+
- 	zfree(&lockhash_table);
- 	return rc;
- }
-diff --git a/tools/perf/builtin-mem.c b/tools/perf/builtin-mem.c
-index fbd05617c2ddd..ac2e17c093941 100644
---- a/tools/perf/builtin-mem.c
-+++ b/tools/perf/builtin-mem.c
-@@ -514,5 +514,8 @@ int cmd_mem(int argc, const char **argv)
- 	else
- 		usage_with_options(mem_usage, mem_options);
- 
-+	/* free usage string allocated by parse_options_subcommand */
-+	free((void *)mem_usage[0]);
-+
- 	return 0;
- }
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index b70bc7f3ad5b3..e440a00b1613e 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -3725,5 +3725,8 @@ int cmd_sched(int argc, const char **argv)
- 		usage_with_options(sched_usage, sched_options);
- 	}
- 
-+	/* free usage string allocated by parse_options_subcommand */
-+	free((void *)sched_usage[0]);
-+
- 	return 0;
- }
--- 
-2.43.0
-
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -483,17 +483,10 @@ static const struct dmi_system_id irq1_l
+                 },
+         },
+ 	{
+-		/* Asus ExpertBook B2402CBA */
++		/* Asus ExpertBook B2402 (B2402CBA / B2402FBA / B2402CVA / B2402FVA) */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_MATCH(DMI_BOARD_NAME, "B2402CBA"),
+-		},
+-	},
+-	{
+-		/* Asus ExpertBook B2402FBA */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_MATCH(DMI_BOARD_NAME, "B2402FBA"),
++			DMI_MATCH(DMI_BOARD_NAME, "B2402"),
+ 		},
+ 	},
+ 	{
 
 
 
