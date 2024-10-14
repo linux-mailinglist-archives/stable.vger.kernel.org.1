@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-84231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A3099CF28
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:52:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DA7899D345
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C48328B428
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:52:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E73421F25115
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA6D1AED3F;
-	Mon, 14 Oct 2024 14:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22ED1B85DB;
+	Mon, 14 Oct 2024 15:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="am1I8Hrf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcuhPLt+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A7980027;
-	Mon, 14 Oct 2024 14:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBC11B4F08;
+	Mon, 14 Oct 2024 15:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917286; cv=none; b=h4wOEsL9YiyNHCQ3zYPc5FoBHrOc4BjZB1Se2PCsDF+tg43BDNJuqinKvlnnfkzOXgLYTZktugHP2qfOwdc27NNfIsQRlbpdY4CdA5GymyXrLuXEHcoT9vndhkljSwYadICRUBuXPTWNA2djQnxkP+goMz0judvtTaYRy+2CtUk=
+	t=1728919959; cv=none; b=eaHpUUgWtKcjhEC/SS345cyM2SUWo/8hUVUrt3oe3FaYd1RMuiVexHhD+j7izifnnRgp8H1rYk/lBzpMiT1HZSBwHrkZ80Vk6uxzMRcDWW+CjcR5W+aXDcb2k/kxBfV5NX5WZYlmAEigvwy+JwYiI24cnWRJSqeRMRuF0JEHjyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917286; c=relaxed/simple;
-	bh=yYuzksFWsuVGvPJ2KOP561wIuFmLKT80rK3H/3YYTCY=;
+	s=arc-20240116; t=1728919959; c=relaxed/simple;
+	bh=I68Ozh+cb+UH1yjWOzesXAQnmRLNyfJ146mOflYea/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GcL4uAj6iBq5m8bCEimG5APjMeVklR6XF0J0svJ7cPr53az6GtDYUwz/nlmj2QS0RBkCXp6AZz4m8AdCGqYLNXa5oPhM29g/pePNe/sClCO2VnGWEdNm+uMXCbc4U9HaImo5D7skFqpwUFiew5L6KO72iaJvl+Q47OpctTMikrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=am1I8Hrf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D448AC4CEC3;
-	Mon, 14 Oct 2024 14:48:04 +0000 (UTC)
+	 MIME-Version; b=OVJBrGufOeikvQX7Sr+g7brFzomygGV/iNIsjwWnOsslHEnPw92vfFeT9Qjur6EeHcQaFIzxgQJsNswUSZkl/1GCCjZ8sy93HePMeABWUFACldX/2DTwPMw5Zl2Nht3jb76oWm63RwOjBm2pLtOWXMvkXwN9vqrRVb8UYuIFkQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcuhPLt+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E76C4CEC3;
+	Mon, 14 Oct 2024 15:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917285;
-	bh=yYuzksFWsuVGvPJ2KOP561wIuFmLKT80rK3H/3YYTCY=;
+	s=korg; t=1728919959;
+	bh=I68Ozh+cb+UH1yjWOzesXAQnmRLNyfJ146mOflYea/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=am1I8Hrftpmv0U5iUwfFi7vVxTa4e8UIkGLIm22vjmdpynFT/mJH+maUrYtk+q8rb
-	 R5BMrRYvHsVGwYzefmlfi4/Sw+7+OD3UMeYwW0lyEK014TAHWGZmUJNogZ7B07Axhr
-	 wW4KSuWBs1gS9O3c49Swfjj/eTEM+SpJM1eDzDGM=
+	b=WcuhPLt+lAv2y6MTdLUVttZiCxK78mKyjzmMCgO3NQWn7b5fUeAI0P+UtIqOCtogG
+	 P4raSi0nw60Riqs4Q50mUdVLvf7qxPyrDdFmHVs37Zru/BO66tZmmfkBe6AnDG8K5J
+	 YiSLjv1mxkC162k6bbG0HvQZglyjQ1kx7NubiFXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donet Tom <donettom@linux.ibm.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
-	Kees Cook <keescook@chromium.org>,
-	Mark Brown <broonie@kernel.org>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Ralph Campbell <rcampbell@nvidia.com>,
-	Jason Gunthorpe <jgg@mellanox.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 205/213] selftests/mm: fix incorrect buffer->mirror size in hmm2 double_map test
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 757/798] netfilter: fib: check correct rtable in vrf setups
 Date: Mon, 14 Oct 2024 16:21:51 +0200
-Message-ID: <20241014141050.962954131@linuxfoundation.org>
+Message-ID: <20241014141247.809212711@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,69 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 76503e1fa1a53ef041a120825d5ce81c7fe7bdd7 upstream.
+[ Upstream commit 05ef7055debc804e8083737402127975e7244fc4 ]
 
-The hmm2 double_map test was failing due to an incorrect buffer->mirror
-size.  The buffer->mirror size was 6, while buffer->ptr size was 6 *
-PAGE_SIZE.  The test failed because the kernel's copy_to_user function was
-attempting to copy a 6 * PAGE_SIZE buffer to buffer->mirror.  Since the
-size of buffer->mirror was incorrect, copy_to_user failed.
+We need to init l3mdev unconditionally, else main routing table is searched
+and incorrect result is returned unless strict (iif keyword) matching is
+requested.
 
-This patch corrects the buffer->mirror size to 6 * PAGE_SIZE.
+Next patch adds a selftest for this.
 
-Test Result without this patch
-==============================
- #  RUN           hmm2.hmm2_device_private.double_map ...
- # hmm-tests.c:1680:double_map:Expected ret (-14) == 0 (0)
- # double_map: Test terminated by assertion
- #          FAIL  hmm2.hmm2_device_private.double_map
- not ok 53 hmm2.hmm2_device_private.double_map
-
-Test Result with this patch
-===========================
- #  RUN           hmm2.hmm2_device_private.double_map ...
- #            OK  hmm2.hmm2_device_private.double_map
- ok 53 hmm2.hmm2_device_private.double_map
-
-Link: https://lkml.kernel.org/r/20240927050752.51066-1-donettom@linux.ibm.com
-Fixes: fee9f6d1b8df ("mm/hmm/test: add selftests for HMM")
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Jérôme Glisse <jglisse@redhat.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Ralph Campbell <rcampbell@nvidia.com>
-Cc: Jason Gunthorpe <jgg@mellanox.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2a8a7c0eaa87 ("netfilter: nft_fib: Fix for rpath check with VRF devices")
+Closes: https://bugzilla.netfilter.org/show_bug.cgi?id=1761
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/hmm-tests.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/netfilter/nft_fib_ipv4.c | 4 +---
+ net/ipv6/netfilter/nft_fib_ipv6.c | 5 +++--
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
---- a/tools/testing/selftests/mm/hmm-tests.c
-+++ b/tools/testing/selftests/mm/hmm-tests.c
-@@ -1657,7 +1657,7 @@ TEST_F(hmm2, double_map)
+diff --git a/net/ipv4/netfilter/nft_fib_ipv4.c b/net/ipv4/netfilter/nft_fib_ipv4.c
+index fc65d69f23e16..edec5c8f59ac8 100644
+--- a/net/ipv4/netfilter/nft_fib_ipv4.c
++++ b/net/ipv4/netfilter/nft_fib_ipv4.c
+@@ -66,6 +66,7 @@ void nft_fib4_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ 		.flowi4_scope = RT_SCOPE_UNIVERSE,
+ 		.flowi4_iif = LOOPBACK_IFINDEX,
+ 		.flowi4_uid = sock_net_uid(nft_net(pkt), NULL),
++		.flowi4_l3mdev = l3mdev_master_ifindex_rcu(nft_in(pkt)),
+ 	};
+ 	const struct net_device *oif;
+ 	const struct net_device *found;
+@@ -84,9 +85,6 @@ void nft_fib4_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ 	else
+ 		oif = NULL;
  
- 	buffer->fd = -1;
- 	buffer->size = size;
--	buffer->mirror = malloc(npages);
-+	buffer->mirror = malloc(size);
- 	ASSERT_NE(buffer->mirror, NULL);
+-	if (priv->flags & NFTA_FIB_F_IIF)
+-		fl4.flowi4_l3mdev = l3mdev_master_ifindex_rcu(oif);
+-
+ 	if (nft_hook(pkt) == NF_INET_PRE_ROUTING &&
+ 	    nft_fib_is_loopback(pkt->skb, nft_in(pkt))) {
+ 		nft_fib_store_result(dest, priv, nft_in(pkt));
+diff --git a/net/ipv6/netfilter/nft_fib_ipv6.c b/net/ipv6/netfilter/nft_fib_ipv6.c
+index 36dc14b34388c..c9f1634b3838a 100644
+--- a/net/ipv6/netfilter/nft_fib_ipv6.c
++++ b/net/ipv6/netfilter/nft_fib_ipv6.c
+@@ -41,8 +41,6 @@ static int nft_fib6_flowi_init(struct flowi6 *fl6, const struct nft_fib *priv,
+ 	if (ipv6_addr_type(&fl6->daddr) & IPV6_ADDR_LINKLOCAL) {
+ 		lookup_flags |= RT6_LOOKUP_F_IFACE;
+ 		fl6->flowi6_oif = get_ifindex(dev ? dev : pkt->skb->dev);
+-	} else if (priv->flags & NFTA_FIB_F_IIF) {
+-		fl6->flowi6_l3mdev = l3mdev_master_ifindex_rcu(dev);
+ 	}
  
- 	/* Reserve a range of addresses. */
+ 	if (ipv6_addr_type(&fl6->saddr) & IPV6_ADDR_UNICAST)
+@@ -75,6 +73,8 @@ static u32 __nft_fib6_eval_type(const struct nft_fib *priv,
+ 	else if (priv->flags & NFTA_FIB_F_OIF)
+ 		dev = nft_out(pkt);
+ 
++	fl6.flowi6_l3mdev = l3mdev_master_ifindex_rcu(dev);
++
+ 	nft_fib6_flowi_init(&fl6, priv, pkt, dev, iph);
+ 
+ 	if (dev && nf_ipv6_chk_addr(nft_net(pkt), &fl6.daddr, dev, true))
+@@ -165,6 +165,7 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ 		.flowi6_iif = LOOPBACK_IFINDEX,
+ 		.flowi6_proto = pkt->tprot,
+ 		.flowi6_uid = sock_net_uid(nft_net(pkt), NULL),
++		.flowi6_l3mdev = l3mdev_master_ifindex_rcu(nft_in(pkt)),
+ 	};
+ 	struct rt6_info *rt;
+ 	int lookup_flags;
+-- 
+2.43.0
+
 
 
 
