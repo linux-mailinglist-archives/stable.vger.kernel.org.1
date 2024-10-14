@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-83864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4090C99CCEB
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:27:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5257999CDF9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:38:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4D48B20EBA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:27:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F20F81F23A1D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B97E1AB52F;
-	Mon, 14 Oct 2024 14:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB6D1AB507;
+	Mon, 14 Oct 2024 14:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4fbhC3c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4Vhrpv2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58196E571;
-	Mon, 14 Oct 2024 14:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9CC1A76A5;
+	Mon, 14 Oct 2024 14:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915989; cv=none; b=hwCXNoCO/C0w8hT2NH5y/vfN/jf/Lry5OhRERvm1urbZVtvTNCVGsO1y1PL4YA5XPyw7L6VxuCUD58zbU2YxzXRfUEQOuG737dmFkUkt75dnDMqGnMqqQzpSfnsLJTTITaMFTOAQBrmd7ND5FMbtIQvwW9ny+EVKnZoB653CrOM=
+	t=1728916700; cv=none; b=tNNkym5iM+lViG5hfIfyJ9hLkZgPYFZXaTBvSnXbGUFl6YGDxd3mVBdW7SvRjjXqtaDQUfDj2nkumCX7TREYknnm97G2B7mmy+rtypbpq8qnuXDLmrqdigL01AVhUzsVxh65x/BCKKVTELrp2k+eEI7y5w2Y8WJFWO4JWWX16qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915989; c=relaxed/simple;
-	bh=jFSSgvkFniMnhxvfCgBR6yPjlPW3p/5xsYSlLmnEVCA=;
+	s=arc-20240116; t=1728916700; c=relaxed/simple;
+	bh=gaWP/TYZXZlMH5uKOH38Ru2bHaRjR18pnFd06AXfG+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YdAMq0IppT7ziTgyJjjlceDW7ukNN83wP4rs0Av7zX1/kLdWD/C1sXCHrK7CgO2/hopxIZ/lESJpi9XLSPmrJvkn/EUKt+RPPe8qhVPOOebQ7oztI50uQADvVeieYJtOMD4GOOU+3VNXC4VjxCtXZiBOfsU21wW/JAazHHggsxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4fbhC3c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868F0C4CECF;
-	Mon, 14 Oct 2024 14:26:28 +0000 (UTC)
+	 MIME-Version; b=HVVH7U5hG2Gl3snJS4XITRDggsufafeEQ52sOrqM3A9UNXW/33YF3Jw4ugdMMkgwQLhuPfrJweUp2pktW0VFxXfzwQTI8nO846adatNHG86fkT5xm0uuuXe7vG0UQ/9/ywKPeK5tvQfp2A7Uk3urZ7nRuhwSlDgEqTsk0+eu4lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4Vhrpv2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E989C4CEC3;
+	Mon, 14 Oct 2024 14:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915988;
-	bh=jFSSgvkFniMnhxvfCgBR6yPjlPW3p/5xsYSlLmnEVCA=;
+	s=korg; t=1728916700;
+	bh=gaWP/TYZXZlMH5uKOH38Ru2bHaRjR18pnFd06AXfG+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4fbhC3crt/VhalqiD2cvfb4hva46TaTDqmQO4AXj7ijjKlUO2LPKG7K5EgEG8noB
-	 HxS8k9H7QTp6ZoInrqqip/plnolOLP2bcB5pJy8BqS6c8875mSADtcojLbGEF3HVQv
-	 Q6GkAMjrjKnON7aaiTzKyycKgpwxU5w4NFR5Odx4=
+	b=e4Vhrpv21eCF2vysdvxTQAKzWnFgrbujr5ejNjXcEOquoPMOGUiDomLy7bOV2fdsS
+	 EPgMhYhWdrQO6doUPh9SA6b283PyzDBHmnYGm95qqLjaY3BWLi4jjn2/Bqxk/Iu1dI
+	 sE1IY3XZrjV5WvqKysavjsEc8gIxvStYbfR6HrKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Song Shuai <songshuaishuai@tinylab.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 053/214] clk: imx: Remove CLK_SET_PARENT_GATE for DRAM mux for i.MX7D
+Subject: [PATCH 6.6 010/213] riscv: Remove SHADOW_OVERFLOW_STACK_SIZE macro
 Date: Mon, 14 Oct 2024 16:18:36 +0200
-Message-ID: <20241014141047.060270644@linuxfoundation.org>
+Message-ID: <20241014141043.382030055@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Song Shuai <songshuaishuai@tinylab.org>
 
-[ Upstream commit a54c441b46a0745683c2eef5a359d22856d27323 ]
+[ Upstream commit a7565f4d068b2e60f95c3223c3167c40b8fe83ae ]
 
-For i.MX7D DRAM related mux clock, the clock source change should ONLY
-be done done in low level asm code without accessing DRAM, and then
-calling clk API to sync the HW clock status with clk tree, it should never
-touch real clock source switch via clk API, so CLK_SET_PARENT_GATE flag
-should NOT be added, otherwise, DRAM's clock parent will be disabled when
-DRAM is active, and system will hang.
+The commit be97d0db5f44 ("riscv: VMAP_STACK overflow
+detection thread-safe") got rid of `shadow_stack`,
+so SHADOW_OVERFLOW_STACK_SIZE should be removed too.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20240607133347.3291040-8-peng.fan@oss.nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Fixes: be97d0db5f44 ("riscv: VMAP_STACK overflow detection thread-safe")
+Signed-off-by: Song Shuai <songshuaishuai@tinylab.org>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Link: https://lore.kernel.org/r/20231211110331.359534-1-songshuaishuai@tinylab.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx7d.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/riscv/include/asm/thread_info.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk-imx7d.c b/drivers/clk/imx/clk-imx7d.c
-index 2b77d1fc7bb94..1e1296e748357 100644
---- a/drivers/clk/imx/clk-imx7d.c
-+++ b/drivers/clk/imx/clk-imx7d.c
-@@ -498,9 +498,9 @@ static void __init imx7d_clocks_init(struct device_node *ccm_node)
- 	hws[IMX7D_ENET_AXI_ROOT_SRC] = imx_clk_hw_mux2_flags("enet_axi_src", base + 0x8900, 24, 3, enet_axi_sel, ARRAY_SIZE(enet_axi_sel), CLK_SET_PARENT_GATE);
- 	hws[IMX7D_NAND_USDHC_BUS_ROOT_SRC] = imx_clk_hw_mux2_flags("nand_usdhc_src", base + 0x8980, 24, 3, nand_usdhc_bus_sel, ARRAY_SIZE(nand_usdhc_bus_sel), CLK_SET_PARENT_GATE);
- 	hws[IMX7D_DRAM_PHYM_ROOT_SRC] = imx_clk_hw_mux2_flags("dram_phym_src", base + 0x9800, 24, 1, dram_phym_sel, ARRAY_SIZE(dram_phym_sel), CLK_SET_PARENT_GATE);
--	hws[IMX7D_DRAM_ROOT_SRC] = imx_clk_hw_mux2_flags("dram_src", base + 0x9880, 24, 1, dram_sel, ARRAY_SIZE(dram_sel), CLK_SET_PARENT_GATE);
-+	hws[IMX7D_DRAM_ROOT_SRC] = imx_clk_hw_mux2("dram_src", base + 0x9880, 24, 1, dram_sel, ARRAY_SIZE(dram_sel));
- 	hws[IMX7D_DRAM_PHYM_ALT_ROOT_SRC] = imx_clk_hw_mux2_flags("dram_phym_alt_src", base + 0xa000, 24, 3, dram_phym_alt_sel, ARRAY_SIZE(dram_phym_alt_sel), CLK_SET_PARENT_GATE);
--	hws[IMX7D_DRAM_ALT_ROOT_SRC]  = imx_clk_hw_mux2_flags("dram_alt_src", base + 0xa080, 24, 3, dram_alt_sel, ARRAY_SIZE(dram_alt_sel), CLK_SET_PARENT_GATE);
-+	hws[IMX7D_DRAM_ALT_ROOT_SRC]  = imx_clk_hw_mux2("dram_alt_src", base + 0xa080, 24, 3, dram_alt_sel, ARRAY_SIZE(dram_alt_sel));
- 	hws[IMX7D_USB_HSIC_ROOT_SRC] = imx_clk_hw_mux2_flags("usb_hsic_src", base + 0xa100, 24, 3, usb_hsic_sel, ARRAY_SIZE(usb_hsic_sel), CLK_SET_PARENT_GATE);
- 	hws[IMX7D_PCIE_CTRL_ROOT_SRC] = imx_clk_hw_mux2_flags("pcie_ctrl_src", base + 0xa180, 24, 3, pcie_ctrl_sel, ARRAY_SIZE(pcie_ctrl_sel), CLK_SET_PARENT_GATE);
- 	hws[IMX7D_PCIE_PHY_ROOT_SRC] = imx_clk_hw_mux2_flags("pcie_phy_src", base + 0xa200, 24, 3, pcie_phy_sel, ARRAY_SIZE(pcie_phy_sel), CLK_SET_PARENT_GATE);
+diff --git a/arch/riscv/include/asm/thread_info.h b/arch/riscv/include/asm/thread_info.h
+index 4fb84c2e94c65..8c72d1bcdf141 100644
+--- a/arch/riscv/include/asm/thread_info.h
++++ b/arch/riscv/include/asm/thread_info.h
+@@ -33,7 +33,6 @@
+ 
+ #define THREAD_SHIFT            (PAGE_SHIFT + THREAD_SIZE_ORDER)
+ #define OVERFLOW_STACK_SIZE     SZ_4K
+-#define SHADOW_OVERFLOW_STACK_SIZE (1024)
+ 
+ #define IRQ_STACK_SIZE		THREAD_SIZE
+ 
 -- 
 2.43.0
 
