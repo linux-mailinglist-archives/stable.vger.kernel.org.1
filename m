@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-84083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A68099CE0E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:39:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B1B99CD25
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:29:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA1D428131C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:39:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 181DD1F21905
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919AD1A0724;
-	Mon, 14 Oct 2024 14:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB211AAE25;
+	Mon, 14 Oct 2024 14:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIv2dwDH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuCJqyuk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F70620EB;
-	Mon, 14 Oct 2024 14:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7401AA793;
+	Mon, 14 Oct 2024 14:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916764; cv=none; b=SwCs5GiL4J8Vm+EU7IiDXJwGj5kaM7JxpdPkNnABVhi1LvKBFmSk9tet0i8lauZ+7WESk64gyMKSt+5aNT/+HBvKzkb27HAmsqJC5yIVXwASY4vNkUJSaQFwbjeLqQ4cr2Q0+DIuIimz4HcbdD0brtOAblpNVXD5/Cg3fNDJNjY=
+	t=1728916159; cv=none; b=VCoXiSQoJEVxlxzTD3c+gt4/1kvPf9/Gk1ALCJchnoddyVOO85XxMw2WjoSxKyFOktHIQTPdB4ZNXOcoYOACZdFzWtVfDVwaBuV9iw/kbT1V1evdemgWWSc1G+BoZCPI8Ea9pqVwQHQnvJxhRKpmli8iUOr7/CoszNPMPP+hgC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916764; c=relaxed/simple;
-	bh=29U+ZR+TBn7jO35UaX8jYTTxvqI7s44YIlvGeaMmoFA=;
+	s=arc-20240116; t=1728916159; c=relaxed/simple;
+	bh=+IJX+eIp3mx9uq91ouNSKDYIAWschSZjRF+V0Zet4Fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CcsTGUrmxcT/QBkQPvxb2pubkVYc6FpSwdMp7Y3D/RtU8IooWKlWN6aiyMV9cYhrU82/TDs2JBetLwqLa4mNUQZD5lrIWcaOemyxbxFuz1848fZNMzJDv7IfsPbBXAopA3+9Nda8EwN4lW1rTchAuf0IuNQ8tV2MyeWAqpH1VPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIv2dwDH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6BCBC4CECF;
-	Mon, 14 Oct 2024 14:39:23 +0000 (UTC)
+	 MIME-Version; b=pGLJGLmvXbBBxmpf4Q9b5HZbgtuFP6PNIfPBTmprhV5/BoxeogJLo+eDe7faXi0kRo57vh8xxGNy2Ya8yX5Yv8FYNgfmp2LIMHKb3PolGMTepWpXc0dQOF8WevsXE+5B6zPvrvrZqoWCwbBZgdcn+D3hEWY9/nLVMj61xRODdR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuCJqyuk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868CCC4CED0;
+	Mon, 14 Oct 2024 14:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916764;
-	bh=29U+ZR+TBn7jO35UaX8jYTTxvqI7s44YIlvGeaMmoFA=;
+	s=korg; t=1728916158;
+	bh=+IJX+eIp3mx9uq91ouNSKDYIAWschSZjRF+V0Zet4Fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LIv2dwDHyTMlGL9I9UNrJKHG/gtXizVu+T8MaQUCqoZy1N171FS/XGYSiQiLTULXc
-	 3u9fpyLZlZdbThx3Yye6a/ygHtGM2LKFw3+dNBQ3RL0o8+hwWawFEk7FFn54yub3T3
-	 mbTh3VvMyNtI0XVAFTclwd7+GBislhSR+WJDzj1k=
+	b=zuCJqyukq8esj9hPuKb7vtN3ZdTZNLWs0klAcOvTCgkUL1inux0ilSRPb8ijdrA3e
+	 3Bi3Rj5U217O+txRE0mhtzT3H015yTuDN6JT1piVGvPxkKKd/00PDUq4UhnfUOQZCo
+	 USSRVkErl5tjgqPodd5p9Q8IP2MVdUFvp8+e1hks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	syzbot+d7ce59b06b3eb14fd218@syzkaller.appspotmail.com,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/213] s390/boot: Compile all files with the same march flag
-Date: Mon, 14 Oct 2024 16:19:24 +0200
-Message-ID: <20241014141045.255622720@linuxfoundation.org>
+Subject: [PATCH 6.11 102/214] Bluetooth: RFCOMM: FIX possible deadlock in rfcomm_sk_state_change
+Date: Mon, 14 Oct 2024 16:19:25 +0200
+Message-ID: <20241014141048.975150144@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit fccb175bc89a0d37e3ff513bb6bf1f73b3a48950 ]
+[ Upstream commit 08d1914293dae38350b8088980e59fbc699a72fe ]
 
-Only a couple of files of the decompressor are compiled with the
-minimum architecture level. This is problematic for potential function
-calls between compile units, especially if a target function is within
-a compile until compiled for a higher architecture level, since that
-may lead to an unexpected operation exception.
+rfcomm_sk_state_change attempts to use sock_lock so it must never be
+called with it locked but rfcomm_sock_ioctl always attempt to lock it
+causing the following trace:
 
-Therefore compile all files of the decompressor for the same (minimum)
-architecture level.
+======================================================
+WARNING: possible circular locking dependency detected
+6.8.0-syzkaller-08951-gfe46a7dd189e #0 Not tainted
+------------------------------------------------------
+syz-executor386/5093 is trying to acquire lock:
+ffff88807c396258 (sk_lock-AF_BLUETOOTH-BTPROTO_RFCOMM){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1671 [inline]
+ffff88807c396258 (sk_lock-AF_BLUETOOTH-BTPROTO_RFCOMM){+.+.}-{0:0}, at: rfcomm_sk_state_change+0x5b/0x310 net/bluetooth/rfcomm/sock.c:73
 
-Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+but task is already holding lock:
+ffff88807badfd28 (&d->lock){+.+.}-{3:3}, at: __rfcomm_dlc_close+0x226/0x6a0 net/bluetooth/rfcomm/core.c:491
+
+Reported-by: syzbot+d7ce59b06b3eb14fd218@syzkaller.appspotmail.com
+Tested-by: syzbot+d7ce59b06b3eb14fd218@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d7ce59b06b3eb14fd218
+Fixes: 3241ad820dbb ("[Bluetooth] Add timestamp support to L2CAP, RFCOMM and SCO")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/boot/Makefile | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ net/bluetooth/rfcomm/sock.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/s390/boot/Makefile b/arch/s390/boot/Makefile
-index c7c81e5f92189..e4def3a6c6cca 100644
---- a/arch/s390/boot/Makefile
-+++ b/arch/s390/boot/Makefile
-@@ -9,11 +9,8 @@ UBSAN_SANITIZE := n
- KASAN_SANITIZE := n
- KCSAN_SANITIZE := n
+diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
+index 37d63d768afb8..f48250e3f2e10 100644
+--- a/net/bluetooth/rfcomm/sock.c
++++ b/net/bluetooth/rfcomm/sock.c
+@@ -865,9 +865,7 @@ static int rfcomm_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned lon
  
--KBUILD_AFLAGS := $(KBUILD_AFLAGS_DECOMPRESSOR)
--KBUILD_CFLAGS := $(KBUILD_CFLAGS_DECOMPRESSOR)
--
- #
--# Use minimum architecture for als.c to be able to print an error
-+# Use minimum architecture level so it is possible to print an error
- # message if the kernel is started on a machine which is too old
- #
- ifndef CONFIG_CC_IS_CLANG
-@@ -22,16 +19,10 @@ else
- CC_FLAGS_MARCH_MINIMUM := -march=z10
- endif
- 
--ifneq ($(CC_FLAGS_MARCH),$(CC_FLAGS_MARCH_MINIMUM))
--AFLAGS_REMOVE_head.o		+= $(CC_FLAGS_MARCH)
--AFLAGS_head.o			+= $(CC_FLAGS_MARCH_MINIMUM)
--AFLAGS_REMOVE_mem.o		+= $(CC_FLAGS_MARCH)
--AFLAGS_mem.o			+= $(CC_FLAGS_MARCH_MINIMUM)
--CFLAGS_REMOVE_als.o		+= $(CC_FLAGS_MARCH)
--CFLAGS_als.o			+= $(CC_FLAGS_MARCH_MINIMUM)
--CFLAGS_REMOVE_sclp_early_core.o	+= $(CC_FLAGS_MARCH)
--CFLAGS_sclp_early_core.o	+= $(CC_FLAGS_MARCH_MINIMUM)
--endif
-+KBUILD_AFLAGS := $(filter-out $(CC_FLAGS_MARCH),$(KBUILD_AFLAGS_DECOMPRESSOR))
-+KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_MARCH),$(KBUILD_CFLAGS_DECOMPRESSOR))
-+KBUILD_AFLAGS += $(CC_FLAGS_MARCH_MINIMUM)
-+KBUILD_CFLAGS += $(CC_FLAGS_MARCH_MINIMUM)
- 
- CFLAGS_sclp_early_core.o += -I$(srctree)/drivers/s390/char
- 
+ 	if (err == -ENOIOCTLCMD) {
+ #ifdef CONFIG_BT_RFCOMM_TTY
+-		lock_sock(sk);
+ 		err = rfcomm_dev_ioctl(sk, cmd, (void __user *) arg);
+-		release_sock(sk);
+ #else
+ 		err = -EOPNOTSUPP;
+ #endif
 -- 
 2.43.0
 
