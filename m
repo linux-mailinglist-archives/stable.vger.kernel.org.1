@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-84057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0103C99CDED
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:37:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A759999D227
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8F3F283952
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:37:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F15B1F2503C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0861AAE02;
-	Mon, 14 Oct 2024 14:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D521AC448;
+	Mon, 14 Oct 2024 15:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qC9mzXE5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XOKjjyQv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C48D24B34;
-	Mon, 14 Oct 2024 14:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0228C1AB505;
+	Mon, 14 Oct 2024 15:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916670; cv=none; b=jWSmQ28TFrGmZz+qqjJgX325lNaZtbYab0zsjT4S1VNi4/sAU8muIpZ7va64QE3aarqZm9WqZ8a4vmPaqWwI4gaFi/xtEC05QsPfMu7O43c9kokzysjcI8ZJmsG5r7k/O6tK5Njb5KvCa0ePXAl/zSmris5+/3L/OmGf4hl+69A=
+	t=1728919258; cv=none; b=ipk7zP3NWcdxrg+Tx67o4tKSlZfS8ghKC1y6yD4oWA6kv+JNgehbRGKc8keSuxfZpLYEFSL97e79+WrYHTp/ObxcJeOQxdFyEtejtqYnKwRlgiNw0IJ4P9JmoyNdAm7rZxZHzIaUPOif7y6BGcuEsOvTR89msjjR30dK70k5plw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916670; c=relaxed/simple;
-	bh=G1iDkE22l+fjjjL8LrdPLpJOo0SS0VIBtN/LWWEiEHA=;
+	s=arc-20240116; t=1728919258; c=relaxed/simple;
+	bh=n7OmxHrOoxVjqjlYcAcM76XhGMYvfn7CYsm9SIENnn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jdBJiODRsxUrSxSgsqxcVldHr1ujtKQFRuctnA/iOJ4QHzT5iow9p+c+VHz6xreRgdsptZ4PZULzvdwn/2uYaXNopDMsvvGn875tiL/SUEX4/MkEaSWGy2G+/xLAxZcKB1G17f33Aqmb7wkaAWZRS3NMoTGyPUbLK+wnC2eTl3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qC9mzXE5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377DEC4CEC3;
-	Mon, 14 Oct 2024 14:37:49 +0000 (UTC)
+	 MIME-Version; b=jxcRRm+RN4i5+GMGf3y0Mi8aQzz29LRQU6cjd4gIU9UrfZZrmpy/IEiIOd2j30Y8+eKRC6VDEUSJnZSYhwj5jpVh+1YsMhZjLrfunA948t1+Cps1MqfyvbM8r022Jrulx1QQebeDwaXjDySyds/nDtdeL6qQmhN+uLJfmh9wMUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XOKjjyQv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F894C4CEC3;
+	Mon, 14 Oct 2024 15:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916669;
-	bh=G1iDkE22l+fjjjL8LrdPLpJOo0SS0VIBtN/LWWEiEHA=;
+	s=korg; t=1728919257;
+	bh=n7OmxHrOoxVjqjlYcAcM76XhGMYvfn7CYsm9SIENnn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qC9mzXE5wosOtVeEu+uGxnFb1SRonV8ZRgwRgP1x9MsJKibYe/ZU7R9VzkzMnwYuA
-	 sEUpjN3QNXcPXSd/BylqYjk6pBSPjZuKUDihy0rWH3iIzDRnFp3M8AwYRvYPllWT3r
-	 Hhc48i6sztaVGo72LvKXgeGTsdUD2VsM4bfxdaqQ=
+	b=XOKjjyQvK2adCFbKGqboP1Q3QEJqCmMxiCxyvx5izPpOWy9me1FhYfItbOGcdW/6p
+	 y01v1PoZviODfjAoeRpjmE31JmdRUynWWoc0sTey2ILR20A4+gLzVTfcehhsWw/JfM
+	 bGzZ4n1p4G8eXLG4efODFaRp4o5BQE66zqImmXjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/213] phy: qualcomm: phy-qcom-eusb2-repeater: Add tuning overrides
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 557/798] parisc: Fix 64-bit userspace syscall path
 Date: Mon, 14 Oct 2024 16:18:31 +0200
-Message-ID: <20241014141043.185943925@linuxfoundation.org>
+Message-ID: <20241014141239.876673761@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +60,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Helge Deller <deller@kernel.org>
 
-[ Upstream commit 56156a76e765d32009fee058697c591194d0829f ]
+commit d24449864da5838936669618356b0e30ca2999c3 upstream.
 
-There are devices in the wild, like the Sony Xperia 1 V that *require*
-different tuning than the base design for USB to work.
+Currently the glibc isn't yet ported to 64-bit for hppa, so
+there is no usable userspace available yet.
+But it's possible to manually build a static 64-bit binary
+and run that for testing. One such 64-bit test program is
+available at http://ftp.parisc-linux.org/src/64bit.tar.gz
+and it shows various issues with the existing 64-bit syscall
+path in the kernel.
+This patch fixes those issues.
 
-Add support for overriding the necessary tuning values.
-
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230830-topic-eusb2_override-v2-4-7d8c893d93f6@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 734550d60cdf ("phy: qualcomm: eusb2-repeater: Rework init to drop redundant zero-out loop")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org      # v4.19+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ arch/parisc/kernel/syscall.S |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
-index d4fb85c20eb0f..a623f092b11f6 100644
---- a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
-+++ b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
-@@ -142,7 +142,9 @@ static int eusb2_repeater_init(struct phy *phy)
- {
- 	struct reg_field *regfields = eusb2_repeater_tune_reg_fields;
- 	struct eusb2_repeater *rptr = phy_get_drvdata(phy);
--	const u32 *init_tbl = rptr->cfg->init_tbl;
-+	struct device_node *np = rptr->dev->of_node;
-+	u32 init_tbl[F_NUM_TUNE_FIELDS] = { 0 };
-+	u8 override;
- 	u32 val;
- 	int ret;
- 	int i;
-@@ -163,6 +165,19 @@ static int eusb2_repeater_init(struct phy *phy)
- 			regmap_field_update_bits(rptr->regs[i], mask, 0);
- 		}
- 	}
-+	memcpy(init_tbl, rptr->cfg->init_tbl, sizeof(init_tbl));
-+
-+	if (!of_property_read_u8(np, "qcom,tune-usb2-amplitude", &override))
-+		init_tbl[F_TUNE_IUSB2] = override;
-+
-+	if (!of_property_read_u8(np, "qcom,tune-usb2-disc-thres", &override))
-+		init_tbl[F_TUNE_HSDISC] = override;
-+
-+	if (!of_property_read_u8(np, "qcom,tune-usb2-preem", &override))
-+		init_tbl[F_TUNE_USB2_PREEM] = override;
-+
-+	for (i = 0; i < F_NUM_TUNE_FIELDS; i++)
-+		regmap_field_update_bits(rptr->regs[i], init_tbl[i], init_tbl[i]);
+--- a/arch/parisc/kernel/syscall.S
++++ b/arch/parisc/kernel/syscall.S
+@@ -232,10 +232,10 @@ linux_gateway_entry:
  
- 	ret = regmap_field_read_poll_timeout(rptr->regs[F_RPTR_STATUS],
- 					     val, val & RPTR_OK, 10, 5);
--- 
-2.43.0
-
+ #ifdef CONFIG_64BIT
+ 	ldil	L%sys_call_table, %r1
+-	or,=	%r2,%r2,%r2
+-	addil	L%(sys_call_table64-sys_call_table), %r1
++	or,ev	%r2,%r2,%r2
++	ldil	L%sys_call_table64, %r1
+ 	ldo	R%sys_call_table(%r1), %r19
+-	or,=	%r2,%r2,%r2
++	or,ev	%r2,%r2,%r2
+ 	ldo	R%sys_call_table64(%r1), %r19
+ #else
+ 	load32	sys_call_table, %r19
+@@ -368,10 +368,10 @@ tracesys_next:
+ 	extrd,u	%r19,63,1,%r2			/* W hidden in bottom bit */
+ 
+ 	ldil	L%sys_call_table, %r1
+-	or,=	%r2,%r2,%r2
+-	addil	L%(sys_call_table64-sys_call_table), %r1
++	or,ev	%r2,%r2,%r2
++	ldil	L%sys_call_table64, %r1
+ 	ldo	R%sys_call_table(%r1), %r19
+-	or,=	%r2,%r2,%r2
++	or,ev	%r2,%r2,%r2
+ 	ldo	R%sys_call_table64(%r1), %r19
+ #else
+ 	load32	sys_call_table, %r19
+@@ -1310,6 +1310,8 @@ ENTRY(sys_call_table)
+ END(sys_call_table)
+ 
+ #ifdef CONFIG_64BIT
++#undef __SYSCALL_WITH_COMPAT
++#define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, native)
+ 	.align 8
+ ENTRY(sys_call_table64)
+ #include <asm/syscall_table_64.h>    /* 64-bit syscalls */
 
 
 
