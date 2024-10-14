@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-84179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D11FE99CE90
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:45:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB3EE99D30C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 863A72881A7
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:45:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18FB81C22A34
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF82678C90;
-	Mon, 14 Oct 2024 14:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8713C1C75E6;
+	Mon, 14 Oct 2024 15:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IlrE54VC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xsvKeNH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D39226296;
-	Mon, 14 Oct 2024 14:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C851BBBC6;
+	Mon, 14 Oct 2024 15:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917111; cv=none; b=IxR0xM53UIjqvX1FqVxzzBE+tN0DEl/ONj56jRuaw17HG15+Hmj3knVNcLNOf0H6+XoJ2b+QyjSj+GEAfyJzr9Ksns1/71wiwFg6XhAF/R8SOEQNT4faVGrCUsu3u6fVH4nH+8PyH/eID918enMwWR1T7MCQojHnJOCbJDe4q0I=
+	t=1728919787; cv=none; b=raHi2go8LpJCivLFZYWlho97gE18gIuYXyjQPMnYPnjGmZT2xkHu2llrCBwc0aQAkSMXgBsd6zJOS2tmVzSz3GrCyf6dQXMggJGLCA6IZPb0EOwc3kgTbad/vr2yrdMXfFaOyiakIlz/QtLUHE9sXMiI709d3wYCBXaWgr6hQ8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917111; c=relaxed/simple;
-	bh=/8yQ7sFIntS947LNBL8heMWARbh2GW6k8vraSz5dHEE=;
+	s=arc-20240116; t=1728919787; c=relaxed/simple;
+	bh=tbWXi7V7jHmQi6a8+pEBJiAp0zSdCWcumXja8D8mKMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s4HmE1BTXC/myQKOb86IHs5SrwfejGqF3uMqBfTPqL0qPo9097GEYwwptIfxUuKZIAaknkIxL0dsgOYn1AGnQygi/wh8otmoO8J05tvAq1g6eGyahfCcIqYkKA51VqbgDZGPyFVh6a+w4i60ZFcxg3tg8r6iMnLB9w2DZfeV2nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IlrE54VC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D91C4CEC7;
-	Mon, 14 Oct 2024 14:45:10 +0000 (UTC)
+	 MIME-Version; b=m6qjIzpKA7Ud4eEAg3DSS99d28CVTyDKbfO2L+j4hFH2dvV5Uy0Vmcz0f7eI93SGIzYrtvZdt0Co4+KM/EvEDRnneuuBa1F0ic2d59p4M4K1sYKCkF48ZCK+kxRpYvheaqleNstQeVGYPyEvbE89muZ3eY2AFMx7gd68eve434Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xsvKeNH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68363C4CEC3;
+	Mon, 14 Oct 2024 15:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917111;
-	bh=/8yQ7sFIntS947LNBL8heMWARbh2GW6k8vraSz5dHEE=;
+	s=korg; t=1728919786;
+	bh=tbWXi7V7jHmQi6a8+pEBJiAp0zSdCWcumXja8D8mKMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IlrE54VCMHDNaUgHfTJ1qLcBoHhBXv2MB4qrCZJciDr590/7PCaWLia0G2xz9OWDw
-	 lVUGmYM9mAVfGIUPokg4HeMa5gEyZ5zuGeQmGeIyhWTDv+qPBEhZjCep5fU+kUwKd8
-	 /AW/gqTl5Ki/mW0Xs+9bsMV+smZoW2/B9K6b5TnM=
+	b=0xsvKeNH90v1sPj3fQPMowKQrwromKpIzVrT3FYvvzWoeLKphexPMvxOkC2RZlFfy
+	 oAn1WbCz3gDgofmk+1toALs4xb9ai1VO2EGZamukIinI+a5M2ZOwk25zvDOgEVYfq6
+	 T7Eyh3Ayv7JDkHb+Q4CJjq+xyn2O5X9GpKyuDt3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Petr Tesarik <petr@tesarici.cz>,
+	Ying Sun <sunying@isrc.iscas.ac.cn>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/213] mctp: Handle error of rtnl_register_module().
+Subject: [PATCH 6.1 707/798] riscv/kexec_file: Fix relocation type R_RISCV_ADD16 and R_RISCV_SUB16 unknown
 Date: Mon, 14 Oct 2024 16:21:01 +0200
-Message-ID: <20241014141049.019564189@linuxfoundation.org>
+Message-ID: <20241014141245.844833607@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,220 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Ying Sun <sunying@isrc.iscas.ac.cn>
 
-[ Upstream commit d51705614f668254cc5def7490df76f9680b4659 ]
+[ Upstream commit c6ebf2c528470a09be77d0d9df2c6617ea037ac5 ]
 
-Since introduced, mctp has been ignoring the returned value of
-rtnl_register_module(), which could fail silently.
+Runs on the kernel with CONFIG_RISCV_ALTERNATIVE enabled:
+  kexec -sl vmlinux
 
-Handling the error allows users to view a module as an all-or-nothing
-thing in terms of the rtnetlink functionality.  This prevents syzkaller
-from reporting spurious errors from its tests, where OOM often occurs
-and module is automatically loaded.
+Error:
+  kexec_image: Unknown rela relocation: 34
+  kexec_image: Error loading purgatory ret=-8
+and
+  kexec_image: Unknown rela relocation: 38
+  kexec_image: Error loading purgatory ret=-8
 
-Let's handle the errors by rtnl_register_many().
+The purgatory code uses the 16-bit addition and subtraction relocation
+type, but not handled, resulting in kexec_file_load failure.
+So add handle to arch_kexec_apply_relocations_add().
 
-Fixes: 583be982d934 ("mctp: Add device handling and netlink interface")
-Fixes: 831119f88781 ("mctp: Add neighbour netlink interface")
-Fixes: 06d2f4c583a7 ("mctp: Add netlink route management")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Tested on RISC-V64 Qemu-virt, issue fixed.
+
+Co-developed-by: Petr Tesarik <petr@tesarici.cz>
+Signed-off-by: Petr Tesarik <petr@tesarici.cz>
+Signed-off-by: Ying Sun <sunying@isrc.iscas.ac.cn>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20240711083236.2859632-1-sunying@isrc.iscas.ac.cn
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/mctp.h |  2 +-
- net/mctp/af_mctp.c |  6 +++++-
- net/mctp/device.c  | 30 ++++++++++++++++++------------
- net/mctp/neigh.c   | 31 +++++++++++++++++++------------
- net/mctp/route.c   | 33 +++++++++++++++++++++++----------
- 5 files changed, 66 insertions(+), 36 deletions(-)
+ arch/riscv/kernel/elf_kexec.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/net/mctp.h b/include/net/mctp.h
-index 2bff5f47ce82f..1eb1b4393e46b 100644
---- a/include/net/mctp.h
-+++ b/include/net/mctp.h
-@@ -293,7 +293,7 @@ void mctp_neigh_remove_dev(struct mctp_dev *mdev);
- int mctp_routes_init(void);
- void mctp_routes_exit(void);
- 
--void mctp_device_init(void);
-+int mctp_device_init(void);
- void mctp_device_exit(void);
- 
- #endif /* __NET_MCTP_H */
-diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
-index f6be58b68c6f3..28be85d055330 100644
---- a/net/mctp/af_mctp.c
-+++ b/net/mctp/af_mctp.c
-@@ -676,10 +676,14 @@ static __init int mctp_init(void)
- 	if (rc)
- 		goto err_unreg_routes;
- 
--	mctp_device_init();
-+	rc = mctp_device_init();
-+	if (rc)
-+		goto err_unreg_neigh;
- 
- 	return 0;
- 
-+err_unreg_neigh:
-+	mctp_neigh_exit();
- err_unreg_routes:
- 	mctp_routes_exit();
- err_unreg_proto:
-diff --git a/net/mctp/device.c b/net/mctp/device.c
-index acb97b2574289..85cc5f31f1e7c 100644
---- a/net/mctp/device.c
-+++ b/net/mctp/device.c
-@@ -524,25 +524,31 @@ static struct notifier_block mctp_dev_nb = {
- 	.priority = ADDRCONF_NOTIFY_PRIORITY,
- };
- 
--void __init mctp_device_init(void)
-+static const struct rtnl_msg_handler mctp_device_rtnl_msg_handlers[] = {
-+	{THIS_MODULE, PF_MCTP, RTM_NEWADDR, mctp_rtm_newaddr, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_DELADDR, mctp_rtm_deladdr, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_GETADDR, NULL, mctp_dump_addrinfo, 0},
-+};
-+
-+int __init mctp_device_init(void)
- {
--	register_netdevice_notifier(&mctp_dev_nb);
-+	int err;
- 
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_GETADDR,
--			     NULL, mctp_dump_addrinfo, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_NEWADDR,
--			     mctp_rtm_newaddr, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_DELADDR,
--			     mctp_rtm_deladdr, NULL, 0);
-+	register_netdevice_notifier(&mctp_dev_nb);
- 	rtnl_af_register(&mctp_af_ops);
-+
-+	err = rtnl_register_many(mctp_device_rtnl_msg_handlers);
-+	if (err) {
-+		rtnl_af_unregister(&mctp_af_ops);
-+		unregister_netdevice_notifier(&mctp_dev_nb);
-+	}
-+
-+	return err;
- }
- 
- void __exit mctp_device_exit(void)
- {
-+	rtnl_unregister_many(mctp_device_rtnl_msg_handlers);
- 	rtnl_af_unregister(&mctp_af_ops);
--	rtnl_unregister(PF_MCTP, RTM_DELADDR);
--	rtnl_unregister(PF_MCTP, RTM_NEWADDR);
--	rtnl_unregister(PF_MCTP, RTM_GETADDR);
--
- 	unregister_netdevice_notifier(&mctp_dev_nb);
- }
-diff --git a/net/mctp/neigh.c b/net/mctp/neigh.c
-index ffa0f9e0983fb..590f642413e4e 100644
---- a/net/mctp/neigh.c
-+++ b/net/mctp/neigh.c
-@@ -322,22 +322,29 @@ static struct pernet_operations mctp_net_ops = {
- 	.exit = mctp_neigh_net_exit,
- };
- 
-+static const struct rtnl_msg_handler mctp_neigh_rtnl_msg_handlers[] = {
-+	{THIS_MODULE, PF_MCTP, RTM_NEWNEIGH, mctp_rtm_newneigh, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_DELNEIGH, mctp_rtm_delneigh, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_GETNEIGH, NULL, mctp_rtm_getneigh, 0},
-+};
-+
- int __init mctp_neigh_init(void)
- {
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_NEWNEIGH,
--			     mctp_rtm_newneigh, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_DELNEIGH,
--			     mctp_rtm_delneigh, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_GETNEIGH,
--			     NULL, mctp_rtm_getneigh, 0);
--
--	return register_pernet_subsys(&mctp_net_ops);
-+	int err;
-+
-+	err = register_pernet_subsys(&mctp_net_ops);
-+	if (err)
-+		return err;
-+
-+	err = rtnl_register_many(mctp_neigh_rtnl_msg_handlers);
-+	if (err)
-+		unregister_pernet_subsys(&mctp_net_ops);
-+
-+	return err;
- }
- 
--void __exit mctp_neigh_exit(void)
-+void mctp_neigh_exit(void)
- {
-+	rtnl_unregister_many(mctp_neigh_rtnl_msg_handlers);
- 	unregister_pernet_subsys(&mctp_net_ops);
--	rtnl_unregister(PF_MCTP, RTM_GETNEIGH);
--	rtnl_unregister(PF_MCTP, RTM_DELNEIGH);
--	rtnl_unregister(PF_MCTP, RTM_NEWNEIGH);
- }
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index 01c530dbc1a65..c6a815df9d358 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -1410,26 +1410,39 @@ static struct pernet_operations mctp_net_ops = {
- 	.exit = mctp_routes_net_exit,
- };
- 
-+static const struct rtnl_msg_handler mctp_route_rtnl_msg_handlers[] = {
-+	{THIS_MODULE, PF_MCTP, RTM_NEWROUTE, mctp_newroute, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_DELROUTE, mctp_delroute, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_GETROUTE, NULL, mctp_dump_rtinfo, 0},
-+};
-+
- int __init mctp_routes_init(void)
- {
-+	int err;
-+
- 	dev_add_pack(&mctp_packet_type);
- 
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_GETROUTE,
--			     NULL, mctp_dump_rtinfo, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_NEWROUTE,
--			     mctp_newroute, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_DELROUTE,
--			     mctp_delroute, NULL, 0);
-+	err = register_pernet_subsys(&mctp_net_ops);
-+	if (err)
-+		goto err_pernet;
-+
-+	err = rtnl_register_many(mctp_route_rtnl_msg_handlers);
-+	if (err)
-+		goto err_rtnl;
- 
--	return register_pernet_subsys(&mctp_net_ops);
-+	return 0;
-+
-+err_rtnl:
-+	unregister_pernet_subsys(&mctp_net_ops);
-+err_pernet:
-+	dev_remove_pack(&mctp_packet_type);
-+	return err;
- }
- 
- void mctp_routes_exit(void)
- {
-+	rtnl_unregister_many(mctp_route_rtnl_msg_handlers);
- 	unregister_pernet_subsys(&mctp_net_ops);
--	rtnl_unregister(PF_MCTP, RTM_DELROUTE);
--	rtnl_unregister(PF_MCTP, RTM_NEWROUTE);
--	rtnl_unregister(PF_MCTP, RTM_GETROUTE);
- 	dev_remove_pack(&mctp_packet_type);
- }
- 
+diff --git a/arch/riscv/kernel/elf_kexec.c b/arch/riscv/kernel/elf_kexec.c
+index b3b96ff46d193..88721bea81fcd 100644
+--- a/arch/riscv/kernel/elf_kexec.c
++++ b/arch/riscv/kernel/elf_kexec.c
+@@ -444,6 +444,12 @@ int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
+ 			*(u32 *)loc = CLEAN_IMM(CJTYPE, *(u32 *)loc) |
+ 				 ENCODE_CJTYPE_IMM(val - addr);
+ 			break;
++		case R_RISCV_ADD16:
++			*(u16 *)loc += val;
++			break;
++		case R_RISCV_SUB16:
++			*(u16 *)loc -= val;
++			break;
+ 		case R_RISCV_ADD32:
+ 			*(u32 *)loc += val;
+ 			break;
 -- 
 2.43.0
 
