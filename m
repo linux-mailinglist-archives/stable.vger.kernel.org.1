@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-84944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91AA299D303
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A584199CD76
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:33:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BD731F24AA6
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D699A1C22B41
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8951C305A;
-	Mon, 14 Oct 2024 15:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84EB220322;
+	Mon, 14 Oct 2024 14:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQN9AVDs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJCThsag"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194671C304F;
-	Mon, 14 Oct 2024 15:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CFE39FCE;
+	Mon, 14 Oct 2024 14:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919763; cv=none; b=A13QYhGz4W7z21UtdAEM7sH/DiPAhLNbMgzqUB4NHKebBaMNw+kw6tFaKxDVa+fUG5Kniq1cbxdJzWwNznX4jFN1MZeP8dhK7YyBXoO1Lw7ufW5kI+j2rzc94OAaOWNKK1O6ADaAWaP9tVeLvdvUNeBe68wcvUhyNA0t31rGigI=
+	t=1728916383; cv=none; b=kWh10+/UcHaxri4pPQOLTy5IMNwvKhJgY6+Qp4+NU/hT9IdHrniBpMqpB9qXSGklmOR8i3qO3JgR0CWXZF7Sd+JSGzQe08cvD0e8SJbc6FUm5EKtRyvRqUlMV6KkuaWUecw9AcnAesdIFuCFcKmAASLNayuoCSeoLE7Yh5wHWN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919763; c=relaxed/simple;
-	bh=eVi0j1tS2ibpH5Yonu64a8iVde4QE4o3XLWD97kreUE=;
+	s=arc-20240116; t=1728916383; c=relaxed/simple;
+	bh=rrXvf9Ji4xT41L+a+iIi7YgSr9Xh+UXQsAQVVBWvCUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lxw2S6Bm8Qn7CXgaBZ5BA6DBXtYjf9H/yGBRtVWCAkh9q3g09jx9drHZbeXZ8AkN9vGUu3eOUSZe2ZRrxkqh3yDUvtgKPd26/bazdD+zMduboUmnl9Yy1dTr6HTXFGzi5JF+AmdYR0ji9RY1ekOCy5JvvBsxEZ6vZt7utbDceEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQN9AVDs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E0AEC4CEC7;
-	Mon, 14 Oct 2024 15:29:22 +0000 (UTC)
+	 MIME-Version; b=k1CBEkXXXqlPt9Hid1Pd0ImShT12GGcSt4vG3FPKc0hrNb9dvr0W5z7o2yjECJySfAuy3q7brMN/jpMytlNLixaYR+9eN5bY9xW4/AcDOcRfw9HkC6g8lTCqqsVB3VXS9sZZo94ualgRKo037Lyf41Vj8S1WNfbDACvU2BDk6+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJCThsag; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE96C4CEC3;
+	Mon, 14 Oct 2024 14:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919762;
-	bh=eVi0j1tS2ibpH5Yonu64a8iVde4QE4o3XLWD97kreUE=;
+	s=korg; t=1728916383;
+	bh=rrXvf9Ji4xT41L+a+iIi7YgSr9Xh+UXQsAQVVBWvCUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OQN9AVDsJ2O1C11MhshXr/VYEkllrur+349sL9F9rerrm3+Cc/hSd45gBwioAQ02v
-	 Wg5VVxfdxiWAwBKPRQRzgN0PpO4dObUAVw5EjvR8d6yAeR+5DTpTOh0A5UFtoiVGff
-	 OjCs1kXLSO78fyNycG3LSEj3wyu2L9pH+Ql9Hg9U=
+	b=DJCThsagI7fO/4MQBqv0IwX71IYd/qGwXd3h+/JeX1D2euIKB/U/yJ8uhRXzeAn+d
+	 RUJrWQPglSUMMFZicfoyMiywavkf7XOC0JgDcnNZu3yQsnPmmIfMScdGbpw1WtYnfk
+	 vMbpycsbE4zrP4H67V0zf+rdWeHf+71sz3MMRn+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 669/798] drm/crtc: fix uninitialized variable use even harder
+	Wade Wang <wade.wang@hp.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.11 160/214] HID: plantronics: Workaround for an unexcepted opposite volume key
 Date: Mon, 14 Oct 2024 16:20:23 +0200
-Message-ID: <20241014141244.346875701@linuxfoundation.org>
+Message-ID: <20241014141051.230509970@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Wade Wang <wade.wang@hp.com>
 
-[ Upstream commit b6802b61a9d0e99dcfa6fff7c50db7c48a9623d3 ]
+commit 87b696209007b7c4ef7bdfe39ea0253404a43770 upstream.
 
-DRM_MODESET_LOCK_ALL_BEGIN() has a hidden trap-door (aka retry loop),
-which means we can't rely too much on variable initializers.
+Some Plantronics headset as the below send an unexcept opposite
+volume key's HID report for each volume key press after 200ms, like
+unecepted Volume Up Key following Volume Down key pressed by user.
+This patch adds a quirk to hid-plantronics for these devices, which
+will ignore the second unexcepted opposite volume key if it happens
+within 220ms from the last one that was handled.
+    Plantronics EncorePro 500 Series  (047f:431e)
+    Plantronics Blackwire_3325 Series (047f:430c)
 
-Fixes: 6e455f5dcdd1 ("drm/crtc: fix uninitialized variable use")
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # sc7180, sdm845
-Link: https://patchwork.freedesktop.org/patch/msgid/20240212215534.190682-1-robdclark@gmail.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The patch was tested on the mentioned model, it shouldn't affect
+other models, however, this quirk might be needed for them too.
+Auto-repeat (when a key is held pressed) is not affected per test
+result.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Wade Wang <wade.wang@hp.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_crtc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-ids.h         |    2 ++
+ drivers/hid/hid-plantronics.c |   23 +++++++++++++++++++++++
+ 2 files changed, 25 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_crtc.c b/drivers/gpu/drm/drm_crtc.c
-index cb90e70d85e86..65f9f66933bba 100644
---- a/drivers/gpu/drm/drm_crtc.c
-+++ b/drivers/gpu/drm/drm_crtc.c
-@@ -904,6 +904,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 	connector_set = NULL;
- 	fb = NULL;
- 	mode = NULL;
-+	num_connectors = 0;
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -1036,6 +1036,8 @@
+ #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3220_SERIES	0xc056
+ #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3215_SERIES	0xc057
+ #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES	0xc058
++#define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES	0x430c
++#define USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES		0x431e
  
- 	DRM_MODESET_LOCK_ALL_END(dev, ctx, ret);
+ #define USB_VENDOR_ID_PANASONIC		0x04da
+ #define USB_DEVICE_ID_PANABOARD_UBT780	0x1044
+--- a/drivers/hid/hid-plantronics.c
++++ b/drivers/hid/hid-plantronics.c
+@@ -38,8 +38,10 @@
+ 			    (usage->hid & HID_USAGE_PAGE) == HID_UP_CONSUMER)
  
--- 
-2.43.0
-
+ #define PLT_QUIRK_DOUBLE_VOLUME_KEYS BIT(0)
++#define PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS BIT(1)
+ 
+ #define PLT_DOUBLE_KEY_TIMEOUT 5 /* ms */
++#define PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT 220 /* ms */
+ 
+ struct plt_drv_data {
+ 	unsigned long device_type;
+@@ -137,6 +139,21 @@ static int plantronics_event(struct hid_
+ 
+ 		drv_data->last_volume_key_ts = cur_ts;
+ 	}
++	if (drv_data->quirks & PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS) {
++		unsigned long prev_ts, cur_ts;
++
++		/* Usages are filtered in plantronics_usages. */
++
++		if (!value) /* Handle key presses only. */
++			return 0;
++
++		prev_ts = drv_data->last_volume_key_ts;
++		cur_ts = jiffies;
++		if (jiffies_to_msecs(cur_ts - prev_ts) <= PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT)
++			return 1; /* Ignore the followed opposite volume key. */
++
++		drv_data->last_volume_key_ts = cur_ts;
++	}
+ 
+ 	return 0;
+ }
+@@ -210,6 +227,12 @@ static const struct hid_device_id plantr
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+ 					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES),
+ 		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
++					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES),
++		.driver_data = PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
++					 USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES),
++		.driver_data = PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS, HID_ANY_ID) },
+ 	{ }
+ };
 
 
 
