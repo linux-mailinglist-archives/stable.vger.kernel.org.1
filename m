@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-84115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18CB899CE34
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:41:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24C3C99D2AD
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49D301C22ECB
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:41:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4AE9283167
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291411ABEA6;
-	Mon, 14 Oct 2024 14:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F09F1BD00A;
+	Mon, 14 Oct 2024 15:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0b0oDIj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/31Yw8U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2251AB6FD;
-	Mon, 14 Oct 2024 14:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC021AC8A2;
+	Mon, 14 Oct 2024 15:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916879; cv=none; b=b746OLZJ9R19t3czGc2t+NNh+2oJ83seOg7pu4KSNRMypXi643IphY4vmapiQKQNpYHkjmBIGwWtv942Vqea7jFb47wDKaGI/9XF1SYEc6m7XLhnHt3v1feRJHCbo40o2T+JhbDHy8jQ0zxGRboEJ40ttxLzZIYwgWxgO80I68M=
+	t=1728919565; cv=none; b=TKCMkEUr8H9r98dGIINlEz2qjusHXueh+IrJy1yeIL6niqcQbFFWhPzo/abfWy1wgny5WSiZWeHnYDTUHmJXlmOYX/fXlfQrdGDHHSDpMWOSIgUkSw7xCaiGcTAL48MIcVv0lmr0Ypc3Xmw5Yu5jijPJxb6OP2CU2VEsJH1BL+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916879; c=relaxed/simple;
-	bh=h6PzDePQj/K4ptEc7L+D73ElBibPO957WSIutPs1w7s=;
+	s=arc-20240116; t=1728919565; c=relaxed/simple;
+	bh=Bhvoi/3X/NUdBWT/jGgqYoKt1J61o9AGgICy2JD3Nrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvDFZVkhmVRLldejESLrioFHO7pcqw8+yzvB/WxfSpoa97F3RKmDVU3R88+qsT4DNypiGc+3pA4bUigLTwR/U73zGAhliNzi8/oWzZpyXLajj87uqDe34MFSfwnRBY6okA7V6M88POVof7cUcJKNWV2Pu66MfGZSeD573MnwkXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0b0oDIj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F0AC4AF09;
-	Mon, 14 Oct 2024 14:41:19 +0000 (UTC)
+	 MIME-Version; b=mH0ujvTPMfcqbeCwiQCv/1hI6jse73k+PId/fNC6TyhTUsJBiNLnaYxlRzpfuEjrfwzsq/DjYGUBWVw6GPdMj0/fM/IltYpGuot6AlqYt5tuYp7VxyrdpLJvpSKuwEna6ZyVuygm9Qy6OM7XIHhYixL7v0CixWOX8ml8Btn/swY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/31Yw8U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34AEEC4CEC7;
+	Mon, 14 Oct 2024 15:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916879;
-	bh=h6PzDePQj/K4ptEc7L+D73ElBibPO957WSIutPs1w7s=;
+	s=korg; t=1728919564;
+	bh=Bhvoi/3X/NUdBWT/jGgqYoKt1J61o9AGgICy2JD3Nrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l0b0oDIjdICBSAMJHfnzCw0lyV4zLy92d1u6Yi4f1nCjGakzwbxIdGS0FQg5WaaBt
-	 zWJVdCwswd9Y4p2rzIXAMbT0U7Dj2oFyD4VSd5vO9MJVHvdWVcBuDlT9+YTRy0ZLDr
-	 UgL7XSS8v+k5WjeWd6XfnMg39sbCkMYxCwB47ptY=
+	b=1/31Yw8UltSwffCXekbMOaAPvHw9v86GHF2RlcCQkjSwnShg32s7Gbza9DsumlE6h
+	 oj8jrRP2O0PFwC71V+AtH+2m7JYX34QpJFJs0P+t53d/sJRWtF92WHuyb74tzPxWyS
+	 pnTm0I5m7y21/oLEfDtWAdmjMDegdMVUvMxaSHkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Peter Chen <peter.chen@kernel.org>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Beleswar Padhi <b-padhi@ti.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/213] usb: chipidea: udc: enable suspend interrupt after usb reset
-Date: Mon, 14 Oct 2024 16:19:56 +0200
-Message-ID: <20241014141046.486491574@linuxfoundation.org>
+Subject: [PATCH 6.1 643/798] remoteproc: k3-r5: Delay notification of wakeup event
+Date: Mon, 14 Oct 2024 16:19:57 +0200
+Message-ID: <20241014141243.301256696@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Udit Kumar <u-kumar1@ti.com>
 
-[ Upstream commit e4fdcc10092fb244218013bfe8ff01c55d54e8e4 ]
+[ Upstream commit 8fa052c29e509f3e47d56d7fc2ca28094d78c60a ]
 
-Currently, suspend interrupt is enabled before pullup enable operation.
-This will cause a suspend interrupt assert right after pullup DP. This
-suspend interrupt is meaningless, so this will ignore such interrupt
-by enable it after usb reset completed.
+Few times, core1 was scheduled to boot first before core0, which leads
+to error:
 
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20240823073832.1702135-1-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+'k3_r5_rproc_start: can not start core 1 before core 0'.
+
+This was happening due to some scheduling between prepare and start
+callback. The probe function waits for event, which is getting
+triggered by prepare callback. To avoid above condition move event
+trigger to start instead of prepare callback.
+
+Fixes: 61f6f68447ab ("remoteproc: k3-r5: Wait for core0 power-up before powering up core1")
+Signed-off-by: Udit Kumar <u-kumar1@ti.com>
+[ Applied wakeup event trigger only for Split-Mode booted rprocs ]
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240820105004.2788327-1-b-padhi@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/udc.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/remoteproc/ti_k3_r5_remoteproc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-index 0b7bd3c643c3a..f70ceedfb468f 100644
---- a/drivers/usb/chipidea/udc.c
-+++ b/drivers/usb/chipidea/udc.c
-@@ -86,7 +86,7 @@ static int hw_device_state(struct ci_hdrc *ci, u32 dma)
- 		hw_write(ci, OP_ENDPTLISTADDR, ~0, dma);
- 		/* interrupt, error, port change, reset, sleep/suspend */
- 		hw_write(ci, OP_USBINTR, ~0,
--			     USBi_UI|USBi_UEI|USBi_PCI|USBi_URI|USBi_SLI);
-+			     USBi_UI|USBi_UEI|USBi_PCI|USBi_URI);
- 	} else {
- 		hw_write(ci, OP_USBINTR, ~0, 0);
+diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+index 75bfe62736ab1..580f86de654f2 100644
+--- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
++++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+@@ -464,8 +464,6 @@ static int k3_r5_rproc_prepare(struct rproc *rproc)
+ 			ret);
+ 		return ret;
  	}
-@@ -876,6 +876,7 @@ __releases(ci->lock)
- __acquires(ci->lock)
- {
- 	int retval;
-+	u32 intr;
+-	core->released_from_reset = true;
+-	wake_up_interruptible(&cluster->core_transition);
  
- 	spin_unlock(&ci->lock);
- 	if (ci->gadget.speed != USB_SPEED_UNKNOWN)
-@@ -889,6 +890,11 @@ __acquires(ci->lock)
- 	if (retval)
- 		goto done;
- 
-+	/* clear SLI */
-+	hw_write(ci, OP_USBSTS, USBi_SLI, USBi_SLI);
-+	intr = hw_read(ci, OP_USBINTR, ~0);
-+	hw_write(ci, OP_USBINTR, ~0, intr | USBi_SLI);
+ 	/*
+ 	 * Newer IP revisions like on J7200 SoCs support h/w auto-initialization
+@@ -582,6 +580,9 @@ static int k3_r5_rproc_start(struct rproc *rproc)
+ 		ret = k3_r5_core_run(core);
+ 		if (ret)
+ 			return ret;
 +
- 	ci->status = usb_ep_alloc_request(&ci->ep0in->ep, GFP_ATOMIC);
- 	if (ci->status == NULL)
- 		retval = -ENOMEM;
++		core->released_from_reset = true;
++		wake_up_interruptible(&cluster->core_transition);
+ 	}
+ 
+ 	return 0;
 -- 
 2.43.0
 
