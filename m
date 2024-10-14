@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7097099D235
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA2C99CCBF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:24:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B1CF1F25053
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FBA41F230E4
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FDF43AA9;
-	Mon, 14 Oct 2024 15:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3711A76AC;
+	Mon, 14 Oct 2024 14:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2evBTwm4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0m8AlqsQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405C31AE006;
-	Mon, 14 Oct 2024 15:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883911547F3;
+	Mon, 14 Oct 2024 14:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919298; cv=none; b=rylMLTQARAsfuOFN53rMbxjo5sAI6INNDavquXwtum3MSwPWGgXBejqCH9TDRCssFsjRmrM8BtCWUG03T9Tu3dB0S4PTjW28ogCAdyMFViREdIni/Vl/a7r2v0m7ZyTETZCCypRHjGHni/l7HR1bj8HKmJimfO8ozmpOEugMmoA=
+	t=1728915855; cv=none; b=CvU1Uk2Uig+VbZboHazqY1Cua6O+0tvku6Z64i2ueBNila/VN6COB+WHUETbf4vo8/X8uL9T2vd+4R5uMwqSvJIEUPx1x0mo+6SVS7lS0awoWFgXYPN9546OVi9w780WdaenHcjjmR0H9peWwDeatUkkcdE3m1yTSIjJRAVbKn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919298; c=relaxed/simple;
-	bh=fvuMPbb/n+Sye56h3MSCbDUYur2cvNwK1M0Et5m+1xo=;
+	s=arc-20240116; t=1728915855; c=relaxed/simple;
+	bh=RrfvP8/kYQIpavjDSEcu1i0oCOE2ZKCQH9Me2KdZLj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LJD/fhJnbHspH/W6l2ZxmCwtONaDfhpddSHPzwRlAl0SVzGCK67b+jsQHqFlc7TGwHt2HT2LONUyW/BMD3IFCahxMVqtHs33Qyrheh026hKCzz9E6vB17zai095+wjyUWiCbFaE1bV16jiuRYLHQsCUlzwREN8ZyvuqiVTEKiWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2evBTwm4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA06DC4CEC3;
-	Mon, 14 Oct 2024 15:21:37 +0000 (UTC)
+	 MIME-Version; b=ONt4oDeeMqNDfRO/0Phe8zK8QuVxmTKtulhFkS7iKusfBRWrLzZ9B7jDwO4eksC+644g/Eg4bXFDbOD1r3EmazJOzeqNsPkzKlbrEAW+wXKyAyXMtgyq1NCK+tCBD0A03JeByyjo+ILcBX1sDtOHQrutqe2OPjRKDiGXzF/reio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0m8AlqsQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38BFC4CEC3;
+	Mon, 14 Oct 2024 14:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919298;
-	bh=fvuMPbb/n+Sye56h3MSCbDUYur2cvNwK1M0Et5m+1xo=;
+	s=korg; t=1728915855;
+	bh=RrfvP8/kYQIpavjDSEcu1i0oCOE2ZKCQH9Me2KdZLj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2evBTwm4crUGg+yfQ1JLrLK3JeMmxg7GRbcLJcdWKsVWG/tY+iYCS+Pb527QCEoYr
-	 bZZ5NKdUGdO7X9fEhvras+EQBtlInovXSdGERyPGa3g7QDLfATukXGRUATQbaAUpK2
-	 78OXncy2EDXCEhcIsYxpDCncX2I8detca+8vWJLM=
+	b=0m8AlqsQDWiuaqggj9aM1p8nOM/qI9SGWSk06BscTzS3yOa3cnalD7+SA1Pt87l5W
+	 sdS/EqTa4eydfoc/wH7LQP0U6Gje8da9SVXA7ESP27rs1AxEyUb9lueLM9mMyP7Rah
+	 K7idswvBIsqCy6IZkjScUAEn6wcSahxPSlwxwJpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shiyan <eagle.alexander923@gmail.com>,
-	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.1 528/798] media: i2c: ar0521: Use cansleep version of gpiod_set_value()
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 019/214] s390/boot: Compile all files with the same march flag
 Date: Mon, 14 Oct 2024 16:18:02 +0200
-Message-ID: <20241014141238.732814396@linuxfoundation.org>
+Message-ID: <20241014141045.743575611@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +60,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit bee1aed819a8cda47927436685d216906ed17f62 upstream.
+[ Upstream commit fccb175bc89a0d37e3ff513bb6bf1f73b3a48950 ]
 
-If we use GPIO reset from I2C port expander, we must use *_cansleep()
-variant of GPIO functions.
-This was not done in ar0521_power_on()/ar0521_power_off() functions.
-Let's fix that.
+Only a couple of files of the decompressor are compiled with the
+minimum architecture level. This is problematic for potential function
+calls between compile units, especially if a target function is within
+a compile until compiled for a higher architecture level, since that
+may lead to an unexpected operation exception.
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 11 at drivers/gpio/gpiolib.c:3496 gpiod_set_value+0x74/0x7c
-Modules linked in:
-CPU: 0 PID: 11 Comm: kworker/u16:0 Not tainted 6.10.0 #53
-Hardware name: Diasom DS-RK3568-SOM-EVB (DT)
-Workqueue: events_unbound deferred_probe_work_func
-pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : gpiod_set_value+0x74/0x7c
-lr : ar0521_power_on+0xcc/0x290
-sp : ffffff8001d7ab70
-x29: ffffff8001d7ab70 x28: ffffff80027dcc90 x27: ffffff8003c82000
-x26: ffffff8003ca9250 x25: ffffffc080a39c60 x24: ffffff8003ca9088
-x23: ffffff8002402720 x22: ffffff8003ca9080 x21: ffffff8003ca9088
-x20: 0000000000000000 x19: ffffff8001eb2a00 x18: ffffff80efeeac80
-x17: 756d2d6332692f30 x16: 0000000000000000 x15: 0000000000000000
-x14: ffffff8001d91d40 x13: 0000000000000016 x12: ffffffc080e98930
-x11: ffffff8001eb2880 x10: 0000000000000890 x9 : ffffff8001d7a9f0
-x8 : ffffff8001d92570 x7 : ffffff80efeeac80 x6 : 000000003fc6e780
-x5 : ffffff8001d91c80 x4 : 0000000000000002 x3 : 0000000000000000
-x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000001
-Call trace:
- gpiod_set_value+0x74/0x7c
- ar0521_power_on+0xcc/0x290
-...
+Therefore compile all files of the decompressor for the same (minimum)
+architecture level.
 
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
-Fixes: 852b50aeed15 ("media: On Semi AR0521 sensor driver")
-Cc: stable@vger.kernel.org
-Acked-by: Krzysztof Hałasa <khalasa@piap.pl>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ar0521.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/s390/boot/Makefile | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
---- a/drivers/media/i2c/ar0521.c
-+++ b/drivers/media/i2c/ar0521.c
-@@ -718,7 +718,8 @@ static int ar0521_power_off(struct devic
- 	clk_disable_unprepare(sensor->extclk);
+diff --git a/arch/s390/boot/Makefile b/arch/s390/boot/Makefile
+index 4f476884d3404..f1b2989cc7cca 100644
+--- a/arch/s390/boot/Makefile
++++ b/arch/s390/boot/Makefile
+@@ -11,11 +11,8 @@ KASAN_SANITIZE := n
+ KCSAN_SANITIZE := n
+ KMSAN_SANITIZE := n
  
- 	if (sensor->reset_gpio)
--		gpiod_set_value(sensor->reset_gpio, 1); /* assert RESET signal */
-+		/* assert RESET signal */
-+		gpiod_set_value_cansleep(sensor->reset_gpio, 1);
+-KBUILD_AFLAGS := $(KBUILD_AFLAGS_DECOMPRESSOR)
+-KBUILD_CFLAGS := $(KBUILD_CFLAGS_DECOMPRESSOR)
+-
+ #
+-# Use minimum architecture for als.c to be able to print an error
++# Use minimum architecture level so it is possible to print an error
+ # message if the kernel is started on a machine which is too old
+ #
+ ifndef CONFIG_CC_IS_CLANG
+@@ -24,16 +21,10 @@ else
+ CC_FLAGS_MARCH_MINIMUM := -march=z10
+ endif
  
- 	for (i = ARRAY_SIZE(ar0521_supply_names) - 1; i >= 0; i--) {
- 		if (sensor->supplies[i])
-@@ -752,7 +753,7 @@ static int ar0521_power_on(struct device
+-ifneq ($(CC_FLAGS_MARCH),$(CC_FLAGS_MARCH_MINIMUM))
+-AFLAGS_REMOVE_head.o		+= $(CC_FLAGS_MARCH)
+-AFLAGS_head.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-AFLAGS_REMOVE_mem.o		+= $(CC_FLAGS_MARCH)
+-AFLAGS_mem.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-CFLAGS_REMOVE_als.o		+= $(CC_FLAGS_MARCH)
+-CFLAGS_als.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-CFLAGS_REMOVE_sclp_early_core.o	+= $(CC_FLAGS_MARCH)
+-CFLAGS_sclp_early_core.o	+= $(CC_FLAGS_MARCH_MINIMUM)
+-endif
++KBUILD_AFLAGS := $(filter-out $(CC_FLAGS_MARCH),$(KBUILD_AFLAGS_DECOMPRESSOR))
++KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_MARCH),$(KBUILD_CFLAGS_DECOMPRESSOR))
++KBUILD_AFLAGS += $(CC_FLAGS_MARCH_MINIMUM)
++KBUILD_CFLAGS += $(CC_FLAGS_MARCH_MINIMUM)
  
- 	if (sensor->reset_gpio)
- 		/* deassert RESET signal */
--		gpiod_set_value(sensor->reset_gpio, 0);
-+		gpiod_set_value_cansleep(sensor->reset_gpio, 0);
- 	usleep_range(4500, 5000); /* min 45000 clocks */
+ CFLAGS_sclp_early_core.o += -I$(srctree)/drivers/s390/char
  
- 	for (cnt = 0; cnt < ARRAY_SIZE(initial_regs); cnt++) {
+-- 
+2.43.0
+
 
 
 
