@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-85012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 768FA99D364
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B30E99CEE8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09F64B27A76
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3A7FB24089
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0363B1C174A;
-	Mon, 14 Oct 2024 15:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C341BF80C;
+	Mon, 14 Oct 2024 14:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fWwU3kpd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7Dt7lJT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5B81C0DCB;
-	Mon, 14 Oct 2024 15:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37D31BE238;
+	Mon, 14 Oct 2024 14:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919994; cv=none; b=eZDylSEfGu8cIGo3OOKQmqMvQ085ph8nMeaIYD4EbugkYc2XwfPvhaqdwmYodJP4QJUbhtSPEOGUVPH6fdMm7ndmneaf0rZrPju7rqb54Yt5f3aoDOWIbFLt1bSh//mIdEGxz3H6H+2O4RbiP+z435jJGCdcN+9lWUB3rPHi1oA=
+	t=1728917208; cv=none; b=LP0xjoWtVJBSeX7GmidLSkhKAfcXWpGhuFeJhtT5zUFnmUSpe7DlVyTRzTdslob99BlYNhjeTEcgq3ZNcYs9RMvCo7ZLfNVsApm2RFro3LVFeaP5T/wQ12jS7WHso5kKkDslsgsSh6B8+KfITDe8paI4o10alS4jHkId7K3D/3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919994; c=relaxed/simple;
-	bh=nwKB4zkrWNBuq8gE2wjdsVCeKDHMfNd1lo0jlxca11U=;
+	s=arc-20240116; t=1728917208; c=relaxed/simple;
+	bh=5E/fAnYLZi2pUVxPbNIN64oeoDSDYUf5ZSC3kZ6ep8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gw/EHuFlDvZrnGPCv4GmBvwEhGNqNXP9bO6OBE888605NRwMsu8eAPdNfQfeiKKArwRkUD5N5C+Xo1+YEwCOVDH6l7Xgn+GusV2doR9cZ7GB1AjZSaYkf7XFzSn9zck4ByOguEIYi8pPt000h3MwjrfeNqMSRnnU5opF45kjiKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fWwU3kpd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A74CFC4CEC3;
-	Mon, 14 Oct 2024 15:33:13 +0000 (UTC)
+	 MIME-Version; b=h0uhFWhvS/AN+r39Ifv3/zPD0xUprPIpajXM06cl1AHrtmYBDZ8YK3s42f2iq+62ZF67SVqn3y2N/WFDqbQkDBu9LGnRb35anh2tsp18gBgISyeH9Ezt/5WxN5rUDGtux2hK3rUsuhaLL3I0vcMEKGSahIpdUiTX2X1CJ86ZLSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7Dt7lJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB33C4CECF;
+	Mon, 14 Oct 2024 14:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919994;
-	bh=nwKB4zkrWNBuq8gE2wjdsVCeKDHMfNd1lo0jlxca11U=;
+	s=korg; t=1728917208;
+	bh=5E/fAnYLZi2pUVxPbNIN64oeoDSDYUf5ZSC3kZ6ep8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fWwU3kpdy7d3SlB08Y79Q401UYkT5V6Ez1Cgi6oYM/5q3TVXDWbDNaLPQCgfIsi34
-	 UnX7Nz0OYnC4qwG6s7RYKnFIZ2zX4OhaL4oNwqfhR4ML3sZMeZ4hYx6FCRYx8zz1xn
-	 bG7y6eFOilbeb6f7280Q3tCzHUYV9/cjBP/9Dssw=
+	b=d7Dt7lJTPoUZ1+iHEq0Wt4as/Bg+gZMlzVluzmsLZpWup3ikTwYsUlLuNemfC4pdu
+	 xVCqNEEcOKvy3H4Z8RDPka+FTknJ4f+zpeviGxomnqFd9WKb2bGCUueRKArdcm8we6
+	 /aTB7dE2aqHvWopjqoWooKu5QLyBfdeHyOnNRNVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d7ce59b06b3eb14fd218@syzkaller.appspotmail.com,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 736/798] Bluetooth: RFCOMM: FIX possible deadlock in rfcomm_sk_state_change
+	Jose Alberto Reguero <jose.alberto.reguero@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 184/213] usb: xhci: Fix problem with xhci resume from suspend
 Date: Mon, 14 Oct 2024 16:21:30 +0200
-Message-ID: <20241014141246.986445925@linuxfoundation.org>
+Message-ID: <20241014141050.145834747@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Jose Alberto Reguero <jose.alberto.reguero@gmail.com>
 
-[ Upstream commit 08d1914293dae38350b8088980e59fbc699a72fe ]
+commit d44238d8254a36249d576c96473269dbe500f5e4 upstream.
 
-rfcomm_sk_state_change attempts to use sock_lock so it must never be
-called with it locked but rfcomm_sock_ioctl always attempt to lock it
-causing the following trace:
+I have a ASUS PN51 S mini pc that has two xhci devices. One from AMD,
+and other from ASMEDIA. The one from ASMEDIA have problems when resume
+from suspend, and keep broken until unplug the  power cord. I use this
+kernel parameter: xhci-hcd.quirks=128 and then it works ok. I make a
+path to reset only the ASMEDIA xhci.
 
-======================================================
-WARNING: possible circular locking dependency detected
-6.8.0-syzkaller-08951-gfe46a7dd189e #0 Not tainted
-------------------------------------------------------
-syz-executor386/5093 is trying to acquire lock:
-ffff88807c396258 (sk_lock-AF_BLUETOOTH-BTPROTO_RFCOMM){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1671 [inline]
-ffff88807c396258 (sk_lock-AF_BLUETOOTH-BTPROTO_RFCOMM){+.+.}-{0:0}, at: rfcomm_sk_state_change+0x5b/0x310 net/bluetooth/rfcomm/sock.c:73
-
-but task is already holding lock:
-ffff88807badfd28 (&d->lock){+.+.}-{3:3}, at: __rfcomm_dlc_close+0x226/0x6a0 net/bluetooth/rfcomm/core.c:491
-
-Reported-by: syzbot+d7ce59b06b3eb14fd218@syzkaller.appspotmail.com
-Tested-by: syzbot+d7ce59b06b3eb14fd218@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d7ce59b06b3eb14fd218
-Fixes: 3241ad820dbb ("[Bluetooth] Add timestamp support to L2CAP, RFCOMM and SCO")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jose Alberto Reguero <jose.alberto.reguero@gmail.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20240919184202.22249-1-jose.alberto.reguero@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/rfcomm/sock.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/usb/host/xhci-pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
-index 29aa07e9db9d7..cbff37b327340 100644
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -865,9 +865,7 @@ static int rfcomm_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned lon
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -73,6 +73,7 @@
+ #define PCI_DEVICE_ID_ASMEDIA_1042A_XHCI		0x1142
+ #define PCI_DEVICE_ID_ASMEDIA_1142_XHCI			0x1242
+ #define PCI_DEVICE_ID_ASMEDIA_2142_XHCI			0x2142
++#define PCI_DEVICE_ID_ASMEDIA_3042_XHCI			0x3042
+ #define PCI_DEVICE_ID_ASMEDIA_3242_XHCI			0x3242
  
- 	if (err == -ENOIOCTLCMD) {
- #ifdef CONFIG_BT_RFCOMM_TTY
--		lock_sock(sk);
- 		err = rfcomm_dev_ioctl(sk, cmd, (void __user *) arg);
--		release_sock(sk);
- #else
- 		err = -EOPNOTSUPP;
- #endif
--- 
-2.43.0
-
+ #define PCI_DEVICE_ID_CADENCE				0x17CD
+@@ -516,6 +517,10 @@ static void xhci_pci_quirks(struct devic
+ 		pdev->device == PCI_DEVICE_ID_ASMEDIA_1042A_XHCI)
+ 		xhci->quirks |= XHCI_ASMEDIA_MODIFY_FLOWCONTROL;
+ 
++	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA &&
++	    pdev->device == PCI_DEVICE_ID_ASMEDIA_3042_XHCI)
++		xhci->quirks |= XHCI_RESET_ON_RESUME;
++
+ 	if (pdev->vendor == PCI_VENDOR_ID_TI && pdev->device == 0x8241)
+ 		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_7;
+ 
 
 
 
