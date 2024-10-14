@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-84837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A9699D252
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40CFB99CE1D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:40:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C91B91C23C57
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:24:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 641F31C212B4
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DD91AE01F;
-	Mon, 14 Oct 2024 15:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EEA4595B;
+	Mon, 14 Oct 2024 14:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvK4oTzU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U4ynRCpg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF551AB6FD;
-	Mon, 14 Oct 2024 15:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8657D17C77;
+	Mon, 14 Oct 2024 14:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919379; cv=none; b=XtXEMDTivZYIyECDoPlQ6AdA4EBJ9UeG1hBXL5/vo/sIychvYuZP6bF5nahZ5QJN6zF7CtcRvx9dKBDV1EGQf98W8iYPddff28qRX2wf2MUGovEpq/uYgqes6cGGHWaS4kjubU+B5O2NOn89Y7EVxfe9G3/+Efu+F7E9hrWkCWc=
+	t=1728916809; cv=none; b=VrikS0BEerqI3UjMLaD4QH6/ZxB2JrMXHtQX+h1FNlstQsmeQYB0gbmk4e/HYdwyLdrivwVTppJ3sxwKf2q4RDbuC6tRHvrgTsSXLAZpD+W/17UHmUBuYzNYZIvXQpb7u4rNq+4CqxUl2E6VXOEPVwRBm2Es/4q03Da1hEU/BLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919379; c=relaxed/simple;
-	bh=+k15zycAGIwEK5+E6otpdEbFMJ9yb6/JcZDDCS81Rys=;
+	s=arc-20240116; t=1728916809; c=relaxed/simple;
+	bh=LZbZNOA4Qacw0BSZTgBvFxHF/yu3LdFitpq5Ujp5oK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ExOplXxMhmYPQj7EeltIpEPJJj8jBTtFlQnWhgJXEJfITODRwPUTuCxO9DMt/L5cWcYKuJH01Ps7zyygbbYxntQrtjz4uqdb0IQOTMT9hHcAxzc9DoA5JTFF+3uPQ1tLmiVjP/fDpsi1riWtlquKE5CS8FL4WeXex84trvkkzmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvK4oTzU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7096CC4CEC3;
-	Mon, 14 Oct 2024 15:22:58 +0000 (UTC)
+	 MIME-Version; b=pAoAs4oZ7oX8hmH24Mwp7m2jjseWR49XP9eeM+4LtlvoDbvd/sNjN1+NGDUVNy728rAkQhiUUOWITeLKeWc6zpc7x4q159S+dxpoS2UcvMxzwsarUFMNzz1ssJimurn3DHOgzYOyhYGOEeQmRT0V1wjKe+v/sYcmcW3mqMTWaSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U4ynRCpg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D0DC4CEC7;
+	Mon, 14 Oct 2024 14:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919378;
-	bh=+k15zycAGIwEK5+E6otpdEbFMJ9yb6/JcZDDCS81Rys=;
+	s=korg; t=1728916809;
+	bh=LZbZNOA4Qacw0BSZTgBvFxHF/yu3LdFitpq5Ujp5oK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SvK4oTzUtyU6uBBXiIu9VCwNP35TzyYIZjHdV6AQILIBtxCnmak4QMkITv8N8NEzq
-	 XRDWSxgLvuUTfKN2dysC1lsQTOxukFXlXvq3Z+fAOJL63ugRKFJ/EBbnfxCFqhInjO
-	 0CJhbRg3ipILRWgSicP8+85xC/zQlo6/87YpQaLM=
+	b=U4ynRCpga+RgyIUryOCsCE6AbVpdlHIs8GhPYawaKywSYSJrovVLG8W18G/aOpFNv
+	 hid8kW+gAcbA6kfSbD31oubT1vsLmqXEAzNX1Fg40t5iPkIYbHqqtesuEveFteJ9tp
+	 zbrRIv6TRx8l/T4c85aP6niTrqO5PBNdBVHEoX84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ajit Pandey <quic_ajipan@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.1 592/798] clk: qcom: clk-alpha-pll: Fix CAL_L_VAL override for LUCID EVO PLL
+	Namhyung Kim <namhyung@kernel.org>,
+	Aditya Gupta <adityag@linux.ibm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Disha Goel <disgoel@linux.vnet.ibm.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 040/213] libsubcmd: Dont free the usage string
 Date: Mon, 14 Oct 2024 16:19:06 +0200
-Message-ID: <20241014141241.263165664@linuxfoundation.org>
+Message-ID: <20241014141044.554361587@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +69,187 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ajit Pandey <quic_ajipan@quicinc.com>
+From: Aditya Gupta <adityag@linux.ibm.com>
 
-commit fff617979f97c773aaa9432c31cf62444b3bdbd4 upstream.
+[ Upstream commit 1a5efc9e13f357abc396dbf445b25d08914c8060 ]
 
-In LUCID EVO PLL CAL_L_VAL and L_VAL bitfields are part of single
-PLL_L_VAL register. Update for L_VAL bitfield values in PLL_L_VAL
-register using regmap_write() API in __alpha_pll_trion_set_rate
-callback will override LUCID EVO PLL initial configuration related
-to PLL_CAL_L_VAL bit fields in PLL_L_VAL register.
+Currently, commands which depend on 'parse_options_subcommand()' don't
+show the usage string, and instead show '(null)'
 
-Observed random PLL lock failures during PLL enable due to such
-override in PLL calibration value. Use regmap_update_bits() with
-L_VAL bitfield mask instead of regmap_write() API to update only
-PLL_L_VAL bitfields in __alpha_pll_trion_set_rate callback.
+    $ ./perf sched
+	Usage: (null)
 
-Fixes: 260e36606a03 ("clk: qcom: clk-alpha-pll: add Lucid EVO PLL configuration interfaces")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ajit Pandey <quic_ajipan@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Acked-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Link: https://lore.kernel.org/r/20240611133752.2192401-2-quic_ajipan@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    -D, --dump-raw-trace  dump raw trace in ASCII
+    -f, --force           don't complain, do it
+    -i, --input <file>    input file name
+    -v, --verbose         be more verbose (show symbol address, etc)
+
+'parse_options_subcommand()' is generally expected to initialise the usage
+string, with information in the passed 'subcommands[]' array
+
+This behaviour was changed in:
+
+  230a7a71f92212e7 ("libsubcmd: Fix parse-options memory leak")
+
+Where the generated usage string is deallocated, and usage[0] string is
+reassigned as NULL.
+
+As discussed in [1], free the allocated usage string in the main
+function itself, and don't reset usage string to NULL in
+parse_options_subcommand
+
+With this change, the behaviour is restored.
+
+    $ ./perf sched
+        Usage: perf sched [<options>] {record|latency|map|replay|script|timehist}
+
+           -D, --dump-raw-trace  dump raw trace in ASCII
+           -f, --force           don't complain, do it
+           -i, --input <file>    input file name
+           -v, --verbose         be more verbose (show symbol address, etc)
+
+[1]: https://lore.kernel.org/linux-perf-users/htq5vhx6piet4nuq2mmhk7fs2bhfykv52dbppwxmo3s7du2odf@styd27tioc6e/
+
+Fixes: 230a7a71f92212e7 ("libsubcmd: Fix parse-options memory leak")
+Suggested-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Disha Goel <disgoel@linux.vnet.ibm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240904061836.55873-2-adityag@linux.ibm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/lib/subcmd/parse-options.c | 8 +++-----
+ tools/perf/builtin-kmem.c        | 2 ++
+ tools/perf/builtin-kvm.c         | 3 +++
+ tools/perf/builtin-kwork.c       | 3 +++
+ tools/perf/builtin-lock.c        | 3 +++
+ tools/perf/builtin-mem.c         | 3 +++
+ tools/perf/builtin-sched.c       | 3 +++
+ 7 files changed, 20 insertions(+), 5 deletions(-)
 
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -1581,7 +1581,7 @@ static int __alpha_pll_trion_set_rate(st
- 	if (ret < 0)
- 		return ret;
+diff --git a/tools/lib/subcmd/parse-options.c b/tools/lib/subcmd/parse-options.c
+index d943d78b787ed..9fa75943f2ed1 100644
+--- a/tools/lib/subcmd/parse-options.c
++++ b/tools/lib/subcmd/parse-options.c
+@@ -633,10 +633,11 @@ int parse_options_subcommand(int argc, const char **argv, const struct option *o
+ 			const char *const subcommands[], const char *usagestr[], int flags)
+ {
+ 	struct parse_opt_ctx_t ctx;
+-	char *buf = NULL;
  
--	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
-+	regmap_update_bits(pll->clkr.regmap, PLL_L_VAL(pll), LUCID_EVO_PLL_L_VAL_MASK,  l);
- 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
+ 	/* build usage string if it's not provided */
+ 	if (subcommands && !usagestr[0]) {
++		char *buf = NULL;
++
+ 		astrcatf(&buf, "%s %s [<options>] {", subcmd_config.exec_name, argv[0]);
  
- 	/* Latch the PLL input */
+ 		for (int i = 0; subcommands[i]; i++) {
+@@ -678,10 +679,7 @@ int parse_options_subcommand(int argc, const char **argv, const struct option *o
+ 			astrcatf(&error_buf, "unknown switch `%c'", *ctx.opt);
+ 		usage_with_options(usagestr, options);
+ 	}
+-	if (buf) {
+-		usagestr[0] = NULL;
+-		free(buf);
+-	}
++
+ 	return parse_options_end(&ctx);
+ }
+ 
+diff --git a/tools/perf/builtin-kmem.c b/tools/perf/builtin-kmem.c
+index 9714327fd0ead..cf623c1490d95 100644
+--- a/tools/perf/builtin-kmem.c
++++ b/tools/perf/builtin-kmem.c
+@@ -2058,6 +2058,8 @@ int cmd_kmem(int argc, const char **argv)
+ 
+ out_delete:
+ 	perf_session__delete(session);
++	/* free usage string allocated by parse_options_subcommand */
++	free((void *)kmem_usage[0]);
+ 
+ 	return ret;
+ }
+diff --git a/tools/perf/builtin-kvm.c b/tools/perf/builtin-kvm.c
+index 71165036e4cac..988bef73bd095 100644
+--- a/tools/perf/builtin-kvm.c
++++ b/tools/perf/builtin-kvm.c
+@@ -2187,5 +2187,8 @@ int cmd_kvm(int argc, const char **argv)
+ 	else
+ 		usage_with_options(kvm_usage, kvm_options);
+ 
++	/* free usage string allocated by parse_options_subcommand */
++	free((void *)kvm_usage[0]);
++
+ 	return 0;
+ }
+diff --git a/tools/perf/builtin-kwork.c b/tools/perf/builtin-kwork.c
+index de2fbb7c56c32..be210be42c77b 100644
+--- a/tools/perf/builtin-kwork.c
++++ b/tools/perf/builtin-kwork.c
+@@ -1853,5 +1853,8 @@ int cmd_kwork(int argc, const char **argv)
+ 	} else
+ 		usage_with_options(kwork_usage, kwork_options);
+ 
++	/* free usage string allocated by parse_options_subcommand */
++	free((void *)kwork_usage[0]);
++
+ 	return 0;
+ }
+diff --git a/tools/perf/builtin-lock.c b/tools/perf/builtin-lock.c
+index 0b4b4445c5207..fcb32c58bee7e 100644
+--- a/tools/perf/builtin-lock.c
++++ b/tools/perf/builtin-lock.c
+@@ -2622,6 +2622,9 @@ int cmd_lock(int argc, const char **argv)
+ 		usage_with_options(lock_usage, lock_options);
+ 	}
+ 
++	/* free usage string allocated by parse_options_subcommand */
++	free((void *)lock_usage[0]);
++
+ 	zfree(&lockhash_table);
+ 	return rc;
+ }
+diff --git a/tools/perf/builtin-mem.c b/tools/perf/builtin-mem.c
+index 865f321d729b6..286105be91cec 100644
+--- a/tools/perf/builtin-mem.c
++++ b/tools/perf/builtin-mem.c
+@@ -518,5 +518,8 @@ int cmd_mem(int argc, const char **argv)
+ 	else
+ 		usage_with_options(mem_usage, mem_options);
+ 
++	/* free usage string allocated by parse_options_subcommand */
++	free((void *)mem_usage[0]);
++
+ 	return 0;
+ }
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index 994b9dcb2385a..ac9d94dbbeefa 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -3737,5 +3737,8 @@ int cmd_sched(int argc, const char **argv)
+ 		usage_with_options(sched_usage, sched_options);
+ 	}
+ 
++	/* free usage string allocated by parse_options_subcommand */
++	free((void *)sched_usage[0]);
++
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
