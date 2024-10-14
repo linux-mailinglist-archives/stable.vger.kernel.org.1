@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-84910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8264199D2D0
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:30:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E96B99CD55
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:31:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02EB6B245E7
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:30:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C984B222FB
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4811CACE8;
-	Mon, 14 Oct 2024 15:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27BB1798C;
+	Mon, 14 Oct 2024 14:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n3POJS7i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNhrV1jX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173981CACE4;
-	Mon, 14 Oct 2024 15:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4F720EB;
+	Mon, 14 Oct 2024 14:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919645; cv=none; b=T4NhBndFJml+uV2bTDu71pR5PX7qPZqybFLFo3JAW3JSuQ0y+5tv73Q19FLZGqzWJxWY62NYB82qf7H+s6vf68kNXij6tRG9iGxbyGtizhYB4zWwoaCF2bTMowBo3spkp4HRs2V/fwaqQKzZYYps3ymLXkJpsagKvP3JJXwXe34=
+	t=1728916307; cv=none; b=pMnUCh77/hw4o8bjXGG1gpI9G8+/sAJ7PDmcjkeVwSBwS/rvucWj/OXq+6f3glXEwAEAHpmnGCDUof0Rf5jjfAKR08YFhVPBX3O/DyN9yceSywPRJFe82sp/LmBXYwfLKeLS/Pul9bPXjKW5tcm8FR7DmbPHiEJQpUIbIlJ9r2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919645; c=relaxed/simple;
-	bh=41yYohRbQ2CxURdYCmsxUNIO6r6IIXKg8+i90kthOZg=;
+	s=arc-20240116; t=1728916307; c=relaxed/simple;
+	bh=X2EQlGKlD+eka6sHu4iyEVQFaG0/A4prvFV1wO72cVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sZNlsna2BRKIzPbd1vWISLDN6ewc195LRt1cteRix0aZ4RslrmkNd05qRIz7gBeJG0w6C8caqkvgXlI61C58jBvmH4b4vjQOFwpLfywmy4kowBrkB5Z6JKdNSi7TLjSzopFzQhgyM8omN4A+POBJQ9UXHMZodq4Qse3ThEXSvWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n3POJS7i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D01C4CEC3;
-	Mon, 14 Oct 2024 15:27:24 +0000 (UTC)
+	 MIME-Version; b=I63y7ta+JG4P3Of6/ALkSYDKyDZ1MTBEjfiDNwMHMC3llIFcU1s/htG8qgEOn84bdR00I31wvUdFBjLGo4fcjWAcqCGe9EGCC6/R4br2QqQFKo13M+QxDu78Jacm1ruNWQ/lRyWAaMCeTDC+fNe9SdbDXE6wZETB+ICStFT7k2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNhrV1jX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A63C4CEC3;
+	Mon, 14 Oct 2024 14:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919645;
-	bh=41yYohRbQ2CxURdYCmsxUNIO6r6IIXKg8+i90kthOZg=;
+	s=korg; t=1728916307;
+	bh=X2EQlGKlD+eka6sHu4iyEVQFaG0/A4prvFV1wO72cVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n3POJS7ifE/Z1pS8LRn6ufP7rbMVpKef3oW48D0+Xs2syfrQpHNQHsEWkSgv7Dd+t
-	 N7SyfiULugyg4CieyV+L7i3vTVZOKP0KnI8XN4NsUd7FJZJZ8HBxywVv8ixVnxhYGM
-	 gDY6/1y4UczC4l0KOHzmbIN74pk+DnJyHkqxXrpo=
+	b=mNhrV1jXHxyA43DBwJNgqSQk4eEbfnQOzNbgWQ2BOj2MV+c99DfWpR3NyY6jD8bvW
+	 iWR2/hgPbxEjpljEypHZeHtOE7koyehZN2OUJ7TCOVGmTGrLB0v1Vq0pWYGiWv/cL8
+	 /DofrExczHqfsLgQJsqP86fS0dixcSEtuBoLom3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 636/798] clk: imx6ul: fix enet1 gate configuration
+Subject: [PATCH 6.11 127/214] net/sched: accept TCA_STAB only for root qdisc
 Date: Mon, 14 Oct 2024 16:19:50 +0200
-Message-ID: <20241014141243.027374898@linuxfoundation.org>
+Message-ID: <20241014141049.947908778@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +62,154 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 5f82bfced6118450cb9ea3f12316568f6fac10ab ]
+[ Upstream commit 3cb7cf1540ddff5473d6baeb530228d19bc97b8a ]
 
-According to the "i.MX 6UltraLite Applications Processor Reference Manual,
-Rev. 2, 03/2017", BIT(13) is ENET1_125M_EN which is not controlling root
-of PLL6. It is controlling ENET1 separately.
+Most qdiscs maintain their backlog using qdisc_pkt_len(skb)
+on the assumption it is invariant between the enqueue()
+and dequeue() handlers.
 
-So, instead of this picture (implementation before this patch):
-fec1 <- enet_ref (divider) <---------------------------,
-                                                       |- pll6_enet (gate)
-fec2 <- enet2_ref_125m (gate) <- enet2_ref (divider) <-´
+Unfortunately syzbot can crash a host rather easily using
+a TBF + SFQ combination, with an STAB on SFQ [1]
 
-we should have this one (after this patch):
-fec1 <- enet1_ref_125m (gate) <- enet1_ref (divider) <-,
-                                                       |- pll6_enet
-fec2 <- enet2_ref_125m (gate) <- enet2_ref (divider) <-´
+We can't support TCA_STAB on arbitrary level, this would
+require to maintain per-qdisc storage.
 
-With this fix, the RMII reference clock will be turned off, after
-setting network interface down on each separate interface
-(ip l s dev eth0 down). Which was not working before, on system with both
-FECs enabled.
+[1]
+[   88.796496] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[   88.798611] #PF: supervisor read access in kernel mode
+[   88.799014] #PF: error_code(0x0000) - not-present page
+[   88.799506] PGD 0 P4D 0
+[   88.799829] Oops: Oops: 0000 [#1] SMP NOPTI
+[   88.800569] CPU: 14 UID: 0 PID: 2053 Comm: b371744477 Not tainted 6.12.0-rc1-virtme #1117
+[   88.801107] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   88.801779] RIP: 0010:sfq_dequeue (net/sched/sch_sfq.c:272 net/sched/sch_sfq.c:499) sch_sfq
+[ 88.802544] Code: 0f b7 50 12 48 8d 04 d5 00 00 00 00 48 89 d6 48 29 d0 48 8b 91 c0 01 00 00 48 c1 e0 03 48 01 c2 66 83 7a 1a 00 7e c0 48 8b 3a <4c> 8b 07 4c 89 02 49 89 50 08 48 c7 47 08 00 00 00 00 48 c7 07 00
+All code
+========
+   0:	0f b7 50 12          	movzwl 0x12(%rax),%edx
+   4:	48 8d 04 d5 00 00 00 	lea    0x0(,%rdx,8),%rax
+   b:	00
+   c:	48 89 d6             	mov    %rdx,%rsi
+   f:	48 29 d0             	sub    %rdx,%rax
+  12:	48 8b 91 c0 01 00 00 	mov    0x1c0(%rcx),%rdx
+  19:	48 c1 e0 03          	shl    $0x3,%rax
+  1d:	48 01 c2             	add    %rax,%rdx
+  20:	66 83 7a 1a 00       	cmpw   $0x0,0x1a(%rdx)
+  25:	7e c0                	jle    0xffffffffffffffe7
+  27:	48 8b 3a             	mov    (%rdx),%rdi
+  2a:*	4c 8b 07             	mov    (%rdi),%r8		<-- trapping instruction
+  2d:	4c 89 02             	mov    %r8,(%rdx)
+  30:	49 89 50 08          	mov    %rdx,0x8(%r8)
+  34:	48 c7 47 08 00 00 00 	movq   $0x0,0x8(%rdi)
+  3b:	00
+  3c:	48                   	rex.W
+  3d:	c7                   	.byte 0xc7
+  3e:	07                   	(bad)
+	...
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20230131084642.709385-16-o.rempel@pengutronix.de
-Stable-dep-of: 32c055ef563c ("clk: imx6ul: fix clock parent for IMX6UL_CLK_ENETx_REF_SEL")
+Code starting with the faulting instruction
+===========================================
+   0:	4c 8b 07             	mov    (%rdi),%r8
+   3:	4c 89 02             	mov    %r8,(%rdx)
+   6:	49 89 50 08          	mov    %rdx,0x8(%r8)
+   a:	48 c7 47 08 00 00 00 	movq   $0x0,0x8(%rdi)
+  11:	00
+  12:	48                   	rex.W
+  13:	c7                   	.byte 0xc7
+  14:	07                   	(bad)
+	...
+[   88.803721] RSP: 0018:ffff9a1f892b7d58 EFLAGS: 00000206
+[   88.804032] RAX: 0000000000000000 RBX: ffff9a1f8420c800 RCX: ffff9a1f8420c800
+[   88.804560] RDX: ffff9a1f81bc1440 RSI: 0000000000000000 RDI: 0000000000000000
+[   88.805056] RBP: ffffffffc04bb0e0 R08: 0000000000000001 R09: 00000000ff7f9a1f
+[   88.805473] R10: 000000000001001b R11: 0000000000009a1f R12: 0000000000000140
+[   88.806194] R13: 0000000000000001 R14: ffff9a1f886df400 R15: ffff9a1f886df4ac
+[   88.806734] FS:  00007f445601a740(0000) GS:ffff9a2e7fd80000(0000) knlGS:0000000000000000
+[   88.807225] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   88.807672] CR2: 0000000000000000 CR3: 000000050cc46000 CR4: 00000000000006f0
+[   88.808165] Call Trace:
+[   88.808459]  <TASK>
+[   88.808710] ? __die (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:434)
+[   88.809261] ? page_fault_oops (arch/x86/mm/fault.c:715)
+[   88.809561] ? exc_page_fault (./arch/x86/include/asm/irqflags.h:26 ./arch/x86/include/asm/irqflags.h:87 ./arch/x86/include/asm/irqflags.h:147 arch/x86/mm/fault.c:1489 arch/x86/mm/fault.c:1539)
+[   88.809806] ? asm_exc_page_fault (./arch/x86/include/asm/idtentry.h:623)
+[   88.810074] ? sfq_dequeue (net/sched/sch_sfq.c:272 net/sched/sch_sfq.c:499) sch_sfq
+[   88.810411] sfq_reset (net/sched/sch_sfq.c:525) sch_sfq
+[   88.810671] qdisc_reset (./include/linux/skbuff.h:2135 ./include/linux/skbuff.h:2441 ./include/linux/skbuff.h:3304 ./include/linux/skbuff.h:3310 net/sched/sch_generic.c:1036)
+[   88.810950] tbf_reset (./include/linux/timekeeping.h:169 net/sched/sch_tbf.c:334) sch_tbf
+[   88.811208] qdisc_reset (./include/linux/skbuff.h:2135 ./include/linux/skbuff.h:2441 ./include/linux/skbuff.h:3304 ./include/linux/skbuff.h:3310 net/sched/sch_generic.c:1036)
+[   88.811484] netif_set_real_num_tx_queues (./include/linux/spinlock.h:396 ./include/net/sch_generic.h:768 net/core/dev.c:2958)
+[   88.811870] __tun_detach (drivers/net/tun.c:590 drivers/net/tun.c:673)
+[   88.812271] tun_chr_close (drivers/net/tun.c:702 drivers/net/tun.c:3517)
+[   88.812505] __fput (fs/file_table.c:432 (discriminator 1))
+[   88.812735] task_work_run (kernel/task_work.c:230)
+[   88.813016] do_exit (kernel/exit.c:940)
+[   88.813372] ? trace_hardirqs_on (kernel/trace/trace_preemptirq.c:58 (discriminator 4))
+[   88.813639] ? handle_mm_fault (./arch/x86/include/asm/irqflags.h:42 ./arch/x86/include/asm/irqflags.h:97 ./arch/x86/include/asm/irqflags.h:155 ./include/linux/memcontrol.h:1022 ./include/linux/memcontrol.h:1045 ./include/linux/memcontrol.h:1052 mm/memory.c:5928 mm/memory.c:6088)
+[   88.813867] do_group_exit (kernel/exit.c:1070)
+[   88.814138] __x64_sys_exit_group (kernel/exit.c:1099)
+[   88.814490] x64_sys_call (??:?)
+[   88.814791] do_syscall_64 (arch/x86/entry/common.c:52 (discriminator 1) arch/x86/entry/common.c:83 (discriminator 1))
+[   88.815012] entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+[   88.815495] RIP: 0033:0x7f44560f1975
+
+Fixes: 175f9c1bba9b ("net_sched: Add size table for qdiscs")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://patch.msgid.link/20241007184130.3960565-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx6ul.c             | 7 ++++---
- include/dt-bindings/clock/imx6ul-clock.h | 3 ++-
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ include/net/sch_generic.h | 1 -
+ net/sched/sch_api.c       | 7 ++++++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx6ul.c b/drivers/clk/imx/clk-imx6ul.c
-index 520b100bff4bb..777c4d2b87b3f 100644
---- a/drivers/clk/imx/clk-imx6ul.c
-+++ b/drivers/clk/imx/clk-imx6ul.c
-@@ -176,7 +176,7 @@ static void __init imx6ul_clocks_init(struct device_node *ccm_node)
- 	hws[IMX6UL_CLK_PLL3_USB_OTG]	= imx_clk_hw_gate("pll3_usb_otg",	"pll3_bypass", base + 0x10, 13);
- 	hws[IMX6UL_CLK_PLL4_AUDIO]	= imx_clk_hw_gate("pll4_audio",	"pll4_bypass", base + 0x70, 13);
- 	hws[IMX6UL_CLK_PLL5_VIDEO]	= imx_clk_hw_gate("pll5_video",	"pll5_bypass", base + 0xa0, 13);
--	hws[IMX6UL_CLK_PLL6_ENET]	= imx_clk_hw_gate("pll6_enet",	"pll6_bypass", base + 0xe0, 13);
-+	hws[IMX6UL_CLK_PLL6_ENET]	= imx_clk_hw_fixed_factor("pll6_enet",	"pll6_bypass", 1, 1);
- 	hws[IMX6UL_CLK_PLL7_USB_HOST]	= imx_clk_hw_gate("pll7_usb_host",	"pll7_bypass", base + 0x20, 13);
+diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+index 79edd5b5e3c91..5d74fa7e694cc 100644
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -848,7 +848,6 @@ static inline void qdisc_calculate_pkt_len(struct sk_buff *skb,
+ static inline int qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 				struct sk_buff **to_free)
+ {
+-	qdisc_calculate_pkt_len(skb, sch);
+ 	return sch->enqueue(skb, sch, to_free);
+ }
  
- 	/*
-@@ -205,12 +205,13 @@ static void __init imx6ul_clocks_init(struct device_node *ccm_node)
- 	hws[IMX6UL_CLK_PLL3_PFD2] = imx_clk_hw_pfd("pll3_pfd2_508m", "pll3_usb_otg", base + 0xf0,	 2);
- 	hws[IMX6UL_CLK_PLL3_PFD3] = imx_clk_hw_pfd("pll3_pfd3_454m", "pll3_usb_otg", base + 0xf0,	 3);
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 74afc210527d2..2eefa47838799 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -593,7 +593,6 @@ void __qdisc_calculate_pkt_len(struct sk_buff *skb,
+ 		pkt_len = 1;
+ 	qdisc_skb_cb(skb)->pkt_len = pkt_len;
+ }
+-EXPORT_SYMBOL(__qdisc_calculate_pkt_len);
  
--	hws[IMX6UL_CLK_ENET_REF] = clk_hw_register_divider_table(NULL, "enet_ref", "pll6_enet", 0,
-+	hws[IMX6UL_CLK_ENET_REF] = clk_hw_register_divider_table(NULL, "enet1_ref", "pll6_enet", 0,
- 			base + 0xe0, 0, 2, 0, clk_enet_ref_table, &imx_ccm_lock);
- 	hws[IMX6UL_CLK_ENET2_REF] = clk_hw_register_divider_table(NULL, "enet2_ref", "pll6_enet", 0,
- 			base + 0xe0, 2, 2, 0, clk_enet_ref_table, &imx_ccm_lock);
+ void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc)
+ {
+@@ -1201,6 +1200,12 @@ static int qdisc_graft(struct net_device *dev, struct Qdisc *parent,
+ 			return -EINVAL;
+ 		}
  
--	hws[IMX6UL_CLK_ENET2_REF_125M] = imx_clk_hw_gate("enet_ref_125m", "enet2_ref", base + 0xe0, 20);
-+	hws[IMX6UL_CLK_ENET1_REF_125M] = imx_clk_hw_gate("enet1_ref_125m", "enet1_ref", base + 0xe0, 13);
-+	hws[IMX6UL_CLK_ENET2_REF_125M] = imx_clk_hw_gate("enet2_ref_125m", "enet2_ref", base + 0xe0, 20);
- 	hws[IMX6UL_CLK_ENET_PTP_REF]	= imx_clk_hw_fixed_factor("enet_ptp_ref", "pll6_enet", 1, 20);
- 	hws[IMX6UL_CLK_ENET_PTP]	= imx_clk_hw_gate("enet_ptp", "enet_ptp_ref", base + 0xe0, 21);
- 
-diff --git a/include/dt-bindings/clock/imx6ul-clock.h b/include/dt-bindings/clock/imx6ul-clock.h
-index 79094338e6f1e..b44920f1edb0d 100644
---- a/include/dt-bindings/clock/imx6ul-clock.h
-+++ b/include/dt-bindings/clock/imx6ul-clock.h
-@@ -256,7 +256,8 @@
- #define IMX6UL_CLK_GPIO4		247
- #define IMX6UL_CLK_GPIO5		248
- #define IMX6UL_CLK_MMDC_P1_IPG		249
-+#define IMX6UL_CLK_ENET1_REF_125M	250
- 
--#define IMX6UL_CLK_END			250
-+#define IMX6UL_CLK_END			251
- 
- #endif /* __DT_BINDINGS_CLOCK_IMX6UL_H */
++		if (new &&
++		    !(parent->flags & TCQ_F_MQROOT) &&
++		    rcu_access_pointer(new->stab)) {
++			NL_SET_ERR_MSG(extack, "STAB not supported on a non root");
++			return -EINVAL;
++		}
+ 		err = cops->graft(parent, cl, new, &old, extack);
+ 		if (err)
+ 			return err;
 -- 
 2.43.0
 
