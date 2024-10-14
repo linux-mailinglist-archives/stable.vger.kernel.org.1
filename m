@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-84808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C82099D230
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7098299CCD8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:25:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 521791F25086
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 227FD1F2127B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03381C7281;
-	Mon, 14 Oct 2024 15:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53451A76A5;
+	Mon, 14 Oct 2024 14:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQ/7oEKA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kvheOxMT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E15E1C6F5F;
-	Mon, 14 Oct 2024 15:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729951547F3;
+	Mon, 14 Oct 2024 14:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919282; cv=none; b=Kac6bVc/moBcyzirXq4Z/+CI0ZMRCIwChoR4G119FiQMKBPu+xx4rim08DhffDRIgAZwCb6CJgtFSbItVSWszoRgwdQk5/Eq2VK0fsBdJd9WtqsICWEqBrzcNigwPdcE0oymPekw0ujlK+Ox9Bqr2BcmS7ikML2bZz8VimsxqUE=
+	t=1728915938; cv=none; b=BKs6Ojv29v0+6sWxxnt16ZC/KGadFhvz4NcZSjp8F4O3nPJ63vQMPvUXdXXCK8m2K1AO+XjPO8a0nnuQwBfLST/Ifz3aPFbsVLeTF0ZIsnPMKmOF41kwppgDmMxE0dTU10qCBoX1hX4GrhEMf8O/GS+2bSxfrTkmXTSSk+fpIcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919282; c=relaxed/simple;
-	bh=cFsm81LymCq8DS/8GzwJGuZEomRV1W2SrH6ZlCXgRhM=;
+	s=arc-20240116; t=1728915938; c=relaxed/simple;
+	bh=pItyfJqN6DLVH3L5vNjbiaLzTj2OSIfy7L5vUIM4QDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LXduud3I7IyXOmzVdIQz2Ud9Ha7mzGzxaT8KZOOP1Pi1Taj/gLTYQpEP9wOOKuITLIuE9UwdFQHydkHUhCY+VQdIdevaca4mujCtdaPRyu7doF1OHpziJP5Gt9J+4QieKnY745aB4mspTu4q9i/GAciD8uFm9hY/gfvqauEP6fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQ/7oEKA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF40C4CEC3;
-	Mon, 14 Oct 2024 15:21:21 +0000 (UTC)
+	 MIME-Version; b=d8VYcOTfVGpayserrbgYGmFVa4JyjOQULhOHldXOyB/tHNCMQ+4iXTnmFd/tOCs+vxO4dYsxyDmPeNNWr2J7fTEr0KTqZ8ZfhwmdIv8/31UKY0zg4qPklm/ZD1rL1cW+lqEclF8axVcMbiRXU9K5pHo2UrcywaBzI/uj46tM6J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kvheOxMT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8044C4CEC3;
+	Mon, 14 Oct 2024 14:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919282;
-	bh=cFsm81LymCq8DS/8GzwJGuZEomRV1W2SrH6ZlCXgRhM=;
+	s=korg; t=1728915938;
+	bh=pItyfJqN6DLVH3L5vNjbiaLzTj2OSIfy7L5vUIM4QDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQ/7oEKAzX1EfPcbdFH2Kz0rYG3seTFmZ04avVoUqy8G6d0wokQr+flf+vwdIlXwu
-	 NgLtCoGXCLZXy0sBJzq8MZ94B+NkOxIWZEoUfU7Q7oK19MQaUnrF46uU1E7EwFZKMK
-	 cJFpl/RkefLo3oE6vuP1jU187kwuddFmksvwUXmk=
+	b=kvheOxMT5F0XHg6FM7aqrRrN+zD5ghxoE1KZLSTXbvietycvLKxM7dsogIIZ6txM7
+	 LEIA9PFUJChPIfPdA1dirc7B6g9eMfZH4EdDWTF0xgB9bouCcS5P3AnOixYPanuTrg
+	 6+dM3Zm0OXcELOstFQy8MXYAASHkDOxWC7q/s7AQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 533/798] parisc: Fix itlb miss handler for 64-bit programs
-Date: Mon, 14 Oct 2024 16:18:07 +0200
-Message-ID: <20241014141238.929637435@linuxfoundation.org>
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 025/214] s390/cpum_sf: Remove WARN_ON_ONCE statements
+Date: Mon, 14 Oct 2024 16:18:08 +0200
+Message-ID: <20241014141045.975030598@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +65,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-commit 9542130937e9dc707dd7c6b7af73326437da2d50 upstream.
+[ Upstream commit b495e710157606889f2d8bdc62aebf2aa02f67a7 ]
 
-For an itlb miss when executing code above 4 Gb on ILP64 adjust the
-iasq/iaoq in the same way isr/ior was adjusted.  This fixes signal
-delivery for the 64-bit static test program from
-http://ftp.parisc-linux.org/src/64bit.tar.gz.  Note that signals are
-handled by the signal trampoline code in the 64-bit VDSO which is mapped
-into high userspace memory region above 4GB for 64-bit processes.
+Remove WARN_ON_ONCE statements. These have not triggered in the
+past.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org	# v4.19+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/entry.S |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/s390/kernel/perf_cpum_sf.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -1038,8 +1038,7 @@ ENTRY_CFI(intr_save)		/* for os_hpmc */
- 	STREG           %r16, PT_ISR(%r29)
- 	STREG           %r17, PT_IOR(%r29)
+diff --git a/arch/s390/kernel/perf_cpum_sf.c b/arch/s390/kernel/perf_cpum_sf.c
+index 736c1d9632dd5..48fa9471660a8 100644
+--- a/arch/s390/kernel/perf_cpum_sf.c
++++ b/arch/s390/kernel/perf_cpum_sf.c
+@@ -1463,7 +1463,7 @@ static int aux_output_begin(struct perf_output_handle *handle,
+ 	unsigned long range, i, range_scan, idx, head, base, offset;
+ 	struct hws_trailer_entry *te;
  
--#if 0 && defined(CONFIG_64BIT)
--	/* Revisit when we have 64-bit code above 4Gb */
-+#if defined(CONFIG_64BIT)
- 	b,n		intr_save2
+-	if (WARN_ON_ONCE(handle->head & ~PAGE_MASK))
++	if (handle->head & ~PAGE_MASK)
+ 		return -EINVAL;
  
- skip_save_ior:
-@@ -1047,8 +1046,7 @@ skip_save_ior:
- 	 * need to adjust iasq/iaoq here in the same way we adjusted isr/ior
- 	 * above.
- 	 */
--	extrd,u,*	%r8,PSW_W_BIT,1,%r1
--	cmpib,COND(=),n	1,%r1,intr_save2
-+	bb,COND(>=),n	%r8,PSW_W_BIT,intr_save2
- 	LDREG		PT_IASQ0(%r29), %r16
- 	LDREG		PT_IAOQ0(%r29), %r17
- 	/* adjust iasq/iaoq */
+ 	aux->head = handle->head >> PAGE_SHIFT;
+@@ -1642,7 +1642,7 @@ static void hw_collect_aux(struct cpu_hw_sf *cpuhw)
+ 	unsigned long num_sdb;
+ 
+ 	aux = perf_get_aux(handle);
+-	if (WARN_ON_ONCE(!aux))
++	if (!aux)
+ 		return;
+ 
+ 	/* Inform user space new data arrived */
+@@ -1661,7 +1661,7 @@ static void hw_collect_aux(struct cpu_hw_sf *cpuhw)
+ 				num_sdb);
+ 			break;
+ 		}
+-		if (WARN_ON_ONCE(!aux))
++		if (!aux)
+ 			return;
+ 
+ 		/* Update head and alert_mark to new position */
+@@ -1896,12 +1896,8 @@ static void cpumsf_pmu_start(struct perf_event *event, int flags)
+ {
+ 	struct cpu_hw_sf *cpuhw = this_cpu_ptr(&cpu_hw_sf);
+ 
+-	if (WARN_ON_ONCE(!(event->hw.state & PERF_HES_STOPPED)))
++	if (!(event->hw.state & PERF_HES_STOPPED))
+ 		return;
+-
+-	if (flags & PERF_EF_RELOAD)
+-		WARN_ON_ONCE(!(event->hw.state & PERF_HES_UPTODATE));
+-
+ 	perf_pmu_disable(event->pmu);
+ 	event->hw.state = 0;
+ 	cpuhw->lsctl.cs = 1;
+-- 
+2.43.0
+
 
 
 
