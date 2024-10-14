@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-83970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D91599CD6D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:32:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D342299D2D1
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:30:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6B7F283540
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:32:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79D161F23B67
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011C11A3A8D;
-	Mon, 14 Oct 2024 14:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256551CACF2;
+	Mon, 14 Oct 2024 15:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ReoGFDsH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rxhGlpTG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B178739FCE;
-	Mon, 14 Oct 2024 14:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDD41C8781;
+	Mon, 14 Oct 2024 15:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916358; cv=none; b=HR6n2eEcBoO6BOn4/y4FCVvtAwMSs9LyZJDfSmXn7JSCtd194zxpZGzgrcesy87Uk2OVc91R7xOuIzDUhLMncsnxgn1euKOrDW7ZzckXCZPsU/tcC2vo5wpTVhU0F+AbM9XW7knjLnGDeEkoQp5IxhRAxAKc/6II28nbhDY4iHs=
+	t=1728919651; cv=none; b=ZkTHop5xtJK2h5Y2mdPlK3VeuCq2a3/KLJcaCKsS4sGlOhCs7dLqLZQlP88Up3HVTLxqB8xVR80wnzibtWOOR+3i0zqP/x+wh8y6n+XkLXD1OGndFVyFaSE7JgY9YiJVhZDbS4ZgHyaRvnEJw09BtFtJGuWJcD2aabfjoOSqxTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916358; c=relaxed/simple;
-	bh=8hfmwvNc8f3XWsxzEsGeKr9V81+G1Es09nIJD50p3MY=;
+	s=arc-20240116; t=1728919651; c=relaxed/simple;
+	bh=ltmy8P/AfxSwTbMQkqCFGMxt4VAVVQPptHUc6LMACIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EX4ucZzwJ12DMek85aVJcru5wmgHip7GhmOiSyrkvqt/tgmEnewgC3/KKxWa5zeBFPSiACsl6Th8z/4+u7eX6ZK/md2Y/NyaEs4SMppNnPAKjx5eCbdDeWGDTEh300Cq5DL4TIf1d62aSP2SPNjKQYKQ4OwwmYHG1Ootc58PYOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ReoGFDsH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20221C4CEC3;
-	Mon, 14 Oct 2024 14:32:37 +0000 (UTC)
+	 MIME-Version; b=Qx9C5iMUatE7VLxHNK8c1Vg4xyUnTOIisEbdjWHEmrjKWYZt3eleK9384+4OisAiCie9qCykSvfcnEa9Sij9EdaK2kL4rgdxe3AwXh4pPgANx3nESZ6VfP2FLd5LSPAf4Vd50Zb7o8uO9gxIbduyv9OR/h7NF9kxhSSGRNV+noA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rxhGlpTG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5787DC4CEC7;
+	Mon, 14 Oct 2024 15:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916358;
-	bh=8hfmwvNc8f3XWsxzEsGeKr9V81+G1Es09nIJD50p3MY=;
+	s=korg; t=1728919651;
+	bh=ltmy8P/AfxSwTbMQkqCFGMxt4VAVVQPptHUc6LMACIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ReoGFDsH3pR1LuoRnBKRAa2LB9Qnqrx1a1rBqIb/WNLwat8Vzjix8lrtrX/GdojUQ
-	 B+ZJl47D1bUEHnwt3hzKVMIGuTbVR0aOY+UkrAb+VIPbWp9MnGJ2mMhuLCATs4juKo
-	 CGzYkzOv4vLr79yujx0IDTPC4Z/pjl4R4t21kQbg=
+	b=rxhGlpTGN/Bm0GHjPTPJ9+R9+FhqGxkpce9blmulKPPI8DTaSEh19qH2PlaDT3vti
+	 VvO25YPfUjgs5BUSpwVss5S2PZuXovjiNAc4AzWu888BxmZR4zJ7majblhwAf7t+FQ
+	 noLdUzVGNh/rLTgtlP7apHSqwCkIwwUTp7vQ9GYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 129/214] drm/xe: Make wedged_mode debugfs writable
+Subject: [PATCH 6.1 638/798] clk: imx6ul: retain early UART clocks during kernel init
 Date: Mon, 14 Oct 2024 16:19:52 +0200
-Message-ID: <20241014141050.027434223@linuxfoundation.org>
+Message-ID: <20241014141243.106636645@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 1badf482816417dca71f8120b4c540cdc82aa03c ]
+[ Upstream commit 912d7af473f163ccdeb02aaabc3534177936b86c ]
 
-The intent of this debugfs entry is to allow modification of wedging
-behavior, either from IGT tests or during manual debug; it should be
-marked as writable to properly reflect this.  In practice this hasn't
-caused a problem because we always access wedged_mode as root, which
-ignores file permissions, but it's still misleading to have the entry
-incorrectly marked as RO.
+Make sure to keep UART clocks enabled during kernel init if
+earlyprintk or earlycon are active.
 
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Fixes: 6b8ef44cc0a9 ("drm/xe: Introduce the wedged_mode debugfs")
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241002230620.1249258-2-matthew.d.roper@intel.com
-(cherry picked from commit 93d93813422758f6c99289de446b19184019ef5a)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20230421115517.1940990-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Stable-dep-of: 32c055ef563c ("clk: imx6ul: fix clock parent for IMX6UL_CLK_ENETx_REF_SEL")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/imx/clk-imx6ul.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_debugfs.c b/drivers/gpu/drm/xe/xe_debugfs.c
-index 1011e5d281fa9..c87e6bca64d86 100644
---- a/drivers/gpu/drm/xe/xe_debugfs.c
-+++ b/drivers/gpu/drm/xe/xe_debugfs.c
-@@ -190,7 +190,7 @@ void xe_debugfs_register(struct xe_device *xe)
- 	debugfs_create_file("forcewake_all", 0400, root, xe,
- 			    &forcewake_all_fops);
+diff --git a/drivers/clk/imx/clk-imx6ul.c b/drivers/clk/imx/clk-imx6ul.c
+index 3e802befa2d4d..ef6c94b732684 100644
+--- a/drivers/clk/imx/clk-imx6ul.c
++++ b/drivers/clk/imx/clk-imx6ul.c
+@@ -542,6 +542,8 @@ static void __init imx6ul_clocks_init(struct device_node *ccm_node)
  
--	debugfs_create_file("wedged_mode", 0400, root, xe,
-+	debugfs_create_file("wedged_mode", 0600, root, xe,
- 			    &wedged_mode_fops);
+ 	clk_set_parent(hws[IMX6UL_CLK_ENET1_REF_SEL]->clk, hws[IMX6UL_CLK_ENET_REF]->clk);
+ 	clk_set_parent(hws[IMX6UL_CLK_ENET2_REF_SEL]->clk, hws[IMX6UL_CLK_ENET2_REF]->clk);
++
++	imx_register_uart_clocks();
+ }
  
- 	for (mem_type = XE_PL_VRAM0; mem_type <= XE_PL_VRAM1; ++mem_type) {
+ CLK_OF_DECLARE(imx6ul, "fsl,imx6ul-ccm", imx6ul_clocks_init);
 -- 
 2.43.0
 
