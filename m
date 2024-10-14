@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-84962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3345799D321
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 356CE99CDB6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DF91B2734F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 669AF1C22BAB
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77AA11C9EAC;
-	Mon, 14 Oct 2024 15:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8791A76AC;
+	Mon, 14 Oct 2024 14:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYg2uftC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgRb+URO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377051C9B81;
-	Mon, 14 Oct 2024 15:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9144595B;
+	Mon, 14 Oct 2024 14:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919825; cv=none; b=CSk98TjVueFukmnGpRyZ0Se1GAAc8BkpV7chEw+LkRhwqON4hLzGQkohZN8TdwF+UFTmaQh+xSxsqgbKQZrSBgnr+Aw1XE7PnzF4kCXe38JCpxTA982/1XBb4pqLgxDETEA7oNnFWZwY5pANXTrgIxRkt8n/c13+fC9JSaaZDd4=
+	t=1728916519; cv=none; b=eGNfPZ7ITvFz3VH8MVkDGzAHrERBgBlK0z1H37py4JlrLiRW6kIaHVxZeFukD4iU/rUSNIbBeeeeK32CgE03dBogtmHejVbWoRIaBD4CvJEtIHfZlL9qt2F3+c0J1GOQRo05rjxaeFhNSbk9K/Y5CPZo9xHJRlNapUEx6vMsMtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919825; c=relaxed/simple;
-	bh=IEcRA0H9ogbDN9Fd19C+H/LzVXE7fp/gK6uB8kyY6x8=;
+	s=arc-20240116; t=1728916519; c=relaxed/simple;
+	bh=ua23tWhqj+xE83m/RXzAl/11Hv9LGGS7gCTCuooiVXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HroLqvTfhWHPVNaP6IzC/5fcsEg9Ev+H5oeBjkj/iwaxOdLfLgQ0MtVUn91jNUENsvIla4zn6KdsixCXhB0gwO9Smhp5I5XZ33e6hxvDnkD9NXJ361RCEEGCMSt9gMCzgFVqb68TKpss4yoAM+X8/xuFd/5nRvAYoo1Fe3vJ2TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYg2uftC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7FAC4CEC7;
-	Mon, 14 Oct 2024 15:30:24 +0000 (UTC)
+	 MIME-Version; b=dS511DEg6HpOWvSk8ZfEX/3weXsdqWS3Da2sjENrBeJmIHIV+k8b+VnDfYGuDE3LkHTDFckNvvMON2i5LWastAQhQZ/L+4ul/djWmU5sIjUtejmzZburEUnDg1BVLvJLhaxZ66/BA+E0fLR6YzCfjirYRLkpaxFnwRjzlth0A9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgRb+URO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3330AC4CEC3;
+	Mon, 14 Oct 2024 14:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919824;
-	bh=IEcRA0H9ogbDN9Fd19C+H/LzVXE7fp/gK6uB8kyY6x8=;
+	s=korg; t=1728916519;
+	bh=ua23tWhqj+xE83m/RXzAl/11Hv9LGGS7gCTCuooiVXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SYg2uftCjysHRVqC7lOTxt0DaOfa4kvGl3qTh9CqyGEROhoZE8XHFwA81sXnaMytJ
-	 S8tSjajPEwJ8ZxpuH89BB9ThUVNJg+fRa/ygrQaSIItvGOlHlsD54zNILIMBKtSzfl
-	 /Mjjqz7hbat8ItMW9abxUop0pAGjAM77iDoUKre4=
+	b=FgRb+UROaczyh4cDfBEmiolkgNECSc/Qay93GGNeUCsjouE9LMueFlHUrqxXrUkqU
+	 +gFEP8zNZxoxmJSKRDxSoZOmDW7BW89mC/YyTp85N/u7nOLrUjWu925yvpwKPUEJok
+	 VgKNzA6hWmdtMiWkLbEu3NVm/V6huDO2RSHYpf8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Jun <zhujun2@cmss.chinamobile.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 717/798] tools/iio: Add memory allocation failure check for trigger_name
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH 6.11 208/214] PM: domains: Fix alloc/free in dev_pm_domain_attach|detach_list()
 Date: Mon, 14 Oct 2024 16:21:11 +0200
-Message-ID: <20241014141246.234912254@linuxfoundation.org>
+Message-ID: <20241014141053.094901868@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Jun <zhujun2@cmss.chinamobile.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit 3c6b818b097dd6932859bcc3d6722a74ec5931c1 ]
+commit 7738568885f2eaecfc10a3f530a2693e5f0ae3d0 upstream.
 
-Added a check to handle memory allocation failure for `trigger_name`
-and return `-ENOMEM`.
+The dev_pm_domain_attach|detach_list() functions are not resource managed,
+hence they should not use devm_* helpers to manage allocation/freeing of
+data. Let's fix this by converting to the traditional alloc/free functions.
 
-Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
-Link: https://patch.msgid.link/20240828093129.3040-1-zhujun2@cmss.chinamobile.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 161e16a5e50a ("PM: domains: Add helper functions to attach/detach multiple PM domains")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://lore.kernel.org/r/20241002122232.194245-3-ulf.hansson@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/iio/iio_generic_buffer.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/base/power/common.c |   25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
-index 0d0a7a19d6f95..9ef5ee087eda3 100644
---- a/tools/iio/iio_generic_buffer.c
-+++ b/tools/iio/iio_generic_buffer.c
-@@ -498,6 +498,10 @@ int main(int argc, char **argv)
- 			return -ENOMEM;
- 		}
- 		trigger_name = malloc(IIO_MAX_NAME_LENGTH);
-+		if (!trigger_name) {
-+			ret = -ENOMEM;
-+			goto error;
-+		}
- 		ret = read_sysfs_string("name", trig_dev_name, trigger_name);
- 		free(trig_dev_name);
- 		if (ret < 0) {
--- 
-2.43.0
-
+--- a/drivers/base/power/common.c
++++ b/drivers/base/power/common.c
+@@ -195,6 +195,7 @@ int dev_pm_domain_attach_list(struct dev
+ 	struct device *pd_dev = NULL;
+ 	int ret, i, num_pds = 0;
+ 	bool by_id = true;
++	size_t size;
+ 	u32 pd_flags = data ? data->pd_flags : 0;
+ 	u32 link_flags = pd_flags & PD_FLAG_NO_DEV_LINK ? 0 :
+ 			DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME;
+@@ -217,19 +218,17 @@ int dev_pm_domain_attach_list(struct dev
+ 	if (num_pds <= 0)
+ 		return 0;
+ 
+-	pds = devm_kzalloc(dev, sizeof(*pds), GFP_KERNEL);
++	pds = kzalloc(sizeof(*pds), GFP_KERNEL);
+ 	if (!pds)
+ 		return -ENOMEM;
+ 
+-	pds->pd_devs = devm_kcalloc(dev, num_pds, sizeof(*pds->pd_devs),
+-				    GFP_KERNEL);
+-	if (!pds->pd_devs)
+-		return -ENOMEM;
+-
+-	pds->pd_links = devm_kcalloc(dev, num_pds, sizeof(*pds->pd_links),
+-				     GFP_KERNEL);
+-	if (!pds->pd_links)
+-		return -ENOMEM;
++	size = sizeof(*pds->pd_devs) + sizeof(*pds->pd_links);
++	pds->pd_devs = kcalloc(num_pds, size, GFP_KERNEL);
++	if (!pds->pd_devs) {
++		ret = -ENOMEM;
++		goto free_pds;
++	}
++	pds->pd_links = (void *)(pds->pd_devs + num_pds);
+ 
+ 	if (link_flags && pd_flags & PD_FLAG_DEV_LINK_ON)
+ 		link_flags |= DL_FLAG_RPM_ACTIVE;
+@@ -272,6 +271,9 @@ err_attach:
+ 			device_link_del(pds->pd_links[i]);
+ 		dev_pm_domain_detach(pds->pd_devs[i], true);
+ 	}
++	kfree(pds->pd_devs);
++free_pds:
++	kfree(pds);
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(dev_pm_domain_attach_list);
+@@ -318,6 +320,9 @@ void dev_pm_domain_detach_list(struct de
+ 			device_link_del(list->pd_links[i]);
+ 		dev_pm_domain_detach(list->pd_devs[i], true);
+ 	}
++
++	kfree(list->pd_devs);
++	kfree(list);
+ }
+ EXPORT_SYMBOL_GPL(dev_pm_domain_detach_list);
+ 
 
 
 
