@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-84237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C968E99CF31
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:52:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1B299D358
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F0AA1F2301B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:52:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 601C5B2788F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3FF1BE223;
-	Mon, 14 Oct 2024 14:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89BD1AB6E9;
+	Mon, 14 Oct 2024 15:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6hoVmAx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O2jO5Ay9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F3C481B3;
-	Mon, 14 Oct 2024 14:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F6C1B85E3;
+	Mon, 14 Oct 2024 15:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917306; cv=none; b=eOPUsjicLqu6kFj9MqYqQnp3T1ZN8kd4NadR8gASpsvi03oG6c34aYXwoMeyYYISQVQHKEzdWPY4XGIGC8yWGcUuhdrO4HOZnIdPb9WU6yCe+8Le2MnhXNm1VjsZfXSQ2Roj7916PVrTc+Dhu1YMzh5xEyYO6mvjtDzqRMQFlXs=
+	t=1728919969; cv=none; b=JhZ2KczLkFhhMZcdJosg8+ufBD3TzbBqejazrsPZ7PMbIjgvYioTSTooaPGLvlRny51eYfWHFwmt00dipGSXZjNamwcnIlXj/noknrzOKNGNsEginRDJiu2PGnpJuMxMX5IkrKyW8xfrgAyOLkrwBrpJYjfA6yyTS2afPsYNvgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917306; c=relaxed/simple;
-	bh=9E/bBisSYz+F/nW59Cy1viWQ7cw0qXLaXitdLCgDql8=;
+	s=arc-20240116; t=1728919969; c=relaxed/simple;
+	bh=+0hA3/znlRPV8ZJ0XRBWGuSYDs19H2svZA5Eu3tZzsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sECVGKbKe5GxySpM8a/ZI50AFAZVD20/l4E21jxUzMNU1+0O83UKnpXWep0WnyFiKUFnPV0Uu33NLXmGTRvc9/ExTNQVLxU9BePb449++miWB2DOc12/qSDamVI+KSXi1fDhh5EU+Vt0qaDKjY3St8TenddJWdAibwBmSAprcbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6hoVmAx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1CF3C4CEC3;
-	Mon, 14 Oct 2024 14:48:25 +0000 (UTC)
+	 MIME-Version; b=FobGTGTcEeRZQtypAVqvIVgUbGBLAPNojvAMeTWKKtEJMBdcGbC4xJhcj1uA4yqk+isGDLxgsLnQolgceQl+cganASseAwTFOlhFVGgh09gXHDZZlrShy+9g5gznoJF2LwpLAOKOBOf7i0LfE3OthLAz1a+2XPu+YOdUTs0TSX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O2jO5Ay9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C1EC4CEC3;
+	Mon, 14 Oct 2024 15:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917306;
-	bh=9E/bBisSYz+F/nW59Cy1viWQ7cw0qXLaXitdLCgDql8=;
+	s=korg; t=1728919969;
+	bh=+0hA3/znlRPV8ZJ0XRBWGuSYDs19H2svZA5Eu3tZzsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k6hoVmAxkkBg26Ts9EGNC4LP0CDxFUe1jIyEt60OlZh+MIqlCVa7D07f6BYyFXMmQ
-	 Xr7kQfUXY2x+Asis/1DI6rxBAKqtHmQGWFqLrThEJYh5kDNiW5E1ngpc4IQ3JCcC2i
-	 G5m0hL1n8LUexEMV38IJxclldFnoY9J6x8j3uhgM=
+	b=O2jO5Ay9IOhORfwrDRfUlbik8AbrXV/qZiBEUbW385Tswng5yfK7quW51wgwMeWxY
+	 UrMi3qjRR37XRNrTixSvrl/D8oQHbV4CsxFyw3e4cg7S6KGYczFehEBBWB1RsHDdxp
+	 NA8/d8hH9nQtOv6skh5IvQaeviqo+E20XQfIvg84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wade Wang <wade.wang@hp.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.6 181/213] HID: plantronics: Workaround for an unexcepted opposite volume key
+	Neal Cardwell <ncardwell@google.com>,
+	Yuchung Cheng <ycheng@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 733/798] tcp: fix tcp_enter_recovery() to zero retrans_stamp when its safe
 Date: Mon, 14 Oct 2024 16:21:27 +0200
-Message-ID: <20241014141050.030714705@linuxfoundation.org>
+Message-ID: <20241014141246.867802240@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +64,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wade Wang <wade.wang@hp.com>
+From: Neal Cardwell <ncardwell@google.com>
 
-commit 87b696209007b7c4ef7bdfe39ea0253404a43770 upstream.
+[ Upstream commit b41b4cbd9655bcebcce941bef3601db8110335be ]
 
-Some Plantronics headset as the below send an unexcept opposite
-volume key's HID report for each volume key press after 200ms, like
-unecepted Volume Up Key following Volume Down key pressed by user.
-This patch adds a quirk to hid-plantronics for these devices, which
-will ignore the second unexcepted opposite volume key if it happens
-within 220ms from the last one that was handled.
-    Plantronics EncorePro 500 Series  (047f:431e)
-    Plantronics Blackwire_3325 Series (047f:430c)
+Fix tcp_enter_recovery() so that if there are no retransmits out then
+we zero retrans_stamp when entering fast recovery. This is necessary
+to fix two buggy behaviors.
 
-The patch was tested on the mentioned model, it shouldn't affect
-other models, however, this quirk might be needed for them too.
-Auto-repeat (when a key is held pressed) is not affected per test
-result.
+Currently a non-zero retrans_stamp value can persist across multiple
+back-to-back loss recovery episodes. This is because we generally only
+clears retrans_stamp if we are completely done with loss recoveries,
+and get to tcp_try_to_open() and find !tcp_any_retrans_done(sk). This
+behavior causes two bugs:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Wade Wang <wade.wang@hp.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(1) When a loss recovery episode (CA_Loss or CA_Recovery) is followed
+immediately by a new CA_Recovery, the retrans_stamp value can persist
+and can be a time before this new CA_Recovery episode starts. That
+means that timestamp-based undo will be using the wrong retrans_stamp
+(a value that is too old) when comparing incoming TS ecr values to
+retrans_stamp to see if the current fast recovery episode can be
+undone.
+
+(2) If there is a roughly minutes-long sequence of back-to-back fast
+recovery episodes, one after another (e.g. in a shallow-buffered or
+policed bottleneck), where each fast recovery successfully makes
+forward progress and recovers one window of sequence space (but leaves
+at least one retransmit in flight at the end of the recovery),
+followed by several RTOs, then the ETIMEDOUT check may be using the
+wrong retrans_stamp (a value set at the start of the first fast
+recovery in the sequence). This can cause a very premature ETIMEDOUT,
+killing the connection prematurely.
+
+This commit changes the code to zero retrans_stamp when entering fast
+recovery, when this is known to be safe (no retransmits are out in the
+network). That ensures that when starting a fast recovery episode, and
+it is safe to do so, retrans_stamp is set when we send the fast
+retransmit packet. That addresses both bug (1) and bug (2) by ensuring
+that (if no retransmits are out when we start a fast recovery) we use
+the initial fast retransmit of this fast recovery as the time value
+for undo and ETIMEDOUT calculations.
+
+This makes intuitive sense, since the start of a new fast recovery
+episode (in a scenario where no lost packets are out in the network)
+means that the connection has made forward progress since the last RTO
+or fast recovery, and we should thus "restart the clock" used for both
+undo and ETIMEDOUT logic.
+
+Note that if when we start fast recovery there *are* retransmits out
+in the network, there can still be undesirable (1)/(2) issues. For
+example, after this patch we can still have the (1) and (2) problems
+in cases like this:
+
++ round 1: sender sends flight 1
+
++ round 2: sender receives SACKs and enters fast recovery 1,
+  retransmits some packets in flight 1 and then sends some new data as
+  flight 2
+
++ round 3: sender receives some SACKs for flight 2, notes losses, and
+  retransmits some packets to fill the holes in flight 2
+
++ fast recovery has some lost retransmits in flight 1 and continues
+  for one or more rounds sending retransmits for flight 1 and flight 2
+
++ fast recovery 1 completes when snd_una reaches high_seq at end of
+  flight 1
+
++ there are still holes in the SACK scoreboard in flight 2, so we
+  enter fast recovery 2, but some retransmits in the flight 2 sequence
+  range are still in flight (retrans_out > 0), so we can't execute the
+  new retrans_stamp=0 added here to clear retrans_stamp
+
+It's not yet clear how to fix these remaining (1)/(2) issues in an
+efficient way without breaking undo behavior, given that retrans_stamp
+is currently used for undo and ETIMEDOUT. Perhaps the optimal (but
+expensive) strategy would be to set retrans_stamp to the timestamp of
+the earliest outstanding retransmit when entering fast recovery. But
+at least this commit makes things better.
+
+Note that this does not change the semantics of retrans_stamp; it
+simply makes retrans_stamp accurate in some cases where it was not
+before:
+
+(1) Some loss recovery, followed by an immediate entry into a fast
+recovery, where there are no retransmits out when entering the fast
+recovery.
+
+(2) When a TFO server has a SYNACK retransmit that sets retrans_stamp,
+and then the ACK that completes the 3-way handshake has SACK blocks
+that trigger a fast recovery. In this case when entering fast recovery
+we want to zero out the retrans_stamp from the TFO SYNACK retransmit,
+and set the retrans_stamp based on the timestamp of the fast recovery.
+
+We introduce a tcp_retrans_stamp_cleanup() helper, because this
+two-line sequence already appears in 3 places and is about to appear
+in 2 more as a result of this bug fix patch series. Once this bug fix
+patches series in the net branch makes it into the net-next branch
+we'll update the 3 other call sites to use the new helper.
+
+This is a long-standing issue. The Fixes tag below is chosen to be the
+oldest commit at which the patch will apply cleanly, which is from
+Linux v3.5 in 2012.
+
+Fixes: 1fbc340514fc ("tcp: early retransmit: tcp_enter_recovery()")
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241001200517.2756803-3-ncardwell.sw@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h         |    2 ++
- drivers/hid/hid-plantronics.c |   23 +++++++++++++++++++++++
- 2 files changed, 25 insertions(+)
+ net/ipv4/tcp_input.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -1033,6 +1033,8 @@
- #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3220_SERIES	0xc056
- #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3215_SERIES	0xc057
- #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES	0xc058
-+#define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES	0x430c
-+#define USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES		0x431e
- 
- #define USB_VENDOR_ID_PANASONIC		0x04da
- #define USB_DEVICE_ID_PANABOARD_UBT780	0x1044
---- a/drivers/hid/hid-plantronics.c
-+++ b/drivers/hid/hid-plantronics.c
-@@ -38,8 +38,10 @@
- 			    (usage->hid & HID_USAGE_PAGE) == HID_UP_CONSUMER)
- 
- #define PLT_QUIRK_DOUBLE_VOLUME_KEYS BIT(0)
-+#define PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS BIT(1)
- 
- #define PLT_DOUBLE_KEY_TIMEOUT 5 /* ms */
-+#define PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT 220 /* ms */
- 
- struct plt_drv_data {
- 	unsigned long device_type;
-@@ -137,6 +139,21 @@ static int plantronics_event(struct hid_
- 
- 		drv_data->last_volume_key_ts = cur_ts;
- 	}
-+	if (drv_data->quirks & PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS) {
-+		unsigned long prev_ts, cur_ts;
-+
-+		/* Usages are filtered in plantronics_usages. */
-+
-+		if (!value) /* Handle key presses only. */
-+			return 0;
-+
-+		prev_ts = drv_data->last_volume_key_ts;
-+		cur_ts = jiffies;
-+		if (jiffies_to_msecs(cur_ts - prev_ts) <= PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT)
-+			return 1; /* Ignore the followed opposite volume key. */
-+
-+		drv_data->last_volume_key_ts = cur_ts;
-+	}
- 
- 	return 0;
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 5b7345a3a96e4..9ac47ccfe1203 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -2489,6 +2489,16 @@ static bool tcp_any_retrans_done(const struct sock *sk)
+ 	return false;
  }
-@@ -210,6 +227,12 @@ static const struct hid_device_id plantr
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
- 					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES),
- 		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
-+					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES),
-+		.driver_data = PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
-+					 USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES),
-+		.driver_data = PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS, HID_ANY_ID) },
- 	{ }
- };
+ 
++/* If loss recovery is finished and there are no retransmits out in the
++ * network, then we clear retrans_stamp so that upon the next loss recovery
++ * retransmits_timed_out() and timestamp-undo are using the correct value.
++ */
++static void tcp_retrans_stamp_cleanup(struct sock *sk)
++{
++	if (!tcp_any_retrans_done(sk))
++		tcp_sk(sk)->retrans_stamp = 0;
++}
++
+ static void DBGUNDO(struct sock *sk, const char *msg)
+ {
+ #if FASTRETRANS_DEBUG > 1
+@@ -2856,6 +2866,9 @@ void tcp_enter_recovery(struct sock *sk, bool ece_ack)
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 	int mib_idx;
+ 
++	/* Start the clock with our fast retransmit, for undo and ETIMEDOUT. */
++	tcp_retrans_stamp_cleanup(sk);
++
+ 	if (tcp_is_reno(tp))
+ 		mib_idx = LINUX_MIB_TCPRENORECOVERY;
+ 	else
+-- 
+2.43.0
+
 
 
 
