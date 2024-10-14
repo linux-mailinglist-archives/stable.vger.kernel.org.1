@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-83838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C0199CCC9
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:24:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD7399D1FE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3767B212B5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:24:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DDA51C23192
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807DE19E802;
-	Mon, 14 Oct 2024 14:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8701B85C2;
+	Mon, 14 Oct 2024 15:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mvsTqWa8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRW37OMt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B926E571;
-	Mon, 14 Oct 2024 14:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376041B4F2C;
+	Mon, 14 Oct 2024 15:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915891; cv=none; b=BnhSeCYygq76UBmeY4Cs8nFmTMv1GA5r9bUkhSoGgC464uKOqTRJ1X80GgRm4SEjsCnm4JacSwBZDDA7DPG6X1HhSoP7tYp2LgUmBBnb4Xki95OPx3N8WJNnNXA8HlwzYiioOm+AcahtVUJ80/wbUMEm8TyY/TQyW9DA4U/gPS8=
+	t=1728919118; cv=none; b=ltdQW5VE20OpS9Ei/4fwwBblsvyMDSoJteTWm0GGMw+QmZhC4rDkhpC/4w3wRU3JfJnPLt2VxzU6fS1Zhldk58p5XRIoSyyPP0pH5wI/P7IdQUYUM7s9iyMeezmmMiuhBcskbQE3I6/9G8b8cIs3WTzHCnkRwZ+zkNZk+elEkyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915891; c=relaxed/simple;
-	bh=1Tn2NGhjYACNPr6NXGFv1Ens55ANiwaFFo8riPQRCfU=;
+	s=arc-20240116; t=1728919118; c=relaxed/simple;
+	bh=XypvQoMakyGpn+W5QNflRu1r3SaqWpwVeqSvEIHcxIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UbcEu52ypwVNSwj2itpH4EmBP9TfoPnp2c3qEG4Km5sjcdPKXM5eiiAaaw22y97Ibd9g7O0q3WiNhJbXniQv2Vawe/dx6TS9/AEtRxYn+e5YYumd1sniHS20p8dcwRFYNO7HKkzlnzMnsnnlFDayfNRWEGyRSEyf18pDwI5ngh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mvsTqWa8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A371C4CEC3;
-	Mon, 14 Oct 2024 14:24:49 +0000 (UTC)
+	 MIME-Version; b=Yv+nRpHGdmzqZUdFuz+bIcxZxL6E6bjoQviHt9X/1dljlAuNP/9+wppq2hWVgFbMatO6LV8U2+JHDyJuF1SFc3waOMNur7SJ8lWdGWvy7yUeThFRUY7H1y40Iad0yrpwFV0Mv02uLLUBO7I4cSiv36MGzmx41XHGJaHe4ZMsLKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRW37OMt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD34C4CEC3;
+	Mon, 14 Oct 2024 15:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915891;
-	bh=1Tn2NGhjYACNPr6NXGFv1Ens55ANiwaFFo8riPQRCfU=;
+	s=korg; t=1728919118;
+	bh=XypvQoMakyGpn+W5QNflRu1r3SaqWpwVeqSvEIHcxIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mvsTqWa8/BraYU05K0UGEHFZ3dH57Qo6CVSiAjEY4Ev32zXj1Z+FPJ5Z4bciVfHmn
-	 0VVlx5+ClrEcpj0F0FqZnRSI39Sa5kV+3ST+lMfWRIDHOUVRt0Pbvhfy4C8ISt4XIL
-	 KbAGgul0o7cKrxzMasWJ8zJYWkZAEuLU3m366Myw=
+	b=qRW37OMtYJz9jXGm5ya6IGKBP80OuNYYHaaqfJIJ9sFT+9xg0yEwEhxuyw13SzV+W
+	 CyQXEafa4id8nguUqlCcCS7fSjguTwG+wjORUwAA5fJS4/2o/Nq1jMQi6AEhjGEmQE
+	 9SyASakI1X0QWWHuUWiiPE81z+fFw8XfuyN2m77s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Srujana Challa <schalla@marvell.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 008/214] vdpa/octeon_ep: Fix format specifier for pointers in debug messages
-Date: Mon, 14 Oct 2024 16:17:51 +0200
-Message-ID: <20241014141045.317378206@linuxfoundation.org>
+Subject: [PATCH 6.1 518/798] selftests: vDSO: fix vDSO symbols lookup for powerpc64
+Date: Mon, 14 Oct 2024 16:17:52 +0200
+Message-ID: <20241014141238.329498933@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srujana Challa <schalla@marvell.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit bc0dcbc5c2c539f37004f2cce0e6e245b2e50b6c ]
+[ Upstream commit ba83b3239e657469709d15dcea5f9b65bf9dbf34 ]
 
-Updates the debug messages in octep_vdpa_hw.c to use the %p format
-specifier for pointers instead of casting them to u64.
+On powerpc64, following tests fail locating vDSO functions:
 
-Fixes smatch warning:
-octep_hw_caps_read() warn: argument 3 to %016llx specifier is cast
-from pointer
+  ~ # ./vdso_test_abi
+  TAP version 13
+  1..16
+  # [vDSO kselftest] VDSO_VERSION: LINUX_2.6.15
+  # Couldn't find __kernel_gettimeofday
+  ok 1 # SKIP __kernel_gettimeofday
+  # clock_id: CLOCK_REALTIME
+  # Couldn't find __kernel_clock_gettime
+  ok 2 # SKIP __kernel_clock_gettime CLOCK_REALTIME
+  # Couldn't find __kernel_clock_getres
+  ok 3 # SKIP __kernel_clock_getres CLOCK_REALTIME
+  ...
+  # Couldn't find __kernel_time
+  ok 16 # SKIP __kernel_time
+  # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:16 error:0
 
-Fixes: 8b6c724cdab8 ("virtio: vdpa: vDPA driver for Marvell OCTEON DPU devices")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202409160431.bRhZWhiU-lkp@intel.com/
-Signed-off-by: Srujana Challa <schalla@marvell.com>
-Message-Id: <20240916162255.677774-1-schalla@marvell.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+  ~ # ./vdso_test_getrandom
+  __kernel_getrandom is missing!
+
+  ~ # ./vdso_test_gettimeofday
+  Could not find __kernel_gettimeofday
+
+  ~ # ./vdso_test_getcpu
+  Could not find __kernel_getcpu
+
+On powerpc64, as shown below by readelf, vDSO functions symbols have
+type NOTYPE, so also accept that type when looking for symbols.
+
+$ powerpc64-linux-gnu-readelf -a arch/powerpc/kernel/vdso/vdso64.so.dbg
+ELF Header:
+  Magic:   7f 45 4c 46 02 02 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF64
+  Data:                              2's complement, big endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Shared object file)
+  Machine:                           PowerPC64
+  Version:                           0x1
+...
+
+Symbol table '.dynsym' contains 12 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND
+     1: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     2: 00000000000005f0    36 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     3: 0000000000000578    68 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     4: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
+     5: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     6: 0000000000000614   172 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     7: 00000000000006f0    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     8: 000000000000047c    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     9: 0000000000000454    12 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+    10: 00000000000004d0    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+    11: 00000000000005bc    52 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+
+Symbol table '.symtab' contains 56 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+...
+    45: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
+    46: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __kernel_getcpu
+    47: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_getres
+    48: 00000000000005f0    36 NOTYPE  GLOBAL DEFAULT    8 __kernel_get_tbfreq
+    49: 000000000000047c    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_gettimeofday
+    50: 0000000000000614   172 NOTYPE  GLOBAL DEFAULT    8 __kernel_sync_dicache
+    51: 00000000000006f0    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_getrandom
+    52: 0000000000000454    12 NOTYPE  GLOBAL DEFAULT    8 __kernel_sigtram[...]
+    53: 0000000000000578    68 NOTYPE  GLOBAL DEFAULT    8 __kernel_time
+    54: 00000000000004d0    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_g[...]
+    55: 00000000000005bc    52 NOTYPE  GLOBAL DEFAULT    8 __kernel_get_sys[...]
+
+Fixes: 98eedc3a9dbf ("Document the vDSO and add a reference parser")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/octeon_ep/octep_vdpa_hw.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tools/testing/selftests/vDSO/parse_vdso.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vdpa/octeon_ep/octep_vdpa_hw.c b/drivers/vdpa/octeon_ep/octep_vdpa_hw.c
-index 11bd76ae18cf9..1d4767b33315e 100644
---- a/drivers/vdpa/octeon_ep/octep_vdpa_hw.c
-+++ b/drivers/vdpa/octeon_ep/octep_vdpa_hw.c
-@@ -475,11 +475,11 @@ int octep_hw_caps_read(struct octep_hw *oct_hw, struct pci_dev *pdev)
- 		dev_err(dev, "Incomplete PCI capabilities");
- 		return -EIO;
- 	}
--	dev_info(dev, "common cfg mapped at: 0x%016llx\n", (u64)(uintptr_t)oct_hw->common_cfg);
--	dev_info(dev, "device cfg mapped at: 0x%016llx\n", (u64)(uintptr_t)oct_hw->dev_cfg);
--	dev_info(dev, "isr cfg mapped at: 0x%016llx\n", (u64)(uintptr_t)oct_hw->isr);
--	dev_info(dev, "notify base: 0x%016llx, notify off multiplier: %u\n",
--		 (u64)(uintptr_t)oct_hw->notify_base, oct_hw->notify_off_multiplier);
-+	dev_info(dev, "common cfg mapped at: %p\n", oct_hw->common_cfg);
-+	dev_info(dev, "device cfg mapped at: %p\n", oct_hw->dev_cfg);
-+	dev_info(dev, "isr cfg mapped at: %p\n", oct_hw->isr);
-+	dev_info(dev, "notify base: %p, notify off multiplier: %u\n",
-+		 oct_hw->notify_base, oct_hw->notify_off_multiplier);
+diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
+index 4ae417372e9eb..d9ccc5acac182 100644
+--- a/tools/testing/selftests/vDSO/parse_vdso.c
++++ b/tools/testing/selftests/vDSO/parse_vdso.c
+@@ -216,7 +216,8 @@ void *vdso_sym(const char *version, const char *name)
+ 		ELF(Sym) *sym = &vdso_info.symtab[chain];
  
- 	oct_hw->config_size = octep_get_config_size(oct_hw);
- 	oct_hw->features = octep_hw_get_dev_features(oct_hw);
-@@ -511,7 +511,7 @@ int octep_hw_caps_read(struct octep_hw *oct_hw, struct pci_dev *pdev)
- 	}
- 	mbox = octep_get_mbox(oct_hw);
- 	octep_mbox_init(mbox);
--	dev_info(dev, "mbox mapped at: 0x%016llx\n", (u64)(uintptr_t)mbox);
-+	dev_info(dev, "mbox mapped at: %p\n", mbox);
- 
- 	return 0;
- }
+ 		/* Check for a defined global or weak function w/ right name. */
+-		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC)
++		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC &&
++		    ELF64_ST_TYPE(sym->st_info) != STT_NOTYPE)
+ 			continue;
+ 		if (ELF64_ST_BIND(sym->st_info) != STB_GLOBAL &&
+ 		    ELF64_ST_BIND(sym->st_info) != STB_WEAK)
 -- 
 2.43.0
 
