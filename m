@@ -1,131 +1,143 @@
-Return-Path: <stable+bounces-84805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE0299D22E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A499199D2D8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B91FBB26B3B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67EB7287148
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B266B1ADFFB;
-	Mon, 14 Oct 2024 15:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3681CB531;
+	Mon, 14 Oct 2024 15:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D9hdYh6t"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="J0wSZSHz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730BE1AC887
-	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 15:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BD51AE00C
+	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 15:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919274; cv=none; b=MkYB0NJU+jgTpJmoRz5x9X6HZYcdyRRrp9Om5n7iJafhAhpirLveyFyLfig6dG8y6xXaHfzeUILrtaat4Dt/oErxBJAvyL+g86jRBKtoqoeiofaikKAsBDZk5vvpNKZbIi29y78qw91IQDNsmmtANzmRenf9zpRl5ng3+vnzFwE=
+	t=1728919664; cv=none; b=SBUTU+cflRXJHgz9BuB4FMhzkHkGpF7gj7fFJWJB3Fo1R2J6v+kA/GCWWxPd8oNHxRWqTiGctA1dSKugbs8OnhgqEWAWXOLz4l/4d52igikXqQF1YzoqsAtDR/dSJ8YpRyTYew5MLRUyTt3Z79US3WePx+9ypqonGOEF5PMXBsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919274; c=relaxed/simple;
-	bh=vfyV2JLArq//R3EZAY5T/9gykyXsGDAtc1ey8X9Ha9I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bt4Bzays11pJDvTOJ+ZsL9nGC8SbYIu1MGdeRIgU2tSnYC4APMlL4hXDnn+O1E/JQeFy1kSGDDFg9QLlI+kU/Gb5B3SLJt0CuG8aZxLSViYB43/koltYpb4QnJ0NyuMsTj+gSN2LH867CDxgeaKPMrM+QUiMFHOCTSGscRpBvHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D9hdYh6t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262A8C4CEC3;
-	Mon, 14 Oct 2024 15:21:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728919274;
-	bh=vfyV2JLArq//R3EZAY5T/9gykyXsGDAtc1ey8X9Ha9I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9hdYh6tIv2YYru2QRnQcCc+G9LQD89PUvfPXnvxlC0nsxEOL1+6+Qw1dUgYfHlNR
-	 12Ghy8D4g89gdjH8HzGDYv7xF9w63t+nTooCQ6J9Ug6sAjX+3tn60CQ2WH7Rv+b9Oc
-	 qNLPopQd0vqd3qiNUsUrqcGNsYxghTnGe1gz0bi7sKVORLUGrqAz+ynrUezucXqvsb
-	 6XwZnJdIfHqvHyoqJGklrx+lwgSpxDN8E/SyM6ey6PVDA1o1Nb+eJ/KcOUsg0Zz6JQ
-	 dJGe5Xzrz0BjnI+D8FXPtc4xH8vw9RFjNg4FYURdCerwGjvPTc54o+BthAtJs3suZk
-	 YmldPonncf1uQ==
-From: Mike Rapoport <rppt@kernel.org>
-To: stable@vger.kernel.org
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Patrick Roy <roypat@amazon.co.uk>
-Subject: [PATCH 5.15.y] secretmem: disable memfd_secret() if arch cannot set direct map
-Date: Mon, 14 Oct 2024 18:21:03 +0300
-Message-ID: <20241014152103.1328260-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024101412-prowling-snowflake-9fe0@gregkh>
-References: <2024101412-prowling-snowflake-9fe0@gregkh>
+	s=arc-20240116; t=1728919664; c=relaxed/simple;
+	bh=b6yahaVdr8hTpYrymapwr8Gi+VRT/0jILQ68OOYwggY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SFVqvyzV4jQC2l5euEb1aKmZqPhM/FXX8krZDi7l7I8B/TS0cQCiPBqh8QJC6MDbhpNVcA58dbPr94eByUtVPEaV9jf4cORv7dJl2ZMrMW9EcvCvfWtOs5+yWB38y+hp7Xq28PCQ62/VcbwaXLFPaUg0MAjbqxJkkgmx0nwu+JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=J0wSZSHz; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-716a5b30089so264268a34.3
+        for <stable@vger.kernel.org>; Mon, 14 Oct 2024 08:27:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1728919661; x=1729524461; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z9yIRP/KsLjcxcxII5/lXPcFtxtuaU6xnyFBDOKX70k=;
+        b=J0wSZSHz7jfKiplh5hlAMnwHZL6GVkmQ8aiu9dFw0U9pD7W+XLAQHziBcXfwsbUqEC
+         SpS4BdH2SsGQhZqG7u6ilWq5h1ejCeIUSP9ufg/ywf9+aJTAiAi6prF83OW45YYahMcg
+         +5/g7ly9pStnPj403BWMsDGzVtim8teltumtY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728919661; x=1729524461;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z9yIRP/KsLjcxcxII5/lXPcFtxtuaU6xnyFBDOKX70k=;
+        b=JD0UB156eR9E8heI5ZY2iMIVKGKBvvnBtZdfwnwjlkJ7dpNBfG/Y7r9kGeHBETPN8k
+         d2/tk+JS2+DUmsZksEIbkU4pAMJDIn0j/1AM4g7Nv9uRnLxgeAJyY2gr4wYYTbAJLfgE
+         5mVKUYbTQ/E96dc5tUZE5YjRol2NYgHheEai1L+YP8AGkUpv8gHOIcEF+oLD0c12Ewsh
+         +DT66vBhy830oqYdRBKW12Qw6fm1Bkhy2oumUhDo3ja8rLGRxVcCFqsOnI2M3oa8wgwp
+         e7/NQPTR4wjEUUaHOwcXGjA/UCdy835aocKcCIWZVXefu8vI9lx9lc6uU9kZNw8xDPUB
+         /hyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXtABBgN2PszBE7bTkjPrYs5hldWNPZAo7H0o29fjadTJse7T61K6kNMnYvGlO2P62IuuMBc+k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0bbRqWzpBpuydK7oqb7ChfthiOM8MnsMCtC/7zp+K0NyoiBMV
+	KJv4rXDqofsIjFZjQk6jY8TrbSKd8nJy0MIurJOW1N6lkZUJvwBkCfaoYj61z+TTAQL/iaJnIv7
+	tZDlPePHtUIZ06LlsbhO+JDna5GLjSpHFT4NGa9i6+o9U/a8=
+X-Google-Smtp-Source: AGHT+IEziAPSxkdF8eMOp1RXN7d7s544AwYMwxr/wUwFC7ODFvd8sIDGR1p6z81kLbwviBR4qLmSxoKaxW0zWGIF+0c=
+X-Received: by 2002:a05:6870:e416:b0:27b:73dd:2a85 with SMTP id
+ 586e51a60fabf-2886dd50b7amr2143445fac.1.1728919661579; Mon, 14 Oct 2024
+ 08:27:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CABi2SkW0Q8zAkmVg8qz9WV+Fkjft4stO67ajx0Gos82Sc4vjhg@mail.gmail.com>
+ <2024101439-scotch-ceremony-c2a8@gregkh>
+In-Reply-To: <2024101439-scotch-ceremony-c2a8@gregkh>
+From: Jeff Xu <jeffxu@chromium.org>
+Date: Mon, 14 Oct 2024 08:27:29 -0700
+Message-ID: <CABi2SkWSLHfcBhsa2OQqtTjUa-gNRYXWthwPeWrrEQ1pUhfnJg@mail.gmail.com>
+Subject: Re: backport mseal and mseal_test to 6.10
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Pedro Falcato <pedro.falcato@gmail.com>, 
+	stable@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
+	Oleg Nesterov <oleg@redhat.com>, Kees Cook <keescook@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Patrick Roy <roypat@amazon.co.uk>
+On Sun, Oct 13, 2024 at 10:54=E2=80=AFPM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
+>
+> On Sun, Oct 13, 2024 at 10:17:48PM -0700, Jeff Xu wrote:
+> > Hi Greg,
+> >
+> > How are you?
+> >
+> > What is the process to backport Pedro's recent mseal fixes to 6.10 ?
+>
+> Please read:
+>     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.ht=
+ml
+> for how all of this works :)
+>
+> > Specifically those 5 commits:
+> >
+> > 67203f3f2a63d429272f0c80451e5fcc469fdb46
+> >     selftests/mm: add mseal test for no-discard madvise
+> >
+> > 4d1b3416659be70a2251b494e85e25978de06519
+> >     mm: move can_modify_vma to mm/vma.h
+> >
+> >  4a2dd02b09160ee43f96c759fafa7b56dfc33816
+> >   mm/mprotect: replace can_modify_mm with can_modify_vma
+> >
+> > 23c57d1fa2b9530e38f7964b4e457fed5a7a0ae8
+> >       mseal: replace can_modify_mm_madv with a vma variant
+> >
+> > f28bdd1b17ec187eaa34845814afaaff99832762
+> >    selftests/mm: add more mseal traversal tests
+> >
+> > There will be merge conflicts, I  can backport them to 5.10 and test
+> > to help the backporting process.
+>
+> 5.10 or 6.10?
+>
+6.10.
 
-Return -ENOSYS from memfd_secret() syscall if !can_set_direct_map().
-This is the case for example on some arm64 configurations, where marking
-4k PTEs in the direct map not present can only be done if the direct map
-is set up at 4k granularity in the first place (as ARM's
-break-before-make semantics do not easily allow breaking apart
-large/gigantic pages).
+> And why 6.10?  If you look at the front page of kernel.org you will see
+> that 6.10 is now end-of-life, so why does that kernel matter to you
+> anymore?
+>
+OK, I didn't know that. Less work is nice :-)
 
-More precisely, on arm64 systems with !can_set_direct_map(),
-set_direct_map_invalid_noflush() is a no-op, however it returns success
-(0) instead of an error. This means that memfd_secret will seemingly
-"work" (e.g. syscall succeeds, you can mmap the fd and fault in pages),
-but it does not actually achieve its goal of removing its memory from
-the direct map.
+Thanks!
+-Jeff
 
-Note that with this patch, memfd_secret() will start erroring on systems
-where can_set_direct_map() returns false (arm64 with
-CONFIG_RODATA_FULL_DEFAULT_ENABLED=n, CONFIG_DEBUG_PAGEALLOC=n and
-CONFIG_KFENCE=n), but that still seems better than the current silent
-failure. Since CONFIG_RODATA_FULL_DEFAULT_ENABLED defaults to 'y', most
-arm64 systems actually have a working memfd_secret() and aren't be
-affected.
-
->From going through the iterations of the original memfd_secret patch
-series, it seems that disabling the syscall in these scenarios was the
-intended behavior [1] (preferred over having
-set_direct_map_invalid_noflush return an error as that would result in
-SIGBUSes at page-fault time), however the check for it got dropped
-between v16 [2] and v17 [3], when secretmem moved away from CMA
-allocations.
-
-[1]: https://lore.kernel.org/lkml/20201124164930.GK8537@kernel.org/
-[2]: https://lore.kernel.org/lkml/20210121122723.3446-11-rppt@kernel.org/#t
-[3]: https://lore.kernel.org/lkml/20201125092208.12544-10-rppt@kernel.org/
-
-Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
-Signed-off-by: Patrick Roy <roypat@amazon.co.uk>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- mm/secretmem.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index d1986ce2e7c7..624663a94808 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -234,7 +234,7 @@ SYSCALL_DEFINE1(memfd_secret, unsigned int, flags)
- 	/* make sure local flags do not confict with global fcntl.h */
- 	BUILD_BUG_ON(SECRETMEM_FLAGS_MASK & O_CLOEXEC);
- 
--	if (!secretmem_enable)
-+	if (!secretmem_enable || !can_set_direct_map())
- 		return -ENOSYS;
- 
- 	if (flags & ~(SECRETMEM_FLAGS_MASK | O_CLOEXEC))
-@@ -278,7 +278,7 @@ static int secretmem_init(void)
- {
- 	int ret = 0;
- 
--	if (!secretmem_enable)
-+	if (!secretmem_enable || !can_set_direct_map())
- 		return ret;
- 
- 	secretmem_mnt = kern_mount(&secretmem_fs);
--- 
-2.43.0
-
+> > Those 5 fixes are needed for two reasons: maintain the consistency of
+> > mseal's semantics across releases, and for ease of backporting future
+> > fixes.
+>
+> Backporting more to 6.10?  Again, it's end-of-life, who would be
+> backporting anything else?
+>
+> confused,
+>
+> greg k-h
 
