@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-84822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B62799D23E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9278A99CCFE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:27:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 018721F2505B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55FF6282D21
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 000881C7603;
-	Mon, 14 Oct 2024 15:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00AB41ABEDF;
+	Mon, 14 Oct 2024 14:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jqdp9Zv4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqwOCjHI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EC01C75F3;
-	Mon, 14 Oct 2024 15:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25ED1AAC4;
+	Mon, 14 Oct 2024 14:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919328; cv=none; b=fDv/d+wiAwUcosSpVl5L4QrpkPq2RDhFyfWnlq2YVLGUTHzwL0UkJeGBV/ZnohpeAGrn2Ru2Ebikv146ChMRYOZZKfO4uFUX72sbd/SH6qsZYuTiI4vTRXXY2ApRnyxZSVApeK18BOH/KWcUv4zMT6I6CwZzk/TY4IzkZFIyEg8=
+	t=1728916043; cv=none; b=FyvudLG0hWgC7ux54ATy5OrLDVaZNkKcNY8PWCiXVsTrfEYhgMbdA38IiPrAvH9GDPo7lOgzqyCb5IAr8U8fEJmsDYyc61RnB3ygBVjeCLEoPF3uQwixrQsqaMkc36AuFYwf3tYdn9nah4CS4Z+H5qdwYbsi0cNTrd/upJMUYMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919328; c=relaxed/simple;
-	bh=4G7G/k7tY2xvoULqS7uIFkKcViwolc6AIYNMRw3riv4=;
+	s=arc-20240116; t=1728916043; c=relaxed/simple;
+	bh=ypg+ghyZQT+E4cz746VCCsk03jwm1gRu7f9P7Ixz9Uc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lih2Vk5SAIIVelbA78ziBW4nAMHwHa+iRCIR6Xjt1TM/vJYDcpCWruNQ9c7OYjuM6wOje7uCd/bm5ojnRU9VoQrwAvM7q8jBcc2C2J7eFUSPQXIRcaR6EAAy25yeiKB4g69sLFOgmIDMFiD7dkeeetRIcjDHEHPWOAXahlLTByA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jqdp9Zv4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A9BC4CEC3;
-	Mon, 14 Oct 2024 15:22:07 +0000 (UTC)
+	 MIME-Version; b=TTHyf22LB2KWs0DGN8e6A/F+bk9BG5BN9558sWxnA8LOoVaZ5mYXL/BIppFJA4TXAB/lMEsxp9bmgynaheVPWdf1eKVGPfj/GpMXrZjTWfuhoOXEAB5+x10x912RpnelbE7fhiLD5fHSq6g6r06oGwqsNJPw4lfxxCOHBNG0lLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqwOCjHI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2382CC4CEC3;
+	Mon, 14 Oct 2024 14:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919328;
-	bh=4G7G/k7tY2xvoULqS7uIFkKcViwolc6AIYNMRw3riv4=;
+	s=korg; t=1728916043;
+	bh=ypg+ghyZQT+E4cz746VCCsk03jwm1gRu7f9P7Ixz9Uc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jqdp9Zv4d0j3QXEgUtRJMKCcFIxqabEHF3vhgJpXGbtySykowyCOQX3ANoqJqc4mz
-	 OiZ96ZQmrlCXxXPbphUZ/2NF5feV9xMPnexrt2niE8ob4FXBzWtTfIiOqCN4ByTYqr
-	 d4zrnYxgeuC7DCPQPCsQQNfGmOF9rYhmk1/W9/Pk=
+	b=VqwOCjHIlTQ/vSA/4S4iiCmE7mAYLJpCk52lMSA2RpbzH5O9qnQXP5AZTpBToVD/M
+	 OseHg/JM0mYUdoXVqe6cGReploGO/gQjBXoThtqbLJpGqw9WC9HLr4hVZ6SJd+bR7t
+	 4nGQObRpdjWWXnpZ+q0miIeeKRXghF8XR2nE9XI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolai Stange <nstange@suse.com>,
-	Chun-Yi Lee <jlee@suse.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 579/798] aoe: fix the potential use-after-free problem in more places
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 070/214] driver core: bus: Fix double free in driver API bus_register()
 Date: Mon, 14 Oct 2024 16:18:53 +0200
-Message-ID: <20241014141240.749676187@linuxfoundation.org>
+Message-ID: <20241014141047.722045130@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chun-Yi Lee <joeyli.kernel@gmail.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 6d6e54fc71ad1ab0a87047fd9c211e75d86084a3 upstream.
+[ Upstream commit bfa54a793ba77ef696755b66f3ac4ed00c7d1248 ]
 
-For fixing CVE-2023-6270, f98364e92662 ("aoe: fix the potential
-use-after-free problem in aoecmd_cfg_pkts") makes tx() calling dev_put()
-instead of doing in aoecmd_cfg_pkts(). It avoids that the tx() runs
-into use-after-free.
+For bus_register(), any error which happens after kset_register() will
+cause that @priv are freed twice, fixed by setting @priv with NULL after
+the first free.
 
-Then Nicolai Stange found more places in aoe have potential use-after-free
-problem with tx(). e.g. revalidate(), aoecmd_ata_rw(), resend(), probe()
-and aoecmd_cfg_rsp(). Those functions also use aoenet_xmit() to push
-packet to tx queue. So they should also use dev_hold() to increase the
-refcnt of skb->dev.
-
-On the other hand, moving dev_put() to tx() causes that the refcnt of
-skb->dev be reduced to a negative value, because corresponding
-dev_hold() are not called in revalidate(), aoecmd_ata_rw(), resend(),
-probe(), and aoecmd_cfg_rsp(). This patch fixed this issue.
-
-Cc: stable@vger.kernel.org
-Link: https://nvd.nist.gov/vuln/detail/CVE-2023-6270
-Fixes: f98364e92662 ("aoe: fix the potential use-after-free problem in aoecmd_cfg_pkts")
-Reported-by: Nicolai Stange <nstange@suse.com>
-Signed-off-by: Chun-Yi Lee <jlee@suse.com>
-Link: https://lore.kernel.org/stable/20240624064418.27043-1-jlee%40suse.com
-Link: https://lore.kernel.org/r/20241002035458.24401-1-jlee@suse.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20240727-bus_register_fix-v1-1-fed8dd0dba7a@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/aoe/aoecmd.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/base/bus.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/block/aoe/aoecmd.c
-+++ b/drivers/block/aoe/aoecmd.c
-@@ -361,6 +361,7 @@ ata_rw_frameinit(struct frame *f)
- 	}
- 
- 	ah->cmdstat = ATA_CMD_PIO_READ | writebit | extbit;
-+	dev_hold(t->ifp->nd);
- 	skb->dev = t->ifp->nd;
- }
- 
-@@ -401,6 +402,8 @@ aoecmd_ata_rw(struct aoedev *d)
- 		__skb_queue_head_init(&queue);
- 		__skb_queue_tail(&queue, skb);
- 		aoenet_xmit(&queue);
-+	} else {
-+		dev_put(f->t->ifp->nd);
- 	}
- 	return 1;
- }
-@@ -483,10 +486,13 @@ resend(struct aoedev *d, struct frame *f
- 	memcpy(h->dst, t->addr, sizeof h->dst);
- 	memcpy(h->src, t->ifp->nd->dev_addr, sizeof h->src);
- 
-+	dev_hold(t->ifp->nd);
- 	skb->dev = t->ifp->nd;
- 	skb = skb_clone(skb, GFP_ATOMIC);
--	if (skb == NULL)
-+	if (skb == NULL) {
-+		dev_put(t->ifp->nd);
- 		return;
-+	}
- 	f->sent = ktime_get();
- 	__skb_queue_head_init(&queue);
- 	__skb_queue_tail(&queue, skb);
-@@ -617,6 +623,8 @@ probe(struct aoetgt *t)
- 		__skb_queue_head_init(&queue);
- 		__skb_queue_tail(&queue, skb);
- 		aoenet_xmit(&queue);
-+	} else {
-+		dev_put(f->t->ifp->nd);
- 	}
- }
- 
-@@ -1395,6 +1403,7 @@ aoecmd_ata_id(struct aoedev *d)
- 	ah->cmdstat = ATA_CMD_ID_ATA;
- 	ah->lba3 = 0xa0;
- 
-+	dev_hold(t->ifp->nd);
- 	skb->dev = t->ifp->nd;
- 
- 	d->rttavg = RTTAVG_INIT;
-@@ -1404,6 +1413,8 @@ aoecmd_ata_id(struct aoedev *d)
- 	skb = skb_clone(skb, GFP_ATOMIC);
- 	if (skb)
- 		f->sent = ktime_get();
-+	else
-+		dev_put(t->ifp->nd);
- 
- 	return skb;
- }
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index ffea0728b8b2f..08362ecec0ecb 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -920,6 +920,8 @@ int bus_register(const struct bus_type *bus)
+ 	bus_remove_file(bus, &bus_attr_uevent);
+ bus_uevent_fail:
+ 	kset_unregister(&priv->subsys);
++	/* Above kset_unregister() will kfree @priv */
++	priv = NULL;
+ out:
+ 	kfree(priv);
+ 	return retval;
+-- 
+2.43.0
+
 
 
 
