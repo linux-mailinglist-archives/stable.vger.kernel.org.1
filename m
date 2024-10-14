@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-84767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0B0999D205
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9045F99D20A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 325C01F24FB2
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C14471C23198
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64BB51B85D7;
-	Mon, 14 Oct 2024 15:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88021BE23E;
+	Mon, 14 Oct 2024 15:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="liEwBUgW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQlphCme"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2072614AA9;
-	Mon, 14 Oct 2024 15:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C0D1AB536;
+	Mon, 14 Oct 2024 15:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919144; cv=none; b=vCAAe+tUuNW/W5fTCWrC45RbjQbuyMwYm4f1YxVqHB8cDTx+v6sYJ2ya5+j5gl6oMQGGLKm1bU1oiO+T2KqLG/k2StZLGZhgfMaByHvQP2nsyuAHnwFM8PbTn3MLT4/fF40nZYzSDgoNTtm1jfxC/VBQSWBN3Idas45/UN1u0e4=
+	t=1728919161; cv=none; b=EqxOvUbfwQB71OCTu3S+a9Lrge6vk8vmPQUh6L6gsR/7nVVxwkDNMH2I2sXFYNMF0IaByasmEvLXCs9t44m9TdwO2O59DWEpyfXUcT+zywD5ww+1wSvVl+PnvAiSMTmi4p3Op4M4Ng5sqyG6XoBmJo3R2myDV9MAT9L1CfnK96w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919144; c=relaxed/simple;
-	bh=WXnwXCUpAZjcdmgBiNdQpfIGvwqIxGF5yJnQq7SMqwE=;
+	s=arc-20240116; t=1728919161; c=relaxed/simple;
+	bh=WrQ6QiC3VHsDTJVFCCLhNJ0lSUmZxKR/xslSdji7lmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VkDNb6GSYw8fkxKrmypWPlF6MD6QOpkXHibmdMJsvn2VOg70s/9pnNn4tuaU5s8J49wg4mWHzngTjZeIKvdxBL755fVAIpl521VQh0fZF5YmAB06VEeHbcbAsUrv2v+8blXIGmlQNVS42F+795ZD9Uys2UttyYMs1eFxOP7+wPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=liEwBUgW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87281C4CEC3;
-	Mon, 14 Oct 2024 15:19:03 +0000 (UTC)
+	 MIME-Version; b=VMENEHRpYesR8uWIUHBjQnOYxSE/DmrsImczRtl4+uqniJ6nhd/4j/+nttY7+JD41xBFDFOgefJx0YEDYnsDz74Jfjk0iTOSj8f+cQ9fg1hI45wvS4TKZoLbMYex/cdLvWjFY986s/Sfbtq5R8beXh5F+7DlW77fkhOe6/HpVFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQlphCme; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDE6C4CECF;
+	Mon, 14 Oct 2024 15:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919144;
-	bh=WXnwXCUpAZjcdmgBiNdQpfIGvwqIxGF5yJnQq7SMqwE=;
+	s=korg; t=1728919161;
+	bh=WrQ6QiC3VHsDTJVFCCLhNJ0lSUmZxKR/xslSdji7lmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=liEwBUgWxpC/DZlWudOmsjwm1WRD0k6ccleJ+XAD0QTgVkSYYFsj+3wyYX9wM5U6d
-	 rgK1rS5jUmFxDoa/Qp9w0gLY+syHclO/dyGL8TYUFWQVmmezfIcJn+Rhx5CVK+wxF1
-	 mI3+isVgoa4wLT2ZH75URi33gn2DI8dl9lg30mn4=
+	b=wQlphCme2onufuueo1ETDWgT4I2xxP+73XgTFJf+P/xYDKsQp1IjsBhOW6YZnBp5/
+	 ktH7/K0QigEkyC4gUQrZVqBKh5cCJoleIzf3DJeZopghSVD6Kdch1Haro8AqFOyc8B
+	 0vQHYRg3bPS/4AWxOpbcHphQbkSUoGeJi5RD4zRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kees Cook <kees@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 497/798] perf,x86: avoid missing caller address in stack traces captured in uprobe
-Date: Mon, 14 Oct 2024 16:17:31 +0200
-Message-ID: <20241014141237.497476754@linuxfoundation.org>
+Subject: [PATCH 6.1 498/798] scsi: aacraid: Rearrange order of struct aac_srb_unit
+Date: Mon, 14 Oct 2024 16:17:32 +0200
+Message-ID: <20241014141237.541987965@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -66,194 +66,110 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit cfa7f3d2c526c224a6271cc78a4a27a0de06f4f0 ]
+[ Upstream commit 6e5860b0ad4934baee8c7a202c02033b2631bb44 ]
 
-When tracing user functions with uprobe functionality, it's common to
-install the probe (e.g., a BPF program) at the first instruction of the
-function. This is often going to be `push %rbp` instruction in function
-preamble, which means that within that function frame pointer hasn't
-been established yet. This leads to consistently missing an actual
-caller of the traced function, because perf_callchain_user() only
-records current IP (capturing traced function) and then following frame
-pointer chain (which would be caller's frame, containing the address of
-caller's caller).
+struct aac_srb_unit contains struct aac_srb, which contains struct sgmap,
+which ends in a (currently) "fake" (1-element) flexible array.  Converting
+this to a flexible array is needed so that runtime bounds checking won't
+think the array is fixed size (i.e. under CONFIG_FORTIFY_SOURCE=y and/or
+CONFIG_UBSAN_BOUNDS=y), as other parts of aacraid use struct sgmap as a
+flexible array.
 
-So when we have target_1 -> target_2 -> target_3 call chain and we are
-tracing an entry to target_3, captured stack trace will report
-target_1 -> target_3 call chain, which is wrong and confusing.
+It is not legal to have a flexible array in the middle of a structure, so
+it either needs to be split up or rearranged so that it is at the end of
+the structure. Luckily, struct aac_srb_unit, which is exclusively
+consumed/updated by aac_send_safw_bmic_cmd(), does not depend on member
+ordering.
 
-This patch proposes a x86-64-specific heuristic to detect `push %rbp`
-(`push %ebp` on 32-bit architecture) instruction being traced. Given
-entire kernel implementation of user space stack trace capturing works
-under assumption that user space code was compiled with frame pointer
-register (%rbp/%ebp) preservation, it seems pretty reasonable to use
-this instruction as a strong indicator that this is the entry to the
-function. In that case, return address is still pointed to by %rsp/%esp,
-so we fetch it and add to stack trace before proceeding to unwind the
-rest using frame pointer-based logic.
+The values set in the on-stack struct aac_srb_unit instance "srbu" by the
+only two callers, aac_issue_safw_bmic_identify() and
+aac_get_safw_ciss_luns(), do not contain anything in srbu.srb.sgmap.sg, and
+they both implicitly initialize srbu.srb.sgmap.count to 0 during
+memset(). For example:
 
-We also check for `endbr64` (for 64-bit modes) as another common pattern
-for function entry, as suggested by Josh Poimboeuf. Even if we get this
-wrong sometimes for uprobes attached not at the function entry, it's OK
-because stack trace will still be overall meaningful, just with one
-extra bogus entry. If we don't detect this, we end up with guaranteed to
-be missing caller function entry in the stack trace, which is worse
-overall.
+        memset(&srbu, 0, sizeof(struct aac_srb_unit));
 
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20240729175223.23914-1-andrii@kernel.org
+        srbcmd = &srbu.srb;
+        srbcmd->flags   = cpu_to_le32(SRB_DataIn);
+        srbcmd->cdb[0]  = CISS_REPORT_PHYSICAL_LUNS;
+        srbcmd->cdb[1]  = 2; /* extended reporting */
+        srbcmd->cdb[8]  = (u8)(datasize >> 8);
+        srbcmd->cdb[9]  = (u8)(datasize);
+
+        rcode = aac_send_safw_bmic_cmd(dev, &srbu, phys_luns, datasize);
+
+During aac_send_safw_bmic_cmd(), a separate srb is mapped into DMA, and has
+srbu.srb copied into it:
+
+        srb = fib_data(fibptr);
+        memcpy(srb, &srbu->srb, sizeof(struct aac_srb));
+
+Only then is srb.sgmap.count written and srb->sg populated:
+
+        srb->count              = cpu_to_le32(xfer_len);
+
+        sg64 = (struct sgmap64 *)&srb->sg;
+        sg64->count             = cpu_to_le32(1);
+        sg64->sg[0].addr[1]     = cpu_to_le32(upper_32_bits(addr));
+        sg64->sg[0].addr[0]     = cpu_to_le32(lower_32_bits(addr));
+        sg64->sg[0].count       = cpu_to_le32(xfer_len);
+
+But this is happening in the DMA memory, not in srbu.srb. An attempt to
+copy the changes back to srbu does happen:
+
+        /*
+         * Copy the updated data for other dumping or other usage if
+         * needed
+         */
+        memcpy(&srbu->srb, srb, sizeof(struct aac_srb));
+
+But this was never correct: the sg64 (3 u32s) overlap of srb.sg (2 u32s)
+always meant that srbu.srb would have held truncated information and any
+attempt to walk srbu.srb.sg.sg based on the value of srbu.srb.sg.count
+would result in attempting to parse past the end of srbu.srb.sg.sg[0] into
+srbu.srb_reply.
+
+After getting a reply from hardware, the reply is copied into
+srbu.srb_reply:
+
+        srb_reply = (struct aac_srb_reply *)fib_data(fibptr);
+        memcpy(&srbu->srb_reply, srb_reply, sizeof(struct aac_srb_reply));
+
+This has always been fixed-size, so there's no issue here. It is worth
+noting that the two callers _never check_ srbu contents -- neither
+srbu.srb nor srbu.srb_reply is examined. (They depend on the mapped
+xfer_buf instead.)
+
+Therefore, the ordering of members in struct aac_srb_unit does not matter,
+and the flexible array member can moved to the end.
+
+(Additionally, the two memcpy()s that update srbu could be entirely
+removed as they are never consumed, but I left that as-is.)
+
+Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://lore.kernel.org/r/20240711215739.208776-1-kees@kernel.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/core.c  | 63 +++++++++++++++++++++++++++++++++++++++++
- include/linux/uprobes.h |  2 ++
- kernel/events/uprobes.c |  2 ++
- 3 files changed, 67 insertions(+)
+ drivers/scsi/aacraid/aacraid.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 2b2c9fd74ef90..39f86188be54c 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -41,6 +41,8 @@
- #include <asm/desc.h>
- #include <asm/ldt.h>
- #include <asm/unwind.h>
-+#include <asm/uprobes.h>
-+#include <asm/ibt.h>
- 
- #include "perf_event.h"
- 
-@@ -2841,6 +2843,46 @@ static unsigned long get_segment_base(unsigned int segment)
- 	return get_desc_base(desc);
- }
- 
-+#ifdef CONFIG_UPROBES
-+/*
-+ * Heuristic-based check if uprobe is installed at the function entry.
-+ *
-+ * Under assumption of user code being compiled with frame pointers,
-+ * `push %rbp/%ebp` is a good indicator that we indeed are.
-+ *
-+ * Similarly, `endbr64` (assuming 64-bit mode) is also a common pattern.
-+ * If we get this wrong, captured stack trace might have one extra bogus
-+ * entry, but the rest of stack trace will still be meaningful.
-+ */
-+static bool is_uprobe_at_func_entry(struct pt_regs *regs)
-+{
-+	struct arch_uprobe *auprobe;
-+
-+	if (!current->utask)
-+		return false;
-+
-+	auprobe = current->utask->auprobe;
-+	if (!auprobe)
-+		return false;
-+
-+	/* push %rbp/%ebp */
-+	if (auprobe->insn[0] == 0x55)
-+		return true;
-+
-+	/* endbr64 (64-bit only) */
-+	if (user_64bit_mode(regs) && is_endbr(*(u32 *)auprobe->insn))
-+		return true;
-+
-+	return false;
-+}
-+
-+#else
-+static bool is_uprobe_at_func_entry(struct pt_regs *regs)
-+{
-+	return false;
-+}
-+#endif /* CONFIG_UPROBES */
-+
- #ifdef CONFIG_IA32_EMULATION
- 
- #include <linux/compat.h>
-@@ -2852,6 +2894,7 @@ perf_callchain_user32(struct pt_regs *regs, struct perf_callchain_entry_ctx *ent
- 	unsigned long ss_base, cs_base;
- 	struct stack_frame_ia32 frame;
- 	const struct stack_frame_ia32 __user *fp;
-+	u32 ret_addr;
- 
- 	if (user_64bit_mode(regs))
- 		return 0;
-@@ -2861,6 +2904,12 @@ perf_callchain_user32(struct pt_regs *regs, struct perf_callchain_entry_ctx *ent
- 
- 	fp = compat_ptr(ss_base + regs->bp);
- 	pagefault_disable();
-+
-+	/* see perf_callchain_user() below for why we do this */
-+	if (is_uprobe_at_func_entry(regs) &&
-+	    !get_user(ret_addr, (const u32 __user *)regs->sp))
-+		perf_callchain_store(entry, ret_addr);
-+
- 	while (entry->nr < entry->max_stack) {
- 		if (!valid_user_frame(fp, sizeof(frame)))
- 			break;
-@@ -2889,6 +2938,7 @@ perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs
- {
- 	struct stack_frame frame;
- 	const struct stack_frame __user *fp;
-+	unsigned long ret_addr;
- 
- 	if (perf_guest_state()) {
- 		/* TODO: We don't support guest os callchain now */
-@@ -2912,6 +2962,19 @@ perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs
- 		return;
- 
- 	pagefault_disable();
-+
-+	/*
-+	 * If we are called from uprobe handler, and we are indeed at the very
-+	 * entry to user function (which is normally a `push %rbp` instruction,
-+	 * under assumption of application being compiled with frame pointers),
-+	 * we should read return address from *regs->sp before proceeding
-+	 * to follow frame pointers, otherwise we'll skip immediate caller
-+	 * as %rbp is not yet setup.
-+	 */
-+	if (is_uprobe_at_func_entry(regs) &&
-+	    !get_user(ret_addr, (const unsigned long __user *)regs->sp))
-+		perf_callchain_store(entry, ret_addr);
-+
- 	while (entry->nr < entry->max_stack) {
- 		if (!valid_user_frame(fp, sizeof(frame)))
- 			break;
-diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
-index f46e0ca0169c7..d91e32aff5a13 100644
---- a/include/linux/uprobes.h
-+++ b/include/linux/uprobes.h
-@@ -76,6 +76,8 @@ struct uprobe_task {
- 	struct uprobe			*active_uprobe;
- 	unsigned long			xol_vaddr;
- 
-+	struct arch_uprobe              *auprobe;
-+
- 	struct return_instance		*return_instances;
- 	unsigned int			depth;
+diff --git a/drivers/scsi/aacraid/aacraid.h b/drivers/scsi/aacraid/aacraid.h
+index 5e115e8b2ba46..be1d661a696f3 100644
+--- a/drivers/scsi/aacraid/aacraid.h
++++ b/drivers/scsi/aacraid/aacraid.h
+@@ -2029,8 +2029,8 @@ struct aac_srb_reply
  };
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index f8bda852c6b48..8a5989d46c930 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -2075,6 +2075,7 @@ static void handler_chain(struct uprobe *uprobe, struct pt_regs *regs)
- 	bool need_prep = false; /* prepare return uprobe, when needed */
  
- 	down_read(&uprobe->register_rwsem);
-+	current->utask->auprobe = &uprobe->arch;
- 	for (uc = uprobe->consumers; uc; uc = uc->next) {
- 		int rc = 0;
+ struct aac_srb_unit {
+-	struct aac_srb		srb;
+ 	struct aac_srb_reply	srb_reply;
++	struct aac_srb		srb;
+ };
  
-@@ -2089,6 +2090,7 @@ static void handler_chain(struct uprobe *uprobe, struct pt_regs *regs)
- 
- 		remove &= rc;
- 	}
-+	current->utask->auprobe = NULL;
- 
- 	if (need_prep && !remove)
- 		prepare_uretprobe(uprobe, regs); /* put bp at return */
+ /*
 -- 
 2.43.0
 
