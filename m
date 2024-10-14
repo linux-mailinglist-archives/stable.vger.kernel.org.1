@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-84113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9BA99CE30
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:41:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5928099CD73
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:33:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD93A1C2309C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:41:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B26A1C2263E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0C31AA7A5;
-	Mon, 14 Oct 2024 14:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4277412D758;
+	Mon, 14 Oct 2024 14:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7F7HbyN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1c52fis"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB30D611E;
-	Mon, 14 Oct 2024 14:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0642BCF5;
+	Mon, 14 Oct 2024 14:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916872; cv=none; b=q2XoY9SqBom/9ziwMRiZkUP98cWTzy2xuOA6adT7GSH78HYpF2AGubjofdhma1tFrE7d2THbIMz1gVEXFoJa0++iF0eKG7ia09i6KRkrboJxK1kRzxOHDC1QS/P9Ji8KbocH6TCBlaZaOrsY8R+fqgX/fV1A9rym/ihea1iMBCk=
+	t=1728916369; cv=none; b=s2mx7LN+YYHwNqPGPwDkgSW5aRE1zXXI5DLvdSyhngDlmqOiLkC3mUCeeZFYVZSWsXNZJpfVht75N5DNW87BFmh+Hjosq+zb3iqEqcnpCMC5nWpR8xftbVQB2SFxJfdGYTUtWMHfSjWKQPShKc4HU1eDSpoocaP9Ns1ACQzI9NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916872; c=relaxed/simple;
-	bh=5UPkypACSx0uIJZGUk2S5vDrg4rmfgu5OvdeYQdeftM=;
+	s=arc-20240116; t=1728916369; c=relaxed/simple;
+	bh=2cTfGKQVu/eZ2KlQd9a0AoWLHk5K/DvQovSnZQ0efRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CM/AO0E8DqIg/nOsWc9UpP3ieLYlaM6vcCyYHx+Tz9useshdZKoyXY4gTShIuxhoEbu7MqI4mEQmurhubmW/lae4gT4GZ0Zo7SMXAzqUloMc4B24U9xtQ8ERhNI0kRX80U+ElUwh8zh+YiDtaGm7a6leHNOcIjT/ekeTi7HfoII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7F7HbyN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D347C4CEC7;
-	Mon, 14 Oct 2024 14:41:11 +0000 (UTC)
+	 MIME-Version; b=IsrwcY0F+ZwE5j1ZJJ0zBxwzNpiB4aYXjg7t4PKms0upcscPduYWm0gwm7btfcdjQF1D7k+HeTIEhVkhoUzoMf6PWgp+EbYsOcCtUmRQuGOmT+AQi/OXKUM/v38lPOzdnuvc/94Bz3fSuKSn21dwprk1hdo105JVjyDell2+qBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1c52fis; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A77DC4CEC3;
+	Mon, 14 Oct 2024 14:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916872;
-	bh=5UPkypACSx0uIJZGUk2S5vDrg4rmfgu5OvdeYQdeftM=;
+	s=korg; t=1728916368;
+	bh=2cTfGKQVu/eZ2KlQd9a0AoWLHk5K/DvQovSnZQ0efRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T7F7HbyNfyQKEhu0r1Q07GspcBgtyrILQVAz/qcL97kYVKMf5T5w4EmrQKyrqeHsw
-	 IMBlEbEdZfWSJp1IR4cuh96UYHJxHrI1k5ING8103I1RG9/Unws8tbW4d02OZVWlKw
-	 c09XrMuE7r2M5+xCEFmLGoQKMkY+DH2bCo4WPKkY=
+	b=s1c52fisRNkNV4o0bC4HOcmsQROSIwTYnDdwzdZUixqmy+1G+6ca7bP1cRGsfdjk+
+	 0D3uniROIDHvHi1UIM/BawmXOolgyexIQeXiZSkjVyiSN+y3ozPLLyM7AhoWbKY9pw
+	 Gl6TBMYZT5uE746Vk8+4aowbY5R+I5wYw1MQq7LQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wadim Egorov <w.egorov@phytec.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/213] usb: typec: tipd: Free IRQ only if it was requested before
+Subject: [PATCH 6.11 132/214] btrfs: zoned: fix missing RCU locking in error message when loading zone info
 Date: Mon, 14 Oct 2024 16:19:55 +0200
-Message-ID: <20241014141046.448450111@linuxfoundation.org>
+Message-ID: <20241014141050.143224431@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wadim Egorov <w.egorov@phytec.de>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit db63d9868f7f310de44ba7bea584e2454f8b4ed0 ]
+[ Upstream commit fe4cd7ed128fe82ab9fe4f9fc8a73d4467699787 ]
 
-In polling mode, if no IRQ was requested there is no need to free it.
-Call devm_free_irq() only if client->irq is set. This fixes the warning
-caused by the tps6598x module removal:
+At btrfs_load_zone_info() we have an error path that is dereferencing
+the name of a device which is a RCU string but we are not holding a RCU
+read lock, which is incorrect.
 
-WARNING: CPU: 2 PID: 333 at kernel/irq/devres.c:144 devm_free_irq+0x80/0x8c
-...
-...
-Call trace:
-  devm_free_irq+0x80/0x8c
-  tps6598x_remove+0x28/0x88 [tps6598x]
-  i2c_device_remove+0x2c/0x9c
-  device_remove+0x4c/0x80
-  device_release_driver_internal+0x1cc/0x228
-  driver_detach+0x50/0x98
-  bus_remove_driver+0x6c/0xbc
-  driver_unregister+0x30/0x60
-  i2c_del_driver+0x54/0x64
-  tps6598x_i2c_driver_exit+0x18/0xc3c [tps6598x]
-  __arm64_sys_delete_module+0x184/0x264
-  invoke_syscall+0x48/0x110
-  el0_svc_common.constprop.0+0xc8/0xe8
-  do_el0_svc+0x20/0x2c
-  el0_svc+0x28/0x98
-  el0t_64_sync_handler+0x13c/0x158
-  el0t_64_sync+0x190/0x194
+Fix this by using btrfs_err_in_rcu() instead of btrfs_err().
 
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240816124150.608125-1-w.egorov@phytec.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The problem is there since commit 08e11a3db098 ("btrfs: zoned: load zone's
+allocation offset"), back then at btrfs_load_block_group_zone_info() but
+then later on that code was factored out into the helper
+btrfs_load_zone_info() by commit 09a46725cc84 ("btrfs: zoned: factor out
+per-zone logic from btrfs_load_block_group_zone_info").
+
+Fixes: 08e11a3db098 ("btrfs: zoned: load zone's allocation offset")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tipd/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/zoned.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/tipd/core.c b/drivers/usb/typec/tipd/core.c
-index 125269f39f83a..01db27cbf1d10 100644
---- a/drivers/usb/typec/tipd/core.c
-+++ b/drivers/usb/typec/tipd/core.c
-@@ -907,6 +907,8 @@ static void tps6598x_remove(struct i2c_client *client)
- 
- 	if (!client->irq)
- 		cancel_delayed_work_sync(&tps->wq_poll);
-+	else
-+		devm_free_irq(tps->dev, client->irq, tps);
- 
- 	tps6598x_disconnect(tps, 0);
- 	typec_unregister_port(tps->port);
+diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
+index 047e3337852e1..ff02fd44fb7cd 100644
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -1352,7 +1352,7 @@ static int btrfs_load_zone_info(struct btrfs_fs_info *fs_info, int zone_idx,
+ 	switch (zone.cond) {
+ 	case BLK_ZONE_COND_OFFLINE:
+ 	case BLK_ZONE_COND_READONLY:
+-		btrfs_err(fs_info,
++		btrfs_err_in_rcu(fs_info,
+ 		"zoned: offline/readonly zone %llu on device %s (devid %llu)",
+ 			  (info->physical >> device->zone_info->zone_size_shift),
+ 			  rcu_str_deref(device->name), device->devid);
 -- 
 2.43.0
 
