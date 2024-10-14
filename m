@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4992299CE3E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:41:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B02C199CD4D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:31:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 793BB1C208EF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:41:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA3451C2261D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9683B1AB6CC;
-	Mon, 14 Oct 2024 14:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 390D6200CB;
+	Mon, 14 Oct 2024 14:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BIGR9Ht2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMWHBTzf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556D84595B;
-	Mon, 14 Oct 2024 14:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6C9610B;
+	Mon, 14 Oct 2024 14:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916897; cv=none; b=pr2Jf+Mt/tu1epg3bGSNsbCJNITj79zWGv1OjSexXhJeY0l5P7QoM3H48CXzmW6k7ff5fU4xWD3Q1PNMkSJjli468eoVzQTCw3QZpf0aXE9FRdP7IIR96y/tEQUXj6HyctkowJigeECV6lsBDvP1HRP00dQKVERLUHpm1e+xWBA=
+	t=1728916286; cv=none; b=famoXYQbGYgEFa4sj5KLVMDgsbCra/jqZS5m+5A6HKZCSJV7CH7Q3ZvnqKO8SVSdSF/ObdPFqgS7lUi3PW9bLuHAJKeB8qGO8wtQFdIf5gOflwKDtAIZ1gv1L5Nsr/MQcLRwvVBBG3K3Rr7dv12EExUmGgP3kmlqozHLhYBPvcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916897; c=relaxed/simple;
-	bh=UD0+wLURz8LwfWmEJK2PkBK6yi9X+zZI+2vMKCncGGw=;
+	s=arc-20240116; t=1728916286; c=relaxed/simple;
+	bh=MXSzCKLQAdXceDzDIZVTulgI1Gqw8KcLevriScat/KQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L9lOBmfGIG+qN+n91Gobh+4zRxfFPEsnia8i1s192UrXHHePRMSGgfY8yFSAar2U+Sspxz3XY/kgc4uKGVLim+pILk1oXwZyu/QnGHSSKEG/lMeV8Sq30A56OJwSjkXtPLo1UrsatC/Y+Zw/fpGvyrGYEO0SSqUDhlyJ0n4AMKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BIGR9Ht2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C54C4CEC3;
-	Mon, 14 Oct 2024 14:41:36 +0000 (UTC)
+	 MIME-Version; b=m94qzRe4zg7tDHQe4HfQKnTcrmT5GSHER633KIEJrnZ291Iv2MA7kVL0A6ZXic1ztp36KFKREIO2+FxZQf/pcr1YlXbJOwq7p+GsC8WJDut24G5fyPHIPpBkPL2PdosEbIiVkynRpL9D/n6011/C7YyXc+pa+N66gqb5v9Sg3JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMWHBTzf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C87FC4CEC7;
+	Mon, 14 Oct 2024 14:31:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916897;
-	bh=UD0+wLURz8LwfWmEJK2PkBK6yi9X+zZI+2vMKCncGGw=;
+	s=korg; t=1728916285;
+	bh=MXSzCKLQAdXceDzDIZVTulgI1Gqw8KcLevriScat/KQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BIGR9Ht2Mvv8qJnzNIFmUiTpFt8osIGsrT90GnEgvbycGiL9xs5mJZv1QuDRU05mr
-	 yBC2kOzBtMYom/3vU09Y/YoVTvE+1zfi2F/2QaRMHt1kr4Crl1qNFUVfjPTAHBvskY
-	 zT0S1Q3AbyNUzwheszLPInkgE77/K7j7rf/cSANE=
+	b=GMWHBTzfsK6uxFQMU7bUOe8rQKh9Jzw0WMUpV3X4h43EtUgBkafpjRYeVro/BJ7ne
+	 lrB0Njtmjfp4RdH+cqsfND/rXM0oBWkjiC3WxheMeGUxxHD8id+l5ZM0W4EoK5FHQ/
+	 LQ5egVrzOM9O9G7vdNGVxLcICLXKIWoDq6yqJras=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Breno Leitao <leitao@debian.org>,
 	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/213] netfilter: nf_reject: Fix build warning when CONFIG_BRIDGE_NETFILTER=n
+Subject: [PATCH 6.11 138/214] net: netconsole: fix wrong warning
 Date: Mon, 14 Oct 2024 16:20:01 +0200
-Message-ID: <20241014141046.675262595@linuxfoundation.org>
+Message-ID: <20241014141050.375288234@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit fc56878ca1c288e49b5cbb43860a5938e3463654 ]
+[ Upstream commit d94785bb46b6167382b1de3290eccc91fa98df53 ]
 
-If CONFIG_BRIDGE_NETFILTER is not enabled, which is the case for x86_64
-defconfig, then building nf_reject_ipv4.c and nf_reject_ipv6.c with W=1
-using gcc-14 results in the following warnings, which are treated as
-errors:
+A warning is triggered when there is insufficient space in the buffer
+for userdata. However, this is not an issue since userdata will be sent
+in the next iteration.
 
-net/ipv4/netfilter/nf_reject_ipv4.c: In function 'nf_send_reset':
-net/ipv4/netfilter/nf_reject_ipv4.c:243:23: error: variable 'niph' set but not used [-Werror=unused-but-set-variable]
-  243 |         struct iphdr *niph;
-      |                       ^~~~
-cc1: all warnings being treated as errors
-net/ipv6/netfilter/nf_reject_ipv6.c: In function 'nf_send_reset6':
-net/ipv6/netfilter/nf_reject_ipv6.c:286:25: error: variable 'ip6h' set but not used [-Werror=unused-but-set-variable]
-  286 |         struct ipv6hdr *ip6h;
-      |                         ^~~~
-cc1: all warnings being treated as errors
+Current warning message:
 
-Address this by reducing the scope of these local variables to where
-they are used, which is code only compiled when CONFIG_BRIDGE_NETFILTER
-enabled.
+    ------------[ cut here ]------------
+     WARNING: CPU: 13 PID: 3013042 at drivers/net/netconsole.c:1122 write_ext_msg+0x3b6/0x3d0
+      ? write_ext_msg+0x3b6/0x3d0
+      console_flush_all+0x1e9/0x330
 
-Compile tested and run through netfilter selftests.
+The code incorrectly issues a warning when this_chunk is zero, which is
+a valid scenario. The warning should only be triggered when this_chunk
+is negative.
 
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Closes: https://lore.kernel.org/netfilter-devel/20240906145513.567781-1-andriy.shevchenko@linux.intel.com/
-Signed-off-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 1ec9daf95093 ("net: netconsole: append userdata to fragmented netconsole messages")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241008094325.896208-1-leitao@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/netfilter/nf_reject_ipv4.c | 10 ++++------
- net/ipv6/netfilter/nf_reject_ipv6.c |  5 ++---
- 2 files changed, 6 insertions(+), 9 deletions(-)
+ drivers/net/netconsole.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
-index fc761915c5f6f..675b5bbed638e 100644
---- a/net/ipv4/netfilter/nf_reject_ipv4.c
-+++ b/net/ipv4/netfilter/nf_reject_ipv4.c
-@@ -239,9 +239,8 @@ static int nf_reject_fill_skb_dst(struct sk_buff *skb_in)
- void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 		   int hook)
- {
--	struct sk_buff *nskb;
--	struct iphdr *niph;
- 	const struct tcphdr *oth;
-+	struct sk_buff *nskb;
- 	struct tcphdr _oth;
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index 9c09293b52588..3e68f7a6e0abe 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -1118,8 +1118,14 @@ static void send_ext_msg_udp(struct netconsole_target *nt, const char *msg,
  
- 	oth = nf_reject_ip_tcphdr_get(oldskb, &_oth, hook);
-@@ -266,14 +265,12 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	nskb->mark = IP4_REPLY_MARK(net, oldskb->mark);
- 
- 	skb_reserve(nskb, LL_MAX_HEADER);
--	niph = nf_reject_iphdr_put(nskb, oldskb, IPPROTO_TCP,
--				   ip4_dst_hoplimit(skb_dst(nskb)));
-+	nf_reject_iphdr_put(nskb, oldskb, IPPROTO_TCP,
-+			    ip4_dst_hoplimit(skb_dst(nskb)));
- 	nf_reject_ip_tcphdr_put(nskb, oldskb, oth);
- 	if (ip_route_me_harder(net, sk, nskb, RTN_UNSPEC))
- 		goto free_nskb;
- 
--	niph = ip_hdr(nskb);
--
- 	/* "Never happens" */
- 	if (nskb->len > dst_mtu(skb_dst(nskb)))
- 		goto free_nskb;
-@@ -290,6 +287,7 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	 */
- 	if (nf_bridge_info_exists(oldskb)) {
- 		struct ethhdr *oeth = eth_hdr(oldskb);
-+		struct iphdr *niph = ip_hdr(nskb);
- 		struct net_device *br_indev;
- 
- 		br_indev = nf_bridge_get_physindev(oldskb, net);
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index 690d1c0476913..4e0976534648c 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -273,7 +273,6 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	const struct tcphdr *otcph;
- 	unsigned int otcplen, hh_len;
- 	const struct ipv6hdr *oip6h = ipv6_hdr(oldskb);
--	struct ipv6hdr *ip6h;
- 	struct dst_entry *dst = NULL;
- 	struct flowi6 fl6;
- 
-@@ -329,8 +328,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	nskb->mark = fl6.flowi6_mark;
- 
- 	skb_reserve(nskb, hh_len + dst->header_len);
--	ip6h = nf_reject_ip6hdr_put(nskb, oldskb, IPPROTO_TCP,
--				    ip6_dst_hoplimit(dst));
-+	nf_reject_ip6hdr_put(nskb, oldskb, IPPROTO_TCP, ip6_dst_hoplimit(dst));
- 	nf_reject_ip6_tcphdr_put(nskb, oldskb, otcph, otcplen);
- 
- 	nf_ct_attach(nskb, oldskb);
-@@ -345,6 +343,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	 */
- 	if (nf_bridge_info_exists(oldskb)) {
- 		struct ethhdr *oeth = eth_hdr(oldskb);
-+		struct ipv6hdr *ip6h = ipv6_hdr(nskb);
- 		struct net_device *br_indev;
- 
- 		br_indev = nf_bridge_get_physindev(oldskb, net);
+ 			this_chunk = min(userdata_len - sent_userdata,
+ 					 MAX_PRINT_CHUNK - preceding_bytes);
+-			if (WARN_ON_ONCE(this_chunk <= 0))
++			if (WARN_ON_ONCE(this_chunk < 0))
++				/* this_chunk could be zero if all the previous
++				 * message used all the buffer. This is not a
++				 * problem, userdata will be sent in the next
++				 * iteration
++				 */
+ 				return;
++
+ 			memcpy(buf + this_header + this_offset,
+ 			       userdata + sent_userdata,
+ 			       this_chunk);
 -- 
 2.43.0
 
