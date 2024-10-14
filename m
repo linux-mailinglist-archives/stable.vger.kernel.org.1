@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-83934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D587699CD3E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3AA99CE27
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:40:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94BD1281349
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C323A284AFF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447611798C;
-	Mon, 14 Oct 2024 14:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF49B17C77;
+	Mon, 14 Oct 2024 14:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uO6CV4xk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9jB1++q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017EC20EB;
-	Mon, 14 Oct 2024 14:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC0620EB;
+	Mon, 14 Oct 2024 14:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916243; cv=none; b=cPELNUCDRiWHes9rIiTxLto98mCEzY+Q4+5oOquT15hkK/1E0C7iepnFJcyJ5cCTitd+oFRL73v5jSoxQqYYGnjsqaxyDazpPufjjOnqrZTc9V9850DXtLIGo1hxbW+326OTLpl6zcdImpMGDSAU5EggFiknBlJPDcNtUad2K4I=
+	t=1728916841; cv=none; b=QS2LWUrZEzT0gUHEMJjOroWI04Bvp/1xdwTYsrcoazu2XPny/nH4+2jAPX5CNGlsC7D3mBoLInagv2D7uNy3dKrWPM8+rFQ4CmEyGGOrlfgXeTzKwvnv3f4hJkna0UR8aigkNZqqU3A6wDcAcGWfcixSlZxmp4CI4fby6QNUVek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916243; c=relaxed/simple;
-	bh=T38LbNz8LZtBQkF/15rxVTpk+gCF9Zj8Njm4a/OYIB4=;
+	s=arc-20240116; t=1728916841; c=relaxed/simple;
+	bh=cXYvmEszmiYc5TLkZoHvGil1P63AcRbbzmHkr25cAUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FD9VSRFKdh7I1npjJvJR9+mC30zvfJHeJv2T7c8LZbZ38oOh/BDJk9yBdsnNu/TOJ4rl3IjPw9cVXIn/c3Un0rxN1yhzkQAADJ1UAcpRwRjF6l0uWnVj1C0gNwfXY7N+diFJ5dtRv/nVJCL0udsrKpIJHX+FCOyt4ahffjGmUtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uO6CV4xk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35238C4CEC3;
-	Mon, 14 Oct 2024 14:30:42 +0000 (UTC)
+	 MIME-Version; b=BgYmF1qv3x4yKGBsaop+ZGt1kM6GHZT1DbsB07+eAES2EbjJLhQXRRh71MCBybZB7UbOG4VjFDdPsfH8WlggKGFBL6wkvR/XsPYvxIrqlmLss5+2vQOfwIEceroEnd/B9fCm7YdmY7hxdXA/rTGp2AfRG0YD1KS697FJ2HLdu6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9jB1++q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF730C4CEC3;
+	Mon, 14 Oct 2024 14:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916242;
-	bh=T38LbNz8LZtBQkF/15rxVTpk+gCF9Zj8Njm4a/OYIB4=;
+	s=korg; t=1728916841;
+	bh=cXYvmEszmiYc5TLkZoHvGil1P63AcRbbzmHkr25cAUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uO6CV4xk6pAU9ta2SubTNfiIb8ogRumYLtNec3s72ANC2D66XnvkR352JmZTjiDwS
-	 ZHLtRRqLRg0nzmPspKvf3WLimPqGXdeUSpV9FPu7nPtocOw+Z/WoktO9IovtIcjE0S
-	 Y1XY44ZUneqJ+Jyf3DTrWkBasF8JmlKBas3lQRJk=
+	b=q9jB1++q8lRlamELmY/zGfOWC8avhL9+V0zDAn/6TFu5dniDY1hTj/lYyLhbNYNE3
+	 tGCiD5mzQ+Q6g+ptAEDpGClAOpK8ORYBPZNEyM6B9xvCo2h5ceKK976gINp0+C34xn
+	 BuDaveGlyu5QWaDEyS6BI142eHmTShWKEOKJGCAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 123/214] ice: Fix increasing MSI-X on VF
+Subject: [PATCH 6.6 080/213] mfd: intel_soc_pmic_chtwc: Make Lenovo Yoga Tab 3 X90F DMI match less strict
 Date: Mon, 14 Oct 2024 16:19:46 +0200
-Message-ID: <20241014141049.789226326@linuxfoundation.org>
+Message-ID: <20241014141046.101944283@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,134 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit bce9af1b030bf59d51bbabf909a3ef164787e44e ]
+[ Upstream commit ae7eee56cdcfcb6a886f76232778d6517fd58690 ]
 
-Increasing MSI-X value on a VF leads to invalid memory operations. This
-is caused by not reallocating some arrays.
+There are 2G and 4G RAM versions of the Lenovo Yoga Tab 3 X90F and it
+turns out that the 2G version has a DMI product name of
+"CHERRYVIEW D1 PLATFORM" where as the 4G version has
+"CHERRYVIEW C0 PLATFORM". The sys-vendor + product-version check are
+unique enough that the product-name check is not necessary.
 
-Reproducer:
-  modprobe ice
-  echo 0 > /sys/bus/pci/devices/$PF_PCI/sriov_drivers_autoprobe
-  echo 1 > /sys/bus/pci/devices/$PF_PCI/sriov_numvfs
-  echo 17 > /sys/bus/pci/devices/$VF0_PCI/sriov_vf_msix_count
+Drop the product-name check so that the existing DMI match for the 4G
+RAM version also matches the 2G RAM version.
 
-Default MSI-X is 16, so 17 and above triggers this issue.
-
-KASAN reports:
-
-  BUG: KASAN: slab-out-of-bounds in ice_vsi_alloc_ring_stats+0x38d/0x4b0 [ice]
-  Read of size 8 at addr ffff8888b937d180 by task bash/28433
-  (...)
-
-  Call Trace:
-   (...)
-   ? ice_vsi_alloc_ring_stats+0x38d/0x4b0 [ice]
-   kasan_report+0xed/0x120
-   ? ice_vsi_alloc_ring_stats+0x38d/0x4b0 [ice]
-   ice_vsi_alloc_ring_stats+0x38d/0x4b0 [ice]
-   ice_vsi_cfg_def+0x3360/0x4770 [ice]
-   ? mutex_unlock+0x83/0xd0
-   ? __pfx_ice_vsi_cfg_def+0x10/0x10 [ice]
-   ? __pfx_ice_remove_vsi_lkup_fltr+0x10/0x10 [ice]
-   ice_vsi_cfg+0x7f/0x3b0 [ice]
-   ice_vf_reconfig_vsi+0x114/0x210 [ice]
-   ice_sriov_set_msix_vec_count+0x3d0/0x960 [ice]
-   sriov_vf_msix_count_store+0x21c/0x300
-   (...)
-
-  Allocated by task 28201:
-   (...)
-   ice_vsi_cfg_def+0x1c8e/0x4770 [ice]
-   ice_vsi_cfg+0x7f/0x3b0 [ice]
-   ice_vsi_setup+0x179/0xa30 [ice]
-   ice_sriov_configure+0xcaa/0x1520 [ice]
-   sriov_numvfs_store+0x212/0x390
-   (...)
-
-To fix it, use ice_vsi_rebuild() instead of ice_vf_reconfig_vsi(). This
-causes the required arrays to be reallocated taking the new queue count
-into account (ice_vsi_realloc_stat_arrays()). Set req_txq and req_rxq
-before ice_vsi_rebuild(), so that realloc uses the newly set queue
-count.
-
-Additionally, ice_vsi_rebuild() does not remove VSI filters
-(ice_fltr_remove_all()), so ice_vf_init_host_cfg() is no longer
-necessary.
-
-Reported-by: Jacob Keller <jacob.e.keller@intel.com>
-Fixes: 2a2cb4c6c181 ("ice: replace ice_vf_recreate_vsi() with ice_vf_reconfig_vsi()")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Link: https://lore.kernel.org/r/20240825132617.8809-1-hdegoede@redhat.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_sriov.c          | 11 ++++++++---
- drivers/net/ethernet/intel/ice/ice_vf_lib.c         |  2 +-
- drivers/net/ethernet/intel/ice/ice_vf_lib_private.h |  1 -
- 3 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/mfd/intel_soc_pmic_chtwc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-index 55ef33208456a..78ca6ddc3d03f 100644
---- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-@@ -1119,7 +1119,10 @@ int ice_sriov_set_msix_vec_count(struct pci_dev *vf_dev, int msix_vec_count)
- 	if (vf->first_vector_idx < 0)
- 		goto unroll;
- 
--	if (ice_vf_reconfig_vsi(vf) || ice_vf_init_host_cfg(vf, vsi)) {
-+	vsi->req_txq = queues;
-+	vsi->req_rxq = queues;
-+
-+	if (ice_vsi_rebuild(vsi, ICE_VSI_FLAG_NO_INIT)) {
- 		/* Try to rebuild with previous values */
- 		needs_rebuild = true;
- 		goto unroll;
-@@ -1146,8 +1149,10 @@ int ice_sriov_set_msix_vec_count(struct pci_dev *vf_dev, int msix_vec_count)
- 		return -EINVAL;
- 
- 	if (needs_rebuild) {
--		ice_vf_reconfig_vsi(vf);
--		ice_vf_init_host_cfg(vf, vsi);
-+		vsi->req_txq = prev_queues;
-+		vsi->req_rxq = prev_queues;
-+
-+		ice_vsi_rebuild(vsi, ICE_VSI_FLAG_NO_INIT);
- 	}
- 
- 	ice_ena_vf_mappings(vf);
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-index 9fe2a309c5ffa..f8fbd49e23105 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-@@ -256,7 +256,7 @@ static void ice_vf_pre_vsi_rebuild(struct ice_vf *vf)
-  *
-  * It brings the VSI down and then reconfigures it with the hardware.
-  */
--int ice_vf_reconfig_vsi(struct ice_vf *vf)
-+static int ice_vf_reconfig_vsi(struct ice_vf *vf)
- {
- 	struct ice_vsi *vsi = ice_get_vf_vsi(vf);
- 	struct ice_pf *pf = vf->pf;
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib_private.h b/drivers/net/ethernet/intel/ice/ice_vf_lib_private.h
-index 91ba7fe0eaee1..0c7e77c0a09fa 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib_private.h
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib_private.h
-@@ -23,7 +23,6 @@
- #warning "Only include ice_vf_lib_private.h in CONFIG_PCI_IOV virtualization files"
- #endif
- 
--int ice_vf_reconfig_vsi(struct ice_vf *vf);
- void ice_initialize_vf_entry(struct ice_vf *vf);
- void ice_dis_vf_qs(struct ice_vf *vf);
- int ice_check_vf_init(struct ice_vf *vf);
+diff --git a/drivers/mfd/intel_soc_pmic_chtwc.c b/drivers/mfd/intel_soc_pmic_chtwc.c
+index 7fce3ef7ab453..2a83f540d4c9d 100644
+--- a/drivers/mfd/intel_soc_pmic_chtwc.c
++++ b/drivers/mfd/intel_soc_pmic_chtwc.c
+@@ -178,7 +178,6 @@ static const struct dmi_system_id cht_wc_model_dmi_ids[] = {
+ 		.driver_data = (void *)(long)INTEL_CHT_WC_LENOVO_YT3_X90,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
+ 			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
+ 		},
+ 	},
 -- 
 2.43.0
 
