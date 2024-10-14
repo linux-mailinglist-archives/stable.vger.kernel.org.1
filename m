@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-84786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 147D899D21B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFFB799CCD1
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:25:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E6E5B262EC
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4409DB22D96
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4E81ABEC1;
-	Mon, 14 Oct 2024 15:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABEFD1AAE02;
+	Mon, 14 Oct 2024 14:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M2OZFJW6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ORBQx+R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2C61BFDFC;
-	Mon, 14 Oct 2024 15:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E11E571;
+	Mon, 14 Oct 2024 14:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919209; cv=none; b=nXeX3ePxc2n0nCmoWuKXg/1zqbzksoWtmXiDW1c5Hb2frD4h/Hj4kgOQyAd/lgGTi0aqfQg2ObfzgxJbw0Ifxo+ktl58gMhWvsHmURExraY3pkKPMtm14FWE79bJvXmVTdqy/Q1Nl4YvMjg0YpEG7jeZ0C5mkd7m/ynzFtjFdTs=
+	t=1728915911; cv=none; b=objnsM6dsjQ+Yl3JqOiysTYJJpFpyYpyDUbPEgfGUx/I7EptR2OuUw6+W6Q1Y8wD7Gr1ig7JFhoyrar3PGyH4UbfZhhuxt6n8aFRWJt77dcTK6AWhyAng00MrcRnxQi7caAmAFBxY4WP74imWXBrTO+mVpfDROfNyXEuIoswpkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919209; c=relaxed/simple;
-	bh=b17S7zhLVxEvO/YObLPGRZyadH+r/I6aPb5c9eIpd/Y=;
+	s=arc-20240116; t=1728915911; c=relaxed/simple;
+	bh=KgfzpeYUp2V0NhCv9YFviPU0O0IH9PnCA3gxWfipsGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfeSIzTGFDcHc9qh1uQ+lsgp5OHtGb2voN9ZweBimKf1DUl8A1a+PXUencDyPpoalM38vdFeHN2cTBnviG+cV7v9iOPHv8H+O5Ns3T4lNsRRUaIHVDRhjRFv+XHn/kWqVZbD6HJHQQ5DIXLOEr1OTYLpXOzI1Ir7NxIT6Z3fLrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2OZFJW6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9DBC4CEC3;
-	Mon, 14 Oct 2024 15:20:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=plMUQmEIp3qVyybZ3yFCDWn3eaoKGgHcgWvCQKlQLp/bdghYOQLRcXh6W2xg+cLxfjFjUB6Lh8WBQuiFyEhzRFg/OueScWh6hQTPjpn4y8+M5GHbyeof18ZAxCmSKuN02P4by/JpjRsPi9Z5imH3HKkCRit4fpcL7PdskDpK/HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ORBQx+R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A35C4CEC3;
+	Mon, 14 Oct 2024 14:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919209;
-	bh=b17S7zhLVxEvO/YObLPGRZyadH+r/I6aPb5c9eIpd/Y=;
+	s=korg; t=1728915911;
+	bh=KgfzpeYUp2V0NhCv9YFviPU0O0IH9PnCA3gxWfipsGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M2OZFJW6ar/fdA+/mSgvDwOm3NDT0prwnd9eYALPcm505ATYxm2bPjbOZTnKNiZQf
-	 jGf6dDv9V388VhkiHjeSBMLbMmQr2eB7vC9kdW/SwScvfenOE4CMXgDhOBitO9mBt2
-	 0WaZY3kh58G1lEk39shAEqjlt6mNtgrENLQ+R7fc=
+	b=2ORBQx+Rp2EssWLWQQcGOjtwfRWk4+SkK56NQXf160WnF3tPLDE8Je75J2DJuYA6C
+	 4A+KM+tUvmx8fAvSOlnu9Ssu2dxxT/Tyjx4+vcdcXeZh0OlwdEpavYusFNijpHNHkr
+	 Tq08g4Y2K6zlJA1w/PzIzW3+d4/b1C4tbHlm/iNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 544/798] ext4: propagate errors from ext4_find_extent() in ext4_insert_range()
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 035/214] i2c: i801: Use a different adapter-name for IDF adapters
 Date: Mon, 14 Oct 2024 16:18:18 +0200
-Message-ID: <20241014141239.370880377@linuxfoundation.org>
+Message-ID: <20241014141046.357626041@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 369c944ed1d7c3fb7b35f24e4735761153afe7b3 upstream.
+[ Upstream commit 43457ada98c824f310adb7bd96bd5f2fcd9a3279 ]
 
-Even though ext4_find_extent() returns an error, ext4_insert_range() still
-returns 0. This may confuse the user as to why fallocate returns success,
-but the contents of the file are not as expected. So propagate the error
-returned by ext4_find_extent() to avoid inconsistencies.
+On chipsets with a second 'Integrated Device Function' SMBus controller use
+a different adapter-name for the second IDF adapter.
 
-Fixes: 331573febb6a ("ext4: Add support FALLOC_FL_INSERT_RANGE for fallocate")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20240822023545.1994557-11-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This allows platform glue code which is looking for the primary i801
+adapter to manually instantiate i2c_clients on to differentiate
+between the 2.
+
+This allows such code to find the primary i801 adapter by name, without
+needing to duplicate the PCI-ids to feature-flags mapping from i2c-i801.c.
+
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-i801.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -5570,6 +5570,7 @@ static int ext4_insert_range(struct file
- 	path = ext4_find_extent(inode, offset_lblk, NULL, 0);
- 	if (IS_ERR(path)) {
- 		up_write(&EXT4_I(inode)->i_data_sem);
-+		ret = PTR_ERR(path);
- 		goto out_stop;
- 	}
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index 328c0dab6b147..299fe9d3afab0 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -1763,8 +1763,15 @@ static int i801_probe(struct pci_dev *dev, const struct pci_device_id *id)
  
+ 	i801_add_tco(priv);
+ 
++	/*
++	 * adapter.name is used by platform code to find the main I801 adapter
++	 * to instantiante i2c_clients, do not change.
++	 */
+ 	snprintf(priv->adapter.name, sizeof(priv->adapter.name),
+-		"SMBus I801 adapter at %04lx", priv->smba);
++		 "SMBus %s adapter at %04lx",
++		 (priv->features & FEATURE_IDF) ? "I801 IDF" : "I801",
++		 priv->smba);
++
+ 	err = i2c_add_adapter(&priv->adapter);
+ 	if (err) {
+ 		platform_device_unregister(priv->tco_pdev);
+-- 
+2.43.0
+
 
 
 
