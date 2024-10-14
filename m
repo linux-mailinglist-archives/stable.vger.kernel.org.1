@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-84226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E260999CF23
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:51:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FBE799D341
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E31528B2DB
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:51:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 513B51C20A42
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3011ADFE9;
-	Mon, 14 Oct 2024 14:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA6C1B4F31;
+	Mon, 14 Oct 2024 15:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uB8kEQbK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wuy36cs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1FE80027;
-	Mon, 14 Oct 2024 14:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99BF1ACDED;
+	Mon, 14 Oct 2024 15:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917268; cv=none; b=KsyHqgna8GNFQr3++E/K4iCSdgDKm6HJwEVwS5+rrgaYlWXMJ9QnGYt806DQi8gPqNgDwnkoy+lG3EHMviQc2HUdj9bbw2Pe3i0ZFy+t7dtFqsz9F0VOiR2lZ/O8ziIgXyF1COqjk8ZjCVd52fmT0vaR2av6oPzwFGI7wjSpNzg=
+	t=1728919945; cv=none; b=vBxx5ni4XN3k27ipWDbmu3RBcZq4nwt5TrsF45qvY2ywKz+9jkdey7gLbkoByqwhUYc90su7aaudYcQD2WWVcYWitkbgJDVfVLk/M36e+/TqYtWfQtDFKySNN1vbmOaT2hI9Fv/oN0Gagm3uTD5+hg8Y3O/rBA1OfDvoKGhaq7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917268; c=relaxed/simple;
-	bh=kogjiN/gmcxhlyZyDFIsUrVmfcLiDvJi9y4xF1UJU+c=;
+	s=arc-20240116; t=1728919945; c=relaxed/simple;
+	bh=8hWPnoqwptbP54AuJAYIi0R3yzoMek3xCNo5zQZNYJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RQh5tDtCv4yb+uJltWV1iZIbF7OsA0RiUPLG1ZEhiTlwQ3vBit2mX3xsYSRgRR7PcOXxpRCfcduk+yPSGGa2VFGlq5BOL4v5+T+DQy/Ud77H8jav52PmXZaM1tuZqV6VGSQa0Dpo4ZMwJU6qvrFNHSUY1TPg4RNB9rVsX/kCf10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uB8kEQbK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2E9C4CEC3;
-	Mon, 14 Oct 2024 14:47:47 +0000 (UTC)
+	 MIME-Version; b=K7YateanfL5dPGg4RWXQalMOdeVJ6o5rZs1gaHv1DdEZoxMSqtzadx0AGtbBcANcSEh9AKPMTkzKW22ezXBtMXaoGPHA4t7bCrW6Ozat5AfMGyA4bdSCvCwBD1jZx4YmkX2fngj5EoWVTwjCPFFTW4sm2XxEb/LpVD1AcMuHno8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wuy36cs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236B5C4CEC3;
+	Mon, 14 Oct 2024 15:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917268;
-	bh=kogjiN/gmcxhlyZyDFIsUrVmfcLiDvJi9y4xF1UJU+c=;
+	s=korg; t=1728919945;
+	bh=8hWPnoqwptbP54AuJAYIi0R3yzoMek3xCNo5zQZNYJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uB8kEQbK9tmpxkgIhVhznRv7hEp1/QDmufaH9ruVeZ2PoFrHZjng5gp/ges5SmXV3
-	 iko5bOAPMMCv3EEWaGOpQinRf15OjsZoLfmOUJMs4nW6hYoYAfOzv+FIoSP9e3TgHN
-	 XCcCFAcf1dOaQFw+So+BddAhjgrw4CVbsC1Zwjzc=
+	b=0wuy36csR81t4hlQkBeQQc9XA/Z0YT1nIzYCFazalwyTebW0qM79/aZ2wLZLJYH9O
+	 KOfuZB03UP3IVV46YFMYHoPktQnWpY5Bt8JHCibwzkPzADEqyLwZ+11zZnM4uF2Tr5
+	 Cf1U1W5p0jOEPke5bU1vGaQ089GagXU9iowLJ9tk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 201/213] mptcp: pm: do not remove closing subflows
+	Rosen Penev <rosenp@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 753/798] net: ibm: emac: mal: fix wrong goto
 Date: Mon, 14 Oct 2024 16:21:47 +0200
-Message-ID: <20241014141050.804526777@linuxfoundation.org>
+Message-ID: <20241014141247.653833260@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Rosen Penev <rosenp@gmail.com>
 
-commit db0a37b7ac27d8ca27d3dc676a16d081c16ec7b9 upstream.
+[ Upstream commit 08c8acc9d8f3f70d62dd928571368d5018206490 ]
 
-In a previous fix, the in-kernel path-manager has been modified not to
-retrigger the removal of a subflow if it was already closed, e.g. when
-the initial subflow is removed, but kept in the subflows list.
+dcr_map is called in the previous if and therefore needs to be unmapped.
 
-To be complete, this fix should also skip the subflows that are in any
-closing state: mptcp_close_ssk() will initiate the closure, but the
-switch to the TCP_CLOSE state depends on the other peer.
-
-Fixes: 58e1b66b4e4b ("mptcp: pm: do not remove already closed subflows")
-Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241008-net-mptcp-fallback-fixes-v1-4-c6fb8e93e551@kernel.org
+Fixes: 1ff0fcfcb1a6 ("ibm_newemac: Fix new MAL feature handling")
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://patch.msgid.link/20241007235711.5714-1-rosenp@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ibm/emac/mal.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -864,7 +864,8 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 			int how = RCV_SHUTDOWN | SEND_SHUTDOWN;
- 			u8 id = subflow_get_local_id(subflow);
+diff --git a/drivers/net/ethernet/ibm/emac/mal.c b/drivers/net/ethernet/ibm/emac/mal.c
+index ff5487bbebe37..a93c9230e982f 100644
+--- a/drivers/net/ethernet/ibm/emac/mal.c
++++ b/drivers/net/ethernet/ibm/emac/mal.c
+@@ -576,7 +576,7 @@ static int mal_probe(struct platform_device *ofdev)
+ 		printk(KERN_ERR "%pOF: Support for 405EZ not enabled!\n",
+ 				ofdev->dev.of_node);
+ 		err = -ENODEV;
+-		goto fail;
++		goto fail_unmap;
+ #endif
+ 	}
  
--			if (inet_sk_state_load(ssk) == TCP_CLOSE)
-+			if ((1 << inet_sk_state_load(ssk)) &
-+			    (TCPF_FIN_WAIT1 | TCPF_FIN_WAIT2 | TCPF_CLOSING | TCPF_CLOSE))
- 				continue;
- 			if (rm_type == MPTCP_MIB_RMADDR && remote_id != rm_id)
- 				continue;
+-- 
+2.43.0
+
 
 
 
