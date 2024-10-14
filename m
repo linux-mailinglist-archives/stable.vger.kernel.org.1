@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-84198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D532799CED0
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:47:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4BB99D31E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99D812885EC
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:47:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA21A28A73C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E6E1AC447;
-	Mon, 14 Oct 2024 14:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4280E1BB6BB;
+	Mon, 14 Oct 2024 15:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3+oYLJ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YAeGQW55"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805E31AAE08;
-	Mon, 14 Oct 2024 14:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32801ADFE9;
+	Mon, 14 Oct 2024 15:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917176; cv=none; b=C8+4KpcRFJY5Q0S2HTZ7V/QvklhfLnCpmcLkYeRJm8n8r1fvmkZtSDK21xwq5hqjHDB6ukfDHGmimD7PsKq+4z8ruylbaDzT+2XcQSC2Yj+YB9Eulls/d8wsjkXY/iH7ZlMCqfsxGm557Y/ZTvDQeAXnuQpcjcyc4JLH6yUAKsU=
+	t=1728919849; cv=none; b=fraKMRxSElxqJpMJDod+8MZuRFIYk8GCYIeGCLlpg3YSYSpdrS4q7WpF7SDAlFgcLmQdA6Kq/YxSmAbUym7Jw8llRSSOTZeOX0FS437d1T512odmMSz7yAOVx0ZGUBWZLKOH1wN1BNrP0HnJnN39D9hdwwOXThO8DvTXaH0NrzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917176; c=relaxed/simple;
-	bh=ZSdnEPpyH2WOgqcz+lpStYEk2GzFZbiF1bLzV6YLwNY=;
+	s=arc-20240116; t=1728919849; c=relaxed/simple;
+	bh=Of5pn25vDING94u+wEWcCijrc8SaA2gGOkJ/2mZIhsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8MbuHpvR3DqVF2LqRiycOrkUOq5GyenJfTMFebdBKtLPAyIlFmJOrjp3B+2fPvm6UZRbmX93dmYptHY8FkeX1+MYUJd0orhaVBMY7WwTVgFadoKVlBjrVtf5aiNtcdwM0Emj5ug9o3H1nF0ssGXJyuk+Ef3BsjC3hpx0OKGjQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3+oYLJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC078C4CEC3;
-	Mon, 14 Oct 2024 14:46:15 +0000 (UTC)
+	 MIME-Version; b=IdQal2V7ySKHmgicikFmxWMhkk/RCKxHaSFfHeyeMTsjL23HnEhYuLYFMdTvxaqHYs2r/q0lOpF2qWtEK8bIW5HgN83BDxDWofc0+JoFZPorNuO2Hu1TZ/vXn2LMLq0LfsjNr4Zs4tkFRshpreXhPOftd3V9/FulE3arjCOBK6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YAeGQW55; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71850C4CED0;
+	Mon, 14 Oct 2024 15:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917176;
-	bh=ZSdnEPpyH2WOgqcz+lpStYEk2GzFZbiF1bLzV6YLwNY=;
+	s=korg; t=1728919848;
+	bh=Of5pn25vDING94u+wEWcCijrc8SaA2gGOkJ/2mZIhsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O3+oYLJ86yPxv2kl9n/c5TL6XMHHvXXIv88TxyzmoC7LBi4WGhc8bNIxK+UvYOcfe
-	 MUDYx41BkMAAKlrCNc/N57CoPCr75koPqx0sqfypyhsjBKNc/qLtdehtExFit3Eo6W
-	 +b4Y3g77pwftUrbJQNll+sVjeoYmPSRDuMUyoct8=
+	b=YAeGQW55QoVqeUObs7Hk27K6kpu+21ZOEOh+O6foYzvtBIGae05pMIRoByJvvRK3b
+	 AWL8EyFkJTzkFgxKirf0p3fjqfP6uDaL93C60PJXMWg6eh5jVE0XPW3yQGJV0F49zz
+	 YNdJmOHbJlhV4Wxv9nCY6EyrHx8dBNMnv/oHP2q4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Jiri Kosina <jkosina@suse.com>,
+	Andrey Shumilin <shum.sdl@nppct.ru>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/213] hid-asus: add ROG Ally X prod ID to quirk list
+Subject: [PATCH 6.1 724/798] fbdev: sisfb: Fix strbuf array overflow
 Date: Mon, 14 Oct 2024 16:21:18 +0200
-Message-ID: <20241014141049.680942936@linuxfoundation.org>
+Message-ID: <20241014141246.514475118@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke D. Jones <luke@ljones.dev>
+From: Andrey Shumilin <shum.sdl@nppct.ru>
 
-[ Upstream commit d1aa95e86f178dc597e80228cd9bd81fc3510f34 ]
+[ Upstream commit 9cf14f5a2746c19455ce9cb44341b5527b5e19c3 ]
 
-The new ASUS ROG Ally X functions almost exactly the same as the previous
-model, so we can use the same quirks.
+The values of the variables xres and yres are placed in strbuf.
+These variables are obtained from strbuf1.
+The strbuf1 array contains digit characters
+and a space if the array contains non-digit characters.
+Then, when executing sprintf(strbuf, "%ux%ux8", xres, yres);
+more than 16 bytes will be written to strbuf.
+It is suggested to increase the size of the strbuf array to 24.
 
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-asus.c | 3 +++
- drivers/hid/hid-ids.h  | 1 +
- 2 files changed, 4 insertions(+)
+ drivers/video/fbdev/sis/sis_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index fde6307d1db0c..84625e817ce95 100644
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -1282,6 +1282,9 @@ static const struct hid_device_id asus_devices[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
- 	    USB_DEVICE_ID_ASUSTEK_ROG_NKEY_ALLY),
- 	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
-+	    USB_DEVICE_ID_ASUSTEK_ROG_NKEY_ALLY_X),
-+	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
- 	    USB_DEVICE_ID_ASUSTEK_ROG_CLAYMORE_II_KEYBOARD),
- 	  QUIRK_ROG_CLAYMORE_II_KEYBOARD },
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 17f7d3a3f57b0..567000a5888b7 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -210,6 +210,7 @@
- #define USB_DEVICE_ID_ASUSTEK_ROG_NKEY_KEYBOARD3	0x1a30
- #define USB_DEVICE_ID_ASUSTEK_ROG_Z13_LIGHTBAR		0x18c6
- #define USB_DEVICE_ID_ASUSTEK_ROG_NKEY_ALLY		0x1abe
-+#define USB_DEVICE_ID_ASUSTEK_ROG_NKEY_ALLY_X		0x1b4c
- #define USB_DEVICE_ID_ASUSTEK_ROG_CLAYMORE_II_KEYBOARD	0x196b
- #define USB_DEVICE_ID_ASUSTEK_FX503VD_KEYBOARD	0x1869
+diff --git a/drivers/video/fbdev/sis/sis_main.c b/drivers/video/fbdev/sis/sis_main.c
+index fe8996461b9ef..7b83d73eb0a04 100644
+--- a/drivers/video/fbdev/sis/sis_main.c
++++ b/drivers/video/fbdev/sis/sis_main.c
+@@ -184,7 +184,7 @@ static void sisfb_search_mode(char *name, bool quiet)
+ {
+ 	unsigned int j = 0, xres = 0, yres = 0, depth = 0, rate = 0;
+ 	int i = 0;
+-	char strbuf[16], strbuf1[20];
++	char strbuf[24], strbuf1[20];
+ 	char *nameptr = name;
  
+ 	/* We don't know the hardware specs yet and there is no ivideo */
 -- 
 2.43.0
 
