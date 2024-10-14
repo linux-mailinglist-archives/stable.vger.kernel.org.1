@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-83972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 836B799CD72
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F2199D2A8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8D42282000
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:32:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 674A9284354
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD9F1AB52B;
-	Mon, 14 Oct 2024 14:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0641ADFF8;
+	Mon, 14 Oct 2024 15:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSHCeDSp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/xEDJsc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF2524B34;
-	Mon, 14 Oct 2024 14:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7D514AA9;
+	Mon, 14 Oct 2024 15:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916365; cv=none; b=iKbRGwYOQsYioX1tjaPjJx/qBckJvBtaFiy+PWeS/E0ifrbDgu5U/5yjMNn04plPectmA7OTy79XN96tXRJn0rkvMuucKIz7QLxIV8vzrrFZjGo+CiaVppxgp8NCRipOJ1QHAj79LNhXDcFLBTdnTo+Lxs1q17xV53qHV3AqedU=
+	t=1728919554; cv=none; b=qzzWH86IC5Nix8rAQRNwma9GA1GF0GgPlrVyzk1VRhQevcNob+I2cDQEdusy3bKZqL1MnfG7kL7uStWLtRfdBl7wBSmuyk7EJi9eQR0TCenNOyCG+VQvr40XtE5ZemH/JoEirCXR6bIMBxpqgHU2/CKnI0Ued5zUbka/RuedOOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916365; c=relaxed/simple;
-	bh=34XnZspkRSdBE+ZwTINkqDh/NyUXne+f2Pgv+zupuRw=;
+	s=arc-20240116; t=1728919554; c=relaxed/simple;
+	bh=pbGmebGs2gwMPFHVmzrbdJ4i1lk6JFdOgy50yVAqdtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cE63zzpXFmW297Y0Pju7sLlQY4Y06Y8qhJjQfqDuBeMjh8IoJZjbWfmAz3dIViX6XgiGNlyIOcqRtFb57BYMak1QSLyMwxAf5uIdnqGgnfGbltiLNZoR+8wGhZ1zB2fQQ1NUTVfF7UsZ5DIWLiqXwaP7bZe4a+lPoe1sb2xog5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSHCeDSp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C204CC4CEC7;
-	Mon, 14 Oct 2024 14:32:44 +0000 (UTC)
+	 MIME-Version; b=kMac34gc3PaG6f3Es10yncUw+8jdCB++RFh5Es5HkzrQ1wIpUm2pIgs0s0UVywbrR0W0N15aw2OrVpGuEYjSRomGg/VHc1TdWasr9dja7F1u9/CWPzOGMzX+Fe4s2hiNwhg42ge+fawyPDzmxDTpni6wwiL6As8t1LMGT0nPAy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/xEDJsc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED59DC4CECF;
+	Mon, 14 Oct 2024 15:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916365;
-	bh=34XnZspkRSdBE+ZwTINkqDh/NyUXne+f2Pgv+zupuRw=;
+	s=korg; t=1728919554;
+	bh=pbGmebGs2gwMPFHVmzrbdJ4i1lk6JFdOgy50yVAqdtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vSHCeDSpG7FBYM8l2VR0Gs2bmgtOWGvF5mLNXIvZTzHswR3nS8LGTubgY9S7AHwgm
-	 pIgGbPQkUmkJzXNSRDBReVRNI55S0+eevftLQxsrDl1WKzCqnzLOHgkzIfrGTwBL1s
-	 RmP0oz+uynQT5nhKDmTjknWUuTmjf5LpxQJCqLew=
+	b=B/xEDJscdogBKcZZTqVcOn3K2iq8KIha0IsST7HhGlfoqM6KjodP26jNeqj3bjCWu
+	 wB0zlohIrM9fd8jAgj/PquZ+dCVHdgK/lnlYKGliEdKBnBK0/udapiufoBmylI10MX
+	 /slPuh1mW7KuCUx5x6pI+JtH0MQgQojXpxl2p4W0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 131/214] net: ti: icssg-prueth: Fix race condition for VLAN table access
+Subject: [PATCH 6.1 640/798] media: i2c: imx335: Enable regulator supplies
 Date: Mon, 14 Oct 2024 16:19:54 +0200
-Message-ID: <20241014141050.104436253@linuxfoundation.org>
+Message-ID: <20241014141243.184516899@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: MD Danish Anwar <danishanwar@ti.com>
+From: Kieran Bingham <kieran.bingham@ideasonboard.com>
 
-[ Upstream commit ff8ee11e778520c5716b7f165d2c7ce14d6a068b ]
+[ Upstream commit fea91ee73b7cd19f08017221923d789f984abc54 ]
 
-The VLAN table is a shared memory between the two ports/slices
-in a ICSSG cluster and this may lead to race condition when the
-common code paths for both ports are executed in different CPUs.
+Provide support for enabling and disabling regulator supplies to control
+power to the camera sensor.
 
-Fix the race condition access by locking the shared memory access
+While updating the power on function, document that a sleep is
+represented as 'T4' in the datasheet power on sequence.
 
-Fixes: 487f7323f39a ("net: ti: icssg-prueth: Add helper functions to configure FDB")
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: 99d30e2fdea4 ("media: imx335: Fix reset-gpio handling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/icssg/icssg_config.c | 2 ++
- drivers/net/ethernet/ti/icssg/icssg_prueth.c | 1 +
- drivers/net/ethernet/ti/icssg/icssg_prueth.h | 2 ++
- 3 files changed, 5 insertions(+)
+ drivers/media/i2c/imx335.c | 36 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 34 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_config.c b/drivers/net/ethernet/ti/icssg/icssg_config.c
-index dae52a83a3786..5be020d0887ac 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_config.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_config.c
-@@ -733,6 +733,7 @@ void icssg_vtbl_modify(struct prueth_emac *emac, u8 vid, u8 port_mask,
- 	u8 fid_c1;
- 
- 	tbl = prueth->vlan_tbl;
-+	spin_lock(&prueth->vtbl_lock);
- 	fid_c1 = tbl[vid].fid_c1;
- 
- 	/* FID_C1: bit0..2 port membership mask,
-@@ -748,6 +749,7 @@ void icssg_vtbl_modify(struct prueth_emac *emac, u8 vid, u8 port_mask,
- 	}
- 
- 	tbl[vid].fid_c1 = fid_c1;
-+	spin_unlock(&prueth->vtbl_lock);
- }
- EXPORT_SYMBOL_GPL(icssg_vtbl_modify);
- 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index e3451beed3238..33cb3590a5cde 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -1262,6 +1262,7 @@ static int prueth_probe(struct platform_device *pdev)
- 		icss_iep_init_fw(prueth->iep1);
- 	}
- 
-+	spin_lock_init(&prueth->vtbl_lock);
- 	/* setup netdev interfaces */
- 	if (eth0_node) {
- 		ret = prueth_netdev_init(prueth, eth0_node);
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-index f678d656a3ed3..4d1c895dacdb6 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-@@ -282,6 +282,8 @@ struct prueth {
- 	bool is_switchmode_supported;
- 	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
- 	int default_vlan;
-+	/** @vtbl_lock: Lock for vtbl in shared memory */
-+	spinlock_t vtbl_lock;
+diff --git a/drivers/media/i2c/imx335.c b/drivers/media/i2c/imx335.c
+index 8e91767d61300..d173a456ea046 100644
+--- a/drivers/media/i2c/imx335.c
++++ b/drivers/media/i2c/imx335.c
+@@ -75,6 +75,12 @@ struct imx335_reg_list {
+ 	const struct imx335_reg *regs;
  };
  
- struct emac_tx_ts_response {
++static const char * const imx335_supply_name[] = {
++	"avdd", /* Analog (2.9V) supply */
++	"ovdd", /* Digital I/O (1.8V) supply */
++	"dvdd", /* Digital Core (1.2V) supply */
++};
++
+ /**
+  * struct imx335_mode - imx335 sensor mode structure
+  * @width: Frame width
+@@ -108,6 +114,7 @@ struct imx335_mode {
+  * @sd: V4L2 sub-device
+  * @pad: Media pad. Only one pad supported
+  * @reset_gpio: Sensor reset gpio
++ * @supplies: Regulator supplies to handle power control
+  * @inclk: Sensor input clock
+  * @ctrl_handler: V4L2 control handler
+  * @link_freq_ctrl: Pointer to link frequency control
+@@ -127,6 +134,8 @@ struct imx335 {
+ 	struct v4l2_subdev sd;
+ 	struct media_pad pad;
+ 	struct gpio_desc *reset_gpio;
++	struct regulator_bulk_data supplies[ARRAY_SIZE(imx335_supply_name)];
++
+ 	struct clk *inclk;
+ 	struct v4l2_ctrl_handler ctrl_handler;
+ 	struct v4l2_ctrl *link_freq_ctrl;
+@@ -790,6 +799,17 @@ static int imx335_parse_hw_config(struct imx335 *imx335)
+ 		return PTR_ERR(imx335->reset_gpio);
+ 	}
+ 
++	for (i = 0; i < ARRAY_SIZE(imx335_supply_name); i++)
++		imx335->supplies[i].supply = imx335_supply_name[i];
++
++	ret = devm_regulator_bulk_get(imx335->dev,
++				      ARRAY_SIZE(imx335_supply_name),
++				      imx335->supplies);
++	if (ret) {
++		dev_err(imx335->dev, "Failed to get regulators\n");
++		return ret;
++	}
++
+ 	/* Get sensor input clock */
+ 	imx335->inclk = devm_clk_get(imx335->dev, NULL);
+ 	if (IS_ERR(imx335->inclk)) {
+@@ -868,6 +888,17 @@ static int imx335_power_on(struct device *dev)
+ 	struct imx335 *imx335 = to_imx335(sd);
+ 	int ret;
+ 
++	ret = regulator_bulk_enable(ARRAY_SIZE(imx335_supply_name),
++				    imx335->supplies);
++	if (ret) {
++		dev_err(dev, "%s: failed to enable regulators\n",
++			__func__);
++		return ret;
++	}
++
++	usleep_range(500, 550); /* Tlow */
++
++	/* Set XCLR */
+ 	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
+ 
+ 	ret = clk_prepare_enable(imx335->inclk);
+@@ -876,12 +907,13 @@ static int imx335_power_on(struct device *dev)
+ 		goto error_reset;
+ 	}
+ 
+-	usleep_range(20, 22);
++	usleep_range(20, 22); /* T4 */
+ 
+ 	return 0;
+ 
+ error_reset:
+ 	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
++	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
+ 
+ 	return ret;
+ }
+@@ -898,8 +930,8 @@ static int imx335_power_off(struct device *dev)
+ 	struct imx335 *imx335 = to_imx335(sd);
+ 
+ 	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
+-
+ 	clk_disable_unprepare(imx335->inclk);
++	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
