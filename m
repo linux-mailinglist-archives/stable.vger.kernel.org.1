@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-84053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DAD399CDE9
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:37:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0906A99CD00
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:27:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 715101C215F7
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:37:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 350E41C22637
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC29A1AAE37;
-	Mon, 14 Oct 2024 14:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9603B1AAE19;
+	Mon, 14 Oct 2024 14:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5wO/f7v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VhMcykb6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEAE1AA793;
-	Mon, 14 Oct 2024 14:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8421AA790;
+	Mon, 14 Oct 2024 14:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916656; cv=none; b=kd1KetvZgOx0Jyzh2/o8qsoYWdgsm86bG/RaYsN0LkkWuXgxtBvtVHAmjsRoEb6x1w5DL9TEmUA2VRT/qqzRArPgy1+xiQe07h30bjC71X5vf2CQdjeUNecGrQlIWVoQ5pzYRa5fb+/XOYQ+9hVQPrCTx5xMasxTrZJ6e+1wTj4=
+	t=1728916051; cv=none; b=YUsBn59kVFklk+uluBm0ZwVjKozUMYzb8znXI5B6X81m/J+TOwsMF8F/etc9UZF5CcGUUvcZn6NwlUE+eqfmafLTo9yWRhCvcmKk5D/VcYSIEEodG5vS1uHQV9yxcq0XtqBNSQWbc4lx2TKxVTXM5n2z6nk5FXQkc+vRq+IHIy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916656; c=relaxed/simple;
-	bh=vo7dbB0+z/XMhgwXmdR65/ipNRf3MXi3WxtS8LX/p/I=;
+	s=arc-20240116; t=1728916051; c=relaxed/simple;
+	bh=QbMVemG6rRXea8B/6EQAXJpMhaF3gN0DtvAYl1KQrm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EOSDsguHXgAZQUlobApvv3Ag9AOdz3XoeUntDQiandH6piq4Q0sv/TUMWVSgBz63PJwLtMpljrRLo6xxR5gpzeXXgPymr01tkr5kjAntuIGiKO7KqU94/qJX6xvFYu+3uuFXjFMXYvglT1xmCrwM1A6HbmdjcY7AYcSEZzWs8pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5wO/f7v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0BFC4CEC3;
-	Mon, 14 Oct 2024 14:37:35 +0000 (UTC)
+	 MIME-Version; b=hp273p1DMWirO1IwoZG10Eyc2xTfB/ZhRPmpvMLVOkyFCXIl3EwHMFPTzJyMuF+kKQHKN8s5sTKCmzVUTjL2v6x2pcbb55gnKVYfQo3TBwC5ESb8NEz0q0rIFB0DpKUT9OyoFdPDqt6TYaPqgC6GjOtp3pDB0iFkTiqrqJ+WIYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VhMcykb6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7D9C4CEC3;
+	Mon, 14 Oct 2024 14:27:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916656;
-	bh=vo7dbB0+z/XMhgwXmdR65/ipNRf3MXi3WxtS8LX/p/I=;
+	s=korg; t=1728916050;
+	bh=QbMVemG6rRXea8B/6EQAXJpMhaF3gN0DtvAYl1KQrm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b5wO/f7vs1fyR6FwcdbrLeDKqpUUKHP2Get0jl1dQ1FcD3M4vav+svWU0FJ8OG80A
-	 4y5/LV1xZCE5cTSl8i2VyXfOEGHzibO7BDJ1vXhs3M+6s++W1Tl2dDkf9wqMbho3cd
-	 +6Wk6SoYEoVe4OjHC97jmXeohSQAJTTZMVY4hR/k=
+	b=VhMcykb6JUo8IFEtOsHPD6F/Kr5Syvg4P2KeUAbfmwQ062rO6kcWe739wrpF4QIcf
+	 z2O9dBfsJenX5tsTO6FTGRsN9Qi9Do0Kgwy0f+qj0cOK004INW07NxJtV9lvIMqcZn
+	 5Qq1unsq2mBMK6VHGCx4rh48NVqKdOTXSUSxqsss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/213] ata: ahci: Add mask_port_map module parameter
-Date: Mon, 14 Oct 2024 16:18:54 +0200
-Message-ID: <20241014141044.085469616@linuxfoundation.org>
+Subject: [PATCH 6.11 072/214] scsi: lpfc: Add ELS_RSP cmd to the list of WQEs to flush in lpfc_els_flush_cmd()
+Date: Mon, 14 Oct 2024 16:18:55 +0200
+Message-ID: <20241014141047.799088230@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,173 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 24cfd86433c920188ac3f02df8aba6bc4c792f4b ]
+[ Upstream commit 93bcc5f3984bf4f51da1529700aec351872dbfff ]
 
-Commits 0077a504e1a4 ("ahci: asm1166: correct count of reported ports")
-and 9815e3961754 ("ahci: asm1064: correct count of reported ports")
-attempted to limit the ports of the ASM1166 and ASM1064 AHCI controllers
-to avoid long boot times caused by the fact that these adapters report
-a port map larger than the number of physical ports. The excess ports
-are "virtual" to hide port multiplier devices and probing these ports
-takes time. However, these commits caused a regression for users that do
-use PMP devices, as the ATA devices connected to the PMP cannot be
-scanned. These commits have thus been reverted by commit 6cd8adc3e18
-("ahci: asm1064: asm1166: don't limit reported ports") to allow the
-discovery of devices connected through a port multiplier. But this
-revert re-introduced the long boot times for users that do not use a
-port multiplier setup.
+During HBA stress testing, a spam of received PLOGIs exposes a resource
+recovery bug causing leakage of lpfc_sqlq entries from the global
+phba->sli4_hba.lpfc_els_sgl_list.
 
-This patch adds the mask_port_map ahci module parameter to allow users
-to manually specify port map masks for controllers. In the case of the
-ASMedia 1166 and 1064 controllers, users that do not have port
-multiplier devices can mask the excess virtual ports exposed by the
-controller to speedup port scanning, thus reducing boot time.
+The issue is in lpfc_els_flush_cmd(), where the driver attempts to recover
+outstanding ELS sgls when walking the txcmplq.  Only CMD_ELS_REQUEST64_CRs
+and CMD_GEN_REQUEST64_CRs are added to the abort and cancel lists.  A check
+for CMD_XMIT_ELS_RSP64_WQE is missing in order to recover LS_ACC usages of
+the phba->sli4_hba.lpfc_els_sgl_list too.
 
-The mask_port_map parameter accepts 2 different formats:
- - mask_port_map=<mask>
-   This applies the same mask to all AHCI controllers
-   present in the system. This format is convenient for small systems
-   that have only a single AHCI controller.
- - mask_port_map=<pci_dev>=<mask>,<pci_dev>=mask,...
-   This applies the specified masks only to the PCI device listed. The
-   <pci_dev> field is a regular PCI device ID (domain:bus:dev.func).
-   This ID can be seen following "ahci" in the kernel messages. E.g.
-   for "ahci 0000:01:00.0: 2/2 ports implemented (port mask 0x3)", the
-   <pci_dev> field is "0000:01:00.0".
+Fix by adding CMD_XMIT_ELS_RSP64_WQE as part of the txcmplq walk when
+adding WQEs to the abort and cancel list in lpfc_els_flush_cmd().  Also,
+update naming convention from CRs to WQEs.
 
-When used, the function ahci_save_initial_config() indicates that a
-port map mask was applied with the message "masking port_map ...".
-E.g.: without a mask:
-modprobe ahci
-dmesg | grep ahci
-...
-ahci 0000:00:17.0: AHCI vers 0001.0301, 32 command slots, 6 Gbps, SATA mode
-ahci 0000:00:17.0: (0000:00:17.0) 8/8 ports implemented (port mask 0xff)
-
-With a mask:
-modprobe ahci mask_port_map=0000:00:17.0=0x1
-dmesg | grep ahci
-...
-ahci 0000:00:17.0: masking port_map 0xff -> 0x1
-ahci 0000:00:17.0: AHCI vers 0001.0301, 32 command slots, 6 Gbps, SATA mode
-ahci 0000:00:17.0: (0000:00:17.0) 1/8 ports implemented (port mask 0x1)
-
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20240912232447.45607-2-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 85 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 85 insertions(+)
+ drivers/scsi/lpfc/lpfc_els.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 0a6aea36cd975..6e76780fb4308 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -667,6 +667,87 @@ static int mobile_lpm_policy = -1;
- module_param(mobile_lpm_policy, int, 0644);
- MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
+diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
+index e27f5d955edb4..4f324ca5368ef 100644
+--- a/drivers/scsi/lpfc/lpfc_els.c
++++ b/drivers/scsi/lpfc/lpfc_els.c
+@@ -9656,11 +9656,12 @@ lpfc_els_flush_cmd(struct lpfc_vport *vport)
+ 		if (piocb->cmd_flag & LPFC_DRIVER_ABORTED && !mbx_tmo_err)
+ 			continue;
  
-+static char *ahci_mask_port_map;
-+module_param_named(mask_port_map, ahci_mask_port_map, charp, 0444);
-+MODULE_PARM_DESC(mask_port_map,
-+		 "32-bits port map masks to ignore controllers ports. "
-+		 "Valid values are: "
-+		 "\"<mask>\" to apply the same mask to all AHCI controller "
-+		 "devices, and \"<pci_dev>=<mask>,<pci_dev>=<mask>,...\" to "
-+		 "specify different masks for the controllers specified, "
-+		 "where <pci_dev> is the PCI ID of an AHCI controller in the "
-+		 "form \"domain:bus:dev.func\"");
-+
-+static void ahci_apply_port_map_mask(struct device *dev,
-+				     struct ahci_host_priv *hpriv, char *mask_s)
-+{
-+	unsigned int mask;
-+
-+	if (kstrtouint(mask_s, 0, &mask)) {
-+		dev_err(dev, "Invalid port map mask\n");
-+		return;
-+	}
-+
-+	hpriv->mask_port_map = mask;
-+}
-+
-+static void ahci_get_port_map_mask(struct device *dev,
-+				   struct ahci_host_priv *hpriv)
-+{
-+	char *param, *end, *str, *mask_s;
-+	char *name;
-+
-+	if (!strlen(ahci_mask_port_map))
-+		return;
-+
-+	str = kstrdup(ahci_mask_port_map, GFP_KERNEL);
-+	if (!str)
-+		return;
-+
-+	/* Handle single mask case */
-+	if (!strchr(str, '=')) {
-+		ahci_apply_port_map_mask(dev, hpriv, str);
-+		goto free;
-+	}
-+
-+	/*
-+	 * Mask list case: parse the parameter to apply the mask only if
-+	 * the device name matches.
-+	 */
-+	param = str;
-+	end = param + strlen(param);
-+	while (param && param < end && *param) {
-+		name = param;
-+		param = strchr(name, '=');
-+		if (!param)
-+			break;
-+
-+		*param = '\0';
-+		param++;
-+		if (param >= end)
-+			break;
-+
-+		if (strcmp(dev_name(dev), name) != 0) {
-+			param = strchr(param, ',');
-+			if (param)
-+				param++;
-+			continue;
-+		}
-+
-+		mask_s = param;
-+		param = strchr(mask_s, ',');
-+		if (param) {
-+			*param = '\0';
-+			param++;
-+		}
-+
-+		ahci_apply_port_map_mask(dev, hpriv, mask_s);
-+	}
-+
-+free:
-+	kfree(str);
-+}
-+
- static void ahci_pci_save_initial_config(struct pci_dev *pdev,
- 					 struct ahci_host_priv *hpriv)
- {
-@@ -689,6 +770,10 @@ static void ahci_pci_save_initial_config(struct pci_dev *pdev,
- 			  "Disabling your PATA port. Use the boot option 'ahci.marvell_enable=0' to avoid this.\n");
- 	}
+-		/* On the ELS ring we can have ELS_REQUESTs or
+-		 * GEN_REQUESTs waiting for a response.
++		/* On the ELS ring we can have ELS_REQUESTs, ELS_RSPs,
++		 * or GEN_REQUESTs waiting for a CQE response.
+ 		 */
+ 		ulp_command = get_job_cmnd(phba, piocb);
+-		if (ulp_command == CMD_ELS_REQUEST64_CR) {
++		if (ulp_command == CMD_ELS_REQUEST64_WQE ||
++		    ulp_command == CMD_XMIT_ELS_RSP64_WQE) {
+ 			list_add_tail(&piocb->dlist, &abort_list);
  
-+	/* Handle port map masks passed as module parameter. */
-+	if (ahci_mask_port_map)
-+		ahci_get_port_map_mask(&pdev->dev, hpriv);
-+
- 	ahci_save_initial_config(&pdev->dev, hpriv);
- }
- 
+ 			/* If the link is down when flushing ELS commands
 -- 
 2.43.0
 
