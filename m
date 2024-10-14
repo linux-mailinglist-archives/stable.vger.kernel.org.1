@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-84924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC9099D2E2
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:31:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E845999CE6E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:43:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBC85B24755
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:31:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC4E32876B2
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AFE51ADFE4;
-	Mon, 14 Oct 2024 15:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37A31AB52F;
+	Mon, 14 Oct 2024 14:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sVv6CLcf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tzzg6iAu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBF5156256;
-	Mon, 14 Oct 2024 15:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6225C19E802;
+	Mon, 14 Oct 2024 14:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919689; cv=none; b=md/X3sTcs5cVnxj3wY3+c2YmXHd9n+xgWgAiD3qzollEdajDUX7Oxw7ZWpWtTdTZGUHoRE+EfH4ORgSmh0O1BdzKdhvzsO5DvM5OzTVRU0ixr+8VgsZkFUQrjYfyDvlufZIWX5ACuTptvjJRBD/UruRzhieDcFLV9rEPdT5Vgtw=
+	t=1728917017; cv=none; b=mgf4BkSXM5nThG+USENaHoEFWW3ASK3FBQ6xuL1jleBEfq01rJWFnMiSR+4fkIXvQu2cLwX3niyob8VHnRR3gTFeBNfP6xup11JFkDmj+/LZMiaJCqCv2ZNM7nbnZxT3LgFsJymkZE2c5qaa2gkDoNX6EDN0KY78959a8WJbICo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919689; c=relaxed/simple;
-	bh=MRAgylme8droz3dOhoWl1pJq6qvRoKI9gQtRPRDexAY=;
+	s=arc-20240116; t=1728917017; c=relaxed/simple;
+	bh=/801QHqFeQEIl9RLF0pM9A80qVyA0ye/PeaSkoiHZmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XDbB/JEY9KAGJBK2mZY8sy3sAmE9W2z4qDiBRfvizunjKpUSJQPeS73IhF+lRujTEAvN8DXAVkYMIqkZzZggxC/sdoWD8zJNjTjrECvKFUkE0dzgWCMK9nR3drS+HfnoGPyGy/I8lZB1M4U1sivmokFB0QCAEsSsxsK8KKSFtuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sVv6CLcf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E68BC4CECF;
-	Mon, 14 Oct 2024 15:28:08 +0000 (UTC)
+	 MIME-Version; b=HNPK6y6zB2GTFxfj6ihmzFjKnlZB2d1u29l2Qt/JsQjfJFauLjTyb9VvBfyW4qY8BvlAtc8aH/9KszutzniFPyMd3WmmyTV4kDIrrF3Lj8Y7Uh7AIniBCH7AjofLVDNT9sK6tWgfQE9y6HRsuZQPWo7ck1bcUao+pNbX/b6YtxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tzzg6iAu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD840C4CEC7;
+	Mon, 14 Oct 2024 14:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919688;
-	bh=MRAgylme8droz3dOhoWl1pJq6qvRoKI9gQtRPRDexAY=;
+	s=korg; t=1728917017;
+	bh=/801QHqFeQEIl9RLF0pM9A80qVyA0ye/PeaSkoiHZmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sVv6CLcfn3ZMG+9+PdBWpNELr13/6TPsEUQH1M95Z2PZbdENwIndo7irpds2A01nH
-	 upgcQlaaAn3QaIgmK2KvRYih44YSVP03sixl0oa3FwzlOle8IoBw+zaPbMEBBuasby
-	 SI6WPZ3feRumxDMA9G0RP9UfTmiOXoU5QHuwQUks=
+	b=Tzzg6iAuSrVPERs8PPdh9AUSoNyW6tCpXljbheydo2sCX1IjaFc50fCmUcTIgeAHm
+	 G7RxFrPFEkuCZi4q8SdrhEV3uY/zxHE2jU1Q2uVcertPdq4rxCsMeRpDLLp4epiKWF
+	 ofnq9ILEpQi7Iul9hT3+NV74SQg54YawFGwPc4mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 680/798] Bluetooth: Fix usage of __hci_cmd_sync_status
+Subject: [PATCH 6.6 128/213] net: dsa: b53: fix jumbo frame mtu check
 Date: Mon, 14 Oct 2024 16:20:34 +0200
-Message-ID: <20241014141244.786133290@linuxfoundation.org>
+Message-ID: <20241014141047.965203489@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 87be7b189b2c50d4b51512f59e4e97db4eedee8a ]
+[ Upstream commit 42fb3acf6826c6764ba79feb6e15229b43fd2f9f ]
 
-__hci_cmd_sync_status shall only be used if hci_req_sync_lock is _not_
-required which is not the case of hci_dev_cmd so it needs to use
-hci_cmd_sync_status which uses hci_req_sync_lock internally.
+JMS_MIN_SIZE is the full ethernet frame length, while mtu is just the
+data payload size. Comparing these two meant that mtus between 1500 and
+1518 did not trigger enabling jumbo frames.
 
-Fixes: f1a8f402f13f ("Bluetooth: L2CAP: Fix deadlock")
-Reported-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+So instead compare the set mtu ETH_DATA_LEN, which is equal to
+JMS_MIN_SIZE - ETH_HLEN - ETH_FCS_LEN;
+
+Also do a check that the requested mtu is actually greater than the
+minimum length, else we do not need to enable jumbo frames.
+
+In practice this only introduced a very small range of mtus that did not
+work properly. Newer chips allow 2000 byte large frames by default, and
+older chips allow 1536 bytes long, which is equivalent to an mtu of
+1514. So effectivly only mtus of 1515~1517 were broken.
+
+Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index dc19a0b1a2f6d..993b98257bc28 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -721,8 +721,8 @@ int hci_dev_cmd(unsigned int cmd, void __user *arg)
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index ae1c4dc35fe33..492e5eb931a6f 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -2268,7 +2268,7 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
+ 	if (!dsa_is_cpu_port(ds, port))
+ 		return 0;
  
- 	switch (cmd) {
- 	case HCISETAUTH:
--		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_AUTH_ENABLE,
--					    1, &dr.dev_opt, HCI_CMD_TIMEOUT);
-+		err = hci_cmd_sync_status(hdev, HCI_OP_WRITE_AUTH_ENABLE,
-+					  1, &dr.dev_opt, HCI_CMD_TIMEOUT);
- 		break;
+-	enable_jumbo = (mtu >= JMS_MIN_SIZE);
++	enable_jumbo = (mtu > ETH_DATA_LEN);
+ 	allow_10_100 = (dev->chip_id == BCM583XX_DEVICE_ID);
  
- 	case HCISETENCRYPT:
-@@ -733,23 +733,21 @@ int hci_dev_cmd(unsigned int cmd, void __user *arg)
- 
- 		if (!test_bit(HCI_AUTH, &hdev->flags)) {
- 			/* Auth must be enabled first */
--			err = __hci_cmd_sync_status(hdev,
--						    HCI_OP_WRITE_AUTH_ENABLE,
--						    1, &dr.dev_opt,
--						    HCI_CMD_TIMEOUT);
-+			err = hci_cmd_sync_status(hdev,
-+						  HCI_OP_WRITE_AUTH_ENABLE,
-+						  1, &dr.dev_opt,
-+						  HCI_CMD_TIMEOUT);
- 			if (err)
- 				break;
- 		}
- 
--		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_ENCRYPT_MODE,
--					    1, &dr.dev_opt,
--					    HCI_CMD_TIMEOUT);
-+		err = hci_cmd_sync_status(hdev, HCI_OP_WRITE_ENCRYPT_MODE,
-+					  1, &dr.dev_opt, HCI_CMD_TIMEOUT);
- 		break;
- 
- 	case HCISETSCAN:
--		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_SCAN_ENABLE,
--					    1, &dr.dev_opt,
--					    HCI_CMD_TIMEOUT);
-+		err = hci_cmd_sync_status(hdev, HCI_OP_WRITE_SCAN_ENABLE,
-+					  1, &dr.dev_opt, HCI_CMD_TIMEOUT);
- 
- 		/* Ensure that the connectable and discoverable states
- 		 * get correctly modified as this was a non-mgmt change.
-@@ -761,9 +759,8 @@ int hci_dev_cmd(unsigned int cmd, void __user *arg)
- 	case HCISETLINKPOL:
- 		policy = cpu_to_le16(dr.dev_opt);
- 
--		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_DEF_LINK_POLICY,
--					    2, &policy,
--					    HCI_CMD_TIMEOUT);
-+		err = hci_cmd_sync_status(hdev, HCI_OP_WRITE_DEF_LINK_POLICY,
-+					  2, &policy, HCI_CMD_TIMEOUT);
- 		break;
- 
- 	case HCISETLINKMODE:
+ 	return b53_set_jumbo(dev, enable_jumbo, allow_10_100);
 -- 
 2.43.0
 
