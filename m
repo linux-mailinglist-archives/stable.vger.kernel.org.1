@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-83866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F15099CCEF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:27:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 601D799CDD2
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:36:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 936B71C21B81
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:27:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91B251C22E36
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E021AB512;
-	Mon, 14 Oct 2024 14:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2B41AB52F;
+	Mon, 14 Oct 2024 14:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WLl9i8s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7S4PKdh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0548AE571;
-	Mon, 14 Oct 2024 14:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B751AB52B;
+	Mon, 14 Oct 2024 14:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916001; cv=none; b=s6Fv6AC3LpAAgG3fRzUOVxJc4Fgfdn/4POKUI82hvK18ouEoNw0HBaETwRkfwr15qo4zJ7PdDE48hsQbT77RHC/nE6Pd/MW2nlmhDBPjdmje4md6oR5vhPBMMsIIGkOSyg8kOFP/hIu/2tLF6rd2/PbtzL9PqRnZi6WjcmgRYwc=
+	t=1728916593; cv=none; b=k/8PeYzy0IwPCVU/baaNThmDy+0ZXLEtR/rbugusQtEucV5IncY/CHsCB7y/xlSCgyANL1C9xCv3ApJmWvjxJzpsar1sYl7RmPBaeSk4cjLG6f5dbcxdV0PzFHIzYp5iUIopeAms2nBX3beIq11RHRDEjQgjrn5N6s86bemQIGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916001; c=relaxed/simple;
-	bh=5TusMgiGF2z2oVW5neFTAaKhs8uvNa/38rUL5IzQtzY=;
+	s=arc-20240116; t=1728916593; c=relaxed/simple;
+	bh=DGZ6CdCDNj14yfX/+pwjIRATyVdRf8MnN0KMSDtGfSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kCwwI46m2PQvMLk9oBAKCUA3YDn4XiVzdseQ9AI+3zOfJHaaMZvUgfcB3dvau6fEMagpIqLVzX0O1QcfwFHOS+6+3UWbWUKft64/u3Xz1Xsw7NoPy3qIFQIq49vi1cbcY6FF4c6e/5jerIg15Xk5ENod0W1q535cdjlnPYL4T8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WLl9i8s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B95CC4CEC3;
-	Mon, 14 Oct 2024 14:26:40 +0000 (UTC)
+	 MIME-Version; b=SSklDFnkf0mH7tVhI5HIER55Yhd2pOhsLhw25NX8fratNj5O0Y1dNzUCyXxQs1oEcoKAzImMsY+qS65BDCCelaqJiDMfSbJvl82FgmkeboOMxsetym5FfKM3nPwEoh5cE1qXHAfiHLS6VuUX6Ebung11l8q1Rgcqp2h/pgLiDUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7S4PKdh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB85AC4CEC7;
+	Mon, 14 Oct 2024 14:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916000;
-	bh=5TusMgiGF2z2oVW5neFTAaKhs8uvNa/38rUL5IzQtzY=;
+	s=korg; t=1728916593;
+	bh=DGZ6CdCDNj14yfX/+pwjIRATyVdRf8MnN0KMSDtGfSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1WLl9i8srJ3RBl77tcEIGQ9xOpN10TCNxMhKXU1mkiS+DRarnnvcmDc66ZasgYXNX
-	 sbUMLhhTp73skZ+xMs1GBmU9iAmAJWAakGdf1VlZ42mJGfI24TDnfZxoaDoDEwF2tU
-	 DFUUb7nxXcAVtF3T0NEGKOAhH2RKYX8vdmaNpcG4=
+	b=S7S4PKdhvsRikwnC24ejcAWOnuf+SoRZz8K1ES6gALpUgv6BmEQM067Wpwzb55DG3
+	 wChiWVXhHYTyL4qS3HL+8iKoK6m2xn1jiEqls084ooHKJOcPunRUE4yLU3jEXqdDwz
+	 pGyEMnmrRp2bO6ogZCVAj3vjIpXACkHQg4/vVnC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wadim Egorov <w.egorov@phytec.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Cong Yang <yangcong5@huaqin.corp-partner.google.com>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 055/214] usb: typec: tipd: Free IRQ only if it was requested before
+Subject: [PATCH 6.6 012/213] drm/panel: boe-tv101wum-nl6: Fine tune Himax83102-j02 panel HFP and HBP (again)
 Date: Mon, 14 Oct 2024 16:18:38 +0200
-Message-ID: <20241014141047.136936476@linuxfoundation.org>
+Message-ID: <20241014141043.460800985@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wadim Egorov <w.egorov@phytec.de>
+From: Cong Yang <yangcong5@huaqin.corp-partner.google.com>
 
-[ Upstream commit db63d9868f7f310de44ba7bea584e2454f8b4ed0 ]
+[ Upstream commit 9dfc46c87cdc8f5a42a71de247a744a6b8188980 ]
 
-In polling mode, if no IRQ was requested there is no need to free it.
-Call devm_free_irq() only if client->irq is set. This fixes the warning
-caused by the tps6598x module removal:
+The current measured frame rate is 59.95Hz, which does not meet the
+requirements of touch-stylus and stylus cannot work normally. After
+adjustment, the actual measurement is 60.001Hz. Now this panel looks
+like it's only used by me on the MTK platform, so let's change this
+set of parameters.
 
-WARNING: CPU: 2 PID: 333 at kernel/irq/devres.c:144 devm_free_irq+0x80/0x8c
-...
-...
-Call trace:
-  devm_free_irq+0x80/0x8c
-  tps6598x_remove+0x28/0x88 [tps6598x]
-  i2c_device_remove+0x2c/0x9c
-  device_remove+0x4c/0x80
-  device_release_driver_internal+0x1cc/0x228
-  driver_detach+0x50/0x98
-  bus_remove_driver+0x6c/0xbc
-  driver_unregister+0x30/0x60
-  i2c_del_driver+0x54/0x64
-  tps6598x_i2c_driver_exit+0x18/0xc3c [tps6598x]
-  __arm64_sys_delete_module+0x184/0x264
-  invoke_syscall+0x48/0x110
-  el0_svc_common.constprop.0+0xc8/0xe8
-  do_el0_svc+0x20/0x2c
-  el0_svc+0x28/0x98
-  el0t_64_sync_handler+0x13c/0x158
-  el0t_64_sync+0x190/0x194
+[ dianders: Added "(again") to subject and fixed the "Fixes" line ]
 
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240816124150.608125-1-w.egorov@phytec.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cea7008190ad ("drm/panel: boe-tv101wum-nl6: Fine tune Himax83102-j02 panel HFP and HBP")
+Signed-off-by: Cong Yang <yangcong5@huaqin.corp-partner.google.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240301061128.3145982-1-yangcong5@huaqin.corp-partner.google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tipd/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/typec/tipd/core.c b/drivers/usb/typec/tipd/core.c
-index dd51a25480bfb..256b0c054e9a9 100644
---- a/drivers/usb/typec/tipd/core.c
-+++ b/drivers/usb/typec/tipd/core.c
-@@ -1465,8 +1465,9 @@ static void tps6598x_remove(struct i2c_client *client)
+diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
+index cfa5b54ed6fe7..e6328991c87e9 100644
+--- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
++++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
+@@ -2112,11 +2112,11 @@ static const struct panel_desc starry_qfh032011_53g_desc = {
+ };
  
- 	if (!client->irq)
- 		cancel_delayed_work_sync(&tps->wq_poll);
-+	else
-+		devm_free_irq(tps->dev, client->irq, tps);
- 
--	devm_free_irq(tps->dev, client->irq, tps);
- 	tps6598x_disconnect(tps, 0);
- 	typec_unregister_port(tps->port);
- 	usb_role_switch_put(tps->role_sw);
+ static const struct drm_display_mode starry_himax83102_j02_default_mode = {
+-	.clock = 162850,
++	.clock = 162680,
+ 	.hdisplay = 1200,
+-	.hsync_start = 1200 + 50,
+-	.hsync_end = 1200 + 50 + 20,
+-	.htotal = 1200 + 50 + 20 + 50,
++	.hsync_start = 1200 + 60,
++	.hsync_end = 1200 + 60 + 20,
++	.htotal = 1200 + 60 + 20 + 40,
+ 	.vdisplay = 1920,
+ 	.vsync_start = 1920 + 116,
+ 	.vsync_end = 1920 + 116 + 8,
 -- 
 2.43.0
 
