@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-83912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF24B99CD26
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:29:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC1E99D26C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:25:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 640681F216FF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:29:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E935B26786
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AE61A7AC7;
-	Mon, 14 Oct 2024 14:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D001B4F1C;
+	Mon, 14 Oct 2024 15:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jm9lomXw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pq8y/4mX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343DF18035;
-	Mon, 14 Oct 2024 14:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DB31AE861;
+	Mon, 14 Oct 2024 15:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916162; cv=none; b=RQpWJooHvgn6Hzy3KQwjiAECJEW2Q1WARpFYJhK7glql2huwsGPnRgVU9YpnRKPMvJ+dHcVBZWXVK5hVUPTDC1W8RAxx1JNnzIlm8FkKI9tyjsC7M8fgdyqI1+sazve7k2aUzjdWJ6UKbANMeHtM2v1YoM2K/j6sTpnl5ko6quM=
+	t=1728919457; cv=none; b=hRj8XDSVojV5vA20CJV3Dss8eWGHqLKjxXoApI/fvxQ2TXOte54mY8CknaiSiFre4a4adgvIKDyLVXcnIvuSVgitBftWMuT/HXAajxYYmXEZBJ1hnHJVVHNuQ/HbzIDgNH39BkS+fHK67+lIFkj6IQNcuyKxLaJZgbSDskOi5s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916162; c=relaxed/simple;
-	bh=/kl86Vu/SiPIRJ0zQJCRmCambDqfLFy8VG3LgamEOUk=;
+	s=arc-20240116; t=1728919457; c=relaxed/simple;
+	bh=LAuAhl4PEgvGz8111xK724r5nL+uYZzprCz3aN1ma7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LdTXht1YFKR95FN9bXJ+0O1nTC5YrfFxxlU288BmcDYPmLTwMOEIhZlsY7c0c50RXp0Hdtr11tmDyjFUoFp36LRtn1thqZWEjwFDOwoGDWhcF3UPaLfoZ7dyIo9zJ7iveuwLE+wtH6WEZkm4hLIwtFJ38g34Ch4aCms9Qr5fIHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jm9lomXw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE76C4CEC3;
-	Mon, 14 Oct 2024 14:29:21 +0000 (UTC)
+	 MIME-Version; b=LvF3xNYWUbyV7hs2Ts7Vt+Qswexsk4uQyeHtHy8AMNOqjrNonkW2tG0XobsUvFjDQ0AsJxloBSYjWsmz1dU0aFcDO0wm7AYIXyh28ifqVenO+qS7IjOOGuEjEjUXForFrN/qz484g0ikY4tqN60LV/Vn+6EvgFqIG/11LlJVkeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pq8y/4mX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC18C4CEC3;
+	Mon, 14 Oct 2024 15:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916162;
-	bh=/kl86Vu/SiPIRJ0zQJCRmCambDqfLFy8VG3LgamEOUk=;
+	s=korg; t=1728919457;
+	bh=LAuAhl4PEgvGz8111xK724r5nL+uYZzprCz3aN1ma7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jm9lomXwQwpsGUtKslmQYsT2udV+YCx42uq8u/XcfYrjwmlrBag3m0YCICNXeNViz
-	 Nowt4OWKn6QwP5Ieu8hFBAtm0iFXDId5SgT1x+DNtgZXZclbAxDZl8czazLZO72/bm
-	 CQT3S3Og+oXeANXJ7o2Rn1HGy+OrkuRUr2cZ9A9Q=
+	b=Pq8y/4mXXDG4QhlyPKs+rkvxXPSVoqTJDSDxTDSll/xiHPbooSh0ldM62PGnPQC7Z
+	 nsQnn59VlkVrKlelAwPFohsNkhCLy8mMGrfzokjCK4BlQ+kr4JYihKqxeF8rZAkVte
+	 0bats1F5DPDxCMfoRyTq0qx3gp/ddmuZy+T1C6OI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Kiran K <kiran.k@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 103/214] Bluetooth: btusb: Dont fail external suspend requests
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 6.1 612/798] close_range(): fix the logics in descriptor table trimming
 Date: Mon, 14 Oct 2024 16:19:26 +0200
-Message-ID: <20241014141049.013288325@linuxfoundation.org>
+Message-ID: <20241014141242.077768902@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +60,351 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 610712298b11b2914be00b35abe9326b5dbb62c8 ]
+commit 678379e1d4f7443b170939525d3312cfc37bf86b upstream.
 
-Commit 4e0a1d8b0675
-("Bluetooth: btusb: Don't suspend when there are connections")
-introduces a check for connections to prevent auto-suspend but that
-actually ignored the fact the .suspend callback can be called for
-external suspend requests which
-Documentation/driver-api/usb/power-management.rst states the following:
+Cloning a descriptor table picks the size that would cover all currently
+opened files.  That's fine for clone() and unshare(), but for close_range()
+there's an additional twist - we clone before we close, and it would be
+a shame to have
+	close_range(3, ~0U, CLOSE_RANGE_UNSHARE)
+leave us with a huge descriptor table when we are not going to keep
+anything past stderr, just because some large file descriptor used to
+be open before our call has taken it out.
 
- 'External suspend calls should never be allowed to fail in this way,
- only autosuspend calls.  The driver can tell them apart by applying
- the :c:func:`PMSG_IS_AUTO` macro to the message argument to the
- ``suspend`` method; it will return True for internal PM events
- (autosuspend) and False for external PM events.'
+Unfortunately, it had been dealt with in an inherently racy way -
+sane_fdtable_size() gets a "don't copy anything past that" argument
+(passed via unshare_fd() and dup_fd()), close_range() decides how much
+should be trimmed and passes that to unshare_fd().
 
-In addition to that align system suspend with USB suspend by using
-hci_suspend_dev since otherwise the stack would be expecting events
-such as advertising reports which may not be delivered while the
-transport is suspended.
+The problem is, a range that used to extend to the end of descriptor
+table back when close_range() had looked at it might very well have stuff
+grown after it by the time dup_fd() has allocated a new files_struct
+and started to figure out the capacity of fdtable to be attached to that.
 
-Fixes: 4e0a1d8b0675 ("Bluetooth: btusb: Don't suspend when there are connections")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Tested-by: Kiran K <kiran.k@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That leads to interesting pathological cases; at the very least it's a
+QoI issue, since unshare(CLONE_FILES) is atomic in a sense that it takes
+a snapshot of descriptor table one might have observed at some point.
+Since CLOSE_RANGE_UNSHARE close_range() is supposed to be a combination
+of unshare(CLONE_FILES) with plain close_range(), ending up with a
+weird state that would never occur with unshare(2) is confusing, to put
+it mildly.
+
+It's not hard to get rid of - all it takes is passing both ends of the
+range down to sane_fdtable_size().  There we are under ->files_lock,
+so the race is trivially avoided.
+
+So we do the following:
+	* switch close_files() from calling unshare_fd() to calling
+dup_fd().
+	* undo the calling convention change done to unshare_fd() in
+60997c3d45d9 "close_range: add CLOSE_RANGE_UNSHARE"
+	* introduce struct fd_range, pass a pointer to that to dup_fd()
+and sane_fdtable_size() instead of "trim everything past that point"
+they are currently getting.  NULL means "we are not going to be punching
+any holes"; NR_OPEN_MAX is gone.
+	* make sane_fdtable_size() use find_last_bit() instead of
+open-coding it; it's easier to follow that way.
+	* while we are at it, have dup_fd() report errors by returning
+ERR_PTR(), no need to use a separate int *errorp argument.
+
+Fixes: 60997c3d45d9 "close_range: add CLOSE_RANGE_UNSHARE"
+Cc: stable@vger.kernel.org
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ fs/file.c               |   93 +++++++++++++++++-------------------------------
+ include/linux/fdtable.h |    8 ++--
+ kernel/fork.c           |   30 ++++++---------
+ 3 files changed, 50 insertions(+), 81 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 93dbeb8b348d5..a1e9b052bc847 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -4092,16 +4092,29 @@ static void btusb_disconnect(struct usb_interface *intf)
- static int btusb_suspend(struct usb_interface *intf, pm_message_t message)
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -267,59 +267,45 @@ static inline void __clear_open_fd(unsig
+ 	__clear_bit(fd / BITS_PER_LONG, fdt->full_fds_bits);
+ }
+ 
+-static unsigned int count_open_files(struct fdtable *fdt)
+-{
+-	unsigned int size = fdt->max_fds;
+-	unsigned int i;
+-
+-	/* Find the last open fd */
+-	for (i = size / BITS_PER_LONG; i > 0; ) {
+-		if (fdt->open_fds[--i])
+-			break;
+-	}
+-	i = (i + 1) * BITS_PER_LONG;
+-	return i;
+-}
+-
+ /*
+  * Note that a sane fdtable size always has to be a multiple of
+  * BITS_PER_LONG, since we have bitmaps that are sized by this.
+  *
+- * 'max_fds' will normally already be properly aligned, but it
+- * turns out that in the close_range() -> __close_range() ->
+- * unshare_fd() -> dup_fd() -> sane_fdtable_size() we can end
+- * up having a 'max_fds' value that isn't already aligned.
+- *
+- * Rather than make close_range() have to worry about this,
+- * just make that BITS_PER_LONG alignment be part of a sane
+- * fdtable size. Becuase that's really what it is.
++ * punch_hole is optional - when close_range() is asked to unshare
++ * and close, we don't need to copy descriptors in that range, so
++ * a smaller cloned descriptor table might suffice if the last
++ * currently opened descriptor falls into that range.
+  */
+-static unsigned int sane_fdtable_size(struct fdtable *fdt, unsigned int max_fds)
++static unsigned int sane_fdtable_size(struct fdtable *fdt, struct fd_range *punch_hole)
  {
- 	struct btusb_data *data = usb_get_intfdata(intf);
-+	int err;
+-	unsigned int count;
++	unsigned int last = find_last_bit(fdt->open_fds, fdt->max_fds);
  
- 	BT_DBG("intf %p", intf);
- 
--	/* Don't suspend if there are connections */
--	if (hci_conn_count(data->hdev))
-+	/* Don't auto-suspend if there are connections; external suspend calls
-+	 * shall never fail.
-+	 */
-+	if (PMSG_IS_AUTO(message) && hci_conn_count(data->hdev))
- 		return -EBUSY;
- 
- 	if (data->suspend_count++)
- 		return 0;
- 
-+	/* Notify Host stack to suspend; this has to be done before stopping
-+	 * the traffic since the hci_suspend_dev itself may generate some
-+	 * traffic.
-+	 */
-+	err = hci_suspend_dev(data->hdev);
-+	if (err) {
-+		data->suspend_count--;
-+		return err;
+-	count = count_open_files(fdt);
+-	if (max_fds < NR_OPEN_DEFAULT)
+-		max_fds = NR_OPEN_DEFAULT;
+-	return ALIGN(min(count, max_fds), BITS_PER_LONG);
++	if (last == fdt->max_fds)
++		return NR_OPEN_DEFAULT;
++	if (punch_hole && punch_hole->to >= last && punch_hole->from <= last) {
++		last = find_last_bit(fdt->open_fds, punch_hole->from);
++		if (last == punch_hole->from)
++			return NR_OPEN_DEFAULT;
 +	}
-+
- 	spin_lock_irq(&data->txlock);
- 	if (!(PMSG_IS_AUTO(message) && data->tx_in_flight)) {
- 		set_bit(BTUSB_SUSPENDING, &data->flags);
-@@ -4109,6 +4122,7 @@ static int btusb_suspend(struct usb_interface *intf, pm_message_t message)
- 	} else {
- 		spin_unlock_irq(&data->txlock);
- 		data->suspend_count--;
-+		hci_resume_dev(data->hdev);
- 		return -EBUSY;
++	return ALIGN(last + 1, BITS_PER_LONG);
+ }
+ 
+ /*
+- * Allocate a new files structure and copy contents from the
+- * passed in files structure.
+- * errorp will be valid only when the returned files_struct is NULL.
++ * Allocate a new descriptor table and copy contents from the passed in
++ * instance.  Returns a pointer to cloned table on success, ERR_PTR()
++ * on failure.  For 'punch_hole' see sane_fdtable_size().
+  */
+-struct files_struct *dup_fd(struct files_struct *oldf, unsigned int max_fds, int *errorp)
++struct files_struct *dup_fd(struct files_struct *oldf, struct fd_range *punch_hole)
+ {
+ 	struct files_struct *newf;
+ 	struct file **old_fds, **new_fds;
+ 	unsigned int open_files, i;
+ 	struct fdtable *old_fdt, *new_fdt;
++	int error;
+ 
+-	*errorp = -ENOMEM;
+ 	newf = kmem_cache_alloc(files_cachep, GFP_KERNEL);
+ 	if (!newf)
+-		goto out;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	atomic_set(&newf->count, 1);
+ 
+@@ -336,7 +322,7 @@ struct files_struct *dup_fd(struct files
+ 
+ 	spin_lock(&oldf->file_lock);
+ 	old_fdt = files_fdtable(oldf);
+-	open_files = sane_fdtable_size(old_fdt, max_fds);
++	open_files = sane_fdtable_size(old_fdt, punch_hole);
+ 
+ 	/*
+ 	 * Check whether we need to allocate a larger fd array and fd set.
+@@ -349,14 +335,14 @@ struct files_struct *dup_fd(struct files
+ 
+ 		new_fdt = alloc_fdtable(open_files - 1);
+ 		if (!new_fdt) {
+-			*errorp = -ENOMEM;
++			error = -ENOMEM;
+ 			goto out_release;
+ 		}
+ 
+ 		/* beyond sysctl_nr_open; nothing to do */
+ 		if (unlikely(new_fdt->max_fds < open_files)) {
+ 			__free_fdtable(new_fdt);
+-			*errorp = -EMFILE;
++			error = -EMFILE;
+ 			goto out_release;
+ 		}
+ 
+@@ -367,7 +353,7 @@ struct files_struct *dup_fd(struct files
+ 		 */
+ 		spin_lock(&oldf->file_lock);
+ 		old_fdt = files_fdtable(oldf);
+-		open_files = sane_fdtable_size(old_fdt, max_fds);
++		open_files = sane_fdtable_size(old_fdt, punch_hole);
  	}
  
-@@ -4229,6 +4243,8 @@ static int btusb_resume(struct usb_interface *intf)
- 	spin_unlock_irq(&data->txlock);
- 	schedule_work(&data->work);
+ 	copy_fd_bitmaps(new_fdt, old_fdt, open_files / BITS_PER_LONG);
+@@ -401,8 +387,7 @@ struct files_struct *dup_fd(struct files
  
-+	hci_resume_dev(data->hdev);
-+
+ out_release:
+ 	kmem_cache_free(files_cachep, newf);
+-out:
+-	return NULL;
++	return ERR_PTR(error);
+ }
+ 
+ static struct fdtable *close_files(struct files_struct * files)
+@@ -734,37 +719,25 @@ int __close_range(unsigned fd, unsigned
+ 	if (fd > max_fd)
+ 		return -EINVAL;
+ 
+-	if (flags & CLOSE_RANGE_UNSHARE) {
+-		int ret;
+-		unsigned int max_unshare_fds = NR_OPEN_MAX;
++	if ((flags & CLOSE_RANGE_UNSHARE) && atomic_read(&cur_fds->count) > 1) {
++		struct fd_range range = {fd, max_fd}, *punch_hole = &range;
+ 
+ 		/*
+ 		 * If the caller requested all fds to be made cloexec we always
+ 		 * copy all of the file descriptors since they still want to
+ 		 * use them.
+ 		 */
+-		if (!(flags & CLOSE_RANGE_CLOEXEC)) {
+-			/*
+-			 * If the requested range is greater than the current
+-			 * maximum, we're closing everything so only copy all
+-			 * file descriptors beneath the lowest file descriptor.
+-			 */
+-			rcu_read_lock();
+-			if (max_fd >= last_fd(files_fdtable(cur_fds)))
+-				max_unshare_fds = fd;
+-			rcu_read_unlock();
+-		}
+-
+-		ret = unshare_fd(CLONE_FILES, max_unshare_fds, &fds);
+-		if (ret)
+-			return ret;
++		if (flags & CLOSE_RANGE_CLOEXEC)
++			punch_hole = NULL;
+ 
++		fds = dup_fd(cur_fds, punch_hole);
++		if (IS_ERR(fds))
++			return PTR_ERR(fds);
+ 		/*
+ 		 * We used to share our file descriptor table, and have now
+ 		 * created a private one, make sure we're using it below.
+ 		 */
+-		if (fds)
+-			swap(cur_fds, fds);
++		swap(cur_fds, fds);
+ 	}
+ 
+ 	if (flags & CLOSE_RANGE_CLOEXEC)
+--- a/include/linux/fdtable.h
++++ b/include/linux/fdtable.h
+@@ -22,7 +22,6 @@
+  * as this is the granularity returned by copy_fdset().
+  */
+ #define NR_OPEN_DEFAULT BITS_PER_LONG
+-#define NR_OPEN_MAX ~0U
+ 
+ struct fdtable {
+ 	unsigned int max_fds;
+@@ -117,7 +116,10 @@ struct task_struct;
+ 
+ void put_files_struct(struct files_struct *fs);
+ int unshare_files(void);
+-struct files_struct *dup_fd(struct files_struct *, unsigned, int *) __latent_entropy;
++struct fd_range {
++	unsigned int from, to;
++};
++struct files_struct *dup_fd(struct files_struct *, struct fd_range *) __latent_entropy;
+ void do_close_on_exec(struct files_struct *);
+ int iterate_fd(struct files_struct *, unsigned,
+ 		int (*)(const void *, struct file *, unsigned),
+@@ -126,8 +128,6 @@ int iterate_fd(struct files_struct *, un
+ extern int close_fd(unsigned int fd);
+ extern int __close_range(unsigned int fd, unsigned int max_fd, unsigned int flags);
+ extern struct file *close_fd_get_file(unsigned int fd);
+-extern int unshare_fd(unsigned long unshare_flags, unsigned int max_fds,
+-		      struct files_struct **new_fdp);
+ 
+ extern struct kmem_cache *files_cachep;
+ 
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -1619,28 +1619,25 @@ static int copy_fs(unsigned long clone_f
+ static int copy_files(unsigned long clone_flags, struct task_struct *tsk)
+ {
+ 	struct files_struct *oldf, *newf;
+-	int error = 0;
+ 
+ 	/*
+ 	 * A background process may not have any files ...
+ 	 */
+ 	oldf = current->files;
+ 	if (!oldf)
+-		goto out;
++		return 0;
+ 
+ 	if (clone_flags & CLONE_FILES) {
+ 		atomic_inc(&oldf->count);
+-		goto out;
++		return 0;
+ 	}
+ 
+-	newf = dup_fd(oldf, NR_OPEN_MAX, &error);
+-	if (!newf)
+-		goto out;
++	newf = dup_fd(oldf, NULL);
++	if (IS_ERR(newf))
++		return PTR_ERR(newf);
+ 
+ 	tsk->files = newf;
+-	error = 0;
+-out:
+-	return error;
++	return 0;
+ }
+ 
+ static int copy_sighand(unsigned long clone_flags, struct task_struct *tsk)
+@@ -3126,17 +3123,16 @@ static int unshare_fs(unsigned long unsh
+ /*
+  * Unshare file descriptor table if it is being shared
+  */
+-int unshare_fd(unsigned long unshare_flags, unsigned int max_fds,
+-	       struct files_struct **new_fdp)
++static int unshare_fd(unsigned long unshare_flags, struct files_struct **new_fdp)
+ {
+ 	struct files_struct *fd = current->files;
+-	int error = 0;
+ 
+ 	if ((unshare_flags & CLONE_FILES) &&
+ 	    (fd && atomic_read(&fd->count) > 1)) {
+-		*new_fdp = dup_fd(fd, max_fds, &error);
+-		if (!*new_fdp)
+-			return error;
++		fd = dup_fd(fd, NULL);
++		if (IS_ERR(fd))
++			return PTR_ERR(fd);
++		*new_fdp = fd;
+ 	}
+ 
  	return 0;
+@@ -3194,7 +3190,7 @@ int ksys_unshare(unsigned long unshare_f
+ 	err = unshare_fs(unshare_flags, &new_fs);
+ 	if (err)
+ 		goto bad_unshare_out;
+-	err = unshare_fd(unshare_flags, NR_OPEN_MAX, &new_fd);
++	err = unshare_fd(unshare_flags, &new_fd);
+ 	if (err)
+ 		goto bad_unshare_cleanup_fs;
+ 	err = unshare_userns(unshare_flags, &new_cred);
+@@ -3286,7 +3282,7 @@ int unshare_files(void)
+ 	struct files_struct *old, *copy = NULL;
+ 	int error;
  
- failed:
--- 
-2.43.0
-
+-	error = unshare_fd(CLONE_FILES, NR_OPEN_MAX, &copy);
++	error = unshare_fd(CLONE_FILES, &copy);
+ 	if (error || !copy)
+ 		return error;
+ 
 
 
 
