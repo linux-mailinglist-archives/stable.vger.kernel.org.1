@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-84240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30B1C99CF35
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:52:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8400C99D34E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 582E11C236C0
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:52:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2266B279F0
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CAB1B85EB;
-	Mon, 14 Oct 2024 14:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F2E1BDABD;
+	Mon, 14 Oct 2024 15:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aeT/aoKM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WkpbvkBh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30411AB6C1;
-	Mon, 14 Oct 2024 14:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864AD1ABEA7;
+	Mon, 14 Oct 2024 15:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917316; cv=none; b=fJqCLm0lAaNkQdJ/i5SCKIFFK0C1XbaAzkAouKdLa5/BEAAP8ivDLYplhxpxgIHu3h4PRf7z+GqQOAPBsaKFfnp/SJiSIzFwMRq0SR6AWm/WNUcawxb8X4c4QNiiZxxKZseyeNvJ9ObtZ9HXdDMEHlBMXEJzWLyCPSxbCkeIEWk=
+	t=1728919976; cv=none; b=aolYnvFWDvouJcBnGibUafPnLvvl6IuxpOTJJXrg0Mx3XKGHpGkEtAJSj3Fa319hOwV6IlGs11+hms6YbmAL1LWry3gd1w3xeOk/xtIH490h6fMlbliFnwNJ1PkizXd/w9c+LjWFCS8kd8KL/AFewjD5XAovYo6FwQ+ZpfvR0qE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917316; c=relaxed/simple;
-	bh=+1LvYCRqLc4ssegtPtS1boMMVo8r3q2kn3w4aOVkjgQ=;
+	s=arc-20240116; t=1728919976; c=relaxed/simple;
+	bh=MTlfc8OEAN07rzWijtdwyYjJz2f98CwDDkcS6Nq+TRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uLfWxLezYY1z5Sqi8aTS7jgY7mV1Y/PaygkevU+lG/Mkbw7jdouPhuK6jui1yyXZO/H5NngeWrR9MetuZTYpctM0K1ZlsJkWRKwI1Sx/L2Zl5D6Dzn0PQzO7TWXwdZKuztfqxMZDjRSCNpqGtatY7OsXov7mppiCRCqGxneKQgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aeT/aoKM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176FCC4CEC3;
-	Mon, 14 Oct 2024 14:48:35 +0000 (UTC)
+	 MIME-Version; b=sjGp6cMraqGX3fpmK9nzv7MvBTbAyToCCnNHxqqybBCZbBFUdho3iBtKmhisUNfpnaydsBYEBCT8iUnvYtzUq2x7m/pNmBDTfHfzOfZG/6dh2IzxALbpg9FHFQa8pV78KFCkEMoTKxod3Q9q2nSxCG102TuX8ZPfGgqLC4my6nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WkpbvkBh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB31C4CEC3;
+	Mon, 14 Oct 2024 15:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917316;
-	bh=+1LvYCRqLc4ssegtPtS1boMMVo8r3q2kn3w4aOVkjgQ=;
+	s=korg; t=1728919976;
+	bh=MTlfc8OEAN07rzWijtdwyYjJz2f98CwDDkcS6Nq+TRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aeT/aoKMTKEGnyUGOaZBbbIs/lXarg7Am3qNSV4c6ayYmtCfMrhJkC0Tou9UxVc4q
-	 SAq5h3p+PdUfMxCW4Lm5YqsCWD/piDUOx9mIaJunhArWa5UO1pIP5xRLo7TygXFOgn
-	 dN13hOacuiTty4VPMZ/h+Fx4PHPV+fsDoNQGUNeQ=
+	b=WkpbvkBhQFTue7mGdTdCJBVmxvpr0azdSz7ry30uK0mQa9vCkB6VV+rSSLIADDZla
+	 imPDlHLeCiN94h3Sz26SS+AF22KPiK8TjuBg9qzcx2q4lPYUzYb5GF/lFCPeu1UzXP
+	 0kcR4KKLW4ytqyLuZAbeOu/BCkake2FDlMzKDZJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederic Weisbecker <frederic@kernel.org>,
-	syzbot+943d34fa3cf2191e3068@syzkaller.appspotmail.com,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Hillf Danton <hdanton@sina.com>,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 208/213] kthread: unpark only parked kthread
-Date: Mon, 14 Oct 2024 16:21:54 +0200
-Message-ID: <20241014141051.080219600@linuxfoundation.org>
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 761/798] vxlan: Handle error of rtnl_register_module().
+Date: Mon, 14 Oct 2024 16:21:55 +0200
+Message-ID: <20241014141247.965893793@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 214e01ad4ed7158cab66498810094fac5d09b218 upstream.
+[ Upstream commit 78b7b991838a4a6baeaad934addc4db2c5917eb8 ]
 
-Calling into kthread unparking unconditionally is mostly harmless when
-the kthread is already unparked. The wake up is then simply ignored
-because the target is not in TASK_PARKED state.
+Since introduced, vxlan_vnifilter_init() has been ignoring the
+returned value of rtnl_register_module(), which could fail silently.
 
-However if the kthread is per CPU, the wake up is preceded by a call
-to kthread_bind() which expects the task to be inactive and in
-TASK_PARKED state, which obviously isn't the case if it is unparked.
+Handling the error allows users to view a module as an all-or-nothing
+thing in terms of the rtnetlink functionality.  This prevents syzkaller
+from reporting spurious errors from its tests, where OOM often occurs
+and module is automatically loaded.
 
-As a result, calling kthread_stop() on an unparked per-cpu kthread
-triggers such a warning:
+Let's handle the errors by rtnl_register_many().
 
-	WARNING: CPU: 0 PID: 11 at kernel/kthread.c:525 __kthread_bind_mask kernel/kthread.c:525
-	 <TASK>
-	 kthread_stop+0x17a/0x630 kernel/kthread.c:707
-	 destroy_workqueue+0x136/0xc40 kernel/workqueue.c:5810
-	 wg_destruct+0x1e2/0x2e0 drivers/net/wireguard/device.c:257
-	 netdev_run_todo+0xe1a/0x1000 net/core/dev.c:10693
-	 default_device_exit_batch+0xa14/0xa90 net/core/dev.c:11769
-	 ops_exit_list net/core/net_namespace.c:178 [inline]
-	 cleanup_net+0x89d/0xcc0 net/core/net_namespace.c:640
-	 process_one_work kernel/workqueue.c:3231 [inline]
-	 process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3312
-	 worker_thread+0x86d/0xd70 kernel/workqueue.c:3393
-	 kthread+0x2f0/0x390 kernel/kthread.c:389
-	 ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-	 ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-	 </TASK>
-
-Fix this with skipping unecessary unparking while stopping a kthread.
-
-Link: https://lkml.kernel.org/r/20240913214634.12557-1-frederic@kernel.org
-Fixes: 5c25b5ff89f0 ("workqueue: Tag bound workers with KTHREAD_IS_PER_CPU")
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Reported-by: syzbot+943d34fa3cf2191e3068@syzkaller.appspotmail.com
-Tested-by: syzbot+943d34fa3cf2191e3068@syzkaller.appspotmail.com
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kthread.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/vxlan/vxlan_core.c      |  6 +++++-
+ drivers/net/vxlan/vxlan_private.h   |  2 +-
+ drivers/net/vxlan/vxlan_vnifilter.c | 19 +++++++++----------
+ 3 files changed, 15 insertions(+), 12 deletions(-)
 
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -622,6 +622,8 @@ void kthread_unpark(struct task_struct *
- {
- 	struct kthread *kthread = to_kthread(k);
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 61224a5a877cb..155d335c80a7e 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -4803,9 +4803,13 @@ static int __init vxlan_init_module(void)
+ 	if (rc)
+ 		goto out4;
  
-+	if (!test_bit(KTHREAD_SHOULD_PARK, &kthread->flags))
-+		return;
- 	/*
- 	 * Newly created kthread was parked when the CPU was offline.
- 	 * The binding was lost and we need to set it again.
+-	vxlan_vnifilter_init();
++	rc = vxlan_vnifilter_init();
++	if (rc)
++		goto out5;
+ 
+ 	return 0;
++out5:
++	rtnl_link_unregister(&vxlan_link_ops);
+ out4:
+ 	unregister_switchdev_notifier(&vxlan_switchdev_notifier_block);
+ out3:
+diff --git a/drivers/net/vxlan/vxlan_private.h b/drivers/net/vxlan/vxlan_private.h
+index 599c3b4fdd5ed..b0e8c6d290579 100644
+--- a/drivers/net/vxlan/vxlan_private.h
++++ b/drivers/net/vxlan/vxlan_private.h
+@@ -134,7 +134,7 @@ int vxlan_vni_in_use(struct net *src_net, struct vxlan_dev *vxlan,
+ int vxlan_vnigroup_init(struct vxlan_dev *vxlan);
+ void vxlan_vnigroup_uninit(struct vxlan_dev *vxlan);
+ 
+-void vxlan_vnifilter_init(void);
++int vxlan_vnifilter_init(void);
+ void vxlan_vnifilter_uninit(void);
+ void vxlan_vnifilter_count(struct vxlan_dev *vxlan, __be32 vni,
+ 			   struct vxlan_vni_node *vninode,
+diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+index c5cf55030158f..3d113d709d194 100644
+--- a/drivers/net/vxlan/vxlan_vnifilter.c
++++ b/drivers/net/vxlan/vxlan_vnifilter.c
+@@ -992,19 +992,18 @@ static int vxlan_vnifilter_process(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	return err;
+ }
+ 
+-void vxlan_vnifilter_init(void)
++static const struct rtnl_msg_handler vxlan_vnifilter_rtnl_msg_handlers[] = {
++	{THIS_MODULE, PF_BRIDGE, RTM_GETTUNNEL, NULL, vxlan_vnifilter_dump, 0},
++	{THIS_MODULE, PF_BRIDGE, RTM_NEWTUNNEL, vxlan_vnifilter_process, NULL, 0},
++	{THIS_MODULE, PF_BRIDGE, RTM_DELTUNNEL, vxlan_vnifilter_process, NULL, 0},
++};
++
++int vxlan_vnifilter_init(void)
+ {
+-	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_GETTUNNEL, NULL,
+-			     vxlan_vnifilter_dump, 0);
+-	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_NEWTUNNEL,
+-			     vxlan_vnifilter_process, NULL, 0);
+-	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_DELTUNNEL,
+-			     vxlan_vnifilter_process, NULL, 0);
++	return rtnl_register_many(vxlan_vnifilter_rtnl_msg_handlers);
+ }
+ 
+ void vxlan_vnifilter_uninit(void)
+ {
+-	rtnl_unregister(PF_BRIDGE, RTM_GETTUNNEL);
+-	rtnl_unregister(PF_BRIDGE, RTM_NEWTUNNEL);
+-	rtnl_unregister(PF_BRIDGE, RTM_DELTUNNEL);
++	rtnl_unregister_many(vxlan_vnifilter_rtnl_msg_handlers);
+ }
+-- 
+2.43.0
+
 
 
 
