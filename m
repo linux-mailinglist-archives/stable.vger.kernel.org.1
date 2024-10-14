@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-83888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 575C699CD09
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:28:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88B9199D248
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:24:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BEE92826B8
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:28:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EC3A28211E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9591AAE02;
-	Mon, 14 Oct 2024 14:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CA11AB530;
+	Mon, 14 Oct 2024 15:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6MJSTtP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eiHAf4Uy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF9B1A0724;
-	Mon, 14 Oct 2024 14:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410861AAE02;
+	Mon, 14 Oct 2024 15:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916079; cv=none; b=vAiqYP3UMpTFwuVrdIOU+E8xIA6v6L4PlmaKFPZ6EON0ebneZVFt0InnHmcaoFAcGn2vt+trT+69HVlAJGJ5hNlqGOj6NDzySkPQkMecvoxUyq3eJPqOKi8JZBXK3Dm8/k0wi44Ii2fsyvdo+G/sCvqncv7QHefMI7lruUlvYuI=
+	t=1728919358; cv=none; b=Y7kEuyq0NvHb0Nelo9UbmmvXKcbG+HN3jl8wfxo9sDaJCJ4SDGi1YMEksmGGu+RkvAwtAd8fUwdYnHQMVSI9Ir9PbiWmXNI5C+OUuELce+kjUNslauIFq2G11/xOGAaK6P0XelelKVLkxDDrEy8m+Lw00GXvVHWWa4Z9gvM0Oyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916079; c=relaxed/simple;
-	bh=Zi5ecuMFyaitR+E3FAFL/d0Msx/8VwAXriNN7u+NInA=;
+	s=arc-20240116; t=1728919358; c=relaxed/simple;
+	bh=fGs2KHzvn7T9jRZAflmPtcCfAj0j0ZpXAisw7Hm96Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=StITY+pfb/0LyH5OJeSpJbDuUlaRzC/MjeKBrERS2VkFerGCd2uxZQAk1rTgBpsAbbsXz6hvFmwHzHd249KrDAqMEsSTTjr5e23aFM4dfthgwwUkVlzKBNA2qvSPZEjpvtqwEc5BsEAxc5ivDnYQasTTujme6N9gAnnc9iUZJkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6MJSTtP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7707C4CEC3;
-	Mon, 14 Oct 2024 14:27:58 +0000 (UTC)
+	 MIME-Version; b=lXbpnWYZJXijECDBOUAA4zGCZWtaQJfl4XlcbAEm7DGtRH/1HU5FbDgXOvkXUcJSh7fPfTjRHV2p9l2dmNHImRXuoWALcfV2xSmv0+iAK1wwI6L2WgD6PateZak2adBMy9OeyZoohwg1aPI4TBSe1/J4JDKfqco/VzVJpMmhQSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eiHAf4Uy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CF1C4CEC7;
+	Mon, 14 Oct 2024 15:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916079;
-	bh=Zi5ecuMFyaitR+E3FAFL/d0Msx/8VwAXriNN7u+NInA=;
+	s=korg; t=1728919358;
+	bh=fGs2KHzvn7T9jRZAflmPtcCfAj0j0ZpXAisw7Hm96Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O6MJSTtPwr+xyhNkhNg+G/A+hFhKPeL7PY/2qqy5QCkAJQA6bHfXdhcVAe535BxR7
-	 KcfI9lahOTKcnwSdjKs/vXYXtqYOys5vG3jEFbmeW45OaG2SxCStOvcnGBq2FRYFCP
-	 dtq2A9IQW+BG1YO/wpe2AsjYNgH1DDObvFRgnAGI=
+	b=eiHAf4UymO5ENlsgstDierO+X73W69KfjWH5AG4YhtsOEBAyhNom0eTb7hpIhrOLa
+	 OUkHjYWIrVbYDdxAMZR2vylyCSmBMwGV00fZhoFpY7E6P9jotGspPzVZMh/BdJHDBw
+	 xZxfsAQdAp52olSqh1UJ60D6rLBA3Y2r9kiFsxU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3d613ae53c031502687a@syzkaller.appspotmail.com,
-	Qianqiang Liu <qianqiang.liu@163.com>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 078/214] fbcon: Fix a NULL pointer dereference issue in fbcon_putcs
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 587/798] clk: qcom: gcc-sm8150: De-register gcc_cpuss_ahb_clk_src
 Date: Mon, 14 Oct 2024 16:19:01 +0200
-Message-ID: <20241014141048.032995402@linuxfoundation.org>
+Message-ID: <20241014141241.065426691@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +61,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianqiang Liu <qianqiang.liu@163.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-[ Upstream commit 5b97eebcce1b4f3f07a71f635d6aa3af96c236e7 ]
+commit bab0c7a0bc586e736b7cd2aac8e6391709a70ef2 upstream.
 
-syzbot has found a NULL pointer dereference bug in fbcon.
-Here is the simplified C reproducer:
+The branch clocks of gcc_cpuss_ahb_clk_src are marked critical
+and hence these clocks vote on XO blocking the suspend.
+De-register these clocks and its source as there is no rate
+setting happening on them.
 
-struct param {
-	uint8_t type;
-	struct tiocl_selection ts;
-};
-
-int main()
-{
-	struct fb_con2fbmap con2fb;
-	struct param param;
-
-	int fd = open("/dev/fb1", 0, 0);
-
-	con2fb.console = 0x19;
-	con2fb.framebuffer = 0;
-	ioctl(fd, FBIOPUT_CON2FBMAP, &con2fb);
-
-	param.type = 2;
-	param.ts.xs = 0; param.ts.ys = 0;
-	param.ts.xe = 0; param.ts.ye = 0;
-	param.ts.sel_mode = 0;
-
-	int fd1 = open("/dev/tty1", O_RDWR, 0);
-	ioctl(fd1, TIOCLINUX, &param);
-
-	con2fb.console = 1;
-	con2fb.framebuffer = 0;
-	ioctl(fd, FBIOPUT_CON2FBMAP, &con2fb);
-
-	return 0;
-}
-
-After calling ioctl(fd1, TIOCLINUX, &param), the subsequent ioctl(fd, FBIOPUT_CON2FBMAP, &con2fb)
-causes the kernel to follow a different execution path:
-
- set_con2fb_map
-  -> con2fb_init_display
-   -> fbcon_set_disp
-    -> redraw_screen
-     -> hide_cursor
-      -> clear_selection
-       -> highlight
-        -> invert_screen
-         -> do_update_region
-          -> fbcon_putcs
-           -> ops->putcs
-
-Since ops->putcs is a NULL pointer, this leads to a kernel panic.
-To prevent this, we need to call set_blitting_type() within set_con2fb_map()
-to properly initialize ops->putcs.
-
-Reported-by: syzbot+3d613ae53c031502687a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3d613ae53c031502687a
-Tested-by: syzbot+3d613ae53c031502687a@syzkaller.appspotmail.com
-Signed-off-by: Qianqiang Liu <qianqiang.liu@163.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
+Cc: stable@vger.kernel.org
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-5-8b3eaa5fb856@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fbcon.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/clk/qcom/gcc-sc8180x.c |   63 -----------------------------------------
+ 1 file changed, 63 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 3f7333dca508c..fedd796c9a5cd 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -847,6 +847,8 @@ static int set_con2fb_map(int unit, int newidx, int user)
- 			return err;
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -261,28 +261,6 @@ static const struct clk_parent_data gcc_
+ 	{ .hw = &gpll0_out_even.clkr.hw },
+ };
  
- 		fbcon_add_cursor_work(info);
-+	} else if (vc) {
-+		set_blitting_type(vc, info);
- 	}
+-static const struct freq_tbl ftbl_gcc_cpuss_ahb_clk_src[] = {
+-	F(19200000, P_BI_TCXO, 1, 0, 0),
+-	F(50000000, P_GPLL0_OUT_MAIN, 12, 0, 0),
+-	F(100000000, P_GPLL0_OUT_MAIN, 6, 0, 0),
+-	{ }
+-};
+-
+-static struct clk_rcg2 gcc_cpuss_ahb_clk_src = {
+-	.cmd_rcgr = 0x48014,
+-	.mnd_width = 0,
+-	.hid_width = 5,
+-	.parent_map = gcc_parent_map_0,
+-	.freq_tbl = ftbl_gcc_cpuss_ahb_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_cpuss_ahb_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
+-};
+-
+ static const struct freq_tbl ftbl_gcc_emac_ptp_clk_src[] = {
+ 	F(19200000, P_BI_TCXO, 1, 0, 0),
+ 	F(50000000, P_GPLL0_OUT_EVEN, 6, 0, 0),
+@@ -1600,25 +1578,6 @@ static struct clk_branch gcc_cfg_noc_usb
+ 	},
+ };
  
- 	con2fb_map[unit] = newidx;
--- 
-2.43.0
-
+-/* For CPUSS functionality the AHB clock needs to be left enabled */
+-static struct clk_branch gcc_cpuss_ahb_clk = {
+-	.halt_reg = 0x48000,
+-	.halt_check = BRANCH_HALT_VOTED,
+-	.clkr = {
+-		.enable_reg = 0x52004,
+-		.enable_mask = BIT(21),
+-		.hw.init = &(struct clk_init_data){
+-			.name = "gcc_cpuss_ahb_clk",
+-			.parent_hws = (const struct clk_hw *[]){
+-				      &gcc_cpuss_ahb_clk_src.clkr.hw
+-			},
+-			.num_parents = 1,
+-			.flags = CLK_IS_CRITICAL | CLK_SET_RATE_PARENT,
+-			.ops = &clk_branch2_ops,
+-		},
+-	},
+-};
+-
+ static struct clk_branch gcc_cpuss_rbcpr_clk = {
+ 	.halt_reg = 0x48008,
+ 	.halt_check = BRANCH_HALT,
+@@ -3151,25 +3110,6 @@ static struct clk_branch gcc_sdcc4_apps_
+ 	},
+ };
+ 
+-/* For CPUSS functionality the SYS NOC clock needs to be left enabled */
+-static struct clk_branch gcc_sys_noc_cpuss_ahb_clk = {
+-	.halt_reg = 0x4819c,
+-	.halt_check = BRANCH_HALT_VOTED,
+-	.clkr = {
+-		.enable_reg = 0x52004,
+-		.enable_mask = BIT(0),
+-		.hw.init = &(struct clk_init_data){
+-			.name = "gcc_sys_noc_cpuss_ahb_clk",
+-			.parent_hws = (const struct clk_hw *[]){
+-				      &gcc_cpuss_ahb_clk_src.clkr.hw
+-			},
+-			.num_parents = 1,
+-			.flags = CLK_IS_CRITICAL | CLK_SET_RATE_PARENT,
+-			.ops = &clk_branch2_ops,
+-		},
+-	},
+-};
+-
+ static struct clk_branch gcc_tsif_ahb_clk = {
+ 	.halt_reg = 0x36004,
+ 	.halt_check = BRANCH_HALT,
+@@ -4259,8 +4199,6 @@ static struct clk_regmap *gcc_sc8180x_cl
+ 	[GCC_CFG_NOC_USB3_MP_AXI_CLK] = &gcc_cfg_noc_usb3_mp_axi_clk.clkr,
+ 	[GCC_CFG_NOC_USB3_PRIM_AXI_CLK] = &gcc_cfg_noc_usb3_prim_axi_clk.clkr,
+ 	[GCC_CFG_NOC_USB3_SEC_AXI_CLK] = &gcc_cfg_noc_usb3_sec_axi_clk.clkr,
+-	[GCC_CPUSS_AHB_CLK] = &gcc_cpuss_ahb_clk.clkr,
+-	[GCC_CPUSS_AHB_CLK_SRC] = &gcc_cpuss_ahb_clk_src.clkr,
+ 	[GCC_CPUSS_RBCPR_CLK] = &gcc_cpuss_rbcpr_clk.clkr,
+ 	[GCC_DDRSS_GPU_AXI_CLK] = &gcc_ddrss_gpu_axi_clk.clkr,
+ 	[GCC_DISP_HF_AXI_CLK] = &gcc_disp_hf_axi_clk.clkr,
+@@ -4397,7 +4335,6 @@ static struct clk_regmap *gcc_sc8180x_cl
+ 	[GCC_SDCC4_AHB_CLK] = &gcc_sdcc4_ahb_clk.clkr,
+ 	[GCC_SDCC4_APPS_CLK] = &gcc_sdcc4_apps_clk.clkr,
+ 	[GCC_SDCC4_APPS_CLK_SRC] = &gcc_sdcc4_apps_clk_src.clkr,
+-	[GCC_SYS_NOC_CPUSS_AHB_CLK] = &gcc_sys_noc_cpuss_ahb_clk.clkr,
+ 	[GCC_TSIF_AHB_CLK] = &gcc_tsif_ahb_clk.clkr,
+ 	[GCC_TSIF_INACTIVITY_TIMERS_CLK] = &gcc_tsif_inactivity_timers_clk.clkr,
+ 	[GCC_TSIF_REF_CLK] = &gcc_tsif_ref_clk.clkr,
 
 
 
