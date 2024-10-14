@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-84151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC3499CE6C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:43:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F46099D2E1
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:31:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED9C21C23050
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:43:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7271FB24908
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18331AAE08;
-	Mon, 14 Oct 2024 14:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80CB01AB534;
+	Mon, 14 Oct 2024 15:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kw6y27x/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLSpWA5e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1EB1AA797;
-	Mon, 14 Oct 2024 14:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6AC156256;
+	Mon, 14 Oct 2024 15:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917010; cv=none; b=M2cX44JqQv035LqGeMuXFlWt1+ZQoGVT497BMFuhkV9bzBQskd/F9FqAILmNy+pC5+togN4Uy5UZqJOxzNiSBIsGlLt+0qLKjOTdfvZzyL1fpn31bk8r+R7UKy2YQF3tQz694VFap141q7PcigAXn6xMemrNyBs73mMjiNEqVLk=
+	t=1728919682; cv=none; b=eIklTHFy/GJk2fJ4hJi8tqNNIpHscAziShApcwDhvA3ayLCVVAjsGjrUMARqVdWowmvbEWIcPPeSQ1J/D8WwnTNQvNwlDHjRLGUYGdnTpc4WvXtQcTPs+UlxCDC8RbgTk1+TJwweULV0OfMikyVlgJiGt6dEeAfNxxCwhUz5JSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917010; c=relaxed/simple;
-	bh=PyerRhANBWvrN5WXJgdSyckyfNEnpgmGmyvkmk0mwnI=;
+	s=arc-20240116; t=1728919682; c=relaxed/simple;
+	bh=+qy+RpVfqMDgR9vdbPVcMRfhdsGu4kMVshP1hMdt3W0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XBG+b0FIlbpn7RziLjdZzlRkos1+H+b3UC5bleCvzycDOAWH4B1wc8pWKbRl+G1wIQ6UY3LcA9vpWyVFoZuMtTcOB0jEGpSPRgwt5WO+N+126HeA3PZECWtuXnSyMVUk4/w+hc1XGpC9eN8jInfnKqd+xmq6+zY5tkp91TOzaj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kw6y27x/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D7F4C4CEC3;
-	Mon, 14 Oct 2024 14:43:29 +0000 (UTC)
+	 MIME-Version; b=GzavzK8mpDq2j9bOV46byRI0XaeoC9AEa5oe2vN5YB9sgYHtODSlQ3WtEjZNl4ZZ6XtnkTLy2TtYZChI5A0ub7U/oUoBCrxAzXrwVA6ROGW1v2BPhBlyyXnY0OFu47BNa3XBfItZVIWJq+9vV/Uq6HeWkwUGBNSnRtQjxgd3eaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLSpWA5e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6090FC4CEC3;
+	Mon, 14 Oct 2024 15:28:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917010;
-	bh=PyerRhANBWvrN5WXJgdSyckyfNEnpgmGmyvkmk0mwnI=;
+	s=korg; t=1728919682;
+	bh=+qy+RpVfqMDgR9vdbPVcMRfhdsGu4kMVshP1hMdt3W0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kw6y27x/UxgLLS5dhqCQJ8b8Icq5ZumOuqT4Zw/qzkkRA9mJXZi07P6e4OWZii2GJ
-	 DDHF+Qnjcum53kc4KIyaWD8RLHaT71C1BBfrw5jz+xVdGPKliILwLlpwxeCz3TQY5s
-	 pVgDKCTd/fik3HIznFxKXeHV1z4gEaIyvJ6nEpGo=
+	b=CLSpWA5e6S3+57AoBYUlyYXDv47k334aGIDF6wJ9fZWD6iDJB4mZniAuI/m58WzXM
+	 R7O9NiRslm3pdab7zSEUt481DJl9t7ebbrnP4959xiLR8zg/joIdW+ww/rrBVGKOkD
+	 mW7OLnie42zNjIAjn0xq/8M8i18Gi2wCnsaA83lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Furong Xu <0x1207@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Aditya Gupta <adityag@linux.ibm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Disha Goel <disgoel@linux.vnet.ibm.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 126/213] Revert "net: stmmac: set PP_FLAG_DMA_SYNC_DEV only if XDP is enabled"
+Subject: [PATCH 6.1 678/798] libsubcmd: Dont free the usage string
 Date: Mon, 14 Oct 2024 16:20:32 +0200
-Message-ID: <20241014141047.889483672@linuxfoundation.org>
+Message-ID: <20241014141244.707363001@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +69,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Aditya Gupta <adityag@linux.ibm.com>
 
-[ Upstream commit 5546da79e6cc5bb3324bf25688ed05498fd3f86d ]
+[ Upstream commit 1a5efc9e13f357abc396dbf445b25d08914c8060 ]
 
-This reverts commit b514c47ebf41a6536551ed28a05758036e6eca7c.
+Currently, commands which depend on 'parse_options_subcommand()' don't
+show the usage string, and instead show '(null)'
 
-The commit describes that we don't have to sync the page when
-recycling, and it tries to optimize that case. But we do need
-to sync after allocation. Recycling side should be changed to
-pass the right sync size instead.
+    $ ./perf sched
+	Usage: (null)
 
-Fixes: b514c47ebf41 ("net: stmmac: set PP_FLAG_DMA_SYNC_DEV only if XDP is enabled")
-Reported-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/20241004070846.2502e9ea@kernel.org
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Furong Xu <0x1207@gmail.com>
-Link: https://patch.msgid.link/20241004142115.910876-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    -D, --dump-raw-trace  dump raw trace in ASCII
+    -f, --force           don't complain, do it
+    -i, --input <file>    input file name
+    -v, --verbose         be more verbose (show symbol address, etc)
+
+'parse_options_subcommand()' is generally expected to initialise the usage
+string, with information in the passed 'subcommands[]' array
+
+This behaviour was changed in:
+
+  230a7a71f92212e7 ("libsubcmd: Fix parse-options memory leak")
+
+Where the generated usage string is deallocated, and usage[0] string is
+reassigned as NULL.
+
+As discussed in [1], free the allocated usage string in the main
+function itself, and don't reset usage string to NULL in
+parse_options_subcommand
+
+With this change, the behaviour is restored.
+
+    $ ./perf sched
+        Usage: perf sched [<options>] {record|latency|map|replay|script|timehist}
+
+           -D, --dump-raw-trace  dump raw trace in ASCII
+           -f, --force           don't complain, do it
+           -i, --input <file>    input file name
+           -v, --verbose         be more verbose (show symbol address, etc)
+
+[1]: https://lore.kernel.org/linux-perf-users/htq5vhx6piet4nuq2mmhk7fs2bhfykv52dbppwxmo3s7du2odf@styd27tioc6e/
+
+Fixes: 230a7a71f92212e7 ("libsubcmd: Fix parse-options memory leak")
+Suggested-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Disha Goel <disgoel@linux.vnet.ibm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240904061836.55873-2-adityag@linux.ibm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/lib/subcmd/parse-options.c | 8 +++-----
+ tools/perf/builtin-kmem.c        | 2 ++
+ tools/perf/builtin-kvm.c         | 3 +++
+ tools/perf/builtin-kwork.c       | 3 +++
+ tools/perf/builtin-lock.c        | 3 +++
+ tools/perf/builtin-mem.c         | 3 +++
+ tools/perf/builtin-sched.c       | 3 +++
+ 7 files changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 89a80e3e8bb88..d6167a7b19f21 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -2018,7 +2018,7 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
- 	rx_q->queue_index = queue;
- 	rx_q->priv_data = priv;
+diff --git a/tools/lib/subcmd/parse-options.c b/tools/lib/subcmd/parse-options.c
+index d943d78b787ed..9fa75943f2ed1 100644
+--- a/tools/lib/subcmd/parse-options.c
++++ b/tools/lib/subcmd/parse-options.c
+@@ -633,10 +633,11 @@ int parse_options_subcommand(int argc, const char **argv, const struct option *o
+ 			const char *const subcommands[], const char *usagestr[], int flags)
+ {
+ 	struct parse_opt_ctx_t ctx;
+-	char *buf = NULL;
  
--	pp_params.flags = PP_FLAG_DMA_MAP | (xdp_prog ? PP_FLAG_DMA_SYNC_DEV : 0);
-+	pp_params.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
- 	pp_params.pool_size = dma_conf->dma_rx_size;
- 	num_pages = DIV_ROUND_UP(dma_conf->dma_buf_sz, PAGE_SIZE);
- 	pp_params.order = ilog2(num_pages);
+ 	/* build usage string if it's not provided */
+ 	if (subcommands && !usagestr[0]) {
++		char *buf = NULL;
++
+ 		astrcatf(&buf, "%s %s [<options>] {", subcmd_config.exec_name, argv[0]);
+ 
+ 		for (int i = 0; subcommands[i]; i++) {
+@@ -678,10 +679,7 @@ int parse_options_subcommand(int argc, const char **argv, const struct option *o
+ 			astrcatf(&error_buf, "unknown switch `%c'", *ctx.opt);
+ 		usage_with_options(usagestr, options);
+ 	}
+-	if (buf) {
+-		usagestr[0] = NULL;
+-		free(buf);
+-	}
++
+ 	return parse_options_end(&ctx);
+ }
+ 
+diff --git a/tools/perf/builtin-kmem.c b/tools/perf/builtin-kmem.c
+index 40dd52acc48ae..c74c0da7c8052 100644
+--- a/tools/perf/builtin-kmem.c
++++ b/tools/perf/builtin-kmem.c
+@@ -2048,6 +2048,8 @@ int cmd_kmem(int argc, const char **argv)
+ 
+ out_delete:
+ 	perf_session__delete(session);
++	/* free usage string allocated by parse_options_subcommand */
++	free((void *)kmem_usage[0]);
+ 
+ 	return ret;
+ }
+diff --git a/tools/perf/builtin-kvm.c b/tools/perf/builtin-kvm.c
+index 7d9ec1bac1a25..ba6654862883f 100644
+--- a/tools/perf/builtin-kvm.c
++++ b/tools/perf/builtin-kvm.c
+@@ -1651,5 +1651,8 @@ int cmd_kvm(int argc, const char **argv)
+ 	else
+ 		usage_with_options(kvm_usage, kvm_options);
+ 
++	/* free usage string allocated by parse_options_subcommand */
++	free((void *)kvm_usage[0]);
++
+ 	return 0;
+ }
+diff --git a/tools/perf/builtin-kwork.c b/tools/perf/builtin-kwork.c
+index 25cba0d61736c..4b612a41cdc10 100644
+--- a/tools/perf/builtin-kwork.c
++++ b/tools/perf/builtin-kwork.c
+@@ -1831,5 +1831,8 @@ int cmd_kwork(int argc, const char **argv)
+ 	} else
+ 		usage_with_options(kwork_usage, kwork_options);
+ 
++	/* free usage string allocated by parse_options_subcommand */
++	free((void *)kwork_usage[0]);
++
+ 	return 0;
+ }
+diff --git a/tools/perf/builtin-lock.c b/tools/perf/builtin-lock.c
+index 28fa76ecc0822..27bbc513aeb94 100644
+--- a/tools/perf/builtin-lock.c
++++ b/tools/perf/builtin-lock.c
+@@ -2007,6 +2007,9 @@ int cmd_lock(int argc, const char **argv)
+ 		usage_with_options(lock_usage, lock_options);
+ 	}
+ 
++	/* free usage string allocated by parse_options_subcommand */
++	free((void *)lock_usage[0]);
++
+ 	zfree(&lockhash_table);
+ 	return rc;
+ }
+diff --git a/tools/perf/builtin-mem.c b/tools/perf/builtin-mem.c
+index fbd05617c2ddd..ac2e17c093941 100644
+--- a/tools/perf/builtin-mem.c
++++ b/tools/perf/builtin-mem.c
+@@ -514,5 +514,8 @@ int cmd_mem(int argc, const char **argv)
+ 	else
+ 		usage_with_options(mem_usage, mem_options);
+ 
++	/* free usage string allocated by parse_options_subcommand */
++	free((void *)mem_usage[0]);
++
+ 	return 0;
+ }
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index b70bc7f3ad5b3..e440a00b1613e 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -3725,5 +3725,8 @@ int cmd_sched(int argc, const char **argv)
+ 		usage_with_options(sched_usage, sched_options);
+ 	}
+ 
++	/* free usage string allocated by parse_options_subcommand */
++	free((void *)sched_usage[0]);
++
+ 	return 0;
+ }
 -- 
 2.43.0
 
