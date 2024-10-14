@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6824399D202
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC9199CCB4
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:23:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27EC12865E4
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A83451F238AC
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FDEF1B85CC;
-	Mon, 14 Oct 2024 15:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845EF1AAE02;
+	Mon, 14 Oct 2024 14:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZN15bLbZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DudhOkPY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7E814AA9;
-	Mon, 14 Oct 2024 15:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FE2E571;
+	Mon, 14 Oct 2024 14:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919130; cv=none; b=IlBws4I0mQjGVjCQQjjynZMcR0vP3e1rhR72SEClK6RZMZwr3IXAOTCkEKqxyIV2UCtqvCnmh1n4KTyiF8fMxplspSk6sfOr5tz/WIDFGFVHA5EtU2ALliZ8zPDs01wE2sseV6icG/qjGObqvS3c/EtaDVUcFcl+sptZp5c0bgg=
+	t=1728915828; cv=none; b=GSJcMoBGJ2C0fi6ahEGDRK3SSIvrcdP33fN8Gxl/7mlU2c7SdeLwTbO6UjosBF/u+1oG1r+MEofpv7zDZ+Ndz/WO0+vN/LVzwIi58AEDwqmvCO0ApWSVrV57zS6XaiDUOLFFR8SZHBjuLSmDU4TquWdiLvbt+7NRAkjlQaGDBXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919130; c=relaxed/simple;
-	bh=YYCgFtiPxpFwp7gM6Mc5ckMaJ8IeJ2cUBmmPRAL6SgU=;
+	s=arc-20240116; t=1728915828; c=relaxed/simple;
+	bh=I7NLEYV0n01ilu5idESXd4W/KYQAXC0n8blzwWjRrZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FTcxlkOJdkbKbej46PFxfBF0NojGBlpj2/z0UzvderWVWVT9mJsMOrvBpdD4CprF/ySyYgxqwAYmkHmQMcu+DFl+3YPLK0sB76Yju7UR2uQVxAR88AryIKrpDT7NwxWUitKDJ0n02Nr+/CNPSryIsFsQy2A9cB45IyPTqgRtF9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZN15bLbZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1108C4CEC7;
-	Mon, 14 Oct 2024 15:18:49 +0000 (UTC)
+	 MIME-Version; b=XFuO5MGbBgU3TOAFtcgb4iZkvYK/aW44akzFecdGHN/1tbOFhAP1w5beMeDdNG2s9mOyjg9ZlRzJBvtzSRPVCbRfxv1viDXa3FrAFg9J5TOXqORrKBOQAm4+odNsNalGNQVRJLaIOk5S+MDdPDi81HBDphX2c+jLOhbO5F+sW/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DudhOkPY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60493C4CEC7;
+	Mon, 14 Oct 2024 14:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919130;
-	bh=YYCgFtiPxpFwp7gM6Mc5ckMaJ8IeJ2cUBmmPRAL6SgU=;
+	s=korg; t=1728915827;
+	bh=I7NLEYV0n01ilu5idESXd4W/KYQAXC0n8blzwWjRrZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZN15bLbZx5uRiWYKmN3cCkbQ8cZuzR9zvDop3h93cNDv5UZCSK64dQF5UiBY2Wc08
-	 hs+IyglU3mRTUhR8MJUxAPmdcb+XcIfZfdwfL3mf0q5le7yFFvjb44dBVlJfqJ+3/6
-	 Gjz6LOofSutVbTZrW2n/isnzGQWb/Y/yu2h3pFGk=
+	b=DudhOkPYHTNz+vX7CDjzswphr/auuEvNX+AfQKzS6RF2kMEH4eIw1F3RQae4JmHNm
+	 O6qI1gO9WTFdey9FriO21wai/meR/GCN5io2f8UTCxweK4Y0w5ftpqyeASwFL/HXGY
+	 LZcit+oR2un3McPK4UNMNWKhUdEL8j1nE0SRBZ78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	syzbot+7f71f79bbfb4427b00e1@syzkaller.appspotmail.com,
+	Diogo Jahchan Koike <djahchankoike@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 520/798] powerpc/vdso: Fix VDSO data access when running in a non-root time namespace
+Subject: [PATCH 6.11 011/214] ntfs3: Change to non-blocking allocation in ntfs_d_hash
 Date: Mon, 14 Oct 2024 16:17:54 +0200
-Message-ID: <20241014141238.407673956@linuxfoundation.org>
+Message-ID: <20241014141045.433734362@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Diogo Jahchan Koike <djahchankoike@gmail.com>
 
-[ Upstream commit c73049389e58c01e2e3bbfae900c8daeee177191 ]
+[ Upstream commit 589996bf8c459deb5bbc9747d8f1c51658608103 ]
 
-When running in a non-root time namespace, the global VDSO data page
-is replaced by a dedicated namespace data page and the global data
-page is mapped next to it. Detailed explanations can be found at
-commit 660fd04f9317 ("lib/vdso: Prepare for time namespace support").
+d_hash is done while under "rcu-walk" and should not sleep.
+__get_name() allocates using GFP_KERNEL, having the possibility
+to sleep when under memory pressure. Change the allocation to
+GFP_NOWAIT.
 
-When it happens, __kernel_get_syscall_map and __kernel_get_tbfreq
-and __kernel_sync_dicache don't work anymore because they read 0
-instead of the data they need.
-
-To address that, clock_mode has to be read. When it is set to
-VDSO_CLOCKMODE_TIMENS, it means it is a dedicated namespace data page
-and the global data is located on the following page.
-
-Add a macro called get_realdatapage which reads clock_mode and add
-PAGE_SIZE to the pointer provided by get_datapage macro when
-clock_mode is equal to VDSO_CLOCKMODE_TIMENS. Use this new macro
-instead of get_datapage macro except for time functions as they handle
-it internally.
-
-Fixes: 74205b3fc2ef ("powerpc/vdso: Add support for time namespaces")
-Reported-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Closes: https://lore.kernel.org/all/ZtnYqZI-nrsNslwy@zx2c4.com/
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Reported-by: syzbot+7f71f79bbfb4427b00e1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7f71f79bbfb4427b00e1
+Fixes: d392e85fd1e8 ("fs/ntfs3: Fix the format of the "nocase" mount option")
+Signed-off-by: Diogo Jahchan Koike <djahchankoike@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/vdso_datapage.h | 15 +++++++++++++++
- arch/powerpc/kernel/asm-offsets.c        |  2 ++
- arch/powerpc/kernel/vdso/cacheflush.S    |  2 +-
- arch/powerpc/kernel/vdso/datapage.S      |  4 ++--
- 4 files changed, 20 insertions(+), 3 deletions(-)
+ fs/ntfs3/namei.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/vdso_datapage.h b/arch/powerpc/include/asm/vdso_datapage.h
-index a585c8e538ff0..939daf6b695ef 100644
---- a/arch/powerpc/include/asm/vdso_datapage.h
-+++ b/arch/powerpc/include/asm/vdso_datapage.h
-@@ -111,6 +111,21 @@ extern struct vdso_arch_data *vdso_data;
- 	addi	\ptr, \ptr, (_vdso_datapage - 999b)@l
- .endm
+diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
+index f16d318c4372a..0a70c36585463 100644
+--- a/fs/ntfs3/namei.c
++++ b/fs/ntfs3/namei.c
+@@ -395,7 +395,7 @@ static int ntfs_d_hash(const struct dentry *dentry, struct qstr *name)
+ 	/*
+ 	 * Try slow way with current upcase table
+ 	 */
+-	uni = __getname();
++	uni = kmem_cache_alloc(names_cachep, GFP_NOWAIT);
+ 	if (!uni)
+ 		return -ENOMEM;
  
-+#include <asm/asm-offsets.h>
-+#include <asm/page.h>
-+
-+.macro get_realdatapage ptr scratch
-+	get_datapage \ptr
-+#ifdef CONFIG_TIME_NS
-+	lwz	\scratch, VDSO_CLOCKMODE_OFFSET(\ptr)
-+	xoris	\scratch, \scratch, VDSO_CLOCKMODE_TIMENS@h
-+	xori	\scratch, \scratch, VDSO_CLOCKMODE_TIMENS@l
-+	cntlzw	\scratch, \scratch
-+	rlwinm	\scratch, \scratch, PAGE_SHIFT - 5, 1 << PAGE_SHIFT
-+	add	\ptr, \ptr, \scratch
-+#endif
-+.endm
-+
- #endif /* __ASSEMBLY__ */
+@@ -417,7 +417,7 @@ static int ntfs_d_hash(const struct dentry *dentry, struct qstr *name)
+ 	err = 0;
  
- #endif /* __KERNEL__ */
-diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index 4ce2a4aa39854..65d79dd0c92ce 100644
---- a/arch/powerpc/kernel/asm-offsets.c
-+++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -347,6 +347,8 @@ int main(void)
- #else
- 	OFFSET(CFG_SYSCALL_MAP32, vdso_arch_data, syscall_map);
- #endif
-+	OFFSET(VDSO_CLOCKMODE_OFFSET, vdso_arch_data, data[0].clock_mode);
-+	DEFINE(VDSO_CLOCKMODE_TIMENS, VDSO_CLOCKMODE_TIMENS);
+ out:
+-	__putname(uni);
++	kmem_cache_free(names_cachep, uni);
+ 	return err;
+ }
  
- #ifdef CONFIG_BUG
- 	DEFINE(BUG_ENTRY_SIZE, sizeof(struct bug_entry));
-diff --git a/arch/powerpc/kernel/vdso/cacheflush.S b/arch/powerpc/kernel/vdso/cacheflush.S
-index 0085ae464dac9..3b2479bd2f9a1 100644
---- a/arch/powerpc/kernel/vdso/cacheflush.S
-+++ b/arch/powerpc/kernel/vdso/cacheflush.S
-@@ -30,7 +30,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
- #ifdef CONFIG_PPC64
- 	mflr	r12
-   .cfi_register lr,r12
--	get_datapage	r10
-+	get_realdatapage	r10, r11
- 	mtlr	r12
-   .cfi_restore	lr
- #endif
-diff --git a/arch/powerpc/kernel/vdso/datapage.S b/arch/powerpc/kernel/vdso/datapage.S
-index db8e167f01667..2b19b6201a33a 100644
---- a/arch/powerpc/kernel/vdso/datapage.S
-+++ b/arch/powerpc/kernel/vdso/datapage.S
-@@ -28,7 +28,7 @@ V_FUNCTION_BEGIN(__kernel_get_syscall_map)
- 	mflr	r12
-   .cfi_register lr,r12
- 	mr.	r4,r3
--	get_datapage	r3
-+	get_realdatapage	r3, r11
- 	mtlr	r12
- #ifdef __powerpc64__
- 	addi	r3,r3,CFG_SYSCALL_MAP64
-@@ -52,7 +52,7 @@ V_FUNCTION_BEGIN(__kernel_get_tbfreq)
-   .cfi_startproc
- 	mflr	r12
-   .cfi_register lr,r12
--	get_datapage	r3
-+	get_realdatapage	r3, r11
- #ifndef __powerpc64__
- 	lwz	r4,(CFG_TB_TICKS_PER_SEC + 4)(r3)
- #endif
 -- 
 2.43.0
 
