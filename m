@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-84948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C4499D309
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32DB399CD5F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:32:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5852028A24F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83B801F239B1
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1654F1C75E2;
-	Mon, 14 Oct 2024 15:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4CE1A0724;
+	Mon, 14 Oct 2024 14:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z568USCQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blVojzUv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A091D0942;
-	Mon, 14 Oct 2024 15:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84ACC17C77;
+	Mon, 14 Oct 2024 14:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919776; cv=none; b=VjAQhkKFWUeE2Xb7zDxSGt/w8vtD88Rr17eO27Gd+XALYmVOl2XFi4MiXfQaEsovV5wY2RXFFzrotT7E++LCyHMCx9wOVZGKQUM5Qrh7f1ZK52H3LVIMbZ+HP5EYmgsVDXXPkJwfUca8IJolE/R0xdo4UxWpCF/MSNcOIYuFOds=
+	t=1728916338; cv=none; b=IHi76FuA6hFPiih6j/h6MToCYqz6II3SUhxQT6SB9qvEtAnxmyApPTIwfclnnPvlj4CoT1+cdGEKxKB4T9b3lcHoFflkAYprFNSeYhuy3cfwBf285fALVYLKMN0+DQCEdgJtukfAo4iUNQzQw+e2LhNuXNbEUXznLvF8kmnhZGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919776; c=relaxed/simple;
-	bh=DzwcWCfw4yxYBDAFLJM1CcyiRHI9xBtOsfeFFx1y+N8=;
+	s=arc-20240116; t=1728916338; c=relaxed/simple;
+	bh=krBwssS6JrCXBGyaUO6BNpo2+229IkPf1iOS4wHSW6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sCXRRvEY8fOB9AAlbfYdCLc8Ycq75/GQP9fv0GziEsm088uuGwtI6urfntGigxTSqOd8cLwlFm7aURafTMLdRn28aWDrEcBk4SbFT+OGT3maA2R7Rd1JSiwxv0vQXXN3yK9+FnCqN58k+VW7lUzBxkGvzQlsX5ntihjp8+gaR+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z568USCQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC36C4CED1;
-	Mon, 14 Oct 2024 15:29:35 +0000 (UTC)
+	 MIME-Version; b=VufIzdsS6Vi/lTapHa3XdSSaNxYV8+muQm8oNd3zJZ62owfXZ0kKShkwtY3NfngEZdwAE/CjsFiaZmFB55LnXPH+MuIKX0x67wC6h1ma3eWGjs6IJ/sDQKGiDFLv1514xaqjiyoEf4xRg3zBZspffYDXU7287X4xz/4JlNxCUEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blVojzUv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA614C4CED0;
+	Mon, 14 Oct 2024 14:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919776;
-	bh=DzwcWCfw4yxYBDAFLJM1CcyiRHI9xBtOsfeFFx1y+N8=;
+	s=korg; t=1728916338;
+	bh=krBwssS6JrCXBGyaUO6BNpo2+229IkPf1iOS4wHSW6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z568USCQ96ef4eVAcu/dZ31vw9jfhXmuznGB16UCX2x7LpUYb/HIYlwgKJ4CCEanS
-	 vmLZSxwbRPke48B2/fwWv6cgibfqrH1A2aPHxWoXj87Fj/jgjqgqdQVzZFVNKTbYyy
-	 mOjtLnUocKyqxEkfejE8eTUi1dH2GMsdkej49mLI=
+	b=blVojzUvyN9rm7ugnf/HZ3fvm2bmBIwK9pJO9rM6ZKIJwXKuITevOAF7EE4DL4FAs
+	 YbgcxkqN/Fj3Kr/kdb7rRANDaT4W2agmzMV7+yQmwJs/B5lVoBBwbNVhOm8sARwL/6
+	 FV4Y+J6XhV6RGTpG5cSArpAlwskw34gSIr7jqT24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiyang Ruan <ruansy.fnst@fujitsu.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Alistair Popple <apopple@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 663/798] fsdax: unshare: zero destination if srcmap is HOLE or UNWRITTEN
+	kernel test robot <lkp@intel.com>,
+	Eric Tremblay <etremblay@distech-controls.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 154/214] hwmon: (tmp513) Add missing dependency on REGMAP_I2C
 Date: Mon, 14 Oct 2024 16:20:17 +0200
-Message-ID: <20241014141244.099503797@linuxfoundation.org>
+Message-ID: <20241014141050.998558837@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,64 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit 13dd4e04625f600e5affb1b3f0b6c35268ab839b upstream.
+[ Upstream commit 193bc02c664999581a1f38c152f379fce91afc0c ]
 
-unshare copies data from source to destination.  But if the source is
-HOLE or UNWRITTEN extents, we should zero the destination, otherwise
-the HOLE or UNWRITTEN part will be user-visible old data of the new
-allocated extent.
+0-day reports:
 
-Found by running generic/649 while mounting with -o dax=always on pmem.
+drivers/hwmon/tmp513.c:162:21: error:
+	variable 'tmp51x_regmap_config' has initializer but incomplete type
+162 | static const struct regmap_config tmp51x_regmap_config = {
+    |                     ^
 
-Link: https://lkml.kernel.org/r/1679483469-2-1-git-send-email-ruansy.fnst@fujitsu.com
-Fixes: d984648e428b ("fsdax,xfs: port unshare to fsdax")
-Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Darrick J. Wong <djwong@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+struct regmap_config is only available if REGMAP is enabled.
+Add the missing Kconfig dependency to fix the problem.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202410020246.2cTDDx0X-lkp@intel.com/
+Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
+Cc: Eric Tremblay <etremblay@distech-controls.com>
+Reviewed-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dax.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/hwmon/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -1234,15 +1234,20 @@ static s64 dax_unshare_iter(struct iomap
- 	/* don't bother with blocks that are not shared to start with */
- 	if (!(iomap->flags & IOMAP_F_SHARED))
- 		return length;
--	/* don't bother with holes or unwritten extents */
--	if (srcmap->type == IOMAP_HOLE || srcmap->type == IOMAP_UNWRITTEN)
--		return length;
- 
- 	id = dax_read_lock();
- 	ret = dax_iomap_direct_access(iomap, pos, length, &daddr, NULL);
- 	if (ret < 0)
- 		goto out_unlock;
- 
-+	/* zero the distance if srcmap is HOLE or UNWRITTEN */
-+	if (srcmap->flags & IOMAP_F_SHARED || srcmap->type == IOMAP_UNWRITTEN) {
-+		memset(daddr, 0, length);
-+		dax_flush(iomap->dax_dev, daddr, length);
-+		ret = length;
-+		goto out_unlock;
-+	}
-+
- 	ret = dax_iomap_direct_access(srcmap, pos, length, &saddr, NULL);
- 	if (ret < 0)
- 		goto out_unlock;
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index b60fe2e58ad6c..543c40630d67e 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -2288,6 +2288,7 @@ config SENSORS_TMP464
+ config SENSORS_TMP513
+ 	tristate "Texas Instruments TMP513 and compatibles"
+ 	depends on I2C
++	select REGMAP_I2C
+ 	help
+ 	  If you say yes here you get support for Texas Instruments TMP512,
+ 	  and TMP513 temperature and power supply sensor chips.
+-- 
+2.43.0
+
 
 
 
