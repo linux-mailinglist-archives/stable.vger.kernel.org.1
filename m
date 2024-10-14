@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-84765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C20D99D204
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED2C99CCB9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABE2E1F24FCA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C0071C213B5
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BDC1B85D2;
-	Mon, 14 Oct 2024 15:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D5D1AB6F1;
+	Mon, 14 Oct 2024 14:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K63UPZOq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqZC+OMV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEA519E7ED;
-	Mon, 14 Oct 2024 15:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341F21AB6E6;
+	Mon, 14 Oct 2024 14:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919137; cv=none; b=n5O7AoLO3WnEtfHK1ntZENIu1BoZ/ObtgoJhWk6T7WTCP0lzxouLreelTaenaOgrMXBkJQeog9B+4HE/w+2rUhbESLTBwBmR0W3PSa3hPEdawRGL4hFQRhx4NSZaU9xrvRR8G3BlTj03S7C/K5ogqyW7T/1Cr0PacVOKAPJe5Yo=
+	t=1728915838; cv=none; b=F4ZXF97j/1VZJwYGasEKsHiVuAv7GADIVeHA3aT7WsDQ//nf9niuaAWt5hulGY4pcCKT+sAYztt3T/xyPZqwG0JADmOdLftsDE+BjMg6V5tgxIC6D46JXa7ZgDti8RKp6t5awoj6zMera8A4xRHQQ//xirf4WKDBpC6exwyZ+2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919137; c=relaxed/simple;
-	bh=MwTW+hjFnGmEIqI5aXDqN8awfYh327Rk3CXfiL0f16Q=;
+	s=arc-20240116; t=1728915838; c=relaxed/simple;
+	bh=4J2YvKzHV5hvxrSzqsLNTaMuEKbOQNNZO+hKmAR7ZKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FJwLRWtqWOv6zD3DB9o58u5BwaL22CzTNpv6GJ3H2GoqXTYDWQLsSgnSqtzbAjir1RhjFOmzm3DU3I8FMp6JnUxDyoTx/xmUYhlZnwk6CYcnxloa25vOVs32D8AVmDR6nSqD60VNz0ik7XycYrCvZdXmILYcohIXPe1sWr3FGE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K63UPZOq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1D93C4CEC3;
-	Mon, 14 Oct 2024 15:18:56 +0000 (UTC)
+	 MIME-Version; b=aylcnuw7yOxiE0xLsC+HulJS3wwjioguLMvduK0SabqT/uSmSc/xYLGvahhLbB7uudyvuVB8UvwoMPIlh5WS5xD1y0c/4jRE+vzWsgksMRdwJYdTii5Yz0wBEIBH29xTm72xQEs+RmXb7W8Ofjt8bjY7XXBPKhxu3FlbiovR2+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqZC+OMV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99194C4CECF;
+	Mon, 14 Oct 2024 14:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919137;
-	bh=MwTW+hjFnGmEIqI5aXDqN8awfYh327Rk3CXfiL0f16Q=;
+	s=korg; t=1728915838;
+	bh=4J2YvKzHV5hvxrSzqsLNTaMuEKbOQNNZO+hKmAR7ZKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K63UPZOqwFv6VxHlL1LYCL8X24Jhzdmn8YuZD699AcTUGLdC5WaaR22rlmhm0pkW6
-	 CfxAH6yuKgNRE1jMKMJeRAiithGhoc65zv9tOVNCGe2VXei1zISAgdltLy/UuA7hnD
-	 0xE1jkO0Q7rF3JpyX8MUcPFr46jbGQc/QxAL5BKA=
+	b=fqZC+OMV4DLMxjhqXK3I37I91naOtFKKXhuvQxcVXhYMOoDhxVeZW9I9evIwXZlVn
+	 6wvVSydupAvx9+LGtpIp1FR9zPArtzQU/7CCVFu/J8lZgEDHSCm2HwYZyhSg20MKug
+	 /bY7MOIrIySHcYwbZICZzCtZ8QCaPytK0gTxRoIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 522/798] selftests: vDSO: fix vdso_config for s390
-Date: Mon, 14 Oct 2024 16:17:56 +0200
-Message-ID: <20241014141238.487276711@linuxfoundation.org>
+Subject: [PATCH 6.11 014/214] zram: free secondary algorithms names
+Date: Mon, 14 Oct 2024 16:17:57 +0200
+Message-ID: <20241014141045.551022802@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-[ Upstream commit a6e23fb8d3c0e3904da70beaf5d7e840a983c97f ]
+[ Upstream commit 684826f8271ad97580b138b9ffd462005e470b99 ]
 
-Running vdso_test_correctness on s390x (aka s390 64 bit) emits a warning:
+We need to kfree() secondary algorithms names when reset zram device that
+had multi-streams, otherwise we leak memory.
 
-Warning: failed to find clock_gettime64 in vDSO
-
-This is caused by the "#elif defined (__s390__)" check in vdso_config.h
-which the defines VDSO_32BIT.
-
-If __s390x__ is defined also __s390__ is defined. Therefore the correct
-check must make sure that only __s390__ is defined.
-
-Therefore add the missing !defined(__s390x__). Also use common
-__s390x__ define instead of __s390X__.
-
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Fixes: 693f5ca08ca0 ("kselftest: Extend vDSO selftest")
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+[senozhatsky@chromium.org: kfree(NULL) is legal]
+  Link: https://lkml.kernel.org/r/20240917013021.868769-1-senozhatsky@chromium.org
+Link: https://lkml.kernel.org/r/20240911025600.3681789-1-senozhatsky@chromium.org
+Fixes: 001d92735701 ("zram: add recompression algorithm sysfs knob")
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vDSO/vdso_config.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/block/zram/zram_drv.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/vDSO/vdso_config.h b/tools/testing/selftests/vDSO/vdso_config.h
-index f9890584f6fb4..72de45f587b2c 100644
---- a/tools/testing/selftests/vDSO/vdso_config.h
-+++ b/tools/testing/selftests/vDSO/vdso_config.h
-@@ -25,11 +25,11 @@
- #define VDSO_VERSION		1
- #define VDSO_NAMES		0
- #define VDSO_32BIT		1
--#elif defined (__s390__)
-+#elif defined (__s390__) && !defined(__s390x__)
- #define VDSO_VERSION		2
- #define VDSO_NAMES		0
- #define VDSO_32BIT		1
--#elif defined (__s390X__)
-+#elif defined (__s390x__)
- #define VDSO_VERSION		2
- #define VDSO_NAMES		0
- #elif defined(__mips__)
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index efcb8d9d274c3..1a875ac43d566 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1989,6 +1989,11 @@ static void zram_destroy_comps(struct zram *zram)
+ 		zcomp_destroy(comp);
+ 		zram->num_active_comps--;
+ 	}
++
++	for (prio = ZRAM_SECONDARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
++		kfree(zram->comp_algs[prio]);
++		zram->comp_algs[prio] = NULL;
++	}
+ }
+ 
+ static void zram_reset_device(struct zram *zram)
 -- 
 2.43.0
 
