@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-83865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729A299CCEA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:27:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC5999D236
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26F541F22BFB
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:27:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0C821C23620
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34FD1AB536;
-	Mon, 14 Oct 2024 14:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389721C729B;
+	Mon, 14 Oct 2024 15:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMnrPPIi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m25EAKJC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B500E571;
-	Mon, 14 Oct 2024 14:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7BCB1AC44D;
+	Mon, 14 Oct 2024 15:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915992; cv=none; b=CCd7xfS4hY4HESbCcsu2ABh5vvh62R6XmxepsIbDg5WGW9hl6HA7UnQnhm6sEa8lcfa0y1VobWIo7bLiMu4SpwjEYScWVlFyhmmdHRPKZhhVjq8aWIPNDYV6TC2TruPdso+HwlUUsm91KPjJgoeFbb3+YpkiNuJy2n1xwsktaVg=
+	t=1728919302; cv=none; b=lNXUhJM9SpDvCU0edVDL1W/TidUuLR4feHUpV8zZHoqls67QjGnCYuelBWxHnBN2qiof7Ry92scyzcuUkktIIvvaqFSpNkYoroJ+GevT9bLEq793ie4dpo/Y7LX6zUgQY2smniuD0NsrIgC6aLsaioP9/QS136d5b9YYZNh2TOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915992; c=relaxed/simple;
-	bh=XqV1lVSNUbUxvOn3kWixek4Rh2HaRpq5RRrDhpXPia4=;
+	s=arc-20240116; t=1728919302; c=relaxed/simple;
+	bh=9KjSzCx1ScqpwehI5VdRVIFI6S9r6TE/Y4ovL1jw41U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=idDTHd5kgv0VdfquKt+eDbnhB8hZMu135ihXIDCtR4/lDMOfZ+i97wcGFqQa/SoAUs2+RrY/Q+sW9Ka1GMxkLr5GdZ8H9BGkRk7ZY/XCcjig18zrtQiQA7O1soC5kfFbXtw9YvcAHLcdyGLSO5EQyi8L2H3PziKgeF7rTQ+aWEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMnrPPIi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECBFC4CEC7;
-	Mon, 14 Oct 2024 14:26:31 +0000 (UTC)
+	 MIME-Version; b=jZRERpG7e8bqEe5RmfPoZvvX7f8jg8dim42dacmuXh0rDS5hdmKiUgwkt0a/64ikg2OOZGj7CRDewpJIlNXNBASAfHnliyt1zxC9iMwj01ulGo+mEjPFlvYcCzfzNRJAWeapkE+l8SULvNEp0JBOs1jXU/f++2MIXRJynp2C4vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m25EAKJC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2371FC4CEC3;
+	Mon, 14 Oct 2024 15:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915992;
-	bh=XqV1lVSNUbUxvOn3kWixek4Rh2HaRpq5RRrDhpXPia4=;
+	s=korg; t=1728919301;
+	bh=9KjSzCx1ScqpwehI5VdRVIFI6S9r6TE/Y4ovL1jw41U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iMnrPPIiSHM0rRVYug661KjLZpn4MOtJxrXW54bTDDC/eIO18rLNQDtWnSOSYnE96
-	 KZzJBxhNcbnyflChJ6FiuaIkDNhC/I6qhgNO0XZv6uUos0IrnTTVMTXSY/ktl07Bum
-	 FpKfAb/ityEiYiz3PQuynpbSh84lNdDlZtysskDM=
+	b=m25EAKJCmzTPJn8BXUz6uP0aHZBImsLVpX7DMQfJLX3y/m7ULeLS/rJZUYEfa5a3V
+	 t/TjV+vaZw5mLIJnlZBTDY4Tc2CWYgKPAlK3EoSbp5v7YEusribBWOZzcrY8rrsOYh
+	 RL4Bwz3JM/1kbBAJwZNqoOtPJ3EgLQTjHKzCO+WU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Peter Hurley <peter@hurleysoftware.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 054/214] serial: protect uart_port_dtr_rts() in uart_shutdown() too
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 563/798] jbd2: stop waiting for space when jbd2_cleanup_journal_tail() returns error
 Date: Mon, 14 Oct 2024 16:18:37 +0200
-Message-ID: <20241014141047.099635148@linuxfoundation.org>
+Message-ID: <20241014141240.116768147@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 602babaa84d627923713acaf5f7e9a4369e77473 ]
+commit f5cacdc6f2bb2a9bf214469dd7112b43dd2dd68a upstream.
 
-Commit af224ca2df29 (serial: core: Prevent unsafe uart port access, part
-3) added few uport == NULL checks. It added one to uart_shutdown(), so
-the commit assumes, uport can be NULL in there. But right after that
-protection, there is an unprotected "uart_port_dtr_rts(uport, false);"
-call. That is invoked only if HUPCL is set, so I assume that is the
-reason why we do not see lots of these reports.
+In __jbd2_log_wait_for_space(), we might call jbd2_cleanup_journal_tail()
+to recover some journal space. But if an error occurs while executing
+jbd2_cleanup_journal_tail() (e.g., an EIO), we don't stop waiting for free
+space right away, we try other branches, and if j_committing_transaction
+is NULL (i.e., the tid is 0), we will get the following complain:
 
-Or it cannot be NULL at this point at all for some reason :P.
+============================================
+JBD2: I/O error when updating journal superblock for sdd-8.
+__jbd2_log_wait_for_space: needed 256 blocks and only had 217 space available
+__jbd2_log_wait_for_space: no way to get more journal space in sdd-8
+------------[ cut here ]------------
+WARNING: CPU: 2 PID: 139804 at fs/jbd2/checkpoint.c:109 __jbd2_log_wait_for_space+0x251/0x2e0
+Modules linked in:
+CPU: 2 PID: 139804 Comm: kworker/u8:3 Not tainted 6.6.0+ #1
+RIP: 0010:__jbd2_log_wait_for_space+0x251/0x2e0
+Call Trace:
+ <TASK>
+ add_transaction_credits+0x5d1/0x5e0
+ start_this_handle+0x1ef/0x6a0
+ jbd2__journal_start+0x18b/0x340
+ ext4_dirty_inode+0x5d/0xb0
+ __mark_inode_dirty+0xe4/0x5d0
+ generic_update_time+0x60/0x70
+[...]
+============================================
 
-Until the above is investigated, stay on the safe side and move this
-dereference to the if too.
+So only if jbd2_cleanup_journal_tail() returns 1, i.e., there is nothing to
+clean up at the moment, continue to try to reclaim free space in other ways.
 
-I got this inconsistency from Coverity under CID 1585130. Thanks.
+Note that this fix relies on commit 6f6a6fda2945 ("jbd2: fix ocfs2 corrupt
+when updating journal superblock fails") to make jbd2_cleanup_journal_tail
+return the correct error code.
 
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Peter Hurley <peter@hurleysoftware.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20240805102046.307511-3-jirislaby@kernel.org
+Fixes: 8c3f25d8950c ("jbd2: don't give up looking for space so easily in __jbd2_log_wait_for_space")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240718115336.2554501-1-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_core.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ fs/jbd2/checkpoint.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index 20e797c9e13ab..4187ddeeac366 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -407,14 +407,16 @@ static void uart_shutdown(struct tty_struct *tty, struct uart_state *state)
- 		/*
- 		 * Turn off DTR and RTS early.
- 		 */
--		if (uport && uart_console(uport) && tty) {
--			uport->cons->cflag = tty->termios.c_cflag;
--			uport->cons->ispeed = tty->termios.c_ispeed;
--			uport->cons->ospeed = tty->termios.c_ospeed;
--		}
-+		if (uport) {
-+			if (uart_console(uport) && tty) {
-+				uport->cons->cflag = tty->termios.c_cflag;
-+				uport->cons->ispeed = tty->termios.c_ispeed;
-+				uport->cons->ospeed = tty->termios.c_ospeed;
-+			}
- 
--		if (!tty || C_HUPCL(tty))
--			uart_port_dtr_rts(uport, false);
-+			if (!tty || C_HUPCL(tty))
-+				uart_port_dtr_rts(uport, false);
-+		}
- 
- 		uart_port_shutdown(port);
- 	}
--- 
-2.43.0
-
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -101,8 +101,11 @@ __releases(&journal->j_state_lock)
+ 			write_unlock(&journal->j_state_lock);
+ 			if (chkpt) {
+ 				jbd2_log_do_checkpoint(journal);
+-			} else if (jbd2_cleanup_journal_tail(journal) == 0) {
+-				/* We were able to recover space; yay! */
++			} else if (jbd2_cleanup_journal_tail(journal) <= 0) {
++				/*
++				 * We were able to recover space or the
++				 * journal was aborted due to an error.
++				 */
+ 				;
+ 			} else if (has_transaction) {
+ 				/*
 
 
 
