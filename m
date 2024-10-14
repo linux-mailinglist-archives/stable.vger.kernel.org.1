@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-83867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BD5D99CCF0
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:27:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CFEA99CD22
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:29:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B74DF1F211E9
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:27:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39D752810C6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94A01AB6EB;
-	Mon, 14 Oct 2024 14:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453A81AAE2B;
+	Mon, 14 Oct 2024 14:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSi2Xk2M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3Bxkvdj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D181AAE02;
-	Mon, 14 Oct 2024 14:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042E013B7A1;
+	Mon, 14 Oct 2024 14:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916004; cv=none; b=sv70qcKXND2mM5Rsz0cQFirsUBB8WK+tWjkAIlKZRXUMvFSDq4sQpICXqq6rNC9Sid7eH5bmLTb2H7FFlsyq5gB7ftEfMMSV4VZq7X60n+vgiKEu4X7dVLiMFfFZ3fAOu4rQO9NOdMH+3LmZWRUKY+te0wskCBL67E7hGuJuSEA=
+	t=1728916149; cv=none; b=h8/qfs5wPkx6LFcQFE9WWXeLeL1E++bbC+IfEWj9upsGr9kFsLuBnbP5f1sKnO6CoRfT+JXUMa6NClAWYNzAJJF/Dvcf4dkL2EBdbIrihF0z2C3v3/TIVT7b6QAIO9UmAWESBkFTlhEg7uFZfbhBBnUK6od/io5TKzt8ERjo0Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916004; c=relaxed/simple;
-	bh=zX1+NLfyGFZVRb2chfr9SyVec9t5pBlFlqT3iJl+bbg=;
+	s=arc-20240116; t=1728916149; c=relaxed/simple;
+	bh=2He5T2YzNF2DG7xKxFD+d1zxG7PaRgky+o90XoG4lhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LbiHVzTKatdJ3mIC/W8EX/Xl++qlh67swryj20p/V5M77NPSClp3ubObDHonnFqJ7g72yTebvDS409a5BokUXwegRpFEiZfDlR8Gs1KGHJGCnuW8m9eGlO2Dt6VeCDUtfA2rzMc/u7se/7hPSqHaIyAnfsrFlFhRkLgxRCoV2Tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSi2Xk2M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A73C4CEC3;
-	Mon, 14 Oct 2024 14:26:43 +0000 (UTC)
+	 MIME-Version; b=SUy9+wTO9c6RV8TGZCZhvtyLgmMI1QT26J/tJBxz6KsgBizcI+XKAkEEqmq20pu/ICbQ+pJ007cJDYdhYixzzGuQGileM7Vkw49GXgnBv/Iwl/FXgVeleK9Z2oSFLuCfO/DblqDLOb+3+shuJeIEk++d0a1RR8XTKYSaohDLzmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3Bxkvdj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19937C4CECF;
+	Mon, 14 Oct 2024 14:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916004;
-	bh=zX1+NLfyGFZVRb2chfr9SyVec9t5pBlFlqT3iJl+bbg=;
+	s=korg; t=1728916148;
+	bh=2He5T2YzNF2DG7xKxFD+d1zxG7PaRgky+o90XoG4lhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hSi2Xk2MwFKpxRq4dzLBv4KdcWoy7dt/orUFZexNH85P8P1g68xAcs7LKufYKeThF
-	 L2dp5M1Lfp/+03KYBIowHjxblj6Im22yt4ogu50hEqkqnzKaBNw46NmL6tfpscgYma
-	 V5X8LEHyhUhiXZujGoqzVBnH4HxKAKpHpDctda50=
+	b=l3Bxkvdj56gunKbIoYkRgz7tUSBRrwv/8ps/uG1VhBxpR1iWgPfIJu89XsFez1UQ/
+	 EonFfmZtZB9FznuOYSH3DZ/YsHV0kfsT40f/F79urJhaUMu2DHgbz2BPUCD6xnjyGA
+	 pwMLlVTGcVOZ54212geetucuP4NjneJZ3ERszcrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Peter Chen <peter.chen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 056/214] usb: typec: ucsi: Dont truncate the reads
-Date: Mon, 14 Oct 2024 16:18:39 +0200
-Message-ID: <20241014141047.176486299@linuxfoundation.org>
+Subject: [PATCH 6.11 057/214] usb: chipidea: udc: enable suspend interrupt after usb reset
+Date: Mon, 14 Oct 2024 16:18:40 +0200
+Message-ID: <20241014141047.214734341@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
 References: <20241014141044.974962104@linuxfoundation.org>
@@ -66,55 +66,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 1d05c382ddb4e43ce251a50f308df5e42a2f6088 ]
+[ Upstream commit e4fdcc10092fb244218013bfe8ff01c55d54e8e4 ]
 
-That may silently corrupt the data. Instead, failing attempts
-to read more than the interface can handle.
+Currently, suspend interrupt is enabled before pullup enable operation.
+This will cause a suspend interrupt assert right after pullup DP. This
+suspend interrupt is meaningless, so this will ignore such interrupt
+by enable it after usb reset completed.
 
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
-Link: https://lore.kernel.org/r/20240816135859.3499351-3-heikki.krogerus@linux.intel.com
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20240823073832.1702135-1-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c | 8 ++------
- drivers/usb/typec/ucsi/ucsi.h | 2 ++
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ drivers/usb/chipidea/udc.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-index 8cc43c866130a..8a81fec9efe36 100644
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -103,12 +103,8 @@ static int ucsi_run_command(struct ucsi *ucsi, u64 command, u32 *cci,
+diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+index 2d7f616270c17..69ef3cd8d4f83 100644
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -86,7 +86,7 @@ static int hw_device_state(struct ci_hdrc *ci, u32 dma)
+ 		hw_write(ci, OP_ENDPTLISTADDR, ~0, dma);
+ 		/* interrupt, error, port change, reset, sleep/suspend */
+ 		hw_write(ci, OP_USBINTR, ~0,
+-			     USBi_UI|USBi_UEI|USBi_PCI|USBi_URI|USBi_SLI);
++			     USBi_UI|USBi_UEI|USBi_PCI|USBi_URI);
+ 	} else {
+ 		hw_write(ci, OP_USBINTR, ~0, 0);
+ 	}
+@@ -877,6 +877,7 @@ __releases(ci->lock)
+ __acquires(ci->lock)
+ {
+ 	int retval;
++	u32 intr;
  
- 	*cci = 0;
+ 	spin_unlock(&ci->lock);
+ 	if (ci->gadget.speed != USB_SPEED_UNKNOWN)
+@@ -890,6 +891,11 @@ __acquires(ci->lock)
+ 	if (retval)
+ 		goto done;
  
--	/*
--	 * Below UCSI 2.0, MESSAGE_IN was limited to 16 bytes. Truncate the
--	 * reads here.
--	 */
--	if (ucsi->version <= UCSI_VERSION_1_2)
--		size = clamp(size, 0, 16);
-+	if (size > UCSI_MAX_DATA_LENGTH(ucsi))
-+		return -EINVAL;
- 
- 	ret = ucsi->ops->sync_control(ucsi, command);
- 	if (ucsi->ops->read_cci(ucsi, cci))
-diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
-index 5a3481d36d7ab..db90b513f78a8 100644
---- a/drivers/usb/typec/ucsi/ucsi.h
-+++ b/drivers/usb/typec/ucsi/ucsi.h
-@@ -435,6 +435,8 @@ struct ucsi {
- #define UCSI_DELAY_DEVICE_PDOS	BIT(1)	/* Reading PDOs fails until the parter is in PD mode */
- };
- 
-+#define UCSI_MAX_DATA_LENGTH(u) (((u)->version < UCSI_VERSION_2_0) ? 0x10 : 0xff)
++	/* clear SLI */
++	hw_write(ci, OP_USBSTS, USBi_SLI, USBi_SLI);
++	intr = hw_read(ci, OP_USBINTR, ~0);
++	hw_write(ci, OP_USBINTR, ~0, intr | USBi_SLI);
 +
- #define UCSI_MAX_SVID		5
- #define UCSI_MAX_ALTMODES	(UCSI_MAX_SVID * 6)
- 
+ 	ci->status = usb_ep_alloc_request(&ci->ep0in->ep, GFP_ATOMIC);
+ 	if (ci->status == NULL)
+ 		retval = -ENOMEM;
 -- 
 2.43.0
 
