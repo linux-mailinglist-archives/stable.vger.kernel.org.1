@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-83942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D33499CD46
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:31:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F87799D29F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CA1A1C2271D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:31:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFE07283C71
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A084F610B;
-	Mon, 14 Oct 2024 14:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2A71AE863;
+	Mon, 14 Oct 2024 15:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJDZuGSP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6iIIB6z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E73520EB;
-	Mon, 14 Oct 2024 14:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAB71ABEA1;
+	Mon, 14 Oct 2024 15:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916269; cv=none; b=usrgSmiRunZ2nMoSYe8rsbKw6QoA/hlRhevuoAXxaYDWlzyCy/ePLV0GTa7tbbmF3OLI9e1qeXewimVuP4R6gBqsmoDOvfAFgQfy5Vx3yQ1rCWNtq5sMrjfYdja6lsPOXiPab1kHDf3EMFIDL3aVkZITc6w+qFw6hz217r8fXuM=
+	t=1728919530; cv=none; b=lL0Wu330GTqzL9yvKizUxt6Z6sD0wojaAXGOMffj7wjf4bJbLGjBK0DFjrwO0+h7Yguwv+OXVqB57RsKO+GUGrumhYv7SStggDBApTImCs/Glf/JwqMkJbBe6U37ef/1bkzlAIxJEO8L3QmhtTqZ4rCcZY9V/ZAr4Z4bf6jRx5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916269; c=relaxed/simple;
-	bh=MP4fpq+lO2u5Hue3BCvyLqpyS3bwMy+XbcxlssV+bbQ=;
+	s=arc-20240116; t=1728919530; c=relaxed/simple;
+	bh=Df619HFUOMG71kAGbW/aT74sQNqwo5ppBxp37laaZW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rjYTkPXHXarKYxw0syyDhoM2SBSQpO//AkIs0zlMRUnFrYfiL42OkR2K1X4H7Rz8IZ1yNd0Wc47mGdWhkeJH5iHLB+HizrMacCXT/ZNl/7aSfaMwoOLFznzKDBhB2msB5waXM4DZ7nmM3ux9BsHGs2OYCzdLrvSqZYVvySlB5Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJDZuGSP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4F9C4CEC3;
-	Mon, 14 Oct 2024 14:31:08 +0000 (UTC)
+	 MIME-Version; b=BG34abuNfJM4J+ICfWiRU+dhD/cGR7TkQ82YTelwZDEkxUe0gs3LlTu3SuuIxxwW6mXSnl6X4HVBNt7LsULl+BzIBOsdTRa5KQhyZcrpwO5cQ7TAr/A4oNUhuCBv0x7NiRxdyvX1UbwoxnyJcjEuxxD1fcuaI7NJn2saPVCInIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A6iIIB6z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC79C4CEC3;
+	Mon, 14 Oct 2024 15:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916269;
-	bh=MP4fpq+lO2u5Hue3BCvyLqpyS3bwMy+XbcxlssV+bbQ=;
+	s=korg; t=1728919530;
+	bh=Df619HFUOMG71kAGbW/aT74sQNqwo5ppBxp37laaZW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jJDZuGSPKoVb+wNKigRgGvnVASjO5gM4A5XnTOj6FvoCKoECJoTUZ5ZumZh6eRBgF
-	 b6MbdC0akTsW5dccxSuigC4qfw2WqWIbP7Ju0qvhbUd84W7z/e44fPdVps1fXwSZB6
-	 f8h9lV567/ldX2Jl2KM+3mlDco7ROUMMg6hoi9qI=
+	b=A6iIIB6zYmAgCNiGF5RYgX6v4uZEmCLuslZkz1Dd52NHozCFa9GeESqKZhoMavtGI
+	 On71cvUHRRty7Dcx6mVuYMfbjEAxtABo3MiU+Rrl6+FFwnOnVkzWgnZLqvhPJeFebA
+	 jOwNzKjTGS4SJS2vIgxyT+hrQE/JB8Y4xuL4xcjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yury Vostrikov <mon@unformed.ru>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Edward Cree <ecree.xilinx@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 091/214] sfc: Dont invoke xdp_do_flush() from netpoll.
-Date: Mon, 14 Oct 2024 16:19:14 +0200
-Message-ID: <20241014141048.546355856@linuxfoundation.org>
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1 601/798] cachefiles: fix dentry leak in cachefiles_open_file()
+Date: Mon, 14 Oct 2024 16:19:15 +0200
+Message-ID: <20241014141241.623154851@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 55e802468e1d38dec8e25a2fdb6078d45b647e8c ]
+commit da6ef2dffe6056aad3435e6cf7c6471c2a62187c upstream.
 
-Yury reported a crash in the sfc driver originated from
-netpoll_send_udp(). The netconsole sends a message and then netpoll
-invokes the driver's NAPI function with a budget of zero. It is
-dedicated to allow driver to free TX resources, that it may have used
-while sending the packet.
+A dentry leak may be caused when a lookup cookie and a cull are concurrent:
 
-In the netpoll case the driver invokes xdp_do_flush() unconditionally,
-leading to crash because bpf_net_context was never assigned.
+            P1             |             P2
+-----------------------------------------------------------
+cachefiles_lookup_cookie
+  cachefiles_look_up_object
+    lookup_one_positive_unlocked
+     // get dentry
+                            cachefiles_cull
+                              inode->i_flags |= S_KERNEL_FILE;
+    cachefiles_open_file
+      cachefiles_mark_inode_in_use
+        __cachefiles_mark_inode_in_use
+          can_use = false
+          if (!(inode->i_flags & S_KERNEL_FILE))
+            can_use = true
+	  return false
+        return false
+        // Returns an error but doesn't put dentry
 
-Invoke xdp_do_flush() only if budget is not zero.
+After that the following WARNING will be triggered when the backend folder
+is umounted:
 
-Fixes: 401cb7dae8130 ("net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.")
-Reported-by: Yury Vostrikov <mon@unformed.ru>
-Closes: https://lore.kernel.org/5627f6d1-5491-4462-9d75-bc0612c26a22@app.fastmail.com
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
-Link: https://patch.msgid.link/20241002125837.utOcRo6Y@linutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+==================================================================
+BUG: Dentry 000000008ad87947{i=7a,n=Dx_1_1.img}  still in use (1) [unmount of ext4 sda]
+WARNING: CPU: 4 PID: 359261 at fs/dcache.c:1767 umount_check+0x5d/0x70
+CPU: 4 PID: 359261 Comm: umount Not tainted 6.6.0-dirty #25
+RIP: 0010:umount_check+0x5d/0x70
+Call Trace:
+ <TASK>
+ d_walk+0xda/0x2b0
+ do_one_tree+0x20/0x40
+ shrink_dcache_for_umount+0x2c/0x90
+ generic_shutdown_super+0x20/0x160
+ kill_block_super+0x1a/0x40
+ ext4_kill_sb+0x22/0x40
+ deactivate_locked_super+0x35/0x80
+ cleanup_mnt+0x104/0x160
+==================================================================
+
+Whether cachefiles_open_file() returns true or false, the reference count
+obtained by lookup_positive_unlocked() in cachefiles_look_up_object()
+should be released.
+
+Therefore release that reference count in cachefiles_look_up_object() to
+fix the above issue and simplify the code.
+
+Fixes: 1f08c925e7a3 ("cachefiles: Implement backing file wrangling")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240829083409.3788142-1-libaokun@huaweicloud.com
+Acked-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/sfc/efx_channels.c       | 3 ++-
- drivers/net/ethernet/sfc/siena/efx_channels.c | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ fs/cachefiles/namei.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/sfc/efx_channels.c b/drivers/net/ethernet/sfc/efx_channels.c
-index c9e17a8208a90..f1723a6fb082b 100644
---- a/drivers/net/ethernet/sfc/efx_channels.c
-+++ b/drivers/net/ethernet/sfc/efx_channels.c
-@@ -1260,7 +1260,8 @@ static int efx_poll(struct napi_struct *napi, int budget)
+--- a/fs/cachefiles/namei.c
++++ b/fs/cachefiles/namei.c
+@@ -593,14 +593,12 @@ static bool cachefiles_open_file(struct
+ 	 * write and readdir but not lookup or open).
+ 	 */
+ 	touch_atime(&file->f_path);
+-	dput(dentry);
+ 	return true;
  
- 	spent = efx_process_channel(channel, budget);
+ check_failed:
+ 	fscache_cookie_lookup_negative(object->cookie);
+ 	cachefiles_unmark_inode_in_use(object, file);
+ 	fput(file);
+-	dput(dentry);
+ 	if (ret == -ESTALE)
+ 		return cachefiles_create_file(object);
+ 	return false;
+@@ -609,7 +607,6 @@ error_fput:
+ 	fput(file);
+ error:
+ 	cachefiles_do_unmark_inode_in_use(object, d_inode(dentry));
+-	dput(dentry);
+ 	return false;
+ }
  
--	xdp_do_flush();
-+	if (budget)
-+		xdp_do_flush();
+@@ -652,7 +649,9 @@ bool cachefiles_look_up_object(struct ca
+ 		goto new_file;
+ 	}
  
- 	if (spent < budget) {
- 		if (efx_channel_has_rx_queue(channel) &&
-diff --git a/drivers/net/ethernet/sfc/siena/efx_channels.c b/drivers/net/ethernet/sfc/siena/efx_channels.c
-index a7346e965bfe7..d120b3c83ac07 100644
---- a/drivers/net/ethernet/sfc/siena/efx_channels.c
-+++ b/drivers/net/ethernet/sfc/siena/efx_channels.c
-@@ -1285,7 +1285,8 @@ static int efx_poll(struct napi_struct *napi, int budget)
+-	if (!cachefiles_open_file(object, dentry))
++	ret = cachefiles_open_file(object, dentry);
++	dput(dentry);
++	if (!ret)
+ 		return false;
  
- 	spent = efx_process_channel(channel, budget);
- 
--	xdp_do_flush();
-+	if (budget)
-+		xdp_do_flush();
- 
- 	if (spent < budget) {
- 		if (efx_channel_has_rx_queue(channel) &&
--- 
-2.43.0
-
+ 	_leave(" = t [%lu]", file_inode(object->file)->i_ino);
 
 
 
