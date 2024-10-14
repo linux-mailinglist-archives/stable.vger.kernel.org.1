@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-84137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43BD399CE54
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:42:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E5199CE26
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:40:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F01381F23CCC
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:42:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B11C728497E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5319517C77;
-	Mon, 14 Oct 2024 14:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391031AAE37;
+	Mon, 14 Oct 2024 14:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TsfVzF+k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPg/U1Cr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2961AA7A5;
-	Mon, 14 Oct 2024 14:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD4920EB;
+	Mon, 14 Oct 2024 14:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916958; cv=none; b=raDjA+YxMKnmjeM3Bl8ikkSTDopSOO24341QVYzLYJ9ucO7K2Ea08bSYJpAJOWjSTc15+2TOVqeRtS5Cn5fJkE37ey/Cm945OdkQWfSKTgkRWmHGbdmZmsHNfT10Qh1+2IfA/mwZs6GxgY6LbRAumJ+tVA/tRLNtDGRFZwJCgbg=
+	t=1728916838; cv=none; b=pyPAybSiWAMJJqHhZ842RaKUDts2iayVXeuaXG3b2+C0Zckf9gW4qddjTI1vRMrMG2h9oiDnj7BRs8lT4M2M6xcg5O9vvs7+uIly8U9ntWWu8PZ05aLKOvzPIXf+VUAG3jaS3lAASG1e0l3kcv3FDE70CnHixxsXf4v7ittVQ8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916958; c=relaxed/simple;
-	bh=XCua2k03eyzHuHPbDyu5iAAp3plmULQlonsXJ7e0mlQ=;
+	s=arc-20240116; t=1728916838; c=relaxed/simple;
+	bh=cILnWomqjqv7iQ+2JhkvwzeBWgr5EPmY3Lr4ZUG6Tdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=owBdcE+vNcDmGays67A9ij4s7JUiv0xcz6SO7/wzwxJ3l4PZNMBH486dTy566Wrt1vh+xmzv9gVfybO5C0EloALxeZIVLa3wYnX3kOl/pqOusB5EPWBI7wrJjP2CBSRW3c95lUZ8RrmKg7q3+m1dhknRv9bwnubQ0HgI+i70+VI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TsfVzF+k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FD3C4CEC3;
-	Mon, 14 Oct 2024 14:42:37 +0000 (UTC)
+	 MIME-Version; b=VnVpWO7myjQKVBwnNqVYVAkjIfxpgZZlyz73olkbTuW95JwNr78gTRWWoJL91dHCdw1Etki3czDCTa9/Ap09nWlWoOf6OWL0idtO4WFk5igcTgxlNvpRwCGQg0Gb0/ZNoHs3nPKQx2FX2ij1lm1FgkDtSHxZF/hReKMK42Y6N14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPg/U1Cr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59FB7C4CEC3;
+	Mon, 14 Oct 2024 14:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916957;
-	bh=XCua2k03eyzHuHPbDyu5iAAp3plmULQlonsXJ7e0mlQ=;
+	s=korg; t=1728916837;
+	bh=cILnWomqjqv7iQ+2JhkvwzeBWgr5EPmY3Lr4ZUG6Tdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TsfVzF+ktMqF9lzMRup31zAnt+S6ZAzPnlrl8s5MSGm0kprfyn1WMoR50G7N/YA2M
-	 HvT4lAXSMX70pmZwn1Uz7v7VpqMX4xEsC724FrMiUzW8jWilyzhFDyq43uQvC2d7BI
-	 ZWf+ydsiNdxr+EehvOrPYMsAgKyDIh4q10CBUL0k=
+	b=RPg/U1Crgg59JQXiOQVEMYH/z/z3zCWUDiooeryUe65JCVj1s5j6nha2vbVcccfXn
+	 MDjkVjgbU1CFi7CGW4oj6kQlysSHSvY7HTg1045kqc7wjA4X4Pc/qwenfx+YZTNoEi
+	 k/TcTb30kcvGTtkkimeoLaWQD4iLxjcFZotIfz20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SiyuLi <siyuli@glenfly.com>,
-	WangYuli <wangyuli@uniontech.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Md Haris Iqbal <haris.iqbal@ionos.com>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/213] PCI: Add function 0 DMA alias quirk for Glenfly Arise chip
-Date: Mon, 14 Oct 2024 16:19:36 +0200
-Message-ID: <20241014141045.716640185@linuxfoundation.org>
+Subject: [PATCH 6.6 071/213] RDMA/rtrs-srv: Avoid null pointer deref during path establishment
+Date: Mon, 14 Oct 2024 16:19:37 +0200
+Message-ID: <20241014141045.754840157@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
 References: <20241014141042.954319779@linuxfoundation.org>
@@ -68,67 +68,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Md Haris Iqbal <haris.iqbal@ionos.com>
 
-[ Upstream commit 9246b487ab3c3b5993aae7552b7a4c541cc14a49 ]
+[ Upstream commit d0e62bf7b575fbfe591f6f570e7595dd60a2f5eb ]
 
-Add DMA support for audio function of Glenfly Arise chip, which uses
-Requester ID of function 0.
+For RTRS path establishment, RTRS client initiates and completes con_num
+of connections. After establishing all its connections, the information
+is exchanged between the client and server through the info_req message.
+During this exchange, it is essential that all connections have been
+established, and the state of the RTRS srv path is CONNECTED.
 
-Link: https://lore.kernel.org/r/CA2BBD087345B6D1+20240823095708.3237375-1-wangyuli@uniontech.com
-Signed-off-by: SiyuLi <siyuli@glenfly.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-[bhelgaas: lower-case hex to match local code, drop unused Device IDs]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
+So add these sanity checks, to make sure we detect and abort process in
+error scenarios to avoid null pointer deref.
+
+Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
+Link: https://patch.msgid.link/20240821112217.41827-9-haris.iqbal@ionos.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c      | 4 ++++
- include/linux/pci_ids.h   | 2 ++
- sound/pci/hda/hda_intel.c | 2 +-
- 3 files changed, 7 insertions(+), 1 deletion(-)
+ drivers/infiniband/ulp/rtrs/rtrs-srv.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 0b08ac45effbb..a35f72b443cef 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4252,6 +4252,10 @@ static void quirk_dma_func0_alias(struct pci_dev *dev)
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe832, quirk_dma_func0_alias);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe476, quirk_dma_func0_alias);
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+index 94ac99a4f696e..758a3d9c2844d 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+@@ -931,12 +931,11 @@ static void rtrs_srv_info_req_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	if (err)
+ 		goto close;
  
-+/* Some Glenfly chips use function 0 as the PCIe Requester ID for DMA */
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d40, quirk_dma_func0_alias);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d41, quirk_dma_func0_alias);
-+
- static void quirk_dma_func1_alias(struct pci_dev *dev)
- {
- 	if (PCI_FUNC(dev->devfn) != 1)
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index abff4e3b6a58b..cebfd1bb9dfa1 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -2653,6 +2653,8 @@
- #define PCI_DEVICE_ID_DCI_PCCOM8	0x0002
- #define PCI_DEVICE_ID_DCI_PCCOM2	0x0004
+-out:
+ 	rtrs_iu_free(iu, srv_path->s.dev->ib_dev, 1);
+ 	return;
+ close:
++	rtrs_iu_free(iu, srv_path->s.dev->ib_dev, 1);
+ 	close_path(srv_path);
+-	goto out;
+ }
  
-+#define PCI_VENDOR_ID_GLENFLY		0x6766
+ static int post_recv_info_req(struct rtrs_srv_con *con)
+@@ -987,6 +986,16 @@ static int post_recv_path(struct rtrs_srv_path *srv_path)
+ 			q_size = SERVICE_CON_QUEUE_DEPTH;
+ 		else
+ 			q_size = srv->queue_depth;
++		if (srv_path->state != RTRS_SRV_CONNECTING) {
++			rtrs_err(s, "Path state invalid. state %s\n",
++				 rtrs_srv_state_str(srv_path->state));
++			return -EIO;
++		}
 +
- #define PCI_VENDOR_ID_INTEL		0x8086
- #define PCI_DEVICE_ID_INTEL_EESSC	0x0008
- #define PCI_DEVICE_ID_INTEL_HDA_CML_LP	0x02c8
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index a6a9d353fe635..134c6f6e0959a 100644
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2682,7 +2682,7 @@ static const struct pci_device_id azx_ids[] = {
- 	  .driver_data = AZX_DRIVER_ATIHDMI_NS | AZX_DCAPS_PRESET_ATI_HDMI_NS |
- 	  AZX_DCAPS_PM_RUNTIME },
- 	/* GLENFLY */
--	{ PCI_DEVICE(0x6766, PCI_ANY_ID),
-+	{ PCI_DEVICE(PCI_VENDOR_ID_GLENFLY, PCI_ANY_ID),
- 	  .class = PCI_CLASS_MULTIMEDIA_HD_AUDIO << 8,
- 	  .class_mask = 0xffffff,
- 	  .driver_data = AZX_DRIVER_GFHDMI | AZX_DCAPS_POSFIX_LPIB |
++		if (!srv_path->s.con[cid]) {
++			rtrs_err(s, "Conn not set for %d\n", cid);
++			return -EIO;
++		}
+ 
+ 		err = post_recv_io(to_srv_con(srv_path->s.con[cid]), q_size);
+ 		if (err) {
 -- 
 2.43.0
 
