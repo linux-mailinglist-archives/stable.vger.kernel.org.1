@@ -1,200 +1,115 @@
-Return-Path: <stable+bounces-83761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59E8799C5CF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 11:34:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E20699C5B8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 11:31:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E598B293AF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 09:33:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EE6228CBFA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 09:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91EDA15B13B;
-	Mon, 14 Oct 2024 09:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F0F156879;
+	Mon, 14 Oct 2024 09:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="AAKMP1BU"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eMXcXS8l"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9A6156F3F
-	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 09:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7C514A4EB
+	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 09:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728898378; cv=none; b=FS1ZaAX8xb0kGvzy0tVAEi0D9S5eqI4G4oE7QtMGutFdcOtc4uNtsgk6uRopfwEQYpcoHY9+J/V3wuVZoqG7jTmV1gIkT/uu1vWAZVT+UyaDdIYMuBgWiF692SK7WQQsGYCiwQlbx1rb0vcAjLdwMHYqac1kfGVnU7TL5m/YtOY=
+	t=1728898268; cv=none; b=WRXdH/35z5K2SlLPKNTsJWYFTjzSnE6DPcP+nH9ggfBv7iYtmx7TytdDnmiCcaJAvEztvr4OBGQsFxtAyaEPdzTM+rptpYtkPWY6nE3XdBody6Qqg65XIgr4KHGzdIjZ8bVtUAEu2aRHvyIlITnpklUNfirBOdTxISc6qQfai7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728898378; c=relaxed/simple;
-	bh=Nlu7sy6nlj6YleTyQBt/cJY6uYT2Pq2MXEk7kWoy/Mc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VXlZA32uAVgA1QirGhhF0G1NyAE62ZCXg3ngHeynjl+JaIn70vXJOk+xzSkHkETOITparV/GEdajIX+f7sI8goqxr2t+e8Ps2/7yOTJEiEga6pfbr9/5bP7IaoCKb8zlz/NQNP84w1zNZBY35uSuv40ehI4IBKb0YtPWDrO3+RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=AAKMP1BU; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-71e57d89ffaso844767b3a.1
-        for <stable@vger.kernel.org>; Mon, 14 Oct 2024 02:32:56 -0700 (PDT)
+	s=arc-20240116; t=1728898268; c=relaxed/simple;
+	bh=10Vh/KXdRgda34P24+FCpQSF7tDiI5LjonUGB1ERa3Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V1gEQElV98x6E0Jz4+4xPxtWr6udZNdmgVXby8bo0KtQKL7tb5YnvzVA937KeW/MZN4lX9wXzg/BsuIavvVy2aYi0IjwhHqSTrWY16FCSUEBBckCG09eflAoG4z9zEkkSeIIEtdVnm5pdYH6AD5hAvwkV/4RrPfY7XzcgHSsvQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eMXcXS8l; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43120f65540so18681595e9.0
+        for <stable@vger.kernel.org>; Mon, 14 Oct 2024 02:31:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1728898376; x=1729503176; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wEcd+IiEv1ro72y/n/abcXpVwZU0hZ5zkZIt5HG485g=;
-        b=AAKMP1BU8BI9hZ19geOjy1VFvBjhD7kzDez3f8HcKeNxgm64Aw0IUNz5Ei1pTqMO29
-         6pT/HeleXMkeL2HLqK0PlnYFzcoBKg4P2MYCo66oX5z8jhqcX6oaPzvGB8IaXBwFnSKn
-         RfLzFFwTUu+/JS+neT9Wul3vF0M2NGE9kKcgiw2E76Rm1Ww1as032gZpcM0UG18VCp8U
-         y/rrqu+DjVTSdcFJ1RNFT9F6+DP0FNwO188aENlDXmS89mFlCZHZNl3VdraVuuf8bAyJ
-         A7rgfMnHLHzEH5+lhnmP69t4RoZAMgW+9CcRyALTpvUjyJvp+8ON4js1I8cwhXrBZADs
-         5Mqw==
+        d=linaro.org; s=google; t=1728898265; x=1729503065; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tPxfM3/+LHt+EmVnzhLr9Fip6ZGfwtZ5p/tUW2SXXpI=;
+        b=eMXcXS8lzTnM02rJIVw2/WdsdmSh/mnx/ivOmhWN8ViLT9NNERxB4W7xliedmLhH1U
+         P9q9MwDQYYfBQsWQh9os4zZXfDzbuJoBjp4xOR3RinoOc278D5Z0IR8mzybKbwwu2W21
+         lPfZSq6fesf0cRiLuObl92IuvJtrj6XMCWZ9LxrGUiQGkUfMSNHTmQ23XoIFl/WAnOZo
+         +o4oAsVOmxj1tqMfannFrZT7oA837YZ/Gue1RpkIBGKiFF0nAzNRmLO5obvM3zQtvXTO
+         7uUeBTJGye+HNYoKNhZRhPA/qsYUPs248r2BcyQ4o5VJMoKT6NoSuHr5G/aps62cVkjD
+         3z0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728898376; x=1729503176;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wEcd+IiEv1ro72y/n/abcXpVwZU0hZ5zkZIt5HG485g=;
-        b=oLwjCA6iibpZ2yuWQO6IdmkA8lAKq5CfZ/mQ6g6N8SkGee0ZavgmjZvXPx7OUhUKUE
-         QFh+/VS8RCwJ/yZcnyG8qGrR/DBgT0U2RdaGJHQwvzPMp8dXi6ZdsAsDUYiqCqtoxGsy
-         XeEiO24AZWZFgVvHi6zupafoyDUkyD+Nj/sINzQ4oAB2d42IE06qM4Ox76X0J10+rWBk
-         zsXu8a7rxWDF2ckGwiTt4Plln2k7w+feqFIV7WT16LiTJuRrAqlTXBV8h2rPX0xaqREh
-         OwU+x9rj5zY0mWxOF2wG3ehCefTZZ0Iy99ybLqbhGiidHI9Z7F9um1KbJydezT0O/OAQ
-         XD1A==
-X-Forwarded-Encrypted: i=1; AJvYcCVQY9JnlYhptDi7tlV7Wi5kf8RhWzfhYUSDonY0JvcaS+3oWEw1+hc6uujPmwS2zLsMvh9JT8Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvPPErI4qcl9y4L23SQV5mUj5sy+8eUp6xRDbD9GElBoxCMadZ
-	RyZkFaYp68o9lPnzl0ZZ52KdaNgmTlNhktDsHhHkLtm09yMgbxdKK+idE62uPsc=
-X-Google-Smtp-Source: AGHT+IGGDQPE3jEb4Z4FwIgFqUJjG8GscF+eJJXjCeNI6Tg8DZJVOarNlapFjLz/T1p6Tv1Pf0c13Q==
-X-Received: by 2002:a05:6a00:3e25:b0:71e:6489:d06 with SMTP id d2e1a72fcca58-71e6489127amr5134515b3a.0.1728898375926;
-        Mon, 14 Oct 2024 02:32:55 -0700 (PDT)
-Received: from PXLDJ45XCM.bytedance.net ([61.213.176.11])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e60bbec80sm2339338b3a.95.2024.10.14.02.32.49
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 14 Oct 2024 02:32:55 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: axboe@kernel.dk,
-	ming.lei@redhat.com
-Cc: linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	muchun.song@linux.dev,
-	Muchun Song <songmuchun@bytedance.com>,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND v3 3/3] block: fix ordering between checking BLK_MQ_S_STOPPED and adding requests
-Date: Mon, 14 Oct 2024 17:29:34 +0800
-Message-Id: <20241014092934.53630-4-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20241014092934.53630-1-songmuchun@bytedance.com>
-References: <20241014092934.53630-1-songmuchun@bytedance.com>
+        d=1e100.net; s=20230601; t=1728898265; x=1729503065;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tPxfM3/+LHt+EmVnzhLr9Fip6ZGfwtZ5p/tUW2SXXpI=;
+        b=kTiJjqwKjfOQj/5VzTnzjqoXmFEEDbQGB/9CC72TxfQWUKKlVcbdQBkk1hkorsGZlm
+         hvws5pfTH7vX0YDvJs4lgoFei7YPeniqhL14ORhx9TGkG+AnBHfOtP5j4wZvTxDNtLG/
+         5W1uwG3r9yzGgmWrl/MEqsA9PElL4gk/OAMmqUUilWZAqesXJ9eoLzkSUVJOSaym74+L
+         OtjgICouj8LdD/unnWmEGakp1DvKmKicN7cH1TzAHI61DWVsNg37GnqqIJszd43DYSOL
+         DimxvDqVX3FBkjOoKiyFqFM3c84GmBMHjUm9UnoVD1rqv3ZquiB3XssMIaluIrIDR6G8
+         SHVg==
+X-Forwarded-Encrypted: i=1; AJvYcCUDxRM5BvnG0yNUqI19cxAUlX753I6yDHkpi3Pti7kZr5q9IvqDgwMiZreMcGSM+F5qXe8XeTw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRyjqTrhNZ8CFa5XmsMmcaxf63g5cDDcstN9JpKLI5FnyV6F15
+	npJpzBLXSlGsz7PGOEM4GcxOy7d40XcFzJgoXWw38gGLi9LZ4NqWhiXMdQue/b0=
+X-Google-Smtp-Source: AGHT+IGJAZ2abLY3A+ePxucwhIPOIPVNEZwYUtaSndGiYueX+Z9ySXWSN9wDAthowcyl1n/MoONv3w==
+X-Received: by 2002:a05:600c:190f:b0:430:53f8:38bc with SMTP id 5b1f17b1804b1-431255dcb76mr61160315e9.12.1728898264921;
+        Mon, 14 Oct 2024 02:31:04 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43127a6ae71sm63892235e9.47.2024.10.14.02.31.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Oct 2024 02:31:04 -0700 (PDT)
+Date: Mon, 14 Oct 2024 12:31:00 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Umang Jain <umang.jain@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] staging: vchiq_arm: Fix missing refcount
+ decrement in error path for fw_node
+Message-ID: <e9ccca49-c609-4d65-8609-a5ca3264ede7@stanley.mountain>
+References: <20241014-vchiq_arm-of_node_put-v2-0-cafe0a4c2666@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241014-vchiq_arm-of_node_put-v2-0-cafe0a4c2666@gmail.com>
 
-Supposing first scenario with a virtio_blk driver.
+On Mon, Oct 14, 2024 at 10:56:35AM +0200, Javier Carrasco wrote:
+> This series refactors some useless goto instructions as a preparation
+> for the fix of a missing of_node_put() by means of the cleanup
+> attribute.
+> 
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> ---
+> Changes in v2:
+> - Refactor vchiq_probe() to remove goto instructions.
+> - Declare and initialize the node right before its first usage.
+> - Link to v1: https://lore.kernel.org/r/20241013-vchiq_arm-of_node_put-v1-1-f72b2a6e47d0@gmail.com
+> 
 
-CPU0                        CPU1
+Thanks!
 
-blk_mq_try_issue_directly()
-  __blk_mq_issue_directly()
-    q->mq_ops->queue_rq()
-      virtio_queue_rq()
-        blk_mq_stop_hw_queue()
-                            virtblk_done()
-  blk_mq_request_bypass_insert()  1) store
-                              blk_mq_start_stopped_hw_queue()
-                                clear_bit(BLK_MQ_S_STOPPED)       3) store
-                                blk_mq_run_hw_queue()
-                                  if (!blk_mq_hctx_has_pending()) 4) load
-                                    return
-                                  blk_mq_sched_dispatch_requests()
-  blk_mq_run_hw_queue()
-    if (!blk_mq_hctx_has_pending())
-      return
-    blk_mq_sched_dispatch_requests()
-      if (blk_mq_hctx_stopped())  2) load
-        return
-      __blk_mq_sched_dispatch_requests()
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
 
-Supposing another scenario.
-
-CPU0                        CPU1
-
-blk_mq_requeue_work()
-  blk_mq_insert_request() 1) store
-                            virtblk_done()
-                              blk_mq_start_stopped_hw_queue()
-  blk_mq_run_hw_queues()        clear_bit(BLK_MQ_S_STOPPED)       3) store
-                                blk_mq_run_hw_queue()
-                                  if (!blk_mq_hctx_has_pending()) 4) load
-                                    return
-                                  blk_mq_sched_dispatch_requests()
-    if (blk_mq_hctx_stopped())  2) load
-      continue
-    blk_mq_run_hw_queue()
-
-Both scenarios are similar, the full memory barrier should be inserted
-between 1) and 2), as well as between 3) and 4) to make sure that either
-CPU0 sees BLK_MQ_S_STOPPED is cleared or CPU1 sees dispatch list.
-Otherwise, either CPU will not rerun the hardware queue causing starvation
-of the request.
-
-The easy way to fix it is to add the essential full memory barrier into
-helper of blk_mq_hctx_stopped(). In order to not affect the fast path
-(hardware queue is not stopped most of the time), we only insert the
-barrier into the slow path. Actually, only slow path needs to care about
-missing of dispatching the request to the low-level device driver.
-
-Fixes: 320ae51feed5 ("blk-mq: new multi-queue block IO queueing mechanism")
-Cc: stable@vger.kernel.org
-Cc: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
----
- block/blk-mq.c |  6 ++++++
- block/blk-mq.h | 13 +++++++++++++
- 2 files changed, 19 insertions(+)
-
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index ff6df6c7eeb25..b90c1680cb780 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -2413,6 +2413,12 @@ void blk_mq_start_stopped_hw_queue(struct blk_mq_hw_ctx *hctx, bool async)
- 		return;
- 
- 	clear_bit(BLK_MQ_S_STOPPED, &hctx->state);
-+	/*
-+	 * Pairs with the smp_mb() in blk_mq_hctx_stopped() to order the
-+	 * clearing of BLK_MQ_S_STOPPED above and the checking of dispatch
-+	 * list in the subsequent routine.
-+	 */
-+	smp_mb__after_atomic();
- 	blk_mq_run_hw_queue(hctx, async);
- }
- EXPORT_SYMBOL_GPL(blk_mq_start_stopped_hw_queue);
-diff --git a/block/blk-mq.h b/block/blk-mq.h
-index 260beea8e332c..f36f3bff70d86 100644
---- a/block/blk-mq.h
-+++ b/block/blk-mq.h
-@@ -228,6 +228,19 @@ static inline struct blk_mq_tags *blk_mq_tags_from_data(struct blk_mq_alloc_data
- 
- static inline bool blk_mq_hctx_stopped(struct blk_mq_hw_ctx *hctx)
- {
-+	/* Fast path: hardware queue is not stopped most of the time. */
-+	if (likely(!test_bit(BLK_MQ_S_STOPPED, &hctx->state)))
-+		return false;
-+
-+	/*
-+	 * This barrier is used to order adding of dispatch list before and
-+	 * the test of BLK_MQ_S_STOPPED below. Pairs with the memory barrier
-+	 * in blk_mq_start_stopped_hw_queue() so that dispatch code could
-+	 * either see BLK_MQ_S_STOPPED is cleared or dispatch list is not
-+	 * empty to avoid missing dispatching requests.
-+	 */
-+	smp_mb();
-+
- 	return test_bit(BLK_MQ_S_STOPPED, &hctx->state);
- }
- 
--- 
-2.20.1
+regards,
+dan carpenter
 
 
