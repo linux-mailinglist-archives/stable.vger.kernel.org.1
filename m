@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-83905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72AD799CD1C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:29:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB0F99CDDE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:37:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0673DB2235C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:29:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 477CF1F23AAF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F431AB501;
-	Mon, 14 Oct 2024 14:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87EA19E802;
+	Mon, 14 Oct 2024 14:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZdMyyrV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5sDSwtd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76A51AAE25;
-	Mon, 14 Oct 2024 14:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F6739FCE;
+	Mon, 14 Oct 2024 14:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916138; cv=none; b=Ju4KzoCwBK/G6DjjAVAPNoFSyt0SvRFB8m4ZJ5mv9PPIa8Qosk8c8jOw8gxEcnGUKExweN96ZLc9R2ejtHsOf1BZ64rQONRHdXuG9CGUAY3tewTyt5doqEQvD41CYLYSCeideptQGxS4XzFSew98ah7UoJzhe0apUfNmAK0H6d4=
+	t=1728916628; cv=none; b=pbMkTf179pxNE+lYRPCUVDHQzu2FrTGV09u5hmIuBk9hjAxukNuZOw2PCkHNBNEemuKu+VqJO+marHfPBhh10/nbyHq54o3BObW6wh3Cbt5UE678nDlat18Z73/eEBK+3D4CHwtkom9hDjhdXN/RC1L98dZ4XNuC+4GYMxoDTpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916138; c=relaxed/simple;
-	bh=smb0JnzMvCvVaPgzWAJ18Ju/2O/K+ZisRzbK477AiUs=;
+	s=arc-20240116; t=1728916628; c=relaxed/simple;
+	bh=H5Sz1fudZFYeJH7Sal1i3dSxbITNaq70yc9TbER05rY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qWq7eKB3yEPq9cXuYTmZ2JOPVAuV46oUqQ5pa6bji0xbNFblRjBxHpXqtbwviVjiTbEmV0ZF0o0YpM5l0hohcR3IHYG4q1o6pdTTjFqgA1OCYr6rM5Y1c62c079MDEsV+y8IJBD0KUKcCLMIZjU1zUw3At7E0fFdvq1ytKMsNAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZdMyyrV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C39C4CED1;
-	Mon, 14 Oct 2024 14:28:57 +0000 (UTC)
+	 MIME-Version; b=r4cLozPbDmsi2ra+DN5pZvaqyXXy8vBfoQ50s08SZadmgHNJ3ppd9vccCYhMXJ1Bta9+RVzAbIxKKxns2QjPRk87jqtW3+a6UMR3lsZJwxTOKnYb/wBmsfjNHWdJPwloF//gcYUOX+cmOHP0YBYb+GDWcTr5RS225c9nD0NcqEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5sDSwtd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA87BC4CEC3;
+	Mon, 14 Oct 2024 14:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916138;
-	bh=smb0JnzMvCvVaPgzWAJ18Ju/2O/K+ZisRzbK477AiUs=;
+	s=korg; t=1728916628;
+	bh=H5Sz1fudZFYeJH7Sal1i3dSxbITNaq70yc9TbER05rY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kZdMyyrVptcvcwHDnerPJt8FHIXaAPsUMppzR4O0vuPVraPNJUgf2EypuSrDu+HHf
-	 45jsJ3WOeJvvZwOpABJ6n2+RoTfrhYRNsjWmFEEVeeJTKpMplVff1uD7ltZSVb/Xsy
-	 ZlSQw6WAHD9G2EM8mt0KZJCgybAAcbTOg1OIT3Lc=
+	b=w5sDSwtdk/21JZdMeMe8r27xdLDW+WgWGmBvEgnLZAvk0RcHem4hrQBSjnMrV+5ZL
+	 bFf5XnSq6LJ4AAC8ZPF5JWEb67UgILAaQlHzzZee/Tki4XCx++RceaIlb015unCRop
+	 G3HY4rXJlerCczbr22kCVJrRe84uTA5gmPKsQUms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Mayank Rana <quic_mrana@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 064/214] netfilter: nf_reject: Fix build warning when CONFIG_BRIDGE_NETFILTER=n
+Subject: [PATCH 6.6 021/213] bus: mhi: ep: Do not allocate memory for MHI objects from DMA zone
 Date: Mon, 14 Oct 2024 16:18:47 +0200
-Message-ID: <20241014141047.486717375@linuxfoundation.org>
+Message-ID: <20241014141043.813974688@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit fc56878ca1c288e49b5cbb43860a5938e3463654 ]
+[ Upstream commit c7d0b2db5bc5e8c0fdc67b3c8f463c3dfec92f77 ]
 
-If CONFIG_BRIDGE_NETFILTER is not enabled, which is the case for x86_64
-defconfig, then building nf_reject_ipv4.c and nf_reject_ipv6.c with W=1
-using gcc-14 results in the following warnings, which are treated as
-errors:
+MHI endpoint stack accidentally started allocating memory for objects from
+DMA zone since commit 62210a26cd4f ("bus: mhi: ep: Use slab allocator
+where applicable"). But there is no real need to allocate memory from this
+naturally limited DMA zone. This also causes the MHI endpoint stack to run
+out of memory while doing high bandwidth transfers.
 
-net/ipv4/netfilter/nf_reject_ipv4.c: In function 'nf_send_reset':
-net/ipv4/netfilter/nf_reject_ipv4.c:243:23: error: variable 'niph' set but not used [-Werror=unused-but-set-variable]
-  243 |         struct iphdr *niph;
-      |                       ^~~~
-cc1: all warnings being treated as errors
-net/ipv6/netfilter/nf_reject_ipv6.c: In function 'nf_send_reset6':
-net/ipv6/netfilter/nf_reject_ipv6.c:286:25: error: variable 'ip6h' set but not used [-Werror=unused-but-set-variable]
-  286 |         struct ipv6hdr *ip6h;
-      |                         ^~~~
-cc1: all warnings being treated as errors
+So let's switch over to normal memory.
 
-Address this by reducing the scope of these local variables to where
-they are used, which is code only compiled when CONFIG_BRIDGE_NETFILTER
-enabled.
-
-Compile tested and run through netfilter selftests.
-
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Closes: https://lore.kernel.org/netfilter-devel/20240906145513.567781-1-andriy.shevchenko@linux.intel.com/
-Signed-off-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: <stable@vger.kernel.org> # 6.8
+Fixes: 62210a26cd4f ("bus: mhi: ep: Use slab allocator where applicable")
+Reviewed-by: Mayank Rana <quic_mrana@quicinc.com>
+Link: https://lore.kernel.org/r/20240603164354.79035-1-manivannan.sadhasivam@linaro.org
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/netfilter/nf_reject_ipv4.c | 10 ++++------
- net/ipv6/netfilter/nf_reject_ipv6.c |  5 ++---
- 2 files changed, 6 insertions(+), 9 deletions(-)
+ drivers/bus/mhi/ep/main.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
-index 04504b2b51df5..87fd945a0d27a 100644
---- a/net/ipv4/netfilter/nf_reject_ipv4.c
-+++ b/net/ipv4/netfilter/nf_reject_ipv4.c
-@@ -239,9 +239,8 @@ static int nf_reject_fill_skb_dst(struct sk_buff *skb_in)
- void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 		   int hook)
- {
--	struct sk_buff *nskb;
--	struct iphdr *niph;
- 	const struct tcphdr *oth;
-+	struct sk_buff *nskb;
- 	struct tcphdr _oth;
+diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
+index 2cb7e21ad3b74..c48f4d9f2c690 100644
+--- a/drivers/bus/mhi/ep/main.c
++++ b/drivers/bus/mhi/ep/main.c
+@@ -74,7 +74,7 @@ static int mhi_ep_send_completion_event(struct mhi_ep_cntrl *mhi_cntrl, struct m
+ 	struct mhi_ring_element *event;
+ 	int ret;
  
- 	oth = nf_reject_ip_tcphdr_get(oldskb, &_oth, hook);
-@@ -266,14 +265,12 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	nskb->mark = IP4_REPLY_MARK(net, oldskb->mark);
+-	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL | GFP_DMA);
++	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL);
+ 	if (!event)
+ 		return -ENOMEM;
  
- 	skb_reserve(nskb, LL_MAX_HEADER);
--	niph = nf_reject_iphdr_put(nskb, oldskb, IPPROTO_TCP,
--				   ip4_dst_hoplimit(skb_dst(nskb)));
-+	nf_reject_iphdr_put(nskb, oldskb, IPPROTO_TCP,
-+			    ip4_dst_hoplimit(skb_dst(nskb)));
- 	nf_reject_ip_tcphdr_put(nskb, oldskb, oth);
- 	if (ip_route_me_harder(net, sk, nskb, RTN_UNSPEC))
- 		goto free_nskb;
+@@ -93,7 +93,7 @@ int mhi_ep_send_state_change_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_stat
+ 	struct mhi_ring_element *event;
+ 	int ret;
  
--	niph = ip_hdr(nskb);
--
- 	/* "Never happens" */
- 	if (nskb->len > dst_mtu(skb_dst(nskb)))
- 		goto free_nskb;
-@@ -290,6 +287,7 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	 */
- 	if (nf_bridge_info_exists(oldskb)) {
- 		struct ethhdr *oeth = eth_hdr(oldskb);
-+		struct iphdr *niph = ip_hdr(nskb);
- 		struct net_device *br_indev;
+-	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL | GFP_DMA);
++	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL);
+ 	if (!event)
+ 		return -ENOMEM;
  
- 		br_indev = nf_bridge_get_physindev(oldskb, net);
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index b9457473c176d..7db0437140bf2 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -273,7 +273,6 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	const struct tcphdr *otcph;
- 	unsigned int otcplen, hh_len;
- 	const struct ipv6hdr *oip6h = ipv6_hdr(oldskb);
--	struct ipv6hdr *ip6h;
- 	struct dst_entry *dst = NULL;
- 	struct flowi6 fl6;
+@@ -111,7 +111,7 @@ int mhi_ep_send_ee_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_ee_type exec_e
+ 	struct mhi_ring_element *event;
+ 	int ret;
  
-@@ -329,8 +328,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	nskb->mark = fl6.flowi6_mark;
+-	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL | GFP_DMA);
++	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL);
+ 	if (!event)
+ 		return -ENOMEM;
  
- 	skb_reserve(nskb, hh_len + dst->header_len);
--	ip6h = nf_reject_ip6hdr_put(nskb, oldskb, IPPROTO_TCP,
--				    ip6_dst_hoplimit(dst));
-+	nf_reject_ip6hdr_put(nskb, oldskb, IPPROTO_TCP, ip6_dst_hoplimit(dst));
- 	nf_reject_ip6_tcphdr_put(nskb, oldskb, otcph, otcplen);
+@@ -130,7 +130,7 @@ static int mhi_ep_send_cmd_comp_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_e
+ 	struct mhi_ring_element *event;
+ 	int ret;
  
- 	nf_ct_attach(nskb, oldskb);
-@@ -345,6 +343,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	 */
- 	if (nf_bridge_info_exists(oldskb)) {
- 		struct ethhdr *oeth = eth_hdr(oldskb);
-+		struct ipv6hdr *ip6h = ipv6_hdr(nskb);
- 		struct net_device *br_indev;
+-	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL | GFP_DMA);
++	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL);
+ 	if (!event)
+ 		return -ENOMEM;
  
- 		br_indev = nf_bridge_get_physindev(oldskb, net);
+@@ -422,7 +422,7 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
+ 		read_offset = mhi_chan->tre_size - mhi_chan->tre_bytes_left;
+ 		write_offset = len - buf_left;
+ 
+-		buf_addr = kmem_cache_zalloc(mhi_cntrl->tre_buf_cache, GFP_KERNEL | GFP_DMA);
++		buf_addr = kmem_cache_zalloc(mhi_cntrl->tre_buf_cache, GFP_KERNEL);
+ 		if (!buf_addr)
+ 			return -ENOMEM;
+ 
+@@ -1460,14 +1460,14 @@ int mhi_ep_register_controller(struct mhi_ep_cntrl *mhi_cntrl,
+ 
+ 	mhi_cntrl->ev_ring_el_cache = kmem_cache_create("mhi_ep_event_ring_el",
+ 							sizeof(struct mhi_ring_element), 0,
+-							SLAB_CACHE_DMA, NULL);
++							0, NULL);
+ 	if (!mhi_cntrl->ev_ring_el_cache) {
+ 		ret = -ENOMEM;
+ 		goto err_free_cmd;
+ 	}
+ 
+ 	mhi_cntrl->tre_buf_cache = kmem_cache_create("mhi_ep_tre_buf", MHI_EP_DEFAULT_MTU, 0,
+-						      SLAB_CACHE_DMA, NULL);
++						      0, NULL);
+ 	if (!mhi_cntrl->tre_buf_cache) {
+ 		ret = -ENOMEM;
+ 		goto err_destroy_ev_ring_el_cache;
 -- 
 2.43.0
 
