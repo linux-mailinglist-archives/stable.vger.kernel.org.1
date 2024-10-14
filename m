@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-83946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94E899CD4C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:31:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6341699D2B0
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0449F1C22691
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:31:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27F36283874
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6377E20EB;
-	Mon, 14 Oct 2024 14:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB731BE238;
+	Mon, 14 Oct 2024 15:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVW96j81"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdehocrI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219DF1798C;
-	Mon, 14 Oct 2024 14:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EE11B85CB;
+	Mon, 14 Oct 2024 15:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916282; cv=none; b=omKh1zpJYW8g+A0Zjb1CwDd7p14tYCKKZU5BUu5L3ni8AdVK4X+ILCoed+ZBSbuBP0+G6aiyZ/YZShb7G3aOZ8IzBl8h7eMYaee5hi7AdGI0iB2gRIi7XP5zY+igj9iWf/MAlR3r6FEv5cQPCOoJyKbCiV9SFYW8LS/fytXIHOY=
+	t=1728919575; cv=none; b=QOzFYVesZFlJeKMd1sGrcloxCrbETNENR57P/Ykz31Z06sbbp6yPoycT0aA/t90CC+4Mkd/D5kbVFcMRatQEYl/mKIkE4xTPvt8CoHsOAGqXzOm/z3hyUcR1gGXUBbsI/7YQvqLJ3wCpqdQbCYzcmPpVQmz0GtLRILS0mXJWT3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916282; c=relaxed/simple;
-	bh=2yU8Ub58j14EFyi+qdF27xunJBYnaGRnjdTgn6OOMNQ=;
+	s=arc-20240116; t=1728919575; c=relaxed/simple;
+	bh=FWorPPaYnRMzBV5O6z/h6vjb1y/AIde1KOGzz5nRSUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ux5W/VQCimmmeFyag98AxncYy9O+PbHCCXcuv67VMpp+0k1GvRk1poUBThpr7F7wCZn3UorVMqy/S7nDSdK6h0qhweABVQ35ySoa0YjbGwzAg/UAfPjxXpmNQXSOIbJsNVb0KD+dMoca0v8+F1kKfpP2lCHbAafCojYvm0usi8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVW96j81; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B9EC4CEC7;
-	Mon, 14 Oct 2024 14:31:21 +0000 (UTC)
+	 MIME-Version; b=HXZt3EqayE+zAvntlllDcOyltQ9EMIZvBWRq1PpyKbFkLASOKDgwkVuTx4UlNU5oxoYMds/H5Mja0cfOCV5FcPDv1M4XkiQj4t8m/ww2UdpZHuYxFFdnKOm3jyQREg/Yn4zrWBwyUm0FIuX21dajTQfLZo644kII0WKNULJj+Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdehocrI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8782BC4CEC3;
+	Mon, 14 Oct 2024 15:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916282;
-	bh=2yU8Ub58j14EFyi+qdF27xunJBYnaGRnjdTgn6OOMNQ=;
+	s=korg; t=1728919575;
+	bh=FWorPPaYnRMzBV5O6z/h6vjb1y/AIde1KOGzz5nRSUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZVW96j81QlC495HbQ7MHDbxkKolIsNuXEBU3EMBv3hnoEs106gWTmp/IQsTGdJPDZ
-	 rZiPZc/RC4oLjdv2sB+cQQHyxgd0FG4F4v8J6zaZOCsxmczgkxKOC1inu9cSzB8PBJ
-	 zSNxWGbJ4dYJlkvSx4ek0aHPSOKPDj5A0SYXXF4g=
+	b=MdehocrIAUhiIEiaPgSZQ6QtPWVFqPFGNIYDNoJJZyaftPzFmm2sJIpX2qD+jivoT
+	 AXLpbx2VsaOR7ly/zLOxHEB90uRRLOXv5DTDCOFY3DknD1Bob0EswqRLFQBb5nR74L
+	 w3j6F2SNroxEEs4ZsW5o7fPtJ03oyiYvn2lYNm7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 137/214] net: dsa: refuse cross-chip mirroring operations
+Subject: [PATCH 6.1 646/798] clk: samsung: exynos7885: do not define number of clocks in bindings
 Date: Mon, 14 Oct 2024 16:20:00 +0200
-Message-ID: <20241014141050.337060882@linuxfoundation.org>
+Message-ID: <20241014141243.429549096@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 8c924369cb56c3054dca504c2c9c3eb208272865 ]
+[ Upstream commit ef4923c8e0523d83b7cd4918760e03b03b2b08ad ]
 
-In case of a tc mirred action from one switch to another, the behavior
-is not correct. We simply tell the source switch driver to program a
-mirroring entry towards mirror->to_local_port = to_dp->index, but it is
-not even guaranteed that the to_dp belongs to the same switch as dp.
+Number of clocks supported by Linux drivers might vary - sometimes we
+add new clocks, not exposed previously.  Therefore these numbers of
+clocks should not be in the bindings, as that prevents changing them.
 
-For proper cross-chip support, we would need to go through the
-cross-chip notifier layer in switch.c, program the entry on cascade
-ports, and introduce new, explicit API for cross-chip mirroring, given
-that intermediary switches should have introspection into the DSA tags
-passed through the cascade port (and not just program a port mirror on
-the entire cascade port). None of that exists today.
+Define number of clocks per each clock controller inside the driver
+directly.
 
-Reject what is not implemented so that user space is not misled into
-thinking it works.
-
-Fixes: f50f212749e8 ("net: dsa: Add plumbing for port mirroring")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241008094320.3340980-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
+Reviewed-by: Chanwoo Choi <cw00.choi@samsung.com>
+Link: https://lore.kernel.org/r/20230808082738.122804-9-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Stable-dep-of: 217a5f23c290 ("clk: samsung: exynos7885: Update CLKS_NR_FSYS after bindings fix")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dsa/user.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/clk/samsung/clk-exynos7885.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/net/dsa/user.c b/net/dsa/user.c
-index f5adfa1d978a2..ac34d5d1deb09 100644
---- a/net/dsa/user.c
-+++ b/net/dsa/user.c
-@@ -1392,6 +1392,14 @@ dsa_user_add_cls_matchall_mirred(struct net_device *dev,
- 	if (!dsa_user_dev_check(act->dev))
- 		return -EOPNOTSUPP;
+diff --git a/drivers/clk/samsung/clk-exynos7885.c b/drivers/clk/samsung/clk-exynos7885.c
+index 0d2a950ed1844..5d58879606eef 100644
+--- a/drivers/clk/samsung/clk-exynos7885.c
++++ b/drivers/clk/samsung/clk-exynos7885.c
+@@ -17,6 +17,12 @@
+ #include "clk.h"
+ #include "clk-exynos-arm64.h"
  
-+	to_dp = dsa_user_to_port(act->dev);
++/* NOTE: Must be equal to the last clock ID increased by one */
++#define CLKS_NR_TOP			(CLK_GOUT_FSYS_USB30DRD + 1)
++#define CLKS_NR_CORE			(CLK_GOUT_TREX_P_CORE_PCLK_P_CORE + 1)
++#define CLKS_NR_PERI			(CLK_GOUT_WDT1_PCLK + 1)
++#define CLKS_NR_FSYS			(CLK_GOUT_MMC_SDIO_SDCLKIN + 1)
 +
-+	if (dp->ds != to_dp->ds) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Cross-chip mirroring not implemented");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	mall_tc_entry = kzalloc(sizeof(*mall_tc_entry), GFP_KERNEL);
- 	if (!mall_tc_entry)
- 		return -ENOMEM;
-@@ -1399,9 +1407,6 @@ dsa_user_add_cls_matchall_mirred(struct net_device *dev,
- 	mall_tc_entry->cookie = cls->cookie;
- 	mall_tc_entry->type = DSA_PORT_MALL_MIRROR;
- 	mirror = &mall_tc_entry->mirror;
--
--	to_dp = dsa_user_to_port(act->dev);
--
- 	mirror->to_local_port = to_dp->index;
- 	mirror->ingress = ingress;
+ /* ---- CMU_TOP ------------------------------------------------------------- */
  
+ /* Register Offset definitions for CMU_TOP (0x12060000) */
+@@ -334,7 +340,7 @@ static const struct samsung_cmu_info top_cmu_info __initconst = {
+ 	.nr_div_clks		= ARRAY_SIZE(top_div_clks),
+ 	.gate_clks		= top_gate_clks,
+ 	.nr_gate_clks		= ARRAY_SIZE(top_gate_clks),
+-	.nr_clk_ids		= TOP_NR_CLK,
++	.nr_clk_ids		= CLKS_NR_TOP,
+ 	.clk_regs		= top_clk_regs,
+ 	.nr_clk_regs		= ARRAY_SIZE(top_clk_regs),
+ };
+@@ -553,7 +559,7 @@ static const struct samsung_cmu_info peri_cmu_info __initconst = {
+ 	.nr_mux_clks		= ARRAY_SIZE(peri_mux_clks),
+ 	.gate_clks		= peri_gate_clks,
+ 	.nr_gate_clks		= ARRAY_SIZE(peri_gate_clks),
+-	.nr_clk_ids		= PERI_NR_CLK,
++	.nr_clk_ids		= CLKS_NR_PERI,
+ 	.clk_regs		= peri_clk_regs,
+ 	.nr_clk_regs		= ARRAY_SIZE(peri_clk_regs),
+ 	.clk_name		= "dout_peri_bus",
+@@ -662,7 +668,7 @@ static const struct samsung_cmu_info core_cmu_info __initconst = {
+ 	.nr_div_clks		= ARRAY_SIZE(core_div_clks),
+ 	.gate_clks		= core_gate_clks,
+ 	.nr_gate_clks		= ARRAY_SIZE(core_gate_clks),
+-	.nr_clk_ids		= CORE_NR_CLK,
++	.nr_clk_ids		= CLKS_NR_CORE,
+ 	.clk_regs		= core_clk_regs,
+ 	.nr_clk_regs		= ARRAY_SIZE(core_clk_regs),
+ 	.clk_name		= "dout_core_bus",
+@@ -744,7 +750,7 @@ static const struct samsung_cmu_info fsys_cmu_info __initconst = {
+ 	.nr_mux_clks		= ARRAY_SIZE(fsys_mux_clks),
+ 	.gate_clks		= fsys_gate_clks,
+ 	.nr_gate_clks		= ARRAY_SIZE(fsys_gate_clks),
+-	.nr_clk_ids		= FSYS_NR_CLK,
++	.nr_clk_ids		= CLKS_NR_FSYS,
+ 	.clk_regs		= fsys_clk_regs,
+ 	.nr_clk_regs		= ARRAY_SIZE(fsys_clk_regs),
+ 	.clk_name		= "dout_fsys_bus",
 -- 
 2.43.0
 
