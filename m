@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0073299D272
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:25:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B37999CD2F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8FE828679C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:25:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD633B2155B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFCB1B85CC;
-	Mon, 14 Oct 2024 15:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A44251ABEA6;
+	Mon, 14 Oct 2024 14:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYFHuy7O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wiCdGMMR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E811ABEDF;
-	Mon, 14 Oct 2024 15:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DAA1ABEA2;
+	Mon, 14 Oct 2024 14:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919485; cv=none; b=FBLCf2w9+lPppnSht/V+88id/zx6O0PYj4w3YWHkF3jAuL4uPP0Lm4w2qwKofRJqODSYVALgtnn8goH0lg8MjyH+mzVMoop3C71HKXQexyMO7CycssIAyUijxOvugXJYw+kxmeEZoqULAQl025oxBZJyuE4Vyt6vdvOsCM+vg3c=
+	t=1728916191; cv=none; b=oNx0wPbWGPR6EvigrbaNj8X9XvbR+grGs8rcBf9XCT0JDOwTrn4MsNmyYAOPsr8d1qUTTXmaNGS02/5NPaoE98QV28danuQUO/RW8Kkkp/w+B1hdhKTET+HCg4z1aVOtbEUF7/1gMuh9xhI41CCK9iJj7hMyB1PkB4ypEVFnbSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919485; c=relaxed/simple;
-	bh=kSTh9KaI1RKAdE4Qc7pjsdsRMqgbucqNq3cIQD3xOkc=;
+	s=arc-20240116; t=1728916191; c=relaxed/simple;
+	bh=8eSVKdW97W6QE2zMq9QqAp/dJmwxzXLJoXAJmVXjjak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GHjf7rmiDBWoHbz39cO1aweNDB900mMfFCv727Au0b+KNQImDpxc0RD1MGoGx49EzjmOjmpLBmU7iJlR1/GAZq5cB2bv0aqxILjkIstKrcXa92pDZLtwjjqsHN9kG+d+xJSdtfOIpAHvNz7viYnhhhLsEWwNAhl492RvkoDJf0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYFHuy7O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE1CC4CEC7;
-	Mon, 14 Oct 2024 15:24:44 +0000 (UTC)
+	 MIME-Version; b=jvGrKw8x+1ul4vjCpQ4N9Bg4Bvzs3NXW1dE/wvH0bzEbJ4gP6n1F1xJcBezm1oERh++mFDyiJCMe46pm5bkFFWbVsKUhS/h2eFMRWMOrwPWiKyBUGPUb1Z6XXfEB76PZ8RLlGw6p8JYR/P/ZxDMb1eKjP0w38ii4aiZiNLPaGqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wiCdGMMR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E271BC4CEC3;
+	Mon, 14 Oct 2024 14:29:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919485;
-	bh=kSTh9KaI1RKAdE4Qc7pjsdsRMqgbucqNq3cIQD3xOkc=;
+	s=korg; t=1728916191;
+	bh=8eSVKdW97W6QE2zMq9QqAp/dJmwxzXLJoXAJmVXjjak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NYFHuy7O3Vwot9Bxnv+bKEsbgtpZr/LYV3A5c9QGFnLgS9WPZ6b/9ZQlG5zFPrGKx
-	 syXMbowZRDvwqt/tsjS1iu9MZM4Szmf9LT2CCmFl78xEY/+CCSCR4y9uilWrvGGXhR
-	 CLZH+UfMKrlahSBPxzq9ICieVPgcSeI65NOYxplE=
+	b=wiCdGMMR2yrcbh2u4m5Csmr6/TR0R74Q9UyUNMBzkmtG8wGBD3xN/YPlJTaNZPSFB
+	 GvO0Dbzd6hC7LPFuay+81k7paZ3IvNV+WqfE8hiYYQVa+ItvIyf2J2b884ATSLdLQf
+	 211OaCrwo7LAbA0l3ro5+UQgBawRE350cTYLKU9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Piotr Oledzki <ole@ans.pl>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 619/798] i2c: core: Lock address during client device instantiation
+Subject: [PATCH 6.11 110/214] net: dsa: b53: fix max MTU for 1g switches
 Date: Mon, 14 Oct 2024 16:19:33 +0200
-Message-ID: <20241014141242.358272051@linuxfoundation.org>
+Message-ID: <20241014141049.289559595@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 8d3cefaf659265aa82b0373a563fdb9d16a2b947 ]
+[ Upstream commit 680a8217dc00dc7e7da57888b3c053289b60eb2b ]
 
-Krzysztof reported an issue [0] which is caused by parallel attempts to
-instantiate the same I2C client device. This can happen if driver
-supports auto-detection, but certain devices are also instantiated
-explicitly.
-The original change isn't actually wrong, it just revealed that I2C core
-isn't prepared yet to handle this scenario.
-Calls to i2c_new_client_device() can be nested, therefore we can't use a
-simple mutex here. Parallel instantiation of devices at different addresses
-is ok, so we just have to prevent parallel instantiation at the same address.
-We can use a bitmap with one bit per 7-bit I2C client address, and atomic
-bit operations to set/check/clear bits.
-Now a parallel attempt to instantiate a device at the same address will
-result in -EBUSY being returned, avoiding the "sysfs: cannot create duplicate
-filename" splash.
+JMS_MAX_SIZE is the ethernet frame length, not the MTU, which is payload
+without ethernet headers.
 
-Note: This patch version includes small cosmetic changes to the Tested-by
-      version, only functional change is that address locking is supported
-      for slave addresses too.
+According to the datasheets maximum supported frame length for most
+gigabyte swithes is 9720 bytes, so convert that to the expected MTU when
+using VLAN tagged frames.
 
-[0] https://lore.kernel.org/linux-i2c/9479fe4e-eb0c-407e-84c0-bd60c15baf74@ans.pl/T/#m12706546e8e2414d8f1a0dc61c53393f731685cc
-
-Fixes: caba40ec3531 ("eeprom: at24: Probe for DDR3 thermal sensor in the SPD case")
-Cc: stable@vger.kernel.org
-Tested-by: Krzysztof Piotr Oledzki <ole@ans.pl>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-core-base.c | 28 ++++++++++++++++++++++++++++
- include/linux/i2c.h         |  3 +++
- 2 files changed, 31 insertions(+)
+ drivers/net/dsa/b53/b53_common.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 4417b2656f875..f7e3fc0b3a1da 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -919,6 +919,27 @@ int i2c_dev_irq_from_resources(const struct resource *resources,
- 	return 0;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 57df00ad9dd4c..6fed3eb15ad9b 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -27,6 +27,7 @@
+ #include <linux/phylink.h>
+ #include <linux/etherdevice.h>
+ #include <linux/if_bridge.h>
++#include <linux/if_vlan.h>
+ #include <net/dsa.h>
+ 
+ #include "b53_regs.h"
+@@ -224,6 +225,8 @@ static const struct b53_mib_desc b53_mibs_58xx[] = {
+ 
+ #define B53_MIBS_58XX_SIZE	ARRAY_SIZE(b53_mibs_58xx)
+ 
++#define B53_MAX_MTU		(9720 - ETH_HLEN - VLAN_HLEN - ETH_FCS_LEN)
++
+ static int b53_do_vlan_op(struct b53_device *dev, u8 op)
+ {
+ 	unsigned int i;
+@@ -2267,7 +2270,7 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
+ 
+ static int b53_get_max_mtu(struct dsa_switch *ds, int port)
+ {
+-	return JMS_MAX_SIZE;
++	return B53_MAX_MTU;
  }
  
-+/*
-+ * Serialize device instantiation in case it can be instantiated explicitly
-+ * and by auto-detection
-+ */
-+static int i2c_lock_addr(struct i2c_adapter *adap, unsigned short addr,
-+			 unsigned short flags)
-+{
-+	if (!(flags & I2C_CLIENT_TEN) &&
-+	    test_and_set_bit(addr, adap->addrs_in_instantiation))
-+		return -EBUSY;
-+
-+	return 0;
-+}
-+
-+static void i2c_unlock_addr(struct i2c_adapter *adap, unsigned short addr,
-+			    unsigned short flags)
-+{
-+	if (!(flags & I2C_CLIENT_TEN))
-+		clear_bit(addr, adap->addrs_in_instantiation);
-+}
-+
- /**
-  * i2c_new_client_device - instantiate an i2c device
-  * @adap: the adapter managing the device
-@@ -966,6 +987,10 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
- 		goto out_err_silent;
- 	}
- 
-+	status = i2c_lock_addr(adap, client->addr, client->flags);
-+	if (status)
-+		goto out_err_silent;
-+
- 	/* Check for address business */
- 	status = i2c_check_addr_busy(adap, i2c_encode_flags_to_addr(client));
- 	if (status)
-@@ -997,6 +1022,8 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
- 	dev_dbg(&adap->dev, "client [%s] registered with bus id %s\n",
- 		client->name, dev_name(&client->dev));
- 
-+	i2c_unlock_addr(adap, client->addr, client->flags);
-+
- 	return client;
- 
- out_remove_swnode:
-@@ -1008,6 +1035,7 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
- 	dev_err(&adap->dev,
- 		"Failed to register i2c client %s at 0x%02x (%d)\n",
- 		client->name, client->addr, status);
-+	i2c_unlock_addr(adap, client->addr, client->flags);
- out_err_silent:
- 	if (need_put)
- 		put_device(&client->dev);
-diff --git a/include/linux/i2c.h b/include/linux/i2c.h
-index 96432b0a05d4d..87b403a6d7e41 100644
---- a/include/linux/i2c.h
-+++ b/include/linux/i2c.h
-@@ -752,6 +752,9 @@ struct i2c_adapter {
- 	struct regulator *bus_regulator;
- 
- 	struct dentry *debugfs;
-+
-+	/* 7bit address space */
-+	DECLARE_BITMAP(addrs_in_instantiation, 1 << 7);
- };
- #define to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
- 
+ static const struct phylink_mac_ops b53_phylink_mac_ops = {
 -- 
 2.43.0
 
