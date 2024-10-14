@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D7DC99D27D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:26:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37FF599CD32
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5C3E28590F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:26:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E93992832A7
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849E91C68AA;
-	Mon, 14 Oct 2024 15:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF951AB52D;
+	Mon, 14 Oct 2024 14:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="On+NpMnT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqJk6uAD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBCD1C302E;
-	Mon, 14 Oct 2024 15:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C63E1AB508;
+	Mon, 14 Oct 2024 14:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919489; cv=none; b=a2qZP+CF8WhJ1+1yg5fJpgeg4oq6JR6b7V65h6V2xaeY0qBZ7HrrgrYk80T/FB6Y7spa0n6Fpa5b9zPLqTHC+E0Q35lqicUgCCYiLhuyJS6oLx2Q5D8jicNy2CA8MXVSS+MGZw34gMwd/xoZSCJPAHZNCGQ6Fivg/2iJ42dsoxA=
+	t=1728916202; cv=none; b=c03rbgo8AAiYMJA4U5+72YRht76VdS3y/cLjzekwr4T+nNdvKuguK0bBegEL+VHBYNS93Q5dboFHruHYAEnZjUwaMbRY8+wDagFb4n5TCBpp8bW+NhiwQmu00AHzLWD8HxR+zAP7Y/pcPoaEoi4kSYZz7Aw5s5YSrfB4HvgH+Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919489; c=relaxed/simple;
-	bh=VbS2I9XTSCiVXVgE5Cis1+WliWhq8+QpJ5WNfaL8YEA=;
+	s=arc-20240116; t=1728916202; c=relaxed/simple;
+	bh=qK6xoJ2Js2EWwXJH2co2dlroukkwgtzF3HdV11jB+D4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jtbi0fweRW0snQcic+6xrr4Eys8fFGsn9KQDv4x1L0pzZBzNUiAZtw3GFTI8ojQMqIfEtwqaasvChrvBV7jl7ia7abf4+Xv5uBnQTt33Nsdm414vYwwxiHBnQ2a7tw8Dd6j2J2SqFk9vWL+PGmdhN8p+aMFNrhmjid6mJA1uS7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=On+NpMnT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5357AC4CEC3;
-	Mon, 14 Oct 2024 15:24:48 +0000 (UTC)
+	 MIME-Version; b=VRJYjkU98k770znMA5vvOejLGiNRwxM4tJOKhUF++cDfF78eOuGWT/3fFgZGNRBcI8xKkTzywKOXkexm0M15IxLKyhttEvXTluci8ytMrhe7463TFoMur3dIQILjKv2QWTPh6H+Jgjm7MjNwXFrBgn8teEiWTOplXXEPMBudnPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqJk6uAD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE9FC4CEC3;
+	Mon, 14 Oct 2024 14:30:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919488;
-	bh=VbS2I9XTSCiVXVgE5Cis1+WliWhq8+QpJ5WNfaL8YEA=;
+	s=korg; t=1728916202;
+	bh=qK6xoJ2Js2EWwXJH2co2dlroukkwgtzF3HdV11jB+D4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=On+NpMnT4mRR1Dnza+Hd8VvITS2FJvtoiDpBNmgMJFHKj1XIB+2J3RcfZCEgqxo5U
-	 jBOCSxq4gecK6bsvRW8WqTNlyNQOiCBpdw1DZvxvssPnms7vDuUJA+Pv39r359Rv5Y
-	 ZvfZKMznL1JE4M4KJK4X15WggSx4LjOy6Z1jiiCk=
+	b=yqJk6uADxT9ZfxH0rwsgxK0UwYsKuiCDl4ZV8B2Pl9YbWx54cXcSSqQnlAuoNwdLr
+	 xL4nxNVitnsD8oua0GtCIPRRSbrNQEnVneo4cZ5hlAnpawNoyFwFShfiLVTLoDqGOM
+	 OH+R7KmPL52t48Tst8O1QAM9BXdQatvnv+4WjOzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Michal Simek <michal.simek@amd.com>,
-	Wolfram Sang <wsa@kernel.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 620/798] i2c: xiic: Use devm_clk_get_enabled()
-Date: Mon, 14 Oct 2024 16:19:34 +0200
-Message-ID: <20241014141242.397326272@linuxfoundation.org>
+Subject: [PATCH 6.11 112/214] net: dsa: b53: allow lower MTUs on BCM5325/5365
+Date: Mon, 14 Oct 2024 16:19:35 +0200
+Message-ID: <20241014141049.365833678@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andi Shyti <andi.shyti@kernel.org>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 8390dc7477e49e4acc9e553f385f4ff59d186efe ]
+[ Upstream commit e4b294f88a32438baf31762441f3dd1c996778be ]
 
-Replace the pair of functions, devm_clk_get() and clk_prepare_enable(),
-with a single function devm_clk_get_enabled().
+While BCM5325/5365 do not support jumbo frames, they do support slightly
+oversized frames, so do not error out if requesting a supported MTU for
+them.
 
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Acked-by: Michal Simek <michal.simek@amd.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Stable-dep-of: 0c8d604dea43 ("i2c: xiic: Fix pm_runtime_set_suspended() with runtime pm enabled")
+Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-xiic.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
-index 5ed8a341d62f9..00998a69a6b13 100644
---- a/drivers/i2c/busses/i2c-xiic.c
-+++ b/drivers/i2c/busses/i2c-xiic.c
-@@ -798,16 +798,11 @@ static int xiic_i2c_probe(struct platform_device *pdev)
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index e8b20bfa8b83e..5b83f9b6cdac3 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -2258,7 +2258,7 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
+ 	bool allow_10_100;
  
- 	mutex_init(&i2c->lock);
+ 	if (is5325(dev) || is5365(dev))
+-		return -EOPNOTSUPP;
++		return 0;
  
--	i2c->clk = devm_clk_get(&pdev->dev, NULL);
-+	i2c->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(i2c->clk))
- 		return dev_err_probe(&pdev->dev, PTR_ERR(i2c->clk),
--				     "input clock not found.\n");
-+				     "failed to enable input clock.\n");
- 
--	ret = clk_prepare_enable(i2c->clk);
--	if (ret) {
--		dev_err(&pdev->dev, "Unable to enable clock.\n");
--		return ret;
--	}
- 	i2c->dev = &pdev->dev;
- 	pm_runtime_set_autosuspend_delay(i2c->dev, XIIC_PM_TIMEOUT);
- 	pm_runtime_use_autosuspend(i2c->dev);
-@@ -819,7 +814,7 @@ static int xiic_i2c_probe(struct platform_device *pdev)
- 
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Cannot claim IRQ\n");
--		goto err_clk_dis;
-+		goto err_pm_disable;
- 	}
- 
- 	i2c->singlemaster =
-@@ -840,14 +835,14 @@ static int xiic_i2c_probe(struct platform_device *pdev)
- 	ret = xiic_reinit(i2c);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Cannot xiic_reinit\n");
--		goto err_clk_dis;
-+		goto err_pm_disable;
- 	}
- 
- 	/* add i2c adapter to i2c tree */
- 	ret = i2c_add_adapter(&i2c->adap);
- 	if (ret) {
- 		xiic_deinit(i2c);
--		goto err_clk_dis;
-+		goto err_pm_disable;
- 	}
- 
- 	if (pdata) {
-@@ -858,10 +853,10 @@ static int xiic_i2c_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
--err_clk_dis:
-+err_pm_disable:
- 	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
--	clk_disable_unprepare(i2c->clk);
-+
- 	return ret;
- }
- 
-@@ -879,7 +874,6 @@ static int xiic_i2c_remove(struct platform_device *pdev)
- 
- 	xiic_deinit(i2c);
- 	pm_runtime_put_sync(i2c->dev);
--	clk_disable_unprepare(i2c->clk);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	if (!dsa_is_cpu_port(ds, port))
+ 		return 0;
 -- 
 2.43.0
 
