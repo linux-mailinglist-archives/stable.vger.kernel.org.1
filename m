@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-83873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2AB99CCF7
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:27:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5054C99D217
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A784B20D28
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:27:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF865B261D5
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58531AAE19;
-	Mon, 14 Oct 2024 14:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633701C3027;
+	Mon, 14 Oct 2024 15:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tE4GtCXC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bdG8ymn9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92DEA1AB50C;
-	Mon, 14 Oct 2024 14:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D433B298;
+	Mon, 14 Oct 2024 15:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916023; cv=none; b=C8qTEuy7DgYdmAHvlPipiMeTkoouc7AkCsfvkrP8w5m7BpyH3KdpJa8jKgCy0BxEyJtFS44WmUNfp3oSpSbonovcGoY2VfMQ/DpnzvfbehXOvRMYtlbX8T0lVGc563mTdwo4NhCollgyPwdpPy1vdg23vkkBBrvM2EQV1Tck36s=
+	t=1728919199; cv=none; b=ts9ABpEsqe8iptUlts8pQs8CvGsTq4eLEPnAZz+3KmWZwt+KwvZim/bHdgKZjb29037HY55wx2E+U4i5EUrbteNXIOIm0dSN7dRCNd/SKOx4Wd62E8WA+JhrOYVToW2JQZGYgik9R8HNCqyyEV2wcDS/LfvwzMRshJrqvfvyUwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916023; c=relaxed/simple;
-	bh=SKxJlxrPrV7FTYdCCmZaK4T3bOvTlY1lrqIEnLX4NEE=;
+	s=arc-20240116; t=1728919199; c=relaxed/simple;
+	bh=O7HmYc9aIM3jnhwfy0X7uuHrqTmVI4fOrvABtx0FgwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EiBNBgCxFNq7qJFo/0WbX9+1lplPk6M3PL4v2bFIBKc+/nuRxvUusMRKX58sPYP1MY/0oxEVIkr+H7+3tn4+QLgRpzSKvpny5ghdOuPkx2h075GXcsww9vagWWV6qaWvBgG+NnYCFyBnviDcSdWOIq2z/ikMWHN+CX81zVsAbbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tE4GtCXC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E67C4CEC3;
-	Mon, 14 Oct 2024 14:27:02 +0000 (UTC)
+	 MIME-Version; b=YmvAbN5aeZhSZ2n652caS8BzfDlodhftwO4Ow+J2kge/+LWQXpKT/iat8yRogOuXWRl56MMrNHivLgi/WqsJTgmY5sulLlXAeSq7lw/SbI64hoGIlVrrNIMay0RSdnwfHgaIu9lAvSh6GjWjrnsdfnCElW/esWSdSMB+vRBT0gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bdG8ymn9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 835FFC4CEC3;
+	Mon, 14 Oct 2024 15:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916023;
-	bh=SKxJlxrPrV7FTYdCCmZaK4T3bOvTlY1lrqIEnLX4NEE=;
+	s=korg; t=1728919199;
+	bh=O7HmYc9aIM3jnhwfy0X7uuHrqTmVI4fOrvABtx0FgwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tE4GtCXCd1e1yVjy4EwIsaZveGNFIvhmhmVKvadp0EwTDWXVHAPRarTkLuycZuKLr
-	 loL6djNgkC1aKL91DCI4S+3wAu/M3BDeBqEhZgzfkkUbAGywe7btVvl66XQfbBWtSW
-	 CjzRF8YujETe2NFwEu302lcKxuP/DULPzjtO47bc=
+	b=bdG8ymn9o871XfLDN4VdR7aJbbLkSticG7zfnyYDNo+gLakC9MD01wW8+VhN1V7uD
+	 iuM/ps3kCGq5sO1TLpJZ+oCRS2CH3g3fcccD4gIH8xn61Gogdr133svP8bzG2lAvyJ
+	 upqVddiJ7S/m+3Iuo7bFi3T5T+QDnguYKwer0B58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 032/214] RDMA/rtrs-srv: Avoid null pointer deref during path establishment
+	syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.1 541/798] ext4: no need to continue when the number of entries is 1
 Date: Mon, 14 Oct 2024 16:18:15 +0200
-Message-ID: <20241014141046.241918382@linuxfoundation.org>
+Message-ID: <20241014141239.253093225@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Md Haris Iqbal <haris.iqbal@ionos.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit d0e62bf7b575fbfe591f6f570e7595dd60a2f5eb ]
+commit 1a00a393d6a7fb1e745a41edd09019bd6a0ad64c upstream.
 
-For RTRS path establishment, RTRS client initiates and completes con_num
-of connections. After establishing all its connections, the information
-is exchanged between the client and server through the info_req message.
-During this exchange, it is essential that all connections have been
-established, and the state of the RTRS srv path is CONNECTED.
-
-So add these sanity checks, to make sure we detect and abort process in
-error scenarios to avoid null pointer deref.
-
-Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Link: https://patch.msgid.link/20240821112217.41827-9-haris.iqbal@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ac27a0ec112a ("[PATCH] ext4: initial copy of files from ext3")
+Reported-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ae688d469e36fb5138d0
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reported-and-tested-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
+Link: https://patch.msgid.link/tencent_BE7AEE6C7C2D216CB8949CE8E6EE7ECC2C0A@qq.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/ext4/namei.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index 94ac99a4f696e..758a3d9c2844d 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -931,12 +931,11 @@ static void rtrs_srv_info_req_done(struct ib_cq *cq, struct ib_wc *wc)
- 	if (err)
- 		goto close;
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -2047,7 +2047,7 @@ static struct ext4_dir_entry_2 *do_split
+ 		split = count/2;
  
--out:
- 	rtrs_iu_free(iu, srv_path->s.dev->ib_dev, 1);
- 	return;
- close:
-+	rtrs_iu_free(iu, srv_path->s.dev->ib_dev, 1);
- 	close_path(srv_path);
--	goto out;
- }
- 
- static int post_recv_info_req(struct rtrs_srv_con *con)
-@@ -987,6 +986,16 @@ static int post_recv_path(struct rtrs_srv_path *srv_path)
- 			q_size = SERVICE_CON_QUEUE_DEPTH;
- 		else
- 			q_size = srv->queue_depth;
-+		if (srv_path->state != RTRS_SRV_CONNECTING) {
-+			rtrs_err(s, "Path state invalid. state %s\n",
-+				 rtrs_srv_state_str(srv_path->state));
-+			return -EIO;
-+		}
-+
-+		if (!srv_path->s.con[cid]) {
-+			rtrs_err(s, "Conn not set for %d\n", cid);
-+			return -EIO;
-+		}
- 
- 		err = post_recv_io(to_srv_con(srv_path->s.con[cid]), q_size);
- 		if (err) {
--- 
-2.43.0
-
+ 	hash2 = map[split].hash;
+-	continued = hash2 == map[split - 1].hash;
++	continued = split > 0 ? hash2 == map[split - 1].hash : 0;
+ 	dxtrace(printk(KERN_INFO "Split block %lu at %x, %i/%i\n",
+ 			(unsigned long)dx_get_block(frame->at),
+ 					hash2, split, count-split));
 
 
 
