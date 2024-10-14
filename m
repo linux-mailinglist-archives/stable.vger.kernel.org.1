@@ -1,111 +1,113 @@
-Return-Path: <stable+bounces-83767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A8A499C6B1
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 12:07:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C30D99C6BF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 12:09:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDB62285839
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 10:07:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6EC81F22DFA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 10:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8C215CD6E;
-	Mon, 14 Oct 2024 10:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7972B1607AC;
+	Mon, 14 Oct 2024 10:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="PLaQws46"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="GFG53Ax3"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA8415D5B6;
-	Mon, 14 Oct 2024 10:06:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2552B1591E2
+	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 10:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728900398; cv=none; b=NOE5yPkx+cBZxDBp6THqwUGEyU33I24z++xrI5oE5O6sK9UYLm8+/lbzrt4uslX0L6hHRsP+666DWxF6e0CiYBpzt6DdQ/A2r7+bE1uHdZleAL3FZJzafRJFF5/bVluYXnZvYZKJQqPJFr0TV5BzljdsICO4rZIBeUoC+A2sbmE=
+	t=1728900542; cv=none; b=QD5Xe4zEGHwr4PO38IhAfMpQXNCUlO4e3u2Rk9Fa68oeI/HLKxQuKT+K3vl/l00BCBSVn/J8hpQgR2MOwUjGiLqTulpE32uMqvDPudANF179yUgHexMt3VzZ78RE0MXxBz9ndHjhDr0HwVoQCD8JlgRwQ2QIQJXB5qH19WlqGBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728900398; c=relaxed/simple;
-	bh=uaq+VezdUHJKrUYtj9d7VcOn+0AYecZGUvHEZTIw4WY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UAHEeb6tfbSmCZVIeDZA0+mLhm9FwO+m9mq3xbC82KwID4z/T3Qq8UgQ1r4Xm+9PoT+Tg8QoLOdWNMhyre0vJXKmSPDJdmsaDw6kpejVi/PNzMzJNbpUHR2ERipTwUe14doPZt3fy20ESnAFdc7amsnO5055RB7so+EGLkYk5nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=PLaQws46; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from umang.jain (unknown [IPv6:2405:201:2015:f873:55d7:c02e:b2eb:ee3f])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id A086A1449;
-	Mon, 14 Oct 2024 12:04:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1728900294;
-	bh=uaq+VezdUHJKrUYtj9d7VcOn+0AYecZGUvHEZTIw4WY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PLaQws46jfL+o5Ua+94/BFY1mef7eOr6tAzSKlxIG5hujGe6A2NPODDUBkA91nUSh
-	 1BsT6JrZREMf4IVGNEsdD7tsT0riBZpbyInuRS0cwKlV2pcQQUHXvsmrU1/jYobUHj
-	 /Tng7MrJwYBekMGK2msIITfQBUpCD0lIuWmSePPA=
-From: Umang Jain <umang.jain@ideasonboard.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	kernel-list@raspberrypi.com,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Umang Jain <umang.jain@ideasonboard.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 2/2] staging: vchiq_arm: Utilize devm_kzalloc() for allocation
-Date: Mon, 14 Oct 2024 15:36:24 +0530
-Message-ID: <20241014100624.104987-3-umang.jain@ideasonboard.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241014100624.104987-1-umang.jain@ideasonboard.com>
-References: <20241014100624.104987-1-umang.jain@ideasonboard.com>
+	s=arc-20240116; t=1728900542; c=relaxed/simple;
+	bh=wHCxYSfFuaNeA3TT/4cfIRlmF+58tPwuSpi0Baco4D4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=qUakTCnKu6TCeZtkJRlX5mRasfxrNMGdl0J40R8Yb3FBaTOiqQj3KZNPflAUfirwZ249RbxNDwzf9M6zSynn2WyEDJvtICLsRoya1tv4du62XUPrOxJXL8KHpduYVb92THWa5Y01MYAFMyUiUojcdcz6xEWx/dbBPGREk3dDdoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=GFG53Ax3; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 46978A0B52;
+	Mon, 14 Oct 2024 12:08:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=mail; bh=ddAL5RTHjumrRgAOWfEV
+	FabhquD8pSD1jG/Vy9qkYwk=; b=GFG53Ax3kvzd9MvEhhqXHH6eCXDB6YH1CTrT
+	EaemE77kpmVQcQxbM/cYkfW2L8yG12/eS0VjtJvA1H89fBNBPQ+jjeOiVlIvoIpP
+	wDg8Il0MtFgyBuBS4zmxFMqvZA2mcP/0twXPZz+gEQg1N+IDZmMv1l0FIO38bMNR
+	3dtrBGYD+Eqn3PGyP5SI4RMSVmE5w0AeW++SCeJ/uFw/YYzCgdU4Pu3CEpbJzPe7
+	EErup6ns3Ao4jTbc2Xez7KMhTQzHlrBrh8MCB/LydYs7FTJHYLJdX1M7+0u12kDJ
+	Macg7xvIUwhyyKr2d/TtVeSCmGXHo1Q/SNghxO5wRBRDFr7bm12cwB8SB88U0TY3
+	Lb7+1SeilLP13t342iVkPGWJnaQTOweFBsJOMMgi70NpicLAYW/6kNpzRsveCGHr
+	Y9i+rr7kBsB6aHg1eRXpkcrNLw6+FEz7U71QEoafYdmHNumtV5g1+YP8UMHiJH/W
+	ypgXgI39RLwAilfjUpR2NN9ZzwScy90JIoREjWwBPGVnzfeKHP6sEAs5iuhJVx+Q
+	DsiJZ5/xbyaTwG8dlOoPZDRWiDlCtx5zOx+lMxF1ztFQv3pLgKl3B5uxzFrpxqtD
+	Swm4edHOE9f01HzCn+4QJ8xFyd3dGqDW37s9PUOX5zb5Bvzp7Hd4CMsjmgjWY+Xr
+	IJILCNo=
+Message-ID: <196c236b-75d7-4609-958b-fdf458e69a07@prolan.hu>
+Date: Mon, 14 Oct 2024 12:08:48 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 net-next 1/2] net: fec: Move `fec_ptp_read()` to the
+ top of the file
+To: <kuba@kernel.org>, <stable@vger.kernel.org>
+CC: <horms@kernel.org>, <Frank.li@nxp.com>, <wei.fang@nxp.com>,
+	<shenwei.wang@nxp.com>, <xiaoning.wang@nxp.com>, <davem@davemloft.net>,
+	<edumazet@google.com>, <pabeni@redhat.com>, <richardcochran@gmail.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>
+References: <20240812094713.2883476-1-csokas.bence@prolan.hu>
+ <172360263324.1842448.13885436119657830097.git-patchwork-notify@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
+In-Reply-To: <172360263324.1842448.13885436119657830097.git-patchwork-notify@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
+ ATLAS.intranet.prolan.hu (10.254.0.229)
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2980D94855647165
 
-The struct drv_mgmt 'mgmt' is currently allocated dynamically using
-kzalloc(). Unfortunately, it is subjected to memory leaks in the error
-handling paths of the probe() function.
+Hi,
+I just noticed this series' `Fixes:` tag was dropped when it was 
+committed. However, we believe it should be considered for backporting 
+to stable, so let this be a heads-up to the stable team.
+Bence
 
-To address this issue, use device resource management
-helper devm_kzalloc(), to ensure cleanup after the allocation.
-
-Cc: stable@vger.kernel.org
-Fixes: 1c9e16b73166 ("staging: vc04_services: vchiq_arm: Split driver static and runtime data")
-Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
----
- drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-index 7ece82c361ee..8412be7183fc 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-@@ -1343,7 +1343,7 @@ static int vchiq_probe(struct platform_device *pdev)
- 		return -ENOENT;
- 	}
- 
--	mgmt = kzalloc(sizeof(*mgmt), GFP_KERNEL);
-+	mgmt = devm_kzalloc(&pdev->dev, sizeof(*mgmt), GFP_KERNEL);
- 	if (!mgmt)
- 		return -ENOMEM;
- 
-@@ -1397,8 +1397,6 @@ static void vchiq_remove(struct platform_device *pdev)
- 
- 	arm_state = vchiq_platform_get_arm_state(&mgmt->state);
- 	kthread_stop(arm_state->ka_thread);
--
--	kfree(mgmt);
- }
- 
- static struct platform_driver vchiq_driver = {
--- 
-2.45.2
+On 2024. 08. 14. 4:30, patchwork-bot+netdevbpf@kernel.org wrote:
+> Hello:
+> 
+> This series was applied to netdev/net-next.git (main)
+> by Jakub Kicinski <kuba@kernel.org>:
+> 
+> On Mon, 12 Aug 2024 11:47:13 +0200 you wrote:
+>> This function is used in `fec_ptp_enable_pps()` through
+>> struct cyclecounter read(). Moving the declaration makes
+>> it clearer, what's happening.
+>>
+>> Fixes: 61d5e2a251fb ("fec: Fix timer capture timing in `fec_ptp_enable_pps()`")
+>> Suggested-by: Frank Li <Frank.li@nxp.com>
+>> Link: https://lore.kernel.org/netdev/20240805144754.2384663-1-csokas.bence@prolan.hu/T/#ma6c21ad264016c24612048b1483769eaff8cdf20
+>> Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+>>
+>> [...]
+> 
+> Here is the summary with links:
+>    - [v3,net-next,1/2] net: fec: Move `fec_ptp_read()` to the top of the file
+>      https://git.kernel.org/netdev/net-next/c/4374a1fe580a
+>    - [v3,net-next,2/2] net: fec: Remove duplicated code
+>      https://git.kernel.org/netdev/net-next/c/713ebaed68d8
+> 
+> You are awesome, thank you!
 
 
