@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-84896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FB5299D2B6
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:29:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B23D799CD54
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:31:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 645D5284044
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:29:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B1871F21C3D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00BA61B85D0;
-	Mon, 14 Oct 2024 15:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F161A28C;
+	Mon, 14 Oct 2024 14:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cN/b4fxW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0ZxrUkK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37F51AB6E9;
-	Mon, 14 Oct 2024 15:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5700820EB;
+	Mon, 14 Oct 2024 14:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919598; cv=none; b=ofrcl4UCf9LBlNCJZEwEjlLD7221s83vv6IZWUkGcvDvD8rhJLuVgrAXRODQqj/b0KSnqq3lVvW5fNIoDq6e23FcVvYDMjPEpJzVshQGPOFZNKicHi91pRR2dR2QhkNZYfbLmPNDKt5PF48a87vjypDzkIwqBHV2i9QBDGgrhQA=
+	t=1728916304; cv=none; b=pQq81wLJsQeY3Tny4bau1tuyd1puC/BYdk5SfB0iclwolqfiKmLnBiejJdzce5bRxXN93hrq++5zmOMG3L5UEcZjml30Af9rH345H4qK6rqqfAW3okWiideORB5liQ1GPJw4fDz/aRjFFsBiViwsMfFn2a/pu05Kc2vjYtOEOP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919598; c=relaxed/simple;
-	bh=jWmbwQM9SKeFyD+rp7UgHg7u0SA3H55+DLfcBJSg87A=;
+	s=arc-20240116; t=1728916304; c=relaxed/simple;
+	bh=Xj98C+70SorqS0S5JTt+DIVz8JTvTxY00XRxlPsgMOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hHiizUZweL4lkvh2vmWOBH/E3VyhqZuFP6fLVW+HV00lYPvaNcJFk0n0E9eDtG+4dNMZTMQPqOc6zKWzO4ojH4xhfuMODk6hg69e5+es7+bRQj3Y1p2XOpXR0UrYNy4ZJ7A9OOXqiX2UjpohWcm4dhaeCN5m/Jd7WlP1NcdGYZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cN/b4fxW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7F9C4CEC3;
-	Mon, 14 Oct 2024 15:26:37 +0000 (UTC)
+	 MIME-Version; b=ejY/LpifccwuZX3EfXvXpnK8ez+gU1gxiWf7pLILljucNdbAoU7IxbkMLxboMgJzEBynzXU9JobeH79A6KkAEuFJosNkzD8yRmJTW67bIYOoSYu4B07B2IkqdMNxstxiZGeCeCcZRxcPBRI5JMiLHPsgWJUpPyXai3iVMGKHouU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0ZxrUkK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D335EC4CEC3;
+	Mon, 14 Oct 2024 14:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919598;
-	bh=jWmbwQM9SKeFyD+rp7UgHg7u0SA3H55+DLfcBJSg87A=;
+	s=korg; t=1728916304;
+	bh=Xj98C+70SorqS0S5JTt+DIVz8JTvTxY00XRxlPsgMOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cN/b4fxW/5QcFb9SRFaWScxLEHtbci37lDVxrtux3HTTIqN9W/oOrMKj7XLBK5Ljr
-	 0P3FiexqdS0gfCUIhj+3aMRF0PHhWoxYVBEDetZzmGmBmNFtz44ZlrUnS4Gc8frPen
-	 p3KOBNQKoV/OMrJi5CXmVI+WdLHA5oYe6RbOHZKM=
+	b=G0ZxrUkKkFUhrhgOB604Oaagv2O7aex5C930jlPRETx5zBo8gjwEyHqTSnGP5Ur19
+	 wS6H5PF6l9zXghzhvmpOdK8qdB8SoLm13nDtyIcxRf7Uk2Ad6uJF4sZFRwHshJML4k
+	 8NyEQ4tBP2jEHCbtjd8oZYB8SjAVRkO+kFhp16jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 652/798] ACPI: battery: Fix possible crash when unregistering a battery hook
-Date: Mon, 14 Oct 2024 16:20:06 +0200
-Message-ID: <20241014141243.666232291@linuxfoundation.org>
+Subject: [PATCH 6.11 144/214] mctp: Handle error of rtnl_register_module().
+Date: Mon, 14 Oct 2024 16:20:07 +0200
+Message-ID: <20241014141050.605741305@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,220 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 76959aff14a0012ad6b984ec7686d163deccdc16 ]
+[ Upstream commit d51705614f668254cc5def7490df76f9680b4659 ]
 
-When a battery hook returns an error when adding a new battery, then
-the battery hook is automatically unregistered.
-However the battery hook provider cannot know that, so it will later
-call battery_hook_unregister() on the already unregistered battery
-hook, resulting in a crash.
+Since introduced, mctp has been ignoring the returned value of
+rtnl_register_module(), which could fail silently.
 
-Fix this by using the list head to mark already unregistered battery
-hooks as already being unregistered so that they can be ignored by
-battery_hook_unregister().
+Handling the error allows users to view a module as an all-or-nothing
+thing in terms of the rtnetlink functionality.  This prevents syzkaller
+from reporting spurious errors from its tests, where OOM often occurs
+and module is automatically loaded.
 
-Fixes: fa93854f7a7e ("battery: Add the battery hooking API")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20241001212835.341788-3-W_Armin@gmx.de
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Let's handle the errors by rtnl_register_many().
+
+Fixes: 583be982d934 ("mctp: Add device handling and netlink interface")
+Fixes: 831119f88781 ("mctp: Add neighbour netlink interface")
+Fixes: 06d2f4c583a7 ("mctp: Add netlink route management")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/battery.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ include/net/mctp.h |  2 +-
+ net/mctp/af_mctp.c |  6 +++++-
+ net/mctp/device.c  | 30 ++++++++++++++++++------------
+ net/mctp/neigh.c   | 31 +++++++++++++++++++------------
+ net/mctp/route.c   | 33 +++++++++++++++++++++++----------
+ 5 files changed, 66 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 59d38c6e45d83..5a4e022662417 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -703,7 +703,7 @@ static void battery_hook_unregister_unlocked(struct acpi_battery_hook *hook)
- 	list_for_each_entry(battery, &acpi_battery_list, list) {
- 		hook->remove_battery(battery->bat);
- 	}
--	list_del(&hook->list);
-+	list_del_init(&hook->list);
+diff --git a/include/net/mctp.h b/include/net/mctp.h
+index 7b17c52e8ce2a..28d59ae94ca3b 100644
+--- a/include/net/mctp.h
++++ b/include/net/mctp.h
+@@ -295,7 +295,7 @@ void mctp_neigh_remove_dev(struct mctp_dev *mdev);
+ int mctp_routes_init(void);
+ void mctp_routes_exit(void);
  
- 	pr_info("extension unregistered: %s\n", hook->name);
- }
-@@ -711,7 +711,14 @@ static void battery_hook_unregister_unlocked(struct acpi_battery_hook *hook)
- void battery_hook_unregister(struct acpi_battery_hook *hook)
- {
- 	mutex_lock(&hook_mutex);
--	battery_hook_unregister_unlocked(hook);
-+	/*
-+	 * Ignore already unregistered battery hooks. This might happen
-+	 * if a battery hook was previously unloaded due to an error when
-+	 * adding a new battery.
-+	 */
-+	if (!list_empty(&hook->list))
-+		battery_hook_unregister_unlocked(hook);
+-void mctp_device_init(void);
++int mctp_device_init(void);
+ void mctp_device_exit(void);
+ 
+ #endif /* __NET_MCTP_H */
+diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+index de52a9191da0e..75f4790d99623 100644
+--- a/net/mctp/af_mctp.c
++++ b/net/mctp/af_mctp.c
+@@ -753,10 +753,14 @@ static __init int mctp_init(void)
+ 	if (rc)
+ 		goto err_unreg_routes;
+ 
+-	mctp_device_init();
++	rc = mctp_device_init();
++	if (rc)
++		goto err_unreg_neigh;
+ 
+ 	return 0;
+ 
++err_unreg_neigh:
++	mctp_neigh_exit();
+ err_unreg_routes:
+ 	mctp_routes_exit();
+ err_unreg_proto:
+diff --git a/net/mctp/device.c b/net/mctp/device.c
+index acb97b2574289..85cc5f31f1e7c 100644
+--- a/net/mctp/device.c
++++ b/net/mctp/device.c
+@@ -524,25 +524,31 @@ static struct notifier_block mctp_dev_nb = {
+ 	.priority = ADDRCONF_NOTIFY_PRIORITY,
+ };
+ 
+-void __init mctp_device_init(void)
++static const struct rtnl_msg_handler mctp_device_rtnl_msg_handlers[] = {
++	{THIS_MODULE, PF_MCTP, RTM_NEWADDR, mctp_rtm_newaddr, NULL, 0},
++	{THIS_MODULE, PF_MCTP, RTM_DELADDR, mctp_rtm_deladdr, NULL, 0},
++	{THIS_MODULE, PF_MCTP, RTM_GETADDR, NULL, mctp_dump_addrinfo, 0},
++};
 +
- 	mutex_unlock(&hook_mutex);
- }
- EXPORT_SYMBOL_GPL(battery_hook_unregister);
-@@ -721,7 +728,6 @@ void battery_hook_register(struct acpi_battery_hook *hook)
- 	struct acpi_battery *battery;
++int __init mctp_device_init(void)
+ {
+-	register_netdevice_notifier(&mctp_dev_nb);
++	int err;
  
- 	mutex_lock(&hook_mutex);
--	INIT_LIST_HEAD(&hook->list);
- 	list_add(&hook->list, &battery_hook_list);
- 	/*
- 	 * Now that the driver is registered, we need
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_GETADDR,
+-			     NULL, mctp_dump_addrinfo, 0);
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_NEWADDR,
+-			     mctp_rtm_newaddr, NULL, 0);
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_DELADDR,
+-			     mctp_rtm_deladdr, NULL, 0);
++	register_netdevice_notifier(&mctp_dev_nb);
+ 	rtnl_af_register(&mctp_af_ops);
++
++	err = rtnl_register_many(mctp_device_rtnl_msg_handlers);
++	if (err) {
++		rtnl_af_unregister(&mctp_af_ops);
++		unregister_netdevice_notifier(&mctp_dev_nb);
++	}
++
++	return err;
+ }
+ 
+ void __exit mctp_device_exit(void)
+ {
++	rtnl_unregister_many(mctp_device_rtnl_msg_handlers);
+ 	rtnl_af_unregister(&mctp_af_ops);
+-	rtnl_unregister(PF_MCTP, RTM_DELADDR);
+-	rtnl_unregister(PF_MCTP, RTM_NEWADDR);
+-	rtnl_unregister(PF_MCTP, RTM_GETADDR);
+-
+ 	unregister_netdevice_notifier(&mctp_dev_nb);
+ }
+diff --git a/net/mctp/neigh.c b/net/mctp/neigh.c
+index ffa0f9e0983fb..590f642413e4e 100644
+--- a/net/mctp/neigh.c
++++ b/net/mctp/neigh.c
+@@ -322,22 +322,29 @@ static struct pernet_operations mctp_net_ops = {
+ 	.exit = mctp_neigh_net_exit,
+ };
+ 
++static const struct rtnl_msg_handler mctp_neigh_rtnl_msg_handlers[] = {
++	{THIS_MODULE, PF_MCTP, RTM_NEWNEIGH, mctp_rtm_newneigh, NULL, 0},
++	{THIS_MODULE, PF_MCTP, RTM_DELNEIGH, mctp_rtm_delneigh, NULL, 0},
++	{THIS_MODULE, PF_MCTP, RTM_GETNEIGH, NULL, mctp_rtm_getneigh, 0},
++};
++
+ int __init mctp_neigh_init(void)
+ {
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_NEWNEIGH,
+-			     mctp_rtm_newneigh, NULL, 0);
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_DELNEIGH,
+-			     mctp_rtm_delneigh, NULL, 0);
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_GETNEIGH,
+-			     NULL, mctp_rtm_getneigh, 0);
+-
+-	return register_pernet_subsys(&mctp_net_ops);
++	int err;
++
++	err = register_pernet_subsys(&mctp_net_ops);
++	if (err)
++		return err;
++
++	err = rtnl_register_many(mctp_neigh_rtnl_msg_handlers);
++	if (err)
++		unregister_pernet_subsys(&mctp_net_ops);
++
++	return err;
+ }
+ 
+-void __exit mctp_neigh_exit(void)
++void mctp_neigh_exit(void)
+ {
++	rtnl_unregister_many(mctp_neigh_rtnl_msg_handlers);
+ 	unregister_pernet_subsys(&mctp_net_ops);
+-	rtnl_unregister(PF_MCTP, RTM_GETNEIGH);
+-	rtnl_unregister(PF_MCTP, RTM_DELNEIGH);
+-	rtnl_unregister(PF_MCTP, RTM_NEWNEIGH);
+ }
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index eefd7834d9a00..597e9cf5aa644 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -1474,26 +1474,39 @@ static struct pernet_operations mctp_net_ops = {
+ 	.exit = mctp_routes_net_exit,
+ };
+ 
++static const struct rtnl_msg_handler mctp_route_rtnl_msg_handlers[] = {
++	{THIS_MODULE, PF_MCTP, RTM_NEWROUTE, mctp_newroute, NULL, 0},
++	{THIS_MODULE, PF_MCTP, RTM_DELROUTE, mctp_delroute, NULL, 0},
++	{THIS_MODULE, PF_MCTP, RTM_GETROUTE, NULL, mctp_dump_rtinfo, 0},
++};
++
+ int __init mctp_routes_init(void)
+ {
++	int err;
++
+ 	dev_add_pack(&mctp_packet_type);
+ 
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_GETROUTE,
+-			     NULL, mctp_dump_rtinfo, 0);
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_NEWROUTE,
+-			     mctp_newroute, NULL, 0);
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_DELROUTE,
+-			     mctp_delroute, NULL, 0);
++	err = register_pernet_subsys(&mctp_net_ops);
++	if (err)
++		goto err_pernet;
++
++	err = rtnl_register_many(mctp_route_rtnl_msg_handlers);
++	if (err)
++		goto err_rtnl;
+ 
+-	return register_pernet_subsys(&mctp_net_ops);
++	return 0;
++
++err_rtnl:
++	unregister_pernet_subsys(&mctp_net_ops);
++err_pernet:
++	dev_remove_pack(&mctp_packet_type);
++	return err;
+ }
+ 
+ void mctp_routes_exit(void)
+ {
++	rtnl_unregister_many(mctp_route_rtnl_msg_handlers);
+ 	unregister_pernet_subsys(&mctp_net_ops);
+-	rtnl_unregister(PF_MCTP, RTM_DELROUTE);
+-	rtnl_unregister(PF_MCTP, RTM_NEWROUTE);
+-	rtnl_unregister(PF_MCTP, RTM_GETROUTE);
+ 	dev_remove_pack(&mctp_packet_type);
+ }
+ 
 -- 
 2.43.0
 
