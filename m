@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 322EC99CDE3
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:37:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C29799CCF9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:27:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E045E283BE7
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:37:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 916111C22390
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBC719E802;
-	Mon, 14 Oct 2024 14:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC13C1547F3;
+	Mon, 14 Oct 2024 14:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A13LKL5I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEWNTWna"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0594A24;
-	Mon, 14 Oct 2024 14:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B371AB52F;
+	Mon, 14 Oct 2024 14:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916641; cv=none; b=JdZukkvYCGs/II27ceqPyGavKNoKibFuPjV11LAidoZ/MtKm77REvfEvXReYz0vrHg3G995lHFZykMlE3W40hm8a0FWkpfWxPxUi+75eVJAE46X4RDZpb/ILl+MSCQhm7UeF6tK5xKcaEbwAf658woqax4PEMgEwjA/CoLRnOX0=
+	t=1728916033; cv=none; b=m3r+ISnkje/B2TLeOReKkeJ7fg8etat3WLPMqbQruWTlukxOctH2nHADFHBUqAaq3rMEvl0aQB7nHOI52uffuQO7XKIgGfbd+BUKmvMR1CrMxZn+/zA3FtTH9oMl2DL6Ul+hoymjXHSeCVKyuI7iu7xjVXi9Um+G1ZzHbzQBIzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916641; c=relaxed/simple;
-	bh=BpcHcOPsL/Yf9cl7HNx/DUkKWELcYoM6vJ0zaLx9mVg=;
+	s=arc-20240116; t=1728916033; c=relaxed/simple;
+	bh=DkM1oDrZAK4OS7UdKDN8eCeMSiV5xebVUtpXO1wRqLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dDdtUxDZ/1ydid973HrvM75Im0LuTi1SbEVY+cEmrxkDt+Ffoh2dULrlHsyypFKfOagXZmjc/42ZXe6qI0B1OTPbBNT9kaqjDCFdIGd84ejh8w8jHrZ1w2dzzLpa9OadgxZcjS+t8ppuijpUa9bWObAHqBk8XpsXaEvFcru2gRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A13LKL5I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A12B5C4CEC3;
-	Mon, 14 Oct 2024 14:37:20 +0000 (UTC)
+	 MIME-Version; b=kwGBj3u7OI+QfFe4vOZsME7bOGHm3LYXUd5zt4W0l8/MBjJA222Y+nPHkZlu45xU1mQ+qV+W5Ybz+4tEGAaACqKkz6Hb1K9mxk5wdkWCuBqnyHWhRu6KSw3vcPt5pzYeEWZl3zG+pSSrbpP4cqg7Jf2GqXplmtxuxHlwJ28W77E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEWNTWna; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9610C4CEC3;
+	Mon, 14 Oct 2024 14:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916641;
-	bh=BpcHcOPsL/Yf9cl7HNx/DUkKWELcYoM6vJ0zaLx9mVg=;
+	s=korg; t=1728916033;
+	bh=DkM1oDrZAK4OS7UdKDN8eCeMSiV5xebVUtpXO1wRqLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A13LKL5IK+GJd6SkhiUAXdV8DZy8AcVwiGoIBoYh70TDCHeSt00M96PJrNsGH/ifz
-	 qnHdpb2AknoRmfovsVog6Mfum+jS1kHya38YBKnBCNdx8I8Rn8UD/0mkfDyv0rWrbD
-	 kHe49mRAZ6WQaDN61dpW5t5gDHmofakrTluCxEg4=
+	b=dEWNTWnaKA6j2TUDlux0aPi1mtE3wAY9Jtn0c7AzAIOXMqE3HW0WNJhy0jr+ko4VI
+	 AoCgfNTIVRHqrJaVHhD5kwmF2Sxt9FmrGBTdPlLBE+YuGvsmpTopjWzVLZCxstuRtA
+	 bKy9kW4bRtPQUdDiNh+tY6k8Z6T2+Nw/EguhmeA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiubo Li <xiubli@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Luis Henriques <lhenriques@suse.de>,
+	Riyan Dhiman <riyandhiman14@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/213] libceph: init the cursor when preparing sparse read in msgr2
+Subject: [PATCH 6.11 067/214] staging: vme_user: added bound check to geoid
 Date: Mon, 14 Oct 2024 16:18:50 +0200
-Message-ID: <20241014141043.929601567@linuxfoundation.org>
+Message-ID: <20241014141047.605333457@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Riyan Dhiman <riyandhiman14@gmail.com>
 
-[ Upstream commit 321e3c3de53c7530cd518219d01f04e7e32a9d23 ]
+[ Upstream commit a8a8b54350229f59c8ba6496fb5689a1632a59be ]
 
-The cursor is no longer initialized in the OSD client, causing the
-sparse read state machine to fall into an infinite loop.  The cursor
-should be initialized in IN_S_PREPARE_SPARSE_DATA state.
+The geoid is a module parameter that allows users to hardcode the slot number.
+A bound check for geoid was added in the probe function because only values
+between 0 and less than VME_MAX_SLOT are valid.
 
-[ idryomov: use msg instead of con->in_msg, changelog ]
-
-Link: https://tracker.ceph.com/issues/64607
-Fixes: 8e46a2d068c9 ("libceph: just wait for more data to be available on the socket")
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Tested-by: Luis Henriques <lhenriques@suse.de>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Riyan Dhiman <riyandhiman14@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240827125604.42771-2-riyandhiman14@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/messenger_v2.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/staging/vme_user/vme_fake.c   | 6 ++++++
+ drivers/staging/vme_user/vme_tsi148.c | 6 ++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/net/ceph/messenger_v2.c b/net/ceph/messenger_v2.c
-index a901cae2f1060..f9ed6bf6c4776 100644
---- a/net/ceph/messenger_v2.c
-+++ b/net/ceph/messenger_v2.c
-@@ -2038,6 +2038,9 @@ static int prepare_sparse_read_data(struct ceph_connection *con)
- 	if (!con_secure(con))
- 		con->in_data_crc = -1;
+diff --git a/drivers/staging/vme_user/vme_fake.c b/drivers/staging/vme_user/vme_fake.c
+index 7f84d1c86f291..c4fb2b65154c7 100644
+--- a/drivers/staging/vme_user/vme_fake.c
++++ b/drivers/staging/vme_user/vme_fake.c
+@@ -1059,6 +1059,12 @@ static int __init fake_init(void)
+ 	struct vme_slave_resource *slave_image;
+ 	struct vme_lm_resource *lm;
  
-+	ceph_msg_data_cursor_init(&con->v2.in_cursor, msg,
-+				  msg->sparse_read_total);
++	if (geoid < 0 || geoid >= VME_MAX_SLOTS) {
++		pr_err("VME geographical address must be between 0 and %d (exclusive), but got %d\n",
++			VME_MAX_SLOTS, geoid);
++		return -EINVAL;
++	}
 +
- 	reset_in_kvecs(con);
- 	con->v2.in_state = IN_S_PREPARE_SPARSE_DATA_CONT;
- 	con->v2.data_len_remain = data_len(msg);
+ 	/* We need a fake parent device */
+ 	vme_root = root_device_register("vme");
+ 	if (IS_ERR(vme_root))
+diff --git a/drivers/staging/vme_user/vme_tsi148.c b/drivers/staging/vme_user/vme_tsi148.c
+index 2ec9c29044041..e40ca4870d704 100644
+--- a/drivers/staging/vme_user/vme_tsi148.c
++++ b/drivers/staging/vme_user/vme_tsi148.c
+@@ -2253,6 +2253,12 @@ static int tsi148_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	struct vme_dma_resource *dma_ctrlr;
+ 	struct vme_lm_resource *lm;
+ 
++	if (geoid < 0 || geoid >= VME_MAX_SLOTS) {
++		dev_err(&pdev->dev, "VME geographical address must be between 0 and %d (exclusive), but got %d\n",
++			VME_MAX_SLOTS, geoid);
++		return -EINVAL;
++	}
++
+ 	/* If we want to support more than one of each bridge, we need to
+ 	 * dynamically generate this so we get one per device
+ 	 */
 -- 
 2.43.0
 
