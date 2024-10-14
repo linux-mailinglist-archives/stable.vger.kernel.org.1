@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-83936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE0799CD41
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE02499CE06
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:39:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D26EB236DC
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B07C1F23B79
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95291798C;
-	Mon, 14 Oct 2024 14:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A7324B34;
+	Mon, 14 Oct 2024 14:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRuuWdPG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+9wQGUv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9625920EB;
-	Mon, 14 Oct 2024 14:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EBB39FCE;
+	Mon, 14 Oct 2024 14:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916249; cv=none; b=ZlNESRgOb401ZOy+o3fm5FJErjyu9eXxaYFX6UKmns6B6fjel/s2bgSL71CKu8kozw+x6AcrQZNHr3/RxCJinn3yVvt0MbQT4tpAT//h9y/4BDhIWr/GYBRD+4YO5TqkTLmYh9U0JHN1qgxxrIKwQiE86avmj97bZz8aSF2fZNg=
+	t=1728916737; cv=none; b=pe9Nnp8FtEpton/kvQLGYn0oMiU2cThz2qAis7jwL5N79UMszNn80/JCZcGKjs7xo7G8YWswHEFfJTiEYj8IkifxkVmtTS/Q+a+J9x5nZ+G93dNsq6IQmztMhfleyEDodyCXmwujnLl4+qEMDApU68lSNVhToGXyiTATRk93OrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916249; c=relaxed/simple;
-	bh=dAU/ehewvo7tM8ro+qVBNne0DzngElLVxfcoYPvAW3s=;
+	s=arc-20240116; t=1728916737; c=relaxed/simple;
+	bh=C1SYtGmCBYM5wUPdTMLJLIQS8/8DHk0rzwbYbL25E2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hX1Mf1aj3QdfyMxHmSd5WCpayEY5IDk9AtnxgDo/tdLJybXHXtnyfCkMcrDG0BFFrvo+nMh/hWviJ/I1CwuXikMtmvQ4RQR/l2/DjbPGzXVRIuN+QjOCveK9v+n3HI736ZdRKsuazJerK9pl8BtdaRkoo51xhJexxNEZ3LLdhOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRuuWdPG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0C1C4CEC3;
-	Mon, 14 Oct 2024 14:30:48 +0000 (UTC)
+	 MIME-Version; b=FP2v+r1yYksoWIGNdxOlQmBBPuYAuKPzBN8jx5Sp5FjsTBWB0+iBPmpdh7uucCcYFxNP+4aXLadC8Xlzwb8skH+J8vTKzu3g5vIU0G/93TtosHuEdegpnuOHSRoX5YD6iHYmfUD7/5fmhaKcR+dLsfR0YaYyKs8PJyv/M3N9fiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+9wQGUv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB4BC4CEC3;
+	Mon, 14 Oct 2024 14:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916249;
-	bh=dAU/ehewvo7tM8ro+qVBNne0DzngElLVxfcoYPvAW3s=;
+	s=korg; t=1728916737;
+	bh=C1SYtGmCBYM5wUPdTMLJLIQS8/8DHk0rzwbYbL25E2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nRuuWdPGSAM59nZOhJ8+yIGgUvcWWHvCLdrP+NISt/hXKr8axmlb67zIzFq5Gqheo
-	 vuL4dZIyo2rWMGd1BbbM3SxbUNZYaaF4nN6DcadP8Z9KopuCeAQ4dPtLTdbHWFUPSL
-	 SQV86Pg00mtnpUFH2Bjd24p25k0sqLO8Orn6saLE=
+	b=B+9wQGUvlDv4u6woBflMgwkidGR0gJXTOhHQmWNnTvqnZCYu7ifIHEQko6vvk3mu5
+	 LTv6zSr0TBGC13YLCB5xbnx/c2i5PmOO2xyCcLZTsOEL8VwtSRhIHZkQpQc4KftgAZ
+	 6Pvcjpk2r1B7PIB3Vt/HgB/3LHcAJN3w1D10n3lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Cardwell <ncardwell@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+7f71f79bbfb4427b00e1@syzkaller.appspotmail.com,
+	Diogo Jahchan Koike <djahchankoike@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 095/214] tcp: fix tcp_enter_recovery() to zero retrans_stamp when its safe
+Subject: [PATCH 6.6 052/213] ntfs3: Change to non-blocking allocation in ntfs_d_hash
 Date: Mon, 14 Oct 2024 16:19:18 +0200
-Message-ID: <20241014141048.702791971@linuxfoundation.org>
+Message-ID: <20241014141045.023160798@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,155 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Diogo Jahchan Koike <djahchankoike@gmail.com>
 
-[ Upstream commit b41b4cbd9655bcebcce941bef3601db8110335be ]
+[ Upstream commit 589996bf8c459deb5bbc9747d8f1c51658608103 ]
 
-Fix tcp_enter_recovery() so that if there are no retransmits out then
-we zero retrans_stamp when entering fast recovery. This is necessary
-to fix two buggy behaviors.
+d_hash is done while under "rcu-walk" and should not sleep.
+__get_name() allocates using GFP_KERNEL, having the possibility
+to sleep when under memory pressure. Change the allocation to
+GFP_NOWAIT.
 
-Currently a non-zero retrans_stamp value can persist across multiple
-back-to-back loss recovery episodes. This is because we generally only
-clears retrans_stamp if we are completely done with loss recoveries,
-and get to tcp_try_to_open() and find !tcp_any_retrans_done(sk). This
-behavior causes two bugs:
-
-(1) When a loss recovery episode (CA_Loss or CA_Recovery) is followed
-immediately by a new CA_Recovery, the retrans_stamp value can persist
-and can be a time before this new CA_Recovery episode starts. That
-means that timestamp-based undo will be using the wrong retrans_stamp
-(a value that is too old) when comparing incoming TS ecr values to
-retrans_stamp to see if the current fast recovery episode can be
-undone.
-
-(2) If there is a roughly minutes-long sequence of back-to-back fast
-recovery episodes, one after another (e.g. in a shallow-buffered or
-policed bottleneck), where each fast recovery successfully makes
-forward progress and recovers one window of sequence space (but leaves
-at least one retransmit in flight at the end of the recovery),
-followed by several RTOs, then the ETIMEDOUT check may be using the
-wrong retrans_stamp (a value set at the start of the first fast
-recovery in the sequence). This can cause a very premature ETIMEDOUT,
-killing the connection prematurely.
-
-This commit changes the code to zero retrans_stamp when entering fast
-recovery, when this is known to be safe (no retransmits are out in the
-network). That ensures that when starting a fast recovery episode, and
-it is safe to do so, retrans_stamp is set when we send the fast
-retransmit packet. That addresses both bug (1) and bug (2) by ensuring
-that (if no retransmits are out when we start a fast recovery) we use
-the initial fast retransmit of this fast recovery as the time value
-for undo and ETIMEDOUT calculations.
-
-This makes intuitive sense, since the start of a new fast recovery
-episode (in a scenario where no lost packets are out in the network)
-means that the connection has made forward progress since the last RTO
-or fast recovery, and we should thus "restart the clock" used for both
-undo and ETIMEDOUT logic.
-
-Note that if when we start fast recovery there *are* retransmits out
-in the network, there can still be undesirable (1)/(2) issues. For
-example, after this patch we can still have the (1) and (2) problems
-in cases like this:
-
-+ round 1: sender sends flight 1
-
-+ round 2: sender receives SACKs and enters fast recovery 1,
-  retransmits some packets in flight 1 and then sends some new data as
-  flight 2
-
-+ round 3: sender receives some SACKs for flight 2, notes losses, and
-  retransmits some packets to fill the holes in flight 2
-
-+ fast recovery has some lost retransmits in flight 1 and continues
-  for one or more rounds sending retransmits for flight 1 and flight 2
-
-+ fast recovery 1 completes when snd_una reaches high_seq at end of
-  flight 1
-
-+ there are still holes in the SACK scoreboard in flight 2, so we
-  enter fast recovery 2, but some retransmits in the flight 2 sequence
-  range are still in flight (retrans_out > 0), so we can't execute the
-  new retrans_stamp=0 added here to clear retrans_stamp
-
-It's not yet clear how to fix these remaining (1)/(2) issues in an
-efficient way without breaking undo behavior, given that retrans_stamp
-is currently used for undo and ETIMEDOUT. Perhaps the optimal (but
-expensive) strategy would be to set retrans_stamp to the timestamp of
-the earliest outstanding retransmit when entering fast recovery. But
-at least this commit makes things better.
-
-Note that this does not change the semantics of retrans_stamp; it
-simply makes retrans_stamp accurate in some cases where it was not
-before:
-
-(1) Some loss recovery, followed by an immediate entry into a fast
-recovery, where there are no retransmits out when entering the fast
-recovery.
-
-(2) When a TFO server has a SYNACK retransmit that sets retrans_stamp,
-and then the ACK that completes the 3-way handshake has SACK blocks
-that trigger a fast recovery. In this case when entering fast recovery
-we want to zero out the retrans_stamp from the TFO SYNACK retransmit,
-and set the retrans_stamp based on the timestamp of the fast recovery.
-
-We introduce a tcp_retrans_stamp_cleanup() helper, because this
-two-line sequence already appears in 3 places and is about to appear
-in 2 more as a result of this bug fix patch series. Once this bug fix
-patches series in the net branch makes it into the net-next branch
-we'll update the 3 other call sites to use the new helper.
-
-This is a long-standing issue. The Fixes tag below is chosen to be the
-oldest commit at which the patch will apply cleanly, which is from
-Linux v3.5 in 2012.
-
-Fixes: 1fbc340514fc ("tcp: early retransmit: tcp_enter_recovery()")
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Yuchung Cheng <ycheng@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241001200517.2756803-3-ncardwell.sw@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+7f71f79bbfb4427b00e1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7f71f79bbfb4427b00e1
+Fixes: d392e85fd1e8 ("fs/ntfs3: Fix the format of the "nocase" mount option")
+Signed-off-by: Diogo Jahchan Koike <djahchankoike@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ fs/ntfs3/namei.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index e6d73f6131ceb..631e44c344454 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -2522,6 +2522,16 @@ static bool tcp_any_retrans_done(const struct sock *sk)
- 	return false;
+diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
+index b5687d74b4495..bcdc1ec90a96a 100644
+--- a/fs/ntfs3/namei.c
++++ b/fs/ntfs3/namei.c
+@@ -501,7 +501,7 @@ static int ntfs_d_hash(const struct dentry *dentry, struct qstr *name)
+ 	/*
+ 	 * Try slow way with current upcase table
+ 	 */
+-	uni = __getname();
++	uni = kmem_cache_alloc(names_cachep, GFP_NOWAIT);
+ 	if (!uni)
+ 		return -ENOMEM;
+ 
+@@ -523,7 +523,7 @@ static int ntfs_d_hash(const struct dentry *dentry, struct qstr *name)
+ 	err = 0;
+ 
+ out:
+-	__putname(uni);
++	kmem_cache_free(names_cachep, uni);
+ 	return err;
  }
  
-+/* If loss recovery is finished and there are no retransmits out in the
-+ * network, then we clear retrans_stamp so that upon the next loss recovery
-+ * retransmits_timed_out() and timestamp-undo are using the correct value.
-+ */
-+static void tcp_retrans_stamp_cleanup(struct sock *sk)
-+{
-+	if (!tcp_any_retrans_done(sk))
-+		tcp_sk(sk)->retrans_stamp = 0;
-+}
-+
- static void DBGUNDO(struct sock *sk, const char *msg)
- {
- #if FASTRETRANS_DEBUG > 1
-@@ -2889,6 +2899,9 @@ void tcp_enter_recovery(struct sock *sk, bool ece_ack)
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	int mib_idx;
- 
-+	/* Start the clock with our fast retransmit, for undo and ETIMEDOUT. */
-+	tcp_retrans_stamp_cleanup(sk);
-+
- 	if (tcp_is_reno(tp))
- 		mib_idx = LINUX_MIB_TCPRENORECOVERY;
- 	else
 -- 
 2.43.0
 
