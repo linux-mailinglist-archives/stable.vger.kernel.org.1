@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-84322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6726799CF9A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 018D099CFAD
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:57:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B505287F55
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:56:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9B82283950
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BF175809;
-	Mon, 14 Oct 2024 14:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499931CCB5D;
+	Mon, 14 Oct 2024 14:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZ8A9Dvc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ET1YXIlE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866B6481B7;
-	Mon, 14 Oct 2024 14:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054701CCB42;
+	Mon, 14 Oct 2024 14:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917613; cv=none; b=QX+am1EyWMZHdFL+8fEXYEolAHh3nuMylpGd9SyVOQhA+BIo5f7XJsTz0bOf8R9T4oD2av1uvyUkGLwDr0A7CUEoNSCjMIgRExPX/YKLX242s5nsxMglBlFtcr50m70bk0lgshTXMk6BeSgMqwa5ujlkg7rOfb0hDpL8TTxvzOw=
+	t=1728917634; cv=none; b=OYNtm6b0a9uJtVrp8hgmhW3nlEhsnAbIaFDvSRKSM3YXBeriI2YUPATDomfz/m433rKvzqAoywqq/MIIUtf7+sP0xCFxKh57vQhhMIhTeAuAO7wqpOb6Pcm5CqPXVx+UxG4HvGTwpQdSMuU2e+2IqxeyVmOG7CLL7wZsYcx1i4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917613; c=relaxed/simple;
-	bh=b0dfcpT61TAfToDSHUrIdbHWKIw8GRF/I9L983A6dYk=;
+	s=arc-20240116; t=1728917634; c=relaxed/simple;
+	bh=vr265cPA5XHjERuVSmbInkoGonICWPHPHHzDV0Rqpe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bCnBfh2HMVm81wGRlTq2FPkfLJiZoAmtr5Pz+2QRyQqnpdFnhRmNpr+dlcWOI/9CHz8Npvdui7AqoBfkKETWsryCpwNwpOjKrEiah2qwzba0TFjm2nbRnjHwGS+mcdQTMbB/ddy1qqAOo1O/JTZzD3T86XvtDQrXxQfqnWB9GNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZ8A9Dvc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FB3C4CEC3;
-	Mon, 14 Oct 2024 14:53:32 +0000 (UTC)
+	 MIME-Version; b=MGmgUlCzUkoWcWe5BDWbpo/vYVnf2Qw2bRqk0wLpn/KILtjiOgIxm9rexhw1xVVZbuKBECDsg57F5520XrRKOyL2sKco6EibUWVgMUciIXOv5OaZID30GQ/XucvyCLZTHO/mTKAS6svPZieEcOr73b76QYZgNBFBdjX69vZQTZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ET1YXIlE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE81C4CEC3;
+	Mon, 14 Oct 2024 14:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917613;
-	bh=b0dfcpT61TAfToDSHUrIdbHWKIw8GRF/I9L983A6dYk=;
+	s=korg; t=1728917633;
+	bh=vr265cPA5XHjERuVSmbInkoGonICWPHPHHzDV0Rqpe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZ8A9Dvc/MRkp90YMwFoVpPAJpc2LsMr17+Eru483Stq//JrGAayY8eRbQdeHwDsZ
-	 NlYiAcMDdXJJggRVUJ3wWRf6KoZ9mrilsP5SXJTbuxivR9ohDqhUQYVz/IdIKLSAW7
-	 Vq+txk302YiShLICR9jd6jK/O+HXvEhFXn2TODtE=
+	b=ET1YXIlE3HrTRCeZXTcyyFVMbaOYE4xrqaR83Ym1wNsxxbPYYUpKalRVZjvhHz6d5
+	 XnejT3pFiWb1wW9910+b6Rc28Qhh2xHNKIU245fNc4hh4Uv+PF14x3KZSvFi20jIUY
+	 D4MogaKD8TuHY97DujMSeUgCLfKMOdjg5drtJlkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/798] bareudp: Pull inner IP header in bareudp_udp_encap_recv().
-Date: Mon, 14 Oct 2024 16:10:09 +0200
-Message-ID: <20241014141220.105782388@linuxfoundation.org>
+Subject: [PATCH 6.1 056/798] bareudp: Pull inner IP header on xmit.
+Date: Mon, 14 Oct 2024 16:10:10 +0200
+Message-ID: <20241014141220.144632130@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -69,66 +69,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit 45fa29c85117170b0508790f878b13ec6593c888 ]
+[ Upstream commit c471236b2359e6b27388475dd04fff0a5e2bf922 ]
 
-Bareudp reads the inner IP header to get the ECN value. Therefore, it
-needs to ensure that it's part of the skb's linear data.
-
-This is similar to the vxlan and geneve fixes for that same problem:
-  * commit f7789419137b ("vxlan: Pull inner IP header in vxlan_rcv().")
-  * commit 1ca1ba465e55 ("geneve: make sure to pull inner header in
-    geneve_rx()")
+Both bareudp_xmit_skb() and bareudp6_xmit_skb() read their skb's inner
+IP header to get its ECN value (with ip_tunnel_ecn_encap()). Therefore
+we need to ensure that the inner IP header is part of the skb's linear
+data.
 
 Fixes: 571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling different protocols like MPLS, IP, NSH etc.")
 Signed-off-by: Guillaume Nault <gnault@redhat.com>
 Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/5205940067c40218a70fbb888080466b2fc288db.1726046181.git.gnault@redhat.com
+Link: https://patch.msgid.link/267328222f0a11519c6de04c640a4f87a38ea9ed.1726046181.git.gnault@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bareudp.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ drivers/net/bareudp.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
-index 277493e41b072..d0759d8bf7305 100644
+index d0759d8bf7305..54767154de265 100644
 --- a/drivers/net/bareudp.c
 +++ b/drivers/net/bareudp.c
-@@ -67,6 +67,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 	__be16 proto;
- 	void *oiph;
+@@ -319,6 +319,9 @@ static int bareudp_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 	__be32 saddr;
  	int err;
-+	int nh;
  
- 	bareudp = rcu_dereference_sk_user_data(sk);
- 	if (!bareudp)
-@@ -144,10 +145,25 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 	}
- 	skb_dst_set(skb, &tun_dst->dst);
- 	skb->dev = bareudp->dev;
--	oiph = skb_network_header(skb);
--	skb_reset_network_header(skb);
- 	skb_reset_mac_header(skb);
++	if (!skb_vlan_inet_prepare(skb, skb->protocol != htons(ETH_P_TEB)))
++		return -EINVAL;
++
+ 	if (!sock)
+ 		return -ESHUTDOWN;
  
-+	/* Save offset of outer header relative to skb->head,
-+	 * because we are going to reset the network header to the inner header
-+	 * and might change skb->head.
-+	 */
-+	nh = skb_network_header(skb) - skb->head;
+@@ -382,6 +385,9 @@ static int bareudp6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 	__be16 sport;
+ 	int err;
+ 
++	if (!skb_vlan_inet_prepare(skb, skb->protocol != htons(ETH_P_TEB)))
++		return -EINVAL;
 +
-+	skb_reset_network_header(skb);
-+
-+	if (!pskb_inet_may_pull(skb)) {
-+		DEV_STATS_INC(bareudp->dev, rx_length_errors);
-+		DEV_STATS_INC(bareudp->dev, rx_errors);
-+		goto drop;
-+	}
-+
-+	/* Get the outer header. */
-+	oiph = skb->head + nh;
-+
- 	if (!ipv6_mod_enabled() || family == AF_INET)
- 		err = IP_ECN_decapsulate(oiph, skb);
- 	else
+ 	if (!sock)
+ 		return -ESHUTDOWN;
+ 
 -- 
 2.43.0
 
