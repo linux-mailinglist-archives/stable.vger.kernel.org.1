@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-84036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601D799CDD2
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:36:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7028A99D251
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91B251C22E36
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:36:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9835F1C23C53
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2B41AB52F;
-	Mon, 14 Oct 2024 14:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3264E1B85EB;
+	Mon, 14 Oct 2024 15:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7S4PKdh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INpsGBeG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B751AB52B;
-	Mon, 14 Oct 2024 14:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39CE1AE01F;
+	Mon, 14 Oct 2024 15:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916593; cv=none; b=k/8PeYzy0IwPCVU/baaNThmDy+0ZXLEtR/rbugusQtEucV5IncY/CHsCB7y/xlSCgyANL1C9xCv3ApJmWvjxJzpsar1sYl7RmPBaeSk4cjLG6f5dbcxdV0PzFHIzYp5iUIopeAms2nBX3beIq11RHRDEjQgjrn5N6s86bemQIGI=
+	t=1728919376; cv=none; b=sfl4oO8WEKMnWdOS9dOd4qvh5dMjA/waxU61edeuQ5tB2KBEY+bP1V4OCi1ByJ3dy8zZ9e21lO8rfhLByw4pq4M7KHC9K43wEoqYRiqM3nn5X/eoL+nnN4rTfYxTZUIe9beVbRVqtDrFYS4QdHcUEB00aTgVBS+aA9OYyNfyT8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916593; c=relaxed/simple;
-	bh=DGZ6CdCDNj14yfX/+pwjIRATyVdRf8MnN0KMSDtGfSk=;
+	s=arc-20240116; t=1728919376; c=relaxed/simple;
+	bh=oPk4u5WjiJ/ecqFm/sdGg/MMdzhuuEDK/ft7rgI06EM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SSklDFnkf0mH7tVhI5HIER55Yhd2pOhsLhw25NX8fratNj5O0Y1dNzUCyXxQs1oEcoKAzImMsY+qS65BDCCelaqJiDMfSbJvl82FgmkeboOMxsetym5FfKM3nPwEoh5cE1qXHAfiHLS6VuUX6Ebung11l8q1Rgcqp2h/pgLiDUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7S4PKdh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB85AC4CEC7;
-	Mon, 14 Oct 2024 14:36:32 +0000 (UTC)
+	 MIME-Version; b=mCNLmwvUkNtjyLIgVHyjYAAZAZerJXolKHxX+CIZl1ovAE3uF6ppLTqZBuR63sHRl7MGcv6meHzfyAaXnlu7o9d+fkstL23F4x9oLgiDFFGMcuZ5R57PwOSdbamZuq4+iYNI7p2X/Gxk/+AUjH6ace0hyV7+/i6qOmKlWMXoAsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INpsGBeG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE411C4CEC3;
+	Mon, 14 Oct 2024 15:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916593;
-	bh=DGZ6CdCDNj14yfX/+pwjIRATyVdRf8MnN0KMSDtGfSk=;
+	s=korg; t=1728919375;
+	bh=oPk4u5WjiJ/ecqFm/sdGg/MMdzhuuEDK/ft7rgI06EM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S7S4PKdhvsRikwnC24ejcAWOnuf+SoRZz8K1ES6gALpUgv6BmEQM067Wpwzb55DG3
-	 wChiWVXhHYTyL4qS3HL+8iKoK6m2xn1jiEqls084ooHKJOcPunRUE4yLU3jEXqdDwz
-	 pGyEMnmrRp2bO6ogZCVAj3vjIpXACkHQg4/vVnC0=
+	b=INpsGBeGKj5pdvPJ70C7WIeVgPkTiR37k9Gmyh5jKHRS60KCwYrH34xK3/ySA5CNi
+	 uZX31IknLJmWclIN2vBrMjUNYYaVT8e605nUp8rroOiMA9fGUA7L2wKp8sy7xpM8b+
+	 82GGizMeYPircd9sOIZF05szSSGvQwZoQvv0nkB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Yang <yangcong5@huaqin.corp-partner.google.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/213] drm/panel: boe-tv101wum-nl6: Fine tune Himax83102-j02 panel HFP and HBP (again)
-Date: Mon, 14 Oct 2024 16:18:38 +0200
-Message-ID: <20241014141043.460800985@linuxfoundation.org>
+	Danilo Krummrich <dakr@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Rientjes <rientjes@google.com>,
+	Christoph Lameter <cl@linux.com>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Pekka Enberg <penberg@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 565/798] mm: krealloc: consider spare memory for __GFP_ZERO
+Date: Mon, 14 Oct 2024 16:18:39 +0200
+Message-ID: <20241014141240.194585562@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +68,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Yang <yangcong5@huaqin.corp-partner.google.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit 9dfc46c87cdc8f5a42a71de247a744a6b8188980 ]
+commit 1a83a716ec233990e1fd5b6fbb1200ade63bf450 upstream.
 
-The current measured frame rate is 59.95Hz, which does not meet the
-requirements of touch-stylus and stylus cannot work normally. After
-adjustment, the actual measurement is 60.001Hz. Now this panel looks
-like it's only used by me on the MTK platform, so let's change this
-set of parameters.
+As long as krealloc() is called with __GFP_ZERO consistently, starting
+with the initial memory allocation, __GFP_ZERO should be fully honored.
 
-[ dianders: Added "(again") to subject and fixed the "Fixes" line ]
+However, if for an existing allocation krealloc() is called with a
+decreased size, it is not ensured that the spare portion the allocation is
+zeroed.  Thus, if krealloc() is subsequently called with a larger size
+again, __GFP_ZERO can't be fully honored, since we don't know the previous
+size, but only the bucket size.
 
-Fixes: cea7008190ad ("drm/panel: boe-tv101wum-nl6: Fine tune Himax83102-j02 panel HFP and HBP")
-Signed-off-by: Cong Yang <yangcong5@huaqin.corp-partner.google.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240301061128.3145982-1-yangcong5@huaqin.corp-partner.google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Example:
+
+	buf = kzalloc(64, GFP_KERNEL);
+	memset(buf, 0xff, 64);
+
+	buf = krealloc(buf, 48, GFP_KERNEL | __GFP_ZERO);
+
+	/* After this call the last 16 bytes are still 0xff. */
+	buf = krealloc(buf, 64, GFP_KERNEL | __GFP_ZERO);
+
+Fix this, by explicitly setting spare memory to zero, when shrinking an
+allocation with __GFP_ZERO flag set or init_on_alloc enabled.
+
+Link: https://lkml.kernel.org/r/20240812223707.32049-1-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: David Rientjes <rientjes@google.com>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: Pekka Enberg <penberg@kernel.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/slab_common.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-index cfa5b54ed6fe7..e6328991c87e9 100644
---- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-+++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-@@ -2112,11 +2112,11 @@ static const struct panel_desc starry_qfh032011_53g_desc = {
- };
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -1322,6 +1322,13 @@ __do_krealloc(const void *p, size_t new_
  
- static const struct drm_display_mode starry_himax83102_j02_default_mode = {
--	.clock = 162850,
-+	.clock = 162680,
- 	.hdisplay = 1200,
--	.hsync_start = 1200 + 50,
--	.hsync_end = 1200 + 50 + 20,
--	.htotal = 1200 + 50 + 20 + 50,
-+	.hsync_start = 1200 + 60,
-+	.hsync_end = 1200 + 60 + 20,
-+	.htotal = 1200 + 60 + 20 + 40,
- 	.vdisplay = 1920,
- 	.vsync_start = 1920 + 116,
- 	.vsync_end = 1920 + 116 + 8,
--- 
-2.43.0
-
+ 	/* If the object still fits, repoison it precisely. */
+ 	if (ks >= new_size) {
++		/* Zero out spare memory. */
++		if (want_init_on_alloc(flags)) {
++			kasan_disable_current();
++			memset((void *)p + new_size, 0, ks - new_size);
++			kasan_enable_current();
++		}
++
+ 		p = kasan_krealloc((void *)p, new_size, flags);
+ 		return (void *)p;
+ 	}
 
 
 
