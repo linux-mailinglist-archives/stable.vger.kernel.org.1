@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-84961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA83F99D316
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B8699CEC8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:47:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F20428A4FF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B13282885BC
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7361C7281;
-	Mon, 14 Oct 2024 15:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA881AB51B;
+	Mon, 14 Oct 2024 14:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nd58eAY2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rS36l3DJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699C31C6F55;
-	Mon, 14 Oct 2024 15:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5816249659;
+	Mon, 14 Oct 2024 14:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919821; cv=none; b=QhA4AhKFipZS+JcTl4EeHd6m+V0Diy9rGt+J5SY1HldgSjyDC7h5FAUK/lU5v/vXdAIUcaPdjctg5xbqHB+foigM5m8vz0f0qVr9dpL9uUNVBheP+0eKhqUxalXJ6yBv2XlvWsfQnFJHF2LuLhOgaUJCf1VKqpAfy6pV5Xs0LkE=
+	t=1728917149; cv=none; b=aC0zbkP74L3HDRGai+tY/GjvKQhsPE6wy83eDvPcN7sA3w+8LeLcygjZkJ6ivB3TgWBb4lHjWVY+oZgutlFcAzB3TsWp8U3KtcUmNQuskeshSWDbqwdzUQiqEXouosencZXr9AdNO+/PNVH2Em3G3BnXvqRn1jDLjpSzblREsGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919821; c=relaxed/simple;
-	bh=yw8bFlcuoYW6CUfl41SnGEKKbsiyBVEurfzGaOnaPaE=;
+	s=arc-20240116; t=1728917149; c=relaxed/simple;
+	bh=kmOmSPRHKlOoK8DY4dPVnJpRSQd+D1KLUXPFupcJBUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D/ZuqIxOiOtJgWA57EHSw42cU1AytYecUhpIl4aIaUpG7sKjwEhci/Ol/xlUlv/+Y/C6AZZ36cBKl9Zmc3nNc4+4SfITvzRZG2NJSyTtqpZo9ZWo88PKNJaGc3/JilFzyfkiptql6Tkk+FWTtSHvNUTB0Cv20hDpUBxef1wBfNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nd58eAY2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFDAC4CEC3;
-	Mon, 14 Oct 2024 15:30:20 +0000 (UTC)
+	 MIME-Version; b=LPTeWAT3QHQ6f0+2DuwE9W/VIF9cLQP91tCwyNqR6832cBeur+3Rr8robx+0CFkRD81y9ibDTsCUtt3MV1wRhYEc8Pn8dvK0D8imUEs4SiMZkRY5RaCk0YEg0SWx1gmWScwXSCrNje43tSWO1ZYwaO0jzu9N61BUdzjKyS7aSUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rS36l3DJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 718E8C4CEC3;
+	Mon, 14 Oct 2024 14:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919821;
-	bh=yw8bFlcuoYW6CUfl41SnGEKKbsiyBVEurfzGaOnaPaE=;
+	s=korg; t=1728917148;
+	bh=kmOmSPRHKlOoK8DY4dPVnJpRSQd+D1KLUXPFupcJBUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nd58eAY2JQoEhiPZWl6Q5+P0jlP/BIy5ST/N7rfCq8f7k0TRoPjh5AJkmrKkeQnE0
-	 ocm37p9dpX+FcbSUtDQi+LKFRKyUk+sM5bceZT4RmZkel9pHGrRRnCdN+/EDxRisnw
-	 4k1J4gY06KtffOyJhf0xP8HAgGnLjOJ9eBKR559o=
+	b=rS36l3DJzs/al31GsT+fRTF82Qbn0KYTIGVaLaxH0n780X516o8Gd7dLPps9kTD2y
+	 RaoqenLoTvPW9w8YQHW2LytgS/7OCo/TI+iQuWCYfXEUHcO17YN9iblQeru7iGHNLp
+	 LY7FL2BzJtJ0eV2sPjJm1UKCkIDPbCgypuu0kkfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Chen <philipchen@chromium.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 716/798] virtio_pmem: Check device status before requesting flush
-Date: Mon, 14 Oct 2024 16:21:10 +0200
-Message-ID: <20241014141246.195593584@linuxfoundation.org>
+Subject: [PATCH 6.6 165/213] rcu/nocb: Fix rcuog wake-up from offline softirq
+Date: Mon, 14 Oct 2024 16:21:11 +0200
+Message-ID: <20241014141049.410758881@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Chen <philipchen@chromium.org>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-[ Upstream commit e25fbcd97cf52c3c9824d44b5c56c19673c3dd50 ]
+[ Upstream commit f7345ccc62a4b880cf76458db5f320725f28e400 ]
 
-If a pmem device is in a bad status, the driver side could wait for
-host ack forever in virtio_pmem_flush(), causing the system to hang.
+After a CPU has set itself offline and before it eventually calls
+rcutree_report_cpu_dead(), there are still opportunities for callbacks
+to be enqueued, for example from a softirq. When that happens on NOCB,
+the rcuog wake-up is deferred through an IPI to an online CPU in order
+not to call into the scheduler and risk arming the RT-bandwidth after
+hrtimers have been migrated out and disabled.
 
-So add a status check in the beginning of virtio_pmem_flush() to return
-early if the device is not activated.
+But performing a synchronized IPI from a softirq is buggy as reported in
+the following scenario:
 
-Signed-off-by: Philip Chen <philipchen@chromium.org>
-Message-Id: <20240826215313.2673566-1-philipchen@chromium.org>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com
+        WARNING: CPU: 1 PID: 26 at kernel/smp.c:633 smp_call_function_single
+        Modules linked in: rcutorture torture
+        CPU: 1 UID: 0 PID: 26 Comm: migration/1 Not tainted 6.11.0-rc1-00012-g9139f93209d1 #1
+        Stopper: multi_cpu_stop+0x0/0x320 <- __stop_cpus+0xd0/0x120
+        RIP: 0010:smp_call_function_single
+        <IRQ>
+        swake_up_one_online
+        __call_rcu_nocb_wake
+        __call_rcu_common
+        ? rcu_torture_one_read
+        call_timer_fn
+        __run_timers
+        run_timer_softirq
+        handle_softirqs
+        irq_exit_rcu
+        ? tick_handle_periodic
+        sysvec_apic_timer_interrupt
+        </IRQ>
+
+Fix this with forcing deferred rcuog wake up through the NOCB timer when
+the CPU is offline. The actual wake up will happen from
+rcutree_report_cpu_dead().
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202409231644.4c55582d-lkp@intel.com
+Fixes: 9139f93209d1 ("rcu/nocb: Fix RT throttling hrtimer armed from offline CPU")
+Reviewed-by: "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/nd_virtio.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ kernel/rcu/tree_nocb.h | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
-index c6a648fd8744a..a78e17a43a9d2 100644
---- a/drivers/nvdimm/nd_virtio.c
-+++ b/drivers/nvdimm/nd_virtio.c
-@@ -44,6 +44,15 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
- 	unsigned long flags;
- 	int err, err1;
- 
-+	/*
-+	 * Don't bother to submit the request to the device if the device is
-+	 * not activated.
-+	 */
-+	if (vdev->config->get_status(vdev) & VIRTIO_CONFIG_S_NEEDS_RESET) {
-+		dev_info(&vdev->dev, "virtio pmem device needs a reset\n");
-+		return -EIO;
-+	}
-+
- 	might_sleep();
- 	req_data = kmalloc(sizeof(*req_data), GFP_KERNEL);
- 	if (!req_data)
+diff --git a/kernel/rcu/tree_nocb.h b/kernel/rcu/tree_nocb.h
+index 7a0bce3f784df..8993b2322be2b 100644
+--- a/kernel/rcu/tree_nocb.h
++++ b/kernel/rcu/tree_nocb.h
+@@ -568,13 +568,19 @@ static void __call_rcu_nocb_wake(struct rcu_data *rdp, bool was_alldone,
+ 			rcu_nocb_unlock(rdp);
+ 			wake_nocb_gp_defer(rdp, RCU_NOCB_WAKE_LAZY,
+ 					   TPS("WakeLazy"));
+-		} else if (!irqs_disabled_flags(flags)) {
++		} else if (!irqs_disabled_flags(flags) && cpu_online(rdp->cpu)) {
+ 			/* ... if queue was empty ... */
+ 			rcu_nocb_unlock(rdp);
+ 			wake_nocb_gp(rdp, false);
+ 			trace_rcu_nocb_wake(rcu_state.name, rdp->cpu,
+ 					    TPS("WakeEmpty"));
+ 		} else {
++			/*
++			 * Don't do the wake-up upfront on fragile paths.
++			 * Also offline CPUs can't call swake_up_one_online() from
++			 * (soft-)IRQs. Rely on the final deferred wake-up from
++			 * rcutree_report_cpu_dead()
++			 */
+ 			rcu_nocb_unlock(rdp);
+ 			wake_nocb_gp_defer(rdp, RCU_NOCB_WAKE,
+ 					   TPS("WakeEmptyIsDeferred"));
 -- 
 2.43.0
 
