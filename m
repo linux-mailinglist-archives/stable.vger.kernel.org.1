@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-84135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2769A99CE52
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:42:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40BD599CD3D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 403951C22E4E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:42:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBB891F20F45
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D06B1AB6FC;
-	Mon, 14 Oct 2024 14:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6CA200CB;
+	Mon, 14 Oct 2024 14:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qa//XmO/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUKOwKyU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3391AB521;
-	Mon, 14 Oct 2024 14:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9DE610B;
+	Mon, 14 Oct 2024 14:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916946; cv=none; b=iw96sk+p7Gj5mFLyqFha7Ij6tuh6FmbyjxRJxK78v+bozrhXDLtsvABt8AVPRdozykblR930AZAKriCtbH5NhWKP+QWN6N02HT2ik8QHuvcZSADsJtet71jcpUMAqJNP4jX4ku4eCHzmfO+sI/SnpcToathvFOO3ZAE3psPiAtI=
+	t=1728916239; cv=none; b=r3ukaMdzyUm8wYbBX4WwOXpNQYABNy51seKo6UgEH4fT7SJCkmJJbE1uhAdNmuvFES4L+jSlAasGW/6CFgfMqOmC7XPzG7k+mxElX3xVZw1u4qopfdVt8wapfn7nU5+zE+jYandSJrVIEpk4SODY3sPzbIUzRo7sx7BFWojCXbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916946; c=relaxed/simple;
-	bh=P2/nVTV2sMZa1dEwF9uRNa5XtbJX/e+KKlF8iUlh6bE=;
+	s=arc-20240116; t=1728916239; c=relaxed/simple;
+	bh=aB3oLMty+rnkcmTNyUlcd8zC2iNAAgXi+fRsqaNe9ZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sP8SwXBn9NiHjtfwvVgAhcgkxooqFiBbh7zXj/MGoqxYz7E6JPlOtCVq0BYEmHVeNYopftLUz40yaM8WLfUpAvmfnX8AfnRBsLHcgEsgiyef8mXx++fN50+PchqtpP9+xO7tz6j7+feuwk/S/pDJNYwdmN2KUkNI9LQubfuyY2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qa//XmO/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E2EC4CEC3;
-	Mon, 14 Oct 2024 14:42:25 +0000 (UTC)
+	 MIME-Version; b=Cnx/NM7P6Ufw9aENTIcA8vBOIsiXxfgu94bcUQhkfXW0mUlG4ZqpyorswPxwBy9EfCO8WGK2jmL5QyfesLePh8pTmYyqfQ76/LcEvPZB+/2cODYDjtdaifi10W9X2GaT77t2k0Fh/BjvooXBDjj9HTDKFNaqyvN4vdZG69kE/3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUKOwKyU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C74C4CEC7;
+	Mon, 14 Oct 2024 14:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916946;
-	bh=P2/nVTV2sMZa1dEwF9uRNa5XtbJX/e+KKlF8iUlh6bE=;
+	s=korg; t=1728916239;
+	bh=aB3oLMty+rnkcmTNyUlcd8zC2iNAAgXi+fRsqaNe9ZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qa//XmO/OFzTCd95QejGllsp+9T3KYvIo4EZAnLVY0z+cTDZqKmZr18yrikuiR/3x
-	 qSNY6CGE27zgdOAYTuIRf8fvaZkQckZGijylTTI9w7Q7hRqI9gDWEh/nkmgRrEyV9V
-	 7FU3yPa7PBBToJgRcqGrd3FOMI67HCF3kXsZuJK4=
+	b=WUKOwKyUVvbK2UwzjkJktgLnvb2Gj/L5cUW3pn6YixzrU/bwcKbFdv7//iBmpJkFR
+	 6Q3IyvfTpnbb9+UxKekeRX0axnUzpJyrUiKaI7oD6M0GIpxE4TIflj0qy1g4wqVcLn
+	 P25oG5UPd9v1AZbn8p0SMej6HS+xPkHBFvxDa6jA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5fca234bd7eb378ff78e@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/213] io_uring: check if we need to reschedule during overflow flush
-Date: Mon, 14 Oct 2024 16:19:44 +0200
-Message-ID: <20241014141046.025015422@linuxfoundation.org>
+Subject: [PATCH 6.11 122/214] ice: Flush FDB entries before reset
+Date: Mon, 14 Oct 2024 16:19:45 +0200
+Message-ID: <20241014141049.752377467@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Wojciech Drewek <wojciech.drewek@intel.com>
 
-[ Upstream commit eac2ca2d682f94f46b1973bdf5e77d85d77b8e53 ]
+[ Upstream commit fbcb968a98ac0b71f5a2bda2751d7a32d201f90d ]
 
-In terms of normal application usage, this list will always be empty.
-And if an application does overflow a bit, it'll have a few entries.
-However, nothing obviously prevents syzbot from running a test case
-that generates a ton of overflow entries, and then flushing them can
-take quite a while.
+Triggering the reset while in switchdev mode causes
+errors[1]. Rules are already removed by this time
+because switch content is flushed in case of the reset.
+This means that rules were deleted from HW but SW
+still thinks they exist so when we get
+SWITCHDEV_FDB_DEL_TO_DEVICE notification we try to
+delete not existing rule.
 
-Check for needing to reschedule while flushing, and drop our locks and
-do so if necessary. There's no state to maintain here as overflows
-always prune from head-of-list, hence it's fine to drop and reacquire
-the locks at the end of the loop.
+We can avoid these errors by clearing the rules
+early in the reset flow before they are removed from HW.
+Switchdev API will get notified that the rule was removed
+so we won't get SWITCHDEV_FDB_DEL_TO_DEVICE notification.
+Remove unnecessary ice_clear_sw_switch_recipes.
 
-Link: https://lore.kernel.org/io-uring/66ed061d.050a0220.29194.0053.GAE@google.com/
-Reported-by: syzbot+5fca234bd7eb378ff78e@syzkaller.appspotmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[1]
+ice 0000:01:00.0: Failed to delete FDB forward rule, err: -2
+ice 0000:01:00.0: Failed to delete FDB guard rule, err: -2
+
+Fixes: 7c945a1a8e5f ("ice: Switchdev FDB events support")
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Signed-off-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ .../net/ethernet/intel/ice/ice_eswitch_br.c   |  5 +++-
+ .../net/ethernet/intel/ice/ice_eswitch_br.h   |  1 +
+ drivers/net/ethernet/intel/ice/ice_main.c     | 24 +++----------------
+ 3 files changed, 8 insertions(+), 22 deletions(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 7b0a100e1139a..39d8d1fc5c2bc 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -701,6 +701,21 @@ static void __io_cqring_overflow_flush(struct io_ring_ctx *ctx)
- 		memcpy(cqe, &ocqe->cqe, cqe_size);
- 		list_del(&ocqe->list);
- 		kfree(ocqe);
+diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch_br.c b/drivers/net/ethernet/intel/ice/ice_eswitch_br.c
+index f5aceb32bf4dd..cccb7ddf61c97 100644
+--- a/drivers/net/ethernet/intel/ice/ice_eswitch_br.c
++++ b/drivers/net/ethernet/intel/ice/ice_eswitch_br.c
+@@ -582,10 +582,13 @@ ice_eswitch_br_switchdev_event(struct notifier_block *nb,
+ 	return NOTIFY_DONE;
+ }
+ 
+-static void ice_eswitch_br_fdb_flush(struct ice_esw_br *bridge)
++void ice_eswitch_br_fdb_flush(struct ice_esw_br *bridge)
+ {
+ 	struct ice_esw_br_fdb_entry *entry, *tmp;
+ 
++	if (!bridge)
++		return;
 +
-+		/*
-+		 * For silly syzbot cases that deliberately overflow by huge
-+		 * amounts, check if we need to resched and drop and
-+		 * reacquire the locks if so. Nothing real would ever hit this.
-+		 * Ideally we'd have a non-posting unlock for this, but hard
-+		 * to care for a non-real case.
-+		 */
-+		if (need_resched()) {
-+			io_cq_unlock_post(ctx);
-+			mutex_unlock(&ctx->uring_lock);
-+			cond_resched();
-+			mutex_lock(&ctx->uring_lock);
-+			io_cq_lock(ctx);
-+		}
+ 	list_for_each_entry_safe(entry, tmp, &bridge->fdb_list, list)
+ 		ice_eswitch_br_fdb_entry_notify_and_cleanup(bridge, entry);
+ }
+diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch_br.h b/drivers/net/ethernet/intel/ice/ice_eswitch_br.h
+index c15c7344d7f85..66a2c804338f0 100644
+--- a/drivers/net/ethernet/intel/ice/ice_eswitch_br.h
++++ b/drivers/net/ethernet/intel/ice/ice_eswitch_br.h
+@@ -117,5 +117,6 @@ void
+ ice_eswitch_br_offloads_deinit(struct ice_pf *pf);
+ int
+ ice_eswitch_br_offloads_init(struct ice_pf *pf);
++void ice_eswitch_br_fdb_flush(struct ice_esw_br *bridge);
+ 
+ #endif /* _ICE_ESWITCH_BR_H_ */
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 39f89cb590cf2..03b72c0e043a7 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -520,25 +520,6 @@ static void ice_pf_dis_all_vsi(struct ice_pf *pf, bool locked)
+ 		pf->vf_agg_node[node].num_vsis = 0;
+ }
+ 
+-/**
+- * ice_clear_sw_switch_recipes - clear switch recipes
+- * @pf: board private structure
+- *
+- * Mark switch recipes as not created in sw structures. There are cases where
+- * rules (especially advanced rules) need to be restored, either re-read from
+- * hardware or added again. For example after the reset. 'recp_created' flag
+- * prevents from doing that and need to be cleared upfront.
+- */
+-static void ice_clear_sw_switch_recipes(struct ice_pf *pf)
+-{
+-	struct ice_sw_recipe *recp;
+-	u8 i;
+-
+-	recp = pf->hw.switch_info->recp_list;
+-	for (i = 0; i < ICE_MAX_NUM_RECIPES; i++)
+-		recp[i].recp_created = false;
+-}
+-
+ /**
+  * ice_prepare_for_reset - prep for reset
+  * @pf: board private structure
+@@ -575,8 +556,9 @@ ice_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
+ 	mutex_unlock(&pf->vfs.table_lock);
+ 
+ 	if (ice_is_eswitch_mode_switchdev(pf)) {
+-		if (reset_type != ICE_RESET_PFR)
+-			ice_clear_sw_switch_recipes(pf);
++		rtnl_lock();
++		ice_eswitch_br_fdb_flush(pf->eswitch.br_offloads->bridge);
++		rtnl_unlock();
  	}
  
- 	if (list_empty(&ctx->cq_overflow_list)) {
+ 	/* release ADQ specific HW and SW resources */
 -- 
 2.43.0
 
