@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-84265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B1099CF50
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:53:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42C6299CF62
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:54:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8529B24522
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:53:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCA3FB2255A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:54:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCC71C3039;
-	Mon, 14 Oct 2024 14:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C302A1C7601;
+	Mon, 14 Oct 2024 14:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2ZUM1uV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9cNZejD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD221AC8A2;
-	Mon, 14 Oct 2024 14:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE411ABEB5;
+	Mon, 14 Oct 2024 14:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917409; cv=none; b=dLyVPeeo2zemcnEZaGA8ZUyd83xgtvrRJO1EiQNugxsRbMyVv1vvZVEu2KPKthc0F6BfzH0CYI7O4Gd9T1JMIwIRiq4ng+K3VuBeSkBOb63I3ie7Y+o2fH0qGnU9Ab41olNpIsu+v4Qw2zFTDV5Q+/lmq3RhDHn1zy5zrN4XC/0=
+	t=1728917446; cv=none; b=paq1+mUPlNXz4wwVOORvUwmfZA8JEWo8/Am0y98TnYuTCMoUHMixSUEepJJoaI1ui6uKTKsU+Kt85udz3f0traSf2lY6ylzYzgd1DofGrS4ejarnHxIw4pMPjkySb+IzjmFl0+3K1o4wkudTU65ybVuxR9HcszoibwoHJWcdw+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917409; c=relaxed/simple;
-	bh=BSZjXo4nusqpQuC3nfLaVme0ZRLCASYtgSRqgC+AgpQ=;
+	s=arc-20240116; t=1728917446; c=relaxed/simple;
+	bh=0vf6X68U9tVrIm6ZIIQZyjuKU8ZEtVFlsyvgFWVOm3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBHZNv13xkKiV7dVDSrfKtecfr3F56tBQ2QPwuYrOordZyITMEq++0KR1vSuOlDyOl105IGP9iGCktfEk7l8L6uZXVSxKlcqPRiEFDJl/B4DZL+znWfW4MQbw+HNwI+0BYOwy9Ii9Po32EWkZLK5OuDsE2xk9WPNXlDjBkWvjXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2ZUM1uV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25EFAC4CEC3;
-	Mon, 14 Oct 2024 14:50:07 +0000 (UTC)
+	 MIME-Version; b=o7d7Nf7oYqoQiccE0mV5iODi8WC823WilC+tUTF/lGkiV5YgnZjk7CHxD/m01/cZFZB93CVMW6eZJIQwupTSgkceOb9EIvLI0QiKiPJ3FYnQM+gTQ8qt4/+ZRGP3YFyEygrl3Jo9vZg4H/GWtKtgn1mbXVHrgEk+2yQb5Zrq+Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9cNZejD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E588CC4CEC3;
+	Mon, 14 Oct 2024 14:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917408;
-	bh=BSZjXo4nusqpQuC3nfLaVme0ZRLCASYtgSRqgC+AgpQ=;
+	s=korg; t=1728917446;
+	bh=0vf6X68U9tVrIm6ZIIQZyjuKU8ZEtVFlsyvgFWVOm3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U2ZUM1uVjqqeHGKemBq9WTjrMIoBwZEupjekiG3mDaqs3Nrk43PfWonUcyVysDPKo
-	 lxR1KltpnugeuFZ5BysHUO/Opc7fRG8BxZM2g/qYjvXlcBrEofL5/pBVZl/3agqNy9
-	 yjjmhnGlaTENnln6t7twMqEzJIOxyQB6iTRgfpTE=
+	b=N9cNZejDn+AyWRYarxhUpe5cd5BHAQXfvGfsh8IpevmezTNn4GMP8LVvaXr6P5ypt
+	 Bwtu6DV6oESwTS/PFcrc3bIMKaWZQqmBfLdx/AcYE50MIci/bG978FuSIJ3BNWmeTz
+	 PA1q2vUSay1225f2Ckywz1kpgBGqXQfgFV9Nytas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avraham Stern <avraham.stern@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Vasily Khoruzhick <anarsoul@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/798] wifi: iwlwifi: mvm: increase the time between ranging measurements
-Date: Mon, 14 Oct 2024 16:09:33 +0200
-Message-ID: <20241014141218.705770991@linuxfoundation.org>
+Subject: [PATCH 6.1 020/798] ACPICA: Implement ACPI_WARNING_ONCE and ACPI_ERROR_ONCE
+Date: Mon, 14 Oct 2024 16:09:34 +0200
+Message-ID: <20241014141218.744152828@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -67,37 +66,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Vasily Khoruzhick <anarsoul@gmail.com>
 
-[ Upstream commit 3a7ee94559dfd640604d0265739e86dec73b64e8 ]
+[ Upstream commit 632b746b108e3c62e0795072d00ed597371c738a ]
 
-The algo running in fw may take a little longer than 5 milliseconds,
-(e.g. measurement on 80MHz while associated). Increase the minimum
-time between measurements to 7 milliseconds.
+ACPICA commit 2ad4e6e7c4118f4cdfcad321c930b836cec77406
 
-Fixes: 830aa3e7d1ca ("iwlwifi: mvm: add support for range request command version 13")
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240729201718.d3f3c26e00d9.I09e951290e8a3d73f147b88166fd9a678d1d69ed@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+In some cases it is not practical nor useful to nag user about some
+firmware errors that they cannot fix. Add a macro that will print a
+warning or error only once to be used in these cases.
+
+Link: https://github.com/acpica/acpica/commit/2ad4e6e7
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: c82c507126c9 ("ACPICA: executer/exsystem: Don't nag user about every Stall() violating the spec")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/constants.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/acpi/acoutput.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-index c604f9f39b248..685649b48c570 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-@@ -103,7 +103,7 @@
- #define IWL_MVM_FTM_INITIATOR_SECURE_LTF	false
- #define IWL_MVM_FTM_RESP_NDP_SUPPORT		true
- #define IWL_MVM_FTM_RESP_LMR_FEEDBACK_SUPPORT	true
--#define IWL_MVM_FTM_NON_TB_MIN_TIME_BETWEEN_MSR	5
-+#define IWL_MVM_FTM_NON_TB_MIN_TIME_BETWEEN_MSR	7
- #define IWL_MVM_FTM_NON_TB_MAX_TIME_BETWEEN_MSR	1000
- #define IWL_MVM_D3_DEBUG			false
- #define IWL_MVM_USE_TWT				true
+diff --git a/include/acpi/acoutput.h b/include/acpi/acoutput.h
+index 73781aae21192..eaef8471177af 100644
+--- a/include/acpi/acoutput.h
++++ b/include/acpi/acoutput.h
+@@ -193,6 +193,7 @@
+  */
+ #ifndef ACPI_NO_ERROR_MESSAGES
+ #define AE_INFO                         _acpi_module_name, __LINE__
++#define ACPI_ONCE(_fn, _plist)                  { static char _done; if (!_done) { _done = 1; _fn _plist; } }
+ 
+ /*
+  * Error reporting. Callers module and line number are inserted by AE_INFO,
+@@ -201,8 +202,10 @@
+  */
+ #define ACPI_INFO(plist)                acpi_info plist
+ #define ACPI_WARNING(plist)             acpi_warning plist
++#define ACPI_WARNING_ONCE(plist)        ACPI_ONCE(acpi_warning, plist)
+ #define ACPI_EXCEPTION(plist)           acpi_exception plist
+ #define ACPI_ERROR(plist)               acpi_error plist
++#define ACPI_ERROR_ONCE(plist)          ACPI_ONCE(acpi_error, plist)
+ #define ACPI_BIOS_WARNING(plist)        acpi_bios_warning plist
+ #define ACPI_BIOS_EXCEPTION(plist)      acpi_bios_exception plist
+ #define ACPI_BIOS_ERROR(plist)          acpi_bios_error plist
+@@ -214,8 +217,10 @@
+ 
+ #define ACPI_INFO(plist)
+ #define ACPI_WARNING(plist)
++#define ACPI_WARNING_ONCE(plist)
+ #define ACPI_EXCEPTION(plist)
+ #define ACPI_ERROR(plist)
++#define ACPI_ERROR_ONCE(plist)
+ #define ACPI_BIOS_WARNING(plist)
+ #define ACPI_BIOS_EXCEPTION(plist)
+ #define ACPI_BIOS_ERROR(plist)
 -- 
 2.43.0
 
