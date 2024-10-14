@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-84019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD2799CDB7
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63DF499D322
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BC1F1C22E1F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76D8CB27266
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B227D1AB525;
-	Mon, 14 Oct 2024 14:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4921C1C9B91;
+	Mon, 14 Oct 2024 15:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6sYKzih"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLJT4NhG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDBF1A0724;
-	Mon, 14 Oct 2024 14:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0744E1537AA;
+	Mon, 14 Oct 2024 15:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916526; cv=none; b=BCB9WN2mw99WJe74FSlw+cZdayiD51HSru1Hx27j1Kj1hZDbzZm8ZPUiOFOZhjPyd1NRslxxHOMebMot7jOFu4FZ/oykt56lcckl93AfwCAvoYn6koRn0TYVntwIDZfuXvB65NHcFhhQIDKH8JUL9S/xBwy2yJBE3f7AaxnuWfk=
+	t=1728919832; cv=none; b=urIEoZf2zq9J0MuOpDfBJaBF/bjj8x4JevgjDpwb53WJVyNilaxCux6PL2bSSp2qtl1mFUi2wi4Te6ADkRMlpB25hIPpVUfMClpetQNdGFRL4syfsY2qzwC3Fetor22CrdVmpE37IfDH2Th02vdOR8xLzVuNj9lq44VcDG0UiPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916526; c=relaxed/simple;
-	bh=TLrxOdmGSFt6LIFvCjdeBCQqGP7BMEE4Cpm5k42FOqA=;
+	s=arc-20240116; t=1728919832; c=relaxed/simple;
+	bh=XM64NmLjjqqtYIwojBr4zYIiFGEnMvKTED3HHySYEVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UECvfE1uctqSC2wrI3v6emyR/9OdEdJHYSAFvZGVJQmON5KTGLxZfaql4rmwTkHSFBnQuuMa5774HzqqUHKCtccLFYIhQY4W+X/x1irvlcqoZbL9ikPejlxp/8Z0Qm/dZU7lrxsA7wKBapxI2M4XWx0aoMvlCICj6J9NkZBYG40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6sYKzih; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D302DC4CED0;
-	Mon, 14 Oct 2024 14:35:25 +0000 (UTC)
+	 MIME-Version; b=PaxqxkU0J3s6oTH5se3alMGoW1celqhK/Z45f7v8eJLM7z1Z/2VrQnxnhFQrhxwuh5tnKViiLX3c+M0vlEFTd8eRauSUnpb86ejQWoTlZJkZ1Ip9yp/PwczOIXLdWhCbiOsI6gP3kulxgH+Lwrlr+WtZV1t1NYcmEk26g3fA0do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLJT4NhG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6F4C4CEC3;
+	Mon, 14 Oct 2024 15:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916526;
-	bh=TLrxOdmGSFt6LIFvCjdeBCQqGP7BMEE4Cpm5k42FOqA=;
+	s=korg; t=1728919831;
+	bh=XM64NmLjjqqtYIwojBr4zYIiFGEnMvKTED3HHySYEVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E6sYKzihj98vfK1NEwDwpo7rEyRXR6lkubBCDCMDrfk+177jHdY4kFgaYFcg+UR+7
-	 PDd9XPRr7gvW/J0UcEzuuW5Ti+y9VpYHSh0ToZ2HbBfqTtjGsZxjB/Ztjd6Le7ezej
-	 eCDchln8YIRQQsu+yHjyttGbKt8g8NJ80OMxDIxo=
+	b=pLJT4NhG/k3gFQ7JHyspn5fW4sd2iDSvK+vAPVGrXeL47N+vmBouuI8qN8Qi6uQ2N
+	 UzPIi6Ele4nMwtBSpnVOdvGDXioR+NJvnaNmV6MLt+5PSgOwUh6Lr+7MgsKnrnHXCf
+	 hkJtB+RyoFZMOfeGEA/GZ1kElgJxd06ENAXcZ98w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederic Weisbecker <frederic@kernel.org>,
-	syzbot+943d34fa3cf2191e3068@syzkaller.appspotmail.com,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Hillf Danton <hdanton@sina.com>,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 210/214] kthread: unpark only parked kthread
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 719/798] driver core: bus: Return -EIO instead of 0 when show/store invalid bus attribute
 Date: Mon, 14 Oct 2024 16:21:13 +0200
-Message-ID: <20241014141053.172858802@linuxfoundation.org>
+Message-ID: <20241014141246.317022694@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 214e01ad4ed7158cab66498810094fac5d09b218 upstream.
+[ Upstream commit c0fd973c108cdc22a384854bc4b3e288a9717bb2 ]
 
-Calling into kthread unparking unconditionally is mostly harmless when
-the kthread is already unparked. The wake up is then simply ignored
-because the target is not in TASK_PARKED state.
+Return -EIO instead of 0 for below erroneous bus attribute operations:
+ - read a bus attribute without show().
+ - write a bus attribute without store().
 
-However if the kthread is per CPU, the wake up is preceded by a call
-to kthread_bind() which expects the task to be inactive and in
-TASK_PARKED state, which obviously isn't the case if it is unparked.
-
-As a result, calling kthread_stop() on an unparked per-cpu kthread
-triggers such a warning:
-
-	WARNING: CPU: 0 PID: 11 at kernel/kthread.c:525 __kthread_bind_mask kernel/kthread.c:525
-	 <TASK>
-	 kthread_stop+0x17a/0x630 kernel/kthread.c:707
-	 destroy_workqueue+0x136/0xc40 kernel/workqueue.c:5810
-	 wg_destruct+0x1e2/0x2e0 drivers/net/wireguard/device.c:257
-	 netdev_run_todo+0xe1a/0x1000 net/core/dev.c:10693
-	 default_device_exit_batch+0xa14/0xa90 net/core/dev.c:11769
-	 ops_exit_list net/core/net_namespace.c:178 [inline]
-	 cleanup_net+0x89d/0xcc0 net/core/net_namespace.c:640
-	 process_one_work kernel/workqueue.c:3231 [inline]
-	 process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3312
-	 worker_thread+0x86d/0xd70 kernel/workqueue.c:3393
-	 kthread+0x2f0/0x390 kernel/kthread.c:389
-	 ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-	 ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-	 </TASK>
-
-Fix this with skipping unecessary unparking while stopping a kthread.
-
-Link: https://lkml.kernel.org/r/20240913214634.12557-1-frederic@kernel.org
-Fixes: 5c25b5ff89f0 ("workqueue: Tag bound workers with KTHREAD_IS_PER_CPU")
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Reported-by: syzbot+943d34fa3cf2191e3068@syzkaller.appspotmail.com
-Tested-by: syzbot+943d34fa3cf2191e3068@syzkaller.appspotmail.com
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20240724-bus_fix-v2-1-5adbafc698fb@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kthread.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/base/bus.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -623,6 +623,8 @@ void kthread_unpark(struct task_struct *
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index 7ca47e5b3c1f4..339a9edcde5f5 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -104,7 +104,8 @@ static ssize_t bus_attr_show(struct kobject *kobj, struct attribute *attr,
  {
- 	struct kthread *kthread = to_kthread(k);
+ 	struct bus_attribute *bus_attr = to_bus_attr(attr);
+ 	struct subsys_private *subsys_priv = to_subsys_private(kobj);
+-	ssize_t ret = 0;
++	/* return -EIO for reading a bus attribute without show() */
++	ssize_t ret = -EIO;
  
-+	if (!test_bit(KTHREAD_SHOULD_PARK, &kthread->flags))
-+		return;
- 	/*
- 	 * Newly created kthread was parked when the CPU was offline.
- 	 * The binding was lost and we need to set it again.
+ 	if (bus_attr->show)
+ 		ret = bus_attr->show(subsys_priv->bus, buf);
+@@ -116,7 +117,8 @@ static ssize_t bus_attr_store(struct kobject *kobj, struct attribute *attr,
+ {
+ 	struct bus_attribute *bus_attr = to_bus_attr(attr);
+ 	struct subsys_private *subsys_priv = to_subsys_private(kobj);
+-	ssize_t ret = 0;
++	/* return -EIO for writing a bus attribute without store() */
++	ssize_t ret = -EIO;
+ 
+ 	if (bus_attr->store)
+ 		ret = bus_attr->store(subsys_priv->bus, buf, count);
+-- 
+2.43.0
+
 
 
 
