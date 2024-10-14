@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6601499D222
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D2B99CCDA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:25:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B73928478B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77C951C21502
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E3C1AC426;
-	Mon, 14 Oct 2024 15:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C291A76AC;
+	Mon, 14 Oct 2024 14:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUa0FeP5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mr0Fjc0x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68211A76CE;
-	Mon, 14 Oct 2024 15:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686C5E571;
+	Mon, 14 Oct 2024 14:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919240; cv=none; b=K/CidSkjSEIQcnKBc/YQq9SE8h+ec2AQFmLBmPH/DtZ0n0FDi16o1mgZZ4/DjFbwvWwEPQq8bj8Zn/kePZITTYYK64NpwWYJDT5VSSQnDmGaV/4nS+2M8wezezukrYGSBYqcERTDarEcOYHrhcJ6cJjb4egFYZDVfybphvwHxAk=
+	t=1728915945; cv=none; b=JOy1cqUbRxEbWDQjSPs2fll2g55844NUtCjJxkGgO9U6AoTKfYuIaVCYIw2xWrAdrUS9mtWImCh8OMMFktbAYS312PddsU9W9oIRm5E+hNmlW1Zz6E3DuyUonzbJfOBn5b960uEY2A1CDOK3Qs+E5ChHefEoTejGo3QlTbLxYTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919240; c=relaxed/simple;
-	bh=3hJ3ja/N9bzSmg144mUrwZHh95aMRuyaYBLx3rDrw58=;
+	s=arc-20240116; t=1728915945; c=relaxed/simple;
+	bh=yAabrBQ+q5lhohF6jF4DEAfyU15D10KaKqnF5hKResI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YNjDQFwDfXCVBosz3RglbF8HipxgDSoAEYMl9zm6Ic8eFGvcmo2q3AuItwW6ZoVPkQ3Amn+/BUZWHuDwTYtiS4mmqoufIqpK8GHl4oa5SM/mThkOz6S0U79MxYIWDwK69mXWYY8Ld1bTL5YgbPGWMOeB/5iaS6Xrz6LJ9JfdMpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUa0FeP5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3534FC4CEC3;
-	Mon, 14 Oct 2024 15:20:40 +0000 (UTC)
+	 MIME-Version; b=JjdhVJpRR0rEvG/juHnVnIqPGR2rQmVXotzTiaGEIXslneVIo42iQmrumSAx7OF1t8tdtcQeyW503jI9jdexf4ihkeBjQqG0rhfNd9vNiTRW3CaazQzP5wW6hyWfdgNdbP0J8pDPrfHWUgDiLdsEM5TXOD3AmMddCBEZ98t6zuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mr0Fjc0x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE51C4CEC3;
+	Mon, 14 Oct 2024 14:25:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919240;
-	bh=3hJ3ja/N9bzSmg144mUrwZHh95aMRuyaYBLx3rDrw58=;
+	s=korg; t=1728915945;
+	bh=yAabrBQ+q5lhohF6jF4DEAfyU15D10KaKqnF5hKResI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dUa0FeP5c/kmo2ryqsKclo+c5w+osYv0oxlcoF8hf+EnRsV3+yH9HItiqPDMapjZ5
-	 HbnHeDjqQrwY3CvlYV+8wXM0aBDM29wkl3w3ZEH2C1LmbXqEZJQ/GGjRWMAHl+I+tx
-	 9oyX5RlsBVOZxXAbkr2TafiHTNh7a2jksFtUsJaA=
+	b=Mr0Fjc0x4TuNTRPCLw8/Wfw+vLYHedISGrabTYr5zyq1fl5+EjhPtl9MYomP7m3sx
+	 /khbkKPWqm4nByVh06eBAb+qn4qJqYVf6T/FE5wUsjhTAiSyVVyvfNg7V1wNJT0PbH
+	 6dLQEet5vpSf23P5ilAeYicrDrYhOnKB5RcG2XHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.1 552/798] ext4: fix incorrect tid assumption in ext4_wait_for_tail_page_commit()
-Date: Mon, 14 Oct 2024 16:18:26 +0200
-Message-ID: <20241014141239.684077146@linuxfoundation.org>
+	Samuel Holland <samuel.holland@sifive.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 044/214] riscv: Omit optimized string routines when using KASAN
+Date: Mon, 14 Oct 2024 16:18:27 +0200
+Message-ID: <20241014141046.709665988@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-commit dd589b0f1445e1ea1085b98edca6e4d5dedb98d0 upstream.
+[ Upstream commit 58ff537109ac863d4ec83baf8413b17dcc10101c ]
 
-Function ext4_wait_for_tail_page_commit() assumes that '0' is not a valid
-value for transaction IDs, which is incorrect.  Don't assume that and invoke
-jbd2_log_wait_commit() if the journal had a committing transaction instead.
+The optimized string routines are implemented in assembly, so they are
+not instrumented for use with KASAN. Fall back to the C version of the
+routines in order to improve KASAN coverage. This fixes the
+kasan_strings() unit test.
 
-Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240724161119.13448-2-luis.henriques@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240801033725.28816-2-samuel.holland@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ arch/riscv/include/asm/string.h | 2 ++
+ arch/riscv/kernel/riscv_ksyms.c | 3 ---
+ arch/riscv/lib/Makefile         | 2 ++
+ arch/riscv/lib/strcmp.S         | 1 +
+ arch/riscv/lib/strlen.S         | 1 +
+ arch/riscv/lib/strncmp.S        | 1 +
+ arch/riscv/purgatory/Makefile   | 2 ++
+ 7 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -5350,8 +5350,9 @@ static void ext4_wait_for_tail_page_comm
- {
- 	unsigned offset;
- 	journal_t *journal = EXT4_SB(inode->i_sb)->s_journal;
--	tid_t commit_tid = 0;
-+	tid_t commit_tid;
- 	int ret;
-+	bool has_transaction;
+diff --git a/arch/riscv/include/asm/string.h b/arch/riscv/include/asm/string.h
+index a96b1fea24fe4..5ba77f60bf0b5 100644
+--- a/arch/riscv/include/asm/string.h
++++ b/arch/riscv/include/asm/string.h
+@@ -19,6 +19,7 @@ extern asmlinkage void *__memcpy(void *, const void *, size_t);
+ extern asmlinkage void *memmove(void *, const void *, size_t);
+ extern asmlinkage void *__memmove(void *, const void *, size_t);
  
- 	offset = inode->i_size & (PAGE_SIZE - 1);
- 	/*
-@@ -5376,12 +5377,14 @@ static void ext4_wait_for_tail_page_comm
- 		folio_put(folio);
- 		if (ret != -EBUSY)
- 			return;
--		commit_tid = 0;
-+		has_transaction = false;
- 		read_lock(&journal->j_state_lock);
--		if (journal->j_committing_transaction)
-+		if (journal->j_committing_transaction) {
- 			commit_tid = journal->j_committing_transaction->t_tid;
-+			has_transaction = true;
-+		}
- 		read_unlock(&journal->j_state_lock);
--		if (commit_tid)
-+		if (has_transaction)
- 			jbd2_log_wait_commit(journal, commit_tid);
- 	}
- }
++#if !(defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS))
+ #define __HAVE_ARCH_STRCMP
+ extern asmlinkage int strcmp(const char *cs, const char *ct);
+ 
+@@ -27,6 +28,7 @@ extern asmlinkage __kernel_size_t strlen(const char *);
+ 
+ #define __HAVE_ARCH_STRNCMP
+ extern asmlinkage int strncmp(const char *cs, const char *ct, size_t count);
++#endif
+ 
+ /* For those files which don't want to check by kasan. */
+ #if defined(CONFIG_KASAN) && !defined(__SANITIZE_ADDRESS__)
+diff --git a/arch/riscv/kernel/riscv_ksyms.c b/arch/riscv/kernel/riscv_ksyms.c
+index a72879b4249a5..5ab1c7e1a6ed5 100644
+--- a/arch/riscv/kernel/riscv_ksyms.c
++++ b/arch/riscv/kernel/riscv_ksyms.c
+@@ -12,9 +12,6 @@
+ EXPORT_SYMBOL(memset);
+ EXPORT_SYMBOL(memcpy);
+ EXPORT_SYMBOL(memmove);
+-EXPORT_SYMBOL(strcmp);
+-EXPORT_SYMBOL(strlen);
+-EXPORT_SYMBOL(strncmp);
+ EXPORT_SYMBOL(__memset);
+ EXPORT_SYMBOL(__memcpy);
+ EXPORT_SYMBOL(__memmove);
+diff --git a/arch/riscv/lib/Makefile b/arch/riscv/lib/Makefile
+index 2b369f51b0a5e..8eec6b69a875f 100644
+--- a/arch/riscv/lib/Makefile
++++ b/arch/riscv/lib/Makefile
+@@ -3,9 +3,11 @@ lib-y			+= delay.o
+ lib-y			+= memcpy.o
+ lib-y			+= memset.o
+ lib-y			+= memmove.o
++ifeq ($(CONFIG_KASAN_GENERIC)$(CONFIG_KASAN_SW_TAGS),)
+ lib-y			+= strcmp.o
+ lib-y			+= strlen.o
+ lib-y			+= strncmp.o
++endif
+ lib-y			+= csum.o
+ ifeq ($(CONFIG_MMU), y)
+ lib-$(CONFIG_RISCV_ISA_V)	+= uaccess_vector.o
+diff --git a/arch/riscv/lib/strcmp.S b/arch/riscv/lib/strcmp.S
+index 687b2bea5c438..542301a67a2ff 100644
+--- a/arch/riscv/lib/strcmp.S
++++ b/arch/riscv/lib/strcmp.S
+@@ -120,3 +120,4 @@ strcmp_zbb:
+ .option pop
+ #endif
+ SYM_FUNC_END(strcmp)
++EXPORT_SYMBOL(strcmp)
+diff --git a/arch/riscv/lib/strlen.S b/arch/riscv/lib/strlen.S
+index 8ae3064e45ff0..962983b73251e 100644
+--- a/arch/riscv/lib/strlen.S
++++ b/arch/riscv/lib/strlen.S
+@@ -131,3 +131,4 @@ strlen_zbb:
+ #endif
+ SYM_FUNC_END(strlen)
+ SYM_FUNC_ALIAS(__pi_strlen, strlen)
++EXPORT_SYMBOL(strlen)
+diff --git a/arch/riscv/lib/strncmp.S b/arch/riscv/lib/strncmp.S
+index aba5b3148621d..0f359ea2f55b2 100644
+--- a/arch/riscv/lib/strncmp.S
++++ b/arch/riscv/lib/strncmp.S
+@@ -136,3 +136,4 @@ strncmp_zbb:
+ .option pop
+ #endif
+ SYM_FUNC_END(strncmp)
++EXPORT_SYMBOL(strncmp)
+diff --git a/arch/riscv/purgatory/Makefile b/arch/riscv/purgatory/Makefile
+index f11945ee24903..fb9c917c9b457 100644
+--- a/arch/riscv/purgatory/Makefile
++++ b/arch/riscv/purgatory/Makefile
+@@ -1,7 +1,9 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+ purgatory-y := purgatory.o sha256.o entry.o string.o ctype.o memcpy.o memset.o
++ifeq ($(CONFIG_KASAN_GENERIC)$(CONFIG_KASAN_SW_TAGS),)
+ purgatory-y += strcmp.o strlen.o strncmp.o
++endif
+ 
+ targets += $(purgatory-y)
+ PURGATORY_OBJS = $(addprefix $(obj)/,$(purgatory-y))
+-- 
+2.43.0
+
 
 
 
