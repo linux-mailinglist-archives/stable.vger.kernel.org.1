@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-83878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F64A99CCFC
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:27:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8E399D23D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCC34B223BA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:27:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2E05285E52
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D131E1ABEA1;
-	Mon, 14 Oct 2024 14:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47801ABEC9;
+	Mon, 14 Oct 2024 15:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4US+2Y9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYAf+VcA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4B41AAE2C;
-	Mon, 14 Oct 2024 14:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B9C1C75F2;
+	Mon, 14 Oct 2024 15:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916040; cv=none; b=j9kuH/Vl1V/7MH79y72k7d9l0VjVo1IIS0CJkOxmMRvRY6jFz5GTAdFpryK8sWbmKeFlYIE4CgPuNsIA2E6dnYKUBnx+2xkiyyj5ukPXXIU65ojVqk6pdtqPVHQplMg5pVRdt8EGM058dgWgBhRGHsE7yzCH3gY0uSIl0/LroNg=
+	t=1728919325; cv=none; b=eOD47AUaWJ3x9N6dPqikcJltKGADVyIQe+qziGoZ/QaqbvkTwIRm+DaalaPSuL817pXhWGs2CHckFTlC6G80VZuhVQsUUvLEL6KzvAuIZSvxbhcXFPjIZxUWX3fzwIhf6jsXaAfifUpC6q7uRcdoC0T7isxQi1faQ/IPqm9hO/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916040; c=relaxed/simple;
-	bh=r/lRvqlt2AyvGtj3JyDAw54m4bfKhXaGPLin8nOo1eg=;
+	s=arc-20240116; t=1728919325; c=relaxed/simple;
+	bh=LynaRG21rpdTzXfs6Ak8KN/WszbsAt5ZnwQXX9Zh7Eg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RmWb2PkJzcqP1gcxvOreXE+xuH5WzP8GBI6LZ+EC0rsImjvfMV0NHviQjMjzlKJkpSp3wEjbaV78bTeXivP3uJGpx4tIe+IqSZzff6M5e+TIm0OtOwlfsXifmH1V1qCqNVexEGZpx5a9DI9s8liKqucYnuzNP6Hzo0xFPC1N9mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4US+2Y9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A252CC4CEC3;
-	Mon, 14 Oct 2024 14:27:19 +0000 (UTC)
+	 MIME-Version; b=saEKqF5w1wTKxi4JYuZq04Vjn7jB2WpPEs02JxLlqKuive0Ig09P5txxVILj0+peKKIHKup9JTYSmW0O2ET9vUhv8lb2iLdRvjogIkr9jxlHjoMvObMwBbBKJbzmHhO48mMZbJ4w2WeXqZEX0E/begkcBmMASmqogVHJtiH+P80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYAf+VcA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDD3C4CEC3;
+	Mon, 14 Oct 2024 15:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916040;
-	bh=r/lRvqlt2AyvGtj3JyDAw54m4bfKhXaGPLin8nOo1eg=;
+	s=korg; t=1728919325;
+	bh=LynaRG21rpdTzXfs6Ak8KN/WszbsAt5ZnwQXX9Zh7Eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W4US+2Y9THVLPlJ4iurzOsfgtbxu/9unDW9p3BBivrGjQ5PmfAXhtTXYCAZ7UKd+G
-	 cYrRh+wS1QQ4qvqrFkaNbQiDBVs/xcIL6i0bUUd3B4CRA8Gzg97AMAQrRnW8X1M+Kw
-	 mA42qQwaZEaJiBWXS9Eq/GlWaRtM3sDgWOePHEdM=
+	b=HYAf+VcAahOfjmPIkJfgv+N5PZbwBWhXrP5zU0G6tf4u5JmKhf+UyXY/x42iR+3FZ
+	 eEGsDik5YW+ms8/p0jkTPSIem0X1QsliBSdJXCixnI2qEHHvuTVUqPx65bL693DaeY
+	 tbEDDfi7BQI6ldDQ1P2r+5tgl+49IqOIS6cA78VQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ken Raeburn <raeburn@redhat.com>,
-	Matthew Sakai <msakai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 069/214] dm vdo: dont refer to dedupe_context after releasing it
+	Cedric Blancher <cedric.blancher@gmail.com>,
+	Dan Shelton <dan.f.shelton@gmail.com>,
+	Roland Mainz <roland.mainz@nrubsig.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.1 578/798] NFSD: Fix NFSv4s PUTPUBFH operation
 Date: Mon, 14 Oct 2024 16:18:52 +0200
-Message-ID: <20241014141047.683380021@linuxfoundation.org>
+Message-ID: <20241014141240.710726074@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ken Raeburn <raeburn@redhat.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 0808ebf2f80b962e75741a41ced372a7116f1e26 ]
+commit 202f39039a11402dcbcd5fece8d9fa6be83f49ae upstream.
 
-Clear the dedupe_context pointer in a data_vio whenever ownership of
-the context is lost, so that vdo can't examine it accidentally.
+According to RFC 8881, all minor versions of NFSv4 support PUTPUBFH.
 
-Signed-off-by: Ken Raeburn <raeburn@redhat.com>
-Signed-off-by: Matthew Sakai <msakai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Replace the XDR decoder for PUTPUBFH with a "noop" since we no
+longer want the minorversion check, and PUTPUBFH has no arguments to
+decode. (Ideally nfsd4_decode_noop should really be called
+nfsd4_decode_void).
+
+PUTPUBFH should now behave just like PUTROOTFH.
+
+Reported-by: Cedric Blancher <cedric.blancher@gmail.com>
+Fixes: e1a90ebd8b23 ("NFSD: Combine decode operations for v4 and v4.1")
+Cc: Dan Shelton <dan.f.shelton@gmail.com>
+Cc: Roland Mainz <roland.mainz@nrubsig.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-vdo/dedupe.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfsd/nfs4xdr.c |   10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/md/dm-vdo/dedupe.c b/drivers/md/dm-vdo/dedupe.c
-index 39ac68614419f..80628ae93fbac 100644
---- a/drivers/md/dm-vdo/dedupe.c
-+++ b/drivers/md/dm-vdo/dedupe.c
-@@ -729,6 +729,7 @@ static void process_update_result(struct data_vio *agent)
- 	    !change_context_state(context, DEDUPE_CONTEXT_COMPLETE, DEDUPE_CONTEXT_IDLE))
- 		return;
- 
-+	agent->dedupe_context = NULL;
- 	release_context(context);
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -1246,14 +1246,6 @@ nfsd4_decode_putfh(struct nfsd4_compound
  }
  
-@@ -1648,6 +1649,7 @@ static void process_query_result(struct data_vio *agent)
- 
- 	if (change_context_state(context, DEDUPE_CONTEXT_COMPLETE, DEDUPE_CONTEXT_IDLE)) {
- 		agent->is_duplicate = decode_uds_advice(context);
-+		agent->dedupe_context = NULL;
- 		release_context(context);
- 	}
- }
-@@ -2321,6 +2323,7 @@ static void timeout_index_operations_callback(struct vdo_completion *completion)
- 		 * send its requestor on its way.
- 		 */
- 		list_del_init(&context->list_entry);
-+		context->requestor->dedupe_context = NULL;
- 		continue_data_vio(context->requestor);
- 		timed_out++;
- 	}
--- 
-2.43.0
-
+ static __be32
+-nfsd4_decode_putpubfh(struct nfsd4_compoundargs *argp, union nfsd4_op_u *p)
+-{
+-	if (argp->minorversion == 0)
+-		return nfs_ok;
+-	return nfserr_notsupp;
+-}
+-
+-static __be32
+ nfsd4_decode_read(struct nfsd4_compoundargs *argp, union nfsd4_op_u *u)
+ {
+ 	struct nfsd4_read *read = &u->read;
+@@ -2345,7 +2337,7 @@ static const nfsd4_dec nfsd4_dec_ops[] =
+ 	[OP_OPEN_CONFIRM]	= nfsd4_decode_open_confirm,
+ 	[OP_OPEN_DOWNGRADE]	= nfsd4_decode_open_downgrade,
+ 	[OP_PUTFH]		= nfsd4_decode_putfh,
+-	[OP_PUTPUBFH]		= nfsd4_decode_putpubfh,
++	[OP_PUTPUBFH]		= nfsd4_decode_noop,
+ 	[OP_PUTROOTFH]		= nfsd4_decode_noop,
+ 	[OP_READ]		= nfsd4_decode_read,
+ 	[OP_READDIR]		= nfsd4_decode_readdir,
 
 
 
