@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-84207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E8199CEE2
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:48:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EABC099D34C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 967941C2329D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:48:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF9BA28BA2A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CFE1B85CC;
-	Mon, 14 Oct 2024 14:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D651BFE01;
+	Mon, 14 Oct 2024 15:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7ZqQaM4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6MZL3Wm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECB71B4F2D;
-	Mon, 14 Oct 2024 14:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A8019E98B;
+	Mon, 14 Oct 2024 15:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917206; cv=none; b=QEtEFXDmVeP39vRVlVTO59xqSvE0683S5nTbv87gPXfWiqKCxsxi82mIedMXk/h+2n5DDtz0mUd9Olo7/bpI0dwEqH9eErJpe+miFdxHOLm2sj94YQ+ZgotqfxVT2f5zPS8VY3/zKHpVjcAObuuG7cTUDNqxSMewQnRdXEsH3dE=
+	t=1728919991; cv=none; b=tMRi6W3ZalOKttoQUq73t7x0aG6t3pqsbboNKP8fe0btPZjJHbWH+IizPIUzk9qP1nCh1qnXGQG5tfXpYI0LoE+6EmoTNMzk5haSXrCIkfBWjB3hv3aYPg2Zp6SoH8tm3HcF3NHhCuvzadRL7u/jzNVK6Le3tfheRZJ1PlBzgDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917206; c=relaxed/simple;
-	bh=1ZjcxIm/wyFtuUnpi789j8+8PcqfCrS29NpejmZYuos=;
+	s=arc-20240116; t=1728919991; c=relaxed/simple;
+	bh=guSAlA79CELeZobNAK1Uv95XAdyaUFnfEIA3TKVAcdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hypyloWiq/jGrsJQ1YGNMDhcx1JEWHXdRWXawbCQHe1Kr4OIS5KKorzrARjnGV5bJzUh6B8fONknFA2ZszvAXantGYyI1gmoG/pKkftt1UDViKcOoCzcgxYUJpN3hH+Qv5fxRFGv4kAwGZvo7RzadlizBgicwFzrpPjWtPQlw8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7ZqQaM4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301F2C4CEC3;
-	Mon, 14 Oct 2024 14:46:44 +0000 (UTC)
+	 MIME-Version; b=c9Ze7cR5DYTMYelfpXk165sOGOBu3CxW/NGSWEMK7mqAn1BU9F3o5wBgnguDzDbYeJ1QpzAkXljn+WTuwwz+30DuSNPliar0wV3cFX4Kvk20y4KJHRs3xoRN7KnWYWaXRQuzp/7jVP7CkvnqcK3cQoH1vwzBlopI5CcdCayPrAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6MZL3Wm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ADA7C4CEC3;
+	Mon, 14 Oct 2024 15:33:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917205;
-	bh=1ZjcxIm/wyFtuUnpi789j8+8PcqfCrS29NpejmZYuos=;
+	s=korg; t=1728919990;
+	bh=guSAlA79CELeZobNAK1Uv95XAdyaUFnfEIA3TKVAcdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7ZqQaM4XBPXknXHRk3Hquk8kG2XjIPxY0ZueGMLZ5lY+pTEkF3If0FEM4uVoHkd9
-	 wG/E/e7p1duCs5G56MXLIaONO/VM7NQwEfdEAjJY+8uFbYwa2TlE/ty0/LgcA3VN1k
-	 L4Dt+JSGT1CG86uhyawIWUZs1sfv58m+pOvujToE=
+	b=O6MZL3WmGEKoUb3P2z0gdoHx8mZdc8jOhlTJ+2hKkeyEC17wY2/pg02KMepCN9A+2
+	 2u/qQR4ZVIW9lQ+El4CFHHtdfty88bCuoJyswfUuP//7xVIC93O4j61BCDUgoWMtUj
+	 br0V6QW+MwxUqtRYSHogeIGrLMSiw6ngd5eEVlwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Selvarasu Ganesan <selvarasu.g@samsung.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 183/213] usb: dwc3: core: Stop processing of pending events if controller is halted
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Kacper Ludwinski <kac.ludwinski@icloud.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 735/798] selftests: net: no_forwarding: fix VID for $swp2 in one_bridge_two_pvids() test
 Date: Mon, 14 Oct 2024 16:21:29 +0200
-Message-ID: <20241014141050.106883509@linuxfoundation.org>
+Message-ID: <20241014141246.947410014@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+From: Kacper Ludwinski <kac.ludwinski@icloud.com>
 
-commit 0d410e8913f5cffebcca79ffdd596009d4a13a28 upstream.
+[ Upstream commit 9f49d14ec41ce7be647028d7d34dea727af55272 ]
 
-This commit addresses an issue where events were being processed when
-the controller was in a halted state. To fix this issue by stop
-processing the events as the event count was considered stale or
-invalid when the controller was halted.
+Currently, the second bridge command overwrites the first one.
+Fix this by adding this VID to the interface behind $swp2.
 
-Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
-Cc: stable@kernel.org
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
-Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240916231813.206-1-selvarasu.g@samsung.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The one_bridge_two_pvids() test intends to check that there is no
+leakage of traffic between bridge ports which have a single VLAN - the
+PVID VLAN.
+
+Because of a typo, port $swp1 is configured with a PVID twice (second
+command overwrites first), and $swp2 isn't configured at all (and since
+the bridge vlan_default_pvid property is set to 0, this port will not
+have a PVID at all, so it will drop all untagged and priority-tagged
+traffic).
+
+So, instead of testing the configuration that was intended, we are
+testing a different one, where one port has PVID 2 and the other has
+no PVID. This incorrect version of the test should also pass, but is
+ineffective for its purpose, so fix the typo.
+
+This typo has an impact on results of the test,
+potentially leading to wrong conclusions regarding
+the functionality of a network device.
+
+The tests results:
+
+TEST: Switch ports in VLAN-aware bridge with different PVIDs:
+	Unicast non-IP untagged   [ OK ]
+	Multicast non-IP untagged   [ OK ]
+	Broadcast non-IP untagged   [ OK ]
+	Unicast IPv4 untagged   [ OK ]
+	Multicast IPv4 untagged   [ OK ]
+	Unicast IPv6 untagged   [ OK ]
+	Multicast IPv6 untagged   [ OK ]
+	Unicast non-IP VID 1   [ OK ]
+	Multicast non-IP VID 1   [ OK ]
+	Broadcast non-IP VID 1   [ OK ]
+	Unicast IPv4 VID 1   [ OK ]
+	Multicast IPv4 VID 1   [ OK ]
+	Unicast IPv6 VID 1   [ OK ]
+	Multicast IPv6 VID 1   [ OK ]
+	Unicast non-IP VID 4094   [ OK ]
+	Multicast non-IP VID 4094   [ OK ]
+	Broadcast non-IP VID 4094   [ OK ]
+	Unicast IPv4 VID 4094   [ OK ]
+	Multicast IPv4 VID 4094   [ OK ]
+	Unicast IPv6 VID 4094   [ OK ]
+	Multicast IPv6 VID 4094   [ OK ]
+
+Fixes: 476a4f05d9b8 ("selftests: forwarding: add a no_forwarding.sh test")
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Kacper Ludwinski <kac.ludwinski@icloud.com>
+Link: https://patch.msgid.link/20241002051016.849-1-kac.ludwinski@icloud.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c   |   22 +++++++++++++++++++---
- drivers/usb/dwc3/core.h   |    4 ----
- drivers/usb/dwc3/gadget.c |   11 -----------
- 3 files changed, 19 insertions(+), 18 deletions(-)
+ tools/testing/selftests/net/forwarding/no_forwarding.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -533,6 +533,7 @@ static int dwc3_alloc_event_buffers(stru
- int dwc3_event_buffers_setup(struct dwc3 *dwc)
- {
- 	struct dwc3_event_buffer	*evt;
-+	u32				reg;
+diff --git a/tools/testing/selftests/net/forwarding/no_forwarding.sh b/tools/testing/selftests/net/forwarding/no_forwarding.sh
+index 9e677aa64a06a..694ece9ba3a74 100755
+--- a/tools/testing/selftests/net/forwarding/no_forwarding.sh
++++ b/tools/testing/selftests/net/forwarding/no_forwarding.sh
+@@ -202,7 +202,7 @@ one_bridge_two_pvids()
+ 	ip link set $swp2 master br0
  
- 	if (!dwc->ev_buf)
- 		return 0;
-@@ -545,8 +546,10 @@ int dwc3_event_buffers_setup(struct dwc3
- 			upper_32_bits(evt->dma));
- 	dwc3_writel(dwc->regs, DWC3_GEVNTSIZ(0),
- 			DWC3_GEVNTSIZ_SIZE(evt->length));
--	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), 0);
+ 	bridge vlan add dev $swp1 vid 1 pvid untagged
+-	bridge vlan add dev $swp1 vid 2 pvid untagged
++	bridge vlan add dev $swp2 vid 2 pvid untagged
  
-+	/* Clear any stale event */
-+	reg = dwc3_readl(dwc->regs, DWC3_GEVNTCOUNT(0));
-+	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), reg);
- 	return 0;
- }
+ 	run_test "Switch ports in VLAN-aware bridge with different PVIDs"
  
-@@ -573,7 +576,10 @@ void dwc3_event_buffers_cleanup(struct d
- 	dwc3_writel(dwc->regs, DWC3_GEVNTADRHI(0), 0);
- 	dwc3_writel(dwc->regs, DWC3_GEVNTSIZ(0), DWC3_GEVNTSIZ_INTMASK
- 			| DWC3_GEVNTSIZ_SIZE(0));
--	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), 0);
-+
-+	/* Clear any stale event */
-+	reg = dwc3_readl(dwc->regs, DWC3_GEVNTCOUNT(0));
-+	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), reg);
- }
- 
- static void dwc3_core_num_eps(struct dwc3 *dwc)
-@@ -2254,7 +2260,11 @@ static int dwc3_runtime_resume(struct de
- 
- 	switch (dwc->current_dr_role) {
- 	case DWC3_GCTL_PRTCAP_DEVICE:
--		dwc3_gadget_process_pending_events(dwc);
-+		if (dwc->pending_events) {
-+			pm_runtime_put(dwc->dev);
-+			dwc->pending_events = false;
-+			enable_irq(dwc->irq_gadget);
-+		}
- 		break;
- 	case DWC3_GCTL_PRTCAP_HOST:
- 	default:
-@@ -2341,6 +2351,12 @@ static void dwc3_complete(struct device
- static const struct dev_pm_ops dwc3_dev_pm_ops = {
- 	SET_SYSTEM_SLEEP_PM_OPS(dwc3_suspend, dwc3_resume)
- 	.complete = dwc3_complete,
-+
-+	/*
-+	 * Runtime suspend halts the controller on disconnection. It relies on
-+	 * platforms with custom connection notification to start the controller
-+	 * again.
-+	 */
- 	SET_RUNTIME_PM_OPS(dwc3_runtime_suspend, dwc3_runtime_resume,
- 			dwc3_runtime_idle)
- };
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -1643,7 +1643,6 @@ static inline void dwc3_otg_host_init(st
- #if !IS_ENABLED(CONFIG_USB_DWC3_HOST)
- int dwc3_gadget_suspend(struct dwc3 *dwc);
- int dwc3_gadget_resume(struct dwc3 *dwc);
--void dwc3_gadget_process_pending_events(struct dwc3 *dwc);
- #else
- static inline int dwc3_gadget_suspend(struct dwc3 *dwc)
- {
-@@ -1655,9 +1654,6 @@ static inline int dwc3_gadget_resume(str
- 	return 0;
- }
- 
--static inline void dwc3_gadget_process_pending_events(struct dwc3 *dwc)
--{
--}
- #endif /* !IS_ENABLED(CONFIG_USB_DWC3_HOST) */
- 
- #if IS_ENABLED(CONFIG_USB_DWC3_ULPI)
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4741,14 +4741,3 @@ int dwc3_gadget_resume(struct dwc3 *dwc)
- 
- 	return dwc3_gadget_soft_connect(dwc);
- }
--
--void dwc3_gadget_process_pending_events(struct dwc3 *dwc)
--{
--	if (dwc->pending_events) {
--		dwc3_interrupt(dwc->irq_gadget, dwc->ev_buf);
--		dwc3_thread_interrupt(dwc->irq_gadget, dwc->ev_buf);
--		pm_runtime_put(dwc->dev);
--		dwc->pending_events = false;
--		enable_irq(dwc->irq_gadget);
--	}
--}
+-- 
+2.43.0
+
 
 
 
