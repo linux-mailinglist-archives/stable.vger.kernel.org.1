@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-83910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C697799CD23
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:29:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A68099CE0E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:39:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 033891C216F1
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:29:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA1D428131C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6DA1AAE3B;
-	Mon, 14 Oct 2024 14:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919AD1A0724;
+	Mon, 14 Oct 2024 14:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnFHggh7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIv2dwDH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF6E1547F3;
-	Mon, 14 Oct 2024 14:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F70620EB;
+	Mon, 14 Oct 2024 14:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916156; cv=none; b=CFtbGlu3UcCaFiZgtWUYT3eeS4Ly31Dzg4PNVuzvxYChWm1zHAKaNsv6wsYJSu9iJR+BYWkII9vXYrcK8mRDZlEezIFzt7wkHJa1OUzWjzit8jaHdnQieHhUChYi8Ub/IwXsI29KK+U0sGWHpBBoGK/h+l258gDdjIQeTknfeTE=
+	t=1728916764; cv=none; b=SwCs5GiL4J8Vm+EU7IiDXJwGj5kaM7JxpdPkNnABVhi1LvKBFmSk9tet0i8lauZ+7WESk64gyMKSt+5aNT/+HBvKzkb27HAmsqJC5yIVXwASY4vNkUJSaQFwbjeLqQ4cr2Q0+DIuIimz4HcbdD0brtOAblpNVXD5/Cg3fNDJNjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916156; c=relaxed/simple;
-	bh=VulfSATv7IOfWM8yPIsyk/rglBh7UxbcghQg3eKztPw=;
+	s=arc-20240116; t=1728916764; c=relaxed/simple;
+	bh=29U+ZR+TBn7jO35UaX8jYTTxvqI7s44YIlvGeaMmoFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pClu1LdoYApX3/8Z2X2nmfTPveW3REMV+wB7yWQNnQQuyVVnBZOc+BAxbs6v4gI9KP71/+UjYJseiudxKLmZ+TfEqqychZ3tBRO3IildP6miqywwGnUJJW2hnefIEa7O0iorFDnuY32Dqb8ANuAur6AFJ7pBrtHLW8O0n+i3WFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnFHggh7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430A0C4CEC3;
-	Mon, 14 Oct 2024 14:29:15 +0000 (UTC)
+	 MIME-Version; b=CcsTGUrmxcT/QBkQPvxb2pubkVYc6FpSwdMp7Y3D/RtU8IooWKlWN6aiyMV9cYhrU82/TDs2JBetLwqLa4mNUQZD5lrIWcaOemyxbxFuz1848fZNMzJDv7IfsPbBXAopA3+9Nda8EwN4lW1rTchAuf0IuNQ8tV2MyeWAqpH1VPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIv2dwDH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6BCBC4CECF;
+	Mon, 14 Oct 2024 14:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916155;
-	bh=VulfSATv7IOfWM8yPIsyk/rglBh7UxbcghQg3eKztPw=;
+	s=korg; t=1728916764;
+	bh=29U+ZR+TBn7jO35UaX8jYTTxvqI7s44YIlvGeaMmoFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pnFHggh7EWVNSVRo65S5RrFBXOCRXwK7zCQTcquDEru283fgfcFPrGfQBebd66xFZ
-	 8LrbWrqAhshhTTlHX4XKz3ucLIinzLYk1Wb/m9dZ4F4dXhUyv+RmOUlUkmDFARNtIy
-	 hkaU04OSij/nrAxYCuFO0G9leyJQAnAwdpOOiid0=
+	b=LIv2dwDHyTMlGL9I9UNrJKHG/gtXizVu+T8MaQUCqoZy1N171FS/XGYSiQiLTULXc
+	 3u9fpyLZlZdbThx3Yye6a/ygHtGM2LKFw3+dNBQ3RL0o8+hwWawFEk7FFn54yub3T3
+	 mbTh3VvMyNtI0XVAFTclwd7+GBislhSR+WJDzj1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 101/214] net: pse-pd: Fix enabled status mismatch
+Subject: [PATCH 6.6 058/213] s390/boot: Compile all files with the same march flag
 Date: Mon, 14 Oct 2024 16:19:24 +0200
-Message-ID: <20241014141048.936623074@linuxfoundation.org>
+Message-ID: <20241014141045.255622720@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit dda3529d2e84e2ee7b97158c9cdf5e10308f37bc ]
+[ Upstream commit fccb175bc89a0d37e3ff513bb6bf1f73b3a48950 ]
 
-PSE controllers like the TPS23881 can forcefully turn off their
-configuration state. In such cases, the is_enabled() and get_status()
-callbacks will report the PSE as disabled, while admin_state_enabled
-will show it as enabled. This mismatch can lead the user to attempt
-to enable it, but no action is taken as admin_state_enabled remains set.
+Only a couple of files of the decompressor are compiled with the
+minimum architecture level. This is problematic for potential function
+calls between compile units, especially if a target function is within
+a compile until compiled for a higher architecture level, since that
+may lead to an unexpected operation exception.
 
-The solution is to disable the PSE before enabling it, ensuring the
-actual status matches admin_state_enabled.
+Therefore compile all files of the decompressor for the same (minimum)
+architecture level.
 
-Fixes: d83e13761d5b ("net: pse-pd: Use regulator framework within PSE framework")
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241002121706.246143-1-kory.maincent@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/pse-pd/pse_core.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/s390/boot/Makefile | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 4f032b16a8a0a..f8e6854781e6e 100644
---- a/drivers/net/pse-pd/pse_core.c
-+++ b/drivers/net/pse-pd/pse_core.c
-@@ -785,6 +785,17 @@ static int pse_ethtool_c33_set_config(struct pse_control *psec,
- 	 */
- 	switch (config->c33_admin_control) {
- 	case ETHTOOL_C33_PSE_ADMIN_STATE_ENABLED:
-+		/* We could have mismatch between admin_state_enabled and
-+		 * state reported by regulator_is_enabled. This can occur when
-+		 * the PI is forcibly turn off by the controller. Call
-+		 * regulator_disable on that case to fix the counters state.
-+		 */
-+		if (psec->pcdev->pi[psec->id].admin_state_enabled &&
-+		    !regulator_is_enabled(psec->ps)) {
-+			err = regulator_disable(psec->ps);
-+			if (err)
-+				break;
-+		}
- 		if (!psec->pcdev->pi[psec->id].admin_state_enabled)
- 			err = regulator_enable(psec->ps);
- 		break;
+diff --git a/arch/s390/boot/Makefile b/arch/s390/boot/Makefile
+index c7c81e5f92189..e4def3a6c6cca 100644
+--- a/arch/s390/boot/Makefile
++++ b/arch/s390/boot/Makefile
+@@ -9,11 +9,8 @@ UBSAN_SANITIZE := n
+ KASAN_SANITIZE := n
+ KCSAN_SANITIZE := n
+ 
+-KBUILD_AFLAGS := $(KBUILD_AFLAGS_DECOMPRESSOR)
+-KBUILD_CFLAGS := $(KBUILD_CFLAGS_DECOMPRESSOR)
+-
+ #
+-# Use minimum architecture for als.c to be able to print an error
++# Use minimum architecture level so it is possible to print an error
+ # message if the kernel is started on a machine which is too old
+ #
+ ifndef CONFIG_CC_IS_CLANG
+@@ -22,16 +19,10 @@ else
+ CC_FLAGS_MARCH_MINIMUM := -march=z10
+ endif
+ 
+-ifneq ($(CC_FLAGS_MARCH),$(CC_FLAGS_MARCH_MINIMUM))
+-AFLAGS_REMOVE_head.o		+= $(CC_FLAGS_MARCH)
+-AFLAGS_head.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-AFLAGS_REMOVE_mem.o		+= $(CC_FLAGS_MARCH)
+-AFLAGS_mem.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-CFLAGS_REMOVE_als.o		+= $(CC_FLAGS_MARCH)
+-CFLAGS_als.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-CFLAGS_REMOVE_sclp_early_core.o	+= $(CC_FLAGS_MARCH)
+-CFLAGS_sclp_early_core.o	+= $(CC_FLAGS_MARCH_MINIMUM)
+-endif
++KBUILD_AFLAGS := $(filter-out $(CC_FLAGS_MARCH),$(KBUILD_AFLAGS_DECOMPRESSOR))
++KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_MARCH),$(KBUILD_CFLAGS_DECOMPRESSOR))
++KBUILD_AFLAGS += $(CC_FLAGS_MARCH_MINIMUM)
++KBUILD_CFLAGS += $(CC_FLAGS_MARCH_MINIMUM)
+ 
+ CFLAGS_sclp_early_core.o += -I$(srctree)/drivers/s390/char
+ 
 -- 
 2.43.0
 
