@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-84938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2888699D2F7
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:32:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A30E599CD6B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:32:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8C051F20F76
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:32:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67026283492
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05DE1BD00A;
-	Mon, 14 Oct 2024 15:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AAE717C77;
+	Mon, 14 Oct 2024 14:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIMbdCgr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JjL4hcQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCF21B85E3;
-	Mon, 14 Oct 2024 15:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2F81A28C;
+	Mon, 14 Oct 2024 14:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919737; cv=none; b=e7SNyhKz8vj7s37O1FaFOK7Kw7L7HDwNa+uh0CLeEy0z+n7UPnJfyoj7DhJxteqq/dSuU7Ym4mUG/zMBWh4h30a8dK+U0do+KEq5rIDOEu3BQBgZNvdk9co50wqiZTrsjySkbuCGNZIITlsHkR1FEgoHmH/Z5iglJUdlucOz8SY=
+	t=1728916352; cv=none; b=RgKuaMRemHpk+lNa3KfZ/bV5FPZw8sYgJtyNQnAjva8HUlR8kziiJUBjy8xqXASDLTiKdQBkbjAIrNHJIMiv5WuM1xg1DCThOOyMQa/WzONhIlgM4b6Td7IbfkBwSpHVG+tcngVDi2qDKz1ArBCB4Kree/sID8j5V2XwjRZAyEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919737; c=relaxed/simple;
-	bh=f5dLOV/d6sBchKZ05l5B0SAbVzqGu5ttgJvQXzmjun0=;
+	s=arc-20240116; t=1728916352; c=relaxed/simple;
+	bh=NdgM1zimwg59TfkSAfG+dj46CXOKbJdGmhVBPVZ6sUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eWh/iUFQiSIaH2+/3ST0+3k1xs+mO+EZsyA3DLX8WtqKhSonGoVSDoVUUiqL+2vIzUQHsiPniXtzmxYaz1jM9ZwULKlRrP7DovlSMz2KYe7FFn0VLxEBoEkJkU++0mgAY/zkAhgTQV0uUOHaXjnHWyvBvbdNtB/GsZ8jqD9hBfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIMbdCgr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876EDC4CEC7;
-	Mon, 14 Oct 2024 15:28:56 +0000 (UTC)
+	 MIME-Version; b=Z980Bo3Sq97BKhBRf2LMHHsGlOv2xZC0PmMF121+QOMerXI3WNJHDV0iaHHynvgY7QdaDRk0m+b3+qVYGiqHUjdTtjtnFKiI2kHrOjA7vwZnAKR7Jplgc2DDbZERJCtoykwifjnLiNplL/kn+6MNZMh/Pqa1iQbGUeOAi4Ntvkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JjL4hcQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59BF1C4CECF;
+	Mon, 14 Oct 2024 14:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919737;
-	bh=f5dLOV/d6sBchKZ05l5B0SAbVzqGu5ttgJvQXzmjun0=;
+	s=korg; t=1728916351;
+	bh=NdgM1zimwg59TfkSAfG+dj46CXOKbJdGmhVBPVZ6sUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIMbdCgrCDiCinXNwtPJGRfvBpeIqiUig6iUG2TzUXwOwWr7F+IPghRTbKVRW53DQ
-	 rTmcnKOSVg2niCpNNVEi3jvBHV+ZvFRAI9Y0fsYzMFPTk09FrA1hyaXECTH+zYFVD0
-	 W+NZEua/joq5kOyUpGbQqsUbJQIi9Tsm5+V9XNuQ=
+	b=1JjL4hcQXGpLX85k+2uXcLq4Fzz2Q0yRuNWm/4QGCAOL9/UTfFGE5fxiNBIXgimG/
+	 zKyx20QRr7ukjnmMKcoI8PJ4CcRBaFJl2rcYyfE9LeCBJbNAkd3eZdENTImNQTv67X
+	 6OVT8KTlinwhLcqduKLIudyznW0P0+2mUhJeyKtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sachin Sant <sachinp@linux.ibm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 666/798] tracing: Remove precision vsnprintf() check from print event
+Subject: [PATCH 6.11 157/214] hwmon: (adt7470) Add missing dependency on REGMAP_I2C
 Date: Mon, 14 Oct 2024 16:20:20 +0200
-Message-ID: <20241014141244.229980724@linuxfoundation.org>
+Message-ID: <20241014141051.113844538@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 5efd3e2aef91d2d812290dcb25b2058e6f3f532c ]
+[ Upstream commit b6abcc19566509ab4812bd5ae5df46515d0c1d70 ]
 
-This reverts 60be76eeabb3d ("tracing: Add size check when printing
-trace_marker output"). The only reason the precision check was added
-was because of a bug that miscalculated the write size of the string into
-the ring buffer and it truncated it removing the terminating nul byte. On
-reading the trace it crashed the kernel. But this was due to the bug in
-the code that happened during development and should never happen in
-practice. If anything, the precision can hide bugs where the string in the
-ring buffer isn't nul terminated and it will not be checked.
+This driver requires REGMAP_I2C to be selected in order to get access to
+regmap_config and devm_regmap_init_i2c. Add the missing dependency.
 
-Link: https://lore.kernel.org/all/C7E7AF1A-D30F-4D18-B8E5-AF1EF58004F5@linux.ibm.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20240227125706.04279ac2@gandalf.local.home
-Link: https://lore.kernel.org/all/20240302111244.3a1674be@gandalf.local.home/
-Link: https://lore.kernel.org/linux-trace-kernel/20240304174341.2a561d9f@gandalf.local.home
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Fixes: 60be76eeabb3d ("tracing: Add size check when printing trace_marker output")
-Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-Tested-by: Sachin Sant <sachinp@linux.ibm.com>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: ef67959c4253 ("hwmon: (adt7470) Convert to use regmap")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Message-ID: <20241002-hwmon-select-regmap-v1-2-548d03268934@gmail.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_output.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/hwmon/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/trace/trace_output.c b/kernel/trace/trace_output.c
-index bf1965b180992..5cd4fb6563068 100644
---- a/kernel/trace/trace_output.c
-+++ b/kernel/trace/trace_output.c
-@@ -1445,12 +1445,11 @@ static enum print_line_t trace_print_print(struct trace_iterator *iter,
- {
- 	struct print_entry *field;
- 	struct trace_seq *s = &iter->seq;
--	int max = iter->ent_size - offsetof(struct print_entry, buf);
- 
- 	trace_assign_type(field, iter->ent);
- 
- 	seq_print_ip_sym(s, field->ip, flags);
--	trace_seq_printf(s, ": %.*s", max, field->buf);
-+	trace_seq_printf(s, ": %s", field->buf);
- 
- 	return trace_handle_return(s);
- }
-@@ -1459,11 +1458,10 @@ static enum print_line_t trace_print_raw(struct trace_iterator *iter, int flags,
- 					 struct trace_event *event)
- {
- 	struct print_entry *field;
--	int max = iter->ent_size - offsetof(struct print_entry, buf);
- 
- 	trace_assign_type(field, iter->ent);
- 
--	trace_seq_printf(&iter->seq, "# %lx %.*s", field->ip, max, field->buf);
-+	trace_seq_printf(&iter->seq, "# %lx %s", field->ip, field->buf);
- 
- 	return trace_handle_return(&iter->seq);
- }
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index 75d7797a5b943..cfb22c2b9e61c 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -224,6 +224,7 @@ config SENSORS_ADT7462
+ config SENSORS_ADT7470
+ 	tristate "Analog Devices ADT7470"
+ 	depends on I2C
++	select REGMAP_I2C
+ 	help
+ 	  If you say yes here you get support for the Analog Devices
+ 	  ADT7470 temperature monitoring chips.
 -- 
 2.43.0
 
