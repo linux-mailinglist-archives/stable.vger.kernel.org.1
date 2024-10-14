@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-84881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3604399D2A5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F73799CE21
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:40:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB4872844B2
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B7201F23268
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A9A1ABEDC;
-	Mon, 14 Oct 2024 15:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E381AA797;
+	Mon, 14 Oct 2024 14:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O2bnDZjz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NnNaiPP+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39D014AA9;
-	Mon, 14 Oct 2024 15:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A3E20EB;
+	Mon, 14 Oct 2024 14:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919548; cv=none; b=d9lMfFhVJQ2miXmg+fnN+F1uJ6fiUSeH5gkwVlDYyqInILT4lkYTFKVJ+CswYcocKZwQfsTaY3+OqBSuoOZ6Mr5yUQdoq+a4LYKWGi6KrOk4X27MYxGPExkCIBR7MbTeUJ0FAv8RGF0cprSVvX1hAIqmHORUg81g26oD16sEWtg=
+	t=1728916827; cv=none; b=YEhARij3zNFcj6X0jt4MZN3+HZZA6B1RcmT62UcMGoIQMInb0TfhcMzugMsLqUNkLigepD+RlMOXpnOsncf40T+6/0iZpl3zTqsNo5kKLasFaUNVCvTdnE+2779N+PQDTAdOg/AXVv1jGQUgJhRsBl2RLwsIubD78ki8aFySnrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919548; c=relaxed/simple;
-	bh=J1lZUnJLirdc0alkth/sa1qaqHgtl8x8hchWh5IbPyc=;
+	s=arc-20240116; t=1728916827; c=relaxed/simple;
+	bh=PShpwdKSwSm9L99SUBhFzdi4ybApZUkPQYhmVblxbwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WTlpNb2EDq5l1HaT1TZjYH6w4PgS15icp2AomoiFGClf5OtTpI/tGr5Oh1Q3oMLosv5ZfdfswwpJFufx+yCNOD34epHZ3gCAxhI80MTaNXlGdzNhJBOxzXK8iOwnN96ij9/0a5nQ9C3zNokBorSLzMNtlBoJuU/DA330cshMs7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O2bnDZjz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03747C4CECF;
-	Mon, 14 Oct 2024 15:25:46 +0000 (UTC)
+	 MIME-Version; b=PEPNUhe4CZjysIuNGbRWOQB7QcnlfBZIjzHcT3K7ugKbAPd6VBKM3EpSalbr6isVU2FSQPBU+mlTTW0p2C1vlp6lM9OeMwAbUju+r0sGNftsarq3KJHNXES16KBC6kYTy3f+0RU4BmwrDjosfOow+QXu6IVKVkMc1GAOowXxlf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NnNaiPP+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05090C4CEC3;
+	Mon, 14 Oct 2024 14:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919547;
-	bh=J1lZUnJLirdc0alkth/sa1qaqHgtl8x8hchWh5IbPyc=;
+	s=korg; t=1728916827;
+	bh=PShpwdKSwSm9L99SUBhFzdi4ybApZUkPQYhmVblxbwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O2bnDZjzcba1KjehHFIvYmUBXQG08JxX8Syr6lBdGxA4nBLqL7kMYLNtfyf0dAoBB
-	 gFdzctde9wcIWemuY1XOiVfu6QWkDYqaITX6OeS6iIRbN9GYzVM9ryeu1fvUzLKzOX
-	 W9B1bnm5JNBLn+4SojXwAOYDKHZxpm5dYdXHGE10=
+	b=NnNaiPP+xoc4ih6m/SI1t2d53XjQlmuUVA0iGzfcykT+phfZKmKBS9NCGUokviCk3
+	 awcQzIxwiSySXqDk+SAHewa9YF21b1AVQk3biMs2Ie183coGGLkHDZF3KLXIrY6k18
+	 gdvc5suHpLa5gT7cb8XoYXjwVa/Ker4MGsqvSocg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alfred Agrell <blubban@gmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Subject: [PATCH 6.1 596/798] tomoyo: fallback to realpath if symlinks pathname does not exist
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 044/213] jbd2: fix kernel-doc for j_transaction_overhead_buffers
 Date: Mon, 14 Oct 2024 16:19:10 +0200
-Message-ID: <20241014141241.418334588@linuxfoundation.org>
+Message-ID: <20241014141044.709380851@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit ada1986d07976d60bed5017aa38b7f7cf27883f7 upstream.
+[ Upstream commit 7e8fb2eda9885ea2d13179a4c0bbf810f900ef25 ]
 
-Alfred Agrell found that TOMOYO cannot handle execveat(AT_EMPTY_PATH)
-inside chroot environment where /dev and /proc are not mounted, for
-commit 51f39a1f0cea ("syscalls: implement execveat() system call") missed
-that TOMOYO tries to canonicalize argv[0] when the filename fed to the
-executed program as argv[0] is supplied using potentially nonexistent
-pathname.
+Use the correct struct member name in the kernel-doc notation
+to prevent a kernel-doc build warning.
 
-Since "/dev/fd/<fd>" already lost symlink information used for obtaining
-that <fd>, it is too late to reconstruct symlink's pathname. Although
-<filename> part of "/dev/fd/<fd>/<filename>" might not be canonicalized,
-TOMOYO cannot use tomoyo_realpath_nofollow() when /dev or /proc is not
-mounted. Therefore, fallback to tomoyo_realpath_from_path() when
-tomoyo_realpath_nofollow() failed.
+include/linux/jbd2.h:1303: warning: Function parameter or struct member 'j_transaction_overhead_buffers' not described in 'journal_s'
+include/linux/jbd2.h:1303: warning: Excess struct member 'j_transaction_overhead' description in 'journal_s'
 
-Reported-by: Alfred Agrell <blubban@gmail.com>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1082001
-Fixes: 51f39a1f0cea ("syscalls: implement execveat() system call")
-Cc: stable@vger.kernel.org # v3.19+
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e3a00a23781c ("jbd2: precompute number of transaction descriptor blocks")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lore.kernel.org/linux-next/20240710182252.4c281445@canb.auug.org.au/
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240723051647.3053491-1-rdunlap@infradead.org
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/tomoyo/domain.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ include/linux/jbd2.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/security/tomoyo/domain.c
-+++ b/security/tomoyo/domain.c
-@@ -723,10 +723,13 @@ int tomoyo_find_next_domain(struct linux
- 	ee->r.obj = &ee->obj;
- 	ee->obj.path1 = bprm->file->f_path;
- 	/* Get symlink's pathname of program. */
--	retval = -ENOENT;
- 	exename.name = tomoyo_realpath_nofollow(original_name);
--	if (!exename.name)
--		goto out;
-+	if (!exename.name) {
-+		/* Fallback to realpath if symlink's pathname does not exist. */
-+		exename.name = tomoyo_realpath_from_path(&bprm->file->f_path);
-+		if (!exename.name)
-+			goto out;
-+	}
- 	tomoyo_fill_path_info(&exename);
- retry:
- 	/* Check 'aggregator' directive. */
+diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
+index 8553dc1d0e898..f0bc9aa5aed3f 100644
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -1084,7 +1084,7 @@ struct journal_s
+ 	int			j_revoke_records_per_block;
+ 
+ 	/**
+-	 * @j_transaction_overhead:
++	 * @j_transaction_overhead_buffers:
+ 	 *
+ 	 * Number of blocks each transaction needs for its own bookkeeping
+ 	 */
+-- 
+2.43.0
+
 
 
 
