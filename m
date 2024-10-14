@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-83831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDCB399CCC1
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:24:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 853FC99D21D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 751FC1F230E4
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:24:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A03D28106A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932241A0BE7;
-	Mon, 14 Oct 2024 14:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C401C3300;
+	Mon, 14 Oct 2024 15:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IiWsWhq+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WH5RXZMy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4465019E802;
-	Mon, 14 Oct 2024 14:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620481A76CE;
+	Mon, 14 Oct 2024 15:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915866; cv=none; b=BBzqQCU5O4EsApNj7sYK8X/Es+ybQ/EbhOojDC6GKNyitYSyvGWwNiTFr5DFNoWdUew4IXHApJ01CREaYN2GicHQv0MQSE0AavJrrKlCjKGUaStR8bJXE3CKasNqSkFBzA1EBscSDX+DdXptrZM9GB1hOanEjJpBZfmEpn8Nkuk=
+	t=1728919223; cv=none; b=HfBS2E2cnQ24/6mblyyRMkYKCsYegz1CjBVs34eI2shtdkRMmhv9ngtl+5wJUmKY6znoum10zyTmDu9hs3YKxNPJmnptjkSOw3yIZpcSd8SxrUNaq2S7lkQxUcxP9zBZR67zY94tfFUTXOsNjTLjtm+567Jbb5735H3ClG4D+rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915866; c=relaxed/simple;
-	bh=LC5dEXaHYJ3O7ht/kmp26PYpPne6B7xWk6C5+8YN70s=;
+	s=arc-20240116; t=1728919223; c=relaxed/simple;
+	bh=JNI0pt0V47aNS4YYfiYCFEuRnryuDTygf1KcdwAcKG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=huqDmcijB7OfgullW7SV+rE1Q56A4AhIF0MautwE60f7AzxPR6P17x3YcnKNYpRpZ0VSlsoJRag14+217R9aJiDi6ZGcz35BAxI2VUc6Cj6nOuxXznkSy2akHS8Z0+vmU8F6/30LBHeEIsAGR4IJomty/e8g5dUIZdkmah8iZuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IiWsWhq+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2778C4CEC7;
-	Mon, 14 Oct 2024 14:24:25 +0000 (UTC)
+	 MIME-Version; b=LOGK9pYCPSnpXhdC50TX0f/FAjRW2J6s1mFg2rH7eYr7DZJttQFPuF/ifvUOjEluuAgb9z8EgeJKtr3d4Ksx/bsHz5bAfIyC8B2z9Kr6CTK4h+6gvW5og4caIqDCNQEDZTPF0roFr6sErDUeFuIRevZNJF0Kp7gK+gV8DPzLMZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WH5RXZMy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56D8C4CEC3;
+	Mon, 14 Oct 2024 15:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915866;
-	bh=LC5dEXaHYJ3O7ht/kmp26PYpPne6B7xWk6C5+8YN70s=;
+	s=korg; t=1728919223;
+	bh=JNI0pt0V47aNS4YYfiYCFEuRnryuDTygf1KcdwAcKG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IiWsWhq+TkM0VzORGlFC1zDARJmTntgzb6qIPI1Yjmbke9OAKe0dMH0pehmrEmHPV
-	 tZ2ywZmOOfdAXbO4AM+rGBuz01Gfee0POQhTw21VJYheQz2zR7YfS35aGPqu2IT1UY
-	 wcH0I9KwtQ713iJE8ahf2Nk2iwAe0RQYiq0heKOk=
+	b=WH5RXZMyXU515X1dKwplvNRGpHhdUDRke6+I0YsiB8ZJk3NdD98YA/X3Y1zQDzmMm
+	 0+vFloZs5sNXOUQCYabrrZRhKa/v7jGQedrVNLjvaDLmbU0l6Ugfbd8K2hPAgfaRY8
+	 F7b+NEQsQsilK1nAu4sZjbja8q5Sda67cQUhIzJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 021/214] s390/mm: Add cond_resched() to cmm_alloc/free_pages()
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 530/798] spi: bcm63xx: Fix module autoloading
 Date: Mon, 14 Oct 2024 16:18:04 +0200
-Message-ID: <20241014141045.820093753@linuxfoundation.org>
+Message-ID: <20241014141238.811434977@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 131b8db78558120f58c5dc745ea9655f6b854162 ]
+commit 909f34f2462a99bf876f64c5c61c653213e32fce upstream.
 
-Adding/removing large amount of pages at once to/from the CMM balloon
-can result in rcu_sched stalls or workqueue lockups, because of busy
-looping w/o cond_resched().
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
+based on the alias from platform_device_id table.
 
-Prevent this by adding a cond_resched(). cmm_free_pages() holds a
-spin_lock while looping, so it cannot be added directly to the existing
-loop. Instead, introduce a wrapper function that operates on maximum 256
-pages at once, and add it there.
-
-Signed-off-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 44d8fb30941d ("spi/bcm63xx: move register definitions into the driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://patch.msgid.link/20240819123349.4020472-2-ruanjinjie@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/mm/cmm.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/spi/spi-bcm63xx.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/s390/mm/cmm.c b/arch/s390/mm/cmm.c
-index 75d15bf41d97c..d01724a715d0f 100644
---- a/arch/s390/mm/cmm.c
-+++ b/arch/s390/mm/cmm.c
-@@ -95,11 +95,12 @@ static long cmm_alloc_pages(long nr, long *counter,
- 		(*counter)++;
- 		spin_unlock(&cmm_lock);
- 		nr--;
-+		cond_resched();
- 	}
- 	return nr;
- }
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -476,6 +476,7 @@ static const struct platform_device_id b
+ 	{
+ 	},
+ };
++MODULE_DEVICE_TABLE(platform, bcm63xx_spi_dev_match);
  
--static long cmm_free_pages(long nr, long *counter, struct cmm_page_array **list)
-+static long __cmm_free_pages(long nr, long *counter, struct cmm_page_array **list)
- {
- 	struct cmm_page_array *pa;
- 	unsigned long addr;
-@@ -123,6 +124,21 @@ static long cmm_free_pages(long nr, long *counter, struct cmm_page_array **list)
- 	return nr;
- }
- 
-+static long cmm_free_pages(long nr, long *counter, struct cmm_page_array **list)
-+{
-+	long inc = 0;
-+
-+	while (nr) {
-+		inc = min(256L, nr);
-+		nr -= inc;
-+		inc = __cmm_free_pages(inc, counter, list);
-+		if (inc)
-+			break;
-+		cond_resched();
-+	}
-+	return nr + inc;
-+}
-+
- static int cmm_oom_notify(struct notifier_block *self,
- 			  unsigned long dummy, void *parm)
- {
--- 
-2.43.0
-
+ static const struct of_device_id bcm63xx_spi_of_match[] = {
+ 	{ .compatible = "brcm,bcm6348-spi", .data = &bcm6348_spi_reg_offsets },
 
 
 
