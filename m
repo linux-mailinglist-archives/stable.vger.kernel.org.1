@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-84663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99EFC99D148
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:13:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D97CD99D14A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:13:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DB6C2855F7
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:12:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D0A828542C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6641AB505;
-	Mon, 14 Oct 2024 15:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3E11AAE02;
+	Mon, 14 Oct 2024 15:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNGmOju+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixEHXmDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A955043AA9;
-	Mon, 14 Oct 2024 15:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C103481B3;
+	Mon, 14 Oct 2024 15:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918778; cv=none; b=SUxHqnqTTkFHDtktPQD4Cd+Ss8pYy+yO7SRaE+RoJDT3qM9qs0lESqj6DzBNYFgTJYmnZ7D3WHfgGaVib/+5ELVieO/NbqiVjln5ys27Wsxs+SRJqRzSPPqxafJZdtwZP5Jc7vf5P/+UIWIvTiuyPa06ZWPDT6gYCdWj6auLU2M=
+	t=1728918785; cv=none; b=B3Ih64f6lu3SiWYP+hlPxc98m5Qf1WyIhUGmBSGyWDIB8mudSjAciZy/UOS4tIiE51qG8O0thJb0bfruv+2xB7PpI9CjPyx+ddTRW1AAQJThRBAF6pTP0bVGdze9BYZDwt7aP7FN0xo6namYNyQzKhG/kBMJZRhLLsGHY3keBpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918778; c=relaxed/simple;
-	bh=Qr9w3sJkluk+jTlEMHLlLx8KNkJsLMAEXp437gGOFFk=;
+	s=arc-20240116; t=1728918785; c=relaxed/simple;
+	bh=gAgH7yJD72B3ISX99MTMqaA2G8+oRXp2ovM4XL311WY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ilOXowiWqJ5a+Iy2XvrIuanIvHEjwdDVsOF6Riatj4s1dMnOrX/gvdMlLVC7W0wOhnelw0+bLx/7faAQR2TRaZuyUgqVahsCOx8T/aiCLJqApjb9NJEkDBaDJpZlr+vBHoFcO0R3SVg0yM36J928L64NbNx0TjrTsKHe7Jxbbpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNGmOju+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6B0C4CEC3;
-	Mon, 14 Oct 2024 15:12:57 +0000 (UTC)
+	 MIME-Version; b=DEyTpWAqs0DdHQHQvt2BvJqV0bSp8kr/ayH7qD3AsVWKTt+emlLPwzOHaQ4oO/qC35jU3JD9ASEWobJwNtBuXAuEO/sFsSHbtz11Xl0KANmUSAmLY14qA07juOejE5I3ODmkzkoPRJt8uCqpbUC4YZnvRfsvYMNsfWI8p6bjzSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixEHXmDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD4FC4CECF;
+	Mon, 14 Oct 2024 15:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918778;
-	bh=Qr9w3sJkluk+jTlEMHLlLx8KNkJsLMAEXp437gGOFFk=;
+	s=korg; t=1728918785;
+	bh=gAgH7yJD72B3ISX99MTMqaA2G8+oRXp2ovM4XL311WY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uNGmOju+4tVema2g7HHv0SdF4tyElHoTTEYwL4Igl9i92nmd/K9NlN2mSbr7v7PLD
-	 VDrrHy0yhbnlEGBXn2rzna7lVGm2avW03/qKVaiIcCieAdf0FTdf3qpZQLUkw7DF8z
-	 AvStgNoKNuYpmnhoU8340RjzxX4Gyv5wMDdPGC0Q=
+	b=ixEHXmDgHbC5OIR3vHZOkV1FFPQsssRDB39J2mxTsRttokP1lmZ156cRCftaX0eOL
+	 hGx9KTm9K00uLpuk5e/JX99089TQiu1Ee5lhmi+8olOb1kibyo8gRb0SlYX0ShTpz1
+	 /JJQkKmJR50H74w4yplT3QGkU+C+mvDkcDsn5kYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>,
-	Issam Hamdi <ih@simonwunderlich.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jeongjun Park <aha310510@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 421/798] wifi: cfg80211: Set correct chandef when starting CAC
-Date: Mon, 14 Oct 2024 16:16:15 +0200
-Message-ID: <20241014141234.488790070@linuxfoundation.org>
+Subject: [PATCH 6.1 422/798] net/xen-netback: prevent UAF in xenvif_flush_hash()
+Date: Mon, 14 Oct 2024 16:16:16 +0200
+Message-ID: <20241014141234.527626212@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -67,75 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Issam Hamdi <ih@simonwunderlich.de>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit 20361712880396e44ce80aaeec2d93d182035651 ]
+[ Upstream commit 0fa5e94a1811d68fbffa0725efe6d4ca62c03d12 ]
 
-When starting CAC in a mode other than AP mode, it return a
-"WARNING: CPU: 0 PID: 63 at cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]"
-caused by the chandef.chan being null at the end of CAC.
+During the list_for_each_entry_rcu iteration call of xenvif_flush_hash,
+kfree_rcu does not exist inside the rcu read critical section, so if
+kfree_rcu is called when the rcu grace period ends during the iteration,
+UAF occurs when accessing head->next after the entry becomes free.
 
-Solution: Ensure the channel definition is set for the different modes
-when starting CAC to avoid getting a NULL 'chan' at the end of CAC.
+Therefore, to solve this, you need to change it to list_for_each_entry_safe.
 
- Call Trace:
-  ? show_regs.part.0+0x14/0x16
-  ? __warn+0x67/0xc0
-  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
-  ? report_bug+0xa7/0x130
-  ? exc_overflow+0x30/0x30
-  ? handle_bug+0x27/0x50
-  ? exc_invalid_op+0x18/0x60
-  ? handle_exception+0xf6/0xf6
-  ? exc_overflow+0x30/0x30
-  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
-  ? exc_overflow+0x30/0x30
-  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
-  ? regulatory_propagate_dfs_state.cold+0x1b/0x4c [cfg80211]
-  ? cfg80211_propagate_cac_done_wk+0x1a/0x30 [cfg80211]
-  ? process_one_work+0x165/0x280
-  ? worker_thread+0x120/0x3f0
-  ? kthread+0xc2/0xf0
-  ? process_one_work+0x280/0x280
-  ? kthread_complete_and_exit+0x20/0x20
-  ? ret_from_fork+0x19/0x24
-
-Reported-by: Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>
-Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
-Link: https://patch.msgid.link/20240816142418.3381951-1-ih@simonwunderlich.de
-[shorten subject, remove OCB, reorder cases to match previous list]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Link: https://patch.msgid.link/20240822181109.2577354-1-aha310510@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/net/xen-netback/hash.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index fe14997ce2c08..4df7a285a7de3 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -9834,7 +9834,20 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+diff --git a/drivers/net/xen-netback/hash.c b/drivers/net/xen-netback/hash.c
+index ff96f22648efd..45ddce35f6d2c 100644
+--- a/drivers/net/xen-netback/hash.c
++++ b/drivers/net/xen-netback/hash.c
+@@ -95,7 +95,7 @@ static u32 xenvif_new_hash(struct xenvif *vif, const u8 *data,
  
- 	err = rdev_start_radar_detection(rdev, dev, &chandef, cac_time_ms);
- 	if (!err) {
--		wdev->links[0].ap.chandef = chandef;
-+		switch (wdev->iftype) {
-+		case NL80211_IFTYPE_AP:
-+		case NL80211_IFTYPE_P2P_GO:
-+			wdev->links[0].ap.chandef = chandef;
-+			break;
-+		case NL80211_IFTYPE_ADHOC:
-+			wdev->u.ibss.chandef = chandef;
-+			break;
-+		case NL80211_IFTYPE_MESH_POINT:
-+			wdev->u.mesh.chandef = chandef;
-+			break;
-+		default:
-+			break;
-+		}
- 		wdev->cac_started = true;
- 		wdev->cac_start_time = jiffies;
- 		wdev->cac_time_ms = cac_time_ms;
+ static void xenvif_flush_hash(struct xenvif *vif)
+ {
+-	struct xenvif_hash_cache_entry *entry;
++	struct xenvif_hash_cache_entry *entry, *n;
+ 	unsigned long flags;
+ 
+ 	if (xenvif_hash_cache_size == 0)
+@@ -103,8 +103,7 @@ static void xenvif_flush_hash(struct xenvif *vif)
+ 
+ 	spin_lock_irqsave(&vif->hash.cache.lock, flags);
+ 
+-	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link,
+-				lockdep_is_held(&vif->hash.cache.lock)) {
++	list_for_each_entry_safe(entry, n, &vif->hash.cache.list, link) {
+ 		list_del_rcu(&entry->link);
+ 		vif->hash.cache.count--;
+ 		kfree_rcu(entry, rcu);
 -- 
 2.43.0
 
