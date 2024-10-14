@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-84779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B1599D212
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D29BD99CCC2
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:24:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91C651C2345E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A1D6B20D2F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FF91C243C;
-	Mon, 14 Oct 2024 15:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B16E571;
+	Mon, 14 Oct 2024 14:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eD/HglVQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8w/Oprt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612B249659;
-	Mon, 14 Oct 2024 15:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88FF19E802;
+	Mon, 14 Oct 2024 14:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919185; cv=none; b=KR+Bm5wVgz3Z8DbCYkf9eDra+0f8kQMQWN47G/lsJYuTOA1r2XH4S4Qj2eEF+UXGGKwlrgMj9t36zckz/+fMW9l9+rchi/vl5SIkZqZ04tTGU/ddonoLHoW5Ytn36FR5umxltV1HzAc47XqTF2Mi30/gS36O9nwG9i7127ftJvc=
+	t=1728915862; cv=none; b=rvKOoG0ZPq/427jN1vLKGjUjxOJpVwEyncnMpQ8oXyYPyK0f3F2wq/KSPu84kx7mXz0NzWdYOcPdihsBuibOTqx0EtSr4pjtQUyxz/ud5sf4IGW6CTlaZka19EA3gy9gkrjUTXyHcpTfjdf+dKoIvVeJwFO0QLpG2C0szkf52kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919185; c=relaxed/simple;
-	bh=1AEPg4oatgaSloHHyJpaqOCcMY6sdFgW2bAYCOlfuk4=;
+	s=arc-20240116; t=1728915862; c=relaxed/simple;
+	bh=EaQm//Bi1q8e0ezZjlKl9lHgPdDnIELxRp/6jsDhawA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VLl0BvmVvIV7GD8tGtpoh9DBWA6SZaTCmt+jWStm7Ukuqx3MjctYOocDxu3+pEA2ApSryrf59U2PullNLxXLBz5FOZv8mSFrpKG+kf8PI0NjziBp3b47tS05tZnSgTH4i09qMyOBmrFmSPoWq97piAxzcYWAfU7OQh+CRXTe9PY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eD/HglVQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C839AC4CEC3;
-	Mon, 14 Oct 2024 15:19:44 +0000 (UTC)
+	 MIME-Version; b=Eexp+cS3VjqJmY6Svl8av1k35gnLn1OCAKb9Xh9QjR8N4LVjjsNLLmARm/KUqYr6xvVhEwB4gzCEg5u/ZwuLx95pxoyo2PkNaKJ84ZVUiJuJmytp4k1hpE5HD6XgddlGuNXLO09QJoR5DGXwSMEfgtnRocRbhiVk2pwM/076fXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8w/Oprt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D45C4CEC7;
+	Mon, 14 Oct 2024 14:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919185;
-	bh=1AEPg4oatgaSloHHyJpaqOCcMY6sdFgW2bAYCOlfuk4=;
+	s=korg; t=1728915862;
+	bh=EaQm//Bi1q8e0ezZjlKl9lHgPdDnIELxRp/6jsDhawA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eD/HglVQjIAfS13fH+ZfkbusrECQJPGEpHpHdUZTJB93TwiMZFdm79Ir2+mfWzsqK
-	 UUzUEVoYUVG4UupTUDb6W5sKOQ4MoOqunaboJRHOeouOTXtiaeXELPR4g93aqflj7H
-	 ycO9iZ+5pOZdQXivrgHECqOLaQn+zHGeKH8E2zzM=
+	b=e8w/OprtiI/zLjQBmq0+MDJnANGWC3GzRURWG2ZIbNGbw8QRAYXscV9QkY/9kYHbG
+	 mGbTug3/lmOLXC58mCscmIyXr6NP4VLNr04PMfowwWe5JnUiuJHJZdM5KeSAWMLMVv
+	 0if+6wxzJrRO2+pGZUCDebnjJ8J2EIH0cGbzKLrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.1 529/798] firmware: tegra: bpmp: Drop unused mbox_client_to_bpmp()
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 020/214] s390/facility: Disable compile time optimization for decompressor code
 Date: Mon, 14 Oct 2024 16:18:03 +0200
-Message-ID: <20241014141238.773063171@linuxfoundation.org>
+Message-ID: <20241014141045.782077901@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit 9c3a62c20f7fb00294a4237e287254456ba8a48b upstream.
+[ Upstream commit 0147addc4fb72a39448b8873d8acdf3a0f29aa65 ]
 
-mbox_client_to_bpmp() is not used, W=1 builds:
+Disable compile time optimizations of test_facility() for the
+decompressor. The decompressor should not contain any optimized code
+depending on the architecture level set the kernel image is compiled
+for to avoid unexpected operation exceptions.
 
-  drivers/firmware/tegra/bpmp.c:28:1: error: unused function 'mbox_client_to_bpmp' [-Werror,-Wunused-function]
+Add a __DECOMPRESSOR check to test_facility() to enforce that
+facilities are always checked during runtime for the decompressor.
 
-Fixes: cdfa358b248e ("firmware: tegra: Refactor BPMP driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/tegra/bpmp.c |    6 ------
- 1 file changed, 6 deletions(-)
+ arch/s390/include/asm/facility.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/firmware/tegra/bpmp.c
-+++ b/drivers/firmware/tegra/bpmp.c
-@@ -25,12 +25,6 @@
- #define MSG_RING	BIT(1)
- #define TAG_SZ		32
+diff --git a/arch/s390/include/asm/facility.h b/arch/s390/include/asm/facility.h
+index b7d234838a366..65ebf86506cde 100644
+--- a/arch/s390/include/asm/facility.h
++++ b/arch/s390/include/asm/facility.h
+@@ -59,8 +59,10 @@ static inline int test_facility(unsigned long nr)
+ 	unsigned long facilities_als[] = { FACILITIES_ALS };
  
--static inline struct tegra_bpmp *
--mbox_client_to_bpmp(struct mbox_client *client)
--{
--	return container_of(client, struct tegra_bpmp, mbox.client);
--}
--
- static inline const struct tegra_bpmp_ops *
- channel_to_ops(struct tegra_bpmp_channel *channel)
- {
+ 	if (__builtin_constant_p(nr) && nr < sizeof(facilities_als) * 8) {
+-		if (__test_facility(nr, &facilities_als))
+-			return 1;
++		if (__test_facility(nr, &facilities_als)) {
++			if (!__is_defined(__DECOMPRESSOR))
++				return 1;
++		}
+ 	}
+ 	return __test_facility(nr, &stfle_fac_list);
+ }
+-- 
+2.43.0
+
 
 
 
