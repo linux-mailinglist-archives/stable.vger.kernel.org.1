@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-84887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C20099D2AE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FDC499CE3B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:41:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D46DE2838F3
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C4A21C22E12
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894181AC426;
-	Mon, 14 Oct 2024 15:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4691AB52F;
+	Mon, 14 Oct 2024 14:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYdRC3j7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hchZghmi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BB114AA9;
-	Mon, 14 Oct 2024 15:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE4A1AB525;
+	Mon, 14 Oct 2024 14:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919568; cv=none; b=gSWfhItB4l690rPOiIi0ruBazpcnpSj3hmJEXRn1NkQ4Vkj7rZ8Foao4R6AkfwG5JOQPtFLWK3tOUuVxxKWyAtNf1bGqwhsqQuMMGDlojs1Dk/tvLDhrD5PzXwnKLyLOohxNsndUHY/AfPfaBfdhX4/EwktnBvMdLqZpr756xUU=
+	t=1728916887; cv=none; b=fYX8D9CoklaCRduJSShMLYXhnbl0JUw7n/7pQCyDVmPFjjkY7Z+e2XfoU5EgdRH4upRe1elUdlj1u2Voq2htE5f9IJHiGfn3y7lV0gw0W6fKP84romJn7BdFpdK+OfiAgh3fQmrG075iqhxAu5VVibQd46uisTupflv51Z42aMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919568; c=relaxed/simple;
-	bh=ewCVjkQRPXJODpxwsi/Mp7y81EtkoQ6wjBSdUtu3NUQ=;
+	s=arc-20240116; t=1728916887; c=relaxed/simple;
+	bh=WBD+6+IDh2PXIvwVfvE36cf7heCS7sii1mit73p0Nrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5KrmxWB2AqOFMykHmhuLtZ5zWl1RmEpEz2dDWC/t6oCHXAi1XOwoT2GLm7EltfCKvAAbPaVsi0hOlH0+xDgaYgaP7l7ULMqKjpmwZ4pZTGTJaK+333AgaBFIyExgorKtChPpp29z+tRCgy0CKKMdWiiHZfJg9mvsnO39zUKepA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYdRC3j7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA13FC4CEC3;
-	Mon, 14 Oct 2024 15:26:07 +0000 (UTC)
+	 MIME-Version; b=N4qO7Kvm37eTZ4T89cZWvTIORMPfdrOqSS19h7kZzBU2ilc2RwkwIiPB3D8r10XtmIlHBcgoZp1pZmf7miwLRSSvta1gmQX3vGq88saukXaieymyFhfP34zRE7POhpbQMnh9qqNn0zeLYWFMo/Qfv0h88DjOy8Ra19xFgvtg9Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hchZghmi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69CBC4CEC3;
+	Mon, 14 Oct 2024 14:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919568;
-	bh=ewCVjkQRPXJODpxwsi/Mp7y81EtkoQ6wjBSdUtu3NUQ=;
+	s=korg; t=1728916887;
+	bh=WBD+6+IDh2PXIvwVfvE36cf7heCS7sii1mit73p0Nrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vYdRC3j7oUIftU4PAiez6Ok/HVgAHdWC4ec8Xb4Yvd8RTfvnVW2f/3r58/r1yk2CS
-	 8YHnZ4gHQBwttMPW3CapM59gGFrDnObicNxrv3gK4Ruqd55i55nZJXZcGLvm+bB5FY
-	 miNovsfsPhUe578lKTa55lJWR4Gi5RvZ9ILcR/iI=
+	b=hchZghmiMKK/sG/oDK9pm9SgB5s4oZ14uZZPkUw6375UbXnyOz0EiKiilWq88Pmqs
+	 WFH4sXI6TNhXFYdG8HzQLZbtdtmsqqGmmehLyFS6uP90AXmVR1nI2xGHd78E7aolKR
+	 DjnaVAuHpdduOFZEzW5pMIMiv1/aSs2aOCbqK+Mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ruffalo Lavoisier <RuffaloLavoisier@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 644/798] dt-bindings: clock: qcom: Add missing UFS QREF clocks
+Subject: [PATCH 6.6 092/213] comedi: ni_routing: tools: Check when the file could not be opened
 Date: Mon, 14 Oct 2024 16:19:58 +0200
-Message-ID: <20241014141243.346824490@linuxfoundation.org>
+Message-ID: <20241014141046.561863794@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Ruffalo Lavoisier <ruffalolavoisier@gmail.com>
 
-[ Upstream commit 26447dad8119fd084d7c6f167c3026700b701666 ]
+[ Upstream commit 5baeb157b341b1d26a5815aeaa4d3bb9e0444fda ]
 
-Add missing QREF clocks for UFS MEM and UFS CARD controllers.
+- After fopen check NULL before using the file pointer use
 
-Fixes: 0fadcdfdcf57 ("dt-bindings: clock: Add SC8180x GCC binding")
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240131-ufs-phy-clock-v3-3-58a49d2f4605@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 648b4bde0aca ("dt-bindings: clock: qcom: Add GPLL9 support on gcc-sc8180x")
+Signed-off-by: Ruffalo Lavoisier <RuffaloLavoisier@gmail.com>
+Link: https://lore.kernel.org/r/20240906203025.89588-1-RuffaloLavoisier@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/clock/qcom,gcc-sc8180x.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/dt-bindings/clock/qcom,gcc-sc8180x.h b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
-index e893415ae13d0..90c6e021a0356 100644
---- a/include/dt-bindings/clock/qcom,gcc-sc8180x.h
-+++ b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
-@@ -246,6 +246,8 @@
- #define GCC_PCIE_3_CLKREF_CLK					236
- #define GCC_USB3_PRIM_CLKREF_CLK				237
- #define GCC_USB3_SEC_CLKREF_CLK					238
-+#define GCC_UFS_MEM_CLKREF_EN					239
-+#define GCC_UFS_CARD_CLKREF_EN					240
+diff --git a/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c b/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c
+index d55521b5bdcb2..892a66b2cea66 100644
+--- a/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c
++++ b/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c
+@@ -140,6 +140,11 @@ int main(void)
+ {
+ 	FILE *fp = fopen("ni_values.py", "w");
  
- #define GCC_EMAC_BCR						0
- #define GCC_GPU_BCR						1
++	if (fp == NULL) {
++		fprintf(stderr, "Could not open file!");
++		return -1;
++	}
++
+ 	/* write route register values */
+ 	fprintf(fp, "ni_route_values = {\n");
+ 	for (int i = 0; ni_all_route_values[i]; ++i)
 -- 
 2.43.0
 
