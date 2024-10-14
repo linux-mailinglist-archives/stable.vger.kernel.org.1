@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-85050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D480499D37B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:36:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F7199CF3C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:53:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 035B81C23577
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:36:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A81EE28C33C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:53:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892891AC885;
-	Mon, 14 Oct 2024 15:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0821B4F14;
+	Mon, 14 Oct 2024 14:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apw567PL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlp0bghV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF3D1BC58;
-	Mon, 14 Oct 2024 15:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF8D1B4F1E;
+	Mon, 14 Oct 2024 14:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728920136; cv=none; b=BZjFLDPyxVHQvb4ammMEUWvdYOXWLixOISvaAN2VUHD1VMyUCRskqdF2IIBrvP23N25pGSMR0rzS5F58TdxnJgS8H6lAO/p7LJD83DDQ45HpNRlbl7WAUZHDNJL2Y9J+z0VB+wXqtx76QCuWZTyyWeXfWFHab0MZNzrRiPkXajA=
+	t=1728917334; cv=none; b=C2WVKNJSuqbH3M/w+fM4AMFMO4ogRuUoY4A6OLmxpWQ6LCNm7AMC8697A8g1EzLA5gTskh0PWCrVlHzsyhM6NrB89WVACluw9JHKdAx+jzKP9QwDCz3n8Qabjh4bXurEvY0A96oLIm1rlUiqwBGdEsUqHYJI7TW/IQi6Uz3SKs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728920136; c=relaxed/simple;
-	bh=Oxplt2pacsq58GIakSwuCIXmsQScoXDjbvIZmty6+sk=;
+	s=arc-20240116; t=1728917334; c=relaxed/simple;
+	bh=DjzQ0GOyOc1FgGmFykqDBuqxg6GVs1QaI1jMuskdsps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FNSf9vTS/vc0mkmI2t3d6Dqitkp2pTBPGliV1aqtu1XKAddRAAL5K7YGN77c0YB/kqPx6m5osxntoQmPFG9c09ifm+lZvItg0Rh+4NDikeYrgfZlJ5WEyMpWphDZ5DERvz6hK7kmN7MvTKgOC0CfsKzwZESbfdSQjZE10la46no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apw567PL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E18C4CEC3;
-	Mon, 14 Oct 2024 15:35:35 +0000 (UTC)
+	 MIME-Version; b=BBjceV+D4Y2sXWR9Hcc8mi2XF7qj1y6asAaAdohM7ocq1OFe5RpfUCMsinyheihkSfIqHxP0iq167FMZs3BtjWFk54isXZ38bHY6O22Mvzi7GXq00wdJguQQMdLPorM1z3lPE+lg3j+8JkJKUFNKtKKQEUw9Cc6HvtseLToR+zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlp0bghV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622ACC4CEC3;
+	Mon, 14 Oct 2024 14:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728920136;
-	bh=Oxplt2pacsq58GIakSwuCIXmsQScoXDjbvIZmty6+sk=;
+	s=korg; t=1728917333;
+	bh=DjzQ0GOyOc1FgGmFykqDBuqxg6GVs1QaI1jMuskdsps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=apw567PLlZayMCrmSB0WxQr0cC1R6VrLGXLsBsMBH4zjFube2hR/o8phZu5kDKJzl
-	 woP+MnP82sA13IgyDOT/Aaip7Vw3jtxpgzBDwu05awRz8nGffTqR6Y3RJVUttc4x7W
-	 cZ0d9kKx9EPRxrtJ4WHdUvmNA/y3saxdYWsgYb40=
+	b=nlp0bghV22gY6TlkkPB4j0hufzZWFJUrvXEXCnb14PwJY4Yvbl1CYe7f3AV3RRd2c
+	 ESZmKSyL3egdFgU4Gd+meB3jE1ZnT8J97hU+cvU9J+111jVafLLqH0cW5N1pjgGPeM
+	 oX7BlUH4ZsTHfhRyfKQuQzfAZ7vTZF5eJvsuiKIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2ada1bc857496353be5a@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 764/798] slip: make slhc_remember() more robust against malicious packets
-Date: Mon, 14 Oct 2024 16:21:58 +0200
-Message-ID: <20241014141248.082312601@linuxfoundation.org>
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 213/213] scsi: Revert "scsi: sd: Do not repeat the starting disk message"
+Date: Mon, 14 Oct 2024 16:21:59 +0200
+Message-ID: <20241014141051.273396615@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,175 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 7d3fce8cbe3a70a1c7c06c9b53696be5d5d8dd5c ]
+commit da3e19ef0b3de0aa4b25595bdc214c02a04f19b8 upstream.
 
-syzbot found that slhc_remember() was missing checks against
-malicious packets [1].
+This reverts commit 7a6bbc2829d4ab592c7e440a6f6f5deb3cd95db4.
 
-slhc_remember() only checked the size of the packet was at least 20,
-which is not good enough.
+The offending commit tried to suppress a double "Starting disk" message for
+some drivers, but instead started spamming the log with bogus messages
+every five seconds:
 
-We need to make sure the packet includes the IPv4 and TCP header
-that are supposed to be carried.
+	[  311.798956] sd 0:0:0:0: [sda] Starting disk
+	[  316.919103] sd 0:0:0:0: [sda] Starting disk
+	[  322.040775] sd 0:0:0:0: [sda] Starting disk
+	[  327.161140] sd 0:0:0:0: [sda] Starting disk
+	[  332.281352] sd 0:0:0:0: [sda] Starting disk
+	[  337.401878] sd 0:0:0:0: [sda] Starting disk
+	[  342.521527] sd 0:0:0:0: [sda] Starting disk
+	[  345.850401] sd 0:0:0:0: [sda] Starting disk
+	[  350.967132] sd 0:0:0:0: [sda] Starting disk
+	[  356.090454] sd 0:0:0:0: [sda] Starting disk
+	...
 
-Add iph and th pointers to make the code more readable.
+on machines that do not actually stop the disk on runtime suspend (e.g.
+the Qualcomm sc8280xp CRD with UFS).
 
-[1]
+Let's just revert for now to address the regression.
 
-BUG: KMSAN: uninit-value in slhc_remember+0x2e8/0x7b0 drivers/net/slip/slhc.c:666
-  slhc_remember+0x2e8/0x7b0 drivers/net/slip/slhc.c:666
-  ppp_receive_nonmp_frame+0xe45/0x35e0 drivers/net/ppp/ppp_generic.c:2455
-  ppp_receive_frame drivers/net/ppp/ppp_generic.c:2372 [inline]
-  ppp_do_recv+0x65f/0x40d0 drivers/net/ppp/ppp_generic.c:2212
-  ppp_input+0x7dc/0xe60 drivers/net/ppp/ppp_generic.c:2327
-  pppoe_rcv_core+0x1d3/0x720 drivers/net/ppp/pppoe.c:379
-  sk_backlog_rcv+0x13b/0x420 include/net/sock.h:1113
-  __release_sock+0x1da/0x330 net/core/sock.c:3072
-  release_sock+0x6b/0x250 net/core/sock.c:3626
-  pppoe_sendmsg+0x2b8/0xb90 drivers/net/ppp/pppoe.c:903
-  sock_sendmsg_nosec net/socket.c:729 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:744
-  ____sys_sendmsg+0x903/0xb60 net/socket.c:2602
-  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2656
-  __sys_sendmmsg+0x3c1/0x960 net/socket.c:2742
-  __do_sys_sendmmsg net/socket.c:2771 [inline]
-  __se_sys_sendmmsg net/socket.c:2768 [inline]
-  __x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2768
-  x64_sys_call+0xb6e/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:308
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was created at:
-  slab_post_alloc_hook mm/slub.c:4091 [inline]
-  slab_alloc_node mm/slub.c:4134 [inline]
-  kmem_cache_alloc_node_noprof+0x6bf/0xb80 mm/slub.c:4186
-  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:587
-  __alloc_skb+0x363/0x7b0 net/core/skbuff.c:678
-  alloc_skb include/linux/skbuff.h:1322 [inline]
-  sock_wmalloc+0xfe/0x1a0 net/core/sock.c:2732
-  pppoe_sendmsg+0x3a7/0xb90 drivers/net/ppp/pppoe.c:867
-  sock_sendmsg_nosec net/socket.c:729 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:744
-  ____sys_sendmsg+0x903/0xb60 net/socket.c:2602
-  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2656
-  __sys_sendmmsg+0x3c1/0x960 net/socket.c:2742
-  __do_sys_sendmmsg net/socket.c:2771 [inline]
-  __se_sys_sendmmsg net/socket.c:2768 [inline]
-  __x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2768
-  x64_sys_call+0xb6e/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:308
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-CPU: 0 UID: 0 PID: 5460 Comm: syz.2.33 Not tainted 6.12.0-rc2-syzkaller-00006-g87d6aab2389e #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-
-Fixes: b5451d783ade ("slip: Move the SLIP drivers")
-Reported-by: syzbot+2ada1bc857496353be5a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/670646db.050a0220.3f80e.0027.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241009091132.2136321-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7a6bbc2829d4 ("scsi: sd: Do not repeat the starting disk message")
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240716161101.30692-1-johan+linaro@kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/slip/slhc.c | 57 ++++++++++++++++++++++++-----------------
- 1 file changed, 34 insertions(+), 23 deletions(-)
+ drivers/scsi/sd.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/slip/slhc.c b/drivers/net/slip/slhc.c
-index ba93bab948e09..bf9e801cc61cc 100644
---- a/drivers/net/slip/slhc.c
-+++ b/drivers/net/slip/slhc.c
-@@ -643,46 +643,57 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
- int
- slhc_remember(struct slcompress *comp, unsigned char *icp, int isize)
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -3955,6 +3955,8 @@ static int sd_resume(struct device *dev)
  {
--	struct cstate *cs;
--	unsigned ihl;
--
-+	const struct tcphdr *th;
- 	unsigned char index;
-+	struct iphdr *iph;
-+	struct cstate *cs;
-+	unsigned int ihl;
+ 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
  
--	if(isize < 20) {
--		/* The packet is shorter than a legal IP header */
-+	/* The packet is shorter than a legal IP header.
-+	 * Also make sure isize is positive.
-+	 */
-+	if (isize < (int)sizeof(struct iphdr)) {
-+runt:
- 		comp->sls_i_runt++;
--		return slhc_toss( comp );
-+		return slhc_toss(comp);
- 	}
-+	iph = (struct iphdr *)icp;
- 	/* Peek at the IP header's IHL field to find its length */
--	ihl = icp[0] & 0xf;
--	if(ihl < 20 / 4){
--		/* The IP header length field is too small */
--		comp->sls_i_runt++;
--		return slhc_toss( comp );
--	}
--	index = icp[9];
--	icp[9] = IPPROTO_TCP;
-+	ihl = iph->ihl;
-+	/* The IP header length field is too small,
-+	 * or packet is shorter than the IP header followed
-+	 * by minimal tcp header.
-+	 */
-+	if (ihl < 5 || isize < ihl * 4 + sizeof(struct tcphdr))
-+		goto runt;
++	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
 +
-+	index = iph->protocol;
-+	iph->protocol = IPPROTO_TCP;
+ 	if (opal_unlock_from_suspend(sdkp->opal_dev)) {
+ 		sd_printk(KERN_NOTICE, sdkp, "OPAL unlock failed\n");
+ 		return -EIO;
+@@ -3971,13 +3973,12 @@ static int sd_resume_common(struct devic
+ 	if (!sdkp)	/* E.g.: runtime resume at the start of sd_probe() */
+ 		return 0;
  
- 	if (ip_fast_csum(icp, ihl)) {
- 		/* Bad IP header checksum; discard */
- 		comp->sls_i_badcheck++;
--		return slhc_toss( comp );
-+		return slhc_toss(comp);
- 	}
--	if(index > comp->rslot_limit) {
-+	if (index > comp->rslot_limit) {
- 		comp->sls_i_error++;
- 		return slhc_toss(comp);
- 	}
+-	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
 -
-+	th = (struct tcphdr *)(icp + ihl * 4);
-+	if (th->doff < sizeof(struct tcphdr) / 4)
-+		goto runt;
-+	if (isize < ihl * 4 + th->doff * 4)
-+		goto runt;
- 	/* Update local state */
- 	cs = &comp->rstate[comp->recv_current = index];
- 	comp->flags &=~ SLF_TOSS;
--	memcpy(&cs->cs_ip,icp,20);
--	memcpy(&cs->cs_tcp,icp + ihl*4,20);
-+	memcpy(&cs->cs_ip, iph, sizeof(*iph));
-+	memcpy(&cs->cs_tcp, th, sizeof(*th));
- 	if (ihl > 5)
--	  memcpy(cs->cs_ipopt, icp + sizeof(struct iphdr), (ihl - 5) * 4);
--	if (cs->cs_tcp.doff > 5)
--	  memcpy(cs->cs_tcpopt, icp + ihl*4 + sizeof(struct tcphdr), (cs->cs_tcp.doff - 5) * 4);
--	cs->cs_hsize = ihl*2 + cs->cs_tcp.doff*2;
-+	  memcpy(cs->cs_ipopt, &iph[1], (ihl - 5) * 4);
-+	if (th->doff > 5)
-+	  memcpy(cs->cs_tcpopt, &th[1], (th->doff - 5) * 4);
-+	cs->cs_hsize = ihl*2 + th->doff*2;
- 	cs->initialized = true;
- 	/* Put headers back on packet
- 	 * Neither header checksum is recalculated
--- 
-2.43.0
-
+ 	if (!sd_do_start_stop(sdkp->device, runtime)) {
+ 		sdkp->suspended = false;
+ 		return 0;
+ 	}
+ 
++	sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
+ 	ret = sd_start_stop_device(sdkp, 1);
+ 	if (!ret) {
+ 		sd_resume(dev);
 
 
 
