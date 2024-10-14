@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-84909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E173B99D2CD
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:30:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EBC599CD47
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:31:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0758D1C22968
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:30:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B8901C2245E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4C31CACE9;
-	Mon, 14 Oct 2024 15:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A859924B34;
+	Mon, 14 Oct 2024 14:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="emal5Jd4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJ2I+lM1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C606F1CACE5;
-	Mon, 14 Oct 2024 15:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678A520EB;
+	Mon, 14 Oct 2024 14:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919641; cv=none; b=S3yP8joFToXKInJCunwF4CrzAnP7lqLe652v8x6ueIKrgQ0GYWp1QXMP9CX9ANv99PdslpOZ97bsaOx3+hnbzI/Rn/XwML9ObPPVx0960nhff1T2l0uouv64lrlR7DQv9ltG29gKc8Bfj7cUWS11vadDdUFJXtc3J2kD7bHu8oQ=
+	t=1728916272; cv=none; b=MugDa+SZgeJFl+NcHT/9342YUAXRVymWA+/RfygSPmcW9Nr5S7CwhBmWAY44F1CBTFcs3WmpTQcJf9z+IA0iUPxayDi8MTKB6WRFlYZAIYi6zLTF30ltSndBJxHCf1T6z4riAHNkOgBa07MK8Ut7/o0nykvt+21S/rYSbJG9F0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919641; c=relaxed/simple;
-	bh=40pExZqKvuNo6wUoqC0DSu6l/D4fNoN/qywYGVeNkOw=;
+	s=arc-20240116; t=1728916272; c=relaxed/simple;
+	bh=IhYjOJC4XTLrutNnyMv3Uj8NrWC0pNSjYW8Fks6eL9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k61qxAxTBaQWjQ/FCKOxBKMdVvXYVP6xn//87LWkKDgGwZsrT2LhzQ05PH1Ewr8EHELt3WciQn4Qrln5tdiWc3RCl/0IJDaGShs6rufzyL08VlRI332f+iGo6W9ryWCBBaTLK1q7zSOyviCYCxICw1LnVS9fsEpu9guzftzj2PU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=emal5Jd4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F4DEC4CEC3;
-	Mon, 14 Oct 2024 15:27:21 +0000 (UTC)
+	 MIME-Version; b=poPhdvj/AP1Wo23OJvt4Ch+r5JhsKDp7Yg59NnpPMajpQvncFJDHvIbmhTKquR6Rk8MtgV5IU5z54da2+frzo8oa5/wEldaxB0ApiRmJ+/0HobiwBxgjBxjEHXd4pUt4f5HyVK3WoM9ZQ0/KjB0iiTNVSQ0EEqF2uuRIb1zHsaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJ2I+lM1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F79C4CEC3;
+	Mon, 14 Oct 2024 14:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919641;
-	bh=40pExZqKvuNo6wUoqC0DSu6l/D4fNoN/qywYGVeNkOw=;
+	s=korg; t=1728916272;
+	bh=IhYjOJC4XTLrutNnyMv3Uj8NrWC0pNSjYW8Fks6eL9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=emal5Jd40UpOCo8gRZlJsSt678vDOCiEArJrgzRF+jAqNcHFT9q1vELHuewdTV4yw
-	 uQ1ZXtjNBiIIBlpzmPGOy2yF62NxkZZ5Kfg1Im048vhEcfg54yXNu427f98gkESqll
-	 SJnw0fIe5owwqw/OOzhJb0N5ycEYc03zUHSVSqzg=
+	b=GJ2I+lM1XI9CovkwnLXw14f4Zgz4kB3X9uWB2t2btF5MZ9N4pQ5YJQOPBTFz1M+xt
+	 DPheHi8n6XdIXQl2K1hqVM3KF6rsXGEyUEJURhlOi/HIuou0Q0Bvx77oA41UbReHHu
+	 lBlq0YAFGk1kxNaZ0PQ7/SFrzY5m0WZtPMWYElHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brandon Duffany <brandon@buildbuddy.io>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 635/798] sched: psi: fix bogus pressure spikes from aggregation race
+Subject: [PATCH 6.11 126/214] e1000e: change I219 (19) devices to ADP
 Date: Mon, 14 Oct 2024 16:19:49 +0200
-Message-ID: <20241014141242.987554171@linuxfoundation.org>
+Message-ID: <20241014141049.909710627@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,187 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Weiner <hannes@cmpxchg.org>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-[ Upstream commit 3840cbe24cf060ea05a585ca497814609f5d47d1 ]
+[ Upstream commit 9d9e5347b035412daa844f884b94a05bac94f864 ]
 
-Brandon reports sporadic, non-sensical spikes in cumulative pressure
-time (total=) when reading cpu.pressure at a high rate. This is due to
-a race condition between reader aggregation and tasks changing states.
+Sporadic issues, such as PHY access loss, have been observed on I219 (19)
+devices. It was found that these devices have hardware more closely
+related to ADP than MTP and the issues were caused by taking MTP-specific
+flows.
 
-While it affects all states and all resources captured by PSI, in
-practice it most likely triggers with CPU pressure, since scheduling
-events are so frequent compared to other resource events.
+Change the MAC and board types of these devices from MTP to ADP to
+correctly reflect the LAN hardware, and flows, of these devices.
 
-The race context is the live snooping of ongoing stalls during a
-pressure read. The read aggregates per-cpu records for stalls that
-have concluded, but will also incorporate ad-hoc the duration of any
-active state that hasn't been recorded yet. This is important to get
-timely measurements of ongoing stalls. Those ad-hoc samples are
-calculated on-the-fly up to the current time on that CPU; since the
-stall hasn't concluded, it's expected that this is the minimum amount
-of stall time that will enter the per-cpu records once it does.
-
-The problem is that the path that concludes the state uses a CPU clock
-read that is not synchronized against aggregators; the clock is read
-outside of the seqlock protection. This allows aggregators to race and
-snoop a stall with a longer duration than will actually be recorded.
-
-With the recorded stall time being less than the last snapshot
-remembered by the aggregator, a subsequent sample will underflow and
-observe a bogus delta value, resulting in an erratic jump in pressure.
-
-Fix this by moving the clock read of the state change into the seqlock
-protection. This ensures no aggregation can snoop live stalls past the
-time that's recorded when the state concludes.
-
-Reported-by: Brandon Duffany <brandon@buildbuddy.io>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219194
-Link: https://lore.kernel.org/lkml/20240827121851.GB438928@cmpxchg.org/
-Fixes: df77430639c9 ("psi: Reduce calls to sched_clock() in psi")
-Cc: stable@vger.kernel.org
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: db2d737d63c5 ("e1000e: Separate MTP board type from ADP")
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/psi.c | 26 ++++++++++++--------------
- 1 file changed, 12 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/intel/e1000e/hw.h     | 4 ++--
+ drivers/net/ethernet/intel/e1000e/netdev.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index 81dbced92df5f..fb56fcce29cd7 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -777,13 +777,14 @@ static void record_times(struct psi_group_cpu *groupc, u64 now)
- }
- 
- static void psi_group_change(struct psi_group *group, int cpu,
--			     unsigned int clear, unsigned int set, u64 now,
-+			     unsigned int clear, unsigned int set,
- 			     bool wake_clock)
- {
- 	struct psi_group_cpu *groupc;
- 	unsigned int t, m;
- 	enum psi_states s;
- 	u32 state_mask;
-+	u64 now;
- 
- 	lockdep_assert_rq_held(cpu_rq(cpu));
- 	groupc = per_cpu_ptr(group->pcpu, cpu);
-@@ -798,6 +799,7 @@ static void psi_group_change(struct psi_group *group, int cpu,
- 	 * SOME and FULL time these may have resulted in.
- 	 */
- 	write_seqcount_begin(&groupc->seq);
-+	now = cpu_clock(cpu);
- 
- 	/*
- 	 * Start with TSK_ONCPU, which doesn't have a corresponding
-@@ -911,18 +913,15 @@ void psi_task_change(struct task_struct *task, int clear, int set)
- {
- 	int cpu = task_cpu(task);
- 	struct psi_group *group;
--	u64 now;
- 
- 	if (!task->pid)
- 		return;
- 
- 	psi_flags_change(task, clear, set);
- 
--	now = cpu_clock(cpu);
--
- 	group = task_psi_group(task);
- 	do {
--		psi_group_change(group, cpu, clear, set, now, true);
-+		psi_group_change(group, cpu, clear, set, true);
- 	} while ((group = group->parent));
- }
- 
-@@ -931,7 +930,6 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
- {
- 	struct psi_group *group, *common = NULL;
- 	int cpu = task_cpu(prev);
--	u64 now = cpu_clock(cpu);
- 
- 	if (next->pid) {
- 		psi_flags_change(next, 0, TSK_ONCPU);
-@@ -948,7 +946,7 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
- 				break;
- 			}
- 
--			psi_group_change(group, cpu, 0, TSK_ONCPU, now, true);
-+			psi_group_change(group, cpu, 0, TSK_ONCPU, true);
- 		} while ((group = group->parent));
- 	}
- 
-@@ -986,7 +984,7 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
- 		do {
- 			if (group == common)
- 				break;
--			psi_group_change(group, cpu, clear, set, now, wake_clock);
-+			psi_group_change(group, cpu, clear, set, wake_clock);
- 		} while ((group = group->parent));
- 
- 		/*
-@@ -998,7 +996,7 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
- 		if ((prev->psi_flags ^ next->psi_flags) & ~TSK_ONCPU) {
- 			clear &= ~TSK_ONCPU;
- 			for (; group; group = group->parent)
--				psi_group_change(group, cpu, clear, set, now, wake_clock);
-+				psi_group_change(group, cpu, clear, set, wake_clock);
- 		}
- 	}
- }
-@@ -1009,8 +1007,8 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
- 	int cpu = task_cpu(curr);
- 	struct psi_group *group;
- 	struct psi_group_cpu *groupc;
--	u64 now, irq;
- 	s64 delta;
-+	u64 irq;
- 
- 	if (!curr->pid)
- 		return;
-@@ -1020,7 +1018,6 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
- 	if (prev && task_psi_group(prev) == group)
- 		return;
- 
--	now = cpu_clock(cpu);
- 	irq = irq_time_read(cpu);
- 	delta = (s64)(irq - rq->psi_irq_time);
- 	if (delta < 0)
-@@ -1028,12 +1025,15 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
- 	rq->psi_irq_time = irq;
- 
- 	do {
-+		u64 now;
-+
- 		if (!group->enabled)
- 			continue;
- 
- 		groupc = per_cpu_ptr(group->pcpu, cpu);
- 
- 		write_seqcount_begin(&groupc->seq);
-+		now = cpu_clock(cpu);
- 
- 		record_times(groupc, now);
- 		groupc->times[PSI_IRQ_FULL] += delta;
-@@ -1232,11 +1232,9 @@ void psi_cgroup_restart(struct psi_group *group)
- 	for_each_possible_cpu(cpu) {
- 		struct rq *rq = cpu_rq(cpu);
- 		struct rq_flags rf;
--		u64 now;
- 
- 		rq_lock_irq(rq, &rf);
--		now = cpu_clock(cpu);
--		psi_group_change(group, cpu, 0, 0, now, true);
-+		psi_group_change(group, cpu, 0, 0, true);
- 		rq_unlock_irq(rq, &rf);
- 	}
- }
+diff --git a/drivers/net/ethernet/intel/e1000e/hw.h b/drivers/net/ethernet/intel/e1000e/hw.h
+index 4b6e7536170ab..fc8ed38aa0955 100644
+--- a/drivers/net/ethernet/intel/e1000e/hw.h
++++ b/drivers/net/ethernet/intel/e1000e/hw.h
+@@ -108,8 +108,8 @@ struct e1000_hw;
+ #define E1000_DEV_ID_PCH_RPL_I219_V22		0x0DC8
+ #define E1000_DEV_ID_PCH_MTP_I219_LM18		0x550A
+ #define E1000_DEV_ID_PCH_MTP_I219_V18		0x550B
+-#define E1000_DEV_ID_PCH_MTP_I219_LM19		0x550C
+-#define E1000_DEV_ID_PCH_MTP_I219_V19		0x550D
++#define E1000_DEV_ID_PCH_ADP_I219_LM19		0x550C
++#define E1000_DEV_ID_PCH_ADP_I219_V19		0x550D
+ #define E1000_DEV_ID_PCH_LNP_I219_LM20		0x550E
+ #define E1000_DEV_ID_PCH_LNP_I219_V20		0x550F
+ #define E1000_DEV_ID_PCH_LNP_I219_LM21		0x5510
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index f103249b12fac..07e9033463582 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -7899,10 +7899,10 @@ static const struct pci_device_id e1000_pci_tbl[] = {
+ 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_ADP_I219_V17), board_pch_adp },
+ 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_RPL_I219_LM22), board_pch_adp },
+ 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_RPL_I219_V22), board_pch_adp },
++	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_ADP_I219_LM19), board_pch_adp },
++	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_ADP_I219_V19), board_pch_adp },
+ 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_MTP_I219_LM18), board_pch_mtp },
+ 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_MTP_I219_V18), board_pch_mtp },
+-	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_MTP_I219_LM19), board_pch_mtp },
+-	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_MTP_I219_V19), board_pch_mtp },
+ 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_LNP_I219_LM20), board_pch_mtp },
+ 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_LNP_I219_V20), board_pch_mtp },
+ 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_LNP_I219_LM21), board_pch_mtp },
 -- 
 2.43.0
 
