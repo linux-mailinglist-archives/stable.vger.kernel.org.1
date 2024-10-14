@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-84104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3AA99CE27
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F5999CD3F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C323A284AFF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:40:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAF59282000
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF49B17C77;
-	Mon, 14 Oct 2024 14:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA29200CB;
+	Mon, 14 Oct 2024 14:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9jB1++q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HlIqeIj4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC0620EB;
-	Mon, 14 Oct 2024 14:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7A4F9DA;
+	Mon, 14 Oct 2024 14:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916841; cv=none; b=QS2LWUrZEzT0gUHEMJjOroWI04Bvp/1xdwTYsrcoazu2XPny/nH4+2jAPX5CNGlsC7D3mBoLInagv2D7uNy3dKrWPM8+rFQ4CmEyGGOrlfgXeTzKwvnv3f4hJkna0UR8aigkNZqqU3A6wDcAcGWfcixSlZxmp4CI4fby6QNUVek=
+	t=1728916246; cv=none; b=hx8EluJOKZ79p0QEW7ZNQlUgHN3PpxtVURb2ZL9L5WwW7/Ke0jeDx6NO6AL68AlwIAe424cGjnI8Qjp7UaJCdNuX6NLCPg+1/eYyn8a4l/9aCSlpvJW0dIM90Nn7MCwUY9jFjXf3rjz+O0u1XYEQNEOieD1HBFSjg0R35qAZQB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916841; c=relaxed/simple;
-	bh=cXYvmEszmiYc5TLkZoHvGil1P63AcRbbzmHkr25cAUw=;
+	s=arc-20240116; t=1728916246; c=relaxed/simple;
+	bh=lnDTZQuIHYwXPBvgPtJZTXi0cOoGzc4nbwUKgBv24Rw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BgYmF1qv3x4yKGBsaop+ZGt1kM6GHZT1DbsB07+eAES2EbjJLhQXRRh71MCBybZB7UbOG4VjFDdPsfH8WlggKGFBL6wkvR/XsPYvxIrqlmLss5+2vQOfwIEceroEnd/B9fCm7YdmY7hxdXA/rTGp2AfRG0YD1KS697FJ2HLdu6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9jB1++q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF730C4CEC3;
-	Mon, 14 Oct 2024 14:40:40 +0000 (UTC)
+	 MIME-Version; b=BeLay/OdVgc+PjZS6J2PtSlPXe/S76ssj27ypCSdsEQPw5dr87u0cr86VNNI1GmQ+OE6fPrb8hJzKrJCIEF3/ZUUOBBmU8965EPeWJq5/ahi+i0WB7Phoap94IoFcIos3zibDcpT+l9+/k0xnzVHFieyFBIqCymgzR8lkfRg2vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HlIqeIj4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B91C8C4CEC3;
+	Mon, 14 Oct 2024 14:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916841;
-	bh=cXYvmEszmiYc5TLkZoHvGil1P63AcRbbzmHkr25cAUw=;
+	s=korg; t=1728916246;
+	bh=lnDTZQuIHYwXPBvgPtJZTXi0cOoGzc4nbwUKgBv24Rw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q9jB1++q8lRlamELmY/zGfOWC8avhL9+V0zDAn/6TFu5dniDY1hTj/lYyLhbNYNE3
-	 tGCiD5mzQ+Q6g+ptAEDpGClAOpK8ORYBPZNEyM6B9xvCo2h5ceKK976gINp0+C34xn
-	 BuDaveGlyu5QWaDEyS6BI142eHmTShWKEOKJGCAA=
+	b=HlIqeIj4k034J8sEEGkGJtg3iZV7lrRR3L5ZvNVv7gEFZ+qCPSJf3SJldanMTjEW5
+	 dw1j4yBVhTAQJjbs2807yfR1bpH56OAEXg5sU/Ed6pkYYRPTeEgZqFbL06MGu2dyLA
+	 sb9YmBXopQGk74H3iJB0xR3F+spNdMLPboCh/PUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/213] mfd: intel_soc_pmic_chtwc: Make Lenovo Yoga Tab 3 X90F DMI match less strict
-Date: Mon, 14 Oct 2024 16:19:46 +0200
-Message-ID: <20241014141046.101944283@linuxfoundation.org>
+Subject: [PATCH 6.11 124/214] i40e: Fix macvlan leak by synchronizing access to mac_filter_hash
+Date: Mon, 14 Oct 2024 16:19:47 +0200
+Message-ID: <20241014141049.828540722@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +65,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-[ Upstream commit ae7eee56cdcfcb6a886f76232778d6517fd58690 ]
+[ Upstream commit dac6c7b3d33756d6ce09f00a96ea2ecd79fae9fb ]
 
-There are 2G and 4G RAM versions of the Lenovo Yoga Tab 3 X90F and it
-turns out that the 2G version has a DMI product name of
-"CHERRYVIEW D1 PLATFORM" where as the 4G version has
-"CHERRYVIEW C0 PLATFORM". The sys-vendor + product-version check are
-unique enough that the product-name check is not necessary.
+This patch addresses a macvlan leak issue in the i40e driver caused by
+concurrent access to vsi->mac_filter_hash. The leak occurs when multiple
+threads attempt to modify the mac_filter_hash simultaneously, leading to
+inconsistent state and potential memory leaks.
 
-Drop the product-name check so that the existing DMI match for the 4G
-RAM version also matches the 2G RAM version.
+To fix this, we now wrap the calls to i40e_del_mac_filter() and zeroing
+vf->default_lan_addr.addr with spin_lock/unlock_bh(&vsi->mac_filter_hash_lock),
+ensuring atomic operations and preventing concurrent access.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://lore.kernel.org/r/20240825132617.8809-1-hdegoede@redhat.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Additionally, we add lockdep_assert_held(&vsi->mac_filter_hash_lock) in
+i40e_add_mac_filter() to help catch similar issues in the future.
+
+Reproduction steps:
+1. Spawn VFs and configure port vlan on them.
+2. Trigger concurrent macvlan operations (e.g., adding and deleting
+	portvlan and/or mac filters).
+3. Observe the potential memory leak and inconsistent state in the
+	mac_filter_hash.
+
+This synchronization ensures the integrity of the mac_filter_hash and prevents
+the described leak.
+
+Fixes: fed0d9f13266 ("i40e: Fix VF's MAC Address change on VM")
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel_soc_pmic_chtwc.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c        | 1 +
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/mfd/intel_soc_pmic_chtwc.c b/drivers/mfd/intel_soc_pmic_chtwc.c
-index 7fce3ef7ab453..2a83f540d4c9d 100644
---- a/drivers/mfd/intel_soc_pmic_chtwc.c
-+++ b/drivers/mfd/intel_soc_pmic_chtwc.c
-@@ -178,7 +178,6 @@ static const struct dmi_system_id cht_wc_model_dmi_ids[] = {
- 		.driver_data = (void *)(long)INTEL_CHT_WC_LENOVO_YT3_X90,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
- 			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
- 		},
- 	},
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index cbcfada7b357a..f7d4b5f79422b 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -1734,6 +1734,7 @@ struct i40e_mac_filter *i40e_add_mac_filter(struct i40e_vsi *vsi,
+ 	struct hlist_node *h;
+ 	int bkt;
+ 
++	lockdep_assert_held(&vsi->mac_filter_hash_lock);
+ 	if (vsi->info.pvid)
+ 		return i40e_add_filter(vsi, macaddr,
+ 				       le16_to_cpu(vsi->info.pvid));
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 662622f01e312..dfa785e39458d 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -2213,8 +2213,10 @@ static int i40e_vc_get_vf_resources_msg(struct i40e_vf *vf, u8 *msg)
+ 		vfres->vsi_res[0].qset_handle
+ 					  = le16_to_cpu(vsi->info.qs_handle[0]);
+ 		if (!(vf->driver_caps & VIRTCHNL_VF_OFFLOAD_USO) && !vf->pf_set_mac) {
++			spin_lock_bh(&vsi->mac_filter_hash_lock);
+ 			i40e_del_mac_filter(vsi, vf->default_lan_addr.addr);
+ 			eth_zero_addr(vf->default_lan_addr.addr);
++			spin_unlock_bh(&vsi->mac_filter_hash_lock);
+ 		}
+ 		ether_addr_copy(vfres->vsi_res[0].default_mac_addr,
+ 				vf->default_lan_addr.addr);
 -- 
 2.43.0
 
