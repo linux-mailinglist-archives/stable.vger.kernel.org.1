@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-83917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CFE699CD2C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:29:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C44A99CE17
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:39:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 028B7282355
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:29:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCFB61C22D59
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E41A1AB52D;
-	Mon, 14 Oct 2024 14:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6A81AAE02;
+	Mon, 14 Oct 2024 14:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3yYakov"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQWex2mc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4341AB508;
-	Mon, 14 Oct 2024 14:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A571624B34;
+	Mon, 14 Oct 2024 14:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916183; cv=none; b=YLxFjs0FM/sGLRYkBNfe0dumyozsxsF5gWAwyahlgLJpbl6l+UPUDDfUyDDwYBTt0fmlmHMWGO4041LBNaCq7T8e04ZzZ4FlW9tGIzAZDt2ovKRJMRRPyr8XLzXZr1HcFHm4LIqiZslkj8T6LF8m3OQGU6p1b7ApQhB2UCEFlIs=
+	t=1728916788; cv=none; b=eYwLfnHrB8cWQtQJAkVJkVKatipazLzj8mUScgzehhQPiEddLLjYH48yWf2OIqWAV4cWEJTGZxeTmRra3WGZ1bMujxdOdkzcT7OBjM49QGOfP3UEVCRHuax0Cp7lTZglQKvQlnRL38nTgSjxatC5SDrUuJ7HNBOj3OmI7LwMGxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916183; c=relaxed/simple;
-	bh=pBhfDn2vncCod7kFTMV2RRj92XzMFRo7ggLSpFdbrCU=;
+	s=arc-20240116; t=1728916788; c=relaxed/simple;
+	bh=YSVCcPrFqkCUY6+Vywp4ZO08pmSQWkJERSn8eD7xEgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ThPMpOo6cU1GRux8HQK6kMTvHmdvMadie7TuDu/9AbOjFHteD0Zpcvs6hyoRlU7fybd1zFvuOKPW+1Je2FX+J35P0OglswxWdZ+9MXcFkmZmnN2ZlIll9dKp9B96hpXJcX+fJvmKhqiy2vxC0gD0PsQrFm71KU06wW1tpLeiqAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3yYakov; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93A4C4CED1;
-	Mon, 14 Oct 2024 14:29:42 +0000 (UTC)
+	 MIME-Version; b=NVTkYnsnApxEioxbZErYzqZzMazXVwB65DKw+BkA/kumyD4JmjO8gYKPMvD+ILOzH3ule0V+YmiGejT7cq8d6nLk0v4MdtQGniydAuZLF0VEbq9V+VUgsqBvFq1qlAqkZ9Hi9Faz5a0cgAJCR/Rm3/eoeijaQFkK4zy59KnPcPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQWex2mc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F31C4CECF;
+	Mon, 14 Oct 2024 14:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916183;
-	bh=pBhfDn2vncCod7kFTMV2RRj92XzMFRo7ggLSpFdbrCU=;
+	s=korg; t=1728916788;
+	bh=YSVCcPrFqkCUY6+Vywp4ZO08pmSQWkJERSn8eD7xEgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q3yYakovnDLHgrCClZRt8vlj/mH2y0AbpzzzerC6ScW5si92Vj27pU2ltPPua/iEM
-	 5uLXqqZuJo+fHTFX9vv58tpglQs/6JRfEfkBBqObV9SMMMKVZRcnBnwsZagLMwdJKf
-	 UAbAfJJ5wu1yec3oYE9cuWGbQrHFRi4sRgYb19Vo=
+	b=rQWex2mcPDZEunwgxUNONL06ONcfSYsIbo4I38gQ8ZMGpLjpdApyB4vI1PTfYn4bm
+	 TQSwnwhX/0+gZCCnzfx18H+pyUwdrOoDUsROZTE2zFzAzW9VSHciZAI0SN5gqXPC3u
+	 9kqdWMyhsoA5ucrmAaQ5y3wsuhLQWe+cObM2uwZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 108/214] net: ethernet: adi: adin1110: Fix some error handling path in adin1110_read_fifo()
+Subject: [PATCH 6.6 065/213] s390/traps: Handle early warnings gracefully
 Date: Mon, 14 Oct 2024 16:19:31 +0200
-Message-ID: <20241014141049.211571401@linuxfoundation.org>
+Message-ID: <20241014141045.523506228@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 83211ae1640516accae645de82f5a0a142676897 ]
+[ Upstream commit 3c4d0ae0671827f4b536cc2d26f8b9c54584ccc5 ]
 
-If 'frame_size' is too small or if 'round_len' is an error code, it is
-likely that an error code should be returned to the caller.
+Add missing warning handling to the early program check handler. This
+way a warning is printed to the console as soon as the early console
+is setup, and the kernel continues to boot.
 
-Actually, 'ret' is likely to be 0, so if one of these sanity checks fails,
-'success' is returned.
+Before this change a disabled wait psw was loaded instead and the
+machine was silently stopped without giving an idea about what
+happened.
 
-Return -EINVAL instead.
-
-Fixes: bc93e19d088b ("net: ethernet: adi: Add ADIN1110 support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://patch.msgid.link/8ff73b40f50d8fa994a454911b66adebce8da266.1727981562.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/adi/adin1110.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/kernel/early.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/adi/adin1110.c
-index 0713f1e2c7f38..bf2e513295bb7 100644
---- a/drivers/net/ethernet/adi/adin1110.c
-+++ b/drivers/net/ethernet/adi/adin1110.c
-@@ -318,11 +318,11 @@ static int adin1110_read_fifo(struct adin1110_port_priv *port_priv)
- 	 * from the  ADIN1110 frame header.
- 	 */
- 	if (frame_size < ADIN1110_FRAME_HEADER_LEN + ADIN1110_FEC_LEN)
--		return ret;
-+		return -EINVAL;
+diff --git a/arch/s390/kernel/early.c b/arch/s390/kernel/early.c
+index 3a54733e4fc65..eb6307c066c8a 100644
+--- a/arch/s390/kernel/early.c
++++ b/arch/s390/kernel/early.c
+@@ -174,8 +174,21 @@ static __init void setup_topology(void)
  
- 	round_len = adin1110_round_len(frame_size);
- 	if (round_len < 0)
--		return ret;
-+		return -EINVAL;
+ void __do_early_pgm_check(struct pt_regs *regs)
+ {
+-	if (!fixup_exception(regs))
+-		disabled_wait();
++	struct lowcore *lc = get_lowcore();
++	unsigned long ip;
++
++	regs->int_code = lc->pgm_int_code;
++	regs->int_parm_long = lc->trans_exc_code;
++	ip = __rewind_psw(regs->psw, regs->int_code >> 16);
++
++	/* Monitor Event? Might be a warning */
++	if ((regs->int_code & PGM_INT_CODE_MASK) == 0x40) {
++		if (report_bug(ip, regs) == BUG_TRAP_TYPE_WARN)
++			return;
++	}
++	if (fixup_exception(regs))
++		return;
++	disabled_wait();
+ }
  
- 	frame_size_no_fcs = frame_size - ADIN1110_FRAME_HEADER_LEN - ADIN1110_FEC_LEN;
- 	memset(priv->data, 0, ADIN1110_RD_HEADER_LEN);
+ static noinline __init void setup_lowcore_early(void)
 -- 
 2.43.0
 
