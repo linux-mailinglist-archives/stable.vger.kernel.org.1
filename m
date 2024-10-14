@@ -1,146 +1,142 @@
-Return-Path: <stable+bounces-83813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4462F99CBCA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:46:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C2999CBCF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:47:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D18F0B229DE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 13:46:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 677922840E7
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 13:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BF69475;
-	Mon, 14 Oct 2024 13:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8782F1AB503;
+	Mon, 14 Oct 2024 13:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRx0CkB4"
+	dkim=pass (2048-bit key) header.d=batbytes-com.20230601.gappssmtp.com header.i=@batbytes-com.20230601.gappssmtp.com header.b="xHeT880M"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DFD231C8A
-	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 13:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBCC1AA7A1
+	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 13:46:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728913565; cv=none; b=VfxUvjf6/jvFSsWN2TJOzBeG2v+cTIqZ/RPN4YRXvC5qz30afDMAgw02J3lK6hKab1IwBolieMllMmzMacJgVkrMRz5bBTDeWWs85NwHgyH/qsrmoTmg//KXU4jBHcMiSCDRuHxiqGWLcfizTZ2RitcUyYAJUEeA90jmJwSle2Q=
+	t=1728913596; cv=none; b=W28ZU2/0s2hcw55tNetAvKC+tZ2JrtpvB9urdZ5L2QgPybdm4HTVeqrEgcsD0+QTfMyxLwwT5KSognrQjOupcrhg1b7+fBkjoccSEvCJkrFtiH5Fr8efOPSQxav1sUR12j701wy63Oyu3oi8l6wgblO35CfMaJHA+H8FOfgFuHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728913565; c=relaxed/simple;
-	bh=HKBZkahpmMGflVDyaBRXvcjHLsxx0VQgUZ0K8O4EB4E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=urvCHojrXAZuoceEDO33EVtJ+fZcuVCW9ZSQvKYKKwVpzqPOe37Ta7LniNzMQgSErbuHKg71sem3sSGZcFcONiG3K9mZOMFvsjwnBMnWzwlkw6NQ5JGWo5OUeC98FsT7GKf/7k7ynytD34fyzPV8D0KCD9i4k0sX0mCcZxDTWeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRx0CkB4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5CDCC4CEC7;
-	Mon, 14 Oct 2024 13:46:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728913565;
-	bh=HKBZkahpmMGflVDyaBRXvcjHLsxx0VQgUZ0K8O4EB4E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TRx0CkB4OvnHgDrgYlIdtnWewJcj3YkuUaNieKF767pIO6JepyIRATG3iLzD6IZXl
-	 B+K3IY23K5lmb7Dz58C23rbjuNB2gTef3pCe36XceUNJp3z7rYKBrsxhDXIxDf8IV4
-	 VbyB4JoTZaPjSgMcDQXpasOXZgg+JVIrvKaZzw+A=
-Date: Mon, 14 Oct 2024 15:46:02 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jinpu Wang <jinpu.wang@ionos.com>
-Cc: Baolu Lu <baolu.lu@linux.intel.com>,
-	"Liang, Kan" <kan.liang@linux.intel.com>,
-	stable <stable@vger.kernel.org>, jroedel@suse.de,
-	Sasha Levin <sashal@kernel.org>, x86@kernel.org
-Subject: Re: [regression]Boot Hang on Kernel 6.1.83+ with Dell PowerEdge R770
- and Intel Xeon 6710E
-Message-ID: <2024101448-gristle-rewire-31b8@gregkh>
-References: <CAMGffE=dPofoPD_+giBnAC66-+=RqRmO2uBmC88-Ph1RgGN=0Q@mail.gmail.com>
- <2024101006-scanner-unboxed-0190@gregkh>
- <CAMGffE=HvMU4Syy7ATEevKQ+izAvndmpQ8-F9HN_WM+3PKwWyw@mail.gmail.com>
- <2024101000-duplex-justify-97e6@gregkh>
- <CAMGffE=xSDZ8Ad9o7ayg2xwnMyPDojyBDh_AHf+h7WBV7y630w@mail.gmail.com>
- <635be050-f0ab-4242-ac79-db67d561dae9@linux.intel.com>
- <9539f133-2cdb-4aa8-8eac-ddf649819d98@linux.intel.com>
- <CAMGffEm-4t21nrV2DPX8+7jPKH-Ahf-wQLSzCobApi=ge8GFvw@mail.gmail.com>
- <CAMGffEn38nt+GUrCTCLi6G82rD1bHXrg-aULbxfSQge6Bu+VFA@mail.gmail.com>
+	s=arc-20240116; t=1728913596; c=relaxed/simple;
+	bh=hXB/C5cfukY2a2WKHkPhfQHVJ+hWk/5yyFbXvCtVRjs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=egeDj5NPsUESDf/JnY8Rgi8zi7CHCu0WYOLYJYUucGAmh4GXjqrH/8c8u5y3cioh7FK52l78pYtZR90uextxMGboDxNBw6Hh78VLQCAWipQBub6Cz7QpbmlE9Tk+uskG6aay1/OD2rOQTaqX9fp0V+5J9FfHvOW1FAKkgV9Ym6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=batbytes.com; spf=none smtp.mailfrom=batbytes.com; dkim=pass (2048-bit key) header.d=batbytes-com.20230601.gappssmtp.com header.i=@batbytes-com.20230601.gappssmtp.com header.b=xHeT880M; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=batbytes.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=batbytes.com
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6cbc28f8e1bso35687066d6.0
+        for <stable@vger.kernel.org>; Mon, 14 Oct 2024 06:46:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=batbytes-com.20230601.gappssmtp.com; s=20230601; t=1728913594; x=1729518394; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ko3jW5Cl6F4biBXzgYlOkyez2QUIpC8KdqLdRC76G2Y=;
+        b=xHeT880MBBsaME/gWtr+dHzxQSon9R0Q4Sagpqd9+n46QcZ2fTpQI8e3t6OQYZUgMl
+         /ENN753Wihv+im2VWMdYnDnoCm/OKMC37NKFPkIBlbaaKL+saTzXvKvVvQHj+Z45hHHd
+         2gyHxzIFId7Ury/CiB4kmQHe3UNWOv70NUCSh4vJ9mPxXJqfIdT7lX0GgIpfclpI7HRD
+         t3UEv0NEcPIooZ5Dhdf3GQRwY73fiPBCojMNAFJeyuRk5M6L1O0Bsqo1qmJPok3ppONl
+         MMgBQHm4Zwbb4wvya8eha5OMzZXCYkvcKAYn+9eXjPQ+uYMegk5Cxa5KAvX0heZrl2MG
+         S+Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728913594; x=1729518394;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ko3jW5Cl6F4biBXzgYlOkyez2QUIpC8KdqLdRC76G2Y=;
+        b=HUx3oUyLw22oT9wBb9HOI2YMWO5xwhwzukWN4RC+m2sptsuGEYliSwWVATyPZDrUzL
+         /x2gPE5LwmM95kwk0TglRVOrC3ogi13fFzlHK9G4LtQyKZLTkC57V3ZaiXftXzuDswaG
+         pt9H/vJN8poIfxUKQrYD0KXevIk9IhvKmKvXcqAjZQ//74wiw6DoCCqhEK1H5THxKQDn
+         +G70SUgAjCmyfIKhaZYd3DaghGVzGPQgOsx2FjNAjqbI0RlgPKeppiRPcApM/zv7BNhV
+         QpMylZxU4scjaBagcekdM9pBEXR0e/TBW033sf5evavujoyDooyDtzfhu5KYBlixTlaC
+         Wd8w==
+X-Forwarded-Encrypted: i=1; AJvYcCUD8382b3pSsQ5p1WZtvZ0CbPDNKu0qgoP0LesIaL77kG38vsmxNor6ssHA174z8vEdlKy7rsM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywu+5JXnH71v5iKiYXN318xhKh840OxQ9o3BAlicfm7iUNcOYJF
+	JDdK7Gm3+qrUPx/SHCTZLlcYjX3bXtgl5aczblUzyQRpuN+yK9QLLpWbTLNioQ==
+X-Google-Smtp-Source: AGHT+IECjyFa7lqpkKz9WnA88loVkpaciMaBusV2OtD0lFCtirhYVtvs6EezQ5JzX+waow9Y789YcQ==
+X-Received: by 2002:a05:6214:4b04:b0:6cb:eea5:69e0 with SMTP id 6a1803df08f44-6cbeff63b34mr210563056d6.27.1728913593824;
+        Mon, 14 Oct 2024 06:46:33 -0700 (PDT)
+Received: from batbytes.com ([216.212.123.7])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cbe85a7700sm45584966d6.7.2024.10.14.06.46.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Oct 2024 06:46:33 -0700 (PDT)
+From: Patrick Donnelly <batrick@batbytes.com>
+To: Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Cc: Patrick Donnelly <pdonnell@redhat.com>,
+	stable@vger.kernel.org,
+	ceph-devel@vger.kernel.org (open list:CEPH DISTRIBUTED FILE SYSTEM CLIENT (CEPH)),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH 2/2] ceph: extract entity name from device id
+Date: Mon, 14 Oct 2024 09:46:24 -0400
+Message-ID: <20241014134625.700634-3-batrick@batbytes.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241014134625.700634-1-batrick@batbytes.com>
+References: <20241014134625.700634-1-batrick@batbytes.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMGffEn38nt+GUrCTCLi6G82rD1bHXrg-aULbxfSQge6Bu+VFA@mail.gmail.com>
 
-On Mon, Oct 14, 2024 at 11:39:57AM +0200, Jinpu Wang wrote:
-> Hi Greg,
-> 
-> 
-> On Fri, Oct 11, 2024 at 7:22 AM Jinpu Wang <jinpu.wang@ionos.com> wrote:
-> >
-> > Hi Baolu, Liang
-> >
-> > Thanks for the reply.
-> >
-> > On Thu, Oct 10, 2024 at 4:01 PM Baolu Lu <baolu.lu@linux.intel.com> wrote:
-> > >
-> > > On 2024/10/10 21:25, Liang, Kan wrote:
-> > > > On 2024-10-10 6:10 a.m., Jinpu Wang wrote:
-> > > >> Hi Greg,
-> > > >>
-> > > >>
-> > > >> On Thu, Oct 10, 2024 at 11:31 AM Greg KH<gregkh@linuxfoundation.org> wrote:
-> > > >>> On Thu, Oct 10, 2024 at 11:13:42AM +0200, Jinpu Wang wrote:
-> > > >>>> Hi Greg,
-> > > >>>>
-> > > >>>> On Thu, Oct 10, 2024 at 11:07 AM Greg KH<gregkh@linuxfoundation.org> wrote:
-> > > >>>>> On Thu, Oct 10, 2024 at 09:31:37AM +0200, Jinpu Wang wrote:
-> > > >>>>>> Hello all,
-> > > >>>>>>
-> > > >>>>>> We are experiencing a boot hang issue when booting kernel version
-> > > >>>>>> 6.1.83+ on a Dell Inc. PowerEdge R770 equipped with an Intel Xeon
-> > > >>>>>> 6710E processor. After extensive testing and use of `git bisect`, we
-> > > >>>>>> have traced the issue to commit:
-> > > >>>>>>
-> > > >>>>>> `586e19c88a0c ("iommu/vt-d: Retrieve IOMMU perfmon capability information")`
-> > > >>>>>>
-> > > >>>>>> This commit appears to be part of a larger patchset, which can be found here:
-> > > >>>>>> [Patchset on lore.kernel.org](https://lore.kernel.org/
-> > > >>>>>> lkml/7c4b3e4e-1c5d-04f1-1891-84f686c94736@linux.intel.com/T/)
-> > > >>>>>>
-> > > >>>>>> We attempted to boot with the `intel_iommu=off` option, but the system
-> > > >>>>>> hangs in the same manner. However, the system boots successfully after
-> > > >>>>>> disabling `CONFIG_INTEL_IOMMU_PERF_EVENTS`.
-> > > >>>>> Is there any error messages?  Does the latest 6.6.y tree work properly?
-> > > >>>>> If so, why not just use that, no new hardware should be using older
-> > > >>>>> kernel trees anyway 🙂
-> > > >>>> No error, just hang, I've removed "quiet" and added "debug".
-> > > >>>> Yes, the latest 6.6.y tree works for this, but there are other
-> > > >>>> problems/dependency we have to solve.
-> > > >>> Ok, that implies that we need to add some other patch to 6.1.y, OR we
-> > > >>> can revert it from 6.1.y.  Let me know what you think is the better
-> > > >>> thing to do.
-> > > >>>
-> > > >> I think better to revert both:
-> > > >> 8c91a4bfc7f8 ("iommu: Fix compilation without CONFIG_IOMMU_INTEL")
-> > > > I'm not sure about this one. May need baolu's comments.
-> > >
-> > > I can't find this commit in the mainline kernel. I guess it fixes a
-> > > compilation issue in the stable tree? If so, it depends on whether the
-> > > issue is still there.
-> > >
-> > > Thanks,
-> > > baolu
-> >
-> > Both commits are hash from stable tree for linux-6.1.y branch.
-> > I tried only revert  586e19c88a0c ("iommu/vt-d: Retrieve IOMMU perfmon
-> > capability information")
-> >
-> > There is a minor conflict in the Makefile, but it's easy to fix. I
-> > attached the patch below,
-> > Greg please consider including it.
-> >
-> > Thx!
-> I'm attaching the revert here again, maybe you missed the email,
-> please consider to include it in 6.1.y.
+From: Patrick Donnelly <pdonnell@redhat.com>
 
-I did miss that, sorry, now queued up!
+Previously, the "name" in the new device syntax "<name>@<fsid>.<fsname>" was
+ignored because (presumably) tests were done using mount.ceph which also passed
+the entity name using "-o name=foo". If mounting is done without the mount.ceph
+helper, the new device id syntax fails to set the name properly.
 
-greg k-h
+Cc: stable@vger.kernel.org
+Resolves: https://tracker.ceph.com/issues/68516
+Signed-off-by: Patrick Donnelly <pdonnell@redhat.com>
+---
+ fs/ceph/super.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/fs/ceph/super.c b/fs/ceph/super.c
+index 42bdbe5b7ef9..de03cd6eb86e 100644
+--- a/fs/ceph/super.c
++++ b/fs/ceph/super.c
+@@ -285,7 +285,9 @@ static int ceph_parse_new_source(const char *dev_name, const char *dev_name_end,
+ 	size_t len;
+ 	struct ceph_fsid fsid;
+ 	struct ceph_parse_opts_ctx *pctx = fc->fs_private;
++	struct ceph_options *opts = pctx->copts;
+ 	struct ceph_mount_options *fsopt = pctx->opts;
++	const char *name_start = dev_name;
+ 	const char *fsid_start, *fs_name_start;
+ 
+ 	if (*dev_name_end != '=') {
+@@ -296,8 +298,14 @@ static int ceph_parse_new_source(const char *dev_name, const char *dev_name_end,
+ 	fsid_start = strchr(dev_name, '@');
+ 	if (!fsid_start)
+ 		return invalfc(fc, "missing cluster fsid");
+-	++fsid_start; /* start of cluster fsid */
++	len = fsid_start - name_start;
++	kfree(opts->name);
++	opts->name = kstrndup(name_start, len, GFP_KERNEL);
++	if (!opts->name)
++		return -ENOMEM;
++	dout("using %s entity name", opts->name);
+ 
++	++fsid_start; /* start of cluster fsid */
+ 	fs_name_start = strchr(fsid_start, '.');
+ 	if (!fs_name_start)
+ 		return invalfc(fc, "missing file system name");
+-- 
+Patrick Donnelly, Ph.D.
+He / Him / His
+Red Hat Partner Engineer
+IBM, Inc.
+GPG: 19F28A586F808C2402351B93C3301A3E258DD79D
+
 
