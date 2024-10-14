@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-84771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F037D99D20C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8915299CCBE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:24:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84ADBB26074
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C771283E92
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530C61BE854;
-	Mon, 14 Oct 2024 15:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1421AA7A5;
+	Mon, 14 Oct 2024 14:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSUMM35v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDCx7fdW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104611BD00A;
-	Mon, 14 Oct 2024 15:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098E31547F3;
+	Mon, 14 Oct 2024 14:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919158; cv=none; b=c7tgQ/nUPmBnwpJFynXjn8O6wkIgoUtcZWTXsjfczYFfzkmGxfSSuCE4zhA5L17xj8jBSmEIAhKHL68l4nUtN42VqK7tYl1rFlPSeJCT/Ut+LmrteWx42Z4BiYSxa5OC6VGsVWDzuzZzczXYFEEhb3wWheaEZYTz5AeJTFtUEhM=
+	t=1728915852; cv=none; b=dXiga3ZHz3xmOVwXvxQ7h8i2yuAy8vuEWM98VQhT2x7OITXvrq4Ic+CXCumC+NNSLGngQ3PXMeXJpisbFHwMyJ23GWp0VdBiF8eVlCLdOkoJX9NDGBfmIiIXNfqexBWhZJ9Y1yREGQHFA8SQVN8us8tJe2ukUs4J/QLBxxecW6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919158; c=relaxed/simple;
-	bh=/zszVhLmoHkFhYa54G/vzlbjXDPtAwfcwoqr1x8CJYY=;
+	s=arc-20240116; t=1728915852; c=relaxed/simple;
+	bh=S89xMwi3hP1Nod/Bz9V7j2wvttpsXI23FVM3hPCZDsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=upSJ0LkHznJW97f4FyV+stNtzMG6PI516yOBGDfexihX6t6tI7YyRkXj58q9C/s1vIG1dVxa+Uuo+h9mlnvOsuKV2yNKiKmNcawac2fH6sDTM+0XjfgVPzOTP2PCmArNqwHJc1u/8nPQMPZEVG972aNlNIqDT5fseUT49jNgplQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSUMM35v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73DBAC4CEC3;
-	Mon, 14 Oct 2024 15:19:17 +0000 (UTC)
+	 MIME-Version; b=aroLNiXfAVGFlfCqAwCBGReL/7zJIC9u+mbIhLAKQbw4byJvGUmEGzUAWWEA5L1YJq4VX7Xuvh0DYoiSaWrHm3SyRmd3cSm0MMxNYALnzpSO/+BckOpkiHXYQcoFHACeaWg9xq08aeJZ3rzIRf2xElclRhaxIY+/CnA7xvY/g+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDCx7fdW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D5EC4CEC7;
+	Mon, 14 Oct 2024 14:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919157;
-	bh=/zszVhLmoHkFhYa54G/vzlbjXDPtAwfcwoqr1x8CJYY=;
+	s=korg; t=1728915851;
+	bh=S89xMwi3hP1Nod/Bz9V7j2wvttpsXI23FVM3hPCZDsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HSUMM35vP2WFRJdKTn7d2l0dZrzkQBzMym93zijMJ6161HYFa2kqmWQHWJaKdCim7
-	 KQd+/YPCNY2NeuENTQ/NZ+MGVi4bYW3zE8JR7kZRcSCp/LiLlreVWLTS6dxu7sAVpa
-	 xj/m21fwjQYoYnax+k6uhj4+/Q6JVsNxRIai4I0w=
+	b=BDCx7fdWzVNEjkNQkl7clEfws5enxvGIF8Un8mlbNXr7f84EQ0IH9TjArQZCKVSE9
+	 BbtnAqzcF7EMcDk95W7mBEkGiT03W9aM/eJ+n4JdPVWpp6fdSE4I507gSmYb1SSAl0
+	 4rVJ6VZwQhwDG9uiydtkoIiS+FHaHs8sicXbjiVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Hancock <robert.hancock@calian.com>,
-	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.1 527/798] i2c: xiic: Wait for TX empty to avoid missed TX NAKs
+	Jinke Han <jinkehan@didiglobal.com>,
+	Tao Chen <chen.dylane@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 018/214] bpf: Check percpu map value size first
 Date: Mon, 14 Oct 2024 16:18:01 +0200
-Message-ID: <20241014141238.692482771@linuxfoundation.org>
+Message-ID: <20241014141045.703244032@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Hancock <robert.hancock@calian.com>
+From: Tao Chen <chen.dylane@gmail.com>
 
-commit 521da1e9225450bd323db5fa5bca942b1dc485b7 upstream.
+[ Upstream commit 1d244784be6b01162b732a5a7d637dfc024c3203 ]
 
-Frequently an I2C write will be followed by a read, such as a register
-address write followed by a read of the register value. In this driver,
-when the TX FIFO half empty interrupt was raised and it was determined
-that there was enough space in the TX FIFO to send the following read
-command, it would do so without waiting for the TX FIFO to actually
-empty.
+Percpu map is often used, but the map value size limit often ignored,
+like issue: https://github.com/iovisor/bcc/issues/2519. Actually,
+percpu map value size is bound by PCPU_MIN_UNIT_SIZE, so we
+can check the value size whether it exceeds PCPU_MIN_UNIT_SIZE first,
+like percpu map of local_storage. Maybe the error message seems clearer
+compared with "cannot allocate memory".
 
-Unfortunately it appears that in some cases this can result in a NAK
-that was raised by the target device on the write, such as due to an
-unsupported register address, being ignored and the subsequent read
-being done anyway. This can potentially put the I2C bus into an
-invalid state and/or result in invalid read data being processed.
-
-To avoid this, once a message has been fully written to the TX FIFO,
-wait for the TX FIFO empty interrupt before moving on to the next
-message, to ensure NAKs are handled properly.
-
-Fixes: e1d5b6598cdc ("i2c: Add support for Xilinx XPS IIC Bus Interface")
-Signed-off-by: Robert Hancock <robert.hancock@calian.com>
-Cc: <stable@vger.kernel.org> # v2.6.34+
-Reviewed-by: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
-Acked-by: Michal Simek <michal.simek@amd.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jinke Han <jinkehan@didiglobal.com>
+Signed-off-by: Tao Chen <chen.dylane@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240910144111.1464912-2-chen.dylane@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-xiic.c |   19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ kernel/bpf/arraymap.c | 3 +++
+ kernel/bpf/hashtab.c  | 3 +++
+ 2 files changed, 6 insertions(+)
 
---- a/drivers/i2c/busses/i2c-xiic.c
-+++ b/drivers/i2c/busses/i2c-xiic.c
-@@ -482,14 +482,17 @@ static irqreturn_t xiic_process(int irq,
- 			goto out;
- 		}
+diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
+index feabc01938525..a5c6f8aa49015 100644
+--- a/kernel/bpf/arraymap.c
++++ b/kernel/bpf/arraymap.c
+@@ -73,6 +73,9 @@ int array_map_alloc_check(union bpf_attr *attr)
+ 	/* avoid overflow on round_up(map->value_size) */
+ 	if (attr->value_size > INT_MAX)
+ 		return -E2BIG;
++	/* percpu map value size is bound by PCPU_MIN_UNIT_SIZE */
++	if (percpu && round_up(attr->value_size, 8) > PCPU_MIN_UNIT_SIZE)
++		return -E2BIG;
  
--		xiic_fill_tx_fifo(i2c);
--
--		/* current message sent and there is space in the fifo */
--		if (!xiic_tx_space(i2c) && xiic_tx_fifo_space(i2c) >= 2) {
-+		if (xiic_tx_space(i2c)) {
-+			xiic_fill_tx_fifo(i2c);
-+		} else {
-+			/* current message fully written */
- 			dev_dbg(i2c->adap.dev.parent,
- 				"%s end of message sent, nmsgs: %d\n",
- 				__func__, i2c->nmsgs);
--			if (i2c->nmsgs > 1) {
-+			/* Don't move onto the next message until the TX FIFO empties,
-+			 * to ensure that a NAK is not missed.
-+			 */
-+			if (i2c->nmsgs > 1 && (pend & XIIC_INTR_TX_EMPTY_MASK)) {
- 				i2c->nmsgs--;
- 				i2c->tx_msg++;
- 				xfer_more = 1;
-@@ -500,11 +503,7 @@ static irqreturn_t xiic_process(int irq,
- 					"%s Got TX IRQ but no more to do...\n",
- 					__func__);
- 			}
--		} else if (!xiic_tx_space(i2c) && (i2c->nmsgs == 1))
--			/* current frame is sent and is last,
--			 * make sure to disable tx half
--			 */
--			xiic_irq_dis(i2c, XIIC_INTR_TX_HALF_MASK);
-+		}
- 	}
+ 	return 0;
+ }
+diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
+index 06115f8728e89..bcb74ac880cb5 100644
+--- a/kernel/bpf/hashtab.c
++++ b/kernel/bpf/hashtab.c
+@@ -462,6 +462,9 @@ static int htab_map_alloc_check(union bpf_attr *attr)
+ 		 * kmalloc-able later in htab_map_update_elem()
+ 		 */
+ 		return -E2BIG;
++	/* percpu map value size is bound by PCPU_MIN_UNIT_SIZE */
++	if (percpu && round_up(attr->value_size, 8) > PCPU_MIN_UNIT_SIZE)
++		return -E2BIG;
  
- 	if (pend & XIIC_INTR_BNB_MASK) {
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
