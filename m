@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-83952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1177999CD53
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:31:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB5299D2B6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:29:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 396A81C22505
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:31:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 645D5284044
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B25B200CB;
-	Mon, 14 Oct 2024 14:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00BA61B85D0;
+	Mon, 14 Oct 2024 15:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIzb7HBJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cN/b4fxW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59ED320EB;
-	Mon, 14 Oct 2024 14:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37F51AB6E9;
+	Mon, 14 Oct 2024 15:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916301; cv=none; b=KQh972Rt3k0ry3efpDtA8qtZ5jLXgVZblFCWJMHIkJoBtYg3vtiD2dyU6avRJJpZHFlrxAJHL87e4V9VgV8H/X4vEhOzP/rqtQiGOZuhcB0Z6kZuyAl2Ud0ZJEVIPUtbkEopKawDBhpQdjPu9FH+VvIatFMIZxCb6wMgh29hXqc=
+	t=1728919598; cv=none; b=ofrcl4UCf9LBlNCJZEwEjlLD7221s83vv6IZWUkGcvDvD8rhJLuVgrAXRODQqj/b0KSnqq3lVvW5fNIoDq6e23FcVvYDMjPEpJzVshQGPOFZNKicHi91pRR2dR2QhkNZYfbLmPNDKt5PF48a87vjypDzkIwqBHV2i9QBDGgrhQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916301; c=relaxed/simple;
-	bh=Od8bJnrOnUXkah7g0ynv7OKFoYx5wQfbzBTcktLRrzE=;
+	s=arc-20240116; t=1728919598; c=relaxed/simple;
+	bh=jWmbwQM9SKeFyD+rp7UgHg7u0SA3H55+DLfcBJSg87A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qpDq/DV+XruxykGyyeWTCz00JXKtVK8KdFcDyiUWy0EOalv9DJz+blw+OU3RQbIL0jzriSkCWs16//K3Bb9hfjkXtXqDzjk0SU/gwYC4u8Q/B6IJeBkjHDLM7WzezX0OFXSw0dfA/h+RQ4vt6sf9ywLFXwAv8v3GjAyQjVHWy3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIzb7HBJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF505C4CEC3;
-	Mon, 14 Oct 2024 14:31:40 +0000 (UTC)
+	 MIME-Version; b=hHiizUZweL4lkvh2vmWOBH/E3VyhqZuFP6fLVW+HV00lYPvaNcJFk0n0E9eDtG+4dNMZTMQPqOc6zKWzO4ojH4xhfuMODk6hg69e5+es7+bRQj3Y1p2XOpXR0UrYNy4ZJ7A9OOXqiX2UjpohWcm4dhaeCN5m/Jd7WlP1NcdGYZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cN/b4fxW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7F9C4CEC3;
+	Mon, 14 Oct 2024 15:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916301;
-	bh=Od8bJnrOnUXkah7g0ynv7OKFoYx5wQfbzBTcktLRrzE=;
+	s=korg; t=1728919598;
+	bh=jWmbwQM9SKeFyD+rp7UgHg7u0SA3H55+DLfcBJSg87A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VIzb7HBJnB2+p5VgXx1SNHl5wKSqVbWDGVy5NPEdTNjaStdkWetRUvVV9o9qTDuhc
-	 y37xkazdHKiM4xn/xEgWam1cxyX6266fbWTJG7eMNkVmMTFpYDPnsENpQqoyhHmogF
-	 MQtELtWFpXfDUg0tZ+Ji9uS41gxfnpZ/EveKYwl4=
+	b=cN/b4fxW/5QcFb9SRFaWScxLEHtbci37lDVxrtux3HTTIqN9W/oOrMKj7XLBK5Ljr
+	 0P3FiexqdS0gfCUIhj+3aMRF0PHhWoxYVBEDetZzmGmBmNFtz44ZlrUnS4Gc8frPen
+	 p3KOBNQKoV/OMrJi5CXmVI+WdLHA5oYe6RbOHZKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 143/214] bridge: Handle error of rtnl_register_module().
+Subject: [PATCH 6.1 652/798] ACPI: battery: Fix possible crash when unregistering a battery hook
 Date: Mon, 14 Oct 2024 16:20:06 +0200
-Message-ID: <20241014141050.567760172@linuxfoundation.org>
+Message-ID: <20241014141243.666232291@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit cba5e43b0b757734b1e79f624d93a71435e31136 ]
+[ Upstream commit 76959aff14a0012ad6b984ec7686d163deccdc16 ]
 
-Since introduced, br_vlan_rtnl_init() has been ignoring the returned
-value of rtnl_register_module(), which could fail silently.
+When a battery hook returns an error when adding a new battery, then
+the battery hook is automatically unregistered.
+However the battery hook provider cannot know that, so it will later
+call battery_hook_unregister() on the already unregistered battery
+hook, resulting in a crash.
 
-Handling the error allows users to view a module as an all-or-nothing
-thing in terms of the rtnetlink functionality.  This prevents syzkaller
-from reporting spurious errors from its tests, where OOM often occurs
-and module is automatically loaded.
+Fix this by using the list head to mark already unregistered battery
+hooks as already being unregistered so that they can be ignored by
+battery_hook_unregister().
 
-Let's handle the errors by rtnl_register_many().
-
-Fixes: 8dcea187088b ("net: bridge: vlan: add rtm definitions and dump support")
-Fixes: f26b296585dc ("net: bridge: vlan: add new rtm message support")
-Fixes: adb3ce9bcb0f ("net: bridge: vlan: add del rtm message support")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: fa93854f7a7e ("battery: Add the battery hooking API")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20241001212835.341788-3-W_Armin@gmx.de
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_netlink.c |  6 +++++-
- net/bridge/br_private.h |  5 +++--
- net/bridge/br_vlan.c    | 19 +++++++++----------
- 3 files changed, 17 insertions(+), 13 deletions(-)
+ drivers/acpi/battery.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
-index f17dbac7d8284..6b97ae47f8552 100644
---- a/net/bridge/br_netlink.c
-+++ b/net/bridge/br_netlink.c
-@@ -1920,7 +1920,10 @@ int __init br_netlink_init(void)
- {
- 	int err;
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index 59d38c6e45d83..5a4e022662417 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -703,7 +703,7 @@ static void battery_hook_unregister_unlocked(struct acpi_battery_hook *hook)
+ 	list_for_each_entry(battery, &acpi_battery_list, list) {
+ 		hook->remove_battery(battery->bat);
+ 	}
+-	list_del(&hook->list);
++	list_del_init(&hook->list);
  
--	br_vlan_rtnl_init();
-+	err = br_vlan_rtnl_init();
-+	if (err)
-+		goto out;
+ 	pr_info("extension unregistered: %s\n", hook->name);
+ }
+@@ -711,7 +711,14 @@ static void battery_hook_unregister_unlocked(struct acpi_battery_hook *hook)
+ void battery_hook_unregister(struct acpi_battery_hook *hook)
+ {
+ 	mutex_lock(&hook_mutex);
+-	battery_hook_unregister_unlocked(hook);
++	/*
++	 * Ignore already unregistered battery hooks. This might happen
++	 * if a battery hook was previously unloaded due to an error when
++	 * adding a new battery.
++	 */
++	if (!list_empty(&hook->list))
++		battery_hook_unregister_unlocked(hook);
 +
- 	rtnl_af_register(&br_af_ops);
- 
- 	err = rtnl_link_register(&br_link_ops);
-@@ -1931,6 +1934,7 @@ int __init br_netlink_init(void)
- 
- out_af:
- 	rtnl_af_unregister(&br_af_ops);
-+out:
- 	return err;
+ 	mutex_unlock(&hook_mutex);
  }
+ EXPORT_SYMBOL_GPL(battery_hook_unregister);
+@@ -721,7 +728,6 @@ void battery_hook_register(struct acpi_battery_hook *hook)
+ 	struct acpi_battery *battery;
  
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index d4bedc87b1d8f..041f6e571a209 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -1571,7 +1571,7 @@ void br_vlan_get_stats(const struct net_bridge_vlan *v,
- void br_vlan_port_event(struct net_bridge_port *p, unsigned long event);
- int br_vlan_bridge_event(struct net_device *dev, unsigned long event,
- 			 void *ptr);
--void br_vlan_rtnl_init(void);
-+int br_vlan_rtnl_init(void);
- void br_vlan_rtnl_uninit(void);
- void br_vlan_notify(const struct net_bridge *br,
- 		    const struct net_bridge_port *p,
-@@ -1802,8 +1802,9 @@ static inline int br_vlan_bridge_event(struct net_device *dev,
- 	return 0;
- }
- 
--static inline void br_vlan_rtnl_init(void)
-+static inline int br_vlan_rtnl_init(void)
- {
-+	return 0;
- }
- 
- static inline void br_vlan_rtnl_uninit(void)
-diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
-index 9c2fffb827ab1..89f51ea4cabec 100644
---- a/net/bridge/br_vlan.c
-+++ b/net/bridge/br_vlan.c
-@@ -2296,19 +2296,18 @@ static int br_vlan_rtm_process(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	return err;
- }
- 
--void br_vlan_rtnl_init(void)
-+static const struct rtnl_msg_handler br_vlan_rtnl_msg_handlers[] = {
-+	{THIS_MODULE, PF_BRIDGE, RTM_NEWVLAN, br_vlan_rtm_process, NULL, 0},
-+	{THIS_MODULE, PF_BRIDGE, RTM_DELVLAN, br_vlan_rtm_process, NULL, 0},
-+	{THIS_MODULE, PF_BRIDGE, RTM_GETVLAN, NULL, br_vlan_rtm_dump, 0},
-+};
-+
-+int br_vlan_rtnl_init(void)
- {
--	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_GETVLAN, NULL,
--			     br_vlan_rtm_dump, 0);
--	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_NEWVLAN,
--			     br_vlan_rtm_process, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_DELVLAN,
--			     br_vlan_rtm_process, NULL, 0);
-+	return rtnl_register_many(br_vlan_rtnl_msg_handlers);
- }
- 
- void br_vlan_rtnl_uninit(void)
- {
--	rtnl_unregister(PF_BRIDGE, RTM_GETVLAN);
--	rtnl_unregister(PF_BRIDGE, RTM_NEWVLAN);
--	rtnl_unregister(PF_BRIDGE, RTM_DELVLAN);
-+	rtnl_unregister_many(br_vlan_rtnl_msg_handlers);
- }
+ 	mutex_lock(&hook_mutex);
+-	INIT_LIST_HEAD(&hook->list);
+ 	list_add(&hook->list, &battery_hook_list);
+ 	/*
+ 	 * Now that the driver is registered, we need
 -- 
 2.43.0
 
