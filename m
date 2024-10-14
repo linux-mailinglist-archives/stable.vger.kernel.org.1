@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-83779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4802399C95D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 13:50:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B23F299C95E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 13:50:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 793251C2161D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 11:50:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EE141F23210
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 11:50:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE5119F418;
-	Mon, 14 Oct 2024 11:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E4119F421;
+	Mon, 14 Oct 2024 11:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HK+KHKjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yO3YkIQD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF4113C67C
-	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 11:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CF519E96E
+	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 11:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728906622; cv=none; b=GRUf3nu+rXe6CCTSu9r2424++CLECCoeD7qoAZaV/JJc90nBccDRX3IbLC87p2Y9J/aoO71N4Ntuj7gI/i1B3bRxDBuUcIHMqkggU/7Uk/QYgR+uDengEpLuCpAN//FYMD5RcI26m7St+R3qA3KjQS0ngGYSYuVtRV27evYojn4=
+	t=1728906625; cv=none; b=CL+A6iqgXie10AHnyzhY4aEskN1M8RqakOxGUznIAEW7RYruQQD3Ji4priHK0J+/8VCaehXlAmPsMJkX9UMkqVqaWUBDqCeqKW64AUTrCWV48ukL+HGidKARedfPD1utsVxSLDgajRX69+wIzdN2AW1gQ8Yp93d15rob2UsL43Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728906622; c=relaxed/simple;
-	bh=UsouneQISNhZ/IcZ0y+t3d2YG6r1PzCPf5Xok1+Mfbg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ibIpuA1n/qwbty7Hb4dusTASDS69r2190Picp+fqdcve7sI++/Tz3A0A7ctbEZcLQsaTjYhjOYdtd1TlPanQ0I0YjYO1r1RdzxpVbPUyUAUxT5hoiiWq8/DYSvOymhQebhmGjjzedPyGF7mJoxTIqN4R9vFSvM/5/OkP/B0gpRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HK+KHKjM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F30C4CEC3;
-	Mon, 14 Oct 2024 11:50:21 +0000 (UTC)
+	s=arc-20240116; t=1728906625; c=relaxed/simple;
+	bh=B/CHMM9im4jXWSxUcmXTH4e6CGPHSRroEs+W/z/DXFs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GvnugEeG0jUj2lvjnIdu1T8LZ22I3kfRrdYddK/AkFotAR16QS4y2ZrUc3AdEzey8coR+4yMgZwiwrtltB9FQHEBnLDiQastPmcAR93EM8rV/nub79lFu3VzqonjMWFun599kL3NzxuZo5G39ZUjYC3jwJO9v0th2GDt6voU4ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yO3YkIQD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD270C4CEC3;
+	Mon, 14 Oct 2024 11:50:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728906621;
-	bh=UsouneQISNhZ/IcZ0y+t3d2YG6r1PzCPf5Xok1+Mfbg=;
+	s=korg; t=1728906625;
+	bh=B/CHMM9im4jXWSxUcmXTH4e6CGPHSRroEs+W/z/DXFs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=HK+KHKjMGIJolkT4C1mmp+HcaQLoCFWbLNJWfnNG5zyRDxiunhV+a/mfItVLG69gZ
-	 mSBDvUXwTMn7xtgCXtazCJP+2o6ekHXHBWuQe9scPeRihJ7fp0IWKrnei6jFcO9ZKv
-	 wyLfihJ1d+sjksHryD2Hdpt/UYdCJc2JMWukxyus=
-Subject: FAILED: patch "[PATCH] scsi: ufs: Use pre-calculated offsets in ufshcd_init_lrb()" failed to apply to 5.10-stable tree
-To: avri.altman@wdc.com,bvanassche@acm.org,martin.petersen@oracle.com
+	b=yO3YkIQDDR24vxCbh9kz5QFT57OuR7Q6vL5DtDSpPmDFJlgpXywWBffJVKjgIYKEW
+	 YycwtLQrl6157d4M7UdmITwIneR5AYYbb/JMefV/7Da5VT5blqaXzhETtB+yIArS2+
+	 FEs1xDUvXNlSUxLhdpTJsXaHi3EN1mq0Bb7a6eXU=
+Subject: FAILED: patch "[PATCH] io_uring/rw: fix cflags posting for single issue multishot" failed to apply to 6.11-stable tree
+To: axboe@kernel.dk
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 14 Oct 2024 13:47:37 +0200
-Message-ID: <2024101436-violin-agreement-b115@gregkh>
+Date: Mon, 14 Oct 2024 13:48:36 +0200
+Message-ID: <2024101436-avalanche-approach-5c90@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,41 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.11-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.11.y
 git checkout FETCH_HEAD
-git cherry-pick -x d5130c5a093257aa4542aaded8034ef116a7624a
+git cherry-pick -x c9d952b9103b600ddafc5d1c0e2f2dbd30f0b805
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024101436-violin-agreement-b115@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024101436-avalanche-approach-5c90@gregkh' --subject-prefix 'PATCH 6.11.y' HEAD^..
 
 Possible dependencies:
 
-d5130c5a0932 ("scsi: ufs: Use pre-calculated offsets in ufshcd_init_lrb()")
-06caeb536b2b ("scsi: ufs: core: Rename symbol sizeof_utp_transfer_cmd_desc()")
-5149452ca662 ("scsi: ufs: core: Fix MCQ tag calculation")
-f87b2c41822a ("scsi: ufs: mcq: Add completion support of a CQE")
-854f84e7feeb ("scsi: ufs: core: mcq: Find hardware queue to queue request")
-22a2d563de14 ("scsi: ufs: core: Prepare ufshcd_send_command() for MCQ")
-2468da61ea09 ("scsi: ufs: core: mcq: Configure operation and runtime interface")
-4682abfae2eb ("scsi: ufs: core: mcq: Allocate memory for MCQ mode")
-7224c806876e ("scsi: ufs: core: mcq: Calculate queue depth")
-c263b4ef737e ("scsi: ufs: core: mcq: Configure resource regions")
-57b1c0ef89ac ("scsi: ufs: core: mcq: Add support to allocate multiple queues")
-0cab4023ec7b ("scsi: ufs: core: Defer adding host to SCSI if MCQ is supported")
-305a357d3595 ("scsi: ufs: core: Introduce multi-circular queue capability")
-6e1d850acff9 ("scsi: ufs: core: Probe for EXT_IID support")
-baf5ddac90dc ("scsi: ufs: ufs-qcom: Add support for reinitializing the UFS device")
-96a7141da332 ("scsi: ufs: core: Add support for reinitializing the UFS device")
-c2c38c573a2e ("scsi: ufs: core: Add reinit_notify() callback")
-031312dbc695 ("scsi: ufs: ufs-qcom: Remove unnecessary goto statements")
-4a5bd1a928a2 ("Merge patch series "Prepare for upstreaming Pixel 6 and 7 UFS support"")
+c9d952b9103b ("io_uring/rw: fix cflags posting for single issue multishot read")
+6733e678ba12 ("io_uring/kbuf: pass in 'len' argument for buffer commit")
+ecd5c9b29643 ("io_uring/kbuf: add io_kbuf_commit() helper")
+03e02e8f95fe ("io_uring/kbuf: use 'bl' directly rather than req->buf_list")
 
 thanks,
 
@@ -95,40 +80,66 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d5130c5a093257aa4542aaded8034ef116a7624a Mon Sep 17 00:00:00 2001
-From: Avri Altman <avri.altman@wdc.com>
-Date: Tue, 10 Sep 2024 07:45:43 +0300
-Subject: [PATCH] scsi: ufs: Use pre-calculated offsets in ufshcd_init_lrb()
+From c9d952b9103b600ddafc5d1c0e2f2dbd30f0b805 Mon Sep 17 00:00:00 2001
+From: Jens Axboe <axboe@kernel.dk>
+Date: Sat, 5 Oct 2024 19:06:50 -0600
+Subject: [PATCH] io_uring/rw: fix cflags posting for single issue multishot
+ read
 
-Replace manual offset calculations for response_upiu and prd_table in
-ufshcd_init_lrb() with pre-calculated offsets already stored in the
-utp_transfer_req_desc structure. The pre-calculated offsets are set
-differently in ufshcd_host_memory_configure() based on the
-UFSHCD_QUIRK_PRDT_BYTE_GRAN quirk, ensuring correct alignment and
-access.
+If multishot gets disabled, and hence the request will get terminated
+rather than persist for more iterations, then posting the CQE with the
+right cflags is still important. Most notably, the buffer reference
+needs to be included.
 
-Fixes: 26f968d7de82 ("scsi: ufs: Introduce UFSHCD_QUIRK_PRDT_BYTE_GRAN quirk")
+Refactor the return of __io_read() a bit, so that the provided buffer
+is always put correctly, and hence returned to the application.
+
+Reported-by: Sharon Rosner <Sharon Rosner>
+Link: https://github.com/axboe/liburing/issues/1257
 Cc: stable@vger.kernel.org
-Signed-off-by: Avri Altman <avri.altman@wdc.com>
-Link: https://lore.kernel.org/r/20240910044543.3812642-1-avri.altman@wdc.com
-Acked-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 2a975d426c82 ("io_uring/rw: don't allow multishot reads without NOWAIT support")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 24a32e2fd75e..6a71ebf953e2 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -2933,9 +2933,8 @@ static void ufshcd_init_lrb(struct ufs_hba *hba, struct ufshcd_lrb *lrb, int i)
- 	struct utp_transfer_req_desc *utrdlp = hba->utrdl_base_addr;
- 	dma_addr_t cmd_desc_element_addr = hba->ucdl_dma_addr +
- 		i * ufshcd_get_ucd_size(hba);
--	u16 response_offset = offsetof(struct utp_transfer_cmd_desc,
--				       response_upiu);
--	u16 prdt_offset = offsetof(struct utp_transfer_cmd_desc, prd_table);
-+	u16 response_offset = le16_to_cpu(utrdlp[i].response_upiu_offset);
-+	u16 prdt_offset = le16_to_cpu(utrdlp[i].prd_table_offset);
+diff --git a/io_uring/rw.c b/io_uring/rw.c
+index f023ff49c688..93ad92605884 100644
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -972,17 +972,21 @@ int io_read_mshot(struct io_kiocb *req, unsigned int issue_flags)
+ 		if (issue_flags & IO_URING_F_MULTISHOT)
+ 			return IOU_ISSUE_SKIP_COMPLETE;
+ 		return -EAGAIN;
+-	}
+-
+-	/*
+-	 * Any successful return value will keep the multishot read armed.
+-	 */
+-	if (ret > 0 && req->flags & REQ_F_APOLL_MULTISHOT) {
++	} else if (ret <= 0) {
++		io_kbuf_recycle(req, issue_flags);
++		if (ret < 0)
++			req_set_fail(req);
++	} else {
+ 		/*
+-		 * Put our buffer and post a CQE. If we fail to post a CQE, then
++		 * Any successful return value will keep the multishot read
++		 * armed, if it's still set. Put our buffer and post a CQE. If
++		 * we fail to post a CQE, or multishot is no longer set, then
+ 		 * jump to the termination path. This request is then done.
+ 		 */
+ 		cflags = io_put_kbuf(req, ret, issue_flags);
++		if (!(req->flags & REQ_F_APOLL_MULTISHOT))
++			goto done;
++
+ 		rw->len = 0; /* similarly to above, reset len to 0 */
  
- 	lrb->utr_descriptor_ptr = utrdlp + i;
- 	lrb->utrd_dma_addr = hba->utrdl_dma_addr +
+ 		if (io_req_post_cqe(req, ret, cflags | IORING_CQE_F_MORE)) {
+@@ -1003,6 +1007,7 @@ int io_read_mshot(struct io_kiocb *req, unsigned int issue_flags)
+ 	 * Either an error, or we've hit overflow posting the CQE. For any
+ 	 * multishot request, hitting overflow will terminate it.
+ 	 */
++done:
+ 	io_req_set_res(req, ret, cflags);
+ 	io_req_rw_cleanup(req, issue_flags);
+ 	if (issue_flags & IO_URING_F_MULTISHOT)
 
 
