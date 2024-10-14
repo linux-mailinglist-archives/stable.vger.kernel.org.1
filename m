@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-84870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 348C499D295
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F2399CD18
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:28:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDE90285DF7
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CFC3B211A1
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BC21AB534;
-	Mon, 14 Oct 2024 15:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D161A3A8D;
+	Mon, 14 Oct 2024 14:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rbA94J9u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kuhwqVGU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C550E481B3;
-	Mon, 14 Oct 2024 15:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDA91547F3;
+	Mon, 14 Oct 2024 14:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919509; cv=none; b=n/BjbA5vPKc8qt/U/iSHTZh5F0I/P92allz49KBBMIoyNg0Cd9aiXs3cQ4lqZaZqEa2L15r6qgXJa/cGe1QiKZLEUyjpLPw9Nyne+GQVX5VEcaPxLzhzfOSFX3V9oJtOcWvMzMWGcL+Hbw051zHtmpKyl/7hMXw/PAlVEfRDFXk=
+	t=1728916125; cv=none; b=EawFDAk6Si70aJrRX4CCPaxi93b9/Mieyk77Lw3LXrD64A0hOLu+N5X8a400JoMSXeASXpOzgWhIDFO5IrbsxVADf4fD+QAhbcHVEH1IoUaK5oX7PFIxbVKefpdo+VU0XNJ/5h1Ata2+TQHpJfCTPJMQOXJOOiFTdI7mPRxWE2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919509; c=relaxed/simple;
-	bh=s+ATs3T/0z1lxWaNDS+fD7eCbpM+01gl0G1kB0kez1Y=;
+	s=arc-20240116; t=1728916125; c=relaxed/simple;
+	bh=zHdVGyCcZr51KvBLRcfKTij+Mcd2NB+875SkeI0JWHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YmL0uB2MpMHZMiLPRsgy0pERg6kYd2rIpKQJINQMlCqUGFN3gIgO3/ydL/6hlM1z4La7PRjXUyFaYzlZjfElGpX/zokMS/glgto5H/D78auzamODhCsStsjWXdQUL9ZsDbOjfy4zijK+TLdGkTK/Iizk3f35Ok4HXcUUFQjpE3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rbA94J9u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3657EC4CEC3;
-	Mon, 14 Oct 2024 15:25:09 +0000 (UTC)
+	 MIME-Version; b=FiM77rlKquKBYJtQySFn6RH25DZhBx00dSqRGHBHc5EYs2EQ5snF2V1yeKVImLgIZA0lq+09/4PwZW/roYxZAvQD8diqBSDjmJu7b+1myLmjyvv1VRxUPf0vkdZFG2IxCIQCs0AxKmjzlKtHB/TL9FUP8+f+1J97ka07JgQ+ANw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kuhwqVGU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F618C4CEC3;
+	Mon, 14 Oct 2024 14:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919509;
-	bh=s+ATs3T/0z1lxWaNDS+fD7eCbpM+01gl0G1kB0kez1Y=;
+	s=korg; t=1728916124;
+	bh=zHdVGyCcZr51KvBLRcfKTij+Mcd2NB+875SkeI0JWHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rbA94J9ufV1CvLVV95ngYsHg931DGw2VsbvjiWTiZa1IhvhYoftNJhurZtEuvzxDb
-	 +9wHs9qCBEivnFQ3LPF9K162fOVWf/IqZ2Yzuep+zA9cLlkcpemydbqoKPeTJ2fX2s
-	 hGvmARpyEZnm2IAi+3VchvVTEPsxYpnTePWvfR6E=
+	b=kuhwqVGUEjQH//29Gqknj6xTg/0NQ8ICzRdtnezOb3zd12lfoL1HSGGiQiMq1lQwM
+	 vGpIMCieoCKzjox1FY4+tlgCiLKNk9Rd891TIAH6oGB2CGfDn+vqKfNaWN53CoprNE
+	 gGO9bmBwHCiw3gu0hXY4ilTCkCLinD3vYbXY6s/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.1 599/798] Input: adp5589-keys - fix NULL pointer dereference
+	Ingo van Lil <inguin@gmx.de>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 090/214] net: phy: dp83869: fix memory corruption when enabling fiber
 Date: Mon, 14 Oct 2024 16:19:13 +0200
-Message-ID: <20241014141241.536021459@linuxfoundation.org>
+Message-ID: <20241014141048.506397175@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Ingo van Lil <inguin@gmx.de>
 
-commit fb5cc65f973661241e4a2b7390b429aa7b330c69 upstream.
+[ Upstream commit a842e443ca8184f2dc82ab307b43a8b38defd6a5 ]
 
-We register a devm action to call adp5589_clear_config() and then pass
-the i2c client as argument so that we can call i2c_get_clientdata() in
-order to get our device object. However, i2c_set_clientdata() is only
-being set at the end of the probe function which means that we'll get a
-NULL pointer dereference in case the probe function fails early.
+When configuring the fiber port, the DP83869 PHY driver incorrectly
+calls linkmode_set_bit() with a bit mask (1 << 10) rather than a bit
+number (10). This corrupts some other memory location -- in case of
+arm64 the priv pointer in the same structure.
 
-Fixes: 30df385e35a4 ("Input: adp5589-keys - use devm_add_action_or_reset() for register clear")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20241001-b4-dev-adp5589-fw-conversion-v1-1-fca0149dfc47@analog.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since the advertising flags are updated from supported at the end of the
+function the incorrect line isn't needed at all and can be removed.
+
+Fixes: a29de52ba2a1 ("net: dp83869: Add ability to advertise Fiber connection")
+Signed-off-by: Ingo van Lil <inguin@gmx.de>
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241002161807.440378-1-inguin@gmx.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/keyboard/adp5589-keys.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/net/phy/dp83869.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/input/keyboard/adp5589-keys.c
-+++ b/drivers/input/keyboard/adp5589-keys.c
-@@ -936,10 +936,9 @@ static int adp5589_keypad_add(struct adp
+diff --git a/drivers/net/phy/dp83869.c b/drivers/net/phy/dp83869.c
+index d7aaefb5226b6..5f056d7db83ee 100644
+--- a/drivers/net/phy/dp83869.c
++++ b/drivers/net/phy/dp83869.c
+@@ -645,7 +645,6 @@ static int dp83869_configure_fiber(struct phy_device *phydev,
+ 		     phydev->supported);
  
- static void adp5589_clear_config(void *data)
- {
--	struct i2c_client *client = data;
--	struct adp5589_kpad *kpad = i2c_get_clientdata(client);
-+	struct adp5589_kpad *kpad = data;
+ 	linkmode_set_bit(ETHTOOL_LINK_MODE_FIBRE_BIT, phydev->supported);
+-	linkmode_set_bit(ADVERTISED_FIBRE, phydev->advertising);
  
--	adp5589_write(client, kpad->var->reg(ADP5589_GENERAL_CFG), 0);
-+	adp5589_write(kpad->client, kpad->var->reg(ADP5589_GENERAL_CFG), 0);
- }
- 
- static int adp5589_probe(struct i2c_client *client,
-@@ -983,7 +982,7 @@ static int adp5589_probe(struct i2c_clie
- 	}
- 
- 	error = devm_add_action_or_reset(&client->dev, adp5589_clear_config,
--					 client);
-+					 kpad);
- 	if (error)
- 		return error;
- 
-@@ -1010,8 +1009,6 @@ static int adp5589_probe(struct i2c_clie
- 	if (error)
- 		return error;
- 
--	i2c_set_clientdata(client, kpad);
--
- 	dev_info(&client->dev, "Rev.%d keypad, irq %d\n", revid, client->irq);
- 	return 0;
- }
+ 	if (dp83869->mode == DP83869_RGMII_1000_BASE) {
+ 		linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseX_Full_BIT,
+-- 
+2.43.0
+
 
 
 
