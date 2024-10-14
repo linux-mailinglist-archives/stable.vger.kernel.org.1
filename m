@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-84920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D922C99D2DE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65EFE99CE68
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:43:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 906791F24ABA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:31:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D2121F23C2B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1717D1C7608;
-	Mon, 14 Oct 2024 15:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3CF1AB6DC;
+	Mon, 14 Oct 2024 14:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYBAbh59"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Abhsdf+3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C659F43AA9;
-	Mon, 14 Oct 2024 15:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557631AB6C1;
+	Mon, 14 Oct 2024 14:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919675; cv=none; b=huf8WxgTxkheOL0mG9g3C5VuoxdAFxXlCCzV7objB4fml4brseGbPjrGc/zpjsudHfLKEIafnmrzqZgioMweAtO1GjM/p9QIYJmysV8UdZmYcQ82AH3QUFcw4obVoxQAvDBnneJ/iPTwWH5iZibiHdHpNtfYJQPdbzUoENcuJIw=
+	t=1728917000; cv=none; b=Xi7r7uj7g+0eY09acsn8tWO/C+dDzEUtCf575slTz1UxczYrc+hhgMqu2bv/waBkNkcx3EIKuNndDWEUx4ZNLhtUjnaUyFeQnrfwgzdJELoZmpcqojMfliyX2NQ6Z24jFQSobb0VjMs+ZhzPGriZTW6w4c9Lc0/6JKUSqY0jLAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919675; c=relaxed/simple;
-	bh=Wps9GTuz5wk3jqcrwZC72jAJwsXLfZNo6NiQtZfA74I=;
+	s=arc-20240116; t=1728917000; c=relaxed/simple;
+	bh=O5oGpRzabzeqX37hsifSO8BttgEqXt2+CVwyWOtndHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NWZMgWEaxyC3HCRn77TRTm49h6+TDLwZfMOiw837E6NiCDNt9dtW4s9e/4HoymAVS/Kgpm2JQ7Td3ZncnKf4xuyrhaDg33JvesCiyeKLAsMgDCPTN0azl6qCPugWIW6z/iF+P/HzVysztEBNwgukff7YMg46SXpPQu9aKTEloyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYBAbh59; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02FE7C4CEC3;
-	Mon, 14 Oct 2024 15:27:54 +0000 (UTC)
+	 MIME-Version; b=L12paS+w3bGj7RBIYWRtZdlSHtM1qruJkU9O1QHfDEIzAjxHV2amfo+I5I6p9QqDbk3UHGyVU0b4zOifDBZWBa1EinWXkj9ZvdDJxPp3+BYvAPyHlFXspltLfD3ymb2j4I389ES2iQUVVp/qfS6HmzBJh2J+0cYHS+uR11mow2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Abhsdf+3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0CA5C4CEC7;
+	Mon, 14 Oct 2024 14:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919675;
-	bh=Wps9GTuz5wk3jqcrwZC72jAJwsXLfZNo6NiQtZfA74I=;
+	s=korg; t=1728917000;
+	bh=O5oGpRzabzeqX37hsifSO8BttgEqXt2+CVwyWOtndHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HYBAbh5916ewoOzPuKxolX3Sw27Z1+/JXEH9wziE6iiE2YWlMZyhKahOv+ssto8OG
-	 c+9AuKOIOarytHxXhJaFMjbnbIqbuenYHpC85xSGXOXUq8i0fZu/ZttLXye+oG2oCP
-	 XbLN7DC539pZHIsJq4Y1f+nRwq//mvO82X+/oCG0=
+	b=Abhsdf+3rkg1zUN/CELGDG9FUchWA4S1RLrEK7HrhBR9ZCojSkYYkV5XXgw/dkrUw
+	 nX95rRqmd/TZZKBy+p4Eet2xt/X5k11/Eb68f78baJjrQOkhqfNr4ec9lN7q6/1HIa
+	 8fuddLQ3Wfbgl3t5HWljbeh67dmaXCelGkY0+6lI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Jihong <yangjihong1@huawei.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 676/798] perf sched: Move curr_thread initialization to perf_sched__map()
+Subject: [PATCH 6.6 124/213] thermal: int340x: processor_thermal: Set feature mask before proc_thermal_add
 Date: Mon, 14 Oct 2024 16:20:30 +0200
-Message-ID: <20241014141244.625151562@linuxfoundation.org>
+Message-ID: <20241014141047.812429843@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Jihong <yangjihong1@huawei.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 5e895278697c014e95ae7ae5e79a72ef68c5184e ]
+[ Upstream commit 6ebc25d8b053a208786295bab58abbb66b39c318 ]
 
-The curr_thread is used only for the 'perf sched map'. Put initialization
-in perf_sched__map() to reduce unnecessary actions in other commands.
+The function proc_thermal_add() adds sysfs entries for power limits.
 
-Simple functional testing:
+The feature mask of available features is not present at that time, so
+it cannot be used by proc_thermal_add() to selectively create sysfs
+attributes.
 
-  # perf sched record perf bench sched messaging
-  # Running 'sched/messaging' benchmark:
-  # 20 sender and receiver processes per group
-  # 10 groups == 400 processes run
+The feature mask is set by proc_thermal_mmio_add(), so modify the code
+to call it before proc_thermal_add() so as to allow the latter to use
+the feature mask.
 
-       Total time: 0.197 [sec]
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 15.526 MB perf.data (140095 samples) ]
+There is no functional impact with this change.
 
-  # perf sched map
-    *A0                                                               451264.532445 secs A0 => migration/0:15
-    *.                                                                451264.532468 secs .  => swapper:0
-     .  *B0                                                           451264.532537 secs B0 => migration/1:21
-     .  *.                                                            451264.532560 secs
-     .   .  *C0                                                       451264.532644 secs C0 => migration/2:27
-     .   .  *.                                                        451264.532668 secs
-     .   .   .  *D0                                                   451264.532753 secs D0 => migration/3:33
-     .   .   .  *.                                                    451264.532778 secs
-     .   .   .   .  *E0                                               451264.532861 secs E0 => migration/4:39
-     .   .   .   .  *.                                                451264.532886 secs
-     .   .   .   .   .  *F0                                           451264.532973 secs F0 => migration/5:45
-  <SNIP>
-     A7  A7  A7  A7  A7 *A7  .   .   .   .   .   .   .   .   .   .    451264.790785 secs
-     A7  A7  A7  A7  A7  A7 *A7  .   .   .   .   .   .   .   .   .    451264.790858 secs
-     A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .   .   .   .   .   .    451264.790934 secs
-     A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .   .   .   .   .    451264.791004 secs
-     A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .   .   .   .    451264.791075 secs
-     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .   .   .    451264.791143 secs
-     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .   .    451264.791232 secs
-     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .   .    451264.791336 secs
-     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .   .    451264.791407 secs
-     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7  .    451264.791484 secs
-     A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7  A7 *A7   451264.791553 secs
-  # echo $?
-  0
-
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240206083228.172607-4-yangjihong1@huawei.com
-Stable-dep-of: 1a5efc9e13f3 ("libsubcmd: Don't free the usage string")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 99ca0b57e49f ("thermal: intel: int340x: processor: Fix warning during module unload")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-sched.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ .../processor_thermal_device_pci.c            | 21 +++++++++----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index 8abd48a99ec5e..0cdb220229d39 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -3298,9 +3298,13 @@ static int perf_sched__map(struct perf_sched *sched)
- {
- 	int rc = -1;
+diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
+index 0d1e980072704..e7a0f17cdbe4b 100644
+--- a/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
++++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
+@@ -223,19 +223,19 @@ static int proc_thermal_pci_probe(struct pci_dev *pdev, const struct pci_device_
  
--	if (setup_map_cpus(sched))
-+	sched->curr_thread = calloc(MAX_CPUS, sizeof(*(sched->curr_thread)));
-+	if (!sched->curr_thread)
- 		return rc;
+ 	INIT_DELAYED_WORK(&pci_info->work, proc_thermal_threshold_work_fn);
  
-+	if (setup_map_cpus(sched))
-+		goto out_free_curr_thread;
-+
- 	if (setup_color_pids(sched))
- 		goto out_put_map_cpus;
- 
-@@ -3323,6 +3327,9 @@ static int perf_sched__map(struct perf_sched *sched)
- out_put_map_cpus:
- 	zfree(&sched->map.comp_cpus);
- 	perf_cpu_map__put(sched->map.cpus);
-+
-+out_free_curr_thread:
-+	zfree(&sched->curr_thread);
- 	return rc;
- }
- 
-@@ -3608,11 +3615,6 @@ int cmd_sched(int argc, const char **argv)
- 	unsigned int i;
- 	int ret = 0;
- 
--	sched.curr_thread = calloc(MAX_CPUS, sizeof(*sched.curr_thread));
--	if (!sched.curr_thread) {
--		ret = -ENOMEM;
--		goto out;
+-	ret = proc_thermal_add(&pdev->dev, proc_priv);
+-	if (ret) {
+-		dev_err(&pdev->dev, "error: proc_thermal_add, will continue\n");
+-		pci_info->no_legacy = 1;
 -	}
- 	sched.cpu_last_switched = calloc(MAX_CPUS, sizeof(*sched.cpu_last_switched));
- 	if (!sched.cpu_last_switched) {
- 		ret = -ENOMEM;
-@@ -3694,7 +3696,6 @@ int cmd_sched(int argc, const char **argv)
- out:
- 	free(sched.curr_pid);
- 	free(sched.cpu_last_switched);
--	free(sched.curr_thread);
+-
+ 	proc_priv->priv_data = pci_info;
+ 	pci_info->proc_priv = proc_priv;
+ 	pci_set_drvdata(pdev, proc_priv);
+ 
+ 	ret = proc_thermal_mmio_add(pdev, proc_priv, id->driver_data);
+ 	if (ret)
+-		goto err_ret_thermal;
++		return ret;
++
++	ret = proc_thermal_add(&pdev->dev, proc_priv);
++	if (ret) {
++		dev_err(&pdev->dev, "error: proc_thermal_add, will continue\n");
++		pci_info->no_legacy = 1;
++	}
+ 
+ 	psv_trip.temperature = get_trip_temp(pci_info);
+ 
+@@ -245,7 +245,7 @@ static int proc_thermal_pci_probe(struct pci_dev *pdev, const struct pci_device_
+ 							&tzone_params, 0, 0);
+ 	if (IS_ERR(pci_info->tzone)) {
+ 		ret = PTR_ERR(pci_info->tzone);
+-		goto err_ret_mmio;
++		goto err_del_legacy;
+ 	}
+ 
+ 	/* request and enable interrupt */
+@@ -276,11 +276,10 @@ static int proc_thermal_pci_probe(struct pci_dev *pdev, const struct pci_device_
+ 	pci_free_irq_vectors(pdev);
+ err_ret_tzone:
+ 	thermal_zone_device_unregister(pci_info->tzone);
+-err_ret_mmio:
+-	proc_thermal_mmio_remove(pdev, proc_priv);
+-err_ret_thermal:
++err_del_legacy:
+ 	if (!pci_info->no_legacy)
+ 		proc_thermal_remove(proc_priv);
++	proc_thermal_mmio_remove(pdev, proc_priv);
+ 	pci_disable_device(pdev);
  
  	return ret;
- }
 -- 
 2.43.0
 
