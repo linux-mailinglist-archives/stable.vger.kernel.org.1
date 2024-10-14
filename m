@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-84914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 294B199D2D3
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:30:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3350599CD3B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D37621F20C9A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:30:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63D181C21C2C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A461CACF9;
-	Mon, 14 Oct 2024 15:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659A920322;
+	Mon, 14 Oct 2024 14:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1ewJYan"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TIfu4nEE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6394B1C7608;
-	Mon, 14 Oct 2024 15:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22529610B;
+	Mon, 14 Oct 2024 14:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919658; cv=none; b=Xkncq2D67j74Cl0TvM7FsEVUEPNItkj5oXK4pa/OSFAbg1PzG60/yzczhqKvvx0vYnIZYyPsKF41HIRQiXoROIdqBdQ0Gb54O0XMCC/5rje6LK+b32GAImxacepZ4iAJoaFWPD3eVWe5QX/rLtWfpUlogWW7nxc5Xoe3Sx5DEXQ=
+	t=1728916236; cv=none; b=ltPKSj72JSEm890pFyGPzinIcwJPLXgdc1Yt2h8kIEX67Dr0xOS4DwZz1AY1HWUGeNob4Laagl7NaiOpShqgiZ+HZK7jqFKvgAkCMF/qt2UzbunkwiNpxP5k9yko96RlqvWkncFeb9ijEUJ4mN3EzI6/kNGFjxTJBmLt8jYGLl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919658; c=relaxed/simple;
-	bh=U9TnY9xK9o6mS4ZCZxKaIhwq/eX2AJvi/9iM8yz4A9w=;
+	s=arc-20240116; t=1728916236; c=relaxed/simple;
+	bh=6D7w2DAD2CTFivULAzbS190war7cozXRYS2WYdPMzp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SZCWLskSuwAtyZNbz7kwKgvJRfB1AvIlbV47ij2I2yUPG4OYNu+8P4TnmiBrb1/ISOIb1hziGfx+FPnkKh3IausLxwyvUQ5r1BYWftbqtKBfnzPwFGCTkJuDJ6aPXY5w155LoTFRw4b2AhSB66BqdQ3X84GD+ZW2lhfrU7AVoKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1ewJYan; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5029C4CEC3;
-	Mon, 14 Oct 2024 15:27:37 +0000 (UTC)
+	 MIME-Version; b=hd9GTG94v0JKxzGURBSAW6teblh+8g9KwCSU6/K9bDeFrFaeujJFRy315gWgrAWt7S4tmEdm7HNzjFEKvxK2yOLYw0cRIhacUZv63WPUiKEXseQlB4DYRs4xDlm+dUrdhiFlUPP42R9XXrf6kR+BoraeD5s0R6ZxSU/qLylyb0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TIfu4nEE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B98C4CEC7;
+	Mon, 14 Oct 2024 14:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919658;
-	bh=U9TnY9xK9o6mS4ZCZxKaIhwq/eX2AJvi/9iM8yz4A9w=;
+	s=korg; t=1728916235;
+	bh=6D7w2DAD2CTFivULAzbS190war7cozXRYS2WYdPMzp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f1ewJYanDX2Kx0cc9a1V6ytByJEtOBmYcseICUR7ueDmoX06DrW3wLV+4eO6GsBgz
-	 2QqdwB3UhYtY25+Xp4HmzYXDICLMFR4jR1kiH7M92bP2pA1oBBAwN1ydwqEZj4I8nL
-	 n2RErjN1jS7SPbmIeyCffAzTt4Xm/t8ury5Mx998=
+	b=TIfu4nEE1NsJD5/yGXxF5V0hSzsmeWN/qrtPVXAyIL6BV/t/qQ2IHNNxw41+H9DqB
+	 V3v7eg97KkjI1dH59/5sYO+zU/mArx2rbpLAFaz5DTadLXFWRDWr27dGGiS05vRqyJ
+	 8XBAax4DDeG+kjzAxVMjmZJYSzTTNsgbAhN5+yFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 630/798] drm/amd/display: Allow backlight to go below `AMDGPU_DM_DEFAULT_MIN_BACKLIGHT`
+Subject: [PATCH 6.11 121/214] ice: Fix netif_is_ice() in Safe Mode
 Date: Mon, 14 Oct 2024 16:19:44 +0200
-Message-ID: <20241014141242.787953258@linuxfoundation.org>
+Message-ID: <20241014141049.712634384@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
 
-[ Upstream commit 87d749a6aab73d8069d0345afaa98297816cb220 ]
+[ Upstream commit 8e60dbcbaaa177dacef55a61501790e201bf8c88 ]
 
-The issue with panel power savings compatibility below
-`AMDGPU_DM_DEFAULT_MIN_BACKLIGHT` happens at
-`AMDGPU_DM_DEFAULT_MIN_BACKLIGHT` as well.
+netif_is_ice() works by checking the pointer to netdev ops. However, it
+only checks for the default ice_netdev_ops, not ice_netdev_safe_mode_ops,
+so in Safe Mode it always returns false, which is unintuitive. While it
+doesn't look like netif_is_ice() is currently being called anywhere in Safe
+Mode, this could change and potentially lead to unexpected behaviour.
 
-That issue will be fixed separately, so don't prevent the backlight
-brightness from going that low.
-
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lore.kernel.org/amd-gfx/be04226a-a9e3-4a45-a83b-6d263c6557d8@t-8ch.de/T/#m400dee4e2fc61fe9470334d20a7c8c89c9aef44f
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: df006dd4b1dc ("ice: Add initial support framework for LAG")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 0625c4f075f2d..8f7130f7d8c69 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4077,7 +4077,7 @@ static void amdgpu_dm_update_backlight_caps(struct amdgpu_display_manager *dm,
- 		int spread = caps.max_input_signal - caps.min_input_signal;
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 5bd0d7252081c..39f89cb590cf2 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -86,7 +86,8 @@ ice_indr_setup_tc_cb(struct net_device *netdev, struct Qdisc *sch,
  
- 		if (caps.max_input_signal > AMDGPU_DM_DEFAULT_MAX_BACKLIGHT ||
--		    caps.min_input_signal < AMDGPU_DM_DEFAULT_MIN_BACKLIGHT ||
-+		    caps.min_input_signal < 0 ||
- 		    spread > AMDGPU_DM_DEFAULT_MAX_BACKLIGHT ||
- 		    spread < AMDGPU_DM_MIN_SPREAD) {
- 			DRM_DEBUG_KMS("DM: Invalid backlight caps: min=%d, max=%d\n",
+ bool netif_is_ice(const struct net_device *dev)
+ {
+-	return dev && (dev->netdev_ops == &ice_netdev_ops);
++	return dev && (dev->netdev_ops == &ice_netdev_ops ||
++		       dev->netdev_ops == &ice_netdev_safe_mode_ops);
+ }
+ 
+ /**
 -- 
 2.43.0
 
