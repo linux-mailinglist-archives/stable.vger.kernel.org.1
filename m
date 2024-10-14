@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-84446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 592EA99D03D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:02:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B7899D03F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:02:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A69D1C23646
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:02:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A39111C235FA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73AA1B4F07;
-	Mon, 14 Oct 2024 15:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF851B4F21;
+	Mon, 14 Oct 2024 15:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Et5LCn9W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TgeQsu8a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735AA1C3300;
-	Mon, 14 Oct 2024 15:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC4D1AB6E2;
+	Mon, 14 Oct 2024 15:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918046; cv=none; b=OegdQOUdKYlSc4macuGXiNsYtTCMpaxloFt9xkMXdPIN1UHJKUm4u54ae3Vq9rpVog0cRwfSmDzxMvXni6zBhUXJ3j0Po4VN4EdZJipYdpseBWqv6YadKUKoMo4RyvUHk5UhM0/EVcppT9cgJpzWR6YUmUn3s+K8bOI/AQ891LM=
+	t=1728918053; cv=none; b=q7w/Nu+QSTFSm1lWjDI1getlzj1RYq13a2iN45M9X7ozgRijejptfowfxuISRSFxxzL9HpVufDyhl7fWB2QZq4pTRlsBSvSrRXLzYPa2KcO6Bwm0aSHIh7FYxhA7E3OSsiI8HPBxk5gF8CtzTOQWN62A5z0Bz55bqAUSMNfPnyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918046; c=relaxed/simple;
-	bh=gIyF8+QW6n/VvJ8kiIrHZD6uWoTd1OXO/E0W27hsTBQ=;
+	s=arc-20240116; t=1728918053; c=relaxed/simple;
+	bh=d/p/HvxJrISm3CSxf1fAbQVLjU3ziFba/hYSHR8fOXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NeHv66Vt1kvS9b9xRxzRwQkX4o5RpKdsRXX832XnaeCTWc9gMp9gUHBn/AdmyrfEg9in3byP6iFsIP4r+Og1Z+0PnsAgUphYqXXEUUC2Nh+wrpOIC1P3sbv2AT+eHLRdiIldcG9AXRe/uCJqhqqRTAu61QaP9GMJNBik9uG7/cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Et5LCn9W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940B8C4CEC7;
-	Mon, 14 Oct 2024 15:00:45 +0000 (UTC)
+	 MIME-Version; b=Fd5zCf215udIqEQeCBH5wFJOn0CZi7GWwl3KbZ+34qIiHpfdW+BeY8aChPA/kT9lPtVEME0HjRV+7NdxXeDXSiY41QdlYaT2rGaix8+Ulx7/uJ71xZmpdECG1WR4ZBjVNCQ+jTAi86YODFYG5ILCD1jIhUCTJcRPvhbdC6qzFAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TgeQsu8a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A759C4CEC3;
+	Mon, 14 Oct 2024 15:00:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918046;
-	bh=gIyF8+QW6n/VvJ8kiIrHZD6uWoTd1OXO/E0W27hsTBQ=;
+	s=korg; t=1728918053;
+	bh=d/p/HvxJrISm3CSxf1fAbQVLjU3ziFba/hYSHR8fOXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Et5LCn9Wke+4scQ1hp6W4y2mEjpC93Txpg5iZ1nrv6KNOIvSa97mpVFWclnEj6DBv
-	 xeFzSNuyNDkSxt63l9XIxZFH1nMmyG0uxaRlIPT2c1kL13bhWUYx5pCtL2c2bwblD/
-	 NU6tvTBbCwS4kN8U7m5xqN9jXmxtDA36/01r+fQU=
+	b=TgeQsu8a7HU74emgjopCM8MalngdZEhwuPCain3C9k1If0Sscwb7SvPhqvxl/GKNF
+	 VCtr2THqruz9d0FDt8XT60JvzaiRmcPuIsif02L0TXv7BKDoCb30VNSTX9x2HKZE25
+	 abI/dctCyxWLEr5GuwNDAcPpPgK0C+/BaE3PC03s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Md Haris Iqbal <haris.iqbal@ionos.com>,
+	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 207/798] pinctrl: single: fix missing error code in pcs_probe()
-Date: Mon, 14 Oct 2024 16:12:41 +0200
-Message-ID: <20241014141226.062198264@linuxfoundation.org>
+Subject: [PATCH 6.1 208/798] RDMA/rtrs: Reset hb_missed_cnt after receiving other traffic from peer
+Date: Mon, 14 Oct 2024 16:12:42 +0200
+Message-ID: <20241014141226.103765350@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -66,35 +68,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Jack Wang <jinpu.wang@ionos.com>
 
-[ Upstream commit cacd8cf79d7823b07619865e994a7916fcc8ae91 ]
+[ Upstream commit 3258cbbd86deaa2675e1799bc3d18bd1ef472641 ]
 
-If pinctrl_enable() fails in pcs_probe(), it should return the error code.
+Reset hb_missed_cnt after receiving traffic from other peer, so
+hb is more robust again high load on host or network.
 
-Fixes: 8f773bfbdd42 ("pinctrl: single: fix possible memory leak when pinctrl_enable() fails")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Link: https://lore.kernel.org/20240819024625.154441-1-yangyingliang@huaweicloud.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 6a98d71daea1 ("RDMA/rtrs: client: main functionality")
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
+Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
+Link: https://patch.msgid.link/20240821112217.41827-5-haris.iqbal@ionos.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-single.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/ulp/rtrs/rtrs-clt.c | 3 ++-
+ drivers/infiniband/ulp/rtrs/rtrs-srv.c | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index d32d5c5e99bcd..28f3fabc72e30 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -1919,7 +1919,8 @@ static int pcs_probe(struct platform_device *pdev)
- 
- 	dev_info(pcs->dev, "%i pins, size %u\n", pcs->desc.npins, pcs->size);
- 
--	if (pinctrl_enable(pcs->pctl))
-+	ret = pinctrl_enable(pcs->pctl);
-+	if (ret)
- 		goto free;
- 
- 	return 0;
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+index cc07c91f9c549..9beae1e50d115 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+@@ -624,6 +624,7 @@ static void rtrs_clt_rdma_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		 */
+ 		if (WARN_ON(wc->wr_cqe->done != rtrs_clt_rdma_done))
+ 			return;
++		clt_path->s.hb_missed_cnt = 0;
+ 		rtrs_from_imm(be32_to_cpu(wc->ex.imm_data),
+ 			       &imm_type, &imm_payload);
+ 		if (imm_type == RTRS_IO_RSP_IMM ||
+@@ -641,7 +642,6 @@ static void rtrs_clt_rdma_done(struct ib_cq *cq, struct ib_wc *wc)
+ 				return  rtrs_clt_recv_done(con, wc);
+ 		} else if (imm_type == RTRS_HB_ACK_IMM) {
+ 			WARN_ON(con->c.cid);
+-			clt_path->s.hb_missed_cnt = 0;
+ 			clt_path->s.hb_cur_latency =
+ 				ktime_sub(ktime_get(), clt_path->s.hb_last_sent);
+ 			if (clt_path->flags & RTRS_MSG_NEW_RKEY_F)
+@@ -668,6 +668,7 @@ static void rtrs_clt_rdma_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		/*
+ 		 * Key invalidations from server side
+ 		 */
++		clt_path->s.hb_missed_cnt = 0;
+ 		WARN_ON(!(wc->wc_flags & IB_WC_WITH_INVALIDATE ||
+ 			  wc->wc_flags & IB_WC_WITH_IMM));
+ 		WARN_ON(wc->wr_cqe->done != rtrs_clt_rdma_done);
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+index e978ee4bb73ae..726b690ebe652 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+@@ -1234,6 +1234,7 @@ static void rtrs_srv_rdma_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		 */
+ 		if (WARN_ON(wc->wr_cqe != &io_comp_cqe))
+ 			return;
++		srv_path->s.hb_missed_cnt = 0;
+ 		err = rtrs_post_recv_empty(&con->c, &io_comp_cqe);
+ 		if (err) {
+ 			rtrs_err(s, "rtrs_post_recv(), err: %d\n", err);
 -- 
 2.43.0
 
