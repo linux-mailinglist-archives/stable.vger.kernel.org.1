@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-84043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9D599CDDC
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:37:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D244E99CD1A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:28:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B4361F23ADB
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:37:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0001F1C2261D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585E024B34;
-	Mon, 14 Oct 2024 14:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A5E1A7AC7;
+	Mon, 14 Oct 2024 14:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PS5Qotg0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xt7nGIIo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164634A24;
-	Mon, 14 Oct 2024 14:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203931A0724;
+	Mon, 14 Oct 2024 14:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916622; cv=none; b=WMC0XgkTjEqYEz7QKEzVDViTfDUA9XdxYxGvxJn00KfdYCmeeo+5nZS8+OAjAjcdE10dWI5fHA1eckULtgReyI899BKswp7KjwcRM7VPH1ROFe95gfTgj9D4AbEZzC1zw7MpDAreultmNz9Ljv/DOZ95WaHA3pbdnLzNQ/3SfiA=
+	t=1728916135; cv=none; b=ZZKBWAb6uqrIaKHZDGns2HJfXnj31uv9RgVtwrtCq4yRqMbgs7dRntxsIvLB3HmLf5gcTQ1Ai+bwWVbd+tSaZY8vL96cUMcal9PYXlDjkfoKrRXwQCOs7IhElxQ96zxBA55UCEgAjhUv/VM21kWM8NQL4MmQbzCQCafWw65PzRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916622; c=relaxed/simple;
-	bh=eywVfrXIgqhr7KUwFI/KZjugmm2yToNV2R+1lJzaUAE=;
+	s=arc-20240116; t=1728916135; c=relaxed/simple;
+	bh=V6Kjctt1UK6BAvQfJQDeMz+geZO3n8HJvLFLeE+enUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ANoqCNxbJcpfdNU9MMHfXd0Mnf3LG8YO5x7T6rkHCicjtNxWZ1/UCuXr+saKQOcJ2u5HOuX3X6SbI3mBL52X/0A5Wq4bCAR1nwbSkSIuz4jCuwL6StSnCcDMc9b8imQIH+duLk1aQYurvTs8Ya65K/Ai5psyLM7DmdQOp5e+Xi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PS5Qotg0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1CEC4CEC3;
-	Mon, 14 Oct 2024 14:37:01 +0000 (UTC)
+	 MIME-Version; b=knCTTgiQj3Uos1xoPZ5FZRTpNHS82dBfJZiSjuejD6EdKBRlUy7kscGGjxwXeUFZLPsGmLShLFr8F/Fz650NtHZBj7pfPZnq2YduyUxifyKQHwI1YAKJkrMl7vYN5xwiAPvJvy39gfyzTUR+h8wcqw2ZI6erBdypXCKSzs1/IuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xt7nGIIo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1D2C4CEC3;
+	Mon, 14 Oct 2024 14:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916622;
-	bh=eywVfrXIgqhr7KUwFI/KZjugmm2yToNV2R+1lJzaUAE=;
+	s=korg; t=1728916135;
+	bh=V6Kjctt1UK6BAvQfJQDeMz+geZO3n8HJvLFLeE+enUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PS5Qotg0AFc4NmUk73w5t3yZBbRoJZZDeXeiZ1vATLxC2XASduh62zWxCtVlBRjcU
-	 IDx3girnOZhZ2FqN1plUdLjpPHBngM+mutGIvMHYJhDvglCFALrapnbJXmsSOSxU0Z
-	 rMvhq5gAJ706l+qMumoYJThBi8v4Z3ZmEjTwWW94=
+	b=xt7nGIIosszgEt5B9pz5f4ysBo5eyK9lL22Tv0mGDAoGDm0ZTuZdqzpxn8f+Zb6rN
+	 r3NNu1bbbpRg1mFP0DZP+/x87cSz5UfJKqUzfR+4mXQfx3agrUJmu048jsHINV69b8
+	 HHGSXsJpkr/D39/2Bx5YsDdk4Gc/Aay2AEQtSUho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/213] bus: mhi: ep: Add support for async DMA write operation
-Date: Mon, 14 Oct 2024 16:18:45 +0200
-Message-ID: <20241014141043.734244023@linuxfoundation.org>
+Subject: [PATCH 6.11 063/214] netfilter: nf_nat: dont try nat source port reallocation for reverse dir clash
+Date: Mon, 14 Oct 2024 16:18:46 +0200
+Message-ID: <20241014141047.448595623@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,234 +62,212 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit ee08acb58fe47fc3bc2c137965985cdb1df40b35 ]
+[ Upstream commit d8f84a9bc7c4e07fdc4edc00f9e868b8db974ccb ]
 
-In order to optimize the data transfer, let's use the async DMA operation
-for writing (queuing) data to the host.
+A conntrack entry can be inserted to the connection tracking table if there
+is no existing entry with an identical tuple in either direction.
 
-In the async path, the completion event for the transfer ring will only be
-sent to the host when the controller driver notifies the MHI stack of the
-actual transfer completion using the callback (mhi_ep_skb_completion)
-supplied in "struct mhi_ep_buf_info".
+Example:
+INITIATOR -> NAT/PAT -> RESPONDER
 
-Also to accommodate the async operation, the transfer ring read offset
-(ring->rd_offset) is cached in the "struct mhi_ep_chan" and updated locally
-to let the stack queue further ring items to the controller driver. But the
-actual read offset of the transfer ring will only be updated in the
-completion callback.
+Initiator passes through NAT/PAT ("us") and SNAT is done (saddr rewrite).
+Then, later, NAT/PAT machine itself also wants to connect to RESPONDER.
 
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Stable-dep-of: c7d0b2db5bc5 ("bus: mhi: ep: Do not allocate memory for MHI objects from DMA zone")
+This will not work if the SNAT done earlier has same IP:PORT source pair.
+
+Conntrack table has:
+ORIGINAL: $IP_INITATOR:$SPORT -> $IP_RESPONDER:$DPORT
+REPLY:    $IP_RESPONDER:$DPORT -> $IP_NAT:$SPORT
+
+and new locally originating connection wants:
+ORIGINAL: $IP_NAT:$SPORT -> $IP_RESPONDER:$DPORT
+REPLY:    $IP_RESPONDER:$DPORT -> $IP_NAT:$SPORT
+
+This is handled by the NAT engine which will do a source port reallocation
+for the locally originating connection that is colliding with an existing
+tuple by attempting a source port rewrite.
+
+This is done even if this new connection attempt did not go through a
+masquerade/snat rule.
+
+There is a rare race condition with connection-less protocols like UDP,
+where we do the port reallocation even though its not needed.
+
+This happens when new packets from the same, pre-existing flow are received
+in both directions at the exact same time on different CPUs after the
+conntrack table was flushed (or conntrack becomes active for first time).
+
+With strict ordering/single cpu, the first packet creates new ct entry and
+second packet is resolved as established reply packet.
+
+With parallel processing, both packets are picked up as new and both get
+their own ct entry.
+
+In this case, the 'reply' packet (picked up as ORIGINAL) can be mangled by
+NAT engine because a port collision is detected.
+
+This change isn't enough to prevent a packet drop later during
+nf_conntrack_confirm(), the existing clash resolution strategy will not
+detect such reverse clash case.  This is resolved by a followup patch.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/ep/internal.h |  1 +
- drivers/bus/mhi/ep/main.c     | 74 +++++++++++++++++++++++++----------
- include/linux/mhi_ep.h        |  4 ++
- 3 files changed, 59 insertions(+), 20 deletions(-)
+ net/netfilter/nf_nat_core.c | 120 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 118 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bus/mhi/ep/internal.h b/drivers/bus/mhi/ep/internal.h
-index a2125fa5fe2f9..accbf3a51d0cf 100644
---- a/drivers/bus/mhi/ep/internal.h
-+++ b/drivers/bus/mhi/ep/internal.h
-@@ -159,6 +159,7 @@ struct mhi_ep_chan {
- 	void (*xfer_cb)(struct mhi_ep_device *mhi_dev, struct mhi_result *result);
- 	enum mhi_ch_state state;
- 	enum dma_data_direction dir;
-+	size_t rd_offset;
- 	u64 tre_loc;
- 	u32 tre_size;
- 	u32 tre_bytes_left;
-diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
-index 1ec9552d2b519..8765a7fb3d2c0 100644
---- a/drivers/bus/mhi/ep/main.c
-+++ b/drivers/bus/mhi/ep/main.c
-@@ -183,6 +183,8 @@ static int mhi_ep_process_cmd_ring(struct mhi_ep_ring *ring, struct mhi_ring_ele
- 
- 				goto err_unlock;
- 			}
-+
-+			mhi_chan->rd_offset = ch_ring->rd_offset;
- 		}
- 
- 		/* Set channel state to RUNNING */
-@@ -312,7 +314,7 @@ bool mhi_ep_queue_is_empty(struct mhi_ep_device *mhi_dev, enum dma_data_directio
- 	struct mhi_ep_cntrl *mhi_cntrl = mhi_dev->mhi_cntrl;
- 	struct mhi_ep_ring *ring = &mhi_cntrl->mhi_chan[mhi_chan->chan].ring;
- 
--	return !!(ring->rd_offset == ring->wr_offset);
-+	return !!(mhi_chan->rd_offset == ring->wr_offset);
- }
- EXPORT_SYMBOL_GPL(mhi_ep_queue_is_empty);
- 
-@@ -339,7 +341,7 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
- 			return -ENODEV;
- 		}
- 
--		el = &ring->ring_cache[ring->rd_offset];
-+		el = &ring->ring_cache[mhi_chan->rd_offset];
- 
- 		/* Check if there is data pending to be read from previous read operation */
- 		if (mhi_chan->tre_bytes_left) {
-@@ -418,6 +420,7 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
- 				tr_done = true;
- 			}
- 
-+			mhi_chan->rd_offset = (mhi_chan->rd_offset + 1) % ring->ring_size;
- 			mhi_ep_ring_inc_index(ring);
- 		}
- 
-@@ -478,6 +481,35 @@ static int mhi_ep_process_ch_ring(struct mhi_ep_ring *ring, struct mhi_ring_elem
- 	return 0;
+diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
+index 016c816d91cbc..c212b1b137222 100644
+--- a/net/netfilter/nf_nat_core.c
++++ b/net/netfilter/nf_nat_core.c
+@@ -183,7 +183,35 @@ hash_by_src(const struct net *net,
+ 	return reciprocal_scale(hash, nf_nat_htable_size);
  }
  
-+static void mhi_ep_skb_completion(struct mhi_ep_buf_info *buf_info)
+-/* Is this tuple already taken? (not by us) */
++/**
++ * nf_nat_used_tuple - check if proposed nat tuple clashes with existing entry
++ * @tuple: proposed NAT binding
++ * @ignored_conntrack: our (unconfirmed) conntrack entry
++ *
++ * A conntrack entry can be inserted to the connection tracking table
++ * if there is no existing entry with an identical tuple in either direction.
++ *
++ * Example:
++ * INITIATOR -> NAT/PAT -> RESPONDER
++ *
++ * INITIATOR passes through NAT/PAT ("us") and SNAT is done (saddr rewrite).
++ * Then, later, NAT/PAT itself also connects to RESPONDER.
++ *
++ * This will not work if the SNAT done earlier has same IP:PORT source pair.
++ *
++ * Conntrack table has:
++ * ORIGINAL: $IP_INITIATOR:$SPORT -> $IP_RESPONDER:$DPORT
++ * REPLY:    $IP_RESPONDER:$DPORT -> $IP_NAT:$SPORT
++ *
++ * and new locally originating connection wants:
++ * ORIGINAL: $IP_NAT:$SPORT -> $IP_RESPONDER:$DPORT
++ * REPLY:    $IP_RESPONDER:$DPORT -> $IP_NAT:$SPORT
++ *
++ * ... which would mean incoming packets cannot be distinguished between
++ * the existing and the newly added entry (identical IP_CT_DIR_REPLY tuple).
++ *
++ * @return: true if the proposed NAT mapping collides with an existing entry.
++ */
+ static int
+ nf_nat_used_tuple(const struct nf_conntrack_tuple *tuple,
+ 		  const struct nf_conn *ignored_conntrack)
+@@ -200,6 +228,94 @@ nf_nat_used_tuple(const struct nf_conntrack_tuple *tuple,
+ 	return nf_conntrack_tuple_taken(&reply, ignored_conntrack);
+ }
+ 
++static bool nf_nat_allow_clash(const struct nf_conn *ct)
 +{
-+	struct mhi_ep_device *mhi_dev = buf_info->mhi_dev;
-+	struct mhi_ep_cntrl *mhi_cntrl = mhi_dev->mhi_cntrl;
-+	struct mhi_ep_chan *mhi_chan = mhi_dev->dl_chan;
-+	struct mhi_ep_ring *ring = &mhi_cntrl->mhi_chan[mhi_chan->chan].ring;
-+	struct mhi_ring_element *el = &ring->ring_cache[ring->rd_offset];
-+	struct device *dev = &mhi_dev->dev;
-+	struct mhi_result result = {};
-+	int ret;
-+
-+	if (mhi_chan->xfer_cb) {
-+		result.buf_addr = buf_info->cb_buf;
-+		result.dir = mhi_chan->dir;
-+		result.bytes_xferd = buf_info->size;
-+
-+		mhi_chan->xfer_cb(mhi_dev, &result);
-+	}
-+
-+	ret = mhi_ep_send_completion_event(mhi_cntrl, ring, el, buf_info->size,
-+					   buf_info->code);
-+	if (ret) {
-+		dev_err(dev, "Error sending transfer completion event\n");
-+		return;
-+	}
-+
-+	mhi_ep_ring_inc_index(ring);
++	return nf_ct_l4proto_find(nf_ct_protonum(ct))->allow_clash;
 +}
 +
- /* TODO: Handle partially formed TDs */
- int mhi_ep_queue_skb(struct mhi_ep_device *mhi_dev, struct sk_buff *skb)
++/**
++ * nf_nat_used_tuple_new - check if to-be-inserted conntrack collides with existing entry
++ * @tuple: proposed NAT binding
++ * @ignored_ct: our (unconfirmed) conntrack entry
++ *
++ * Same as nf_nat_used_tuple, but also check for rare clash in reverse
++ * direction. Should be called only when @tuple has not been altered, i.e.
++ * @ignored_conntrack will not be subject to NAT.
++ *
++ * @return: true if the proposed NAT mapping collides with existing entry.
++ */
++static noinline bool
++nf_nat_used_tuple_new(const struct nf_conntrack_tuple *tuple,
++		      const struct nf_conn *ignored_ct)
++{
++	static const unsigned long uses_nat = IPS_NAT_MASK | IPS_SEQ_ADJUST_BIT;
++	const struct nf_conntrack_tuple_hash *thash;
++	const struct nf_conntrack_zone *zone;
++	struct nf_conn *ct;
++	bool taken = true;
++	struct net *net;
++
++	if (!nf_nat_used_tuple(tuple, ignored_ct))
++		return false;
++
++	if (!nf_nat_allow_clash(ignored_ct))
++		return true;
++
++	/* Initial choice clashes with existing conntrack.
++	 * Check for (rare) reverse collision.
++	 *
++	 * This can happen when new packets are received in both directions
++	 * at the exact same time on different CPUs.
++	 *
++	 * Without SMP, first packet creates new conntrack entry and second
++	 * packet is resolved as established reply packet.
++	 *
++	 * With parallel processing, both packets could be picked up as
++	 * new and both get their own ct entry allocated.
++	 *
++	 * If ignored_conntrack and colliding ct are not subject to NAT then
++	 * pretend the tuple is available and let later clash resolution
++	 * handle this at insertion time.
++	 *
++	 * Without it, the 'reply' packet has its source port rewritten
++	 * by nat engine.
++	 */
++	if (READ_ONCE(ignored_ct->status) & uses_nat)
++		return true;
++
++	net = nf_ct_net(ignored_ct);
++	zone = nf_ct_zone(ignored_ct);
++
++	thash = nf_conntrack_find_get(net, zone, tuple);
++	if (unlikely(!thash)) /* clashing entry went away */
++		return false;
++
++	ct = nf_ct_tuplehash_to_ctrack(thash);
++
++	/* NB: IP_CT_DIR_ORIGINAL should be impossible because
++	 * nf_nat_used_tuple() handles origin collisions.
++	 *
++	 * Handle remote chance other CPU confirmed its ct right after.
++	 */
++	if (thash->tuple.dst.dir != IP_CT_DIR_REPLY)
++		goto out;
++
++	/* clashing connection subject to NAT? Retry with new tuple. */
++	if (READ_ONCE(ct->status) & uses_nat)
++		goto out;
++
++	if (nf_ct_tuple_equal(&ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple,
++			      &ignored_ct->tuplehash[IP_CT_DIR_REPLY].tuple) &&
++	    nf_ct_tuple_equal(&ct->tuplehash[IP_CT_DIR_REPLY].tuple,
++			      &ignored_ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple)) {
++		taken = false;
++		goto out;
++	}
++out:
++	nf_ct_put(ct);
++	return taken;
++}
++
+ static bool nf_nat_may_kill(struct nf_conn *ct, unsigned long flags)
  {
-@@ -488,7 +520,6 @@ int mhi_ep_queue_skb(struct mhi_ep_device *mhi_dev, struct sk_buff *skb)
- 	struct mhi_ring_element *el;
- 	u32 buf_left, read_offset;
- 	struct mhi_ep_ring *ring;
--	enum mhi_ev_ccs code;
- 	size_t tr_len;
- 	u32 tre_len;
- 	int ret;
-@@ -512,7 +543,7 @@ int mhi_ep_queue_skb(struct mhi_ep_device *mhi_dev, struct sk_buff *skb)
- 			goto err_exit;
- 		}
- 
--		el = &ring->ring_cache[ring->rd_offset];
-+		el = &ring->ring_cache[mhi_chan->rd_offset];
- 		tre_len = MHI_TRE_DATA_GET_LEN(el);
- 
- 		tr_len = min(buf_left, tre_len);
-@@ -521,33 +552,35 @@ int mhi_ep_queue_skb(struct mhi_ep_device *mhi_dev, struct sk_buff *skb)
- 		buf_info.dev_addr = skb->data + read_offset;
- 		buf_info.host_addr = MHI_TRE_DATA_GET_PTR(el);
- 		buf_info.size = tr_len;
-+		buf_info.cb = mhi_ep_skb_completion;
-+		buf_info.cb_buf = skb;
-+		buf_info.mhi_dev = mhi_dev;
- 
--		dev_dbg(dev, "Writing %zd bytes to channel (%u)\n", tr_len, ring->ch_id);
--		ret = mhi_cntrl->write_sync(mhi_cntrl, &buf_info);
--		if (ret < 0) {
--			dev_err(dev, "Error writing to the channel\n");
--			goto err_exit;
--		}
--
--		buf_left -= tr_len;
- 		/*
- 		 * For all TREs queued by the host for DL channel, only the EOT flag will be set.
- 		 * If the packet doesn't fit into a single TRE, send the OVERFLOW event to
- 		 * the host so that the host can adjust the packet boundary to next TREs. Else send
- 		 * the EOT event to the host indicating the packet boundary.
- 		 */
--		if (buf_left)
--			code = MHI_EV_CC_OVERFLOW;
-+		if (buf_left - tr_len)
-+			buf_info.code = MHI_EV_CC_OVERFLOW;
- 		else
--			code = MHI_EV_CC_EOT;
-+			buf_info.code = MHI_EV_CC_EOT;
- 
--		ret = mhi_ep_send_completion_event(mhi_cntrl, ring, el, tr_len, code);
--		if (ret) {
--			dev_err(dev, "Error sending transfer completion event\n");
-+		dev_dbg(dev, "Writing %zd bytes to channel (%u)\n", tr_len, ring->ch_id);
-+		ret = mhi_cntrl->write_async(mhi_cntrl, &buf_info);
-+		if (ret < 0) {
-+			dev_err(dev, "Error writing to the channel\n");
- 			goto err_exit;
- 		}
- 
--		mhi_ep_ring_inc_index(ring);
-+		buf_left -= tr_len;
-+
-+		/*
-+		 * Update the read offset cached in mhi_chan. Actual read offset
-+		 * will be updated by the completion handler.
-+		 */
-+		mhi_chan->rd_offset = (mhi_chan->rd_offset + 1) % ring->ring_size;
- 	} while (buf_left);
- 
- 	mutex_unlock(&mhi_chan->lock);
-@@ -787,7 +820,7 @@ static void mhi_ep_ch_ring_worker(struct work_struct *work)
- 		}
- 
- 		/* Sanity check to make sure there are elements in the ring */
--		if (ring->rd_offset == ring->wr_offset) {
-+		if (chan->rd_offset == ring->wr_offset) {
- 			mutex_unlock(&chan->lock);
- 			kmem_cache_free(mhi_cntrl->ring_item_cache, itr);
- 			continue;
-@@ -1431,6 +1464,7 @@ int mhi_ep_register_controller(struct mhi_ep_cntrl *mhi_cntrl,
- 		ret = -ENOMEM;
- 		goto err_destroy_tre_buf_cache;
- 	}
-+
- 	INIT_WORK(&mhi_cntrl->state_work, mhi_ep_state_worker);
- 	INIT_WORK(&mhi_cntrl->reset_work, mhi_ep_reset_worker);
- 	INIT_WORK(&mhi_cntrl->cmd_ring_work, mhi_ep_cmd_ring_worker);
-diff --git a/include/linux/mhi_ep.h b/include/linux/mhi_ep.h
-index 14c6e8d3f5736..11bf3212f7822 100644
---- a/include/linux/mhi_ep.h
-+++ b/include/linux/mhi_ep.h
-@@ -51,16 +51,20 @@ struct mhi_ep_db_info {
- 
- /**
-  * struct mhi_ep_buf_info - MHI Endpoint transfer buffer info
-+ * @mhi_dev: MHI device associated with this buffer
-  * @dev_addr: Address of the buffer in endpoint
-  * @host_addr: Address of the bufffer in host
-  * @size: Size of the buffer
-+ * @code: Transfer completion code
-  * @cb: Callback to be executed by controller drivers after transfer completion (async)
-  * @cb_buf: Opaque buffer to be passed to the callback
-  */
- struct mhi_ep_buf_info {
-+	struct mhi_ep_device *mhi_dev;
- 	void *dev_addr;
- 	u64 host_addr;
- 	size_t size;
-+	int code;
- 
- 	void (*cb)(struct mhi_ep_buf_info *buf_info);
- 	void *cb_buf;
+ 	static const unsigned long flags_refuse = IPS_FIXED_TIMEOUT |
+@@ -611,7 +727,7 @@ get_unique_tuple(struct nf_conntrack_tuple *tuple,
+ 	    !(range->flags & NF_NAT_RANGE_PROTO_RANDOM_ALL)) {
+ 		/* try the original tuple first */
+ 		if (nf_in_range(orig_tuple, range)) {
+-			if (!nf_nat_used_tuple(orig_tuple, ct)) {
++			if (!nf_nat_used_tuple_new(orig_tuple, ct)) {
+ 				*tuple = *orig_tuple;
+ 				return;
+ 			}
 -- 
 2.43.0
 
