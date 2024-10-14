@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-84380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF8499CFE8
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:59:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6208499CFF4
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:59:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07A1D1F2349F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:59:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92E221C23317
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7BA71ABEBF;
-	Mon, 14 Oct 2024 14:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31971C2432;
+	Mon, 14 Oct 2024 14:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UX+W5gWS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTe7EP0r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6535D81749;
-	Mon, 14 Oct 2024 14:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BAF81749;
+	Mon, 14 Oct 2024 14:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917808; cv=none; b=gFrBTxG8TIGqu1EbckAEo8ZGS3L/RuJZf/jTG8oucOGQDSWeCbjvepq8hm7lYAW5Vr6moXXgelkJSIpr67DLfz9FdD1sKwFG32wRUkGjP61mjFTdDUkBWv1psQne3s3oVLDBtrK4+GnKVpBJSaLaQuCfr3wWg8WS0VaHCDrj1Pk=
+	t=1728917844; cv=none; b=a/HQINSEkfouXH6ZTYwL2bALC2OY+bB85f9cBMCOBFJO39EQxp8UTX159YYrs98DZbAvcoFeBep7aSrTcKYG/aXHjeAhwpvSnosqanmAcwwTuuFzOpdobkWRzj6pY0J7XCJlAMVfmqCRGYi6HLvMiXNY4UQxtklrOBu5uAlauYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917808; c=relaxed/simple;
-	bh=s4uJxc1UEcywNfkCqSQ6f2MhKHA0H09u77t24VEsFgY=;
+	s=arc-20240116; t=1728917844; c=relaxed/simple;
+	bh=6m7Q5lsHRIFKOoKrleqjLIJ6+kDbq1lu6FxxjXXJuvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hpuJK7H1cZl7eW8bwG0YOy0RlXSCts5avxwsGQ8w1vGPzM9A3MI3cPubz00NYYwYlsp39zfFwrfMbTYLTHvvlTZjCrkFfodsrbk1MDULB8Ou2Tz7om25nkuu0FrVkDLCCttLpODmSMAPZyXgHFlFkEzPK1pig5CVQwPQoT6W/mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UX+W5gWS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5AFC4CEC3;
-	Mon, 14 Oct 2024 14:56:46 +0000 (UTC)
+	 MIME-Version; b=Zz9q5lYPiF8LKPQvefZkqoo0+Sw1JwjU90IWoX1dm44pbrSL6POjNPe064jaazATxvewXywwH5Ry7WawvM+Hhv0kvLf6RuQGIYNSL2Z93UDLENXN/tLZ2EfYZE3Qcdav8tm0dUl4u5bUPdbDVjaigVgmsDx212v0hHVVP+y577w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTe7EP0r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D403AC4CEC3;
+	Mon, 14 Oct 2024 14:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917808;
-	bh=s4uJxc1UEcywNfkCqSQ6f2MhKHA0H09u77t24VEsFgY=;
+	s=korg; t=1728917844;
+	bh=6m7Q5lsHRIFKOoKrleqjLIJ6+kDbq1lu6FxxjXXJuvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UX+W5gWSYqWn8mYygFINsWxszdhl8DLjwsV75ZpseJy2Kv9vw7WA5diOvZ+6sCfyD
-	 8u4hrZ9hFVsyGEL5RkxRzcoX7cv63NAH7Yx8fkZ+DQQUEgle+e+l0oHX2Jltuyxd+S
-	 wLihsY2EeP5b9jIU/5uKktN+nh/c3ftITf5hAH7w=
+	b=rTe7EP0r7R1nHSyCXcQY+T8xSdExlhGXlg+u8rcTtZS4GndjIoHri9lPVYn9F94q4
+	 Xh0cw7tSoUpfNoXnzUbqVdPq5FFhCU5uJUFHeaO+lVQi1m0Su140tDMRgLknaws2oM
+	 vPc6CnJHz0BVsz6aHt4HB19CsI8D6cEjxMWPU2KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/798] powerpc/8xx: Fix kernel vs user address comparison
-Date: Mon, 14 Oct 2024 16:11:17 +0200
-Message-ID: <20241014141222.753635871@linuxfoundation.org>
+Subject: [PATCH 6.1 124/798] drm/msm: Fix incorrect file name output in adreno_request_fw()
+Date: Mon, 14 Oct 2024 16:11:18 +0200
+Message-ID: <20241014141222.793207609@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -66,61 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 65a82e117ffeeab0baf6f871a1cab11a28ace183 ]
+[ Upstream commit e19366911340c2313a1abbb09c54eaf9bdea4f58 ]
 
-Since commit 9132a2e82adc ("powerpc/8xx: Define a MODULE area below
-kernel text"), module exec space is below PAGE_OFFSET so not only
-space above PAGE_OFFSET, but space above TASK_SIZE need to be seen
-as kernel space.
+In adreno_request_fw() when debugging information is printed to the log
+after firmware load, an incorrect filename is printed. 'newname' is used
+instead of 'fwname', so prefix "qcom/" is being added to filename.
+Looks like "copy-paste" mistake.
 
-Until now the problem went undetected because by default TASK_SIZE
-is 0x8000000 which means address space is determined by just
-checking upper address bit. But when TASK_SIZE is over 0x80000000,
-PAGE_OFFSET is used for comparison, leading to thinking module
-addresses are part of user space.
+Fix this mistake by replacing 'newname' with 'fwname'.
 
-Fix it by using TASK_SIZE instead of PAGE_OFFSET for address
-comparison.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 9132a2e82adc ("powerpc/8xx: Define a MODULE area below kernel text")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/3f574c9845ff0a023b46cb4f38d2c45aecd769bd.1724173828.git.christophe.leroy@csgroup.eu
+Fixes: 2c41ef1b6f7d ("drm/msm/adreno: deal with linux-firmware fw paths")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/602382/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/head_8xx.S | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/adreno/adreno_gpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index 0b05f2be66b9f..f267e1587a9ba 100644
---- a/arch/powerpc/kernel/head_8xx.S
-+++ b/arch/powerpc/kernel/head_8xx.S
-@@ -40,12 +40,12 @@
- #include "head_32.h"
- 
- .macro compare_to_kernel_boundary scratch, addr
--#if CONFIG_TASK_SIZE <= 0x80000000 && CONFIG_PAGE_OFFSET >= 0x80000000
-+#if CONFIG_TASK_SIZE <= 0x80000000 && MODULES_VADDR >= 0x80000000
- /* By simply checking Address >= 0x80000000, we know if its a kernel address */
- 	not.	\scratch, \addr
- #else
- 	rlwinm	\scratch, \addr, 16, 0xfff8
--	cmpli	cr0, \scratch, PAGE_OFFSET@h
-+	cmpli	cr0, \scratch, TASK_SIZE@h
- #endif
- .endm
- 
-@@ -403,7 +403,7 @@ FixupDAR:/* Entry point for dcbx workaround. */
- 	mfspr	r10, SPRN_SRR0
- 	mtspr	SPRN_MD_EPN, r10
- 	rlwinm	r11, r10, 16, 0xfff8
--	cmpli	cr1, r11, PAGE_OFFSET@h
-+	cmpli	cr1, r11, TASK_SIZE@h
- 	mfspr	r11, SPRN_M_TWB	/* Get level 1 table */
- 	blt+	cr1, 3f
- 
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+index c4ad70eb1d923..c73eb07afb0a7 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+@@ -418,7 +418,7 @@ adreno_request_fw(struct adreno_gpu *adreno_gpu, const char *fwname)
+ 		ret = request_firmware_direct(&fw, fwname, drm->dev);
+ 		if (!ret) {
+ 			DRM_DEV_INFO(drm->dev, "loaded %s from legacy location\n",
+-				newname);
++				fwname);
+ 			adreno_gpu->fwloc = FW_LOCATION_LEGACY;
+ 			goto out;
+ 		} else if (adreno_gpu->fwloc != FW_LOCATION_UNKNOWN) {
 -- 
 2.43.0
 
