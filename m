@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-83987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A0099CD8E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:34:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729EF99CE77
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:44:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55C91B22453
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:34:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 378C2287478
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B770A1AB6FD;
-	Mon, 14 Oct 2024 14:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84581AB507;
+	Mon, 14 Oct 2024 14:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AyB51LNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p22DXGV1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A4DE571;
-	Mon, 14 Oct 2024 14:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DB319E802;
+	Mon, 14 Oct 2024 14:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916416; cv=none; b=eyBQcKIZ70sXNoo8E0oMPer6D2IBOj/i7krSkMk3KTWGIn5rvHddWvujA0RKmIy1arROUo/NMCswP8Um7zH7bpRNOcWahR26Jms17h5ZMBWFWd1JMI8XthrTojRhPJYtiTY1KJJTZy3wqXg+tMBwAGi1OKlYOZptIRqE7rzxv7c=
+	t=1728917044; cv=none; b=Ngxq7eDd9JvmV1kIF/jWNWPAFT9fGsZ9pM/nSlTEY8QwwQ8LM1zHiUkNoPeRadGapnVkJybnT5OfHP0xO4XRuX0pEzEGjMkxYwGKPosyp18aFokRczyy/gjg6Q4qFdMHt48DHL5QBFq3jPcty16WAEUr422rHnEwpIlO02G0R8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916416; c=relaxed/simple;
-	bh=h++N79ZdjPPum1iT66tjnb4YZ7BVD9WAHMK94d25LNU=;
+	s=arc-20240116; t=1728917044; c=relaxed/simple;
+	bh=Z9Vs0DkQEFRppSpbePD5ddbuKoHaBQdKK/8mqhhDiS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PIrvEpRaQDV7w/ViXlfKA8bHQVHS4KrQjU5j3yT7H9ijQ6abLyuTZedqZ867bv44Bu6JcOAd91wcyXpRqBe3yY7O1L6xfRtI3QU7r5n2HZNy/67VYVBH6wMSn796ubdVC74Lrcwi3eKLb6AaJ6r4NVE3imfHNpk/sS24Lxsb3PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AyB51LNW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D822CC4CEC3;
-	Mon, 14 Oct 2024 14:33:35 +0000 (UTC)
+	 MIME-Version; b=orxw7PSWbAm7wU0ePu3vYiwRBwJ/kmopqsLI62/h9W3MOUx1RI/sHb5HoXrqRnzEr7ZRkNWgtv2cqrKFL7mAp64vyVToIpi75YaqmKmSfWy727U9w7cFsat/m5GXftvQP1tr72XLsubh/+TWhwA4syIygdyJ6Cn3oLGdMRaZGSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p22DXGV1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8ABC4CEC3;
+	Mon, 14 Oct 2024 14:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916416;
-	bh=h++N79ZdjPPum1iT66tjnb4YZ7BVD9WAHMK94d25LNU=;
+	s=korg; t=1728917044;
+	bh=Z9Vs0DkQEFRppSpbePD5ddbuKoHaBQdKK/8mqhhDiS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AyB51LNWSHYDm7XirAdGz5cRpjMAZW8QUpzDN3WDdcmOxGt6i41buBlj85zHXA/aC
-	 FJUdijor0fEgpLg6rc0S2nQowrj3BVKklRcD9mfShWLyJ+6zhPwF5GoDNaKVYiFXOs
-	 mDL/y5K10JPUv6S3ut4r/TjT6QKkKXLdJFKecZyg=
+	b=p22DXGV1UY/W9TaEZFpgF/5YcQes8kMAi3RfuE71ApDTmw/48gsQxYbChrv88WIyY
+	 Lm9Z07NbJXRhdvCHs3Bv9ZZqkLqBRuSKmAYJZ0ec/2aofPxsL/sceHW1qb2I/Nbvqu
+	 QlX2/ZIqSY1tI4lI8v9tCUFuQ6VU52bJqNqoAwGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Paul <seanpaul@chromium.org>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.11 178/214] drm/i915/hdcp: fix connector refcounting
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 135/213] gpio: aspeed: Add the flush write to ensure the write complete.
 Date: Mon, 14 Oct 2024 16:20:41 +0200
-Message-ID: <20241014141051.925530692@linuxfoundation.org>
+Message-ID: <20241014141048.237752081@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Billy Tsai <billy_tsai@aspeedtech.com>
 
-commit 4cc2718f621a6a57a02581125bb6d914ce74d23b upstream.
+[ Upstream commit 1bb5a99e1f3fd27accb804aa0443a789161f843c ]
 
-We acquire a connector reference before scheduling an HDCP prop work,
-and expect the work function to release the reference.
+Performing a dummy read ensures that the register write operation is fully
+completed, mitigating any potential bus delays that could otherwise impact
+the frequency of bitbang usage. E.g., if the JTAG application uses GPIO to
+control the JTAG pins (TCK, TMS, TDI, TDO, and TRST), and the application
+sets the TCK clock to 1 MHz, the GPIO's high/low transitions will rely on
+a delay function to ensure the clock frequency does not exceed 1 MHz.
+However, this can lead to rapid toggling of the GPIO because the write
+operation is POSTed and does not wait for a bus acknowledgment.
 
-However, if the work was already queued, it won't be queued multiple
-times, and the reference is not dropped.
-
-Release the reference immediately if the work was already queued.
-
-Fixes: a6597faa2d59 ("drm/i915: Protect workers against disappearing connectors")
-Cc: Sean Paul <seanpaul@chromium.org>
-Cc: Suraj Kandpal <suraj.kandpal@intel.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: stable@vger.kernel.org # v5.10+
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240924153022.2255299-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit abc0742c79bdb3b164eacab24aea0916d2ec1cb5)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 361b79119a4b ("gpio: Add Aspeed driver")
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+Link: https://lore.kernel.org/r/20241008081450.1490955-2-billy_tsai@aspeedtech.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_hdcp.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpio/gpio-aspeed.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/i915/display/intel_hdcp.c
-+++ b/drivers/gpu/drm/i915/display/intel_hdcp.c
-@@ -1089,7 +1089,8 @@ static void intel_hdcp_update_value(stru
- 	hdcp->value = value;
- 	if (update_property) {
- 		drm_connector_get(&connector->base);
--		queue_work(i915->unordered_wq, &hdcp->prop_work);
-+		if (!queue_work(i915->unordered_wq, &hdcp->prop_work))
-+			drm_connector_put(&connector->base);
- 	}
+diff --git a/drivers/gpio/gpio-aspeed.c b/drivers/gpio/gpio-aspeed.c
+index 58f107194fdaf..017f083bc8c29 100644
+--- a/drivers/gpio/gpio-aspeed.c
++++ b/drivers/gpio/gpio-aspeed.c
+@@ -406,6 +406,8 @@ static void __aspeed_gpio_set(struct gpio_chip *gc, unsigned int offset,
+ 	gpio->dcache[GPIO_BANK(offset)] = reg;
+ 
+ 	iowrite32(reg, addr);
++	/* Flush write */
++	ioread32(addr);
  }
  
-@@ -2517,7 +2518,8 @@ void intel_hdcp_update_pipe(struct intel
- 		mutex_lock(&hdcp->mutex);
- 		hdcp->value = DRM_MODE_CONTENT_PROTECTION_DESIRED;
- 		drm_connector_get(&connector->base);
--		queue_work(i915->unordered_wq, &hdcp->prop_work);
-+		if (!queue_work(i915->unordered_wq, &hdcp->prop_work))
-+			drm_connector_put(&connector->base);
- 		mutex_unlock(&hdcp->mutex);
- 	}
- 
-@@ -2534,7 +2536,9 @@ void intel_hdcp_update_pipe(struct intel
- 		 */
- 		if (!desired_and_not_enabled && !content_protection_type_changed) {
- 			drm_connector_get(&connector->base);
--			queue_work(i915->unordered_wq, &hdcp->prop_work);
-+			if (!queue_work(i915->unordered_wq, &hdcp->prop_work))
-+				drm_connector_put(&connector->base);
-+
- 		}
- 	}
- 
+ static void aspeed_gpio_set(struct gpio_chip *gc, unsigned int offset,
+-- 
+2.43.0
+
 
 
 
