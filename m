@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-83856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD9DB99CCDC
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:25:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D71799CDCE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:36:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55B9EB21364
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:25:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CF4F283A83
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FDD21A0BE7;
-	Mon, 14 Oct 2024 14:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5171AB521;
+	Mon, 14 Oct 2024 14:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZzvNAndv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHsKX1Rd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA4DE571;
-	Mon, 14 Oct 2024 14:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5840A1AAE08;
+	Mon, 14 Oct 2024 14:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915952; cv=none; b=GvXOCYKtVNQy8+lsGPrrDUhypEtHSOVQ5sVXgyIxTYn9C+DNiLJzYZSq4zedhp2C3rPrrQ8LtUDiraImX3R2mvmPXtqWgfm9EUCM3z3TMEzkxHJtenj/ClFjRiK3IX3OawbQ/BRUhylYkb8YShCvCDiP6mHcFEOSYZUJfVEsXCA=
+	t=1728916590; cv=none; b=dRJCK9rWxC8oeXkKuk/ThhT6IpCcfFU+5dSnE9K9Y/VkJMaZdnv8YuIkh0dFNI+ifu/cBO8wI8JRy8CSKlMcW/MwRFmFXTauWtKeBfsZWvMol/j8javSne7HoNANI9OBiorw/VfLKogW0Nr1DAF2DBS6Zok7ZL3Zwuugh7qXJ8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915952; c=relaxed/simple;
-	bh=h7vP5/gSzkZU6myHRzjSwJ0z2Ggb9fPRXGG99woB1oU=;
+	s=arc-20240116; t=1728916590; c=relaxed/simple;
+	bh=QdVhbrFS3irK+nZhOjSzkjsVLXF3jlQX2GxPOaeGGGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bD/N5lO+DZsfnL/OEm7VsoRhu5b8mNOdYacYWLDp6r4M7OfKO6Fhci6u8rEs1m3ZzcMWXShqZAnPsVYQiE/QyHleJy+Hbas9rqaFIz97w2rauLkdKmkCy9pMbJDPAPDozCDZdTgJTxbXwQxlyTPfo4WButUWDPCuvvwq8ch7BDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzvNAndv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F97C4CEC3;
-	Mon, 14 Oct 2024 14:25:51 +0000 (UTC)
+	 MIME-Version; b=Pc70L1AFSCOJ8OJrycveHpuakiHIM62YYUajV3ytsaXzPmgLnFrs6nCd+wm5AARudS8Wf1SewWAwlFR5wo2wwYqH62L50ERYGHOhCDL/tJtKOcvBSg5zkM1VkUYVG24O9A3Z9ZuYHJ9wyldV/43aQdKyXIeiJToC01b5WOeVi0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHsKX1Rd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D398AC4CEC7;
+	Mon, 14 Oct 2024 14:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915952;
-	bh=h7vP5/gSzkZU6myHRzjSwJ0z2Ggb9fPRXGG99woB1oU=;
+	s=korg; t=1728916590;
+	bh=QdVhbrFS3irK+nZhOjSzkjsVLXF3jlQX2GxPOaeGGGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZzvNAndvydo/L88usT9CqGWxCbF0ZNefJ43X4ghh1Ubu1s8yyOI/faYcbMkw10Tz2
-	 0clIj2kRLDIEXV35vF75DnvBLKfmll/mU4sHy1j4m1Pggz/XpNUQ9PIWEsg5L/njHi
-	 xEpytP43zF4mu2eEXj2lyA7FjkR796v2+LYI8Tj8=
+	b=MHsKX1RdhfIW9aQKqHhW2NBdYcl3cX/i0YJmwPQ2B6MXNd8odVuyn+MUPqT+h+tHY
+	 A//dwwi6EcKAZLfisO+UY4QQ6EmWHDviOygwE52cHjEPqUXUQvOkUyg+pRuBvRZpRo
+	 XYJYOdXxeEUrr+t8GORy9UZNvjZTONtiJHT12Uyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 046/214] RDMA/mlx5: Enforce umem boundaries for explicit ODP page faults
+Subject: [PATCH 6.6 003/213] Revert "PCI/MSI: Provide stubs for IMS functions"
 Date: Mon, 14 Oct 2024 16:18:29 +0200
-Message-ID: <20241014141046.787577663@linuxfoundation.org>
+Message-ID: <20241014141043.107386014@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Guralnik <michaelgur@nvidia.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit 8c6d097d830f779fc1725fbaa1314f20a7a07b4b ]
+[ Upstream commit 372c669271bff736c5bc275c982d8d1b4f1f147c ]
 
-The new memory scheme page faults are requesting the driver to fetch
-additinal pages to the faulted memory access.
-This is done in order to prefetch pages before and after the area that
-got the page fault, assuming this will reduce the total amount of page
-faults.
+This reverts commit 41efa431244f6498833ff8ee8dde28c4924c5479.
 
-The driver should ensure it handles only the pages that are within the
-umem range.
+IMS (Interrupt Message Store) support appeared in v6.2, but there are no
+users yet.
 
-Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://patch.msgid.link/20240909100504.29797-5-michaelgur@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Remove it for now.  We can add it back when a user comes along.  If this is
+re-added later, this could be squashed with these commits:
+
+  0194425af0c8 ("PCI/MSI: Provide IMS (Interrupt Message Store) support")
+  c9e5bea27383 ("PCI/MSI: Provide pci_ims_alloc/free_irq()")
+
+which added the non-stub implementations.
+
+Link: https://lore.kernel.org/r/20240410221307.2162676-2-helgaas@kernel.org
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/odp.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ include/linux/pci.h | 34 ++++++++--------------------------
+ 1 file changed, 8 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
-index a524181f34df9..3a4605fda6d57 100644
---- a/drivers/infiniband/hw/mlx5/odp.c
-+++ b/drivers/infiniband/hw/mlx5/odp.c
-@@ -733,24 +733,31 @@ static int pagefault_dmabuf_mr(struct mlx5_ib_mr *mr, size_t bcnt,
-  *  >0: Number of pages mapped
-  */
- static int pagefault_mr(struct mlx5_ib_mr *mr, u64 io_virt, size_t bcnt,
--			u32 *bytes_mapped, u32 flags)
-+			u32 *bytes_mapped, u32 flags, bool permissive_fault)
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 7b18a4b3efb0e..2b7e45bae9408 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1630,8 +1630,6 @@ struct msix_entry {
+ 	u16	entry;	/* Driver uses to specify entry, OS writes */
+ };
+ 
+-struct msi_domain_template;
+-
+ #ifdef CONFIG_PCI_MSI
+ int pci_msi_vec_count(struct pci_dev *dev);
+ void pci_disable_msi(struct pci_dev *dev);
+@@ -1664,11 +1662,6 @@ void pci_msix_free_irq(struct pci_dev *pdev, struct msi_map map);
+ void pci_free_irq_vectors(struct pci_dev *dev);
+ int pci_irq_vector(struct pci_dev *dev, unsigned int nr);
+ const struct cpumask *pci_irq_get_affinity(struct pci_dev *pdev, int vec);
+-bool pci_create_ims_domain(struct pci_dev *pdev, const struct msi_domain_template *template,
+-			   unsigned int hwsize, void *data);
+-struct msi_map pci_ims_alloc_irq(struct pci_dev *pdev, union msi_instance_cookie *icookie,
+-				 const struct irq_affinity_desc *affdesc);
+-void pci_ims_free_irq(struct pci_dev *pdev, struct msi_map map);
+ 
+ #else
+ static inline int pci_msi_vec_count(struct pci_dev *dev) { return -ENOSYS; }
+@@ -1732,25 +1725,6 @@ static inline const struct cpumask *pci_irq_get_affinity(struct pci_dev *pdev,
  {
- 	struct ib_umem_odp *odp = to_ib_umem_odp(mr->umem);
+ 	return cpu_possible_mask;
+ }
+-
+-static inline bool pci_create_ims_domain(struct pci_dev *pdev,
+-					 const struct msi_domain_template *template,
+-					 unsigned int hwsize, void *data)
+-{ return false; }
+-
+-static inline struct msi_map pci_ims_alloc_irq(struct pci_dev *pdev,
+-					       union msi_instance_cookie *icookie,
+-					       const struct irq_affinity_desc *affdesc)
+-{
+-	struct msi_map map = { .index = -ENOSYS, };
+-
+-	return map;
+-}
+-
+-static inline void pci_ims_free_irq(struct pci_dev *pdev, struct msi_map map)
+-{
+-}
+-
+ #endif
  
--	if (unlikely(io_virt < mr->ibmr.iova))
-+	if (unlikely(io_virt < mr->ibmr.iova) && !permissive_fault)
- 		return -EFAULT;
+ /**
+@@ -2667,6 +2641,14 @@ static inline bool pci_is_thunderbolt_attached(struct pci_dev *pdev)
+ void pci_uevent_ers(struct pci_dev *pdev, enum  pci_ers_result err_type);
+ #endif
  
- 	if (mr->umem->is_dmabuf)
- 		return pagefault_dmabuf_mr(mr, bcnt, bytes_mapped, flags);
- 
- 	if (!odp->is_implicit_odp) {
-+		u64 offset = io_virt < mr->ibmr.iova ? 0 : io_virt - mr->ibmr.iova;
- 		u64 user_va;
- 
--		if (check_add_overflow(io_virt - mr->ibmr.iova,
--				       (u64)odp->umem.address, &user_va))
-+		if (check_add_overflow(offset, (u64)odp->umem.address,
-+				       &user_va))
- 			return -EFAULT;
--		if (unlikely(user_va >= ib_umem_end(odp) ||
--			     ib_umem_end(odp) - user_va < bcnt))
++struct msi_domain_template;
 +
-+		if (permissive_fault) {
-+			if (user_va < ib_umem_start(odp))
-+				user_va = ib_umem_start(odp);
-+			if ((user_va + bcnt) > ib_umem_end(odp))
-+				bcnt = ib_umem_end(odp) - user_va;
-+		} else if (unlikely(user_va >= ib_umem_end(odp) ||
-+				    ib_umem_end(odp) - user_va < bcnt))
- 			return -EFAULT;
- 		return pagefault_real_mr(mr, odp, user_va, bcnt, bytes_mapped,
- 					 flags);
-@@ -857,7 +864,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
- 	case MLX5_MKEY_MR:
- 		mr = container_of(mmkey, struct mlx5_ib_mr, mmkey);
++bool pci_create_ims_domain(struct pci_dev *pdev, const struct msi_domain_template *template,
++			   unsigned int hwsize, void *data);
++struct msi_map pci_ims_alloc_irq(struct pci_dev *pdev, union msi_instance_cookie *icookie,
++				 const struct irq_affinity_desc *affdesc);
++void pci_ims_free_irq(struct pci_dev *pdev, struct msi_map map);
++
+ #include <linux/dma-mapping.h>
  
--		ret = pagefault_mr(mr, io_virt, bcnt, bytes_mapped, 0);
-+		ret = pagefault_mr(mr, io_virt, bcnt, bytes_mapped, 0, false);
- 		if (ret < 0)
- 			goto end;
- 
-@@ -1710,7 +1717,7 @@ static void mlx5_ib_prefetch_mr_work(struct work_struct *w)
- 	for (i = 0; i < work->num_sge; ++i) {
- 		ret = pagefault_mr(work->frags[i].mr, work->frags[i].io_virt,
- 				   work->frags[i].length, &bytes_mapped,
--				   work->pf_flags);
-+				   work->pf_flags, false);
- 		if (ret <= 0)
- 			continue;
- 		mlx5_update_odp_stats(work->frags[i].mr, prefetch, ret);
-@@ -1761,7 +1768,7 @@ static int mlx5_ib_prefetch_sg_list(struct ib_pd *pd,
- 		if (IS_ERR(mr))
- 			return PTR_ERR(mr);
- 		ret = pagefault_mr(mr, sg_list[i].addr, sg_list[i].length,
--				   &bytes_mapped, pf_flags);
-+				   &bytes_mapped, pf_flags, false);
- 		if (ret < 0) {
- 			mlx5r_deref_odp_mkey(&mr->mmkey);
- 			return ret;
+ #define pci_printk(level, pdev, fmt, arg...) \
 -- 
 2.43.0
 
