@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-83861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8990399CCE4
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:26:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4128B99D22B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E9881F235C2
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:26:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AA9C1C231F4
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88691AB52D;
-	Mon, 14 Oct 2024 14:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01BDF1C6886;
+	Mon, 14 Oct 2024 15:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsv6taRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uj7gzrZc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646251AB505;
-	Mon, 14 Oct 2024 14:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20E41AC44C;
+	Mon, 14 Oct 2024 15:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915974; cv=none; b=ZVy9r1CORQpH4lFg8WR4BrSJQMW4dK0fxTbn37kLUlSbIY2fnNI6rLFudnV1oR3j+1Pd76Y6L/ShkRUYZp/I9ifcinySKL+W64N9rMde+A5rzObp/hwSuK6Zl8hJWMQN2PaU9LjBfvwOec7ICf2zITTW9SRe4YynCr5Jai8G0nU=
+	t=1728919271; cv=none; b=gE+6+tecFJITM2tSJM1iRcRoXfk7BHg2hZJN/JRJLMdKT306qA+HC9odQhggl35R56p7jznMONDLgfMAEfFqK55vh0wDNEshNVzEm505qRP0pJom8CLW3ujxaffL0e8Wb0oibvIKPefTiceuHd/vf+qcsGuO5qDVF9nQpdhMDfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915974; c=relaxed/simple;
-	bh=WLjtRDynmlCAAt6KAHlU1h+MeuiBunfoMqtiYuKB6N0=;
+	s=arc-20240116; t=1728919271; c=relaxed/simple;
+	bh=VAMaoMEIjL16OA6OEFvucP0TPKCcgTquFWo1msbV1zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N0EjyDXtFBJxwL9I7sjPi6x83PZfi5AfTU84kz6LSugb0MJLwFjx+8YY7eVbH87WCJIJYYHTYbdSzH+nGpiB0gdZZqQr1W1MsMR8WeoR+xkAGGakulyGaAVDZZQlJG27f5h6QPG2uqnRGWVNAe3//HVRX80DXdYJVlj04T73xv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsv6taRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3515C4CED5;
-	Mon, 14 Oct 2024 14:26:13 +0000 (UTC)
+	 MIME-Version; b=Pse9sJ8H1G7ps0B70E3Kip3vh3+5qhqBnruTXE5Twe2gLW1oVqyM3PTZCbs9gIUvbmBiQsQnTLh5mPKLlWdQD89I79FfJSMSklDZvAwvVhUbNxc0MWxURNQLzNwzlkGoQ40Jk2zLWqMQPApqohIdOz8rZ8UIr3CIcdR50hpicfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uj7gzrZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E49C4CEC3;
+	Mon, 14 Oct 2024 15:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915974;
-	bh=WLjtRDynmlCAAt6KAHlU1h+MeuiBunfoMqtiYuKB6N0=;
+	s=korg; t=1728919271;
+	bh=VAMaoMEIjL16OA6OEFvucP0TPKCcgTquFWo1msbV1zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lsv6taRkfEiBcnEszcps7wypCBMgikDMMgxm7W4KSsozcIqROIoaxflHasB5c9ge8
-	 ptLDWJMTs1kF7FTCYs3hwRnHKPFf3kbJl1ithcYdjJyAVq/EtOYKjLoxRbNT13+HER
-	 jbOB85tfUFwIMCtf/6dsB2ju5M1KV86t2qhOa0IY=
+	b=Uj7gzrZcOOWqa5yiBuUih8mK6vnwJPkJyTl7Tzl4aXGbSjwLVpB+Tx0ONxTDOv53c
+	 bu4I6uzCU4HjeK7aZeqJn+HjwEBxDDp5rVJOHFHaphS6ar9MAfbDcumIFTGdgDazIB
+	 osj6mgFcGa87UDs9BEc5eQBrqnbaxi4dCoOd6oho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunke Cao <yunkec@chromium.org>,
-	Tomasz Figa <tfiga@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 051/214] media: videobuf2-core: clear memory related fields in __vb2_plane_dmabuf_put()
+	Andrew Jones <ajones@ventanamicro.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.1 560/798] of/irq: Support #msi-cells=<0> in of_msi_get_domain
 Date: Mon, 14 Oct 2024 16:18:34 +0200
-Message-ID: <20241014141046.982207440@linuxfoundation.org>
+Message-ID: <20241014141239.997376684@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +61,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunke Cao <yunkec@chromium.org>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-[ Upstream commit 6a9c97ab6b7e85697e0b74e86062192a5ffffd99 ]
+commit db8e81132cf051843c9a59b46fa5a071c45baeb3 upstream.
 
-Clear vb2_plane's memory related fields in __vb2_plane_dmabuf_put(),
-including bytesused, length, fd and data_offset.
+An 'msi-parent' property with a single entry and no accompanying
+'#msi-cells' property is considered the legacy definition as opposed
+to its definition after being expanded with commit 126b16e2ad98
+("Docs: dt: add generic MSI bindings"). However, the legacy
+definition is completely compatible with the current definition and,
+since of_phandle_iterator_next() tolerates missing and present-but-
+zero *cells properties since commit e42ee61017f5 ("of: Let
+of_for_each_phandle fallback to non-negative cell_count"), there's no
+need anymore to special case the legacy definition in
+of_msi_get_domain().
 
-Remove the duplicated code in __prepare_dmabuf().
+Indeed, special casing has turned out to be harmful, because, as of
+commit 7c025238b47a ("dt-bindings: irqchip: Describe the IMX MU block
+as a MSI controller"), MSI controller DT bindings have started
+specifying '#msi-cells' as a required property (even when the value
+must be zero) as an effort to make the bindings more explicit. But,
+since the special casing of 'msi-parent' only uses the existence of
+'#msi-cells' for its heuristic, and not whether or not it's also
+nonzero, the legacy path is not taken. Furthermore, the path to
+support the new, broader definition isn't taken either since that
+path has been restricted to the platform-msi bus.
 
-Signed-off-by: Yunke Cao <yunkec@chromium.org>
-Acked-by: Tomasz Figa <tfiga@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But, neither the definition of 'msi-parent' nor the definition of
+'#msi-cells' is platform-msi-specific (the platform-msi bus was just
+the first bus that needed '#msi-cells'), so remove both the special
+casing and the restriction. The code removal also requires changing
+to of_parse_phandle_with_optional_args() in order to ensure the
+legacy (but compatible) use of 'msi-parent' remains supported. This
+not only simplifies the code but also resolves an issue with PCI
+devices finding their MSI controllers on riscv, as the riscv,imsics
+binding requires '#msi-cells=<0>'.
+
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20240817074107.31153-2-ajones@ventanamicro.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/common/videobuf2/videobuf2-core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/of/irq.c |   34 +++++++---------------------------
+ 1 file changed, 7 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
-index 8b0de1cb08808..97605c2e25dac 100644
---- a/drivers/media/common/videobuf2/videobuf2-core.c
-+++ b/drivers/media/common/videobuf2/videobuf2-core.c
-@@ -311,6 +311,10 @@ static void __vb2_plane_dmabuf_put(struct vb2_buffer *vb, struct vb2_plane *p)
- 	p->mem_priv = NULL;
- 	p->dbuf = NULL;
- 	p->dbuf_mapped = 0;
-+	p->bytesused = 0;
-+	p->length = 0;
-+	p->m.fd = 0;
-+	p->data_offset = 0;
- }
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -710,8 +710,7 @@ struct irq_domain *of_msi_map_get_device
+  * @np: device node for @dev
+  * @token: bus type for this domain
+  *
+- * Parse the msi-parent property (both the simple and the complex
+- * versions), and returns the corresponding MSI domain.
++ * Parse the msi-parent property and returns the corresponding MSI domain.
+  *
+  * Returns: the MSI domain for this device (or NULL on failure).
+  */
+@@ -719,33 +718,14 @@ struct irq_domain *of_msi_get_domain(str
+ 				     struct device_node *np,
+ 				     enum irq_domain_bus_token token)
+ {
+-	struct device_node *msi_np;
++	struct of_phandle_iterator it;
+ 	struct irq_domain *d;
++	int err;
  
- /*
-@@ -1420,10 +1424,6 @@ static int __prepare_dmabuf(struct vb2_buffer *vb)
+-	/* Check for a single msi-parent property */
+-	msi_np = of_parse_phandle(np, "msi-parent", 0);
+-	if (msi_np && !of_property_read_bool(msi_np, "#msi-cells")) {
+-		d = irq_find_matching_host(msi_np, token);
+-		if (!d)
+-			of_node_put(msi_np);
+-		return d;
+-	}
+-
+-	if (token == DOMAIN_BUS_PLATFORM_MSI) {
+-		/* Check for the complex msi-parent version */
+-		struct of_phandle_args args;
+-		int index = 0;
+-
+-		while (!of_parse_phandle_with_args(np, "msi-parent",
+-						   "#msi-cells",
+-						   index, &args)) {
+-			d = irq_find_matching_host(args.np, token);
+-			if (d)
+-				return d;
+-
+-			of_node_put(args.np);
+-			index++;
+-		}
++	of_for_each_phandle(&it, err, np, "msi-parent", "#msi-cells", 0) {
++		d = irq_find_matching_host(it.node, token);
++		if (d)
++			return d;
+ 	}
  
- 		/* Release previously acquired memory if present */
- 		__vb2_plane_dmabuf_put(vb, &vb->planes[plane]);
--		vb->planes[plane].bytesused = 0;
--		vb->planes[plane].length = 0;
--		vb->planes[plane].m.fd = 0;
--		vb->planes[plane].data_offset = 0;
- 
- 		/* Acquire each plane's memory */
- 		mem_priv = call_ptr_memop(attach_dmabuf,
--- 
-2.43.0
-
+ 	return NULL;
 
 
 
