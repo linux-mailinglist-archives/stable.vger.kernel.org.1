@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-84116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D5E99CE3A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:41:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6770499CD49
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:31:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25227285638
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:41:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B5512832A7
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1761AB6DD;
-	Mon, 14 Oct 2024 14:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204951A28C;
+	Mon, 14 Oct 2024 14:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pg7/pp49"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hBjk/8bK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3991AC447;
-	Mon, 14 Oct 2024 14:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32C41798C;
+	Mon, 14 Oct 2024 14:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916884; cv=none; b=vF4iukGYmdLolPElLgYJUgMLa6Kgh5mP12HGpRfGutO3n6pmR/Xh8UwIy9OW1BCJsNh/s2hCb2V9AKOB3/O/RaRJ4hU15LidxfctMKOCVFfUu4y8sVDrushYrwrXBFNuwg+SuPw1DpHw/ERaF9So2sdYrBGKobP3UO3mLPjpMNo=
+	t=1728916275; cv=none; b=irp/6A04XA2s1BClxUs3rZGiIPCBnRDRb7XbK43nYUCGSH+gBh4NN09ykKY5NqwZ9iH2Bp+J3flhA24Fd3F6UHTFEjfCwUN/hb/R5r2Nwg2S1Ka7BQa3+BHwFCSYhMjgSMWk1V/qb8dHxD+GRdSE1/4T/it/WdiX9+NAFaAjW1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916884; c=relaxed/simple;
-	bh=Mn9P9kbGVbbIc0MjsSiQq6wgIw3VuR+y6zoJiv0Mye0=;
+	s=arc-20240116; t=1728916275; c=relaxed/simple;
+	bh=VdvsoEi3J5sShsz78p8R+HxCEV+32s+hW44cmIdoRZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uIFogR14Mq43heSwU0WJwSWvwsSuXzy1Cebl4AGr5LYjr2am834FhsKEn/8XX5SbMMU+DS6ZQD6Cp57oj5nGO1COgGI9i+M+oUc0WeeGRPo4z0rRX+HB3e1JS59dmGL47dgwRmuM0KmF/4cMR+33qKYpn/qZZOkW+4T8Mdn1St4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pg7/pp49; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87784C4CED0;
-	Mon, 14 Oct 2024 14:41:23 +0000 (UTC)
+	 MIME-Version; b=J2F/OAFivT7DH4FV0MKH7eMFOQcQYa42cXmK+HMcSI8PlzT01momVh7wXN7qQg6cKA2YiTiBXoWDIQRN9mjNKKK49yp7tnkBH96tf+i8oQm/boXXPyv/YJAvBS0gRyg116sh60gR+IK1rULaARU3qtsnQ7iqib06yI3hRL5gJv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBjk/8bK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58EB8C4CEC3;
+	Mon, 14 Oct 2024 14:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916883;
-	bh=Mn9P9kbGVbbIc0MjsSiQq6wgIw3VuR+y6zoJiv0Mye0=;
+	s=korg; t=1728916275;
+	bh=VdvsoEi3J5sShsz78p8R+HxCEV+32s+hW44cmIdoRZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pg7/pp49eiFrQdrBCE9urrVGt/GVX0bzVxhJQ+HJ++pc+HTe3CCfjOttuuVoCpNa4
-	 BmkxJ09UD3POoAB9gM6seIYE6UwOfRuiwzho5RSEPf2Hs8qUwNuwO+dLGyiA/1zxhx
-	 FpzUx6Pv6ObztJ63Ke0Ii+3hWaEpe2nsTtxt4GcM=
+	b=hBjk/8bKxm0xMsHdOw0o524MbUxKkXwcQaVHbGa4UaRwrtpIZc03NlzHq4mpKLxi/
+	 NqOJPy1QK+HyFp+qaWbc/eHWDIsQm3gp9JuHslWdpBb4E5bPHTWlyL2G1MJA4nE0f/
+	 KIs30FqQHR03FsPaUGrq6taHd6wf/+YrVqAVlrhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Shao <shawn.shao@jaguarmicro.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/213] usb: dwc2: Adjust the timing of USB Driver Interrupt Registration in the Crashkernel Scenario
-Date: Mon, 14 Oct 2024 16:19:57 +0200
-Message-ID: <20241014141046.524391187@linuxfoundation.org>
+Subject: [PATCH 6.11 135/214] netfilter: fib: check correct rtable in vrf setups
+Date: Mon, 14 Oct 2024 16:19:58 +0200
+Message-ID: <20241014141050.261020877@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,126 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Shao <shawn.shao@jaguarmicro.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 4058c39bd176daf11a826802d940d86292a6b02b ]
+[ Upstream commit 05ef7055debc804e8083737402127975e7244fc4 ]
 
-The issue is that before entering the crash kernel, the DWC USB controller
-did not perform operations such as resetting the interrupt mask bits.
-After entering the crash kernel,before the USB interrupt handler
-registration was completed while loading the DWC USB driver,an GINTSTS_SOF
-interrupt was received.This triggered the misroute_irq process within the
-GIC handling framework,ultimately leading to the misrouting of the
-interrupt,causing it to be handled by the wrong interrupt handler
-and resulting in the issue.
+We need to init l3mdev unconditionally, else main routing table is searched
+and incorrect result is returned unless strict (iif keyword) matching is
+requested.
 
-Summary:In a scenario where the kernel triggers a panic and enters
-the crash kernel,it is necessary to ensure that the interrupt mask
-bit is not enabled before the interrupt registration is complete.
-If an interrupt reaches the CPU at this moment,it will certainly
-not be handled correctly,especially in cases where this interrupt
-is reported frequently.
+Next patch adds a selftest for this.
 
-Please refer to the Crashkernel dmesg information as follows
-(the message on line 3 was added before devm_request_irq is
-called by the dwc2_driver_probe function):
-[    5.866837][    T1] dwc2 JMIC0010:01: supply vusb_d not found, using dummy regulator
-[    5.874588][    T1] dwc2 JMIC0010:01: supply vusb_a not found, using dummy regulator
-[    5.882335][    T1] dwc2 JMIC0010:01: before devm_request_irq  irq: [71], gintmsk[0xf300080e], gintsts[0x04200009]
-[    5.892686][    C0] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.10.0-jmnd1.2_RC #18
-[    5.900327][    C0] Hardware name: CMSS HyperCard4-25G/HyperCard4-25G, BIOS 1.6.4 Jul  8 2024
-[    5.908836][    C0] Call trace:
-[    5.911965][    C0]  dump_backtrace+0x0/0x1f0
-[    5.916308][    C0]  show_stack+0x20/0x30
-[    5.920304][    C0]  dump_stack+0xd8/0x140
-[    5.924387][    C0]  pcie_xxx_handler+0x3c/0x1d8
-[    5.930121][    C0]  __handle_irq_event_percpu+0x64/0x1e0
-[    5.935506][    C0]  handle_irq_event+0x80/0x1d0
-[    5.940109][    C0]  try_one_irq+0x138/0x174
-[    5.944365][    C0]  misrouted_irq+0x134/0x140
-[    5.948795][    C0]  note_interrupt+0x1d0/0x30c
-[    5.953311][    C0]  handle_irq_event+0x13c/0x1d0
-[    5.958001][    C0]  handle_fasteoi_irq+0xd4/0x260
-[    5.962779][    C0]  __handle_domain_irq+0x88/0xf0
-[    5.967555][    C0]  gic_handle_irq+0x9c/0x2f0
-[    5.971985][    C0]  el1_irq+0xb8/0x140
-[    5.975807][    C0]  __setup_irq+0x3dc/0x7cc
-[    5.980064][    C0]  request_threaded_irq+0xf4/0x1b4
-[    5.985015][    C0]  devm_request_threaded_irq+0x80/0x100
-[    5.990400][    C0]  dwc2_driver_probe+0x1b8/0x6b0
-[    5.995178][    C0]  platform_drv_probe+0x5c/0xb0
-[    5.999868][    C0]  really_probe+0xf8/0x51c
-[    6.004125][    C0]  driver_probe_device+0xfc/0x170
-[    6.008989][    C0]  device_driver_attach+0xc8/0xd0
-[    6.013853][    C0]  __driver_attach+0xe8/0x1b0
-[    6.018369][    C0]  bus_for_each_dev+0x7c/0xdc
-[    6.022886][    C0]  driver_attach+0x2c/0x3c
-[    6.027143][    C0]  bus_add_driver+0xdc/0x240
-[    6.031573][    C0]  driver_register+0x80/0x13c
-[    6.036090][    C0]  __platform_driver_register+0x50/0x5c
-[    6.041476][    C0]  dwc2_platform_driver_init+0x24/0x30
-[    6.046774][    C0]  do_one_initcall+0x50/0x25c
-[    6.051291][    C0]  do_initcall_level+0xe4/0xfc
-[    6.055894][    C0]  do_initcalls+0x80/0xa4
-[    6.060064][    C0]  kernel_init_freeable+0x198/0x240
-[    6.065102][    C0]  kernel_init+0x1c/0x12c
-
-Signed-off-by: Shawn Shao <shawn.shao@jaguarmicro.com>
-Link: https://lore.kernel.org/r/20240830031709.134-1-shawn.shao@jaguarmicro.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2a8a7c0eaa87 ("netfilter: nft_fib: Fix for rpath check with VRF devices")
+Closes: https://bugzilla.netfilter.org/show_bug.cgi?id=1761
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/platform.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ net/ipv4/netfilter/nft_fib_ipv4.c | 4 +---
+ net/ipv6/netfilter/nft_fib_ipv6.c | 5 +++--
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
-index 7b84416dfc2b1..c1b7209b94836 100644
---- a/drivers/usb/dwc2/platform.c
-+++ b/drivers/usb/dwc2/platform.c
-@@ -469,18 +469,6 @@ static int dwc2_driver_probe(struct platform_device *dev)
+diff --git a/net/ipv4/netfilter/nft_fib_ipv4.c b/net/ipv4/netfilter/nft_fib_ipv4.c
+index 9eee535c64dd4..ba233fdd81886 100644
+--- a/net/ipv4/netfilter/nft_fib_ipv4.c
++++ b/net/ipv4/netfilter/nft_fib_ipv4.c
+@@ -66,6 +66,7 @@ void nft_fib4_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ 		.flowi4_scope = RT_SCOPE_UNIVERSE,
+ 		.flowi4_iif = LOOPBACK_IFINDEX,
+ 		.flowi4_uid = sock_net_uid(nft_net(pkt), NULL),
++		.flowi4_l3mdev = l3mdev_master_ifindex_rcu(nft_in(pkt)),
+ 	};
+ 	const struct net_device *oif;
+ 	const struct net_device *found;
+@@ -84,9 +85,6 @@ void nft_fib4_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ 	else
+ 		oif = NULL;
  
- 	spin_lock_init(&hsotg->lock);
- 
--	hsotg->irq = platform_get_irq(dev, 0);
--	if (hsotg->irq < 0)
--		return hsotg->irq;
+-	if (priv->flags & NFTA_FIB_F_IIF)
+-		fl4.flowi4_l3mdev = l3mdev_master_ifindex_rcu(oif);
 -
--	dev_dbg(hsotg->dev, "registering common handler for irq%d\n",
--		hsotg->irq);
--	retval = devm_request_irq(hsotg->dev, hsotg->irq,
--				  dwc2_handle_common_intr, IRQF_SHARED,
--				  dev_name(hsotg->dev), hsotg);
--	if (retval)
--		return retval;
--
- 	hsotg->vbus_supply = devm_regulator_get_optional(hsotg->dev, "vbus");
- 	if (IS_ERR(hsotg->vbus_supply)) {
- 		retval = PTR_ERR(hsotg->vbus_supply);
-@@ -524,6 +512,20 @@ static int dwc2_driver_probe(struct platform_device *dev)
- 	if (retval)
- 		goto error;
+ 	if (nft_hook(pkt) == NF_INET_PRE_ROUTING &&
+ 	    nft_fib_is_loopback(pkt->skb, nft_in(pkt))) {
+ 		nft_fib_store_result(dest, priv, nft_in(pkt));
+diff --git a/net/ipv6/netfilter/nft_fib_ipv6.c b/net/ipv6/netfilter/nft_fib_ipv6.c
+index 36dc14b34388c..c9f1634b3838a 100644
+--- a/net/ipv6/netfilter/nft_fib_ipv6.c
++++ b/net/ipv6/netfilter/nft_fib_ipv6.c
+@@ -41,8 +41,6 @@ static int nft_fib6_flowi_init(struct flowi6 *fl6, const struct nft_fib *priv,
+ 	if (ipv6_addr_type(&fl6->daddr) & IPV6_ADDR_LINKLOCAL) {
+ 		lookup_flags |= RT6_LOOKUP_F_IFACE;
+ 		fl6->flowi6_oif = get_ifindex(dev ? dev : pkt->skb->dev);
+-	} else if (priv->flags & NFTA_FIB_F_IIF) {
+-		fl6->flowi6_l3mdev = l3mdev_master_ifindex_rcu(dev);
+ 	}
  
-+	hsotg->irq = platform_get_irq(dev, 0);
-+	if (hsotg->irq < 0) {
-+		retval = hsotg->irq;
-+		goto error;
-+	}
+ 	if (ipv6_addr_type(&fl6->saddr) & IPV6_ADDR_UNICAST)
+@@ -75,6 +73,8 @@ static u32 __nft_fib6_eval_type(const struct nft_fib *priv,
+ 	else if (priv->flags & NFTA_FIB_F_OIF)
+ 		dev = nft_out(pkt);
+ 
++	fl6.flowi6_l3mdev = l3mdev_master_ifindex_rcu(dev);
 +
-+	dev_dbg(hsotg->dev, "registering common handler for irq%d\n",
-+		hsotg->irq);
-+	retval = devm_request_irq(hsotg->dev, hsotg->irq,
-+				  dwc2_handle_common_intr, IRQF_SHARED,
-+				  dev_name(hsotg->dev), hsotg);
-+	if (retval)
-+		goto error;
-+
- 	/*
- 	 * For OTG cores, set the force mode bits to reflect the value
- 	 * of dr_mode. Force mode bits should not be touched at any
+ 	nft_fib6_flowi_init(&fl6, priv, pkt, dev, iph);
+ 
+ 	if (dev && nf_ipv6_chk_addr(nft_net(pkt), &fl6.daddr, dev, true))
+@@ -165,6 +165,7 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ 		.flowi6_iif = LOOPBACK_IFINDEX,
+ 		.flowi6_proto = pkt->tprot,
+ 		.flowi6_uid = sock_net_uid(nft_net(pkt), NULL),
++		.flowi6_l3mdev = l3mdev_master_ifindex_rcu(nft_in(pkt)),
+ 	};
+ 	struct rt6_info *rt;
+ 	int lookup_flags;
 -- 
 2.43.0
 
