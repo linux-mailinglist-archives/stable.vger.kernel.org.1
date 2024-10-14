@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71AE999CDFA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:38:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729A299CCEA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31787283BEF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:38:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26F541F22BFB
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C2C1A0724;
-	Mon, 14 Oct 2024 14:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34FD1AB536;
+	Mon, 14 Oct 2024 14:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PNxi8lFt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMnrPPIi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF5625632;
-	Mon, 14 Oct 2024 14:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B500E571;
+	Mon, 14 Oct 2024 14:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916704; cv=none; b=FW/ksW2WcCbxnc1Wuamb05a/iVsKAuwETp9CG8VZwv/fZfwHyfZpMvGwjDdPpAU5mLhTiaLv4mlEn9e1GxxfWlHN6kvKoO2oN7vGRid56a7IjSDbKSB6ZkAbNajF7b3vagIxFkTmXNgCyUwB55/3ieF+ZguOw8LYi0NUapkuiu4=
+	t=1728915992; cv=none; b=CCd7xfS4hY4HESbCcsu2ABh5vvh62R6XmxepsIbDg5WGW9hl6HA7UnQnhm6sEa8lcfa0y1VobWIo7bLiMu4SpwjEYScWVlFyhmmdHRPKZhhVjq8aWIPNDYV6TC2TruPdso+HwlUUsm91KPjJgoeFbb3+YpkiNuJy2n1xwsktaVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916704; c=relaxed/simple;
-	bh=wW8x2KUm3qyNKN8u7aAFzwhrWi67wQCU9Beq7qpmvs4=;
+	s=arc-20240116; t=1728915992; c=relaxed/simple;
+	bh=XqV1lVSNUbUxvOn3kWixek4Rh2HaRpq5RRrDhpXPia4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z2blYumpwutPz+uZadhjmjkJg007+CXvsyOXLM2OaAOx7l2S7GK+C/QQWkR/pDQ57xFk/ofS8Vh94Q/hrHkq4YxNX/QuFH8l08NxD8zgVh4V3ESWT2f/PIvtoXJGBF0sIPUDqOKxtDau2feA96qud/yhiNlgfWyejKZnY5fz21w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PNxi8lFt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B37ABC4CEC3;
-	Mon, 14 Oct 2024 14:38:23 +0000 (UTC)
+	 MIME-Version; b=idDTHd5kgv0VdfquKt+eDbnhB8hZMu135ihXIDCtR4/lDMOfZ+i97wcGFqQa/SoAUs2+RrY/Q+sW9Ka1GMxkLr5GdZ8H9BGkRk7ZY/XCcjig18zrtQiQA7O1soC5kfFbXtw9YvcAHLcdyGLSO5EQyi8L2H3PziKgeF7rTQ+aWEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMnrPPIi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECBFC4CEC7;
+	Mon, 14 Oct 2024 14:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916704;
-	bh=wW8x2KUm3qyNKN8u7aAFzwhrWi67wQCU9Beq7qpmvs4=;
+	s=korg; t=1728915992;
+	bh=XqV1lVSNUbUxvOn3kWixek4Rh2HaRpq5RRrDhpXPia4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PNxi8lFt02O+EasdOlvz4O4F8OIHnH/b/aIIaf2FZGhAAIljttPkzIhrGJpsUOscT
-	 YLj9pHv0jLN8KkFZr2A39mXRfAloWchysf9SkRzAykYb9K9W+cfyu0wSfgPOeJU2GL
-	 T331s6YyvFchztbihRdD6Xv6AqGPRJV40hF4gy8E=
+	b=iMnrPPIiSHM0rRVYug661KjLZpn4MOtJxrXW54bTDDC/eIO18rLNQDtWnSOSYnE96
+	 KZzJBxhNcbnyflChJ6FiuaIkDNhC/I6qhgNO0XZv6uUos0IrnTTVMTXSY/ktl07Bum
+	 FpKfAb/ityEiYiz3PQuynpbSh84lNdDlZtysskDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Peter Hurley <peter@hurleysoftware.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/213] net: ethernet: cortina: Drop TSO support
+Subject: [PATCH 6.11 054/214] serial: protect uart_port_dtr_rts() in uart_shutdown() too
 Date: Mon, 14 Oct 2024 16:18:37 +0200
-Message-ID: <20241014141043.421013343@linuxfoundation.org>
+Message-ID: <20241014141047.099635148@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit ac631873c9e7a50d2a8de457cfc4b9f86666403e ]
+[ Upstream commit 602babaa84d627923713acaf5f7e9a4369e77473 ]
 
-The recent change to allow large frames without hardware checksumming
-slotted in software checksumming in the driver if hardware could not
-do it.
+Commit af224ca2df29 (serial: core: Prevent unsafe uart port access, part
+3) added few uport == NULL checks. It added one to uart_shutdown(), so
+the commit assumes, uport can be NULL in there. But right after that
+protection, there is an unprotected "uart_port_dtr_rts(uport, false);"
+call. That is invoked only if HUPCL is set, so I assume that is the
+reason why we do not see lots of these reports.
 
-This will however upset TSO (TCP Segment Offloading). Typical
-error dumps includes this:
+Or it cannot be NULL at this point at all for some reason :P.
 
-skb len=2961 headroom=222 headlen=66 tailroom=0
-(...)
-WARNING: CPU: 0 PID: 956 at net/core/dev.c:3259 skb_warn_bad_offload+0x7c/0x108
-gemini-ethernet-port: caps=(0x0000010000154813, 0x00002007ffdd7889)
+Until the above is investigated, stay on the safe side and move this
+dereference to the if too.
 
-And the packets do not go through.
+I got this inconsistency from Coverity under CID 1585130. Thanks.
 
-The TSO implementation is bogus: a TSO enabled driver must propagate
-the skb_shinfo(skb)->gso_size value to the TSO engine on the NIC.
-
-Drop the size check and TSO offloading features for now: this
-needs to be fixed up properly.
-
-After this ethernet works fine on Gemini devices with a direct connected
-PHY such as D-Link DNS-313.
-
-Also tested to still be working with a DSA switch using the Gemini
-ethernet as conduit interface.
-
-Link: https://lore.kernel.org/netdev/CANn89iJLfxng1sYL5Zk0mknXpyYQPCp83m3KgD2KJ2_hKCpEUg@mail.gmail.com/
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Fixes: d4d0c5b4d279 ("net: ethernet: cortina: Handle large frames")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Cc: Peter Hurley <peter@hurleysoftware.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240805102046.307511-3-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 15 ++-------------
- 1 file changed, 2 insertions(+), 13 deletions(-)
+ drivers/tty/serial/serial_core.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index f69d974a23a1f..956cfb293ee19 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -79,8 +79,7 @@ MODULE_PARM_DESC(debug, "Debug level (0=none,...,16=all)");
- #define GMAC0_IRQ4_8 (GMAC0_MIB_INT_BIT | GMAC0_RX_OVERRUN_INT_BIT)
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index 20e797c9e13ab..4187ddeeac366 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -407,14 +407,16 @@ static void uart_shutdown(struct tty_struct *tty, struct uart_state *state)
+ 		/*
+ 		 * Turn off DTR and RTS early.
+ 		 */
+-		if (uport && uart_console(uport) && tty) {
+-			uport->cons->cflag = tty->termios.c_cflag;
+-			uport->cons->ispeed = tty->termios.c_ispeed;
+-			uport->cons->ospeed = tty->termios.c_ospeed;
+-		}
++		if (uport) {
++			if (uart_console(uport) && tty) {
++				uport->cons->cflag = tty->termios.c_cflag;
++				uport->cons->ispeed = tty->termios.c_ispeed;
++				uport->cons->ospeed = tty->termios.c_ospeed;
++			}
  
- #define GMAC_OFFLOAD_FEATURES (NETIF_F_SG | NETIF_F_IP_CSUM | \
--		NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM | \
--		NETIF_F_TSO | NETIF_F_TSO_ECN | NETIF_F_TSO6)
-+			       NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM)
+-		if (!tty || C_HUPCL(tty))
+-			uart_port_dtr_rts(uport, false);
++			if (!tty || C_HUPCL(tty))
++				uart_port_dtr_rts(uport, false);
++		}
  
- /**
-  * struct gmac_queue_page - page buffer per-page info
-@@ -1148,23 +1147,13 @@ static int gmac_map_tx_bufs(struct net_device *netdev, struct sk_buff *skb,
- 	struct gmac_txdesc *txd;
- 	skb_frag_t *skb_frag;
- 	dma_addr_t mapping;
--	unsigned short mtu;
- 	void *buffer;
- 	int ret;
- 
--	mtu  = ETH_HLEN;
--	mtu += netdev->mtu;
--	if (skb->protocol == htons(ETH_P_8021Q))
--		mtu += VLAN_HLEN;
--
-+	/* TODO: implement proper TSO using MTU in word3 */
- 	word1 = skb->len;
- 	word3 = SOF_BIT;
- 
--	if (word1 > mtu) {
--		word1 |= TSS_MTU_ENABLE_BIT;
--		word3 |= mtu;
--	}
--
- 	if (skb->len >= ETH_FRAME_LEN) {
- 		/* Hardware offloaded checksumming isn't working on frames
- 		 * bigger than 1514 bytes. A hypothesis about this is that the
+ 		uart_port_shutdown(port);
+ 	}
 -- 
 2.43.0
 
