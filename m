@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-84987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9900499D333
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19AC999CEFE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:49:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA6AD1C21709
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B691E1F24304
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE8E1ABEC6;
-	Mon, 14 Oct 2024 15:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC5B1C75F3;
+	Mon, 14 Oct 2024 14:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EH71IvKg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q949T+Cg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF081CA8D;
-	Mon, 14 Oct 2024 15:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAB51ABECB;
+	Mon, 14 Oct 2024 14:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919909; cv=none; b=hIxqG3Qf7woALqTh4509KlMsHpPeLU5QPCTU9mDEv0972ix0fCWnTJu2fxJZIKkGTtybR40/Qknigyn72wTzbGOz3FPX18tn/Y4E604mhrr3Kwi6OunncHroVoOsVbmEHaUkVl05DSYweNocxaYOBtpHnJQA04WMSup/i+5yVKY=
+	t=1728917231; cv=none; b=HSsWLhz1YITJzy+luytQ/ItdeSl8sqO9aaGISdIGHzjYfsetUVt2GFWiTYG2SG4Xgs6QBCBh5EEQQwvgo4IDrG9jp+UVgkug9RHkqtVjfYiI3XY/tOZXCzSkTgJ25m2yOaJYAlwXu2mIXdgz7z1uzmSHngnTvmbS9LsYIrpkEF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919909; c=relaxed/simple;
-	bh=EdzM6uN33khm1on2b9EZgbsUI+VlpL7gKr2X3ZOZZrk=;
+	s=arc-20240116; t=1728917231; c=relaxed/simple;
+	bh=7OFL3lzDI04BBcrNdT6HDZBYWVEbQobxenTcfS6x02s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AXpu+EN2SwVVVXB7uHVH5OyYlepR1vpaFJs47t0lsT1tQIzlME0ETroOQBBw86z53vN6nfOpekZ+6gA9b8Htqx9qX3J/EhdUZ2b3+qQ23Rmxgann/JeXCkGFRnVBKympoeKg30yn31lrbZxjD88IY0NvXdu3ruv6qF4qOsNsqwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EH71IvKg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F00C4CEC7;
-	Mon, 14 Oct 2024 15:31:48 +0000 (UTC)
+	 MIME-Version; b=QWAxxeFP1VdHtVLEdow18LKhDeReAXMjuBMDkZ99/QfAv6aIp2LTrve189TU3Md2ab5aCocqdlIsjWvDIB64K/t756hqbWTiPSKSpcabLPIzJ8KjUob5ZMp1eEKqBuVQPI2KWRLfUeU0UgXNZx4NmAPtPWkUHkbbmO+mx8x/PcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q949T+Cg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1A0C4CEC3;
+	Mon, 14 Oct 2024 14:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919909;
-	bh=EdzM6uN33khm1on2b9EZgbsUI+VlpL7gKr2X3ZOZZrk=;
+	s=korg; t=1728917231;
+	bh=7OFL3lzDI04BBcrNdT6HDZBYWVEbQobxenTcfS6x02s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EH71IvKgCXASi42JdBkowkOjD3yTt+OXvPea0byjm2TIJPkh3yoDMOw3I2Gl0Hrtk
-	 x+tkQQpJ21lV6O+id4NCoj8tgsLKVl78Pxg0r4hUQ4jsDtORRdfer8ox20orgFW3br
-	 tOvYHRdVgEZaMY2e4pR4LTUb6XKowamJv/TY9TPI=
+	b=Q949T+CgWlCvqtn1nd/N7gG2HXqOgYQsMuyuzka2DyOEi/OunlvSsBzOzNQQ3wN5K
+	 IpuHSmrO4KdyOCiNHFguDcLUOMss2AGuUva4U+VGILU0zhE2GrVkvlkssTaN8DGA2B
+	 3LOKs59Qa2dYooU3qhF7QkqnLeA/EryrxPywHrkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 743/798] net: dsa: b53: fix max MTU for 1g switches
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 191/213] Bluetooth: hci_conn: Fix UAF in hci_enhanced_setup_sync
 Date: Mon, 14 Oct 2024 16:21:37 +0200
-Message-ID: <20241014141247.259975584@linuxfoundation.org>
+Message-ID: <20241014141050.417267423@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +60,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 680a8217dc00dc7e7da57888b3c053289b60eb2b ]
+commit 18fd04ad856df07733f5bb07e7f7168e7443d393 upstream.
 
-JMS_MAX_SIZE is the ethernet frame length, not the MTU, which is payload
-without ethernet headers.
+This checks if the ACL connection remains valid as it could be destroyed
+while hci_enhanced_setup_sync is pending on cmd_sync leading to the
+following trace:
 
-According to the datasheets maximum supported frame length for most
-gigabyte swithes is 9720 bytes, so convert that to the expected MTU when
-using VLAN tagged frames.
+BUG: KASAN: slab-use-after-free in hci_enhanced_setup_sync+0x91b/0xa60
+Read of size 1 at addr ffff888002328ffd by task kworker/u5:2/37
 
-Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CPU: 0 UID: 0 PID: 37 Comm: kworker/u5:2 Not tainted 6.11.0-rc6-01300-g810be445d8d6 #7099
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
+Workqueue: hci0 hci_cmd_sync_work
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x5d/0x80
+ ? hci_enhanced_setup_sync+0x91b/0xa60
+ print_report+0x152/0x4c0
+ ? hci_enhanced_setup_sync+0x91b/0xa60
+ ? __virt_addr_valid+0x1fa/0x420
+ ? hci_enhanced_setup_sync+0x91b/0xa60
+ kasan_report+0xda/0x1b0
+ ? hci_enhanced_setup_sync+0x91b/0xa60
+ hci_enhanced_setup_sync+0x91b/0xa60
+ ? __pfx_hci_enhanced_setup_sync+0x10/0x10
+ ? __pfx___mutex_lock+0x10/0x10
+ hci_cmd_sync_work+0x1c2/0x330
+ process_one_work+0x7d9/0x1360
+ ? __pfx_lock_acquire+0x10/0x10
+ ? __pfx_process_one_work+0x10/0x10
+ ? assign_work+0x167/0x240
+ worker_thread+0x5b7/0xf60
+ ? __kthread_parkme+0xac/0x1c0
+ ? __pfx_worker_thread+0x10/0x10
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0x293/0x360
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2f/0x70
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+Allocated by task 34:
+ kasan_save_stack+0x30/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0x8f/0xa0
+ __hci_conn_add+0x187/0x17d0
+ hci_connect_sco+0x2e1/0xb90
+ sco_sock_connect+0x2a2/0xb80
+ __sys_connect+0x227/0x2a0
+ __x64_sys_connect+0x6d/0xb0
+ do_syscall_64+0x71/0x140
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Freed by task 37:
+ kasan_save_stack+0x30/0x50
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3b/0x60
+ __kasan_slab_free+0x101/0x160
+ kfree+0xd0/0x250
+ device_release+0x9a/0x210
+ kobject_put+0x151/0x280
+ hci_conn_del+0x448/0xbf0
+ hci_abort_conn_sync+0x46f/0x980
+ hci_cmd_sync_work+0x1c2/0x330
+ process_one_work+0x7d9/0x1360
+ worker_thread+0x5b7/0xf60
+ kthread+0x293/0x360
+ ret_from_fork+0x2f/0x70
+ ret_from_fork_asm+0x1a/0x30
+
+Cc: stable@vger.kernel.org
+Fixes: e07a06b4eb41 ("Bluetooth: Convert SCO configure_datapath to hci_sync")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_conn.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 862150c54e88e..82583edbb3f95 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -27,6 +27,7 @@
- #include <linux/phylink.h>
- #include <linux/etherdevice.h>
- #include <linux/if_bridge.h>
-+#include <linux/if_vlan.h>
- #include <net/dsa.h>
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -290,6 +290,9 @@ static int hci_enhanced_setup_sync(struc
  
- #include "b53_regs.h"
-@@ -224,6 +225,8 @@ static const struct b53_mib_desc b53_mibs_58xx[] = {
+ 	kfree(conn_handle);
  
- #define B53_MIBS_58XX_SIZE	ARRAY_SIZE(b53_mibs_58xx)
- 
-+#define B53_MAX_MTU		(9720 - ETH_HLEN - VLAN_HLEN - ETH_FCS_LEN)
++	if (!hci_conn_valid(hdev, conn))
++		return -ECANCELED;
 +
- static int b53_do_vlan_op(struct b53_device *dev, u8 op)
- {
- 	unsigned int i;
-@@ -2232,7 +2235,7 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
+ 	bt_dev_dbg(hdev, "hcon %p", conn);
  
- static int b53_get_max_mtu(struct dsa_switch *ds, int port)
- {
--	return JMS_MAX_SIZE;
-+	return B53_MAX_MTU;
- }
- 
- static const struct dsa_switch_ops b53_switch_ops = {
--- 
-2.43.0
-
+ 	configure_datapath_sync(hdev, &conn->codec);
 
 
 
