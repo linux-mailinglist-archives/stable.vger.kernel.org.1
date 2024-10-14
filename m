@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-83880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D932299CCFF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:27:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C9A99D23F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E8252826E6
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:27:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D58D1F250D9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2C81A76C4;
-	Mon, 14 Oct 2024 14:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537371C75F3;
+	Mon, 14 Oct 2024 15:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1C1Bldd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRsNG8Wv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647381AA790;
-	Mon, 14 Oct 2024 14:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6201C75E4;
+	Mon, 14 Oct 2024 15:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916047; cv=none; b=O7KWaioj0XmxG2TZBXDZRmDbtI9Jw9EvT4GGqfxonRgchwcHHUkeTQi5SvKd0eCpL54tZJTIopevLoAclwGiDLSVTIm7QzUJRMYvIMJpck6JP620pNJn7Io0+8L2x8s8DVn/UgF+uw8Yzu04kl7kcENkk5eeqQabrn6jIcsvIIo=
+	t=1728919332; cv=none; b=FwODYY4gsCH6fnc3QZ9z3pcFNX746iv2GrM4T6e5Of0AmoDjvYj2UO9ji5SP8cIcUzH7YDlwSR+EHOf/baP/aaheoINpP5O8GRuLTnEiL964xBCoAC3fDFcMfZ9itKJrjzTtGeVYbQktCBcFucoEvepF/K3yQuLT5VQ/ny3MWnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916047; c=relaxed/simple;
-	bh=NV3RJ4Xn1yeMkTHCZ9JIXbMPCDJ1LmztQD4O1txEF/U=;
+	s=arc-20240116; t=1728919332; c=relaxed/simple;
+	bh=p1Tq/pMMWNFgcLI+20+UYnNZ3i68pwIjT8ecwC9d4c0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tFuDg0WGSosFnBVZijkw2xpztFRHHquSjiwQqjkqvAKb/FClcmqsqh0ZpzEjiq7c4OvjY+X7Fgvzcwfhht5fJT9XKv/kIIkA5WmFPBJ5T3s8hje3fTMgOCrd9FhUDNevVPo79BULysymWXwezy22hD/inOuIobdPddqGCd4htps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1C1Bldd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99291C4CEC3;
-	Mon, 14 Oct 2024 14:27:26 +0000 (UTC)
+	 MIME-Version; b=UAs77U6VtbXailhscJdooYG0lcJp6o++1KNUAS0kGPnu3uWZ9+2T4+BrlFYEbCsKQjUVnXbDODIHKfYAA5pzVqyb9cDiWR9eQITPlFeLmHGbnvORG9kr5zQeHMy7JLgWfuPr4DqqwkIXtAm46UDcA1k1kqwNJC8zdbT0old/IrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRsNG8Wv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F20DC4CEC3;
+	Mon, 14 Oct 2024 15:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916047;
-	bh=NV3RJ4Xn1yeMkTHCZ9JIXbMPCDJ1LmztQD4O1txEF/U=;
+	s=korg; t=1728919331;
+	bh=p1Tq/pMMWNFgcLI+20+UYnNZ3i68pwIjT8ecwC9d4c0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U1C1BlddPAATO/AxIzdQcEJrwuhf11YK2SSCs0jZBZEdyxTML4nkEEcuZLVVDv+Hf
-	 kQIoy6+eDuGi56GdxYKdSSdy5z2t0Zn4L9EFkzh66ww66EB3i4oL/ghaiulu7lOcCT
-	 1qo0Pw+143nKhnXorXI7l/Jh1IsjnpBNYs3mEKkw=
+	b=YRsNG8WvZuMnBgnJZVHYPPDIMcGdZpde2Oog5GT4gjxJ5OCPawJL9eSRBVmN4FURj
+	 p2cZcoPCCYSX8hW0TRRJ8jDvK1liHeAXVCYdeZIJRj/b9Lm1L0hY8d3OpdTowFXj2K
+	 o++zw8vW+xr3rxB9hOYl6GW1dXUCUpyXq0CBQJBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 071/214] driver core: bus: Return -EIO instead of 0 when show/store invalid bus attribute
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.1 580/798] clk: rockchip: fix error for unknown clocks
 Date: Mon, 14 Oct 2024 16:18:54 +0200
-Message-ID: <20241014141047.759518416@linuxfoundation.org>
+Message-ID: <20241014141240.788597480@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-[ Upstream commit c0fd973c108cdc22a384854bc4b3e288a9717bb2 ]
+commit 12fd64babaca4dc09d072f63eda76ba44119816a upstream.
 
-Return -EIO instead of 0 for below erroneous bus attribute operations:
- - read a bus attribute without show().
- - write a bus attribute without store().
+There is a clk == NULL check after the switch to check for
+unsupported clk types. Since clk is re-assigned in a loop,
+this check is useless right now for anything but the first
+round. Let's fix this up by assigning clk = NULL in the
+loop before the switch statement.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20240724-bus_fix-v2-1-5adbafc698fb@quicinc.com
+Fixes: a245fecbb806 ("clk: rockchip: add basic infrastructure for clock branches")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+[added fixes + stable-cc]
+Link: https://lore.kernel.org/r/20240325193609.237182-6-sebastian.reichel@collabora.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/bus.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/clk/rockchip/clk.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-index 08362ecec0ecb..6a68734e7ebd1 100644
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -152,7 +152,8 @@ static ssize_t bus_attr_show(struct kobject *kobj, struct attribute *attr,
+--- a/drivers/clk/rockchip/clk.c
++++ b/drivers/clk/rockchip/clk.c
+@@ -438,12 +438,13 @@ void rockchip_clk_register_branches(stru
+ 				    struct rockchip_clk_branch *list,
+ 				    unsigned int nr_clk)
  {
- 	struct bus_attribute *bus_attr = to_bus_attr(attr);
- 	struct subsys_private *subsys_priv = to_subsys_private(kobj);
--	ssize_t ret = 0;
-+	/* return -EIO for reading a bus attribute without show() */
-+	ssize_t ret = -EIO;
+-	struct clk *clk = NULL;
++	struct clk *clk;
+ 	unsigned int idx;
+ 	unsigned long flags;
  
- 	if (bus_attr->show)
- 		ret = bus_attr->show(subsys_priv->bus, buf);
-@@ -164,7 +165,8 @@ static ssize_t bus_attr_store(struct kobject *kobj, struct attribute *attr,
- {
- 	struct bus_attribute *bus_attr = to_bus_attr(attr);
- 	struct subsys_private *subsys_priv = to_subsys_private(kobj);
--	ssize_t ret = 0;
-+	/* return -EIO for writing a bus attribute without store() */
-+	ssize_t ret = -EIO;
+ 	for (idx = 0; idx < nr_clk; idx++, list++) {
+ 		flags = list->flags;
++		clk = NULL;
  
- 	if (bus_attr->store)
- 		ret = bus_attr->store(subsys_priv->bus, buf, count);
--- 
-2.43.0
-
+ 		/* catch simple muxes */
+ 		switch (list->branch_type) {
 
 
 
