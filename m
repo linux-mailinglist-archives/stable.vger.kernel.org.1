@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-83859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B807499CCE0
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:26:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3A6F99CDF5
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DC2DB20DD6
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:26:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 323981F23C0B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A701A0BE7;
-	Mon, 14 Oct 2024 14:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819AD1AB530;
+	Mon, 14 Oct 2024 14:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVETFkHX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x72JZ0mR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5691547F3;
-	Mon, 14 Oct 2024 14:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4053D1AB525;
+	Mon, 14 Oct 2024 14:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915968; cv=none; b=fffdCTxrUxejZeBmND89WFWcxqi5P7M2/6QAD9Av1Hc7Q8F5nvDxHVkcSnSYxelGggsLavf9P1Mu7VFMILrh3P90eA+2gl0RSK98lSJXHbyF9LVSMij8xbhvRidLQ3cN9O+/q8GMV2HopIFWgJvwHDLvi0wel6f4PRWNn3LnrYg=
+	t=1728916687; cv=none; b=e/kZZwYh6LSJyCdh1Rmi0P4D+y8+Ico52iLTqH21VKw7YrAy9trYxCPYAzTkODePq1bAJ236RcXVCmBHEoSWxLe478jVwK2FgnhG2JN98ZunlWtghP3PETQ40LREK+Sv18ZAE0J61ev1cRdLpZgpOk1cWXM95cr7TWvFOJGJ+hA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915968; c=relaxed/simple;
-	bh=2jSMSYfioVcn/ozjFOhaZ0afPESGDe+Urt+0bW5/lMU=;
+	s=arc-20240116; t=1728916687; c=relaxed/simple;
+	bh=zPllwFRAKOae2rJtCHvW1B7JTWVTGnLrV/sJtjxvzWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OxVQ9TXJgvIRGyX67qeGWITvi4ue243H9c9GVy/aIFKy3xZVPsVYJYR661mTTDJVlsYbe4rGorDke7uSIPzy6sMhfP2nlPPDgjIHA4FLeKwrNalz1MnbGeO7mgn/ApCUV1y6OKaGkCSb1XR+3qswAZlkYWNkriv7mM5rs3V9kEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVETFkHX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72ABAC4CEC3;
-	Mon, 14 Oct 2024 14:26:07 +0000 (UTC)
+	 MIME-Version; b=c5a/Pjy0rKA4cZlq48rrCtgaSYe6bWal1iMarUtlNBBZDew9UgtX2ME5vL2junDvz/AzSUfPRYUPas3Z99MrpzdDyop+e1Fmu+vek3Uih55lHpNgFNhSrkk4wIE0qoo15g7rhVZ0cXQfPUVrK9BMEVlDSGnw+halnDI+1chqvT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x72JZ0mR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAC8C4CEC7;
+	Mon, 14 Oct 2024 14:38:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915967;
-	bh=2jSMSYfioVcn/ozjFOhaZ0afPESGDe+Urt+0bW5/lMU=;
+	s=korg; t=1728916687;
+	bh=zPllwFRAKOae2rJtCHvW1B7JTWVTGnLrV/sJtjxvzWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MVETFkHXxzwaut70EwkVTALU8zn+ZQO30KMRoYdjHjePJOrsbxa1WK/Ho1WK6j5RZ
-	 H8sbWx9ehVcz60WugTZWl4XWTb5F4InalvallohmGpxX7HSfh0P9VOYT2Te5NBY1M7
-	 ih0D1DS/X9jWtlA+uEtkdESfKsnELomZFXW2GMhI=
+	b=x72JZ0mR2MT+tOhWp9gjhkgLSxdndmcCCk1bGoFKw1SCv7yuvdngc25lUkXzG6VKN
+	 RSfJaljWlTibgsDhI0MpX533oFEuSdbLR0leD1ai9hfOyVaYza+bbIgI2iaLfgxdMJ
+	 burERFNMzfRUTQtZ7nF79br8qwAbW7b/S5uZ3bCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 049/214] soundwire: cadence: re-check Peripheral status with delayed_work
+	Sasha Levin <sashal@kernel.org>,
+	Elliot Berman <quic_eberman@quicinc.com>
+Subject: [PATCH 6.6 006/213] phy: qualcomm: eusb2-repeater: Rework init to drop redundant zero-out loop
 Date: Mon, 14 Oct 2024 16:18:32 +0200
-Message-ID: <20241014141046.905132391@linuxfoundation.org>
+Message-ID: <20241014141043.223253103@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,206 +63,285 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit f8c35d61ba01afa76846905c67862cdace7f66b0 ]
+[ Upstream commit 734550d60cdf634299f0eac7f7fe15763ed990bb ]
 
-The SoundWire peripheral enumeration is entirely based on interrupts,
-more specifically sticky bits tracking state changes.
+Instead of incrementing the base of the global reg fields, which renders
+the second instance of the repeater broken due to wrong offsets, use
+regmap with base and offset. As for zeroing out the rest of the tuning
+regs, avoid looping though the table and just use the table as is,
+as it is already zero initialized.
 
-This patch adds a defensive programming check on the actual status
-reported in PING frames. If for some reason an interrupt was lost or
-delayed, the delayed work would detect a peripheral change of status
-after the bus starts.
-
-The 100ms defined for the delay is not completely arbitrary, if a
-Peripheral didn't join the bus within that delay then probably the
-hardware link is broken, and conversely if the detection didn't happen
-because of software issues the 100ms is still acceptable in terms of
-user experience.
-
-The overhead of the one-shot workqueue is minimal, and the mutual
-exclusion ensures that the interrupt and delayed work cannot update
-the status concurrently.
-
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://lore.kernel.org/r/20240805114921.88007-1-yung-chuan.liao@linux.intel.com
+Fixes: 99a517a582fc ("phy: qualcomm: phy-qcom-eusb2-repeater: Zero out untouched tuning regs")
+Tested-by: Elliot Berman <quic_eberman@quicinc.com> # sm8650-qrd
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20240201-phy-qcom-eusb2-repeater-fixes-v4-1-cf18c8cef6d7@linaro.org
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/cadence_master.c   | 39 ++++++++++++++++++++++++++--
- drivers/soundwire/cadence_master.h   |  5 ++++
- drivers/soundwire/intel.h            |  2 ++
- drivers/soundwire/intel_auxdevice.c  |  1 +
- drivers/soundwire/intel_bus_common.c | 11 ++++++++
- 5 files changed, 56 insertions(+), 2 deletions(-)
+ .../phy/qualcomm/phy-qcom-eusb2-repeater.c    | 166 +++++++-----------
+ 1 file changed, 62 insertions(+), 104 deletions(-)
 
-diff --git a/drivers/soundwire/cadence_master.c b/drivers/soundwire/cadence_master.c
-index e0683a5975d10..05652e983539b 100644
---- a/drivers/soundwire/cadence_master.c
-+++ b/drivers/soundwire/cadence_master.c
-@@ -890,8 +890,14 @@ static int cdns_update_slave_status(struct sdw_cdns *cdns,
- 		}
- 	}
+diff --git a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
+index a623f092b11f6..a43e20abb10d5 100644
+--- a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
++++ b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
+@@ -37,56 +37,28 @@
+ #define EUSB2_TUNE_EUSB_EQU		0x5A
+ #define EUSB2_TUNE_EUSB_HS_COMP_CUR	0x5B
  
--	if (is_slave)
--		return sdw_handle_slave_status(&cdns->bus, status);
-+	if (is_slave) {
-+		int ret;
+-#define QCOM_EUSB2_REPEATER_INIT_CFG(r, v)	\
+-	{					\
+-		.reg = r,			\
+-		.val = v,			\
+-	}
+-
+-enum reg_fields {
+-	F_TUNE_EUSB_HS_COMP_CUR,
+-	F_TUNE_EUSB_EQU,
+-	F_TUNE_EUSB_SLEW,
+-	F_TUNE_USB2_HS_COMP_CUR,
+-	F_TUNE_USB2_PREEM,
+-	F_TUNE_USB2_EQU,
+-	F_TUNE_USB2_SLEW,
+-	F_TUNE_SQUELCH_U,
+-	F_TUNE_HSDISC,
+-	F_TUNE_RES_FSDIF,
+-	F_TUNE_IUSB2,
+-	F_TUNE_USB2_CROSSOVER,
+-	F_NUM_TUNE_FIELDS,
+-
+-	F_FORCE_VAL_5 = F_NUM_TUNE_FIELDS,
+-	F_FORCE_EN_5,
+-
+-	F_EN_CTL1,
+-
+-	F_RPTR_STATUS,
+-	F_NUM_FIELDS,
+-};
+-
+-static struct reg_field eusb2_repeater_tune_reg_fields[F_NUM_FIELDS] = {
+-	[F_TUNE_EUSB_HS_COMP_CUR] = REG_FIELD(EUSB2_TUNE_EUSB_HS_COMP_CUR, 0, 1),
+-	[F_TUNE_EUSB_EQU] = REG_FIELD(EUSB2_TUNE_EUSB_EQU, 0, 1),
+-	[F_TUNE_EUSB_SLEW] = REG_FIELD(EUSB2_TUNE_EUSB_SLEW, 0, 1),
+-	[F_TUNE_USB2_HS_COMP_CUR] = REG_FIELD(EUSB2_TUNE_USB2_HS_COMP_CUR, 0, 1),
+-	[F_TUNE_USB2_PREEM] = REG_FIELD(EUSB2_TUNE_USB2_PREEM, 0, 2),
+-	[F_TUNE_USB2_EQU] = REG_FIELD(EUSB2_TUNE_USB2_EQU, 0, 1),
+-	[F_TUNE_USB2_SLEW] = REG_FIELD(EUSB2_TUNE_USB2_SLEW, 0, 1),
+-	[F_TUNE_SQUELCH_U] = REG_FIELD(EUSB2_TUNE_SQUELCH_U, 0, 2),
+-	[F_TUNE_HSDISC] = REG_FIELD(EUSB2_TUNE_HSDISC, 0, 2),
+-	[F_TUNE_RES_FSDIF] = REG_FIELD(EUSB2_TUNE_RES_FSDIF, 0, 2),
+-	[F_TUNE_IUSB2] = REG_FIELD(EUSB2_TUNE_IUSB2, 0, 3),
+-	[F_TUNE_USB2_CROSSOVER] = REG_FIELD(EUSB2_TUNE_USB2_CROSSOVER, 0, 2),
+-
+-	[F_FORCE_VAL_5] = REG_FIELD(EUSB2_FORCE_VAL_5, 0, 7),
+-	[F_FORCE_EN_5] = REG_FIELD(EUSB2_FORCE_EN_5, 0, 7),
+-
+-	[F_EN_CTL1] = REG_FIELD(EUSB2_EN_CTL1, 0, 7),
+-
+-	[F_RPTR_STATUS] = REG_FIELD(EUSB2_RPTR_STATUS, 0, 7),
++enum eusb2_reg_layout {
++	TUNE_EUSB_HS_COMP_CUR,
++	TUNE_EUSB_EQU,
++	TUNE_EUSB_SLEW,
++	TUNE_USB2_HS_COMP_CUR,
++	TUNE_USB2_PREEM,
++	TUNE_USB2_EQU,
++	TUNE_USB2_SLEW,
++	TUNE_SQUELCH_U,
++	TUNE_HSDISC,
++	TUNE_RES_FSDIF,
++	TUNE_IUSB2,
++	TUNE_USB2_CROSSOVER,
++	NUM_TUNE_FIELDS,
 +
-+		mutex_lock(&cdns->status_update_lock);
-+		ret = sdw_handle_slave_status(&cdns->bus, status);
-+		mutex_unlock(&cdns->status_update_lock);
-+		return ret;
-+	}
- 
- 	return 0;
- }
-@@ -988,6 +994,31 @@ irqreturn_t sdw_cdns_irq(int irq, void *dev_id)
- }
- EXPORT_SYMBOL(sdw_cdns_irq);
- 
-+static void cdns_check_attached_status_dwork(struct work_struct *work)
-+{
-+	struct sdw_cdns *cdns =
-+		container_of(work, struct sdw_cdns, attach_dwork.work);
-+	enum sdw_slave_status status[SDW_MAX_DEVICES + 1];
-+	u32 val;
-+	int ret;
-+	int i;
++	FORCE_VAL_5 = NUM_TUNE_FIELDS,
++	FORCE_EN_5,
 +
-+	val = cdns_readl(cdns, CDNS_MCP_SLAVE_STAT);
++	EN_CTL1,
 +
-+	for (i = 0; i <= SDW_MAX_DEVICES; i++) {
-+		status[i] = val & 0x3;
-+		if (status[i])
-+			dev_dbg(cdns->dev, "Peripheral %d status: %d\n", i, status[i]);
-+		val >>= 2;
-+	}
-+
-+	mutex_lock(&cdns->status_update_lock);
-+	ret = sdw_handle_slave_status(&cdns->bus, status);
-+	mutex_unlock(&cdns->status_update_lock);
-+	if (ret < 0)
-+		dev_err(cdns->dev, "%s: sdw_handle_slave_status failed: %d\n", __func__, ret);
-+}
-+
- /**
-  * cdns_update_slave_status_work - update slave status in a work since we will need to handle
-  * other interrupts eg. CDNS_MCP_INT_RX_WL during the update slave
-@@ -1740,7 +1771,11 @@ int sdw_cdns_probe(struct sdw_cdns *cdns)
- 	init_completion(&cdns->tx_complete);
- 	cdns->bus.port_ops = &cdns_port_ops;
- 
-+	mutex_init(&cdns->status_update_lock);
-+
- 	INIT_WORK(&cdns->work, cdns_update_slave_status_work);
-+	INIT_DELAYED_WORK(&cdns->attach_dwork, cdns_check_attached_status_dwork);
-+
- 	return 0;
- }
- EXPORT_SYMBOL(sdw_cdns_probe);
-diff --git a/drivers/soundwire/cadence_master.h b/drivers/soundwire/cadence_master.h
-index bc84435e420f5..e1d7969ba48ae 100644
---- a/drivers/soundwire/cadence_master.h
-+++ b/drivers/soundwire/cadence_master.h
-@@ -117,6 +117,8 @@ struct sdw_cdns_dai_runtime {
-  * @link_up: Link status
-  * @msg_count: Messages sent on bus
-  * @dai_runtime_array: runtime context for each allocated DAI.
-+ * @status_update_lock: protect concurrency between interrupt-based and delayed work
-+ * status update
-  */
- struct sdw_cdns {
- 	struct device *dev;
-@@ -148,10 +150,13 @@ struct sdw_cdns {
- 	bool interrupt_enabled;
- 
- 	struct work_struct work;
-+	struct delayed_work attach_dwork;
- 
- 	struct list_head list;
- 
- 	struct sdw_cdns_dai_runtime **dai_runtime_array;
-+
-+	struct mutex status_update_lock; /* add mutual exclusion to sdw_handle_slave_status() */
++	RPTR_STATUS,
++	LAYOUT_SIZE,
  };
  
- #define bus_to_cdns(_bus) container_of(_bus, struct sdw_cdns, bus)
-diff --git a/drivers/soundwire/intel.h b/drivers/soundwire/intel.h
-index 68838e843b543..f4235f5991c37 100644
---- a/drivers/soundwire/intel.h
-+++ b/drivers/soundwire/intel.h
-@@ -103,6 +103,8 @@ static inline void intel_writew(void __iomem *base, int offset, u16 value)
+ struct eusb2_repeater_cfg {
+@@ -98,10 +70,11 @@ struct eusb2_repeater_cfg {
  
- #define INTEL_MASTER_RESET_ITERATIONS	10
+ struct eusb2_repeater {
+ 	struct device *dev;
+-	struct regmap_field *regs[F_NUM_FIELDS];
++	struct regmap *regmap;
+ 	struct phy *phy;
+ 	struct regulator_bulk_data *vregs;
+ 	const struct eusb2_repeater_cfg *cfg;
++	u32 base;
+ 	enum phy_mode mode;
+ };
  
-+#define SDW_INTEL_DELAYED_ENUMERATION_MS	100
-+
- #define SDW_INTEL_CHECK_OPS(sdw, cb)	((sdw) && (sdw)->link_res && (sdw)->link_res->hw_ops && \
- 					 (sdw)->link_res->hw_ops->cb)
- #define SDW_INTEL_OPS(sdw, cb)		((sdw)->link_res->hw_ops->cb)
-diff --git a/drivers/soundwire/intel_auxdevice.c b/drivers/soundwire/intel_auxdevice.c
-index 8807e01cbf7c7..dff49c5ce5b30 100644
---- a/drivers/soundwire/intel_auxdevice.c
-+++ b/drivers/soundwire/intel_auxdevice.c
-@@ -475,6 +475,7 @@ static void intel_link_remove(struct auxiliary_device *auxdev)
- 	 */
- 	if (!bus->prop.hw_disabled) {
- 		sdw_intel_debugfs_exit(sdw);
-+		cancel_delayed_work_sync(&cdns->attach_dwork);
- 		sdw_cdns_enable_interrupt(cdns, false);
- 	}
- 	sdw_bus_master_delete(bus);
-diff --git a/drivers/soundwire/intel_bus_common.c b/drivers/soundwire/intel_bus_common.c
-index a75e5d7d87154..d3ff6c65b64c3 100644
---- a/drivers/soundwire/intel_bus_common.c
-+++ b/drivers/soundwire/intel_bus_common.c
-@@ -60,6 +60,9 @@ int intel_start_bus(struct sdw_intel *sdw)
- 	sdw_cdns_check_self_clearing_bits(cdns, __func__,
- 					  true, INTEL_MASTER_RESET_ITERATIONS);
+@@ -109,10 +82,10 @@ static const char * const pm8550b_vreg_l[] = {
+ 	"vdd18", "vdd3",
+ };
  
-+	schedule_delayed_work(&cdns->attach_dwork,
-+			      msecs_to_jiffies(SDW_INTEL_DELAYED_ENUMERATION_MS));
-+
- 	return 0;
- }
+-static const u32 pm8550b_init_tbl[F_NUM_TUNE_FIELDS] = {
+-	[F_TUNE_IUSB2] = 0x8,
+-	[F_TUNE_SQUELCH_U] = 0x3,
+-	[F_TUNE_USB2_PREEM] = 0x5,
++static const u32 pm8550b_init_tbl[NUM_TUNE_FIELDS] = {
++	[TUNE_IUSB2] = 0x8,
++	[TUNE_SQUELCH_U] = 0x3,
++	[TUNE_USB2_PREEM] = 0x5,
+ };
  
-@@ -151,6 +154,9 @@ int intel_start_bus_after_reset(struct sdw_intel *sdw)
- 	}
- 	sdw_cdns_check_self_clearing_bits(cdns, __func__, true, INTEL_MASTER_RESET_ITERATIONS);
+ static const struct eusb2_repeater_cfg pm8550b_eusb2_cfg = {
+@@ -140,47 +113,42 @@ static int eusb2_repeater_init_vregs(struct eusb2_repeater *rptr)
  
-+	schedule_delayed_work(&cdns->attach_dwork,
-+			      msecs_to_jiffies(SDW_INTEL_DELAYED_ENUMERATION_MS));
-+
- 	return 0;
- }
- 
-@@ -184,6 +190,9 @@ int intel_start_bus_after_clock_stop(struct sdw_intel *sdw)
- 
- 	sdw_cdns_check_self_clearing_bits(cdns, __func__, true, INTEL_MASTER_RESET_ITERATIONS);
- 
-+	schedule_delayed_work(&cdns->attach_dwork,
-+			      msecs_to_jiffies(SDW_INTEL_DELAYED_ENUMERATION_MS));
-+
- 	return 0;
- }
- 
-@@ -194,6 +203,8 @@ int intel_stop_bus(struct sdw_intel *sdw, bool clock_stop)
- 	bool wake_enable = false;
+ static int eusb2_repeater_init(struct phy *phy)
+ {
+-	struct reg_field *regfields = eusb2_repeater_tune_reg_fields;
+ 	struct eusb2_repeater *rptr = phy_get_drvdata(phy);
+ 	struct device_node *np = rptr->dev->of_node;
+-	u32 init_tbl[F_NUM_TUNE_FIELDS] = { 0 };
+-	u8 override;
++	struct regmap *regmap = rptr->regmap;
++	const u32 *init_tbl = rptr->cfg->init_tbl;
++	u8 tune_usb2_preem = init_tbl[TUNE_USB2_PREEM];
++	u8 tune_hsdisc = init_tbl[TUNE_HSDISC];
++	u8 tune_iusb2 = init_tbl[TUNE_IUSB2];
++	u32 base = rptr->base;
+ 	u32 val;
  	int ret;
- 
-+	cancel_delayed_work_sync(&cdns->attach_dwork);
+-	int i;
 +
- 	if (clock_stop) {
- 		ret = sdw_cdns_clock_stop(cdns, true);
- 		if (ret < 0)
++	of_property_read_u8(np, "qcom,tune-usb2-amplitude", &tune_iusb2);
++	of_property_read_u8(np, "qcom,tune-usb2-disc-thres", &tune_hsdisc);
++	of_property_read_u8(np, "qcom,tune-usb2-preem", &tune_usb2_preem);
+ 
+ 	ret = regulator_bulk_enable(rptr->cfg->num_vregs, rptr->vregs);
+ 	if (ret)
+ 		return ret;
+ 
+-	regmap_field_update_bits(rptr->regs[F_EN_CTL1], EUSB2_RPTR_EN, EUSB2_RPTR_EN);
++	regmap_write(regmap, base + EUSB2_EN_CTL1, EUSB2_RPTR_EN);
+ 
+-	for (i = 0; i < F_NUM_TUNE_FIELDS; i++) {
+-		if (init_tbl[i]) {
+-			regmap_field_update_bits(rptr->regs[i], init_tbl[i], init_tbl[i]);
+-		} else {
+-			/* Write 0 if there's no value set */
+-			u32 mask = GENMASK(regfields[i].msb, regfields[i].lsb);
+-
+-			regmap_field_update_bits(rptr->regs[i], mask, 0);
+-		}
+-	}
+-	memcpy(init_tbl, rptr->cfg->init_tbl, sizeof(init_tbl));
++	regmap_write(regmap, base + EUSB2_TUNE_EUSB_HS_COMP_CUR, init_tbl[TUNE_EUSB_HS_COMP_CUR]);
++	regmap_write(regmap, base + EUSB2_TUNE_EUSB_EQU, init_tbl[TUNE_EUSB_EQU]);
++	regmap_write(regmap, base + EUSB2_TUNE_EUSB_SLEW, init_tbl[TUNE_EUSB_SLEW]);
++	regmap_write(regmap, base + EUSB2_TUNE_USB2_HS_COMP_CUR, init_tbl[TUNE_USB2_HS_COMP_CUR]);
++	regmap_write(regmap, base + EUSB2_TUNE_USB2_EQU, init_tbl[TUNE_USB2_EQU]);
++	regmap_write(regmap, base + EUSB2_TUNE_USB2_SLEW, init_tbl[TUNE_USB2_SLEW]);
++	regmap_write(regmap, base + EUSB2_TUNE_SQUELCH_U, init_tbl[TUNE_SQUELCH_U]);
++	regmap_write(regmap, base + EUSB2_TUNE_RES_FSDIF, init_tbl[TUNE_RES_FSDIF]);
++	regmap_write(regmap, base + EUSB2_TUNE_USB2_CROSSOVER, init_tbl[TUNE_USB2_CROSSOVER]);
+ 
+-	if (!of_property_read_u8(np, "qcom,tune-usb2-amplitude", &override))
+-		init_tbl[F_TUNE_IUSB2] = override;
++	regmap_write(regmap, base + EUSB2_TUNE_USB2_PREEM, tune_usb2_preem);
++	regmap_write(regmap, base + EUSB2_TUNE_HSDISC, tune_hsdisc);
++	regmap_write(regmap, base + EUSB2_TUNE_IUSB2, tune_iusb2);
+ 
+-	if (!of_property_read_u8(np, "qcom,tune-usb2-disc-thres", &override))
+-		init_tbl[F_TUNE_HSDISC] = override;
+-
+-	if (!of_property_read_u8(np, "qcom,tune-usb2-preem", &override))
+-		init_tbl[F_TUNE_USB2_PREEM] = override;
+-
+-	for (i = 0; i < F_NUM_TUNE_FIELDS; i++)
+-		regmap_field_update_bits(rptr->regs[i], init_tbl[i], init_tbl[i]);
+-
+-	ret = regmap_field_read_poll_timeout(rptr->regs[F_RPTR_STATUS],
+-					     val, val & RPTR_OK, 10, 5);
++	ret = regmap_read_poll_timeout(regmap, base + EUSB2_RPTR_STATUS, val, val & RPTR_OK, 10, 5);
+ 	if (ret)
+ 		dev_err(rptr->dev, "initialization timed-out\n");
+ 
+@@ -191,6 +159,8 @@ static int eusb2_repeater_set_mode(struct phy *phy,
+ 				   enum phy_mode mode, int submode)
+ {
+ 	struct eusb2_repeater *rptr = phy_get_drvdata(phy);
++	struct regmap *regmap = rptr->regmap;
++	u32 base = rptr->base;
+ 
+ 	switch (mode) {
+ 	case PHY_MODE_USB_HOST:
+@@ -199,10 +169,8 @@ static int eusb2_repeater_set_mode(struct phy *phy,
+ 		 * per eUSB 1.2 Spec. Below implement software workaround until
+ 		 * PHY and controller is fixing seen observation.
+ 		 */
+-		regmap_field_update_bits(rptr->regs[F_FORCE_EN_5],
+-					 F_CLK_19P2M_EN, F_CLK_19P2M_EN);
+-		regmap_field_update_bits(rptr->regs[F_FORCE_VAL_5],
+-					 V_CLK_19P2M_EN, V_CLK_19P2M_EN);
++		regmap_write(regmap, base + EUSB2_FORCE_EN_5, F_CLK_19P2M_EN);
++		regmap_write(regmap, base + EUSB2_FORCE_VAL_5, V_CLK_19P2M_EN);
+ 		break;
+ 	case PHY_MODE_USB_DEVICE:
+ 		/*
+@@ -211,10 +179,8 @@ static int eusb2_repeater_set_mode(struct phy *phy,
+ 		 * repeater doesn't clear previous value due to shared
+ 		 * regulators (say host <-> device mode switch).
+ 		 */
+-		regmap_field_update_bits(rptr->regs[F_FORCE_EN_5],
+-					 F_CLK_19P2M_EN, 0);
+-		regmap_field_update_bits(rptr->regs[F_FORCE_VAL_5],
+-					 V_CLK_19P2M_EN, 0);
++		regmap_write(regmap, base + EUSB2_FORCE_EN_5, 0);
++		regmap_write(regmap, base + EUSB2_FORCE_VAL_5, 0);
+ 		break;
+ 	default:
+ 		return -EINVAL;
+@@ -243,9 +209,8 @@ static int eusb2_repeater_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct phy_provider *phy_provider;
+ 	struct device_node *np = dev->of_node;
+-	struct regmap *regmap;
+-	int i, ret;
+ 	u32 res;
++	int ret;
+ 
+ 	rptr = devm_kzalloc(dev, sizeof(*rptr), GFP_KERNEL);
+ 	if (!rptr)
+@@ -258,22 +223,15 @@ static int eusb2_repeater_probe(struct platform_device *pdev)
+ 	if (!rptr->cfg)
+ 		return -EINVAL;
+ 
+-	regmap = dev_get_regmap(dev->parent, NULL);
+-	if (!regmap)
++	rptr->regmap = dev_get_regmap(dev->parent, NULL);
++	if (!rptr->regmap)
+ 		return -ENODEV;
+ 
+ 	ret = of_property_read_u32(np, "reg", &res);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	for (i = 0; i < F_NUM_FIELDS; i++)
+-		eusb2_repeater_tune_reg_fields[i].reg += res;
+-
+-	ret = devm_regmap_field_bulk_alloc(dev, regmap, rptr->regs,
+-					   eusb2_repeater_tune_reg_fields,
+-					   F_NUM_FIELDS);
+-	if (ret)
+-		return ret;
++	rptr->base = res;
+ 
+ 	ret = eusb2_repeater_init_vregs(rptr);
+ 	if (ret < 0) {
 -- 
 2.43.0
 
