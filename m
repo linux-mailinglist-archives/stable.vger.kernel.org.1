@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-84127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50BF99CE48
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:42:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C7199D2B7
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:29:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E685C1C22D04
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:42:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C68B11C21F72
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1261AB526;
-	Mon, 14 Oct 2024 14:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1EA1C243C;
+	Mon, 14 Oct 2024 15:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4rsIl9D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZlCAJCS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA101AAE08;
-	Mon, 14 Oct 2024 14:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFF71C2335;
+	Mon, 14 Oct 2024 15:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916920; cv=none; b=dq1YL7sKvWy8uHijFGQ1GlcSshfGZhAd9AnnTUmEUvEfCM+l0WIITmlNVotp0w0MTntARcMFw0Auzo9tMU4gxDMjuSazPY8acMsi4XxMZm+12zNoEYv4O0MON1hvx9py9PIX6G2qmh09LpqeMAEXhOAMJp1ASmdvtOilKNFp8dg=
+	t=1728919601; cv=none; b=EMQFJqYZTim5LISXvIT6tN/9wEdZwTBo9VdVeDY+zwT+JAc8WsclLgmaF1qdPQZ7MZ9xv4GJ6xfsBg6/w6sYWzXCMTit9WoaMj7LCs/sbZ4UQ8S0bv6WQ4mxbTy0luWpb3AGXIUVp42abguqJdwo5ckQ7FakneHMUqPjDmZ/pQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916920; c=relaxed/simple;
-	bh=swVuxx/eSO45LJd9xF8bW/FZJhB7IwBO1C8L65Msm74=;
+	s=arc-20240116; t=1728919601; c=relaxed/simple;
+	bh=BtOeomBYRsbjFbawBsExer2KMkoSxxAxi9i0KGwDT2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OKkZ2igqfhpkGpx+EmJehZWX02idqUOOMMnT9YayuYxQ5dycY7x82ZKbnF3pxsViHRazQRB1jEpHV7PGtQvlcV4SiuBPEE0f4iZ8fpJFmju/4JrHrK6wR4BsCzSdSxgxYwz9UHpYYyuEF4w19SbIxL4uSbsFbSyvveD2j7p+5a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4rsIl9D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3105C4CEC3;
-	Mon, 14 Oct 2024 14:41:59 +0000 (UTC)
+	 MIME-Version; b=PtZq9x7spG6r8fWoJg1euunhSRJXrOsP2+GQYQe88qRFL9dGW/9TFMDJB6GfVFhh+xF83r+RMZ4igEsZYdaVmOT0Kg4sMI3UicrEYGh3MwS3Nm5vdbxhjnbUPNKJU6zRuw4//zPfB4YVkvqMOTf69/iiHHmfWo3tGnFbawIke04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZlCAJCS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D49FCC4CEC3;
+	Mon, 14 Oct 2024 15:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916920;
-	bh=swVuxx/eSO45LJd9xF8bW/FZJhB7IwBO1C8L65Msm74=;
+	s=korg; t=1728919601;
+	bh=BtOeomBYRsbjFbawBsExer2KMkoSxxAxi9i0KGwDT2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t4rsIl9DYuWgJfZi7t6bdFOiG4t9mQ/r+xXM6xU4fnaJe+ysGlpdWR/NTPCkFlfGa
-	 uzkA1T6KlK2uEZfL8NbyhUOuXM6vsSiioC/r0nujfrN67ACHVOUs2Ghafh8+i3mNO+
-	 iUga96ayeE9CjAf37o9vNbcOyL9S1zAKlsIe70bw=
+	b=TZlCAJCSz/luBi4IzPlpcJOscnFUbQP/zOM9TjMCmA174jks4uezVJuphKfPfs6Qj
+	 Zz8AQte0NN1/23PU8kR3bb5oe3Jirx7XbmCS5v7bqcXJ/E/lCkhkLLY+nldFuKYiho
+	 gdklDc8ZQIrKizg5kFjIwFC1mS0epsW0xGkIk0HQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/213] scsi: lpfc: Add ELS_RSP cmd to the list of WQEs to flush in lpfc_els_flush_cmd()
+	"dmitry.baryshkov@linaro.org, agross@kernel.org, bjorn.andersson@linaro.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, Sumit Semwal" <sumit.semwal@linaro.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>
+Subject: [PATCH 6.1 653/798] Revert "arm64: dts: qcom: sm8250: switch UFS QMP PHY to new style of bindings"
 Date: Mon, 14 Oct 2024 16:20:07 +0200
-Message-ID: <20241014141046.912856147@linuxfoundation.org>
+Message-ID: <20241014141243.704889775@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Sumit Semwal <sumit.semwal@linaro.org>
 
-[ Upstream commit 93bcc5f3984bf4f51da1529700aec351872dbfff ]
+This reverts commit cf9c7b34b90b622254b236a9a43737b6059a1c14.
 
-During HBA stress testing, a spam of received PLOGIs exposes a resource
-recovery bug causing leakage of lpfc_sqlq entries from the global
-phba->sli4_hba.lpfc_els_sgl_list.
+This commit breaks UFS on RB5 in the 6.1 LTS kernels. The original patch
+author suggests that this is not a stable kernel patch, hence reverting
+it.
 
-The issue is in lpfc_els_flush_cmd(), where the driver attempts to recover
-outstanding ELS sgls when walking the txcmplq.  Only CMD_ELS_REQUEST64_CRs
-and CMD_GEN_REQUEST64_CRs are added to the abort and cancel lists.  A check
-for CMD_XMIT_ELS_RSP64_WQE is missing in order to recover LS_ACC usages of
-the phba->sli4_hba.lpfc_els_sgl_list too.
+This was reported during testing with 6.1.103 / 5.15.165 LTS kernels
+merged in the respective Android Common Kernel branches.
 
-Fix by adding CMD_XMIT_ELS_RSP64_WQE as part of the txcmplq walk when
-adding WQEs to the abort and cancel list in lpfc_els_flush_cmd().  Also,
-update naming convention from CRs to WQEs.
-
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240912232447.45607-2-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_els.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8250.dtsi |   20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
-index f67d72160d36e..ebe84bb7bb3dd 100644
---- a/drivers/scsi/lpfc/lpfc_els.c
-+++ b/drivers/scsi/lpfc/lpfc_els.c
-@@ -9649,11 +9649,12 @@ lpfc_els_flush_cmd(struct lpfc_vport *vport)
- 		if (piocb->cmd_flag & LPFC_DRIVER_ABORTED && !mbx_tmo_err)
- 			continue;
+--- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+@@ -2125,7 +2125,7 @@
+ 				     "jedec,ufs-2.0";
+ 			reg = <0 0x01d84000 0 0x3000>;
+ 			interrupts = <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>;
+-			phys = <&ufs_mem_phy>;
++			phys = <&ufs_mem_phy_lanes>;
+ 			phy-names = "ufsphy";
+ 			lanes-per-direction = <2>;
+ 			#reset-cells = <1>;
+@@ -2169,8 +2169,10 @@
  
--		/* On the ELS ring we can have ELS_REQUESTs or
--		 * GEN_REQUESTs waiting for a response.
-+		/* On the ELS ring we can have ELS_REQUESTs, ELS_RSPs,
-+		 * or GEN_REQUESTs waiting for a CQE response.
- 		 */
- 		ulp_command = get_job_cmnd(phba, piocb);
--		if (ulp_command == CMD_ELS_REQUEST64_CR) {
-+		if (ulp_command == CMD_ELS_REQUEST64_WQE ||
-+		    ulp_command == CMD_XMIT_ELS_RSP64_WQE) {
- 			list_add_tail(&piocb->dlist, &abort_list);
+ 		ufs_mem_phy: phy@1d87000 {
+ 			compatible = "qcom,sm8250-qmp-ufs-phy";
+-			reg = <0 0x01d87000 0 0x1000>;
+-
++			reg = <0 0x01d87000 0 0x1c0>;
++			#address-cells = <2>;
++			#size-cells = <2>;
++			ranges;
+ 			clock-names = "ref",
+ 				      "ref_aux";
+ 			clocks = <&rpmhcc RPMH_CXO_CLK>,
+@@ -2178,12 +2180,18 @@
  
- 			/* If the link is down when flushing ELS commands
--- 
-2.43.0
-
+ 			resets = <&ufs_mem_hc 0>;
+ 			reset-names = "ufsphy";
++			status = "disabled";
+ 
+ 			power-domains = <&gcc UFS_PHY_GDSC>;
+ 
+-			#phy-cells = <0>;
+-
+-			status = "disabled";
++			ufs_mem_phy_lanes: phy@1d87400 {
++				reg = <0 0x01d87400 0 0x16c>,
++				      <0 0x01d87600 0 0x200>,
++				      <0 0x01d87c00 0 0x200>,
++				      <0 0x01d87800 0 0x16c>,
++				      <0 0x01d87a00 0 0x200>;
++				#phy-cells = <0>;
++			};
+ 		};
+ 
+ 		ipa_virt: interconnect@1e00000 {
 
 
 
