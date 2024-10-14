@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9BA99CEC6
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:47:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7434699D314
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ED051F240CE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:47:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C63A1C217DA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559D81ABEB8;
-	Mon, 14 Oct 2024 14:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C9717C69;
+	Mon, 14 Oct 2024 15:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkSIyNHL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvJ44Xfp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119DC75809;
-	Mon, 14 Oct 2024 14:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F091C2DB0;
+	Mon, 14 Oct 2024 15:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917142; cv=none; b=o85iKVoOoMSX6CePJI93NXr5OJ70dnUz+8CCSf6WJhDx5lefsds5+0IdfHh5gSS3vY0bZeyOvOAJ2044FVXOUCo+eQ4dF3m7hbjoTNcmn2/CpMUBNEBTLiBlFf0vMrSqhDb9YDHjitn4hb01Z+W9RvAU49iJHOo0P56Q7nRnYU8=
+	t=1728919814; cv=none; b=uWeEBqkrFqI7jJESz2B44tpqBqX3oarwmeUFGjb5FIp1U7CItLDedUokcpNPcJYj+VrWKFle6TPirGjqE0aXOQxa1n6PufCay95MoMRDvfmtFlBDrOeCzMYp2VVHwdH7s549gl24Vu3X9sDxMnKm0B9ouLqSIRU5bRGcmnQy2f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917142; c=relaxed/simple;
-	bh=hkRqTA14VSuvrpJ3sIhgNfERu5xFParXxctmoVyCAF4=;
+	s=arc-20240116; t=1728919814; c=relaxed/simple;
+	bh=ztLQK3uYHoIf8CvGCn3F0PvT37Re79OzHWOhZblXTaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MVsJFogApnQCSPJwnsfm9/kl3gliMfdYf6wb7CoMKZ7hH2zKyG06JtGb/SI3pb+NtZPCsmsXLhJU6uLw//FSFTXs2zfU1aU9be7vq6jguz0y8eFADMS0SRvJDZ8P0CsB9rJkkU2i5c/5J5X2ODwuOPj1FCOO6eTluA45Kymd1FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkSIyNHL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D05C4CEC3;
-	Mon, 14 Oct 2024 14:45:41 +0000 (UTC)
+	 MIME-Version; b=KNCPDtzk03Ip+9iCd1/IPAkTBdjqcWTtX9TOX6MFvL7DgSS3prs9MTSouPQCa+kJu6Pj2vutIb3h3INfyxTtJSKmWEB0lo1m5b0WE8ieMJB5GNKpPH0lSv8kVYr7mL9JIyFVdGM3jh2uCv/i2QulqXYgycC+OwlcjPaecFbQzzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvJ44Xfp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED27AC4CEC3;
+	Mon, 14 Oct 2024 15:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917141;
-	bh=hkRqTA14VSuvrpJ3sIhgNfERu5xFParXxctmoVyCAF4=;
+	s=korg; t=1728919814;
+	bh=ztLQK3uYHoIf8CvGCn3F0PvT37Re79OzHWOhZblXTaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xkSIyNHLv+JTBmmohGAIVSPOKFtqnzzJFGUTX0eAoQnzhjnOeLUJTS8SWSM/Fqo1N
-	 ra2PcLEb07+xvJYhG8qzETdn+Z7t9GWt7H5ish9/20r7t+NAf7RExJWKQ17QPF0Eql
-	 o9DKAODKz00ENWOM9NBVAU/pXWjOVEz6Xriqw+0Q=
+	b=uvJ44Xfp8HRRqwYukwkYqsgi55ANMooxM/KoKCE9wSsTRn5nBhW5UFpnFw0vZoirS
+	 y27lvypKp/xohxrGOiXb3ZUJ9FWo/GhKOSJvdKllAlRPo0fAZr1DU1mLEDkff/YdIm
+	 9W2uq+JrSu8ixrVrnzNBuQdG5R75V/5l2FaG27Ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2ada1bc857496353be5a@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/213] slip: make slhc_remember() more robust against malicious packets
+Subject: [PATCH 6.1 715/798] netfilter: nf_reject: Fix build warning when CONFIG_BRIDGE_NETFILTER=n
 Date: Mon, 14 Oct 2024 16:21:09 +0200
-Message-ID: <20241014141049.332825938@linuxfoundation.org>
+Message-ID: <20241014141246.157105360@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,172 +63,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 7d3fce8cbe3a70a1c7c06c9b53696be5d5d8dd5c ]
+[ Upstream commit fc56878ca1c288e49b5cbb43860a5938e3463654 ]
 
-syzbot found that slhc_remember() was missing checks against
-malicious packets [1].
+If CONFIG_BRIDGE_NETFILTER is not enabled, which is the case for x86_64
+defconfig, then building nf_reject_ipv4.c and nf_reject_ipv6.c with W=1
+using gcc-14 results in the following warnings, which are treated as
+errors:
 
-slhc_remember() only checked the size of the packet was at least 20,
-which is not good enough.
+net/ipv4/netfilter/nf_reject_ipv4.c: In function 'nf_send_reset':
+net/ipv4/netfilter/nf_reject_ipv4.c:243:23: error: variable 'niph' set but not used [-Werror=unused-but-set-variable]
+  243 |         struct iphdr *niph;
+      |                       ^~~~
+cc1: all warnings being treated as errors
+net/ipv6/netfilter/nf_reject_ipv6.c: In function 'nf_send_reset6':
+net/ipv6/netfilter/nf_reject_ipv6.c:286:25: error: variable 'ip6h' set but not used [-Werror=unused-but-set-variable]
+  286 |         struct ipv6hdr *ip6h;
+      |                         ^~~~
+cc1: all warnings being treated as errors
 
-We need to make sure the packet includes the IPv4 and TCP header
-that are supposed to be carried.
+Address this by reducing the scope of these local variables to where
+they are used, which is code only compiled when CONFIG_BRIDGE_NETFILTER
+enabled.
 
-Add iph and th pointers to make the code more readable.
+Compile tested and run through netfilter selftests.
 
-[1]
-
-BUG: KMSAN: uninit-value in slhc_remember+0x2e8/0x7b0 drivers/net/slip/slhc.c:666
-  slhc_remember+0x2e8/0x7b0 drivers/net/slip/slhc.c:666
-  ppp_receive_nonmp_frame+0xe45/0x35e0 drivers/net/ppp/ppp_generic.c:2455
-  ppp_receive_frame drivers/net/ppp/ppp_generic.c:2372 [inline]
-  ppp_do_recv+0x65f/0x40d0 drivers/net/ppp/ppp_generic.c:2212
-  ppp_input+0x7dc/0xe60 drivers/net/ppp/ppp_generic.c:2327
-  pppoe_rcv_core+0x1d3/0x720 drivers/net/ppp/pppoe.c:379
-  sk_backlog_rcv+0x13b/0x420 include/net/sock.h:1113
-  __release_sock+0x1da/0x330 net/core/sock.c:3072
-  release_sock+0x6b/0x250 net/core/sock.c:3626
-  pppoe_sendmsg+0x2b8/0xb90 drivers/net/ppp/pppoe.c:903
-  sock_sendmsg_nosec net/socket.c:729 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:744
-  ____sys_sendmsg+0x903/0xb60 net/socket.c:2602
-  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2656
-  __sys_sendmmsg+0x3c1/0x960 net/socket.c:2742
-  __do_sys_sendmmsg net/socket.c:2771 [inline]
-  __se_sys_sendmmsg net/socket.c:2768 [inline]
-  __x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2768
-  x64_sys_call+0xb6e/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:308
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was created at:
-  slab_post_alloc_hook mm/slub.c:4091 [inline]
-  slab_alloc_node mm/slub.c:4134 [inline]
-  kmem_cache_alloc_node_noprof+0x6bf/0xb80 mm/slub.c:4186
-  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:587
-  __alloc_skb+0x363/0x7b0 net/core/skbuff.c:678
-  alloc_skb include/linux/skbuff.h:1322 [inline]
-  sock_wmalloc+0xfe/0x1a0 net/core/sock.c:2732
-  pppoe_sendmsg+0x3a7/0xb90 drivers/net/ppp/pppoe.c:867
-  sock_sendmsg_nosec net/socket.c:729 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:744
-  ____sys_sendmsg+0x903/0xb60 net/socket.c:2602
-  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2656
-  __sys_sendmmsg+0x3c1/0x960 net/socket.c:2742
-  __do_sys_sendmmsg net/socket.c:2771 [inline]
-  __se_sys_sendmmsg net/socket.c:2768 [inline]
-  __x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2768
-  x64_sys_call+0xb6e/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:308
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-CPU: 0 UID: 0 PID: 5460 Comm: syz.2.33 Not tainted 6.12.0-rc2-syzkaller-00006-g87d6aab2389e #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-
-Fixes: b5451d783ade ("slip: Move the SLIP drivers")
-Reported-by: syzbot+2ada1bc857496353be5a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/670646db.050a0220.3f80e.0027.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241009091132.2136321-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Closes: https://lore.kernel.org/netfilter-devel/20240906145513.567781-1-andriy.shevchenko@linux.intel.com/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/slip/slhc.c | 57 ++++++++++++++++++++++++-----------------
- 1 file changed, 34 insertions(+), 23 deletions(-)
+ net/ipv4/netfilter/nf_reject_ipv4.c | 10 ++++------
+ net/ipv6/netfilter/nf_reject_ipv6.c |  5 ++---
+ 2 files changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/slip/slhc.c b/drivers/net/slip/slhc.c
-index ba93bab948e09..bf9e801cc61cc 100644
---- a/drivers/net/slip/slhc.c
-+++ b/drivers/net/slip/slhc.c
-@@ -643,46 +643,57 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
- int
- slhc_remember(struct slcompress *comp, unsigned char *icp, int isize)
+diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
+index fc761915c5f6f..675b5bbed638e 100644
+--- a/net/ipv4/netfilter/nf_reject_ipv4.c
++++ b/net/ipv4/netfilter/nf_reject_ipv4.c
+@@ -239,9 +239,8 @@ static int nf_reject_fill_skb_dst(struct sk_buff *skb_in)
+ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 		   int hook)
  {
--	struct cstate *cs;
--	unsigned ihl;
--
-+	const struct tcphdr *th;
- 	unsigned char index;
-+	struct iphdr *iph;
-+	struct cstate *cs;
-+	unsigned int ihl;
+-	struct sk_buff *nskb;
+-	struct iphdr *niph;
+ 	const struct tcphdr *oth;
++	struct sk_buff *nskb;
+ 	struct tcphdr _oth;
  
--	if(isize < 20) {
--		/* The packet is shorter than a legal IP header */
-+	/* The packet is shorter than a legal IP header.
-+	 * Also make sure isize is positive.
-+	 */
-+	if (isize < (int)sizeof(struct iphdr)) {
-+runt:
- 		comp->sls_i_runt++;
--		return slhc_toss( comp );
-+		return slhc_toss(comp);
- 	}
-+	iph = (struct iphdr *)icp;
- 	/* Peek at the IP header's IHL field to find its length */
--	ihl = icp[0] & 0xf;
--	if(ihl < 20 / 4){
--		/* The IP header length field is too small */
--		comp->sls_i_runt++;
--		return slhc_toss( comp );
--	}
--	index = icp[9];
--	icp[9] = IPPROTO_TCP;
-+	ihl = iph->ihl;
-+	/* The IP header length field is too small,
-+	 * or packet is shorter than the IP header followed
-+	 * by minimal tcp header.
-+	 */
-+	if (ihl < 5 || isize < ihl * 4 + sizeof(struct tcphdr))
-+		goto runt;
-+
-+	index = iph->protocol;
-+	iph->protocol = IPPROTO_TCP;
+ 	oth = nf_reject_ip_tcphdr_get(oldskb, &_oth, hook);
+@@ -266,14 +265,12 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	nskb->mark = IP4_REPLY_MARK(net, oldskb->mark);
  
- 	if (ip_fast_csum(icp, ihl)) {
- 		/* Bad IP header checksum; discard */
- 		comp->sls_i_badcheck++;
--		return slhc_toss( comp );
-+		return slhc_toss(comp);
- 	}
--	if(index > comp->rslot_limit) {
-+	if (index > comp->rslot_limit) {
- 		comp->sls_i_error++;
- 		return slhc_toss(comp);
- 	}
+ 	skb_reserve(nskb, LL_MAX_HEADER);
+-	niph = nf_reject_iphdr_put(nskb, oldskb, IPPROTO_TCP,
+-				   ip4_dst_hoplimit(skb_dst(nskb)));
++	nf_reject_iphdr_put(nskb, oldskb, IPPROTO_TCP,
++			    ip4_dst_hoplimit(skb_dst(nskb)));
+ 	nf_reject_ip_tcphdr_put(nskb, oldskb, oth);
+ 	if (ip_route_me_harder(net, sk, nskb, RTN_UNSPEC))
+ 		goto free_nskb;
+ 
+-	niph = ip_hdr(nskb);
 -
-+	th = (struct tcphdr *)(icp + ihl * 4);
-+	if (th->doff < sizeof(struct tcphdr) / 4)
-+		goto runt;
-+	if (isize < ihl * 4 + th->doff * 4)
-+		goto runt;
- 	/* Update local state */
- 	cs = &comp->rstate[comp->recv_current = index];
- 	comp->flags &=~ SLF_TOSS;
--	memcpy(&cs->cs_ip,icp,20);
--	memcpy(&cs->cs_tcp,icp + ihl*4,20);
-+	memcpy(&cs->cs_ip, iph, sizeof(*iph));
-+	memcpy(&cs->cs_tcp, th, sizeof(*th));
- 	if (ihl > 5)
--	  memcpy(cs->cs_ipopt, icp + sizeof(struct iphdr), (ihl - 5) * 4);
--	if (cs->cs_tcp.doff > 5)
--	  memcpy(cs->cs_tcpopt, icp + ihl*4 + sizeof(struct tcphdr), (cs->cs_tcp.doff - 5) * 4);
--	cs->cs_hsize = ihl*2 + cs->cs_tcp.doff*2;
-+	  memcpy(cs->cs_ipopt, &iph[1], (ihl - 5) * 4);
-+	if (th->doff > 5)
-+	  memcpy(cs->cs_tcpopt, &th[1], (th->doff - 5) * 4);
-+	cs->cs_hsize = ihl*2 + th->doff*2;
- 	cs->initialized = true;
- 	/* Put headers back on packet
- 	 * Neither header checksum is recalculated
+ 	/* "Never happens" */
+ 	if (nskb->len > dst_mtu(skb_dst(nskb)))
+ 		goto free_nskb;
+@@ -290,6 +287,7 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	 */
+ 	if (nf_bridge_info_exists(oldskb)) {
+ 		struct ethhdr *oeth = eth_hdr(oldskb);
++		struct iphdr *niph = ip_hdr(nskb);
+ 		struct net_device *br_indev;
+ 
+ 		br_indev = nf_bridge_get_physindev(oldskb, net);
+diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+index 690d1c0476913..4e0976534648c 100644
+--- a/net/ipv6/netfilter/nf_reject_ipv6.c
++++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+@@ -273,7 +273,6 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	const struct tcphdr *otcph;
+ 	unsigned int otcplen, hh_len;
+ 	const struct ipv6hdr *oip6h = ipv6_hdr(oldskb);
+-	struct ipv6hdr *ip6h;
+ 	struct dst_entry *dst = NULL;
+ 	struct flowi6 fl6;
+ 
+@@ -329,8 +328,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	nskb->mark = fl6.flowi6_mark;
+ 
+ 	skb_reserve(nskb, hh_len + dst->header_len);
+-	ip6h = nf_reject_ip6hdr_put(nskb, oldskb, IPPROTO_TCP,
+-				    ip6_dst_hoplimit(dst));
++	nf_reject_ip6hdr_put(nskb, oldskb, IPPROTO_TCP, ip6_dst_hoplimit(dst));
+ 	nf_reject_ip6_tcphdr_put(nskb, oldskb, otcph, otcplen);
+ 
+ 	nf_ct_attach(nskb, oldskb);
+@@ -345,6 +343,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	 */
+ 	if (nf_bridge_info_exists(oldskb)) {
+ 		struct ethhdr *oeth = eth_hdr(oldskb);
++		struct ipv6hdr *ip6h = ipv6_hdr(nskb);
+ 		struct net_device *br_indev;
+ 
+ 		br_indev = nf_bridge_get_physindev(oldskb, net);
 -- 
 2.43.0
 
