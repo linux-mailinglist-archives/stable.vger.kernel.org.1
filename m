@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756BB99CE8B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:45:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD2A99D32F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21CDB1F23B4D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:45:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65CCB28AECD
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A9B1AB6EB;
-	Mon, 14 Oct 2024 14:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665D11AB530;
+	Mon, 14 Oct 2024 15:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSaVoCjN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2T9y64tI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9C31AB6C1;
-	Mon, 14 Oct 2024 14:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F5D481B3;
+	Mon, 14 Oct 2024 15:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917104; cv=none; b=jxhPU/qj1t8xsQqqdxWdOx6+wNZrD5/3R2+iUe4pMpq7n+jz5zeboaD67J7lUI7EPP9uVfxqiJw7Ysx/STsAUyGZ8x9Jw2Bu3qPs21V9jtdjeXlTC5FZK2i+8DdYPS7V669LU7BeUMj8ZDVrMrdFLVngp1i2ofpwQL1h2zlkrFw=
+	t=1728919889; cv=none; b=AuU9Jsor8ISVtiRrcPySSaOuh82V6RLOqrytxfWOi8BtGyGLm211Qs8f2IIra17ImCnhnq5rlyzcwd2Qhgb0ZI2LReHL2D8C7m3Wyra8/tP8cVa9pC8yF5nlPEQMdL4uTKzoxnmMrz1S1MSbRwndYto8I9Qe8oXsro4BihlT4JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917104; c=relaxed/simple;
-	bh=DpfwiGUqoeThG3cI7M85ab3XNQdTqGpJp4Fvd1vrP90=;
+	s=arc-20240116; t=1728919889; c=relaxed/simple;
+	bh=cqzVAKRfOP8Fsto1QUE/rGzV789jrEYbPsygkvgbvkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EBsHrIjRd/3JDqy4pqZGrf6qrYrPpp0yhJemhWN0D4t+nvzCahmP5lTUNPOLoiXAT5pCzEapOJtKhrlXx+E6PtTwJM+Q2Oi8nqNb3/mCcIPs1kcyOH7xna4fHoE4t66EdbZt3oDP+n8WNYt/IMELe+rLde5sPxuNq6D4dRnkcjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nSaVoCjN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E75C4CEC7;
-	Mon, 14 Oct 2024 14:45:03 +0000 (UTC)
+	 MIME-Version; b=vEl4gbUZhFLWXm9YjlEMCtVzSw9aDjpsMGsbpRyl9TuxRTx9b5H4UdsrMX7fSosywMBYPKEC9wXHIyhfmwlSUBstnmkHYWoGXXxafbYODroutuBgPt579IvQ3NY/CslyXrKngyhds2CfS9IpufLDOh8XnYa7lzyJavnu3ud5PaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2T9y64tI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9690FC4CEC7;
+	Mon, 14 Oct 2024 15:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917104;
-	bh=DpfwiGUqoeThG3cI7M85ab3XNQdTqGpJp4Fvd1vrP90=;
+	s=korg; t=1728919889;
+	bh=cqzVAKRfOP8Fsto1QUE/rGzV789jrEYbPsygkvgbvkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nSaVoCjN94JhMJPmzYgwLWbstFnHBhgDJsQdt3oY/k8D+aqbtCnRuRGzLb5gQKX6z
-	 GJzkCf7iVOLUNH41RmrkIWLtQznQFXHzWt7hlO2RyXKsknEQc3FuNaAc0Dl7qFqiit
-	 ZcMsEGKgV3YB+V/idXC+B4BNPaHMNI0/MJnGPooQ=
+	b=2T9y64tIrKRiEzYkcArL+CQPMZFP37B0GZyP4o5Zozbk7ekNxZVV9HomlgLlBkdVL
+	 TTuHWtWcJWdDNKHkkPrzUi+ctf6I+brS82q1pGNjRgnoFCYOOSfO6W7WzELa1Hv1m7
+	 UKYHo0a5SH8B+Pzjpy1S7ce0zTGwD36Kwg6xuV4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Jon Mason <jdmason@kudzu.us>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/213] vxlan: Handle error of rtnl_register_module().
+Subject: [PATCH 6.1 705/798] ntb: ntb_hw_switchtec: Fix use after free vulnerability in switchtec_ntb_remove due to race condition
 Date: Mon, 14 Oct 2024 16:20:59 +0200
-Message-ID: <20241014141048.942751239@linuxfoundation.org>
+Message-ID: <20241014141245.765401872@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
 
-[ Upstream commit 78b7b991838a4a6baeaad934addc4db2c5917eb8 ]
+[ Upstream commit e51aded92d42784313ba16c12f4f88cc4f973bbb ]
 
-Since introduced, vxlan_vnifilter_init() has been ignoring the
-returned value of rtnl_register_module(), which could fail silently.
+In the switchtec_ntb_add function, it can call switchtec_ntb_init_sndev
+function, then &sndev->check_link_status_work is bound with
+check_link_status_work. switchtec_ntb_link_notification may be called
+to start the work.
 
-Handling the error allows users to view a module as an all-or-nothing
-thing in terms of the rtnetlink functionality.  This prevents syzkaller
-from reporting spurious errors from its tests, where OOM often occurs
-and module is automatically loaded.
+If we remove the module which will call switchtec_ntb_remove to make
+cleanup, it will free sndev through kfree(sndev), while the work
+mentioned above will be used. The sequence of operations that may lead
+to a UAF bug is as follows:
 
-Let's handle the errors by rtnl_register_many().
+CPU0                                 CPU1
 
-Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+                        | check_link_status_work
+switchtec_ntb_remove    |
+kfree(sndev);           |
+                        | if (sndev->link_force_down)
+                        | // use sndev
+
+Fix it by ensuring that the work is canceled before proceeding with
+the cleanup in switchtec_ntb_remove.
+
+Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c      |  6 +++++-
- drivers/net/vxlan/vxlan_private.h   |  2 +-
- drivers/net/vxlan/vxlan_vnifilter.c | 19 +++++++++----------
- 3 files changed, 15 insertions(+), 12 deletions(-)
+ drivers/ntb/hw/mscc/ntb_hw_switchtec.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 8268fa331826e..c114c91b558bd 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -4819,9 +4819,13 @@ static int __init vxlan_init_module(void)
- 	if (rc)
- 		goto out4;
- 
--	vxlan_vnifilter_init();
-+	rc = vxlan_vnifilter_init();
-+	if (rc)
-+		goto out5;
- 
- 	return 0;
-+out5:
-+	rtnl_link_unregister(&vxlan_link_ops);
- out4:
- 	unregister_switchdev_notifier(&vxlan_switchdev_notifier_block);
- out3:
-diff --git a/drivers/net/vxlan/vxlan_private.h b/drivers/net/vxlan/vxlan_private.h
-index 817fa3075842e..85b6d0c347e3b 100644
---- a/drivers/net/vxlan/vxlan_private.h
-+++ b/drivers/net/vxlan/vxlan_private.h
-@@ -202,7 +202,7 @@ int vxlan_vni_in_use(struct net *src_net, struct vxlan_dev *vxlan,
- int vxlan_vnigroup_init(struct vxlan_dev *vxlan);
- void vxlan_vnigroup_uninit(struct vxlan_dev *vxlan);
- 
--void vxlan_vnifilter_init(void);
-+int vxlan_vnifilter_init(void);
- void vxlan_vnifilter_uninit(void);
- void vxlan_vnifilter_count(struct vxlan_dev *vxlan, __be32 vni,
- 			   struct vxlan_vni_node *vninode,
-diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index 9c59d0bf8c3de..d2023e7131bd4 100644
---- a/drivers/net/vxlan/vxlan_vnifilter.c
-+++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -992,19 +992,18 @@ static int vxlan_vnifilter_process(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	return err;
- }
- 
--void vxlan_vnifilter_init(void)
-+static const struct rtnl_msg_handler vxlan_vnifilter_rtnl_msg_handlers[] = {
-+	{THIS_MODULE, PF_BRIDGE, RTM_GETTUNNEL, NULL, vxlan_vnifilter_dump, 0},
-+	{THIS_MODULE, PF_BRIDGE, RTM_NEWTUNNEL, vxlan_vnifilter_process, NULL, 0},
-+	{THIS_MODULE, PF_BRIDGE, RTM_DELTUNNEL, vxlan_vnifilter_process, NULL, 0},
-+};
-+
-+int vxlan_vnifilter_init(void)
- {
--	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_GETTUNNEL, NULL,
--			     vxlan_vnifilter_dump, 0);
--	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_NEWTUNNEL,
--			     vxlan_vnifilter_process, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_DELTUNNEL,
--			     vxlan_vnifilter_process, NULL, 0);
-+	return rtnl_register_many(vxlan_vnifilter_rtnl_msg_handlers);
- }
- 
- void vxlan_vnifilter_uninit(void)
- {
--	rtnl_unregister(PF_BRIDGE, RTM_GETTUNNEL);
--	rtnl_unregister(PF_BRIDGE, RTM_NEWTUNNEL);
--	rtnl_unregister(PF_BRIDGE, RTM_DELTUNNEL);
-+	rtnl_unregister_many(vxlan_vnifilter_rtnl_msg_handlers);
+diff --git a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
+index 88ae18b0efa8d..7ce65a00db56b 100644
+--- a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
++++ b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
+@@ -1556,6 +1556,7 @@ static void switchtec_ntb_remove(struct device *dev,
+ 	switchtec_ntb_deinit_db_msg_irq(sndev);
+ 	switchtec_ntb_deinit_shared_mw(sndev);
+ 	switchtec_ntb_deinit_crosslink(sndev);
++	cancel_work_sync(&sndev->check_link_status_work);
+ 	kfree(sndev);
+ 	dev_info(dev, "ntb device unregistered\n");
  }
 -- 
 2.43.0
