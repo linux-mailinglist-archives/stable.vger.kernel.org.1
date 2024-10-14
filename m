@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-83926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE17F99CD37
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4646F99D296
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CF2AB22D2F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F101E280F3B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80157381BA;
-	Mon, 14 Oct 2024 14:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61AB1AAE1D;
+	Mon, 14 Oct 2024 15:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFUsiook"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4bYgMPy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AB31798C;
-	Mon, 14 Oct 2024 14:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6531D481B3;
+	Mon, 14 Oct 2024 15:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916216; cv=none; b=fKfVCEZX3YV/Wcn15U2fNrb/M+tiVw6MrqNcUqV04s8D0Z+ktY0YJqM4ePUjkNXG1WfPLwqz6LaY9XZYK8kYq4CVUnLTj686vHL2cFcGJfxL4XF3KGD84DilRu++mSmw/KZY9zVreQfDqX9eGuXvgHXYB5Fe9qJKUasMEDRHAxE=
+	t=1728919513; cv=none; b=e2t5IW6HTdpysUwOsNVrtsqt8oFqe0RKMU+NOO+/Tc4l8uamMBMtRh/kuJH4z7bL93AE0CeO5/FRZzTkDW2WF8SJL6de7t/eu6/JVYsWMBDxk07XPAoo/6+mg/UT5QYDjGuNRyRuDJmE6s1/4ukcA2W0dNkY2v6ypnUqbPd4SVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916216; c=relaxed/simple;
-	bh=dhVyug9Rq78i1LGjpfxMaZVgfBdq1HjmP2GZutTv1EI=;
+	s=arc-20240116; t=1728919513; c=relaxed/simple;
+	bh=ZIDuRjlni3GAW8GoUUp+afwv3xJegUfq7UXFbdatGyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fas1Z5hVleao++mTH1YGOm1wa8GJDkdC+tMv1Z9awx0Y2a6z7AWFX+lpV7wU5cXef6UILL60nzOrDOxKoTS2GS2AzdvtMq7jLBUDK8hl4z8bcg4b+Pi7FPnMbaCcld4icGLdEyfyYR1cdBxmWT3PCjeu7QRtwIcHg7DOCVcgJAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFUsiook; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D683C4CEC3;
-	Mon, 14 Oct 2024 14:30:15 +0000 (UTC)
+	 MIME-Version; b=PYf18LojDF9RQVW+31HqlhbLoViykrgOSXTgG3jIF7X9ZQ8bB/nuLjuR6G7GJgw8zjVXjkXnYjE9EEcR+bw+XUaTjgBwZM8fL6AY/1mQFUFtxgEKbrKLxogvUKeNqHqV9/tOeeQrTlJ+czSU2Ye2SV7wyGWG92A4mVd3XAxTzGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4bYgMPy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5086C4CEC3;
+	Mon, 14 Oct 2024 15:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916215;
-	bh=dhVyug9Rq78i1LGjpfxMaZVgfBdq1HjmP2GZutTv1EI=;
+	s=korg; t=1728919513;
+	bh=ZIDuRjlni3GAW8GoUUp+afwv3xJegUfq7UXFbdatGyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WFUsiookRPdj102DnJayCiHEcJz2LDnG1uNKOXuss8kKdXXUM+VNqy9t/txsSdVfB
-	 1vZ4n0G7fwO2H00ULgh5W2ZgkNjD/MORjsEQEhelzXHt6tobPDsBWKzyJylG9rZAFt
-	 qsBH3wiI/E5XwdalqAtLJEuMZfnCu3lfQHGRomSA=
+	b=q4bYgMPyHYTHa2EBvFj6+NfJ5TnxOvBy+7w5iTZICqhikMlrXS9WIqV383G+oc7lO
+	 eq2hu/mkPoHHH+THaSlcBWyWN650Bx/3IY9cjxI+1OlDKCkPEnmNnLVvszbgeNBVCU
+	 swamrrLRziO3QnXJmzTSuyWUjh1C7SJE04AVeDvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 116/214] gpio: aspeed: Add the flush write to ensure the write complete.
-Date: Mon, 14 Oct 2024 16:19:39 +0200
-Message-ID: <20241014141049.519836847@linuxfoundation.org>
+Subject: [PATCH 6.1 626/798] arm64: errata: Expand speculative SSBS workaround once more
+Date: Mon, 14 Oct 2024 16:19:40 +0200
+Message-ID: <20241014141242.631915941@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Billy Tsai <billy_tsai@aspeedtech.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 1bb5a99e1f3fd27accb804aa0443a789161f843c ]
+[ Upstream commit 081eb7932c2b244f63317a982c5e3990e2c7fbdd ]
 
-Performing a dummy read ensures that the register write operation is fully
-completed, mitigating any potential bus delays that could otherwise impact
-the frequency of bitbang usage. E.g., if the JTAG application uses GPIO to
-control the JTAG pins (TCK, TMS, TDI, TDO, and TRST), and the application
-sets the TCK clock to 1 MHz, the GPIO's high/low transitions will rely on
-a delay function to ensure the clock frequency does not exceed 1 MHz.
-However, this can lead to rapid toggling of the GPIO because the write
-operation is POSTed and does not wait for a bus acknowledgment.
+A number of Arm Ltd CPUs suffer from errata whereby an MSR to the SSBS
+special-purpose register does not affect subsequent speculative
+instructions, permitting speculative store bypassing for a window of
+time.
 
-Fixes: 361b79119a4b ("gpio: Add Aspeed driver")
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-Link: https://lore.kernel.org/r/20241008081450.1490955-2-billy_tsai@aspeedtech.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+We worked around this for a number of CPUs in commits:
+
+* 7187bb7d0b5c7dfa ("arm64: errata: Add workaround for Arm errata 3194386 and 3312417")
+* 75b3c43eab594bfb ("arm64: errata: Expand speculative SSBS workaround")
+* 145502cac7ea70b5 ("arm64: errata: Expand speculative SSBS workaround (again)")
+
+Since then, a (hopefully final) batch of updates have been published,
+with two more affected CPUs. For the affected CPUs the existing
+mitigation is sufficient, as described in their respective Software
+Developer Errata Notice (SDEN) documents:
+
+* Cortex-A715 (MP148) SDEN v15.0, erratum 3456084
+  https://developer.arm.com/documentation/SDEN-2148827/1500/
+
+* Neoverse-N3 (MP195) SDEN v5.0, erratum 3456111
+  https://developer.arm.com/documentation/SDEN-3050973/0500/
+
+Enable the existing mitigation by adding the relevant MIDRs to
+erratum_spec_ssbs_list, and update silicon-errata.rst and the
+Kconfig text accordingly.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240930111705.3352047-3-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: fix conflict in silicon-errata.rst, handle move ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-aspeed.c | 2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/arm64/silicon-errata.rst | 4 ++++
+ arch/arm64/Kconfig                     | 2 ++
+ arch/arm64/kernel/cpu_errata.c         | 2 ++
+ 3 files changed, 8 insertions(+)
 
-diff --git a/drivers/gpio/gpio-aspeed.c b/drivers/gpio/gpio-aspeed.c
-index 04c03402db6dd..98551b7f6de2e 100644
---- a/drivers/gpio/gpio-aspeed.c
-+++ b/drivers/gpio/gpio-aspeed.c
-@@ -406,6 +406,8 @@ static void __aspeed_gpio_set(struct gpio_chip *gc, unsigned int offset,
- 	gpio->dcache[GPIO_BANK(offset)] = reg;
- 
- 	iowrite32(reg, addr);
-+	/* Flush write */
-+	ioread32(addr);
- }
- 
- static void aspeed_gpio_set(struct gpio_chip *gc, unsigned int offset,
+diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
+index 6451e9198fef7..e7b50babd0d5c 100644
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -135,6 +135,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A710     | #3324338        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-A715     | #3456084        | ARM64_ERRATUM_3194386       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A720     | #3456091        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A725     | #3456106        | ARM64_ERRATUM_3194386       |
+@@ -171,6 +173,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N2     | #3324339        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Neoverse-N3     | #3456111        | ARM64_ERRATUM_3194386       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-V1     | #3324341        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-V2     | #3324336        | ARM64_ERRATUM_3194386       |
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 2ef939075039d..1a62ef142a988 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1012,6 +1012,7 @@ config ARM64_ERRATUM_3194386
+ 	  * ARM Cortex-A78C erratum 3324346
+ 	  * ARM Cortex-A78C erratum 3324347
+ 	  * ARM Cortex-A710 erratam 3324338
++	  * ARM Cortex-A715 errartum 3456084
+ 	  * ARM Cortex-A720 erratum 3456091
+ 	  * ARM Cortex-A725 erratum 3456106
+ 	  * ARM Cortex-X1 erratum 3324344
+@@ -1022,6 +1023,7 @@ config ARM64_ERRATUM_3194386
+ 	  * ARM Cortex-X925 erratum 3324334
+ 	  * ARM Neoverse-N1 erratum 3324349
+ 	  * ARM Neoverse N2 erratum 3324339
++	  * ARM Neoverse-N3 erratum 3456111
+ 	  * ARM Neoverse-V1 erratum 3324341
+ 	  * ARM Neoverse V2 erratum 3324336
+ 	  * ARM Neoverse-V3 erratum 3312417
+diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+index 7640031e1b845..78aea409b092b 100644
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -442,6 +442,7 @@ static const struct midr_range erratum_spec_ssbs_list[] = {
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_A715),
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A720),
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A725),
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
+@@ -452,6 +453,7 @@ static const struct midr_range erratum_spec_ssbs_list[] = {
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X925),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
++	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N3),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
 -- 
 2.43.0
 
