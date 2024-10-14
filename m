@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-84960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F286899D315
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F1999CEDA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:47:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E3421F24F33
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3BC9B23C9D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962481C2DB2;
-	Mon, 14 Oct 2024 15:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E91155342;
+	Mon, 14 Oct 2024 14:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4KgFJEd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWVC0gry"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5200A1A2C06;
-	Mon, 14 Oct 2024 15:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B911BDC3;
+	Mon, 14 Oct 2024 14:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919818; cv=none; b=W2DU20/AIaUk+rF95jDjmN6/1vw4EimpcD2esLS5YFRXnKld1hSJzX42ZU1ZxBTzW0o+jiXCOOgyRqnf4Yw6QTo5KujzL/CmI6R7zMRRjzQko1FtXnOlNhqISFz4pMy7ee8V1085F+k7veKrDwoDn0GoZLqx1/9rG8YCYwop9nI=
+	t=1728917189; cv=none; b=dnuRJS19m9gTvi3bgxp5VU+dfH38EDgB3zFB6fwWgJtcKldNdUjy42XgkWh/MLwqQjOiwoSYcrrHy0nUkUfI08L6cPF64SIjhtwKJd7Jn5TRXVTpSxqtTS1Pf+Dm4Hraw85CEIltVAFZ1JBSZDgsTnlsJDQ0JnJu400zvInincU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919818; c=relaxed/simple;
-	bh=+CWQtVP0zf+ISxqsEE+aCgbVr3fdxYgXdFC4opMxS2Q=;
+	s=arc-20240116; t=1728917189; c=relaxed/simple;
+	bh=oHVcW0PyG8Bj1BE8y+++JWbs8PSm8bBdAM+MuRqQuck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q2G9ojuzEWDSCl8cdDKrCpVkR2/8bOtA4dTOOhotEirGzbhRfOufWNuj77JEStDKgMydXEwxBSmPIzWG4of2RQP9peBdd6UCYDIvAeEgEsW+56tPa8XGr+/VipYuht3AfjGvH0BYFTbMwJrieey49oUsoC+T/rULNloZ0gc+EKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4KgFJEd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF02C4CEC3;
-	Mon, 14 Oct 2024 15:30:17 +0000 (UTC)
+	 MIME-Version; b=GhIOIFntY/EE5qP1r2MdiwJ7dlT2AQ64AtMLeao7gAkl/sLqeu8WYiMQ8e2c4Xhid3h20EjBlRpbBZUK+JRBY2v0XXGxzbGdAkWzilbhkVH09BkuEKVIb3gdYJg59uE3POL1mKkUCybUjzejSWEft/FX74z5/3r+73jZaPIV2l4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWVC0gry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E08C4CEC3;
+	Mon, 14 Oct 2024 14:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919817;
-	bh=+CWQtVP0zf+ISxqsEE+aCgbVr3fdxYgXdFC4opMxS2Q=;
+	s=korg; t=1728917189;
+	bh=oHVcW0PyG8Bj1BE8y+++JWbs8PSm8bBdAM+MuRqQuck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N4KgFJEd4pAS/kJUmsFlx/GIdcR8Px0Eo/ThOthkW4aQjU5zi3CgKKO/ZmqR6/RGD
-	 upiQZKuqD1AwOFRkKn92YzU72iZ1bEcj5hhAUzKtTo2t0r1Of3wcasWIRh0fl8RXR2
-	 4hXVadc26+asaujxkf4QC+mfOT7QYpEjBBjFxYH8=
+	b=HWVC0gryRgrt5oWbacM7bbrXtsu7xXL8bbjnqd46RIItxrnIoYRWn6HJFu/79KxaI
+	 xczE320Nft+kj52cADv9El349/udIvugLq4oPYxfwoi54QU01AxZ06bhIESFZz4prm
+	 O8KvL2cd4d8l4qGNa82A0s1I6ic9d5cPD3aKaYOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Rosen Penev <rosenp@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 698/798] RDMA/rtrs-srv: Avoid null pointer deref during path establishment
+Subject: [PATCH 6.6 146/213] net: ibm: emac: mal: fix wrong goto
 Date: Mon, 14 Oct 2024 16:20:52 +0200
-Message-ID: <20241014141245.492460229@linuxfoundation.org>
+Message-ID: <20241014141048.666242930@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Md Haris Iqbal <haris.iqbal@ionos.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit d0e62bf7b575fbfe591f6f570e7595dd60a2f5eb ]
+[ Upstream commit 08c8acc9d8f3f70d62dd928571368d5018206490 ]
 
-For RTRS path establishment, RTRS client initiates and completes con_num
-of connections. After establishing all its connections, the information
-is exchanged between the client and server through the info_req message.
-During this exchange, it is essential that all connections have been
-established, and the state of the RTRS srv path is CONNECTED.
+dcr_map is called in the previous if and therefore needs to be unmapped.
 
-So add these sanity checks, to make sure we detect and abort process in
-error scenarios to avoid null pointer deref.
-
-Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Link: https://patch.msgid.link/20240821112217.41827-9-haris.iqbal@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 1ff0fcfcb1a6 ("ibm_newemac: Fix new MAL feature handling")
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://patch.msgid.link/20241007235711.5714-1-rosenp@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/ibm/emac/mal.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index 726b690ebe652..a70ccb4d4c857 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -936,12 +936,11 @@ static void rtrs_srv_info_req_done(struct ib_cq *cq, struct ib_wc *wc)
- 	if (err)
- 		goto close;
+diff --git a/drivers/net/ethernet/ibm/emac/mal.c b/drivers/net/ethernet/ibm/emac/mal.c
+index c3236b59e7e93..3578b7d720c06 100644
+--- a/drivers/net/ethernet/ibm/emac/mal.c
++++ b/drivers/net/ethernet/ibm/emac/mal.c
+@@ -578,7 +578,7 @@ static int mal_probe(struct platform_device *ofdev)
+ 		printk(KERN_ERR "%pOF: Support for 405EZ not enabled!\n",
+ 				ofdev->dev.of_node);
+ 		err = -ENODEV;
+-		goto fail;
++		goto fail_unmap;
+ #endif
+ 	}
  
--out:
- 	rtrs_iu_free(iu, srv_path->s.dev->ib_dev, 1);
- 	return;
- close:
-+	rtrs_iu_free(iu, srv_path->s.dev->ib_dev, 1);
- 	close_path(srv_path);
--	goto out;
- }
- 
- static int post_recv_info_req(struct rtrs_srv_con *con)
-@@ -992,6 +991,16 @@ static int post_recv_path(struct rtrs_srv_path *srv_path)
- 			q_size = SERVICE_CON_QUEUE_DEPTH;
- 		else
- 			q_size = srv->queue_depth;
-+		if (srv_path->state != RTRS_SRV_CONNECTING) {
-+			rtrs_err(s, "Path state invalid. state %s\n",
-+				 rtrs_srv_state_str(srv_path->state));
-+			return -EIO;
-+		}
-+
-+		if (!srv_path->s.con[cid]) {
-+			rtrs_err(s, "Conn not set for %d\n", cid);
-+			return -EIO;
-+		}
- 
- 		err = post_recv_io(to_srv_con(srv_path->s.con[cid]), q_size);
- 		if (err) {
 -- 
 2.43.0
 
