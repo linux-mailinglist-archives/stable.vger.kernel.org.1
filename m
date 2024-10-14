@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-84001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4BA99CDA1
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DA0099D326
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D84C1C22603
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78D60B273DE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A0001AB534;
-	Mon, 14 Oct 2024 14:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C203F1CACD0;
+	Mon, 14 Oct 2024 15:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQvQy38U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6Hm+rZA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DF51A28C;
-	Mon, 14 Oct 2024 14:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA081AB51B;
+	Mon, 14 Oct 2024 15:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916466; cv=none; b=JLr80SLKblu615tWcQGErtLBu3VOycvXHO/A/yt2858qUj6+Kr06H7STNHSIYSFvlFl/41wSQK58Pwc0ahciBsdpyU6jnHL6rlvqzaGjE7LrmSNmHKIjPcMBVQiwXHiv7enOn+c8A2qrbdgqylwWXzU2oQZcZxSrx+mVB7S7cvA=
+	t=1728919855; cv=none; b=PCtAlhnsBUjWIt+xoaQs6kYzkl8IMmHhxeCvL43sk3QfrvfQL7g7kCxfw8qcPvbBefSHQELYe+Hgefh3n5cTq23x8SyXiPIlPpXRZFgO64NfKE6XONyPhNx+2qiSAD/pYwCoIaZEPEb0jPTBk22GCIZapG1kFTFGFAo0wi5ANyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916466; c=relaxed/simple;
-	bh=pVge0Oqv/r7cafSwjEogw7JYqsBJgiqpoENanOTDga8=;
+	s=arc-20240116; t=1728919855; c=relaxed/simple;
+	bh=8wwUF7tGxKWFPL1jr3b0x1BkXoy1ru+0j/90ntuAE/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IVxsQADkFSb0FPUbuljAQM0M8ZwuEypvJ4g9p0ygoAIsBQe6KS70Sy6HCJGfNWDNVIkfaBKZ1C7n63Eo/HTVVYtyaJ4ev7DfDmk7LojLjSrjisetZ1iso+csZfE1KBFJuIzTK6siuNZTvxmhm66iXGuKLKXFjJvKsO7phW/rzew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQvQy38U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09305C4CEC7;
-	Mon, 14 Oct 2024 14:34:24 +0000 (UTC)
+	 MIME-Version; b=JyLgg7oxMgWcDjtA5xDwrjlq91tQTpr9jAELW48Snk9N/o4RUGK4k7IxKyzvN5f7ByKINUsL642n2DzqyMsUAkjf6wQxb3pFmbwoMYHM0X7P/5UPYLimlFs/d/VdJAjRXLMqaKSoEFjT1Wj+Rta755KqnKABnw/D9PHeMDI93TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6Hm+rZA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36FEC4CEC3;
+	Mon, 14 Oct 2024 15:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916465;
-	bh=pVge0Oqv/r7cafSwjEogw7JYqsBJgiqpoENanOTDga8=;
+	s=korg; t=1728919855;
+	bh=8wwUF7tGxKWFPL1jr3b0x1BkXoy1ru+0j/90ntuAE/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rQvQy38UYeMwZuOjhYINkguCS7v0Gmv/a6tgNjZipAFFOPzAXYGrHrRhGlS67GoVQ
-	 /DW6FiDJ6ab5VrFu2V/SyUuj8LNnH+i6UKFH8K1n8MdeXsTGnTb4AfmN0sDqy5ciyB
-	 dhmTTWDmtz5QnU+ynu9+mLHptk1tIMEpBjzB6goY=
+	b=w6Hm+rZA5/jWmLIUUHqCAEBD0y1KIbxLxKK+PTiRR9prC8IzTODxdqqHwWFvG9dSM
+	 eNTHZI0FHPv72pUjDDRAUvWjC+KoZczfgxc0hPrmBpqyoeMFxua/hc3zVfDUsETxkD
+	 B3UsyvLiiwtzj1tpyRiR4TBVg4XCfRCgNinh2f70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.11 190/214] ata: libata: avoid superfluous disk spin down + spin up during hibernation
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 699/798] clk: bcm: bcm53573: fix OF node leak in init
 Date: Mon, 14 Oct 2024 16:20:53 +0200
-Message-ID: <20241014141052.392384190@linuxfoundation.org>
+Message-ID: <20241014141245.532377035@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit a38719e3157118428e34fbd45b0d0707a5877784 upstream.
+[ Upstream commit f92d67e23b8caa81f6322a2bad1d633b00ca000e ]
 
-A user reported that commit aa3998dbeb3a ("ata: libata-scsi: Disable scsi
-device manage_system_start_stop") introduced a spin down + immediate spin
-up of the disk both when entering and when resuming from hibernation.
-This behavior was not there before, and causes an increased latency both
-when entering and when resuming from hibernation.
+Driver code is leaking OF node reference from of_get_parent() in
+bcm53573_ilp_init().  Usage of of_get_parent() is not needed in the
+first place, because the parent node will not be freed while we are
+processing given node (triggered by CLK_OF_DECLARE()).  Thus fix the
+leak by accessing parent directly, instead of of_get_parent().
 
-Hibernation is done by three consecutive PM events, in the following order:
-1) PM_EVENT_FREEZE
-2) PM_EVENT_THAW
-3) PM_EVENT_HIBERNATE
-
-Commit aa3998dbeb3a ("ata: libata-scsi: Disable scsi device
-manage_system_start_stop") modified ata_eh_handle_port_suspend() to call
-ata_dev_power_set_standby() (which spins down the disk), for both event
-PM_EVENT_FREEZE and event PM_EVENT_HIBERNATE.
-
-Documentation/driver-api/pm/devices.rst, section "Entering Hibernation",
-explicitly mentions that PM_EVENT_FREEZE does not have to be put the device
-in a low-power state, and actually recommends not doing so. Thus, let's not
-spin down the disk on PM_EVENT_FREEZE. (The disk will instead be spun down
-during the subsequent PM_EVENT_HIBERNATE event.)
-
-This way, PM_EVENT_FREEZE will behave as it did before commit aa3998dbeb3a
-("ata: libata-scsi: Disable scsi device manage_system_start_stop"), while
-PM_EVENT_HIBERNATE will continue to spin down the disk.
-
-This will avoid the superfluous spin down + spin up when entering and
-resuming from hibernation, while still making sure that the disk is spun
-down before actually entering hibernation.
-
-Cc: stable@vger.kernel.org # v6.6+
-Fixes: aa3998dbeb3a ("ata: libata-scsi: Disable scsi device manage_system_start_stop")
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20241008135843.1266244-2-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240826065801.17081-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-eh.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/clk/bcm/clk-bcm53573-ilp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -4059,10 +4059,20 @@ static void ata_eh_handle_port_suspend(s
- 
- 	WARN_ON(ap->pflags & ATA_PFLAG_SUSPENDED);
- 
--	/* Set all devices attached to the port in standby mode */
--	ata_for_each_link(link, ap, HOST_FIRST) {
--		ata_for_each_dev(dev, link, ENABLED)
--			ata_dev_power_set_standby(dev);
-+	/*
-+	 * We will reach this point for all of the PM events:
-+	 * PM_EVENT_SUSPEND (if runtime pm, PM_EVENT_AUTO will also be set)
-+	 * PM_EVENT_FREEZE, and PM_EVENT_HIBERNATE.
-+	 *
-+	 * We do not want to perform disk spin down for PM_EVENT_FREEZE.
-+	 * (Spin down will be performed by the subsequent PM_EVENT_HIBERNATE.)
-+	 */
-+	if (!(ap->pm_mesg.event & PM_EVENT_FREEZE)) {
-+		/* Set all devices attached to the port in standby mode */
-+		ata_for_each_link(link, ap, HOST_FIRST) {
-+			ata_for_each_dev(dev, link, ENABLED)
-+				ata_dev_power_set_standby(dev);
-+		}
+diff --git a/drivers/clk/bcm/clk-bcm53573-ilp.c b/drivers/clk/bcm/clk-bcm53573-ilp.c
+index 84f2af736ee8a..83ef41d618be3 100644
+--- a/drivers/clk/bcm/clk-bcm53573-ilp.c
++++ b/drivers/clk/bcm/clk-bcm53573-ilp.c
+@@ -112,7 +112,7 @@ static void bcm53573_ilp_init(struct device_node *np)
+ 		goto err_free_ilp;
  	}
  
- 	/*
+-	ilp->regmap = syscon_node_to_regmap(of_get_parent(np));
++	ilp->regmap = syscon_node_to_regmap(np->parent);
+ 	if (IS_ERR(ilp->regmap)) {
+ 		err = PTR_ERR(ilp->regmap);
+ 		goto err_free_ilp;
+-- 
+2.43.0
+
 
 
 
