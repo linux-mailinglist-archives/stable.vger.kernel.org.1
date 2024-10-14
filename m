@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-84526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CCE99D09A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:05:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B4699D09D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:05:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87E472874FF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:05:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 041FB1C235D7
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E1B45C14;
-	Mon, 14 Oct 2024 15:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CF945C14;
+	Mon, 14 Oct 2024 15:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JGmNWU7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEAbz2X3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDA21798C;
-	Mon, 14 Oct 2024 15:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1886B611E;
+	Mon, 14 Oct 2024 15:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918312; cv=none; b=qug/TmPZjnLJNxnaJOdTEDGIHu9InuJ31zkaHm+/2iKAmEH1Bc/tk2fz3y8fS6HEGcafMeh/RMWo49wGtuXtkONg185GYWkr9R+cXXomGzd8CAZbTZmTqcrB6jIyFLT6bWsfyQ0HSGQAENWn6ztbHyxXJaDhE+6JLxnQeJH9wmc=
+	t=1728918319; cv=none; b=Wge35O8XzryWEG9SCsYGDQm6SDJ3ukC1tVtgwhxH7Msnx6P6hwPKPCc5bG+kEzdonqp2Xzfs2gIIx+SlKb3Gwd/91Q1IQdeJ+MQstbKti6UL+ry76Eaghwh0lk73yE8TgefYW2UQ+hGMupB86cCZuEbqap3fUNRteE/Ayo4/ORk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918312; c=relaxed/simple;
-	bh=+5j1hAq0tZ6AhKr53GaAYFnEKeuKSeSqOAJaGGAHRys=;
+	s=arc-20240116; t=1728918319; c=relaxed/simple;
+	bh=eUrhrVdOrgAX4Jln1YNhOW4I0lsUiu4wWHV8oL0kfQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SbboezL/ghGGz4JSgWO1iIcBLZUupQl6wek2erMaCZyz/OLD6F8AEVCdPwzopGUf9Z2GTGnfuzQ7bHMd3+M88BT47mqlJbPHvjjdhBcvdaesDy280MZo7x8m1DiOJZYmcCA9iwNEgMGySF9lba0oTpeD5xh9MzTHFngQfgN1gEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JGmNWU7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5170C4CEC3;
-	Mon, 14 Oct 2024 15:05:11 +0000 (UTC)
+	 MIME-Version; b=ijTxKSQavJlhGGzcdwO4kMBPHkrxlSW5wq9hPtsJTm5kXuQwE6yatV0AhFuSJkZ5NFfDWP27/x4Vo35pbkRsaylSNeKR1K84/wEDJl4iqW7M7NEaCCBgpKCFoPfOZC1axQk5AVFHqcI//lxuT1M9t6AY0LZMKwuKHYlRfV2iowQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEAbz2X3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A2AC4CEC3;
+	Mon, 14 Oct 2024 15:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918312;
-	bh=+5j1hAq0tZ6AhKr53GaAYFnEKeuKSeSqOAJaGGAHRys=;
+	s=korg; t=1728918319;
+	bh=eUrhrVdOrgAX4Jln1YNhOW4I0lsUiu4wWHV8oL0kfQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1JGmNWU79ClQYMr+NBUDra+AYrIV0HpoWwRqt8gXB70U+td++hNlvqB2kn7bCBUNt
-	 gKmVlMTmRVmn3ly+z2tP2qQ/Dgkd8WjUnR0/Q3SFHjncSaVs/iqLh8q4RyyTqq7zks
-	 /vBaLujVW1YtXevtJoq46k1HZJ3MowHIkexP/Rho=
+	b=UEAbz2X3FvxflNy3AHYpq4SMqCOFKM7W7Hn7Lmp8Etw2Vy3I8ZVlanNZp+DT4ffca
+	 8RUztoRW/dpH368peXZPZJPYrjyF2moZ46+9P2q+32wRsU5m8IufIkG3c6vLyr54lb
+	 ZftoCz37dx5oQF/1rnzFdRmySxCih6KHXzkgloHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.1 285/798] soc: versatile: integrator: fix OF node leak in probe() error path
-Date: Mon, 14 Oct 2024 16:13:59 +0200
-Message-ID: <20241014141229.142745664@linuxfoundation.org>
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.1 286/798] Revert "media: tuners: fix error return code of hybrid_tuner_request_state()"
+Date: Mon, 14 Oct 2024 16:14:00 +0200
+Message-ID: <20241014141229.181140061@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -65,33 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-commit 874c5b601856adbfda10846b9770a6c66c41e229 upstream.
+commit e25cc4be4616fcf5689622b3226d648aab253cdb upstream.
 
-Driver is leaking OF node reference obtained from
-of_find_matching_node().
+This reverts commit b9302fa7ed979e84b454e4ca92192cf485a4ed41.
 
-Fixes: f956a785a282 ("soc: move SoC driver for the ARM Integrator")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/20240825-soc-dev-fixes-v1-1-ff4b35abed83@linaro.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+As Fedor Pchelkin pointed out, this commit violates the
+convention of using the macro return value, which causes errors.
+For example, in functions tda18271_attach(), xc5000_attach(),
+simple_tuner_attach().
+
+Link: https://lore.kernel.org/linux-media/20240424202031.syigrtrtipbq5f2l@fpc/
+Suggested-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/versatile/soc-integrator.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/tuners/tuner-i2c.h |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/soc/versatile/soc-integrator.c
-+++ b/drivers/soc/versatile/soc-integrator.c
-@@ -113,6 +113,7 @@ static int __init integrator_soc_init(vo
- 		return -ENODEV;
- 
- 	syscon_regmap = syscon_node_to_regmap(np);
-+	of_node_put(np);
- 	if (IS_ERR(syscon_regmap))
- 		return PTR_ERR(syscon_regmap);
- 
+--- a/drivers/media/tuners/tuner-i2c.h
++++ b/drivers/media/tuners/tuner-i2c.h
+@@ -133,10 +133,8 @@ static inline int tuner_i2c_xfer_send_re
+ 	}								\
+ 	if (0 == __ret) {						\
+ 		state = kzalloc(sizeof(type), GFP_KERNEL);		\
+-		if (!state) {						\
+-			__ret = -ENOMEM;				\
++		if (NULL == state)					\
+ 			goto __fail;					\
+-		}							\
+ 		state->i2c_props.addr = i2caddr;			\
+ 		state->i2c_props.adap = i2cadap;			\
+ 		state->i2c_props.name = devname;			\
 
 
 
