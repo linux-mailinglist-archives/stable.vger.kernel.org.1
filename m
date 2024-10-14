@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C90199CED9
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:47:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE9C99CDA3
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 757941C232FA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:47:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF50EB20CC9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5946280027;
-	Mon, 14 Oct 2024 14:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA58F4A24;
+	Mon, 14 Oct 2024 14:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7rGOg7W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gm9w+i43"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174A1481B3;
-	Mon, 14 Oct 2024 14:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E031A28C;
+	Mon, 14 Oct 2024 14:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917196; cv=none; b=ppc3csAXSCevCfQdLVbePJTwwYcIQ4/6Ai7P2lfIppE0V/0tZBEenwaPrgDIf+z9JlnErSPw5FHPFCjOgMwvpDa61SZKg3CS5aaITUHNJdmwWDfPzIPpJKom5vGMU1p4sUZ3QtF4gAMY+I7jMjhnFNL844gNY/cjLGzBr6heV9M=
+	t=1728916469; cv=none; b=PDUKeR1i1XQm24/BmSYXHt9HXCjCY+lhbOjLxygIZIuKewI2a/Hw2tpmP2mQVTLubCKLqwT+TpYA006No8V6pYMPCrBBZDCWKfIv5A2Dzl3/DBsG22QQDzhbAGtH407WQIvUAapKsWmk2uQraTdB9v3f7jHYZ69qqhWcLDUHj/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917196; c=relaxed/simple;
-	bh=DloLLRpy2KqGfWXZxc677I7z0Ompid/BKy3WAnPXz1Q=;
+	s=arc-20240116; t=1728916469; c=relaxed/simple;
+	bh=Pbl7lH4I1+hTOSnDkwJMJ3Pndg10Ca7Wk54MKSCeKJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNvu9+Ze1QWXwHKKnqCGyPLKzII1ld1I8f5vRJA2QhcGfpAZZSZxoVQPVjVVRl9S0qTbXhgsFBECsFjST30GPwcZCB1f2tlNvbHNaR4/Jm90RP+sneAvzW7nQN93EnhRqT939d7NtaaJq15Bc493qjuQvdbnRYGRfXidKXYSmRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7rGOg7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B068C4CEC3;
-	Mon, 14 Oct 2024 14:46:35 +0000 (UTC)
+	 MIME-Version; b=us4S/abgHasLkHfoAb4Q1SL2wRlefslMXW+aWRpTF1FnCZXQPmhrw/j+2Em0i89PPdZxin7NZUUIXGyRuaZwgv4gyVFbSb9X5vVly2taa3p2OY3y/QYA1UUVnEVU7aBpYK14359G1uHbWEJ9AkMiWP5ZUE4mcggouCRiMzddjOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gm9w+i43; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8ABC4CEC3;
+	Mon, 14 Oct 2024 14:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917195;
-	bh=DloLLRpy2KqGfWXZxc677I7z0Ompid/BKy3WAnPXz1Q=;
+	s=korg; t=1728916469;
+	bh=Pbl7lH4I1+hTOSnDkwJMJ3Pndg10Ca7Wk54MKSCeKJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u7rGOg7WxI6au9js68V+ScqKajSM9Vn9YNq0HFtmoWXZLdSlGdx8/gRYvpVv25stj
-	 hqIxMewTLqJATFevR4VvnU5E2ylcARuvZ2JxW+YbGqVRupOXVz4CpnYj8j+HxE29pV
-	 hBZDB6uqsMpWWdpIHMhZ3PBV7X6+5sKF9zXnoLBI=
+	b=Gm9w+i43/kNzXR/7fkNWARDOyMGcChWdlYG1c1OWGAVEZLutYNW++1eCJuZPC0SMe
+	 epB204BZjQKmRdDwFI0QkIS6kLEEivBAk4qyblpeDzYw7K/nqxbbkNf6QFE5nmgjqz
+	 KFqMGm65hzV+dIb1RgwewJKymw1TwwB3/GXHmYQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 148/213] sctp: ensure sk_state is set to CLOSED if hashing fails in sctp_listen_start
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.11 191/214] OPP: fix error code in dev_pm_opp_set_config()
 Date: Mon, 14 Oct 2024 16:20:54 +0200
-Message-ID: <20241014141048.744510052@linuxfoundation.org>
+Message-ID: <20241014141052.432419740@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 4d5c70e6155d5eae198bade4afeab3c1b15073b6 ]
+commit eb8333673e1ebc2418980b664a84c91b4e98afc4 upstream.
 
-If hashing fails in sctp_listen_start(), the socket remains in the
-LISTENING state, even though it was not added to the hash table.
-This can lead to a scenario where a socket appears to be listening
-without actually being accessible.
+This is an error path so set the error code.  Smatch complains about the
+current code:
 
-This patch ensures that if the hashing operation fails, the sk_state
-is set back to CLOSED before returning an error.
+    drivers/opp/core.c:2660 dev_pm_opp_set_config()
+    error: uninitialized symbol 'ret'.
 
-Note that there is no need to undo the autobind operation if hashing
-fails, as the bind port can still be used for next listen() call on
-the same socket.
-
-Fixes: 76c6d988aeb3 ("sctp: add sock_reuseport for the sock in __sctp_hash_endpoint")
-Reported-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e37440e7e2c2 ("OPP: Call dev_pm_opp_set_opp() for required OPPs")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/3f3660af-4ea0-4a89-b3b7-58de7b16d7a5@stanley.mountain
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/socket.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/opp/core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 4a1ebe46d045d..108a0745c0c3c 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -8525,6 +8525,7 @@ static int sctp_listen_start(struct sock *sk, int backlog)
- 	struct sctp_endpoint *ep = sp->ep;
- 	struct crypto_shash *tfm = NULL;
- 	char alg[32];
-+	int err;
+diff --git a/drivers/opp/core.c b/drivers/opp/core.c
+index 494f8860220d..3aa18737470f 100644
+--- a/drivers/opp/core.c
++++ b/drivers/opp/core.c
+@@ -2630,8 +2630,10 @@ int dev_pm_opp_set_config(struct device *dev, struct dev_pm_opp_config *config)
  
- 	/* Allocate HMAC for generating cookie. */
- 	if (!sp->hmac && sp->sctp_hmac_alg) {
-@@ -8552,18 +8553,25 @@ static int sctp_listen_start(struct sock *sk, int backlog)
- 	inet_sk_set_state(sk, SCTP_SS_LISTENING);
- 	if (!ep->base.bind_addr.port) {
- 		if (sctp_autobind(sk)) {
--			inet_sk_set_state(sk, SCTP_SS_CLOSED);
--			return -EAGAIN;
-+			err = -EAGAIN;
-+			goto err;
- 		}
- 	} else {
- 		if (sctp_get_port(sk, inet_sk(sk)->inet_num)) {
--			inet_sk_set_state(sk, SCTP_SS_CLOSED);
--			return -EADDRINUSE;
-+			err = -EADDRINUSE;
-+			goto err;
- 		}
- 	}
+ 	/* Attach genpds */
+ 	if (config->genpd_names) {
+-		if (config->required_devs)
++		if (config->required_devs) {
++			ret = -EINVAL;
+ 			goto err;
++		}
  
- 	WRITE_ONCE(sk->sk_max_ack_backlog, backlog);
--	return sctp_hash_endpoint(ep);
-+	err = sctp_hash_endpoint(ep);
-+	if (err)
-+		goto err;
-+
-+	return 0;
-+err:
-+	inet_sk_set_state(sk, SCTP_SS_CLOSED);
-+	return err;
- }
- 
- /*
+ 		ret = _opp_attach_genpd(opp_table, dev, config->genpd_names,
+ 					config->virt_devs);
 -- 
-2.43.0
+2.47.0
 
 
 
