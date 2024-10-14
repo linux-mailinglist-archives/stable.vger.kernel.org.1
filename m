@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-84084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B8C99CE11
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF24B99CD26
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:29:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD3231F23BAD
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:39:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 640681F216FF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EA71AB52D;
-	Mon, 14 Oct 2024 14:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AE61A7AC7;
+	Mon, 14 Oct 2024 14:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CwPs8me1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jm9lomXw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C4D1AB522;
-	Mon, 14 Oct 2024 14:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343DF18035;
+	Mon, 14 Oct 2024 14:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916768; cv=none; b=U8T/oQSOcJ3K0g6lCgT/jpnRyOBG5PHtyZfiT8knji6ks7hi5XrUHa/Tbr8iG0lbg7ZHfJ5QyYeSSeBlgSv7/cWCAaaup6CySvn3MZkweBgkLMwOgeXVYXWHW3V3SwJINtMsrjAcyBlxE4IzTYHyNV7eLNvtFO2w5Fs3SpCcHhw=
+	t=1728916162; cv=none; b=RQpWJooHvgn6Hzy3KQwjiAECJEW2Q1WARpFYJhK7glql2huwsGPnRgVU9YpnRKPMvJ+dHcVBZWXVK5hVUPTDC1W8RAxx1JNnzIlm8FkKI9tyjsC7M8fgdyqI1+sazve7k2aUzjdWJ6UKbANMeHtM2v1YoM2K/j6sTpnl5ko6quM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916768; c=relaxed/simple;
-	bh=JXScuW6IiIqrBuJB8ILHVb+6h+Ffjx2ayfR5tQr9db4=;
+	s=arc-20240116; t=1728916162; c=relaxed/simple;
+	bh=/kl86Vu/SiPIRJ0zQJCRmCambDqfLFy8VG3LgamEOUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fd2SVljzLmdjesQt7BWjENLP9XQqvpc0UWkRiWVc8upxabzJQF277dZYJVSOTKmw6zPTRbJzCGu/DG1hukQE2QY9m0fS1V8WQBswKKqX5Yb5uecZBUSfmW1zwE2ngqxB2gWkBkq41gBcR/cx05PCheSErUs9W8n/xpPmctGFTH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CwPs8me1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EA4C4CEC3;
-	Mon, 14 Oct 2024 14:39:27 +0000 (UTC)
+	 MIME-Version; b=LdTXht1YFKR95FN9bXJ+0O1nTC5YrfFxxlU288BmcDYPmLTwMOEIhZlsY7c0c50RXp0Hdtr11tmDyjFUoFp36LRtn1thqZWEjwFDOwoGDWhcF3UPaLfoZ7dyIo9zJ7iveuwLE+wtH6WEZkm4hLIwtFJ38g34Ch4aCms9Qr5fIHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jm9lomXw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE76C4CEC3;
+	Mon, 14 Oct 2024 14:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916767;
-	bh=JXScuW6IiIqrBuJB8ILHVb+6h+Ffjx2ayfR5tQr9db4=;
+	s=korg; t=1728916162;
+	bh=/kl86Vu/SiPIRJ0zQJCRmCambDqfLFy8VG3LgamEOUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CwPs8me1nDzjcNbuOXs/SxI+0cfrKXrni+/9fSL2DahD+gYDuk1CfLEQFVMqQA4gE
-	 zjbZF+YSMqTRW9ttw6K9mk374PxcGhnee1XHCaPDrkc1zwrydeX7zmGrVcYF0wEdnK
-	 8YLnsGeP1KsIPLw+vrBQIt8EASrEkZkt5sxpA6EM=
+	b=jm9lomXwQwpsGUtKslmQYsT2udV+YCx42uq8u/XcfYrjwmlrBag3m0YCICNXeNViz
+	 Nowt4OWKn6QwP5Ieu8hFBAtm0iFXDId5SgT1x+DNtgZXZclbAxDZl8czazLZO72/bm
+	 CQT3S3Og+oXeANXJ7o2Rn1HGy+OrkuRUr2cZ9A9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Kiran K <kiran.k@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/213] s390/facility: Disable compile time optimization for decompressor code
-Date: Mon, 14 Oct 2024 16:19:25 +0200
-Message-ID: <20241014141045.294180950@linuxfoundation.org>
+Subject: [PATCH 6.11 103/214] Bluetooth: btusb: Dont fail external suspend requests
+Date: Mon, 14 Oct 2024 16:19:26 +0200
+Message-ID: <20241014141049.013288325@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 0147addc4fb72a39448b8873d8acdf3a0f29aa65 ]
+[ Upstream commit 610712298b11b2914be00b35abe9326b5dbb62c8 ]
 
-Disable compile time optimizations of test_facility() for the
-decompressor. The decompressor should not contain any optimized code
-depending on the architecture level set the kernel image is compiled
-for to avoid unexpected operation exceptions.
+Commit 4e0a1d8b0675
+("Bluetooth: btusb: Don't suspend when there are connections")
+introduces a check for connections to prevent auto-suspend but that
+actually ignored the fact the .suspend callback can be called for
+external suspend requests which
+Documentation/driver-api/usb/power-management.rst states the following:
 
-Add a __DECOMPRESSOR check to test_facility() to enforce that
-facilities are always checked during runtime for the decompressor.
+ 'External suspend calls should never be allowed to fail in this way,
+ only autosuspend calls.  The driver can tell them apart by applying
+ the :c:func:`PMSG_IS_AUTO` macro to the message argument to the
+ ``suspend`` method; it will return True for internal PM events
+ (autosuspend) and False for external PM events.'
 
-Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+In addition to that align system suspend with USB suspend by using
+hci_suspend_dev since otherwise the stack would be expecting events
+such as advertising reports which may not be delivered while the
+transport is suspended.
+
+Fixes: 4e0a1d8b0675 ("Bluetooth: btusb: Don't suspend when there are connections")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Tested-by: Kiran K <kiran.k@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/facility.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btusb.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/include/asm/facility.h b/arch/s390/include/asm/facility.h
-index 94b6919026dfb..953d42205ea83 100644
---- a/arch/s390/include/asm/facility.h
-+++ b/arch/s390/include/asm/facility.h
-@@ -60,8 +60,10 @@ static inline int test_facility(unsigned long nr)
- 	unsigned long facilities_als[] = { FACILITIES_ALS };
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 93dbeb8b348d5..a1e9b052bc847 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -4092,16 +4092,29 @@ static void btusb_disconnect(struct usb_interface *intf)
+ static int btusb_suspend(struct usb_interface *intf, pm_message_t message)
+ {
+ 	struct btusb_data *data = usb_get_intfdata(intf);
++	int err;
  
- 	if (__builtin_constant_p(nr) && nr < sizeof(facilities_als) * 8) {
--		if (__test_facility(nr, &facilities_als))
--			return 1;
-+		if (__test_facility(nr, &facilities_als)) {
-+			if (!__is_defined(__DECOMPRESSOR))
-+				return 1;
-+		}
+ 	BT_DBG("intf %p", intf);
+ 
+-	/* Don't suspend if there are connections */
+-	if (hci_conn_count(data->hdev))
++	/* Don't auto-suspend if there are connections; external suspend calls
++	 * shall never fail.
++	 */
++	if (PMSG_IS_AUTO(message) && hci_conn_count(data->hdev))
+ 		return -EBUSY;
+ 
+ 	if (data->suspend_count++)
+ 		return 0;
+ 
++	/* Notify Host stack to suspend; this has to be done before stopping
++	 * the traffic since the hci_suspend_dev itself may generate some
++	 * traffic.
++	 */
++	err = hci_suspend_dev(data->hdev);
++	if (err) {
++		data->suspend_count--;
++		return err;
++	}
++
+ 	spin_lock_irq(&data->txlock);
+ 	if (!(PMSG_IS_AUTO(message) && data->tx_in_flight)) {
+ 		set_bit(BTUSB_SUSPENDING, &data->flags);
+@@ -4109,6 +4122,7 @@ static int btusb_suspend(struct usb_interface *intf, pm_message_t message)
+ 	} else {
+ 		spin_unlock_irq(&data->txlock);
+ 		data->suspend_count--;
++		hci_resume_dev(data->hdev);
+ 		return -EBUSY;
  	}
- 	return __test_facility(nr, &stfle_fac_list);
- }
+ 
+@@ -4229,6 +4243,8 @@ static int btusb_resume(struct usb_interface *intf)
+ 	spin_unlock_irq(&data->txlock);
+ 	schedule_work(&data->work);
+ 
++	hci_resume_dev(data->hdev);
++
+ 	return 0;
+ 
+ failed:
 -- 
 2.43.0
 
