@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-84823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C9A99D23F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DAD399CDE9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:37:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D58D1F250D9
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 715101C215F7
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537371C75F3;
-	Mon, 14 Oct 2024 15:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC29A1AAE37;
+	Mon, 14 Oct 2024 14:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRsNG8Wv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5wO/f7v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6201C75E4;
-	Mon, 14 Oct 2024 15:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEAE1AA793;
+	Mon, 14 Oct 2024 14:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919332; cv=none; b=FwODYY4gsCH6fnc3QZ9z3pcFNX746iv2GrM4T6e5Of0AmoDjvYj2UO9ji5SP8cIcUzH7YDlwSR+EHOf/baP/aaheoINpP5O8GRuLTnEiL964xBCoAC3fDFcMfZ9itKJrjzTtGeVYbQktCBcFucoEvepF/K3yQuLT5VQ/ny3MWnk=
+	t=1728916656; cv=none; b=kd1KetvZgOx0Jyzh2/o8qsoYWdgsm86bG/RaYsN0LkkWuXgxtBvtVHAmjsRoEb6x1w5DL9TEmUA2VRT/qqzRArPgy1+xiQe07h30bjC71X5vf2CQdjeUNecGrQlIWVoQ5pzYRa5fb+/XOYQ+9hVQPrCTx5xMasxTrZJ6e+1wTj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919332; c=relaxed/simple;
-	bh=p1Tq/pMMWNFgcLI+20+UYnNZ3i68pwIjT8ecwC9d4c0=;
+	s=arc-20240116; t=1728916656; c=relaxed/simple;
+	bh=vo7dbB0+z/XMhgwXmdR65/ipNRf3MXi3WxtS8LX/p/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UAs77U6VtbXailhscJdooYG0lcJp6o++1KNUAS0kGPnu3uWZ9+2T4+BrlFYEbCsKQjUVnXbDODIHKfYAA5pzVqyb9cDiWR9eQITPlFeLmHGbnvORG9kr5zQeHMy7JLgWfuPr4DqqwkIXtAm46UDcA1k1kqwNJC8zdbT0old/IrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRsNG8Wv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F20DC4CEC3;
-	Mon, 14 Oct 2024 15:22:11 +0000 (UTC)
+	 MIME-Version; b=EOSDsguHXgAZQUlobApvv3Ag9AOdz3XoeUntDQiandH6piq4Q0sv/TUMWVSgBz63PJwLtMpljrRLo6xxR5gpzeXXgPymr01tkr5kjAntuIGiKO7KqU94/qJX6xvFYu+3uuFXjFMXYvglT1xmCrwM1A6HbmdjcY7AYcSEZzWs8pA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5wO/f7v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0BFC4CEC3;
+	Mon, 14 Oct 2024 14:37:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919331;
-	bh=p1Tq/pMMWNFgcLI+20+UYnNZ3i68pwIjT8ecwC9d4c0=;
+	s=korg; t=1728916656;
+	bh=vo7dbB0+z/XMhgwXmdR65/ipNRf3MXi3WxtS8LX/p/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YRsNG8WvZuMnBgnJZVHYPPDIMcGdZpde2Oog5GT4gjxJ5OCPawJL9eSRBVmN4FURj
-	 p2cZcoPCCYSX8hW0TRRJ8jDvK1liHeAXVCYdeZIJRj/b9Lm1L0hY8d3OpdTowFXj2K
-	 o++zw8vW+xr3rxB9hOYl6GW1dXUCUpyXq0CBQJBY=
+	b=b5wO/f7vs1fyR6FwcdbrLeDKqpUUKHP2Get0jl1dQ1FcD3M4vav+svWU0FJ8OG80A
+	 4y5/LV1xZCE5cTSl8i2VyXfOEGHzibO7BDJ1vXhs3M+6s++W1Tl2dDkf9wqMbho3cd
+	 +6Wk6SoYEoVe4OjHC97jmXeohSQAJTTZMVY4hR/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.1 580/798] clk: rockchip: fix error for unknown clocks
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 028/213] ata: ahci: Add mask_port_map module parameter
 Date: Mon, 14 Oct 2024 16:18:54 +0200
-Message-ID: <20241014141240.788597480@linuxfoundation.org>
+Message-ID: <20241014141044.085469616@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 12fd64babaca4dc09d072f63eda76ba44119816a upstream.
+[ Upstream commit 24cfd86433c920188ac3f02df8aba6bc4c792f4b ]
 
-There is a clk == NULL check after the switch to check for
-unsupported clk types. Since clk is re-assigned in a loop,
-this check is useless right now for anything but the first
-round. Let's fix this up by assigning clk = NULL in the
-loop before the switch statement.
+Commits 0077a504e1a4 ("ahci: asm1166: correct count of reported ports")
+and 9815e3961754 ("ahci: asm1064: correct count of reported ports")
+attempted to limit the ports of the ASM1166 and ASM1064 AHCI controllers
+to avoid long boot times caused by the fact that these adapters report
+a port map larger than the number of physical ports. The excess ports
+are "virtual" to hide port multiplier devices and probing these ports
+takes time. However, these commits caused a regression for users that do
+use PMP devices, as the ATA devices connected to the PMP cannot be
+scanned. These commits have thus been reverted by commit 6cd8adc3e18
+("ahci: asm1064: asm1166: don't limit reported ports") to allow the
+discovery of devices connected through a port multiplier. But this
+revert re-introduced the long boot times for users that do not use a
+port multiplier setup.
 
-Fixes: a245fecbb806 ("clk: rockchip: add basic infrastructure for clock branches")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-[added fixes + stable-cc]
-Link: https://lore.kernel.org/r/20240325193609.237182-6-sebastian.reichel@collabora.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch adds the mask_port_map ahci module parameter to allow users
+to manually specify port map masks for controllers. In the case of the
+ASMedia 1166 and 1064 controllers, users that do not have port
+multiplier devices can mask the excess virtual ports exposed by the
+controller to speedup port scanning, thus reducing boot time.
+
+The mask_port_map parameter accepts 2 different formats:
+ - mask_port_map=<mask>
+   This applies the same mask to all AHCI controllers
+   present in the system. This format is convenient for small systems
+   that have only a single AHCI controller.
+ - mask_port_map=<pci_dev>=<mask>,<pci_dev>=mask,...
+   This applies the specified masks only to the PCI device listed. The
+   <pci_dev> field is a regular PCI device ID (domain:bus:dev.func).
+   This ID can be seen following "ahci" in the kernel messages. E.g.
+   for "ahci 0000:01:00.0: 2/2 ports implemented (port mask 0x3)", the
+   <pci_dev> field is "0000:01:00.0".
+
+When used, the function ahci_save_initial_config() indicates that a
+port map mask was applied with the message "masking port_map ...".
+E.g.: without a mask:
+modprobe ahci
+dmesg | grep ahci
+...
+ahci 0000:00:17.0: AHCI vers 0001.0301, 32 command slots, 6 Gbps, SATA mode
+ahci 0000:00:17.0: (0000:00:17.0) 8/8 ports implemented (port mask 0xff)
+
+With a mask:
+modprobe ahci mask_port_map=0000:00:17.0=0x1
+dmesg | grep ahci
+...
+ahci 0000:00:17.0: masking port_map 0xff -> 0x1
+ahci 0000:00:17.0: AHCI vers 0001.0301, 32 command slots, 6 Gbps, SATA mode
+ahci 0000:00:17.0: (0000:00:17.0) 1/8 ports implemented (port mask 0x1)
+
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/rockchip/clk.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/ata/ahci.c | 85 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 85 insertions(+)
 
---- a/drivers/clk/rockchip/clk.c
-+++ b/drivers/clk/rockchip/clk.c
-@@ -438,12 +438,13 @@ void rockchip_clk_register_branches(stru
- 				    struct rockchip_clk_branch *list,
- 				    unsigned int nr_clk)
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 0a6aea36cd975..6e76780fb4308 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -667,6 +667,87 @@ static int mobile_lpm_policy = -1;
+ module_param(mobile_lpm_policy, int, 0644);
+ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
+ 
++static char *ahci_mask_port_map;
++module_param_named(mask_port_map, ahci_mask_port_map, charp, 0444);
++MODULE_PARM_DESC(mask_port_map,
++		 "32-bits port map masks to ignore controllers ports. "
++		 "Valid values are: "
++		 "\"<mask>\" to apply the same mask to all AHCI controller "
++		 "devices, and \"<pci_dev>=<mask>,<pci_dev>=<mask>,...\" to "
++		 "specify different masks for the controllers specified, "
++		 "where <pci_dev> is the PCI ID of an AHCI controller in the "
++		 "form \"domain:bus:dev.func\"");
++
++static void ahci_apply_port_map_mask(struct device *dev,
++				     struct ahci_host_priv *hpriv, char *mask_s)
++{
++	unsigned int mask;
++
++	if (kstrtouint(mask_s, 0, &mask)) {
++		dev_err(dev, "Invalid port map mask\n");
++		return;
++	}
++
++	hpriv->mask_port_map = mask;
++}
++
++static void ahci_get_port_map_mask(struct device *dev,
++				   struct ahci_host_priv *hpriv)
++{
++	char *param, *end, *str, *mask_s;
++	char *name;
++
++	if (!strlen(ahci_mask_port_map))
++		return;
++
++	str = kstrdup(ahci_mask_port_map, GFP_KERNEL);
++	if (!str)
++		return;
++
++	/* Handle single mask case */
++	if (!strchr(str, '=')) {
++		ahci_apply_port_map_mask(dev, hpriv, str);
++		goto free;
++	}
++
++	/*
++	 * Mask list case: parse the parameter to apply the mask only if
++	 * the device name matches.
++	 */
++	param = str;
++	end = param + strlen(param);
++	while (param && param < end && *param) {
++		name = param;
++		param = strchr(name, '=');
++		if (!param)
++			break;
++
++		*param = '\0';
++		param++;
++		if (param >= end)
++			break;
++
++		if (strcmp(dev_name(dev), name) != 0) {
++			param = strchr(param, ',');
++			if (param)
++				param++;
++			continue;
++		}
++
++		mask_s = param;
++		param = strchr(mask_s, ',');
++		if (param) {
++			*param = '\0';
++			param++;
++		}
++
++		ahci_apply_port_map_mask(dev, hpriv, mask_s);
++	}
++
++free:
++	kfree(str);
++}
++
+ static void ahci_pci_save_initial_config(struct pci_dev *pdev,
+ 					 struct ahci_host_priv *hpriv)
  {
--	struct clk *clk = NULL;
-+	struct clk *clk;
- 	unsigned int idx;
- 	unsigned long flags;
+@@ -689,6 +770,10 @@ static void ahci_pci_save_initial_config(struct pci_dev *pdev,
+ 			  "Disabling your PATA port. Use the boot option 'ahci.marvell_enable=0' to avoid this.\n");
+ 	}
  
- 	for (idx = 0; idx < nr_clk; idx++, list++) {
- 		flags = list->flags;
-+		clk = NULL;
++	/* Handle port map masks passed as module parameter. */
++	if (ahci_mask_port_map)
++		ahci_get_port_map_mask(&pdev->dev, hpriv);
++
+ 	ahci_save_initial_config(&pdev->dev, hpriv);
+ }
  
- 		/* catch simple muxes */
- 		switch (list->branch_type) {
+-- 
+2.43.0
+
 
 
 
