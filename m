@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-84949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77EB899D312
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24FE299CD9F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 955AAB285B9
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80E97B22C0E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD8A11C7B6F;
-	Mon, 14 Oct 2024 15:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A80C1AB522;
+	Mon, 14 Oct 2024 14:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sS3W1aES"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIeF0aZR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6694E1C729E;
-	Mon, 14 Oct 2024 15:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE1F4595B;
+	Mon, 14 Oct 2024 14:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919780; cv=none; b=TOc+YQF7p2o1YiLM/ib7KtBzSCQpaVzpYYZF6Mxhsxhk2mO6d1Vctek3+xkWoFZ2IfSFDgjTLPkkz3mT8gkucq8z7Lw9p7yn+d15lgkuSmd2690HfBmPVdNM4nVgsIlzZRj2fvI2Wew2KM+CQXXBZhRtl0c9PkQLormFq1bCCe0=
+	t=1728916456; cv=none; b=XJGmQRcPUcaH85x1szHDiMv8Xrkf83MqjTvP0dUjPpwl3m6zpujbj9lnkomG21WuDlqACwIdsTYw1ea5LIXGJLw6hvxPlbBEz6NC1oGPI8UWiINrivXyZvD6Plg4sQrtem3QcuPeMAXqhBecu8ivcj6Ugx7nd1eXLYLQZdGEdT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919780; c=relaxed/simple;
-	bh=iuQswb5u+R6omW/wqo1hHeaE85h/cAwK40KshFuQwBU=;
+	s=arc-20240116; t=1728916456; c=relaxed/simple;
+	bh=/zMGcg4jOxOjcZ0krdqfBHc930gicD9wCXuPs3TNA48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n2n6SLRzJ2DpKrcZ5DHGZRrCGeIBd1f864wNihJulzT5PQgZS/KZuYakt86qQHsykc+8VqTiCkP+R6x8ZswWecqh0Q+a8BlCR5zHN4Ucga2gtjA9rBeaIPi8qO2HhGUEhgmavyB06SCzLl1LQqYip2Z7GXN4cGhP1oSV84pomuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sS3W1aES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700A0C4CEC3;
-	Mon, 14 Oct 2024 15:29:39 +0000 (UTC)
+	 MIME-Version; b=nEkhyWxeTo9iY8OmtiDvnBBIoFC2xg3O8VJYVsbCw3YAPKYCQhZxQjeMBMs7IwayE3bdVKmS54i29QpiFaPQZLjtb8u2Ds9mHSJEogmclq9S5R/8hB8Pq+ZVZeDqFFPT6rLrXqJgtdOyJDqhEPDlB+iu7bJ/xV7yFkn0pE6ezFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIeF0aZR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA77C4CEC3;
+	Mon, 14 Oct 2024 14:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919779;
-	bh=iuQswb5u+R6omW/wqo1hHeaE85h/cAwK40KshFuQwBU=;
+	s=korg; t=1728916455;
+	bh=/zMGcg4jOxOjcZ0krdqfBHc930gicD9wCXuPs3TNA48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sS3W1aESA8HiYZU/8/h2xf4ftC/ONnBlO1Wl/Jak+jxcu8/iNHsXWB6Th5J0y5wr5
-	 4Gx9dBWtM9C7RZwVNnzkw138E81gW9Ilo9GteCb/2xmU0lx3yMXmwtUI5vqJF/8EXa
-	 0eXL/gjbOKCBOScWUoTyssrpjkilaxh5EoLoqtc4=
+	b=KIeF0aZRyU5mRiU5gB8LGUNfHnGTl9ooKCuBDpavkYI/4Vv7dLgyrjHsWdNetjnfL
+	 O7IIgMw2oqxK92dvGmC8WF5OE1WOpJ0pad5HERN8g387xRUEOuHNcvfzq0S/QaBFaL
+	 b9OvVsqKdWJ2cPI8Ud3GdgQAhKF7Xj2qmNmpA+7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SiyuLi <siyuli@glenfly.com>,
-	WangYuli <wangyuli@uniontech.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 697/798] PCI: Add function 0 DMA alias quirk for Glenfly Arise chip
+	Michal Wilczynski <m.wilczynski@samsung.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.11 188/214] mmc: sdhci-of-dwcmshc: Prevent stale command interrupt handling
 Date: Mon, 14 Oct 2024 16:20:51 +0200
-Message-ID: <20241014141245.451620357@linuxfoundation.org>
+Message-ID: <20241014141052.315236971@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +62,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Michal Wilczynski <m.wilczynski@samsung.com>
 
-[ Upstream commit 9246b487ab3c3b5993aae7552b7a4c541cc14a49 ]
+commit 27e8fe0da3b75520edfba9cee0030aeb5aef1505 upstream.
 
-Add DMA support for audio function of Glenfly Arise chip, which uses
-Requester ID of function 0.
+While working with the T-Head 1520 LicheePi4A SoC, certain conditions
+arose that allowed me to reproduce a race issue in the sdhci code.
 
-Link: https://lore.kernel.org/r/CA2BBD087345B6D1+20240823095708.3237375-1-wangyuli@uniontech.com
-Signed-off-by: SiyuLi <siyuli@glenfly.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-[bhelgaas: lower-case hex to match local code, drop unused Device IDs]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To reproduce the bug, you need to enable the sdio1 controller in the
+device tree file
+`arch/riscv/boot/dts/thead/th1520-lichee-module-4a.dtsi` as follows:
+
+&sdio1 {
+	bus-width = <4>;
+	max-frequency = <100000000>;
+	no-sd;
+	no-mmc;
+	broken-cd;
+	cap-sd-highspeed;
+	post-power-on-delay-ms = <50>;
+	status = "okay";
+	wakeup-source;
+	keep-power-in-suspend;
+};
+
+When resetting the SoC using the reset button, the following messages
+appear in the dmesg log:
+
+[    8.164898] mmc2: Got command interrupt 0x00000001 even though no
+command operation was in progress.
+[    8.174054] mmc2: sdhci: ============ SDHCI REGISTER DUMP ===========
+[    8.180503] mmc2: sdhci: Sys addr:  0x00000000 | Version:  0x00000005
+[    8.186950] mmc2: sdhci: Blk size:  0x00000000 | Blk cnt:  0x00000000
+[    8.193395] mmc2: sdhci: Argument:  0x00000000 | Trn mode: 0x00000000
+[    8.199841] mmc2: sdhci: Present:   0x03da0000 | Host ctl: 0x00000000
+[    8.206287] mmc2: sdhci: Power:     0x0000000f | Blk gap:  0x00000000
+[    8.212733] mmc2: sdhci: Wake-up:   0x00000000 | Clock:    0x0000decf
+[    8.219178] mmc2: sdhci: Timeout:   0x00000000 | Int stat: 0x00000000
+[    8.225622] mmc2: sdhci: Int enab:  0x00ff1003 | Sig enab: 0x00ff1003
+[    8.232068] mmc2: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+[    8.238513] mmc2: sdhci: Caps:      0x3f69c881 | Caps_1:   0x08008177
+[    8.244959] mmc2: sdhci: Cmd:       0x00000502 | Max curr: 0x00191919
+[    8.254115] mmc2: sdhci: Resp[0]:   0x00001009 | Resp[1]:  0x00000000
+[    8.260561] mmc2: sdhci: Resp[2]:   0x00000000 | Resp[3]:  0x00000000
+[    8.267005] mmc2: sdhci: Host ctl2: 0x00001000
+[    8.271453] mmc2: sdhci: ADMA Err:  0x00000000 | ADMA Ptr:
+0x0000000000000000
+[    8.278594] mmc2: sdhci: ============================================
+
+I also enabled some traces to better understand the problem:
+
+     kworker/3:1-62      [003] .....     8.163538: mmc_request_start:
+mmc2: start struct mmc_request[000000000d30cc0c]: cmd_opcode=5
+cmd_arg=0x0 cmd_flags=0x2e1 cmd_retries=0 stop_opcode=0 stop_arg=0x0
+stop_flags=0x0 stop_retries=0 sbc_opcode=0 sbc_arg=0x0 sbc_flags=0x0
+sbc_retires=0 blocks=0 block_size=0 blk_addr=0 data_flags=0x0 tag=0
+can_retune=0 doing_retune=0 retune_now=0 need_retune=0 hold_retune=1
+retune_period=0
+          <idle>-0       [000] d.h2.     8.164816: sdhci_cmd_irq:
+hw_name=ffe70a0000.mmc quirks=0x2008008 quirks2=0x8 intmask=0x10000
+intmask_p=0x18000
+     irq/24-mmc2-96      [000] .....     8.164840: sdhci_thread_irq:
+msg=
+     irq/24-mmc2-96      [000] d.h2.     8.164896: sdhci_cmd_irq:
+hw_name=ffe70a0000.mmc quirks=0x2008008 quirks2=0x8 intmask=0x1
+intmask_p=0x1
+     irq/24-mmc2-96      [000] .....     8.285142: mmc_request_done:
+mmc2: end struct mmc_request[000000000d30cc0c]: cmd_opcode=5
+cmd_err=-110 cmd_resp=0x0 0x0 0x0 0x0 cmd_retries=0 stop_opcode=0
+stop_err=0 stop_resp=0x0 0x0 0x0 0x0 stop_retries=0 sbc_opcode=0
+sbc_err=0 sbc_resp=0x0 0x0 0x0 0x0 sbc_retries=0 bytes_xfered=0
+data_err=0 tag=0 can_retune=0 doing_retune=0 retune_now=0 need_retune=0
+hold_retune=1 retune_period=0
+
+Here's what happens: the __mmc_start_request function is called with
+opcode 5. Since the power to the Wi-Fi card, which resides on this SDIO
+bus, is initially off after the reset, an interrupt SDHCI_INT_TIMEOUT is
+triggered. Immediately after that, a second interrupt SDHCI_INT_RESPONSE
+is triggered. Depending on the exact timing, these conditions can
+trigger the following race problem:
+
+1) The sdhci_cmd_irq top half handles the command as an error. It sets
+   host->cmd to NULL and host->pending_reset to true.
+2) The sdhci_thread_irq bottom half is scheduled next and executes faster
+   than the second interrupt handler for SDHCI_INT_RESPONSE. It clears
+   host->pending_reset before the SDHCI_INT_RESPONSE handler runs.
+3) The pending interrupt SDHCI_INT_RESPONSE handler gets called, triggering
+   a code path that prints: "mmc2: Got command interrupt 0x00000001 even
+   though no command operation was in progress."
+
+To solve this issue, we need to clear pending interrupts when resetting
+host->pending_reset. This ensures that after sdhci_threaded_irq restores
+interrupts, there are no pending stale interrupts.
+
+The behavior observed here is non-compliant with the SDHCI standard.
+Place the code in the sdhci-of-dwcmshc driver to account for a
+hardware-specific quirk instead of the core SDHCI code.
+
+Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Fixes: 43658a542ebf ("mmc: sdhci-of-dwcmshc: Add support for T-Head TH1520")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20241008100327.4108895-1-m.wilczynski@samsung.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c      | 4 ++++
- include/linux/pci_ids.h   | 2 ++
- sound/pci/hda/hda_intel.c | 2 +-
- 3 files changed, 7 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-of-dwcmshc.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 56dce858a6934..7ebce76778f71 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4144,6 +4144,10 @@ static void quirk_dma_func0_alias(struct pci_dev *dev)
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe832, quirk_dma_func0_alias);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe476, quirk_dma_func0_alias);
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -746,6 +746,14 @@ static void th1520_sdhci_reset(struct sd
  
-+/* Some Glenfly chips use function 0 as the PCIe Requester ID for DMA */
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d40, quirk_dma_func0_alias);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d41, quirk_dma_func0_alias);
-+
- static void quirk_dma_func1_alias(struct pci_dev *dev)
- {
- 	if (PCI_FUNC(dev->devfn) != 1)
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index f680897794fa2..69b8c46a42ea7 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -2638,6 +2638,8 @@
- #define PCI_DEVICE_ID_DCI_PCCOM8	0x0002
- #define PCI_DEVICE_ID_DCI_PCCOM2	0x0004
+ 	sdhci_reset(host, mask);
  
-+#define PCI_VENDOR_ID_GLENFLY		0x6766
++	/* The T-Head 1520 SoC does not comply with the SDHCI specification
++	 * regarding the "Software Reset for CMD line should clear 'Command
++	 * Complete' in the Normal Interrupt Status Register." Clear the bit
++	 * here to compensate for this quirk.
++	 */
++	if (mask & SDHCI_RESET_CMD)
++		sdhci_writel(host, SDHCI_INT_RESPONSE, SDHCI_INT_STATUS);
 +
- #define PCI_VENDOR_ID_INTEL		0x8086
- #define PCI_DEVICE_ID_INTEL_EESSC	0x0008
- #define PCI_DEVICE_ID_INTEL_PXHD_0	0x0320
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index a26f2a2d44cf2..b8d769b2d0f9a 100644
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2748,7 +2748,7 @@ static const struct pci_device_id azx_ids[] = {
- 	  .driver_data = AZX_DRIVER_ATIHDMI_NS | AZX_DCAPS_PRESET_ATI_HDMI_NS |
- 	  AZX_DCAPS_PM_RUNTIME },
- 	/* GLENFLY */
--	{ PCI_DEVICE(0x6766, PCI_ANY_ID),
-+	{ PCI_DEVICE(PCI_VENDOR_ID_GLENFLY, PCI_ANY_ID),
- 	  .class = PCI_CLASS_MULTIMEDIA_HD_AUDIO << 8,
- 	  .class_mask = 0xffffff,
- 	  .driver_data = AZX_DRIVER_GFHDMI | AZX_DCAPS_POSFIX_LPIB |
--- 
-2.43.0
-
+ 	if (priv->flags & FLAG_IO_FIXED_1V8) {
+ 		ctrl_2 = sdhci_readw(host, SDHCI_HOST_CONTROL2);
+ 		if (!(ctrl_2 & SDHCI_CTRL_VDD_180)) {
 
 
 
