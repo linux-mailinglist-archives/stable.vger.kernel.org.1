@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-84025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E144299CDC1
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D11FE99CE90
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15D7E1C22EFE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 863A72881A7
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D89C1AA793;
-	Mon, 14 Oct 2024 14:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF82678C90;
+	Mon, 14 Oct 2024 14:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNnwE/CO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IlrE54VC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAA24A24;
-	Mon, 14 Oct 2024 14:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D39226296;
+	Mon, 14 Oct 2024 14:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916551; cv=none; b=piBOQ0A6UP6fnsYL1ABIQFvHg+siGli4vr/jJYRmxtTlqNN1oVCV4wMUuwcrkasJuOSvgd1aY+f8PKw064nCL5h21sT+YiHr948NoNuCvN496ubCxZXCxCxMgL0/lX7y8BZemMyTeTAfOhggsYKYc2iKRb1m9xvUmk/qComLUB0=
+	t=1728917111; cv=none; b=IxR0xM53UIjqvX1FqVxzzBE+tN0DEl/ONj56jRuaw17HG15+Hmj3knVNcLNOf0H6+XoJ2b+QyjSj+GEAfyJzr9Ksns1/71wiwFg6XhAF/R8SOEQNT4faVGrCUsu3u6fVH4nH+8PyH/eID918enMwWR1T7MCQojHnJOCbJDe4q0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916551; c=relaxed/simple;
-	bh=bWZgJcyuJDPWtquun8GjdlGHecm/im51dA13oFoRP0s=;
+	s=arc-20240116; t=1728917111; c=relaxed/simple;
+	bh=/8yQ7sFIntS947LNBL8heMWARbh2GW6k8vraSz5dHEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bV1OCD3wrxTDnf+pA2pjPnAfWPXEu49HocOoEtRTvOkg3z+myI/OC65utL1AB4b+nAHmPHi1Nh8QZypxnIiTzKJ4JbPox5gMjaTYxrdK5gD4WW2fiEZ6/I26tls+zR0q0BSc0oSDqDh6YsmXp7pwUmDh8hvJsOE4pEwaa2T2WrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNnwE/CO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F58EC4CEC3;
-	Mon, 14 Oct 2024 14:35:51 +0000 (UTC)
+	 MIME-Version; b=s4HmE1BTXC/myQKOb86IHs5SrwfejGqF3uMqBfTPqL0qPo9097GEYwwptIfxUuKZIAaknkIxL0dsgOYn1AGnQygi/wh8otmoO8J05tvAq1g6eGyahfCcIqYkKA51VqbgDZGPyFVh6a+w4i60ZFcxg3tg8r6iMnLB9w2DZfeV2nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IlrE54VC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D91C4CEC7;
+	Mon, 14 Oct 2024 14:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916551;
-	bh=bWZgJcyuJDPWtquun8GjdlGHecm/im51dA13oFoRP0s=;
+	s=korg; t=1728917111;
+	bh=/8yQ7sFIntS947LNBL8heMWARbh2GW6k8vraSz5dHEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aNnwE/COYnuPrZVP8BvsPIecoGYsuBH514T0yD6s2/CasFvJEpiUE4DV/5JzfGxeq
-	 bYex2OgmqqLl/bDVDXBiyOM6OvpItKyo4nWS0nUO0jBHgLWPl/5ULD9Szz17p0Wxec
-	 XesYzFKMDSzPei7V+dAeovP85MlhtEKkNw7D+mDI=
+	b=IlrE54VCMHDNaUgHfTJ1qLcBoHhBXv2MB4qrCZJciDr590/7PCaWLia0G2xz9OWDw
+	 lVUGmYM9mAVfGIUPokg4HeMa5gEyZ5zuGeQmGeIyhWTDv+qPBEhZjCep5fU+kUwKd8
+	 /AW/gqTl5Ki/mW0Xs+9bsMV+smZoW2/B9K6b5TnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
 	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.11 197/214] mptcp: handle consistently DSS corruption
-Date: Mon, 14 Oct 2024 16:21:00 +0200
-Message-ID: <20241014141052.664725060@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 155/213] mctp: Handle error of rtnl_register_module().
+Date: Mon, 14 Oct 2024 16:21:01 +0200
+Message-ID: <20241014141049.019564189@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +63,223 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit e32d262c89e2b22cb0640223f953b548617ed8a6 upstream.
+[ Upstream commit d51705614f668254cc5def7490df76f9680b4659 ]
 
-Bugged peer implementation can send corrupted DSS options, consistently
-hitting a few warning in the data path. Use DEBUG_NET assertions, to
-avoid the splat on some builds and handle consistently the error, dumping
-related MIBs and performing fallback and/or reset according to the
-subflow type.
+Since introduced, mctp has been ignoring the returned value of
+rtnl_register_module(), which could fail silently.
 
-Fixes: 6771bfd9ee24 ("mptcp: update mptcp ack sequence from work queue")
-Cc: stable@vger.kernel.org
+Handling the error allows users to view a module as an all-or-nothing
+thing in terms of the rtnetlink functionality.  This prevents syzkaller
+from reporting spurious errors from its tests, where OOM often occurs
+and module is automatically loaded.
+
+Let's handle the errors by rtnl_register_many().
+
+Fixes: 583be982d934 ("mctp: Add device handling and netlink interface")
+Fixes: 831119f88781 ("mctp: Add neighbour netlink interface")
+Fixes: 06d2f4c583a7 ("mctp: Add netlink route management")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Jeremy Kerr <jk@codeconstruct.com.au>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241008-net-mptcp-fallback-fixes-v1-1-c6fb8e93e551@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/mib.c      |    2 ++
- net/mptcp/mib.h      |    2 ++
- net/mptcp/protocol.c |   24 +++++++++++++++++++++---
- net/mptcp/subflow.c  |    4 +++-
- 4 files changed, 28 insertions(+), 4 deletions(-)
+ include/net/mctp.h |  2 +-
+ net/mctp/af_mctp.c |  6 +++++-
+ net/mctp/device.c  | 30 ++++++++++++++++++------------
+ net/mctp/neigh.c   | 31 +++++++++++++++++++------------
+ net/mctp/route.c   | 33 +++++++++++++++++++++++----------
+ 5 files changed, 66 insertions(+), 36 deletions(-)
 
---- a/net/mptcp/mib.c
-+++ b/net/mptcp/mib.c
-@@ -26,6 +26,8 @@ static const struct snmp_mib mptcp_snmp_
- 	SNMP_MIB_ITEM("MPJoinAckRx", MPTCP_MIB_JOINACKRX),
- 	SNMP_MIB_ITEM("MPJoinAckHMacFailure", MPTCP_MIB_JOINACKMAC),
- 	SNMP_MIB_ITEM("DSSNotMatching", MPTCP_MIB_DSSNOMATCH),
-+	SNMP_MIB_ITEM("DSSCorruptionFallback", MPTCP_MIB_DSSCORRUPTIONFALLBACK),
-+	SNMP_MIB_ITEM("DSSCorruptionReset", MPTCP_MIB_DSSCORRUPTIONRESET),
- 	SNMP_MIB_ITEM("InfiniteMapTx", MPTCP_MIB_INFINITEMAPTX),
- 	SNMP_MIB_ITEM("InfiniteMapRx", MPTCP_MIB_INFINITEMAPRX),
- 	SNMP_MIB_ITEM("DSSNoMatchTCP", MPTCP_MIB_DSSTCPMISMATCH),
---- a/net/mptcp/mib.h
-+++ b/net/mptcp/mib.h
-@@ -21,6 +21,8 @@ enum linux_mptcp_mib_field {
- 	MPTCP_MIB_JOINACKRX,		/* Received an ACK + MP_JOIN */
- 	MPTCP_MIB_JOINACKMAC,		/* HMAC was wrong on ACK + MP_JOIN */
- 	MPTCP_MIB_DSSNOMATCH,		/* Received a new mapping that did not match the previous one */
-+	MPTCP_MIB_DSSCORRUPTIONFALLBACK,/* DSS corruption detected, fallback */
-+	MPTCP_MIB_DSSCORRUPTIONRESET,	/* DSS corruption detected, MPJ subflow reset */
- 	MPTCP_MIB_INFINITEMAPTX,	/* Sent an infinite mapping */
- 	MPTCP_MIB_INFINITEMAPRX,	/* Received an infinite mapping */
- 	MPTCP_MIB_DSSTCPMISMATCH,	/* DSS-mapping did not map with TCP's sequence numbers */
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -620,6 +620,18 @@ static bool mptcp_check_data_fin(struct
- 	return ret;
+diff --git a/include/net/mctp.h b/include/net/mctp.h
+index 2bff5f47ce82f..1eb1b4393e46b 100644
+--- a/include/net/mctp.h
++++ b/include/net/mctp.h
+@@ -293,7 +293,7 @@ void mctp_neigh_remove_dev(struct mctp_dev *mdev);
+ int mctp_routes_init(void);
+ void mctp_routes_exit(void);
+ 
+-void mctp_device_init(void);
++int mctp_device_init(void);
+ void mctp_device_exit(void);
+ 
+ #endif /* __NET_MCTP_H */
+diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+index f6be58b68c6f3..28be85d055330 100644
+--- a/net/mctp/af_mctp.c
++++ b/net/mctp/af_mctp.c
+@@ -676,10 +676,14 @@ static __init int mctp_init(void)
+ 	if (rc)
+ 		goto err_unreg_routes;
+ 
+-	mctp_device_init();
++	rc = mctp_device_init();
++	if (rc)
++		goto err_unreg_neigh;
+ 
+ 	return 0;
+ 
++err_unreg_neigh:
++	mctp_neigh_exit();
+ err_unreg_routes:
+ 	mctp_routes_exit();
+ err_unreg_proto:
+diff --git a/net/mctp/device.c b/net/mctp/device.c
+index acb97b2574289..85cc5f31f1e7c 100644
+--- a/net/mctp/device.c
++++ b/net/mctp/device.c
+@@ -524,25 +524,31 @@ static struct notifier_block mctp_dev_nb = {
+ 	.priority = ADDRCONF_NOTIFY_PRIORITY,
+ };
+ 
+-void __init mctp_device_init(void)
++static const struct rtnl_msg_handler mctp_device_rtnl_msg_handlers[] = {
++	{THIS_MODULE, PF_MCTP, RTM_NEWADDR, mctp_rtm_newaddr, NULL, 0},
++	{THIS_MODULE, PF_MCTP, RTM_DELADDR, mctp_rtm_deladdr, NULL, 0},
++	{THIS_MODULE, PF_MCTP, RTM_GETADDR, NULL, mctp_dump_addrinfo, 0},
++};
++
++int __init mctp_device_init(void)
+ {
+-	register_netdevice_notifier(&mctp_dev_nb);
++	int err;
+ 
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_GETADDR,
+-			     NULL, mctp_dump_addrinfo, 0);
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_NEWADDR,
+-			     mctp_rtm_newaddr, NULL, 0);
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_DELADDR,
+-			     mctp_rtm_deladdr, NULL, 0);
++	register_netdevice_notifier(&mctp_dev_nb);
+ 	rtnl_af_register(&mctp_af_ops);
++
++	err = rtnl_register_many(mctp_device_rtnl_msg_handlers);
++	if (err) {
++		rtnl_af_unregister(&mctp_af_ops);
++		unregister_netdevice_notifier(&mctp_dev_nb);
++	}
++
++	return err;
  }
  
-+static void mptcp_dss_corruption(struct mptcp_sock *msk, struct sock *ssk)
-+{
-+	if (READ_ONCE(msk->allow_infinite_fallback)) {
-+		MPTCP_INC_STATS(sock_net(ssk),
-+				MPTCP_MIB_DSSCORRUPTIONFALLBACK);
-+		mptcp_do_fallback(ssk);
-+	} else {
-+		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DSSCORRUPTIONRESET);
-+		mptcp_subflow_reset(ssk);
-+	}
-+}
+ void __exit mctp_device_exit(void)
+ {
++	rtnl_unregister_many(mctp_device_rtnl_msg_handlers);
+ 	rtnl_af_unregister(&mctp_af_ops);
+-	rtnl_unregister(PF_MCTP, RTM_DELADDR);
+-	rtnl_unregister(PF_MCTP, RTM_NEWADDR);
+-	rtnl_unregister(PF_MCTP, RTM_GETADDR);
+-
+ 	unregister_netdevice_notifier(&mctp_dev_nb);
+ }
+diff --git a/net/mctp/neigh.c b/net/mctp/neigh.c
+index ffa0f9e0983fb..590f642413e4e 100644
+--- a/net/mctp/neigh.c
++++ b/net/mctp/neigh.c
+@@ -322,22 +322,29 @@ static struct pernet_operations mctp_net_ops = {
+ 	.exit = mctp_neigh_net_exit,
+ };
+ 
++static const struct rtnl_msg_handler mctp_neigh_rtnl_msg_handlers[] = {
++	{THIS_MODULE, PF_MCTP, RTM_NEWNEIGH, mctp_rtm_newneigh, NULL, 0},
++	{THIS_MODULE, PF_MCTP, RTM_DELNEIGH, mctp_rtm_delneigh, NULL, 0},
++	{THIS_MODULE, PF_MCTP, RTM_GETNEIGH, NULL, mctp_rtm_getneigh, 0},
++};
 +
- static bool __mptcp_move_skbs_from_subflow(struct mptcp_sock *msk,
- 					   struct sock *ssk,
- 					   unsigned int *bytes)
-@@ -692,10 +704,16 @@ static bool __mptcp_move_skbs_from_subfl
- 				moved += len;
- 			seq += len;
- 
--			if (WARN_ON_ONCE(map_remaining < len))
--				break;
-+			if (unlikely(map_remaining < len)) {
-+				DEBUG_NET_WARN_ON_ONCE(1);
-+				mptcp_dss_corruption(msk, ssk);
-+			}
- 		} else {
--			WARN_ON_ONCE(!fin);
-+			if (unlikely(!fin)) {
-+				DEBUG_NET_WARN_ON_ONCE(1);
-+				mptcp_dss_corruption(msk, ssk);
-+			}
+ int __init mctp_neigh_init(void)
+ {
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_NEWNEIGH,
+-			     mctp_rtm_newneigh, NULL, 0);
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_DELNEIGH,
+-			     mctp_rtm_delneigh, NULL, 0);
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_GETNEIGH,
+-			     NULL, mctp_rtm_getneigh, 0);
+-
+-	return register_pernet_subsys(&mctp_net_ops);
++	int err;
 +
- 			sk_eat_skb(ssk, skb);
- 			done = true;
- 		}
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -971,8 +971,10 @@ static bool skb_is_fully_mapped(struct s
- 	unsigned int skb_consumed;
++	err = register_pernet_subsys(&mctp_net_ops);
++	if (err)
++		return err;
++
++	err = rtnl_register_many(mctp_neigh_rtnl_msg_handlers);
++	if (err)
++		unregister_pernet_subsys(&mctp_net_ops);
++
++	return err;
+ }
  
- 	skb_consumed = tcp_sk(ssk)->copied_seq - TCP_SKB_CB(skb)->seq;
--	if (WARN_ON_ONCE(skb_consumed >= skb->len))
-+	if (unlikely(skb_consumed >= skb->len)) {
-+		DEBUG_NET_WARN_ON_ONCE(1);
- 		return true;
-+	}
+-void __exit mctp_neigh_exit(void)
++void mctp_neigh_exit(void)
+ {
++	rtnl_unregister_many(mctp_neigh_rtnl_msg_handlers);
+ 	unregister_pernet_subsys(&mctp_net_ops);
+-	rtnl_unregister(PF_MCTP, RTM_GETNEIGH);
+-	rtnl_unregister(PF_MCTP, RTM_DELNEIGH);
+-	rtnl_unregister(PF_MCTP, RTM_NEWNEIGH);
+ }
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index 01c530dbc1a65..c6a815df9d358 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -1410,26 +1410,39 @@ static struct pernet_operations mctp_net_ops = {
+ 	.exit = mctp_routes_net_exit,
+ };
  
- 	return skb->len - skb_consumed <= subflow->map_data_len -
- 					  mptcp_subflow_get_map_offset(subflow);
++static const struct rtnl_msg_handler mctp_route_rtnl_msg_handlers[] = {
++	{THIS_MODULE, PF_MCTP, RTM_NEWROUTE, mctp_newroute, NULL, 0},
++	{THIS_MODULE, PF_MCTP, RTM_DELROUTE, mctp_delroute, NULL, 0},
++	{THIS_MODULE, PF_MCTP, RTM_GETROUTE, NULL, mctp_dump_rtinfo, 0},
++};
++
+ int __init mctp_routes_init(void)
+ {
++	int err;
++
+ 	dev_add_pack(&mctp_packet_type);
+ 
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_GETROUTE,
+-			     NULL, mctp_dump_rtinfo, 0);
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_NEWROUTE,
+-			     mctp_newroute, NULL, 0);
+-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_DELROUTE,
+-			     mctp_delroute, NULL, 0);
++	err = register_pernet_subsys(&mctp_net_ops);
++	if (err)
++		goto err_pernet;
++
++	err = rtnl_register_many(mctp_route_rtnl_msg_handlers);
++	if (err)
++		goto err_rtnl;
+ 
+-	return register_pernet_subsys(&mctp_net_ops);
++	return 0;
++
++err_rtnl:
++	unregister_pernet_subsys(&mctp_net_ops);
++err_pernet:
++	dev_remove_pack(&mctp_packet_type);
++	return err;
+ }
+ 
+ void mctp_routes_exit(void)
+ {
++	rtnl_unregister_many(mctp_route_rtnl_msg_handlers);
+ 	unregister_pernet_subsys(&mctp_net_ops);
+-	rtnl_unregister(PF_MCTP, RTM_DELROUTE);
+-	rtnl_unregister(PF_MCTP, RTM_NEWROUTE);
+-	rtnl_unregister(PF_MCTP, RTM_GETROUTE);
+ 	dev_remove_pack(&mctp_packet_type);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
