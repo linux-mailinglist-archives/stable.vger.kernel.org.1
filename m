@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-84072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1203B99CE02
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:38:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D33499CD46
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:31:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4147A1C22FFF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:38:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CA1A1C2271D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036091AB517;
-	Mon, 14 Oct 2024 14:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A084F610B;
+	Mon, 14 Oct 2024 14:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJuVfVIA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJDZuGSP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A2E4A24;
-	Mon, 14 Oct 2024 14:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E73520EB;
+	Mon, 14 Oct 2024 14:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916721; cv=none; b=LOiGFwSav7cFy1lBE/VzOfNb+IfEf8mzt3U4yn2VwAeckISiXJRuSzTrbDgVW7nqi1a62XoyH8+CRGmsrjfffGRLhSArwRrorLLU9/ylg1vCCakprP79zNSt4Oh4tgPVJLHLBbTbK2b58Hk9LuWNyYURNobCouEJdA1uILRsjro=
+	t=1728916269; cv=none; b=usrgSmiRunZ2nMoSYe8rsbKw6QoA/hlRhevuoAXxaYDWlzyCy/ePLV0GTa7tbbmF3OLI9e1qeXewimVuP4R6gBqsmoDOvfAFgQfy5Vx3yQ1rCWNtq5sMrjfYdja6lsPOXiPab1kHDf3EMFIDL3aVkZITc6w+qFw6hz217r8fXuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916721; c=relaxed/simple;
-	bh=f+cCkPcYqhMQw6dPkm8DeISKdW5w9mFpQDGoetA2S18=;
+	s=arc-20240116; t=1728916269; c=relaxed/simple;
+	bh=MP4fpq+lO2u5Hue3BCvyLqpyS3bwMy+XbcxlssV+bbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUEDHScbsVpduwLBmd9MzP7cR1RNf+wp5DlZ/U2njUKYoE1mJMKROK89DM0HP015YmL/2a2hzV5Vwq+yMWsN//wAUZ5oSLFzgS/d9HdQZCG9wQXaWmCwMe14fB7GBtlhAhviSeQsOkPdIs07EnsZWq9RMe6mjk+ovf75p1Tktn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YJuVfVIA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 300D6C4CEC3;
-	Mon, 14 Oct 2024 14:38:41 +0000 (UTC)
+	 MIME-Version; b=rjYTkPXHXarKYxw0syyDhoM2SBSQpO//AkIs0zlMRUnFrYfiL42OkR2K1X4H7Rz8IZ1yNd0Wc47mGdWhkeJH5iHLB+HizrMacCXT/ZNl/7aSfaMwoOLFznzKDBhB2msB5waXM4DZ7nmM3ux9BsHGs2OYCzdLrvSqZYVvySlB5Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJDZuGSP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4F9C4CEC3;
+	Mon, 14 Oct 2024 14:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916721;
-	bh=f+cCkPcYqhMQw6dPkm8DeISKdW5w9mFpQDGoetA2S18=;
+	s=korg; t=1728916269;
+	bh=MP4fpq+lO2u5Hue3BCvyLqpyS3bwMy+XbcxlssV+bbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YJuVfVIA6cSkb99qV47VSu9TY8Q/F8MpkIzFE3OQK1TV/cTO2zecorPBZzbGb2Ptx
-	 ycHuQUO48DyjD2LFr5DOUB4bu7prke63YlnB94txcAsFvG2zTeAvhd82A2fjO+CVOf
-	 rjy2cuVyurhmPuOzz5pJn7nV5z6TOuvOkcg6AZuQ=
+	b=jJDZuGSPKoVb+wNKigRgGvnVASjO5gM4A5XnTOj6FvoCKoECJoTUZ5ZumZh6eRBgF
+	 b6MbdC0akTsW5dccxSuigC4qfw2WqWIbP7Ju0qvhbUd84W7z/e44fPdVps1fXwSZB6
+	 f8h9lV567/ldX2Jl2KM+3mlDco7ROUMMg6hoi9qI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Yury Vostrikov <mon@unformed.ru>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Edward Cree <ecree.xilinx@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/213] fs/ntfs3: Do not call file_modified if collapse range failed
+Subject: [PATCH 6.11 091/214] sfc: Dont invoke xdp_do_flush() from netpoll.
 Date: Mon, 14 Oct 2024 16:19:14 +0200
-Message-ID: <20241014141044.865866027@linuxfoundation.org>
+Message-ID: <20241014141048.546355856@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 2db86f7995fe6b62a4d6fee9f3cdeba3c6d27606 ]
+[ Upstream commit 55e802468e1d38dec8e25a2fdb6078d45b647e8c ]
 
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Yury reported a crash in the sfc driver originated from
+netpoll_send_udp(). The netconsole sends a message and then netpoll
+invokes the driver's NAPI function with a budget of zero. It is
+dedicated to allow driver to free TX resources, that it may have used
+while sending the packet.
+
+In the netpoll case the driver invokes xdp_do_flush() unconditionally,
+leading to crash because bpf_net_context was never assigned.
+
+Invoke xdp_do_flush() only if budget is not zero.
+
+Fixes: 401cb7dae8130 ("net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.")
+Reported-by: Yury Vostrikov <mon@unformed.ru>
+Closes: https://lore.kernel.org/5627f6d1-5491-4462-9d75-bc0612c26a22@app.fastmail.com
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
+Link: https://patch.msgid.link/20241002125837.utOcRo6Y@linutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/file.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/sfc/efx_channels.c       | 3 ++-
+ drivers/net/ethernet/sfc/siena/efx_channels.c | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index cd69cbd0aaae7..f14d21b6c6d39 100644
---- a/fs/ntfs3/file.c
-+++ b/fs/ntfs3/file.c
-@@ -418,7 +418,7 @@ static int ntfs_truncate(struct inode *inode, loff_t new_size)
- }
+diff --git a/drivers/net/ethernet/sfc/efx_channels.c b/drivers/net/ethernet/sfc/efx_channels.c
+index c9e17a8208a90..f1723a6fb082b 100644
+--- a/drivers/net/ethernet/sfc/efx_channels.c
++++ b/drivers/net/ethernet/sfc/efx_channels.c
+@@ -1260,7 +1260,8 @@ static int efx_poll(struct napi_struct *napi, int budget)
  
- /*
-- * ntfs_fallocate
-+ * ntfs_fallocate - file_operations::ntfs_fallocate
-  *
-  * Preallocate space for a file. This implements ntfs's fallocate file
-  * operation, which gets called from sys_fallocate system call. User
-@@ -553,6 +553,8 @@ static long ntfs_fallocate(struct file *file, int mode, loff_t vbo, loff_t len)
- 		ni_lock(ni);
- 		err = attr_collapse_range(ni, vbo, len);
- 		ni_unlock(ni);
-+		if (err)
-+			goto out;
- 	} else if (mode & FALLOC_FL_INSERT_RANGE) {
- 		/* Check new size. */
- 		err = inode_newsize_ok(inode, new_size);
+ 	spent = efx_process_channel(channel, budget);
+ 
+-	xdp_do_flush();
++	if (budget)
++		xdp_do_flush();
+ 
+ 	if (spent < budget) {
+ 		if (efx_channel_has_rx_queue(channel) &&
+diff --git a/drivers/net/ethernet/sfc/siena/efx_channels.c b/drivers/net/ethernet/sfc/siena/efx_channels.c
+index a7346e965bfe7..d120b3c83ac07 100644
+--- a/drivers/net/ethernet/sfc/siena/efx_channels.c
++++ b/drivers/net/ethernet/sfc/siena/efx_channels.c
+@@ -1285,7 +1285,8 @@ static int efx_poll(struct napi_struct *napi, int budget)
+ 
+ 	spent = efx_process_channel(channel, budget);
+ 
+-	xdp_do_flush();
++	if (budget)
++		xdp_do_flush();
+ 
+ 	if (spent < budget) {
+ 		if (efx_channel_has_rx_queue(channel) &&
 -- 
 2.43.0
 
