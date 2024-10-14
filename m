@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-83923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5645899CD33
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CBED99D28D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:27:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86A011C225BF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC9A0285C75
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C5724B34;
-	Mon, 14 Oct 2024 14:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C33D1AC44C;
+	Mon, 14 Oct 2024 15:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltNH4EVE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/iEfszY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4EDE1798C;
-	Mon, 14 Oct 2024 14:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C271CBE8A;
+	Mon, 14 Oct 2024 15:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916205; cv=none; b=jerRApYnquGSLIIgF1pozzan6J6Ew+KjOxUCtGdP6nZyNOf4DKRNCc8s0L00ozN3ir8lEbdI0tfkj6O020h62q3OuTF1b+TAWAVlowxLMWbQJWmjJmO6YyXptgHI/+j8kUNTYVs2q72AWVtUnoXejuSUNoEot7/Ok4yxiP7rHrI=
+	t=1728919496; cv=none; b=G3qujAKdY2dKwAg2/+loJzhO9q4hGEKmnq2BQn/uToQZYkmRPcHVp8rO0/PsOjUc58GFg0zKTv9vEauK/PcCu35Sbs2Ce1E44Ig7xCtYbuXSmmQ7oqSJmRTp01BgO+kW4371PrESzX5lVA28SaAEYxCBdkeldG68xnGcFk8MHCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916205; c=relaxed/simple;
-	bh=Uq4oR7rJbw5T30/+L20UlI1mjYgDVnzFWLkUHlta6yU=;
+	s=arc-20240116; t=1728919496; c=relaxed/simple;
+	bh=S3t5aQJiQWolK8ZBAzVteTlz6ZJl6IbB6K6AdR9m5ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0BYNy7n5Pz13psmeugw9PyUrenoPj/UY6qsGTxgwxOzxEGGQ90rgKR+i8OUAS3e6CFwBTAXfbzrHW5wzyJRGg1VhPq8DsWUdN6LJm0NXCm0008QDPXWtboh+YLZCgSV3fbOPnT6qn2K3DjSf+AL/baQif6TU/eCP2JMDfv+5eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltNH4EVE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC41C4CEC3;
-	Mon, 14 Oct 2024 14:30:05 +0000 (UTC)
+	 MIME-Version; b=iRjCcEgmUSkvyoLwLNhY+eMRxzRSg4O21VhW/4HukhWy7+FjOxSyPsv/HfLOid204jPv1JUd63tEKHbzHDFkCK1+/Kz/BOVumGN2/hsNgtG3/bxz2eaMHTOuJfQo02djJZrYsDVV9/Hnso/IgYo92QM0ngU+6eVTFDTH9Pcfxqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/iEfszY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EDBAC4CEC7;
+	Mon, 14 Oct 2024 15:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916205;
-	bh=Uq4oR7rJbw5T30/+L20UlI1mjYgDVnzFWLkUHlta6yU=;
+	s=korg; t=1728919495;
+	bh=S3t5aQJiQWolK8ZBAzVteTlz6ZJl6IbB6K6AdR9m5ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ltNH4EVEFA6BZgic1NDjVgnWs7PXFjdPwL5H+KGiSS8vfx30qcXB8+gUXPBR/NiyF
-	 QpjIbMZFfyEbIBF4lvgGPfePV0eIrjLwFW/3Iz5X+zQmj0l94gJrncehyfYYZqwssa
-	 qvvVh1AoXspQE7olP1OP9AdyR1RERopOHOWRa2v4=
+	b=e/iEfszYZQTH8Rad0rY4WuP1dskEZ2w9mZxlB7nqYl0DKH/066EAMNXRT5lmr81Wn
+	 GAefwsMaTAEwkBVhe1XstRaYMTeZcgQBePfKwY6P8tsyVfCw3ZnM8jzA8gCsbSjqhG
+	 bUetxV2YjM8l7LfUQNmCAaKA4hTYFWs8c2Zf7+dw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	David Virag <virag.david003@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 113/214] net: dsa: b53: fix jumbo frames on 10/100 ports
+Subject: [PATCH 6.1 622/798] dt-bindings: clock: exynos7885: Fix duplicated binding
 Date: Mon, 14 Oct 2024 16:19:36 +0200
-Message-ID: <20241014141049.403340294@linuxfoundation.org>
+Message-ID: <20241014141242.475925254@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: David Virag <virag.david003@gmail.com>
 
-[ Upstream commit 2f3dcd0d39affe5b9ba1c351ce0e270c8bdd5109 ]
+[ Upstream commit abf3a3ea9acb5c886c8729191a670744ecd42024 ]
 
-All modern chips support and need the 10_100 bit set for supporting jumbo
-frames on 10/100 ports, so instead of enabling it only for 583XX enable
-it for everything except bcm63xx, where the bit is writeable, but does
-nothing.
+The numbering in Exynos7885's FSYS CMU bindings has 4 duplicated by
+accident, with the rest of the bindings continuing with 5.
 
-Tested on BCM53115, where jumbo frames were dropped at 10/100 speeds
-without the bit set.
+Fix this by moving CLK_MOUT_FSYS_USB30DRD_USER to the end as 11.
 
-Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Since CLK_MOUT_FSYS_USB30DRD_USER is not used in any device tree as of
+now, and there are no other clocks affected (maybe apart from
+CLK_MOUT_FSYS_MMC_SDIO_USER which the number was shared with, also not
+used in a device tree), this is the least impactful way to solve this
+problem.
+
+Fixes: cd268e309c29 ("dt-bindings: clock: Add bindings for Exynos7885 CMU_FSYS")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Virag <virag.david003@gmail.com>
+Link: https://lore.kernel.org/r/20240806121157.479212-2-virag.david003@gmail.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/dt-bindings/clock/exynos7885.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 5b83f9b6cdac3..c39cb119e760d 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2264,7 +2264,7 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
- 		return 0;
+diff --git a/include/dt-bindings/clock/exynos7885.h b/include/dt-bindings/clock/exynos7885.h
+index 8256e7430b63d..a363eb63dba7c 100644
+--- a/include/dt-bindings/clock/exynos7885.h
++++ b/include/dt-bindings/clock/exynos7885.h
+@@ -139,13 +139,13 @@
+ #define CLK_MOUT_FSYS_MMC_CARD_USER	2
+ #define CLK_MOUT_FSYS_MMC_EMBD_USER	3
+ #define CLK_MOUT_FSYS_MMC_SDIO_USER	4
+-#define CLK_MOUT_FSYS_USB30DRD_USER	4
+ #define CLK_GOUT_MMC_CARD_ACLK		5
+ #define CLK_GOUT_MMC_CARD_SDCLKIN	6
+ #define CLK_GOUT_MMC_EMBD_ACLK		7
+ #define CLK_GOUT_MMC_EMBD_SDCLKIN	8
+ #define CLK_GOUT_MMC_SDIO_ACLK		9
+ #define CLK_GOUT_MMC_SDIO_SDCLKIN	10
+-#define FSYS_NR_CLK			11
++#define CLK_MOUT_FSYS_USB30DRD_USER	11
++#define FSYS_NR_CLK			12
  
- 	enable_jumbo = (mtu > ETH_DATA_LEN);
--	allow_10_100 = (dev->chip_id == BCM583XX_DEVICE_ID);
-+	allow_10_100 = !is63xx(dev);
- 
- 	return b53_set_jumbo(dev, enable_jumbo, allow_10_100);
- }
+ #endif /* _DT_BINDINGS_CLOCK_EXYNOS_7885_H */
 -- 
 2.43.0
 
