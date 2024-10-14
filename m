@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-83660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D6199BE62
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 05:57:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B13B99BE64
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 05:58:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0958B20C11
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 03:57:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F26AE281DF5
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 03:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12489136337;
-	Mon, 14 Oct 2024 03:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D7B13B287;
+	Mon, 14 Oct 2024 03:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aqXSRwxt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kpta0FGM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0ED130E4A;
-	Mon, 14 Oct 2024 03:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A7813A25B;
+	Mon, 14 Oct 2024 03:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728878255; cv=none; b=VQ/X+oRt15ANNVaJ/rImkFu1uxFGRanBiLqxqrbxYztQZ4ai0hSS1ze/zAiDbKRv9GKMKefD0Wry5vf/1SoGgxcai26auWXJZ85NSiXL4NYKz1sOUMrBTYShnrqe23oGxZhbTVmlQt0gQZTnQbcML/qOti6DwkFBdpK6sJSzImU=
+	t=1728878257; cv=none; b=bOaBNTRB6slmAmgFro/H7M48C4VKX3TDt7jU9Vt1arPnR7hYZPDfg45CdxmVBQK7QO6iZbJzrzizr/CFGzN8RwpXyUecNOreVxhqUBgGohs0fgo2q02CjD38cvRLAsWsxExNrefcoEECjpHmqyCq2tOx5J3un+3ZwQbUueWf04U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728878255; c=relaxed/simple;
-	bh=kjv1k59V4Iv3EuGSi6TCLdCI2lLkb6B+qdpAvoR8bi0=;
+	s=arc-20240116; t=1728878257; c=relaxed/simple;
+	bh=AZSLE5u636YRwv58zS/iaUVsjZjUtUpnDiCxk2qw0to=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZNTzRvCsDdr6KkBNIimNgf8j9zST6eOZ8FgwD7R6B5kw3xajf5TkgECubgg5SSYpPrbOGXpYWRgKKM7GKOje4fPCB1qv4i5ah74qsXbQHSSRTh7nGQBpthHiBUlezLZlIogTRgyvM5JbAWCppno1rl9SerHOluRf6Q9UbOkPVXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aqXSRwxt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD6E2C4CEC3;
-	Mon, 14 Oct 2024 03:57:34 +0000 (UTC)
+	 MIME-Version; b=SI1D076NU9SSs3gnN7q3IJ4ZbELnloQQLyQkLNMGMw3I1+LKQ9TL6IdSTH/uCycTYRUowlk+7NLjUwi1Vp0JvdJAopLSHrXbjNQzQU9wUvw90eky0xAoPj0b3hy/mtiKkG86MyoJXS2VpoVU8zzc7MA1qeM4umY1Goea/vsvUX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kpta0FGM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 282EAC4AF09;
+	Mon, 14 Oct 2024 03:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728878255;
-	bh=kjv1k59V4Iv3EuGSi6TCLdCI2lLkb6B+qdpAvoR8bi0=;
+	s=k20201202; t=1728878256;
+	bh=AZSLE5u636YRwv58zS/iaUVsjZjUtUpnDiCxk2qw0to=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aqXSRwxttk3eXJjYceI8RXz4+ZsbopJj20kMjKXkBnBJLb8Mun0jpuz2rjaVQ4vXK
-	 TQixDMP2zhUhBjxnBLjRmnvgLPy1wR5ciX6PcQLXgwIRqT5ZlEmbctOvpF6klYAQyZ
-	 aMsfi1tn2GfAtrY5IWzYmkOc+XklD32pGHvT+WZh4suwBr9dmI+uYKNt8n7zxSNYdt
-	 a1AFhSKh7Ww1MXR8FAtq7rxKkPe7GiYSI3sfSt4evkaKT0g/ktFZ1hCYoRbH1hAsCU
-	 6xwT44UkTP1I0k4bMHP3viBVi5Q3Stv+KoUZv23VucHhCh1HyOyhpagP3dvPYZHu15
-	 UiWyxvvRSi67w==
+	b=Kpta0FGMQc0LPqkcScLGK2fQA9t1oN1vmWQuSlfxrJN6m0Fe1goXz1HFOOpMDocB9
+	 fEryOOP8IUBRdebbpIoZUk1NC2Gzb77tOohQELknLWzdxSXvRQjeV7y9M7jcPzo1ZW
+	 xsW3Ct9xhmDj0k32/0qtit90wwf38mbJ0LrhGhBb8CEmiYgV9SxNZWtNbHNkrhExN3
+	 aL6N2dzjast+DyBUofZMFWV+IGkFsAri5b0bDqpWyDjBylmAdgAQjhPPDaSp8YWPUP
+	 WuBLnpV7W5Ad1/eBGG5hJ6giAAmC+62RmrNhzlbsKXRDBOPrXy1T7IYn5GiEhd+PSW
+	 jBvgTCUiIBDIQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andrew Ballance <andrewjballance@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+Cc: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	syzbot+c2ada45c23d98d646118@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>,
 	ntfs3@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.11 02/20] fs/ntfs3: Check if more than chunk-size bytes are written
-Date: Sun, 13 Oct 2024 23:57:04 -0400
-Message-ID: <20241014035731.2246632-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 03/20] fs/ntfs3: Fix warning possible deadlock in ntfs_set_state
+Date: Sun, 13 Oct 2024 23:57:05 -0400
+Message-ID: <20241014035731.2246632-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241014035731.2246632-1-sashal@kernel.org>
 References: <20241014035731.2246632-1-sashal@kernel.org>
@@ -65,35 +65,32 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.3
 Content-Transfer-Encoding: 8bit
 
-From: Andrew Ballance <andrewjballance@gmail.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 9931122d04c6d431b2c11b5bb7b10f28584067f0 ]
+[ Upstream commit 5b2db723455a89dc96743d34d8bdaa23a402db2f ]
 
-A incorrectly formatted chunk may decompress into
-more than LZNT_CHUNK_SIZE bytes and a index out of bounds
-will occur in s_max_off.
+Use non-zero subkey to skip analyzer warnings.
 
-Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Reported-by: syzbot+c2ada45c23d98d646118@syzkaller.appspotmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/lznt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ntfs3/ntfs_fs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/lznt.c b/fs/ntfs3/lznt.c
-index 4aae598d6d884..fdc9b2ebf3410 100644
---- a/fs/ntfs3/lznt.c
-+++ b/fs/ntfs3/lznt.c
-@@ -236,6 +236,9 @@ static inline ssize_t decompress_chunk(u8 *unc, u8 *unc_end, const u8 *cmpr,
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index e5255a251929a..79047cd546117 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -334,7 +334,7 @@ struct mft_inode {
  
- 	/* Do decompression until pointers are inside range. */
- 	while (up < unc_end && cmpr < cmpr_end) {
-+		// return err if more than LZNT_CHUNK_SIZE bytes are written
-+		if (up - unc > LZNT_CHUNK_SIZE)
-+			return -EINVAL;
- 		/* Correct index */
- 		while (unc + s_max_off[index] < up)
- 			index += 1;
+ /* Nested class for ntfs_inode::ni_lock. */
+ enum ntfs_inode_mutex_lock_class {
+-	NTFS_INODE_MUTEX_DIRTY,
++	NTFS_INODE_MUTEX_DIRTY = 1,
+ 	NTFS_INODE_MUTEX_SECURITY,
+ 	NTFS_INODE_MUTEX_OBJID,
+ 	NTFS_INODE_MUTEX_REPARSE,
 -- 
 2.43.0
 
