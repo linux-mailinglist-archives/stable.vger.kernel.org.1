@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-84413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1730299D014
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:00:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DAA699D018
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:00:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C59CC28591D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:00:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1B37B252BC
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9650F1C7B99;
-	Mon, 14 Oct 2024 14:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773AF1B85CC;
+	Mon, 14 Oct 2024 14:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xe3hVBmp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFca4aaZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537951C761F;
-	Mon, 14 Oct 2024 14:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351C049659;
+	Mon, 14 Oct 2024 14:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917923; cv=none; b=mRWFKEkD04a/gV9rybs0NeRsQmtkW0Tg2DuVxqmRCZ82Bn8O7Bw/0JE0S8HlltdovFa8yn23rQ6dgsz9ZnTbNdzv/ci/bp/7pCtyCRsawckKIiGKOIdOAE/9i5AnH7rJ/KcenD6OQSfgfZ+Yxew0rD9DlGON57Bpvn5QIVU2QlA=
+	t=1728917935; cv=none; b=ak/dBbRXGHIH9LBFaSwryIj+Lh4By76INtl5INNnZLYkZF3QKIeYZGrzCn3kUcUYb4gF9HnG4ao249mRd39JsjIHmio1fQsdeAQ3vcVBtQ7bx9a9IB5bGslGBGVqPrQ2PtlugBg6MdtD/GywrAP6CMvaI4YSivB1nFgxv4LBHng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917923; c=relaxed/simple;
-	bh=U2QqdkpPoHVUY1KgcGp5Jl3P1aXsqKlFmU+5BNIFzME=;
+	s=arc-20240116; t=1728917935; c=relaxed/simple;
+	bh=xYIwJ0z9UdkGg6NBVEE4kMNRUHoRQOcb6f9+UcJS3Ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bsIzYb1ECnir5wFFdciw5J0Y8i5f80g9ZbuwhCIsTywrTwCFb/Ias8+3Hab8YJU1Ixsy0CDNk2RGA7f4JMk0m91P6oy7PAcJ+GRE2rAwbXiHXpgJuGNsh+wuQKvdRlpN71lmz280HoR+KK7ONv64HGKTU819MXXsm8EZ1RKMio4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xe3hVBmp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB139C4CEC3;
-	Mon, 14 Oct 2024 14:58:42 +0000 (UTC)
+	 MIME-Version; b=B3kfIGCaDlfgUb7g9314CioBQ2qjrrutiKaeBA8R+2ffe6aLJmNVmkeo45VwCJKJhuEclOXxW+RzcZFyVCowNclDjOpfTUoZW0WDPfP0zivxtfNUXpTUiPyTyeaK57jG6PkPrOs7OniVxQXZ6Yew6hB5b1LAUn6p7wQlHxOYZQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFca4aaZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BA4C4CEC3;
+	Mon, 14 Oct 2024 14:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917923;
-	bh=U2QqdkpPoHVUY1KgcGp5Jl3P1aXsqKlFmU+5BNIFzME=;
+	s=korg; t=1728917935;
+	bh=xYIwJ0z9UdkGg6NBVEE4kMNRUHoRQOcb6f9+UcJS3Ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xe3hVBmpVsFZr5/5O5nUIts/sYq7VGsqHji+ZVpjLGpmwK6uJHo/fVdOmTDAsq0QU
-	 uI8D4bQZYOIFUQ11ilbaZb0dxLNkssnpgSfCskZzu1LrxG04L88J0qsS0VGuMokSw2
-	 LbQ/oiPeXoPc3LuNi6TrEg+gcudAc+IHTxECk3ws=
+	b=XFca4aaZL6VnItJsH6YYEs6km0oKG7KyE48DPp9bnpCFgpfUkbyxolhPHSC092B3Y
+	 vXTj//izDUmcDc0QUyAJm8Mr5/P37YBAjmtZHTOiByVAP+9boI5a/81ZiBdzr5KwUH
+	 gy0W00gAydK2sgk3poOZbqer6Tg/p/+q3qMG0JMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
 	Daniel Borkmann <daniel@iogearbox.net>,
 	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 174/798] bpf: Fix bpf_strtol and bpf_strtoul helpers for 32bit
-Date: Mon, 14 Oct 2024 16:12:08 +0200
-Message-ID: <20241014141224.763000958@linuxfoundation.org>
+Subject: [PATCH 6.1 175/798] bpf: Improve check_raw_mode_ok test for MEM_UNINIT-tagged types
+Date: Mon, 14 Oct 2024 16:12:09 +0200
+Message-ID: <20241014141224.802401138@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -69,70 +70,76 @@ Content-Transfer-Encoding: 8bit
 
 From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit cfe69c50b05510b24e26ccb427c7cc70beafd6c1 ]
+[ Upstream commit 18752d73c1898fd001569195ba4b0b8c43255f4a ]
 
-The bpf_strtol() and bpf_strtoul() helpers are currently broken on 32bit:
+When checking malformed helper function signatures, also take other argument
+types into account aside from just ARG_PTR_TO_UNINIT_MEM.
 
-The argument type ARG_PTR_TO_LONG is BPF-side "long", not kernel-side "long"
-and therefore always considered fixed 64bit no matter if 64 or 32bit underlying
-architecture.
+This concerns (formerly) ARG_PTR_TO_{INT,LONG} given uninitialized memory can
+be passed there, too.
 
-This contract breaks in case of the two mentioned helpers since their BPF_CALL
-definition for the helpers was added with {unsigned,}long *res. Meaning, the
-transition from BPF-side "long" (BPF program) to kernel-side "long" (BPF helper)
-breaks here.
+The func proto sanity check goes back to commit 435faee1aae9 ("bpf, verifier:
+add ARG_PTR_TO_RAW_STACK type"), and its purpose was to detect wrong func protos
+which had more than just one MEM_UNINIT-tagged type as arguments.
 
-Both helpers call __bpf_strtoll() with "long long" correctly, but later assigning
-the result into 32-bit "*(long *)" on 32bit architectures. From a BPF program
-point of view, this means upper bits will be seen as uninitialised.
+The reason more than one is currently not supported is as we mark stack slots with
+STACK_MISC in check_helper_call() in case of raw mode based on meta.access_size to
+allow uninitialized stack memory to be passed to helpers when they just write into
+the buffer.
 
-Therefore, fix both BPF_CALL signatures to {s,u}64 types to fix this situation.
+Probing for base type as well as MEM_UNINIT tagging ensures that other types do not
+get missed (as it used to be the case for ARG_PTR_TO_{INT,LONG}).
 
-Now, changing also uapi/bpf.h helper documentation which generates bpf_helper_defs.h
-for BPF programs is tricky: Changing signatures there to __{s,u}64 would trigger
-compiler warnings (incompatible pointer types passing 'long *' to parameter of type
-'__s64 *' (aka 'long long *')) for existing BPF programs.
-
-Leaving the signatures as-is would be fine as from BPF program point of view it is
-still BPF-side "long" and thus equivalent to __{s,u}64 on 64 or 32bit underlying
-architectures.
-
-Note that bpf_strtol() and bpf_strtoul() are the only helpers with this issue.
-
-Fixes: d7a4cb9b6705 ("bpf: Introduce bpf_strtol and bpf_strtoul helpers")
-Reported-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 57c3bb725a3d ("bpf: Introduce ARG_PTR_TO_{INT,LONG} arg types")
+Reported-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
 Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/481fcec8-c12c-9abb-8ecb-76c71c009959@iogearbox.net
-Link: https://lore.kernel.org/r/20240913191754.13290-1-daniel@iogearbox.net
+Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Link: https://lore.kernel.org/r/20240913191754.13290-4-daniel@iogearbox.net
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/helpers.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/bpf/verifier.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 758510b46d87b..d12e696fac74f 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -509,7 +509,7 @@ static int __bpf_strtoll(const char *buf, size_t buf_len, u64 flags,
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 4efa50eb07d72..eb4073781a3c7 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -5796,6 +5796,12 @@ static bool arg_type_is_mem_size(enum bpf_arg_type type)
+ 	       type == ARG_CONST_SIZE_OR_ZERO;
  }
  
- BPF_CALL_4(bpf_strtol, const char *, buf, size_t, buf_len, u64, flags,
--	   long *, res)
-+	   s64 *, res)
++static bool arg_type_is_raw_mem(enum bpf_arg_type type)
++{
++	return base_type(type) == ARG_PTR_TO_MEM &&
++	       type & MEM_UNINIT;
++}
++
+ static bool arg_type_is_release(enum bpf_arg_type type)
  {
- 	long long _res;
- 	int err;
-@@ -534,7 +534,7 @@ const struct bpf_func_proto bpf_strtol_proto = {
- };
+ 	return type & OBJ_RELEASE;
+@@ -6708,15 +6714,15 @@ static bool check_raw_mode_ok(const struct bpf_func_proto *fn)
+ {
+ 	int count = 0;
  
- BPF_CALL_4(bpf_strtoul, const char *, buf, size_t, buf_len, u64, flags,
--	   unsigned long *, res)
-+	   u64 *, res)
- {
- 	unsigned long long _res;
- 	bool is_negative;
+-	if (fn->arg1_type == ARG_PTR_TO_UNINIT_MEM)
++	if (arg_type_is_raw_mem(fn->arg1_type))
+ 		count++;
+-	if (fn->arg2_type == ARG_PTR_TO_UNINIT_MEM)
++	if (arg_type_is_raw_mem(fn->arg2_type))
+ 		count++;
+-	if (fn->arg3_type == ARG_PTR_TO_UNINIT_MEM)
++	if (arg_type_is_raw_mem(fn->arg3_type))
+ 		count++;
+-	if (fn->arg4_type == ARG_PTR_TO_UNINIT_MEM)
++	if (arg_type_is_raw_mem(fn->arg4_type))
+ 		count++;
+-	if (fn->arg5_type == ARG_PTR_TO_UNINIT_MEM)
++	if (arg_type_is_raw_mem(fn->arg5_type))
+ 		count++;
+ 
+ 	/* We only support one arg being in raw mode at the moment,
 -- 
 2.43.0
 
