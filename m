@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-83977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A584199CD76
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:33:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F1599CE5B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:43:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D699A1C22B41
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:33:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76F611C22B38
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84EB220322;
-	Mon, 14 Oct 2024 14:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB6A1AA7A5;
+	Mon, 14 Oct 2024 14:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJCThsag"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yls4OIqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CFE39FCE;
-	Mon, 14 Oct 2024 14:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3D71DA53;
+	Mon, 14 Oct 2024 14:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916383; cv=none; b=kWh10+/UcHaxri4pPQOLTy5IMNwvKhJgY6+Qp4+NU/hT9IdHrniBpMqpB9qXSGklmOR8i3qO3JgR0CWXZF7Sd+JSGzQe08cvD0e8SJbc6FUm5EKtRyvRqUlMV6KkuaWUecw9AcnAesdIFuCFcKmAASLNayuoCSeoLE7Yh5wHWN8=
+	t=1728916976; cv=none; b=eO2VtOo/kWurc6D5GZtWPSLF5lizrWUEMBUSfhZ/ehkTJvz2gmRvtpck+MSHjQHp1PudjjtpuIfuQw6utlHZ7QIxy9vIy6eT/w/3ZfTv6rnb7k+AmGmF+8Do868JYioa4uxkbQ8g8hXm1ja9oGBk5tObRmkN1za99T4c0ZBm2Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916383; c=relaxed/simple;
-	bh=rrXvf9Ji4xT41L+a+iIi7YgSr9Xh+UXQsAQVVBWvCUs=;
+	s=arc-20240116; t=1728916976; c=relaxed/simple;
+	bh=fod+zQtSqfb3gNc5IDyfdQJm6xHGbA6gwugNAMYAbs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k1CBEkXXXqlPt9Hid1Pd0ImShT12GGcSt4vG3FPKc0hrNb9dvr0W5z7o2yjECJySfAuy3q7brMN/jpMytlNLixaYR+9eN5bY9xW4/AcDOcRfw9HkC6g8lTCqqsVB3VXS9sZZo94ualgRKo037Lyf41Vj8S1WNfbDACvU2BDk6+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJCThsag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE96C4CEC3;
-	Mon, 14 Oct 2024 14:33:02 +0000 (UTC)
+	 MIME-Version; b=unoWv2nxl4P0WMXdYufIHfeBfFCCU7bzHlwltzdg/LjXnxWBRy7Pj2SjS9Hy8esL4hNJfyOGRMlxNwfdkIpx4uBHvY8/iZDbvVfu49+WPOabRrWlQ8VbbRZ4EKJmt60kQp02cEyUDBKGV8uITVL9hP+AkMQD5n/U9cpCRf7LjE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yls4OIqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA95C4CEC3;
+	Mon, 14 Oct 2024 14:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916383;
-	bh=rrXvf9Ji4xT41L+a+iIi7YgSr9Xh+UXQsAQVVBWvCUs=;
+	s=korg; t=1728916976;
+	bh=fod+zQtSqfb3gNc5IDyfdQJm6xHGbA6gwugNAMYAbs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJCThsagI7fO/4MQBqv0IwX71IYd/qGwXd3h+/JeX1D2euIKB/U/yJ8uhRXzeAn+d
-	 RUJrWQPglSUMMFZicfoyMiywavkf7XOC0JgDcnNZu3yQsnPmmIfMScdGbpw1WtYnfk
-	 vMbpycsbE4zrP4H67V0zf+rdWeHf+71sz3MMRn+0=
+	b=Yls4OIqmrLhIJXSqk13p9CrXjPhNNU5E6ySdLzdwxDjT/6gRV3KRnrIU2uuyiStcM
+	 H6DJComoHNE0JGEuX/OPb3oloplv6wTpOl7bbvz0gxddihmkSuwydfLJvCM4d6HXfH
+	 ai+mkGvPdvck7ik9TGKPbz+x8NO79p5948cidNAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wade Wang <wade.wang@hp.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.11 160/214] HID: plantronics: Workaround for an unexcepted opposite volume key
+	Aananth V <aananthv@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Yuchung Cheng <ycheng@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 117/213] tcp: new TCP_INFO stats for RTO events
 Date: Mon, 14 Oct 2024 16:20:23 +0200
-Message-ID: <20241014141051.230509970@linuxfoundation.org>
+Message-ID: <20241014141047.536250182@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +65,223 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wade Wang <wade.wang@hp.com>
+From: Aananth V <aananthv@google.com>
 
-commit 87b696209007b7c4ef7bdfe39ea0253404a43770 upstream.
+[ Upstream commit 3868ab0f192581eff978501a05f3dc2e01541d77 ]
 
-Some Plantronics headset as the below send an unexcept opposite
-volume key's HID report for each volume key press after 200ms, like
-unecepted Volume Up Key following Volume Down key pressed by user.
-This patch adds a quirk to hid-plantronics for these devices, which
-will ignore the second unexcepted opposite volume key if it happens
-within 220ms from the last one that was handled.
-    Plantronics EncorePro 500 Series  (047f:431e)
-    Plantronics Blackwire_3325 Series (047f:430c)
+The 2023 SIGCOMM paper "Improving Network Availability with Protective
+ReRoute" has indicated Linux TCP's RTO-triggered txhash rehashing can
+effectively reduce application disruption during outages. To better
+measure the efficacy of this feature, this patch adds three more
+detailed stats during RTO recovery and exports via TCP_INFO.
+Applications and monitoring systems can leverage this data to measure
+the network path diversity and end-to-end repair latency during network
+outages to improve their network infrastructure.
 
-The patch was tested on the mentioned model, it shouldn't affect
-other models, however, this quirk might be needed for them too.
-Auto-repeat (when a key is held pressed) is not affected per test
-result.
+The following counters are added to tcp_sock in order to track RTO
+events over the lifetime of a TCP socket.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Wade Wang <wade.wang@hp.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+1. u16 total_rto - Counts the total number of RTO timeouts.
+2. u16 total_rto_recoveries - Counts the total number of RTO recoveries.
+3. u32 total_rto_time - Counts the total time spent (ms) in RTO
+                        recoveries. (time spent in CA_Loss and
+                        CA_Recovery states)
+
+To compute total_rto_time, we add a new u32 rto_stamp field to
+tcp_sock. rto_stamp records the start timestamp (ms) of the last RTO
+recovery (CA_Loss).
+
+Corresponding fields are also added to the tcp_info struct.
+
+Signed-off-by: Aananth V <aananthv@google.com>
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Yuchung Cheng <ycheng@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 27c80efcc204 ("tcp: fix TFO SYN_RECV to not zero retrans_stamp with retransmits out")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h         |    2 ++
- drivers/hid/hid-plantronics.c |   23 +++++++++++++++++++++++
- 2 files changed, 25 insertions(+)
+ include/linux/tcp.h      |  8 ++++++++
+ include/uapi/linux/tcp.h | 12 ++++++++++++
+ net/ipv4/tcp.c           |  9 +++++++++
+ net/ipv4/tcp_input.c     | 15 +++++++++++++++
+ net/ipv4/tcp_minisocks.c |  4 ++++
+ net/ipv4/tcp_timer.c     | 17 +++++++++++++++--
+ 6 files changed, 63 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -1036,6 +1036,8 @@
- #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3220_SERIES	0xc056
- #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3215_SERIES	0xc057
- #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES	0xc058
-+#define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES	0x430c
-+#define USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES		0x431e
+diff --git a/include/linux/tcp.h b/include/linux/tcp.h
+index 3c5efeeb024f6..9b371aa7c7962 100644
+--- a/include/linux/tcp.h
++++ b/include/linux/tcp.h
+@@ -377,6 +377,14 @@ struct tcp_sock {
+ 				 * Total data bytes retransmitted
+ 				 */
+ 	u32	total_retrans;	/* Total retransmits for entire connection */
++	u32	rto_stamp;	/* Start time (ms) of last CA_Loss recovery */
++	u16	total_rto;	/* Total number of RTO timeouts, including
++				 * SYN/SYN-ACK and recurring timeouts.
++				 */
++	u16	total_rto_recoveries;	/* Total number of RTO recoveries,
++					 * including any unfinished recovery.
++					 */
++	u32	total_rto_time;	/* ms spent in (completed) RTO recoveries. */
  
- #define USB_VENDOR_ID_PANASONIC		0x04da
- #define USB_DEVICE_ID_PANABOARD_UBT780	0x1044
---- a/drivers/hid/hid-plantronics.c
-+++ b/drivers/hid/hid-plantronics.c
-@@ -38,8 +38,10 @@
- 			    (usage->hid & HID_USAGE_PAGE) == HID_UP_CONSUMER)
+ 	u32	urg_seq;	/* Seq of received urgent pointer */
+ 	unsigned int		keepalive_time;	  /* time before keep alive takes place */
+diff --git a/include/uapi/linux/tcp.h b/include/uapi/linux/tcp.h
+index 879eeb0a084b4..d1d08da6331ab 100644
+--- a/include/uapi/linux/tcp.h
++++ b/include/uapi/linux/tcp.h
+@@ -289,6 +289,18 @@ struct tcp_info {
+ 				      */
  
- #define PLT_QUIRK_DOUBLE_VOLUME_KEYS BIT(0)
-+#define PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS BIT(1)
- 
- #define PLT_DOUBLE_KEY_TIMEOUT 5 /* ms */
-+#define PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT 220 /* ms */
- 
- struct plt_drv_data {
- 	unsigned long device_type;
-@@ -137,6 +139,21 @@ static int plantronics_event(struct hid_
- 
- 		drv_data->last_volume_key_ts = cur_ts;
- 	}
-+	if (drv_data->quirks & PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS) {
-+		unsigned long prev_ts, cur_ts;
+ 	__u32   tcpi_rehash;         /* PLB or timeout triggered rehash attempts */
 +
-+		/* Usages are filtered in plantronics_usages. */
-+
-+		if (!value) /* Handle key presses only. */
-+			return 0;
-+
-+		prev_ts = drv_data->last_volume_key_ts;
-+		cur_ts = jiffies;
-+		if (jiffies_to_msecs(cur_ts - prev_ts) <= PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT)
-+			return 1; /* Ignore the followed opposite volume key. */
-+
-+		drv_data->last_volume_key_ts = cur_ts;
-+	}
- 
- 	return 0;
- }
-@@ -210,6 +227,12 @@ static const struct hid_device_id plantr
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
- 					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES),
- 		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
-+					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES),
-+		.driver_data = PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
-+					 USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES),
-+		.driver_data = PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS, HID_ANY_ID) },
- 	{ }
++	__u16	tcpi_total_rto;	/* Total number of RTO timeouts, including
++				 * SYN/SYN-ACK and recurring timeouts.
++				 */
++	__u16	tcpi_total_rto_recoveries;	/* Total number of RTO
++						 * recoveries, including any
++						 * unfinished recovery.
++						 */
++	__u32	tcpi_total_rto_time;	/* Total time spent in RTO recoveries
++					 * in milliseconds, including any
++					 * unfinished recovery.
++					 */
  };
+ 
+ /* netlink attributes types for SCM_TIMESTAMPING_OPT_STATS */
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 1e3202f2b7a87..75371928d94f6 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3851,6 +3851,15 @@ void tcp_get_info(struct sock *sk, struct tcp_info *info)
+ 	info->tcpi_rcv_wnd = tp->rcv_wnd;
+ 	info->tcpi_rehash = tp->plb_rehash + tp->timeout_rehash;
+ 	info->tcpi_fastopen_client_fail = tp->fastopen_client_fail;
++
++	info->tcpi_total_rto = tp->total_rto;
++	info->tcpi_total_rto_recoveries = tp->total_rto_recoveries;
++	info->tcpi_total_rto_time = tp->total_rto_time;
++	if (tp->rto_stamp) {
++		info->tcpi_total_rto_time += tcp_time_stamp_raw() -
++						tp->rto_stamp;
++	}
++
+ 	unlock_sock_fast(sk, slow);
+ }
+ EXPORT_SYMBOL_GPL(tcp_get_info);
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 057d39248bec7..d472f7052cd32 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -2108,6 +2108,10 @@ void tcp_clear_retrans(struct tcp_sock *tp)
+ 	tp->undo_marker = 0;
+ 	tp->undo_retrans = -1;
+ 	tp->sacked_out = 0;
++	tp->rto_stamp = 0;
++	tp->total_rto = 0;
++	tp->total_rto_recoveries = 0;
++	tp->total_rto_time = 0;
+ }
+ 
+ static inline void tcp_init_undo(struct tcp_sock *tp)
+@@ -2899,6 +2903,14 @@ void tcp_enter_recovery(struct sock *sk, bool ece_ack)
+ 	tcp_set_ca_state(sk, TCP_CA_Recovery);
+ }
+ 
++static void tcp_update_rto_time(struct tcp_sock *tp)
++{
++	if (tp->rto_stamp) {
++		tp->total_rto_time += tcp_time_stamp(tp) - tp->rto_stamp;
++		tp->rto_stamp = 0;
++	}
++}
++
+ /* Process an ACK in CA_Loss state. Move to CA_Open if lost data are
+  * recovered or spurious. Otherwise retransmits more on partial ACKs.
+  */
+@@ -3103,6 +3115,8 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
+ 		break;
+ 	case TCP_CA_Loss:
+ 		tcp_process_loss(sk, flag, num_dupack, rexmit);
++		if (icsk->icsk_ca_state != TCP_CA_Loss)
++			tcp_update_rto_time(tp);
+ 		tcp_identify_packet_loss(sk, ack_flag);
+ 		if (!(icsk->icsk_ca_state == TCP_CA_Open ||
+ 		      (*ack_flag & FLAG_LOST_RETRANS)))
+@@ -6541,6 +6555,7 @@ static void tcp_rcv_synrecv_state_fastopen(struct sock *sk)
+ 		tcp_try_undo_recovery(sk);
+ 
+ 	/* Reset rtx states to prevent spurious retransmits_timed_out() */
++	tcp_update_rto_time(tp);
+ 	tp->retrans_stamp = 0;
+ 	inet_csk(sk)->icsk_retransmits = 0;
+ 
+diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
+index 0c04c460001f1..cc2b608b1a8e7 100644
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -560,6 +560,10 @@ struct sock *tcp_create_openreq_child(const struct sock *sk,
+ 		newtp->undo_marker = treq->snt_isn;
+ 		newtp->retrans_stamp = div_u64(treq->snt_synack,
+ 					       USEC_PER_SEC / TCP_TS_HZ);
++		newtp->total_rto = req->num_timeout;
++		newtp->total_rto_recoveries = 1;
++		newtp->total_rto_time = tcp_time_stamp_raw() -
++						newtp->retrans_stamp;
+ 	}
+ 	newtp->tsoffset = treq->ts_off;
+ #ifdef CONFIG_TCP_MD5SIG
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index 64bcf384e9ddc..b65cd417b0f7c 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -411,6 +411,19 @@ abort:		tcp_write_err(sk);
+ 	}
+ }
+ 
++static void tcp_update_rto_stats(struct sock *sk)
++{
++	struct inet_connection_sock *icsk = inet_csk(sk);
++	struct tcp_sock *tp = tcp_sk(sk);
++
++	if (!icsk->icsk_retransmits) {
++		tp->total_rto_recoveries++;
++		tp->rto_stamp = tcp_time_stamp(tp);
++	}
++	icsk->icsk_retransmits++;
++	tp->total_rto++;
++}
++
+ /*
+  *	Timer for Fast Open socket to retransmit SYNACK. Note that the
+  *	sk here is the child socket, not the parent (listener) socket.
+@@ -443,7 +456,7 @@ static void tcp_fastopen_synack_timer(struct sock *sk, struct request_sock *req)
+ 	 */
+ 	inet_rtx_syn_ack(sk, req);
+ 	req->num_timeout++;
+-	icsk->icsk_retransmits++;
++	tcp_update_rto_stats(sk);
+ 	if (!tp->retrans_stamp)
+ 		tp->retrans_stamp = tcp_time_stamp(tp);
+ 	inet_csk_reset_xmit_timer(sk, ICSK_TIME_RETRANS,
+@@ -586,7 +599,7 @@ void tcp_retransmit_timer(struct sock *sk)
+ 
+ 	tcp_enter_loss(sk);
+ 
+-	icsk->icsk_retransmits++;
++	tcp_update_rto_stats(sk);
+ 	if (tcp_retransmit_skb(sk, tcp_rtx_queue_head(sk), 1) > 0) {
+ 		/* Retransmission failed because of local congestion,
+ 		 * Let senders fight for local resources conservatively.
+-- 
+2.43.0
+
 
 
 
