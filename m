@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-84872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 036EE99D299
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F8C099CD38
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 993E71F23D3D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BED87281C81
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2833C1ABEBB;
-	Mon, 14 Oct 2024 15:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D961825757;
+	Mon, 14 Oct 2024 14:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E2C+Rprj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xH7pdIoj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A53481B3;
-	Mon, 14 Oct 2024 15:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C8720EB;
+	Mon, 14 Oct 2024 14:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919516; cv=none; b=Vccq0qeYr3O0eWxdfKu8nfiZS/WYEocWvbsnahGLRV/tFyKVcIknucXUFkTsrQF1q/20Kymsabt3xWjqKmixR6S63JzfPRYPF24x3z9JPY/0iqyP16ToiktiuGrkMMty+dM/fbvi0MttfUOqh3rdnKu6gixzuV5arkokONI0lGI=
+	t=1728916222; cv=none; b=l5S+JSx0C8BQXQy48lnOoAz+16kD2Cxadpg6SvCk0Ko2V4fhfNQLbX12zgR6gYzpy9bN5+aA2QQkDm3+T39ST/cMd3EV22/a3ECSDp9OVteFWRLBi+tb6yDpqW1qQD2r5EYoiRNd/MqH/Y9eg7p5Uy8hDpimV0o7CtXt7nfmBpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919516; c=relaxed/simple;
-	bh=9jOuBQ++1+doAV/Mr1a9tM30w1ctlCQNuLNgMrfwifU=;
+	s=arc-20240116; t=1728916222; c=relaxed/simple;
+	bh=zOyImEWgYNLE4ecWLGGuroKQw5XAtHAR1CCaJ/FJxeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dEz0N/yozHNygaS5wrOB06Hur+zngx9gxHEadtuuhyiG/CDs/uRm4qxEvF6bD0JI7Rom5s6z8kt+EmG5tlxjW/++fKwGrBf87uVHWgqI11ihkV6ZIYLDHRFuWLiinHWVZMmYcRSZ+/yrjanFWEmcY24ukgbM5CxPobAFfLU+Y28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E2C+Rprj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E37C4CEC7;
-	Mon, 14 Oct 2024 15:25:16 +0000 (UTC)
+	 MIME-Version; b=ijK51kiF/qh3qkhWIbPn267qUNZYZjvhQcPBHN8vX7UNR09bBrcn+JTX/1XFjOg5ibr7MtuUNJKy3QWUaolJCq9n0PdRdT6ZPu8STSkjs2y5DJ4+ncByUeUH9s07+tdTesZlpQxpl5rkdrCDy/l5IzGCo2V3ztXf6g95Yp412tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xH7pdIoj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08473C4CEC3;
+	Mon, 14 Oct 2024 14:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919516;
-	bh=9jOuBQ++1+doAV/Mr1a9tM30w1ctlCQNuLNgMrfwifU=;
+	s=korg; t=1728916222;
+	bh=zOyImEWgYNLE4ecWLGGuroKQw5XAtHAR1CCaJ/FJxeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E2C+RprjXluMNVUmD8i0Negtbq6OMwRiaooL5elGRPFLi9aRfWLsFGjv8yWBJFOMK
-	 PpT3/WUIUPCuTyCucc5eD+PDyR4B3uKkHxlkxOmXIfaNFKERK/jSJ/UNEOhsVzAGGd
-	 sr9p0BMc0yUQWTBQuyiJo2LigBTGXd/hL3dHBLpQ=
+	b=xH7pdIojjW9MjKbieG/v0EebCkjgvwwb19FjdmgE41aGjXRJpUC0YoYpDaMoeAWps
+	 3i960Scn8ql0qeDtiIGxl0Fl+iHE+wqyvWQ4/IYf5fDr8zC2OG+BoXk5OPxYLLVMXi
+	 +ydOgsmSUbuuFTb9Vbu1yk6jU8HmyZa6AiMxqi2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
+	Niels Dettenbach <nd@syndicat.com>,
+	Juergen Gross <jgross@suse.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 627/798] io_uring/net: harden multishot termination case for recv
+Subject: [PATCH 6.11 118/214] x86/xen: mark boot CPU of PV guest in MSR_IA32_APICBASE
 Date: Mon, 14 Oct 2024 16:19:41 +0200
-Message-ID: <20241014141242.670112178@linuxfoundation.org>
+Message-ID: <20241014141049.596514959@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit c314094cb4cfa6fc5a17f4881ead2dfebfa717a7 ]
+[ Upstream commit bf56c410162dbf2e27906acbdcd904cbbfdba302 ]
 
-If the recv returns zero, or an error, then it doesn't matter if more
-data has already been received for this buffer. A condition like that
-should terminate the multishot receive. Rather than pass in the
-collected return value, pass in whether to terminate or keep the recv
-going separately.
+Recent topology checks of the x86 boot code uncovered the need for
+PV guests to have the boot cpu marked in the APICBASE MSR.
 
-Note that this isn't a bug right now, as the only way to get there is
-via setting MSG_WAITALL with multishot receive. And if an application
-does that, then -EINVAL is returned anyway. But it seems like an easy
-bug to introduce, so let's make it a bit more explicit.
-
-Link: https://github.com/axboe/liburing/issues/1246
-Cc: stable@vger.kernel.org
-Fixes: b3fdea6ecb55 ("io_uring: multishot recv")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 9d22c96316ac ("x86/topology: Handle bogus ACPI tables correctly")
+Reported-by: Niels Dettenbach <nd@syndicat.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/xen/enlighten_pv.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/io_uring/net.c b/io_uring/net.c
-index 48404bd330017..f41acabf7b4a5 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -893,6 +893,7 @@ int io_recv(struct io_kiocb *req, unsigned int issue_flags)
- 	int ret, min_ret = 0;
- 	bool force_nonblock = issue_flags & IO_URING_F_NONBLOCK;
- 	size_t len = sr->len;
-+	bool mshot_finished;
- 
- 	if (!(req->flags & REQ_F_POLLED) &&
- 	    (sr->flags & IORING_RECVSEND_POLL_FIRST))
-@@ -957,6 +958,7 @@ int io_recv(struct io_kiocb *req, unsigned int issue_flags)
- 		req_set_fail(req);
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index 2c12ae42dc8bd..d6818c6cafda1 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -1032,6 +1032,10 @@ static u64 xen_do_read_msr(unsigned int msr, int *err)
+ 	switch (msr) {
+ 	case MSR_IA32_APICBASE:
+ 		val &= ~X2APIC_ENABLE;
++		if (smp_processor_id() == 0)
++			val |= MSR_IA32_APICBASE_BSP;
++		else
++			val &= ~MSR_IA32_APICBASE_BSP;
+ 		break;
  	}
- 
-+	mshot_finished = ret <= 0;
- 	if (ret > 0)
- 		ret += sr->done_io;
- 	else if (sr->done_io)
-@@ -968,7 +970,7 @@ int io_recv(struct io_kiocb *req, unsigned int issue_flags)
- 	if (msg.msg_inq)
- 		cflags |= IORING_CQE_F_SOCK_NONEMPTY;
- 
--	if (!io_recv_finish(req, &ret, cflags, ret <= 0, issue_flags))
-+	if (!io_recv_finish(req, &ret, cflags, mshot_finished, issue_flags))
- 		goto retry_multishot;
- 
- 	return ret;
+ 	return val;
 -- 
 2.43.0
 
