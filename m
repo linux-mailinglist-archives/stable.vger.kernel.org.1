@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-83953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23D799CD54
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:31:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B50BF99CE48
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:42:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B1871F21C3D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:31:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E685C1C22D04
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:42:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F161A28C;
-	Mon, 14 Oct 2024 14:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1261AB526;
+	Mon, 14 Oct 2024 14:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0ZxrUkK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4rsIl9D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5700820EB;
-	Mon, 14 Oct 2024 14:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA101AAE08;
+	Mon, 14 Oct 2024 14:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916304; cv=none; b=pQq81wLJsQeY3Tny4bau1tuyd1puC/BYdk5SfB0iclwolqfiKmLnBiejJdzce5bRxXN93hrq++5zmOMG3L5UEcZjml30Af9rH345H4qK6rqqfAW3okWiideORB5liQ1GPJw4fDz/aRjFFsBiViwsMfFn2a/pu05Kc2vjYtOEOP8=
+	t=1728916920; cv=none; b=dq1YL7sKvWy8uHijFGQ1GlcSshfGZhAd9AnnTUmEUvEfCM+l0WIITmlNVotp0w0MTntARcMFw0Auzo9tMU4gxDMjuSazPY8acMsi4XxMZm+12zNoEYv4O0MON1hvx9py9PIX6G2qmh09LpqeMAEXhOAMJp1ASmdvtOilKNFp8dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916304; c=relaxed/simple;
-	bh=Xj98C+70SorqS0S5JTt+DIVz8JTvTxY00XRxlPsgMOQ=;
+	s=arc-20240116; t=1728916920; c=relaxed/simple;
+	bh=swVuxx/eSO45LJd9xF8bW/FZJhB7IwBO1C8L65Msm74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ejY/LpifccwuZX3EfXvXpnK8ez+gU1gxiWf7pLILljucNdbAoU7IxbkMLxboMgJzEBynzXU9JobeH79A6KkAEuFJosNkzD8yRmJTW67bIYOoSYu4B07B2IkqdMNxstxiZGeCeCcZRxcPBRI5JMiLHPsgWJUpPyXai3iVMGKHouU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0ZxrUkK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D335EC4CEC3;
-	Mon, 14 Oct 2024 14:31:43 +0000 (UTC)
+	 MIME-Version; b=OKkZ2igqfhpkGpx+EmJehZWX02idqUOOMMnT9YayuYxQ5dycY7x82ZKbnF3pxsViHRazQRB1jEpHV7PGtQvlcV4SiuBPEE0f4iZ8fpJFmju/4JrHrK6wR4BsCzSdSxgxYwz9UHpYYyuEF4w19SbIxL4uSbsFbSyvveD2j7p+5a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4rsIl9D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3105C4CEC3;
+	Mon, 14 Oct 2024 14:41:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916304;
-	bh=Xj98C+70SorqS0S5JTt+DIVz8JTvTxY00XRxlPsgMOQ=;
+	s=korg; t=1728916920;
+	bh=swVuxx/eSO45LJd9xF8bW/FZJhB7IwBO1C8L65Msm74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0ZxrUkKkFUhrhgOB604Oaagv2O7aex5C930jlPRETx5zBo8gjwEyHqTSnGP5Ur19
-	 wS6H5PF6l9zXghzhvmpOdK8qdB8SoLm13nDtyIcxRf7Uk2Ad6uJF4sZFRwHshJML4k
-	 8NyEQ4tBP2jEHCbtjd8oZYB8SjAVRkO+kFhp16jg=
+	b=t4rsIl9DYuWgJfZi7t6bdFOiG4t9mQ/r+xXM6xU4fnaJe+ysGlpdWR/NTPCkFlfGa
+	 uzkA1T6KlK2uEZfL8NbyhUOuXM6vsSiioC/r0nujfrN67ACHVOUs2Ghafh8+i3mNO+
+	 iUga96ayeE9CjAf37o9vNbcOyL9S1zAKlsIe70bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 144/214] mctp: Handle error of rtnl_register_module().
+Subject: [PATCH 6.6 101/213] scsi: lpfc: Add ELS_RSP cmd to the list of WQEs to flush in lpfc_els_flush_cmd()
 Date: Mon, 14 Oct 2024 16:20:07 +0200
-Message-ID: <20241014141050.605741305@linuxfoundation.org>
+Message-ID: <20241014141046.912856147@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,220 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit d51705614f668254cc5def7490df76f9680b4659 ]
+[ Upstream commit 93bcc5f3984bf4f51da1529700aec351872dbfff ]
 
-Since introduced, mctp has been ignoring the returned value of
-rtnl_register_module(), which could fail silently.
+During HBA stress testing, a spam of received PLOGIs exposes a resource
+recovery bug causing leakage of lpfc_sqlq entries from the global
+phba->sli4_hba.lpfc_els_sgl_list.
 
-Handling the error allows users to view a module as an all-or-nothing
-thing in terms of the rtnetlink functionality.  This prevents syzkaller
-from reporting spurious errors from its tests, where OOM often occurs
-and module is automatically loaded.
+The issue is in lpfc_els_flush_cmd(), where the driver attempts to recover
+outstanding ELS sgls when walking the txcmplq.  Only CMD_ELS_REQUEST64_CRs
+and CMD_GEN_REQUEST64_CRs are added to the abort and cancel lists.  A check
+for CMD_XMIT_ELS_RSP64_WQE is missing in order to recover LS_ACC usages of
+the phba->sli4_hba.lpfc_els_sgl_list too.
 
-Let's handle the errors by rtnl_register_many().
+Fix by adding CMD_XMIT_ELS_RSP64_WQE as part of the txcmplq walk when
+adding WQEs to the abort and cancel list in lpfc_els_flush_cmd().  Also,
+update naming convention from CRs to WQEs.
 
-Fixes: 583be982d934 ("mctp: Add device handling and netlink interface")
-Fixes: 831119f88781 ("mctp: Add neighbour netlink interface")
-Fixes: 06d2f4c583a7 ("mctp: Add netlink route management")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20240912232447.45607-2-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/mctp.h |  2 +-
- net/mctp/af_mctp.c |  6 +++++-
- net/mctp/device.c  | 30 ++++++++++++++++++------------
- net/mctp/neigh.c   | 31 +++++++++++++++++++------------
- net/mctp/route.c   | 33 +++++++++++++++++++++++----------
- 5 files changed, 66 insertions(+), 36 deletions(-)
+ drivers/scsi/lpfc/lpfc_els.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/mctp.h b/include/net/mctp.h
-index 7b17c52e8ce2a..28d59ae94ca3b 100644
---- a/include/net/mctp.h
-+++ b/include/net/mctp.h
-@@ -295,7 +295,7 @@ void mctp_neigh_remove_dev(struct mctp_dev *mdev);
- int mctp_routes_init(void);
- void mctp_routes_exit(void);
+diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
+index f67d72160d36e..ebe84bb7bb3dd 100644
+--- a/drivers/scsi/lpfc/lpfc_els.c
++++ b/drivers/scsi/lpfc/lpfc_els.c
+@@ -9649,11 +9649,12 @@ lpfc_els_flush_cmd(struct lpfc_vport *vport)
+ 		if (piocb->cmd_flag & LPFC_DRIVER_ABORTED && !mbx_tmo_err)
+ 			continue;
  
--void mctp_device_init(void);
-+int mctp_device_init(void);
- void mctp_device_exit(void);
+-		/* On the ELS ring we can have ELS_REQUESTs or
+-		 * GEN_REQUESTs waiting for a response.
++		/* On the ELS ring we can have ELS_REQUESTs, ELS_RSPs,
++		 * or GEN_REQUESTs waiting for a CQE response.
+ 		 */
+ 		ulp_command = get_job_cmnd(phba, piocb);
+-		if (ulp_command == CMD_ELS_REQUEST64_CR) {
++		if (ulp_command == CMD_ELS_REQUEST64_WQE ||
++		    ulp_command == CMD_XMIT_ELS_RSP64_WQE) {
+ 			list_add_tail(&piocb->dlist, &abort_list);
  
- #endif /* __NET_MCTP_H */
-diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
-index de52a9191da0e..75f4790d99623 100644
---- a/net/mctp/af_mctp.c
-+++ b/net/mctp/af_mctp.c
-@@ -753,10 +753,14 @@ static __init int mctp_init(void)
- 	if (rc)
- 		goto err_unreg_routes;
- 
--	mctp_device_init();
-+	rc = mctp_device_init();
-+	if (rc)
-+		goto err_unreg_neigh;
- 
- 	return 0;
- 
-+err_unreg_neigh:
-+	mctp_neigh_exit();
- err_unreg_routes:
- 	mctp_routes_exit();
- err_unreg_proto:
-diff --git a/net/mctp/device.c b/net/mctp/device.c
-index acb97b2574289..85cc5f31f1e7c 100644
---- a/net/mctp/device.c
-+++ b/net/mctp/device.c
-@@ -524,25 +524,31 @@ static struct notifier_block mctp_dev_nb = {
- 	.priority = ADDRCONF_NOTIFY_PRIORITY,
- };
- 
--void __init mctp_device_init(void)
-+static const struct rtnl_msg_handler mctp_device_rtnl_msg_handlers[] = {
-+	{THIS_MODULE, PF_MCTP, RTM_NEWADDR, mctp_rtm_newaddr, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_DELADDR, mctp_rtm_deladdr, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_GETADDR, NULL, mctp_dump_addrinfo, 0},
-+};
-+
-+int __init mctp_device_init(void)
- {
--	register_netdevice_notifier(&mctp_dev_nb);
-+	int err;
- 
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_GETADDR,
--			     NULL, mctp_dump_addrinfo, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_NEWADDR,
--			     mctp_rtm_newaddr, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_DELADDR,
--			     mctp_rtm_deladdr, NULL, 0);
-+	register_netdevice_notifier(&mctp_dev_nb);
- 	rtnl_af_register(&mctp_af_ops);
-+
-+	err = rtnl_register_many(mctp_device_rtnl_msg_handlers);
-+	if (err) {
-+		rtnl_af_unregister(&mctp_af_ops);
-+		unregister_netdevice_notifier(&mctp_dev_nb);
-+	}
-+
-+	return err;
- }
- 
- void __exit mctp_device_exit(void)
- {
-+	rtnl_unregister_many(mctp_device_rtnl_msg_handlers);
- 	rtnl_af_unregister(&mctp_af_ops);
--	rtnl_unregister(PF_MCTP, RTM_DELADDR);
--	rtnl_unregister(PF_MCTP, RTM_NEWADDR);
--	rtnl_unregister(PF_MCTP, RTM_GETADDR);
--
- 	unregister_netdevice_notifier(&mctp_dev_nb);
- }
-diff --git a/net/mctp/neigh.c b/net/mctp/neigh.c
-index ffa0f9e0983fb..590f642413e4e 100644
---- a/net/mctp/neigh.c
-+++ b/net/mctp/neigh.c
-@@ -322,22 +322,29 @@ static struct pernet_operations mctp_net_ops = {
- 	.exit = mctp_neigh_net_exit,
- };
- 
-+static const struct rtnl_msg_handler mctp_neigh_rtnl_msg_handlers[] = {
-+	{THIS_MODULE, PF_MCTP, RTM_NEWNEIGH, mctp_rtm_newneigh, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_DELNEIGH, mctp_rtm_delneigh, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_GETNEIGH, NULL, mctp_rtm_getneigh, 0},
-+};
-+
- int __init mctp_neigh_init(void)
- {
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_NEWNEIGH,
--			     mctp_rtm_newneigh, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_DELNEIGH,
--			     mctp_rtm_delneigh, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_GETNEIGH,
--			     NULL, mctp_rtm_getneigh, 0);
--
--	return register_pernet_subsys(&mctp_net_ops);
-+	int err;
-+
-+	err = register_pernet_subsys(&mctp_net_ops);
-+	if (err)
-+		return err;
-+
-+	err = rtnl_register_many(mctp_neigh_rtnl_msg_handlers);
-+	if (err)
-+		unregister_pernet_subsys(&mctp_net_ops);
-+
-+	return err;
- }
- 
--void __exit mctp_neigh_exit(void)
-+void mctp_neigh_exit(void)
- {
-+	rtnl_unregister_many(mctp_neigh_rtnl_msg_handlers);
- 	unregister_pernet_subsys(&mctp_net_ops);
--	rtnl_unregister(PF_MCTP, RTM_GETNEIGH);
--	rtnl_unregister(PF_MCTP, RTM_DELNEIGH);
--	rtnl_unregister(PF_MCTP, RTM_NEWNEIGH);
- }
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index eefd7834d9a00..597e9cf5aa644 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -1474,26 +1474,39 @@ static struct pernet_operations mctp_net_ops = {
- 	.exit = mctp_routes_net_exit,
- };
- 
-+static const struct rtnl_msg_handler mctp_route_rtnl_msg_handlers[] = {
-+	{THIS_MODULE, PF_MCTP, RTM_NEWROUTE, mctp_newroute, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_DELROUTE, mctp_delroute, NULL, 0},
-+	{THIS_MODULE, PF_MCTP, RTM_GETROUTE, NULL, mctp_dump_rtinfo, 0},
-+};
-+
- int __init mctp_routes_init(void)
- {
-+	int err;
-+
- 	dev_add_pack(&mctp_packet_type);
- 
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_GETROUTE,
--			     NULL, mctp_dump_rtinfo, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_NEWROUTE,
--			     mctp_newroute, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_DELROUTE,
--			     mctp_delroute, NULL, 0);
-+	err = register_pernet_subsys(&mctp_net_ops);
-+	if (err)
-+		goto err_pernet;
-+
-+	err = rtnl_register_many(mctp_route_rtnl_msg_handlers);
-+	if (err)
-+		goto err_rtnl;
- 
--	return register_pernet_subsys(&mctp_net_ops);
-+	return 0;
-+
-+err_rtnl:
-+	unregister_pernet_subsys(&mctp_net_ops);
-+err_pernet:
-+	dev_remove_pack(&mctp_packet_type);
-+	return err;
- }
- 
- void mctp_routes_exit(void)
- {
-+	rtnl_unregister_many(mctp_route_rtnl_msg_handlers);
- 	unregister_pernet_subsys(&mctp_net_ops);
--	rtnl_unregister(PF_MCTP, RTM_DELROUTE);
--	rtnl_unregister(PF_MCTP, RTM_NEWROUTE);
--	rtnl_unregister(PF_MCTP, RTM_GETROUTE);
- 	dev_remove_pack(&mctp_packet_type);
- }
- 
+ 			/* If the link is down when flushing ELS commands
 -- 
 2.43.0
 
