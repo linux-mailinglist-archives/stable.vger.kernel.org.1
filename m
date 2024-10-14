@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-84844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 054A699D25C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:24:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1295D99CD11
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:28:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85C2D1F2417F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:24:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B07A1C22667
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D081C0DD6;
-	Mon, 14 Oct 2024 15:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEAB1AAE23;
+	Mon, 14 Oct 2024 14:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ckkzal4b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOjmt6mq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11481BFE06;
-	Mon, 14 Oct 2024 15:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13B21AA793;
+	Mon, 14 Oct 2024 14:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919404; cv=none; b=Tf1jErngaH9orXOWNWZz0qRfy3UUUwyTnxiX5pu2WSIqVOPIumJTZdNQf7AtoNCwV8NDoYxu0E9eh3+SycGZmMWc3rFGH+I+gm9o8CjcQYNoyMKs9cLARJOM2KmDvC11xqVuyXbzw0BZub9UxATIYORajPW9IqZBvPiCrgabZO0=
+	t=1728916111; cv=none; b=eLqXG26tRwaGsT+q78JnXAu5Zk9KaVx5Qo3zZpXqVAdGzlESmy0CgMBUPHA6Fm42FqAJRTMf+bfIKQlXMgjgSllL0oua2DXBUfgIYRpaqcKlBpECMtuFLXNBMZ87+d0QgBCgc8gLvivPQ8oC516nrt4B9zEqmy0aEKVssEiA0E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919404; c=relaxed/simple;
-	bh=PVwzxVlP+lrDq4ghafIn9y8AXIvRsTs2w3A/JMeS60A=;
+	s=arc-20240116; t=1728916111; c=relaxed/simple;
+	bh=+ryevX4ee89OFn4L3F4FkUpcyUlkj6X5xMWkXgIpfio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oNcMlW69EkanY201gq/jZ++hI2joH49NEmd4CBAV0ySRfRc+aGFYJti60w47SdHel1/238urY8SnG6Eue2xe92oD6iEEesBkzgB3AD716D8uF+YSL/RdGlrCQoFokSxlHES+HqyhuMELIMEU+K2kiuF+osSRMUfetpqHNRfI6Yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ckkzal4b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E50C4CEC3;
-	Mon, 14 Oct 2024 15:23:23 +0000 (UTC)
+	 MIME-Version; b=beP9UQelQad73kkZp719XNGKZiJtxTBf25GULzlT3MpWtcUkLQ04dx9qaVOSsLL7Hf/E3DZXcopaLVxRCZi/95LyN9nXJ7Dhv4QEksrvacBvhl9e2IT1D9vvI9zwn1NcPc+TPPsc1koI+fV+1wxHg/Ib2zNc98fxqHhRBFoVQBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOjmt6mq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B30CC4CEC3;
+	Mon, 14 Oct 2024 14:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919404;
-	bh=PVwzxVlP+lrDq4ghafIn9y8AXIvRsTs2w3A/JMeS60A=;
+	s=korg; t=1728916111;
+	bh=+ryevX4ee89OFn4L3F4FkUpcyUlkj6X5xMWkXgIpfio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ckkzal4b5VUWrJ2lpcwM2d5m9rXVe1NpUaf51KtWiRg0R/46SGvmbAb/a/rueol0C
-	 zNl8fhbQWLGilk8R642dcKDIPNZ7JNqS250QWEdTGfUsRQjrn6nEfXoxKDjVACZGUb
-	 DQL6QHU/zNqzahyg/OzQ+0Oy4/5bpgIyr5l7xouQ=
+	b=jOjmt6mq5qPQFvDFA2ACoL8CsdoD2RNhijMhgEyoBeCa/WC7mV9xndy/K+Fk4wC48
+	 /JhMacv04UnuHC8n+++rmZ5MyPZpnxGWj3xViQwA13vbuASVatyk5VZJsFQ4Aa7vfh
+	 lL4OElPGcXQZQ+D5CkFpEVlvnkhNpjAXCcn0BppM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 569/798] ocfs2: cancel dqi_sync_work before freeing oinfo
+	Frank Li <Frank.Li@nxp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 060/214] usb: host: xhci-plat: Parse xhci-missing_cas_quirk and apply quirk
 Date: Mon, 14 Oct 2024 16:18:43 +0200
-Message-ID: <20241014141240.354074570@linuxfoundation.org>
+Message-ID: <20241014141047.331795982@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,85 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 35fccce29feb3706f649726d410122dd81b92c18 upstream.
+[ Upstream commit a6cd2b3fa89468b5f28b83d211bd25cc589f9eba ]
 
-ocfs2_global_read_info() will initialize and schedule dqi_sync_work at the
-end, if error occurs after successfully reading global quota, it will
-trigger the following warning with CONFIG_DEBUG_OBJECTS_* enabled:
+Parse software managed property 'xhci-skip-phy-init-quirk' and
+'xhci-skip-phy-init-quirk' to apply related quirk. It allows usb glue layer
+driver apply these quirk.
 
-ODEBUG: free active (active state 0) object: 00000000d8b0ce28 object type: timer_list hint: qsync_work_fn+0x0/0x16c
-
-This reports that there is an active delayed work when freeing oinfo in
-error handling, so cancel dqi_sync_work first.  BTW, return status instead
-of -1 when .read_file_info fails.
-
-Link: https://syzkaller.appspot.com/bug?extid=f7af59df5d6b25f0febd
-Link: https://lkml.kernel.org/r/20240904071004.2067695-1-joseph.qi@linux.alibaba.com
-Fixes: 171bf93ce11f ("ocfs2: Periodic quota syncing")
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Reported-by: syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com
-Tested-by: syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240906-dwc-mp-v5-1-ea8ec6774e7b@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/quota_local.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-plat.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/ocfs2/quota_local.c
-+++ b/fs/ocfs2/quota_local.c
-@@ -689,7 +689,7 @@ static int ocfs2_local_read_info(struct
- 	int status;
- 	struct buffer_head *bh = NULL;
- 	struct ocfs2_quota_recovery *rec;
--	int locked = 0;
-+	int locked = 0, global_read = 0;
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index 31bdfa52eeb25..ecaa75718e592 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -259,6 +259,12 @@ int xhci_plat_probe(struct platform_device *pdev, struct device *sysdev, const s
+ 		if (device_property_read_bool(tmpdev, "write-64-hi-lo-quirk"))
+ 			xhci->quirks |= XHCI_WRITE_64_HI_LO;
  
- 	info->dqi_max_spc_limit = 0x7fffffffffffffffLL;
- 	info->dqi_max_ino_limit = 0x7fffffffffffffffLL;
-@@ -697,6 +697,7 @@ static int ocfs2_local_read_info(struct
- 	if (!oinfo) {
- 		mlog(ML_ERROR, "failed to allocate memory for ocfs2 quota"
- 			       " info.");
-+		status = -ENOMEM;
- 		goto out_err;
++		if (device_property_read_bool(tmpdev, "xhci-missing-cas-quirk"))
++			xhci->quirks |= XHCI_MISSING_CAS;
++
++		if (device_property_read_bool(tmpdev, "xhci-skip-phy-init-quirk"))
++			xhci->quirks |= XHCI_SKIP_PHY_INIT;
++
+ 		device_property_read_u32(tmpdev, "imod-interval-ns",
+ 					 &xhci->imod_interval);
  	}
- 	info->dqi_priv = oinfo;
-@@ -709,6 +710,7 @@ static int ocfs2_local_read_info(struct
- 	status = ocfs2_global_read_info(sb, type);
- 	if (status < 0)
- 		goto out_err;
-+	global_read = 1;
- 
- 	status = ocfs2_inode_lock(lqinode, &oinfo->dqi_lqi_bh, 1);
- 	if (status < 0) {
-@@ -779,10 +781,12 @@ out_err:
- 		if (locked)
- 			ocfs2_inode_unlock(lqinode, 1);
- 		ocfs2_release_local_quota_bitmaps(&oinfo->dqi_chunk);
-+		if (global_read)
-+			cancel_delayed_work_sync(&oinfo->dqi_sync_work);
- 		kfree(oinfo);
- 	}
- 	brelse(bh);
--	return -1;
-+	return status;
- }
- 
- /* Write local info to quota file */
+-- 
+2.43.0
+
 
 
 
