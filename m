@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-84505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5FC799D082
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:04:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D916B99D092
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:05:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20A1C1C2364C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:04:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 740DEB2692B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623D37C6E6;
-	Mon, 14 Oct 2024 15:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2CE4CDEC;
+	Mon, 14 Oct 2024 15:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kbghRw/u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W12mmU0+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE2F4CDEC;
-	Mon, 14 Oct 2024 15:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C26481B3;
+	Mon, 14 Oct 2024 15:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918240; cv=none; b=mulWvr33c3zkfUpCA6LNaK532HnQakWqqrDUl4R6XKvsnVCte4Vn2F3vqaMP0HyRFQU1ysM+hibbI5aGLf4+SVpxR+6k/0aNvRiPloRmmKDXSIY8JdvZ1y9kYP5lWe4iZH6rt9MvBITYEArCAbk3kfL0n8zy5yARpNh9CDF5YLw=
+	t=1728918277; cv=none; b=mIxX4fhrA2D08jQtiZM7vtrdq+WTg+o2wOcRn3K+J4KjGeBRYge29BRq4qDWfleJwKOIyh0WCiaSubTKoSKDJVu0GpmkfG0FUykWdMW3bwSq8kUmaeez/f1hgualv10hYz66C0LGqJRkLM/bvSrw5NupAFLTUeSRIkUG/PkVcWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918240; c=relaxed/simple;
-	bh=yqRGUNNB0RqNu6A4wgT0NM2JbNPt/f5atU25z8ZyUHM=;
+	s=arc-20240116; t=1728918277; c=relaxed/simple;
+	bh=FRcU4Ecsl2NuxfEeY4Gf6DRsbZrGRuzAsIlMw08Feq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D77IHJDpFKhRzFMPqBW3wSzBmsxFaVYvzX4sOHbfdOHjvGCtlY1oCP7unG1b0NPyFSrEzwkTUCWEQyHiDe7A8z2PV0fwotXcQ4aVGbQd2+uHWrcKFtLYuR4LPf/H2RggLYEKD4Mgafwm5uRp45H8RFucDKdrLYosVrAmLJT6ASo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kbghRw/u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B92C4CEC3;
-	Mon, 14 Oct 2024 15:03:59 +0000 (UTC)
+	 MIME-Version; b=XAbJpEXMC7tTF6hs12G+wrPigEEz83GxjXyf5S89TJbFe/biEOrle9nXFpurcPJ/Ec0NCPUf3eVFi0mCldrOPQuCkd23EycedMpwl8pjsIi6/bQvpo2tblq2wnE+okcISqMSk56+5BoLy7OYRHXEKHl9wsplgCt/JgPNa2ih5Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W12mmU0+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20A6C4CEC3;
+	Mon, 14 Oct 2024 15:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918240;
-	bh=yqRGUNNB0RqNu6A4wgT0NM2JbNPt/f5atU25z8ZyUHM=;
+	s=korg; t=1728918277;
+	bh=FRcU4Ecsl2NuxfEeY4Gf6DRsbZrGRuzAsIlMw08Feq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kbghRw/uSYHxk4ukEGd94thKULe4Y8x9RMUAvhTAcTDmp9Ym6kvH/3lTI+WXAgPft
-	 vPYLPm3167BDoE88X5AkdX+JyrEYrC7jY+1K//R378I2XgDLDQZ7xXYDEUU7NailPR
-	 gngmFl+1dwyGE3TA9IpUm4EvBVVD2s4BDtuOtFMA=
+	b=W12mmU0+cdg8QgHgwUpXaIXwfqTSX1OOhj0nULrkuqoSHifisfFytAOp1LO9lglid
+	 bcAHWqTyKd6/aoqquDxyC4FDbwkMnae4ANNWXzp+AP1kRJtNoKJ5u+h+DgMTU5n6iy
+	 k5S+w96sBQ0h+ti5kGUOMPnhJ402px49mcm9MIe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xie Yongji <xieyongji@bytedance.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
 	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 257/798] vdpa: Add eventfd for the vdpa callback
-Date: Mon, 14 Oct 2024 16:13:31 +0200
-Message-ID: <20241014141228.031999125@linuxfoundation.org>
+Subject: [PATCH 6.1 258/798] vhost_vdpa: assign irq bypass producer token correctly
+Date: Mon, 14 Oct 2024 16:13:32 +0200
+Message-ID: <20241014141228.071564704@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -67,75 +67,93 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xie Yongji <xieyongji@bytedance.com>
+From: Jason Wang <jasowang@redhat.com>
 
-[ Upstream commit 5e68470f4e80a4120e9ecec408f6ab4ad386bd4a ]
+[ Upstream commit 02e9e9366fefe461719da5d173385b6685f70319 ]
 
-Add eventfd for the vdpa callback so that user
-can signal it directly instead of triggering the
-callback. It will be used for vhost-vdpa case.
+We used to call irq_bypass_unregister_producer() in
+vhost_vdpa_setup_vq_irq() which is problematic as we don't know if the
+token pointer is still valid or not.
 
-Signed-off-by: Xie Yongji <xieyongji@bytedance.com>
-Message-Id: <20230323053043.35-9-xieyongji@bytedance.com>
+Actually, we use the eventfd_ctx as the token so the life cycle of the
+token should be bound to the VHOST_SET_VRING_CALL instead of
+vhost_vdpa_setup_vq_irq() which could be called by set_status().
+
+Fixing this by setting up irq bypass producer's token when handling
+VHOST_SET_VRING_CALL and un-registering the producer before calling
+vhost_vring_ioctl() to prevent a possible use after free as eventfd
+could have been released in vhost_vring_ioctl(). And such registering
+and unregistering will only be done if DRIVER_OK is set.
+
+Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
+Tested-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Fixes: 2cf1ba9a4d15 ("vhost_vdpa: implement IRQ offloading in vhost_vdpa")
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20240816031900.18013-1-jasowang@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Stable-dep-of: 02e9e9366fef ("vhost_vdpa: assign irq bypass producer token correctly")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vdpa.c         | 2 ++
- drivers/virtio/virtio_vdpa.c | 1 +
- include/linux/vdpa.h         | 6 ++++++
- 3 files changed, 9 insertions(+)
+ drivers/vhost/vdpa.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index 55f88eeb78a72..ef9e845a5a5c5 100644
+index ef9e845a5a5c5..59587f9880d3c 100644
 --- a/drivers/vhost/vdpa.c
 +++ b/drivers/vhost/vdpa.c
-@@ -602,9 +602,11 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
- 		if (vq->call_ctx.ctx) {
+@@ -191,11 +191,9 @@ static void vhost_vdpa_setup_vq_irq(struct vhost_vdpa *v, u16 qid)
+ 	if (irq < 0)
+ 		return;
+ 
+-	irq_bypass_unregister_producer(&vq->call_ctx.producer);
+ 	if (!vq->call_ctx.ctx)
+ 		return;
+ 
+-	vq->call_ctx.producer.token = vq->call_ctx.ctx;
+ 	vq->call_ctx.producer.irq = irq;
+ 	ret = irq_bypass_register_producer(&vq->call_ctx.producer);
+ 	if (unlikely(ret))
+@@ -571,6 +569,14 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
+ 			vq->last_avail_idx = vq_state.split.avail_index;
+ 		}
+ 		break;
++	case VHOST_SET_VRING_CALL:
++		if (vq->call_ctx.ctx) {
++			if (ops->get_status(vdpa) &
++			    VIRTIO_CONFIG_S_DRIVER_OK)
++				vhost_vdpa_unsetup_vq_irq(v, idx);
++			vq->call_ctx.producer.token = NULL;
++		}
++		break;
+ 	}
+ 
+ 	r = vhost_vring_ioctl(&v->vdev, cmd, argp);
+@@ -603,13 +609,16 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
  			cb.callback = vhost_vdpa_virtqueue_cb;
  			cb.private = vq;
-+			cb.trigger = vq->call_ctx.ctx;
+ 			cb.trigger = vq->call_ctx.ctx;
++			vq->call_ctx.producer.token = vq->call_ctx.ctx;
++			if (ops->get_status(vdpa) &
++			    VIRTIO_CONFIG_S_DRIVER_OK)
++				vhost_vdpa_setup_vq_irq(v, idx);
  		} else {
  			cb.callback = NULL;
  			cb.private = NULL;
-+			cb.trigger = NULL;
+ 			cb.trigger = NULL;
  		}
  		ops->set_vq_cb(vdpa, idx, &cb);
- 		vhost_vdpa_setup_vq_irq(v, idx);
-diff --git a/drivers/virtio/virtio_vdpa.c b/drivers/virtio/virtio_vdpa.c
-index 9670cc79371d8..056ba6c5bb083 100644
---- a/drivers/virtio/virtio_vdpa.c
-+++ b/drivers/virtio/virtio_vdpa.c
-@@ -188,6 +188,7 @@ virtio_vdpa_setup_vq(struct virtio_device *vdev, unsigned int index,
- 	/* Setup virtqueue callback */
- 	cb.callback = callback ? virtio_vdpa_virtqueue_cb : NULL;
- 	cb.private = info;
-+	cb.trigger = NULL;
- 	ops->set_vq_cb(vdpa, index, &cb);
- 	ops->set_vq_num(vdpa, index, virtqueue_get_vring_size(vq));
+-		vhost_vdpa_setup_vq_irq(v, idx);
+ 		break;
  
-diff --git a/include/linux/vdpa.h b/include/linux/vdpa.h
-index 6d0f5e4e82c25..41bc78b3b8360 100644
---- a/include/linux/vdpa.h
-+++ b/include/linux/vdpa.h
-@@ -13,10 +13,16 @@
-  * struct vdpa_calllback - vDPA callback definition.
-  * @callback: interrupt callback function
-  * @private: the data passed to the callback function
-+ * @trigger: the eventfd for the callback (Optional).
-+ *           When it is set, the vDPA driver must guarantee that
-+ *           signaling it is functional equivalent to triggering
-+ *           the callback. Then vDPA parent can signal it directly
-+ *           instead of triggering the callback.
-  */
- struct vdpa_callback {
- 	irqreturn_t (*callback)(void *data);
- 	void *private;
-+	struct eventfd_ctx *trigger;
- };
- 
- /**
+ 	case VHOST_SET_VRING_NUM:
+@@ -1235,6 +1244,7 @@ static int vhost_vdpa_open(struct inode *inode, struct file *filep)
+ 	for (i = 0; i < nvqs; i++) {
+ 		vqs[i] = &v->vqs[i];
+ 		vqs[i]->handle_kick = handle_vq_kick;
++		vqs[i]->call_ctx.ctx = NULL;
+ 	}
+ 	vhost_dev_init(dev, vqs, nvqs, 0, 0, 0, false,
+ 		       vhost_vdpa_process_iotlb_msg);
 -- 
 2.43.0
 
