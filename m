@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-84379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6714D99CFE9
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B59399CFEA
 	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:59:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED60BB218D7
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:59:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EC3D1F22D47
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CF71ABEAD;
-	Mon, 14 Oct 2024 14:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B88C1ABEC9;
+	Mon, 14 Oct 2024 14:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8JMTtaQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GqZufTU6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E5381749;
-	Mon, 14 Oct 2024 14:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7AB75809;
+	Mon, 14 Oct 2024 14:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917804; cv=none; b=Mr+GQYf1Qn32kcnzvtwUdFPHDX0rpFkWEvL6tV4QJsa3WsUFn4H7IcO14it2kBXKXEfACEd+yKZ+W7wTOYFGvitV5gzkvyCvNmBTcm+jCBytSYD9PBNHTRHh08ooaON19Ew9pct+1nNxs4+XYlp3/RmI2jNRnEzH6Rxss/8eiJk=
+	t=1728917811; cv=none; b=KYMc9S4Fgrn6whrYvJTBv9XS3XwFqXbKxG3gnQD8UpRBalBx4FjrWhUIGFqQylsL2J1d+XQRjtVNgfifrwg49gPqkwzKbO54Vxq+3FGH7NZWE2cKBCiwOi7fgvtKw2pzgeHvmbCxpc7VySOh6ox4EoN/Kdq5DTKPmcymmwL9mlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917804; c=relaxed/simple;
-	bh=xDZ/bgXzB7YNmldGYa3sRHVv5cDwlGKmKH4J792U8No=;
+	s=arc-20240116; t=1728917811; c=relaxed/simple;
+	bh=GLBMDeOzdOYWZ2ecoEWUs3MsPuF95jvEI3yGQQfRvYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gE5NKgXOv3z16uvxLyt5/ktFFZ1t836Zs1mJFMMQFigFzyjctIxRQBDTSO/uD+w8XIdZrE/kswFSEckR107lJNUBJjHmxBobEEY6zv51Ons9t+kPGkZzZxI3VdeDHKDz99N7wS35c1bVppE1XoMM60GjUmqhHgP3wrnGFNhDDf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8JMTtaQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7D1C4CEC3;
-	Mon, 14 Oct 2024 14:56:43 +0000 (UTC)
+	 MIME-Version; b=cc9+4BSK6c3YApzEwJTkRk6951C8Ri8PmOwnWspoeyVAU9EUDpZ6r9/PMoqEhOU+10wyItak+vz0octp2w6r4j279aqG1Tt1HA1MjvLrAVNGXcym1SCnRGoO7Ah5MGtzprVkqXkHqCju3UrhSTAN7/3FD/zZsmOyT0xiNv/TCzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GqZufTU6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB419C4CEC3;
+	Mon, 14 Oct 2024 14:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917804;
-	bh=xDZ/bgXzB7YNmldGYa3sRHVv5cDwlGKmKH4J792U8No=;
+	s=korg; t=1728917811;
+	bh=GLBMDeOzdOYWZ2ecoEWUs3MsPuF95jvEI3yGQQfRvYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V8JMTtaQsNGeC9KW3m0qo/Og4HqCTP4cHaihQSRuKo48ZpoSQLpkBUV4FpiHogTKf
-	 yVIOAY95+jaX7UxNajG4Si/BtKsu5uULdzFICn8cPXBs/dYwtOhNFJFr7KBkRup5/0
-	 sn6QMWUZJYVlcQvb7M04EDA1ELc6Re1mbU1ysS80=
+	b=GqZufTU61DFz9ku32oLJyXfEjdm+yQtGjz3EAbdFN8/gXPgq4iBTwHE+WytNGn2Oo
+	 dbo8SqypqIV54+2jmwirbCe3g305IbCKTlae7g13lPbfW3hvd5oueBAoUVLYJi89Jd
+	 QI0tzlrbsaULHcqK8WUk0aZi6FSOtl4rFIRdE5GU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
 	Andrii Nakryiko <andrii@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 140/798] selftests/bpf: Workaround strict bpf_lsm return value check.
-Date: Mon, 14 Oct 2024 16:11:34 +0200
-Message-ID: <20241014141223.419685858@linuxfoundation.org>
+Subject: [PATCH 6.1 141/798] selftests/bpf: Use pid_t consistently in test_progs.c
+Date: Mon, 14 Oct 2024 16:11:35 +0200
+Message-ID: <20241014141223.458498462@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -66,45 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit aa8ebb270c66cea1f56a25d0f938036e91ad085a ]
+[ Upstream commit ec4fe2f0fa12fd2d0115df7e58414dc26899cc5e ]
 
-test_progs-no_alu32 -t libbpf_get_fd_by_id_opts
-is being rejected by the verifier with the following error
-due to compiler optimization:
+Use pid_t rather than __pid_t when allocating memory for 'worker_pids' in
+'struct test_env', as this is its declared type and also avoids compile
+errors seen building against musl libc on mipsel64:
 
-6: (67) r0 <<= 62                     ; R0_w=scalar(smax=0x4000000000000000,umax=0xc000000000000000,smin32=0,smax32=umax32=0,var_off=(0x0; 0xc000000000000000))
-7: (c7) r0 s>>= 63                    ; R0_w=scalar(smin=smin32=-1,smax=smax32=0)
-;  @ test_libbpf_get_fd_by_id_opts.c:0
-8: (57) r0 &= -13                     ; R0_w=scalar(smax=0x7ffffffffffffff3,umax=0xfffffffffffffff3,smax32=0x7ffffff3,umax32=0xfffffff3,var_off=(0x0; 0xfffffffffffffff3))
-; int BPF_PROG(check_access, struct bpf_map *map, fmode_t fmode) @ test_libbpf_get_fd_by_id_opts.c:27
-9: (95) exit
-At program exit the register R0 has smax=9223372036854775795 should have been in [-4095, 0]
+  test_progs.c:1738:49: error: '__pid_t' undeclared (first use in this function); did you mean 'pid_t'?
+   1738 |                 env.worker_pids = calloc(sizeof(__pid_t), env.workers);
+        |                                                 ^~~~~~~
+        |                                                 pid_t
+  test_progs.c:1738:49: note: each undeclared identifier is reported only once for each function it appears in
 
-Workaround by adding barrier().
-Eventually the verifier will be able to recognize it.
-
-Fixes: 5d99e198be27 ("bpf, lsm: Add check for BPF LSM return value")
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 91b2c0afd00c ("selftests/bpf: Add parallelism to test_progs")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
 Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Geliang Tang <geliang@kernel.org>
+Link: https://lore.kernel.org/bpf/c6447da51a94babc1931711a43e2ceecb135c93d.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c  | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/bpf/test_progs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c b/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c
-index f5ac5f3e89196..568816307f712 100644
---- a/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c
-+++ b/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c
-@@ -31,6 +31,7 @@ int BPF_PROG(check_access, struct bpf_map *map, fmode_t fmode)
- 
- 	if (fmode & FMODE_WRITE)
- 		return -EACCES;
-+	barrier();
- 
- 	return 0;
- }
+diff --git a/tools/testing/selftests/bpf/test_progs.c b/tools/testing/selftests/bpf/test_progs.c
+index 3fef451d88313..a952d614ffbbd 100644
+--- a/tools/testing/selftests/bpf/test_progs.c
++++ b/tools/testing/selftests/bpf/test_progs.c
+@@ -1639,7 +1639,7 @@ int main(int argc, char **argv)
+ 	/* launch workers if requested */
+ 	env.worker_id = -1; /* main process */
+ 	if (env.workers) {
+-		env.worker_pids = calloc(sizeof(__pid_t), env.workers);
++		env.worker_pids = calloc(sizeof(pid_t), env.workers);
+ 		env.worker_socks = calloc(sizeof(int), env.workers);
+ 		if (env.debug)
+ 			fprintf(stdout, "Launching %d workers.\n", env.workers);
 -- 
 2.43.0
 
