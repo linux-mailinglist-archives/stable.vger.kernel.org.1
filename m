@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72ACC99D349
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1785199CF16
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:51:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C078FB277CD
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8FCA1F22F79
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520D01B4F0A;
-	Mon, 14 Oct 2024 15:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BBF31CC8B9;
+	Mon, 14 Oct 2024 14:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4XUHhxh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7TWXOSq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5531B4F04;
-	Mon, 14 Oct 2024 15:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62441CC893;
+	Mon, 14 Oct 2024 14:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919925; cv=none; b=HCmBYQkRyw28pX0KFrtRxYQ/toZC6UYzDrI//DrYzE7D5mgeb8cOLdeXGWTLu/nZ1/xZb2sFxmaINkavegqrkX+f9zlyPkE/jyi1AqwIdX11Pf2KUdixMlLYzvdps8M1H2kPRjhp5SCZ39zqcAwayqX8IUq9c82eE9i6nL3nUUA=
+	t=1728917251; cv=none; b=CjY9p40vA635dd/eHKZaifmcrMfRtwceR8AaTy1/e5n8ZVp/aQy4uLfGaOKlBOaeg0Y7n1VJyW3ZzIRh/v4ewnsEMM/0m82fTy1bQpM4p/4Gf9ugel3GSsRTUmJph4Fl6ArBPWgfqZwJ48pc+Jhwe/jK2tthXIgz/VCC/lxJonw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919925; c=relaxed/simple;
-	bh=+RXIXf7b5VpBahR5KLXhAGJc/ClnLyBqM902rQ2N5tg=;
+	s=arc-20240116; t=1728917251; c=relaxed/simple;
+	bh=E52431rwp/5xncWyPK+8NJpji7WpCwsraorVSf60oWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C0ecJsUH/QlZntjZ2p8ng29L6lx4tNY7LiEDncXzi+jpC9SIKdT687kOsotoEYceInl2W4kr3V3+9GpQUAFGAHdmyc2iwdNnczcV6yz7wM9kyLdv47jzWsOsuSC5KCvqdKheGnX7OQv48bI4TtuS1YSIJno4QYPSmzx+HBYRu+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4XUHhxh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F96DC4CECF;
-	Mon, 14 Oct 2024 15:32:04 +0000 (UTC)
+	 MIME-Version; b=DtfUNlsnAi+tHS1baDh+PNmYyplIcS5l+P+FsmzD8Xy9vmmDfT/SPsSNozQHcEj8lkTjUOxrYAcizgRDNDH0PHm5307tg1WlDKpsXgW2xJORMysAeax6HhYpDuFvtSFk/eXZEDSNl7baZUHsC1bWbAO/oYNVYMEQjrRtPKSBK4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7TWXOSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6B1C4CEC3;
+	Mon, 14 Oct 2024 14:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919924;
-	bh=+RXIXf7b5VpBahR5KLXhAGJc/ClnLyBqM902rQ2N5tg=;
+	s=korg; t=1728917251;
+	bh=E52431rwp/5xncWyPK+8NJpji7WpCwsraorVSf60oWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4XUHhxhDCso7FOXJCiN0ad1hOlQQQZG2SaIM7IXlqeH31//7PLM5PpKqhxBASlki
-	 l23vmmsydTVQ0JPRftScKPcOe3veQahopc5HPCsq/lxJfFuyxhlDqG0IFQ/hVyBOJT
-	 3uxX4qe+4QHxVNFzwu+XeKNwTmiAv4dgW72gcfW0=
+	b=m7TWXOSqHa/Axp+lUxctCMvDC2tEC3+srEHfeXVV7iH5zTsdFvySJUGb2EOdfk0wH
+	 PI4a3kfiWPq1ofYh3yPrm/ZE9pXldrp8mto4dWuk1P8ypB2X1fVShAEmwveqcHChED
+	 WooxRy7rj/9C5Cl+tfqvytlMrJEQIZavjZsd96kY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 748/798] gpio: aspeed: Use devm_clk api to manage clock source
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 196/213] net: explicitly clear the sk pointer, when pf->create fails
 Date: Mon, 14 Oct 2024 16:21:42 +0200
-Message-ID: <20241014141247.454490616@linuxfoundation.org>
+Message-ID: <20241014141050.611023084@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Billy Tsai <billy_tsai@aspeedtech.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit a6191a3d18119184237f4ee600039081ad992320 ]
+commit 631083143315d1b192bd7d915b967b37819e88ea upstream.
 
-Replace of_clk_get with devm_clk_get_enabled to manage the clock source.
+We have recently noticed the exact same KASAN splat as in commit
+6cd4a78d962b ("net: do not leave a dangling sk pointer, when socket
+creation fails"). The problem is that commit did not fully address the
+problem, as some pf->create implementations do not use sk_common_release
+in their error paths.
 
-Fixes: 5ae4cb94b313 ("gpio: aspeed: Add debounce support")
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-Link: https://lore.kernel.org/r/20241008081450.1490955-3-billy_tsai@aspeedtech.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For example, we can use the same reproducer as in the above commit, but
+changing ping to arping. arping uses AF_PACKET socket and if packet_create
+fails, it will just sk_free the allocated sk object.
+
+While we could chase all the pf->create implementations and make sure they
+NULL the freed sk object on error from the socket, we can't guarantee
+future protocols will not make the same mistake.
+
+So it is easier to just explicitly NULL the sk pointer upon return from
+pf->create in __sock_create. We do know that pf->create always releases the
+allocated sk object on error, so if the pointer is not NULL, it is
+definitely dangling.
+
+Fixes: 6cd4a78d962b ("net: do not leave a dangling sk pointer, when socket creation fails")
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241003170151.69445-1-ignat@cloudflare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-aspeed.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/socket.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-aspeed.c b/drivers/gpio/gpio-aspeed.c
-index 3cfb2c6103c6b..21deb228c7d7b 100644
---- a/drivers/gpio/gpio-aspeed.c
-+++ b/drivers/gpio/gpio-aspeed.c
-@@ -1156,7 +1156,7 @@ static int __init aspeed_gpio_probe(struct platform_device *pdev)
- 	if (!gpio_id)
- 		return -EINVAL;
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -1569,8 +1569,13 @@ int __sock_create(struct net *net, int f
+ 	rcu_read_unlock();
  
--	gpio->clk = of_clk_get(pdev->dev.of_node, 0);
-+	gpio->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(gpio->clk)) {
- 		dev_warn(&pdev->dev,
- 				"Failed to get clock from devicetree, debouncing disabled\n");
--- 
-2.43.0
-
+ 	err = pf->create(net, sock, protocol, kern);
+-	if (err < 0)
++	if (err < 0) {
++		/* ->create should release the allocated sock->sk object on error
++		 * but it may leave the dangling pointer
++		 */
++		sock->sk = NULL;
+ 		goto out_module_put;
++	}
+ 
+ 	/*
+ 	 * Now to bump the refcnt of the [loadable] module that owns this
 
 
 
