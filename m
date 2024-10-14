@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-84761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD7399D1FE
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F8799CCCA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:25:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DDA51C23192
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EFA6B21A91
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8701B85C2;
-	Mon, 14 Oct 2024 15:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1581A76AC;
+	Mon, 14 Oct 2024 14:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRW37OMt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGAoehZg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376041B4F2C;
-	Mon, 14 Oct 2024 15:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38231E571;
+	Mon, 14 Oct 2024 14:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919118; cv=none; b=ltdQW5VE20OpS9Ei/4fwwBblsvyMDSoJteTWm0GGMw+QmZhC4rDkhpC/4w3wRU3JfJnPLt2VxzU6fS1Zhldk58p5XRIoSyyPP0pH5wI/P7IdQUYUM7s9iyMeezmmMiuhBcskbQE3I6/9G8b8cIs3WTzHCnkRwZ+zkNZk+elEkyA=
+	t=1728915894; cv=none; b=Byw582KaZFwTfN/OvbUyeOo8DPn64CC9CFdd46Yf5UX8aqyL6Wa5AB7pqtuvM5q/xBAZaobxFhpYSlE9UelM6vcDhV57L2HDfRLa5tuB6gwLfHjjDTHj7fp5o45OeDObriGmZm6jUQlB0dWijVqyRTlS01brrE4HdyrPby1Sksg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919118; c=relaxed/simple;
-	bh=XypvQoMakyGpn+W5QNflRu1r3SaqWpwVeqSvEIHcxIA=;
+	s=arc-20240116; t=1728915894; c=relaxed/simple;
+	bh=Ewk2xc/vsKEtwcjrNdA5M5P/KpxITXm40vCC4o3/4Zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yv+nRpHGdmzqZUdFuz+bIcxZxL6E6bjoQviHt9X/1dljlAuNP/9+wppq2hWVgFbMatO6LV8U2+JHDyJuF1SFc3waOMNur7SJ8lWdGWvy7yUeThFRUY7H1y40Iad0yrpwFV0Mv02uLLUBO7I4cSiv36MGzmx41XHGJaHe4ZMsLKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRW37OMt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD34C4CEC3;
-	Mon, 14 Oct 2024 15:18:37 +0000 (UTC)
+	 MIME-Version; b=oiWhTeGBLPT6/HdqsSHgTPKVRK3G57OmOy4TGDpjvdS1puy7Y24AXjzI9qJfu0LHLKVpCV4dGFuqL2TIft5PFLXZ/btJqbjBLdWAfwOCKvTdoO6LXlOYGi9hpgICcMhJ5NuVBF5CKs5NiDm/NwBWhUfxRal5U2ztDatbMSmoZw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGAoehZg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4823C4CEC3;
+	Mon, 14 Oct 2024 14:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919118;
-	bh=XypvQoMakyGpn+W5QNflRu1r3SaqWpwVeqSvEIHcxIA=;
+	s=korg; t=1728915894;
+	bh=Ewk2xc/vsKEtwcjrNdA5M5P/KpxITXm40vCC4o3/4Zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qRW37OMtYJz9jXGm5ya6IGKBP80OuNYYHaaqfJIJ9sFT+9xg0yEwEhxuyw13SzV+W
-	 CyQXEafa4id8nguUqlCcCS7fSjguTwG+wjORUwAA5fJS4/2o/Nq1jMQi6AEhjGEmQE
-	 9SyASakI1X0QWWHuUWiiPE81z+fFw8XfuyN2m77s=
+	b=JGAoehZgoc6U5dQpSgQVeDdsJbgQm+c7e2jziVrdYOIkAm8atV0kW2QamPK41e3xM
+	 mgnb3+UFqnBcwVvcxJiIdHMZmukRWNy/3kZ8c9dmzQJnkGszFhycGHpn1WF819x9j9
+	 GLEoeiKGxe8K6v6xl4EH7neu+F5qIjj+bWk7hi+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 518/798] selftests: vDSO: fix vDSO symbols lookup for powerpc64
+Subject: [PATCH 6.11 009/214] virtio_console: fix misc probe bugs
 Date: Mon, 14 Oct 2024 16:17:52 +0200
-Message-ID: <20241014141238.329498933@linuxfoundation.org>
+Message-ID: <20241014141045.356730682@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit ba83b3239e657469709d15dcea5f9b65bf9dbf34 ]
+[ Upstream commit b9efbe2b8f0177fa97bfab290d60858900aa196b ]
 
-On powerpc64, following tests fail locating vDSO functions:
+This fixes the following issue discovered by code review:
 
-  ~ # ./vdso_test_abi
-  TAP version 13
-  1..16
-  # [vDSO kselftest] VDSO_VERSION: LINUX_2.6.15
-  # Couldn't find __kernel_gettimeofday
-  ok 1 # SKIP __kernel_gettimeofday
-  # clock_id: CLOCK_REALTIME
-  # Couldn't find __kernel_clock_gettime
-  ok 2 # SKIP __kernel_clock_gettime CLOCK_REALTIME
-  # Couldn't find __kernel_clock_getres
-  ok 3 # SKIP __kernel_clock_getres CLOCK_REALTIME
-  ...
-  # Couldn't find __kernel_time
-  ok 16 # SKIP __kernel_time
-  # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:16 error:0
+after vqs have been created, a buggy device can send an interrupt.
 
-  ~ # ./vdso_test_getrandom
-  __kernel_getrandom is missing!
+A control vq callback will then try to schedule control_work which has
+not been initialized yet. Similarly for config interrupt.  Further, in
+and out vq callbacks invoke find_port_by_vq which attempts to take
+ports_lock which also has not been initialized.
 
-  ~ # ./vdso_test_gettimeofday
-  Could not find __kernel_gettimeofday
+To fix, init all locks and work before creating vqs.
 
-  ~ # ./vdso_test_getcpu
-  Could not find __kernel_getcpu
-
-On powerpc64, as shown below by readelf, vDSO functions symbols have
-type NOTYPE, so also accept that type when looking for symbols.
-
-$ powerpc64-linux-gnu-readelf -a arch/powerpc/kernel/vdso/vdso64.so.dbg
-ELF Header:
-  Magic:   7f 45 4c 46 02 02 01 00 00 00 00 00 00 00 00 00
-  Class:                             ELF64
-  Data:                              2's complement, big endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              DYN (Shared object file)
-  Machine:                           PowerPC64
-  Version:                           0x1
-...
-
-Symbol table '.dynsym' contains 12 entries:
-   Num:    Value          Size Type    Bind   Vis      Ndx Name
-     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND
-     1: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     2: 00000000000005f0    36 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     3: 0000000000000578    68 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     4: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
-     5: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     6: 0000000000000614   172 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     7: 00000000000006f0    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     8: 000000000000047c    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     9: 0000000000000454    12 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-    10: 00000000000004d0    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-    11: 00000000000005bc    52 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-
-Symbol table '.symtab' contains 56 entries:
-   Num:    Value          Size Type    Bind   Vis      Ndx Name
-...
-    45: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
-    46: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __kernel_getcpu
-    47: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_getres
-    48: 00000000000005f0    36 NOTYPE  GLOBAL DEFAULT    8 __kernel_get_tbfreq
-    49: 000000000000047c    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_gettimeofday
-    50: 0000000000000614   172 NOTYPE  GLOBAL DEFAULT    8 __kernel_sync_dicache
-    51: 00000000000006f0    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_getrandom
-    52: 0000000000000454    12 NOTYPE  GLOBAL DEFAULT    8 __kernel_sigtram[...]
-    53: 0000000000000578    68 NOTYPE  GLOBAL DEFAULT    8 __kernel_time
-    54: 00000000000004d0    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_g[...]
-    55: 00000000000005bc    52 NOTYPE  GLOBAL DEFAULT    8 __kernel_get_sys[...]
-
-Fixes: 98eedc3a9dbf ("Document the vDSO and add a reference parser")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Message-ID: <ad982e975a6160ad110c623c016041311ca15b4f.1726511547.git.mst@redhat.com>
+Fixes: 17634ba25544 ("virtio: console: Add a new MULTIPORT feature, support for generic ports")
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vDSO/parse_vdso.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/char/virtio_console.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
-index 4ae417372e9eb..d9ccc5acac182 100644
---- a/tools/testing/selftests/vDSO/parse_vdso.c
-+++ b/tools/testing/selftests/vDSO/parse_vdso.c
-@@ -216,7 +216,8 @@ void *vdso_sym(const char *version, const char *name)
- 		ELF(Sym) *sym = &vdso_info.symtab[chain];
+diff --git a/drivers/char/virtio_console.c b/drivers/char/virtio_console.c
+index de7d720d99fa9..bcb05fc44c998 100644
+--- a/drivers/char/virtio_console.c
++++ b/drivers/char/virtio_console.c
+@@ -2007,25 +2007,27 @@ static int virtcons_probe(struct virtio_device *vdev)
+ 		multiport = true;
+ 	}
  
- 		/* Check for a defined global or weak function w/ right name. */
--		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC)
-+		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC &&
-+		    ELF64_ST_TYPE(sym->st_info) != STT_NOTYPE)
- 			continue;
- 		if (ELF64_ST_BIND(sym->st_info) != STB_GLOBAL &&
- 		    ELF64_ST_BIND(sym->st_info) != STB_WEAK)
+-	err = init_vqs(portdev);
+-	if (err < 0) {
+-		dev_err(&vdev->dev, "Error %d initializing vqs\n", err);
+-		goto free_chrdev;
+-	}
+-
+ 	spin_lock_init(&portdev->ports_lock);
+ 	INIT_LIST_HEAD(&portdev->ports);
+ 	INIT_LIST_HEAD(&portdev->list);
+ 
+-	virtio_device_ready(portdev->vdev);
+-
+ 	INIT_WORK(&portdev->config_work, &config_work_handler);
+ 	INIT_WORK(&portdev->control_work, &control_work_handler);
+ 
+ 	if (multiport) {
+ 		spin_lock_init(&portdev->c_ivq_lock);
+ 		spin_lock_init(&portdev->c_ovq_lock);
++	}
+ 
++	err = init_vqs(portdev);
++	if (err < 0) {
++		dev_err(&vdev->dev, "Error %d initializing vqs\n", err);
++		goto free_chrdev;
++	}
++
++	virtio_device_ready(portdev->vdev);
++
++	if (multiport) {
+ 		err = fill_queue(portdev->c_ivq, &portdev->c_ivq_lock);
+ 		if (err < 0) {
+ 			dev_err(&vdev->dev,
 -- 
 2.43.0
 
