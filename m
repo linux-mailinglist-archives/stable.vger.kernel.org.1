@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-84222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 987DD99CF1E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:51:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ABFF99D33C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5387B28AEEF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:51:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB2EB1C22EE3
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539CE1CF2A4;
-	Mon, 14 Oct 2024 14:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA2C1B4F17;
+	Mon, 14 Oct 2024 15:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hx1UUNoD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BpPzunw0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A46A1CEEAA;
-	Mon, 14 Oct 2024 14:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C50B1AE01D;
+	Mon, 14 Oct 2024 15:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917255; cv=none; b=WbSYl4uzLeRmiXxOmBwXlQO5j2pSzl1JjxEtT8UJy4OJ31Fek9YW2dAFcwlxyolfY83TVAoMRJFekvCOBsgHSXhKaFexxkZXevyu2uyiZn1zxi0aoZsOOp6jIjyvnZdk4E0wmcf3ll/9Pwc2k2KDPXuR4M+LZoK33zkMg8snVg8=
+	t=1728919928; cv=none; b=YLWzfe4CHObnM4wOBd7CjNUIFKWoQMbB3UQCZawgQ4pVThqzWnmxEAc8IXdAideIlYWWPD/7EJmPxNedhTfQU55ucLdXa7CQVVZX0WlBBaA3e3DwOZLoWW0qp6eZY/VUfw7lMvjbht/GT84XtbyzV8UlwjetY6ME6Umwd3TdcOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917255; c=relaxed/simple;
-	bh=59Ezzow20hcoiZDnPFauOri+mZsfurFh1cAQmfWh5o8=;
+	s=arc-20240116; t=1728919928; c=relaxed/simple;
+	bh=ulEfzWUxA47QbKdHCOF3Xlznbp2GHMCnQIEtjw6Hb7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgXQwE6UJRoNDqAWgsnR0siqFN2NMHHxN/OQl6841FZ46sBsPxq8YGypCFFhIcrh1L/hh8gctaT40MbanAWLF18JEPJoi1lgft0gNZwnTwxP4680cB4DLMnmvU/PZj/amKQGeYiFwlSbyGgYXHpXjpw6/BW8FaTAlHjF2Oo4X64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hx1UUNoD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555DBC4CEC3;
-	Mon, 14 Oct 2024 14:47:34 +0000 (UTC)
+	 MIME-Version; b=NCierIkDQVlq6OyP6KRJPcwqvKWpLzYwH3EWjazdiH0iLaDRbvkyDspAdFPtf4YOpAnyVUdFwCmSQyDkUw8nPFaOF6tbxfcjz+uT2TCpoEEQ5QaKb+KIiCJuootHG1dONAwpU8oK8GJqW/Urm+DjhbphJ6aV0C4eeMGHHEPMPEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpPzunw0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C39C4CEC3;
+	Mon, 14 Oct 2024 15:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917254;
-	bh=59Ezzow20hcoiZDnPFauOri+mZsfurFh1cAQmfWh5o8=;
+	s=korg; t=1728919928;
+	bh=ulEfzWUxA47QbKdHCOF3Xlznbp2GHMCnQIEtjw6Hb7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hx1UUNoDpWbdoPQJ6g73V/M9DPxsDQalm68oiext9aqljgAgN1bYjayX4oXmGyg6k
-	 4BgisA1JNF664aNKqr38Hb7kGcSD8cRZcKUJ6thHbJo3l/47nSe92LGjqqVL/QTF6o
-	 MSLgQuzSE8fNUnvb2Z06MctHp02/I57d/NbXrbyI=
+	b=BpPzunw0svHEbKBK3CbSMtgB6Lg278PAdqKlGA3F8sylnTHFxIvcquZ8KIUjKU7J6
+	 2iGJ9Pax/2kDgOWsASuGX2/Uqj0p+xk8sCrAHDA2G8hbIkWV+f0izSA5/Mox5w4Qqp
+	 fD0uU6Oe5zZHbrvHC56qyEvWcqlTAlxn1WBWEpeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anastasia Kovaleva <a.kovaleva@yadro.com>,
-	Dmitry Bogdanov <d.bogdanov@yadro.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 197/213] net: Fix an unsafe loop on the list
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 749/798] ice: Fix netif_is_ice() in Safe Mode
 Date: Mon, 14 Oct 2024 16:21:43 +0200
-Message-ID: <20241014141050.649417395@linuxfoundation.org>
+Message-ID: <20241014141247.494325553@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anastasia Kovaleva <a.kovaleva@yadro.com>
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
 
-commit 1dae9f1187189bc09ff6d25ca97ead711f7e26f9 upstream.
+[ Upstream commit 8e60dbcbaaa177dacef55a61501790e201bf8c88 ]
 
-The kernel may crash when deleting a genetlink family if there are still
-listeners for that family:
+netif_is_ice() works by checking the pointer to netdev ops. However, it
+only checks for the default ice_netdev_ops, not ice_netdev_safe_mode_ops,
+so in Safe Mode it always returns false, which is unintuitive. While it
+doesn't look like netif_is_ice() is currently being called anywhere in Safe
+Mode, this could change and potentially lead to unexpected behaviour.
 
-Oops: Kernel access of bad area, sig: 11 [#1]
-  ...
-  NIP [c000000000c080bc] netlink_update_socket_mc+0x3c/0xc0
-  LR [c000000000c0f764] __netlink_clear_multicast_users+0x74/0xc0
-  Call Trace:
-__netlink_clear_multicast_users+0x74/0xc0
-genl_unregister_family+0xd4/0x2d0
-
-Change the unsafe loop on the list to a safe one, because inside the
-loop there is an element removal from this list.
-
-Fixes: b8273570f802 ("genetlink: fix netns vs. netlink table locking (2)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Anastasia Kovaleva <a.kovaleva@yadro.com>
-Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20241003104431.12391-1-a.kovaleva@yadro.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: df006dd4b1dc ("ice: Add initial support framework for LAG")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h       |    2 ++
- net/netlink/af_netlink.c |    3 ++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -902,6 +902,8 @@ static inline void sk_add_bind2_node(str
- 	hlist_for_each_entry(__sk, list, sk_bind_node)
- #define sk_for_each_bound_bhash2(__sk, list) \
- 	hlist_for_each_entry(__sk, list, sk_bind2_node)
-+#define sk_for_each_bound_safe(__sk, tmp, list) \
-+	hlist_for_each_entry_safe(__sk, tmp, list, sk_bind_node)
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 3f01942e4982d..9be88820b77c3 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -82,7 +82,8 @@ ice_indr_setup_tc_cb(struct net_device *netdev, struct Qdisc *sch,
  
- /**
-  * sk_for_each_entry_offset_rcu - iterate over a list at a given struct offset
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -2143,8 +2143,9 @@ void __netlink_clear_multicast_users(str
+ bool netif_is_ice(struct net_device *dev)
  {
- 	struct sock *sk;
- 	struct netlink_table *tbl = &nl_table[ksk->sk_protocol];
-+	struct hlist_node *tmp;
- 
--	sk_for_each_bound(sk, &tbl->mc_list)
-+	sk_for_each_bound_safe(sk, tmp, &tbl->mc_list)
- 		netlink_update_socket_mc(nlk_sk(sk), group, 0);
+-	return dev && (dev->netdev_ops == &ice_netdev_ops);
++	return dev && (dev->netdev_ops == &ice_netdev_ops ||
++		       dev->netdev_ops == &ice_netdev_safe_mode_ops);
  }
  
+ /**
+-- 
+2.43.0
+
 
 
 
