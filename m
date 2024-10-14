@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B858999CECA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:47:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF86399D31B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61FEE1F241F8
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:47:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7883928562B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61BF9145B18;
-	Mon, 14 Oct 2024 14:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EECA1CACCE;
+	Mon, 14 Oct 2024 15:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efKM5XWG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6u2mFy8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB52481B7;
-	Mon, 14 Oct 2024 14:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5051AC885;
+	Mon, 14 Oct 2024 15:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917156; cv=none; b=FiUBvqYWAmPJSVfr5xM7E6rjtVv3it72Oo/WqIxW3Iu31vxzWhzEHrhbEvHKFODMjx42+ZJ4t7m/yWWNIFoNLa/SMMCrfRhQU7ML2pQqHttYDKKr1w0Xr+BR88Lno9kIZ9vKnvmRD7uyYAS29LsM+LlN36xqIgw+oqj3XLimhzU=
+	t=1728919835; cv=none; b=DElNcsdYSiuMBcNdCjYYYMfQECHnPG2Y9MgHuLF3fHI5eGxPtPjHH1xdU4saNskHEMhesf6NMTRarrq3R7gjxvIjI+H2gskHP/SuHKqfzs/mv0DmTETvUAWSyUvqTCurb7qfxsydhYQHpNOHBvxvmK44/dLWaBUKhvpfzxQDe3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917156; c=relaxed/simple;
-	bh=RPLtWdfXMbFV5Gf2LtaTxJT/6DbfWAg1Edv5Lgndnts=;
+	s=arc-20240116; t=1728919835; c=relaxed/simple;
+	bh=zOaghwbCJdfoySnNmBHxadPlSdbNoGbKMy+f00Suoao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvDVE/Shlc0E17FoIvOQlqj2NerJ19AdL4VpHXQ/w42liBG20YZPv1FeoNdaPwhUWHBwAbbtp7AdB1XAdvpz+ugsBincZx1q18SqjFQDMuGcwrNKj6JszLt/cGTqQCujm2Yos5ephU0//KEf9w/Bt0Fpd1wHQsOhPgpq62t3l2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efKM5XWG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828AAC4CEC3;
-	Mon, 14 Oct 2024 14:45:55 +0000 (UTC)
+	 MIME-Version; b=uuz6O/ofW+op2zabejHpnbVC6dEOBx5yZyb5MeItDgCUqXqSJAHCvE7Gg4uaKyrdHo1uREfoPEwF6MFLDdFlXlZIkSAjFHrlssuNxH0M2lJmBFw89FKaSTh7N09b4aMozi9NhzMe9r4YHbDxwl8iF8E2kq2YbfbN7D6leqvGedg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6u2mFy8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CF2C4CEC3;
+	Mon, 14 Oct 2024 15:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917156;
-	bh=RPLtWdfXMbFV5Gf2LtaTxJT/6DbfWAg1Edv5Lgndnts=;
+	s=korg; t=1728919835;
+	bh=zOaghwbCJdfoySnNmBHxadPlSdbNoGbKMy+f00Suoao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=efKM5XWGEdg2n6Vt4CqENDO9ZKpqdajcwIz7wPt3eLaeDvwOqaWeQYGOwtfZnwAVk
-	 u1ZkxrXv20e1djd+CVCaTy328oqL7fTOYTwmutMwlfxLO0fXjPytHv8HaK5c2Fp1DC
-	 LqwxR7/a+uKzfJeVc7YjdaPJ00dpcI+63cKy11jo=
+	b=n6u2mFy8sUByobUQFtQcQBIXXqnBpmF06XCIgZPXBMcTeFadqKD+8LrRLvTg+NK2W
+	 VY539W6t4xLzFhhND9U0kIBOS9i/8b9opzSuooPj5Hju33+1NOLlhSRIr7R1YelKD0
+	 /94jE0/7RYchTHN0ZxZDyrofMuDMRyOhs41+ONPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/213] HID: i2c-hid: Remove I2C_HID_QUIRK_SET_PWR_WAKEUP_DEV quirk
-Date: Mon, 14 Oct 2024 16:21:13 +0200
-Message-ID: <20241014141049.487474973@linuxfoundation.org>
+Subject: [PATCH 6.1 720/798] scsi: lpfc: Add ELS_RSP cmd to the list of WQEs to flush in lpfc_els_flush_cmd()
+Date: Mon, 14 Oct 2024 16:21:14 +0200
+Message-ID: <20241014141246.355677038@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit bd008acdac45011f2246ec2518ef19c2da9e6008 ]
+[ Upstream commit 93bcc5f3984bf4f51da1529700aec351872dbfff ]
 
-Re-trying the power-on command on failure on all devices should
-not be a problem, drop the I2C_HID_QUIRK_SET_PWR_WAKEUP_DEV quirk
-and simply retry power-on on all devices.
+During HBA stress testing, a spam of received PLOGIs exposes a resource
+recovery bug causing leakage of lpfc_sqlq entries from the global
+phba->sli4_hba.lpfc_els_sgl_list.
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Stable-dep-of: 26dd6a5667f5 ("HID: i2c-hid: Skip SET_POWER SLEEP for Cirque touchpad on system suspend")
+The issue is in lpfc_els_flush_cmd(), where the driver attempts to recover
+outstanding ELS sgls when walking the txcmplq.  Only CMD_ELS_REQUEST64_CRs
+and CMD_GEN_REQUEST64_CRs are added to the abort and cancel lists.  A check
+for CMD_XMIT_ELS_RSP64_WQE is missing in order to recover LS_ACC usages of
+the phba->sli4_hba.lpfc_els_sgl_list too.
+
+Fix by adding CMD_XMIT_ELS_RSP64_WQE as part of the txcmplq walk when
+adding WQEs to the abort and cancel list in lpfc_els_flush_cmd().  Also,
+update naming convention from CRs to WQEs.
+
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20240912232447.45607-2-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/i2c-hid/i2c-hid-core.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/scsi/lpfc/lpfc_els.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
-index 799ad0ef9c4af..59dececbb340e 100644
---- a/drivers/hid/i2c-hid/i2c-hid-core.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-core.c
-@@ -44,7 +44,6 @@
- #include "i2c-hid.h"
+diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
+index a8dd142e832a0..b4afaed5e4879 100644
+--- a/drivers/scsi/lpfc/lpfc_els.c
++++ b/drivers/scsi/lpfc/lpfc_els.c
+@@ -9455,11 +9455,12 @@ lpfc_els_flush_cmd(struct lpfc_vport *vport)
+ 		if (piocb->cmd_flag & LPFC_DRIVER_ABORTED && !mbx_tmo_err)
+ 			continue;
  
- /* quirks to control the device */
--#define I2C_HID_QUIRK_SET_PWR_WAKEUP_DEV	BIT(0)
- #define I2C_HID_QUIRK_NO_IRQ_AFTER_RESET	BIT(1)
- #define I2C_HID_QUIRK_BOGUS_IRQ			BIT(4)
- #define I2C_HID_QUIRK_RESET_ON_RESUME		BIT(5)
-@@ -119,8 +118,6 @@ static const struct i2c_hid_quirks {
- 	__u16 idProduct;
- 	__u32 quirks;
- } i2c_hid_quirks[] = {
--	{ USB_VENDOR_ID_WEIDA, HID_ANY_ID,
--		I2C_HID_QUIRK_SET_PWR_WAKEUP_DEV },
- 	{ I2C_VENDOR_ID_HANTICK, I2C_PRODUCT_ID_HANTICK_5288,
- 		I2C_HID_QUIRK_NO_IRQ_AFTER_RESET },
- 	{ I2C_VENDOR_ID_ITE, I2C_DEVICE_ID_ITE_VOYO_WINPAD_A15,
-@@ -389,8 +386,7 @@ static int i2c_hid_set_power(struct i2c_hid *ihid, int power_state)
- 	 * The call will get a return value (EREMOTEIO) but device will be
- 	 * triggered and activated. After that, it goes like a normal device.
- 	 */
--	if (power_state == I2C_HID_PWR_ON &&
--	    ihid->quirks & I2C_HID_QUIRK_SET_PWR_WAKEUP_DEV) {
-+	if (power_state == I2C_HID_PWR_ON) {
- 		ret = i2c_hid_set_power_command(ihid, I2C_HID_PWR_ON);
+-		/* On the ELS ring we can have ELS_REQUESTs or
+-		 * GEN_REQUESTs waiting for a response.
++		/* On the ELS ring we can have ELS_REQUESTs, ELS_RSPs,
++		 * or GEN_REQUESTs waiting for a CQE response.
+ 		 */
+ 		ulp_command = get_job_cmnd(phba, piocb);
+-		if (ulp_command == CMD_ELS_REQUEST64_CR) {
++		if (ulp_command == CMD_ELS_REQUEST64_WQE ||
++		    ulp_command == CMD_XMIT_ELS_RSP64_WQE) {
+ 			list_add_tail(&piocb->dlist, &abort_list);
  
- 		/* Device was already activated */
+ 			/* If the link is down when flushing ELS commands
 -- 
 2.43.0
 
