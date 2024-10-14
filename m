@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-83698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7308D99BEC3
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DD4E99BEC6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BE551C21FC1
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 04:06:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F86A1C2255B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 04:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BAB145B0B;
-	Mon, 14 Oct 2024 03:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6551A4B76;
+	Mon, 14 Oct 2024 03:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LU79CNpw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="np7dh8mA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E9519F43A;
-	Mon, 14 Oct 2024 03:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61E11A3AA9;
+	Mon, 14 Oct 2024 03:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728878334; cv=none; b=km/DkMTl6boIm0c1rglp6jf7rgO8JCZkZlpn+zrHU1ZIp4O8slH7vFnvCFcFnZax/UQrVZZYilQnZF/k42B+RYECoVjJFLQ4CUa4fPHQYPE6D2f3xe7SIylOEYQ7fTUIv5VZHeKRTTEOJ/UPsxeoBbEKvsA7CLuiR0KtJ4I28fY=
+	t=1728878335; cv=none; b=JaiX1dhHNCejab49zlEpleCdXRo/bVDXEjN6bc6NfAxCIABd0+un7V/4h/e+zMmGGjMjc0I+QFH+lBOhw8hHbsI3CNoVo2qCYSdn7jnp7egSqHxicWlQOcYad09jrgH867S7cJOw8BlFJ37cmJ4+F3P5HCo4RRqrh/yZ9oo2A3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728878334; c=relaxed/simple;
-	bh=9PyrOC4KSgcikUxcFWP7qw6w7ILMmA5X9BdM7egGWOI=;
+	s=arc-20240116; t=1728878335; c=relaxed/simple;
+	bh=v4+xlGOj+TcoPX5RB/YjejqTD4s5UxCNPNGcJLzq/+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+5Cz+YRrnB8NpGNv9iny+rYYOyJcnQ58M7Wpo7VmCEDhbYxFQAhILP899E3xW4Iy4R4xe8TZyLIsmAV1ES1z3ou85BIngYCQU3w/0C4R1lzBIsqDwQChdgqJnyiqT7Smkle+ZzXnTSNZdC53i5+GbJbE1n8N3GvB+Fu4Qap+Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LU79CNpw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98DFC4CECE;
-	Mon, 14 Oct 2024 03:58:52 +0000 (UTC)
+	 MIME-Version; b=FAG2TnF+keph/RcylJ2kLCIJ6Sk78PTXkKHnyVB9fJ/actpuO0pMhf+iYRMIcHfWQOsqPQ/q9qqc5RMERy5itWdJEMC3+6QSDWKRc5YZsYTb1E0dXta5iIWUpWATQrMzsR52R2F3AecfxqOmGPoHhQu8w76ewEX/WpAf0bxwmes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=np7dh8mA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A03C4CECF;
+	Mon, 14 Oct 2024 03:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728878333;
-	bh=9PyrOC4KSgcikUxcFWP7qw6w7ILMmA5X9BdM7egGWOI=;
+	s=k20201202; t=1728878334;
+	bh=v4+xlGOj+TcoPX5RB/YjejqTD4s5UxCNPNGcJLzq/+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LU79CNpwfdtp/xI6BRFDOxeuQ23ohOXoe4W+i3RHKsM9cZyjC6biCde3VZ96DfgCT
-	 UCjz/gLS+UHvIdUNqUb5/jBLmIcmJBGnb94j9UqcgMBXTyd05YZO3RhFMjvHmo1GZR
-	 UQh4HmdB3B2W+RZh+xxR626RawyHGXY0GFhOun4LD00spTKBevNTMLKzoTr9nbSfCe
-	 LZrLMDw5zg4iCi/YtLhlQmNp21YYugpKRQDEVRkdcVHBKFG8e5J/qMcj70jrrghD1c
-	 hIKPHKtrwg0sS6BzENr+js+X7Z78huqFd4BqHlgzGprhijwkMxn3XAV8yu614kk4O3
-	 AzAQKDAkJElnQ==
+	b=np7dh8mAQ7gIgw1k6eTED04XJ/+uvd5gqwHKeW/E/LW1rq4pX6YsXKcufV5FzhoWZ
+	 x7nY3aJSPSLT9QBuHb3pBO2X6CKBJLnWeJTPbFgXmdnw6MjikJ4pPOhjv60xyOFZAx
+	 /+nmEAzMT891k69iW5Mxzb8k6vmYCatAaCFQiuorXpgbrDveLpMFqkG0sJEGoBoAN6
+	 pHEK7ygtq7w+8EaHd3KV4C/HQpluETMcSlTNtSdOn23S/6928aFakhy+11KceH0x/W
+	 bu4kkxLQ5WuiX1jsu7smD6lhL4A6YryfW7TKr4TEiGFM/y14VcZ03E3vbMrN4Aq60s
+	 IKyP/eAHoClZw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	syzbot+bc7ca0ae4591cb2550f9@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>,
 	ntfs3@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.1 03/10] fs/ntfs3: Stale inode instead of bad
-Date: Sun, 13 Oct 2024 23:58:38 -0400
-Message-ID: <20241014035848.2247549-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 04/10] fs/ntfs3: Fix possible deadlock in mi_read
+Date: Sun, 13 Oct 2024 23:58:39 -0400
+Message-ID: <20241014035848.2247549-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241014035848.2247549-1-sashal@kernel.org>
 References: <20241014035848.2247549-1-sashal@kernel.org>
@@ -66,39 +67,30 @@ Content-Transfer-Encoding: 8bit
 
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 1fd21919de6de245b63066b8ee3cfba92e36f0e9 ]
+[ Upstream commit 03b097099eef255fbf85ea6a786ae3c91b11f041 ]
 
-Fixed the logic of processing inode with wrong sequence number.
+Mutex lock with another subclass used in ni_lock_dir().
 
+Reported-by: syzbot+bc7ca0ae4591cb2550f9@syzkaller.appspotmail.com
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ fs/ntfs3/namei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 28cbae3954315..026ed43c06704 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -524,11 +524,15 @@ struct inode *ntfs_iget5(struct super_block *sb, const struct MFT_REF *ref,
- 	if (inode->i_state & I_NEW)
- 		inode = ntfs_read_mft(inode, name, ref);
- 	else if (ref->seq != ntfs_i(inode)->mi.mrec->seq) {
--		/* Inode overlaps? */
--		_ntfs_bad_inode(inode);
-+		/*
-+		 * Sequence number is not expected.
-+		 * Looks like inode was reused but caller uses the old reference
-+		 */
-+		iput(inode);
-+		inode = ERR_PTR(-ESTALE);
- 	}
- 
--	if (IS_ERR(inode) && name)
-+	if (IS_ERR(inode))
- 		ntfs_set_state(sb->s_fs_info, NTFS_DIRTY_ERROR);
- 
- 	return inode;
+diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
+index a9549e73081fb..7cad1bc2b314f 100644
+--- a/fs/ntfs3/namei.c
++++ b/fs/ntfs3/namei.c
+@@ -79,7 +79,7 @@ static struct dentry *ntfs_lookup(struct inode *dir, struct dentry *dentry,
+ 		if (err < 0)
+ 			inode = ERR_PTR(err);
+ 		else {
+-			ni_lock(ni);
++			ni_lock_dir(ni);
+ 			inode = dir_search_u(dir, uni, NULL);
+ 			ni_unlock(ni);
+ 		}
 -- 
 2.43.0
 
