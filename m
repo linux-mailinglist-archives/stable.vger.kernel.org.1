@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-84980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A59FA99D32E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC1BC99CDBE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CA831F25374
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 192431C22C08
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317321AAE1D;
-	Mon, 14 Oct 2024 15:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD14C24B34;
+	Mon, 14 Oct 2024 14:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+OHkdaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8PUp0mc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22D94CDEC;
-	Mon, 14 Oct 2024 15:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4DD1A28C;
+	Mon, 14 Oct 2024 14:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919886; cv=none; b=jM1C0kwy2E2t5QdDstUQ0X+Ypoq4HXLeKOmij4BqyXPmMw7+v3Q3H0jnxcqhx+mT38VagTMqCR+aLKDNgtjwmsX2vGm6Af6XUS7NLk4WFTJMzmflC0iUqSkimVO0nvIaEbQT/bPX3PG/evstGJ9/Y8QGQPCPaKbbf6z0oEBVIoE=
+	t=1728916541; cv=none; b=JidXdX60PXzqbLbTBnx+tH/Bq0qlDbAs1tMIjTwuyEEJ5VzlyyC83ATLglSIB5eR6Z0Y0g1e2Qa/6euU71ACtZ840eoTV4WuCgq1ro8eaBupCnyB1l9+Kw+46wzcL1lMV4jI2FP0LJgMY6Wbhhj/a1hfFSKlsAPxYd4oLGTbdoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919886; c=relaxed/simple;
-	bh=JalulShxDNZ3vS6ZLv+jVnSFwQGip/YAT0lxqYrF3EY=;
+	s=arc-20240116; t=1728916541; c=relaxed/simple;
+	bh=4oaJUhaWp3AT3+kNeh1SbKYSTTkKnlPP+ZM/umlc0Bw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T2FHuMZwUKyfx24q0Q4lZIkW/YAK0oVmp0Vif7PETAWeiVC7mJG+2UTOIFL8F/HuGEUrDG3C15Q4+TwTE8tVZ5hy0y+53DTfZxJ5SLurAByg3zDuHzEPLK8N5eR2ecypuycN/F7e5AzJQ+ga2aT17u+pNHpKzXZJtuXjykFhrvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+OHkdaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54408C4CEC3;
-	Mon, 14 Oct 2024 15:31:25 +0000 (UTC)
+	 MIME-Version; b=jeGQEvfTHKXe/PKYbauORk7cwMTerWqtVySyMFLO91BlsWMHLBAsTx0VQMsM0y33qFja3LxhK9mkmkcHyGMdJfkOfc2BkbJw/aYZjGd10c5zeJiSCMSGieLmdHkLLwKnexf4dS4XznWxPfptkXP/gim6m7DJ4vx4HVaWcaS6Ua8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8PUp0mc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A8FC4CEC3;
+	Mon, 14 Oct 2024 14:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919885;
-	bh=JalulShxDNZ3vS6ZLv+jVnSFwQGip/YAT0lxqYrF3EY=;
+	s=korg; t=1728916541;
+	bh=4oaJUhaWp3AT3+kNeh1SbKYSTTkKnlPP+ZM/umlc0Bw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z+OHkdaIHbE8HrVrtSao0ocKMzmK1OWjKetbn8pW5y20cp7gmI3bgZeRIXlWGJOOD
-	 IqyubmboDUbf3TRO2THwrzhaeEqGgMXK/EMsC+PTMNVTlOYjUAuiLoBeYqee2+6Ubr
-	 ZicnEAqlpCRUc74ImdiPvKuWIj2MZmANNjuB0zKo=
+	b=A8PUp0mcHGDcsMrYVAW8PyRNv2OhPiniRCaTlEWarAsKE9bDIEgbyBrxgYTFbLJbV
+	 Oj5DtDwCsAAFNpuXVdGAFW1KRnDoQSD3KSgE/rfyuxG27XNe4HKpTfF+H7AquiMcqK
+	 TQ/w09DrJGSbkwNnsQ0CmGWG9iq46HcziH+GJWTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5fca234bd7eb378ff78e@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 704/798] io_uring: check if we need to reschedule during overflow flush
+	Daniel Golle <daniel@makrotopia.org>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.11 195/214] net: phy: Remove LED entry from LEDs list on unregister
 Date: Mon, 14 Oct 2024 16:20:58 +0200
-Message-ID: <20241014141245.725454185@linuxfoundation.org>
+Message-ID: <20241014141052.586390479@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit eac2ca2d682f94f46b1973bdf5e77d85d77b8e53 ]
+commit f50b5d74c68e551667e265123659b187a30fe3a5 upstream.
 
-In terms of normal application usage, this list will always be empty.
-And if an application does overflow a bit, it'll have a few entries.
-However, nothing obviously prevents syzbot from running a test case
-that generates a ton of overflow entries, and then flushing them can
-take quite a while.
+Commit c938ab4da0eb ("net: phy: Manual remove LEDs to ensure correct
+ordering") correctly fixed a problem with using devm_ but missed
+removing the LED entry from the LEDs list.
 
-Check for needing to reschedule while flushing, and drop our locks and
-do so if necessary. There's no state to maintain here as overflows
-always prune from head-of-list, hence it's fine to drop and reacquire
-the locks at the end of the loop.
+This cause kernel panic on specific scenario where the port for the PHY
+is torn down and up and the kmod for the PHY is removed.
 
-Link: https://lore.kernel.org/io-uring/66ed061d.050a0220.29194.0053.GAE@google.com/
-Reported-by: syzbot+5fca234bd7eb378ff78e@syzkaller.appspotmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On setting the port down the first time, the assosiacted LEDs are
+correctly unregistered. The associated kmod for the PHY is now removed.
+The kmod is now added again and the port is now put up, the associated LED
+are registered again.
+On putting the port down again for the second time after these step, the
+LED list now have 4 elements. With the first 2 already unregistered
+previously and the 2 new one registered again.
+
+This cause a kernel panic as the first 2 element should have been
+removed.
+
+Fix this by correctly removing the element when LED is unregistered.
+
+Reported-by: Daniel Golle <daniel@makrotopia.org>
+Tested-by: Daniel Golle <daniel@makrotopia.org>
+Cc: stable@vger.kernel.org
+Fixes: c938ab4da0eb ("net: phy: Manual remove LEDs to ensure correct ordering")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241004182759.14032-1-ansuelsmth@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/net/phy/phy_device.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index b21f2bafaeb04..f902b161f02ca 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -615,6 +615,21 @@ static bool __io_cqring_overflow_flush(struct io_ring_ctx *ctx, bool force)
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -3249,10 +3249,11 @@ static __maybe_unused int phy_led_hw_is_
  
- 		list_del(&ocqe->list);
- 		kfree(ocqe);
-+
-+		/*
-+		 * For silly syzbot cases that deliberately overflow by huge
-+		 * amounts, check if we need to resched and drop and
-+		 * reacquire the locks if so. Nothing real would ever hit this.
-+		 * Ideally we'd have a non-posting unlock for this, but hard
-+		 * to care for a non-real case.
-+		 */
-+		if (need_resched()) {
-+			io_cq_unlock_post(ctx);
-+			mutex_unlock(&ctx->uring_lock);
-+			cond_resched();
-+			mutex_lock(&ctx->uring_lock);
-+			io_cq_lock(ctx);
-+		}
+ static void phy_leds_unregister(struct phy_device *phydev)
+ {
+-	struct phy_led *phyled;
++	struct phy_led *phyled, *tmp;
+ 
+-	list_for_each_entry(phyled, &phydev->leds, list) {
++	list_for_each_entry_safe(phyled, tmp, &phydev->leds, list) {
+ 		led_classdev_unregister(&phyled->led_cdev);
++		list_del(&phyled->list);
  	}
+ }
  
- 	all_flushed = list_empty(&ctx->cq_overflow_list);
--- 
-2.43.0
-
 
 
 
