@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-83780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23F299C95E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 13:50:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A76A99C967
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 13:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EE141F23210
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 11:50:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C5701C2160D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 11:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E4119F421;
-	Mon, 14 Oct 2024 11:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877D7194ACD;
+	Mon, 14 Oct 2024 11:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yO3YkIQD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXPo5OYL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CF519E96E
-	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 11:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492D31684B4
+	for <stable@vger.kernel.org>; Mon, 14 Oct 2024 11:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728906625; cv=none; b=CL+A6iqgXie10AHnyzhY4aEskN1M8RqakOxGUznIAEW7RYruQQD3Ji4priHK0J+/8VCaehXlAmPsMJkX9UMkqVqaWUBDqCeqKW64AUTrCWV48ukL+HGidKARedfPD1utsVxSLDgajRX69+wIzdN2AW1gQ8Yp93d15rob2UsL43Y=
+	t=1728906738; cv=none; b=SYqNlPbmD5TbOUfnoca3hruceq9f+wFQ9B4MuDWnhcm9c08xCmVF1GGA9xvtXZIaf2kGzHkFgZbeKGyMB/45VhDtsk3BwmSoXB9q8ULwzkECl8EYYX4jkaSCRn/0BcFpEhkUFB6B0BNOk2ZfubZeU9PjXD2fpFRHkJFSlmQv4MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728906625; c=relaxed/simple;
-	bh=B/CHMM9im4jXWSxUcmXTH4e6CGPHSRroEs+W/z/DXFs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GvnugEeG0jUj2lvjnIdu1T8LZ22I3kfRrdYddK/AkFotAR16QS4y2ZrUc3AdEzey8coR+4yMgZwiwrtltB9FQHEBnLDiQastPmcAR93EM8rV/nub79lFu3VzqonjMWFun599kL3NzxuZo5G39ZUjYC3jwJO9v0th2GDt6voU4ZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yO3YkIQD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD270C4CEC3;
-	Mon, 14 Oct 2024 11:50:24 +0000 (UTC)
+	s=arc-20240116; t=1728906738; c=relaxed/simple;
+	bh=+rbTiKbBSETQu7thuUWOe3UgZVmj/7iqR3EbKMc0Jg4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=azrpNH8tVAeUtWAiTUdZCpVm3iDYdGj0BcUDpa+tTpJUUz0PZkcFlKEmnsEwWmKopo0Dx54ccsqAb+eMwSPeP08b94ueLMNbg+rIkts9jX+/M6Ah2rqpKdnxo7/FJgYc80xhRevjrCyIWb0kMJ7ZGDqWrbWB1EV4JUjoRA5dWSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXPo5OYL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB43C4CEC7;
+	Mon, 14 Oct 2024 11:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728906625;
-	bh=B/CHMM9im4jXWSxUcmXTH4e6CGPHSRroEs+W/z/DXFs=;
+	s=korg; t=1728906736;
+	bh=+rbTiKbBSETQu7thuUWOe3UgZVmj/7iqR3EbKMc0Jg4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=yO3YkIQDDR24vxCbh9kz5QFT57OuR7Q6vL5DtDSpPmDFJlgpXywWBffJVKjgIYKEW
-	 YycwtLQrl6157d4M7UdmITwIneR5AYYbb/JMefV/7Da5VT5blqaXzhETtB+yIArS2+
-	 FEs1xDUvXNlSUxLhdpTJsXaHi3EN1mq0Bb7a6eXU=
-Subject: FAILED: patch "[PATCH] io_uring/rw: fix cflags posting for single issue multishot" failed to apply to 6.11-stable tree
-To: axboe@kernel.dk
+	b=tXPo5OYLUI4A0U4fHTmLSQ4IcdduazF8wpo9jbFpP21lwMT+3Nhjoyo2sO1ST/HeC
+	 fZJaTLy09IljI/Y6Bfw+gG4Z50MEzKucLQDWceEuyfN8fFXwqOE/WSoUkZCFM2wNGr
+	 CeoJR90zI54zCsyAU50m5fO5hDKqqO4k9JyKTiIo=
+Subject: FAILED: patch "[PATCH] mptcp: handle consistently DSS corruption" failed to apply to 5.15-stable tree
+To: pabeni@redhat.com,kuba@kernel.org,matttbe@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 14 Oct 2024 13:48:36 +0200
-Message-ID: <2024101436-avalanche-approach-5c90@gregkh>
+Date: Mon, 14 Oct 2024 13:52:13 +0200
+Message-ID: <2024101413-murky-haiku-4511@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,26 +53,28 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.11-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.11.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x c9d952b9103b600ddafc5d1c0e2f2dbd30f0b805
+git cherry-pick -x e32d262c89e2b22cb0640223f953b548617ed8a6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024101436-avalanche-approach-5c90@gregkh' --subject-prefix 'PATCH 6.11.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024101413-murky-haiku-4511@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-c9d952b9103b ("io_uring/rw: fix cflags posting for single issue multishot read")
-6733e678ba12 ("io_uring/kbuf: pass in 'len' argument for buffer commit")
-ecd5c9b29643 ("io_uring/kbuf: add io_kbuf_commit() helper")
-03e02e8f95fe ("io_uring/kbuf: use 'bl' directly rather than req->buf_list")
+e32d262c89e2 ("mptcp: handle consistently DSS corruption")
+104125b82e5c ("mptcp: add mib for infinite map sending")
+1e39e5a32ad7 ("mptcp: infinite mapping sending")
+0eb4e7ee1655 ("mptcp: add tracepoint in mptcp_sendmsg_frag")
+f284c0c77321 ("mptcp: implement fastclose xmit path")
+f70cad1085d1 ("mptcp: stop relying on tcp_tx_skb_cache")
 
 thanks,
 
@@ -80,66 +82,109 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c9d952b9103b600ddafc5d1c0e2f2dbd30f0b805 Mon Sep 17 00:00:00 2001
-From: Jens Axboe <axboe@kernel.dk>
-Date: Sat, 5 Oct 2024 19:06:50 -0600
-Subject: [PATCH] io_uring/rw: fix cflags posting for single issue multishot
- read
+From e32d262c89e2b22cb0640223f953b548617ed8a6 Mon Sep 17 00:00:00 2001
+From: Paolo Abeni <pabeni@redhat.com>
+Date: Tue, 8 Oct 2024 13:04:52 +0200
+Subject: [PATCH] mptcp: handle consistently DSS corruption
 
-If multishot gets disabled, and hence the request will get terminated
-rather than persist for more iterations, then posting the CQE with the
-right cflags is still important. Most notably, the buffer reference
-needs to be included.
+Bugged peer implementation can send corrupted DSS options, consistently
+hitting a few warning in the data path. Use DEBUG_NET assertions, to
+avoid the splat on some builds and handle consistently the error, dumping
+related MIBs and performing fallback and/or reset according to the
+subflow type.
 
-Refactor the return of __io_read() a bit, so that the provided buffer
-is always put correctly, and hence returned to the application.
-
-Reported-by: Sharon Rosner <Sharon Rosner>
-Link: https://github.com/axboe/liburing/issues/1257
+Fixes: 6771bfd9ee24 ("mptcp: update mptcp ack sequence from work queue")
 Cc: stable@vger.kernel.org
-Fixes: 2a975d426c82 ("io_uring/rw: don't allow multishot reads without NOWAIT support")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241008-net-mptcp-fallback-fixes-v1-1-c6fb8e93e551@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/io_uring/rw.c b/io_uring/rw.c
-index f023ff49c688..93ad92605884 100644
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -972,17 +972,21 @@ int io_read_mshot(struct io_kiocb *req, unsigned int issue_flags)
- 		if (issue_flags & IO_URING_F_MULTISHOT)
- 			return IOU_ISSUE_SKIP_COMPLETE;
- 		return -EAGAIN;
--	}
--
--	/*
--	 * Any successful return value will keep the multishot read armed.
--	 */
--	if (ret > 0 && req->flags & REQ_F_APOLL_MULTISHOT) {
-+	} else if (ret <= 0) {
-+		io_kbuf_recycle(req, issue_flags);
-+		if (ret < 0)
-+			req_set_fail(req);
-+	} else {
- 		/*
--		 * Put our buffer and post a CQE. If we fail to post a CQE, then
-+		 * Any successful return value will keep the multishot read
-+		 * armed, if it's still set. Put our buffer and post a CQE. If
-+		 * we fail to post a CQE, or multishot is no longer set, then
- 		 * jump to the termination path. This request is then done.
- 		 */
- 		cflags = io_put_kbuf(req, ret, issue_flags);
-+		if (!(req->flags & REQ_F_APOLL_MULTISHOT))
-+			goto done;
-+
- 		rw->len = 0; /* similarly to above, reset len to 0 */
+diff --git a/net/mptcp/mib.c b/net/mptcp/mib.c
+index 38c2efc82b94..ad88bd3c58df 100644
+--- a/net/mptcp/mib.c
++++ b/net/mptcp/mib.c
+@@ -32,6 +32,8 @@ static const struct snmp_mib mptcp_snmp_list[] = {
+ 	SNMP_MIB_ITEM("MPJoinSynTxBindErr", MPTCP_MIB_JOINSYNTXBINDERR),
+ 	SNMP_MIB_ITEM("MPJoinSynTxConnectErr", MPTCP_MIB_JOINSYNTXCONNECTERR),
+ 	SNMP_MIB_ITEM("DSSNotMatching", MPTCP_MIB_DSSNOMATCH),
++	SNMP_MIB_ITEM("DSSCorruptionFallback", MPTCP_MIB_DSSCORRUPTIONFALLBACK),
++	SNMP_MIB_ITEM("DSSCorruptionReset", MPTCP_MIB_DSSCORRUPTIONRESET),
+ 	SNMP_MIB_ITEM("InfiniteMapTx", MPTCP_MIB_INFINITEMAPTX),
+ 	SNMP_MIB_ITEM("InfiniteMapRx", MPTCP_MIB_INFINITEMAPRX),
+ 	SNMP_MIB_ITEM("DSSNoMatchTCP", MPTCP_MIB_DSSTCPMISMATCH),
+diff --git a/net/mptcp/mib.h b/net/mptcp/mib.h
+index c8ffe18a8722..3206cdda8bb1 100644
+--- a/net/mptcp/mib.h
++++ b/net/mptcp/mib.h
+@@ -27,6 +27,8 @@ enum linux_mptcp_mib_field {
+ 	MPTCP_MIB_JOINSYNTXBINDERR,	/* Not able to bind() the address when sending a SYN + MP_JOIN */
+ 	MPTCP_MIB_JOINSYNTXCONNECTERR,	/* Not able to connect() when sending a SYN + MP_JOIN */
+ 	MPTCP_MIB_DSSNOMATCH,		/* Received a new mapping that did not match the previous one */
++	MPTCP_MIB_DSSCORRUPTIONFALLBACK,/* DSS corruption detected, fallback */
++	MPTCP_MIB_DSSCORRUPTIONRESET,	/* DSS corruption detected, MPJ subflow reset */
+ 	MPTCP_MIB_INFINITEMAPTX,	/* Sent an infinite mapping */
+ 	MPTCP_MIB_INFINITEMAPRX,	/* Received an infinite mapping */
+ 	MPTCP_MIB_DSSTCPMISMATCH,	/* DSS-mapping did not map with TCP's sequence numbers */
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index c2317919fc14..6d0e201c3eb2 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -620,6 +620,18 @@ static bool mptcp_check_data_fin(struct sock *sk)
+ 	return ret;
+ }
  
- 		if (io_req_post_cqe(req, ret, cflags | IORING_CQE_F_MORE)) {
-@@ -1003,6 +1007,7 @@ int io_read_mshot(struct io_kiocb *req, unsigned int issue_flags)
- 	 * Either an error, or we've hit overflow posting the CQE. For any
- 	 * multishot request, hitting overflow will terminate it.
- 	 */
-+done:
- 	io_req_set_res(req, ret, cflags);
- 	io_req_rw_cleanup(req, issue_flags);
- 	if (issue_flags & IO_URING_F_MULTISHOT)
++static void mptcp_dss_corruption(struct mptcp_sock *msk, struct sock *ssk)
++{
++	if (READ_ONCE(msk->allow_infinite_fallback)) {
++		MPTCP_INC_STATS(sock_net(ssk),
++				MPTCP_MIB_DSSCORRUPTIONFALLBACK);
++		mptcp_do_fallback(ssk);
++	} else {
++		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DSSCORRUPTIONRESET);
++		mptcp_subflow_reset(ssk);
++	}
++}
++
+ static bool __mptcp_move_skbs_from_subflow(struct mptcp_sock *msk,
+ 					   struct sock *ssk,
+ 					   unsigned int *bytes)
+@@ -692,10 +704,16 @@ static bool __mptcp_move_skbs_from_subflow(struct mptcp_sock *msk,
+ 				moved += len;
+ 			seq += len;
+ 
+-			if (WARN_ON_ONCE(map_remaining < len))
+-				break;
++			if (unlikely(map_remaining < len)) {
++				DEBUG_NET_WARN_ON_ONCE(1);
++				mptcp_dss_corruption(msk, ssk);
++			}
+ 		} else {
+-			WARN_ON_ONCE(!fin);
++			if (unlikely(!fin)) {
++				DEBUG_NET_WARN_ON_ONCE(1);
++				mptcp_dss_corruption(msk, ssk);
++			}
++
+ 			sk_eat_skb(ssk, skb);
+ 			done = true;
+ 		}
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index 1040b3b9696b..e1046a696ab5 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -975,8 +975,10 @@ static bool skb_is_fully_mapped(struct sock *ssk, struct sk_buff *skb)
+ 	unsigned int skb_consumed;
+ 
+ 	skb_consumed = tcp_sk(ssk)->copied_seq - TCP_SKB_CB(skb)->seq;
+-	if (WARN_ON_ONCE(skb_consumed >= skb->len))
++	if (unlikely(skb_consumed >= skb->len)) {
++		DEBUG_NET_WARN_ON_ONCE(1);
+ 		return true;
++	}
+ 
+ 	return skb->len - skb_consumed <= subflow->map_data_len -
+ 					  mptcp_subflow_get_map_offset(subflow);
 
 
