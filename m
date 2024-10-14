@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-85006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8657699D352
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30B1C99CF35
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD952B27862
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 582E11C236C0
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24571BD03B;
-	Mon, 14 Oct 2024 15:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CAB1B85EB;
+	Mon, 14 Oct 2024 14:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GA8G7cM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aeT/aoKM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8781B85E2;
-	Mon, 14 Oct 2024 15:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30411AB6C1;
+	Mon, 14 Oct 2024 14:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919973; cv=none; b=M7r46LO9PD3RbeYvhgP6JV0ftXIjQDhCy6EKdtcaAtdX4fp0IlofrSUI9P1HT2zxuf4j+5VokEgj0QBoebhACcQPzE/U5EwKuidO5o5cnHqo2PHdMpJCTGY8/5PIUwNX3A3WysRVKOFE7hbqV7Ci0uwJsZbnbgefmY52lhGqa/4=
+	t=1728917316; cv=none; b=fJqCLm0lAaNkQdJ/i5SCKIFFK0C1XbaAzkAouKdLa5/BEAAP8ivDLYplhxpxgIHu3h4PRf7z+GqQOAPBsaKFfnp/SJiSIzFwMRq0SR6AWm/WNUcawxb8X4c4QNiiZxxKZseyeNvJ9ObtZ9HXdDMEHlBMXEJzWLyCPSxbCkeIEWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919973; c=relaxed/simple;
-	bh=+2rOGEmucCNQcVg1J+93ESI1ilRpVQkOHu/K3KkTko0=;
+	s=arc-20240116; t=1728917316; c=relaxed/simple;
+	bh=+1LvYCRqLc4ssegtPtS1boMMVo8r3q2kn3w4aOVkjgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZhcnUYW/bl1iemGxPhTquN5rsBqC7V9vMJXf9wqvjxEDi4L6It7iBRm+VWOXJAAxya1JyVfbrqc0y3uOu7IqqbiE5HzyA4rTNodBk685zmpkdxt7QHrIlSsxZ4e/qhASaVZ3HsgJi8IMFMWaGuJy/PQDbZGCT4CtgEtgGLPEHao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GA8G7cM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B12C4CEC3;
-	Mon, 14 Oct 2024 15:32:52 +0000 (UTC)
+	 MIME-Version; b=uLfWxLezYY1z5Sqi8aTS7jgY7mV1Y/PaygkevU+lG/Mkbw7jdouPhuK6jui1yyXZO/H5NngeWrR9MetuZTYpctM0K1ZlsJkWRKwI1Sx/L2Zl5D6Dzn0PQzO7TWXwdZKuztfqxMZDjRSCNpqGtatY7OsXov7mppiCRCqGxneKQgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aeT/aoKM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176FCC4CEC3;
+	Mon, 14 Oct 2024 14:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919972;
-	bh=+2rOGEmucCNQcVg1J+93ESI1ilRpVQkOHu/K3KkTko0=;
+	s=korg; t=1728917316;
+	bh=+1LvYCRqLc4ssegtPtS1boMMVo8r3q2kn3w4aOVkjgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0GA8G7cMdeOn5gdiyDK7roDytwIjddQ0OketS34Gai+iNOSEQ7K1A6A6/Q8W5czaZ
-	 uuBtJAvoVl48Tm+Gfe6ys7W+llHdUbQAPI3n4ZjCYEayIFxsVgl9iNOwvKV7zkF2DS
-	 saYTv6m91kgcAEjJ/v2BCFI+72xqDm3EUdHYd0BU=
+	b=aeT/aoKMTKEGnyUGOaZBbbIs/lXarg7Am3qNSV4c6ayYmtCfMrhJkC0Tou9UxVc4q
+	 SAq5h3p+PdUfMxCW4Lm5YqsCWD/piDUOx9mIaJunhArWa5UO1pIP5xRLo7TygXFOgn
+	 dN13hOacuiTty4VPMZ/h+Fx4PHPV+fsDoNQGUNeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 760/798] rtnetlink: Add bulk registration helpers for rtnetlink message handlers.
+	Frederic Weisbecker <frederic@kernel.org>,
+	syzbot+943d34fa3cf2191e3068@syzkaller.appspotmail.com,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Hillf Danton <hdanton@sina.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 208/213] kthread: unpark only parked kthread
 Date: Mon, 14 Oct 2024 16:21:54 +0200
-Message-ID: <20241014141247.926414824@linuxfoundation.org>
+Message-ID: <20241014141051.080219600@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-[ Upstream commit 07cc7b0b942bf55ef1a471470ecda8d2a6a6541f ]
+commit 214e01ad4ed7158cab66498810094fac5d09b218 upstream.
 
-Before commit addf9b90de22 ("net: rtnetlink: use rcu to free rtnl message
-handlers"), once rtnl_msg_handlers[protocol] was allocated, the following
-rtnl_register_module() for the same protocol never failed.
+Calling into kthread unparking unconditionally is mostly harmless when
+the kthread is already unparked. The wake up is then simply ignored
+because the target is not in TASK_PARKED state.
 
-However, after the commit, rtnl_msg_handler[protocol][msgtype] needs to
-be allocated in each rtnl_register_module(), so each call could fail.
+However if the kthread is per CPU, the wake up is preceded by a call
+to kthread_bind() which expects the task to be inactive and in
+TASK_PARKED state, which obviously isn't the case if it is unparked.
 
-Many callers of rtnl_register_module() do not handle the returned error,
-and we need to add many error handlings.
+As a result, calling kthread_stop() on an unparked per-cpu kthread
+triggers such a warning:
 
-To handle that easily, let's add wrapper functions for bulk registration
-of rtnetlink message handlers.
+	WARNING: CPU: 0 PID: 11 at kernel/kthread.c:525 __kthread_bind_mask kernel/kthread.c:525
+	 <TASK>
+	 kthread_stop+0x17a/0x630 kernel/kthread.c:707
+	 destroy_workqueue+0x136/0xc40 kernel/workqueue.c:5810
+	 wg_destruct+0x1e2/0x2e0 drivers/net/wireguard/device.c:257
+	 netdev_run_todo+0xe1a/0x1000 net/core/dev.c:10693
+	 default_device_exit_batch+0xa14/0xa90 net/core/dev.c:11769
+	 ops_exit_list net/core/net_namespace.c:178 [inline]
+	 cleanup_net+0x89d/0xcc0 net/core/net_namespace.c:640
+	 process_one_work kernel/workqueue.c:3231 [inline]
+	 process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3312
+	 worker_thread+0x86d/0xd70 kernel/workqueue.c:3393
+	 kthread+0x2f0/0x390 kernel/kthread.c:389
+	 ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+	 ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+	 </TASK>
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 78b7b991838a ("vxlan: Handle error of rtnl_register_module().")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this with skipping unecessary unparking while stopping a kthread.
+
+Link: https://lkml.kernel.org/r/20240913214634.12557-1-frederic@kernel.org
+Fixes: 5c25b5ff89f0 ("workqueue: Tag bound workers with KTHREAD_IS_PER_CPU")
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Reported-by: syzbot+943d34fa3cf2191e3068@syzkaller.appspotmail.com
+Tested-by: syzbot+943d34fa3cf2191e3068@syzkaller.appspotmail.com
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/rtnetlink.h | 17 +++++++++++++++++
- net/core/rtnetlink.c    | 29 +++++++++++++++++++++++++++++
- 2 files changed, 46 insertions(+)
+ kernel/kthread.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
-index 9f881b74f32ed..fdc7b4ce0ef7b 100644
---- a/include/net/rtnetlink.h
-+++ b/include/net/rtnetlink.h
-@@ -27,6 +27,15 @@ static inline enum rtnl_kinds rtnl_msgtype_kind(int msgtype)
- 	return msgtype & RTNL_KIND_MASK;
- }
- 
-+struct rtnl_msg_handler {
-+	struct module *owner;
-+	int protocol;
-+	int msgtype;
-+	rtnl_doit_func doit;
-+	rtnl_dumpit_func dumpit;
-+	int flags;
-+};
-+
- void rtnl_register(int protocol, int msgtype,
- 		   rtnl_doit_func, rtnl_dumpit_func, unsigned int flags);
- int rtnl_register_module(struct module *owner, int protocol, int msgtype,
-@@ -34,6 +43,14 @@ int rtnl_register_module(struct module *owner, int protocol, int msgtype,
- int rtnl_unregister(int protocol, int msgtype);
- void rtnl_unregister_all(int protocol);
- 
-+int __rtnl_register_many(const struct rtnl_msg_handler *handlers, int n);
-+void __rtnl_unregister_many(const struct rtnl_msg_handler *handlers, int n);
-+
-+#define rtnl_register_many(handlers)				\
-+	__rtnl_register_many(handlers, ARRAY_SIZE(handlers))
-+#define rtnl_unregister_many(handlers)				\
-+	__rtnl_unregister_many(handlers, ARRAY_SIZE(handlers))
-+
- static inline int rtnl_msg_family(const struct nlmsghdr *nlh)
+--- a/kernel/kthread.c
++++ b/kernel/kthread.c
+@@ -622,6 +622,8 @@ void kthread_unpark(struct task_struct *
  {
- 	if (nlmsg_len(nlh) >= sizeof(struct rtgenmsg))
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index be663a7382ce9..afb52254a47ec 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -385,6 +385,35 @@ void rtnl_unregister_all(int protocol)
- }
- EXPORT_SYMBOL_GPL(rtnl_unregister_all);
+ 	struct kthread *kthread = to_kthread(k);
  
-+int __rtnl_register_many(const struct rtnl_msg_handler *handlers, int n)
-+{
-+	const struct rtnl_msg_handler *handler;
-+	int i, err;
-+
-+	for (i = 0, handler = handlers; i < n; i++, handler++) {
-+		err = rtnl_register_internal(handler->owner, handler->protocol,
-+					     handler->msgtype, handler->doit,
-+					     handler->dumpit, handler->flags);
-+		if (err) {
-+			__rtnl_unregister_many(handlers, i);
-+			break;
-+		}
-+	}
-+
-+	return err;
-+}
-+EXPORT_SYMBOL_GPL(__rtnl_register_many);
-+
-+void __rtnl_unregister_many(const struct rtnl_msg_handler *handlers, int n)
-+{
-+	const struct rtnl_msg_handler *handler;
-+	int i;
-+
-+	for (i = n - 1, handler = handlers + n - 1; i >= 0; i--, handler--)
-+		rtnl_unregister(handler->protocol, handler->msgtype);
-+}
-+EXPORT_SYMBOL_GPL(__rtnl_unregister_many);
-+
- static LIST_HEAD(link_ops);
- 
- static const struct rtnl_link_ops *rtnl_link_ops_get(const char *kind)
--- 
-2.43.0
-
++	if (!test_bit(KTHREAD_SHOULD_PARK, &kthread->flags))
++		return;
+ 	/*
+ 	 * Newly created kthread was parked when the CPU was offline.
+ 	 * The binding was lost and we need to set it again.
 
 
 
