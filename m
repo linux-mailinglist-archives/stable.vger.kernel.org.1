@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 811AD99D220
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6111599CCD7
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:25:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E54B1F24FD2
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C7911F21A08
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93131C5798;
-	Mon, 14 Oct 2024 15:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A674019E802;
+	Mon, 14 Oct 2024 14:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofYonzFV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARWwLJTf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979611AB6E9;
-	Mon, 14 Oct 2024 15:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CCE1547F3;
+	Mon, 14 Oct 2024 14:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919237; cv=none; b=QULOhxf7S7tpEpZ9tQU6ohZbT1rSo8TNtmoZbBAVbKKKlUPCiZFVbxRp3qiwGwJmAZMihuuGya17nnA+2diwL9MEPywdEeixo7qX7aOXfK7jv14sl5Xl82YaO1VLRolf5r9I3B7U8hMQcvK1kyfqTu089cXfYC2JV/xFfKSN06A=
+	t=1728915935; cv=none; b=OPHuV0cUIbLAk8XULkEPnUsxQsY8lsAyzuot3C4yJkZ2VzGzl4iGgi+7+/3BJcXFm4n9IhCBmZWwL7/TBh+q6teVMW9czvNzrBi8pUj2p3gmy9ImQ3yByRIEnL/HYyNOgHcdvhNMAf0SHj/zSXjhIqh8STxOI7vOlTwQmmO1orM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919237; c=relaxed/simple;
-	bh=KsBjFl75c43wLzn9ibRbabGQ8YU6uRWHQDDFQtrmPPM=;
+	s=arc-20240116; t=1728915935; c=relaxed/simple;
+	bh=KlkuGAV6OijJu8DDVrsrxU1q4a0hCD4XZD6cdCwpawQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T0puRRJKK5Pes/lYpr15EiXbw8s74+Vx5mDK1Fs1qy0m3H72gW5mrbv+4L0bcUP01uuhZQhSxRSFg/jl1XxBUliNs4CHKS7L5wn0MqH4z/MuE4QwXRBOjjxSUpw3YU3IO8OLBtmYm2PuBvsCT/7rdJeZjO8dxFhJgo0rriCPaMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofYonzFV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3923C4CEC3;
-	Mon, 14 Oct 2024 15:20:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FAHfooyfCc7lBfO3qSraMlNmy8vvg9fJsf361qps992CkHvWtWyl9o/Rop6UFwWCIsDP/VR+1VL/TvA7xI6ZuVuEt3uwQMNmlJHdJNR0gANjYWQJw4fmp0zZj2SKlhKcfDHLDfAUdOA4oCY6hyZakjIm/GxF7sn3tsFyyIHKPo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARWwLJTf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9107AC4CEC3;
+	Mon, 14 Oct 2024 14:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919237;
-	bh=KsBjFl75c43wLzn9ibRbabGQ8YU6uRWHQDDFQtrmPPM=;
+	s=korg; t=1728915935;
+	bh=KlkuGAV6OijJu8DDVrsrxU1q4a0hCD4XZD6cdCwpawQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ofYonzFVBfyYVRdGxHX/y8qmg8vNHbz7Q//yec+9sYw90k1NPccQT3aPl1rA1Ux7G
-	 wKoZqWM7M4W4MGYvGIjRKC0rAgmBANXFyOBM90DtUU0sMxQLc7JRuSIwz494W8Ou4g
-	 KGnLhEqxMyTuYRd7KHidXoFfxqWPgzRv6qYwHTr0=
+	b=ARWwLJTfsCcjBiIvzVgZwPFkpHCGNJVscQmDbo1Z+wfjf6lMbSeQDjEm430Hge5vt
+	 P27YEZGo9ze4vDxeFEeZKLeJLx7w2Iqzi3YHVdaEzxUJxaIyT4ezHdWdfVXn19cpOD
+	 c3cZAjXkFX+SgOU1e7YoUM66xA0uDXwKud39PN5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 551/798] ext4: update orig_path in ext4_find_extent()
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 042/214] mfd: intel-lpss: Add Intel Arrow Lake-H LPSS PCI IDs
 Date: Mon, 14 Oct 2024 16:18:25 +0200
-Message-ID: <20241014141239.645552051@linuxfoundation.org>
+Message-ID: <20241014141046.631496095@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 5b4b2dcace35f618fe361a87bae6f0d13af31bc1 upstream.
+[ Upstream commit 6112597f5ba84b70870fade5069ccc9c8b534a33 ]
 
-In ext4_find_extent(), if the path is not big enough, we free it and set
-*orig_path to NULL. But after reallocating and successfully initializing
-the path, we don't update *orig_path, in which case the caller gets a
-valid path but a NULL ppath, and this may cause a NULL pointer dereference
-or a path memory leak. For example:
+Add Intel Arrow Lake-H PCI IDs.
 
-ext4_split_extent
-  path = *ppath = 2000
-  ext4_find_extent
-    if (depth > path[0].p_maxdepth)
-      kfree(path = 2000);
-      *orig_path = path = NULL;
-      path = kcalloc() = 3000
-  ext4_split_extent_at(*ppath = NULL)
-    path = *ppath;
-    ex = path[depth].p_ext;
-    // NULL pointer dereference!
-
-==================================================================
-BUG: kernel NULL pointer dereference, address: 0000000000000010
-CPU: 6 UID: 0 PID: 576 Comm: fsstress Not tainted 6.11.0-rc2-dirty #847
-RIP: 0010:ext4_split_extent_at+0x6d/0x560
-Call Trace:
- <TASK>
- ext4_split_extent.isra.0+0xcb/0x1b0
- ext4_ext_convert_to_initialized+0x168/0x6c0
- ext4_ext_handle_unwritten_extents+0x325/0x4d0
- ext4_ext_map_blocks+0x520/0xdb0
- ext4_map_blocks+0x2b0/0x690
- ext4_iomap_begin+0x20e/0x2c0
-[...]
-==================================================================
-
-Therefore, *orig_path is updated when the extent lookup succeeds, so that
-the caller can safely use path or *ppath.
-
-Fixes: 10809df84a4d ("ext4: teach ext4_ext_find_extent() to realloc path if necessary")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240822023545.1994557-6-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240829095719.1557-2-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c     |    3 ++-
- fs/ext4/move_extent.c |    1 -
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/mfd/intel-lpss-pci.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -957,6 +957,8 @@ ext4_find_extent(struct inode *inode, ex
- 
- 	ext4_ext_show_path(inode, path);
- 
-+	if (orig_path)
-+		*orig_path = path;
- 	return path;
- 
- err:
-@@ -3251,7 +3253,6 @@ static int ext4_split_extent_at(handle_t
- 	}
- 	depth = ext_depth(inode);
- 	ex = path[depth].p_ext;
--	*ppath = path;
- 
- 	if (EXT4_EXT_MAY_ZEROOUT & split_flag) {
- 		if (split_flag & (EXT4_EXT_DATA_VALID1|EXT4_EXT_DATA_VALID2)) {
---- a/fs/ext4/move_extent.c
-+++ b/fs/ext4/move_extent.c
-@@ -36,7 +36,6 @@ get_ext_path(struct inode *inode, ext4_l
- 		*ppath = NULL;
- 		return -ENODATA;
- 	}
--	*ppath = path;
- 	return 0;
- }
- 
+diff --git a/drivers/mfd/intel-lpss-pci.c b/drivers/mfd/intel-lpss-pci.c
+index 1362b3f64ade6..0eb6a98ed0fc0 100644
+--- a/drivers/mfd/intel-lpss-pci.c
++++ b/drivers/mfd/intel-lpss-pci.c
+@@ -424,6 +424,19 @@ static const struct pci_device_id intel_lpss_pci_ids[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x5ac4), (kernel_ulong_t)&bxt_spi_info },
+ 	{ PCI_VDEVICE(INTEL, 0x5ac6), (kernel_ulong_t)&bxt_spi_info },
+ 	{ PCI_VDEVICE(INTEL, 0x5aee), (kernel_ulong_t)&bxt_uart_info },
++	/* ARL-H */
++	{ PCI_VDEVICE(INTEL, 0x7725), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x7726), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x7727), (kernel_ulong_t)&tgl_spi_info },
++	{ PCI_VDEVICE(INTEL, 0x7730), (kernel_ulong_t)&tgl_spi_info },
++	{ PCI_VDEVICE(INTEL, 0x7746), (kernel_ulong_t)&tgl_spi_info },
++	{ PCI_VDEVICE(INTEL, 0x7750), (kernel_ulong_t)&bxt_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x7751), (kernel_ulong_t)&bxt_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x7752), (kernel_ulong_t)&bxt_uart_info },
++	{ PCI_VDEVICE(INTEL, 0x7778), (kernel_ulong_t)&bxt_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x7779), (kernel_ulong_t)&bxt_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x777a), (kernel_ulong_t)&bxt_i2c_info },
++	{ PCI_VDEVICE(INTEL, 0x777b), (kernel_ulong_t)&bxt_i2c_info },
+ 	/* RPL-S */
+ 	{ PCI_VDEVICE(INTEL, 0x7a28), (kernel_ulong_t)&bxt_uart_info },
+ 	{ PCI_VDEVICE(INTEL, 0x7a29), (kernel_ulong_t)&bxt_uart_info },
+-- 
+2.43.0
+
 
 
 
