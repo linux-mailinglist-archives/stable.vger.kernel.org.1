@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-84919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DB2999D2DD
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:31:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD3699CDAA
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE5901C21681
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:31:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D798B2824E6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED301CC893;
-	Mon, 14 Oct 2024 15:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B42C1ABEDC;
+	Mon, 14 Oct 2024 14:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WHv0ZE7/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTDiGNiM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C51E1CC16F;
-	Mon, 14 Oct 2024 15:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB14614A614;
+	Mon, 14 Oct 2024 14:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919672; cv=none; b=O2rQ5oWRRSxqVv7YVCNEf9n7L63KhmiqHkTioWOq+Ox6TJ1N6esBZBsGCqFhWWHW0KcpHxw0mcja/kBcV953aSnD0eh7VAOpY6CYeCB59qFouHGJ4Wir8lEfbcCZyv9TE0cU3W5OSD1s8b5ZgUKpWTg4GRCELZSEzGpXp4ucO3U=
+	t=1728916485; cv=none; b=UtBR2LhPeczkz08qlTFppQuGvEiOsNXAmfxo3SslvbQbgK5vFXFBWPdtKUUwAmbWkRzCpFVOhDe5O3yC0kvUo4Bo0uhdtzKaEtWwx0suo49gUXwGaoJbulJXGGr9Fz7RXV4wUUpDR2JNzoem2uG7wcn0PQM4nqyk+LwOlP5vMTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919672; c=relaxed/simple;
-	bh=Lctxc1ae2l1tiTCgHV9XcDmynfQ1dPmyOTbq7h6p4UM=;
+	s=arc-20240116; t=1728916485; c=relaxed/simple;
+	bh=8PUjvuA9S28L7VtrOwP7L/m1z52YNNXRu0yoP8+ERLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CxzwhVYuhTqubXMt6mVUZKii1UfPYQnfCSnP1+I1pX9qU87wZc6t7Q0PWHIjgOtYMu7RT3+udyNSePoNRykWieOj2nYB83G0ahcwdJfKY8+4uuWzXhOInHkO7VBYNNos65eZIl+TDdEbef1xz44yHPl5ocvePEypNWysQOeXN7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WHv0ZE7/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3143C4CEC3;
-	Mon, 14 Oct 2024 15:27:51 +0000 (UTC)
+	 MIME-Version; b=D9QM9+Xga/fxgHvOAeP+EEPYsFeh5A9m6ao5rI+PYNm5Q2N7oM7wz/ZGyEaMZjPOydFxVL43UceXkhgLcjDDRNp08i6/tmYoLog8P8FFIUUujx8iJxLxZB3Dpp66KqcbIS42Lf7ItzOjtjkdbQLd6hVduzwGyZUlnTCHOMeyIjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTDiGNiM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C144C4CEC3;
+	Mon, 14 Oct 2024 14:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919672;
-	bh=Lctxc1ae2l1tiTCgHV9XcDmynfQ1dPmyOTbq7h6p4UM=;
+	s=korg; t=1728916485;
+	bh=8PUjvuA9S28L7VtrOwP7L/m1z52YNNXRu0yoP8+ERLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WHv0ZE7/ZAE2JqDc8zON/vIHEmyzejzSWTmo25YIIme+/2nRLw1M5hPAk+lLy+Ngf
-	 mvlwSFK6VVoeodQ2t+FkbATrEOPXe9DmRL3oX6SNK/zI67b6FH8yLdGSSbgkgMyjop
-	 ZTbxs5uLwOmhDuB4waK2Wh6yYTVPiq0IOR/Lg8WU=
+	b=DTDiGNiMluY+Py9funtucXqosam9Vukp8dfkSMJQ7wVgeOwdpQPPq7cfPT8OGES1t
+	 fpjm9uGPuWRu9u9/WwsLUA0i3T+FC/vaQKMK0gWx3EbOVU9MGrj4lJFNzV3cyhpmsx
+	 UEchvRXNZcg9D5cpd/611JwF+au6E0G2Z8aaZkSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Jihong <yangjihong1@huawei.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 675/798] perf sched: Fix memory leak in perf_sched__map()
+	Roy Luo <royluo@google.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.11 166/214] usb: dwc3: re-enable runtime PM after failed resume
 Date: Mon, 14 Oct 2024 16:20:29 +0200
-Message-ID: <20241014141244.585339845@linuxfoundation.org>
+Message-ID: <20241014141051.460315225@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Jihong <yangjihong1@huawei.com>
+From: Roy Luo <royluo@google.com>
 
-[ Upstream commit ef76a5af819743d405674f6de5d0e63320ac653e ]
+commit 897e13a8f9a23576eeacb95075fdded97b197cc3 upstream.
 
-perf_sched__map() needs to free memory of map_cpus, color_pids and
-color_cpus in normal path and rollback allocated memory in error path.
+When dwc3_resume_common() returns an error, runtime pm is left in
+suspended and disabled state in dwc3_resume(). Since the device
+is suspended, its parent devices (like the power domain or glue
+driver) could also be suspended and may have released resources
+that dwc requires. Consequently, calling dwc3_suspend_common() in
+this situation could result in attempts to access unclocked or
+unpowered registers.
+To prevent these problems, runtime PM should always be re-enabled,
+even after failed resume attempts. This ensures that
+dwc3_suspend_common() is skipped in such cases.
 
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240206083228.172607-3-yangjihong1@huawei.com
-Stable-dep-of: 1a5efc9e13f3 ("libsubcmd: Don't free the usage string")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 68c26fe58182 ("usb: dwc3: set pm runtime active before resume common")
+Cc: stable@vger.kernel.org
+Signed-off-by: Roy Luo <royluo@google.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20240913232145.3507723-1-royluo@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/builtin-sched.c | 41 ++++++++++++++++++++++++--------------
- 1 file changed, 26 insertions(+), 15 deletions(-)
+ drivers/usb/dwc3/core.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index 2d595dde2d121..8abd48a99ec5e 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -3240,8 +3240,6 @@ static int perf_sched__lat(struct perf_sched *sched)
- 
- static int setup_map_cpus(struct perf_sched *sched)
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -2562,7 +2562,7 @@ static int dwc3_suspend(struct device *d
+ static int dwc3_resume(struct device *dev)
  {
--	struct perf_cpu_map *map;
--
- 	sched->max_cpu.cpu  = sysconf(_SC_NPROCESSORS_CONF);
+ 	struct dwc3	*dwc = dev_get_drvdata(dev);
+-	int		ret;
++	int		ret = 0;
  
- 	if (sched->map.comp) {
-@@ -3250,16 +3248,15 @@ static int setup_map_cpus(struct perf_sched *sched)
- 			return -1;
- 	}
+ 	pinctrl_pm_select_default_state(dev);
  
--	if (!sched->map.cpus_str)
--		return 0;
--
--	map = perf_cpu_map__new(sched->map.cpus_str);
--	if (!map) {
--		pr_err("failed to get cpus map from %s\n", sched->map.cpus_str);
--		return -1;
-+	if (sched->map.cpus_str) {
-+		sched->map.cpus = perf_cpu_map__new(sched->map.cpus_str);
-+		if (!sched->map.cpus) {
-+			pr_err("failed to get cpus map from %s\n", sched->map.cpus_str);
-+			zfree(&sched->map.comp_cpus);
-+			return -1;
-+		}
- 	}
+@@ -2570,14 +2570,12 @@ static int dwc3_resume(struct device *de
+ 	pm_runtime_set_active(dev);
  
--	sched->map.cpus = map;
- 	return 0;
- }
+ 	ret = dwc3_resume_common(dwc, PMSG_RESUME);
+-	if (ret) {
++	if (ret)
+ 		pm_runtime_set_suspended(dev);
+-		return ret;
+-	}
  
-@@ -3299,20 +3296,34 @@ static int setup_color_cpus(struct perf_sched *sched)
+ 	pm_runtime_enable(dev);
  
- static int perf_sched__map(struct perf_sched *sched)
- {
-+	int rc = -1;
-+
- 	if (setup_map_cpus(sched))
--		return -1;
-+		return rc;
- 
- 	if (setup_color_pids(sched))
--		return -1;
-+		goto out_put_map_cpus;
- 
- 	if (setup_color_cpus(sched))
--		return -1;
-+		goto out_put_color_pids;
- 
- 	setup_pager();
- 	if (perf_sched__read_events(sched))
--		return -1;
-+		goto out_put_color_cpus;
-+
-+	rc = 0;
- 	print_bad_events(sched);
 -	return 0;
-+
-+out_put_color_cpus:
-+	perf_cpu_map__put(sched->map.color_cpus);
-+
-+out_put_color_pids:
-+	perf_thread_map__put(sched->map.color_pids);
-+
-+out_put_map_cpus:
-+	zfree(&sched->map.comp_cpus);
-+	perf_cpu_map__put(sched->map.cpus);
-+	return rc;
++	return ret;
  }
  
- static int perf_sched__replay(struct perf_sched *sched)
--- 
-2.43.0
-
+ static void dwc3_complete(struct device *dev)
 
 
 
