@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C3999D21C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0149A99CCD4
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:25:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B6EA1C231DC
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C1AE1F21AFD
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:25:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5FB3B298;
-	Mon, 14 Oct 2024 15:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C371AAE02;
+	Mon, 14 Oct 2024 14:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbtCZ0R/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0Xr1kSd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5F81A76CE;
-	Mon, 14 Oct 2024 15:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2394B1A0BE7;
+	Mon, 14 Oct 2024 14:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919220; cv=none; b=LJ8/3qMsWoE4aZrO4tRZYWC6luuvfx3RlGsej8XYlxwlitUmLnNNm80sLVS0Qug4JOIUSrbvJqze6JkWZKqjPhLeH7an1zctRFaaWRCgu1k14YkpYycQpBLmaWXOu9cLSXOaTyW41VYdTrcL5jAbv7MopOSirxAIByOLkGfJsDU=
+	t=1728915925; cv=none; b=jjxPu/xZw359KG799Wviv49BtpFDIXKzH+K4lK3hRfBiV7i+Z0fa7k/WNeM3rkif0WYtzWCAWsz+rH5ZujHK1nqzyPlzf60hJDaYp31tvUyzrmMjR7J9gf3DVUub2GEiYUH/5HeP0ZNh0eFjisAoeVUPKQ2T74Z+HAb4gT+4qXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919220; c=relaxed/simple;
-	bh=kYxtst4CboctwJ4OZhCFIucXjen7GiluE98spYX2mkM=;
+	s=arc-20240116; t=1728915925; c=relaxed/simple;
+	bh=iIuu1rMdxUQUFhvIpHWx7+RTSiVu2bjRUnGsEPzYQ44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GLpmjJeCp9oPtBSesO0eb6GQ/gOpqjSgRQxT5INJwY6oONT5vYlMWAMAyKOWeI6CQs7iGCNu7YFecpkUpDWu6TKTfHu8q3MiljyseVurgTxSUJkx0LkmsIx2GCLM3msAqljQxgvAn/Nuj9omAvN7vuzzv8hXyMiYF/uc6DuW3t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbtCZ0R/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500F1C4CEC3;
-	Mon, 14 Oct 2024 15:20:19 +0000 (UTC)
+	 MIME-Version; b=G4lKRmvh0CDeWARhqrf6JyXp+KXW0rH+K8bUzM4KHVObcMxE0R7RIhuwgSTvVCAco3RMF1uMYfag6pPb4iqD1O9YtT14N/5+YIRC2tV7hAbjLDf5O0vBTbQyaqdKl2CHWBdrQKbPvqHHqjeEvxqNX0TbHkoPu2lHZ2Ogjww2EUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0Xr1kSd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A954C4CEC3;
+	Mon, 14 Oct 2024 14:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919219;
-	bh=kYxtst4CboctwJ4OZhCFIucXjen7GiluE98spYX2mkM=;
+	s=korg; t=1728915925;
+	bh=iIuu1rMdxUQUFhvIpHWx7+RTSiVu2bjRUnGsEPzYQ44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbtCZ0R/Ow+L3kCIVRkdJ4DbWZLIcV1T+zee8uRUpSqfN48iGtKTeroUnOQPXRbtH
-	 dPWakrT14lA+f4kUPcqeCUdhCm/HYsvnHv0m9YxvYz0Uq/Ruu/zxiO3Z1p17QbpD0y
-	 VUzUq6W7Kbmiu90Qd3Sfs4LDH3ZaSdJZty1pIIlk=
+	b=M0Xr1kSdSA49vXLJEoiQ/KNxMsIqmHVrhgWsr341UdvOeWl24SKHxo7u+mplMpq0K
+	 KLWNt4ip+eIyff6CTGEaPqYE6IRTDM+EMz7AcBafxsOUSeUJJdMedRkJdJjMtAAe0F
+	 hDUMLjm9dpT+AVRhe9rxVYOBeZiwHSdeAqEpSMpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.1 547/798] ext4: fix incorrect tid assumption in __jbd2_log_wait_for_space()
-Date: Mon, 14 Oct 2024 16:18:21 +0200
-Message-ID: <20241014141239.486967178@linuxfoundation.org>
+	syzbot+5fca234bd7eb378ff78e@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 039/214] io_uring: check if we need to reschedule during overflow flush
+Date: Mon, 14 Oct 2024 16:18:22 +0200
+Message-ID: <20241014141046.516220094@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 972090651ee15e51abfb2160e986fa050cfc7a40 upstream.
+[ Upstream commit eac2ca2d682f94f46b1973bdf5e77d85d77b8e53 ]
 
-Function __jbd2_log_wait_for_space() assumes that '0' is not a valid value
-for transaction IDs, which is incorrect.  Don't assume that and invoke
-jbd2_log_wait_commit() if the journal had a committing transaction instead.
+In terms of normal application usage, this list will always be empty.
+And if an application does overflow a bit, it'll have a few entries.
+However, nothing obviously prevents syzbot from running a test case
+that generates a ton of overflow entries, and then flushing them can
+take quite a while.
 
-Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240724161119.13448-3-luis.henriques@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Check for needing to reschedule while flushing, and drop our locks and
+do so if necessary. There's no state to maintain here as overflows
+always prune from head-of-list, hence it's fine to drop and reacquire
+the locks at the end of the loop.
+
+Link: https://lore.kernel.org/io-uring/66ed061d.050a0220.29194.0053.GAE@google.com/
+Reported-by: syzbot+5fca234bd7eb378ff78e@syzkaller.appspotmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/checkpoint.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ io_uring/io_uring.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -91,9 +91,12 @@ __releases(&journal->j_state_lock)
- 		if (space_left < nblocks) {
- 			int chkpt = journal->j_checkpoint_transactions != NULL;
- 			tid_t tid = 0;
-+			bool has_transaction = false;
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 7a166120a45c3..7057d942fb2b0 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -627,6 +627,21 @@ static void __io_cqring_overflow_flush(struct io_ring_ctx *ctx, bool dying)
+ 		}
+ 		list_del(&ocqe->list);
+ 		kfree(ocqe);
++
++		/*
++		 * For silly syzbot cases that deliberately overflow by huge
++		 * amounts, check if we need to resched and drop and
++		 * reacquire the locks if so. Nothing real would ever hit this.
++		 * Ideally we'd have a non-posting unlock for this, but hard
++		 * to care for a non-real case.
++		 */
++		if (need_resched()) {
++			io_cq_unlock_post(ctx);
++			mutex_unlock(&ctx->uring_lock);
++			cond_resched();
++			mutex_lock(&ctx->uring_lock);
++			io_cq_lock(ctx);
++		}
+ 	}
  
--			if (journal->j_committing_transaction)
-+			if (journal->j_committing_transaction) {
- 				tid = journal->j_committing_transaction->t_tid;
-+				has_transaction = true;
-+			}
- 			spin_unlock(&journal->j_list_lock);
- 			write_unlock(&journal->j_state_lock);
- 			if (chkpt) {
-@@ -101,7 +104,7 @@ __releases(&journal->j_state_lock)
- 			} else if (jbd2_cleanup_journal_tail(journal) == 0) {
- 				/* We were able to recover space; yay! */
- 				;
--			} else if (tid) {
-+			} else if (has_transaction) {
- 				/*
- 				 * jbd2_journal_commit_transaction() may want
- 				 * to take the checkpoint_mutex if JBD2_FLUSHED
+ 	if (list_empty(&ctx->cq_overflow_list)) {
+-- 
+2.43.0
+
 
 
 
