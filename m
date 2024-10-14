@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-84999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BDC799D342
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D7199CF24
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:51:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52E621F2329A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19CA71C23395
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EABE1ACDED;
-	Mon, 14 Oct 2024 15:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490354087C;
+	Mon, 14 Oct 2024 14:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Coo29+/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LikIBnAs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8BA49659;
-	Mon, 14 Oct 2024 15:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0713D45C14;
+	Mon, 14 Oct 2024 14:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919949; cv=none; b=gAM/y0g32Xa89SaAojHwvIyruyQ4uAPC5cs6IeyRUq1cTO2iVKCu71FsJ8Bp6Xp9Bl3wz1ZODFKOW0JgKEbk99Eh8Ys1ct+9EM6EJHUXLyvPOmoOoKTVgizt8kCd11hQ4ravOOMAm9wUZdcXzxQ3woj5BWo+36hu1q8GtFkTWlA=
+	t=1728917272; cv=none; b=o/wfdlM1jt3wqbBghco6SKzFkajqasH7/4cdXlGaP++IAs9SGDcjBFuGZfKbpGe7uqbJQG8aJJQNa380zcGuFo/ID0Wp7JOJfw+rziLVxS1/CThraFPzHWY7DQsUdczbAbHbCjwtPsuhGBEfrXzkOtM/1wzoj5LOEfq1rKn3Z4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919949; c=relaxed/simple;
-	bh=b8glmoQVLJgTojX3Wh1q+VbVipfJNb3AzcNfw+ToYw8=;
+	s=arc-20240116; t=1728917272; c=relaxed/simple;
+	bh=jZDBhAcguzowgrGW5BegMuYQRQEKkWilUjD6xcIDSPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FscobnmM9C8BVTjHUWMmiVXnMOf5HBJgxP4F6nDCCJWOiScBxX+SfPlsuNiUYXRtGJW+8AQfwRMenLJz6HIW0Q4wGsMpZ3JQwBa92wUiBFIH9JerqsS+FRU99rg8r0Hk7xOlUkfbIVgYFuSJYkSJZCxT69eQ0o4PsfWyo6wb8ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Coo29+/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C43AC4CEC3;
-	Mon, 14 Oct 2024 15:32:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YER8UWsOMl/6dNCgZ8a+lwks8aWcjms5SeBfe4Z/ABqWAUWiSXwTTRgrXec9HBiqiXkM9zO0R1kKJ0/37C2rTC7qyV2JQyv06mN7M1GY8sZi9Cx5YEUZkrkRewkskQ1FFEci5kahRt1lkyfe/ZOYvop9k6PARL04s1TD/DCVZ7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LikIBnAs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1CEC4CEC3;
+	Mon, 14 Oct 2024 14:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919949;
-	bh=b8glmoQVLJgTojX3Wh1q+VbVipfJNb3AzcNfw+ToYw8=;
+	s=korg; t=1728917271;
+	bh=jZDBhAcguzowgrGW5BegMuYQRQEKkWilUjD6xcIDSPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Coo29+/TbyVGvTuh5M7MQ5dSYh/IbM4PF4bm4q7Yb+Hb0NSFdjH17jW0XkfUY6i79
-	 xsQjcB8QWFc+0zdLuymD4tB3yl7sPQSxg2Dmv+J6y939NgVhQz79pQh44pgf8SH4Ss
-	 O/PezMZqtEwHVTAYubkrckbsGsff+q/oVse2C/J0=
+	b=LikIBnAsvihiwy6BSvz8USAJIyyvNmyvKN6nUZNoHHcrjzD0Cdq520IjCI4DBJa+y
+	 rDDhj9bJILhs+T/hDk2degOrKavzO73ysSHKrkSTjiMhI79WJP2lGDUPm1q+uDVVOU
+	 QffGT5ZMS25P5wxLd2nM9Wu9vqOfNlZ5lzgJz8TI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 754/798] btrfs: zoned: fix missing RCU locking in error message when loading zone info
+	"Kun(llfl)" <llfl@linux.alibaba.com>,
+	JianXiong Zhao <zhaojianxiong.zjx@alibaba-inc.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 202/213] device-dax: correct pgoff align in dax_set_mapping()
 Date: Mon, 14 Oct 2024 16:21:48 +0200
-Message-ID: <20241014141247.692843062@linuxfoundation.org>
+Message-ID: <20241014141050.843461924@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Kun(llfl) <llfl@linux.alibaba.com>
 
-[ Upstream commit fe4cd7ed128fe82ab9fe4f9fc8a73d4467699787 ]
+commit 7fcbd9785d4c17ea533c42f20a9083a83f301fa6 upstream.
 
-At btrfs_load_zone_info() we have an error path that is dereferencing
-the name of a device which is a RCU string but we are not holding a RCU
-read lock, which is incorrect.
+pgoff should be aligned using ALIGN_DOWN() instead of ALIGN().  Otherwise,
+vmf->address not aligned to fault_size will be aligned to the next
+alignment, that can result in memory failure getting the wrong address.
 
-Fix this by using btrfs_err_in_rcu() instead of btrfs_err().
+It's a subtle situation that only can be observed in
+page_mapped_in_vma() after the page is page fault handled by
+dev_dax_huge_fault.  Generally, there is little chance to perform
+page_mapped_in_vma in dev-dax's page unless in specific error injection
+to the dax device to trigger an MCE - memory-failure.  In that case,
+page_mapped_in_vma() will be triggered to determine which task is
+accessing the failure address and kill that task in the end.
 
-The problem is there since commit 08e11a3db098 ("btrfs: zoned: load zone's
-allocation offset"), back then at btrfs_load_block_group_zone_info() but
-then later on that code was factored out into the helper
-btrfs_load_zone_info() by commit 09a46725cc84 ("btrfs: zoned: factor out
-per-zone logic from btrfs_load_block_group_zone_info").
 
-Fixes: 08e11a3db098 ("btrfs: zoned: load zone's allocation offset")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We used self-developed dax device (which is 2M aligned mapping) , to
+perform error injection to random address.  It turned out that error
+injected to non-2M-aligned address was causing endless MCE until panic.
+Because page_mapped_in_vma() kept resulting wrong address and the task
+accessing the failure address was never killed properly:
+
+
+[ 3783.719419] Memory failure: 0x200c9742: recovery action for dax page:
+Recovered
+[ 3784.049006] mce: Uncorrected hardware memory error in user-access at
+200c9742380
+[ 3784.049190] Memory failure: 0x200c9742: recovery action for dax page:
+Recovered
+[ 3784.448042] mce: Uncorrected hardware memory error in user-access at
+200c9742380
+[ 3784.448186] Memory failure: 0x200c9742: recovery action for dax page:
+Recovered
+[ 3784.792026] mce: Uncorrected hardware memory error in user-access at
+200c9742380
+[ 3784.792179] Memory failure: 0x200c9742: recovery action for dax page:
+Recovered
+[ 3785.162502] mce: Uncorrected hardware memory error in user-access at
+200c9742380
+[ 3785.162633] Memory failure: 0x200c9742: recovery action for dax page:
+Recovered
+[ 3785.461116] mce: Uncorrected hardware memory error in user-access at
+200c9742380
+[ 3785.461247] Memory failure: 0x200c9742: recovery action for dax page:
+Recovered
+[ 3785.764730] mce: Uncorrected hardware memory error in user-access at
+200c9742380
+[ 3785.764859] Memory failure: 0x200c9742: recovery action for dax page:
+Recovered
+[ 3786.042128] mce: Uncorrected hardware memory error in user-access at
+200c9742380
+[ 3786.042259] Memory failure: 0x200c9742: recovery action for dax page:
+Recovered
+[ 3786.464293] mce: Uncorrected hardware memory error in user-access at
+200c9742380
+[ 3786.464423] Memory failure: 0x200c9742: recovery action for dax page:
+Recovered
+[ 3786.818090] mce: Uncorrected hardware memory error in user-access at
+200c9742380
+[ 3786.818217] Memory failure: 0x200c9742: recovery action for dax page:
+Recovered
+[ 3787.085297] mce: Uncorrected hardware memory error in user-access at
+200c9742380
+[ 3787.085424] Memory failure: 0x200c9742: recovery action for dax page:
+Recovered
+
+It took us several weeks to pinpoint this problem,  but we eventually
+used bpftrace to trace the page fault and mce address and successfully
+identified the issue.
+
+
+Joao added:
+
+; Likely we never reproduce in production because we always pin
+: device-dax regions in the region align they provide (Qemu does
+: similarly with prealloc in hugetlb/file backed memory).  I think this
+: bug requires that we touch *unpinned* device-dax regions unaligned to
+: the device-dax selected alignment (page size i.e.  4K/2M/1G)
+
+Link: https://lkml.kernel.org/r/23c02a03e8d666fef11bbe13e85c69c8b4ca0624.1727421694.git.llfl@linux.alibaba.com
+Fixes: b9b5777f09be ("device-dax: use ALIGN() for determining pgoff")
+Signed-off-by: Kun(llfl) <llfl@linux.alibaba.com>
+Tested-by: JianXiong Zhao <zhaojianxiong.zjx@alibaba-inc.com>
+Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/zoned.c | 2 +-
+ drivers/dax/device.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index 2c42e85a3e269..794526ab90d26 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -1345,7 +1345,7 @@ static int btrfs_load_zone_info(struct btrfs_fs_info *fs_info, int zone_idx,
- 	switch (zone.cond) {
- 	case BLK_ZONE_COND_OFFLINE:
- 	case BLK_ZONE_COND_READONLY:
--		btrfs_err(fs_info,
-+		btrfs_err_in_rcu(fs_info,
- 		"zoned: offline/readonly zone %llu on device %s (devid %llu)",
- 			  (info->physical >> device->zone_info->zone_size_shift),
- 			  rcu_str_deref(device->name), device->devid);
--- 
-2.43.0
-
+--- a/drivers/dax/device.c
++++ b/drivers/dax/device.c
+@@ -86,7 +86,7 @@ static void dax_set_mapping(struct vm_fa
+ 		nr_pages = 1;
+ 
+ 	pgoff = linear_page_index(vmf->vma,
+-			ALIGN(vmf->address, fault_size));
++			ALIGN_DOWN(vmf->address, fault_size));
+ 
+ 	for (i = 0; i < nr_pages; i++) {
+ 		struct page *page = pfn_to_page(pfn_t_to_pfn(pfn) + i);
 
 
 
