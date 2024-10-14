@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-84848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DCE399D260
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:25:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0979499CE22
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:40:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBE531F2521A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:25:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C189328441D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D2E1AE017;
-	Mon, 14 Oct 2024 15:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B4A1A0724;
+	Mon, 14 Oct 2024 14:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DgVNWLx6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVGU4TdG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F3A43AA9;
-	Mon, 14 Oct 2024 15:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3464020EB;
+	Mon, 14 Oct 2024 14:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919422; cv=none; b=AwDaOhAGlfZF0sdVZa9+0eQjChSkbyoNg6xeLGyTCMMdBo5ZepDPcytXiRsa/vFiPdjT+V3/QlwwsAq0/3PpVSRNQe7ETLSsXiN8hFxbbWCrKkPdEHkpL5fuJHQ87XQ+ioBTZH7PsqaVDzoguVRQpMY8KTJrqYgo9SqhKPNPQ00=
+	t=1728916831; cv=none; b=R3OLhx4JeHAZ8k3ki5H8dEjFf9JT8pceUOMdk0dIR43qO4V+bhRS6CbZ/bBlKQpE1Vo5CsaW6ALR0+4178fsvt104dkcu0hMMLDSt5f1tP2E1QDZ3BQ2DnGQj/+12M5OzjXg8lHScNiF1iCh9ZUzL8CK/bbGSZUGz7wCDSZIlzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919422; c=relaxed/simple;
-	bh=Tre9cGAyKoXv/5RfMTecMjEAbcsd53B4l8ULKRqHIro=;
+	s=arc-20240116; t=1728916831; c=relaxed/simple;
+	bh=yfYIgEgvuj04JsCIj0gRt/jvrrzHlvz6Z6EsYvJVDKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cXlkpXxreoXju3i/USCAA5453UZCGSHp80RK6BQBYUEjAix6I0hyKjLcGPDHeImCHLP5bgxKAAStVt3TInzmXl9u4Db75kpVAlebipFUCLRh4U3+NfPNIKkdnRe7ly1SwcnXBl86/mq2KJ5dHjAndxNId5Pp1W3St9hsaOcwEIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DgVNWLx6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45805C4CEC3;
-	Mon, 14 Oct 2024 15:23:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sn9VeXWHho9BlB8MYgbHMeDnqg1MC2Btq7o6ywBGnbXKLuESet92RoNWfA9W7HVxR7LGVieCWbSWSyGPO+KgYbzF3SAIFA3uv4lj/SXHNkMJTmZ3Pf+amHBLD/W5uPecr6euNKypNdIzOZDLTtluN/ck3tiNnWbo9vDHWdexRTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVGU4TdG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F97C4CEC3;
+	Mon, 14 Oct 2024 14:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919422;
-	bh=Tre9cGAyKoXv/5RfMTecMjEAbcsd53B4l8ULKRqHIro=;
+	s=korg; t=1728916831;
+	bh=yfYIgEgvuj04JsCIj0gRt/jvrrzHlvz6Z6EsYvJVDKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DgVNWLx6cWNVTEtll844cNIoR6RY6rAmFVPZbTZum68FceQoosxhzH3XrYq4KSe7t
-	 Ze52m+eyvcMbysQPZhqrhVKhctxL+VWajQ+Xx/BIy2txT+iLQZZzDpLsirfm0xlpgC
-	 WRGWJm1/dbP8O2/jQwcQ87HvX6bpdfpfyCDAPikU=
+	b=TVGU4TdGcAILCUX46d0gfexc9QuzHzCk6FccA06z052XwaC7U4ogqCrJ8ibJbCKe2
+	 zeojT5y5eyhkqyhLtfGwgN2zrozrqNWrXTbDGUhexXluE5uTDWzAhN3mLECdYQ2rhW
+	 fRK5lek0wLAclCUxni/ep+oyA80sdtf+w/ak42Ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
-	KhaiWenTan <khai.wen.tan@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 597/798] net: stmmac: Fix zero-division error when disabling tc cbs
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 045/213] lib/build_OID_registry: avoid non-destructive substitution for Perl < 5.13.2 compat
 Date: Mon, 14 Oct 2024 16:19:11 +0200
-Message-ID: <20241014141241.459094809@linuxfoundation.org>
+Message-ID: <20241014141044.748803436@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +64,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: KhaiWenTan <khai.wen.tan@linux.intel.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
 
-commit 675faf5a14c14a2be0b870db30a70764df81e2df upstream.
+[ Upstream commit 2fe29fe945637b9834c5569fbb1c9d4f881d8263 ]
 
-The commit b8c43360f6e4 ("net: stmmac: No need to calculate speed divider
-when offload is disabled") allows the "port_transmit_rate_kbps" to be
-set to a value of 0, which is then passed to the "div_s64" function when
-tc-cbs is disabled. This leads to a zero-division error.
+On a system with Perl 5.12.1, commit 5ef6dc08cfde
+("lib/build_OID_registry: don't mention the full path of the script in
+output") causes the build to fail with the error below.
 
-When tc-cbs is disabled, the idleslope, sendslope, and credit values the
-credit values are not required to be configured. Therefore, adding a return
-statement after setting the txQ mode to DCB when tc-cbs is disabled would
-prevent a zero-division error.
+     Bareword found where operator expected at ./lib/build_OID_registry line 41, near "s#^\Q$abs_srctree/\E##r"
+     syntax error at ./lib/build_OID_registry line 41, near "s#^\Q$abs_srctree/\E##r"
+     Execution of ./lib/build_OID_registry aborted due to compilation errors.
+     make[3]: *** [lib/Makefile:352: lib/oid_registry_data.c] Error 255
 
-Fixes: b8c43360f6e4 ("net: stmmac: No need to calculate speed divider when offload is disabled")
-Cc: <stable@vger.kernel.org>
-Co-developed-by: Choong Yong Liang <yong.liang.choong@linux.intel.com>
-Signed-off-by: Choong Yong Liang <yong.liang.choong@linux.intel.com>
-Signed-off-by: KhaiWenTan <khai.wen.tan@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240918061422.1589662-1-khai.wen.tan@linux.intel.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Ahmad Fatoum analyzed that non-destructive substitution is only supported since
+Perl 5.13.2. Instead of dropping `r` and having the side effect of modifying
+`$0`, introduce a dedicated variable to support older Perl versions.
+
+Link: https://lkml.kernel.org/r/20240702223512.8329-2-pmenzel@molgen.mpg.de
+Link: https://lkml.kernel.org/r/20240701155802.75152-1-pmenzel@molgen.mpg.de
+Fixes: 5ef6dc08cfde ("lib/build_OID_registry: don't mention the full path of the script in output")
+Link: https://lore.kernel.org/all/259f7a87-2692-480e-9073-1c1c35b52f67@molgen.mpg.de/
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Suggested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c |    1 +
- 1 file changed, 1 insertion(+)
+ lib/build_OID_registry | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -396,6 +396,7 @@ static int tc_setup_cbs(struct stmmac_pr
- 			return ret;
+diff --git a/lib/build_OID_registry b/lib/build_OID_registry
+index 56d8bafeb848b..8267e8d71338b 100755
+--- a/lib/build_OID_registry
++++ b/lib/build_OID_registry
+@@ -38,7 +38,9 @@ close IN_FILE || die;
+ #
+ open C_FILE, ">$ARGV[1]" or die;
+ print C_FILE "/*\n";
+-print C_FILE " * Automatically generated by ", $0 =~ s#^\Q$abs_srctree/\E##r, ".  Do not edit\n";
++my $scriptname = $0;
++$scriptname =~ s#^\Q$abs_srctree/\E##;
++print C_FILE " * Automatically generated by ", $scriptname, ".  Do not edit\n";
+ print C_FILE " */\n";
  
- 		priv->plat->tx_queues_cfg[queue].mode_to_use = MTL_QUEUE_DCB;
-+		return 0;
- 	}
- 
- 	/* Final adjustments for HW */
+ #
+-- 
+2.43.0
+
 
 
 
