@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA30199D1FB
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE07599CCC7
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:24:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61FC01F24F45
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B250C282047
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4F61ABEA2;
-	Mon, 14 Oct 2024 15:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DDA619E802;
+	Mon, 14 Oct 2024 14:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8NR7hpF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n67evUJu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497FF171671;
-	Mon, 14 Oct 2024 15:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA93E571;
+	Mon, 14 Oct 2024 14:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919104; cv=none; b=WGAeMNZwxeRyxy8PbjW2+1zJ+lTcDzPafSBz7UCg8h9ncthaarIXZPlxEzGGt661TElE7gNGaIDIC2bVOQjoPaZh/HBA+pRwwUrES0UMvUITyMN6s8lCwMbgpu1VK/7cizKVZaZW8c4lwa9XizAC6sBNFo+j2mFY0ARkB6/a7So=
+	t=1728915883; cv=none; b=laegXNas4oJmlOFYrqRDkVcTTfPbs82X6XWQEFgiyo1JmSfUDdM2z95gr6+WjFuDdeXJmayD2e7QEtGs7vwlHuXlHD/xaeQH9/vUnFXA9cv3rFDGcC3PJPMF1qA4YuI244UswgSMP7dO1oJ10Yiyoq14Zu5BrJFW9lPNkhAQ0/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919104; c=relaxed/simple;
-	bh=C2nFJhDVqVOkmEGKzP6dStzzUtObAlqe+97RPx6WrUE=;
+	s=arc-20240116; t=1728915883; c=relaxed/simple;
+	bh=J93wB9J+L810e+dt1eP5GJILz0qzBwtDs1zKorhtH5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tza/4Rvo88nuJcltmQX3Sx0mgLmnrhtAH9HxDrpxOFgc6aAiDFpztuUIF2gM0lV0TaPPtJsOwpAQWyIzAnYBEx6N5JbbJDwGvKYR1yZaIBB+H989KWK0enUu4ariulhDBvN3cHwO8Mg5kuKGtgIKhqsQBAkkr2MgBQP2QWD8M0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8NR7hpF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF0EC4CEC3;
-	Mon, 14 Oct 2024 15:18:23 +0000 (UTC)
+	 MIME-Version; b=BkIHP7oepkl561/TTzX8yPpIkhc709dav1HU+CjXtR8gOqdp2NlIzcvZyjqqJKgxbksmL7sLnTLwpgGEOGh9esNWCC3boaM0ULAxEHHGUac9zPrNgi4AlFxkiLe7UctCZuXPHG7qnxRyhTfrS7RFDYDwSMpWPknaPMtqIWwnXEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n67evUJu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF08C4CEC3;
+	Mon, 14 Oct 2024 14:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919104;
-	bh=C2nFJhDVqVOkmEGKzP6dStzzUtObAlqe+97RPx6WrUE=;
+	s=korg; t=1728915883;
+	bh=J93wB9J+L810e+dt1eP5GJILz0qzBwtDs1zKorhtH5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m8NR7hpFq8QzTp4ZIyMxShbTfdx9lUXSziWY2pmm28ARnBdAHfi5FREaKS5DjCrhg
-	 i7LESRufpSG1ibv/sd4wnlQ3kPMHqqfEQT4Q5B7mJGgKGxv1JZQ0Im9fk91GiGUahH
-	 h5sqBUMrStr5DIPRjPT9lAi9HH9VL5sYGrL+2fjI=
+	b=n67evUJuo4ClouXGffq4GjT3RzBxuQU9H8Opm6h4YTcBUNQ5+i3LcBCurnqR23Mea
+	 4/T+Eu4JYmYn1UCpg0kKTrli6vq0oBjFafPUsPKDCvZNDo84XZEnDT13uoIy1Ic6XV
+	 llI3FicobElew0PIiBI3G2wPT7f+GSFrKdXBp/yo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 514/798] spi: s3c64xx: fix timeout counters in flush_fifo
-Date: Mon, 14 Oct 2024 16:17:48 +0200
-Message-ID: <20241014141238.174927546@linuxfoundation.org>
+Subject: [PATCH 6.11 006/214] fs/ntfs3: Fix sparse warning in ni_fiemap
+Date: Mon, 14 Oct 2024 16:17:49 +0200
+Message-ID: <20241014141045.239896009@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Dooks <ben.dooks@codethink.co.uk>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 68a16708d2503b6303d67abd43801e2ca40c208d ]
+[ Upstream commit 62fea783f96ce825f0ac9e40ce9530ddc1ea2a29 ]
 
-In the s3c64xx_flush_fifo() code, the loops counter is post-decremented
-in the do { } while(test && loops--) condition. This means the loops is
-left at the unsigned equivalent of -1 if the loop times out. The test
-after will never pass as if tests for loops == 0.
+The interface of fiemap_fill_next_extent_k() was modified
+to eliminate the sparse warning.
 
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-Fixes: 230d42d422e7 ("spi: Add s3c64xx SPI Controller driver")
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://patch.msgid.link/20240924134009.116247-2-ben.dooks@codethink.co.uk
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d57431c6f511 ("fs/ntfs3: Do copy_to_user out of run_lock")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202406271920.hndE8N6D-lkp@intel.com/
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-s3c64xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ntfs3/frecord.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 1480df7b43b3f..c481f80b4d8d2 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -219,7 +219,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
- 	loops = msecs_to_loops(1);
- 	do {
- 		val = readl(regs + S3C64XX_SPI_STATUS);
--	} while (TX_FIFO_LVL(val, sdd) && loops--);
-+	} while (TX_FIFO_LVL(val, sdd) && --loops);
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index a469c608a3948..60c975ac38e61 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -1900,13 +1900,13 @@ enum REPARSE_SIGN ni_parse_reparse(struct ntfs_inode *ni, struct ATTRIB *attr,
  
- 	if (loops == 0)
- 		dev_warn(&sdd->pdev->dev, "Timed out flushing TX FIFO\n");
-@@ -232,7 +232,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
- 			readl(regs + S3C64XX_SPI_RX_DATA);
- 		else
+ /*
+  * fiemap_fill_next_extent_k - a copy of fiemap_fill_next_extent
+- * but it accepts kernel address for fi_extents_start
++ * but it uses 'fe_k' instead of fieinfo->fi_extents_start
+  */
+ static int fiemap_fill_next_extent_k(struct fiemap_extent_info *fieinfo,
+-				     u64 logical, u64 phys, u64 len, u32 flags)
++				     struct fiemap_extent *fe_k, u64 logical,
++				     u64 phys, u64 len, u32 flags)
+ {
+ 	struct fiemap_extent extent;
+-	struct fiemap_extent __user *dest = fieinfo->fi_extents_start;
+ 
+ 	/* only count the extents */
+ 	if (fieinfo->fi_extents_max == 0) {
+@@ -1930,8 +1930,7 @@ static int fiemap_fill_next_extent_k(struct fiemap_extent_info *fieinfo,
+ 	extent.fe_length = len;
+ 	extent.fe_flags = flags;
+ 
+-	dest += fieinfo->fi_extents_mapped;
+-	memcpy(dest, &extent, sizeof(extent));
++	memcpy(fe_k + fieinfo->fi_extents_mapped, &extent, sizeof(extent));
+ 
+ 	fieinfo->fi_extents_mapped++;
+ 	if (fieinfo->fi_extents_mapped == fieinfo->fi_extents_max)
+@@ -1949,7 +1948,6 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 	      __u64 vbo, __u64 len)
+ {
+ 	int err = 0;
+-	struct fiemap_extent __user *fe_u = fieinfo->fi_extents_start;
+ 	struct fiemap_extent *fe_k = NULL;
+ 	struct ntfs_sb_info *sbi = ni->mi.sbi;
+ 	u8 cluster_bits = sbi->cluster_bits;
+@@ -2008,7 +2006,6 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 		err = -ENOMEM;
+ 		goto out;
+ 	}
+-	fieinfo->fi_extents_start = fe_k;
+ 
+ 	end = vbo + len;
+ 	alloc_size = le64_to_cpu(attr->nres.alloc_size);
+@@ -2098,8 +2095,8 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 			if (vbo + dlen >= end)
+ 				flags |= FIEMAP_EXTENT_LAST;
+ 
+-			err = fiemap_fill_next_extent_k(fieinfo, vbo, lbo, dlen,
+-							flags);
++			err = fiemap_fill_next_extent_k(fieinfo, fe_k, vbo, lbo,
++							dlen, flags);
+ 
+ 			if (err < 0)
+ 				break;
+@@ -2120,7 +2117,7 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 		if (vbo + bytes >= end)
+ 			flags |= FIEMAP_EXTENT_LAST;
+ 
+-		err = fiemap_fill_next_extent_k(fieinfo, vbo, lbo, bytes,
++		err = fiemap_fill_next_extent_k(fieinfo, fe_k, vbo, lbo, bytes,
+ 						flags);
+ 		if (err < 0)
  			break;
--	} while (loops--);
-+	} while (--loops);
+@@ -2137,15 +2134,13 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 	/*
+ 	 * Copy to user memory out of lock
+ 	 */
+-	if (copy_to_user(fe_u, fe_k,
++	if (copy_to_user(fieinfo->fi_extents_start, fe_k,
+ 			 fieinfo->fi_extents_max *
+ 				 sizeof(struct fiemap_extent))) {
+ 		err = -EFAULT;
+ 	}
  
- 	if (loops == 0)
- 		dev_warn(&sdd->pdev->dev, "Timed out flushing RX FIFO\n");
+ out:
+-	/* Restore original pointer. */
+-	fieinfo->fi_extents_start = fe_u;
+ 	kfree(fe_k);
+ 	return err;
+ }
 -- 
 2.43.0
 
