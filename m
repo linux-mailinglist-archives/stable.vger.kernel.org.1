@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-84985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D7DF99D331
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB2F99CEF8
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E9481C22ACD
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71A761C2339B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031B91AB517;
-	Mon, 14 Oct 2024 15:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BCED7C6E6;
+	Mon, 14 Oct 2024 14:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElgowFa4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFIU5m/C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B655D3A1B6;
-	Mon, 14 Oct 2024 15:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2581ABEB7;
+	Mon, 14 Oct 2024 14:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919902; cv=none; b=Ew6j/8AiSLjmUb0wZCukT3BWASxO3sPl2190XRPUkfCiO3oPHxxNv2qlsC3/QwQlH1yv/Kx5rW9/MEd1u9ZnmEzUWZrnRLQLmZ75MgMnsuVlI6JWjXR0EiJWoZr4ZjO/vBUYj3BSbKDLK9IDlwHo7mF+MNHhVmyt7dkUwmQOrZg=
+	t=1728917225; cv=none; b=q1LaSyxlNfTSZ5SOWQGmyrOTIVEHjdIpwUFvu1uNZerzKKpgZkH/omyYHT6NgTu4eMJvrdacnxkJzX+753S1NKyEThUUQE0UeRDWeIemD0qNcdP/0WoJwTZBeurgtiY6VAji3bwQwwP3P0CBf+P/gmDyM8GL9tSR3WFW/na1PcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919902; c=relaxed/simple;
-	bh=a5p7A8cHH4hiYSPILJjwBYPu7WhCpgFF+zDnDNrmr3w=;
+	s=arc-20240116; t=1728917225; c=relaxed/simple;
+	bh=s2gORQoysaQE7nzrTG4bV7BMhT/VqcokqZsb+suK8Io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BpP6jT7ETUcfn3AENzQ9R0KbP3N3ANbyRrdQYq60aaWsQ0RMFmnQSd0VEegBM1NqPJXkSZ0wpEw1rd67A+UWNJ6Eele8P1QB74KEFQ4RVMm0cF5v7+oxwbnOgLChm8aXOSnDD2IamVjP//GB+HEzevJmQw4u45B4EpGaU3YZ6Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElgowFa4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B673C4CEC3;
-	Mon, 14 Oct 2024 15:31:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PA6LZev3PgSH59bugboKPn8Lhvuv/XrXquY//p/ipISnzIlLDOTItQndlGp9Dgt7fX/oIvxV4l10Ylr6GQqIEAYsigECoPmKZy0L6kE0FdWr8GmpDcT7p29ckcIMh8rQR714JUK7oWQK6tqe4Ij4s6cAp9Q9ZLRXYAp7OJaVkrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFIU5m/C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03FCC4CEC3;
+	Mon, 14 Oct 2024 14:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919902;
-	bh=a5p7A8cHH4hiYSPILJjwBYPu7WhCpgFF+zDnDNrmr3w=;
+	s=korg; t=1728917225;
+	bh=s2gORQoysaQE7nzrTG4bV7BMhT/VqcokqZsb+suK8Io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ElgowFa4oOmnuAJOdETRy3PB/7La9mQJuDAl+1lcvuUduAok06U71HtK6oXOm5NPK
-	 q8sCw0eqlHdNPPnhWp1DHNBEuIrsf9UftdVR/XnJm1VM2IMNZrG3mfeD2/k760bNMT
-	 7X4TgtGOxnabVVjrd4tOUBHOXL3c2AN7D68GYQE4=
+	b=oFIU5m/Cp0BBwOiXpWnUlN33r8O4U7MizCrp/NZZfXDmpbDBDDYSMNO6bmGPZmQ6t
+	 xjyoas9aU60D4/JVGvWFqX75A/KMKWDg4kyA0WyL1N/tjdAqcJ0AFKW0c4LdHGkck3
+	 Qt+rOvtyEaJJu2L4TDUisdWi9Oec5OSjw/a2kVKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 741/798] net: ethernet: adi: adin1110: Fix some error handling path in adin1110_read_fifo()
+	Boris Brezillon <bbrezillon@kernel.org>,
+	"Juan A. Suarez Romero" <jasuarez@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [PATCH 6.6 189/213] drm/vc4: Stop the active perfmon before being destroyed
 Date: Mon, 14 Oct 2024 16:21:35 +0200
-Message-ID: <20241014141247.181048226@linuxfoundation.org>
+Message-ID: <20241014141050.338338225@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 83211ae1640516accae645de82f5a0a142676897 ]
+commit 0b2ad4f6f2bec74a5287d96cb2325a5e11706f22 upstream.
 
-If 'frame_size' is too small or if 'round_len' is an error code, it is
-likely that an error code should be returned to the caller.
+Upon closing the file descriptor, the active performance monitor is not
+stopped. Although all perfmons are destroyed in `vc4_perfmon_close_file()`,
+the active performance monitor's pointer (`vc4->active_perfmon`) is still
+retained.
 
-Actually, 'ret' is likely to be 0, so if one of these sanity checks fails,
-'success' is returned.
+If we open a new file descriptor and submit a few jobs with performance
+monitors, the driver will attempt to stop the active performance monitor
+using the stale pointer in `vc4->active_perfmon`. However, this pointer
+is no longer valid because the previous process has already terminated,
+and all performance monitors associated with it have been destroyed and
+freed.
 
-Return -EINVAL instead.
+To fix this, when the active performance monitor belongs to a given
+process, explicitly stop it before destroying and freeing it.
 
-Fixes: bc93e19d088b ("net: ethernet: adi: Add ADIN1110 support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://patch.msgid.link/8ff73b40f50d8fa994a454911b66adebce8da266.1727981562.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v4.17+
+Cc: Boris Brezillon <bbrezillon@kernel.org>
+Cc: Juan A. Suarez Romero <jasuarez@igalia.com>
+Fixes: 65101d8c9108 ("drm/vc4: Expose performance counters to userspace")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Juan A. Suarez <jasuarez@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241004123817.890016-2-mcanal@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/adi/adin1110.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/vc4/vc4_perfmon.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/adi/adin1110.c
-index 7474afc0e8e73..5e17d107f3623 100644
---- a/drivers/net/ethernet/adi/adin1110.c
-+++ b/drivers/net/ethernet/adi/adin1110.c
-@@ -318,11 +318,11 @@ static int adin1110_read_fifo(struct adin1110_port_priv *port_priv)
- 	 * from the  ADIN1110 frame header.
- 	 */
- 	if (frame_size < ADIN1110_FRAME_HEADER_LEN + ADIN1110_FEC_LEN)
--		return ret;
-+		return -EINVAL;
+--- a/drivers/gpu/drm/vc4/vc4_perfmon.c
++++ b/drivers/gpu/drm/vc4/vc4_perfmon.c
+@@ -116,6 +116,11 @@ void vc4_perfmon_open_file(struct vc4_fi
+ static int vc4_perfmon_idr_del(int id, void *elem, void *data)
+ {
+ 	struct vc4_perfmon *perfmon = elem;
++	struct vc4_dev *vc4 = (struct vc4_dev *)data;
++
++	/* If the active perfmon is being destroyed, stop it first */
++	if (perfmon == vc4->active_perfmon)
++		vc4_perfmon_stop(vc4, perfmon, false);
  
- 	round_len = adin1110_round_len(frame_size);
- 	if (round_len < 0)
--		return ret;
-+		return -EINVAL;
+ 	vc4_perfmon_put(perfmon);
  
- 	frame_size_no_fcs = frame_size - ADIN1110_FRAME_HEADER_LEN - ADIN1110_FEC_LEN;
- 	memset(priv->data, 0, ADIN1110_RD_HEADER_LEN);
--- 
-2.43.0
-
+@@ -130,7 +135,7 @@ void vc4_perfmon_close_file(struct vc4_f
+ 		return;
+ 
+ 	mutex_lock(&vc4file->perfmon.lock);
+-	idr_for_each(&vc4file->perfmon.idr, vc4_perfmon_idr_del, NULL);
++	idr_for_each(&vc4file->perfmon.idr, vc4_perfmon_idr_del, vc4);
+ 	idr_destroy(&vc4file->perfmon.idr);
+ 	mutex_unlock(&vc4file->perfmon.lock);
+ 	mutex_destroy(&vc4file->perfmon.lock);
 
 
 
