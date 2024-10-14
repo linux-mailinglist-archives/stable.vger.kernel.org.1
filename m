@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-83909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341B799CD24
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:29:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3DD99CD30
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A32DEB220D5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:29:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A885281F31
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECD418035;
-	Mon, 14 Oct 2024 14:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD031AB526;
+	Mon, 14 Oct 2024 14:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNk/4M0x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qc30m/L8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCEC13B7A1;
-	Mon, 14 Oct 2024 14:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92501AAE25;
+	Mon, 14 Oct 2024 14:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916152; cv=none; b=cBUfWpAc3Vq39DGIVjqEotqXlrY0El+qlb5690kKtXhoD+kmV5qkNe11x7xj34NSXSjMiF0qCgeqD5Phqv00B4e4FEy3eXGi+tW6LQlkMU2zr4CXtIkL++g4rfp4IDFQopwAkuO+fSwUqmmgMtuwXYZOjATKK8J/G8c23mhYG2A=
+	t=1728916194; cv=none; b=O9GzKcWZo59V9f6TxnCYFs8I9W+MUWzRbYUj+2FomPUVpwx/H0WjUrcL3OqRMHWET3Qs1lCGtIA897vUiUZkkY0Tfq/DYvYk3j5VW7NVuUyj4vRIs/7ZbhQX3ejRn/ucnZR2kHqw7/oZZsUUXBNT7mkwnPz/lkegeZqkh880934=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916152; c=relaxed/simple;
-	bh=tDuCTZrMkuWXD/4GK0NeDyZ3WGyImIvPITUZSBL8uIU=;
+	s=arc-20240116; t=1728916194; c=relaxed/simple;
+	bh=zLEGeiYnpglF2klfNYvvPsgpwrywZyXjoFXhAlw/uAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WErqINR5s+CSiKmmibKF6f3N0gXuSGx6uCXpfF1Lq/P1ni3xtHClY3tky/LJ9EeBTTY1mplc9zeGrPcQIThvnkoX/NcMDZbrn7hzxvMXEQ7GNB74v/1IagplGsGlRq/lJen5d49px43/eMVJx4qiyM4jG2cVrovpft/x97MkUFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNk/4M0x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6F4C4CED0;
-	Mon, 14 Oct 2024 14:29:11 +0000 (UTC)
+	 MIME-Version; b=MPglOt88eLCs58XUVIhOEJ46OXTTtFfv9icbY/cU+VADFOgQcCbXe9PtNeTMaHA2SiVfuIIvbFoTR/GL8lvHdfSlauXtN1bp+Fhnv61tlQolfKuf3NPmpUJikJNLujAiSFVpR8mc55Timp8INisqdmKcyIcAJlEZpr3yZzV6Rn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qc30m/L8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF61EC4CEC3;
+	Mon, 14 Oct 2024 14:29:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916152;
-	bh=tDuCTZrMkuWXD/4GK0NeDyZ3WGyImIvPITUZSBL8uIU=;
+	s=korg; t=1728916194;
+	bh=zLEGeiYnpglF2klfNYvvPsgpwrywZyXjoFXhAlw/uAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SNk/4M0xxRQ5FUVZWKlCzgRH8bWSKLFuxO6pMYnir27fi/q6ibXYxymMjr6x/O1I0
-	 urmAgwliBWkQxsAw2+tF1eyua8iQErgMpuZeXzKPATEyQZfWbb18Rb0sbLUk7zASwO
-	 toKvsbU6Zp6/LtsnE+GevbjvDrUdkKZnWf5nLl+8=
+	b=Qc30m/L8NZGEDbrry7fsW/s0qV8s8wGGQA5mjnNYDOpCEElHdTOi1K3IaWZLbwrI/
+	 zFqhSuuhkOroqcboEN9nQS+iwIDQqrcBMUZkXWtcEFeg/eAuzN259xwiThW85kOtNR
+	 XRRv5zg385pJjsHFwvePeBn5VXPnp1MX4tWwOEiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 092/214] net: phy: aquantia: AQR115c fix up PMA capabilities
-Date: Mon, 14 Oct 2024 16:19:15 +0200
-Message-ID: <20241014141048.586158868@linuxfoundation.org>
+Subject: [PATCH 6.11 093/214] net: phy: aquantia: remove usage of phy_set_max_speed
+Date: Mon, 14 Oct 2024 16:19:16 +0200
+Message-ID: <20241014141048.624804207@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
 References: <20241014141044.974962104@linuxfoundation.org>
@@ -69,43 +69,57 @@ Content-Transfer-Encoding: 8bit
 
 From: Abhishek Chauhan <quic_abchauha@quicinc.com>
 
-[ Upstream commit 17cbfcdd85f6c93b2e9565d61110ad0b90440436 ]
+[ Upstream commit 8f61d73306c62e3c0e368cf6051330f4593415f6 ]
 
-AQR115c reports incorrect PMA capabilities which includes
-10G/5G and also incorrectly disables capabilities like autoneg
-and 10Mbps support.
+Remove the use of phy_set_max_speed in phy driver as the
+function is mainly used in MAC driver to set the max
+speed.
 
-AQR115c as per the Marvell databook supports speeds up to 2.5Gbps
-with autonegotiation.
+Instead use get_features to fix up Phy PMA capabilities for
+AQR111, AQR111B0, AQR114C and AQCS109
 
-Fixes: 0ebc581f8a4b ("net: phy: aquantia: add support for aqr115c")
+Fixes: 038ba1dc4e54 ("net: phy: aquantia: add AQR111 and AQR111B0 PHY ID")
+Fixes: 0974f1f03b07 ("net: phy: aquantia: remove false 5G and 10G speed ability for AQCS109")
+Fixes: c278ec644377 ("net: phy: aquantia: add support for AQR114C PHY ID")
 Link: https://lore.kernel.org/all/20240913011635.1286027-1-quic_abchauha@quicinc.com/T/
 Signed-off-by: Abhishek Chauhan <quic_abchauha@quicinc.com>
 Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20241001224626.2400222-2-quic_abchauha@quicinc.com
+Link: https://patch.msgid.link/20241001224626.2400222-3-quic_abchauha@quicinc.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/aquantia/aquantia_main.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/phy/aquantia/aquantia_main.c | 37 ++++++++++++------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
-index 4d156d406bab9..1bb39664a5cb1 100644
+index 1bb39664a5cb1..c33a5ef34ba03 100644
 --- a/drivers/net/phy/aquantia/aquantia_main.c
 +++ b/drivers/net/phy/aquantia/aquantia_main.c
-@@ -731,6 +731,19 @@ static int aqr113c_fill_interface_modes(struct phy_device *phydev)
- 	return aqr107_fill_interface_modes(phydev);
+@@ -537,12 +537,6 @@ static int aqcs109_config_init(struct phy_device *phydev)
+ 	if (!ret)
+ 		aqr107_chip_info(phydev);
+ 
+-	/* AQCS109 belongs to a chip family partially supporting 10G and 5G.
+-	 * PMA speed ability bits are the same for all members of the family,
+-	 * AQCS109 however supports speeds up to 2.5G only.
+-	 */
+-	phy_set_max_speed(phydev, SPEED_2500);
+-
+ 	return aqr107_set_downshift(phydev, MDIO_AN_VEND_PROV_DOWNSHIFT_DFLT);
  }
  
-+static int aqr115c_get_features(struct phy_device *phydev)
+@@ -744,6 +738,18 @@ static int aqr115c_get_features(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++static int aqr111_get_features(struct phy_device *phydev)
 +{
-+	unsigned long *supported = phydev->supported;
-+
-+	/* PHY supports speeds up to 2.5G with autoneg. PMA capabilities
++	/* PHY supports speeds up to 5G with autoneg. PMA capabilities
 +	 * are not useful.
 +	 */
-+	linkmode_or(supported, supported, phy_gbit_features);
-+	linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, supported);
++	aqr115c_get_features(phydev);
++	linkmode_set_bit(ETHTOOL_LINK_MODE_5000baseT_Full_BIT,
++			 phydev->supported);
 +
 +	return 0;
 +}
@@ -113,11 +127,78 @@ index 4d156d406bab9..1bb39664a5cb1 100644
  static int aqr113c_config_init(struct phy_device *phydev)
  {
  	int ret;
-@@ -1046,6 +1059,7 @@ static struct phy_driver aqr_driver[] = {
+@@ -780,15 +786,6 @@ static int aqr107_probe(struct phy_device *phydev)
+ 	return aqr_hwmon_probe(phydev);
+ }
+ 
+-static int aqr111_config_init(struct phy_device *phydev)
+-{
+-	/* AQR111 reports supporting speed up to 10G,
+-	 * however only speeds up to 5G are supported.
+-	 */
+-	phy_set_max_speed(phydev, SPEED_5000);
+-
+-	return aqr107_config_init(phydev);
+-}
+ 
+ static struct phy_driver aqr_driver[] = {
+ {
+@@ -866,6 +863,7 @@ static struct phy_driver aqr_driver[] = {
+ 	.get_sset_count	= aqr107_get_sset_count,
+ 	.get_strings	= aqr107_get_strings,
+ 	.get_stats	= aqr107_get_stats,
++	.get_features   = aqr115c_get_features,
+ 	.link_change_notify = aqr107_link_change_notify,
+ 	.led_brightness_set = aqr_phy_led_brightness_set,
+ 	.led_hw_is_supported = aqr_phy_led_hw_is_supported,
+@@ -878,7 +876,7 @@ static struct phy_driver aqr_driver[] = {
+ 	.name		= "Aquantia AQR111",
+ 	.probe		= aqr107_probe,
+ 	.get_rate_matching = aqr107_get_rate_matching,
+-	.config_init	= aqr111_config_init,
++	.config_init	= aqr107_config_init,
+ 	.config_aneg    = aqr_config_aneg,
+ 	.config_intr	= aqr_config_intr,
+ 	.handle_interrupt = aqr_handle_interrupt,
+@@ -890,6 +888,7 @@ static struct phy_driver aqr_driver[] = {
+ 	.get_sset_count	= aqr107_get_sset_count,
+ 	.get_strings	= aqr107_get_strings,
+ 	.get_stats	= aqr107_get_stats,
++	.get_features   = aqr111_get_features,
+ 	.link_change_notify = aqr107_link_change_notify,
+ 	.led_brightness_set = aqr_phy_led_brightness_set,
+ 	.led_hw_is_supported = aqr_phy_led_hw_is_supported,
+@@ -902,7 +901,7 @@ static struct phy_driver aqr_driver[] = {
+ 	.name		= "Aquantia AQR111B0",
+ 	.probe		= aqr107_probe,
+ 	.get_rate_matching = aqr107_get_rate_matching,
+-	.config_init	= aqr111_config_init,
++	.config_init	= aqr107_config_init,
+ 	.config_aneg    = aqr_config_aneg,
+ 	.config_intr	= aqr_config_intr,
+ 	.handle_interrupt = aqr_handle_interrupt,
+@@ -914,6 +913,7 @@ static struct phy_driver aqr_driver[] = {
+ 	.get_sset_count	= aqr107_get_sset_count,
+ 	.get_strings	= aqr107_get_strings,
+ 	.get_stats	= aqr107_get_stats,
++	.get_features   = aqr111_get_features,
+ 	.link_change_notify = aqr107_link_change_notify,
+ 	.led_brightness_set = aqr_phy_led_brightness_set,
+ 	.led_hw_is_supported = aqr_phy_led_hw_is_supported,
+@@ -1023,7 +1023,7 @@ static struct phy_driver aqr_driver[] = {
+ 	.name           = "Aquantia AQR114C",
+ 	.probe          = aqr107_probe,
+ 	.get_rate_matching = aqr107_get_rate_matching,
+-	.config_init    = aqr111_config_init,
++	.config_init    = aqr107_config_init,
+ 	.config_aneg    = aqr_config_aneg,
+ 	.config_intr    = aqr_config_intr,
+ 	.handle_interrupt = aqr_handle_interrupt,
+@@ -1035,6 +1035,7 @@ static struct phy_driver aqr_driver[] = {
  	.get_sset_count = aqr107_get_sset_count,
  	.get_strings    = aqr107_get_strings,
  	.get_stats      = aqr107_get_stats,
-+	.get_features   = aqr115c_get_features,
++	.get_features   = aqr111_get_features,
  	.link_change_notify = aqr107_link_change_notify,
  	.led_brightness_set = aqr_phy_led_brightness_set,
  	.led_hw_is_supported = aqr_phy_led_hw_is_supported,
