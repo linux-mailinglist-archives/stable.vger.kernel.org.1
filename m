@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-84933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5F6E99D2ED
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:31:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B47999CE78
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:44:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6114C283447
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:31:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3B5B1F23D7E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18E471ADFF8;
-	Mon, 14 Oct 2024 15:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69E11AB6F8;
+	Mon, 14 Oct 2024 14:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIwlYxPZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rC735S4X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE8E139D0B;
-	Mon, 14 Oct 2024 15:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E024595B;
+	Mon, 14 Oct 2024 14:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919719; cv=none; b=kuc6uwstFSyvLzk2bdKffhqE7HE7j5QlrcrdoSuYUMT7iCgTL+k9NwG/N0ib+umAOstqDYaX6vB6DQt1B0vxYrLpFsQkrfPqBcN7uB+ILBhTicsKNC5wi5Fs0kyjSAtacgwtJ1bz/bEHFXVa7hFt2RZccbc7PTpBHhhHFDjh21c=
+	t=1728917048; cv=none; b=iM7yIzN9ByUUL7E1KEnEcpltydkNRSvVS+AU34giuXAEGA2MLC6WX/8b8dB2Fr4DdkMN3Z/lVGwZWETabVbZCEQic2tvce7KneXrl7Zy17wDP7QFynKh+BjgWdGl9OmSI4dTN3NcI7sFij9OdM2tcvtTjTNKnLIar9/KvWDmraE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919719; c=relaxed/simple;
-	bh=69ndTRQtemZdZek1AAZ4riucCBNEB/6rVdyn2Xi5vMc=;
+	s=arc-20240116; t=1728917048; c=relaxed/simple;
+	bh=ZBud8ZaYaxWBKJ07NFb7s8K+xkNyYlzxcIhjX/cakFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X//aVMhZHDwnssH6eS2fPxmsN9yeMg8Z2r+mqV2OZXGfaRyTxLlreOYlZspfaI3kklMI3XaEyb4DbkF4YY2iHtBG+XjPK2VA3597ArG/UIA+A9BECUjjgqEDPcNAPoO/UK57CF6VSo/Kz8cD/HsIEhhc3kLEg3KkoRzB5Lk7pAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIwlYxPZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA2FC4CEC7;
-	Mon, 14 Oct 2024 15:28:39 +0000 (UTC)
+	 MIME-Version; b=QMZIBJ/mKZdY//sXAQIISgsGtqzhBP9vpK5LGK/zMDH/IgGd1/T/ou8+STWcVz8g9K3skgn8NAfKnMQivYGOE8YAF2U83dQ4D9WoIIH5txtEfldsmzDHRWHX6ZCaZSFrCUu3waxU6j2WX58Cd+M2FBZN2rDgSER+vukjQaDQ1E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rC735S4X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79801C4CEC3;
+	Mon, 14 Oct 2024 14:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919719;
-	bh=69ndTRQtemZdZek1AAZ4riucCBNEB/6rVdyn2Xi5vMc=;
+	s=korg; t=1728917048;
+	bh=ZBud8ZaYaxWBKJ07NFb7s8K+xkNyYlzxcIhjX/cakFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AIwlYxPZoSIeGEYXeaJgOSZqQjfzNqNuyjjZ/d9vQOQ25W2uCbgj3PEYNWIl1us6r
-	 m8a/5nrWTJGC6AbkacseR0VBIavX0JRrwT6Vgevfw/ZGg9OL0ONlz2/ODnFgG1M1+e
-	 djeHQcYRokkASOeZnoeY0bLiJIu5uSp09p6XJlc0=
+	b=rC735S4XR3OQvOBsXOdrr0l5BLXPR0vSt0VNcphwaoX0WFXm7IxYzXJ7Fl2VoMj4o
+	 PgBq4NaLu3KCDm1HjM27nredLwlYSZMj56kuWpzAvc/49jt9K0dnZrLuUGqSV9z2xP
+	 U/uJ/GdErZhPBc7Ab+rJJcZmNnitrMjvsptl4ycE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 688/798] s390/facility: Disable compile time optimization for decompressor code
+Subject: [PATCH 6.6 136/213] gpio: aspeed: Use devm_clk api to manage clock source
 Date: Mon, 14 Oct 2024 16:20:42 +0200
-Message-ID: <20241014141245.101826484@linuxfoundation.org>
+Message-ID: <20241014141048.279033394@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Billy Tsai <billy_tsai@aspeedtech.com>
 
-[ Upstream commit 0147addc4fb72a39448b8873d8acdf3a0f29aa65 ]
+[ Upstream commit a6191a3d18119184237f4ee600039081ad992320 ]
 
-Disable compile time optimizations of test_facility() for the
-decompressor. The decompressor should not contain any optimized code
-depending on the architecture level set the kernel image is compiled
-for to avoid unexpected operation exceptions.
+Replace of_clk_get with devm_clk_get_enabled to manage the clock source.
 
-Add a __DECOMPRESSOR check to test_facility() to enforce that
-facilities are always checked during runtime for the decompressor.
-
-Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 5ae4cb94b313 ("gpio: aspeed: Add debounce support")
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+Link: https://lore.kernel.org/r/20241008081450.1490955-3-billy_tsai@aspeedtech.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/facility.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-aspeed.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/include/asm/facility.h b/arch/s390/include/asm/facility.h
-index 94b6919026dfb..953d42205ea83 100644
---- a/arch/s390/include/asm/facility.h
-+++ b/arch/s390/include/asm/facility.h
-@@ -60,8 +60,10 @@ static inline int test_facility(unsigned long nr)
- 	unsigned long facilities_als[] = { FACILITIES_ALS };
+diff --git a/drivers/gpio/gpio-aspeed.c b/drivers/gpio/gpio-aspeed.c
+index 017f083bc8c29..76468e6a2899a 100644
+--- a/drivers/gpio/gpio-aspeed.c
++++ b/drivers/gpio/gpio-aspeed.c
+@@ -1193,7 +1193,7 @@ static int __init aspeed_gpio_probe(struct platform_device *pdev)
+ 	if (!gpio_id)
+ 		return -EINVAL;
  
- 	if (__builtin_constant_p(nr) && nr < sizeof(facilities_als) * 8) {
--		if (__test_facility(nr, &facilities_als))
--			return 1;
-+		if (__test_facility(nr, &facilities_als)) {
-+			if (!__is_defined(__DECOMPRESSOR))
-+				return 1;
-+		}
- 	}
- 	return __test_facility(nr, &stfle_fac_list);
- }
+-	gpio->clk = of_clk_get(pdev->dev.of_node, 0);
++	gpio->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(gpio->clk)) {
+ 		dev_warn(&pdev->dev,
+ 				"Failed to get clock from devicetree, debouncing disabled\n");
 -- 
 2.43.0
 
