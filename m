@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-84709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ECDF99D1B5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:20:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 803D299D176
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:17:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86C9CB252D2
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:19:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 356681F2451F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 423DE1C82F1;
-	Mon, 14 Oct 2024 15:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573E01CDA19;
+	Mon, 14 Oct 2024 15:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cY+kTIAB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sML865Dt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E959A1C82E2;
-	Mon, 14 Oct 2024 15:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120684CDEC;
+	Mon, 14 Oct 2024 15:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918940; cv=none; b=XB5vhbsxTfw3942gaJuUPXk3LsccSZ5LbKx0Xg0g89Lx/d4D67q8fA8rFf8II02yd24GMp7TjfvAbiQqZ3EVP5IMtKk4aS86SFbK6WSuUlNsaPzydy0ufyt5CTSsQsJ1MBD/UOcWiAYTk0Xs1n3EPV1xXEKmonqZvnTeqgNvO1M=
+	t=1728918832; cv=none; b=YQ60IrMME3AmxeIoF3lqqm9/AZvnlqG516MnfwVd8804EU/HdaYTbt0Qz4IVEQCkWJ+RKxnYBUdKSD5HSMi4Qpigd4tX/JcQGoku0fQH+tsYCSfUF6FOZ+fAYSxk1t5oyg3ap2ZplkwYqflARAsU+3IKwiB+wazv865ovyC1Tys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918940; c=relaxed/simple;
-	bh=aQQtfK0IbQ0wyG+bbf2XkD3bEYCPMkdL2kk/x4TKM5I=;
+	s=arc-20240116; t=1728918832; c=relaxed/simple;
+	bh=+C3IPsefhQi8+mJxnUqFn9+o8y95i+nhiDRvEzZcRkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oiha9SqUmcvnqJAW0A8hn4qrrt6Th7W8G5Bt4EZme781fGsFImFUW2Hjr8lDVGZv0xZ/g+lHhn8D74Ez3r6IHXKlekjHu71IySx/jZpf6l6Zu2PjGiP6wSCqhNNIS4UIzkxCmdNvuJe4m0eeLi3UecJFiE0vcjlST6szLQQLJkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cY+kTIAB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3E1C4CEC3;
-	Mon, 14 Oct 2024 15:15:38 +0000 (UTC)
+	 MIME-Version; b=lUwMFpqtIY/N/o5RJCxnXkQIEOYlSUaxAd2lQy3hK7L8F9wo1B81pRJxeeRojI32K3PKYMmFvulnkXPfgDVcg3KFblwRZSjbqefYw9/TnJ8HJeNJ1rP8o7zyKAs1ofhfDnzpc2v0XV56tyq6aiPLvN86BbagiUK3NqMfs07b1yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sML865Dt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D400C4CECF;
+	Mon, 14 Oct 2024 15:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918939;
-	bh=aQQtfK0IbQ0wyG+bbf2XkD3bEYCPMkdL2kk/x4TKM5I=;
+	s=korg; t=1728918831;
+	bh=+C3IPsefhQi8+mJxnUqFn9+o8y95i+nhiDRvEzZcRkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cY+kTIABebwO+U3PFVffAcbJRSVlx8fznMsG2sa45CTaNDE7uIUqEYtxcldNORtYI
-	 G5M2ecRTIIZTTwXwoIxdmnSfHrlNShqPjULp11dj1C8ue+uNHlsMwbr2gp8rdjLBXx
-	 AjSTl+ZHnlXPIfFSkAjBYBVEvzp6ZfxqblaxjTCg=
+	b=sML865DtddwfBdiL4E6KTzQ4ip4Pp15WEMAzBDHZmuBP3gLUH88MLgjZRm61acFXU
+	 IRT8NOd7GilQ8d2k2QUW5umVtAWoqhb5trV1m/p3fQmStrEZxylHMjXzJCHzEUzlLA
+	 oALbkojpUaE16l2TzfQQn6T/reqLwh5QTv+99xlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 435/798] wifi: ath11k: fix array out-of-bound access in SoC stats
-Date: Mon, 14 Oct 2024 16:16:29 +0200
-Message-ID: <20241014141235.053480052@linuxfoundation.org>
+Subject: [PATCH 6.1 436/798] wifi: rtw88: select WANT_DEV_COREDUMP
+Date: Mon, 14 Oct 2024 16:16:30 +0200
+Message-ID: <20241014141235.092245325@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -66,41 +66,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-[ Upstream commit 69f253e46af98af17e3efa3e5dfa72fcb7d1983d ]
+[ Upstream commit 7e989b0c1e33210c07340bf5228aa83ea52515b5 ]
 
-Currently, the ath11k_soc_dp_stats::hal_reo_error array is defined with a
-maximum size of DP_REO_DST_RING_MAX. However, the ath11k_dp_process_rx()
-function access ath11k_soc_dp_stats::hal_reo_error using the REO
-destination SRNG ring ID, which is incorrect. SRNG ring ID differ from
-normal ring ID, and this usage leads to out-of-bounds array access. To fix
-this issue, modify ath11k_dp_process_rx() to use the normal ring ID
-directly instead of the SRNG ring ID to avoid out-of-bounds array access.
+We have invoked device coredump when fw crash.
+Should select WANT_DEV_COREDUMP by ourselves.
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240704070811.4186543-3-quic_periyasa@quicinc.com
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240718070616.42217-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 3746f9c956969..73f299f65e2eb 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -2699,7 +2699,7 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
- 		if (unlikely(push_reason !=
- 			     HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRUCTION)) {
- 			dev_kfree_skb_any(msdu);
--			ab->soc_stats.hal_reo_error[dp->reo_dst_ring[ring_id].ring_id]++;
-+			ab->soc_stats.hal_reo_error[ring_id]++;
- 			continue;
- 		}
+diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wireless/realtek/rtw88/Kconfig
+index e3d7cb6c12902..5c18da555681a 100644
+--- a/drivers/net/wireless/realtek/rtw88/Kconfig
++++ b/drivers/net/wireless/realtek/rtw88/Kconfig
+@@ -12,6 +12,7 @@ if RTW88
  
+ config RTW88_CORE
+ 	tristate
++	select WANT_DEV_COREDUMP
+ 
+ config RTW88_PCI
+ 	tristate
 -- 
 2.43.0
 
