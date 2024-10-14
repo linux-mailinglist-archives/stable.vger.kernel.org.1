@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-84605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26CDA99D106
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:09:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BC7399D0D9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:07:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 424E61C21504
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:09:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D48AD283777
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A397B1AB505;
-	Mon, 14 Oct 2024 15:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C4126296;
+	Mon, 14 Oct 2024 15:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2c7Ri4CT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cyc0bbNo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6268A1A76A5;
-	Mon, 14 Oct 2024 15:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B3E3A1B6;
+	Mon, 14 Oct 2024 15:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918588; cv=none; b=oAFgsesBwnXiqNT7b0RW6tJFZtDXgSyakT5npLlaIspFpDdPAfFTHTdqc6AI66IEIk49fSPeUibhLa5xzuyNqa62MiwpnacM72gL/NVryQBNJmyJclGtNWAcqnhpXG4WZZr4oNMvDLJqknV2XTPhAfUrQUHNXjfMz3fOOZrYtJg=
+	t=1728918471; cv=none; b=NJKBoEQGAIp6uSqdBWD0bf667R2X6zrR9/3Epwg4wn6wgcWNnPGZXOIqDngkCeP+dgxUNY+PpJxt3uoRs3B+FJ7fOLINBzmWYU171/590tKK9vQav44RQ7Xj1M2rYqrtVt3wQkjJV3WP00axd6vY/qU/InGZrjKF9OQBqC25OIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918588; c=relaxed/simple;
-	bh=cvRWzcUSIWwszd+9v7LMK0rrdWjYWZe1NYpV7TqEy18=;
+	s=arc-20240116; t=1728918471; c=relaxed/simple;
+	bh=yPeBihS1stzFJUC3W7IZrWQX55Dr+n0rpUMxrRb7HIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SWyvfG3KEsFxUCa2guIRcsOvvoqvr+x9OsFd+PZ4q/QuPMbu2ocjxUVqMZ8tTbcVV6tbR6EmyhbB8dV+estqm9lefkNp1He6UFRuZh2hBheMmz5TMvzaB1IlxCO/SNtlmCLrTbtsXF75QBB6Sa9XkowbWZuL/OMmI43JWh1Ot84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2c7Ri4CT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FA1C4CEC3;
-	Mon, 14 Oct 2024 15:09:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ssAIOFaqUEEBYysKjrcg3A0/NCeimSBr1ixS+pgLo42UJAWYmUeUTIyAzbFsqSiR3XiK2qijPUtVI19Enl6G57BBB2nE1o2BNivPok/HAHyk4BPTIuyHE62HfAxyjpl5kcI0rnU6D78HY57Os8UXfaa2mEthpZbedNjrFRCNO00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cyc0bbNo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45847C4CEC3;
+	Mon, 14 Oct 2024 15:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918588;
-	bh=cvRWzcUSIWwszd+9v7LMK0rrdWjYWZe1NYpV7TqEy18=;
+	s=korg; t=1728918471;
+	bh=yPeBihS1stzFJUC3W7IZrWQX55Dr+n0rpUMxrRb7HIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2c7Ri4CTOepm1nTkzdrf4kbYlMYHd72jmXkg9Ji3utTQDbOzxqyqX356ZiVevUoS6
-	 Ez/qFHwXJeqDhCxSFU/9LIooOW40LqVshK1EMpg/+OpPdsVtlMiyCnU01mslPuy60I
-	 bcGlx7qSgc3iX8vauhkJss6cgNMe8OskZjkA8ID8=
+	b=Cyc0bbNoRWi2FJLZG9brVUDwmZIruxMlD2ml/ksfq9CZTE8pqc6krJKnajCMy7Pax
+	 p/Y1h3Q6HQ8pczQr48cPXKDyWpTI/2hZeCiQzpmfqIX3tP15hRUHph93kvBq14Al3m
+	 BmBotKKN61BwBrd8oOXJ7nY6edNxcI8hOZPe01ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaosheng Cui <cuigaosheng1@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.1 333/798] hwrng: cctrng - Add missing clk_disable_unprepare in cctrng_resume
-Date: Mon, 14 Oct 2024 16:14:47 +0200
-Message-ID: <20241014141231.032658826@linuxfoundation.org>
+	Nikola Radojevic <nikola@radojevic.rs>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.1 334/798] arm64: dts: rockchip: Raise Pinebook Pros panel backlight PWM frequency
+Date: Mon, 14 Oct 2024 16:14:48 +0200
+Message-ID: <20241014141231.071706229@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -59,38 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Dragan Simic <dsimic@manjaro.org>
 
-commit 4b7acc85de14ee8a2236f54445dc635d47eceac0 upstream.
+commit 8c51521de18755d4112a77a598a348b38d0af370 upstream.
 
-Add the missing clk_disable_unprepare() before return in
-cctrng_resume().
+Increase the frequency of the PWM signal that drives the LED backlight of
+the Pinebook Pro's panel, from about 1.35 KHz (which equals to the PWM
+period of 740,740 ns), to exactly 8 kHz (which equals to the PWM period of
+125,000 ns).  Using a higher PWM frequency for the panel backlight, which
+reduces the flicker, can only be beneficial to the end users' eyes.
 
-Fixes: a583ed310bb6 ("hwrng: cctrng - introduce Arm CryptoCell driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+On top of that, increasing the backlight PWM signal frequency reportedly
+eliminates the buzzing emitted from the Pinebook Pro's built-in speakers
+when certain backlight levels are set, which cause some weird interference
+with some of the components of the Pinebook Pro's audio chain.
+
+The old value for the backlight PWM period, i.e. 740,740 ns, is pretty much
+an arbitrary value that was selected during the very early bring-up of the
+Pinebook Pro, only because that value seemed to minimize horizontal line
+distortion on the display, which resulted from the old X.org drivers causing
+screen tearing when dragging windows around.  That's no longer an issue, so
+there are no reasons to stick with the old PWM period value.
+
+The lower and the upper backlight PWM frequency limits for the Pinebook Pro's
+panel, according to its datasheet, are 200 Hz and 10 kHz, respectively. [1]
+These changes still leave some headroom, which may have some positive effects
+on the lifetime expectancy of the panel's backlight LEDs.
+
+[1] https://files.pine64.org/doc/datasheet/PinebookPro/NV140FHM-N49_Rev.P0_20160804_201710235838.pdf
+
+Fixes: 5a65505a6988 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
+Cc: stable@vger.kernel.org
+Reported-by: Nikola Radojevic <nikola@radojevic.rs>
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Tested-by: Nikola Radojević <nikola@radojevic.rs>
+Link: https://lore.kernel.org/r/2a23b6cfd8c0513e5b233b4006ee3d3ed09b824f.1722805655.git.dsimic@manjaro.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/hw_random/cctrng.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/char/hw_random/cctrng.c
-+++ b/drivers/char/hw_random/cctrng.c
-@@ -665,6 +665,7 @@ static int __maybe_unused cctrng_resume(
- 	/* wait for Cryptocell reset completion */
- 	if (!cctrng_wait_for_reset_completion(drvdata)) {
- 		dev_err(dev, "Cryptocell reset not completed");
-+		clk_disable_unprepare(drvdata->clk);
- 		return -EBUSY;
- 	}
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -32,7 +32,7 @@
+ 	backlight: edp-backlight {
+ 		compatible = "pwm-backlight";
+ 		power-supply = <&vcc_12v>;
+-		pwms = <&pwm0 0 740740 0>;
++		pwms = <&pwm0 0 125000 0>;
+ 	};
  
+ 	bat: battery {
 
 
 
