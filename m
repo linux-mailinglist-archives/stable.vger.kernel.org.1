@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-84052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41BEE99CDE8
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:37:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D932299CCFF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:27:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7328D1C221E1
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:37:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E8252826E6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B021AAE02;
-	Mon, 14 Oct 2024 14:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2C81A76C4;
+	Mon, 14 Oct 2024 14:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxtHoDnU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1C1Bldd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1971AA793;
-	Mon, 14 Oct 2024 14:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647381AA790;
+	Mon, 14 Oct 2024 14:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916653; cv=none; b=LaNyptFCL8I2GgCiEhWy2DO2lM5kwizKfhiNR++SoaW6Nk9gMK8Cv4lPKdjAaQ0Q+Nc1MsVOqa+lExBu1Q6LNJqj4QA6grnu1aHDVRNim7q66RnFhM2UlEYETO7OHcVwqioisYbEiob+UXseO0z8+vzu9axxwroXfT6lGQuWJpc=
+	t=1728916047; cv=none; b=O7KWaioj0XmxG2TZBXDZRmDbtI9Jw9EvT4GGqfxonRgchwcHHUkeTQi5SvKd0eCpL54tZJTIopevLoAclwGiDLSVTIm7QzUJRMYvIMJpck6JP620pNJn7Io0+8L2x8s8DVn/UgF+uw8Yzu04kl7kcENkk5eeqQabrn6jIcsvIIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916653; c=relaxed/simple;
-	bh=pB6cKZEmWPj2/FyBhoI1/UYNDsocjZmh8Jdmt9qsNCk=;
+	s=arc-20240116; t=1728916047; c=relaxed/simple;
+	bh=NV3RJ4Xn1yeMkTHCZ9JIXbMPCDJ1LmztQD4O1txEF/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mhUYh10v/n5jzSexCXy+ShiNUvvs2bUlnOiOK1dOQLAvPLhx+pGAynHI3x1lJTZr3s10G3wgIOLMC6GAF6FMy2KWF6VMc3gRivmLfC13ltC/w6spYxaoLaYnqwhWJRtKt0XX8ITgnw+KW/6B4vK8YUxSOZsJgDqMik0fvpcBx4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxtHoDnU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E1EC4CEC3;
-	Mon, 14 Oct 2024 14:37:32 +0000 (UTC)
+	 MIME-Version; b=tFuDg0WGSosFnBVZijkw2xpztFRHHquSjiwQqjkqvAKb/FClcmqsqh0ZpzEjiq7c4OvjY+X7Fgvzcwfhht5fJT9XKv/kIIkA5WmFPBJ5T3s8hje3fTMgOCrd9FhUDNevVPo79BULysymWXwezy22hD/inOuIobdPddqGCd4htps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1C1Bldd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99291C4CEC3;
+	Mon, 14 Oct 2024 14:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916653;
-	bh=pB6cKZEmWPj2/FyBhoI1/UYNDsocjZmh8Jdmt9qsNCk=;
+	s=korg; t=1728916047;
+	bh=NV3RJ4Xn1yeMkTHCZ9JIXbMPCDJ1LmztQD4O1txEF/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DxtHoDnUPjjT3YoQcvjHiKr4L0yYlD1KBvZVtkf4rIhnMJDwkPjjYIDLh/RdDh2yt
-	 cl24mTNtIzgGjSU7IFIGUZlkevAaS3IEU6mva1N0hRc14RcD5w/X4vbmlgf7aVeYQy
-	 1Uu/8edlFn99w/o1hIsH7lBZmdhZuzbyNxc6WUMQ=
+	b=U1C1BlddPAATO/AxIzdQcEJrwuhf11YK2SSCs0jZBZEdyxTML4nkEEcuZLVVDv+Hf
+	 kQIoy6+eDuGi56GdxYKdSSdy5z2t0Zn4L9EFkzh66ww66EB3i4oL/ghaiulu7lOcCT
+	 1qo0Pw+143nKhnXorXI7l/Jh1IsjnpBNYs3mEKkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Song <carlos.song@nxp.com>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Mark Brown <broonie@kernel.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/213] spi: spi-fsl-lpspi: remove redundant spi_controller_put call
-Date: Mon, 14 Oct 2024 16:18:53 +0200
-Message-ID: <20241014141044.046357060@linuxfoundation.org>
+Subject: [PATCH 6.11 071/214] driver core: bus: Return -EIO instead of 0 when show/store invalid bus attribute
+Date: Mon, 14 Oct 2024 16:18:54 +0200
+Message-ID: <20241014141047.759518416@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Song <carlos.song@nxp.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit bff892acf79cec531da6cb21c50980a584ce1476 ]
+[ Upstream commit c0fd973c108cdc22a384854bc4b3e288a9717bb2 ]
 
-devm_spi_alloc_controller will allocate an SPI controller and
-automatically release a reference on it when dev is unbound from
-its driver. It doesn't need to call spi_controller_put explicitly
-to put the reference when lpspi driver failed initialization.
+Return -EIO instead of 0 for below erroneous bus attribute operations:
+ - read a bus attribute without show().
+ - write a bus attribute without store().
 
-Fixes: 2ae0ab0143fc ("spi: lpspi: Avoid potential use-after-free in probe()")
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://msgid.link/r/20240403084029.2000544-1-carlos.song@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20240724-bus_fix-v2-1-5adbafc698fb@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/base/bus.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 180cea7d38172..13313f07839b6 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -881,39 +881,39 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	fsl_lpspi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (IS_ERR(fsl_lpspi->base)) {
- 		ret = PTR_ERR(fsl_lpspi->base);
--		goto out_controller_put;
-+		return ret;
- 	}
- 	fsl_lpspi->base_phys = res->start;
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index 08362ecec0ecb..6a68734e7ebd1 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -152,7 +152,8 @@ static ssize_t bus_attr_show(struct kobject *kobj, struct attribute *attr,
+ {
+ 	struct bus_attribute *bus_attr = to_bus_attr(attr);
+ 	struct subsys_private *subsys_priv = to_subsys_private(kobj);
+-	ssize_t ret = 0;
++	/* return -EIO for reading a bus attribute without show() */
++	ssize_t ret = -EIO;
  
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
- 		ret = irq;
--		goto out_controller_put;
-+		return ret;
- 	}
+ 	if (bus_attr->show)
+ 		ret = bus_attr->show(subsys_priv->bus, buf);
+@@ -164,7 +165,8 @@ static ssize_t bus_attr_store(struct kobject *kobj, struct attribute *attr,
+ {
+ 	struct bus_attribute *bus_attr = to_bus_attr(attr);
+ 	struct subsys_private *subsys_priv = to_subsys_private(kobj);
+-	ssize_t ret = 0;
++	/* return -EIO for writing a bus attribute without store() */
++	ssize_t ret = -EIO;
  
- 	ret = devm_request_irq(&pdev->dev, irq, fsl_lpspi_isr, 0,
- 			       dev_name(&pdev->dev), fsl_lpspi);
- 	if (ret) {
- 		dev_err(&pdev->dev, "can't get irq%d: %d\n", irq, ret);
--		goto out_controller_put;
-+		return ret;
- 	}
- 
- 	fsl_lpspi->clk_per = devm_clk_get(&pdev->dev, "per");
- 	if (IS_ERR(fsl_lpspi->clk_per)) {
- 		ret = PTR_ERR(fsl_lpspi->clk_per);
--		goto out_controller_put;
-+		return ret;
- 	}
- 
- 	fsl_lpspi->clk_ipg = devm_clk_get(&pdev->dev, "ipg");
- 	if (IS_ERR(fsl_lpspi->clk_ipg)) {
- 		ret = PTR_ERR(fsl_lpspi->clk_ipg);
--		goto out_controller_put;
-+		return ret;
- 	}
- 
- 	/* enable the clock */
- 	ret = fsl_lpspi_init_rpm(fsl_lpspi);
- 	if (ret)
--		goto out_controller_put;
-+		return ret;
- 
- 	ret = pm_runtime_get_sync(fsl_lpspi->dev);
- 	if (ret < 0) {
-@@ -974,8 +974,6 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	pm_runtime_dont_use_autosuspend(fsl_lpspi->dev);
- 	pm_runtime_put_sync(fsl_lpspi->dev);
- 	pm_runtime_disable(fsl_lpspi->dev);
--out_controller_put:
--	spi_controller_put(controller);
- 
- 	return ret;
- }
+ 	if (bus_attr->store)
+ 		ret = bus_attr->store(subsys_priv->bus, buf, count);
 -- 
 2.43.0
 
