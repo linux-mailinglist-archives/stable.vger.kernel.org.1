@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-84951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB3EE99D30C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:33:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A2F999CDC2
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18FB81C22A34
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:33:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA98B1F23B00
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8713C1C75E6;
-	Mon, 14 Oct 2024 15:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7224B1AA7A5;
+	Mon, 14 Oct 2024 14:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xsvKeNH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wx12qeAL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C851BBBC6;
-	Mon, 14 Oct 2024 15:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259FB4A24;
+	Mon, 14 Oct 2024 14:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919787; cv=none; b=raHi2go8LpJCivLFZYWlho97gE18gIuYXyjQPMnYPnjGmZT2xkHu2llrCBwc0aQAkSMXgBsd6zJOS2tmVzSz3GrCyf6dQXMggJGLCA6IZPb0EOwc3kgTbad/vr2yrdMXfFaOyiakIlz/QtLUHE9sXMiI709d3wYCBXaWgr6hQ8w=
+	t=1728916555; cv=none; b=f+rHLG/z0Hkjs7pgWd+MTJFdcmE7wZPC84jHv36lchCfaioh7fmip45i9R/NWtgjugwL7wsDqxuQtuBPb9BNLkgb0D6yjdFb/40S+Wl7jQ5ysBW4r8V7+jEJCWTEUlNlVIg8trPFEzCy7XweXWXfPk0IEmgnCAs3dHXN8Sk//5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919787; c=relaxed/simple;
-	bh=tbWXi7V7jHmQi6a8+pEBJiAp0zSdCWcumXja8D8mKMU=;
+	s=arc-20240116; t=1728916555; c=relaxed/simple;
+	bh=A9GbwNHcYboLi8gMKLwYDIcsaM3oDnEjL29z90F6u30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m6qjIzpKA7Ud4eEAg3DSS99d28CVTyDKbfO2L+j4hFH2dvV5Uy0Vmcz0f7eI93SGIzYrtvZdt0Co4+KM/EvEDRnneuuBa1F0ic2d59p4M4K1sYKCkF48ZCK+kxRpYvheaqleNstQeVGYPyEvbE89muZ3eY2AFMx7gd68eve434Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xsvKeNH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68363C4CEC3;
-	Mon, 14 Oct 2024 15:29:46 +0000 (UTC)
+	 MIME-Version; b=Fz2woguBqZdSw3jEnlafkfsVCbbWXS6lVuYPxd7VTNUrNnaj7c4v1PvzgKt55JvMWFz4rrYmLhBm5wDZCQLDjwghtT1BUxdFDPdr/30hvvUt8d7nAuG+qrvhHvlKP4GmeaZvPOOJhldRwt89oY5Wy1RHahLlu1rzdlv7xBKWW60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wx12qeAL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AFAC4CEC3;
+	Mon, 14 Oct 2024 14:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919786;
-	bh=tbWXi7V7jHmQi6a8+pEBJiAp0zSdCWcumXja8D8mKMU=;
+	s=korg; t=1728916555;
+	bh=A9GbwNHcYboLi8gMKLwYDIcsaM3oDnEjL29z90F6u30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0xsvKeNH90v1sPj3fQPMowKQrwromKpIzVrT3FYvvzWoeLKphexPMvxOkC2RZlFfy
-	 oAn1WbCz3gDgofmk+1toALs4xb9ai1VO2EGZamukIinI+a5M2ZOwk25zvDOgEVYfq6
-	 T7Eyh3Ayv7JDkHb+Q4CJjq+xyn2O5X9GpKyuDt3I=
+	b=wx12qeAL1ciz+6+8nJhuvezNKuicO/We8qG9K8OyRnMs9jhnEkzv1AeWW2zBk74eU
+	 tqRHNIeRs9wvVsKxzHXxJpdM6WYPVhvvvlAufPbqfFoGIMMSPuTy30SvR29zcOihj6
+	 X9NcR1APH1HWtpP7rfAC37ExspkQ8PtOU+oTsPDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Tesarik <petr@tesarici.cz>,
-	Ying Sun <sunying@isrc.iscas.ac.cn>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 707/798] riscv/kexec_file: Fix relocation type R_RISCV_ADD16 and R_RISCV_SUB16 unknown
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.11 198/214] mptcp: pm: do not remove closing subflows
 Date: Mon, 14 Oct 2024 16:21:01 +0200
-Message-ID: <20241014141245.844833607@linuxfoundation.org>
+Message-ID: <20241014141052.703427469@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ying Sun <sunying@isrc.iscas.ac.cn>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit c6ebf2c528470a09be77d0d9df2c6617ea037ac5 ]
+commit db0a37b7ac27d8ca27d3dc676a16d081c16ec7b9 upstream.
 
-Runs on the kernel with CONFIG_RISCV_ALTERNATIVE enabled:
-  kexec -sl vmlinux
+In a previous fix, the in-kernel path-manager has been modified not to
+retrigger the removal of a subflow if it was already closed, e.g. when
+the initial subflow is removed, but kept in the subflows list.
 
-Error:
-  kexec_image: Unknown rela relocation: 34
-  kexec_image: Error loading purgatory ret=-8
-and
-  kexec_image: Unknown rela relocation: 38
-  kexec_image: Error loading purgatory ret=-8
+To be complete, this fix should also skip the subflows that are in any
+closing state: mptcp_close_ssk() will initiate the closure, but the
+switch to the TCP_CLOSE state depends on the other peer.
 
-The purgatory code uses the 16-bit addition and subtraction relocation
-type, but not handled, resulting in kexec_file_load failure.
-So add handle to arch_kexec_apply_relocations_add().
-
-Tested on RISC-V64 Qemu-virt, issue fixed.
-
-Co-developed-by: Petr Tesarik <petr@tesarici.cz>
-Signed-off-by: Petr Tesarik <petr@tesarici.cz>
-Signed-off-by: Ying Sun <sunying@isrc.iscas.ac.cn>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20240711083236.2859632-1-sunying@isrc.iscas.ac.cn
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 58e1b66b4e4b ("mptcp: pm: do not remove already closed subflows")
+Cc: stable@vger.kernel.org
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241008-net-mptcp-fallback-fixes-v1-4-c6fb8e93e551@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/elf_kexec.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/mptcp/pm_netlink.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/elf_kexec.c b/arch/riscv/kernel/elf_kexec.c
-index b3b96ff46d193..88721bea81fcd 100644
---- a/arch/riscv/kernel/elf_kexec.c
-+++ b/arch/riscv/kernel/elf_kexec.c
-@@ -444,6 +444,12 @@ int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
- 			*(u32 *)loc = CLEAN_IMM(CJTYPE, *(u32 *)loc) |
- 				 ENCODE_CJTYPE_IMM(val - addr);
- 			break;
-+		case R_RISCV_ADD16:
-+			*(u16 *)loc += val;
-+			break;
-+		case R_RISCV_SUB16:
-+			*(u16 *)loc -= val;
-+			break;
- 		case R_RISCV_ADD32:
- 			*(u32 *)loc += val;
- 			break;
--- 
-2.43.0
-
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -856,7 +856,8 @@ static void mptcp_pm_nl_rm_addr_or_subfl
+ 			int how = RCV_SHUTDOWN | SEND_SHUTDOWN;
+ 			u8 id = subflow_get_local_id(subflow);
+ 
+-			if (inet_sk_state_load(ssk) == TCP_CLOSE)
++			if ((1 << inet_sk_state_load(ssk)) &
++			    (TCPF_FIN_WAIT1 | TCPF_FIN_WAIT2 | TCPF_CLOSING | TCPF_CLOSE))
+ 				continue;
+ 			if (rm_type == MPTCP_MIB_RMADDR && remote_id != rm_id)
+ 				continue;
 
 
 
