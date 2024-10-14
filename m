@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-84243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D51D99CF3D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:53:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6773B99D34B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87B65B250C8
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:53:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F53F1C2307D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D2C1CF7D0;
-	Mon, 14 Oct 2024 14:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30CAA1BE238;
+	Mon, 14 Oct 2024 15:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8qs8pUW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOM/Z+RV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456A21B4F14;
-	Mon, 14 Oct 2024 14:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E380019F43B;
+	Mon, 14 Oct 2024 15:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917327; cv=none; b=QA0r34DstW+N9mmWOnJbRv1UE8jVaTLKdeBboFNpqwo+frrXFMWHtCFd74P+SRx40uKu881WCuaVmul8jlsbtGdLY7Tx9npJ61qN9z2tFUVSQnu/alF5dJZ8Lifi+q8fn5uy68YgM8UghuX63ACfv+Ut6x4RjRPd1RffacvqtgY=
+	t=1728919984; cv=none; b=NM4HeTOwqUQQUNAut/I1D9T1+wXt45pdga3k6mCquedSGy/Vj9TPRMpSpXztDrFpo5zTCZ6Cl4OTarw1ntRYcqkpEdAS44BMk9NO6XvnJHWKd2kfQJI90RyufKgErPy8yrD8DY0YeECqasaWNA0cSzjKKFGI9FLmtxqK/7FD8VI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917327; c=relaxed/simple;
-	bh=3Z+Zu4xd8P1CCw15f0eXxfa38TIoJTvXQ1aoubzYHxw=;
+	s=arc-20240116; t=1728919984; c=relaxed/simple;
+	bh=xn5VIKdw7mNIRxyiIG56x7vwKIBeySX/BnJTVfV4r/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QV5o0HlvV+X9uMRMYcZ/MDrLT933jADg/4jXTIxJtydy0ILZAcmezZK+osgkznvpJXsjB2Tb8n4xcPUy592kugvdCIVM7W1jAtQMYMYVkjxJHaj4h7K8R55+++cLNuZsiQWEwBWSrmeFpfD19PHfgkQZBPi4Fnt2Sv0+co44Icg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8qs8pUW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A894C4CECF;
-	Mon, 14 Oct 2024 14:48:46 +0000 (UTC)
+	 MIME-Version; b=n0GuEkXC3OtaXcFPZjzy/2IQSZ3rsVHIJIgkACRxAu4CIkoka+95pgqZ4lYdU4XWYiUbgIQ+tb1Zt4OFYViuYwFd3lLxfciqzV7oucyZEZLbV6os1VibrKhNMNvrlnEXp3SYvrKz3r+mNvjOZSYe+TkTxlY7EBYZOq3iLGeSURY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOM/Z+RV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2283BC4CEC3;
+	Mon, 14 Oct 2024 15:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917326;
-	bh=3Z+Zu4xd8P1CCw15f0eXxfa38TIoJTvXQ1aoubzYHxw=;
+	s=korg; t=1728919983;
+	bh=xn5VIKdw7mNIRxyiIG56x7vwKIBeySX/BnJTVfV4r/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m8qs8pUWvDu8SFlFkyNwzDVHKKdFACQR9Tg1oE//dLY1xXB6W4MFDWvDxtxuFAro6
-	 v77qCu6ww7MqxnQ3wfbvE8055mvPfLlkkCneDLQWgVS1TkMUILbz3qZwH/DY31QpXy
-	 tlwbu/8vgu0fG9aVhUrnuKHmL4azGAuuEjyAY1lo=
+	b=GOM/Z+RVdKgzuv7sIdUz3tFBHsmCwJdPeaWqUsy2HDOcL9mmacYG55eHs9BGjU0xX
+	 B49OUCe9SL5j3LFfq81ei4ZHoZ9IDqsjrLztyyCErvoQdicMaaFURkWtJ4ME6FqzJx
+	 NY2+rNrkErgd40HRxKMcoYazNdwAjTz7hEFzOsGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	syzbot+1d121645899e7692f92a@syzkaller.appspotmail.com,
 	Eric Dumazet <edumazet@google.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 211/213] net: ethernet: cortina: Restore TSO support
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 763/798] ppp: fix ppp_async_encode() illegal access
 Date: Mon, 14 Oct 2024 16:21:57 +0200
-Message-ID: <20241014141051.194300027@linuxfoundation.org>
+Message-ID: <20241014141248.043202430@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,135 +64,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 2942dfab630444d46aaa37fb7d629b620abbf6ba upstream.
+[ Upstream commit 40dddd4b8bd08a69471efd96107a4e1c73fabefc ]
 
-An earlier commit deleted the TSO support in the Cortina Gemini
-driver because the driver was confusing gso_size and MTU,
-probably because what the Linux kernel calls "gso_size" was
-called "MTU" in the datasheet.
+syzbot reported an issue in ppp_async_encode() [1]
 
-Restore the functionality properly reading the gso_size from
-the skbuff.
+In this case, pppoe_sendmsg() is called with a zero size.
+Then ppp_async_encode() is called with an empty skb.
 
-Tested with iperf3, running a server on a different machine
-and client on the device with the cortina gemini ethernet:
+BUG: KMSAN: uninit-value in ppp_async_encode drivers/net/ppp/ppp_async.c:545 [inline]
+ BUG: KMSAN: uninit-value in ppp_async_push+0xb4f/0x2660 drivers/net/ppp/ppp_async.c:675
+  ppp_async_encode drivers/net/ppp/ppp_async.c:545 [inline]
+  ppp_async_push+0xb4f/0x2660 drivers/net/ppp/ppp_async.c:675
+  ppp_async_send+0x130/0x1b0 drivers/net/ppp/ppp_async.c:634
+  ppp_channel_bridge_input drivers/net/ppp/ppp_generic.c:2280 [inline]
+  ppp_input+0x1f1/0xe60 drivers/net/ppp/ppp_generic.c:2304
+  pppoe_rcv_core+0x1d3/0x720 drivers/net/ppp/pppoe.c:379
+  sk_backlog_rcv+0x13b/0x420 include/net/sock.h:1113
+  __release_sock+0x1da/0x330 net/core/sock.c:3072
+  release_sock+0x6b/0x250 net/core/sock.c:3626
+  pppoe_sendmsg+0x2b8/0xb90 drivers/net/ppp/pppoe.c:903
+  sock_sendmsg_nosec net/socket.c:729 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:744
+  ____sys_sendmsg+0x903/0xb60 net/socket.c:2602
+  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2656
+  __sys_sendmmsg+0x3c1/0x960 net/socket.c:2742
+  __do_sys_sendmmsg net/socket.c:2771 [inline]
+  __se_sys_sendmmsg net/socket.c:2768 [inline]
+  __x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2768
+  x64_sys_call+0xb6e/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:308
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Connecting to host 192.168.1.2, port 5201
-60008000.ethernet-port eth0: segment offloading mss = 05ea len=1c8a
-60008000.ethernet-port eth0: segment offloading mss = 05ea len=1c8a
-60008000.ethernet-port eth0: segment offloading mss = 05ea len=27da
-60008000.ethernet-port eth0: segment offloading mss = 05ea len=0b92
-60008000.ethernet-port eth0: segment offloading mss = 05ea len=2bda
-(...)
+Uninit was created at:
+  slab_post_alloc_hook mm/slub.c:4092 [inline]
+  slab_alloc_node mm/slub.c:4135 [inline]
+  kmem_cache_alloc_node_noprof+0x6bf/0xb80 mm/slub.c:4187
+  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:587
+  __alloc_skb+0x363/0x7b0 net/core/skbuff.c:678
+  alloc_skb include/linux/skbuff.h:1322 [inline]
+  sock_wmalloc+0xfe/0x1a0 net/core/sock.c:2732
+  pppoe_sendmsg+0x3a7/0xb90 drivers/net/ppp/pppoe.c:867
+  sock_sendmsg_nosec net/socket.c:729 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:744
+  ____sys_sendmsg+0x903/0xb60 net/socket.c:2602
+  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2656
+  __sys_sendmmsg+0x3c1/0x960 net/socket.c:2742
+  __do_sys_sendmmsg net/socket.c:2771 [inline]
+  __se_sys_sendmmsg net/socket.c:2768 [inline]
+  __x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2768
+  x64_sys_call+0xb6e/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:308
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-(The hardware MSS 0x05ea here includes the ethernet headers.)
+CPU: 1 UID: 0 PID: 5411 Comm: syz.1.14 Not tainted 6.12.0-rc1-syzkaller-00165-g360c1f1f24c6 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
 
-If I disable all segment offloading on the receiving host and
-dump packets using tcpdump -xx like this:
-
-ethtool -K enp2s0 gro off gso off tso off
-tcpdump -xx -i enp2s0 host 192.168.1.136
-
-I get segmented packages such as this when running iperf3:
-
-23:16:54.024139 IP OpenWrt.lan.59168 > Fecusia.targus-getdata1:
-Flags [.], seq 1486:2934, ack 1, win 4198,
-options [nop,nop,TS val 3886192908 ecr 3601341877], length 1448
-0x0000:  fc34 9701 a0c6 14d6 4da8 3c4f 0800 4500
-0x0010:  05dc 16a0 4000 4006 9aa1 c0a8 0188 c0a8
-0x0020:  0102 e720 1451 ff25 9822 4c52 29cf 8010
-0x0030:  1066 ac8c 0000 0101 080a e7a2 990c d6a8
-(...)
-0x05c0:  5e49 e109 fe8c 4617 5e18 7a82 7eae d647
-0x05d0:  e8ee ae64 dc88 c897 3f8a 07a4 3a33 6b1b
-0x05e0:  3501 a30f 2758 cc44 4b4a
-
-Several such packets often follow after each other verifying
-the segmentation into 0x05a8 (1448) byte packages also on the
-reveiving end. As can be seen, the ethernet frames are
-0x05ea (1514) in size.
-
-Performance with iperf3 before this patch: ~15.5 Mbit/s
-Performance with iperf3 after this patch: ~175 Mbit/s
-
-This was running a 60 second test (twice) the best measurement
-was 179 Mbit/s.
-
-For comparison if I run iperf3 with UDP I get around 1.05 Mbit/s
-both before and after this patch.
-
-While this is a gigabit ethernet interface, the CPU is a cheap
-D-Link DIR-685 router (based on the ARMv5 Faraday FA526 at
-~50 MHz), and the software is not supposed to drive traffic,
-as the device has a DSA chip, so this kind of numbers can be
-expected.
-
-Fixes: ac631873c9e7 ("net: ethernet: cortina: Drop TSO support")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+1d121645899e7692f92a@syzkaller.appspotmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241009185802.3763282-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c |   23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ drivers/net/ppp/ppp_async.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -79,7 +79,8 @@ MODULE_PARM_DESC(debug, "Debug level (0=
- #define GMAC0_IRQ4_8 (GMAC0_MIB_INT_BIT | GMAC0_RX_OVERRUN_INT_BIT)
+diff --git a/drivers/net/ppp/ppp_async.c b/drivers/net/ppp/ppp_async.c
+index abc65c4d7a303..669a3a9aa5cb8 100644
+--- a/drivers/net/ppp/ppp_async.c
++++ b/drivers/net/ppp/ppp_async.c
+@@ -550,7 +550,7 @@ ppp_async_encode(struct asyncppp *ap)
+ 	 * and 7 (code-reject) must be sent as though no options
+ 	 * had been negotiated.
+ 	 */
+-	islcp = proto == PPP_LCP && 1 <= data[2] && data[2] <= 7;
++	islcp = proto == PPP_LCP && count >= 3 && 1 <= data[2] && data[2] <= 7;
  
- #define GMAC_OFFLOAD_FEATURES (NETIF_F_SG | NETIF_F_IP_CSUM | \
--			       NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM)
-+			       NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM | \
-+			       NETIF_F_TSO | NETIF_F_TSO_ECN | NETIF_F_TSO6)
- 
- /**
-  * struct gmac_queue_page - page buffer per-page info
-@@ -1148,13 +1149,25 @@ static int gmac_map_tx_bufs(struct net_d
- 	skb_frag_t *skb_frag;
- 	dma_addr_t mapping;
- 	void *buffer;
-+	u16 mss;
- 	int ret;
- 
--	/* TODO: implement proper TSO using MTU in word3 */
- 	word1 = skb->len;
- 	word3 = SOF_BIT;
- 
--	if (skb->len >= ETH_FRAME_LEN) {
-+	mss = skb_shinfo(skb)->gso_size;
-+	if (mss) {
-+		/* This means we are dealing with TCP and skb->len is the
-+		 * sum total of all the segments. The TSO will deal with
-+		 * chopping this up for us.
-+		 */
-+		/* The accelerator needs the full frame size here */
-+		mss += skb_tcp_all_headers(skb);
-+		netdev_dbg(netdev, "segment offloading mss = %04x len=%04x\n",
-+			   mss, skb->len);
-+		word1 |= TSS_MTU_ENABLE_BIT;
-+		word3 |= mss;
-+	} else if (skb->len >= ETH_FRAME_LEN) {
- 		/* Hardware offloaded checksumming isn't working on frames
- 		 * bigger than 1514 bytes. A hypothesis about this is that the
- 		 * checksum buffer is only 1518 bytes, so when the frames get
-@@ -1169,7 +1182,9 @@ static int gmac_map_tx_bufs(struct net_d
- 				return ret;
- 		}
- 		word1 |= TSS_BYPASS_BIT;
--	} else if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+	}
-+
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
- 		int tcp = 0;
- 
- 		/* We do not switch off the checksumming on non TCP/UDP
+ 	if (i == 0) {
+ 		if (islcp)
+-- 
+2.43.0
+
 
 
 
