@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-84002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE9C99CDA3
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 280B399D32B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF50EB20CC9
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5F4328AD98
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA58F4A24;
-	Mon, 14 Oct 2024 14:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF731CC158;
+	Mon, 14 Oct 2024 15:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gm9w+i43"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MN5QBQYA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E031A28C;
-	Mon, 14 Oct 2024 14:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9BC1C1ADB;
+	Mon, 14 Oct 2024 15:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916469; cv=none; b=PDUKeR1i1XQm24/BmSYXHt9HXCjCY+lhbOjLxygIZIuKewI2a/Hw2tpmP2mQVTLubCKLqwT+TpYA006No8V6pYMPCrBBZDCWKfIv5A2Dzl3/DBsG22QQDzhbAGtH407WQIvUAapKsWmk2uQraTdB9v3f7jHYZ69qqhWcLDUHj/8=
+	t=1728919876; cv=none; b=eoqSvCibigRAiUzG8YNoFOoSIX/3O0dlDUv21DidELT7j+oGQNo64XHzLPAxXZmTeF9OpuO45QH+BR1dakwVmnD67v3jNzv9dXzSAA4DN5rP6p7HiX3GdS0GzTtO49b4kRQX+hnIEmV70dFh0wg+dJ2tICt4LDxfQGtlEyXYME0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916469; c=relaxed/simple;
-	bh=Pbl7lH4I1+hTOSnDkwJMJ3Pndg10Ca7Wk54MKSCeKJI=;
+	s=arc-20240116; t=1728919876; c=relaxed/simple;
+	bh=WajYkgmZ9y6wvKnF/5RizybSj20rWtjxd7WXYvb9HsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=us4S/abgHasLkHfoAb4Q1SL2wRlefslMXW+aWRpTF1FnCZXQPmhrw/j+2Em0i89PPdZxin7NZUUIXGyRuaZwgv4gyVFbSb9X5vVly2taa3p2OY3y/QYA1UUVnEVU7aBpYK14359G1uHbWEJ9AkMiWP5ZUE4mcggouCRiMzddjOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gm9w+i43; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8ABC4CEC3;
-	Mon, 14 Oct 2024 14:34:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iSWEvmsUR0S1bWZXDCm0kRAkhCsa+31RX7Uctf4sQzM2Wlqg2duGyGiCpNXteB7sTbjzFiiJo7nvR+XfFhVFiX+CdltB0l2ne6cvVomWEeJUgq39MFRxrFY//uyNx23dT8y72rLo77ogy1T5ntJp7udearsIY4nIxzySHPf2aJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MN5QBQYA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB39C4CEC3;
+	Mon, 14 Oct 2024 15:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916469;
-	bh=Pbl7lH4I1+hTOSnDkwJMJ3Pndg10Ca7Wk54MKSCeKJI=;
+	s=korg; t=1728919876;
+	bh=WajYkgmZ9y6wvKnF/5RizybSj20rWtjxd7WXYvb9HsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gm9w+i43/kNzXR/7fkNWARDOyMGcChWdlYG1c1OWGAVEZLutYNW++1eCJuZPC0SMe
-	 epB204BZjQKmRdDwFI0QkIS6kLEEivBAk4qyblpeDzYw7K/nqxbbkNf6QFE5nmgjqz
-	 KFqMGm65hzV+dIb1RgwewJKymw1TwwB3/GXHmYQ8=
+	b=MN5QBQYAk59sFDVkFgqRaAbOZ1uJmaqNzzbfh+UBcsiFcUcW5L01PF1ucNiKWFNuP
+	 UW8pU9y8KFXgl/QzsZRDESuAQXnWZAWFIV/VwycekdPpfD5IjY8RTl1tBedQ73evn+
+	 CzNXZnhuiQJ/g1/Y+KghEju56vq+LHgN0EZfC4VQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.11 191/214] OPP: fix error code in dev_pm_opp_set_config()
-Date: Mon, 14 Oct 2024 16:20:54 +0200
-Message-ID: <20241014141052.432419740@linuxfoundation.org>
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 701/798] i2c: i801: Use a different adapter-name for IDF adapters
+Date: Mon, 14 Oct 2024 16:20:55 +0200
+Message-ID: <20241014141245.609890632@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +62,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit eb8333673e1ebc2418980b664a84c91b4e98afc4 upstream.
+[ Upstream commit 43457ada98c824f310adb7bd96bd5f2fcd9a3279 ]
 
-This is an error path so set the error code.  Smatch complains about the
-current code:
+On chipsets with a second 'Integrated Device Function' SMBus controller use
+a different adapter-name for the second IDF adapter.
 
-    drivers/opp/core.c:2660 dev_pm_opp_set_config()
-    error: uninitialized symbol 'ret'.
+This allows platform glue code which is looking for the primary i801
+adapter to manually instantiate i2c_clients on to differentiate
+between the 2.
 
-Fixes: e37440e7e2c2 ("OPP: Call dev_pm_opp_set_opp() for required OPPs")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/3f3660af-4ea0-4a89-b3b7-58de7b16d7a5@stanley.mountain
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This allows such code to find the primary i801 adapter by name, without
+needing to duplicate the PCI-ids to feature-flags mapping from i2c-i801.c.
+
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/opp/core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-i801.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/opp/core.c b/drivers/opp/core.c
-index 494f8860220d..3aa18737470f 100644
---- a/drivers/opp/core.c
-+++ b/drivers/opp/core.c
-@@ -2630,8 +2630,10 @@ int dev_pm_opp_set_config(struct device *dev, struct dev_pm_opp_config *config)
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index 208c7741bc681..d3ecd65b0542a 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -1751,8 +1751,15 @@ static int i801_probe(struct pci_dev *dev, const struct pci_device_id *id)
  
- 	/* Attach genpds */
- 	if (config->genpd_names) {
--		if (config->required_devs)
-+		if (config->required_devs) {
-+			ret = -EINVAL;
- 			goto err;
-+		}
+ 	i801_add_tco(priv);
  
- 		ret = _opp_attach_genpd(opp_table, dev, config->genpd_names,
- 					config->virt_devs);
++	/*
++	 * adapter.name is used by platform code to find the main I801 adapter
++	 * to instantiante i2c_clients, do not change.
++	 */
+ 	snprintf(priv->adapter.name, sizeof(priv->adapter.name),
+-		"SMBus I801 adapter at %04lx", priv->smba);
++		 "SMBus %s adapter at %04lx",
++		 (priv->features & FEATURE_IDF) ? "I801 IDF" : "I801",
++		 priv->smba);
++
+ 	err = i2c_add_adapter(&priv->adapter);
+ 	if (err) {
+ 		platform_device_unregister(priv->tco_pdev);
 -- 
-2.47.0
+2.43.0
 
 
 
