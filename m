@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-84297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E1F99CF77
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:55:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A942899CF53
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:53:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4505B287888
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:55:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57B071F22DD9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F286C1A0BE7;
-	Mon, 14 Oct 2024 14:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BC7A1C3045;
+	Mon, 14 Oct 2024 14:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hyxfsp9g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ls18m3wW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EAC45C14;
-	Mon, 14 Oct 2024 14:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F1C1AC8A2;
+	Mon, 14 Oct 2024 14:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917527; cv=none; b=lX8dYQ8KHwgXmd/n3plAefEyawnzA5WvjgASUjSNDrX8t0i5HjMJxhxBgk7ZXhw0VHv++hh6WB26A2A41zowbSLDB3H5NUBZ9CwYSUOK0zUYIsER8l3ZeXZTKX2+piL5E+x1SVbPS6or5iEthdZYclHlqB7barg5WyEuQ3li3bQ=
+	t=1728917412; cv=none; b=kvsczR/slpPcIKHC51Zxv1ragGDGhAfpn4bQj0tpbQdbGxi0EuS6tPTczby/rm/wkPk+T1425Tx5Q/5vEBPoJeq20FytWJvFK+I739DZ6TARh1PNsu/cOkg6x7Kbaz8U3s2ldulKPs0+Pyky+iiDehmuCJx+ifubvhT1WLzBcNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917527; c=relaxed/simple;
-	bh=rng+6errRp9ojH6+oTa8pVlMDVfMyeGYm8XZcO71iHY=;
+	s=arc-20240116; t=1728917412; c=relaxed/simple;
+	bh=H8tUOozogb3UbssZiJwGbCMqhNgT/THRJmIKSmVz9vg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSdPxV6Ym8Xmi44RiKV915cosdmeMLP/bU3qPWDzF31CPVlrDkErnfBqFxN2WCZXUrzjQbUw9rqOWKNSZDl2oWPfyOlzfwe9rzfw7dlWP7GKWP8XhvCR0gw/pmmziXV3QjD7Jpk+P3Cy1x6SyHYnJQNM6UWR66oxiD/VxndhWvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hyxfsp9g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221C8C4CECF;
-	Mon, 14 Oct 2024 14:52:06 +0000 (UTC)
+	 MIME-Version; b=b+7oclK2qlJEm6LKbnzU+oWU4sJD0XTj3vcD6a5BjOewh8nDsBOFgz0SpuVmtFE10XBTdSye8WVD2MDyjLuAJo1F3EI4fJNHm4y2ZmO4Ti8m4ACu64xUDejK6G34AITQZjWbNUzE/X9fxPIyBHNdsJODK+vozPajU156ncBJOC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ls18m3wW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B58EC4CEC3;
+	Mon, 14 Oct 2024 14:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917527;
-	bh=rng+6errRp9ojH6+oTa8pVlMDVfMyeGYm8XZcO71iHY=;
+	s=korg; t=1728917412;
+	bh=H8tUOozogb3UbssZiJwGbCMqhNgT/THRJmIKSmVz9vg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hyxfsp9gdGY0tFqDJezpX2snx7w62ZkTUBV+Y0E45zS1ns6g2jergF2IRiPQQPL4e
-	 H6eE8HBNc5f9Lf81VwTEGxCLFn7gN8MVDn/JRkHmkSk3BICvW/8mwBhxuJg2h5HBki
-	 K7sTiiQwVn309XUrkN8qwa2yfqMjjiRGo6lXBz4E=
+	b=Ls18m3wWgQxa5aGHP63mUm+2bGT/1C6i9Li0dDQ8IUe2cl0SCNCyCEkLT8kzqPXLQ
+	 7C51kf43yyIP9WQmfka+gIOa+yKYnmu7J8Ypf/Z/J+PGuam7uFR2Vc0Z0KaANyrigU
+	 ERSyS0f95OqTks7azpJsW8ZLt+aZmSeSrgBDtFX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/798] netfilter: nf_tables: elements with timeout below CONFIG_HZ never expire
-Date: Mon, 14 Oct 2024 16:09:41 +0200
-Message-ID: <20241014141219.015368649@linuxfoundation.org>
+Subject: [PATCH 6.1 028/798] netfilter: nf_tables: reject element expiration with no timeout
+Date: Mon, 14 Oct 2024 16:09:42 +0200
+Message-ID: <20241014141219.053445066@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -67,32 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit e0c47281723f301894c14e6f5cd5884fdfb813f9 ]
+[ Upstream commit d2dc429ecb4e79ad164028d965c00f689e6f6d06 ]
 
-Element timeout that is below CONFIG_HZ never expires because the
-timeout extension is not allocated given that nf_msecs_to_jiffies64()
-returns 0. Set timeout to the minimum value to honor timeout.
+If element timeout is unset and set provides no default timeout, the
+element expiration is silently ignored, reject this instead to let user
+know this is unsupported.
+
+Also prepare for supporting timeout that never expire, where zero
+timeout and expiration must be also rejected.
 
 Fixes: 8e1102d5a159 ("netfilter: nf_tables: support timeouts larger than 23 days")
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 25a9bce8cd3a4..4ebd3382f15b0 100644
+index 4ebd3382f15b0..77306f48b3994 100644
 --- a/net/netfilter/nf_tables_api.c
 +++ b/net/netfilter/nf_tables_api.c
-@@ -4223,7 +4223,7 @@ int nf_msecs_to_jiffies64(const struct nlattr *nla, u64 *result)
- 		return -ERANGE;
- 
- 	ms *= NSEC_PER_MSEC;
--	*result = nsecs_to_jiffies64(ms);
-+	*result = nsecs_to_jiffies64(ms) ? : !!ms;
- 	return 0;
- }
- 
+@@ -6411,6 +6411,9 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 	if (nla[NFTA_SET_ELEM_EXPIRATION] != NULL) {
+ 		if (!(set->flags & NFT_SET_TIMEOUT))
+ 			return -EINVAL;
++		if (timeout == 0)
++			return -EOPNOTSUPP;
++
+ 		err = nf_msecs_to_jiffies64(nla[NFTA_SET_ELEM_EXPIRATION],
+ 					    &expiration);
+ 		if (err)
 -- 
 2.43.0
 
