@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-84936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D7C99D2F3
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:32:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 524FB99CD93
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32E032842AA
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:32:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A65B1F235D1
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87EA21B85D7;
-	Mon, 14 Oct 2024 15:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7A11ABEBD;
+	Mon, 14 Oct 2024 14:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2NWtCtw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Azh6C10b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448251B85CD;
-	Mon, 14 Oct 2024 15:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD561ABEBA;
+	Mon, 14 Oct 2024 14:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919730; cv=none; b=Tt4Cmf7ZJIXNELWBreqaaoaF6aNz5X+N5yEswFlpSnjUI2HMpa3DFKJwJ78gC1K5pcQGmr2K35H01v0H53UjWx2Vrv/DlPc6QTjJzvd9WOlH16aEp5hE+tlhOA41J/ZW/AT0sFBWb14Ig/PgeiPM8mP0eypbx9zT+pGbx4iaiY8=
+	t=1728916439; cv=none; b=UmQNXOwrK6K8JBx/rV6a1D4by4P1/SZXOUWEthqGqSjgjoHsjLXT7tTkYchkUXpyeZizDPDqEWMvynytDjzPNkgmdUOU7v0z/BmdfUNV7b0v8g8CJ7FyOzCegF5/YkMGZq2aPpt9NxL3Qdq9DBWA2GxWtAdyeHPH8/2aR8IqYNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919730; c=relaxed/simple;
-	bh=uCVScCKgRhHd0mvvXl0Qr1D1ru4OpSrurPXRgZB1lks=;
+	s=arc-20240116; t=1728916439; c=relaxed/simple;
+	bh=R2J771YKB08MBvcLBbhDSxhbPFue6fpexCAPoxfbfgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UEIyKjWzHSDmGhUF5GfSjbDY0ropI77PGlMsjkAZr4sSsuPatdTDcHC3FUblyezv2aldQWj6B6AFRma8PgqZhWI9JReQbXHs/aqzs7RzUJGSRR97uPtnW008JpeTVuwUDPB5g9/91FUH0rWzfYlPFWg+mrAzNGUY9xTgJ0xXf4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2NWtCtw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95F2C4CED0;
-	Mon, 14 Oct 2024 15:28:49 +0000 (UTC)
+	 MIME-Version; b=fB5RTZNIiJ6S1jzRD3L/1s1MbzlcVqlYre/terv99lORMhqRwR4wAsPjihUY7FyUh9nK257vhiVgGO8nOl+QSzt+pD86AWxbk8JobQdUA22oewV+LE91NZHTmfZhiPdfYwkLmMZ18/7bXm0ob3/pdFs9JTc9XNHvH/J79wUwm8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Azh6C10b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00EB8C4CEC3;
+	Mon, 14 Oct 2024 14:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919730;
-	bh=uCVScCKgRhHd0mvvXl0Qr1D1ru4OpSrurPXRgZB1lks=;
+	s=korg; t=1728916438;
+	bh=R2J771YKB08MBvcLBbhDSxhbPFue6fpexCAPoxfbfgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F2NWtCtwqztud8jSP7lzA6DQ6HGNkFMjkOW1TwYW0aUn5cRIDXT7X4HK3Y7rzMdi9
-	 4QoNf9/8Vk9alXNvEpaLeBSsi3JDvqXx0djYUD4f2F1olc2AfC/NVKM2qIAHNxNQL1
-	 HZeZcSNLmW660C3lekYgSvXUDyxTxeHdeMtb1hGE=
+	b=Azh6C10brU6EHncGXpffYAqBsRrPAlUt+oRM0NtMPym0/eWSzmOCcmNlbpU7D9WLn
+	 9N+pmn66lp1C4WyFiHmZiCDzGh40Phi8Vv/T4RP0eew9JLjCu4DdF5fK0ceHIZu0Zd
+	 akHLikKMHBBdfbBA41uFSif01fPFB99Jj1ntPS9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 691/798] ext4: dont set SB_RDONLY after filesystem errors
-Date: Mon, 14 Oct 2024 16:20:45 +0200
-Message-ID: <20241014141245.217528727@linuxfoundation.org>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>
+Subject: [PATCH 6.11 183/214] thermal: core: Free tzp copy along with the thermal zone
+Date: Mon, 14 Oct 2024 16:20:46 +0200
+Message-ID: <20241014141052.123108521@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit d3476f3dad4ad68ae5f6b008ea6591d1520da5d8 ]
+commit 827a07525c099f54d3b15110408824541ec66b3c upstream.
 
-When the filesystem is mounted with errors=remount-ro, we were setting
-SB_RDONLY flag to stop all filesystem modifications. We knew this misses
-proper locking (sb->s_umount) and does not go through proper filesystem
-remount procedure but it has been the way this worked since early ext2
-days and it was good enough for catastrophic situation damage
-mitigation. Recently, syzbot has found a way (see link) to trigger
-warnings in filesystem freezing because the code got confused by
-SB_RDONLY changing under its hands. Since these days we set
-EXT4_FLAGS_SHUTDOWN on the superblock which is enough to stop all
-filesystem modifications, modifying SB_RDONLY shouldn't be needed. So
-stop doing that.
+The object pointed to by tz->tzp may still be accessed after being
+freed in thermal_zone_device_unregister(), so move the freeing of it
+to the point after the removal completion has been completed at which
+it cannot be accessed any more.
 
-Link: https://lore.kernel.org/all/000000000000b90a8e061e21d12f@google.com
-Reported-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Link: https://patch.msgid.link/20240805201241.27286-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3d439b1a2ad3 ("thermal/core: Alloc-copy-free the thermal zone parameters structure")
+Cc: 6.8+ <stable@vger.kernel.org> # 6.8+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://patch.msgid.link/4623516.LvFx2qVVIh@rjwysocki.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/thermal/thermal_core.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 3db39758486e9..3bf214d4afef5 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -692,11 +692,12 @@ static void ext4_handle_error(struct super_block *sb, bool force_ro, int error,
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -1647,14 +1647,12 @@ void thermal_zone_device_unregister(stru
+ 	ida_destroy(&tz->ida);
  
- 	ext4_msg(sb, KERN_CRIT, "Remounting filesystem read-only");
- 	/*
--	 * Make sure updated value of ->s_mount_flags will be visible before
--	 * ->s_flags update
-+	 * EXT4_FLAGS_SHUTDOWN was set which stops all filesystem
-+	 * modifications. We don't set SB_RDONLY because that requires
-+	 * sb->s_umount semaphore and setting it without proper remount
-+	 * procedure is confusing code such as freeze_super() leading to
-+	 * deadlocks and other problems.
- 	 */
--	smp_wmb();
--	sb->s_flags |= SB_RDONLY;
+ 	device_del(&tz->device);
+-
+-	kfree(tz->tzp);
+-
+ 	put_device(&tz->device);
+ 
+ 	thermal_notify_tz_delete(tz);
+ 
+ 	wait_for_completion(&tz->removal);
++	kfree(tz->tzp);
+ 	kfree(tz);
  }
- 
- static void flush_stashed_error_work(struct work_struct *work)
--- 
-2.43.0
-
+ EXPORT_SYMBOL_GPL(thermal_zone_device_unregister);
 
 
 
