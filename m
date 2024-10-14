@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-85007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8400C99D34E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 572AC99CF36
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:52:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2266B279F0
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 889C01C236F4
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F2E1BDABD;
-	Mon, 14 Oct 2024 15:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFBBE1BFDF4;
+	Mon, 14 Oct 2024 14:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WkpbvkBh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqP595Pl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864AD1ABEA7;
-	Mon, 14 Oct 2024 15:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A551BF804;
+	Mon, 14 Oct 2024 14:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919976; cv=none; b=aolYnvFWDvouJcBnGibUafPnLvvl6IuxpOTJJXrg0Mx3XKGHpGkEtAJSj3Fa319hOwV6IlGs11+hms6YbmAL1LWry3gd1w3xeOk/xtIH490h6fMlbliFnwNJ1PkizXd/w9c+LjWFCS8kd8KL/AFewjD5XAovYo6FwQ+ZpfvR0qE=
+	t=1728917320; cv=none; b=SZ5mJIctCeG4HRw/EjqtF803LKDT7uZ18DXYtiytlnfdq2+1gQ3r5zLTQzNoovEleBCd5A1oYF68VO4q7M3iqibPf/XNVLqMshFMo5ThOVagJfpZxwUrDog8pyktgMPOedjIbyK2kpWTaNlUdReQQkmBueRzb49E0tf499rnS50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919976; c=relaxed/simple;
-	bh=MTlfc8OEAN07rzWijtdwyYjJz2f98CwDDkcS6Nq+TRc=;
+	s=arc-20240116; t=1728917320; c=relaxed/simple;
+	bh=/XpbyGrCaNXPrXnxSnqXL2n4zoA39yE9Tvu0oenQ1H0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sjGp6cMraqGX3fpmK9nzv7MvBTbAyToCCnNHxqqybBCZbBFUdho3iBtKmhisUNfpnaydsBYEBCT8iUnvYtzUq2x7m/pNmBDTfHfzOfZG/6dh2IzxALbpg9FHFQa8pV78KFCkEMoTKxod3Q9q2nSxCG102TuX8ZPfGgqLC4my6nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WkpbvkBh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB31C4CEC3;
-	Mon, 14 Oct 2024 15:32:55 +0000 (UTC)
+	 MIME-Version; b=bkwpgEbstjy3N0goVa8zg94wWVXMHakZAWOOG2y9ey3PRvVo05JiZ3gEls8t+cm5m1Of87OIR3dLxgFW8B19Z2grNUAhs9H9zigHu3ZaFnSuRyf9NrYq/9Cytk04ouZVx/ANb1r0UnV3rKOgcTCQY6q8L3lux1MLq/M9ICY2C8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqP595Pl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C5A6C4CEC3;
+	Mon, 14 Oct 2024 14:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919976;
-	bh=MTlfc8OEAN07rzWijtdwyYjJz2f98CwDDkcS6Nq+TRc=;
+	s=korg; t=1728917320;
+	bh=/XpbyGrCaNXPrXnxSnqXL2n4zoA39yE9Tvu0oenQ1H0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WkpbvkBhQFTue7mGdTdCJBVmxvpr0azdSz7ry30uK0mQa9vCkB6VV+rSSLIADDZla
-	 imPDlHLeCiN94h3Sz26SS+AF22KPiK8TjuBg9qzcx2q4lPYUzYb5GF/lFCPeu1UzXP
-	 0kcR4KKLW4ytqyLuZAbeOu/BCkake2FDlMzKDZJY=
+	b=lqP595PlvXowRgodLIbTlsmBtLDeZrBwJwdvGoAtkIzPd14psD4pzac1WrGK28+I8
+	 Kc9GnuYNpeTzRzRBs7gaNQT/7i54QNYdBDpnHXvPf5I6IUztsdLkhju0JqIhlFHBKB
+	 Tm+Pg2ihb6ZrR966vOTnFYuzABS65L8ZO2t9HtYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 761/798] vxlan: Handle error of rtnl_register_module().
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 209/213] fs/proc/kcore.c: allow translation of physical memory addresses
 Date: Mon, 14 Oct 2024 16:21:55 +0200
-Message-ID: <20241014141247.965893793@linuxfoundation.org>
+Message-ID: <20241014141051.118240782@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-[ Upstream commit 78b7b991838a4a6baeaad934addc4db2c5917eb8 ]
+commit 3d5854d75e3187147613130561b58f0b06166172 upstream.
 
-Since introduced, vxlan_vnifilter_init() has been ignoring the
-returned value of rtnl_register_module(), which could fail silently.
+When /proc/kcore is read an attempt to read the first two pages results in
+HW-specific page swap on s390 and another (so called prefix) pages are
+accessed instead.  That leads to a wrong read.
 
-Handling the error allows users to view a module as an all-or-nothing
-thing in terms of the rtnetlink functionality.  This prevents syzkaller
-from reporting spurious errors from its tests, where OOM often occurs
-and module is automatically loaded.
+Allow architecture-specific translation of memory addresses using
+kc_xlate_dev_mem_ptr() and kc_unxlate_dev_mem_ptr() callbacks similarily
+to /dev/mem xlate_dev_mem_ptr() and unxlate_dev_mem_ptr() callbacks.  That
+way an architecture can deal with specific physical memory ranges.
 
-Let's handle the errors by rtnl_register_many().
+Re-use the existing /dev/mem callback implementation on s390, which
+handles the described prefix pages swapping correctly.
 
-Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For other architectures the default callback is basically NOP.  It is
+expected the condition (vaddr == __va(__pa(vaddr))) always holds true for
+KCORE_RAM memory type.
+
+Link: https://lkml.kernel.org/r/20240930122119.1651546-1-agordeev@linux.ibm.com
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Suggested-by: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_core.c      |  6 +++++-
- drivers/net/vxlan/vxlan_private.h   |  2 +-
- drivers/net/vxlan/vxlan_vnifilter.c | 19 +++++++++----------
- 3 files changed, 15 insertions(+), 12 deletions(-)
+ arch/s390/include/asm/io.h |    2 ++
+ fs/proc/kcore.c            |   36 ++++++++++++++++++++++++++++++++++--
+ 2 files changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 61224a5a877cb..155d335c80a7e 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -4803,9 +4803,13 @@ static int __init vxlan_init_module(void)
- 	if (rc)
- 		goto out4;
+--- a/arch/s390/include/asm/io.h
++++ b/arch/s390/include/asm/io.h
+@@ -16,8 +16,10 @@
+ #include <asm/pci_io.h>
  
--	vxlan_vnifilter_init();
-+	rc = vxlan_vnifilter_init();
-+	if (rc)
-+		goto out5;
+ #define xlate_dev_mem_ptr xlate_dev_mem_ptr
++#define kc_xlate_dev_mem_ptr xlate_dev_mem_ptr
+ void *xlate_dev_mem_ptr(phys_addr_t phys);
+ #define unxlate_dev_mem_ptr unxlate_dev_mem_ptr
++#define kc_unxlate_dev_mem_ptr unxlate_dev_mem_ptr
+ void unxlate_dev_mem_ptr(phys_addr_t phys, void *addr);
  
- 	return 0;
-+out5:
-+	rtnl_link_unregister(&vxlan_link_ops);
- out4:
- 	unregister_switchdev_notifier(&vxlan_switchdev_notifier_block);
- out3:
-diff --git a/drivers/net/vxlan/vxlan_private.h b/drivers/net/vxlan/vxlan_private.h
-index 599c3b4fdd5ed..b0e8c6d290579 100644
---- a/drivers/net/vxlan/vxlan_private.h
-+++ b/drivers/net/vxlan/vxlan_private.h
-@@ -134,7 +134,7 @@ int vxlan_vni_in_use(struct net *src_net, struct vxlan_dev *vxlan,
- int vxlan_vnigroup_init(struct vxlan_dev *vxlan);
- void vxlan_vnigroup_uninit(struct vxlan_dev *vxlan);
+ #define IO_SPACE_LIMIT 0
+--- a/fs/proc/kcore.c
++++ b/fs/proc/kcore.c
+@@ -50,6 +50,20 @@ static struct proc_dir_entry *proc_root_
+ #define	kc_offset_to_vaddr(o) ((o) + PAGE_OFFSET)
+ #endif
  
--void vxlan_vnifilter_init(void);
-+int vxlan_vnifilter_init(void);
- void vxlan_vnifilter_uninit(void);
- void vxlan_vnifilter_count(struct vxlan_dev *vxlan, __be32 vni,
- 			   struct vxlan_vni_node *vninode,
-diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index c5cf55030158f..3d113d709d194 100644
---- a/drivers/net/vxlan/vxlan_vnifilter.c
-+++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -992,19 +992,18 @@ static int vxlan_vnifilter_process(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	return err;
- }
- 
--void vxlan_vnifilter_init(void)
-+static const struct rtnl_msg_handler vxlan_vnifilter_rtnl_msg_handlers[] = {
-+	{THIS_MODULE, PF_BRIDGE, RTM_GETTUNNEL, NULL, vxlan_vnifilter_dump, 0},
-+	{THIS_MODULE, PF_BRIDGE, RTM_NEWTUNNEL, vxlan_vnifilter_process, NULL, 0},
-+	{THIS_MODULE, PF_BRIDGE, RTM_DELTUNNEL, vxlan_vnifilter_process, NULL, 0},
-+};
++#ifndef kc_xlate_dev_mem_ptr
++#define kc_xlate_dev_mem_ptr kc_xlate_dev_mem_ptr
++static inline void *kc_xlate_dev_mem_ptr(phys_addr_t phys)
++{
++	return __va(phys);
++}
++#endif
++#ifndef kc_unxlate_dev_mem_ptr
++#define kc_unxlate_dev_mem_ptr kc_unxlate_dev_mem_ptr
++static inline void kc_unxlate_dev_mem_ptr(phys_addr_t phys, void *virt)
++{
++}
++#endif
 +
-+int vxlan_vnifilter_init(void)
- {
--	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_GETTUNNEL, NULL,
--			     vxlan_vnifilter_dump, 0);
--	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_NEWTUNNEL,
--			     vxlan_vnifilter_process, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_DELTUNNEL,
--			     vxlan_vnifilter_process, NULL, 0);
-+	return rtnl_register_many(vxlan_vnifilter_rtnl_msg_handlers);
- }
+ static LIST_HEAD(kclist_head);
+ static DECLARE_RWSEM(kclist_lock);
+ static int kcore_need_update = 1;
+@@ -471,6 +485,8 @@ static ssize_t read_kcore_iter(struct ki
+ 	while (buflen) {
+ 		struct page *page;
+ 		unsigned long pfn;
++		phys_addr_t phys;
++		void *__start;
  
- void vxlan_vnifilter_uninit(void)
- {
--	rtnl_unregister(PF_BRIDGE, RTM_GETTUNNEL);
--	rtnl_unregister(PF_BRIDGE, RTM_NEWTUNNEL);
--	rtnl_unregister(PF_BRIDGE, RTM_DELTUNNEL);
-+	rtnl_unregister_many(vxlan_vnifilter_rtnl_msg_handlers);
- }
--- 
-2.43.0
-
+ 		/*
+ 		 * If this is the first iteration or the address is not within
+@@ -537,7 +553,8 @@ static ssize_t read_kcore_iter(struct ki
+ 			}
+ 			break;
+ 		case KCORE_RAM:
+-			pfn = __pa(start) >> PAGE_SHIFT;
++			phys = __pa(start);
++			pfn =  phys >> PAGE_SHIFT;
+ 			page = pfn_to_online_page(pfn);
+ 
+ 			/*
+@@ -556,13 +573,28 @@ static ssize_t read_kcore_iter(struct ki
+ 			fallthrough;
+ 		case KCORE_VMEMMAP:
+ 		case KCORE_TEXT:
++			if (m->type == KCORE_RAM) {
++				__start = kc_xlate_dev_mem_ptr(phys);
++				if (!__start) {
++					ret = -ENOMEM;
++					if (iov_iter_zero(tsz, iter) != tsz)
++						ret = -EFAULT;
++					goto out;
++				}
++			} else {
++				__start = (void *)start;
++			}
++
+ 			/*
+ 			 * Sadly we must use a bounce buffer here to be able to
+ 			 * make use of copy_from_kernel_nofault(), as these
+ 			 * memory regions might not always be mapped on all
+ 			 * architectures.
+ 			 */
+-			if (copy_from_kernel_nofault(buf, (void *)start, tsz)) {
++			ret = copy_from_kernel_nofault(buf, __start, tsz);
++			if (m->type == KCORE_RAM)
++				kc_unxlate_dev_mem_ptr(phys, __start);
++			if (ret) {
+ 				if (iov_iter_zero(tsz, iter) != tsz) {
+ 					ret = -EFAULT;
+ 					goto out;
 
 
 
