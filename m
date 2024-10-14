@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-83964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32DB399CD5F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:32:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD9699CE80
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83B801F239B1
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:32:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6811A1F23D0E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4CE1A0724;
-	Mon, 14 Oct 2024 14:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6515A1AB522;
+	Mon, 14 Oct 2024 14:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blVojzUv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBjemqlq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84ACC17C77;
-	Mon, 14 Oct 2024 14:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2172913B7A1;
+	Mon, 14 Oct 2024 14:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916338; cv=none; b=IHi76FuA6hFPiih6j/h6MToCYqz6II3SUhxQT6SB9qvEtAnxmyApPTIwfclnnPvlj4CoT1+cdGEKxKB4T9b3lcHoFflkAYprFNSeYhuy3cfwBf285fALVYLKMN0+DQCEdgJtukfAo4iUNQzQw+e2LhNuXNbEUXznLvF8kmnhZGo=
+	t=1728917070; cv=none; b=piSuvAE/epKnsEsw9W/u02RLZ3hRR5uVzCtriHYpWfgyO0hVv9+Ncz3sR20T9Kkm6JEQ3k3j3tjy8Bw7a9VL03HzRqsEnioyyCtwfrjlDN8k7v2I6MTkYAXA0VlOzK+TND/ysbCA/X5wECS5vytApg7xMzGXQobpqFHDb8zMDKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916338; c=relaxed/simple;
-	bh=krBwssS6JrCXBGyaUO6BNpo2+229IkPf1iOS4wHSW6M=;
+	s=arc-20240116; t=1728917070; c=relaxed/simple;
+	bh=OqVJlGzL6qjEED7NwAejmXjrPsxDLGZTlu512TO/eNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VufIzdsS6Vi/lTapHa3XdSSaNxYV8+muQm8oNd3zJZ62owfXZ0kKShkwtY3NfngEZdwAE/CjsFiaZmFB55LnXPH+MuIKX0x67wC6h1ma3eWGjs6IJ/sDQKGiDFLv1514xaqjiyoEf4xRg3zBZspffYDXU7287X4xz/4JlNxCUEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blVojzUv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA614C4CED0;
-	Mon, 14 Oct 2024 14:32:17 +0000 (UTC)
+	 MIME-Version; b=PO1njB5biWmK6Q1PnP2ZWVEAGCNRvj1nwmQP8ZyEJpjtiaQ8R/H8oUQyo/TIRAI49IBF/lwZtYp//TsDs3HzodwIQbzMO3DlWlm8pGvuY2MzsCeXVg2O7s2pEp+F4ni1P1yENPZbUOq3PN5RsXldxJafiS4lWHIbLCPV4NGvO5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBjemqlq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EACCC4CEC3;
+	Mon, 14 Oct 2024 14:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916338;
-	bh=krBwssS6JrCXBGyaUO6BNpo2+229IkPf1iOS4wHSW6M=;
+	s=korg; t=1728917070;
+	bh=OqVJlGzL6qjEED7NwAejmXjrPsxDLGZTlu512TO/eNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=blVojzUvyN9rm7ugnf/HZ3fvm2bmBIwK9pJO9rM6ZKIJwXKuITevOAF7EE4DL4FAs
-	 YbgcxkqN/Fj3Kr/kdb7rRANDaT4W2agmzMV7+yQmwJs/B5lVoBBwbNVhOm8sARwL/6
-	 FV4Y+J6XhV6RGTpG5cSArpAlwskw34gSIr7jqT24=
+	b=SBjemqlq61XmSWlwpJQnz1bYYVxtTPzKRx2egT9s9Odzr7e11e0MnHcGI9UFLuQUY
+	 4Sw8TMe9exDJJJkO7CDIPfh0PGfiDGVIzO1PaYi8PHqUlWhR9ZTqgk3tSKVzHcAKhk
+	 1VFfrRMwMwgSeUuSB0N+B4BAJXEZiBewHQgiL6TY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Eric Tremblay <etremblay@distech-controls.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 154/214] hwmon: (tmp513) Add missing dependency on REGMAP_I2C
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.6 111/213] ice: fix VLAN replay after reset
 Date: Mon, 14 Oct 2024 16:20:17 +0200
-Message-ID: <20241014141050.998558837@linuxfoundation.org>
+Message-ID: <20241014141047.299565936@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Dave Ertman <david.m.ertman@intel.com>
 
-[ Upstream commit 193bc02c664999581a1f38c152f379fce91afc0c ]
+[ Upstream commit 0eae2c136cb624e4050092feb59f18159b4f2512 ]
 
-0-day reports:
+There is a bug currently when there are more than one VLAN defined
+and any reset that affects the PF is initiated, after the reset rebuild
+no traffic will pass on any VLAN but the last one created.
 
-drivers/hwmon/tmp513.c:162:21: error:
-	variable 'tmp51x_regmap_config' has initializer but incomplete type
-162 | static const struct regmap_config tmp51x_regmap_config = {
-    |                     ^
+This is caused by the iteration though the VLANs during replay each
+clearing the vsi_map bitmap of the VSI that is being replayed.  The
+problem is that during rhe replay, the pointer to the vsi_map bitmap
+is used by each successive vlan to determine if it should be replayed
+on this VSI.
 
-struct regmap_config is only available if REGMAP is enabled.
-Add the missing Kconfig dependency to fix the problem.
+The logic was that the replay of the VLAN would replace the bit in the map
+before the next VLAN would iterate through.  But, since the replay copies
+the old bitmap pointer to filt_replay_rules and creates a new one for the
+recreated VLANS, it does not do this, and leaves the old bitmap broken
+to be used to replay the remaining VLANs.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202410020246.2cTDDx0X-lkp@intel.com/
-Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
-Cc: Eric Tremblay <etremblay@distech-controls.com>
-Reviewed-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Since the old bitmap will be cleaned up in post replay cleanup, there is
+no need to alter it and break following VLAN replay, so don't clear the
+bit.
+
+Fixes: 334cb0626de1 ("ice: Implement VSI replay framework")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Dave Ertman <david.m.ertman@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/ice/ice_switch.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-index b60fe2e58ad6c..543c40630d67e 100644
---- a/drivers/hwmon/Kconfig
-+++ b/drivers/hwmon/Kconfig
-@@ -2288,6 +2288,7 @@ config SENSORS_TMP464
- config SENSORS_TMP513
- 	tristate "Texas Instruments TMP513 and compatibles"
- 	depends on I2C
-+	select REGMAP_I2C
- 	help
- 	  If you say yes here you get support for Texas Instruments TMP512,
- 	  and TMP513 temperature and power supply sensor chips.
+diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
+index 355716e6bcc82..19f730a68fa21 100644
+--- a/drivers/net/ethernet/intel/ice/ice_switch.c
++++ b/drivers/net/ethernet/intel/ice/ice_switch.c
+@@ -6326,8 +6326,6 @@ ice_replay_vsi_fltr(struct ice_hw *hw, u16 vsi_handle, u8 recp_id,
+ 		if (!itr->vsi_list_info ||
+ 		    !test_bit(vsi_handle, itr->vsi_list_info->vsi_map))
+ 			continue;
+-		/* Clearing it so that the logic can add it back */
+-		clear_bit(vsi_handle, itr->vsi_list_info->vsi_map);
+ 		f_entry.fltr_info.vsi_handle = vsi_handle;
+ 		f_entry.fltr_info.fltr_act = ICE_FWD_TO_VSI;
+ 		/* update the src in case it is VSI num */
 -- 
 2.43.0
 
