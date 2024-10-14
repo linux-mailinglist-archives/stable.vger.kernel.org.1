@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-83996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 026FE99CD9C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:34:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 431A699CED6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:47:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD4961F20B59
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:34:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 053FF28863F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:47:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2B71AC8A6;
-	Mon, 14 Oct 2024 14:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5CD01ADFFD;
+	Mon, 14 Oct 2024 14:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tjbs4TWg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzWecQ/t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789EE4595B;
-	Mon, 14 Oct 2024 14:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FF41AD403;
+	Mon, 14 Oct 2024 14:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916449; cv=none; b=nIXFopURK9rtJPM3VeIgQ/KPjbzlMvFzWqHBgJZ4R41uOj6nt3bE5rozVw8Ryps0x0c9VnDLE0dHngV+ZHUdj5QSomenuhiB7TbLUJMx10ASGl3stT3z4SYmFbK5EQv1jvinPUIK+JZ4hEjJ7Yeye2K7TzVTU6U2dhQnblihlxg=
+	t=1728917183; cv=none; b=KLZQpep495L6lqFnAJAXMprOR3errbHBpy+ASbmAG3Vfz4Cfo4OaKK9089+wKkbXNDz6rOtBiyeLyCjlhIAjRArDpKpcRwRpkEUiLXWE0RG0zFiyEKQgHV9bqctWng1xkCgrKmHjsDnzNHMXx8zJWNcHuxd9fcSkZ2EmZyEefEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916449; c=relaxed/simple;
-	bh=uCnS4DiiRhL6pEezC8AfYVnHbTkAvhI4RtOfLSnxrSY=;
+	s=arc-20240116; t=1728917183; c=relaxed/simple;
+	bh=7m9XTEUqMixPLbua399Mcgcycm50vt1HV4MZZ7Gn0ZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dzUPNwEQhnp8uwu2NvuP+ZT6RKFTKrvSGSQtYc+PnwvgNfAlkCEqymMhpsQI2o+F5GGKaCRkLylrPSsd6NxXGCWsApugz3ErOc+F/nXwer6YgYpz6Fxq/2nX3wKWDMBWrB15dqZ753FISqstretddIRH/7nGuzTL+iiyqxw7n2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tjbs4TWg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CD9C4CEC3;
-	Mon, 14 Oct 2024 14:34:08 +0000 (UTC)
+	 MIME-Version; b=pcOzLdwAVkdnz++YHPwDHhH6kA6uqK2oenh8TybbWqAO5OE8l+QwOOUhp0GFQcwSEFWbQSW3ry7bBBs4LmwI4THF3qo768Zk9LdFQVaGI9rceHhi5DemgJ1T7kJu8RlAY/nUEAlfY7loYPK/XvR1Kp1SlR3DZo5cIKw6/L5fgKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzWecQ/t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC538C4CEC3;
+	Mon, 14 Oct 2024 14:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916449;
-	bh=uCnS4DiiRhL6pEezC8AfYVnHbTkAvhI4RtOfLSnxrSY=;
+	s=korg; t=1728917183;
+	bh=7m9XTEUqMixPLbua399Mcgcycm50vt1HV4MZZ7Gn0ZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tjbs4TWgukgN+HVCncf54dqIDuU22NyWZiiyEOmyXbnxAhkwRZZlHztd/ikKYOip8
-	 ZBbg24uYJDRt7eUBIwtIkh/HJbeWpbYTrHdtHVQrA4TJONwC4nUkeqz18ATKc0P6xW
-	 iK9R0knF2C+mY3od4zKMd8aJ9UPUJtb6lXc5QP1s=
+	b=DzWecQ/tNQFN/FAT8aXMFi+1Z55B5Nh3lICCgjSKyk1ppvWC5AOFbOwduSA1KqwX8
+	 anBbMyxyNNLI5FjZBNWH5O5R5iPIpMdwQjH4lenw3vnnRCnZT1nqdMVMXzHq2Vty2u
+	 2uamCB1evFfTPPUC8d1zViU5zzsXXHXGoSQZ/N3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avri Altman <avri.altman@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.11 186/214] scsi: ufs: Use pre-calculated offsets in ufshcd_init_lrb()
-Date: Mon, 14 Oct 2024 16:20:49 +0200
-Message-ID: <20241014141052.238282012@linuxfoundation.org>
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 144/213] e1000e: change I219 (19) devices to ADP
+Date: Mon, 14 Oct 2024 16:20:50 +0200
+Message-ID: <20241014141048.586921304@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avri Altman <avri.altman@wdc.com>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-commit d5130c5a093257aa4542aaded8034ef116a7624a upstream.
+[ Upstream commit 9d9e5347b035412daa844f884b94a05bac94f864 ]
 
-Replace manual offset calculations for response_upiu and prd_table in
-ufshcd_init_lrb() with pre-calculated offsets already stored in the
-utp_transfer_req_desc structure. The pre-calculated offsets are set
-differently in ufshcd_host_memory_configure() based on the
-UFSHCD_QUIRK_PRDT_BYTE_GRAN quirk, ensuring correct alignment and
-access.
+Sporadic issues, such as PHY access loss, have been observed on I219 (19)
+devices. It was found that these devices have hardware more closely
+related to ADP than MTP and the issues were caused by taking MTP-specific
+flows.
 
-Fixes: 26f968d7de82 ("scsi: ufs: Introduce UFSHCD_QUIRK_PRDT_BYTE_GRAN quirk")
-Cc: stable@vger.kernel.org
-Signed-off-by: Avri Altman <avri.altman@wdc.com>
-Link: https://lore.kernel.org/r/20240910044543.3812642-1-avri.altman@wdc.com
-Acked-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Change the MAC and board types of these devices from MTP to ADP to
+correctly reflect the LAN hardware, and flows, of these devices.
+
+Fixes: db2d737d63c5 ("e1000e: Separate MTP board type from ADP")
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/e1000e/hw.h     | 4 ++--
+ drivers/net/ethernet/intel/e1000e/netdev.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -2920,9 +2920,8 @@ static void ufshcd_init_lrb(struct ufs_h
- 	struct utp_transfer_req_desc *utrdlp = hba->utrdl_base_addr;
- 	dma_addr_t cmd_desc_element_addr = hba->ucdl_dma_addr +
- 		i * ufshcd_get_ucd_size(hba);
--	u16 response_offset = offsetof(struct utp_transfer_cmd_desc,
--				       response_upiu);
--	u16 prdt_offset = offsetof(struct utp_transfer_cmd_desc, prd_table);
-+	u16 response_offset = le16_to_cpu(utrdlp[i].response_upiu_offset);
-+	u16 prdt_offset = le16_to_cpu(utrdlp[i].prd_table_offset);
- 
- 	lrb->utr_descriptor_ptr = utrdlp + i;
- 	lrb->utrd_dma_addr = hba->utrdl_dma_addr +
+diff --git a/drivers/net/ethernet/intel/e1000e/hw.h b/drivers/net/ethernet/intel/e1000e/hw.h
+index 4b6e7536170ab..fc8ed38aa0955 100644
+--- a/drivers/net/ethernet/intel/e1000e/hw.h
++++ b/drivers/net/ethernet/intel/e1000e/hw.h
+@@ -108,8 +108,8 @@ struct e1000_hw;
+ #define E1000_DEV_ID_PCH_RPL_I219_V22		0x0DC8
+ #define E1000_DEV_ID_PCH_MTP_I219_LM18		0x550A
+ #define E1000_DEV_ID_PCH_MTP_I219_V18		0x550B
+-#define E1000_DEV_ID_PCH_MTP_I219_LM19		0x550C
+-#define E1000_DEV_ID_PCH_MTP_I219_V19		0x550D
++#define E1000_DEV_ID_PCH_ADP_I219_LM19		0x550C
++#define E1000_DEV_ID_PCH_ADP_I219_V19		0x550D
+ #define E1000_DEV_ID_PCH_LNP_I219_LM20		0x550E
+ #define E1000_DEV_ID_PCH_LNP_I219_V20		0x550F
+ #define E1000_DEV_ID_PCH_LNP_I219_LM21		0x5510
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index 06d109063c8d8..721c098f2bb1b 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -7899,10 +7899,10 @@ static const struct pci_device_id e1000_pci_tbl[] = {
+ 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_ADP_I219_V17), board_pch_adp },
+ 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_RPL_I219_LM22), board_pch_adp },
+ 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_RPL_I219_V22), board_pch_adp },
++	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_ADP_I219_LM19), board_pch_adp },
++	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_ADP_I219_V19), board_pch_adp },
+ 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_MTP_I219_LM18), board_pch_mtp },
+ 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_MTP_I219_V18), board_pch_mtp },
+-	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_MTP_I219_LM19), board_pch_mtp },
+-	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_MTP_I219_V19), board_pch_mtp },
+ 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_LNP_I219_LM20), board_pch_mtp },
+ 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_LNP_I219_V20), board_pch_mtp },
+ 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_LNP_I219_LM21), board_pch_mtp },
+-- 
+2.43.0
+
 
 
 
