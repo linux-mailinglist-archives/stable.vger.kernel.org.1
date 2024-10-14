@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-83918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46B1D99CD2E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0252199CE19
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 692D61C226A6
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACA711F21D2B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90C51AB6ED;
-	Mon, 14 Oct 2024 14:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4C11A0724;
+	Mon, 14 Oct 2024 14:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXPODmPD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zCq/Wgw1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880821AB6D4;
-	Mon, 14 Oct 2024 14:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C65220EB;
+	Mon, 14 Oct 2024 14:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916188; cv=none; b=Y68cSDKLE1D1y6fgUQ3wKM09UsNh/0QIyIm40nJSEfq7NnxAaoS2jZ692wnyMNU+ymE68E2gv3j8q9WJpUr6KE1ywFAwWYTRhYSzZ19JDTClOHaiRZrKAEz34eQlwdkPuHkxU4jr/DWe4k3mEiLI4Hyty74PdJG58e607UAYedQ=
+	t=1728916795; cv=none; b=CAzXBP1gM1wEhQIQYTQo12hwSxPZQJEX7O0TaPoNw07MRAXEa0sjmCLcm5le6xVzCU1zayEX8mIyDW6Z5CA4jl9Ygg7o+4Q8CcRv5jwucLUeOb0+uu3gsF9uAkDOcPeAs+MIF3YRexQYY5TLbCIP14euYqCs5IAvAnl/LlD/vh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916188; c=relaxed/simple;
-	bh=/iCG/kOAQHKSjbSMhguyrmik9xhfVmOXLYmzdPOVoIk=;
+	s=arc-20240116; t=1728916795; c=relaxed/simple;
+	bh=i1IjRjZHXm9eYFThdamZ5Cg5BJF4j29ButzrieB0ZCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEExsmFiTx3kFc8IAJn1jiacMvL/shzVRxaNXi4OQmhgFry1HAQmg85QSE1fHRokzVEPL432lHy42GIn3AZdayXdhlq8DN7VBF4dNqgy+8yl8vVIUZg7h4NmxyaDsx4pfaMKm1myeyBUZUtjTroJVyxApRs6PH7IwVp5ybZwrTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXPODmPD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07722C4CEC7;
-	Mon, 14 Oct 2024 14:29:47 +0000 (UTC)
+	 MIME-Version; b=uXOjpBCpx+YBCpS0LTD42bTucwOuV63CSx6Q/QkW4PvqTPGvafb1uteQPdUTZp7ts493yYsqtb91KOWTTZxUB04rjqMLjXcggCHuHSyCsvCTSvaX/beWmLrA7JkI/DO3hfd4ZUQ5sUakVQkxNqAmVRFM8C/XL3RKmBXp/k5DGKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zCq/Wgw1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB303C4CEC3;
+	Mon, 14 Oct 2024 14:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916188;
-	bh=/iCG/kOAQHKSjbSMhguyrmik9xhfVmOXLYmzdPOVoIk=;
+	s=korg; t=1728916795;
+	bh=i1IjRjZHXm9eYFThdamZ5Cg5BJF4j29ButzrieB0ZCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PXPODmPDltpq0my0BCstxPKvmtEepUFpu32J6DUHDnQcj+fX5mCDs6rehADkYD2TN
-	 QFzvxR+jg0HI7mUCTotYon1o5sBKmrbuvwFQfZ7HCIUXEl0wfWR3clJOudhPHgiw6e
-	 yPnrJDea1vfRn7j9ULvcgeRpphVErcDCORhuR9o0=
+	b=zCq/Wgw1QGoBAVzfRMdvT67JTOO/YD5cFhEFbZ+MjAuqYjJS2dyW5Wqs+3UY9SalN
+	 ByYFXAtJ0MWB8Y24qg+1e8wo7eNnESX2mzx17axsikkrXFLSB3RxX3K8mmDtxQFQ46
+	 7dCenps5Avw7aTdUOqXz2QBQAngjHh+/aWlfb2x8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Xu Kuohai <xukuohai@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 109/214] net: dsa: b53: fix jumbo frame mtu check
+Subject: [PATCH 6.6 066/213] bpf: Prevent tail call between progs attached to different hooks
 Date: Mon, 14 Oct 2024 16:19:32 +0200
-Message-ID: <20241014141049.250480089@linuxfoundation.org>
+Message-ID: <20241014141045.561030804@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Xu Kuohai <xukuohai@huawei.com>
 
-[ Upstream commit 42fb3acf6826c6764ba79feb6e15229b43fd2f9f ]
+[ Upstream commit 28ead3eaabc16ecc907cfb71876da028080f6356 ]
 
-JMS_MIN_SIZE is the full ethernet frame length, while mtu is just the
-data payload size. Comparing these two meant that mtus between 1500 and
-1518 did not trigger enabling jumbo frames.
+bpf progs can be attached to kernel functions, and the attached functions
+can take different parameters or return different return values. If
+prog attached to one kernel function tail calls prog attached to another
+kernel function, the ctx access or return value verification could be
+bypassed.
 
-So instead compare the set mtu ETH_DATA_LEN, which is equal to
-JMS_MIN_SIZE - ETH_HLEN - ETH_FCS_LEN;
+For example, if prog1 is attached to func1 which takes only 1 parameter
+and prog2 is attached to func2 which takes two parameters. Since verifier
+assumes the bpf ctx passed to prog2 is constructed based on func2's
+prototype, verifier allows prog2 to access the second parameter from
+the bpf ctx passed to it. The problem is that verifier does not prevent
+prog1 from passing its bpf ctx to prog2 via tail call. In this case,
+the bpf ctx passed to prog2 is constructed from func1 instead of func2,
+that is, the assumption for ctx access verification is bypassed.
 
-Also do a check that the requested mtu is actually greater than the
-minimum length, else we do not need to enable jumbo frames.
+Another example, if BPF LSM prog1 is attached to hook file_alloc_security,
+and BPF LSM prog2 is attached to hook bpf_lsm_audit_rule_known. Verifier
+knows the return value rules for these two hooks, e.g. it is legal for
+bpf_lsm_audit_rule_known to return positive number 1, and it is illegal
+for file_alloc_security to return positive number. So verifier allows
+prog2 to return positive number 1, but does not allow prog1 to return
+positive number. The problem is that verifier does not prevent prog1
+from calling prog2 via tail call. In this case, prog2's return value 1
+will be used as the return value for prog1's hook file_alloc_security.
+That is, the return value rule is bypassed.
 
-In practice this only introduced a very small range of mtus that did not
-work properly. Newer chips allow 2000 byte large frames by default, and
-older chips allow 1536 bytes long, which is equivalent to an mtu of
-1514. So effectivly only mtus of 1515~1517 were broken.
+This patch adds restriction for tail call to prevent such bypasses.
 
-Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
+Link: https://lore.kernel.org/r/20240719110059.797546-4-xukuohai@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/bpf.h |  1 +
+ kernel/bpf/core.c   | 21 ++++++++++++++++++---
+ 2 files changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 0783fc121bbbf..57df00ad9dd4c 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2259,7 +2259,7 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
- 	if (!dsa_is_cpu_port(ds, port))
- 		return 0;
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 722102518dc95..1e05cc80e0485 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -288,6 +288,7 @@ struct bpf_map {
+ 	 * same prog type, JITed flag and xdp_has_frags flag.
+ 	 */
+ 	struct {
++		const struct btf_type *attach_func_proto;
+ 		spinlock_t lock;
+ 		enum bpf_prog_type type;
+ 		bool jited;
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index 4124805ad7ba5..58ee17f429a33 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -2259,6 +2259,7 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
+ {
+ 	enum bpf_prog_type prog_type = resolve_prog_type(fp);
+ 	bool ret;
++	struct bpf_prog_aux *aux = fp->aux;
  
--	enable_jumbo = (mtu >= JMS_MIN_SIZE);
-+	enable_jumbo = (mtu > ETH_DATA_LEN);
- 	allow_10_100 = (dev->chip_id == BCM583XX_DEVICE_ID);
+ 	if (fp->kprobe_override)
+ 		return false;
+@@ -2268,7 +2269,7 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
+ 	 * in the case of devmap and cpumap). Until device checks
+ 	 * are implemented, prohibit adding dev-bound programs to program maps.
+ 	 */
+-	if (bpf_prog_is_dev_bound(fp->aux))
++	if (bpf_prog_is_dev_bound(aux))
+ 		return false;
  
- 	return b53_set_jumbo(dev, enable_jumbo, allow_10_100);
+ 	spin_lock(&map->owner.lock);
+@@ -2278,12 +2279,26 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
+ 		 */
+ 		map->owner.type  = prog_type;
+ 		map->owner.jited = fp->jited;
+-		map->owner.xdp_has_frags = fp->aux->xdp_has_frags;
++		map->owner.xdp_has_frags = aux->xdp_has_frags;
++		map->owner.attach_func_proto = aux->attach_func_proto;
+ 		ret = true;
+ 	} else {
+ 		ret = map->owner.type  == prog_type &&
+ 		      map->owner.jited == fp->jited &&
+-		      map->owner.xdp_has_frags == fp->aux->xdp_has_frags;
++		      map->owner.xdp_has_frags == aux->xdp_has_frags;
++		if (ret &&
++		    map->owner.attach_func_proto != aux->attach_func_proto) {
++			switch (prog_type) {
++			case BPF_PROG_TYPE_TRACING:
++			case BPF_PROG_TYPE_LSM:
++			case BPF_PROG_TYPE_EXT:
++			case BPF_PROG_TYPE_STRUCT_OPS:
++				ret = false;
++				break;
++			default:
++				break;
++			}
++		}
+ 	}
+ 	spin_unlock(&map->owner.lock);
+ 
 -- 
 2.43.0
 
