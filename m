@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-83823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CED2C99CCB9
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:24:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 624FF99D206
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C0071C213B5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:24:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3EDEB26046
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D5D1AB6F1;
-	Mon, 14 Oct 2024 14:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1CC1B85E4;
+	Mon, 14 Oct 2024 15:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqZC+OMV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mh32CEdN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341F21AB6E6;
-	Mon, 14 Oct 2024 14:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8131B4F13;
+	Mon, 14 Oct 2024 15:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915838; cv=none; b=F4ZXF97j/1VZJwYGasEKsHiVuAv7GADIVeHA3aT7WsDQ//nf9niuaAWt5hulGY4pcCKT+sAYztt3T/xyPZqwG0JADmOdLftsDE+BjMg6V5tgxIC6D46JXa7ZgDti8RKp6t5awoj6zMera8A4xRHQQ//xirf4WKDBpC6exwyZ+2w=
+	t=1728919140; cv=none; b=KU8RTJzX+E3pOkd4zJGnMmLriMfSoRQnN1CnWDZq5NYa8dBLEk6BAx8edGbycpO53iYS6k04zHe9iUDePehel7uGC3qAD/5Z74FhhloehVDLCtiyFpVr3igi6CYn75AHKzFMj42+PKolbECnJBzvVHeMazOqSCZ4q78MPRQSJ1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915838; c=relaxed/simple;
-	bh=4J2YvKzHV5hvxrSzqsLNTaMuEKbOQNNZO+hKmAR7ZKQ=;
+	s=arc-20240116; t=1728919140; c=relaxed/simple;
+	bh=YQv38f7d5sSjbjEKL88HKuLFIHZWcrB+yf4EXJ2AYNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aylcnuw7yOxiE0xLsC+HulJS3wwjioguLMvduK0SabqT/uSmSc/xYLGvahhLbB7uudyvuVB8UvwoMPIlh5WS5xD1y0c/4jRE+vzWsgksMRdwJYdTii5Yz0wBEIBH29xTm72xQEs+RmXb7W8Ofjt8bjY7XXBPKhxu3FlbiovR2+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqZC+OMV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99194C4CECF;
-	Mon, 14 Oct 2024 14:23:57 +0000 (UTC)
+	 MIME-Version; b=OjGYRVDszZZZkmD8GRw0uboa5qlQ3fBP9Ad+ev6rMB5szGit6eKczQ2e2lrTIPb90kFnYHgaWD9TFRcPyFBvBb+OTjc6ugv+scmR2v4lUsHYDIaMVDuCm9c2dYN3I4WyJrMyLO1VjvUdKBskzDTtVKoGHInbD5URdtCEgbEn06M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mh32CEdN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 120D5C4CEC3;
+	Mon, 14 Oct 2024 15:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915838;
-	bh=4J2YvKzHV5hvxrSzqsLNTaMuEKbOQNNZO+hKmAR7ZKQ=;
+	s=korg; t=1728919140;
+	bh=YQv38f7d5sSjbjEKL88HKuLFIHZWcrB+yf4EXJ2AYNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fqZC+OMV4DLMxjhqXK3I37I91naOtFKKXhuvQxcVXhYMOoDhxVeZW9I9evIwXZlVn
-	 6wvVSydupAvx9+LGtpIp1FR9zPArtzQU/7CCVFu/J8lZgEDHSCm2HwYZyhSg20MKug
-	 /bY7MOIrIySHcYwbZICZzCtZ8QCaPytK0gTxRoIo=
+	b=mh32CEdNKzCbZixVu3ZF5ItCwwyVzLA5MGs25H50T5YvvL1qbvTrQdGEZSuUp78QN
+	 AWFRSEOe6rkDQtNZursGRY+oj1XGZSujUW7RsPREACcKJDcJ8U0iC/m2nojUcnzsEF
+	 Sx5drP0jUGSggEiNB9t7uVeaQs1HWKgLG7ea+3xE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 014/214] zram: free secondary algorithms names
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 523/798] Revert "ALSA: hda: Conditionally use snooping for AMD HDMI"
 Date: Mon, 14 Oct 2024 16:17:57 +0200
-Message-ID: <20241014141045.551022802@linuxfoundation.org>
+Message-ID: <20241014141238.525806055@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 684826f8271ad97580b138b9ffd462005e470b99 ]
+commit 3f7f36a4559ef78a6418c5f0447fbfbdcf671956 upstream.
 
-We need to kfree() secondary algorithms names when reset zram device that
-had multi-streams, otherwise we leak memory.
+This reverts commit 478689b5990deb626a0b3f1ebf165979914d6be4.
 
-[senozhatsky@chromium.org: kfree(NULL) is legal]
-  Link: https://lkml.kernel.org/r/20240917013021.868769-1-senozhatsky@chromium.org
-Link: https://lkml.kernel.org/r/20240911025600.3681789-1-senozhatsky@chromium.org
-Fixes: 001d92735701 ("zram: add recompression algorithm sysfs knob")
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The fix seems leading to regressions for other systems.
+Also, the way to check the presence of IOMMU via get_dma_ops() isn't
+reliable and it's no longer applicable for 6.12.  After all, it's no
+right fix, so let's revert it at first.
+
+To be noted, the PCM buffer allocation has been changed to try the
+continuous pages at first since 6.12, so the problem could be already
+addressed without this hackish workaround.
+
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Closes: https://lore.kernel.org/ZvgCdYfKgwHpJXGE@eldamar.lan
+Link: https://patch.msgid.link/20241002155948.4859-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/zram/zram_drv.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/pci/hda/hda_controller.h |    2 +-
+ sound/pci/hda/hda_intel.c      |   10 +---------
+ 2 files changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index efcb8d9d274c3..1a875ac43d566 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1989,6 +1989,11 @@ static void zram_destroy_comps(struct zram *zram)
- 		zcomp_destroy(comp);
- 		zram->num_active_comps--;
- 	}
-+
-+	for (prio = ZRAM_SECONDARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
-+		kfree(zram->comp_algs[prio]);
-+		zram->comp_algs[prio] = NULL;
-+	}
- }
+--- a/sound/pci/hda/hda_controller.h
++++ b/sound/pci/hda/hda_controller.h
+@@ -28,7 +28,7 @@
+ #else
+ #define AZX_DCAPS_I915_COMPONENT 0		/* NOP */
+ #endif
+-#define AZX_DCAPS_AMD_ALLOC_FIX	(1 << 14)	/* AMD allocation workaround */
++/* 14 unused */
+ #define AZX_DCAPS_CTX_WORKAROUND (1 << 15)	/* X-Fi workaround */
+ #define AZX_DCAPS_POSFIX_LPIB	(1 << 16)	/* Use LPIB as default */
+ #define AZX_DCAPS_AMD_WORKAROUND (1 << 17)	/* AMD-specific workaround */
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -40,7 +40,6 @@
  
- static void zram_reset_device(struct zram *zram)
--- 
-2.43.0
-
+ #ifdef CONFIG_X86
+ /* for snoop control */
+-#include <linux/dma-map-ops.h>
+ #include <asm/set_memory.h>
+ #include <asm/cpufeature.h>
+ #endif
+@@ -301,7 +300,7 @@ enum {
+ 
+ /* quirks for ATI HDMI with snoop off */
+ #define AZX_DCAPS_PRESET_ATI_HDMI_NS \
+-	(AZX_DCAPS_PRESET_ATI_HDMI | AZX_DCAPS_AMD_ALLOC_FIX)
++	(AZX_DCAPS_PRESET_ATI_HDMI | AZX_DCAPS_SNOOP_OFF)
+ 
+ /* quirks for AMD SB */
+ #define AZX_DCAPS_PRESET_AMD_SB \
+@@ -1719,13 +1718,6 @@ static void azx_check_snoop_available(st
+ 	if (chip->driver_caps & AZX_DCAPS_SNOOP_OFF)
+ 		snoop = false;
+ 
+-#ifdef CONFIG_X86
+-	/* check the presence of DMA ops (i.e. IOMMU), disable snoop conditionally */
+-	if ((chip->driver_caps & AZX_DCAPS_AMD_ALLOC_FIX) &&
+-	    !get_dma_ops(chip->card->dev))
+-		snoop = false;
+-#endif
+-
+ 	chip->snoop = snoop;
+ 	if (!snoop) {
+ 		dev_info(chip->card->dev, "Force to non-snoop mode\n");
 
 
 
