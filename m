@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-84090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C44A99CE17
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B1D99CD2E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCFB61C22D59
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:39:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 692D61C226A6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6A81AAE02;
-	Mon, 14 Oct 2024 14:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90C51AB6ED;
+	Mon, 14 Oct 2024 14:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQWex2mc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXPODmPD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A571624B34;
-	Mon, 14 Oct 2024 14:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880821AB6D4;
+	Mon, 14 Oct 2024 14:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916788; cv=none; b=eYwLfnHrB8cWQtQJAkVJkVKatipazLzj8mUScgzehhQPiEddLLjYH48yWf2OIqWAV4cWEJTGZxeTmRra3WGZ1bMujxdOdkzcT7OBjM49QGOfP3UEVCRHuax0Cp7lTZglQKvQlnRL38nTgSjxatC5SDrUuJ7HNBOj3OmI7LwMGxA=
+	t=1728916188; cv=none; b=Y68cSDKLE1D1y6fgUQ3wKM09UsNh/0QIyIm40nJSEfq7NnxAaoS2jZ692wnyMNU+ymE68E2gv3j8q9WJpUr6KE1ywFAwWYTRhYSzZ19JDTClOHaiRZrKAEz34eQlwdkPuHkxU4jr/DWe4k3mEiLI4Hyty74PdJG58e607UAYedQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916788; c=relaxed/simple;
-	bh=YSVCcPrFqkCUY6+Vywp4ZO08pmSQWkJERSn8eD7xEgQ=;
+	s=arc-20240116; t=1728916188; c=relaxed/simple;
+	bh=/iCG/kOAQHKSjbSMhguyrmik9xhfVmOXLYmzdPOVoIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NVTkYnsnApxEioxbZErYzqZzMazXVwB65DKw+BkA/kumyD4JmjO8gYKPMvD+ILOzH3ule0V+YmiGejT7cq8d6nLk0v4MdtQGniydAuZLF0VEbq9V+VUgsqBvFq1qlAqkZ9Hi9Faz5a0cgAJCR/Rm3/eoeijaQFkK4zy59KnPcPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQWex2mc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F31C4CECF;
-	Mon, 14 Oct 2024 14:39:47 +0000 (UTC)
+	 MIME-Version; b=tEExsmFiTx3kFc8IAJn1jiacMvL/shzVRxaNXi4OQmhgFry1HAQmg85QSE1fHRokzVEPL432lHy42GIn3AZdayXdhlq8DN7VBF4dNqgy+8yl8vVIUZg7h4NmxyaDsx4pfaMKm1myeyBUZUtjTroJVyxApRs6PH7IwVp5ybZwrTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXPODmPD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07722C4CEC7;
+	Mon, 14 Oct 2024 14:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916788;
-	bh=YSVCcPrFqkCUY6+Vywp4ZO08pmSQWkJERSn8eD7xEgQ=;
+	s=korg; t=1728916188;
+	bh=/iCG/kOAQHKSjbSMhguyrmik9xhfVmOXLYmzdPOVoIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rQWex2mcPDZEunwgxUNONL06ONcfSYsIbo4I38gQ8ZMGpLjpdApyB4vI1PTfYn4bm
-	 TQSwnwhX/0+gZCCnzfx18H+pyUwdrOoDUsROZTE2zFzAzW9VSHciZAI0SN5gqXPC3u
-	 9kqdWMyhsoA5ucrmAaQ5y3wsuhLQWe+cObM2uwZM=
+	b=PXPODmPDltpq0my0BCstxPKvmtEepUFpu32J6DUHDnQcj+fX5mCDs6rehADkYD2TN
+	 QFzvxR+jg0HI7mUCTotYon1o5sBKmrbuvwFQfZ7HCIUXEl0wfWR3clJOudhPHgiw6e
+	 yPnrJDea1vfRn7j9ULvcgeRpphVErcDCORhuR9o0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/213] s390/traps: Handle early warnings gracefully
-Date: Mon, 14 Oct 2024 16:19:31 +0200
-Message-ID: <20241014141045.523506228@linuxfoundation.org>
+Subject: [PATCH 6.11 109/214] net: dsa: b53: fix jumbo frame mtu check
+Date: Mon, 14 Oct 2024 16:19:32 +0200
+Message-ID: <20241014141049.250480089@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 3c4d0ae0671827f4b536cc2d26f8b9c54584ccc5 ]
+[ Upstream commit 42fb3acf6826c6764ba79feb6e15229b43fd2f9f ]
 
-Add missing warning handling to the early program check handler. This
-way a warning is printed to the console as soon as the early console
-is setup, and the kernel continues to boot.
+JMS_MIN_SIZE is the full ethernet frame length, while mtu is just the
+data payload size. Comparing these two meant that mtus between 1500 and
+1518 did not trigger enabling jumbo frames.
 
-Before this change a disabled wait psw was loaded instead and the
-machine was silently stopped without giving an idea about what
-happened.
+So instead compare the set mtu ETH_DATA_LEN, which is equal to
+JMS_MIN_SIZE - ETH_HLEN - ETH_FCS_LEN;
 
-Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Also do a check that the requested mtu is actually greater than the
+minimum length, else we do not need to enable jumbo frames.
+
+In practice this only introduced a very small range of mtus that did not
+work properly. Newer chips allow 2000 byte large frames by default, and
+older chips allow 1536 bytes long, which is equivalent to an mtu of
+1514. So effectivly only mtus of 1515~1517 were broken.
+
+Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/early.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/early.c b/arch/s390/kernel/early.c
-index 3a54733e4fc65..eb6307c066c8a 100644
---- a/arch/s390/kernel/early.c
-+++ b/arch/s390/kernel/early.c
-@@ -174,8 +174,21 @@ static __init void setup_topology(void)
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 0783fc121bbbf..57df00ad9dd4c 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -2259,7 +2259,7 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
+ 	if (!dsa_is_cpu_port(ds, port))
+ 		return 0;
  
- void __do_early_pgm_check(struct pt_regs *regs)
- {
--	if (!fixup_exception(regs))
--		disabled_wait();
-+	struct lowcore *lc = get_lowcore();
-+	unsigned long ip;
-+
-+	regs->int_code = lc->pgm_int_code;
-+	regs->int_parm_long = lc->trans_exc_code;
-+	ip = __rewind_psw(regs->psw, regs->int_code >> 16);
-+
-+	/* Monitor Event? Might be a warning */
-+	if ((regs->int_code & PGM_INT_CODE_MASK) == 0x40) {
-+		if (report_bug(ip, regs) == BUG_TRAP_TYPE_WARN)
-+			return;
-+	}
-+	if (fixup_exception(regs))
-+		return;
-+	disabled_wait();
- }
+-	enable_jumbo = (mtu >= JMS_MIN_SIZE);
++	enable_jumbo = (mtu > ETH_DATA_LEN);
+ 	allow_10_100 = (dev->chip_id == BCM583XX_DEVICE_ID);
  
- static noinline __init void setup_lowcore_early(void)
+ 	return b53_set_jumbo(dev, enable_jumbo, allow_10_100);
 -- 
 2.43.0
 
