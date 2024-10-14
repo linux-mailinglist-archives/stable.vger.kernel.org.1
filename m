@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-83955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D93099CD56
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:31:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDE4799D2B9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:29:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DFEE1C2287E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:31:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AC85B21556
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4901A28C;
-	Mon, 14 Oct 2024 14:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362F91BFE05;
+	Mon, 14 Oct 2024 15:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvO6uket"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cNjZ6C/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997D5610B;
-	Mon, 14 Oct 2024 14:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FF619E98B;
+	Mon, 14 Oct 2024 15:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916310; cv=none; b=ldo+rYnNie44XzmcRJCoWSbXVlHuYpwH3gd1Mpntv/mj7Zs7Oqm4aCNd/gZQbA1JVV2s97zQ9lrSoH1k8A1wcE6oBdYYcQOByqSOCc1hGvYiRDtYsrrOWzpz5qWM+q6qY0dMITMJcD7tJkeu20Bo/TAM1AW309RpkoHJeg4ZmBs=
+	t=1728919605; cv=none; b=o/qP0zwLxp3wEoa4l7c/DJY9vUvhUYBtRcYW07s/eRaUWZj7rhNkvk20SXuikhvu4eImOY0q4SRLvUURDQugVrvYACWcUoGeqcgLJR+biZuTx/2ENCObYVo67xRyM6CxdjEfV6ghZ3dPNoZy9Al0v1Wtqu2bvIpi5TaOdnosz9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916310; c=relaxed/simple;
-	bh=po3OwcMN/bNdUl1IBtqJmy4joCrWx0ex9pzeoaFHXFk=;
+	s=arc-20240116; t=1728919605; c=relaxed/simple;
+	bh=6yjZbBK3T2HbJsV73tsSnmUNlCWw5+vv4P+RFm0kf/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G8x3i6YGo1UNEc2UAi6yy4/LH9eg1Wa/P+7CtxicVFHiMKAAmP7VkVsR749BDJHumboMdZBCYwcJZozUv4snW/8rnb1z8zmKcz3sCvyaTZgSxFKmdxyzHjFr2IpQZYktneLzGNPn0af3P3ga0rW3kUtLSBD2cq7YL2wWPmeKPLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvO6uket; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23724C4CEC3;
-	Mon, 14 Oct 2024 14:31:49 +0000 (UTC)
+	 MIME-Version; b=Y+uWJvn7n40pxEk+Cadx0rM/uMTC8s045fpIvR7zUGfr+R/CVx24wiBLUQifVIZwWQsRu87a6xWBRXYNhoG0rLoxoa5ZWzqQdYPLVWiIyw/PfpDSEo2k1MY9O6LSpcUDpDRqAVx7VxbKeR3U3riUiHt1zDasX42/gKqufmIyNzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cNjZ6C/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2466BC4CEC3;
+	Mon, 14 Oct 2024 15:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916310;
-	bh=po3OwcMN/bNdUl1IBtqJmy4joCrWx0ex9pzeoaFHXFk=;
+	s=korg; t=1728919604;
+	bh=6yjZbBK3T2HbJsV73tsSnmUNlCWw5+vv4P+RFm0kf/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VvO6uket3iHAmaSw+6Wzfl1etlxmyWd1pBYydFIr1Vn0Pl0pxJFjttxgNj6MqvuE9
-	 SiUApR17UyoR/LGbIGyZ3g2qp68KfilJP7VIMo+XA5e2TVyVVkygON3bP2FcEgDhjz
-	 bbb2FXSatcziXElkPXtEfWsoU7/OuBQAtHkg3N6E=
+	b=1cNjZ6C/ocSszgOFIgFqbz2rRq08F+pnk+NdlkYEtHT7nCcIJmOxzDjOK6th84tMp
+	 BATB8I07Vuy88kfUjYuhW38MmQFYsub8EGx9icwZKIWtAy/pWG7kXb7te1rnXafI/P
+	 PUzP1vrASLBuBwS4x4GcViwFhdAzhEUiCxnOj1l0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 145/214] mpls: Handle error of rtnl_register_module().
+	"linux-erofs@lists.ozlabs.org, LKML" <linux-kernel@vger.kernel.org>,
+	Yue Hu <huyue2@coolpad.com>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.1 654/798] erofs: get rid of erofs_inode_datablocks()
 Date: Mon, 14 Oct 2024 16:20:08 +0200
-Message-ID: <20241014141050.644711662@linuxfoundation.org>
+Message-ID: <20241014141243.744899671@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 5be2062e3080e3ff6707816caa445ec0c6eaacf7 ]
+commit 4efdec36dc9907628e590a68193d6d8e5e74d032 upstream.
 
-Since introduced, mpls_init() has been ignoring the returned
-value of rtnl_register_module(), which could fail silently.
+erofs_inode_datablocks() has the only one caller, let's just get
+rid of it entirely.  No logic changes.
 
-Handling the error allows users to view a module as an all-or-nothing
-thing in terms of the rtnetlink functionality.  This prevents syzkaller
-from reporting spurious errors from its tests, where OOM often occurs
-and module is automatically loaded.
-
-Let's handle the errors by rtnl_register_many().
-
-Fixes: 03c0566542f4 ("mpls: Netlink commands to add, remove, and dump routes")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Stable-dep-of: 9ed50b8231e3 ("erofs: fix incorrect symlink detection in fast symlink")
+Link: https://lore.kernel.org/r/20230204093040.97967-1-hsiangkao@linux.alibaba.com
+[ Gao Xiang: apply this to 6.6.y to avoid further backport twists
+             due to obsoleted EROFS_BLKSIZ. ]
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mpls/af_mpls.c | 32 +++++++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+Obsoleted EROFS_BLKSIZ impedes efforts to backport
+ 9ed50b8231e3 ("erofs: fix incorrect symlink detection in fast symlink")
+ 9e2f9d34dd12 ("erofs: handle overlapped pclusters out of crafted images properly")
 
-diff --git a/net/mpls/af_mpls.c b/net/mpls/af_mpls.c
-index 0e6c94a8c2bc6..4f6836677e40b 100644
---- a/net/mpls/af_mpls.c
-+++ b/net/mpls/af_mpls.c
-@@ -2730,6 +2730,15 @@ static struct rtnl_af_ops mpls_af_ops __read_mostly = {
- 	.get_stats_af_size = mpls_get_stats_af_size,
- };
+To avoid further bugfix conflicts due to random EROFS_BLKSIZs
+around the whole codebase, just backport the dependencies for 6.1.y.
+
+ fs/erofs/internal.h |    6 ------
+ fs/erofs/namei.c    |   18 +++++-------------
+ 2 files changed, 5 insertions(+), 19 deletions(-)
+
+--- a/fs/erofs/internal.h
++++ b/fs/erofs/internal.h
+@@ -347,12 +347,6 @@ static inline erofs_off_t erofs_iloc(str
+ 		(EROFS_I(inode)->nid << sbi->islotbits);
+ }
  
-+static const struct rtnl_msg_handler mpls_rtnl_msg_handlers[] __initdata_or_module = {
-+	{THIS_MODULE, PF_MPLS, RTM_NEWROUTE, mpls_rtm_newroute, NULL, 0},
-+	{THIS_MODULE, PF_MPLS, RTM_DELROUTE, mpls_rtm_delroute, NULL, 0},
-+	{THIS_MODULE, PF_MPLS, RTM_GETROUTE, mpls_getroute, mpls_dump_routes, 0},
-+	{THIS_MODULE, PF_MPLS, RTM_GETNETCONF,
-+	 mpls_netconf_get_devconf, mpls_netconf_dump_devconf,
-+	 RTNL_FLAG_DUMP_UNLOCKED},
-+};
-+
- static int __init mpls_init(void)
+-static inline unsigned long erofs_inode_datablocks(struct inode *inode)
+-{
+-	/* since i_size cannot be changed */
+-	return DIV_ROUND_UP(inode->i_size, EROFS_BLKSIZ);
+-}
+-
+ static inline unsigned int erofs_bitrange(unsigned int value, unsigned int bit,
+ 					  unsigned int bits)
  {
- 	int err;
-@@ -2748,24 +2757,25 @@ static int __init mpls_init(void)
+--- a/fs/erofs/namei.c
++++ b/fs/erofs/namei.c
+@@ -5,7 +5,6 @@
+  * Copyright (C) 2022, Alibaba Cloud
+  */
+ #include "xattr.h"
+-
+ #include <trace/events/erofs.h>
  
- 	rtnl_af_register(&mpls_af_ops);
+ struct erofs_qstr {
+@@ -87,19 +86,13 @@ static struct erofs_dirent *find_target_
+ 	return ERR_PTR(-ENOENT);
+ }
  
--	rtnl_register_module(THIS_MODULE, PF_MPLS, RTM_NEWROUTE,
--			     mpls_rtm_newroute, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_MPLS, RTM_DELROUTE,
--			     mpls_rtm_delroute, NULL, 0);
--	rtnl_register_module(THIS_MODULE, PF_MPLS, RTM_GETROUTE,
--			     mpls_getroute, mpls_dump_routes, 0);
--	rtnl_register_module(THIS_MODULE, PF_MPLS, RTM_GETNETCONF,
--			     mpls_netconf_get_devconf,
--			     mpls_netconf_dump_devconf,
--			     RTNL_FLAG_DUMP_UNLOCKED);
--	err = ipgre_tunnel_encap_add_mpls_ops();
-+	err = rtnl_register_many(mpls_rtnl_msg_handlers);
- 	if (err)
-+		goto out_unregister_rtnl_af;
-+
-+	err = ipgre_tunnel_encap_add_mpls_ops();
-+	if (err) {
- 		pr_err("Can't add mpls over gre tunnel ops\n");
-+		goto out_unregister_rtnl;
-+	}
+-static void *find_target_block_classic(struct erofs_buf *target,
+-				       struct inode *dir,
+-				       struct erofs_qstr *name,
+-				       int *_ndirents)
++static void *erofs_find_target_block(struct erofs_buf *target,
++		struct inode *dir, struct erofs_qstr *name, int *_ndirents)
+ {
+-	unsigned int startprfx, endprfx;
+-	int head, back;
++	int head = 0, back = DIV_ROUND_UP(dir->i_size, EROFS_BLKSIZ) - 1;
++	unsigned int startprfx = 0, endprfx = 0;
+ 	void *candidate = ERR_PTR(-ENOENT);
  
- 	err = 0;
- out:
- 	return err;
+-	startprfx = endprfx = 0;
+-	head = 0;
+-	back = erofs_inode_datablocks(dir) - 1;
+-
+ 	while (head <= back) {
+ 		const int mid = head + (back - head) / 2;
+ 		struct erofs_buf buf = __EROFS_BUF_INITIALIZER;
+@@ -180,8 +173,7 @@ int erofs_namei(struct inode *dir, const
+ 	qn.end = name->name + name->len;
  
-+out_unregister_rtnl:
-+	rtnl_unregister_many(mpls_rtnl_msg_handlers);
-+out_unregister_rtnl_af:
-+	rtnl_af_unregister(&mpls_af_ops);
-+	dev_remove_pack(&mpls_packet_type);
- out_unregister_pernet:
- 	unregister_pernet_subsys(&mpls_net_ops);
- 	goto out;
--- 
-2.43.0
-
+ 	ndirents = 0;
+-
+-	de = find_target_block_classic(&buf, dir, &qn, &ndirents);
++	de = erofs_find_target_block(&buf, dir, &qn, &ndirents);
+ 	if (IS_ERR(de))
+ 		return PTR_ERR(de);
+ 
 
 
 
