@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-84981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD2A99D32F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D26DD99CDC0
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:35:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65CCB28AECD
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FF401C22D8A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665D11AB530;
-	Mon, 14 Oct 2024 15:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A91117C77;
+	Mon, 14 Oct 2024 14:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2T9y64tI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0ZuNEqu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F5D481B3;
-	Mon, 14 Oct 2024 15:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D9B4A24;
+	Mon, 14 Oct 2024 14:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919889; cv=none; b=AuU9Jsor8ISVtiRrcPySSaOuh82V6RLOqrytxfWOi8BtGyGLm211Qs8f2IIra17ImCnhnq5rlyzcwd2Qhgb0ZI2LReHL2D8C7m3Wyra8/tP8cVa9pC8yF5nlPEQMdL4uTKzoxnmMrz1S1MSbRwndYto8I9Qe8oXsro4BihlT4JM=
+	t=1728916548; cv=none; b=hQLfyFpvUuFn3oR9paqUGjnWwSubtqNm3nvmBLowkl1jTfi6ZmDXu9gomd8QX6kFzKYa8AaTjaVXcOqgKlbBjkwfMuudbrVquo55i4kgUmmO9LnUXEFCqA44Mih0cApo7c1NtJuh976C/Xc7jixhKnoUpILwBFv18+xu6AcZ6EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919889; c=relaxed/simple;
-	bh=cqzVAKRfOP8Fsto1QUE/rGzV789jrEYbPsygkvgbvkA=;
+	s=arc-20240116; t=1728916548; c=relaxed/simple;
+	bh=LRAXUBwPH7szKZWWXidJbipFUticwpYV15V0gFKJKv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vEl4gbUZhFLWXm9YjlEMCtVzSw9aDjpsMGsbpRyl9TuxRTx9b5H4UdsrMX7fSosywMBYPKEC9wXHIyhfmwlSUBstnmkHYWoGXXxafbYODroutuBgPt579IvQ3NY/CslyXrKngyhds2CfS9IpufLDOh8XnYa7lzyJavnu3ud5PaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2T9y64tI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9690FC4CEC7;
-	Mon, 14 Oct 2024 15:31:28 +0000 (UTC)
+	 MIME-Version; b=t4VZ//Fp6bb68BSyUUOzKbdbPSKWsgsa/aTsik8pMO5iM7ayeuzTviHBkZcj5UV5ShJNWdvQBsXwyLuCaQ0fBoOnAYxPIoBBuv8M+I1bMOHq7yb5CN7IgMozXcvstum5nWDFBl/+bF1S7ybYNOY9m+sJq2PP7mQklRHJ3VT4G9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0ZuNEqu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD837C4CEC3;
+	Mon, 14 Oct 2024 14:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919889;
-	bh=cqzVAKRfOP8Fsto1QUE/rGzV789jrEYbPsygkvgbvkA=;
+	s=korg; t=1728916548;
+	bh=LRAXUBwPH7szKZWWXidJbipFUticwpYV15V0gFKJKv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2T9y64tIrKRiEzYkcArL+CQPMZFP37B0GZyP4o5Zozbk7ekNxZVV9HomlgLlBkdVL
-	 TTuHWtWcJWdDNKHkkPrzUi+ctf6I+brS82q1pGNjRgnoFCYOOSfO6W7WzELa1Hv1m7
-	 UKYHo0a5SH8B+Pzjpy1S7ce0zTGwD36Kwg6xuV4A=
+	b=F0ZuNEqu6ih9CP++SHpTg49uAOHMWSKK9UFYETGkWmVEKnMQtJT5m1tFe9gTFAv+M
+	 Zzmj0fagPTmDN4ydBb+qrC6qugeQOYhf0NVw5vRCrZZnFmdLRmnAcIwFaHS7gVBoY2
+	 z+xOku/mv6Fj0jQr+vCiAFX028uOG3PPWN5iWJqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Jon Mason <jdmason@kudzu.us>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 705/798] ntb: ntb_hw_switchtec: Fix use after free vulnerability in switchtec_ntb_remove due to race condition
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.11 196/214] net: phy: realtek: Fix MMD access on RTL8126A-integrated PHY
 Date: Mon, 14 Oct 2024 16:20:59 +0200
-Message-ID: <20241014141245.765401872@linuxfoundation.org>
+Message-ID: <20241014141052.625422046@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit e51aded92d42784313ba16c12f4f88cc4f973bbb ]
+commit a6ad589c1d118f9d5b1bc4c6888d42919f830340 upstream.
 
-In the switchtec_ntb_add function, it can call switchtec_ntb_init_sndev
-function, then &sndev->check_link_status_work is bound with
-check_link_status_work. switchtec_ntb_link_notification may be called
-to start the work.
+All MMD reads return 0 for the RTL8126A-integrated PHY. Therefore phylib
+assumes it doesn't support EEE, what results in higher power consumption,
+and a significantly higher chip temperature in my case.
+To fix this split out the PHY driver for the RTL8126A-integrated PHY
+and set the read_mmd/write_mmd callbacks to read from vendor-specific
+registers.
 
-If we remove the module which will call switchtec_ntb_remove to make
-cleanup, it will free sndev through kfree(sndev), while the work
-mentioned above will be used. The sequence of operations that may lead
-to a UAF bug is as follows:
-
-CPU0                                 CPU1
-
-                        | check_link_status_work
-switchtec_ntb_remove    |
-kfree(sndev);           |
-                        | if (sndev->link_force_down)
-                        | // use sndev
-
-Fix it by ensuring that the work is canceled before proceeding with
-the cleanup in switchtec_ntb_remove.
-
-Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5befa3728b85 ("net: phy: realtek: add support for RTL8126A-integrated 5Gbps PHY")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/hw/mscc/ntb_hw_switchtec.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/realtek.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-index 88ae18b0efa8d..7ce65a00db56b 100644
---- a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-+++ b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-@@ -1556,6 +1556,7 @@ static void switchtec_ntb_remove(struct device *dev,
- 	switchtec_ntb_deinit_db_msg_irq(sndev);
- 	switchtec_ntb_deinit_shared_mw(sndev);
- 	switchtec_ntb_deinit_crosslink(sndev);
-+	cancel_work_sync(&sndev->check_link_status_work);
- 	kfree(sndev);
- 	dev_info(dev, "ntb device unregistered\n");
+diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
+index c15d2f66ef0d..166f6a728373 100644
+--- a/drivers/net/phy/realtek.c
++++ b/drivers/net/phy/realtek.c
+@@ -1081,6 +1081,16 @@ static int rtl8221b_vn_cg_c45_match_phy_device(struct phy_device *phydev)
+ 	return rtlgen_is_c45_match(phydev, RTL_8221B_VN_CG, true);
  }
+ 
++static int rtl8251b_c22_match_phy_device(struct phy_device *phydev)
++{
++	return rtlgen_is_c45_match(phydev, RTL_8251B, false);
++}
++
++static int rtl8251b_c45_match_phy_device(struct phy_device *phydev)
++{
++	return rtlgen_is_c45_match(phydev, RTL_8251B, true);
++}
++
+ static int rtlgen_resume(struct phy_device *phydev)
+ {
+ 	int ret = genphy_resume(phydev);
+@@ -1418,7 +1428,7 @@ static struct phy_driver realtek_drvs[] = {
+ 		.suspend        = genphy_c45_pma_suspend,
+ 		.resume         = rtlgen_c45_resume,
+ 	}, {
+-		PHY_ID_MATCH_EXACT(0x001cc862),
++		.match_phy_device = rtl8251b_c45_match_phy_device,
+ 		.name           = "RTL8251B 5Gbps PHY",
+ 		.get_features   = rtl822x_get_features,
+ 		.config_aneg    = rtl822x_config_aneg,
+@@ -1427,6 +1437,18 @@ static struct phy_driver realtek_drvs[] = {
+ 		.resume         = rtlgen_resume,
+ 		.read_page      = rtl821x_read_page,
+ 		.write_page     = rtl821x_write_page,
++	}, {
++		.match_phy_device = rtl8251b_c22_match_phy_device,
++		.name           = "RTL8126A-internal 5Gbps PHY",
++		.get_features   = rtl822x_get_features,
++		.config_aneg    = rtl822x_config_aneg,
++		.read_status    = rtl822x_read_status,
++		.suspend        = genphy_suspend,
++		.resume         = rtlgen_resume,
++		.read_page      = rtl821x_read_page,
++		.write_page     = rtl821x_write_page,
++		.read_mmd	= rtl822x_read_mmd,
++		.write_mmd	= rtl822x_write_mmd,
+ 	}, {
+ 		PHY_ID_MATCH_EXACT(0x001ccad0),
+ 		.name		= "RTL8224 2.5Gbps PHY",
 -- 
-2.43.0
+2.47.0
 
 
 
