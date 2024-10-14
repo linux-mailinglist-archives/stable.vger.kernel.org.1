@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-83983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD4499CD89
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:34:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C99E599CE73
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:44:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 451BA1F2370A
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:34:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 071F01C21CA7
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C1A1ADFE8;
-	Mon, 14 Oct 2024 14:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC681AB522;
+	Mon, 14 Oct 2024 14:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rB5XNzi7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="030OgEam"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFD61AB536;
-	Mon, 14 Oct 2024 14:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0D31AC426;
+	Mon, 14 Oct 2024 14:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916403; cv=none; b=pLlGLvOmxI15JHUxOPDu67+n1UK9altBdRITgUgkNtlac7YL6mKUgMfQXfDyMVM7raHRcmhs43eTo85Y3Ag+sHIfIZYQqmdZWnWyZHWe6wBywTMzMscaex3DEe4LATgR8FXJY4jGOpxkhTe4r+gH2gwXcGpdr0/cDjI4IxRatuU=
+	t=1728917031; cv=none; b=Fbgndn9y4klB4QuW2u8IcCHe4oQSzPe105rP9f8k9eAaMl7Bn3XeaMLslm8c5iLBRTSp673iXT0+0DlOyqoiuP0mBX5J9HLA6D1CuEv5RvXKY2xdD6iBXAec2uo0PBHKMmV6Mu4lUUSdJ/+1ouRbPMqSEb3qhO65ubws59STY1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916403; c=relaxed/simple;
-	bh=SVZd1AaTDsHeezNRtNnU+5pTjUWmys1LNUxcusNIemA=;
+	s=arc-20240116; t=1728917031; c=relaxed/simple;
+	bh=LYpt2sqCjISsYz2MqXJ1LzmVKGdbky7tiMutPVv3DEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gvmy9l7CC7vjaUzEhpaQCYuhApIwd29pF1wTy8GyN0vp/J5wbWt04bDDhrT+Kngn4z5X92oiCV2x38tXt3meY534jDzwpFWCZLzWGRZEt4EXGBq4WBaTXa7TL6Bkx6Qdoz48yVmD2ux4YnbEPcbg9qAbjuLAR+wVeXYi6qk2iXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rB5XNzi7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4BFFC4CED1;
-	Mon, 14 Oct 2024 14:33:22 +0000 (UTC)
+	 MIME-Version; b=F+ZQtbp678dAqliPXZPEx+Vrdb5OJR16Ry04uS5lxLuCPi+1GCSGE/fryHahNimCrD5qGghmYQ5la6mv3lVv0rk9G6TNcC5RQg1Nnq6OM3MunjdOq1YmvFpYEK8uyX7TCVNDMdX73MK0CmU8J5i5ytEpSBlmg3F79RugdL3kQL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=030OgEam; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79FC1C4CECF;
+	Mon, 14 Oct 2024 14:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916403;
-	bh=SVZd1AaTDsHeezNRtNnU+5pTjUWmys1LNUxcusNIemA=;
+	s=korg; t=1728917031;
+	bh=LYpt2sqCjISsYz2MqXJ1LzmVKGdbky7tiMutPVv3DEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rB5XNzi7QZMXwLgVbMe0mLGetiXM2DWU57V03kfK/9M39JbflctJ2b2ZmlS6VVyGg
-	 DWrJl3CohP0WaukoFXa2WlUMZFaFZkaC4+oWfsZd68GgCUizfliUaLsKf7n0PGPoj8
-	 zJu02WqckiQf2a8LY+bdNONzUWNmj/Q08g9a8xD4=
+	b=030OgEamVka8LVVxQ5P6JpSq0yTRZCjrfcbBvPkE0q1skCjnC3CsJIFcHzsP9kZbo
+	 /vQF64/aYaVnVT4vrvpFgYvOahwA+9ZapvaqHdnZfqVdKSqAi6BpFzcHABkAVtPW15
+	 EKgIbOyS1ZJKSlI1CGgb8bfBVWT21sCPJoO0IZ1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Brezillon <bbrezillon@kernel.org>,
-	"Juan A. Suarez Romero" <jasuarez@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH 6.11 174/214] drm/vc4: Stop the active perfmon before being destroyed
-Date: Mon, 14 Oct 2024 16:20:37 +0200
-Message-ID: <20241014141051.769836883@linuxfoundation.org>
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 132/213] net: dsa: b53: fix jumbo frames on 10/100 ports
+Date: Mon, 14 Oct 2024 16:20:38 +0200
+Message-ID: <20241014141048.121929163@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-commit 0b2ad4f6f2bec74a5287d96cb2325a5e11706f22 upstream.
+[ Upstream commit 2f3dcd0d39affe5b9ba1c351ce0e270c8bdd5109 ]
 
-Upon closing the file descriptor, the active performance monitor is not
-stopped. Although all perfmons are destroyed in `vc4_perfmon_close_file()`,
-the active performance monitor's pointer (`vc4->active_perfmon`) is still
-retained.
+All modern chips support and need the 10_100 bit set for supporting jumbo
+frames on 10/100 ports, so instead of enabling it only for 583XX enable
+it for everything except bcm63xx, where the bit is writeable, but does
+nothing.
 
-If we open a new file descriptor and submit a few jobs with performance
-monitors, the driver will attempt to stop the active performance monitor
-using the stale pointer in `vc4->active_perfmon`. However, this pointer
-is no longer valid because the previous process has already terminated,
-and all performance monitors associated with it have been destroyed and
-freed.
+Tested on BCM53115, where jumbo frames were dropped at 10/100 speeds
+without the bit set.
 
-To fix this, when the active performance monitor belongs to a given
-process, explicitly stop it before destroying and freeing it.
-
-Cc: stable@vger.kernel.org # v4.17+
-Cc: Boris Brezillon <bbrezillon@kernel.org>
-Cc: Juan A. Suarez Romero <jasuarez@igalia.com>
-Fixes: 65101d8c9108 ("drm/vc4: Expose performance counters to userspace")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Juan A. Suarez <jasuarez@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241004123817.890016-2-mcanal@igalia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_perfmon.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/vc4/vc4_perfmon.c
-+++ b/drivers/gpu/drm/vc4/vc4_perfmon.c
-@@ -116,6 +116,11 @@ void vc4_perfmon_open_file(struct vc4_fi
- static int vc4_perfmon_idr_del(int id, void *elem, void *data)
- {
- 	struct vc4_perfmon *perfmon = elem;
-+	struct vc4_dev *vc4 = (struct vc4_dev *)data;
-+
-+	/* If the active perfmon is being destroyed, stop it first */
-+	if (perfmon == vc4->active_perfmon)
-+		vc4_perfmon_stop(vc4, perfmon, false);
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 51b41eb660134..4a2c9a9134d8c 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -2273,7 +2273,7 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
+ 		return 0;
  
- 	vc4_perfmon_put(perfmon);
+ 	enable_jumbo = (mtu > ETH_DATA_LEN);
+-	allow_10_100 = (dev->chip_id == BCM583XX_DEVICE_ID);
++	allow_10_100 = !is63xx(dev);
  
-@@ -130,7 +135,7 @@ void vc4_perfmon_close_file(struct vc4_f
- 		return;
- 
- 	mutex_lock(&vc4file->perfmon.lock);
--	idr_for_each(&vc4file->perfmon.idr, vc4_perfmon_idr_del, NULL);
-+	idr_for_each(&vc4file->perfmon.idr, vc4_perfmon_idr_del, vc4);
- 	idr_destroy(&vc4file->perfmon.idr);
- 	mutex_unlock(&vc4file->perfmon.lock);
- 	mutex_destroy(&vc4file->perfmon.lock);
+ 	return b53_set_jumbo(dev, enable_jumbo, allow_10_100);
+ }
+-- 
+2.43.0
+
 
 
 
