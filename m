@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-84039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4BC99CDD4
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:36:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C31199D25A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:24:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DD161C22E6B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:36:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BE66285C07
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CBA1A76A5;
-	Mon, 14 Oct 2024 14:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF5C81BFE01;
+	Mon, 14 Oct 2024 15:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rjqf2/Iw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+R0MtLA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E2519E802;
-	Mon, 14 Oct 2024 14:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA4D1AC423;
+	Mon, 14 Oct 2024 15:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916603; cv=none; b=efuBkO2T0bcS6lP06fAqkXDQllXXSOfEud9SQ38Q80Y0lq2QpsQJn2OyW8Xv0cSLTu0qU+WAwb0q1c1WcsfoYKGCuVZCY2mJOjulry+VGWsF8rsHQYQ7KDc3kZGst8JCb5fdmWCISS+Xhymt+iZ+9hmAoTG2D0SaEPGV5oIjXls=
+	t=1728919400; cv=none; b=PzXg1H2kmrMN4HNWWWnIbar289V2COOSuZ4k3+ZaDxEvVtKHSRkqHujI54kIi58jgjTFqtGLNqnTU3ug9I82OszC/lUhMzfqNQgbh9mhj3gH9z7FNXQfgdU4jJISiY5OVMnhUEYL5EPlttDsRYJiXUJv9wWzUS2+jBMpmbdmrH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916603; c=relaxed/simple;
-	bh=yNvti6W+ZHgl5GeUmuiDI6rYbpZ0HMttADZ23TWUYAk=;
+	s=arc-20240116; t=1728919400; c=relaxed/simple;
+	bh=9FitwZegNZfVMVkh173239Wn5iATHV9rhw/tKXvo6pc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ia+5m/e0y27iCRz6ZHfDIha4IDQwcPLR3fnXaM3m2dPfpliGEDBfo+x8r8e3Cu8SuB9RzQpMmskeI6Yr1mc6SI/LFtBJ3s5GZ3ONIBCjyuFxPg70o3Y++QhCNni5djFWzXIW4fW51DFxzeqVod8jDqDrXSBMrMOlgr9esv/xNSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rjqf2/Iw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AFDBC4CEC3;
-	Mon, 14 Oct 2024 14:36:43 +0000 (UTC)
+	 MIME-Version; b=bNi32Hqj0o+ReSZhIHmqcQwvigGlA2J8sIuUpdb5tGDtJNGMNfvYZYeme+lWkjGu/qxIw0QSXYAbarGXbOwLO27lc2H79be1kNrNUw9oe7nIvMy1MnWQrkwtKlQ0JHeXIyrU8OTu749KkMGpki0AXL/1S/8koamzr64eeHXy2Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+R0MtLA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D299EC4CEC7;
+	Mon, 14 Oct 2024 15:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916603;
-	bh=yNvti6W+ZHgl5GeUmuiDI6rYbpZ0HMttADZ23TWUYAk=;
+	s=korg; t=1728919400;
+	bh=9FitwZegNZfVMVkh173239Wn5iATHV9rhw/tKXvo6pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rjqf2/IwCQgfV0ycrkiAfoALhsuAQZ0BtUCJxTE43lhX0ZV8ihQauKLbWHM4bjO0p
-	 oVovrywWAtZYTeTysKdWewsoH5MIzOsx6kRSbOAc5vFkn/jj1yYPQgi8wccYovaZB6
-	 gyOkzILcJFrMWvmgff5ryYYJMN19naHo4ZrZ32hQ=
+	b=i+R0MtLAv1ABAgxqTAROel7udl6TW6WebxMH15eBLCrkwn4CUZ7DDu8Zw5cxR3Jun
+	 PJ53pYmeNa1XVkKfeRNPPekz8MyjCjfoU7SYuYisYN+OxmEWGRBk4eJae5bthF8QFK
+	 PmsRvDPZW0xFnnFj0Pbca8oKDKpxaqVRX9MIeGxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jean-Lo=C3=AFc=20Charroud?= <lagiraudiere+linux@free.fr>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/213] ALSA: hda/realtek: cs35l41: Fix device ID / model name
-Date: Mon, 14 Oct 2024 16:18:41 +0200
-Message-ID: <20241014141043.576723303@linuxfoundation.org>
+	Gautham Ananthakrishna <gautham.ananthakrishna@oracle.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 568/798] ocfs2: reserve space for inline xattr before attaching reflink tree
+Date: Mon, 14 Oct 2024 16:18:42 +0200
+Message-ID: <20241014141240.312771741@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +66,161 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Loïc Charroud <lagiraudiere+linux@free.fr>
+From: Gautham Ananthakrishna <gautham.ananthakrishna@oracle.com>
 
-[ Upstream commit b91050448897663b60b6d15525c8c3ecae28a368 ]
+commit 5ca60b86f57a4d9648f68418a725b3a7de2816b0 upstream.
 
-The patch 51d976079976c800ef19ed1b542602fcf63f0edb ("ALSA: hda/realtek:
-Add quirks for ASUS Zenbook 2022 Models") modified the entry 1043:1e2e
-from "ASUS UM3402" to "ASUS UM6702RA/RC" and added another entry for
-"ASUS UM3402" with 104e:1ee2.
-The first entry was correct, while the new one corresponds to model
-"ASUS UM6702RA/RC"
-Fix the model names for both devices.
+One of our customers reported a crash and a corrupted ocfs2 filesystem.
+The crash was due to the detection of corruption.  Upon troubleshooting,
+the fsck -fn output showed the below corruption
 
-Fixes: 51d976079976 ("ALSA: hda/realtek: Add quirks for ASUS Zenbook 2022 Models")
-Signed-off-by: Jean-Loïc Charroud <lagiraudiere+linux@free.fr>
-Link: https://lore.kernel.org/r/1656546983.650349575.1707867732866.JavaMail.zimbra@free.fr
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[EXTENT_LIST_FREE] Extent list in owner 33080590 claims 230 as the next free chain record,
+but fsck believes the largest valid value is 227.  Clamp the next record value? n
+
+The stat output from the debugfs.ocfs2 showed the following corruption
+where the "Next Free Rec:" had overshot the "Count:" in the root metadata
+block.
+
+        Inode: 33080590   Mode: 0640   Generation: 2619713622 (0x9c25a856)
+        FS Generation: 904309833 (0x35e6ac49)
+        CRC32: 00000000   ECC: 0000
+        Type: Regular   Attr: 0x0   Flags: Valid
+        Dynamic Features: (0x16) HasXattr InlineXattr Refcounted
+        Extended Attributes Block: 0  Extended Attributes Inline Size: 256
+        User: 0 (root)   Group: 0 (root)   Size: 281320357888
+        Links: 1   Clusters: 141738
+        ctime: 0x66911b56 0x316edcb8 -- Fri Jul 12 06:02:30.829349048 2024
+        atime: 0x66911d6b 0x7f7a28d -- Fri Jul 12 06:11:23.133669517 2024
+        mtime: 0x66911b56 0x12ed75d7 -- Fri Jul 12 06:02:30.317552087 2024
+        dtime: 0x0 -- Wed Dec 31 17:00:00 1969
+        Refcount Block: 2777346
+        Last Extblk: 2886943   Orphan Slot: 0
+        Sub Alloc Slot: 0   Sub Alloc Bit: 14
+        Tree Depth: 1   Count: 227   Next Free Rec: 230
+        ## Offset        Clusters       Block#
+        0  0             2310           2776351
+        1  2310          2139           2777375
+        2  4449          1221           2778399
+        3  5670          731            2779423
+        4  6401          566            2780447
+        .......          ....           .......
+        .......          ....           .......
+
+The issue was in the reflink workfow while reserving space for inline
+xattr.  The problematic function is ocfs2_reflink_xattr_inline().  By the
+time this function is called the reflink tree is already recreated at the
+destination inode from the source inode.  At this point, this function
+reserves space for inline xattrs at the destination inode without even
+checking if there is space at the root metadata block.  It simply reduces
+the l_count from 243 to 227 thereby making space of 256 bytes for inline
+xattr whereas the inode already has extents beyond this index (in this
+case up to 230), thereby causing corruption.
+
+The fix for this is to reserve space for inline metadata at the destination
+inode before the reflink tree gets recreated. The customer has verified the
+fix.
+
+Link: https://lkml.kernel.org/r/20240918063844.1830332-1-gautham.ananthakrishna@oracle.com
+Fixes: ef962df057aa ("ocfs2: xattr: fix inlined xattr reflink")
+Signed-off-by: Gautham Ananthakrishna <gautham.ananthakrishna@oracle.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ocfs2/refcounttree.c |   26 ++++++++++++++++++++++++--
+ fs/ocfs2/xattr.c        |   11 +----------
+ 2 files changed, 25 insertions(+), 12 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 5cfeda80cbf10..07e1547fff2e5 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10092,11 +10092,11 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1da2, "ASUS UP6502ZA/ZD", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
--	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM6702RA/RC", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e51, "ASUS Zephyrus M15", ALC294_FIXUP_ASUS_GU502_PINS),
- 	SND_PCI_QUIRK(0x1043, 0x1e5e, "ASUS ROG Strix G513", ALC294_FIXUP_ASUS_G513_PINS),
- 	SND_PCI_QUIRK(0x1043, 0x1e8e, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA401),
--	SND_PCI_QUIRK(0x1043, 0x1ee2, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x1ee2, "ASUS UM6702RA/RC", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1c52, "ASUS Zephyrus G15 2022", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1f11, "ASUS Zephyrus G14", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1f12, "ASUS UM5302", ALC287_FIXUP_CS35L41_I2C_2),
--- 
-2.43.0
-
+--- a/fs/ocfs2/refcounttree.c
++++ b/fs/ocfs2/refcounttree.c
+@@ -25,6 +25,7 @@
+ #include "namei.h"
+ #include "ocfs2_trace.h"
+ #include "file.h"
++#include "symlink.h"
+ 
+ #include <linux/bio.h>
+ #include <linux/blkdev.h>
+@@ -4154,8 +4155,9 @@ static int __ocfs2_reflink(struct dentry
+ 	int ret;
+ 	struct inode *inode = d_inode(old_dentry);
+ 	struct buffer_head *new_bh = NULL;
++	struct ocfs2_inode_info *oi = OCFS2_I(inode);
+ 
+-	if (OCFS2_I(inode)->ip_flags & OCFS2_INODE_SYSTEM_FILE) {
++	if (oi->ip_flags & OCFS2_INODE_SYSTEM_FILE) {
+ 		ret = -EINVAL;
+ 		mlog_errno(ret);
+ 		goto out;
+@@ -4181,6 +4183,26 @@ static int __ocfs2_reflink(struct dentry
+ 		goto out_unlock;
+ 	}
+ 
++	if ((oi->ip_dyn_features & OCFS2_HAS_XATTR_FL) &&
++	    (oi->ip_dyn_features & OCFS2_INLINE_XATTR_FL)) {
++		/*
++		 * Adjust extent record count to reserve space for extended attribute.
++		 * Inline data count had been adjusted in ocfs2_duplicate_inline_data().
++		 */
++		struct ocfs2_inode_info *new_oi = OCFS2_I(new_inode);
++
++		if (!(new_oi->ip_dyn_features & OCFS2_INLINE_DATA_FL) &&
++		    !(ocfs2_inode_is_fast_symlink(new_inode))) {
++			struct ocfs2_dinode *new_di = (struct ocfs2_dinode *)new_bh->b_data;
++			struct ocfs2_dinode *old_di = (struct ocfs2_dinode *)old_bh->b_data;
++			struct ocfs2_extent_list *el = &new_di->id2.i_list;
++			int inline_size = le16_to_cpu(old_di->i_xattr_inline_size);
++
++			le16_add_cpu(&el->l_count, -(inline_size /
++					sizeof(struct ocfs2_extent_rec)));
++		}
++	}
++
+ 	ret = ocfs2_create_reflink_node(inode, old_bh,
+ 					new_inode, new_bh, preserve);
+ 	if (ret) {
+@@ -4188,7 +4210,7 @@ static int __ocfs2_reflink(struct dentry
+ 		goto inode_unlock;
+ 	}
+ 
+-	if (OCFS2_I(inode)->ip_dyn_features & OCFS2_HAS_XATTR_FL) {
++	if (oi->ip_dyn_features & OCFS2_HAS_XATTR_FL) {
+ 		ret = ocfs2_reflink_xattrs(inode, old_bh,
+ 					   new_inode, new_bh,
+ 					   preserve);
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -6524,16 +6524,7 @@ static int ocfs2_reflink_xattr_inline(st
+ 	}
+ 
+ 	new_oi = OCFS2_I(args->new_inode);
+-	/*
+-	 * Adjust extent record count to reserve space for extended attribute.
+-	 * Inline data count had been adjusted in ocfs2_duplicate_inline_data().
+-	 */
+-	if (!(new_oi->ip_dyn_features & OCFS2_INLINE_DATA_FL) &&
+-	    !(ocfs2_inode_is_fast_symlink(args->new_inode))) {
+-		struct ocfs2_extent_list *el = &new_di->id2.i_list;
+-		le16_add_cpu(&el->l_count, -(inline_size /
+-					sizeof(struct ocfs2_extent_rec)));
+-	}
++
+ 	spin_lock(&new_oi->ip_lock);
+ 	new_oi->ip_dyn_features |= OCFS2_HAS_XATTR_FL | OCFS2_INLINE_XATTR_FL;
+ 	new_di->i_dyn_features = cpu_to_le16(new_oi->ip_dyn_features);
 
 
 
