@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-84216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D4F99CF00
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:49:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C42CE99D334
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 038E3289934
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:49:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC9321C22A97
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6EB4595B;
-	Mon, 14 Oct 2024 14:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2E31ABEDC;
+	Mon, 14 Oct 2024 15:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvC8igzT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuJXkLlW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E59B1ABEB7;
-	Mon, 14 Oct 2024 14:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D01F3A1B6;
+	Mon, 14 Oct 2024 15:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917235; cv=none; b=uBocd0U8BzQnXYPMm74OXEvokmH1QHMPGN1W/ged6ZrNelZjdXLOtP8JTrhjjolottVpH1Ahi4fHiBcVzMgZEXZZN2fgVd5p4mGN6PMrUQu0dSkKBBnNB1e2FL9fQIGd7VYUszdVLcrIOkAFhTMOiuxl400EGvuyzs8jdpP2iLk=
+	t=1728919912; cv=none; b=LRqZ4FlCBUd7ckaSdTc4jmtscUVcSrPohLkkjIrBO616ASxOVSNenWj2iLfWihM+T4VdzwwIAzR469soX9BNR4OoduV77oFZqQaBQ1sc01+0vsjlJkS1MBRIzVq/BRXzPbAufCQMrGwkh0s7tYqxydZ7/nVFYLcsalz5NhCY79A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917235; c=relaxed/simple;
-	bh=025uWzUSr1zlbiq99DhlQy9H13g6K3lTM/R0nn6RX9k=;
+	s=arc-20240116; t=1728919912; c=relaxed/simple;
+	bh=IAwf/MsV4gITRTPX1pl/3hmwEQivFKxTKmXWdXpS4ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A9v717M6EgVhf8NW/UE7k06dYBqmHGeh+nmdbmXxr3keAhxrsaI6ND9ENTYpVx2mhxD0EiTYGQhwdJUFgDv6ljIfcJEGo0VaRC3otXr7G3WTwnuh8tsy02nXqVKi+UM1qnLw1QjSFRq4IwdXHXUpgi2Jdst3hB61JYxWhRSxSaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvC8igzT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E4AC4CEC3;
-	Mon, 14 Oct 2024 14:47:14 +0000 (UTC)
+	 MIME-Version; b=TksC7O4A8Z8FmUfRilyXbQXJitf7qX9sMbZn79ZwfmyldHQTQGc23e6n+HuDKzc0RuoEq4dL4vIOTC5hTE7jGKaeq+OMYEs1s2B67z/tSU7XFdtwIAFlZWdxEkJ7QH6600zW+Im0vBbMpd6SWjBJLM951CpNOak1+c+xHwkCcPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuJXkLlW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5699C4CEC3;
+	Mon, 14 Oct 2024 15:31:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917234;
-	bh=025uWzUSr1zlbiq99DhlQy9H13g6K3lTM/R0nn6RX9k=;
+	s=korg; t=1728919912;
+	bh=IAwf/MsV4gITRTPX1pl/3hmwEQivFKxTKmXWdXpS4ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FvC8igzTP4rZ6WIQjQ7KA3rjvBI9h3JCO1kXK0bq+U0psM/243nsv93zskWrRtZvO
-	 /8bpTYQnHbmq/gzwQw2JIVlaA1QAIl9nKIiKN7TOhrQC5zaXikjF/SQjb2yrn/8j5G
-	 cBFGx6gqLULdXFX/MzkfUN4mMBC+LrNg4XiXJY6I=
+	b=DuJXkLlW3TwYXUt+dvg1aD+5ibJBt7YcnfRvEDJ112FZkT4eZjzW/F1O6QBEna+gs
+	 1ZaGuFVO+P0Y5dq2t2XkFvZ5TIaU56eK7xBapaAHNaoQ/vmhBAkyds3MFAeDtGbPjh
+	 NqB59EpTdryF7TX+UohyYNHfDxvEdPF9l+zLIMv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Palmer <daniel@0x0f.com>,
-	Michael Schmitz <schmitzmic@gmail.com>,
-	stable@kernel.org,
-	Finn Thain <fthain@linux-m68k.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 192/213] scsi: wd33c93: Dont use stale scsi_pointer value
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 744/798] net: dsa: b53: fix max MTU for BCM5325/BCM5365
 Date: Mon, 14 Oct 2024 16:21:38 +0200
-Message-ID: <20241014141050.455606304@linuxfoundation.org>
+Message-ID: <20241014141247.300065860@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Palmer <daniel@0x0f.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-commit 9023ed8d91eb1fcc93e64dc4962f7412b1c4cbec upstream.
+[ Upstream commit ca8c1f71c10193c270f772d70d34b15ad765d6a8 ]
 
-A regression was introduced with commit dbb2da557a6a ("scsi: wd33c93:
-Move the SCSI pointer to private command data") which results in an oops
-in wd33c93_intr(). That commit added the scsi_pointer variable and
-initialized it from hostdata->connected. However, during selection,
-hostdata->connected is not yet valid. Fix this by getting the current
-scsi_pointer from hostdata->selecting.
+BCM5325/BCM5365 do not support jumbo frames, so we should not report a
+jumbo frame mtu for them. But they do support so called "oversized"
+frames up to 1536 bytes long by default, so report an appropriate MTU.
 
-Cc: Daniel Palmer <daniel@0x0f.com>
-Cc: Michael Schmitz <schmitzmic@gmail.com>
-Cc: stable@kernel.org
-Fixes: dbb2da557a6a ("scsi: wd33c93: Move the SCSI pointer to private command data")
-Signed-off-by: Daniel Palmer <daniel@0x0f.com>
-Co-developed-by: Finn Thain <fthain@linux-m68k.org>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Link: https://lore.kernel.org/r/09e11a0a54e6aa2a88bd214526d305aaf018f523.1727926187.git.fthain@linux-m68k.org
-Reviewed-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/wd33c93.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/scsi/wd33c93.c
-+++ b/drivers/scsi/wd33c93.c
-@@ -831,7 +831,7 @@ wd33c93_intr(struct Scsi_Host *instance)
- 		/* construct an IDENTIFY message with correct disconnect bit */
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 82583edbb3f95..28b58dee6b8cd 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -225,6 +225,7 @@ static const struct b53_mib_desc b53_mibs_58xx[] = {
  
- 		hostdata->outgoing_msg[0] = IDENTIFY(0, cmd->device->lun);
--		if (scsi_pointer->phase)
-+		if (WD33C93_scsi_pointer(cmd)->phase)
- 			hostdata->outgoing_msg[0] |= 0x40;
+ #define B53_MIBS_58XX_SIZE	ARRAY_SIZE(b53_mibs_58xx)
  
- 		if (hostdata->sync_stat[cmd->device->id] == SS_FIRST) {
++#define B53_MAX_MTU_25		(1536 - ETH_HLEN - VLAN_HLEN - ETH_FCS_LEN)
+ #define B53_MAX_MTU		(9720 - ETH_HLEN - VLAN_HLEN - ETH_FCS_LEN)
+ 
+ static int b53_do_vlan_op(struct b53_device *dev, u8 op)
+@@ -2235,6 +2236,11 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
+ 
+ static int b53_get_max_mtu(struct dsa_switch *ds, int port)
+ {
++	struct b53_device *dev = ds->priv;
++
++	if (is5325(dev) || is5365(dev))
++		return B53_MAX_MTU_25;
++
+ 	return B53_MAX_MTU;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
