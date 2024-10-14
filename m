@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-84978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF6A99D32C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:34:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99CFA99CE88
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:44:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1597B1F2533B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:34:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E238288267
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:44:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027281AB534;
-	Mon, 14 Oct 2024 15:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CC01AB522;
+	Mon, 14 Oct 2024 14:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXsXGyqA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="syqBkOO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FD71A76B4;
-	Mon, 14 Oct 2024 15:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1143A4595B;
+	Mon, 14 Oct 2024 14:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919879; cv=none; b=BAfnfRsoE3zNbjMjI0uA0jpVObzeG9u+xml/Pab35aNXNJyigPJmALFsJcteqdPjjpRVXBH36J22yK5J8+/Hxc0LzSB5sMmvbOda6GbqhEL8QbJ2fSy6OQ0ftmPdQQT82tMtWSWmLrL38hpcuxBNk2sC7EcVSi2nFMOzcTZ1gNA=
+	t=1728917094; cv=none; b=QlX2McRY0BmteWlWnsD/LbBcO4vKl2tg+VM5rxmw1IpRfgHCOHVpryXXduuzN86WpldYmQINBm0ihdE8IPi0a3IEVmFJhgGheJ7k6AxnahZxEBHvG8yGPhmStuS89tHDwt9AEAPPbeK/5bZGs2bO0hDFSuwFsrFUAnh8GL5ENYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919879; c=relaxed/simple;
-	bh=7GXD+GA45yz8d6sxnfIunrj8Tayyt2PLqcY+iOSm2G8=;
+	s=arc-20240116; t=1728917094; c=relaxed/simple;
+	bh=inFeL05DCQmtRUXiam5NsGrrxGAf1lhTUF6chjA6l30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AFUhiMgWgHPxz7OuzXvcPQ401LyaPCX3FOWjDk7fRQNzmtIxPoc8UHhIi5IhEFH00h6S+4nnhwP1oOiiLYZexP8dJ2rq/pX/IxD43tzTvzhbqU0Dpw1C4oJTuYbZcscK1hlu73n9Yxc/C5PIH+zpsuw7f6xqQMXfrL6qvqJrvQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXsXGyqA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D40C4CEC3;
-	Mon, 14 Oct 2024 15:31:18 +0000 (UTC)
+	 MIME-Version; b=hvoBjJf9SF67X6JkaczfGZtwFRFaHObeIkHd4wy22xTNlVw9C9YYpvp5g/6lET2KhVGYFxC3ptMwnPs0tgM80t7p+T9qRMfJgEWr4ZTmugn50XXMJkycsWBPMI77EipvGT2nO6Gu+/Zbm6V0MWqxW6kiLy+OnG8vGhMyxTs2VQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=syqBkOO5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755EAC4CEC3;
+	Mon, 14 Oct 2024 14:44:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919879;
-	bh=7GXD+GA45yz8d6sxnfIunrj8Tayyt2PLqcY+iOSm2G8=;
+	s=korg; t=1728917093;
+	bh=inFeL05DCQmtRUXiam5NsGrrxGAf1lhTUF6chjA6l30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VXsXGyqAOIMqTnlhrEgK5ojtZTdN62owV5zQZN6mWuT71dZEUXtLKesR4FK7YhGp0
-	 xV9laLqxTMxPIRC22EpT8hbCYjvRCYzolyvfSa0Bypz9D26TMhuJ9NuphrTIAuHQuv
-	 E/lQTKyTi87tvaOWM9xdNNeZUbfqehsXCYbELbSc=
+	b=syqBkOO5CVHRQC6qzACFkyYveb0bCiL7l6PZWuRAaXA027n4PnvNu/IBvhbegkc6T
+	 GUajVEkEOzbC8e+WiMk7Ikd5CQ2WrHPkXW/z4+joEmFPo7kn1pp0DBHP9piMhWAqKz
+	 Nl/RGRWwd6R7iE36JcfhlY9gzNeHb0k5sjl1C/hk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zdravko delineshev <delineshev@outlook.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 702/798] PCI: Mark Creative Labs EMU20k2 INTx masking as broken
+Subject: [PATCH 6.6 150/213] netfilter: fib: check correct rtable in vrf setups
 Date: Mon, 14 Oct 2024 16:20:56 +0200
-Message-ID: <20241014141245.648659455@linuxfoundation.org>
+Message-ID: <20241014141048.824326735@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +60,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 2910306655a7072640021563ec9501bfa67f0cb1 ]
+[ Upstream commit 05ef7055debc804e8083737402127975e7244fc4 ]
 
-Per user reports, the Creative Labs EMU20k2 (Sound Blaster X-Fi
-Titanium Series) generates spurious interrupts when used with
-vfio-pci unless DisINTx masking support is disabled.
+We need to init l3mdev unconditionally, else main routing table is searched
+and incorrect result is returned unless strict (iif keyword) matching is
+requested.
 
-Thus, quirk the device to mark INTx masking as broken.
+Next patch adds a selftest for this.
 
-Closes: https://lore.kernel.org/all/VI1PR10MB8207C507DB5420AB4C7281E0DB9A2@VI1PR10MB8207.EURPRD10.PROD.OUTLOOK.COM
-Link: https://lore.kernel.org/linux-pci/20240912215331.839220-1-alex.williamson@redhat.com
-Reported-by: zdravko delineshev <delineshev@outlook.com>
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Fixes: 2a8a7c0eaa87 ("netfilter: nft_fib: Fix for rpath check with VRF devices")
+Closes: https://bugzilla.netfilter.org/show_bug.cgi?id=1761
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/netfilter/nft_fib_ipv4.c | 4 +---
+ net/ipv6/netfilter/nft_fib_ipv6.c | 5 +++--
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 131c75769b993..8887f3b3b38f0 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3506,6 +3506,8 @@ DECLARE_PCI_FIXUP_FINAL(0x1814, 0x0601, /* Ralink RT2800 802.11n PCI */
- 			quirk_broken_intx_masking);
- DECLARE_PCI_FIXUP_FINAL(0x1b7c, 0x0004, /* Ceton InfiniTV4 */
- 			quirk_broken_intx_masking);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_CREATIVE, PCI_DEVICE_ID_CREATIVE_20K2,
-+			quirk_broken_intx_masking);
+diff --git a/net/ipv4/netfilter/nft_fib_ipv4.c b/net/ipv4/netfilter/nft_fib_ipv4.c
+index 9eee535c64dd4..ba233fdd81886 100644
+--- a/net/ipv4/netfilter/nft_fib_ipv4.c
++++ b/net/ipv4/netfilter/nft_fib_ipv4.c
+@@ -66,6 +66,7 @@ void nft_fib4_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ 		.flowi4_scope = RT_SCOPE_UNIVERSE,
+ 		.flowi4_iif = LOOPBACK_IFINDEX,
+ 		.flowi4_uid = sock_net_uid(nft_net(pkt), NULL),
++		.flowi4_l3mdev = l3mdev_master_ifindex_rcu(nft_in(pkt)),
+ 	};
+ 	const struct net_device *oif;
+ 	const struct net_device *found;
+@@ -84,9 +85,6 @@ void nft_fib4_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ 	else
+ 		oif = NULL;
  
- /*
-  * Realtek RTL8169 PCI Gigabit Ethernet Controller (rev 10)
+-	if (priv->flags & NFTA_FIB_F_IIF)
+-		fl4.flowi4_l3mdev = l3mdev_master_ifindex_rcu(oif);
+-
+ 	if (nft_hook(pkt) == NF_INET_PRE_ROUTING &&
+ 	    nft_fib_is_loopback(pkt->skb, nft_in(pkt))) {
+ 		nft_fib_store_result(dest, priv, nft_in(pkt));
+diff --git a/net/ipv6/netfilter/nft_fib_ipv6.c b/net/ipv6/netfilter/nft_fib_ipv6.c
+index 36dc14b34388c..c9f1634b3838a 100644
+--- a/net/ipv6/netfilter/nft_fib_ipv6.c
++++ b/net/ipv6/netfilter/nft_fib_ipv6.c
+@@ -41,8 +41,6 @@ static int nft_fib6_flowi_init(struct flowi6 *fl6, const struct nft_fib *priv,
+ 	if (ipv6_addr_type(&fl6->daddr) & IPV6_ADDR_LINKLOCAL) {
+ 		lookup_flags |= RT6_LOOKUP_F_IFACE;
+ 		fl6->flowi6_oif = get_ifindex(dev ? dev : pkt->skb->dev);
+-	} else if (priv->flags & NFTA_FIB_F_IIF) {
+-		fl6->flowi6_l3mdev = l3mdev_master_ifindex_rcu(dev);
+ 	}
+ 
+ 	if (ipv6_addr_type(&fl6->saddr) & IPV6_ADDR_UNICAST)
+@@ -75,6 +73,8 @@ static u32 __nft_fib6_eval_type(const struct nft_fib *priv,
+ 	else if (priv->flags & NFTA_FIB_F_OIF)
+ 		dev = nft_out(pkt);
+ 
++	fl6.flowi6_l3mdev = l3mdev_master_ifindex_rcu(dev);
++
+ 	nft_fib6_flowi_init(&fl6, priv, pkt, dev, iph);
+ 
+ 	if (dev && nf_ipv6_chk_addr(nft_net(pkt), &fl6.daddr, dev, true))
+@@ -165,6 +165,7 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ 		.flowi6_iif = LOOPBACK_IFINDEX,
+ 		.flowi6_proto = pkt->tprot,
+ 		.flowi6_uid = sock_net_uid(nft_net(pkt), NULL),
++		.flowi6_l3mdev = l3mdev_master_ifindex_rcu(nft_in(pkt)),
+ 	};
+ 	struct rt6_info *rt;
+ 	int lookup_flags;
 -- 
 2.43.0
 
