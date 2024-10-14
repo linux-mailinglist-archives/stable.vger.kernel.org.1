@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-84227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D7199CF24
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:51:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B6999CF27
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:52:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19CA71C23395
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:51:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22A76B23EE3
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490354087C;
-	Mon, 14 Oct 2024 14:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271B61AB536;
+	Mon, 14 Oct 2024 14:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LikIBnAs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lw5bPFOo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0713D45C14;
-	Mon, 14 Oct 2024 14:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA12B1BDC3;
+	Mon, 14 Oct 2024 14:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917272; cv=none; b=o/wfdlM1jt3wqbBghco6SKzFkajqasH7/4cdXlGaP++IAs9SGDcjBFuGZfKbpGe7uqbJQG8aJJQNa380zcGuFo/ID0Wp7JOJfw+rziLVxS1/CThraFPzHWY7DQsUdczbAbHbCjwtPsuhGBEfrXzkOtM/1wzoj5LOEfq1rKn3Z4s=
+	t=1728917278; cv=none; b=h6d5pnzSaWIFBkEKPGc/PKt27ylzmHs2Sd1IL/E4FkXDGJ4OxFZs1NSt8nH2erVCQmyL1oWLsTIsBgS/GZdaCBtjgv96j1iWlXUH6PdLF1uW15pAw9xqYSazowQ+KoSWATrBzolDbqTd5lsj/aCOTlyr5j4TBfJUWbaX5dxXxEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917272; c=relaxed/simple;
-	bh=jZDBhAcguzowgrGW5BegMuYQRQEKkWilUjD6xcIDSPI=;
+	s=arc-20240116; t=1728917278; c=relaxed/simple;
+	bh=UuaQMiMtzQS1tp+PlCSVYLaUDRwDorQhXCbknLNgFys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YER8UWsOMl/6dNCgZ8a+lwks8aWcjms5SeBfe4Z/ABqWAUWiSXwTTRgrXec9HBiqiXkM9zO0R1kKJ0/37C2rTC7qyV2JQyv06mN7M1GY8sZi9Cx5YEUZkrkRewkskQ1FFEci5kahRt1lkyfe/ZOYvop9k6PARL04s1TD/DCVZ7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LikIBnAs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1CEC4CEC3;
-	Mon, 14 Oct 2024 14:47:51 +0000 (UTC)
+	 MIME-Version; b=XuQlC2mCLnbvfOnk7Vp5NpbjUB8MQhnK++YLm5dBflEIQWlld2ewi9HsZdFJppHFcVBZ9GFKmfeMCTnMlzn6+NdgVA9q91V8yUDKjJD0rSByU8SagYWlyCAKZXYBGPvR1KQxUEqK3XcRzqki83FOaDNHhin4zIWyjH4xwW3KBRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lw5bPFOo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5214DC4CEC3;
+	Mon, 14 Oct 2024 14:47:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917271;
-	bh=jZDBhAcguzowgrGW5BegMuYQRQEKkWilUjD6xcIDSPI=;
+	s=korg; t=1728917278;
+	bh=UuaQMiMtzQS1tp+PlCSVYLaUDRwDorQhXCbknLNgFys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LikIBnAsvihiwy6BSvz8USAJIyyvNmyvKN6nUZNoHHcrjzD0Cdq520IjCI4DBJa+y
-	 rDDhj9bJILhs+T/hDk2degOrKavzO73ysSHKrkSTjiMhI79WJP2lGDUPm1q+uDVVOU
-	 QffGT5ZMS25P5wxLd2nM9Wu9vqOfNlZ5lzgJz8TI=
+	b=Lw5bPFOoW0SQ27c1cyyjlUW6RWrj2/m4p5NKJgn4nEIK4k7x0iSYxPX5A4zvEoOY5
+	 anMxwKGrIvQV/1WKj7GVeZBIrSYtx1mBTtZ45BDuHrg45TURQ/1xCv6vsfTv5gAbnj
+	 Y66FzsA5jOeVArw6IASeMp+l9YSBhz8A9TLImVIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kun(llfl)" <llfl@linux.alibaba.com>,
-	JianXiong Zhao <zhaojianxiong.zjx@alibaba-inc.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 202/213] device-dax: correct pgoff align in dax_set_mapping()
-Date: Mon, 14 Oct 2024 16:21:48 +0200
-Message-ID: <20241014141050.843461924@linuxfoundation.org>
+	Yonatan Maman <Ymaman@Nvidia.com>,
+	Gal Shalom <GalShalom@Nvidia.com>,
+	Ben Skeggs <bskeggs@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.6 203/213] nouveau/dmem: Fix vulnerability in migrate_to_ram upon copy error
+Date: Mon, 14 Oct 2024 16:21:49 +0200
+Message-ID: <20241014141050.882479182@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
 References: <20241014141042.954319779@linuxfoundation.org>
@@ -62,117 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kun(llfl) <llfl@linux.alibaba.com>
+From: Yonatan Maman <Ymaman@Nvidia.com>
 
-commit 7fcbd9785d4c17ea533c42f20a9083a83f301fa6 upstream.
+commit 835745a377a4519decd1a36d6b926e369b3033e2 upstream.
 
-pgoff should be aligned using ALIGN_DOWN() instead of ALIGN().  Otherwise,
-vmf->address not aligned to fault_size will be aligned to the next
-alignment, that can result in memory failure getting the wrong address.
+The `nouveau_dmem_copy_one` function ensures that the copy push command is
+sent to the device firmware but does not track whether it was executed
+successfully.
 
-It's a subtle situation that only can be observed in
-page_mapped_in_vma() after the page is page fault handled by
-dev_dax_huge_fault.  Generally, there is little chance to perform
-page_mapped_in_vma in dev-dax's page unless in specific error injection
-to the dax device to trigger an MCE - memory-failure.  In that case,
-page_mapped_in_vma() will be triggered to determine which task is
-accessing the failure address and kill that task in the end.
+In the case of a copy error (e.g., firmware or hardware failure), the
+copy push command will be sent via the firmware channel, and
+`nouveau_dmem_copy_one` will likely report success, leading to the
+`migrate_to_ram` function returning a dirty HIGH_USER page to the user.
 
+This can result in a security vulnerability, as a HIGH_USER page that may
+contain sensitive or corrupted data could be returned to the user.
 
-We used self-developed dax device (which is 2M aligned mapping) , to
-perform error injection to random address.  It turned out that error
-injected to non-2M-aligned address was causing endless MCE until panic.
-Because page_mapped_in_vma() kept resulting wrong address and the task
-accessing the failure address was never killed properly:
+To prevent this vulnerability, we allocate a zero page. Thus, in case of
+an error, a non-dirty (zero) page will be returned to the user.
 
-
-[ 3783.719419] Memory failure: 0x200c9742: recovery action for dax page:
-Recovered
-[ 3784.049006] mce: Uncorrected hardware memory error in user-access at
-200c9742380
-[ 3784.049190] Memory failure: 0x200c9742: recovery action for dax page:
-Recovered
-[ 3784.448042] mce: Uncorrected hardware memory error in user-access at
-200c9742380
-[ 3784.448186] Memory failure: 0x200c9742: recovery action for dax page:
-Recovered
-[ 3784.792026] mce: Uncorrected hardware memory error in user-access at
-200c9742380
-[ 3784.792179] Memory failure: 0x200c9742: recovery action for dax page:
-Recovered
-[ 3785.162502] mce: Uncorrected hardware memory error in user-access at
-200c9742380
-[ 3785.162633] Memory failure: 0x200c9742: recovery action for dax page:
-Recovered
-[ 3785.461116] mce: Uncorrected hardware memory error in user-access at
-200c9742380
-[ 3785.461247] Memory failure: 0x200c9742: recovery action for dax page:
-Recovered
-[ 3785.764730] mce: Uncorrected hardware memory error in user-access at
-200c9742380
-[ 3785.764859] Memory failure: 0x200c9742: recovery action for dax page:
-Recovered
-[ 3786.042128] mce: Uncorrected hardware memory error in user-access at
-200c9742380
-[ 3786.042259] Memory failure: 0x200c9742: recovery action for dax page:
-Recovered
-[ 3786.464293] mce: Uncorrected hardware memory error in user-access at
-200c9742380
-[ 3786.464423] Memory failure: 0x200c9742: recovery action for dax page:
-Recovered
-[ 3786.818090] mce: Uncorrected hardware memory error in user-access at
-200c9742380
-[ 3786.818217] Memory failure: 0x200c9742: recovery action for dax page:
-Recovered
-[ 3787.085297] mce: Uncorrected hardware memory error in user-access at
-200c9742380
-[ 3787.085424] Memory failure: 0x200c9742: recovery action for dax page:
-Recovered
-
-It took us several weeks to pinpoint this problem,  but we eventually
-used bpftrace to trace the page fault and mce address and successfully
-identified the issue.
-
-
-Joao added:
-
-; Likely we never reproduce in production because we always pin
-: device-dax regions in the region align they provide (Qemu does
-: similarly with prealloc in hugetlb/file backed memory).  I think this
-: bug requires that we touch *unpinned* device-dax regions unaligned to
-: the device-dax selected alignment (page size i.e.  4K/2M/1G)
-
-Link: https://lkml.kernel.org/r/23c02a03e8d666fef11bbe13e85c69c8b4ca0624.1727421694.git.llfl@linux.alibaba.com
-Fixes: b9b5777f09be ("device-dax: use ALIGN() for determining pgoff")
-Signed-off-by: Kun(llfl) <llfl@linux.alibaba.com>
-Tested-by: JianXiong Zhao <zhaojianxiong.zjx@alibaba-inc.com>
-Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 5be73b690875 ("drm/nouveau/dmem: device memory helpers for SVM")
+Signed-off-by: Yonatan Maman <Ymaman@Nvidia.com>
+Co-developed-by: Gal Shalom <GalShalom@Nvidia.com>
+Signed-off-by: Gal Shalom <GalShalom@Nvidia.com>
+Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241008115943.990286-3-ymaman@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dax/device.c |    2 +-
+ drivers/gpu/drm/nouveau/nouveau_dmem.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/dax/device.c
-+++ b/drivers/dax/device.c
-@@ -86,7 +86,7 @@ static void dax_set_mapping(struct vm_fa
- 		nr_pages = 1;
+--- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
++++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+@@ -193,7 +193,7 @@ static vm_fault_t nouveau_dmem_migrate_t
+ 	if (!spage || !(src & MIGRATE_PFN_MIGRATE))
+ 		goto done;
  
- 	pgoff = linear_page_index(vmf->vma,
--			ALIGN(vmf->address, fault_size));
-+			ALIGN_DOWN(vmf->address, fault_size));
+-	dpage = alloc_page_vma(GFP_HIGHUSER, vmf->vma, vmf->address);
++	dpage = alloc_page_vma(GFP_HIGHUSER | __GFP_ZERO, vmf->vma, vmf->address);
+ 	if (!dpage)
+ 		goto done;
  
- 	for (i = 0; i < nr_pages; i++) {
- 		struct page *page = pfn_to_page(pfn_t_to_pfn(pfn) + i);
 
 
 
