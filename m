@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-85005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B1B299D358
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE33599CF33
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:52:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 601C5B2788F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1B3428B976
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89BD1AB6E9;
-	Mon, 14 Oct 2024 15:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B3E1BB6BB;
+	Mon, 14 Oct 2024 14:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O2jO5Ay9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yg+a9XUK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F6C1B85E3;
-	Mon, 14 Oct 2024 15:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF5E1B85C0;
+	Mon, 14 Oct 2024 14:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919969; cv=none; b=JhZ2KczLkFhhMZcdJosg8+ufBD3TzbBqejazrsPZ7PMbIjgvYioTSTooaPGLvlRny51eYfWHFwmt00dipGSXZjNamwcnIlXj/noknrzOKNGNsEginRDJiu2PGnpJuMxMX5IkrKyW8xfrgAyOLkrwBrpJYjfA6yyTS2afPsYNvgk=
+	t=1728917309; cv=none; b=mApzyfCqzEx4V2RyOV3yktgZW+nEc69/hw243YxfwtEe7CKCdhDMtvrfeouaiCX76bMmiiqX+gcSrkAUr3zjIiFkyFpDtfQDEDZnVdvKPUhOAl0mQyZRrD6fxBEZoIeV+H+LcreXrajq8e2MJlHCXPR0jg7UibF6VfIuTKZTdns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919969; c=relaxed/simple;
-	bh=+0hA3/znlRPV8ZJ0XRBWGuSYDs19H2svZA5Eu3tZzsU=;
+	s=arc-20240116; t=1728917309; c=relaxed/simple;
+	bh=R5a1Q4XJyNoZgCtYWDK8roXtXyfklug3nvcxyz10R28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FobGTGTcEeRZQtypAVqvIVgUbGBLAPNojvAMeTWKKtEJMBdcGbC4xJhcj1uA4yqk+isGDLxgsLnQolgceQl+cganASseAwTFOlhFVGgh09gXHDZZlrShy+9g5gznoJF2LwpLAOKOBOf7i0LfE3OthLAz1a+2XPu+YOdUTs0TSX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O2jO5Ay9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C1EC4CEC3;
-	Mon, 14 Oct 2024 15:32:48 +0000 (UTC)
+	 MIME-Version; b=F+WvVpydsuukKiaot9KaVzR8gTMZgtlXU1hMtsZIXS7G1zdNWuvtyL7us9f4AILKIyE2NXmkrnfq0u6JEmJDuj0xMQDDgfuczl+OEJjKLtwToOnypeZOgCQ+ggKyeNAws2iQxMwpcCQsnmZHVizJIJDtrk5snDMT8RNzaGqOoqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yg+a9XUK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197AFC4CEC3;
+	Mon, 14 Oct 2024 14:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919969;
-	bh=+0hA3/znlRPV8ZJ0XRBWGuSYDs19H2svZA5Eu3tZzsU=;
+	s=korg; t=1728917309;
+	bh=R5a1Q4XJyNoZgCtYWDK8roXtXyfklug3nvcxyz10R28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O2jO5Ay9IOhORfwrDRfUlbik8AbrXV/qZiBEUbW385Tswng5yfK7quW51wgwMeWxY
-	 UrMi3qjRR37XRNrTixSvrl/D8oQHbV4CsxFyw3e4cg7S6KGYczFehEBBWB1RsHDdxp
-	 NA8/d8hH9nQtOv6skh5IvQaeviqo+E20XQfIvg84=
+	b=Yg+a9XUKPfeb+bAvynBYX1dWhMSr4ESiO2JBocalGa/ArQ2eX2uoZmCE2eLQgONKd
+	 quRcFJj+9K0s9qAc9d8LfudFq1lTlN2mI1mrX2oxUr5Rd6zDtjEF3g+1fq3f7BTYIH
+	 qIjRJzllNNxzKZleWEFFkcRlhkwQRiwMI9u0Bdek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Cardwell <ncardwell@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 733/798] tcp: fix tcp_enter_recovery() to zero retrans_stamp when its safe
-Date: Mon, 14 Oct 2024 16:21:27 +0200
-Message-ID: <20241014141246.867802240@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 182/213] Revert "usb: yurex: Replace snprintf() with the safer scnprintf() variant"
+Date: Mon, 14 Oct 2024 16:21:28 +0200
+Message-ID: <20241014141050.069244894@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,158 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit b41b4cbd9655bcebcce941bef3601db8110335be ]
+commit 71c717cd8a2e180126932cc6851ff21c1d04d69a upstream.
 
-Fix tcp_enter_recovery() so that if there are no retransmits out then
-we zero retrans_stamp when entering fast recovery. This is necessary
-to fix two buggy behaviors.
+This reverts commit 86b20af11e84c26ae3fde4dcc4f490948e3f8035.
 
-Currently a non-zero retrans_stamp value can persist across multiple
-back-to-back loss recovery episodes. This is because we generally only
-clears retrans_stamp if we are completely done with loss recoveries,
-and get to tcp_try_to_open() and find !tcp_any_retrans_done(sk). This
-behavior causes two bugs:
+This patch leads to passing 0 to simple_read_from_buffer()
+as a fifth argument, turning the read method into a nop.
+The change is fundamentally flawed, as it breaks the driver.
 
-(1) When a loss recovery episode (CA_Loss or CA_Recovery) is followed
-immediately by a new CA_Recovery, the retrans_stamp value can persist
-and can be a time before this new CA_Recovery episode starts. That
-means that timestamp-based undo will be using the wrong retrans_stamp
-(a value that is too old) when comparing incoming TS ecr values to
-retrans_stamp to see if the current fast recovery episode can be
-undone.
-
-(2) If there is a roughly minutes-long sequence of back-to-back fast
-recovery episodes, one after another (e.g. in a shallow-buffered or
-policed bottleneck), where each fast recovery successfully makes
-forward progress and recovers one window of sequence space (but leaves
-at least one retransmit in flight at the end of the recovery),
-followed by several RTOs, then the ETIMEDOUT check may be using the
-wrong retrans_stamp (a value set at the start of the first fast
-recovery in the sequence). This can cause a very premature ETIMEDOUT,
-killing the connection prematurely.
-
-This commit changes the code to zero retrans_stamp when entering fast
-recovery, when this is known to be safe (no retransmits are out in the
-network). That ensures that when starting a fast recovery episode, and
-it is safe to do so, retrans_stamp is set when we send the fast
-retransmit packet. That addresses both bug (1) and bug (2) by ensuring
-that (if no retransmits are out when we start a fast recovery) we use
-the initial fast retransmit of this fast recovery as the time value
-for undo and ETIMEDOUT calculations.
-
-This makes intuitive sense, since the start of a new fast recovery
-episode (in a scenario where no lost packets are out in the network)
-means that the connection has made forward progress since the last RTO
-or fast recovery, and we should thus "restart the clock" used for both
-undo and ETIMEDOUT logic.
-
-Note that if when we start fast recovery there *are* retransmits out
-in the network, there can still be undesirable (1)/(2) issues. For
-example, after this patch we can still have the (1) and (2) problems
-in cases like this:
-
-+ round 1: sender sends flight 1
-
-+ round 2: sender receives SACKs and enters fast recovery 1,
-  retransmits some packets in flight 1 and then sends some new data as
-  flight 2
-
-+ round 3: sender receives some SACKs for flight 2, notes losses, and
-  retransmits some packets to fill the holes in flight 2
-
-+ fast recovery has some lost retransmits in flight 1 and continues
-  for one or more rounds sending retransmits for flight 1 and flight 2
-
-+ fast recovery 1 completes when snd_una reaches high_seq at end of
-  flight 1
-
-+ there are still holes in the SACK scoreboard in flight 2, so we
-  enter fast recovery 2, but some retransmits in the flight 2 sequence
-  range are still in flight (retrans_out > 0), so we can't execute the
-  new retrans_stamp=0 added here to clear retrans_stamp
-
-It's not yet clear how to fix these remaining (1)/(2) issues in an
-efficient way without breaking undo behavior, given that retrans_stamp
-is currently used for undo and ETIMEDOUT. Perhaps the optimal (but
-expensive) strategy would be to set retrans_stamp to the timestamp of
-the earliest outstanding retransmit when entering fast recovery. But
-at least this commit makes things better.
-
-Note that this does not change the semantics of retrans_stamp; it
-simply makes retrans_stamp accurate in some cases where it was not
-before:
-
-(1) Some loss recovery, followed by an immediate entry into a fast
-recovery, where there are no retransmits out when entering the fast
-recovery.
-
-(2) When a TFO server has a SYNACK retransmit that sets retrans_stamp,
-and then the ACK that completes the 3-way handshake has SACK blocks
-that trigger a fast recovery. In this case when entering fast recovery
-we want to zero out the retrans_stamp from the TFO SYNACK retransmit,
-and set the retrans_stamp based on the timestamp of the fast recovery.
-
-We introduce a tcp_retrans_stamp_cleanup() helper, because this
-two-line sequence already appears in 3 places and is about to appear
-in 2 more as a result of this bug fix patch series. Once this bug fix
-patches series in the net branch makes it into the net-next branch
-we'll update the 3 other call sites to use the new helper.
-
-This is a long-standing issue. The Fixes tag below is chosen to be the
-oldest commit at which the patch will apply cleanly, which is from
-Linux v3.5 in 2012.
-
-Fixes: 1fbc340514fc ("tcp: early retransmit: tcp_enter_recovery()")
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Yuchung Cheng <ycheng@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241001200517.2756803-3-ncardwell.sw@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20241007094004.242122-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/usb/misc/yurex.c |   19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 5b7345a3a96e4..9ac47ccfe1203 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -2489,6 +2489,16 @@ static bool tcp_any_retrans_done(const struct sock *sk)
- 	return false;
+--- a/drivers/usb/misc/yurex.c
++++ b/drivers/usb/misc/yurex.c
+@@ -34,8 +34,6 @@
+ #define YUREX_BUF_SIZE		8
+ #define YUREX_WRITE_TIMEOUT	(HZ*2)
+ 
+-#define MAX_S64_STRLEN 20 /* {-}922337203685477580{7,8} */
+-
+ /* table of devices that work with this driver */
+ static struct usb_device_id yurex_table[] = {
+ 	{ USB_DEVICE(YUREX_VENDOR_ID, YUREX_PRODUCT_ID) },
+@@ -403,7 +401,8 @@ static ssize_t yurex_read(struct file *f
+ {
+ 	struct usb_yurex *dev;
+ 	int len = 0;
+-	char in_buffer[MAX_S64_STRLEN];
++	char in_buffer[20];
++	unsigned long flags;
+ 
+ 	dev = file->private_data;
+ 
+@@ -413,16 +412,14 @@ static ssize_t yurex_read(struct file *f
+ 		return -ENODEV;
+ 	}
+ 
+-	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN)) {
+-		mutex_unlock(&dev->io_mutex);
+-		return -EIO;
+-	}
+-
+-	spin_lock_irq(&dev->lock);
+-	scnprintf(in_buffer, MAX_S64_STRLEN, "%lld\n", dev->bbu);
+-	spin_unlock_irq(&dev->lock);
++	spin_lock_irqsave(&dev->lock, flags);
++	len = snprintf(in_buffer, 20, "%lld\n", dev->bbu);
++	spin_unlock_irqrestore(&dev->lock, flags);
+ 	mutex_unlock(&dev->io_mutex);
+ 
++	if (WARN_ON_ONCE(len >= sizeof(in_buffer)))
++		return -EIO;
++
+ 	return simple_read_from_buffer(buffer, count, ppos, in_buffer, len);
  }
  
-+/* If loss recovery is finished and there are no retransmits out in the
-+ * network, then we clear retrans_stamp so that upon the next loss recovery
-+ * retransmits_timed_out() and timestamp-undo are using the correct value.
-+ */
-+static void tcp_retrans_stamp_cleanup(struct sock *sk)
-+{
-+	if (!tcp_any_retrans_done(sk))
-+		tcp_sk(sk)->retrans_stamp = 0;
-+}
-+
- static void DBGUNDO(struct sock *sk, const char *msg)
- {
- #if FASTRETRANS_DEBUG > 1
-@@ -2856,6 +2866,9 @@ void tcp_enter_recovery(struct sock *sk, bool ece_ack)
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	int mib_idx;
- 
-+	/* Start the clock with our fast retransmit, for undo and ETIMEDOUT. */
-+	tcp_retrans_stamp_cleanup(sk);
-+
- 	if (tcp_is_reno(tp))
- 		mib_idx = LINUX_MIB_TCPRENORECOVERY;
- 	else
--- 
-2.43.0
-
 
 
 
