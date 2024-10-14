@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-83990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B6299CD90
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:34:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B3C99CE7D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:44:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C78C1C22B62
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:34:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5B231C20E0C
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB1739FCE;
-	Mon, 14 Oct 2024 14:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB8C1AB526;
+	Mon, 14 Oct 2024 14:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QaGOMyBK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HE6xpJfF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B1420322;
-	Mon, 14 Oct 2024 14:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D279C1AB530;
+	Mon, 14 Oct 2024 14:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916427; cv=none; b=BfrtdXcU+/7kaqrUtZFr3bUoodY+gQYzyuQFeiXTbuNcDBI8RD8ZQqeHfN/gAkXgic/diYFG/7HBpqVlQxQL6sK/0EGrV/30pAE43VORByrSKUnT7qby/W16yY0/tVFtCA4wm+jtlzw7QZRgvgoV0BQrDLTUzj7tRXv6MT7oQ5A=
+	t=1728917054; cv=none; b=E6ZfJKSr2jrtgNx5rsZzFnLnIxkuxO7khuJCXyhQmHhYAJbq09Su+04qj/+zWJggw2UNxvrGgS8+NV+vJbSrEAC14WPnhaAJirhFk3KVMukVcy8kZbbxQdw9uTSM+q4JHtYIsfvInWWrF1HUbs2ZdqIuoiQiELTi5k64+Bv1bek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916427; c=relaxed/simple;
-	bh=BrVuhQVgYazvbVa0YD+aTvXS6NQy/QlImy8+7PWNbEo=;
+	s=arc-20240116; t=1728917054; c=relaxed/simple;
+	bh=AC/v4ASkjB2oulCGsa5YPm7Ku5m6Nl0XbR1i7U2hz3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LWCVxA5/LePBhOz5A7q4q/UA0sSHYyEbUKBptet1lo4LIqaxEKLIlCyhP4T/RZbIX+/NJsCBdSU2Dk/bBukjVn74DbSWXnjudsGWg5ok9ymRtNB7HtAkGQNEYtS1PwhV/zptyL7rj9PNdilQ6EtEPQMSPSPtMLUaW3W+HJt83Gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QaGOMyBK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C525C4CEC3;
-	Mon, 14 Oct 2024 14:33:46 +0000 (UTC)
+	 MIME-Version; b=aDA+HpCt9YdaMyMqbM7jGLXgkf9eC2m7FM3LwfThaxTyhtabIgVh65xqQu4MdLUrEqw3S5X0slPwMB84nJIzgVK3FTXdmqUTEjNvEEf/9NZT5JwftNStYXMg5h0tfhfbik5f/yL/Dh3nobmEKtPjz7uOEL99YcsdG2CUUsAorBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HE6xpJfF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE48C4CEC7;
+	Mon, 14 Oct 2024 14:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916427;
-	bh=BrVuhQVgYazvbVa0YD+aTvXS6NQy/QlImy8+7PWNbEo=;
+	s=korg; t=1728917054;
+	bh=AC/v4ASkjB2oulCGsa5YPm7Ku5m6Nl0XbR1i7U2hz3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QaGOMyBKA8sxgiMwX0OQBAGYWRiOhA3T5N6NvjuIBNITnOp6MPJbumbcKqo27lRkJ
-	 JL6v4GWInmQZY/JPsT5dEeCGc64HB9Oqw9JCJmAQMN2YR92x7XVqVIFTrEyvRJGHyy
-	 T9fQTBn+xHl7MHj8MrFz/MjHsAIzyB4aa2K8DnTQ=
+	b=HE6xpJfFD+l2m22TI9aEVRp0O8bYb72iuZlni/EFf1cqSgoNeOP3NCGFd6W0N6XA3
+	 n8ktZ+Q8/8YILt0jdNiDD0p/vRhUKFjuAIVlezumZXX47a279AfGtgCTcGYJuaTQNZ
+	 FrTVqJ383A1BC1IfES1h99WY1I66EXRaUoD5k9ks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Badal Nilawar <badal.nilawar@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 180/214] drm/xe/ct: fix xa_store() error checking
-Date: Mon, 14 Oct 2024 16:20:43 +0200
-Message-ID: <20241014141052.004825098@linuxfoundation.org>
+	Zhang Rui <rui.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 138/213] powercap: intel_rapl_tpmi: Ignore minor version change
+Date: Mon, 14 Oct 2024 16:20:44 +0200
+Message-ID: <20241014141048.356309063@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-commit e863781abe4fe430406dd075ca0cab99165b4e63 upstream.
+[ Upstream commit 1d390923974cc233245649cf23833e06b15a9ef7 ]
 
-Looks like we are meant to use xa_err() to extract the error encoded in
-the ptr.
+The hardware definition of every TPMI feature contains a major and minor
+version. When there is a change in the MMIO offset or change in the
+definition of a field, hardware will change major version. For addition
+of new fields without modifying existing MMIO offsets or fields, only
+the minor version is changed.
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Badal Nilawar <badal.nilawar@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241001084346.98516-6-matthew.auld@intel.com
-(cherry picked from commit 1aa4b7864707886fa40d959483591f3d3937fa28)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If the driver has not been updated to recognize a new hardware major
+version, it cannot provide the RAPL interface to users due to possible
+register layout incompatibilities. However, the driver does not need to
+be updated every time the hardware minor version changes because in that
+case it will just miss some new functionality exposed by the hardware.
+
+The current implementation causes the driver to refuse to work for any
+hardware version change which is unnecessarily restrictive.
+
+If there is a minor version mismatch, log an information message and
+continue, but if there is a major version mismatch, log a warning and
+exit (as before).
+
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://patch.msgid.link/20240930081801.28502-4-rui.zhang@intel.com
+Fixes: 9eef7f9da928 ("powercap: intel_rapl: Introduce RAPL TPMI interface driver")
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_ct.c |   23 ++++++++---------------
- 1 file changed, 8 insertions(+), 15 deletions(-)
+ drivers/powercap/intel_rapl_tpmi.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -658,16 +658,12 @@ static int __guc_ct_send_locked(struct x
- 		num_g2h = 1;
+diff --git a/drivers/powercap/intel_rapl_tpmi.c b/drivers/powercap/intel_rapl_tpmi.c
+index f6b7f085977ce..0085e59856166 100644
+--- a/drivers/powercap/intel_rapl_tpmi.c
++++ b/drivers/powercap/intel_rapl_tpmi.c
+@@ -15,7 +15,8 @@
+ #include <linux/module.h>
+ #include <linux/slab.h>
  
- 		if (g2h_fence_needs_alloc(g2h_fence)) {
--			void *ptr;
--
- 			g2h_fence->seqno = next_ct_seqno(ct, true);
--			ptr = xa_store(&ct->fence_lookup,
--				       g2h_fence->seqno,
--				       g2h_fence, GFP_ATOMIC);
--			if (IS_ERR(ptr)) {
--				ret = PTR_ERR(ptr);
-+			ret = xa_err(xa_store(&ct->fence_lookup,
-+					      g2h_fence->seqno, g2h_fence,
-+					      GFP_ATOMIC));
-+			if (ret)
- 				goto out;
--			}
- 		}
+-#define TPMI_RAPL_VERSION 1
++#define TPMI_RAPL_MAJOR_VERSION 0
++#define TPMI_RAPL_MINOR_VERSION 1
  
- 		seqno = g2h_fence->seqno;
-@@ -870,14 +866,11 @@ retry:
- retry_same_fence:
- 	ret = guc_ct_send(ct, action, len, 0, 0, &g2h_fence);
- 	if (unlikely(ret == -ENOMEM)) {
--		void *ptr;
--
- 		/* Retry allocation /w GFP_KERNEL */
--		ptr = xa_store(&ct->fence_lookup,
--			       g2h_fence.seqno,
--			       &g2h_fence, GFP_KERNEL);
--		if (IS_ERR(ptr))
--			return PTR_ERR(ptr);
-+		ret = xa_err(xa_store(&ct->fence_lookup, g2h_fence.seqno,
-+				      &g2h_fence, GFP_KERNEL));
-+		if (ret)
-+			return ret;
+ /* 1 header + 10 registers + 5 reserved. 8 bytes for each. */
+ #define TPMI_RAPL_DOMAIN_SIZE 128
+@@ -154,11 +155,21 @@ static int parse_one_domain(struct tpmi_rapl_package *trp, u32 offset)
+ 	tpmi_domain_size = tpmi_domain_header >> 16 & 0xff;
+ 	tpmi_domain_flags = tpmi_domain_header >> 32 & 0xffff;
  
- 		goto retry_same_fence;
- 	} else if (unlikely(ret)) {
+-	if (tpmi_domain_version != TPMI_RAPL_VERSION) {
+-		pr_warn(FW_BUG "Unsupported version:%d\n", tpmi_domain_version);
++	if (tpmi_domain_version == TPMI_VERSION_INVALID) {
++		pr_warn(FW_BUG "Invalid version\n");
+ 		return -ENODEV;
+ 	}
+ 
++	if (TPMI_MAJOR_VERSION(tpmi_domain_version) != TPMI_RAPL_MAJOR_VERSION) {
++		pr_warn(FW_BUG "Unsupported major version:%ld\n",
++			TPMI_MAJOR_VERSION(tpmi_domain_version));
++		return -ENODEV;
++	}
++
++	if (TPMI_MINOR_VERSION(tpmi_domain_version) > TPMI_RAPL_MINOR_VERSION)
++		pr_info("Ignore: Unsupported minor version:%ld\n",
++			TPMI_MINOR_VERSION(tpmi_domain_version));
++
+ 	/* Domain size: in unit of 128 Bytes */
+ 	if (tpmi_domain_size != 1) {
+ 		pr_warn(FW_BUG "Invalid Domain size %d\n", tpmi_domain_size);
+-- 
+2.43.0
+
 
 
 
