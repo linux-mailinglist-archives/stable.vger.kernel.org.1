@@ -1,57 +1,71 @@
-Return-Path: <stable+bounces-84134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 362FB99CE51
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:42:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7871799D2A0
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6788C1C219D8
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:42:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9A34B23A36
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40B11ABEAD;
-	Mon, 14 Oct 2024 14:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2668F1AE006;
+	Mon, 14 Oct 2024 15:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1UyjRfz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfT79mD0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709DA1ABEA1;
-	Mon, 14 Oct 2024 14:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C7B1ABEBF;
+	Mon, 14 Oct 2024 15:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916943; cv=none; b=HX9TDHIKa6VG54uvXnGKqi3I3H0EJTH41oMqwMm5bqvTUsnMr8mAIB7hxIcbfYpeI46e2E1PfApGRCAB1eWZ4cOmSQ6D3IGLhs5H1V+1ny97ZU3sPNqeQxBd7NJPOnXJcif4DO2A1YFFRdiOf1/DiGraMazbCo6Cks5Rn2FIaUU=
+	t=1728919523; cv=none; b=DadSvQeb/vFoPklaAPap2Yda/X3u7niz+Tl2GgggRl91p8FdAhvEjWTzi20z1fpKTJF8iMvpXDyYQMk3lQFAKJnyYYrTOIZCrVTZQc6Fo9IV1cijEZXt6N5h47Q24hXbZNFN0NraHOTOjc+fPu56h+rd8BTi3O02g/fCnIKhXYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916943; c=relaxed/simple;
-	bh=xhFa7tzUfCGjnJeDbl75IRvZqvnv6mEjSy0d/hipSvY=;
+	s=arc-20240116; t=1728919523; c=relaxed/simple;
+	bh=wiCikzPZUf+cwRYIgpKc+KO+ABwhhnn4JMO5uXBGb9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GE6xIj5pPcUAh8d7oeK6dncAD3ms2hvQCB/uwGMSw43aZMaPPFA4lSRcWDlynzF8Wp6DVaf/quIhjM52f6lEDU7Z7Osxq9qukQnjtbbbyw5k5op7sXJAXj8UdVYKChoxl/sLq+qrlFs72eR+evFmnEbcg/MuhRVAIv46U1xOGRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1UyjRfz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82503C4CEC3;
-	Mon, 14 Oct 2024 14:42:22 +0000 (UTC)
+	 MIME-Version; b=DDbMr+/6dJYD5EUk3P3JS3OmTNVhInz/XDY6JbqbJNvv+mXNxxM5V0dpqDcvcV166A1li3RzjP61U6O64x2M6CofZMejFeVJ4NaPlrJdyAEKDCdhMgDWsa35GJfSy/z4UFbVDnPPrgMhqJd80Och71pKOgsqv+KOS6LvbO0wMuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfT79mD0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76D1C4CEC3;
+	Mon, 14 Oct 2024 15:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916943;
-	bh=xhFa7tzUfCGjnJeDbl75IRvZqvnv6mEjSy0d/hipSvY=;
+	s=korg; t=1728919523;
+	bh=wiCikzPZUf+cwRYIgpKc+KO+ABwhhnn4JMO5uXBGb9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T1UyjRfz1kfL6nG9g6BNiEYXgUjGgNhJJuQYl0MJ5R1VBYtyqKaQCpH0Lcs74w0jO
-	 hfuux7XmfV+bLb/5+YQS1dJ1RN/i6sAq6wtZeBClcWnxCHI5hwRBY23hwhuuVD9sA4
-	 BdmLDIa4btE9MtoUmFtnel53kZPdKZ5oR+K9g7Vc=
+	b=IfT79mD0YfZoM87Ss183zky46sQclplSWfcN7ZMnv1seYGLxZOy8GgB4wErk4Yjhe
+	 xFkEBjWchU1tMIFalG8gRswD6ZDm6LiUZmwbxxKEZQB3RdD81WgATwmLlze8A9GDn2
+	 LjI23Sx8ABifbDunMym8WZZ0Ma0QeOHylTVBQ5fw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Yosry Ahmed <yosryahmed@google.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Chris Down <chris@chrisdown.name>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Vitaly Wool <vitaly.wool@konsulko.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/213] RISC-V: Dont have MAX_PHYSMEM_BITS exceed phys_addr_t
+Subject: [PATCH 6.1 629/798] mm: z3fold: deprecate CONFIG_Z3FOLD
 Date: Mon, 14 Oct 2024 16:19:43 +0200
-Message-ID: <20241014141045.986791150@linuxfoundation.org>
+Message-ID: <20241014141242.749558423@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +77,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Palmer Dabbelt <palmer@rivosinc.com>
+From: Yosry Ahmed <yosryahmed@google.com>
 
-[ Upstream commit ad380f6a0a5e82e794b45bb2eaec24ed51a56846 ]
+[ Upstream commit 7a2369b74abf76cd3e54c45b30f6addb497f831b ]
 
-I recently ended up with a warning on some compilers along the lines of
+The z3fold compressed pages allocator is rarely used, most users use
+zsmalloc.  The only disadvantage of zsmalloc in comparison is the
+dependency on MMU, and zbud is a more common option for !MMU as it was the
+default zswap allocator for a long time.
 
-      CC      kernel/resource.o
-    In file included from include/linux/ioport.h:16,
-                     from kernel/resource.c:15:
-    kernel/resource.c: In function 'gfr_start':
-    include/linux/minmax.h:49:37: error: conversion from 'long long unsigned int' to 'resource_size_t' {aka 'unsigned int'} changes value from '17179869183' to '4294967295' [-Werror=overflow]
-       49 |         ({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
-          |                                     ^
-    include/linux/minmax.h:52:9: note: in expansion of macro '__cmp_once_unique'
-       52 |         __cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
-          |         ^~~~~~~~~~~~~~~~~
-    include/linux/minmax.h:161:27: note: in expansion of macro '__cmp_once'
-      161 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
-          |                           ^~~~~~~~~~
-    kernel/resource.c:1829:23: note: in expansion of macro 'min_t'
-     1829 |                 end = min_t(resource_size_t, base->end,
-          |                       ^~~~~
-    kernel/resource.c: In function 'gfr_continue':
-    include/linux/minmax.h:49:37: error: conversion from 'long long unsigned int' to 'resource_size_t' {aka 'unsigned int'} changes value from '17179869183' to '4294967295' [-Werror=overflow]
-       49 |         ({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
-          |                                     ^
-    include/linux/minmax.h:52:9: note: in expansion of macro '__cmp_once_unique'
-       52 |         __cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
-          |         ^~~~~~~~~~~~~~~~~
-    include/linux/minmax.h:161:27: note: in expansion of macro '__cmp_once'
-      161 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
-          |                           ^~~~~~~~~~
-    kernel/resource.c:1847:24: note: in expansion of macro 'min_t'
-     1847 |                addr <= min_t(resource_size_t, base->end,
-          |                        ^~~~~
-    cc1: all warnings being treated as errors
+Historically, zsmalloc had worse latency than zbud and z3fold but offered
+better memory savings.  This is no longer the case as shown by a simple
+recent analysis [1].  That analysis showed that z3fold does not have any
+advantage over zsmalloc or zbud considering both performance and memory
+usage.  In a kernel build test on tmpfs in a limited cgroup, z3fold took
+3% more time and used 1.8% more memory.  The latency of zswap_load() was
+7% higher, and that of zswap_store() was 10% higher.  Zsmalloc is better
+in all metrics.
 
-which looks like a real problem: our phys_addr_t is only 32 bits now, so
-having 34-bit masks is just going to result in overflows.
+Moreover, z3fold apparently has latent bugs, which was made noticeable by
+a recent soft lockup bug report with z3fold [2].  Switching to zsmalloc
+not only fixed the problem, but also reduced the swap usage from 6~8G to
+1~2G.  Other users have also reported being bitten by mistakenly enabling
+z3fold.
 
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240731162159.9235-2-palmer@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Other than hurting users, z3fold is repeatedly causing wasted engineering
+effort.  Apart from investigating the above bug, it came up in multiple
+development discussions (e.g.  [3]) as something we need to handle, when
+there aren't any legit users (at least not intentionally).
+
+The natural course of action is to deprecate z3fold, and remove in a few
+cycles if no objections are raised from active users.  Next on the list
+should be zbud, as it offers marginal latency gains at the cost of huge
+memory waste when compared to zsmalloc.  That one will need to wait until
+zsmalloc does not depend on MMU.
+
+Rename the user-visible config option from CONFIG_Z3FOLD to
+CONFIG_Z3FOLD_DEPRECATED so that users with CONFIG_Z3FOLD=y get a new
+prompt with explanation during make oldconfig.  Also, remove
+CONFIG_Z3FOLD=y from defconfigs.
+
+[1]https://lore.kernel.org/lkml/CAJD7tkbRF6od-2x_L8-A1QL3=2Ww13sCj4S3i4bNndqF+3+_Vg@mail.gmail.com/
+[2]https://lore.kernel.org/lkml/EF0ABD3E-A239-4111-A8AB-5C442E759CF3@gmail.com/
+[3]https://lore.kernel.org/lkml/CAJD7tkbnmeVugfunffSovJf9FAgy9rhBVt_tx=nxUveLUfqVsA@mail.gmail.com/
+
+[arnd@arndb.de: deprecate ZSWAP_ZPOOL_DEFAULT_Z3FOLD as well]
+  Link: https://lkml.kernel.org/r/20240909202625.1054880-1-arnd@kernel.org
+Link: https://lkml.kernel.org/r/20240904233343.933462-1-yosryahmed@google.com
+Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Chris Down <chris@chrisdown.name>
+Acked-by: Nhat Pham <nphamcs@gmail.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Vitaly Wool <vitaly.wool@konsulko.com>
+Acked-by: Christoph Hellwig <hch@lst.de>
+Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 7a2369b74abf76cd3e54c45b30f6addb497f831b)
+Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/sparsemem.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/configs/loongson3_defconfig |  1 -
+ mm/Kconfig                                 | 25 ++++++++++++++++------
+ 2 files changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/arch/riscv/include/asm/sparsemem.h b/arch/riscv/include/asm/sparsemem.h
-index 63acaecc33747..2f901a410586d 100644
---- a/arch/riscv/include/asm/sparsemem.h
-+++ b/arch/riscv/include/asm/sparsemem.h
-@@ -7,7 +7,7 @@
- #ifdef CONFIG_64BIT
- #define MAX_PHYSMEM_BITS	56
- #else
--#define MAX_PHYSMEM_BITS	34
-+#define MAX_PHYSMEM_BITS	32
- #endif /* CONFIG_64BIT */
- #define SECTION_SIZE_BITS	27
- #endif /* CONFIG_SPARSEMEM */
+diff --git a/arch/loongarch/configs/loongson3_defconfig b/arch/loongarch/configs/loongson3_defconfig
+index 3540e9c0a6310..15b7420c868ba 100644
+--- a/arch/loongarch/configs/loongson3_defconfig
++++ b/arch/loongarch/configs/loongson3_defconfig
+@@ -82,7 +82,6 @@ CONFIG_ZSWAP=y
+ CONFIG_ZSWAP_COMPRESSOR_DEFAULT_ZSTD=y
+ CONFIG_ZPOOL=y
+ CONFIG_ZBUD=y
+-CONFIG_Z3FOLD=y
+ CONFIG_ZSMALLOC=m
+ CONFIG_NET=y
+ CONFIG_PACKET=y
+diff --git a/mm/Kconfig b/mm/Kconfig
+index a65145fe89f2b..cf782e0474910 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -132,12 +132,15 @@ config ZSWAP_ZPOOL_DEFAULT_ZBUD
+ 	help
+ 	  Use the zbud allocator as the default allocator.
+ 
+-config ZSWAP_ZPOOL_DEFAULT_Z3FOLD
+-	bool "z3fold"
+-	select Z3FOLD
++config ZSWAP_ZPOOL_DEFAULT_Z3FOLD_DEPRECATED
++	bool "z3foldi (DEPRECATED)"
++	select Z3FOLD_DEPRECATED
+ 	help
+ 	  Use the z3fold allocator as the default allocator.
+ 
++	  Deprecated and scheduled for removal in a few cycles,
++	  see CONFIG_Z3FOLD_DEPRECATED.
++
+ config ZSWAP_ZPOOL_DEFAULT_ZSMALLOC
+ 	bool "zsmalloc"
+ 	select ZSMALLOC
+@@ -149,7 +152,7 @@ config ZSWAP_ZPOOL_DEFAULT
+        string
+        depends on ZSWAP
+        default "zbud" if ZSWAP_ZPOOL_DEFAULT_ZBUD
+-       default "z3fold" if ZSWAP_ZPOOL_DEFAULT_Z3FOLD
++       default "z3fold" if ZSWAP_ZPOOL_DEFAULT_Z3FOLD_DEPRECATED
+        default "zsmalloc" if ZSWAP_ZPOOL_DEFAULT_ZSMALLOC
+        default ""
+ 
+@@ -163,15 +166,25 @@ config ZBUD
+ 	  deterministic reclaim properties that make it preferable to a higher
+ 	  density approach when reclaim will be used.
+ 
+-config Z3FOLD
+-	tristate "3:1 compression allocator (z3fold)"
++config Z3FOLD_DEPRECATED
++	tristate "3:1 compression allocator (z3fold) (DEPRECATED)"
+ 	depends on ZSWAP
+ 	help
++	  Deprecated and scheduled for removal in a few cycles. If you have
++	  a good reason for using Z3FOLD over ZSMALLOC, please contact
++	  linux-mm@kvack.org and the zswap maintainers.
++
+ 	  A special purpose allocator for storing compressed pages.
+ 	  It is designed to store up to three compressed pages per physical
+ 	  page. It is a ZBUD derivative so the simplicity and determinism are
+ 	  still there.
+ 
++config Z3FOLD
++	tristate
++	default y if Z3FOLD_DEPRECATED=y
++	default m if Z3FOLD_DEPRECATED=m
++	depends on Z3FOLD_DEPRECATED
++
+ config ZSMALLOC
+ 	tristate
+ 	prompt "N:1 compression allocator (zsmalloc)" if ZSWAP
 -- 
 2.43.0
 
