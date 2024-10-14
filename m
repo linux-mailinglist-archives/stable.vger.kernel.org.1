@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-83703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C5E099BED5
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:08:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F39199BED7
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:09:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9664B2397C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 04:08:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 427391F22EAE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 04:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A85814659D;
-	Mon, 14 Oct 2024 03:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1671AB507;
+	Mon, 14 Oct 2024 03:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cClMPThV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Afvq1lRJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362761AAE37;
-	Mon, 14 Oct 2024 03:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D132F1AAE39;
+	Mon, 14 Oct 2024 03:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728878359; cv=none; b=drDJjCEaAAUqW4XQoaVaehOM8g6whmBqMElluIVmulBO/o6+Yz8gPARLj1iDR5WnhcNNbh6EQ1fmDU3CbMxkTx/IS6TCaSHE1p1+KFjWxE89edkQJr3xSA19PxiQDm4hpw/1EuU+Iaa7N16P5eC3YmYkFVUKk3fYt1YL243nkDk=
+	t=1728878361; cv=none; b=QseFYoyey/j1Vpn8/C0k+IDPXAplnG+1u41yR6jKBvzegUmASMdzU0bS99zw5ylFyksSqN7AXXaWH9uvdY4osrQtuXz7zPIWmmvIPqjwaszjTSYQPKcXo9Nz1kkeal0B+B4EiomNb0yL4VxOTuPeNuSbWSMRw+D+ADB1pPmhnYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728878359; c=relaxed/simple;
-	bh=hlFmRF6vtlxFFlJEPBqT0iLFeODwaNMkdPAj8xUvjK8=;
+	s=arc-20240116; t=1728878361; c=relaxed/simple;
+	bh=wVwRs0M2xO0l0PXaRRxAREb3NgjeX+7sz70e/59BTgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0rpwADlS++SfKXHKPaeygoEc/mOdRPUC6s36IOOyPJ9CWmnrkQFutcum9VJD/7N0T2aR/L4a7wgrgTB/8e/nuWvFynNkpZ/T1UQbuHTCfLCybvT/kz2QweEs7qGTf0psivLX05vXgvLa7Pt2GuCbGyGjOQ4enV0hrKA2ZXfpyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cClMPThV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8994DC4CECE;
-	Mon, 14 Oct 2024 03:59:17 +0000 (UTC)
+	 MIME-Version; b=tDRuvXgpO+xJ5rJNb4D6TTHNJ1naB59v4DnrSkEf6JMbC6/+08sbLQIb7V4ci2pUH8F5Ec+louK+mVIevdj28iMnAC52X7ao5FkvB2fuffInWPkTwwmOja5PSPYhRhM1i2D0Eklt99HZNUDd/UtJ40zy9UNRJpmGEnRrOWZbEQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Afvq1lRJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52AFDC4CECE;
+	Mon, 14 Oct 2024 03:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728878358;
-	bh=hlFmRF6vtlxFFlJEPBqT0iLFeODwaNMkdPAj8xUvjK8=;
+	s=k20201202; t=1728878361;
+	bh=wVwRs0M2xO0l0PXaRRxAREb3NgjeX+7sz70e/59BTgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cClMPThVuwjWfB1MNHCGMvPTY77bC3ywidPmxbw/UVYku4g8+YT2XdCc7/Krvhse1
-	 tF1SkMP9sr/LgTuLywzlwQQvVd5xSdyyLvVK7F+Q9lhWjbDhXkcNxFFSXcdui6/bwb
-	 JKkWMYFlKcuDjNdEBHm1WJ9oNCQ19Zs3gYOBraJlaDqMnG/mUXVy6o+ujcFfAwgTeJ
-	 UlMQd2Pue0F051FKaY/JpRrbm2Lv8BlS/Clsdmg0GRuZfKkSJs3gm0j27cNhRgtOi2
-	 jVL6uf+QSss16sVtcIpAqWkxm6AAf123S3fQnhUf7hWjYfueoaoVm6sKfn46nCSyKb
-	 YcgWU7I+b69/A==
+	b=Afvq1lRJ+VNNDYcB/v1mvt2z68aAEYfQvwfp309zsqRxZKNpCxpARw6LxFr5QHNFt
+	 buQ84YVhjDhH2W6f+s+jvRBj38t2VmeWGuwzqUtQVt4QeoiRo7ki97RfHZl2FIMBzj
+	 ICb4lpLETflGYTFPh40yy2Ze0Kg3iuFW5K/pppMVZdEx8UZDylvBafjyaPtD509i11
+	 3qBaS3okXXXNGRN+rmNcQP/xL73Wnwj+IAVyHaU5TdjG4mcT13uT3lwaeSrBBGwJGw
+	 xyWSk/YMzTYR39S9X692q9OVtUb5R69DY8ou2/WMM1iet6s8spUgOe9uBz6a/Fuqsy
+	 zQI872SAes+oQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Daniel Palmer <daniel@0x0f.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Dai Ngo <dai.ngo@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	quic_jjohnson@quicinc.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 08/10] net: amd: mvme147: Fix probe banner message
-Date: Sun, 13 Oct 2024 23:58:43 -0400
-Message-ID: <20241014035848.2247549-8-sashal@kernel.org>
+	trondmy@kernel.org,
+	anna@kernel.org,
+	linux-nfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 09/10] NFS: remove revoked delegation from server's delegation list
+Date: Sun, 13 Oct 2024 23:58:44 -0400
+Message-ID: <20241014035848.2247549-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241014035848.2247549-1-sashal@kernel.org>
 References: <20241014035848.2247549-1-sashal@kernel.org>
@@ -70,51 +68,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.112
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Palmer <daniel@0x0f.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit 82c5b53140faf89c31ea2b3a0985a2f291694169 ]
+[ Upstream commit 7ef60108069b7e3cc66432304e1dd197d5c0a9b5 ]
 
-Currently this driver prints this line with what looks like
-a rogue format specifier when the device is probed:
-[    2.840000] eth%d: MVME147 at 0xfffe1800, irq 12, Hardware Address xx:xx:xx:xx:xx:xx
+After the delegation is returned to the NFS server remove it
+from the server's delegations list to reduce the time it takes
+to scan this list.
 
-Change the printk() for netdev_info() and move it after the
-registration has completed so it prints out the name of the
-interface properly.
+Network trace captured while running the below script shows the
+time taken to service the CB_RECALL increases gradually due to
+the overhead of traversing the delegation list in
+nfs_delegation_find_inode_server.
 
-Signed-off-by: Daniel Palmer <daniel@0x0f.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The NFS server in this test is a Solaris server which issues
+CB_RECALL when receiving the all-zero stateid in the SETATTR.
+
+mount=/mnt/data
+for i in $(seq 1 20)
+do
+   echo $i
+   mkdir $mount/testtarfile$i
+   time  tar -C $mount/testtarfile$i -xf 5000_files.tar
+done
+
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/mvme147.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ fs/nfs/delegation.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/amd/mvme147.c b/drivers/net/ethernet/amd/mvme147.c
-index 410c7b67eba4d..e6cc916d205f1 100644
---- a/drivers/net/ethernet/amd/mvme147.c
-+++ b/drivers/net/ethernet/amd/mvme147.c
-@@ -105,10 +105,6 @@ static struct net_device * __init mvme147lance_probe(void)
- 	macaddr[3] = address&0xff;
- 	eth_hw_addr_set(dev, macaddr);
- 
--	printk("%s: MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
--	       dev->name, dev->base_addr, MVME147_LANCE_IRQ,
--	       dev->dev_addr);
--
- 	lp = netdev_priv(dev);
- 	lp->ram = __get_dma_pages(GFP_ATOMIC, 3);	/* 32K */
- 	if (!lp->ram) {
-@@ -138,6 +134,9 @@ static struct net_device * __init mvme147lance_probe(void)
- 		return ERR_PTR(err);
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index 2ba4d221bf9d5..39c697e100b1b 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -981,6 +981,11 @@ void nfs_delegation_mark_returned(struct inode *inode,
  	}
  
-+	netdev_info(dev, "MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
-+		    dev->base_addr, MVME147_LANCE_IRQ, dev->dev_addr);
-+
- 	return dev;
- }
+ 	nfs_mark_delegation_revoked(delegation);
++	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
++	spin_unlock(&delegation->lock);
++	if (nfs_detach_delegation(NFS_I(inode), delegation, NFS_SERVER(inode)))
++		nfs_put_delegation(delegation);
++	goto out_rcu_unlock;
  
+ out_clear_returning:
+ 	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
 -- 
 2.43.0
 
