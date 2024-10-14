@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-84595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3110399D0F9
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:09:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2314499D0FF
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:09:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA1D8284703
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:09:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B56C1C2345E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136681A76A5;
-	Mon, 14 Oct 2024 15:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913951AA793;
+	Mon, 14 Oct 2024 15:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvSfMJwg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yruR/pGR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C528D45C1C;
-	Mon, 14 Oct 2024 15:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF2145C1C;
+	Mon, 14 Oct 2024 15:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728918548; cv=none; b=ggbpee2QLlPIqkON4XdlNMN+fAquPNP772hLzP5DEf//JYdgoJ/xw/sMCTADnrR36RUTNYcvOa4bddQhiraDNTj8dioDxf9xG+0a92NVoeb52r2ZTEpgvrciSk4oGAwNnl38Ipd0W+Oh0yfLbm9Inna8E9Gw+DErBbXUf92+4UE=
+	t=1728918566; cv=none; b=SU8GLXpufj8RlNnoFlUdSdJygyqjKGCTbkUWKyyLxQ1jXaI1/645FXD1ec8UWyVJmaYPhNc5ELTFbePq5GTQmJ4UoLiaN90jP81gP5AB6CDTjLRICUaxpoIfSuiQNR8X8C6vdzBMnocqITiBZfgzCpOhcUJNXYAKiLSVqEXKaqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728918548; c=relaxed/simple;
-	bh=Gqy6SHsI9P4HkeRE5P1iUV9kyheNlUDU86OTPl4ujho=;
+	s=arc-20240116; t=1728918566; c=relaxed/simple;
+	bh=9fVwBKUKPPUiN8/HD++Z6GkQBiPLqzNZ19XAkZacvIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E6TI6ini5VCY+QnKNxRv48RRXUkVanOGC2kWd2HTNUZTAfo5yCH7n6358qM5LVKiP1gNtO+Z+eGWq64xCt+fGocqAKANao7Re0yF2cRWfmgXLU0bheyP7iSoEl2930Wgv44ipRs4kTEg+UkOe7FQFHupZ2xh6hkcHVEj9r9UvHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvSfMJwg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6BDC4CEC3;
-	Mon, 14 Oct 2024 15:09:07 +0000 (UTC)
+	 MIME-Version; b=n7B2kOn8I4HoHhI1TzBLRwh8mZkbEx/kF+Aco0G6G/AtAzwIdK0G58ftfC4UONrrya+sRnXyMch3RHnDb/M+Dg+VTMpgWHSNTYDXJ+imbNTCueGIVkGRxQ++EZs1eF3bHB05l1XVqdZUUEAJMOU+pVjytybiF9Va+4CD/ADIbvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yruR/pGR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC5AC4CEC7;
+	Mon, 14 Oct 2024 15:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728918548;
-	bh=Gqy6SHsI9P4HkeRE5P1iUV9kyheNlUDU86OTPl4ujho=;
+	s=korg; t=1728918566;
+	bh=9fVwBKUKPPUiN8/HD++Z6GkQBiPLqzNZ19XAkZacvIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvSfMJwgncnMXVJ1GTTgtDeqN1R8QpsraXzwGHJU/KEmPQ3T2LMnWXoC+wXCV5qH+
-	 plmk6K+679a2tdBTQqJ4lj9mtuWoKGssgsiRPziOLmuQxGc0Ry6N+7EidPdkcfnkl2
-	 9ycDdflJDUuADlrL5CkbNStGDmiJ0Yf4gHepsu+M=
+	b=yruR/pGRyiAsuBy6wIcAihXa6n62mYNDkE4zEiEjtqm/X7rcSPbsMz75bBGPiiKLJ
+	 KvM5ZHc0jMq5jrezkGcJq8orFcCrDOYOgPKG520ExvfngM5UANc+M+qThjmoXwfVqA
+	 J/iv6rgVO6dIcQTOo+Etrpzfwoo/9+YOpe0p6XAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.1 327/798] f2fs: fix several potential integer overflows in file offsets
-Date: Mon, 14 Oct 2024 16:14:41 +0200
-Message-ID: <20241014141230.798915231@linuxfoundation.org>
+Subject: [PATCH 6.1 328/798] f2fs: prevent possible int overflow in dir_block_index()
+Date: Mon, 14 Oct 2024 16:14:42 +0200
+Message-ID: <20241014141230.837443056@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -68,61 +68,41 @@ Content-Transfer-Encoding: 8bit
 
 From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 1cade98cf6415897bf9342ee451cc5b40b58c638 upstream.
+commit 47f268f33dff4a5e31541a990dc09f116f80e61c upstream.
 
-When dealing with large extents and calculating file offsets by
-summing up according extent offsets and lengths of unsigned int type,
-one may encounter possible integer overflow if the values are
-big enough.
+The result of multiplication between values derived from functions
+dir_buckets() and bucket_blocks() *could* technically reach
+2^30 * 2^2 = 2^32.
 
-Prevent this from happening by expanding one of the addends to
-(pgoff_t) type.
+While unlikely to happen, it is prudent to ensure that it will not
+lead to integer overflow. Thus, use mul_u32_u32() as it's more
+appropriate to mitigate the issue.
 
 Found by Linux Verification Center (linuxtesting.org) with static
 analysis tool SVACE.
 
-Fixes: d323d005ac4a ("f2fs: support file defragment")
+Fixes: 3843154598a0 ("f2fs: introduce large directory support")
 Cc: stable@vger.kernel.org
 Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 Reviewed-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/extent_cache.c |    4 ++--
- fs/f2fs/file.c         |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ fs/f2fs/dir.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -426,7 +426,7 @@ static unsigned int __free_extent_tree(s
- static void __drop_largest_extent(struct extent_tree *et,
- 					pgoff_t fofs, unsigned int len)
- {
--	if (fofs < et->largest.fofs + et->largest.len &&
-+	if (fofs < (pgoff_t)et->largest.fofs + et->largest.len &&
- 			fofs + len > et->largest.fofs) {
- 		et->largest.len = 0;
- 		et->largest_updated = true;
-@@ -505,7 +505,7 @@ static bool __lookup_extent_tree(struct
+--- a/fs/f2fs/dir.c
++++ b/fs/f2fs/dir.c
+@@ -190,7 +190,8 @@ static unsigned long dir_block_index(uns
+ 	unsigned long bidx = 0;
  
- 	if (type == EX_READ &&
- 			et->largest.fofs <= pgofs &&
--			et->largest.fofs + et->largest.len > pgofs) {
-+			(pgoff_t)et->largest.fofs + et->largest.len > pgofs) {
- 		*ei = et->largest;
- 		ret = true;
- 		stat_inc_largest_node_hit(sbi);
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2671,7 +2671,7 @@ static int f2fs_defragment_range(struct
- 	 * block addresses are continuous.
- 	 */
- 	if (f2fs_lookup_read_extent_cache(inode, pg_start, &ei)) {
--		if (ei.fofs + ei.len >= pg_end)
-+		if ((pgoff_t)ei.fofs + ei.len >= pg_end)
- 			goto out;
- 	}
- 
+ 	for (i = 0; i < level; i++)
+-		bidx += dir_buckets(i, dir_level) * bucket_blocks(i);
++		bidx += mul_u32_u32(dir_buckets(i, dir_level),
++				    bucket_blocks(i));
+ 	bidx += idx * bucket_blocks(level);
+ 	return bidx;
+ }
 
 
 
