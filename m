@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-84769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F3E999D207
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B2E99CCBD
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:24:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEC3A2834DB
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C57F5B215F6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1411BD03B;
-	Mon, 14 Oct 2024 15:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703081ABEA1;
+	Mon, 14 Oct 2024 14:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyEmtTa4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="un1oLzRk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1971D1B86CC;
-	Mon, 14 Oct 2024 15:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EDD1AB505;
+	Mon, 14 Oct 2024 14:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919151; cv=none; b=Mp3qyS6toyOVGtyG2bplC0N13MOv56xdCKxD1jdo83DmGijE7DRaFFmfXR7+WGJlCI1IWtHDjzon9Dk2wBpKoE2LcYqKIc9fiNC5dDM0oWCTe9Nr43QTdR6hWlhuQozzJjlKUEi6HNjWNSUNYacP951rQ2xH0LgNb+q1MSDBZxU=
+	t=1728915845; cv=none; b=L8FniCS1YKGpd1Fan/O2s/g2kYotRF3NMnE7IfoPUlGzD3r+n46ydanA7DM2wdTANaPFgYn++7wmr511qRmkpz/gKdxRg/DjQk4qPDEraC5rdtPj4crjcv7pIGEIOBZoZAMmCDNoMmGKgLlHsyukjBNHGb0lZM3ADAGNoG9XFnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919151; c=relaxed/simple;
-	bh=F4TvSckTmLOKHsfUuCtDT62VjNrHnBP8l3KibBmf0DY=;
+	s=arc-20240116; t=1728915845; c=relaxed/simple;
+	bh=d97/4jlYhprWleUWysNJF25d1E5FY+vpECQpab+r4kE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ns/5zY0FjuoXddZ0igKUrV9ycXF9UX0Nlt/FkvULYaq8B6DuBIO6F6obUacluK3g4rXFuVAJwumAWmdnXciq6WrfvchhYC17V1rLB82dIVsBwSx6pmpVaA2Xly8f4DbBMmA5QcHwru9HlynK6fX+RzPtQO6XbloqKSHaHDqx2uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyEmtTa4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D284C4CEC3;
-	Mon, 14 Oct 2024 15:19:10 +0000 (UTC)
+	 MIME-Version; b=jHs+wEv7aVD+g/gPvOFN6ln7LtL+tPibQKtpwk1JMPEjlBJL88M4VHSgkc2dFHgB8ZmLbHyUdz1QgFafJXebpmOKB3K1VD57tjaBFqHrlmS9MZSZL0R56SV3xNOHK+3Fj1lx88J9FJpdhBaG5OVcEuROdHlmkAcsXTv96KUJmWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=un1oLzRk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EFAAC4CEC3;
+	Mon, 14 Oct 2024 14:24:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919151;
-	bh=F4TvSckTmLOKHsfUuCtDT62VjNrHnBP8l3KibBmf0DY=;
+	s=korg; t=1728915845;
+	bh=d97/4jlYhprWleUWysNJF25d1E5FY+vpECQpab+r4kE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dyEmtTa4yPV7f/rbkiOBlBjqseaw40NSCj3Guw4d/+xGa4DyS6FVR/SXycVulR+II
-	 YiTALH/p7obdeuxHZqp8XBXBZn0axGVmUzkQDe+bDpWLmVzl3s8HnnhkP6bAXTetPX
-	 KaTkQAu+2KuC/VuQqtguHJOgVjFHG0FiHOWh4B+A=
+	b=un1oLzRkUjhl0sc0A53otdcG7qeZAHaYErqyl62UXvvuSUQoiR3IPxECXygiQhBk/
+	 mVmlGgddxAqhxhNeg79nskg2RGYiTNLCfPvMLIeFMW2DhG3qFLwcxZYAF9zVwfX66E
+	 5flXawioX2wpX69Zfx/559L8AKY71TsBv8BBYkZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Marek Vasut <marex@denx.de>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.1 525/798] i2c: stm32f7: Do not prepare/unprepare clock during runtime suspend/resume
+	Hou Tao <houtao1@huawei.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 016/214] bpf: Call the missed btf_record_free() when map creation fails
 Date: Mon, 14 Oct 2024 16:17:59 +0200
-Message-ID: <20241014141238.604819054@linuxfoundation.org>
+Message-ID: <20241014141045.627217046@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Hou Tao <houtao1@huawei.com>
 
-commit 048bbbdbf85e5e00258dfb12f5e368f908801d7b upstream.
+[ Upstream commit 87e9675a0dfd0bf4a36550e4a0e673038ec67aee ]
 
-In case there is any sort of clock controller attached to this I2C bus
-controller, for example Versaclock or even an AIC32x4 I2C codec, then
-an I2C transfer triggered from the clock controller clk_ops .prepare
-callback may trigger a deadlock on drivers/clk/clk.c prepare_lock mutex.
+When security_bpf_map_create() in map_create() fails, map_create() will
+call btf_put() and ->map_free() callback to free the map. It doesn't
+free the btf_record of map value, so add the missed btf_record_free()
+when map creation fails.
 
-This is because the clock controller first grabs the prepare_lock mutex
-and then performs the prepare operation, including its I2C access. The
-I2C access resumes this I2C bus controller via .runtime_resume callback,
-which calls clk_prepare_enable(), which attempts to grab the prepare_lock
-mutex again and deadlocks.
+However btf_record_free() needs to be called after ->map_free() just
+like bpf_map_free_deferred() did, because ->map_free() may use the
+btf_record to free the special fields in preallocated map value. So
+factor out bpf_map_free() helper to free the map, btf_record, and btf
+orderly and use the helper in both map_create() and
+bpf_map_free_deferred().
 
-Since the clock are already prepared since probe() and unprepared in
-remove(), use simple clk_enable()/clk_disable() calls to enable and
-disable the clock on runtime suspend and resume, to avoid hitting the
-prepare_lock mutex.
-
-Acked-by: Alain Volmat <alain.volmat@foss.st.com>
-Signed-off-by: Marek Vasut <marex@denx.de>
-Fixes: 4e7bca6fc07b ("i2c: i2c-stm32f7: add PM Runtime support")
-Cc: <stable@vger.kernel.org> # v5.0+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20240912012845.3458483-2-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-stm32f7.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/bpf/syscall.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/drivers/i2c/busses/i2c-stm32f7.c
-+++ b/drivers/i2c/busses/i2c-stm32f7.c
-@@ -2353,7 +2353,7 @@ static int __maybe_unused stm32f7_i2c_ru
- 	struct stm32f7_i2c_dev *i2c_dev = dev_get_drvdata(dev);
- 
- 	if (!stm32f7_i2c_is_slave_registered(i2c_dev))
--		clk_disable_unprepare(i2c_dev->clk);
-+		clk_disable(i2c_dev->clk);
- 
- 	return 0;
- }
-@@ -2364,9 +2364,9 @@ static int __maybe_unused stm32f7_i2c_ru
- 	int ret;
- 
- 	if (!stm32f7_i2c_is_slave_registered(i2c_dev)) {
--		ret = clk_prepare_enable(i2c_dev->clk);
-+		ret = clk_enable(i2c_dev->clk);
- 		if (ret) {
--			dev_err(dev, "failed to prepare_enable clock\n");
-+			dev_err(dev, "failed to enable clock\n");
- 			return ret;
- 		}
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index d9cae8e259699..21fb9c4d498fb 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -733,15 +733,11 @@ void bpf_obj_free_fields(const struct btf_record *rec, void *obj)
  	}
+ }
+ 
+-/* called from workqueue */
+-static void bpf_map_free_deferred(struct work_struct *work)
++static void bpf_map_free(struct bpf_map *map)
+ {
+-	struct bpf_map *map = container_of(work, struct bpf_map, work);
+ 	struct btf_record *rec = map->record;
+ 	struct btf *btf = map->btf;
+ 
+-	security_bpf_map_free(map);
+-	bpf_map_release_memcg(map);
+ 	/* implementation dependent freeing */
+ 	map->ops->map_free(map);
+ 	/* Delay freeing of btf_record for maps, as map_free
+@@ -760,6 +756,16 @@ static void bpf_map_free_deferred(struct work_struct *work)
+ 	btf_put(btf);
+ }
+ 
++/* called from workqueue */
++static void bpf_map_free_deferred(struct work_struct *work)
++{
++	struct bpf_map *map = container_of(work, struct bpf_map, work);
++
++	security_bpf_map_free(map);
++	bpf_map_release_memcg(map);
++	bpf_map_free(map);
++}
++
+ static void bpf_map_put_uref(struct bpf_map *map)
+ {
+ 	if (atomic64_dec_and_test(&map->usercnt)) {
+@@ -1411,8 +1417,7 @@ static int map_create(union bpf_attr *attr)
+ free_map_sec:
+ 	security_bpf_map_free(map);
+ free_map:
+-	btf_put(map->btf);
+-	map->ops->map_free(map);
++	bpf_map_free(map);
+ put_token:
+ 	bpf_token_put(token);
+ 	return err;
+-- 
+2.43.0
+
 
 
 
