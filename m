@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-83716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE8A499BEFB
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:11:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F6D99BEFE
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 06:12:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 937F228701B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 04:11:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41FDF1C22416
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 04:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311141C1753;
-	Mon, 14 Oct 2024 03:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D9C1C0DD6;
+	Mon, 14 Oct 2024 04:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vO67CKGn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aeUzZ1wr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28571C0DD6;
-	Mon, 14 Oct 2024 03:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F16314C5BD;
+	Mon, 14 Oct 2024 04:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728878395; cv=none; b=PG22STJ0wVYjDcaNxL14vEmQP1Y4U/UofGNmMTaNBoONQt1eIrrP5cLCPAXp6+1OovZHKhfsUSwmyVi53BhFuGooq4cslJxp5/Z+dtxPraLeV3zMhM2ESImMZvrPxLLt1HiYmtuRyQjRyAxnO6NlezoJ/B5bFUwj0cX6+sAslpA=
+	t=1728878401; cv=none; b=fPr/5BBpIPPRnwJGxNGPMUtQB1gacjiWpjl1rCDq0e5klJE3ZoyAV7AySUEMk7YA1sdbjWkJyco4mUtToJcQfIrrLwNRsiNCf8RHGPZulsncBJ9tVTV2uYIXKaFXhE+LJ7KzID+1HyjN4KTLr9pFANocRO0fHNFG4MV40evUjbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728878395; c=relaxed/simple;
-	bh=xDnlq5/mTEbLilXHutJWA57ZV4BomMzdbuarC3CGAeU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KkaqOJcUTmZ642yEMTQ1wf/0aZvkG13/FpQQvoXbEWmY2P3X9Yzl4xJX73HQg4Qj/sgvuNGQXu3Tc3OkJP5sYL7PdA74ykXrcRSwygUsuCFx3XMA8atPPPXrDLDn7u+v13wB96+pF/WDkJr2HT9n9Uf8MaaaLRV7SuT/jwcSQ6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vO67CKGn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81866C4CEC3;
-	Mon, 14 Oct 2024 03:59:53 +0000 (UTC)
+	s=arc-20240116; t=1728878401; c=relaxed/simple;
+	bh=IJPe+KHMs0Jr4wtbXXie9OWisHlE7T9H0zYOSBGDXPk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U35oaBcaZ0RCbEqxUIFWzCYnsJBITDygliDlDOBBQJMURAPtArAj7IqB6YnE4HJNV9NXg4VO2UX33jZoUSLUidl6/ySTSsSno43pGp35LTCOyQSj4jZJCZgTKbXVsyfTQ9RiRX311Hw9PLh2Ta6/4OlqYcaE68qeqbVceZl1ODE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aeUzZ1wr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF6A8C4CEC3;
+	Mon, 14 Oct 2024 03:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728878394;
-	bh=xDnlq5/mTEbLilXHutJWA57ZV4BomMzdbuarC3CGAeU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vO67CKGn5C/xYQZxQJwOxXGBUqkqBjnwZgz+6HiFImTE34A4QCsYtgPzdTZRjdgjY
-	 dFKHlViHmhOFOn4kdTBfazvr3h2dhSBLNRGnwQU81QitpvIBOKw1N9/RWOWYmtMh/a
-	 foyMp2+R7BQN2Atn4HOg4atgL2cukHZC7d7KJ+WhA2q+6101rh0XFgmLvoNHZNrawM
-	 Ua4vBoSvQy3fbij/bWS6TUI7lL993uO93iLIB4tGm3benFICJJ6CZdC+4sZr3XHW37
-	 GO2FroHs76JxcxztkxB01mmbndk0RMT+s50IeUYVxz/QcEA9nwfTsXfKSR8dkDBzqU
-	 e1iFdMc/+1qxA==
+	s=k20201202; t=1728878401;
+	bh=IJPe+KHMs0Jr4wtbXXie9OWisHlE7T9H0zYOSBGDXPk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=aeUzZ1wrD/PNXdA3RsxS3JmlJ+C3S0SBBuSuBij1P9z9HTZMDTBsSmu1JjcecNJeZ
+	 LOWobA3dJXZ90Tm9uTFwb3E0a9Im+AFkyBOQZzghGGUYX9oDaIW6FlMLNETb7Y2QJn
+	 XuV56IgeQ6aL888f/AIeWtazVlsbnKfareLfCjwrvZ+RBgD89TN1/+l5ZisYPouKTI
+	 iNFUgBqPLfDi5RUaSVp0oEcR7vmx1lH15JFTWSiX7fotdZb/+q7RUToNUbcgguFQIz
+	 b2yMz4RmW5tAR5lMcwlLVMpJ6nQSeRqeRedMK8sc237abeDtlWQw0xAv1q5ofUAcq4
+	 mqozGZcHI5EVw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dimitri Sivanich <sivanich@hpe.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+Cc: Daniel Palmer <daniel@0x0f.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	dimitri.sivanich@hpe.com,
-	gregkh@linuxfoundation.org
-Subject: [PATCH AUTOSEL 5.10 3/3] misc: sgi-gru: Don't disable preemption in GRU driver
-Date: Sun, 13 Oct 2024 23:59:43 -0400
-Message-ID: <20241014035948.2261641-3-sashal@kernel.org>
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	quic_jjohnson@quicinc.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 1/2] net: amd: mvme147: Fix probe banner message
+Date: Sun, 13 Oct 2024 23:59:53 -0400
+Message-ID: <20241014035958.2266211-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241014035948.2261641-1-sashal@kernel.org>
-References: <20241014035948.2261641-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,97 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.226
+X-stable-base: Linux 5.4.284
 Content-Transfer-Encoding: 8bit
 
-From: Dimitri Sivanich <sivanich@hpe.com>
+From: Daniel Palmer <daniel@0x0f.com>
 
-[ Upstream commit b983b271662bd6104d429b0fd97af3333ba760bf ]
+[ Upstream commit 82c5b53140faf89c31ea2b3a0985a2f291694169 ]
 
-Disabling preemption in the GRU driver is unnecessary, and clashes with
-sleeping locks in several code paths.  Remove preempt_disable and
-preempt_enable from the GRU driver.
+Currently this driver prints this line with what looks like
+a rogue format specifier when the device is probed:
+[    2.840000] eth%d: MVME147 at 0xfffe1800, irq 12, Hardware Address xx:xx:xx:xx:xx:xx
 
-Signed-off-by: Dimitri Sivanich <sivanich@hpe.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Change the printk() for netdev_info() and move it after the
+registration has completed so it prints out the name of the
+interface properly.
+
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/sgi-gru/grukservices.c | 2 --
- drivers/misc/sgi-gru/grumain.c      | 4 ----
- drivers/misc/sgi-gru/grutlbpurge.c  | 2 --
- 3 files changed, 8 deletions(-)
+ drivers/net/ethernet/amd/mvme147.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/misc/sgi-gru/grukservices.c b/drivers/misc/sgi-gru/grukservices.c
-index 0ea923fe6371b..e2bdba4742930 100644
---- a/drivers/misc/sgi-gru/grukservices.c
-+++ b/drivers/misc/sgi-gru/grukservices.c
-@@ -258,7 +258,6 @@ static int gru_get_cpu_resources(int dsr_bytes, void **cb, void **dsr)
- 	int lcpu;
+diff --git a/drivers/net/ethernet/amd/mvme147.c b/drivers/net/ethernet/amd/mvme147.c
+index 72abd3f82249b..eb7b1da2fb06f 100644
+--- a/drivers/net/ethernet/amd/mvme147.c
++++ b/drivers/net/ethernet/amd/mvme147.c
+@@ -106,10 +106,6 @@ struct net_device * __init mvme147lance_probe(int unit)
+ 	address = address >> 8;
+ 	dev->dev_addr[3] = address&0xff;
  
- 	BUG_ON(dsr_bytes > GRU_NUM_KERNEL_DSR_BYTES);
--	preempt_disable();
- 	bs = gru_lock_kernel_context(-1);
- 	lcpu = uv_blade_processor_id();
- 	*cb = bs->kernel_cb + lcpu * GRU_HANDLE_STRIDE;
-@@ -272,7 +271,6 @@ static int gru_get_cpu_resources(int dsr_bytes, void **cb, void **dsr)
- static void gru_free_cpu_resources(void *cb, void *dsr)
- {
- 	gru_unlock_kernel_context(uv_numa_blade_id());
--	preempt_enable();
- }
- 
- /*
-diff --git a/drivers/misc/sgi-gru/grumain.c b/drivers/misc/sgi-gru/grumain.c
-index e2325e3d077ea..4f7a0f8472556 100644
---- a/drivers/misc/sgi-gru/grumain.c
-+++ b/drivers/misc/sgi-gru/grumain.c
-@@ -941,10 +941,8 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
- 
- again:
- 	mutex_lock(&gts->ts_ctxlock);
--	preempt_disable();
- 
- 	if (gru_check_context_placement(gts)) {
--		preempt_enable();
- 		mutex_unlock(&gts->ts_ctxlock);
- 		gru_unload_context(gts, 1);
- 		return VM_FAULT_NOPAGE;
-@@ -953,7 +951,6 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
- 	if (!gts->ts_gru) {
- 		STAT(load_user_context);
- 		if (!gru_assign_gru_context(gts)) {
--			preempt_enable();
- 			mutex_unlock(&gts->ts_ctxlock);
- 			set_current_state(TASK_INTERRUPTIBLE);
- 			schedule_timeout(GRU_ASSIGN_DELAY);  /* true hack ZZZ */
-@@ -969,7 +966,6 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
- 				vma->vm_page_prot);
+-	printk("%s: MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
+-	       dev->name, dev->base_addr, MVME147_LANCE_IRQ,
+-	       dev->dev_addr);
+-
+ 	lp = netdev_priv(dev);
+ 	lp->ram = __get_dma_pages(GFP_ATOMIC, 3);	/* 32K */
+ 	if (!lp->ram) {
+@@ -139,6 +135,9 @@ struct net_device * __init mvme147lance_probe(int unit)
+ 		return ERR_PTR(err);
  	}
  
--	preempt_enable();
- 	mutex_unlock(&gts->ts_ctxlock);
- 
- 	return VM_FAULT_NOPAGE;
-diff --git a/drivers/misc/sgi-gru/grutlbpurge.c b/drivers/misc/sgi-gru/grutlbpurge.c
-index 10921cd2608df..1107dd3e2e9fa 100644
---- a/drivers/misc/sgi-gru/grutlbpurge.c
-+++ b/drivers/misc/sgi-gru/grutlbpurge.c
-@@ -65,7 +65,6 @@ static struct gru_tlb_global_handle *get_lock_tgh_handle(struct gru_state
- 	struct gru_tlb_global_handle *tgh;
- 	int n;
- 
--	preempt_disable();
- 	if (uv_numa_blade_id() == gru->gs_blade_id)
- 		n = get_on_blade_tgh(gru);
- 	else
-@@ -79,7 +78,6 @@ static struct gru_tlb_global_handle *get_lock_tgh_handle(struct gru_state
- static void get_unlock_tgh_handle(struct gru_tlb_global_handle *tgh)
- {
- 	unlock_tgh_handle(tgh);
--	preempt_enable();
++	netdev_info(dev, "MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
++		    dev->base_addr, MVME147_LANCE_IRQ, dev->dev_addr);
++
+ 	return dev;
  }
  
- /*
 -- 
 2.43.0
 
