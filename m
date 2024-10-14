@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-84209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF5599CEEB
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:48:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DE7699D360
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BC64B242DD
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:48:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B262B27979
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF78C1BC063;
-	Mon, 14 Oct 2024 14:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7F81AB6DD;
+	Mon, 14 Oct 2024 15:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCZj9M4K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3RkCriV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6751C2337;
-	Mon, 14 Oct 2024 14:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01D719E7ED;
+	Mon, 14 Oct 2024 15:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917212; cv=none; b=NvjKS+mUFGhzIggRuGNi31YTc96wa+XOWt909xQbeoLwUbA/eTsGav2+JJw3gBfB6iPqXFHKR+Tnksbh5eSvwSTT/d4ZfgUB4N6wdZRxgb81odFIq6m3ZjzV0yiONSMx6BudswbyOVsZwPGPr30hyc2oY1VwQw6gHkFlh0gNw1U=
+	t=1728919997; cv=none; b=eLoHPWlXriy2vHIuA71DcEVFBHk0BUQyCyQc1uyszle2Ga5XUwGRWnR12qgmzFI15pyYZFvW6WujR0iAxKtNacN4KWsl8wFB/XqBimdQTYnxybtLbZr5cYhDJ0V0xE/COIh0wfbfbvdvqqquMbBKMDZyDgZvBfBWm0dKqn4aeA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917212; c=relaxed/simple;
-	bh=6c16AE8y4s5yGtVh8aB6O+bf4/HXq1cEu6uTdXduCrA=;
+	s=arc-20240116; t=1728919997; c=relaxed/simple;
+	bh=vWivJPeIywmCke3lhnjoEaQM35plidQoL4WGwtryksY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K0xYy3zFmbj3rrwzqW2VSQBNhjgtMSsgng66bbZHgxxc9eLOkBpA6WXYBlkIeuAqS+vA8amlUU+BckGQdBf4/sEBbr94HnZrNLrnybYf/DSXdBf1oS0S1kX4dwDZiAPZcQIVhrY98NQJ69W7lHXzNqi6i49SUVmaA7CTcYz766I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCZj9M4K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A74D1C4CEC3;
-	Mon, 14 Oct 2024 14:46:51 +0000 (UTC)
+	 MIME-Version; b=R6SL124RAKq19kYQD4I4YBeRJ0uh5RXc7ZTL98GVipag4+BcPAuikVTyJaTvelgpLdffRJYt45qJEZcxXhFlx2u0ekycO7Ln4rEuqBPHNW5+jw7UlpmkrANZRf5E7lA3f8xwJOxoLfBPoUKgnh1S1zpeALpsYgiUYU9ppgC+iWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J3RkCriV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418AEC4CEC3;
+	Mon, 14 Oct 2024 15:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917212;
-	bh=6c16AE8y4s5yGtVh8aB6O+bf4/HXq1cEu6uTdXduCrA=;
+	s=korg; t=1728919997;
+	bh=vWivJPeIywmCke3lhnjoEaQM35plidQoL4WGwtryksY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LCZj9M4KQ3a7vKmCESspr4IkKxkQASAf1Dw8kvLlSjTD0RZ4PFoQ68qZcUodTa0zS
-	 Y7KUBhQa8mEEHQm4PcQD7dadWgPbGD6rwrDyQSFel/h6lJ0NOxNjyN+D9vxtBQxN7y
-	 BolOKKL1SFUipJCbY0GY78ZS0lsV9vGEN1WoSXUo=
+	b=J3RkCriVrt5L4RxCXFrgWN8qjEyi3EVNdy/pu7eE7zYwhB25UmKoQje9t7aPp1NXU
+	 /Qi0WwAZojv9jBfeHfCn7tTKy5m54PMuGgGEFQAP7dHgPZ6wBG7/rFnfpy9PsmhzcP
+	 76H+Sp75gsMEdp4bwQrKudUSDhTegGTEq3YeTY1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Icenowy Zheng <uwu@icenowy.me>,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.6 185/213] usb: storage: ignore bogus device raised by JieLi BR21 USB sound chip
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 737/798] net: phy: bcm84881: Fix some error handling paths
 Date: Mon, 14 Oct 2024 16:21:31 +0200
-Message-ID: <20241014141050.185469319@linuxfoundation.org>
+Message-ID: <20241014141247.025323618@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Icenowy Zheng <uwu@icenowy.me>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit a6555cb1cb69db479d0760e392c175ba32426842 upstream.
+[ Upstream commit 9234a2549cb6ac038bec36cc7c084218e9575513 ]
 
-JieLi tends to use SCSI via USB Mass Storage to implement their own
-proprietary commands instead of implementing another USB interface.
-Enumerating it as a generic mass storage device will lead to a Hardware
-Error sense key get reported.
+If phy_read_mmd() fails, the error code stored in 'bmsr' should be returned
+instead of 'val' which is likely to be 0.
 
-Ignore this bogus device to prevent appearing a unusable sdX device
-file.
-
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-Cc: stable <stable@kernel.org>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20241001083407.8336-1-uwu@icenowy.me
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 75f4d8d10e01 ("net: phy: add Broadcom BCM84881 PHY driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://patch.msgid.link/3e1755b0c40340d00e089d6adae5bca2f8c79e53.1727982168.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/unusual_devs.h |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/phy/bcm84881.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -2423,6 +2423,17 @@ UNUSUAL_DEV(  0xc251, 0x4003, 0x0100, 0x
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_NOT_LOCKABLE),
+diff --git a/drivers/net/phy/bcm84881.c b/drivers/net/phy/bcm84881.c
+index 9717a1626f3fa..37a64a37b2ae3 100644
+--- a/drivers/net/phy/bcm84881.c
++++ b/drivers/net/phy/bcm84881.c
+@@ -120,7 +120,7 @@ static int bcm84881_aneg_done(struct phy_device *phydev)
  
-+/*
-+ * Reported by Icenowy Zheng <uwu@icenowy.me>
-+ * This is an interface for vendor-specific cryptic commands instead
-+ * of real USB storage device.
-+ */
-+UNUSUAL_DEV(  0xe5b7, 0x0811, 0x0100, 0x0100,
-+		"ZhuHai JieLi Technology",
-+		"JieLi BR21",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_IGNORE_DEVICE),
-+
- /* Reported by Andrew Simmons <andrew.simmons@gmail.com> */
- UNUSUAL_DEV(  0xed06, 0x4500, 0x0001, 0x0001,
- 		"DataStor",
+ 	bmsr = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_C22 + MII_BMSR);
+ 	if (bmsr < 0)
+-		return val;
++		return bmsr;
+ 
+ 	return !!(val & MDIO_AN_STAT1_COMPLETE) &&
+ 	       !!(bmsr & BMSR_ANEGCOMPLETE);
+@@ -146,7 +146,7 @@ static int bcm84881_read_status(struct phy_device *phydev)
+ 
+ 	bmsr = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_C22 + MII_BMSR);
+ 	if (bmsr < 0)
+-		return val;
++		return bmsr;
+ 
+ 	phydev->autoneg_complete = !!(val & MDIO_AN_STAT1_COMPLETE) &&
+ 				   !!(bmsr & BMSR_ANEGCOMPLETE);
+-- 
+2.43.0
+
 
 
 
