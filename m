@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-84800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A759999D227
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BEF599CCDD
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:26:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F15B1F2503C
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6106D2819D2
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D521AC448;
-	Mon, 14 Oct 2024 15:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15AB1A76C4;
+	Mon, 14 Oct 2024 14:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XOKjjyQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSnaVISC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0228C1AB505;
-	Mon, 14 Oct 2024 15:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9D5E571;
+	Mon, 14 Oct 2024 14:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919258; cv=none; b=ipk7zP3NWcdxrg+Tx67o4tKSlZfS8ghKC1y6yD4oWA6kv+JNgehbRGKc8keSuxfZpLYEFSL97e79+WrYHTp/ObxcJeOQxdFyEtejtqYnKwRlgiNw0IJ4P9JmoyNdAm7rZxZHzIaUPOif7y6BGcuEsOvTR89msjjR30dK70k5plw=
+	t=1728915964; cv=none; b=Gqzwe36JV6U1Cap3N6oFaskbUsbjnD/tX3kSA3q25V9ib0Qco/i/sV0g61SoSBU+d4YRMhE5PglXfz1GxlRBXXvdGxjpPT9Pq5cnAsOyi1lKAAPAGnPlGie4bpzHbaEtY1phrak2XRLWWIP9kM/GnFK3TgyI3aYXBvpQK1yU/sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919258; c=relaxed/simple;
-	bh=n7OmxHrOoxVjqjlYcAcM76XhGMYvfn7CYsm9SIENnn0=;
+	s=arc-20240116; t=1728915964; c=relaxed/simple;
+	bh=+UXLl5uZF006oRNWZnBGeQpZd1+msQyBdhqgkt3EY+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jxcRRm+RN4i5+GMGf3y0Mi8aQzz29LRQU6cjd4gIU9UrfZZrmpy/IEiIOd2j30Y8+eKRC6VDEUSJnZSYhwj5jpVh+1YsMhZjLrfunA948t1+Cps1MqfyvbM8r022Jrulx1QQebeDwaXjDySyds/nDtdeL6qQmhN+uLJfmh9wMUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XOKjjyQv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F894C4CEC3;
-	Mon, 14 Oct 2024 15:20:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KNsuMUorW5pAOqOUbkdfXf7yNOkrzs0Ta2EXO3baHr9mY9UjcoMswLkWD0mRh1ZgajMWhKDpDAZ5/qcztf32FSPa7Lk1Fi5UV43aGifuZD2/n06v4MQarBQV0+Fj8Hg9EYKgEn6LZdghOkH2j04TB8YEpctNqbt+OCTDlEDQfiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSnaVISC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F8CC4CEC3;
+	Mon, 14 Oct 2024 14:26:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919257;
-	bh=n7OmxHrOoxVjqjlYcAcM76XhGMYvfn7CYsm9SIENnn0=;
+	s=korg; t=1728915964;
+	bh=+UXLl5uZF006oRNWZnBGeQpZd1+msQyBdhqgkt3EY+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XOKjjyQvK2adCFbKGqboP1Q3QEJqCmMxiCxyvx5izPpOWy9me1FhYfItbOGcdW/6p
-	 y01v1PoZviODfjAoeRpjmE31JmdRUynWWoc0sTey2ILR20A4+gLzVTfcehhsWw/JfM
-	 bGzZ4n1p4G8eXLG4efODFaRp4o5BQE66zqImmXjA=
+	b=tSnaVISCAO6cnig5ObffRMhs+s6SolfwLBA89BC/IWMLKIaw1qn7dQRpnU4Aj8UPe
+	 5vhhhtG3cZEDo5Q0bWNhuYyuSBKzLn2QzYmEW1ao8m1AhxEKQgSdQFUyEUA86rQtko
+	 4cvua9elUG3q+5NXUdL1y6xzMsTdAnlyXfyntHak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 557/798] parisc: Fix 64-bit userspace syscall path
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 048/214] PCI: endpoint: Assign PCI domain number for endpoint controllers
 Date: Mon, 14 Oct 2024 16:18:31 +0200
-Message-ID: <20241014141239.876673761@linuxfoundation.org>
+Message-ID: <20241014141046.865841165@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,71 +61,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@kernel.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-commit d24449864da5838936669618356b0e30ca2999c3 upstream.
+[ Upstream commit 0328947c50324cf4b2d8b181bf948edb8101f59f ]
 
-Currently the glibc isn't yet ported to 64-bit for hppa, so
-there is no usable userspace available yet.
-But it's possible to manually build a static 64-bit binary
-and run that for testing. One such 64-bit test program is
-available at http://ftp.parisc-linux.org/src/64bit.tar.gz
-and it shows various issues with the existing 64-bit syscall
-path in the kernel.
-This patch fixes those issues.
+Right now, PCI endpoint subsystem doesn't assign PCI domain number for the
+PCI endpoint controllers. But this domain number could be useful to the EPC
+drivers to uniquely identify each controller based on the hardware instance
+when there are multiple ones present in an SoC (even multiple RC/EP).
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org      # v4.19+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So let's make use of the existing pci_bus_find_domain_nr() API to allocate
+domain numbers based on either devicetree (linux,pci-domain) property or
+dynamic domain number allocation scheme.
+
+It should be noted that the domain number allocated by this API will be
+based on both RC and EP controllers in a SoC. If the 'linux,pci-domain' DT
+property is present, then the domain number represents the actual hardware
+instance of the PCI endpoint controller. If not, then the domain number
+will be allocated based on the PCI EP/RC controller probe order.
+
+If the architecture doesn't support CONFIG_PCI_DOMAINS_GENERIC (rare), then
+currently a warning is thrown to indicate that the architecture specific
+implementation is needed.
+
+Link: https://lore.kernel.org/linux-pci/20240828-pci-qcom-hotplug-v4-5-263a385fbbcb@linaro.org
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/syscall.S |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/pci/endpoint/pci-epc-core.c | 14 ++++++++++++++
+ include/linux/pci-epc.h             |  2 ++
+ 2 files changed, 16 insertions(+)
 
---- a/arch/parisc/kernel/syscall.S
-+++ b/arch/parisc/kernel/syscall.S
-@@ -232,10 +232,10 @@ linux_gateway_entry:
+diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
+index 84309dfe0c684..085a2de8b923d 100644
+--- a/drivers/pci/endpoint/pci-epc-core.c
++++ b/drivers/pci/endpoint/pci-epc-core.c
+@@ -838,6 +838,10 @@ void pci_epc_destroy(struct pci_epc *epc)
+ {
+ 	pci_ep_cfs_remove_epc_group(epc->group);
+ 	device_unregister(&epc->dev);
++
++#ifdef CONFIG_PCI_DOMAINS_GENERIC
++	pci_bus_release_domain_nr(NULL, &epc->dev);
++#endif
+ }
+ EXPORT_SYMBOL_GPL(pci_epc_destroy);
  
- #ifdef CONFIG_64BIT
- 	ldil	L%sys_call_table, %r1
--	or,=	%r2,%r2,%r2
--	addil	L%(sys_call_table64-sys_call_table), %r1
-+	or,ev	%r2,%r2,%r2
-+	ldil	L%sys_call_table64, %r1
- 	ldo	R%sys_call_table(%r1), %r19
--	or,=	%r2,%r2,%r2
-+	or,ev	%r2,%r2,%r2
- 	ldo	R%sys_call_table64(%r1), %r19
- #else
- 	load32	sys_call_table, %r19
-@@ -368,10 +368,10 @@ tracesys_next:
- 	extrd,u	%r19,63,1,%r2			/* W hidden in bottom bit */
+@@ -900,6 +904,16 @@ __pci_epc_create(struct device *dev, const struct pci_epc_ops *ops,
+ 	epc->dev.release = pci_epc_release;
+ 	epc->ops = ops;
  
- 	ldil	L%sys_call_table, %r1
--	or,=	%r2,%r2,%r2
--	addil	L%(sys_call_table64-sys_call_table), %r1
-+	or,ev	%r2,%r2,%r2
-+	ldil	L%sys_call_table64, %r1
- 	ldo	R%sys_call_table(%r1), %r19
--	or,=	%r2,%r2,%r2
-+	or,ev	%r2,%r2,%r2
- 	ldo	R%sys_call_table64(%r1), %r19
- #else
- 	load32	sys_call_table, %r19
-@@ -1310,6 +1310,8 @@ ENTRY(sys_call_table)
- END(sys_call_table)
++#ifdef CONFIG_PCI_DOMAINS_GENERIC
++	epc->domain_nr = pci_bus_find_domain_nr(NULL, dev);
++#else
++	/*
++	 * TODO: If the architecture doesn't support generic PCI
++	 * domains, then a custom implementation has to be used.
++	 */
++	WARN_ONCE(1, "This architecture doesn't support generic PCI domains\n");
++#endif
++
+ 	ret = dev_set_name(&epc->dev, "%s", dev_name(dev));
+ 	if (ret)
+ 		goto put_dev;
+diff --git a/include/linux/pci-epc.h b/include/linux/pci-epc.h
+index 85bdf2adb7607..8e3dcac55dcd5 100644
+--- a/include/linux/pci-epc.h
++++ b/include/linux/pci-epc.h
+@@ -128,6 +128,7 @@ struct pci_epc_mem {
+  * @group: configfs group representing the PCI EPC device
+  * @lock: mutex to protect pci_epc ops
+  * @function_num_map: bitmap to manage physical function number
++ * @domain_nr: PCI domain number of the endpoint controller
+  * @init_complete: flag to indicate whether the EPC initialization is complete
+  *                 or not
+  */
+@@ -145,6 +146,7 @@ struct pci_epc {
+ 	/* mutex to protect against concurrent access of EP controller */
+ 	struct mutex			lock;
+ 	unsigned long			function_num_map;
++	int				domain_nr;
+ 	bool				init_complete;
+ };
  
- #ifdef CONFIG_64BIT
-+#undef __SYSCALL_WITH_COMPAT
-+#define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, native)
- 	.align 8
- ENTRY(sys_call_table64)
- #include <asm/syscall_table_64.h>    /* 64-bit syscalls */
+-- 
+2.43.0
+
 
 
 
