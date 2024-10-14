@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-84074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 544EB99CE04
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:38:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C2D99D2A1
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1796E28355B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:38:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79EB01C20777
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2BF1AB530;
-	Mon, 14 Oct 2024 14:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836461B4F02;
+	Mon, 14 Oct 2024 15:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xz71NY/S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0Jrust7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30801AB528;
-	Mon, 14 Oct 2024 14:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E7814AA9;
+	Mon, 14 Oct 2024 15:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916728; cv=none; b=JqBabBR+344EmSmL2OzpqPuWXnBx4Ku17m35wx2ue4xmxWl74C0DhTfE5ncJpSIKDpjt27MckdurxffxBhbn46cfjc8cWaK7HyCTH7qESFoC/cDfoiPjajNmiQLwOHf+lXUwIiffUXXEgAMvqq/U2BpzSFQbm6Wi5OCiY/YPkkw=
+	t=1728919534; cv=none; b=bgfdA3u7xf88aLYZ4TI6NSAOf5s2Zk45yDkqPExxiKV0HERqrJ1sejPBgsp6TEQV/+f+CTVW47ys9H8YumhCpLWT0piOZ5fPH6LQnZmIQh0UdnhXXzqltCE4Tp9j6/3cv80z2+JJoOf2aOT5wjmSllAlWv/pE4JpM+qE1RXGxqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916728; c=relaxed/simple;
-	bh=zvcYChbHS/g/NdedPpMo8GNo822BkbbeHhmCN425n14=;
+	s=arc-20240116; t=1728919534; c=relaxed/simple;
+	bh=zhk6xaT90LbweuAYLR3GRoC/XmqIPTUPizTTnK6asl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6+1OLU8eoYGKlrvEMhbPbsPR6tGzW80B0qiQGohffQSDytkK26GiDB1Ok/FPKLYpblhabPJ+gIU5JhTF2SQjwoDjAygSmwCs6d8Scpmg00iUDARnip7HWC04eGu3ziQWCI1fRrw/cXh1iw7eyPX9BbqpbLHulDxG2XQ9+jsMUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xz71NY/S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3265AC4CEC3;
-	Mon, 14 Oct 2024 14:38:48 +0000 (UTC)
+	 MIME-Version; b=QDonlDrrNc6XhRDknqmznxCNsOw1sxfAxh+QmplOs8pztaWZlB5sAfGrfDs/kitIWqTvbeXUW0W7FIopiR4NL+0UwNlp7711/jv2Kimg8CjZ4BwOcW56cTMyxp5UmRAswjgQcDACjYNgZaP29OD1INI5yMRvzIG/zi5WwfF8Tvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0Jrust7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C83DC4CEC3;
+	Mon, 14 Oct 2024 15:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916728;
-	bh=zvcYChbHS/g/NdedPpMo8GNo822BkbbeHhmCN425n14=;
+	s=korg; t=1728919533;
+	bh=zhk6xaT90LbweuAYLR3GRoC/XmqIPTUPizTTnK6asl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xz71NY/SmlY46HXcSTYNyS2oWFD6igDIK+mPgUNlU9mygo5fa1Gx6n+spyEL4o9o4
-	 hirUznY7BroRs60Oe26a0tzMXMHVgcL6dPcjmP6BIEydzWVD5zBWmhv/6BgwoEtTMB
-	 w4lGqWy2ujF/LChjn3d5gVHhZmssxpwK+/cg/sHM=
+	b=M0Jrust7hgmE1Dmz9GB+fVCbWJ8Rwsh56OHEn6ilHrex5Wu0sa/rQ+5XA9h6Ahs39
+	 DbMbJhra0NxICmSmmWswN+0/3A2wcVGj2XCYtBOIRanJXVys7BcgdnXfhyFRjiBOs8
+	 AiJrGNfbU9Yj55eSQe1ZXxrBEmKg17eVEAiZDlOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/213] fs/ntfs3: Refactor enum_rstbl to suppress static checker
+	Lamome Julien <julien.lamome@wanadoo.fr>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 602/798] ACPI: resource: Add Asus Vivobook X1704VAP to irq1_level_low_skip_override[]
 Date: Mon, 14 Oct 2024 16:19:16 +0200
-Message-ID: <20241014141044.945754560@linuxfoundation.org>
+Message-ID: <20241014141241.662355711@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 56c16d5459d5c050a97a138a00a82b105a8e0a66 ]
+commit 2f80ce0b78c340e332f04a5801dee5e4ac8cfaeb upstream.
 
-Comments and brief description of function enum_rstbl added.
+Like other Asus Vivobook models the X1704VAP has its keybopard IRQ (1)
+described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
+which breaks the keyboard.
 
-Fixes: b46acd6a6a62 ("fs/ntfs3: Add NTFS journal")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the X1704VAP to the irq1_level_low_skip_override[] quirk table to fix
+this.
+
+Reported-by: Lamome Julien <julien.lamome@wanadoo.fr>
+Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1078696
+Closes: https://lore.kernel.org/all/1226760b-4699-4529-bf57-6423938157a3@wanadoo.fr/
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20240927141606.66826-3-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/fslog.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/acpi/resource.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
-index 231b012fb19d3..2a1aeab53ea4b 100644
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -609,14 +609,29 @@ static inline void add_client(struct CLIENT_REC *ca, u16 index, __le16 *head)
- 	*head = cpu_to_le16(index);
- }
- 
-+/*
-+ * Enumerate restart table.
-+ *
-+ * @t - table to enumerate.
-+ * @c - current enumerated element.
-+ *
-+ * enumeration starts with @c == NULL
-+ * returns next element or NULL
-+ */
- static inline void *enum_rstbl(struct RESTART_TABLE *t, void *c)
- {
- 	__le32 *e;
- 	u32 bprt;
--	u16 rsize = t ? le16_to_cpu(t->size) : 0;
-+	u16 rsize;
-+
-+	if (!t)
-+		return NULL;
-+
-+	rsize = le16_to_cpu(t->size);
- 
- 	if (!c) {
--		if (!t || !t->total)
-+		/* start enumeration. */
-+		if (!t->total)
- 			return NULL;
- 		e = Add2Ptr(t, sizeof(struct RESTART_TABLE));
- 	} else {
--- 
-2.43.0
-
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -440,6 +440,13 @@ static const struct dmi_system_id asus_l
+ 		},
+ 	},
+ 	{
++		/* Asus Vivobook X1704VAP */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "X1704VAP"),
++		},
++	},
++	{
+ 		.ident = "Asus ExpertBook B1402CBA",
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 
 
 
