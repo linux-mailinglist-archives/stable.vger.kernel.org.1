@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-84743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60DA199D1EC
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:22:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8159E99D1B6
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:20:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B8A5285F50
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:22:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37FB11F24150
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CCA51CEAD1;
-	Mon, 14 Oct 2024 15:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A6E1C82F4;
+	Mon, 14 Oct 2024 15:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="132MoPrx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUCpyIb1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5D21AE01F;
-	Mon, 14 Oct 2024 15:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FF01C7269;
+	Mon, 14 Oct 2024 15:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919057; cv=none; b=B3JIYIQJxhLEa5lm27LplGBD0st85aWUdnOFkS1DvG8DO98ltigLlmFN3UKehdndoDKjm8N75ZLO/dWykf6h4JD7897pLVSYM6QD8qgrS2TZAgNgqW6ukuBDHmZNbcdmPS6fY3WIsHPFJ+ysbKnqdr3Tpj3Jmm14nCcT1ZvS6dA=
+	t=1728918950; cv=none; b=dq4apHQNERFH6ZcQye1oXbO4BCACxzVk0myX47wOfEglAbbpWE4Ayuzzd/0nnsraJ5G1rSAAXRgpf2psq5kQAKgHpilnNlnyHNhRYTVCxFmop2NsBizue+ayhvsH+6AIyjLKIXI/VSIvernz6w/rG8VpvGIkiXOXGDcwfn3l3pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919057; c=relaxed/simple;
-	bh=QHkiL1j6NWEyF4Hkz3FZR8xTePLqMKm60YdGvamFnvg=;
+	s=arc-20240116; t=1728918950; c=relaxed/simple;
+	bh=UXas0jGHe0rWZ0xrsSJ4fVGSRW4g+Acr2w42OzMCFe0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o6zlbh1CZ1Xl3VDigmtR6+NYL1J4Sr/aewvpw2ivAY+01Uo+j30REugqHt75f0Z7RNn3PfdatPHUGwxUwMyWij74FeoOW6mfnPu8T9j0+SIogJN6b/EQtp1BwqEdAkSnF+wus4k9zahTPu/HrrFSWDXWtvKZrUnX5rpea8BZs6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=132MoPrx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA08FC4CEC3;
-	Mon, 14 Oct 2024 15:17:36 +0000 (UTC)
+	 MIME-Version; b=q6byz+XKqVowPa5CtxEsVP7PEPbQmCmnF/4IBOamaMgfKTWl07tmen1CoGxK26RrjbRggjf7AChFiNMqmsgRyLmq5oPXrd5wdp8ycTXt0Y+YABQS393MBypUv9MWJREQoRsb6auV3LR3QnjFhS5yH0hiotXLb+WrkCSv6qGa4q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUCpyIb1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78776C4CEC3;
+	Mon, 14 Oct 2024 15:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919057;
-	bh=QHkiL1j6NWEyF4Hkz3FZR8xTePLqMKm60YdGvamFnvg=;
+	s=korg; t=1728918950;
+	bh=UXas0jGHe0rWZ0xrsSJ4fVGSRW4g+Acr2w42OzMCFe0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=132MoPrx87Ybh4EmD7LkwLK2hxU3TdTPWU3anZRRNTxUPVwZwY0qqoqvvIZ4HvgNV
-	 fX8AlhhKyf/UoYjScIvSUAS1MiU7ds7XvZXi5bp56F4VuTvPzyOw0zoQ8txYKEXXdc
-	 U5QUfTUXlri3zPfK0kda95Xm5TjXdLr6eTPU68D8=
+	b=AUCpyIb1jtxXydM121552qMI/xD/9w2M0YHPcESzqWdkAZQVBr0usnR0Kgb9gIzzh
+	 phhG6l7py2OmJXBaOknEfpSfpPG+Es1tzzovewwQvoFrmZiP/WEPjflyivevYYSH6l
+	 OwGir1/EGghyp27238qD60TiKTvw67uN2JKO6akk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Davis <afd@ti.com>,
-	Dhruva Gole <d-gole@ti.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 469/798] power: reset: brcmstb: Do not go into infinite loop if reset fails
-Date: Mon, 14 Oct 2024 16:17:03 +0200
-Message-ID: <20241014141236.400255575@linuxfoundation.org>
+Subject: [PATCH 6.1 470/798] iommu/vt-d: Always reserve a domain ID for identity setup
+Date: Mon, 14 Oct 2024 16:17:04 +0200
+Message-ID: <20241014141236.439807424@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -68,37 +69,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrew Davis <afd@ti.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit cf8c39b00e982fa506b16f9d76657838c09150cb ]
+[ Upstream commit 2c13012e09190174614fd6901857a1b8c199e17d ]
 
-There may be other backup reset methods available, do not halt
-here so that other reset methods can be tried.
+We will use a global static identity domain. Reserve a static domain ID
+for it.
 
-Signed-off-by: Andrew Davis <afd@ti.com>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20240610142836.168603-5-afd@ti.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Link: https://lore.kernel.org/r/20240809055431.36513-4-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/reset/brcmstb-reboot.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/iommu/intel/iommu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/power/reset/brcmstb-reboot.c b/drivers/power/reset/brcmstb-reboot.c
-index 0f2944dc93551..a04713f191a11 100644
---- a/drivers/power/reset/brcmstb-reboot.c
-+++ b/drivers/power/reset/brcmstb-reboot.c
-@@ -62,9 +62,6 @@ static int brcmstb_restart_handler(struct notifier_block *this,
- 		return NOTIFY_DONE;
- 	}
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index 7b9502c30fe94..962b7370192a6 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -1697,10 +1697,10 @@ static int iommu_init_domains(struct intel_iommu *iommu)
+ 	 * entry for first-level or pass-through translation modes should
+ 	 * be programmed with a domain id different from those used for
+ 	 * second-level or nested translation. We reserve a domain id for
+-	 * this purpose.
++	 * this purpose. This domain id is also used for identity domain
++	 * in legacy mode.
+ 	 */
+-	if (sm_supported(iommu))
+-		set_bit(FLPT_DEFAULT_DID, iommu->domain_ids);
++	set_bit(FLPT_DEFAULT_DID, iommu->domain_ids);
  
--	while (1)
--		;
--
- 	return NOTIFY_DONE;
+ 	return 0;
  }
- 
 -- 
 2.43.0
 
