@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-84263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCDCA99CF4D
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:53:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092F299CF3F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:53:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 701CDB20B3F
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:53:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B47241F20F2F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858A91AC44D;
-	Mon, 14 Oct 2024 14:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49551BD00A;
+	Mon, 14 Oct 2024 14:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIveLzpq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fDyPl7sA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9A01AAE0C;
-	Mon, 14 Oct 2024 14:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27221B4F1E;
+	Mon, 14 Oct 2024 14:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917401; cv=none; b=hlR0fiVapE7ATKZ68EVWJ8eJEjaEMcX2r5AHksGCIxFlusvFnQ3wzgDWZZHUzSWtJVGgo7WWop67Gvf4JgI7c5CXemUbrpxPul8YEhd4PHse3HrIT6Ui1ajyBssHrGNwrTQhr1SC8Dlynpf0YYep+n//HOLEKSqJidas4vy/coo=
+	t=1728917344; cv=none; b=iLhLRU5O56Ii1+aQ3doiaP7GEvPp0ran7OqgEx1gzJbNkgK41lePXHPwHSGZ0TUPHsih0UGafcs7lNWsPdkN5KN1KIMCYtwQy+YgHj0+jzZoSjWDPXWBLazFo1FnsULoLIiVZIiBAxY+wxuaXBHiDjB4mjUr5eh5+pXhDxzVCwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917401; c=relaxed/simple;
-	bh=rSxQvAObKBXj5v+sZsROu5iSzWof/6+Pn7vs2w0N7AY=;
+	s=arc-20240116; t=1728917344; c=relaxed/simple;
+	bh=2fKrg89s71VHYFLZva62JBhgnVtCnEcO1N1xtxbbk4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YOmwcxQqBVJK/6jCGV8e7aXOf6s4rsaSR2q2t4wn3k+lAK20rtEbTKYiC/XY35k7/QADvH4bBiiuLSh85n1Y3aRvEVB02K3VlU+Y29079ZAwvZZtEqSsR2GC2NOz9CexdMHOGrE2hwvsG599Xhi724wCuSr08aHHFdmrLVDAF4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIveLzpq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E70C4CEC3;
-	Mon, 14 Oct 2024 14:50:00 +0000 (UTC)
+	 MIME-Version; b=kcDgYfYWiJ0nsOxXXJVa/l6lXXSKX+YH/wtu3Il/v08hCG2K+kM6CqE4zSasAU1UHHK6wLxtsda3hPzg0u3DGh7T1yRzcFkltzoi0JNjw/w2oAeFcf/5+vzvEvXHxIrrom40BdRpN8ZH7KC/tXJrMBj0GGfy3J6lEnhCXuquth0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fDyPl7sA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CDFC4CEC3;
+	Mon, 14 Oct 2024 14:49:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917401;
-	bh=rSxQvAObKBXj5v+sZsROu5iSzWof/6+Pn7vs2w0N7AY=;
+	s=korg; t=1728917344;
+	bh=2fKrg89s71VHYFLZva62JBhgnVtCnEcO1N1xtxbbk4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UIveLzpqxfqt0A1bPLeZZZCkR5ZXX34gr0V/EgXyqelRLK1pBQH03X83OXgcXS/RM
-	 l/sqim8bcL7qjNY1pf6MDieX7sDieHE1OOev/3wzvSGFhsTm8lAQ56Gnzp29xtTXFz
-	 YgjsO7dNod4q7JjyX72I970CHD7d0ga83LW9kn5k=
+	b=fDyPl7sAHS9S3CHElrti3Fe3gY98vWbr7+ykxXDEjPLQXfrA+B+TVWOEmQWctt4aa
+	 YkRxssi4KjP2PZlJRiJXyS4dIkLXHExfdT3kiPFZMv97sDKv71iM/jopwDZDGkimGn
+	 ls/cbDOQLBzKwVGx1clFKn/Nvk/7RfpKdwaKx0Kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Kandybka <d.kandybka@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/798] wifi: rtw88: remove CPT execution branch never used
-Date: Mon, 14 Oct 2024 16:09:23 +0200
-Message-ID: <20241014141218.316417939@linuxfoundation.org>
+Subject: [PATCH 6.1 010/798] RISC-V: KVM: Fix sbiret init before forwarding to userspace
+Date: Mon, 14 Oct 2024 16:09:24 +0200
+Message-ID: <20241014141218.355287832@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
 References: <20241014141217.941104064@linuxfoundation.org>
@@ -66,93 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Kandybka <d.kandybka@gmail.com>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-[ Upstream commit 77c977327dfaa9ae2e154964cdb89ceb5c7b7cf1 ]
+[ Upstream commit 6b7b282e6baea06ba65b55ae7d38326ceb79cebf ]
 
-In 'rtw_coex_action_bt_a2dp_pan', 'wl_cpt_test' and 'bt_cpt_test' are
-hardcoded to false, so corresponding 'table_case' and 'tdma_case'
-assignments are never met.
-Also 'rtw_coex_set_rf_para(rtwdev, chip->wl_rf_para_rx[1])' is never
-executed. Assuming that CPT was never fully implemented, remove
-lookalike leftovers. Compile tested only.
+When forwarding SBI calls to userspace ensure sbiret.error is
+initialized to SBI_ERR_NOT_SUPPORTED first, in case userspace
+neglects to set it to anything. If userspace neglects it then we
+can't be sure it did anything else either, so we just report it
+didn't do or try anything. Just init sbiret.value to zero, which is
+the preferred value to return when nothing special is specified.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+KVM was already initializing both sbiret.error and sbiret.value, but
+the values used appear to come from a copy+paste of the __sbi_ecall()
+implementation, i.e. a0 and a1, which don't apply prior to the call
+being executed, nor at all when forwarding to userspace.
 
-Fixes: 76f631cb401f ("rtw88: coex: update the mechanism for A2DP + PAN")
-
-Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240809085310.10512-1-d.kandybka@gmail.com
+Fixes: dea8ee31a039 ("RISC-V: KVM: Add SBI v0.1 support")
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20240807154943.150540-2-ajones@ventanamicro.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/coex.c | 38 ++++++-----------------
- 1 file changed, 10 insertions(+), 28 deletions(-)
+ arch/riscv/kvm/vcpu_sbi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
-index a82476f47a7c4..8627ab0ce3bdf 100644
---- a/drivers/net/wireless/realtek/rtw88/coex.c
-+++ b/drivers/net/wireless/realtek/rtw88/coex.c
-@@ -2195,7 +2195,6 @@ static void rtw_coex_action_bt_a2dp_pan(struct rtw_dev *rtwdev)
- 	struct rtw_coex_stat *coex_stat = &coex->stat;
- 	struct rtw_efuse *efuse = &rtwdev->efuse;
- 	u8 table_case, tdma_case;
--	bool wl_cpt_test = false, bt_cpt_test = false;
- 
- 	rtw_dbg(rtwdev, RTW_DBG_COEX, "[BTCoex], %s()\n", __func__);
- 
-@@ -2203,29 +2202,16 @@ static void rtw_coex_action_bt_a2dp_pan(struct rtw_dev *rtwdev)
- 	rtw_coex_set_rf_para(rtwdev, chip->wl_rf_para_rx[0]);
- 	if (efuse->share_ant) {
- 		/* Shared-Ant */
--		if (wl_cpt_test) {
--			if (coex_stat->wl_gl_busy) {
--				table_case = 20;
--				tdma_case = 17;
--			} else {
--				table_case = 10;
--				tdma_case = 15;
--			}
--		} else if (bt_cpt_test) {
--			table_case = 26;
--			tdma_case = 26;
--		} else {
--			if (coex_stat->wl_gl_busy &&
--			    coex_stat->wl_noisy_level == 0)
--				table_case = 14;
--			else
--				table_case = 10;
-+		if (coex_stat->wl_gl_busy &&
-+		    coex_stat->wl_noisy_level == 0)
-+			table_case = 14;
-+		else
-+			table_case = 10;
- 
--			if (coex_stat->wl_gl_busy)
--				tdma_case = 15;
--			else
--				tdma_case = 20;
--		}
-+		if (coex_stat->wl_gl_busy)
-+			tdma_case = 15;
-+		else
-+			tdma_case = 20;
- 	} else {
- 		/* Non-Shared-Ant */
- 		table_case = 112;
-@@ -2236,11 +2222,7 @@ static void rtw_coex_action_bt_a2dp_pan(struct rtw_dev *rtwdev)
- 			tdma_case = 120;
- 	}
- 
--	if (wl_cpt_test)
--		rtw_coex_set_rf_para(rtwdev, chip->wl_rf_para_rx[1]);
--	else
--		rtw_coex_set_rf_para(rtwdev, chip->wl_rf_para_rx[0]);
--
-+	rtw_coex_set_rf_para(rtwdev, chip->wl_rf_para_rx[0]);
- 	rtw_coex_table(rtwdev, false, table_case);
- 	rtw_coex_tdma(rtwdev, false, tdma_case);
+diff --git a/arch/riscv/kvm/vcpu_sbi.c b/arch/riscv/kvm/vcpu_sbi.c
+index f96991d230bfc..bc575f6921504 100644
+--- a/arch/riscv/kvm/vcpu_sbi.c
++++ b/arch/riscv/kvm/vcpu_sbi.c
+@@ -67,8 +67,8 @@ void kvm_riscv_vcpu_sbi_forward(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ 	run->riscv_sbi.args[3] = cp->a3;
+ 	run->riscv_sbi.args[4] = cp->a4;
+ 	run->riscv_sbi.args[5] = cp->a5;
+-	run->riscv_sbi.ret[0] = cp->a0;
+-	run->riscv_sbi.ret[1] = cp->a1;
++	run->riscv_sbi.ret[0] = SBI_ERR_NOT_SUPPORTED;
++	run->riscv_sbi.ret[1] = 0;
  }
+ 
+ void kvm_riscv_vcpu_sbi_system_reset(struct kvm_vcpu *vcpu,
 -- 
 2.43.0
 
