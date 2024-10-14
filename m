@@ -1,55 +1,64 @@
-Return-Path: <stable+bounces-84042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9EFB99CDDB
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:37:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D44C99D25D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:24:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27A251C22FB4
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:37:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44DBD1C23C92
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15EEC1A0BE7;
-	Mon, 14 Oct 2024 14:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369151AC885;
+	Mon, 14 Oct 2024 15:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEIjmvnJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJJCI9Ex"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C823419E802;
-	Mon, 14 Oct 2024 14:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A451AB51B;
+	Mon, 14 Oct 2024 15:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916618; cv=none; b=heKJsNriJ1d5Rvs5l55ihB7P0VJSDp4u8eBsoZgPG5JLswudPXxmHB6ncnldeqjo2Ru7tmEU59y5dJuUrSvNvODCYsSqb7UB2VM/cEavGjxAY3mlN4VN8NcfCsj0EoRU9M4Gc7jxx8YZzw/aYpc34FUcVcvd4dO/UH/PxvbohcY=
+	t=1728919413; cv=none; b=WzOF36TszD2+9MkMZ1bNH8Q6OyUgqLx5fs1xodHT3hypYPb+qMKe9ruVsk77A/bgXVI6Ye4CZA51BzniFcT+6IahbQG6DdC+LON6FAHwmoRle5d3JoiDA3DrJUny752kyI8fQCDcJ8BLrnQYIfpmTdjn8HHYsxm3WSguw1dBhZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916618; c=relaxed/simple;
-	bh=IJCNeWeY3rQq8gxrPwbSA9NnNlyZSHrmS8LjCP9xhcs=;
+	s=arc-20240116; t=1728919413; c=relaxed/simple;
+	bh=ybosPgXizbs1iYZuYWFiAkHRudofTDt3SgSVdJm9ifE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RsIrufVIYhMj9eMONhKyqkSqHwGJzmLja5DsAV680k/aU7A4O7zVeAnlKNx5LP48riaDLZU8Tuo+Q21vdM6322Phv9cThT0uo7ZFirw2NKtu0mjPY94ocrJx6F9xyfdzjCgv7SlfezdYwtRw/8lVpM1ylsZzqxjMI2VkOVr2k4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEIjmvnJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3831FC4CEC3;
-	Mon, 14 Oct 2024 14:36:58 +0000 (UTC)
+	 MIME-Version; b=Xy4Ax0zEbo95vM3IjebWDdwsDq7rZRXhy5lCxF3P5APtC/JaoUEmILDH7hBXzmbZ1o9Yi5W5jZ8tBzO6khAYb8vKRoHXLuQMLbm5ovwOseF2H+nNOxRpySrPcRTmafq5LUvyZuPnME1JVLpXA/8+h3m9nvsaGXyM/vQHLLAdJt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJJCI9Ex; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04463C4CEC3;
+	Mon, 14 Oct 2024 15:23:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916618;
-	bh=IJCNeWeY3rQq8gxrPwbSA9NnNlyZSHrmS8LjCP9xhcs=;
+	s=korg; t=1728919412;
+	bh=ybosPgXizbs1iYZuYWFiAkHRudofTDt3SgSVdJm9ifE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VEIjmvnJ/DxBV55rh2IQUzWpHI7H3Qf0si/+XXiUKKOXJaWw6o2tr2uCqu3wd4C5b
-	 lRUE9MSVhU0V38HJxC+IDhX/GGvLzP4LPt36xYCE6JfTcEqBaZhvaRXIkzMgX23FT4
-	 v0PVXXNKKUHeEWbW7s8I9Jh95StgoGSjCGw57Dsw=
+	b=WJJCI9ExuIZUO/h4uP285Ply+4AoWMsi86rf0DCiDDm0Su//4ukZO9zwff+6iBf8j
+	 0GMnPum//5QsRna6PN0M6blgqjVY5hnGs972gqzP8qmdMqNNUhLx/PRIbgh9EzzSpV
+	 abkdASY8k/WYuCpn2HKwJTcgCqBMFbX8Kbeh5UeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/213] bus: mhi: ep: Introduce async read/write callbacks
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 570/798] ocfs2: remove unreasonable unlock in ocfs2_read_blocks
 Date: Mon, 14 Oct 2024 16:18:44 +0200
-Message-ID: <20241014141043.695972341@linuxfoundation.org>
+Message-ID: <20241014141240.394054426@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +70,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit 8b786ed8fb089e347af21d13ba5677325fcd4cd8 ]
+commit c03a82b4a0c935774afa01fd6d128b444fd930a1 upstream.
 
-These callbacks can be implemented by the controller drivers to perform
-async read/write operation that increases the throughput.
+Patch series "Misc fixes for ocfs2_read_blocks", v5.
 
-For aiding the async operation, a completion callback is also introduced.
+This series contains 2 fixes for ocfs2_read_blocks().  The first patch fix
+the issue reported by syzbot, which detects bad unlock balance in
+ocfs2_read_blocks().  The second patch fixes an issue reported by Heming
+Zhao when reviewing above fix.
 
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Stable-dep-of: c7d0b2db5bc5 ("bus: mhi: ep: Do not allocate memory for MHI objects from DMA zone")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+This patch (of 2):
+
+There was a lock release before exiting, so remove the unreasonable unlock.
+
+Link: https://lkml.kernel.org/r/20240902023636.1843422-1-joseph.qi@linux.alibaba.com
+Link: https://lkml.kernel.org/r/20240902023636.1843422-2-joseph.qi@linux.alibaba.com
+Fixes: cf76c78595ca ("ocfs2: don't put and assigning null to bh allocated outside")
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ab134185af9ef88dfed5
+Tested-by: syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>	[4.20+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mhi_ep.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/ocfs2/buffer_head_io.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/linux/mhi_ep.h b/include/linux/mhi_ep.h
-index b96b543bf2f65..14c6e8d3f5736 100644
---- a/include/linux/mhi_ep.h
-+++ b/include/linux/mhi_ep.h
-@@ -54,11 +54,16 @@ struct mhi_ep_db_info {
-  * @dev_addr: Address of the buffer in endpoint
-  * @host_addr: Address of the bufffer in host
-  * @size: Size of the buffer
-+ * @cb: Callback to be executed by controller drivers after transfer completion (async)
-+ * @cb_buf: Opaque buffer to be passed to the callback
-  */
- struct mhi_ep_buf_info {
- 	void *dev_addr;
- 	u64 host_addr;
- 	size_t size;
-+
-+	void (*cb)(struct mhi_ep_buf_info *buf_info);
-+	void *cb_buf;
- };
- 
- /**
-@@ -96,6 +101,8 @@ struct mhi_ep_buf_info {
-  * @unmap_free: CB function to unmap and free the allocated memory in endpoint for storing host context
-  * @read_sync: CB function for reading from host memory synchronously
-  * @write_sync: CB function for writing to host memory synchronously
-+ * @read_async: CB function for reading from host memory asynchronously
-+ * @write_async: CB function for writing to host memory asynchronously
-  * @mhi_state: MHI Endpoint state
-  * @max_chan: Maximum channels supported by the endpoint controller
-  * @mru: MRU (Maximum Receive Unit) value of the endpoint controller
-@@ -151,6 +158,8 @@ struct mhi_ep_cntrl {
- 			   void __iomem *virt, size_t size);
- 	int (*read_sync)(struct mhi_ep_cntrl *mhi_cntrl, struct mhi_ep_buf_info *buf_info);
- 	int (*write_sync)(struct mhi_ep_cntrl *mhi_cntrl, struct mhi_ep_buf_info *buf_info);
-+	int (*read_async)(struct mhi_ep_cntrl *mhi_cntrl, struct mhi_ep_buf_info *buf_info);
-+	int (*write_async)(struct mhi_ep_cntrl *mhi_cntrl, struct mhi_ep_buf_info *buf_info);
- 
- 	enum mhi_state mhi_state;
- 
--- 
-2.43.0
-
+--- a/fs/ocfs2/buffer_head_io.c
++++ b/fs/ocfs2/buffer_head_io.c
+@@ -235,7 +235,6 @@ int ocfs2_read_blocks(struct ocfs2_cachi
+ 		if (bhs[i] == NULL) {
+ 			bhs[i] = sb_getblk(sb, block++);
+ 			if (bhs[i] == NULL) {
+-				ocfs2_metadata_cache_io_unlock(ci);
+ 				status = -ENOMEM;
+ 				mlog_errno(status);
+ 				/* Don't forget to put previous bh! */
 
 
 
