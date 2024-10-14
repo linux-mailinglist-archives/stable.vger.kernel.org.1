@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-84879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D5999D2A4
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:28:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE0799CD41
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA0B21C215F4
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:28:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D26EB236DC
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B92649659;
-	Mon, 14 Oct 2024 15:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95291798C;
+	Mon, 14 Oct 2024 14:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dSfRhHIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRuuWdPG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7C2139D0B;
-	Mon, 14 Oct 2024 15:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9625920EB;
+	Mon, 14 Oct 2024 14:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919540; cv=none; b=pKBazpBA4N48A6y60JoEG71W58oYrByh1NBIcP4a4r7PrNNQ5htgbfy67ojB7tzsLXviUeV03ZVNRXaRAdP9bPC9sQucUiYnEtzYccFbAGZSuPKETzIME3gqxxGnBJuY9mUyYdSZ6IhN8+EfKLw08G//o1G4W5faT1RGI+ARIoE=
+	t=1728916249; cv=none; b=ZlNESRgOb401ZOy+o3fm5FJErjyu9eXxaYFX6UKmns6B6fjel/s2bgSL71CKu8kozw+x6AcrQZNHr3/RxCJinn3yVvt0MbQT4tpAT//h9y/4BDhIWr/GYBRD+4YO5TqkTLmYh9U0JHN1qgxxrIKwQiE86avmj97bZz8aSF2fZNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919540; c=relaxed/simple;
-	bh=SZvtNmpIGI6yLM+eU89GXXvOA72iWKaEtpG/ToLAWvY=;
+	s=arc-20240116; t=1728916249; c=relaxed/simple;
+	bh=dAU/ehewvo7tM8ro+qVBNne0DzngElLVxfcoYPvAW3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bj4nRRNm3DzGYbkLzJbrI8pMTd1oHkIxzXqAx6vSBJ/8ews7BDiAg9VbVNAD71rlEBBa4VZ35vlKe4bpm7oYODAWFaeTj7xAlyHm8UuCca+g4BIB3kPDWJ1L2rHQ0aVbSOvp5iRvjf9URR3VVdVd0Ibnpmw/w7AdGFyWIULqLvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSfRhHIT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE6AC4CEC3;
-	Mon, 14 Oct 2024 15:25:40 +0000 (UTC)
+	 MIME-Version; b=hX1Mf1aj3QdfyMxHmSd5WCpayEY5IDk9AtnxgDo/tdLJybXHXtnyfCkMcrDG0BFFrvo+nMh/hWviJ/I1CwuXikMtmvQ4RQR/l2/DjbPGzXVRIuN+QjOCveK9v+n3HI736ZdRKsuazJerK9pl8BtdaRkoo51xhJexxNEZ3LLdhOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRuuWdPG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0C1C4CEC3;
+	Mon, 14 Oct 2024 14:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728919540;
-	bh=SZvtNmpIGI6yLM+eU89GXXvOA72iWKaEtpG/ToLAWvY=;
+	s=korg; t=1728916249;
+	bh=dAU/ehewvo7tM8ro+qVBNne0DzngElLVxfcoYPvAW3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dSfRhHITMaVbIuEFTLjwehgo/krD99GkmusdqpenkQyKu9hvN1NgQKkYmrdzdl7zp
-	 TM48ctoeXZ1jRoUcpBgtgc1kFghU55nuBi5M3xsozs5GeqzzZwye06aM2AtuXGhNZn
-	 QWmNrfWUUd7CpdmpZNW5+C2cryzr1uOHQnSbkWUg=
+	b=nRuuWdPGSAM59nZOhJ8+yIGgUvcWWHvCLdrP+NISt/hXKr8axmlb67zIzFq5Gqheo
+	 vuL4dZIyo2rWMGd1BbbM3SxbUNZYaaF4nN6DcadP8Z9KopuCeAQ4dPtLTdbHWFUPSL
+	 SQV86Pg00mtnpUFH2Bjd24p25k0sqLO8Orn6saLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+283673dbc38527ef9f3d@syzkaller.appspotmail.com,
-	Josef Bacik <josef@toxicpanda.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 604/798] btrfs: fix a NULL pointer dereference when failed to start a new trasacntion
+	Neal Cardwell <ncardwell@google.com>,
+	Yuchung Cheng <ycheng@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 095/214] tcp: fix tcp_enter_recovery() to zero retrans_stamp when its safe
 Date: Mon, 14 Oct 2024 16:19:18 +0200
-Message-ID: <20241014141241.739282691@linuxfoundation.org>
+Message-ID: <20241014141048.702791971@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +64,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Neal Cardwell <ncardwell@google.com>
 
-commit c3b47f49e83197e8dffd023ec568403bcdbb774b upstream.
+[ Upstream commit b41b4cbd9655bcebcce941bef3601db8110335be ]
 
-[BUG]
-Syzbot reported a NULL pointer dereference with the following crash:
+Fix tcp_enter_recovery() so that if there are no retransmits out then
+we zero retrans_stamp when entering fast recovery. This is necessary
+to fix two buggy behaviors.
 
-  FAULT_INJECTION: forcing a failure.
-   start_transaction+0x830/0x1670 fs/btrfs/transaction.c:676
-   prepare_to_relocate+0x31f/0x4c0 fs/btrfs/relocation.c:3642
-   relocate_block_group+0x169/0xd20 fs/btrfs/relocation.c:3678
-  ...
-  BTRFS info (device loop0): balance: ended with status: -12
-  Oops: general protection fault, probably for non-canonical address 0xdffffc00000000cc: 0000 [#1] PREEMPT SMP KASAN NOPTI
-  KASAN: null-ptr-deref in range [0x0000000000000660-0x0000000000000667]
-  RIP: 0010:btrfs_update_reloc_root+0x362/0xa80 fs/btrfs/relocation.c:926
-  Call Trace:
-   <TASK>
-   commit_fs_roots+0x2ee/0x720 fs/btrfs/transaction.c:1496
-   btrfs_commit_transaction+0xfaf/0x3740 fs/btrfs/transaction.c:2430
-   del_balance_item fs/btrfs/volumes.c:3678 [inline]
-   reset_balance_state+0x25e/0x3c0 fs/btrfs/volumes.c:3742
-   btrfs_balance+0xead/0x10c0 fs/btrfs/volumes.c:4574
-   btrfs_ioctl_balance+0x493/0x7c0 fs/btrfs/ioctl.c:3673
-   vfs_ioctl fs/ioctl.c:51 [inline]
-   __do_sys_ioctl fs/ioctl.c:907 [inline]
-   __se_sys_ioctl+0xf9/0x170 fs/ioctl.c:893
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Currently a non-zero retrans_stamp value can persist across multiple
+back-to-back loss recovery episodes. This is because we generally only
+clears retrans_stamp if we are completely done with loss recoveries,
+and get to tcp_try_to_open() and find !tcp_any_retrans_done(sk). This
+behavior causes two bugs:
 
-[CAUSE]
-The allocation failure happens at the start_transaction() inside
-prepare_to_relocate(), and during the error handling we call
-unset_reloc_control(), which makes fs_info->balance_ctl to be NULL.
+(1) When a loss recovery episode (CA_Loss or CA_Recovery) is followed
+immediately by a new CA_Recovery, the retrans_stamp value can persist
+and can be a time before this new CA_Recovery episode starts. That
+means that timestamp-based undo will be using the wrong retrans_stamp
+(a value that is too old) when comparing incoming TS ecr values to
+retrans_stamp to see if the current fast recovery episode can be
+undone.
 
-Then we continue the error path cleanup in btrfs_balance() by calling
-reset_balance_state() which will call del_balance_item() to fully delete
-the balance item in the root tree.
+(2) If there is a roughly minutes-long sequence of back-to-back fast
+recovery episodes, one after another (e.g. in a shallow-buffered or
+policed bottleneck), where each fast recovery successfully makes
+forward progress and recovers one window of sequence space (but leaves
+at least one retransmit in flight at the end of the recovery),
+followed by several RTOs, then the ETIMEDOUT check may be using the
+wrong retrans_stamp (a value set at the start of the first fast
+recovery in the sequence). This can cause a very premature ETIMEDOUT,
+killing the connection prematurely.
 
-However during the small window between set_reloc_contrl() and
-unset_reloc_control(), we can have a subvolume tree update and created a
-reloc_root for that subvolume.
+This commit changes the code to zero retrans_stamp when entering fast
+recovery, when this is known to be safe (no retransmits are out in the
+network). That ensures that when starting a fast recovery episode, and
+it is safe to do so, retrans_stamp is set when we send the fast
+retransmit packet. That addresses both bug (1) and bug (2) by ensuring
+that (if no retransmits are out when we start a fast recovery) we use
+the initial fast retransmit of this fast recovery as the time value
+for undo and ETIMEDOUT calculations.
 
-Then we go into the final btrfs_commit_transaction() of
-del_balance_item(), and into btrfs_update_reloc_root() inside
-commit_fs_roots().
+This makes intuitive sense, since the start of a new fast recovery
+episode (in a scenario where no lost packets are out in the network)
+means that the connection has made forward progress since the last RTO
+or fast recovery, and we should thus "restart the clock" used for both
+undo and ETIMEDOUT logic.
 
-That function checks if fs_info->reloc_ctl is in the merge_reloc_tree
-stage, but since fs_info->reloc_ctl is NULL, it results a NULL pointer
-dereference.
+Note that if when we start fast recovery there *are* retransmits out
+in the network, there can still be undesirable (1)/(2) issues. For
+example, after this patch we can still have the (1) and (2) problems
+in cases like this:
 
-[FIX]
-Just add extra check on fs_info->reloc_ctl inside
-btrfs_update_reloc_root(), before checking
-fs_info->reloc_ctl->merge_reloc_tree.
++ round 1: sender sends flight 1
 
-That DEAD_RELOC_TREE handling is to prevent further modification to the
-reloc tree during merge stage, but since there is no reloc_ctl at all,
-we do not need to bother that.
++ round 2: sender receives SACKs and enters fast recovery 1,
+  retransmits some packets in flight 1 and then sends some new data as
+  flight 2
 
-Reported-by: syzbot+283673dbc38527ef9f3d@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/66f6bfa7.050a0220.38ace9.0019.GAE@google.com/
-CC: stable@vger.kernel.org # 4.19+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
++ round 3: sender receives some SACKs for flight 2, notes losses, and
+  retransmits some packets to fill the holes in flight 2
+
++ fast recovery has some lost retransmits in flight 1 and continues
+  for one or more rounds sending retransmits for flight 1 and flight 2
+
++ fast recovery 1 completes when snd_una reaches high_seq at end of
+  flight 1
+
++ there are still holes in the SACK scoreboard in flight 2, so we
+  enter fast recovery 2, but some retransmits in the flight 2 sequence
+  range are still in flight (retrans_out > 0), so we can't execute the
+  new retrans_stamp=0 added here to clear retrans_stamp
+
+It's not yet clear how to fix these remaining (1)/(2) issues in an
+efficient way without breaking undo behavior, given that retrans_stamp
+is currently used for undo and ETIMEDOUT. Perhaps the optimal (but
+expensive) strategy would be to set retrans_stamp to the timestamp of
+the earliest outstanding retransmit when entering fast recovery. But
+at least this commit makes things better.
+
+Note that this does not change the semantics of retrans_stamp; it
+simply makes retrans_stamp accurate in some cases where it was not
+before:
+
+(1) Some loss recovery, followed by an immediate entry into a fast
+recovery, where there are no retransmits out when entering the fast
+recovery.
+
+(2) When a TFO server has a SYNACK retransmit that sets retrans_stamp,
+and then the ACK that completes the 3-way handshake has SACK blocks
+that trigger a fast recovery. In this case when entering fast recovery
+we want to zero out the retrans_stamp from the TFO SYNACK retransmit,
+and set the retrans_stamp based on the timestamp of the fast recovery.
+
+We introduce a tcp_retrans_stamp_cleanup() helper, because this
+two-line sequence already appears in 3 places and is about to appear
+in 2 more as a result of this bug fix patch series. Once this bug fix
+patches series in the net branch makes it into the net-next branch
+we'll update the 3 other call sites to use the new helper.
+
+This is a long-standing issue. The Fixes tag below is chosen to be the
+oldest commit at which the patch will apply cleanly, which is from
+Linux v3.5 in 2012.
+
+Fixes: 1fbc340514fc ("tcp: early retransmit: tcp_enter_recovery()")
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241001200517.2756803-3-ncardwell.sw@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/relocation.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_input.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -921,7 +921,7 @@ int btrfs_update_reloc_root(struct btrfs
- 	btrfs_grab_root(reloc_root);
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index e6d73f6131ceb..631e44c344454 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -2522,6 +2522,16 @@ static bool tcp_any_retrans_done(const struct sock *sk)
+ 	return false;
+ }
  
- 	/* root->reloc_root will stay until current relocation finished */
--	if (fs_info->reloc_ctl->merge_reloc_tree &&
-+	if (fs_info->reloc_ctl && fs_info->reloc_ctl->merge_reloc_tree &&
- 	    btrfs_root_refs(root_item) == 0) {
- 		set_bit(BTRFS_ROOT_DEAD_RELOC_TREE, &root->state);
- 		/*
++/* If loss recovery is finished and there are no retransmits out in the
++ * network, then we clear retrans_stamp so that upon the next loss recovery
++ * retransmits_timed_out() and timestamp-undo are using the correct value.
++ */
++static void tcp_retrans_stamp_cleanup(struct sock *sk)
++{
++	if (!tcp_any_retrans_done(sk))
++		tcp_sk(sk)->retrans_stamp = 0;
++}
++
+ static void DBGUNDO(struct sock *sk, const char *msg)
+ {
+ #if FASTRETRANS_DEBUG > 1
+@@ -2889,6 +2899,9 @@ void tcp_enter_recovery(struct sock *sk, bool ece_ack)
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 	int mib_idx;
+ 
++	/* Start the clock with our fast retransmit, for undo and ETIMEDOUT. */
++	tcp_retrans_stamp_cleanup(sk);
++
+ 	if (tcp_is_reno(tp))
+ 		mib_idx = LINUX_MIB_TCPRENORECOVERY;
+ 	else
+-- 
+2.43.0
+
 
 
 
