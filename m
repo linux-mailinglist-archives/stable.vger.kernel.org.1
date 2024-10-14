@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-83914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C111699CD28
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:29:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F21E99D26B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:25:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 861A32815EF
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:29:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7FB4284A2D
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E9C18035;
-	Mon, 14 Oct 2024 14:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FDA1B4F1F;
+	Mon, 14 Oct 2024 15:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1WL0g/a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zaNPWu+2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73091AAC4;
-	Mon, 14 Oct 2024 14:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E617A1798C;
+	Mon, 14 Oct 2024 15:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916169; cv=none; b=H6j499aRP4hVD0l7Dv5rVquFg+7WrAHTZhZDmwH+fsEy6jfgp+tnq3v2a6BZo1TfK8VD6nwfUigNNIlHRyu+bT65rWMvtBxx71z71NFJdj2damQ3/O6NmVr8eIvpHfgn1NE2vL2PqnA7s2YFxxMF+58xcnSxzXHD46HsO4PrDpk=
+	t=1728919464; cv=none; b=R6La2yX1pUv/SLLTN7+zss36/UB3fRwHf7wH+fOUaOOZtTuhMupBj/XkEiDSFYhHNJAhykfq5a4zUgqHaIF9ANgNTmiOFQRcxMAi2VnFcGMobt0Ge5TJe82mnCpaYLY3dSzs2+S+YvD6Td6USmJk/zgkguDqeuP9EQeEoLDvjqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916169; c=relaxed/simple;
-	bh=W0B3bzn53v4G68kzTZ6dtELpe64PQePK/dBf1efZHqU=;
+	s=arc-20240116; t=1728919464; c=relaxed/simple;
+	bh=iMOkDWi0DzgsRjCBWSckQ03GQgg+j0uXsBHPEGshYk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r4Osf5b5gmWL6Sy8ALE5nACJrOCuCgMRmSIXB3xnxa7ED3ugm3TZacARHt+gaWgBI04E85WUvz796TR4x0tXCcU/B69GiZrajZ90UktGgABpaWbxR5dWf7xKSHtLm9w2cnGFYs6AYR1KM6jGw7/qoAvC3MterhFdbahxIhuOLb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1WL0g/a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0C8C4CEC3;
-	Mon, 14 Oct 2024 14:29:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rMFqPVz/oTfKBfVWmvHhXD6rUTsvEfTz+3TvLj80sm8tBYzziqIy6/OLhZCzZqdqar39nUpdhaxtLGjCBMOFieUxpA/zbENsqCIjDt02ogrgkkNjwtFTcD9nY+XzhMID02cEDiQKDHZjuF+KvfJ7QuKmKdc1Kj5l8pP+avkkzX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zaNPWu+2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55261C4CEC3;
+	Mon, 14 Oct 2024 15:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916168;
-	bh=W0B3bzn53v4G68kzTZ6dtELpe64PQePK/dBf1efZHqU=;
+	s=korg; t=1728919463;
+	bh=iMOkDWi0DzgsRjCBWSckQ03GQgg+j0uXsBHPEGshYk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q1WL0g/a9N0DU9P0UsYIW/qAalAL3/cU7IwbMsrJ1XGOPauu6AEjUAwgn8jejpSfY
-	 1ydKL5I18d5Po7YJ1eOYyOJLZqrw4kcdvb7gjoILrIgsb5BMjWLfJTIpN+U5+lWbKV
-	 a2ZDm4cHjsRT7nsTN6fcqTBmOu93I457RwBCfI3g=
+	b=zaNPWu+2yPgv0il0Ct8mjUpt2Gl/pE8qmceQ7Gm8USPnobN7aFVqKLNGlu+4o2TwM
+	 eLddNkiE5DlgxkgpKXbfW3MeQ2iAe/YMspVmA7gRLAdxIZf3Gg4DUq6ein8Ma27Wbf
+	 7966vr6JXSQwvEh3dvglNLtKj9ce6MAdpb+JajLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 105/214] nfsd: fix possible badness in FREE_STATEID
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Luben Tuikov <ltuikov89@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	Philipp Stanner <pstanner@redhat.com>
+Subject: [PATCH 6.1 614/798] drm/sched: Add locking to drm_sched_entity_modify_sched
 Date: Mon, 14 Oct 2024 16:19:28 +0200
-Message-ID: <20241014141049.091831886@linuxfoundation.org>
+Message-ID: <20241014141242.156418902@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +66,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit c88c150a467fcb670a1608e2272beeee3e86df6e ]
+commit 4286cc2c953983d44d248c9de1c81d3a9643345c upstream.
 
-When multiple FREE_STATEIDs are sent for the same delegation stateid,
-it can lead to a possible either use-after-free or counter refcount
-underflow errors.
+Without the locking amdgpu currently can race between
+amdgpu_ctx_set_entity_priority() (via drm_sched_entity_modify_sched()) and
+drm_sched_job_arm(), leading to the latter accesing potentially
+inconsitent entity->sched_list and entity->num_sched_list pair.
 
-In nfsd4_free_stateid() under the client lock we find a delegation
-stateid, however the code drops the lock before calling nfs4_put_stid(),
-that allows another FREE_STATE to find the stateid again. The first one
-will proceed to then free the stateid which leads to either
-use-after-free or decrementing already zeroed counter.
+v2:
+ * Improve commit message. (Philipp)
 
-Fixes: 3f29cc82a84c ("nfsd: split sc_status out of sc_type")
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: b37aced31eb0 ("drm/scheduler: implement a function to modify sched list")
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Luben Tuikov <ltuikov89@gmail.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: Philipp Stanner <pstanner@redhat.com>
+Cc: <stable@vger.kernel.org> # v5.7+
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240913160559.49054-2-tursulin@igalia.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/scheduler/sched_entity.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 3837f4e417247..64cf5d7b7a4e2 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -7158,6 +7158,7 @@ nfsd4_free_stateid(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	switch (s->sc_type) {
- 	case SC_TYPE_DELEG:
- 		if (s->sc_status & SC_STATUS_REVOKED) {
-+			s->sc_status |= SC_STATUS_CLOSED;
- 			spin_unlock(&s->sc_lock);
- 			dp = delegstateid(s);
- 			list_del_init(&dp->dl_recall_lru);
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -110,8 +110,10 @@ void drm_sched_entity_modify_sched(struc
+ {
+ 	WARN_ON(!num_sched_list || !sched_list);
+ 
++	spin_lock(&entity->rq_lock);
+ 	entity->sched_list = sched_list;
+ 	entity->num_sched_list = num_sched_list;
++	spin_unlock(&entity->rq_lock);
+ }
+ EXPORT_SYMBOL(drm_sched_entity_modify_sched);
+ 
 
 
 
