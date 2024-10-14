@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-83894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3783A99CD10
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:28:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F5F99CE1F
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA390282BF8
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:28:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C28BB209DB
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D281A76AC;
-	Mon, 14 Oct 2024 14:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063B639FCE;
+	Mon, 14 Oct 2024 14:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLZ6uJ5K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKbt24yb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC94219E802;
-	Mon, 14 Oct 2024 14:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60E120EB;
+	Mon, 14 Oct 2024 14:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916099; cv=none; b=LrS4zRlHHQBrsrB3m6126BG0xahovEKF9Gd1urDSeMP4SZ0088IVqkgYB65+/31ff1XgaEViDiIG/XLoWW5IZu3brsdj9NAmI1rm07NNMj93I1yYm7SmlkghRhLVfMWQ+3XvABhmvhS7Fi8bMve103RRoxpk7O2YzAkaHCLq2Bc=
+	t=1728916820; cv=none; b=nBLlDBXWYYw/ylefdZAfy+geWFED/z9IUQiOP2eaP4F4I2nDMeAYJ251BVnh8MiijfO4YDlOVa3F07d0gHFIr404+Qb9wPR4g+zLbFWYVDbL9gG3iE/leAtpE5HbgVL6JDGHfMh4F9Y9U5GQdedXBF2eDmAI2O3/oOWXxuto5xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916099; c=relaxed/simple;
-	bh=NzLIxInj8LicsPcBxNLGGVl0R6a9PhsvfW2TV2phyMg=;
+	s=arc-20240116; t=1728916820; c=relaxed/simple;
+	bh=RB0YxHobD9reai2yXlw8L6qyrJTMHgKpnb+PPksrqOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HcfBSrlr6MFbu4aIBB6F/XlxvKKVCLCCdGo8bXVwHE7BKUbXoDZt6q/hxt343v1E4v/Jqb2yXw/DZArzkNJeyLTTWwMsfPGuSUge/xQtvYN2q59thcYA7rjUYYwRBDqIbnKXDMAu/TBYNdJ8pFXs2/Z9AsuZWSIsrBGYs0AYX80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLZ6uJ5K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2705CC4CEC3;
-	Mon, 14 Oct 2024 14:28:18 +0000 (UTC)
+	 MIME-Version; b=cyYcuT3lsVxsk9KCof3WTVW10A4BOjD+pRvu2p7ZkunRgJQwZkk26WhuIiUM6+KL8c5eO7TZfMVrF/PKN423+XD5cIv1HfqIU0vj9vRz2tP21+JfB2db9jZ5PAL5tCR1rVZp00BrqVd51hPHOqyNGr1M8jur61DKcpEGY1EpIGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKbt24yb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E90C4CEC3;
+	Mon, 14 Oct 2024 14:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916099;
-	bh=NzLIxInj8LicsPcBxNLGGVl0R6a9PhsvfW2TV2phyMg=;
+	s=korg; t=1728916820;
+	bh=RB0YxHobD9reai2yXlw8L6qyrJTMHgKpnb+PPksrqOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rLZ6uJ5KJyH3hGMvGLiq2BxawnCXzBUpbw6q2AUnS59OadDujeeL+4WWN3Fc0v0hY
-	 P3AYFYnHvfXYjLIk7D0U9E7bPJX6CgU9nBXdoJXaXf5VP9is7n8WvD/dhVCxNFcYg7
-	 6P8uFusBETUuR+jCCDWA6QcclPEs7c1EmyHd9ZdM=
+	b=jKbt24ybTbBaz4D+UYHzAZ2u1T0v4mOcBDhM2aEDURDeh5LDnjoXxpEXGLvcpX9X9
+	 RgsVQSdR1V35KDzjrAcRcfXx0sFRZLLEzJeYAbGo3wtOol6P1y5TdjvK95+1TAvGQn
+	 Pa1PUp3kbzPla3K0jpZp/XAWO+QuxtJZvgyRwEtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Piotr Tyda <piotr.tyda@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 084/214] ice: clear port vlan config during reset
-Date: Mon, 14 Oct 2024 16:19:07 +0200
-Message-ID: <20241014141048.269685188@linuxfoundation.org>
+Subject: [PATCH 6.6 042/213] selftests: Introduce Makefile variable to list shared bash scripts
+Date: Mon, 14 Oct 2024 16:19:08 +0200
+Message-ID: <20241014141044.632750239@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,145 +62,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Benjamin Poirier <bpoirier@nvidia.com>
 
-[ Upstream commit d019b1a9128d65956f04679ec2bb8b0800f13358 ]
+[ Upstream commit 2a0683be5b4c9829e8335e494a21d1148e832822 ]
 
-Since commit 2a2cb4c6c181 ("ice: replace ice_vf_recreate_vsi() with
-ice_vf_reconfig_vsi()") VF VSI is only reconfigured instead of
-recreated. The context configuration from previous setting is still the
-same. If any of the config needs to be cleared it needs to be cleared
-explicitly.
+Some tests written in bash source other files in a parent directory. For
+example, drivers/net/bonding/dev_addr_lists.sh sources
+net/forwarding/lib.sh. If a subset of tests is exported and run outside the
+source tree (for example by using `make -C tools/testing/selftests gen_tar
+TARGETS="drivers/net/bonding"`), these other files must be made available
+as well.
 
-Previously there was assumption that port vlan will be cleared
-automatically. Now, when VSI is only reconfigured we have to do it in the
-code.
+Commit ae108c48b5d2 ("selftests: net: Fix cross-tree inclusion of scripts")
+addressed this problem by symlinking and copying the sourced files but this
+only works for direct dependencies. Commit 25ae948b4478 ("selftests/net:
+add lib.sh") changed net/forwarding/lib.sh to source net/lib.sh. As a
+result, that latter file must be included as well when the former is
+exported. This was not handled and was reverted in commit 2114e83381d3
+("selftests: forwarding: Avoid failures to source net/lib.sh"). In order to
+allow reinstating the inclusion of net/lib.sh from net/forwarding/lib.sh,
+add a mechanism to list dependent files in a new Makefile variable and
+export them. This allows sourcing those files using the same expression
+whether tests are run in-tree or exported.
 
-Not clearing port vlan configuration leads to situation when the driver
-VSI config is different than the VSI config in HW. Traffic can't be
-passed after setting and clearing port vlan, because of invalid VSI
-config in HW.
+Dependencies are not resolved recursively so transitive dependencies must
+be listed in TEST_INCLUDES. For example, if net/forwarding/lib.sh sources
+net/lib.sh; the Makefile related to a test that sources
+net/forwarding/lib.sh from a parent directory must list:
+TEST_INCLUDES := \
+	../../../net/forwarding/lib.sh \
+	../../../net/lib.sh
 
-Example reproduction:
-> ip a a dev $(VF) $(VF_IP_ADDRESS)
-> ip l s dev $(VF) up
-> ping $(VF_IP_ADDRESS)
-ping is working fine here
-> ip link set eth5 vf 0 vlan 100
-> ip link set eth5 vf 0 vlan 0
-> ping $(VF_IP_ADDRESS)
-ping isn't working
+v2:
+Fix rst syntax in Documentation/dev-tools/kselftest.rst (Jakub Kicinski)
 
-Fixes: 2a2cb4c6c181 ("ice: replace ice_vf_recreate_vsi() with ice_vf_reconfig_vsi()")
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Tested-by: Piotr Tyda <piotr.tyda@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+v1 (from RFC):
+* changed TEST_INCLUDES to take relative paths, like other TEST_* variables
+  (Vladimir Oltean)
+* preserved common "$(MAKE) OUTPUT=... -C ... target" ordering in Makefile
+  (Petr Machata)
+
+Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_vf_lib.c   |  7 +++
- .../net/ethernet/intel/ice/ice_vsi_vlan_lib.c | 57 +++++++++++++++++++
- .../net/ethernet/intel/ice/ice_vsi_vlan_lib.h |  1 +
- 3 files changed, 65 insertions(+)
+ Documentation/dev-tools/kselftest.rst | 12 ++++++++++++
+ tools/testing/selftests/Makefile      |  7 ++++++-
+ tools/testing/selftests/lib.mk        | 19 +++++++++++++++++++
+ 3 files changed, 37 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-index 5635e9da2212b..9fe2a309c5ffa 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-@@ -335,6 +335,13 @@ static int ice_vf_rebuild_host_vlan_cfg(struct ice_vf *vf, struct ice_vsi *vsi)
+diff --git a/Documentation/dev-tools/kselftest.rst b/Documentation/dev-tools/kselftest.rst
+index deede972f2547..3ae1b3677d7f3 100644
+--- a/Documentation/dev-tools/kselftest.rst
++++ b/Documentation/dev-tools/kselftest.rst
+@@ -255,9 +255,21 @@ Contributing new tests (details)
  
- 		err = vlan_ops->add_vlan(vsi, &vf->port_vlan_info);
- 	} else {
-+		/* clear possible previous port vlan config */
-+		err = ice_vsi_clear_port_vlan(vsi);
-+		if (err) {
-+			dev_err(dev, "failed to clear port VLAN via VSI parameters for VF %u, error %d\n",
-+				vf->vf_id, err);
-+			return err;
-+		}
- 		err = ice_vsi_add_vlan_zero(vsi);
- 	}
+    TEST_PROGS_EXTENDED, TEST_GEN_PROGS_EXTENDED mean it is the
+    executable which is not tested by default.
++
+    TEST_FILES, TEST_GEN_FILES mean it is the file which is used by
+    test.
  
-diff --git a/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c b/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
-index 6e8f2aab60801..5291f2888ef89 100644
---- a/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
-@@ -787,3 +787,60 @@ int ice_vsi_clear_outer_port_vlan(struct ice_vsi *vsi)
- 	kfree(ctxt);
- 	return err;
- }
++   TEST_INCLUDES is similar to TEST_FILES, it lists files which should be
++   included when exporting or installing the tests, with the following
++   differences:
 +
-+int ice_vsi_clear_port_vlan(struct ice_vsi *vsi)
-+{
-+	struct ice_hw *hw = &vsi->back->hw;
-+	struct ice_vsi_ctx *ctxt;
-+	int err;
++    * symlinks to files in other directories are preserved
++    * the part of paths below tools/testing/selftests/ is preserved when
++      copying the files to the output directory
 +
-+	ctxt = kzalloc(sizeof(*ctxt), GFP_KERNEL);
-+	if (!ctxt)
-+		return -ENOMEM;
++   TEST_INCLUDES is meant to list dependencies located in other directories of
++   the selftests hierarchy.
 +
-+	ctxt->info = vsi->info;
-+
-+	ctxt->info.port_based_outer_vlan = 0;
-+	ctxt->info.port_based_inner_vlan = 0;
-+
-+	ctxt->info.inner_vlan_flags =
-+		FIELD_PREP(ICE_AQ_VSI_INNER_VLAN_TX_MODE_M,
-+			   ICE_AQ_VSI_INNER_VLAN_TX_MODE_ALL);
-+	if (ice_is_dvm_ena(hw)) {
-+		ctxt->info.inner_vlan_flags |=
-+			FIELD_PREP(ICE_AQ_VSI_INNER_VLAN_EMODE_M,
-+				   ICE_AQ_VSI_INNER_VLAN_EMODE_NOTHING);
-+		ctxt->info.outer_vlan_flags =
-+			FIELD_PREP(ICE_AQ_VSI_OUTER_VLAN_TX_MODE_M,
-+				   ICE_AQ_VSI_OUTER_VLAN_TX_MODE_ALL);
-+		ctxt->info.outer_vlan_flags |=
-+			FIELD_PREP(ICE_AQ_VSI_OUTER_TAG_TYPE_M,
-+				   ICE_AQ_VSI_OUTER_TAG_VLAN_8100);
-+		ctxt->info.outer_vlan_flags |=
-+			ICE_AQ_VSI_OUTER_VLAN_EMODE_NOTHING <<
-+			ICE_AQ_VSI_OUTER_VLAN_EMODE_S;
-+	}
-+
-+	ctxt->info.sw_flags2 &= ~ICE_AQ_VSI_SW_FLAG_RX_VLAN_PRUNE_ENA;
-+	ctxt->info.valid_sections =
-+		cpu_to_le16(ICE_AQ_VSI_PROP_OUTER_TAG_VALID |
-+			    ICE_AQ_VSI_PROP_VLAN_VALID |
-+			    ICE_AQ_VSI_PROP_SW_VALID);
-+
-+	err = ice_update_vsi(hw, vsi->idx, ctxt, NULL);
-+	if (err) {
-+		dev_err(ice_pf_to_dev(vsi->back), "update VSI for clearing port based VLAN failed, err %d aq_err %s\n",
-+			err, ice_aq_str(hw->adminq.sq_last_status));
-+	} else {
-+		vsi->info.port_based_outer_vlan =
-+			ctxt->info.port_based_outer_vlan;
-+		vsi->info.port_based_inner_vlan =
-+			ctxt->info.port_based_inner_vlan;
-+		vsi->info.outer_vlan_flags = ctxt->info.outer_vlan_flags;
-+		vsi->info.inner_vlan_flags = ctxt->info.inner_vlan_flags;
-+		vsi->info.sw_flags2 = ctxt->info.sw_flags2;
-+	}
-+
-+	kfree(ctxt);
-+	return err;
-+}
-diff --git a/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.h b/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.h
-index f0d84d11bd5b1..12b227621a7dd 100644
---- a/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.h
-@@ -36,5 +36,6 @@ int ice_vsi_ena_outer_insertion(struct ice_vsi *vsi, u16 tpid);
- int ice_vsi_dis_outer_insertion(struct ice_vsi *vsi);
- int ice_vsi_set_outer_port_vlan(struct ice_vsi *vsi, struct ice_vlan *vlan);
- int ice_vsi_clear_outer_port_vlan(struct ice_vsi *vsi);
-+int ice_vsi_clear_port_vlan(struct ice_vsi *vsi);
+  * First use the headers inside the kernel source and/or git repo, and then the
+    system headers.  Headers for the kernel release as opposed to headers
+    installed by the distro on the system should be the primary focus to be able
+diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
+index 697f13bbbc321..5b61b8bb29f84 100644
+--- a/tools/testing/selftests/Makefile
++++ b/tools/testing/selftests/Makefile
+@@ -184,6 +184,8 @@ run_tests: all
+ 	@for TARGET in $(TARGETS); do \
+ 		BUILD_TARGET=$$BUILD/$$TARGET;	\
+ 		$(MAKE) OUTPUT=$$BUILD_TARGET -C $$TARGET run_tests \
++				SRC_PATH=$(shell readlink -e $$(pwd)) \
++				OBJ_PATH=$(BUILD)                   \
+ 				O=$(abs_objtree);		    \
+ 	done;
  
- #endif /* _ICE_VSI_VLAN_LIB_H_ */
+@@ -234,7 +236,10 @@ ifdef INSTALL_PATH
+ 	@ret=1;	\
+ 	for TARGET in $(TARGETS); do \
+ 		BUILD_TARGET=$$BUILD/$$TARGET;	\
+-		$(MAKE) OUTPUT=$$BUILD_TARGET -C $$TARGET INSTALL_PATH=$(INSTALL_PATH)/$$TARGET install \
++		$(MAKE) OUTPUT=$$BUILD_TARGET -C $$TARGET install \
++				INSTALL_PATH=$(INSTALL_PATH)/$$TARGET \
++				SRC_PATH=$(shell readlink -e $$(pwd)) \
++				OBJ_PATH=$(INSTALL_PATH) \
+ 				O=$(abs_objtree)		\
+ 				$(if $(FORCE_TARGETS),|| exit);	\
+ 		ret=$$((ret * $$?));		\
+diff --git a/tools/testing/selftests/lib.mk b/tools/testing/selftests/lib.mk
+index a8f0442a36bca..01db65c0e84ca 100644
+--- a/tools/testing/selftests/lib.mk
++++ b/tools/testing/selftests/lib.mk
+@@ -77,11 +77,29 @@ define RUN_TESTS
+ 	run_many $(1)
+ endef
+ 
++define INSTALL_INCLUDES
++	$(if $(TEST_INCLUDES), \
++		relative_files=""; \
++		for entry in $(TEST_INCLUDES); do \
++			entry_dir=$$(readlink -e "$$(dirname "$$entry")"); \
++			entry_name=$$(basename "$$entry"); \
++			relative_dir=$${entry_dir#"$$SRC_PATH"/}; \
++			if [ "$$relative_dir" = "$$entry_dir" ]; then \
++				echo "Error: TEST_INCLUDES entry \"$$entry\" not located inside selftests directory ($$SRC_PATH)" >&2; \
++				exit 1; \
++			fi; \
++			relative_files="$$relative_files $$relative_dir/$$entry_name"; \
++		done; \
++		cd $(SRC_PATH) && rsync -aR $$relative_files $(OBJ_PATH)/ \
++	)
++endef
++
+ run_tests: all
+ ifdef building_out_of_srctree
+ 	@if [ "X$(TEST_PROGS)$(TEST_PROGS_EXTENDED)$(TEST_FILES)" != "X" ]; then \
+ 		rsync -aq --copy-unsafe-links $(TEST_PROGS) $(TEST_PROGS_EXTENDED) $(TEST_FILES) $(OUTPUT); \
+ 	fi
++	@$(INSTALL_INCLUDES)
+ 	@if [ "X$(TEST_PROGS)" != "X" ]; then \
+ 		$(call RUN_TESTS, $(TEST_GEN_PROGS) $(TEST_CUSTOM_PROGS) \
+ 				  $(addprefix $(OUTPUT)/,$(TEST_PROGS))) ; \
+@@ -111,6 +129,7 @@ endef
+ install: all
+ ifdef INSTALL_PATH
+ 	$(INSTALL_RULE)
++	$(INSTALL_INCLUDES)
+ else
+ 	$(error Error: set INSTALL_PATH to use install)
+ endif
 -- 
 2.43.0
 
