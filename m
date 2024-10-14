@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-83852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7098299CCD8
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:25:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76A5899D231
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 17:23:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 227FD1F2127B
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:25:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A79111C235AC
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 15:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53451A76A5;
-	Mon, 14 Oct 2024 14:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B954A1ADFF9;
+	Mon, 14 Oct 2024 15:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kvheOxMT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKkavV6A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729951547F3;
-	Mon, 14 Oct 2024 14:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739B71AC450;
+	Mon, 14 Oct 2024 15:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728915938; cv=none; b=BKs6Ojv29v0+6sWxxnt16ZC/KGadFhvz4NcZSjp8F4O3nPJ63vQMPvUXdXXCK8m2K1AO+XjPO8a0nnuQwBfLST/Ifz3aPFbsVLeTF0ZIsnPMKmOF41kwppgDmMxE0dTU10qCBoX1hX4GrhEMf8O/GS+2bSxfrTkmXTSSk+fpIcI=
+	t=1728919285; cv=none; b=P6+oxuIwh2j29/Gykz3FpPN2uMwD6RUFJOn97UyGLYn6Ebcr0YYUK4s293e7ldAWnYRY9JIqr6WFPJ9zLTAGa/QpBOYhKic7IRcYOrF0VYjIbUBYx7PVBbtAmamAMqrJ8Pqhe2utFXYArndEjSqEx0LqPEOqPVQVAT1+Ne81oUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728915938; c=relaxed/simple;
-	bh=pItyfJqN6DLVH3L5vNjbiaLzTj2OSIfy7L5vUIM4QDk=;
+	s=arc-20240116; t=1728919285; c=relaxed/simple;
+	bh=a6GSY4JvErJWIeGzLSaOlcL8U+/dQkReuZxcjejkaP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d8VYcOTfVGpayserrbgYGmFVa4JyjOQULhOHldXOyB/tHNCMQ+4iXTnmFd/tOCs+vxO4dYsxyDmPeNNWr2J7fTEr0KTqZ8ZfhwmdIv8/31UKY0zg4qPklm/ZD1rL1cW+lqEclF8axVcMbiRXU9K5pHo2UrcywaBzI/uj46tM6J0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kvheOxMT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8044C4CEC3;
-	Mon, 14 Oct 2024 14:25:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u7GQbBcMCHjgqkpsauqOnXM6oT+6CWqhBv+6nXM3RAaVEW4svfDJIJcLqw6KERxsFWRJ5L/5azLFbXyrccnZpgubAOpTsN9jDcDcsdawBARG3K+I0ZRUF2oWWxPV/PvMfa/VrKmOJytTIbd8jmU0hQdIKrsuOrhiH7Ov3DhEDaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKkavV6A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE977C4CEC7;
+	Mon, 14 Oct 2024 15:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728915938;
-	bh=pItyfJqN6DLVH3L5vNjbiaLzTj2OSIfy7L5vUIM4QDk=;
+	s=korg; t=1728919285;
+	bh=a6GSY4JvErJWIeGzLSaOlcL8U+/dQkReuZxcjejkaP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kvheOxMT5F0XHg6FM7aqrRrN+zD5ghxoE1KZLSTXbvietycvLKxM7dsogIIZ6txM7
-	 LEIA9PFUJChPIfPdA1dirc7B6g9eMfZH4EdDWTF0xgB9bouCcS5P3AnOixYPanuTrg
-	 6+dM3Zm0OXcELOstFQy8MXYAASHkDOxWC7q/s7AQ=
+	b=MKkavV6AwpJ3Gn0reGH/U21F033jVb5rYZcPBBFsWPCR8VOMNIaTtzT6/mNdKhRT7
+	 qwq7P9eUpCJahCfItrbPPFMRGrHOwJ2JRGEl8Nh/zqatchihR+SUfdf1ar/DubV074
+	 CmVk+T+Y+DNr/+z4auIqKFIje8q0YO7hWc2kYVSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 025/214] s390/cpum_sf: Remove WARN_ON_ONCE statements
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Lukasz Spintzyk <lukasz.spintzyk@displaylink.com>,
+	Deepak Rawat <drawat@vmware.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Thomas Hellstrom <thellstrom@vmware.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	dri-devel@lists.freedesktop.org,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.1 534/798] drm: Consistently use struct drm_mode_rect for FB_DAMAGE_CLIPS
 Date: Mon, 14 Oct 2024 16:18:08 +0200
-Message-ID: <20241014141045.975030598@linuxfoundation.org>
+Message-ID: <20241014141238.969355054@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+References: <20241014141217.941104064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +69,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit b495e710157606889f2d8bdc62aebf2aa02f67a7 ]
+commit 8b0d2f61545545ab5eef923ed6e59fc3be2385e0 upstream.
 
-Remove WARN_ON_ONCE statements. These have not triggered in the
-past.
+FB_DAMAGE_CLIPS is a plane property for damage handling. Its UAPI
+should only use UAPI types. Hence replace struct drm_rect with
+struct drm_mode_rect in drm_atomic_plane_set_property(). Both types
+are identical in practice, so there's no change in behavior.
 
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Closes: https://lore.kernel.org/dri-devel/Zu1Ke1TuThbtz15E@intel.com/
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: d3b21767821e ("drm: Add a new plane property to send damage during plane update")
+Cc: Lukasz Spintzyk <lukasz.spintzyk@displaylink.com>
+Cc: Deepak Rawat <drawat@vmware.com>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Thomas Hellstrom <thellstrom@vmware.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.0+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240923075841.16231-1-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/perf_cpum_sf.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/drm_atomic_uapi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/perf_cpum_sf.c b/arch/s390/kernel/perf_cpum_sf.c
-index 736c1d9632dd5..48fa9471660a8 100644
---- a/arch/s390/kernel/perf_cpum_sf.c
-+++ b/arch/s390/kernel/perf_cpum_sf.c
-@@ -1463,7 +1463,7 @@ static int aux_output_begin(struct perf_output_handle *handle,
- 	unsigned long range, i, range_scan, idx, head, base, offset;
- 	struct hws_trailer_entry *te;
- 
--	if (WARN_ON_ONCE(handle->head & ~PAGE_MASK))
-+	if (handle->head & ~PAGE_MASK)
- 		return -EINVAL;
- 
- 	aux->head = handle->head >> PAGE_SHIFT;
-@@ -1642,7 +1642,7 @@ static void hw_collect_aux(struct cpu_hw_sf *cpuhw)
- 	unsigned long num_sdb;
- 
- 	aux = perf_get_aux(handle);
--	if (WARN_ON_ONCE(!aux))
-+	if (!aux)
- 		return;
- 
- 	/* Inform user space new data arrived */
-@@ -1661,7 +1661,7 @@ static void hw_collect_aux(struct cpu_hw_sf *cpuhw)
- 				num_sdb);
- 			break;
- 		}
--		if (WARN_ON_ONCE(!aux))
-+		if (!aux)
- 			return;
- 
- 		/* Update head and alert_mark to new position */
-@@ -1896,12 +1896,8 @@ static void cpumsf_pmu_start(struct perf_event *event, int flags)
- {
- 	struct cpu_hw_sf *cpuhw = this_cpu_ptr(&cpu_hw_sf);
- 
--	if (WARN_ON_ONCE(!(event->hw.state & PERF_HES_STOPPED)))
-+	if (!(event->hw.state & PERF_HES_STOPPED))
- 		return;
--
--	if (flags & PERF_EF_RELOAD)
--		WARN_ON_ONCE(!(event->hw.state & PERF_HES_UPTODATE));
--
- 	perf_pmu_disable(event->pmu);
- 	event->hw.state = 0;
- 	cpuhw->lsctl.cs = 1;
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/drm_atomic_uapi.c
++++ b/drivers/gpu/drm/drm_atomic_uapi.c
+@@ -567,7 +567,7 @@ static int drm_atomic_plane_set_property
+ 					&state->fb_damage_clips,
+ 					val,
+ 					-1,
+-					sizeof(struct drm_rect),
++					sizeof(struct drm_mode_rect),
+ 					&replaced);
+ 		return ret;
+ 	} else if (property == plane->scaling_filter_property) {
 
 
 
