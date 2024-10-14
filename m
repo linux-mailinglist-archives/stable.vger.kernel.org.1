@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-84091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4C299CE18
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:39:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D71799CD0E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:28:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D90D1C23003
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:39:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57B122829F9
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7904595B;
-	Mon, 14 Oct 2024 14:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D941AB6D4;
+	Mon, 14 Oct 2024 14:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2J6uSB7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdoTjETT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF0720EB;
-	Mon, 14 Oct 2024 14:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AA51AB535;
+	Mon, 14 Oct 2024 14:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916792; cv=none; b=okPwVNGIj493K58X3dwNa0logcCdCp7lCZB9gq6KNReW8Ak8LlyDXUq2K9OT8icFHFbBzzV4s8pX8DFSmOe6q5GrEsRXauBisDSZT0wLOTztGTXsB/s3+kSR0bK9x9CDbHJ/oolcfIiytYUB8vIAvRtDxxNOK24RnX6A597z24M=
+	t=1728916092; cv=none; b=UdRMuOvaOw72I012tYWwWJoe8ae68STO51mEgS4C62f7cnbgs+OEK0Ra2EQMCrT98ydfv0GFJCq0mkqCfDMDHr2ogwUSwOFYDXhVXoT44Yl90vBACOn/qX3GZ756Oskypwn6i4I3Lqwe9ChvSvgd3MfxSm4Vc3I+DFwIBBQMB2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916792; c=relaxed/simple;
-	bh=nkVTVIZVS68Mxz07ss3g27mlDowcCnRaBAuE1AaEzKQ=;
+	s=arc-20240116; t=1728916092; c=relaxed/simple;
+	bh=DYDfd2W5n5JzFXrYNYeHDXswy4b/fK58hXIXJSRt2uY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F83Kw/V1q5tcWW/1HhLbo/+BAEw/Wdfncx/KUeoLQ92uI4NOQbp9lze1vPbqyCuXeZJ4McQNq3/X+mhwK9vhO299S2yL54PaB5czbviQ5LpYo4Zf89OU2kK08mwOVsABTQOn4CucnAC6rj8XHsiJay20JxAjBN7o7AhwvvTVvOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2J6uSB7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F939C4CEC3;
-	Mon, 14 Oct 2024 14:39:51 +0000 (UTC)
+	 MIME-Version; b=Y+tsUwsYD4LTfEtPRwm8yQy78HG4alBRBWjM6lHOA4/Vyf5mpDiji8xzNKUEA6kgf1QVnxDBktW1jj4HKH8FZKTAB+hsXg4W03PyfWLfkXxY0PbWNMct24e1TT3BNVSH2OmXTABm/8YKnrijfscM5psPo0b07P4DNFWs6MC6Vbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdoTjETT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A56C4CEC3;
+	Mon, 14 Oct 2024 14:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916791;
-	bh=nkVTVIZVS68Mxz07ss3g27mlDowcCnRaBAuE1AaEzKQ=;
+	s=korg; t=1728916092;
+	bh=DYDfd2W5n5JzFXrYNYeHDXswy4b/fK58hXIXJSRt2uY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2J6uSB7Rs+g3Bj0eh6WQbeDa3huM74EFvW7WbhWsVa7CQEq3JN0ai638RlSos9rP
-	 SLdKo5LnSOCOPeLiKetZ3Pb2N0bTi2iWv4AvsQAJgeYB2fwF0o4eLd9puDErB0ui1P
-	 GC0boyWYe1aeTNTws4BB1j0pqPi8F7KN3WSTNZF4=
+	b=pdoTjETTjxfyjW1vsY9XomUPuE1vMTJWddo+7MjUBoUr0SPyf311MPPe1AM39DMGc
+	 xxriQT/pvG5p9Txs9tw22TI3ji7EGTm6ga3pJe9dWD6nCoqPRYGuvzb8NaTaV06SH+
+	 MtL/1mgRLwABF1UbxIsSR6rJwIhClMkjy1nnROoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Jihong <yangjihong1@huawei.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/213] perf sched: Move curr_pid and cpu_last_switched initialization to perf_sched__{lat|map|replay}()
+Subject: [PATCH 6.11 082/214] nfsd: nfsd_destroy_serv() must call svc_destroy() even if nfsd_startup_net() failed
 Date: Mon, 14 Oct 2024 16:19:05 +0200
-Message-ID: <20241014141044.516379964@linuxfoundation.org>
+Message-ID: <20241014141048.191782323@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,310 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Jihong <yangjihong1@huawei.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit bd2cdf26b9ea000339d54adc82e87fdbf22c21c3 ]
+[ Upstream commit 53e4e17557049d7688ca9dadeae80864d40cf0b7 ]
 
-The curr_pid and cpu_last_switched are used only for the
-'perf sched replay/latency/map'. Put their initialization in
-perf_sched__{lat|map|replay () to reduce unnecessary actions in other
-commands.
+If nfsd_startup_net() fails and so ->nfsd_net_up is false,
+nfsd_destroy_serv() doesn't currently call svc_destroy().  It should.
 
-Simple functional testing:
-
-  # perf sched record perf bench sched messaging
-  # Running 'sched/messaging' benchmark:
-  # 20 sender and receiver processes per group
-  # 10 groups == 400 processes run
-
-       Total time: 0.209 [sec]
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 16.456 MB perf.data (147907 samples) ]
-
-  # perf sched lat
-
-   -------------------------------------------------------------------------------------------------------------------------------------------
-    Task                  |   Runtime ms  | Switches | Avg delay ms    | Max delay ms    | Max delay start           | Max delay end          |
-   -------------------------------------------------------------------------------------------------------------------------------------------
-    sched-messaging:(401) |   2990.699 ms |    38705 | avg:   0.661 ms | max:  67.046 ms | max start: 456532.624830 s | max end: 456532.691876 s
-    qemu-system-x86:(7)   |    179.764 ms |     2191 | avg:   0.152 ms | max:  21.857 ms | max start: 456532.576434 s | max end: 456532.598291 s
-    sshd:48125            |      0.522 ms |        2 | avg:   0.037 ms | max:   0.046 ms | max start: 456532.514610 s | max end: 456532.514656 s
-  <SNIP>
-    ksoftirqd/11:82       |      0.063 ms |        1 | avg:   0.005 ms | max:   0.005 ms | max start: 456532.769366 s | max end: 456532.769371 s
-    kworker/9:0-mm_:34624 |      0.233 ms |       20 | avg:   0.004 ms | max:   0.007 ms | max start: 456532.690804 s | max end: 456532.690812 s
-    migration/13:93       |      0.000 ms |        1 | avg:   0.004 ms | max:   0.004 ms | max start: 456532.512669 s | max end: 456532.512674 s
-   -----------------------------------------------------------------------------------------------------------------
-    TOTAL:                |   3180.750 ms |    41368 |
-   ---------------------------------------------------
-
-  # echo $?
-  0
-
-  # perf sched map
-    *A0                                                               456532.510141 secs A0 => migration/0:15
-    *.                                                                456532.510171 secs .  => swapper:0
-     .  *B0                                                           456532.510261 secs B0 => migration/1:21
-     .  *.                                                            456532.510279 secs
-  <SNIP>
-     L7  L7  L7  L7  L7  L7  L7  L7  L7  L7  L7 *L7  .   .   .   .    456532.785979 secs
-     L7  L7  L7  L7  L7  L7  L7  L7  L7  L7  L7  L7 *L7  .   .   .    456532.786054 secs
-     L7  L7  L7  L7  L7  L7  L7  L7  L7  L7  L7  L7  L7 *L7  .   .    456532.786127 secs
-     L7  L7  L7  L7  L7  L7  L7  L7  L7  L7  L7  L7  L7  L7 *L7  .    456532.786197 secs
-     L7  L7  L7  L7  L7  L7  L7  L7  L7  L7  L7  L7  L7  L7  L7 *L7   456532.786270 secs
-  # echo $?
-  0
-
-  # perf sched replay
-  run measurement overhead: 108 nsecs
-  sleep measurement overhead: 66473 nsecs
-  the run test took 1000002 nsecs
-  the sleep test took 1082686 nsecs
-  nr_run_events:        49334
-  nr_sleep_events:      50054
-  nr_wakeup_events:     34701
-  target-less wakeups:  165
-  multi-target wakeups: 766
-  task      0 (             swapper:         0), nr_events: 15419
-  task      1 (             swapper:         1), nr_events: 1
-  task      2 (             swapper:         2), nr_events: 1
-  <SNIP>
-  task    715 (     sched-messaging:    110248), nr_events: 1438
-  task    716 (     sched-messaging:    110249), nr_events: 512
-  task    717 (     sched-messaging:    110250), nr_events: 500
-  task    718 (     sched-messaging:    110251), nr_events: 537
-  task    719 (     sched-messaging:    110252), nr_events: 823
-  ------------------------------------------------------------
-  #1  : 1325.288, ravg: 1325.29, cpu: 7823.35 / 7823.35
-  #2  : 1363.606, ravg: 1329.12, cpu: 7655.53 / 7806.56
-  #3  : 1349.494, ravg: 1331.16, cpu: 7544.80 / 7780.39
-  #4  : 1311.488, ravg: 1329.19, cpu: 7495.13 / 7751.86
-  #5  : 1309.902, ravg: 1327.26, cpu: 7266.65 / 7703.34
-  #6  : 1309.535, ravg: 1325.49, cpu: 7843.86 / 7717.39
-  #7  : 1316.482, ravg: 1324.59, cpu: 7854.41 / 7731.09
-  #8  : 1366.604, ravg: 1328.79, cpu: 7955.81 / 7753.57
-  #9  : 1326.286, ravg: 1328.54, cpu: 7466.86 / 7724.90
-  #10 : 1356.653, ravg: 1331.35, cpu: 7566.60 / 7709.07
-  # echo $?
-  0
-
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240206083228.172607-5-yangjihong1@huawei.com
-Stable-dep-of: 1a5efc9e13f3 ("libsubcmd: Don't free the usage string")
+Fixes: 1e3577a4521e ("SUNRPC: discard sv_refcnt, and svc_get/svc_put")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-sched.c | 94 +++++++++++++++++++++++++-------------
- 1 file changed, 61 insertions(+), 33 deletions(-)
+ fs/nfsd/nfssvc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index e498b559ea68a..994b9dcb2385a 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -3211,14 +3211,44 @@ static void perf_sched__merge_lat(struct perf_sched *sched)
- 	}
- }
- 
-+static int setup_cpus_switch_event(struct perf_sched *sched)
-+{
-+	unsigned int i;
-+
-+	sched->cpu_last_switched = calloc(MAX_CPUS, sizeof(*(sched->cpu_last_switched)));
-+	if (!sched->cpu_last_switched)
-+		return -1;
-+
-+	sched->curr_pid = malloc(MAX_CPUS * sizeof(*(sched->curr_pid)));
-+	if (!sched->curr_pid) {
-+		zfree(&sched->cpu_last_switched);
-+		return -1;
-+	}
-+
-+	for (i = 0; i < MAX_CPUS; i++)
-+		sched->curr_pid[i] = -1;
-+
-+	return 0;
-+}
-+
-+static void free_cpus_switch_event(struct perf_sched *sched)
-+{
-+	zfree(&sched->curr_pid);
-+	zfree(&sched->cpu_last_switched);
-+}
-+
- static int perf_sched__lat(struct perf_sched *sched)
+diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
+index 8103c3c90cd11..58523b4c37de0 100644
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -449,6 +449,9 @@ static void nfsd_shutdown_net(struct net *net)
  {
-+	int rc = -1;
- 	struct rb_node *next;
+ 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
  
- 	setup_pager();
- 
-+	if (setup_cpus_switch_event(sched))
-+		return rc;
-+
- 	if (perf_sched__read_events(sched))
--		return -1;
-+		goto out_free_cpus_switch_event;
- 
- 	perf_sched__merge_lat(sched);
- 	perf_sched__sort_lat(sched);
-@@ -3247,7 +3277,11 @@ static int perf_sched__lat(struct perf_sched *sched)
- 	print_bad_events(sched);
- 	printf("\n");
- 
--	return 0;
-+	rc = 0;
-+
-+out_free_cpus_switch_event:
-+	free_cpus_switch_event(sched);
-+	return rc;
- }
- 
- static int setup_map_cpus(struct perf_sched *sched)
-@@ -3314,9 +3348,12 @@ static int perf_sched__map(struct perf_sched *sched)
- 	if (!sched->curr_thread)
- 		return rc;
- 
--	if (setup_map_cpus(sched))
-+	if (setup_cpus_switch_event(sched))
- 		goto out_free_curr_thread;
- 
-+	if (setup_map_cpus(sched))
-+		goto out_free_cpus_switch_event;
-+
- 	if (setup_color_pids(sched))
- 		goto out_put_map_cpus;
- 
-@@ -3340,6 +3377,9 @@ static int perf_sched__map(struct perf_sched *sched)
- 	zfree(&sched->map.comp_cpus);
- 	perf_cpu_map__put(sched->map.cpus);
- 
-+out_free_cpus_switch_event:
-+	free_cpus_switch_event(sched);
-+
- out_free_curr_thread:
- 	zfree(&sched->curr_thread);
- 	return rc;
-@@ -3353,6 +3393,10 @@ static int perf_sched__replay(struct perf_sched *sched)
- 	mutex_init(&sched->start_work_mutex);
- 	mutex_init(&sched->work_done_wait_mutex);
- 
-+	ret = setup_cpus_switch_event(sched);
-+	if (ret)
-+		goto out_mutex_destroy;
-+
- 	calibrate_run_measurement_overhead(sched);
- 	calibrate_sleep_measurement_overhead(sched);
- 
-@@ -3360,7 +3404,7 @@ static int perf_sched__replay(struct perf_sched *sched)
- 
- 	ret = perf_sched__read_events(sched);
- 	if (ret)
--		goto out_mutex_destroy;
-+		goto out_free_cpus_switch_event;
- 
- 	printf("nr_run_events:        %ld\n", sched->nr_run_events);
- 	printf("nr_sleep_events:      %ld\n", sched->nr_sleep_events);
-@@ -3386,6 +3430,9 @@ static int perf_sched__replay(struct perf_sched *sched)
- 	sched->thread_funcs_exit = true;
- 	destroy_tasks(sched);
- 
-+out_free_cpus_switch_event:
-+	free_cpus_switch_event(sched);
-+
- out_mutex_destroy:
- 	mutex_destroy(&sched->start_work_mutex);
- 	mutex_destroy(&sched->work_done_wait_mutex);
-@@ -3624,21 +3671,7 @@ int cmd_sched(int argc, const char **argv)
- 		.switch_event	    = replay_switch_event,
- 		.fork_event	    = replay_fork_event,
- 	};
--	unsigned int i;
--	int ret = 0;
--
--	sched.cpu_last_switched = calloc(MAX_CPUS, sizeof(*sched.cpu_last_switched));
--	if (!sched.cpu_last_switched) {
--		ret = -ENOMEM;
--		goto out;
--	}
--	sched.curr_pid = malloc(MAX_CPUS * sizeof(*sched.curr_pid));
--	if (!sched.curr_pid) {
--		ret = -ENOMEM;
--		goto out;
--	}
--	for (i = 0; i < MAX_CPUS; i++)
--		sched.curr_pid[i] = -1;
-+	int ret;
- 
- 	argc = parse_options_subcommand(argc, argv, sched_options, sched_subcommands,
- 					sched_usage, PARSE_OPT_STOP_AT_NON_OPTION);
-@@ -3649,9 +3682,9 @@ int cmd_sched(int argc, const char **argv)
- 	 * Aliased to 'perf script' for now:
++	if (!nn->nfsd_net_up)
++		return;
++	nfsd_export_flush(net);
+ 	nfs4_state_shutdown_net(net);
+ 	nfsd_reply_cache_shutdown(nn);
+ 	nfsd_file_cache_shutdown_net(net);
+@@ -556,11 +559,8 @@ void nfsd_destroy_serv(struct net *net)
+ 	 * other initialization has been done except the rpcb information.
  	 */
- 	if (!strcmp(argv[0], "script")) {
--		ret = cmd_script(argc, argv);
-+		return cmd_script(argc, argv);
- 	} else if (strlen(argv[0]) > 2 && strstarts("record", argv[0])) {
--		ret = __cmd_record(argc, argv);
-+		return __cmd_record(argc, argv);
- 	} else if (strlen(argv[0]) > 2 && strstarts("latency", argv[0])) {
- 		sched.tp_handler = &lat_ops;
- 		if (argc > 1) {
-@@ -3660,7 +3693,7 @@ int cmd_sched(int argc, const char **argv)
- 				usage_with_options(latency_usage, latency_options);
- 		}
- 		setup_sorting(&sched, latency_options, latency_usage);
--		ret = perf_sched__lat(&sched);
-+		return perf_sched__lat(&sched);
- 	} else if (!strcmp(argv[0], "map")) {
- 		if (argc) {
- 			argc = parse_options(argc, argv, map_options, map_usage, 0);
-@@ -3669,7 +3702,7 @@ int cmd_sched(int argc, const char **argv)
- 		}
- 		sched.tp_handler = &map_ops;
- 		setup_sorting(&sched, latency_options, latency_usage);
--		ret = perf_sched__map(&sched);
-+		return perf_sched__map(&sched);
- 	} else if (strlen(argv[0]) > 2 && strstarts("replay", argv[0])) {
- 		sched.tp_handler = &replay_ops;
- 		if (argc) {
-@@ -3677,7 +3710,7 @@ int cmd_sched(int argc, const char **argv)
- 			if (argc)
- 				usage_with_options(replay_usage, replay_options);
- 		}
--		ret = perf_sched__replay(&sched);
-+		return perf_sched__replay(&sched);
- 	} else if (!strcmp(argv[0], "timehist")) {
- 		if (argc) {
- 			argc = parse_options(argc, argv, timehist_options,
-@@ -3693,21 +3726,16 @@ int cmd_sched(int argc, const char **argv)
- 				parse_options_usage(NULL, timehist_options, "w", true);
- 			if (sched.show_next)
- 				parse_options_usage(NULL, timehist_options, "n", true);
--			ret = -EINVAL;
--			goto out;
-+			return -EINVAL;
- 		}
- 		ret = symbol__validate_sym_arguments();
- 		if (ret)
--			goto out;
-+			return ret;
+ 	svc_rpcb_cleanup(serv, net);
+-	if (!nn->nfsd_net_up)
+-		return;
  
--		ret = perf_sched__timehist(&sched);
-+		return perf_sched__timehist(&sched);
- 	} else {
- 		usage_with_options(sched_usage, sched_options);
- 	}
- 
--out:
--	free(sched.curr_pid);
--	free(sched.cpu_last_switched);
--
--	return ret;
-+	return 0;
+ 	nfsd_shutdown_net(net);
+-	nfsd_export_flush(net);
+ 	svc_destroy(&serv);
  }
+ 
 -- 
 2.43.0
 
