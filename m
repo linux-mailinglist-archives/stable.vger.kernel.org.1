@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-83943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EBC599CD47
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:31:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 880B799CE2A
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:40:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B8901C2245E
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:31:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B2AF1F23C68
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A859924B34;
-	Mon, 14 Oct 2024 14:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0D01AA7A5;
+	Mon, 14 Oct 2024 14:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJ2I+lM1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNDHOj8Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678A520EB;
-	Mon, 14 Oct 2024 14:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489964595B;
+	Mon, 14 Oct 2024 14:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916272; cv=none; b=MugDa+SZgeJFl+NcHT/9342YUAXRVymWA+/RfygSPmcW9Nr5S7CwhBmWAY44F1CBTFcs3WmpTQcJf9z+IA0iUPxayDi8MTKB6WRFlYZAIYi6zLTF30ltSndBJxHCf1T6z4riAHNkOgBa07MK8Ut7/o0nykvt+21S/rYSbJG9F0k=
+	t=1728916852; cv=none; b=TJi+HADEjt4CN1YgP3u6hXs4sQ7iXhSCHs5G1h94IaXCS6wZK3YBb3iJHLeR2sTDam/rwCknWtc+z1XltS311ogluaBsmPe5dWIB4CxJ9g3Lo16Y0yN5dtQmoh59K7v5R724ePF/1td8lSZFkcJo1+ZHE78dDO6kyJWfNn4WbOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916272; c=relaxed/simple;
-	bh=IhYjOJC4XTLrutNnyMv3Uj8NrWC0pNSjYW8Fks6eL9E=;
+	s=arc-20240116; t=1728916852; c=relaxed/simple;
+	bh=UlXR5/4Kj3/3wnUHsIpfAvdGeqUnsGSt38FqP90gdoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=poPhdvj/AP1Wo23OJvt4Ch+r5JhsKDp7Yg59NnpPMajpQvncFJDHvIbmhTKquR6Rk8MtgV5IU5z54da2+frzo8oa5/wEldaxB0ApiRmJ+/0HobiwBxgjBxjEHXd4pUt4f5HyVK3WoM9ZQ0/KjB0iiTNVSQ0EEqF2uuRIb1zHsaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJ2I+lM1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F79C4CEC3;
-	Mon, 14 Oct 2024 14:31:11 +0000 (UTC)
+	 MIME-Version; b=gAv01XFBbLwHfpfJ9DN5NzkKX1Q4lxA6bS24pi//B3NhtbFnT3HwlY8hAoTDrBdCoCiu9tOlStPawcdAXKXapJJOfr36YHuGKi1Keofepd1ae4SEiPB2rDBClOrYgM8tF0AeuZvV0lU3xxLqfWLWc2R1VyscBQeR9KImn5MNQVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNDHOj8Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC40C4CEC3;
+	Mon, 14 Oct 2024 14:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916272;
-	bh=IhYjOJC4XTLrutNnyMv3Uj8NrWC0pNSjYW8Fks6eL9E=;
+	s=korg; t=1728916852;
+	bh=UlXR5/4Kj3/3wnUHsIpfAvdGeqUnsGSt38FqP90gdoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GJ2I+lM1XI9CovkwnLXw14f4Zgz4kB3X9uWB2t2btF5MZ9N4pQ5YJQOPBTFz1M+xt
-	 DPheHi8n6XdIXQl2K1hqVM3KF6rsXGEyUEJURhlOi/HIuou0Q0Bvx77oA41UbReHHu
-	 lBlq0YAFGk1kxNaZ0PQ7/SFrzY5m0WZtPMWYElHA=
+	b=JNDHOj8ZklhSEFAEM1BYW90w3FyIRh6HeLse4cj5BF+uBYUWEA2lJmM1e2nZygmUP
+	 3UEq3+8rCKfyq4LDOodxoB1Wqi9ZiSD55Lzb+Hgl15dEvEud9Eb+scOjrKHZHPZDOG
+	 iZNENDnTsCEiyDDDFpd786Z8tJzY2nrLPfSQTrYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 126/214] e1000e: change I219 (19) devices to ADP
+Subject: [PATCH 6.6 083/213] soundwire: cadence: re-check Peripheral status with delayed_work
 Date: Mon, 14 Oct 2024 16:19:49 +0200
-Message-ID: <20241014141049.909710627@linuxfoundation.org>
+Message-ID: <20241014141046.216943005@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +64,206 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 9d9e5347b035412daa844f884b94a05bac94f864 ]
+[ Upstream commit f8c35d61ba01afa76846905c67862cdace7f66b0 ]
 
-Sporadic issues, such as PHY access loss, have been observed on I219 (19)
-devices. It was found that these devices have hardware more closely
-related to ADP than MTP and the issues were caused by taking MTP-specific
-flows.
+The SoundWire peripheral enumeration is entirely based on interrupts,
+more specifically sticky bits tracking state changes.
 
-Change the MAC and board types of these devices from MTP to ADP to
-correctly reflect the LAN hardware, and flows, of these devices.
+This patch adds a defensive programming check on the actual status
+reported in PING frames. If for some reason an interrupt was lost or
+delayed, the delayed work would detect a peripheral change of status
+after the bus starts.
 
-Fixes: db2d737d63c5 ("e1000e: Separate MTP board type from ADP")
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+The 100ms defined for the delay is not completely arbitrary, if a
+Peripheral didn't join the bus within that delay then probably the
+hardware link is broken, and conversely if the detection didn't happen
+because of software issues the 100ms is still acceptable in terms of
+user experience.
+
+The overhead of the one-shot workqueue is minimal, and the mutual
+exclusion ensures that the interrupt and delayed work cannot update
+the status concurrently.
+
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://lore.kernel.org/r/20240805114921.88007-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/hw.h     | 4 ++--
- drivers/net/ethernet/intel/e1000e/netdev.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/soundwire/cadence_master.c   | 39 ++++++++++++++++++++++++++--
+ drivers/soundwire/cadence_master.h   |  5 ++++
+ drivers/soundwire/intel.h            |  2 ++
+ drivers/soundwire/intel_auxdevice.c  |  1 +
+ drivers/soundwire/intel_bus_common.c | 11 ++++++++
+ 5 files changed, 56 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/hw.h b/drivers/net/ethernet/intel/e1000e/hw.h
-index 4b6e7536170ab..fc8ed38aa0955 100644
---- a/drivers/net/ethernet/intel/e1000e/hw.h
-+++ b/drivers/net/ethernet/intel/e1000e/hw.h
-@@ -108,8 +108,8 @@ struct e1000_hw;
- #define E1000_DEV_ID_PCH_RPL_I219_V22		0x0DC8
- #define E1000_DEV_ID_PCH_MTP_I219_LM18		0x550A
- #define E1000_DEV_ID_PCH_MTP_I219_V18		0x550B
--#define E1000_DEV_ID_PCH_MTP_I219_LM19		0x550C
--#define E1000_DEV_ID_PCH_MTP_I219_V19		0x550D
-+#define E1000_DEV_ID_PCH_ADP_I219_LM19		0x550C
-+#define E1000_DEV_ID_PCH_ADP_I219_V19		0x550D
- #define E1000_DEV_ID_PCH_LNP_I219_LM20		0x550E
- #define E1000_DEV_ID_PCH_LNP_I219_V20		0x550F
- #define E1000_DEV_ID_PCH_LNP_I219_LM21		0x5510
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index f103249b12fac..07e9033463582 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -7899,10 +7899,10 @@ static const struct pci_device_id e1000_pci_tbl[] = {
- 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_ADP_I219_V17), board_pch_adp },
- 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_RPL_I219_LM22), board_pch_adp },
- 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_RPL_I219_V22), board_pch_adp },
-+	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_ADP_I219_LM19), board_pch_adp },
-+	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_ADP_I219_V19), board_pch_adp },
- 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_MTP_I219_LM18), board_pch_mtp },
- 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_MTP_I219_V18), board_pch_mtp },
--	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_MTP_I219_LM19), board_pch_mtp },
--	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_MTP_I219_V19), board_pch_mtp },
- 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_LNP_I219_LM20), board_pch_mtp },
- 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_LNP_I219_V20), board_pch_mtp },
- 	{ PCI_VDEVICE(INTEL, E1000_DEV_ID_PCH_LNP_I219_LM21), board_pch_mtp },
+diff --git a/drivers/soundwire/cadence_master.c b/drivers/soundwire/cadence_master.c
+index 3e7cf04aaf2a6..e69982dbd449b 100644
+--- a/drivers/soundwire/cadence_master.c
++++ b/drivers/soundwire/cadence_master.c
+@@ -891,8 +891,14 @@ static int cdns_update_slave_status(struct sdw_cdns *cdns,
+ 		}
+ 	}
+ 
+-	if (is_slave)
+-		return sdw_handle_slave_status(&cdns->bus, status);
++	if (is_slave) {
++		int ret;
++
++		mutex_lock(&cdns->status_update_lock);
++		ret = sdw_handle_slave_status(&cdns->bus, status);
++		mutex_unlock(&cdns->status_update_lock);
++		return ret;
++	}
+ 
+ 	return 0;
+ }
+@@ -989,6 +995,31 @@ irqreturn_t sdw_cdns_irq(int irq, void *dev_id)
+ }
+ EXPORT_SYMBOL(sdw_cdns_irq);
+ 
++static void cdns_check_attached_status_dwork(struct work_struct *work)
++{
++	struct sdw_cdns *cdns =
++		container_of(work, struct sdw_cdns, attach_dwork.work);
++	enum sdw_slave_status status[SDW_MAX_DEVICES + 1];
++	u32 val;
++	int ret;
++	int i;
++
++	val = cdns_readl(cdns, CDNS_MCP_SLAVE_STAT);
++
++	for (i = 0; i <= SDW_MAX_DEVICES; i++) {
++		status[i] = val & 0x3;
++		if (status[i])
++			dev_dbg(cdns->dev, "Peripheral %d status: %d\n", i, status[i]);
++		val >>= 2;
++	}
++
++	mutex_lock(&cdns->status_update_lock);
++	ret = sdw_handle_slave_status(&cdns->bus, status);
++	mutex_unlock(&cdns->status_update_lock);
++	if (ret < 0)
++		dev_err(cdns->dev, "%s: sdw_handle_slave_status failed: %d\n", __func__, ret);
++}
++
+ /**
+  * cdns_update_slave_status_work - update slave status in a work since we will need to handle
+  * other interrupts eg. CDNS_MCP_INT_RX_WL during the update slave
+@@ -1745,7 +1776,11 @@ int sdw_cdns_probe(struct sdw_cdns *cdns)
+ 	init_completion(&cdns->tx_complete);
+ 	cdns->bus.port_ops = &cdns_port_ops;
+ 
++	mutex_init(&cdns->status_update_lock);
++
+ 	INIT_WORK(&cdns->work, cdns_update_slave_status_work);
++	INIT_DELAYED_WORK(&cdns->attach_dwork, cdns_check_attached_status_dwork);
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL(sdw_cdns_probe);
+diff --git a/drivers/soundwire/cadence_master.h b/drivers/soundwire/cadence_master.h
+index bc84435e420f5..e1d7969ba48ae 100644
+--- a/drivers/soundwire/cadence_master.h
++++ b/drivers/soundwire/cadence_master.h
+@@ -117,6 +117,8 @@ struct sdw_cdns_dai_runtime {
+  * @link_up: Link status
+  * @msg_count: Messages sent on bus
+  * @dai_runtime_array: runtime context for each allocated DAI.
++ * @status_update_lock: protect concurrency between interrupt-based and delayed work
++ * status update
+  */
+ struct sdw_cdns {
+ 	struct device *dev;
+@@ -148,10 +150,13 @@ struct sdw_cdns {
+ 	bool interrupt_enabled;
+ 
+ 	struct work_struct work;
++	struct delayed_work attach_dwork;
+ 
+ 	struct list_head list;
+ 
+ 	struct sdw_cdns_dai_runtime **dai_runtime_array;
++
++	struct mutex status_update_lock; /* add mutual exclusion to sdw_handle_slave_status() */
+ };
+ 
+ #define bus_to_cdns(_bus) container_of(_bus, struct sdw_cdns, bus)
+diff --git a/drivers/soundwire/intel.h b/drivers/soundwire/intel.h
+index 511932c55216c..bb6b1df2d2c20 100644
+--- a/drivers/soundwire/intel.h
++++ b/drivers/soundwire/intel.h
+@@ -91,6 +91,8 @@ static inline void intel_writew(void __iomem *base, int offset, u16 value)
+ 
+ #define INTEL_MASTER_RESET_ITERATIONS	10
+ 
++#define SDW_INTEL_DELAYED_ENUMERATION_MS	100
++
+ #define SDW_INTEL_CHECK_OPS(sdw, cb)	((sdw) && (sdw)->link_res && (sdw)->link_res->hw_ops && \
+ 					 (sdw)->link_res->hw_ops->cb)
+ #define SDW_INTEL_OPS(sdw, cb)		((sdw)->link_res->hw_ops->cb)
+diff --git a/drivers/soundwire/intel_auxdevice.c b/drivers/soundwire/intel_auxdevice.c
+index 93698532deac4..bdfff78ac2f81 100644
+--- a/drivers/soundwire/intel_auxdevice.c
++++ b/drivers/soundwire/intel_auxdevice.c
+@@ -398,6 +398,7 @@ static void intel_link_remove(struct auxiliary_device *auxdev)
+ 	 */
+ 	if (!bus->prop.hw_disabled) {
+ 		sdw_intel_debugfs_exit(sdw);
++		cancel_delayed_work_sync(&cdns->attach_dwork);
+ 		sdw_cdns_enable_interrupt(cdns, false);
+ 	}
+ 	sdw_bus_master_delete(bus);
+diff --git a/drivers/soundwire/intel_bus_common.c b/drivers/soundwire/intel_bus_common.c
+index 179aa0d85951b..db9cf211671a3 100644
+--- a/drivers/soundwire/intel_bus_common.c
++++ b/drivers/soundwire/intel_bus_common.c
+@@ -60,6 +60,9 @@ int intel_start_bus(struct sdw_intel *sdw)
+ 	sdw_cdns_check_self_clearing_bits(cdns, __func__,
+ 					  true, INTEL_MASTER_RESET_ITERATIONS);
+ 
++	schedule_delayed_work(&cdns->attach_dwork,
++			      msecs_to_jiffies(SDW_INTEL_DELAYED_ENUMERATION_MS));
++
+ 	return 0;
+ }
+ 
+@@ -151,6 +154,9 @@ int intel_start_bus_after_reset(struct sdw_intel *sdw)
+ 	}
+ 	sdw_cdns_check_self_clearing_bits(cdns, __func__, true, INTEL_MASTER_RESET_ITERATIONS);
+ 
++	schedule_delayed_work(&cdns->attach_dwork,
++			      msecs_to_jiffies(SDW_INTEL_DELAYED_ENUMERATION_MS));
++
+ 	return 0;
+ }
+ 
+@@ -184,6 +190,9 @@ int intel_start_bus_after_clock_stop(struct sdw_intel *sdw)
+ 
+ 	sdw_cdns_check_self_clearing_bits(cdns, __func__, true, INTEL_MASTER_RESET_ITERATIONS);
+ 
++	schedule_delayed_work(&cdns->attach_dwork,
++			      msecs_to_jiffies(SDW_INTEL_DELAYED_ENUMERATION_MS));
++
+ 	return 0;
+ }
+ 
+@@ -194,6 +203,8 @@ int intel_stop_bus(struct sdw_intel *sdw, bool clock_stop)
+ 	bool wake_enable = false;
+ 	int ret;
+ 
++	cancel_delayed_work_sync(&cdns->attach_dwork);
++
+ 	if (clock_stop) {
+ 		ret = sdw_cdns_clock_stop(cdns, true);
+ 		if (ret < 0)
 -- 
 2.43.0
 
