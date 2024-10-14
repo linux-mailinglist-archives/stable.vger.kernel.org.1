@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-83920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-84074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD3DD99CD30
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:30:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 544EB99CE04
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:38:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A885281F31
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:30:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1796E28355B
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD031AB526;
-	Mon, 14 Oct 2024 14:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2BF1AB530;
+	Mon, 14 Oct 2024 14:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qc30m/L8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xz71NY/S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92501AAE25;
-	Mon, 14 Oct 2024 14:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30801AB528;
+	Mon, 14 Oct 2024 14:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728916194; cv=none; b=O9GzKcWZo59V9f6TxnCYFs8I9W+MUWzRbYUj+2FomPUVpwx/H0WjUrcL3OqRMHWET3Qs1lCGtIA897vUiUZkkY0Tfq/DYvYk3j5VW7NVuUyj4vRIs/7ZbhQX3ejRn/ucnZR2kHqw7/oZZsUUXBNT7mkwnPz/lkegeZqkh880934=
+	t=1728916728; cv=none; b=JqBabBR+344EmSmL2OzpqPuWXnBx4Ku17m35wx2ue4xmxWl74C0DhTfE5ncJpSIKDpjt27MckdurxffxBhbn46cfjc8cWaK7HyCTH7qESFoC/cDfoiPjajNmiQLwOHf+lXUwIiffUXXEgAMvqq/U2BpzSFQbm6Wi5OCiY/YPkkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728916194; c=relaxed/simple;
-	bh=zLEGeiYnpglF2klfNYvvPsgpwrywZyXjoFXhAlw/uAQ=;
+	s=arc-20240116; t=1728916728; c=relaxed/simple;
+	bh=zvcYChbHS/g/NdedPpMo8GNo822BkbbeHhmCN425n14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPglOt88eLCs58XUVIhOEJ46OXTTtFfv9icbY/cU+VADFOgQcCbXe9PtNeTMaHA2SiVfuIIvbFoTR/GL8lvHdfSlauXtN1bp+Fhnv61tlQolfKuf3NPmpUJikJNLujAiSFVpR8mc55Timp8INisqdmKcyIcAJlEZpr3yZzV6Rn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qc30m/L8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF61EC4CEC3;
-	Mon, 14 Oct 2024 14:29:53 +0000 (UTC)
+	 MIME-Version; b=F6+1OLU8eoYGKlrvEMhbPbsPR6tGzW80B0qiQGohffQSDytkK26GiDB1Ok/FPKLYpblhabPJ+gIU5JhTF2SQjwoDjAygSmwCs6d8Scpmg00iUDARnip7HWC04eGu3ziQWCI1fRrw/cXh1iw7eyPX9BbqpbLHulDxG2XQ9+jsMUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xz71NY/S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3265AC4CEC3;
+	Mon, 14 Oct 2024 14:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728916194;
-	bh=zLEGeiYnpglF2klfNYvvPsgpwrywZyXjoFXhAlw/uAQ=;
+	s=korg; t=1728916728;
+	bh=zvcYChbHS/g/NdedPpMo8GNo822BkbbeHhmCN425n14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qc30m/L8NZGEDbrry7fsW/s0qV8s8wGGQA5mjnNYDOpCEElHdTOi1K3IaWZLbwrI/
-	 zFqhSuuhkOroqcboEN9nQS+iwIDQqrcBMUZkXWtcEFeg/eAuzN259xwiThW85kOtNR
-	 XRRv5zg385pJjsHFwvePeBn5VXPnp1MX4tWwOEiI=
+	b=xz71NY/SmlY46HXcSTYNyS2oWFD6igDIK+mPgUNlU9mygo5fa1Gx6n+spyEL4o9o4
+	 hirUznY7BroRs60Oe26a0tzMXMHVgcL6dPcjmP6BIEydzWVD5zBWmhv/6BgwoEtTMB
+	 w4lGqWy2ujF/LChjn3d5gVHhZmssxpwK+/cg/sHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhishek Chauhan <quic_abchauha@quicinc.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 093/214] net: phy: aquantia: remove usage of phy_set_max_speed
+Subject: [PATCH 6.6 050/213] fs/ntfs3: Refactor enum_rstbl to suppress static checker
 Date: Mon, 14 Oct 2024 16:19:16 +0200
-Message-ID: <20241014141048.624804207@linuxfoundation.org>
+Message-ID: <20241014141044.945754560@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-References: <20241014141044.974962104@linuxfoundation.org>
+In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
+References: <20241014141042.954319779@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,145 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhishek Chauhan <quic_abchauha@quicinc.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 8f61d73306c62e3c0e368cf6051330f4593415f6 ]
+[ Upstream commit 56c16d5459d5c050a97a138a00a82b105a8e0a66 ]
 
-Remove the use of phy_set_max_speed in phy driver as the
-function is mainly used in MAC driver to set the max
-speed.
+Comments and brief description of function enum_rstbl added.
 
-Instead use get_features to fix up Phy PMA capabilities for
-AQR111, AQR111B0, AQR114C and AQCS109
-
-Fixes: 038ba1dc4e54 ("net: phy: aquantia: add AQR111 and AQR111B0 PHY ID")
-Fixes: 0974f1f03b07 ("net: phy: aquantia: remove false 5G and 10G speed ability for AQCS109")
-Fixes: c278ec644377 ("net: phy: aquantia: add support for AQR114C PHY ID")
-Link: https://lore.kernel.org/all/20240913011635.1286027-1-quic_abchauha@quicinc.com/T/
-Signed-off-by: Abhishek Chauhan <quic_abchauha@quicinc.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20241001224626.2400222-3-quic_abchauha@quicinc.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b46acd6a6a62 ("fs/ntfs3: Add NTFS journal")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/aquantia/aquantia_main.c | 37 ++++++++++++------------
- 1 file changed, 19 insertions(+), 18 deletions(-)
+ fs/ntfs3/fslog.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
-index 1bb39664a5cb1..c33a5ef34ba03 100644
---- a/drivers/net/phy/aquantia/aquantia_main.c
-+++ b/drivers/net/phy/aquantia/aquantia_main.c
-@@ -537,12 +537,6 @@ static int aqcs109_config_init(struct phy_device *phydev)
- 	if (!ret)
- 		aqr107_chip_info(phydev);
- 
--	/* AQCS109 belongs to a chip family partially supporting 10G and 5G.
--	 * PMA speed ability bits are the same for all members of the family,
--	 * AQCS109 however supports speeds up to 2.5G only.
--	 */
--	phy_set_max_speed(phydev, SPEED_2500);
--
- 	return aqr107_set_downshift(phydev, MDIO_AN_VEND_PROV_DOWNSHIFT_DFLT);
+diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
+index 231b012fb19d3..2a1aeab53ea4b 100644
+--- a/fs/ntfs3/fslog.c
++++ b/fs/ntfs3/fslog.c
+@@ -609,14 +609,29 @@ static inline void add_client(struct CLIENT_REC *ca, u16 index, __le16 *head)
+ 	*head = cpu_to_le16(index);
  }
  
-@@ -744,6 +738,18 @@ static int aqr115c_get_features(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int aqr111_get_features(struct phy_device *phydev)
-+{
-+	/* PHY supports speeds up to 5G with autoneg. PMA capabilities
-+	 * are not useful.
-+	 */
-+	aqr115c_get_features(phydev);
-+	linkmode_set_bit(ETHTOOL_LINK_MODE_5000baseT_Full_BIT,
-+			 phydev->supported);
-+
-+	return 0;
-+}
-+
- static int aqr113c_config_init(struct phy_device *phydev)
++/*
++ * Enumerate restart table.
++ *
++ * @t - table to enumerate.
++ * @c - current enumerated element.
++ *
++ * enumeration starts with @c == NULL
++ * returns next element or NULL
++ */
+ static inline void *enum_rstbl(struct RESTART_TABLE *t, void *c)
  {
- 	int ret;
-@@ -780,15 +786,6 @@ static int aqr107_probe(struct phy_device *phydev)
- 	return aqr_hwmon_probe(phydev);
- }
+ 	__le32 *e;
+ 	u32 bprt;
+-	u16 rsize = t ? le16_to_cpu(t->size) : 0;
++	u16 rsize;
++
++	if (!t)
++		return NULL;
++
++	rsize = le16_to_cpu(t->size);
  
--static int aqr111_config_init(struct phy_device *phydev)
--{
--	/* AQR111 reports supporting speed up to 10G,
--	 * however only speeds up to 5G are supported.
--	 */
--	phy_set_max_speed(phydev, SPEED_5000);
--
--	return aqr107_config_init(phydev);
--}
- 
- static struct phy_driver aqr_driver[] = {
- {
-@@ -866,6 +863,7 @@ static struct phy_driver aqr_driver[] = {
- 	.get_sset_count	= aqr107_get_sset_count,
- 	.get_strings	= aqr107_get_strings,
- 	.get_stats	= aqr107_get_stats,
-+	.get_features   = aqr115c_get_features,
- 	.link_change_notify = aqr107_link_change_notify,
- 	.led_brightness_set = aqr_phy_led_brightness_set,
- 	.led_hw_is_supported = aqr_phy_led_hw_is_supported,
-@@ -878,7 +876,7 @@ static struct phy_driver aqr_driver[] = {
- 	.name		= "Aquantia AQR111",
- 	.probe		= aqr107_probe,
- 	.get_rate_matching = aqr107_get_rate_matching,
--	.config_init	= aqr111_config_init,
-+	.config_init	= aqr107_config_init,
- 	.config_aneg    = aqr_config_aneg,
- 	.config_intr	= aqr_config_intr,
- 	.handle_interrupt = aqr_handle_interrupt,
-@@ -890,6 +888,7 @@ static struct phy_driver aqr_driver[] = {
- 	.get_sset_count	= aqr107_get_sset_count,
- 	.get_strings	= aqr107_get_strings,
- 	.get_stats	= aqr107_get_stats,
-+	.get_features   = aqr111_get_features,
- 	.link_change_notify = aqr107_link_change_notify,
- 	.led_brightness_set = aqr_phy_led_brightness_set,
- 	.led_hw_is_supported = aqr_phy_led_hw_is_supported,
-@@ -902,7 +901,7 @@ static struct phy_driver aqr_driver[] = {
- 	.name		= "Aquantia AQR111B0",
- 	.probe		= aqr107_probe,
- 	.get_rate_matching = aqr107_get_rate_matching,
--	.config_init	= aqr111_config_init,
-+	.config_init	= aqr107_config_init,
- 	.config_aneg    = aqr_config_aneg,
- 	.config_intr	= aqr_config_intr,
- 	.handle_interrupt = aqr_handle_interrupt,
-@@ -914,6 +913,7 @@ static struct phy_driver aqr_driver[] = {
- 	.get_sset_count	= aqr107_get_sset_count,
- 	.get_strings	= aqr107_get_strings,
- 	.get_stats	= aqr107_get_stats,
-+	.get_features   = aqr111_get_features,
- 	.link_change_notify = aqr107_link_change_notify,
- 	.led_brightness_set = aqr_phy_led_brightness_set,
- 	.led_hw_is_supported = aqr_phy_led_hw_is_supported,
-@@ -1023,7 +1023,7 @@ static struct phy_driver aqr_driver[] = {
- 	.name           = "Aquantia AQR114C",
- 	.probe          = aqr107_probe,
- 	.get_rate_matching = aqr107_get_rate_matching,
--	.config_init    = aqr111_config_init,
-+	.config_init    = aqr107_config_init,
- 	.config_aneg    = aqr_config_aneg,
- 	.config_intr    = aqr_config_intr,
- 	.handle_interrupt = aqr_handle_interrupt,
-@@ -1035,6 +1035,7 @@ static struct phy_driver aqr_driver[] = {
- 	.get_sset_count = aqr107_get_sset_count,
- 	.get_strings    = aqr107_get_strings,
- 	.get_stats      = aqr107_get_stats,
-+	.get_features   = aqr111_get_features,
- 	.link_change_notify = aqr107_link_change_notify,
- 	.led_brightness_set = aqr_phy_led_brightness_set,
- 	.led_hw_is_supported = aqr_phy_led_hw_is_supported,
+ 	if (!c) {
+-		if (!t || !t->total)
++		/* start enumeration. */
++		if (!t->total)
+ 			return NULL;
+ 		e = Add2Ptr(t, sizeof(struct RESTART_TABLE));
+ 	} else {
 -- 
 2.43.0
 
