@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-84171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BC3F99CE84
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:44:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F54199CD59
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 16:32:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F0291C22C32
-	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:44:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A13C1F22D8E
+	for <lists+stable@lfdr.de>; Mon, 14 Oct 2024 14:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BE81AB507;
-	Mon, 14 Oct 2024 14:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BDA1A28C;
+	Mon, 14 Oct 2024 14:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="etA+Qgz8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrHbmqB8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9D0E571;
-	Mon, 14 Oct 2024 14:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865D7610B;
+	Mon, 14 Oct 2024 14:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917083; cv=none; b=SKimt5kTjg/IWYpqJBdZnzVXfIqMkZzUVsE+aaUrV6QINxVIBzZdgJY99r9NJE1P1EzXNoB9aUhWHYBwrkT8GWWiVwgsYVuoU/v08k4zV+vB6nc+18m8tC25TybakblFoxHHS9EB4KdZm4Pxa4y8N004N8JaHB4tyma9JRYp8TA=
+	t=1728916319; cv=none; b=heIlv2el9VJLknSZSip27jfMRXxTmkypuoEoAydNmDx609Fj4b11C6flgHA6NffeKRmN9BtTojPksvEBxor7dAZOpKrr868tvLNZAFcjNk4YyAq4m0sHdv1Kf3HtaqP50L28bRJ0QGum/lp9+Z2dWZUylnPy1+Bs0NtMjF4fqt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917083; c=relaxed/simple;
-	bh=KoAA0JioOFwFjvry8KLhMtrj+cBX5u0wknj10DZTCEA=;
+	s=arc-20240116; t=1728916319; c=relaxed/simple;
+	bh=bGnWvBN44XyssaBiPBP81p5sBPaIq/IuD96lOUa3U60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F0bL/HYfDEjhcjJiq/iayX5mUmoulD84FpRtAmOb3Vpix6V89xzhgQV+g209tL/QCZrDJjcgslHrj46lBgLKZ0QnPiffmhcxFVkifxF7P1LL6Qkjkm0IC3WXhGettv9NAImhCyQKXnKPJNHw3GticOSYqHUOfeV+svjtyeNCYJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=etA+Qgz8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F40C4CEC3;
-	Mon, 14 Oct 2024 14:44:43 +0000 (UTC)
+	 MIME-Version; b=fuPFX+mrg+0q445Ar10m1pw1ba3HSd/hJylV7R5E/FIo5FAxvluG1Gerlj9k0Hy+SH5B1tXJNvskPAnO1VmQPtYMBdilIz1K52JS6mK/zbGQ7O+XSFvdQ3O4kD7G2r7Q2jPnNlEDD9YdjPytAo67Ub/RdMbuQhOhD37+nKBpe3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrHbmqB8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10727C4CEC3;
+	Mon, 14 Oct 2024 14:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728917083;
-	bh=KoAA0JioOFwFjvry8KLhMtrj+cBX5u0wknj10DZTCEA=;
+	s=korg; t=1728916319;
+	bh=bGnWvBN44XyssaBiPBP81p5sBPaIq/IuD96lOUa3U60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=etA+Qgz8GmJXpqaho93x1WV/T4wz5a72WVxY1T7grzoAduCC7RyKGg7SGvVcRpgE4
-	 67xTJFewy01Rbj0yZfsyfQcUnbZb5cGRNeRZeSJ9iwczi22UFzMEQHFezht5UhHmmP
-	 MaeD9NmdEj56a0+6SQ+LXWdTveGeqEOEZi3YrTYI=
+	b=CrHbmqB8fSrTxIE9hT+MsE3gEKtfFcD+3TYEMsnt+9Iy8OwjONh7HUWZRypl1OF+r
+	 aKLpHP5Er7+UQjBItanyGwzy/XeITHPJEIJRZ+uFTUfp+7vVTWrDTdZycB9eIV6sv9
+	 GSaFrRZ5l5UDeC39+0ah/rvylx+FymVzdH92t27g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Steve French <stfrench@microsoft.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/213] smb: client: fix UAF in async decryption
+Subject: [PATCH 6.11 148/214] net/smc: fix lacks of icsk_syn_mss with IPPROTO_SMC
 Date: Mon, 14 Oct 2024 16:20:11 +0200
-Message-ID: <20241014141047.067507343@linuxfoundation.org>
+Message-ID: <20241014141050.763814480@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
+In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
+References: <20241014141044.974962104@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,194 +64,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Enzo Matsumiya <ematsumiya@suse.de>
+From: D. Wythe <alibuda@linux.alibaba.com>
 
-[ Upstream commit b0abcd65ec545701b8793e12bc27dc98042b151a ]
+[ Upstream commit 6fd27ea183c208e478129a85e11d880fc70040f2 ]
 
-Doing an async decryption (large read) crashes with a
-slab-use-after-free way down in the crypto API.
+Eric report a panic on IPPROTO_SMC, and give the facts
+that when INET_PROTOSW_ICSK was set, icsk->icsk_sync_mss must be set too.
 
-Reproducer:
-    # mount.cifs -o ...,seal,esize=1 //srv/share /mnt
-    # dd if=/mnt/largefile of=/dev/null
-    ...
-    [  194.196391] ==================================================================
-    [  194.196844] BUG: KASAN: slab-use-after-free in gf128mul_4k_lle+0xc1/0x110
-    [  194.197269] Read of size 8 at addr ffff888112bd0448 by task kworker/u77:2/899
-    [  194.197707]
-    [  194.197818] CPU: 12 UID: 0 PID: 899 Comm: kworker/u77:2 Not tainted 6.11.0-lku-00028-gfca3ca14a17a-dirty #43
-    [  194.198400] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-3-gd478f380-prebuilt.qemu.org 04/01/2014
-    [  194.199046] Workqueue: smb3decryptd smb2_decrypt_offload [cifs]
-    [  194.200032] Call Trace:
-    [  194.200191]  <TASK>
-    [  194.200327]  dump_stack_lvl+0x4e/0x70
-    [  194.200558]  ? gf128mul_4k_lle+0xc1/0x110
-    [  194.200809]  print_report+0x174/0x505
-    [  194.201040]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-    [  194.201352]  ? srso_return_thunk+0x5/0x5f
-    [  194.201604]  ? __virt_addr_valid+0xdf/0x1c0
-    [  194.201868]  ? gf128mul_4k_lle+0xc1/0x110
-    [  194.202128]  kasan_report+0xc8/0x150
-    [  194.202361]  ? gf128mul_4k_lle+0xc1/0x110
-    [  194.202616]  gf128mul_4k_lle+0xc1/0x110
-    [  194.202863]  ghash_update+0x184/0x210
-    [  194.203103]  shash_ahash_update+0x184/0x2a0
-    [  194.203377]  ? __pfx_shash_ahash_update+0x10/0x10
-    [  194.203651]  ? srso_return_thunk+0x5/0x5f
-    [  194.203877]  ? crypto_gcm_init_common+0x1ba/0x340
-    [  194.204142]  gcm_hash_assoc_remain_continue+0x10a/0x140
-    [  194.204434]  crypt_message+0xec1/0x10a0 [cifs]
-    [  194.206489]  ? __pfx_crypt_message+0x10/0x10 [cifs]
-    [  194.208507]  ? srso_return_thunk+0x5/0x5f
-    [  194.209205]  ? srso_return_thunk+0x5/0x5f
-    [  194.209925]  ? srso_return_thunk+0x5/0x5f
-    [  194.210443]  ? srso_return_thunk+0x5/0x5f
-    [  194.211037]  decrypt_raw_data+0x15f/0x250 [cifs]
-    [  194.212906]  ? __pfx_decrypt_raw_data+0x10/0x10 [cifs]
-    [  194.214670]  ? srso_return_thunk+0x5/0x5f
-    [  194.215193]  smb2_decrypt_offload+0x12a/0x6c0 [cifs]
+Bug: Unable to handle kernel NULL pointer dereference at virtual address
+0000000000000000
+Mem abort info:
+ESR = 0x0000000086000005
+EC = 0x21: IABT (current EL), IL = 32 bits
+SET = 0, FnV = 0
+EA = 0, S1PTW = 0
+FSC = 0x05: level 1 translation fault
+user pgtable: 4k pages, 48-bit VAs, pgdp=00000001195d1000
+[0000000000000000] pgd=0800000109c46003, p4d=0800000109c46003,
+pud=0000000000000000
+Internal error: Oops: 0000000086000005 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 1 UID: 0 PID: 8037 Comm: syz.3.265 Not tainted
+6.11.0-rc7-syzkaller-g5f5673607153 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine,
+BIOS Google 08/06/2024
+pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : 0x0
+lr : cipso_v4_sock_setattr+0x2a8/0x3c0 net/ipv4/cipso_ipv4.c:1910
+sp : ffff80009b887a90
+x29: ffff80009b887aa0 x28: ffff80008db94050 x27: 0000000000000000
+x26: 1fffe0001aa6f5b3 x25: dfff800000000000 x24: ffff0000db75da00
+x23: 0000000000000000 x22: ffff0000d8b78518 x21: 0000000000000000
+x20: ffff0000d537ad80 x19: ffff0000d8b78000 x18: 1fffe000366d79ee
+x17: ffff8000800614a8 x16: ffff800080569b84 x15: 0000000000000001
+x14: 000000008b336894 x13: 00000000cd96feaa x12: 0000000000000003
+x11: 0000000000040000 x10: 00000000000020a3 x9 : 1fffe0001b16f0f1
+x8 : 0000000000000000 x7 : 0000000000000000 x6 : 000000000000003f
+x5 : 0000000000000040 x4 : 0000000000000001 x3 : 0000000000000000
+x2 : 0000000000000002 x1 : 0000000000000000 x0 : ffff0000d8b78000
+Call trace:
+0x0
+netlbl_sock_setattr+0x2e4/0x338 net/netlabel/netlabel_kapi.c:1000
+smack_netlbl_add+0xa4/0x154 security/smack/smack_lsm.c:2593
+smack_socket_post_create+0xa8/0x14c security/smack/smack_lsm.c:2973
+security_socket_post_create+0x94/0xd4 security/security.c:4425
+__sock_create+0x4c8/0x884 net/socket.c:1587
+sock_create net/socket.c:1622 [inline]
+__sys_socket_create net/socket.c:1659 [inline]
+__sys_socket+0x134/0x340 net/socket.c:1706
+__do_sys_socket net/socket.c:1720 [inline]
+__se_sys_socket net/socket.c:1718 [inline]
+__arm64_sys_socket+0x7c/0x94 net/socket.c:1718
+__invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
+el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
+do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:712
+el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
+el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
+Code: ???????? ???????? ???????? ???????? (????????)
+---[ end trace 0000000000000000 ]---
 
-This is because TFM is being used in parallel.
+This patch add a toy implementation that performs a simple return to
+prevent such panic. This is because MSS can be set in sock_create_kern
+or smc_setsockopt, similar to how it's done in AF_SMC. However, for
+AF_SMC, there is currently no way to synchronize MSS within
+__sys_connect_file. This toy implementation lays the groundwork for us
+to support such feature for IPPROTO_SMC in the future.
 
-Fix this by allocating a new AEAD TFM for async decryption, but keep
-the existing one for synchronous READ cases (similar to what is done
-in smb3_calc_signature()).
-
-Also remove the calls to aead_request_set_callback() and
-crypto_wait_req() since it's always going to be a synchronous operation.
-
-Signed-off-by: Enzo Matsumiya <ematsumiya@suse.de>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: d25a92ccae6b ("net/smc: Introduce IPPROTO_SMC")
+Reported-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Link: https://patch.msgid.link/1728456916-67035-1-git-send-email-alibuda@linux.alibaba.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2ops.c | 47 ++++++++++++++++++++++++-----------------
- fs/smb/client/smb2pdu.c |  6 ++++++
- 2 files changed, 34 insertions(+), 19 deletions(-)
+ net/smc/smc_inet.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 007d0a683910f..450e3050324c6 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -4250,7 +4250,7 @@ smb2_get_enc_key(struct TCP_Server_Info *server, __u64 ses_id, int enc, u8 *key)
-  */
- static int
- crypt_message(struct TCP_Server_Info *server, int num_rqst,
--	      struct smb_rqst *rqst, int enc)
-+	      struct smb_rqst *rqst, int enc, struct crypto_aead *tfm)
+diff --git a/net/smc/smc_inet.c b/net/smc/smc_inet.c
+index a5b2041600f95..a944e7dcb8b96 100644
+--- a/net/smc/smc_inet.c
++++ b/net/smc/smc_inet.c
+@@ -108,12 +108,23 @@ static struct inet_protosw smc_inet6_protosw = {
+ };
+ #endif /* CONFIG_IPV6 */
+ 
++static unsigned int smc_sync_mss(struct sock *sk, u32 pmtu)
++{
++	/* No need pass it through to clcsock, mss can always be set by
++	 * sock_create_kern or smc_setsockopt.
++	 */
++	return 0;
++}
++
+ static int smc_inet_init_sock(struct sock *sk)
  {
- 	struct smb2_transform_hdr *tr_hdr =
- 		(struct smb2_transform_hdr *)rqst[0].rq_iov[0].iov_base;
-@@ -4261,8 +4261,6 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
- 	u8 key[SMB3_ENC_DEC_KEY_SIZE];
- 	struct aead_request *req;
- 	u8 *iv;
--	DECLARE_CRYPTO_WAIT(wait);
--	struct crypto_aead *tfm;
- 	unsigned int crypt_len = le32_to_cpu(tr_hdr->OriginalMessageSize);
- 	void *creq;
- 	size_t sensitive_size;
-@@ -4274,14 +4272,6 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
- 		return rc;
- 	}
+ 	struct net *net = sock_net(sk);
  
--	rc = smb3_crypto_aead_allocate(server);
--	if (rc) {
--		cifs_server_dbg(VFS, "%s: crypto alloc failed\n", __func__);
--		return rc;
--	}
--
--	tfm = enc ? server->secmech.enc : server->secmech.dec;
--
- 	if ((server->cipher_type == SMB2_ENCRYPTION_AES256_CCM) ||
- 		(server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
- 		rc = crypto_aead_setkey(tfm, key, SMB3_GCM256_CRYPTKEY_SIZE);
-@@ -4321,11 +4311,7 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
- 	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
- 	aead_request_set_ad(req, assoc_data_len);
- 
--	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
--				  crypto_req_done, &wait);
--
--	rc = crypto_wait_req(enc ? crypto_aead_encrypt(req)
--				: crypto_aead_decrypt(req), &wait);
-+	rc = enc ? crypto_aead_encrypt(req) : crypto_aead_decrypt(req);
- 
- 	if (!rc && enc)
- 		memcpy(&tr_hdr->Signature, sign, SMB2_SIGNATURE_SIZE);
-@@ -4432,7 +4418,7 @@ smb3_init_transform_rq(struct TCP_Server_Info *server, int num_rqst,
- 	/* fill the 1st iov with a transform header */
- 	fill_transform_hdr(tr_hdr, orig_len, old_rq, server->cipher_type);
- 
--	rc = crypt_message(server, num_rqst, new_rq, 1);
-+	rc = crypt_message(server, num_rqst, new_rq, 1, server->secmech.enc);
- 	cifs_dbg(FYI, "Encrypt message returned %d\n", rc);
- 	if (rc)
- 		goto err_free;
-@@ -4457,8 +4443,9 @@ decrypt_raw_data(struct TCP_Server_Info *server, char *buf,
- 		 unsigned int buf_data_size, struct iov_iter *iter,
- 		 bool is_offloaded)
- {
--	struct kvec iov[2];
-+	struct crypto_aead *tfm;
- 	struct smb_rqst rqst = {NULL};
-+	struct kvec iov[2];
- 	size_t iter_size = 0;
- 	int rc;
- 
-@@ -4475,9 +4462,31 @@ decrypt_raw_data(struct TCP_Server_Info *server, char *buf,
- 		iter_size = iov_iter_count(iter);
- 	}
- 
--	rc = crypt_message(server, 1, &rqst, 0);
-+	if (is_offloaded) {
-+		if ((server->cipher_type == SMB2_ENCRYPTION_AES128_GCM) ||
-+		    (server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
-+			tfm = crypto_alloc_aead("gcm(aes)", 0, 0);
-+		else
-+			tfm = crypto_alloc_aead("ccm(aes)", 0, 0);
-+		if (IS_ERR(tfm)) {
-+			rc = PTR_ERR(tfm);
-+			cifs_server_dbg(VFS, "%s: Failed alloc decrypt TFM, rc=%d\n", __func__, rc);
+ 	/* init common smc sock */
+ 	smc_sk_init(net, sk, IPPROTO_SMC);
 +
-+			return rc;
-+		}
-+	} else {
-+		if (unlikely(!server->secmech.dec))
-+			return -EIO;
++	inet_csk(sk)->icsk_sync_mss = smc_sync_mss;
 +
-+		tfm = server->secmech.dec;
-+	}
-+
-+	rc = crypt_message(server, 1, &rqst, 0, tfm);
- 	cifs_dbg(FYI, "Decrypt message returned %d\n", rc);
- 
-+	if (is_offloaded)
-+		crypto_free_aead(tfm);
-+
- 	if (rc)
- 		return rc;
- 
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index bf45b8652e580..83a03201bb862 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -1263,6 +1263,12 @@ SMB2_negotiate(const unsigned int xid,
- 		else
- 			cifs_server_dbg(VFS, "Missing expected negotiate contexts\n");
- 	}
-+
-+	if (server->cipher_type && !rc) {
-+		rc = smb3_crypto_aead_allocate(server);
-+		if (rc)
-+			cifs_server_dbg(VFS, "%s: crypto alloc failed, rc=%d\n", __func__, rc);
-+	}
- neg_exit:
- 	free_rsp_buf(resp_buftype, rsp);
- 	return rc;
+ 	/* create clcsock */
+ 	return smc_create_clcsk(net, sk, sk->sk_family);
+ }
 -- 
 2.43.0
 
