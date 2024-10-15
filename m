@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-86334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B431C99ED56
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:26:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3126999ED5D
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5E821C237BB
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:26:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC2BBB2099C
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B07C1B218D;
-	Tue, 15 Oct 2024 13:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0711B21A1;
+	Tue, 15 Oct 2024 13:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXzff56x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVa0gNiq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB2E1B2183;
-	Tue, 15 Oct 2024 13:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4361B2184;
+	Tue, 15 Oct 2024 13:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728998558; cv=none; b=D87q4QgxjjGCNlCuIrkcgR5wZ4Zl+Xjxig0nIIIgOcxPPLGjugujdECKDBo/4CA4AVq7N0Flpy/toAZImrHjiUJrXThVLLLrdGzk/7AC+RVqAQNWKr94KVvI4VgHGS2S4DTuHjRLRU9QtugaHGsehLKHgck3Y6XZJq9EyAlQj5w=
+	t=1728998579; cv=none; b=g4BqCmHvuutJwwnn6YpfP3chJBZIredKF0NzHCQ3hPbzsiCMrz6ichpv7tr6Q8oXXgwt+tLJJP0+DE5yXZjzLawZ/I3mGDq3ozoHQrJwg/GiuAtDNhl+RlFpV7v7pq4QbuM25wVGP6BPUwDWLUTKAmyCQbB4gjFfFku8N9n4uiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728998558; c=relaxed/simple;
-	bh=O+TLqMM9zMARr9o4FNIMi7tR3YGIV+ZrBxRkdmAkqaA=;
+	s=arc-20240116; t=1728998579; c=relaxed/simple;
+	bh=10h2vRt9FRpXX/jrN5ieOhiVPE6dgWPbjnePcK9sg7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NIPWpBc23gK1RKjwvsceIf9uqPVNSbvXkkrrVsLpoLNW7ngdxL+Y5xq9iyM5H80Ryrh9RGy2UiuUxyBXAYkt68RO4/vvtErIK6jqKSC6AxdE++UEzbWq3xPxmInJR7WgLfMJNErAeIx4DISMSnI/rJEnKsjzGSUGs7L3mjr6v2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXzff56x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A347C4CEC6;
-	Tue, 15 Oct 2024 13:22:38 +0000 (UTC)
+	 MIME-Version; b=FZGHO1ms3p8MMteE1r3/SOZ22cI4SnddtjaoTKLk5K1WKLsS/8olv9EZwXg3AGvU+hrfd0uW5Se4Lr5feRgV5/+0KgFSr7bkDj1J3C4qJj6kQrbyDTsHRr4XXrvYA1aqDleX/mfJzua9VmIJqHpKBAGs5bTX84lchPZGcj10di0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVa0gNiq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C99DC4CEC6;
+	Tue, 15 Oct 2024 13:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728998558;
-	bh=O+TLqMM9zMARr9o4FNIMi7tR3YGIV+ZrBxRkdmAkqaA=;
+	s=korg; t=1728998578;
+	bh=10h2vRt9FRpXX/jrN5ieOhiVPE6dgWPbjnePcK9sg7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SXzff56xu+K4d9vkglMSi+Eo14pn+iQnlf7Aoqe5shId1Xy6KPHtqZfrOXXCcmxm4
-	 JnI1Ei03pHJtmReyaLU/yQnYupkhXCHVV8IbaiGrVKnynYwTBVDPZFn+kGiWJSxx/B
-	 w1IpjPquArZWZ5om5Mfo9/SWQcHr9taUl/kb38Sg=
+	b=aVa0gNiqbsJGb4BDejQsdWH5yPAdRTRjloBMijNAPQsOR+fmSFBc6Q5ZRgjh44ORt
+	 z6AyaoPfVvbYNX2W/PNS1MuQBYpM9y6hJ86caa0lTyLNda9Bqu2wy8we48JvFXLYtG
+	 jqn7kxrh/b2mbEBEMZ/oMoPXafR6qnjXvaL2NfSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Alberto Reguero <jose.alberto.reguero@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 505/518] usb: xhci: Fix problem with xhci resume from suspend
-Date: Tue, 15 Oct 2024 14:46:49 +0200
-Message-ID: <20241015123936.482453057@linuxfoundation.org>
+	Icenowy Zheng <uwu@icenowy.me>,
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.10 506/518] usb: storage: ignore bogus device raised by JieLi BR21 USB sound chip
+Date: Tue, 15 Oct 2024 14:46:50 +0200
+Message-ID: <20241015123936.520417073@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -65,45 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jose Alberto Reguero <jose.alberto.reguero@gmail.com>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-commit d44238d8254a36249d576c96473269dbe500f5e4 upstream.
+commit a6555cb1cb69db479d0760e392c175ba32426842 upstream.
 
-I have a ASUS PN51 S mini pc that has two xhci devices. One from AMD,
-and other from ASMEDIA. The one from ASMEDIA have problems when resume
-from suspend, and keep broken until unplug the  power cord. I use this
-kernel parameter: xhci-hcd.quirks=128 and then it works ok. I make a
-path to reset only the ASMEDIA xhci.
+JieLi tends to use SCSI via USB Mass Storage to implement their own
+proprietary commands instead of implementing another USB interface.
+Enumerating it as a generic mass storage device will lead to a Hardware
+Error sense key get reported.
 
-Signed-off-by: Jose Alberto Reguero <jose.alberto.reguero@gmail.com>
+Ignore this bogus device to prevent appearing a unusable sdX device
+file.
+
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
 Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240919184202.22249-1-jose.alberto.reguero@gmail.com
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20241001083407.8336-1-uwu@icenowy.me
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/storage/unusual_devs.h |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -71,6 +71,7 @@
- #define PCI_DEVICE_ID_ASMEDIA_1042A_XHCI		0x1142
- #define PCI_DEVICE_ID_ASMEDIA_1142_XHCI			0x1242
- #define PCI_DEVICE_ID_ASMEDIA_2142_XHCI			0x2142
-+#define PCI_DEVICE_ID_ASMEDIA_3042_XHCI			0x3042
- #define PCI_DEVICE_ID_ASMEDIA_3242_XHCI			0x3242
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -2412,6 +2412,17 @@ UNUSUAL_DEV(  0xc251, 0x4003, 0x0100, 0x
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_NOT_LOCKABLE),
  
- static const char hcd_name[] = "xhci_hcd";
-@@ -324,6 +325,10 @@ static void xhci_pci_quirks(struct devic
- 		pdev->device == PCI_DEVICE_ID_ASMEDIA_1042A_XHCI)
- 		xhci->quirks |= XHCI_ASMEDIA_MODIFY_FLOWCONTROL;
- 
-+	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA &&
-+	    pdev->device == PCI_DEVICE_ID_ASMEDIA_3042_XHCI)
-+		xhci->quirks |= XHCI_RESET_ON_RESUME;
++/*
++ * Reported by Icenowy Zheng <uwu@icenowy.me>
++ * This is an interface for vendor-specific cryptic commands instead
++ * of real USB storage device.
++ */
++UNUSUAL_DEV(  0xe5b7, 0x0811, 0x0100, 0x0100,
++		"ZhuHai JieLi Technology",
++		"JieLi BR21",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_IGNORE_DEVICE),
 +
- 	if (pdev->vendor == PCI_VENDOR_ID_TI && pdev->device == 0x8241)
- 		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_7;
- 
+ /* Reported by Andrew Simmons <andrew.simmons@gmail.com> */
+ UNUSUAL_DEV(  0xed06, 0x4500, 0x0001, 0x0001,
+ 		"DataStor",
 
 
 
