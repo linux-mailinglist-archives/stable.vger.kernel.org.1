@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-85635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2450F99E831
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:03:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5961899E834
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:03:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C0DFB25906
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:03:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E8191F21F15
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0947A1E378C;
-	Tue, 15 Oct 2024 12:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61711E1A35;
+	Tue, 15 Oct 2024 12:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BhYhxx7J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWEy1kBn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5751C57B1;
-	Tue, 15 Oct 2024 12:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6430F1C57B1;
+	Tue, 15 Oct 2024 12:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993777; cv=none; b=Q8avqFvRpiJUCJS7PByrb2CP66sWgf5x0sTjktxDEMMaUozAanrSGu7Pw49OMwzZDNA9CaMsRlyTDDuElYSZ/Jhos7G4Y1GTcSWWFrWH1TcbeOlFkBevHPOkJ5pBusxjIc1bRY+w9FkjPT0K853Q+chxXhA7y9zHk+Nh9F+i9+k=
+	t=1728993790; cv=none; b=ABPfYBR9fThCx8WAlPCTk6F8HtETfSoJhwDaXf60TFRI2RwhGyDHy+B/CtiKXlDJHddGrn0xgjlolxlCghJjd1UNOfBYf8lgWZ6qvUqKEJz+hzA6v7kZl9OAPFZZo0E5J2wshObsF6Viz5vMAHRdhNXEKZ/bs1gyJfTXyfNXJzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993777; c=relaxed/simple;
-	bh=NqLZZmAG6PbRREanTgAkI3b4o9mYcC28rlPHKBjlefE=;
+	s=arc-20240116; t=1728993790; c=relaxed/simple;
+	bh=dcOQ7I2XFDdNiuNzUNYHMgWB1YlVl9gkKcDr4e8riZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m0okWYizkLH6o/OdSbllgR9BvfsVFE+HPrCNfZ7ff+LXq2/xjRd5NJZRAUj2bK9yWaZkIDdsZIX/Wh1+O7S1dqNstpKq3uxKVmUIFVl/l5PzvbXU2AGtZslHWSpsmLCH2eP17e1b08izQ0bGWodkCb9ybnylt/iBmtttVh/YZFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BhYhxx7J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D71E2C4CEC6;
-	Tue, 15 Oct 2024 12:02:56 +0000 (UTC)
+	 MIME-Version; b=spJxpvnqPNB0Pb0OAq3S6bNlgMa1u+oP0l4dJ7GiGiNaBB0Q4FwdUy+oBMUEce4u8vLAikdA0cBg8h4tnS/L5nHlLqpMN/+q6qQxi28lrVrme2wCXLgdgmY8p/SdHoGuhmMusnhKqc14LrvlmKwwgzvBlDb00JYhvSBYSI3IVLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWEy1kBn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2D7C4CEC6;
+	Tue, 15 Oct 2024 12:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993777;
-	bh=NqLZZmAG6PbRREanTgAkI3b4o9mYcC28rlPHKBjlefE=;
+	s=korg; t=1728993790;
+	bh=dcOQ7I2XFDdNiuNzUNYHMgWB1YlVl9gkKcDr4e8riZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BhYhxx7JXOEi2wuJHFz94NGUXDukR2iwsNVJoHYtdCRKQe0ftS7isWl4yqVuhf0rD
-	 xKlN9mjmGwkaYOiXC1wwACZJQVaTfElHmO9FZFd5yPqakvP/mSjIf15spnIfWlVm52
-	 K9CpQEremOfFRJZBxkKgf4lx5Oe4NZuOnpU3zzrg=
+	b=hWEy1kBnezypNQFUVTqTbUXlUBFw/mahUOueh+9Pks8CpY7v0IiSoUPP5dWuSqKsP
+	 o1WTDXxT3Av9cmiPPzbwDh8sG73KFSnQ1TSOWLb2vYKOqItjMxopV2DOzR6sRAPG8Q
+	 vXk2FAmmbSaNlWc9rB3bq3G3rpsEumYyh8v2gWdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Mario Casquero <mcasquer@redhat.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Jens Remus <jremus@linux.ibm.com>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 485/691] selftests/mm: fix charge_reserved_hugetlb.sh test
-Date: Tue, 15 Oct 2024 13:27:13 +0200
-Message-ID: <20241015112459.589030644@linuxfoundation.org>
+Subject: [PATCH 5.15 486/691] selftests: vDSO: fix ELF hash table entry size for s390x
+Date: Tue, 15 Oct 2024 13:27:14 +0200
+Message-ID: <20241015112459.627843960@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -70,121 +67,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Jens Remus <jremus@linux.ibm.com>
 
-[ Upstream commit c41a701d18efe6b8aa402efab16edbaba50c9548 ]
+[ Upstream commit 14be4e6f35221c4731b004553ecf7cbc6dc1d2d8 ]
 
-Currently, running the charge_reserved_hugetlb.sh selftest we can
-sometimes observe something like:
+The vDSO self tests fail on s390x for a vDSO linked with the GNU linker
+ld as follows:
 
-  $ ./charge_reserved_hugetlb.sh -cgroup-v2
-  ...
-  write_result is 0
-  After write:
-  hugetlb_usage=0
-  reserved_usage=10485760
-  killing write_to_hugetlbfs
-  Received 2.
-  Deleting the memory
-  Detach failure: Invalid argument
-  umount: /mnt/huge: target is busy.
+  # ./vdso_test_gettimeofday
+  Floating point exception (core dumped)
 
-Both cases are issues in the test.
+On s390x the ELF hash table entries are 64 bits instead of 32 bits in
+size (see Glibc sysdeps/unix/sysv/linux/s390/bits/elfclass.h).
 
-While the unmount error seems to be racy, it will make the test fail:
-	$ ./run_vmtests.sh -t hugetlb
-	...
-	# [FAIL]
-	not ok 10 charge_reserved_hugetlb.sh -cgroup-v2 # exit=32
-
-The issue is that we are not waiting for the write_to_hugetlbfs process to
-quit.  So it might still have a hugetlbfs file open, about which umount is
-not happy.  Fix that by making "killall" wait for the process to quit.
-
-The other error ("Detach failure: Invalid argument") does not seem to
-result in a test error, but is misleading.  Turns out write_to_hugetlbfs.c
-unconditionally tries to cleanup using shmdt(), even when we only
-mmap()'ed a hugetlb file.  Even worse, shmaddr is never even set for the
-SHM case.  Fix that as well.
-
-With this change it seems to work as expected.
-
-Link: https://lkml.kernel.org/r/20240821123115.2068812-1-david@redhat.com
-Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: Mario Casquero <mcasquer@redhat.com>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Tested-by: Mario Casquero <mcasquer@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 40723419f407 ("kselftest: Enable vDSO test on non x86 platforms")
+Reported-by: Heiko Carstens <hca@linux.ibm.com>
+Tested-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/vm/charge_reserved_hugetlb.sh   |  2 +-
- .../testing/selftests/vm/write_to_hugetlbfs.c | 21 +++++++++++--------
- 2 files changed, 13 insertions(+), 10 deletions(-)
+ tools/testing/selftests/vDSO/parse_vdso.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/vm/charge_reserved_hugetlb.sh b/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-index e14bdd4455f2d..8e00276b4e69b 100644
---- a/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-@@ -252,7 +252,7 @@ function cleanup_hugetlb_memory() {
-   local cgroup="$1"
-   if [[ "$(pgrep -f write_to_hugetlbfs)" != "" ]]; then
-     echo killing write_to_hugetlbfs
--    killall -2 write_to_hugetlbfs
-+    killall -2 --wait write_to_hugetlbfs
-     wait_for_hugetlb_memory_to_get_depleted $cgroup
-   fi
-   set -e
-diff --git a/tools/testing/selftests/vm/write_to_hugetlbfs.c b/tools/testing/selftests/vm/write_to_hugetlbfs.c
-index 6a2caba19ee1d..1289d311efd70 100644
---- a/tools/testing/selftests/vm/write_to_hugetlbfs.c
-+++ b/tools/testing/selftests/vm/write_to_hugetlbfs.c
-@@ -28,7 +28,7 @@ enum method {
+diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
+index d9ccc5acac182..7dd5668ea8a6e 100644
+--- a/tools/testing/selftests/vDSO/parse_vdso.c
++++ b/tools/testing/selftests/vDSO/parse_vdso.c
+@@ -36,6 +36,12 @@
+ #define ELF_BITS_XFORM(bits, x) ELF_BITS_XFORM2(bits, x)
+ #define ELF(x) ELF_BITS_XFORM(ELF_BITS, x)
  
- /* Global variables. */
- static const char *self;
--static char *shmaddr;
-+static int *shmaddr;
- static int shmid;
- 
- /*
-@@ -47,15 +47,17 @@ void sig_handler(int signo)
- {
- 	printf("Received %d.\n", signo);
- 	if (signo == SIGINT) {
--		printf("Deleting the memory\n");
--		if (shmdt((const void *)shmaddr) != 0) {
--			perror("Detach failure");
-+		if (shmaddr) {
-+			printf("Deleting the memory\n");
-+			if (shmdt((const void *)shmaddr) != 0) {
-+				perror("Detach failure");
-+				shmctl(shmid, IPC_RMID, NULL);
-+				exit(4);
-+			}
++#ifdef __s390x__
++#define ELF_HASH_ENTRY ELF(Xword)
++#else
++#define ELF_HASH_ENTRY ELF(Word)
++#endif
 +
- 			shmctl(shmid, IPC_RMID, NULL);
--			exit(4);
-+			printf("Done deleting the memory\n");
- 		}
--
--		shmctl(shmid, IPC_RMID, NULL);
--		printf("Done deleting the memory\n");
- 	}
- 	exit(2);
- }
-@@ -211,7 +213,8 @@ int main(int argc, char **argv)
- 			shmctl(shmid, IPC_RMID, NULL);
- 			exit(2);
- 		}
--		printf("shmaddr: %p\n", ptr);
-+		shmaddr = ptr;
-+		printf("shmaddr: %p\n", shmaddr);
+ static struct vdso_info
+ {
+ 	bool valid;
+@@ -47,8 +53,8 @@ static struct vdso_info
+ 	/* Symbol table */
+ 	ELF(Sym) *symtab;
+ 	const char *symstrings;
+-	ELF(Word) *bucket, *chain;
+-	ELF(Word) nbucket, nchain;
++	ELF_HASH_ENTRY *bucket, *chain;
++	ELF_HASH_ENTRY nbucket, nchain;
  
- 		break;
- 	default:
+ 	/* Version table */
+ 	ELF(Versym) *versym;
+@@ -115,7 +121,7 @@ void vdso_init_from_sysinfo_ehdr(uintptr_t base)
+ 	/*
+ 	 * Fish out the useful bits of the dynamic table.
+ 	 */
+-	ELF(Word) *hash = 0;
++	ELF_HASH_ENTRY *hash = 0;
+ 	vdso_info.symstrings = 0;
+ 	vdso_info.symtab = 0;
+ 	vdso_info.versym = 0;
+@@ -133,7 +139,7 @@ void vdso_init_from_sysinfo_ehdr(uintptr_t base)
+ 				 + vdso_info.load_offset);
+ 			break;
+ 		case DT_HASH:
+-			hash = (ELF(Word) *)
++			hash = (ELF_HASH_ENTRY *)
+ 				((uintptr_t)dyn[i].d_un.d_ptr
+ 				 + vdso_info.load_offset);
+ 			break;
 -- 
 2.43.0
 
