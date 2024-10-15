@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-86191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB1F599EC54
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:17:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F8E799EC59
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:18:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 865C22896C0
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:17:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0E491C21ED5
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7B53DAC1F;
-	Tue, 15 Oct 2024 13:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153731C4A34;
+	Tue, 15 Oct 2024 13:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a54tgx/3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ojbtf1yo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406A522910F;
-	Tue, 15 Oct 2024 13:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75811C4A2E;
+	Tue, 15 Oct 2024 13:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728998078; cv=none; b=XAXirG3T8xzu6OiaDEFWFOLa056urQJJALo3OHDD/KrEkyzp6TZnyqnmmH+1uWUXPnYf0PRsPNIlN0UWX3hQP+OJJQDII/Xb8WmnRhGAlUHJW3tGwpJGx4MeR8ZjbmltF2peWC8bJ+eayKMKQYl+N3q+8C8QkLFN15mB1N2tqdo=
+	t=1728998081; cv=none; b=PtNDUy7bPpWUWIGUiUUd0+Tn+N6xizsomwpBUuRPUfuIEdimJBfVQW/6mSPIryMjTuBLwwC3J5i5xqmW39xvSzkAiSaLZpAFw8hIc3cJzag/vQrwlSv7kpK8rPJnaLODKu91lbsnRE1Bzk7e2otXDBQPV6Y2PFeMHKcmiJyMX+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728998078; c=relaxed/simple;
-	bh=xmgE3/mw75i4Q+D5EwHvbEwEqisJhn64T/O9jWZmtRA=;
+	s=arc-20240116; t=1728998081; c=relaxed/simple;
+	bh=q36eb354hyhs8dcaLnrITiXUyw1Guu3wU276YS34vso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lzz0R0xdWKr4TzKYs9B8dOMpbLVnY23JPSW5htm7Bxe9j809jA2KORCepROCm9+Pg3o6xUhlOwJEjwgF8fLDvVVxuCo0XhVQaa0I5PHID/6fNq7u00jxyQST+C5SlM9fB39W7KdlEQKtAfLRgNGwBoCh+HvcqmLq97iKlDuyvRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a54tgx/3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0A4C4CEC6;
-	Tue, 15 Oct 2024 13:14:37 +0000 (UTC)
+	 MIME-Version; b=DUkjAmy3QQs4piVn//zwckPAwEtC2JJjBXDXS/v7BNQbwOWQZqXV0rMZO4F/2Z8kmmHpStcR6Pb8kgnEZkHMf70T7I7IyhesYZiO3gMxE8fyWOVAa7FNoWtpz/TvBO7icyYZNcBdBF+rcVG5hchbvlpwKAH2RlvGNa1HptuePfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ojbtf1yo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D438C4CEDC;
+	Tue, 15 Oct 2024 13:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728998077;
-	bh=xmgE3/mw75i4Q+D5EwHvbEwEqisJhn64T/O9jWZmtRA=;
+	s=korg; t=1728998081;
+	bh=q36eb354hyhs8dcaLnrITiXUyw1Guu3wU276YS34vso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a54tgx/37W43ro97LouvUG114MQMPGoz4CzHYpY9NzAN51dfO5kfvVwafSjMCle5p
-	 zlTx6LGHlkVH25HcxpZcdNG2Sb+9dAy6LpUV1w0RoZY/Q32ov5TqoqSPaQ8NPYX0Uh
-	 yxa0+mqWEfO/MNFGaSTAFoDOBoQUk4ztaivQO3Y0=
+	b=Ojbtf1yomM0VqcOXTFyAjYBhfSCXdtDklYxHygo7tn8QbFw+nZqGCF7WaoUorxK/w
+	 U92JxsKb9p9/K64pIIy7N6XNoiY30JbcBhpfjdlIFgRDq59nnjKj+qrWCCmlZ2FRwf
+	 xOfe70hkBqT/JMpGd6MOfz9jdXHrLT+BUMr4bnPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
 	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 341/518] drm/amd/display: Check stream before comparing them
-Date: Tue, 15 Oct 2024 14:44:05 +0200
-Message-ID: <20241015123930.132333439@linuxfoundation.org>
+Subject: [PATCH 5.10 342/518] drm/amd/display: Fix index out of bounds in DCN30 degamma hardware format translation
+Date: Tue, 15 Oct 2024 14:44:06 +0200
+Message-ID: <20241015123930.170413145@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -69,39 +73,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 35ff747c86767937ee1e0ca987545b7eed7a0810 ]
+[ Upstream commit bc50b614d59990747dd5aeced9ec22f9258991ff ]
 
-[WHAT & HOW]
-amdgpu_dm can pass a null stream to dc_is_stream_unchanged. It is
-necessary to check for null before dereferencing them.
+This commit addresses a potential index out of bounds issue in the
+`cm3_helper_translate_curve_to_degamma_hw_format` function in the DCN30
+color  management module. The issue could occur when the index 'i'
+exceeds the  number of transfer function points (TRANSFER_FUNC_POINTS).
 
-This fixes 1 FORWARD_NULL issue reported by Coverity.
+The fix adds a check to ensure 'i' is within bounds before accessing the
+transfer function points. If 'i' is out of bounds, the function returns
+false to indicate an error.
 
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reported by smatch:
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:338 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:339 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:340 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
+
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 2 ++
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index 0a13c06eea447..3af9591baa767 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -1697,6 +1697,8 @@ static bool are_stream_backends_same(
- bool dc_is_stream_unchanged(
- 	struct dc_stream_state *old_stream, struct dc_stream_state *stream)
- {
-+	if (!old_stream || !stream)
-+		return false;
- 
- 	if (!are_stream_backends_same(old_stream, stream))
- 		return false;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
+index e0df9b0065f9c..e0b1fc92ed186 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
+@@ -355,6 +355,8 @@ bool cm3_helper_translate_curve_to_degamma_hw_format(
+ 				i += increment) {
+ 			if (j == hw_points - 1)
+ 				break;
++			if (i >= TRANSFER_FUNC_POINTS)
++				return false;
+ 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
+ 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
+ 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
 -- 
 2.43.0
 
