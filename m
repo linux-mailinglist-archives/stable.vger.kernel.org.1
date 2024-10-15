@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-85133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D83899E5C7
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:34:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 141D799E5F1
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:36:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF3D11C20B4A
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:34:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD1C01F220A4
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF02D1E8855;
-	Tue, 15 Oct 2024 11:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2CF1D90DC;
+	Tue, 15 Oct 2024 11:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ChvdDE5z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbkcVC6c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E2815099D;
-	Tue, 15 Oct 2024 11:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175831684A3;
+	Tue, 15 Oct 2024 11:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728992084; cv=none; b=Er68YePFjqCqN8PlEWjt760fbtVDoplpR9QDFBRYtci0FxDO3EveSopmgt9Ze7CNeIM6xXYnCEyF+h64IQb7nUv0PuMZmHwH87v/Umuxe7FkH6+9M6Bd243gH4tFYS89wjT3LwFn0/Jk7s0HwxwvdaefO7oVKGpoPBQHjoU6gnY=
+	t=1728992203; cv=none; b=OLWgKeeYG1lsvJEarNH01tRomiWf8HML53KeGp86gjOjqXB41kgAatArcsuJpyx13Ikg6w/79D/cbzo6kBVNJN3dTnSMng+449wg5GupQ7MQsxtXsEkiDr4zFO7DA2NwMzcczHzhQrE1E/vIyo3L1cafNOrNu3Yv88/tV9GCJB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728992084; c=relaxed/simple;
-	bh=QxNtkB/OwYoTG8xBBws8nGw49rDgY1voKJE8euoRVCY=;
+	s=arc-20240116; t=1728992203; c=relaxed/simple;
+	bh=gCAUzbLL8vdF9xMsxxOa/rjI9X4+yxRB3CvxhKAVXPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ProdamNCPWuJzu5EDyMIe2F4pzpAN9K1yFU3MKi+x/hGu76nS3NQ1UHbyB3ix2tDGCQJt2aXoITNsErLSP/p1/9rMz5lpgPr8U11hCsGYPjQCH92X5zRwnW+UMOj3ErSJCpvAbe/iSwGhBbszcJqxnWVfGuBoKRSgSwHyxEIEsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ChvdDE5z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B3BC4CED2;
-	Tue, 15 Oct 2024 11:34:43 +0000 (UTC)
+	 MIME-Version; b=H1nupn0hbYh7OKD8MDsN48ITKpFOvgrRXVXqgqv9Q1wortFDKaY2LNSQrvmzgZbxqvOPangPQL0tYZr8vRAs7rYx1qMaPwS2vFQfQpCmJgdXDKMzST7JZFBefDs3Po+daHen4uvItft8N3PO3q0hejc6OfTbvBJnXFe7vKXtge4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbkcVC6c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B75C4CECF;
+	Tue, 15 Oct 2024 11:36:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728992084;
-	bh=QxNtkB/OwYoTG8xBBws8nGw49rDgY1voKJE8euoRVCY=;
+	s=korg; t=1728992203;
+	bh=gCAUzbLL8vdF9xMsxxOa/rjI9X4+yxRB3CvxhKAVXPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ChvdDE5zw7cn7hbesBwfkwJjRTeftgGsCMp26foWAdXfeRilbZl4BDYXEEtTrlBdm
-	 04MQuQQDWQQWoLGgtuWNOKdfJ1aXCf/zNTCyioitjfPiZo7ijrQiVbsVal0Ub/RDj8
-	 xf9xpTgqq33ki2HIkAudw8FGz1uL9qp51YeuJ4Sc=
+	b=RbkcVC6cRj0MghbUG6ACn2FGPrQeAYoqO8qRfBFWQFOv7PuH7ZnwA9TzLMp/K1zIr
+	 hQ1C5wojHSJPguM9hL2WQjCN9OaZVexRQSW+7POLSMpKCzYSOWTVv6FVVMReZ8Oxsy
+	 Phv7GmddPN1jywCtAdeRnmFJBmxp9aqVDECdTHcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 006/691] jbd2: correctly compare tids with tid_geq function in jbd2_fc_begin_commit
-Date: Tue, 15 Oct 2024 13:19:14 +0200
-Message-ID: <20241015112440.580778620@linuxfoundation.org>
+	Danilo Krummrich <dakr@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Rientjes <rientjes@google.com>,
+	Christoph Lameter <cl@linux.com>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Pekka Enberg <penberg@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 007/691] mm: krealloc: consider spare memory for __GFP_ZERO
+Date: Tue, 15 Oct 2024 13:19:15 +0200
+Message-ID: <20241015112440.619877786@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -68,33 +72,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-commit f0e3c14802515f60a47e6ef347ea59c2733402aa upstream.
+commit 1a83a716ec233990e1fd5b6fbb1200ade63bf450 upstream.
 
-Use tid_geq to compare tids to work over sequence number wraps.
+As long as krealloc() is called with __GFP_ZERO consistently, starting
+with the initial memory allocation, __GFP_ZERO should be fully honored.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20240801013815.2393869-2-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+However, if for an existing allocation krealloc() is called with a
+decreased size, it is not ensured that the spare portion the allocation is
+zeroed.  Thus, if krealloc() is subsequently called with a larger size
+again, __GFP_ZERO can't be fully honored, since we don't know the previous
+size, but only the bucket size.
+
+Example:
+
+	buf = kzalloc(64, GFP_KERNEL);
+	memset(buf, 0xff, 64);
+
+	buf = krealloc(buf, 48, GFP_KERNEL | __GFP_ZERO);
+
+	/* After this call the last 16 bytes are still 0xff. */
+	buf = krealloc(buf, 64, GFP_KERNEL | __GFP_ZERO);
+
+Fix this, by explicitly setting spare memory to zero, when shrinking an
+allocation with __GFP_ZERO flag set or init_on_alloc enabled.
+
+Link: https://lkml.kernel.org/r/20240812223707.32049-1-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: David Rientjes <rientjes@google.com>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: Pekka Enberg <penberg@kernel.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/journal.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/slab_common.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -740,7 +740,7 @@ int jbd2_fc_begin_commit(journal_t *jour
- 		return -EINVAL;
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -1210,6 +1210,13 @@ static __always_inline void *__do_kreall
  
- 	write_lock(&journal->j_state_lock);
--	if (tid <= journal->j_commit_sequence) {
-+	if (tid_geq(journal->j_commit_sequence, tid)) {
- 		write_unlock(&journal->j_state_lock);
- 		return -EALREADY;
+ 	/* If the object still fits, repoison it precisely. */
+ 	if (ks >= new_size) {
++		/* Zero out spare memory. */
++		if (want_init_on_alloc(flags)) {
++			kasan_disable_current();
++			memset((void *)p + new_size, 0, ks - new_size);
++			kasan_enable_current();
++		}
++
+ 		p = kasan_krealloc((void *)p, new_size, flags);
+ 		return (void *)p;
  	}
 
 
