@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-85206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A6A99E62C
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:39:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8189399E638
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:39:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA0701F24B88
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:39:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45E8F287C9F
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B19D91E907E;
-	Tue, 15 Oct 2024 11:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1031E9078;
+	Tue, 15 Oct 2024 11:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IRACH1Z1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXKf+FvV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4541E7669;
-	Tue, 15 Oct 2024 11:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296F31E8857;
+	Tue, 15 Oct 2024 11:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728992324; cv=none; b=RszUT5eC8QrNHanVsdQEsIOxt28EmMoEHM4SSrosJNYgf2armJlnMMXk494JRwYiypF73adrRAS7PCYkckcA3I7NlrJG419bsgPOdAO1coySy1w2/lSuIgjs2S4Uou0cs7FINMQyZFc1nEZ3z/x/TaPSXYjnEqJy2Ik75Oev0OY=
+	t=1728992362; cv=none; b=kB+6ipSvvfvpvilRwgcktN1TSfuXeVS2sevMtO7o59QlPumt23NUSsjhrZgG7VUWEqb0jzG/IKveAQrmn2lMDMKKH0N1bvj2ca/RndRsHSJk7Pv6R6uXFqLVqCwaLl43DxnpeUiHZVz1VJVW3lgsa6y9tgaGgc4qlrq0fITpMAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728992324; c=relaxed/simple;
-	bh=HM10kq5mm+L+xrxWNZHvfFzUS/xJSPAgekhlOs+yePg=;
+	s=arc-20240116; t=1728992362; c=relaxed/simple;
+	bh=0JqWU2tIuKR8No+JJ1u6iN7pyHhsIjceJxMiSs4BRX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=caVhDqN6Nai7m+JTIHH4hcMDtkyzqFMXHHzssc8HaAAiVXmifFpaz+5hT/3STpxAOzTt6gI3iTksLpL8QISRTeQMIpjepf1lOFlj84sWo7RBRyen07hz1zqZwa8X1wMsu31LBNzvxoEqTpRe0EzeLVu3Oy2pr51PcusjOS/OSf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IRACH1Z1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C063C4CEC6;
-	Tue, 15 Oct 2024 11:38:43 +0000 (UTC)
+	 MIME-Version; b=Qn6txbv95tMr9LqPEPoASt8pYFJ7hTYaTyvYf58j7+6FC4DnhelFIvKGYPJLzvnHnLRy7tSmG7yAUVVKuwJT0wWymyKwboFLXYqhF7JPymvOk1awcmWpQiGOlgt6sZaXoiqvWsiDDUVHLAiZsksoVlMXDqcpDMWAIEuNKkG/1Q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXKf+FvV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362B7C4CECE;
+	Tue, 15 Oct 2024 11:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728992324;
-	bh=HM10kq5mm+L+xrxWNZHvfFzUS/xJSPAgekhlOs+yePg=;
+	s=korg; t=1728992361;
+	bh=0JqWU2tIuKR8No+JJ1u6iN7pyHhsIjceJxMiSs4BRX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IRACH1Z1dfvRA0UMUKjnBWdAb8UmKc3pzlc94TFyymY41U8Pg6JNybdZPG4dIMwDd
-	 5IXKbPEjOXKTb2KOOWY+E7eMIIFdiqs1adCj/0NtrH6pDcR2ZbXh10ecIb+hjBoIVU
-	 7FqdfKjet/50HaXpHDRVxA+Yxt9JIRMmaIt+qjlQ=
+	b=wXKf+FvVSevIRLHy66kyb+3Q2PXvyqwGqGwQHNj2zQfL0ot9WHHLplVK3433qYPyk
+	 Cf9EI6WsRZcrE8QMF4Toh/svrtoNd121DtPMtwdIsqLXfi0OgNJBq2bcunt/0VY+Tm
+	 vFOgTAd1j/HSCXvVdQhvnHYq15jDil0+/F7I7KeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Roman Kisel <romank@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 076/691] x86/hyperv: Set X86_FEATURE_TSC_KNOWN_FREQ when Hyper-V provides frequency
-Date: Tue, 15 Oct 2024 13:20:24 +0200
-Message-ID: <20241015112443.374676641@linuxfoundation.org>
+Subject: [PATCH 5.15 077/691] spi: spidev: Add missing spi_device_id for jg10309-01
+Date: Tue, 15 Oct 2024 13:20:25 +0200
+Message-ID: <20241015112443.414177745@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -67,46 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 8fcc514809de41153b43ccbe1a0cdf7f72b78e7e ]
+[ Upstream commit 5478a4f7b94414def7b56d2f18bc2ed9b0f3f1f2 ]
 
-A Linux guest on Hyper-V gets the TSC frequency from a synthetic MSR, if
-available. In this case, set X86_FEATURE_TSC_KNOWN_FREQ so that Linux
-doesn't unnecessarily do refined TSC calibration when setting up the TSC
-clocksource.
+When the of_device_id entry for "elgin,jg10309-01" was added, the
+corresponding spi_device_id was forgotten, causing a warning message
+during boot-up:
 
-With this change, a message such as this is no longer output during boot
-when the TSC is used as the clocksource:
+    SPI driver spidev has no spi_device_id for elgin,jg10309-01
 
-[    1.115141] tsc: Refined TSC clocksource calibration: 2918.408 MHz
+Fix module autoloading and shut up the warning by adding the missing
+entry.
 
-Furthermore, the guest and host will have exactly the same view of the
-TSC frequency, which is important for features such as the TSC deadline
-timer that are emulated by the Hyper-V host.
-
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20240606025559.1631-1-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240606025559.1631-1-mhklinux@outlook.com>
+Fixes: 5f3eee1eef5d0edd ("spi: spidev: Add an entry for elgin,jg10309-01")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/54bbb9d8a8db7e52d13e266f2d4a9bcd8b42a98a.1725366625.git.geert+renesas@glider.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mshyperv.c | 1 +
+ drivers/spi/spidev.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index 8d3c649a1769b..3794b223fd69c 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -322,6 +322,7 @@ static void __init ms_hyperv_init_platform(void)
- 	    ms_hyperv.misc_features & HV_FEATURE_FREQUENCY_MSRS_AVAILABLE) {
- 		x86_platform.calibrate_tsc = hv_get_tsc_khz;
- 		x86_platform.calibrate_cpu = hv_get_tsc_khz;
-+		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
- 	}
- 
- 	if (ms_hyperv.priv_high & HV_ISOLATION) {
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 8570cd35b7e50..2ea29fb819410 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -684,6 +684,7 @@ static struct class *spidev_class;
+ static const struct spi_device_id spidev_spi_ids[] = {
+ 	{ .name = "bh2228fv" },
+ 	{ .name = "dh2228fv" },
++	{ .name = "jg10309-01" },
+ 	{ .name = "ltc2488" },
+ 	{ .name = "sx1301" },
+ 	{ .name = "bk4" },
 -- 
 2.43.0
 
