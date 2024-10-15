@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-86160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6A3299EBF6
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:12:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E242299EBCF
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:11:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9020F1F27322
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:12:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A73892852F6
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2604E1AF0B2;
-	Tue, 15 Oct 2024 13:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4861C07ED;
+	Tue, 15 Oct 2024 13:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGmwitKQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pafkvyKV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87FA1C07DF;
-	Tue, 15 Oct 2024 13:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79961C07DF;
+	Tue, 15 Oct 2024 13:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997970; cv=none; b=U3xaMWLt0UhdRrwZ2YgQZlX9SmI7VjQefV8op7a9/1+VpHV8l7XRCI8pQKzLhz2eCc1yWMM6tsSkymbjagXNR7OJ7wZYnn2GDNxblUWwL7DIMEyhAqmKfYc5xVDaw+qJdtsxhoeUg4/nUEEvkn+uCh7BJ2VKm+QU7d4AANEGRvw=
+	t=1728997866; cv=none; b=YLnmjoXkX0mszzHSr0UQvN7caqEG4k0xaPu+KT0WFvoGKrQHePIVD/GiR418Op4UayW0rq2tGa+3pLmWsh3Ji3ZiJ+9W/MFhzntRWutyEcwL25s29vd0+JCh+kdEryfAd3FSy0SRx9duwWiTCCNC5VXLbbCkCoC3kjf37RczNAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997970; c=relaxed/simple;
-	bh=r3Fm8KoSX7jo2Uf2GtNW7M1EgX21MEZc6YSNfMYOpv0=;
+	s=arc-20240116; t=1728997866; c=relaxed/simple;
+	bh=sqNGJmy0gB4doe0nFuL0NQddvlUzzk0g57ku7REpnhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IoFfFNMDeumtbI9bicCakf/BrzFdeV1dBDdMTVDIjYguUK7mZliDM3Ae2xtTd/ggKVHujgRxiHxsIo4cSZRGFOxM6ktOPdRXUEA49I1HFI8jHa9r7JmYTvLzG6tbCRodTVLb8DFyzvnyUYWKc3S5P8BxCaKxGM8x9BmsUn6KUOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGmwitKQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56575C4CEC6;
-	Tue, 15 Oct 2024 13:12:50 +0000 (UTC)
+	 MIME-Version; b=CuGRH5OhjMzfUTnvLOD8Df5FLVAimwTVoaA0ldJdFbFF/zFPs7f85oKp9Lpwuwugd+9GrRXab1sS/7DsOFEHeOlhhfhz2hX23GzqaCf2EcZgsGjtLszqpfncJd0AesNVPAhEBD/tW4WKuMJSX3bhVJOd/I5X5FfBtWG7+P29ElE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pafkvyKV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A94CC4CEC6;
+	Tue, 15 Oct 2024 13:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997970;
-	bh=r3Fm8KoSX7jo2Uf2GtNW7M1EgX21MEZc6YSNfMYOpv0=;
+	s=korg; t=1728997866;
+	bh=sqNGJmy0gB4doe0nFuL0NQddvlUzzk0g57ku7REpnhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oGmwitKQ132mRJtFklJirmZdhgXYLSqAQRF9tTdFYyhUCV7d5GlSwrTMzPC2oyOm8
-	 KO/6PwNlF2Bwi1Zg6TXln6CZT4R9IpM8UPPMo8lk/KoO8i54K8ueqbXeNK+yVl0Q5P
-	 EA+deA1v/JJl6UeJi/gbd8v0LTNIIdnTOn+Xbl6w=
+	b=pafkvyKVf2EPaTIyxJOQCo+OxgpMdiU0doZhWfQyR4IlPVpSQgiKmzJ8OzlfUFR7A
+	 3jmkALQFm4woViNI9iICNpGDoQ8CV8LhW2iacIRGMLyhhsbDPtJY9o3OCCjAgpClHY
+	 tbR/j/X+XX+1VZxrLUu+UzP7nU3hjDKUDEuulD2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 310/518] net: mvpp2: Increase size of queue_name buffer
-Date: Tue, 15 Oct 2024 14:43:34 +0200
-Message-ID: <20241015123928.947356732@linuxfoundation.org>
+Subject: [PATCH 5.10 311/518] ipv4: Check !in_dev earlier for ioctl(SIOCSIFADDR).
+Date: Tue, 15 Oct 2024 14:43:35 +0200
+Message-ID: <20241015123928.985315718@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -67,56 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 91d516d4de48532d967a77967834e00c8c53dfe6 ]
+[ Upstream commit e3af3d3c5b26c33a7950e34e137584f6056c4319 ]
 
-Increase size of queue_name buffer from 30 to 31 to accommodate
-the largest string written to it. This avoids truncation in
-the possibly unlikely case where the string is name is the
-maximum size.
+dev->ip_ptr could be NULL if we set an invalid MTU.
 
-Flagged by gcc-14:
+Even then, if we issue ioctl(SIOCSIFADDR) for a new IPv4 address,
+devinet_ioctl() allocates struct in_ifaddr and fails later in
+inet_set_ifa() because in_dev is NULL.
 
-  .../mvpp2_main.c: In function 'mvpp2_probe':
-  .../mvpp2_main.c:7636:32: warning: 'snprintf' output may be truncated before the last format character [-Wformat-truncation=]
-   7636 |                  "stats-wq-%s%s", netdev_name(priv->port_list[0]->dev),
-        |                                ^
-  .../mvpp2_main.c:7635:9: note: 'snprintf' output between 10 and 31 bytes into a destination of size 30
-   7635 |         snprintf(priv->queue_name, sizeof(priv->queue_name),
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   7636 |                  "stats-wq-%s%s", netdev_name(priv->port_list[0]->dev),
-        |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   7637 |                  priv->port_count > 1 ? "+" : "");
-        |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Let's move the check earlier.
 
-Introduced by commit 118d6298f6f0 ("net: mvpp2: add ethtool GOP statistics").
-I am not flagging this as a bug as I am not aware that it is one.
-
-Compile tested only.
-
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Marcin Wojtas <marcin.s.wojtas@gmail.com>
-Link: https://patch.msgid.link/20240806-mvpp2-namelen-v1-1-6dc773653f2f@kernel.org
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20240809235406.50187-2-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/devinet.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2.h b/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
-index e999ac2de34e8..40a9d10c56cd4 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
-@@ -999,7 +999,7 @@ struct mvpp2 {
- 	unsigned int max_port_rxqs;
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index 9ac7d47d27b81..7868f316a477f 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -566,10 +566,6 @@ static int inet_set_ifa(struct net_device *dev, struct in_ifaddr *ifa)
  
- 	/* Workqueue to gather hardware statistics */
--	char queue_name[30];
-+	char queue_name[31];
- 	struct workqueue_struct *stats_queue;
+ 	ASSERT_RTNL();
  
- 	/* Debugfs root entry */
+-	if (!in_dev) {
+-		inet_free_ifa(ifa);
+-		return -ENOBUFS;
+-	}
+ 	ipv4_devconf_setall(in_dev);
+ 	neigh_parms_data_state_setall(in_dev->arp_parms);
+ 	if (ifa->ifa_dev != in_dev) {
+@@ -1150,6 +1146,8 @@ int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
+ 
+ 		if (!ifa) {
+ 			ret = -ENOBUFS;
++			if (!in_dev)
++				break;
+ 			ifa = inet_alloc_ifa();
+ 			if (!ifa)
+ 				break;
 -- 
 2.43.0
 
