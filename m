@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-85713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BCAC99E891
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:07:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C7299E866
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C5BE1C2147E
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:07:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B95D1F21F49
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068C01E7658;
-	Tue, 15 Oct 2024 12:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1481E1A35;
+	Tue, 15 Oct 2024 12:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWOGmeUq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vt9nUGoo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66E41C57B1;
-	Tue, 15 Oct 2024 12:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FBE1C57B1;
+	Tue, 15 Oct 2024 12:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728994043; cv=none; b=PKmTsHbPe0xghh2tGm/6lNbjEF4mtQQ5TrxMV2p5RE2kf2/D8JRYm0sVoHL+mRRCileNLjsD8QRpF6tK5adPx1bPhnnSBEMjN1LSnt5Par7OGKMLslu+tu+HQqcCOka2c7zpvogCsBJD8CFxidvci0kRTJReJv4HVYQHNrY/ECg=
+	t=1728993933; cv=none; b=hCcgWz+fYIwdwaV0ZFOWwvEuCalM1YITuFV1FVrn3h/b9+95epIut/HOdA41zd3f/vi1ny/qUdwcuK5lVtGjfmHmjZ96Kgc3uUktPg5yeDAZKHp9iEjceoWvXv/043+AJmmue83NEGkGYjYyzsNiVxNH6tkWPbIknJ4pYEMRnkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728994043; c=relaxed/simple;
-	bh=TupkwhHdmb3j4/diAYhm3OzxQbx9TllmrJpDdTaRuUE=;
+	s=arc-20240116; t=1728993933; c=relaxed/simple;
+	bh=QckrsCEl35rfwqJoBCvNCV/zVdHBTbMvgkHffWtDDCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aRXJSm/Td+ntlbV8O/QzuIx6x6NH8DDaat4z/vV81sB8dbGnY4+AdRy/D0+gbXaKyONu0pTR+PrqxOg3micPR7AKFIOdeRakTy5OeZtWW7Es5rP6hKHYfC+KubyFRrzef3sB0Xt0HKtl2tyHRTdV8o+DyDsKv1dvGv+jlIi8G1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWOGmeUq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26FEBC4CECE;
-	Tue, 15 Oct 2024 12:07:22 +0000 (UTC)
+	 MIME-Version; b=m3SafdQ0TxpTePj+nRQ2c69H+qRVK7/9/AQI0bN6Nwgj0QyoeORJABzaVg4k8nnN24pWRkfY1LGfPyFqk1vQ7CjxiJhegwDbDrLl79z7qLehDQRCIqU4FuwGFcaSZJhbb30F/t0Vp5ixsvDKIQTtdmwYVRQB7uK7tjeahwksNFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vt9nUGoo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5395C4CEC6;
+	Tue, 15 Oct 2024 12:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728994043;
-	bh=TupkwhHdmb3j4/diAYhm3OzxQbx9TllmrJpDdTaRuUE=;
+	s=korg; t=1728993933;
+	bh=QckrsCEl35rfwqJoBCvNCV/zVdHBTbMvgkHffWtDDCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XWOGmeUq01W4NozRMB7mHtiBeyMZW8uiThGKyJyhJl/Xx8oaZf2XkdePF68Teqthh
-	 GYN68OHL8pYB1XOHlouxFDkYsJODKKiyS7aZLEmyjDqkChinuAFJm4UqHx0Qxl91I2
-	 Bc9QLAOz7pr48zKfZkUGPwPYgeM1r9KaXp6xPtPQ=
+	b=vt9nUGoo8FcJnBNQICYsxPiziybLjOc7yQrOTxVfidX35bQKcgts8sUl9I9L2w0Iy
+	 HGxZ2p0Pvn+SiBrRY2q/IHs9bwRZLe4mcCclFdpE4FEb4vho6ovxE3luSgtFDdJ5gO
+	 Inw1B9n5YshB8FBwtXSYPNRpMcgn/Cf2G69Lu83M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 549/691] kconfig: qconf: fix buffer overflow in debug links
-Date: Tue, 15 Oct 2024 13:28:17 +0200
-Message-ID: <20241015112502.131227729@linuxfoundation.org>
+Subject: [PATCH 5.15 550/691] device property: Add fwnode_iomap()
+Date: Tue, 15 Oct 2024 13:28:18 +0200
+Message-ID: <20241015112502.170230814@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -65,41 +68,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
 
-[ Upstream commit 984ed20ece1c6c20789ece040cbff3eb1a388fa9 ]
+[ Upstream commit eca6e2d4a4a4b824f055eeaaa24f1c2327fb91a2 ]
 
-If you enable "Option -> Show Debug Info" and click a link, the program
-terminates with the following error:
+This patch introduces a new helper routine - fwnode_iomap(), which
+allows to map the memory mapped IO for a given device node.
 
-    *** buffer overflow detected ***: terminated
+This implementation does not cover the ACPI case and may be expanded
+in the future. The main purpose here is to be able to develop resource
+provider agnostic drivers.
 
-The buffer overflow is caused by the following line:
-
-    strcat(data, "$");
-
-The buffer needs one more byte to accommodate the additional character.
-
-Fixes: c4f7398bee9c ("kconfig: qconf: make debug links work again")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/r/20211203212358.31444-2-anand.ashok.dumbre@xilinx.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 8d3cefaf6592 ("i2c: core: Lock address during client device instantiation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/qconf.cc | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/property.c  | 16 ++++++++++++++++
+ include/linux/property.h |  2 ++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/scripts/kconfig/qconf.cc b/scripts/kconfig/qconf.cc
-index 78087b2d9ac67..61b679f6c2f2a 100644
---- a/scripts/kconfig/qconf.cc
-+++ b/scripts/kconfig/qconf.cc
-@@ -1172,7 +1172,7 @@ void ConfigInfoView::clicked(const QUrl &url)
- {
- 	QByteArray str = url.toEncoded();
- 	const std::size_t count = str.size();
--	char *data = new char[count + 1];
-+	char *data = new char[count + 2];  // '$' + '\0'
- 	struct symbol **result;
- 	struct menu *m = NULL;
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 21f4184db42fc..87bb97e12749e 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -1050,6 +1050,22 @@ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
+ }
+ EXPORT_SYMBOL(fwnode_irq_get);
  
++/**
++ * fwnode_iomap - Maps the memory mapped IO for a given fwnode
++ * @fwnode:	Pointer to the firmware node
++ * @index:	Index of the IO range
++ *
++ * Returns a pointer to the mapped memory.
++ */
++void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index)
++{
++	if (IS_ENABLED(CONFIG_OF_ADDRESS) && is_of_node(fwnode))
++		return of_iomap(to_of_node(fwnode), index);
++
++	return NULL;
++}
++EXPORT_SYMBOL(fwnode_iomap);
++
+ /**
+  * fwnode_graph_get_next_endpoint - Get next endpoint firmware node
+  * @fwnode: Pointer to the parent firmware node
+diff --git a/include/linux/property.h b/include/linux/property.h
+index fe2092e39aedb..032262e3d9991 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -126,6 +126,8 @@ void fwnode_handle_put(struct fwnode_handle *fwnode);
+ 
+ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
+ 
++void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
++
+ unsigned int device_get_child_node_count(struct device *dev);
+ 
+ static inline bool device_property_read_bool(struct device *dev,
 -- 
 2.43.0
 
