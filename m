@@ -1,197 +1,165 @@
-Return-Path: <stable+bounces-85091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C2B299DDF2
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 08:08:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 263E199DE07
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 08:15:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02A61281B98
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 06:08:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE60128152F
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 06:15:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4712518784C;
-	Tue, 15 Oct 2024 06:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E939117BEC1;
+	Tue, 15 Oct 2024 06:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fmznJw9X"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="irBSJEDR"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2050.outbound.protection.outlook.com [40.107.102.50])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F2713C3F2;
-	Tue, 15 Oct 2024 06:08:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728972485; cv=fail; b=Dspxuvfeo0KRD0ad03vwOZixoM8canRPp1lel/l/GkJ7grN4+0SRinZwnlbmo6Qt79/Nb56Tr/rcK99GPdkVO4li+enLg4GqvBWqi2FjoFczvJYs4z+qf3JxiroSr9Ux76QO5Hw76+4vhIKP0+kJNXhEJHHcSqq1CG5mov/mOnc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728972485; c=relaxed/simple;
-	bh=6rnQ0I60jnOqGc9FQHaMJEnMutdhkhPv0gxCeOiTv18=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=nte7usv/3WV9ZS3gwKWgdxrKMR82BQcdYc69UgQfA0B+h/wS8xgfuq7wFRiIIuvdyepLyKecBX3i42myO7k2Jg7olNUQTnwxqoD2DdWqQaoUYcPFUwBVppjEvGIS7jG79f6Lan3FkbEuDfI4XtJ9JP8iDqYfqA/53xZ7v9oaPho=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fmznJw9X; arc=fail smtp.client-ip=40.107.102.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=h4qXNoiuysImoisQX/BYn8lURn1GwhMyoeIC4Mq1FXFd+/cSQGIzfwAZWfcL44mryEZtvaYx3d3L3U7DfDFQKQL3eI4+B9s2h2wUEza2f3f+JmCMQ/LxubBpJOUVYdLnrw+H9x+Z999oSwRL5lhYajc2eV+9MgRyIQJY9hgsauiOr2eKdaWlrngoJsafikkv+ojN+NztzS81hO6Y5pzam9Ph/X+oUHD0VLv1rTAHx9lofuzy4QEbVBXvpBB4H5XRqRLW0LY6IUdHtaB9Hr52nFyfKlDx5Z5k6ZPLLOJf0XWlOJAfS+oFEVpOopuRVugE6dHEZLYzcdVlFeMYDY+pyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PtT9+wjuOmc8f/Q9byRfZmHurO5Bebc928sTxgJ/kZs=;
- b=paW5xQjLKf7hWy37y/PYpggQCwVgPBca/DV50zWE/ety/6A9Y94jmK6vXCzX+hRO/T3CHjhO1Qa3drUh7nR/Rc08wfHHp2gBh14/ZdS3rdkW6m0Lvb7N7rKc7cA0edT89OQdvsKdm8rebPJp/FActZNOjUX8k3tkXAX8Yn2YUQbYznV2w287WinHNk4cpfYwr8OQQqPAnLFmNdtvY31sTtLeJ7HkvIYCSukHS7KTjNJD5fodMbWEpWGvJOUG4xY2XLkiFVoDm05brsDJl2gTjwRuE0hSK67Kzv7k9FbqSfPVmOdJjz+lmnOqhqsdnKmvziDj/NVa0yDW/bkUaeAsbQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PtT9+wjuOmc8f/Q9byRfZmHurO5Bebc928sTxgJ/kZs=;
- b=fmznJw9X8YfUc6sNsmHLCgqj94jPPpEez4fbR9aLOqkVWCuhstA5PFzmpkQs/enHLl6bOpiyGdRMxwI89OH/qd8HcjJMzf1VVW8rkZir52L05QedgHf+95/PWdQEtec/I7jjHaQI4HvTzjc8/yifUx8C7KjDJevWrItqnCUG/3PjxYxCOFoRx3/lKFN3JrkWyZFs1amlprB3mGPGtmpxpq1bdQ/WR83HXhKs30Dvvs9XHiCL2U+AZkzqqeXUPGH7IncCn3Z8Ejrt2Kv848DnAFdQ0MRQ+MtubTxhbOd73fCP75sV8+4W8dU4c5kv9QegEkhDD4/F4EBHA58XpxFB8A==
-Received: from MW4P220CA0024.NAMP220.PROD.OUTLOOK.COM (2603:10b6:303:115::29)
- by CY8PR12MB7682.namprd12.prod.outlook.com (2603:10b6:930:85::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.27; Tue, 15 Oct
- 2024 06:07:59 +0000
-Received: from SJ5PEPF000001CA.namprd05.prod.outlook.com
- (2603:10b6:303:115:cafe::76) by MW4P220CA0024.outlook.office365.com
- (2603:10b6:303:115::29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.26 via Frontend
- Transport; Tue, 15 Oct 2024 06:07:59 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- SJ5PEPF000001CA.mail.protection.outlook.com (10.167.242.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8069.17 via Frontend Transport; Tue, 15 Oct 2024 06:07:59 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 14 Oct
- 2024 23:07:50 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Mon, 14 Oct 2024 23:07:50 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Mon, 14 Oct 2024 23:07:50 -0700
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
-	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.6 000/213] 6.6.57-rc1 review
-In-Reply-To: <20241014141042.954319779@linuxfoundation.org>
-References: <20241014141042.954319779@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20762582;
+	Tue, 15 Oct 2024 06:15:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728972937; cv=none; b=bHWanLRSaeQSWkVljGdLNlRG2eg/plbnMzHizrDgN/I1/Q+wnCe8Lh/i7Umu0Q4PWwY6GoUVarTv1RlRFE26JkhvqEoM9FOLEXjP1xHmpxG7VAjfn9aF/N6nuUwIsFK7rtN+V1tJjjy8wWzf71FWD6myGogA+/yEj618746+8uM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728972937; c=relaxed/simple;
+	bh=J3AEEHWFdXK99qmd51njSmIbev5atRLnRYTFUmdmIwU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tM3LlLQgTuK9RD+OWgbVPaTN4LrczfPV1qYmlJcS/Dw6r3dSNGXjJVdJJHAw+07C1fds2N9iQqwML/fNFtm337joZoU3WVmGul3UlAAxx7boBRRYI4hIVM4cjdOflq1xpF+FgNQEUojc2715UQ3D1VQvKC+TXpohaU9l480gaz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=irBSJEDR; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728972936; x=1760508936;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=J3AEEHWFdXK99qmd51njSmIbev5atRLnRYTFUmdmIwU=;
+  b=irBSJEDRVbmiEtJJ1+puM78qFiDI5s7If0EclsKWYeji9vGboS/UyG9I
+   g9fMzFuSGJqU7ogcLRg4Qq2pSYZTQb9DZRGuJhJDk2YFwj0MKqXU9Cc31
+   rsASE9AYsitkjKZa/jnlMpku87m7m09yPnBTwxn5qF3fM4cKiPJVXIaMD
+   aSFLaX221DIBOR/hVNUWcMSmHs0lmoFCyeB4T3KxbpFHjtPnlvmMcQx7O
+   FUypEgVAJWqGkuWu3/+VhJudLnZjDmBpnVCmMJgmqPk8kW4Itb5GQHruu
+   rxy58SuVyZHBnh9qLxXaOXEbJno2Sd49uEj/1xfFasKNt+5PnnN0T+elf
+   w==;
+X-CSE-ConnectionGUID: fIY17HwZSQ6j1a2zVFyrpQ==
+X-CSE-MsgGUID: H4x5SoGoSUmvvTpVbHraAA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11225"; a="39721986"
+X-IronPort-AV: E=Sophos;i="6.11,204,1725346800"; 
+   d="scan'208";a="39721986"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2024 23:15:35 -0700
+X-CSE-ConnectionGUID: oOMMFqeMR3u/cwaAPy56aw==
+X-CSE-MsgGUID: Cc8Kwl+kT0Ch4xj8sPpPpA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,204,1725346800"; 
+   d="scan'208";a="101135730"
+Received: from rzhang1-mobl7.sh.intel.com ([10.238.6.124])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2024 23:15:30 -0700
+From: Zhang Rui <rui.zhang@intel.com>
+To: tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	rafael.j.wysocki@intel.com,
+	x86@kernel.org,
+	linux-pm@vger.kernel.org
+Cc: hpa@zytor.com,
+	peterz@infradead.org,
+	thorsten.blum@toblux.com,
+	yuntao.wang@linux.dev,
+	tony.luck@intel.com,
+	len.brown@intel.com,
+	srinivas.pandruvada@intel.com,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH V4] x86/apic: Always explicitly disarm TSC-deadline timer
+Date: Tue, 15 Oct 2024 14:15:22 +0800
+Message-Id: <20241015061522.25288-1-rui.zhang@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <6c4b417e-e5ed-4f16-91a0-3063f45de716@drhqmail202.nvidia.com>
-Date: Mon, 14 Oct 2024 23:07:50 -0700
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CA:EE_|CY8PR12MB7682:EE_
-X-MS-Office365-Filtering-Correlation-Id: c59ad78d-a62b-4c2b-9577-08dcecdfb846
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|1800799024|7416014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZHA2bGJ4Qjd2RElidVVZbkxiWjdNc0VsUEpBaXBUeWtqY3lmeC9HUDQ2WXNO?=
- =?utf-8?B?WjFsaVQ0YzZEa1V3R216U2RyYTU0eWVoRTgyVTUyK1lweHl2TzRsRVF4NTRo?=
- =?utf-8?B?QlRUTmNhYytWdW5IYTVSWTB0N3ArNjhOMkhVaFVCa3dhZWx1TVFzS2tQUVA2?=
- =?utf-8?B?Snp6QzhlSTlWUTVnemZWYm1hMEF2S3NmSTF3TDFiSUJEY01lcStlenZBNVFk?=
- =?utf-8?B?aUtLNXFXc3dSN3B4d2Y0Z2UyOStwUmRGRzFmWHZFcmN0NzZ1WkhCMkhSdjNl?=
- =?utf-8?B?aXZLS1F6eXFuQTg4RXp1U0l2QjI3azIvdHFMYXJ1RnJiSDBGamJPSmFSMUdG?=
- =?utf-8?B?Tmw0TnBiQ2FvQ3kyNEErTTNoMW5TdGZmMHFZWE81NEJ1QlI1SnZ5WUw4VTNS?=
- =?utf-8?B?T3FLQU45Z1Y3VXdEem9mM09tTGFpMVpOSXdZRWJhZ041Z3lyWGlOQWNMU1N3?=
- =?utf-8?B?WHhRMkFUemJpOTVRbW9IMEFJaUk0Lzl1ZjdOaDFYV1N2Q3ZPdWljK1RkM0F1?=
- =?utf-8?B?UEFwelJiTjZFOXhwRmMybFNub1dHcFhPUXNZUVdWL2NzTEVVSWhrQmtrY2pO?=
- =?utf-8?B?NVlYQittaEZqZ0tYK2lFeERDRDNTY0Fic0pDTkExMnFPWGoxU3ljZ1V0Y013?=
- =?utf-8?B?THV1bUcwMHRIYUFvcDhHOUlQVmt1R0xCSmx3UGZudzlOcFJIdXRoR2tCeEtz?=
- =?utf-8?B?M0t4T05kUjl4NDFidE1UVTVmYmF0Q2p1TUdzb0c5elhFMEV0MjRGcTJVcGdT?=
- =?utf-8?B?MmJUdDhhQTFiTVRZQVFYZWNaUDJ0Q050U2hacnZNb2ZuQ0oydmtoMmZQdXRW?=
- =?utf-8?B?UlRLdFllbmRidlRjckROVTQ3bkNrSWN0WS9TUlArakNpSUFEcWplMEJjMW9n?=
- =?utf-8?B?cHlGWkNyQnVrS25OREdFY2hjZ0xyZEwyNFg5VmJ4NUpFbjdHaEJPUU1MSUU3?=
- =?utf-8?B?S2VoQ3JmcFcvbWdIK1Q3M28yUHRSbi9lakNJTWRJTlZKWGJyNk5RcEJiZlcy?=
- =?utf-8?B?dVV4MFFLSUFRMnRhQ3VnSE9aQ0hRYk9qQlRqbHAvNm9halBJeERnRC93WVpO?=
- =?utf-8?B?c2cvUEg4dmdRdmg5VmN5aE5PMHJ1RkJJM1lmbVVrOEZJN1AvQ2Ewb0haeTdC?=
- =?utf-8?B?MDVqc3R5U05Yd0RianhmZGRVRmwwajg2bmozR0g2OWVwd1JsWEpCTTJmcklu?=
- =?utf-8?B?NGNmWmRUeFI0VDJCRzdwMFJ0TjdaVnpUUmpBUTluR2JnMEdxSGxwVUxWa3BC?=
- =?utf-8?B?NlpHOG9HVWVsbnZ4andadkJuYlZKN0NiVjZsYlYvM0R2R2xqOXorMW02S0RZ?=
- =?utf-8?B?Tm5SR3FuZGFuOGtVdGlPV3EzOTluS0pEeWw1K3JZeTlYT21YR1hvNUl0TmNU?=
- =?utf-8?B?Y3JOczRpTjN5R2FuRGFhdmVGamg2OE9xYnJrbnpjVHNiMU5JaU5CdVZrazBQ?=
- =?utf-8?B?UTVtUDhiSkJ4eWFuWDIxZ2dvdXA0UGJHb3ZSMXFPU1lsbk5zMUdrUDNJVGNw?=
- =?utf-8?B?ZU1WcEY2aElvTGNSSUhhcUdwODYzK3NvWC85ZFd1dTVWL2QyMW41NThrSnAv?=
- =?utf-8?B?S2Q5QzFQWm40eDBSK1pWTUhlcU1BdmlxZW1hV3hTZDJEaGJkV2JmcWorTVBV?=
- =?utf-8?B?ZUE5aEVsOGVnM1ZjOVNaWE1uY0RkYXNxNXZHdEJrWE56NXFjSXZOeUd3eitI?=
- =?utf-8?B?TjdjSWdBWTZIYnYwdkZ3ODB4NDlmSnkwSFA1ZVpHUmo4Q3NzSFZzb0JUb1pQ?=
- =?utf-8?B?Smc1VXhDc0NHYUkxQkRLWjBtMWVsZHh2L3RybE56SmtiK0tYcjUydDIreUow?=
- =?utf-8?B?Vk9rTlNQOVQ2NkVHU0lRQXlnRHdXQzFIOStpWXdWdXRrdE9QTkdkcnhjaWRL?=
- =?utf-8?Q?DbeOiNb6nWjIO?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(7416014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 06:07:59.2950
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c59ad78d-a62b-4c2b-9577-08dcecdfb846
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001CA.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7682
+Content-Transfer-Encoding: 8bit
 
-On Mon, 14 Oct 2024 16:18:26 +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.57 release.
-> There are 213 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 16 Oct 2024 14:09:57 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.57-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+New processors have become pickier about the local APIC timer state
+before entering low power modes. These low power modes are used (for
+example) when you close your laptop lid and suspend. If you put your
+laptop in a bag in this unnecessarily-high-power state, it is likely
+to get quite toasty while it quickly sucks the battery dry.
 
-All tests passing for Tegra ...
+The problem boils down to some CPUs' inability to power down until the
+kernel fully disables the local APIC timer. The current kernel code
+works in one-shot and periodic modes but does not work for deadline
+mode. Deadline mode has been the supported and preferred mode on
+Intel CPUs for over a decade and uses an MSR to drive the timer
+instead of an APIC register.
 
-Test results for stable-v6.6:
-    10 builds:	10 pass, 0 fail
-    26 boots:	26 pass, 0 fail
-    116 tests:	116 pass, 0 fail
+Disable the TSC Deadline timer in lapic_timer_shutdown() by writing to
+MSR_IA32_TSC_DEADLINE when in TSC-deadline mode. Also avoid writing
+to the initial-count register (APIC_TMICT) which is ignored in
+TSC-deadline mode.
 
-Linux version:	6.6.57-rc1-g8a7bf87a1018
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-                tegra20-ventana, tegra210-p2371-2180,
-                tegra210-p3450-0000, tegra30-cardhu-a04
+Note: The APIC_LVTT|=APIC_LVT_MASKED operation should theoretically be
+enough to tell the hardware that the timer will not fire in any of the
+timer modes. But mitigating AMD erratum 411[1] also requires clearing
+out APIC_TMICT. Solely setting APIC_LVT_MASKED is also ineffective in
+practice on Intel Lunar Lake systems, which is the motivation for this
+change.
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
+1. 411 Processor May Exit Message-Triggered C1E State Without an Interrupt if Local APIC Timer Reaches Zero - https://www.amd.com/content/dam/amd/en/documents/archived-tech-docs/revision-guides/41322_10h_Rev_Gd.pdf
 
-Jon
+Cc: stable@vger.kernel.org
+Fixes: 279f1461432c ("x86: apic: Use tsc deadline for oneshot when available")
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Tested-by: Todd Brandt <todd.e.brandt@intel.com>
+---
+V2
+- Improve changelog
+V3
+- Subject and changelog rewrite
+- Check LAPIC Timer mode using APIC_LVTT value instead of extra CPU feature flag check
+- Avoid APIC_TMICT write which is ignored in TSC-deadline mode
+V4
+- Add back Fixes tag and stable tag which was missing in V3
+- Update patch recipients
+---
+ arch/x86/kernel/apic/apic.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index 6513c53c9459..5436a4083065 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -440,7 +440,19 @@ static int lapic_timer_shutdown(struct clock_event_device *evt)
+ 	v = apic_read(APIC_LVTT);
+ 	v |= (APIC_LVT_MASKED | LOCAL_TIMER_VECTOR);
+ 	apic_write(APIC_LVTT, v);
+-	apic_write(APIC_TMICT, 0);
++
++	/*
++	 * Setting APIC_LVT_MASKED should be enough to tell the
++	 * hardware that this timer will never fire. But AMD
++	 * erratum 411 and some Intel CPU behavior circa 2024
++	 * say otherwise. Time for belt and suspenders programming,
++	 * mask the timer and zero the counter registers:
++	 */
++	if (v & APIC_LVT_TIMER_TSCDEADLINE)
++		wrmsrl(MSR_IA32_TSC_DEADLINE, 0);
++	else
++		apic_write(APIC_TMICT, 0);
++
+ 	return 0;
+ }
+ 
+-- 
+2.34.1
+
 
