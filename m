@@ -1,54 +1,51 @@
-Return-Path: <stable+bounces-86183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10C399EC2D
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:15:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7722399EC36
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:16:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 993321F25123
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:15:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0861C287A6C
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:16:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092BF2281C8;
-	Tue, 15 Oct 2024 13:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F0D22911C;
+	Tue, 15 Oct 2024 13:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EyNw3RdU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IU2hGMv2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0EB1EB9F1;
-	Tue, 15 Oct 2024 13:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7516229114;
+	Tue, 15 Oct 2024 13:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728998050; cv=none; b=RfQADsOQEyGrBOz05iZZBxpatz3IgbWThW7aLx/7jqlQMF3+Wxb0E6wtD5LqOhV7+SUQ2gandUQS1G4/QnhFDkRQ+PRkuKAnouVMApun9obVeu+aH8lND/EzOn/Xkze0nD1x5wvmjz6R6EluKbmTsUBScRyLaYF5Z79OdfzCRjU=
+	t=1728998057; cv=none; b=FExWthtYad1yZnchHGQ71D4MaXPlf342mvUC63EKcukEh7lDCoYJjfppckJwzScOixvxKGvhT+aZ5tJBJhaNwf3BC4q0PuL1bwWNWb3H5kFvXyUweXU+cIhLK+Zddwgy9APcGANQdx5sZiq66qIQVkY8mxAruaHD2WJ0L9CsLvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728998050; c=relaxed/simple;
-	bh=9mgzkZhj5qOmzlEDqH7p8QsDqG5w8zcCAah0SY52BKM=;
+	s=arc-20240116; t=1728998057; c=relaxed/simple;
+	bh=r4MqBhlhHvTt7U7zOvM+JbUKpZv61VKTSVHOOEfBImY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g+gpm+dlvaj1MM7avKoMxcUNJVnK71wNVxEhMO2jl4V+QSH6KTObic/cOoMtXidR5HflgHHPG0qmtQ9Rx7n0ml9oXMHqrpATpLqAGFx65BUZpaNoEvUKBYswx3xhksy/ZU3ZdOE8I5pfa1vwV8qaXFSKnsO/tThaCr9rfUDUYHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EyNw3RdU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01B9C4CED3;
-	Tue, 15 Oct 2024 13:14:09 +0000 (UTC)
+	 MIME-Version; b=fXDElDO0WMlWBFBiUSpENVYWMWpuBuWBF4z0FV2f5oC0OZVy9/5fjb9wKaiLGcmYZyVggxT8rJAkxaYoPcWAuwGtpakvxcePAFFL+xzxCkygwfg3hmIRi/ebtfHUZ6StCuAA4YhmKnCRV+pyBFan3SUQVxok3gFq4YVgOD/I7/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IU2hGMv2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9212C4CED7;
+	Tue, 15 Oct 2024 13:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728998050;
-	bh=9mgzkZhj5qOmzlEDqH7p8QsDqG5w8zcCAah0SY52BKM=;
+	s=korg; t=1728998057;
+	bh=r4MqBhlhHvTt7U7zOvM+JbUKpZv61VKTSVHOOEfBImY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EyNw3RdUWXonxzAa6CuDkHr92uN3bW/FByKeRnYMt9s279ThVCBJDUeYwRonJ1vwK
-	 Vwm7Q+JbZdhMtolUQVoyR42lKLLQFGF0wEdUOn7Nb8afd3uXDp5UM/hlBqcBIJoSi3
-	 RpxtrQ1aLo4s0HBT/GxXvg2aOJyux0YrLTeY1+Uo=
+	b=IU2hGMv2JWeADDVxT+1Q/imQJEgJXi6H9KG+VTo8kKyS259IadoN661Z2lFOFQ95G
+	 ePOUDGo1uw+oTES+DWltuvtANSSlZhQNcqJJ91G9xKt3bt0UESUP/EwF3aTBJNxTOH
+	 zLZaiyZqzRIsXv4xg9yuVMj3HPCO6Code254l2/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Gengkun <luogengkun@huaweicloud.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kan Liang <kan.liang@linux.intel.com>
-Subject: [PATCH 5.10 364/518] perf/core: Fix small negative period being ignored
-Date: Tue, 15 Oct 2024 14:44:28 +0200
-Message-ID: <20241015123931.022304502@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 365/518] parisc: Fix itlb miss handler for 64-bit programs
+Date: Tue, 15 Oct 2024 14:44:29 +0200
+Message-ID: <20241015123931.060433587@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -67,105 +64,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luo Gengkun <luogengkun@huaweicloud.com>
+From: Helge Deller <deller@gmx.de>
 
-commit 62c0b1061593d7012292f781f11145b2d46f43ab upstream.
+commit 9542130937e9dc707dd7c6b7af73326437da2d50 upstream.
 
-In perf_adjust_period, we will first calculate period, and then use
-this period to calculate delta. However, when delta is less than 0,
-there will be a deviation compared to when delta is greater than or
-equal to 0. For example, when delta is in the range of [-14,-1], the
-range of delta = delta + 7 is between [-7,6], so the final value of
-delta/8 is 0. Therefore, the impact of -1 and -2 will be ignored.
-This is unacceptable when the target period is very short, because
-we will lose a lot of samples.
+For an itlb miss when executing code above 4 Gb on ILP64 adjust the
+iasq/iaoq in the same way isr/ior was adjusted.  This fixes signal
+delivery for the 64-bit static test program from
+http://ftp.parisc-linux.org/src/64bit.tar.gz.  Note that signals are
+handled by the signal trampoline code in the 64-bit VDSO which is mapped
+into high userspace memory region above 4GB for 64-bit processes.
 
-Here are some tests and analyzes:
-before:
-  # perf record -e cs -F 1000  ./a.out
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.022 MB perf.data (518 samples) ]
-
-  # perf script
-  ...
-  a.out     396   257.956048:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.957891:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.959730:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.961545:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.963355:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.965163:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.966973:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.968785:         23 cs:  ffffffff81f4eeec schedul>
-  a.out     396   257.970593:         23 cs:  ffffffff81f4eeec schedul>
-  ...
-
-after:
-  # perf record -e cs -F 1000  ./a.out
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.058 MB perf.data (1466 samples) ]
-
-  # perf script
-  ...
-  a.out     395    59.338813:         11 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.339707:         12 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.340682:         13 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.341751:         13 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.342799:         12 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.343765:         11 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.344651:         11 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.345539:         12 cs:  ffffffff81f4eeec schedul>
-  a.out     395    59.346502:         13 cs:  ffffffff81f4eeec schedul>
-  ...
-
-test.c
-
-int main() {
-        for (int i = 0; i < 20000; i++)
-                usleep(10);
-
-        return 0;
-}
-
-  # time ./a.out
-  real    0m1.583s
-  user    0m0.040s
-  sys     0m0.298s
-
-The above results were tested on x86-64 qemu with KVM enabled using
-test.c as test program. Ideally, we should have around 1500 samples,
-but the previous algorithm had only about 500, whereas the modified
-algorithm now has about 1400. Further more, the new version shows 1
-sample per 0.001s, while the previous one is 1 sample per 0.002s.This
-indicates that the new algorithm is more sensitive to small negative
-values compared to old algorithm.
-
-Fixes: bd2b5b12849a ("perf_counter: More aggressive frequency adjustment")
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20240831074316.2106159-2-luogengkun@huaweicloud.com
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org	# v4.19+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/parisc/kernel/entry.S |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -4065,7 +4065,11 @@ static void perf_adjust_period(struct pe
- 	period = perf_calculate_period(event, nsec, count);
+--- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -1071,8 +1071,7 @@ ENTRY_CFI(intr_save)		/* for os_hpmc */
+ 	STREG           %r16, PT_ISR(%r29)
+ 	STREG           %r17, PT_IOR(%r29)
  
- 	delta = (s64)(period - hwc->sample_period);
--	delta = (delta + 7) / 8; /* low pass filter */
-+	if (delta >= 0)
-+		delta += 7;
-+	else
-+		delta -= 7;
-+	delta /= 8; /* low pass filter */
+-#if 0 && defined(CONFIG_64BIT)
+-	/* Revisit when we have 64-bit code above 4Gb */
++#if defined(CONFIG_64BIT)
+ 	b,n		intr_save2
  
- 	sample_period = hwc->sample_period + delta;
- 
+ skip_save_ior:
+@@ -1080,8 +1079,7 @@ skip_save_ior:
+ 	 * need to adjust iasq/iaoq here in the same way we adjusted isr/ior
+ 	 * above.
+ 	 */
+-	extrd,u,*	%r8,PSW_W_BIT,1,%r1
+-	cmpib,COND(=),n	1,%r1,intr_save2
++	bb,COND(>=),n	%r8,PSW_W_BIT,intr_save2
+ 	LDREG		PT_IASQ0(%r29), %r16
+ 	LDREG		PT_IAOQ0(%r29), %r17
+ 	/* adjust iasq/iaoq */
 
 
 
