@@ -1,86 +1,160 @@
-Return-Path: <stable+bounces-85095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2F5699DE98
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 08:41:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C2F99DEF1
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 09:00:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A473F1F21C6F
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 06:41:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0904F282FBA
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 07:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECC718A6CC;
-	Tue, 15 Oct 2024 06:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30CD31D0B91;
+	Tue, 15 Oct 2024 06:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="gqCoRWnB"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PCFsuZzK"
 X-Original-To: stable@vger.kernel.org
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CB9189BBF
-	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 06:41:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C2718BB8F
+	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 06:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728974486; cv=none; b=XnB2nhopH6VEdyx6Y9ibYLoZq3AheClOVG1+allLeViyB16o0XFPOodadbt839c7G8ridn1GLPaDSaBqyqBX1f9FfPqMoEmCqE4nx1KTUV1uHA/fAUFumQ2rP50lIURvNuDTjcC343/k7bbMX/UWrjO4T72WdRAckftgJprs78U=
+	t=1728975537; cv=none; b=JURf+N+wZLabzGQ1Lp5jBChGNiJ15XdbbLtauQKfCWfp0gSGhqVlxYVmHtTS164xQllmidKl9AnN865LORUh2F7t79E7NDAnE4LuIFgC+uG/D7+j1D9R2kxQ0jTKVwVGxvf/DDvCF58bJpEvGCi2V/XmfEElZ4L1ispxIu3x9Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728974486; c=relaxed/simple;
-	bh=aRjq5JD6dVfYh9IBLDvsSL0I1KRfWiU/aP2xCr6Z56w=;
-	h=Message-ID:Date:MIME-Version:To:CC:From:Subject:Content-Type; b=cDXA95WM26dYQcU01B6ju4PhcNYk9fDbTcirnd5+d3KM+4g7WMA604J8lE4blzRPM9qJH+TI5aC8Y9reLrLnZinnr3+oJxDrGa/eBOrLJz+r6XtwTG/2h1xwfQYZDWMv/CYDXmDCh1Y1HParDptw7o6vzf/7diP61EYUdiR6iR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=gqCoRWnB; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 31363A051F;
-	Tue, 15 Oct 2024 08:41:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=mail; bh=p8e+8ab+baPymbmXz7QVRVtyy9vyn1yJUtoQkx2g4Zk=; b=
-	gqCoRWnBt6tTK779wpt7OzHf0ssorfkDRehUz3yCCWpBieH6a8QatI2dDRvh5PHz
-	qrmdUgeRD230WavD6yVGxL7wbqJZd8VKxPyNKLcE61aydghONMAHDx5aTH3OZWRA
-	M9083nJkewEjjmx67t3eSsZ48P44RNV4tjSpzqE8HefWZi3+S2I9YMKONMAxiV20
-	zoLX7ztFStElHDZIDARNVZagUBrCgNHe3jsa160q7ZJigRpKsqU60DBWYQ2CMkin
-	BGyy3suujdYHcvzfd69chYI24AqJ7G0r2PFLBSpSrC3D+p4bNVjL3zvCL7GcVg/4
-	qXPBw1c8FqAK8BtS3bMwu/A98avQC9Q5QPtz50JA6gNIYuFW464Pyo/kw4Kor0K9
-	IQTIDBJnNgEDlZSgsTouf2cQkxmbVLnSp//xtyvPku6l9pXMWiRChRPAAJQDPHE8
-	/0umpOPASii3jXsMvnf6U4GITvq6g+2aO9w4UyUQktQAeHme156CO6++uPb5C+Ns
-	cAirb7Qc4lC4U/7i2YZqkdRjv6j21m7PbaF3A3DQxXS1ZTXlegSZgTV4BMGe9KDF
-	gJh1of1yGZZXLfQ1KRi6RTlMxdqkFYtY8JwCMeqZIFskYAPji+o7ckPoCX/wm5bk
-	TFsRDo5hRfqsYsTrqqyxGUD9cjhWD1Nb4JAc3EPxNf8=
-Message-ID: <e437a6ba-292d-4a0e-8e81-074c84045b26@prolan.hu>
-Date: Tue, 15 Oct 2024 08:41:16 +0200
+	s=arc-20240116; t=1728975537; c=relaxed/simple;
+	bh=HHRjomsRYsJDwBzUt/stxykgtORGhKkWesiG8s2sUzQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GMAykxlP905SitGMxaSdB8qcBQyhvlB2CGPj7NxboOtZW7TSnGu0/UrQvADqNuF3O0pROamWrmK9/9Ptv4g9Xy0/E7SmHjWbDB2IekPspm0HLOwxXHmo9Jta4KHLprgvjcsGfOUU0G0DLOTj4lpvQXvO9uSnyOjJFPOMUzjt4eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PCFsuZzK; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-431198c63cfso5305355e9.1
+        for <stable@vger.kernel.org>; Mon, 14 Oct 2024 23:58:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1728975534; x=1729580334; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3Rg9CafE1YGkVl9KvHL3hkpJVC1sI0hUFkBUJZbx7bE=;
+        b=PCFsuZzKQAR9kOL6ni8Kn0H9p+6MTkmTF4D+Fp053Ojk/c0Du5nfr2xqGqiYwee+kB
+         YOcC8WBKZQSMVX3hgMZL8vriWYVmNTdRp9piSGURLmPXoiZJB3E9HgQazfgc0g9AkYyz
+         uPBDLHOtBgeWZFKvjP/tQ0+vTT987www5QA5+vPUq8BmE1O/uQwKOya/G9v7wQ5hmsfH
+         7DYnA4kvWqz33GL9wvZi9wNEZH8i30eD4weWbViSxizGIPrKorkf+sywal49bRhzm5Gu
+         crES1KWqZAqLsIUQFAQ1r/s0pJg2zcLNiBi+XqO3y4aG8vJMfIysFr0BXiU62JaFCPbv
+         DkHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728975534; x=1729580334;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3Rg9CafE1YGkVl9KvHL3hkpJVC1sI0hUFkBUJZbx7bE=;
+        b=khBzngsR8ic+E6BYZwv97ECFMFSbLNUfqk+LXOH9xSpYgNgFGHxkY7qCqkwM/T3arx
+         0/uHn76cihA00/xT6sB6pzsv/1WmdP6ggi6LolaKGLRGIJBdHyzg33lB2y/mJFFqTkm0
+         f7uFSmguS+rMhyl3+oqlq94eM8O/dWBLUA6nPr5EjC46+MkryB5poBgofoD3RjLh2XEe
+         xrhDxqwqB9DRjNdU5aZwVgmnSAPuav76gaqsBxxOgvE8Xwiv6/k5SkKESo0d33TyIh45
+         78WBMkm7kwPWoTLv5goqim2oOhIzCCH+lR7yz1+/OCy/DirLf8oVupKlDkPXi1VHPkGV
+         Y/Sg==
+X-Forwarded-Encrypted: i=1; AJvYcCV5JGls1pbBQPWGzq4bePezDu6dZ2HANLevf4Vu4FdE2p4+r6RzXCPpxQlQNgngMtCSd4I22NU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6CGEVFT3kiwzZ6mUbARlzlYy2YaXDBngkqdKNQHpUE8TWLuOK
+	lTMH4WCfJUyVGhp4ODItM9tWcEAr8+Ld33se9m7+2X0J6twlnKBt5PAfklnxJrE=
+X-Google-Smtp-Source: AGHT+IGbPMxgc3DOJjQs7sGqlYcjADDsKE8cdCECGo3sJ7ddzUzXMkKiJhT5InhJZ4au28jZv0tx4A==
+X-Received: by 2002:a05:600c:5122:b0:42c:b63d:df3 with SMTP id 5b1f17b1804b1-4311ddff73dmr55330175e9.0.1728975534141;
+        Mon, 14 Oct 2024 23:58:54 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.211.167])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4313f6c5d22sm8461645e9.40.2024.10.14.23.58.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Oct 2024 23:58:53 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Tomasz Figa <tomasz.figa@gmail.com>,
+	Jaewon Kim <jaewon02.kim@samsung.com>,
+	Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	stable@vger.kernel.org,
+	Igor Belwon <igor.belwon@mentallysanemainliners.org>
+Subject: [PATCH 1/2] dt-bindings: pinctrl: samsung: Fix interrupt constraint for variants with fallbacks
+Date: Tue, 15 Oct 2024 08:58:47 +0200
+Message-ID: <20241015065848.29429-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: <stable@vger.kernel.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-Subject: [REQUEST] net: fec: Not yet ported PTP patches
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
- ATLAS.intranet.prolan.hu (10.254.0.229)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D94855647065
+Content-Transfer-Encoding: 8bit
 
-Hi!
+Commit 904140fa4553 ("dt-bindings: pinctrl: samsung: use Exynos7
+fallbacks for newer wake-up controllers") added
+samsung,exynos7-wakeup-eint fallback to some compatibles, so the
+intention in the if:then: conditions was to handle the cases:
 
-The following upstream commits have not been queued for stable due to 
-missing `Fixes:` tags, but are strongly recommended for correct PTP 
-operation on the i.MX 6 SoC family, please pick them. Our first priority 
-would be 6.6, the last LTS, but obviously all stable versions would benefit.
+1. Single Exynos7 compatible or Exynos5433+Exynos7 or
+   Exynos7885+Exynos7: only one interrupt
 
-* 4374a1fe580a ("net: fec: Move `fec_ptp_read()` to the top of the file")
-* 713ebaed68d8 ("net: fec: Remove duplicated code")
-* bf8ca67e2167 [tree: net-next] ("net: fec: refactor PPS channel 
-configuration")
+2. Exynos850+Exynos7: no interrupts
 
-Bence
+This was not implemented properly however and if:then: block matches
+only single Exynos5433 or Exynos7885 compatibles, which do not exist in
+DTS anymore, so basically is a no-op and no enforcement on number of
+interrupts is made by the binding.
+
+Fix the if:then: condition so interrupts in the Exynos5433 and
+Exynos7885 wake-up pin controller will be properly constrained.
+
+Fixes: 904140fa4553 ("dt-bindings: pinctrl: samsung: use Exynos7 fallbacks for newer wake-up controllers")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+---
+
+Cc: Igor Belwon <igor.belwon@mentallysanemainliners.org>
+---
+ .../samsung,pinctrl-wakeup-interrupt.yaml     | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/pinctrl/samsung,pinctrl-wakeup-interrupt.yaml b/Documentation/devicetree/bindings/pinctrl/samsung,pinctrl-wakeup-interrupt.yaml
+index 91516fedc872..49cb2b1a3d28 100644
+--- a/Documentation/devicetree/bindings/pinctrl/samsung,pinctrl-wakeup-interrupt.yaml
++++ b/Documentation/devicetree/bindings/pinctrl/samsung,pinctrl-wakeup-interrupt.yaml
+@@ -92,14 +92,17 @@ allOf:
+   - if:
+       properties:
+         compatible:
+-          # Match without "contains", to skip newer variants which are still
+-          # compatible with samsung,exynos7-wakeup-eint
+-          enum:
+-            - samsung,s5pv210-wakeup-eint
+-            - samsung,exynos4210-wakeup-eint
+-            - samsung,exynos5433-wakeup-eint
+-            - samsung,exynos7-wakeup-eint
+-            - samsung,exynos7885-wakeup-eint
++          oneOf:
++            # Match without "contains", to skip newer variants which are still
++            # compatible with samsung,exynos7-wakeup-eint
++            - enum:
++                - samsung,exynos4210-wakeup-eint
++                - samsung,exynos7-wakeup-eint
++                - samsung,s5pv210-wakeup-eint
++            - contains:
++                enum:
++                  - samsung,exynos5433-wakeup-eint
++                  - samsung,exynos7885-wakeup-eint
+     then:
+       properties:
+         interrupts:
+-- 
+2.43.0
 
 
