@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-86105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E078199EBB2
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:09:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B868299EBBF
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 693C2B20A5B
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:09:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CC0F284266
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9C51AF0B7;
-	Tue, 15 Oct 2024 13:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871B01AF0B2;
+	Tue, 15 Oct 2024 13:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogpOtNAp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ga7sw9gn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CAB1DFD8;
-	Tue, 15 Oct 2024 13:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462C61C07DF;
+	Tue, 15 Oct 2024 13:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997787; cv=none; b=qmJFDaT8w6LptEqoDAtHHKzz4eh4BjlnebJgcwKyrymbLFVukcqFm3k5izioOWaB4wjvcCFdOlY2FB6e9IMi+/Mmv6InuP9kZu5zqHipZ01kapFNFLn+1jK7sygAhLdlDAFgTgOd5x3393i6K7/L4u8cVxs9OWQl85PSPnQihS0=
+	t=1728997823; cv=none; b=tL+dyi5V/vivO684nEQx1G3mOBLrkMY2Lqhg3uAfaZuq+IbxfAfYgOWxQ70mKMRkbtpGRSYq6K5szQvIRjdV0hSASHTyXd57I3AABtlF7MZCqbx1UTLHVxrZ6kKJGrLah8Fl3mXI5i48mj4veaS+C6PtiaFTjQfxbMOHC4myZgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997787; c=relaxed/simple;
-	bh=rl+4+oI1vJFF+ZE7e/jWBdrZN4bD1Alc6zqirAHFhO4=;
+	s=arc-20240116; t=1728997823; c=relaxed/simple;
+	bh=Gw+vDIFrrwxbJwjstRgzzloAwExni1qIPlg7mE8ybOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ynpr0epvx2t1KahPAuWwnPFpb4K9tJhUrUv7YibFe1HUdragw/WzzJI79WFn9R63ml/xL9FNB9v4MhIlAXhWwF+AbkiomzSIOX1VXnrx/hct10Uks8w816e/NXmjMxNpUUQFxuZ15L9xKBOF5uqgnfoCZrBoGGVQdYMmPeZa1Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogpOtNAp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B75D0C4CEC6;
-	Tue, 15 Oct 2024 13:09:46 +0000 (UTC)
+	 MIME-Version; b=UwSyaPp4pEZe/OPszAMDs0wy+kvXHAarJAGjGDYIIT80pwe8UPZyJP4UuKSuQ+PllFxN5LRqpIwUNIE+wmEqmJqo7O8YI0hvCId9F9Qjx2tgRsku/hMy3N1pCPoANeYmt80ZXg8yVoagXQxLmoUj7Nq4nw+jdkT0zBiylXKrcMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ga7sw9gn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1405C4CEC6;
+	Tue, 15 Oct 2024 13:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997787;
-	bh=rl+4+oI1vJFF+ZE7e/jWBdrZN4bD1Alc6zqirAHFhO4=;
+	s=korg; t=1728997823;
+	bh=Gw+vDIFrrwxbJwjstRgzzloAwExni1qIPlg7mE8ybOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogpOtNApLn9rgloLn0nkbMwS0IXN2O1Kq4fKNPlFlh/ebLxnt7jmN2wwm+ZWWXScY
-	 GE9JN5kSnGfiSkST74LXDuC1M09IKlM9LsXJTmrKhWfDF06NchdWnBfh/dvLmUhRvj
-	 322Hw2/waRvEsuFeFGwQ/PEQw7z4pX/DsiL+VVT4=
+	b=Ga7sw9gniGAb44xdCtBaGssDGV5YTksJC5LgYovq0u5Em5XJdZmPARHwBFmT6D9l3
+	 TzT/t/9Iq37kcbu6W3Y6u7KKrOJmaWAbLeT0VwdQ1IHJROi/2Ec1Iqtr/9qhMZhTp2
+	 xd6NJPTYDf6dvHYx6iyBnZv7d63jnlTUlGO23wXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Maxim Mikityanskiy <maxtram95@gmail.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 269/518] ieee802154: Fix build error
-Date: Tue, 15 Oct 2024 14:42:53 +0200
-Message-ID: <20241015123927.376571908@linuxfoundation.org>
+Subject: [PATCH 5.10 270/518] net/mlx5: Fix error path in multi-packet WQE transmit
+Date: Tue, 15 Oct 2024 14:42:54 +0200
+Message-ID: <20241015123927.414406155@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -66,38 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Gerd Bayer <gbayer@linux.ibm.com>
 
-[ Upstream commit addf89774e48c992316449ffab4f29c2309ebefb ]
+[ Upstream commit 2bcae12c795f32ddfbf8c80d1b5f1d3286341c32 ]
 
-If REGMAP_SPI is m and IEEE802154_MCR20A is y,
+Remove the erroneous unmap in case no DMA mapping was established
 
-	mcr20a.c:(.text+0x3ed6c5b): undefined reference to `__devm_regmap_init_spi'
-	ld: mcr20a.c:(.text+0x3ed6cb5): undefined reference to `__devm_regmap_init_spi'
+The multi-packet WQE transmit code attempts to obtain a DMA mapping for
+the skb. This could fail, e.g. under memory pressure, when the IOMMU
+driver just can't allocate more memory for page tables. While the code
+tries to handle this in the path below the err_unmap label it erroneously
+unmaps one entry from the sq's FIFO list of active mappings. Since the
+current map attempt failed this unmap is removing some random DMA mapping
+that might still be required. If the PCI function now presents that IOVA,
+the IOMMU may assumes a rogue DMA access and e.g. on s390 puts the PCI
+function in error state.
 
-Select REGMAP_SPI for IEEE802154_MCR20A to fix it.
+The erroneous behavior was seen in a stress-test environment that created
+memory pressure.
 
-Fixes: 8c6ad9cc5157 ("ieee802154: Add NXP MCR20A IEEE 802.15.4 transceiver driver")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/20240909131740.1296608-1-ruanjinjie@huawei.com
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Fixes: 5af75c747e2a ("net/mlx5e: Enhanced TX MPWQE for SKBs")
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Acked-by: Maxim Mikityanskiy <maxtram95@gmail.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ieee802154/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_tx.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ieee802154/Kconfig b/drivers/net/ieee802154/Kconfig
-index 0f7c6dc2ed154..26f393a0507c1 100644
---- a/drivers/net/ieee802154/Kconfig
-+++ b/drivers/net/ieee802154/Kconfig
-@@ -108,6 +108,7 @@ config IEEE802154_CA8210_DEBUGFS
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
+index 3736680680715..9b1e43ff8ae1e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
+@@ -601,7 +601,6 @@ mlx5e_sq_xmit_mpwqe(struct mlx5e_txqsq *sq, struct sk_buff *skb,
+ 	return;
  
- config IEEE802154_MCR20A
- 	tristate "MCR20A transceiver driver"
-+	select REGMAP_SPI
- 	depends on IEEE802154_DRIVERS && MAC802154
- 	depends on SPI
- 	help
+ err_unmap:
+-	mlx5e_dma_unmap_wqe_err(sq, 1);
+ 	sq->stats->dropped++;
+ 	dev_kfree_skb_any(skb);
+ }
 -- 
 2.43.0
 
