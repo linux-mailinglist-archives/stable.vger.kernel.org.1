@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-85135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED05F99E5CC
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:35:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F3499E5D8
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:35:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2D5C1F24672
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:35:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66F6F1C23108
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A687C1EBFF1;
-	Tue, 15 Oct 2024 11:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694201E907D;
+	Tue, 15 Oct 2024 11:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZcjeOji"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tdWpIN57"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4511EBFE4;
-	Tue, 15 Oct 2024 11:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B6B1E7666;
+	Tue, 15 Oct 2024 11:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728992092; cv=none; b=cdn+6xM5wjN+yUb38GLIJRSKthAo7Etn5Zk+FsoP4HcbR6hY59UCldGaMuNT4zPRTzJhaJ0h6UgQFPlhlv2k0fdJzr66lZsf4FTV4RJ427z09zdjfGvoA5IYS8ZRIN7mnBk6ssoe32AT6IE1gTMGqwDjLkua4llDb+Ae8tQYUrk=
+	t=1728992129; cv=none; b=c6+hsFluMRDrMVMcOH+gqEaB4GgvT+MzJsBPHexfrfLS2PbOAdzQdNC3GBKv6IT74eH6FG2NLs5XOmUzsDR4dLZExPkvwGIi7qCmkqjObTl6lXFj2qq9ysEhIp0ph0u5baYm1Fia/oRJPiqC35pxLvV6u6yHnHkswRauMaaVhZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728992092; c=relaxed/simple;
-	bh=eiUUEcpVjgixv55bL63Ld/vrIMrOfg0kkHa0q4OwvAI=;
+	s=arc-20240116; t=1728992129; c=relaxed/simple;
+	bh=MMnodEZlFzZm6Ug61Vw8uUny/LwTqNeuyJ2fG83lOxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZVhQ1tLS88yM/cqHq4/SsznSukeP76ghNqSo6BnLQEPOIZGy7VGolA3tsqtTpuxHfWWtc5jk9xFx9z4eErTBr9xVZB2pOFEUJbtGBwboTOdaZbVqPDFvt1eBoeGwkTqxpCY87jkHmJ53uH4/6/k2ank/MT9BhevA+3S6lnhtvOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZcjeOji; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7839DC4CEC6;
-	Tue, 15 Oct 2024 11:34:51 +0000 (UTC)
+	 MIME-Version; b=G/jJiD+OHbRHtDiISLONmc/OiZl1ztAIDVUvY3OyxVePHbV9HAYhmlGJne40dy7aX+Szhjv3CbDKbQagB266OOlSURV6kMbKZgDVGs9o51MXUwZLfhOWkdCXgpzfI4JPBOApbMORZ0L62nCjZvdKSQvFNPrjfkmNMCTEsoZ4zN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tdWpIN57; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72873C4CEC6;
+	Tue, 15 Oct 2024 11:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728992091;
-	bh=eiUUEcpVjgixv55bL63Ld/vrIMrOfg0kkHa0q4OwvAI=;
+	s=korg; t=1728992129;
+	bh=MMnodEZlFzZm6Ug61Vw8uUny/LwTqNeuyJ2fG83lOxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tZcjeOjimIe37yI6WD9btMACAQeI1gEP3gILH+Tl4f4yGinygvg62UfACmkA8nbLg
-	 lnqWAYysQtdLesSbzGzialXQv0dGkcA0ajdnifuGhFSydSZUdAfImqwXaWYp6zwRBN
-	 G2OKuzt4YuygxU9SjqMnquyDhWvSYf6PVL65Vcyg=
+	b=tdWpIN57F3OdaZDNUlVB7/0y0x9RXrMcx9kwtb3PN3LM9n3Mn7f4FPj0r87mRs0AQ
+	 KlxUrhXlFrqj9G5fhAVi2aDMlR8qlOOPTWRkNz89Ty3y8TYrzocMLgPoRs1M5leEpy
+	 l7dJtnNgksCAjnHRFPyYstkNIs4Q07KXQaPteEmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>,
-	Su Yue <glass.su@suse.com>,
 	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	syzbot+9709e73bae885b05314b@syzkaller.appspotmail.com,
+	Heming Zhao <heming.zhao@suse.com>,
 	Mark Fasheh <mark@fasheh.com>,
 	Joel Becker <jlbec@evilplan.org>,
 	Junxiao Bi <junxiao.bi@oracle.com>,
@@ -52,9 +52,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Gang He <ghe@suse.com>,
 	Jun Piao <piaojun@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 008/691] ocfs2: fix the la space leak when unmounting an ocfs2 volume
-Date: Tue, 15 Oct 2024 13:19:16 +0200
-Message-ID: <20241015112440.660761453@linuxfoundation.org>
+Subject: [PATCH 5.15 009/691] ocfs2: fix uninit-value in ocfs2_get_block()
+Date: Tue, 15 Oct 2024 13:19:17 +0200
+Message-ID: <20241015112440.700671855@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -73,61 +73,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
 
-commit dfe6c5692fb525e5e90cefe306ee0dffae13d35f upstream.
+commit 2af148ef8549a12f8025286b8825c2833ee6bcb8 upstream.
 
-This bug has existed since the initial OCFS2 code.  The code logic in
-ocfs2_sync_local_to_main() is wrong, as it ignores the last contiguous
-free bits, which causes an OCFS2 volume to lose the last free clusters of
-LA window on each umount command.
+syzbot reported an uninit-value BUG:
 
-Link: https://lkml.kernel.org/r/20240719114310.14245-1-heming.zhao@suse.com
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Reviewed-by: Su Yue <glass.su@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+BUG: KMSAN: uninit-value in ocfs2_get_block+0xed2/0x2710 fs/ocfs2/aops.c:159
+ocfs2_get_block+0xed2/0x2710 fs/ocfs2/aops.c:159
+do_mpage_readpage+0xc45/0x2780 fs/mpage.c:225
+mpage_readahead+0x43f/0x840 fs/mpage.c:374
+ocfs2_readahead+0x269/0x320 fs/ocfs2/aops.c:381
+read_pages+0x193/0x1110 mm/readahead.c:160
+page_cache_ra_unbounded+0x901/0x9f0 mm/readahead.c:273
+do_page_cache_ra mm/readahead.c:303 [inline]
+force_page_cache_ra+0x3b1/0x4b0 mm/readahead.c:332
+force_page_cache_readahead mm/internal.h:347 [inline]
+generic_fadvise+0x6b0/0xa90 mm/fadvise.c:106
+vfs_fadvise mm/fadvise.c:185 [inline]
+ksys_fadvise64_64 mm/fadvise.c:199 [inline]
+__do_sys_fadvise64 mm/fadvise.c:214 [inline]
+__se_sys_fadvise64 mm/fadvise.c:212 [inline]
+__x64_sys_fadvise64+0x1fb/0x3a0 mm/fadvise.c:212
+x64_sys_call+0xe11/0x3ba0
+arch/x86/include/generated/asm/syscalls_64.h:222
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+This is because when ocfs2_extent_map_get_blocks() fails, p_blkno is
+uninitialized.  So the error log will trigger the above uninit-value
+access.
+
+The error log is out-of-date since get_blocks() was removed long time ago.
+And the error code will be logged in ocfs2_extent_map_get_blocks() once
+ocfs2_get_cluster() fails, so fix this by only logging inode and block.
+
+Link: https://syzkaller.appspot.com/bug?extid=9709e73bae885b05314b
+Link: https://lkml.kernel.org/r/20240925090600.3643376-1-joseph.qi@linux.alibaba.com
+Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: syzbot+9709e73bae885b05314b@syzkaller.appspotmail.com
+Tested-by: syzbot+9709e73bae885b05314b@syzkaller.appspotmail.com
+Cc: Heming Zhao <heming.zhao@suse.com>
 Cc: Mark Fasheh <mark@fasheh.com>
 Cc: Joel Becker <jlbec@evilplan.org>
 Cc: Junxiao Bi <junxiao.bi@oracle.com>
 Cc: Changwei Ge <gechangwei@live.cn>
 Cc: Gang He <ghe@suse.com>
 Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/localalloc.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ fs/ocfs2/aops.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/fs/ocfs2/localalloc.c
-+++ b/fs/ocfs2/localalloc.c
-@@ -1008,6 +1008,25 @@ static int ocfs2_sync_local_to_main(stru
- 		start = bit_off + 1;
+--- a/fs/ocfs2/aops.c
++++ b/fs/ocfs2/aops.c
+@@ -156,9 +156,8 @@ int ocfs2_get_block(struct inode *inode,
+ 	err = ocfs2_extent_map_get_blocks(inode, iblock, &p_blkno, &count,
+ 					  &ext_flags);
+ 	if (err) {
+-		mlog(ML_ERROR, "Error %d from get_blocks(0x%p, %llu, 1, "
+-		     "%llu, NULL)\n", err, inode, (unsigned long long)iblock,
+-		     (unsigned long long)p_blkno);
++		mlog(ML_ERROR, "get_blocks() failed, inode: 0x%p, "
++		     "block: %llu\n", inode, (unsigned long long)iblock);
+ 		goto bail;
  	}
  
-+	/* clear the contiguous bits until the end boundary */
-+	if (count) {
-+		blkno = la_start_blk +
-+			ocfs2_clusters_to_blocks(osb->sb,
-+					start - count);
-+
-+		trace_ocfs2_sync_local_to_main_free(
-+				count, start - count,
-+				(unsigned long long)la_start_blk,
-+				(unsigned long long)blkno);
-+
-+		status = ocfs2_release_clusters(handle,
-+				main_bm_inode,
-+				main_bm_bh, blkno,
-+				count);
-+		if (status < 0)
-+			mlog_errno(status);
-+	}
-+
- bail:
- 	if (status)
- 		mlog_errno(status);
 
 
 
