@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-85601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016C999E807
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:01:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD0699E80E
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:01:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACA361F21510
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:01:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82F6C1C217E5
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7421E6339;
-	Tue, 15 Oct 2024 12:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1231E1EB9E9;
+	Tue, 15 Oct 2024 12:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+ePt+mf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yT25jsri"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9031C57B1;
-	Tue, 15 Oct 2024 12:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24E11EABCC;
+	Tue, 15 Oct 2024 12:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993664; cv=none; b=CkAufm1zjE/FOj82rz2vA4ojr4610O48WRO6z+3rObe4r5yjH7CfD80SOwVSK5RbQu0xpKVgs3+MohCCJ2U7ZBIM8ypmSxATJjWi4+NEDXowiaHUVrDgv56uLfDPj6PRYC5rx+9x7fbSBwF4pDTagn5fj3TOII/aiorqFk4O3DU=
+	t=1728993680; cv=none; b=UvSiqBXJFv6RW4hbBM1UwXrn+aAZTzdKr92aQb4oOwYQA+67O03U8JbkRcZeZztofxoGclFSzAjEuK9Htks9MNfboj7skrVoe5FjA9jhRzVImsQvsCHfc2OZj5CWUModlcdgy6yvTBGqdJaxWnO5tfvMIsw4nmG3IX5jfnHoZYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993664; c=relaxed/simple;
-	bh=PTFqHDwZhSA1FZwNcOzaTKL92nVeyNvtAsRPlO/VpWQ=;
+	s=arc-20240116; t=1728993680; c=relaxed/simple;
+	bh=kBOlpb1SPcPPMXwiaI72uzTv3CzbltJwC8ELbvQkVhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=in/ONOXOkQ3hko2KbuPahQEm9pny7inqP7k6pfs8reZ/QCQrlMpXDFwUl6NHJzjTE7O0dJtdB599WZ3k5YhHq+aKAqvDd7yVGvLg3BTJMlrCVP0ZN1rnjd9HsDsmj/p25dIxgUf6e8JygXnLkLqSZLJQE5k44qipWqusqMY/o+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+ePt+mf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58011C4CEC6;
-	Tue, 15 Oct 2024 12:01:03 +0000 (UTC)
+	 MIME-Version; b=BUlWmP8u1vNHtWaaQoumDl95qH0BahZV/PYphHYSFfd2pUxxNANhMu/gQYR9pH3QEpOYYcW23ZnClzLXHfjLA6QuE3lANmdAAb2RZKK25HYUFAKxIlHGU3wvd9zXK9kfY53sfsfKwZoZ9svyp9TR3TNyESJKe2Hw9EB8JHiSBbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yT25jsri; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B23C4CECE;
+	Tue, 15 Oct 2024 12:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993663;
-	bh=PTFqHDwZhSA1FZwNcOzaTKL92nVeyNvtAsRPlO/VpWQ=;
+	s=korg; t=1728993680;
+	bh=kBOlpb1SPcPPMXwiaI72uzTv3CzbltJwC8ELbvQkVhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+ePt+mfvwcnQyS9kKsuKWUb6vVGfQmOoiqisgpQa6o9KFnRiDQMF5y5YZABvvCl+
-	 ZyFoTkenmYp5QJOljbK9fsDqdUH72zD1Fzbu1bJvXRJCy+r9MIn37QQIY86nJ6KsUg
-	 eJSzoYr4yQ7xMm/ENGoUIiBN77/d/YIX5Qq4v9WM=
+	b=yT25jsria7PRlpeAkhIu8VfEDtIONs328be+NEJnDtszNmA14/18hFuKZuU6BxYkB
+	 3bmUvdBItQcnFKa9QyAMYB3LTsGGycICt0WzYxpCbYGB4KBNuplwIgfswp0dmBjURs
+	 iPdN+hG8zzciKOzf+U+2keMDABfkLCEWIl1oJ8Bg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 451/691] ata: sata_sil: Rename sil_blacklist to sil_quirks
-Date: Tue, 15 Oct 2024 13:26:39 +0200
-Message-ID: <20241015112458.247864244@linuxfoundation.org>
+Subject: [PATCH 5.15 452/691] drm/amd/display: Check null pointers before using dc->clk_mgr
+Date: Tue, 15 Oct 2024 13:26:40 +0200
+Message-ID: <20241015112458.286591211@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -67,58 +69,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 93b0f9e11ce511353c65b7f924cf5f95bd9c3aba ]
+[ Upstream commit 95d9e0803e51d5a24276b7643b244c7477daf463 ]
 
-Rename the array sil_blacklist to sil_quirks as this name is more
-neutral and is also consistent with how this driver define quirks with
-the SIL_QUIRK_XXX flags.
+[WHY & HOW]
+dc->clk_mgr is null checked previously in the same function, indicating
+it might be null.
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
+Passing "dc" to "dc->hwss.apply_idle_power_optimizations", which
+dereferences null "dc->clk_mgr". (The function pointer resolves to
+"dcn35_apply_idle_power_optimizations".)
+
+This fixes 1 FORWARD_NULL issue reported by Coverity.
+
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/sata_sil.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ata/sata_sil.c b/drivers/ata/sata_sil.c
-index 75321f1ceba52..fc438c4518fb7 100644
---- a/drivers/ata/sata_sil.c
-+++ b/drivers/ata/sata_sil.c
-@@ -128,7 +128,7 @@ static const struct pci_device_id sil_pci_tbl[] = {
- static const struct sil_drivelist {
- 	const char *product;
- 	unsigned int quirk;
--} sil_blacklist [] = {
-+} sil_quirks[] = {
- 	{ "ST320012AS",		SIL_QUIRK_MOD15WRITE },
- 	{ "ST330013AS",		SIL_QUIRK_MOD15WRITE },
- 	{ "ST340017AS",		SIL_QUIRK_MOD15WRITE },
-@@ -601,8 +601,8 @@ static void sil_thaw(struct ata_port *ap)
-  *	list, and apply the fixups to only the specific
-  *	devices/hosts/firmwares that need it.
-  *
-- *	20040111 - Seagate drives affected by the Mod15Write bug are blacklisted
-- *	The Maxtor quirk is in the blacklist, but I'm keeping the original
-+ *	20040111 - Seagate drives affected by the Mod15Write bug are quirked
-+ *	The Maxtor quirk is in sil_quirks, but I'm keeping the original
-  *	pessimistic fix for the following reasons...
-  *	- There seems to be less info on it, only one device gleaned off the
-  *	Windows	driver, maybe only one is affected.  More info would be greatly
-@@ -621,9 +621,9 @@ static void sil_dev_config(struct ata_device *dev)
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 22dbc6bc21af4..db7a758ab778d 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -3671,7 +3671,8 @@ void dc_allow_idle_optimizations(struct dc *dc, bool allow)
+ 	if (allow == dc->idle_optimizations_allowed)
+ 		return;
  
- 	ata_id_c_string(dev->id, model_num, ATA_ID_PROD, sizeof(model_num));
- 
--	for (n = 0; sil_blacklist[n].product; n++)
--		if (!strcmp(sil_blacklist[n].product, model_num)) {
--			quirks = sil_blacklist[n].quirk;
-+	for (n = 0; sil_quirks[n].product; n++)
-+		if (!strcmp(sil_quirks[n].product, model_num)) {
-+			quirks = sil_quirks[n].quirk;
- 			break;
- 		}
+-	if (dc->hwss.apply_idle_power_optimizations && dc->hwss.apply_idle_power_optimizations(dc, allow))
++	if (dc->hwss.apply_idle_power_optimizations && dc->clk_mgr != NULL &&
++	    dc->hwss.apply_idle_power_optimizations(dc, allow))
+ 		dc->idle_optimizations_allowed = allow;
+ }
  
 -- 
 2.43.0
