@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-86194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7759B99EC5E
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:18:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A54C99EBFB
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:13:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FD151F245B6
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:18:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55FD82810B7
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A545227398;
-	Tue, 15 Oct 2024 13:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527E91D5ABD;
+	Tue, 15 Oct 2024 13:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BIccpITv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDN0aHWq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA851210C0F;
-	Tue, 15 Oct 2024 13:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FDD1C07DF;
+	Tue, 15 Oct 2024 13:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728998088; cv=none; b=acad24aFNSNeJg4aDNAtzu5/wHBGqoNrwnzGZvE83FfnjZMmEQIt1gX9uTq6nbYs6fO2dbkKFik2ovww2ROApIlh+tZ9bdv3vNkBxkUvFAppj9fJ/qhbVnNoIkZ88busx6wDrhTz5BREO9NUA2nMi9cEKfM+tKE+YTl1ajvUS3o=
+	t=1728997981; cv=none; b=WFf0VKY9vY4CdOuIrS//3ZmxcufFPIQjXsFzKXht917MK41K7TxfOk3S1X2oZ2X8mckheniDg9UF8+fcSv0JPm1gZbeovemGI+A3N346JEKPtet9lGUPmup/SMkvUHVbltOvghLS4w35Gvj461exzneaAnHj368edkBRxpEMmiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728998088; c=relaxed/simple;
-	bh=pBLKXptGBNaEDADEEqnHJawpZjmVUUte+qeFxBBYJrg=;
+	s=arc-20240116; t=1728997981; c=relaxed/simple;
+	bh=bUNjnbvIhhmWFwmGbTewMxwtnb1Uo1qr+yOp0+mbjpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WoT7Ng2GOrG1qLosbcpQ6Nq4f+AFppMQrLFrUVU3OMde2Zpn3r3SjuPokNR7ed1z/zLocvE58LrVdzQLHX9vVYvjeu5OdMbUX139Aq1QgEK3gRKuAEFC5mUEt+phaKmnAf8QZQyZRGji8YtCWD1ejYWKHfPnDk3AQ0uZJEu/pms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BIccpITv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB38C4CECF;
-	Tue, 15 Oct 2024 13:14:47 +0000 (UTC)
+	 MIME-Version; b=mJyJHmy+Vz6jRrKVOIKpH73iEUBNLggu/iF+Pu4xQG2g6Qhpq5rR+7xNzR/rsXPI8mFxhgx+pRNxc15qOuWshK31JGCf/Oe99kLg5FFabzeUtLy9n1cMPZc7ovjDT88j1W/M+K78z9vw+zOt/qnQ37nBOqkgLnA15//EQ6auvOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDN0aHWq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78154C4CEC6;
+	Tue, 15 Oct 2024 13:13:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728998088;
-	bh=pBLKXptGBNaEDADEEqnHJawpZjmVUUte+qeFxBBYJrg=;
+	s=korg; t=1728997980;
+	bh=bUNjnbvIhhmWFwmGbTewMxwtnb1Uo1qr+yOp0+mbjpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BIccpITvQa5RScoR7NF9Bd+ww3kFWkFD9/Gk/J82CEHXzyJETrudYj7w1MbjXenqB
-	 +U7EP/fJ1sdM49XHGKFuSbHl/SFwIryIFM8HU0TjfsdVn9vAhnx9Uss/fZs61QqBqo
-	 1z0OnOt7iuLU+t0ifegR2fQh5UMfO4c5BvjVpfv8=
+	b=vDN0aHWqJmLZAB+stv4ow3G3OXm77vJf01QXkTXud7TsUffToSmcrvqQXierzIZfG
+	 XbbkzWqsLT7ULVWKB+gkUI5oEcBmkbVPW4an1xKlafdVB4qVfD7WFUaKz+8Lbdk5ZA
+	 X0WISvjWT2CUInXvqYVUny7W8o46okP9t8BLP6Ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
 	Alex Hung <alex.hung@amd.com>,
 	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 344/518] drm/amd/display: Fix index out of bounds in DCN30 color transformation
-Date: Tue, 15 Oct 2024 14:44:08 +0200
-Message-ID: <20241015123930.248764463@linuxfoundation.org>
+Subject: [PATCH 5.10 345/518] drm/amd/display: Initialize get_bytes_per_elements default to 1
+Date: Tue, 15 Oct 2024 14:44:09 +0200
+Message-ID: <20241015123930.287173796@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -73,51 +69,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit d81873f9e715b72d4f8d391c8eb243946f784dfc ]
+[ Upstream commit 4067f4fa0423a89fb19a30b57231b384d77d2610 ]
 
-This commit addresses a potential index out of bounds issue in the
-`cm3_helper_translate_curve_to_hw_format` function in the DCN30 color
-management module. The issue could occur when the index 'i' exceeds the
-number of transfer function points (TRANSFER_FUNC_POINTS).
+Variables, used as denominators and maybe not assigned to other values,
+should not be 0. bytes_per_element_y & bytes_per_element_c are
+initialized by get_bytes_per_element() which should never return 0.
 
-The fix adds a check to ensure 'i' is within bounds before accessing the
-transfer function points. If 'i' is out of bounds, the function returns
-false to indicate an error.
+This fixes 10 DIVIDE_BY_ZERO issues reported by Coverity.
 
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:180 cm3_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:181 cm3_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:182 cm3_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
-
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20v2.c | 2 +-
+ .../gpu/drm/amd/display/dc/dml/dcn21/display_rq_dlg_calc_21.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-index e0b1fc92ed186..62c02adae7e76 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-@@ -178,6 +178,8 @@ bool cm3_helper_translate_curve_to_hw_format(
- 				i += increment) {
- 			if (j == hw_points - 1)
- 				break;
-+			if (i >= TRANSFER_FUNC_POINTS)
-+				return false;
- 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
- 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
- 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20v2.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20v2.c
+index 6a6d5970d1d58..0388694572f58 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20v2.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20v2.c
+@@ -78,7 +78,7 @@ static void calculate_ttu_cursor(struct display_mode_lib *mode_lib,
+ 
+ static unsigned int get_bytes_per_element(enum source_format_class source_format, bool is_chroma)
+ {
+-	unsigned int ret_val = 0;
++	unsigned int ret_val = 1;
+ 
+ 	if (source_format == dm_444_16) {
+ 		if (!is_chroma)
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn21/display_rq_dlg_calc_21.c b/drivers/gpu/drm/amd/display/dc/dml/dcn21/display_rq_dlg_calc_21.c
+index dc1c81a6e3771..8593fd07116a7 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn21/display_rq_dlg_calc_21.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn21/display_rq_dlg_calc_21.c
+@@ -53,7 +53,7 @@ static void calculate_ttu_cursor(
+ 
+ static unsigned int get_bytes_per_element(enum source_format_class source_format, bool is_chroma)
+ {
+-	unsigned int ret_val = 0;
++	unsigned int ret_val = 1;
+ 
+ 	if (source_format == dm_444_16) {
+ 		if (!is_chroma)
 -- 
 2.43.0
 
