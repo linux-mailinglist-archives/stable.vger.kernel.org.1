@@ -1,89 +1,89 @@
-Return-Path: <stable+bounces-85185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E39899E604
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:37:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8829D99E60A
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DFF6285AD2
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:37:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9E721C22558
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1D11E32AF;
-	Tue, 15 Oct 2024 11:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CFD1D90DC;
+	Tue, 15 Oct 2024 11:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="m4kJJ6Vj"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="aIWR/3Nd"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2086.outbound.protection.outlook.com [40.107.236.86])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2048.outbound.protection.outlook.com [40.107.236.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E3E15099D
-	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 11:37:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A76D1D90DB
+	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 11:37:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728992256; cv=fail; b=DtRVieMcYrl24itoQEnO2nJ4RFkhRNff1pC/vy51z5gb4a0h8hhMncO5S0sCf+AR4xz5UN239rXxtt0UGvloS37c9b4J21WfniZlCoBZpFxtFDBYQtgnu7lZWVYh1SPpqPY/1xIMxZzZeoR/9kKGVWL4gg1AtA7g6HrM1xDpS2U=
+	t=1728992263; cv=fail; b=PABfcao7rjHZwF7H6q4rLgBF6GPpXhrQABfaAlSaLQOZybeaRA+fMHF9NYqGfnBsmJoWhHnqB8ykCYUkP+UHD+r2HaUnDiNDth1FwYfrXuSI5rqjJRICp0UXOpKFuxKVE+zXiodsIAX5WeDm/TBgTNbS8GRBOsBzFvQ65EeYO+g=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728992256; c=relaxed/simple;
-	bh=piGgcP5JND9WMMDTflmafebcJJ49AjI5jhkh72tBomU=;
+	s=arc-20240116; t=1728992263; c=relaxed/simple;
+	bh=WR6ANooRYOmTrabYgofHWoRJHWBH4li+vimz5/AiGdA=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VGZKUrqYSYPLmRv4Z+9HNBoWguhp6FskItHySVOpjJIOvuzI26pC62rLf/A1QS7JlF7PeTHKWQx+vkhgoa6EmW+vDNcOaBgBJZj1OCKaeUn8qXLocLGg5qky1UrcFfqb3MMkJBh30Po6tZbDo72Jevb2J1DLBEyHtT8XTP3lRgI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=m4kJJ6Vj; arc=fail smtp.client-ip=40.107.236.86
+	 MIME-Version:Content-Type; b=iRZ3rLjJE9ITuSVs/RnNhIXzePzXQU1t8FRnMHdp6gBdnfULh7S9fmUiq8OD0GaHwvQ50qnWSfcAfwimNwT0PZbQZyXNo63EOXLdRpj6DJG1QuY5MhM5hx1ipQJX68n5HnqVwEq/r4yRVwsVoYXIlJuVKP+qy5B7Wrr9wBsTXeY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=aIWR/3Nd; arc=fail smtp.client-ip=40.107.236.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KX+jlqc6xuOj6yoskKidsEA9gR70QSHaiwVNELywOu49Kr48+dRczCtpVhT8Eahr1vP90hNwxYYXZo9OOA+tkv6YJKZsRjMEhabMjYpmw13AgJgQab5ycfam4/822sIMFtY41rlvDMUtFke2oiRBIcyWqNLGbtj3o2amggRfNi6JEyiavLEvyug+JPXJztrdsegDVuAdzTMxcHXYMu3Robt+2DCTPUrrTHGki5xHvQfB5B2810N81JWwsh8hCYXadJ88PY0wLkFiYcnrjqrVyTk4LeI3zw0owNeYtb15rOVSSTi9VoDioxVmb1XNKWqdKa9kAYpUWX9JOhDy8K4qvg==
+ b=aQACpxRVjtZ/FP39JWbKk/6xPOwP2M0qBHlSZaeeqq0ktsxom2e85VdsovKrnuf2GdNHeyJhCTn8QHZ7u6P76gCKYFLJYwfGiUCbY2Xd2mFPGEOQkIHGXAxvKDcj7QF9y4YZ5D2oIBcJkjjiZf3llbeykKG0IFpHPhuYWm9dNTga+CHatTsV7obYiRygsT59VoKmLsGGUngKWfcbcF/XGN2dDv+sd4108Pg1sWlzyiU7t4auaNzMy4Kw6LbNsMBOtJE4pukKHl2BWWnWP20+X+4gvA0tCezKiRljpFZEGmkOxRNj5L6IuhJlNj6TeFxcP4ZaYsMDKlBmtujzhd+6iA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nJNju0KEu5UCzdnf++1zDBmeRohWPYsI8a8h717+k3w=;
- b=juBdtxrZT+DbSO6JTT3kohvmgD3n7xz42OPkN/glGHrRypym7xNRnYflqWtX8Vci8XldWaYb8+fnAlXSUJSkCPI5MyG4El3hZM31EkbKnjI2sYfzevJZxyS6vkYoEdtKUc0a7FQ0cNL14cd89ZgON3e/YkTGzSIfXXTDGOxuSpi4RHpGuvl3LAkS5BWI//CCSY9zrhOTq83DTZ7IvsW7/VA1hadGrke38BELJgvXgjoTB3xLcYu3uk0qnwG/o2HM5D1c1kKK+o2X9JpbdsusPg06MQXNGKxCrAkjKyuaLwDCn3Dq+BOCLlQysJ31G244RiK85xQ8eiypTLeRTl4Q/w==
+ bh=s9yISr3NcOH0bKs9R2HQ8uyGN5BTkP7FODcyMbI4ZEY=;
+ b=FZGACu2wKVmsILCpx6Zfj5DJ7dtupikkAThW5JDuaoRZGGGIIcHize1XagLwxk6jkkBINxCDu131b/wgXBJ4mlergIgGeEplMXQLoO+bkTBIw9XQMYuCkICOqVbbe80gaF72TEUx/sLwhHy8VFUdiJ9PLsHK4C7uTrGDItoidPJqcF7ooZqO1S1N9wvhsTklykEl50cEdLj0MODYEg/mY99PDiinLSXxKMsoIV1nSlDj+A93TFurtZoYELyWKGntRBUfio2nSF/VxVoUUnHFmf84Tsd4CgjyiWy6GKtriYNMckueZ+bFVXccZCNEJrbt/OVpSa2vofqkJQjA+U4qCw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nJNju0KEu5UCzdnf++1zDBmeRohWPYsI8a8h717+k3w=;
- b=m4kJJ6Vjfe4q9ZIMKTdTK80bjMwIruTKtfGNtCyYxXvAoMUZeE+cw36elTUSn6HcZJntcHd4yIYVYxx6A+eNnjFD/NG12CmXgOgZHnnRcHtOGHD3OCDvNIqDdn9ocCjNGsAJnZiK8EpGA24AkxoBPoyOReN0Rd9tnZZOla3vhmVObw0ScIfSOD44DsRRoVuRgvEfaoZropFH9J4K/U40Ds8cMsDXY7pj8fB83XVCy7pn9g6H6nhmlQn4fjZYVVQBkFJkZl/OXdu7N83ajtZDGgeWkMQ/y9V58LXb+394ozttIbgnsxPBGv4Jttr9nM9fvdrZkPmgiuyJzWNYR4fFAg==
-Received: from DM6PR04CA0026.namprd04.prod.outlook.com (2603:10b6:5:334::31)
- by PH7PR12MB9176.namprd12.prod.outlook.com (2603:10b6:510:2e9::8) with
+ bh=s9yISr3NcOH0bKs9R2HQ8uyGN5BTkP7FODcyMbI4ZEY=;
+ b=aIWR/3NdFh3R54DCPtPxNIydQO7gW2IcK8Bn4lgWcvwd77lalFFqdXDhOQ8lYIanyH6slCbGWZ7yMP7/LvlOAR2b7XihI6sTpkCBwChxMrV5dcWFl+cyVn939G0nmFqUo8dPM4K36D/lDDUbWqji+Ma5TwTzN5KS4x/+syNTHwbSF7TdeBA3jydr4CsmUxWJAMrXeYjPxo/ATZMr70UPUlLiImQnHk1KOEtwBuCE9dEvNLCBrvIdZ4AXzGM0EmQ0YWv/BnOMBwzk27aqj/amILB2yU6Bbk2yb/Mt/YrZK089VHFvv/x/6278T3kEInrPk1Zbye6Ju/MN1VQFbujQHg==
+Received: from BL1PR13CA0165.namprd13.prod.outlook.com (2603:10b6:208:2bd::20)
+ by IA1PR12MB6091.namprd12.prod.outlook.com (2603:10b6:208:3ed::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.17; Tue, 15 Oct
- 2024 11:37:27 +0000
-Received: from DS2PEPF00003448.namprd04.prod.outlook.com
- (2603:10b6:5:334:cafe::b) by DM6PR04CA0026.outlook.office365.com
- (2603:10b6:5:334::31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.17 via Frontend
- Transport; Tue, 15 Oct 2024 11:37:26 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ 2024 11:37:38 +0000
+Received: from BL6PEPF0001AB54.namprd02.prod.outlook.com
+ (2603:10b6:208:2bd:cafe::2) by BL1PR13CA0165.outlook.office365.com
+ (2603:10b6:208:2bd::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18 via Frontend
+ Transport; Tue, 15 Oct 2024 11:37:38 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- DS2PEPF00003448.mail.protection.outlook.com (10.167.17.75) with Microsoft
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BL6PEPF0001AB54.mail.protection.outlook.com (10.167.241.6) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8069.17 via Frontend Transport; Tue, 15 Oct 2024 11:37:26 +0000
+ 15.20.8069.17 via Frontend Transport; Tue, 15 Oct 2024 11:37:38 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 15 Oct
- 2024 04:37:15 -0700
+ 2024 04:37:21 -0700
 Received: from shredder.lan (10.126.230.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 15 Oct
- 2024 04:37:10 -0700
+ 2024 04:37:15 -0700
 From: Ido Schimmel <idosch@nvidia.com>
 To: <stable@vger.kernel.org>
 CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
 	<edumazet@google.com>, <jiri@nvidia.com>, <jacob.e.keller@intel.com>,
 	<gregkh@linuxfoundation.org>, <sashal@kernel.org>, <vkarri@nvidia.com>,
 	<nogikh@google.com>, Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH stable 6.1 1/2] devlink: drop the filter argument from devlinks_xa_find_get
-Date: Tue, 15 Oct 2024 14:36:24 +0300
-Message-ID: <20241015113625.613416-2-idosch@nvidia.com>
+Subject: [PATCH stable 6.1 2/2] devlink: bump the instance index directly when iterating
+Date: Tue, 15 Oct 2024 14:36:25 +0300
+Message-ID: <20241015113625.613416-3-idosch@nvidia.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015113625.613416-1-idosch@nvidia.com>
 References: <20241015113625.613416-1-idosch@nvidia.com>
@@ -99,118 +99,142 @@ X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF00003448:EE_|PH7PR12MB9176:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4b274623-c79d-414f-5374-08dced0dbe94
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB54:EE_|IA1PR12MB6091:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1d4fbee1-db98-4a20-a605-08dced0dc575
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014;
+	BCL:0;ARA:13230040|1800799024|376014|36860700013|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?xFmCCCsSxvlLjyZQtBwiIfvtoaGIelM7DQv3g94Wmg3kFOLjBQXjPArTXcb9?=
- =?us-ascii?Q?aVaN0HbL/UdYbtAS3KeWzqcVOn2vY4JkJwG7ScrJUcfhquueVzEJu2etjqLZ?=
- =?us-ascii?Q?DLqsEBA17Z8Fv5NHes5LC76BdhHC1MM7XN8c8lBmupb1DDmeHlMb1x2ab+zz?=
- =?us-ascii?Q?FmDq4aA9wqFiEzIWdGtf3Cz56NV4nFz02Z60ucavKyYm4qoTKYSGkq+gd2bZ?=
- =?us-ascii?Q?c0pwAGjvhrYeVCwlePRp3ymjdbM3z6+KNrDit5c6a8IbcSTw38v1CQaucVzk?=
- =?us-ascii?Q?2XOZoeoJ6myJA0JXcGjta0cET1pr+ktvPhqFdyZ2OUsGy4uyx/8htpJVRf9O?=
- =?us-ascii?Q?84YYVgvy/fgAr1bH9vZ4zTDsHntzyyLyywRS3Zt6gN4ivNYGdmakzYZR6Yxz?=
- =?us-ascii?Q?9rAyd7EwKzf2F/FZWvoJ1kYlN01ph6aP5SU6ZJDtMaS5hIHN8QrFirPNkNI+?=
- =?us-ascii?Q?IrquQculj//Cq6OhxrJJH9PFMVc4yIeiZsUFLIG132rSZRvZQvKg7iu5z2l7?=
- =?us-ascii?Q?9gx3FEclvXT2hk4i9tAIv0CsD9mT/op7pfrNQvdcy4RDTD511972Qss/MEDL?=
- =?us-ascii?Q?J2DCjrThPd7bC9X70WZ6t1pK5xV4j/y9OXb919+Dpygr8RSRYGCUX6z+mso7?=
- =?us-ascii?Q?mtlL49/zeQpkHzLyLwOeP/pMRW1Dw4/aMYFUtp5yg4nH5bUmqHuitiKUvTgb?=
- =?us-ascii?Q?qMH21W0OdxOORowIDEajOfnnsnx9sPVAOzY9leLQmfHTim2G8LHqLKeXnPuA?=
- =?us-ascii?Q?BiwHZFvwEe/FtoZFocx8ORUWpPx5VJvK4c2WrzO0U6G7TQtEKJKTn680dGuu?=
- =?us-ascii?Q?ZwNLsZVq8mJiXfGovCW6+MfuQ0TsePIOzzb6LzstR/yLB10WPJ/6CJUCw1Cr?=
- =?us-ascii?Q?509njZ5Xf+HopK2ObyQqXGE/pdq3x7new5s+FdEBUMY44vH56WGsWzmE1txu?=
- =?us-ascii?Q?Swmblbnp11NalPE/p14P/yxKCheesCvHpzlweeqNia5i5/sRos84TopCk/s9?=
- =?us-ascii?Q?MaKPiypLXYUw0mA8V20GOeiRWhX6qxmCXSdNLHUkw2rgkftxIYmgzVmye1WA?=
- =?us-ascii?Q?4hfv+l/WaiggDgCP6jbIPCrtRMcFqA+On9lERRNz6T9KtdCPS3N6BP02+/g4?=
- =?us-ascii?Q?IZarjWeZ4zm1LYeiZr0LBroPRr+4DUz/ryDXZyj8tRBhuSSXxCrBMPurZhn6?=
- =?us-ascii?Q?RHT/0ZKc1yr5frm/BCyHuu+LpI9KIsNSN3sMzgHg3ZJ8XkeMgGQG932JQLCl?=
- =?us-ascii?Q?OLo5gxKAzqj7ZrZCeFUsGzlFfkhXuvEXON0vk5DlHoBn1es3mQHx2B8KS/7j?=
- =?us-ascii?Q?w0oA8iZlXcpEQa7giUrCx+pJMgzEh27E2uCbVsmY8lHfGw/Yd7BWjvaG0Wl/?=
- =?us-ascii?Q?MpLlEX7Sk8swYlCApN2187AhLQzV?=
+	=?us-ascii?Q?vPGfB4uhaICoE4eH45HNJqGfJbAUg/h8Jtm8QNwm4r3EUH0W3MlCd0HV4sUF?=
+ =?us-ascii?Q?ad99Lpd9L6X4Fl3PsAHC4RD1BOzloNqtJrFPPvr4Ao9BTOy2c517CQrQgCon?=
+ =?us-ascii?Q?1M5eamyMSim9BBQLGV2EP43+8bMDDAcQ3SaOLY6Q7l0DAn/A9z6FKD5F2u02?=
+ =?us-ascii?Q?btVz0Yf5vXxLCShrR5X5vQSRJ0r0Q9U3xqzEK2U/OXxwtFjmd2UhI5NKsgq2?=
+ =?us-ascii?Q?Okk5Uw+mvYRwOeVro6m6OdFATMVd7ffEEnd6JdzwMlrftvsEsN3h1dPlYyUY?=
+ =?us-ascii?Q?r85Lk3uhZJZAEkVPafVEhWvnF0VS3WH3ZqGlTg3NTtlu+Mykqlxg+gWn4fOE?=
+ =?us-ascii?Q?lrdFNUHISP+au/wLPJGPSwkonM+UCD+HkKE71mpnfaUf0L5/6BWrtpAhGf6q?=
+ =?us-ascii?Q?dGSu9L6jG6QJ/6s/v5dEmyIqSRNkaXsYHRcfJAkzXvr71kP5UCPvZmo0AVN0?=
+ =?us-ascii?Q?1I5ulGoPWTacFGkYZc6KRMSAOrplIHczlA8KKLJv9CAOzWMvkPRjDMiLriqk?=
+ =?us-ascii?Q?zBXgnlrtNB/Hqc+eUQ0uhxlFwslE+mILKr7/PJBWHIW8XXb+O1m0ueoTFd1k?=
+ =?us-ascii?Q?WxwK0wFS9ZbY+DZhA0IHrP0+Fp0X2NogNzHhDcPr/6euhIBTkM031MNqWsqm?=
+ =?us-ascii?Q?NHpinLLCHjwLypnlWvlKkvgQjaRmqeMxIxM4EeD10LjSr02VvBQBvjOZSM3/?=
+ =?us-ascii?Q?/4jy3h34DcNbJrhVoKh35Gr86d9PdIYKPkN5b8RO8MmysjlOI+d9hDWgyi2A?=
+ =?us-ascii?Q?7ZHxjj7/zLVGE6EPOOv0lFyskknHQKfLhoJCUlmGIRlQwg9ow3pBF6riB3E4?=
+ =?us-ascii?Q?14S3kzH4fZCH3/42hKMYyiwP3tKHL6+fNWrO4NqSaASDh2YdaUuzJmTsITx3?=
+ =?us-ascii?Q?/S16eLfejaYUqBHcJ9xE5VFFXg3W3rRULBXEIkTTJQvP7x6netk+5DIvnbRh?=
+ =?us-ascii?Q?Ok7Wj6IIOUeNPDXgVbCTMkNiOoBpGUDFQdn/Bmn2rap9nLRWcG2lmglhbH7P?=
+ =?us-ascii?Q?Ms2lh8iB1m/D47OoOM9Xn09rrmEy35aNiG2hahHkR0iVuLmeAaZMNUN0Ntbc?=
+ =?us-ascii?Q?aRZJcC9CI1yVP+621xrqki3dKSwJhsOkmD2CSsP603RwdDFcVFoL/b9/z96n?=
+ =?us-ascii?Q?XTrcR7R3v7KpiHJjXPayYJlAI+srWI/xaQbaNd4bOP1UHhQnEn7gXzPVw9Dg?=
+ =?us-ascii?Q?LTu4LGC4qz+i2qSytOjKfSg1JUcEWhW6Pv59GkHlDCh7/eh5ttVpNF4Qmmmy?=
+ =?us-ascii?Q?QnkOAwzMb1G3eCgyHTFGTg7iCmnOi6IzgXVs3RFbpORevOsrfjwk1BQnpkJ5?=
+ =?us-ascii?Q?BzjZpzcKKO/FAT92WNve3mLK9CbpPDQfJjwR5y0tQ1ff4fvrWq5b44pyWTka?=
+ =?us-ascii?Q?eYoz4VNGEGwzgpq2UNeVJHuCaMBR?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 11:37:26.6267
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 11:37:38.1072
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4b274623-c79d-414f-5374-08dced0dbe94
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1d4fbee1-db98-4a20-a605-08dced0dc575
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DS2PEPF00003448.namprd04.prod.outlook.com
+	BL6PEPF0001AB54.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9176
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6091
 
 From: Jakub Kicinski <kuba@kernel.org>
 
-commit 8861c0933c78e3631fe752feadc0d2a6e5eab1e1 upstream.
+commit d772781964415c63759572b917e21c4f7ec08d9f upstream.
 
-Looks like devlinks_xa_find_get() was intended to get the mark
-from the @filter argument. It doesn't actually use @filter, passing
-DEVLINK_REGISTERED to xa_find_fn() directly. Walking marks other
-than registered is unlikely so drop @filter argument completely.
+xa_find_after() is designed to handle multi-index entries correctly.
+If a xarray has two entries one which spans indexes 0-3 and one at
+index 4 xa_find_after(0) will return the entry at index 4.
 
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Having to juggle the two callbacks, however, is unnecessary in case
+of the devlink xarray, as there is 1:1 relationship with indexes.
+
+Always use xa_find() and increment the index manually.
+
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 [ Ido: Moved the changes from core.c and devl_internal.h to leftover.c ]
-Stable-dep-of: d77278196441 ("devlink: bump the instance index directly when iterating")
 Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 ---
- net/devlink/leftover.c | 21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ net/devlink/leftover.c | 35 ++++++++++-------------------------
+ 1 file changed, 10 insertions(+), 25 deletions(-)
 
 diff --git a/net/devlink/leftover.c b/net/devlink/leftover.c
-index 032c7af065cd..68210b5fab8e 100644
+index 68210b5fab8e..f1c6bd727a83 100644
 --- a/net/devlink/leftover.c
 +++ b/net/devlink/leftover.c
-@@ -289,7 +289,7 @@ void devl_unlock(struct devlink *devlink)
+@@ -289,15 +289,13 @@ void devl_unlock(struct devlink *devlink)
  EXPORT_SYMBOL_GPL(devl_unlock);
  
  static struct devlink *
--devlinks_xa_find_get(struct net *net, unsigned long *indexp, xa_mark_t filter,
-+devlinks_xa_find_get(struct net *net, unsigned long *indexp,
- 		     void * (*xa_find_fn)(struct xarray *, unsigned long *,
- 					  unsigned long, xa_mark_t))
+-devlinks_xa_find_get(struct net *net, unsigned long *indexp,
+-		     void * (*xa_find_fn)(struct xarray *, unsigned long *,
+-					  unsigned long, xa_mark_t))
++devlinks_xa_find_get(struct net *net, unsigned long *indexp)
  {
-@@ -322,30 +322,25 @@ devlinks_xa_find_get(struct net *net, unsigned long *indexp, xa_mark_t filter,
- }
+-	struct devlink *devlink;
++	struct devlink *devlink = NULL;
  
- static struct devlink *devlinks_xa_find_get_first(struct net *net,
--						  unsigned long *indexp,
--						  xa_mark_t filter)
-+						  unsigned long *indexp)
- {
--	return devlinks_xa_find_get(net, indexp, filter, xa_find);
-+	return devlinks_xa_find_get(net, indexp, xa_find);
- }
+ 	rcu_read_lock();
+ retry:
+-	devlink = xa_find_fn(&devlinks, indexp, ULONG_MAX, DEVLINK_REGISTERED);
++	devlink = xa_find(&devlinks, indexp, ULONG_MAX, DEVLINK_REGISTERED);
+ 	if (!devlink)
+ 		goto unlock;
  
- static struct devlink *devlinks_xa_find_get_next(struct net *net,
--						 unsigned long *indexp,
--						 xa_mark_t filter)
-+						 unsigned long *indexp)
- {
--	return devlinks_xa_find_get(net, indexp, filter, xa_find_after);
-+	return devlinks_xa_find_get(net, indexp, xa_find_after);
+@@ -306,31 +304,20 @@ devlinks_xa_find_get(struct net *net, unsigned long *indexp,
+ 	 * This prevents live-lock of devlink_unregister() wait for completion.
+ 	 */
+ 	if (xa_get_mark(&devlinks, *indexp, DEVLINK_UNREGISTERING))
+-		goto retry;
++		goto next;
+ 
+-	/* For a possible retry, the xa_find_after() should be always used */
+-	xa_find_fn = xa_find_after;
+ 	if (!devlink_try_get(devlink))
+-		goto retry;
++		goto next;
+ 	if (!net_eq(devlink_net(devlink), net)) {
+ 		devlink_put(devlink);
+-		goto retry;
++		goto next;
+ 	}
+ unlock:
+ 	rcu_read_unlock();
+ 	return devlink;
+-}
+-
+-static struct devlink *devlinks_xa_find_get_first(struct net *net,
+-						  unsigned long *indexp)
+-{
+-	return devlinks_xa_find_get(net, indexp, xa_find);
+-}
+-
+-static struct devlink *devlinks_xa_find_get_next(struct net *net,
+-						 unsigned long *indexp)
+-{
+-	return devlinks_xa_find_get(net, indexp, xa_find_after);
++next:
++	(*indexp)++;
++	goto retry;
  }
  
  /* Iterate over devlink pointers which were possible to get reference to.
-  * devlink_put() needs to be called for each iterated devlink pointer
+@@ -338,9 +325,7 @@ static struct devlink *devlinks_xa_find_get_next(struct net *net,
   * in loop body in order to release the reference.
   */
--#define devlinks_xa_for_each_get(net, index, devlink, filter)			\
--	for (index = 0,								\
--	     devlink = devlinks_xa_find_get_first(net, &index, filter);		\
--	     devlink; devlink = devlinks_xa_find_get_next(net, &index, filter))
--
  #define devlinks_xa_for_each_registered_get(net, index, devlink)		\
--	devlinks_xa_for_each_get(net, index, devlink, DEVLINK_REGISTERED)
-+	for (index = 0,								\
-+	     devlink = devlinks_xa_find_get_first(net, &index);	\
-+	     devlink; devlink = devlinks_xa_find_get_next(net, &index))
+-	for (index = 0,								\
+-	     devlink = devlinks_xa_find_get_first(net, &index);	\
+-	     devlink; devlink = devlinks_xa_find_get_next(net, &index))
++	for (index = 0; (devlink = devlinks_xa_find_get(net, &index)); index++)
  
  static struct devlink *devlink_get_from_attrs(struct net *net,
  					      struct nlattr **attrs)
