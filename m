@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-86093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A9E899EBA2
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:09:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 871B499EB77
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:07:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDE36B20CCC
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:09:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D9511F25BE9
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA69A1AF0B2;
-	Tue, 15 Oct 2024 13:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB8D1AF0D5;
+	Tue, 15 Oct 2024 13:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8/UZHhZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xpn9t/E7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96EA01C07FF;
-	Tue, 15 Oct 2024 13:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F061C07E5;
+	Tue, 15 Oct 2024 13:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997748; cv=none; b=MpKgxgJ+Z8Y9xNRh6slYx3zznaPTvtFVP+HEyeLXa6cx8s49qdEPe2ZCb0kKLvqyxn5MsbkrDpbpFLxH6HXKDEy6oMrvZKKemQTGPUDLJeEg1L7/9Ahz6uaafY4mIOLDTnoG+agvvHArppamx6liuLNeQyU0Crkecdi1W3+C1n8=
+	t=1728997640; cv=none; b=Jwr2Nk23beaNosu9zqU3SiD8402Ux5N+oFaRkwqrSVSNfM2XxgU/0c73tV3DSPQU4Q8LoHx8gadQKPyfsV/zuEVzLYUag2b7fHN8Irp6UJTR1nvTqyDGyr8YBnpyfn1DpCtt6y7guMA3T05NxlKCjzc3SV5e7bSYSvzQK9jfqs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997748; c=relaxed/simple;
-	bh=kD4oI/DaDZqGuZrTWD4d5QAJtYjWri3uINDlvo/pRQs=;
+	s=arc-20240116; t=1728997640; c=relaxed/simple;
+	bh=VywtIFR/u86ERdT7pSpmTpvuSLfTPT+J3qZWPqpip+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LKEOLvA4k2AG8Fj6Kxzl8PORRd9TEWBytMRQq6/2Lthz08hWAksTvPrv+i7XB8l8YIanU5DYMuaYr58ETk87xUdy5QPqdRFeUcQceEkJVOIi/72piH2lvFKAX5PbZLwuOm/279gWT5WvCYNIdVx8fV4osnpyNcA0D3gdhE3tNNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8/UZHhZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD03C4CEC6;
-	Tue, 15 Oct 2024 13:09:07 +0000 (UTC)
+	 MIME-Version; b=Fw0LTa5GWFCIkVYT/7lgwh1d3dfuYcYFVYM8OiNAhUVxczYJH8HIDCESbtXLQjxBiMorRs/vcVumnmiC5uELcHqSWk5nuH4M0o6YJGFCqVZ7PoCMB5CfxpfWzvNFz0aEg//mW5S2q8hi8DEqriKLcu85yXHGjuETADk3yD8FdtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xpn9t/E7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C683C4CEC6;
+	Tue, 15 Oct 2024 13:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997748;
-	bh=kD4oI/DaDZqGuZrTWD4d5QAJtYjWri3uINDlvo/pRQs=;
+	s=korg; t=1728997640;
+	bh=VywtIFR/u86ERdT7pSpmTpvuSLfTPT+J3qZWPqpip+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j8/UZHhZJWPblYsJ7Ex2usF3UVTWPnDUPIOAbV02QupPCj2JIjvPoQ0R9+pjc/EUx
-	 S1+P5pjDPcRg2CKkJlZdZBxIxMBd5WTesB8ihKc+/Lcwo7Hn0zEoW2KTnctcXllWV9
-	 k7Z6+RdwP92vYip6KiPPdiA5So072IxxMgO33Szo=
+	b=Xpn9t/E7NP3xqaf7T9VWd+gK1HWZc5m1zvn2SWhO8oDCs+f5avTDQY6codWRJBxJn
+	 DA8QgKGGT3/p2+6yrVBW5hNaOzvwPzIJAApWlCVuLibtlEiYHQu0ixPRhBzE4fvJoE
+	 /Kcrd3u4UlpS8VSpFJsqdVrrQaXIsyge1xPoa0ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Werner Sembach <wse@tuxedocomputers.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.10 233/518] ACPI: sysfs: validate return type of _STR method
-Date: Tue, 15 Oct 2024 14:42:17 +0200
-Message-ID: <20241015123925.985149440@linuxfoundation.org>
+Subject: [PATCH 5.10 234/518] ACPI: resource: Add another DMI match for the TongFang GMxXGxx
+Date: Tue, 15 Oct 2024 14:42:18 +0200
+Message-ID: <20241015123926.022846599@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -59,46 +59,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-commit 4bb1e7d027413835b086aed35bc3f0713bc0f72b upstream.
+commit a98cfe6ff15b62f94a44d565607a16771c847bc6 upstream.
 
-Only buffer objects are valid return values of _STR.
+Internal documentation suggest that the TUXEDO Polaris 15 Gen5 AMD might
+have GMxXGxX as the board name instead of GMxXGxx.
 
-If something else is returned description_show() will access invalid
-memory.
+Adding both to be on the safe side.
 
-Fixes: d1efe3c324ea ("ACPI: Add new sysfs interface to export device description")
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
 Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://patch.msgid.link/20240709-acpi-sysfs-groups-v2-1-058ab0667fa8@weissschuh.net
+Link: https://patch.msgid.link/20240910094008.1601230-1-wse@tuxedocomputers.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/device_sysfs.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/acpi/resource.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/acpi/device_sysfs.c
-+++ b/drivers/acpi/device_sysfs.c
-@@ -533,8 +533,9 @@ int acpi_device_setup_files(struct acpi_
- 	 * If device has _STR, 'description' file is created
- 	 */
- 	if (acpi_has_method(dev->handle, "_STR")) {
--		status = acpi_evaluate_object(dev->handle, "_STR",
--					NULL, &buffer);
-+		status = acpi_evaluate_object_typed(dev->handle, "_STR",
-+						    NULL, &buffer,
-+						    ACPI_TYPE_BUFFER);
- 		if (ACPI_FAILURE(status))
- 			buffer.pointer = NULL;
- 		dev->pnp.str_obj = buffer.pointer;
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -456,6 +456,12 @@ static const struct dmi_system_id asus_l
+ 		},
+ 	},
+ 	{
++		/* TongFang GMxXGxX/TUXEDO Polaris 15 Gen5 AMD */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxX"),
++		},
++	},
++	{
+ 		/* TongFang GMxXGxx sold as Eluktronics Inc. RP-15 */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
 
 
 
