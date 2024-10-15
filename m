@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-86375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F0AA99F4A0
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 20:00:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10FD599F4A7
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 20:00:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 245AF2847E6
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 18:00:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4F111F2129A
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 18:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F681FC7D0;
-	Tue, 15 Oct 2024 18:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE832216AF;
+	Tue, 15 Oct 2024 18:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zw152S/7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EatNm/cB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9221FAF1B;
-	Tue, 15 Oct 2024 18:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112731B3950;
+	Tue, 15 Oct 2024 18:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729015228; cv=none; b=Pe9/tGroVdgPoe8p1dLVERVXCkl47KeTpNPIWxAMsbMwxckMeyvgTOxxhMgVcaVBIPPtTjBIbyiX3JTQiTmaFGtmd5g8wb4ny1TvmNn+FoNkRbNVdMFnataJxeukNCAJkQYxmITei1lpUkzadNkj8yGI1mXZNJXmpJ03jRoev/Q=
+	t=1729015230; cv=none; b=Oc1tcRBI7feudVYKSpbB11qbxoG/+HYhH3HLIPJVqWM6aMhM6ElXjboyIfIJInbo/QjieRIynSZddBzOjbW0jBkSEhkpk+/7HEgQGcEB2caQViLf03GbijzIXC53p9psEkAiodB/p3wLRIBtwqa5Mk/m94PoXLY+ErzxGm/Gxow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729015228; c=relaxed/simple;
-	bh=mij/X30J/XczEgMH6nNnXtL6uh/rQkgw18iGPylR2kg=;
+	s=arc-20240116; t=1729015230; c=relaxed/simple;
+	bh=lpbB4zBvabiC+qAlL68upeccQ4XTAZm+z7OB3LiXtIY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OoXzIQlMtmWP+Q5kA0DXSKLKShAcwo40XgFJKlzguUr938bWn9G5T8Y+bmI4xfNrrUBzD4gcRu8ygnkX/2XkbjlDrExoBwHaem3IDYhyMq9Ov+MJNoZN5t4CMKXp2PJfW/WVPF+6UCtZkb5yA6YnP+P58Xm0JdZ25Fp23J8XowQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zw152S/7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F952C4CEC6;
-	Tue, 15 Oct 2024 18:00:28 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=p5rV3dCnSuZoRFtsFEuBaRrmDwrWXkN07aQT5nu8+pogbWsqMunhCePCqed5psjMsHHLx8a060wczlOoRA3DCXT8m4qasK2bjFm/0+zpKn9nLGqNjsR62/8Wq/sa2kMpdCBZwrGeT31rBZnNDsQZysODNGegMO1vRaajF6BImuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EatNm/cB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4ABC4CED0;
+	Tue, 15 Oct 2024 18:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729015228;
-	bh=mij/X30J/XczEgMH6nNnXtL6uh/rQkgw18iGPylR2kg=;
+	s=k20201202; t=1729015229;
+	bh=lpbB4zBvabiC+qAlL68upeccQ4XTAZm+z7OB3LiXtIY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Zw152S/7hyFB+0SzLyd3Int0/+6KoOpkAr7Y2XRSosmL+RZX8ZMkWPyh3n4nIh2iZ
-	 iI3nVPyRV08/c9Hg4Ui8yZKTuPTNMBLSbzEtV59xXR6TB0FFwa/VQ6zBP7wDy+dV+R
-	 wrCL0It1QJZM40VvQRhF0kv3pLI9rh77dloldun0OUdk1fy0paIeHkQ7Y4Wk4l0HpA
-	 iyGhDRylC01lBVoUbs4lFhtVLgKdPpxlxsEL7FvP4HBxQTQon5oDKN6k299xhSwYW7
-	 /y7Xac3dhEJNJX4UrHZfgT9ejtRfGe8s3uirSZ6UOIgXL1AL/urXZz3SicTcnD/4+8
-	 kWxo7UHcY53Cg==
+	b=EatNm/cB8Ug5PL8M8DCox35cExWgIaqGH2Sa9LYNCQy9IjRzt0eTV1+xfUAsUzlsa
+	 /3V2DhyXsqcwcvv3/Se6D8iGctkkzcqx/GCPBEbdvFM/3pPa8gdM6E8ejEtW76A/de
+	 DX3LCH0CaasGt4Z3EgATy7jICY59ZXAfLiMI/91vG3WCpEoC+EuTDrN7DW6F+oEa9G
+	 qBX1KFtwwi/jPskGD0EXydzKC1cop4//x+AgTfC/wtdX3dw6JXlYqKU50iX3ey5Zco
+	 afkMS0jmJ184G3vOo3DNhea+4O3OX1YYDfMou3TgjlXCkKYw+WGy9n+0l9wDHpTLbi
+	 8x+UIBPyWytFw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE2A03809A8A;
-	Tue, 15 Oct 2024 18:00:34 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB0813809A8A;
+	Tue, 15 Oct 2024 18:00:35 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -52,39 +52,42 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 1/1] net: macb: Avoid 20s boot delay by skipping MDIO
- bus registration for fixed-link PHY
+Subject: Re: [PATCH net v2 0/2] mptcp: prevent MPC handshake on port-based
+ signal endpoints
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <172901523349.1243233.7852864309614579932.git-patchwork-notify@kernel.org>
-Date: Tue, 15 Oct 2024 18:00:33 +0000
-References: <20241013052916.3115142-1-o.rempel@pengutronix.de>
-In-Reply-To: <20241013052916.3115142-1-o.rempel@pengutronix.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: nicolas.ferre@microchip.com, claudiu.beznea@microchip.com,
+ <172901523474.1243233.15564285937564337583.git-patchwork-notify@kernel.org>
+Date: Tue, 15 Oct 2024 18:00:34 +0000
+References: <20241014-net-mptcp-mpc-port-endp-v2-0-7faea8e6b6ae@kernel.org>
+In-Reply-To: <20241014-net-mptcp-mpc-port-endp-v2-0-7faea8e6b6ae@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
  davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- stable@vger.kernel.org, andrew@lunn.ch, kernel@pengutronix.de,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- codrin.ciubotariu@microchip.com
+ shuah@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, cong.wang@bytedance.com,
+ stable@vger.kernel.org, syzbot+f4aacdfef2c6a6529c3e@syzkaller.appspotmail.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun, 13 Oct 2024 07:29:16 +0200 you wrote:
-> A boot delay was introduced by commit 79540d133ed6 ("net: macb: Fix
-> handling of fixed-link node"). This delay was caused by the call to
-> `mdiobus_register()` in cases where a fixed-link PHY was present. The
-> MDIO bus registration triggered unnecessary PHY address scans, leading
-> to a 20-second delay due to attempts to detect Clause 45 (C45)
-> compatible PHYs, despite no MDIO bus being attached.
+On Mon, 14 Oct 2024 16:05:59 +0200 you wrote:
+> MPTCP connection requests toward a listening socket created by the
+> in-kernel PM for a port based signal endpoint will never be accepted,
+> they need to be explicitly rejected.
+> 
+> - Patch 1: Explicitly reject such requests. A fix for >= v5.12.
+> 
+> - Patch 2: Cover this case in the MPTCP selftests to avoid regressions.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2,1/1] net: macb: Avoid 20s boot delay by skipping MDIO bus registration for fixed-link PHY
-    https://git.kernel.org/netdev/net/c/d0c3601f2c4e
+  - [net,v2,1/2] mptcp: prevent MPC handshake on port-based signal endpoints
+    https://git.kernel.org/netdev/net/c/3d041393ea8c
+  - [net,v2,2/2] selftests: mptcp: join: test for prohibited MPC to port-based endp
+    https://git.kernel.org/netdev/net/c/5afca7e996c4
 
 You are awesome, thank you!
 -- 
