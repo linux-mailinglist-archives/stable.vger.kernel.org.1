@@ -1,106 +1,123 @@
-Return-Path: <stable+bounces-86382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D7D899F837
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 22:40:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD8499F85B
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 22:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFA80B2142B
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 20:40:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B287F283E15
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 20:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F131F81AF;
-	Tue, 15 Oct 2024 20:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5A51F9EBE;
+	Tue, 15 Oct 2024 20:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QcgzRTHz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rpSk/pWW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510C9158D9C;
-	Tue, 15 Oct 2024 20:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3404C1F80DD;
+	Tue, 15 Oct 2024 20:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729024809; cv=none; b=EiVrXbYhHh00fOoJpc8StmxcyZleEj1ROFT3QlUqssR4qeyjyZwEgcRw1nroWkVX9yMEYnnI59233zOJQtRNHwEbC/GuSz9QhzY/LGbQulYiyIM1ZsMvQbpcRW/V1MEsyUxhsHsSdQdWSFNSOMcockkSwFVnaN1f8RmdGXdvLpM=
+	t=1729025934; cv=none; b=VCe1A3k2VX1y/5F7o0JQsRYvYQXBfsm0vKd//kijbo4JK/qkLexmawS3hlDnlRNHANECR8UJKTQYs6Oj/r748IYlYDSQIqQy9a1W32by/d/0DD2e7m55FiQnrVncdXCjjjWp0nvNznoIwkFbELMknUjb+5qECmt0XM5Zupuz8HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729024809; c=relaxed/simple;
-	bh=0wWYi439brCW/pXJK0fnqR2LBbpH4OIgiVOrCpdGInk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mlyhSa5zyl/qlFOXELu4JB3DYVOWaLxs3iEv0V/ygNuXxjhZ4J/4fJpxq9+9N8F8DtrqioxQ42UayU+qZLYuh8/VOUBSYSDKaUGRRkvKFbQVRyWEPAz8K07RsOz2LQLOAEL7/VRI5rjEmZrxrCvWZD7h/kHdopJMqy3kXTh2HaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QcgzRTHz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A079DC4CEC6;
-	Tue, 15 Oct 2024 20:40:08 +0000 (UTC)
+	s=arc-20240116; t=1729025934; c=relaxed/simple;
+	bh=OdfbPphNVRToS+4L7iWif22RAzWjckEAkN41WHeGg50=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UKd0c3k/AbpxwMXw9Gg6SDFDfFgX2c/jmrBDIlplu1MSZSa7wIX1FiwPzPEr9EBp58se3xRA7NiEz1V15X8WE4mdPsyRN9pfITxdOQ5Po3hN9xkJ8AYc0082X5GwvTcZxU5pCkffYSAuAKsmfCHDjJGcXIMN/YZc8OXp1/vZSYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rpSk/pWW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F55C4CEC6;
+	Tue, 15 Oct 2024 20:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729024808;
-	bh=0wWYi439brCW/pXJK0fnqR2LBbpH4OIgiVOrCpdGInk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QcgzRTHzFNR/xIadpsTQRxfGRzN0HSl8WrBPM0bP35P6s5qe6f1EIrSgkxMfGFhdQ
-	 kU3ScGv8rTUEAjTPB2Ya1f6pzuHFn2YwrwA9wM8itcojnY5WQhRVsSHoryXNHSb0eh
-	 FlgCJ4M54YEMemWAmiGDiIqyied/ZBm/6vlAFhEq01wsOrBdzD6ezxz+hyYY8U2ZRo
-	 oOPFpM2XNFB8kvENVdr6yaHrKCM91Im8KY2+hosXEUUadphXXb8b9b5Y+/GsJTlkZ/
-	 swo00HexgFEL9GCYegPGMWvnC5AWHmzrkwRQIqcqxEI7L6nP/psZXs0Z1N0ltMYBNx
-	 EG2T6b9Qr1Maw==
-Date: Tue, 15 Oct 2024 15:40:07 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Alim Akhtar <alim.akhtar@samsung.com>, devicetree@vger.kernel.org,
-	stable@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
-	linux-samsung-soc@vger.kernel.org,
-	Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>,
-	Jaewon Kim <jaewon02.kim@samsung.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Tomasz Figa <tomasz.figa@gmail.com>, linux-kernel@vger.kernel.org,
-	Igor Belwon <igor.belwon@mentallysanemainliners.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: pinctrl: samsung: Fix interrupt
- constraint for variants with fallbacks
-Message-ID: <172902480730.1923750.8393362089469271008.robh@kernel.org>
-References: <20241015065848.29429-1-krzysztof.kozlowski@linaro.org>
+	s=k20201202; t=1729025933;
+	bh=OdfbPphNVRToS+4L7iWif22RAzWjckEAkN41WHeGg50=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rpSk/pWW0GDNpTpxzpLph+2NXw9KHKsaY1unOGf+3SFCoq6Rw9rgx5etGj1h0uTy0
+	 WT6jIOY5wwV0r+3J5hOa3DEVhvgYKT8IfmBIsKJwcmMDZYtjLt1c8Jef6lzrX0Glvl
+	 vHrUlHvyv8R9kjvD0ZvueV8oa+MvmB8aYbf4zn1g5sdgL/D56ASk87LZ8ER+v6aXvF
+	 dAXsMOpjEZYDvEDMm0Jyu3z4Ep7PialQRyNtbkdKRKVV54MBWFdnVjIbNByibA52f+
+	 zfspTtTa5B+nNNw/BTcWKvb8ZS/t1hEpNHGslTgDVmHwCqqyDZbCMBCIHIVVwektxS
+	 gX35w2B2jxpag==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Stefan Berger <stefanb@linux.ibm.com>,
+	stable@vger.kernel.org,
+	linux-integrity@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v6 1/5] tpm: Return on tpm2_create_null_primary() failure
+Date: Tue, 15 Oct 2024 23:58:36 +0300
+Message-ID: <20241015205842.117300-2-jarkko@kernel.org>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241015205842.117300-1-jarkko@kernel.org>
+References: <20241015205842.117300-1-jarkko@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015065848.29429-1-krzysztof.kozlowski@linaro.org>
+Content-Transfer-Encoding: 8bit
 
+tpm2_sessions_init() does not ignore the result of
+tpm2_create_null_primary(). Address this by returning -ENODEV to the
+caller. Given that upper layers cannot help healing the situation
+further, deal with the TPM error here by
 
-On Tue, 15 Oct 2024 08:58:47 +0200, Krzysztof Kozlowski wrote:
-> Commit 904140fa4553 ("dt-bindings: pinctrl: samsung: use Exynos7
-> fallbacks for newer wake-up controllers") added
-> samsung,exynos7-wakeup-eint fallback to some compatibles, so the
-> intention in the if:then: conditions was to handle the cases:
-> 
-> 1. Single Exynos7 compatible or Exynos5433+Exynos7 or
->    Exynos7885+Exynos7: only one interrupt
-> 
-> 2. Exynos850+Exynos7: no interrupts
-> 
-> This was not implemented properly however and if:then: block matches
-> only single Exynos5433 or Exynos7885 compatibles, which do not exist in
-> DTS anymore, so basically is a no-op and no enforcement on number of
-> interrupts is made by the binding.
-> 
-> Fix the if:then: condition so interrupts in the Exynos5433 and
-> Exynos7885 wake-up pin controller will be properly constrained.
-> 
-> Fixes: 904140fa4553 ("dt-bindings: pinctrl: samsung: use Exynos7 fallbacks for newer wake-up controllers")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> ---
-> 
-> Cc: Igor Belwon <igor.belwon@mentallysanemainliners.org>
-> ---
->  .../samsung,pinctrl-wakeup-interrupt.yaml     | 19 +++++++++++--------
->  1 file changed, 11 insertions(+), 8 deletions(-)
-> 
+Cc: stable@vger.kernel.org # v6.10+
+Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+v6:
+- Address:
+  https://lore.kernel.org/linux-integrity/69c893e7-6b87-4daa-80db-44d1120e80fe@linux.ibm.com/
+  as TPM RC is taken care of at the call site. Add also the missing
+  documentation for the return values.
+v5:
+- Do not print klog messages on error, as tpm2_save_context() already
+  takes care of this.
+v4:
+- Fixed up stable version.
+v3:
+- Handle TPM and POSIX error separately and return -ENODEV always back
+  to the caller.
+v2:
+- Refined the commit message.
+---
+ drivers/char/tpm/tpm2-sessions.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+index 511c67061728..253639767c1e 100644
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -1347,6 +1347,11 @@ static int tpm2_create_null_primary(struct tpm_chip *chip)
+  *
+  * Derive and context save the null primary and allocate memory in the
+  * struct tpm_chip for the authorizations.
++ *
++ * Return:
++ * * 0		- OK
++ * * -errno	- A system error
++ * * TPM_RC	- A TPM error
+  */
+ int tpm2_sessions_init(struct tpm_chip *chip)
+ {
+@@ -1354,7 +1359,7 @@ int tpm2_sessions_init(struct tpm_chip *chip)
+ 
+ 	rc = tpm2_create_null_primary(chip);
+ 	if (rc)
+-		dev_err(&chip->dev, "TPM: security failed (NULL seed derivation): %d\n", rc);
++		return rc;
+ 
+ 	chip->auth = kmalloc(sizeof(*chip->auth), GFP_KERNEL);
+ 	if (!chip->auth)
+-- 
+2.47.0
 
 
