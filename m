@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-86219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 124BE99EC9A
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:21:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 813CC99ECA0
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:21:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0BCC282254
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:21:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2E701C2335F
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379AE227B8A;
-	Tue, 15 Oct 2024 13:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5B520B1EA;
+	Tue, 15 Oct 2024 13:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yf01NaLs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGBEqOIe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D9A205E26;
-	Tue, 15 Oct 2024 13:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4BF1D90A4;
+	Tue, 15 Oct 2024 13:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728998172; cv=none; b=fa+WYtXXfgbhPnKCxPri5Y9PPBRcFN3FZunj8AGL3OOvLC+G+CQTOq6+tA0tROd5xGFTMxvdvFPgMmjBkLBoNixok0EwM5koIiAzNq5diajUjuhWxT6SYB6L/MakGvitF0i0oV5Z1N7KwNvm768jDMLNu/+s9Q+z5WgbNZsuQ2Y=
+	t=1728998188; cv=none; b=Mf+fj5TSnxqBqLalmrw/LELzF9SknolaLTFYfadF9WT/mTyKqGKBNmLFchGgLsr4SSYXEaqiLthReZtYNn3wMU7ML8X08DdEMif6eOdFUpVasUfx/cDoxblEdCt7FCZ183D3O7FMhJ/GNoHBNV/IdIUrEb4qTbHKFSeuBhoIWns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728998172; c=relaxed/simple;
-	bh=U8Yi44pYv/A9mRoPkDj+KtdYsXKEBHCCV24L82w7zoI=;
+	s=arc-20240116; t=1728998188; c=relaxed/simple;
+	bh=mG8n070ZwCr5MsQK2C3UD9fVa6fv4bh4c3y8UJ3XqaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/HXiqNl5KekN8TnrpS2fQQ6l/vQVYq3l8Gg2rubkpcnWHha6f43RBI/4VlR8xnpK+P1MdRFoxSAvYAGbs/DisL1xwQisZh9kzIj3cEgdhbqD+Wucr30/UDw89sIpHfftAwtWgI+U/2biZv2mhQ5a7bCLqpUXEdBecBtWeZAy9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yf01NaLs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1C6C4CEC6;
-	Tue, 15 Oct 2024 13:16:11 +0000 (UTC)
+	 MIME-Version; b=K49R4c9uKi1eaA8AAFPax3IExsTFAeZ8OhBomeBhTUZmMJCU5EbH0QuRgM5/hFjnRl/8cBSDYqVkD4BwB2tgj7BlbnSb/d/1R1ebC00aNTIaBqrkSQNDubrhjK8DhaNK2R8I6OK05iWaLiI581WAHN0svr7vOyWLX11Mwef+La4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGBEqOIe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A74C4CEC6;
+	Tue, 15 Oct 2024 13:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728998171;
-	bh=U8Yi44pYv/A9mRoPkDj+KtdYsXKEBHCCV24L82w7zoI=;
+	s=korg; t=1728998188;
+	bh=mG8n070ZwCr5MsQK2C3UD9fVa6fv4bh4c3y8UJ3XqaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yf01NaLswuKJjD9teKbMQ3aMS3ZbW0tWQ0XquwyzwjrkpcZIjJ6gc8eM7YEO1xRRK
-	 FMLjh/fA++fxZn2hD6Dtan4yXCPqAj14nBZJA0CHj3wfhnf2uYXsgthpav3laNcKwW
-	 D+q8VeRdZxOS2cHOgZ5VCNRmvsklt9+3Zuq70xe8=
+	b=ZGBEqOIe35zOQPbBLZwh1TqEKumssurAFK9JJ3Se1x6XtDNWrhqCxWlz3f1u/SZQB
+	 GkCHPi8rV7wqklFwFSACniefSuKUeuP+8FdzAhBkVNPwbyeb1GKtGLOqmK/QfqQG1f
+	 LQJZUsFVJQ808cJqkeYa/VMMotinr+NtMbTM4ayw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
 	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 372/518] ext4: propagate errors from ext4_find_extent() in ext4_insert_range()
-Date: Tue, 15 Oct 2024 14:44:36 +0200
-Message-ID: <20241015123931.330364996@linuxfoundation.org>
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 5.10 373/518] ext4: fix incorrect tid assumption in __jbd2_log_wait_for_space()
+Date: Tue, 15 Oct 2024 14:44:37 +0200
+Message-ID: <20241015123931.368346943@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -68,38 +67,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-commit 369c944ed1d7c3fb7b35f24e4735761153afe7b3 upstream.
+commit 972090651ee15e51abfb2160e986fa050cfc7a40 upstream.
 
-Even though ext4_find_extent() returns an error, ext4_insert_range() still
-returns 0. This may confuse the user as to why fallocate returns success,
-but the contents of the file are not as expected. So propagate the error
-returned by ext4_find_extent() to avoid inconsistencies.
+Function __jbd2_log_wait_for_space() assumes that '0' is not a valid value
+for transaction IDs, which is incorrect.  Don't assume that and invoke
+jbd2_log_wait_commit() if the journal had a committing transaction instead.
 
-Fixes: 331573febb6a ("ext4: Add support FALLOC_FL_INSERT_RANGE for fallocate")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20240822023545.1994557-11-libaokun@huaweicloud.com
+Link: https://patch.msgid.link/20240724161119.13448-3-luis.henriques@linux.dev
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/jbd2/checkpoint.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -5566,6 +5566,7 @@ static int ext4_insert_range(struct file
- 	path = ext4_find_extent(inode, offset_lblk, NULL, 0);
- 	if (IS_ERR(path)) {
- 		up_write(&EXT4_I(inode)->i_data_sem);
-+		ret = PTR_ERR(path);
- 		goto out_stop;
- 	}
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -115,9 +115,12 @@ __releases(&journal->j_state_lock)
+ 		if (space_left < nblocks) {
+ 			int chkpt = journal->j_checkpoint_transactions != NULL;
+ 			tid_t tid = 0;
++			bool has_transaction = false;
  
+-			if (journal->j_committing_transaction)
++			if (journal->j_committing_transaction) {
+ 				tid = journal->j_committing_transaction->t_tid;
++				has_transaction = true;
++			}
+ 			spin_unlock(&journal->j_list_lock);
+ 			write_unlock(&journal->j_state_lock);
+ 			if (chkpt) {
+@@ -125,7 +128,7 @@ __releases(&journal->j_state_lock)
+ 			} else if (jbd2_cleanup_journal_tail(journal) == 0) {
+ 				/* We were able to recover space; yay! */
+ 				;
+-			} else if (tid) {
++			} else if (has_transaction) {
+ 				/*
+ 				 * jbd2_journal_commit_transaction() may want
+ 				 * to take the checkpoint_mutex if JBD2_FLUSHED
 
 
 
