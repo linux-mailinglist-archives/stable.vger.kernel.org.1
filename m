@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-85261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D66999E684
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:43:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F17D299E686
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:43:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F6F51C21FF0
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:43:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4EBB1F24F6D
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536941EC015;
-	Tue, 15 Oct 2024 11:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51391E9082;
+	Tue, 15 Oct 2024 11:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAIsX5Gt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYXa5W/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113AD1D9A42;
-	Tue, 15 Oct 2024 11:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749EE1E9078;
+	Tue, 15 Oct 2024 11:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728992516; cv=none; b=R/xSrhfyCDLBqKX7grpgwOk7VdbxEKX+yfz6o6H9p/ADC6SsnLOAdTaJ7pQQh3roXY7M9v6Jj5yEuek98rjE6WRc9x4EGKiOCa4tgZ3m6V70uOAnVrxRGH8Bn3LLaz1QFzwhGk5VppiIEzUHjiH3jLuQj2aBgsXf7yjQ/7VDVJ0=
+	t=1728992522; cv=none; b=gu81URV6Kso/ei1se6bz5eE9DQCchpC4X9EYbsOQfLHRl2OO/RIjrkw+iph5xi0jImE/JJyMkAtRwFm+ihQEfBmzO1q350tuW49Pioir1tzK+/H24P9nktbluqrR+j395UaVG+E2TFrrpPxAnzZqQei5yYvnU5zhdhA50PNbtDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728992516; c=relaxed/simple;
-	bh=0wS8uI0YNYvsLDJBUeBb2Tb7hvbWZjLhZDxnLHT/T+o=;
+	s=arc-20240116; t=1728992522; c=relaxed/simple;
+	bh=zDAYsjQbcY64oGv8R3lz2/k8zFf+kXsaaIi+Y0zz4ec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p0Vqz71n4j/RPcTO4csrO6b0BCXIpznOT0NaMMy2M1pjOJa3N86QAQXkm4Bnuv06TgCzT/AuzPfUQ7XHYBFpsCf8mAiT68bAIh6X9aVPzE8VqWjCtr38pX5gxCJdaGZcCeyawoZ70NcDHd/aApdFYukUKPVwIfV0uVFM2umHJA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAIsX5Gt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F67C4CEC6;
-	Tue, 15 Oct 2024 11:41:55 +0000 (UTC)
+	 MIME-Version; b=i7a1OieVCeiLf+SFnOGLBKVY+ZdXLem5Q+rL3v+cZ1Ip1J68KJ+8PhSkaGNBqmArkegtme/VZfjodlu2/YZ015rSypLx2lkavPQOvq/6acl8WoramceYZXa897nas+rpfnDwBqkV8MmLrHqrVlVv/bRYQ/Vhgp3Mz7E40x4joV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYXa5W/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D843EC4CEC6;
+	Tue, 15 Oct 2024 11:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728992515;
-	bh=0wS8uI0YNYvsLDJBUeBb2Tb7hvbWZjLhZDxnLHT/T+o=;
+	s=korg; t=1728992522;
+	bh=zDAYsjQbcY64oGv8R3lz2/k8zFf+kXsaaIi+Y0zz4ec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zAIsX5Gtqgk8rPEGpxLYkB+mFrKwxQSs50SYJu/6wPDeI7Me8mxl0ESBppDIJjdWw
-	 uJuHcaJMTqgJMQACitTk6VNZ0uIOYhrkit5mronS2pmod5Ef32Yg4Hkc9Svy7eLaUZ
-	 UEx1TuBM0HmPZFX+qdsZYiDlDhUxuuX59KGDebj8=
+	b=hYXa5W/OHRYdaHs4yNZIYr+ITk2T6PzMpaC/ttGkj2LyqRPlrOeTRrgydCEkPnTgf
+	 RzOWdV1pWLLbqe3EhZHAu8gNmAUDY7nkFOtI9IxqNP3g3lKm73SgrrIl3+cdCYD1YY
+	 0MIyiLlJxHHt86qH2qAqF3wWjMKefnwqtB2N0YGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Riyan Dhiman <riyandhiman14@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 138/691] block: fix potential invalid pointer dereference in blk_add_partition
-Date: Tue, 15 Oct 2024 13:21:26 +0200
-Message-ID: <20241015112445.832347289@linuxfoundation.org>
+Subject: [PATCH 5.15 139/691] spi: ppc4xx: handle irq_of_parse_and_map() errors
+Date: Tue, 15 Oct 2024 13:21:27 +0200
+Message-ID: <20241015112445.871842783@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -67,52 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Riyan Dhiman <riyandhiman14@gmail.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 26e197b7f9240a4ac301dd0ad520c0c697c2ea7d ]
+[ Upstream commit 0f245463b01ea254ae90e1d0389e90b0e7d8dc75 ]
 
-The blk_add_partition() function initially used a single if-condition
-(IS_ERR(part)) to check for errors when adding a partition. This was
-modified to handle the specific case of -ENXIO separately, allowing the
-function to proceed without logging the error in this case. However,
-this change unintentionally left a path where md_autodetect_dev()
-could be called without confirming that part is a valid pointer.
+Zero and negative number is not a valid IRQ for in-kernel code and the
+irq_of_parse_and_map() function returns zero on error.  So this check for
+valid IRQs should only accept values > 0.
 
-This commit separates the error handling logic by splitting the
-initial if-condition, improving code readability and handling specific
-error scenarios explicitly. The function now distinguishes the general
-error case from -ENXIO without altering the existing behavior of
-md_autodetect_dev() calls.
-
-Fixes: b72053072c0b (block: allow partitions on host aware zone devices)
-Signed-off-by: Riyan Dhiman <riyandhiman14@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240911132954.5874-1-riyandhiman14@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 44dab88e7cc9 ("spi: add spi_ppc4xx driver")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://patch.msgid.link/20240724084047.1506084-1-make24@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/partitions/core.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/spi/spi-ppc4xx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/block/partitions/core.c b/block/partitions/core.c
-index 00fb271a60510..0d1fe2b42b855 100644
---- a/block/partitions/core.c
-+++ b/block/partitions/core.c
-@@ -590,9 +590,11 @@ static bool blk_add_partition(struct gendisk *disk,
+diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
+index 1179a1115137f..edfe0896046f9 100644
+--- a/drivers/spi/spi-ppc4xx.c
++++ b/drivers/spi/spi-ppc4xx.c
+@@ -411,6 +411,9 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
  
- 	part = add_partition(disk, p, from, size, state->parts[p].flags,
- 			     &state->parts[p].info);
--	if (IS_ERR(part) && PTR_ERR(part) != -ENXIO) {
--		printk(KERN_ERR " %s: p%d could not be added: %pe\n",
--		       disk->disk_name, p, part);
-+	if (IS_ERR(part)) {
-+		if (PTR_ERR(part) != -ENXIO) {
-+			printk(KERN_ERR " %s: p%d could not be added: %pe\n",
-+			       disk->disk_name, p, part);
-+		}
- 		return true;
- 	}
- 
+ 	/* Request IRQ */
+ 	hw->irqnum = irq_of_parse_and_map(np, 0);
++	if (hw->irqnum <= 0)
++		goto free_host;
++
+ 	ret = request_irq(hw->irqnum, spi_ppc4xx_int,
+ 			  0, "spi_ppc4xx_of", (void *)hw);
+ 	if (ret) {
 -- 
 2.43.0
 
