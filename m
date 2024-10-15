@@ -1,54 +1,60 @@
-Return-Path: <stable+bounces-85469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABAA399E776
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:53:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B5E99E7A1
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:56:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCB5D1C2417A
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:53:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C23021F22A66
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98ECF1D0492;
-	Tue, 15 Oct 2024 11:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7D71E9084;
+	Tue, 15 Oct 2024 11:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPlX4Vbb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sVmDwhZw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570B71D4154;
-	Tue, 15 Oct 2024 11:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C104D1E3DE8;
+	Tue, 15 Oct 2024 11:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993219; cv=none; b=hVnkWYW3t4s9NI/WsIgZx+UH+xbdlBh85cemOzYwSAtRum0g9BOlJhInBeutiX9JQJdxK04MdFTAGm4iYUBCSrBUhOQzwuBN6uLRQL38/4wX9GZzMVYHKWGj96oxBkDLxswVLlO3mcnQZKBsjKTUK5CgQaIIW2DWgZi0fscQyM8=
+	t=1728993358; cv=none; b=DDeN7ETs5TWrMEmkSQXU/Fyu6jEmtQj662uX+nDxMM1VN5bPfG/HSJJABTc+n8U5FuCG9/EmXJncQGlCtoJjlup+aatG5yN35bo/pfSxOrFVgAS24H2kgtqofpaCv4otmrjwjrVvSyfYb6LW/Rf/3ZjCsv3C17CrcqYbLRasg8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993219; c=relaxed/simple;
-	bh=JIWKZXauhtSLyKlosUFAByvo0li9BdAbOEosgNpzLTs=;
+	s=arc-20240116; t=1728993358; c=relaxed/simple;
+	bh=jUTO2WDlWS2E7Z/k0N02nAcHPmeWn3sq0tCpIPOT6pQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=giFfxZqHMpa0FFqjGS60U99UOOKFL/6E1CFSVataWIOsb1SYZ8t60RI43IYmgDurq+JbNYyWR9nSk7CPZ6tEm7Z0FHr1Y8kgNhNfcgDXn487XYBOwySzxp6y5CTwaaXUsWYikta1kbwmD1i+xRUqv9pSHtEVdJCBOV2UtJ0Q7VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPlX4Vbb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15E4C4CEC6;
-	Tue, 15 Oct 2024 11:53:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K+K3YRiBgyYtvZXTEnn6LVVgzG+o1RLQqxoW9kJzV9gHOpA3U7gEzClgMctHvUGHsCyhn5BUGWGOqXB38Ky3OA0+gb+pEmr4t4NLCC6b5qIHf+AvAmmO+er2BpID6htHtWEWCmM4iGgF7DdwdYvPfVthQsJgnDtd4Qysu5xOE1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sVmDwhZw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3079DC4CED0;
+	Tue, 15 Oct 2024 11:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993219;
-	bh=JIWKZXauhtSLyKlosUFAByvo0li9BdAbOEosgNpzLTs=;
+	s=korg; t=1728993358;
+	bh=jUTO2WDlWS2E7Z/k0N02nAcHPmeWn3sq0tCpIPOT6pQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pPlX4VbbqDGz3bNJrUnYH5yuc9IU6ugVkCZzmG8xXU0uxeMPrVOyUb/DKbWN3AyHh
-	 EYylnKp99TmoVrElYYk0QO+xF3ABBMA/693BDWCwKl2yxI10Sdf7OV88bWzEZlL31P
-	 ebv0nAeAWo5cy+3I4KqBNDxLZRO4sM4aOJFIgm3Y=
+	b=sVmDwhZwEzOjXb+/sO/g8XtDGoyOuiT+XVUORU8wW35BJPcGl/HgXu7DUYJv2m78n
+	 5DCliy1llWS+8WaK3nP+E3v9aHjGmGJwkxmtKK8CErT57T3FOI2D0deo2CvXtXwfF3
+	 5fLNrBrZWE1dulR9S0wTYeZ9S+y9zjywYbDs+jiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+67ba3c42bcbb4665d3ad@syzkaller.appspotmail.com,
-	Julian Sun <sunjunchao2870@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.15 345/691] vfs: fix race between evice_inodes() and find_inode()&iput()
-Date: Tue, 15 Oct 2024 13:24:53 +0200
-Message-ID: <20241015112454.032793278@linuxfoundation.org>
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	Christian Brauner <brauner@kernel.org>,
+	James Morris <jmorris@namei.org>,
+	Jann Horn <jannh@google.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Subject: [PATCH 5.15 346/691] fs: Fix file_set_fowner LSM hook inconsistencies
+Date: Tue, 15 Oct 2024 13:24:54 +0200
+Message-ID: <20241015112454.072231711@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -61,98 +67,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Sun <sunjunchao2870@gmail.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-commit 88b1afbf0f6b221f6c5bb66cc80cd3b38d696687 upstream.
+commit 26f204380a3c182e5adf1a798db0724d6111b597 upstream.
 
-Hi, all
+The fcntl's F_SETOWN command sets the process that handle SIGIO/SIGURG
+for the related file descriptor.  Before this change, the
+file_set_fowner LSM hook was always called, ignoring the VFS logic which
+may not actually change the process that handles SIGIO (e.g. TUN, TTY,
+dnotify), nor update the related UID/EUID.
 
-Recently I noticed a bug[1] in btrfs, after digged it into
-and I believe it'a race in vfs.
+Moreover, because security_file_set_fowner() was called without lock
+(e.g. f_owner.lock), concurrent F_SETOWN commands could result to a race
+condition and inconsistent LSM states (e.g. SELinux's fown_sid) compared
+to struct fown_struct's UID/EUID.
 
-Let's assume there's a inode (ie ino 261) with i_count 1 is
-called by iput(), and there's a concurrent thread calling
-generic_shutdown_super().
+This change makes sure the LSM states are always in sync with the VFS
+state by moving the security_file_set_fowner() call close to the
+UID/EUID updates and using the same f_owner.lock .
 
-cpu0:                              cpu1:
-iput() // i_count is 1
-  ->spin_lock(inode)
-  ->dec i_count to 0
-  ->iput_final()                    generic_shutdown_super()
-    ->__inode_add_lru()               ->evict_inodes()
-      // cause some reason[2]           ->if (atomic_read(inode->i_count)) continue;
-      // return before                  // inode 261 passed the above check
-      // list_lru_add_obj()             // and then schedule out
-   ->spin_unlock()
-// note here: the inode 261
-// was still at sb list and hash list,
-// and I_FREEING|I_WILL_FREE was not been set
+Rename f_modown() to __f_setown() to simplify code.
 
-btrfs_iget()
-  // after some function calls
-  ->find_inode()
-    // found the above inode 261
-    ->spin_lock(inode)
-   // check I_FREEING|I_WILL_FREE
-   // and passed
-      ->__iget()
-    ->spin_unlock(inode)                // schedule back
-                                        ->spin_lock(inode)
-                                        // check (I_NEW|I_FREEING|I_WILL_FREE) flags,
-                                        // passed and set I_FREEING
-iput()                                  ->spin_unlock(inode)
-  ->spin_lock(inode)			  ->evict()
-  // dec i_count to 0
-  ->iput_final()
-    ->spin_unlock()
-    ->evict()
-
-Now, we have two threads simultaneously evicting
-the same inode, which may trigger the BUG(inode->i_state & I_CLEAR)
-statement both within clear_inode() and iput().
-
-To fix the bug, recheck the inode->i_count after holding i_lock.
-Because in the most scenarios, the first check is valid, and
-the overhead of spin_lock() can be reduced.
-
-If there is any misunderstanding, please let me know, thanks.
-
-[1]: https://lore.kernel.org/linux-btrfs/000000000000eabe1d0619c48986@google.com/
-[2]: The reason might be 1. SB_ACTIVE was removed or 2. mapping_shrinkable()
-return false when I reproduced the bug.
-
-Reported-by: syzbot+67ba3c42bcbb4665d3ad@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=67ba3c42bcbb4665d3ad
-CC: stable@vger.kernel.org
-Fixes: 63997e98a3be ("split invalidate_inodes()")
-Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
-Link: https://lore.kernel.org/r/20240823130730.658881-1-sunjunchao2870@gmail.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Casey Schaufler <casey@schaufler-ca.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: James Morris <jmorris@namei.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Ondrej Mosnacek <omosnace@redhat.com>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: Serge E. Hallyn <serge@hallyn.com>
+Cc: Stephen Smalley <stephen.smalley.work@gmail.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/inode.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/fcntl.c |   14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -678,6 +678,10 @@ again:
- 			continue;
+--- a/fs/fcntl.c
++++ b/fs/fcntl.c
+@@ -85,8 +85,8 @@ static int setfl(int fd, struct file * f
+ 	return error;
+ }
  
- 		spin_lock(&inode->i_lock);
-+		if (atomic_read(&inode->i_count)) {
-+			spin_unlock(&inode->i_lock);
-+			continue;
-+		}
- 		if (inode->i_state & (I_NEW | I_FREEING | I_WILL_FREE)) {
- 			spin_unlock(&inode->i_lock);
- 			continue;
+-static void f_modown(struct file *filp, struct pid *pid, enum pid_type type,
+-                     int force)
++void __f_setown(struct file *filp, struct pid *pid, enum pid_type type,
++		int force)
+ {
+ 	write_lock_irq(&filp->f_owner.lock);
+ 	if (force || !filp->f_owner.pid) {
+@@ -96,19 +96,13 @@ static void f_modown(struct file *filp,
+ 
+ 		if (pid) {
+ 			const struct cred *cred = current_cred();
++			security_file_set_fowner(filp);
+ 			filp->f_owner.uid = cred->uid;
+ 			filp->f_owner.euid = cred->euid;
+ 		}
+ 	}
+ 	write_unlock_irq(&filp->f_owner.lock);
+ }
+-
+-void __f_setown(struct file *filp, struct pid *pid, enum pid_type type,
+-		int force)
+-{
+-	security_file_set_fowner(filp);
+-	f_modown(filp, pid, type, force);
+-}
+ EXPORT_SYMBOL(__f_setown);
+ 
+ int f_setown(struct file *filp, unsigned long arg, int force)
+@@ -144,7 +138,7 @@ EXPORT_SYMBOL(f_setown);
+ 
+ void f_delown(struct file *filp)
+ {
+-	f_modown(filp, NULL, PIDTYPE_TGID, 1);
++	__f_setown(filp, NULL, PIDTYPE_TGID, 1);
+ }
+ 
+ pid_t f_getown(struct file *filp)
 
 
 
