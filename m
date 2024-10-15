@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-85318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12DAA99E6C7
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:45:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0241599E6CA
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEB4E1F21414
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:45:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBA71286076
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D4201E9078;
-	Tue, 15 Oct 2024 11:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 631A91E907D;
+	Tue, 15 Oct 2024 11:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bijzlkbd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XwZpGPU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592311D5AA5;
-	Tue, 15 Oct 2024 11:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8AB1E7C02;
+	Tue, 15 Oct 2024 11:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728992709; cv=none; b=JYTLiziDiRdLiF/OX0W8521Mh5ChWw/2BIUp20KT2Rc6jwOG/qlNcZ+AhUSe3j/7oTl9ExBzYH4GeMfM9kwnG3o4HUwPVc1ewMwqjePonrgdyBv8r4DU5jpItYKIXKhko4RUwcizINDp2TJoUq0lYd51VQjqkfu5LEYUjCh4VTw=
+	t=1728992716; cv=none; b=ct+7aJ9qBPo9vrzUmvpIUk4rDsXgMOQSiRWf23DU4e2pe3IjcKoZWJZ8exe80H5YueNt1HvK5MC85SM/gpXr3SNCqULxNaleyQ/WwD7LRNNqcXtLdbl0Wbn7V25G6C5embg2/OgZEzeUSHE61tQyyuxNNva7inVygAPJHK3XDDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728992709; c=relaxed/simple;
-	bh=4rfJVyjR5rQLx/K4G0c0o88fgsUUKTZJY+zlabY6IjI=;
+	s=arc-20240116; t=1728992716; c=relaxed/simple;
+	bh=mRmaQZwqTMec33Q+Pb87XivbgF892mM0zIDE6CTdX7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VnlDlnY+ay0xP8D3iJDQsxuG89a03s5O7Z05bnr9aXoS8MbL+dEnD5GEeR6Uzj0SPJbj7RC8r6Hq+E+60clAOUIJUQg7qXuw9sDgmlfWypJDEO5X+N9CdReUN7LYhy3/An2mdIw9I+gc/QA5hwHGegfW5Xc0gY6iF55MAvv5XT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bijzlkbd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA96C4CEC6;
-	Tue, 15 Oct 2024 11:45:08 +0000 (UTC)
+	 MIME-Version; b=u2nPX0qJY+NmLOkYX0+LlRNvQwH8Q6q743S7FqS4zlpvCl5/lp2TtVqy0wj27QXVQWNSVY6Q22F6eE+XoVDMAmXxREOyUnoiCN6pZvSqyLi4PP6CuYdwtxsWyg55atEpcMzBkiUCaCsCzvaeDOErieFDh/i2ulJ/jAtPZU7LcaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XwZpGPU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 801C3C4CECE;
+	Tue, 15 Oct 2024 11:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728992709;
-	bh=4rfJVyjR5rQLx/K4G0c0o88fgsUUKTZJY+zlabY6IjI=;
+	s=korg; t=1728992716;
+	bh=mRmaQZwqTMec33Q+Pb87XivbgF892mM0zIDE6CTdX7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bijzlkbd9JIVKhF4u4QUez3QrjX/e437z8THESLSjDoZ0bT8lC3ifTjFOb8xGw33x
-	 0ijesh89Z83GqRvUkqx2+8nAx1S/v8GbZaFjJCL0M5Z03SYHjv9L29cWc/cmzuKY/5
-	 JJBgVoPr9II4WYBk9nOr1f64IqctzZoAX08JFYqo=
+	b=1XwZpGPUqwLH3MMgocyIai/iRAtZkFFnyrPHHNCF2zIe5tk6bykPfzd82KHrOu+sF
+	 5hm5TFkdq0gC9ECZi63Bruip+meyL+Xzkoydegj+6nmwPpLLN5NF+eD/+nUp0lwI8z
+	 aCb2fbx5u0dXMyF34s5afBM3jejnNTjfrmemseRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tony Ambardar <tony.ambardar@gmail.com>,
 	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 196/691] selftests/bpf: Fix compiling tcp_rtt.c with musl-libc
-Date: Tue, 15 Oct 2024 13:22:24 +0200
-Message-ID: <20241015112448.136622371@linuxfoundation.org>
+Subject: [PATCH 5.15 197/691] selftests/bpf: Fix compiling core_reloc.c with musl-libc
+Date: Tue, 15 Oct 2024 13:22:25 +0200
+Message-ID: <20241015112448.175725346@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -68,39 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 18826fb0b79c3c3cd1fe765d85f9c6f1a902c722 ]
+[ Upstream commit debfa4f628f271f72933bf38d581cc53cfe1def5 ]
 
-The GNU version of 'struct tcp_info' in 'netinet/tcp.h' is not exposed by
-musl headers unless _GNU_SOURCE is defined.
+The type 'loff_t' is a GNU extension and not exposed by the musl 'fcntl.h'
+header unless _GNU_SOURCE is defined. Add this definition to fix errors
+seen compiling for mips64el/musl-libc:
 
-Add this definition to fix errors seen compiling for mips64el/musl-libc:
+  In file included from tools/testing/selftests/bpf/prog_tests/core_reloc.c:4:
+  ./bpf_testmod/bpf_testmod.h:10:9: error: unknown type name 'loff_t'
+     10 |         loff_t off;
+        |         ^~~~~~
+  ./bpf_testmod/bpf_testmod.h:16:9: error: unknown type name 'loff_t'
+     16 |         loff_t off;
+        |         ^~~~~~
 
-  tcp_rtt.c: In function 'wait_for_ack':
-  tcp_rtt.c:24:25: error: storage size of 'info' isn't known
-     24 |         struct tcp_info info;
-        |                         ^~~~
-  tcp_rtt.c:24:25: error: unused variable 'info' [-Werror=unused-variable]
-  cc1: all warnings being treated as errors
-
-Fixes: 1f4f80fed217 ("selftests/bpf: test_progs: convert test_tcp_rtt")
+Fixes: 6bcd39d366b6 ("selftests/bpf: Add CO-RE relocs selftest relying on kernel module BTF")
 Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
 Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/f2329767b15df206f08a5776d35a47c37da855ae.1721713597.git.tony.ambardar@gmail.com
+Link: https://lore.kernel.org/bpf/11c3af75a7eb6bcb7ad9acfae6a6f470c572eb82.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/tcp_rtt.c | 1 +
+ tools/testing/selftests/bpf/prog_tests/core_reloc.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c b/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
-index d207e968e6b1b..dee68ef976ae9 100644
---- a/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
-+++ b/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
+diff --git a/tools/testing/selftests/bpf/prog_tests/core_reloc.c b/tools/testing/selftests/bpf/prog_tests/core_reloc.c
+index 4739b15b2a979..ae2c7e8fb6600 100644
+--- a/tools/testing/selftests/bpf/prog_tests/core_reloc.c
++++ b/tools/testing/selftests/bpf/prog_tests/core_reloc.c
 @@ -1,4 +1,5 @@
  // SPDX-License-Identifier: GPL-2.0
 +#define _GNU_SOURCE
  #include <test_progs.h>
- #include "cgroup_helpers.h"
- #include "network_helpers.h"
+ #include "progs/core_reloc_types.h"
+ #include "bpf_testmod/bpf_testmod.h"
 -- 
 2.43.0
 
