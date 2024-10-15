@@ -1,89 +1,111 @@
-Return-Path: <stable+bounces-85120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F5F99E4D2
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:59:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A6D99E53B
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:11:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E49F42824D9
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 10:59:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E739A1F23C19
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BE11EABD6;
-	Tue, 15 Oct 2024 10:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057A81E3764;
+	Tue, 15 Oct 2024 11:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kmQQoh4Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENbINzWK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FDC1EBA14;
-	Tue, 15 Oct 2024 10:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9924F1D8A1E;
+	Tue, 15 Oct 2024 11:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728989831; cv=none; b=iqRZtB+qTp69CpDRR5Cf7FiyUNCQJy8hMifBE6quIrCeXOT7v2wBtPSP4oxSCFLZXV19k70/3k57OvFRvvheT1Qla+Lw8T4LGG9WJEw6AOPQ6Jbra46nXtV8SXVWXgmYPAB8sWuZY7Q1TYqqK7C8uptYv7HbpVabkQH/ExDVl3A=
+	t=1728990632; cv=none; b=jtro8TwmlBPySbxxIzgT7idjmmJoADVTwNzYeffp8spoa/IVcZR5kASeLbmymu4Th34X9/h1YyQT/X95W0bvf8AlGrmVhxzrZpdNome+DsT6v9yDVNKEWitGiLFW6e9POKBtUpXXoExsroRU8K6GWZze+CET8I6qgmU90sF1Ifs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728989831; c=relaxed/simple;
-	bh=mBWDy+/1LsU2mdwv1xP65UODLZMmvWYLMSfi4wfkJQk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WQIppIEBuYWxkmUxSiNkmRZOskftZ3XaobF0NA1IFs6cLTXh5tub8RkjwQJ0hc++9klHsjbtlfx1sGZnqHJC1oIHjoi18ITLxJFIacvtzo3aBortudMV+goQ0eTNCWNEXBmjvltK60+lbFcgvejnauGl/v1WGNw5HdRSMwn/BYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kmQQoh4Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8487CC4CEC6;
-	Tue, 15 Oct 2024 10:57:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728989830;
-	bh=mBWDy+/1LsU2mdwv1xP65UODLZMmvWYLMSfi4wfkJQk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=kmQQoh4YxBvbkgspgx/X973q8Bmnwb/dxh0QPJgtrtv4OL6LV1HiiqItFg8p8vNuU
-	 WDckni2cX6kck54UNdTc5ptOBGtVzPy2j7x7uNmUwNAgCbgn6zep12SgPqOFLHiqgu
-	 FVChmW1hYmKKgfLfdVBLApUp+1i130fdXK47Q93WZ5qfLuOq6v95Aw84pl4a5O/HKk
-	 VigB64Fhopnb9x8lHMVIcBCID+vI8d52T6NNs7rCT+qfxoJ28Yztr5cnzkGkvNUPz4
-	 dXloIa6rMCxrsRFz8Ue4JQHcQNoGK49JtdtRTN6T8mk408GISGsT9f9ON9idQiMeub
-	 tVQcnVTOD+IKA==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-539fe76e802so826427e87.1;
-        Tue, 15 Oct 2024 03:57:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUBLs/XcXNxgdNHJi/6wd6yKFNCVtxJnONKAyony5DKwrdMoz8/32enXCBnCVRLdrE044oqKwPH@vger.kernel.org, AJvYcCVyH6AsXyhdPi9iFny2EhDCFn/Bsrho7Mf8LU/51q/lZdxTqB9iUpw3x42xlH9+e3zJ4hbLWQ8fqF+s/MHaE2I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXSDnIImQSA15KnduRbZZFVC2kMZr3kBHhsYQx+hm/BE9QTe0x
-	y3rNZNAPmDPNH4CFPoVxntlPk7oU4Y23Va1tP3lcdGbM4YpOjyfeXvuvDSssF8eTmGLogRHtrIN
-	713SzoLrTf5hpolxm/x/5MohkdAo=
-X-Google-Smtp-Source: AGHT+IHDatbRRWflHG79t76g/ZmQOloSnfcbXHBgCIHWzrSGdpAhWGwB4xFU17eSKij3R1NnXzvhVTbId4qaUTC+x1c=
-X-Received: by 2002:a05:6512:2398:b0:52c:9468:c991 with SMTP id
- 2adb3069b0e04-539e54e72a2mr5276430e87.14.1728989828934; Tue, 15 Oct 2024
- 03:57:08 -0700 (PDT)
+	s=arc-20240116; t=1728990632; c=relaxed/simple;
+	bh=5aeyu7uYwG5DbyLuOUrkdyPSoIVIgnN8aSc3vEfPZko=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jMgNmdcSDV2Yw9f2uQp8ho8H90edB0BQ+gEjz4EG46dbr+ShHD4m/ljZBBK/fKTIQrBQ6GPFJDJMNkGO+BjtVNk+J76+UMvC3WeKRQaCp2u45KXr2oiCiaO5drPbINtU/aKQyyQ9paOiS6YGmL5wRxq+jyGebyzw5hv9ne1wjXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ENbINzWK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF58C4CEC6;
+	Tue, 15 Oct 2024 11:10:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1728990632;
+	bh=5aeyu7uYwG5DbyLuOUrkdyPSoIVIgnN8aSc3vEfPZko=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ENbINzWKQ1ZfE+FvEJLhMNiqk7edL7FDZBQ1cSXZFCak+odzJT0JPts2eIZAE+Bg7
+	 4reoEFrfhZnCWmxBAx/nKn+xg9zbJo6SRv+lhK6+hHTc5X5MERaZW0lbH0JT49WG4i
+	 JLxvs3eH2mDSjdcqBiERxYvCjl5Mlm20i3d7eE+8=
+Date: Tue, 15 Oct 2024 13:10:28 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: Jiri Slaby <jirislaby@kernel.org>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, broonie@kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Thomas Richter <tmricht@linux.ibm.com>, linux-s390@vger.kernel.org
+Subject: Re: [PATCH 6.11 000/214] 6.11.4-rc1 review
+Message-ID: <2024101514-blurred-nappy-547a@gregkh>
+References: <20241014141044.974962104@linuxfoundation.org>
+ <CA+G9fYsPPmEbjNza_Tjyf+ZweuHcjHboOJfHeVSSVnmEV2gzXw@mail.gmail.com>
+ <cdb9391d-88ee-430c-8b3b-06b355f4087f@kernel.org>
+ <6dd1f93f-2900-41cc-a369-1ce397e1fb52@kernel.org>
+ <20241015094645.7641-F-hca@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241009124352.3105119-2-ardb+git@google.com> <202410141357.3B2A71A340@keescook>
-In-Reply-To: <202410141357.3B2A71A340@keescook>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 15 Oct 2024 12:56:57 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXF7aFyBOOxQQsvsAsnvo3FYrkU=KA1BiMeSuKq1KHC1qA@mail.gmail.com>
-Message-ID: <CAMj1kXF7aFyBOOxQQsvsAsnvo3FYrkU=KA1BiMeSuKq1KHC1qA@mail.gmail.com>
-Subject: Re: [PATCH v2] x86/stackprotector: Work around strict Clang TLS
- symbol requirements
-To: Kees Cook <kees@kernel.org>
-Cc: Ard Biesheuvel <ardb+git@google.com>, x86@kernel.org, llvm@lists.linux.dev, 
-	linux-hardening@vger.kernel.org, stable@vger.kernel.org, 
-	Fangrui Song <i@maskray.me>, Brian Gerst <brgerst@gmail.com>, Uros Bizjak <ubizjak@gmail.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Andy Lutomirski <luto@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241015094645.7641-F-hca@linux.ibm.com>
 
-On Mon, 14 Oct 2024 at 22:59, Kees Cook <kees@kernel.org> wrote:
->
-> On Wed, Oct 09, 2024 at 02:43:53PM +0200, Ard Biesheuvel wrote:
-> > However, if a non-TLS definition of the symbol in question is visible in
-> > the same compilation unit (which amounts to the whole of vmlinux if LTO
-> > is enabled), it will drop the per-CPU prefix and emit a load from a
-> > bogus address.
->
-> I take this to mean that x86 32-bit kernels built with the stack
-> protector and using Clang LTO will crash very quickly?
->
+On Tue, Oct 15, 2024 at 11:46:45AM +0200, Heiko Carstens wrote:
+> On Tue, Oct 15, 2024 at 10:51:31AM +0200, Jiri Slaby wrote:
+> > On 15. 10. 24, 9:18, Jiri Slaby wrote:
+> > > On 15. 10. 24, 9:05, Naresh Kamboju wrote:
+> > > > On Mon, 14 Oct 2024 at 19:55, Greg Kroah-Hartman
+> > > Reverting of this makes it work again:
+> > > commit 51ab63c4cc8fbcfee58b8342a35006b45afbbd0d
+> > > Refs: v6.11.3-19-g51ab63c4cc8f
+> > > Author:     Heiko Carstens <hca@linux.ibm.com>
+> > > AuthorDate: Wed Sep 4 11:39:27 2024 +0200
+> > > Commit:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > CommitDate: Mon Oct 14 16:10:09 2024 +0200
+> > > 
+> > >      s390/boot: Compile all files with the same march flag
+> > > 
+> > >      [ Upstream commit fccb175bc89a0d37e3ff513bb6bf1f73b3a48950 ]
+> > > 
+> > > 
+> > > If the above is to be really used in stable (REASONS?), I believe at
+> > > least these are missing:
+> > > ebcc369f1891 s390: Use MARCH_HAS_*_FEATURES defines
+> > > 697b37371f4a s390: Provide MARCH_HAS_*_FEATURES defines
+> > 
+> > And this one:
+> > db545f538747 s390/boot: Increase minimum architecture to z10
+> 
+> All of this is not supposed to be stable material.
+> 
 
-Yeah. The linked issue is not quite clear, but it does suggest things
-are pretty broken in that case.
+Agreed, I'm dropping this compile s390 patch, thanks for the build
+testing everyone!  Something went wrong with the testing on our end,
+odd...
+
+thanks,
+
+greg k-h
 
