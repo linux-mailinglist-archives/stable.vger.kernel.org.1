@@ -1,176 +1,133 @@
-Return-Path: <stable+bounces-86351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E623199ED9A
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:32:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF86699EDAC
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A63F4286066
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:32:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D95D1C21CD9
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E43014D439;
-	Tue, 15 Oct 2024 13:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D33814AD19;
+	Tue, 15 Oct 2024 13:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="pwLTvBhF"
+	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="yR6xUNes"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B201FC7C9;
-	Tue, 15 Oct 2024 13:32:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB639139D04
+	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 13:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728999122; cv=none; b=gfLbb/4WZIFkIe4naT6NHTxeD6ZLiEpXCe82VGTGOlwRpJEAxiIrxcM5KP3GaLlEahPQ2FQjZ34RIiZQMd6WyOc8YkCe/EqMS6iuec0P2rQ1N5rEm9gfXvhbq3ANtaGfAYS21M6TzwrrEMxjQZ5KZVWDJdO2//SDZVm8KkcbHD0=
+	t=1728999198; cv=none; b=gM3c6voSsgeAx/O5udWNoBQvLVYc0qHJO0GqqeMahCgRx4rcPZJIFJUKP8XTf1Gi3VySfJu93yFyeEJQsD8lMFT0+rpmkpN7pSeZOkc+SEpAQjnQe28CqAnmFlGYeKhrTX7r/qje+3w7/IQYDPjPqcnQDIpuv7ttab+zASnW7qI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728999122; c=relaxed/simple;
-	bh=zcN5Xlyqvbbdst9rfv6DJMy58JEgi17eQkmigmRX3n8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=IW/M2FXdWYZTbgNuK9BINUw1a/0Swa+pTVedwoUOpGG0/VF7E4PAzKtgwLb6ZS0QtnmD1P7hGg7j/rBFQ2Ak2/h462MpB7adMhhIfj+gJiwEmwhBJJCoq3GKobLBQ6f0jqFt93EEAQ9CNp/3ypLrrV+jMGc+uxGH9hWLbk/SVFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=pwLTvBhF; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FC6w7P012825;
-	Tue, 15 Oct 2024 13:31:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	kA4AcdIzhQcdO4VO4nfKsSVq2Fnc0aE3VWrEIVio3s4=; b=pwLTvBhFoURX8EdS
-	yVolPTqMsxrN2BonyROYGPD2FOgK1id3jEuC2egfK1oldYhDbDhAPGVAEPv5e862
-	w9ID7Mwyknx+1x93IgqJkZTSFxuoMhY2SJjBYcggD5b9TqiqdApyaxYtEocgt8ug
-	n3EqCR5CBE4VYfrEBU8GjtR/nFYhHK4bXdyxiDI7bxBdUuOuFKaNhav3vOTsWYGd
-	O51z8zo0PctdYBVemBStAvxn8Pgx0KwMANNErsbU44OdIYsDGqaHLepCuLoyBj52
-	N+qdluXIYLPgXlWGmk0EuI+gxG885OBbS9WEfMohNtVtkcaVb4fT5taY828m5rwT
-	x9DI/w==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 429e5g1qdb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Oct 2024 13:31:38 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49FDVb8S015831
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Oct 2024 13:31:37 GMT
-Received: from [10.216.56.224] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 15 Oct
- 2024 06:31:33 -0700
-Message-ID: <d4a52579-0e2a-4df3-a1fa-e8e154ff1e90@quicinc.com>
-Date: Tue, 15 Oct 2024 19:01:30 +0530
+	s=arc-20240116; t=1728999198; c=relaxed/simple;
+	bh=UJEXxmod9hwkTENeMk5+2g6dtyvgZ2h1Duc4mV+05xs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oK1+/8YpLnxEuAHvnthONWGX1WtNshW5tZZwXRGa4hocRl8kufdZnG9N2SnGPbGFNBTYEqHJ+j22Xs1HkZ9W/KTyZXcsh+1yL3t9Cqc1WNrQ0Qn4bHcwZsRFGvm8aIsck2N6RBl4c4qJgaTRZAduLfhl0JsvZP/7PxPHkOW1HYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=yR6xUNes; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-37d49a7207cso3485028f8f.0
+        for <stable@vger.kernel.org>; Tue, 15 Oct 2024 06:33:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1728999194; x=1729603994; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QS14/1rLrV66qDBatRYaujSeYfhdUS/QKbwUq4VPEjM=;
+        b=yR6xUNestIQGqBoSQFhtGQjPFxM9n+m00oG5Q59JZY+IvJzy8ovCaEtrdvoui88wTX
+         iTW1SFaPzwv2+izGsC+m+jLcbRbKIzqlooLTGirJn4OFNvV4tdiGZIRETlj7f6GdJzb1
+         fBqv/qKigSKqUGU7leP2VupPKGFskUESTg9rFQ2uafJCi4GuXc66x7zeTeur24uK0ewJ
+         8p2eILLqoH/CIFPFGo1RHzLSg7LUDd1HrNic8JwMZJAf6xyDpZLJNfSqOiXF+foVWC1+
+         Q61+bKkGETiQFmmh50M5gkvCS+JDkJaSZLT5jjcUXHWwxRSSPzBBo9/POyMmIz8boJN3
+         4Lig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728999194; x=1729603994;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QS14/1rLrV66qDBatRYaujSeYfhdUS/QKbwUq4VPEjM=;
+        b=uLZ1wQHkTD60J9vpbbZAKviBmjcUyqrtQRN6g4loyZqX0ydMUgGqWgHP76xOGLOgRA
+         7BuofcFx+TyRgdEWQmhR80ulgX+oY+yQtXjvMJRR2lIYiIVjFPM5MlvI47w+mGHuYLYa
+         gL+/PhdhPqg+wvla0RZYlK1W3I795bxtXm2mZVTUcym+DeqhXJmvYXuvCuS69HCvu2N3
+         mxFiV8xmFgFRNaudQfo7tCDExrPKLZ0QhI0BjJmNYVUFyxKs7XaywlrKk+KFtBcs/zIy
+         NviSkPkEaaNyIbac5da4ZQFK6xzUBy3LtxnrlaH9mhm+rkohqlY0BSwP8h0w5/tcSG8N
+         xBng==
+X-Gm-Message-State: AOJu0YwkU2dvCZ57eALnt9OYTCxuXJelk8IJEtsGfz40GvDbDqaAYeXt
+	NekPcW5aHuttVnOz0voJXgTNpkfl6lFXHGKCC0GcWM9bWbbrTsQPpj/mlYe4KUO8dUtFsU2QiPi
+	t4OjrkelK+a1icn2wO1Z1SYDw9ClXJqQPywJuq1zLeoCdV23SWck=
+X-Google-Smtp-Source: AGHT+IGNradBs7hA6tXJ03WnMFyglMyY4jCHENeRjpb48YC3HbpmmRPnxpuAwooOcuGkZlLWRPIWTDx0C/YHIDf8Dy4=
+X-Received: by 2002:adf:f304:0:b0:37d:4fb1:4fab with SMTP id
+ ffacd0b85a97d-37d601d21bemr6228186f8f.57.1728999194068; Tue, 15 Oct 2024
+ 06:33:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] iommu/arm-smmu: Defer probe of clients after smmu
- device bound
-Content-Language: en-US
-To: <will@kernel.org>
-CC: <robin.murphy@arm.com>, <joro@8bytes.org>, <jgg@ziepe.ca>,
-        <jsnitsel@redhat.com>, <robdclark@chromium.org>,
-        <quic_c_gdjako@quicinc.com>, <dmitry.baryshkov@linaro.org>,
-        <linux-arm-kernel@lists.infradead.org>, <iommu@lists.linux.dev>,
-        <linux-kernel@vger.kernel.org>, <quic_charante@quicinc.com>,
-        <stable@vger.kernel.org>, Prakash Gupta
-	<quic_guptap@quicinc.com>
-References: <20241004090428.2035-1-quic_pbrahma@quicinc.com>
-From: Pratyush Brahma <quic_pbrahma@quicinc.com>
-In-Reply-To: <20241004090428.2035-1-quic_pbrahma@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: D576OjrQQ18vkOw66nyELqYH4K7rmAq7
-X-Proofpoint-ORIG-GUID: D576OjrQQ18vkOw66nyELqYH4K7rmAq7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
- adultscore=0 impostorscore=0 mlxscore=0 priorityscore=1501 suspectscore=0
- bulkscore=0 phishscore=0 spamscore=0 mlxlogscore=999 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2410150092
+References: <20241015112327.341300635@linuxfoundation.org>
+In-Reply-To: <20241015112327.341300635@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Tue, 15 Oct 2024 22:33:02 +0900
+Message-ID: <CAKL4bV7WGcKbkCkfG-J8UtrKt5MM5dObr1c5RoKmm-TxfAVVkQ@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/211] 6.6.57-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Greg
 
-On 10/4/2024 2:34 PM, Pratyush Brahma wrote:
-> Null pointer dereference occurs due to a race between smmu
-> driver probe and client driver probe, when of_dma_configure()
-> for client is called after the iommu_device_register() for smmu driver
-> probe has executed but before the driver_bound() for smmu driver
-> has been called.
+On Tue, Oct 15, 2024 at 8:26=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Following is how the race occurs:
+> This is the start of the stable review cycle for the 6.6.57 release.
+> There are 211 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> T1:Smmu device probe		T2: Client device probe
+> Responses should be made by Thu, 17 Oct 2024 11:22:41 +0000.
+> Anything received after that time might be too late.
 >
-> really_probe()
-> arm_smmu_device_probe()
-> iommu_device_register()
-> 					really_probe()
-> 					platform_dma_configure()
-> 					of_dma_configure()
-> 					of_dma_configure_id()
-> 					of_iommu_configure()
-> 					iommu_probe_device()
-> 					iommu_init_device()
-> 					arm_smmu_probe_device()
-> 					arm_smmu_get_by_fwnode()
-> 						driver_find_device_by_fwnode()
-> 						driver_find_device()
-> 						next_device()
-> 						klist_next()
-> 						    /* null ptr
-> 						       assigned to smmu */
-> 					/* null ptr dereference
-> 					   while smmu->streamid_mask */
-> driver_bound()
-> 	klist_add_tail()
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.57-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
 >
-> When this null smmu pointer is dereferenced later in
-> arm_smmu_probe_device, the device crashes.
+> thanks,
 >
-> Fix this by deferring the probe of the client device
-> until the smmu device has bound to the arm smmu driver.
+> greg k-h
 >
-> Fixes: 021bb8420d44 ("iommu/arm-smmu: Wire up generic configuration support")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Prakash Gupta <quic_guptap@quicinc.com>
-> Signed-off-by: Prakash Gupta <quic_guptap@quicinc.com>
-> Signed-off-by: Pratyush Brahma <quic_pbrahma@quicinc.com>
-> ---
-> Changes in v2:
->   Fix kernel test robot warning
->   Add stable kernel list in cc
->   Link to v1: https://lore.kernel.org/all/20241001055633.21062-1-quic_pbrahma@quicinc.com/
->
->   drivers/iommu/arm/arm-smmu/arm-smmu.c | 3 +++
->   1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-> index 723273440c21..7c778b7eb8c8 100644
-> --- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
-> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-> @@ -1437,6 +1437,9 @@ static struct iommu_device *arm_smmu_probe_device(struct device *dev)
->   			goto out_free;
->   	} else {
->   		smmu = arm_smmu_get_by_fwnode(fwspec->iommu_fwnode);
-> +		if (!smmu)
-> +			return ERR_PTR(dev_err_probe(dev, -EPROBE_DEFER,
-> +						"smmu dev has not bound yet\n"));
->   	}
->   
->   	ret = -EINVAL;
 
+6.6.57-rc2 tested.
 
-Hi
-Can someone please review this patch? Let me know if any further 
-information is required.
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
+
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+
+[    0.000000] Linux version 6.6.57-rc2rv
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20240910, GNU ld (GNU
+Binutils) 2.43.0) #1 SMP PREEMPT_DYNAMIC Tue Oct 15 22:09:26 JST 2024
 
 Thanks
-Pratyush
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
