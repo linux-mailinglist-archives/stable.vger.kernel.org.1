@@ -1,73 +1,53 @@
-Return-Path: <stable+bounces-85824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C38299EA41
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:48:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCDB699EA46
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:48:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FD5B289136
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:48:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 921BD2895F9
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1831C07CD;
-	Tue, 15 Oct 2024 12:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38DD1C07DE;
+	Tue, 15 Oct 2024 12:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KHSL7JM5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6dF/Fay"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40651C07EC
-	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 12:48:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6591C07CC;
+	Tue, 15 Oct 2024 12:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728996494; cv=none; b=JOtex4K7KhMOLWzmiCok4ppN6/SEr+yNEMPvkBYpJX41nH33RKoazRpJc1he1WFNk8OUAKqUj+/ONswS7sH0A7q854ksBehnFjpKc9Zwbu+kJloP8kMhdS+7yyGrxY8TLDI4mAds8KLO1mrgBc13ECZqvppE/tgij0teLpOqpjQ=
+	t=1728996516; cv=none; b=MSt8pvaqdFMJYA1OA/vn4jX5GMqDgptGDLo0ZM5XiF2tIBvW/v0GkDZV5CyZT1rC5fe9mVTGqxJVPJr0RoRAOvFi0gpbUU3BOt6rbzH8Rj24lKT+m7JeZOkb2RY0TboN3CmI/HYP/W50eAJ+ma+efBZMbClTsoLdQdm7+F2PN60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728996494; c=relaxed/simple;
-	bh=Yj6T3HYU4dgVmjX5AdHX1JjKWVa0/Xr0X028o5r2lvU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=bMFZbzw/lzlYcwBty76Yf6pmlWqSI+AM0YX1U+h6xa0tw+s0dSG607rj0T56XrVh6Mrg6WcdUQeU5DcHB8ABL+ij7I+wvJXbFJ9UCzIQEdEgEsYhNDsQrmOJUEOHyxsYu7H8+z/T64NcyBdW22Hq+BL440cRAy86pg0pnjtcYHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KHSL7JM5; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728996492; x=1760532492;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=Yj6T3HYU4dgVmjX5AdHX1JjKWVa0/Xr0X028o5r2lvU=;
-  b=KHSL7JM5V4aHJAGgEPYGWxor9XQs149KYy5td2xaPZaIs5hUcIx3iX4C
-   q+CKY9l8X3cMhVNJPfgSoINALk5zh8Q+DE993Fcsv9H+uhl3RVMN21q0+
-   vIU9nBeR+LY3KLu7nax/hV/Wb6G5/U+GS/Q6vIoCNPhYgxwlqksaIVtHg
-   kTwXvUHUelwe/uIjfTMpsVh5LTtLLAPoVZ9bA/oQBQbAGUCQiINTnp/sC
-   oY0yFna6GPn/c45mL2ySG1fssP/m3gC4O3eRn/2VUr4GNbXcwbWVeZ576
-   RJecVOZNTvLRoZktMrioK38MafZWJJg8LMR5Eo/g1Rn4qBtJph5hyNIF1
-   w==;
-X-CSE-ConnectionGUID: JSQeV51uQoKKZG0mbX7hCA==
-X-CSE-MsgGUID: fZW1X5PYRFiuN4A/4tnSmQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11225"; a="39776245"
-X-IronPort-AV: E=Sophos;i="6.11,205,1725346800"; 
-   d="scan'208";a="39776245"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2024 05:48:12 -0700
-X-CSE-ConnectionGUID: HWSUkD1FTNOf32oMfv4UiQ==
-X-CSE-MsgGUID: AWrXfEowTYWbU6zEkS5JKw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,205,1725346800"; 
-   d="scan'208";a="77761496"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 15 Oct 2024 05:48:11 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t0gy9-000Ip7-0f;
-	Tue, 15 Oct 2024 12:48:09 +0000
-Date: Tue, 15 Oct 2024 20:47:11 +0800
-From: kernel test robot <lkp@intel.com>
+	s=arc-20240116; t=1728996516; c=relaxed/simple;
+	bh=Zu8HA9GF8oYNqN0gW9DTJjGKn9j2ms4IdAX9py1eejc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rEv4KVFdU8ci/VHiWHuBvU2j7QmY681GRMhawP8L2UetSboxM1ie4oQEmr/U6XvIjGm39ODHpIVIuDXSnD7uSUpN9blY7ol7lYDrvgtc/c0nrU6P4RneFcuy5ueTC/7I8NviKyu4hOCcQkT7nL4kmYNPbHBbDSQ46Wk9obl0cfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6dF/Fay; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BF0C4CECE;
+	Tue, 15 Oct 2024 12:48:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1728996516;
+	bh=Zu8HA9GF8oYNqN0gW9DTJjGKn9j2ms4IdAX9py1eejc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d6dF/Fay5IPYBh4ZUm/+Nq0Tvl5UbsDrvpZea0UuHJ1gNZwjYKtEySb7wK2uPadR5
+	 gv8jOLMSW+CoS0uAW4aFdsBxtfmWUyHI7mO0c262M5z5pyrvXlvXOzriBw2lsrTVJK
+	 9XvWtdi+/Dum6eQwjyhp3VmNgt9WnTYZXNGMKhok=
+Date: Tue, 15 Oct 2024 14:48:07 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Alexander Usyskin <alexander.usyskin@intel.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Cc: Oren Weil <oren.jer.weil@intel.com>, Tomas Winkler <tomasw@gmail.com>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Rohit Agarwal <rohiagar@chromium.org>,
+	Brian Geffon <bgeffon@google.com>
 Subject: Re: [char-misc-next v3] mei: use kvmalloc for read buffer
-Message-ID: <Zw5kT4LZq4K-hWR6@86e5a9022298>
+Message-ID: <2024101509-refined-posh-c50d@gregkh>
+References: <20241015123157.2337026-1-alexander.usyskin@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,22 +58,26 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20241015123157.2337026-1-alexander.usyskin@intel.com>
 
-Hi,
+On Tue, Oct 15, 2024 at 03:31:57PM +0300, Alexander Usyskin wrote:
+> Read buffer is allocated according to max message size, reported by
+> the firmware and may reach 64K in systems with pxp client.
+> Contiguous 64k allocation may fail under memory pressure.
+> Read buffer is used as in-driver message storage and not required
+> to be contiguous.
+> Use kvmalloc to allow kernel to allocate non-contiguous memory.
+> 
+> Fixes: 3030dc056459 ("mei: add wrapper for queuing control commands.")
+> Reported-by: Rohit Agarwal <rohiagar@chromium.org>
+> Closes: https://lore.kernel.org/all/20240813084542.2921300-1-rohiagar@chromium.org/
+> Tested-by: Brian Geffon <bgeffon@google.com>
+> Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+> ---
 
-Thanks for your patch.
+Why is this on the -next branch?  You want this merged now, right?
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Again, I asked "why hasn't this been reviewed by others at Intel", and
+so I'm just going to delete this series until it has followed the
+correct Intel-internal review process.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [char-misc-next v3] mei: use kvmalloc for read buffer
-Link: https://lore.kernel.org/stable/20241015123157.2337026-1-alexander.usyskin%40intel.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+greg k-h
 
