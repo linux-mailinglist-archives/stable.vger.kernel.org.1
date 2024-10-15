@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-85837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB51599EA6C
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:54:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A46AF99EA6E
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:54:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85C19281807
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:54:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D68051C219D7
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72601AF0B4;
-	Tue, 15 Oct 2024 12:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557311C07D4;
+	Tue, 15 Oct 2024 12:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QpHsHLVP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wl9gHzFy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A551C07C4;
-	Tue, 15 Oct 2024 12:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129E51C07C4;
+	Tue, 15 Oct 2024 12:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728996855; cv=none; b=Ltr620joXuX4oNUAQUKghM2IV3YGr5zOJzRZha4ZOSczpM6LUjJi1D/qVRrDYrGVJxlSjqE89u0gV9Dl6kdlJAh5a5LaQ8EqaAcOFwggTNjCur7+DBEb8/UF900DHr++MFjRJb7K9LUNjAe3ZA+GDrDXrgjzBBZeG384YqRvAos=
+	t=1728996862; cv=none; b=lPN5xRzCiLrpblYTLvv0JjlASpH9p72fPVhLdsofyqwUCs/bbZe91IYrtMN007g1uDjbC6G0s2DxY/2AjB1WY7zK9Zs5k3IEychHrFgvt/a4w3MrOMeXckZ/Tz9ggu/e0vWutcVo7MrOlP3v1b9JLvpvDRV80PX+XSWnXgeZoY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728996855; c=relaxed/simple;
-	bh=SJ5JtrZAuQxNUuUHHcB0K6Q+fQP5/ZXpDVVstrM5Vmg=;
+	s=arc-20240116; t=1728996862; c=relaxed/simple;
+	bh=CWGJ4WDdCB2U/rjbsw9YH6jTqIE4Aksp3erFwMeVEZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHY+SbhEFZBKG0r2U9jHBCnxcfWXiskoM1LQKN5mpJ/QMwobY5/CSuAtAP7AQHm+1NTS098b4CKB2+nSA8xGsSV/ERGYJnZ8NQiB8wTRIf48O2gh7Z+AZxEE2mawCH/q0HpEpfL/pdlr4xh8MN0qIftwvTLvwXj+IfFvsGAaiXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QpHsHLVP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92E1C4CEC6;
-	Tue, 15 Oct 2024 12:54:14 +0000 (UTC)
+	 MIME-Version; b=oYCowEdIfGR6GktZdwui+rE2qqVJ6+lw1JlBqNS/gwnuZIwm+0naTlxlrrlbxMpuNMaWGZcwzs4DIJxiXvdc/rie5/uOd9BROMbzrbzoFVHEoDwPdLW58N3Tj7UwWBIIXTb8ZijKI+SSosEJ99bao2y9IMRZj2uKFcFOjEzIN9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wl9gHzFy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F539C4CEC6;
+	Tue, 15 Oct 2024 12:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728996855;
-	bh=SJ5JtrZAuQxNUuUHHcB0K6Q+fQP5/ZXpDVVstrM5Vmg=;
+	s=korg; t=1728996861;
+	bh=CWGJ4WDdCB2U/rjbsw9YH6jTqIE4Aksp3erFwMeVEZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QpHsHLVPhEMTRIPl/XQHDJc4tX0DEW8qdc99h7VrLv7+viNynaPjEmKyQGzUaZ1kt
-	 ezyz/tAgTjulT6xjO+nobH34Qf7wXwsnVk6ntyES2eh1fINhMFUP3zHUZr593ULl3S
-	 TMNk8VBlgKgJYyt8h/qHp6qeG1LV3k7C7YOc22ms=
+	b=wl9gHzFyKnTchc/uIdgkA5SviTprjYO2mJscTASrCq0AeRCPTQsv90g12Dc3aJbt6
+	 fIXjdh8VvERNTEtxvRwxcJ+CV89L8IR46QbbdcY+pLh9rUk5eGFNfXdHfN9fiI3WpG
+	 JyLfAeM76z1KGVECTKnXt7IkMLv+HKeYyNKcU36Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Meir Lichtinger <meirl@nvidia.com>,
+	Eran Ben Elisha <eranbe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 019/518] ice: fix accounting for filters shared by multiple VSIs
-Date: Tue, 15 Oct 2024 14:38:43 +0200
-Message-ID: <20241015123917.576050757@linuxfoundation.org>
+Subject: [PATCH 5.10 020/518] net/mlx5: Update the list of the PCI supported devices
+Date: Tue, 15 Oct 2024 14:38:44 +0200
+Message-ID: <20241015123917.612962911@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -67,67 +68,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Meir Lichtinger <meirl@nvidia.com>
 
-[ Upstream commit e843cf7b34fe2e0c1afc55e1f3057375c9b77a14 ]
+[ Upstream commit dd8595eabeb486d41ad9994e6cece36e0e25e313 ]
 
-When adding a switch filter (such as a MAC or VLAN filter), it is expected
-that the driver will detect the case where the filter already exists, and
-return -EEXIST. This is used by calling code such as ice_vc_add_mac_addr,
-and ice_vsi_add_vlan to avoid incrementing the accounting fields such as
-vsi->num_vlan or vf->num_mac.
+Add the upcoming BlueField-3 device ID.
 
-This logic works correctly for the case where only a single VSI has added a
-given switch filter.
-
-When a second VSI adds the same switch filter, the driver converts the
-existing filter from an ICE_FWD_TO_VSI filter into an ICE_FWD_TO_VSI_LIST
-filter. This saves switch resources, by ensuring that multiple VSIs can
-re-use the same filter.
-
-The ice_add_update_vsi_list() function is responsible for doing this
-conversion. When first converting a filter from the FWD_TO_VSI into
-FWD_TO_VSI_LIST, it checks if the VSI being added is the same as the
-existing rule's VSI. In such a case it returns -EEXIST.
-
-However, when the switch rule has already been converted to a
-FWD_TO_VSI_LIST, the logic is different. Adding a new VSI in this case just
-requires extending the VSI list entry. The logic for checking if the rule
-already exists in this case returns 0 instead of -EEXIST.
-
-This breaks the accounting logic mentioned above, so the counters for how
-many MAC and VLAN filters exist for a given VF or VSI no longer accurately
-reflect the actual count. This breaks other code which relies on these
-counts.
-
-In typical usage this primarily affects such filters generally shared by
-multiple VSIs such as VLAN 0, or broadcast and multicast MAC addresses.
-
-Fix this by correctly reporting -EEXIST in the case of adding the same VSI
-to a switch rule already converted to ICE_FWD_TO_VSI_LIST.
-
-Fixes: 9daf8208dd4d ("ice: Add support for switch filter programming")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Meir Lichtinger <meirl@nvidia.com>
+Reviewed-by: Eran Ben Elisha <eranbe@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_switch.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
-index 0155c45d9d7f..1645fb527fdb 100644
---- a/drivers/net/ethernet/intel/ice/ice_switch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_switch.c
-@@ -1259,7 +1259,7 @@ ice_add_update_vsi_list(struct ice_hw *hw,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 35e11cb883c9..f76a4860032c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1600,6 +1600,7 @@ static const struct pci_device_id mlx5_core_pci_table[] = {
+ 	{ PCI_VDEVICE(MELLANOX, 0xa2d2) },			/* BlueField integrated ConnectX-5 network controller */
+ 	{ PCI_VDEVICE(MELLANOX, 0xa2d3), MLX5_PCI_DEV_IS_VF},	/* BlueField integrated ConnectX-5 network controller VF */
+ 	{ PCI_VDEVICE(MELLANOX, 0xa2d6) },			/* BlueField-2 integrated ConnectX-6 Dx network controller */
++	{ PCI_VDEVICE(MELLANOX, 0xa2dc) },			/* BlueField-3 integrated ConnectX-7 network controller */
+ 	{ 0, }
+ };
  
- 		/* A rule already exists with the new VSI being added */
- 		if (test_bit(vsi_handle, m_entry->vsi_list_info->vsi_map))
--			return 0;
-+			return -EEXIST;
- 
- 		/* Update the previously created VSI list set with
- 		 * the new VSI ID passed in
 -- 
 2.43.0
 
