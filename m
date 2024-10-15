@@ -1,152 +1,164 @@
-Return-Path: <stable+bounces-86378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B867F99F531
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 20:27:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE3999F545
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 20:28:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3D361C22DA7
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 18:27:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0520E28483E
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 18:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024511FC7EC;
-	Tue, 15 Oct 2024 18:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776F0227BA8;
+	Tue, 15 Oct 2024 18:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fdRFp10a"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WNTRTKPY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1772B1F9ED1
-	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 18:27:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732F722911B
+	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 18:27:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729016822; cv=none; b=lw1+KBZIAW5ts4Eq8+4F8LV2nJiuom4UMViA32daNHI6sVbBX7v/b0/g4yvt99lpGEf/0m+swnzfWLc0jTBGtmavVbD6QjYc3vTBqvU+vzllIYIFmJFhGLkvW1G1kOAkLU4MkEmWnuOaY7QhfSsHphpdy7SLpR65QLLb80zqJPA=
+	t=1729016860; cv=none; b=U42gXNk5zDZWoF7gVXkAKxeFnxtz1PP0sv4ROJc/EDZrtSqRw0Wu9mxi4oINxkKb9kJYAvCKVzUHKAYGVvNQt0he+zHvhEvABGuEzPwWamGGniwJeHGy9wfLBU4k2btbxb5pk8tU5BcTPJrvsIrJsMMTn8Jd8G58hC/zn4GvyEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729016822; c=relaxed/simple;
-	bh=vamx8/rOiH4uiKyR1YrzhxprexDCGI5fRg2RjeqQ9cw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gyxz1C+SuxJgsSxdSXVUpMJ4NWWj2Q+D3uZUmPWxZ2JRpZyabaHJxKsnamrrVG7TpUdQamdk6ZwG+dTz+mk5XcG8BPOZdiv8mvAso7ZMRR5VX3k8spugKrU859YyzCIF6NOQc6sr/x4Rcq0UwuJEPE9sjXpbwwbbdNCEXmRbuVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fdRFp10a; arc=none smtp.client-ip=209.85.208.46
+	s=arc-20240116; t=1729016860; c=relaxed/simple;
+	bh=7P5eDtewB/XXvdIouhuiVrA5JcIwFJRwjUeMhlF9l9o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=K8ACOesXR/QCUAAPXlEiAXo8lLp6rCMVmssKrofQvUpchku/NKh+Oeclv9mYmbqE4jz2yW7JmUWq8qeB3X/GwlrojDsgB6gzriBkc+DBEoKKvLwZMsd98yxXwefrayNM0mBqcYqWUkeAqPvn+1qnE8vZBx89UD5f/zhd35eZ1qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WNTRTKPY; arc=none smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5c932b47552so56938a12.0
-        for <stable@vger.kernel.org>; Tue, 15 Oct 2024 11:27:00 -0700 (PDT)
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5c932b47552so56953a12.0
+        for <stable@vger.kernel.org>; Tue, 15 Oct 2024 11:27:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729016819; x=1729621619; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mlSTzVFBMAwfCjrUhLGs/71Kbvg//7/+EQqPLUMGtSs=;
-        b=fdRFp10a3pQjyII1qC+wNdA/NI2AXcs7Z8x8eeSx79oRo+vWhDAroo+NrsR+0nqfmV
-         8hJGFfi2622r+x9krhGCoY9cGLgvxaLxRYMxTWFKlubimpKXCXZgcFVhGzC2dE8BqZjc
-         cOh5EOFVMhPVh+1SH6uD1AbF4CED1gDKTckDh9Pz4EzufhQYgKPVuQcy237MrlAA+u5D
-         vyhwfsUJ4mdK8JZGs8uvHGLTYFf3F6a+v4Dkx20Bg/G8LuAAXPqWElbBsU3km48YeIIw
-         m0ZaiSWx2gSeGeJySRQyoozeGYeS5qWd0MCpjX+1xuhry7G8T/tUpw5UPARZ1TGYZo0B
-         waJg==
+        d=google.com; s=20230601; t=1729016857; x=1729621657; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y0XGeskGBljrZ3o31WnXq6th/S7en+muGJ/z0yASC/c=;
+        b=WNTRTKPYFIpRuwNY1DpLWfDDWo0pvvytPyV+2mJOChElnm0iXKKwaEiR5n76yR4f0J
+         5mdfTlC4bsIN69mAn1kKUJp2aW7Yop+1RS3Se3dUoFGKWRiDhV+qDiQAOEEJ2IRcL2AX
+         wUXCw4pJP9Ie3D6MycCe6MCPFSnJaJ6E60n4iCrtdOSFYx8pw6YPETp7Bj9KYwIdnkkE
+         T19Njl3nCxKRwXdZ3xDMjE9xRrPGElzPkbZTJXMsb1+URsBvLoR8F93XiAWbMb1pHVJi
+         +gorPnsEKuXGoymP3Nhxin06dThzmtNEIgSvLNRfvDdEagXVzPHJi8WRWdbXjqcoM8OR
+         BjGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729016819; x=1729621619;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mlSTzVFBMAwfCjrUhLGs/71Kbvg//7/+EQqPLUMGtSs=;
-        b=SK/CEhsNhcZ6qZCc8ZGuYauq1KkrBSMr8ioh1HcAS/o/VbuJjhpBey5HHSOHKr/V4v
-         1VoZ6xNgvuVqBszeg8Z1sTQyYuyDEBNvoRFItVKqmZ4phqKarNJJWA8L9Y60x9OJpqPv
-         eimSV2oSp/BMxewBBIsM4c2cFfeTJkFKIFBY5qik49GJho79A157dw+3HB9ni24D8plh
-         iwEroa4Mv8HZoHXjYvx+PQi+N0bcZLuVEWmFoIW431B83X/jLvpgCjqY6UnGhFOv8/DD
-         LdwOexRZLdpy8/WdEGiFBOhWiCOcg5eC/hpiRMfq4ZjvTJafi6wd/3wGkEV7i7uDiq3A
-         tBRw==
-X-Forwarded-Encrypted: i=1; AJvYcCWbrOvryKUEVeDybFl3IfZ4nacLSMQvU9BC7MAPVq64RbiCaqy8ZtQiT/FTFX8a73jGOAeeeqA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywhqk6mm9hfgdUK3FpAoad4BIMshXg4s32nZn4HY1HIq5RMNqS6
-	iciBjW9U0UVZQ30qgbYUOs6LB7e05/c2QQ/5EDfp+Pibq1rCMGapSSNUhGXLDUGZNBYfaiWtgWe
-	tM8Rc
-X-Google-Smtp-Source: AGHT+IGrVjq4UbZIZxc0XUzzTQLvBel0agYzdvE0EBbcyaVW8iIIg+me9M2vVfg/SYDFgH0aqj2X2w==
-X-Received: by 2002:a05:6402:520b:b0:5c9:2834:589c with SMTP id 4fb4d7f45d1cf-5c997bc14d3mr21224a12.3.1729016818678;
-        Tue, 15 Oct 2024 11:26:58 -0700 (PDT)
-Received: from localhost ([2a00:79e0:9d:4:9e7e:5bb9:bb65:c022])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4313f55df1csm25890795e9.1.2024.10.15.11.26.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Oct 2024 11:26:58 -0700 (PDT)
-From: Jann Horn <jannh@google.com>
-Date: Tue, 15 Oct 2024 20:26:44 +0200
-Subject: [PATCH v2] comedi: Flush partial mappings in error case
+        d=1e100.net; s=20230601; t=1729016857; x=1729621657;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y0XGeskGBljrZ3o31WnXq6th/S7en+muGJ/z0yASC/c=;
+        b=VuFN6xobgdvEjSnPEukdZI68dz1QIind31CSsp5/UG/pkbErAQY6eTXeoWTBGWYYsK
+         hrmtw8yRFaxsKp9GIdoAcmzpHsXzqMC4YFman1kTOZd7Pdf4cGu+jJokfHJAO+4hcu0R
+         +D7vwpNgmZuU7QnMBFY4k/ai7B09L4MYi1AsyvZPrhcAKbfVOZvCSwjeL6s2D/7CrVBg
+         E4dPFgSjv2WS2S5x04h8LGa/HqPnXGoJ02ltjXNUl+TXyrnFSQFSwuXGTV4NDvToKwja
+         aNQbT0Vo304q/4O9i/QO3hgEO1eN5oVNGVB/1akd2PgheSoI2diRaRJWOoj9HZ1RrGGo
+         x7Cw==
+X-Forwarded-Encrypted: i=1; AJvYcCWFNPj7apRsshto6dhzPNpKl3Zu3ztgwUi1vXSo55WJnVr40wTFLGcZzoz+3Ss6vzRc5i57zFk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxC6o+vVomaj4/egT248kVnvvdri+s3cWMmLipzAXrI70YG1MY5
+	pTIgnosWCj/fDPap9jUcPRe/GQh09X6nkYCpZLrPHEhoIBCN+Orzjefu7pi7uBfU5psKvBZrPAc
+	RbSBxeHZ2tWKxeEpx3CNcrFWy4pDCXEzuOo5P
+X-Google-Smtp-Source: AGHT+IG4vFTd1o5zCc770+Uz/qc/CsRimYoCsoJN/cKl8KhAFmwiLaJcjOltJw+t0AxqekveFNe7U+xaHEYwjMReqAE=
+X-Received: by 2002:a05:6402:35c3:b0:5c5:c44d:484e with SMTP id
+ 4fb4d7f45d1cf-5c997ab0ca9mr35635a12.1.1729016856288; Tue, 15 Oct 2024
+ 11:27:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241015-comedi-tlb-v2-1-cafb0e27dd9a@google.com>
-X-B4-Tracking: v=1; b=H4sIAOOzDmcC/22MQQ6CMBBFr0JmbU2nDo115T0MCwtjmQSpaUmjI
- dzdytrle/n/rZA5CWe4NCskLpIlzhXMoYF+vM+BlQyVwWhDqJFUH588iFomr0hXaVvdOotQD6/
- ED3nvsVtXeZS8xPTZ2wV/9m+moEJF3jqHRJ5O52uIMUx8rBvotm37ArWt8TGlAAAA
-To: Ian Abbott <abbotti@mev.co.uk>, 
- H Hartley Sweeten <hsweeten@visionengravers.com>, 
- Frank Mori Hess <fmh6jj@gmail.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Jann Horn <jannh@google.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1729016814; l=1856;
- i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=vamx8/rOiH4uiKyR1YrzhxprexDCGI5fRg2RjeqQ9cw=;
- b=DWAUbb29ZWRl0BmEcGgYmZtEX/q4PdYLpMGsUS37T3aoYfbfO6QVbmCBNUX0kPaHiyOyQuCR6
- Fk/OoP06U6DAWuGugUbD/IhPLDpz3h4YscUyU7jTHpp5q/V4AqxEPo1
-X-Developer-Key: i=jannh@google.com; a=ed25519;
- pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
+References: <20241014-comedi-tlb-v1-1-4b699144b438@google.com> <4f531d06-9802-4086-8463-db4c9b6ba11c@mev.co.uk>
+In-Reply-To: <4f531d06-9802-4086-8463-db4c9b6ba11c@mev.co.uk>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 15 Oct 2024 20:26:58 +0200
+Message-ID: <CAG48ez2_86QrYnDe5xKxbngqF7OBQ3=HDF55bDP0hKvbasNCQQ@mail.gmail.com>
+Subject: Re: [PATCH] comedi: Flush partial mappings in error case
+To: Ian Abbott <abbotti@mev.co.uk>
+Cc: H Hartley Sweeten <hsweeten@visionengravers.com>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-If some remap_pfn_range() calls succeeded before one failed, we still have
-buffer pages mapped into the userspace page tables when we drop the buffer
-reference with comedi_buf_map_put(bm). The userspace mappings are only
-cleaned up later in the mmap error path.
+On Tue, Oct 15, 2024 at 12:19=E2=80=AFPM Ian Abbott <abbotti@mev.co.uk> wro=
+te:
+> On 14/10/2024 21:50, Jann Horn wrote:
+> > If some remap_pfn_range() calls succeeded before one failed, we still h=
+ave
+> > buffer pages mapped into the userspace page tables when we drop the buf=
+fer
+> > reference with comedi_buf_map_put(bm). The userspace mappings are only
+> > cleaned up later in the mmap error path.
+> >
+> > Fix it by explicitly flushing all mappings in our VMA on the comedi_mma=
+p()
+> > error path.
+> >
+> > See commit 79a61cc3fc04 ("mm: avoid leaving partial pfn mappings around=
+ in
+> > error case").
+> >
+> > Cc: stable@vger.kernel.org
+>
+> Your patched version won't compile before 6.1 so you may want to
+> indicate that in the Cc line.
 
-Fix it by explicitly flushing all mappings in our VMA on the error path.
+Ah, thanks for pointing that out - I can just use zap_vma_ptes()
+instead, which is available in older kernels, that way it will be more
+concise and the backport will be easier.
 
-See commit 79a61cc3fc04 ("mm: avoid leaving partial pfn mappings around in
-error case").
+> > Fixes: ed9eccbe8970 ("Staging: add comedi core")
+> > Signed-off-by: Jann Horn <jannh@google.com>
+> > ---
+> > Note: compile-tested only; I don't actually have comedi hardware, and I
+> > don't know anything about comedi.
+> > ---
+> >   drivers/comedi/comedi_fops.c | 9 +++++++++
+> >   1 file changed, 9 insertions(+)
+> >
+> > diff --git a/drivers/comedi/comedi_fops.c b/drivers/comedi/comedi_fops.=
+c
+> > index 1b481731df96..0e573df8646f 100644
+> > --- a/drivers/comedi/comedi_fops.c
+> > +++ b/drivers/comedi/comedi_fops.c
+> > @@ -2414,6 +2414,15 @@ static int comedi_mmap(struct file *file, struct=
+ vm_area_struct *vma)
+> >               vma->vm_private_data =3D bm;
+> >
+> >               vma->vm_ops->open(vma);
+> > +     } else {
+> > +             /*
+> > +              * Leaving behind a partial mapping of a buffer we're abo=
+ut to
+> > +              * drop is unsafe, see remap_pfn_range_notrack().
+> > +              * We need to zap the range here ourselves instead of rel=
+ying
+> > +              * on the automatic zapping in remap_pfn_range() because =
+we call
+> > +              * remap_pfn_range() in a loop.
+> > +              */
+> > +             zap_page_range_single(vma, vma->vm_start, size, NULL);
+> >       }
+> >
+> >   done:
+> >
+> > ---
+> > base-commit: 6485cf5ea253d40d507cd71253c9568c5470cd27
+> > change-id: 20241014-comedi-tlb-400246505961
+>
+> I guess this doesn't need to be done for the path that calls
+> dma_mmap_coherent() since that does not do any range splitting. Would it
+> be better to move it into the branch that calls remap_pfn_range() in a lo=
+op?
 
-Cc: stable@vger.kernel.org
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Signed-off-by: Jann Horn <jannh@google.com>
----
-Note: compile-tested only; I don't actually have comedi hardware, and I
-don't know anything about comedi.
----
-Changes in v2:
-- only do the zapping in the pfnmap path (Ian Abbott)
-- use zap_vma_ptes() instead of zap_page_range_single() (Ian Abbott)
-- Link to v1: https://lore.kernel.org/r/20241014-comedi-tlb-v1-1-4b699144b438@google.com
----
- drivers/comedi/comedi_fops.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Sure, I'll move it up into the branch.
 
-diff --git a/drivers/comedi/comedi_fops.c b/drivers/comedi/comedi_fops.c
-index 1b481731df96..68e5301e6281 100644
---- a/drivers/comedi/comedi_fops.c
-+++ b/drivers/comedi/comedi_fops.c
-@@ -2407,6 +2407,16 @@ static int comedi_mmap(struct file *file, struct vm_area_struct *vma)
- 
- 			start += PAGE_SIZE;
- 		}
-+
-+		/*
-+		 * Leaving behind a partial mapping of a buffer we're about to
-+		 * drop is unsafe, see remap_pfn_range_notrack().
-+		 * We need to zap the range here ourselves instead of relying
-+		 * on the automatic zapping in remap_pfn_range() because we call
-+		 * remap_pfn_range() in a loop.
-+		 */
-+		if (retval)
-+			zap_vma_ptes(vma, vma->vm_start, size);
- 	}
- 
- 	if (retval == 0) {
+> Note that I have no commit access to pulled-from repositories.  Greg-KH
+> usually commits them on one of his repos, so could you Cc him too?  Thank=
+s.
 
----
-base-commit: 6485cf5ea253d40d507cd71253c9568c5470cd27
-change-id: 20241014-comedi-tlb-400246505961
--- 
-Jann Horn <jannh@google.com>
-
+Ack, will do.
 
