@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-85881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8617399EAA2
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C8B99EACF
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C09F284FBB
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:56:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF3FB282453
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E072D1C07DD;
-	Tue, 15 Oct 2024 12:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F1B1C07DD;
+	Tue, 15 Oct 2024 12:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNstbORk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQZGoMsm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0351C07C2;
-	Tue, 15 Oct 2024 12:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342C31C07C8;
+	Tue, 15 Oct 2024 12:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997009; cv=none; b=Q3NxZLnwYt0Ula4djN5ha5FuNPvoJv+OatwRxUfqcxEw3uMVOvzi2D9Cx1BOVvdIoMvC49f64enF4wrVL9xPv3I8XLk666YzcRjmPasCu4Z5cvxO8LX0E7uZBtdYIAgG+x7ii8OU3TNUdZicd9kUpGsJpUb0OkEjptQPh+JEq74=
+	t=1728997160; cv=none; b=ZYmA2X4APgmfhbIfN6muA/LIAT29q0lnJmxUAWJyKbFPsaaJDK5joTHDIeUB5NsDbuhgIBvSrCjvUS6oJfxg0lK78V0ZkiBg/BuZK0Jz3IYeXqZVL9V2TRI+uV08pvqndd5vaI6vMntFN+7vEFq5uqX8MOm08mh1GHsZhMrSN2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997009; c=relaxed/simple;
-	bh=pxEnMqOj+PlsNrWPasw/FwRan+Kwrh9AmGrHU9sln0c=;
+	s=arc-20240116; t=1728997160; c=relaxed/simple;
+	bh=oJ0dLRDS3Wwx9DRLk1jT5nMI7RyjmjA4IQHFiE1nuEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PllMKyowhBXmrwMc1udbWYLWTl6jG3r1tyxRFbSvagvDbo8SQNoH04yBXKW3VCzAfSSf4ifbGehsTussP06SizaAhIMmOYKuDyaMXKeOqE9m0imMojwGUv1fnsxsUUo2XS5I9vsdEKa9I5dX/dTuBeIDicUXztQv8XyxXcxxEK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNstbORk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BACC4CEC6;
-	Tue, 15 Oct 2024 12:56:48 +0000 (UTC)
+	 MIME-Version; b=CtHPQzKBe0eOiKboUiNKJ5IWwHecoM2CG+DyC36xFJBkH2N8SwCNKZy3dLNAfUvcalMbp6aSSdJOPEal0csAyrXHAghjlBvWTFHEVrxggR1YdHchZ7kZ3JdE2a7E0XyoNMsZl86iFvr867LHsJ9EB78Z3xPWNrCo6/AzXTzyouQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQZGoMsm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B047EC4CEC6;
+	Tue, 15 Oct 2024 12:59:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997009;
-	bh=pxEnMqOj+PlsNrWPasw/FwRan+Kwrh9AmGrHU9sln0c=;
+	s=korg; t=1728997160;
+	bh=oJ0dLRDS3Wwx9DRLk1jT5nMI7RyjmjA4IQHFiE1nuEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vNstbORkQOzF7tqtRnXZQZExa1H0Z3/YVUw8VSLpBsOzbKYQ1PmGGtmsbWEg0tJK+
-	 +HN5Nol2wcJC461KVuzju+r21unaxOMc/8zL1NITt15RRuiCqop+guwQWC+TWAZLtz
-	 Kx2lhXe/axHn7oRqsrGC8xvbYJZ7qpL5BMg/GHNI=
+	b=UQZGoMsmU0BQYkXI++aOOyzxumlaVyn57wRfmzEnwEf9/rRyay8edlyCojWNMiQtF
+	 J5PAKY3WGRUFGKrrN4eTAbZ3Ex0DWBwRAHBrW1X20jKLiSqpqIDFqRYuFlB9YmLhbI
+	 c3UAalcXTnk9qlYByAdQy7p8c8hCFsYCxM26Mgd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Anthony Iliopoulos <ailiop@suse.com>,
 	Christoph Hellwig <hch@lst.de>,
-	Jan Kara <jack@suse.cz>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
+	Christian Brauner <christian.brauner@ubuntu.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Deepa Dinamani <deepa.kernel@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 061/518] fs: explicitly unregister per-superblock BDIs
-Date: Tue, 15 Oct 2024 14:39:25 +0200
-Message-ID: <20241015123919.363486173@linuxfoundation.org>
+Subject: [PATCH 5.10 062/518] mount: warn only once about timestamp range expiration
+Date: Tue, 15 Oct 2024 14:39:26 +0200
+Message-ID: <20241015123919.401418010@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -71,59 +72,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Anthony Iliopoulos <ailiop@suse.com>
 
-[ Upstream commit 0b3ea0926afb8dde70cfab00316ae0a70b93a7cc ]
+[ Upstream commit a128b054ce029554a4a52fc3abb8c1df8bafcaef ]
 
-Add a new SB_I_ flag to mark superblocks that have an ephemeral bdi
-associated with them, and unregister it when the superblock is shut
-down.
+Commit f8b92ba67c5d ("mount: Add mount warning for impending timestamp
+expiry") introduced a mount warning regarding filesystem timestamp
+limits, that is printed upon each writable mount or remount.
 
-Link: https://lkml.kernel.org/r/20211021124441.668816-4-hch@lst.de
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
+This can result in a lot of unnecessary messages in the kernel log in
+setups where filesystems are being frequently remounted (or mounted
+multiple times).
+
+Avoid this by setting a superblock flag which indicates that the warning
+has been emitted at least once for any particular mount, as suggested in
+[1].
+
+Link: https://lore.kernel.org/CAHk-=wim6VGnxQmjfK_tDg6fbHYKL4EFkmnTjVr9QnRqjDBAeA@mail.gmail.com/ [1]
+Link: https://lkml.kernel.org/r/20220119202934.26495-1-ailiop@suse.com
+Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Christian Brauner <christian.brauner@ubuntu.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Deepa Dinamani <deepa.kernel@gmail.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Stable-dep-of: 4bcda1eaf184 ("mount: handle OOM on mnt_warn_timestamp_expiry")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/super.c         | 3 +++
+ fs/namespace.c     | 2 ++
  include/linux/fs.h | 1 +
- 2 files changed, 4 insertions(+)
+ 2 files changed, 3 insertions(+)
 
-diff --git a/fs/super.c b/fs/super.c
-index 282aa36901eb1..3d040c09f723f 100644
---- a/fs/super.c
-+++ b/fs/super.c
-@@ -476,6 +476,8 @@ void generic_shutdown_super(struct super_block *sb)
- 	spin_unlock(&sb_lock);
- 	up_write(&sb->s_umount);
- 	if (sb->s_bdi != &noop_backing_dev_info) {
-+		if (sb->s_iflags & SB_I_PERSB_BDI)
-+			bdi_unregister(sb->s_bdi);
- 		bdi_put(sb->s_bdi);
- 		sb->s_bdi = &noop_backing_dev_info;
- 	}
-@@ -1634,6 +1636,7 @@ int super_setup_bdi_name(struct super_block *sb, char *fmt, ...)
- 	}
- 	WARN_ON(sb->s_bdi != &noop_backing_dev_info);
- 	sb->s_bdi = bdi;
-+	sb->s_iflags |= SB_I_PERSB_BDI;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index b020a12c53a2a..1665315e08e9a 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2553,6 +2553,7 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
+ 	struct super_block *sb = mnt->mnt_sb;
  
- 	return 0;
+ 	if (!__mnt_is_readonly(mnt) &&
++	   (!(sb->s_iflags & SB_I_TS_EXPIRY_WARNED)) &&
+ 	   (ktime_get_real_seconds() + TIME_UPTIME_SEC_MAX > sb->s_time_max)) {
+ 		char *buf = (char *)__get_free_page(GFP_KERNEL);
+ 		char *mntpath = buf ? d_path(mountpoint, buf, PAGE_SIZE) : ERR_PTR(-ENOMEM);
+@@ -2567,6 +2568,7 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
+ 			tm.tm_year+1900, (unsigned long long)sb->s_time_max);
+ 
+ 		free_page((unsigned long)buf);
++		sb->s_iflags |= SB_I_TS_EXPIRY_WARNED;
+ 	}
  }
+ 
 diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 2e202f01c38d0..e92acc55fbd1d 100644
+index e92acc55fbd1d..a7d839b196069 100644
 --- a/include/linux/fs.h
 +++ b/include/linux/fs.h
-@@ -1427,6 +1427,7 @@ extern int send_sigurg(struct fown_struct *fown);
- #define SB_I_UNTRUSTED_MOUNTER		0x00000040
+@@ -1428,6 +1428,7 @@ extern int send_sigurg(struct fown_struct *fown);
  
  #define SB_I_SKIP_SYNC	0x00000100	/* Skip superblock at global sync */
-+#define SB_I_PERSB_BDI	0x00000200	/* has a per-sb bdi */
+ #define SB_I_PERSB_BDI	0x00000200	/* has a per-sb bdi */
++#define SB_I_TS_EXPIRY_WARNED 0x00000400 /* warned about timestamp range expiry */
  
  /* Possible states of 'frozen' field */
  enum {
