@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-86014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 787EE99EB40
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:04:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B237099EB46
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:05:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9F9B1C21D72
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:04:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EC8CB20D2D
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD001C07E0;
-	Tue, 15 Oct 2024 13:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A4C1C07E5;
+	Tue, 15 Oct 2024 13:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTF9xxki"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="naYgGwyI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89EDB1AF0AC;
-	Tue, 15 Oct 2024 13:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7733D1C07DB;
+	Tue, 15 Oct 2024 13:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997481; cv=none; b=OtSnrOA9+0A9HVyqJBv+UnfVWdx5ZQft2nctGPgFi4vWITJRtT3IU74FRbefLpu/7/IQBTW5hlBIBJmL1JODyo9r7wLD8Gbc6rKj6JSCpBxCf9S98zUCrhqp9XnR18+PJzz3CSa6bfkzZfSk1eQ+XCLXAWMiBHqxOMJ5BRDhlOs=
+	t=1728997498; cv=none; b=KEHhE9n1g3lPGsMEIMm5kqdfRhAsW9j+Fcfg+k7inyQJqV/JO7mkI2LFrFOM2wAvpaLWqtmgYOVoTOeW+5ix4ya4OQ+GJuYNjOYoMMfiDo4vTlrIswuYGoP5/V1bfOua3DhtefwWQi85EaJS5ef+P+T3dt/i6KoTm46fvL+FH88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997481; c=relaxed/simple;
-	bh=u0MmMAWqB9PpyRiukTtT6BuI5WwTws8x6D/Flrh7uFc=;
+	s=arc-20240116; t=1728997498; c=relaxed/simple;
+	bh=Jn9a2/lBj92IwzrsExTJ9xHXk69ndwRuttUahoiK7pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sL4EfhTZEvkxVsaUfE2GXBFDDOgtfh0MCBsilUBCm8d8Z1bDXlt9wtcG4e5tfzRyWIA8nBqXgEKsBcfIBDsFN+kvxDS9aRPr4qCSLxIe332Y/kLeIPHAYrAYr8m/M8s+xETfUgASyzqaSrPBPKhXgbGGJ1HU2snykmxkju9d4ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTF9xxki; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3AB7C4CEC6;
-	Tue, 15 Oct 2024 13:04:40 +0000 (UTC)
+	 MIME-Version; b=o2GUK/q0ZF81P4Jb4LVowmnYYe9BtQmu28nhaDNn8aOythD35coVYxa2ekVUf2WGTbk9tsVpf0dCIm7tAvBnYAUbMhWj/7Pk8Vc4Eqdr8GScg9tnzQ74eE7D56JFqBHGbXT1d+OiOYwU/PcpyAyknYV7/I42Qi9LzTV2MdOqN5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=naYgGwyI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45CCC4CEC6;
+	Tue, 15 Oct 2024 13:04:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997481;
-	bh=u0MmMAWqB9PpyRiukTtT6BuI5WwTws8x6D/Flrh7uFc=;
+	s=korg; t=1728997498;
+	bh=Jn9a2/lBj92IwzrsExTJ9xHXk69ndwRuttUahoiK7pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OTF9xxkiEYmUWNivU7nqaU5MBMjHePrimwTgrfLdpZdxhXUpOp55HnCGrfE8QPXjr
-	 rw9g6GsQsFL5N+RUfNApU3FhqP/qCQzVz0DXoXU8F4g1gwE6D7fAjZuKFI9UG/G0Yy
-	 JoFw3Rhb38X0d0nDqV+HsbXcbTCbMXd9uYq5eg8A=
+	b=naYgGwyIRRP1AgdapHE3D9v2q5K9wDYK+T7xWEFHdlQhAwSlfFU9+CXjZIFITV/gZ
+	 hczMbGRGEXgzhCFIHqwL9nHtxjfU5UFTZBNVmbfpWYy86tdVdgAY10rVjOLTgINhOl
+	 2mwPqRby0v50v754gbXyT2Zu1t5sxZNP3cxq1eb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 168/518] pinctrl: single: fix missing error code in pcs_probe()
-Date: Tue, 15 Oct 2024 14:41:12 +0200
-Message-ID: <20241015123923.479276615@linuxfoundation.org>
+Subject: [PATCH 5.10 169/518] clk: ti: dra7-atl: Fix leak of of_nodes
+Date: Tue, 15 Oct 2024 14:41:13 +0200
+Message-ID: <20241015123923.517018153@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -66,35 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit cacd8cf79d7823b07619865e994a7916fcc8ae91 ]
+[ Upstream commit 9d6e9f10e2e031fb7bfb3030a7d1afc561a28fea ]
 
-If pinctrl_enable() fails in pcs_probe(), it should return the error code.
+This fix leaking the of_node references in of_dra7_atl_clk_probe().
 
-Fixes: 8f773bfbdd42 ("pinctrl: single: fix possible memory leak when pinctrl_enable() fails")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Link: https://lore.kernel.org/20240819024625.154441-1-yangyingliang@huaweicloud.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+The docs for of_parse_phandle_with_args() say that the caller must call
+of_node_put() on the returned node. This adds the missing of_node_put()
+to fix the leak.
+
+Fixes: 9ac33b0ce81f ("CLK: TI: Driver for DRA7 ATL (Audio Tracking Logic)")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://lore.kernel.org/r/20240826-clk-fix-leak-v1-1-f55418a13aa6@baylibre.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-single.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/ti/clk-dra7-atl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 5b76594b535c1..22fd7ebd5cf3f 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -1923,7 +1923,8 @@ static int pcs_probe(struct platform_device *pdev)
+diff --git a/drivers/clk/ti/clk-dra7-atl.c b/drivers/clk/ti/clk-dra7-atl.c
+index 62508e74a47a7..fc266c0ab6293 100644
+--- a/drivers/clk/ti/clk-dra7-atl.c
++++ b/drivers/clk/ti/clk-dra7-atl.c
+@@ -258,6 +258,7 @@ static int of_dra7_atl_clk_probe(struct platform_device *pdev)
+ 		}
  
- 	dev_info(pcs->dev, "%i pins, size %u\n", pcs->desc.npins, pcs->size);
- 
--	if (pinctrl_enable(pcs->pctl))
-+	ret = pinctrl_enable(pcs->pctl);
-+	if (ret)
- 		goto free;
- 
- 	return 0;
+ 		clk = of_clk_get_from_provider(&clkspec);
++		of_node_put(clkspec.np);
+ 		if (IS_ERR(clk)) {
+ 			pr_err("%s: failed to get atl clock %d from provider\n",
+ 			       __func__, i);
 -- 
 2.43.0
 
