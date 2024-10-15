@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-85646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297DB99E83B
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:03:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C66F99E84B
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:04:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D58F41F22704
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:03:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DBEC1C22135
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0B71D95A2;
-	Tue, 15 Oct 2024 12:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E98E1E7640;
+	Tue, 15 Oct 2024 12:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="erbizc79"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKxZCNC2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BAEA1C57B1;
-	Tue, 15 Oct 2024 12:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEA11C57B1;
+	Tue, 15 Oct 2024 12:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993813; cv=none; b=jJmYOWbEYPQHsZhh2zjlurJHReBptuCYIaBvb88lteWjyrRzVLZOZ1GtmEuPozJL0OvmCWX4LFXrHfEbWkm6iCPs2cfZW9MIzgHJDP32191CrwmCjvd/twMhuJe0FnnhtT9CPWWE9vOwscl4X1FffmzInbAm7MGuTuLMwPhMh4c=
+	t=1728993849; cv=none; b=SKBHFUddrJgbkOyjzx4BmV3eTfwwAVykBY6RbhVpjNlc+Ea7Ohy9t4yrfNxNFu2ljkkH4n1xADwn9D0JYR5i2TrJI4xEet8nu6uGmT8hznqTUHt6eZryCDoni59HdKW3C75mAvZ+eXQ9EQ+CTYfcPFH7Tdk9LlH9EcloQToCmgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993813; c=relaxed/simple;
-	bh=TUbD6d2mcc1wMd4MjCpOrfCVy8bGtrDt9zx+Iyg68R8=;
+	s=arc-20240116; t=1728993849; c=relaxed/simple;
+	bh=kaLDUmZzMagFBeSWL2mOoeFjvVQdglBceOQsqDkfebE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q82+GWPlzpAXH9mxRgujpXqvtK/b1ZBbaTcDs7GghMPuWfoRij1p4pOO616vMlRrmi8K0PruRkA87I8MjjedMve6o041DVi6V1OGN+oAeZRtcGYKz1UAf31NuOptdaEVHkb75zmm3FDbKXBJRKL3RaNHHPhLe+43UxSv7wDVaks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=erbizc79; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CECC4CEC6;
-	Tue, 15 Oct 2024 12:03:32 +0000 (UTC)
+	 MIME-Version; b=lg8rha2qE64QZqgUyyxE9LdnX1gDwQ+Qnv8HtvqOEmAjpzU2YcZMBWOFqnHo2K9UkzoifgL8fSF4x79u8qmaiSI3KE1HEzEvpfqxQzG/pxftabDfWtw1aYvE1A5ryJ//u+x+JCwk3tNq9FJP2e5g+bE4A+CWpAd56poJCxdcw9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKxZCNC2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48EBC4CEC6;
+	Tue, 15 Oct 2024 12:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993813;
-	bh=TUbD6d2mcc1wMd4MjCpOrfCVy8bGtrDt9zx+Iyg68R8=;
+	s=korg; t=1728993849;
+	bh=kaLDUmZzMagFBeSWL2mOoeFjvVQdglBceOQsqDkfebE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=erbizc79VQ6CHbEhoBPFEfQB578lNFWCINbepryKeTJC5QCloLnrGgjOcshkSfBdt
-	 OnFHaT35WYZ5pKfV7iOJXG43AM9PlWrpCWFsMny7ECVBx8TBmhENmBrDPFMhg2p9mY
-	 cMDXQ0GYcGUvoOBnHK1Mpl37IFf6lwiSxewePxBQ=
+	b=AKxZCNC2C1t4zwycdbjQ2JxN5TiZrIsOrR3GRTNP/aye+dd4bzm9yFAKKkOsTwqPg
+	 jvgu7wzaY6DlDhajNHutPJSR0vM5f1ZoiXjjhh/vNd+zuGCtRaib2WmxTavvmzM7r2
+	 aUO3zHAkY1i7B49xuVYsr1Ex+LFn+EbnjVDaCbrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.15 516/691] ext4: mark fc as ineligible using an handle in ext4_xattr_set()
-Date: Tue, 15 Oct 2024 13:27:44 +0200
-Message-ID: <20241015112500.825912281@linuxfoundation.org>
+	Jisheng Zhang <jszhang@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 5.15 517/691] riscv: define ILLEGAL_POINTER_VALUE for 64bit
+Date: Tue, 15 Oct 2024 13:27:45 +0200
+Message-ID: <20241015112500.864994256@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -67,47 +65,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-commit 04e6ce8f06d161399e5afde3df5dcfa9455b4952 upstream.
+commit 5c178472af247c7b50f962495bb7462ba453b9fb upstream.
 
-Calling ext4_fc_mark_ineligible() with a NULL handle is racy and may result
-in a fast-commit being done before the filesystem is effectively marked as
-ineligible.  This patch moves the call to this function so that an handle
-can be used.  If a transaction fails to start, then there's not point in
-trying to mark the filesystem as ineligible, and an error will eventually be
-returned to user-space.
+This is used in poison.h for poison pointer offset. Based on current
+SV39, SV48 and SV57 vm layout, 0xdead000000000000 is a proper value
+that is not mappable, this can avoid potentially turning an oops to
+an expolit.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240923104909.18342-3-luis.henriques@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Fixes: fbe934d69eb7 ("RISC-V: Build Infrastructure")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240705170210.3236-1-jszhang@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/riscv/Kconfig |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -2512,6 +2512,8 @@ retry:
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -210,6 +210,11 @@ config GENERIC_HWEIGHT
+ config FIX_EARLYCON_MEM
+ 	def_bool MMU
  
- 		error = ext4_xattr_set_handle(handle, inode, name_index, name,
- 					      value, value_len, flags);
-+		ext4_fc_mark_ineligible(inode->i_sb, EXT4_FC_REASON_XATTR,
-+					handle);
- 		error2 = ext4_journal_stop(handle);
- 		if (error == -ENOSPC &&
- 		    ext4_should_retry_alloc(sb, &retries))
-@@ -2519,7 +2521,6 @@ retry:
- 		if (error == 0)
- 			error = error2;
- 	}
--	ext4_fc_mark_ineligible(inode->i_sb, EXT4_FC_REASON_XATTR, NULL);
- 
- 	return error;
- }
++config ILLEGAL_POINTER_VALUE
++	hex
++	default 0 if 32BIT
++	default 0xdead000000000000 if 64BIT
++
+ config PGTABLE_LEVELS
+ 	int
+ 	default 3 if 64BIT
 
 
 
