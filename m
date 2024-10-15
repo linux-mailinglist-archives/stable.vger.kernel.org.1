@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-86299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D8899ED1D
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:24:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48BFA99ED32
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:25:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D97D1B21F98
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:24:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CA1828738F
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510C51FC7C2;
-	Tue, 15 Oct 2024 13:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35579227B9B;
+	Tue, 15 Oct 2024 13:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlKr6Evp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pnS0D9H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBB41FC7C3;
-	Tue, 15 Oct 2024 13:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39E81FA246;
+	Tue, 15 Oct 2024 13:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728998444; cv=none; b=q3pLySzpHGWv7Sq8770u7EmUtNrclJgYneLsnWKH/Bx9n3WEStoaYb5Qzg9BJCXIS7GUNwzlwOIH5YtfmHf2PJRoHbRXb9o+e+HKjZ+mBa74m3PCQZmJQyGP/OzsKyuJ22vvep5lgzZpwZyI6zHrslpmdS9zRWyZ0G3QKpSA2w0=
+	t=1728998482; cv=none; b=Pik737B6ebduELIYpfPc0uxd8CSGGB4ha+hsHLXenJxbxK5eVS32rFHK9DJ6ou7c3jzNoDZS+zoNp3XKwZtB9Hds96LajGbYz9zlB5i0a5csxiw/mD6M/j02jEmh4kU68/h80Wcsp6OpIPJtaSN3ATjmXJd+j5URXsaGY0nj99A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728998444; c=relaxed/simple;
-	bh=nbkbrpYouLVnRJPlCr+ITtNs85GPtZAEl8401lTovnQ=;
+	s=arc-20240116; t=1728998482; c=relaxed/simple;
+	bh=7CFEXZtcgX7PqF9/7YXvzNgwN24MUXwV8Ug2OVgoAmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=moIbBxwzkt4RXv6B7WpWJr3rvwqzpUr5W4YGR0CCm0Rsa+SQ53YWNns0Khf/wEQYJ80WIfT0Gr5Ut7wUrhmN1XynZ2cWuytnjgfkLFwtcgpled6zmw+mAuaVnluYAUSnLGS9LsL/TLWVSQAh/ReLzkXq5EasKpBTmta/eBffqTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlKr6Evp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6ABC4CEC6;
-	Tue, 15 Oct 2024 13:20:43 +0000 (UTC)
+	 MIME-Version; b=WBf7yCiK6Xb9oSd8y3wiR5ppueCIeB/ND6z+Gg4K/uwGBaPfn6c9nCex+5dVubW+aYSvRSGiSsoHpoDBa0qZBJduobkFtwQnGkf8k1535PmJBvqj7XS9otgARjJvgNog8AJ9MFeM9hd6AZrD/MYkp/p4TblcmjO3W8cccjulNwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pnS0D9H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AAB2C4CED0;
+	Tue, 15 Oct 2024 13:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728998443;
-	bh=nbkbrpYouLVnRJPlCr+ITtNs85GPtZAEl8401lTovnQ=;
+	s=korg; t=1728998481;
+	bh=7CFEXZtcgX7PqF9/7YXvzNgwN24MUXwV8Ug2OVgoAmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlKr6Evp6Ilp2GbzgUbMbCsBkGiJaL9Ffpuc+kDX2zhZv3Xc9dJbK9D/euKeiDQ9h
-	 JLB9Ioc99pz2D/hQG98kA+4Hp6+uIuRbuVnNYEZ6RSB/PPRGlPdwabjyYe3N2Nf8HH
-	 2yFaohSXxwz61qWneVKCg6tXScvxsSYZme+j2Fs8=
+	b=1pnS0D9HyivQxVOthTbNUtiBwIGJ5MUFVHs1aGLDC7d4Y2zStNP5rR8ffSVKN+vKB
+	 ypQjhSEHy7M5XeaSYKOFpeB37tI+ftfl2p6bNfd6qYRH0kGkIpHjCtyirytUHoPOya
+	 6wJlDm+owurshlcqhDNgPjGOn4Nf+EI/aoRkvbaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bob Pearson <rpearsonhpe@gmail.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sherry Yang <sherry.yang@oracle.com>
-Subject: [PATCH 5.10 471/518] RDMA/rxe: Fix seg fault in rxe_comp_queue_pkt
-Date: Tue, 15 Oct 2024 14:46:15 +0200
-Message-ID: <20241015123935.184179165@linuxfoundation.org>
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 472/518] NFSD: Mark filecache "down" if init fails
+Date: Tue, 15 Oct 2024 14:46:16 +0200
+Message-ID: <20241015123935.221837724@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -66,52 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bob Pearson <rpearsonhpe@gmail.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 2b23b6097303ed0ba5f4bc036a1c07b6027af5c6 upstream.
+[ Upstream commit dc0d0f885aa422f621bc1c2124133eff566b0bc8 ]
 
-In rxe_comp_queue_pkt() an incoming response packet skb is enqueued to the
-resp_pkts queue and then a decision is made whether to run the completer
-task inline or schedule it. Finally the skb is dereferenced to bump a 'hw'
-performance counter. This is wrong because if the completer task is
-already running in a separate thread it may have already processed the skb
-and freed it which can cause a seg fault.  This has been observed
-infrequently in testing at high scale.
+NeilBrown says:
+> The handling of NFSD_FILE_CACHE_UP is strange.  nfsd_file_cache_init()
+> sets it, but doesn't clear it on failure.  So if nfsd_file_cache_init()
+> fails for some reason, nfsd_file_cache_shutdown() would still try to
+> clean up if it was called.
 
-This patch fixes this by changing the order of enqueuing the packet until
-after the counter is accessed.
-
-Link: https://lore.kernel.org/r/20240329145513.35381-4-rpearsonhpe@gmail.com
-Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
-Fixes: 0b1e5b99a48b ("IB/rxe: Add port protocol stats")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-[Sherry: bp to fix CVE-2024-38544. Fix conflict due to missing commit:
-dccb23f6c312 ("RDMA/rxe: Split rxe_run_task() into two subroutines")
-which is not necessary to backport]
-Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: NeilBrown <neilb@suse.de>
+Fixes: c7b824c3d06c ("NFSD: Replace the "init once" mechanism")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_comp.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nfsd/filecache.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/infiniband/sw/rxe/rxe_comp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_comp.c
-@@ -123,12 +123,12 @@ void rxe_comp_queue_pkt(struct rxe_qp *q
- {
- 	int must_sched;
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index 31169f0cc3d74..585163b4e11ce 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -717,7 +717,7 @@ nfsd_file_cache_init(void)
  
--	skb_queue_tail(&qp->resp_pkts, skb);
--
--	must_sched = skb_queue_len(&qp->resp_pkts) > 1;
-+	must_sched = skb_queue_len(&qp->resp_pkts) > 0;
- 	if (must_sched != 0)
- 		rxe_counter_inc(SKB_TO_PKT(skb)->rxe, RXE_CNT_COMPLETER_SCHED);
+ 	ret = rhltable_init(&nfsd_file_rhltable, &nfsd_file_rhash_params);
+ 	if (ret)
+-		return ret;
++		goto out;
  
-+	skb_queue_tail(&qp->resp_pkts, skb);
-+
- 	rxe_run_task(&qp->comp.task, must_sched);
- }
+ 	ret = -ENOMEM;
+ 	nfsd_filecache_wq = alloc_workqueue("nfsd_filecache", 0, 0);
+@@ -769,6 +769,8 @@ nfsd_file_cache_init(void)
  
+ 	INIT_DELAYED_WORK(&nfsd_filecache_laundrette, nfsd_file_gc_worker);
+ out:
++	if (ret)
++		clear_bit(NFSD_FILE_CACHE_UP, &nfsd_file_flags);
+ 	return ret;
+ out_notifier:
+ 	lease_unregister_notifier(&nfsd_file_lease_notifier);
+-- 
+2.43.0
+
 
 
 
