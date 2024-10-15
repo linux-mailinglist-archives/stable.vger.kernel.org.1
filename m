@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-86196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602A199EC65
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:19:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04C9F99EC88
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:20:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 925AC1C20D78
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:19:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13F751C2343C
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:20:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA0D1DD0FB;
-	Tue, 15 Oct 2024 13:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69C761FAEFC;
+	Tue, 15 Oct 2024 13:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oG2IqydB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVT1JS+U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D841DD0F6;
-	Tue, 15 Oct 2024 13:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279121FAEF5;
+	Tue, 15 Oct 2024 13:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728998095; cv=none; b=Qyq2tMPFf3z0qai76C4Qrrb+Lew0uG11Z2GqyCFWPBDbh7N4w3nfz7wGmnZDEOuNSney1caMq+X204NXC+1gTTF0TVPQ+BFjSnPMmdGS+jLnLgLhvaddcB4GiLOFfzXtTh/ee2yUtTU79cHc3uj9Gl4qS2VM81UleTy+OUXC1U0=
+	t=1728998134; cv=none; b=KZ4ht/6imxaLw52FMUtAEsQdQKyxJZg0fk1vz3N0Ehc3TiyREljUKg1BAuxMIvv42kY4PtKpRvVRgYDMSQTZycppSE0TxLJG4zcsAgTTj0gMhf29cvUoLCizVM1h48uF7FCDGBD0DGlk2/OVq0bVzozZM39lf23uHBDjUEG36F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728998095; c=relaxed/simple;
-	bh=HmZkGp9qmhAx+MhTBlJ3OHaxoTMPsNMiR7AIyeHrl4U=;
+	s=arc-20240116; t=1728998134; c=relaxed/simple;
+	bh=l/VvIMQqxgvOktuLOO81NX3gimjmiIaX0Kv9/xACTYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RkZvIRz1jbn67ceS8VlW6SIL9isd6ajS+akkRntk5rIuiLdmL5Ftm5GObJgFwLNKD4n+Ayb8/15X5D2OyjRHNS40vpG/YKiTYfH2DqducK32/Y7qZ8DijnF2eTPhjXrnlmaDJTSSVI3QW21X4yLQS+Hz1MZxAOmzor62KotuwNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oG2IqydB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8ACC4CEC6;
-	Tue, 15 Oct 2024 13:14:54 +0000 (UTC)
+	 MIME-Version; b=YpK1lZQEzXLlDvPnw3zilmWv3e9MaUK9455F09Vnq3NyJtOBnm13niSN1d9awS5P05uLJxGg3LHQUj5XYKanoht8VFHlxJXnnqW8EaoowBa8UsZTeSkkIwuMH0kxh84W6j3NkKdW+k0OKi0COGs9cR9lWnK2umRARBwZf2C+LSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVT1JS+U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B7CC4CECF;
+	Tue, 15 Oct 2024 13:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728998095;
-	bh=HmZkGp9qmhAx+MhTBlJ3OHaxoTMPsNMiR7AIyeHrl4U=;
+	s=korg; t=1728998133;
+	bh=l/VvIMQqxgvOktuLOO81NX3gimjmiIaX0Kv9/xACTYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oG2IqydB/MDNn6+LI5ke3gihkzr8spmT1ypduRWSv5NsyialW99R53qa/+MBNq4+w
-	 TfFxSt4YhDHBzj2/3yiSCDttRCQ/OG+su7kcpYV830cHaWlE97iS7iYhYIW1j3wHDe
-	 viMptwfR5V5FVFCGmcAURNLspYZMiVX/1Fl7wm1k=
+	b=KVT1JS+UeQ51jQUiRgg4ge6rhXXsVx9cw3yuMESFlW1+6CFkPC3q/ji0ax3C6VDvk
+	 t0LOHJsIYitiABaF6SznW39pixbvRHVAD19Pbx0hfm8AJktD7xry6XNkH8C+cOU/dW
+	 oYGdoDudWLbvfCladwVM7wtGG94kirY+JC0m9oiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.10 370/518] ext4: no need to continue when the number of entries is 1
-Date: Tue, 15 Oct 2024 14:44:34 +0200
-Message-ID: <20241015123931.254316333@linuxfoundation.org>
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.10 371/518] ext4: fix slab-use-after-free in ext4_split_extent_at()
+Date: Tue, 15 Oct 2024 14:44:35 +0200
+Message-ID: <20241015123931.292379529@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -67,34 +68,128 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 1a00a393d6a7fb1e745a41edd09019bd6a0ad64c upstream.
+commit c26ab35702f8cd0cdc78f96aa5856bfb77be798f upstream.
 
-Fixes: ac27a0ec112a ("[PATCH] ext4: initial copy of files from ext3")
-Reported-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ae688d469e36fb5138d0
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reported-and-tested-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
-Link: https://patch.msgid.link/tencent_BE7AEE6C7C2D216CB8949CE8E6EE7ECC2C0A@qq.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+We hit the following use-after-free:
+
+==================================================================
+BUG: KASAN: slab-use-after-free in ext4_split_extent_at+0xba8/0xcc0
+Read of size 2 at addr ffff88810548ed08 by task kworker/u20:0/40
+CPU: 0 PID: 40 Comm: kworker/u20:0 Not tainted 6.9.0-dirty #724
+Call Trace:
+ <TASK>
+ kasan_report+0x93/0xc0
+ ext4_split_extent_at+0xba8/0xcc0
+ ext4_split_extent.isra.0+0x18f/0x500
+ ext4_split_convert_extents+0x275/0x750
+ ext4_ext_handle_unwritten_extents+0x73e/0x1580
+ ext4_ext_map_blocks+0xe20/0x2dc0
+ ext4_map_blocks+0x724/0x1700
+ ext4_do_writepages+0x12d6/0x2a70
+[...]
+
+Allocated by task 40:
+ __kmalloc_noprof+0x1ac/0x480
+ ext4_find_extent+0xf3b/0x1e70
+ ext4_ext_map_blocks+0x188/0x2dc0
+ ext4_map_blocks+0x724/0x1700
+ ext4_do_writepages+0x12d6/0x2a70
+[...]
+
+Freed by task 40:
+ kfree+0xf1/0x2b0
+ ext4_find_extent+0xa71/0x1e70
+ ext4_ext_insert_extent+0xa22/0x3260
+ ext4_split_extent_at+0x3ef/0xcc0
+ ext4_split_extent.isra.0+0x18f/0x500
+ ext4_split_convert_extents+0x275/0x750
+ ext4_ext_handle_unwritten_extents+0x73e/0x1580
+ ext4_ext_map_blocks+0xe20/0x2dc0
+ ext4_map_blocks+0x724/0x1700
+ ext4_do_writepages+0x12d6/0x2a70
+[...]
+==================================================================
+
+The flow of issue triggering is as follows:
+
+ext4_split_extent_at
+  path = *ppath
+  ext4_ext_insert_extent(ppath)
+    ext4_ext_create_new_leaf(ppath)
+      ext4_find_extent(orig_path)
+        path = *orig_path
+        read_extent_tree_block
+          // return -ENOMEM or -EIO
+        ext4_free_ext_path(path)
+          kfree(path)
+        *orig_path = NULL
+  a. If err is -ENOMEM:
+  ext4_ext_dirty(path + path->p_depth)
+  // path use-after-free !!!
+  b. If err is -EIO and we have EXT_DEBUG defined:
+  ext4_ext_show_leaf(path)
+    eh = path[depth].p_hdr
+    // path also use-after-free !!!
+
+So when trying to zeroout or fix the extent length, call ext4_find_extent()
+to update the path.
+
+In addition we use *ppath directly as an ext4_ext_show_leaf() input to
+avoid possible use-after-free when EXT_DEBUG is defined, and to avoid
+unnecessary path updates.
+
+Fixes: dfe5080939ea ("ext4: drop EXT4_EX_NOFREE_ON_ERR from rest of extents handling code")
 Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20240822023545.1994557-4-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/namei.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/extents.c |   21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -1936,7 +1936,7 @@ static struct ext4_dir_entry_2 *do_split
- 		split = count/2;
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3226,6 +3226,25 @@ static int ext4_split_extent_at(handle_t
+ 	if (err != -ENOSPC && err != -EDQUOT)
+ 		goto out;
  
- 	hash2 = map[split].hash;
--	continued = hash2 == map[split - 1].hash;
-+	continued = split > 0 ? hash2 == map[split - 1].hash : 0;
- 	dxtrace(printk(KERN_INFO "Split block %lu at %x, %i/%i\n",
- 			(unsigned long)dx_get_block(frame->at),
- 					hash2, split, count-split));
++	/*
++	 * Update path is required because previous ext4_ext_insert_extent()
++	 * may have freed or reallocated the path. Using EXT4_EX_NOFAIL
++	 * guarantees that ext4_find_extent() will not return -ENOMEM,
++	 * otherwise -ENOMEM will cause a retry in do_writepages(), and a
++	 * WARN_ON may be triggered in ext4_da_update_reserve_space() due to
++	 * an incorrect ee_len causing the i_reserved_data_blocks exception.
++	 */
++	path = ext4_find_extent(inode, ee_block, ppath,
++				flags | EXT4_EX_NOFAIL);
++	if (IS_ERR(path)) {
++		EXT4_ERROR_INODE(inode, "Failed split extent on %u, err %ld",
++				 split, PTR_ERR(path));
++		return PTR_ERR(path);
++	}
++	depth = ext_depth(inode);
++	ex = path[depth].p_ext;
++	*ppath = path;
++
+ 	if (EXT4_EXT_MAY_ZEROOUT & split_flag) {
+ 		if (split_flag & (EXT4_EXT_DATA_VALID1|EXT4_EXT_DATA_VALID2)) {
+ 			if (split_flag & EXT4_EXT_DATA_VALID1) {
+@@ -3278,7 +3297,7 @@ fix_extent_len:
+ 	ext4_ext_dirty(handle, inode, path + path->p_depth);
+ 	return err;
+ out:
+-	ext4_ext_show_leaf(inode, path);
++	ext4_ext_show_leaf(inode, *ppath);
+ 	return err;
+ }
+ 
 
 
 
