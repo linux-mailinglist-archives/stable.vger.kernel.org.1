@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-86059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6134E99EB76
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:07:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F2E99EB4C
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:05:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15BE81F25BAE
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:07:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90DB9B213E7
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF811AF0B1;
-	Tue, 15 Oct 2024 13:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01AAA1AF0AB;
+	Tue, 15 Oct 2024 13:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSRX6C9G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmiqPtYd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C121C07E5;
-	Tue, 15 Oct 2024 13:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B343E1C07DB;
+	Tue, 15 Oct 2024 13:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997640; cv=none; b=IBBH8iKsm0XOQF0pMI+5zBr6mGqskoc/8UgCe52Ovh0hlXPIENsdsxPW07YqpjxDfNgO+QL7VwyiY2B/xu5zvDJwdwvBHXAgCKSSRtmLSujZWcYgMz1q1jXAVp4xOb1W/1+nm5ZKKl0kbs3JbWslRsSbxZ2rkUAeEj+J9ucNVuQ=
+	t=1728997522; cv=none; b=GFswM1k1yTa0PRRWY1D/vRWalSooBELgiX4SynYgQPhgc2tCdx1nXDdBQE1tDOOhjBUSf8b9ACYCSgjY5JB3g0b1O6h87V7SqJCCmZyctMl15lBFzIFxs3e+vHXpfpsYHPIEq2b/Ii6NBjVcfCbTnZ76JtiWEANjJF8cvqTaqRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997640; c=relaxed/simple;
-	bh=MzG87VFiU+snaDlzzI+yKwPQ1ZwX0JWpBba9gEQcXfc=;
+	s=arc-20240116; t=1728997522; c=relaxed/simple;
+	bh=XkRx/HtLepb1tJk1RDzOSh76F01g6RqPfboS3OxIb9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bctP2RmbZT3Cr4aAXSMA/DOgLDbWJ8jjadxDYi57Ush44Wrp3UgRJrtaH5v8cnW4lb5wdI+xAwHsEjjPS0HjbfJxT9x4t0iqImGIVDpey6q6PlcDvKm1hyqfJ7Lzd3281tpHRzeCzwd713q9W1iayJvk3qG7VLJa+LGdcW1gWIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSRX6C9G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20075C4CEC6;
-	Tue, 15 Oct 2024 13:07:16 +0000 (UTC)
+	 MIME-Version; b=nfej2FykKIYVD0gqncoXmQcRYqvpaKKunedmGPHk3o5+lTuCIujnGIWBDbZVDsMN7GgtEXqv8soSkWvv9libHuQRnAd5rXTxzGQYLkvq7WnT26k4jN+so0g0vaj7o3lU8PP/J9CvbGYGncHGvw6wwRV8VtIptO/+hx5iAMjovbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmiqPtYd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DDBC4CEC6;
+	Tue, 15 Oct 2024 13:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997637;
-	bh=MzG87VFiU+snaDlzzI+yKwPQ1ZwX0JWpBba9gEQcXfc=;
+	s=korg; t=1728997522;
+	bh=XkRx/HtLepb1tJk1RDzOSh76F01g6RqPfboS3OxIb9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CSRX6C9GXfE2oZE2rjmaVGQ4DW8MPPqu8ZGJuAf+81r2KjYLYMCSBmZG19zOKIPn+
-	 UrVKbeTgQk2c3L9OPrmpgMcEnHmLzQzu9SOwqHDvweAsYdlveDMF2LK+IoJNYnpuOO
-	 ckEJIkFzRexnOTicST3RjuGMqFaFxJ4twV60oLsE=
+	b=tmiqPtYd704CZbYZbSZiS/gzhj8ejNN+pwH2bjtVYc7mImSsOg1Gun/AW1bj2OuNI
+	 wMVEJZRwC2GmZ0u7gaCZuZ+MnqnYZVj7IV8HtIPO/ZCl7Onhuo/O9XWEtiObphluoZ
+	 ozMXXLQ/Xu/2Vm2E5pzZZGijqyD9QQHYe0UL4cO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Zdenek Kabelac <zkabelac@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 199/518] vhost_vdpa: assign irq bypass producer token correctly
-Date: Tue, 15 Oct 2024 14:41:43 +0200
-Message-ID: <20241015123924.665487995@linuxfoundation.org>
+Subject: [PATCH 5.10 200/518] Revert "dm: requeue IO if mapping table not yet available"
+Date: Tue, 15 Oct 2024 14:41:44 +0200
+Message-ID: <20241015123924.703984598@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -67,93 +66,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jason Wang <jasowang@redhat.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 02e9e9366fefe461719da5d173385b6685f70319 ]
+[ Upstream commit c8691cd0fc11197515ed148de0780d927bfca38b ]
 
-We used to call irq_bypass_unregister_producer() in
-vhost_vdpa_setup_vq_irq() which is problematic as we don't know if the
-token pointer is still valid or not.
+This reverts commit fa247089de9936a46e290d4724cb5f0b845600f5.
 
-Actually, we use the eventfd_ctx as the token so the life cycle of the
-token should be bound to the VHOST_SET_VRING_CALL instead of
-vhost_vdpa_setup_vq_irq() which could be called by set_status().
+The following sequence of commands causes a livelock - there will be
+workqueue process looping and consuming 100% CPU:
 
-Fixing this by setting up irq bypass producer's token when handling
-VHOST_SET_VRING_CALL and un-registering the producer before calling
-vhost_vring_ioctl() to prevent a possible use after free as eventfd
-could have been released in vhost_vring_ioctl(). And such registering
-and unregistering will only be done if DRIVER_OK is set.
+dmsetup create --notable test
+truncate -s 1MiB testdata
+losetup /dev/loop0 testdata
+dmsetup load test --table '0 2048 linear /dev/loop0 0'
+dd if=/dev/zero of=/dev/dm-0 bs=16k count=1 conv=fdatasync
 
-Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
-Tested-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Fixes: 2cf1ba9a4d15 ("vhost_vdpa: implement IRQ offloading in vhost_vdpa")
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20240816031900.18013-1-jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+The livelock is caused by the commit fa247089de99. The commit claims that
+it fixes a race condition, however, it is unknown what the actual race
+condition is and what program is involved in the race condition.
+
+When the inactive table is loaded, the nodes /dev/dm-0 and
+/sys/block/dm-0 are created. /dev/dm-0 has zero size at this point. When
+the device is suspended and resumed, the nodes /dev/mapper/test and
+/dev/disk/* are created.
+
+If some program opens a block device before it is created by dmsetup or
+lvm, the program is buggy, so dm could just report an error as it used to
+do before.
+
+Reported-by: Zdenek Kabelac <zkabelac@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: fa247089de99 ("dm: requeue IO if mapping table not yet available")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vdpa.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/md/dm-rq.c |  4 +++-
+ drivers/md/dm.c    | 11 ++++++++---
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index fdd175730d327..61d11e7317acd 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -100,11 +100,9 @@ static void vhost_vdpa_setup_vq_irq(struct vhost_vdpa *v, u16 qid)
- 	if (irq < 0)
- 		return;
+diff --git a/drivers/md/dm-rq.c b/drivers/md/dm-rq.c
+index 5f933dbb0152c..7762bde40963e 100644
+--- a/drivers/md/dm-rq.c
++++ b/drivers/md/dm-rq.c
+@@ -496,8 +496,10 @@ static blk_status_t dm_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
  
--	irq_bypass_unregister_producer(&vq->call_ctx.producer);
- 	if (!vq->call_ctx.ctx)
- 		return;
- 
--	vq->call_ctx.producer.token = vq->call_ctx.ctx;
- 	vq->call_ctx.producer.irq = irq;
- 	ret = irq_bypass_register_producer(&vq->call_ctx.producer);
- 	if (unlikely(ret))
-@@ -397,6 +395,14 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
- 
- 		vq->last_avail_idx = vq_state.avail_index;
- 		break;
-+	case VHOST_SET_VRING_CALL:
-+		if (vq->call_ctx.ctx) {
-+			if (ops->get_status(vdpa) &
-+			    VIRTIO_CONFIG_S_DRIVER_OK)
-+				vhost_vdpa_unsetup_vq_irq(v, idx);
-+			vq->call_ctx.producer.token = NULL;
-+		}
-+		break;
- 	}
- 
- 	r = vhost_vring_ioctl(&v->vdev, cmd, argp);
-@@ -423,13 +429,16 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
- 			cb.callback = vhost_vdpa_virtqueue_cb;
- 			cb.private = vq;
- 			cb.trigger = vq->call_ctx.ctx;
-+			vq->call_ctx.producer.token = vq->call_ctx.ctx;
-+			if (ops->get_status(vdpa) &
-+			    VIRTIO_CONFIG_S_DRIVER_OK)
-+				vhost_vdpa_setup_vq_irq(v, idx);
- 		} else {
- 			cb.callback = NULL;
- 			cb.private = NULL;
- 			cb.trigger = NULL;
+ 		map = dm_get_live_table(md, &srcu_idx);
+ 		if (unlikely(!map)) {
++			DMERR_LIMIT("%s: mapping table unavailable, erroring io",
++				    dm_device_name(md));
+ 			dm_put_live_table(md, srcu_idx);
+-			return BLK_STS_RESOURCE;
++			return BLK_STS_IOERR;
  		}
- 		ops->set_vq_cb(vdpa, idx, &cb);
--		vhost_vdpa_setup_vq_irq(v, idx);
- 		break;
+ 		ti = dm_table_find_target(map, 0);
+ 		dm_put_live_table(md, srcu_idx);
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index b56ea42ab7d2b..4fdf0e666777a 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -1696,10 +1696,15 @@ static blk_qc_t dm_submit_bio(struct bio *bio)
+ 	struct dm_table *map;
  
- 	case VHOST_SET_VRING_NUM:
-@@ -890,6 +899,7 @@ static int vhost_vdpa_open(struct inode *inode, struct file *filep)
- 	for (i = 0; i < nvqs; i++) {
- 		vqs[i] = &v->vqs[i];
- 		vqs[i]->handle_kick = handle_vq_kick;
-+		vqs[i]->call_ctx.ctx = NULL;
- 	}
- 	vhost_dev_init(dev, vqs, nvqs, 0, 0, 0, false,
- 		       vhost_vdpa_process_iotlb_msg);
+ 	map = dm_get_live_table(md, &srcu_idx);
++	if (unlikely(!map)) {
++		DMERR_LIMIT("%s: mapping table unavailable, erroring io",
++			    dm_device_name(md));
++		bio_io_error(bio);
++		goto out;
++	}
+ 
+-	/* If suspended, or map not yet available, queue this IO for later */
+-	if (unlikely(test_bit(DMF_BLOCK_IO_FOR_SUSPEND, &md->flags)) ||
+-	    unlikely(!map)) {
++	/* If suspended, queue this IO for later */
++	if (unlikely(test_bit(DMF_BLOCK_IO_FOR_SUSPEND, &md->flags))) {
+ 		if (bio->bi_opf & REQ_NOWAIT)
+ 			bio_wouldblock_error(bio);
+ 		else if (bio->bi_opf & REQ_RAHEAD)
 -- 
 2.43.0
 
