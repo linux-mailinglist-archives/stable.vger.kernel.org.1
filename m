@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-85145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BBF899E5D7
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:35:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C982199E5DA
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:36:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 110982854F6
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:35:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07A801C23435
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C8D1EBA14;
-	Tue, 15 Oct 2024 11:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DD31E412E;
+	Tue, 15 Oct 2024 11:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMpp//fl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f7jWEp2p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF66D1E907D;
-	Tue, 15 Oct 2024 11:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95091EBFF1;
+	Tue, 15 Oct 2024 11:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728992126; cv=none; b=LmWlSvAV1i/U/1FTliAxFG8aymjdNQIL9fzb9TssoP2EIHvoMgtzOFSxESrQpe3o0hLeD5bcTEMGYfGdecq41Qbv7Q/fKZ3VYSP5jHtlv7HKI9nSgb3wqJLBq7CAv0i0/uD6QzMUFvjFJ26FgpHPmS6oRpMSTkCjB+ryAiEQ8vA=
+	t=1728992133; cv=none; b=rgsdn1/7n2hW1aTRPkubL0pco+3OSuHC41gXOGFpC21XbiE8J2ITxuD/NhS0327WEFL34IsMpw3Tm/7hsnX1GU2fJDsKX1BjKpwPkDaIvRQQt2YxuaD4Mh47q1bjcvSfuyjGYcAy9UME6jDE5DhbnYeuDEHTv6JT6nNesTVUuqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728992126; c=relaxed/simple;
-	bh=OrkDED4+q3jl1ytEsh8bOfyRyR/5OAYNJO4j187LCQ8=;
+	s=arc-20240116; t=1728992133; c=relaxed/simple;
+	bh=r0nT14xTc4nwEHEkDql0gwBB9frjgzORyij4VrzhVxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A1+G5uUN1y05wjKzsqd3nniDZpowDCPtpCPHU4eIoy8QQALpI9pVLbdIKtJncweklQn1d0sIhLiMmn6tBUGYUGvZoVDyDd6kUcOy3ulv+o0z/LvmLlpnxrWgL7O3rcGMJ70mmOEDx4K0Lkdm0Kwyjk2R/5IkZKkQSSdo3UWHFMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMpp//fl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41207C4CECF;
-	Tue, 15 Oct 2024 11:35:25 +0000 (UTC)
+	 MIME-Version; b=aOM1CHtKfikrCAVCJKMWusFNncdlLZivSfHmDztscUgMkap7KlybkKrh1oZ4BtpHXx+6RiqDAr9QWjS03pKL8S88YxneI02M10x37aMaoPtdnksWE5KvcZUH0UxBpNGSgH0ktXYaTXdsI2I/lNCS7c3PoCdEbbc9Jz7zSZFTtLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f7jWEp2p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59BCC4CECE;
+	Tue, 15 Oct 2024 11:35:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728992125;
-	bh=OrkDED4+q3jl1ytEsh8bOfyRyR/5OAYNJO4j187LCQ8=;
+	s=korg; t=1728992132;
+	bh=r0nT14xTc4nwEHEkDql0gwBB9frjgzORyij4VrzhVxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RMpp//flGDdzjityuBODRie3mYC2alEB/jEwh0sEzI1G6u7AAasMQG1Jplv7sZEY4
-	 65hh+OhOfWKMbQo3sqornjj3e+5diMem1G3dpbvl+WT0cqKd4l8pB8iWpTe3ltvM2r
-	 54pE/nw96amK9uUft1FBZgXAOGoHYjjx60/s+QGs=
+	b=f7jWEp2p69b2NEFY00/g1jBlVZwJ5hKkuEwPLD3f4wHeSVByaMBZ2fQ7NQWp46rPU
+	 OkNVH0p6oUBuJKx5AviO4hjyk8SIOhsx0Leie4biRt9rQbjbkSLFI9Tjf4heAOnoms
+	 gs1KblfP9VfZ3utkTpAcLtlHF92oihz3GjeqMoHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 026/691] Input: i8042 - add Fujitsu Lifebook E756 to i8042 quirk table
-Date: Tue, 15 Oct 2024 13:19:34 +0200
-Message-ID: <20241015112441.372479725@linuxfoundation.org>
+Subject: [PATCH 5.15 027/691] NFSv4: Fix clearing of layout segments in layoutreturn
+Date: Tue, 15 Oct 2024 13:19:35 +0200
+Message-ID: <20241015112441.411866439@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -66,42 +67,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 7ce7c2283fa6843ab3c2adfeb83dcc504a107858 ]
+[ Upstream commit d72b7963115bea971a28eaa2cb76722c023f9fdf ]
 
-Yet another quirk entry for Fujitsu laptop.  Lifebook E756 requires
-i8041.nomux for keeping the touchpad working after suspend/resume.
+Make sure that we clear the layout segments in cases where we see a
+fatal error, and also in the case where the layout is invalid.
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1229056
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20240814100630.2048-1-tiwai@suse.de
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/nfs/nfs4proc.c | 9 ++++++---
+ fs/nfs/pnfs.c     | 5 ++---
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
-index 49d87f56cb90..a6474090a882 100644
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -617,6 +617,15 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
- 		},
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
- 	},
-+	{
-+		/* Fujitsu Lifebook E756 */
-+		/* https://bugzilla.suse.com/show_bug.cgi?id=1229056 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK E756"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
-+	},
- 	{
- 		/* Fujitsu Lifebook E5411 */
- 		.matches = {
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 770fa1cb112d..f1c351e40c7a 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -9755,13 +9755,16 @@ static void nfs4_layoutreturn_done(struct rpc_task *task, void *calldata)
+ 		fallthrough;
+ 	default:
+ 		task->tk_status = 0;
++		lrp->res.lrs_present = 0;
+ 		fallthrough;
+ 	case 0:
+ 		break;
+ 	case -NFS4ERR_DELAY:
+-		if (nfs4_async_handle_error(task, server, NULL, NULL) != -EAGAIN)
+-			break;
+-		goto out_restart;
++		if (nfs4_async_handle_error(task, server, NULL, NULL) ==
++		    -EAGAIN)
++			goto out_restart;
++		lrp->res.lrs_present = 0;
++		break;
+ 	}
+ 	dprintk("<-- %s\n", __func__);
+ 	return;
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index e13f1c762951..fb12a2193884 100644
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -1169,10 +1169,9 @@ void pnfs_layoutreturn_free_lsegs(struct pnfs_layout_hdr *lo,
+ 	LIST_HEAD(freeme);
+ 
+ 	spin_lock(&inode->i_lock);
+-	if (!pnfs_layout_is_valid(lo) ||
+-	    !nfs4_stateid_match_other(&lo->plh_stateid, arg_stateid))
++	if (!nfs4_stateid_match_other(&lo->plh_stateid, arg_stateid))
+ 		goto out_unlock;
+-	if (stateid) {
++	if (stateid && pnfs_layout_is_valid(lo)) {
+ 		u32 seq = be32_to_cpu(arg_stateid->seqid);
+ 
+ 		pnfs_mark_matching_lsegs_invalid(lo, &freeme, range, seq);
 -- 
 2.43.0
 
