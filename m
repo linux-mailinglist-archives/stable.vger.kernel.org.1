@@ -1,111 +1,170 @@
-Return-Path: <stable+bounces-85094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A622F99DE5D
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 08:30:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C1B99DE9A
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 08:41:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 362E2B21F3E
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 06:30:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD0C72827A9
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 06:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426E518A6CC;
-	Tue, 15 Oct 2024 06:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6159E189F47;
+	Tue, 15 Oct 2024 06:41:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="EbjAh/2I"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18123173320;
-	Tue, 15 Oct 2024 06:29:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5E3189BBF;
+	Tue, 15 Oct 2024 06:41:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728973792; cv=none; b=FlwZ0lI+J0FR8d1A1ysKkqMCnNsdS6BVlL3pUOvOqIggUFm3pZ+T4jdbtISNJR7HMj36sMMs4qZJq2Mb6gNEDIytMCQr8jIxjl3X+z9nIifJpdkC5TrTGOm/lcOn77yovOJ/l1dUGItl/d8d1+P7TQLWF2Unptzhw3SWB0ECG4E=
+	t=1728974492; cv=none; b=e344qBLeZHcj8g/b4TrDo4L+UMhjKW4k0iFBYH94ghizr0AKa0Q/PoFDFrXBkIgtoB5sEH3uKdMYuHBQZZupown22YE6expKl4aZ3tqGj7Qo/lZvPGOQm9mvRdL0KgbvGsxGtzWu4Cr2JSyqry2OJ3DZS9H4UH5fxf6aP2pxtB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728973792; c=relaxed/simple;
-	bh=J8RkUhuHWNVGsBrqmHNDANwqRPCWU4gWwViHGogZ1U8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OLEQlMOl/XhdHDw2CrFJTGppNDiumZYuGxr7zf9mchEkHF3Mm6sJZflATBHwWAeztt9wHX9kT8JOE/PHEcYxlsrnQJLAUFNb9lqGcVcqMi4NbieFOJvkwhH8qdyyu9mHXu3Q+eLkfYzB0veMRveK8HRpAwmdwpQ92dJPnd+pYgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 73F441C0086; Tue, 15 Oct 2024 08:29:41 +0200 (CEST)
-Date: Tue, 15 Oct 2024 08:29:41 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Jon Hunter <jonathanh@nvidia.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-Subject: Re: [PATCH 6.1 000/798] 6.1.113-rc1 review
-Message-ID: <Zw4L1ZR1pBNksjwV@duo.ucw.cz>
-References: <20241014141217.941104064@linuxfoundation.org>
- <3ab1938a-6f6a-4664-9991-d196e684974d@nvidia.com>
+	s=arc-20240116; t=1728974492; c=relaxed/simple;
+	bh=NPYI7qQkCAIIaWUWQV9e705bB0abWmdxPW100Vqf1Yg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=K72kgp/8fh7K2iy6U7i4n+Fr83vmtl+PfDkngZGGbVomFNxMJMRvDiU3TjQ89PM/ce216jAxTzFJL5itUr8wT4tf5sjUpAe4IGEeUbeJDkHzkx8Xc8BIXxjEQoc7hiexeTeo7PcDf4Gm4r0iUKrQN3Iv6kJSACqYngIusywjK0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=EbjAh/2I; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49F0lNeH012373;
+	Tue, 15 Oct 2024 06:41:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:message-id:mime-version:subject:to; s=
+	qcppdkim1; bh=ANlADneuu0TU4NEWZ6V7PrzdLYwNdv/Vvk1QjP26udY=; b=Eb
+	jAh/2I7OvUzx2WuuFM1Ufu6cx/NkkUyVU2MfZFq8BGynygPiyWxycUl6kJR02hc1
+	po3j1/qDzINdtpf4zoUDSMDWHYtZ8KcGxFcZ/USKft6Yg/6nsv1OwI++ZRAwh0gi
+	AG65REXc5VKwTqs2rrgs0NxthtYIYSp9mX2McsDCrBhq9hYev/2j6QL/iFHG1RMq
+	StWlehSct7wRvCKo4NdF2jlgLKwOrjicYDjistX8H45zB3t9gtQJRbBnfhaIcXBW
+	LJjnihnlh4JDnM8RLCyq+HQCz6OGSPdtwSQWrn6/dGZEQ0vNqOIapZtX6dXH36kY
+	2JLyX5EN8S0wfsroCMIQ==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 429e5g0nc8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 15 Oct 2024 06:41:19 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49F6fJGe030878
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 15 Oct 2024 06:41:19 GMT
+Received: from hu-mpubbise-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Mon, 14 Oct 2024 23:41:17 -0700
+From: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+To: <ath10k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Manikanta Pubbisetty
+	<quic_mpubbise@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH ath-current] wifi: ath10k: Fix memory leak in management tx
+Date: Tue, 15 Oct 2024 12:11:03 +0530
+Message-ID: <20241015064103.6060-1-quic_mpubbise@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="5suPJ6AZaEeQGZnT"
-Content-Disposition: inline
-In-Reply-To: <3ab1938a-6f6a-4664-9991-d196e684974d@nvidia.com>
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: KQT_A4WmFeySMsIe-UWDXa3SSxU_t0fK
+X-Proofpoint-ORIG-GUID: KQT_A4WmFeySMsIe-UWDXa3SSxU_t0fK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
+ adultscore=0 impostorscore=0 mlxscore=0 priorityscore=1501 suspectscore=0
+ bulkscore=0 phishscore=0 spamscore=0 mlxlogscore=999 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2410150044
 
+In the current logic, memory is allocated for storing the MSDU context
+during management packet TX but this memory is not being freed during
+management TX completion. Similar leaks are seen in the management TX
+cleanup logic.
 
---5suPJ6AZaEeQGZnT
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Kmemleak reports this problem as below,
 
-Hi!
+unreferenced object 0xffffff80b64ed250 (size 16):
+  comm "kworker/u16:7", pid 148, jiffies 4294687130 (age 714.199s)
+  hex dump (first 16 bytes):
+    00 2b d8 d8 80 ff ff ff c4 74 e9 fd 07 00 00 00  .+.......t......
+  backtrace:
+    [<ffffffe6e7b245dc>] __kmem_cache_alloc_node+0x1e4/0x2d8
+    [<ffffffe6e7adde88>] kmalloc_trace+0x48/0x110
+    [<ffffffe6bbd765fc>] ath10k_wmi_tlv_op_gen_mgmt_tx_send+0xd4/0x1d8 [ath10k_core]
+    [<ffffffe6bbd3eed4>] ath10k_mgmt_over_wmi_tx_work+0x134/0x298 [ath10k_core]
+    [<ffffffe6e78d5974>] process_scheduled_works+0x1ac/0x400
+    [<ffffffe6e78d60b8>] worker_thread+0x208/0x328
+    [<ffffffe6e78dc890>] kthread+0x100/0x1c0
+    [<ffffffe6e78166c0>] ret_from_fork+0x10/0x20
 
-> > -------------
-> > Pseudo-Shortlog of commits:
->=20
-> ...
-> > Oleksij Rempel <linux@rempel-privat.de>
-> >      clk: imx6ul: add ethernet refclock mux support
->=20
->=20
-> I am seeing the following build issue for ARM multi_v7_defconfig and
-> bisect is point to the commit ...
->=20
-> drivers/clk/imx/clk-imx6ul.c: In function =E2=80=98imx6ul_clocks_init=E2=
-=80=99:
-> drivers/clk/imx/clk-imx6ul.c:487:34: error: implicit declaration of funct=
-ion =E2=80=98imx_obtain_fixed_of_clock=E2=80=99; did you mean =E2=80=98imx_=
-obtain_fixed_clock=E2=80=99? [-Werror=3Dimplicit-function-declaration]
->   hws[IMX6UL_CLK_ENET1_REF_PAD] =3D imx_obtain_fixed_of_clock(ccm_node, "=
-enet1_ref_pad", 0);
->                                   ^~~~~~~~~~~~~~~~~~~~~~~~~
->                                   imx_obtain_fixed_clock
+Free the memory during completion and cleanup to fix the leak.
 
-CIP testing sees same problem:
+Protect the mgmt_pending_tx idr_remove() operation in
+ath10k_wmi_tlv_op_cleanup_mgmt_tx_send() using ar->data_lock similar to
+other instances.
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/808399=
-1401
+Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.2.0-01387-QCAHLSWMTPLZ-1
 
-Best regards,
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Fixes: dc405152bb64 ("ath10k: handle mgmt tx completion event")
+Fixes: c730c477176a ("ath10k: Remove msdu from idr when management pkt send fails")
+Cc: stable@vger.kernel.org
+Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+---
+ drivers/net/wireless/ath/ath10k/wmi-tlv.c | 7 ++++++-
+ drivers/net/wireless/ath/ath10k/wmi.c     | 2 ++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
---5suPJ6AZaEeQGZnT
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+index dbaf26d6a7a6..16d07d619b4d 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
++++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+@@ -3043,9 +3043,14 @@ ath10k_wmi_tlv_op_cleanup_mgmt_tx_send(struct ath10k *ar,
+ 				       struct sk_buff *msdu)
+ {
+ 	struct ath10k_skb_cb *cb = ATH10K_SKB_CB(msdu);
++	struct ath10k_mgmt_tx_pkt_addr *pkt_addr;
+ 	struct ath10k_wmi *wmi = &ar->wmi;
+ 
+-	idr_remove(&wmi->mgmt_pending_tx, cb->msdu_id);
++	spin_lock_bh(&ar->data_lock);
++	pkt_addr = idr_remove(&wmi->mgmt_pending_tx, cb->msdu_id);
++	spin_unlock_bh(&ar->data_lock);
++
++	kfree(pkt_addr);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index 4861179b2217..5e061f7525a6 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -2441,6 +2441,7 @@ wmi_process_mgmt_tx_comp(struct ath10k *ar, struct mgmt_tx_compl_params *param)
+ 	dma_unmap_single(ar->dev, pkt_addr->paddr,
+ 			 msdu->len, DMA_TO_DEVICE);
+ 	info = IEEE80211_SKB_CB(msdu);
++	kfree(pkt_addr);
+ 
+ 	if (param->status) {
+ 		info->flags &= ~IEEE80211_TX_STAT_ACK;
+@@ -9612,6 +9613,7 @@ static int ath10k_wmi_mgmt_tx_clean_up_pending(int msdu_id, void *ptr,
+ 	dma_unmap_single(ar->dev, pkt_addr->paddr,
+ 			 msdu->len, DMA_TO_DEVICE);
+ 	ieee80211_free_txskb(ar->hw, msdu);
++	kfree(pkt_addr);
+ 
+ 	return 0;
+ }
+-- 
+2.17.1
 
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZw4L1QAKCRAw5/Bqldv6
-8qaiAKCoKkfZIrhqcOQZiCornDy3vgT1gQCfUfjHlNlJXzZHVsFgcIQGytPkZr4=
-=J50w
------END PGP SIGNATURE-----
-
---5suPJ6AZaEeQGZnT--
 
