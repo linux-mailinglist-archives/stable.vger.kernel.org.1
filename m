@@ -1,92 +1,97 @@
-Return-Path: <stable+bounces-85079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 440C699DAAF
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 02:30:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E20FC99DBD5
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 03:47:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 757B81C21565
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 00:30:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F8121C21AB7
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 01:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D1638F77;
-	Tue, 15 Oct 2024 00:30:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lSGPyvmy"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA18414A4DF;
+	Tue, 15 Oct 2024 01:47:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97AA4A23
-	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 00:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF4A8468;
+	Tue, 15 Oct 2024 01:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728952221; cv=none; b=V8bWBWaFTIzMkqGCfE6QgVuP5vDCaDdCsFGrxiXdgJ8KIpjDTPM2vlAOKgXeBUehUt6isvftCOG8fV8GD9JADpVkMb5FTvRJBSS8uf5rbxE3anXzO7ZvODwigYdI1HGx4CLpu+XxUG6O3MQ2A5bQ0ImQsOStoYFPPsRi9n4YaFM=
+	t=1728956829; cv=none; b=TJTms/234dnUDbNNYJNMJTZ5HI7eUdUCXdtkuMySSBsbpzcDa0aR/hHfLzLuDEdJ004PFJCTnZaTS9t51f9k+8ip1WmE2IY4airmCN5fXqTojOnp2kwii7zTcX7eYMrUCCusb2ioG6z/YTQ8O8/XE1MrjYfnn9FGzv0kaySVYAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728952221; c=relaxed/simple;
-	bh=nJZ1QWkTV0MZm9WgJo4U6AQhnf5be0DTLzOoclSeVys=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=euPaX00OCYwipU11juubWF1zML7wiu/S4E2auXaS/QLWPFR4U3RQ4DG9S878r5cTwhwui3vcS5l96cU/IZh76KZ0aj4le+itL2ulxIe9+AZpFiI18QWlOKhQnYRNGEkySAm0OBEFEN1hj7Nqj3KOzJxDvKJjF9zouJ5feTXlUnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lSGPyvmy; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37d4612da0fso3450406f8f.0
-        for <stable@vger.kernel.org>; Mon, 14 Oct 2024 17:30:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728952217; x=1729557017; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=WqzwA+or3NqGNBho9kDhIYHCDYygL6ZXy4nRRa0QQ3k=;
-        b=lSGPyvmyiC88GB7L/zlIBOV05oHEHYiQy5IYVIdmd/CEsgiqEs1zdHIUxH9/ZubJrl
-         pxlNlZnOjx9GxxKI1gLHI9gCSjbOhgDDctrdM1mXpU0Al0CQQTdIH5G5SkraYttIljmf
-         G/UEPmz10YgBNO+ZwV1iBSc7ong0fmz4rRbJvCI/XUugHSYbWyVRMei58FFB3hlkrJJH
-         AlSsVA6gDAdFS9WRTj1A93jToBIhCf/XOg+jKRhvRdpnPFarbOmqX7/HQJt5z3pW73Y0
-         MzkmurdctiYx0IUPdHy9bz7LngzKCWJ+h3PnSAhQFp8WeiU4zPJoOgC+7m0tPUozDhah
-         ChQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728952217; x=1729557017;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WqzwA+or3NqGNBho9kDhIYHCDYygL6ZXy4nRRa0QQ3k=;
-        b=jX3UQKRVtTmOcGorNWnAFbDqg0TS+TfHNOJMY5TfVXh/0BiwyXt76lNBzjnuLecclI
-         YHp84h/SyAUIDLtCM/86LeLqK7xQGm3XpehO31zJpJY2l301XBJkFLjr89o2epKsMxZp
-         0BlOW4VhHONbJFYFzH8kr1b4e0yArTvNPMpdUu1JjHL5qdHs8buAcQjTytU8mic4u6jx
-         QThSDrCKwXybLJ0VZbOHLkxDGRWqN4RsozCDK8WMdpB7R/YRYqQaYoh8PKMpzqQdFeul
-         u2z8mhM+BVhkVLoHxtIGS8r3PxzZBu6ItxK2ZpelO3do+dTj29x8QRZVa3qoFRvMKl+O
-         BC3A==
-X-Forwarded-Encrypted: i=1; AJvYcCVp0UKt2vhM83Lnk2miCcztKPC7av8jzMbZ4v2kDwHfZZmaQZihFMpB8FQ6+1WJ99JpS1ekSck=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPgEPfakCVmL2zZfkaGa9TwQNROVhdwgBPeWiaJ108riCX38pi
-	M/aegxJchgEpeRbJAdxWybFykwchjV2Ecv6jSVTJHiVK3rAOTkSdLLuzDvqlBDB8ujcjXBKeNk+
-	KzB4LhrZdm51YOjF4UbMWCN+n0UtQBvg0
-X-Google-Smtp-Source: AGHT+IFPAxDn9Ocl0LS03WxYc8aEQzGGOLCCAjLOCm3WRw4+Fkxt+cvbLLevHQD36JPExtOkdy+JI3CIpchS01moSbw=
-X-Received: by 2002:a5d:504e:0:b0:37c:ce3c:e15d with SMTP id
- ffacd0b85a97d-37d551d9cb7mr9596165f8f.14.1728952217042; Mon, 14 Oct 2024
- 17:30:17 -0700 (PDT)
+	s=arc-20240116; t=1728956829; c=relaxed/simple;
+	bh=igBZYiHlzAituf/psbEZa0SdcnGgUrsMstspMASXq18=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZKCeAtmbCtsGgyNS0t0b2mHT37Ic3RiB6UVnwZylFUHHFiKVbq8J6OANtf2qP5rI4AX6slsngw1WCF/JsgvMYOO5cYMD8dk0m0ffaz48prCzX2Foy2ZyPBv6Stu3O0EePxwY1svcYYq1L0iXfFlkG3ngNOVe//7+GnzJANDaQNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4XSH4G5bb6z1gx1K;
+	Tue, 15 Oct 2024 09:45:50 +0800 (CST)
+Received: from kwepemg200013.china.huawei.com (unknown [7.202.181.64])
+	by mail.maildlp.com (Postfix) with ESMTPS id CA82E1A0188;
+	Tue, 15 Oct 2024 09:47:03 +0800 (CST)
+Received: from huawei.com (10.175.113.32) by kwepemg200013.china.huawei.com
+ (7.202.181.64) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 15 Oct
+ 2024 09:47:03 +0800
+From: Liu Shixin <liushixin2@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Muchun Song <muchun.song@linux.dev>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>, Liu Shixin <liushixin2@huawei.com>
+Subject: [PATCH] mm/swapfile: skip HugeTLB pages for unuse_vma
+Date: Tue, 15 Oct 2024 09:45:21 +0800
+Message-ID: <20241015014521.570237-1-liushixin2@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240205211233.2601-1-mario.limonciello@amd.com>
- <20241013213103.55357-1-stuart.a.hayhurst@gmail.com> <MN0PR12MB6101BA1509A6D9B6338EC8E9E2442@MN0PR12MB6101.namprd12.prod.outlook.com>
-In-Reply-To: <MN0PR12MB6101BA1509A6D9B6338EC8E9E2442@MN0PR12MB6101.namprd12.prod.outlook.com>
-From: Stuart <stuart.a.hayhurst@gmail.com>
-Date: Tue, 15 Oct 2024 01:30:05 +0100
-Message-ID: <CALTg27nH4FfnRi8js8hqh1_C-As-Ouw1Q5FGKm-9Bm8p9c8r+Q@mail.gmail.com>
-Subject: Re: [PATCH] drm/amd/display: Disable PSR-SU on Parade 08-01 TCON too
-To: "Limonciello, Mario" <Mario.Limonciello@amd.com>
-Cc: "Mahfooz, Hamza" <Hamza.Mahfooz@amd.com>, "Rossi, Marc" <Marc.Rossi@amd.com>, 
-	"amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemg200013.china.huawei.com (7.202.181.64)
 
-> Is this on a mainline 6.11.y or 6.12-rc3 kernel?  Can you please open up a new issue with all the details?  You can ping it back here.
+I got a bad pud error and lost a 1GB HugeTLB when calling swapoff.
+The problem can be reproduced by the following steps:
 
-Currently a Debian 6.11.2 kernel, but I did reproduce it with a
-mainline 6.10 and earlier versions in the past.
+ 1. Allocate an anonymous 1GB HugeTLB and some other anonymous memory.
+ 2. Swapout the above anonymous memory.
+ 3. run swapoff and we will get a bad pud error in kernel message:
 
-Issue link: https://gitlab.freedesktop.org/drm/amd/-/issues/3688
+  mm/pgtable-generic.c:42: bad pud 00000000743d215d(84000001400000e7)
+
+We can tell that pud_clear_bad is called by pud_none_or_clear_bad
+in unuse_pud_range() by ftrace. And therefore the HugeTLB pages will
+never be freed because we lost it from page table. We can skip
+HugeTLB pages for unuse_vma to fix it.
+
+Fixes: 0fe6e20b9c4c ("hugetlb, rmap: add reverse mapping for hugepage")
+Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+---
+ mm/swapfile.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 0cded32414a1..f4ef91513fc9 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -2312,7 +2312,7 @@ static int unuse_mm(struct mm_struct *mm, unsigned int type)
+ 
+ 	mmap_read_lock(mm);
+ 	for_each_vma(vmi, vma) {
+-		if (vma->anon_vma) {
++		if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
+ 			ret = unuse_vma(vma, type);
+ 			if (ret)
+ 				break;
+-- 
+2.34.1
+
 
