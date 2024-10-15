@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-86223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D5E99EC9E
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:21:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E401B99ECD6
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44CD02830A2
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:21:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 595A0B215DD
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4F32281FC;
-	Tue, 15 Oct 2024 13:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D96E227394;
+	Tue, 15 Oct 2024 13:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cr+FHVqg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLMLfVmj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFE11C4A01;
-	Tue, 15 Oct 2024 13:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8EE1E7653;
+	Tue, 15 Oct 2024 13:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728998185; cv=none; b=r6dpkY/Q9rxO79ToqnlAyPkXtHITtPLJ6SobUjYX025a2JibVsLYgxKLVGVsdOdAUwf4y++KTHGMPulPZwTyIWB3kRyZ/i9Rtg6DyPhgoOx/yWR5JykN2cnGok6PMjoN8j/TZdmZYugmkvIJBMn3yZMFOGMpwNxd90a9MoL9eUE=
+	t=1728998321; cv=none; b=n4zgfaPv7YYwNRJfe5ENNIYNOqDyBdkkpBFv1j0rxxe4ty+3zLIlSqUS+EeeuP066YQcBntNQTbD7oNNlecI132A0kGYv6CDt4kqhnHl5g81ZVnyoRXIfu/T9khsZT2YWFDj/sZA4X1wIWEUeZiwzL3ODdGeQeGictzAp1pKcLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728998185; c=relaxed/simple;
-	bh=n+yOkFADLdKHLIOcNKaLKaIJIO1Q1ZN3+ek+omAB2HE=;
+	s=arc-20240116; t=1728998321; c=relaxed/simple;
+	bh=351qantpzzgVjQA5BVRarbrMWC61RJiwqw7sApLt4hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z/YO7VIRbLMymNyoFItZSvZMGmojJx2LEdPyGLKEDF1TMPl7to9pBAUIV/jT4ulLV/DTzNE6GteVcfhncv1KuxyY7LiFqZBYQEQDYu98o8Z6UwUagHVwWsfNRCt0VTbByh143b/VpCiuUsSreVki+73+3diFrN3WzuzKxeaLYzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cr+FHVqg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A773DC4CEC6;
-	Tue, 15 Oct 2024 13:16:24 +0000 (UTC)
+	 MIME-Version; b=hFXNut9499348Y1V9DoFO5/ZyleXPCCBIwrWH6h4Ws2UqD6pLmcqC+XtebLbZEspNrkpyieeM18wNE1+80CU70mXTJy550Vi6K/BSpNm6ttBrphuzyqLoLOQMI+WuneOHf06rMb2HKrmjLa3UBZ/SgymaSAFdtfOFlGUhXJOzyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLMLfVmj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26269C4CED1;
+	Tue, 15 Oct 2024 13:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728998185;
-	bh=n+yOkFADLdKHLIOcNKaLKaIJIO1Q1ZN3+ek+omAB2HE=;
+	s=korg; t=1728998320;
+	bh=351qantpzzgVjQA5BVRarbrMWC61RJiwqw7sApLt4hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cr+FHVqgqAwjmruGRnkvRBbwa67b7UCU08alNvOTLZU933cuB+m4kko+Nzt5ycAG9
-	 YMJDUdTpoDYQJ6BTOIkpf+K3x9kVciU1IU6Nz2mUIJntm9fKzdFe+MHdFfy8PllNkH
-	 JuRHzx0ri8euVy4zJ2f5qVVTMKEa4R9jY5pZ1eNM=
+	b=dLMLfVmjR9RX4qZc04tSXdNjh7s8hCrSd/51hgeXLJ4/1d0kcdF3JHDJHnedNhwS2
+	 6f6drQwNcnTPSgvxKxQRb1JQ7Ya0wwwE3vRb69Gx8x16YKcuoSXQ3MmAnCvmtHkdfO
+	 djdPIM9iGBerWwAtVEY7NXvk+jQnQsoE0o2xQ06M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Tipton <quic_mdtipton@quicinc.com>,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Imran Shaik <quic_imrashai@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.10 402/518] clk: qcom: clk-rpmh: Fix overflow in BCM vote
-Date: Tue, 15 Oct 2024 14:45:06 +0200
-Message-ID: <20241015123932.489748250@linuxfoundation.org>
+	Zheng Wang <zyytlz.wz@163.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 5.10 403/518] media: venus: fix use after free bug in venus_remove due to race condition
+Date: Tue, 15 Oct 2024 14:45:07 +0200
+Message-ID: <20241015123932.528171334@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -67,37 +67,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mike Tipton <quic_mdtipton@quicinc.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-commit a4e5af27e6f6a8b0d14bc0d7eb04f4a6c7291586 upstream.
+commit c5a85ed88e043474161bbfe54002c89c1cb50ee2 upstream.
 
-Valid frequencies may result in BCM votes that exceed the max HW value.
-Set vote ceiling to BCM_TCS_CMD_VOTE_MASK to ensure the votes aren't
-truncated, which can result in lower frequencies than desired.
+in venus_probe, core->work is bound with venus_sys_error_handler, which is
+used to handle error. The code use core->sys_err_done to make sync work.
+The core->work is started in venus_event_notify.
 
-Fixes: 04053f4d23a4 ("clk: qcom: clk-rpmh: Add IPA clock support")
+If we call venus_remove, there might be an unfished work. The possible
+sequence is as follows:
+
+CPU0                  CPU1
+
+                     |venus_sys_error_handler
+venus_remove         |
+hfi_destroy	 		 |
+venus_hfi_destroy	 |
+kfree(hdev);	     |
+                     |hfi_reinit
+					 |venus_hfi_queues_reinit
+                     |//use hdev
+
+Fix it by canceling the work in venus_remove.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
-Reviewed-by: Taniya Das <quic_tdas@quicinc.com>
-Signed-off-by: Imran Shaik <quic_imrashai@quicinc.com>
-Link: https://lore.kernel.org/r/20240809-clk-rpmh-bcm-vote-fix-v2-1-240c584b7ef9@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/clk-rpmh.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/platform/qcom/venus/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/clk/qcom/clk-rpmh.c
-+++ b/drivers/clk/qcom/clk-rpmh.c
-@@ -270,6 +270,8 @@ static int clk_rpmh_bcm_send_cmd(struct
- 		cmd_state = 0;
- 	}
+--- a/drivers/media/platform/qcom/venus/core.c
++++ b/drivers/media/platform/qcom/venus/core.c
+@@ -366,6 +366,7 @@ static int venus_remove(struct platform_
+ 	struct device *dev = core->dev;
+ 	int ret;
  
-+	cmd_state = min(cmd_state, BCM_TCS_CMD_VOTE_MASK);
-+
- 	if (c->last_sent_aggr_state != cmd_state) {
- 		cmd.addr = c->res_addr;
- 		cmd.data = BCM_TCS_CMD(1, enable, 0, cmd_state);
++	cancel_delayed_work_sync(&core->work);
+ 	ret = pm_runtime_get_sync(dev);
+ 	WARN_ON(ret < 0);
+ 
 
 
 
