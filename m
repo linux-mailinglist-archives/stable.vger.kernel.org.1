@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-86025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5814999EB4B
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:05:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4139C99EB26
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEB64B20FCF
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:05:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05AE4283993
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820341C07DC;
-	Tue, 15 Oct 2024 13:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12EAA1E3790;
+	Tue, 15 Oct 2024 13:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PTpPwHS4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNghUCxy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2641C07DB;
-	Tue, 15 Oct 2024 13:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C571A1E379D;
+	Tue, 15 Oct 2024 13:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997519; cv=none; b=GersYhPH8K7sZLqNCLxU+SI1+07EpKDLrSq7X6KhaA32FcG/2L/itGDDOdNS8zWvHd56ybGtV6VTTOSVKb/8FzI+AWuP3qmSC/gdjNrF4HbYqr77UPUddT/HDMSXlfcDSiTNUzFlK8fhsTslegDJsZdF2CQqfKWKafEAGNcGJlc=
+	t=1728997409; cv=none; b=BgFa21hW8IkfkEMt5hVCYL1c2mhXPLUgs0369sZ8nNQf21jGo9Gw+Ng9063yX+HzHWZd+X+Vp3eWnYIesVlN9F5y5GkPkCxLW4YoG6YFNu/komUlI6JaTZCTyJEs3/sCuJhuii1IuEIALFFnGOYQlSSmMCNYjx9cNGlzw/OztBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997519; c=relaxed/simple;
-	bh=tzkrrtIYLvr/FF+rAH2iMd5neU/mcikZHLMJMTxDyKU=;
+	s=arc-20240116; t=1728997409; c=relaxed/simple;
+	bh=cImxAtC2DUqUYq5Uckkft8jA4IyNfQL1ZdBNkT9XTf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OB7JX7xKTfYmB30gjT691w0+6SQYIGxnaCdd0Jeuh+/17ayWIh4e3zV9qJXku7+CT25gj/z1mmMGSq7U7DJL88Bs/Y568iNaL1rrd1g7z3mfa4MulxLmqO4SAhId/DoEUrAmv3x6k/rwKSLMbr6P+ng8S0b9qaS9DJUiotBd0xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PTpPwHS4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A22FDC4CEC6;
-	Tue, 15 Oct 2024 13:05:18 +0000 (UTC)
+	 MIME-Version; b=sEewezJM0UXMh3P7NUmkXL/xEj3i/2mRCkGcgQqbBehvgZF+W/ZLXQvDzdNgsrdHu9FRzJklTN0CNNxs8EDLmXWp606npTookAQBjS+e4sWBmqWgLfSQ1xCbXOR+iNUzWF03p7QCAy9BZY8lWpd/RhoSKe34jXHJ5KS07QdhRYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNghUCxy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17F9C4CEC6;
+	Tue, 15 Oct 2024 13:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997519;
-	bh=tzkrrtIYLvr/FF+rAH2iMd5neU/mcikZHLMJMTxDyKU=;
+	s=korg; t=1728997409;
+	bh=cImxAtC2DUqUYq5Uckkft8jA4IyNfQL1ZdBNkT9XTf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PTpPwHS4bBAfk4w+uv4rrGVa1FSTVIsB0CJCHQAJ+jHjwxSORz8bitWLNsh25enwh
-	 fBYyD1cqxB+dDluwVVnR6PPixeeAuMUxEMOiuyqEvaxuftnH++h3uOaoKgIkbsG1bZ
-	 rSrPIBrJ4nglAQ4oA8jan4d5fO39y048sv1T6LCg=
+	b=aNghUCxyAARjgBiCyHR3WDuC+2tM/41+ucnM4KW+2aVpxoIKLFrshyXPsgcV/0sAP
+	 uDPbd0DyvJIyC6/V9IA4gG7ODGNs/8IQbQtmNrXNm8D9GMNHa9umd5VkuoLczTauSp
+	 1mnyCbszwN6dCt9MsOl3el3QDQUFF71SL7eKROrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 165/518] PCI: keystone: Fix if-statement expression in ks_pcie_quirk()
-Date: Tue, 15 Oct 2024 14:41:09 +0200
-Message-ID: <20241015123923.365342794@linuxfoundation.org>
+Subject: [PATCH 5.10 166/518] PCI: xilinx-nwl: Fix register misspelling
+Date: Tue, 15 Oct 2024 14:41:10 +0200
+Message-ID: <20241015123923.402913534@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -62,47 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 6188a1c762eb9bbd444f47696eda77a5eae6207a ]
+[ Upstream commit a437027ae1730b8dc379c75fa0dd7d3036917400 ]
 
-This code accidentally uses && where || was intended.  It potentially
-results in a NULL dereference.
+MSIC -> MISC
 
-Thus, fix the if-statement expression to use the correct condition.
-
-Fixes: 86f271f22bbb ("PCI: keystone: Add workaround for Errata #i2037 (AM65x SR 1.0)")
-Link: https://lore.kernel.org/linux-pci/1b762a93-e1b2-4af3-8c04-c8843905c279@stanley.mountain
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Fixes: c2a7ff18edcd ("PCI: xilinx-nwl: Expand error logging")
+Link: https://lore.kernel.org/r/20240531161337.864994-4-sean.anderson@linux.dev
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/pcie-xilinx-nwl.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index 0b49bdf149a69..08f37ae8a1110 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -598,7 +598,7 @@ static void ks_pcie_quirk(struct pci_dev *dev)
- 	 */
- 	if (pci_match_id(am6_pci_devids, bridge)) {
- 		bridge_dev = pci_get_host_bridge_device(dev);
--		if (!bridge_dev && !bridge_dev->parent)
-+		if (!bridge_dev || !bridge_dev->parent)
- 			return;
+diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
+index 2a9fe7c3aef9f..5c6653d825fb5 100644
+--- a/drivers/pci/controller/pcie-xilinx-nwl.c
++++ b/drivers/pci/controller/pcie-xilinx-nwl.c
+@@ -79,8 +79,8 @@
+ #define MSGF_MISC_SR_NON_FATAL_DEV	BIT(22)
+ #define MSGF_MISC_SR_FATAL_DEV		BIT(23)
+ #define MSGF_MISC_SR_LINK_DOWN		BIT(24)
+-#define MSGF_MSIC_SR_LINK_AUTO_BWIDTH	BIT(25)
+-#define MSGF_MSIC_SR_LINK_BWIDTH	BIT(26)
++#define MSGF_MISC_SR_LINK_AUTO_BWIDTH	BIT(25)
++#define MSGF_MISC_SR_LINK_BWIDTH	BIT(26)
  
- 		ks_pcie = dev_get_drvdata(bridge_dev->parent);
+ #define MSGF_MISC_SR_MASKALL		(MSGF_MISC_SR_RXMSG_AVAIL | \
+ 					MSGF_MISC_SR_RXMSG_OVER | \
+@@ -95,8 +95,8 @@
+ 					MSGF_MISC_SR_NON_FATAL_DEV | \
+ 					MSGF_MISC_SR_FATAL_DEV | \
+ 					MSGF_MISC_SR_LINK_DOWN | \
+-					MSGF_MSIC_SR_LINK_AUTO_BWIDTH | \
+-					MSGF_MSIC_SR_LINK_BWIDTH)
++					MSGF_MISC_SR_LINK_AUTO_BWIDTH | \
++					MSGF_MISC_SR_LINK_BWIDTH)
+ 
+ /* Legacy interrupt status mask bits */
+ #define MSGF_LEG_SR_INTA		BIT(0)
+@@ -305,10 +305,10 @@ static irqreturn_t nwl_pcie_misc_handler(int irq, void *data)
+ 	if (misc_stat & MSGF_MISC_SR_FATAL_DEV)
+ 		dev_err(dev, "Fatal Error Detected\n");
+ 
+-	if (misc_stat & MSGF_MSIC_SR_LINK_AUTO_BWIDTH)
++	if (misc_stat & MSGF_MISC_SR_LINK_AUTO_BWIDTH)
+ 		dev_info(dev, "Link Autonomous Bandwidth Management Status bit set\n");
+ 
+-	if (misc_stat & MSGF_MSIC_SR_LINK_BWIDTH)
++	if (misc_stat & MSGF_MISC_SR_LINK_BWIDTH)
+ 		dev_info(dev, "Link Bandwidth Management Status bit set\n");
+ 
+ 	/* Clear misc interrupt status */
 -- 
 2.43.0
 
