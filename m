@@ -1,72 +1,74 @@
-Return-Path: <stable+bounces-86358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C56299EFD9
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 16:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3604699EFF2
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 16:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3523C1F217A2
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:41:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D39F31F24206
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32C61D5173;
-	Tue, 15 Oct 2024 14:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBBF16D4FF;
+	Tue, 15 Oct 2024 14:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yl1xxQy0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R6vjcvjW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
+Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0041D5169
-	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 14:40:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40071FC7C4;
+	Tue, 15 Oct 2024 14:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729003244; cv=none; b=ig4ztxmPk2I1Lc1n3nmg9j0xe0Y/93TdD7kvqEOegXM5qK46KNVuj+Hy8XKS+nsFLyLOASw0c8ssWPLIvzNv9b4OmtQkFSSw+VQy8B3a1LbHxRltN/+i5QHvWkxNtO911uu7E+bG2MRXQqvDMq/7LOYRtt0Zdmw45NTv2vWISMI=
+	t=1729003541; cv=none; b=VMi59d+DGHERp5omRGzmDHTK+c/1tcOUM+lLhSR/ZRDv049dYtgJH3vpv6lDTMqQ68vmPQMgYykeNNOC+hrNqkzAZ5az7h8dJRr52N8buOP8452KQN6RUeoLLaA87iuusN+ocBgDVyVpLzVqXR2JSe5Sz8GtzmmG/KTN/16/Xus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729003244; c=relaxed/simple;
-	bh=9j/iM9ZFOnXJ8Pq4EAuSjpyDlhqwQ5ndLD3SAv/tylQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=suhPYt8Y6Omkmta95BsylPr4SNWZwL8unZRnYSttKPdHgLCKgEL9MS+O9B4v0SHD5f22GySxopjyDZypIFjkXOETkudCGJMO+4/33fy1/UpPHkD0TkL3FjB+7N7tldWfPCdvdXHseRwbO57EDg++4wGz1jSdjB1UwQoICa0ilJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yl1xxQy0; arc=none smtp.client-ip=209.85.166.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-837ec133784so151155339f.3
-        for <stable@vger.kernel.org>; Tue, 15 Oct 2024 07:40:42 -0700 (PDT)
+	s=arc-20240116; t=1729003541; c=relaxed/simple;
+	bh=c36HbQs0gJpyQFG4AYu2BErUBXyc17mTB5ULEPC4y3E=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=oZDt0IYxmgTDVEdz9cWPI1+NObo7609fuprwTSnAstlnk/R2rn3OAq2s0neLI5zzliJuOX/2XrClBLcokaaWud20hV6XTmIPByk7OENv8fvRIKtbG1IdUD0o/RwXTc9jmdcQGn/YJ9zyWDb1vCVi+KugAnPLco9CfZ1bMLhtTOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R6vjcvjW; arc=none smtp.client-ip=209.85.214.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-20c77459558so43154805ad.0;
+        Tue, 15 Oct 2024 07:45:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1729003242; x=1729608042; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dt0BlX7ghZTRqrFsNZjMr0j0wMiPy8jkYnWp/1A16kg=;
-        b=Yl1xxQy0jFESj8oH6O3sPxlpCyPv1Ax4uy1984qU/WcuKbUWHwVC/XdXIyqjxllAZ3
-         DOgi6JNu+IY+7w37SbEAij/qUiaxLxGlB4qoEa59NXT2H1Xs7gTPdZQhiWk5Ex62Qm9k
-         VfqkcdHzbyKEZz+PCB96mVMH0CWKgW5+JC2sg=
+        d=gmail.com; s=20230601; t=1729003539; x=1729608339; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ofgu3iXnCYSQ3sJFxlEFNmaN7sQ5lnXtot0dUpXtI6g=;
+        b=R6vjcvjWUPTOsFvw8T9GBv8TYGLY0UWwLyBdTeKV+mBtc5I+H8ecB5Fd1Lu58RjPIO
+         Eo6rBCZ1osTHMO80mQuCqUz3J51tQcl4Q4KRtRRo++0HqKiR4+B1VUzBKfKtA5RTPmP+
+         BH6Rq2e6VWvBTZUVLlUsnxS5dG50gdA0KovFKgkbEZ1QFwsVVrDb52dJWGJ9cstMVRhS
+         o6QC+5BI8ckltWSrpRTyCHkXzkHZuyPpGorYKLE3bKhyV/RQp313bNfi84Ri8Nnn7y2q
+         xEr10ugMTXJb4Ys+T8XdPiDZKCkX5ENpE7BdLDxihpRO9nD2BeoKNQi1/BhFXKgjBFDV
+         gA1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729003242; x=1729608042;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dt0BlX7ghZTRqrFsNZjMr0j0wMiPy8jkYnWp/1A16kg=;
-        b=Ec6M8qpJ4TH/iD6Zqmm4WgX2pJjdnQYqQuA35fdX2eFYUFn0tamH/Rrbycjt32OU9v
-         sDSGH8vE0uR6dVub5xmYM10yTpUCE9X2hUad5JwosWdQDWXX8mssKO5gGi3ayR+UcKA/
-         yWqf1+wBRA64RjDGqqv3R8idINLsoNDgFEMh4qOvDc7suhljfbZCKs8S9okjoDPdLarT
-         1BrnRBQfZzh8RrLa7lsoKp5G1Dj/WX8B12jwrY57zSrFf2fP7/m9Yyl3h7sgBo1E7hz6
-         rukvRzf5mtarUvu5/48dfVOZPWqzpGlsw7RMGCH4MjQ9uI9RqDamzM9IQ7z3ISQK1R4u
-         jl/g==
-X-Forwarded-Encrypted: i=1; AJvYcCXSJ+cXZSWp4uKihfs8HbGwKZPDlkBGctv2CTbL/WXWKK1elgc507ugzQz1aNIC5cen2B5apFY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzq+3aeSjtN9pPZfbT5fvcP46OsZhlOt6OBZ8o4c3pNxdEkOg/H
-	iTbVqXAtGhK7a+AyZd9PiCo2NPYdVf6vrPyPcLVS+rEtJijsTDbq4fqO00YIYbjcPn5/jkhsXlm
-	E
-X-Google-Smtp-Source: AGHT+IE8j3afbFFAJaUzf/DFsIbH2c/+ncqZt9lRW/uO0WSLuyNF5qt3dAKoftbomXfEkEynRLRBBg==
-X-Received: by 2002:a92:cda4:0:b0:3a0:98cd:3754 with SMTP id e9e14a558f8ab-3a3b5f237d3mr136176475ab.4.1729003242255;
-        Tue, 15 Oct 2024 07:40:42 -0700 (PDT)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3a3d70cd07csm3412505ab.37.2024.10.15.07.40.40
+        d=1e100.net; s=20230601; t=1729003539; x=1729608339;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Ofgu3iXnCYSQ3sJFxlEFNmaN7sQ5lnXtot0dUpXtI6g=;
+        b=K2Sa9tO3Wh1QCCOh7wCWIoHKGsVLXnZs466YvrSRUNUbGdbq4O9XyNfAyA9ahGMgRa
+         w1/Vb1xclIk1MATvdqvsT3/6u0ZnXDmKZJOdfeJckIacOKq4r9w4ekWKhSWvsJgH+ag3
+         +FNuhMwfmqlzDDJROjiFHuRIp7KQj/gL8NPwOWt9AUrAxR7Kox25oSHRF2j0/adCDR+5
+         9KBb1NtMiyyctDV3ORhlSdLhhUwVYix/EjhyssKRg3IM6HvE6sO/zgsRrsXy5YLjGrhG
+         8WsanhxiyaygmsOp/yzKS/pniYO//wbqmCcixLQ9lNJfwNo/yRq07tO4qsmrXG3vcZeK
+         27sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUw1QR2/W+UBX4Y1Ux+dof9HaQ/eY+GZ+yJtGPaSdwnsDJWzopQ2n62dpPWFvRd6iK/pzQ4Tf2bumaGAfdx@vger.kernel.org, AJvYcCWUwy0AiSP57Q06EVEM0XXZ4kImHStuqhLEdfDJ/nt5vprJowHxSOvG5Za4oywaDVDIOHzJFj0U+mSt2DoKWuc=@vger.kernel.org, AJvYcCXaBARHSOmiwVOSDFApLo9CRAoBRpmY7pt7C3+LeVmu093OljcwV5yN4U0zrpNXUrN8vguDRMQB@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGVx324dg9EEM3hY8TeFmnmhaviA0Pq3Rnbf9DtZ5uNWY6Pnvl
+	aLreD3TYgPBALaDZlOESXWEuhvvHv99AcrEhz3Yo2QgzL3OJO0Ig
+X-Google-Smtp-Source: AGHT+IG8W36j/qtZDwW2WA2jb0i/BTgkc8ZJA0sEHueOn6qFxt+Kh7GFqBij7XyJqwymRVZNuB/RlQ==
+X-Received: by 2002:a17:902:da84:b0:20b:6458:ec83 with SMTP id d9443c01a7336-20ca144ea0fmr212260065ad.4.1729003538995;
+        Tue, 15 Oct 2024 07:45:38 -0700 (PDT)
+Received: from [198.18.0.1] (n220246094186.netvigator.com. [220.246.94.186])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7ea9c6bc015sm1412742a12.19.2024.10.15.07.45.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Oct 2024 07:40:41 -0700 (PDT)
-Message-ID: <1a173476-ccdc-4007-adbf-812229520b3d@linuxfoundation.org>
-Date: Tue, 15 Oct 2024 08:40:40 -0600
+        Tue, 15 Oct 2024 07:45:38 -0700 (PDT)
+Message-ID: <b7b9fba3-819a-411f-9e67-d5eec9e63eaa@gmail.com>
+Date: Tue, 15 Oct 2024 22:45:34 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,46 +76,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/798] 6.1.113-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20241014141217.941104064@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20241014141217.941104064@linuxfoundation.org>
+Subject: Re: [PATCH] pstore: Fix uaf when backend is unregistered
+From: Zach Wade <zachwade.k@gmail.com>
+To: Kees Cook <kees@kernel.org>
+Cc: tony.luck@intel.com, gpiccoli@igalia.com,
+ linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, lixingyang1@qq.com
+References: <2bf30957-ad04-473a-a72e-8baab648fb56@gmail.com>
+ <202410081019.0E9DE76A@keescook>
+ <6077c924-f975-49a0-8ee4-4e481664ac38@gmail.com>
+In-Reply-To: <6077c924-f975-49a0-8ee4-4e481664ac38@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/14/24 08:09, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.113 release.
-> There are 798 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+
+
+On 2024/10/9 21:36, Zach Wade wrote:
 > 
-> Responses should be made by Wed, 16 Oct 2024 14:09:57 +0000.
-> Anything received after that time might be too late.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.113-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+> On 2024/10/9 1:23, Kees Cook wrote:
+>> On Wed, Oct 09, 2024 at 01:10:14AM +0800, Zach Wade wrote:
+>>> when unload pstore_blk, we will unlink the pstore file and
+>>> set pos->dentry to NULL, but simple_unlink(d_inode(root), pos->dentry)
+>>> may free inode of pos->dentry and free pos by free_pstore_private,
+>>> this may trigger uaf. kasan report:
+>>
+>> Thanks for this! I need to double check what happening here a bit more
+>> closely, as maybe some ordering changed after a43e0fc5e913 ("pstore:
+>> inode: Only d_invalidate() is needed")
+>>
+>>> @@ -316,9 +316,10 @@ int pstore_put_backend_records(struct 
+>>> pstore_info *psi)
+>>>           list_for_each_entry_safe(pos, tmp, &records_list, list) {
+>>>               if (pos->record->psi == psi) {
+>>>                   list_del_init(&pos->list);
+>>> -                d_invalidate(pos->dentry);
+>>> -                simple_unlink(d_inode(root), pos->dentry);
+>>> +                unlink_dentry = pos->dentry;
+>>>                   pos->dentry = NULL;
+>>> +                d_invalidate(unlink_dentry);
+>>> +                simple_unlink(d_inode(root), unlink_dentry);
+>>
+>> But on the face of it, this does solve the UAF. I'll double-check that
+>> this isn't a result of the mentioned commit.
 > 
-> thanks,
+> Hi Cook,
 > 
-> greg k-h
+> However, I think a more appropriate solution to the problem here is to
+> check the reference count when uninstalling the mount point.
+> 
+> At the same time, the test script is attached:
+> #!/bin/bash
+> modprobe pstore_blk
+> blkdev=/dev/sda2
+> best_effort=on
+> mount -t pstore pstore /sys/fs/pstore
+> sleep 2
+> umount /sys/fs/pstore
+> modprobe -r pstore_blk
+> 
+> Thanks,
+> Zach
+> 
+>>
+> 
+>> -Kees
+>>
 > 
 
-Compiled and booted on my test system. No dmesg regressions.
+friendly ping.
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+Hi Cook,
 
-thanks,
--- Shuah
+How are you doing? I really hope we can solve this problem.
+
+Thanks,
+Zach
 
