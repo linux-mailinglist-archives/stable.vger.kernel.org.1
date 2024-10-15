@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-85532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF53A99E7B8
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:57:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EABFA99E7BC
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:57:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A393D28151C
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:57:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82492B22B10
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 252061E3DE8;
-	Tue, 15 Oct 2024 11:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7F41EBA10;
+	Tue, 15 Oct 2024 11:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekPjRdu+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c50uGZqt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72EE1D0492;
-	Tue, 15 Oct 2024 11:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABCA1EB9E8;
+	Tue, 15 Oct 2024 11:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993430; cv=none; b=GNMxwU+6aoPmfhyG0a2pA7XVQx7N3NTU8aMIGN5HS/vnH8eG3j1e71tHI6r9GVx2x3JcI7IHqmfB+G6xLjvYBU2hj/TjV8E6wV/iangrFcqWlT4q4/3Ktu9cO8NODEI2Y3FEq6pUdy/ca8FrMBzCQu7Q/DUsBuYf2gCOpCeGvzU=
+	t=1728993437; cv=none; b=XbFTdjA7kIhRp+VgwdGPAz9cDYCSgQJwM8fMWKY6/xs0E9m2WwZ7qCADZYFTxO/R8fApGVpM6bhKbTC+1UZVKuTcYVzeB603B7HQeb2ouCPDW3Ta5CuVfcDclW2h6J9AjOx0LnqtaorgS4iFvf5t3O9qQwm7a5tXhAQSpkldRQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993430; c=relaxed/simple;
-	bh=nBHC2PMgITlShHTFCy9yldRTpEd780zV7ChpoJ2W6bY=;
+	s=arc-20240116; t=1728993437; c=relaxed/simple;
+	bh=00oYVZm12vByY8oaOSqa2yOyif5h5JaFepzeMSDcwiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j/+kZFsP3cmvMuLFPXlu+54WHrlXyoFE3S63MCSpMDB+9FjyCad5wvGi0/FaqDxMskAHC9tHuwNLyNEEJHlvjIkYJ4rMxaHE47k0sM/VNBFhKHnhFEXxZWd2eKevSwrqTPjSXZX1Ap5iuKtxoPmmVYVZwgU3lYjQLVgbV82MZiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekPjRdu+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E61C4CEC6;
-	Tue, 15 Oct 2024 11:57:10 +0000 (UTC)
+	 MIME-Version; b=upTELX9oKSniY9SVgV8QSktWOLtI2R0fEUw+GKYpB0dnSGSHKp1eyCkchHnDGnyoCJIBirLYPFJ+qXEUIh4ofFc9WVq1tX98yuA8axnnyhWTNKn9OIpCl9KMZwcL3MqOEB4dfn0iW7bz1HNrQinxBij4XXqnQH+SPR9tu4UfXEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c50uGZqt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7CD5C4CEC6;
+	Tue, 15 Oct 2024 11:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993430;
-	bh=nBHC2PMgITlShHTFCy9yldRTpEd780zV7ChpoJ2W6bY=;
+	s=korg; t=1728993437;
+	bh=00oYVZm12vByY8oaOSqa2yOyif5h5JaFepzeMSDcwiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ekPjRdu+ScUxwHKXraHPajZmBtQD6e912fP52yJGW9/aloc/ginYYtb20AhGx+0h+
-	 2b5kTbLehgzD2aCXeJwiwCf+F1sHIOxK+AZO+hKXcriujkTh8qNg/mgHRSI7NbI9y1
-	 08f948rDQ1O6zfNvi7wNWqPsu/rxp2o1SZ59dNlY=
+	b=c50uGZqtDQtltRvdIn+qvFvcZ3ve50JLXY0uoI72na4dEQNbHZqzqt+3OOS99KeyI
+	 80oC9e+Tmz3w02LlJEWXxZ2CJ02a2mDmEScbQQ8uPbg1vvwdAX+pAuzfSbM/bBFI2u
+	 n2GkXg2GC437laGAT71A3EpuJqYXj+hv9P/O0KQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.15 409/691] ice: Adjust over allocation of memory in ice_sched_add_root_node() and ice_sched_add_node()
-Date: Tue, 15 Oct 2024 13:25:57 +0200
-Message-ID: <20241015112456.577150347@linuxfoundation.org>
+	Jeongjun Park <aha310510@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 410/691] net/xen-netback: prevent UAF in xenvif_flush_hash()
+Date: Tue, 15 Oct 2024 13:25:58 +0200
+Message-ID: <20241015112456.617712623@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -69,58 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit 62fdaf9e8056e9a9e6fe63aa9c816ec2122d60c6 ]
+[ Upstream commit 0fa5e94a1811d68fbffa0725efe6d4ca62c03d12 ]
 
-In ice_sched_add_root_node() and ice_sched_add_node() there are calls to
-devm_kcalloc() in order to allocate memory for array of pointers to
-'ice_sched_node' structure. But incorrect types are used as sizeof()
-arguments in these calls (structures instead of pointers) which leads to
-over allocation of memory.
+During the list_for_each_entry_rcu iteration call of xenvif_flush_hash,
+kfree_rcu does not exist inside the rcu read critical section, so if
+kfree_rcu is called when the rcu grace period ends during the iteration,
+UAF occurs when accessing head->next after the entry becomes free.
 
-Adjust over allocation of memory by correcting types in devm_kcalloc()
-sizeof() arguments.
+Therefore, to solve this, you need to change it to list_for_each_entry_safe.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Link: https://patch.msgid.link/20240822181109.2577354-1-aha310510@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_sched.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/xen-netback/hash.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sched.c b/drivers/net/ethernet/intel/ice/ice_sched.c
-index 0b61fde449152..209e3a9d9b7ab 100644
---- a/drivers/net/ethernet/intel/ice/ice_sched.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sched.c
-@@ -27,9 +27,8 @@ ice_sched_add_root_node(struct ice_port_info *pi,
- 	if (!root)
- 		return ICE_ERR_NO_MEMORY;
+diff --git a/drivers/net/xen-netback/hash.c b/drivers/net/xen-netback/hash.c
+index ff96f22648efd..45ddce35f6d2c 100644
+--- a/drivers/net/xen-netback/hash.c
++++ b/drivers/net/xen-netback/hash.c
+@@ -95,7 +95,7 @@ static u32 xenvif_new_hash(struct xenvif *vif, const u8 *data,
  
--	/* coverity[suspicious_sizeof] */
- 	root->children = devm_kcalloc(ice_hw_to_dev(hw), hw->max_children[0],
--				      sizeof(*root), GFP_KERNEL);
-+				      sizeof(*root->children), GFP_KERNEL);
- 	if (!root->children) {
- 		devm_kfree(ice_hw_to_dev(hw), root);
- 		return ICE_ERR_NO_MEMORY;
-@@ -180,10 +179,9 @@ ice_sched_add_node(struct ice_port_info *pi, u8 layer,
- 	if (!node)
- 		return ICE_ERR_NO_MEMORY;
- 	if (hw->max_children[layer]) {
--		/* coverity[suspicious_sizeof] */
- 		node->children = devm_kcalloc(ice_hw_to_dev(hw),
- 					      hw->max_children[layer],
--					      sizeof(*node), GFP_KERNEL);
-+					      sizeof(*node->children), GFP_KERNEL);
- 		if (!node->children) {
- 			devm_kfree(ice_hw_to_dev(hw), node);
- 			return ICE_ERR_NO_MEMORY;
+ static void xenvif_flush_hash(struct xenvif *vif)
+ {
+-	struct xenvif_hash_cache_entry *entry;
++	struct xenvif_hash_cache_entry *entry, *n;
+ 	unsigned long flags;
+ 
+ 	if (xenvif_hash_cache_size == 0)
+@@ -103,8 +103,7 @@ static void xenvif_flush_hash(struct xenvif *vif)
+ 
+ 	spin_lock_irqsave(&vif->hash.cache.lock, flags);
+ 
+-	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link,
+-				lockdep_is_held(&vif->hash.cache.lock)) {
++	list_for_each_entry_safe(entry, n, &vif->hash.cache.list, link) {
+ 		list_del_rcu(&entry->link);
+ 		vif->hash.cache.count--;
+ 		kfree_rcu(entry, rcu);
 -- 
 2.43.0
 
