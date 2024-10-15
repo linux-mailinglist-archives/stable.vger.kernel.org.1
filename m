@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-85900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A09D99EAB9
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:58:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F25F599EAC3
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:58:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF055B219F6
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:58:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72E35B21A82
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A331C07DD;
-	Tue, 15 Oct 2024 12:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F26F41C07DD;
+	Tue, 15 Oct 2024 12:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgU+JYij"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2qKjYaM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D2C1C07C2;
-	Tue, 15 Oct 2024 12:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF2B1C07C4;
+	Tue, 15 Oct 2024 12:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997079; cv=none; b=GB1zylzlRX9ACB8MLnpuXuUTBDLvgeviGLcFu2kQekdginXZzpPqi3WB16hfiKPuj+JVky6yyT6raacMT7BfiIGz0/XaCZINEepmYttcfi3uin/ve0yh01ABP5T5dFOHE6xLDpeGVadeOlpVwl4w7qqL1sOK4jQo/0uCvKLcsOI=
+	t=1728997116; cv=none; b=UAFEvf/MJ/y4L7GIWjbFDvm5wvJNlRYT0Hb9SFX0J1D42L/zN+GoN6WgGhtK4AZXff+He3+txlwvYlyvgKp1Fxz1RRGnOQj6LquSIXM6nDepmsGXAeMOjEU3oMG+IHJKKG6rOVO84k8KDrjBMr7+obGO346TravaAvyEXgdaWgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997079; c=relaxed/simple;
-	bh=vlrwI6H9Tg2Wn2d2hTY5lA4c+Z44GRpnrW0ObUqNiFQ=;
+	s=arc-20240116; t=1728997116; c=relaxed/simple;
+	bh=ysYXStonbOmtYT5gH9e4xKWfMaCN6tiPtE8zytiu+Gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uMlylW3TGBkuGRz8WBN7wbaY2vGs148hzuE+p/26wOfk1+tflpuyE2s1DtIn0MXIPdIGVQs2JE1McAK3y/DkbMJ6kn6H7WVTQVzlxfeTj4/gjGuX/SR+wUtVCYZlaspIZVCb918d8MIdla+bknsiV1NFoNE5Ar+JToIno8ykVBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jgU+JYij; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E1CC4CEC6;
-	Tue, 15 Oct 2024 12:57:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TRf/RV2hJZtUI6TLgNbwoCqs58B9NKbkVWX3V1d6ST7AyPk73hb4muAyKNYUa4sr3TyG6mnnWvPYATi9VM/VTLrNf4PMmGOoSZjKKXj3PqAcPZVFH4SeGGkTt5nl7C1sZi9As5xKGoUMDqjFKXasQKPB6dJ98Lp8HpZ1fYxNxTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2qKjYaM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE3DC4CEC6;
+	Tue, 15 Oct 2024 12:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997078;
-	bh=vlrwI6H9Tg2Wn2d2hTY5lA4c+Z44GRpnrW0ObUqNiFQ=;
+	s=korg; t=1728997116;
+	bh=ysYXStonbOmtYT5gH9e4xKWfMaCN6tiPtE8zytiu+Gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jgU+JYijyt3KnRJzIqTkZym/pm7jdKTufvXCgsCXjJ0sGTyKicGNKVha8JOqeIt6c
-	 uBfzAwsYsGeCGZmoYlCUz6zbqnT1aZheNekwucEK3QEv6pmKarf/UKTLCHWtxH1d9I
-	 1QXCBGaHkBKW3/ZY/NO8iOSx0nYS/Bz8+Lbx8GTw=
+	b=d2qKjYaMkR7d6FxDoFT/Y+CnUnNtR1WYKMKunR+OxSy5WQ7iJ+Tz1nMbE0qTzCg3q
+	 PoakjGbf89dJuPCeDxIe337l62BcDcDHm50QtkBCB6td/LC7n0MVLmv4AVDSgtTt0o
+	 LwWPiwERgKBH/lFd4MxxI8DDjpaEyHyUF4M921fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olaf Hering <olaf@aepfle.de>,
-	Christian Brauner <brauner@kernel.org>,
+	Kamlesh Gurudasani <kamlesh@ti.com>,
+	=?UTF-8?q?=C2=A0=20Waiman=20Long?= <longman@redhat.com>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 064/518] mount: handle OOM on mnt_warn_timestamp_expiry
-Date: Tue, 15 Oct 2024 14:39:28 +0200
-Message-ID: <20241015123919.476938907@linuxfoundation.org>
+Subject: [PATCH 5.10 065/518] padata: Honor the callers alignment in case of chunk_size 0
+Date: Tue, 15 Oct 2024 14:39:29 +0200
+Message-ID: <20241015123919.515269611@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -60,65 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olaf Hering <olaf@aepfle.de>
+From: Kamlesh Gurudasani <kamlesh@ti.com>
 
-[ Upstream commit 4bcda1eaf184e308f07f9c61d3a535f9ce477ce8 ]
+[ Upstream commit 24cc57d8faaa4060fd58adf810b858fcfb71a02f ]
 
-If no page could be allocated, an error pointer was used as format
-string in pr_warn.
+In the case where we are forcing the ps.chunk_size to be at least 1,
+we are ignoring the caller's alignment.
 
-Rearrange the code to return early in case of OOM. Also add a check
-for the return value of d_path.
+Move the forcing of ps.chunk_size to be at least 1 before rounding it
+up to caller's alignment, so that caller's alignment is honored.
 
-Fixes: f8b92ba67c5d ("mount: Add mount warning for impending timestamp expiry")
-Signed-off-by: Olaf Hering <olaf@aepfle.de>
-Link: https://lore.kernel.org/r/20240730085856.32385-1-olaf@aepfle.de
-[brauner: rewrite commit and commit message]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+While at it, use max() to force the ps.chunk_size to be at least 1 to
+improve readability.
+
+Fixes: 6d45e1c948a8 ("padata: Fix possible divide-by-0 panic in padata_mt_helper()")
+Signed-off-by: Kamlesh Gurudasani <kamlesh@ti.com>
+Acked-by:  Waiman Long <longman@redhat.com>
+Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ kernel/padata.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 17d3bea73f8d8..7e67db7456b3d 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -2555,8 +2555,15 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
- 	if (!__mnt_is_readonly(mnt) &&
- 	   (!(sb->s_iflags & SB_I_TS_EXPIRY_WARNED)) &&
- 	   (ktime_get_real_seconds() + TIME_UPTIME_SEC_MAX > sb->s_time_max)) {
--		char *buf = (char *)__get_free_page(GFP_KERNEL);
--		char *mntpath = buf ? d_path(mountpoint, buf, PAGE_SIZE) : ERR_PTR(-ENOMEM);
-+		char *buf, *mntpath;
-+
-+		buf = (char *)__get_free_page(GFP_KERNEL);
-+		if (buf)
-+			mntpath = d_path(mountpoint, buf, PAGE_SIZE);
-+		else
-+			mntpath = ERR_PTR(-ENOMEM);
-+		if (IS_ERR(mntpath))
-+			mntpath = "(unknown)";
+diff --git a/kernel/padata.c b/kernel/padata.c
+index 2a514cf8379b4..41d5bf2fa2ad9 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -516,9 +516,12 @@ void __init padata_do_multithreaded(struct padata_mt_job *job)
+ 	 * thread function.  Load balance large jobs between threads by
+ 	 * increasing the number of chunks, guarantee at least the minimum
+ 	 * chunk size from the caller, and honor the caller's alignment.
++	 * Ensure chunk_size is at least 1 to prevent divide-by-0
++	 * panic in padata_mt_helper().
+ 	 */
+ 	ps.chunk_size = job->size / (ps.nworks * load_balance_factor);
+ 	ps.chunk_size = max(ps.chunk_size, job->min_chunk);
++	ps.chunk_size = max(ps.chunk_size, 1ul);
+ 	ps.chunk_size = roundup(ps.chunk_size, job->align);
  
- 		pr_warn("%s filesystem being %s at %s supports timestamps until %ptTd (0x%llx)\n",
- 			sb->s_type->name,
-@@ -2564,8 +2571,9 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
- 			mntpath, &sb->s_time_max,
- 			(unsigned long long)sb->s_time_max);
- 
--		free_page((unsigned long)buf);
- 		sb->s_iflags |= SB_I_TS_EXPIRY_WARNED;
-+		if (buf)
-+			free_page((unsigned long)buf);
- 	}
- }
- 
+ 	/*
 -- 
 2.43.0
 
