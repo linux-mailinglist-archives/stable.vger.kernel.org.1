@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-85701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1FE099E885
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D92C199E887
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:06:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D7581F22AE8
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:06:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 856F01F21E09
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FFA1EABD1;
-	Tue, 15 Oct 2024 12:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383D81EABA8;
+	Tue, 15 Oct 2024 12:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="btwbMe6m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEmF7Ckt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F6E1E1A35;
-	Tue, 15 Oct 2024 12:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FE01E1A35;
+	Tue, 15 Oct 2024 12:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728994004; cv=none; b=jQvZKoqhwSTOPBGmR5CHCeHRJXI2m9f9QcMtHRP/XFyO5L0mP/IrbS4SyWuTYSooksFPFUbqhdpd1w90nI2OWMmb0yswcfo7WYtQGwpAMXEXbZhXK0OaZpKsA9uRE2/uLRRji3bdlosXGam2qMC2oZmokMixnoJBgu44xoYGnD8=
+	t=1728994011; cv=none; b=fjtdwmNzMQPKGScil758P//Yzo5hgs7i/Pe9zvQ/rW/ISewI6lKAh/FKjYOYRXtormjDsZQ8NKZsBdKLwgHhdO0amJiD0rA+whpZ2UXTj7S9Q4W1jIudQtFQe/AHKJR4a5Cap+HKH1qA9NYVPRYt+38uAd5UUAyRE4otbUn/1DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728994004; c=relaxed/simple;
-	bh=j8hgGJ+VpbjwKHWOgJWI3DdEqH6Z5lu5WjrHy9uGBKc=;
+	s=arc-20240116; t=1728994011; c=relaxed/simple;
+	bh=Jj7Z7OjsjmoLxTyRyWxsHmP5g17IfZlsOEaT4f1mCBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ALwkibw8tnxPikHtlma6gexqJ1MMs5CngPcqZYs6ENq76TN41GcLeBzxHbGAt373v0IWlyH1s6X6o/gvx1YloKhlBFVi/w03Lex/xntdMN3ZzhKpruJs9JG6MmNbEeAgi4TgW/S7xxEPdtGWAZIiux54VEEQP1ifXAmJdz/zcZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=btwbMe6m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37336C4CEC6;
-	Tue, 15 Oct 2024 12:06:43 +0000 (UTC)
+	 MIME-Version; b=ppvZxx6+1+gxtDzJd6Rami6YiP4Dnr+/pXAt1L7r/s41sLcckieFO4rNCV+3OFhgp0fTNfcFGriojUqcWZ1wAqxjbALuq0efzIXNL1rI0TB7xc2u2ocCSWBQvlTqoyWYOeUNnLOjyKqW+bAEF43l1H5zs9pGlJ/wrXGDsCeZo/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEmF7Ckt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A1FEC4CEC6;
+	Tue, 15 Oct 2024 12:06:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728994004;
-	bh=j8hgGJ+VpbjwKHWOgJWI3DdEqH6Z5lu5WjrHy9uGBKc=;
+	s=korg; t=1728994010;
+	bh=Jj7Z7OjsjmoLxTyRyWxsHmP5g17IfZlsOEaT4f1mCBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=btwbMe6mjL8uIlvbpsYHZwawItwspX53FC3qDm2z4ddGDtWNf51HEjsPOGl75xSa9
-	 w0+tnOqPknvnh7ivt26CqjAK6w3kjuVJmzyEjoaqWmFzOmo5S84IuXC6bzDM48VitZ
-	 uII5ciw3ST9G+zfj0PIiGe3QNoxUonoMbldpBfwc=
+	b=pEmF7Ckt8RWILIE9O53Ltm1kBSogrkaQ/G20Ls9xSJnOc85WcNPXsJ90OxBFZUqpO
+	 hRXiqOnXcicyO/cKFWiPEqakkbMgH8XuZZr92O+Ew3BtF9cChXY5CHyAkRTipwpiK+
+	 5Zn46PlZbaq3DyqIK2teR4FAGk1PbbNQQyMZbFdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 578/691] ACPI: battery: Fix possible crash when unregistering a battery hook
-Date: Tue, 15 Oct 2024 13:28:46 +0200
-Message-ID: <20241015112503.282076935@linuxfoundation.org>
+	"dmitry.baryshkov@linaro.org, agross@kernel.org, bjorn.andersson@linaro.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, Sumit Semwal" <sumit.semwal@linaro.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>
+Subject: [PATCH 5.15 579/691] Revert "arm64: dts: qcom: sm8250: switch UFS QMP PHY to new style of bindings"
+Date: Tue, 15 Oct 2024 13:28:47 +0200
+Message-ID: <20241015112503.321121510@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -66,70 +65,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Sumit Semwal <sumit.semwal@linaro.org>
 
-[ Upstream commit 76959aff14a0012ad6b984ec7686d163deccdc16 ]
+This reverts commit cf9c7b34b90b622254b236a9a43737b6059a1c14.
 
-When a battery hook returns an error when adding a new battery, then
-the battery hook is automatically unregistered.
-However the battery hook provider cannot know that, so it will later
-call battery_hook_unregister() on the already unregistered battery
-hook, resulting in a crash.
+This commit breaks UFS on RB5 in the 6.1 LTS kernels. The original patch
+author suggests that this is not a stable kernel patch, hence reverting
+it.
 
-Fix this by using the list head to mark already unregistered battery
-hooks as already being unregistered so that they can be ignored by
-battery_hook_unregister().
+This was reported during testing with 6.1.103 / 5.15.165 LTS kernels
+merged in the respective Android Common Kernel branches.
 
-Fixes: fa93854f7a7e ("battery: Add the battery hooking API")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20241001212835.341788-3-W_Armin@gmx.de
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/battery.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8250.dtsi |   20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 6a8580427e1a9..8bb0f4d06adc0 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -712,7 +712,7 @@ static void battery_hook_unregister_unlocked(struct acpi_battery_hook *hook)
- 	list_for_each_entry(battery, &acpi_battery_list, list) {
- 		hook->remove_battery(battery->bat);
- 	}
--	list_del(&hook->list);
-+	list_del_init(&hook->list);
+--- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+@@ -1702,7 +1702,7 @@
+ 				     "jedec,ufs-2.0";
+ 			reg = <0 0x01d84000 0 0x3000>;
+ 			interrupts = <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>;
+-			phys = <&ufs_mem_phy>;
++			phys = <&ufs_mem_phy_lanes>;
+ 			phy-names = "ufsphy";
+ 			lanes-per-direction = <2>;
+ 			#reset-cells = <1>;
+@@ -1746,8 +1746,10 @@
  
- 	pr_info("extension unregistered: %s\n", hook->name);
- }
-@@ -720,7 +720,14 @@ static void battery_hook_unregister_unlocked(struct acpi_battery_hook *hook)
- void battery_hook_unregister(struct acpi_battery_hook *hook)
- {
- 	mutex_lock(&hook_mutex);
--	battery_hook_unregister_unlocked(hook);
-+	/*
-+	 * Ignore already unregistered battery hooks. This might happen
-+	 * if a battery hook was previously unloaded due to an error when
-+	 * adding a new battery.
-+	 */
-+	if (!list_empty(&hook->list))
-+		battery_hook_unregister_unlocked(hook);
-+
- 	mutex_unlock(&hook_mutex);
- }
- EXPORT_SYMBOL_GPL(battery_hook_unregister);
-@@ -730,7 +737,6 @@ void battery_hook_register(struct acpi_battery_hook *hook)
- 	struct acpi_battery *battery;
+ 		ufs_mem_phy: phy@1d87000 {
+ 			compatible = "qcom,sm8250-qmp-ufs-phy";
+-			reg = <0 0x01d87000 0 0x1000>;
+-
++			reg = <0 0x01d87000 0 0x1c0>;
++			#address-cells = <2>;
++			#size-cells = <2>;
++			ranges;
+ 			clock-names = "ref",
+ 				      "ref_aux";
+ 			clocks = <&rpmhcc RPMH_CXO_CLK>,
+@@ -1755,12 +1757,18 @@
  
- 	mutex_lock(&hook_mutex);
--	INIT_LIST_HEAD(&hook->list);
- 	list_add(&hook->list, &battery_hook_list);
- 	/*
- 	 * Now that the driver is registered, we need
--- 
-2.43.0
-
+ 			resets = <&ufs_mem_hc 0>;
+ 			reset-names = "ufsphy";
++			status = "disabled";
+ 
+ 			power-domains = <&gcc UFS_PHY_GDSC>;
+ 
+-			#phy-cells = <0>;
+-
+-			status = "disabled";
++			ufs_mem_phy_lanes: phy@1d87400 {
++				reg = <0 0x01d87400 0 0x16c>,
++				      <0 0x01d87600 0 0x200>,
++				      <0 0x01d87c00 0 0x200>,
++				      <0 0x01d87800 0 0x16c>,
++				      <0 0x01d87a00 0 0x200>;
++				#phy-cells = <0>;
++			};
+ 		};
+ 
+ 		ipa_virt: interconnect@1e00000 {
 
 
 
