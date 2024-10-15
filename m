@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-85877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B57899EA9E
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:56:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F4399EAA3
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:57:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32D081F2173B
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:56:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04D05282A5C
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543511C07DE;
-	Tue, 15 Oct 2024 12:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6141C07D4;
+	Tue, 15 Oct 2024 12:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s64ajP3d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGX6fYEj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EEB1C07C2;
-	Tue, 15 Oct 2024 12:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AFD1C07C2;
+	Tue, 15 Oct 2024 12:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728996996; cv=none; b=n22ao412SHODUukj6HgBtPwcFZNZmCHOaRTLoENjroL6W/nPoMgvaJifG/fA5ZQFz2XHym52gjY83uLjUIpCWNUqZly1KNwQWrUZqY6Iq3E2daQbja604BEDrS0mRmizNRJ5lvvxfBuz9rOedoE2gPQjjcMZ4h71ugwLg1I8l5k=
+	t=1728997017; cv=none; b=e+1hGcpAxZpAaoS8XgaAk0/hUoaOzw4rN9lgJ9J/OU6SgsDNJgdHNhDKxmhFqJVpUnWzWZRE8jOCom/yASq9IaJUDWvsF5k1IRfeiXGpD6nRacYGwLq5hVD3Fnv1H9qund2HPRHLHt9cISQvAITAGq+uznRJDcmFMgFr74P1pBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728996996; c=relaxed/simple;
-	bh=9B4g0KLlefL1AW3XTgJViY9G2xB9ZQf2bduCareceUo=;
+	s=arc-20240116; t=1728997017; c=relaxed/simple;
+	bh=BBwwlLPGKuQQf8nB3I8AAhGE0VmZqfux/W4Vy50RigQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bozttrKBEURSdXh4fZ6TlwERTW9yJRbNhIReMmgfTKuhaMMJSUcrlvGef5QgC+86+MGQhhjl3lnuRb2rmJH23U3YMIAW0C4yiJRS0vZmarZxHyad0VJirxuMOuGpKT4lJ/g7qqTCIJos4Svg1lyQsvZFmrinfgE8DgxO0JE+jng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s64ajP3d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77897C4CEC6;
-	Tue, 15 Oct 2024 12:56:35 +0000 (UTC)
+	 MIME-Version; b=tL0fO19iZn3XZv0EVO7ZtP3RyrahhTGA5fl9vmPlDMw1272m5WWti5irAVXckdcwWdudhqpPsp/0gPodxXJMMOtQzf0I4AFsIwqBfav78LG8ORWuxkZRxbs58+WbAe4iBQAlJREm0DgZcPRl7eK1oxjbL4ygFYFHBcvoPHTzlAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGX6fYEj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18DE1C4CEC6;
+	Tue, 15 Oct 2024 12:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728996996;
-	bh=9B4g0KLlefL1AW3XTgJViY9G2xB9ZQf2bduCareceUo=;
+	s=korg; t=1728997017;
+	bh=BBwwlLPGKuQQf8nB3I8AAhGE0VmZqfux/W4Vy50RigQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s64ajP3d4uVDpHW8d2EaWX38BIRr/D9IVPp3ahOEktgnHhfjzfRfUi39c245J8ZWE
-	 G0Vtm3b/7YrvGcHE+FWCg3Ljg2NKj2lBcBVMZjAV+RLlCsJm1LMSTA3UpcuaxN+AwG
-	 /QHMddCIHjwOMlKazrf5sepbewkJqnND3WEDdI9M=
+	b=eGX6fYEj+bY/xtqRgN1kU0y8Gct1bBKkywi9JbihH/jfF2KE7OL7X/vAEbfqLAUWa
+	 85XvHbax133Hso1GDKMhDpaL3pSdOmAwIjYaW0Uw0urz6ioqFKAvawEJWQDeFdHAjB
+	 3Mz6jXoeL6IHtiF84oAmPpx3OJJZaXZsWewKlJRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Thomas Blocher <thomas.blocher@ek-dev.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 031/518] ALSA: hda/realtek - FIxed ALC285 headphone no sound
-Date: Tue, 15 Oct 2024 14:38:55 +0200
-Message-ID: <20241015123918.206269301@linuxfoundation.org>
+Subject: [PATCH 5.10 032/518] pinctrl: at91: make it work with current gpiolib
+Date: Tue, 15 Oct 2024 14:38:56 +0200
+Message-ID: <20241015123918.244232267@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -66,98 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Thomas Blocher <thomas.blocher@ek-dev.de>
 
-[ Upstream commit 1fa7b099d60ad64f559bd3b8e3f0d94b2e015514 ]
+[ Upstream commit 752f387faaae0ae2e84d3f496922524785e77d60 ]
 
-Dell platform with ALC215 ALC285 ALC289 ALC225 ALC295 ALC299, plug
-headphone or headset.
-It had a chance to get no sound from headphone.
-Replace depop procedure will solve this issue.
+pinctrl-at91 currently does not support the gpio-groups devicetree
+property and has no pin-range.
+Because of this at91 gpios stopped working since patch
+commit 2ab73c6d8323fa1e ("gpio: Support GPIO controllers without pin-ranges")
+This was discussed in the patches
+commit fc328a7d1fcce263 ("gpio: Revert regression in sysfs-gpio (gpiolib.c)")
+commit 56e337f2cf132632 ("Revert "gpio: Revert regression in sysfs-gpio (gpiolib.c)"")
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/d0de1b03fd174520945dde216d765223@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+As a workaround manually set pin-range via gpiochip_add_pin_range() until
+a) pinctrl-at91 is reworked to support devicetree gpio-groups
+b) another solution as mentioned in
+commit 56e337f2cf132632 ("Revert "gpio: Revert regression in sysfs-gpio (gpiolib.c)"")
+is found
+
+Signed-off-by: Thomas Blocher <thomas.blocher@ek-dev.de>
+Link: https://lore.kernel.org/5b992862-355d-f0de-cd3d-ff99e67a4ff1@ek-dev.de
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ drivers/pinctrl/pinctrl-at91.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index a952888b5b8af..d6ebde90f0825 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -5006,6 +5006,7 @@ static void alc_headset_mode_unplugged(struct hda_codec *codec)
- 	case 0x10ec0295:
- 	case 0x10ec0289:
- 	case 0x10ec0299:
-+		alc_hp_mute_disable(codec, 75);
- 		alc_process_coef_fw(codec, alc225_pre_hsmode);
- 		alc_process_coef_fw(codec, coef0225);
- 		break;
-@@ -5231,6 +5232,7 @@ static void alc_headset_mode_default(struct hda_codec *codec)
- 	case 0x10ec0299:
- 		alc_process_coef_fw(codec, alc225_pre_hsmode);
- 		alc_process_coef_fw(codec, coef0225);
-+		alc_hp_enable_unmute(codec, 75);
- 		break;
- 	case 0x10ec0255:
- 		alc_process_coef_fw(codec, coef0255);
-@@ -5390,6 +5392,7 @@ static void alc_headset_mode_ctia(struct hda_codec *codec)
- 			alc_process_coef_fw(codec, coef0225_2);
- 		else
- 			alc_process_coef_fw(codec, coef0225_1);
-+		alc_hp_enable_unmute(codec, 75);
- 		break;
- 	case 0x10ec0867:
- 		alc_update_coefex_idx(codec, 0x57, 0x5, 1<<14, 0);
-@@ -5495,6 +5498,7 @@ static void alc_headset_mode_omtp(struct hda_codec *codec)
- 	case 0x10ec0289:
- 	case 0x10ec0299:
- 		alc_process_coef_fw(codec, coef0225);
-+		alc_hp_enable_unmute(codec, 75);
- 		break;
- 	}
- 	codec_dbg(codec, "Headset jack set to Nokia-style headset mode.\n");
-@@ -5654,12 +5658,6 @@ static void alc_determine_headset_type(struct hda_codec *codec)
- 	case 0x10ec0295:
- 	case 0x10ec0289:
- 	case 0x10ec0299:
--		snd_hda_codec_write(codec, 0x21, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
--		msleep(80);
--		snd_hda_codec_write(codec, 0x21, 0,
--			    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
--
- 		alc_process_coef_fw(codec, alc225_pre_hsmode);
- 		alc_update_coef_idx(codec, 0x67, 0xf000, 0x1000);
- 		val = alc_read_coef_idx(codec, 0x45);
-@@ -5676,15 +5674,19 @@ static void alc_determine_headset_type(struct hda_codec *codec)
- 			val = alc_read_coef_idx(codec, 0x46);
- 			is_ctia = (val & 0x00f0) == 0x00f0;
- 		}
-+		if (!is_ctia) {
-+			alc_update_coef_idx(codec, 0x45, 0x3f<<10, 0x38<<10);
-+			alc_update_coef_idx(codec, 0x49, 3<<8, 1<<8);
-+			msleep(100);
-+			val = alc_read_coef_idx(codec, 0x46);
-+			if ((val & 0x00f0) == 0x00f0)
-+				is_ctia = false;
-+			else
-+				is_ctia = true;
+diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
+index 52ecd47c18e2d..bb9348f14b1ba 100644
+--- a/drivers/pinctrl/pinctrl-at91.c
++++ b/drivers/pinctrl/pinctrl-at91.c
+@@ -1401,8 +1401,11 @@ static int at91_pinctrl_probe(struct platform_device *pdev)
+ 
+ 	/* We will handle a range of GPIO pins */
+ 	for (i = 0; i < gpio_banks; i++)
+-		if (gpio_chips[i])
++		if (gpio_chips[i]) {
+ 			pinctrl_add_gpio_range(info->pctl, &gpio_chips[i]->range);
++			gpiochip_add_pin_range(&gpio_chips[i]->chip, dev_name(info->pctl->dev), 0,
++				gpio_chips[i]->range.pin_base, gpio_chips[i]->range.npins);
 +		}
- 		alc_update_coef_idx(codec, 0x4a, 7<<6, 7<<6);
- 		alc_update_coef_idx(codec, 0x4a, 3<<4, 3<<4);
- 		alc_update_coef_idx(codec, 0x67, 0xf000, 0x3000);
--
--		snd_hda_codec_write(codec, 0x21, 0,
--			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
--		msleep(80);
--		snd_hda_codec_write(codec, 0x21, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
- 		break;
- 	case 0x10ec0867:
- 		is_ctia = true;
+ 
+ 	dev_info(&pdev->dev, "initialized AT91 pinctrl driver\n");
+ 
 -- 
 2.43.0
 
