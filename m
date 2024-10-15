@@ -1,165 +1,126 @@
-Return-Path: <stable+bounces-85092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263E199DE07
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 08:15:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 687C799DE45
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 08:28:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE60128152F
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 06:15:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07BB2B209E1
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 06:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E939117BEC1;
-	Tue, 15 Oct 2024 06:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648D3189F5E;
+	Tue, 15 Oct 2024 06:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="irBSJEDR"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="Uxg7dj01"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20762582;
-	Tue, 15 Oct 2024 06:15:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386A3189B9B;
+	Tue, 15 Oct 2024 06:28:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728972937; cv=none; b=bHWanLRSaeQSWkVljGdLNlRG2eg/plbnMzHizrDgN/I1/Q+wnCe8Lh/i7Umu0Q4PWwY6GoUVarTv1RlRFE26JkhvqEoM9FOLEXjP1xHmpxG7VAjfn9aF/N6nuUwIsFK7rtN+V1tJjjy8wWzf71FWD6myGogA+/yEj618746+8uM=
+	t=1728973687; cv=none; b=PkNKwFB9jv51w5vbqg8+2GyZInsds8vdBk1LWfPiQvGML/1Fhhd7Qmu/wuzsgeGZtDmFsnlr0J/pL2rDfG5J7qNP2U/umzlsyVbABX9L/oSJn+Ny8j4XIlbqO2j9LtBudel3wHnr/FS/9vTHbCuSQpjxHdYF94QvTp35Jek2kr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728972937; c=relaxed/simple;
-	bh=J3AEEHWFdXK99qmd51njSmIbev5atRLnRYTFUmdmIwU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tM3LlLQgTuK9RD+OWgbVPaTN4LrczfPV1qYmlJcS/Dw6r3dSNGXjJVdJJHAw+07C1fds2N9iQqwML/fNFtm337joZoU3WVmGul3UlAAxx7boBRRYI4hIVM4cjdOflq1xpF+FgNQEUojc2715UQ3D1VQvKC+TXpohaU9l480gaz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=irBSJEDR; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728972936; x=1760508936;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=J3AEEHWFdXK99qmd51njSmIbev5atRLnRYTFUmdmIwU=;
-  b=irBSJEDRVbmiEtJJ1+puM78qFiDI5s7If0EclsKWYeji9vGboS/UyG9I
-   g9fMzFuSGJqU7ogcLRg4Qq2pSYZTQb9DZRGuJhJDk2YFwj0MKqXU9Cc31
-   rsASE9AYsitkjKZa/jnlMpku87m7m09yPnBTwxn5qF3fM4cKiPJVXIaMD
-   aSFLaX221DIBOR/hVNUWcMSmHs0lmoFCyeB4T3KxbpFHjtPnlvmMcQx7O
-   FUypEgVAJWqGkuWu3/+VhJudLnZjDmBpnVCmMJgmqPk8kW4Itb5GQHruu
-   rxy58SuVyZHBnh9qLxXaOXEbJno2Sd49uEj/1xfFasKNt+5PnnN0T+elf
-   w==;
-X-CSE-ConnectionGUID: fIY17HwZSQ6j1a2zVFyrpQ==
-X-CSE-MsgGUID: H4x5SoGoSUmvvTpVbHraAA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11225"; a="39721986"
-X-IronPort-AV: E=Sophos;i="6.11,204,1725346800"; 
-   d="scan'208";a="39721986"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2024 23:15:35 -0700
-X-CSE-ConnectionGUID: oOMMFqeMR3u/cwaAPy56aw==
-X-CSE-MsgGUID: Cc8Kwl+kT0Ch4xj8sPpPpA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,204,1725346800"; 
-   d="scan'208";a="101135730"
-Received: from rzhang1-mobl7.sh.intel.com ([10.238.6.124])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2024 23:15:30 -0700
-From: Zhang Rui <rui.zhang@intel.com>
-To: tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	rafael.j.wysocki@intel.com,
-	x86@kernel.org,
-	linux-pm@vger.kernel.org
-Cc: hpa@zytor.com,
-	peterz@infradead.org,
-	thorsten.blum@toblux.com,
-	yuntao.wang@linux.dev,
-	tony.luck@intel.com,
-	len.brown@intel.com,
-	srinivas.pandruvada@intel.com,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH V4] x86/apic: Always explicitly disarm TSC-deadline timer
-Date: Tue, 15 Oct 2024 14:15:22 +0800
-Message-Id: <20241015061522.25288-1-rui.zhang@intel.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1728973687; c=relaxed/simple;
+	bh=ZdkCjF3tQbsg2KVxwh1SgcNMxgO6Ws/OTCX8Atf20v0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rwa3gYhGHhFwl1nSuA6YAVgLBtRhd9w6tytNR8MN2x+ZXGFpiXcTcxvnzhHq2OJAxbRqS+aUI7CjfgxPnwOTSQ79b3OYb8o4+wMmXWdGZ3YZcztMnlHc4T8HXtk9S4jPHB18286LQ7yxeW6qmvYoVMFdPs1Cd2dcX2FqrmXsH5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=Uxg7dj01; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+Received: from localhost (localhost [127.0.0.1])
+	by a.mx.secunet.com (Postfix) with ESMTP id F10B32080B;
+	Tue, 15 Oct 2024 08:27:55 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from a.mx.secunet.com ([127.0.0.1])
+	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 6smyEAcTErHB; Tue, 15 Oct 2024 08:27:55 +0200 (CEST)
+Received: from cas-essen-02.secunet.de (rl2.secunet.de [10.53.40.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by a.mx.secunet.com (Postfix) with ESMTPS id 3ABC3201E5;
+	Tue, 15 Oct 2024 08:27:55 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 3ABC3201E5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1728973675;
+	bh=S9LYNGHcizZ23zBSIsj0dP1Vk9wlrYERCPTc+BcbmTk=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=Uxg7dj01+MqRP4V8Lz6nGNT84aDtrqfZce1kdke0Suyn9Pf7FaXb2/I3T8TEbmYVR
+	 1gzERTPWhFKO8e9RBCrgmDEQDPSnYRf0IBqoJKEL4heYa1PscPrEs47mWOWlcFY3Y7
+	 ucf8PTSZ2jrXZP+2pQtC6vHl93j/SF0zadM2FWzieWBj5XYNrJtkO66UCWIvtl3j/g
+	 H5bh0m4PXQ7mlBYEY6K57oWsbvzoEnWSK2q6o1StwCWoWhr2Z0Q0GooOoKlD2l6w+D
+	 WyUBMpSJ+WYnm4S1bgQvLqNVdqswBd8ky+mXJUKDJ2blVQA8/UeQc4TKcmIdxQCrJw
+	 b+XxtD0KIDUwQ==
+Received: from mbx-essen-02.secunet.de (10.53.40.198) by
+ cas-essen-02.secunet.de (10.53.40.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 15 Oct 2024 08:27:55 +0200
+Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
+ (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 15 Oct
+ 2024 08:27:54 +0200
+Received: by gauss2.secunet.de (Postfix, from userid 1000)
+	id 79DC23181044; Tue, 15 Oct 2024 08:27:54 +0200 (CEST)
+Date: Tue, 15 Oct 2024 08:27:54 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Petr Vaganov <p.vaganov@ideco.ru>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Stephan Mueller
+	<smueller@chronox.de>, Antony Antony <antony.antony@secunet.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, <stable@vger.kernel.org>, Boris Tonofa
+	<b.tonofa@ideco.ru>
+Subject: Re: [PATCH ipsec v3] xfrm: fix one more kernel-infoleak in algo
+ dumping
+Message-ID: <Zw4Lak7LOwfW32NJ@gauss3.secunet.de>
+References: <20241008090259.20785-1-p.vaganov@ideco.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20241008090259.20785-1-p.vaganov@ideco.ru>
+X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
+ mbx-essen-02.secunet.de (10.53.40.198)
+X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-New processors have become pickier about the local APIC timer state
-before entering low power modes. These low power modes are used (for
-example) when you close your laptop lid and suspend. If you put your
-laptop in a bag in this unnecessarily-high-power state, it is likely
-to get quite toasty while it quickly sucks the battery dry.
+On Tue, Oct 08, 2024 at 02:02:58PM +0500, Petr Vaganov wrote:
+> During fuzz testing, the following issue was discovered:
+> 
+> BUG: KMSAN: kernel-infoleak in _copy_to_iter+0x598/0x2a30
 
-The problem boils down to some CPUs' inability to power down until the
-kernel fully disables the local APIC timer. The current kernel code
-works in one-shot and periodic modes but does not work for deadline
-mode. Deadline mode has been the supported and preferred mode on
-Intel CPUs for over a decade and uses an MSR to drive the timer
-instead of an APIC register.
+...
 
-Disable the TSC Deadline timer in lapic_timer_shutdown() by writing to
-MSR_IA32_TSC_DEADLINE when in TSC-deadline mode. Also avoid writing
-to the initial-count register (APIC_TMICT) which is ignored in
-TSC-deadline mode.
+> 
+> Bytes 328-379 of 732 are uninitialized
+> Memory access of size 732 starts at ffff88800e18e000
+> Data copied to user address 00007ff30f48aff0
+> 
+> CPU: 2 PID: 18167 Comm: syz-executor.0 Not tainted 6.8.11 #1
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+> 
+> Fixes copying of xfrm algorithms where some random
+> data of the structure fields can end up in userspace.
+> Padding in structures may be filled with random (possibly sensitve)
+> data and should never be given directly to user-space.
+> 
+> A similar issue was resolved in the commit
+> 8222d5910dae ("xfrm: Zero padding when dumping algos and encap")
+> 
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+> 
+> Fixes: c7a5899eb26e ("xfrm: redact SA secret with lockdown confidentiality")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Boris Tonofa <b.tonofa@ideco.ru>
+> Signed-off-by: Boris Tonofa <b.tonofa@ideco.ru>
+> Signed-off-by: Petr Vaganov <p.vaganov@ideco.ru>
 
-Note: The APIC_LVTT|=APIC_LVT_MASKED operation should theoretically be
-enough to tell the hardware that the timer will not fire in any of the
-timer modes. But mitigating AMD erratum 411[1] also requires clearing
-out APIC_TMICT. Solely setting APIC_LVT_MASKED is also ineffective in
-practice on Intel Lunar Lake systems, which is the motivation for this
-change.
-
-1. 411 Processor May Exit Message-Triggered C1E State Without an Interrupt if Local APIC Timer Reaches Zero - https://www.amd.com/content/dam/amd/en/documents/archived-tech-docs/revision-guides/41322_10h_Rev_Gd.pdf
-
-Cc: stable@vger.kernel.org
-Fixes: 279f1461432c ("x86: apic: Use tsc deadline for oneshot when available")
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Tested-by: Todd Brandt <todd.e.brandt@intel.com>
----
-V2
-- Improve changelog
-V3
-- Subject and changelog rewrite
-- Check LAPIC Timer mode using APIC_LVTT value instead of extra CPU feature flag check
-- Avoid APIC_TMICT write which is ignored in TSC-deadline mode
-V4
-- Add back Fixes tag and stable tag which was missing in V3
-- Update patch recipients
----
- arch/x86/kernel/apic/apic.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 6513c53c9459..5436a4083065 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -440,7 +440,19 @@ static int lapic_timer_shutdown(struct clock_event_device *evt)
- 	v = apic_read(APIC_LVTT);
- 	v |= (APIC_LVT_MASKED | LOCAL_TIMER_VECTOR);
- 	apic_write(APIC_LVTT, v);
--	apic_write(APIC_TMICT, 0);
-+
-+	/*
-+	 * Setting APIC_LVT_MASKED should be enough to tell the
-+	 * hardware that this timer will never fire. But AMD
-+	 * erratum 411 and some Intel CPU behavior circa 2024
-+	 * say otherwise. Time for belt and suspenders programming,
-+	 * mask the timer and zero the counter registers:
-+	 */
-+	if (v & APIC_LVT_TIMER_TSCDEADLINE)
-+		wrmsrl(MSR_IA32_TSC_DEADLINE, 0);
-+	else
-+		apic_write(APIC_TMICT, 0);
-+
- 	return 0;
- }
- 
--- 
-2.34.1
-
+Applied, thanks a lot!
 
