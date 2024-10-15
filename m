@@ -1,71 +1,55 @@
-Return-Path: <stable+bounces-85979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB47599EB10
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:02:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA31899EB13
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:02:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18AFD1C21E6B
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:02:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A7FBB22764
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486CC1AF0AD;
-	Tue, 15 Oct 2024 13:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53361C07F8;
+	Tue, 15 Oct 2024 13:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVZSUdrb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQYrQbPo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0212D1C07E0;
-	Tue, 15 Oct 2024 13:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920881C07DB;
+	Tue, 15 Oct 2024 13:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997362; cv=none; b=K6Hj1Ws8Sx0JnUG88t6qsCVHWvEYKYxqZhh9A9qtsD9oSWOB/4MXvxoMHEkj1D9pHGVMx/igwnp6dEDrM5JRu4JxIfuI2sM/BRvG66erqUjOcDH2+M/7HMAyAr9oT4KUIGrjDxzGUb1crUpkpi+mWuEuEVQCcmydkpy3R16b/p8=
+	t=1728997368; cv=none; b=aZ5OIejlv9tSyvGjkmIMTAp3n0oNGP57IPf9ZtIC8PALEnq4SM9DoJm+iGN9QuVyYGmq2DE0wdVawX7RrdUKtfSIrSx3YIOiOWuCbpc2X2VP3xA1Qf6f6SWLfWPkokpDJY77AI1igUSLFDvFGHNCWIlCqOtg3Lbllmx5zTEpWJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997362; c=relaxed/simple;
-	bh=m/2a8h5gakcSLogsDAlRET9+x12ynAbxaUFztLxUqtg=;
+	s=arc-20240116; t=1728997368; c=relaxed/simple;
+	bh=4EnJA19aX246HXMPjQ2gS4COgiiB4kYZtQ0+I/9VWAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uEG5w6VyXnPDwhAsUzKal7+EKQJguHODsh3R669Iuo1GdqrYgLF3UPWuUgVgx6QpCFYP569SXoGJC5nquC1va5fkUBJ50js6HC7A1X2InnAagqHbXfLNrISHrnNUs6Y9OGyaKZ8dWKv/QUVee5w9WFiGAxFtUSX2qhRCM/5NGJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVZSUdrb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED43BC4CEC6;
-	Tue, 15 Oct 2024 13:02:40 +0000 (UTC)
+	 MIME-Version; b=IDIrl9Xwp6HJZrMx1qi12eyrp0lVm9K/8pTw8qj8bpV5hIL9YKHdc4m5QXxOgh5s7JxwACF4MM0WwGyzizJ7mis1gHBsirOlt8bGTwU/CYOkWoQh3pdrbvqr4zxbtjC6ElMqkRaTzi+MyTwUFtya8KeXml4J+aoGVp60sAq7Gcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQYrQbPo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CC7C4CEC6;
+	Tue, 15 Oct 2024 13:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997361;
-	bh=m/2a8h5gakcSLogsDAlRET9+x12ynAbxaUFztLxUqtg=;
+	s=korg; t=1728997368;
+	bh=4EnJA19aX246HXMPjQ2gS4COgiiB4kYZtQ0+I/9VWAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aVZSUdrbQ4DGv/ecZmwJmkRkVdZFdOu6P7kwC5vCpzcyOIcR4QryY9i0HAbnzCYOr
-	 BAN9o8PRHEeQ9MspcNkWcnYwSRjltPmpnjFNGhAgMugumV1UA58hGbqq6q8ehBJh7K
-	 pm4mCSibgigAsFZD94jh5e9aU/Ipncq/aARRloOA=
+	b=WQYrQbPov6ggA7h/rLBOnlEnN2m3SslLsn521KQzMHyjVAak1LLmEyD4j9oMor820
+	 y2Kb5ys4SAyhP44Ns/0JThqNoyOlJvvlnSL5Dq+AhPhWoiLkNVglbr4y7vSDi3msse
+	 tqBeXD6/+5Uof807kCoMR9s/WH9Xkubqu5AmJMHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Chaitanya S Prakash <chaitanyas.prakash@arm.com>,
-	Colin Ian King <colin.i.king@gmail.com>,
-	David Ahern <dsa@cumulusnetworks.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Junhao He <hejunhao3@huawei.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Yang Jihong <yangjihong@bytedance.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Zhipeng Wang <zhipeng.wang_1@nxp.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 160/518] perf time-utils: Fix 32-bit nsec parsing
-Date: Tue, 15 Oct 2024 14:41:04 +0200
-Message-ID: <20241015123923.176610442@linuxfoundation.org>
+Subject: [PATCH 5.10 161/518] clk: imx: imx8mp: fix clock tree update of TF-A managed clocks
+Date: Tue, 15 Oct 2024 14:41:05 +0200
+Message-ID: <20241015123923.214597059@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -84,68 +68,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
 
-[ Upstream commit 38e2648a81204c9fc5b4c87a8ffce93a6ed91b65 ]
+[ Upstream commit 3d29036853b9cb07ac49e8261fca82a940be5c41 ]
 
-The "time utils" test fails in 32-bit builds:
-  ...
-  parse_nsec_time("18446744073.709551615")
-  Failed. ptime 4294967295709551615 expected 18446744073709551615
-  ...
+On the i.MX8M*, the TF-A exposes a SiP (Silicon Provider) service
+for DDR frequency scaling. The imx8m-ddrc-devfreq driver calls the
+SiP and then does clk_set_parent on the DDR muxes to synchronize
+the clock tree.
 
-Switch strtoul to strtoull as an unsigned long in 32-bit build isn't
-64-bits.
+since commit 936c383673b9 ("clk: imx: fix composite peripheral flags"),
+these TF-A managed muxes have SET_PARENT_GATE set, which results
+in imx8m-ddrc-devfreq's clk_set_parent after SiP failing with -EBUSY:
 
-Fixes: c284d669a20d408b ("perf tools: Move parse_nsec_time to time-utils.c")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
-Cc: Colin Ian King <colin.i.king@gmail.com>
-Cc: David Ahern <dsa@cumulusnetworks.com>
-Cc: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Junhao He <hejunhao3@huawei.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Yang Jihong <yangjihong@bytedance.com>
-Link: https://lore.kernel.org/r/20240831070415.506194-3-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+clk_set_parent(dram_apb_src, sys1_pll_40m);(busfreq-imx8mq.c)
+
+commit 926bf91248dd
+("clk: imx8m: fix clock tree update of TF-A managed clocks") adds this
+method and enables 8mm, 8mn and 8mq. i.MX8MP also needs it.
+
+This is safe to do, because updating the Linux clock tree to reflect
+reality will always be glitch-free.
+
+Another reason to this patch is that powersave image BT music
+requires dram to be 400MTS, so clk_set_parent(dram_alt_src,
+sys1_pll_800m); is required. Without this patch, it will not succeed.
+
+Fixes: 936c383673b9 ("clk: imx: fix composite peripheral flags")
+Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20240607133347.3291040-7-peng.fan@oss.nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/time-utils.c | 4 ++--
+ drivers/clk/imx/clk-imx8mp.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/time-utils.c b/tools/perf/util/time-utils.c
-index 3024439216816..1b91ccd4d5234 100644
---- a/tools/perf/util/time-utils.c
-+++ b/tools/perf/util/time-utils.c
-@@ -20,7 +20,7 @@ int parse_nsec_time(const char *str, u64 *ptime)
- 	u64 time_sec, time_nsec;
- 	char *end;
+diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
+index 148572852e70f..56d45caa603f8 100644
+--- a/drivers/clk/imx/clk-imx8mp.c
++++ b/drivers/clk/imx/clk-imx8mp.c
+@@ -579,8 +579,8 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
+ 	hws[IMX8MP_CLK_IPG_ROOT] = imx_clk_hw_divider2("ipg_root", "ahb_root", ccm_base + 0x9080, 0, 1);
+ 	hws[IMX8MP_CLK_IPG_AUDIO_ROOT] = imx_clk_hw_divider2("ipg_audio_root", "audio_ahb", ccm_base + 0x9180, 0, 1);
  
--	time_sec = strtoul(str, &end, 10);
-+	time_sec = strtoull(str, &end, 10);
- 	if (*end != '.' && *end != '\0')
- 		return -1;
- 
-@@ -38,7 +38,7 @@ int parse_nsec_time(const char *str, u64 *ptime)
- 		for (i = strlen(nsec_buf); i < 9; i++)
- 			nsec_buf[i] = '0';
- 
--		time_nsec = strtoul(nsec_buf, &end, 10);
-+		time_nsec = strtoull(nsec_buf, &end, 10);
- 		if (*end != '\0')
- 			return -1;
- 	} else
+-	hws[IMX8MP_CLK_DRAM_ALT] = imx8m_clk_hw_composite("dram_alt", imx8mp_dram_alt_sels, ccm_base + 0xa000);
+-	hws[IMX8MP_CLK_DRAM_APB] = imx8m_clk_hw_composite_critical("dram_apb", imx8mp_dram_apb_sels, ccm_base + 0xa080);
++	hws[IMX8MP_CLK_DRAM_ALT] = imx8m_clk_hw_fw_managed_composite("dram_alt", imx8mp_dram_alt_sels, ccm_base + 0xa000);
++	hws[IMX8MP_CLK_DRAM_APB] = imx8m_clk_hw_fw_managed_composite_critical("dram_apb", imx8mp_dram_apb_sels, ccm_base + 0xa080);
+ 	hws[IMX8MP_CLK_VPU_G1] = imx8m_clk_hw_composite("vpu_g1", imx8mp_vpu_g1_sels, ccm_base + 0xa100);
+ 	hws[IMX8MP_CLK_VPU_G2] = imx8m_clk_hw_composite("vpu_g2", imx8mp_vpu_g2_sels, ccm_base + 0xa180);
+ 	hws[IMX8MP_CLK_CAN1] = imx8m_clk_hw_composite("can1", imx8mp_can1_sels, ccm_base + 0xa200);
 -- 
 2.43.0
 
