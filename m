@@ -1,181 +1,180 @@
-Return-Path: <stable+bounces-85098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2699F99DF13
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 09:05:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0CE499DF17
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 09:06:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A3321C2193F
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 07:05:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 258DB1C219E2
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 07:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2758018BB8B;
-	Tue, 15 Oct 2024 07:05:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="De/8AHEo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6942618B486;
+	Tue, 15 Oct 2024 07:06:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2A81ADFFB
-	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 07:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564A0137930;
+	Tue, 15 Oct 2024 07:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728975914; cv=none; b=fcXYqPkBJQCMVRbo9VqY+uZ0tylWk84C/18ZCb5kUHUujxVolXL/NFHWeuBl2kYD+vur52RWV0qhklnpZp3K/pHa0nsZB1vZ798R9IFtTI1vL9rId25lODM5QRkMd+TGxUnDS/OA/NBfApSKho0PzD/o+U0FygqVSdZkZuSL2pk=
+	t=1728975995; cv=none; b=CfeyhLrufWDuT6YTKsAM3/7xQq7QDkaxcWjb64AUHMaNFPtGkOar5yZdL2HBwLuKVej3R/8UTRaKoQd+sBRGa6Xq9qFpLhU6t/a4/BJtXO+AKd20SJPBWo/kzfGtG1iW7ByKXP3RCfsH6l8hgSGJIQUHmIkeYiE+Pt/N4cYTMYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728975914; c=relaxed/simple;
-	bh=oBC+1HsUohKVIcQAJ+6MB0/ZUctHQtUBhtp+e9sDpvI=;
+	s=arc-20240116; t=1728975995; c=relaxed/simple;
+	bh=LYPJDKAOIaphEy92xgvTYRFt9LgukmQ/k1PhfTyENkw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qUB2Kk2uRBagPC2rjoJbj7utAhL3YTjcaWIskMnA9mnE9Bn8h8aUoU8YDB5cDzE6sBcDRnbirWtllO+aq3T24+L6qJ6agjUuzgW2XhePa4wGp2vkKAR0ob4LRI2ipUVDR29PvKv1833ided9zjFVurMmqRA5vj3zU9R34DGpjOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=De/8AHEo; arc=none smtp.client-ip=209.85.217.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-4a47ec4ef2cso649571137.1
-        for <stable@vger.kernel.org>; Tue, 15 Oct 2024 00:05:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728975912; x=1729580712; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9S+Y8EgTI4RaVYlHU0odSMHwKx4OEouTcUJBn6Fq/ys=;
-        b=De/8AHEoxrhEvoqQ5QVIUlCI/nVQT2OSVwYEDAYujNDp9lwspw6jh17I4ZGERnCrFv
-         idb8BLsJLf6ecujqqMgXKm8vlaR5YQRiMpUv2y6tiN2SaCWU/0flVg34ctjG8P59JJiT
-         pDPF6M5lCFuD5yRyiiWyYQU0AQOdiPmO2EkseHackRqyCA8z2ZZHxuC+Va+FSBaukwUO
-         I6jpqLQ5112xLNGQzJcIs3scOdK+6f3jY+25b3V2cbg81JOEw+62UmXsgAbhIgzkeZLV
-         V5FS0Hszhe3C9hj+y45N5KYtBD10LUFtWCIBfihpp+nDa9iR1Xl7xGM4Gd1KaOqQh2aY
-         mikw==
+	 To:Cc:Content-Type; b=a2X+IzQ4vyYsqrlrr/QpjPgQozHTcyiuVTXFFqRTtDpn7E5evY7KJJqEsMk4HzZFqXTjBQ9bkErDy0hIyFYDhpn5qkiudb2ArVwdppgqMY3OhVQ+/n2Ml3NPHuTaepz9sSL1tCA+7jab5vJPp8Wq/Sh2eattYECvQRYG/HmeukQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-6dbb24ee2ebso51651277b3.1;
+        Tue, 15 Oct 2024 00:06:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728975912; x=1729580712;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9S+Y8EgTI4RaVYlHU0odSMHwKx4OEouTcUJBn6Fq/ys=;
-        b=OSmjFiOIAQ4MvN06zumpx+IGhiexP4INRuIih0ZkdpBAQEWr3wFijpX4OoEbRCe+Vb
-         eukRc4NpYkElcDL1ChR46oVxKKeL82ISkjJN9+6RzeWv6HsenkjWprosEnvaGntjv8Fu
-         9k3CtUB3XlxTmR0TuJi36/E9oR89gB+VW1ikcyF6NQmbrUCBxJswKMtb9KIUU/xkKwTY
-         WnHDFbf2YjVzkGJYQZdmnz9O7yHky85YA01l7+l+ux+XBoYMhKPeDzwH9H6UBhZDObsV
-         326L0QmrbD0SAxlIWxRjnLwceVMd/2+KeVqcKOGr8BZ2dog5WEdUItmO37b3Zzefl4qF
-         EWtw==
-X-Gm-Message-State: AOJu0YxZM/D0p38RRwXoNMhqEn0ZHOH6TPQ7JRh/xaXRn2vgcFSeKqBj
-	i9r9MzcAfxJAzb6p6O9Eo5nlU9H4Atx21R8BG1+6iOzqiCCKb2AUlSfOL23KZO0K5MJBZXUGkaH
-	KmRXBM5Wto7R2hHi63LSLNoIM0oLHDL9iYb7OVQ==
-X-Google-Smtp-Source: AGHT+IHEcqC0X9UrZgnNhMSIO+RyEt/FWn39JNphrOjRmt8okVO8tsYm73/rsHZiD48SNgda7GloKr6sPzvke21V0Ok=
-X-Received: by 2002:a05:6102:2ad2:b0:4a3:b2d0:ac50 with SMTP id
- ada2fe7eead31-4a475f4c6damr5693483137.11.1728975911768; Tue, 15 Oct 2024
- 00:05:11 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1728975992; x=1729580792;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RjXNxhe4YkjVhl5J3HDsDQslVdlFO3kMOqAyUlL8DnU=;
+        b=dnCmbDtdiSGf8/2uHGHcQ2AddAjHNWXHHNm+wnnFqDXWPwgirRoo8ekOIHa+LRSMDO
+         z/IFKX6kusVs7fFu0/IRkcY6VtPncQOmBRC07KiF16oe4bUhQj88iTI3WrtG9MNiGNsZ
+         cs3TnzVZ/TrzVgB+EnfkLzPtatQvRZ2/ZdnqFjNpDxB6/VtA3/aYjxVhHzuSxvQz/zMh
+         Nnb0nxtzK5bUF0IkiKSDLyV594K3v9C6mD4+LMXqP2w+Chu+Ai1JOPPIqHKI6ZrAsxra
+         VwLM/zIzrPQz6ss0jy8g7fe4x7stKP46TrfS2RtAEcUi07lcWcBBWnZ3J3lWOB9RorXS
+         hC+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVRksgolTY6CHYAgBw/RcYfQE+9pVPsyj8gTGmm0GHAufaoNS405A8rOOP8gkmkiknaoSdtLZKbq+qgxUQ=@vger.kernel.org, AJvYcCWxBmX4DjXXQwuV8xqbjY1yB39QG/RAGCTUMQB39a6FBVn6lXYuHkn02n0HMV67HdUCt7DZOh+H@vger.kernel.org, AJvYcCXfGli8f91XhaKdZSkiGqGPJSraCiBcRfcPkKIZ20/ijp4m7QmI5AuPFrYSw5glUUi7EhpEhxNYCTuFbHI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8HpVfpS9HWNiNeHspjgMmJ5Zkxap94A3BrLP0dL8bCfRwmWlZ
+	Ugc04DSUaunG/bWutwSSLO9erCwUY/J9wxGGGa5//HYQWwtjQxp3gPHnVQ3r
+X-Google-Smtp-Source: AGHT+IGEDFEpWB0ZRU1LJRaweqLNuMHaVtzhGTM+46dG+NlSZhgCJhAZP7xp/QVL510NsacM97WPqg==
+X-Received: by 2002:a05:690c:d92:b0:6e3:1f02:4069 with SMTP id 00721157ae682-6e3477c030bmr106232847b3.7.1728975991752;
+        Tue, 15 Oct 2024 00:06:31 -0700 (PDT)
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com. [209.85.128.169])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6e3c5d25cd2sm1581397b3.118.2024.10.15.00.06.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Oct 2024 00:06:31 -0700 (PDT)
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-6dbb24ee2ebso51650877b3.1;
+        Tue, 15 Oct 2024 00:06:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVOdnARffxW2nTUe/I8GTRyNHj3Qe62yq24n+e0vBnHUllndmav0eOFsUd7/CXGmUtmeBefHM9gtVV1J/4=@vger.kernel.org, AJvYcCX1RmmnVN1vMiOYxq8GGdAX06PrDFTQ+kxWSgaRpFnn6WkOVcRw8dOmy0o3j6pYK+JdX8ERSlMj@vger.kernel.org, AJvYcCXY2WZWLcwhZjXWWQRogmoXuMv0WTySP65PuSrmIi5pkwrL89Hnv7i4vpTZ0FjHVFaLkNAG0Iwk9O46TGo=@vger.kernel.org
+X-Received: by 2002:a05:690c:5302:b0:6e2:43ea:55f with SMTP id
+ 00721157ae682-6e347c68ffbmr75764257b3.38.1728975990825; Tue, 15 Oct 2024
+ 00:06:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241014141044.974962104@linuxfoundation.org>
-In-Reply-To: <20241014141044.974962104@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 15 Oct 2024 12:35:00 +0530
-Message-ID: <CA+G9fYsPPmEbjNza_Tjyf+ZweuHcjHboOJfHeVSSVnmEV2gzXw@mail.gmail.com>
-Subject: Re: [PATCH 6.11 000/214] 6.11.4-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+References: <20241014141217.941104064@linuxfoundation.org> <3ab1938a-6f6a-4664-9991-d196e684974d@nvidia.com>
+In-Reply-To: <3ab1938a-6f6a-4664-9991-d196e684974d@nvidia.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 15 Oct 2024 09:06:19 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVHLiB7PWji9uRLZNWqFa1r7NiTv9MWCCAg=3-924M7tA@mail.gmail.com>
+Message-ID: <CAMuHMdVHLiB7PWji9uRLZNWqFa1r7NiTv9MWCCAg=3-924M7tA@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/798] 6.1.113-rc1 review
+To: Jon Hunter <jonathanh@nvidia.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	pavel@denx.de, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
 	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org, Heiko Carstens <hca@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Thomas Richter <tmricht@linux.ibm.com>, 
-	linux-s390@vger.kernel.org
+	broonie@kernel.org, 
+	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 14 Oct 2024 at 19:55, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Tue, Oct 15, 2024 at 7:32=E2=80=AFAM Jon Hunter <jonathanh@nvidia.com> w=
+rote:
+> On 14/10/2024 15:09, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.1.113 release.
+> > There are 798 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Wed, 16 Oct 2024 14:09:57 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >       https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.113-rc1.gz
+> > or in the git tree and branch at:
+> >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+> >
+> > -------------
+> > Pseudo-Shortlog of commits:
 >
-> This is the start of the stable review cycle for the 6.11.4 release.
-> There are 214 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> ...
 >
-> Responses should be made by Wed, 16 Oct 2024 14:09:57 +0000.
-> Anything received after that time might be too late.
+> > Oleksij Rempel <linux@rempel-privat.de>
+> >      clk: imx6ul: add ethernet refclock mux support
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.4-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
-> and the diffstat can be found below.
 >
-> thanks,
+> I am seeing the following build issue for ARM multi_v7_defconfig and
+> bisect is point to the commit ...
 >
-> greg k-h
+> drivers/clk/imx/clk-imx6ul.c: In function =E2=80=98imx6ul_clocks_init=E2=
+=80=99:
+> drivers/clk/imx/clk-imx6ul.c:487:34: error: implicit declaration of funct=
+ion =E2=80=98imx_obtain_fixed_of_clock=E2=80=99; did you mean =E2=80=98imx_=
+obtain_fixed_clock=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+>    hws[IMX6UL_CLK_ENET1_REF_PAD] =3D imx_obtain_fixed_of_clock(ccm_node, =
+"enet1_ref_pad", 0);
+>                                    ^~~~~~~~~~~~~~~~~~~~~~~~~
+>                                    imx_obtain_fixed_clock
+> drivers/clk/imx/clk-imx6ul.c:487:32: warning: assignment makes pointer fr=
+om integer without a cast [-Wint-conversion]
+>    hws[IMX6UL_CLK_ENET1_REF_PAD] =3D imx_obtain_fixed_of_clock(ccm_node, =
+"enet1_ref_pad", 0);
+>                                  ^
+> drivers/clk/imx/clk-imx6ul.c:489:34: error: implicit declaration of funct=
+ion =E2=80=98imx_clk_gpr_mux=E2=80=99; did you mean =E2=80=98imx_clk_hw_mux=
+=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+>    hws[IMX6UL_CLK_ENET1_REF_SEL] =3D imx_clk_gpr_mux("enet1_ref_sel", "fs=
+l,imx6ul-iomuxc-gpr",
+>                                    ^~~~~~~~~~~~~~~
+>                                    imx_clk_hw_mux
+> drivers/clk/imx/clk-imx6ul.c:489:32: warning: assignment makes pointer fr=
+om integer without a cast [-Wint-conversion]
+>    hws[IMX6UL_CLK_ENET1_REF_SEL] =3D imx_clk_gpr_mux("enet1_ref_sel", "fs=
+l,imx6ul-iomuxc-gpr",
+>                                  ^
+> drivers/clk/imx/clk-imx6ul.c:492:32: warning: assignment makes pointer fr=
+om integer without a cast [-Wint-conversion]
+>    hws[IMX6UL_CLK_ENET2_REF_PAD] =3D imx_obtain_fixed_of_clock(ccm_node, =
+"enet2_ref_pad", 0);
+>                                  ^
+> drivers/clk/imx/clk-imx6ul.c:494:32: warning: assignment makes pointer fr=
+om integer without a cast [-Wint-conversion]
+>    hws[IMX6UL_CLK_ENET2_REF_SEL] =3D imx_clk_gpr_mux("enet2_ref_sel", "fs=
+l,imx6ul-iomuxc-gpr",
 
-The S390 build broke on the stable-rc linux-6.11.y branch due to
-following build warnings / errors.
+Missing backports of the other clock-related patches in the original
+series[1]?
+imx_obtain_fixed_clock() was introduced in commit 7757731053406dd0
+("clk: imx: add imx_obtain_fixed_of_clock()"), but some of the other
+patches from that series may be needed, too?
 
-First seen on v6.11.3-215-ga491a66f8da4
-  GOOD: v6.11.3
-  BAD: v6.11.3-215-ga491a66f8da4
+[1] https://lore.kernel.org/all/20230131084642.709385-1-o.rempel@pengutroni=
+x.de/
 
-List of regressions,
-* s390, build
-  - clang-19-allnoconfig
-  - clang-19-defconfig
-  - clang-nightly-allnoconfig
-  - clang-nightly-defconfig
-  - gcc-13-allmodconfig
-  - gcc-13-allnoconfig
-  - gcc-13-defconfig
-  - gcc-13-tinyconfig
-  - gcc-8-allnoconfig
-  - gcc-8-defconfig-fe40093d
-  - gcc-8-tinyconfig
+Gr{oetje,eeting}s,
 
-Build log:
--------
-  arch/s390/include/asm/cpu_mf.h: Assembler messages:
-  arch/s390/include/asm/cpu_mf.h:165: Error: Unrecognized opcode: `lpp'
-  make[3]: *** [scripts/Makefile.build:244: arch/s390/boot/startup.o] Error 1
+                        Geert
 
-  arch/s390/include/asm/atomic_ops.h: Assembler messages:
-  arch/s390/include/asm/atomic_ops.h:83: Error: Unrecognized opcode: `laag'
-  arch/s390/include/asm/atomic_ops.h:83: Error: Unrecognized opcode: `laag'
-  make[3]: *** [scripts/Makefile.build:244: arch/s390/boot/vmem.o] Error 1
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
-  arch/s390/include/asm/bitops.h: Assembler messages:
-  arch/s390/include/asm/bitops.h:308: Error: Unrecognized opcode: `flogr'
-  make[3]: *** [scripts/Makefile.build:244:
-arch/s390/boot/pgm_check_info.o] Error 1
-
-  arch/s390/include/asm/timex.h: Assembler messages:
-  arch/s390/include/asm/timex.h:192: Error: Unrecognized opcode: `stckf'
-  arch/s390/include/asm/timex.h:192: Error: Unrecognized opcode: `stckf'
-  make[3]: *** [scripts/Makefile.build:244: arch/s390/boot/kaslr.o] Error 1
-  make[3]: Target 'arch/s390/boot/bzImage' not remade because of errors.
-  make[2]: *** [arch/s390/Makefile:137: bzImage] Error 2
-
-Build log:
----------
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.11.y/build/v6.11.3-215-ga491a66f8da4/testrun/25429522/suite/build/test/gcc-13-defconfig/log
-
-metadata:
-----
-  git describe: v6.11.3-215-ga491a66f8da4
-  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-  git sha: a491a66f8da4fbfc06aedae9a8b0586d11a51fa9
-  kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2nQsfudCDSTlwmKIKEozbcVOnCs/config
-  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2nQsfudCDSTlwmKIKEozbcVOnCs/
-  toolchain: clang-19 and gcc-13
-  config: defconfig
-  arch: S390
-
-Steps to reproduce:
--------
-# tuxmake --runtime podman --target-arch s390 --toolchain gcc-13
---kconfig defconfig
-
-
---
-Linaro LKFT
-https://lkft.linaro.org
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
