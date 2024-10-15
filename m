@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-85980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C3099EB11
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:02:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 125BD99EB17
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:03:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 248841C2288D
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:02:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AE151C218BF
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3240F1AF0B0;
-	Tue, 15 Oct 2024 13:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F20E1C07C9;
+	Tue, 15 Oct 2024 13:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTRB16Wt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mAY6BmG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E941C07DB;
-	Tue, 15 Oct 2024 13:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBE21C07CC;
+	Tue, 15 Oct 2024 13:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997365; cv=none; b=RKIw3gOSf+g11kgNgEeui+ABKhoGzTDHam33Ofabo6qKD1t0t1QudN8P7VS9a6SNzKtxJjxR2W54fJpcDq9FSnB0R4i+IGsb9xqHJGt4dyf62kH3nwyF6YtBfJ/a1ww3m9oz/YXXbjSs0IEaopP9DG94kiSfjI+ue5C8vxae6G8=
+	t=1728997381; cv=none; b=iIjoH6gI6YVJ93SQUKtqaVgXaJtCrhfofCLIU2XxjsIj6KVsEHi3aS0zVGwUy15e4m0J9tjQdINozKXWwSjgWXOY8KUK4044emMMviPH9kQ4MlQRo/0De+VTYVsiX1uf/adk+J+HJK4/E2HRePv67cL+YEuoVA0d/3QnQx3ygxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997365; c=relaxed/simple;
-	bh=NpUtAe26iRbmMOul+QNeQF7xgIgfkjYHQ2FIOKFX8h4=;
+	s=arc-20240116; t=1728997381; c=relaxed/simple;
+	bh=Gfrm+UholqIf4o69ygsul1JnjiI/Zfup+SZOH6PlsiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gz2KSiR71wQ4U/VbJEUj0EKM/uO28/H/pkTmZV1FeqW+r8r604UlOa26knRdP/s8VjRxdNxcVxLts/nAmKQmHa305YnZBGg9RmcmdUSohXFjRmZmAGXuZXPp9iPN5WEv0Lpz/6wmQBOaqGqdhzUiM9vtFEX0ti9HEWlq6f9KTCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTRB16Wt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52788C4CEC6;
-	Tue, 15 Oct 2024 13:02:44 +0000 (UTC)
+	 MIME-Version; b=cimPsC8mXmbDmhUvPnji3IM8rYTZd7APh1kAWJC7aCiCiwGMWEjrXSv2Jq6FqVEeoNNuxVIFadQilupBiuIOQQKQuZMUOMr8yoZe0kzNDAiOKbJ9wWKPIg54JK3dy5PZg7+4N4alGnEuTLiZFEAZH/AyGywk2fAL3xX1PPdQLSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mAY6BmG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEA8C4CECE;
+	Tue, 15 Oct 2024 13:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997364;
-	bh=NpUtAe26iRbmMOul+QNeQF7xgIgfkjYHQ2FIOKFX8h4=;
+	s=korg; t=1728997381;
+	bh=Gfrm+UholqIf4o69ygsul1JnjiI/Zfup+SZOH6PlsiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eTRB16WtZiWCwIApAixNiuLmJXEhVjse2ZEQH9iJyfmeR26yGgVY+MYJS0P2nfemu
-	 SEKdhtPQqTq6DQSnkwB4tQ5u0m8npMoaJl59TdGVx0CjLYeWMLs1fYCg9wNGE4N7A8
-	 w1CkPTYowEeIVakdM5yYiSYnikIgshQaqm0FVlMQ=
+	b=1mAY6BmGPnjDkhM7rjlpio/Ivosih3jzX2IqxgJNFTyVuJB913l38VEKQJwzs8Qdx
+	 UvwHcATOrqJD4KC2GY5NSTJLQjVr1xzK+sL10ErWAE10MgNkDxX3AvlW+46vx0092f
+	 jyEZJ2+3cbL2VNo2Z+YfVCs2YLoIo4A5qeByqzyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
+	Jonathan McDowell <noodles@meta.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 134/518] xen/swiotlb: add alignment check for dma buffers
-Date: Tue, 15 Oct 2024 14:40:38 +0200
-Message-ID: <20241015123922.166861309@linuxfoundation.org>
+Subject: [PATCH 5.10 135/518] tpm: Clean up TPM space after command failure
+Date: Tue, 15 Oct 2024 14:40:39 +0200
+Message-ID: <20241015123922.205718350@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -66,50 +66,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Jonathan McDowell <noodles@meta.com>
 
-[ Upstream commit 9f40ec84a7976d95c34e7cc070939deb103652b0 ]
+[ Upstream commit e3aaebcbb7c6b403416f442d1de70d437ce313a7 ]
 
-When checking a memory buffer to be consecutive in machine memory,
-the alignment needs to be checked, too. Failing to do so might result
-in DMA memory not being aligned according to its requested size,
-leading to error messages like:
+tpm_dev_transmit prepares the TPM space before attempting command
+transmission. However if the command fails no rollback of this
+preparation is done. This can result in transient handles being leaked
+if the device is subsequently closed with no further commands performed.
 
-  4xxx 0000:2b:00.0: enabling device (0140 -> 0142)
-  4xxx 0000:2b:00.0: Ring address not aligned
-  4xxx 0000:2b:00.0: Failed to initialise service qat_crypto
-  4xxx 0000:2b:00.0: Resetting device qat_dev0
-  4xxx: probe of 0000:2b:00.0 failed with error -14
+Fix this by flushing the space in the event of command transmission
+failure.
 
-Fixes: 9435cce87950 ("xen/swiotlb: Add support for 64KB page granularity")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: 745b361e989a ("tpm: infrastructure for TPM spaces")
+Signed-off-by: Jonathan McDowell <noodles@meta.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/swiotlb-xen.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/char/tpm/tpm-dev-common.c | 2 ++
+ drivers/char/tpm/tpm2-space.c     | 3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
-index ad3ee4857e154..000d02ea4f7d8 100644
---- a/drivers/xen/swiotlb-xen.c
-+++ b/drivers/xen/swiotlb-xen.c
-@@ -91,9 +91,15 @@ static inline int range_straddles_page_boundary(phys_addr_t p, size_t size)
- {
- 	unsigned long next_bfn, xen_pfn = XEN_PFN_DOWN(p);
- 	unsigned int i, nr_pages = XEN_PFN_UP(xen_offset_in_page(p) + size);
-+	phys_addr_t algn = 1ULL << (get_order(size) + PAGE_SHIFT);
+diff --git a/drivers/char/tpm/tpm-dev-common.c b/drivers/char/tpm/tpm-dev-common.c
+index b99e1941c52c9..fde81ecbd6a3b 100644
+--- a/drivers/char/tpm/tpm-dev-common.c
++++ b/drivers/char/tpm/tpm-dev-common.c
+@@ -48,6 +48,8 @@ static ssize_t tpm_dev_transmit(struct tpm_chip *chip, struct tpm_space *space,
  
- 	next_bfn = pfn_to_bfn(xen_pfn);
+ 	if (!ret)
+ 		ret = tpm2_commit_space(chip, space, buf, &len);
++	else
++		tpm2_flush_space(chip);
  
-+	/* If buffer is physically aligned, ensure DMA alignment. */
-+	if (IS_ALIGNED(p, algn) &&
-+	    !IS_ALIGNED((phys_addr_t)next_bfn << XEN_PAGE_SHIFT, algn))
-+		return 1;
+ out_rc:
+ 	return ret ? ret : len;
+diff --git a/drivers/char/tpm/tpm2-space.c b/drivers/char/tpm/tpm2-space.c
+index ffb35f0154c16..c57404c6b98c9 100644
+--- a/drivers/char/tpm/tpm2-space.c
++++ b/drivers/char/tpm/tpm2-space.c
+@@ -166,6 +166,9 @@ void tpm2_flush_space(struct tpm_chip *chip)
+ 	struct tpm_space *space = &chip->work_space;
+ 	int i;
+ 
++	if (!space)
++		return;
 +
- 	for (i = 1; i < nr_pages; i++)
- 		if (pfn_to_bfn(++xen_pfn) != ++next_bfn)
- 			return 1;
+ 	for (i = 0; i < ARRAY_SIZE(space->context_tbl); i++)
+ 		if (space->context_tbl[i] && ~space->context_tbl[i])
+ 			tpm2_flush_context(chip, space->context_tbl[i]);
 -- 
 2.43.0
 
