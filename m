@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-85865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B01399EA92
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:56:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E95A99EA94
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:56:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0594D1F24403
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:56:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 503C21C22355
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E961AF0AF;
-	Tue, 15 Oct 2024 12:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E481AF0B3;
+	Tue, 15 Oct 2024 12:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEHx59If"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+/9flr+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC261C07DD;
-	Tue, 15 Oct 2024 12:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739C91C07DD;
+	Tue, 15 Oct 2024 12:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728996950; cv=none; b=rTs/NhJDs7/KNNd1obFJ8s0/DEcEHiZxNXLnQQfsuN0O3wuEoKEv31PZT1afykiobU+dz+DTLPJRhUFfdQxNan9ttDsjPbOneJcZvsvoqtzz2D7K9Ubml1gQpIqaRwieWFweQAF3bRh0D4bHPmUnAmHZWqlZwNdgh2K5h4WbKI4=
+	t=1728996957; cv=none; b=tN9WECyFElv7opNpjjtDrzcO5h79YALcmVkhLA5XSiBIe7fF7/foa+GdnH6r9MlRXUvcwVOMILcE5f4489t5DIiFmgv9gt62/ICGLD/x3O9y/qoInB+lXKBX3xHyzUKgQQRT+gmtRstROtEbk9/D0WUalEG359Wu05SBmePOL1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728996950; c=relaxed/simple;
-	bh=RNJhTlxW8NvWGpNTKsu0NKr75zZ2pMeCGhE3398aLEw=;
+	s=arc-20240116; t=1728996957; c=relaxed/simple;
+	bh=PJf60X3lt9OSn58JbBYO2Ap5b/HXvqmpMfMecTEfKYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GEG6f33UWOs397TBPy2IrKq0txA5ILFmtGDFjS8AqQ5mJSJR7t5MsKJqSYCr0aSAYe3JKwNAMYLOBoM/UOdZ4UTpHfGirlPQ6CePzSCi3lyhN2YsUYgkean6epaOJIKj5ZuHZmGIVkIXvFQ7N8Nw6NASiQ/5XbZoY1iqki25vWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEHx59If; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B0AC4CEC6;
-	Tue, 15 Oct 2024 12:55:49 +0000 (UTC)
+	 MIME-Version; b=Aw9fnUkWe5MMMy15uR7Bw4R3XyAcsmwZLNpqSzw/itbje154Lv/UVxo8H0x7y10edNywk9dBQhFmc94R8uoJkO4/D3eOFVIQR2d6wcsNX2L8oVd3wnqMwBdG4mYj85UqLOOKf4XExzodINaGi0vbcG11YlWir9sG4XV6WPrYnkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+/9flr+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9150C4CEC6;
+	Tue, 15 Oct 2024 12:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728996950;
-	bh=RNJhTlxW8NvWGpNTKsu0NKr75zZ2pMeCGhE3398aLEw=;
+	s=korg; t=1728996957;
+	bh=PJf60X3lt9OSn58JbBYO2Ap5b/HXvqmpMfMecTEfKYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oEHx59IfPPNWS63bQk5uN2jEn2UOfIgNLTl28gc5hsDXIBeYaeCorjkedr4SETPBn
-	 eStYDWehix8p5i/mlZ4SOvSe3+shWBRPxbD7eMxnQnqt/OSCPko6jV8JIQWiHT/nmd
-	 sf9IitQPqAgANnMI0jdc4k0l3Lgra35/5KAFc2vs=
+	b=W+/9flr+YyxrZURTUH2qWqvJRc0K8mqePowf8Ut6JHYDYC9mNYHcANsJzIBdLBrAc
+	 IK33eFuCQyM6MwbmFF5/25tQ5khFcoQuAyd7etGYOVPaJJR2VbnAK1rmLTSPWFfJY2
+	 5pvlvDJX4jxhgJmnYTppv0bPr+Y7ElCaAlYBWZiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hagar Hemdan <hagarhem@amazon.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Subject: [PATCH 5.10 047/518] gpio: prevent potential speculation leaks in gpio_device_get_desc()
-Date: Tue, 15 Oct 2024 14:39:11 +0200
-Message-ID: <20241015123918.826484633@linuxfoundation.org>
+	Geliang Tang <geliangtang@gmail.com>,
+	Mat Martineau <mathew.j.martineau@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 5.10 048/518] mptcp: export lookup_anno_list_by_saddr
+Date: Tue, 15 Oct 2024 14:39:12 +0200
+Message-ID: <20241015123918.864322911@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -66,51 +67,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hagar Hemdan <hagarhem@amazon.com>
+From: Geliang Tang <geliangtang@gmail.com>
 
-commit d795848ecce24a75dfd46481aee066ae6fe39775 upstream.
+commit d88c476f4a7dd69a2588470f6c4f8b663efa16c6 upstream.
 
-Userspace may trigger a speculative read of an address outside the gpio
-descriptor array.
-Users can do that by calling gpio_ioctl() with an offset out of range.
-Offset is copied from user and then used as an array index to get
-the gpio descriptor without sanitization in gpio_device_get_desc().
+This patch exported the static function lookup_anno_list_by_saddr, and
+renamed it to mptcp_lookup_anno_list_by_saddr.
 
-This change ensures that the offset is sanitized by using
-array_index_nospec() to mitigate any possibility of speculative
-information leaks.
-
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
-
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-Link: https://lore.kernel.org/r/20240523085332.1801-1-hagarhem@amazon.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Signed-off-by: Geliang Tang <geliangtang@gmail.com>
+Signed-off-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: b4cd80b03389 ("mptcp: pm: Fix uaf in __timer_delete_sync")
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c |   10 +++++-----
+ net/mptcp/protocol.h   |    3 +++
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -4,6 +4,7 @@
- #include <linux/module.h>
- #include <linux/interrupt.h>
- #include <linux/irq.h>
-+#include <linux/nospec.h>
- #include <linux/spinlock.h>
- #include <linux/list.h>
- #include <linux/device.h>
-@@ -143,7 +144,7 @@ struct gpio_desc *gpiochip_get_desc(stru
- 	if (hwnum >= gdev->ngpio)
- 		return ERR_PTR(-EINVAL);
- 
--	return &gdev->descs[hwnum];
-+	return &gdev->descs[array_index_nospec(hwnum, gdev->ngpio)];
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -194,9 +194,9 @@ static void check_work_pending(struct mp
+ 		WRITE_ONCE(msk->pm.work_pending, false);
  }
- EXPORT_SYMBOL_GPL(gpiochip_get_desc);
  
+-static struct mptcp_pm_add_entry *
+-lookup_anno_list_by_saddr(struct mptcp_sock *msk,
+-			  struct mptcp_addr_info *addr)
++struct mptcp_pm_add_entry *
++mptcp_lookup_anno_list_by_saddr(struct mptcp_sock *msk,
++				struct mptcp_addr_info *addr)
+ {
+ 	struct mptcp_pm_add_entry *entry;
+ 
+@@ -255,7 +255,7 @@ mptcp_pm_del_add_timer(struct mptcp_sock
+ 	struct sock *sk = (struct sock *)msk;
+ 
+ 	spin_lock_bh(&msk->pm.lock);
+-	entry = lookup_anno_list_by_saddr(msk, addr);
++	entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
+ 	if (entry)
+ 		entry->retrans_times = ADD_ADDR_RETRANS_MAX;
+ 	spin_unlock_bh(&msk->pm.lock);
+@@ -272,7 +272,7 @@ static bool mptcp_pm_alloc_anno_list(str
+ 	struct mptcp_pm_add_entry *add_entry = NULL;
+ 	struct sock *sk = (struct sock *)msk;
+ 
+-	if (lookup_anno_list_by_saddr(msk, &entry->addr))
++	if (mptcp_lookup_anno_list_by_saddr(msk, &entry->addr))
+ 		return false;
+ 
+ 	add_entry = kmalloc(sizeof(*add_entry), GFP_ATOMIC);
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -451,6 +451,9 @@ void mptcp_pm_free_anno_list(struct mptc
+ struct mptcp_pm_add_entry *
+ mptcp_pm_del_add_timer(struct mptcp_sock *msk,
+ 		       struct mptcp_addr_info *addr);
++struct mptcp_pm_add_entry *
++mptcp_lookup_anno_list_by_saddr(struct mptcp_sock *msk,
++				struct mptcp_addr_info *addr);
+ 
+ int mptcp_pm_announce_addr(struct mptcp_sock *msk,
+ 			   const struct mptcp_addr_info *addr,
 
 
 
