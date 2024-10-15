@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-86172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE79F99EC05
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:13:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB8B99EC0A
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:13:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79EF71F27346
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:13:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1086B20C0C
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477F81D6DB1;
-	Tue, 15 Oct 2024 13:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23CEE1D8DFD;
+	Tue, 15 Oct 2024 13:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YT2q5W2e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXUPI75H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0333C1C07ED;
-	Tue, 15 Oct 2024 13:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56521D5AD3;
+	Tue, 15 Oct 2024 13:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728998012; cv=none; b=JTqTv332R/ijpXbF8JOB3ff0p8GREQZYwDo2gB0JD13SqyI35k/vB15x1OQVxsDox1NoNiFsiJ2PY7MI5gzq6tXC233eiw6Zz2QVlRxZHDRl2m7NOjnOF3/PSt2vCJ7v50JDE7TJrDn9WVibTM/L/Wz1MhgoBU36rIKBikQPZ0s=
+	t=1728998018; cv=none; b=cWFv7E7GStyfmxLJWAGkM2WrYo/7V7QwUAkovDTMnatClWBLPoWK7wCyPT+KZGdvNLlixdJB0AmB7Cd2jDYTpSyIvE/5SgG/5FVcHTsLUMCO/ASd+O0tVRYHqz9G6YLR3W6GBO8DYDysFOSjE/1tV9gN6qd8cZzy0vny+IUvp6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728998012; c=relaxed/simple;
-	bh=hq/RDSwd40QLrSZNn2WUPHfghWoR2kDC6LF5euU+L7M=;
+	s=arc-20240116; t=1728998018; c=relaxed/simple;
+	bh=llJE/fevbi1DImn0iV7zjoVL94MHAla5aQwkx9/Da5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KysXbdRrYpxuZSss+TLJZlaYqq9HRM5XnVch2HnjbsM3BnoBDN32nYNfbLFQOh3+/5TYOKQioIZSMmKZgBcZMPi7vc2UhJtvASA/P9atu+Lv6Rh8f7gE6CjwtiuUN7ZttAYIDnBpnsqdiAFhmRFBv+lzWjCiAUX0du5uOec/YBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YT2q5W2e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BCAC4CEC6;
-	Tue, 15 Oct 2024 13:13:31 +0000 (UTC)
+	 MIME-Version; b=Q4fPjvmxuuM1zSU8fjfLGVxTy4Z480GWQ7ncLYpeynBsI9fPegmhKRBDTz2pn+c06/C1DlBOpK+WSysPCw2+jJIV5jYLxF3N4gB/n/2Nphgff0G7qtBE+uf0lVNy32lYDBP/OzjV5+HcY5VRQXIk94nXQ8bR4/xoe++3f9zZqu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXUPI75H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448F3C4CECF;
+	Tue, 15 Oct 2024 13:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728998011;
-	bh=hq/RDSwd40QLrSZNn2WUPHfghWoR2kDC6LF5euU+L7M=;
+	s=korg; t=1728998018;
+	bh=llJE/fevbi1DImn0iV7zjoVL94MHAla5aQwkx9/Da5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YT2q5W2eZFrSgaC65SIDlApRlMKxoFEOR4kVtCdhmPG6+UtJOQAKeQw/paIQDNSh1
-	 /6weVq0ItSFbpKZ42kh8mg215LFdkqL87UbJggsFbsiqhNznhtrkdMrog0DQ8a/W8O
-	 ehArnS37t83JvIRmFOB64Ra4af6NrLWuGT9y9US0=
+	b=PXUPI75HGX5oGXNDbFu9GuuZ5fJqs8TKWteRZixxTnG/C8mJw8wTmfOMWOs4dAu2K
+	 H03vUrL00b0q5BN6mI+r2P9KxrSiot0yTq53dUYj9bkv/5EqpIcpYowid1lTTgvfn8
+	 wIe9QUy7n1pG6cUO0dxM5QzBB0fdof67sfI7P4m0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Ben Dooks <ben.dooks@codethink.co.uk>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 354/518] spi: spi-imx: Fix pm_runtime_set_suspended() with runtime pm enabled
-Date: Tue, 15 Oct 2024 14:44:18 +0200
-Message-ID: <20241015123930.630288648@linuxfoundation.org>
+Subject: [PATCH 5.10 355/518] spi: s3c64xx: fix timeout counters in flush_fifo
+Date: Tue, 15 Oct 2024 14:44:19 +0200
+Message-ID: <20241015123930.669520396@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -66,37 +67,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Ben Dooks <ben.dooks@codethink.co.uk>
 
-[ Upstream commit b6e05ba0844139dde138625906015c974c86aa93 ]
+[ Upstream commit 68a16708d2503b6303d67abd43801e2ca40c208d ]
 
-It is not valid to call pm_runtime_set_suspended() for devices
-with runtime PM enabled because it returns -EAGAIN if it is enabled
-already and working. So, call pm_runtime_disable() before to fix it.
+In the s3c64xx_flush_fifo() code, the loops counter is post-decremented
+in the do { } while(test && loops--) condition. This means the loops is
+left at the unsigned equivalent of -1 if the loop times out. The test
+after will never pass as if tests for loops == 0.
 
-Fixes: 43b6bf406cd0 ("spi: imx: fix runtime pm support for !CONFIG_PM")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patch.msgid.link/20240923040015.3009329-2-ruanjinjie@huawei.com
+Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+Fixes: 230d42d422e7 ("spi: Add s3c64xx SPI Controller driver")
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://patch.msgid.link/20240924134009.116247-2-ben.dooks@codethink.co.uk
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-s3c64xx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 8566da12d15e3..f1a0073a8700f 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1756,8 +1756,8 @@ static int spi_imx_probe(struct platform_device *pdev)
- 		spi_imx_sdma_exit(spi_imx);
- out_runtime_pm_put:
- 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
--	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_disable(spi_imx->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index d435df1b715bb..7beea6f930933 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -215,7 +215,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
+ 	loops = msecs_to_loops(1);
+ 	do {
+ 		val = readl(regs + S3C64XX_SPI_STATUS);
+-	} while (TX_FIFO_LVL(val, sdd) && loops--);
++	} while (TX_FIFO_LVL(val, sdd) && --loops);
  
- 	clk_disable_unprepare(spi_imx->clk_ipg);
- out_put_per:
+ 	if (loops == 0)
+ 		dev_warn(&sdd->pdev->dev, "Timed out flushing TX FIFO\n");
+@@ -228,7 +228,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
+ 			readl(regs + S3C64XX_SPI_RX_DATA);
+ 		else
+ 			break;
+-	} while (loops--);
++	} while (--loops);
+ 
+ 	if (loops == 0)
+ 		dev_warn(&sdd->pdev->dev, "Timed out flushing RX FIFO\n");
 -- 
 2.43.0
 
