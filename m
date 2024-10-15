@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-86058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB9D99EB73
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:07:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66A8099EB4D
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:05:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E6FF1C2332E
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:07:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12AF51F21A17
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10951AF0AC;
-	Tue, 15 Oct 2024 13:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADCC1C07E5;
+	Tue, 15 Oct 2024 13:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qD5N5xWu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKENEE3D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E36C1C07DB;
-	Tue, 15 Oct 2024 13:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0805E1C07DB;
+	Tue, 15 Oct 2024 13:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997629; cv=none; b=qX/FgwoIwxIwMJKwEb/e8296jpGdOoJmOg3mmlqPMra08maDCHaEXSeGlLOVobJ8JpH+3+W7PZQ1ZJw2E4U3wqD6r+be9DHBIrnPuGyKQyCZReuPwfaS/WfvtsTmMrrLiQ1xgv1RSdqCG34fw+D1rlHr2ftePh5jIUDrJU+T3yU=
+	t=1728997526; cv=none; b=PW0KC+2Vif6TTg7GT5aX5nOFVF8PT+f7RvAgSseS9dD2QFyes/DmJqYuZ/Qrh2bestWN7M4azdaTEnsM5tQy0/q482opAlGXqiaYFsTiUKbuuK0h8IYYTkS0x4lcDFdCNHaKxQyqrjOo5jSbc4RIr7iQZBl0hevPYr0IMVtY8MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997629; c=relaxed/simple;
-	bh=DQqWtn/khCrl1K4nYL7QIFPxFA+itPh2HJUqPBdQDZU=;
+	s=arc-20240116; t=1728997526; c=relaxed/simple;
+	bh=IVjrxskALrJh07NIhL2Um4fxbzLC9U8y/DhZfGwkpQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MNUQ5CxNp1VyOjWNS5T3OI9bSfTxrbIutD64TTugrDwsOQB2+dyS5dUB2ne/Bh5uEC1T/FJa3G6KXn2K5Z3KQ/+ED71l3h4Y7NA0Q43Sz+Dz6/WnklYZrLpFtHyKxNWcOdAc90pZkcZ+KL+gfBpwqOacK4l2xJUhC92sWhNfhdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qD5N5xWu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B0BC4CEC6;
-	Tue, 15 Oct 2024 13:07:08 +0000 (UTC)
+	 MIME-Version; b=jtkFS4oLfCvV8mwruaTX8MNmEzaqjlokg2whmkUGQWehNfpqWoX5mzaOs0JuPS6IliieC5+3YaoVnbxCI2t4paNwqPoYq3xAlvhhn/AgN+RkEXN7l+IsplTzk4ZIq4VN3sbxwyB8D49p+MjpyBp1dGRQ2hHHJqdbz6iKHSXcH0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKENEE3D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C73C4CEC6;
+	Tue, 15 Oct 2024 13:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997629;
-	bh=DQqWtn/khCrl1K4nYL7QIFPxFA+itPh2HJUqPBdQDZU=;
+	s=korg; t=1728997525;
+	bh=IVjrxskALrJh07NIhL2Um4fxbzLC9U8y/DhZfGwkpQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qD5N5xWuNEeK9bhx3IeXMV9XUMZML5w0tA8106qya1UAMOMUxoQR3Ckspwx5onNOZ
-	 Vlbf1a6U3DcZOr3CYgYtisfPqjoSic0X6ECCahqWKXZ1m/O4jYItQpRR3ugRfoLeba
-	 JTWwIMOhD65qT6WeRNQYcTr5H6y0rAMrkavWPduE=
+	b=AKENEE3DpcumoWfyYGOmrJpjMy/r56Hzn+Dv/I0ggZTkwE2U74Yk3jnFucvDXZLWz
+	 K4OsveHG+gR8TqXc4ubSmRkSkEBFm3V+U1Vh9H+mvQZVcHgmTUaVQup/Z2zcnIpQyZ
+	 UkFozJlZKB1dDhTWOQxcOQYJVB+l2EqV6bNGtknI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Li <roman.li@amd.com>,
-	Fangzhi Zuo <Jerry.Zuo@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <superm1@kernel.org>
-Subject: [PATCH 5.10 208/518] drm/amd/display: Fix Synaptics Cascaded Panamera DSC Determination
-Date: Tue, 15 Oct 2024 14:41:52 +0200
-Message-ID: <20241015123925.012156973@linuxfoundation.org>
+	Hans de Goede <hdegoede@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Subject: [PATCH 5.10 209/518] Input: goodix - use the new soc_intel_is_byt() helper
+Date: Tue, 15 Oct 2024 14:41:53 +0200
+Message-ID: <20241015123925.060062261@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -69,35 +66,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Fangzhi Zuo <Jerry.Zuo@amd.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 4437936c6b696b98f3fe1d8679a2788c41b4df77 upstream.
+commit d176708ffc20332d1c730098d2b111e0b77ece82 upstream.
 
-Synaptics Cascaded Panamera topology needs to unconditionally
-acquire root aux for dsc decoding.
+Use the new soc_intel_is_byt() helper from linux/platform_data/x86/soc.h.
 
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Mario Limonciello <superm1@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20220131143539.109142-5-hdegoede@redhat.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+[Ricardo: Resolved minor cherry-pick conflict. The file linux/regulator/
+ consumer.h is not #included in the upstream version but it is in
+ v5.10.y. ]
+Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/touchscreen/goodix.c |   18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -201,7 +201,7 @@ static bool validate_dsc_caps_on_connect
- 		aconnector->dsc_aux = &aconnector->mst_port->dm_dp_aux.aux;
+--- a/drivers/input/touchscreen/goodix.c
++++ b/drivers/input/touchscreen/goodix.c
+@@ -23,6 +23,7 @@
+ #include <linux/delay.h>
+ #include <linux/irq.h>
+ #include <linux/interrupt.h>
++#include <linux/platform_data/x86/soc.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/slab.h>
+ #include <linux/acpi.h>
+@@ -718,21 +719,6 @@ static int goodix_reset(struct goodix_ts
+ }
  
- 	/* synaptics cascaded MST hub case */
--	if (!aconnector->dsc_aux && is_synaptics_cascaded_panamera(aconnector->dc_link, port))
-+	if (is_synaptics_cascaded_panamera(aconnector->dc_link, port))
- 		aconnector->dsc_aux = port->mgr->aux;
+ #ifdef ACPI_GPIO_SUPPORT
+-#include <asm/cpu_device_id.h>
+-#include <asm/intel-family.h>
+-
+-static const struct x86_cpu_id baytrail_cpu_ids[] = {
+-	{ X86_VENDOR_INTEL, 6, INTEL_FAM6_ATOM_SILVERMONT, X86_FEATURE_ANY, },
+-	{}
+-};
+-
+-static inline bool is_byt(void)
+-{
+-	const struct x86_cpu_id *id = x86_match_cpu(baytrail_cpu_ids);
+-
+-	return !!id;
+-}
+-
+ static const struct acpi_gpio_params first_gpio = { 0, 0, false };
+ static const struct acpi_gpio_params second_gpio = { 1, 0, false };
  
- 	if (!aconnector->dsc_aux)
+@@ -816,7 +802,7 @@ static int goodix_add_acpi_gpio_mappings
+ 		dev_info(dev, "Using ACPI INTI and INTO methods for IRQ pin access\n");
+ 		ts->irq_pin_access_method = IRQ_PIN_ACCESS_ACPI_METHOD;
+ 		gpio_mapping = acpi_goodix_reset_only_gpios;
+-	} else if (is_byt() && ts->gpio_count == 2 && ts->gpio_int_idx == -1) {
++	} else if (soc_intel_is_byt() && ts->gpio_count == 2 && ts->gpio_int_idx == -1) {
+ 		dev_info(dev, "No ACPI GpioInt resource, assuming that the GPIO order is reset, int\n");
+ 		ts->irq_pin_access_method = IRQ_PIN_ACCESS_ACPI_GPIO;
+ 		gpio_mapping = acpi_goodix_int_last_gpios;
 
 
 
