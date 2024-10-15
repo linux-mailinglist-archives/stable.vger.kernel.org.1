@@ -1,130 +1,153 @@
-Return-Path: <stable+bounces-85118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4EF99E3D1
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:27:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E06FA99E41B
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:35:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68EDAB22A28
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 10:27:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 486DCB23489
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 10:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0FE01E379D;
-	Tue, 15 Oct 2024 10:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BC71E9080;
+	Tue, 15 Oct 2024 10:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="Cr7SIyGl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9MB2srn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp104.iad3a.emailsrvr.com (smtp104.iad3a.emailsrvr.com [173.203.187.104])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9441DD88D;
-	Tue, 15 Oct 2024 10:26:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.203.187.104
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854381E5022
+	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 10:32:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728988010; cv=none; b=MoOAJ8zbxVedeZBHWTA6ZPlbiYvz3C7ASdzKktOXG03xA/JGF1AmZr7q+skO7rlH9QPNkGy0Sb0mj5oMe6B5/GnmzR72tzcqfhibw/6CM09SFcmMLfuVHqxcHku7XrFdvEGlQNYqaAbvo0BHw8hUDzrUyb29BoyBu/D2sNICJ9s=
+	t=1728988353; cv=none; b=Elke7Ze5lWJu3a+SB0SdN5L3bW0chmJChPDJcqyqn5fzqfX/K3q9+Zaz33Uucl1+wwcFwcMage34WKRXBwXF7kfVwK5Jq5VZhnamyaxpakxmBD/3p0FC1V+ib1NqL81bKfWxyFak1qMbmjXiiUPL7asBQ7dM0AZsPyrGzK54N6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728988010; c=relaxed/simple;
-	bh=PJRqIp9n5Mf2OJtL8AZpAYA3vRkTkn4CYT/9vbWvho8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YcX91RUvRaZbESqLgAy/xUJ0apbWWehB0Xoo1Bfvfhe4vYPVDXYijSnBZXGwt9Gjo+e47qZzMroXee1XSORgxWwg9fjmJvpIKOhm9ZUbXX8DX7+Z4T9T2iv1xmcgX3JBd8JlboqJvp1rBEGzdqZwZ5I41fkwmINHY+vWKHk1sK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=Cr7SIyGl; arc=none smtp.client-ip=173.203.187.104
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-	s=20221208-6x11dpa4; t=1728987586;
-	bh=PJRqIp9n5Mf2OJtL8AZpAYA3vRkTkn4CYT/9vbWvho8=;
-	h=Date:Subject:To:From:From;
-	b=Cr7SIyGlsNLBl59vrLeXnfX6GKV51CZVuPfviskV2CEcRDD0M0MvwhjrMogDjMM/T
-	 uQImLOIg01NRAezOoPpR6Y2+QCQW7YZk6Md14NuwISO2Zi2Hb7BpPipcoqZXDYhz9d
-	 vrfU4HUcJy+F18cAKn000hzOAFSmihBBJctx08yQ=
-X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp6.relay.iad3a.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 0D81A3AB1;
-	Tue, 15 Oct 2024 06:19:45 -0400 (EDT)
-Message-ID: <4f531d06-9802-4086-8463-db4c9b6ba11c@mev.co.uk>
-Date: Tue, 15 Oct 2024 11:19:45 +0100
+	s=arc-20240116; t=1728988353; c=relaxed/simple;
+	bh=aOyfIZ8MUf/tgLKWg8Q6zrbmauH5gdtWkBfRbi2eqGc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ecUltVzPbMiUQ3eHZ2k8UB+Ef8AJ+Ai2TGk+MzLFkPSE3ZhtuTOEoVaWYOqCGczoTlp1B4tX3gK+G+kPraaBGVguP7jkOnr8Vbcf8TJZWipHK/zRuT44MfB7gR0UTud00uVYuD9Is+kOtN2YbykUdQToPlnuqavwbBsOUb3WyWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9MB2srn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAF5C4CEC7;
+	Tue, 15 Oct 2024 10:32:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1728988353;
+	bh=aOyfIZ8MUf/tgLKWg8Q6zrbmauH5gdtWkBfRbi2eqGc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T9MB2srn5nNpFczeFjqjJdUIREbaQk/K+74VQ2FpqLl8odWjTVyEGhKPE0pDNISMR
+	 BLLzMKnzRfpjMZgoTP1SxQbOuz85VwRm+2H8lbclDBVTktUVfv1xhgmze88MVFbqTn
+	 o8/8q3ynrxME7crm6vfQ39EBdqvU11RFdeqKLkv8=
+Date: Tue, 15 Oct 2024 12:32:30 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jeff Xu <jeffxu@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Pedro Falcato <pedro.falcato@gmail.com>, stable@vger.kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Oleg Nesterov <oleg@redhat.com>, Kees Cook <keescook@chromium.org>
+Subject: Re: backport mseal and mseal_test to 6.10
+Message-ID: <2024101534-shingle-rigor-5283@gregkh>
+References: <CABi2SkW0Q8zAkmVg8qz9WV+Fkjft4stO67ajx0Gos82Sc4vjhg@mail.gmail.com>
+ <2024101439-scotch-ceremony-c2a8@gregkh>
+ <CABi2SkWSLHfcBhsa2OQqtTjUa-gNRYXWthwPeWrrEQ1pUhfnJg@mail.gmail.com>
+ <2024101437-taco-confusion-379f@gregkh>
+ <CABi2SkVA3qynBG1Ra_v2pg_k-pAzfjGc4VSDMN2L9tv9BreAiw@mail.gmail.com>
+ <2024101409-catcall-sequence-3ecf@gregkh>
+ <CABi2SkUvE3uJT0Zt+1WWSgSAneVo+Y_-UYR7DqhGk8OBevs1Qw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] comedi: Flush partial mappings in error case
-To: Jann Horn <jannh@google.com>,
- H Hartley Sweeten <hsweeten@visionengravers.com>,
- Frank Mori Hess <fmhess@users.sourceforge.net>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20241014-comedi-tlb-v1-1-4b699144b438@google.com>
-Content-Language: en-GB
-From: Ian Abbott <abbotti@mev.co.uk>
-Organization: MEV Ltd.
-In-Reply-To: <20241014-comedi-tlb-v1-1-4b699144b438@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Classification-ID: 0eb9834f-7cf2-4e2b-8beb-e87435a99214-1-1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABi2SkUvE3uJT0Zt+1WWSgSAneVo+Y_-UYR7DqhGk8OBevs1Qw@mail.gmail.com>
 
-On 14/10/2024 21:50, Jann Horn wrote:
-> If some remap_pfn_range() calls succeeded before one failed, we still have
-> buffer pages mapped into the userspace page tables when we drop the buffer
-> reference with comedi_buf_map_put(bm). The userspace mappings are only
-> cleaned up later in the mmap error path.
-> 
-> Fix it by explicitly flushing all mappings in our VMA on the comedi_mmap()
-> error path.
-> 
-> See commit 79a61cc3fc04 ("mm: avoid leaving partial pfn mappings around in
-> error case").
-> 
-> Cc: stable@vger.kernel.org
+On Mon, Oct 14, 2024 at 10:25:54AM -0700, Jeff Xu wrote:
+> On Mon, Oct 14, 2024 at 9:23 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Mon, Oct 14, 2024 at 09:19:55AM -0700, Jeff Xu wrote:
+> > > On Mon, Oct 14, 2024 at 9:12 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > >
+> > > > On Mon, Oct 14, 2024 at 08:27:29AM -0700, Jeff Xu wrote:
+> > > > > On Sun, Oct 13, 2024 at 10:54 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > > > >
+> > > > > > On Sun, Oct 13, 2024 at 10:17:48PM -0700, Jeff Xu wrote:
+> > > > > > > Hi Greg,
+> > > > > > >
+> > > > > > > How are you?
+> > > > > > >
+> > > > > > > What is the process to backport Pedro's recent mseal fixes to 6.10 ?
+> > > > > >
+> > > > > > Please read:
+> > > > > >     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> > > > > > for how all of this works :)
+> > > > > >
+> > > > > > > Specifically those 5 commits:
+> > > > > > >
+> > > > > > > 67203f3f2a63d429272f0c80451e5fcc469fdb46
+> > > > > > >     selftests/mm: add mseal test for no-discard madvise
+> > > > > > >
+> > > > > > > 4d1b3416659be70a2251b494e85e25978de06519
+> > > > > > >     mm: move can_modify_vma to mm/vma.h
+> > > > > > >
+> > > > > > >  4a2dd02b09160ee43f96c759fafa7b56dfc33816
+> > > > > > >   mm/mprotect: replace can_modify_mm with can_modify_vma
+> > > > > > >
+> > > > > > > 23c57d1fa2b9530e38f7964b4e457fed5a7a0ae8
+> > > > > > >       mseal: replace can_modify_mm_madv with a vma variant
+> > > > > > >
+> > > > > > > f28bdd1b17ec187eaa34845814afaaff99832762
+> > > > > > >    selftests/mm: add more mseal traversal tests
+> > > > > > >
+> > > > > > > There will be merge conflicts, I  can backport them to 5.10 and test
+> > > > > > > to help the backporting process.
+> > > > > >
+> > > > > > 5.10 or 6.10?
+> > > > > >
+> > > > > 6.10.
+> > > > >
+> > > > > > And why 6.10?  If you look at the front page of kernel.org you will see
+> > > > > > that 6.10 is now end-of-life, so why does that kernel matter to you
+> > > > > > anymore?
+> > > > > >
+> > > > > OK, I didn't know that. Less work is nice :-)
+> > > >
+> > > > So, now that you don't care about 6.10.y, what about 6.11.y?  Are any of
+> > > > these actually bugfixes that people need?
+> > > >
+> > > Oh, yes. It would be great to backport those 5 mentioned to 6.11.y.
+> >
+> > Why, are they bugfixes?
+> >
+> Yes. For performance, there are 5% impact with mprotect/madvise.
 
-Your patched version won't compile before 6.1 so you may want to 
-indicate that in the Cc line.
+That's not a bugfix, but we do sometimes take performance improvements
+if it's really needed and the maintainer is willing to do the backport
+for us.
 
-> Fixes: ed9eccbe8970 ("Staging: add comedi core")
-> Signed-off-by: Jann Horn <jannh@google.com>
-> ---
-> Note: compile-tested only; I don't actually have comedi hardware, and I
-> don't know anything about comedi.
-> ---
->   drivers/comedi/comedi_fops.c | 9 +++++++++
->   1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/comedi/comedi_fops.c b/drivers/comedi/comedi_fops.c
-> index 1b481731df96..0e573df8646f 100644
-> --- a/drivers/comedi/comedi_fops.c
-> +++ b/drivers/comedi/comedi_fops.c
-> @@ -2414,6 +2414,15 @@ static int comedi_mmap(struct file *file, struct vm_area_struct *vma)
->   		vma->vm_private_data = bm;
->   
->   		vma->vm_ops->open(vma);
-> +	} else {
-> +		/*
-> +		 * Leaving behind a partial mapping of a buffer we're about to
-> +		 * drop is unsafe, see remap_pfn_range_notrack().
-> +		 * We need to zap the range here ourselves instead of relying
-> +		 * on the automatic zapping in remap_pfn_range() because we call
-> +		 * remap_pfn_range() in a loop.
-> +		 */
-> +		zap_page_range_single(vma, vma->vm_start, size, NULL);
->   	}
->   
->   done:
-> 
-> ---
-> base-commit: 6485cf5ea253d40d507cd71253c9568c5470cd27
-> change-id: 20241014-comedi-tlb-400246505961
+> > > I don't know what will be the lifetime of 6.11.y, but keeping mseal's
+> > > semantics consistent across releases is important.
+> >
+> > Stable kernels last until the next release happens, like has been
+> > happening for 15+ years now, nothing new here :)
+> >
+> Does it mean that with 6.12, 6.11.y will be EOL soon ?
 
-I guess this doesn't need to be done for the path that calls 
-dma_mmap_coherent() since that does not do any range splitting. Would it 
-be better to move it into the branch that calls remap_pfn_range() in a loop?
+Yes.
 
-Note that I have no commit access to pulled-from repositories.  Greg-KH 
-usually commits them on one of his repos, so could you Cc him too?  Thanks.
+> say in the next few months?
 
--- 
--=( Ian Abbott <abbotti@mev.co.uk> || MEV Ltd. is a company  )=-
--=( registered in England & Wales.  Regd. number: 02862268.  )=-
--=( Regd. addr.: S11 & 12 Building 67, Europa Business Park, )=-
--=( Bird Hall Lane, STOCKPORT, SK3 0XA, UK. || www.mev.co.uk )=-
+Yes.
+
+> (Sorry that I didn't know much about linux release cycle. )
+
+It's well documented, please see the Documentation/process/2.Process.rst
+file for details.  If you have questions after that, please let us know.
+
+thanks,
+
+greg k-h
 
