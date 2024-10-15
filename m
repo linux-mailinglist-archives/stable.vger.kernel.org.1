@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-85407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC8F99E72F
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:50:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E507F99E709
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:48:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66F0F28565B
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:50:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 228C31C25E15
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0841E633E;
-	Tue, 15 Oct 2024 11:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8658F1D5ACD;
+	Tue, 15 Oct 2024 11:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XOVJ9n+f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUfL7UKf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE64019B3FF;
-	Tue, 15 Oct 2024 11:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B7B1D4154;
+	Tue, 15 Oct 2024 11:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993011; cv=none; b=RO6HEZclVI366EnTPREy5U52+50EKubx3+X+ke0j9Cxm5QWLordbJ9g7D+F0TBbGIw+JL+kfZTrO06DzGIjo2VyyfQqAuvCVczz/57EDzIEBBHioa2WNT0ptcxH+xtGIJ8xjfCZA86JBX8iEC6OuhlEslMYNhEBloh3pEJcCSUU=
+	t=1728992905; cv=none; b=cZCAH7LYz0OCFNd6c5y0HtDRUOTDy4m5DA0SN5Idz3Fp7/njgy+V1NERESMIt4L6FW/ruujgFAE0UH3Kci6h5GCEMFnw2a6oxLwXzMVnORu3L35YyzZtqwVlhdq3ZRmlwv9jgGbNy4dN0s8upRixybFZaX5xiMluJiBsWO1q8Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993011; c=relaxed/simple;
-	bh=yqILZbu8SQ5bKZfy4zs/V10GgFXSK1L0UXZanXDSSo0=;
+	s=arc-20240116; t=1728992905; c=relaxed/simple;
+	bh=OgakBZ4/YbY4sE3rr4dLXhm5p8YbHK8jzbUwr4qT5PY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQuYVxDJk36zoHZGwDGRAA12qRIsNWm6rMU54heFP3fK8bZptq9uxLUxMtkeB2OwSjr+lObhknmwQ/pEAsUqk10ZrgnfxlF6z1k3PFqGWr5NULOl+u3776p5c6OMBI+8f6kzF0PkH9lRXKzWUOcYtmHBKZhQul3HehgherOzePs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XOVJ9n+f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40830C4CEC6;
-	Tue, 15 Oct 2024 11:50:10 +0000 (UTC)
+	 MIME-Version; b=GoSCLG8b3ZeQeXWI0fJ+ENoMECaovvQDyohoSlcQgxxQlPPtkVW96aIaZcEoJwAyXuW++20C4QP92t6LnepaiNO9KzNh8oRlrhAMNThowhJZ+y1QP7TcWEzKgFcIhbHDQoEjkOikYdTB5y4v9dfkPS4oo3oku6/66JhGDLfy6BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUfL7UKf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D55C4CECE;
+	Tue, 15 Oct 2024 11:48:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993011;
-	bh=yqILZbu8SQ5bKZfy4zs/V10GgFXSK1L0UXZanXDSSo0=;
+	s=korg; t=1728992905;
+	bh=OgakBZ4/YbY4sE3rr4dLXhm5p8YbHK8jzbUwr4qT5PY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XOVJ9n+fAkXpHYCgiDhtQfFzZbybgx/eQj8pFbh33/yTT3VbW31k56VQSpCU46PAJ
-	 qDdiNbF5JfYosFOKIzJ3b5Z9lzWXN+RV85JPu7rjM6AJ2Bw9vTwR/Nf7SDRm0P0ZHa
-	 ySGnHkcZl9nVkUHwQUfQmhHkRTF367EqobBmQjoE=
+	b=tUfL7UKfMDWNrv7uY+9W9OsuDHgSwFPbqeMnJbaKJ8vC2/bMGFogBlD+uv2cZ5pYI
+	 16TXMCzAit3pUfN77pwD4mXxw5SMhAZKtG75/MCuQ/2VPauU7L585vjHx+KCJltAjN
+	 NfGhRJZpLBErBsG0yqp2OheWFWbYoGb8GuYmgkic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Junxian Huang <huangjunxian6@hisilicon.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 253/691] RDMA/hns: Fix VF triggering PF reset in abnormal interrupt handler
-Date: Tue, 15 Oct 2024 13:23:21 +0200
-Message-ID: <20241015112450.392591165@linuxfoundation.org>
+Subject: [PATCH 5.15 254/691] RDMA/hns: Optimize hem allocation performance
+Date: Tue, 15 Oct 2024 13:23:22 +0200
+Message-ID: <20241015112450.433280831@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -68,47 +68,53 @@ Content-Transfer-Encoding: 8bit
 
 From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit 4321feefa5501a746ebf6a7d8b59e6b955ae1860 ]
+[ Upstream commit fe51f6254d81f5a69c31df16353d6539b2b51630 ]
 
-In abnormal interrupt handler, a PF reset will be triggered even if
-the device is a VF. It should be a VF reset.
+When allocating MTT hem, for each hop level of each hem that is being
+allocated, the driver iterates the hem list to find out whether the
+bt page has been allocated in this hop level. If not, allocate a new
+one and splice it to the list. The time complexity is O(n^2) in worst
+cases.
 
-Fixes: 2b9acb9a97fe ("RDMA/hns: Add the process of AEQ overflow for hip08")
+Currently the allocation for-loop uses 'unit' as the step size. This
+actually has taken into account the reuse of last-hop-level MTT bt
+pages by multiple buffer pages. Thus pages of last hop level will
+never have been allocated, so there is no need to iterate the hem list
+in last hop level.
+
+Removing this unnecessary iteration can reduce the time complexity to
+O(n).
+
+Fixes: 38389eaa4db1 ("RDMA/hns: Add mtr support for mixed multihop addressing")
 Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20240906093444.3571619-7-huangjunxian6@hisilicon.com
+Link: https://patch.msgid.link/20240906093444.3571619-9-huangjunxian6@hisilicon.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hem.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 92cff8d014cbe..64d458fd39ba9 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -5814,6 +5814,7 @@ static irqreturn_t abnormal_interrupt_basic(struct hns_roce_dev *hr_dev,
- 	struct pci_dev *pdev = hr_dev->pci_dev;
- 	struct hnae3_ae_dev *ae_dev = pci_get_drvdata(pdev);
- 	const struct hnae3_ae_ops *ops = ae_dev->ops;
-+	enum hnae3_reset_type reset_type;
- 	irqreturn_t int_work = IRQ_NONE;
- 	u32 int_en;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
+index 5f2b434541a2d..ce2ace2c850dc 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hem.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
+@@ -1182,10 +1182,12 @@ static int hem_list_alloc_mid_bt(struct hns_roce_dev *hr_dev,
  
-@@ -5825,10 +5826,12 @@ static irqreturn_t abnormal_interrupt_basic(struct hns_roce_dev *hr_dev,
- 		roce_write(hr_dev, ROCEE_VF_ABN_INT_ST_REG,
- 			   1 << HNS_ROCE_V2_VF_INT_ST_AEQ_OVERFLOW_S);
+ 	/* config L1 bt to last bt and link them to corresponding parent */
+ 	for (level = 1; level < hopnum; level++) {
+-		cur = hem_list_search_item(&mid_bt[level], offset);
+-		if (cur) {
+-			hem_ptrs[level] = cur;
+-			continue;
++		if (!hem_list_is_bottom_bt(hopnum, level)) {
++			cur = hem_list_search_item(&mid_bt[level], offset);
++			if (cur) {
++				hem_ptrs[level] = cur;
++				continue;
++			}
+ 		}
  
-+		reset_type = hr_dev->is_vf ?
-+			     HNAE3_VF_FUNC_RESET : HNAE3_FUNC_RESET;
-+
- 		/* Set reset level for reset_event() */
- 		if (ops->set_default_reset_request)
--			ops->set_default_reset_request(ae_dev,
--						       HNAE3_FUNC_RESET);
-+			ops->set_default_reset_request(ae_dev, reset_type);
- 		if (ops->reset_event)
- 			ops->reset_event(pdev, NULL);
- 
+ 		step = hem_list_calc_ba_range(hopnum, level, unit);
 -- 
 2.43.0
 
