@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-85623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFD7A99E821
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:02:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DCEF99E823
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:02:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E3C6B255F6
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:02:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47D011F21BBD
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:02:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C81F1E378C;
-	Tue, 15 Oct 2024 12:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3961E378C;
+	Tue, 15 Oct 2024 12:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qanj3RXJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hC3KV/0B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAE11C57B1;
-	Tue, 15 Oct 2024 12:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AABF1C57B1;
+	Tue, 15 Oct 2024 12:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993737; cv=none; b=eckBLT9wNSYYWEUHtdEJ8HDTAIKYFxBZPDzPI5boV1h32QM+jJsuKIvSSpJkgZharUPaq/CTys4Phhr+ChAkeKKmN/oxLPF6+SJSFh+sFpea81wzKR72dnWvhSvKeytXJd8TsPirVSnwQxLWApZNlAAMB7teHtLQLzWotvg961I=
+	t=1728993744; cv=none; b=PxgtmtuLGaQb6BSAmcXvo2VGfGO5w2oVzCM/VAwceDqi1lAlh+cxfOBIyHqyD2jn6DuaUMrkEyXnGcYI+IOrCEYcnh//KAY0xXCW0yUbr98JlpS+Rgop4PuKJaKQEBC2Zn0COkTozhrKA5OkLTi5xQklmjZB3cIGEp141CnpUJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993737; c=relaxed/simple;
-	bh=3ShOYmdRcq64R4lCMTAfQ/5aw4eu516rlgdB2YKfNE0=;
+	s=arc-20240116; t=1728993744; c=relaxed/simple;
+	bh=ocuPszL8TBKfZBZUGoTWG0pPejyf9G6SfiZPNM8MFLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D1BH3fKt5GwCzfscxWLFxnrrzDiABCbZm0DG1iby8q9AY3r5Q296hmE1Bqnyv/p4QIiGmPzhahyuovF9Q/23nSNW1XNSDH6zMS4LABH2gVSiiszcnSaXXI0FfWTyEAley4iEPChRlZ6SJhKYT7uiiRWPTTYxponP6WHOovn+yg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qanj3RXJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E215C4CEC6;
-	Tue, 15 Oct 2024 12:02:16 +0000 (UTC)
+	 MIME-Version; b=nup22v6WXZ3reoSnuN7wtS+/2E4+JTPk35F1uk9QR2gnpLTPywQpkZah/Bu7fffOA9euZaJloqD5ktZO0yiCoHb45jlJRZA5mXOuYtYbfSRkFe7Z1yfw9ZY1pj4Vqlg7pBD6L21P4XgwimUh0W5Kzjboo7Mg+dtr3ZyfwvzSitE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hC3KV/0B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE366C4CEC6;
+	Tue, 15 Oct 2024 12:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993737;
-	bh=3ShOYmdRcq64R4lCMTAfQ/5aw4eu516rlgdB2YKfNE0=;
+	s=korg; t=1728993744;
+	bh=ocuPszL8TBKfZBZUGoTWG0pPejyf9G6SfiZPNM8MFLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qanj3RXJ7br8lN6uzkXD2jOWhJMmRWl7cYy37UFO8BFS2HehvSJ+IKqKM3vPGYyzh
-	 LgzY0Ca9xvy2QLR906ZmAvZ4Du00O3NfCoVE/NpzynHb5kueH1m1mLls74AxqhibSs
-	 e+lDg03SXstoBW9K0dV2hJ8aCwnKtLaX0BXwDgiM=
+	b=hC3KV/0BEn5r0YPnEzPXP2ZRnuUPKGuFkjDq50CJCi6pOOcelpZpYZZ5KuvP7zSJT
+	 fU61xy++6qxmrYYEqePQjzVSBcfLZK2fmUJGjFh1WvVduT7fMbCzwwgnSDs4JM+pzx
+	 2lFVQXQhg7tbUL4b2QZLGglxa6ItbbjT/sF46xDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Hans P. Moller" <hmoller@uc.cl>,
+	Ai Chao <aichao@kylinos.cn>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 501/691] ALSA: line6: add hw monitor volume control to POD HD500X
-Date: Tue, 15 Oct 2024 13:27:29 +0200
-Message-ID: <20241015112500.228242638@linuxfoundation.org>
+Subject: [PATCH 5.15 502/691] ALSA: hda/realtek: Add quirk for Huawei MateBook 13 KLV-WX9
+Date: Tue, 15 Oct 2024 13:27:30 +0200
+Message-ID: <20241015112500.268242938@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -65,33 +65,31 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hans P. Moller <hmoller@uc.cl>
+From: Ai Chao <aichao@kylinos.cn>
 
-commit 703235a244e533652346844cfa42623afb36eed1 upstream.
+commit dee476950cbd83125655a3f49e00d63b79f6114e upstream.
 
-Add hw monitor volume control for POD HD500X. This is done adding
-LINE6_CAP_HWMON_CTL to the capabilities
+The headset mic requires a fixup to be properly detected/used.
 
-Signed-off-by: Hans P. Moller <hmoller@uc.cl>
+Signed-off-by: Ai Chao <aichao@kylinos.cn>
 Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240926060252.25630-1-aichao@kylinos.cn
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241003232828.5819-1-hmoller@uc.cl
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/line6/podhd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/usb/line6/podhd.c
-+++ b/sound/usb/line6/podhd.c
-@@ -507,7 +507,7 @@ static const struct line6_properties pod
- 	[LINE6_PODHD500X] = {
- 		.id = "PODHD500X",
- 		.name = "POD HD500X",
--		.capabilities	= LINE6_CAP_CONTROL
-+		.capabilities	= LINE6_CAP_CONTROL | LINE6_CAP_HWMON_CTL
- 				| LINE6_CAP_PCM | LINE6_CAP_HWMON,
- 		.altsetting = 1,
- 		.ep_ctrl_r = 0x81,
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9503,6 +9503,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1849, 0xa233, "Positivo Master C6300", ALC269_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x19e5, 0x3204, "Huawei MACH-WX9", ALC256_FIXUP_HUAWEI_MACH_WX9_PINS),
+ 	SND_PCI_QUIRK(0x19e5, 0x320f, "Huawei WRT-WX9 ", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x19e5, 0x3212, "Huawei KLV-WX9 ", ALC256_FIXUP_ACER_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1b35, 0x1235, "CZC B20", ALC269_FIXUP_CZC_B20),
+ 	SND_PCI_QUIRK(0x1b35, 0x1236, "CZC TMI", ALC269_FIXUP_CZC_TMI),
+ 	SND_PCI_QUIRK(0x1b35, 0x1237, "CZC L101", ALC269_FIXUP_CZC_L101),
 
 
 
