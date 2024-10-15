@@ -1,203 +1,170 @@
-Return-Path: <stable+bounces-86364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 921AD99F31C
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 18:47:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD5499F33C
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 18:49:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50E7F286B99
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 16:47:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF7E11C2400B
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 16:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62EB91F669D;
-	Tue, 15 Oct 2024 16:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618631F9EC8;
+	Tue, 15 Oct 2024 16:48:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="FW9H0NpA"
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40C61B21B3;
-	Tue, 15 Oct 2024 16:47:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D86A1F76C3;
+	Tue, 15 Oct 2024 16:48:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729010871; cv=none; b=t0FrS5UgN3HqWE1XqGGNaifB+RA4lz7GV/1CKMh3pzneTDOxJH3KJNEy6dZEUNTI6I9FLLp8kD1806S73GqEVptJ/nVk881hnxpR7xxCAqzn5dkwG4XJYVHxEppMBzF0X2JloMMj8w/cj4K5fxJAG2qg7OZhhbhnlf8TOuEN1Yc=
+	t=1729010931; cv=none; b=hRU4D++Wmr2F4bj49kxUILFMyXfi751+Rf5KiqS8k/MDVPdvR09Tp39X2yykezIq7oO9kHWWZc/z+vn022/D2aR4u645AbDmNfPwIT+xeKrp8U2G6Hn0wZxxXyPUySzcsUin3OTB8SqdRP+8JucJfrgTewOy3plt/s/rbVzMppk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729010871; c=relaxed/simple;
-	bh=wQjqRYCcFhfvzyaKYgj9ni5DarplWCQKtVntqTX0oBA=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UN2I3PdzKKjliUCA0AjJCfXcfHjB3Tr7c/LaZmkTtfXih3gDgSohco0+auMlJ4iy/+jEJlwqH5Co5WypNFQh6dSYtR2VR1lssPXRitiPchpxk+W0lH5AtsNqe9+L+00lxOC7zyDe52VaBAvJgCGDpLmarpui7ClsrQP+OEDvpbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XSfzm2kWfz6L6nf;
-	Wed, 16 Oct 2024 00:43:16 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 23D181404F5;
-	Wed, 16 Oct 2024 00:47:45 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 15 Oct
- 2024 18:47:44 +0200
-Date: Tue, 15 Oct 2024 17:47:43 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: <dave.jiang@intel.com>, <ira.weiny@intel.com>, <stable@vger.kernel.org>,
-	"Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, Davidlohr Bueso
-	<dave@stgolabs.net>, Alison Schofield <alison.schofield@intel.com>, "Zijun
- Hu" <zijun_hu@icloud.com>, <vishal.l.verma@intel.com>,
-	<linux-cxl@vger.kernel.org>
-Subject: Re: [PATCH 4/5] cxl/port: Fix use-after-free, permit out-of-order
- decoder shutdown
-Message-ID: <20241015174743.0000180d@Huawei.com>
-In-Reply-To: <172862486548.2150669.3548553804904171839.stgit@dwillia2-xfh.jf.intel.com>
-References: <172862483180.2150669.5564474284074502692.stgit@dwillia2-xfh.jf.intel.com>
-	<172862486548.2150669.3548553804904171839.stgit@dwillia2-xfh.jf.intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1729010931; c=relaxed/simple;
+	bh=WVKaqYII5ujyaBkhL4nkOVbjo6ExLLfpeD8xhgZL3h0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=dyxTlkiK/O7eEjUU71mzabGP2tG1Hd7aHC1tXFdV5q/U6WRkPRs9be/xWDYie4fTdAjnQ31PeoY5pUQ++hoOS4xRcrjJLWvrvOPTjnoC2aF31kLXzFojz7z/UX7TnYIxpGH3aRBhoqB7vU9UAhyrqlgvH476GkBxS5G7ZJgd98g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=FW9H0NpA; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FER2tW025730;
+	Tue, 15 Oct 2024 16:48:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	xqrl0QVoN8iOxiZ9dmBEDOekXWz2/f055zS4qxQJEkw=; b=FW9H0NpAE8bONztn
+	unIxuTqoIYFH8xffAvt/OcFt3uk2plKUkEWCeD7baHzR0ARchoD8xlY/gepAhukD
+	yXZBpKG80BakCG2t833zY8zAp3blG3Lo/GAoLpb0DAiyatvSnn0xVF/hD5wPiPr9
+	ceFUIqN0TOy+vsoeavLWdkF0SB/tKaYvAUtmeMiycl2ucjvm2dwuMBqri7sIaYHd
+	oD9cU8D3U4/bPGN3yV1t6CbXQ8Et5+G5Q3BE3ajUKqcOIEMYf3JKfvU/dWSdybeT
+	nesNSkxpT07+2QNfgEZkNid/JGbyZk1/uPGFSc+L4nZNfw9upKhWp/53gXwStPm2
+	fQ2+Mw==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 429t5kgf98-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 15 Oct 2024 16:48:43 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49FGmgl1025501
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 15 Oct 2024 16:48:42 GMT
+Received: from [10.48.240.238] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 15 Oct
+ 2024 09:48:42 -0700
+Message-ID: <2f6f7649-772e-42e6-a762-f2d66b7e3b22@quicinc.com>
+Date: Tue, 15 Oct 2024 09:48:41 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] wifi: ath12k: fix warning when unbinding
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>, <kvalo@kernel.org>,
+        <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
+        <ath12k@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+CC: <stable@vger.kernel.org>
+References: <20241010175102.207324-1-jtornosm@redhat.com>
+ <20241010175102.207324-3-jtornosm@redhat.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <20241010175102.207324-3-jtornosm@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- frapeml500008.china.huawei.com (7.182.85.71)
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: -TkSgi2IqKd3JC0d0BDh4oPSk7YF0DaK
+X-Proofpoint-GUID: -TkSgi2IqKd3JC0d0BDh4oPSk7YF0DaK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
+ bulkscore=0 mlxscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
+ malwarescore=0 phishscore=0 clxscore=1011 suspectscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2410150115
 
-On Thu, 10 Oct 2024 22:34:26 -0700
-Dan Williams <dan.j.williams@intel.com> wrote:
-
-> In support of investigating an initialization failure report [1],
-> cxl_test was updated to register mock memory-devices after the mock
-> root-port/bus device had been registered. That led to cxl_test crashing
-> with a use-after-free bug with the following signature:
+On 10/10/2024 10:48 AM, Jose Ignacio Tornos Martinez wrote:
+> If there is an error during some initialization realated to firmware,
+> the buffers dp->tx_ring[i].tx_status are released.
+> However this is released again when the device is unbinded (ath12k_pci),
+> and we get:
+> [   41.271233] WARNING: CPU: 0 PID: 2098 at mm/slub.c:4689 free_large_kmalloc+0x4d/0x80
+> [   41.271246] Modules linked in: uinput snd_seq_dummy snd_hrtimer nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables nfnetlink sunrpc qrtr_mhi intel_rapl_msr intel_rapl_common intel_uncore_frequency_common intel_pmc_core intel_vsec pmt_telemetry pmt_class kvm_intel kvm rapl qrtr snd_hda_codec_generic ath12k qmi_helpers snd_hda_intel snd_intel_dspcfg snd_intel_sdw_acpi iTCO_wdt intel_pmc_bxt mac80211 snd_hda_codec iTCO_vendor_support libarc4 snd_hda_core snd_hwdep snd_seq snd_seq_device cfg80211 snd_pcm pcspkr i2c_i801 snd_timer i2c_smbus snd rfkill soundcore lpc_ich mhi virtio_balloon joydev xfs crct10dif_pclmul crc32_pclmul crc32c_intel polyval_clmulni polyval_generic ghash_clmulni_intel sha512_ssse3 sha256_ssse3 sha1_ssse3 virtio_net virtio_blk virtio_console virtio_gpu net_failover failover virtio_dma_buf serio_raw fuse qemu_fw_cfg
+> [   41.271284] CPU: 0 UID: 0 PID: 2098 Comm: bash Kdump: loaded Not tainted 6.12.0-rc1+ #29
+> [   41.271286] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
+> [   41.271287] RIP: 0010:free_large_kmalloc+0x4d/0x80
+> [   41.271289] Code: 00 10 00 00 48 d3 e0 f7 d8 81 e2 c0 00 00 00 75 2f 89 c6 48 89 df e8 82 ff ff ff f0 ff 4b 34 0f 85 59 0e ce 00 e9 5b 0e ce 00 <0f> 0b 80 3d c8 29 3c 02 00 0f 84 2d 0e ce 00 b8 00 f0 ff ff eb d1
+> [   41.271290] RSP: 0018:ffffa40881a33c50 EFLAGS: 00010246
+> [   41.271292] RAX: 000fffffc0000000 RBX: ffffe697c0278000 RCX: 0000000000000000
+> [   41.271293] RDX: ffffe697c0b60008 RSI: ffff8d00c9e00000 RDI: ffffe697c0278000
+> [   41.271294] RBP: ffff8d00c3af0000 R08: ffff8d00f215d0c0 R09: 0000000080400038
+> [   41.271294] R10: 0000000080400038 R11: 0000000000000000 R12: 0000000000000001
+> [   41.271295] R13: ffffffffc0ef8948 R14: ffffffffc0ef8948 R15: ffff8d00c1277560
+> [   41.271296] FS:  00007fd31e556740(0000) GS:ffff8d011e400000(0000) knlGS:0000000000000000
+> [   41.271297] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   41.271298] CR2: 00007f778d3ffb38 CR3: 00000000065dc000 CR4: 0000000000752ef0
+> [   41.271301] PKRU: 55555554
+> [   41.271302] Call Trace:
+> [   41.271304]  <TASK>
+> [   41.271304]  ? free_large_kmalloc+0x4d/0x80
+> [   41.271306]  ? __warn.cold+0x93/0xfa
+> [   41.271308]  ? free_large_kmalloc+0x4d/0x80
+> [   41.271311]  ? report_bug+0xff/0x140
+> [   41.271314]  ? handle_bug+0x58/0x90
+> [   41.271316]  ? exc_invalid_op+0x17/0x70
+> [   41.271317]  ? asm_exc_invalid_op+0x1a/0x20
+> [   41.271321]  ? free_large_kmalloc+0x4d/0x80
+> [   41.271323]  ath12k_dp_free+0xdc/0x110 [ath12k]
+> [   41.271337]  ath12k_core_deinit+0x8d/0xb0 [ath12k]
+> [   41.271345]  ath12k_pci_remove+0x50/0xf0 [ath12k]
+> [   41.271354]  pci_device_remove+0x3f/0xb0
+> [   41.271356]  device_release_driver_internal+0x19c/0x200
+> [   41.271359]  unbind_store+0xa1/0xb0
+> ...
 > 
->     cxl_port_attach_region: cxl region3: cxl_host_bridge.0:port3 decoder3.0 add: mem0:decoder7.0 @ 0 next: cxl_switch_uport.0 nr_eps: 1 nr_targets: 1
->     cxl_port_attach_region: cxl region3: cxl_host_bridge.0:port3 decoder3.0 add: mem4:decoder14.0 @ 1 next: cxl_switch_uport.0 nr_eps: 2 nr_targets: 1
->     cxl_port_setup_targets: cxl region3: cxl_switch_uport.0:port6 target[0] = cxl_switch_dport.0 for mem0:decoder7.0 @ 0
-> 1)  cxl_port_setup_targets: cxl region3: cxl_switch_uport.0:port6 target[1] = cxl_switch_dport.4 for mem4:decoder14.0 @ 1
->     [..]
->     cxld_unregister: cxl decoder14.0:
->     cxl_region_decode_reset: cxl_region region3:
->     mock_decoder_reset: cxl_port port3: decoder3.0 reset
-> 2)  mock_decoder_reset: cxl_port port3: decoder3.0: out of order reset, expected decoder3.1
->     cxl_endpoint_decoder_release: cxl decoder14.0:
->     [..]
->     cxld_unregister: cxl decoder7.0:
-> 3)  cxl_region_decode_reset: cxl_region region3:
->     Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6bc3: 0000 [#1] PREEMPT SMP PTI
->     [..]
->     RIP: 0010:to_cxl_port+0x8/0x60 [cxl_core]
->     [..]
->     Call Trace:
->      <TASK>
->      cxl_region_decode_reset+0x69/0x190 [cxl_core]
->      cxl_region_detach+0xe8/0x210 [cxl_core]
->      cxl_decoder_kill_region+0x27/0x40 [cxl_core]
->      cxld_unregister+0x5d/0x60 [cxl_core]
+> The issue is always reproducible from a VM because the MSI addressing
+> initialization is failing.
 > 
-> At 1) a region has been established with 2 endpoint decoders (7.0 and
-> 14.0). Those endpoints share a common switch-decoder in the topology
-> (3.0). At teardown, 2), decoder14.0 is the first to be removed and hits
-> the "out of order reset case" in the switch decoder. The effect though
-> is that region3 cleanup is aborted leaving it in-tact and
-> referencing decoder14.0. At 3) the second attempt to teardown region3
-> trips over the stale decoder14.0 object which has long since been
-> deleted.
+> In order to fix the issue, just check if the buffers were already released
+> and if they need to be released, in addition set to NULL for the checking.
 > 
-> The fix here is to recognize that the CXL specification places no
-> mandate on in-order shutdown of switch-decoders, the driver enforces
-> in-order allocation, and hardware enforces in-order commit. So, rather
-> than fail and leave objects dangling, always remove them.
+> cc: stable@vger.kernel.org
+> Fixes: d889913205cf7 ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+> ---
+>  drivers/net/wireless/ath/ath12k/dp.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 > 
-> In support of making cxl_region_decode_reset() always succeed,
-> cxl_region_invalidate_memregion() failures are turned into warnings.
-> Crashing the kernel is ok there since system integrity is at risk if
-> caches cannot be managed around physical address mutation events like
-> CXL region destruction.
-
-I'm fine with this, but seems like it is worth breaking out as a precursor
-where we can discuss merits of that change separate from the complexity
-of the rest.
-
-I don't mind that strongly though so if you keep this intact,
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-Trivial passing comment inline.
-
-
-
-> diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
-> index 3df10517a327..223c273c0cd1 100644
-> --- a/drivers/cxl/core/hdm.c
-> +++ b/drivers/cxl/core/hdm.c
-> @@ -712,7 +712,44 @@ static int cxl_decoder_commit(struct cxl_decoder *cxld)
->  	return 0;
->  }
+> diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
+> index 789d430e4455..9d878d815f3c 100644
+> --- a/drivers/net/wireless/ath/ath12k/dp.c
+> +++ b/drivers/net/wireless/ath/ath12k/dp.c
+> @@ -1277,8 +1277,12 @@ void ath12k_dp_free(struct ath12k_base *ab)
 >  
-> -static int cxl_decoder_reset(struct cxl_decoder *cxld)
-> +static int commit_reap(struct device *dev, const void *data)
-> +{
-> +	struct cxl_port *port = to_cxl_port(dev->parent);
-> +	struct cxl_decoder *cxld;
-> +
-> +	if (!is_switch_decoder(dev) && !is_endpoint_decoder(dev))
-> +		return 0;
-> +
-> +	cxld = to_cxl_decoder(dev);
-> +	if (port->commit_end == cxld->id &&
-> +	    ((cxld->flags & CXL_DECODER_F_ENABLE) == 0)) {
-I'd have gone with !(cxld->flags & CXL_DECODER_F_ENABLE) but
-this is consistent with exiting form, so fine as is.
+>  	ath12k_dp_rx_reo_cmd_list_cleanup(ab);
+>  
+> -	for (i = 0; i < ab->hw_params->max_tx_ring; i++)
+> -		kfree(dp->tx_ring[i].tx_status);
+> +	for (i = 0; i < ab->hw_params->max_tx_ring; i++) {
+> +		if (dp->tx_ring[i].tx_status) {
 
-> +		port->commit_end--;
-> +		dev_dbg(&port->dev, "reap: %s commit_end: %d\n",
-> +			dev_name(&cxld->dev), port->commit_end);
+this test is unnecessary since kfree() already handles NULL
+
+> +			kfree(dp->tx_ring[i].tx_status);
+> +			dp->tx_ring[i].tx_status = NULL;
+> +		}
 > +	}
-> +
-> +	return 0;
-> +}
-
-
-> diff --git a/tools/testing/cxl/test/cxl.c b/tools/testing/cxl/test/cxl.c
-> index 90d5afd52dd0..c5bbd89b3192 100644
-> --- a/tools/testing/cxl/test/cxl.c
-> +++ b/tools/testing/cxl/test/cxl.c
-> @@ -693,26 +693,22 @@ static int mock_decoder_commit(struct cxl_decoder *cxld)
->  	return 0;
->  }
 >  
-> -static int mock_decoder_reset(struct cxl_decoder *cxld)
-> +static void mock_decoder_reset(struct cxl_decoder *cxld)
->  {
->  	struct cxl_port *port = to_cxl_port(cxld->dev.parent);
->  	int id = cxld->id;
->  
->  	if ((cxld->flags & CXL_DECODER_F_ENABLE) == 0)
-> -		return 0;
-> +		return;
->  
->  	dev_dbg(&port->dev, "%s reset\n", dev_name(&cxld->dev));
-> -	if (port->commit_end != id) {
-> +	if (port->commit_end == id)
-> +		cxl_port_commit_reap(cxld);
-> +	else
->  		dev_dbg(&port->dev,
->  			"%s: out of order reset, expected decoder%d.%d\n",
->  			dev_name(&cxld->dev), port->id, port->commit_end);
-> -		return -EBUSY;
-> -	}
-> -
-> -	port->commit_end--;
->  	cxld->flags &= ~CXL_DECODER_F_ENABLE;
-> -
-> -	return 0;
->  }
->  
->  static void default_mock_decoder(struct cxl_decoder *cxld)
-> 
-> 
+>  	ath12k_dp_rx_free(ab);
+>  	/* Deinit any SOC level resource */
 
 
