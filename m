@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-85747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69EFC99E8E7
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:11:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFAC399E8F2
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CD7C1F21944
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:11:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CE6D1C22D5B
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32851EF95A;
-	Tue, 15 Oct 2024 12:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB011EC018;
+	Tue, 15 Oct 2024 12:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o3XOLmzT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ALP8uMRY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CE81EABD1;
-	Tue, 15 Oct 2024 12:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A171EF941;
+	Tue, 15 Oct 2024 12:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728994162; cv=none; b=ImTmtnKqzdFaz1wQrSqvPPxi3AGOn9fREJ56J0K4k0u8DnXtv9HYvWOjcBd+Q6byD8wxDWNKfU5ELLaN6N6OEKQ2eQhaVpqUPl4YeDNx588HivmK+ODXjqroBd0UHtjBz/zfNAIW0TF6/HAYBsnadWQLwMQhT6etiX97QQtikHo=
+	t=1728994200; cv=none; b=OFJJ7gWcFecvw4UydHeTzSWjbzswkjAYIoZR0Q89u4z/l5XLXzUlDwaxOr/bKourF82eQlP0W76/k4h0EKtpfqFpVRZ19BrX0cQDwnb3EdlNq8Gpp/BZIXXokDyOE4UnzNufAGj0ZMy7+pQC6x21lwlem3hARRpgyHDZ7cvedfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728994162; c=relaxed/simple;
-	bh=qiKYDaIvqjvYca6qTu/1wFjc0dlEyqj8Mm+UzYZkZxc=;
+	s=arc-20240116; t=1728994200; c=relaxed/simple;
+	bh=MQUgX2Ci4GE285drRM50b2Gtk7+cS1u6g2w3s/WCCNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RDJ59C8P+42syqDdnjJYikFaT01Af/eB/KPQSFdxhFSk5DABlzTTS+275vGlyDIebX0OeqtNUZOmRxgRal1jvCLE5yhZ6G/BEI2MO8OQk1TMfRfh9g/Nm5oAEZCNo11XPoZ3rN3qJOdeJQy+byjJkD3tGEt2oFKeEuULqj7/oto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o3XOLmzT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A618C4CEC6;
-	Tue, 15 Oct 2024 12:09:21 +0000 (UTC)
+	 MIME-Version; b=A1mVqD+QXZjpB7bCymFPGv9BmKFiphkdKdstpnqujLAgxYkPPRAoeRjn39O9hilSKPhEoaqN4uA3Nwwfns0geH2MVc8TvjaCQk5CRV9t/9owiFt258chOR+kmQMd9lrHpxORZTup4yY7dymhyWeTYgFCxkigGmzZoa16rp8edp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ALP8uMRY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F29AC4CEC6;
+	Tue, 15 Oct 2024 12:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728994161;
-	bh=qiKYDaIvqjvYca6qTu/1wFjc0dlEyqj8Mm+UzYZkZxc=;
+	s=korg; t=1728994199;
+	bh=MQUgX2Ci4GE285drRM50b2Gtk7+cS1u6g2w3s/WCCNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o3XOLmzTzd3y4585pmCh4r8ux9OOnVDXYgGVy2612nC0KniTU5fjNFCv2SlXrG446
-	 v28r+LfaEF+TTaEEQIVe36QLKbV1ST+5AbK9wVxVsFPoYLLibrnHb30L58Oj4gPokJ
-	 xj1YbsnjQkFv++yyXaQAQjlwn3wRHF34vJOjxuwI=
+	b=ALP8uMRYQKRoEwSPkkscm4Xl17vyNVcSXQyN4Nebzl+VUINEKbMMWrAOl7tLaf21m
+	 ZE3f2Ypey0IHy5ytAFnrttQhLrWaGP4eyPGklLonbRdyfEVVGvK5UeJlnAj6igMmPS
+	 MyaCRATjtyETLqOIVg0o395ZfMg+0Mfi7Nr9MqO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ruffalo Lavoisier <RuffaloLavoisier@gmail.com>,
+	Philip Chen <philipchen@chromium.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 617/691] comedi: ni_routing: tools: Check when the file could not be opened
-Date: Tue, 15 Oct 2024 13:29:25 +0200
-Message-ID: <20241015112504.822505716@linuxfoundation.org>
+Subject: [PATCH 5.15 618/691] virtio_pmem: Check device status before requesting flush
+Date: Tue, 15 Oct 2024 13:29:26 +0200
+Message-ID: <20241015112504.861498881@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -65,36 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ruffalo Lavoisier <ruffalolavoisier@gmail.com>
+From: Philip Chen <philipchen@chromium.org>
 
-[ Upstream commit 5baeb157b341b1d26a5815aeaa4d3bb9e0444fda ]
+[ Upstream commit e25fbcd97cf52c3c9824d44b5c56c19673c3dd50 ]
 
-- After fopen check NULL before using the file pointer use
+If a pmem device is in a bad status, the driver side could wait for
+host ack forever in virtio_pmem_flush(), causing the system to hang.
 
-Signed-off-by: Ruffalo Lavoisier <RuffaloLavoisier@gmail.com>
-Link: https://lore.kernel.org/r/20240906203025.89588-1-RuffaloLavoisier@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So add a status check in the beginning of virtio_pmem_flush() to return
+early if the device is not activated.
+
+Signed-off-by: Philip Chen <philipchen@chromium.org>
+Message-Id: <20240826215313.2673566-1-philipchen@chromium.org>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/nvdimm/nd_virtio.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c b/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c
-index d55521b5bdcb2..892a66b2cea66 100644
---- a/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c
-+++ b/drivers/comedi/drivers/ni_routing/tools/convert_c_to_py.c
-@@ -140,6 +140,11 @@ int main(void)
- {
- 	FILE *fp = fopen("ni_values.py", "w");
+diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
+index 10351d5b49fac..41e97c6567cf9 100644
+--- a/drivers/nvdimm/nd_virtio.c
++++ b/drivers/nvdimm/nd_virtio.c
+@@ -44,6 +44,15 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
+ 	unsigned long flags;
+ 	int err, err1;
  
-+	if (fp == NULL) {
-+		fprintf(stderr, "Could not open file!");
-+		return -1;
++	/*
++	 * Don't bother to submit the request to the device if the device is
++	 * not activated.
++	 */
++	if (vdev->config->get_status(vdev) & VIRTIO_CONFIG_S_NEEDS_RESET) {
++		dev_info(&vdev->dev, "virtio pmem device needs a reset\n");
++		return -EIO;
 +	}
 +
- 	/* write route register values */
- 	fprintf(fp, "ni_route_values = {\n");
- 	for (int i = 0; ni_all_route_values[i]; ++i)
+ 	might_sleep();
+ 	req_data = kmalloc(sizeof(*req_data), GFP_KERNEL);
+ 	if (!req_data)
 -- 
 2.43.0
 
