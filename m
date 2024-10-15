@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-85521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2943899E7AD
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:56:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B4A99E7AF
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD795B249F8
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:56:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD2A21F22996
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610231E633E;
-	Tue, 15 Oct 2024 11:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA191D0492;
+	Tue, 15 Oct 2024 11:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m50k/XUJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tda6u/HX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1711D0492;
-	Tue, 15 Oct 2024 11:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7401D4154;
+	Tue, 15 Oct 2024 11:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993396; cv=none; b=sU+jgdLyx4wHZS5ZGxGSvu5QgORMKJbmvkOTdP/75NzPbHWW/b6oBlsiLEx9xbgJLwirubC1F3lWi7Z4CQfeQ3yY2id8E+9IFA6D+06GWu3XgHe2M5MMZ6Na0DY0Iqirtri7BRQqxF0tNvdHheUGaduQd629qG3BYCeIhvGiPHU=
+	t=1728993401; cv=none; b=f5R6unQcaJoqgk1P0MsGn7XQMGIWnh0uoiq/uNJuH2w9c9PbWHhvRU7yC4PJSzp3Yh957cUmuXm8zpExR0JjxIXu8QDcodCNKud7GExRdEA+rQoolKydKxiIEyB9XHLbxTjw3l9S9h+zLqlOMipCxP389hBq22dsnEcwwSCXqr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993396; c=relaxed/simple;
-	bh=1K7pX/yD/QEnUfoEvVoxpEOSErj2efA15I7VFyA7TQo=;
+	s=arc-20240116; t=1728993401; c=relaxed/simple;
+	bh=U6CvHeLEyZjxVMzPMfXlSVSQpkmFrPb0bHHALdo76Qo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kfugk8gyrQZCyl4ouNnQK7goO6Z5HAzx7mLOMD1qUhWdfd215Ue+m/a6WgoiPPyJ0mp569tSP2fO9sPx2LwlIuGwTO2sV/l1PVTHfZDkxM9w+7d1eEyBWdwBDE0XCRGDYyKq/yCixScqCqG3qIvKC7bH04E7xnKXmQUlyo+lJ1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m50k/XUJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277C4C4CECE;
-	Tue, 15 Oct 2024 11:56:34 +0000 (UTC)
+	 MIME-Version; b=T8I08GfxjufoftwObN2cpXo+9iSOVpqF9n06L1K77tVB9jAcNEXf7heOI3GkgQycBss43XoJCN8p9SVughJxSTke8hu9euBUCEgHwvBBbl6lvu5QKhzLgaKy4oEa6/voY0BQD2YuzljXcWT1QT8iu3EdHI2gEOdSCtwwTj6MvlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tda6u/HX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C1AC4CECF;
+	Tue, 15 Oct 2024 11:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993395;
-	bh=1K7pX/yD/QEnUfoEvVoxpEOSErj2efA15I7VFyA7TQo=;
+	s=korg; t=1728993401;
+	bh=U6CvHeLEyZjxVMzPMfXlSVSQpkmFrPb0bHHALdo76Qo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m50k/XUJy0+MKTRc/VZlifIuPTm+tbNjWszwRGwnBmNwR/DDudpAuWZPwQ38NBAtq
-	 Zg+TzeUbOksCTdW01CAYA9UoD/4AY7xAHs9i3OlvE7QJwFeVlKr4w737oQ9RK/qIcW
-	 kFYgW6pe669LGd6uoCL/wW1G1WcBfkgGQRojbXh8=
+	b=Tda6u/HXgzxJfaByq76SWwyY7iZT9ldtFSWhUFKN+8L/SZCmY4A0uiR+qisViaOVy
+	 SeB1sjhQRFERtHn7YUTI6B1C/KNfjwyuhqMffx1fo+H29V6WlICmVLs9d6kKgz8Zor
+	 Bh6LfUKXdLt/ooEg2+tfwIz75tyFhnYadIo+7cAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Hancock <robert.hancock@calian.com>,
-	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 399/691] i2c: xiic: Try re-initialization on bus busy timeout
-Date: Tue, 15 Oct 2024 13:25:47 +0200
-Message-ID: <20241015112456.174639054@linuxfoundation.org>
+Subject: [PATCH 5.15 400/691] media: usbtv: Remove useless locks in usbtv_video_free()
+Date: Tue, 15 Oct 2024 13:25:48 +0200
+Message-ID: <20241015112456.215217240@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -68,103 +67,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Robert Hancock <robert.hancock@calian.com>
+From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
 
-[ Upstream commit 1d4a1adbed2582444aaf97671858b7d12915bd05 ]
+[ Upstream commit 65e6a2773d655172143cc0b927cdc89549842895 ]
 
-In the event that the I2C bus was powered down when the I2C controller
-driver loads, or some spurious pulses occur on the I2C bus, it's
-possible that the controller detects a spurious I2C "start" condition.
-In this situation it may continue to report the bus is busy indefinitely
-and block the controller from working.
+Remove locks calls in usbtv_video_free() because
+are useless and may led to a deadlock as reported here:
+https://syzkaller.appspot.com/x/bisect.txt?x=166dc872180000
+Also remove usbtv_stop() call since it will be called when
+unregistering the device.
 
-The "single-master" DT flag can be specified to disable bus busy checks
-entirely, but this may not be safe to use in situations where other I2C
-masters may potentially exist.
+Before 'c838530d230b' this issue would only be noticed if you
+disconnect while streaming and now it is noticeable even when
+disconnecting while not streaming.
 
-In the event that the controller reports "bus busy" for too long when
-starting a transaction, we can try reinitializing the controller to see
-if the busy condition clears. This allows recovering from this scenario.
+Fixes: c838530d230b ("media: media videobuf2: Be more flexible on the number of queue stored buffers")
+Fixes: f3d27f34fdd7 ("[media] usbtv: Add driver for Fushicai USBTV007 video frame grabber")
 
-Fixes: e1d5b6598cdc ("i2c: Add support for Xilinx XPS IIC Bus Interface")
-Signed-off-by: Robert Hancock <robert.hancock@calian.com>
-Cc: <stable@vger.kernel.org> # v2.6.34+
-Reviewed-by: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
-Acked-by: Michal Simek <michal.simek@amd.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Reviewed-by: Tomasz Figa <tfiga@chromium.org>
+Tested-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[hverkuil: fix minor spelling mistake in log message]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-xiic.c | 41 ++++++++++++++++++++++-------------
- 1 file changed, 26 insertions(+), 15 deletions(-)
+ drivers/media/usb/usbtv/usbtv-video.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
-index 1ecd26e673d47..c1065ca54fb3e 100644
---- a/drivers/i2c/busses/i2c-xiic.c
-+++ b/drivers/i2c/busses/i2c-xiic.c
-@@ -540,23 +540,11 @@ static int xiic_bus_busy(struct xiic_i2c *i2c)
- 	return (sr & XIIC_SR_BUS_BUSY_MASK) ? -EBUSY : 0;
- }
+diff --git a/drivers/media/usb/usbtv/usbtv-video.c b/drivers/media/usb/usbtv/usbtv-video.c
+index a714ad77ca8e2..e5fcf53229812 100644
+--- a/drivers/media/usb/usbtv/usbtv-video.c
++++ b/drivers/media/usb/usbtv/usbtv-video.c
+@@ -959,15 +959,8 @@ int usbtv_video_init(struct usbtv *usbtv)
  
--static int xiic_busy(struct xiic_i2c *i2c)
-+static int xiic_wait_not_busy(struct xiic_i2c *i2c)
+ void usbtv_video_free(struct usbtv *usbtv)
  {
- 	int tries = 3;
- 	int err;
- 
--	if (i2c->tx_msg || i2c->rx_msg)
--		return -EBUSY;
+-	mutex_lock(&usbtv->vb2q_lock);
+-	mutex_lock(&usbtv->v4l2_lock);
 -
--	/* In single master mode bus can only be busy, when in use by this
--	 * driver. If the register indicates bus being busy for some reason we
--	 * should ignore it, since bus will never be released and i2c will be
--	 * stuck forever.
--	 */
--	if (i2c->singlemaster) {
--		return 0;
--	}
+-	usbtv_stop(usbtv);
+ 	vb2_video_unregister_device(&usbtv->vdev);
+ 	v4l2_device_disconnect(&usbtv->v4l2_dev);
+ 
+-	mutex_unlock(&usbtv->v4l2_lock);
+-	mutex_unlock(&usbtv->vb2q_lock);
 -
- 	/* for instance if previous transfer was terminated due to TX error
- 	 * it might be that the bus is on it's way to become available
- 	 * give it at most 3 ms to wake
-@@ -710,13 +698,36 @@ static int xiic_start_xfer(struct xiic_i2c *i2c, struct i2c_msg *msgs, int num)
- 
- 	mutex_lock(&i2c->lock);
- 
--	ret = xiic_busy(i2c);
--	if (ret) {
-+	if (i2c->tx_msg || i2c->rx_msg) {
- 		dev_err(i2c->adap.dev.parent,
- 			"cannot start a transfer while busy\n");
-+		ret = -EBUSY;
- 		goto out;
- 	}
- 
-+	/* In single master mode bus can only be busy, when in use by this
-+	 * driver. If the register indicates bus being busy for some reason we
-+	 * should ignore it, since bus will never be released and i2c will be
-+	 * stuck forever.
-+	 */
-+	if (!i2c->singlemaster) {
-+		ret = xiic_wait_not_busy(i2c);
-+		if (ret) {
-+			/* If the bus is stuck in a busy state, such as due to spurious low
-+			 * pulses on the bus causing a false start condition to be detected,
-+			 * then try to recover by re-initializing the controller and check
-+			 * again if the bus is still busy.
-+			 */
-+			dev_warn(i2c->adap.dev.parent, "I2C bus busy timeout, reinitializing\n");
-+			ret = xiic_reinit(i2c);
-+			if (ret)
-+				goto out;
-+			ret = xiic_wait_not_busy(i2c);
-+			if (ret)
-+				goto out;
-+		}
-+	}
-+
- 	i2c->tx_msg = msgs;
- 	i2c->rx_msg = NULL;
- 	i2c->nmsgs = num;
+ 	v4l2_device_put(&usbtv->v4l2_dev);
+ }
 -- 
 2.43.0
 
