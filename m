@@ -1,162 +1,148 @@
-Return-Path: <stable+bounces-85112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C1599E2EC
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:38:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 078B099E2FC
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:44:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42B251F227C3
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 09:38:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA51A1F22CF1
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 09:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DBFD1DDC08;
-	Tue, 15 Oct 2024 09:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 214A51DF261;
+	Tue, 15 Oct 2024 09:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iMihmCbl"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7547B13BACC
-	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 09:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91211BF2B;
+	Tue, 15 Oct 2024 09:44:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728985110; cv=none; b=O7fubpY99f4TVvIQrtP/lP8yejqict8B58T4h2k1wHz3lz1WqBjNNOUmT6EPgOFnQWivT3jS3d7XGYWm/4A7F/mMZC0K9tE64l8R64J/iXU4AcyPnIdjulMc9+d4AatI8GSaJcDKB9ZJ37jfPBNlGWGh/nAW1mcpA1mShqEoM1Q=
+	t=1728985485; cv=none; b=e9ImnWoRXiRt2eXZW1sn0DLfFcS2yN5qmLoLKiE0aFSzKpQxh0UfRBciSbA0jNi/f4Q+9WAgCgqaUeC6oEsUIUOOf+oCdfRWSb5li3t+4idvNKrR88DjX/IB+b36JvKGYkjX0cmZO43qFJyp/hGG2ElAhB64NJPIQKDQHoYMMl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728985110; c=relaxed/simple;
-	bh=WkFsvszqVPTGJ45zScx2bg3QTySV+PQBpCxtr/kUBMY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uu2kmF6+cINPyh4pK/7goIkURDZfIolbeRs7YnjlC8IDIn1STUWZ2NTK2Ilve5JOW9ZHd2tNdAL33SqOzYZhueU/8eO/RRTb+TUN6gQqdCLSe9fqNVw2shrH5BFXAUgjqn3ojfP5MpdrFrx2p4uFRIdb7w2LU9547Xys6p3xPck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1t0e0D-0007sj-GF; Tue, 15 Oct 2024 11:38:05 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1t0e0B-00202n-UO; Tue, 15 Oct 2024 11:38:03 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1t0e0B-00CdCJ-2g;
-	Tue, 15 Oct 2024 11:38:03 +0200
-Date: Tue, 15 Oct 2024 11:38:03 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Jon Hunter <jonathanh@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-Subject: Re: [PATCH 6.1 000/798] 6.1.113-rc1 review
-Message-ID: <Zw43-8oV-vSeyj5D@pengutronix.de>
-References: <20241014141217.941104064@linuxfoundation.org>
- <3ab1938a-6f6a-4664-9991-d196e684974d@nvidia.com>
- <CAMuHMdVHLiB7PWji9uRLZNWqFa1r7NiTv9MWCCAg=3-924M7tA@mail.gmail.com>
- <CAMuHMdVcE1Wvi+g5P5CEe5RFEuBfSCmR+7HFVfiC1rG6bHdesA@mail.gmail.com>
+	s=arc-20240116; t=1728985485; c=relaxed/simple;
+	bh=xDzom3Mp9aBUd2cif8YQ9ZgSLhcqWvPQSQFDkhI/jYo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cHp2yKBpSIIW7uhBD6G4NKkrPLUISyJuQKR59PEqGy3R/5SWUb51di67OQfCcsChozUUS/A7l8lZqso/nHLqQDmn3Kl2SS6ejoZoiu4NAnuulG8vve6SYaw7P0jfyFFTj8j4rsl6QqdGgWPzKTWzyx7YJu/4j509B9Vxm34Gw4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iMihmCbl; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728985484; x=1760521484;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=xDzom3Mp9aBUd2cif8YQ9ZgSLhcqWvPQSQFDkhI/jYo=;
+  b=iMihmCblQoMimcHMFSMpBZ6j0aGS3pi9EuHxcLgnr043PPEhT0C3UxYm
+   AFPKEFKmtz8fKqiHIcJLcf/a4sNI2aADN/AyI1o8x+qyZ7OD9VxCl0z2q
+   hEghiEakctWxmeiqrYAYmhKIkMF/eCi+ni7H/b5/1PJl2l2OXpjX5uNEd
+   2NsHu4pfwukbiZQP4t67qOTQ1b4F8NJLGnUPrOVcr8kRBXEURhMU0ZVCu
+   GAtKUTsNbYzFUvEGLv9PNXgUeSK9LOIEfxFvbdPhi8mjRK9k7ZdCIFZFP
+   F0WMDChpli2uXXPXEz79kYEBdQ4Z7SZ9WWxONTgd3RMSV9xIfgSVTph42
+   w==;
+X-CSE-ConnectionGUID: sfshIy9BRjOcFqbm9mlBXg==
+X-CSE-MsgGUID: ceLh9gRQRTSxvWVAQPyB2Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="45839815"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="45839815"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2024 02:44:43 -0700
+X-CSE-ConnectionGUID: 2BiOxhbyTiCfFN8BIwtL2A==
+X-CSE-MsgGUID: mFRFN6fJQ+epfUaK8fPLRQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,204,1725346800"; 
+   d="scan'208";a="82615994"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.245.89.141])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2024 02:44:41 -0700
+Message-ID: <18e66783-0fc7-4c55-8087-dc4212e851b4@intel.com>
+Date: Tue, 15 Oct 2024 12:44:37 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMuHMdVcE1Wvi+g5P5CEe5RFEuBfSCmR+7HFVfiC1rG6bHdesA@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mmc: core: Use GFP_NOIO in ACMD22
+To: Avri Altman <avri.altman@wdc.com>, Ulf Hansson <ulf.hansson@linaro.org>,
+ linux-mmc@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20241014114458.360538-1-avri.altman@wdc.com>
+Content-Language: en-US
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <20241014114458.360538-1-avri.altman@wdc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi all,
-
-On Tue, Oct 15, 2024 at 09:07:14AM +0200, Geert Uytterhoeven wrote:
-> CC Oleksij
+On 14/10/24 14:44, Avri Altman wrote:
+> While reviewing the SDUC series, Adrian made a comment concerning the
+> memory allocation code in mmc_sd_num_wr_blocks() - see [1].
+> Prevent memory allocations from triggering I/O operations while ACMD22
+> is in progress.
 > 
-> On Tue, Oct 15, 2024 at 9:06 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > On Tue, Oct 15, 2024 at 7:32 AM Jon Hunter <jonathanh@nvidia.com> wrote:
-> > > On 14/10/2024 15:09, Greg Kroah-Hartman wrote:
-> > > > This is the start of the stable review cycle for the 6.1.113 release.
-> > > > There are 798 patches in this series, all will be posted as a response
-> > > > to this one.  If anyone has any issues with these being applied, please
-> > > > let me know.
-> > > >
-> > > > Responses should be made by Wed, 16 Oct 2024 14:09:57 +0000.
-> > > > Anything received after that time might be too late.
-> > > >
-> > > > The whole patch series can be found in one patch at:
-> > > >       https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.113-rc1.gz
-> > > > or in the git tree and branch at:
-> > > >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> > > > and the diffstat can be found below.
-> > > >
-> > > > thanks,
-> > > >
-> > > > greg k-h
-> > > >
-> > > > -------------
-> > > > Pseudo-Shortlog of commits:
-> > >
-> > > ...
-> > >
-> > > > Oleksij Rempel <linux@rempel-privat.de>
-> > > >      clk: imx6ul: add ethernet refclock mux support
-> > >
-> > >
-> > > I am seeing the following build issue for ARM multi_v7_defconfig and
-> > > bisect is point to the commit ...
-> > >
-> > > drivers/clk/imx/clk-imx6ul.c: In function ‘imx6ul_clocks_init’:
-> > > drivers/clk/imx/clk-imx6ul.c:487:34: error: implicit declaration of function ‘imx_obtain_fixed_of_clock’; did you mean ‘imx_obtain_fixed_clock’? [-Werror=implicit-function-declaration]
-> > >    hws[IMX6UL_CLK_ENET1_REF_PAD] = imx_obtain_fixed_of_clock(ccm_node, "enet1_ref_pad", 0);
-> > >                                    ^~~~~~~~~~~~~~~~~~~~~~~~~
-> > >                                    imx_obtain_fixed_clock
-> > > drivers/clk/imx/clk-imx6ul.c:487:32: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
-> > >    hws[IMX6UL_CLK_ENET1_REF_PAD] = imx_obtain_fixed_of_clock(ccm_node, "enet1_ref_pad", 0);
-> > >                                  ^
-> > > drivers/clk/imx/clk-imx6ul.c:489:34: error: implicit declaration of function ‘imx_clk_gpr_mux’; did you mean ‘imx_clk_hw_mux’? [-Werror=implicit-function-declaration]
-> > >    hws[IMX6UL_CLK_ENET1_REF_SEL] = imx_clk_gpr_mux("enet1_ref_sel", "fsl,imx6ul-iomuxc-gpr",
-> > >                                    ^~~~~~~~~~~~~~~
-> > >                                    imx_clk_hw_mux
-> > > drivers/clk/imx/clk-imx6ul.c:489:32: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
-> > >    hws[IMX6UL_CLK_ENET1_REF_SEL] = imx_clk_gpr_mux("enet1_ref_sel", "fsl,imx6ul-iomuxc-gpr",
-> > >                                  ^
-> > > drivers/clk/imx/clk-imx6ul.c:492:32: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
-> > >    hws[IMX6UL_CLK_ENET2_REF_PAD] = imx_obtain_fixed_of_clock(ccm_node, "enet2_ref_pad", 0);
-> > >                                  ^
-> > > drivers/clk/imx/clk-imx6ul.c:494:32: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
-> > >    hws[IMX6UL_CLK_ENET2_REF_SEL] = imx_clk_gpr_mux("enet2_ref_sel", "fsl,imx6ul-iomuxc-gpr",
-> >
-> > Missing backports of the other clock-related patches in the original
-> > series[1]?
-> > imx_obtain_fixed_clock() was introduced in commit 7757731053406dd0
-> > ("clk: imx: add imx_obtain_fixed_of_clock()"), but some of the other
-> > patches from that series may be needed, too?
-> >
-> > [1] https://lore.kernel.org/all/20230131084642.709385-1-o.rempel@pengutronix.de/
+> [1] https://www.spinics.net/lists/linux-mmc/msg82199.html
+> 
+> Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
+> Signed-off-by: Avri Altman <avri.altman@wdc.com>
+> Cc: stable@vger.kernel.org
+> ---
+>  drivers/mmc/core/block.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+> index 04f3165cf9ae..042b0147d47e 100644
+> --- a/drivers/mmc/core/block.c
+> +++ b/drivers/mmc/core/block.c
+> @@ -995,6 +995,8 @@ static int mmc_sd_num_wr_blocks(struct mmc_card *card, u32 *written_blocks)
+>  	u32 result;
+>  	__be32 *blocks;
+>  	u8 resp_sz = mmc_card_ult_capacity(card) ? 8 : 4;
+> +	unsigned int noio_flag;
+> +
+>  	struct mmc_request mrq = {};
+>  	struct mmc_command cmd = {};
+>  	struct mmc_data data = {};
+> @@ -1018,9 +1020,13 @@ static int mmc_sd_num_wr_blocks(struct mmc_card *card, u32 *written_blocks)
+>  	mrq.cmd = &cmd;
+>  	mrq.data = &data;
+>  
+> +	noio_flag = memalloc_noio_save();
+> +
+>  	blocks = kmalloc(resp_sz, GFP_KERNEL);
 
-Yes, I agree, at least commit 7757731053406dd0 is missing. Other patches
-in [1] series are only interesting if corresponding device trees was
-upstream.
+Could have memalloc_noio_restore() here:
 
-Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+	memalloc_noio_restore(noio_flag);
+
+but I feel maybe adding something like:
+
+	u64 __aligned(8)	tiny_io_buf;
+
+to either struct mmc_card or struct mmc_host is better?
+Ulf, any thoughts?
+
+> -	if (!blocks)
+> +	if (!blocks) {
+> +		memalloc_noio_restore(noio_flag);
+>  		return -ENOMEM;
+> +	}
+>  
+>  	sg_init_one(&sg, blocks, resp_sz);
+>  
+> @@ -1041,6 +1047,8 @@ static int mmc_sd_num_wr_blocks(struct mmc_card *card, u32 *written_blocks)
+>  	}
+>  	kfree(blocks);
+>  
+> +	memalloc_noio_restore(noio_flag);
+> +
+>  	if (cmd.error || data.error)
+>  		return -EIO;
+>  
+
 
