@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-85887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B596299EAA8
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:57:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D18499EA87
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:55:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70DD6287AB2
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:57:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CAB37B20B6E
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A401C07DE;
-	Tue, 15 Oct 2024 12:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8441AF0C3;
+	Tue, 15 Oct 2024 12:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxndxU56"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ps0DGaqw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4461C07C2;
-	Tue, 15 Oct 2024 12:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D501AF0BB;
+	Tue, 15 Oct 2024 12:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997033; cv=none; b=ZRXf2z3PS14No/Cb0dyKCuG06KJ7PN119Twd0A4I5bXGm7Ad4dAjXthFEcJDovl0XaxeVwyWMmQ3EplsOuek8KRR1OkDQ2kmOtTTX/W0vyTukAFRQFWwmrKFjjSaQ3LzEyG458wcz8EJirvy/thVZfJUNp5deI2lM5TuQqG0IbA=
+	t=1728996919; cv=none; b=Yh97AzG18ixFhgfqkbYaRSC7rLKzl/3Iyp+QQDSuaqIzKcivWefCAcAoBDS6Qcug1ZvE+8sn3qGSw9e9fmestj+UNrf4BTV++a4jiznqtRzTLqYnXRN8wo0OpUM1p+4QIh+tS54c8ipM1BFW/gn/ZGYqShMs53FigcG5SODtKZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997033; c=relaxed/simple;
-	bh=dK0vNMw+LiWhgqPZNoJ8Bo376B6wjern/RvbrRfHWwo=;
+	s=arc-20240116; t=1728996919; c=relaxed/simple;
+	bh=K7srZxwPCRJBRF7W9eajl7ExhJT8ZHvDVxQZr6RU2xY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u0EJRTCJVSOgxPH3VzN9H8qCzWmdoCFJFOq8dikatl1WQwN/RozK8hiC/k8SH2nswvPridbuRUF+9HtxKAQ9J/B5eCjvx9Nqxed78IqCQ3PDRxxdWVO8v9Qb0qKTgECL5kaDp3WD9IlaVYbCUE46Jyr25tOVxV9WdWJjL0rZQvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxndxU56; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4496FC4CEC6;
-	Tue, 15 Oct 2024 12:57:13 +0000 (UTC)
+	 MIME-Version; b=MR9Fxkbe0HQcOsRvBvZiF/2nD+gFVpk6Qqwtap1z4pkH7980UfXp5uf1grw5+giVL6mPeAudb/GpRuhS9utvjNklUbv0fM/8IWxsYaRu3jw7kMwMuQdoNPZdLQ439xdDYTlwlanasMWRTMAxj2pp2UqnlVBOgaSdAj2t4NP8zXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ps0DGaqw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 194C1C4CED0;
+	Tue, 15 Oct 2024 12:55:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997033;
-	bh=dK0vNMw+LiWhgqPZNoJ8Bo376B6wjern/RvbrRfHWwo=;
+	s=korg; t=1728996919;
+	bh=K7srZxwPCRJBRF7W9eajl7ExhJT8ZHvDVxQZr6RU2xY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zxndxU56KjRI0VUaiAvUhhq0XknOfWjEmULCoOaM+XKD3KRfzFNDm7LM1K3B8+3qJ
-	 OT003N+ReqG2Q4P90NRU6AdfxQi5w+i1tLR0MXvPUx6loa8ILpNDlvk9/SxteqxrJD
-	 G9ksDiHmeqVK7zHMGD06mIhqHJU7Ed7PxWKd0asY=
+	b=ps0DGaqw3wuRyYOcmo2eDRGMguW65QRZm7uROWbt4stUx7Z+aZY4bBJkYCFl2oJAY
+	 mOo5Dc286xtzPrQToYekhsX6da4Qgs+Bs78Cyi1nuvcB5ky+/4yy7C4Lx/AAOu3N/1
+	 oL4O7llPvPbMgFNO+ErjW/SCjdavOeIlEoEtkWoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Liao Chen <liaochen4@huawei.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 037/518] ASoC: intel: fix module autoloading
-Date: Tue, 15 Oct 2024 14:39:01 +0200
-Message-ID: <20241015123918.435312244@linuxfoundation.org>
+Subject: [PATCH 5.10 038/518] ASoC: tda7419: fix module autoloading
+Date: Tue, 15 Oct 2024 14:39:02 +0200
+Message-ID: <20241015123918.474378203@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -68,31 +68,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Liao Chen <liaochen4@huawei.com>
 
-[ Upstream commit ae61a3391088d29aa8605c9f2db84295ab993a49 ]
+[ Upstream commit 934b44589da9aa300201a00fe139c5c54f421563 ]
 
 Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
 based on the alias from of_device_id table.
 
 Signed-off-by: Liao Chen <liaochen4@huawei.com>
-Link: https://patch.msgid.link/20240826084924.368387-2-liaochen4@huawei.com
+Link: https://patch.msgid.link/20240826084924.368387-4-liaochen4@huawei.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/keembay/kmb_platform.c | 1 +
+ sound/soc/codecs/tda7419.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/intel/keembay/kmb_platform.c b/sound/soc/intel/keembay/kmb_platform.c
-index 291a686568c26..c7b754034d24f 100644
---- a/sound/soc/intel/keembay/kmb_platform.c
-+++ b/sound/soc/intel/keembay/kmb_platform.c
-@@ -634,6 +634,7 @@ static const struct of_device_id kmb_plat_of_match[] = {
- 	{ .compatible = "intel,keembay-tdm", .data = &intel_kmb_tdm_dai},
- 	{}
+diff --git a/sound/soc/codecs/tda7419.c b/sound/soc/codecs/tda7419.c
+index 83d220054c96f..9183db51547d3 100644
+--- a/sound/soc/codecs/tda7419.c
++++ b/sound/soc/codecs/tda7419.c
+@@ -624,6 +624,7 @@ static const struct of_device_id tda7419_of_match[] = {
+ 	{ .compatible = "st,tda7419" },
+ 	{ },
  };
-+MODULE_DEVICE_TABLE(of, kmb_plat_of_match);
++MODULE_DEVICE_TABLE(of, tda7419_of_match);
  
- static int kmb_plat_dai_probe(struct platform_device *pdev)
- {
+ static struct i2c_driver tda7419_driver = {
+ 	.driver = {
 -- 
 2.43.0
 
