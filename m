@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-86264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF69F99ECD9
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 143FC99ECE6
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0D931C22CD8
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:23:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C74A1C235D3
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45D71DD0D6;
-	Tue, 15 Oct 2024 13:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9EE71C07F5;
+	Tue, 15 Oct 2024 13:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a1j2Y3ZV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eeEyNaHL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8285E3DAC15;
-	Tue, 15 Oct 2024 13:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9867F1C07D4;
+	Tue, 15 Oct 2024 13:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728998324; cv=none; b=c+UL1KVNpBCUzkPvHIg7sG/ujgLytcEGoY2uZJvadjRxdV9+OX2Ew7+aeBjjJD1o0pN6uX3gob1h4N51cuuxjZ9Hbqnj3vj1qwf2nGvmXpgIAWuBwQSUH9xpNF4Z37uivFZ0uaSV7l7ChqsR8YiBjjbUp3ibYgmRfCvRRii4aog=
+	t=1728998362; cv=none; b=ZPvM2d5QMR3t98Bg5KFXC2eMadBlcCLR9WWOYVNJIz9sQz2rx6TPP3lfTjX2usMMq4Rhj4mJ2/h+aeSKv0plyHLiQL3YhLjanH2Ipb30ds9zaPSmUKECeNtm3whQZejcy6TcrZCowP7JKvz3mBiln/K9DmptmbLHNTKYEL8DE78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728998324; c=relaxed/simple;
-	bh=5MfQRp4zV1+Zj5gw5WaS9SwyLQqQkCzF+b4RYIRD3DU=;
+	s=arc-20240116; t=1728998362; c=relaxed/simple;
+	bh=F1pmrIl09F4zOM0SuPagAvxHPsAuzZi40xJ9uyWnmF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ru3QhO7BwAMi5Tyd/vKCcHTlaWrxVOo7E7V13ISXOj16k9e3IIRaC54G3HKchC5huS8pV/0ZSNTk+3MVBMhShPVxEuoX6ANCJzZB+EKc55FjJ6VZIrJNODFEBQGPZq+iR9iJOw4O2IAlnu7oSlKkyfbDSPyCs/AdEdhGJco2AQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a1j2Y3ZV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BDBEC4CEC6;
-	Tue, 15 Oct 2024 13:18:43 +0000 (UTC)
+	 MIME-Version; b=npZt3pdgJEpT7XmDGT/PNZGsOLb+XifkakfiKeGFtzNC4RO9upCbnJoCvwbkXSqeBJWisadjeFaG5YeHpo0ALEdQ03AFldzcPpBYG739/Y5cUWyUOEQOz257gQPL9HBr6URGeOVIsj4Ew5FAoyj/WElTdBQzc03MELY6ciruoXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eeEyNaHL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FD7C4CEC6;
+	Tue, 15 Oct 2024 13:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728998324;
-	bh=5MfQRp4zV1+Zj5gw5WaS9SwyLQqQkCzF+b4RYIRD3DU=;
+	s=korg; t=1728998362;
+	bh=F1pmrIl09F4zOM0SuPagAvxHPsAuzZi40xJ9uyWnmF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a1j2Y3ZVTNOihOH0G+VgMV/R15pzUQtyzRBak6wiiyPbf3pLUTGIesnF6a7AZJqzQ
-	 2q0iRGdRpeFrKvTr0evwoIry2vXuAb8zx4Wqny7EmmcJYKcAOyAfzuOBPPmM6QK44x
-	 zBQyntMq8Aukk3xGBxX5CIf+6iW8yIf0udDbmjss=
+	b=eeEyNaHL70Dqi4/XDHK+iusGfjEDIUGEvMrlN6FLX/5bLeTJvqXbEFzsHL0reeHPk
+	 lHH3tnhkZcM/nx/b5/xGyIZ4rGo/qDDs8XZfWCE+wYsmewq+9Z3AGA5YunemTGZIai
+	 xwJCs610Z8dJjCeePS/w1yb4EchtQ9rqrP26OuRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sachin Sant <sachinp@linux.ibm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 437/518] net: ethernet: cortina: Drop TSO support
-Date: Tue, 15 Oct 2024 14:45:41 +0200
-Message-ID: <20241015123933.872890744@linuxfoundation.org>
+Subject: [PATCH 5.10 438/518] tracing: Remove precision vsnprintf() check from print event
+Date: Tue, 15 Oct 2024 14:45:42 +0200
+Message-ID: <20241015123933.911484567@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -67,86 +69,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit ac631873c9e7a50d2a8de457cfc4b9f86666403e ]
+[ Upstream commit 5efd3e2aef91d2d812290dcb25b2058e6f3f532c ]
 
-The recent change to allow large frames without hardware checksumming
-slotted in software checksumming in the driver if hardware could not
-do it.
+This reverts 60be76eeabb3d ("tracing: Add size check when printing
+trace_marker output"). The only reason the precision check was added
+was because of a bug that miscalculated the write size of the string into
+the ring buffer and it truncated it removing the terminating nul byte. On
+reading the trace it crashed the kernel. But this was due to the bug in
+the code that happened during development and should never happen in
+practice. If anything, the precision can hide bugs where the string in the
+ring buffer isn't nul terminated and it will not be checked.
 
-This will however upset TSO (TCP Segment Offloading). Typical
-error dumps includes this:
+Link: https://lore.kernel.org/all/C7E7AF1A-D30F-4D18-B8E5-AF1EF58004F5@linux.ibm.com/
+Link: https://lore.kernel.org/linux-trace-kernel/20240227125706.04279ac2@gandalf.local.home
+Link: https://lore.kernel.org/all/20240302111244.3a1674be@gandalf.local.home/
+Link: https://lore.kernel.org/linux-trace-kernel/20240304174341.2a561d9f@gandalf.local.home
 
-skb len=2961 headroom=222 headlen=66 tailroom=0
-(...)
-WARNING: CPU: 0 PID: 956 at net/core/dev.c:3259 skb_warn_bad_offload+0x7c/0x108
-gemini-ethernet-port: caps=(0x0000010000154813, 0x00002007ffdd7889)
-
-And the packets do not go through.
-
-The TSO implementation is bogus: a TSO enabled driver must propagate
-the skb_shinfo(skb)->gso_size value to the TSO engine on the NIC.
-
-Drop the size check and TSO offloading features for now: this
-needs to be fixed up properly.
-
-After this ethernet works fine on Gemini devices with a direct connected
-PHY such as D-Link DNS-313.
-
-Also tested to still be working with a DSA switch using the Gemini
-ethernet as conduit interface.
-
-Link: https://lore.kernel.org/netdev/CANn89iJLfxng1sYL5Zk0mknXpyYQPCp83m3KgD2KJ2_hKCpEUg@mail.gmail.com/
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Fixes: d4d0c5b4d279 ("net: ethernet: cortina: Handle large frames")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 60be76eeabb3d ("tracing: Add size check when printing trace_marker output")
+Reported-by: Sachin Sant <sachinp@linux.ibm.com>
+Tested-by: Sachin Sant <sachinp@linux.ibm.com>
+Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 15 ++-------------
- 1 file changed, 2 insertions(+), 13 deletions(-)
+ kernel/trace/trace_output.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index fa46854fd697c..04a034cd5183f 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -80,8 +80,7 @@ MODULE_PARM_DESC(debug, "Debug level (0=none,...,16=all)");
- #define GMAC0_IRQ4_8 (GMAC0_MIB_INT_BIT | GMAC0_RX_OVERRUN_INT_BIT)
+diff --git a/kernel/trace/trace_output.c b/kernel/trace/trace_output.c
+index 753b84c50848a..94b0991717b6d 100644
+--- a/kernel/trace/trace_output.c
++++ b/kernel/trace/trace_output.c
+@@ -1313,12 +1313,11 @@ static enum print_line_t trace_print_print(struct trace_iterator *iter,
+ {
+ 	struct print_entry *field;
+ 	struct trace_seq *s = &iter->seq;
+-	int max = iter->ent_size - offsetof(struct print_entry, buf);
  
- #define GMAC_OFFLOAD_FEATURES (NETIF_F_SG | NETIF_F_IP_CSUM | \
--		NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM | \
--		NETIF_F_TSO | NETIF_F_TSO_ECN | NETIF_F_TSO6)
-+			       NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM)
+ 	trace_assign_type(field, iter->ent);
  
- /**
-  * struct gmac_queue_page - page buffer per-page info
-@@ -1149,23 +1148,13 @@ static int gmac_map_tx_bufs(struct net_device *netdev, struct sk_buff *skb,
- 	struct gmac_txdesc *txd;
- 	skb_frag_t *skb_frag;
- 	dma_addr_t mapping;
--	unsigned short mtu;
- 	void *buffer;
- 	int ret;
+ 	seq_print_ip_sym(s, field->ip, flags);
+-	trace_seq_printf(s, ": %.*s", max, field->buf);
++	trace_seq_printf(s, ": %s", field->buf);
  
--	mtu  = ETH_HLEN;
--	mtu += netdev->mtu;
--	if (skb->protocol == htons(ETH_P_8021Q))
--		mtu += VLAN_HLEN;
--
-+	/* TODO: implement proper TSO using MTU in word3 */
- 	word1 = skb->len;
- 	word3 = SOF_BIT;
+ 	return trace_handle_return(s);
+ }
+@@ -1327,11 +1326,10 @@ static enum print_line_t trace_print_raw(struct trace_iterator *iter, int flags,
+ 					 struct trace_event *event)
+ {
+ 	struct print_entry *field;
+-	int max = iter->ent_size - offsetof(struct print_entry, buf);
  
--	if (word1 > mtu) {
--		word1 |= TSS_MTU_ENABLE_BIT;
--		word3 |= mtu;
--	}
--
- 	if (skb->len >= ETH_FRAME_LEN) {
- 		/* Hardware offloaded checksumming isn't working on frames
- 		 * bigger than 1514 bytes. A hypothesis about this is that the
+ 	trace_assign_type(field, iter->ent);
+ 
+-	trace_seq_printf(&iter->seq, "# %lx %.*s", field->ip, max, field->buf);
++	trace_seq_printf(&iter->seq, "# %lx %s", field->ip, field->buf);
+ 
+ 	return trace_handle_return(&iter->seq);
+ }
 -- 
 2.43.0
 
