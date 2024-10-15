@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-85923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB0299EAD0
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:59:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 546C899EADE
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:00:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 486FD28274B
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:59:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 863A01C2301D
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDB41C07D4;
-	Tue, 15 Oct 2024 12:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E787B1C07E0;
+	Tue, 15 Oct 2024 13:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1nhB9Nn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9U9Q2kY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9CC1C07C2;
-	Tue, 15 Oct 2024 12:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C921C07C2;
+	Tue, 15 Oct 2024 13:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997163; cv=none; b=YVe+Ea37g9NiWfZd+qi3y31oBilPpe3kqQ93Ufm59QVDlM47t3KDM7lx55KGu7v2ROWxtie2SKdawZHw7eXRMr9fQ8Vr0xoJBbTkjI+UcPUAO9xp6gd0I9O3gj2hxgt2rDJexm//I3RmvcBylKduA+y3/HhKjQNobucwjxbuEqM=
+	t=1728997200; cv=none; b=i7da4HZ8ZKLx3p01EsB+NLAoudbOORg+lmH13b+G1047AStwCLAiV6IRVKjD38oxCsSjl/YkkMGRepvI8qW5++C42M3T0m1gxZxzZ55zzSzxovGGn7GYHxEcIt5aMLI3Yze3yd1oLULwYDQ9rtboOtLhE564r7BPpIH4v/B5SsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997163; c=relaxed/simple;
-	bh=/uxYaCrzUeh+29kIF9ywNpiaN0QZZM/xIs7UeDwqArY=;
+	s=arc-20240116; t=1728997200; c=relaxed/simple;
+	bh=qZvOIRpBP/uL+kbNa64YCWpGNQXXeutrXpUoR5IebBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EY4flN3mfVQlJmqkjAhEbFhmFHCWLTsHZ8L2/bZSOx+3nt7r4AbUT+DFbti/c03zB9AJQ2wv+VBqVEgQcJavGygUCImRAzFvWZd6VA7oHzi7KnsONUyDY1rSxXFlNj9IQxBzoIE+V66rt03Xy1cXv77WIUvqwhPRS/M+oSU4g/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1nhB9Nn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E10BAC4CEC6;
-	Tue, 15 Oct 2024 12:59:22 +0000 (UTC)
+	 MIME-Version; b=fR60davWqkucnRZxQHT0OSiQNon1UT1iGIzh8Lr5xktxhi8APSyvUAlFJbEYKzr0sTBC6exlTZIbJ7hQghmMlNegJV14mPysgRuORCUHgJ9CIv27G+VjXK9rJ8FJ9RN+ayiW4smvYJgbI1xuTtP+OM10JftOiske2d5IHkeclOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9U9Q2kY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C01C4CEC6;
+	Tue, 15 Oct 2024 12:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997163;
-	bh=/uxYaCrzUeh+29kIF9ywNpiaN0QZZM/xIs7UeDwqArY=;
+	s=korg; t=1728997200;
+	bh=qZvOIRpBP/uL+kbNa64YCWpGNQXXeutrXpUoR5IebBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D1nhB9NnSjO854FVGTvoQuj85udyeLDqC5/4Td1I67VrXDvqm6z9IBQGgSgxpWDLQ
-	 UjGKAwlIwHf2+s+isrN55TRuRhxEzkzYakiLbYXi0r2hSnLlscmpnIDMatPtyBBSEL
-	 bUR3lnFtp65ODVRnxjWRmr90E5kaH2B9vDPTwkeM=
+	b=t9U9Q2kYmYDPkDZJlrHgHj5B5bi0jfx9aqFGiezSOIzy9NtigZzbv8nsJknOnUCOn
+	 PTc94+DRabi8ZpkHffV/Uuo+7pJk72ihTTq7IwfoyGxiax4LUvoLx9N4+yzTnNBv1M
+	 f2yG4eS+GZHY9qRJVgMrhVK6fGmGfXBIQRUpsFd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Dahl <ada@thorsis.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 097/518] ARM: dts: microchip: sam9x60: Fix rtc/rtt clocks
-Date: Tue, 15 Oct 2024 14:40:01 +0200
-Message-ID: <20241015123920.745577677@linuxfoundation.org>
+Subject: [PATCH 5.10 098/518] ARM: dts: imx7d-zii-rmu2: fix Ethernet PHY pinctrl property
+Date: Tue, 15 Oct 2024 14:40:02 +0200
+Message-ID: <20241015123920.784121040@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -66,52 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Dahl <ada@thorsis.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit d355c895fa4ddd8bec15569eee540baeed7df8c5 ]
+[ Upstream commit 0e49cfe364dea4345551516eb2fe53135a10432b ]
 
-The RTC and RTT peripherals use the timing domain slow clock (TD_SLCK),
-sourced from the 32.768 kHz crystal oscillator or slow rc oscillator.
+There is no "fsl,phy" property in pin controller pincfg nodes:
 
-The previously used Monitoring domain slow clock (MD_SLCK) is sourced
-from an internal RC oscillator which is most probably not precise enough
-for real time clock purposes.
+  imx7d-zii-rmu2.dtb: pinctrl@302c0000: enet1phyinterruptgrp: 'fsl,pins' is a required property
+  imx7d-zii-rmu2.dtb: pinctrl@302c0000: enet1phyinterruptgrp: 'fsl,phy' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-Fixes: 1e5f532c2737 ("ARM: dts: at91: sam9x60: add device tree for soc and board")
-Fixes: 5f6b33f46346 ("ARM: dts: sam9x60: add rtt")
-Signed-off-by: Alexander Dahl <ada@thorsis.com>
-Link: https://lore.kernel.org/r/20240821055136.6858-1-ada@thorsis.com
-[claudiu.beznea: removed () around the last commit description paragraph,
- removed " in front of "timing domain slow clock", described that
- TD_SLCK can also be sourced from slow rc oscillator]
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Fixes: f496e6750083 ("ARM: dts: Add ZII support for ZII i.MX7 RMU2 board")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/sam9x60.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/imx7d-zii-rmu2.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/sam9x60.dtsi b/arch/arm/boot/dts/sam9x60.dtsi
-index e1e0dec8cc1f2..5e569cf1cccfc 100644
---- a/arch/arm/boot/dts/sam9x60.dtsi
-+++ b/arch/arm/boot/dts/sam9x60.dtsi
-@@ -692,7 +692,7 @@ rtt: rtt@fffffe20 {
- 				compatible = "microchip,sam9x60-rtt", "atmel,at91sam9260-rtt";
- 				reg = <0xfffffe20 0x20>;
- 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
--				clocks = <&clk32k 0>;
-+				clocks = <&clk32k 1>;
- 			};
+diff --git a/arch/arm/boot/dts/imx7d-zii-rmu2.dts b/arch/arm/boot/dts/imx7d-zii-rmu2.dts
+index 1065941807e83..ce59342e55aae 100644
+--- a/arch/arm/boot/dts/imx7d-zii-rmu2.dts
++++ b/arch/arm/boot/dts/imx7d-zii-rmu2.dts
+@@ -350,7 +350,7 @@ MX7D_PAD_SD3_RESET_B__SD3_RESET_B	0x59
  
- 			pit: timer@fffffe40 {
-@@ -718,7 +718,7 @@ rtc: rtc@fffffea8 {
- 				compatible = "microchip,sam9x60-rtc", "atmel,at91sam9x5-rtc";
- 				reg = <0xfffffea8 0x100>;
- 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
--				clocks = <&clk32k 0>;
-+				clocks = <&clk32k 1>;
- 			};
- 
- 			watchdog: watchdog@ffffff80 {
+ &iomuxc_lpsr {
+ 	pinctrl_enet1_phy_interrupt: enet1phyinterruptgrp {
+-		fsl,phy = <
++		fsl,pins = <
+ 			MX7D_PAD_LPSR_GPIO1_IO02__GPIO1_IO2	0x08
+ 		>;
+ 	};
 -- 
 2.43.0
 
