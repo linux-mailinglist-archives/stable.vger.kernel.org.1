@@ -1,60 +1,54 @@
-Return-Path: <stable+bounces-85590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DBF399E7FC
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:00:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 016C999E807
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:01:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 423FE2818A6
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:00:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACA361F21510
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E736C1E378C;
-	Tue, 15 Oct 2024 12:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7421E6339;
+	Tue, 15 Oct 2024 12:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqYpubzN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+ePt+mf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BCC1C57B1;
-	Tue, 15 Oct 2024 12:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9031C57B1;
+	Tue, 15 Oct 2024 12:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993625; cv=none; b=UrOOq9675DUrXAtcmvuym2baxYevMSWvJwWCNYJNMBNKyBtvUluq3fzw73aPahCbpf8dj6HAik0MX8JeuWkbjqBUAOiquJUz/gyfqpxa2j6KyngxsjqVUjZrXsoIzKHOsDh7u93/wOdl8sXnaG1gFlOl+/cHByY6SfpRMh8jUHw=
+	t=1728993664; cv=none; b=CkAufm1zjE/FOj82rz2vA4ojr4610O48WRO6z+3rObe4r5yjH7CfD80SOwVSK5RbQu0xpKVgs3+MohCCJ2U7ZBIM8ypmSxATJjWi4+NEDXowiaHUVrDgv56uLfDPj6PRYC5rx+9x7fbSBwF4pDTagn5fj3TOII/aiorqFk4O3DU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993625; c=relaxed/simple;
-	bh=JW/W2nVAJbBL7gQ2m399ZDylPTOcYEWuXuyXhPY7MWA=;
+	s=arc-20240116; t=1728993664; c=relaxed/simple;
+	bh=PTFqHDwZhSA1FZwNcOzaTKL92nVeyNvtAsRPlO/VpWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g7oV+gpn6eBjCxKKA88H0kJt3GRZvmSJjSCCUJaO1ZzdO7wbIF20BUit66ufrw8vXPzbK6mf8Kj71DANNKl8/Q7n1bOq/urAJYi0H7O2dXZN385I/pZjRZa3Nf7VJ7F0Jk0f7KzdXYZh0LI9bhiLf//quh2caRPL4Ass6dCF7+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LqYpubzN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A2FC4CEC6;
-	Tue, 15 Oct 2024 12:00:24 +0000 (UTC)
+	 MIME-Version; b=in/ONOXOkQ3hko2KbuPahQEm9pny7inqP7k6pfs8reZ/QCQrlMpXDFwUl6NHJzjTE7O0dJtdB599WZ3k5YhHq+aKAqvDd7yVGvLg3BTJMlrCVP0ZN1rnjd9HsDsmj/p25dIxgUf6e8JygXnLkLqSZLJQE5k44qipWqusqMY/o+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+ePt+mf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58011C4CEC6;
+	Tue, 15 Oct 2024 12:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993625;
-	bh=JW/W2nVAJbBL7gQ2m399ZDylPTOcYEWuXuyXhPY7MWA=;
+	s=korg; t=1728993663;
+	bh=PTFqHDwZhSA1FZwNcOzaTKL92nVeyNvtAsRPlO/VpWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LqYpubzNA0aRHcdP/MQxD5YiyTSiymn2j67QZB4jjTBC9XpKAYBfAcN0HYR0RUFjU
-	 b4XlLgg4gByBw2IiLJFmyUdbx5cM0HHcQgdNhnYwVRNoi8waUp7OfjXZoBRz5U1keo
-	 9SUd9KPai+/xnkCq97YGi1ZT8Yt/+2AMft1aTGBM=
+	b=o+ePt+mfvwcnQyS9kKsuKWUb6vVGfQmOoiqisgpQa6o9KFnRiDQMF5y5YZABvvCl+
+	 ZyFoTkenmYp5QJOljbK9fsDqdUH72zD1Fzbu1bJvXRJCy+r9MIn37QQIY86nJ6KsUg
+	 eJSzoYr4yQ7xMm/ENGoUIiBN77/d/YIX5Qq4v9WM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Igor Pylypiv <ipylypiv@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 450/691] drm/amd/display: Add null check for top_pipe_to_program in commit_planes_for_stream
-Date: Tue, 15 Oct 2024 13:26:38 +0200
-Message-ID: <20241015112458.208388911@linuxfoundation.org>
+Subject: [PATCH 5.15 451/691] ata: sata_sil: Rename sil_blacklist to sil_quirks
+Date: Tue, 15 Oct 2024 13:26:39 +0200
+Message-ID: <20241015112458.247864244@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -73,49 +67,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 66d71a72539e173a9b00ca0b1852cbaa5f5bf1ad ]
+[ Upstream commit 93b0f9e11ce511353c65b7f924cf5f95bd9c3aba ]
 
-This commit addresses a null pointer dereference issue in the
-`commit_planes_for_stream` function at line 4140. The issue could occur
-when `top_pipe_to_program` is null.
+Rename the array sil_blacklist to sil_quirks as this name is more
+neutral and is also consistent with how this driver define quirks with
+the SIL_QUIRK_XXX flags.
 
-The fix adds a check to ensure `top_pipe_to_program` is not null before
-accessing its stream_res. This prevents a null pointer dereference.
-
-Reported by smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc.c:4140 commit_planes_for_stream() error: we previously assumed 'top_pipe_to_program' could be null (see line 3906)
-
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/ata/sata_sil.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 12e4beca5e840..22dbc6bc21af4 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -3027,7 +3027,8 @@ static void commit_planes_for_stream(struct dc *dc,
- 		dc->hwss.pipe_control_lock(dc, top_pipe_to_program, false);
+diff --git a/drivers/ata/sata_sil.c b/drivers/ata/sata_sil.c
+index 75321f1ceba52..fc438c4518fb7 100644
+--- a/drivers/ata/sata_sil.c
++++ b/drivers/ata/sata_sil.c
+@@ -128,7 +128,7 @@ static const struct pci_device_id sil_pci_tbl[] = {
+ static const struct sil_drivelist {
+ 	const char *product;
+ 	unsigned int quirk;
+-} sil_blacklist [] = {
++} sil_quirks[] = {
+ 	{ "ST320012AS",		SIL_QUIRK_MOD15WRITE },
+ 	{ "ST330013AS",		SIL_QUIRK_MOD15WRITE },
+ 	{ "ST340017AS",		SIL_QUIRK_MOD15WRITE },
+@@ -601,8 +601,8 @@ static void sil_thaw(struct ata_port *ap)
+  *	list, and apply the fixups to only the specific
+  *	devices/hosts/firmwares that need it.
+  *
+- *	20040111 - Seagate drives affected by the Mod15Write bug are blacklisted
+- *	The Maxtor quirk is in the blacklist, but I'm keeping the original
++ *	20040111 - Seagate drives affected by the Mod15Write bug are quirked
++ *	The Maxtor quirk is in sil_quirks, but I'm keeping the original
+  *	pessimistic fix for the following reasons...
+  *	- There seems to be less info on it, only one device gleaned off the
+  *	Windows	driver, maybe only one is affected.  More info would be greatly
+@@ -621,9 +621,9 @@ static void sil_dev_config(struct ata_device *dev)
  
- 	if ((update_type != UPDATE_TYPE_FAST) && stream->update_flags.bits.dsc_changed)
--		if (top_pipe_to_program->stream_res.tg->funcs->lock_doublebuffer_enable) {
-+		if (top_pipe_to_program &&
-+		    top_pipe_to_program->stream_res.tg->funcs->lock_doublebuffer_enable) {
- 			top_pipe_to_program->stream_res.tg->funcs->wait_for_state(
- 					top_pipe_to_program->stream_res.tg,
- 					CRTC_STATE_VACTIVE);
+ 	ata_id_c_string(dev->id, model_num, ATA_ID_PROD, sizeof(model_num));
+ 
+-	for (n = 0; sil_blacklist[n].product; n++)
+-		if (!strcmp(sil_blacklist[n].product, model_num)) {
+-			quirks = sil_blacklist[n].quirk;
++	for (n = 0; sil_quirks[n].product; n++)
++		if (!strcmp(sil_quirks[n].product, model_num)) {
++			quirks = sil_quirks[n].quirk;
+ 			break;
+ 		}
+ 
 -- 
 2.43.0
 
