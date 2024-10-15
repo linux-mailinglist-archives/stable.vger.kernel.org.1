@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-85827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A86F99EA62
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:54:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1F7999EA6D
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:54:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B3FC1C22B3F
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:54:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CDAE287B5E
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE091C07F1;
-	Tue, 15 Oct 2024 12:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE1D1AF0D9;
+	Tue, 15 Oct 2024 12:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEAlEADw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7xcdaE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA6E1C07EF;
-	Tue, 15 Oct 2024 12:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F1C1C07D4;
+	Tue, 15 Oct 2024 12:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728996820; cv=none; b=DLTu0jN+SFirYmMmmJgQ0k5X5W4r31zVIHAeuzKX9QcuqbXDLsNpJPDQkqdyaHSZak44RkikCOB8VIwWwLtCBmkXm9lpxDnVir5lZH6U6GlP9g6pbtlDTOyDHwhXZCZ06X9/wRa8VV9lppLIyk/Gli9uXMZLfHdxofbL35FBp3E=
+	t=1728996859; cv=none; b=FQfdOzRNTOoNGr4utYMS9LBI9xE0+KF2xw56Rcsi9Yz1wqcMF/uJnndO/QgIWLonJ5jloS51HB+iEv86cDOpW+YEpaNf7CDepDfys9ojQYqa2IjvdIVBH1UkPBlpkGt6wXHsHsJ4WW6R4LdOZ2MzMoxcSoRJMBkL4zTvPrDCaHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728996820; c=relaxed/simple;
-	bh=RclqezL13YuiNO2rCRsE/4AdxrOnllJ8qyV0S3rISRA=;
+	s=arc-20240116; t=1728996859; c=relaxed/simple;
+	bh=+OMbZal0lFXYIruPfrnZfqhACzAW20kEvSYIHa4fNXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FVPNjVJjUjA5vz0YqoSitQmjeRSfmQy4NsMHOMstWIRk5fKYhCDjrdVQ1/FmQR4MBadyJ0dB4DXWXV5H3th1Gt4hcW4U6dU3tYI9fsGpxOu3/ZHgX1kD3gEvuXaLbrNjWwKmHYVbCNJ65LT/K9Ecs3xnYntUx0Q7QS6k9QBx3i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEAlEADw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5508CC4CECE;
-	Tue, 15 Oct 2024 12:53:39 +0000 (UTC)
+	 MIME-Version; b=pOmmMUsaFgHkzrwV37C/8zz+TRfrjzxrPYsuUgsT/wYpKdm58lyz9QU4ilQZybimKXPVb7Xo3Fy2h7Bi37l/1vxM62EQfB9cWVnPjvyu9jggfiNKTqtNjtJouXdURyuLBdlkiahsgxczCWypE6K6UM+ENGIdn4wbeacg+DE3J6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7xcdaE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E5CC4CEC6;
+	Tue, 15 Oct 2024 12:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728996819;
-	bh=RclqezL13YuiNO2rCRsE/4AdxrOnllJ8qyV0S3rISRA=;
+	s=korg; t=1728996858;
+	bh=+OMbZal0lFXYIruPfrnZfqhACzAW20kEvSYIHa4fNXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nEAlEADw8aVciMGbQmjaOmD/Ij/57vYnvwTT7CUFgDSAQ3ps5FBHLEjElnCKwhYgt
-	 F2KmUvHmDgONDM5LKsN4gV4eaGGZ+ZnPEC8h5+3nDHafjjLkN+w85qZAtRl7JldIWw
-	 Wg8DVYUYqhpL1WL7vz4Y66Qy5I8z9YF2vCFwpcZ0=
+	b=i7xcdaE7Q6HVKZjn1lVrmgYZD8MeVPyRg18+6pXNDOFa5xAiESO6NWmJIJSV5Q6tx
+	 J0+hUi/xODgzx4rgC59lwIWwWsk8rMnJIzcp1kf7zV/QLv/aH4bNC4cd3ZTTR1pwPq
+	 vwAut/6+GE0Ja6nezYT5EJ4fS/iHwoXoFENQM5Ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jun Li <jun.li@nxp.com>,
-	Felipe Balbi <balbi@kernel.org>,
-	Jack Pham <jackp@codeaurora.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Amit Pundir <amit.pundir@linaro.org>,
-	John Stultz <john.stultz@linaro.org>
-Subject: [PATCH 5.10 001/518] usb: dwc3: Decouple USB 2.0 L1 & L2 events
-Date: Tue, 15 Oct 2024 14:38:25 +0200
-Message-ID: <20241015123916.885180494@linuxfoundation.org>
+	Piyush Mehta <piyush.mehta@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 002/518] usb: dwc3: core: Enable GUCTL1 bit 10 for fixing termination error after resume bug
+Date: Tue, 15 Oct 2024 14:38:26 +0200
+Message-ID: <20241015123916.924513982@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -69,77 +65,96 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jack Pham <jackp@codeaurora.org>
+From: Piyush Mehta <piyush.mehta@amd.com>
 
-[ Upstream commit 843714bb37d9a3780160d7b4a4a72b8077a77589 ]
+[ Upstream commit 63d7f9810a38102cdb8cad214fac98682081e1a7 ]
 
-On DWC_usb3 revisions 3.00a and newer (including DWC_usb31 and
-DWC_usb32) the GUCTL1 register gained the DEV_DECOUPLE_L1L2_EVT
-field (bit 31) which when enabled allows the controller in device
-mode to treat USB 2.0 L1 LPM & L2 events separately.
+When configured in HOST mode, after issuing U3/L2 exit controller fails
+to send proper CRC checksum in CRC5 field. Because of this behavior
+Transaction Error is generated, resulting in reset and re-enumeration of
+usb device attached. Enabling chicken bit 10 of GUCTL1 will correct this
+problem.
 
-After commit d1d90dd27254 ("usb: dwc3: gadget: Enable suspend
-events") the controller will now receive events (and therefore
-interrupts) for every state change when entering/exiting either
-L1 or L2 states.  Since L1 is handled entirely by the hardware
-and requires no software intervention, there is no need to even
-enable these events and unnecessarily notify the gadget driver.
-Enable the aforementioned bit to help reduce the overall interrupt
-count for these L1 events that don't need to be handled while
-retaining the events for full L2 suspend/wakeup.
+When this bit is set to '1', the UTMI/ULPI opmode will be changed to
+"normal" along with HS terminations, term, and xcvr signals after EOR.
+This option is to support certain legacy UTMI/ULPI PHYs.
 
-Tested-by: Jun Li <jun.li@nxp.com>
-Tested-by: Amit Pundir <amit.pundir@linaro.org> # for RB5 (sm8250)
-Tested-by: John Stultz <john.stultz@linaro.org> # for HiKey960 & db845c
-Reviewed-by: Jun Li <jun.li@nxp.com>
-Acked-by: Felipe Balbi <balbi@kernel.org>
-Signed-off-by: Jack Pham <jackp@codeaurora.org>
-Link: https://lore.kernel.org/r/20210812082635.12924-1-jackp@codeaurora.org
+Added "snps,resume-hs-terminations" quirk to resolved the above issue.
+
+Signed-off-by: Piyush Mehta <piyush.mehta@amd.com>
+Link: https://lore.kernel.org/r/20220920052235.194272-3-piyush.mehta@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Stable-dep-of: 9149c9b0c7e0 ("usb: dwc3: core: update LC timer as per USB Spec V3.2")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c | 9 +++++++++
- drivers/usb/dwc3/core.h | 5 +++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/core.c | 17 +++++++++++++++++
+ drivers/usb/dwc3/core.h |  4 ++++
+ 2 files changed, 21 insertions(+)
 
 diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index ee7682faa6f3..3a88e4268590 100644
+index 3a88e4268590..82db59304492 100644
 --- a/drivers/usb/dwc3/core.c
 +++ b/drivers/usb/dwc3/core.c
-@@ -1064,6 +1064,15 @@ static int dwc3_core_init(struct dwc3 *dwc)
- 		if (!DWC3_VER_IS_PRIOR(DWC3, 290A))
- 			reg |= DWC3_GUCTL1_DEV_L1_EXIT_BY_HW;
+@@ -1054,6 +1054,21 @@ static int dwc3_core_init(struct dwc3 *dwc)
+ 		dwc3_writel(dwc->regs, DWC3_GUCTL2, reg);
+ 	}
  
-+		/*
-+		 * Decouple USB 2.0 L1 & L2 events which will allow for
-+		 * gadget driver to only receive U3/L2 suspend & wakeup
-+		 * events and prevent the more frequent L1 LPM transitions
-+		 * from interrupting the driver.
-+		 */
-+		if (!DWC3_VER_IS_PRIOR(DWC3, 300A))
-+			reg |= DWC3_GUCTL1_DEV_DECOUPLE_L1L2_EVT;
++	/*
++	 * When configured in HOST mode, after issuing U3/L2 exit controller
++	 * fails to send proper CRC checksum in CRC5 feild. Because of this
++	 * behaviour Transaction Error is generated, resulting in reset and
++	 * re-enumeration of usb device attached. All the termsel, xcvrsel,
++	 * opmode becomes 0 during end of resume. Enabling bit 10 of GUCTL1
++	 * will correct this problem. This option is to support certain
++	 * legacy ULPI PHYs.
++	 */
++	if (dwc->resume_hs_terminations) {
++		reg = dwc3_readl(dwc->regs, DWC3_GUCTL1);
++		reg |= DWC3_GUCTL1_RESUME_OPMODE_HS_HOST;
++		dwc3_writel(dwc->regs, DWC3_GUCTL1, reg);
++	}
 +
- 		if (dwc->dis_tx_ipgap_linecheck_quirk)
- 			reg |= DWC3_GUCTL1_TX_IPGAP_LINECHECK_DIS;
+ 	if (!DWC3_VER_IS_PRIOR(DWC3, 250A)) {
+ 		reg = dwc3_readl(dwc->regs, DWC3_GUCTL1);
+ 
+@@ -1378,6 +1393,8 @@ static void dwc3_get_properties(struct dwc3 *dwc)
+ 				"snps,dis-del-phy-power-chg-quirk");
+ 	dwc->dis_tx_ipgap_linecheck_quirk = device_property_read_bool(dev,
+ 				"snps,dis-tx-ipgap-linecheck-quirk");
++	dwc->resume_hs_terminations = device_property_read_bool(dev,
++				"snps,resume-hs-terminations");
+ 	dwc->parkmode_disable_ss_quirk = device_property_read_bool(dev,
+ 				"snps,parkmode-disable-ss-quirk");
  
 diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-index 1c8496fc732e..620c19deeee7 100644
+index 620c19deeee7..dbfb17ee4cca 100644
 --- a/drivers/usb/dwc3/core.h
 +++ b/drivers/usb/dwc3/core.h
-@@ -250,9 +250,10 @@
- #define DWC3_GCTL_DSBLCLKGTNG		BIT(0)
- 
- /* Global User Control 1 Register */
--#define DWC3_GUCTL1_PARKMODE_DISABLE_SS	BIT(17)
-+#define DWC3_GUCTL1_DEV_DECOUPLE_L1L2_EVT	BIT(31)
+@@ -254,6 +254,7 @@
  #define DWC3_GUCTL1_TX_IPGAP_LINECHECK_DIS	BIT(28)
--#define DWC3_GUCTL1_DEV_L1_EXIT_BY_HW	BIT(24)
-+#define DWC3_GUCTL1_DEV_L1_EXIT_BY_HW		BIT(24)
-+#define DWC3_GUCTL1_PARKMODE_DISABLE_SS		BIT(17)
+ #define DWC3_GUCTL1_DEV_L1_EXIT_BY_HW		BIT(24)
+ #define DWC3_GUCTL1_PARKMODE_DISABLE_SS		BIT(17)
++#define DWC3_GUCTL1_RESUME_OPMODE_HS_HOST	BIT(10)
  
  /* Global Status Register */
  #define DWC3_GSTS_OTG_IP	BIT(10)
+@@ -1051,6 +1052,8 @@ struct dwc3_scratchpad_array {
+  *			change quirk.
+  * @dis_tx_ipgap_linecheck_quirk: set if we disable u2mac linestate
+  *			check during HS transmit.
++ * @resume-hs-terminations: Set if we enable quirk for fixing improper crc
++ *			generation after resume from suspend.
+  * @parkmode_disable_ss_quirk: set if we need to disable all SuperSpeed
+  *			instances in park mode.
+  * @tx_de_emphasis_quirk: set if we enable Tx de-emphasis quirk
+@@ -1252,6 +1255,7 @@ struct dwc3 {
+ 	unsigned		dis_u2_freeclk_exists_quirk:1;
+ 	unsigned		dis_del_phy_power_chg_quirk:1;
+ 	unsigned		dis_tx_ipgap_linecheck_quirk:1;
++	unsigned		resume_hs_terminations:1;
+ 	unsigned		parkmode_disable_ss_quirk:1;
+ 
+ 	unsigned		tx_de_emphasis_quirk:1;
 -- 
 2.43.0
 
