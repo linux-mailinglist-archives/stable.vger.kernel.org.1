@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-85329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 817ED99E6D4
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:46:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B45A799E6D6
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46489285C28
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:46:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79CCF285CAA
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E721D5AA5;
-	Tue, 15 Oct 2024 11:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBBB1D95AB;
+	Tue, 15 Oct 2024 11:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uptED1bC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nySW5yZx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C17146588;
-	Tue, 15 Oct 2024 11:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9171A76DA;
+	Tue, 15 Oct 2024 11:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728992751; cv=none; b=haPMGjqt7Ow2dRg8hsg/+WpashD+xL3ddjQ8xSbbkyySz9KeQnICozxgP7vpa7gKUr6w3tPi9r65j7bohvx9PO10uQCRGBbM/MFhzKbphcKceCm3BiDRTEgdgqGw/MtSsnivPyVjyrR8Bo/CV2X3V9SRA4VVJ2kIoGcIAQsgjmU=
+	t=1728992757; cv=none; b=nENhYxYZSE3C7VdguqzqfBJCV+GbB4yZNWxinA74xM+44toytNM2y5RDIWu+loTquy0fB8PZ18vjzAWZiAcC2R/h7DDT89eKe3e2Y23vLG7EBS05BqbdrcYS/GLp/hz4pOdxkOmHqcyrRePILWYDzTaaas8ZHFiY328U9QiLX9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728992751; c=relaxed/simple;
-	bh=PHvSisS6qZ31FZ1c7NzJb0kCKqPA7oU4riVnl5jegiU=;
+	s=arc-20240116; t=1728992757; c=relaxed/simple;
+	bh=VI6tCz7wxQXs1OQqROQhZSLOA5iTsiegGuC62C8BJEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IX2CPFA+WMSYfM9c7LYb6FwHkEbMy8gZXox17u+RrkHFdSvWcZMjGnjWfYGzCcuor2uC+Xl9L4ly0CdHi1ltHkryWsn0VEGkMRQXOdxiDsn0B8wKJ9iSkxKX+bO4W1C3h5wr+Qq0wtxEwiqi411RgEetCXvuo0cpSulUXpddujo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uptED1bC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0A9C4CEC6;
-	Tue, 15 Oct 2024 11:45:50 +0000 (UTC)
+	 MIME-Version; b=VQZ/3VjsHzT1U7xmMu9gmm8iw93uogVdck2R/rio/7m8CNXHANFouljr8cTvKWwsYmuSJ5T+CxwoPtmPQLOBZduIgfhWd/Hz9rc5MgviC5/a4Y/uw6AKOCq0bAl4vKSsHuBvBZXlJ1JxtH47sBIoA2nXZ3Y3O4eldIUdvfRx68I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nySW5yZx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13541C4CEC6;
+	Tue, 15 Oct 2024 11:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728992750;
-	bh=PHvSisS6qZ31FZ1c7NzJb0kCKqPA7oU4riVnl5jegiU=;
+	s=korg; t=1728992757;
+	bh=VI6tCz7wxQXs1OQqROQhZSLOA5iTsiegGuC62C8BJEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uptED1bCFszJSh70c67b3O0QuTn8PApOcsnNp+FF+Rg3yMMlUqpN9Sp8tVOdTSpks
-	 RclO2j4ySakEcsooK/r/vjKO9JY91tAtMnkJIWZG6CXoEQbsG1LaP9hW1eOEfyhcxU
-	 hp6XDcPlDDbfWtgmFDgSb4zksZ0oD/b3eOOu1F3U=
+	b=nySW5yZxkGQ3o2+uOUCVbY3l7E1eGYwNHnIT6obelhL9AVrJOqtqFU4KmErDzrQJB
+	 YKOOT7OcFYfYxOk40sLm+H7Pi/QC71dyMRuLe5q9OZ8p2qSlv1LALFgf1JykcG110H
+	 Z5UNcDu2coLou9Tfp/Irfp61MyhtlTB8IoL4m66g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kemeng Shi <shikemeng@huaweicloud.com>,
 	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 206/691] ext4: avoid potential buffer_head leak in __ext4_new_inode()
-Date: Tue, 15 Oct 2024 13:22:34 +0200
-Message-ID: <20241015112448.537110373@linuxfoundation.org>
+Subject: [PATCH 5.15 207/691] ext4: avoid negative min_clusters in find_group_orlov()
+Date: Tue, 15 Oct 2024 13:22:35 +0200
+Message-ID: <20241015112448.576489487@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -68,45 +68,37 @@ Content-Transfer-Encoding: 8bit
 
 From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit 227d31b9214d1b9513383cf6c7180628d4b3b61f ]
+[ Upstream commit bb0a12c3439b10d88412fd3102df5b9a6e3cd6dc ]
 
-If a group is marked EXT4_GROUP_INFO_IBITMAP_CORRUPT after it's inode
-bitmap buffer_head was successfully verified, then __ext4_new_inode()
-will get a valid inode_bitmap_bh of a corrupted group from
-ext4_read_inode_bitmap() in which case inode_bitmap_bh misses a release.
-Hnadle "IS_ERR(inode_bitmap_bh)" and group corruption separately like
-how ext4_free_inode() does to avoid buffer_head leak.
+min_clusters is signed integer and will be converted to unsigned
+integer when compared with unsigned number stats.free_clusters.
+If min_clusters is negative, it will be converted to a huge unsigned
+value in which case all groups may not meet the actual desired free
+clusters.
+Set negative min_clusters to 0 to avoid unexpected behavior.
 
-Fixes: 9008a58e5dce ("ext4: make the bitmap read routines return real error codes")
+Fixes: ac27a0ec112a ("[PATCH] ext4: initial copy of files from ext3")
 Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Link: https://patch.msgid.link/20240820132234.2759926-3-shikemeng@huaweicloud.com
+Link: https://patch.msgid.link/20240820132234.2759926-4-shikemeng@huaweicloud.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ialloc.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/ext4/ialloc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
-index 4478ba2e8cc54..a00c91aa755c4 100644
+index a00c91aa755c4..5841686e80b3a 100644
 --- a/fs/ext4/ialloc.c
 +++ b/fs/ext4/ialloc.c
-@@ -1056,12 +1056,13 @@ struct inode *__ext4_new_inode(struct user_namespace *mnt_userns,
- 		brelse(inode_bitmap_bh);
- 		inode_bitmap_bh = ext4_read_inode_bitmap(sb, group);
- 		/* Skip groups with suspicious inode tables */
--		if (((!(sbi->s_mount_state & EXT4_FC_REPLAY))
--		     && EXT4_MB_GRP_IBITMAP_CORRUPT(grp)) ||
--		    IS_ERR(inode_bitmap_bh)) {
-+		if (IS_ERR(inode_bitmap_bh)) {
- 			inode_bitmap_bh = NULL;
- 			goto next_group;
- 		}
-+		if (!(sbi->s_mount_state & EXT4_FC_REPLAY) &&
-+		    EXT4_MB_GRP_IBITMAP_CORRUPT(grp))
-+			goto next_group;
+@@ -515,6 +515,8 @@ static int find_group_orlov(struct super_block *sb, struct inode *parent,
+ 	if (min_inodes < 1)
+ 		min_inodes = 1;
+ 	min_clusters = avefreec - EXT4_CLUSTERS_PER_GROUP(sb)*flex_size / 4;
++	if (min_clusters < 0)
++		min_clusters = 0;
  
- repeat_in_this_group:
- 		ret2 = find_inode_bit(sb, group, inode_bitmap_bh, &ino);
+ 	/*
+ 	 * Start looking in the flex group where we last allocated an
 -- 
 2.43.0
 
