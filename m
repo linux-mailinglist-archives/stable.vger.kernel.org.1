@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-85272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C706099E68F
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:43:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20AA099E66A
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:42:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BD4C28A333
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:43:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFA011F24EF1
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BFF1EF0B3;
-	Tue, 15 Oct 2024 11:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009451E7658;
+	Tue, 15 Oct 2024 11:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFM6BgaO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QD1ZeskN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5BC1EF0AB;
-	Tue, 15 Oct 2024 11:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBB11EF954;
+	Tue, 15 Oct 2024 11:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728992552; cv=none; b=X9QdOYg29bpriOvR3vCnjSJ4BfRygkbK/jsqFeFbcs+y6BGn3y7TPUu5pdb0nSjd3AZBgBCp/REDJcNZLTAWPmSKMCgVXq4zR8T95CAcZ7/nZezr/5eVA0VEXq/1QHp2zgO4J9symVdsUn0Tpdw4mNSYO+5+2RGqvMljwrDvt54=
+	t=1728992444; cv=none; b=KqKfv8+2ZMezgps2TOuxy1QXXShMtaorfufQM5NaQXAhzVVf1JSD50YfScy/Pj/JSoeq4C7vp/hrxsQNjMvlOyMSEFPgOMjBgl/qIJ5OZA8dXY7Oou3W04ZZiCueJ3md8W55fu1skYqZEMfUauQrbJmJtXcyzbKB44O8DGvd8ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728992552; c=relaxed/simple;
-	bh=lZHeOvdoohmm309fEGFhTbEFOxyFeOYLduCKZj7VkIk=;
+	s=arc-20240116; t=1728992444; c=relaxed/simple;
+	bh=t5jq+Zzaor2gdQxybD3kbh0rviraDIYj3TtZMvPmC+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D8wba+awr4GXknirdWeerpJ8iyl9a56DUSM5mxzS1HwP3ZG4lNSMLpVCkI0mgVDsIf6/qYxkfwsyk3LThBEdBhNVjDS1Mq0YIpd/EGrL2c1yWsBgsetixze39qmfp/9mR+yd3nAc7MMH82f6oZY7Xf/E2VmBrMSle1A5DK/vdD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFM6BgaO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A767FC4CECE;
-	Tue, 15 Oct 2024 11:42:31 +0000 (UTC)
+	 MIME-Version; b=bitss1miVhdE95Ey8fp1yYChXlnGn4IWRRIX2CqC0NPWNBZ0FiXUkg8M5yQ1jK/NtxVjYUl/x/v6FBpcPaIbM4Ae8kRVo0xtMY2vHrWW+ZpBbp5zR5lgVBFaT8iJS2LIye/gTrOuEqO16qpFFbR9Yyd26Dt5AkRLhVrr4BaOJi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QD1ZeskN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B88F9C4CEC6;
+	Tue, 15 Oct 2024 11:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728992552;
-	bh=lZHeOvdoohmm309fEGFhTbEFOxyFeOYLduCKZj7VkIk=;
+	s=korg; t=1728992444;
+	bh=t5jq+Zzaor2gdQxybD3kbh0rviraDIYj3TtZMvPmC+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZFM6BgaOhaynNJPVBzsX8kigZ5plWI8RRlEecAQFb/a9M64z+6K/aqquNgC36fD8c
-	 3KCMB652eRNcPFsVoeGNvFPHK1f7N+ORYLalli4ujY3FlC+6+S/2sDuSpYBjffOhFC
-	 7BIljPh/3GIZGWkqyD72nqkQBO+CdHcpCko6HwGY=
+	b=QD1ZeskNb8ydxoUqwD06GLgd1NExloR1mbRnfDWfalBnOV42BTAkfeKQtdYmt37iu
+	 0EieFXPTbL/soJLLM981h3CeMX5wJwyWDORfpFoyLiROJsmKfPc3JvCzwJoI7EuJZi
+	 GTJSLr3ERIx7X7BXCdqmJMm9V3JGzxmIA1VB3B5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Howard Hsu <howard-yh.hsu@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 118/691] wifi: mt76: mt7915: fix rx filter setting for bfee functionality
-Date: Tue, 15 Oct 2024 13:21:06 +0200
-Message-ID: <20241015112445.042374315@linuxfoundation.org>
+Subject: [PATCH 5.15 119/691] wifi: cfg80211: fix two more possible UBSAN-detected off-by-one errors
+Date: Tue, 15 Oct 2024 13:21:07 +0200
+Message-ID: <20241015112445.081346861@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -66,36 +66,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Howard Hsu <howard-yh.hsu@mediatek.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 6ac80fce713e875a316a58975b830720a3e27721 ]
+[ Upstream commit 15ea13b1b1fbf6364d4cd568e65e4c8479632999 ]
 
-Fix rx filter setting to prevent dropping NDPA frames. Without this
-change, bfee functionality may behave abnormally.
+Although not reproduced in practice, these two cases may be
+considered by UBSAN as off-by-one errors. So fix them in the
+same way as in commit a26a5107bc52 ("wifi: cfg80211: fix UBSAN
+noise in cfg80211_wext_siwscan()").
 
-Fixes: e57b7901469f ("mt76: add mac80211 driver for MT7915 PCIe-based chipsets")
-Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
-Link: https://patch.msgid.link/20240827093011.18621-21-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 807f8a8c3004 ("cfg80211/nl80211: add support for scheduled scans")
+Fixes: 5ba63533bbf6 ("cfg80211: fix alignment problem in scan request")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20240909090806.1091956-1-dmantipov@yandex.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/wireless/nl80211.c | 3 ++-
+ net/wireless/sme.c     | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 09ea97a81fb4f..6e8ad657c65d8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -526,8 +526,7 @@ static void mt7915_configure_filter(struct ieee80211_hw *hw,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index a46278cf67da9..d286a10f35522 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -8784,7 +8784,8 @@ nl80211_parse_sched_scan(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 		return ERR_PTR(-ENOMEM);
  
- 	MT76_FILTER(CONTROL, MT_WF_RFCR_DROP_CTS |
- 			     MT_WF_RFCR_DROP_RTS |
--			     MT_WF_RFCR_DROP_CTL_RSV |
--			     MT_WF_RFCR_DROP_NDPA);
-+			     MT_WF_RFCR_DROP_CTL_RSV);
+ 	if (n_ssids)
+-		request->ssids = (void *)&request->channels[n_channels];
++		request->ssids = (void *)request +
++			struct_size(request, channels, n_channels);
+ 	request->n_ssids = n_ssids;
+ 	if (ie_len) {
+ 		if (n_ssids)
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 1591cd68fc583..3c29e9bf66b4e 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -115,7 +115,8 @@ static int cfg80211_conn_scan(struct wireless_dev *wdev)
+ 		n_channels = i;
+ 	}
+ 	request->n_channels = n_channels;
+-	request->ssids = (void *)&request->channels[n_channels];
++	request->ssids = (void *)request +
++		struct_size(request, channels, n_channels);
+ 	request->n_ssids = 1;
  
- 	*total_flags = flags;
- 	mt76_wr(dev, MT_WF_RFCR(band), phy->rxfilter);
+ 	memcpy(request->ssids[0].ssid, wdev->conn->params.ssid,
 -- 
 2.43.0
 
