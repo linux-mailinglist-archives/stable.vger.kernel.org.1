@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-85156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA7C99E5E5
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:36:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 717A899E5E7
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:36:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BCA71C22723
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:36:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A6CD282DE8
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3621E7C35;
-	Tue, 15 Oct 2024 11:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CB015099D;
+	Tue, 15 Oct 2024 11:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Kh4YiuJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iuO1kax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEFF61684A3;
-	Tue, 15 Oct 2024 11:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D6E1D89F5;
+	Tue, 15 Oct 2024 11:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728992162; cv=none; b=otOG4v0/RFTTOlVvFPCLOmggq4bT6voMpL8sJUmY2QNAVBbv0UgQYcUGMIp2P0GQwToLPBuwDaPpmzTyAkk0TcAgJqOVjOu2IUw+hxwq4piUGYPEMaNRsh0dPFoolFLbP8hA68TESQktLM0bBhssuc12OElAxEIPiqIjTTGdEwI=
+	t=1728992170; cv=none; b=Joqxz6OBMHvklRPdo57Hfghb49pyCqPpp0+JbhX3gMEczM5pC+3nYLyLnpwDgSi4cMSq/AnrC9eYllzliAAjB9UVgwDJICls/W4ghDDvLRnvyUHOJWfk3o9opQO/AhtHZ6ijJOxIGNP+e+c2AdA2MNMYSngwgMz0vQ8dOAIvBrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728992162; c=relaxed/simple;
-	bh=eiH5NKNk2R6M5lUauimTUnDMNmkNxMdkDpBWyeX4qqw=;
+	s=arc-20240116; t=1728992170; c=relaxed/simple;
+	bh=mj8LeAALDMP2WXbaWJlVtoUJ/VHr6o2ap/n8QRmUXXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AmIBEDA8NLl9tfKolJqUXjDxOfDUlQt84mK8B2skw1cRZY0+d61UdKFucu3i33yM7Q3HZ4EppT8J5TXwg7YdoWXakLxDOav8NBNX6YsvJbhWPdNO6xcCDnfH2hcZKo3FsiI82rxYNY8NLhaAEzme+UboD1cO1OTOZpYVxCm3Xxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Kh4YiuJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EDE1C4CEC6;
-	Tue, 15 Oct 2024 11:36:02 +0000 (UTC)
+	 MIME-Version; b=UCpvp5C8Myd7dNmK2oN9YN5bblzImQZCQAabSd1io/+/uUJbc2Gp+UujxVx1cYHCQ9StOHOC59bOIVUk2MgtsjBD7aU2bMhWvcBcgYLoBSvrEUXeZcyKzccBUJn81Ku9RiKa4urwxFe1CWNpcZh7//SarIgGsOC17f+gUzAQOTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iuO1kax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C0E5C4CEC6;
+	Tue, 15 Oct 2024 11:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728992162;
-	bh=eiH5NKNk2R6M5lUauimTUnDMNmkNxMdkDpBWyeX4qqw=;
+	s=korg; t=1728992169;
+	bh=mj8LeAALDMP2WXbaWJlVtoUJ/VHr6o2ap/n8QRmUXXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Kh4YiuJ4X0OM/i6S0ThXr/sW4yTjsG6dgRSwH3fJfG9yKZgkC/ES6pHTFwNvWHX6
-	 BszkMxz/kAYU+aWMSDDNODUDSyJiUkvO4GSb3fLm07j3q6Jo2rzFrxcDSLT+OOd3Nu
-	 TVXEe/XvHcY3Y4WbK3RW8Ipz+FLc4bMwwbbjY6wU=
+	b=2iuO1kaxk5eK9UXMlYzlv+I/Ha0Mu5wTgUVbvScd/gXzjl06WTdtRoa0lPRcepnBG
+	 WC0o+wGoy5A9x+7MTrdjalcaoNjm6OfsO+N1KmpuqL/82A7+pXykVd2L/OJB3gsABv
+	 hFYuMT6QPikLRnMxWxCerJH3UNQ6E9jNi5yaMiqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 5.15 036/691] fs/ntfs3: Use kvfree to free memory allocated by kvmalloc
-Date: Tue, 15 Oct 2024 13:19:44 +0200
-Message-ID: <20241015112441.771581052@linuxfoundation.org>
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 037/691] arm64: dts: rockchip: fix PMIC interrupt pin in pinctrl for ROCK Pi E
+Date: Tue, 15 Oct 2024 13:19:45 +0200
+Message-ID: <20241015112441.810887318@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -64,90 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: FUKAUMI Naoki <naoki@radxa.com>
 
-commit ddb17dc880eeaac37b5a6e984de07b882de7d78d upstream.
+[ Upstream commit c623e9daf60a0275d623ce054601550e54987f5b ]
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+use GPIO0_A2 as PMIC interrupt pin in pinctrl.
+(I forgot to fix this part in previous commit.)
+
+Fixes: 02afd3d5b9fa ("arm64: dts: rockchip: fix PMIC interrupt pin on ROCK Pi E")
+Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://lore.kernel.org/r/20240722095216.1656081-1-naoki@radxa.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/attrlist.c |    4 ++--
- fs/ntfs3/bitmap.c   |    4 ++--
- fs/ntfs3/frecord.c  |    4 ++--
- fs/ntfs3/super.c    |    2 +-
- 4 files changed, 7 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ntfs3/attrlist.c
-+++ b/fs/ntfs3/attrlist.c
-@@ -29,7 +29,7 @@ static inline bool al_is_valid_le(const
- void al_destroy(struct ntfs_inode *ni)
- {
- 	run_close(&ni->attr_list.run);
--	kfree(ni->attr_list.le);
-+	kvfree(ni->attr_list.le);
- 	ni->attr_list.le = NULL;
- 	ni->attr_list.size = 0;
- 	ni->attr_list.dirty = false;
-@@ -318,7 +318,7 @@ int al_add_le(struct ntfs_inode *ni, enu
- 		memcpy(ptr, al->le, off);
- 		memcpy(Add2Ptr(ptr, off + sz), le, old_size - off);
- 		le = Add2Ptr(ptr, off);
--		kfree(al->le);
-+		kvfree(al->le);
- 		al->le = ptr;
- 	} else {
- 		memmove(Add2Ptr(le, sz), le, old_size - off);
---- a/fs/ntfs3/bitmap.c
-+++ b/fs/ntfs3/bitmap.c
-@@ -129,7 +129,7 @@ void wnd_close(struct wnd_bitmap *wnd)
- {
- 	struct rb_node *node, *next;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
+index d9905a08c6ce..66443d52cd34 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
+@@ -332,7 +332,7 @@ led_pin: led-pin {
  
--	kfree(wnd->free_bits);
-+	kvfree(wnd->free_bits);
- 	run_close(&wnd->run);
+ 	pmic {
+ 		pmic_int_l: pmic-int-l {
+-			rockchip,pins = <2 RK_PA6 RK_FUNC_GPIO &pcfg_pull_up>;
++			rockchip,pins = <0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_up>;
+ 		};
+ 	};
  
- 	node = rb_first(&wnd->start_tree);
-@@ -1340,7 +1340,7 @@ int wnd_extend(struct wnd_bitmap *wnd, s
- 			       wnd->nwnd * sizeof(short));
- 		memset(new_free + wnd->nwnd, 0,
- 		       (new_wnd - wnd->nwnd) * sizeof(short));
--		kfree(wnd->free_bits);
-+		kvfree(wnd->free_bits);
- 		wnd->free_bits = new_free;
- 	}
- 
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -750,7 +750,7 @@ static int ni_try_remove_attr_list(struc
- 	run_deallocate(sbi, &ni->attr_list.run, true);
- 	run_close(&ni->attr_list.run);
- 	ni->attr_list.size = 0;
--	kfree(ni->attr_list.le);
-+	kvfree(ni->attr_list.le);
- 	ni->attr_list.le = NULL;
- 	ni->attr_list.dirty = false;
- 
-@@ -899,7 +899,7 @@ int ni_create_attr_list(struct ntfs_inod
- 	goto out;
- 
- out1:
--	kfree(ni->attr_list.le);
-+	kvfree(ni->attr_list.le);
- 	ni->attr_list.le = NULL;
- 	ni->attr_list.size = 0;
- 	return err;
---- a/fs/ntfs3/super.c
-+++ b/fs/ntfs3/super.c
-@@ -441,7 +441,7 @@ static noinline void put_ntfs(struct ntf
- {
- 	kfree(sbi->new_rec);
- 	kvfree(ntfs_put_shared(sbi->upcase));
--	kfree(sbi->def_table);
-+	kvfree(sbi->def_table);
- 
- 	wnd_close(&sbi->mft.bitmap);
- 	wnd_close(&sbi->used.bitmap);
+-- 
+2.43.0
+
 
 
 
