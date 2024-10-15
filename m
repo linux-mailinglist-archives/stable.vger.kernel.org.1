@@ -1,97 +1,99 @@
-Return-Path: <stable+bounces-85080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E20FC99DBD5
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 03:47:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4302D99DBE1
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 03:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F8121C21AB7
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 01:47:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 744D81C20A90
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 01:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA18414A4DF;
-	Tue, 15 Oct 2024 01:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28A7155308;
+	Tue, 15 Oct 2024 01:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LNJZZo1d"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF4A8468;
-	Tue, 15 Oct 2024 01:47:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE291E4A9
+	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 01:49:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728956829; cv=none; b=TJTms/234dnUDbNNYJNMJTZ5HI7eUdUCXdtkuMySSBsbpzcDa0aR/hHfLzLuDEdJ004PFJCTnZaTS9t51f9k+8ip1WmE2IY4airmCN5fXqTojOnp2kwii7zTcX7eYMrUCCusb2ioG6z/YTQ8O8/XE1MrjYfnn9FGzv0kaySVYAY=
+	t=1728956963; cv=none; b=eeE7KmZVNL8dNXOWwtXoIr/8NBQcFtJFUdN+WpOn/S2czjhJgVUH8xPMom2cPaNz0gc2w2N9uRlrHGSiixqXG1KEGto4Go+a4G8aFYVm2E+4VSCf+LSLfiz5g2HOc7nBg5gcbkTbLKogKHW0lFuQ5OLXbb/Ro1Qjob7Wys9gyIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728956829; c=relaxed/simple;
-	bh=igBZYiHlzAituf/psbEZa0SdcnGgUrsMstspMASXq18=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZKCeAtmbCtsGgyNS0t0b2mHT37Ic3RiB6UVnwZylFUHHFiKVbq8J6OANtf2qP5rI4AX6slsngw1WCF/JsgvMYOO5cYMD8dk0m0ffaz48prCzX2Foy2ZyPBv6Stu3O0EePxwY1svcYYq1L0iXfFlkG3ngNOVe//7+GnzJANDaQNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4XSH4G5bb6z1gx1K;
-	Tue, 15 Oct 2024 09:45:50 +0800 (CST)
-Received: from kwepemg200013.china.huawei.com (unknown [7.202.181.64])
-	by mail.maildlp.com (Postfix) with ESMTPS id CA82E1A0188;
-	Tue, 15 Oct 2024 09:47:03 +0800 (CST)
-Received: from huawei.com (10.175.113.32) by kwepemg200013.china.huawei.com
- (7.202.181.64) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 15 Oct
- 2024 09:47:03 +0800
-From: Liu Shixin <liushixin2@huawei.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Naoya Horiguchi
-	<nao.horiguchi@gmail.com>, Muchun Song <muchun.song@linux.dev>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>, Liu Shixin <liushixin2@huawei.com>
-Subject: [PATCH] mm/swapfile: skip HugeTLB pages for unuse_vma
-Date: Tue, 15 Oct 2024 09:45:21 +0800
-Message-ID: <20241015014521.570237-1-liushixin2@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1728956963; c=relaxed/simple;
+	bh=RhNyz76qPI6+n5RwAes9G5wRNWu5JEbCcb3TYxHs6ys=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Dx40/cvTGoRQ8Sa+ddwchzdK5T2j8nJInZ0TOgDjqWiMev/cu0I7ynURsZ1BrxZn99Ln2YDAywNUHfYzTuihZjNyoza2I9+DlZrBXMR1Z2CNqybfWPSNJVbKITVjW4tb3+Z6U5mdAsMp5uy7t9yf8HOtVPXR3xcOp1S30NM2E/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LNJZZo1d; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728956961; x=1760492961;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=RhNyz76qPI6+n5RwAes9G5wRNWu5JEbCcb3TYxHs6ys=;
+  b=LNJZZo1dqZf/94pulKep2Em/JBjuM+ifGP4EAkSguBAwI08+aBAoojpP
+   fSaKKnSeQzWgNCj10N4L6jc/YSxTSgRf7AjI1KdW7ODuKCPt2/VJdODvU
+   0HbUdPe/JN2UgmxwG2zrbV2pTMQeSy3ZrMCKryfzAkVzwToM/r/Z7Rccz
+   ZofWALgcpQcn7vXSPFzxEDS98kZ0+VL5H0YBAHNdVk1cPN1Mwu18bEHmJ
+   xJlAE3J3JQqXMQgGe32UNX5r14m02yqp9rrUTJrKScJ7IRSZWtZCQn8yC
+   WZ9VnZhYtBy2fXSAMjHsHG7Q/fhVrfA+pDy7QmyQarK/3d8T5xqvEQGuc
+   A==;
+X-CSE-ConnectionGUID: 7AstA3LPQ7OIGX5ckq9SvA==
+X-CSE-MsgGUID: UWJIjJ0XS1aB6lf1cjRCZA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11225"; a="15948789"
+X-IronPort-AV: E=Sophos;i="6.11,204,1725346800"; 
+   d="scan'208";a="15948789"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2024 18:49:20 -0700
+X-CSE-ConnectionGUID: Bc3Fn8NBTr2j1Sp+CFxS9A==
+X-CSE-MsgGUID: awmrzWz0TEul7DJNxZxr4g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,204,1725346800"; 
+   d="scan'208";a="77914741"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 14 Oct 2024 18:49:19 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t0WgX-000HSX-1K;
+	Tue, 15 Oct 2024 01:49:17 +0000
+Date: Tue, 15 Oct 2024 09:48:32 +0800
+From: kernel test robot <lkp@intel.com>
+To: Liu Shixin <liushixin2@huawei.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] mm/swapfile: skip HugeTLB pages for unuse_vma
+Message-ID: <Zw3J8LYEeJ-Bs-Xy@841ce2d326e3>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemg200013.china.huawei.com (7.202.181.64)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241015014521.570237-1-liushixin2@huawei.com>
 
-I got a bad pud error and lost a 1GB HugeTLB when calling swapoff.
-The problem can be reproduced by the following steps:
+Hi,
 
- 1. Allocate an anonymous 1GB HugeTLB and some other anonymous memory.
- 2. Swapout the above anonymous memory.
- 3. run swapoff and we will get a bad pud error in kernel message:
+Thanks for your patch.
 
-  mm/pgtable-generic.c:42: bad pud 00000000743d215d(84000001400000e7)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-We can tell that pud_clear_bad is called by pud_none_or_clear_bad
-in unuse_pud_range() by ftrace. And therefore the HugeTLB pages will
-never be freed because we lost it from page table. We can skip
-HugeTLB pages for unuse_vma to fix it.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Fixes: 0fe6e20b9c4c ("hugetlb, rmap: add reverse mapping for hugepage")
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
----
- mm/swapfile.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] mm/swapfile: skip HugeTLB pages for unuse_vma
+Link: https://lore.kernel.org/stable/20241015014521.570237-1-liushixin2%40huawei.com
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 0cded32414a1..f4ef91513fc9 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -2312,7 +2312,7 @@ static int unuse_mm(struct mm_struct *mm, unsigned int type)
- 
- 	mmap_read_lock(mm);
- 	for_each_vma(vmi, vma) {
--		if (vma->anon_vma) {
-+		if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
- 			ret = unuse_vma(vma, type);
- 			if (ret)
- 				break;
 -- 
-2.34.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
