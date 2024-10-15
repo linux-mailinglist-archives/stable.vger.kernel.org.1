@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-86047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A226B99EB68
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:06:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A10499EB6A
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13F3AB226F8
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:06:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08D1F1F255DF
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6113C1AF0AB;
-	Tue, 15 Oct 2024 13:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F35C1C07DB;
+	Tue, 15 Oct 2024 13:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdVJeUFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kni0tLTl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177E61C07E5;
-	Tue, 15 Oct 2024 13:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB301C07E5;
+	Tue, 15 Oct 2024 13:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997593; cv=none; b=m50//L24o0CUmF+CWneimadiefUV32VCu4MzK0CisWMQKxpJ7w03GfCEgbfAApP+CExamR+Svywy+1f/h5jclX4xF3D/L/MUr0IKYzSDYm6LrQBdOunZSQnpsdpdqJehTUsX0nbvVfpIfXbvZVp+FP1kEU+sfQExqOGc5ang2mQ=
+	t=1728997600; cv=none; b=seEuIg6GxFNE8jr3mqNt+qx54fIbH66FAaCMFuTH4VkDh/XSm1aZCWvqOIXFUy2HQnYDEqZlVwL/GIZo3DquVssMNPijqIXdeMs2jh0vpc+ea2pHWlFKqUxKmh5JQXc8bk6m11taxPB+/RE9N0SfNZRyDDjegLynSGRqhbvCaLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997593; c=relaxed/simple;
-	bh=UajjncrUFRxYzcGQ7T33kR0u2K8MMUW0XLyfxaEUa6Y=;
+	s=arc-20240116; t=1728997600; c=relaxed/simple;
+	bh=JnZjIGxXq7K2t7qWNGz/U/jko6URe2oU/EGUGoJ9YHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NFCBYmhtWYhZcBDgOTeK/eNLkPtBL7R5QbSOtgKDvbkJDMFoSNSOsTogr9oNRRydKpjfsF5YA9gHmRbmxSqU7Kt5uRRRO+onYjNHPW4xEfx9FsZ1ntL69qFBH5ZSi+i7jH6g/nRZri4PcoyS9wc/izu+wSrpqXsoPo0HoIo9Zl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdVJeUFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 923F8C4CEC6;
-	Tue, 15 Oct 2024 13:06:32 +0000 (UTC)
+	 MIME-Version; b=BHn5HmonURAlLQTHoGtFGH1/+mvwIfBPvwOF9W0/7Ul2tppC1WEv3sE89P6ok4A5ZKDQqLy24F9riQHkeUy0Rym1+1zsf3KEg6mcuq596WE6DjMo4jYqmrYlsSEggHGNk7I8HZsvwEcGUeB7OJSOk9YZJFC3c0hvQPDyGL8sPeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kni0tLTl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A84C4CEC6;
+	Tue, 15 Oct 2024 13:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997593;
-	bh=UajjncrUFRxYzcGQ7T33kR0u2K8MMUW0XLyfxaEUa6Y=;
+	s=korg; t=1728997599;
+	bh=JnZjIGxXq7K2t7qWNGz/U/jko6URe2oU/EGUGoJ9YHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LdVJeUFNuPc8hVJLnpbcm7qjgejN7jvfLol+8w3GgM4vQr4Enjuc/ksnt+4mhuu2E
-	 R49esaDX5tKEHusS1k/xBYyWQI65cZgWpbqvS/TDOx+zPuGHLIJjOPn5BKbB9uQpz1
-	 cmbifzDeHpsFuG0TzQx7PVjPdwGcrNIv7UQ1v6WY=
+	b=Kni0tLTl67i02gHYJP61BSu5jksIO5ljdi9gsxqEprJEefB44o5xG70NFWAFgpvZ8
+	 ebtvS3WLxiVtY08dpCnvHuuxoOnxX6BjoRVyIjeqNj7I0TxGR3JLOjg6ViHfWngLDi
+	 1yabj+Irl/r6CLo29lzb055KvbJyz03QX681OpSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 5.10 228/518] firmware_loader: Block path traversal
-Date: Tue, 15 Oct 2024 14:42:12 +0200
-Message-ID: <20241015123925.795904471@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Jim Quinlan <james.quinlan@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 5.10 229/518] tty: rp2: Fix reset with non forgiving PCIe host bridges
+Date: Tue, 15 Oct 2024 14:42:13 +0200
+Message-ID: <20241015123925.833376711@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -66,107 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-commit f0e5311aa8022107d63c54e2f03684ec097d1394 upstream.
+commit f16dd10ba342c429b1e36ada545fb36d4d1f0e63 upstream.
 
-Most firmware names are hardcoded strings, or are constructed from fairly
-constrained format strings where the dynamic parts are just some hex
-numbers or such.
+The write to RP2_GLOBAL_CMD followed by an immediate read of
+RP2_GLOBAL_CMD in rp2_reset_asic() is intented to flush out the write,
+however by then the device is already in reset and cannot respond to a
+memory cycle access.
 
-However, there are a couple codepaths in the kernel where firmware file
-names contain string components that are passed through from a device or
-semi-privileged userspace; the ones I could find (not counting interfaces
-that require root privileges) are:
+On platforms such as the Raspberry Pi 4 and others using the
+pcie-brcmstb.c driver, any memory access to a device that cannot respond
+is met with a fatal system error, rather than being substituted with all
+1s as is usually the case on PC platforms.
 
- - lpfc_sli4_request_firmware_update() seems to construct the firmware
-   filename from "ModelName", a string that was previously parsed out of
-   some descriptor ("Vital Product Data") in lpfc_fill_vpd()
- - nfp_net_fw_find() seems to construct a firmware filename from a model
-   name coming from nfp_hwinfo_lookup(pf->hwinfo, "nffw.partno"), which I
-   think parses some descriptor that was read from the device.
-   (But this case likely isn't exploitable because the format string looks
-   like "netronome/nic_%s", and there shouldn't be any *folders* starting
-   with "netronome/nic_". The previous case was different because there,
-   the "%s" is *at the start* of the format string.)
- - module_flash_fw_schedule() is reachable from the
-   ETHTOOL_MSG_MODULE_FW_FLASH_ACT netlink command, which is marked as
-   GENL_UNS_ADMIN_PERM (meaning CAP_NET_ADMIN inside a user namespace is
-   enough to pass the privilege check), and takes a userspace-provided
-   firmware name.
-   (But I think to reach this case, you need to have CAP_NET_ADMIN over a
-   network namespace that a special kind of ethernet device is mapped into,
-   so I think this is not a viable attack path in practice.)
+Swapping the delay and the read ensures that the device has finished
+resetting before we attempt to read from it.
 
-Fix it by rejecting any firmware names containing ".." path components.
-
-For what it's worth, I went looking and haven't found any USB device
-drivers that use the firmware loader dangerously.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-Fixes: abb139e75c2c ("firmware: teach the kernel to load firmware files directly from the filesystem")
-Signed-off-by: Jann Horn <jannh@google.com>
-Acked-by: Luis Chamberlain <mcgrof@kernel.org>
-Link: https://lore.kernel.org/r/20240828-firmware-traversal-v3-1-c76529c63b5f@google.com
+Fixes: 7d9f49afa451 ("serial: rp2: New driver for Comtrol RocketPort 2 cards")
+Cc: stable <stable@kernel.org>
+Suggested-by: Jim Quinlan <james.quinlan@broadcom.com>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20240906225435.707837-1-florian.fainelli@broadcom.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/firmware_loader/main.c |   30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/tty/serial/rp2.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/base/firmware_loader/main.c
-+++ b/drivers/base/firmware_loader/main.c
-@@ -786,6 +786,26 @@ static void fw_abort_batch_reqs(struct f
- 	mutex_unlock(&fw_lock);
- }
+--- a/drivers/tty/serial/rp2.c
++++ b/drivers/tty/serial/rp2.c
+@@ -600,8 +600,8 @@ static void rp2_reset_asic(struct rp2_ca
+ 	u32 clk_cfg;
  
-+/*
-+ * Reject firmware file names with ".." path components.
-+ * There are drivers that construct firmware file names from device-supplied
-+ * strings, and we don't want some device to be able to tell us "I would like to
-+ * be sent my firmware from ../../../etc/shadow, please".
-+ *
-+ * Search for ".." surrounded by either '/' or start/end of string.
-+ *
-+ * This intentionally only looks at the firmware name, not at the firmware base
-+ * directory or at symlink contents.
-+ */
-+static bool name_contains_dotdot(const char *name)
-+{
-+	size_t name_len = strlen(name);
-+
-+	return strcmp(name, "..") == 0 || strncmp(name, "../", 3) == 0 ||
-+	       strstr(name, "/../") != NULL ||
-+	       (name_len >= 3 && strcmp(name+name_len-3, "/..") == 0);
-+}
-+
- /* called from request_firmware() and request_firmware_work_func() */
- static int
- _request_firmware(const struct firmware **firmware_p, const char *name,
-@@ -806,6 +826,14 @@ _request_firmware(const struct firmware
- 		goto out;
- 	}
+ 	writew(1, base + RP2_GLOBAL_CMD);
+-	readw(base + RP2_GLOBAL_CMD);
+ 	msleep(100);
++	readw(base + RP2_GLOBAL_CMD);
+ 	writel(0, base + RP2_CLK_PRESCALER);
  
-+	if (name_contains_dotdot(name)) {
-+		dev_warn(device,
-+			 "Firmware load for '%s' refused, path contains '..' component\n",
-+			 name);
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
- 	ret = _request_firmware_prepare(&fw, name, device, buf, size,
- 					offset, opt_flags);
- 	if (ret <= 0) /* error or already assigned */
-@@ -876,6 +904,8 @@ _request_firmware(const struct firmware
-  *      @name will be used as $FIRMWARE in the uevent environment and
-  *      should be distinctive enough not to be confused with any other
-  *      firmware image for this or any other device.
-+ *	It must not contain any ".." path components - "foo/bar..bin" is
-+ *	allowed, but "foo/../bar.bin" is not.
-  *
-  *	Caller must hold the reference count of @device.
-  *
+ 	/* TDM clock configuration */
 
 
 
