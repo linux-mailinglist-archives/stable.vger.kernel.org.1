@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-85168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 141D799E5F1
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:36:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED05F99E5CC
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:35:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD1C01F220A4
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:36:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2D5C1F24672
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2CF1D90DC;
-	Tue, 15 Oct 2024 11:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A687C1EBFF1;
+	Tue, 15 Oct 2024 11:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbkcVC6c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZcjeOji"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175831684A3;
-	Tue, 15 Oct 2024 11:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4511EBFE4;
+	Tue, 15 Oct 2024 11:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728992203; cv=none; b=OLWgKeeYG1lsvJEarNH01tRomiWf8HML53KeGp86gjOjqXB41kgAatArcsuJpyx13Ikg6w/79D/cbzo6kBVNJN3dTnSMng+449wg5GupQ7MQsxtXsEkiDr4zFO7DA2NwMzcczHzhQrE1E/vIyo3L1cafNOrNu3Yv88/tV9GCJB0=
+	t=1728992092; cv=none; b=cdn+6xM5wjN+yUb38GLIJRSKthAo7Etn5Zk+FsoP4HcbR6hY59UCldGaMuNT4zPRTzJhaJ0h6UgQFPlhlv2k0fdJzr66lZsf4FTV4RJ427z09zdjfGvoA5IYS8ZRIN7mnBk6ssoe32AT6IE1gTMGqwDjLkua4llDb+Ae8tQYUrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728992203; c=relaxed/simple;
-	bh=gCAUzbLL8vdF9xMsxxOa/rjI9X4+yxRB3CvxhKAVXPs=;
+	s=arc-20240116; t=1728992092; c=relaxed/simple;
+	bh=eiUUEcpVjgixv55bL63Ld/vrIMrOfg0kkHa0q4OwvAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H1nupn0hbYh7OKD8MDsN48ITKpFOvgrRXVXqgqv9Q1wortFDKaY2LNSQrvmzgZbxqvOPangPQL0tYZr8vRAs7rYx1qMaPwS2vFQfQpCmJgdXDKMzST7JZFBefDs3Po+daHen4uvItft8N3PO3q0hejc6OfTbvBJnXFe7vKXtge4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbkcVC6c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B75C4CECF;
-	Tue, 15 Oct 2024 11:36:42 +0000 (UTC)
+	 MIME-Version; b=ZVhQ1tLS88yM/cqHq4/SsznSukeP76ghNqSo6BnLQEPOIZGy7VGolA3tsqtTpuxHfWWtc5jk9xFx9z4eErTBr9xVZB2pOFEUJbtGBwboTOdaZbVqPDFvt1eBoeGwkTqxpCY87jkHmJ53uH4/6/k2ank/MT9BhevA+3S6lnhtvOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZcjeOji; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7839DC4CEC6;
+	Tue, 15 Oct 2024 11:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728992203;
-	bh=gCAUzbLL8vdF9xMsxxOa/rjI9X4+yxRB3CvxhKAVXPs=;
+	s=korg; t=1728992091;
+	bh=eiUUEcpVjgixv55bL63Ld/vrIMrOfg0kkHa0q4OwvAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RbkcVC6cRj0MghbUG6ACn2FGPrQeAYoqO8qRfBFWQFOv7PuH7ZnwA9TzLMp/K1zIr
-	 hQ1C5wojHSJPguM9hL2WQjCN9OaZVexRQSW+7POLSMpKCzYSOWTVv6FVVMReZ8Oxsy
-	 Phv7GmddPN1jywCtAdeRnmFJBmxp9aqVDECdTHcc=
+	b=tZcjeOjimIe37yI6WD9btMACAQeI1gEP3gILH+Tl4f4yGinygvg62UfACmkA8nbLg
+	 lnqWAYysQtdLesSbzGzialXQv0dGkcA0ajdnifuGhFSydSZUdAfImqwXaWYp6zwRBN
+	 G2OKuzt4YuygxU9SjqMnquyDhWvSYf6PVL65Vcyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	David Rientjes <rientjes@google.com>,
-	Christoph Lameter <cl@linux.com>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Pekka Enberg <penberg@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Su Yue <glass.su@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 007/691] mm: krealloc: consider spare memory for __GFP_ZERO
-Date: Tue, 15 Oct 2024 13:19:15 +0200
-Message-ID: <20241015112440.619877786@linuxfoundation.org>
+Subject: [PATCH 5.15 008/691] ocfs2: fix the la space leak when unmounting an ocfs2 volume
+Date: Tue, 15 Oct 2024 13:19:16 +0200
+Message-ID: <20241015112440.660761453@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -72,64 +73,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Heming Zhao <heming.zhao@suse.com>
 
-commit 1a83a716ec233990e1fd5b6fbb1200ade63bf450 upstream.
+commit dfe6c5692fb525e5e90cefe306ee0dffae13d35f upstream.
 
-As long as krealloc() is called with __GFP_ZERO consistently, starting
-with the initial memory allocation, __GFP_ZERO should be fully honored.
+This bug has existed since the initial OCFS2 code.  The code logic in
+ocfs2_sync_local_to_main() is wrong, as it ignores the last contiguous
+free bits, which causes an OCFS2 volume to lose the last free clusters of
+LA window on each umount command.
 
-However, if for an existing allocation krealloc() is called with a
-decreased size, it is not ensured that the spare portion the allocation is
-zeroed.  Thus, if krealloc() is subsequently called with a larger size
-again, __GFP_ZERO can't be fully honored, since we don't know the previous
-size, but only the bucket size.
-
-Example:
-
-	buf = kzalloc(64, GFP_KERNEL);
-	memset(buf, 0xff, 64);
-
-	buf = krealloc(buf, 48, GFP_KERNEL | __GFP_ZERO);
-
-	/* After this call the last 16 bytes are still 0xff. */
-	buf = krealloc(buf, 64, GFP_KERNEL | __GFP_ZERO);
-
-Fix this, by explicitly setting spare memory to zero, when shrinking an
-allocation with __GFP_ZERO flag set or init_on_alloc enabled.
-
-Link: https://lkml.kernel.org/r/20240812223707.32049-1-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: David Rientjes <rientjes@google.com>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
-Cc: Pekka Enberg <penberg@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Link: https://lkml.kernel.org/r/20240719114310.14245-1-heming.zhao@suse.com
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Su Yue <glass.su@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slab_common.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ocfs2/localalloc.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -1210,6 +1210,13 @@ static __always_inline void *__do_kreall
- 
- 	/* If the object still fits, repoison it precisely. */
- 	if (ks >= new_size) {
-+		/* Zero out spare memory. */
-+		if (want_init_on_alloc(flags)) {
-+			kasan_disable_current();
-+			memset((void *)p + new_size, 0, ks - new_size);
-+			kasan_enable_current();
-+		}
-+
- 		p = kasan_krealloc((void *)p, new_size, flags);
- 		return (void *)p;
+--- a/fs/ocfs2/localalloc.c
++++ b/fs/ocfs2/localalloc.c
+@@ -1008,6 +1008,25 @@ static int ocfs2_sync_local_to_main(stru
+ 		start = bit_off + 1;
  	}
+ 
++	/* clear the contiguous bits until the end boundary */
++	if (count) {
++		blkno = la_start_blk +
++			ocfs2_clusters_to_blocks(osb->sb,
++					start - count);
++
++		trace_ocfs2_sync_local_to_main_free(
++				count, start - count,
++				(unsigned long long)la_start_blk,
++				(unsigned long long)blkno);
++
++		status = ocfs2_release_clusters(handle,
++				main_bm_inode,
++				main_bm_bh, blkno,
++				count);
++		if (status < 0)
++			mlog_errno(status);
++	}
++
+ bail:
+ 	if (status)
+ 		mlog_errno(status);
 
 
 
