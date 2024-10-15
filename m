@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-85822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CA6D99E94A
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:15:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91C1E99E93A
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:14:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0540728098E
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:15:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3FA51C21E24
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6391F7080;
-	Tue, 15 Oct 2024 12:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084AD1EBA14;
+	Tue, 15 Oct 2024 12:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6Z30etU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKfIomWL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7C81F4FB1;
-	Tue, 15 Oct 2024 12:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93EF1EABD1;
+	Tue, 15 Oct 2024 12:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728994417; cv=none; b=FAbhP6LFx3DBxYNh6npuT8PAi0VuDwHk/LJxdcOFLPkSyebaoq20jXWS4ko+AvpQRfGpEzAGaUwh7pOo4Inqqlhkhx2bvJN8xp5HN6yLVNdDTT/gDQq2W+sQ9AxvXmdgg0ufVxpL2wwicMOI5DOgaDZFQa37vyhN9wDWJc5nWbw=
+	t=1728994368; cv=none; b=pPqKeMoPvt4XCgo/4reRE9GJ8NqBO7FTNZRPsflg7Al8wQOYMWGxvcuQJIXY7EqnU5vn3pkenfgJ3yNrzw8eLHC2p3+uorXhkEdfIyHskXVChJI2JexBwNz4R0qIY8LfZbGAC8Q1UiPBdoCa6f1w4K3zkNyM/jFpv5R1600XkMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728994417; c=relaxed/simple;
-	bh=YDmyOdlnj0s+EG3srT8pEb6xvfaD+7butZBvDmVSBqA=;
+	s=arc-20240116; t=1728994368; c=relaxed/simple;
+	bh=CPox/CLV13moe3Q6CXiKy0hhGF7Z3mZ+1+NLxZ2hLkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VAocGf9K5mOqVDqYqnfIkE55MfnUj4YZEd/tnPd0zyqq9rGXKOSYMEhzkwkIucqPi7D9lbPsssjuwHMaIIa0J7t3C3LH64EvuKiHeI6Ndn2q50BrSqbA6nscbYL6Oj3PN7vpPXzBL4mdXGmzHZxSjcVhMcejO+4vVy6ZIEwZ4Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6Z30etU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8035DC4CEC6;
-	Tue, 15 Oct 2024 12:13:36 +0000 (UTC)
+	 MIME-Version; b=GX+nVAOEC83IghZO366HFtd3PEWMVYWRd/RVNOSre4cfWqdP3WJgEj5sxo9C66VAWaUxI6MQBxHCyIq39DzSN/r1A55NQ2QQi3JQiEMtcastv5im3NMgkEzDyKIpGTHkGYqHx9kiQD4+/3nG17C3P8ka1fs8GcuK3L5cUopoE/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKfIomWL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD4BC4CEC6;
+	Tue, 15 Oct 2024 12:12:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728994417;
-	bh=YDmyOdlnj0s+EG3srT8pEb6xvfaD+7butZBvDmVSBqA=;
+	s=korg; t=1728994368;
+	bh=CPox/CLV13moe3Q6CXiKy0hhGF7Z3mZ+1+NLxZ2hLkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z6Z30etUcEnmRQmwZ9VUVk5ItNwrLT+H2XvJyljwsCeqEksSUFr7d1KH+QgUzm0Zv
-	 NCMayie67/jifuvXsjxBoDhlUfZF9NTsmyDzm5EguyaY9cp4pwKJ6VnZRKb4ddjsAD
-	 XJXMXtYC7Z+y6cPQVBvPKMXKq/RFW27NBIWucArY=
+	b=FKfIomWLGoFyVlAs3k0on3oaE4/7eIrgQ/YH7DWF/JMLzJJo0ERBC3a6DSCc5A3Te
+	 M4fdhSnxkm2ZctVvpC7AOSNJC3Px2fQk5awotH7GoUTCZuPcAP5BKRP+SOck4mppsp
+	 UBB1PZwVO1sSjVWEhYgmQBngFBypbGWFQihKk8l0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonatan Maman <Ymaman@Nvidia.com>,
-	Gal Shalom <GalShalom@Nvidia.com>,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 5.15 677/691] nouveau/dmem: Fix vulnerability in migrate_to_ram upon copy error
-Date: Tue, 15 Oct 2024 13:30:25 +0200
-Message-ID: <20241015112507.193558607@linuxfoundation.org>
+	Frederic Weisbecker <frederic@kernel.org>,
+	syzbot+943d34fa3cf2191e3068@syzkaller.appspotmail.com,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Hillf Danton <hdanton@sina.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 678/691] kthread: unpark only parked kthread
+Date: Tue, 15 Oct 2024 13:30:26 +0200
+Message-ID: <20241015112507.233176708@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -67,49 +69,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yonatan Maman <Ymaman@Nvidia.com>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-commit 835745a377a4519decd1a36d6b926e369b3033e2 upstream.
+commit 214e01ad4ed7158cab66498810094fac5d09b218 upstream.
 
-The `nouveau_dmem_copy_one` function ensures that the copy push command is
-sent to the device firmware but does not track whether it was executed
-successfully.
+Calling into kthread unparking unconditionally is mostly harmless when
+the kthread is already unparked. The wake up is then simply ignored
+because the target is not in TASK_PARKED state.
 
-In the case of a copy error (e.g., firmware or hardware failure), the
-copy push command will be sent via the firmware channel, and
-`nouveau_dmem_copy_one` will likely report success, leading to the
-`migrate_to_ram` function returning a dirty HIGH_USER page to the user.
+However if the kthread is per CPU, the wake up is preceded by a call
+to kthread_bind() which expects the task to be inactive and in
+TASK_PARKED state, which obviously isn't the case if it is unparked.
 
-This can result in a security vulnerability, as a HIGH_USER page that may
-contain sensitive or corrupted data could be returned to the user.
+As a result, calling kthread_stop() on an unparked per-cpu kthread
+triggers such a warning:
 
-To prevent this vulnerability, we allocate a zero page. Thus, in case of
-an error, a non-dirty (zero) page will be returned to the user.
+	WARNING: CPU: 0 PID: 11 at kernel/kthread.c:525 __kthread_bind_mask kernel/kthread.c:525
+	 <TASK>
+	 kthread_stop+0x17a/0x630 kernel/kthread.c:707
+	 destroy_workqueue+0x136/0xc40 kernel/workqueue.c:5810
+	 wg_destruct+0x1e2/0x2e0 drivers/net/wireguard/device.c:257
+	 netdev_run_todo+0xe1a/0x1000 net/core/dev.c:10693
+	 default_device_exit_batch+0xa14/0xa90 net/core/dev.c:11769
+	 ops_exit_list net/core/net_namespace.c:178 [inline]
+	 cleanup_net+0x89d/0xcc0 net/core/net_namespace.c:640
+	 process_one_work kernel/workqueue.c:3231 [inline]
+	 process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3312
+	 worker_thread+0x86d/0xd70 kernel/workqueue.c:3393
+	 kthread+0x2f0/0x390 kernel/kthread.c:389
+	 ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+	 ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+	 </TASK>
 
-Fixes: 5be73b690875 ("drm/nouveau/dmem: device memory helpers for SVM")
-Signed-off-by: Yonatan Maman <Ymaman@Nvidia.com>
-Co-developed-by: Gal Shalom <GalShalom@Nvidia.com>
-Signed-off-by: Gal Shalom <GalShalom@Nvidia.com>
-Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241008115943.990286-3-ymaman@nvidia.com
+Fix this with skipping unecessary unparking while stopping a kthread.
+
+Link: https://lkml.kernel.org/r/20240913214634.12557-1-frederic@kernel.org
+Fixes: 5c25b5ff89f0 ("workqueue: Tag bound workers with KTHREAD_IS_PER_CPU")
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Reported-by: syzbot+943d34fa3cf2191e3068@syzkaller.appspotmail.com
+Tested-by: syzbot+943d34fa3cf2191e3068@syzkaller.appspotmail.com
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_dmem.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/kthread.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
-@@ -149,7 +149,7 @@ static vm_fault_t nouveau_dmem_fault_cop
- 	if (!spage || !(args->src[0] & MIGRATE_PFN_MIGRATE))
- 		return 0;
+--- a/kernel/kthread.c
++++ b/kernel/kthread.c
+@@ -578,6 +578,8 @@ void kthread_unpark(struct task_struct *
+ {
+ 	struct kthread *kthread = to_kthread(k);
  
--	dpage = alloc_page_vma(GFP_HIGHUSER, vmf->vma, vmf->address);
-+	dpage = alloc_page_vma(GFP_HIGHUSER | __GFP_ZERO, vmf->vma, vmf->address);
- 	if (!dpage)
- 		return VM_FAULT_SIGBUS;
- 	lock_page(dpage);
++	if (!test_bit(KTHREAD_SHOULD_PARK, &kthread->flags))
++		return;
+ 	/*
+ 	 * Newly created kthread was parked when the CPU was offline.
+ 	 * The binding was lost and we need to set it again.
 
 
 
