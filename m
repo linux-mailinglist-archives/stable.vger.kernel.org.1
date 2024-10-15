@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-86139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74C499EBDF
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:11:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 331A199EBEA
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:12:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32F6FB20933
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:11:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC1C6283A19
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0A61D5AD3;
-	Tue, 15 Oct 2024 13:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C721AF0AC;
+	Tue, 15 Oct 2024 13:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzoJuw9Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NvxuS7mj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2451C07DF;
-	Tue, 15 Oct 2024 13:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83851C07DF;
+	Tue, 15 Oct 2024 13:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997899; cv=none; b=CrGo0gYHr5zDHXwel+czY7nL2ZqKFuRU0L+ZM2u+/48+mvhSOAkqK7ujQGfI59ZkGPqTaXgPsAdgwqlFd/xOZVMZJkx+5ocDrVDhc8gJ+fkggvCDlgcWMd0E+png+HYyIHon05aCyIqhhBKhepknz10m5T/6uxDzmL9Dmw4Zans=
+	t=1728997937; cv=none; b=rgruyXwHl5lNuYQvR+9JyZBwDF07rxphO3P0J6SQehuugaJTtH5E/1WH8XS4A/Cj/NEF58eJhGXWBMruRzjnAidAurTzeZMM4jFHSwIypjN0Z44Fb91KgGL/KXl4k4zTCqnR2QKHFMx0I3h875fU+TiTWHtrYzMiGYU3WeGDH1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997899; c=relaxed/simple;
-	bh=Z2u2nQVhYugad6c3hjw0N6bBIW8Ma7mVfEyMqz/WPV0=;
+	s=arc-20240116; t=1728997937; c=relaxed/simple;
+	bh=JDorJj8JA97IGovOx6XbrF5+jqbwyrdMZ0JTQV4aqc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bIDdlyMlqVEcg8bK8DVWNqg4SfymQHXIRcqF0+zndSbvXbbx8ms2pO99povX2tRtS8msb7u0goGRAYmpctjbL4d0YkIcYiaEWyRFlpNkSIxeR0RUs2vJ24/lRUv/YkRJf4ja3/8Z3mXbm/bHlA4fYsE+ruhKNVRR1RjhyjvhPyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzoJuw9Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 625A4C4CEC6;
-	Tue, 15 Oct 2024 13:11:38 +0000 (UTC)
+	 MIME-Version; b=ZnlKOjDRACIp5f3v5tKV8iKWd34ghImb/nv7hUwkPAcZg5PiAA9w1yZ8c6O+5jbAXYaZ4kfM1UTsH9RBiG8RqUp0u2CTelAO20HVobemq8VoxdfwN93QPmi+6fk8Qepiih4TJgu599gkKNr5/ITNNyGJ5Vu3H5qvlWqlUiP1DAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NvxuS7mj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573B6C4CEC6;
+	Tue, 15 Oct 2024 13:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997898;
-	bh=Z2u2nQVhYugad6c3hjw0N6bBIW8Ma7mVfEyMqz/WPV0=;
+	s=korg; t=1728997936;
+	bh=JDorJj8JA97IGovOx6XbrF5+jqbwyrdMZ0JTQV4aqc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VzoJuw9Q3a2EXyFwqdpIR7ef36ltE7Ouj8CjW9AWJs8AH0BOj5XMIkaoQ3+Azo6kb
-	 1VbjiNdQeBSE7Du2sPn5fadLVni26Y/ZBqPKIHuCt3jpQdjehcxapKowv78A7eKf+1
-	 X4VfKAPsYt5slGmh/H2YxZiBQ2wWNnB4mlnEcnrg=
+	b=NvxuS7mjuHXchFiV86RsMLQzqdkm31ec05ZQ/ELHL2FqwexwJFLxWvKw36B3MaqGa
+	 KKKTGY3PuwRkvNGItGXAQosLlg0Z2CsptVLNcn7il9y6UYJUsSPg/i7FqHt4dlxslD
+	 5wTXWrbmP9Ldd1E3eGetCvnm5vWjwYlWA21OodRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	"David S. Miller" <davem@davemloft.net>,
+	Breno Leitao <leitao@debian.org>,
+	Konstantin Ovsepian <ovs@ovs.to>,
+	Tejun Heo <tj@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 303/518] net: sched: consistently use rcu_replace_pointer() in taprio_change()
-Date: Tue, 15 Oct 2024 14:43:27 +0200
-Message-ID: <20241015123928.682221309@linuxfoundation.org>
+Subject: [PATCH 5.10 304/518] blk_iocost: fix more out of bound shifts
+Date: Tue, 15 Oct 2024 14:43:28 +0200
+Message-ID: <20241015123928.721116669@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -67,40 +68,78 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Konstantin Ovsepian <ovs@ovs.to>
 
-[ Upstream commit d5c4546062fd6f5dbce575c7ea52ad66d1968678 ]
+[ Upstream commit 9bce8005ec0dcb23a58300e8522fe4a31da606fa ]
 
-According to Vinicius (and carefully looking through the whole
-https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa
-once again), txtime branch of 'taprio_change()' is not going to
-race against 'advance_sched()'. But using 'rcu_replace_pointer()'
-in the former may be a good idea as well.
+Recently running UBSAN caught few out of bound shifts in the
+ioc_forgive_debts() function:
 
-Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+UBSAN: shift-out-of-bounds in block/blk-iocost.c:2142:38
+shift exponent 80 is too large for 64-bit type 'u64' (aka 'unsigned long
+long')
+...
+UBSAN: shift-out-of-bounds in block/blk-iocost.c:2144:30
+shift exponent 80 is too large for 64-bit type 'u64' (aka 'unsigned long
+long')
+...
+Call Trace:
+<IRQ>
+dump_stack_lvl+0xca/0x130
+__ubsan_handle_shift_out_of_bounds+0x22c/0x280
+? __lock_acquire+0x6441/0x7c10
+ioc_timer_fn+0x6cec/0x7750
+? blk_iocost_init+0x720/0x720
+? call_timer_fn+0x5d/0x470
+call_timer_fn+0xfa/0x470
+? blk_iocost_init+0x720/0x720
+__run_timer_base+0x519/0x700
+...
+
+Actual impact of this issue was not identified but I propose to fix the
+undefined behaviour.
+The proposed fix to prevent those out of bound shifts consist of
+precalculating exponent before using it the shift operations by taking
+min value from the actual exponent and maximum possible number of bits.
+
+Reported-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Konstantin Ovsepian <ovs@ovs.to>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20240822154137.2627818-1-ovs@ovs.to
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ block/blk-iocost.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index ec6b24edf5f93..04ed23b5f21b4 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -1577,7 +1577,9 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
- 			goto unlock;
- 		}
+diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+index fe5b0c79e5411..7d56506eb8ff9 100644
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -2022,7 +2022,7 @@ static void ioc_forgive_debts(struct ioc *ioc, u64 usage_us_sum, int nr_debtors,
+ 			      struct ioc_now *now)
+ {
+ 	struct ioc_gq *iocg;
+-	u64 dur, usage_pct, nr_cycles;
++	u64 dur, usage_pct, nr_cycles, nr_cycles_shift;
  
--		rcu_assign_pointer(q->admin_sched, new_admin);
-+		/* Not going to race against advance_sched(), but still */
-+		admin = rcu_replace_pointer(q->admin_sched, new_admin,
-+					    lockdep_rtnl_is_held());
- 		if (admin)
- 			call_rcu(&admin->rcu, taprio_free_sched_cb);
- 	} else {
+ 	/* if no debtor, reset the cycle */
+ 	if (!nr_debtors) {
+@@ -2084,10 +2084,12 @@ static void ioc_forgive_debts(struct ioc *ioc, u64 usage_us_sum, int nr_debtors,
+ 		old_debt = iocg->abs_vdebt;
+ 		old_delay = iocg->delay;
+ 
++		nr_cycles_shift = min_t(u64, nr_cycles, BITS_PER_LONG - 1);
+ 		if (iocg->abs_vdebt)
+-			iocg->abs_vdebt = iocg->abs_vdebt >> nr_cycles ?: 1;
++			iocg->abs_vdebt = iocg->abs_vdebt >> nr_cycles_shift ?: 1;
++
+ 		if (iocg->delay)
+-			iocg->delay = iocg->delay >> nr_cycles ?: 1;
++			iocg->delay = iocg->delay >> nr_cycles_shift ?: 1;
+ 
+ 		iocg_kick_waitq(iocg, true, now);
+ 
 -- 
 2.43.0
 
