@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-85605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2399299E80B
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:01:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B8799E83A
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:03:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5616E1C21B67
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:01:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5604A1C21657
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80481E378C;
-	Tue, 15 Oct 2024 12:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BBF1E378C;
+	Tue, 15 Oct 2024 12:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hYrfSr0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5QgAgzD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765341C7274;
-	Tue, 15 Oct 2024 12:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FF61C57B1;
+	Tue, 15 Oct 2024 12:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993677; cv=none; b=MkuXAOu5jx1zWQoAg4E1EIpxHZIwazp+vY8lXDnDiKZwSRjQagx+1HT+oFfjH1Gz+ZHocuD0Dij7KL3PCY6DzIH7P5E7NVTq8d2kcG4JzwmA6M33K/OoQTw0GubUjPEqDWApF4eT6UottNve3XsNgHiWX8vaepfbzFzvyH0gHLk=
+	t=1728993810; cv=none; b=UUHLMm8gFw8gYm95tzG6l1cEgWuMDdV55owKABOSDR5HngYxhW6EOHaEN/ybOH+T3r59pur50eWYMckGbGkYuD7n/YpJGe7sIWJVaxnqPJc2b6M/ggpnl1APQkLWmJb1hfPD3GRUz/7YyhC02MASFjxw9MNjLBBqOn3rC3wc1i8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993677; c=relaxed/simple;
-	bh=YTUtRTLbaN+wfEBeOz7Tmmo+3I+rNfFbnlt/Hi0RtRM=;
+	s=arc-20240116; t=1728993810; c=relaxed/simple;
+	bh=bKPUT0dYn4U3hz+jNJoZ+yzEE49l9xU4CqQQwYt+JfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B6Ce2SyDFdV3Ztu7c4WDyHoBDISB0L5NWWi5Hrk0j6+byVEjflqQh7wnNg2d8Ynpj+dg1/hUR1zR7dkZffuU9nXjOX/fwcAcP4j5ZJHK1HqterKa8EkhfOkku2TKe1KNspVm19NLxdG/xfd4mMS926Fd6OV+CDRSfSUjiVgPhCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hYrfSr0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE393C4CEC6;
-	Tue, 15 Oct 2024 12:01:16 +0000 (UTC)
+	 MIME-Version; b=DrbB1H38kstjbcUrZqbGHJp4tKCtvUn13uJ4iWMTi7vK3yDsDItiGd5yI7acNWQFXW4XpytxSVj4JwB9LzAM9ROSRS3rjbCETb3alPp8S6xrJA9rhHQcUrsbH+HfmES7voX5KqrJhi0HQOYFK1Kfkh/oLL9+czI0K/JKviDnkPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5QgAgzD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774F1C4CEC6;
+	Tue, 15 Oct 2024 12:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993677;
-	bh=YTUtRTLbaN+wfEBeOz7Tmmo+3I+rNfFbnlt/Hi0RtRM=;
+	s=korg; t=1728993809;
+	bh=bKPUT0dYn4U3hz+jNJoZ+yzEE49l9xU4CqQQwYt+JfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0hYrfSr0MExfAmhsfwCRnOqd2xSY0AdlNcd5PjcOzKATBciywr/stmpGakzqGU4Lt
-	 qj2NoyqgE4kKInQopH03swaZoAnZzyr970IjZOIRXME220nz3h7EohDcuVXB7MX4wY
-	 h9qTJHjqU0IDW4LwK9DKt6X2AxotPtSOZAZZKcHg=
+	b=L5QgAgzDyNev4kDsAGvq3dr4DmVp25yNZrVMUJhCqa7aerKB0f3wuoywt2ZDSa3ie
+	 LcE3Rt+8Lf1XmTPndZZP22nC1Y6kguOlNNE4f6BRL1BWky3Htk2Xi1tmy2NN/jkKdo
+	 zBHdvrhPDiAWghMaT1ssJZ1u7/PDA7He7+raGT1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sinadin Shan <sinadin.shan@oracle.com>,
-	Yifei Liu <yifei.l.liu@oracle.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Shuah Khan <skhan@linuxfoundation.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 481/691] selftests: breakpoints: use remaining time to check if suspend succeed
-Date: Tue, 15 Oct 2024 13:27:09 +0200
-Message-ID: <20241015112459.430781756@linuxfoundation.org>
+Subject: [PATCH 5.15 482/691] selftests: vDSO: fix vDSO name for powerpc
+Date: Tue, 15 Oct 2024 13:27:10 +0200
+Message-ID: <20241015112459.470714946@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -67,84 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yifei Liu <yifei.l.liu@oracle.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit c66be905cda24fb782b91053b196bd2e966f95b7 ]
+[ Upstream commit 59eb856c3ed9b3552befd240c0c339f22eed3fa1 ]
 
-step_after_suspend_test fails with device busy error while
-writing to /sys/power/state to start suspend. The test believes
-it failed to enter suspend state with
+Following error occurs when running vdso_test_correctness on powerpc:
 
-$ sudo ./step_after_suspend_test
-TAP version 13
-Bail out! Failed to enter Suspend state
+~ # ./vdso_test_correctness
+[WARN]	failed to find vDSO
+[SKIP]	No vDSO, so skipping clock_gettime() tests
+[SKIP]	No vDSO, so skipping clock_gettime64() tests
+[RUN]	Testing getcpu...
+[OK]	CPU 0: syscall: cpu 0, node 0
 
-However, in the kernel message, I indeed see the system get
-suspended and then wake up later.
+On powerpc, vDSO is neither called linux-vdso.so.1 nor linux-gate.so.1
+but linux-vdso32.so.1 or linux-vdso64.so.1.
 
-[611172.033108] PM: suspend entry (s2idle)
-[611172.044940] Filesystems sync: 0.006 seconds
-[611172.052254] Freezing user space processes
-[611172.059319] Freezing user space processes completed (elapsed 0.001 seconds)
-[611172.067920] OOM killer disabled.
-[611172.072465] Freezing remaining freezable tasks
-[611172.080332] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
-[611172.089724] printk: Suspending console(s) (use no_console_suspend to debug)
-[611172.117126] serial 00:03: disabled
-some other hardware get reconnected
-[611203.136277] OOM killer enabled.
-[611203.140637] Restarting tasks ...
-[611203.141135] usb 1-8.1: USB disconnect, device number 7
-[611203.141755] done.
-[611203.155268] random: crng reseeded on system resumption
-[611203.162059] PM: suspend exit
+Also search those two names before giving up.
 
-After investigation, I noticed that for the code block
-if (write(power_state_fd, "mem", strlen("mem")) != strlen("mem"))
-	ksft_exit_fail_msg("Failed to enter Suspend state\n");
-
-The write will return -1 and errno is set to 16 (device busy).
-It should be caused by the write function is not successfully returned
-before the system suspend and the return value get messed when waking up.
-As a result, It may be better to check the time passed of those few
-instructions to determine whether the suspend is executed correctly for
-it is pretty hard to execute those few lines for 5 seconds.
-
-The timer to wake up the system is set to expire after 5 seconds and
-no re-arm. If the timer remaining time is 0 second and 0 nano secomd,
-it means the timer expired and wake the system up. Otherwise, the system
-could be considered to enter the suspend state failed if there is any
-remaining time.
-
-After appling this patch, the test would not fail for it believes the
-system does not go to suspend by mistake. It now could continue to the
-rest part of the test after suspend.
-
-Fixes: bfd092b8c272 ("selftests: breakpoint: add step_after_suspend_test")
-Reported-by: Sinadin Shan <sinadin.shan@oracle.com>
-Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: c7e5789b24d3 ("kselftest: Move test_vdso to the vDSO test suite")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/breakpoints/step_after_suspend_test.c  | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/selftests/vDSO/vdso_test_correctness.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/testing/selftests/breakpoints/step_after_suspend_test.c b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-index 2cf6f10ab7c4a..fc02918962c75 100644
---- a/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-+++ b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-@@ -153,7 +153,10 @@ void suspend(void)
- 	if (err < 0)
- 		ksft_exit_fail_msg("timerfd_settime() failed\n");
- 
--	if (write(power_state_fd, "mem", strlen("mem")) != strlen("mem"))
-+	system("(echo mem > /sys/power/state) 2> /dev/null");
-+
-+	timerfd_gettime(timerfd, &spec);
-+	if (spec.it_value.tv_sec != 0 || spec.it_value.tv_nsec != 0)
- 		ksft_exit_fail_msg("Failed to enter Suspend state\n");
- 
- 	close(timerfd);
+diff --git a/tools/testing/selftests/vDSO/vdso_test_correctness.c b/tools/testing/selftests/vDSO/vdso_test_correctness.c
+index c4aea794725a7..739cd83f3dfb7 100644
+--- a/tools/testing/selftests/vDSO/vdso_test_correctness.c
++++ b/tools/testing/selftests/vDSO/vdso_test_correctness.c
+@@ -113,6 +113,12 @@ static void fill_function_pointers()
+ 	if (!vdso)
+ 		vdso = dlopen("linux-gate.so.1",
+ 			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
++	if (!vdso)
++		vdso = dlopen("linux-vdso32.so.1",
++			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
++	if (!vdso)
++		vdso = dlopen("linux-vdso64.so.1",
++			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
+ 	if (!vdso) {
+ 		printf("[WARN]\tfailed to find vDSO\n");
+ 		return;
 -- 
 2.43.0
 
