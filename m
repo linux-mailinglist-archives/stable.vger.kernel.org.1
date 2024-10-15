@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-85488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA4099E789
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:54:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C2099E794
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:55:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E84E7282AA9
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:54:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37866B210F1
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6875D1D90CD;
-	Tue, 15 Oct 2024 11:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96A21D90DB;
+	Tue, 15 Oct 2024 11:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJbQJ5S8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aoT1NZgE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276EC1D0492;
-	Tue, 15 Oct 2024 11:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DFB1D0492;
+	Tue, 15 Oct 2024 11:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993284; cv=none; b=nz/XZyrPNY5uCxoKHE3TABYzw0YuKojNwB5ynx3eMpVd6gpIQ1+q2zgmXmEYQKsiNLy4is7c+Sa9Yk+g3HAGpLRsntFeKEY17lyi0YlJdcZPdJEK/Kxj07YIBBqigocg5MCedCQoEAADKZ/yTjv7tR6VLpVCYiSibhyPaX4BYVg=
+	t=1728993321; cv=none; b=EjBT3lIINZMXxpcnUtkQvNDDqETwJKfPxSQKe/ab2zps67i6BsjqR70h4b+gSiLvKMjnulOy60dwgYQFwsV/++k0iHqgObpaojrWDtOU91OYZ9044oG9eUcMzxDwnoDuASvGQeYrXdPMAIwA5T8TS8Shbr/l1U+MfM5DTvv6LBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993284; c=relaxed/simple;
-	bh=mSiqFcot80xd3L4aT6nKSB2n8p7ZuRnJJF0DKlytGjY=;
+	s=arc-20240116; t=1728993321; c=relaxed/simple;
+	bh=QhaZSNR3nbnBLQAbjoY8Cg5XA85bjHvUtyEwWsaDfQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pKM4dX1SpRRIFDvzekdJNPQEND4PQ3zMBd1PUcAVlijn/nZuV3SkLudZHCvLDhpUZgbROZKptuBaDtu+kmY7LK460I503eykpbHgeTOJrv36uZFaVUlV2vMhseGmAJ288mAmVjeta0JurcE1VZBWWy4TamFd1dayguT7m8DLwM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJbQJ5S8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8663BC4CEC6;
-	Tue, 15 Oct 2024 11:54:43 +0000 (UTC)
+	 MIME-Version; b=UxfHPAS+j5hdDe6gHnfcuw8cisgarVO60kpoJOpLC8r2q1MfOurQMfYk6uLU/lo+5n+j7j4XCfHUJh1Szgork/x+xuG1mLyNI4TjJKlFpmfn0NlIjv0cjTFgCF2MXmttaQPL9IHcYdXD6dnHvZC0X5C1k2nlDB3OzlFWPDOmXus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aoT1NZgE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18E1C4CECE;
+	Tue, 15 Oct 2024 11:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993284;
-	bh=mSiqFcot80xd3L4aT6nKSB2n8p7ZuRnJJF0DKlytGjY=;
+	s=korg; t=1728993321;
+	bh=QhaZSNR3nbnBLQAbjoY8Cg5XA85bjHvUtyEwWsaDfQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJbQJ5S8uwvYYsrHLYY/ZjMEDqKtTX46G0gGNYH+cShXRUQ4NhShhWnZQIODJBZ1c
-	 l2ovgvoK+QvZymuo1BIdMBRQPYd8sPPUAem1RTAPA5O72oAxn1c8bYDzymq3LzrJRd
-	 zQ+4z1jqbphElTttAu8tVwluwayG5jqHa1Ty1inE=
+	b=aoT1NZgEQ+mNw4Z+XqhZtZHEvQc3L163uOzo9UPXBlPXiC04GrnKo9rtcYG+ht6cQ
+	 HhMvsYTSzdc0g07MhStpJM94ecm3xObwnE/lxu4n8taOQgMGFoEPIrhtO6g5UAwgzU
+	 HfMZnMb/1L96HsBtdjQRjJwOE1+jPcpVxEsAWMV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>
-Subject: [PATCH 5.15 348/691] EDAC/igen6: Fix conversion of system address to physical memory address
-Date: Tue, 15 Oct 2024 13:24:56 +0200
-Message-ID: <20241015112454.152861867@linuxfoundation.org>
+	Christian Gafert <christian.gafert@rohde-schwarz.com>,
+	Max Ferger <max.ferger@rohde-schwarz.com>,
+	Van Giang Nguyen <vangiang.nguyen@rohde-schwarz.com>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.15 349/691] padata: use integer wrap around to prevent deadlock on seq_nr overflow
+Date: Tue, 15 Oct 2024 13:24:57 +0200
+Message-ID: <20241015112454.192080871@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -65,36 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: VanGiang Nguyen <vangiang.nguyen@rohde-schwarz.com>
 
-commit 0ad875f442e95d69a1145a38aabac2fd29984fe3 upstream.
+commit 9a22b2812393d93d84358a760c347c21939029a6 upstream.
 
-The conversion of system address to physical memory address (as viewed by
-the memory controller) by igen6_edac is incorrect when the system address
-is above the TOM (Total amount Of populated physical Memory) for Elkhart
-Lake and Ice Lake (Neural Network Processor). Fix this conversion.
+When submitting more than 2^32 padata objects to padata_do_serial, the
+current sorting implementation incorrectly sorts padata objects with
+overflowed seq_nr, causing them to be placed before existing objects in
+the reorder list. This leads to a deadlock in the serialization process
+as padata_find_next cannot match padata->seq_nr and pd->processed
+because the padata instance with overflowed seq_nr will be selected
+next.
 
-Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/stable/20240814061011.43545-1-qiuxu.zhuo%40intel.com
+To fix this, we use an unsigned integer wrap around to correctly sort
+padata objects in scenarios with integer overflow.
+
+Fixes: bfde23ce200e ("padata: unbind parallel jobs from specific CPUs")
+Cc: <stable@vger.kernel.org>
+Co-developed-by: Christian Gafert <christian.gafert@rohde-schwarz.com>
+Signed-off-by: Christian Gafert <christian.gafert@rohde-schwarz.com>
+Co-developed-by: Max Ferger <max.ferger@rohde-schwarz.com>
+Signed-off-by: Max Ferger <max.ferger@rohde-schwarz.com>
+Signed-off-by: Van Giang Nguyen <vangiang.nguyen@rohde-schwarz.com>
+Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/igen6_edac.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/padata.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/edac/igen6_edac.c
-+++ b/drivers/edac/igen6_edac.c
-@@ -245,7 +245,7 @@ static u64 ehl_err_addr_to_imc_addr(u64
- 	if (igen6_tom <= _4GB)
- 		return eaddr + igen6_tolud - _4GB;
- 
--	if (eaddr < _4GB)
-+	if (eaddr >= igen6_tom)
- 		return eaddr + igen6_tolud - igen6_tom;
- 
- 	return eaddr;
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -396,7 +396,8 @@ void padata_do_serial(struct padata_priv
+ 	/* Sort in ascending order of sequence number. */
+ 	list_for_each_prev(pos, &reorder->list) {
+ 		cur = list_entry(pos, struct padata_priv, list);
+-		if (cur->seq_nr < padata->seq_nr)
++		/* Compare by difference to consider integer wrap around */
++		if ((signed int)(cur->seq_nr - padata->seq_nr) < 0)
+ 			break;
+ 	}
+ 	list_add(&padata->list, pos);
 
 
 
