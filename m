@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-85990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B421799EB22
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:03:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 567E199EAFA
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:01:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69B701F22B23
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:03:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DC891F21E5A
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607B11AF0BF;
-	Tue, 15 Oct 2024 13:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB44F1C07E0;
+	Tue, 15 Oct 2024 13:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8Yt3uKx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1xag1H/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9C51C07F2;
-	Tue, 15 Oct 2024 13:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB121C07C4;
+	Tue, 15 Oct 2024 13:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997398; cv=none; b=PO5/1cZT3kN5MXeXp6YeMuDz0P30huZ1YFuotDMjrhbVrqnGfTpFis7egXZ9DoPxvNUfUchl7hSXGNilYYAkTX596sd6dBJc3TAn85ujHRvtbWJ3tDCulXsbSiBJwA93bdYl7C90CimgMnl5lJC96mGMxPJvxlG9o4oynYvCcv4=
+	t=1728997291; cv=none; b=DMWXTxt0Doyy3Sy3vZR35DCpBVbdFE8Cr0KobTBU+nFekIjyKDoRO6Hq9n9xQMgdZ62yr3Xhds94eWYwvvjlwSDbBOsybYyMB5tAB+w82S0rppqfOsmIZD1/smPURVLUdsb2vTxHR2Krbk5xH8rRrNAJMdy1mWvswbKf7mTqEC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997398; c=relaxed/simple;
-	bh=dFn1OUH4tfdKz5hCWAVxWd38tsX5PUeXsA11rJPXsG4=;
+	s=arc-20240116; t=1728997291; c=relaxed/simple;
+	bh=Ak8mx7Lb9IO4HpTGFW9h4z79ad/Fba9+ZWYfYXL10ZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=duu1IJteSMq34XHvo5Okkr4pPyKsFbB+dbyknqu6EUrG7Q8jpjlQNqfG0LtCbKUy54R22n/fZlv/r/UsLzbAPg+Nj5GEZTTQjKifdaSo+a+2Fjw+KrOu6CZqc53LwKoWAO3t5oDsnejivSA6Y7snDBh9xwpOwf0fsjeQ6ThYGDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8Yt3uKx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F227C4CEC6;
-	Tue, 15 Oct 2024 13:03:17 +0000 (UTC)
+	 MIME-Version; b=hL1vR9QSyfZRbT20HoPMbKHMANM+FVtX9TM3BzBs77RFn9XTeqimdQ2377/QXm4C+pZS4Ee1QURl6YY+ChRU4krmPgIXHKIRtIiunltuT63ReBDeFOtVkSfUxtIoTb2tpR38M6f4Me1Z8FcMaNQxaSAsDqnpWp1fMuqkbIL/xc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1xag1H/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DA0C4CECE;
+	Tue, 15 Oct 2024 13:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997398;
-	bh=dFn1OUH4tfdKz5hCWAVxWd38tsX5PUeXsA11rJPXsG4=;
+	s=korg; t=1728997291;
+	bh=Ak8mx7Lb9IO4HpTGFW9h4z79ad/Fba9+ZWYfYXL10ZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8Yt3uKxWKU5Kj4BitFh6JgWZPBA2dGMEeEk3Vre5qzkOlsh+MVVvItDnO+2JmtYu
-	 RCgZaOeIDCasVJlFIuMZ98JQv4Kdqhmo1zLQZ9vCGUhTZjUPJVTej9hzY2Q+srFl5a
-	 iPc0nmZuIIpV40emAzQiWH18NZEXAyttzJ6XMI4k=
+	b=X1xag1H/iUs904X/AJU+24dnRyCl1yj51JwXPVlYD/dxGFTNVvVQ2orZPNDjuKkst
+	 JpkdbdGYXSoHStFtD7qT7GN9ei6wWJVdBuanXj6Bpb30SlY9WiHipQcHQ/0kdbNuHR
+	 +s/cDzjnawgbuZZHYnZiug9iI4r3mdxUUgTTzb3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tony Ambardar <tony.ambardar@gmail.com>,
 	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 140/518] selftests/bpf: Fix compiling tcp_rtt.c with musl-libc
-Date: Tue, 15 Oct 2024 14:40:44 +0200
-Message-ID: <20241015123922.399256178@linuxfoundation.org>
+Subject: [PATCH 5.10 141/518] selftests/bpf: Fix errors compiling cg_storage_multi.h with musl libc
+Date: Tue, 15 Oct 2024 14:40:45 +0200
+Message-ID: <20241015123922.439539529@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -68,39 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 18826fb0b79c3c3cd1fe765d85f9c6f1a902c722 ]
+[ Upstream commit 730561d3c08d4a327cceaabf11365958a1c00cec ]
 
-The GNU version of 'struct tcp_info' in 'netinet/tcp.h' is not exposed by
-musl headers unless _GNU_SOURCE is defined.
+Remove a redundant include of '<asm/types.h>', whose needed definitions are
+already included (via '<linux/types.h>') in cg_storage_multi_egress_only.c,
+cg_storage_multi_isolated.c, and cg_storage_multi_shared.c. This avoids
+redefinition errors seen compiling for mips64el/musl-libc like:
 
-Add this definition to fix errors seen compiling for mips64el/musl-libc:
+  In file included from progs/cg_storage_multi_egress_only.c:13:
+  In file included from progs/cg_storage_multi.h:6:
+  In file included from /usr/mips64el-linux-gnuabi64/include/asm/types.h:23:
+  /usr/include/asm-generic/int-l64.h:29:25: error: typedef redefinition with different types ('long' vs 'long long')
+     29 | typedef __signed__ long __s64;
+        |                         ^
+  /usr/include/asm-generic/int-ll64.h:30:44: note: previous definition is here
+     30 | __extension__ typedef __signed__ long long __s64;
+        |                                            ^
 
-  tcp_rtt.c: In function 'wait_for_ack':
-  tcp_rtt.c:24:25: error: storage size of 'info' isn't known
-     24 |         struct tcp_info info;
-        |                         ^~~~
-  tcp_rtt.c:24:25: error: unused variable 'info' [-Werror=unused-variable]
-  cc1: all warnings being treated as errors
-
-Fixes: 1f4f80fed217 ("selftests/bpf: test_progs: convert test_tcp_rtt")
+Fixes: 9e5bd1f7633b ("selftests/bpf: Test CGROUP_STORAGE map can't be used by multiple progs")
 Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
 Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/f2329767b15df206f08a5776d35a47c37da855ae.1721713597.git.tony.ambardar@gmail.com
+Link: https://lore.kernel.org/bpf/4f4702e9f6115b7f84fea01b2326ca24c6df7ba8.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/tcp_rtt.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/bpf/progs/cg_storage_multi.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c b/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
-index d207e968e6b1b..dee68ef976ae9 100644
---- a/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
-+++ b/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
-@@ -1,4 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
- #include <test_progs.h>
- #include "cgroup_helpers.h"
- #include "network_helpers.h"
+diff --git a/tools/testing/selftests/bpf/progs/cg_storage_multi.h b/tools/testing/selftests/bpf/progs/cg_storage_multi.h
+index a0778fe7857a1..41d59f0ee606c 100644
+--- a/tools/testing/selftests/bpf/progs/cg_storage_multi.h
++++ b/tools/testing/selftests/bpf/progs/cg_storage_multi.h
+@@ -3,8 +3,6 @@
+ #ifndef __PROGS_CG_STORAGE_MULTI_H
+ #define __PROGS_CG_STORAGE_MULTI_H
+ 
+-#include <asm/types.h>
+-
+ struct cgroup_value {
+ 	__u32 egress_pkts;
+ 	__u32 ingress_pkts;
 -- 
 2.43.0
 
