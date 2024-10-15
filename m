@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-85657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C66F99E84B
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:04:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EBB99E859
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:04:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DBEC1C22135
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:04:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AD801F21D46
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E98E1E7640;
-	Tue, 15 Oct 2024 12:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7741C57B1;
+	Tue, 15 Oct 2024 12:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKxZCNC2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxPxQ2gA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEA11C57B1;
-	Tue, 15 Oct 2024 12:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F211CFEA9;
+	Tue, 15 Oct 2024 12:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993849; cv=none; b=SKBHFUddrJgbkOyjzx4BmV3eTfwwAVykBY6RbhVpjNlc+Ea7Ohy9t4yrfNxNFu2ljkkH4n1xADwn9D0JYR5i2TrJI4xEet8nu6uGmT8hznqTUHt6eZryCDoni59HdKW3C75mAvZ+eXQ9EQ+CTYfcPFH7Tdk9LlH9EcloQToCmgU=
+	t=1728993891; cv=none; b=ukvImrLtEWFjyLPW4IrTmzZvZBORI8ORX4PSVHLeM7v3SqFcOCsjawnA9KD0Yyh94bqJ+JPAs7O7yrurV8VY8oF3sWMgJdGpVZGphY0sI1S4zSnwpTLRNzctqd+g4D9FsOjen823/pZhKOv7tyEG62z0pZMz4KAM3aEzxrxqqiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993849; c=relaxed/simple;
-	bh=kaLDUmZzMagFBeSWL2mOoeFjvVQdglBceOQsqDkfebE=;
+	s=arc-20240116; t=1728993891; c=relaxed/simple;
+	bh=mTWH6Fk7nxhNb6hPBez7TzQ2ghaZb+Pe7kVYevSsXIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lg8rha2qE64QZqgUyyxE9LdnX1gDwQ+Qnv8HtvqOEmAjpzU2YcZMBWOFqnHo2K9UkzoifgL8fSF4x79u8qmaiSI3KE1HEzEvpfqxQzG/pxftabDfWtw1aYvE1A5ryJ//u+x+JCwk3tNq9FJP2e5g+bE4A+CWpAd56poJCxdcw9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKxZCNC2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48EBC4CEC6;
-	Tue, 15 Oct 2024 12:04:08 +0000 (UTC)
+	 MIME-Version; b=VOF5FhOJqxxFjycOCLPPOv3GP5+MrITR7rXqZ+y049BKG+wava5dGOyTW177VvAFWEcgbLmoM3DIR4F2Fb+LPp2oJwMhF7cCyobOc+zkonwylhHAD8B0hegMsrzqbbYvjiVeioc2x6eXXrczPZaLwwf/LEZIomwGnbpsrJWVZi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxPxQ2gA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179DCC4CEC6;
+	Tue, 15 Oct 2024 12:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993849;
-	bh=kaLDUmZzMagFBeSWL2mOoeFjvVQdglBceOQsqDkfebE=;
+	s=korg; t=1728993891;
+	bh=mTWH6Fk7nxhNb6hPBez7TzQ2ghaZb+Pe7kVYevSsXIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AKxZCNC2C1t4zwycdbjQ2JxN5TiZrIsOrR3GRTNP/aye+dd4bzm9yFAKKkOsTwqPg
-	 jvgu7wzaY6DlDhajNHutPJSR0vM5f1ZoiXjjhh/vNd+zuGCtRaib2WmxTavvmzM7r2
-	 aUO3zHAkY1i7B49xuVYsr1Ex+LFn+EbnjVDaCbrk=
+	b=TxPxQ2gAbWZwtpvDvqJal1zEaYWGYdhQyisrlFzN+lGugx/VCulm7kZyvGE734X64
+	 4UysZlZu1OwlkXJO88pY04v8SQpq75e6EMP3t5qhrRYKFrfJ/iaOX/LpExhXQpsnqg
+	 Oq46Qd65GkWQFWwE0WYG8doLACbaqD3Ic5DEBhoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 5.15 517/691] riscv: define ILLEGAL_POINTER_VALUE for 64bit
-Date: Tue, 15 Oct 2024 13:27:45 +0200
-Message-ID: <20241015112500.864994256@linuxfoundation.org>
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Aoyama Wataru <wataru.aoyama@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 5.15 518/691] exfat: fix memory leak in exfat_load_bitmap()
+Date: Tue, 15 Oct 2024 13:27:46 +0200
+Message-ID: <20241015112500.903784802@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -65,39 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-commit 5c178472af247c7b50f962495bb7462ba453b9fb upstream.
+commit d2b537b3e533f28e0d97293fe9293161fe8cd137 upstream.
 
-This is used in poison.h for poison pointer offset. Based on current
-SV39, SV48 and SV57 vm layout, 0xdead000000000000 is a proper value
-that is not mappable, this can avoid potentially turning an oops to
-an expolit.
+If the first directory entry in the root directory is not a bitmap
+directory entry, 'bh' will not be released and reassigned, which
+will cause a memory leak.
 
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Fixes: fbe934d69eb7 ("RISC-V: Build Infrastructure")
+Fixes: 1e49a94cf707 ("exfat: add bitmap operations")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240705170210.3236-1-jszhang@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Reviewed-by: Aoyama Wataru <wataru.aoyama@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/Kconfig |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/exfat/balloc.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -210,6 +210,11 @@ config GENERIC_HWEIGHT
- config FIX_EARLYCON_MEM
- 	def_bool MMU
+--- a/fs/exfat/balloc.c
++++ b/fs/exfat/balloc.c
+@@ -110,11 +110,8 @@ int exfat_load_bitmap(struct super_block
+ 				return -EIO;
  
-+config ILLEGAL_POINTER_VALUE
-+	hex
-+	default 0 if 32BIT
-+	default 0xdead000000000000 if 64BIT
+ 			type = exfat_get_entry_type(ep);
+-			if (type == TYPE_UNUSED)
+-				break;
+-			if (type != TYPE_BITMAP)
+-				continue;
+-			if (ep->dentry.bitmap.flags == 0x0) {
++			if (type == TYPE_BITMAP &&
++			    ep->dentry.bitmap.flags == 0x0) {
+ 				int err;
+ 
+ 				err = exfat_allocate_bitmap(sb, ep);
+@@ -122,6 +119,9 @@ int exfat_load_bitmap(struct super_block
+ 				return err;
+ 			}
+ 			brelse(bh);
 +
- config PGTABLE_LEVELS
- 	int
- 	default 3 if 64BIT
++			if (type == TYPE_UNUSED)
++				return -EINVAL;
+ 		}
+ 
+ 		if (exfat_get_next_cluster(sb, &clu.dir))
 
 
 
