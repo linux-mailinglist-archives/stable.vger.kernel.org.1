@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-85577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 639D899E7EF
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:59:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E34499E7CA
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:58:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02FE3B23480
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:59:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0278E280D9D
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBEC11E8855;
-	Tue, 15 Oct 2024 11:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8121EABCC;
+	Tue, 15 Oct 2024 11:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtd41ucx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuIa0shL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A93C1E764B;
-	Tue, 15 Oct 2024 11:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4931EABA8;
+	Tue, 15 Oct 2024 11:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993581; cv=none; b=JJUlpLuc/npcn0uGsp5bfMXFpjaGIAc0yXClN+hUYuODfXwTgBsmLwFdqBLpUZKa8zeg/mSnVtFw4r9jnYIcP0OdkzefmQ/PHqMHAU6zWJGDERjVPEtdlExbjKJLQHahZnTSoYfTBItVTKYihZ4AY9A8bib2VOdkB9lpROWmUAM=
+	t=1728993477; cv=none; b=m7gzGFwjGoHeI92FZvQMURlUfcqs1WhHuzK+wsFyDFx1BVOCmCFkz8CfLO+jDJcZq7mZj0KLi7tvlZXO1s4GDzujnm59sPk6vdlpfurjY1s45TPsIy24zw8MZjj5f6T+XrHt1Hm9Or8/+dgZCofny70icQYD6C0mPMrzxiRCZPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993581; c=relaxed/simple;
-	bh=0rxiGhCqze81dqv+Bc71vv0HniVUrZk/kowlFrLeuKg=;
+	s=arc-20240116; t=1728993477; c=relaxed/simple;
+	bh=Gej8DbtnNdAYDFIjerPjju/hvuLPTj7O5g4w0XrpTIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M9/adRUeMIwiLLw0AnFimEvtOT/W2jJ00lrOf2Pu9z02WMM42PBuiUtHSFNTF2RHCTbbJvYf4kywTDi/cVlD8aQhEhzXu5Ss73luZM4AM5dXn4MjVUS4if/zA64CrFcxDm0AgjlonXOH+ghbKInNVSyKnDnyUQmN5KI8p4KmjdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtd41ucx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F87C4CECE;
-	Tue, 15 Oct 2024 11:59:40 +0000 (UTC)
+	 MIME-Version; b=ZdeOjdcLiZHWgclr13GKU8nb6M4IV2ZdP4y754l0rURnQvE9hA1RaZAcfTjq/mhuQKsf2TQXUP+keZ/8ggUROwqIPEuvrP+Ue9r9peLCKbzkGNE8VKAjJlgWqEXmvM8Mb6txN5TntY5Ei+RZeXaRlzBUlxwS4UCsOqdNd60rmI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuIa0shL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68946C4CECF;
+	Tue, 15 Oct 2024 11:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993581;
-	bh=0rxiGhCqze81dqv+Bc71vv0HniVUrZk/kowlFrLeuKg=;
+	s=korg; t=1728993476;
+	bh=Gej8DbtnNdAYDFIjerPjju/hvuLPTj7O5g4w0XrpTIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtd41ucx5zQoim11porDZZXmHbmW8dlXE+cyaPyTwF8xbCm76HzDhnv9rOiDaGLSs
-	 dkhM5Tv7Qg5YppUo/7i/slmzVSWtjNody5NC8xCD3yxINi88p0rj0PrtF9kLDWh3Ke
-	 aOSLn2o0dxhvEkZ6tWckMK5TwtNBfnvwQ500/wIg=
+	b=DuIa0shLK0MTX8GNq+Ez8IBJDC2B1kcXesHFQ8Y8eMLtzk0Gy95q1NA/fFB3fqhI2
+	 4Ubd2V5IEYUvTvJ49O4AOkfGUJF+NU2S5f5xFd14jOGYlYGakcM6TXcTg/uX67aTgP
+	 KsNziosELgY+8pbsbzJXKDcPZ2enuVY9YZAqrOXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 423/691] ACPICA: check null return of ACPI_ALLOCATE_ZEROED() in acpi_db_convert_to_package()
-Date: Tue, 15 Oct 2024 13:26:11 +0200
-Message-ID: <20241015112457.133699832@linuxfoundation.org>
+Subject: [PATCH 5.15 424/691] tipc: guard against string buffer overrun
+Date: Tue, 15 Oct 2024 13:26:12 +0200
+Message-ID: <20241015112457.172743968@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -66,38 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit a5242874488eba2b9062985bf13743c029821330 ]
+[ Upstream commit 6555a2a9212be6983d2319d65276484f7c5f431a ]
 
-ACPICA commit 4d4547cf13cca820ff7e0f859ba83e1a610b9fd0
+Smatch reports that copying media_name and if_name to name_parts may
+overwrite the destination.
 
-ACPI_ALLOCATE_ZEROED() may fail, elements might be NULL and will cause
-NULL pointer dereference later.
+ .../bearer.c:166 bearer_name_validate() error: strcpy() 'media_name' too large for 'name_parts->media_name' (32 vs 16)
+ .../bearer.c:167 bearer_name_validate() error: strcpy() 'if_name' too large for 'name_parts->if_name' (1010102 vs 16)
 
-Link: https://github.com/acpica/acpica/commit/4d4547cf
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://patch.msgid.link/tencent_4A21A2865B8B0A0D12CAEBEB84708EDDB505@qq.com
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+This does seem to be the case so guard against this possibility by using
+strscpy() and failing if truncation occurs.
+
+Introduced by commit b97bf3fd8f6a ("[TIPC] Initial merge")
+
+Compile tested only.
+
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240801-tipic-overrun-v2-1-c5b869d1f074@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/dbconvert.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/tipc/bearer.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/acpica/dbconvert.c b/drivers/acpi/acpica/dbconvert.c
-index 2b84ac093698a..8dbab69320499 100644
---- a/drivers/acpi/acpica/dbconvert.c
-+++ b/drivers/acpi/acpica/dbconvert.c
-@@ -174,6 +174,8 @@ acpi_status acpi_db_convert_to_package(char *string, union acpi_object *object)
- 	elements =
- 	    ACPI_ALLOCATE_ZEROED(DB_DEFAULT_PKG_ELEMENTS *
- 				 sizeof(union acpi_object));
-+	if (!elements)
-+		return (AE_NO_MEMORY);
+diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
+index 17e8e6e3670ab..8c2793181ee7b 100644
+--- a/net/tipc/bearer.c
++++ b/net/tipc/bearer.c
+@@ -163,8 +163,12 @@ static int bearer_name_validate(const char *name,
  
- 	this = string;
- 	for (i = 0; i < (DB_DEFAULT_PKG_ELEMENTS - 1); i++) {
+ 	/* return bearer name components, if necessary */
+ 	if (name_parts) {
+-		strcpy(name_parts->media_name, media_name);
+-		strcpy(name_parts->if_name, if_name);
++		if (strscpy(name_parts->media_name, media_name,
++			    TIPC_MAX_MEDIA_NAME) < 0)
++			return 0;
++		if (strscpy(name_parts->if_name, if_name,
++			    TIPC_MAX_IF_NAME) < 0)
++			return 0;
+ 	}
+ 	return 1;
+ }
 -- 
 2.43.0
 
