@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-85239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F9EF99E668
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:42:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A6A99E62C
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1B061C2164B
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:42:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA0701F24B88
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6CA81F12ED;
-	Tue, 15 Oct 2024 11:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B19D91E907E;
+	Tue, 15 Oct 2024 11:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/r0rjdq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IRACH1Z1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4881EF95B;
-	Tue, 15 Oct 2024 11:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4541E7669;
+	Tue, 15 Oct 2024 11:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728992437; cv=none; b=Jfo4EjKk0ie4mO6mU7PIw7LLP0SPmfzDUGvSoaUvzGLvgodE9QAITnUntxDvvH8VyB1IGY6t7VOj9B/8E6JcXod7avhT7Np2xtVOOnu4LjIlaIuWgvj7jY4kHoDRWFzth46wVdTrZC+VbFEph3kuq7PsW8E8H/9ZT39Hg0DYydc=
+	t=1728992324; cv=none; b=RszUT5eC8QrNHanVsdQEsIOxt28EmMoEHM4SSrosJNYgf2armJlnMMXk494JRwYiypF73adrRAS7PCYkckcA3I7NlrJG419bsgPOdAO1coySy1w2/lSuIgjs2S4Uou0cs7FINMQyZFc1nEZ3z/x/TaPSXYjnEqJy2Ik75Oev0OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728992437; c=relaxed/simple;
-	bh=OSa0gwsklTMkY3XG0D0/nlQ7pFAZn9ltCeBAuQR++l8=;
+	s=arc-20240116; t=1728992324; c=relaxed/simple;
+	bh=HM10kq5mm+L+xrxWNZHvfFzUS/xJSPAgekhlOs+yePg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WIaRXgGteFSGkI+zG2j4v+Vm0wKEer1mDAryUpK7NQk/6HgYbIGmWrdOvm0Tj/eUCcfDWVYDqJKeihdyyGuaI7Kx5csTjVTvaHGdohuB7LTyzLHkOlbwLbrCqeI7Vi4Tt2UtpUPKkib01HNetnTokMb1N7HfF31AvKnL2PWOtFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/r0rjdq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0FE4C4CEC6;
-	Tue, 15 Oct 2024 11:40:36 +0000 (UTC)
+	 MIME-Version; b=caVhDqN6Nai7m+JTIHH4hcMDtkyzqFMXHHzssc8HaAAiVXmifFpaz+5hT/3STpxAOzTt6gI3iTksLpL8QISRTeQMIpjepf1lOFlj84sWo7RBRyen07hz1zqZwa8X1wMsu31LBNzvxoEqTpRe0EzeLVu3Oy2pr51PcusjOS/OSf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IRACH1Z1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C063C4CEC6;
+	Tue, 15 Oct 2024 11:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728992437;
-	bh=OSa0gwsklTMkY3XG0D0/nlQ7pFAZn9ltCeBAuQR++l8=;
+	s=korg; t=1728992324;
+	bh=HM10kq5mm+L+xrxWNZHvfFzUS/xJSPAgekhlOs+yePg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o/r0rjdqFSw38ElKzbNzubBxa6aVlOTaHHcJCeJ7xgCffYQARcK14jSTGAfLASIWI
-	 8XCJ2R0jXmj7Yjw0lQ3YB24d9Li3L9c9mnP38qkkxjnkGkUL+kB8qruXGXEL8a3alC
-	 SorTZqxA7zCphRMRt8Ef1DwWZdadeC64ecivgpTg=
+	b=IRACH1Z1dfvRA0UMUKjnBWdAb8UmKc3pzlc94TFyymY41U8Pg6JNybdZPG4dIMwDd
+	 5IXKbPEjOXKTb2KOOWY+E7eMIIFdiqs1adCj/0NtrH6pDcR2ZbXh10ecIb+hjBoIVU
+	 7FqdfKjet/50HaXpHDRVxA+Yxt9JIRMmaIt+qjlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Chen <liaochen4@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Roman Kisel <romank@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 075/691] spi: bcm63xx: Enable module autoloading
-Date: Tue, 15 Oct 2024 13:20:23 +0200
-Message-ID: <20241015112443.335204467@linuxfoundation.org>
+Subject: [PATCH 5.15 076/691] x86/hyperv: Set X86_FEATURE_TSC_KNOWN_FREQ when Hyper-V provides frequency
+Date: Tue, 15 Oct 2024 13:20:24 +0200
+Message-ID: <20241015112443.374676641@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -66,33 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Liao Chen <liaochen4@huawei.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit 709df70a20e990d262c473ad9899314039e8ec82 ]
+[ Upstream commit 8fcc514809de41153b43ccbe1a0cdf7f72b78e7e ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
-on the alias from of_device_id table.
+A Linux guest on Hyper-V gets the TSC frequency from a synthetic MSR, if
+available. In this case, set X86_FEATURE_TSC_KNOWN_FREQ so that Linux
+doesn't unnecessarily do refined TSC calibration when setting up the TSC
+clocksource.
 
-Signed-off-by: Liao Chen <liaochen4@huawei.com>
-Link: https://patch.msgid.link/20240831094231.795024-1-liaochen4@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+With this change, a message such as this is no longer output during boot
+when the TSC is used as the clocksource:
+
+[    1.115141] tsc: Refined TSC clocksource calibration: 2918.408 MHz
+
+Furthermore, the guest and host will have exactly the same view of the
+TSC frequency, which is important for features such as the TSC deadline
+timer that are emulated by the Hyper-V host.
+
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20240606025559.1631-1-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240606025559.1631-1-mhklinux@outlook.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm63xx.c | 1 +
+ arch/x86/kernel/cpu/mshyperv.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 147199002df1e..a9921dcd6b797 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -482,6 +482,7 @@ static const struct of_device_id bcm63xx_spi_of_match[] = {
- 	{ .compatible = "brcm,bcm6358-spi", .data = &bcm6358_spi_reg_offsets },
- 	{ },
- };
-+MODULE_DEVICE_TABLE(of, bcm63xx_spi_of_match);
+diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+index 8d3c649a1769b..3794b223fd69c 100644
+--- a/arch/x86/kernel/cpu/mshyperv.c
++++ b/arch/x86/kernel/cpu/mshyperv.c
+@@ -322,6 +322,7 @@ static void __init ms_hyperv_init_platform(void)
+ 	    ms_hyperv.misc_features & HV_FEATURE_FREQUENCY_MSRS_AVAILABLE) {
+ 		x86_platform.calibrate_tsc = hv_get_tsc_khz;
+ 		x86_platform.calibrate_cpu = hv_get_tsc_khz;
++		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
+ 	}
  
- static int bcm63xx_spi_probe(struct platform_device *pdev)
- {
+ 	if (ms_hyperv.priv_high & HV_ISOLATION) {
 -- 
 2.43.0
 
