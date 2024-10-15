@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-85634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7693299E82E
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8623699E830
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:03:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A872C1C21A70
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:02:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B81921C20EB9
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A331E7640;
-	Tue, 15 Oct 2024 12:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA001E1A35;
+	Tue, 15 Oct 2024 12:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ApnckhAd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8zbqzva"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4101F1CFEA9;
-	Tue, 15 Oct 2024 12:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EF91CFEA9;
+	Tue, 15 Oct 2024 12:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993774; cv=none; b=iXtvsmKT3OAlmWtIBu2Z2YkBQFKUgxOeJ6mhMcx7/RNLIwpGwUIv86/2YAm8uqiPCoPB8H3lbdAMpYZphzskpIXcVxJwKmAFcgsZI/p4Vj8Mh3rayx7iUOEnPlbFlBSDD5NCua8LwkBbah7L1N6HkYhkQkKL6qWHqN1XyqYmGTs=
+	t=1728993780; cv=none; b=j76EKABu4DFKuP/QbS8HY2BIECktrgvJonFqMczzICXKCnQUipbB+/T9eGaQJ5oAhFKFFyg9CvphhSZcbpCSAkZei0K0jpKQloCi/As7QFqKU3T3n5m+HjB9VKdJjkyxX2ov2GzmeIVbZdq+h8yNHsIWb1z2eWOjkKcTjpBoe/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993774; c=relaxed/simple;
-	bh=bTgvN3pbuHWcBoxXIHc0c4e3BOrMX0kDmJ00oez0ANY=;
+	s=arc-20240116; t=1728993780; c=relaxed/simple;
+	bh=8Gml2jdVqVNppTCy13P3oJ4qGKS0vj7FLCDcyBwSOOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qUx1hCSm0cI2xb+EaznjOIMyMlAJYUgnTzYXbeyrcQZyvTVQGnNfxvHZlY02KzKip1uQ7s7xhC2OhJJVGvelO7moStdwv6OPYs0aD8m3VctQIvT7G0RSXgNJbIxQ9O6aW90Aktglcl4Zkcnk1LJQZjiae38Wtfw3q/SzWcLyiOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ApnckhAd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BECEBC4CEC6;
-	Tue, 15 Oct 2024 12:02:53 +0000 (UTC)
+	 MIME-Version; b=RNvco66An9qu8mBIBf+kdqnOonEMimxtigruPyynI2fXzg7WwLfcOCzRyzDsE8VAyTcfOFYP0INOz3vwhGbUxX1TkXR2HIYavvPB+jcXZOHk9Br7utVuD2XIaltTne0rCD0mgKDhLta8u1ORiQjmjiYRjxL0QZ6KKcn+J0fG4Bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8zbqzva; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289BAC4CEC6;
+	Tue, 15 Oct 2024 12:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993774;
-	bh=bTgvN3pbuHWcBoxXIHc0c4e3BOrMX0kDmJ00oez0ANY=;
+	s=korg; t=1728993780;
+	bh=8Gml2jdVqVNppTCy13P3oJ4qGKS0vj7FLCDcyBwSOOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ApnckhAd9IHStn0sE1HW1gqqRrWwp1YwzvXUq0ct2aGz3p8WclF+HmxQ6DrUWxvSd
-	 E20DyKgDV0wGynWVcqybOmTvbE934SUkiMugdMtUp3Ic4Y452kWIiQz7TuLnrQetiB
-	 I+naVuuGBEmHLIMH8VtZ1sX89xBPttHSC6Wm6mA4=
+	b=A8zbqzva55ZfK6N91dvDPCldyx0E/i//HQmbgKBu4t7Nrym8hj4ZaEJ/fjYhjE/f5
+	 APLyuUC0pkuj5oqoxvpdspey4jhoII+e3M9CtHqbpv48jQqiVvexPMLFaNcdwtTKRm
+	 ReNn0oIkOtWZB2aFWMYgBBwpyffxzE8wPiwCpUjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
 	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 511/691] ext4: update orig_path in ext4_find_extent()
-Date: Tue, 15 Oct 2024 13:27:39 +0200
-Message-ID: <20241015112500.625555807@linuxfoundation.org>
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 5.15 512/691] ext4: fix incorrect tid assumption in ext4_wait_for_tail_page_commit()
+Date: Tue, 15 Oct 2024 13:27:40 +0200
+Message-ID: <20241015112500.667049588@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -67,87 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-commit 5b4b2dcace35f618fe361a87bae6f0d13af31bc1 upstream.
+commit dd589b0f1445e1ea1085b98edca6e4d5dedb98d0 upstream.
 
-In ext4_find_extent(), if the path is not big enough, we free it and set
-*orig_path to NULL. But after reallocating and successfully initializing
-the path, we don't update *orig_path, in which case the caller gets a
-valid path but a NULL ppath, and this may cause a NULL pointer dereference
-or a path memory leak. For example:
+Function ext4_wait_for_tail_page_commit() assumes that '0' is not a valid
+value for transaction IDs, which is incorrect.  Don't assume that and invoke
+jbd2_log_wait_commit() if the journal had a committing transaction instead.
 
-ext4_split_extent
-  path = *ppath = 2000
-  ext4_find_extent
-    if (depth > path[0].p_maxdepth)
-      kfree(path = 2000);
-      *orig_path = path = NULL;
-      path = kcalloc() = 3000
-  ext4_split_extent_at(*ppath = NULL)
-    path = *ppath;
-    ex = path[depth].p_ext;
-    // NULL pointer dereference!
-
-==================================================================
-BUG: kernel NULL pointer dereference, address: 0000000000000010
-CPU: 6 UID: 0 PID: 576 Comm: fsstress Not tainted 6.11.0-rc2-dirty #847
-RIP: 0010:ext4_split_extent_at+0x6d/0x560
-Call Trace:
- <TASK>
- ext4_split_extent.isra.0+0xcb/0x1b0
- ext4_ext_convert_to_initialized+0x168/0x6c0
- ext4_ext_handle_unwritten_extents+0x325/0x4d0
- ext4_ext_map_blocks+0x520/0xdb0
- ext4_map_blocks+0x2b0/0x690
- ext4_iomap_begin+0x20e/0x2c0
-[...]
-==================================================================
-
-Therefore, *orig_path is updated when the extent lookup succeeds, so that
-the caller can safely use path or *ppath.
-
-Fixes: 10809df84a4d ("ext4: teach ext4_ext_find_extent() to realloc path if necessary")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240822023545.1994557-6-libaokun@huaweicloud.com
+Link: https://patch.msgid.link/20240724161119.13448-2-luis.henriques@linux.dev
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c     |    3 ++-
- fs/ext4/move_extent.c |    1 -
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/ext4/inode.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -950,6 +950,8 @@ ext4_find_extent(struct inode *inode, ex
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -5301,8 +5301,9 @@ static void ext4_wait_for_tail_page_comm
+ 	struct page *page;
+ 	unsigned offset;
+ 	journal_t *journal = EXT4_SB(inode->i_sb)->s_journal;
+-	tid_t commit_tid = 0;
++	tid_t commit_tid;
+ 	int ret;
++	bool has_transaction;
  
- 	ext4_ext_show_path(inode, path);
- 
-+	if (orig_path)
-+		*orig_path = path;
- 	return path;
- 
- err:
-@@ -3250,7 +3252,6 @@ static int ext4_split_extent_at(handle_t
+ 	offset = inode->i_size & (PAGE_SIZE - 1);
+ 	/*
+@@ -5327,12 +5328,14 @@ static void ext4_wait_for_tail_page_comm
+ 		put_page(page);
+ 		if (ret != -EBUSY)
+ 			return;
+-		commit_tid = 0;
++		has_transaction = false;
+ 		read_lock(&journal->j_state_lock);
+-		if (journal->j_committing_transaction)
++		if (journal->j_committing_transaction) {
+ 			commit_tid = journal->j_committing_transaction->t_tid;
++			has_transaction = true;
++		}
+ 		read_unlock(&journal->j_state_lock);
+-		if (commit_tid)
++		if (has_transaction)
+ 			jbd2_log_wait_commit(journal, commit_tid);
  	}
- 	depth = ext_depth(inode);
- 	ex = path[depth].p_ext;
--	*ppath = path;
- 
- 	if (EXT4_EXT_MAY_ZEROOUT & split_flag) {
- 		if (split_flag & (EXT4_EXT_DATA_VALID1|EXT4_EXT_DATA_VALID2)) {
---- a/fs/ext4/move_extent.c
-+++ b/fs/ext4/move_extent.c
-@@ -36,7 +36,6 @@ get_ext_path(struct inode *inode, ext4_l
- 		*ppath = NULL;
- 		return -ENODATA;
- 	}
--	*ppath = path;
- 	return 0;
  }
- 
 
 
 
