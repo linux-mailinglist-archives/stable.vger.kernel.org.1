@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-86290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DDD899ECF5
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:24:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C419999ED55
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 502441C23733
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:24:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 870B1286F29
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506B31D5167;
-	Tue, 15 Oct 2024 13:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8631B218A;
+	Tue, 15 Oct 2024 13:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ektwNJ2J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkOTstQC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB2D1AF0CE;
-	Tue, 15 Oct 2024 13:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD941B2184;
+	Tue, 15 Oct 2024 13:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728998415; cv=none; b=pPT3b5TIEcQuGqcW0Odo2CihvjAi4V0ifiPRhB/xTk6CzulKuDcoRZQ8LSbjphMnh3tjaTL3BUV/94P6kCq+qkBWAAyhYIgTAZmAxyuctLxoW/aXMtQQQ2WxiPTr7ytj5S0ZFh89Xz4w1Jac7sL73nKW/WfPRBAl9mh68KPxRoI=
+	t=1728998555; cv=none; b=Z266XozMrHzgQsZchcGt2rkUVKW3pk6Nt2JY/wOMWMb1IBEUH+TWdmsxy6MXTU7EfoPIX3YJk8d5snJYkv2QfsizyEW5e+KRg2M/h6amBbTVO/O05dtRBkjXyjXnZIA2HZz6CTgSaMH+kqIZbzJwzUjpVcQrt7lU49ADgPyWLXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728998415; c=relaxed/simple;
-	bh=GWR45q1zeh9J5xViJYo0wvPNj0sMGbdTR5WQt6Q9fls=;
+	s=arc-20240116; t=1728998555; c=relaxed/simple;
+	bh=w+72BWu3yFhTHSNhYeifKho20lLYvQGgxDGEyvjvQPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G/9mm21MuBzjp5oP+vyXA5hNqaK/Vk9K6LlOc02RgTdWNsJfb67N9UBK2IeqlQmbb4Dy0wm8tvEIix2giMHtv7tm+Wjt8WSkkTFjGlVAdPs3Xo5XPzt25KV8u5omeIbu3Ud6ITVqPsyPQmSCZ2KcVvfVlnjDpxS5aS9QD0bBOxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ektwNJ2J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BB8C4CEC6;
-	Tue, 15 Oct 2024 13:20:13 +0000 (UTC)
+	 MIME-Version; b=P4EcKSsj86PMw6i8xgc+h7T1HBCpz5z8aNhjnIFTzHGSyYeEdE8xViHQ+rNXx1AZOBc8Qf77VpHfTeBSjU71DFJgvvrfvwyvslYC2m7lsls/VfeY+CS2t/8uP5QbW2ZuhS1A3W9un7pp/nquRva+fpbFnfgfTzjwtpRy8zw7TZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkOTstQC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13BDC4CEC6;
+	Tue, 15 Oct 2024 13:22:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728998414;
-	bh=GWR45q1zeh9J5xViJYo0wvPNj0sMGbdTR5WQt6Q9fls=;
+	s=korg; t=1728998555;
+	bh=w+72BWu3yFhTHSNhYeifKho20lLYvQGgxDGEyvjvQPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ektwNJ2JXcNHVUmIz2OMN/67BqDCYFSsI4YUdUc5G9YF5VjWYFnyZPVGIQM+grBqu
-	 B3WikVEBUOMATVzJsspDpt3vPO6dKJhgLzV68g5ZAP2zEZCItxVz3WtmOQqpTfyYW1
-	 d1UYf2rcKM+RwJFk2nNnJ6UJ8fCozTQ6IFswYm/0=
+	b=xkOTstQCPhZjVHJh7v4GOFl1BL5DW92ceM2tyfPBqr5N8/LrDQ3Hj/NJDMn1/rfOU
+	 u2WM/FnuGhlDNerZK/OaGWaZssHKtxx0MylV2LXkm86t9qcVSgj3IqbTYTE87pHlY4
+	 E2i/R1dxVFFzRvXzHfK5bzdBiDevfuDNZfS5aJEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Andrey Shumilin <shum.sdl@nppct.ru>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 469/518] drm/amd/display: Check null pointer before dereferencing se
-Date: Tue, 15 Oct 2024 14:46:13 +0200
-Message-ID: <20241015123935.106802642@linuxfoundation.org>
+Subject: [PATCH 5.10 470/518] fbdev: sisfb: Fix strbuf array overflow
+Date: Tue, 15 Oct 2024 14:46:14 +0200
+Message-ID: <20241015123935.145472443@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -68,39 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Andrey Shumilin <shum.sdl@nppct.ru>
 
-[ Upstream commit ff599ef6970ee000fa5bc38d02fa5ff5f3fc7575 ]
+[ Upstream commit 9cf14f5a2746c19455ce9cb44341b5527b5e19c3 ]
 
-[WHAT & HOW]
-se is null checked previously in the same function, indicating
-it might be null; therefore, it must be checked when used again.
+The values of the variables xres and yres are placed in strbuf.
+These variables are obtained from strbuf1.
+The strbuf1 array contains digit characters
+and a space if the array contains non-digit characters.
+Then, when executing sprintf(strbuf, "%ux%ux8", xres, yres);
+more than 16 bytes will be written to strbuf.
+It is suggested to increase the size of the strbuf array to 24.
 
-This fixes 1 FORWARD_NULL issue reported by Coverity.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Acked-by: Alex Hung <alex.hung@amd.com>
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 2 +-
+ drivers/video/fbdev/sis/sis_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 661907e8a7dec..84fb1377ec934 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -1258,7 +1258,7 @@ bool dc_validate_seamless_boot_timing(const struct dc *dc,
- 		if (crtc_timing->pix_clk_100hz != pix_clk_100hz)
- 			return false;
+diff --git a/drivers/video/fbdev/sis/sis_main.c b/drivers/video/fbdev/sis/sis_main.c
+index e540cb0c51726..7787fd21932cb 100644
+--- a/drivers/video/fbdev/sis/sis_main.c
++++ b/drivers/video/fbdev/sis/sis_main.c
+@@ -183,7 +183,7 @@ static void sisfb_search_mode(char *name, bool quiet)
+ {
+ 	unsigned int j = 0, xres = 0, yres = 0, depth = 0, rate = 0;
+ 	int i = 0;
+-	char strbuf[16], strbuf1[20];
++	char strbuf[24], strbuf1[20];
+ 	char *nameptr = name;
  
--		if (!se->funcs->dp_get_pixel_format)
-+		if (!se || !se->funcs->dp_get_pixel_format)
- 			return false;
- 
- 		if (!se->funcs->dp_get_pixel_format(
+ 	/* We don't know the hardware specs yet and there is no ivideo */
 -- 
 2.43.0
 
