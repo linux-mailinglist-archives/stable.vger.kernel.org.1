@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-86231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44DCB99ECAA
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:21:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0A599ECB7
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:22:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C77D1B20D73
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:21:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7058282F07
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3126F1E6339;
-	Tue, 15 Oct 2024 13:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756181B2186;
+	Tue, 15 Oct 2024 13:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oY4aM58z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+rE+tXu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E3E229100;
-	Tue, 15 Oct 2024 13:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315ED2296FF;
+	Tue, 15 Oct 2024 13:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728998213; cv=none; b=L2Xv7ebimUQWql1LvjTN01KJjGxIbSnX0mr7kUQ6Y7TwJ06kGE+JZF48MoYzfzjANx+8GKbuRNFfo/LPCUzPhf4Ax7hhqH+oV6kfrazZbt10haQ3SEAQTm6Wx7NU3XsUA5t95Iq+tq6yk/2F+ajoFobESIJyDXwuc5k3xBraubU=
+	t=1728998251; cv=none; b=Xfj7OaERo/xWTUMzfmhJGWBbbmYsMVYR+OUIwqP6F2OWG8ub5fOyDDxIEoXFgbmY2dXbtemdk1JyaFDt7HWPZkvLg8KxS/Wj49HyqnBCg7EDFL989CeZt2BnQVQuyp28816wXTRe42Tl+8TaMCEIG82sByKDMn3ZamgejeSOoL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728998213; c=relaxed/simple;
-	bh=ucjIxcxGVTLwvQjGCakOob5ycgIjr66o3amDV5TXrdw=;
+	s=arc-20240116; t=1728998251; c=relaxed/simple;
+	bh=oOqxWlqNqVO0KRSyeQXxW4hrCTJ8zmrwgeXNY4/i3h4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C1cpqMtqwp+tM7IvDV6VoAlUaAXTYIYwE7okyHSIq/oAcWTY0F3EB7j7nG8GEMo92J4VT0Nq1bBt/3H8Jx2BNgzVyFIOL4zM/BDL6R7zJsUOA5bChpn8x+c8rKPknPQzotdOv+KI6J9V8SHi8q090tTL3RRDE/6+dplPDag6a8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oY4aM58z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695FDC4CEC6;
-	Tue, 15 Oct 2024 13:16:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZTQOScguHHXv26454qQ4oi1ETLQL6TJGuET05jCscoF7+m/ulXhVG93mafPPlI43imLqCWGximpWCCJhEXZXuakKc2Qyi8+iJ8YwLhSaIvYjKj1vHnpRryoT8GxwZ13wV/6g6a/usCHpKQ7e1XJi9SDU9EpEP8auSSssTzgcTQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+rE+tXu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7CBDC4CED0;
+	Tue, 15 Oct 2024 13:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728998212;
-	bh=ucjIxcxGVTLwvQjGCakOob5ycgIjr66o3amDV5TXrdw=;
+	s=korg; t=1728998251;
+	bh=oOqxWlqNqVO0KRSyeQXxW4hrCTJ8zmrwgeXNY4/i3h4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oY4aM58z2TBA09YsBTr3XIyTx5MXSalV9ZLwgqVaiun3Lg4w4DTs9NE+U5zIGopf4
-	 65t5tjF6y3N+Ho24Yk4hwFWf+QQ/j1vx5Cq13536gW8xgBZBqDVJlc8GubQbxKdTu+
-	 JKOKm1no061XXq3Cf/Y/9+gWpRuAIQ0DZvMjIA3s=
+	b=v+rE+tXuK59aRLBASkfQWQdVlcC57oXFb8tEzKgFDg4syQupq1TNvccWO/GTj5Ako
+	 olZe/CDIIDFH/NH7AA7/jqOqsuQiTFWsxKH7S8WpErzCvJd9bNII731NAQOnkdlqlG
+	 9L++Ci7ZwqNFBZYU8RU2jrCoBXbmphoJdRkHpDx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.10 404/518] clk: qcom: gcc-sm8250: Do not turn off PCIe GDSCs during gdsc_disable()
-Date: Tue, 15 Oct 2024 14:45:08 +0200
-Message-ID: <20241015123932.567520842@linuxfoundation.org>
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 405/518] iio: magnetometer: ak8975: Fix reading for ak099xx sensors
+Date: Tue, 15 Oct 2024 14:45:09 +0200
+Message-ID: <20241015123932.612981987@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -59,64 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-commit ade508b545c969c72cd68479f275a5dd640fd8b9 upstream.
+commit 129464e86c7445a858b790ac2d28d35f58256bbe upstream.
 
-With PWRSTS_OFF_ON, PCIe GDSCs are turned off during gdsc_disable(). This
-can happen during scenarios such as system suspend and breaks the resume
-of PCIe controllers from suspend.
+Move ST2 reading with overflow handling after measurement data
+reading.
+ST2 register read have to be read after read measurment data,
+because it means end of the reading and realease the lock on the data.
+Remove ST2 read skip on interrupt based waiting because ST2 required to
+be read out at and of the axis read.
 
-So use PWRSTS_RET_ON to indicate the GDSC driver to not turn off the GDSCs
-during gdsc_disable() and allow the hardware to transition the GDSCs to
-retention when the parent domain enters low power state during system
-suspend.
-
-Cc: stable@vger.kernel.org # 5.7
-Fixes: 3e5770921a88 ("clk: qcom: gcc: Add global clock controller driver for SM8250")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240719134238.312191-1-manivannan.sadhasivam@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 57e73a423b1e ("iio: ak8975: add ak09911 and ak09912 support")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Link: https://patch.msgid.link/20240819-ak09918-v4-2-f0734d14cfb9@mainlining.org
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-sm8250.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/magnetometer/ak8975.c |   32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
---- a/drivers/clk/qcom/gcc-sm8250.c
-+++ b/drivers/clk/qcom/gcc-sm8250.c
-@@ -3229,7 +3229,7 @@ static struct gdsc pcie_0_gdsc = {
- 	.pd = {
- 		.name = "pcie_0_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- };
+--- a/drivers/iio/magnetometer/ak8975.c
++++ b/drivers/iio/magnetometer/ak8975.c
+@@ -661,22 +661,8 @@ static int ak8975_start_read_axis(struct
+ 	if (ret < 0)
+ 		return ret;
  
- static struct gdsc pcie_1_gdsc = {
-@@ -3237,7 +3237,7 @@ static struct gdsc pcie_1_gdsc = {
- 	.pd = {
- 		.name = "pcie_1_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- };
+-	/* This will be executed only for non-interrupt based waiting case */
+-	if (ret & data->def->ctrl_masks[ST1_DRDY]) {
+-		ret = i2c_smbus_read_byte_data(client,
+-					       data->def->ctrl_regs[ST2]);
+-		if (ret < 0) {
+-			dev_err(&client->dev, "Error in reading ST2\n");
+-			return ret;
+-		}
+-		if (ret & (data->def->ctrl_masks[ST2_DERR] |
+-			   data->def->ctrl_masks[ST2_HOFL])) {
+-			dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
+-			return -EINVAL;
+-		}
+-	}
+-
+-	return 0;
++	/* Return with zero if the data is ready. */
++	return !data->def->ctrl_regs[ST1_DRDY];
+ }
  
- static struct gdsc pcie_2_gdsc = {
-@@ -3245,7 +3245,7 @@ static struct gdsc pcie_2_gdsc = {
- 	.pd = {
- 		.name = "pcie_2_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- };
+ /* Retrieve raw flux value for one of the x, y, or z axis.  */
+@@ -703,6 +689,20 @@ static int ak8975_read_axis(struct iio_d
+ 	if (ret < 0)
+ 		goto exit;
  
- static struct gdsc ufs_card_gdsc = {
++	/* Read out ST2 for release lock on measurment data. */
++	ret = i2c_smbus_read_byte_data(client, data->def->ctrl_regs[ST2]);
++	if (ret < 0) {
++		dev_err(&client->dev, "Error in reading ST2\n");
++		goto exit;
++	}
++
++	if (ret & (data->def->ctrl_masks[ST2_DERR] |
++		   data->def->ctrl_masks[ST2_HOFL])) {
++		dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
++		ret = -EINVAL;
++		goto exit;
++	}
++
+ 	mutex_unlock(&data->lock);
+ 
+ 	pm_runtime_mark_last_busy(&data->client->dev);
 
 
 
