@@ -1,341 +1,250 @@
-Return-Path: <stable+bounces-85108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37EE99E157
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 10:39:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15FB499E170
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 10:46:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 027831C21AE8
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 08:39:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA6E9282091
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 08:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76ED1CACFC;
-	Tue, 15 Oct 2024 08:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB85C1C3F0A;
+	Tue, 15 Oct 2024 08:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EBXZEQy5"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="1H+f+Ev+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2065.outbound.protection.outlook.com [40.107.244.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C0718A6B7;
-	Tue, 15 Oct 2024 08:39:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728981575; cv=none; b=bIf70+CMwGJqxF/kydVkuZmFRR9qpzD9a0EYFwuKi5qzcslW8OKojkou2jPZYIvvq2FGtuMnOR8t1eoLr7DVGfPvNVCQDtmD/Kixn3PGUAuGjjIVVK5PneeIPoitGlqzAv4PzR93n/yHcueAG4ti5I1D3UuftGjlxoxmvJ0B6OY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728981575; c=relaxed/simple;
-	bh=rnxu/sS5vyuM3fGU8UjfQLVOKTqIz0qs+9SS+rEMwog=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ut88PTYZ6Ihc8OGGhu9wPcmFWfB55IkXgw0f7exS8kp7k1Zd1X7Yx/3nFu5kHv2awa9eyFDozxJK/+wMQweu1WqYvqma0ohWMnz+skGmS9cK4ywnjv4u11R6A7QFNUr5dCDxDCMu9bSI4Auv1FHkTwO5Z4oNHc2xoizfEDk/cAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EBXZEQy5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AC6C4CECD;
-	Tue, 15 Oct 2024 08:39:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728981575;
-	bh=rnxu/sS5vyuM3fGU8UjfQLVOKTqIz0qs+9SS+rEMwog=;
-	h=From:Date:Subject:To:Cc:From;
-	b=EBXZEQy54IxcIW9tbYMpTnn+qCX2fQ+QzKBjG3hLnP/6JDsgo9PWthZczLuvL9NL+
-	 tj2EcvHjXrCEVdFfJCBSBxAAwBl3EgXpN4k3JLaDczHIUWpLw9Ldo6yen4tF1UNZ9o
-	 F27AIIsgT+PpLIsKXnkdbREflgJYQDxhfipAQ2ApVfE5H4MqMppvwHsMGzXyi4h97h
-	 Lvu/VVKItGyde1OAhM+yEEEDEN3P4/ccqpORESi7piw3pupIadpM984+cTMBVJ9eGS
-	 kn0ouUlp40O/TPwr9X90W5EXgkn45q/j3WZ3Aa23h5zBpe04mchIomLsm+Oj+uoBOA
-	 Zo9WHifBEMouQ==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 15 Oct 2024 10:38:47 +0200
-Subject: [PATCH net] mptcp: pm: fix UaF read in
- mptcp_pm_nl_rm_addr_or_subflow
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBE718A6A8;
+	Tue, 15 Oct 2024 08:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728981995; cv=fail; b=QNy9mTr8fTYPX3p44K//xnEPi/XJiWsReSwDxdonvO/m7J3T48ZPd9xxDaW1ShHbhqPxCGfNjRE0usvOgF4Zm9qrDecMkiVFOZBjSakVsQ325C3ajmLQMtTvzZBUQRId6u/RiFVsY/pJ2N+WoaSHjjQ9mPoLS+bleuVO5A4ZKx0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728981995; c=relaxed/simple;
+	bh=hMasDrp7LDS5UgPMknyItSvfweE0V0OxxgIVPgA6R3U=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Fzk4fvBsiodZjT6Xl0pfqDzyiWxWT5OrexcGDglMfF50Pb997lxGJlgEJPvovaw64t5eBiRcE8ikLK/N7uIvRMGl1bhPciB3JRIqQXHLhRT01cnnp6wfaAs3h7oDPk5BkfaoqI++oVMQkASeffHVXbarrEyu+8C3MAAi7fTJ8sc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=1H+f+Ev+; arc=fail smtp.client-ip=40.107.244.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tJ6ZzRCWcN62H2EImxiMpYBd6gPusmRQ+oKgu4eWhTIztJrIDLT4e8Psk6nA7p0g9bqkCFSAFQu0NBDXEz7FylKxek9djG7PwewAoFdmVU/76l9mHmPXR7WI21JH7LcgFSsxo3p5o/+Cz+vz1plDqwzu3+ImZ1d4igVglOeyQglIzc949er0/73wAv5HFZWw2qWVsPe+GdJu5ew57Xur+RHWcS56AtLFu2U8g/vd2N993LKy/WuDjg26pSCx/Ya33BMuMzC88+FUtGwfm3+TGuAOR850ghJ8QLOK86S9368HSPAlYGsH2Ing1Gb8YP5f6MF57g+Xa/oplKwMloI8xA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YR2IMCydY0hNDzkUkKJSQhq8J2QoljsruL5DtPChbhk=;
+ b=y3KOLmG1OqcWAALcJcYihAors9UBL1/x65tqpR+oFLZnz4L/Dc9yU8przBmWUo0v/dD46plsosFC4LvZTPa69RUBN/bLX67a1A44cMWI87bkf8qK+2aHY2kXnHLC2xD1pfrjr5h3Y87fdLL7yPZ+tlfCiKo8vQbJhbnlxQe8EaLqmg3LYWhSRWhQhn7L7g5OCU2MQ1w5R5VDZ5kLJO72nTszJbIstFRkES4A/iEf385u0N7vPcpX/6MAz7O4Enl8scHKvcd0gVLuvw0XdsHUqS4QOt+l8z3oOdysRFPdFZdUgPg8w2dMb20dsChRYaW6iYZre4mEfjignKP1nrJzhA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YR2IMCydY0hNDzkUkKJSQhq8J2QoljsruL5DtPChbhk=;
+ b=1H+f+Ev+rPvzKbtOUMakMcaHtVDOqLcRFTm+I+MfbItvEl7AS+Jg7Dh5YsJi3vWwuh7/LuEeyQHMjuXhyxiTiAyfqSaKFGIwgiYV0WpkWjdlYZhccliXUJxiRjQOj/5wQeDp208NOYQp3LvCk12aDXKGdAQFbVza6Vh6o6xYkbQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM6PR12MB4202.namprd12.prod.outlook.com (2603:10b6:5:219::22)
+ by CYYPR12MB9015.namprd12.prod.outlook.com (2603:10b6:930:c8::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.18; Tue, 15 Oct
+ 2024 08:46:31 +0000
+Received: from DM6PR12MB4202.namprd12.prod.outlook.com
+ ([fe80::f943:600c:2558:af79]) by DM6PR12MB4202.namprd12.prod.outlook.com
+ ([fe80::f943:600c:2558:af79%5]) with mapi id 15.20.8048.020; Tue, 15 Oct 2024
+ 08:46:24 +0000
+Message-ID: <9a1827e3-1c55-cfbb-566f-508793b47a4a@amd.com>
+Date: Tue, 15 Oct 2024 09:45:55 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 0/5] cxl: Initialization and shutdown fixes
+Content-Language: en-US
+To: Dan Williams <dan.j.williams@intel.com>, dave.jiang@intel.com,
+ ira.weiny@intel.com
+Cc: Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, stable@vger.kernel.org,
+ Zijun Hu <zijun_hu@icloud.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Gregory Price <gourry@gourry.net>, Vishal Verma <vishal.l.verma@intel.com>,
+ linux-cxl@vger.kernel.org
+References: <172862483180.2150669.5564474284074502692.stgit@dwillia2-xfh.jf.intel.com>
+ <7eb2912e-3359-8a22-2db9-4bfa803eccbe@amd.com>
+ <6709627eba220_964f229495@dwillia2-xfh.jf.intel.com.notmuch>
+ <a5a310fe-2451-b053-4a0f-53e496adb9be@amd.com>
+ <670af0e72a86a_964f229465@dwillia2-xfh.jf.intel.com.notmuch>
+ <0c945d60-de62-06a5-c636-1cec3b5f516c@amd.com>
+ <670d9a13b4869_3ee2294a4@dwillia2-xfh.jf.intel.com.notmuch>
+From: Alejandro Lucero Palau <alucerop@amd.com>
+In-Reply-To: <670d9a13b4869_3ee2294a4@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO2P265CA0508.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:13b::15) To DM6PR12MB4202.namprd12.prod.outlook.com
+ (2603:10b6:5:219::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241015-net-mptcp-uaf-pm-rm-v1-1-c4ee5d987a64@kernel.org>
-X-B4-Tracking: v=1; b=H4sIABYqDmcC/x3MTQqAIBBA4avErBtQS/q5SrSQGmsWmqhFEN09a
- fkW33sgUWRKMFYPRLo48eFLyLqCZTd+I+S1NCihWimkRk8ZXchLwNNYDA6jw66XYrWmIa0HKDJ
- Esnz/1wkKgPl9Pz8LHodqAAAA
-X-Change-ID: 20241015-net-mptcp-uaf-pm-rm-7810dfa3e559
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- syzbot+3c8b7a8e7df6a2a226ca@syzkaller.appspotmail.com, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13619; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=rnxu/sS5vyuM3fGU8UjfQLVOKTqIz0qs+9SS+rEMwog=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnDipCK75Oc68F3idBgNfnhwea0TWrX5rMe2wMk
- R57rFGxWZaJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZw4qQgAKCRD2t4JPQmmg
- cwbxEADv0Rd4rL4A4WKNAp4xcvRLo7dhDk4TKl8u0uf3C7x0RHKk7oh52mXbOyISzc4/M2waLD6
- NZPOPqSH3lTbeQ4icAj/5F7cbqFfgrUtfEOojP8cjGXbwbeNPhvUkJHuSOOfjM1s9yHrCJDsznm
- d+Q18czhq0yYOuvIGId7ACuBCJO/sndvzSfhq7T6vcaSpE1+klfrgefssUKXaSTIB0lyDyENqZ9
- a8AJHxTbBKByu2QUXq9W/sWLXPKO4OPirg4BMmu+/RNnQJgn8QTdZ2hgTfSjRs/txwIB0ojbiVW
- P18jTHPqzKhZj/KaNHXuMGZbAQkafKXSDYPxEaXI9xoIpbCE8Lc166ZekFkPkgm5ZqwrABzvO1D
- aoMJcebORw9SCzQzKm+5/CYN+k/r6ndHYtdKfqX5WskA0295w8MzuRcqOi14IwkKIb63mS6ltYh
- vyq7sq6wWITmPq8CQtGVpOgOL47fYMvdEVwU1q0HDBd3r7QuJh151dLFsnQJdszgQ83cCyUb+od
- 1Tw5TjQ/s8VTNmxjIcPUtpizYrwW/3A+6X0wGiaGaY2QY3agcopA6BQVA0W53pEWc7+X2IQrShZ
- XBHqu50EFH7HjKzPtKlxSdtw1rXBxILr0Bj9OmEb42HJDGqMP9W8szGuXbpTUh/9HE8ph7vClPp
- b6t7Qrl+PD67Bgw==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4202:EE_|CYYPR12MB9015:EE_
+X-MS-Office365-Filtering-Correlation-Id: 68a87379-7247-45f0-0fa3-08dcecf5d9e1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cklYQ1YrVktkekxqOWVWZW1SK2xIN1RvYTltRVV4YThpNjNMVlJKU01ab2Ji?=
+ =?utf-8?B?SkxtU0FkWGFlMWVEYUhET2ZKWXozazdIbmYvTlBsL1NEMDUxdHIxZWZ3KzRH?=
+ =?utf-8?B?OFJVTkdqUFhPbE90UUw3OXdnUmxVSk5JTDc4eVp1NVRiU2pFKy9ZUTZEaEZH?=
+ =?utf-8?B?STRXbGFQbHc2Nk5kdk9IRFFCUGRtdjI0SDlWT0JCbmlkRGRJQWNJdFMvOVZx?=
+ =?utf-8?B?MmQrWTdKd3lWSnBWOHBBdGJIRnNYMngvMFBtSE0zYVJ6cWlMbWVPODlDRGZS?=
+ =?utf-8?B?dGN0bkRHaTlabG1BSEhuK3RYM3VCdjJpeUxCcjFQTXBQbHcrOU83USszdmcy?=
+ =?utf-8?B?SFlqS0o5L1dpL1ZhcExqeUpyQzduNGRYbVhPOHZwVnZDRFR4THYrMEpmTU5I?=
+ =?utf-8?B?YXBMK0J0Y3Exck94b25IeXpvL3FQN3U4UXV5d1FnY0JaZFpVSGZPRWR1VHp0?=
+ =?utf-8?B?L3RkNWo2c25PYW05WWpnSU5OdXdLaThEazE4VUNLd2tGYlNBS3RjRFZBb3pl?=
+ =?utf-8?B?ZVZUYTBxVmNoakJKVEVHajNzcU5vMFIrYm5OVC9BaGxOSWkybFpMdjBIOExX?=
+ =?utf-8?B?dGNzOU9hYlJKSU9Cc3liUEVGdnFJQXo4bDQrcDRRV0lNaGdRT2twbHlCMTNH?=
+ =?utf-8?B?Z1I3ZnNpMUpSSEFscDZNaE9Ocm1GbEs0R1pVYTA5S1hTdzJBcDlTWjd6Rm15?=
+ =?utf-8?B?TjluaDgweGwwZjd5anJmMGs3NUcydlVHZW5xYithUFY0TkMrVjFRSi9sQjZB?=
+ =?utf-8?B?dU9STlBYNmh2am9HSytHUmk2QVd1WnhLU0wwOUZ0WjRGYTBoMGptaWZtbmlj?=
+ =?utf-8?B?ajdUMnBSTEt5NjJPUHJoRWdkdFJ2d1NmVUdhekdRL3hQSXM3Z1pBRm8zV3JT?=
+ =?utf-8?B?TThqRXdlenJVdlg2N1RzdlFkWnVFdnJLWEltcktSL2ZpSUMxUGJkZ3hveExu?=
+ =?utf-8?B?ZWxNMUJyd29STFA0bytaY2xYNGxRSzU1OWJaZlZJK0VkKzNza1pBMGg2THp6?=
+ =?utf-8?B?Uk1abGhJSEJYV2dyUDZ0emF0UW5GK2FubnZRMG9YTmNUWnFVbjlHNERCMmRV?=
+ =?utf-8?B?NzMvRS82ZmloRGlnbm15ZTdxUGNHSGpsTGc2U3dPODhDdzlnOGZxSUh0UlMz?=
+ =?utf-8?B?VGc2STJPcWZha3JmRTlHcG1wMnZkYjFHRUlFV0ZzbmRBaVpFai83Q05YT29S?=
+ =?utf-8?B?Uy90Qi9VaVZtN05IaTJIWjRtc0NQb3E5NVRRRXFUWUh0M2d0djYrTFNVOWR2?=
+ =?utf-8?B?amlWZUFWMGt2REs4RDV6ZTNUR1ZQcEoyUUowWm9MMG52VFViR0RKWStlRGJl?=
+ =?utf-8?B?QXRlcEkyM3FiWDhCZWZES1hLRVo3WU5OOXlTZFJDSHJ4UzlWNCtWZkkwUlBi?=
+ =?utf-8?B?dUxZQnRMT3RQQnNBMXFoMGhDbUhUL2VnTzl5dFJxZjBVa1hNQ01rZXpLa09Z?=
+ =?utf-8?B?Y1RyTmxJRmJKM0ZlQUJaT2ZEU25WWnc0bnA4Qkh1THFvdGozUXJXRmVvT2o3?=
+ =?utf-8?B?YU9LU3lUVjNWaXhBWGZoMGloNEx1ci9UbVZjdGM5NmZvUVh1b2d0QXMrQi93?=
+ =?utf-8?B?cUNyeFBvWDVObFBreVZWcVBtS2RmV2NEMWl3cklSQzh1VlBzek9PWFBmRTdh?=
+ =?utf-8?B?aGVwSGhhY1NSTHlIQ1hLVHhuTmtPQlBZMm1pV1N4K1orak1jcE1FY3lqRWJJ?=
+ =?utf-8?B?Uk1NSWRhNjBBNzJGcG5Pc0JBUkpObitrdTJxZjZJaG9qQXZyMkFnbGV3PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4202.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SVVCdERZeWgxRlZRRGNPTklEZGd1ekRhNENuRDk0Sk4rdHREMVl6QkhEZmNj?=
+ =?utf-8?B?VFpVM0lyMHNWVVlqWGNMTithdVJqQ2h1ZUtWWVBQcWJvSTVpaTFmc1JBQ2lq?=
+ =?utf-8?B?dHhENFdWUzBjY1dFYlgrVW9Rcm5sQmJLV1lCc3FzZnlEcGE0bDl6SSt0NWJT?=
+ =?utf-8?B?bjlRa3UvZCsrcUU2Mk9DSXRWbmJMSUZTZ0p5QjRESzV3THp3NmMyNndHUVJN?=
+ =?utf-8?B?djY3bTZlZ0pHOTVPZnJpYXM2bnhFZXJ4em5wVnVXQWt6K1hoYzRXUXd3ZDIv?=
+ =?utf-8?B?YXBraDdoeWtXbnZ3WmVhcUNLMmJhVDI2T0RUTFRCOHBtM1JrNmhZOFlVQURk?=
+ =?utf-8?B?WWJKVHdTa2VBdllRY1ZkS1ltcHcwb0tLZVBqQXhxaWxmUnF0UXkyRit3Mzgv?=
+ =?utf-8?B?Umx6WGVzekVYZ01MMmtxcjFZTHpqVEhld3ZHcjg3V1VPMlJ3ZDhrUmYrK1ZE?=
+ =?utf-8?B?eWNQTXBGdVllTGx3UFdMQXgveTBKRHJ2akhlQXR2SXVyRWpxZmdQSXJ2Unhm?=
+ =?utf-8?B?MTlENExLRUNxMWFWUGxWWC8xR0xuTWhIUXA1eUZFRlNlR2gxMXBQWGtyMkZ6?=
+ =?utf-8?B?eHBVamxlVDVYaEZwOWhMaDJUeWd5UG9TekxxSEF5SG0wakxoVUh6OVk2T2pS?=
+ =?utf-8?B?eitraWRSY2JYVGRPaWI5cXZ6NXhRQmlnNmlxT004UGVjYW5aOXZiUEVqMnpj?=
+ =?utf-8?B?dk1pZmM4NjFxSWs1M09TU0d6MmwzMW4yNExvWVh3WHpzNkxXTXBJWkdHcFhW?=
+ =?utf-8?B?bmR5Y0VodGxORE1aRXZiVjFUQU1zQXI1MmVVa2hjRFRJeWR3RURyd1h1K2dt?=
+ =?utf-8?B?NUlhck5WbG0vM3M1Y2Z3YjlHS3BBYUM5dWpnTGc4a1VLQUFSRTQxN0t2Vkov?=
+ =?utf-8?B?b0ZYMFV3UFE3MlQzS3ArMTljclk2Y25lZ0pEN2FCdUs5akpYaDV4Q1dXMFph?=
+ =?utf-8?B?eUdUT1dUKzJkUXBFSnpQckprSUdHNFQwb3ZaRWhyRDNYNnUzVkJZSUxMZTNN?=
+ =?utf-8?B?RGhMcTN2MU1lNExvdkxwS0pNeTA4aDlsOWovdnJaWTRDTmtjN09DbDhmeEYw?=
+ =?utf-8?B?emlpMjNnSVJ5R1FLd21OSUVaYUdiQkVHN0JaV1BuZFQrSUtYQ2Z5L0JHeUxq?=
+ =?utf-8?B?MWRVNmJFTEw0N3RPclhGNVBuN0pYNURTSXVkamFxbjg3RHJYR1lXQWpwai9O?=
+ =?utf-8?B?RTVMQzlpRVJrS3QyUVNKalRpaUZrWU5lM2FvNmZNYWtvaE51VUlCSzA2SjhW?=
+ =?utf-8?B?WjJUcThEalNBK1RtK0dCZ0VJLzVZWVdrdURzd0FydmM0N1ZWZFMxa0QxYjB3?=
+ =?utf-8?B?MFBBWDhRc3BBeE1pY0YwdSt0VWZNc2xVVHdjYnZjUjhWZzJCY1MwbTloWmpa?=
+ =?utf-8?B?cm9kYllsYXBCVElqRTcwb2ttamE0VnhjRUI5aUtGZlBJT3Y5N0NDd0pkeUlm?=
+ =?utf-8?B?MEMxdjlEWllwQzF5dmJJL001Y1hFUzB3bko3TVFUdEdJS1RCR2ZvVXVmRzVi?=
+ =?utf-8?B?ZlhpTDZ5R3NWQnFzaHI2UUNtRERRNFE5d0ZlZ3c5NEI1T05CdzZZcUd5aWF2?=
+ =?utf-8?B?ZlZJZmZ0czJPM0oxUnFLZTJ3aTJxYTNZc0k0ZG1EQzNIeDNvUmxuZ0R1TkIr?=
+ =?utf-8?B?eDNocFJhdm9zZ29oNWIzeE1sK2xrbytpMFIrbWpvekJBYmFxTXQ1bHI2ZUtj?=
+ =?utf-8?B?cDFkQ054UzVISlFJKzlVN0dyRnlWOEpCZE1RbXp3eDhrdTFSWFYwcGZmUHlD?=
+ =?utf-8?B?bFpYZEUyOFlWS1cxL2daam9ON0hhWlFRZVhpd3U3THlCcUUyMWZVUXlYVitu?=
+ =?utf-8?B?TEJnbXhYTFVXVkJLZjgxN0c5ejZwbnRQR0oyV2xnTUgxNDdOWUxzNDRoZ21T?=
+ =?utf-8?B?NkRRQ2JPc1k2TVkxVUpBdDQ1NEVmY0c5dEFxeThwc3FyNTV6OHlQQUY2TDlX?=
+ =?utf-8?B?TTVjNVRZaWJJRE5maVo3cjZzMGIzTGFuMi9PSHNsaXBQUmh4cUwzWXFIYjhv?=
+ =?utf-8?B?clpzTmc3N1c1Z0VEZm80VTBKMVlSeVBUSlhjZE1uNVVBc2FyUkRGREpYck1F?=
+ =?utf-8?B?N0x1YTBpSFI5YXB1NWh6VEFXeGN0Q2J3UFN1ZUFHZnEyUXlkclhnNlF6M1Bk?=
+ =?utf-8?Q?cOK1ZhIvSv2tZ8J6eurdae/WG?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68a87379-7247-45f0-0fa3-08dcecf5d9e1
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4202.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 08:46:24.8511
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AlgM0tIsJ/MrkKCTOwyN7lpowgyDQIdYAh56zJpnpp+kXcaMQuLq3/jBCFchVglcog4kAcSy9jS1f5GX4Xmqog==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB9015
 
-Syzkaller reported this splat:
 
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in mptcp_pm_nl_rm_addr_or_subflow+0xb44/0xcc0 net/mptcp/pm_netlink.c:881
-  Read of size 4 at addr ffff8880569ac858 by task syz.1.2799/14662
+On 10/14/24 23:24, Dan Williams wrote:
+> Alejandro Lucero Palau wrote:
+>> On 10/12/24 22:57, Dan Williams wrote:
+>>> Alejandro Lucero Palau wrote:
+>>> [..]
+>>>>> I am skeptical that PROBE_FORCE_SYNCRONOUS is a fix for any
+>>>>> device-readiness bug. Some other assumption is violated if that is
+>>>>> required.
+>>>> But that problem is not about device readiness but just how the device
+>>>> model works. In this case the memdev creation is adding devices, no real
+>>>> ones but those abstractions we use from the device model, and that
+>>>> device creation is done asynchronously.
+>>> Device creation is not done asynchronously, the PCI driver is attaching
+>>> asynchrounously. When the PCI driver attaches it creates memdevs and
+>>> those are attached to cxl_mem synchronously.
+>>>
+>>>> memdev, a Type2 driver in my case, is going to work with such a device
+>>>> abstraction just after the memdev creation, it is not there yet.
+>>> Oh, is the concern that you always want to have the memdev attached to
+>>> cxl_mem immediately after it is registered?
+>>>
+>>> I think that is another case where "MODULE_SOFTDEP("pre: cxl_mem")" is
+>>> needed. However, to fix this situation once and for all I think I would
+>>> rather just drop all this modularity and move both cxl_port and cxl_mem
+>>> to be drivers internal to cxl_core.ko similar to the cxl_region driver.
+>>
+>> Oh, so the problem is the code is not ready because the functionality is
+>> in a module not loaded yet.
+> Right.
+>
+>> Then it makes sense that change. I'll do it if not already taken. I'll
+>> send v4 without the PROBE_FORCE_SYNCHRONOUS flag and without the
+>> previous loop with delays implemented in v3.
+> So I think EPROBE_DEFER can stay out of the CXL core because it is up to
+> the accelerator driver to decide whether CXL availability is fatal to
+> init or not.
 
-  CPU: 0 UID: 0 PID: 14662 Comm: syz.1.2799 Not tainted 6.12.0-rc2-syzkaller-00307-g36c254515dc6 #0
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-  Call Trace:
-   <TASK>
-   __dump_stack lib/dump_stack.c:94 [inline]
-   dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
-   print_address_description mm/kasan/report.c:377 [inline]
-   print_report+0xc3/0x620 mm/kasan/report.c:488
-   kasan_report+0xd9/0x110 mm/kasan/report.c:601
-   mptcp_pm_nl_rm_addr_or_subflow+0xb44/0xcc0 net/mptcp/pm_netlink.c:881
-   mptcp_pm_nl_rm_subflow_received net/mptcp/pm_netlink.c:914 [inline]
-   mptcp_nl_remove_id_zero_address+0x305/0x4a0 net/mptcp/pm_netlink.c:1572
-   mptcp_pm_nl_del_addr_doit+0x5c9/0x770 net/mptcp/pm_netlink.c:1603
-   genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1115
-   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-   genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1210
-   netlink_rcv_skb+0x165/0x410 net/netlink/af_netlink.c:2551
-   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-   netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
-   netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1357
-   netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1901
-   sock_sendmsg_nosec net/socket.c:729 [inline]
-   __sock_sendmsg net/socket.c:744 [inline]
-   ____sys_sendmsg+0x9ae/0xb40 net/socket.c:2607
-   ___sys_sendmsg+0x135/0x1e0 net/socket.c:2661
-   __sys_sendmsg+0x117/0x1f0 net/socket.c:2690
-   do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
-   __do_fast_syscall_32+0x73/0x120 arch/x86/entry/common.c:386
-   do_fast_syscall_32+0x32/0x80 arch/x86/entry/common.c:411
-   entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-  RIP: 0023:0xf7fe4579
-  Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 8d b4 26 00 00 00 00 8d b4 26 00 00 00 00
-  RSP: 002b:00000000f574556c EFLAGS: 00000296 ORIG_RAX: 0000000000000172
-  RAX: ffffffffffffffda RBX: 000000000000000b RCX: 0000000020000140
-  RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000296 R12: 0000000000000000
-  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-   </TASK>
 
-  Allocated by task 5387:
-   kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
-   kasan_save_track+0x14/0x30 mm/kasan/common.c:68
-   poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
-   __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:394
-   kmalloc_noprof include/linux/slab.h:878 [inline]
-   kzalloc_noprof include/linux/slab.h:1014 [inline]
-   subflow_create_ctx+0x87/0x2a0 net/mptcp/subflow.c:1803
-   subflow_ulp_init+0xc3/0x4d0 net/mptcp/subflow.c:1956
-   __tcp_set_ulp net/ipv4/tcp_ulp.c:146 [inline]
-   tcp_set_ulp+0x326/0x7f0 net/ipv4/tcp_ulp.c:167
-   mptcp_subflow_create_socket+0x4ae/0x10a0 net/mptcp/subflow.c:1764
-   __mptcp_subflow_connect+0x3cc/0x1490 net/mptcp/subflow.c:1592
-   mptcp_pm_create_subflow_or_signal_addr+0xbda/0x23a0 net/mptcp/pm_netlink.c:642
-   mptcp_pm_nl_fully_established net/mptcp/pm_netlink.c:650 [inline]
-   mptcp_pm_nl_work+0x3a1/0x4f0 net/mptcp/pm_netlink.c:943
-   mptcp_worker+0x15a/0x1240 net/mptcp/protocol.c:2777
-   process_one_work+0x958/0x1b30 kernel/workqueue.c:3229
-   process_scheduled_works kernel/workqueue.c:3310 [inline]
-   worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
-   kthread+0x2c1/0x3a0 kernel/kthread.c:389
-   ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
-   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+It needs support from the cxl core though. If the cxl root is not there 
+yet, the driver needs to know, and that is what you did in your original 
+patch and I'm keeping as well.
 
-  Freed by task 113:
-   kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
-   kasan_save_track+0x14/0x30 mm/kasan/common.c:68
-   kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:579
-   poison_slab_object mm/kasan/common.c:247 [inline]
-   __kasan_slab_free+0x51/0x70 mm/kasan/common.c:264
-   kasan_slab_free include/linux/kasan.h:230 [inline]
-   slab_free_hook mm/slub.c:2342 [inline]
-   slab_free mm/slub.c:4579 [inline]
-   kfree+0x14f/0x4b0 mm/slub.c:4727
-   kvfree+0x47/0x50 mm/util.c:701
-   kvfree_rcu_list+0xf5/0x2c0 kernel/rcu/tree.c:3423
-   kvfree_rcu_drain_ready kernel/rcu/tree.c:3563 [inline]
-   kfree_rcu_monitor+0x503/0x8b0 kernel/rcu/tree.c:3632
-   kfree_rcu_shrink_scan+0x245/0x3a0 kernel/rcu/tree.c:3966
-   do_shrink_slab+0x44f/0x11c0 mm/shrinker.c:435
-   shrink_slab+0x32b/0x12a0 mm/shrinker.c:662
-   shrink_one+0x47e/0x7b0 mm/vmscan.c:4818
-   shrink_many mm/vmscan.c:4879 [inline]
-   lru_gen_shrink_node mm/vmscan.c:4957 [inline]
-   shrink_node+0x2452/0x39d0 mm/vmscan.c:5937
-   kswapd_shrink_node mm/vmscan.c:6765 [inline]
-   balance_pgdat+0xc19/0x18f0 mm/vmscan.c:6957
-   kswapd+0x5ea/0xbf0 mm/vmscan.c:7226
-   kthread+0x2c1/0x3a0 kernel/kthread.c:389
-   ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
-   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-  Last potentially related work creation:
-   kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
-   __kasan_record_aux_stack+0xba/0xd0 mm/kasan/generic.c:541
-   kvfree_call_rcu+0x74/0xbe0 kernel/rcu/tree.c:3810
-   subflow_ulp_release+0x2ae/0x350 net/mptcp/subflow.c:2009
-   tcp_cleanup_ulp+0x7c/0x130 net/ipv4/tcp_ulp.c:124
-   tcp_v4_destroy_sock+0x1c5/0x6a0 net/ipv4/tcp_ipv4.c:2541
-   inet_csk_destroy_sock+0x1a3/0x440 net/ipv4/inet_connection_sock.c:1293
-   tcp_done+0x252/0x350 net/ipv4/tcp.c:4870
-   tcp_rcv_state_process+0x379b/0x4f30 net/ipv4/tcp_input.c:6933
-   tcp_v4_do_rcv+0x1ad/0xa90 net/ipv4/tcp_ipv4.c:1938
-   sk_backlog_rcv include/net/sock.h:1115 [inline]
-   __release_sock+0x31b/0x400 net/core/sock.c:3072
-   __tcp_close+0x4f3/0xff0 net/ipv4/tcp.c:3142
-   __mptcp_close_ssk+0x331/0x14d0 net/mptcp/protocol.c:2489
-   mptcp_close_ssk net/mptcp/protocol.c:2543 [inline]
-   mptcp_close_ssk+0x150/0x220 net/mptcp/protocol.c:2526
-   mptcp_pm_nl_rm_addr_or_subflow+0x2be/0xcc0 net/mptcp/pm_netlink.c:878
-   mptcp_pm_nl_rm_subflow_received net/mptcp/pm_netlink.c:914 [inline]
-   mptcp_nl_remove_id_zero_address+0x305/0x4a0 net/mptcp/pm_netlink.c:1572
-   mptcp_pm_nl_del_addr_doit+0x5c9/0x770 net/mptcp/pm_netlink.c:1603
-   genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1115
-   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-   genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1210
-   netlink_rcv_skb+0x165/0x410 net/netlink/af_netlink.c:2551
-   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-   netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
-   netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1357
-   netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1901
-   sock_sendmsg_nosec net/socket.c:729 [inline]
-   __sock_sendmsg net/socket.c:744 [inline]
-   ____sys_sendmsg+0x9ae/0xb40 net/socket.c:2607
-   ___sys_sendmsg+0x135/0x1e0 net/socket.c:2661
-   __sys_sendmsg+0x117/0x1f0 net/socket.c:2690
-   do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
-   __do_fast_syscall_32+0x73/0x120 arch/x86/entry/common.c:386
-   do_fast_syscall_32+0x32/0x80 arch/x86/entry/common.c:411
-   entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+> Additionally, I am less and less convinced that Type-2 drivers should be
+> forced to depend on the cxl_mem driver to attach vs just arranging for
+> those Type-2 drivers to call devm_cxl_enumerate_ports() and
+> devm_cxl_add_endpoint() directly. In other words I am starting to worry
+> that the generic cxl_mem driver design pattern is a midlayer mistake.
 
-  The buggy address belongs to the object at ffff8880569ac800
-   which belongs to the cache kmalloc-512 of size 512
-  The buggy address is located 88 bytes inside of
-   freed 512-byte region [ffff8880569ac800, ffff8880569aca00)
 
-  The buggy address belongs to the physical page:
-  page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x569ac
-  head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-  flags: 0x4fff00000000040(head|node=1|zone=1|lastcpupid=0x7ff)
-  page_type: f5(slab)
-  raw: 04fff00000000040 ffff88801ac42c80 dead000000000100 dead000000000122
-  raw: 0000000000000000 0000000080100010 00000001f5000000 0000000000000000
-  head: 04fff00000000040 ffff88801ac42c80 dead000000000100 dead000000000122
-  head: 0000000000000000 0000000080100010 00000001f5000000 0000000000000000
-  head: 04fff00000000002 ffffea00015a6b01 ffffffffffffffff 0000000000000000
-  head: 0000000000000004 0000000000000000 00000000ffffffff 0000000000000000
-  page dumped because: kasan: bad access detected
-  page_owner tracks the page as allocated
-  page last allocated via order 2, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 10238, tgid 10238 (kworker/u32:6), ts 597403252405, free_ts 597177952947
-   set_page_owner include/linux/page_owner.h:32 [inline]
-   post_alloc_hook+0x2d1/0x350 mm/page_alloc.c:1537
-   prep_new_page mm/page_alloc.c:1545 [inline]
-   get_page_from_freelist+0x101e/0x3070 mm/page_alloc.c:3457
-   __alloc_pages_noprof+0x223/0x25a0 mm/page_alloc.c:4733
-   alloc_pages_mpol_noprof+0x2c9/0x610 mm/mempolicy.c:2265
-   alloc_slab_page mm/slub.c:2412 [inline]
-   allocate_slab mm/slub.c:2578 [inline]
-   new_slab+0x2ba/0x3f0 mm/slub.c:2631
-   ___slab_alloc+0xd1d/0x16f0 mm/slub.c:3818
-   __slab_alloc.constprop.0+0x56/0xb0 mm/slub.c:3908
-   __slab_alloc_node mm/slub.c:3961 [inline]
-   slab_alloc_node mm/slub.c:4122 [inline]
-   __kmalloc_cache_noprof+0x2c5/0x310 mm/slub.c:4290
-   kmalloc_noprof include/linux/slab.h:878 [inline]
-   kzalloc_noprof include/linux/slab.h:1014 [inline]
-   mld_add_delrec net/ipv6/mcast.c:743 [inline]
-   igmp6_leave_group net/ipv6/mcast.c:2625 [inline]
-   igmp6_group_dropped+0x4ab/0xe40 net/ipv6/mcast.c:723
-   __ipv6_dev_mc_dec+0x281/0x360 net/ipv6/mcast.c:979
-   addrconf_leave_solict net/ipv6/addrconf.c:2253 [inline]
-   __ipv6_ifa_notify+0x3f6/0xc30 net/ipv6/addrconf.c:6283
-   addrconf_ifdown.isra.0+0xef9/0x1a20 net/ipv6/addrconf.c:3982
-   addrconf_notify+0x220/0x19c0 net/ipv6/addrconf.c:3781
-   notifier_call_chain+0xb9/0x410 kernel/notifier.c:93
-   call_netdevice_notifiers_info+0xbe/0x140 net/core/dev.c:1996
-   call_netdevice_notifiers_extack net/core/dev.c:2034 [inline]
-   call_netdevice_notifiers net/core/dev.c:2048 [inline]
-   dev_close_many+0x333/0x6a0 net/core/dev.c:1589
-  page last free pid 13136 tgid 13136 stack trace:
-   reset_page_owner include/linux/page_owner.h:25 [inline]
-   free_pages_prepare mm/page_alloc.c:1108 [inline]
-   free_unref_page+0x5f4/0xdc0 mm/page_alloc.c:2638
-   stack_depot_save_flags+0x2da/0x900 lib/stackdepot.c:666
-   kasan_save_stack+0x42/0x60 mm/kasan/common.c:48
-   kasan_save_track+0x14/0x30 mm/kasan/common.c:68
-   unpoison_slab_object mm/kasan/common.c:319 [inline]
-   __kasan_slab_alloc+0x89/0x90 mm/kasan/common.c:345
-   kasan_slab_alloc include/linux/kasan.h:247 [inline]
-   slab_post_alloc_hook mm/slub.c:4085 [inline]
-   slab_alloc_node mm/slub.c:4134 [inline]
-   kmem_cache_alloc_noprof+0x121/0x2f0 mm/slub.c:4141
-   skb_clone+0x190/0x3f0 net/core/skbuff.c:2084
-   do_one_broadcast net/netlink/af_netlink.c:1462 [inline]
-   netlink_broadcast_filtered+0xb11/0xef0 net/netlink/af_netlink.c:1540
-   netlink_broadcast+0x39/0x50 net/netlink/af_netlink.c:1564
-   uevent_net_broadcast_untagged lib/kobject_uevent.c:331 [inline]
-   kobject_uevent_net_broadcast lib/kobject_uevent.c:410 [inline]
-   kobject_uevent_env+0xacd/0x1670 lib/kobject_uevent.c:608
-   device_del+0x623/0x9f0 drivers/base/core.c:3882
-   snd_card_disconnect.part.0+0x58a/0x7c0 sound/core/init.c:546
-   snd_card_disconnect+0x1f/0x30 sound/core/init.c:495
-   snd_usx2y_disconnect+0xe9/0x1f0 sound/usb/usx2y/usbusx2y.c:417
-   usb_unbind_interface+0x1e8/0x970 drivers/usb/core/driver.c:461
-   device_remove drivers/base/dd.c:569 [inline]
-   device_remove+0x122/0x170 drivers/base/dd.c:561
+You know better than me but in my view, a Type2 should follow what a 
+Type3 does with some small changes for dealing with the differences, 
+mainly the way it is going to be used and those optional capabilities 
+for Type2. This makes more sense to me for Type1.
 
-That's because 'subflow' is used just after 'mptcp_close_ssk(subflow)',
-which will initiate the release of its memory. Even if it is very likely
-the release and the re-utilisation will be done later on, it is of
-course better to avoid any issues and read the content of 'subflow'
-before closing it.
+> So, if it makes it easier for sfc, I would be open to exploring a direct
+> scheme for endpoint attachment, and not requiring the generic cxl_mem
+> driver as an intermediary.
 
-Fixes: 1c1f72137598 ("mptcp: pm: only decrement add_addr_accepted for MPJ req")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+3c8b7a8e7df6a2a226ca@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/670d7337.050a0220.4cbc0.004f.GAE@google.com
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/pm_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index f6f0a38a0750f82bc909f02a75beec980d951f1f..4dd61284afc5f7f70708827056fb4530c8879502 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -873,12 +873,12 @@ static void mptcp_pm_nl_rm_addr_or_subflow(struct mptcp_sock *msk,
- 				 i, rm_id, id, remote_id, msk->mpc_endpoint_id);
- 			spin_unlock_bh(&msk->pm.lock);
- 			mptcp_subflow_shutdown(sk, ssk, how);
-+			removed |= subflow->request_join;
- 
- 			/* the following takes care of updating the subflows counter */
- 			mptcp_close_ssk(sk, ssk, subflow);
- 			spin_lock_bh(&msk->pm.lock);
- 
--			removed |= subflow->request_join;
- 			if (rm_type == MPTCP_MIB_RMSUBFLOW)
- 				__MPTCP_INC_STATS(sock_net(sk), rm_type);
- 		}
+V4 is ready (just having problems when testing with 6.12-rcX) so I would 
+like to keep it and explore this once we have something working and 
+accepted. Type2 and Type1 with CXL cache will bring new challenges and I 
+bet we will need refactoring in the code and potentially new design for 
+generic code (Type3 and Type2, Type2 and Type1).
 
----
-base-commit: 25c12b459db8365fee84b63f3dd7910f70627f29
-change-id: 20241015-net-mptcp-uaf-pm-rm-7810dfa3e559
-
-Best regards,
--- 
-Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
 
