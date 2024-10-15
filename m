@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-86024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA4A99EB4A
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:05:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F0299EB27
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:04:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 825931F210D6
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:05:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7A74283FE4
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E518B1AF0A9;
-	Tue, 15 Oct 2024 13:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A9E1F8911;
+	Tue, 15 Oct 2024 13:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogFwq2lq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifSgTzVk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B1C1C07DB;
-	Tue, 15 Oct 2024 13:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81451AF0A9;
+	Tue, 15 Oct 2024 13:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997515; cv=none; b=lsvu9u7/Pnxz37ErHH+mhu2QpW07C8dvYFopiVxtox/V1G2Mey2KMPVEpLx1RAwtGHIB+AvI6qUsOo0q0IpEhG2IH6i7LrScrvrTLY+BVaj0+pbYUfYHkfBekeaaS0LWqrHdW8AhASxxjujsU3u6byVPt5ff2Zf/10LUbdxpGRg=
+	t=1728997412; cv=none; b=X3+6/tU6RJRfHA/fcpDaY7Tn23jIuv0UzpF0Wb1wzpIZSXbmQrhYm2y7+ral3zaHxEvRu4FkR9f/Zf1Pvzki2NFAS3eTzD5+suE5cqRiwDxr0Vjf0ZCU3itaxc52xzQUPWqauFGo67qckkd+VP1CyjjjSmBbGLFUPd+VcFl5Hr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997515; c=relaxed/simple;
-	bh=c9twD0EJ5lJm0JJ7N1OHAo865pxow5ugQ8tUy1tdpNY=;
+	s=arc-20240116; t=1728997412; c=relaxed/simple;
+	bh=272v4f9pb5w3mnLTIfHI/7/rNhuqiB0r4YIErZKbV+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tQoY+j20bWCbT+v2Hjf3SWz3/f1AJBYOXhROvB7yuDwzspntFkzkK7cLDqqVkC6kJhA/8aCenE9JMKTJE794nK8b40Si9eQ9+1nxmgcLAcl41nw02dy6SYQND+KiHzEqfsqC5PF4PHcImj0cb0dlOLRMBAWha6NCektjfw4Kix8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogFwq2lq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12DA1C4CEC6;
-	Tue, 15 Oct 2024 13:05:14 +0000 (UTC)
+	 MIME-Version; b=C0qKNrm0hO8e+wGF4r5hXxlyeJAtQMMcX2n/7ZviPgYipuN+UpXY7rG04PQcBiydeK2APOTU9GqyFapctYXvMgv7dXuAYQWsmseMwnx4kuhSxu5TLvDqe+V+2nNjMoKcMH3TiwgrLFNTiNhTCe4GTRAa4Un75yrJwQR21rc9fkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifSgTzVk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D9FC4CECE;
+	Tue, 15 Oct 2024 13:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997515;
-	bh=c9twD0EJ5lJm0JJ7N1OHAo865pxow5ugQ8tUy1tdpNY=;
+	s=korg; t=1728997412;
+	bh=272v4f9pb5w3mnLTIfHI/7/rNhuqiB0r4YIErZKbV+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogFwq2lqs3OdIgOiPLiY0GFJpL+WOcXjXGPSac9Ayq8nkUHcg9rdVetu6Zg7SpiLH
-	 fMObFRM14YrUa8bx1TZ8M6Xsb+ZRnh2GGsEJyl6jABIuRsJ2pQxGQua3hhB9aeJ7JM
-	 TnoGUHu1ySPtOU69qqajIsofgdGa/hEmkggMXd8w=
+	b=ifSgTzVk+HwxzgpcHglljJKx0uAhi4eUa4dv11p0uQfK17ET8lqHKr0hr0oD7sxOa
+	 MiJRgL17ts8FEaVnpdcuQssYiIe4Cyhn8Qg8dgjRoSJ5M1mZMeR4bhGQvtXbcCu1Xy
+	 7M6Wxwj4rTEVrKnU4K8BDh3syyAQafhssTjWn5zU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Blixt <jonas.blixt@actia.se>,
-	Anson Huang <anson.huang@nxp.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Xi Wang <wangxi11@huawei.com>,
+	Weihang Li <liweihang@huawei.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 174/518] watchdog: imx_sc_wdt: Dont disable WDT in suspend
-Date: Tue, 15 Oct 2024 14:41:18 +0200
-Message-ID: <20241015123923.706259052@linuxfoundation.org>
+Subject: [PATCH 5.10 175/518] RDMA/hns: Add mapped page count checking for MTR
+Date: Tue, 15 Oct 2024 14:41:19 +0200
+Message-ID: <20241015123923.746426063@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -68,71 +67,165 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonas Blixt <jonas.blixt@actia.se>
+From: Xi Wang <wangxi11@huawei.com>
 
-[ Upstream commit 2d9d6d300fb0a4ae4431bb308027ac9385746d42 ]
+[ Upstream commit 9ea9a53ea93be1cc66729ceb920f0d07285d6bfd ]
 
-Parts of the suspend and resume chain is left unprotected if we disable
-the WDT here.
+Add the mapped page count checking flow to avoid invalid page size when
+creating MTR.
 
->From experiments we can see that the SCU disables and re-enables the WDT
-when we enter and leave suspend to ram. By not touching the WDT here we
-are protected by the WDT all the way to the SCU.
-
-Signed-off-by: Jonas Blixt <jonas.blixt@actia.se>
-CC: Anson Huang <anson.huang@nxp.com>
-Fixes: 986857acbc9a ("watchdog: imx_sc: Add i.MX system controller watchdog support")
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20240801121845.1465765-1-jonas.blixt@actia.se
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Fixes: 38389eaa4db1 ("RDMA/hns: Add mtr support for mixed multihop addressing")
+Link: https://lore.kernel.org/r/1612517974-31867-4-git-send-email-liweihang@huawei.com
+Signed-off-by: Xi Wang <wangxi11@huawei.com>
+Signed-off-by: Weihang Li <liweihang@huawei.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Stable-dep-of: d586628b169d ("RDMA/hns: Fix the overflow risk of hem_list_calc_ba_range()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/imx_sc_wdt.c | 24 ------------------------
- 1 file changed, 24 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hem.c |  9 ++--
+ drivers/infiniband/hw/hns/hns_roce_mr.c  | 56 ++++++++++++++----------
+ 2 files changed, 40 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/watchdog/imx_sc_wdt.c b/drivers/watchdog/imx_sc_wdt.c
-index 8ac021748d160..79649b0e89e47 100644
---- a/drivers/watchdog/imx_sc_wdt.c
-+++ b/drivers/watchdog/imx_sc_wdt.c
-@@ -213,29 +213,6 @@ static int imx_sc_wdt_probe(struct platform_device *pdev)
- 	return devm_watchdog_register_device(dev, wdog);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
+index 854b41c14774d..fa920a7621eef 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hem.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
+@@ -981,9 +981,8 @@ static struct roce_hem_item *hem_list_alloc_item(struct hns_roce_dev *hr_dev,
+ 		return NULL;
+ 
+ 	if (exist_bt) {
+-		hem->addr = dma_alloc_coherent(hr_dev->dev,
+-						   count * BA_BYTE_LEN,
+-						   &hem->dma_addr, GFP_KERNEL);
++		hem->addr = dma_alloc_coherent(hr_dev->dev, count * BA_BYTE_LEN,
++					       &hem->dma_addr, GFP_KERNEL);
+ 		if (!hem->addr) {
+ 			kfree(hem);
+ 			return NULL;
+@@ -1242,6 +1241,10 @@ static int hem_list_alloc_root_bt(struct hns_roce_dev *hr_dev,
+ 	if (ba_num < 1)
+ 		return -ENOMEM;
+ 
++	if (ba_num > unit)
++		return -ENOBUFS;
++
++	ba_num = min_t(int, ba_num, unit);
+ 	INIT_LIST_HEAD(&temp_root);
+ 	offset = r->offset;
+ 	/* indicate to last region */
+diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
+index 7e93c9b4a33f1..5fad718cfdbe3 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_mr.c
++++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
+@@ -633,30 +633,26 @@ int hns_roce_dealloc_mw(struct ib_mw *ibmw)
  }
  
--static int __maybe_unused imx_sc_wdt_suspend(struct device *dev)
--{
--	struct imx_sc_wdt_device *imx_sc_wdd = dev_get_drvdata(dev);
+ static int mtr_map_region(struct hns_roce_dev *hr_dev, struct hns_roce_mtr *mtr,
+-			  dma_addr_t *pages, struct hns_roce_buf_region *region)
++			  struct hns_roce_buf_region *region, dma_addr_t *pages,
++			  int max_count)
+ {
++	int count, npage;
++	int offset, end;
+ 	__le64 *mtts;
+-	int offset;
+-	int count;
+-	int npage;
+ 	u64 addr;
+-	int end;
+ 	int i;
+ 
+-	/* if hopnum is 0, buffer cannot store BAs, so skip write mtt */
+-	if (!region->hopnum)
+-		return 0;
 -
--	if (watchdog_active(&imx_sc_wdd->wdd))
--		imx_sc_wdt_stop(&imx_sc_wdd->wdd);
--
+ 	offset = region->offset;
+ 	end = offset + region->count;
+ 	npage = 0;
+-	while (offset < end) {
++	while (offset < end && npage < max_count) {
++		count = 0;
+ 		mtts = hns_roce_hem_list_find_mtt(hr_dev, &mtr->hem_list,
+ 						  offset, &count, NULL);
+ 		if (!mtts)
+ 			return -ENOBUFS;
+ 
+-		for (i = 0; i < count; i++) {
++		for (i = 0; i < count && npage < max_count; i++) {
+ 			if (hr_dev->hw_rev == HNS_ROCE_HW_VER1)
+ 				addr = to_hr_hw_page_addr(pages[npage]);
+ 			else
+@@ -668,7 +664,7 @@ static int mtr_map_region(struct hns_roce_dev *hr_dev, struct hns_roce_mtr *mtr,
+ 		offset += count;
+ 	}
+ 
 -	return 0;
--}
--
--static int __maybe_unused imx_sc_wdt_resume(struct device *dev)
--{
--	struct imx_sc_wdt_device *imx_sc_wdd = dev_get_drvdata(dev);
--
--	if (watchdog_active(&imx_sc_wdd->wdd))
--		imx_sc_wdt_start(&imx_sc_wdd->wdd);
--
++	return npage;
+ }
+ 
+ static inline bool mtr_has_mtt(struct hns_roce_buf_attr *attr)
+@@ -835,8 +831,8 @@ int hns_roce_mtr_map(struct hns_roce_dev *hr_dev, struct hns_roce_mtr *mtr,
+ {
+ 	struct ib_device *ibdev = &hr_dev->ib_dev;
+ 	struct hns_roce_buf_region *r;
+-	unsigned int i;
+-	int err;
++	unsigned int i, mapped_cnt;
++	int ret;
+ 
+ 	/*
+ 	 * Only use the first page address as root ba when hopnum is 0, this
+@@ -847,26 +843,42 @@ int hns_roce_mtr_map(struct hns_roce_dev *hr_dev, struct hns_roce_mtr *mtr,
+ 		return 0;
+ 	}
+ 
+-	for (i = 0; i < mtr->hem_cfg.region_count; i++) {
++	for (i = 0, mapped_cnt = 0; i < mtr->hem_cfg.region_count &&
++	     mapped_cnt < page_cnt; i++) {
+ 		r = &mtr->hem_cfg.region[i];
++		/* if hopnum is 0, no need to map pages in this region */
++		if (!r->hopnum) {
++			mapped_cnt += r->count;
++			continue;
++		}
++
+ 		if (r->offset + r->count > page_cnt) {
+-			err = -EINVAL;
++			ret = -EINVAL;
+ 			ibdev_err(ibdev,
+ 				  "failed to check mtr%u end %u + %u, max %u.\n",
+ 				  i, r->offset, r->count, page_cnt);
+-			return err;
++			return ret;
+ 		}
+ 
+-		err = mtr_map_region(hr_dev, mtr, &pages[r->offset], r);
+-		if (err) {
++		ret = mtr_map_region(hr_dev, mtr, r, &pages[r->offset],
++				     page_cnt - mapped_cnt);
++		if (ret < 0) {
+ 			ibdev_err(ibdev,
+ 				  "failed to map mtr%u offset %u, ret = %d.\n",
+-				  i, r->offset, err);
+-			return err;
++				  i, r->offset, ret);
++			return ret;
+ 		}
++		mapped_cnt += ret;
++		ret = 0;
+ 	}
+ 
 -	return 0;
--}
--
--static SIMPLE_DEV_PM_OPS(imx_sc_wdt_pm_ops,
--			 imx_sc_wdt_suspend, imx_sc_wdt_resume);
--
- static const struct of_device_id imx_sc_wdt_dt_ids[] = {
- 	{ .compatible = "fsl,imx-sc-wdt", },
- 	{ /* sentinel */ }
-@@ -247,7 +224,6 @@ static struct platform_driver imx_sc_wdt_driver = {
- 	.driver		= {
- 		.name	= "imx-sc-wdt",
- 		.of_match_table = imx_sc_wdt_dt_ids,
--		.pm	= &imx_sc_wdt_pm_ops,
- 	},
- };
- module_platform_driver(imx_sc_wdt_driver);
++	if (mapped_cnt < page_cnt) {
++		ret = -ENOBUFS;
++		ibdev_err(ibdev, "failed to map mtr pages count: %u < %u.\n",
++			  mapped_cnt, page_cnt);
++	}
++
++	return ret;
+ }
+ 
+ int hns_roce_mtr_find(struct hns_roce_dev *hr_dev, struct hns_roce_mtr *mtr,
 -- 
 2.43.0
 
