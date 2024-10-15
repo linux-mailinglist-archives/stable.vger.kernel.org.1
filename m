@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-85169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E4799E5F2
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:36:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C4499E5FF
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE313284058
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:36:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D384A1C22BED
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862961E490B;
-	Tue, 15 Oct 2024 11:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3111E6DEE;
+	Tue, 15 Oct 2024 11:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVQFfjEx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wiWUWmNo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410A91684A3;
-	Tue, 15 Oct 2024 11:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C02C1D90CD;
+	Tue, 15 Oct 2024 11:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728992206; cv=none; b=cka+1zZZ16izH/aCgY6Cl+pYktAM3rTauj00iG+GnD/jOqotxhSeyJS5VrxaP6WaXEjfXPy+zKygSX9Uod1EjBNVzudECcLQ8d5SLlJFnLMSi34LU41yeYqX6Z8l9icf0F71OhHYqs2hd7Mmj7U+rQ1IQVR/bkgQf8cLiCYNPPA=
+	t=1728992245; cv=none; b=QVAkTEtVJcYMDZgTrUGmnYldnKDwCqhYq8+Sq/BrR6UfRm3bFFduuGASi/t5kB9XNBcY8ORRvNrFPbLfnuij4RGfI2L4rj+bIfmTZW6zU7QPeRkejfUWBB6EsmYaGZiwNU6nu/OziZChEIdTkowwxAraMWDhGnrZp4f2gbcbRj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728992206; c=relaxed/simple;
-	bh=cqZpjL7ap3eRzcW2kKhm3PDP6SQUBsrilz3ec62E6h0=;
+	s=arc-20240116; t=1728992245; c=relaxed/simple;
+	bh=hOGNZz6sYyX8Q95oKA4CzH7cI34IR1JrZjNxSW7PbSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iS2o8irH64RuJVhfg/yuc9uNJb91I286idyrHQyivZXckqo8Etjy+jkPHO24PXSzGZMpAUp3qEwOasvxmFPYKNAHnAzm8tbsYAW/H2ODtDo8/cCVUCoUL79uDBqdWjjo12C7kmOaJkJeJPN+6eS5vEDYEzXcjXAsHszBRymI79M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVQFfjEx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8D1C4CEC6;
-	Tue, 15 Oct 2024 11:36:45 +0000 (UTC)
+	 MIME-Version; b=icoCTlG3f4PlTHNKesDGjRCH7iRvEuSWnauhOjawGuCrQv9ADxR3r0iOdUV19sZLb/DBFS/DONu12RsqtBkj7vx/umJXOm6KP2tLvL0/FtdgDShZ7mLWt2z5MPy8mhFB6Z9ZIRYZws1gu7P12yQS11XLQM8l3Lt184GArngMmQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wiWUWmNo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF864C4CEC6;
+	Tue, 15 Oct 2024 11:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728992206;
-	bh=cqZpjL7ap3eRzcW2kKhm3PDP6SQUBsrilz3ec62E6h0=;
+	s=korg; t=1728992245;
+	bh=hOGNZz6sYyX8Q95oKA4CzH7cI34IR1JrZjNxSW7PbSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AVQFfjExgSmvunFHHgPaAHtRfUmW6NbQkBL1pfHv8cPf1slGNuwnpWlHY6Ts7yhHS
-	 zx97xHrcer9SV4IZyHVmuoIzbWTuRzB6z0eVPecJ8ehV8D0wa1n2mfKhP1ha9nmFpy
-	 4szrTSC4UlZlYDruM9C4CybXyx2lyql6iGB4sHdI=
+	b=wiWUWmNo945QUilOGRqqqvA3q/bATOUxFWn+J/KYfPjcdvsqCxHmU9O8lGeK04Jxd
+	 GEiwrVXwh4DQ7NWUvS61EjonMiLSzYuDlrWyXocGvIgPlGO9PYrjRATme+vzk0eJLy
+	 0HpYTTyOIpYHIQEe6xZGrxxKIwSVA+diCT6ByjAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	George Kuruvinakunnel <george.kuruvinakunnel@intel.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 042/691] ice: fix accounting for filters shared by multiple VSIs
-Date: Tue, 15 Oct 2024 13:19:50 +0200
-Message-ID: <20241015112442.013088061@linuxfoundation.org>
+Subject: [PATCH 5.15 043/691] igb: Always call igb_xdp_ring_update_tail() under Tx lock
+Date: Tue, 15 Oct 2024 13:19:51 +0200
+Message-ID: <20241015112442.052711475@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -67,67 +69,93 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
 
-[ Upstream commit e843cf7b34fe2e0c1afc55e1f3057375c9b77a14 ]
+[ Upstream commit 27717f8b17c098c4373ddb8fe89e1a1899c7779d ]
 
-When adding a switch filter (such as a MAC or VLAN filter), it is expected
-that the driver will detect the case where the filter already exists, and
-return -EEXIST. This is used by calling code such as ice_vc_add_mac_addr,
-and ice_vsi_add_vlan to avoid incrementing the accounting fields such as
-vsi->num_vlan or vf->num_mac.
+Always call igb_xdp_ring_update_tail() under __netif_tx_lock, add a comment
+and lockdep assert to indicate that. This is needed to share the same TX
+ring between XDP, XSK and slow paths. Furthermore, the current XDP
+implementation is racy on tail updates.
 
-This logic works correctly for the case where only a single VSI has added a
-given switch filter.
-
-When a second VSI adds the same switch filter, the driver converts the
-existing filter from an ICE_FWD_TO_VSI filter into an ICE_FWD_TO_VSI_LIST
-filter. This saves switch resources, by ensuring that multiple VSIs can
-re-use the same filter.
-
-The ice_add_update_vsi_list() function is responsible for doing this
-conversion. When first converting a filter from the FWD_TO_VSI into
-FWD_TO_VSI_LIST, it checks if the VSI being added is the same as the
-existing rule's VSI. In such a case it returns -EEXIST.
-
-However, when the switch rule has already been converted to a
-FWD_TO_VSI_LIST, the logic is different. Adding a new VSI in this case just
-requires extending the VSI list entry. The logic for checking if the rule
-already exists in this case returns 0 instead of -EEXIST.
-
-This breaks the accounting logic mentioned above, so the counters for how
-many MAC and VLAN filters exist for a given VF or VSI no longer accurately
-reflect the actual count. This breaks other code which relies on these
-counts.
-
-In typical usage this primarily affects such filters generally shared by
-multiple VSIs such as VLAN 0, or broadcast and multicast MAC addresses.
-
-Fix this by correctly reporting -EEXIST in the case of adding the same VSI
-to a switch rule already converted to ICE_FWD_TO_VSI_LIST.
-
-Fixes: 9daf8208dd4d ("ice: Add support for switch filter programming")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Fixes: 9cbc948b5a20 ("igb: add XDP support")
+Signed-off-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
+[Kurt: Add lockdep assert and fixes tag]
+Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Tested-by: George Kuruvinakunnel <george.kuruvinakunnel@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_switch.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igb/igb_main.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
-index deb828e761fa..128c67c6de77 100644
---- a/drivers/net/ethernet/intel/ice/ice_switch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_switch.c
-@@ -1286,7 +1286,7 @@ ice_add_update_vsi_list(struct ice_hw *hw,
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index 420bc34fb8c1..559ddb40347c 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -34,6 +34,7 @@
+ #include <linux/bpf_trace.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/etherdevice.h>
++#include <linux/lockdep.h>
+ #ifdef CONFIG_IGB_DCA
+ #include <linux/dca.h>
+ #endif
+@@ -2893,8 +2894,11 @@ static int igb_xdp(struct net_device *dev, struct netdev_bpf *xdp)
+ 	}
+ }
  
- 		/* A rule already exists with the new VSI being added */
- 		if (test_bit(vsi_handle, m_entry->vsi_list_info->vsi_map))
--			return 0;
-+			return -EEXIST;
++/* This function assumes __netif_tx_lock is held by the caller. */
+ static void igb_xdp_ring_update_tail(struct igb_ring *ring)
+ {
++	lockdep_assert_held(&txring_txq(ring)->_xmit_lock);
++
+ 	/* Force memory writes to complete before letting h/w know there
+ 	 * are new descriptors to fetch.
+ 	 */
+@@ -2979,11 +2983,11 @@ static int igb_xdp_xmit(struct net_device *dev, int n,
+ 		nxmit++;
+ 	}
  
- 		/* Update the previously created VSI list set with
- 		 * the new VSI ID passed in
+-	__netif_tx_unlock(nq);
+-
+ 	if (unlikely(flags & XDP_XMIT_FLUSH))
+ 		igb_xdp_ring_update_tail(tx_ring);
+ 
++	__netif_tx_unlock(nq);
++
+ 	return nxmit;
+ }
+ 
+@@ -8703,12 +8707,14 @@ static void igb_put_rx_buffer(struct igb_ring *rx_ring,
+ 
+ static int igb_clean_rx_irq(struct igb_q_vector *q_vector, const int budget)
+ {
++	unsigned int total_bytes = 0, total_packets = 0;
+ 	struct igb_adapter *adapter = q_vector->adapter;
+ 	struct igb_ring *rx_ring = q_vector->rx.ring;
+-	struct sk_buff *skb = rx_ring->skb;
+-	unsigned int total_bytes = 0, total_packets = 0;
+ 	u16 cleaned_count = igb_desc_unused(rx_ring);
++	struct sk_buff *skb = rx_ring->skb;
++	int cpu = smp_processor_id();
+ 	unsigned int xdp_xmit = 0;
++	struct netdev_queue *nq;
+ 	struct xdp_buff xdp;
+ 	u32 frame_sz = 0;
+ 	int rx_buf_pgcnt;
+@@ -8835,7 +8841,10 @@ static int igb_clean_rx_irq(struct igb_q_vector *q_vector, const int budget)
+ 	if (xdp_xmit & IGB_XDP_TX) {
+ 		struct igb_ring *tx_ring = igb_xdp_tx_queue_mapping(adapter);
+ 
++		nq = txring_txq(tx_ring);
++		__netif_tx_lock(nq, cpu);
+ 		igb_xdp_ring_update_tail(tx_ring);
++		__netif_tx_unlock(nq);
+ 	}
+ 
+ 	u64_stats_update_begin(&rx_ring->rx_syncp);
 -- 
 2.43.0
 
