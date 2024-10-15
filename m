@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-86128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F6D99EBCE
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:11:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B74C499EBDF
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:11:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E353F1F272EA
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:11:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32F6FB20933
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A271AF0AC;
-	Tue, 15 Oct 2024 13:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0A61D5AD3;
+	Tue, 15 Oct 2024 13:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIyyT/tL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzoJuw9Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBDE1C07DF;
-	Tue, 15 Oct 2024 13:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2451C07DF;
+	Tue, 15 Oct 2024 13:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997863; cv=none; b=PaUCXmNM9G3X0Xu7o6zFSFiLxCU+6jNwVyx15OI7k1Q+X8gStPEju5ThMrTxorNXOfMHLq1Cnqf0rYq9IYt7Y1/KC0a0sclQXCGJWuesBXP6xdsa2r/6ZbYj/lxuVDlsR7jReoQ4EI5vQjE2G/DZqTmdVbXfDZixLTdc0SjZdX8=
+	t=1728997899; cv=none; b=CrGo0gYHr5zDHXwel+czY7nL2ZqKFuRU0L+ZM2u+/48+mvhSOAkqK7ujQGfI59ZkGPqTaXgPsAdgwqlFd/xOZVMZJkx+5ocDrVDhc8gJ+fkggvCDlgcWMd0E+png+HYyIHon05aCyIqhhBKhepknz10m5T/6uxDzmL9Dmw4Zans=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997863; c=relaxed/simple;
-	bh=PdkGrM2hhz2OzToLzxQ+JLqO0NuvOXljIKVf5uLMn8w=;
+	s=arc-20240116; t=1728997899; c=relaxed/simple;
+	bh=Z2u2nQVhYugad6c3hjw0N6bBIW8Ma7mVfEyMqz/WPV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mh/oqwFjnBcBtr0c6UBeK6h+OdYZDJo6xsqtWaNDlm1b+Ifj+F2FgNu6h7b6zVUVM/u5XKCS7vY4s/rw9aqRRgnynlru4VmdQ48rjnhT7pSZ31S7vtdDZKEb5lXo40dmuKzKpX71UC84Ic+BbtbSluOi9d7V1oXYyIj71GCZhPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIyyT/tL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994A5C4CEC6;
-	Tue, 15 Oct 2024 13:11:02 +0000 (UTC)
+	 MIME-Version; b=bIDdlyMlqVEcg8bK8DVWNqg4SfymQHXIRcqF0+zndSbvXbbx8ms2pO99povX2tRtS8msb7u0goGRAYmpctjbL4d0YkIcYiaEWyRFlpNkSIxeR0RUs2vJ24/lRUv/YkRJf4ja3/8Z3mXbm/bHlA4fYsE+ruhKNVRR1RjhyjvhPyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzoJuw9Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 625A4C4CEC6;
+	Tue, 15 Oct 2024 13:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997863;
-	bh=PdkGrM2hhz2OzToLzxQ+JLqO0NuvOXljIKVf5uLMn8w=;
+	s=korg; t=1728997898;
+	bh=Z2u2nQVhYugad6c3hjw0N6bBIW8Ma7mVfEyMqz/WPV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aIyyT/tLlqe5kD1D92Vx62oRbLQ3QxCEpNBRpliwDD5v8yq260tW5cLV1Ur3bR3qF
-	 uXUk6yhzpCjiKA6RB5Smgg7N2bi9AQ2+tQAoBP0BqwU8aHF868A2FjBS57xemv6h94
-	 fQh8JGlF0V9Rhd6SDbaNqUpdb+o3kIngI2zufwpI=
+	b=VzoJuw9Q3a2EXyFwqdpIR7ef36ltE7Ouj8CjW9AWJs8AH0BOj5XMIkaoQ3+Azo6kb
+	 1VbjiNdQeBSE7Du2sPn5fadLVni26Y/ZBqPKIHuCt3jpQdjehcxapKowv78A7eKf+1
+	 X4VfKAPsYt5slGmh/H2YxZiBQ2wWNnB4mlnEcnrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 302/518] ACPICA: Fix memory leak if acpi_ps_get_next_field() fails
-Date: Tue, 15 Oct 2024 14:43:26 +0200
-Message-ID: <20241015123928.643703156@linuxfoundation.org>
+Subject: [PATCH 5.10 303/518] net: sched: consistently use rcu_replace_pointer() in taprio_change()
+Date: Tue, 15 Oct 2024 14:43:27 +0200
+Message-ID: <20241015123928.682221309@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -66,88 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit e6169a8ffee8a012badd8c703716e761ce851b15 ]
+[ Upstream commit d5c4546062fd6f5dbce575c7ea52ad66d1968678 ]
 
-ACPICA commit 1280045754264841b119a5ede96cd005bc09b5a7
+According to Vinicius (and carefully looking through the whole
+https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa
+once again), txtime branch of 'taprio_change()' is not going to
+race against 'advance_sched()'. But using 'rcu_replace_pointer()'
+in the former may be a good idea as well.
 
-If acpi_ps_get_next_field() fails, the previously created field list
-needs to be properly disposed before returning the status code.
-
-Link: https://github.com/acpica/acpica/commit/12800457
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-[ rjw: Rename local variable to avoid compiler confusion ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/psargs.c | 39 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ net/sched/sch_taprio.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/psargs.c b/drivers/acpi/acpica/psargs.c
-index a56d8708cb8ee..7a1120262a147 100644
---- a/drivers/acpi/acpica/psargs.c
-+++ b/drivers/acpi/acpica/psargs.c
-@@ -25,6 +25,8 @@ acpi_ps_get_next_package_length(struct acpi_parse_state *parser_state);
- static union acpi_parse_object *acpi_ps_get_next_field(struct acpi_parse_state
- 						       *parser_state);
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index ec6b24edf5f93..04ed23b5f21b4 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -1577,7 +1577,9 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
+ 			goto unlock;
+ 		}
  
-+static void acpi_ps_free_field_list(union acpi_parse_object *start);
-+
- /*******************************************************************************
-  *
-  * FUNCTION:    acpi_ps_get_next_package_length
-@@ -683,6 +685,39 @@ static union acpi_parse_object *acpi_ps_get_next_field(struct acpi_parse_state
- 	return_PTR(field);
- }
- 
-+/*******************************************************************************
-+ *
-+ * FUNCTION:    acpi_ps_free_field_list
-+ *
-+ * PARAMETERS:  start               - First Op in field list
-+ *
-+ * RETURN:      None.
-+ *
-+ * DESCRIPTION: Free all Op objects inside a field list.
-+ *
-+ ******************************************************************************/
-+
-+static void acpi_ps_free_field_list(union acpi_parse_object *start)
-+{
-+	union acpi_parse_object *cur = start;
-+	union acpi_parse_object *next;
-+	union acpi_parse_object *arg;
-+
-+	while (cur) {
-+		next = cur->common.next;
-+
-+		/* AML_INT_CONNECTION_OP can have a single argument */
-+
-+		arg = acpi_ps_get_arg(cur, 0);
-+		if (arg) {
-+			acpi_ps_free_op(arg);
-+		}
-+
-+		acpi_ps_free_op(cur);
-+		cur = next;
-+	}
-+}
-+
- /*******************************************************************************
-  *
-  * FUNCTION:    acpi_ps_get_next_arg
-@@ -751,6 +786,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_state,
- 			while (parser_state->aml < parser_state->pkg_end) {
- 				field = acpi_ps_get_next_field(parser_state);
- 				if (!field) {
-+					if (arg) {
-+						acpi_ps_free_field_list(arg);
-+					}
-+
- 					return_ACPI_STATUS(AE_NO_MEMORY);
- 				}
- 
+-		rcu_assign_pointer(q->admin_sched, new_admin);
++		/* Not going to race against advance_sched(), but still */
++		admin = rcu_replace_pointer(q->admin_sched, new_admin,
++					    lockdep_rtnl_is_held());
+ 		if (admin)
+ 			call_rcu(&admin->rcu, taprio_free_sched_cb);
+ 	} else {
 -- 
 2.43.0
 
