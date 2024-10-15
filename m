@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-85296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B33899E6B0
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:44:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF7499E6B4
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:44:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99BCEB264FE
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:44:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D7081C24537
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EACCE1EF931;
-	Tue, 15 Oct 2024 11:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD8E1EBA1E;
+	Tue, 15 Oct 2024 11:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiDLxmLJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDb6dxjI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98EF1EF926;
-	Tue, 15 Oct 2024 11:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FD21E7C14;
+	Tue, 15 Oct 2024 11:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728992633; cv=none; b=rCtBcdqR7dIwOEaQ+QiXhZfEYE4gRZodkyTRUWzz9URHueHoNGyhAM0Q2Ue3tm6wNzERYrHs1yXXmtU7rI7s/kLV7tC7Y6ypYAqLZfC6qQJS3hQv+D+YqELcV/Hi6R0xobYKjhytJdjSMcXRbOTLziAAHpaLxJcTaLYoIzeEHxQ=
+	t=1728992651; cv=none; b=kWOF+XKawRT3JS/YrihMx+LZTzbSboQHcDPYzizuf4HgTEsbl6uqB+Nyfm6RNaZ1OERR5Th1SChd7IOItOarWcoJGy6fewhyykU6htZLBzCK8a8/E4d8bcqq2uBKFaLjsqdVK+dtsy5SqULMPoJj62wV2kx2Qv8p+rleBfdOh7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728992633; c=relaxed/simple;
-	bh=sRLsCKJanEN/IvLF8BvmZNKIpwC/HoCQ+dHps0JMYjk=;
+	s=arc-20240116; t=1728992651; c=relaxed/simple;
+	bh=mYfOPFifAA7yhVkjwdUQD4RWpTQVhxg/QePusYcAF6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CM59aOArhhMgI3Fouh2JO0EPZdk28RxzzsIUXlF2EpVxbEZuyR9C1ZUt65XMEPMg1M9k2m9UgC81EliFRh08OrVIoMn/3EfOYtcnAdzNwCxC10oho1pWqmZ5qf5EGyB047ITYquHetD5JSd/+bFwRw+px5OOX3JvRpEJQcikcMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiDLxmLJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17540C4CED0;
-	Tue, 15 Oct 2024 11:43:52 +0000 (UTC)
+	 MIME-Version; b=jQmHpgzV98IVLsHWZzgFkJwrhdZHm187D9vzygM8knoJK3sumeGLl8XMWR4BwJswd9LsBXSzrxoi42VuK8pwyNToqxIRB5UukTLRITCErDNrwx0oh/3K41NyFtvobXIix5XPq7XuoUsUE6BjRWM/9x4iEvK2yGQlLnSPz/thQwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDb6dxjI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3F6C4CEC6;
+	Tue, 15 Oct 2024 11:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728992633;
-	bh=sRLsCKJanEN/IvLF8BvmZNKIpwC/HoCQ+dHps0JMYjk=;
+	s=korg; t=1728992651;
+	bh=mYfOPFifAA7yhVkjwdUQD4RWpTQVhxg/QePusYcAF6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OiDLxmLJWQPTqzTT6rGZb3BLvnYUvZC6oMomaXCsxek3grO4uzOq2aKiP/+SzgJqM
-	 4aO30tLes3nFaP2DlTOtdpgv8eRCZpRKYDWGRAWqNfwchWobcA0dCkZiF/hibsxQOz
-	 NQks4AZtRtlpNNiCy9pwggcC+s6IB5DgwdCtHw9w=
+	b=kDb6dxjI2QYoNt78VfjUd4olbdNze6EDBRyxhriB4u+SYVe+JQMh2FD7gaQUy61Dh
+	 KUuvZwQ2+wAvB4z6Gbl400p7T4Xwql/6Z62jz8cOFevnhG39ZZd7R9z0TCkultokmg
+	 Jx+PACkdNRBIJgEzgqwc1PiShN5m1FwtBOazxJUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	Ankit Agrawal <agrawal.ag.ankit@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 146/691] reset: k210: fix OF node leak in probe() error path
-Date: Tue, 15 Oct 2024 13:21:34 +0200
-Message-ID: <20241015112446.149232044@linuxfoundation.org>
+Subject: [PATCH 5.15 147/691] clocksource/drivers/qcom: Add missing iounmap() on errors in msm_dt_timer_init()
+Date: Tue, 15 Oct 2024 13:21:35 +0200
+Message-ID: <20241015112446.188021661@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -67,45 +67,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Ankit Agrawal <agrawal.ag.ankit@gmail.com>
 
-[ Upstream commit b14e40f5dc7cd0dd7e958010e6ca9ad32ff2ddad ]
+[ Upstream commit ca140a0dc0a18acd4653b56db211fec9b2339986 ]
 
-Driver is leaking OF node reference on memory allocation failure.
-Acquire the OF node reference after memory allocation to fix this and
-keep it simple.
+Add the missing iounmap() when clock frequency fails to get read by the
+of_property_read_u32() call, or if the call to msm_timer_init() fails.
 
-Fixes: 5a2308da9f60 ("riscv: Add Canaan Kendryte K210 reset controller")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20240825-reset-cleanup-scoped-v1-2-03f6d834f8c0@linaro.org
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Fixes: 6e3321631ac2 ("ARM: msm: Add DT support to msm_timer")
+Signed-off-by: Ankit Agrawal <agrawal.ag.ankit@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240713095713.GA430091@bnew-VirtualBox
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/reset/reset-k210.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clocksource/timer-qcom.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/reset/reset-k210.c b/drivers/reset/reset-k210.c
-index 1b6e03522b40d..b0f4546b2b1e5 100644
---- a/drivers/reset/reset-k210.c
-+++ b/drivers/reset/reset-k210.c
-@@ -91,7 +91,7 @@ static const struct reset_control_ops k210_rst_ops = {
- static int k210_rst_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
--	struct device_node *parent_np = of_get_parent(dev->of_node);
-+	struct device_node *parent_np;
- 	struct k210_rst *ksr;
+diff --git a/drivers/clocksource/timer-qcom.c b/drivers/clocksource/timer-qcom.c
+index b4afe3a675835..eac4c95c6127f 100644
+--- a/drivers/clocksource/timer-qcom.c
++++ b/drivers/clocksource/timer-qcom.c
+@@ -233,6 +233,7 @@ static int __init msm_dt_timer_init(struct device_node *np)
+ 	}
  
- 	dev_info(dev, "K210 reset controller\n");
-@@ -100,6 +100,7 @@ static int k210_rst_probe(struct platform_device *pdev)
- 	if (!ksr)
- 		return -ENOMEM;
+ 	if (of_property_read_u32(np, "clock-frequency", &freq)) {
++		iounmap(cpu0_base);
+ 		pr_err("Unknown frequency\n");
+ 		return -EINVAL;
+ 	}
+@@ -243,7 +244,11 @@ static int __init msm_dt_timer_init(struct device_node *np)
+ 	freq /= 4;
+ 	writel_relaxed(DGT_CLK_CTL_DIV_4, source_base + DGT_CLK_CTL);
  
-+	parent_np = of_get_parent(dev->of_node);
- 	ksr->map = syscon_node_to_regmap(parent_np);
- 	of_node_put(parent_np);
- 	if (IS_ERR(ksr->map))
+-	return msm_timer_init(freq, 32, irq, !!percpu_offset);
++	ret = msm_timer_init(freq, 32, irq, !!percpu_offset);
++	if (ret)
++		iounmap(cpu0_base);
++
++	return ret;
+ }
+ TIMER_OF_DECLARE(kpss_timer, "qcom,kpss-timer", msm_dt_timer_init);
+ TIMER_OF_DECLARE(scss_timer, "qcom,scss-timer", msm_dt_timer_init);
 -- 
 2.43.0
 
