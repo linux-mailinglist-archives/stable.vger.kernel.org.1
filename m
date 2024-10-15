@@ -1,148 +1,148 @@
-Return-Path: <stable+bounces-85113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 078B099E2FC
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:44:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A63E999E309
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:47:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA51A1F22CF1
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 09:44:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B7831C21AA1
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 09:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 214A51DF261;
-	Tue, 15 Oct 2024 09:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECDBC1DF25F;
+	Tue, 15 Oct 2024 09:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iMihmCbl"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="B9X19gLz"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91211BF2B;
-	Tue, 15 Oct 2024 09:44:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C93E18B488;
+	Tue, 15 Oct 2024 09:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728985485; cv=none; b=e9ImnWoRXiRt2eXZW1sn0DLfFcS2yN5qmLoLKiE0aFSzKpQxh0UfRBciSbA0jNi/f4Q+9WAgCgqaUeC6oEsUIUOOf+oCdfRWSb5li3t+4idvNKrR88DjX/IB+b36JvKGYkjX0cmZO43qFJyp/hGG2ElAhB64NJPIQKDQHoYMMl4=
+	t=1728985653; cv=none; b=X5LsnSU92PbNHFKoQWc+05BCDkUMsX80XguCZF/NPQyElUaTgQtuL+oqoFgKIFmACljpSblUCRl2YmMFUGeoxKKTrZKWpu0HUXbSAjUOS7I6VrMycEQ2kH1j+ea7X8hsRnODet8xtdU7xh8gPb3BpMzSmQ95T0TcKPfgR+Fh0xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728985485; c=relaxed/simple;
-	bh=xDzom3Mp9aBUd2cif8YQ9ZgSLhcqWvPQSQFDkhI/jYo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cHp2yKBpSIIW7uhBD6G4NKkrPLUISyJuQKR59PEqGy3R/5SWUb51di67OQfCcsChozUUS/A7l8lZqso/nHLqQDmn3Kl2SS6ejoZoiu4NAnuulG8vve6SYaw7P0jfyFFTj8j4rsl6QqdGgWPzKTWzyx7YJu/4j509B9Vxm34Gw4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iMihmCbl; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728985484; x=1760521484;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=xDzom3Mp9aBUd2cif8YQ9ZgSLhcqWvPQSQFDkhI/jYo=;
-  b=iMihmCblQoMimcHMFSMpBZ6j0aGS3pi9EuHxcLgnr043PPEhT0C3UxYm
-   AFPKEFKmtz8fKqiHIcJLcf/a4sNI2aADN/AyI1o8x+qyZ7OD9VxCl0z2q
-   hEghiEakctWxmeiqrYAYmhKIkMF/eCi+ni7H/b5/1PJl2l2OXpjX5uNEd
-   2NsHu4pfwukbiZQP4t67qOTQ1b4F8NJLGnUPrOVcr8kRBXEURhMU0ZVCu
-   GAtKUTsNbYzFUvEGLv9PNXgUeSK9LOIEfxFvbdPhi8mjRK9k7ZdCIFZFP
-   F0WMDChpli2uXXPXEz79kYEBdQ4Z7SZ9WWxONTgd3RMSV9xIfgSVTph42
-   w==;
-X-CSE-ConnectionGUID: sfshIy9BRjOcFqbm9mlBXg==
-X-CSE-MsgGUID: ceLh9gRQRTSxvWVAQPyB2Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="45839815"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="45839815"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2024 02:44:43 -0700
-X-CSE-ConnectionGUID: 2BiOxhbyTiCfFN8BIwtL2A==
-X-CSE-MsgGUID: mFRFN6fJQ+epfUaK8fPLRQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,204,1725346800"; 
-   d="scan'208";a="82615994"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.245.89.141])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2024 02:44:41 -0700
-Message-ID: <18e66783-0fc7-4c55-8087-dc4212e851b4@intel.com>
-Date: Tue, 15 Oct 2024 12:44:37 +0300
+	s=arc-20240116; t=1728985653; c=relaxed/simple;
+	bh=5T8ObhgxQkBGUuRQW4PDmqdYfE1QHbUI+kJjWHnuKR4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QllZQ6nL1IzF6G0utW8/fp2O4jN+n9OjPbLACMOq67v9aUXGZaentkMr8vsI6nzU9G2iJA5X1q3eOBkhHX+mHY46mI/QbaK2lWHF6Ajiu2+caT2dkN6slHw81nBbK8gxhKQRHHsUq5YSgU8yz1IwB2ohLZKyq/y+W6e6Jwf++h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=B9X19gLz; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49F7o99r030191;
+	Tue, 15 Oct 2024 09:46:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=k9bFiz
+	jRuhZcLwgOZeLnzCyme3HKz9tMoCkYWK3pwUE=; b=B9X19gLzEHrCcTtou3x30s
+	SHDv4JlUPWMS36G3BQjonVC1+gsZ45w0p1gsGIRspyCqGPBfmz3EE3dEFmDaSQUK
+	xWd83Mml5UrxSasVWmnVuUxEDXy0N8OuCNWXZxopNBrErDymDzbajaKFAVZ42sac
+	EdhalzX0Gk3MHrczE5mD2qvnJQ75+UU5u2pRmRjcndFg+0m7D8sjHm6SDakJiUtW
+	aBqcEC/mC3baxVnP1g1Eabo18XPmT7cRreTJvBXjMLPotsFvHd8dNhIG58qFGBqD
+	3cVKKXLO0+t/wtCGEVD9t640qd4ZM21fQbSZwgwEl6VcFfUNrN7dxWx92nYhkS9A
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429mbmrk28-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 15 Oct 2024 09:46:53 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49F9kqjT014450;
+	Tue, 15 Oct 2024 09:46:52 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429mbmrk24-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 15 Oct 2024 09:46:52 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49F81dai006401;
+	Tue, 15 Oct 2024 09:46:51 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4284xk2y7f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 15 Oct 2024 09:46:51 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49F9kltQ26739020
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 15 Oct 2024 09:46:47 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 69C5920043;
+	Tue, 15 Oct 2024 09:46:47 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C765A20040;
+	Tue, 15 Oct 2024 09:46:46 +0000 (GMT)
+Received: from osiris (unknown [9.152.212.60])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 15 Oct 2024 09:46:46 +0000 (GMT)
+Date: Tue, 15 Oct 2024 11:46:45 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        allen.lkml@gmail.com, broonie@kernel.org,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Thomas Richter <tmricht@linux.ibm.com>, linux-s390@vger.kernel.org
+Subject: Re: [PATCH 6.11 000/214] 6.11.4-rc1 review
+Message-ID: <20241015094645.7641-F-hca@linux.ibm.com>
+References: <20241014141044.974962104@linuxfoundation.org>
+ <CA+G9fYsPPmEbjNza_Tjyf+ZweuHcjHboOJfHeVSSVnmEV2gzXw@mail.gmail.com>
+ <cdb9391d-88ee-430c-8b3b-06b355f4087f@kernel.org>
+ <6dd1f93f-2900-41cc-a369-1ce397e1fb52@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mmc: core: Use GFP_NOIO in ACMD22
-To: Avri Altman <avri.altman@wdc.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- linux-mmc@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20241014114458.360538-1-avri.altman@wdc.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20241014114458.360538-1-avri.altman@wdc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6dd1f93f-2900-41cc-a369-1ce397e1fb52@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: pZKsdrJkczM9N3yrhs87owQXtEzgB5QJ
+X-Proofpoint-ORIG-GUID: qOIE5GXM8Tu82EJeLc0KwmL18OhgQdXy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=389 malwarescore=0 suspectscore=0 bulkscore=0 clxscore=1011
+ spamscore=0 impostorscore=0 lowpriorityscore=0 mlxscore=0 phishscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410150063
 
-On 14/10/24 14:44, Avri Altman wrote:
-> While reviewing the SDUC series, Adrian made a comment concerning the
-> memory allocation code in mmc_sd_num_wr_blocks() - see [1].
-> Prevent memory allocations from triggering I/O operations while ACMD22
-> is in progress.
+On Tue, Oct 15, 2024 at 10:51:31AM +0200, Jiri Slaby wrote:
+> On 15. 10. 24, 9:18, Jiri Slaby wrote:
+> > On 15. 10. 24, 9:05, Naresh Kamboju wrote:
+> > > On Mon, 14 Oct 2024 at 19:55, Greg Kroah-Hartman
+> > Reverting of this makes it work again:
+> > commit 51ab63c4cc8fbcfee58b8342a35006b45afbbd0d
+> > Refs: v6.11.3-19-g51ab63c4cc8f
+> > Author:     Heiko Carstens <hca@linux.ibm.com>
+> > AuthorDate: Wed Sep 4 11:39:27 2024 +0200
+> > Commit:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > CommitDate: Mon Oct 14 16:10:09 2024 +0200
+> > 
+> >      s390/boot: Compile all files with the same march flag
+> > 
+> >      [ Upstream commit fccb175bc89a0d37e3ff513bb6bf1f73b3a48950 ]
+> > 
+> > 
+> > If the above is to be really used in stable (REASONS?), I believe at
+> > least these are missing:
+> > ebcc369f1891 s390: Use MARCH_HAS_*_FEATURES defines
+> > 697b37371f4a s390: Provide MARCH_HAS_*_FEATURES defines
 > 
-> [1] https://www.spinics.net/lists/linux-mmc/msg82199.html
-> 
-> Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
-> Signed-off-by: Avri Altman <avri.altman@wdc.com>
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/mmc/core/block.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-> index 04f3165cf9ae..042b0147d47e 100644
-> --- a/drivers/mmc/core/block.c
-> +++ b/drivers/mmc/core/block.c
-> @@ -995,6 +995,8 @@ static int mmc_sd_num_wr_blocks(struct mmc_card *card, u32 *written_blocks)
->  	u32 result;
->  	__be32 *blocks;
->  	u8 resp_sz = mmc_card_ult_capacity(card) ? 8 : 4;
-> +	unsigned int noio_flag;
-> +
->  	struct mmc_request mrq = {};
->  	struct mmc_command cmd = {};
->  	struct mmc_data data = {};
-> @@ -1018,9 +1020,13 @@ static int mmc_sd_num_wr_blocks(struct mmc_card *card, u32 *written_blocks)
->  	mrq.cmd = &cmd;
->  	mrq.data = &data;
->  
-> +	noio_flag = memalloc_noio_save();
-> +
->  	blocks = kmalloc(resp_sz, GFP_KERNEL);
+> And this one:
+> db545f538747 s390/boot: Increase minimum architecture to z10
 
-Could have memalloc_noio_restore() here:
-
-	memalloc_noio_restore(noio_flag);
-
-but I feel maybe adding something like:
-
-	u64 __aligned(8)	tiny_io_buf;
-
-to either struct mmc_card or struct mmc_host is better?
-Ulf, any thoughts?
-
-> -	if (!blocks)
-> +	if (!blocks) {
-> +		memalloc_noio_restore(noio_flag);
->  		return -ENOMEM;
-> +	}
->  
->  	sg_init_one(&sg, blocks, resp_sz);
->  
-> @@ -1041,6 +1047,8 @@ static int mmc_sd_num_wr_blocks(struct mmc_card *card, u32 *written_blocks)
->  	}
->  	kfree(blocks);
->  
-> +	memalloc_noio_restore(noio_flag);
-> +
->  	if (cmd.error || data.error)
->  		return -EIO;
->  
-
+All of this is not supposed to be stable material.
 
