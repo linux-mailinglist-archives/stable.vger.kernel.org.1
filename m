@@ -1,153 +1,89 @@
-Return-Path: <stable+bounces-85119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E06FA99E41B
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:35:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F5F99E4D2
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 486DCB23489
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 10:35:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E49F42824D9
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 10:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BC71E9080;
-	Tue, 15 Oct 2024 10:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BE11EABD6;
+	Tue, 15 Oct 2024 10:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9MB2srn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kmQQoh4Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854381E5022
-	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 10:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FDC1EBA14;
+	Tue, 15 Oct 2024 10:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728988353; cv=none; b=Elke7Ze5lWJu3a+SB0SdN5L3bW0chmJChPDJcqyqn5fzqfX/K3q9+Zaz33Uucl1+wwcFwcMage34WKRXBwXF7kfVwK5Jq5VZhnamyaxpakxmBD/3p0FC1V+ib1NqL81bKfWxyFak1qMbmjXiiUPL7asBQ7dM0AZsPyrGzK54N6c=
+	t=1728989831; cv=none; b=iqRZtB+qTp69CpDRR5Cf7FiyUNCQJy8hMifBE6quIrCeXOT7v2wBtPSP4oxSCFLZXV19k70/3k57OvFRvvheT1Qla+Lw8T4LGG9WJEw6AOPQ6Jbra46nXtV8SXVWXgmYPAB8sWuZY7Q1TYqqK7C8uptYv7HbpVabkQH/ExDVl3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728988353; c=relaxed/simple;
-	bh=aOyfIZ8MUf/tgLKWg8Q6zrbmauH5gdtWkBfRbi2eqGc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ecUltVzPbMiUQ3eHZ2k8UB+Ef8AJ+Ai2TGk+MzLFkPSE3ZhtuTOEoVaWYOqCGczoTlp1B4tX3gK+G+kPraaBGVguP7jkOnr8Vbcf8TJZWipHK/zRuT44MfB7gR0UTud00uVYuD9Is+kOtN2YbykUdQToPlnuqavwbBsOUb3WyWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9MB2srn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAF5C4CEC7;
-	Tue, 15 Oct 2024 10:32:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728988353;
-	bh=aOyfIZ8MUf/tgLKWg8Q6zrbmauH5gdtWkBfRbi2eqGc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T9MB2srn5nNpFczeFjqjJdUIREbaQk/K+74VQ2FpqLl8odWjTVyEGhKPE0pDNISMR
-	 BLLzMKnzRfpjMZgoTP1SxQbOuz85VwRm+2H8lbclDBVTktUVfv1xhgmze88MVFbqTn
-	 o8/8q3ynrxME7crm6vfQ39EBdqvU11RFdeqKLkv8=
-Date: Tue, 15 Oct 2024 12:32:30 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jeff Xu <jeffxu@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Pedro Falcato <pedro.falcato@gmail.com>, stable@vger.kernel.org,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Oleg Nesterov <oleg@redhat.com>, Kees Cook <keescook@chromium.org>
-Subject: Re: backport mseal and mseal_test to 6.10
-Message-ID: <2024101534-shingle-rigor-5283@gregkh>
-References: <CABi2SkW0Q8zAkmVg8qz9WV+Fkjft4stO67ajx0Gos82Sc4vjhg@mail.gmail.com>
- <2024101439-scotch-ceremony-c2a8@gregkh>
- <CABi2SkWSLHfcBhsa2OQqtTjUa-gNRYXWthwPeWrrEQ1pUhfnJg@mail.gmail.com>
- <2024101437-taco-confusion-379f@gregkh>
- <CABi2SkVA3qynBG1Ra_v2pg_k-pAzfjGc4VSDMN2L9tv9BreAiw@mail.gmail.com>
- <2024101409-catcall-sequence-3ecf@gregkh>
- <CABi2SkUvE3uJT0Zt+1WWSgSAneVo+Y_-UYR7DqhGk8OBevs1Qw@mail.gmail.com>
+	s=arc-20240116; t=1728989831; c=relaxed/simple;
+	bh=mBWDy+/1LsU2mdwv1xP65UODLZMmvWYLMSfi4wfkJQk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WQIppIEBuYWxkmUxSiNkmRZOskftZ3XaobF0NA1IFs6cLTXh5tub8RkjwQJ0hc++9klHsjbtlfx1sGZnqHJC1oIHjoi18ITLxJFIacvtzo3aBortudMV+goQ0eTNCWNEXBmjvltK60+lbFcgvejnauGl/v1WGNw5HdRSMwn/BYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kmQQoh4Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8487CC4CEC6;
+	Tue, 15 Oct 2024 10:57:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728989830;
+	bh=mBWDy+/1LsU2mdwv1xP65UODLZMmvWYLMSfi4wfkJQk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=kmQQoh4YxBvbkgspgx/X973q8Bmnwb/dxh0QPJgtrtv4OL6LV1HiiqItFg8p8vNuU
+	 WDckni2cX6kck54UNdTc5ptOBGtVzPy2j7x7uNmUwNAgCbgn6zep12SgPqOFLHiqgu
+	 FVChmW1hYmKKgfLfdVBLApUp+1i130fdXK47Q93WZ5qfLuOq6v95Aw84pl4a5O/HKk
+	 VigB64Fhopnb9x8lHMVIcBCID+vI8d52T6NNs7rCT+qfxoJ28Yztr5cnzkGkvNUPz4
+	 dXloIa6rMCxrsRFz8Ue4JQHcQNoGK49JtdtRTN6T8mk408GISGsT9f9ON9idQiMeub
+	 tVQcnVTOD+IKA==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-539fe76e802so826427e87.1;
+        Tue, 15 Oct 2024 03:57:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUBLs/XcXNxgdNHJi/6wd6yKFNCVtxJnONKAyony5DKwrdMoz8/32enXCBnCVRLdrE044oqKwPH@vger.kernel.org, AJvYcCVyH6AsXyhdPi9iFny2EhDCFn/Bsrho7Mf8LU/51q/lZdxTqB9iUpw3x42xlH9+e3zJ4hbLWQ8fqF+s/MHaE2I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXSDnIImQSA15KnduRbZZFVC2kMZr3kBHhsYQx+hm/BE9QTe0x
+	y3rNZNAPmDPNH4CFPoVxntlPk7oU4Y23Va1tP3lcdGbM4YpOjyfeXvuvDSssF8eTmGLogRHtrIN
+	713SzoLrTf5hpolxm/x/5MohkdAo=
+X-Google-Smtp-Source: AGHT+IHDatbRRWflHG79t76g/ZmQOloSnfcbXHBgCIHWzrSGdpAhWGwB4xFU17eSKij3R1NnXzvhVTbId4qaUTC+x1c=
+X-Received: by 2002:a05:6512:2398:b0:52c:9468:c991 with SMTP id
+ 2adb3069b0e04-539e54e72a2mr5276430e87.14.1728989828934; Tue, 15 Oct 2024
+ 03:57:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABi2SkUvE3uJT0Zt+1WWSgSAneVo+Y_-UYR7DqhGk8OBevs1Qw@mail.gmail.com>
+References: <20241009124352.3105119-2-ardb+git@google.com> <202410141357.3B2A71A340@keescook>
+In-Reply-To: <202410141357.3B2A71A340@keescook>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 15 Oct 2024 12:56:57 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXF7aFyBOOxQQsvsAsnvo3FYrkU=KA1BiMeSuKq1KHC1qA@mail.gmail.com>
+Message-ID: <CAMj1kXF7aFyBOOxQQsvsAsnvo3FYrkU=KA1BiMeSuKq1KHC1qA@mail.gmail.com>
+Subject: Re: [PATCH v2] x86/stackprotector: Work around strict Clang TLS
+ symbol requirements
+To: Kees Cook <kees@kernel.org>
+Cc: Ard Biesheuvel <ardb+git@google.com>, x86@kernel.org, llvm@lists.linux.dev, 
+	linux-hardening@vger.kernel.org, stable@vger.kernel.org, 
+	Fangrui Song <i@maskray.me>, Brian Gerst <brgerst@gmail.com>, Uros Bizjak <ubizjak@gmail.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Andy Lutomirski <luto@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Oct 14, 2024 at 10:25:54AM -0700, Jeff Xu wrote:
-> On Mon, Oct 14, 2024 at 9:23 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Mon, Oct 14, 2024 at 09:19:55AM -0700, Jeff Xu wrote:
-> > > On Mon, Oct 14, 2024 at 9:12 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > On Mon, Oct 14, 2024 at 08:27:29AM -0700, Jeff Xu wrote:
-> > > > > On Sun, Oct 13, 2024 at 10:54 PM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > > > >
-> > > > > > On Sun, Oct 13, 2024 at 10:17:48PM -0700, Jeff Xu wrote:
-> > > > > > > Hi Greg,
-> > > > > > >
-> > > > > > > How are you?
-> > > > > > >
-> > > > > > > What is the process to backport Pedro's recent mseal fixes to 6.10 ?
-> > > > > >
-> > > > > > Please read:
-> > > > > >     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> > > > > > for how all of this works :)
-> > > > > >
-> > > > > > > Specifically those 5 commits:
-> > > > > > >
-> > > > > > > 67203f3f2a63d429272f0c80451e5fcc469fdb46
-> > > > > > >     selftests/mm: add mseal test for no-discard madvise
-> > > > > > >
-> > > > > > > 4d1b3416659be70a2251b494e85e25978de06519
-> > > > > > >     mm: move can_modify_vma to mm/vma.h
-> > > > > > >
-> > > > > > >  4a2dd02b09160ee43f96c759fafa7b56dfc33816
-> > > > > > >   mm/mprotect: replace can_modify_mm with can_modify_vma
-> > > > > > >
-> > > > > > > 23c57d1fa2b9530e38f7964b4e457fed5a7a0ae8
-> > > > > > >       mseal: replace can_modify_mm_madv with a vma variant
-> > > > > > >
-> > > > > > > f28bdd1b17ec187eaa34845814afaaff99832762
-> > > > > > >    selftests/mm: add more mseal traversal tests
-> > > > > > >
-> > > > > > > There will be merge conflicts, I  can backport them to 5.10 and test
-> > > > > > > to help the backporting process.
-> > > > > >
-> > > > > > 5.10 or 6.10?
-> > > > > >
-> > > > > 6.10.
-> > > > >
-> > > > > > And why 6.10?  If you look at the front page of kernel.org you will see
-> > > > > > that 6.10 is now end-of-life, so why does that kernel matter to you
-> > > > > > anymore?
-> > > > > >
-> > > > > OK, I didn't know that. Less work is nice :-)
-> > > >
-> > > > So, now that you don't care about 6.10.y, what about 6.11.y?  Are any of
-> > > > these actually bugfixes that people need?
-> > > >
-> > > Oh, yes. It would be great to backport those 5 mentioned to 6.11.y.
-> >
-> > Why, are they bugfixes?
-> >
-> Yes. For performance, there are 5% impact with mprotect/madvise.
+On Mon, 14 Oct 2024 at 22:59, Kees Cook <kees@kernel.org> wrote:
+>
+> On Wed, Oct 09, 2024 at 02:43:53PM +0200, Ard Biesheuvel wrote:
+> > However, if a non-TLS definition of the symbol in question is visible in
+> > the same compilation unit (which amounts to the whole of vmlinux if LTO
+> > is enabled), it will drop the per-CPU prefix and emit a load from a
+> > bogus address.
+>
+> I take this to mean that x86 32-bit kernels built with the stack
+> protector and using Clang LTO will crash very quickly?
+>
 
-That's not a bugfix, but we do sometimes take performance improvements
-if it's really needed and the maintainer is willing to do the backport
-for us.
-
-> > > I don't know what will be the lifetime of 6.11.y, but keeping mseal's
-> > > semantics consistent across releases is important.
-> >
-> > Stable kernels last until the next release happens, like has been
-> > happening for 15+ years now, nothing new here :)
-> >
-> Does it mean that with 6.12, 6.11.y will be EOL soon ?
-
-Yes.
-
-> say in the next few months?
-
-Yes.
-
-> (Sorry that I didn't know much about linux release cycle. )
-
-It's well documented, please see the Documentation/process/2.Process.rst
-file for details.  If you have questions after that, please let us know.
-
-thanks,
-
-greg k-h
+Yeah. The linked issue is not quite clear, but it does suggest things
+are pretty broken in that case.
 
