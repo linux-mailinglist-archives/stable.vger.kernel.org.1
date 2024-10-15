@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-86120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9530A99EBC4
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:10:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4353B99EBF9
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:13:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 519BB2842E4
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:10:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B18D1C20CB8
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02B81AF0AC;
-	Tue, 15 Oct 2024 13:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11921AF0AC;
+	Tue, 15 Oct 2024 13:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJDEpAa0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+HAKQHe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2B71C07ED;
-	Tue, 15 Oct 2024 13:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1721C07DF;
+	Tue, 15 Oct 2024 13:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997836; cv=none; b=uVWvWul4Y+P3Zo36VQUQxOBgCJhjsR/M22MUK6E8k8i9/IxpDQZDcRAWp3JCyfXMjVwRBYywqjZCeNUV4tRAD7k8Q5f/wuoBH39M/Vi9LhNVzsiDmXauzSkVCKG1vhGIMbNprR8oCVDu4mkgDYl0N+gDZjrQY4j/6rIuUXSWhI0=
+	t=1728997976; cv=none; b=heDj5TstWzMrrdZXiwOM1auRfrPR7LmlNyfLjv5lU5nvhwXW4YKw+Lt7K3vy0WDf52mj9TUHXb4AvmuJol10Eo0yc+4PT8IFqXEAkww0E1AFu/indqMmdOelj8AEBIJyYCXqssMa20pZcIelp4ffy69tE8ogTWg3Fj+t69vmvFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997836; c=relaxed/simple;
-	bh=Ns+YqqLVHfeMkFdymRyjKUP4XnbtlktdeRf7w/O/W6E=;
+	s=arc-20240116; t=1728997976; c=relaxed/simple;
+	bh=btwrCMgvR6weXbw1juWGXMEXdiX8ppM/GFZg9lEsE1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rmZAeyQSXyLqXt8SwBu8PcwuQZuY4VSp3CPCAmBFMoYjL/dA804CUyyrMOz5+KlsCBihKfREw3r75vZWhTC4IWLl8+j7Sl75iYJRbbUnozO/+/HsuZHUSqeHSlvxblH2aynnA3weZAgHLZx7aqSOzBPo6lXFWI/cJcrYzU0jh/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJDEpAa0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F97C4CEC6;
-	Tue, 15 Oct 2024 13:10:35 +0000 (UTC)
+	 MIME-Version; b=sLo41V9s7TZDZC5VqMR5zwSHzg+BVfC7/vlYGZx5cIrJpQRzz0yC55ZCkQ3wQsdPGdr6ISBuNlUa+mrZ+sDRREoiiYm+b364GpugGk5ZW0hElw6/xvsMnn7hYgasMAntkQVhlDa/7gPx2Ue0tn1Ogqw3V6Gz0KIo8jvsRMN2NUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+HAKQHe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33F9C4CEC6;
+	Tue, 15 Oct 2024 13:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997836;
-	bh=Ns+YqqLVHfeMkFdymRyjKUP4XnbtlktdeRf7w/O/W6E=;
+	s=korg; t=1728997974;
+	bh=btwrCMgvR6weXbw1juWGXMEXdiX8ppM/GFZg9lEsE1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJDEpAa0DLdB5EINcoeUgfnE04GXYqc/OIfxxuUgzJIPG40HE6QCDgb3ZbL+aM/8i
-	 KZ7XsW9BVKoZE0jVAYk5SV1WykYcv7CMb0uXjkCA+WzzEExfehYBzzGpkhszDDw75j
-	 0dDO8iGJ2RID7m2Zbt8MvNvEbRlOvwXP8jT3Tsdk=
+	b=W+HAKQHeYtrC9mewLFemb/LSbVmhKUXdhJqFM/XPodNHAEjPmakYHQk2xg02frd8K
+	 ht0+/GF1a0zYTYMFARiiRqRUbUY0VTCzADiJ5GVDbfGo6/Q0rZOVxHTEk3zHGF9FLI
+	 UCM6bIn+e5lFCZpPtyDK5GBxdcy3VxcolA309Q+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 300/518] net: hisilicon: hns_mdio: fix OF node leak in probe()
-Date: Tue, 15 Oct 2024 14:43:24 +0200
-Message-ID: <20241015123928.567850752@linuxfoundation.org>
+Subject: [PATCH 5.10 301/518] ACPICA: Fix memory leak if acpi_ps_get_next_namepath() fails
+Date: Tue, 15 Oct 2024 14:43:25 +0200
+Message-ID: <20241015123928.605570261@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -67,34 +66,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit e62beddc45f487b9969821fad3a0913d9bc18a2f ]
+[ Upstream commit 5accb265f7a1b23e52b0ec42313d1e12895552f4 ]
 
-Driver is leaking OF node reference from
-of_parse_phandle_with_fixed_args() in probe().
+ACPICA commit 2802af722bbde7bf1a7ac68df68e179e2555d361
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240827144421.52852-4-krzysztof.kozlowski@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+If acpi_ps_get_next_namepath() fails, the previously allocated
+union acpi_parse_object needs to be freed before returning the
+status code.
+
+The issue was first being reported on the Linux ACPI mailing list:
+
+Link: https://lore.kernel.org/linux-acpi/56f94776-484f-48c0-8855-dba8e6a7793b@yandex.ru/T/
+Link: https://github.com/acpica/acpica/commit/2802af72
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns_mdio.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/acpica/psargs.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns_mdio.c b/drivers/net/ethernet/hisilicon/hns_mdio.c
-index 883d0d7c6858b..229288dbe708d 100644
---- a/drivers/net/ethernet/hisilicon/hns_mdio.c
-+++ b/drivers/net/ethernet/hisilicon/hns_mdio.c
-@@ -497,6 +497,7 @@ static int hns_mdio_probe(struct platform_device *pdev)
- 						MDIO_SC_RESET_ST;
- 				}
- 			}
-+			of_node_put(reg_args.np);
+diff --git a/drivers/acpi/acpica/psargs.c b/drivers/acpi/acpica/psargs.c
+index 3b40db4ad9f3e..a56d8708cb8ee 100644
+--- a/drivers/acpi/acpica/psargs.c
++++ b/drivers/acpi/acpica/psargs.c
+@@ -820,6 +820,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_state,
+ 			    acpi_ps_get_next_namepath(walk_state, parser_state,
+ 						      arg,
+ 						      ACPI_NOT_METHOD_CALL);
++			if (ACPI_FAILURE(status)) {
++				acpi_ps_free_op(arg);
++				return_ACPI_STATUS(status);
++			}
  		} else {
- 			dev_warn(&pdev->dev, "find syscon ret = %#x\n", ret);
- 			mdio_dev->subctrl_vbase = NULL;
+ 			/* Single complex argument, nothing returned */
+ 
+@@ -854,6 +858,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_state,
+ 			    acpi_ps_get_next_namepath(walk_state, parser_state,
+ 						      arg,
+ 						      ACPI_POSSIBLE_METHOD_CALL);
++			if (ACPI_FAILURE(status)) {
++				acpi_ps_free_op(arg);
++				return_ACPI_STATUS(status);
++			}
+ 
+ 			if (arg->common.aml_opcode == AML_INT_METHODCALL_OP) {
+ 
 -- 
 2.43.0
 
