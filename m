@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-85227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8985599E657
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:41:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D333199E659
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DB63289FCB
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:41:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A60B1F22043
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030351EF092;
-	Tue, 15 Oct 2024 11:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DEC51EF0A5;
+	Tue, 15 Oct 2024 11:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nUCuQX04"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0pp3yId"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B259E1E9078;
-	Tue, 15 Oct 2024 11:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C071EF0A1;
+	Tue, 15 Oct 2024 11:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728992396; cv=none; b=UsgvtYctaYBufivXZLGZxJ9qYMOrPM5BwtLEZrx+IvCo1PghEZkm1xQgY0pf++PTmOUGfx/tlQynF9HSRcGzXP7y8vaSuduJyxfdfEwUU17g/MDFwCprwL+kn6OYihr7DoBiJTqsrUtSjv4i95fnAX6uEEfFuE/0R6hr1EajVss=
+	t=1728992404; cv=none; b=pAx/WKZWrTBL3xucjGQL0Q686HYQ4m4tXQwG6zFAu4gCFjgW0Jsoc/1D5Y0AF4dMgfoDbLsLECiU4Cy/2vxsfE+Hp7MvZeFzkVI93u0gkc6EOPXavBYEdlPO9J1LuxZwtI7esMFBxejKnvzWFvh3/dAzJg2mWB0pXGK45Lfqfhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728992396; c=relaxed/simple;
-	bh=JvV5bPVmTwTm8X5MLGRMUE2iX/xCAzHDjlgOA+jra2k=;
+	s=arc-20240116; t=1728992404; c=relaxed/simple;
+	bh=0Jbpeerxt/6n+ZJldJpq134ML56hInQ3D0OMDI5rqlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HiB8KLwQVYTtdMcArr8Mo3FzDs/8kzVKyhAm1gJbzMJW8uYfHk8I3EjKt76L1mQjDA7AZyfxZGDO9gWOasybukDaITzOLQE8tfBP3TzTLH63ysHRVTNkRe2WDGq/DIShJGSgM3qbp29gF2ckGrtWhzYRv3SrpyufXueNgE1gmsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nUCuQX04; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21843C4CEC6;
-	Tue, 15 Oct 2024 11:39:55 +0000 (UTC)
+	 MIME-Version; b=BrplVM4EmkKntOKmfUkQrQYyt12DcNDWyCaTqZrg53j4S8M27g6UcmzeKakyhxdrF3PIeTvc8r5ec8J6GlSD8XnWYGLeeZHZCTvFPRC3noV07DZZOJv+xaOWG5VMSsTbwM/gjxFvx5e2zQuCSakuvRqlI1Xb1N89B2a3gRX0CkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0pp3yId; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0017EC4CEC6;
+	Tue, 15 Oct 2024 11:40:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728992396;
-	bh=JvV5bPVmTwTm8X5MLGRMUE2iX/xCAzHDjlgOA+jra2k=;
+	s=korg; t=1728992403;
+	bh=0Jbpeerxt/6n+ZJldJpq134ML56hInQ3D0OMDI5rqlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nUCuQX04Zh6pdbKKw4wcYKIKiok7+rmkh4ucc6LXMsF/vFKyqppAxPXlFC9zB5FT7
-	 HjFbrrJd11uJBQOJsTmZvt5SR7XguIjZWE3nuC0V2cfpfTYx5lSddwr+KCcCridQK0
-	 ezXdB8dOi6HGFXCEty+vc8xOHhNkB7heIx8SQsD0=
+	b=z0pp3yIdQrscdYWQjpKvV9+7hp2BpsTmJjRA3zoPyG1MLUOBjMyk4Zg2Zziy2Qjrc
+	 dbwB/llAmn+RmyvJ0eQezpb2Xj5j9FjD2AuNrywXx+/Oba3luiPDmfaeOGwQglachE
+	 AgCsfZROBWela53LEQZSYz/4AJjODvogPxn9Mp7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Christian Brauner (Microsoft)" <brauner@kernel.org>,
+	Olaf Hering <olaf@aepfle.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 104/691] fs/namespace: fnic: Switch to use %ptTd
-Date: Tue, 15 Oct 2024 13:20:52 +0200
-Message-ID: <20241015112444.488661305@linuxfoundation.org>
+Subject: [PATCH 5.15 105/691] mount: handle OOM on mnt_warn_timestamp_expiry
+Date: Tue, 15 Oct 2024 13:20:53 +0200
+Message-ID: <20241015112444.528110999@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -66,44 +66,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Olaf Hering <olaf@aepfle.de>
 
-[ Upstream commit 74e60b8b2f0fe3702710e648a31725ee8224dbdf ]
+[ Upstream commit 4bcda1eaf184e308f07f9c61d3a535f9ce477ce8 ]
 
-Use %ptTd instead of open-coded variant to print contents
-of time64_t type in human readable form.
+If no page could be allocated, an error pointer was used as format
+string in pr_warn.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Christian Brauner (Microsoft) <brauner@kernel.org>
-Stable-dep-of: 4bcda1eaf184 ("mount: handle OOM on mnt_warn_timestamp_expiry")
+Rearrange the code to return early in case of OOM. Also add a check
+for the return value of d_path.
+
+Fixes: f8b92ba67c5d ("mount: Add mount warning for impending timestamp expiry")
+Signed-off-by: Olaf Hering <olaf@aepfle.de>
+Link: https://lore.kernel.org/r/20240730085856.32385-1-olaf@aepfle.de
+[brauner: rewrite commit and commit message]
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ fs/namespace.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
 diff --git a/fs/namespace.c b/fs/namespace.c
-index 04467a2a7888e..c17e3a6ebd179 100644
+index c17e3a6ebd179..22af4b6c737f4 100644
 --- a/fs/namespace.c
 +++ b/fs/namespace.c
-@@ -2571,15 +2571,12 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
+@@ -2569,8 +2569,15 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
+ 	if (!__mnt_is_readonly(mnt) &&
+ 	   (!(sb->s_iflags & SB_I_TS_EXPIRY_WARNED)) &&
  	   (ktime_get_real_seconds() + TIME_UPTIME_SEC_MAX > sb->s_time_max)) {
- 		char *buf = (char *)__get_free_page(GFP_KERNEL);
- 		char *mntpath = buf ? d_path(mountpoint, buf, PAGE_SIZE) : ERR_PTR(-ENOMEM);
--		struct tm tm;
+-		char *buf = (char *)__get_free_page(GFP_KERNEL);
+-		char *mntpath = buf ? d_path(mountpoint, buf, PAGE_SIZE) : ERR_PTR(-ENOMEM);
++		char *buf, *mntpath;
++
++		buf = (char *)__get_free_page(GFP_KERNEL);
++		if (buf)
++			mntpath = d_path(mountpoint, buf, PAGE_SIZE);
++		else
++			mntpath = ERR_PTR(-ENOMEM);
++		if (IS_ERR(mntpath))
++			mntpath = "(unknown)";
  
--		time64_to_tm(sb->s_time_max, 0, &tm);
--
--		pr_warn("%s filesystem being %s at %s supports timestamps until %04ld (0x%llx)\n",
-+		pr_warn("%s filesystem being %s at %s supports timestamps until %ptTd (0x%llx)\n",
+ 		pr_warn("%s filesystem being %s at %s supports timestamps until %ptTd (0x%llx)\n",
  			sb->s_type->name,
- 			is_mounted(mnt) ? "remounted" : "mounted",
--			mntpath,
--			tm.tm_year+1900, (unsigned long long)sb->s_time_max);
-+			mntpath, &sb->s_time_max,
-+			(unsigned long long)sb->s_time_max);
+@@ -2578,8 +2585,9 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
+ 			mntpath, &sb->s_time_max,
+ 			(unsigned long long)sb->s_time_max);
  
- 		free_page((unsigned long)buf);
+-		free_page((unsigned long)buf);
  		sb->s_iflags |= SB_I_TS_EXPIRY_WARNED;
++		if (buf)
++			free_page((unsigned long)buf);
+ 	}
+ }
+ 
 -- 
 2.43.0
 
