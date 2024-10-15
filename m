@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-85680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C7299E866
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:05:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 048D399E87B
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B95D1F21F49
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:05:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19DCD1C21FCC
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1481E1A35;
-	Tue, 15 Oct 2024 12:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC4271E7658;
+	Tue, 15 Oct 2024 12:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vt9nUGoo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fskWQB12"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FBE1C57B1;
-	Tue, 15 Oct 2024 12:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790091EABD1;
+	Tue, 15 Oct 2024 12:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993933; cv=none; b=hCcgWz+fYIwdwaV0ZFOWwvEuCalM1YITuFV1FVrn3h/b9+95epIut/HOdA41zd3f/vi1ny/qUdwcuK5lVtGjfmHmjZ96Kgc3uUktPg5yeDAZKHp9iEjceoWvXv/043+AJmmue83NEGkGYjYyzsNiVxNH6tkWPbIknJ4pYEMRnkc=
+	t=1728993970; cv=none; b=cMWHek+ocgkvButhdRXloGeO/HL2aEthQx8k86pQQ0AoFQJPtZezHe1BNh3YGfafS8AtkMx2hi1KP92a1cHeO94VOWdLx82NMRo2tN5ut5IiuvRJ2PNRuFR+Zxlz+wQg9efHXLc+DrDvcVqcaDTazVh4gy1lH7t0hIA9Q2N51IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993933; c=relaxed/simple;
-	bh=QckrsCEl35rfwqJoBCvNCV/zVdHBTbMvgkHffWtDDCY=;
+	s=arc-20240116; t=1728993970; c=relaxed/simple;
+	bh=qW6PPshGWkhpT9q9N4oTGOeZLv7XhbJgHMNamp8dcW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m3SafdQ0TxpTePj+nRQ2c69H+qRVK7/9/AQI0bN6Nwgj0QyoeORJABzaVg4k8nnN24pWRkfY1LGfPyFqk1vQ7CjxiJhegwDbDrLl79z7qLehDQRCIqU4FuwGFcaSZJhbb30F/t0Vp5ixsvDKIQTtdmwYVRQB7uK7tjeahwksNFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vt9nUGoo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5395C4CEC6;
-	Tue, 15 Oct 2024 12:05:32 +0000 (UTC)
+	 MIME-Version; b=BogWovgKqeE6W8i4qWx8ijOLbb/Ervcn9Sasr2kdifRN0EG1m4YfaTO3D1wye+tNEnmaaODIlCJKgiO3PTk7WLEJUcnT0tU/DSb4K3OlU7BBDBQjLbzMWenaywr2FRV3zSV6EwBddJxLvNHY01og6Fdko/vyFukmJY9U2xPg4lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fskWQB12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF5EC4CEC6;
+	Tue, 15 Oct 2024 12:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993933;
-	bh=QckrsCEl35rfwqJoBCvNCV/zVdHBTbMvgkHffWtDDCY=;
+	s=korg; t=1728993970;
+	bh=qW6PPshGWkhpT9q9N4oTGOeZLv7XhbJgHMNamp8dcW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vt9nUGoo8FcJnBNQICYsxPiziybLjOc7yQrOTxVfidX35bQKcgts8sUl9I9L2w0Iy
-	 HGxZ2p0Pvn+SiBrRY2q/IHs9bwRZLe4mcCclFdpE4FEb4vho6ovxE3luSgtFDdJ5gO
-	 Inw1B9n5YshB8FBwtXSYPNRpMcgn/Cf2G69Lu83M=
+	b=fskWQB126LXtItQdl3v1VVLLEq8/cWd6fOOJWdSdQKK/PdfSvZ+aGT/QNsJzGfYBx
+	 Qa7ZQJX3o/HyHAsCYCg1PSiKt102LT7FXiO+4VtDgi227Yb+MRK4RL1bPzotb5sZlP
+	 xeJskkZpc945L3ossU00HDSLUpNTPGBAzBILsk44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
+	Akhil R <akhilrajeev@nvidia.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 550/691] device property: Add fwnode_iomap()
-Date: Tue, 15 Oct 2024 13:28:18 +0200
-Message-ID: <20241015112502.170230814@linuxfoundation.org>
+Subject: [PATCH 5.15 551/691] device property: Add fwnode_irq_get_byname
+Date: Tue, 15 Oct 2024 13:28:19 +0200
+Message-ID: <20241015112502.211332147@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -68,70 +68,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-[ Upstream commit eca6e2d4a4a4b824f055eeaaa24f1c2327fb91a2 ]
+[ Upstream commit ca0acb511c21738b32386ce0f85c284b351d919e ]
 
-This patch introduces a new helper routine - fwnode_iomap(), which
-allows to map the memory mapped IO for a given device node.
+Add fwnode_irq_get_byname() to get an interrupt by name from either
+ACPI table or Device Tree, whichever is used for enumeration.
 
-This implementation does not cover the ACPI case and may be expanded
-in the future. The main purpose here is to be able to develop resource
-provider agnostic drivers.
+In the ACPI case, this allow us to use 'interrupt-names' in
+_DSD which can be mapped to Interrupt() resource by index.
+The implementation is similar to 'interrupt-names' in the
+Device Tree.
 
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lore.kernel.org/r/20211203212358.31444-2-anand.ashok.dumbre@xilinx.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Stable-dep-of: 8d3cefaf6592 ("i2c: core: Lock address during client device instantiation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/property.c  | 16 ++++++++++++++++
- include/linux/property.h |  2 ++
- 2 files changed, 18 insertions(+)
+ drivers/base/property.c  | 29 +++++++++++++++++++++++++++++
+ include/linux/property.h |  1 +
+ 2 files changed, 30 insertions(+)
 
 diff --git a/drivers/base/property.c b/drivers/base/property.c
-index 21f4184db42fc..87bb97e12749e 100644
+index 87bb97e12749e..ff1be3e311eeb 100644
 --- a/drivers/base/property.c
 +++ b/drivers/base/property.c
-@@ -1050,6 +1050,22 @@ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
+@@ -1066,6 +1066,35 @@ void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index)
  }
- EXPORT_SYMBOL(fwnode_irq_get);
+ EXPORT_SYMBOL(fwnode_iomap);
  
 +/**
-+ * fwnode_iomap - Maps the memory mapped IO for a given fwnode
++ * fwnode_irq_get_byname - Get IRQ from a fwnode using its name
 + * @fwnode:	Pointer to the firmware node
-+ * @index:	Index of the IO range
++ * @name:	IRQ name
 + *
-+ * Returns a pointer to the mapped memory.
++ * Description:
++ * Find a match to the string @name in the 'interrupt-names' string array
++ * in _DSD for ACPI, or of_node for Device Tree. Then get the Linux IRQ
++ * number of the IRQ resource corresponding to the index of the matched
++ * string.
++ *
++ * Return:
++ * Linux IRQ number on success, or negative errno otherwise.
 + */
-+void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index)
++int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name)
 +{
-+	if (IS_ENABLED(CONFIG_OF_ADDRESS) && is_of_node(fwnode))
-+		return of_iomap(to_of_node(fwnode), index);
++	int index;
 +
-+	return NULL;
++	if (!name)
++		return -EINVAL;
++
++	index = fwnode_property_match_string(fwnode, "interrupt-names",  name);
++	if (index < 0)
++		return index;
++
++	return fwnode_irq_get(fwnode, index);
 +}
-+EXPORT_SYMBOL(fwnode_iomap);
++EXPORT_SYMBOL(fwnode_irq_get_byname);
 +
  /**
   * fwnode_graph_get_next_endpoint - Get next endpoint firmware node
   * @fwnode: Pointer to the parent firmware node
 diff --git a/include/linux/property.h b/include/linux/property.h
-index fe2092e39aedb..032262e3d9991 100644
+index 032262e3d9991..840f0545d4f9d 100644
 --- a/include/linux/property.h
 +++ b/include/linux/property.h
-@@ -126,6 +126,8 @@ void fwnode_handle_put(struct fwnode_handle *fwnode);
+@@ -125,6 +125,7 @@ struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
+ void fwnode_handle_put(struct fwnode_handle *fwnode);
  
  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
++int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
  
-+void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
-+
- unsigned int device_get_child_node_count(struct device *dev);
+ void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
  
- static inline bool device_property_read_bool(struct device *dev,
 -- 
 2.43.0
 
