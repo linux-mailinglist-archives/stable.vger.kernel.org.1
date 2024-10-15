@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-86070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC1F99EB84
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:08:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1EC99EB86
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01ED01C216E7
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:08:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0087028454D
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6C11AF0AD;
-	Tue, 15 Oct 2024 13:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5701C9B81;
+	Tue, 15 Oct 2024 13:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBoaEY5e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPkRlU3i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACB41C07FF;
-	Tue, 15 Oct 2024 13:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9716F1AF0A9;
+	Tue, 15 Oct 2024 13:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997673; cv=none; b=eGplQODijl99YbrSgDdNmpgYB8vvGTOgaKzkMur+cw5S5Xvgb3sQmqsnsJ7r1I4//prvVlsKKVUUtellSlwStF1DgxmJn4xhsGwt7wfMmflC2Qa3NZK/5NbcHwKOF7cF89SlyroyFXeczal/VwP6ZuXs2njCW0iFUNox4Ar86sE=
+	t=1728997679; cv=none; b=MwtcNupR8F8lIq/H1cvXaBWhvp3FgPZXtkaLKadW/4zQNQWBH5Y3fPBlOsGZpA2qbG5ygVCYirH6umsaIhrenM1GwvmjfZnIdVGXVDeYwL8xu8Xufe94c9QWZouEMI7mn902E12VE976i9Ru2d1vBcD9a9c8pS+BhOnQtmGgDfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997673; c=relaxed/simple;
-	bh=6yIGy1Cz4b7Q8/IEINCzx8vFjtUk16zOUUiH5DbXcAY=;
+	s=arc-20240116; t=1728997679; c=relaxed/simple;
+	bh=0gkrcUolvWshLomA70g//bEFJi9UhXPha2jvaCVsKwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=igKYwuDLfWhouJy9sfILVdQG8rtIpqL7d9naob1FRmO8aBJdJkde0S495ofJM4d1f7l1yzl6A+wY/BKHUUbiGn+ViKZhhuHLz84pn1Sw3GHITWZSs61/4SLxJLqQjXwS6oGsVEqN+Y5zwnE1N2AU758jFG08/r8zHpJuG1D+qyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBoaEY5e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7DAC4CECE;
-	Tue, 15 Oct 2024 13:07:52 +0000 (UTC)
+	 MIME-Version; b=VWD5zH0UGDvJKX0vrnCMRNO1f8xET9X9nfY1H5CEvOBB1K7c+1T/1ITmd/VECWbZzavcDV6AV+Av6LZwnPAwm2lEAKhtU/toCgacMx72d+m4nImPswbAPgo3dLnd2IaJOoMCkk8xfj//e+i+SRwiOlK7nl4kxyY83Iei13jV2wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPkRlU3i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06AF4C4CEC6;
+	Tue, 15 Oct 2024 13:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997673;
-	bh=6yIGy1Cz4b7Q8/IEINCzx8vFjtUk16zOUUiH5DbXcAY=;
+	s=korg; t=1728997679;
+	bh=0gkrcUolvWshLomA70g//bEFJi9UhXPha2jvaCVsKwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fBoaEY5e6nWJgUECMk+/ziMOYj2AvdNBHvpKWwXVm/mjaxxnBLmN4pvd434qahWjI
-	 98FkP2vNExh2+KqHWe1JN6to4qAHjRveejBIl2sJGZSWLf5Q68gE7eC3r5rt6LN62S
-	 9U5OdykHSZDkJ75BtrhBw2AkJs0z9CkHE109ENLs=
+	b=CPkRlU3iz1xIlht8E87Oguo00kdXa7GvFlWkthDB7yoDBcotar4J3UL66VqmuHbuz
+	 yMGPhpn7rEKFzWiMx34k5qDwsC+1bJyJ3p3qrObVGLcATd/5ESS/OzvCQHUPWWbPE7
+	 JAlJ+WPa5biYa4AaZCvJTHLiJ2Z/ZqMlBX65Wh3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Tomoki Sekiyama <tomoki.sekiyama@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 252/518] soc: versatile: realview: fix soc_dev leak during device remove
-Date: Tue, 15 Oct 2024 14:42:36 +0200
-Message-ID: <20241015123926.716751540@linuxfoundation.org>
+Subject: [PATCH 5.10 253/518] usb: yurex: Replace snprintf() with the safer scnprintf() variant
+Date: Tue, 15 Oct 2024 14:42:37 +0200
+Message-ID: <20241015123926.756699843@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -66,61 +66,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Lee Jones <lee@kernel.org>
 
-[ Upstream commit c774f2564c0086c23f5269fd4691f233756bf075 ]
+[ Upstream commit 86b20af11e84c26ae3fde4dcc4f490948e3f8035 ]
 
-If device is unbound, the soc_dev should be unregistered to prevent
-memory leak.
+There is a general misunderstanding amongst engineers that {v}snprintf()
+returns the length of the data *actually* encoded into the destination
+array.  However, as per the C99 standard {v}snprintf() really returns
+the length of the data that *would have been* written if there were
+enough space for it.  This misunderstanding has led to buffer-overruns
+in the past.  It's generally considered safer to use the {v}scnprintf()
+variants in their place (or even sprintf() in simple cases).  So let's
+do that.
 
-Fixes: a2974c9c1f83 ("soc: add driver for the ARM RealView")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/20240825-soc-dev-fixes-v1-3-ff4b35abed83@linaro.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Whilst we're at it, let's define some magic numbers to increase
+readability and ease of maintenance.
+
+Link: https://lwn.net/Articles/69419/
+Link: https://github.com/KSPP/linux/issues/105
+Cc: Tomoki Sekiyama <tomoki.sekiyama@gmail.com>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/20231213164246.1021885-9-lee@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 93907620b308 ("USB: misc: yurex: fix race between read and write")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/versatile/soc-realview.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/usb/misc/yurex.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/soc/versatile/soc-realview.c b/drivers/soc/versatile/soc-realview.c
-index d304ee69287af..cf91abe07d38d 100644
---- a/drivers/soc/versatile/soc-realview.c
-+++ b/drivers/soc/versatile/soc-realview.c
-@@ -4,6 +4,7 @@
-  *
-  * Author: Linus Walleij <linus.walleij@linaro.org>
-  */
-+#include <linux/device.h>
- #include <linux/init.h>
- #include <linux/io.h>
- #include <linux/slab.h>
-@@ -81,6 +82,13 @@ static struct attribute *realview_attrs[] = {
+diff --git a/drivers/usb/misc/yurex.c b/drivers/usb/misc/yurex.c
+index 6c3d760bd4dd8..62bd302e8bb71 100644
+--- a/drivers/usb/misc/yurex.c
++++ b/drivers/usb/misc/yurex.c
+@@ -34,6 +34,8 @@
+ #define YUREX_BUF_SIZE		8
+ #define YUREX_WRITE_TIMEOUT	(HZ*2)
  
- ATTRIBUTE_GROUPS(realview);
- 
-+static void realview_soc_socdev_release(void *data)
-+{
-+	struct soc_device *soc_dev = data;
++#define MAX_S64_STRLEN 20 /* {-}922337203685477580{7,8} */
 +
-+	soc_device_unregister(soc_dev);
-+}
-+
- static int realview_soc_probe(struct platform_device *pdev)
+ /* table of devices that work with this driver */
+ static struct usb_device_id yurex_table[] = {
+ 	{ USB_DEVICE(YUREX_VENDOR_ID, YUREX_PRODUCT_ID) },
+@@ -400,7 +402,7 @@ static ssize_t yurex_read(struct file *file, char __user *buffer, size_t count,
  {
- 	struct regmap *syscon_regmap;
-@@ -109,6 +117,11 @@ static int realview_soc_probe(struct platform_device *pdev)
- 	if (IS_ERR(soc_dev))
- 		return -ENODEV;
+ 	struct usb_yurex *dev;
+ 	int len = 0;
+-	char in_buffer[20];
++	char in_buffer[MAX_S64_STRLEN];
+ 	unsigned long flags;
  
-+	ret = devm_add_action_or_reset(&pdev->dev, realview_soc_socdev_release,
-+				       soc_dev);
-+	if (ret)
-+		return ret;
+ 	dev = file->private_data;
+@@ -411,14 +413,14 @@ static ssize_t yurex_read(struct file *file, char __user *buffer, size_t count,
+ 		return -ENODEV;
+ 	}
+ 
++	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN))
++		return -EIO;
 +
- 	ret = regmap_read(syscon_regmap, REALVIEW_SYS_ID_OFFSET,
- 			  &realview_coreid);
- 	if (ret)
+ 	spin_lock_irqsave(&dev->lock, flags);
+-	len = snprintf(in_buffer, 20, "%lld\n", dev->bbu);
++	scnprintf(in_buffer, MAX_S64_STRLEN, "%lld\n", dev->bbu);
+ 	spin_unlock_irqrestore(&dev->lock, flags);
+ 	mutex_unlock(&dev->io_mutex);
+ 
+-	if (WARN_ON_ONCE(len >= sizeof(in_buffer)))
+-		return -EIO;
+-
+ 	return simple_read_from_buffer(buffer, count, ppos, in_buffer, len);
+ }
+ 
 -- 
 2.43.0
 
