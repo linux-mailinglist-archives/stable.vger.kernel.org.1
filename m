@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-86311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48BFA99ED32
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:25:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E8B99ED46
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:26:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CA1828738F
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:25:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1325FB22190
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35579227B9B;
-	Tue, 15 Oct 2024 13:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BBB20FAA9;
+	Tue, 15 Oct 2024 13:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pnS0D9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qVh10P83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39E81FA246;
-	Tue, 15 Oct 2024 13:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96351E6321;
+	Tue, 15 Oct 2024 13:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728998482; cv=none; b=Pik737B6ebduELIYpfPc0uxd8CSGGB4ha+hsHLXenJxbxK5eVS32rFHK9DJ6ou7c3jzNoDZS+zoNp3XKwZtB9Hds96LajGbYz9zlB5i0a5csxiw/mD6M/j02jEmh4kU68/h80Wcsp6OpIPJtaSN3ATjmXJd+j5URXsaGY0nj99A=
+	t=1728998518; cv=none; b=oIK+HIZGsffUSDFmXTpQFlVuQt2MFc4OMmI8ZxutlyJmiT2fgJ3YgriCgB9g8sj+8DDuSk6bjpycY+TZhoSlhj645F7mvI6S5TU3u/HVw1MgGEKBI2BRGRstNF3QdThVJG7WMrr3qdWP+yhDEhKFRjeNFVOJVgjgDVlC8Zb7wFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728998482; c=relaxed/simple;
-	bh=7CFEXZtcgX7PqF9/7YXvzNgwN24MUXwV8Ug2OVgoAmQ=;
+	s=arc-20240116; t=1728998518; c=relaxed/simple;
+	bh=IueWrLqPq1micJ43bEiA6ctdVLNorTrLbSYZ8mfDqeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WBf7yCiK6Xb9oSd8y3wiR5ppueCIeB/ND6z+Gg4K/uwGBaPfn6c9nCex+5dVubW+aYSvRSGiSsoHpoDBa0qZBJduobkFtwQnGkf8k1535PmJBvqj7XS9otgARjJvgNog8AJ9MFeM9hd6AZrD/MYkp/p4TblcmjO3W8cccjulNwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pnS0D9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AAB2C4CED0;
-	Tue, 15 Oct 2024 13:21:21 +0000 (UTC)
+	 MIME-Version; b=ZE1+okkAqa5/B/hLXIRiFb8NOVOchc5GcYb3ecn/Pi92XbqR0g5VIPnpOsnr+cGS0X6mbMeaLtuGsEABkkS1GQQ/Z5PrtmaomovGjrWAvu9sHqjKUlbUrOR6krfrHy6nrPGSE6En0QsySeGX2lLKtyeh1pFssKlWcCSHE2kFYDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qVh10P83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49387C4CEC6;
+	Tue, 15 Oct 2024 13:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728998481;
-	bh=7CFEXZtcgX7PqF9/7YXvzNgwN24MUXwV8Ug2OVgoAmQ=;
+	s=korg; t=1728998518;
+	bh=IueWrLqPq1micJ43bEiA6ctdVLNorTrLbSYZ8mfDqeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1pnS0D9HyivQxVOthTbNUtiBwIGJ5MUFVHs1aGLDC7d4Y2zStNP5rR8ffSVKN+vKB
-	 ypQjhSEHy7M5XeaSYKOFpeB37tI+ftfl2p6bNfd6qYRH0kGkIpHjCtyirytUHoPOya
-	 6wJlDm+owurshlcqhDNgPjGOn4Nf+EI/aoRkvbaM=
+	b=qVh10P83jHtFC9Z3+5eSxowxXnkqyeL1A77uyHzUNLzFCtu1DFPVMVTEQGhvftVvt
+	 TfdivoV+DgtJS+d+4yeCR7esx52mBMiBS0rmeJGpU6UhN7ik8jonSMX0XyRTVBx+IJ
+	 6WG+MHbTnWWrp6JRAisl8LYhbdmv5x5COCcTjESY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 472/518] NFSD: Mark filecache "down" if init fails
-Date: Tue, 15 Oct 2024 14:46:16 +0200
-Message-ID: <20241015123935.221837724@linuxfoundation.org>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.10 473/518] ice: fix VLAN replay after reset
+Date: Tue, 15 Oct 2024 14:46:17 +0200
+Message-ID: <20241015123935.261704598@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -66,46 +69,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Dave Ertman <david.m.ertman@intel.com>
 
-[ Upstream commit dc0d0f885aa422f621bc1c2124133eff566b0bc8 ]
+[ Upstream commit 0eae2c136cb624e4050092feb59f18159b4f2512 ]
 
-NeilBrown says:
-> The handling of NFSD_FILE_CACHE_UP is strange.  nfsd_file_cache_init()
-> sets it, but doesn't clear it on failure.  So if nfsd_file_cache_init()
-> fails for some reason, nfsd_file_cache_shutdown() would still try to
-> clean up if it was called.
+There is a bug currently when there are more than one VLAN defined
+and any reset that affects the PF is initiated, after the reset rebuild
+no traffic will pass on any VLAN but the last one created.
 
-Reported-by: NeilBrown <neilb@suse.de>
-Fixes: c7b824c3d06c ("NFSD: Replace the "init once" mechanism")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+This is caused by the iteration though the VLANs during replay each
+clearing the vsi_map bitmap of the VSI that is being replayed.  The
+problem is that during rhe replay, the pointer to the vsi_map bitmap
+is used by each successive vlan to determine if it should be replayed
+on this VSI.
+
+The logic was that the replay of the VLAN would replace the bit in the map
+before the next VLAN would iterate through.  But, since the replay copies
+the old bitmap pointer to filt_replay_rules and creates a new one for the
+recreated VLANS, it does not do this, and leaves the old bitmap broken
+to be used to replay the remaining VLANs.
+
+Since the old bitmap will be cleaned up in post replay cleanup, there is
+no need to alter it and break following VLAN replay, so don't clear the
+bit.
+
+Fixes: 334cb0626de1 ("ice: Implement VSI replay framework")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Dave Ertman <david.m.ertman@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/filecache.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_switch.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 31169f0cc3d74..585163b4e11ce 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -717,7 +717,7 @@ nfsd_file_cache_init(void)
- 
- 	ret = rhltable_init(&nfsd_file_rhltable, &nfsd_file_rhash_params);
- 	if (ret)
--		return ret;
-+		goto out;
- 
- 	ret = -ENOMEM;
- 	nfsd_filecache_wq = alloc_workqueue("nfsd_filecache", 0, 0);
-@@ -769,6 +769,8 @@ nfsd_file_cache_init(void)
- 
- 	INIT_DELAYED_WORK(&nfsd_filecache_laundrette, nfsd_file_gc_worker);
- out:
-+	if (ret)
-+		clear_bit(NFSD_FILE_CACHE_UP, &nfsd_file_flags);
- 	return ret;
- out_notifier:
- 	lease_unregister_notifier(&nfsd_file_lease_notifier);
+diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
+index 1645fb527fdb7..68d756e86ca15 100644
+--- a/drivers/net/ethernet/intel/ice/ice_switch.c
++++ b/drivers/net/ethernet/intel/ice/ice_switch.c
+@@ -2789,8 +2789,6 @@ ice_replay_vsi_fltr(struct ice_hw *hw, u16 vsi_handle, u8 recp_id,
+ 		if (!itr->vsi_list_info ||
+ 		    !test_bit(vsi_handle, itr->vsi_list_info->vsi_map))
+ 			continue;
+-		/* Clearing it so that the logic can add it back */
+-		clear_bit(vsi_handle, itr->vsi_list_info->vsi_map);
+ 		f_entry.fltr_info.vsi_handle = vsi_handle;
+ 		f_entry.fltr_info.fltr_act = ICE_FWD_TO_VSI;
+ 		/* update the src in case it is VSI num */
 -- 
 2.43.0
 
