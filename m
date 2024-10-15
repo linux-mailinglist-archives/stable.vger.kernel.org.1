@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-85611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F2999E813
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:01:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AABAE99E7F1
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:59:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50B2F1F21719
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:01:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EC0F281376
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78A11E1A35;
-	Tue, 15 Oct 2024 12:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8421E9079;
+	Tue, 15 Oct 2024 11:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbgrY0dW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LW3tG7u1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57061D8DEA;
-	Tue, 15 Oct 2024 12:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B41F1E7C34;
+	Tue, 15 Oct 2024 11:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993698; cv=none; b=oEQx1ttNFG3H7rQ7EJkWEq2+Cq6XiAv06tlzy5/IEXkBLRUBS01PiGKNETZ2qR9ARQnyK7GmfTa+vCgnUbkx8ORDD6FPyyjawEKglbKV3Nn3zRoMdEh+iE7APgLzJVC2SdTNBPFSav3Wm0QO2JIkQSA8Z9ZSUgshNVp5YAhRKSs=
+	t=1728993592; cv=none; b=HdsMBhQG7i1BimLk7u7g0CqrojXUftlcc0BfOGshzOIdWKX0daPE2YesNHSKgug3iEf3CTII+WQGCbVXLNNjMjzvuyowMzvvpfnS2y75w6uE8JN12FjvwhSiYXEOH95OXYuT+G27ztVh5RTU1yKwIJlO0n0FVSXMBvik4HaRbAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993698; c=relaxed/simple;
-	bh=tGcdgTqgVxl6mcv6otN08uaJ2m65Jog2TqYNPQ8HAVk=;
+	s=arc-20240116; t=1728993592; c=relaxed/simple;
+	bh=sAJWTrMgsofLmvkEL7NUmmR3gjX9vSqDfDDVRIlH9vM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bg0qMpeTNTxfsTusChKSi3m8dXI3zdf/kouwfuLnNak/rYXFZxsAiQHVeg51nApM1aRSZa1ilNgFYEwcnEctbOIkhagfmgMAJ8rHnCzCNLADSHQjBFEn0Zwxn96wLAkBqYH7KHvilE/TiA7AZlzdm+QK9HvHifi8JHa2EFxrRTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbgrY0dW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D02AC4CECE;
-	Tue, 15 Oct 2024 12:01:37 +0000 (UTC)
+	 MIME-Version; b=X4uLSw8Y0GhG06XJC8WuO2KmDVa8JglMtksS1udy7Nx3uuq4+x1Y52ZBE8y5jeAMmpr34T2ivM89xV8Exq3hqJp+meillZ4QxVgwnHOXr7qF9SZ2YpX4jD+DmKHGsJo7NBq6rj4DdoS86nxAleQhJnNkfGKl9hJiepuw8Ir0+y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LW3tG7u1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A16EC4CEC6;
+	Tue, 15 Oct 2024 11:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993698;
-	bh=tGcdgTqgVxl6mcv6otN08uaJ2m65Jog2TqYNPQ8HAVk=;
+	s=korg; t=1728993591;
+	bh=sAJWTrMgsofLmvkEL7NUmmR3gjX9vSqDfDDVRIlH9vM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FbgrY0dWDCt3bAbVe0CIJCiUmt08dydT0yok2FuCVgcQFE8/u5fQG4ivSYHuVLDBF
-	 0NkHsefk9QlWMcey1jakOe8k44i9HU0bpnsSlqnDXvDgnzalXwhxVeCV8E5tr+qfOo
-	 VOk2g7eE6jERLkyDWH1wntdfaRIgHqofdF/EYH/E=
+	b=LW3tG7u1ibU1UxufivkEOluFNbxDt9aNtloy6WtdDacdzDOXp5XD+lMU6xl1UbKTH
+	 ndlvktzYnNvBfYThSb6cZrwiWUJ33KkXybtYu14J+zMti34zkB6pY431a4lvqgh3lV
+	 RiYcibmNeg5U0yCTciavA9sCFJZiPQkSVdD1aEHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+02341e0daa42a15ce130@syzkaller.appspotmail.com,
-	Zhao Mengmeng <zhaomengmeng@kylinos.cn>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Peng Liu <liupeng01@kylinos.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 457/691] jfs: Fix uninit-value access of new_ea in ea_buffer
-Date: Tue, 15 Oct 2024 13:26:45 +0200
-Message-ID: <20241015112458.486804057@linuxfoundation.org>
+Subject: [PATCH 5.15 458/691] drm/amdgpu: add raven1 gfxoff quirk
+Date: Tue, 15 Oct 2024 13:26:46 +0200
+Message-ID: <20241015112458.525633334@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -67,55 +66,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+From: Peng Liu <liupeng01@kylinos.cn>
 
-[ Upstream commit 2b59ffad47db1c46af25ccad157bb3b25147c35c ]
+[ Upstream commit 0126c0ae11e8b52ecfde9d1b174ee2f32d6c3a5d ]
 
-syzbot reports that lzo1x_1_do_compress is using uninit-value:
+Fix screen corruption with openkylin.
 
-=====================================================
-BUG: KMSAN: uninit-value in lzo1x_1_do_compress+0x19f9/0x2510 lib/lzo/lzo1x_compress.c:178
-
-...
-
-Uninit was stored to memory at:
- ea_put fs/jfs/xattr.c:639 [inline]
-
-...
-
-Local variable ea_buf created at:
- __jfs_setxattr+0x5d/0x1ae0 fs/jfs/xattr.c:662
- __jfs_xattr_set+0xe6/0x1f0 fs/jfs/xattr.c:934
-
-=====================================================
-
-The reason is ea_buf->new_ea is not initialized properly.
-
-Fix this by using memset to empty its content at the beginning
-in ea_get().
-
-Reported-by: syzbot+02341e0daa42a15ce130@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=02341e0daa42a15ce130
-Signed-off-by: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Link: https://bbs.openkylin.top/t/topic/171497
+Signed-off-by: Peng Liu <liupeng01@kylinos.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/xattr.c | 2 ++
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/fs/jfs/xattr.c b/fs/jfs/xattr.c
-index 8ef8dfc3c1944..76b89718fd526 100644
---- a/fs/jfs/xattr.c
-+++ b/fs/jfs/xattr.c
-@@ -434,6 +434,8 @@ static int ea_get(struct inode *inode, struct ea_buffer *ea_buf, int min_size)
- 	int rc;
- 	int quota_allocation = 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+index fb37c0d4b35b4..cebedffc44c09 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -1274,6 +1274,8 @@ static const struct amdgpu_gfxoff_quirk amdgpu_gfxoff_quirk_list[] = {
+ 	{ 0x1002, 0x15dd, 0x1002, 0x15dd, 0xc6 },
+ 	/* Apple MacBook Pro (15-inch, 2019) Radeon Pro Vega 20 4 GB */
+ 	{ 0x1002, 0x69af, 0x106b, 0x019a, 0xc0 },
++	/* https://bbs.openkylin.top/t/topic/171497 */
++	{ 0x1002, 0x15d8, 0x19e5, 0x3e14, 0xc2 },
+ 	{ 0, 0, 0, 0, 0 },
+ };
  
-+	memset(&ea_buf->new_ea, 0, sizeof(ea_buf->new_ea));
-+
- 	/* When fsck.jfs clears a bad ea, it doesn't clear the size */
- 	if (ji->ea.flag == 0)
- 		ea_size = 0;
 -- 
 2.43.0
 
