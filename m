@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-85702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70BD099E886
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:06:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC7BB99E88B
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A30C81C22699
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:06:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A1A01C20DAC
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:07:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291CA1EABAB;
-	Tue, 15 Oct 2024 12:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58FCD1EABA8;
+	Tue, 15 Oct 2024 12:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4FLTwBs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gz1JXySy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A131D4154;
-	Tue, 15 Oct 2024 12:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178741E1A35;
+	Tue, 15 Oct 2024 12:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728994007; cv=none; b=KzvZbSm75q0wX+lMQc6+JYwD3yqQIdM+nsPwTU3ysU1LEXZSOS+v5hcrrwPOpB6YH9rHmPvfiOi4iWHxGi5otqIyIvCR4Rx0zCjFJxURA+bXBun5W/LE9/Z6SJfjQjlHNgHRkEIgQLwN25TeVQSX0Lmx5DQQK/0tXn7Q3UIDI+8=
+	t=1728994024; cv=none; b=ADdSTtCYv8D37ffBRs/HHOGKoQae3IL5v1laQ1OBEGOJNoJtWkJyVvfb3aG5CShs1UVApKCfus9kESkCdpltr/yobs9iqztDtYlfURRWc036ikWLhYeUDy/QwdJJQJ25F7+3xt5LDu+mRUExUwaF9WbgJB5+CTlnOwvBuSFAyyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728994007; c=relaxed/simple;
-	bh=RMc9hGRG/VHKqsU8JZhxHagkNbvKIN7sp6Ts+VoUATc=;
+	s=arc-20240116; t=1728994024; c=relaxed/simple;
+	bh=g1C8c6xyKUSa5GDIMgU1tozETRyhRIkIvc1Zqd3UyCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=byN8z3xMd3BMe/PTbstLsX50+kLbuaoOt3vAGmI0S33a7ebQrEkyK2cAWOmi4VtFwhzYIZRRJRHq/0AyK12oDdCV4yg6Xm17IpQUE6XA1bC6YjWQo9qc5yFEp9A/3C+oZ8Z4CFQr4oxLFIPPoKwlf2L4yexTy7KVa2CZLf6i6Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4FLTwBs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10022C4CEC6;
-	Tue, 15 Oct 2024 12:06:46 +0000 (UTC)
+	 MIME-Version; b=of2lUeJTeC1saryhe3gpu/XqmdmU9usQxZdrpv/cU7PPmLd9aPNkCp7Gaq8pAUaEDVl1h9I+L6Dco1xG7HXLUuCZChj5aCI4jTLDYNq0PcRmBdSrJh3XproswEQc9V9yxV6dkVy64b2jvCjo+YBfrOMqF+iWbu92znjfyxm5EeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gz1JXySy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A98FC4CEC6;
+	Tue, 15 Oct 2024 12:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728994007;
-	bh=RMc9hGRG/VHKqsU8JZhxHagkNbvKIN7sp6Ts+VoUATc=;
+	s=korg; t=1728994024;
+	bh=g1C8c6xyKUSa5GDIMgU1tozETRyhRIkIvc1Zqd3UyCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v4FLTwBsv97HTC17zFUHVUZ61qKL3dEd/nqB5qiHTEuKG/w5aybbokBzR+Mb34h10
-	 IBXgMiPqjNT+NeCSK2bXr+TiT9OfLEZtn4gDV0e3LFNaj1h9j5v4Ne9S7buyefE5GA
-	 i3sPv9ApCfY8gfLXLpTW/7e7B3KUEy3/WJuTYlvo=
+	b=gz1JXySyqmorelAoN6dZ2wlcTb4mkFnJKnZhT+n10L7fd+u1ZWG0goq6vMAL3bKQ1
+	 BjJ3gR1Vmq3zr2fokx3G61grOV3BxTX2Wz5Rnir6j2eTF2xFmaKsgtuHoCVPBv3EqC
+	 V4svNk3oKgNs8WhVaf0R4oUn+ZGnHdzUMefbUsXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 552/691] i2c: smbus: Use device_*() functions instead of of_*()
-Date: Tue, 15 Oct 2024 13:28:20 +0200
-Message-ID: <20241015112502.250131313@linuxfoundation.org>
+Subject: [PATCH 5.15 553/691] i2c: create debugfs entry per adapter
+Date: Tue, 15 Oct 2024 13:28:21 +0200
+Message-ID: <20241015112502.288962259@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -67,117 +66,100 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit a263a84088f689bf0c1552a510b25d0bcc45fcae ]
+[ Upstream commit 73febd775bdbdb98c81255ff85773ac410ded5c4 ]
 
-Change of_*() functions to device_*() for firmware agnostic usage.
-This allows to have the smbus_alert interrupt without any changes
-in the controller drivers using the ACPI table.
+Two drivers already implement custom debugfs handling for their
+i2c_adapter and more will come. So, let the core create a debugfs
+directory per adapter and pass that to drivers for their debugfs files.
 
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Stable-dep-of: 8d3cefaf6592 ("i2c: core: Lock address during client device instantiation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-core-base.c  |  2 +-
- drivers/i2c/i2c-core-smbus.c | 11 ++++++-----
- drivers/i2c/i2c-smbus.c      |  5 +++--
- include/linux/i2c-smbus.h    |  6 +++---
- 4 files changed, 13 insertions(+), 11 deletions(-)
+ drivers/i2c/i2c-core-base.c | 11 +++++++++++
+ include/linux/i2c.h         |  2 ++
+ 2 files changed, 13 insertions(+)
 
 diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index b163ef91aabab..c8cb6f44a0f88 100644
+index c8cb6f44a0f88..76d70de2d317d 100644
 --- a/drivers/i2c/i2c-core-base.c
 +++ b/drivers/i2c/i2c-core-base.c
-@@ -1526,7 +1526,7 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
+@@ -16,6 +16,7 @@
+ #include <linux/acpi.h>
+ #include <linux/clk/clk-conf.h>
+ #include <linux/completion.h>
++#include <linux/debugfs.h>
+ #include <linux/delay.h>
+ #include <linux/err.h>
+ #include <linux/errno.h>
+@@ -66,6 +67,8 @@ static int i2c_detect(struct i2c_adapter *adapter, struct i2c_driver *driver);
+ static DEFINE_STATIC_KEY_FALSE(i2c_trace_msg_key);
+ static bool is_registered;
+ 
++static struct dentry *i2c_debugfs_root;
++
+ int i2c_transfer_trace_reg(void)
+ {
+ 	static_branch_inc(&i2c_trace_msg_key);
+@@ -1526,6 +1529,8 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
  		goto out_list;
  	}
  
--	res = of_i2c_setup_smbus_alert(adap);
-+	res = i2c_setup_smbus_alert(adap);
++	adap->debugfs = debugfs_create_dir(dev_name(&adap->dev), i2c_debugfs_root);
++
+ 	res = i2c_setup_smbus_alert(adap);
  	if (res)
  		goto out_reg;
- 
-diff --git a/drivers/i2c/i2c-core-smbus.c b/drivers/i2c/i2c-core-smbus.c
-index e5b2d1465e7ed..304c2c8fee68e 100644
---- a/drivers/i2c/i2c-core-smbus.c
-+++ b/drivers/i2c/i2c-core-smbus.c
-@@ -14,6 +14,7 @@
- #include <linux/err.h>
- #include <linux/i2c.h>
- #include <linux/i2c-smbus.h>
-+#include <linux/property.h>
- #include <linux/slab.h>
- 
- #include "i2c-core.h"
-@@ -701,13 +702,13 @@ struct i2c_client *i2c_new_smbus_alert_device(struct i2c_adapter *adapter,
- }
- EXPORT_SYMBOL_GPL(i2c_new_smbus_alert_device);
- 
--#if IS_ENABLED(CONFIG_I2C_SMBUS) && IS_ENABLED(CONFIG_OF)
--int of_i2c_setup_smbus_alert(struct i2c_adapter *adapter)
-+#if IS_ENABLED(CONFIG_I2C_SMBUS)
-+int i2c_setup_smbus_alert(struct i2c_adapter *adapter)
- {
- 	int irq;
- 
--	irq = of_property_match_string(adapter->dev.of_node, "interrupt-names",
--				       "smbus_alert");
-+	irq = device_property_match_string(adapter->dev.parent, "interrupt-names",
-+					   "smbus_alert");
- 	if (irq == -EINVAL || irq == -ENODATA)
- 		return 0;
- 	else if (irq < 0)
-@@ -715,5 +716,5 @@ int of_i2c_setup_smbus_alert(struct i2c_adapter *adapter)
- 
- 	return PTR_ERR_OR_ZERO(i2c_new_smbus_alert_device(adapter, NULL));
- }
--EXPORT_SYMBOL_GPL(of_i2c_setup_smbus_alert);
-+EXPORT_SYMBOL_GPL(i2c_setup_smbus_alert);
- #endif
-diff --git a/drivers/i2c/i2c-smbus.c b/drivers/i2c/i2c-smbus.c
-index 44582cf29e162..cacdadb9415c5 100644
---- a/drivers/i2c/i2c-smbus.c
-+++ b/drivers/i2c/i2c-smbus.c
-@@ -13,7 +13,7 @@
- #include <linux/interrupt.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
--#include <linux/of_irq.h>
-+#include <linux/property.h>
- #include <linux/slab.h>
- #include <linux/workqueue.h>
- 
-@@ -178,7 +178,8 @@ static int smbalert_probe(struct i2c_client *ara,
- 	if (setup) {
- 		irq = setup->irq;
- 	} else {
--		irq = of_irq_get_byname(adapter->dev.of_node, "smbus_alert");
-+		irq = fwnode_irq_get_byname(dev_fwnode(adapter->dev.parent),
-+					    "smbus_alert");
- 		if (irq <= 0)
- 			return irq;
- 	}
-diff --git a/include/linux/i2c-smbus.h b/include/linux/i2c-smbus.h
-index 1ef421818d3a8..95cf902e0bdae 100644
---- a/include/linux/i2c-smbus.h
-+++ b/include/linux/i2c-smbus.h
-@@ -30,10 +30,10 @@ struct i2c_client *i2c_new_smbus_alert_device(struct i2c_adapter *adapter,
- 					      struct i2c_smbus_alert_setup *setup);
- int i2c_handle_smbus_alert(struct i2c_client *ara);
- 
--#if IS_ENABLED(CONFIG_I2C_SMBUS) && IS_ENABLED(CONFIG_OF)
--int of_i2c_setup_smbus_alert(struct i2c_adapter *adap);
-+#if IS_ENABLED(CONFIG_I2C_SMBUS)
-+int i2c_setup_smbus_alert(struct i2c_adapter *adap);
- #else
--static inline int of_i2c_setup_smbus_alert(struct i2c_adapter *adap)
-+static inline int i2c_setup_smbus_alert(struct i2c_adapter *adap)
- {
+@@ -1564,6 +1569,7 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
  	return 0;
+ 
+ out_reg:
++	debugfs_remove_recursive(adap->debugfs);
+ 	init_completion(&adap->dev_released);
+ 	device_unregister(&adap->dev);
+ 	wait_for_completion(&adap->dev_released);
+@@ -1765,6 +1771,8 @@ void i2c_del_adapter(struct i2c_adapter *adap)
+ 
+ 	i2c_host_notify_irq_teardown(adap);
+ 
++	debugfs_remove_recursive(adap->debugfs);
++
+ 	/* wait until all references to the device are gone
+ 	 *
+ 	 * FIXME: This is old code and should ideally be replaced by an
+@@ -2062,6 +2070,8 @@ static int __init i2c_init(void)
+ 
+ 	is_registered = true;
+ 
++	i2c_debugfs_root = debugfs_create_dir("i2c", NULL);
++
+ #ifdef CONFIG_I2C_COMPAT
+ 	i2c_adapter_compat_class = class_compat_register("i2c-adapter");
+ 	if (!i2c_adapter_compat_class) {
+@@ -2100,6 +2110,7 @@ static void __exit i2c_exit(void)
+ #ifdef CONFIG_I2C_COMPAT
+ 	class_compat_unregister(i2c_adapter_compat_class);
+ #endif
++	debugfs_remove_recursive(i2c_debugfs_root);
+ 	bus_unregister(&i2c_bus_type);
+ 	tracepoint_synchronize_unregister();
  }
+diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+index 8bcc0142c32c2..7c2ff4d7c360a 100644
+--- a/include/linux/i2c.h
++++ b/include/linux/i2c.h
+@@ -740,6 +740,8 @@ struct i2c_adapter {
+ 
+ 	struct irq_domain *host_notify_domain;
+ 	struct regulator *bus_regulator;
++
++	struct dentry *debugfs;
+ };
+ #define to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
+ 
 -- 
 2.43.0
 
