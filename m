@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-86081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78AAD99EB94
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:08:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC7D99EB96
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:08:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9A341C22849
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:08:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FB552825C8
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622B11D5AC6;
-	Tue, 15 Oct 2024 13:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6FC1AF0D7;
+	Tue, 15 Oct 2024 13:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5VW4QPC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v85f69rg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA0A1AF0D7;
-	Tue, 15 Oct 2024 13:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FF11C07FF;
+	Tue, 15 Oct 2024 13:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728997709; cv=none; b=FL+5fM20XR1/Ex3cs3Cx2qJ6W0LqO4NXjRIcavsCkCSTv1tqOcHHw3pRqwIKzeKsZyYdApJ/pmrMMoT+/0A2XflsyJrunX4pwo1/zDVa2Z1/rzemd04m9JmUq4OexjMAlzmuFgovcw1mpj3Tfyz6ON0aBjJXGesEZPBlZUMGeV0=
+	t=1728997715; cv=none; b=h/JMo14EPn1vvTYYOzkc/MboBX3dF0X6mG5v3GYn+YzieekDGrZhYhxirM0oAmViJ09zAWVXleGDXR/mzJoDHboffctGpBKzd/wZ+/xbTTjq25Z2pSM+A6RqVGS4QC3SbY8CsLMUILdt/3I+COhy7LRwXWtQyFhGeksvdnIAGus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728997709; c=relaxed/simple;
-	bh=El5HKR5glTHK8wRm76K2FsQ6IVktZeexnmuHKej2ZLU=;
+	s=arc-20240116; t=1728997715; c=relaxed/simple;
+	bh=Z7vR9pkxJt+LO/pdMNFZ4vjasWthxb9vLT+cIWzvwL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+DXY511sY/YW1C9bzY+VNnDBW/yrpVwWnAKSzukBWlKizC+pLZUVlXC+Loxzvsw11IKC7GR/PPrrthoE9FRsT1PO8yqQ4p3HcMuAViJZUumWabQEqjsg/lZSolvX731zTkw6mWwWXLO425CHNvIg4/IgJGe3gYGgF3aTmDW+Tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5VW4QPC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32808C4CEC6;
-	Tue, 15 Oct 2024 13:08:27 +0000 (UTC)
+	 MIME-Version; b=X5WOSvcbfEa2PIIEVMSxS2RKxBTNRe5i8am+hzulciif1YKbfYiIr6VfOrTfknlIh4hQeQhPha1Kci3EXQhLYfMQp6oTZ0Xa3fBz4g78PMhK2dK7765dqt/a0AcrT9kAA6wQQxrV5n/z3dkvjUIsmpG0XJtMtR968PPyMtTvvoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v85f69rg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9874C4CEC6;
+	Tue, 15 Oct 2024 13:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728997708;
-	bh=El5HKR5glTHK8wRm76K2FsQ6IVktZeexnmuHKej2ZLU=;
+	s=korg; t=1728997715;
+	bh=Z7vR9pkxJt+LO/pdMNFZ4vjasWthxb9vLT+cIWzvwL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5VW4QPCHAEgBuS22BZ2GUDKZAcnMpa0L2osDcMjyBVoopKqlTWgiEh1ofEe6FRqL
-	 H8qHNDkx7Blo1tFeRZgIbZj7cuKR+iyfuo1wy281XwFBO6dVkpsJSL1CUB3zXwF+3w
-	 JaRImclwsnFRVoFT5WhoPtCScORsF1ysSYe2B6GA=
+	b=v85f69rg+1WHm3mClOH+Y2SxFlbtA66iLrLAOmeuHsRCTMVP+CkI6qbIb7d7j7yBS
+	 wkv57iOTICtnUeiIAdRGByhXNvow3N0azQ4wVV/XWE3eQaHUbyqzlLkvZrUNyjqIJI
+	 20TC4blCNezUjsMbMgDoPKnFb4196pPWwEuZNZgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tommy Huang <tommy_huang@aspeedtech.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.10 262/518] i2c: aspeed: Update the stop sw state when the bus recovery occurs
-Date: Tue, 15 Oct 2024 14:42:46 +0200
-Message-ID: <20241015123927.104762431@linuxfoundation.org>
+Subject: [PATCH 5.10 263/518] i2c: isch: Add missed else
+Date: Tue, 15 Oct 2024 14:42:47 +0200
+Message-ID: <20241015123927.144634135@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
 References: <20241015123916.821186887@linuxfoundation.org>
@@ -65,64 +65,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tommy Huang <tommy_huang@aspeedtech.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 93701d3b84ac5f3ea07259d4ced405c53d757985 upstream.
+commit 1db4da55070d6a2754efeb3743f5312fc32f5961 upstream.
 
-When the i2c bus recovery occurs, driver will send i2c stop command
-in the scl low condition. In this case the sw state will still keep
-original situation. Under multi-master usage, i2c bus recovery will
-be called when i2c transfer timeout occurs. Update the stop command
-calling with aspeed_i2c_do_stop function to update master_state.
+In accordance with the existing comment and code analysis
+it is quite likely that there is a missed 'else' when adapter
+times out. Add it.
 
-Fixes: f327c686d3ba ("i2c: aspeed: added driver for Aspeed I2C")
-Cc: stable@vger.kernel.org # v4.13+
-Signed-off-by: Tommy Huang <tommy_huang@aspeedtech.com>
+Fixes: 5bc1200852c3 ("i2c: Add Intel SCH SMBus support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v2.6.27+
 Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-aspeed.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/i2c/busses/i2c-isch.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/i2c/busses/i2c-aspeed.c
-+++ b/drivers/i2c/busses/i2c-aspeed.c
-@@ -172,6 +172,13 @@ struct aspeed_i2c_bus {
- 
- static int aspeed_i2c_reset(struct aspeed_i2c_bus *bus);
- 
-+/* precondition: bus.lock has been acquired. */
-+static void aspeed_i2c_do_stop(struct aspeed_i2c_bus *bus)
-+{
-+	bus->master_state = ASPEED_I2C_MASTER_STOP;
-+	writel(ASPEED_I2CD_M_STOP_CMD, bus->base + ASPEED_I2C_CMD_REG);
-+}
-+
- static int aspeed_i2c_recover_bus(struct aspeed_i2c_bus *bus)
- {
- 	unsigned long time_left, flags;
-@@ -189,7 +196,7 @@ static int aspeed_i2c_recover_bus(struct
- 			command);
- 
- 		reinit_completion(&bus->cmd_complete);
--		writel(ASPEED_I2CD_M_STOP_CMD, bus->base + ASPEED_I2C_CMD_REG);
-+		aspeed_i2c_do_stop(bus);
- 		spin_unlock_irqrestore(&bus->lock, flags);
- 
- 		time_left = wait_for_completion_timeout(
-@@ -386,13 +393,6 @@ static void aspeed_i2c_do_start(struct a
- }
- 
- /* precondition: bus.lock has been acquired. */
--static void aspeed_i2c_do_stop(struct aspeed_i2c_bus *bus)
--{
--	bus->master_state = ASPEED_I2C_MASTER_STOP;
--	writel(ASPEED_I2CD_M_STOP_CMD, bus->base + ASPEED_I2C_CMD_REG);
--}
--
--/* precondition: bus.lock has been acquired. */
- static void aspeed_i2c_next_msg_or_stop(struct aspeed_i2c_bus *bus)
- {
- 	if (bus->msgs_index + 1 < bus->msgs_count) {
+--- a/drivers/i2c/busses/i2c-isch.c
++++ b/drivers/i2c/busses/i2c-isch.c
+@@ -99,8 +99,7 @@ static int sch_transaction(void)
+ 	if (retries > MAX_RETRIES) {
+ 		dev_err(&sch_adapter.dev, "SMBus Timeout!\n");
+ 		result = -ETIMEDOUT;
+-	}
+-	if (temp & 0x04) {
++	} else if (temp & 0x04) {
+ 		result = -EIO;
+ 		dev_dbg(&sch_adapter.dev, "Bus collision! SMBus may be "
+ 			"locked until next hard reset. (sorry!)\n");
 
 
 
