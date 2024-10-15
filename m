@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-85579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B71899E7F0
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DBF399E7FC
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:00:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21B7F280ECC
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:59:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 423FE2818A6
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2341E7658;
-	Tue, 15 Oct 2024 11:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E736C1E378C;
+	Tue, 15 Oct 2024 12:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G07b2Mpg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqYpubzN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9E41D8DEA;
-	Tue, 15 Oct 2024 11:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BCC1C57B1;
+	Tue, 15 Oct 2024 12:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728993588; cv=none; b=IKLLjyhTozmPzKcnkia3lzKw5rw760Juz4hUxgFKRyimhU2nfb2vcBzw0Hk3PRJZD2q/lAhzw9sEN9R3CyAVtHj6eNLwngmFZ8h3r3FT+P7tLB1D+ZH7ctwaCe5punSgjFwRVzmQSLi7IYor6BGFhGFmIkLb8BC8fe7PrAqv18Q=
+	t=1728993625; cv=none; b=UrOOq9675DUrXAtcmvuym2baxYevMSWvJwWCNYJNMBNKyBtvUluq3fzw73aPahCbpf8dj6HAik0MX8JeuWkbjqBUAOiquJUz/gyfqpxa2j6KyngxsjqVUjZrXsoIzKHOsDh7u93/wOdl8sXnaG1gFlOl+/cHByY6SfpRMh8jUHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728993588; c=relaxed/simple;
-	bh=9r4DDr5HDDxCiUPuOOSq9bfn8CB0opW4pmPy+p/1xg8=;
+	s=arc-20240116; t=1728993625; c=relaxed/simple;
+	bh=JW/W2nVAJbBL7gQ2m399ZDylPTOcYEWuXuyXhPY7MWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L6hsjuj2HjKy4xdnextcbkbpWY5JA1rSkATHpN9WQFn/LxkDKdPzzucv+vttu0YAFqDhjZt2XsMmoW9ke8Nj5W73fdMwrXatwagD4sfer22no8bT/MA7CUTpovTzQlb0AxrD6fK0UvHqcXkVDGPqqpN7hXJNp7FnUci2c1AXV5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G07b2Mpg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89E3C4CEC6;
-	Tue, 15 Oct 2024 11:59:47 +0000 (UTC)
+	 MIME-Version; b=g7oV+gpn6eBjCxKKA88H0kJt3GRZvmSJjSCCUJaO1ZzdO7wbIF20BUit66ufrw8vXPzbK6mf8Kj71DANNKl8/Q7n1bOq/urAJYi0H7O2dXZN385I/pZjRZa3Nf7VJ7F0Jk0f7KzdXYZh0LI9bhiLf//quh2caRPL4Ass6dCF7+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LqYpubzN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A2FC4CEC6;
+	Tue, 15 Oct 2024 12:00:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728993588;
-	bh=9r4DDr5HDDxCiUPuOOSq9bfn8CB0opW4pmPy+p/1xg8=;
+	s=korg; t=1728993625;
+	bh=JW/W2nVAJbBL7gQ2m399ZDylPTOcYEWuXuyXhPY7MWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G07b2MpgBAMFq76Vu4F4wx3+9vjGLsFENgBrBo7ouR9U/WCAH/0FJ6uG/DBQY5BdT
-	 POgEjxHtGmNRF4FLIcv4cRD4BZiYTVAD9gyyqfvYkN1WrhIXVgQn+d92022E8Qw8o8
-	 U43e04oDV/oLS63zYgb8FV4fZbRrA6pfN0xV9xGs=
+	b=LqYpubzNA0aRHcdP/MQxD5YiyTSiymn2j67QZB4jjTBC9XpKAYBfAcN0HYR0RUFjU
+	 b4XlLgg4gByBw2IiLJFmyUdbx5cM0HHcQgdNhnYwVRNoi8waUp7OfjXZoBRz5U1keo
+	 9SUd9KPai+/xnkCq97YGi1ZT8Yt/+2AMft1aTGBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanjay K Kumar <sanjay.k.kumar@intel.com>,
-	Jacob Pan <jacob.jun.pan@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 449/691] iommu/vt-d: Fix potential lockup if qi_submit_sync called with 0 count
-Date: Tue, 15 Oct 2024 13:26:37 +0200
-Message-ID: <20241015112458.169093078@linuxfoundation.org>
+Subject: [PATCH 5.15 450/691] drm/amd/display: Add null check for top_pipe_to_program in commit_planes_for_stream
+Date: Tue, 15 Oct 2024 13:26:38 +0200
+Message-ID: <20241015112458.208388911@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -69,125 +73,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sanjay K Kumar <sanjay.k.kumar@intel.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 3cf74230c139f208b7fb313ae0054386eee31a81 ]
+[ Upstream commit 66d71a72539e173a9b00ca0b1852cbaa5f5bf1ad ]
 
-If qi_submit_sync() is invoked with 0 invalidation descriptors (for
-instance, for DMA draining purposes), we can run into a bug where a
-submitting thread fails to detect the completion of invalidation_wait.
-Subsequently, this led to a soft lockup. Currently, there is no impact
-by this bug on the existing users because no callers are submitting
-invalidations with 0 descriptors. This fix will enable future users
-(such as DMA drain) calling qi_submit_sync() with 0 count.
+This commit addresses a null pointer dereference issue in the
+`commit_planes_for_stream` function at line 4140. The issue could occur
+when `top_pipe_to_program` is null.
 
-Suppose thread T1 invokes qi_submit_sync() with non-zero descriptors, while
-concurrently, thread T2 calls qi_submit_sync() with zero descriptors. Both
-threads then enter a while loop, waiting for their respective descriptors
-to complete. T1 detects its completion (i.e., T1's invalidation_wait status
-changes to QI_DONE by HW) and proceeds to call reclaim_free_desc() to
-reclaim all descriptors, potentially including adjacent ones of other
-threads that are also marked as QI_DONE.
+The fix adds a check to ensure `top_pipe_to_program` is not null before
+accessing its stream_res. This prevents a null pointer dereference.
 
-During this time, while T2 is waiting to acquire the qi->q_lock, the IOMMU
-hardware may complete the invalidation for T2, setting its status to
-QI_DONE. However, if T1's execution of reclaim_free_desc() frees T2's
-invalidation_wait descriptor and changes its status to QI_FREE, T2 will
-not observe the QI_DONE status for its invalidation_wait and will
-indefinitely remain stuck.
+Reported by smatch:
+drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc.c:4140 commit_planes_for_stream() error: we previously assumed 'top_pipe_to_program' could be null (see line 3906)
 
-This soft lockup does not occur when only non-zero descriptors are
-submitted.In such cases, invalidation descriptors are interspersed among
-wait descriptors with the status QI_IN_USE, acting as barriers. These
-barriers prevent the reclaim code from mistakenly freeing descriptors
-belonging to other submitters.
-
-Considered the following example timeline:
-	T1			T2
-========================================
-	ID1
-	WD1
-	while(WD1!=QI_DONE)
-	unlock
-				lock
-	WD1=QI_DONE*		WD2
-				while(WD2!=QI_DONE)
-				unlock
-	lock
-	WD1==QI_DONE?
-	ID1=QI_DONE		WD2=DONE*
-	reclaim()
-	ID1=FREE
-	WD1=FREE
-	WD2=FREE
-	unlock
-				soft lockup! T2 never sees QI_DONE in WD2
-
-Where:
-ID = invalidation descriptor
-WD = wait descriptor
-* Written by hardware
-
-The root of the problem is that the descriptor status QI_DONE flag is used
-for two conflicting purposes:
-1. signal a descriptor is ready for reclaim (to be freed)
-2. signal by the hardware that a wait descriptor is complete
-
-The solution (in this patch) is state separation by using QI_FREE flag
-for #1.
-
-Once a thread's invalidation descriptors are complete, their status would
-be set to QI_FREE. The reclaim_free_desc() function would then only
-free descriptors marked as QI_FREE instead of those marked as
-QI_DONE. This change ensures that T2 (from the previous example) will
-correctly observe the completion of its invalidation_wait (marked as
-QI_DONE).
-
-Signed-off-by: Sanjay K Kumar <sanjay.k.kumar@intel.com>
-Signed-off-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20240728210059.1964602-1-jacob.jun.pan@linux.intel.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/dmar.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
-index 1134aa24d67f1..7109d86491289 100644
---- a/drivers/iommu/intel/dmar.c
-+++ b/drivers/iommu/intel/dmar.c
-@@ -1198,9 +1198,7 @@ static void free_iommu(struct intel_iommu *iommu)
-  */
- static inline void reclaim_free_desc(struct q_inval *qi)
- {
--	while (qi->desc_status[qi->free_tail] == QI_DONE ||
--	       qi->desc_status[qi->free_tail] == QI_ABORT) {
--		qi->desc_status[qi->free_tail] = QI_FREE;
-+	while (qi->desc_status[qi->free_tail] == QI_FREE && qi->free_tail != qi->free_head) {
- 		qi->free_tail = (qi->free_tail + 1) % QI_LENGTH;
- 		qi->free_cnt++;
- 	}
-@@ -1435,8 +1433,16 @@ int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
- 		raw_spin_lock(&qi->q_lock);
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 12e4beca5e840..22dbc6bc21af4 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -3027,7 +3027,8 @@ static void commit_planes_for_stream(struct dc *dc,
+ 		dc->hwss.pipe_control_lock(dc, top_pipe_to_program, false);
  
--	for (i = 0; i < count; i++)
--		qi->desc_status[(index + i) % QI_LENGTH] = QI_DONE;
-+	/*
-+	 * The reclaim code can free descriptors from multiple submissions
-+	 * starting from the tail of the queue. When count == 0, the
-+	 * status of the standalone wait descriptor at the tail of the queue
-+	 * must be set to QI_FREE to allow the reclaim code to proceed.
-+	 * It is also possible that descriptors from one of the previous
-+	 * submissions has to be reclaimed by a subsequent submission.
-+	 */
-+	for (i = 0; i <= count; i++)
-+		qi->desc_status[(index + i) % QI_LENGTH] = QI_FREE;
- 
- 	reclaim_free_desc(qi);
- 	raw_spin_unlock_irqrestore(&qi->q_lock, flags);
+ 	if ((update_type != UPDATE_TYPE_FAST) && stream->update_flags.bits.dsc_changed)
+-		if (top_pipe_to_program->stream_res.tg->funcs->lock_doublebuffer_enable) {
++		if (top_pipe_to_program &&
++		    top_pipe_to_program->stream_res.tg->funcs->lock_doublebuffer_enable) {
+ 			top_pipe_to_program->stream_res.tg->funcs->wait_for_state(
+ 					top_pipe_to_program->stream_res.tg,
+ 					CRTC_STATE_VACTIVE);
 -- 
 2.43.0
 
