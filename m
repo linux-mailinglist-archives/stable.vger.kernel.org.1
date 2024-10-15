@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-85352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCFFB99E6EC
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:47:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D58D99E6FC
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:48:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9846E285C55
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:47:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC68EB27540
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 11:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6F51CFEA9;
-	Tue, 15 Oct 2024 11:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8191E7C02;
+	Tue, 15 Oct 2024 11:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oCjCYI4B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Zpz/1bp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9FD19B3FF;
-	Tue, 15 Oct 2024 11:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8DC1D89F5;
+	Tue, 15 Oct 2024 11:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728992826; cv=none; b=dL1MW6aFH3wgkM/yEcykbOmxDARq7OnBgfQOv/JQP+cfZECYkRqA0n3bi4B8MEFgqSjYKsqdfsCd8JYqQzGfquvhsc2YcO8gCxNBYOo8nGUH/2HGEZyaA1XN5woMSMQ8arXPbcfJPLIRTw+vshe4I36T2AB7m7wpboxMbR3Pf6Q=
+	t=1728992862; cv=none; b=io1j8o1bQmF5Snc/c7/5sMATS1B1j2qGK1+L3ALGsPoCUXbmkZTt7mXQ1BlWatq4tL8P+7u9/PlspgAHYLRRQOwfKWJcyBXz17nLnHQLNBRFghkPIB2lBF46tKK9bRZQVDdQiKLbzxv3xPR5GyBJPb/cnnRsaOV6UHnYqZa2q0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728992826; c=relaxed/simple;
-	bh=yDs3yIFwU2DtXocgYQuroc/hLXU09kuz7RTdEkbqhh4=;
+	s=arc-20240116; t=1728992862; c=relaxed/simple;
+	bh=mh/EzTFHeOViYH2/PS7t1YpV8CFZArZD4ZyrGTOvjcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sg8VyiRQa7A6QCgUpmla1ppKYZ5SOrQDKw2ivYDKSNvm092tXlIa5o5Uz9UeQNqjyDfULULTqxM+tx6spIiIpJfyMrotFSnKbc4Z2KZxxuhBn2sNd6Ne5kj9wwLKK1fgXPjcaQonVPkrdSDmm9zMLIQ4HzVLFzlW1FymNyL1VBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oCjCYI4B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9489C4CEC6;
-	Tue, 15 Oct 2024 11:47:05 +0000 (UTC)
+	 MIME-Version; b=PMTK8CUDp0N6tk7O1UWU8vEbtswF0Z92j5/tUm+zz0qMQ1MjvrGbzMIgv69HsrHFGwLz+JHLioLTlKGbKbHtLyiHMhZdQ8ObERYtog7X5D++HMltboQGG9TEWwp5N2YjxvEpT3GTu7/U0zNtmOlLlnmU/6UKZG/HdbzXbEYBQZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Zpz/1bp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17515C4CEC6;
+	Tue, 15 Oct 2024 11:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728992826;
-	bh=yDs3yIFwU2DtXocgYQuroc/hLXU09kuz7RTdEkbqhh4=;
+	s=korg; t=1728992861;
+	bh=mh/EzTFHeOViYH2/PS7t1YpV8CFZArZD4ZyrGTOvjcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oCjCYI4BRnZ7VSkdTAbFfVwRuPpw2QQYX/jBCN3j8jDpIBZN5Zo9dMuXdUrwrcweZ
-	 TILPGO0dOq1ueCmTpgYAlTtYNtFmLTH981fK4J0kX+kjW2JKZ30mRSN5JrBUQh+efT
-	 +aLtSDjzLykRyEFh8JPyPRJXuIUMSlLnySAhS+EI=
+	b=1Zpz/1bpCk5z7gRznKMvdKLQljGYYx95EZYrlkCEZt2IVQ9+rJeVukTgcMGgI5VRb
+	 X2sgvje0kvo/N44oAdgCuMfy1/B025mf25Osc7Y1bmAjmTX03tMqUc18VTegcA2RtE
+	 gaf7aLICOY2nHLlVR6smCbJ0tt92OnYm/zHV5Kv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 212/691] nilfs2: fix potential oob read in nilfs_btree_check_delete()
-Date: Tue, 15 Oct 2024 13:22:40 +0200
-Message-ID: <20241015112448.774024734@linuxfoundation.org>
+Subject: [PATCH 5.15 213/691] bpf: Fix bpf_strtol and bpf_strtoul helpers for 32bit
+Date: Tue, 15 Oct 2024 13:22:41 +0200
+Message-ID: <20241015112448.812711432@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -67,66 +67,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit f9c96351aa6718b42a9f42eaf7adce0356bdb5e8 ]
+[ Upstream commit cfe69c50b05510b24e26ccb427c7cc70beafd6c1 ]
 
-The function nilfs_btree_check_delete(), which checks whether degeneration
-to direct mapping occurs before deleting a b-tree entry, causes memory
-access outside the block buffer when retrieving the maximum key if the
-root node has no entries.
+The bpf_strtol() and bpf_strtoul() helpers are currently broken on 32bit:
 
-This does not usually happen because b-tree mappings with 0 child nodes
-are never created by mkfs.nilfs2 or nilfs2 itself.  However, it can happen
-if the b-tree root node read from a device is configured that way, so fix
-this potential issue by adding a check for that case.
+The argument type ARG_PTR_TO_LONG is BPF-side "long", not kernel-side "long"
+and therefore always considered fixed 64bit no matter if 64 or 32bit underlying
+architecture.
 
-Link: https://lkml.kernel.org/r/20240904081401.16682-4-konishi.ryusuke@gmail.com
-Fixes: 17c76b0104e4 ("nilfs2: B-tree based block mapping")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This contract breaks in case of the two mentioned helpers since their BPF_CALL
+definition for the helpers was added with {unsigned,}long *res. Meaning, the
+transition from BPF-side "long" (BPF program) to kernel-side "long" (BPF helper)
+breaks here.
+
+Both helpers call __bpf_strtoll() with "long long" correctly, but later assigning
+the result into 32-bit "*(long *)" on 32bit architectures. From a BPF program
+point of view, this means upper bits will be seen as uninitialised.
+
+Therefore, fix both BPF_CALL signatures to {s,u}64 types to fix this situation.
+
+Now, changing also uapi/bpf.h helper documentation which generates bpf_helper_defs.h
+for BPF programs is tricky: Changing signatures there to __{s,u}64 would trigger
+compiler warnings (incompatible pointer types passing 'long *' to parameter of type
+'__s64 *' (aka 'long long *')) for existing BPF programs.
+
+Leaving the signatures as-is would be fine as from BPF program point of view it is
+still BPF-side "long" and thus equivalent to __{s,u}64 on 64 or 32bit underlying
+architectures.
+
+Note that bpf_strtol() and bpf_strtoul() are the only helpers with this issue.
+
+Fixes: d7a4cb9b6705 ("bpf: Introduce bpf_strtol and bpf_strtoul helpers")
+Reported-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/481fcec8-c12c-9abb-8ecb-76c71c009959@iogearbox.net
+Link: https://lore.kernel.org/r/20240913191754.13290-1-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/btree.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ kernel/bpf/helpers.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
-index 4de33c534e470..29f967fb7e9b6 100644
---- a/fs/nilfs2/btree.c
-+++ b/fs/nilfs2/btree.c
-@@ -1659,13 +1659,16 @@ static int nilfs_btree_check_delete(struct nilfs_bmap *btree, __u64 key)
- 	int nchildren, ret;
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 273f2f0deb239..13f870e47ab6d 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -512,7 +512,7 @@ static int __bpf_strtoll(const char *buf, size_t buf_len, u64 flags,
+ }
  
- 	root = nilfs_btree_get_root(btree);
-+	nchildren = nilfs_btree_node_get_nchildren(root);
-+	if (unlikely(nchildren == 0))
-+		return 0;
-+
- 	switch (nilfs_btree_height(btree)) {
- 	case 2:
- 		bh = NULL;
- 		node = root;
- 		break;
- 	case 3:
--		nchildren = nilfs_btree_node_get_nchildren(root);
- 		if (nchildren > 1)
- 			return 0;
- 		ptr = nilfs_btree_node_get_ptr(root, nchildren - 1,
-@@ -1674,12 +1677,12 @@ static int nilfs_btree_check_delete(struct nilfs_bmap *btree, __u64 key)
- 		if (ret < 0)
- 			return ret;
- 		node = (struct nilfs_btree_node *)bh->b_data;
-+		nchildren = nilfs_btree_node_get_nchildren(node);
- 		break;
- 	default:
- 		return 0;
- 	}
+ BPF_CALL_4(bpf_strtol, const char *, buf, size_t, buf_len, u64, flags,
+-	   long *, res)
++	   s64 *, res)
+ {
+ 	long long _res;
+ 	int err;
+@@ -537,7 +537,7 @@ const struct bpf_func_proto bpf_strtol_proto = {
+ };
  
--	nchildren = nilfs_btree_node_get_nchildren(node);
- 	maxkey = nilfs_btree_node_get_key(node, nchildren - 1);
- 	nextmaxkey = (nchildren > 1) ?
- 		nilfs_btree_node_get_key(node, nchildren - 2) : 0;
+ BPF_CALL_4(bpf_strtoul, const char *, buf, size_t, buf_len, u64, flags,
+-	   unsigned long *, res)
++	   u64 *, res)
+ {
+ 	unsigned long long _res;
+ 	bool is_negative;
 -- 
 2.43.0
 
