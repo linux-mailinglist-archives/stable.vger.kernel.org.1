@@ -1,169 +1,222 @@
-Return-Path: <stable+bounces-85826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A1999EA55
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:52:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E2B99EC67
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 15:19:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1DD21F21DED
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:52:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B96D283939
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 13:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190E41C07E0;
-	Tue, 15 Oct 2024 12:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9011C227B86;
+	Tue, 15 Oct 2024 13:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=readmodwrite-com.20230601.gappssmtp.com header.i=@readmodwrite-com.20230601.gappssmtp.com header.b="0B3WgVwz"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Gyva3R4C"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2083.outbound.protection.outlook.com [40.107.101.83])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFE21C07CA
-	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 12:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728996726; cv=none; b=U3bE7qYgt55NA1EmRqx/Fduf5VCRzh1j9Nob6KAeGc6R9ShfL4glqrdsxMQMkbJepLwA6xJ1iMy1pc5CqEJtORWGXP3rBnV4e//TpZBeRGgcsooT3xSTE5cVl5mOo+KujRaa2SgzHyOvTxi9vDe3N5ARTLFUQJTtyncX5khoz5g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728996726; c=relaxed/simple;
-	bh=JqLdNxUdrbf9m7X8XkWe1+HXlycHAz8SZlUD7XMM7h8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BD6VPXZQ2woSE52QsiMWenhBovWtDfHWxqMK32bWnVsREiOInE2jU9x0sqzoDWxyJOsVgjaoNwbLrvC5rfTsUR/RKjY/2IiPOClkSrgcUTxLxANkw3yyaGgFDJUbHuQaCtlanBbHkwfpni2jKNvGiiMeSoklbXNZkRoWDdRIdAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com; spf=none smtp.mailfrom=readmodwrite.com; dkim=pass (2048-bit key) header.d=readmodwrite-com.20230601.gappssmtp.com header.i=@readmodwrite-com.20230601.gappssmtp.com header.b=0B3WgVwz; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=readmodwrite.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43144f656f0so3845445e9.0
-        for <stable@vger.kernel.org>; Tue, 15 Oct 2024 05:52:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=readmodwrite-com.20230601.gappssmtp.com; s=20230601; t=1728996723; x=1729601523; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qamiraWdxMoUu029itAshQt6SKv15LdwoZC2cdLFctQ=;
-        b=0B3WgVwzi8qn63HnB5ghiG9Ss1FvPqv5gvCapqFsJZTQAC9cvN3iwqHtMZJ0jM32Ab
-         xlv3Glctrqk9XNrGj5SkKUZe2qN9FfshJnbZuzLJuzxCEieEELH+GYNiKkbgKwRP0Mxy
-         vrg9GgtyVfzWab0NpVz/uXr5I1h/EVHL/Q+aV2L4S+Macw5qigtrd8nEJ9Ql1WGclhJa
-         v7puStaj1FfKTCEOnBx0gpFxUqqRrlacScDp0I6lrkSGEYoKEdMZFbhMnVjtBMLax+UR
-         IjnkVupb2KwE5W6Iuvf028swXer5Ocd62+PZQx7UsK3VR0F3yBrbJbCGj5YxaBgAIgk4
-         89rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728996723; x=1729601523;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qamiraWdxMoUu029itAshQt6SKv15LdwoZC2cdLFctQ=;
-        b=cVJ/Ub2VcdnrO+3DgbA2sQPC02XockPZRCNuQBfSQ8i943/Ba5IKWRZO7pU+kFzXIz
-         xfY5nBqOsADifeqILJgUJFWeHLcsZtNuVYO4JfWpa7rrO+8rZnvVHHZFN2Zu3P4JAd0h
-         pL0t0cq12oArkZgzgCQqz492/BY8hiFLtVNRaoiqlzgmrmrArfxhcdxUtUMLbzq3b9Rx
-         loQbVYoNomCWmpLG4bI248cgafzkfwPX68xKyUjUD7x0NVB0cEwD440glFyVuvAKcA1z
-         TyXl3nTZoN/lQHeMbi8e9uSOIRbFkcUVLG5Pmy4xUhYfVcG4Rx2fPArjfPi1bNicmrow
-         /tww==
-X-Forwarded-Encrypted: i=1; AJvYcCWD7VbOhRHeBz0miHms1VmJMF9yQlBzqizG9C/Zw2cCtMwGiJGJ1JoCW4HshW7r8I/guMJk+Tg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAp00WXpGiaQapCBclwbl1bW7pEdso+ZkaWy+SUDPVrInr0rBI
-	IyjS42ByBhK353Tl5+VfIFUfFZbXILUKZMwzcUcMFZrCrbLx13MTN+U1A4nOblM=
-X-Google-Smtp-Source: AGHT+IGlcfxtmIQrnyIIKngfm0k3VUAbv5d96errbARi7ueQs0o9UH2OdW8TpdwQkwZ8/lcbTm4l1Q==
-X-Received: by 2002:a05:600c:1d29:b0:42c:a574:6360 with SMTP id 5b1f17b1804b1-4311df5bda1mr134372545e9.29.1728996722337;
-        Tue, 15 Oct 2024 05:52:02 -0700 (PDT)
-Received: from matt-Precision-5490.. ([2a09:bac1:2880:f0::179:225])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d7fa89c55sm1508730f8f.46.2024.10.15.05.52.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Oct 2024 05:52:01 -0700 (PDT)
-From: Matt Fleming <matt@readmodwrite.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@cloudflare.com,
-	Matt Fleming <mfleming@cloudflare.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm/page_alloc: Let GFP_ATOMIC order-0 allocs access highatomic reserves
-Date: Tue, 15 Oct 2024 13:51:58 +0100
-Message-Id: <20241015125158.3597702-1-matt@readmodwrite.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF2A1DD0FC
+	for <stable@vger.kernel.org>; Tue, 15 Oct 2024 13:14:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.83
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728998097; cv=fail; b=OSX5aRYN2J13tu790yPHbOwErAhE52dXPa00xPBO7hKaXpCsSjAWYqgaNzO+3NyzrlQjCdlHx6yG0z+CRtXG+4GIpT4Gem8qgEe9+ltPtARHP+ZZzY6JsPTlXsLTnETWcXBk6HVEW4izVNtQFmLRgkhxQN0uFu858loFZDYG5qE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728998097; c=relaxed/simple;
+	bh=prKPJ3It++8P2Z9WEMVTXNuiI25DKRKe3OHmc9gzQss=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=WH9th1tggffIIoOhme/185AcuIB+/FMVj/nJVz4gTe1BCp5pHVJibXpT14KAsM8GKfj8ZSAY/mWsfpqTJkmf6zF/qNGWjo7lVdKAsmJVFa4q8Vr0kt6z0CdM+SaoH0lTFrwAOBMqQ+tcvWN/gO4u0RCEcLB/A3u9PFa7trLPJvg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Gyva3R4C; arc=fail smtp.client-ip=40.107.101.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FJnpOmXvxN9KBL0lM7JXzmZXB7JqA0zvM3YNMCucGtYHJA8UeSONuLZ5rDmK+VRIsGJoXafEaJX3cg4iQ457jGWIE57FxVo2GYE0yzpovayVkpBlkIJ4zviB7PXX34q9xAedZ+nzKq+CB+Gc7Yq84Rf4Rq9dP5ev8DUB15hNr+nxq7GQXw+l2NXTQ4RxKLU08zfQ0qFT8fTnVXMAaEbrFV9h5bWCMYva9GIap0F2Xo5z6kZGxkCMXLRJzIpSHG3wCAu+9ealMlYKHIJG0nR10xoAHDCBd/eMNyq9JrF7fkZvjQT2OLbfuCrA8gPmdLwEcdOrGJYkOLQpON9kDgtxAQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3lYOnmj2a04rflfxwy2hOZmax+GcNGLyoevOHhv6EnA=;
+ b=idiNq2egVkRgbMvhKNspU3uXoEo9VB6JXw5qUPqgHBT7dUr6MBhfdg4Yey9nnLA87jLV6ihCxP7VKOMV6Tv6swt5N9DF99v4bBLqjYDTpSEmJ4pyRPioQRSE8WsRlxzosm5rm41LPFMEFkWukTFGoMdmMxXqafAAlrpjCsCkHZiuhAXFAkURGAMsK3DQNl5LEr8EMB2bPM0B6F4IjPoRmjdRw5RPvXOWpPnYHw8oOEsATw3s+JvoLn/Ab03BEeQi44hUOUoBhTk/jA46fuEldOa+hxglB+yUhrAEY2DriERK6IWmkD8q5vjZW1yEQZaIitmqu8fjm/W+v6aS8XGnOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3lYOnmj2a04rflfxwy2hOZmax+GcNGLyoevOHhv6EnA=;
+ b=Gyva3R4CDkWAcSXoDCxh/pTXMCgGrhJaOQKd17cMttB7ez26RfTQX5SdCV/J5AyAYcqcvmLhx+CDns6TBxi3r7KyWh4tNWUi8yFZ76Msfxf9K8ChmNIgkLKTCWhgLbQ790ABcCbSswnlCPnDDrmFBDgmsTD2YguXYjr74ynuhFM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by PH7PR12MB8825.namprd12.prod.outlook.com (2603:10b6:510:26a::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.26; Tue, 15 Oct
+ 2024 13:14:52 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca%6]) with mapi id 15.20.8048.020; Tue, 15 Oct 2024
+ 13:14:52 +0000
+Message-ID: <1284976c-8fc9-4eab-b01e-a8a12790541d@amd.com>
+Date: Tue, 15 Oct 2024 08:14:49 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/10] drm/amd/display: temp w/a for dGPU to enter idle
+ optimizations
+To: Wayne Lin <Wayne.Lin@amd.com>, amd-gfx@lists.freedesktop.org
+Cc: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
+ Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+ Hamza Mahfooz <hamza.mahfooz@amd.com>,
+ Aurabindo Pillai <aurabindo.pillai@amd.com>, Roman Li <roman.li@amd.com>,
+ Tom Chung <chiahsuan.chung@amd.com>, Fangzhi Zuo <jerry.zuo@amd.com>,
+ Zaeem Mohamed <zaeem.mohamed@amd.com>, Solomon Chiu <solomon.chiu@amd.com>,
+ Daniel Wheeler <daniel.wheeler@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>, stable@vger.kernel.org
+References: <20241015081713.3042665-1-Wayne.Lin@amd.com>
+ <20241015081713.3042665-2-Wayne.Lin@amd.com>
+Content-Language: en-US
+From: Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <20241015081713.3042665-2-Wayne.Lin@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN7PR04CA0079.namprd04.prod.outlook.com
+ (2603:10b6:806:121::24) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|PH7PR12MB8825:EE_
+X-MS-Office365-Filtering-Correlation-Id: a2b36eae-0669-4b8a-36bb-08dced1b5ac8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NzdJdktwajIzazRuU2lIcjB5SFNJRkphY1ZvOHpjc2VuUC9ET2p4SG5SRCsz?=
+ =?utf-8?B?eXZZVXdFSkRqWVBmUUFJbkNLcTBnQnI1dk50R29UNDBkcDJqL1VsejhYdWJk?=
+ =?utf-8?B?eGN3Zk1jcnlURjVCNE5OeWhWU3lZVStaV3Nja2dEUEFMTldjSm5TZHFrN0tQ?=
+ =?utf-8?B?dVdVTFdCNndORnpzRU8vMEhJWGdKa0VvWHV3bmxRYUtWYkwvL2NJRkhqdTI5?=
+ =?utf-8?B?bkZYNVdLRTRjRGRnd2x2TkN1RlN3L1dYajJTcWdPOXNiLzA3YzVjaVRPcjNC?=
+ =?utf-8?B?d1V6TCtWZW8wRURwWjN2RUdJSUhPZGkxSHpLeTFPcW1ZZXlTRzI5MTdnallo?=
+ =?utf-8?B?RnJmakpOd0VFeUNnV2s1V284S3A4TFdwSkNDUERBTmdKYUlackN4L1lmSDNs?=
+ =?utf-8?B?RXMzTEJ2SjZOZ0loKzlRWDZFSkNDMFRNN3lPSHN6TzBvRnh6anE4bGdXOXdT?=
+ =?utf-8?B?ZHIwQzhvTjdOSUh5L3NrNHNoZTBZZWV2Z1F4Y09hSmNXLzUrV0JVRlZ4SVhn?=
+ =?utf-8?B?QkM5TWZmOWFodXVkUmtPeUhZeEhWZFZWY2EvRTZWTWZpWkY1NjZZbXlYdmd3?=
+ =?utf-8?B?MmNaRm4zaTd6ZHhSMVpOQWdQcDlwV283T0lFTHRVaHp5b1g4Sm40aUNtVnBT?=
+ =?utf-8?B?YmcydHhhT05GMDNhdCtKWnBuMnh6SnF2ckxFWnJMSGtrK1hOZkRRSTFlK3kv?=
+ =?utf-8?B?dzZSemEwYVV6VG5seVFKS1lja2ltUzd4UXl0Q0lDVW5WekREL2dDRUJNc2RZ?=
+ =?utf-8?B?N3Rwb29xejBsa3ZHVktLRkNhd3JORFN0YThKYkp0ZE5iL2tPeFJVNUtINXhq?=
+ =?utf-8?B?by9JWjVHU2Zab0JGcXl1MUdjMmhBV1RLY055dm9HQXc1TWc1UHJaV0ZlbGZX?=
+ =?utf-8?B?QmhoVTZJeXVXTlI2SUdQY1c2ZWZ3ZGZBekhNc2lyRU5TTzluKzV5VmJxWjJl?=
+ =?utf-8?B?eUNyZ1Y3N0RtVjFTckxWUGY1UHNRR1pSSHc5allEZC9vRnJHcDAxd1dycmc2?=
+ =?utf-8?B?Z1FEK2R3dnkxZWhTcGg5eGRsY1dPUEE2djE0MGZQUHFLeWFDUmk0dkFDU1pq?=
+ =?utf-8?B?VjZlRmlPOE9pelVUc2hFOXdEOFplYnVmQUFUTDBCbWJXbUxCbmJxVUhZUVUy?=
+ =?utf-8?B?TEJYTXZBb0FnQVZNV09SUHRPYTFCd2xIc1VkUCszZHNiaFBic3MvZzkrU0cv?=
+ =?utf-8?B?UE5vQ1hxVGVpemN1YzRzUEJzbmlXcklRYzhRSlpnU0E5TDNSV1k3Y0RSNmR6?=
+ =?utf-8?B?Mzl6K1JkM3JwV1MvM2s1RkkvTXVqYWhscXhzcTRLSUM5eUNJcU9aQU02NFVM?=
+ =?utf-8?B?U3JHOVdWdVNFaGVxSWZWRCtVMUxCV3NZbzB6aFZkNDA3dDlNbjBsQkFhNHFr?=
+ =?utf-8?B?S2hZVjlmUlJoZ3F5MFEyUEE4VXhUVWtVZDNjaXlsVkZ5VTBXeWQxYzc1ZzRL?=
+ =?utf-8?B?bjVLM2RITGtuQ1RtSlhwRDB5ZXRIMHVzdGlVa3pKdjZzNWd5dHJPdDdCS2JJ?=
+ =?utf-8?B?M2Z4NXc1cVFMcnBqOGxOTWlRQ1EyQkNVd2dFbkxmREVmMU1kNW1hQ0JHMXBa?=
+ =?utf-8?B?aitJbXROaCtIQ2FnWWJSUHdnS0NJNUZqbmVOaDVod3YrTU5lUkk2NVVTNmZx?=
+ =?utf-8?B?dXE0eFJWNlZ1MUo0UDlkTlVyMnBHZXprdlpqSEs4eGtuVjlLcHltVU5VQ3Zz?=
+ =?utf-8?B?YlJOUHBvUHRSSGZobnVpVER3aUgxMENCSlJpWE1TNXlaaVdaUlUrK3lBPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RnNhODFub1M4QitsNysrWkpGTll1VmxPc1N6OHMwY2VQSmh5dXMzMm9WOEo2?=
+ =?utf-8?B?TlFSaXBDMjBzblhKYlhPV2ZwRlJiUXFIdmdmVFhTUng0eFl3N3RVVFYzeEZW?=
+ =?utf-8?B?ZUprc2syNDNKa25KSy9tS1Z4SDNsdDlUVzJIcHE1eW1oK2pLU2NsTmtZOW9Z?=
+ =?utf-8?B?K2dWZlpuTHNSaU1WL3dzV1NEVVBuWVMxdXN2WDVyNG00TXhOMzRBb21KZVBl?=
+ =?utf-8?B?OEVWeUo5U1RFTyt5MjBIU3VPQ2dMUXg0Z2VqbDc1dFY1ZnB0cGltVHRXdjNx?=
+ =?utf-8?B?M0hLcThNWWw0Q1gyWXVwaW5XQXZkRFE4ZVZFOFh4bHZzOVhqWWo0dG1tNFhh?=
+ =?utf-8?B?SmlyY0NDZTljMGM4UmlBbS83ejZVR3NWTnFDVm5DRmJhMU1lY3RmbUNaQmFn?=
+ =?utf-8?B?bFpWdnFXVXJQZHRsSVA4UGVsam5nTmhkc01ZK1c5WUJFQ3M2ckRkR2JTR09m?=
+ =?utf-8?B?WjZkMzlXZmphYkNHay9hT3oxa3lVUldTT2tOOUpPOEFWQllVZTNFSjl2ejV4?=
+ =?utf-8?B?ZnNrR1JlR1R5c3d2K3hXQXNVQ204akFOVlVtTDNwNmZ5NTFHVmFUdDQ2UWEv?=
+ =?utf-8?B?d0wraUF4K2ZCYUd5eDBOaC9Vd2x5VEVMdkhMK2xhejdqcnlhb1d0a1B0dzUy?=
+ =?utf-8?B?K0Q5QW1CcEU5RXdFSCttbWZ3ZUR1VFRJbG54aGVNR1lpSHpiUExEbFBCQ2ZK?=
+ =?utf-8?B?R2NRVlZubEtWYTBzL1l3d1JENVg5Zmk2MHAxL240SDlLQzRvYzRScUxLd0Ny?=
+ =?utf-8?B?QlN3d3ExaDRSek0zYVQxRS84bDI1SFF1M2orYjJUN2dPbW03ZzJJRGlsR2t5?=
+ =?utf-8?B?VDd6MGI0TmY5NG82K1hYamZ1YVNrOEVsSmJBdjFTNXFzZ3N5L2xmeEVUaldp?=
+ =?utf-8?B?K3pZcnJpOHhlWDZwWXl1WVBSZXRNZGtnMWhsSEN5YnlBcEZDWFFLQVdDbnlo?=
+ =?utf-8?B?UGo0Tk94KzcxUlJzeVpRZXFuZWxYMmJMRnEvTXA2RzByclpoaERUdTdhQlpB?=
+ =?utf-8?B?VlZndVJsZVNhMHBlaWxYUDVITUhQaGpXVG04Tk1KZFhCQWZDb3ZDUmVLUjFG?=
+ =?utf-8?B?Ni9rN2dNcW1RRk5oMWhLczl1cHA1N3ZVM3ZYQTdsTTZML2NvL1RCeUlwVmRE?=
+ =?utf-8?B?TnFWSndFL1puQ2ZBNk1VVUpSbS9JK3V4L2F5RTRpUnRMYUNwY3p4czZkeFdn?=
+ =?utf-8?B?ejl6aWtFbktTdVhZTHR5cVIwVTgvblNia1BCdGh1TndhOXRJU0ZBb0ptQnYz?=
+ =?utf-8?B?bkNrRmROSjRNemlMOVZ0aWtaQThTSVFGeUpDN1JhZUhkQ1RIZ0pvR3FoRkVu?=
+ =?utf-8?B?MDBqM1grUXJQdW9hUDlhckxsMnhubGEvMThjaWZjUUViQ251Vm8yL25waWVp?=
+ =?utf-8?B?VWRISEtGcDdJUTkwbnBFUUJsVDMvZks3cFN4ZzZVcTg3b1hHSEZUNFVGSTZP?=
+ =?utf-8?B?ZVJ6cW5NUVc5WEg4U0tkTWIrQ1ZSMzhsdzdxWU55cjF6bDBqek5PQXdoM1N3?=
+ =?utf-8?B?QTh2YnNSRlBBUDRBbSsvNmJIbHJHRElmNTkvM2VhRi90YTNqSGxMVXNCNEtU?=
+ =?utf-8?B?UnI3aWNKem4vQTRhZkc5SEVHcWRxckFYRkJQOHZrUlg0TktSd1MvQnpOYXVH?=
+ =?utf-8?B?dzR0SldqbnNQU01HdXIybXF3T0hxMVplZkcvaTZHeFQxVTJnSmppTDhiSi9D?=
+ =?utf-8?B?U3oza3QxZndGMGU3YURWS2hydGl4Tk1vREFDSkd3N0lITXFHSzRMdGJkUXVR?=
+ =?utf-8?B?YTkvaytKQ21NSnZyamFHbjcrMktpa0hEb0MxcXNsam1NRERQcUo2d05XeDVW?=
+ =?utf-8?B?VGtWZ29OcC9FR2xXcWdML2VXT0h0alUyeHJRUXJkRXhrYldJMDh5V0hNNjJq?=
+ =?utf-8?B?RC9PUHNNeUZWVUtzbFVraTI1aHd1T0NndXRRUVZHS3VpS3VLbTBOek1TMCs4?=
+ =?utf-8?B?eWt0SXJ3ZWVHb2w3bi9yOVVzVXdVUjRWOWt3azJweUpEdnAvb0VEQTRBeS91?=
+ =?utf-8?B?czBsNGdab1JvaXZvY2s2cUFCaWFSSUxyU0Y4TXN1SVhyczIwMGh3Q3lzK1BD?=
+ =?utf-8?B?Qzl6TUNFeFpscDI1cjJjbjlzRENrSGJlY2RoMjI4ck1tRnlDdDAvY0F4c2tX?=
+ =?utf-8?Q?b5EW24KDKWQ69qBWrJDoLbjhs?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a2b36eae-0669-4b8a-36bb-08dced1b5ac8
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 13:14:52.4678
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: m+MbVDp89umwWnpqr/7g4P7JCDGqkq23XQZjbkAcqU8wb4r/NaoHkJs7BKLi4JkynsPtidZvo1aN+vh4r8vzhg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8825
 
-From: Matt Fleming <mfleming@cloudflare.com>
+On 10/15/2024 03:17, Wayne Lin wrote:
+> From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+> 
+> [Why&How]
+> vblank immediate disable currently does not work for all asics. On
+> DCN401, the vblank interrupts never stop coming, and hence we never
+> get a chance to trigger idle optimizations.
+> 
+> Add a workaround to enable immediate disable only on APUs for now. This
+> adds a 2-frame delay for triggering idle optimization, which is a
+> negligible overhead.
+> 
+> Fixes: db11e20a1144 ("drm/amd/display: use a more lax vblank enable policy for older ASICs")
+> Fixes: 6dfb3a42a914 ("drm/amd/display: use a more lax vblank enable policy for DCN35+")
+> 
+> Cc: Mario Limonciello <mario.limonciello@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+> Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+> Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+> ---
+>   drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> index a4882b16ace2..6ea54eb5d68d 100644
+> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> @@ -8379,7 +8379,8 @@ static void manage_dm_interrupts(struct amdgpu_device *adev,
+>   		if (amdgpu_ip_version(adev, DCE_HWIP, 0) <
+>   		    IP_VERSION(3, 5, 0) ||
+>   		    acrtc_state->stream->link->psr_settings.psr_version <
+> -		    DC_PSR_VERSION_UNSUPPORTED) {
+> +		    DC_PSR_VERSION_UNSUPPORTED ||
+> +		    !(adev->flags & AMD_IS_APU)) {
+>   			timing = &acrtc_state->stream->timing;
+>   
+>   			/* at least 2 frames */
 
-Under memory pressure it's possible for GFP_ATOMIC order-0 allocations
-to fail even though free pages are available in the highatomic reserves.
-GFP_ATOMIC allocations cannot trigger unreserve_highatomic_pageblock()
-since it's only run from reclaim.
+Considering the regression raised [1] is on an APU too I wonder if this 
+is really the best workaround to approach to this issue.
 
-Given that such allocations will pass the watermarks in
-__zone_watermark_unusable_free(), it makes sense to fallback to
-highatomic reserves the same way that ALLOC_OOM can.
-
-This fixes order-0 page allocation failures observed on Cloudflare's
-fleet when handling network packets:
-
-  kswapd1: page allocation failure: order:0, mode:0x820(GFP_ATOMIC),
-  nodemask=(null),cpuset=/,mems_allowed=0-7
-  CPU: 10 PID: 696 Comm: kswapd1 Kdump: loaded Tainted: G           O 6.6.43-CUSTOM #1
-  Hardware name: MACHINE
-  Call Trace:
-   <IRQ>
-   dump_stack_lvl+0x3c/0x50
-   warn_alloc+0x13a/0x1c0
-   __alloc_pages_slowpath.constprop.0+0xc9d/0xd10
-   __alloc_pages+0x327/0x340
-   __napi_alloc_skb+0x16d/0x1f0
-   bnxt_rx_page_skb+0x96/0x1b0 [bnxt_en]
-   bnxt_rx_pkt+0x201/0x15e0 [bnxt_en]
-   __bnxt_poll_work+0x156/0x2b0 [bnxt_en]
-   bnxt_poll+0xd9/0x1c0 [bnxt_en]
-   __napi_poll+0x2b/0x1b0
-   bpf_trampoline_6442524138+0x7d/0x1000
-   __napi_poll+0x5/0x1b0
-   net_rx_action+0x342/0x740
-   handle_softirqs+0xcf/0x2b0
-   irq_exit_rcu+0x6c/0x90
-   sysvec_apic_timer_interrupt+0x72/0x90
-   </IRQ>
-
-Fixes: 1d91df85f399 ("mm/page_alloc: handle a missing case for memalloc_nocma_{save/restore} APIs")
-Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
-Cc: linux-mm@kvack.org
-Cc: stable@vger.kernel.org # v5.9+
-Link: https://lore.kernel.org/all/CAGis_TWzSu=P7QJmjD58WWiu3zjMTVKSzdOwWE8ORaGytzWJwQ@mail.gmail.com/
-Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
----
- mm/page_alloc.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-v2: Update comment and add Fixes, Reviewed-by, and Cc: stable tags.
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 8afab64814dc..94a2ffe28008 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2893,12 +2893,12 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
- 			page = __rmqueue(zone, order, migratetype, alloc_flags);
- 
- 			/*
--			 * If the allocation fails, allow OOM handling access
--			 * to HIGHATOMIC reserves as failing now is worse than
--			 * failing a high-order atomic allocation in the
--			 * future.
-+			 * If the allocation fails, allow OOM handling and
-+			 * order-0 (atomic) allocs access to HIGHATOMIC
-+			 * reserves as failing now is worse than failing a
-+			 * high-order atomic allocation in the future.
- 			 */
--			if (!page && (alloc_flags & ALLOC_OOM))
-+			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_NON_BLOCK)))
- 				page = __rmqueue_smallest(zone, order, MIGRATE_HIGHATOMIC);
- 
- 			if (!page) {
--- 
-2.34.1
-
+https://lore.kernel.org/amd-gfx/9b80e957-f20a-4bd7-a40b-2b5f1decf5a4@johnrowley.me/
 
