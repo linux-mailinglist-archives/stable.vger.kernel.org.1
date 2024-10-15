@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-85799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31FB799E92A
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:13:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA6D99E94A
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF0D81F24473
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:13:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0540728098E
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F301EF943;
-	Tue, 15 Oct 2024 12:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6391F7080;
+	Tue, 15 Oct 2024 12:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTLEU5li"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6Z30etU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3251EF923;
-	Tue, 15 Oct 2024 12:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7C81F4FB1;
+	Tue, 15 Oct 2024 12:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728994338; cv=none; b=QxLNg2YDLjzDmw7TcGJUY6YX9avr0vTiLRjnaFzzJwhyfP/EB9v/RSHSSnB0Z+StcjLyXLUlnqks4UCc3u+x22oTPOqVTg0cR0PFeiVj8PL/QSR85aCMSTx2rvsTbvCVzKfuxtge6QrbTOidzu//6tVGNq0iRuViYojFi6HtpCQ=
+	t=1728994417; cv=none; b=FAbhP6LFx3DBxYNh6npuT8PAi0VuDwHk/LJxdcOFLPkSyebaoq20jXWS4ko+AvpQRfGpEzAGaUwh7pOo4Inqqlhkhx2bvJN8xp5HN6yLVNdDTT/gDQq2W+sQ9AxvXmdgg0ufVxpL2wwicMOI5DOgaDZFQa37vyhN9wDWJc5nWbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728994338; c=relaxed/simple;
-	bh=lKiTWZ2Mu+y9s5bfigyFTlkwt14bJVbJX383leWVGxk=;
+	s=arc-20240116; t=1728994417; c=relaxed/simple;
+	bh=YDmyOdlnj0s+EG3srT8pEb6xvfaD+7butZBvDmVSBqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rB0lkmUN5EAPRjTUICl2P91N32SzlVEdLyzbVALAthr3qXEelkEkAF0j1Xhtnhv/KjggJldGePP4oQAXikdV2BLDepOt8lQExaRsNLv4CrbJ+IO8bq40RKrBNumx40LRsJQ86J2ASIvrBk5dcfy5WMmZ0+ZAs9RiLwsfnjIHDF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTLEU5li; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D71E1C4CECF;
-	Tue, 15 Oct 2024 12:12:17 +0000 (UTC)
+	 MIME-Version; b=VAocGf9K5mOqVDqYqnfIkE55MfnUj4YZEd/tnPd0zyqq9rGXKOSYMEhzkwkIucqPi7D9lbPsssjuwHMaIIa0J7t3C3LH64EvuKiHeI6Ndn2q50BrSqbA6nscbYL6Oj3PN7vpPXzBL4mdXGmzHZxSjcVhMcejO+4vVy6ZIEwZ4Tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6Z30etU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8035DC4CEC6;
+	Tue, 15 Oct 2024 12:13:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728994338;
-	bh=lKiTWZ2Mu+y9s5bfigyFTlkwt14bJVbJX383leWVGxk=;
+	s=korg; t=1728994417;
+	bh=YDmyOdlnj0s+EG3srT8pEb6xvfaD+7butZBvDmVSBqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hTLEU5liEc18L2elmwrn4vXi92RWuZoJOaNHzqMofuvDx0dgyG/q93mfgMsishNe+
-	 Ooj1vG57zkd760IxjPPylWV26pBFAtp0eOcngPzcz3zmd2GNNAFIkKx3KRsHSLs0jQ
-	 ecNvvcL47c6jvslRatnXmeukf98M0kuUh6xKyQKw=
+	b=z6Z30etUcEnmRQmwZ9VUVk5ItNwrLT+H2XvJyljwsCeqEksSUFr7d1KH+QgUzm0Zv
+	 NCMayie67/jifuvXsjxBoDhlUfZF9NTsmyDzm5EguyaY9cp4pwKJ6VnZRKb4ddjsAD
+	 XJXMXtYC7Z+y6cPQVBvPKMXKq/RFW27NBIWucArY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 676/691] mptcp: pm: do not remove closing subflows
-Date: Tue, 15 Oct 2024 13:30:24 +0200
-Message-ID: <20241015112507.153814787@linuxfoundation.org>
+	Yonatan Maman <Ymaman@Nvidia.com>,
+	Gal Shalom <GalShalom@Nvidia.com>,
+	Ben Skeggs <bskeggs@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 5.15 677/691] nouveau/dmem: Fix vulnerability in migrate_to_ram upon copy error
+Date: Tue, 15 Oct 2024 13:30:25 +0200
+Message-ID: <20241015112507.193558607@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -66,42 +67,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Yonatan Maman <Ymaman@Nvidia.com>
 
-commit db0a37b7ac27d8ca27d3dc676a16d081c16ec7b9 upstream.
+commit 835745a377a4519decd1a36d6b926e369b3033e2 upstream.
 
-In a previous fix, the in-kernel path-manager has been modified not to
-retrigger the removal of a subflow if it was already closed, e.g. when
-the initial subflow is removed, but kept in the subflows list.
+The `nouveau_dmem_copy_one` function ensures that the copy push command is
+sent to the device firmware but does not track whether it was executed
+successfully.
 
-To be complete, this fix should also skip the subflows that are in any
-closing state: mptcp_close_ssk() will initiate the closure, but the
-switch to the TCP_CLOSE state depends on the other peer.
+In the case of a copy error (e.g., firmware or hardware failure), the
+copy push command will be sent via the firmware channel, and
+`nouveau_dmem_copy_one` will likely report success, leading to the
+`migrate_to_ram` function returning a dirty HIGH_USER page to the user.
 
-Fixes: 58e1b66b4e4b ("mptcp: pm: do not remove already closed subflows")
+This can result in a security vulnerability, as a HIGH_USER page that may
+contain sensitive or corrupted data could be returned to the user.
+
+To prevent this vulnerability, we allocate a zero page. Thus, in case of
+an error, a non-dirty (zero) page will be returned to the user.
+
+Fixes: 5be73b690875 ("drm/nouveau/dmem: device memory helpers for SVM")
+Signed-off-by: Yonatan Maman <Ymaman@Nvidia.com>
+Co-developed-by: Gal Shalom <GalShalom@Nvidia.com>
+Signed-off-by: Gal Shalom <GalShalom@Nvidia.com>
+Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
 Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241008-net-mptcp-fallback-fixes-v1-4-c6fb8e93e551@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241008115943.990286-3-ymaman@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_dmem.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -778,7 +778,8 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 			int how = RCV_SHUTDOWN | SEND_SHUTDOWN;
- 			u8 id = subflow->local_id;
+--- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
++++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+@@ -149,7 +149,7 @@ static vm_fault_t nouveau_dmem_fault_cop
+ 	if (!spage || !(args->src[0] & MIGRATE_PFN_MIGRATE))
+ 		return 0;
  
--			if (inet_sk_state_load(ssk) == TCP_CLOSE)
-+			if ((1 << inet_sk_state_load(ssk)) &
-+			    (TCPF_FIN_WAIT1 | TCPF_FIN_WAIT2 | TCPF_CLOSING | TCPF_CLOSE))
- 				continue;
- 
- 			if (rm_type == MPTCP_MIB_RMADDR)
+-	dpage = alloc_page_vma(GFP_HIGHUSER, vmf->vma, vmf->address);
++	dpage = alloc_page_vma(GFP_HIGHUSER | __GFP_ZERO, vmf->vma, vmf->address);
+ 	if (!dpage)
+ 		return VM_FAULT_SIGBUS;
+ 	lock_page(dpage);
 
 
 
