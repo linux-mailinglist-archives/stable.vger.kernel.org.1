@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-85745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-85780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE4199E8E3
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6017699E90C
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 14:12:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61415281BB1
-	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:11:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FE8F283107
+	for <lists+stable@lfdr.de>; Tue, 15 Oct 2024 12:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578D21EF93B;
-	Tue, 15 Oct 2024 12:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2774D1EF95A;
+	Tue, 15 Oct 2024 12:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEu3lOPy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tahbxzxx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113171E1A35;
-	Tue, 15 Oct 2024 12:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D693E1E6339;
+	Tue, 15 Oct 2024 12:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728994155; cv=none; b=MTu822FfGmlNf1ZpyBJv7U5cbNsUdd8onRS0qjvQioQ+hWWJUFTathehoxRv3Dt0tNcnIghKLsViki5SnOuiAlfbpwD45Q9/hCK0qFDhqjXdXiktr+fQgSfVK8vZtqKRx0DtRKlLM/xxWQwJ2E1HtVhO/BLYqjgI5Fdmg5WRcC8=
+	t=1728994275; cv=none; b=UnBde9YX5aIx0GzpO5hIaSWLDYC5USnhT6dSxMEdEzIKG9H9qOkRC+B8rb6LpDudOpICMzMDXToOOleBBJB9kQ5vj4pGbsuMi6UqcsYybrWqmBKDKNwpRZ+9b7Ud9/zGWPPunIEvd+9nvwCLPYZGQzcHAZQUSqqRDWpiXCJ4OBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728994155; c=relaxed/simple;
-	bh=1idDyxwHQZohgfraQ8Co6CjR45dKupMbW8WGsQy/Ay8=;
+	s=arc-20240116; t=1728994275; c=relaxed/simple;
+	bh=88t+F81R9yk4kUTWgGKv87ddM2toNumT6uHfKmNaWbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UgXQoqBvqpK3p7m8V9e6iJv7oMtgVEQF0GwI7aJ+gdCPMbxDfwCwaS/dmnoWANRcdVIhkfYg020GfelllX7P2AEiG2yeXbXKNFys/P2Q8xoSEuxlF26C6nOqo837rWGnvBYrk0cLIyJMM0O8SUoWI263V2oS6McDlfwcepxqZXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEu3lOPy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736FAC4CEC6;
-	Tue, 15 Oct 2024 12:09:14 +0000 (UTC)
+	 MIME-Version; b=N3I+OGn1u1KWZWBVhuV/5clRYJHWEBlCOE6em4v8CSHr17H8Usbl+qS5ehtgH/wZa8SFWDskexaHsZBkN5O6EGBfq/vuqNcAALq78O/h+V/Bqc5Rafft2ZOtpQSzDIAJypGxYlj2tZFmCm6oYoGa4cjmXswk+ggYQT3d/L90s8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tahbxzxx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F93C4CEC6;
+	Tue, 15 Oct 2024 12:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728994154;
-	bh=1idDyxwHQZohgfraQ8Co6CjR45dKupMbW8WGsQy/Ay8=;
+	s=korg; t=1728994275;
+	bh=88t+F81R9yk4kUTWgGKv87ddM2toNumT6uHfKmNaWbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oEu3lOPyPla1hmjWUQbC9GaEoZqDDHNX/C7NcN1Tf6E7KiuUFjSPPfOtiTYytbkJQ
-	 gK/wRv6Qq3tdzkzqCKphzE6Z2UpILrDgxgppp2IuwqIOF8enc3rKAu9+BnlcX/u/rL
-	 kZg/idkriX3nj36HzReZKCtu5GmH67fhutt+NNgs=
+	b=tahbxzxxXMQGr/Qg9NtxdvSRgQpHz2VufKgFxinwN+UflCrRoh1RROcwIHA6CXDFt
+	 QSJJgM0gsjKQ1kfBi4RryzOTfGZ/bazbAnp2OTX0On9uTbucuDbv215VIrEYV7mMCX
+	 p5G/UlTCDRY3O/TJojJAq9/772RBCtDrS9ygJMjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Benjamin Poirier <bpoirier@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shawn Shao <shawn.shao@jaguarmicro.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 592/691] selftests: net: Remove executable bits from library scripts
-Date: Tue, 15 Oct 2024 13:29:00 +0200
-Message-ID: <20241015112503.843484993@linuxfoundation.org>
+Subject: [PATCH 5.15 616/691] usb: dwc2: Adjust the timing of USB Driver Interrupt Registration in the Crashkernel Scenario
+Date: Tue, 15 Oct 2024 13:29:24 +0200
+Message-ID: <20241015112504.783184293@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
 References: <20241015112440.309539031@linuxfoundation.org>
@@ -67,37 +65,122 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Benjamin Poirier <bpoirier@nvidia.com>
+From: Shawn Shao <shawn.shao@jaguarmicro.com>
 
-[ Upstream commit 9d851dd4dab63e95c1911a2fa847796d1ec5d58d ]
+[ Upstream commit 4058c39bd176daf11a826802d940d86292a6b02b ]
 
-setup_loopback.sh and net_helper.sh are meant to be sourced from other
-scripts, not executed directly. Therefore, remove the executable bits from
-those files' permissions.
+The issue is that before entering the crash kernel, the DWC USB controller
+did not perform operations such as resetting the interrupt mask bits.
+After entering the crash kernel,before the USB interrupt handler
+registration was completed while loading the DWC USB driver,an GINTSTS_SOF
+interrupt was received.This triggered the misroute_irq process within the
+GIC handling framework,ultimately leading to the misrouting of the
+interrupt,causing it to be handled by the wrong interrupt handler
+and resulting in the issue.
 
-This change is similar to commit 49078c1b80b6 ("selftests: forwarding:
-Remove executable bits from lib.sh")
+Summary:In a scenario where the kernel triggers a panic and enters
+the crash kernel,it is necessary to ensure that the interrupt mask
+bit is not enabled before the interrupt registration is complete.
+If an interrupt reaches the CPU at this moment,it will certainly
+not be handled correctly,especially in cases where this interrupt
+is reported frequently.
 
-Fixes: 7d1575014a63 ("selftests/net: GRO coalesce test")
-Fixes: 3bdd9fd29cb0 ("selftests/net: synchronize udpgro tests' tx and rx connection")
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
-Link: https://lore.kernel.org/r/20240131140848.360618-4-bpoirier@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Please refer to the Crashkernel dmesg information as follows
+(the message on line 3 was added before devm_request_irq is
+called by the dwc2_driver_probe function):
+[    5.866837][    T1] dwc2 JMIC0010:01: supply vusb_d not found, using dummy regulator
+[    5.874588][    T1] dwc2 JMIC0010:01: supply vusb_a not found, using dummy regulator
+[    5.882335][    T1] dwc2 JMIC0010:01: before devm_request_irq  irq: [71], gintmsk[0xf300080e], gintsts[0x04200009]
+[    5.892686][    C0] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.10.0-jmnd1.2_RC #18
+[    5.900327][    C0] Hardware name: CMSS HyperCard4-25G/HyperCard4-25G, BIOS 1.6.4 Jul  8 2024
+[    5.908836][    C0] Call trace:
+[    5.911965][    C0]  dump_backtrace+0x0/0x1f0
+[    5.916308][    C0]  show_stack+0x20/0x30
+[    5.920304][    C0]  dump_stack+0xd8/0x140
+[    5.924387][    C0]  pcie_xxx_handler+0x3c/0x1d8
+[    5.930121][    C0]  __handle_irq_event_percpu+0x64/0x1e0
+[    5.935506][    C0]  handle_irq_event+0x80/0x1d0
+[    5.940109][    C0]  try_one_irq+0x138/0x174
+[    5.944365][    C0]  misrouted_irq+0x134/0x140
+[    5.948795][    C0]  note_interrupt+0x1d0/0x30c
+[    5.953311][    C0]  handle_irq_event+0x13c/0x1d0
+[    5.958001][    C0]  handle_fasteoi_irq+0xd4/0x260
+[    5.962779][    C0]  __handle_domain_irq+0x88/0xf0
+[    5.967555][    C0]  gic_handle_irq+0x9c/0x2f0
+[    5.971985][    C0]  el1_irq+0xb8/0x140
+[    5.975807][    C0]  __setup_irq+0x3dc/0x7cc
+[    5.980064][    C0]  request_threaded_irq+0xf4/0x1b4
+[    5.985015][    C0]  devm_request_threaded_irq+0x80/0x100
+[    5.990400][    C0]  dwc2_driver_probe+0x1b8/0x6b0
+[    5.995178][    C0]  platform_drv_probe+0x5c/0xb0
+[    5.999868][    C0]  really_probe+0xf8/0x51c
+[    6.004125][    C0]  driver_probe_device+0xfc/0x170
+[    6.008989][    C0]  device_driver_attach+0xc8/0xd0
+[    6.013853][    C0]  __driver_attach+0xe8/0x1b0
+[    6.018369][    C0]  bus_for_each_dev+0x7c/0xdc
+[    6.022886][    C0]  driver_attach+0x2c/0x3c
+[    6.027143][    C0]  bus_add_driver+0xdc/0x240
+[    6.031573][    C0]  driver_register+0x80/0x13c
+[    6.036090][    C0]  __platform_driver_register+0x50/0x5c
+[    6.041476][    C0]  dwc2_platform_driver_init+0x24/0x30
+[    6.046774][    C0]  do_one_initcall+0x50/0x25c
+[    6.051291][    C0]  do_initcall_level+0xe4/0xfc
+[    6.055894][    C0]  do_initcalls+0x80/0xa4
+[    6.060064][    C0]  kernel_init_freeable+0x198/0x240
+[    6.065102][    C0]  kernel_init+0x1c/0x12c
+
+Signed-off-by: Shawn Shao <shawn.shao@jaguarmicro.com>
+Link: https://lore.kernel.org/r/20240830031709.134-1-shawn.shao@jaguarmicro.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/net_helper.sh     | 0
- tools/testing/selftests/net/setup_loopback.sh | 0
- 2 files changed, 0 insertions(+), 0 deletions(-)
- mode change 100755 => 100644 tools/testing/selftests/net/net_helper.sh
- mode change 100755 => 100644 tools/testing/selftests/net/setup_loopback.sh
+ drivers/usb/dwc2/platform.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/tools/testing/selftests/net/net_helper.sh b/tools/testing/selftests/net/net_helper.sh
-old mode 100755
-new mode 100644
-diff --git a/tools/testing/selftests/net/setup_loopback.sh b/tools/testing/selftests/net/setup_loopback.sh
-old mode 100755
-new mode 100644
+diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
+index 79094384d8fd4..5ff8186936790 100644
+--- a/drivers/usb/dwc2/platform.c
++++ b/drivers/usb/dwc2/platform.c
+@@ -484,18 +484,6 @@ static int dwc2_driver_probe(struct platform_device *dev)
+ 
+ 	spin_lock_init(&hsotg->lock);
+ 
+-	hsotg->irq = platform_get_irq(dev, 0);
+-	if (hsotg->irq < 0)
+-		return hsotg->irq;
+-
+-	dev_dbg(hsotg->dev, "registering common handler for irq%d\n",
+-		hsotg->irq);
+-	retval = devm_request_irq(hsotg->dev, hsotg->irq,
+-				  dwc2_handle_common_intr, IRQF_SHARED,
+-				  dev_name(hsotg->dev), hsotg);
+-	if (retval)
+-		return retval;
+-
+ 	hsotg->vbus_supply = devm_regulator_get_optional(hsotg->dev, "vbus");
+ 	if (IS_ERR(hsotg->vbus_supply)) {
+ 		retval = PTR_ERR(hsotg->vbus_supply);
+@@ -539,6 +527,20 @@ static int dwc2_driver_probe(struct platform_device *dev)
+ 	if (retval)
+ 		goto error;
+ 
++	hsotg->irq = platform_get_irq(dev, 0);
++	if (hsotg->irq < 0) {
++		retval = hsotg->irq;
++		goto error;
++	}
++
++	dev_dbg(hsotg->dev, "registering common handler for irq%d\n",
++		hsotg->irq);
++	retval = devm_request_irq(hsotg->dev, hsotg->irq,
++				  dwc2_handle_common_intr, IRQF_SHARED,
++				  dev_name(hsotg->dev), hsotg);
++	if (retval)
++		goto error;
++
+ 	/*
+ 	 * For OTG cores, set the force mode bits to reflect the value
+ 	 * of dr_mode. Force mode bits should not be touched at any
 -- 
 2.43.0
 
