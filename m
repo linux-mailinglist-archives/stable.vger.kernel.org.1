@@ -1,122 +1,154 @@
-Return-Path: <stable+bounces-86474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C11339A0738
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 12:26:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E6C9A0782
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 12:36:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F16A81C223A3
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 10:26:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CD0B1F28D80
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 10:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2466206970;
-	Wed, 16 Oct 2024 10:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xiuc74sn"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60FC206E73;
+	Wed, 16 Oct 2024 10:36:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A7C20695C;
-	Wed, 16 Oct 2024 10:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865EE1F81A9;
+	Wed, 16 Oct 2024 10:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729074206; cv=none; b=WcP/oA+p2d7/dS6xpxx1QELPfgUTGZVAaBybEUPZfSc3anCDGSv1NOpYSN+pCXjrp3eS1DEwXIvFvz8QgUbdrd8wWsb21ruRK8ZEps1HkR6QrVRysbhNDzsrIzKTAa1BKZ2KdYFri4QbnQzBU3Z1g/PfI0aNjIVZyzK0+K3SS0k=
+	t=1729074988; cv=none; b=ZYHwnUymNpYTG9RVsGnCT+k7z7udDCdWcFjXX1G3OArE/zhKXMR4RwnpJbLDQYlS9ymwI0S2xcl0FMhTwFupH6Suxzlfz9ObpyF3rjXIYAPdQfUpSnIdyRFSkBcagiAoDh/6WCGkUUQMvTO3rPYpoFwyIsHTZptlhOKfammyHvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729074206; c=relaxed/simple;
-	bh=q/4Xnfo2QoXLnMrsQKtONWcJi0JMSdcZjjDyjdhf5aQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kIFWgZirZLs7hGNsXB4Ltvh55Z8K/96wnXG8Y6qSFhrwGS+0HWoNM9k6Kbh0bU/jX5CNN5YDLhx1VbdgxvQgdU/skMwXpVb/xVbi/lBAQYkf/lKmR47BJ/6dT4zs0FJs+MBF9IEqQGpSX4SQFdL1+9LB39ftsUyIAsfzrk6Qf64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xiuc74sn; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-539e1543ab8so7973097e87.2;
-        Wed, 16 Oct 2024 03:23:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729074203; x=1729679003; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q/4Xnfo2QoXLnMrsQKtONWcJi0JMSdcZjjDyjdhf5aQ=;
-        b=Xiuc74snO0c3vlAdKJIF5lswKqCH/Z8NrsqFGOwA+/iPxQTM63te+fuOE/pHJ/Z5lO
-         mbpPAt4D3zellMOGOsEEB7xfdZT+XIq6DZgYZKJON1MXrtaTDNwMRXWlWXABS0MeMKO2
-         gQxKd2Hcv294mTUff3JQK2F0kesD0UvzQyth7lyCohrz3qHcFBwseYfabbWZ7jDJ59r6
-         7Ocn435wNP5HpfKyS0x8zAvpgqYFqOPtbu2HGHha6fZ1Wfh4WNJEwQJt7Ifu4wQ7Je92
-         JKcNrqkYwB3s6QkWfYbIur92zqjKVJMCqyaFp1kxmQu7OGK7mm3g+RjFAB41fp1M5yjT
-         gC8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729074203; x=1729679003;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q/4Xnfo2QoXLnMrsQKtONWcJi0JMSdcZjjDyjdhf5aQ=;
-        b=w0vW3K0A11OVCITp73paCicsbiFRShmWDvDEcdJrQHJY/fA7/2HJkm3rw3iY72FSW3
-         sFX/4TASg0cMZHihEbQTOSkBMsn39/k3v1peUJYQPruf0Ak3WLrnrRipGbwsgQpyxTq9
-         KGo84THduHBiHSGzCp4lx1cCs69TgrzFztqisCvGtyEbyeIc2Lv3zs0n/q7bup8vkcHO
-         NHpm0fkblQCP4dcWd2WfiEPsRq6N+ao78cHcDv4O0bfgkBO/GaHJ49XPbLBAm+A4HC49
-         R3FNwspjphsg4zoGEo/4CJlrx3P65FNtF5chAJy4+C2jAi6TVg1/xNjTRRzznMqEiKpL
-         rg9w==
-X-Forwarded-Encrypted: i=1; AJvYcCUTehgTrfTAQmd3gB8cMpZDkljIyzBOG4R1f3d+rrToEn6PGz/i8trTQD6ns2X0LurmsXLIV0Jh@vger.kernel.org, AJvYcCXFSpJUd+3upIiU6rlnknJAHPyv2KyWfnV8QLFYeZzy9jxTv0wLIpSiMebW0puj8ZH0DKQ/WK7RMzsmaYQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIJT2QqDXFER9Abh3taWW50Jms7ph7cSm1Hvb4D35aEXYtS3KV
-	YznkhFvi0Wi2pcNvQsLkSS9Aq2iyGXC+yUoJ85tGnC6hiuxQ5adzi/IRZlptPGSlEKGnTdm98Xn
-	Ge3wqgiN8gWqzO3Zk6RjhD8WdHU4=
-X-Google-Smtp-Source: AGHT+IHecL3xyZYXLTNm5iA6rs/KvXKjLMOFmfwx3AdAWDJHF6WIEmSzNsGABI2L/R0hEVHbIIgQ2Q6LGf7wWO/MM7E=
-X-Received: by 2002:a05:6512:10d1:b0:536:a695:9414 with SMTP id
- 2adb3069b0e04-539e54d7907mr9596702e87.6.1729074202511; Wed, 16 Oct 2024
- 03:23:22 -0700 (PDT)
+	s=arc-20240116; t=1729074988; c=relaxed/simple;
+	bh=WMetuwb8pAhfZt/JLmdZ6+4RKdpGwXb3KBOAjuHpmyY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tU6SDkHau7myjCXLdESoIqAQtrCNRP39t10hGJUJ9QdNSjMPWy0P89m0Bh7M/MkMUNetTAXkM0qmLTnrZAuUqxOFYnCaKexzYPev3YgK6a4EYCD4fyjMpq0CkYmEdc908ztw58oN7MqRqTm2qnD5kDdREzACd4C27JkCuljB2Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627F2C4CEC5;
+	Wed, 16 Oct 2024 10:36:26 +0000 (UTC)
+Message-ID: <6df9ffa7-a55e-4ae4-a863-eb64834aef48@xs4all.nl>
+Date: Wed, 16 Oct 2024 12:36:24 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241016072553.8891-2-pstanner@redhat.com> <Zw-CqayFcWzOwci_@smile.fi.intel.com>
- <17b0528bb7e7c31a89913b0d53cc174ba0c26ea4.camel@redhat.com>
-In-Reply-To: <17b0528bb7e7c31a89913b0d53cc174ba0c26ea4.camel@redhat.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 16 Oct 2024 13:22:44 +0300
-Message-ID: <CAHp75VcO5g1UerroLaiUa4n7Aj8TPQ594tPGdG-T-xkh4uqyCA@mail.gmail.com>
-Subject: Re: [PATCH RESEND] vdpa: solidrun: Fix UB bug with devres
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: Andy Shevchenko <andy@kernel.org>, Alvaro Karsz <alvaro.karsz@solid-run.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 12/13] media: cec: extron-da-hd-4k-plus: don't use -1 as
+ an error code
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ stable@vger.kernel.org
+References: <cover.1729074076.git.mchehab+huawei@kernel.org>
+ <21a4b368b49aaa46e9d78cccd855bb11b49ab39c.1729074076.git.mchehab+huawei@kernel.org>
+Content-Language: en-US, nl
+From: Hans Verkuil <hverkuil@xs4all.nl>
+Autocrypt: addr=hverkuil@xs4all.nl; keydata=
+ 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
+In-Reply-To: <21a4b368b49aaa46e9d78cccd855bb11b49ab39c.1729074076.git.mchehab+huawei@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 16, 2024 at 12:22=E2=80=AFPM Philipp Stanner <pstanner@redhat.c=
-om> wrote:
-> On Wed, 2024-10-16 at 12:08 +0300, Andy Shevchenko wrote:
-> > On Wed, Oct 16, 2024 at 09:25:54AM +0200, Philipp Stanner wrote:
+On 16/10/2024 12:22, Mauro Carvalho Chehab wrote:
+> The logic at get_edid_tag_location() returns either an offset
+> or an error condition. However, the error condition uses a
+> non-standard "-1" value.
+> 
+> Use instead -ENOENT to indicate that the tag was not found.
+> 
+> Fixes: 056f2821b631 ("media: cec: extron-da-hd-4k-plus: add the Extron DA HD 4K Plus CEC driver")
 
-...
+Not a fix, since it isn't broken. It is returning an offset, and -1 is used if it isn't
+found. It's fine to change it to -ENOENT since the code calling it just checks if the
+result > 0.
 
-> > > ---
-> >
-> > I haven't found the reason for resending. Can you elaborate here?
->
-> Impatience ;p
->
-> This is not a v2.
+So it is a slight improvement of the code, but not a fix.
 
-It doesn't matter, the reviewers and maintainers should get a clue
-which version is to be used (even if it's a simple resend) and why it
-has been sent.
+> Cc: stable@vger.kernel.org
 
-> I mean, it's a bug, easy to fix and merge [and it's blocking my other
-> PCI work, *cough*]. Should contributors wait longer than 8 days until
-> resending in your opinion?
+So this isn't needed either.
 
-Usually we may ping for that. And yeah, depending on the maintainers
-it takes a while to get it to the point. In some (quite rare I
-believe) cases we may escalate up to Linus about this. I probably has
-only one case like that in my full period of working on the Linux
-kernel project (several years).
+Regards,
 
---=20
-With Best Regards,
-Andy Shevchenko
+	Hans
+
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> ---
+>  .../cec/usb/extron-da-hd-4k-plus/extron-da-hd-4k-plus.c     | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/media/cec/usb/extron-da-hd-4k-plus/extron-da-hd-4k-plus.c b/drivers/media/cec/usb/extron-da-hd-4k-plus/extron-da-hd-4k-plus.c
+> index a526464af88c..7d03a36df5cf 100644
+> --- a/drivers/media/cec/usb/extron-da-hd-4k-plus/extron-da-hd-4k-plus.c
+> +++ b/drivers/media/cec/usb/extron-da-hd-4k-plus/extron-da-hd-4k-plus.c
+> @@ -348,12 +348,12 @@ static int get_edid_tag_location(const u8 *edid, unsigned int size,
+>  
+>  	/* Return if not a CTA-861 extension block */
+>  	if (size < 256 || edid[0] != 0x02 || edid[1] != 0x03)
+> -		return -1;
+> +		return -ENOENT;
+>  
+>  	/* search tag */
+>  	d = edid[0x02] & 0x7f;
+>  	if (d <= 4)
+> -		return -1;
+> +		return -ENOENT;
+>  
+>  	i = 0x04;
+>  	end = 0x00 + d;
+> @@ -371,7 +371,7 @@ static int get_edid_tag_location(const u8 *edid, unsigned int size,
+>  			return offset + i;
+>  		i += len + 1;
+>  	} while (i < end);
+> -	return -1;
+> +	return -ENOENT;
+>  }
+>  
+>  static void extron_edid_crc(u8 *edid)
+
 
