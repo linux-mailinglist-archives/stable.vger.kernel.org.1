@@ -1,126 +1,128 @@
-Return-Path: <stable+bounces-86485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D059A0849
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 13:26:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 084C59A086A
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 13:33:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB8D51C224C1
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 11:26:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDC752862C3
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 11:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD1A207209;
-	Wed, 16 Oct 2024 11:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D7920607F;
+	Wed, 16 Oct 2024 11:33:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uYnWyXnD"
 X-Original-To: stable@vger.kernel.org
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA13206066;
-	Wed, 16 Oct 2024 11:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DFF1D63E1
+	for <stable@vger.kernel.org>; Wed, 16 Oct 2024 11:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729077997; cv=none; b=Xh1/d1b2XUIzG0F8f8lfWqROzHOX1ln85aO5PMC75oJaf66naTqW7ifgjRktlncB0thE59iylRIkchiZxhONAYGPVZyNKDXD4YIITi1rtxbTpY+s7IiUjqGukttg+uYfxcgcb2814GXWeWDyE5ywrPS1J+fkoexCEGpAY0y+Bgw=
+	t=1729078382; cv=none; b=Ric/MESbTiDdjpdTLo60x0lu3JWkxIpjSg6mnCDe8Kie8l45XIob7uBnKDq6yRibQEr8OV2ZpcOgrO85+ZGpsyJfDtKoI9VRkvAo118+Cvb/sEySqEDcr4+hT6CHvr68lVo3pv6nZ0lZXcDYpePX25I6hEkwOeg4qMOKX6VWAJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729077997; c=relaxed/simple;
-	bh=xP2ktAcfFQ/wdOmDftyeYQc/PCd0CuJ9pfF+bw2S034=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hoNsWzeO5X82uLN8G2pQD60E2cTV72sZWMBaxlT+8Q3ehx13baXm1vgJXJQ94Tidax04TY0sZ+DOUs94di+DZoqGgiZXFKG6V0W35zn1n6ZzA3m8QDg5ScsBrn4oAiaovB1URje1/ZrL/vsK3zOqc+pN9F6Ta/7KnOnNrnoi9O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B55BF40004;
-	Wed, 16 Oct 2024 11:26:24 +0000 (UTC)
-Message-ID: <3fe1e610-c863-4fbf-85cb-6e83ba7684af@ghiti.fr>
-Date: Wed, 16 Oct 2024 13:26:24 +0200
+	s=arc-20240116; t=1729078382; c=relaxed/simple;
+	bh=AgAb2/0Ar0SNrTRqLsq8IGW9WXAFzXTWj6vD2c0csaE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=V0MJTu/aAnilNoImlWk3SIMuqhlPKB0YSNBP+5z0ogAsVD4VmsYSku9cRnwq9BiTqpTDzuCr2BENaZdps5EBN9TaUNq3dO76I6SSNAvuPwOzno2ai+MHFVyfqE6KtYIlJ7VZg4f1LxHB61SEcGl4PMAanekPp9+xqbPXItgEAS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uYnWyXnD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E25C4CED4
+	for <stable@vger.kernel.org>; Wed, 16 Oct 2024 11:33:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729078381;
+	bh=AgAb2/0Ar0SNrTRqLsq8IGW9WXAFzXTWj6vD2c0csaE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=uYnWyXnDKbzlY5CliMnpskooLOd8vvnA3ggEPgdkRfgerLYOY/7WULiAAITDpIwUE
+	 9vk74pr0eXb0bS2+RpVU+EiXMgLsLHE6+4hyoxYhtBdoShgxgvGbUucD+Qe5+C9fN5
+	 ea7xMx6U6i8zk4C5I8S8BQJrfwngTcdnnlD6kOQ2T+0M0nxvMYz/4Xl1wQ3EszRIcD
+	 AA+J4KhQxOm3b3ImGVdUVMClp4rDbFFjDQoUSyggHpvvYHy7vhsIHq7GR0Y324SZZ+
+	 BWVp9lRti4zBud6MD5oFsHAXg0GnHQ6jNqnjSbByLXrFJXWb0LyooSsvrs36cchkVL
+	 pavyHnJ6zN1jg==
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fb470a8b27so7537031fa.1
+        for <stable@vger.kernel.org>; Wed, 16 Oct 2024 04:33:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWg4HeG9w7CDD8QW6LIKw6NJIu4k8xBgwIF9WnMCKLAf8YRuwXtqekzvYUvXPpKZFND1YagQnw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4rK8aDBtgORzZ76BvGbWQwXHEVC4++g2Qn/KuZVk1QcSMhR7a
+	9cpPaHWfpNSdS8OuR6KSa3+57LuIggQh/qJ2vSu926nqRgIiwactN/fPWVKsRexR7pBgRooys6K
+	dBLpPhyyC6q4DBb5vWi6myNuxzF4=
+X-Google-Smtp-Source: AGHT+IHrgsSoxLlIJcPoKJq8iBlYE3eb86eDcfSfZ6Vt9oZtqS4DVKxBoJPTTgmTOC+VgTV+sz8N7qsFIS19fkP9Tr0=
+X-Received: by 2002:a05:651c:2209:b0:2fb:55b0:82b8 with SMTP id
+ 38308e7fff4ca-2fb61b34167mr12008591fa.4.1729078379930; Wed, 16 Oct 2024
+ 04:32:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -fixes] riscv: Do not use fortify in early code
-Content-Language: en-US
-To: Jessica Clarke <jrtc27@jrtc27.com>,
- Alexandre Ghiti <alexghiti@rivosinc.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Heiko Stuebner <heiko@sntech.de>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@rivosinc.com>, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org, Jason Montleon <jmontleo@redhat.com>,
- stable@vger.kernel.org, Kees Cook <keescook@chromium.org>
-References: <20241009072749.45006-1-alexghiti@rivosinc.com>
- <1CA19FB3-C1E3-4C2F-A4FB-05B69EC66D2F@jrtc27.com>
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <1CA19FB3-C1E3-4C2F-A4FB-05B69EC66D2F@jrtc27.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alex@ghiti.fr
+References: <20241015-arm-kasan-vmalloc-crash-v1-0-dbb23592ca83@linaro.org> <20241015-arm-kasan-vmalloc-crash-v1-1-dbb23592ca83@linaro.org>
+In-Reply-To: <20241015-arm-kasan-vmalloc-crash-v1-1-dbb23592ca83@linaro.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 16 Oct 2024 13:32:48 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHuJ9JjbxcG0LkRpQiPzW-BDfX+LoW3+W_cfsD=1hdPDg@mail.gmail.com>
+Message-ID: <CAMj1kXHuJ9JjbxcG0LkRpQiPzW-BDfX+LoW3+W_cfsD=1hdPDg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ARM: ioremap: Flush PGDs for VMALLOC shadow
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Clement LE GOFFIC <clement.legoffic@foss.st.com>, Russell King <linux@armlinux.org.uk>, 
+	Kees Cook <kees@kernel.org>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Mark Brown <broonie@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Antonio Borneo <antonio.borneo@foss.st.com>, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Jessica,
-
-On 16/10/2024 00:04, Jessica Clarke wrote:
-> On 9 Oct 2024, at 08:27, Alexandre Ghiti <alexghiti@rivosinc.com> wrote:
->> Early code designates the code executed when the MMU is not yet enabled,
->> and this comes with some limitations (see
->> Documentation/arch/riscv/boot.rst, section "Pre-MMU execution").
->>
->> FORTIFY_SOURCE must be disabled then since it can trigger kernel panics
->> as reported in [1].
->>
->> Reported-by: Jason Montleon <jmontleo@redhat.com>
->> Closes: https://lore.kernel.org/linux-riscv/CAJD_bPJes4QhmXY5f63GHV9B9HFkSCoaZjk-qCT2NGS7Q9HODg@mail.gmail.com/ [1]
->> Fixes: a35707c3d850 ("riscv: add memory-type errata for T-Head")
->> Fixes: 26e7aacb83df ("riscv: Allow to downgrade paging mode from the command line")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-> Is the problem in [1] not just that the early boot path uses memcpy on
-> the result of ALT_OLD_PTR, which is a wildly out-of-bounds pointer from
-> the compiler’s perspective? If so, it would seem better to use
-> unsafe_memcpy for that one call site rather than use the big
-> __NO_FORTIFY hammer, surely?
-
-
-Not sure why fortify complains here, and I have just seen that I forgot 
-to cc Kees (done now).
-
-
+On Tue, 15 Oct 2024 at 23:37, Linus Walleij <linus.walleij@linaro.org> wrote:
 >
-> Presumably the non-early path is just as bad to the compiler, but works
-> because patch_text_nosync isn’t instrumented, so that would just align
-> the two.
+> When sync:ing the VMALLOC area to other CPUs, make sure to also
+> sync the KASAN shadow memory for the VMALLOC area, so that we
+> don't get stale entries for the shadow memory in the top level PGD.
 >
-> Getting the implementation to not be silent on failure during early
-> boot would also be a good idea, but it’s surely better to have
-> FORTIFY_SOURCE enabled with no output for positives than disable the
-> checking in the first place and risk uncaught corruption.
-
-
-I'm not sure to follow: you propose to use unsafe_memcpy() instead of 
-disabling fortify entirely, so we would not get any warning in case of 
-failure anyway right? Or do you propose to modify the fortify code to 
-somehow print a warning? If the latter, it's hard this soon in the boot 
-process (where the mmu is disabled) to make sure that the printing 
-warning path does not try to access any virtual address (which is why 
-the boot failed in the first place) but maybe Kees has an idea.
-
-And I believe that enabling fortify and using the unsafe_*() variants is 
-error-prone since we'd have to make sure that all the "fortified" 
-functions used in that code use the unsafe_*() variants.
-
-So to me, it's way easier in terms of maintenance to just disabling fortify.
-
-Thanks,
-
-Alex
-
-
-> Jess
+> Cc: stable@vger.kernel.org
+> Fixes: 565cbaad83d8 ("ARM: 9202/1: kasan: support CONFIG_KASAN_VMALLOC")
+> Link: https://lore.kernel.org/linux-arm-kernel/a1a1d062-f3a2-4d05-9836-3b098de9db6d@foss.st.com/
+> Reported-by: Clement LE GOFFIC <clement.legoffic@foss.st.com>
+> Suggested-by: Mark Rutland <mark.rutland@arm.com>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+>  arch/arm/mm/ioremap.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 >
->
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+> diff --git a/arch/arm/mm/ioremap.c b/arch/arm/mm/ioremap.c
+> index 794cfea9f9d4..449f1f04814c 100644
+> --- a/arch/arm/mm/ioremap.c
+> +++ b/arch/arm/mm/ioremap.c
+> @@ -23,6 +23,7 @@
+>   */
+>  #include <linux/module.h>
+>  #include <linux/errno.h>
+> +#include <linux/kasan.h>
+>  #include <linux/mm.h>
+>  #include <linux/vmalloc.h>
+>  #include <linux/io.h>
+> @@ -125,6 +126,12 @@ void __check_vmalloc_seq(struct mm_struct *mm)
+>                        pgd_offset_k(VMALLOC_START),
+>                        sizeof(pgd_t) * (pgd_index(VMALLOC_END) -
+>                                         pgd_index(VMALLOC_START)));
+> +               if (IS_ENABLED(CONFIG_KASAN_VMALLOC)) {
+> +                       memcpy(pgd_offset(mm, (unsigned long)kasan_mem_to_shadow((void *)VMALLOC_START)),
+> +                              pgd_offset_k((unsigned long)kasan_mem_to_shadow((void *)VMALLOC_START)),
+> +                              sizeof(pgd_t) * (pgd_index((unsigned long)kasan_mem_to_shadow((void *)VMALLOC_END)) -
+> +                                               pgd_index((unsigned long)kasan_mem_to_shadow((void *)VMALLOC_START))));
+> +               }
+
++1 to Russell's suggestion to change this wall of text into something legible.
+
+Then, there is another part to this: in arch/arm/kernel/traps.c, we
+have the following code
+
+void arch_sync_kernel_mappings(unsigned long start, unsigned long end)
+{
+    if (start < VMALLOC_END && end > VMALLOC_START)
+        atomic_inc_return_release(&init_mm.context.vmalloc_seq);
+}
+
+where we only bump vmalloc_seq if the updated region overlaps with the
+vmalloc region, so this will need a similar treatment afaict.
 
