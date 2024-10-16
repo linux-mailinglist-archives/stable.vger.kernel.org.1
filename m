@@ -1,80 +1,132 @@
-Return-Path: <stable+bounces-86549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3543F9A15B9
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 00:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CC949A15DF
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 00:39:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D70141F22D2A
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 22:16:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D03BA1F234F8
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 22:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A651D45E5;
-	Wed, 16 Oct 2024 22:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A668B1D4358;
+	Wed, 16 Oct 2024 22:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="DEEX4qDz"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="n/YKhbex"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC421D4358;
-	Wed, 16 Oct 2024 22:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AA11D279F;
+	Wed, 16 Oct 2024 22:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729116997; cv=none; b=CLG20YiuMJjHUdHvlOAICiWGjT0IQ2YR/kSuzKIRaQerpybSnBmQQE/Y/wS5yVPnTD6D8ecc4Bj+FtLbFcl8ooQBSNemrP15FQM/qM4YEZ56ter19WHfksyfszEdlq1vOSUK7yuEBFW0qruyBpdW6JGZsF5m4r+AXJJqAk0bMsc=
+	t=1729118376; cv=none; b=kGl5f68q6qRm49YmqMmi/KXErjR5BFKNPGd6KIfbrs1nNC31IyUQ4syWcUQcZphQ0y4D1tF2Owsh1eBoFvccKTEi9naBN2Jye0V8d0NnX7/kFWldONhmoFzbqDCUS0t+f8b94pRKgxa+0OVsdOQ1uLZWiT3gMb4pbuIlNvwe/k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729116997; c=relaxed/simple;
-	bh=+dQNULmA762meA9oyQtjDYVR17GgdfXHjF5FrGTJfpU=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=HUIojr3ieeed74aZsp2EEk2YvfOjH/myjrIQlqxLJCW5ML52WF/2haUbQJ8BguMoB2wnyrUtl1jtBLCfsL7MuEVyL/NWQMx1dUwp97t45u7HruKgO6g4n4l4DCXoC6V+cIjVRtKlVZtNuEIarsOFISSbKhII72lcqSNPvr8kqak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=DEEX4qDz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E446EC4CED1;
-	Wed, 16 Oct 2024 22:16:36 +0000 (UTC)
+	s=arc-20240116; t=1729118376; c=relaxed/simple;
+	bh=Iz8bVR4MDDpnjhsTXEpxJpT6/iH7sl2W0mOZIwRWqDk=;
+	h=Date:To:From:Subject:Message-Id; b=pCW8E65iYvqJnxx5v9w4sqnrpeyR0WR95w/Mb+ug4Ri5c9UV0y/E+qTzlZY3xLyprrdqq+16Xhi6CEXF5TvkGf3Dx+gUXTGkjQQdv7R7qLmyw9BztUVlCCakeYgMUe4ZPB3nuGL9043qyBUO0OaYO6hkG3FPUXagbw6/Cg7NnAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=n/YKhbex; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B74C4CEC5;
+	Wed, 16 Oct 2024 22:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1729116997;
-	bh=+dQNULmA762meA9oyQtjDYVR17GgdfXHjF5FrGTJfpU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DEEX4qDz+fc+kgDAW7/JviDpIk5mPt0fAGVP7azHnNTmmjo2ZkJCS8asv7W1wJrSa
-	 CZrpUDEmwtcxLKXenhRekY9I+eFJnFpbL6DuXyXzhisRzcpkhBwumlLbNmQaWhtX8J
-	 schw36UVg2Hci5+e1wHOgoCOdDw0egQCLdeQeWFY=
-Date: Wed, 16 Oct 2024 15:16:36 -0700
+	s=korg; t=1729118375;
+	bh=Iz8bVR4MDDpnjhsTXEpxJpT6/iH7sl2W0mOZIwRWqDk=;
+	h=Date:To:From:Subject:From;
+	b=n/YKhbexuAe1NS58VIR0zDSf9f7YszjcwUjYlJGl3GzKJlTLMBeW5wuA4zs7hVZre
+	 z6kZfwAYRVWx5E4cCe0ugzUkjHrSHJLclsdWMPa8wxtxYgXRazhWhJviwreVxvJ17n
+	 xsUI+a5H4vp67k5/DKBnitvkd17jiBqwdd2McrtU=
+Date: Wed, 16 Oct 2024 15:39:35 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,ghe@suse.com,gechangwei@live.cn,eadavis@qq.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Jeongjun Park <aha310510@gmail.com>
-Cc: hughd@google.com, yuzhao@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, syzbot <syzkaller@googlegroups.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH RESEND] mm: shmem: fix data-race in shmem_getattr()
-Message-Id: <20241016151636.7e2184ca7467a0f8f90d940c@linux-foundation.org>
-In-Reply-To: <CAO9qdTG9wxBSct-rrgG_DevaLZgy4AFirKu+3uu=HOPD1-PRBg@mail.gmail.com>
-References: <20240922080838.15184-1-aha310510@gmail.com>
-	<CAO9qdTG9wxBSct-rrgG_DevaLZgy4AFirKu+3uu=HOPD1-PRBg@mail.gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Subject: + ocfs2-pass-u64-to-ocfs2_truncate_inline-maybe-overflow.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241016223935.D1B74C4CEC5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Wed, 16 Oct 2024 23:12:43 +0900 Jeongjun Park <aha310510@gmail.com> wrote:
 
-> > Therefore, when calling generic_fillattr() from shmem_getattr(), it is
-> > appropriate to protect the inode using inode_lock_shared() and
-> > inode_unlock_shared() to prevent data-race.
-> >
-> 
-> Cc: stable@vger.kernel.org
-> 
-> I think this patch should be applied from next rc version and also stable
-> version. When calling generic_fillattr(), if you don't hold read lock,
-> data-race will occur in inode member variables, which can cause unexpected
-> behavior. This problem is also present in several stable versions, so I think
-> it should be fixed as soon as possible.
+The patch titled
+     Subject: ocfs2: pass u64 to ocfs2_truncate_inline maybe overflow
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     ocfs2-pass-u64-to-ocfs2_truncate_inline-maybe-overflow.patch
 
-OK, thanks, I added the cc:stable amd moved this into the mm-hotfixes
-pile for a 6.12-rcX merge.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-pass-u64-to-ocfs2_truncate_inline-maybe-overflow.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Edward Adam Davis <eadavis@qq.com>
+Subject: ocfs2: pass u64 to ocfs2_truncate_inline maybe overflow
+Date: Wed, 16 Oct 2024 19:43:47 +0800
+
+Syzbot reported a kernel BUG in ocfs2_truncate_inline.  There are two
+reasons for this: first, the parameter value passed is greater than
+ocfs2_max_inline_data_with_xattr, second, the start and end parameters of
+ocfs2_truncate_inline are "unsigned int".
+
+So, we need to add a sanity check for byte_start and byte_len right before
+ocfs2_truncate_inline() in ocfs2_remove_inode_range(), if they are greater
+than ocfs2_max_inline_data_with_xattr return -EINVAL.
+
+Link: https://lkml.kernel.org/r/tencent_D48DB5122ADDAEDDD11918CFB68D93258C07@qq.com
+Fixes: 1afc32b95233 ("ocfs2: Write support for inline data")
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reported-by: syzbot+81092778aac03460d6b7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=81092778aac03460d6b7
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/ocfs2/file.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+--- a/fs/ocfs2/file.c~ocfs2-pass-u64-to-ocfs2_truncate_inline-maybe-overflow
++++ a/fs/ocfs2/file.c
+@@ -1784,6 +1784,14 @@ int ocfs2_remove_inode_range(struct inod
+ 		return 0;
+ 
+ 	if (OCFS2_I(inode)->ip_dyn_features & OCFS2_INLINE_DATA_FL) {
++		int id_count = ocfs2_max_inline_data_with_xattr(inode->i_sb, di);
++
++		if (byte_start > id_count || byte_start + byte_len > id_count) {
++			ret = -EINVAL;
++			mlog_errno(ret);
++			goto out;
++		}
++
+ 		ret = ocfs2_truncate_inline(inode, di_bh, byte_start,
+ 					    byte_start + byte_len, 0);
+ 		if (ret) {
+_
+
+Patches currently in -mm which might be from eadavis@qq.com are
+
+ocfs2-pass-u64-to-ocfs2_truncate_inline-maybe-overflow.patch
 
 
