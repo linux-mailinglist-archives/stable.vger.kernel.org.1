@@ -1,98 +1,156 @@
-Return-Path: <stable+bounces-86526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA649A10EC
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 19:50:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E27F19A10F3
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 19:51:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2DA9285B7D
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 17:49:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F381B234F1
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 17:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957F120C479;
-	Wed, 16 Oct 2024 17:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5568F210C25;
+	Wed, 16 Oct 2024 17:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UUb/mmYo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="joOpKlSd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CAD18BC23;
-	Wed, 16 Oct 2024 17:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F35318BC23;
+	Wed, 16 Oct 2024 17:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729100996; cv=none; b=MxD5RbLNc6dPr7EHnkfbaJNieLKyWAPLeDqLoXfcnFlvl94S+JUY+sVOffjwss8dn17IJxkU9LDKYJT0+IK58KJKRkawTbGPxa07BINAM/okXxNCE938jFAza/JPebpjq8jkcT+OEMNEv8Z5CMZ/WfehhDjaPMUKTdNOeSNSDIc=
+	t=1729101056; cv=none; b=pk2C0z1rcutZWLwWy/uDziVzbaLVN8hbnHeoD2Niv+7DvDsuLGoOLIVSCQdeayCP0lEYvHTr70PEcVR6UiKeMeCgg5smIqMK1zMFN1L1sMvfisMEcg21it+DPH1vPtvcmHpJpZ/Htkh/BEylB6N4/HXAQhCQF2BCgMl7sHRmEQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729100996; c=relaxed/simple;
-	bh=BYimcUhWbKXz9APz4douIFEmI3RMmXp3Pucc9V3D4+g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N8J6Xc96IXG23aBWX6sdWKi/WSA0qb13nDyTYRKBesRMwLyPNVrdFouYwD6uXhgChW8pDqLoHsq5xV2sgzbsCNrxPFfIrwggIEgANSL5wMo6D7fnUCVoIQ+akSyu+XUBblu5P3sO/j31wlGs3e7AjCJdLA4MwyqdN1w8S+eTl0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UUb/mmYo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB5CC4CECE;
-	Wed, 16 Oct 2024 17:49:54 +0000 (UTC)
+	s=arc-20240116; t=1729101056; c=relaxed/simple;
+	bh=hoU5DGRfSi0AM7CKet0iYo9j9GdgPMDGPjGhM0wKSno=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Gz5smxALhdCygY8Zabn9rfi8nj0Rpjq3gBpavdlecjyyo5G/d2ycLn9LCelegf6B1zOJNpNAD4KfYLxDJHJ5G4dkv68rtpc/hGxphWJVS+daY7d2KyFKUXI1CBCgm8ENKd10jHoXlum76FGobJq4xedsCSPpe0rQzGPL+BqSG34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=joOpKlSd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id ABC9DC4CEC5;
+	Wed, 16 Oct 2024 17:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729100995;
-	bh=BYimcUhWbKXz9APz4douIFEmI3RMmXp3Pucc9V3D4+g=;
-	h=From:To:Cc:Subject:Date:From;
-	b=UUb/mmYot/mVtseLROoMEXoIw67Sqc8AI34Kjmus8LuPfHJRmkCu32TxJndYe6MeF
-	 iwKxy3oAHrrKP79SfQBiONa0Vzcf/Q2YAHtYjnENF+g92aBUdNsozOTJXYfGQQsa1c
-	 vki3LzQ3/pa1JKzyyvedE9TV2hCfTWmNlkGLmom1361uKweiI1bNmnHICZENM+54EP
-	 wNu3vnv7bhpIy3sa091QBdNF9GtxGHsqA/DCc/nrdDbkTEXa67rTkibUo0F4sDiqeC
-	 dzVr2cEDLHRUyJhq7B7+qs3aa2ywDScf7H7luQEsu32RnHObKrLDg4xPjGXG6zyoIj
-	 UiP8t6ldrTN8A==
-From: Christian Brauner <brauner@kernel.org>
-To: Josef Bacik <josef@toxicpanda.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Brad Spengler <spender@grsecurity.net>,
-	linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] fs: don't try and remove empty rbtree node
-Date: Wed, 16 Oct 2024 19:49:48 +0200
-Message-ID: <20241016-adapter-seilwinde-83c508a7bde1@brauner>
-X-Mailer: git-send-email 2.45.2
+	s=k20201202; t=1729101055;
+	bh=hoU5DGRfSi0AM7CKet0iYo9j9GdgPMDGPjGhM0wKSno=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=joOpKlSdtlsK+cPFx91M0RfLr0zarS7AmroBAKCdc8Q0ejrq0O/uRX2Mu9NC69TJb
+	 90m/iOJ7ngKXjE2R3rVK14kxb2xf/jX+804QGx5HtIz8ekCC6OcEMeL57nGtBeMQ+l
+	 uXJY/BIcUov2zz9PloLHWdp1t8eOJaV/H6+m36YFc+C9ha0hMKMGhU4p02/TdMLgpW
+	 aHiSQ3SEWNrl2yLA8NHES50JcGH5DUZSz7jBO8l9/nJh/hNnh0Pj7mABKTouS7pL8Q
+	 5ihxkPJcb4XwKMhV7jBOzA/EFFhEilcwOjjhNM2Kej/J61y3LsSASiwrHgpIvTxvy+
+	 Frer/KfZFs/tA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 97252D2A53B;
+	Wed, 16 Oct 2024 17:50:55 +0000 (UTC)
+From: Celeste Liu via B4 Relay <devnull+CoelacanthusHex.gmail.com@kernel.org>
+Date: Thu, 17 Oct 2024 01:49:49 +0800
+Subject: [PATCH] riscv/entry: get correct syscall number from
+ syscall_get_nr()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1238; i=brauner@kernel.org; h=from:subject:message-id; bh=BYimcUhWbKXz9APz4douIFEmI3RMmXp3Pucc9V3D4+g=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTz/9mzSsMrUso6WEEoLfvu+pYpwbfqjxyMrm6IZfqzy +5I+R3RjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgInwdjH8r9yoYjapenc766rr r49kbjBZFPBowgvXgh2ZDyR+xUcnTmX4p1BtwVLyNXjhydvMCef3Hjz2ImHFtnfM6ybsLSt/6fb iEgcA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241017-fix-riscv-syscall-nr-v1-1-4edb4ca07f07@gmail.com>
+X-B4-Tracking: v=1; b=H4sIALz8D2cC/x2MSQqAMAwAvyI5G7AuFf2KeNCaakCqJFAU8e8Wj
+ wMz84CSMCn02QNCkZWPkMDkGbhtCishL4mhLMraFMai5wuF1UXUW9207xgEO9POjbW+a30FKT2
+ Fkvdvh/F9P1Mix5BmAAAA
+X-Change-ID: 20241016-fix-riscv-syscall-nr-917b566f97f3
+To: Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@rivosinc.com>, 
+ Celeste Liu <coelacanthushex@gmail.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>, Alexandre Ghiti <alex@ghiti.fr>, 
+ "Dmitry V. Levin" <ldv@strace.io>, Andrea Bolognani <abologna@redhat.com>, 
+ Felix Yan <felixonmars@archlinux.org>, Ruizhe Pan <c141028@gmail.com>, 
+ Shiqi Zhang <shiqi@isrc.iscas.ac.cn>, Guo Ren <guoren@kernel.org>, 
+ Yao Zi <ziyao@disroot.org>, Han Gao <gaohan@iscas.ac.cn>, 
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Celeste Liu <CoelacanthusHex@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2366;
+ i=CoelacanthusHex@gmail.com; h=from:subject:message-id;
+ bh=lQHWH4mdPxR6fSPtGuLhEmZBLbEpDpJ9XVmyzF+kIjU=;
+ b=owJ4nJvAy8zAJfY4pvNJRPo6U8bTakkM6fx//rDbHWUTjFeQ1lxc+evTyrQnVWz7ZnMl5gXGN
+ bKeX89itrCjlIVBjItBVkyRRWzn09fLSh99WMZrMgNmDisTyBAGLk4BmIiTFyPDhFnn9dIvunfM
+ ezeRcxLDm791Uyo+aE9KqdXql5lxwCePn5HhUrLiJuNJhmd61+wIi3naMVdOfk7c5X/cwk3Xt4c
+ 4mnjxAQABV0jh
+X-Developer-Key: i=CoelacanthusHex@gmail.com; a=openpgp;
+ fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
+X-Endpoint-Received: by B4 Relay for CoelacanthusHex@gmail.com/default with
+ auth_id=84
+X-Original-From: Celeste Liu <CoelacanthusHex@gmail.com>
+Reply-To: CoelacanthusHex@gmail.com
 
-When copying a namespace we won't have added the new copy into the
-namespace rbtree until after the copy succeeded. Calling free_mnt_ns()
-will try to remove the copy from the rbtree which is invalid. Simply
-free the namespace skeleton directly.
+From: Celeste Liu <CoelacanthusHex@gmail.com>
 
-Fixes: 1901c92497bd ("fs: keep an index of current mount namespaces")
-Cc: stable@vger.kernel.org # v6.11+
-Reported-by: Brad Spengler <spender@grsecurity.net>
-Tested-by: Brad Spengler <spender@grsecurity.net>
-Suggested-by: Brad Spengler <spender@grsecurity.net>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+The return value of syscall_enter_from_user_mode() is always -1 when the
+syscall was filtered. We can't know whether syscall_nr is -1 when we get -1
+from syscall_enter_from_user_mode(). And the old syscall variable is
+unusable because syscall_enter_from_user_mode() may change a7 register.
+So get correct syscall number from syscall_get_nr().
+
+So syscall number part of return value of syscall_enter_from_user_mode()
+is completely useless. We can remove it from API and require caller to
+get syscall number from syscall_get_nr(). But this change affect more
+architectures and will block more time. So we split it into another
+patchset to avoid block this fix. (Other architectures can works
+without this change but riscv need it, see Link: tag below)
+
+Fixes: 61119394631f ("riscv: entry: always initialize regs->a0 to -ENOSYS")
+Reported-by: Andrea Bolognani <abologna@redhat.com>
+Closes: https://github.com/strace/strace/issues/315
+Link: https://lore.kernel.org/all/59505464-c84a-403d-972f-d4b2055eeaac@gmail.com/
+Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
 ---
-In vfs.fixes unless I hear objections.
----
- fs/namespace.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/riscv/kernel/traps.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 93c377816d75..d26f5e6d2ca3 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -3944,7 +3944,9 @@ struct mnt_namespace *copy_mnt_ns(unsigned long flags, struct mnt_namespace *ns,
- 	new = copy_tree(old, old->mnt.mnt_root, copy_flags);
- 	if (IS_ERR(new)) {
- 		namespace_unlock();
--		free_mnt_ns(new_ns);
-+		ns_free_inum(&new_ns->ns);
-+		dec_mnt_namespaces(new_ns->ucounts);
-+		mnt_ns_release(new_ns);
- 		return ERR_CAST(new);
- 	}
- 	if (user_ns != ns->user_ns) {
+diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
+index 51ebfd23e0076447518081d137102a9a11ff2e45..3125fab8ee4af468ace9f692dd34e1797555cce3 100644
+--- a/arch/riscv/kernel/traps.c
++++ b/arch/riscv/kernel/traps.c
+@@ -316,18 +316,25 @@ void do_trap_ecall_u(struct pt_regs *regs)
+ {
+ 	if (user_mode(regs)) {
+ 		long syscall = regs->a7;
++		long res;
+ 
+ 		regs->epc += 4;
+ 		regs->orig_a0 = regs->a0;
+-		regs->a0 = -ENOSYS;
+ 
+ 		riscv_v_vstate_discard(regs);
+ 
+-		syscall = syscall_enter_from_user_mode(regs, syscall);
++		res = syscall_enter_from_user_mode(regs, syscall);
++		/*
++		 * Call syscall_get_nr() again because syscall_enter_from_user_mode()
++		 * may change a7 register.
++		 */
++		syscall = syscall_get_nr(current, regs);
+ 
+ 		add_random_kstack_offset();
+ 
+-		if (syscall >= 0 && syscall < NR_syscalls)
++		if (syscall < 0 || syscall >= NR_syscalls)
++			regs->a0 = -ENOSYS;
++		else if (res != -1)
+ 			syscall_handler(regs, syscall);
+ 
+ 		/*
+
+---
+base-commit: 2f87d0916ce0d2925cedbc9e8f5d6291ba2ac7b2
+change-id: 20241016-fix-riscv-syscall-nr-917b566f97f3
+
+Best regards,
 -- 
-2.45.2
+Celeste Liu <CoelacanthusHex@gmail.com>
+
 
 
