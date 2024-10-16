@@ -1,171 +1,119 @@
-Return-Path: <stable+bounces-86481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE9BD9A07E7
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 12:58:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52CEB9A082B
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 13:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E6F92876A2
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 10:58:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA8D3B2497E
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 11:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C9C207200;
-	Wed, 16 Oct 2024 10:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F040A20899E;
+	Wed, 16 Oct 2024 11:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ailUwRxU";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xqNCwMtB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05631CC14C;
-	Wed, 16 Oct 2024 10:57:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC87202F98;
+	Wed, 16 Oct 2024 11:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729076276; cv=none; b=ghp7FB+i/kSrbKQ/dlpUeZWyMTCXbE9oMt9DVJlD8UEB2JYcKqTdaxraEIKRh5s+aW+S4SKkP6LcKWgENpCftF5nK2hrn+CQCJ7nSpfw0IpvF9XnyALJoU85uq2OZ226FDS1tAGwPkLwR3TyHVXEsIQsTmw++68+j/cxJ1Bzkcc=
+	t=1729077312; cv=none; b=rucl5WgS9PyeUjH6pL2Cxh+5wCcarVo/1CUitLRAVlaz1re4ldrlhjQV6+GeAbZQNYSJ5RUydQ6yrC97wYyve1HOf7/tefBd61F5SUFax9l09PfIdKivdnL7Qn3/poOZOnERHV91tB/UUZbPLs7Q9K5LnrV06FRP/jxMN2VK9As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729076276; c=relaxed/simple;
-	bh=k9e4fjda90o5EA5Z0Af+v/eRFcfzY6lzhbhsuWf7++Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KOTtP0opcsa1dSjebUb7E1PXIhi+u1jCgQbFm3hj4o44pX4jJIpEzoxxFsFC04a4wcxnIJ1rCZHGiH4SWh6LO/w5OzIGMRsW84MMg6LMCQDKuB0PhcgIWykawQFrAj00Q90qSqhKsdhJB077I67b5ewzyxVORghh87VAb2xaHQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B95C4CECD;
-	Wed, 16 Oct 2024 10:57:55 +0000 (UTC)
-Message-ID: <e591ffa7-4214-4ec0-91f3-65c809aedce9@xs4all.nl>
-Date: Wed, 16 Oct 2024 12:57:53 +0200
+	s=arc-20240116; t=1729077312; c=relaxed/simple;
+	bh=KeXYT7Y2Y5kusM4KVM64TAK3+woLAQN8jJ27LWspqwE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=QY7EHRM5hPL6odO/lxq1jvbm7Ubb6Tqg+c9AcyeVAA4Zalwy5kGXsJHQWTQ1sSZVBOgVimJxVQVMVCQe+9BVIgGlpEGSOgQWd3hu0h1D+Zy9taD4R3K3xVp2BIoVBGtuoPriAPaZ50TwvMBHlmiJRmNrijDMTlRMPt7PmBzaZPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ailUwRxU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xqNCwMtB; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1729077309;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=taMxV9mtk3n69MLoKAdYPROfMQmRFolbS3Ztd5Pnu6o=;
+	b=ailUwRxUPhMswFw6KNbD9qLockidc3EcNGUOaMUbL91aUGwePokXSpGsGaS0UvAfqRBpml
+	60h1gEn351uOPQiPOkloVnqaPfaFXKzoYXTGlaeOhjJvj5AP1aXn/rqYHAl04jER2wcX/q
+	W8lBjirowRCwdYoI9JjgpMxb4hdLtGHAbxtiDAzaIGu6NlG8FVUSGQWyihRIiUt9J+WgMS
+	iWMmRSdGNJRz5uvKiXh9pRd6lMP5KXAhP2TiERZKJ1VBHCweZJG5aUSRPiV6uD4oIgkEJw
+	ba/aFw5ApuxXhnKzYkCuRbDvGhXI014402yhhqZLeh68AeIDOZUpKRiOLqkGFg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1729077309;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=taMxV9mtk3n69MLoKAdYPROfMQmRFolbS3Ztd5Pnu6o=;
+	b=xqNCwMtB8BWzTliqAWJ2BpTVRFKQvciCUP6FsKMjnCJTlJy9QGiNuw75HZN9yJIKy4/ZA+
+	G+h4YaWSABZXBHCg==
+Date: Wed, 16 Oct 2024 13:14:51 +0200
+Subject: [PATCH] tools/nolibc/stdlib: fix getenv() with empty environment
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/13] media: adv7604 prevent underflow condition when
- reporting colorspace
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- stable@vger.kernel.org
-References: <cover.1729074076.git.mchehab+huawei@kernel.org>
- <41d12c1afd6571f9cc56c1b920df6ba558d0b927.1729074076.git.mchehab+huawei@kernel.org>
-Content-Language: en-US, nl
-From: Hans Verkuil <hverkuil@xs4all.nl>
-Autocrypt: addr=hverkuil@xs4all.nl; keydata=
- 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
-In-Reply-To: <41d12c1afd6571f9cc56c1b920df6ba558d0b927.1729074076.git.mchehab+huawei@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20241016-nolibc-getenv-v1-1-8bc11abd486d@linutronix.de>
+X-B4-Tracking: v=1; b=H4sIACqgD2cC/x3MQQqAIBBA0avIrBPUJLCrRIvS0QZCQ0MC6e5Jy
+ 7f4v0HBTFhgZg0yViqUYoccGNhjiwE5uW5QQmkp5MRjOmm3POCNsXJvjNdudF5ZB725Mnp6/t+
+ yvu8HXNSq4l8AAAA=
+X-Change-ID: 20241016-nolibc-getenv-f99f4d3df2cd
+To: Willy Tarreau <w@1wt.eu>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+ "Paul E. McKenney" <paulmck@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1729077306; l=1279;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=KeXYT7Y2Y5kusM4KVM64TAK3+woLAQN8jJ27LWspqwE=;
+ b=fkJhst66dWkETVCllsXXJUUPP1dDlpIoXVGm5mQQuP/MTWhXozSINhWUWHK1UEhPiMTMRlanl
+ Ar/G9Lw3eqeD4N8E7WkEos2R5kiOsqgo5/ScpOpYmpaG7NomsAolFPe
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-On 16/10/2024 12:22, Mauro Carvalho Chehab wrote:
-> Currently, adv76xx_log_status() reads some date using
-> io_read() which may return negative values. The current logi
-> doesn't check such errors, causing colorspace to be reported
-> on a wrong way at adv76xx_log_status().
-> 
-> If I/O error happens there, print a different message, instead
-> of reporting bogus messages to userspace.
-> 
-> Fixes: 54450f591c99 ("[media] adv7604: driver for the Analog Devices ADV7604 video decoder")
-> Cc: stable@vger.kernel.org
+The environ pointer itself is never NULL, this is guaranteed by crt.h.
+However if the environment is empty, environ will point to a NULL
+pointer.
+While this case will be checked by the loop later, this only happens
+after the first loop iteration.
+To avoid reading invalid memory inside the loop, fix the test that
+checks for an empty environment.
 
-Not really a fix since this would just affect logging for debugging
-purposes. I would personally just drop the Fixes and Cc tag.
+Fixes: 077d0a392446 ("tools/nolibc/stdlib: add a simple getenv() implementation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+---
+ tools/include/nolibc/stdlib.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+diff --git a/tools/include/nolibc/stdlib.h b/tools/include/nolibc/stdlib.h
+index 75aa273c23a6153db6a32facaea16457a522703b..c31967378cf1f699283d801487c1a91d17e4d1ce 100644
+--- a/tools/include/nolibc/stdlib.h
++++ b/tools/include/nolibc/stdlib.h
+@@ -90,7 +90,7 @@ char *getenv(const char *name)
+ {
+ 	int idx, i;
+ 
+-	if (environ) {
++	if (*environ) {
+ 		for (idx = 0; environ[idx]; idx++) {
+ 			for (i = 0; name[i] && name[i] == environ[idx][i];)
+ 				i++;
 
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
+---
+base-commit: 2f87d0916ce0d2925cedbc9e8f5d6291ba2ac7b2
+change-id: 20241016-nolibc-getenv-f99f4d3df2cd
 
-Regards,
-
-	Hans
-
-> ---
->  drivers/media/i2c/adv7604.c | 26 +++++++++++++++++---------
->  1 file changed, 17 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/media/i2c/adv7604.c b/drivers/media/i2c/adv7604.c
-> index 48230d5109f0..272945a878b3 100644
-> --- a/drivers/media/i2c/adv7604.c
-> +++ b/drivers/media/i2c/adv7604.c
-> @@ -2519,10 +2519,10 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
->  	const struct adv76xx_chip_info *info = state->info;
->  	struct v4l2_dv_timings timings;
->  	struct stdi_readback stdi;
-> -	u8 reg_io_0x02 = io_read(sd, 0x02);
-> +	int ret;
-> +	u8 reg_io_0x02;
->  	u8 edid_enabled;
->  	u8 cable_det;
-> -
->  	static const char * const csc_coeff_sel_rb[16] = {
->  		"bypassed", "YPbPr601 -> RGB", "reserved", "YPbPr709 -> RGB",
->  		"reserved", "RGB -> YPbPr601", "reserved", "RGB -> YPbPr709",
-> @@ -2621,13 +2621,21 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
->  	v4l2_info(sd, "-----Color space-----\n");
->  	v4l2_info(sd, "RGB quantization range ctrl: %s\n",
->  			rgb_quantization_range_txt[state->rgb_quantization_range]);
-> -	v4l2_info(sd, "Input color space: %s\n",
-> -			input_color_space_txt[reg_io_0x02 >> 4]);
-> -	v4l2_info(sd, "Output color space: %s %s, alt-gamma %s\n",
-> -			(reg_io_0x02 & 0x02) ? "RGB" : "YCbCr",
-> -			(((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
-> -				"(16-235)" : "(0-255)",
-> -			(reg_io_0x02 & 0x08) ? "enabled" : "disabled");
-> +
-> +	ret = io_read(sd, 0x02);
-> +	if (ret < 0) {
-> +		v4l2_info(sd, "Can't read Input/Output color space\n");
-> +	} else {
-> +		reg_io_0x02 = ret;
-> +
-> +		v4l2_info(sd, "Input color space: %s\n",
-> +				input_color_space_txt[reg_io_0x02 >> 4]);
-> +		v4l2_info(sd, "Output color space: %s %s, alt-gamma %s\n",
-> +				(reg_io_0x02 & 0x02) ? "RGB" : "YCbCr",
-> +				(((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
-> +					"(16-235)" : "(0-255)",
-> +				(reg_io_0x02 & 0x08) ? "enabled" : "disabled");
-> +	}
->  	v4l2_info(sd, "Color space conversion: %s\n",
->  			csc_coeff_sel_rb[cp_read(sd, info->cp_csc) >> 4]);
->  
+Best regards,
+-- 
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
 
