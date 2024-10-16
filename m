@@ -1,93 +1,122 @@
-Return-Path: <stable+bounces-86429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814569A00FA
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 07:56:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 327E29A014B
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 08:21:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD4A71C24250
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 05:56:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6549B24532
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 06:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9EFB18C033;
-	Wed, 16 Oct 2024 05:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319FD1925BC;
+	Wed, 16 Oct 2024 06:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="fH1rs0sR"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oh7Y6kSD"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBC85221;
-	Wed, 16 Oct 2024 05:56:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A24418C926
+	for <stable@vger.kernel.org>; Wed, 16 Oct 2024 06:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729058175; cv=none; b=hNaEQaDhaz22ONolobV2aUYNTtiqbZPdCp859osqvbikImES47UtlCW9y1+2L2yg65/2m6A1bZqeOK3pK8qCc4I9bt2m6VLqqFraQzZBWf7Y/EFO3P5KA8ncRwi8LzUPwb2QhFcEIUSsto3SZ5KOGB/1W6ilEtk0ODtjUJxjfCE=
+	t=1729059622; cv=none; b=k5eAAqHkLsxA/G4sm3RNXkjkBNFgwYMHNcRWzluTDCpqsnzME4vxIPW6Efz8aBZ/o51vMHSEx34VrKnIOWr0mQCzR8SFO0bO/GRFnwAuP/RM5hx4iu0Hf4bvri2avD688geNjeU4gowEPUdRI2jL7B2JsHi2M+qUnn2RNEzd4EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729058175; c=relaxed/simple;
-	bh=EVsQY8fPxvadPhWsnGUGb2WaQ0g3ANREtDe2FCLO9I8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UrwWTR5XpZQVqbtBMWqvl9y4AkekUax2LjspE4/JbgNs9KdTBn7j4qvruVSX95AhB5MxxgufaixuvQChoU7/O1yK7lUtD/dkWiZJGtcZNGaGLV/OOWAL7grXC8Ttn/R7fsz1kWbyCQm5DAuWyIExhT/2sRYDlgNdixHhgnIWlgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=fH1rs0sR; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=OfDEy5CvavV94PaefN8qX3Rl0Kvh6OaxMiKj2+nKExg=;
-	t=1729058173; x=1729490173; b=fH1rs0sRN0zjeP5Oln5pZ0TgLmeW/MOqlhhu1Z0GqFzLHZh
-	qlMaabGc7B/F8ai4rClQv/ACtxepuZvDJF21GAPUl3pSkasB5VafPglfdJxrgeLguviFvPHjVS3W7
-	LmQ7c2WZizEaEOQONSwL6g0HI8248P+cv9BAUzzf+bFnhJSbX1k+Z8ngnZjSBDAsMfi9eI62gn5lu
-	qg2OErdrn1bgczRmutS67HlR2WHK7cBsKl/lf8jqS+VbXApx4rOrM3u5p8i+YSGuW/Fyh9/nLn7/R
-	De9xuwPhOQXyEObBH2AifA1yHanFOU8UAjWJz495ouVIYxZWme1rasznNvIbFdfQ==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1t0x10-0000xh-EW; Wed, 16 Oct 2024 07:56:10 +0200
-Message-ID: <433b8579-e181-40e6-9eac-815d73993b23@leemhuis.info>
-Date: Wed, 16 Oct 2024 07:56:09 +0200
+	s=arc-20240116; t=1729059622; c=relaxed/simple;
+	bh=7JSgjt/5W2tCjzP18X4ou6+lz5nVznQreebmKWAODzU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=s9BoV0m5zgi6zXS7GNHY4zH8qyroUxxGAObpZ9OlflQYGun1Z0G676/2ARzS9NkojUb5f9LKZOxsdtV4/3wreA1UFTkSXIly4Qlk8titRUiASXeccEqYmhsiLGYr/TEmZu2RGWawabqtWJfYmAItdKpQdki2n6eEgvVh/5aB1O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oh7Y6kSD; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4311173a667so9604525e9.2
+        for <stable@vger.kernel.org>; Tue, 15 Oct 2024 23:20:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1729059618; x=1729664418; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ytXbiH0qYtsul/qCW7PQjPX4CH9pWPDn7uLBaZcZ8e8=;
+        b=oh7Y6kSDfL5xUViTRqZExZYHSSkHzzuMa5qOo0bn7UbwwNiEqt0erX7pb9ZqNYQ8UZ
+         TJIMPqaef8ZzPoRk8rpbtpvmIwwmMYX2TaqcFslFSDk+xqj8z/gVPPXt7g9enExUWT1f
+         CgG1fgbUxFcC+j3/aRwwOspwr7kOVwsE8zPpnLweNgrI8Y1p7EkB+dh/BhnwWTXynsTM
+         UFnGKYlCS0TmFWK5/a8lT/fZ73CsIiUQGWOFwFP3wgCI8HPEUkBOy8UCWEVW6Yn3gUh5
+         MJd89I1bUIoyC/qZ4F+cFIsCtMH81kvnR3vmB9WAjeBTWcZ6RNI53N9OKiZ7SGnpxVO0
+         v+Mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729059618; x=1729664418;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ytXbiH0qYtsul/qCW7PQjPX4CH9pWPDn7uLBaZcZ8e8=;
+        b=TMBfNcEquFtKC0QKcrH6PA8IARo2TKo5kQmI6S1cYi0K4fyRpSqKPR8olPK7TgQO0W
+         K48jWFfORBiUZ8NaxbRar+zE2BzNaXkcVnA5iutQifpEQlwQPa18ncXTD/7lm4RDwGxy
+         6pmx3b5YmpIohaLAgALsZwdU34xGLiAikBFwc9eYdYAdMImv9WNbX3mw3LS3ZtGn47qH
+         VNLTaEFFCbJypp4RXaDbW5it+8+D/6CJOjaEoyfILfsY4BUAvEoLt7R1WTqtX0N60W1X
+         c+gMMRRYe/KJs2MAa4NnbBY/X0yTgeV+d9okVve2TIxN5wbz78w3sfzD1o8YxhxwWh/c
+         jLhg==
+X-Gm-Message-State: AOJu0YzJ+ElCZSiJsI2CP0dBJn5wO4w1rObaVV4hZEwiBOs6TuRKEIRw
+	I4oj8iLFOPwQPmLXU37fn+xVSiHuInqe6k3Gk/92ye+FWHmfPumLaUZgBjzsqr4=
+X-Google-Smtp-Source: AGHT+IE+UoOQRJOTLHySardR6ldHyh0e9elEwxt//vmMPx6P7kv7VSPMQ2O80HK+68vbi8nkoz8Kdw==
+X-Received: by 2002:a5d:5886:0:b0:37d:54d0:1f18 with SMTP id ffacd0b85a97d-37d552a66edmr5968237f8f.6.1729059618378;
+        Tue, 15 Oct 2024 23:20:18 -0700 (PDT)
+Received: from [127.0.1.1] ([178.197.211.167])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d7fa9050csm3398580f8f.48.2024.10.15.23.20.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Oct 2024 23:20:16 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>, 
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Tomasz Figa <tomasz.figa@gmail.com>, 
+ Jaewon Kim <jaewon02.kim@samsung.com>, 
+ Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>, 
+ linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: stable@vger.kernel.org, 
+ Igor Belwon <igor.belwon@mentallysanemainliners.org>
+In-Reply-To: <20241015065848.29429-1-krzysztof.kozlowski@linaro.org>
+References: <20241015065848.29429-1-krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH 1/2] dt-bindings: pinctrl: samsung: Fix interrupt
+ constraint for variants with fallbacks
+Message-Id: <172905961565.5996.4588460479278512095.b4-ty@linaro.org>
+Date: Wed, 16 Oct 2024 08:20:15 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: No sound on speakers X1 Carbon Gen 12
-To: Dean Matthew Menezes <dean.menezes@utexas.edu>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Linux Sound System <linux-sound@vger.kernel.org>,
- Greg KH <gregkh@linuxfoundation.org>
-References: <CAEkK70Tke7UxMEEKgRLMntSYeMqiv0PC8st72VYnBVQD-KcqVw@mail.gmail.com>
- <2024101613-giggling-ceremony-aae7@gregkh>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <2024101613-giggling-ceremony-aae7@gregkh>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1729058173;7a816f2a;
-X-HE-SMSGID: 1t0x10-0000xh-EW
+X-Mailer: b4 0.14.2
 
-On 16.10.24 07:42, Greg KH wrote:
-> On Tue, Oct 15, 2024 at 07:47:22PM -0500, Dean Matthew Menezes wrote:
->> I am not getting sound on the speakers on my Thinkpad X1 Carbon Gen 12
->> with kernel 6.11.2  The sound is working in kernel 6.8
+
+On Tue, 15 Oct 2024 08:58:47 +0200, Krzysztof Kozlowski wrote:
+> Commit 904140fa4553 ("dt-bindings: pinctrl: samsung: use Exynos7
+> fallbacks for newer wake-up controllers") added
+> samsung,exynos7-wakeup-eint fallback to some compatibles, so the
+> intention in the if:then: conditions was to handle the cases:
 > 
-> Can you use 'git bisect' to track down the offending change?
+> 1. Single Exynos7 compatible or Exynos5433+Exynos7 or
+>    Exynos7885+Exynos7: only one interrupt
+> 
+> [...]
 
-Yeah, that would help a lot.
+Applied, thanks!
 
-But FWIW, I CCed the audio maintainers and the sound mailing list, with
-a bit of luck they might have an idea.
+[1/2] dt-bindings: pinctrl: samsung: Fix interrupt constraint for variants with fallbacks
+      https://git.kernel.org/pinctrl/samsung/c/ffb30875172eabff727e2896f097ccd4bb68723f
+[2/2] dt-bindings: pinctrl: samsung: Add missing constraint for Exynos8895 interrupts
+      https://git.kernel.org/pinctrl/samsung/c/e0f89ba1e04307a0060b354c40d29d008a3fef6e
 
-You might also want to publish your dmesg files from the latest working
-and the first broken kernel, that gives people a chance to spot obvious
-problems. Ohh, and runing alsa-info.sh and publishing the output could
-help, too.
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Ciao, Thorsten
 
