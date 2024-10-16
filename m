@@ -1,97 +1,93 @@
-Return-Path: <stable+bounces-86490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AAF39A08F8
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 14:02:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D9BD9A0925
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 14:17:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFA6228296A
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 12:01:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9FC01F219AF
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 12:17:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03627207A1C;
-	Wed, 16 Oct 2024 12:01:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cpA/7PIm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A223F207207;
+	Wed, 16 Oct 2024 12:17:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EFF2071E7
-	for <stable@vger.kernel.org>; Wed, 16 Oct 2024 12:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F56A206953;
+	Wed, 16 Oct 2024 12:17:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=163.172.96.212
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729080113; cv=none; b=BI9S/x2pxG7VJQVMmupFnEWmhQ2f6wRxtjPMKz36ZwrpVAy6GnVH49PiUNl/bnAB6h7KukzvJ8LaTF4kXgCEyi2j6UDn6w2Mm+vFlrBAKLwgbpNBGrM5CGhlh9GvbobcOqysTA9BZpy2HOrsDH/ZGqrrzcBRMMRYqcicGs/vsKY=
+	t=1729081066; cv=none; b=H1htrlBjCW4oDd0NVRGSDBdFlq5YTnyxOwVi+UBDCc/6CLFtTl5ZeywWVVSLwzy3y1cH/VJkoIsZDzfsMCIP/qJfKVHG/nxW95Wf0N3oXCVzNnJwO9F13uAOWGZFIIUujsIPV4iaYXcqFymXySqfYXWBG2yDWm2e71wbosDULEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729080113; c=relaxed/simple;
-	bh=Q7LLV2w3gddlR/52p0111H0ukS2hKNuhILk9n0snq2c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=azun5GCJdz3etW5MnrCxPea9SWkPjf6pIDPxivixFMrBJND0HUBuXLqugz4UagsSQBHiLD5SyksERo/eAnby6Inyun8yrrDvhbPUszaPrfUBfiboMeF9pF4XPWGedqbFxX6rR7d6f0DETQRM5enveZG/RyTt5ubATNskjeLgD8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cpA/7PIm; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729080111;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L0chUVeWVNXUa+6nJgceHk0TDRpnJb7xfMwzVuSrbvU=;
-	b=cpA/7PImqHJ6s2LdeLB3I6FQDhPdS9Bh0XvK4JL49s6/QAQU6iFQTruZNMqf1qONb4/Yk8
-	Y80M5UVakY7T9n1S3GX+D8eBn/QrqqrOAMapOVTbu/lH8Mu2ZW62BDqi4aBjx9VTfRb3ZB
-	L2ZiVPz06vLb8rPAp5zHvtCvnNQ6fTk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-686-AtxIvyv1PyiGfnUaJkNNVQ-1; Wed,
- 16 Oct 2024 08:01:48 -0400
-X-MC-Unique: AtxIvyv1PyiGfnUaJkNNVQ-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 69E86195609E;
-	Wed, 16 Oct 2024 12:01:46 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.39.192.76])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 92F9A3000198;
-	Wed, 16 Oct 2024 12:01:42 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: quic_jjohnson@quicinc.com
-Cc: ath12k@lists.infradead.org,
-	jjohnson@kernel.org,
-	jtornosm@redhat.com,
-	kvalo@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] wifi: ath12k: fix crash when unbinding
-Date: Wed, 16 Oct 2024 14:01:38 +0200
-Message-ID: <20241016120140.204902-1-jtornosm@redhat.com>
-In-Reply-To: <039e7ccb-adb2-4c36-bd5b-83b5965373d7@quicinc.com>
-References: <039e7ccb-adb2-4c36-bd5b-83b5965373d7@quicinc.com>
+	s=arc-20240116; t=1729081066; c=relaxed/simple;
+	bh=bO5v/NOUlppeLzNBHzyNKSewCI43HW1yo0iNqORVgFM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C92FGixe4ri9Rzw3TSzzO4LAXNL8ztRiMjzcNNuL8St5Z2a+RN7pt/IEBMt+hXUGTHsQ2VILizaYDlG04etsnc/GQpDSvOUTyoeHiIcxhx5VJzBA2SCfiAjamQVdo/U3bIl8JQyi6OAELZ89cx1qkNtdhjJ9mCZaNMy0hB2sOzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; arc=none smtp.client-ip=163.172.96.212
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
+Received: (from willy@localhost)
+	by mail.home.local (8.17.1/8.17.1/Submit) id 49GCH8xc019277;
+	Wed, 16 Oct 2024 14:17:08 +0200
+Date: Wed, 16 Oct 2024 14:17:08 +0200
+From: Willy Tarreau <w@1wt.eu>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+        "Paul E. McKenney" <paulmck@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] tools/nolibc/stdlib: fix getenv() with empty environment
+Message-ID: <Zw+uxLIklMHSSxTu@1wt.eu>
+References: <20241016-nolibc-getenv-v1-1-8bc11abd486d@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+In-Reply-To: <20241016-nolibc-getenv-v1-1-8bc11abd486d@linutronix.de>
 
-Hello Jeff,
+Hi Thomas!
 
-> WARNING: Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>")' - ie: 'Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")'
-> #51: 
-> Fixes: d889913205cf7 ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
->
-> same comment applies to the 2/2 patch
-Ok, I will fix it in a next version of the patches.
+On Wed, Oct 16, 2024 at 01:14:51PM +0200, Thomas Weißschuh wrote:
+> The environ pointer itself is never NULL, this is guaranteed by crt.h.
+> However if the environment is empty, environ will point to a NULL
+> pointer.
 
-Thanks
+Good point, however from what I'm seeing on glibc, if the user sets
+environ to NULL, getenv() safely reports NULL and doesn't crash. I
+don't know what the spec says about environ being NULL, though. I
+just tested on freebsd to compare and also get a NULL in this case
+as well. So I'd be tempted by keeping the check.
 
-Best regards
-JosÃ© Ignacio
+>  	int idx, i;
+>  
+> -	if (environ) {
+> +	if (*environ) {
+>  		for (idx = 0; environ[idx]; idx++) {
+>  			for (i = 0; name[i] && name[i] == environ[idx][i];)
+>  				i++;
 
+However as a quick note, if we decide we don't care about environ being
+NULL, and since this is essentially a cleanup, why not even get rid of
+the whole "if" condition, since the loop takes care of it ?
+
+FWIW I tested glibc with this:
+
+  #include <stdlib.h>
+
+
+  int main(int argc, char **argv)
+  {
+        extern char **environ;
+
+        environ=NULL;
+        return getenv("HOME") == NULL;
+  }
+
+Cheers,
+Willy
 
