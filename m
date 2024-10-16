@@ -1,91 +1,94 @@
-Return-Path: <stable+bounces-86547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B39D99A1590
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 00:05:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 410A89A15A8
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 00:10:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E7691F2264C
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 22:05:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 643701C20B9D
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 22:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D320F1D2F6D;
-	Wed, 16 Oct 2024 22:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973D21D415D;
+	Wed, 16 Oct 2024 22:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MMLc4Iyg"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="APnLeXqX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3951D1F63
-	for <stable@vger.kernel.org>; Wed, 16 Oct 2024 22:05:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6661D4161
+	for <stable@vger.kernel.org>; Wed, 16 Oct 2024 22:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729116346; cv=none; b=Lf/ie+jjSSlDdJtmKx7OTosJhMLN/S3uB5a3ogkps2w27muNlR+6pkNkEtnbUlfAojLkNbiIMN5DfzPyPXMLHaz1Cx4AjZJBPveST1j4rwlM7XtQ/HZw3NL6lfUgQaWuOgxQN+Kd1kgnN9dHg+IiKN/mnzEWQ5ypsrMWPtoxg1c=
+	t=1729116633; cv=none; b=hP1LPhqi2yb/LHNAc4oMVbyx0VgZ5kTP6MjONwaozqvhhT6iog8+N6I5I4Dd3/i0xExDsrre5pi1Ojt3gTW8tWwAJiewOD3T9tHgUXGPhXFpPlB5UQe3qCmzv2+SjVmrK/D6XrrWR4+zACvNwHp5/jaT5+HC9JOjGlCwyuXpTJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729116346; c=relaxed/simple;
-	bh=yaHkrgyzxpqCXu/uo343VjqBZzEv+dPomLknhyVwq/E=;
+	s=arc-20240116; t=1729116633; c=relaxed/simple;
+	bh=9vVA4Agfm0WSbaBtQ7P8QVyvTZdi13A+uushqRFcJ2g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DRRC8iuTm0pDIHs2/oHqqPUo7CuO8hQdpi5zudpPvq0B5KTTf/L9KVCNoywGjZpcniGKPBG55Bz0plcIL6gVc4O0biKOEI29b9+vQhI0aCMRQ2Qv1Z5GIOtn2YINFka4O04/hxswo2o6TdMLSg1C4O7mZ5y9f48bq3QGCQ9vegg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MMLc4Iyg; arc=none smtp.client-ip=209.85.208.43
+	 To:Cc:Content-Type; b=UNVWGd268UTkjoaYmoSTg/TFzWPhkX6+hwJiVFb/drFOXWzXLAy7oDLr6FCliAloUM69upRls+P2g4yfHKxz49VxeXQVlNkHMIFV4pqZjmiTcx1GCZSMmdi+YCHplcvIJFaZVBFaX8qlBKV8baeEx2cAkVoBUQwGG4YU1NnZfBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=APnLeXqX; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5c93e9e701fso3817a12.1
-        for <stable@vger.kernel.org>; Wed, 16 Oct 2024 15:05:44 -0700 (PDT)
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-539e66ba398so10011e87.0
+        for <stable@vger.kernel.org>; Wed, 16 Oct 2024 15:10:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729116343; x=1729721143; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1729116630; x=1729721430; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DF2hnyZnur4FAKXfn/pZIiJIZnA1uCI/DSTuBMf9wzw=;
-        b=MMLc4Iyg3bgS0k1/BdsqJ8ME2QLkHQKe6BKlrVObmM1auBDJHeQT6Fp5RK/klTSqFs
-         fsXgPKJRHDaq5Ma6apZCMG6872PNcBWgkLQZG7somQjEu8zKcLeVNkH9vutwmdqUmdO0
-         Knpocd7g6LuZOjkhvRP3dndiscGu0pIpRA6XO0AYhw7XX+loCYiOjK7sq6HqT6DOmyKm
-         6f6+VZwwZIuBVifrwnISbCEL1oNPO24MkLW9yNG8HzeTC4ru28jrKY46hmyYI/MjnzmH
-         5RaY0pt5IXfvFgRfAEOkY/TAIdRjiCWvYTG7UyxauqpA5j+sIkFlcYSH6TkSs0ytYZ1L
-         Mr1A==
+        bh=bXS/2y3cDHrS1yNVghWeZ7jeBDzAVXN+tv3JZQz7G6o=;
+        b=APnLeXqXb4fREg8CQvUNjGwhTbrBVhWbVRIcuFF5xLpXzzef4agKVoMVXW1NF3bZ26
+         yersV4cxWCXvfrvmUWMz6wlVT2/y59arp28r3sy+DbpiipdGme4eWxs1If111XOnKgyp
+         LCqeMnodzmavpwgGMHlOqQU6nAE7EADXWR+eV6kZtg/Ks+nVSUtuI/U9zm/TSGiNsbi7
+         OSYYE3lFbtBggbXp7uwgvVdCeTS/SV8PTcaadIQAqRLxK8w5AYNH7HCuwwsFzWAvKczJ
+         yHd0D/FHBGfvDpY9yR3NE5vAIAEpcGOy/9RqOv8T47jEFSgOlKm3+F20840dd6mTqZPt
+         mtAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729116343; x=1729721143;
+        d=1e100.net; s=20230601; t=1729116630; x=1729721430;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DF2hnyZnur4FAKXfn/pZIiJIZnA1uCI/DSTuBMf9wzw=;
-        b=gLGpVUXhAVBNcgapOg//9PdF9nBLYF40+BKypyc8/FjFdM5kXZNqiQ0izwIczcGbuA
-         +5dGWw5cPtme6o3whjw/wVORszxd6je5A+bPWRYmSvfGz/ednZeZOIvSiCwY60XfOZsQ
-         qcSFOwaQ3257QKZjSKRcp7pHGItZVTv4wn5qu8nFiwDpszwcuGQdfdi1XPDux0hPqmFv
-         /AYKykrDgfZzV/J2WWEsGpuZWfrTLwdu8JuZx1KONAGDoiaqekF3+WqWqT45LGuHsBSQ
-         0pQL9ccq0+BnzUEkuSqxYmslLjq5r+shRfVPYYg9+Rp62lHHVPG9TPIBvdZbdoNqvcoO
-         xo3g==
-X-Forwarded-Encrypted: i=1; AJvYcCUnXDi2kDjD3tVzFTqOaQmWN8U/bg/aRVZdtLU7y3RGCeJmWXt1Qoq60nE5UW5itbbNxpYv1mE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwiKIR5SQWf/dSHI+AqqeNWYWPDHcMR+Z0AEFmEUl6nF4FRINIu
-	+8MaDLoZU5uquGqeG7IhICbvRHByEpgUoJj988+K+eJypZ5idTujP2JvhLR90Bc3UWXV5KXWhY3
-	Z8CgD7L5P/BMYXL8CLyEI+bNCsYlHpbMy3/Nn
-X-Google-Smtp-Source: AGHT+IGWQlAeC6qRe3pdoM5AfU64wh8xVIi8TV2ZZ0HmaHRYqEs3AU7jnrQDT6YQ/IkPj8v31ncDQjs3jK8USoOl9Ho=
-X-Received: by 2002:a05:6402:5107:b0:5c5:c44d:484e with SMTP id
- 4fb4d7f45d1cf-5c9ebb55cf8mr64042a12.1.1729116342627; Wed, 16 Oct 2024
- 15:05:42 -0700 (PDT)
+        bh=bXS/2y3cDHrS1yNVghWeZ7jeBDzAVXN+tv3JZQz7G6o=;
+        b=DFNPxoTdo3hHqSditAcWdYkrNcvLngvYlPNPO2sFJPTTwVfPtXajebVoI/oAtLZ65Q
+         C8UhzoTeU7CIpKD3prIzBLs4O7YbspLX+44OlgN+Gx9ghuBRzHZ9ZWejpyfuxqV8MYKq
+         fiBvHSMSxFmrKbY8CWq598Co5Sdw36nUnUfmrGR4AVOPROsXEROODofeO1xxGRSCS7kj
+         Zmi8DyUYUXmhzh6hHJBZUpxzmF9+0/ZAwb9k9lBiWGEx69UAomKy2rEZ4sa/Br2R3maC
+         N77rBe56RIsFpyt6T7b+8+PdB51LyBOg7Ms3EDzdhAv0Y/Fbm1TLpU1tm0ROoYHh//mj
+         wUqg==
+X-Forwarded-Encrypted: i=1; AJvYcCX9ohFSgw+wrJnmZHHjlpGgXpmZnH8ofD6tygCE0MnjU2W6wW5rZZC5V4iTT6k6lvTgNGR3X94=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkcyyqLr3ArvA2wTMmmOvyhT6ZuBH+hMwROiqj419zea7vzsZW
+	fAUNln3xg4D2ZeeeEgXZb4MjAufCa5sD11ohwNvAjt1p8zZBB7VHpCE9hlKQXId8syn0dg28K7S
+	ab2RmoFZAABnhognx43u+VmPc8sjHF0XnCEfS
+X-Google-Smtp-Source: AGHT+IGid7az1jkIvwZA3Kt0ZPHkpN0/0Zlh1FYVlYC6ShT16mDxfQbgPQEzXVlyZjm46CayfSlmNAItLI3mX+IGBUA=
+X-Received: by 2002:a05:6512:3b8c:b0:539:d0c4:5b53 with SMTP id
+ 2adb3069b0e04-53a0d20607emr137084e87.4.1729116629349; Wed, 16 Oct 2024
+ 15:10:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241015-comedi-tlb-v2-1-cafb0e27dd9a@google.com> <202410170111.K30oyTWa-lkp@intel.com>
-In-Reply-To: <202410170111.K30oyTWa-lkp@intel.com>
+References: <20241015-comedi-tlb-v2-1-cafb0e27dd9a@google.com> <202410170234.hthSWOJg-lkp@intel.com>
+In-Reply-To: <202410170234.hthSWOJg-lkp@intel.com>
 From: Jann Horn <jannh@google.com>
-Date: Thu, 17 Oct 2024 00:05:04 +0200
-Message-ID: <CAG48ez2T7i_qCAcGi3nZqQeT8A3x42YSdL=rWqXOUDy5Eyaf6A@mail.gmail.com>
+Date: Thu, 17 Oct 2024 00:09:53 +0200
+Message-ID: <CAG48ez050bFWVkVJMzG8b-bCPORRoZ9g=OKYGxS9S+-rOJD6Ng@mail.gmail.com>
 Subject: Re: [PATCH v2] comedi: Flush partial mappings in error case
-To: kernel test robot <lkp@intel.com>, Ian Abbott <abbotti@mev.co.uk>
-Cc: H Hartley Sweeten <hsweeten@visionengravers.com>, Frank Mori Hess <fmh6jj@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, oe-kbuild-all@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+To: kernel test robot <lkp@intel.com>
+Cc: Ian Abbott <abbotti@mev.co.uk>, H Hartley Sweeten <hsweeten@visionengravers.com>, 
+	Frank Mori Hess <fmh6jj@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 16, 2024 at 8:05=E2=80=AFPM kernel test robot <lkp@intel.com> w=
+On Wed, Oct 16, 2024 at 8:36=E2=80=AFPM kernel test robot <lkp@intel.com> w=
 rote:
+> kernel test robot noticed the following build errors:
+>
 > [auto build test ERROR on 6485cf5ea253d40d507cd71253c9568c5470cd27]
 >
 > url:    https://github.com/intel-lab-lkp/linux/commits/Jann-Horn/comedi-F=
@@ -94,32 +97,25 @@ lush-partial-mappings-in-error-case/20241016-022809
 > patch link:    https://lore.kernel.org/r/20241015-comedi-tlb-v2-1-cafb0e2=
 7dd9a%40google.com
 > patch subject: [PATCH v2] comedi: Flush partial mappings in error case
-> config: arm-randconfig-004-20241016 (https://download.01.org/0day-ci/arch=
-ive/20241017/202410170111.K30oyTWa-lkp@intel.com/config)
-> compiler: arm-linux-gnueabi-gcc (GCC) 14.1.0
+> config: m68k-randconfig-r071-20241016 (https://download.01.org/0day-ci/ar=
+chive/20241017/202410170234.hthSWOJg-lkp@intel.com/config)
+> compiler: m68k-linux-gcc (GCC) 14.1.0
 > reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
-ve/20241017/202410170111.K30oyTWa-lkp@intel.com/reproduce)
+ve/20241017/202410170234.hthSWOJg-lkp@intel.com/reproduce)
 >
 > If you fix the issue in a separate patch/commit (i.e. not just a new vers=
 ion of
 > the same patch/commit), kindly add following tags
 > | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202410170111.K30oyTWa-lkp=
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202410170234.hthSWOJg-lkp=
 @intel.com/
 >
-> All errors (new ones prefixed by >>):
+> All errors (new ones prefixed by >>, old ones prefixed by <<):
 >
->    arm-linux-gnueabi-ld: drivers/comedi/comedi_fops.o: in function `comed=
-i_mmap':
-> >> comedi_fops.c:(.text+0x4be): undefined reference to `zap_vma_ptes'
+> WARNING: modpost: missing MODULE_DESCRIPTION() in lib/slub_kunit.o
+> >> ERROR: modpost: "zap_vma_ptes" [drivers/comedi/comedi.ko] undefined!
 
-Ugh, this one is from a nommu build ("# CONFIG_MMU is not set"), it
-makes sense that you can't zap PTEs when you don't have any PTEs at
-all... what really impresses me about this is that the rest of the
-code compiles on nommu. I'm pretty sure this codepath wouldn't
-actually _work_ on nommu, but apparently compiling it works?
-
-I don't know what the right fix is here - should the entire comedi
-driver be gated on CONFIG_MMU, or only a subset of the mmap handler,
-or something else?
+And this one is also a nommu build, so I guess it's the same problem
+as https://lore.kernel.org/r/202410170111.K30oyTWa-lkp@intel.com even
+though the error is different.
 
