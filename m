@@ -1,113 +1,118 @@
-Return-Path: <stable+bounces-86532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 932AA9A11C2
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 20:38:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3DFD9A11CF
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 20:39:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54E3B286975
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 18:38:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B77D1287B53
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 18:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017E02141DD;
-	Wed, 16 Oct 2024 18:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB792144BA;
+	Wed, 16 Oct 2024 18:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AxBN016f"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gLYchQED"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7F9290F;
-	Wed, 16 Oct 2024 18:36:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6CD62144AD
+	for <stable@vger.kernel.org>; Wed, 16 Oct 2024 18:38:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729103811; cv=none; b=MIHyX59//B4qQLxH8MhSlTjFT1r2x0/K0xY5r4s6EUyRjJrxTkCX2URFNRyvhdtCRUCVkHTJyamGsPjC3m/bjBFdZAjpaQeQNHotrjg/MKlwLgQGKbA/SXuld2Qq7jxwu0Qk+mJCkNexOUhdO5YsB0LENtbO7OYk6gJE2JoOPDc=
+	t=1729103927; cv=none; b=YfijeNCselt2jqQ2xTq25n7eq1h7wQxWkDUNpW5YOSoPbd40zDZPRQRyNBGcGQrBI8pnvNOdQyYBnrCDiEI9Dl0ymY8RbbjxV/PqHLZbvVToE9ozYg8EpyU8O1NrTZFtXLy+vz9meu8OJrqCRarAqehS1w+FEmvZgDiwBXkTlhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729103811; c=relaxed/simple;
-	bh=0odqZWPk+leaDU5OpiWhybSbr8swW1KSrnvPETAtWL0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e2TEdmTsvLo5IyzwW+tS3Pjlcfk6hYOUCdQwWqLJdnMLZXooIh/h4JPobiveKr/0p9Kou6VBUmHS746G2W35DOpfGcvYFn7SoJWrcwq3D+NTGYyjdvZkB9YBNJqTijMv2aN+Sf/4xhc5zD12dwO9IabUMYXIvemZ+AY/1/KmPjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AxBN016f; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729103809; x=1760639809;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0odqZWPk+leaDU5OpiWhybSbr8swW1KSrnvPETAtWL0=;
-  b=AxBN016fbHSOnlkXz3LlkRM9vtYeUndOer8LYdlAgYAd7bWklyQJpwcH
-   +xaI10LSANVkHE2z5AE5hvDOuXpePtZqZcZ5jjI9ks/FellKCpTbkAXBI
-   0Ivk64J0FB3PMmWHe5df+/k4e3uK/0U9oQin7pK9pKGH2jC+6cuogH3IA
-   s8s5FxAMDSbu66OWq/BgfKknMgStoPn8dD8zJ1Zmqhni0cQDw6FI7eSsN
-   vC75gu7ecl91PuubIdWuWKYoJsZgr4iDWFXnkbdHNnuHTUGr+ELiA1WE/
-   10gTQzpR7NsKv+lrk66N9Qqvz18XFL9PPgb4FjSGIP56bE5160W9AGsip
-   A==;
-X-CSE-ConnectionGUID: ca5l9JdeRrGoBvGAL6ziMw==
-X-CSE-MsgGUID: +oXfJBTiQMiIlzThTr5a0A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28455252"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="28455252"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 11:36:40 -0700
-X-CSE-ConnectionGUID: o1aRxQG6RVu3ESpyMhvD5w==
-X-CSE-MsgGUID: UeCZl5FKQpmyvsXMqjt2jQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,208,1725346800"; 
-   d="scan'208";a="77967661"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 16 Oct 2024 11:36:38 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t18su-000LGx-18;
-	Wed, 16 Oct 2024 18:36:36 +0000
-Date: Thu, 17 Oct 2024 02:35:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jann Horn <jannh@google.com>, Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Frank Mori Hess <fmh6jj@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH v2] comedi: Flush partial mappings in error case
-Message-ID: <202410170234.hthSWOJg-lkp@intel.com>
-References: <20241015-comedi-tlb-v2-1-cafb0e27dd9a@google.com>
+	s=arc-20240116; t=1729103927; c=relaxed/simple;
+	bh=CaXyLEeXI3tLmhlmHR8p7InKimN5ZtQoIcO+dVnX8ho=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IBZRY5Xxib4LASlukM4HShEzCBmQlIYqw6b+G5ASn3+NRZ2+kNHEh1MHj5h7NVQaHRlYlksohV3vL5/++p9ZyupMbgzyr5la7NCMFWxTdlFNvVXyoth7HLjaWk1gj69LFcBsuOMZtLNh5QWOMIP1jq8pJ8vhS6CaaUPnS91XEHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gLYchQED; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2fb5fa911aaso2291091fa.2
+        for <stable@vger.kernel.org>; Wed, 16 Oct 2024 11:38:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1729103924; x=1729708724; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I6rKDIzOUTRgJd5hJo09U0dfDGO4bSLC/6WzdPUaGc0=;
+        b=gLYchQEDoMLSFi+waGfwIS6SlKX4VirBgRMwIb6DhAoDM58SJt7GAiH7mYi1HL0nwV
+         jBE9A/j8owDIauGG57y0xfJ6sA2f3pjiBlOOYhXkn6zpwH5sORQrG9n4E7s2j56/k3FA
+         TRA1G60FiNhAegRpTn3PgRMSMmFVjb0Pi1kwaMBEgaop0GQiUSS9aweV1uMwZstPCUJO
+         Y7/KMvkE01eBOMSI12mxxuZ7drsXeWQyF04A/VybF47eP6ThilLrQism86cCu4huXuaG
+         b4NQPH2GyCbrVqz+WUdeY9yQTMdqeqkXyrqdljKlLpMSzb5mApGoJBSj3W/VLOejmOYP
+         +WaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729103924; x=1729708724;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=I6rKDIzOUTRgJd5hJo09U0dfDGO4bSLC/6WzdPUaGc0=;
+        b=I9QCy5RiMnmB+OAW7qT8d/TLLibT5XV92rhQRBNRJlXoTtViP1pDw4AouqJyAJ+8hF
+         xXaBhjmTtLiyZRSDDaqqYLEPd+WbTA0YIS1MnEEHoD0jTDZZ+5L2PCBHyiUyZNxAIs1A
+         TwMhPvm7bZAJnyAKnOOl50C6cbxJbSMbIs3bLuQZDnTaLDCadg63bggzUmAxVbeCwFKh
+         b5h3EFZQrfuHHBWscvzZ1InkSJcFOGhlnetjT+nApbVSDbBfZv6JidLvqEzEs6fOtbtj
+         pMMMkWUPQoJNBQoPytkYqAZomcZissAkrr5u+vWTYUYQ4MQPbLR5jUa5F2Y42XIG1D1P
+         m4DA==
+X-Forwarded-Encrypted: i=1; AJvYcCVvdfVu+svrGN1CVW8z+m35bZJnSKHg1YzIDprbLuLL0v1FzYoUTJjf89R0/a5f0F4EtQuC8So=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMqQHa4HI3aXF+VDxQtiMQLp2bEgYdbgjkKA8yy5qnrdLsGkZL
+	6X5qubirk9/0l2vnJUzWEcD2Qp5qIp6QVLmK7Mxtjq6sETS8HlpfhlQfeN7rvidLR6PWsqeATOX
+	MQAzeeh3x48xyER2q30tkvSqvZeKZ/10/XKHACWO0rtsE2ggUPb0=
+X-Google-Smtp-Source: AGHT+IF13Ea7y6L9Can5T137qlH4Oc5vSjbBPA5f2FxIJOA7leG6kVirqELpYBS6TOYKSL0EXSp2T3MOJSZA4oMAFBo=
+X-Received: by 2002:a2e:4c19:0:b0:2f7:6653:8053 with SMTP id
+ 38308e7fff4ca-2fb3f1adfa0mr77485051fa.18.1729103923979; Wed, 16 Oct 2024
+ 11:38:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015-comedi-tlb-v2-1-cafb0e27dd9a@google.com>
+References: <20241015-arm-kasan-vmalloc-crash-v1-0-dbb23592ca83@linaro.org>
+ <20241015-arm-kasan-vmalloc-crash-v1-1-dbb23592ca83@linaro.org> <CAMj1kXHuJ9JjbxcG0LkRpQiPzW-BDfX+LoW3+W_cfsD=1hdPDg@mail.gmail.com>
+In-Reply-To: <CAMj1kXHuJ9JjbxcG0LkRpQiPzW-BDfX+LoW3+W_cfsD=1hdPDg@mail.gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 16 Oct 2024 20:38:32 +0200
+Message-ID: <CACRpkdZp84MzXEC7i8K2FCnR3pEc05wPBVX=mMO5s6j1tJTm_A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ARM: ioremap: Flush PGDs for VMALLOC shadow
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Clement LE GOFFIC <clement.legoffic@foss.st.com>, Russell King <linux@armlinux.org.uk>, 
+	Kees Cook <kees@kernel.org>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Mark Brown <broonie@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Antonio Borneo <antonio.borneo@foss.st.com>, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Jann,
+On Wed, Oct 16, 2024 at 1:33=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> wr=
+ote:
 
-kernel test robot noticed the following build errors:
+> > @@ -125,6 +126,12 @@ void __check_vmalloc_seq(struct mm_struct *mm)
+(...)
+> Then, there is another part to this: in arch/arm/kernel/traps.c, we
+> have the following code
+>
+> void arch_sync_kernel_mappings(unsigned long start, unsigned long end)
+> {
+>     if (start < VMALLOC_END && end > VMALLOC_START)
+>         atomic_inc_return_release(&init_mm.context.vmalloc_seq);
+> }
+>
+> where we only bump vmalloc_seq if the updated region overlaps with the
+> vmalloc region, so this will need a similar treatment afaict.
 
-[auto build test ERROR on 6485cf5ea253d40d507cd71253c9568c5470cd27]
+Not really, right? We bump init_mm.context.vmalloc_seq if the address
+overlaps the entire vmalloc area.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jann-Horn/comedi-Flush-partial-mappings-in-error-case/20241016-022809
-base:   6485cf5ea253d40d507cd71253c9568c5470cd27
-patch link:    https://lore.kernel.org/r/20241015-comedi-tlb-v2-1-cafb0e27dd9a%40google.com
-patch subject: [PATCH v2] comedi: Flush partial mappings in error case
-config: m68k-randconfig-r071-20241016 (https://download.01.org/0day-ci/archive/20241017/202410170234.hthSWOJg-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 14.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241017/202410170234.hthSWOJg-lkp@intel.com/reproduce)
+Then the previously patched __check_vmalloc_seq() will check that
+atomic counter and copy the PGD entries, and with the code in this
+patch it will also copy (sync) the corresponding shadow memory
+at that point.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410170234.hthSWOJg-lkp@intel.com/
-
-All errors (new ones prefixed by >>, old ones prefixed by <<):
-
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/slub_kunit.o
->> ERROR: modpost: "zap_vma_ptes" [drivers/comedi/comedi.ko] undefined!
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Yours,
+Linus Walleij
 
