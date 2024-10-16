@@ -1,151 +1,113 @@
-Return-Path: <stable+bounces-86531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C6ED9A1199
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 20:32:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 932AA9A11C2
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 20:38:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C873A1F25175
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 18:31:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54E3B286975
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 18:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1453A212F10;
-	Wed, 16 Oct 2024 18:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017E02141DD;
+	Wed, 16 Oct 2024 18:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="l3HD1PDs";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gD73Fl19"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AxBN016f"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A686F1494CC;
-	Wed, 16 Oct 2024 18:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7F9290F;
+	Wed, 16 Oct 2024 18:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729103513; cv=none; b=or4EPFWN8GGJQY+5G3zynlSu0FcUj7CKhdrpSVMDRSSNBCkqEWYwGfhtWAZyE/kAfAT7GzWZ3VDM94qq56yQoxERCHFR74H0YUsaPHGhc9OfAWp3D5qVHOcmgBbFRe7yD87bMXncVJFJQpZFIrjzy0n9Cu2bndOHwCmdDhojS1o=
+	t=1729103811; cv=none; b=MIHyX59//B4qQLxH8MhSlTjFT1r2x0/K0xY5r4s6EUyRjJrxTkCX2URFNRyvhdtCRUCVkHTJyamGsPjC3m/bjBFdZAjpaQeQNHotrjg/MKlwLgQGKbA/SXuld2Qq7jxwu0Qk+mJCkNexOUhdO5YsB0LENtbO7OYk6gJE2JoOPDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729103513; c=relaxed/simple;
-	bh=ikOpzjgJe3gcfyHssEJF6ZOgvgAufMIFjvvQE6QbR5s=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=RrxrcO+8m6mububacbv28YVDo53uXB+kXGW5Mq8cvr3nVTx7JU5phqy64wX2wnYbAUeX+ZCIzqg95wtjNwLdsQVAY9AhZ+D357agZOqVLoHnxkG3DbQJX0EIGhPrYeJmOVrWfPAnVQDwiOQEDkQZxWfxQGzPzyu96W5bHxzCOV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=l3HD1PDs; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gD73Fl19; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 7091A254008F;
-	Wed, 16 Oct 2024 14:31:50 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Wed, 16 Oct 2024 14:31:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1729103510;
-	 x=1729189910; bh=ymGZ+F5Q+6zPxDfr5uhRuaVWQUin2zTqLDTQDUD/5PE=; b=
-	l3HD1PDs+ckm9NTo6Wp3KL1YG4eDim3EXFL5O8lIlK1nvAG5maQT0GMiq7bgp0Mm
-	BFxqSq7SA7wRQhD7zX+y81HI97AI1AuIqiPqj5f8DVU4j/usDnNZzqvkDzYo1FRD
-	2z/5qV3iHam6oC85KTsUsIFzGQ2/DD7CSVep9e6F3C0yR6QRCn73pARXJUoVpQIX
-	KGNfdASjDFap1Ap7iwQDXi3qYboF++vtB+NG2biOKEB0ztBzU+F9Far/cKI4anS+
-	vUY5xjqvuElbQtdhwzJjVTvcuT4moucAvivPkPM0ZLGxTIc7NUysfLjzs1vQax+j
-	u38YgMcxJQlB921nsyhZ+Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1729103510; x=
-	1729189910; bh=ymGZ+F5Q+6zPxDfr5uhRuaVWQUin2zTqLDTQDUD/5PE=; b=g
-	D73Fl19tfnCBvECN06RsGbwNewsF66hmbpRs3EKqqLo4r1qltkUb46jcN5IhtUMU
-	RGXH8pewTHRDNcYNDXTl4yjM8ULacslFJRboX4NCQ05hp16OlVIXXLDAP9/YP855
-	zMSgCjTUrgOHB3RtjlokBMdl0Hfh5B/Fp9FF11oFOR/Ik5l8vHx6oYbx94iy/xRu
-	fK3xi5G3lS2TqyXLdAuJWqIkyOk9gAU5oi+/VEJgCzXdLX5rcrm6YUnyGm9F7Gau
-	JGtZ52k89IJ/VFItPBhCjmiWLXorStBoKz9Q22JeP2+bsQqRcCljBYTxM6HRqX92
-	b31/YFbJ2EGeiCjsi4mOQ==
-X-ME-Sender: <xms:lQYQZzKp_IJOdGFoM-IhqH-28UuuQimulDAq-WmMbpkLMSAWCyn68w>
-    <xme:lQYQZ3ISpWMOtoaYn1ErUIwiOSs8B4ESqcpGq2iDQdVbljLnKpFLkXYj0Zc382AsP
-    DA-7q5IRwoCgStVO5E>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdegledguddvjecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
-    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
-    druggvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteef
-    gffgvedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopedu
-    vddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepnhhitgholhgrshesfhhjrghslh
-    gvrdgvuhdprhgtphhtthhopehjuhhsthhinhhsthhithhtsehgohhoghhlvgdrtghomhdp
-    rhgtphhtthhopehmohhrsghosehgohhoghhlvgdrtghomhdprhgtphhtthhopehnuggvsh
-    gruhhlnhhivghrshesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvhhvvhhvvhhvsehg
-    ohhoghhlvgdrtghomhdprhgtphhtthhopehmrghsrghhihhrohihsehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehnrghthhgrnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    lhhlvhhmsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepphgrthgthhgvsh
-    eslhhishhtshdrlhhinhhugidruggvvh
-X-ME-Proxy: <xmx:lQYQZ7ueU5DPlczQvLMOSZ402Fns57FWEvtlvrTxC2QKh_gAXiFeLg>
-    <xmx:lQYQZ8YDflcpQC-rxh-OvuLs3aMyx7VQBf0XgCh1D2L39i5h8NADFg>
-    <xmx:lQYQZ6ZD1-JfOc0fkTAD_FQxFFwtLUBOOgVQSHkVe5mVcdg6NCAZ1Q>
-    <xmx:lQYQZwCOXc4t7puz8fgvDcgZ8xZp5ME-AkhR23BLQJ2xOQe-UoWLVg>
-    <xmx:lgYQZ8Agc7dtrBbXc3v3q1z6VfnjQ_xbmHEnvoqXXnBlHlZNLXbBE0Us>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 5DD572220071; Wed, 16 Oct 2024 14:31:49 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1729103811; c=relaxed/simple;
+	bh=0odqZWPk+leaDU5OpiWhybSbr8swW1KSrnvPETAtWL0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e2TEdmTsvLo5IyzwW+tS3Pjlcfk6hYOUCdQwWqLJdnMLZXooIh/h4JPobiveKr/0p9Kou6VBUmHS746G2W35DOpfGcvYFn7SoJWrcwq3D+NTGYyjdvZkB9YBNJqTijMv2aN+Sf/4xhc5zD12dwO9IabUMYXIvemZ+AY/1/KmPjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AxBN016f; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729103809; x=1760639809;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0odqZWPk+leaDU5OpiWhybSbr8swW1KSrnvPETAtWL0=;
+  b=AxBN016fbHSOnlkXz3LlkRM9vtYeUndOer8LYdlAgYAd7bWklyQJpwcH
+   +xaI10LSANVkHE2z5AE5hvDOuXpePtZqZcZ5jjI9ks/FellKCpTbkAXBI
+   0Ivk64J0FB3PMmWHe5df+/k4e3uK/0U9oQin7pK9pKGH2jC+6cuogH3IA
+   s8s5FxAMDSbu66OWq/BgfKknMgStoPn8dD8zJ1Zmqhni0cQDw6FI7eSsN
+   vC75gu7ecl91PuubIdWuWKYoJsZgr4iDWFXnkbdHNnuHTUGr+ELiA1WE/
+   10gTQzpR7NsKv+lrk66N9Qqvz18XFL9PPgb4FjSGIP56bE5160W9AGsip
+   A==;
+X-CSE-ConnectionGUID: ca5l9JdeRrGoBvGAL6ziMw==
+X-CSE-MsgGUID: +oXfJBTiQMiIlzThTr5a0A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28455252"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="28455252"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 11:36:40 -0700
+X-CSE-ConnectionGUID: o1aRxQG6RVu3ESpyMhvD5w==
+X-CSE-MsgGUID: UeCZl5FKQpmyvsXMqjt2jQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,208,1725346800"; 
+   d="scan'208";a="77967661"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 16 Oct 2024 11:36:38 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t18su-000LGx-18;
+	Wed, 16 Oct 2024 18:36:36 +0000
+Date: Thu, 17 Oct 2024 02:35:51 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jann Horn <jannh@google.com>, Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	Frank Mori Hess <fmh6jj@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Jann Horn <jannh@google.com>
+Subject: Re: [PATCH v2] comedi: Flush partial mappings in error case
+Message-ID: <202410170234.hthSWOJg-lkp@intel.com>
+References: <20241015-comedi-tlb-v2-1-cafb0e27dd9a@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 16 Oct 2024 18:31:27 +0000
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Nathan Chancellor" <nathan@kernel.org>,
- "Masahiro Yamada" <masahiroy@kernel.org>
-Cc: "Nicolas Schier" <nicolas@fjasle.eu>,
- "Nick Desaulniers" <ndesaulniers@google.com>,
- "Bill Wendling" <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>,
- "Aleksei Vetrov" <vvvvvv@google.com>, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev,
- stable@vger.kernel.org
-Message-Id: <a22ab6cb-6eb6-44df-9e82-b6e95b9ae08e@app.fastmail.com>
-In-Reply-To: 
- <20241016-disable-two-clang-enum-warnings-v1-1-ae886d7a0269@kernel.org>
-References: 
- <20241016-disable-two-clang-enum-warnings-v1-1-ae886d7a0269@kernel.org>
-Subject: Re: [PATCH] kbuild: Fully disable -Wenum-{compare-conditional,enum-conversion}
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241015-comedi-tlb-v2-1-cafb0e27dd9a@google.com>
 
-On Wed, Oct 16, 2024, at 18:01, Nathan Chancellor wrote:
-> -Wenum-enum-conversion and -Wenum-compare-conditional were strengthened
-> in clang-19 to warn in C mode, which caused the kernel to move them to
-> W=1 in commit 75b5ab134bb5 ("kbuild: Move
-> -Wenum-{compare-conditional,enum-conversion} into W=1") because there
-> were numerous instances of each that would break builds with -Werror.
-> Unfortunately, this is not a full solution, as more and more developers,
-> subsystems, and distributors are building with W=1 as well, so they
-> continue to see the numerous instances of these warnings.
->
-> Since the move to W=1, there have not been many new instances that have
-> appeared through various build reports and the ones that have appeared
-> seem to be following similar existing patterns, suggesting that most
-> instances of these warnings will not be real issues. The only
-> alternatives for silencing these warnings are adding casts (which is
-> generally seen as an ugly practice) or refactoring the enums to macro
-> defines or a unified enum (which may be undesirable because of type
-> safety in other parts of the code).
->
-> Disable the warnings altogether so that W=1 users do not see them.
+Hi Jann,
 
-I don't think we have to go all the way of completely disabling
-the warnings here, they are still potentially useful. I can see
-three ways of being less aggressive with them:
+kernel test robot noticed the following build errors:
 
-- keep -Wno-enum-compare-conditional in W=1 and fix up the
-  remaining warnings for that, iirc the Wno-enum-enum-conversion
-  is the one that causes the problems.
+[auto build test ERROR on 6485cf5ea253d40d507cd71253c9568c5470cd27]
 
-- Move them to W=2 instead of always disabled
+url:    https://github.com/intel-lab-lkp/linux/commits/Jann-Horn/comedi-Flush-partial-mappings-in-error-case/20241016-022809
+base:   6485cf5ea253d40d507cd71253c9568c5470cd27
+patch link:    https://lore.kernel.org/r/20241015-comedi-tlb-v2-1-cafb0e27dd9a%40google.com
+patch subject: [PATCH v2] comedi: Flush partial mappings in error case
+config: m68k-randconfig-r071-20241016 (https://download.01.org/0day-ci/archive/20241017/202410170234.hthSWOJg-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241017/202410170234.hthSWOJg-lkp@intel.com/reproduce)
 
-- Leave the warnings enabled for clang-18 and older.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410170234.hthSWOJg-lkp@intel.com/
 
-     Arnd
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+WARNING: modpost: missing MODULE_DESCRIPTION() in lib/slub_kunit.o
+>> ERROR: modpost: "zap_vma_ptes" [drivers/comedi/comedi.ko] undefined!
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
