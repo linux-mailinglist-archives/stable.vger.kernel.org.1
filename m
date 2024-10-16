@@ -1,114 +1,143 @@
-Return-Path: <stable+bounces-86426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D47899FEE7
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 04:40:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 100D99A0092
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 07:26:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06830B245D1
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 02:40:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B06801F2214F
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 05:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DEAB170A20;
-	Wed, 16 Oct 2024 02:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD53818BC1A;
+	Wed, 16 Oct 2024 05:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="DJq/BtyH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dkPncwBE"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68168154C08;
-	Wed, 16 Oct 2024 02:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71D518BB91
+	for <stable@vger.kernel.org>; Wed, 16 Oct 2024 05:26:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729046391; cv=none; b=GWso0W/rOGJzrDBNOFTLlukC3VK6l5pOjPQC32Qu3bwpUq0fUl9nrfTne4FIjTCQUSHot9uH/qOXoTKhP3uh1VSKiTXyib0tOZ4nc563of+LjZ3audfH9uw71GDA8TU74Pi3T/RjSOXKGX5xB8CnXzc8UmhH9JrQiz7ZIN+r5Tc=
+	t=1729056382; cv=none; b=uJw73GIWZXbV6EGXX3Zw8p0GpZJDd20YpCcUBhaod/Ep8x6vRatdB8kCUkvQog2nv/0FV9dYzyGnB/sP4SqrYUI029XQjjeD2u9e2bl85uwRPUrbdAVYGxHfyfVr/pQWWBqnRlf8RTfeh7U8spnjj7l6IjDzRKU7nxGFn3SK+as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729046391; c=relaxed/simple;
-	bh=8ZmQFqkl/RbOyR2nQXhjIuZ/KP97SoLv32JYtQwgHMI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y1DyQV1THTnr0DunJneNj7FPgtUutM9FwVxditiEau+GcGjiPOwmJttsakIUkERrGZhScCsvnxIdXbq0RUCXXUQwR+GhSxB8+xazHul98EcJF1Dzge5KoBhE6ffHqFSwfT0nhV0d9jepJL/9GlFqIvmwNYviEUn6zQCl72cDScg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=DJq/BtyH; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49G2MeV7020049;
-	Wed, 16 Oct 2024 02:39:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2023-11-20; bh=DM7Vm8wZmOwLJmtQOHFJI0MUgywhFGds7HRJjXFSb2Q=; b=
-	DJq/BtyHUzkjxAU4wC3jdMAi/XDZYz7SWqIxj9jLTY6pcw7FLsfeAG8/ATJ+S/qc
-	TsGzfpZhS6AbHMWkqCQbBmwiY6z1PbcUzn6mmllOGJlT/MzrxLbksTXfiRQo2VUi
-	Tw3OR7CRbV3Ln4edCbXw023LNAvdgbtZD+UWtbkRFrdYZbmJi+bRSP62k80fZ4FF
-	lKn7/qFYDFhL+HvuqPOEf8A3RAA5Foc1q+WCPq5U0SZW3zbx6jLC3yqgGAkuxIEn
-	tIvzh6Wr03vDlAJ1gFqcORz4hCT3WQqLUTicr3YXeVqCHIhRFmLgTUSmc0y98lgm
-	TOPa4kQST8inU9tDazIOog==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427h09j6x6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Oct 2024 02:39:41 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49G1h4hQ036622;
-	Wed, 16 Oct 2024 02:39:40 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 427fjem1uv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Oct 2024 02:39:40 +0000
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49G2bkUf023540;
-	Wed, 16 Oct 2024 02:39:39 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 427fjem1uj-2;
-	Wed, 16 Oct 2024 02:39:39 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: linux-scsi@vger.kernel.org, Ranjan Kumar <ranjan.kumar@broadcom.com>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        rajsekhar.chundru@broadcom.com, sathya.prakash@broadcom.com,
-        sumit.saxena@broadcom.com, chandrakanth.patil@broadcom.com,
-        prayas.patel@broadcom.com, thenzl@redhat.com, mav@ixsystems.com,
-        stable@vger.kernel.org, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v2] mpi3mr: Validating SAS port assignments
-Date: Tue, 15 Oct 2024 22:39:00 -0400
-Message-ID: <172904632510.1112721.9960192265513151218.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.46.1
-In-Reply-To: <20241008074353.200379-1-ranjan.kumar@broadcom.com>
-References: <20241008074353.200379-1-ranjan.kumar@broadcom.com>
+	s=arc-20240116; t=1729056382; c=relaxed/simple;
+	bh=rdIG8bdON8eg0upmdIZgzqWAZ14iwo7fh0+LLx9BfdA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eZXLrGmET8ygC58bzLBjV1xF3+1tr7gP0XeVy6eE6M+OAfSzHLkI9r6Wil/o7ax8ZrqFMTHal7cPuvBIZpPOslVH2LTwkZHsIQGfI/aiiD/e1fkLK9BW94aKVXEFXJvI7Pat60healNKhbu2A2lRPd8M5hxoYye8HPvSDRZEgHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dkPncwBE; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729056379;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rdIG8bdON8eg0upmdIZgzqWAZ14iwo7fh0+LLx9BfdA=;
+	b=dkPncwBE4mCDZ30/3qrokocBgFEd/hV70K7lbDUuse9uPj6qCc3JXp9MZTWPoyggQVBxj8
+	ovkOmL1H7G8bKRQYcPIrXkhhjqRnsx1EjWhL/ZlRSmOZvpC/v1zQAs56Ysw+dNTBujr1mh
+	hRKuoQQR1gb2ZmSCDU1K7DbJzAQbYMA=
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com
+ [209.85.160.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-126-JsGMjY8XN0Cdgj5Clr7A2A-1; Wed, 16 Oct 2024 01:26:15 -0400
+X-MC-Unique: JsGMjY8XN0Cdgj5Clr7A2A-1
+Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-2887dd3c2fdso3127339fac.0
+        for <stable@vger.kernel.org>; Tue, 15 Oct 2024 22:26:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729056374; x=1729661174;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rdIG8bdON8eg0upmdIZgzqWAZ14iwo7fh0+LLx9BfdA=;
+        b=DBVcNzCSppHkaI00IkcQ3Ye4c5um7GwnhTsvD+2Gl+RFGYLXmanWP8J90oravtAb53
+         jY1F8tLl45fCpnqE4L+rkXIE1HvaHhk3cJrt4A06ctiAUIdvHRnTEa2PLgnZjCbSoccE
+         rfFSetybn+H0/1FPfyBQfTzPYShbzKIFGC/HSDa1XWuN48XfR46+7TnkJ++MzTKYX3eL
+         Vt1Jys/7X/yrWpV3jX8TSsYy2Kx/g/jFM1onaHua5SDgeXbyctIdplfM10WQQsRneIX1
+         LNP0ArZmkqslbPjPZrjK8FXdqeETZ+sdSyCf0YOoOXyns458jj8vqlArquU9H9iW28YA
+         gD+w==
+X-Forwarded-Encrypted: i=1; AJvYcCXGYKeqNlnIcGl4vhuk6Tt5Krt67CbIeiIFrDa9Y5khTsYFuUbQ0IY8bZ/fRO8P6LbDdoI+/FA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAZ5Az9X7y0YuWM8FNMG6t/YesB63LfqiCBSFOAMTi2rhJKtsE
+	oW2mL3kLWmi2w2Si4m502XY+HD8dWCBWLizA1YeCUBBuLSgblPHUGeJCrw7GaqXOukP1Fd5ZH1o
+	ZgoLhjq5tUQ+IyZORgk+kM1LDTMtVJFDQQOQaAL2G56KJqrxuG7836i/h+LKV+JZc/o/Y/mW7ov
+	zRt9xH4dG+fRBb+bj2yFjaUryONgz+
+X-Received: by 2002:a05:6870:3295:b0:277:eea4:a436 with SMTP id 586e51a60fabf-2886dce9923mr11714435fac.7.1729056374285;
+        Tue, 15 Oct 2024 22:26:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEHiwn4RE3PioCKXl96uz0dXLqcSvrhpM0cdTcTe9wx/x5I/zORO0z5prrIEan+L0+LNFhQwIPGrANg5wAyQEA=
+X-Received: by 2002:a05:6870:3295:b0:277:eea4:a436 with SMTP id
+ 586e51a60fabf-2886dce9923mr11714422fac.7.1729056374017; Tue, 15 Oct 2024
+ 22:26:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_21,2024-10-15_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0 bulkscore=0
- spamscore=0 phishscore=0 malwarescore=0 mlxlogscore=975 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
- definitions=main-2410160016
-X-Proofpoint-GUID: rjvpHtA5ZFVjzSGJY0-JEBGewsNmlQtW
-X-Proofpoint-ORIG-GUID: rjvpHtA5ZFVjzSGJY0-JEBGewsNmlQtW
+References: <20241009072749.45006-1-alexghiti@rivosinc.com> <1CA19FB3-C1E3-4C2F-A4FB-05B69EC66D2F@jrtc27.com>
+In-Reply-To: <1CA19FB3-C1E3-4C2F-A4FB-05B69EC66D2F@jrtc27.com>
+From: Jason Montleon <jmontleo@redhat.com>
+Date: Wed, 16 Oct 2024 01:26:02 -0400
+Message-ID: <CAJD_bPLcKX+U1k60mgsB_==qrQE+jnLMXSotq3rMrH_o+FtOQQ@mail.gmail.com>
+Subject: Re: [PATCH -fixes] riscv: Do not use fortify in early code
+To: Jessica Clarke <jrtc27@jrtc27.com>
+Cc: Alexandre Ghiti <alexghiti@rivosinc.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Heiko Stuebner <heiko@sntech.de>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 08 Oct 2024 13:13:53 +0530, Ranjan Kumar wrote:
+On Tue, Oct 15, 2024 at 6:05=E2=80=AFPM Jessica Clarke <jrtc27@jrtc27.com> =
+wrote:
+>
+> On 9 Oct 2024, at 08:27, Alexandre Ghiti <alexghiti@rivosinc.com> wrote:
+> >
+> > Early code designates the code executed when the MMU is not yet enabled=
+,
+> > and this comes with some limitations (see
+> > Documentation/arch/riscv/boot.rst, section "Pre-MMU execution").
+> >
+> > FORTIFY_SOURCE must be disabled then since it can trigger kernel panics
+> > as reported in [1].
+> >
+> > Reported-by: Jason Montleon <jmontleo@redhat.com>
+> > Closes: https://lore.kernel.org/linux-riscv/CAJD_bPJes4QhmXY5f63GHV9B9H=
+FkSCoaZjk-qCT2NGS7Q9HODg@mail.gmail.com/ [1]
+> > Fixes: a35707c3d850 ("riscv: add memory-type errata for T-Head")
+> > Fixes: 26e7aacb83df ("riscv: Allow to downgrade paging mode from the co=
+mmand line")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+>
+> Is the problem in [1] not just that the early boot path uses memcpy on
+> the result of ALT_OLD_PTR, which is a wildly out-of-bounds pointer from
+> the compiler=E2=80=99s perspective? If so, it would seem better to use
+> unsafe_memcpy for that one call site rather than use the big
+> __NO_FORTIFY hammer, surely?
+>
 
-> Sanity on phy_mask was added by Tomas through [1].
-> It causes warning messages when >64 phys are
-> detected (expander can have >64 phys) and devices
-> connected to phys greater than 64 are dropped.
-> phy_mask bitmap is only needed for controller
-> phys(not required for expander phys).Controller phys
-> can go maximum up to 64 and u64 is good enough to contain phy_mask bitmap.
-> 
-> [...]
+I can add that replacing memcpy with unsafe_memcpy did also work for
+me. Once it was narrowed down, this is what I originally did in order
+to boot.
 
-Applied to 6.12/scsi-fixes, thanks!
+Jason
 
-[1/1] mpi3mr: Validating SAS port assignments
-      https://git.kernel.org/mkp/scsi/c/b9e63d6c7c0e
+> Presumably the non-early path is just as bad to the compiler, but works
+> because patch_text_nosync isn=E2=80=99t instrumented, so that would just =
+align
+> the two.
+>
+> Getting the implementation to not be silent on failure during early
+> boot would also be a good idea, but it=E2=80=99s surely better to have
+> FORTIFY_SOURCE enabled with no output for positives than disable the
+> checking in the first place and risk uncaught corruption.
+>
+> Jess
+>
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
 
