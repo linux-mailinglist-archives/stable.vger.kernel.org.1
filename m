@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-86510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98B8E9A0D55
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 16:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46CB39A0D58
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 16:53:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C964C1C21B22
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 14:52:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78B181C218E8
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 14:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2FE20E029;
-	Wed, 16 Oct 2024 14:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C07F20F5A4;
+	Wed, 16 Oct 2024 14:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xz44T+eh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ts0kwwVb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DD320CCEA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B151B20E00B;
 	Wed, 16 Oct 2024 14:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729090362; cv=none; b=nhfVpi9h235qXFxrzHJJrmlEVoMda0bEYb6F+UJIbrqPjXsgVz2kv65+8gmls+G1BazCGiT0FeT8gUBrd3em9qNeMKcbQPUkFt3E5hZYJC+VFvXkTTDZlp4T8VdSRAeva6f8vAv5+UM6w3UNaH7EnqP4ID/OYVV0a3eKsj4ABKo=
+	t=1729090362; cv=none; b=GjaBeTbWiYwIBEHUjYxHrpKWfWXwzkVsI1PO40vjXZc7KC5atzuGMwfCZxVbaAwHZMt0btykYInhaZVJ4aIeSoXCum6OmYzKd0T5pb8aKZMXtyYVO2pbWmly21Uq1Vpc/FbCatPcBd+tkfNVf94CY66gqxMcOd8HpptfwwJZbJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729090362; c=relaxed/simple;
-	bh=FJTN7H3SkrxTCsFT5M/F5uxXhCj+8GWjUfvn0IwBnf4=;
+	bh=qsOPJiLdiSLqBOc3H/UA8L4Kp1b6RdcZFhR2y1ZZCA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GXXLwgLDeFbq1g4g4ccLGW/XXWEEHMTvBDi1ct4icbVJTsU/DIOMibp/0H3m1YvZaE/zGIVJ50lTrF8i1bq/nVllwLilUv/+mGf7fbJS9LZid3Vw/bmxWxX5L6VkdduDszw6d+bouFjmrF8pbKk03E7PQeE361K5Wv8GGUkuxlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xz44T+eh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134A9C4AF09;
+	 MIME-Version; b=BwiSWEwybBiX83objAf+WMG2bgL4Zie7hzFqblDqaI9C4cfGReCtgDMv/LqqSL16gte/PnkGWyRl33ddPos5118wizTdqqIyVLkdxEk4JNWyMSHAKaIm21gN87+mCw2mXHeIYOISqFiGw8TBUn6h5EWb5zvM3YH23e/u7+mtSW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ts0kwwVb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70497C4CEE6;
 	Wed, 16 Oct 2024 14:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1729090362;
-	bh=FJTN7H3SkrxTCsFT5M/F5uxXhCj+8GWjUfvn0IwBnf4=;
+	bh=qsOPJiLdiSLqBOc3H/UA8L4Kp1b6RdcZFhR2y1ZZCA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xz44T+eh3KW9I8pmYhy4aXyKslkaI2HV3SGnTj4///HZdLWaeI9CTgpbbcGOif1cw
-	 pNHg2lNU6DWbWuSJ375Uokzh8/v1tc6r7tRBNb4tk+ZdoUIUinbHMp4RFjwDZxvmfO
-	 B3i65AhYXh1CRkVDBypWHMNWBPTXGeblqqXYGGn0sJJ2K27bVYER3+s51vxkAeP5qp
-	 HSoQGdUXi9jEFBAXX4eb53YPMGOSR9p3F/4frOBej7kCEMDPzs2uSidVjZxFCWCffe
-	 zzlB28ydfhPdqo/5DMMn8nWmGd6pZ+oJ7XTdWUEHRp09/7/bKuAzgMcWRX+/Qc/bzS
-	 8l18wvLz1PkVQ==
+	b=ts0kwwVbzhAddWuejYYHhXXMmk3ObkgAL27Jp+wBnBfL2mEUJ3KFZ53Sidcg0ppab
+	 DpsDdeu++gbm69AYPsYV+JsLE6Zv8NhLP9DRliqyLtnGqWAU21NAxN1bhXmIR/1Yh5
+	 LVNw3hGPVFMhuGcj3ux6De+NhWzNzcVOdjTq1778duESQDkhUypGDUpvZxjNIW7AkJ
+	 /Qv9qU+mTv0GSUvmK6QN96FiMgr0WfhMvnGuFF9BnRg5Zkqs5WFPKrUmdqCBgPvan6
+	 rdzJq+CSEycrsWz2SAj7GTZyp/qLj0i5w5LxhYi6/X0W9BywIRcWVkYspW6/v8qrTK
+	 10vLD3Fkq/rtg==
 Received: from johan by xi.lan with local (Exim 4.97.1)
 	(envelope-from <johan+linaro@kernel.org>)
-	id 1t15OL-000000006UN-3tcY;
-	Wed, 16 Oct 2024 16:52:49 +0200
+	id 1t15OM-000000006UU-0Ryf;
+	Wed, 16 Oct 2024 16:52:50 +0200
 From: Johan Hovold <johan+linaro@kernel.org>
 To: Bjorn Andersson <andersson@kernel.org>,
 	Konrad Dybcio <konradybcio@kernel.org>
@@ -56,11 +56,10 @@ Cc: Rob Herring <robh@kernel.org>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 4/6] arm64: dts: qcom: x1e80100-yoga-slim7x: fix nvme regulator boot glitch
-Date: Wed, 16 Oct 2024 16:51:10 +0200
-Message-ID: <20241016145112.24785-5-johan+linaro@kernel.org>
+	stable@vger.kernel.org
+Subject: [PATCH 6/6] arm64: dts: qcom: x1e80100-qcp: fix nvme regulator boot glitch
+Date: Wed, 16 Oct 2024 16:51:12 +0200
+Message-ID: <20241016145112.24785-7-johan+linaro@kernel.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241016145112.24785-1-johan+linaro@kernel.org>
 References: <20241016145112.24785-1-johan+linaro@kernel.org>
@@ -75,22 +74,22 @@ Content-Transfer-Encoding: 8bit
 The NVMe regulator has been left enabled by the boot firmware. Mark it
 as such to avoid disabling the regulator temporarily during boot.
 
-Fixes: 45247fe17db2 ("arm64: dts: qcom: x1e80100: add Lenovo Thinkpad Yoga slim 7x devicetree")
+Fixes: eb57cbe730d1 ("arm64: dts: qcom: x1e80100: Describe the PCIe 6a resources")
 Cc: stable@vger.kernel.org	# 6.11
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts | 2 ++
+ arch/arm64/boot/dts/qcom/x1e80100-qcp.dts | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
-index 3c13331a9ef4..0cdaff9c8cf0 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
-@@ -205,6 +205,8 @@ vreg_nvme: regulator-nvme {
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
+index 1c3a6a7b3ed6..5ef030c60abe 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
+@@ -253,6 +253,8 @@ vreg_nvme: regulator-nvme {
  
- 		pinctrl-0 = <&nvme_reg_en>;
  		pinctrl-names = "default";
+ 		pinctrl-0 = <&nvme_reg_en>;
 +
 +		regulator-boot-on;
  	};
