@@ -1,123 +1,140 @@
-Return-Path: <stable+bounces-86443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4682A9A046C
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 10:37:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1D789A04AD
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 10:51:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E66A01F2621A
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 08:37:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2177B1C21742
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 08:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E7331FCC6C;
-	Wed, 16 Oct 2024 08:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1A4203706;
+	Wed, 16 Oct 2024 08:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="d6V1vFxc"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="szMAFNSK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95D61F80D9
-	for <stable@vger.kernel.org>; Wed, 16 Oct 2024 08:37:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4E1156665
+	for <stable@vger.kernel.org>; Wed, 16 Oct 2024 08:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729067852; cv=none; b=rFaPUNbI3Mr9Rzn0og3J0jkSLIKfzNoKPpQzYkX9i+Loni6rs9zRtT6yZ/TLHK6DCUcHFwloD+SimH4dapVG5vgsEO66A6FDguwi1m+TP5fMDnH+k5Db41s5IJ71jG9GFM8F96qCe1dnqrxv4BCyF6TQmOrDoVvwXV+9ryQoZY8=
+	t=1729068667; cv=none; b=Y6TY7JAjpvAaV2VSEq0zPw7RCEJB2YAGLk2ia7dp2hlZf5wRF2NSA1wKryTNAXC3Iw+6eX/KcXadPGTBEWdV+TpDyqfYF+3u9ADH8zcfC7sL7Pgu3W+BZDjmhcQ+Eu3Cm0tELODwQUThLJPPB37vdNEL6FKZtxMVUfzXJxpHHqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729067852; c=relaxed/simple;
-	bh=ELkP+/LlvaLc+XLPJhx3hY+pNjpVHD4I9RrhF1TIZYk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SMI2gcw0XGQSC9Ylh0v7tTYwZiq/imABTFS8LbqrAiyq2wkWofTma3KLyscVE7F1WXiiZ9p/rQjUurEbN3rg00oOCrebP72Gi5BoH1OfrvUfEnc0tG06pkYE+0t3bK6XSiLhEYQzhjQFkvK8q+aNfGSXhP+jM6yZTX9JCn/zW8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=d6V1vFxc; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42f6bec84b5so60717675e9.1
-        for <stable@vger.kernel.org>; Wed, 16 Oct 2024 01:37:30 -0700 (PDT)
+	s=arc-20240116; t=1729068667; c=relaxed/simple;
+	bh=8NydIpP6V+e+N8ggMR7M80MrPzVoop16b/UyH2Qmok0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T6gt2GxzpWv5Pve0C1xa0eqdCnB+J/6tz6/EoLdcmKXCCF9lIi3J6rsH2FFoJqTU1CyI3BwZizKpqr8qT2xx1va0Kn5Hg4fJNs9nuMTKEKRKEavYi2F+8Y4xNhMQzALtLkLoyv+lKcRTJqWYfdlpk+6qXoKItfoT5l7RK6GyeuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=szMAFNSK; arc=none smtp.client-ip=209.85.221.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-50d3365c29cso380513e0c.0
+        for <stable@vger.kernel.org>; Wed, 16 Oct 2024 01:51:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1729067849; x=1729672649; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9jJdJXmZIFUypkGDe9/4mfd3DKdJwjPw93ZM7h9RdKg=;
-        b=d6V1vFxcP538ogDKAAHC4xvcXZRQXTQvBNCbXNBn/b4/fStwl6so3RghLXkRFjVvfi
-         23QtqR5py/tqNhgvi44yU59YDUc8xTJOvtcilMKDEobJCHXbnvGzfMQQIuzytpwtjnpZ
-         OKMtpHxFoJLAgLQ98kvcr/4fmo468qDj4YS9JPNXi9RxWzfKCtCxG07F80k+L59c++V5
-         XYC68xCIXR00yE7NT/R49+PP23Y47n34avGf5wI7Xk6HqgFuJziKaDjia/+hPQHt56CB
-         Zdqn80r+YSsPSQBmVy+O21XYxzzTZ+uvwwvXobH3dtxcSN+V3ds1A0DBeoFPmNp177Pe
-         ZqJw==
+        d=linaro.org; s=google; t=1729068664; x=1729673464; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=7ANHELgOaoT88BOZwA8pHzeo9xESw2DEE11rjn4SfNE=;
+        b=szMAFNSKYN8PIss3GjPrUceWpzMpHtiVR8Z0x073qzjUj38GM2X8JQYEWpKFJuvDnF
+         WnmkL3ker1N7TgQlp47i/BR0hra8UySapmNR0am/xPOz7Z2cYbt1Huh7fKCZC2l1+mDd
+         9Qn04uMJ4KXYEo64xsBMRZnGND4AAZaMkvr2L/C6MIaMPpSrTHcZBEX0qdTV3QRwiSLq
+         CXG/85Uq4kFYwG14JZM5iDsPwMXQVs2vJeZnyOikd0mteS0hC1C5McgZarz2K1ybRr/T
+         YOjrrSCVEjrgSSphv76BiotALsSUgWnjFABVufIpssJvQF/BAinz2j5AdatmjgM0+pAK
+         zonA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729067849; x=1729672649;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9jJdJXmZIFUypkGDe9/4mfd3DKdJwjPw93ZM7h9RdKg=;
-        b=JOLbVf5Mku3ZceTyW0O4aQwYYgXLEudhvevT9RRRdx1RdpJiZ2+prRqnmIxICbjyqC
-         Fusk3zHR//UiftxXNBpyVf82gFeuqx4pxEU/GWinI1clgcldEkdqQethakZpA6rX3o2N
-         dTzmLaJfH2alRrRvy1i5kr+IkCx20jqfi2302w0uKqlBU8nDnmr1bIhXwT7PjE5XCZgc
-         P2aRwOvXzfJpqk9h8dNTprft+MxDGRz/VL+SsXdbAzjl9unN5OgaNN3xtlSE3J5RbelW
-         cZOKSzxNTq0uTr0aZoEY9FDtEjTjL1ae71mTBJYcVfipyPan6HCf4/PzuglnQSwEmuQe
-         O5NQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWUCfisqSRcF9/hONb7TOYLse7y6az6S2Etikk9mzQkaI//g8apeh6sRaP67SiD1U3Zp5BC1tA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSBqxpudxhb11hROHWNJ9Z2PSHKeq8DKRUHxGN9ILJndOZbxHh
-	vWI8vUWPN3W9ijS0Nby7lfXi5H/3NaX7Mqjx2d000O/Ou3B/wvmLkbc7O/jfPoGbBxUpxfcoqrX
-	H
-X-Google-Smtp-Source: AGHT+IFp3TkzbiKrwAorGoZodCtXXr7F5FcNaRIdRFI7+3ysQVBFKjSKd4I+hM6P7+iGyX8KPTwG+g==
-X-Received: by 2002:a05:600c:1c98:b0:431:150e:4e8d with SMTP id 5b1f17b1804b1-4314a31da99mr27011475e9.21.1729067848919;
-        Wed, 16 Oct 2024 01:37:28 -0700 (PDT)
-Received: from alex-rivos.ba.rivosinc.com (lfbn-lyo-1-472-36.w2-7.abo.wanadoo.fr. [2.7.62.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4313f6b1e9esm42168205e9.37.2024.10.16.01.37.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Oct 2024 01:37:28 -0700 (PDT)
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
-To: Vladimir Isaev <vladimir.isaev@syntacore.com>,
-	Roman Artemev <roman.artemev@syntacore.com>,
-	Guo Ren <guoren@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Alexandre Ghiti <alexghiti@rivosinc.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 1/2] riscv: vdso: Prevent the compiler from inserting calls to memset()
-Date: Wed, 16 Oct 2024 10:36:24 +0200
-Message-Id: <20241016083625.136311-2-alexghiti@rivosinc.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20241016083625.136311-1-alexghiti@rivosinc.com>
-References: <20241016083625.136311-1-alexghiti@rivosinc.com>
+        d=1e100.net; s=20230601; t=1729068664; x=1729673464;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7ANHELgOaoT88BOZwA8pHzeo9xESw2DEE11rjn4SfNE=;
+        b=WhKhYPJb0SMUybNulTq84ZBGgJy3cPaVAf9nXiyEuiHkyJsViRf3VljRMvGw28K0pm
+         rjOaeWtz543lQyXEucb4vI5zqEweuThG4clK76KsWQOgbO6RIBE4mAU4A8UufLxpFreZ
+         yb+YQX6INNVG85pjbi7+RtnOLGUJXIwcZFiIFJsdznQiwvwe1jamy+MFuOx2ga/ZDwjJ
+         srGJfv6v6BlaWOojv2epfHo3rbD35YfTrTcgcgeh4F1vofVjiPbH/7tJByzOOj15osbN
+         7iaxMp+7mDJFCI82SJ3y9wuWyZ07zsW+QlsmfM0jY5mNURVu+rGlWlxP3WGWZgSc+8Fk
+         1lsw==
+X-Gm-Message-State: AOJu0YzQgMvdcLwIppAGD7+TMRg1/qUTjz7J3E/FdXbxlmmGRglJx2MR
+	agL9HhfFx0ThsHTCIUqZjnlhkAPJD86KKSqlA5bO6A4FSSKDjAIE1rOt2WATrjL+0LjXV0miqRq
+	oUSLDgRnauOAkJVyT9GMC+sbTTbFcxnvTl79VlQ==
+X-Google-Smtp-Source: AGHT+IGVdvndE6DwHCl5J6Bx21l+qKZV4+9g/LmWrxs09SV5bTqLudTXO07JdxM9UxTa7+v8ReLIVtv+66nQOC8lm9A=
+X-Received: by 2002:a05:6122:17a6:b0:50d:6cfc:ac4d with SMTP id
+ 71dfb90a1353d-50d6cfcc2d5mr5461175e0c.5.1729068664655; Wed, 16 Oct 2024
+ 01:51:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241015112501.498328041@linuxfoundation.org>
+In-Reply-To: <20241015112501.498328041@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 16 Oct 2024 14:20:53 +0530
+Message-ID: <CA+G9fYtG=-cqLSb5utqMT4FuT=yHrcgr0UCf1pkUbECfDLdO=Q@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/791] 6.1.113-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-The compiler is smart enough to insert a call to memset() in
-riscv_vdso_get_cpus(), which generates a dynamic relocation.
+On Tue, 15 Oct 2024 at 16:56, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.113 release.
+> There are 791 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 17 Oct 2024 11:22:41 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.113-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-So prevent this by using -fno-builtin option.
+From last week's regressions reports,
+The LTP syscalls fanotify22 test failed (broken).
+This regression is noticed on linux.6.10.y [1], linux.6.11.y, linux.6.6.y and
+the Linus mainline and next master branch.
 
-Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
----
- arch/riscv/kernel/vdso/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+Now this has started failing on two additional branches linux.6.1.y and
+linux.5.15.y.
 
-diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
-index 960feb1526ca..3f1c4b2d0b06 100644
---- a/arch/riscv/kernel/vdso/Makefile
-+++ b/arch/riscv/kernel/vdso/Makefile
-@@ -18,6 +18,7 @@ obj-vdso = $(patsubst %, %.o, $(vdso-syms)) note.o
- 
- ccflags-y := -fno-stack-protector
- ccflags-y += -DDISABLE_BRANCH_PROFILING
-+ccflags-y += -fno-builtin
- 
- ifneq ($(c-gettimeofday-y),)
-   CFLAGS_vgettimeofday.o += -fPIC -include $(c-gettimeofday-y)
--- 
-2.39.2
+ ltp-syscalls
+  - fanotify22
 
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Anders bisected to patch
+  b1a855f8a4fd ("ext4: don't set SB_RDONLY after filesystem errors")
+    [ Upstream commit d3476f3dad4ad68ae5f6b008ea6591d1520da5d8 ]
+
+There is a fix discussed and posted in these upstream links,
+  - https://lore.kernel.org/linux-ext4/20241004221556.19222-1-jack@suse.cz/
+  - https://lists.linux.it/pipermail/ltp/2024-October/040433.html
+
+The stable-rc 6.1. (6.1.113-rc1 and 6.1.113-rc2)
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.112-792-g7e3aa874350e/testrun/25467530/suite/ltp-syscalls/test/fanotify22/history/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.112-792-g7e3aa874350e/testrun/25468775/suite/ltp-syscalls/test/fanotify22/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.112-792-g7e3aa874350e/testrun/25468775/suite/ltp-syscalls/test/fanotify22/details/
+
+[1] https://lore.kernel.org/stable/CADYN=9KBXFJA1oU6KVJU66vcEej5p+6NcVYO0=SUrWW1nqJ8jQ@mail.gmail.com/
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
