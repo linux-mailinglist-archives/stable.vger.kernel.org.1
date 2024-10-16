@@ -1,247 +1,196 @@
-Return-Path: <stable+bounces-86517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5669A0E00
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 17:21:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF1F9A0E33
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 17:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F4E01C224ED
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 15:21:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE8CD28267F
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 15:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A3F20C03F;
-	Wed, 16 Oct 2024 15:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895F518C920;
+	Wed, 16 Oct 2024 15:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="iH2DOCHg";
-	dkim=pass (1024-bit key) header.d=sharedspace.onmicrosoft.com header.i=@sharedspace.onmicrosoft.com header.b="iwcdMw3w"
+	dkim=pass (2048-bit key) header.d=jrtc27.com header.i=@jrtc27.com header.b="KywTlMRR"
 X-Original-To: stable@vger.kernel.org
-Received: from esa1.hgst.iphmx.com (esa1.hgst.iphmx.com [68.232.141.245])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163E42076B3;
-	Wed, 16 Oct 2024 15:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=68.232.141.245
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729092066; cv=fail; b=QbcgFmC1XiWRP9NtGnEgAYoFENfrYYQ3ikfrAn6TEpq4hQn0XDFy5E+eYkrLSFZEV/UBEWmg3BZrbOsJXAZsodRXQpYnUwxCTDDU5LcykgH194qDcK/sakMbv/jAT4h/W+U+OFhUm2+/kFmejjqR88q2KxpwGJYCgSymXsadREE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729092066; c=relaxed/simple;
-	bh=ZW54+pq+O59kaiuEBQSraNo2/RWao29+D9xCoc3UTwQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=s00KRYyieyyKyeii/N7a94FEXK5Ti7NxDYFwBVM+wPnD84SCgukPuCJ7EjE269ErKl7TplKsCIMQURbS0pZCEAO6QEspE00lzSQC+6wRTc7uhmgEkfwKbZ0QbFE7zs5ER74/UzFtcuTd6kxE3Ac2sSrRm5agHtDQZSzf+izpwm8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com; spf=pass smtp.mailfrom=wdc.com; dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b=iH2DOCHg; dkim=pass (1024-bit key) header.d=sharedspace.onmicrosoft.com header.i=@sharedspace.onmicrosoft.com header.b=iwcdMw3w; arc=fail smtp.client-ip=68.232.141.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1729092063; x=1760628063;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=ZW54+pq+O59kaiuEBQSraNo2/RWao29+D9xCoc3UTwQ=;
-  b=iH2DOCHguZpiJQrObH5SVkPxlHEFCIacpLUybLVRlWgp3+Marn6XOCAx
-   5YY0FwGlGUiZ8bly2JHzIxT1l7FMfj58DPKgqdZ5Mx+hm9smVRR6XGdVG
-   dyN4uGtMgUKImLbK/zEpEf9z2eJs5D5KszDvrR7uoVR75hVD5YEzt/3pG
-   ZDPnSrnS3lEHNppbcJEsS/TCDdCkUHmn2XwDwFXm1oiKfD11JKU0e744p
-   17RrA/RwRrqWYyVD1FO/hSIgvhRskI/cP1gGKxsUcl79oo98UG2Jor9Qj
-   XwokCWDTnpo5OKx1xCuj7cDMSlBCFKLkSEqCyajkeyRbrWdAsFC4EiFjI
-   w==;
-X-CSE-ConnectionGUID: C0IuRr4+TPy5ODJLAi1CXg==
-X-CSE-MsgGUID: oDQGXoHLR8mjvc1a5HbraA==
-X-IronPort-AV: E=Sophos;i="6.11,208,1725292800"; 
-   d="scan'208";a="30046540"
-Received: from mail-bn8nam11lp2175.outbound.protection.outlook.com (HELO NAM11-BN8-obe.outbound.protection.outlook.com) ([104.47.58.175])
-  by ob1.hgst.iphmx.com with ESMTP; 16 Oct 2024 23:21:01 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=efqfUGDiGgKAR5FGLbY4vubbZ7bdqgMrKHj1kPmFUjUXTD969Xd+AL1J56ybPrUl1rQubddNQQf9NaF/h6OHxI/uaN+04DkbjDo+T+OS3MJiAWW1FzWmw1CxuA68+zeGmHAl2cTplIDqRymN/wHzKqfbNxFB0EJUfXOjk3rwv5GDQ3ng/jL5CiOXMTJ0iSn1u1X3SzAnWEud/Bqs41l9ifqZ1sSMB52s/9VlYGBDCfvIY7RR09qjSRSNfNnv/oQsbAwFxPv8X8sphN0ThNvcAFDOTYp4zZxH+6X4UIvsh+oDbgKk2fLsBk7p+wACcjyCkyA2HL7XwGyhX0+tzm3ZGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZW54+pq+O59kaiuEBQSraNo2/RWao29+D9xCoc3UTwQ=;
- b=TMwIywuBr6Oe38BhNVfLrsAxVa7tezn8+7glcW8pJXFyogKo0RZt0v5vwqLoKvVbSOC/OgmTPL7p6rLg2CC2raPG5lH8XxtrKwpmn/l3H+VrSFVbhokKQfTbsOeHR9tfLg9zBhkHYY8Rva12o8xIR3qYpT7MaX+sBaSiGecYcSHgcgXj5qKHNHWaGVTFjQkgzMOoOvBvV6Rlh775wx6U1hfjCwjkNq30krFjXKjTL1gD6Cg8QsYRZ5ceBp+R1LT4Iw+i05An7SWMYt/g0hUmBLVKj/4HJcrIuybw9XulenkfpW3i1txwWifDWwhpJDn2YHUnC4TuIeg+wN3mGyZOnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
- header.d=wdc.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9529A1384B3
+	for <stable@vger.kernel.org>; Wed, 16 Oct 2024 15:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729092635; cv=none; b=lfkJ4OmlAqlEK/qbxnjSBHEQG/SBSFy3T9fXFQKDO/06qwub9gZp9Fa9629O7G5zTD1dHcYtS4jsp7fl/WVgUOa5paNFgS7Mqs9uyLfHScpY1DMQkjUcPEWbpQMfKsmHL+X+sgWGNKDHSsE8g00xMuOw4ZosNqHqNYbS/owtCK4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729092635; c=relaxed/simple;
+	bh=fu5iRgYgRkj80j9SZ3py/vD5I5PfSyJqY/THhty4v9w=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=uOuXwipO74EqjceLxZBaYHdBSk0H9bRqCl3UnJx4iaYrNendR6vDN+oM5tRFLF1BQxQ0gkrDFLZICKHkg0Knlp+bqBgisGto37ON1hUtKYHAV80zcwPOWg3jpNEgfA8mPvljNQJzmqLF0edj1aNVPLnJB+NS+5FYgRjRi2MXlsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrtc27.com; spf=pass smtp.mailfrom=jrtc27.com; dkim=pass (2048-bit key) header.d=jrtc27.com header.i=@jrtc27.com header.b=KywTlMRR; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrtc27.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jrtc27.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4305724c12eso52080935e9.1
+        for <stable@vger.kernel.org>; Wed, 16 Oct 2024 08:30:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZW54+pq+O59kaiuEBQSraNo2/RWao29+D9xCoc3UTwQ=;
- b=iwcdMw3wg7dpMiC1EDQOiTh5QPnPcHKdIPKfxj4WAMALVR9yPfExHMcZLCFp50rzqW03599z2xYxSsLQx2xcGCTtRdFZh4rXWI9Grk9yigRryyLJkfj4SlvKgZ3HiU8vwd/jJXeTXyrZbSVdggSQMQaUEtCCLBa+/qpZpD5Ycho=
-Received: from DM6PR04MB6575.namprd04.prod.outlook.com (2603:10b6:5:1b7::7) by
- PH0PR04MB8452.namprd04.prod.outlook.com (2603:10b6:510:294::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.24; Wed, 16 Oct
- 2024 15:20:59 +0000
-Received: from DM6PR04MB6575.namprd04.prod.outlook.com
- ([fe80::bf16:5bed:e63:588f]) by DM6PR04MB6575.namprd04.prod.outlook.com
- ([fe80::bf16:5bed:e63:588f%7]) with mapi id 15.20.8069.016; Wed, 16 Oct 2024
- 15:20:59 +0000
-From: Avri Altman <Avri.Altman@wdc.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>, Adrian Hunter
-	<adrian.hunter@intel.com>
-CC: "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] mmc: core: Use GFP_NOIO in ACMD22
-Thread-Topic: [PATCH] mmc: core: Use GFP_NOIO in ACMD22
-Thread-Index: AQHbHi7TFZSMk/o14kmdcXcmd7NitrKHkVSAgAHmQYCAAAe+cA==
-Date: Wed, 16 Oct 2024 15:20:58 +0000
-Message-ID:
- <DM6PR04MB65750E8C697235F8E0B42CA8FC462@DM6PR04MB6575.namprd04.prod.outlook.com>
-References: <20241014114458.360538-1-avri.altman@wdc.com>
- <18e66783-0fc7-4c55-8087-dc4212e851b4@intel.com>
- <CAPDyKFoXsgXNevDoCGTKSTwz-PfavfEHG5feyzEbeynRq3bDGw@mail.gmail.com>
-In-Reply-To:
- <CAPDyKFoXsgXNevDoCGTKSTwz-PfavfEHG5feyzEbeynRq3bDGw@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=wdc.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM6PR04MB6575:EE_|PH0PR04MB8452:EE_
-x-ms-office365-filtering-correlation-id: c60f6665-bf98-42f5-4a1e-08dcedf6234b
-wdcipoutbound: EOP-TRUE
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|366016|10070799003|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?YmY4YWRXSFcwR3ZacTNjNHBONFl3b1RFZVliblg4WThvUGtPMWJlMkxXWFpP?=
- =?utf-8?B?NUVnQmhSTGtJS3pwMWJuQ21BUlQ3NzcxUWwyZ0I5dm45elVwUUg0d0tWdWJL?=
- =?utf-8?B?SmYzU1hZVFZOeEgwZlFkb3pDSDFuZlhsa2UvZ1U4VUJTOXJ1enJZWGM2cWF3?=
- =?utf-8?B?T1Z0YTEvZ1M0dHhmV25jcStLeFdqTnc4ZGhVaVh3aHZxMjFYQUhuMWZ4S1g1?=
- =?utf-8?B?MGhxcExCZ1VVd1FsTkN6Z201ckpXcDczc3hZYUtWTFp1WUJpZjFKRW9yTGtJ?=
- =?utf-8?B?YXNmRW54U2Z2VGpFcVQ5aUdNZlJ6UlZyR05NVWd1bTZkOG5kanFHWFlSV2RM?=
- =?utf-8?B?ek5YenFreklmY2FYZEhmQkZnbVZjbzVoNFV0RXcrWFA2cWRhQ0hkUlpQa0JP?=
- =?utf-8?B?a3JXMG1WL1g4RlNISEtaMEM4Tkh1NHMybXYrTk50bGpkcFBPRHMxeDI1dUJQ?=
- =?utf-8?B?c0lmWlZSTlFOV2RKcWMrSU1lMGxjYUkweDQ5VjY5N3M5cWhza1NzYWkxQmpq?=
- =?utf-8?B?VEFvRWFiR2dXbEo4ZkZUNW1lc1lBV21qektDT3M4SWJrN2t1UGtQYVQrc1c1?=
- =?utf-8?B?WEtNU1M0YmJQTU90VEtHNWlTQkVueEl4Nk16SU1zNEJzYzNYVVZpUVdMWjEr?=
- =?utf-8?B?WUxDUHRkK3o2VzBEeDFlQitXRVJ5a1ZJMHJpZlIvU2FQR0NhZFRhcm9ackkz?=
- =?utf-8?B?NzhTTU9DSkQvZloxVXNjTzRjOUhYSklYTzRjV2JlSHBDZzJtZ2U4bUlRb2NS?=
- =?utf-8?B?b010RFF4YWVHcE5mNlViVFJ2VTlvTkZpMmRRZ1kwRGdrMTNrNVBJdVdUanlx?=
- =?utf-8?B?VjJPR3hlRU5NMEJ4OWRqU2k2TTZpZmNaQ3lMTkNhSlhhdnpjbGlnQVFYOEo1?=
- =?utf-8?B?Z2Izc2VXUkJnTXVuNVBFTDRWZ2c3Ym94bldCQlh4QXRBNnluRzZFamFnYUJ4?=
- =?utf-8?B?WngwcGt0NU1pd3A3bkQzVmpZSDRVdzAyTFFlak5UUFA4WDVGbWcrQjRSQU5a?=
- =?utf-8?B?dGNHc0NYYkJ3NFJWeXEvZTZaVTdOU1VXK3pRNUNBUEVsMDVHYlNIdE4zQ3pI?=
- =?utf-8?B?Y0pIMHg5c0x3eEZsZzFnMENDa2tjb0dlY1cwZnNHT0NJdWRlNnRSNzY4UXdW?=
- =?utf-8?B?c0Fqb0U1MExIWjlPZFlZc1VWcytSUjJMK0pSZkQ1ZEJYQzE0NW5QK0w2QTJE?=
- =?utf-8?B?QjVEc0lLTTcrV3MxUElQRlJ0OHZPSlhhWjFKZkpRVER5SWU1T09iK1JUUVYz?=
- =?utf-8?B?S2FBTVZDWVRkeEViRTRMRFNDaU1ISkhpSmtwL3p5aHBUcWVNemhEcVpnc2l3?=
- =?utf-8?B?MVArbXhKQUhKVVdEQ2ZQZ1BybGlRU1lyUzZXbzJLZWlYdWNGSXpVT3VyaHBH?=
- =?utf-8?B?bTUyUmFpZVRsZS9UcytCVVNSSUk5R1M1cTF0ZGRQb0JDZGpjV1daMy9IRTRW?=
- =?utf-8?B?Z2g4ZnpIWGVBc2xmTmJHdkZ3a3VUS0U5OUkxaWRFSkowQW5oblBXUnFvVitl?=
- =?utf-8?B?czR5dUZ5TUhpY3UyOE0yUkdmVVFrckk3TGxSaEpsblFxNW5YSHFqZXpkbVJC?=
- =?utf-8?B?WmFXSFNmdTg3VmR1ekhUanFNd3IvZEZjV21LdlVZc09pKy9hYzhETE5PM0Fn?=
- =?utf-8?B?OS9aU0tEYU8vNS9MaVZVczd2a0locG1EeVUwUVptMStremxPTkJmWW50cGtE?=
- =?utf-8?B?SGpJTEpTN25aQUtpR2NTMjQ0Nkl6LzhPYXZzTkxGbUFYVStXTmpKOERRPT0=?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR04MB6575.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(10070799003)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?cnpTMFc0TGRnMTQvaWdxTjY1eXB5TVIxTS8wRk0ydGowaFlXTGcxdWNBOXMv?=
- =?utf-8?B?a0k5NEJLUWNrL2plc3pMNHhtWnlkL3FFSEI3YnZ3WHZwcjhWSEh1aDZQRmg0?=
- =?utf-8?B?M0daRUtpa25rNEM1ZHdBYUd6LzEyaEdvT1NobVlTRHVrVWRTWCsvTGFlMklu?=
- =?utf-8?B?RFJyQ0Iyd2l1RU5sL0xkZkN5alZEOUFwQkdKN1JVZ2RBZ2I4NDZaTWVxekwr?=
- =?utf-8?B?QTVDcmVDNmdUbzJNN2lxZW9ONjY0bW5uU0x6OVZ1aHZ6REtuYWt2TFQ4T200?=
- =?utf-8?B?YXUzY2dSSC83VnhheCt5TWgzRUJBdGYxeHJ1aWRad3VCZ2hSbm1tSk1EWHU5?=
- =?utf-8?B?WXBwQnc3UmVNV2xTU3VPbHNLY1R2aTk4RzViUEo4N25SNTVUaEpRMlNJaE41?=
- =?utf-8?B?QmlmQld5dFVyc0UyUWdQQUJXZHFFUWlWckJpc05nRDRWUWQ5K2FlNEg3Skov?=
- =?utf-8?B?UDQxd0FiQkJLYVRLS3hYS1JOV3dZeTRsZm8zRzlEd2NaUkhLc2ZiVm0wRWNp?=
- =?utf-8?B?NlJuTTdycEEzRlFYSnFTbElpS3NRY2hqMUQyWnlNdXpTTXFDeVU5djNxSVVY?=
- =?utf-8?B?ZnBaUDhnbnlzei81ejQrcVJNMHdONHJodnRTK2piUVlqdEFUNTdRNmRYZFpq?=
- =?utf-8?B?UklPMlJpekNRcVFTeWNGN3lTWjFoUE1tcDBqMGM2RHEyRndWYkNSZHZCVG93?=
- =?utf-8?B?cXQ5OTBaZTVTektNQ1pGbEc2WFZVS09ERmVKdDY3YmI2TnNodzF5Q2tzcU1R?=
- =?utf-8?B?dmozbFZsdUJoaTd4Wlg1R05MU0tiMGp4L1NBdGdCQ1JDM2JTL3hybGdSaGk4?=
- =?utf-8?B?QmhqVFRjKzNXbUJRUG5sZkRDeWtBRFdoQVhBcmVWRHVqYndvSmRiQkZpVjVH?=
- =?utf-8?B?RTVpeDNmK1puMUppNkpxS2pOVHpraUUwaGNPbStiWUNRaFpUczhxTURoV0FR?=
- =?utf-8?B?NmFHakhESTVDTTkwQmZCRkRGRldoOE9ZTFlpZ3VhYmJhZTVOMkttUTBHWmN3?=
- =?utf-8?B?ZHZkT2Z6VDFuQlkweXJEai9jbmRIRFhBZzNiemFQdHVyUGtYblVOR1ZZTGk1?=
- =?utf-8?B?eEIyR0RuWXVlSHMremdqYXZIbVF6dUYrUnVYWEVob3R5ZFEweVgrTXpzTDJa?=
- =?utf-8?B?bHBJY2lEdU9HbnpmQTZhNURKZlI1cGlzOEVZT3RMVVVjeUd1cHFCdXJnd3Rs?=
- =?utf-8?B?TWxNQjhFaHc2RWcrMEhjT25URjJtVE1YNVVuRnlYMmFnN2Q4MklxS2dOc3dJ?=
- =?utf-8?B?RGR6U1JmQkxYUVlLQVE5OVpSYjFUVEs3SkdNY2JSTno4Z1hrNzFwYXcxQTBh?=
- =?utf-8?B?OHk2YzllNy8xblBRcVZhdXhONmg5TlhpSGdJYjU4YitKR2gwT1ZSV3MrSFZx?=
- =?utf-8?B?MUZpMWllQ1BIREtVV3ZmM1JrUGFNZ0xSRFpPRllGOTdXRUJCYTd1OHZYdmRD?=
- =?utf-8?B?bDlFZTVhRDJxRmFUQWJxSUNGTmE5TEtFSmpRNG9rKzQwT2c4emlsZS85dFM4?=
- =?utf-8?B?U3NtamFMeUpHNmROZk1YVXhjWkthMVBydGVHQVF5U0hHRms2YlBWWHBiTjBU?=
- =?utf-8?B?MzBWSW94RHBGYzlEV2RqeklYeXJINjljV1hYZFBnRFFzWnAxanhjbGNJMFVi?=
- =?utf-8?B?S3ZEV000bVRoVjdMczFNL3o4U1A5NnpIOUpDY2kyZTBaN1VXbGM4N1FvRUJQ?=
- =?utf-8?B?Q0xqVGNiYk1LL01pdjBVcTlmanFKQ1hpRit2R0Z3TVlvcnl2L3RkUXd6TkxO?=
- =?utf-8?B?SFFRVDFxNDk1VXdMTFpwdzRKME1PNjF6VW1FQmtweVlYOTFVdWxHSVJNOS9M?=
- =?utf-8?B?MlNDVmRNRTgxd0xDL3NCeDZxU1dnYnpzRVNtTlBZSWlIK1VqbjU3M241aDZU?=
- =?utf-8?B?eWR2VmpTUVhLMlpDMEZqNFhvMUFFNnRzZ0VwbWw1UDZOZThWMTc4bS9kZkdZ?=
- =?utf-8?B?R2NSNFp2MXJ3MG04T2phelIrNWtpNEV0SkRiWkhaK3JoMUtjNzZSQnRTVjNL?=
- =?utf-8?B?eTMwVHNuSGFjZnlOZDdCUFZJOExDZ1pJOEFNcHRUelczYlBIUit4bFY5ditv?=
- =?utf-8?B?bkNkVUgvaG80M2dmeGVtcEw1bVI1aTNKWmkyR2dxUVRNY3VWVkwvT3A5Ty9D?=
- =?utf-8?B?WFBhd1RXelhmRUVrdkZkN0ZYOTlFSEVvMWlHaDRoeXVGNTdTSzFIL1JjQnZy?=
- =?utf-8?Q?MGUYnk00eXD/zsd7Jefo83SDg9F8VaiWHR53PlzffUrd?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        d=jrtc27.com; s=gmail.jrtc27.user; t=1729092632; x=1729697432; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fu5iRgYgRkj80j9SZ3py/vD5I5PfSyJqY/THhty4v9w=;
+        b=KywTlMRRNwFzy17gIsBt1V/xAerGUZh2ERVDVACZ4bc/KJBXoFstgwJrzvZGjyGkNB
+         mUCjOBoCnlAvLPjimZmCcdk/242COnDLPGeUXzPDH+9SIEFfN6EN1zaCoYzbSvBjhPI2
+         goPSPLsBgFp6nZAVshElU97r5WaMUbKOLJkS0MyNqEaB41pU9r6plmOHvV7IPGl8jDrc
+         TkWXc2CPcX4QjEB4BIBKfMUVKP2dbEVc1/o00IO3orNYi80Vk3rmpaBs+F5oSIJkYl/d
+         qLcPYyPT4aPWFCZA0T//6Eh1tpJxvkLoeYDsqNnLaRCKX61KDYgP9yR/b+Qv5J29GoWb
+         wQ7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729092632; x=1729697432;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fu5iRgYgRkj80j9SZ3py/vD5I5PfSyJqY/THhty4v9w=;
+        b=sPp7YV8j6E9U8i5XLEsUa49JGhIi/6mPOQw66/MJc5RkrQ2fUqmiAih0QBPpQgfUbl
+         xwrZu1wPOvX7L/FPuqFBFv/vMiPftbsU9y1PVIwUCTiuJ1xOvsPEmA4+HRXoaVksiOh/
+         EfQQRfRmKo8Y11Bedh+Ds2jwkine25k1q5vND2qY1xWvs8BC1ZVHGn1UUx1QNd2TUHZ6
+         zokM4D9KyWaUloR72nKMaDBET5MOF3OvoQU4NTx5bCg0nm9atrhxlHZNXQwEbCWODdpF
+         tXDYO0lVyg64SA/vq25eBpUSz0VBSgvAFiC6/9ywc0hTnGtCZixFgC3MZ/7L1lUXyXVp
+         zvYw==
+X-Forwarded-Encrypted: i=1; AJvYcCWweWs6hH6uWxOf8vcgjwj9sI3JJIOw+damA3JFy9D+lBSrNuVa8C9OSHQd22/h6H8kbqvF3rY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGJ4hYvq86JL4UQpZ8iJ4TnNfPGGnEuWwxBRvOBxZqgl6Hlgb2
+	x5+/Xm5CgYena5RMVmtUxXrWf2q4KhhGbd2/0XQPad9q5mHSLS4lgxRFeE0RqYc=
+X-Google-Smtp-Source: AGHT+IGN4iO/Z4ByP5TditNqCj7XQIWWSN8JvAA6/qnWa/dt+s8Eo87ZFfp0PaLsleCGBhJWo3ulhA==
+X-Received: by 2002:a05:600c:1c9d:b0:430:57f1:d6d with SMTP id 5b1f17b1804b1-431255d5099mr135853665e9.1.1729092631642;
+        Wed, 16 Oct 2024 08:30:31 -0700 (PDT)
+Received: from smtpclient.apple ([131.111.5.201])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4313f569aadsm52179615e9.15.2024.10.16.08.30.30
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 16 Oct 2024 08:30:31 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	WdIdA3mDPe+Z6NSKj1+p2JBpWfF8yqpNuRpsgIJ5qnzo/sTKeNh7PJHD3+tSEYNKjjnjvPGXfRebTNH2MUbJZgiFErt9SWOFGmThpiiInQy1pbRqRWOtMA4uUwa6UntYyZ7exFx1oSK3wlndgT0bD/Ltz9ERGnztJ1Ba1OAcyxxUbICjvEnzWFkDW3m3YX9OYyPf7mv4QX5x2EsBQTwUKWLTOSks+rdqVqq9HWHmOCNqFBbZOLPviKGCk5nmnTtjboxVJYlsBNSeIM6s4lFBj9XZSseil+sModDPGb1+hN6D23HurTDkV6wAGp8iOowuj+m0vAD1sxlSKhrwJKgAa/avREkezY/1TDHlxNSLJjaqvlKxImeZRfVUEOMZaybdqlR/6+Oyw9gHQyvc1hi12HK8k5d+rM2y8uuRiC1bl3uiYJXGm6pYznymAkoyzrxQbroOVysiNh+ZIdWaQHzXV1Mq0lI3yPDIatK8cUDE25FbTTugK2VB+PciuGeZzpergKC0bxrapWVnyy8OU42L5bw8+LRX0M+vQkLGCLpEsZcBTQX8CzKPZK1u1nPJy75cdjRumHJoK7JBUFEROKCrhlFdnkFCt5Tv5DAM4wyz4TwnhRtqCNZmA9dyR5GgmmR5
-X-OriginatorOrg: wdc.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR04MB6575.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c60f6665-bf98-42f5-4a1e-08dcedf6234b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Oct 2024 15:20:58.9547
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: k1trEx4LDFEuFUNZxrCMDN00V0a6HDENLfLbvRKzcoPjHpJZN0Ql9BwhJycZxL+mWsOxYdVzrepTxKhNvky5UQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR04MB8452
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
+Subject: Re: [PATCH -fixes] riscv: Do not use fortify in early code
+From: Jessica Clarke <jrtc27@jrtc27.com>
+In-Reply-To: <3fe1e610-c863-4fbf-85cb-6e83ba7684af@ghiti.fr>
+Date: Wed, 16 Oct 2024 16:30:20 +0100
+Cc: Alexandre Ghiti <alexghiti@rivosinc.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>,
+ Heiko Stuebner <heiko@sntech.de>,
+ =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>,
+ linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org,
+ Jason Montleon <jmontleo@redhat.com>,
+ stable@vger.kernel.org,
+ Kees Cook <keescook@chromium.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <26E1A34A-CC24-4D6B-9C12-782C837A91E1@jrtc27.com>
+References: <20241009072749.45006-1-alexghiti@rivosinc.com>
+ <1CA19FB3-C1E3-4C2F-A4FB-05B69EC66D2F@jrtc27.com>
+ <3fe1e610-c863-4fbf-85cb-6e83ba7684af@ghiti.fr>
+To: Alexandre Ghiti <alex@ghiti.fr>
+X-Mailer: Apple Mail (2.3818.100.11.1.3)
 
-PiBPbiBUdWUsIDE1IE9jdCAyMDI0IGF0IDExOjQ0LCBBZHJpYW4gSHVudGVyIDxhZHJpYW4uaHVu
-dGVyQGludGVsLmNvbT4NCj4gd3JvdGU6DQo+ID4NCj4gPiBPbiAxNC8xMC8yNCAxNDo0NCwgQXZy
-aSBBbHRtYW4gd3JvdGU6DQo+ID4gPiBXaGlsZSByZXZpZXdpbmcgdGhlIFNEVUMgc2VyaWVzLCBB
-ZHJpYW4gbWFkZSBhIGNvbW1lbnQgY29uY2VybmluZw0KPiA+ID4gdGhlIG1lbW9yeSBhbGxvY2F0
-aW9uIGNvZGUgaW4gbW1jX3NkX251bV93cl9ibG9ja3MoKSAtIHNlZSBbMV0uDQo+ID4gPiBQcmV2
-ZW50IG1lbW9yeSBhbGxvY2F0aW9ucyBmcm9tIHRyaWdnZXJpbmcgSS9PIG9wZXJhdGlvbnMgd2hp
-bGUNCj4gPiA+IEFDTUQyMiBpcyBpbiBwcm9ncmVzcy4NCj4gPiA+DQo+ID4gPiBbMV0gaHR0cHM6
-Ly93d3cuc3Bpbmljcy5uZXQvbGlzdHMvbGludXgtbW1jL21zZzgyMTk5Lmh0bWwNCj4gPiA+DQo+
-ID4gPiBTdWdnZXN0ZWQtYnk6IEFkcmlhbiBIdW50ZXIgPGFkcmlhbi5odW50ZXJAaW50ZWwuY29t
-Pg0KPiA+ID4gU2lnbmVkLW9mZi1ieTogQXZyaSBBbHRtYW4gPGF2cmkuYWx0bWFuQHdkYy5jb20+
-DQo+ID4gPiBDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZw0KPiA+ID4gLS0tDQo+ID4gPiAgZHJp
-dmVycy9tbWMvY29yZS9ibG9jay5jIHwgMTAgKysrKysrKysrLQ0KPiA+ID4gIDEgZmlsZSBjaGFu
-Z2VkLCA5IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4gPiA+DQo+ID4gPiBkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9tbWMvY29yZS9ibG9jay5jIGIvZHJpdmVycy9tbWMvY29yZS9ibG9jay5j
-DQo+ID4gPiBpbmRleCAwNGYzMTY1Y2Y5YWUuLjA0MmIwMTQ3ZDQ3ZSAxMDA2NDQNCj4gPiA+IC0t
-LSBhL2RyaXZlcnMvbW1jL2NvcmUvYmxvY2suYw0KPiA+ID4gKysrIGIvZHJpdmVycy9tbWMvY29y
-ZS9ibG9jay5jDQo+ID4gPiBAQCAtOTk1LDYgKzk5NSw4IEBAIHN0YXRpYyBpbnQgbW1jX3NkX251
-bV93cl9ibG9ja3Moc3RydWN0DQo+IG1tY19jYXJkICpjYXJkLCB1MzIgKndyaXR0ZW5fYmxvY2tz
-KQ0KPiA+ID4gICAgICAgdTMyIHJlc3VsdDsNCj4gPiA+ICAgICAgIF9fYmUzMiAqYmxvY2tzOw0K
-PiA+ID4gICAgICAgdTggcmVzcF9zeiA9IG1tY19jYXJkX3VsdF9jYXBhY2l0eShjYXJkKSA/IDgg
-OiA0Ow0KPiA+ID4gKyAgICAgdW5zaWduZWQgaW50IG5vaW9fZmxhZzsNCj4gPiA+ICsNCj4gPiA+
-ICAgICAgIHN0cnVjdCBtbWNfcmVxdWVzdCBtcnEgPSB7fTsNCj4gPiA+ICAgICAgIHN0cnVjdCBt
-bWNfY29tbWFuZCBjbWQgPSB7fTsNCj4gPiA+ICAgICAgIHN0cnVjdCBtbWNfZGF0YSBkYXRhID0g
-e307DQo+ID4gPiBAQCAtMTAxOCw5ICsxMDIwLDEzIEBAIHN0YXRpYyBpbnQgbW1jX3NkX251bV93
-cl9ibG9ja3Moc3RydWN0DQo+IG1tY19jYXJkICpjYXJkLCB1MzIgKndyaXR0ZW5fYmxvY2tzKQ0K
-PiA+ID4gICAgICAgbXJxLmNtZCA9ICZjbWQ7DQo+ID4gPiAgICAgICBtcnEuZGF0YSA9ICZkYXRh
-Ow0KPiA+ID4NCj4gPiA+ICsgICAgIG5vaW9fZmxhZyA9IG1lbWFsbG9jX25vaW9fc2F2ZSgpOw0K
-PiA+ID4gKw0KPiA+ID4gICAgICAgYmxvY2tzID0ga21hbGxvYyhyZXNwX3N6LCBHRlBfS0VSTkVM
-KTsNCj4gPg0KPiA+IENvdWxkIGhhdmUgbWVtYWxsb2Nfbm9pb19yZXN0b3JlKCkgaGVyZToNCj4g
-Pg0KPiA+ICAgICAgICAgbWVtYWxsb2Nfbm9pb19yZXN0b3JlKG5vaW9fZmxhZyk7DQo+ID4NCj4g
-PiBidXQgSSBmZWVsIG1heWJlIGFkZGluZyBzb21ldGhpbmcgbGlrZToNCj4gPg0KPiA+ICAgICAg
-ICAgdTY0IF9fYWxpZ25lZCg4KSAgICAgICAgdGlueV9pb19idWY7DQo+ID4NCj4gPiB0byBlaXRo
-ZXIgc3RydWN0IG1tY19jYXJkIG9yIHN0cnVjdCBtbWNfaG9zdCBpcyBiZXR0ZXI/DQo+ID4gVWxm
-LCBhbnkgdGhvdWdodHM/DQo+ID4NCj4gDQo+IEkgaGF2ZSBubyBzdHJvbmcgb3Bpbmlvbi4NClRo
-ZW4gSSB3b3VsZCB2b3RlIHRvIHN0YXkgd2l0aCBBZHJpYW4ncyBvcmlnaW5hbCBOT0lPIHN1Z2dl
-c3Rpb24sIGJlY2F1c2U6DQoxKSBNeSB0ZXN0aW5nIHNob3dzIHRoYXQgbW1jX3NkX251bV93cl9i
-bG9ja3MoKSBpcyBoYXJkbHkgYmVpbmcgaGl0LCBhbmQNCjIpIHRoYXQgYWxsb2NhdGlvbiBpcyB3
-aXRoaW4gdGhlIHdyaXRlIHRpbWVvdXQgYW55d2F5DQoNClNvIHVubGVzcyB5b3Ugd2FudCBpdCBv
-dGhlcndpc2UsIHdpbGwgcmVtb3ZlIHRoZSByZWR1bmRhbnQgbWFjcm8gY2FsbCBhbmQgcmUtc3Bp
-bi4NCg0KVGhhbmtzLA0KQXZyaQ0KPiANCj4gQSB0aGlyZCBvcHRpb24gY291bGQgYmUgdG8gYWxs
-b2NhdGUgdGhlIGJ1ZmZlciBkeW5hbWljYWxseSBpbiB0aGUgc3RydWN0DQo+IG1tY19jYXJkIHdo
-ZW4gcHJvYmluZyB0aGUgbW1jIGJsb2NrIGRldmljZSBkcml2ZXIsIGJhc2VkIG9uDQo+IG1tY19j
-YXJkX3NkKCkgcmV0dXJuaW5nIHRydWUuDQo+IA0KPiBpZiAobW1jX2NhcmRfc2QoKSkNCj4gICAg
-Y2FyZC0+aW9fYnVmID0gZGV2bV9rbWFsbG9jKCZjYXJkLT5kZXYsIDQsIEdGUF9LRVJORUwpOw0K
-PiANCj4gS2luZCByZWdhcmRzDQo+IFVmZmUNCg==
+On 16 Oct 2024, at 12:26, Alexandre Ghiti <alex@ghiti.fr> wrote:
+>=20
+> Hi Jessica,
+>=20
+> On 16/10/2024 00:04, Jessica Clarke wrote:
+>> On 9 Oct 2024, at 08:27, Alexandre Ghiti <alexghiti@rivosinc.com> =
+wrote:
+>>> Early code designates the code executed when the MMU is not yet =
+enabled,
+>>> and this comes with some limitations (see
+>>> Documentation/arch/riscv/boot.rst, section "Pre-MMU execution").
+>>>=20
+>>> FORTIFY_SOURCE must be disabled then since it can trigger kernel =
+panics
+>>> as reported in [1].
+>>>=20
+>>> Reported-by: Jason Montleon <jmontleo@redhat.com>
+>>> Closes: =
+https://lore.kernel.org/linux-riscv/CAJD_bPJes4QhmXY5f63GHV9B9HFkSCoaZjk-q=
+CT2NGS7Q9HODg@mail.gmail.com/ [1]
+>>> Fixes: a35707c3d850 ("riscv: add memory-type errata for T-Head")
+>>> Fixes: 26e7aacb83df ("riscv: Allow to downgrade paging mode from the =
+command line")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+>> Is the problem in [1] not just that the early boot path uses memcpy =
+on
+>> the result of ALT_OLD_PTR, which is a wildly out-of-bounds pointer =
+from
+>> the compiler=E2=80=99s perspective? If so, it would seem better to =
+use
+>> unsafe_memcpy for that one call site rather than use the big
+>> __NO_FORTIFY hammer, surely?
+>=20
+>=20
+> Not sure why fortify complains here, and I have just seen that I =
+forgot to cc Kees (done now).
+>=20
+>=20
+>>=20
+>> Presumably the non-early path is just as bad to the compiler, but =
+works
+>> because patch_text_nosync isn=E2=80=99t instrumented, so that would =
+just align
+>> the two.
+>>=20
+>> Getting the implementation to not be silent on failure during early
+>> boot would also be a good idea, but it=E2=80=99s surely better to =
+have
+>> FORTIFY_SOURCE enabled with no output for positives than disable the
+>> checking in the first place and risk uncaught corruption.
+>=20
+>=20
+> I'm not sure to follow: you propose to use unsafe_memcpy() instead of =
+disabling fortify entirely, so we would not get any warning in case of =
+failure anyway right?
+
+Yes, but no. The point is to disable it only for the problematic
+function call, not the entire file, so any other fortifiable function
+calls that exist now or in the future in that file don=E2=80=99t get it
+unnecessarily disabled too.
+
+> Or do you propose to modify the fortify code to somehow print a =
+warning? If the latter, it's hard this soon in the boot process (where =
+the mmu is disabled) to make sure that the printing warning path does =
+not try to access any virtual address (which is why the boot failed in =
+the first place) but maybe Kees has an idea.
+
+Not for this patch, just observing it would be nice to have.
+
+> And I believe that enabling fortify and using the unsafe_*() variants =
+is error-prone since we'd have to make sure that all the "fortified" =
+functions used in that code use the unsafe_*() variants.
+
+I mean, that=E2=80=99s how all these things work, normally?
+
+Jess
+
+> So to me, it's way easier in terms of maintenance to just disabling =
+fortify.
+>=20
+> Thanks,
+>=20
+> Alex
+>=20
+>=20
+>> Jess
+>>=20
+>>=20
+>> _______________________________________________
+>> linux-riscv mailing list
+>> linux-riscv@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/linux-riscv
+
+
 
