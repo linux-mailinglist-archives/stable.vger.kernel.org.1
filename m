@@ -1,120 +1,151 @@
-Return-Path: <stable+bounces-86544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA0B9A14B9
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 23:24:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBEBC9A1515
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 23:44:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 855A01F25141
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 21:24:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A280F1F248D5
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 21:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225FB1D1F76;
-	Wed, 16 Oct 2024 21:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BA91D2F66;
+	Wed, 16 Oct 2024 21:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c7/6Prv0"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="i419QJnk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FD013B298;
-	Wed, 16 Oct 2024 21:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7651C07E1;
+	Wed, 16 Oct 2024 21:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729113869; cv=none; b=AgJxa+ipRFXg1h5J2uweyQqY2LXr43aOZDukBk598I9sThsyHL5PZK3MwOWeWBnrI7F6L6KtOAFokVmFSXePWmrqt8B5Cp2jILofQAdni19k2wfefUZ56W/JCqk96seK5GT4C5BseIuzMQtEw5HqPMWOZpOUbJaTUJFHC0AYJUc=
+	t=1729115056; cv=none; b=sGy6t6T3Kss0dqoXVbbVLARXmD2Ko6recRbSU4UGCHAUMbAdRn52kOHVis58SxtXK6nTI44tAdppYQvZi7FKY1i2jTA4PQ8lIzoj3+mURM2IAsgWv9biLe34YuSlHmxjufNMByb2J48OBxIP3OnO0525ZdVUvqNj34Qj/sLmUlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729113869; c=relaxed/simple;
-	bh=WmRyooRpNUPsrOSIwLEuGtI5tETK3P7F58Xs9VK/nqU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UbrZUyKlISAXdX69mhNKd8lEvtJPJr7HO4BuQfUHbXsJGEX0fZ2bWKXLEm4lCBZAHDl1Xuo0WXFEH56q/U1RTy8FQynKXynKWShL5T1vkMqF1d9YqjObNDV6ay9o0emPcFrrM0uWVsn+7Wxm/xgbmoj9EjFtZlPDfzrEeNab1FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c7/6Prv0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D230C4CECD;
-	Wed, 16 Oct 2024 21:24:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729113869;
-	bh=WmRyooRpNUPsrOSIwLEuGtI5tETK3P7F58Xs9VK/nqU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c7/6Prv0V/3uEKt5DQtqrnxyPW+061zPoW9DD2m5SSMpeREYxcAQtl3ic6CvySKSN
-	 e50H621ALjxb7Te6UYMKh3m6wM5StaKEuuqc8NRN/zN8Zamof45GxR2lZx6lc1OuD7
-	 2waucJwnFs8bNs+Nfwzs9+WbTiSK4saf+HJRmnWkdDYfcK5zzR63me4hK3IzJmlP2K
-	 CsBg0dTzFDLeEyEKVCZc889Lju7SQOZCGpIkE579Kds6XwFCXUVqiFAFTXygSjB5GS
-	 bYqIUtBFrUhuynUF6pos3ukihM0+vjR1XMURbBndqor8amdckbZFcuY7QFixWHNEQI
-	 +RP/ffKudQJCw==
-Date: Wed, 16 Oct 2024 14:24:27 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Aleksei Vetrov <vvvvvv@google.com>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	patches@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] kbuild: Fully disable
- -Wenum-{compare-conditional,enum-conversion}
-Message-ID: <20241016212427.GA695927@thelio-3990X>
-References: <20241016-disable-two-clang-enum-warnings-v1-1-ae886d7a0269@kernel.org>
- <a22ab6cb-6eb6-44df-9e82-b6e95b9ae08e@app.fastmail.com>
+	s=arc-20240116; t=1729115056; c=relaxed/simple;
+	bh=4+lHm9ImuQE82ZpWm+YVKOxyojVXUWrhR6KsSBKQM/0=;
+	h=Date:To:From:Subject:Message-Id; b=QEvQ+ePTl8WHcBp9gy/Ozpcf+0cy5yC3VQKJkAUW88MEF0xunqHE8UkTFvu03VKd2oZ3ejXHBnMUBR1rtAVK2aAAJEZW/RmX2rY8UxwlhFGQmrjv3tqbElqbeMFtZ+8zeyueEsQge2hbh/NF+TgHXCSBQOEImRdv4ITKF9oPgXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=i419QJnk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1129C4CEC5;
+	Wed, 16 Oct 2024 21:44:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1729115055;
+	bh=4+lHm9ImuQE82ZpWm+YVKOxyojVXUWrhR6KsSBKQM/0=;
+	h=Date:To:From:Subject:From;
+	b=i419QJnk7yhmN+Ohcmz5sefwXwE8X/b1diSs16AUCUf51lUWJ9Uswu7UhlauHeA2A
+	 pnGX8/UElV62l9ulnqwZ0LMFt2HNgKZQHVDnHn/F5DHkKnqwFq8u/Y88+jffKs+vOb
+	 WoUBjPf3tAmwpvXcsmwcPHD2eiutE8P6/ZFRI6JE=
+Date: Wed, 16 Oct 2024 14:44:15 -0700
+To: mm-commits@vger.kernel.org,tglx@linutronix.de,stable@vger.kernel.org,mingo@redhat.com,glider@google.com,dave.hansen@linux.intel.com,bp@alien8.de,snovitoll@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + x86-traps-move-kmsan-check-after-instrumentation_begin.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241016214415.D1129C4CEC5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a22ab6cb-6eb6-44df-9e82-b6e95b9ae08e@app.fastmail.com>
 
-On Wed, Oct 16, 2024 at 06:31:27PM +0000, Arnd Bergmann wrote:
-> On Wed, Oct 16, 2024, at 18:01, Nathan Chancellor wrote:
-> > -Wenum-enum-conversion and -Wenum-compare-conditional were strengthened
-> > in clang-19 to warn in C mode, which caused the kernel to move them to
-> > W=1 in commit 75b5ab134bb5 ("kbuild: Move
-> > -Wenum-{compare-conditional,enum-conversion} into W=1") because there
-> > were numerous instances of each that would break builds with -Werror.
-> > Unfortunately, this is not a full solution, as more and more developers,
-> > subsystems, and distributors are building with W=1 as well, so they
-> > continue to see the numerous instances of these warnings.
-> >
-> > Since the move to W=1, there have not been many new instances that have
-> > appeared through various build reports and the ones that have appeared
-> > seem to be following similar existing patterns, suggesting that most
-> > instances of these warnings will not be real issues. The only
-> > alternatives for silencing these warnings are adding casts (which is
-> > generally seen as an ugly practice) or refactoring the enums to macro
-> > defines or a unified enum (which may be undesirable because of type
-> > safety in other parts of the code).
-> >
-> > Disable the warnings altogether so that W=1 users do not see them.
-> 
-> I don't think we have to go all the way of completely disabling
-> the warnings here, they are still potentially useful. I can see
-> three ways of being less aggressive with them:
-> 
-> - keep -Wno-enum-compare-conditional in W=1 and fix up the
->   remaining warnings for that, iirc the Wno-enum-enum-conversion
->   is the one that causes the problems.
-> 
-> - Move them to W=2 instead of always disabled
-> 
-> - Leave the warnings enabled for clang-18 and older.
 
-Arnd and I talked about this offline in the ClangBuiltLinux meeting
-today. I am going to run my usual test matrix against a tree with
--Wenum-compare-conditional turned on to see how many instances of these
-warnings are in the tree and how difficult it would be to silence them
-to address the first point above. I will move -Wenum-enum-conversion to
-W=2 and send that as v2 soon to satisfy point two, which should clear up
-the blockage for the Android folks.
+The patch titled
+     Subject: x86/traps: move kmsan check after instrumentation_begin
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     x86-traps-move-kmsan-check-after-instrumentation_begin.patch
 
-While disabling the warnings for clang-19 and newer and leaving them on
-for clang-18 and older would technically address the issue at hand, it
-won't result in increased coverage because the whole point of the change
-that caused this in clang-19 is enabling the warning for C code, so
-clang-18 and older won't ever emit these warnings.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/x86-traps-move-kmsan-check-after-instrumentation_begin.patch
 
-Cheers,
-Nathan
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Subject: x86/traps: move kmsan check after instrumentation_begin
+Date: Wed, 16 Oct 2024 20:24:07 +0500
+
+During x86_64 kernel build with CONFIG_KMSAN, the objtool warns following:
+
+  AR      built-in.a
+  AR      vmlinux.a
+  LD      vmlinux.o
+vmlinux.o: warning: objtool: handle_bug+0x4: call to
+    kmsan_unpoison_entry_regs() leaves .noinstr.text section
+  OBJCOPY modules.builtin.modinfo
+  GEN     modules.builtin
+  MODPOST Module.symvers
+  CC      .vmlinux.export.o
+
+Moving kmsan_unpoison_entry_regs() _after_ instrumentation_begin() fixes
+the warning.
+
+There is decode_bug(regs->ip, &imm) is left before KMSAN unpoisoining, but
+it has the return condition and if we include it after
+instrumentation_begin() it results the warning "return with
+instrumentation enabled", hence, I'm concerned that regs will not be KMSAN
+unpoisoned if `ud_type == BUG_NONE` is true.
+
+Link: https://lkml.kernel.org/r/20241016152407.3149001-1-snovitoll@gmail.com
+Fixes: ba54d194f8da ("x86/traps: avoid KMSAN bugs originating from handle_bug()")
+Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ arch/x86/kernel/traps.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+--- a/arch/x86/kernel/traps.c~x86-traps-move-kmsan-check-after-instrumentation_begin
++++ a/arch/x86/kernel/traps.c
+@@ -261,12 +261,6 @@ static noinstr bool handle_bug(struct pt
+ 	int ud_type;
+ 	u32 imm;
+ 
+-	/*
+-	 * Normally @regs are unpoisoned by irqentry_enter(), but handle_bug()
+-	 * is a rare case that uses @regs without passing them to
+-	 * irqentry_enter().
+-	 */
+-	kmsan_unpoison_entry_regs(regs);
+ 	ud_type = decode_bug(regs->ip, &imm);
+ 	if (ud_type == BUG_NONE)
+ 		return handled;
+@@ -276,6 +270,12 @@ static noinstr bool handle_bug(struct pt
+ 	 */
+ 	instrumentation_begin();
+ 	/*
++	 * Normally @regs are unpoisoned by irqentry_enter(), but handle_bug()
++	 * is a rare case that uses @regs without passing them to
++	 * irqentry_enter().
++	 */
++	kmsan_unpoison_entry_regs(regs);
++	/*
+ 	 * Since we're emulating a CALL with exceptions, restore the interrupt
+ 	 * state to what it was at the exception site.
+ 	 */
+_
+
+Patches currently in -mm which might be from snovitoll@gmail.com are
+
+x86-traps-move-kmsan-check-after-instrumentation_begin.patch
+mm-kasan-kmsan-copy_from-to_kernel_nofault.patch
+
 
