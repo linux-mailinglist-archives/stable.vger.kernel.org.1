@@ -1,94 +1,97 @@
-Return-Path: <stable+bounces-86491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35EF09A0904
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 14:07:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AAF39A08F8
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 14:02:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D3541C21FE8
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 12:07:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFA6228296A
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 12:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B014F207A15;
-	Wed, 16 Oct 2024 12:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03627207A1C;
+	Wed, 16 Oct 2024 12:01:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cpA/7PIm"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.gpxsee.org (mx.gpxsee.org [37.205.14.76])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E6E207A00;
-	Wed, 16 Oct 2024 12:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.14.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EFF2071E7
+	for <stable@vger.kernel.org>; Wed, 16 Oct 2024 12:01:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729080473; cv=none; b=NE0twuW55y5AVaA/kJ3We5kipNmk+DaDSmTo0wXMurtZqnLjglsOPRaFY7jVF1044Ka7rAoHzuDuazZIEa/yP24AAVy7NIgmH9dbrJgcsGpxt2xtMPDoA5pqsRA7m9EMYy1CK8fLuk7mN/T7j1+BZaSUq15xdIOWM0XxYDFNDK4=
+	t=1729080113; cv=none; b=BI9S/x2pxG7VJQVMmupFnEWmhQ2f6wRxtjPMKz36ZwrpVAy6GnVH49PiUNl/bnAB6h7KukzvJ8LaTF4kXgCEyi2j6UDn6w2Mm+vFlrBAKLwgbpNBGrM5CGhlh9GvbobcOqysTA9BZpy2HOrsDH/ZGqrrzcBRMMRYqcicGs/vsKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729080473; c=relaxed/simple;
-	bh=Cd/nJwokvfsxNybbuDAbUxVhvuqfcKV+Gv2tM2d77nw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iiktNw54Vt9a+k0UiOjXhEvlwV19LdGy4znrYn+4P+z+9mr0TLlyRvM9e/2f5u+043qs+3pzPKSOnhZYD9ZNka6N/kxPwdGXvbkLVMRcj64qV/VZNU++8C3wiHcU/8sQIE9VxQo0GlIziEkF0KqIpUYifkM4VtDny+E0xbPNjoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gpxsee.org; spf=pass smtp.mailfrom=gpxsee.org; arc=none smtp.client-ip=37.205.14.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gpxsee.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gpxsee.org
-Received: from [192.168.4.15] (unknown [62.77.71.229])
-	by mx.gpxsee.org (Postfix) with ESMTPSA id 4BABE2BE05;
-	Wed, 16 Oct 2024 13:59:19 +0200 (CEST)
-Message-ID: <b5fcb290-5374-4ff3-b74c-a1bd3c802ef0@gpxsee.org>
-Date: Wed, 16 Oct 2024 13:59:18 +0200
+	s=arc-20240116; t=1729080113; c=relaxed/simple;
+	bh=Q7LLV2w3gddlR/52p0111H0ukS2hKNuhILk9n0snq2c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=azun5GCJdz3etW5MnrCxPea9SWkPjf6pIDPxivixFMrBJND0HUBuXLqugz4UagsSQBHiLD5SyksERo/eAnby6Inyun8yrrDvhbPUszaPrfUBfiboMeF9pF4XPWGedqbFxX6rR7d6f0DETQRM5enveZG/RyTt5ubATNskjeLgD8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cpA/7PIm; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729080111;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L0chUVeWVNXUa+6nJgceHk0TDRpnJb7xfMwzVuSrbvU=;
+	b=cpA/7PImqHJ6s2LdeLB3I6FQDhPdS9Bh0XvK4JL49s6/QAQU6iFQTruZNMqf1qONb4/Yk8
+	Y80M5UVakY7T9n1S3GX+D8eBn/QrqqrOAMapOVTbu/lH8Mu2ZW62BDqi4aBjx9VTfRb3ZB
+	L2ZiVPz06vLb8rPAp5zHvtCvnNQ6fTk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-686-AtxIvyv1PyiGfnUaJkNNVQ-1; Wed,
+ 16 Oct 2024 08:01:48 -0400
+X-MC-Unique: AtxIvyv1PyiGfnUaJkNNVQ-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 69E86195609E;
+	Wed, 16 Oct 2024 12:01:46 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.39.192.76])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 92F9A3000198;
+	Wed, 16 Oct 2024 12:01:42 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: quic_jjohnson@quicinc.com
+Cc: ath12k@lists.infradead.org,
+	jjohnson@kernel.org,
+	jtornosm@redhat.com,
+	kvalo@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] wifi: ath12k: fix crash when unbinding
+Date: Wed, 16 Oct 2024 14:01:38 +0200
+Message-ID: <20241016120140.204902-1-jtornosm@redhat.com>
+In-Reply-To: <039e7ccb-adb2-4c36-bd5b-83b5965373d7@quicinc.com>
+References: <039e7ccb-adb2-4c36-bd5b-83b5965373d7@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/13] media: mgb4: protect driver against spectre
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Hans Verkuil <hverkuil@xs4all.nl>,
- Martin Tuma <martin.tuma@digiteqautomotive.com>,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- stable@vger.kernel.org
-References: <cover.1729074076.git.mchehab+huawei@kernel.org>
- <4675c8e726c7d55bbecf9f4772370daa8b46ccd3.1729074076.git.mchehab+huawei@kernel.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Martin_T=C5=AFma?= <tumic@gpxsee.org>
-In-Reply-To: <4675c8e726c7d55bbecf9f4772370daa8b46ccd3.1729074076.git.mchehab+huawei@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On 16. 10. 24 12:22 odp., Mauro Carvalho Chehab wrote:
-> Frequency range is set from sysfs via frequency_range_store(),
-> being vulnerable to spectre, as reported by smatch:
-> 
-> 	drivers/media/pci/mgb4/mgb4_cmt.c:231 mgb4_cmt_set_vin_freq_range() warn: potential spectre issue 'cmt_vals_in' [r]
-> 	drivers/media/pci/mgb4/mgb4_cmt.c:238 mgb4_cmt_set_vin_freq_range() warn: possible spectre second half.  'reg_set'
-> 
-> Fix it.
-> 
-> Fixes: 0ab13674a9bd ("media: pci: mgb4: Added Digiteq Automotive MGB4 driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> ---
->   drivers/media/pci/mgb4/mgb4_cmt.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/media/pci/mgb4/mgb4_cmt.c b/drivers/media/pci/mgb4/mgb4_cmt.c
-> index 70dc78ef193c..a25b68403bc6 100644
-> --- a/drivers/media/pci/mgb4/mgb4_cmt.c
-> +++ b/drivers/media/pci/mgb4/mgb4_cmt.c
-> @@ -227,6 +227,8 @@ void mgb4_cmt_set_vin_freq_range(struct mgb4_vin_dev *vindev,
->   	u32 config;
->   	size_t i;
->   
-> +	freq_range = array_index_nospec(freq_range, ARRAY_SIZE(cmt_vals_in));
-> +
->   	addr = cmt_addrs_in[vindev->config->id];
->   	reg_set = cmt_vals_in[freq_range];
->   
+Hello Jeff,
 
-I still do not fully understand the exact vulnerability here, but the 
-patch should definitely not do any harm, so I'm ok with it even if it's 
-real purpose would only be to silence the smatch warning :-)
+> WARNING: Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>")' - ie: 'Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")'
+> #51: 
+> Fixes: d889913205cf7 ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+>
+> same comment applies to the 2/2 patch
+Ok, I will fix it in a next version of the patches.
 
-Reviewed-by: Martin Tůma <martin.tuma@digiteqautomotive.com>
+Thanks
+
+Best regards
+José Ignacio
 
 
