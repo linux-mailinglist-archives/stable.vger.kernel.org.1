@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-86469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E595D9A071E
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 12:23:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EA189A071C
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 12:23:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBE69B26CD4
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 10:23:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E4F01C2250D
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 10:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E86722076CB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED08A2076CE;
 	Wed, 16 Oct 2024 10:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tqetwn/j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NxK6WtW9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D612071F6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543272071E6;
 	Wed, 16 Oct 2024 10:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729074158; cv=none; b=MZk0g0gm4zoAJGSk9YyNrG5Q/x1AJCEU1TZ09XcQLiSkWHL/bv9ixJ2aYDO3iAiLEfRQKJrzagAaHErMOuXyVPgkZwjnkF6SY2PgGpyLLUMXRImig0rbTep5aXYybkcq01UkrlATFaVX0X26CvFTi9qG3ceaS8Lu8typnjyTNpM=
+	t=1729074158; cv=none; b=CnOWybx0/1mh+FJG3ctU8ENf+MgIboMUzZ2cGIhFFJKF7aCRxwU4/zKsqnNDu8FN4fRGerb3Jv0gTUtUf0f8zF+rcEQZaENpxe1oLiL3XV3dEtQgP45Sea6/zAzQkD4ERkWKuwus74j4SWNPjwz2I4G9HbJac7+g9xCxGAWDfYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729074158; c=relaxed/simple;
-	bh=vq7QJpYiMutw0B1hm8O24dEVpiMZEcoq2f2zZUsJPKk=;
+	bh=Bn2f3bmb+9nMMRejNorJo9NsRZzQIn1Q3kUP79AKzdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ogPno82wIrTFns9B7mE0AWGU4JbsiH4Z6roIVESAnTu4ZoKyxVnBDfYLFQv9o1eCN7S51KCzxsZ4xpkiDVVj8FOrXZQEkv0Dd/0KX3cJM1W0S8x/34SmfU+KXogTIxhiqozq6pUT8QOD0z6h0fFfjsgs15rWUA+NM2IwTfhT79Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tqetwn/j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFBAC4CED8;
+	 MIME-Version; b=F0ysCsMTk7cMsugps3FZiyxNA7LrtJ1uAkISHS983FreHODf1yW2OV9s5UsMZZgTSnvzJqtn3oo6uPYw1BlCCv3gCdl3sHTR32l/hnO5HHDbYzgFeot53/xSEeQp11x+hRTl8Mfpqu6nEIX4DmQWObp7RjZ2AT3jAz08Uxvnk2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NxK6WtW9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD5BDC4CED5;
 	Wed, 16 Oct 2024 10:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1729074157;
-	bh=vq7QJpYiMutw0B1hm8O24dEVpiMZEcoq2f2zZUsJPKk=;
+	bh=Bn2f3bmb+9nMMRejNorJo9NsRZzQIn1Q3kUP79AKzdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tqetwn/juQJdGucRqIq2PBHKkF6EhDe0jorxR1wAuGRT8x4mtvPN7XbotVG9V6Zas
-	 SDr1HPBnZtzyBTAfPvF6dzNlnlOUQeNR0QY7eTVU9dX6B6bxJL/o/QNNofN5shoixS
-	 NuD1fCyAGjZqaeaabqW7arDwj2rDYrF+cRr26k6aa4oWL/SYAgYwyR3HqSNPH9T+Z/
-	 4ERp9I5ylUvFxFLLXi0yR0nqLIIk6xGOv8zeW0mdcTd3/46kyg8jMvVduR4jbDYU7J
-	 rucX1GHCD7hafdpkKQFfigEkirt+8Z3apXboak1SqQJfOh18mvxcWcDRtqC0K3JPmb
-	 q8Z1SBAdukJMA==
+	b=NxK6WtW903tq2pITJtkGQe7E3238/Yrh4e9X53qcPnv2n335x6iJgZqglhp3YsU1U
+	 awUoSIS+NTxiReF0vwobovRaMXCvLmzJzyk3dX0rs4TfU/lV79SNgNr15RaceuKgFt
+	 fBzngsKUGd4Tfs0eU+DZdRySBm2fKVcJE9is/purQU984xcfQ5aWHL4b8iRGHzYPnw
+	 /r3SQnSOND2THFszDVKFLMpJ8fkQPsbsVMqbXT428J7+RJs75KLpbT6RZh2G+hBhyB
+	 43yHirILOsLJsEbEaRtwxx1a2SekxaAaDHpicSn9H3xuZ5yxJDyHMub6upkxWOvVsh
+	 MAQqWurci5xUA==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1t11Ap-00000004Ymt-2ZRN;
+	id 1t11Ap-00000004Ymx-2g4X;
 	Wed, 16 Oct 2024 12:22:35 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: 
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
 	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Steven Toth <stoth@linuxtv.org>,
 	linux-kernel@vger.kernel.org,
 	linux-media@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 08/13] media: ar0521: don't overflow when checking PLL values
-Date: Wed, 16 Oct 2024 12:22:24 +0200
-Message-ID: <39b23d468eea2714a24a94cb6c20aef5aff492e6.1729074076.git.mchehab+huawei@kernel.org>
+Subject: [PATCH 09/13] media: cx24116: prevent overflows on SNR calculus
+Date: Wed, 16 Oct 2024 12:22:25 +0200
+Message-ID: <644e1a8c55b7cabad791c398e488e2a825fdefb9.1729074076.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <cover.1729074076.git.mchehab+huawei@kernel.org>
 References: <cover.1729074076.git.mchehab+huawei@kernel.org>
@@ -69,36 +68,43 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-The PLL checks are comparing 64 bit integers with 32 bit
-ones. Depending on the values of the variables, this may
-underflow.
+If reading SNR registers fail, a negative number will be
+returned, causing an underflow when reading SNR registers.
 
-Fix it ensuring that both sides of the expression are u64.
+Prevent that.
 
-Fixes: 852b50aeed15 ("media: On Semi AR0521 sensor driver")
+Fixes: 8953db793d5b ("V4L/DVB (9178): cx24116: Add module parameter to return SNR as ESNO.")
 Cc: stable@vger.kernel.org
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- drivers/media/i2c/ar0521.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/dvb-frontends/cx24116.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/ar0521.c b/drivers/media/i2c/ar0521.c
-index fc27238dd4d3..24873149096c 100644
---- a/drivers/media/i2c/ar0521.c
-+++ b/drivers/media/i2c/ar0521.c
-@@ -255,10 +255,10 @@ static u32 calc_pll(struct ar0521_dev *sensor, u32 freq, u16 *pre_ptr, u16 *mult
- 			continue; /* Minimum value */
- 		if (new_mult > 254)
- 			break; /* Maximum, larger pre won't work either */
--		if (sensor->extclk_freq * (u64)new_mult < AR0521_PLL_MIN *
-+		if (sensor->extclk_freq * (u64)new_mult < (u64)AR0521_PLL_MIN *
- 		    new_pre)
- 			continue;
--		if (sensor->extclk_freq * (u64)new_mult > AR0521_PLL_MAX *
-+		if (sensor->extclk_freq * (u64)new_mult > (u64)AR0521_PLL_MAX *
- 		    new_pre)
- 			break; /* Larger pre won't work either */
- 		new_pll = div64_round_up(sensor->extclk_freq * (u64)new_mult,
+diff --git a/drivers/media/dvb-frontends/cx24116.c b/drivers/media/dvb-frontends/cx24116.c
+index 8b978a9f74a4..f5dd3a81725a 100644
+--- a/drivers/media/dvb-frontends/cx24116.c
++++ b/drivers/media/dvb-frontends/cx24116.c
+@@ -741,6 +741,7 @@ static int cx24116_read_snr_pct(struct dvb_frontend *fe, u16 *snr)
+ {
+ 	struct cx24116_state *state = fe->demodulator_priv;
+ 	u8 snr_reading;
++	int ret;
+ 	static const u32 snr_tab[] = { /* 10 x Table (rounded up) */
+ 		0x00000, 0x0199A, 0x03333, 0x04ccD, 0x06667,
+ 		0x08000, 0x0999A, 0x0b333, 0x0cccD, 0x0e667,
+@@ -749,7 +750,11 @@ static int cx24116_read_snr_pct(struct dvb_frontend *fe, u16 *snr)
+ 
+ 	dprintk("%s()\n", __func__);
+ 
+-	snr_reading = cx24116_readreg(state, CX24116_REG_QUALITY0);
++	ret = cx24116_readreg(state, CX24116_REG_QUALITY0);
++	if (ret  < 0)
++		return ret;
++
++	snr_reading = ret;
+ 
+ 	if (snr_reading >= 0xa0 /* 100% */)
+ 		*snr = 0xffff;
 -- 
 2.47.0
 
