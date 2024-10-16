@@ -1,161 +1,126 @@
-Return-Path: <stable+bounces-86484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B0E89A0842
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 13:24:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D059A0849
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 13:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C36511C21F88
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 11:24:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB8D51C224C1
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 11:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 348D52076B5;
-	Wed, 16 Oct 2024 11:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lbxcZs/4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD1A207209;
+	Wed, 16 Oct 2024 11:26:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF251206E9C;
-	Wed, 16 Oct 2024 11:24:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA13206066;
+	Wed, 16 Oct 2024 11:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729077893; cv=none; b=lqKDNzV2zPGmIDDYyDS0EldL/9U9+X0MuYpzAMnWTBeIdEgN8i/5Fpyon0iZxfHvDlFDdljNASmYRZoxbPOZCwa+F3puJKXM7itVl1uxJl1KT3JO7Y3/cuywcbh5fg18Pzd5mYQK2YXDTQg3HSBr9ri9SvVXeQe3EpeYEtl1uZ4=
+	t=1729077997; cv=none; b=Xh1/d1b2XUIzG0F8f8lfWqROzHOX1ln85aO5PMC75oJaf66naTqW7ifgjRktlncB0thE59iylRIkchiZxhONAYGPVZyNKDXD4YIITi1rtxbTpY+s7IiUjqGukttg+uYfxcgcb2814GXWeWDyE5ywrPS1J+fkoexCEGpAY0y+Bgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729077893; c=relaxed/simple;
-	bh=/f5ZOuxkKpkc2C8e/hGt/Hm9Ch/o+QxbJJIVvOOBMdY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GLQpPTocxqIHI8c8TOLbP4XYx+apH7QoXzFIoCKpXXYhvlTl91f+ZuSLOWGIEfhXWuHoVCQPo+PZzXBo2ycdtLxY7ld6gk1CGpQF6m0dzG8E9qm6CEbyugX46y3maWz8Ow1+w6Khe4ulf5qnWuM5aNWWGs5rYC2ofFrCAFs8MAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lbxcZs/4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA96C4CEC5;
-	Wed, 16 Oct 2024 11:24:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729077892;
-	bh=/f5ZOuxkKpkc2C8e/hGt/Hm9Ch/o+QxbJJIVvOOBMdY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lbxcZs/4W2dDLIVibJqUCESaXCiXNHPq150CvFTaEIW6zyKoJnhfQR9/UJSB/OoH0
-	 VLCr7WNUsxwNUt1fbhaM28g7IjUUg5CehSG36wgoDpajeE56sFdfTru6jYHx1DA9G9
-	 fbOEp+Od0GASkKaNdf4HLNYLnadKzvQEhcNUHMbwX0RUl5gryBgRz1h011+z6wB94Y
-	 RFqE/HOpCDfa/+qKNAS3HOIjltvjx/Cx6RURSCZCXD4y/IlqyHt9EyJmP63n+PVzZf
-	 TiuBMoII8cXBdm4YWm+hFZ31Ky8fQTEzutIDOO03Ig/xny8EmI9YWNIZUG8dMOB3Vd
-	 CY9Cd+DqhFoHQ==
-Date: Wed, 16 Oct 2024 13:24:48 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Hans Verkuil <hverkuil@xs4all.nl>
-Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH 10/13] media: adv7604 prevent underflow condition when
- reporting colorspace
-Message-ID: <20241016132448.15e5a4fa@foz.lan>
-In-Reply-To: <e591ffa7-4214-4ec0-91f3-65c809aedce9@xs4all.nl>
-References: <cover.1729074076.git.mchehab+huawei@kernel.org>
-	<41d12c1afd6571f9cc56c1b920df6ba558d0b927.1729074076.git.mchehab+huawei@kernel.org>
-	<e591ffa7-4214-4ec0-91f3-65c809aedce9@xs4all.nl>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1729077997; c=relaxed/simple;
+	bh=xP2ktAcfFQ/wdOmDftyeYQc/PCd0CuJ9pfF+bw2S034=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hoNsWzeO5X82uLN8G2pQD60E2cTV72sZWMBaxlT+8Q3ehx13baXm1vgJXJQ94Tidax04TY0sZ+DOUs94di+DZoqGgiZXFKG6V0W35zn1n6ZzA3m8QDg5ScsBrn4oAiaovB1URje1/ZrL/vsK3zOqc+pN9F6Ta/7KnOnNrnoi9O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B55BF40004;
+	Wed, 16 Oct 2024 11:26:24 +0000 (UTC)
+Message-ID: <3fe1e610-c863-4fbf-85cb-6e83ba7684af@ghiti.fr>
+Date: Wed, 16 Oct 2024 13:26:24 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH -fixes] riscv: Do not use fortify in early code
+Content-Language: en-US
+To: Jessica Clarke <jrtc27@jrtc27.com>,
+ Alexandre Ghiti <alexghiti@rivosinc.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Heiko Stuebner <heiko@sntech.de>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@rivosinc.com>, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Jason Montleon <jmontleo@redhat.com>,
+ stable@vger.kernel.org, Kees Cook <keescook@chromium.org>
+References: <20241009072749.45006-1-alexghiti@rivosinc.com>
+ <1CA19FB3-C1E3-4C2F-A4FB-05B69EC66D2F@jrtc27.com>
+From: Alexandre Ghiti <alex@ghiti.fr>
+In-Reply-To: <1CA19FB3-C1E3-4C2F-A4FB-05B69EC66D2F@jrtc27.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alex@ghiti.fr
 
-Em Wed, 16 Oct 2024 12:57:53 +0200
-Hans Verkuil <hverkuil@xs4all.nl> escreveu:
+Hi Jessica,
 
-> On 16/10/2024 12:22, Mauro Carvalho Chehab wrote:
-> > Currently, adv76xx_log_status() reads some date using
-> > io_read() which may return negative values. The current logi
-> > doesn't check such errors, causing colorspace to be reported
-> > on a wrong way at adv76xx_log_status().
-> > 
-> > If I/O error happens there, print a different message, instead
-> > of reporting bogus messages to userspace.
-> > 
-> > Fixes: 54450f591c99 ("[media] adv7604: driver for the Analog Devices ADV7604 video decoder")
-> > Cc: stable@vger.kernel.org  
-> 
-> Not really a fix since this would just affect logging for debugging
-> purposes. I would personally just drop the Fixes and Cc tag.
-
-The issue is on a VIDIOC_ ioctl, so part of media API. Ok, this is
-used only for debugging purposes and should, instead be implemented
-via debugfs, etc, but, in summary: it is what it is: part of the V4L2
-uAPI.
-
--
-
-Now, the question about what should have Fixes: tag and what
-shouldn't is a different matter. I've saw long discussions about
-that at the kernel mailing lists. In the particular case of y2038,
-I'm pretty sure I saw some of them with Fixes tag on it.
-
-> 
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>  
-> 
-> Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
-> 
-> Regards,
-> 
-> 	Hans
-> 
-> > ---
-> >  drivers/media/i2c/adv7604.c | 26 +++++++++++++++++---------
-> >  1 file changed, 17 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/drivers/media/i2c/adv7604.c b/drivers/media/i2c/adv7604.c
-> > index 48230d5109f0..272945a878b3 100644
-> > --- a/drivers/media/i2c/adv7604.c
-> > +++ b/drivers/media/i2c/adv7604.c
-> > @@ -2519,10 +2519,10 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
-> >  	const struct adv76xx_chip_info *info = state->info;
-> >  	struct v4l2_dv_timings timings;
-> >  	struct stdi_readback stdi;
-> > -	u8 reg_io_0x02 = io_read(sd, 0x02);
-> > +	int ret;
-> > +	u8 reg_io_0x02;
-> >  	u8 edid_enabled;
-> >  	u8 cable_det;
-> > -
-> >  	static const char * const csc_coeff_sel_rb[16] = {
-> >  		"bypassed", "YPbPr601 -> RGB", "reserved", "YPbPr709 -> RGB",
-> >  		"reserved", "RGB -> YPbPr601", "reserved", "RGB -> YPbPr709",
-> > @@ -2621,13 +2621,21 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
-> >  	v4l2_info(sd, "-----Color space-----\n");
-> >  	v4l2_info(sd, "RGB quantization range ctrl: %s\n",
-> >  			rgb_quantization_range_txt[state->rgb_quantization_range]);
-> > -	v4l2_info(sd, "Input color space: %s\n",
-> > -			input_color_space_txt[reg_io_0x02 >> 4]);
-> > -	v4l2_info(sd, "Output color space: %s %s, alt-gamma %s\n",
-> > -			(reg_io_0x02 & 0x02) ? "RGB" : "YCbCr",
-> > -			(((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
-> > -				"(16-235)" : "(0-255)",
-> > -			(reg_io_0x02 & 0x08) ? "enabled" : "disabled");
-> > +
-> > +	ret = io_read(sd, 0x02);
-> > +	if (ret < 0) {
-> > +		v4l2_info(sd, "Can't read Input/Output color space\n");
-> > +	} else {
-> > +		reg_io_0x02 = ret;
-> > +
-> > +		v4l2_info(sd, "Input color space: %s\n",
-> > +				input_color_space_txt[reg_io_0x02 >> 4]);
-> > +		v4l2_info(sd, "Output color space: %s %s, alt-gamma %s\n",
-> > +				(reg_io_0x02 & 0x02) ? "RGB" : "YCbCr",
-> > +				(((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
-> > +					"(16-235)" : "(0-255)",
-> > +				(reg_io_0x02 & 0x08) ? "enabled" : "disabled");
-> > +	}
-> >  	v4l2_info(sd, "Color space conversion: %s\n",
-> >  			csc_coeff_sel_rb[cp_read(sd, info->cp_csc) >> 4]);
-> >    
-> 
+On 16/10/2024 00:04, Jessica Clarke wrote:
+> On 9 Oct 2024, at 08:27, Alexandre Ghiti <alexghiti@rivosinc.com> wrote:
+>> Early code designates the code executed when the MMU is not yet enabled,
+>> and this comes with some limitations (see
+>> Documentation/arch/riscv/boot.rst, section "Pre-MMU execution").
+>>
+>> FORTIFY_SOURCE must be disabled then since it can trigger kernel panics
+>> as reported in [1].
+>>
+>> Reported-by: Jason Montleon <jmontleo@redhat.com>
+>> Closes: https://lore.kernel.org/linux-riscv/CAJD_bPJes4QhmXY5f63GHV9B9HFkSCoaZjk-qCT2NGS7Q9HODg@mail.gmail.com/ [1]
+>> Fixes: a35707c3d850 ("riscv: add memory-type errata for T-Head")
+>> Fixes: 26e7aacb83df ("riscv: Allow to downgrade paging mode from the command line")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> Is the problem in [1] not just that the early boot path uses memcpy on
+> the result of ALT_OLD_PTR, which is a wildly out-of-bounds pointer from
+> the compiler’s perspective? If so, it would seem better to use
+> unsafe_memcpy for that one call site rather than use the big
+> __NO_FORTIFY hammer, surely?
 
 
+Not sure why fortify complains here, and I have just seen that I forgot 
+to cc Kees (done now).
+
+
+>
+> Presumably the non-early path is just as bad to the compiler, but works
+> because patch_text_nosync isn’t instrumented, so that would just align
+> the two.
+>
+> Getting the implementation to not be silent on failure during early
+> boot would also be a good idea, but it’s surely better to have
+> FORTIFY_SOURCE enabled with no output for positives than disable the
+> checking in the first place and risk uncaught corruption.
+
+
+I'm not sure to follow: you propose to use unsafe_memcpy() instead of 
+disabling fortify entirely, so we would not get any warning in case of 
+failure anyway right? Or do you propose to modify the fortify code to 
+somehow print a warning? If the latter, it's hard this soon in the boot 
+process (where the mmu is disabled) to make sure that the printing 
+warning path does not try to access any virtual address (which is why 
+the boot failed in the first place) but maybe Kees has an idea.
+
+And I believe that enabling fortify and using the unsafe_*() variants is 
+error-prone since we'd have to make sure that all the "fortified" 
+functions used in that code use the unsafe_*() variants.
+
+So to me, it's way easier in terms of maintenance to just disabling fortify.
 
 Thanks,
-Mauro
+
+Alex
+
+
+> Jess
+>
+>
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
 
