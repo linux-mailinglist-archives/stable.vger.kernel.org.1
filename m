@@ -1,232 +1,181 @@
-Return-Path: <stable+bounces-86520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D2D9A0EC5
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 17:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D739A1005
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 18:48:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 345EC1C213FD
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 15:44:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B3771C210F1
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 16:48:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B67F20F5AE;
-	Wed, 16 Oct 2024 15:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111B32071F7;
+	Wed, 16 Oct 2024 16:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="H3jAQDNJ"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NQB7NY+B"
 X-Original-To: stable@vger.kernel.org
-Received: from SJ2PR03CU002.outbound.protection.outlook.com (mail-westusazon11023079.outbound.protection.outlook.com [52.101.44.79])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C018920C002;
-	Wed, 16 Oct 2024 15:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.44.79
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729093474; cv=fail; b=Cv+6hpoarqOEU2/K68D9hYwsx0letJYj1Ts5aeC660/X15HFGWDqoffbg/calFT2NH1MOb1EhOovVS3Hmqzmh09gojBBzuHS+ASEU3/Z96GoRkhyVUv+OsTz1PQQPTSbKxzvI4c6dflBN/TQ8SVcqB09DegMgXnX22FMHgYwMUI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729093474; c=relaxed/simple;
-	bh=smUyEFpDvHhbHIz7L6+8Yqg97+CnKsqn7wSVTZ4/vgc=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=huDb302ZC9hut/eKDuBGbUOoG417ykpF+KI6WrvIsE4yc0Fflc0N8nTqkhzO+E21W9h8q5rjQkfzzIc88eZ0k7GE0Ecj+NId5XdwnMkN4GH14Vn9xqtmjgHWnLzF6UblxV9Ho8NTrgdP3SdaZXn+NbkmRh8XjGifUH716zadryo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=H3jAQDNJ; arc=fail smtp.client-ip=52.101.44.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YwhtF7AKF+kd0X64Uu8+u9VyYuH1pyY0T/00AWswr3ejBIUjy7AVVewHsQK4AxbODnrPghXRbztzuPvejLIObJQPjNku4jt1EdvZw63pYzUm8UjueapSGGCdoMjnBO3FRFUdKicR84WULRHM0rqmUr2ohr4VkYlB8XrzgtlmwXCYYkUJiKtNgtxyt8EJbrUIYI+azfeAHaGD7MhyNhmn77WZKQjaoyWQ1pqGXXpuwTGWcXVens2IIw4Xo3X4AgTzTMaGjKtQOA2rY5xsCx6MGxsNqPzVNb/EkC3iWCm4xTi6biYpdFvSH6mCbEdKm+CFYEuSNtkQTvIyr5OLdJgDhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Pv9flViILqejI/SYMFN/ZQlQcYMTAXXvlrC8QcCAnHw=;
- b=hcJTOkMlhXuhrNGVDEitjoEggOsv0Uvf5yHugl6jIJGDQZFv0HNCkf8qESHKQD+qVGy1QvNmNrRvUWu9wdjlr2D8cUc4zQnc6FwLcObmH2k/OT7IEab/vKr+2KOtrVuYj4nnzqJUgGRwuxHVQSbA3Nq0pkYG7qSTWD0ayCDM2zvHAJ2IMnpsKFvkstXfwoLDu3qeP7PEGwuSt35JWHYtDqk/yZUQyp0QaRuK39uqzdnOgA8hCqP1QtEBMhZLc00sn3PfNuZmbjyLviwkmrH3cur9WReEaVm02DRVuwc1IHk+gAQ20gYyvoiQ3ZZHPJh1pKgp2sUaS5hDZW71ACoq9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Pv9flViILqejI/SYMFN/ZQlQcYMTAXXvlrC8QcCAnHw=;
- b=H3jAQDNJYh5l94tZR4vDlio5AhLbb/T9MYz9piQZitxyzrliMflRfKTX0YSOOJ/a4RjaMmrzAEuNpJ/C/ZdmTvHoAdk1i/6ufDKJEQ4/Iq34vGTy9n8+Tri0ithML3ElJYLFrh5pn3/ejzKNyGBT/JE0nGFvPFbpgmWfaEaUqsc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-Received: from BY5PR21MB1443.namprd21.prod.outlook.com (2603:10b6:a03:21f::18)
- by BY5PR21MB1396.namprd21.prod.outlook.com (2603:10b6:a03:23d::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.7; Wed, 16 Oct
- 2024 15:44:30 +0000
-Received: from BY5PR21MB1443.namprd21.prod.outlook.com
- ([fe80::2c5a:1a34:2c8d:48ef]) by BY5PR21MB1443.namprd21.prod.outlook.com
- ([fe80::2c5a:1a34:2c8d:48ef%7]) with mapi id 15.20.8093.000; Wed, 16 Oct 2024
- 15:44:30 +0000
-From: Haiyang Zhang <haiyangz@microsoft.com>
-To: linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: haiyangz@microsoft.com,
-	kys@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	stephen@networkplumber.org,
-	davem@davemloft.net,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net,v2] hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event
-Date: Wed, 16 Oct 2024 08:43:57 -0700
-Message-Id: <1729093437-28674-1-git-send-email-haiyangz@microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-Content-Type: text/plain
-X-ClientProxiedBy: MW4PR03CA0273.namprd03.prod.outlook.com
- (2603:10b6:303:b5::8) To BY5PR21MB1443.namprd21.prod.outlook.com
- (2603:10b6:a03:21f::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5883A1DA26;
+	Wed, 16 Oct 2024 16:48:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729097287; cv=none; b=j2lb5/7mR0HdiAW8O2fOd9DglnVGQuJjFUkqXJgw4HizzfZ8wlQ4wLt3aHfJHe7JGnAI+GRG74uRSWWn2NF2CM/iuWpm+/TXDNSrD8YNlZ0lfcmi08avt/hSZkjbLWzONXYx7MXMmElD6N39tlJvZqjttrSjWH4qeuzEkqQ7L2o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729097287; c=relaxed/simple;
+	bh=Y6h0zmFJh3wMh6qM+Xo9YzKTaJYAVH0Lyb3PtWSMY0A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=mOAnyI2lAPVYu09G6olq4y4Zjy4Z8Siql86ldpte+RZlTSSkyUZLjwpfi908UqD+acHAv5FdV4OQiWkxSjxz+ZeUvWO/WjPmUGNglzezm4WQ9XSBPUeHJEnEx0xchvqcZABB1eCWTrja0+F62iAEtnA9v8ky+hAD7WWVNlSeyq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NQB7NY+B; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49GGUhoq022141;
+	Wed, 16 Oct 2024 16:47:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	nEBogYK/MS2jfRRue1Jp4UCww4Z/6+0yOvwDWySCrh0=; b=NQB7NY+B76NSp4jj
+	U1+HBepX+J4nOEyehf0vw6IBpleZPRTZRKHv5vzqjO43QCbQt9Z3aNA14sQhtqax
+	2T9/ztvZz8vxUsdxPjjgljePqLxLr4Vg49hAQixhYVRP6CSlH/gxbNxOYjq3ZZ4N
+	SGI5lScDGztcDitGK/EMM/LfY8DIa16m/N2h1jgvy8HI3JJNBqC7JhmHSrkiGC9a
+	VjQUUS3dTgJaXfCGRWmFXgQ4eRC6Fxh/FZF6wzHzPgheq37PE2VOSvWIeICcceDJ
+	OlEehmUlls16vyI5/slUOOIUnwwc2oJtOjo2yhuCiNBv3D7H6OCWciYWbDngExwI
+	zz54qQ==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 429uapc5g1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Oct 2024 16:47:59 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49GGlw9Y006515
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Oct 2024 16:47:58 GMT
+Received: from [10.48.241.64] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 16 Oct
+ 2024 09:47:58 -0700
+Message-ID: <452ec614-7883-4e0f-ae0a-25d22d0be41c@quicinc.com>
+Date: Wed, 16 Oct 2024 09:47:57 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Sender: LKML haiyangz <lkmlhyz@microsoft.com>
-X-MS-Exchange-MessageSentRepresentingType: 2
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR21MB1443:EE_|BY5PR21MB1396:EE_
-X-MS-Office365-Filtering-Correlation-Id: a34dae16-3214-4934-eeb1-08dcedf96c48
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|52116014|376014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?WjsFlY2TsKRlZ0aUtND57/cAPUqr3Ih4s1tFkgtLRo+NauPi56q4ZFWu3g1g?=
- =?us-ascii?Q?tIvA/ne3msaAV7yFC4bfMbHb7dG8VWyN+BK9rM65N3oeKxIhVUUE4GCJa0px?=
- =?us-ascii?Q?DJ02mwjMY+tnRvhxX/0ogGsdXtYzDk60zno38CIsbFRUU77zUizWoph2HQwT?=
- =?us-ascii?Q?hwhd63YgrwqxbNiHc4wgC2BzQbR9itIxeoLTZ2oVpPqwksQ7bmHt0XmgYxbQ?=
- =?us-ascii?Q?CotVg6wUOZeqADMoryZtritu+5plhLiwHKqP2v1dKDI5kop3ucnNRdTruj0o?=
- =?us-ascii?Q?4DjDUV+kCP1VMx1UsoXcYRsS/IanOBz1CEgJhcZSp6D0bzXSQW4AbwEbM6jt?=
- =?us-ascii?Q?7RX4mzCGVzhg3D88Ofa49Msiw/iDq6M5XgLCoK3/SA4gNsUOW2c4ay/x6j/j?=
- =?us-ascii?Q?vkKPCiRRaaxjXy+hi5LAcnPmfk47WOe8MyFzeYkLtsq66JXFzZYAqqUecaRA?=
- =?us-ascii?Q?tGYNVBU7YkGL27WfCcvYq1HAeP8SpbshDoMaC/j6EkEaHSK2QIG4SJmZbZs+?=
- =?us-ascii?Q?omuoFSPloX7/Ubjj/w937vhkKPNuUNm4Ja5mCFu4uHDCGqRTuAT5nCNyS8dO?=
- =?us-ascii?Q?qqfc4MkpoHZiXH0TWmZm4IJ6eRkPzp4jUA6zeEZSpnN81lweH2kQXlJ8Ko+0?=
- =?us-ascii?Q?I8csjGbL1kwVeY+qQDZXiAk1a9jwrZyT/hnI66aJOUdxf5N2GvL8u5YSgrcB?=
- =?us-ascii?Q?WnEIM78dF9eYEzTaeIV608jJuiSt2MSQkgc72wPWmhP28L30atl9lJX9lNG4?=
- =?us-ascii?Q?kkiC6+cmCRitOg4FPVRWA+Ko7lh+SENZktUKsIFYYAcCaKKodNjrwD12LNxD?=
- =?us-ascii?Q?kZPiDiLWm+giH769+nJOslRsSTa5JYRdbW44JqFpkCF/yRWShUgwWB5FNu2L?=
- =?us-ascii?Q?qamWDIsrKtPfelCTCdqJiOxFqjNywpctNLlt0sFTWCWB2Vp3ipX7SPf4enjt?=
- =?us-ascii?Q?CGg7mGkNmmsHO49IS89ZUHOSrJaXL8Me1p02x6c56tAe2CtMNCchDylWNDSc?=
- =?us-ascii?Q?OlKD8VlspLgDCE4bVTTtzx4jMgQSFoYPlBitIxjtFX/0qmuwWP5/KXIi1iiq?=
- =?us-ascii?Q?EkG4XpGLQ/MTTkT7Qz4ASwBYJM3n2zDQo+w6FQzQxsBCvEHvPxWFIUjFNi4h?=
- =?us-ascii?Q?9zBNvqO8YwOKUWTBDCaZ4/3jY0joy4wLOadI0P1bdfvchMOvuthxfF0eiH7z?=
- =?us-ascii?Q?fl837Mf3Bh7IZFLnM/52V9mNUK/dMJ0P3YrFaF5McdDzyabthKNJK/NEzSTS?=
- =?us-ascii?Q?ujgk1fInLvLkTKwwuiJbxiestWOga4GqqHqX1EZdN4rb9Ql/zeF6TrOU0YIo?=
- =?us-ascii?Q?rIhd9eQGqxDVxnOgj4HQohd29x90y1+bl2AQmMcDMwKNPg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR21MB1443.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+D9WTWNxZYafXV/JwJy0cZg+u2NCOrpZWnKUjkdifr7hqRHYxnJy1AuB4Ysq?=
- =?us-ascii?Q?pkWtNOWhPdtnmJiGPoghaqB5Y2DvRmyc7otwxm8VA0d4Fp5Y/QrtFyu0nHyv?=
- =?us-ascii?Q?t88fMThg1dmOlRS4mKexoL9e8m58/tUMOIbTpwx9MZZigPXXsmc6I4kauc1A?=
- =?us-ascii?Q?UtheCvYM+r96aO45kMjXSOOJAZ0kK08Ey+kD4f32gcglqpkTakL96wKPOeh0?=
- =?us-ascii?Q?Zc7iwFunnpDTsVuvtNrEE1jyunDGZ7e2Ri0xBS2yv44VdgXzJqAGTTvt3OUv?=
- =?us-ascii?Q?ozk67kV0tF87K5Zw7n9J5D77HBwGTN70+7EWVPavPqLeBcdp0X/uOwPfbJJK?=
- =?us-ascii?Q?ZpI9ESRJ0hWVtyjH0W+d8IImVxH00MgnTcbDRcsIE7FpBd4W4uTTbRFmy3Dr?=
- =?us-ascii?Q?UmowVq8h8L+qe0C6/N1IOf+/NgMykqeNufLJrdU5SCseM5AeD/iAtJa1jW6u?=
- =?us-ascii?Q?myb5wQKS5D38+Phiy57fHZcnWuzfWJ7OWMUyX25QKut7nWY96urRlzr4M4a+?=
- =?us-ascii?Q?eArO51KOOhy5d53CU2yuvqXncnHuiYIUQWWqDMOPiYzfsyDkpwxK6cjHRGqw?=
- =?us-ascii?Q?cfQzh5g1sGaVa4v09+7zEvysgDycG5zlaKtXCv59IJlIMWiGgElM65HgNNUu?=
- =?us-ascii?Q?ZDAT4yde8wQ/G7J9mcZOfgGOpyHE6Qs19tTPIefftIrtLzp3Gb7/gFeMDK76?=
- =?us-ascii?Q?VEEm3NocbW9NcDXT8hx9DviL3t7BVaY60EQyBD4tvp18xVAbb2fNk3Egd0rp?=
- =?us-ascii?Q?QLGrUXPjGJ/OG52vZwRGdl7DVdzwiM547Di4HQcOYDPIycfUvaBRsYoXZSmF?=
- =?us-ascii?Q?NIvWZW8uAZUD+9Na9MePVcm8iC6RapjSA+07wiUPBdDOKWTo4L4bEhb1Sf+Z?=
- =?us-ascii?Q?7Tit0axWXG8BOlRUj8RRuA3gsDObIZOwNjV63zpgQ+Mi523Q+TeqMZhn/VSQ?=
- =?us-ascii?Q?va5ooHTi3W8g3om7BQrNPmvUJdRkF9iszqUFTFy2JXZIhVr+/+KfYzCTZtCm?=
- =?us-ascii?Q?U9dE6KW1qczE5W/Y5j4pRcjYMuwA8u6BA2WDozO5HDXMTYgCKmNA7Vn8qcCT?=
- =?us-ascii?Q?aM4pKPV6vLYXrkuFiodRkfDSfx770nISt4aYqjqDb+ObLY0FoZYn1jBrO2N5?=
- =?us-ascii?Q?P7HOxMbGnWK1VpDzO0Hu0Mfa6x5BdPqGDEKbwvCkmwn5/O1mVoZBS/lQ92qo?=
- =?us-ascii?Q?i9AVvjyDBvbeRInrmGZlGnaycoqTkCSCZejhMSPJ5HoWCZ2eozAeYdtb9uDu?=
- =?us-ascii?Q?Xyv85fdUy22qd7F5tqTjrcvnZq0vl1F23wthex/wbL789QCBT6skOevdz0pU?=
- =?us-ascii?Q?loM+2Zm/Tri7H0fxJK7fM8Lnq2JTHpuch6kv1tWwQDlT6STjU/hYR8xyHeHd?=
- =?us-ascii?Q?OCICYaVNcGASPYrP82tTMuzjtGbaHul9fmEFzglbM72yu9zRPxObkmP9JCYp?=
- =?us-ascii?Q?MKJzJ9oG3SgTVKVE5ILvzmDnaoxdnTrg5YYtnPjsYSM6a1q23ONkDZ1/RxRL?=
- =?us-ascii?Q?W3mJq5+K3lrzQKDYZ30QdlW9G1EoHx1hIa991oGVdie92MrjNVK1TB20/64T?=
- =?us-ascii?Q?HgXIonkC5C4853iNtwHG1SINaAnJ4Gn5SkhcvS26?=
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a34dae16-3214-4934-eeb1-08dcedf96c48
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR21MB1443.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2024 15:44:30.2479
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: C5s/Mc6QYa3ZDd8GCNRC7BkUtqcRvuu0QLbgIrt0HiHGyUSqEJs0aKBSu2a723J6JGZHMxqyyL2y0Nmm8H0CLg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR21MB1396
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] wifi: ath12k: fix crash when unbinding
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>, <kvalo@kernel.org>,
+        <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
+        <ath12k@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+CC: <stable@vger.kernel.org>
+References: <20241016123452.206671-1-jtornosm@redhat.com>
+Content-Language: en-US
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20241016123452.206671-1-jtornosm@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Lcn3FpWuayJyWA0UI1MQbYCmc418XGl8
+X-Proofpoint-GUID: Lcn3FpWuayJyWA0UI1MQbYCmc418XGl8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ spamscore=0 bulkscore=0 clxscore=1015 malwarescore=0 mlxlogscore=747
+ phishscore=0 priorityscore=1501 suspectscore=0 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410160107
 
-The existing code moves VF to the same namespace as the synthetic NIC
-during netvsc_register_vf(). But, if the synthetic device is moved to a
-new namespace after the VF registration, the VF won't be moved together.
+On 10/16/2024 5:34 AM, Jose Ignacio Tornos Martinez wrote:
+> If there is an error during some initialization realated to firmware,
 
-To make the behavior more consistent, add a namespace check for synthetic
-NIC's NETDEV_REGISTER event (generated during its move), and move the VF
-if it is not in the same namespace.
+previous review comment missed:
+s/realated/related/
 
-Cc: stable@vger.kernel.org
-Fixes: c0a41b887ce6 ("hv_netvsc: move VF to same namespace as netvsc device")
-Suggested-by: Stephen Hemminger <stephen@networkplumber.org>
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
----
-v2: Move my fix to synthetic NIC's NETDEV_REGISTER event as suggested by Stephen.
+> the funcion ath12k_dp_cc_cleanup is already call to release resources.
 
----
- drivers/net/hyperv/netvsc_drv.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+previous review comment missed:
+s/funcion/function/
 
-diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
-index 153b97f8ec0d..54e98356ee93 100644
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2798,6 +2798,30 @@ static struct  hv_driver netvsc_drv = {
- 	},
- };
- 
-+/* Set VF's namespace same as the synthetic NIC */
-+static void netvsc_event_set_vf_ns(struct net_device *ndev)
-+{
-+	struct net_device_context *ndev_ctx = netdev_priv(ndev);
-+	struct net_device *vf_netdev = rtnl_dereference(ndev_ctx->vf_netdev);
-+	int ret;
-+
-+	if (!vf_netdev)
-+		return;
-+
-+	if (!net_eq(dev_net(ndev), dev_net(vf_netdev))) {
-+		ret = dev_change_net_namespace(vf_netdev, dev_net(ndev),
-+					       "eth%d");
-+		if (ret)
-+			netdev_err(vf_netdev,
-+				   "Cannot move to same namespace as %s: %d\n",
-+				   ndev->name, ret);
-+		else
-+			netdev_info(vf_netdev,
-+				    "Moved VF to namespace with: %s\n",
-+				    ndev->name);
-+	}
-+}
-+
- /*
-  * On Hyper-V, every VF interface is matched with a corresponding
-  * synthetic interface. The synthetic interface is presented first
-@@ -2810,6 +2834,11 @@ static int netvsc_netdev_event(struct notifier_block *this,
- 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
- 	int ret = 0;
- 
-+	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
-+		netvsc_event_set_vf_ns(event_dev);
-+		return NOTIFY_DONE;
-+	}
-+
- 	ret = check_dev_is_matching_vf(event_dev);
- 	if (ret != 0)
- 		return NOTIFY_DONE;
--- 
-2.34.1
+> However this is released again when the device is unbinded (ath12k_pci),
+> and we get:
+> [  382.050650] BUG: kernel NULL pointer dereference, address: 0000000000000020
+> [  382.050656] #PF: supervisor read access in kernel mode
+> [  382.050657] #PF: error_code(0x0000) - not-present page
+> [  382.050659] PGD 0 P4D 0
+> [  382.050661] Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+> [  382.050664] CPU: 0 UID: 0 PID: 6541 Comm: bash Kdump: loaded Not tainted 6.12.0-rc1+ #14
+> [  382.050666] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
+> [  382.050667] RIP: 0010:ath12k_dp_cc_cleanup.part.0+0xb6/0x500 [ath12k]
+> [  382.050688] Code: 8b 76 28 48 8b 7b 10 45 31 c0 b9 02 00 00 00 e8 30 3d 35 c2 be 02 00 00 00 4c 89 f7 e8 e3 00 fb c2 49 83 c7 28 49 39 ef 74 31 <41> f6 47 20 01 75 ab 4c 89 ff e8 2b de a2 c2 84 c0 74 0e 49 8b 17
+> [  382.050689] RSP: 0018:ffffa3e3c0e83990 EFLAGS: 00010297
+> [  382.050691] RAX: 0000000000000000 RBX: ffff90de08750000 RCX: 0000000000000000
+> [  382.050692] RDX: 0000000000000001 RSI: ffff90de08751178 RDI: ffff90de08751970
+> [  382.050693] RBP: 0000000000005000 R08: 0000000000000200 R09: 000000000040003f
+> [  382.050694] R10: 000000000040003f R11: 0000000000000000 R12: dead000000000122
+> [  382.050695] R13: dead000000000100 R14: ffffffffc0b6f948 R15: 0000000000000000
+> [  382.050696] FS:  00007f216b1ab740(0000) GS:ffff90de5fc00000(0000) knlGS:0000000000000000
+> [  382.050698] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [  382.050699] CR2: 0000000000000020 CR3: 000000001a26c000 CR4: 0000000000752ef0
+> [  382.050702] PKRU: 55555554
+> [  382.050703] Call Trace:
+> [  382.050705]  <TASK>
+> [  382.050707]  ? __die_body.cold+0x19/0x27
+> [  382.050719]  ? page_fault_oops+0x15a/0x2f0
+> [  382.050723]  ? exc_page_fault+0x7e/0x180
+> [  382.050724]  ? asm_exc_page_fault+0x26/0x30
+> [  382.050729]  ? ath12k_dp_cc_cleanup.part.0+0xb6/0x500 [ath12k]
+> [  382.050740]  ? delay_halt_tpause+0x1a/0x20
+> [  382.050742]  ath12k_dp_free+0x67/0x110 [ath12k]
+> [  382.050753]  ath12k_core_deinit+0x8d/0xb0 [ath12k]
+> [  382.050762]  ath12k_pci_remove+0x50/0xf0 [ath12k]
+> [  382.050771]  pci_device_remove+0x3f/0xb0
+> [  382.050773]  device_release_driver_internal+0x19c/0x200
+> [  382.050777]  unbind_store+0xa1/0xb0
+
+FYI I didn't comment on this previously but
+<https://www.kernel.org/doc/html/latest/process/submitting-patches.html#backtraces-in-commit-messages>
+has some guidance on trimming backtraces in commit messages.
+
+> ...
+> 
+> The issue is always reproducible from a VM because the MSI addressing
+> initialization is failing.
+> 
+> In order to fix the issue, just set to NULL the relaeased structure in
+
+Guess I missed this 1st time:
+s/relaeased/released/
+
+> ath12k_dp_cc_cleanup at the end.
+> 
+> cc: stable@vger.kernel.org
+> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+> ---
+> v2:
+>   - Fix the commit size in Fixes
+> v1: https://lore.kernel.org/linux-wireless/20241010175102.207324-2-jtornosm@redhat.com/
+> 
+>  drivers/net/wireless/ath/ath12k/dp.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
+> index 61aa78d8bd8c..789d430e4455 100644
+> --- a/drivers/net/wireless/ath/ath12k/dp.c
+> +++ b/drivers/net/wireless/ath/ath12k/dp.c
+> @@ -1241,6 +1241,7 @@ static void ath12k_dp_cc_cleanup(struct ath12k_base *ab)
+>  	}
+>  
+>  	kfree(dp->spt_info);
+> +	dp->spt_info = NULL;
+>  }
+>  
+>  static void ath12k_dp_reoq_lut_cleanup(struct ath12k_base *ab)
 
 
