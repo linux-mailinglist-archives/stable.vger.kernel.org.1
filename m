@@ -1,67 +1,93 @@
-Return-Path: <stable+bounces-86428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9E369A00E1
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 07:42:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 814569A00FA
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 07:56:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF15C1C213B5
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 05:42:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD4A71C24250
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 05:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8D318BC39;
-	Wed, 16 Oct 2024 05:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9EFB18C033;
+	Wed, 16 Oct 2024 05:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFhinqrK"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="fH1rs0sR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0984218BC2C;
-	Wed, 16 Oct 2024 05:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBC85221;
+	Wed, 16 Oct 2024 05:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729057356; cv=none; b=UslZ6uY//hw0fgOMcxWeQiL7Y4AmsBaG65FMeBWbSGE2a1Qb94G2XIfvOIWFIqM4V9YmX/1jmllYTK3w+rhzYaWRmJDEnyPrttOcyILfI6n7JhoJ11rRkTWVwaX3DCo2l/0VX354mlThTLoiTJkwO/QoU0hfGt1TLoOrtBHCrm0=
+	t=1729058175; cv=none; b=hNaEQaDhaz22ONolobV2aUYNTtiqbZPdCp859osqvbikImES47UtlCW9y1+2L2yg65/2m6A1bZqeOK3pK8qCc4I9bt2m6VLqqFraQzZBWf7Y/EFO3P5KA8ncRwi8LzUPwb2QhFcEIUSsto3SZ5KOGB/1W6ilEtk0ODtjUJxjfCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729057356; c=relaxed/simple;
-	bh=VBS7EJ50GUS6vnNz48rkACqmxiiN4X8WRWJRKPX8I9Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vp/NPGEOygI1xP4aAKT48Jh8VjMlUsqMN7PJjI8riE8P7eoL72OaMYCxyiFx7EqEw4BKb1GVmdvAlvFHmEMEXCL4Tr92okr/PBniglP58rjfoVgbC42KvIj84TzJtKHF1IzxxKQxheUnITCZN6hY8GvEmvAqIKAVTeydlYdrFzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFhinqrK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C89DC4CEC5;
-	Wed, 16 Oct 2024 05:42:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729057355;
-	bh=VBS7EJ50GUS6vnNz48rkACqmxiiN4X8WRWJRKPX8I9Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rFhinqrKcBi86kjQ0Q7EtGxTEeOu111m8JhCtVnECxqUQfN0B8p/y1aFIYWY2pA7K
-	 4g1IHS4cXIm0JipSz0Dyb/MuNbtYiqywPF92dHtVS58pWIIxeSz3CZbf8LY8NY72Kx
-	 EndrusNn23V7cp95TXNtoUXE+1aDU0lQYhv9U+ss=
-Date: Wed, 16 Oct 2024 07:42:28 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Dean Matthew Menezes <dean.menezes@utexas.edu>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: No sound on speakers X1 Carbon Gen 12
-Message-ID: <2024101613-giggling-ceremony-aae7@gregkh>
-References: <CAEkK70Tke7UxMEEKgRLMntSYeMqiv0PC8st72VYnBVQD-KcqVw@mail.gmail.com>
+	s=arc-20240116; t=1729058175; c=relaxed/simple;
+	bh=EVsQY8fPxvadPhWsnGUGb2WaQ0g3ANREtDe2FCLO9I8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UrwWTR5XpZQVqbtBMWqvl9y4AkekUax2LjspE4/JbgNs9KdTBn7j4qvruVSX95AhB5MxxgufaixuvQChoU7/O1yK7lUtD/dkWiZJGtcZNGaGLV/OOWAL7grXC8Ttn/R7fsz1kWbyCQm5DAuWyIExhT/2sRYDlgNdixHhgnIWlgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=fH1rs0sR; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=OfDEy5CvavV94PaefN8qX3Rl0Kvh6OaxMiKj2+nKExg=;
+	t=1729058173; x=1729490173; b=fH1rs0sRN0zjeP5Oln5pZ0TgLmeW/MOqlhhu1Z0GqFzLHZh
+	qlMaabGc7B/F8ai4rClQv/ACtxepuZvDJF21GAPUl3pSkasB5VafPglfdJxrgeLguviFvPHjVS3W7
+	LmQ7c2WZizEaEOQONSwL6g0HI8248P+cv9BAUzzf+bFnhJSbX1k+Z8ngnZjSBDAsMfi9eI62gn5lu
+	qg2OErdrn1bgczRmutS67HlR2WHK7cBsKl/lf8jqS+VbXApx4rOrM3u5p8i+YSGuW/Fyh9/nLn7/R
+	De9xuwPhOQXyEObBH2AifA1yHanFOU8UAjWJz495ouVIYxZWme1rasznNvIbFdfQ==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1t0x10-0000xh-EW; Wed, 16 Oct 2024 07:56:10 +0200
+Message-ID: <433b8579-e181-40e6-9eac-815d73993b23@leemhuis.info>
+Date: Wed, 16 Oct 2024 07:56:09 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAEkK70Tke7UxMEEKgRLMntSYeMqiv0PC8st72VYnBVQD-KcqVw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: No sound on speakers X1 Carbon Gen 12
+To: Dean Matthew Menezes <dean.menezes@utexas.edu>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Linux Sound System <linux-sound@vger.kernel.org>,
+ Greg KH <gregkh@linuxfoundation.org>
+References: <CAEkK70Tke7UxMEEKgRLMntSYeMqiv0PC8st72VYnBVQD-KcqVw@mail.gmail.com>
+ <2024101613-giggling-ceremony-aae7@gregkh>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <2024101613-giggling-ceremony-aae7@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1729058173;7a816f2a;
+X-HE-SMSGID: 1t0x10-0000xh-EW
 
-On Tue, Oct 15, 2024 at 07:47:22PM -0500, Dean Matthew Menezes wrote:
-> I am not getting sound on the speakers on my Thinkpad X1 Carbon Gen 12
-> with kernel 6.11.2  The sound is working in kernel 6.8
+On 16.10.24 07:42, Greg KH wrote:
+> On Tue, Oct 15, 2024 at 07:47:22PM -0500, Dean Matthew Menezes wrote:
+>> I am not getting sound on the speakers on my Thinkpad X1 Carbon Gen 12
+>> with kernel 6.11.2  The sound is working in kernel 6.8
+> 
+> Can you use 'git bisect' to track down the offending change?
 
-Can you use 'git bisect' to track down the offending change?
+Yeah, that would help a lot.
 
-thanks,
+But FWIW, I CCed the audio maintainers and the sound mailing list, with
+a bit of luck they might have an idea.
 
-greg k-h
+You might also want to publish your dmesg files from the latest working
+and the first broken kernel, that gives people a chance to spot obvious
+problems. Ohh, and runing alsa-info.sh and publishing the output could
+help, too.
+
+Ciao, Thorsten
 
