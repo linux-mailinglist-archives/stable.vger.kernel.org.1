@@ -1,128 +1,131 @@
-Return-Path: <stable+bounces-86486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 084C59A086A
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 13:33:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D65979A0896
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 13:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDC752862C3
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 11:33:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1381B1C243A1
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 11:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D7920607F;
-	Wed, 16 Oct 2024 11:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE692076D3;
+	Wed, 16 Oct 2024 11:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uYnWyXnD"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="XXw6kbgS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DFF1D63E1
-	for <stable@vger.kernel.org>; Wed, 16 Oct 2024 11:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A937015C147
+	for <stable@vger.kernel.org>; Wed, 16 Oct 2024 11:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729078382; cv=none; b=Ric/MESbTiDdjpdTLo60x0lu3JWkxIpjSg6mnCDe8Kie8l45XIob7uBnKDq6yRibQEr8OV2ZpcOgrO85+ZGpsyJfDtKoI9VRkvAo118+Cvb/sEySqEDcr4+hT6CHvr68lVo3pv6nZ0lZXcDYpePX25I6hEkwOeg4qMOKX6VWAJM=
+	t=1729078830; cv=none; b=SEFFE2Ni9hE5O2UPWRlDjhvLPZeGRZHS8P1VQHP9wjfAaPm4zP37v7RlDSipyc2z5IHpPMf3TryFvrRLEC06N51AF6ACay9n0+8WPmFM0Tg8K7RmwkGYf85lgtWjvs8A0nCmWHmlJ39nxOb9s8MqzgZQA155YbdqIPVz7Oathl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729078382; c=relaxed/simple;
-	bh=AgAb2/0Ar0SNrTRqLsq8IGW9WXAFzXTWj6vD2c0csaE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V0MJTu/aAnilNoImlWk3SIMuqhlPKB0YSNBP+5z0ogAsVD4VmsYSku9cRnwq9BiTqpTDzuCr2BENaZdps5EBN9TaUNq3dO76I6SSNAvuPwOzno2ai+MHFVyfqE6KtYIlJ7VZg4f1LxHB61SEcGl4PMAanekPp9+xqbPXItgEAS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uYnWyXnD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E25C4CED4
-	for <stable@vger.kernel.org>; Wed, 16 Oct 2024 11:33:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729078381;
-	bh=AgAb2/0Ar0SNrTRqLsq8IGW9WXAFzXTWj6vD2c0csaE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=uYnWyXnDKbzlY5CliMnpskooLOd8vvnA3ggEPgdkRfgerLYOY/7WULiAAITDpIwUE
-	 9vk74pr0eXb0bS2+RpVU+EiXMgLsLHE6+4hyoxYhtBdoShgxgvGbUucD+Qe5+C9fN5
-	 ea7xMx6U6i8zk4C5I8S8BQJrfwngTcdnnlD6kOQ2T+0M0nxvMYz/4Xl1wQ3EszRIcD
-	 AA+J4KhQxOm3b3ImGVdUVMClp4rDbFFjDQoUSyggHpvvYHy7vhsIHq7GR0Y324SZZ+
-	 BWVp9lRti4zBud6MD5oFsHAXg0GnHQ6jNqnjSbByLXrFJXWb0LyooSsvrs36cchkVL
-	 pavyHnJ6zN1jg==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fb470a8b27so7537031fa.1
-        for <stable@vger.kernel.org>; Wed, 16 Oct 2024 04:33:01 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWg4HeG9w7CDD8QW6LIKw6NJIu4k8xBgwIF9WnMCKLAf8YRuwXtqekzvYUvXPpKZFND1YagQnw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4rK8aDBtgORzZ76BvGbWQwXHEVC4++g2Qn/KuZVk1QcSMhR7a
-	9cpPaHWfpNSdS8OuR6KSa3+57LuIggQh/qJ2vSu926nqRgIiwactN/fPWVKsRexR7pBgRooys6K
-	dBLpPhyyC6q4DBb5vWi6myNuxzF4=
-X-Google-Smtp-Source: AGHT+IHrgsSoxLlIJcPoKJq8iBlYE3eb86eDcfSfZ6Vt9oZtqS4DVKxBoJPTTgmTOC+VgTV+sz8N7qsFIS19fkP9Tr0=
-X-Received: by 2002:a05:651c:2209:b0:2fb:55b0:82b8 with SMTP id
- 38308e7fff4ca-2fb61b34167mr12008591fa.4.1729078379930; Wed, 16 Oct 2024
- 04:32:59 -0700 (PDT)
+	s=arc-20240116; t=1729078830; c=relaxed/simple;
+	bh=0oTOvu1oj59C7ovUOvvQCUJ+3REVF9xlBxZA+LgjNcI=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=FWOQjOE438kQnGkfNJxRceL4/4mzsLzr5CPdwxhtdmz8wMUYm/bLA6FzX6SMAB8ru6FTNFd5vgZhBNsVgOAJgSCPfyiMiP6Bsbvwhf4TGDrj9Eccu3QFq5eYSnJjMtCsMefD1aPmQWarPu8clIf5eL86uN+rXr2Sx3fhRJCe9e4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=XXw6kbgS; arc=none smtp.client-ip=44.202.169.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6001a.ext.cloudfilter.net ([10.0.30.140])
+	by cmsmtp with ESMTPS
+	id 0wLutJ9KViA1912O6tb1oZ; Wed, 16 Oct 2024 11:40:22 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id 12O5trno62Zy012O5tthmu; Wed, 16 Oct 2024 11:40:21 +0000
+X-Authority-Analysis: v=2.4 cv=Q4EZ4J2a c=1 sm=1 tr=0 ts=670fa625
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=DAUX931o1VcA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=UiXv1XNBzq_yEhrWseEA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=3tnCv/3B6UvQpTXDSatS30ZSZHSuiUQubieRjnJUKKc=; b=XXw6kbgSWn5liVw81xXEfNx2CP
+	hzERZNAgWdqz/IZf1eHTmbTeJJJ6aWmMlp49PRWmrN8AHQtdEAvhqQ3tSnLyd7bPl1g5sD+k2YxfO
+	/jJrHdq8kqLFv+u0ehSKEYSGz0SaCTDG0nbMWEAiOFFIZr+MtfBp0WKbyxwxA9Gcz/uF7o6PPyEw6
+	lvQNVqkZfTfYP2NyLTzTNf33FzCZvrGDO/pEBzBF2/PIyL6UnFBzuUsLZQLViX7TITyUqXr9kYP+T
+	NKN353S+d7d3ySW3/ggX5iJ1wx+V9I+fx8u7GHgzYviK05pdTcxdk9fPGUEJDJY3r8u7q2dQfPSk+
+	CwT3PXbQ==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:48078 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1t12O2-000Mug-2x;
+	Wed, 16 Oct 2024 05:40:18 -0600
+Subject: Re: [PATCH 5.15 000/691] 5.15.168-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20241015112440.309539031@linuxfoundation.org>
+In-Reply-To: <20241015112440.309539031@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <52532dd8-0191-4ac9-6239-1b278388e5d0@w6rz.net>
+Date: Wed, 16 Oct 2024 04:40:16 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241015-arm-kasan-vmalloc-crash-v1-0-dbb23592ca83@linaro.org> <20241015-arm-kasan-vmalloc-crash-v1-1-dbb23592ca83@linaro.org>
-In-Reply-To: <20241015-arm-kasan-vmalloc-crash-v1-1-dbb23592ca83@linaro.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 16 Oct 2024 13:32:48 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHuJ9JjbxcG0LkRpQiPzW-BDfX+LoW3+W_cfsD=1hdPDg@mail.gmail.com>
-Message-ID: <CAMj1kXHuJ9JjbxcG0LkRpQiPzW-BDfX+LoW3+W_cfsD=1hdPDg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ARM: ioremap: Flush PGDs for VMALLOC shadow
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Clement LE GOFFIC <clement.legoffic@foss.st.com>, Russell King <linux@armlinux.org.uk>, 
-	Kees Cook <kees@kernel.org>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Mark Brown <broonie@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Antonio Borneo <antonio.borneo@foss.st.com>, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1t12O2-000Mug-2x
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:48078
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfIPL1aPoYT1PntCcEtPJ0A0VwXget4iEfu7Fo5K5ApEvxFO+PI1dHsOAlbIli5zNwwYNj4zwg9vQj89uYBk/InDhgV0ly8cYmxRyvd2JR82ZITRzYZFx
+ zQiCBHsIeoaBOG3SfiPfPvlXZspLZahqTQAl0wCWgSacZmo6K1k1W3NrnxPXvE1p2O1QJpUn7kvvRg==
 
-On Tue, 15 Oct 2024 at 23:37, Linus Walleij <linus.walleij@linaro.org> wrote:
+On 10/15/24 4:19 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.168 release.
+> There are 691 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> When sync:ing the VMALLOC area to other CPUs, make sure to also
-> sync the KASAN shadow memory for the VMALLOC area, so that we
-> don't get stale entries for the shadow memory in the top level PGD.
+> Responses should be made by Thu, 17 Oct 2024 11:22:41 +0000.
+> Anything received after that time might be too late.
 >
-> Cc: stable@vger.kernel.org
-> Fixes: 565cbaad83d8 ("ARM: 9202/1: kasan: support CONFIG_KASAN_VMALLOC")
-> Link: https://lore.kernel.org/linux-arm-kernel/a1a1d062-f3a2-4d05-9836-3b098de9db6d@foss.st.com/
-> Reported-by: Clement LE GOFFIC <clement.legoffic@foss.st.com>
-> Suggested-by: Mark Rutland <mark.rutland@arm.com>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
->  arch/arm/mm/ioremap.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.168-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
 >
-> diff --git a/arch/arm/mm/ioremap.c b/arch/arm/mm/ioremap.c
-> index 794cfea9f9d4..449f1f04814c 100644
-> --- a/arch/arm/mm/ioremap.c
-> +++ b/arch/arm/mm/ioremap.c
-> @@ -23,6 +23,7 @@
->   */
->  #include <linux/module.h>
->  #include <linux/errno.h>
-> +#include <linux/kasan.h>
->  #include <linux/mm.h>
->  #include <linux/vmalloc.h>
->  #include <linux/io.h>
-> @@ -125,6 +126,12 @@ void __check_vmalloc_seq(struct mm_struct *mm)
->                        pgd_offset_k(VMALLOC_START),
->                        sizeof(pgd_t) * (pgd_index(VMALLOC_END) -
->                                         pgd_index(VMALLOC_START)));
-> +               if (IS_ENABLED(CONFIG_KASAN_VMALLOC)) {
-> +                       memcpy(pgd_offset(mm, (unsigned long)kasan_mem_to_shadow((void *)VMALLOC_START)),
-> +                              pgd_offset_k((unsigned long)kasan_mem_to_shadow((void *)VMALLOC_START)),
-> +                              sizeof(pgd_t) * (pgd_index((unsigned long)kasan_mem_to_shadow((void *)VMALLOC_END)) -
-> +                                               pgd_index((unsigned long)kasan_mem_to_shadow((void *)VMALLOC_START))));
-> +               }
+> thanks,
+>
+> greg k-h
 
-+1 to Russell's suggestion to change this wall of text into something legible.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Then, there is another part to this: in arch/arm/kernel/traps.c, we
-have the following code
+Tested-by: Ron Economos <re@w6rz.net>
 
-void arch_sync_kernel_mappings(unsigned long start, unsigned long end)
-{
-    if (start < VMALLOC_END && end > VMALLOC_START)
-        atomic_inc_return_release(&init_mm.context.vmalloc_seq);
-}
-
-where we only bump vmalloc_seq if the updated region overlaps with the
-vmalloc region, so this will need a similar treatment afaict.
 
