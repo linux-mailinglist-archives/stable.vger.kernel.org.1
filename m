@@ -1,128 +1,233 @@
-Return-Path: <stable+bounces-86436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50CB89A0365
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 09:59:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0F7D9A036B
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 09:59:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 110002824CB
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 07:59:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA16B1C28184
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 07:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FD81C8FB4;
-	Wed, 16 Oct 2024 07:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BEB41D0F6B;
+	Wed, 16 Oct 2024 07:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="SQEze3JY"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="F9SI5TvI"
 X-Original-To: stable@vger.kernel.org
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46C21B2193;
-	Wed, 16 Oct 2024 07:59:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.248.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316D1165F1A
+	for <stable@vger.kernel.org>; Wed, 16 Oct 2024 07:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729065549; cv=none; b=B52nm3fs6xT4ZBe4ZgohiqIWYuCLGYkOBI5yWkWnwBEU0zotdmLen8M35CbebXeF3WP8Cq1jh1IAGsE30a1PLz9wZ2fmTayqjV69Ln8HB+3xUMj5FvxoEhWQlN/UEjjoXZaUb4pD18jRO3E1gMxuh24R2qK/bKCGXeZFOV5vUgI=
+	t=1729065575; cv=none; b=j2scpE6TDHQ/aXbU/VDPQzkqeR7oj39QIHfwLTMCiuItvOb2/0CJWgFMSlM1a+QgmFV/p/TPKop+eU/WD8k+0uDw3SvlVjwqnQfbJr7H4R0PMOftNZF3fmFGf+h8N0P+KknygMk8Iccvf4IwcKKXRFS+Tcxd9z5ZpvbWTkcKqdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729065549; c=relaxed/simple;
-	bh=IFGp3OJ05WhcLD4qS+zh1HFrpAUMaxtwBRrpvE2rOu4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZXlFMD7MMLcnC+UdRuAiFFJovi84yqbeZS5ZbYmmAfoccfdMe+sCLzwBrPnpYNGlR0NyscBX2CXVow3dKday8/x+r4fS0pRtz4MGRzc5YbeUfjU3ja8QurALsARq5fHG+ZuSLAAswV740rCvyEygxZ/T7RTpjIGLrHfqJ2fBDAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=SQEze3JY; arc=none smtp.client-ip=159.100.248.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.119.157])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id E2B8826761;
-	Wed, 16 Oct 2024 07:59:05 +0000 (UTC)
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay3.mymailcheap.com (Postfix) with ESMTPS id 175473E8D7;
-	Wed, 16 Oct 2024 09:58:58 +0200 (CEST)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 2E0B6400AD;
-	Wed, 16 Oct 2024 07:58:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1729065536; bh=IFGp3OJ05WhcLD4qS+zh1HFrpAUMaxtwBRrpvE2rOu4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SQEze3JYLCmgfxwMvoSQWHON6U8bwpZoUPAu5NKgVO4F4qsW7E0OTxJEzXvXFj/HK
-	 u8JzMW88FZwyZUOcKYimMdMVjfcnvrDj6O+51w5ce/1scAyIo4gcnUVcM84wa9PzlJ
-	 YoGmaZyTfuV8GBFOtfRPzxcjWozFD0V/kGBwUYyA=
-Received: from [198.18.0.1] (unknown [58.32.43.121])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 1A15140F81;
-	Wed, 16 Oct 2024 07:58:50 +0000 (UTC)
-Message-ID: <cdad74ac-5b86-49fb-a6dc-8d5392e7bc6f@aosc.io>
-Date: Wed, 16 Oct 2024 15:58:48 +0800
+	s=arc-20240116; t=1729065575; c=relaxed/simple;
+	bh=/BiKXgb/ifi8dpicYpJPPROj1PZWiwo5txuUrOXm8tY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YA2JetFDk9XSC2XZ7O0nzmFEkyDs1HpY03YBdf6DG05GV191wfR3IR9Fc6ydXUIICuBbps0tOoe1fqTmBKAvXaM8oLisNoC4NfD7nvGiIWwXSAij00cgcLQwxJBTSyabtl6Qz0hnVflHTp6bWZtuk4+euxXhAldr4H/lb0kj6Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=F9SI5TvI; arc=none smtp.client-ip=209.85.221.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-50d3d4d2ad2so1175798e0c.0
+        for <stable@vger.kernel.org>; Wed, 16 Oct 2024 00:59:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1729065573; x=1729670373; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GvCnBTztCAnhD2mHou1d1ZIRw6cIuOdYGceF0zdZt5Q=;
+        b=F9SI5TvIRiEUTCVlZXuS0C9ebLIqYl7jaQqwbwgt2YGqXRXHU2kx3HNegEMY4YILNF
+         1SgZbIyBYvb7u+lRk1iibyb+mLqeDU4DPxAQUq/95ONW+HE4Z1kaFeMaLVwmkXcKEd9j
+         E7p2J+6Ut/441A8Rv2ZiyY7UxIX9RVsqmD3k1PrU0dJzqqT+n1/O8T9Bckuu0SLIer6i
+         phcq5P617hwzCFXS3MPw/ppyZT9Cu9jZrvqnNz6WDimlzNUFkZqlKtaYHZXxzB/+eHYg
+         XvPJ+c4QRxBTb00JZnvMObiCdNVF48F/2XYeoGO0bm8mTF2x3CgJJIU/JkzafhZgbI/7
+         ZQRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729065573; x=1729670373;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GvCnBTztCAnhD2mHou1d1ZIRw6cIuOdYGceF0zdZt5Q=;
+        b=H+PfMqqylTisTo+EymDZPqQoUyxEkUAFQRIDZpiVVcjCw6vKysMa9sWsKcc9cwdcaj
+         sDHI3NTWJYQN6c+6h0VVoWM6IHsrWxhnn/Z0ZLjffhXaxBY2LIrNCdxj66pFwHCAcs6A
+         pNGTiIwTYwTMXo4QG89d7k90+7p+RPks9Tmzm6us6H1D6lqqZvCMwUWHPKHIS06BgE/y
+         uJAdvT06SZXea/gL3QWonsKqtKjf0hEeFjjENSjIb7JWz0M1vqeGyyInZwb+WmUSwaKi
+         VXLvA0AW9hAnwuadqEBsfz+AyRBn8uKBHMhyPqNlcUadkNy//M7rWJQ5/E+mn20UXXCN
+         u5lg==
+X-Gm-Message-State: AOJu0Yx0HqOUnw60wBByqF7M0ZbplUZNGDlwRH5BQ6ZA54b48JFSy47I
+	EfDs5l8kGAL5UqqpU5Z5mCTumLSqV6e9t7Ex8244jNHcdfG+5zZ2l6R9S4HgNSiHVtbCq197YZK
+	JQhcWH0CqgqmMP7J4ZSGHAIzsWQ2l3/DEVr0nCQ==
+X-Google-Smtp-Source: AGHT+IG4hpwFBZCh4eDUtnLHfS4is5WIEfhKJ8QttRME4agWUgCKIL3gqQiAFbfsookdZ7aXIpHbJF73RL1Vb4bfH5Q=
+X-Received: by 2002:a05:6122:1acc:b0:4f5:22cc:71b9 with SMTP id
+ 71dfb90a1353d-50d374b96e2mr8280137e0c.5.1729065573128; Wed, 16 Oct 2024
+ 00:59:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Thunderbird Daily
-Subject: Re: [PATCH 6.6 000/211] 6.6.57-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
 References: <20241015112327.341300635@linuxfoundation.org>
-Content-Language: en-US
-From: Kexy Biscuit <kexybiscuit@aosc.io>
 In-Reply-To: <20241015112327.341300635@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: nf2.mymailcheap.com
-X-Rspamd-Queue-Id: 2E0B6400AD
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.41 / 10.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	TAGGED_RCPT(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,sladewatkins.net,gmx.de];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	TO_DN_SOME(0.00)[]
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 16 Oct 2024 13:29:22 +0530
+Message-ID: <CA+G9fYtmRGt9pXfRk=Bfnac7gbotdw8PcEsSOmD0nUefYHuBpQ@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/211] 6.6.57-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/15/2024 7:25 PM, Greg Kroah-Hartman wrote:
+On Tue, 15 Oct 2024 at 16:55, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
 > This is the start of the stable review cycle for the 6.6.57 release.
 > There are 211 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
-> 
+>
 > Responses should be made by Thu, 17 Oct 2024 11:22:41 +0000.
 > Anything received after that time might be too late.
-> 
+>
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.57-rc2.gz
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.57-rc2.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
 > and the diffstat can be found below.
-> 
+>
 > thanks,
-> 
+>
 > greg k-h
-Building passed on amd64, arm64, loongarch64, ppc64el, and riscv64. 
-Smoke testing passed on 8 amd64 and 1 arm64 test systems.
 
-Tested-by: Kexy Biscuit <kexybiscuit@aosc.io>
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-https://github.com/AOSC-Dev/aosc-os-abbs/pull/8304
--- 
-Best Regards,
-Kexy Biscuit
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 6.6.57-rc2
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: a3810192966c3144d8cf988e8a13fc18a2dde677
+* git describe: v6.6.56-212-ga3810192966c
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.5=
+6-212-ga3810192966c
+
+## Test Regressions (compared to v6.6.54-387-g75430d7252ba)
+
+## Metric Regressions (compared to v6.6.54-387-g75430d7252ba)
+
+## Test Fixes (compared to v6.6.54-387-g75430d7252ba)
+
+## Metric Fixes (compared to v6.6.54-387-g75430d7252ba)
+
+## Test result summary
+total: 161514, pass: 133557, fail: 1868, skip: 25978, xfail: 111
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 129 total, 129 passed, 0 failed
+* arm64: 41 total, 41 passed, 0 failed
+* i386: 28 total, 26 passed, 2 failed
+* mips: 26 total, 25 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 35 passed, 1 failed
+* riscv: 19 total, 19 passed, 0 failed
+* s390: 14 total, 13 passed, 1 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 7 total, 7 passed, 0 failed
+* x86_64: 33 total, 33 passed, 0 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
