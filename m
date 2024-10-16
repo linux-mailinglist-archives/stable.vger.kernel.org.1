@@ -1,91 +1,134 @@
-Return-Path: <stable+bounces-86541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 354D49A1439
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 22:42:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A28F69A1463
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 22:49:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95DE9B21D27
-	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 20:42:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 596391F22A05
+	for <lists+stable@lfdr.de>; Wed, 16 Oct 2024 20:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32919216A13;
-	Wed, 16 Oct 2024 20:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB2C1CC893;
+	Wed, 16 Oct 2024 20:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OHcvgi6B"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="d0KZ5eIP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAFD1CBA1D;
-	Wed, 16 Oct 2024 20:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B304409;
+	Wed, 16 Oct 2024 20:49:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.48.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729111357; cv=none; b=PjRkL9JXNYMcc3nPViyQIxlPzED9CT5MJTeXkM52C3hpIC8Vo0MkVT7MHk2KNVEb0rijMCZ4RgMNnrefjGhHR56XFq7LRqQu2DClABhMO7sRdYv9WSFYldZFEJS5EbkiRs3TCd3Jv3DSRNNiOLaBLJwEDta7MvQAs8KSHFlfqRw=
+	t=1729111793; cv=none; b=MCuQcnyCa3lywKXoZsfobMJObCt3FdYJZkrDd7fZQsVPsBY6VQoDgARaGI9EWz+wVawvtINhXXsVx0huvNiZp9eVOhxq9YwtHQBo9+n5sF/q3ilbDCRJ+mTklhqVJorUGVIOddny8XUWlgpmNvpzyuhTdnFOlBw1RYvUr1WLcV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729111357; c=relaxed/simple;
-	bh=V5DL/YU7lhwF4erblr49VR9vrskp0YdoI0+f2kB6U4w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V+GWROS4R3van2Fu667nDz+Huwr+xDn4lyqd7MclE+NKwKm2MBgGmfXw6VFnVXeUVxcDkMKwzi5jci8q34fBOZZep4h2TOOcOrZQ8+qlfkC6PkipQqe9iA6I4V9Kjh1s6458ITNAXEVf68ZO+IDGvvpI8G85BRdBFoQMh1MfoNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OHcvgi6B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36EEC4CEC5;
-	Wed, 16 Oct 2024 20:42:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729111356;
-	bh=V5DL/YU7lhwF4erblr49VR9vrskp0YdoI0+f2kB6U4w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OHcvgi6BFJCV6ga+ja9eyKLxvyQG/vaQxc07xz/hDdcTAfaPfYM8ql7cf35mcTOFF
-	 ee37HHPtRl8jaRrTHCNOJqcDWofhQnuDHeMUMJw0Q1XwgE7uDmk/XhLZqJMK+q+3sw
-	 BjPya2CwtgcF+lF8yp/Cq9sCj7QeF8GMgCxzzd0gFsuyvzztr6HSJ8v+kt6xWUvdTP
-	 RVnsjI5SIGZIs1Mb8P/bJPPSNngb4xyCDjzjH/lU2pcde/5sDYvZC5JMNSv5lHiO4+
-	 rAQWgumUoYPgiFhK1FS6zKOws8zuq9AjYyruS4k5HDedaZ3GpaoM5myszP+R2Rjiwv
-	 D/52k2PGzV46g==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Rajendra Nayak <quic_rjendra@quicinc.com>,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Abel Vesa <abel.vesa@linaro.org>
-Cc: Johan Hovold <johan@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: dts: qcom: x1e80100: Add Broadcast_AND region in LLCC block
-Date: Wed, 16 Oct 2024 15:42:25 -0500
-Message-ID: <172911112240.3304.14479247298086070465.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241014-x1e80100-dts-llcc-add-broadcastand_region-v2-1-5ee6ac128627@linaro.org>
-References: <20241014-x1e80100-dts-llcc-add-broadcastand_region-v2-1-5ee6ac128627@linaro.org>
+	s=arc-20240116; t=1729111793; c=relaxed/simple;
+	bh=wyviNS/O87hNqvd7UTSnAIcEJ6WvYGkBX9tYawnrCik=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AHib+lMJrYpRslec0UaNOsOqfoGOgW1u5tsoDcpQMvN/4P3j9Z5NaNfuAHI/mPgkNyQZKw6vdHC8HT95hhHgA2n84pl5Y2T2UZwaGjCe1os+KW0Jf6h/8GBYUeFnmKOKIQl9Q+2yVb59eIqrR6FE4bzyhBtsBQcutDaLVrmJaPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=d0KZ5eIP; arc=none smtp.client-ip=52.95.48.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1729111792; x=1760647792;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ICjUl4q8K/hAIxqwCsJkPss/Rcd78MNXDfdL8em+YUo=;
+  b=d0KZ5eIPcUhrxbF7drELaM4c4EIJXLaSOn1WGG45NC4cMLRTJSRUWq9n
+   QB9MP/4aeKbyOks5fSCfPBhgBMdrvlw7rv1uwHfdahBq9tKONeocklxcW
+   vd/hJYYtzhE0mCB1f6tL+kAKTwha94Ksj3YG+DnDe49aFSRXHEi4ebaJq
+   s=;
+X-IronPort-AV: E=Sophos;i="6.11,209,1725321600"; 
+   d="scan'208";a="432058913"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
+  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 20:49:47 +0000
+Received: from EX19MTAEUB002.ant.amazon.com [10.0.43.254:44050]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.17.150:2525] with esmtp (Farcaster)
+ id 91a88051-116e-4f95-a9e3-50e85f98db01; Wed, 16 Oct 2024 20:49:46 +0000 (UTC)
+X-Farcaster-Flow-ID: 91a88051-116e-4f95-a9e3-50e85f98db01
+Received: from EX19D026EUB004.ant.amazon.com (10.252.61.64) by
+ EX19MTAEUB002.ant.amazon.com (10.252.51.79) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Wed, 16 Oct 2024 20:49:46 +0000
+Received: from 3c06303d853a.ant.amazon.com (10.187.171.15) by
+ EX19D026EUB004.ant.amazon.com (10.252.61.64) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Wed, 16 Oct 2024 20:49:43 +0000
+Date: Wed, 16 Oct 2024 13:49:38 -0700
+From: Andrew Paniakin <apanyaki@amazon.com>
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+CC: Christian Heusel <christian@heusel.eu>, <pc@cjr.nz>,
+	<stfrench@microsoft.com>, <sashal@kernel.org>, <pc@manguebit.com>,
+	<stable@vger.kernel.org>, <linux-cifs@vger.kernel.org>,
+	<abuehaze@amazon.com>, <simbarb@amazon.com>, <benh@amazon.com>,
+	<gregkh@linuxfoundation.org>
+Subject: Re: [REGRESSION][BISECTED][STABLE] Commit 60e3318e3e900 in
+ stable/linux-6.1.y breaks cifs client failover to another server in DFS
+ namespace
+Message-ID: <ZxAm4rvmWp2MMt4b@3c06303d853a.ant.amazon.com>
+References: <ZnMkNzmitQdP9OIC@3c06303d853a.ant.amazon.com>
+ <Znmz-Pzi4UrZxlR0@3c06303d853a.ant.amazon.com>
+ <210b1da5-6b22-4dd9-a25f-8b24ba4723d4@heusel.eu>
+ <ZnyRlEUqgZ_m_pu-@3c06303d853a>
+ <a58625e7-8245-4963-b589-ad69621cb48a@heusel.eu>
+ <7c8d1ec1-7913-45ff-b7e2-ea58d2f04857@leemhuis.info>
+ <ZpHy4V6P-pawTG2f@3c06303d853a.ant.amazon.com>
+ <Zp7-gl5mMFCb4UWa@3c06303d853a.ant.amazon.com>
+ <fb4c481d-91ba-46b8-b11a-534597a2b467@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <fb4c481d-91ba-46b8-b11a-534597a2b467@leemhuis.info>
+X-ClientProxiedBy: EX19D044UWB003.ant.amazon.com (10.13.139.168) To
+ EX19D026EUB004.ant.amazon.com (10.252.61.64)
 
-
-On Mon, 14 Oct 2024 10:38:20 +0300, Abel Vesa wrote:
-> Add missing Broadcast_AND region to the LLCC block for x1e80100,
-> as the LLCC version on this platform is 4.1 and it provides the region.
+On 27/09/2024, Linux regression tracking (Thorsten Leemhuis) wrote:
+> On 23.07.24 02:51, Andrew Paniakin wrote:
+> > On 12/07/2024, Andrew Paniakin wrote:
+> >> On 11/07/2024, Linux regression tracking (Thorsten Leemhuis) wrote:
+> >>> On 27.06.24 22:16, Christian Heusel wrote:
+> >>>> On 24/06/26 03:09PM, Andrew Paniakin wrote:
+> >>>>> On 25/06/2024, Christian Heusel wrote:
+> >>>>>> On 24/06/24 10:59AM, Andrew Paniakin wrote:
+> >>>>>>> On 19/06/2024, Andrew Paniakin wrote:
+> >>>>>>>> Commit 60e3318e3e900 ("cifs: use fs_context for automounts") was
+> >>
+> >>> Hmmm, unless I'm missing something it seems nobody did so. Andrew, could
+> >>> you take care of that to get this properly fixed to prevent others from
+> >>> running into the same problem?
+> >>
+> >> We got the confirmation from requesters that the kernel with this patch
+> >> works properly, our regression tests also passed, so I submitted
+> >> backport request:
+> >> https://lore.kernel.org/stable/20240713031147.20332-1-apanyaki@amazon.com/
+> >
+> > There was an issue with backporting the follow-up fix for this patch:
+> > https://lore.kernel.org/all/20240716152749.667492414@linuxfoundation.org/
+> > I'll work on fixing this issue and send new patches again for the next cycle.
 > 
-> This also fixes the following error caused by the missing region:
+> Andrew, was there any progress? From here it looks like this fell
+> through the cracks, but I might be missing something.
 > 
-> [    3.797768] qcom-llcc 25000000.system-cache-controller: error -EINVAL: invalid resource (null)
-> 
-> [...]
+> Ciao, Thorsten
 
-Applied, thanks!
+Hi Thorsten, sorry for delay in reply.
+I had to do one step back and update my development setup, in order to
+prevent rebase process breaking: created script to use crosstool [1] to
+test my future backports on all platforms and make sure to search
+follow-up fixes for the patch I'm porting, found kernel.dance [2] for
+it. Now I'm trying to reproduce issue mentioned in follow-up fix [3] to
+have clear red/green test results. I think I should be able to send
+tested fixes in next 2 weeks.
 
-[1/1] arm64: dts: qcom: x1e80100: Add Broadcast_AND region in LLCC block
-      commit: 80fe25fcc605209b707583e3337e3cd40b7ed0bf
-
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+[1] https://cdn.kernel.org/pub/tools/crosstool/
+[2] https://kernel.dance/
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d5a863a153e90996ab2aef6b9e08d509f4d5662b
 
