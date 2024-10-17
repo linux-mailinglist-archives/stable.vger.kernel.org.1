@@ -1,165 +1,94 @@
-Return-Path: <stable+bounces-86632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD509A2483
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 16:06:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC2B9A2482
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 16:06:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B096B252EA
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 14:06:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99B2D1F22270
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 14:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D5E1DE3D3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE211DE3D9;
 	Thu, 17 Oct 2024 14:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dugwrwc5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4pO3N10"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291E51DE3CB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291731DE3C4;
 	Thu, 17 Oct 2024 14:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729174007; cv=none; b=m69zyAhrfYYvcsz+agax0UitZ3d0y3BWSPB7G2VqRUFCCGJkzfKaObewAQCXRTwyj9aKxIkG+E0md/s7QWl8x5MSS7lnB5bLsz8kS30StXZnEMoSF/3QdehVGtEBthl/5Dmk6s1Iur0keNygMGTDWIHN4E8+/x9qMHX/DGKWq3k=
+	t=1729174007; cv=none; b=ZCae5K6ZIsObCm8JcEvMb319qOCEMv52f/3Ciazwr45Mtrvb7APvUvp24244L0ALVQvHL5XvEi1Lg51IEP4DL7ifE/d/pkhLfEkzKJUi2BUNBx4cXKMbGEWeL9yfw+1DdkuALkAgJ6QBqwRrZOyqRSNh6ChvnSUm2zqWVqSt67I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729174007; c=relaxed/simple;
-	bh=Cd2ptOu9IhlY69+bEHrkg5ABhxuLTtueNlNdkEdviW8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hS+b0KA/j9vrMNTKzrTHRn01ifTY5ubbE9BhViDPGaqJc2LLYvi7W7wqT6C0YiP1mIxI1TdFRC4l5F7N5eDhHzNOIDG7BccCtQGZKYMdnsaCFlrBXlT+Pm2GMzFq4f+Cg9XUUVF5YfOjx+GFr+a+RdRQa14yOmm2EyH6Or9vKXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dugwrwc5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3360EC4CEC3;
+	bh=hZCoXQsVjJgdy7BIPN0W3U1cPX3GJPfRlR7ZS+yt2tA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RoU7fHylWxF7zd94OeL4Kaj9ue3QodoF64k90q+b3olyrLZQmjwsgc+xk23VEQX+4f5bkLzlLTP3HBSzT8JXqA+z3NwjNVPSdeHDH/r7c34odo1GzrIunqmNUljj0IAB/ceOteQcFlhV/cIdgqCrFF3uT0XaWFGR1XuxUCWVmWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4pO3N10; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F02EC4CECD;
 	Thu, 17 Oct 2024 14:06:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729174006;
-	bh=Cd2ptOu9IhlY69+bEHrkg5ABhxuLTtueNlNdkEdviW8=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=dugwrwc51sVaj5d6US1kboxNQ23SEAgVL+OLhep8b2ZQgE11gj+utmdYkKobfyu2q
-	 +Yohb6aa+pbB5s8e+47md8wOxHYbtTn5aRFobzA9zz7kXw2qXpFB7X8OY0tfCjrzDN
-	 jl6ahAefRkX6dZRoIAJA94DHbjNmg05wEcYo9ODNEUMT7ls7/EvamNa7kpniQWPzV3
-	 6HZzCTMQFOI7HA3iRLCiQIpAwAKexVPLqjsdu4/rJtpy6Bo9iujyXd3lQsQgdEK+ME
-	 09OKnp+tXaPMnPfXljDQf3QDp7JUn7aw00L+p1gSTHohb5DXYY98ZGIOhJr/nlNfai
-	 9JTEoO2+dyeAA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 286F5D37488;
-	Thu, 17 Oct 2024 14:06:46 +0000 (UTC)
-From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
-Date: Thu, 17 Oct 2024 16:06:28 +0200
-Subject: [PATCH] iio: invensense: fix multiple odr switch when FIFO is off
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1729174006;
+	bh=hZCoXQsVjJgdy7BIPN0W3U1cPX3GJPfRlR7ZS+yt2tA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=o4pO3N10VGpb0DEWrd9vOW3mo6KGSnEuioKaCNXorxJX2pKRxVQaSbQBwBuEVGr8l
+	 5Iijk/m/WYoGutti6X3/EOkZpPpl99hYZxcg6meJXKQq5vzofrah2bRFnrPtD1PORY
+	 nTa0r5wa3T2ouwab99aBjkGm4hv3+S8nA9aGvktU=
+Date: Thu, 17 Oct 2024 16:06:38 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Vimal Agrawal <avimalin@gmail.com>
+Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, quic_jjohnson@quicinc.com,
+	dan.carpenter@linaro.org, vimal.agrawal@sophos.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] misc: misc_minor_alloc to use ida for all
+ dynamic/misc dynamic minors
+Message-ID: <2024101725-opal-quarters-b4b7@gregkh>
+References: <2024101722-uncharted-wages-5759@gregkh>
+ <20241017133532.94509-1-vimal.agrawal@sophos.com>
+ <2024101715-flounder-delusion-8edb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-v1-1-1bcfa70a747b@tdk.com>
-X-B4-Tracking: v=1; b=H4sIAOMZEWcC/x2NwQrCQAxEf6XkbGCzKlJ/RTyUNrE5NFs2SxVK/
- 93oZZgHj5kdnKuyw73bofKmrsUC6NTBOA/2YtQpGHLKF0p0Q7XNfoHO5qU6Nl3Y27CsKPpBf2s
- b56hSsIjgWXJPlLi/TglidK0c2v/w8TyOL0kefi6AAAAA
-X-Change-ID: 20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-3f29110e95d0
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1729174005; l=3834;
- i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
- bh=hwc0VtUPDpKzrpf0zfGK0OY2bFJH+QWRh4z9/VaDmA8=;
- b=TguYYGKHfPKqJ15J+qhEfByNDFrMqxGAzxCEh92LM4i5xFtK5rtY/ehj4dTlnurQZVP89akYk
- Llm/g42P0yDC49mGFhH2FJs/sfLoYpZafKCZJRIkVVdonXPGMHYksqR
-X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
- pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
-X-Endpoint-Received: by B4 Relay for
- jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
-X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Reply-To: jean-baptiste.maneyrol@tdk.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024101715-flounder-delusion-8edb@gregkh>
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+On Thu, Oct 17, 2024 at 03:39:06PM +0200, Greg KH wrote:
+> On Thu, Oct 17, 2024 at 01:35:32PM +0000, Vimal Agrawal wrote:
+> > misc_minor_alloc was allocating id using ida for minor only in case of
+> > MISC_DYNAMIC_MINOR but misc_minor_free was always freeing ids
+> > using ida_free causing a mismatch and following warn:
+> > > > WARNING: CPU: 0 PID: 159 at lib/idr.c:525 ida_free+0x3e0/0x41f
+> > > > ida_free called for id=127 which is not allocated.
+> > > > <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+> > ...
+> > > > [<60941eb4>] ida_free+0x3e0/0x41f
+> > > > [<605ac993>] misc_minor_free+0x3e/0xbc
+> > > > [<605acb82>] misc_deregister+0x171/0x1b3
+> > 
+> > misc_minor_alloc is changed to allocate id from ida for all minors
+> > falling in the range of dynamic/ misc dynamic minors
+> > 
+> > Fixes: ab760791c0cf ("char: misc: Increase the maximum number of dynamic misc devices to 1048448")
+> > Signed-off-by: Vimal Agrawal <avimalin@gmail.com>
+> 
+> Sorry, but no, do not hide behind a gmail.com address.  Either fix your
+> corporate email system to be able to send patches out, or use the other
+> method of sending from a different address as documented in the kernel
+> documentation.
+> 
+> As it is, I can't take this, sorry.
 
-When multiple ODR switch happens during FIFO off, the change could
-not be taken into account if you get back to previous FIFO on value.
-For example, if you run sensor buffer at 50Hz, stop, change to
-200Hz, then back to 50Hz and restart buffer, data will be timestamped
-at 200Hz. This due to testing against mult and not new_mult.
+Also, only patch 1/2 showed up, what happened to patch 2/2?
 
-To prevent this, let's just run apply_odr automatically when FIFO is
-off. It will also simplify driver code.
+thanks,
 
-Update inv_mpu6050 and inv_icm42600 to delete now useless apply_odr.
-
-Fixes: 95444b9eeb8c ("iio: invensense: fix odr switching to same value")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
----
- drivers/iio/common/inv_sensors/inv_sensors_timestamp.c | 4 ++++
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c      | 1 -
- drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c       | 1 -
- drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c          | 1 -
- 4 files changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-index f44458c380d92823ce2e7e5f78ca877ea4c06118..37d0bdaa8d824f79dcd2f341be7501d249926951 100644
---- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-+++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-@@ -70,6 +70,10 @@ int inv_sensors_timestamp_update_odr(struct inv_sensors_timestamp *ts,
- 	if (mult != ts->mult)
- 		ts->new_mult = mult;
- 
-+	/* When FIFO is off, directly apply the new ODR */
-+	if (!fifo)
-+		inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
-+
- 	return 0;
- }
- EXPORT_SYMBOL_NS_GPL(inv_sensors_timestamp_update_odr, IIO_INV_SENSORS_TIMESTAMP);
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-index 56ac198142500a2e1fc40b62cdd465cc736d8bf0..d061a64ebbf71859a3bc44644a14137dff0f9efe 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -229,7 +229,6 @@ static int inv_icm42600_accel_update_scan_mode(struct iio_dev *indio_dev,
- 	}
- 
- 	/* update data FIFO write */
--	inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
- 	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
- 
- out_unlock:
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-index 938af5b640b00f58d2b8185f752c4755edfb0d25..f1e5a9648c4f5dd34f40136d02c72c90473eff37 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-@@ -128,7 +128,6 @@ static int inv_icm42600_gyro_update_scan_mode(struct iio_dev *indio_dev,
- 	}
- 
- 	/* update data FIFO write */
--	inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
- 	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
- 
- out_unlock:
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-index 3bfeabab0ec4f6fa28fbbcd47afe92af5b8a58e2..5b1088cc3704f1ad1288a0d65b2f957b91455d7f 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-@@ -112,7 +112,6 @@ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_state *st, bool enable)
- 	if (enable) {
- 		/* reset timestamping */
- 		inv_sensors_timestamp_reset(&st->timestamp);
--		inv_sensors_timestamp_apply_odr(&st->timestamp, 0, 0, 0);
- 		/* reset FIFO */
- 		d = st->chip_config.user_ctrl | INV_MPU6050_BIT_FIFO_RST;
- 		ret = regmap_write(st->map, st->reg->user_ctrl, d);
-
----
-base-commit: c3e9df514041ec6c46be83801b1891392f4522f7
-change-id: 20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-3f29110e95d0
-
-Best regards,
--- 
-Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-
-
+greg k-h
 
