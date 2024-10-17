@@ -1,86 +1,77 @@
-Return-Path: <stable+bounces-86555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D4379A1912
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 05:06:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E70A69A1A1D
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 07:20:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE8F2B23D7E
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 03:06:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AC7C28459E
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 05:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5951865EF;
-	Thu, 17 Oct 2024 03:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C4313D298;
+	Thu, 17 Oct 2024 05:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nkP6vZge"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="tzVG7NYW"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C8629405;
-	Thu, 17 Oct 2024 03:04:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEADE21E3C1;
+	Thu, 17 Oct 2024 05:20:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729134281; cv=none; b=sebhktw1IGJ9JMWAjiFwmt1+ddSicXL/YBHlQMPYFBiSq3i5unF9UBu38cZEs2Zb/PJgs+H/foSPZ8N5By5omZj99N1NsTgFRvn8PWLIipQRIe5D4Mtc++AU1WNo23JQV3pp2Q9wan/t8BmKiBe1wmVXdvAwRaEGcKNFc4at/DY=
+	t=1729142426; cv=none; b=G0W4zMbc76IbZ/WnID7rtM7s61hi+JJJSaziNzcvUU/7hHfLKldRY9trzQlL+f0Mq0jqad6Dy/uzaSkojFGo6ypFvj9AC+EXln7okyE9zzF+l2w2+lVZhYPBqq81B4rvhSOh+cWoXuR++AQggo9pe6MdU7y7EQSoy3Zk6iSiS90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729134281; c=relaxed/simple;
-	bh=ghNsXsr5jB58sOCjp0d9dX1q4hNEkMv1dJoASM9z+Hs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YuqpT4XZa7jwyq0YCGtdff6f6VN03RF1VgRcne2AcS2ly3pbnWi6CRIs46Dd+mv49DBtWSlGgiR1adjg0iXJEdnQzwTstO2sQDxQGQroo/HjdENMmXhnh7SXlFoTTqHejJ96rhsoJP8x/o1nnG+Cfb0ZH0IzsQMhD2/wrBPgSPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nkP6vZge; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49GGA7Rh016942;
-	Thu, 17 Oct 2024 03:04:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=1qo8GP2tAgR
-	YLMsBdAO96Js+bfxBaIij1RJ4is2ElnY=; b=nkP6vZgeEbPyGYbHVu79lZ3HENB
-	GSxDYnwuZt8gEbfL7RP8FAv8Od9iSEutqeTbxp7zeubxxbnopRvA4x1mFWsyTTgq
-	X8ZedkoYv+9htyOImqxzIBGKIvZylyP3qS1azuYLNt+z+ccBEPnB8xKeQ/Ehp5ID
-	A0J80eqcYCYLkacKOpvO28Kyt6RPOG86PuqrbNiLES3NPqNSliQNGFL/RmAw3Ir/
-	Omi9BhIZ8iG4T+FW/UtfWaS64dAs2MiFaElw6oF4nib6QRKAQlIqF7UrxK1iRnk+
-	zxd9faQWbcqFYc3AXxXe40MX1IrmDqKf5EBrJXx0KdGczaqI6BaPHmcWiNQ==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 429mh56p1m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Oct 2024 03:04:21 +0000 (GMT)
-Received: from pps.filterd (NALASPPMTA04.qualcomm.com [127.0.0.1])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 49H2xhb4017715;
-	Thu, 17 Oct 2024 03:04:19 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 42aj75kt1g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Oct 2024 03:04:19 +0000
-Received: from NALASPPMTA04.qualcomm.com (NALASPPMTA04.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49H34J4K026165;
-	Thu, 17 Oct 2024 03:04:19 GMT
-Received: from hu-devc-lv-u22-c.qualcomm.com (hu-qianyu-lv.qualcomm.com [10.81.25.114])
-	by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 49H34Ji4026164
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Oct 2024 03:04:19 +0000
-Received: by hu-devc-lv-u22-c.qualcomm.com (Postfix, from userid 4098150)
-	id 70ED5650; Wed, 16 Oct 2024 20:04:19 -0700 (PDT)
-From: Qiang Yu <quic_qianyu@quicinc.com>
-To: manivannan.sadhasivam@linaro.org, vkoul@kernel.org, kishon@kernel.org,
-        robh@kernel.org, andersson@kernel.org, konradybcio@kernel.org,
-        krzk+dt@kernel.org, conor+dt@kernel.org, mturquette@baylibre.com,
-        sboyd@kernel.org, abel.vesa@linaro.org, quic_msarkar@quicinc.com,
-        quic_devipriy@quicinc.com
-Cc: dmitry.baryshkov@linaro.org, kw@linux.com, lpieralisi@kernel.org,
-        neil.armstrong@linaro.org, linux-arm-msm@vger.kernel.org,
-        linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-clk@vger.kernel.org, johan+linaro@kernel.org,
-        Qiang Yu <quic_qianyu@quicinc.com>, stable@vger.kernel.org
-Subject: [PATCH v7 6/7] PCI: qcom: Disable ASPM L0s and remove BDF2SID mapping config for X1E80100 SoC
-Date: Wed, 16 Oct 2024 20:04:11 -0700
-Message-Id: <20241017030412.265000-7-quic_qianyu@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241017030412.265000-1-quic_qianyu@quicinc.com>
-References: <20241017030412.265000-1-quic_qianyu@quicinc.com>
+	s=arc-20240116; t=1729142426; c=relaxed/simple;
+	bh=eMNb+2BquZXlS9LDuU8s3n3SpsAQpEY9rgKeU1b8bc4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ev/roiNCwVHqgiPqSY63IIrc1u8SzREApe9aOpjDgdKW2QFkV8Z+q7VmLifTu4+0AyR7RcBt8GQiBNRQb1mqOFv5Sfms53xqjnIl/V1Ztxq1jqkcWM0YKpqIZGRgNy6AK2tJu2La3zFGgLVftFwsHuQRD34aJQkEd/gug58h1HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=tzVG7NYW; arc=none smtp.client-ip=52.119.213.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1729142425; x=1760678425;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=mWe2YeZ80uokwCci72Iww2HMukKBNuati+Itectcv9I=;
+  b=tzVG7NYWYeUBLBdCL1Nr95uzamv/escFAoXscJ36UGu29DmZ4bvTMV5P
+   fmW3nRKUewIpxnUd89hBFqrlxIr6VyIqjVia+glxKY44Bexm08NmhpUXF
+   3Mh2LRW2HSJwT+p5i2f1JNzCQhx9flpUaUAslLKAiT23oYktB68eqXqmJ
+   k=;
+X-IronPort-AV: E=Sophos;i="6.11,210,1725321600"; 
+   d="scan'208";a="33914739"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2024 05:20:23 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.7.35:22077]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.0.29:2525] with esmtp (Farcaster)
+ id 12569ee5-0466-4090-aa2d-ce74ca440d4c; Thu, 17 Oct 2024 05:20:22 +0000 (UTC)
+X-Farcaster-Flow-ID: 12569ee5-0466-4090-aa2d-ce74ca440d4c
+Received: from EX19D016UWA004.ant.amazon.com (10.13.139.119) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Thu, 17 Oct 2024 05:20:22 +0000
+Received: from 88665a51a6b2.amazon.com (10.106.178.54) by
+ EX19D016UWA004.ant.amazon.com (10.13.139.119) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Thu, 17 Oct 2024 05:20:20 +0000
+From: Cristian Prundeanu <cpru@amazon.com>
+To: <linux-tip-commits@vger.kernel.org>
+CC: <linux-kernel@vger.kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, <x86@kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, Bjoern Doebel <doebel@amazon.com>,
+	Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>, Geoff Blake
+	<blakgeof@amazon.com>, Ali Saidi <alisaidi@amazon.com>, Csaba Csoma
+	<csabac@amazon.com>, Cristian Prundeanu <cpru@amazon.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH 1/2] [tip: sched/core] sched: Disable PLACE_LAG and RUN_TO_PARITY
+Date: Thu, 17 Oct 2024 00:19:59 -0500
+Message-ID: <20241017052000.99200-2-cpru@amazon.com>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <20241017052000.99200-1-cpru@amazon.com>
+References: <20241017052000.99200-1-cpru@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,51 +79,47 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: so-d10g9MdV1RTEVGDizCsF8VXHlGtfr
-X-Proofpoint-ORIG-GUID: so-d10g9MdV1RTEVGDizCsF8VXHlGtfr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- spamscore=0 priorityscore=1501 adultscore=0 mlxlogscore=999
- lowpriorityscore=0 mlxscore=0 phishscore=0 malwarescore=0 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410170020
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D044UWA004.ant.amazon.com (10.13.139.7) To
+ EX19D016UWA004.ant.amazon.com (10.13.139.119)
 
-Currently, the cfg_1_9_0 which is being used for X1E80100 has config_sid
-callback in its ops and doesn't disable ASPM L0s. However, as same as
-SC8280X, PCIe controllers on X1E80100 are connected to SMMUv3, hence don't
-need config_sid() callback and hardware team has recommended to disable
-L0s as it is broken in the controller. Hence reuse cfg_sc8280xp for
-X1E80100.
+With these features are enabled, the EEVDF scheduler introduces a large
+performance degradation, observed in multiple database tests on kernel
+versions using EEVDF, across multiple architectures (x86, aarch64, amd64)
+and CPU generations.
+Disable the features to minimize default performance impact.
 
-Fixes: 6d0c39324c5f ("PCI: qcom: Add X1E80100 PCIe support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: <stable@vger.kernel.org> # 6.6.x
+Fixes: 86bfbb7ce4f6 ("sched/fair: Add lag based placement")
+Fixes: 63304558ba5d ("sched/eevdf: Curb wakeup-preemption")
+Signed-off-by: Cristian Prundeanu <cpru@amazon.com>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/features.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index 468bd4242e61..c533e6024ba2 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -1847,7 +1847,7 @@ static const struct of_device_id qcom_pcie_match[] = {
- 	{ .compatible = "qcom,pcie-sm8450-pcie0", .data = &cfg_1_9_0 },
- 	{ .compatible = "qcom,pcie-sm8450-pcie1", .data = &cfg_1_9_0 },
- 	{ .compatible = "qcom,pcie-sm8550", .data = &cfg_1_9_0 },
--	{ .compatible = "qcom,pcie-x1e80100", .data = &cfg_1_9_0 },
-+	{ .compatible = "qcom,pcie-x1e80100", .data = &cfg_sc8280xp },
- 	{ }
- };
- 
+diff --git a/kernel/sched/features.h b/kernel/sched/features.h
+index a3d331dd2d8f..8a5ca80665b3 100644
+--- a/kernel/sched/features.h
++++ b/kernel/sched/features.h
+@@ -4,7 +4,7 @@
+  * Using the avg_vruntime, do the right thing and preserve lag across
+  * sleep+wake cycles. EEVDF placement strategy #1, #2 if disabled.
+  */
+-SCHED_FEAT(PLACE_LAG, true)
++SCHED_FEAT(PLACE_LAG, false)
+ /*
+  * Give new tasks half a slice to ease into the competition.
+  */
+@@ -17,7 +17,7 @@ SCHED_FEAT(PLACE_REL_DEADLINE, true)
+  * Inhibit (wakeup) preemption until the current task has either matched the
+  * 0-lag point or until is has exhausted it's slice.
+  */
+-SCHED_FEAT(RUN_TO_PARITY, true)
++SCHED_FEAT(RUN_TO_PARITY, false)
+ /*
+  * Allow wakeup of tasks with a shorter slice to cancel RUN_TO_PARITY for
+  * current.
 -- 
-2.34.1
+2.40.1
 
 
