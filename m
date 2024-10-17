@@ -1,229 +1,220 @@
-Return-Path: <stable+bounces-86675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB759A2C07
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 20:20:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BDBB9A2C1F
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 20:26:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70A9F1F25742
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 18:20:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4F3F283C17
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 18:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC0E1DEFE1;
-	Thu, 17 Oct 2024 18:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4081DFE25;
+	Thu, 17 Oct 2024 18:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXJd+9Lv"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="JKt7cyUS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773151DE8B8
-	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 18:19:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1321D31B8;
+	Thu, 17 Oct 2024 18:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729189189; cv=none; b=cmv09MJxXf2AJYMs4KLVA+igx46ln+ZhIsycbSYay39ZBWKu3AfR4iYd7CKhORq2XuZmQRRBhDMUQiZr3ntxNgyCj4R+/d/rdm9jTTO4OAVxuamGa5OuTGrRVHe2ob9OJzKNfu3QIkxPrv4N2OR8U/92FeUdJ4tp5hMFMlB7NsY=
+	t=1729189586; cv=none; b=biE1gAKSkfxJGA5T2f4yBK867XfxLXJ/8gwVtTRV+k37L5A4Mz6NJnKCJB9YA8tvV+44efC6rNuqW8Xyk2/kViluDdf3BJP8NLbx5OElAhw5i4MhuIcduszDFmWiM6HUs6L4v9Rp18c/55Jo7bInurd87tsrZlQeN1Vcbe4iSfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729189189; c=relaxed/simple;
-	bh=xtpvklJlymGtbtPho/vOw/un3Sepj9G+AmTLS44RAdo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=q5fNMSnw3qUTR6ywz2oB2NsKUYiiyyVHxJp5WhiwBApiwEfWjxSvMdxflo/q0a2TRve1cygQW4cODfQ7iEK35t2QqmD6uEL7KHwKuB+sybIrEdALgZ+yYByiK/UXbQBcON4GrutegClrRm96xkJQdPbylYMXfyiCi+ScZQ7BIt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXJd+9Lv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9658EC4CEC3;
-	Thu, 17 Oct 2024 18:19:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729189189;
-	bh=xtpvklJlymGtbtPho/vOw/un3Sepj9G+AmTLS44RAdo=;
-	h=Subject:To:Cc:From:Date:From;
-	b=VXJd+9Lv6iqXKM3lKMIgZhOOonDvWuRgdSy4/ThtIGb0E2dnM4St09vJCxDZdwQCG
-	 iYHzS0t7vxT7bVyRB14/X8xSTaAtNsZqbytb5atGFcWUfSv4Q1rIv+A9S+JMbJHhcM
-	 1d+bcniawq19Q9epwZBl+7zq4KcHQ++BCRQx1ET4=
-Subject: FAILED: patch "[PATCH] ksmbd: fix user-after-free from session log off" failed to apply to 5.15-stable tree
-To: linkinjeon@kernel.org,stfrench@microsoft.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 17 Oct 2024 20:19:45 +0200
-Message-ID: <2024101744-fence-valiant-9382@gregkh>
+	s=arc-20240116; t=1729189586; c=relaxed/simple;
+	bh=w/Dgu9o7SlfhJAtPg0nuc7bjd6Jh+zhUqS2RN9TXNMM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eojry6tvpTqIfY/AHEmR8SNVBnuL/vcJDag1vzdHXbwqeOETRwFaNd6du0YcMnwvK1dpHx2KJ6J47zZ0y+UYOoxqiYxLdo+q67UjfoiRWfx8dQyI8PSQw3Xb58Re6KErQBBVeql6yrvLPugMHxmR6/J2yLS+wUzHN5nJ1qdMn9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=JKt7cyUS; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFBvLG024516;
+	Thu, 17 Oct 2024 18:26:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=fWhCJkkh43jAIW4BYl88J+uvVKlUU
+	73T3cJn6QFcM9Y=; b=JKt7cyUSc+tOxKzK0r3I0fBP8NtTWyL+eFkmaPlC5Nfln
+	AUCnKhDwiJNY6ZO4vvJOpD8m1egjoUIeg3MGM5RUhj+8Sphy2rjF0T3vFIROFXkr
+	qcCVEHfvOAZNCJuoVIeqWf82bkN6YuhAyMnlwFoj4ZVuaQJ3UuCMMZLLRqW2gj3Z
+	GtgTvRxB3nt/q5SRtK2gAFwr4CD4P2M1KSWku6KAbfrZsASThoniaM37wmS3IQpI
+	XgRNodh3/+JlZE6blxXCviIUAGiO9t76x8+X9jMYyGqZ0zy5OL5x3KadLRdrDuXt
+	sH4My1IYSNhrS3Bp3mVj4MrxqRmeCWwnQfMCKNK8A==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427fhcpqgq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 17 Oct 2024 18:26:12 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49HI05fv013876;
+	Thu, 17 Oct 2024 18:26:11 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 427fjakuan-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 17 Oct 2024 18:26:11 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49HIQAdl037718;
+	Thu, 17 Oct 2024 18:26:10 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 427fjaku9n-1;
+	Thu, 17 Oct 2024 18:26:10 +0000
+From: Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
+To: 
+Cc: saeed.mirzamohammadi@oracle.com, Mikulas Patocka <mpatocka@redhat.com>,
+        stable@vger.kernel.org, Mike Snitzer <snitzer@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@redhat.com>,
+        dm-devel@redhat.com, linux-kernel@vger.kernel.org
+Subject: [PATCH 5.15 1/1] dm-crypt, dm-verity: disable tasklets
+Date: Thu, 17 Oct 2024 11:26:02 -0700
+Message-ID: <20241017182605.2049765-1-saeed.mirzamohammadi@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-17_20,2024-10-17_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0 mlxscore=0
+ mlxlogscore=999 bulkscore=0 spamscore=0 suspectscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
+ definitions=main-2410170125
+X-Proofpoint-GUID: i5OHYiGkQHTIONtX5ZQYxPk8wUsgj40a
+X-Proofpoint-ORIG-GUID: i5OHYiGkQHTIONtX5ZQYxPk8wUsgj40a
 
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+commit 0a9bab391e336489169b95cb0d4553d921302189 upstream.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Tasklets have an inherent problem with memory corruption. The function
+tasklet_action_common calls tasklet_trylock, then it calls the tasklet
+callback and then it calls tasklet_unlock. If the tasklet callback frees
+the structure that contains the tasklet or if it calls some code that may
+free it, tasklet_unlock will write into free memory.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 7aa8804c0b67b3cb263a472d17f2cb50d7f1a930
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024101744-fence-valiant-9382@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+The commits 8e14f610159d and d9a02e016aaf try to fix it for dm-crypt, but
+it is not a sufficient fix and the data corruption can still happen [1].
+There is no fix for dm-verity and dm-verity will write into free memory
+with every tasklet-processed bio.
 
-Possible dependencies:
+There will be atomic workqueues implemented in the kernel 6.9 [2]. They
+will have better interface and they will not suffer from the memory
+corruption problem.
 
+But we need something that stops the memory corruption now and that can be
+backported to the stable kernels. So, I'm proposing this commit that
+disables tasklets in both dm-crypt and dm-verity. This commit doesn't
+remove the tasklet support, because the tasklet code will be reused when
+atomic workqueues will be implemented.
 
+[1] https://lore.kernel.org/all/d390d7ee-f142-44d3-822a-87949e14608b@suse.de/T/
+[2] https://lore.kernel.org/lkml/20240130091300.2968534-1-tj@kernel.org/
 
-thanks,
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 39d42fa96ba1b ("dm crypt: add flags to optionally bypass kcryptd workqueues")
+Fixes: 5721d4e5a9cdb ("dm verity: Add optional "try_verify_in_tasklet" feature")
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(cherry picked from commit 30884a44e0cedc3dfda8c22432f3ba4078ec2d94)
+Signed-off-by: Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
+---
+ drivers/md/dm-crypt.c | 37 ++-----------------------------------
+ 1 file changed, 2 insertions(+), 35 deletions(-)
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 7aa8804c0b67b3cb263a472d17f2cb50d7f1a930 Mon Sep 17 00:00:00 2001
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Tue, 8 Oct 2024 22:42:57 +0900
-Subject: [PATCH] ksmbd: fix user-after-free from session log off
-
-There is racy issue between smb2 session log off and smb2 session setup.
-It will cause user-after-free from session log off.
-This add session_lock when setting SMB2_SESSION_EXPIRED and referece
-count to session struct not to free session while it is being used.
-
-Cc: stable@vger.kernel.org # v5.15+
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-25282
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-
-diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
-index 99416ce9f501..1e4624e9d434 100644
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -177,9 +177,10 @@ static void ksmbd_expire_session(struct ksmbd_conn *conn)
+diff --git a/drivers/md/dm-crypt.c b/drivers/md/dm-crypt.c
+index 9889035c343e3..95b3b69a5e3c4 100644
+--- a/drivers/md/dm-crypt.c
++++ b/drivers/md/dm-crypt.c
+@@ -69,10 +69,8 @@ struct dm_crypt_io {
+ 	struct bio *base_bio;
+ 	u8 *integrity_metadata;
+ 	bool integrity_metadata_from_pool:1;
+-	bool in_tasklet:1;
  
- 	down_write(&conn->session_lock);
- 	xa_for_each(&conn->sessions, id, sess) {
--		if (sess->state != SMB2_SESSION_VALID ||
--		    time_after(jiffies,
--			       sess->last_active + SMB2_SESSION_TIMEOUT)) {
-+		if (atomic_read(&sess->refcnt) == 0 &&
-+		    (sess->state != SMB2_SESSION_VALID ||
-+		     time_after(jiffies,
-+			       sess->last_active + SMB2_SESSION_TIMEOUT))) {
- 			xa_erase(&conn->sessions, sess->id);
- 			hash_del(&sess->hlist);
- 			ksmbd_session_destroy(sess);
-@@ -269,8 +270,6 @@ struct ksmbd_session *ksmbd_session_lookup_slowpath(unsigned long long id)
+ 	struct work_struct work;
+-	struct tasklet_struct tasklet;
  
- 	down_read(&sessions_table_lock);
- 	sess = __session_lookup(id);
--	if (sess)
--		sess->last_active = jiffies;
- 	up_read(&sessions_table_lock);
+ 	struct convert_context ctx;
  
- 	return sess;
-@@ -289,6 +288,22 @@ struct ksmbd_session *ksmbd_session_lookup_all(struct ksmbd_conn *conn,
- 	return sess;
+@@ -1769,7 +1767,6 @@ static void crypt_io_init(struct dm_crypt_io *io, struct crypt_config *cc,
+ 	io->ctx.r.req = NULL;
+ 	io->integrity_metadata = NULL;
+ 	io->integrity_metadata_from_pool = false;
+-	io->in_tasklet = false;
+ 	atomic_set(&io->io_pending, 0);
  }
  
-+void ksmbd_user_session_get(struct ksmbd_session *sess)
-+{
-+	atomic_inc(&sess->refcnt);
-+}
-+
-+void ksmbd_user_session_put(struct ksmbd_session *sess)
-+{
-+	if (!sess)
-+		return;
-+
-+	if (atomic_read(&sess->refcnt) <= 0)
-+		WARN_ON(1);
-+	else
-+		atomic_dec(&sess->refcnt);
-+}
-+
- struct preauth_session *ksmbd_preauth_session_alloc(struct ksmbd_conn *conn,
- 						    u64 sess_id)
+@@ -1778,12 +1775,6 @@ static void crypt_inc_pending(struct dm_crypt_io *io)
+ 	atomic_inc(&io->io_pending);
+ }
+ 
+-static void kcryptd_io_bio_endio(struct work_struct *work)
+-{
+-	struct dm_crypt_io *io = container_of(work, struct dm_crypt_io, work);
+-	bio_endio(io->base_bio);
+-}
+-
+ /*
+  * One of the bios was finished. Check for completion of
+  * the whole request and correctly clean up the buffer.
+@@ -1807,20 +1798,6 @@ static void crypt_dec_pending(struct dm_crypt_io *io)
+ 
+ 	base_bio->bi_status = error;
+ 
+-	/*
+-	 * If we are running this function from our tasklet,
+-	 * we can't call bio_endio() here, because it will call
+-	 * clone_endio() from dm.c, which in turn will
+-	 * free the current struct dm_crypt_io structure with
+-	 * our tasklet. In this case we need to delay bio_endio()
+-	 * execution to after the tasklet is done and dequeued.
+-	 */
+-	if (io->in_tasklet) {
+-		INIT_WORK(&io->work, kcryptd_io_bio_endio);
+-		queue_work(cc->io_queue, &io->work);
+-		return;
+-	}
+-
+ 	bio_endio(base_bio);
+ }
+ 
+@@ -2264,11 +2241,6 @@ static void kcryptd_crypt(struct work_struct *work)
+ 		kcryptd_crypt_write_convert(io);
+ }
+ 
+-static void kcryptd_crypt_tasklet(unsigned long work)
+-{
+-	kcryptd_crypt((struct work_struct *)work);
+-}
+-
+ static void kcryptd_queue_crypt(struct dm_crypt_io *io)
  {
-@@ -393,6 +408,7 @@ static struct ksmbd_session *__session_create(int protocol)
- 	xa_init(&sess->rpc_handle_list);
- 	sess->sequence_number = 1;
- 	rwlock_init(&sess->tree_conns_lock);
-+	atomic_set(&sess->refcnt, 1);
- 
- 	ret = __init_smb2_session(sess);
- 	if (ret)
-diff --git a/fs/smb/server/mgmt/user_session.h b/fs/smb/server/mgmt/user_session.h
-index dc9fded2cd43..c1c4b20bd5c6 100644
---- a/fs/smb/server/mgmt/user_session.h
-+++ b/fs/smb/server/mgmt/user_session.h
-@@ -61,6 +61,8 @@ struct ksmbd_session {
- 	struct ksmbd_file_table		file_table;
- 	unsigned long			last_active;
- 	rwlock_t			tree_conns_lock;
-+
-+	atomic_t			refcnt;
- };
- 
- static inline int test_session_flag(struct ksmbd_session *sess, int bit)
-@@ -104,4 +106,6 @@ void ksmbd_release_tree_conn_id(struct ksmbd_session *sess, int id);
- int ksmbd_session_rpc_open(struct ksmbd_session *sess, char *rpc_name);
- void ksmbd_session_rpc_close(struct ksmbd_session *sess, int id);
- int ksmbd_session_rpc_method(struct ksmbd_session *sess, int id);
-+void ksmbd_user_session_get(struct ksmbd_session *sess);
-+void ksmbd_user_session_put(struct ksmbd_session *sess);
- #endif /* __USER_SESSION_MANAGEMENT_H__ */
-diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
-index 231d2d224656..9670c97f14b3 100644
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -238,6 +238,8 @@ static void __handle_ksmbd_work(struct ksmbd_work *work,
- 	} while (is_chained == true);
- 
- send:
-+	if (work->sess)
-+		ksmbd_user_session_put(work->sess);
- 	if (work->tcon)
- 		ksmbd_tree_connect_put(work->tcon);
- 	smb3_preauth_hash_rsp(work);
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 797b0f24097b..599118aed205 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -605,8 +605,10 @@ int smb2_check_user_session(struct ksmbd_work *work)
- 
- 	/* Check for validity of user session */
- 	work->sess = ksmbd_session_lookup_all(conn, sess_id);
--	if (work->sess)
-+	if (work->sess) {
-+		ksmbd_user_session_get(work->sess);
- 		return 1;
-+	}
- 	ksmbd_debug(SMB, "Invalid user session, Uid %llu\n", sess_id);
- 	return -ENOENT;
- }
-@@ -1740,6 +1742,7 @@ int smb2_sess_setup(struct ksmbd_work *work)
+ 	struct crypt_config *cc = io->cc;
+@@ -2280,15 +2252,10 @@ static void kcryptd_queue_crypt(struct dm_crypt_io *io)
+ 		 * irqs_disabled(): the kernel may run some IO completion from the idle thread, but
+ 		 * it is being executed with irqs disabled.
+ 		 */
+-		if (in_hardirq() || irqs_disabled()) {
+-			io->in_tasklet = true;
+-			tasklet_init(&io->tasklet, kcryptd_crypt_tasklet, (unsigned long)&io->work);
+-			tasklet_schedule(&io->tasklet);
++		if (!(in_hardirq() || irqs_disabled())) {
++			kcryptd_crypt(&io->work);
+ 			return;
  		}
- 
- 		conn->binding = true;
-+		ksmbd_user_session_get(sess);
- 	} else if ((conn->dialect < SMB30_PROT_ID ||
- 		    server_conf.flags & KSMBD_GLOBAL_FLAG_SMB3_MULTICHANNEL) &&
- 		   (req->Flags & SMB2_SESSION_REQ_FLAG_BINDING)) {
-@@ -1766,6 +1769,7 @@ int smb2_sess_setup(struct ksmbd_work *work)
- 		}
- 
- 		conn->binding = false;
-+		ksmbd_user_session_get(sess);
- 	}
- 	work->sess = sess;
- 
-@@ -2228,7 +2232,9 @@ int smb2_session_logoff(struct ksmbd_work *work)
+-
+-		kcryptd_crypt(&io->work);
+-		return;
  	}
  
- 	ksmbd_destroy_file_table(&sess->file_table);
-+	down_write(&conn->session_lock);
- 	sess->state = SMB2_SESSION_EXPIRED;
-+	up_write(&conn->session_lock);
- 
- 	ksmbd_free_user(sess->user);
- 	sess->user = NULL;
+ 	INIT_WORK(&io->work, kcryptd_crypt);
+-- 
+2.46.0
 
 
